@@ -126,6 +126,14 @@ descends from [libmapper](http://libmapper.github.io/)'s signal-namespace resear
 - [Signals reference](docs/signals.md) — names published by each input package
 - [Show control](docs/show-control.md) — timeline, scenes, performance mode, monitor, OSC
 
+## Sister project: WebToe
+
+[**WebToe**](https://github.com/frank890417/WebToe) is a web-native, node-based
+dataflow engine (TouchDesigner-style, imports real `.toe` projects). The two are
+halves of one stack: **WebToe is the engine, open-audiovisual is the show** —
+a WebToe network can become an openav World, and openav's inputs (MIDI, chords,
+pose) map naturally onto CHOP channels. Integration adapter is on the roadmap.
+
 ## Status & roadmap
 
 `v0.1` — core four layers + timeline + console + monitor + 3 examples, tests green.
