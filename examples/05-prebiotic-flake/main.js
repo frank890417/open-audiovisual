@@ -168,21 +168,14 @@ const midi = new Midi({ signals });
 midi.enable();
 const keys = mountKeys(document.getElementById('keys'), { signals, base: 48, octaves: 2 });
 
-// ---------- L4 audio branch: Tone.js engine, params live in the same console ----------
+// ---------- L4 audio branch: Tone.js engine, living in the universal side panel ----------
 const sound = new Sound({ signals, params, engine: toneEngine() });
-const soundBtn = document.getElementById('sound-btn');
-soundBtn.addEventListener('click', async () => {
-  if (sound.enabled) return;
-  soundBtn.textContent = 'loading Tone.js…';
-  try { await sound.enable(); soundBtn.textContent = '🔊 sound on'; soundBtn.classList.add('on'); }
-  catch (e) { soundBtn.textContent = 'sound failed — retry'; console.error(e); }
-});
 
 const mapper = new Mapper({ signals, params, profile: 'flake' });
 mapper.load();
 setInterval(() => mapper.save(), 3000);
 
-const consoleUI = mountConsole(document.getElementById('desk'), { timeline, params, mapper, signals, midi });
+const consoleUI = mountConsole(document.getElementById('desk'), { timeline, params, mapper, signals, midi, sound });
 const monitor = new MonitorFeed({});
 monitor.connect();
 

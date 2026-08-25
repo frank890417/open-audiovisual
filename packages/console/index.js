@@ -14,7 +14,17 @@ import { css } from './src/theme.js';
 import { buildTransport } from './src/transport.js';
 import { buildParamPanel } from './src/params-panel.js';
 import { buildSignalPanel } from './src/signals-panel.js';
+import { buildSoundPanel } from './src/sound-panel.js';
 import { buildPerformanceMode } from './src/perf-mode.js';
+
+// every .oav-panel header toggles its section — the universal collapsible
+// panel convention all examples follow
+function wireCollapsible(root) {
+  root.addEventListener('click', (e) => {
+    if (e.target.tagName === 'H3' && e.target.parentElement?.classList.contains('oav-panel'))
+      e.target.parentElement.classList.toggle('closed');
+  });
+}
 
 export function mountConsole(root, app, opts = {}) {
   if (!document.getElementById('openav-css')) {
@@ -25,7 +35,9 @@ export function mountConsole(root, app, opts = {}) {
   }
   root.classList.add('oav-console');
 
+  wireCollapsible(root);
   const transport = buildTransport(root, app);
+  const soundPanel = app.sound ? buildSoundPanel(root, app) : null;
   const params = buildParamPanel(root, app);
   const signalsPanel = opts.signals === false ? null : buildSignalPanel(root, app);
   const perf = buildPerformanceMode(app);
@@ -48,6 +60,7 @@ export function mountConsole(root, app, opts = {}) {
     /** Call once per frame after stage.frame(). */
     render(state) {
       transport.render();
+      soundPanel?.render();
       params.render(state);
       signalsPanel?.render();
       perf.render();

@@ -29,15 +29,10 @@
   #desk { flex: 1; overflow-y: auto; }
   #hint { position: absolute; left: 12px; bottom: 10px; color: #445; z-index: 2;
     font: 11px ui-monospace, monospace; pointer-events: none; }
-  #sound-btn { position: absolute; right: 12px; top: 10px; z-index: 3;
-    background: #1a2030; color: #cfd6e4; border: 1px solid #2a3348; border-radius: 8px;
-    padding: 6px 14px; font: 12px ui-monospace, monospace; cursor: pointer; }
-  #sound-btn.on { background: #2e6df6; color: #fff; border-color: #2e6df6; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <button id="sound-btn">🔊 enable sound (Tone.js)</button>
   <div id="hint">Prebiotic Flake (Che-Yu Wu, 2023) — a MIDI daily sketch, replayed through the framework<br>each note = one flake · the feedback zoom breathes · sound is optional, L4 audio branch</div>
 </div>
 <div id="console"><div id="keys"></div><div id="desk"></div></div>

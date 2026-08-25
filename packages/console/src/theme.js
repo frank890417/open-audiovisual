@@ -20,7 +20,13 @@ export const css = `
 .oav-scrub .head { position: absolute; top: 0; bottom: 0; width: 2px; background: #2e6df6; }
 .oav-panel { background: #10141f; border: 1px solid #1c2334; border-radius: 8px; padding: 8px; }
 .oav-panel h3 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase;
-  letter-spacing: .08em; color: #667; }
+  letter-spacing: .08em; color: #667; cursor: pointer; user-select: none; }
+.oav-panel h3::before { content: '▾ '; color: #445; }
+.oav-panel.closed h3::before { content: '▸ '; }
+.oav-panel.closed > *:not(h3) { display: none; }
+.oav-sound-btn { background: #1a2030; color: #cfd6e4; border: 1px solid #2a3348;
+  border-radius: 8px; padding: 6px 14px; font: 12px ui-monospace, monospace; cursor: pointer; }
+.oav-sound-btn.on { background: #2e6df6; color: #fff; border-color: #2e6df6; }
 .oav-param { display: grid; grid-template-columns: 110px 1fr 52px auto auto; gap: 6px;
   align-items: center; padding: 2px 0; }
 .oav-param label { color: #9aa5bd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

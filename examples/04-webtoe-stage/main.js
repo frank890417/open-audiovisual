@@ -12,6 +12,7 @@
 import { Signals, Params, Loop } from '@openav/core';
 import { Midi } from '@openav/midi';
 import { mountKeys } from '@openav/keys';
+import { Sound, toneEngine } from '@openav/sound';
 import { Mapper } from '@openav/mapping';
 import { Timeline } from '@openav/timeline';
 import { Stage } from '@openav/stage';
@@ -63,7 +64,10 @@ let env = 0;
 signals.on('midi/note/on', () => { env = 1; });
 signals.define('env/pulse', { description: 'note envelope' });
 
-const consoleUI = mountConsole(document.getElementById('desk'), { timeline, params, mapper, signals, midi });
+// L4 audio branch — enable from the Sound section in the side panel
+const sound = new Sound({ signals, params, engine: toneEngine() });
+
+const consoleUI = mountConsole(document.getElementById('desk'), { timeline, params, mapper, signals, midi, sound });
 const monitor = new MonitorFeed({});
 monitor.connect();
 
@@ -74,9 +78,10 @@ const loop = new Loop((dt) => {
   timeline.advance(dt);
   mapper.update(dt);
   const state = stage.frame(dt, timeline.state());
+  sound.update(state);
   consoleUI.render(state);
   monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
 });
 loop.start();
 
-window.openav = { signals, params, timeline, mapper, stage, loop, keys };
+window.openav = { signals, params, timeline, mapper, stage, loop, keys, sound };
