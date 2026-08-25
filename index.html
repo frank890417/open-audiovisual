@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>open-audiovisual — a web-native framework for audiovisual performance</title>
+<meta name="description" content="Input (MIDI · audio · chords · pose) → mapping → algorithmic worlds → output, with a timeline and a backstage monitor. Zero build, zero dependencies, MIT.">
+<meta property="og:title" content="open-audiovisual">
+<meta property="og:description" content="Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. open-audiovisual gives you a show.">
+<meta property="og:url" content="https://openaudiovisual.com">
+<style>
+  :root { --bg:#0d1017; --panel:#10141f; --line:#1c2334; --tx:#cfd6e4; --dim:#8892a8;
+    --faint:#556; --blue:#2e6df6; --lblue:#7ea6ff; --gold:#ffd166; --green:#37c978; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--tx);
+    font:15px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 80px; }
+  h1 { color:#fff; font-size: 34px; margin: 18px 0 6px; letter-spacing: -.01em; }
+  .tag { color: var(--gold); }
+  .tagline { color: var(--dim); font-size: 16px; margin: 0 0 26px; }
+  .tagline b { color: var(--tx); }
+  a { color: var(--lblue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .cta { display:flex; gap:10px; flex-wrap:wrap; margin: 22px 0 40px; }
+  .btn { background: var(--blue); color:#fff; padding: 9px 18px; border-radius: 8px; font-weight:600; }
+  .btn.ghost { background: var(--panel); color: var(--tx); border: 1px solid var(--line); }
+  .btn:hover { text-decoration: none; filter: brightness(1.15); }
+  pre { background: var(--panel); border:1px solid var(--line); border-radius: 10px;
+    padding: 14px 18px; overflow-x: auto; color: var(--green); }
+  pre .c { color: var(--faint); }
+  .layers { background: var(--panel); border:1px solid var(--line); border-radius: 10px;
+    padding: 4px 18px; margin: 26px 0; }
+  .layers p { margin: 12px 0; }
+  .layers .l { color: var(--gold); }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 26px 0; }
+  .card { background: var(--panel); border:1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .card h3 { margin: 0 0 4px; font-size: 15px; }
+  .card p { margin: 0; color: var(--dim); font-size: 13px; }
+  h2 { color:#fff; font-size: 18px; margin: 40px 0 10px; }
+  .note { color: var(--faint); font-size: 13px; }
+  footer { margin-top: 56px; color: var(--faint); font-size: 13px; border-top: 1px solid var(--line); padding-top: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">🎭 open-audiovisual</div>
+  <h1>A web-native framework for<br>audiovisual performance</h1>
+  <p class="tagline">Hydra gives you improvisation. cables gives you a platform. Tone gives you sound.<br><b>open-audiovisual gives you a show.</b></p>
+
+  <div class="cta">
+    <a class="btn" href="https://github.com/frank890417/open-audiovisual">GitHub →</a>
+    <a class="btn ghost" href="examples/01-hello-particles/">Live demo: hello particles</a>
+    <a class="btn ghost" href="examples/02-chord-garden/">chord garden</a>
+    <a class="btn ghost" href="examples/03-pose-field/">pose field</a>
+  </div>
+
+  <pre><span class="c"># zero build · zero dependencies · MIT</span>
+git clone https://github.com/frank890417/open-audiovisual.git
+cd open-audiovisual
+node serve.js   <span class="c"># → http://localhost:8080 (Chrome: WebMIDI + camera)</span></pre>
+
+  <div class="layers">
+    <p><span class="l">L1 INPUT</span> — MIDI · audio analysis · chord semantics · body pose → named, normalized <b>signals</b></p>
+    <p><span class="l">L2 MAPPING</span> — signal → param routes: curves · smoothing · many-to-many · live learn</p>
+    <p><span class="l">L3 WORLD</span> — your algorithmic system; reads params, never inputs. p5 / three / canvas / anything</p>
+    <p><span class="l">L4 OUTPUT</span> — screen · MIDI out · OSC → UDP bridge (Spat, Reaper, TouchDesigner, lights)</p>
+    <p><span class="l">⏱ TIMELINE</span> — param automation · scenes & cues · performance teleprompter</p>
+    <p><span class="l">📟 MONITOR</span> — backstage view on any LAN device: clock, scene, every signal, FPS</p>
+  </div>
+
+  <h2>Why</h2>
+  <p>Everything TouchDesigner-class tools do on a desktop, the browser now does with a URL — WebGL, Web MIDI, realtime audio analysis, on-device pose tracking. What everyone kept rebuilding was the <i>chassis</i>: MIDI plumbing, mapping UI, a timeline with cues, a backstage. This is that chassis, extracted from a real show — <a href="https://cheyuwu.com/exhibition/the-last-input">The Last Input</a> (IRCAM / C-LAB Taiwan Sound Lab 2026, 49.4-channel dome).</p>
+
+  <h2>Agent-native</h2>
+  <p>Worlds are visual code, and coding agents are good at code. The repo ships <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a> and a bundled <code>/create-world</code> skill: describe a performance in natural language ("a jellyfish world that blooms on consonant chords") and your agent writes a runnable World inside the chassis.</p>
+
+  <h2>Docs</h2>
+  <p>
+    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/architecture.md">Architecture</a> ·
+    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/writing-a-world.md">Writing a world</a> ·
+    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/signals.md">Signals reference</a> ·
+    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/show-control.md">Show control</a> ·
+    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">Roadmap</a>
+  </p>
+
+  <p class="note">Demo notes: examples run right here on this static site — QWERTY keys A–L stand in for a MIDI keyboard. WebMIDI needs Chrome/Edge; the OSC bridge and backstage monitor are tiny local Node companions (<code>node packages/monitor/server.js</code>), so those two stay quiet on the hosted demos.</p>
+
+  <footer>MIT · <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a> · lineage: The Last Input → generalized as a public chassis · <a href="https://github.com/frank890417/open-audiovisual">github.com/frank890417/open-audiovisual</a></footer>
+</div>
+</body>
+</html>
