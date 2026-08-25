@@ -99,7 +99,7 @@ node serve.js   <span class="c"># → http://localhost:8080 (Chrome: WebMIDI + c
 
   <!-- ══════ architecture, visually ══════ -->
   <h2>The architecture</h2>
-  <svg class="arch" viewBox="0 0 860 470" role="img" aria-label="open-audiovisual architecture: input, mapping, world, output layers with timeline and monitor spines">
+  <svg class="arch" viewBox="0 0 860 620" role="img" aria-label="open-audiovisual architecture: input, mapping, world, output (video and audio branches) with timeline, console and monitor spines; WebToe as sister engine">
     <defs>
       <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
         <path d="M0 0 L8 4 L0 8 z" fill="#2e6df6"/>
@@ -111,70 +111,111 @@ node serve.js   <span class="c"># → http://localhost:8080 (Chrome: WebMIDI + c
       .bx-map { stroke:#2e6df6; }
       .bx-world { stroke:#ffd166; }
       .bx-out { stroke:#b47ee6; }
+      .bx-sub { fill:#0d1017; stroke:#2a3348; rx:8; }
       .bx-spine { stroke:#2a3348; }
       .tl { font:600 14px ui-monospace,monospace; fill:#fff; }
+      .tm { font:600 12px ui-monospace,monospace; fill:#cfd6e4; }
       .ts { font:11px ui-monospace,monospace; fill:#8892a8; }
       .tc { font:11px ui-monospace,monospace; fill:#556; }
       .chip { fill:#0d1017; stroke:#1c2334; rx:6; }
       .flow { stroke:#2e6df6; stroke-width:2; fill:none; marker-end:url(#arr);
         stroke-dasharray:6 5; animation: dash 1.2s linear infinite; }
+      .flow-g { stroke:#37c978; }
       @keyframes dash { to { stroke-dashoffset:-11; } }
       .lbl { font:600 11px ui-monospace,monospace; }
     </style>
+
     <!-- L1 input -->
-    <rect class="bx bx-in" x="10" y="10" width="620" height="88" rx="10"/>
+    <rect class="bx bx-in" x="10" y="10" width="620" height="96" rx="10"/>
     <text class="tl" x="26" y="36">L1 · INPUT</text>
     <text class="tc" x="26" y="54">"what is happening"</text>
-    <rect class="chip" x="170" y="26" width="90" height="26" rx="6"/><text class="ts" x="186" y="43">midi</text>
-    <rect class="chip" x="270" y="26" width="90" height="26" rx="6"/><text class="ts" x="284" y="43">audio</text>
-    <rect class="chip" x="370" y="26" width="90" height="26" rx="6"/><text class="ts" x="384" y="43">chord</text>
-    <rect class="chip" x="470" y="26" width="90" height="26" rx="6"/><text class="ts" x="488" y="43">pose</text>
-    <text class="ts" x="170" y="80">→ named, normalized <tspan fill="#37c978">signals</tspan>: midi/cc/74 · chord/consonance · pose/hand/y</text>
+    <rect class="chip" x="170" y="24" width="76" height="26" rx="6"/><text class="ts" x="190" y="41">midi</text>
+    <rect class="chip" x="254" y="24" width="76" height="26" rx="6"/><text class="ts" x="270" y="41">audio</text>
+    <rect class="chip" x="338" y="24" width="76" height="26" rx="6"/><text class="ts" x="354" y="41">chord</text>
+    <rect class="chip" x="422" y="24" width="70" height="26" rx="6"/><text class="ts" x="440" y="41">pose</text>
+    <rect class="chip" x="500" y="24" width="118" height="26" rx="6"/><text class="ts" x="508" y="41">keys + sim 🎹</text>
+    <text class="ts" x="170" y="72">→ named, normalized <tspan fill="#37c978">signals</tspan>: midi/cc/74 · chord/consonance · pose/hand/y</text>
+    <text class="tc" x="170" y="92">a knob, a hand, a QWERTY piano and a simulated performer are indistinguishable</text>
+
     <!-- L2 mapping -->
-    <rect class="bx bx-map" x="10" y="128" width="620" height="72" rx="10"/>
-    <text class="tl" x="26" y="154">L2 · MAPPING</text>
-    <text class="tc" x="26" y="172">"what it means"</text>
-    <text class="ts" x="170" y="158">signal → param routes</text>
-    <text class="ts" x="170" y="178">curves · smoothing · many-to-many · live learn — knob ≡ hand</text>
+    <rect class="bx bx-map" x="10" y="136" width="620" height="72" rx="10"/>
+    <text class="tl" x="26" y="162">L2 · MAPPING</text>
+    <text class="tc" x="26" y="180">"what it means"</text>
+    <text class="ts" x="170" y="166">signal → param routes</text>
+    <text class="ts" x="170" y="186">curves · smoothing · many-to-many · live learn — knob ≡ hand</text>
+
     <!-- L3 world -->
-    <rect class="bx bx-world" x="10" y="230" width="620" height="72" rx="10"/>
-    <text class="tl" x="26" y="256">L3 · WORLD</text>
-    <text class="tc" x="26" y="274">"how it behaves"</text>
-    <text class="ts" x="170" y="260">your algorithmic system — reads <tspan fill="#ffd166">params</tspan>, never inputs</text>
-    <text class="ts" x="170" y="280">p5 · three.js · canvas · anything — swap works, keep the shell</text>
-    <!-- L4 output -->
-    <rect class="bx bx-out" x="10" y="332" width="620" height="72" rx="10"/>
-    <text class="tl" x="26" y="358">L4 · OUTPUT</text>
-    <text class="tc" x="26" y="376">"how it leaves"</text>
-    <rect class="chip" x="170" y="346" width="100" height="26" rx="6"/><text class="ts" x="184" y="363">screen</text>
-    <rect class="chip" x="280" y="346" width="100" height="26" rx="6"/><text class="ts" x="292" y="363">midi out</text>
-    <rect class="chip" x="390" y="346" width="130" height="26" rx="6"/><text class="ts" x="400" y="363">osc → udp</text>
-    <text class="ts" x="170" y="396">Spat · Reaper · TouchDesigner · lights</text>
+    <rect class="bx bx-world" x="10" y="238" width="620" height="96" rx="10"/>
+    <text class="tl" x="26" y="264">L3 · WORLD</text>
+    <text class="tc" x="26" y="282">"how it behaves"</text>
+    <text class="ts" x="170" y="262">your algorithmic system — reads <tspan fill="#ffd166">params</tspan>, never inputs</text>
+    <rect class="bx-sub" x="170" y="274" width="215" height="48" rx="8"/>
+    <text class="tm" x="182" y="294">code world</text>
+    <text class="tc" x="182" y="312">p5 · three.js · canvas · …</text>
+    <rect class="bx-sub" x="397" y="274" width="220" height="48" rx="8"/>
+    <text class="tm" x="409" y="294">WebToe patch 🕸</text>
+    <text class="tc" x="409" y="312">node network · .toe import</text>
+
+    <!-- L4 output: video ∥ audio -->
+    <rect class="bx bx-out" x="10" y="364" width="620" height="150" rx="10"/>
+    <text class="tl" x="26" y="390">L4 · OUTPUT</text>
+    <text class="tc" x="26" y="408">"how it leaves"</text>
+    <rect class="bx-sub" x="170" y="380" width="215" height="118" rx="8"/>
+    <text class="tm" x="182" y="402">video</text>
+    <rect class="chip" x="182" y="412" width="86" height="24" rx="6"/><text class="ts" x="198" y="428">screen</text>
+    <rect class="chip" x="274" y="412" width="98" height="24" rx="6"/><text class="ts" x="284" y="428">future NDI</text>
+    <text class="tc" x="182" y="458">fullscreen stage ·</text>
+    <text class="tc" x="182" y="474">projection window</text>
+    <rect class="bx-sub" x="397" y="380" width="220" height="118" rx="8"/>
+    <text class="tm" x="409" y="402">audio</text>
+    <rect class="chip" x="409" y="412" width="92" height="24" rx="6"/><text class="ts" x="417" y="428">midi out</text>
+    <rect class="chip" x="507" y="412" width="100" height="24" rx="6"/><text class="ts" x="513" y="428">sound ♪ Tone</text>
+    <rect class="chip" x="409" y="442" width="92" height="24" rx="6"/><text class="ts" x="419" y="458">osc → udp</text>
+    <text class="tc" x="409" y="488">pluggable engines · sound/* params</text>
+    <text class="tc" x="170" y="510">→ Spat · Reaper · TouchDesigner · DAWs · lights — sound is performable state</text>
+
     <!-- flows -->
-    <path class="flow" d="M320 98 L320 124"/>
-    <path class="flow" d="M320 200 L320 226"/>
-    <path class="flow" d="M320 302 L320 328"/>
+    <path class="flow flow-g" d="M320 106 L320 132"/>
+    <path class="flow" d="M320 208 L320 234"/>
+    <path class="flow" d="M320 334 L320 360"/>
+
     <!-- spines -->
-    <rect class="bx bx-spine" x="660" y="10" width="190" height="190" rx="10"/>
+    <rect class="bx bx-spine" x="660" y="10" width="190" height="150" rx="10"/>
     <text class="tl" x="676" y="38">⏱ TIMELINE</text>
     <text class="ts" x="676" y="62">param automation</text>
     <text class="ts" x="676" y="80">scenes &amp; cues</text>
-    <text class="ts" x="676" y="98">performance mode</text>
-    <text class="tc" x="676" y="126">drives L3 baseline;</text>
-    <text class="tc" x="676" y="142">hands override it</text>
-    <path class="flow" d="M660 150 L634 190"/>
-    <rect class="bx bx-spine" x="660" y="230" width="190" height="174" rx="10"/>
-    <text class="tl" x="676" y="258">📟 MONITOR</text>
-    <text class="ts" x="676" y="282">backstage on any</text>
-    <text class="ts" x="676" y="300">LAN device</text>
-    <text class="ts" x="676" y="318">clock · scene · fps</text>
-    <text class="ts" x="676" y="336">every signal live</text>
-    <path class="flow" d="M634 300 L656 300"/>
-    <text class="lbl" fill="#37c978" x="14" y="440">signals ↓</text>
-    <text class="lbl" fill="#2e6df6" x="120" y="440">routes ↓</text>
-    <text class="lbl" fill="#ffd166" x="216" y="440">params ↓</text>
-    <text class="lbl" fill="#b47ee6" x="320" y="440">render / send</text>
-    <text class="tc" x="660" y="440">the two spines watch and drive everything</text>
+    <text class="tc" x="676" y="106">drives L3+L4 baseline;</text>
+    <text class="tc" x="676" y="122">hands override it</text>
+    <path class="flow" d="M660 120 L634 160"/>
+
+    <rect class="bx bx-spine" x="660" y="180" width="190" height="150" rx="10"/>
+    <text class="tl" x="676" y="208">🎛 CONSOLE</text>
+    <text class="ts" x="676" y="232">director's desk</text>
+    <text class="ts" x="676" y="250">universal side panel</text>
+    <text class="tc" x="676" y="276">collapsible sections:</text>
+    <text class="tc" x="676" y="292">sound · params · signals</text>
+    <text class="tc" x="676" y="308">performance mode (T)</text>
+    <path class="flow" d="M660 255 L634 255"/>
+
+    <rect class="bx bx-spine" x="660" y="350" width="190" height="164" rx="10"/>
+    <text class="tl" x="676" y="378">📟 MONITOR</text>
+    <text class="ts" x="676" y="402">backstage on any</text>
+    <text class="ts" x="676" y="420">LAN device</text>
+    <text class="ts" x="676" y="438">clock · scene · fps</text>
+    <text class="ts" x="676" y="456">every signal live</text>
+    <path class="flow" d="M634 430 L656 430"/>
+
+    <!-- sister stack ribbon -->
+    <rect class="bx" x="10" y="540" width="840" height="44" rx="10"/>
+    <text class="tm" x="26" y="567">🕸 sister stack:</text>
+    <text class="ts" x="160" y="567">WebToe is the engine (node dataflow, .toe import) · open-audiovisual is the show — ext('name') binds a patch to the chassis</text>
+
+    <!-- legend -->
+    <text class="lbl" fill="#37c978" x="14" y="612">signals ↓</text>
+    <text class="lbl" fill="#2e6df6" x="120" y="612">routes ↓</text>
+    <text class="lbl" fill="#ffd166" x="216" y="612">params ↓</text>
+    <text class="lbl" fill="#b47ee6" x="320" y="612">render ∥ sing / send</text>
+    <text class="tc" x="620" y="612">three spines watch and drive everything</text>
   </svg>
 
   <div class="layers">
