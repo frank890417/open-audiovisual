@@ -32,7 +32,7 @@ export class ChordDetector {
    * @param {object} opts
    * @param {number} [opts.window=80] ms after the last note before the gesture is flushed as one chord
    * @param {(a: object) => void} [opts.onChord]
-   * @param {import('../core/src/signals.js?v=0c76e80').Signals} [opts.signals] publish chord/* signals here
+   * @param {import('../core/src/signals.js?v=3ef3261').Signals} [opts.signals] publish chord/* signals here
    */
   constructor({ window = 80, onChord = null, signals = null } = {}) {
     this.window = window;

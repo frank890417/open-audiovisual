@@ -21,19 +21,19 @@
 // sound, audio, hands, pose, loop, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools.
 
-import { Signals, Params, Loop } from '../core/index.js?v=0c76e80';
-import { Midi } from '../midi/index.js?v=0c76e80';
-import { mountKeys } from '../keys/index.js?v=0c76e80';
-import { Sound, toneEngine } from '../sound/index.js?v=0c76e80';
-import { AudioAnalyzer } from '../audio/index.js?v=0c76e80';
-import { ChordDetector } from '../chord/index.js?v=0c76e80';
-import { mountDrums } from '../drums/index.js?v=0c76e80';
-import { PoseTracker, HandTracker } from '../pose/index.js?v=0c76e80';
-import { Mapper } from '../mapping/index.js?v=0c76e80';
-import { Timeline } from '../timeline/index.js?v=0c76e80';
-import { Stage } from '../stage/index.js?v=0c76e80';
-import { mountConsole } from '../console/index.js?v=0c76e80';
-import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=0c76e80';
+import { Signals, Params, Loop } from '../core/index.js?v=3ef3261';
+import { Midi } from '../midi/index.js?v=3ef3261';
+import { mountKeys } from '../keys/index.js?v=3ef3261';
+import { Sound, toneEngine } from '../sound/index.js?v=3ef3261';
+import { AudioAnalyzer } from '../audio/index.js?v=3ef3261';
+import { ChordDetector } from '../chord/index.js?v=3ef3261';
+import { mountDrums } from '../drums/index.js?v=3ef3261';
+import { PoseTracker, HandTracker } from '../pose/index.js?v=3ef3261';
+import { Mapper } from '../mapping/index.js?v=3ef3261';
+import { Timeline } from '../timeline/index.js?v=3ef3261';
+import { Stage } from '../stage/index.js?v=3ef3261';
+import { mountConsole } from '../console/index.js?v=3ef3261';
+import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=3ef3261';
 
 const SHELL_CSS = `
   body { margin: 0; background: #000; height: 100vh; display: grid;

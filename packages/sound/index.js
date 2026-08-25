@@ -25,8 +25,8 @@
 export class Sound {
   /**
    * @param {object} deps
-   * @param {import('../core/src/signals.js?v=0c76e80').Signals} deps.signals
-   * @param {import('../core/src/params.js?v=0c76e80').Params} [deps.params] register engine params (prefixed sound/)
+   * @param {import('../core/src/signals.js?v=3ef3261').Signals} deps.signals
+   * @param {import('../core/src/params.js?v=3ef3261').Params} [deps.params] register engine params (prefixed sound/)
    * @param {object} deps.engine engine implementing the contract above
    */
   constructor({ signals, params = null, engine }) {
