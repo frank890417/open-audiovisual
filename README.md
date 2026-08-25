@@ -71,7 +71,7 @@ Two rules make the whole thing composable:
 |---|---|
 | [`01-hello-particles`](examples/01-hello-particles/) | the smallest complete app — read `main.js` top-to-bottom and you know the framework |
 | [`02-chord-garden`](examples/02-chord-garden/) | performance semantics: triads bloom, clusters decay (lineage: *The Last Input*, IRCAM 2026) |
-| [`03-pose-field`](examples/03-pose-field/) | the body as controller: MediaPipe pose → mapper → flow field |
+| [`03-pose-field`](examples/03-pose-field/) | **fingers as an instrument**: pinch = tightness, second pinch = arms, both fists = bloom, left fist = next pattern family (mandala · lissajous · spirograph · web) |
 | [`04-webtoe-stage`](examples/04-webtoe-stage/) | the sister stack: a WebToe node patch performed as a World (`ext()` bindings) |
 | [`05-prebiotic-flake`](examples/05-prebiotic-flake/) | a 2023 MIDI daily sketch replayed through the chassis — with the L4 audio branch singing (Tone.js) |
 | [`06-cylinder-earth`](examples/06-cylinder-earth/) | voice-controlled WEBGL towers (2020) — mic bands & drum onsets as instruments, or the built-in **drum machine** (@openav/drums: synth kit + TR-style sequencer publishing analyzer-shaped signals) |
