@@ -24,7 +24,12 @@ const MIME = {
 
 http.createServer((req, res) => {
   let urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
-  if (urlPath === '/') return landing(res);
+  // '/' serves the real landing page (same as GitHub Pages); the generated
+  // example list is a fallback for stripped-down checkouts
+  if (urlPath === '/') {
+    if (fs.existsSync(path.join(ROOT, 'index.html'))) urlPath = '/index.html';
+    else return landing(res);
+  }
   if (urlPath.endsWith('/')) urlPath += 'index.html';
   const file = path.join(ROOT, path.normalize(urlPath));
   if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }

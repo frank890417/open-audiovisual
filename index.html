@@ -39,6 +39,23 @@
   h2 { color:#fff; font-size: 18px; margin: 40px 0 10px; }
   .note { color: var(--faint); font-size: 13px; }
   footer { margin-top: 56px; color: var(--faint); font-size: 13px; border-top: 1px solid var(--line); padding-top: 18px; }
+  .demo { display:grid; grid-template-columns: 1fr 290px; gap: 12px; margin: 14px 0 30px; }
+  @media (max-width: 720px) { .demo { grid-template-columns: 1fr; } }
+  #demo-stage { position: relative; background:#000; border:1px solid var(--line); border-radius: 10px;
+    min-height: 260px; overflow: hidden; cursor: crosshair; }
+  .demo-side { display:flex; flex-direction: column; gap: 10px; }
+  .demo-hint { background: var(--panel); border:1px solid var(--line); border-radius: 10px;
+    padding: 10px 14px; font-size: 12.5px; color: var(--dim); }
+  .demo-hint b { color: var(--tx); }
+  .meters { background: var(--panel); border:1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+  .m { display:grid; grid-template-columns: 110px 1fr; gap:8px; align-items:center; padding: 2px 0; }
+  .m label { font-size: 11px; color: var(--dim); }
+  .m.ovr label { color: var(--gold); }
+  .m .bar { height: 8px; background:#0d1017; border-radius:4px; overflow:hidden; }
+  .m .bar i { display:block; height:100%; width:0; background: var(--green); transition: width .06s linear; }
+  .m.ovr .bar i { background: var(--gold); }
+  .demo-note { font-size: 12px; color: var(--faint); }
+  .arch { width:100%; height:auto; margin: 14px 0 6px; }
 </style>
 </head>
 <body>
@@ -54,10 +71,107 @@
     <a class="btn ghost" href="examples/03-pose-field/">pose field</a>
   </div>
 
+  <!-- ══════ live demo — this hero IS the framework running ══════ -->
+  <h2 style="margin-top:0">Try it — right here</h2>
+  <div class="demo">
+    <div id="demo-stage"></div>
+    <div class="demo-side">
+      <div class="demo-hint">▶ <b>press any key</b> (A–L = notes) or <b>click / drag</b> the canvas.<br>
+        Keys fire <i>signals</i> → the mapper routes them to <i>params</i> → the world only sees params.</div>
+      <div class="meters">
+        <div class="m"><label>midi/note/on</label><div class="bar"><i id="m-note"></i></div></div>
+        <div class="m"><label>pointer/x</label><div class="bar"><i id="m-px"></i></div></div>
+        <div class="m"><label>pointer/energy</label><div class="bar"><i id="m-pe"></i></div></div>
+        <div class="m ovr"><label>→ param hue</label><div class="bar"><i id="m-hue"></i></div></div>
+      </div>
+      <div class="demo-note">This demo is ~50 lines using the real packages — <a href="https://github.com/frank890417/open-audiovisual/blob/main/index.html">view source</a>.</div>
+    </div>
+  </div>
+
   <pre><span class="c"># zero build · zero dependencies · MIT</span>
 git clone https://github.com/frank890417/open-audiovisual.git
 cd open-audiovisual
 node serve.js   <span class="c"># → http://localhost:8080 (Chrome: WebMIDI + camera)</span></pre>
+
+  <!-- ══════ architecture, visually ══════ -->
+  <h2>The architecture</h2>
+  <svg class="arch" viewBox="0 0 860 470" role="img" aria-label="open-audiovisual architecture: input, mapping, world, output layers with timeline and monitor spines">
+    <defs>
+      <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L8 4 L0 8 z" fill="#2e6df6"/>
+      </marker>
+    </defs>
+    <style>
+      .bx { fill:#10141f; stroke:#1c2334; rx:10; }
+      .bx-in { stroke:#37c978; }
+      .bx-map { stroke:#2e6df6; }
+      .bx-world { stroke:#ffd166; }
+      .bx-out { stroke:#b47ee6; }
+      .bx-spine { stroke:#2a3348; }
+      .tl { font:600 14px ui-monospace,monospace; fill:#fff; }
+      .ts { font:11px ui-monospace,monospace; fill:#8892a8; }
+      .tc { font:11px ui-monospace,monospace; fill:#556; }
+      .chip { fill:#0d1017; stroke:#1c2334; rx:6; }
+      .flow { stroke:#2e6df6; stroke-width:2; fill:none; marker-end:url(#arr);
+        stroke-dasharray:6 5; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset:-11; } }
+      .lbl { font:600 11px ui-monospace,monospace; }
+    </style>
+    <!-- L1 input -->
+    <rect class="bx bx-in" x="10" y="10" width="620" height="88" rx="10"/>
+    <text class="tl" x="26" y="36">L1 · INPUT</text>
+    <text class="tc" x="26" y="54">"what is happening"</text>
+    <rect class="chip" x="170" y="26" width="90" height="26" rx="6"/><text class="ts" x="186" y="43">midi</text>
+    <rect class="chip" x="270" y="26" width="90" height="26" rx="6"/><text class="ts" x="284" y="43">audio</text>
+    <rect class="chip" x="370" y="26" width="90" height="26" rx="6"/><text class="ts" x="384" y="43">chord</text>
+    <rect class="chip" x="470" y="26" width="90" height="26" rx="6"/><text class="ts" x="488" y="43">pose</text>
+    <text class="ts" x="170" y="80">→ named, normalized <tspan fill="#37c978">signals</tspan>: midi/cc/74 · chord/consonance · pose/hand/y</text>
+    <!-- L2 mapping -->
+    <rect class="bx bx-map" x="10" y="128" width="620" height="72" rx="10"/>
+    <text class="tl" x="26" y="154">L2 · MAPPING</text>
+    <text class="tc" x="26" y="172">"what it means"</text>
+    <text class="ts" x="170" y="158">signal → param routes</text>
+    <text class="ts" x="170" y="178">curves · smoothing · many-to-many · live learn — knob ≡ hand</text>
+    <!-- L3 world -->
+    <rect class="bx bx-world" x="10" y="230" width="620" height="72" rx="10"/>
+    <text class="tl" x="26" y="256">L3 · WORLD</text>
+    <text class="tc" x="26" y="274">"how it behaves"</text>
+    <text class="ts" x="170" y="260">your algorithmic system — reads <tspan fill="#ffd166">params</tspan>, never inputs</text>
+    <text class="ts" x="170" y="280">p5 · three.js · canvas · anything — swap works, keep the shell</text>
+    <!-- L4 output -->
+    <rect class="bx bx-out" x="10" y="332" width="620" height="72" rx="10"/>
+    <text class="tl" x="26" y="358">L4 · OUTPUT</text>
+    <text class="tc" x="26" y="376">"how it leaves"</text>
+    <rect class="chip" x="170" y="346" width="100" height="26" rx="6"/><text class="ts" x="184" y="363">screen</text>
+    <rect class="chip" x="280" y="346" width="100" height="26" rx="6"/><text class="ts" x="292" y="363">midi out</text>
+    <rect class="chip" x="390" y="346" width="130" height="26" rx="6"/><text class="ts" x="400" y="363">osc → udp</text>
+    <text class="ts" x="170" y="396">Spat · Reaper · TouchDesigner · lights</text>
+    <!-- flows -->
+    <path class="flow" d="M320 98 L320 124"/>
+    <path class="flow" d="M320 200 L320 226"/>
+    <path class="flow" d="M320 302 L320 328"/>
+    <!-- spines -->
+    <rect class="bx bx-spine" x="660" y="10" width="190" height="190" rx="10"/>
+    <text class="tl" x="676" y="38">⏱ TIMELINE</text>
+    <text class="ts" x="676" y="62">param automation</text>
+    <text class="ts" x="676" y="80">scenes &amp; cues</text>
+    <text class="ts" x="676" y="98">performance mode</text>
+    <text class="tc" x="676" y="126">drives L3 baseline;</text>
+    <text class="tc" x="676" y="142">hands override it</text>
+    <path class="flow" d="M660 150 L634 190"/>
+    <rect class="bx bx-spine" x="660" y="230" width="190" height="174" rx="10"/>
+    <text class="tl" x="676" y="258">📟 MONITOR</text>
+    <text class="ts" x="676" y="282">backstage on any</text>
+    <text class="ts" x="676" y="300">LAN device</text>
+    <text class="ts" x="676" y="318">clock · scene · fps</text>
+    <text class="ts" x="676" y="336">every signal live</text>
+    <path class="flow" d="M634 300 L656 300"/>
+    <text class="lbl" fill="#37c978" x="14" y="440">signals ↓</text>
+    <text class="lbl" fill="#2e6df6" x="120" y="440">routes ↓</text>
+    <text class="lbl" fill="#ffd166" x="216" y="440">params ↓</text>
+    <text class="lbl" fill="#b47ee6" x="320" y="440">render / send</text>
+    <text class="tc" x="660" y="440">the two spines watch and drive everything</text>
+  </svg>
 
   <div class="layers">
     <p><span class="l">L1 INPUT</span> — MIDI · audio analysis · chord semantics · body pose → named, normalized <b>signals</b></p>
@@ -87,5 +201,102 @@ node serve.js   <span class="c"># → http://localhost:8080 (Chrome: WebMIDI + c
 
   <footer>MIT · <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a> · lineage: The Last Input → generalized as a public chassis · <a href="https://github.com/frank890417/open-audiovisual">github.com/frank890417/open-audiovisual</a></footer>
 </div>
+
+<script type="importmap">
+{ "imports": {
+    "@openav/core": "./packages/core/index.js",
+    "@openav/mapping": "./packages/mapping/index.js",
+    "@openav/stage": "./packages/stage/index.js"
+} }
+</script>
+<script type="module">
+// The landing demo, built with the real packages — the assembly below is the
+// whole framework idea in miniature: input → signals → mapper → params → world.
+import { Signals, Params, Loop } from '@openav/core';
+import { Mapper } from '@openav/mapping';
+import { Stage, createCanvas } from '@openav/stage';
+
+const world = {
+  name: 'hello',
+  params: [
+    { key: 'hue', min: 0, max: 360, def: 205 },
+    { key: 'energy', min: 0, max: 1, def: 0.15 },
+  ],
+  init({ container, signals }) {
+    this.view = createCanvas(container);
+    this.parts = [];
+    signals.on('midi/note/on', ({ note, vel }) => {
+      const { w, h } = this.view.fit();
+      this.burst(((note - 57) / 20) * w || w * Math.random(), h * 0.6, 8 + vel * 30, (note % 12) * 30);
+    });
+  },
+  burst(x, y, n, hs = 0) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, sp = 1.5 + Math.random() * 5;
+      this.parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 2, life: 1, hs });
+    }
+    if (this.parts.length > 2500) this.parts.splice(0, this.parts.length - 2500);
+  },
+  update(dt, s) {
+    this.s = s;
+    // ambient drizzle scales with the energy param (driven by pointer via the mapper)
+    if (Math.random() < s.energy * 0.5) { const { w, h } = this.view.fit(); this.burst(Math.random() * w, h * Math.random(), 2, 120); }
+    for (const p of this.parts) { p.vy += 12 * dt; p.x += p.vx; p.y += p.vy; p.life -= dt * 0.5; }
+    this.parts = this.parts.filter(p => p.life > 0);
+  },
+  render() {
+    const { ctx } = this.view, { w, h } = this.view.fit(), s = this.s || {};
+    ctx.fillStyle = 'rgba(0,0,0,0.16)'; ctx.fillRect(0, 0, w, h);
+    for (const p of this.parts) {
+      ctx.fillStyle = `hsla(${(s.hue + p.hs) % 360},90%,${40 + p.life * 35}%,${p.life})`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 3.5 * p.life, 0, 7); ctx.fill();
+    }
+  },
+};
+
+const signals = new Signals();
+const params = new Params();
+const stage = new Stage({ container: document.getElementById('demo-stage'), params, signals });
+stage.register(world); await stage.activate('hello');
+
+// mapping layer: pointer position/energy → world params (declared as data)
+const mapper = new Mapper({ signals, params });
+mapper.addRoute({ source: 'pointer/x', target: 'hue', smooth: 0.15 });
+mapper.addRoute({ source: 'pointer/energy', target: 'energy', smooth: 0.3 });
+
+// "input layer": keyboard notes + pointer as signals
+const KEYS = { a:60,w:61,s:62,e:63,d:64,f:65,t:66,g:67,y:68,h:69,u:70,j:71,k:72,o:73,l:74 };
+let noteFlash = 0;
+addEventListener('keydown', (e) => {
+  if (e.repeat || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+  const n = KEYS[e.key.toLowerCase()] ?? (48 + (e.key.charCodeAt(0) % 24));
+  signals.pulse('midi/note/on', { note: n, vel: 0.8 }); noteFlash = 1;
+});
+const el = document.getElementById('demo-stage');
+let lastPX = 0.5, lastPT = 0;
+const pointer = (e) => {
+  const r = el.getBoundingClientRect();
+  const x = Math.min(1, Math.max(0, ((e.touches?.[0] ?? e).clientX - r.left) / r.width));
+  const now = performance.now();
+  signals.set('pointer/x', x);
+  signals.set('pointer/energy', Math.min(1, Math.abs(x - lastPX) / Math.max(0.016, (now - lastPT) / 1000) * 0.5));
+  lastPX = x; lastPT = now;
+};
+el.addEventListener('pointermove', pointer);
+el.addEventListener('pointerdown', (e) => { pointer(e); signals.pulse('midi/note/on', { note: 60 + Math.round(24 * lastPX), vel: 0.9 }); noteFlash = 1; });
+
+// meters: make the signal layer visible
+const $ = (id) => document.getElementById(id);
+const loop = new Loop((dt) => {
+  mapper.update(dt);
+  const state = stage.frame(dt, {});
+  noteFlash = Math.max(0, noteFlash - dt * 3);
+  $('m-note').style.width = (noteFlash * 100) + '%';
+  $('m-px').style.width = (signals.get('pointer/x') ?? 0) * 100 + '%';
+  $('m-pe').style.width = (signals.get('pointer/energy') ?? 0) * 100 + '%';
+  $('m-hue').style.width = (state.hue / 360) * 100 + '%';
+});
+loop.start();
+</script>
 </body>
 </html>
