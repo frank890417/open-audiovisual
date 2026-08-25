@@ -9,15 +9,8 @@
 // The world listens to chord/* signals — it has no idea whether a pianist,
 // a sequencer, or a QWERTY keyboard is playing. That's the layer contract.
 
-import { Signals, Params, Loop } from '@openav/core';
-import { Midi } from '@openav/midi';
-import { ChordDetector } from '@openav/chord';
-import { mountKeys } from '@openav/keys';
-import { Mapper } from '@openav/mapping';
-import { Timeline } from '@openav/timeline';
-import { Stage, createCanvas } from '@openav/stage';
-import { mountConsole } from '@openav/console';
-import { MonitorFeed, snapshotOf } from '@openav/monitor';
+import { createShow } from '@openav/show';
+import { createCanvas } from '@openav/stage';
 
 // ---------- world ----------
 const gardenWorld = {
@@ -99,54 +92,21 @@ const gardenWorld = {
 };
 
 // ---------- assembly ----------
-const signals = new Signals();
-const params = new Params();
-const stage = new Stage({ container: document.getElementById('stage'), params, signals });
-stage.register(gardenWorld);
-await stage.activate('garden');
-
-const timeline = new Timeline({
-  params,
-  total: 120,
-  automation: {
-    growth: [[0, 0.6], [40, 1.4], [90, 0.8], [120, 0.2]],
-    wind:   [[0, 0.05], [60, 0.3], [100, 0.7], [120, 0.1]],
+await createShow({
+  world: gardenWorld,
+  timeline: {
+    total: 120,
+    automation: {
+      growth: [[0, 0.6], [40, 1.4], [90, 0.8], [120, 0.2]],
+      wind:   [[0, 0.05], [60, 0.3], [100, 0.7], [120, 0.1]],
+    },
+    scenes: [
+      { id: 'dawn',  t: 0,   title: 'Dawn',       note: 'single seeds · listen' },
+      { id: 'bloom', t: 40,  title: 'Full bloom', note: 'triads — stack real thirds' },
+      { id: 'storm', t: 90,  title: 'Storm',      note: 'clusters welcome · decay is material' },
+      { id: 'after', t: 110, title: 'After',      note: 'let it settle' },
+    ],
   },
-  scenes: [
-    { id: 'dawn',   t: 0,   title: 'Dawn',       note: 'single seeds · listen' },
-    { id: 'bloom',  t: 40,  title: 'Full bloom', note: 'triads — stack real thirds' },
-    { id: 'storm',  t: 90,  title: 'Storm',      note: 'clusters welcome · decay is material' },
-    { id: 'after',  t: 110, title: 'After',      note: 'let it settle' },
-  ],
+  modules: { keys: { base: 48 }, chord: true, sound: true },
+  hint: 'play a TRIAD → bloom · a CLUSTER (adjacent keys) → decay<br>use the piano, tick "keyboard" for QWERTY (Z/X octave), or let it simulate a performance',
 });
-
-const chord = new ChordDetector({ signals });
-const midi = new Midi({ signals });
-midi.onNote = (note, vel, on) => on ? chord.noteOn(note, vel) : chord.noteOff(note);
-midi.enable();
-
-// on-screen piano + QWERTY + simulated performer — feeds the chord detector
-// through the same path a MIDI keyboard uses
-const keys = mountKeys(document.getElementById('keys'), { signals, chord, base: 48, octaves: 2 });
-
-const mapper = new Mapper({ signals, params, profile: 'garden' });
-mapper.load();
-setInterval(() => mapper.save(), 3000);
-
-const app = { timeline, params, mapper, signals, midi, stage };
-const consoleUI = mountConsole(document.getElementById('desk'), app);
-const monitor = new MonitorFeed({});
-monitor.connect();
-
-const loop = app.loop = new Loop((dt) => {
-  keys.update(dt);
-  timeline.advance(dt);
-  mapper.update(dt);
-  const state = stage.frame(dt, timeline.state());
-  consoleUI.render(state);
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
-});
-loop.start();
-
-// expose for devtools poking (and framework debugging) — harmless in production
-window.openav = { signals, params, timeline, mapper, stage, loop, keys };

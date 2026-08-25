@@ -10,30 +10,22 @@
     "@openav/core": "../../packages/core/index.js",
     "@openav/midi": "../../packages/midi/index.js",
     "@openav/keys": "../../packages/keys/index.js",
+    "@openav/chord": "../../packages/chord/index.js",
+    "@openav/audio": "../../packages/audio/index.js",
+    "@openav/pose": "../../packages/pose/index.js",
     "@openav/sound": "../../packages/sound/index.js",
     "@openav/mapping": "../../packages/mapping/index.js",
     "@openav/timeline": "../../packages/timeline/index.js",
     "@openav/stage": "../../packages/stage/index.js",
     "@openav/console": "../../packages/console/index.js",
     "@openav/monitor": "../../packages/monitor/index.js",
+    "@openav/show": "../../packages/show/index.js",
     "@openav/world-webtoe": "../../packages/world-webtoe/index.js"
   }
 }
 </script>
-<style>
-  body { margin: 0; background: #000; height: 100vh; display: grid;
-    grid-template-columns: 1fr 340px; overflow: hidden; }
-  #stage { position: relative; }
-  #console { height: 100vh; display: flex; flex-direction: column; }
-  #keys { padding: 8px 10px; background: #0d1017; border-bottom: 1px solid #1c2334; overflow-x: auto; }
-  #desk { flex: 1; overflow-y: auto; }
-  #hint { position: absolute; left: 12px; bottom: 10px; color: #445; z-index: 2;
-    font: 11px ui-monospace, monospace; pointer-events: none; }
-</style>
 </head>
 <body>
-<div id="stage"><div id="hint">the stage is a WebToe patch (sister project) — params flow in as ext('name')<br>play the piano below, or tick "simulate performance" and watch it play itself</div></div>
-<div id="console"><div id="keys"></div><div id="desk"></div></div>
 <script type="module" src="./main.js"></script>
 </body>
 </html>

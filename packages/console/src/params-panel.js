@@ -4,7 +4,7 @@ export function buildParamPanel(root, app) {
   const { params, mapper } = app;
   const panel = document.createElement('div');
   panel.className = 'oav-panel';
-  panel.innerHTML = '<h3>Params</h3>';
+  panel.innerHTML = '<h3>L3 · Params</h3>';
   root.appendChild(panel);
 
   const rows = new Map();

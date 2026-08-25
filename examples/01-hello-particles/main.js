@@ -1,22 +1,12 @@
 // 01 · hello particles — the smallest complete open-audiovisual app.
-// Read this file top to bottom and you know the whole architecture:
 //
-//   INPUT   (midi + computer-keyboard fallback)  → signals
-//   MAPPING (mapper: learn any knob → any param)
-//   TIMELINE(automation drives params over a tiny 60s piece)
-//   STAGE   (a world that only sees params — never inputs)
-//   CONSOLE (director's desk) + MONITOR (backstage feed)
+// A World (the only part you write) + one createShow() call. The factory
+// assembles the whole shell — inputs, mapping, timeline, layer-aligned side
+// panel, sound module, backstage feed — so every show evolves together.
 
-import { Signals, Params, Loop } from '@openav/core';
-import { Midi } from '@openav/midi';
-import { mountKeys } from '@openav/keys';
-import { Mapper } from '@openav/mapping';
-import { Timeline } from '@openav/timeline';
-import { Stage, createCanvas } from '@openav/stage';
-import { mountConsole } from '@openav/console';
-import { MonitorFeed, snapshotOf } from '@openav/monitor';
+import { createShow } from '@openav/show';
+import { createCanvas } from '@openav/stage';
 
-// ---------- the world (system layer) — sees params, nothing else ----------
 const particlesWorld = {
   name: 'particles',
   params: [
@@ -30,12 +20,11 @@ const particlesWorld = {
   init({ container, signals, params }) {
     this.view = createCanvas(container);
     this.parts = [];
-    // pulses can come from the console button, a mapped pad, or code:
     this._unsubs = [
       params.onPulse('burst', () => this.spawn(innerWidth / 3, innerHeight / 3, 60, 60)),
       signals.on('midi/note/on', ({ note, vel }) => {
         const { w, h } = this.view.fit();
-        const x = ((note - 36) / 48) * w;             // keyboard position → x
+        const x = ((note - 36) / 48) * w;
         this.spawn(Math.max(0, Math.min(w, x)), h * 0.65, 6 + Math.round(vel * 40), (note % 12) * 30);
       }),
     ];
@@ -71,53 +60,21 @@ const particlesWorld = {
   dispose() { this._unsubs?.forEach(u => u()); this.view.dispose(); },
 };
 
-// ---------- assembly ----------
-const signals = new Signals();
-const params = new Params();
-
-const stage = new Stage({ container: document.getElementById('stage'), params, signals });
-stage.register(particlesWorld);
-await stage.activate('particles');
-
-const timeline = new Timeline({
-  params,
-  total: 60,
-  automation: {
-    gravity: [[0, 0.35], [20, 0.35], [30, -0.2], [45, 1.2], [60, 0.35]],
-    hue:     [[0, 205], [30, 320], [60, 40]],
+await createShow({
+  world: particlesWorld,
+  timeline: {
+    total: 60,
+    automation: {
+      gravity: [[0, 0.35], [20, 0.35], [30, -0.2], [45, 1.2], [60, 0.35]],
+      hue:     [[0, 205], [30, 320], [60, 40]],
+    },
+    scenes: [
+      { id: 'calm',  t: 0,  title: 'Calm',   note: 'sparse single notes' },
+      { id: 'rise',  t: 20, title: 'Rising', note: 'build clusters' },
+      { id: 'zerog', t: 30, title: 'Zero G', note: 'gravity flips — float' },
+      { id: 'storm', t: 45, title: 'Storm',  note: 'heavy — full keyboard' },
+    ],
   },
-  scenes: [
-    { id: 'calm',    t: 0,  title: 'Calm',        note: 'sparse single notes' },
-    { id: 'rise',    t: 20, title: 'Rising',      note: 'build clusters' },
-    { id: 'zerog',   t: 30, title: 'Zero G',      note: 'gravity flips — float' },
-    { id: 'storm',   t: 45, title: 'Storm',       note: 'heavy — full keyboard' },
-  ],
+  modules: { keys: { base: 48 }, sound: true },
+  hint: 'play the piano (tick "keyboard" for QWERTY, or "simulate performance") · Space play · T performance mode',
 });
-
-const mapper = new Mapper({ signals, params, profile: 'hello' });
-mapper.load();                                        // restore saved knob bindings
-setInterval(() => mapper.save(), 3000);
-
-const midi = new Midi({ signals });
-midi.enable();                                        // silently no-ops if unsupported
-
-// on-screen piano + QWERTY capture + simulated performer (@openav/keys)
-const keys = mountKeys(document.getElementById('keys'), { signals, base: 48, octaves: 2 });
-
-const app = { timeline, params, mapper, signals, midi, stage };
-const consoleUI = mountConsole(document.getElementById('desk'), app);
-const monitor = new MonitorFeed({});
-monitor.connect();
-
-const loop = app.loop = new Loop((dt) => {
-  keys.update(dt);
-  timeline.advance(dt);
-  mapper.update(dt);
-  const state = stage.frame(dt, timeline.state());
-  consoleUI.render(state);
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
-});
-loop.start();
-
-// expose for devtools poking (and framework debugging) — harmless in production
-window.openav = { signals, params, timeline, mapper, stage, loop, keys };

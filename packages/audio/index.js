@@ -12,6 +12,13 @@
 //   audio/centroid     spectral centroid (brightness), normalized
 //   audio/onset        pulse — fires on transient (energy jump over adaptive floor)
 //
+// Drum separation (the TD audioAnalysis idiom, band-limited onsets — no ML):
+//   audio/kick         pulse {level} — 20–120 Hz transient
+//   audio/snare        pulse {level} — 150–800 Hz + broadband transient
+//   audio/hat          pulse {level} — 6–14 kHz transient
+//   audio/kick/env .snare/env .hat/env   0..1 continuous decay envelopes —
+//   map these straight onto params (a kick that thumps a world is one route)
+//
 // Call update() once per frame (cheap: one getByteFrequencyData + one time-domain read).
 
 export class AudioAnalyzer {
@@ -29,10 +36,18 @@ export class AudioAnalyzer {
     this._freq = null; this._time = null;
     this._rms = 0;
     this._onsetFloor = 0; this._lastOnsetAt = 0;
+    // per-drum adaptive floors, refractory clocks, and decay envelopes
+    this._drum = {
+      kick:  { lo: 20,   hi: 120,   floor: 0, at: 0, env: 0, refract: 90 },
+      snare: { lo: 150,  hi: 800,   floor: 0, at: 0, env: 0, refract: 90 },
+      hat:   { lo: 6000, hi: 14000, floor: 0, at: 0, env: 0, refract: 60 },
+    };
     if (signals) {
-      for (const n of ['audio/rms', 'audio/peak', 'audio/band/low', 'audio/band/mid', 'audio/band/high', 'audio/centroid'])
+      for (const n of ['audio/rms', 'audio/peak', 'audio/band/low', 'audio/band/mid', 'audio/band/high', 'audio/centroid',
+        'audio/kick/env', 'audio/snare/env', 'audio/hat/env'])
         signals.define(n, { source: 'audio' });
-      signals.define('audio/onset', { kind: 'pulse', source: 'audio' });
+      for (const n of ['audio/onset', 'audio/kick', 'audio/snare', 'audio/hat'])
+        signals.define(n, { kind: 'pulse', source: 'audio' });
     }
   }
 
@@ -103,7 +118,21 @@ export class AudioAnalyzer {
     }
     this._onsetFloor = this._onsetFloor * 0.95 + rmsNow * 0.05;
 
-    const f = { rms: this._rms, peak, low, mid, high, centroid, onset };
+    // drum separation: per-band transient over adaptive floor + refractory,
+    // each with a decay envelope (τ≈120ms) published as a continuous signal
+    const drums = {};
+    for (const name of Object.keys(this._drum)) {
+      const d = this._drum[name];
+      const e = bandEnergy(d.lo, d.hi);
+      let hit = false;
+      if (e > d.floor * 1.7 + 0.03 && now - d.at > d.refract) { hit = true; d.at = now; d.env = Math.min(1, e * 2); }
+      d.floor = d.floor * 0.92 + e * 0.08;
+      d.env *= 0.88;                      // ~120ms decay at 60fps
+      drums[name] = { hit, level: e, env: d.env };
+    }
+
+    const f = { rms: this._rms, peak, low, mid, high, centroid, onset,
+      kick: drums.kick, snare: drums.snare, hat: drums.hat };
     if (this.signals) {
       this.signals.set('audio/rms', f.rms);
       this.signals.set('audio/peak', f.peak);
@@ -112,6 +141,10 @@ export class AudioAnalyzer {
       this.signals.set('audio/band/high', f.high);
       this.signals.set('audio/centroid', f.centroid);
       if (onset) this.signals.pulse('audio/onset', { rms: rmsNow });
+      for (const name of ['kick', 'snare', 'hat']) {
+        this.signals.set(`audio/${name}/env`, drums[name].env);
+        if (drums[name].hit) this.signals.pulse(`audio/${name}`, { level: drums[name].level });
+      }
     }
     return f;
   }

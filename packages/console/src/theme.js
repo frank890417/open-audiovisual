@@ -34,6 +34,15 @@ export const css = `
 .oav-layers .l3 { color: #ffd166; } .oav-layers .l4 { color: #b47ee6; }
 .oav-layers .v { color: #8892a8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .oav-midimeter { width: 100%; display: none; background: #0b0e15; border-radius: 6px; margin-top: 6px; }
+.oav-devrow { display: flex; gap: 6px; align-items: center; padding: 2px 0; font-size: 11px;
+  color: #9aa5bd; cursor: pointer; }
+.oav-devrow input { accent-color: #2e6df6; }
+.oav-devrow i { color: #556; font-style: normal; margin-left: auto; }
+.oav-devrow.none { color: #556; cursor: default; }
+.oav-routerow { display: flex; gap: 6px; align-items: center; padding: 2px 0; font-size: 11px;
+  color: #9aa5bd; }
+.oav-routerow input { accent-color: #2e6df6; }
+.oav-routerow span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .oav-param { display: grid; grid-template-columns: 110px 1fr 52px auto auto; gap: 6px;
   align-items: center; padding: 2px 0; }
 .oav-param label { color: #9aa5bd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

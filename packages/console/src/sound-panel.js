@@ -6,7 +6,7 @@ export function buildSoundPanel(root, app) {
   const { sound } = app;
   const panel = document.createElement('div');
   panel.className = 'oav-panel';
-  panel.innerHTML = `<h3>Sound</h3><div class="oav-row">
+  panel.innerHTML = `<h3>L4 · Output — sound</h3><div class="oav-row">
     <button class="oav-sound-btn">🔊 enable sound</button>
     <span class="st" style="color:#667;font-size:11px"></span></div>`;
   root.appendChild(panel);

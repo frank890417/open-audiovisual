@@ -74,10 +74,20 @@ Two rules make the whole thing composable:
 | [`03-pose-field`](examples/03-pose-field/) | the body as controller: MediaPipe pose → mapper → flow field |
 | [`04-webtoe-stage`](examples/04-webtoe-stage/) | the sister stack: a WebToe node patch performed as a World (`ext()` bindings) |
 | [`05-prebiotic-flake`](examples/05-prebiotic-flake/) | a 2023 MIDI daily sketch replayed through the chassis — with the L4 audio branch singing (Tone.js) |
+| [`06-cylinder-earth`](examples/06-cylinder-earth/) | voice-controlled WEBGL towers (2020) — the mic analyzer's bands & drum onsets (kick/snare/hat) as instruments |
+| [`07-firework-festival`](examples/07-firework-festival/) | fireworks launched by closing a finger pinch (2021, PoseNet-era) — 21-landmark hands, four precise controllers |
 
 All examples run without MIDI hardware — every stage ships an on-screen piano
 (@openav/keys: QWERTY capture, Z/X octave) and a **simulated performer** that
 plays the piece hands-free. 01/02 run fully offline. Keys: **Space** play · **←/→** scene jump · **T** performance mode · **F** fullscreen.
+
+Examples are assembled with **`createShow()`** (`@openav/show`) — a World plus one
+declarative call; the layer-aligned side panel, inputs, sound, and backstage all
+come from the factory, so every work evolves together when the framework grows.
+
+**Artwork attribution**: examples 05–07 integrate original artworks by
+**Che-Yu Wu 吳哲宇** (2020–2023), used here strictly as demos — the framework is
+MIT, the artworks remain © the artist, all rights reserved.
 
 ## Agent-native
 

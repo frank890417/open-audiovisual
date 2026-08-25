@@ -99,7 +99,7 @@ export class Mapper {
     }
     // routing
     for (const r of this.routes) {
-      if (r.source !== name) continue;
+      if (r.source !== name || r.enabled === false) continue;
       const p = this.params.get(r.target);
       if (!p) continue;
       if (p.pulse) {

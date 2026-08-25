@@ -8,15 +8,7 @@
 // L4 audio branch (@openav/sound + Tone.js) gives the flakes a voice.
 // The drawing code itself is ~verbatim 2023 — history preserved, chassis new.
 
-import { Signals, Params, Loop } from '@openav/core';
-import { Midi } from '@openav/midi';
-import { mountKeys } from '@openav/keys';
-import { Sound, toneEngine } from '@openav/sound';
-import { Mapper } from '@openav/mapping';
-import { Timeline } from '@openav/timeline';
-import { Stage } from '@openav/stage';
-import { mountConsole } from '@openav/console';
-import { MonitorFeed, snapshotOf } from '@openav/monitor';
+import { createShow } from '@openav/show';
 
 // ---------- the world: 2023 sketch, instance-mode, params instead of magic numbers ----------
 const flakeWorld = {
@@ -145,55 +137,27 @@ const flakeWorld = {
 };
 
 // ---------- assembly ----------
-const signals = new Signals();
-const params = new Params();
-const stage = new Stage({ container: document.getElementById('stage'), params, signals });
-stage.register(flakeWorld);
-await stage.activate('prebiotic-flake');
-
-const timeline = new Timeline({
-  params, total: 120,
-  automation: {
-    zoomRate: [[0, 1.6], [40, 2.4], [90, 3.4], [120, 1.4]],
-    hueShift: [[0, 300], [60, 80], [120, 220]],
+const show = await createShow({
+  world: flakeWorld,
+  timeline: {
+    total: 120,
+    automation: {
+      zoomRate: [[0, 1.6], [40, 2.4], [90, 3.4], [120, 1.4]],
+      hueShift: [[0, 300], [60, 80], [120, 220]],
+    },
+    scenes: [
+      { id: 'seed',   t: 0,  title: 'Seed',   note: 'single flakes · low register' },
+      { id: 'bloom',  t: 40, title: 'Bloom',  note: 'chords · the zoom breathes' },
+      { id: 'escape', t: 90, title: 'Escape', note: 'high notes · let it fly' },
+    ],
   },
-  scenes: [
-    { id: 'seed',   t: 0,  title: 'Seed',    note: 'single flakes · low register' },
-    { id: 'bloom',  t: 40, title: 'Bloom',   note: 'chords · the zoom breathes' },
-    { id: 'escape', t: 90, title: 'Escape',  note: 'high notes · let it fly' },
-  ],
+  modules: { keys: { base: 48 }, sound: true },
+  artwork: { title: '230616 Prebiotic Flake', artist: 'Che-Yu Wu 吳哲宇', year: 2023,
+             note: 'a MIDI daily sketch, integrated as a demo — all rights reserved for the artwork' },
+  hint: 'each note = one flake · the feedback zoom breathes · enable sound in L4 · Output',
 });
 
-const midi = new Midi({ signals });
-midi.enable();
-const keys = mountKeys(document.getElementById('keys'), { signals, base: 48, octaves: 2 });
-
-// echo performed notes to MIDI OUT (ch1) — feeds external synths AND the
+// echo performed notes to MIDI OUT ch1 — feeds external synths AND the
 // per-channel OUT meter in the Layers panel (lineage: TLI's stage panel)
-signals.on('midi/note/on', ({ note, vel }) => midi.noteOn(note, Math.round((vel ?? 0.8) * 127), 1));
-signals.on('midi/note/off', ({ note }) => midi.noteOff(note, 1));
-
-// ---------- L4 audio branch: Tone.js engine, living in the universal side panel ----------
-const sound = new Sound({ signals, params, engine: toneEngine() });
-
-const mapper = new Mapper({ signals, params, profile: 'flake' });
-mapper.load();
-setInterval(() => mapper.save(), 3000);
-
-const app = { timeline, params, mapper, signals, midi, sound, stage };
-const consoleUI = mountConsole(document.getElementById('desk'), app);
-const monitor = new MonitorFeed({});
-monitor.connect();
-
-const loop = app.loop = new Loop((dt) => {
-  keys.update(dt);
-  timeline.advance(dt);
-  mapper.update(dt);
-  const state = stage.frame(dt, timeline.state());
-  sound.update(state);
-  consoleUI.render(state);
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
-});
-loop.start();
-
-window.openav = { signals, params, timeline, mapper, stage, loop, keys, sound };
+show.signals.on('midi/note/on', ({ note, vel }) => show.midi?.noteOn(note, Math.round((vel ?? 0.8) * 127), 1));
+show.signals.on('midi/note/off', ({ note }) => show.midi?.noteOff(note, 1));

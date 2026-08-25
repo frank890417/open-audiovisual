@@ -16,6 +16,8 @@ import { buildParamPanel } from './src/params-panel.js';
 import { buildSignalPanel } from './src/signals-panel.js';
 import { buildSoundPanel } from './src/sound-panel.js';
 import { buildLayersPanel } from './src/layers-panel.js';
+import { buildInputPanel } from './src/input-panel.js';
+import { buildMappingPanel } from './src/mapping-panel.js';
 import { buildPerformanceMode } from './src/perf-mode.js';
 
 // every .oav-panel header toggles its section — the universal collapsible
@@ -37,10 +39,14 @@ export function mountConsole(root, app, opts = {}) {
   root.classList.add('oav-console');
 
   wireCollapsible(root);
+  // layer-aligned side panel: overview → L1 → L2 → L3 → L4 → raw signals.
+  // Every show gets the same structure — modules declared, never hand-wired.
   const transport = buildTransport(root, app);
   const layers = opts.layers === false ? null : buildLayersPanel(root, app);
-  const soundPanel = app.sound ? buildSoundPanel(root, app) : null;
+  const inputPanel = buildInputPanel(root, app);
+  const mappingPanel = buildMappingPanel(root, app);
   const params = buildParamPanel(root, app);
+  const soundPanel = app.sound ? buildSoundPanel(root, app) : null;
   const signalsPanel = opts.signals === false ? null : buildSignalPanel(root, app);
   const perf = buildPerformanceMode(app);
 
@@ -63,8 +69,10 @@ export function mountConsole(root, app, opts = {}) {
     render(state) {
       transport.render();
       layers?.render();
-      soundPanel?.render();
+      inputPanel.render();
+      mappingPanel.render();
       params.render(state);
+      soundPanel?.render();
       signalsPanel?.render();
       perf.render();
     },
