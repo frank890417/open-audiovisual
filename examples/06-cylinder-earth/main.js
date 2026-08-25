@@ -103,9 +103,13 @@ await createShow({
     { source: 'audio/band/high', target: 'shimmer', smooth: 0.2 },
     { source: 'audio/kick/env',  target: 'pump',    curve: 'exp',    smooth: 0.05 },
     { source: 'audio/kick',      target: 'nextPalette' },
+    // the drum machine publishes the same shapes — mic and simulator are twins
+    { source: 'drum/kick/env',   target: 'pump',    curve: 'exp',    smooth: 0.05 },
+    { source: 'drum/kick',       target: 'nextPalette' },
+    { source: 'drum/hat/env',    target: 'shimmer', smooth: 0.15 },
   ],
-  modules: { keys: false, audio: 'mic', sound: false },
+  modules: { keys: false, drums: true, audio: 'mic', sound: false },
   artwork: { title: '200412 3D Cylinder Earth', artist: 'Che-Yu Wu 吳哲宇', year: 2020,
              note: 'voice-controlled daily sketch, integrated as a demo — all rights reserved for the artwork' },
-  hint: 'enable 🎤 mic in L1 · Input — voice pumps the towers, highs shimmer,<br>each kick drum rotates the palette (audio/kick · /snare · /hat are signals now)',
+  hint: 'tick the DRUM MACHINE above (kicks rotate the palette, hats shimmer) —<br>or enable 🎤 mic in L1 · Input and drive it with your voice: same signals, twin sources',
 });

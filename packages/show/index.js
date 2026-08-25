@@ -27,6 +27,7 @@ import { mountKeys } from '../keys/index.js';
 import { Sound, toneEngine } from '../sound/index.js';
 import { AudioAnalyzer } from '../audio/index.js';
 import { ChordDetector } from '../chord/index.js';
+import { mountDrums } from '../drums/index.js';
 import { PoseTracker, HandTracker } from '../pose/index.js';
 import { Mapper } from '../mapping/index.js';
 import { Timeline } from '../timeline/index.js';
@@ -108,7 +109,14 @@ export async function createShow({
   const timeline = new Timeline({ params, ...timelineCfg });
   const mapper = new Mapper({ signals, params, profile: profile || allWorlds[0]?.name || 'show' });
   const loaded = profile !== false && mapper.load();
-  if (!loaded) for (const r of routes) mapper.addRoute(r);
+  if (!loaded) {
+    for (const r of routes) mapper.addRoute(r);
+  } else {
+    // merge: a saved profile keeps the user's edits, but newly DECLARED routes
+    // must still arrive — otherwise code updates lose to yesterday's localStorage
+    const have = new Set(mapper.routes.map(r => r.source + '→' + r.target));
+    for (const r of routes) if (!have.has(r.source + '→' + r.target)) mapper.addRoute(r);
+  }
   setInterval(() => mapper.save(), 3000);
 
   // ---------- L1 modules ----------
@@ -116,7 +124,12 @@ export async function createShow({
   midi?.enable();
   const keys = modules.keys === false ? null
     : mountKeys(keysSlot, { signals, base: 48, octaves: 2, ...(typeof modules.keys === 'object' ? modules.keys : {}) });
-  if (!keys) keysSlot.remove();
+  // drum machine: the drum sibling of the simulated performer — publishes
+  // drum/* signals in the analyzer's shape, synthesizes its own kit (L4)
+  const drums = modules.drums
+    ? mountDrums(keysSlot, { signals, ...(typeof modules.drums === 'object' ? modules.drums : {}) })
+    : null;
+  if (!keys && !drums) keysSlot.remove();
 
   const audio = modules.audio ? new AudioAnalyzer({ signals }) : null;
   // chord is an ANALYZER (L1.5): it subscribes to signals and publishes richer
@@ -134,14 +147,15 @@ export async function createShow({
   const sound = modules.sound ? new Sound({ signals, params, engine: (typeof modules.sound === 'object' && modules.sound.engine) || toneEngine() }) : null;
 
   // ---------- desk + backstage ----------
-  const app = { timeline, params, mapper, signals, midi, sound, stage, keys, audio, hands, pose, chord, artwork };
+  const app = { timeline, params, mapper, signals, midi, sound, stage, keys, drums, audio, hands, pose, chord, artwork };
   const consoleUI = mountConsole(desk, app);
   const monitor = new MonitorFeed({});
   monitor.connect();
 
-  const show = { signals, params, stage, timeline, mapper, midi, keys, sound, audio, hands, pose, chord, console: consoleUI, app, loop: null };
+  const show = { signals, params, stage, timeline, mapper, midi, keys, drums, sound, audio, hands, pose, chord, console: consoleUI, app, loop: null };
   const loop = app.loop = new Loop((dt) => {
     keys?.update(dt);
+    drums?.update(dt);
     audio?.update();
     onFrame?.(dt, show);
     timeline.advance(dt);

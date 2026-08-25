@@ -74,7 +74,7 @@ Two rules make the whole thing composable:
 | [`03-pose-field`](examples/03-pose-field/) | the body as controller: MediaPipe pose → mapper → flow field |
 | [`04-webtoe-stage`](examples/04-webtoe-stage/) | the sister stack: a WebToe node patch performed as a World (`ext()` bindings) |
 | [`05-prebiotic-flake`](examples/05-prebiotic-flake/) | a 2023 MIDI daily sketch replayed through the chassis — with the L4 audio branch singing (Tone.js) |
-| [`06-cylinder-earth`](examples/06-cylinder-earth/) | voice-controlled WEBGL towers (2020) — the mic analyzer's bands & drum onsets (kick/snare/hat) as instruments |
+| [`06-cylinder-earth`](examples/06-cylinder-earth/) | voice-controlled WEBGL towers (2020) — mic bands & drum onsets as instruments, or the built-in **drum machine** (@openav/drums: synth kit + TR-style sequencer publishing analyzer-shaped signals) |
 | [`07-firework-festival`](examples/07-firework-festival/) | fireworks launched by closing a finger pinch (2021, PoseNet-era) — 21-landmark hands, four precise controllers |
 
 All examples run without MIDI hardware — every stage ships an on-screen piano

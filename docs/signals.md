@@ -61,6 +61,17 @@ Mirrored by default (webcam-as-mirror). y flipped: **1 = raised**.
 | `pose/height` | continuous | 0..1 | nose height (crouch ↔ stand) |
 | `pose/lean` | continuous | -1..1 | shoulder-line tilt |
 
+## @openav/drums (simulator — analyzer-shaped)
+
+The drum machine publishes the SAME shapes the audio analyzer publishes, so a
+world mapped to a kick cannot tell mic from machine (that's what a simulator
+is for). Sequencer hits also travel as `midi/note/on` (ch 10, GM notes).
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `drum/kick` `/snare` `/hat` `/clap` | pulse | `{level}` | a sequencer hit |
+| `drum/kick/env` `…` | continuous | 0..1 | decay envelope per lane (map straight onto params) |
+
 ## Naming your own
 
 Path-style, source-first: `breath/pressure`, `phone/{id}/gyro/x`, `weather/wind`.
