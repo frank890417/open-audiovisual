@@ -1,0 +1,345 @@
+{
+ "app": "webtoe",
+ "version": 1,
+ "root": {
+  "nodes": [
+   {
+    "name": "lfo1",
+    "type": "chop:lfo",
+    "family": "CHOP",
+    "pos": [
+     40,
+     320
+    ],
+    "params": {
+     "frequency": {
+      "mode": "expr",
+      "expr": "0.11 * (0.2 + ext('speed', 0.5) * 2.2)"
+     },
+     "amplitude": {
+      "mode": "const",
+      "value": 180
+     }
+    }
+   },
+   {
+    "name": "lfo2",
+    "type": "chop:lfo",
+    "family": "CHOP",
+    "pos": [
+     40,
+     390
+    ],
+    "params": {
+     "frequency": {
+      "mode": "expr",
+      "expr": "0.07 * (0.2 + ext('speed', 0.5) * 2.2)"
+     },
+     "amplitude": {
+      "mode": "const",
+      "value": 180
+     },
+     "phase": {
+      "mode": "const",
+      "value": 0.33
+     }
+    }
+   },
+   {
+    "name": "lfo3",
+    "type": "chop:lfo",
+    "family": "CHOP",
+    "pos": [
+     40,
+     460
+    ],
+    "params": {
+     "frequency": {
+      "mode": "expr",
+      "expr": "0.05 * (0.2 + ext('speed', 0.5) * 2.2)"
+     },
+     "amplitude": {
+      "mode": "const",
+      "value": 180
+     },
+     "phase": {
+      "mode": "const",
+      "value": 0.66
+     }
+    }
+   },
+   {
+    "name": "ramp1",
+    "type": "top:ramp",
+    "family": "TOP",
+    "pos": [
+     40,
+     40
+    ],
+    "params": {
+     "type": {
+      "mode": "const",
+      "value": "circular"
+     },
+     "colora": {
+      "mode": "const",
+      "value": [
+       0.9,
+       0.3,
+       0.45,
+       1
+      ]
+     },
+     "colorb": {
+      "mode": "const",
+      "value": [
+       0.05,
+       0.05,
+       0.1,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "name": "trans1",
+    "type": "top:transform",
+    "family": "TOP",
+    "pos": [
+     230,
+     40
+    ],
+    "params": {
+     "rotate": {
+      "mode": "expr",
+      "value": 0,
+      "expr": "op('lfo1')['chan1']"
+     },
+     "sx": {
+      "mode": "expr",
+      "expr": "1.4 * (0.5 + ext('zoom', 0.5))"
+     },
+     "sy": {
+      "mode": "expr",
+      "expr": "1.4 * (0.5 + ext('zoom', 0.5))"
+     },
+     "extend": {
+      "mode": "const",
+      "value": "mirror"
+     }
+    }
+   },
+   {
+    "name": "ramp2",
+    "type": "top:ramp",
+    "family": "TOP",
+    "pos": [
+     40,
+     130
+    ],
+    "params": {
+     "type": {
+      "mode": "const",
+      "value": "circular"
+     },
+     "colora": {
+      "mode": "const",
+      "value": [
+       0.25,
+       0.65,
+       0.9,
+       1
+      ]
+     },
+     "colorb": {
+      "mode": "const",
+      "value": [
+       0,
+       0.05,
+       0.12,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "name": "trans2",
+    "type": "top:transform",
+    "family": "TOP",
+    "pos": [
+     230,
+     130
+    ],
+    "params": {
+     "rotate": {
+      "mode": "expr",
+      "value": 0,
+      "expr": "op('lfo2')['chan1']"
+     },
+     "sx": {
+      "mode": "expr",
+      "expr": "2.2 * (0.5 + ext('zoom', 0.5))"
+     },
+     "sy": {
+      "mode": "expr",
+      "expr": "2.2 * (0.5 + ext('zoom', 0.5))"
+     },
+     "extend": {
+      "mode": "const",
+      "value": "mirror"
+     }
+    }
+   },
+   {
+    "name": "ramp3",
+    "type": "top:ramp",
+    "family": "TOP",
+    "pos": [
+     40,
+     220
+    ],
+    "params": {
+     "type": {
+      "mode": "const",
+      "value": "radial"
+     },
+     "phase": {
+      "mode": "expr",
+      "value": 0,
+      "expr": "time.seconds * 0.08"
+     },
+     "colora": {
+      "mode": "const",
+      "value": [
+       0.95,
+       0.8,
+       0.35,
+       1
+      ]
+     },
+     "colorb": {
+      "mode": "const",
+      "value": [
+       0.06,
+       0.02,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "name": "trans3",
+    "type": "top:transform",
+    "family": "TOP",
+    "pos": [
+     230,
+     220
+    ],
+    "params": {
+     "rotate": {
+      "mode": "expr",
+      "value": 0,
+      "expr": "op('lfo3')['chan1']"
+     },
+     "sx": {
+      "mode": "const",
+      "value": 0.8
+     },
+     "sy": {
+      "mode": "const",
+      "value": 0.8
+     },
+     "extend": {
+      "mode": "const",
+      "value": "mirror"
+     }
+    }
+   },
+   {
+    "name": "comp1",
+    "type": "top:composite",
+    "family": "TOP",
+    "pos": [
+     430,
+     130
+    ],
+    "params": {
+     "operation": {
+      "mode": "const",
+      "value": "add"
+     }
+    }
+   },
+   {
+    "name": "hsv1",
+    "type": "top:hsvadjust",
+    "family": "TOP",
+    "pos": [
+     620,
+     130
+    ],
+    "params": {
+     "hueoffset": {
+      "mode": "expr",
+      "expr": "fract(ext('hue', 205) / 360 + time.seconds * 0.01)"
+     },
+     "satmult": {
+      "mode": "expr",
+      "expr": "1.15 + ext('pulse') * 1.5"
+     }
+    }
+   },
+   {
+    "name": "out1",
+    "type": "top:out",
+    "family": "TOP",
+    "pos": [
+     800,
+     130
+    ],
+    "flags": {
+     "display": true
+    }
+   }
+  ],
+  "wires": [
+   {
+    "from": "ramp1:0",
+    "to": "trans1:0"
+   },
+   {
+    "from": "ramp2:0",
+    "to": "trans2:0"
+   },
+   {
+    "from": "ramp3:0",
+    "to": "trans3:0"
+   },
+   {
+    "from": "trans1:0",
+    "to": "comp1:0"
+   },
+   {
+    "from": "trans2:0",
+    "to": "comp1:1"
+   },
+   {
+    "from": "trans3:0",
+    "to": "comp1:2"
+   },
+   {
+    "from": "comp1:0",
+    "to": "hsv1:0"
+   },
+   {
+    "from": "hsv1:0",
+    "to": "out1:0"
+   }
+  ]
+ },
+ "meta": {
+  "name": "openav garden",
+  "note": "lfo-garden rewired for open-audiovisual: ext(speed/hue/zoom/pulse)"
+ }
+}

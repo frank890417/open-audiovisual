@@ -9,6 +9,7 @@
 
 import { Signals, Params, Loop } from '@openav/core';
 import { Midi } from '@openav/midi';
+import { mountKeys } from '@openav/keys';
 import { Mapper } from '@openav/mapping';
 import { Timeline } from '@openav/timeline';
 import { Stage, createCanvas } from '@openav/stage';
@@ -100,18 +101,15 @@ setInterval(() => mapper.save(), 3000);
 const midi = new Midi({ signals });
 midi.enable();                                        // silently no-ops if unsupported
 
-// computer-keyboard fallback (a MIDI keyboard is nicer, but demos must never gatekeep)
-const KEYS = { a: 60, w: 61, s: 62, e: 63, d: 64, f: 65, t: 66, g: 67, y: 68, h: 69, u: 70, j: 71, k: 72, o: 73, l: 74 };
-window.addEventListener('keydown', (e) => {
-  if (e.repeat || e.target.tagName === 'INPUT') return;
-  const n = KEYS[e.key]; if (n) signals.pulse('midi/note/on', { note: n, vel: 0.8, ch: 0 });
-});
+// on-screen piano + QWERTY capture + simulated performer (@openav/keys)
+const keys = mountKeys(document.getElementById('keys'), { signals, base: 48, octaves: 2 });
 
-const consoleUI = mountConsole(document.getElementById('console'), { timeline, params, mapper, signals, midi });
+const consoleUI = mountConsole(document.getElementById('desk'), { timeline, params, mapper, signals, midi });
 const monitor = new MonitorFeed({});
 monitor.connect();
 
 const loop = new Loop((dt) => {
+  keys.update(dt);
   timeline.advance(dt);
   mapper.update(dt);
   const state = stage.frame(dt, timeline.state());
@@ -121,4 +119,4 @@ const loop = new Loop((dt) => {
 loop.start();
 
 // expose for devtools poking (and framework debugging) — harmless in production
-window.openav = { signals, params, timeline, mapper, stage, loop };
+window.openav = { signals, params, timeline, mapper, stage, loop, keys };

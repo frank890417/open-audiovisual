@@ -45,8 +45,10 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 │   a World sees params, never inputs. p5 / three / canvas / │
 │   anything. Swap works; keep the shell.                    │
 ├────────────────────────────────────────────────────────────┤
-│ L4 OUTPUT — "how it leaves the browser"                    │
-│   screen · @openav/midi out · @openav/osc → UDP bridge     │
+│ L4 OUTPUT — "how it leaves the browser" (video ∥ audio)    │
+│   video: screen · future NDI                               │
+│   audio: @openav/midi out · @openav/sound (Tone.js engine) │
+│          · @openav/osc → UDP bridge                        │
 ├────────────────────────────────────────────────────────────┤
 │ ⏱ @openav/timeline — param automation + scenes/cues        │
 │ 📟 @openav/monitor — backstage: clock, scene, signals, FPS  │
@@ -70,9 +72,12 @@ Two rules make the whole thing composable:
 | [`01-hello-particles`](examples/01-hello-particles/) | the smallest complete app — read `main.js` top-to-bottom and you know the framework |
 | [`02-chord-garden`](examples/02-chord-garden/) | performance semantics: triads bloom, clusters decay (lineage: *The Last Input*, IRCAM 2026) |
 | [`03-pose-field`](examples/03-pose-field/) | the body as controller: MediaPipe pose → mapper → flow field |
+| [`04-webtoe-stage`](examples/04-webtoe-stage/) | the sister stack: a WebToe node patch performed as a World (`ext()` bindings) |
+| [`05-prebiotic-flake`](examples/05-prebiotic-flake/) | a 2023 MIDI daily sketch replayed through the chassis — with the L4 audio branch singing (Tone.js) |
 
-All examples run without any MIDI hardware (QWERTY fallback) and 01/02 run fully
-offline. Keys: **Space** play · **←/→** scene jump · **T** performance mode · **F** fullscreen.
+All examples run without MIDI hardware — every stage ships an on-screen piano
+(@openav/keys: QWERTY capture, Z/X octave) and a **simulated performer** that
+plays the piece hands-free. 01/02 run fully offline. Keys: **Space** play · **←/→** scene jump · **T** performance mode · **F** fullscreen.
 
 ## Agent-native
 
@@ -136,9 +141,12 @@ pose) map naturally onto CHOP channels. Integration adapter is on the roadmap.
 
 ## Status & roadmap
 
-`v0.1` — core four layers + timeline + console + monitor + 3 examples, tests green.
+`v0.1` — four layers (with the L4 video/audio split) + timeline + console +
+monitor + on-screen piano & simulated performer + 5 examples (including the
+WebToe sister-stack world and a Tone.js-voiced 2023 sketch), tests green.
 Planned: audience-device inputs (phones as sensors via QR), signal recording/replay,
-WebGPU world adapter, NDI gateway research. See [docs/roadmap.md](docs/roadmap.md).
+more sound engines behind the @openav/sound contract, WebGPU world adapter,
+NDI gateway research. See [docs/roadmap.md](docs/roadmap.md).
 
 ## License
 

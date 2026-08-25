@@ -40,6 +40,8 @@
   .note { color: var(--faint); font-size: 13px; }
   footer { margin-top: 56px; color: var(--faint); font-size: 13px; border-top: 1px solid var(--line); padding-top: 18px; }
   .demo { display:grid; grid-template-columns: 1fr 290px; gap: 12px; margin: 14px 0 30px; }
+  .demo-main { display:flex; flex-direction:column; gap:8px; min-width:0; }
+  #demo-keys { overflow-x:auto; }
   @media (max-width: 720px) { .demo { grid-template-columns: 1fr; } }
   #demo-stage { position: relative; background:#000; border:1px solid var(--line); border-radius: 10px;
     min-height: 260px; overflow: hidden; cursor: crosshair; }
@@ -74,10 +76,10 @@
   <!-- ══════ live demo — this hero IS the framework running ══════ -->
   <h2 style="margin-top:0">Try it — right here</h2>
   <div class="demo">
-    <div id="demo-stage"></div>
+    <div class="demo-main"><div id="demo-stage"></div><div id="demo-keys"></div></div>
     <div class="demo-side">
-      <div class="demo-hint">▶ <b>press any key</b> (A–L = notes) or <b>click / drag</b> the canvas.<br>
-        Keys fire <i>signals</i> → the mapper routes them to <i>params</i> → the world only sees params.</div>
+      <div class="demo-hint">▶ <b>play the piano</b> (or tick "keyboard" / "simulate performance") and <b>drag</b> the canvas.<br>
+        Notes fire <i>signals</i> → the mapper routes them to <i>params</i> → the world only sees params.</div>
       <div class="meters">
         <div class="m"><label>midi/note/on</label><div class="bar"><i id="m-note"></i></div></div>
         <div class="m"><label>pointer/x</label><div class="bar"><i id="m-px"></i></div></div>
@@ -206,6 +208,7 @@ node serve.js   <span class="c"># → http://localhost:8080 (Chrome: WebMIDI + c
 { "imports": {
     "@openav/core": "./packages/core/index.js",
     "@openav/mapping": "./packages/mapping/index.js",
+    "@openav/keys": "./packages/keys/index.js",
     "@openav/stage": "./packages/stage/index.js"
 } }
 </script>
@@ -214,6 +217,7 @@ node serve.js   <span class="c"># → http://localhost:8080 (Chrome: WebMIDI + c
 // whole framework idea in miniature: input → signals → mapper → params → world.
 import { Signals, Params, Loop } from '@openav/core';
 import { Mapper } from '@openav/mapping';
+import { mountKeys } from '@openav/keys';
 import { Stage, createCanvas } from '@openav/stage';
 
 const world = {
@@ -264,14 +268,10 @@ const mapper = new Mapper({ signals, params });
 mapper.addRoute({ source: 'pointer/x', target: 'hue', smooth: 0.15 });
 mapper.addRoute({ source: 'pointer/energy', target: 'energy', smooth: 0.3 });
 
-// "input layer": keyboard notes + pointer as signals
-const KEYS = { a:60,w:61,s:62,e:63,d:64,f:65,t:66,g:67,y:68,h:69,u:70,j:71,k:72,o:73,l:74 };
+// "input layer": the piano (screen / QWERTY capture / simulated performer)
 let noteFlash = 0;
-addEventListener('keydown', (e) => {
-  if (e.repeat || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
-  const n = KEYS[e.key.toLowerCase()] ?? (48 + (e.key.charCodeAt(0) % 24));
-  signals.pulse('midi/note/on', { note: n, vel: 0.8 }); noteFlash = 1;
-});
+signals.on('midi/note/on', () => { noteFlash = 1; });
+const keys = mountKeys(document.getElementById('demo-keys'), { signals, base: 60, octaves: 2 });
 const el = document.getElementById('demo-stage');
 let lastPX = 0.5, lastPT = 0;
 const pointer = (e) => {
@@ -288,6 +288,7 @@ el.addEventListener('pointerdown', (e) => { pointer(e); signals.pulse('midi/note
 // meters: make the signal layer visible
 const $ = (id) => document.getElementById(id);
 const loop = new Loop((dt) => {
+  keys.update(dt);
   mapper.update(dt);
   const state = stage.frame(dt, {});
   noteFlash = Math.max(0, noteFlash - dt * 3);

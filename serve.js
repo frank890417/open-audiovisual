@@ -38,6 +38,7 @@ http.createServer((req, res) => {
     res.writeHead(200, {
       'Content-Type': MIME[path.extname(file)] || 'application/octet-stream',
       'Cache-Control': 'no-store',   // performance dev: stale code on stage is a nightmare
+      'Access-Control-Allow-Origin': '*',   // hosted WebToe fetches local patch files in dev
     });
     res.end(data);
   });

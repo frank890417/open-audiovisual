@@ -12,6 +12,7 @@
 import { Signals, Params, Loop } from '@openav/core';
 import { Midi } from '@openav/midi';
 import { ChordDetector } from '@openav/chord';
+import { mountKeys } from '@openav/keys';
 import { Mapper } from '@openav/mapping';
 import { Timeline } from '@openav/timeline';
 import { Stage, createCanvas } from '@openav/stage';
@@ -124,29 +125,20 @@ const midi = new Midi({ signals });
 midi.onNote = (note, vel, on) => on ? chord.noteOn(note, vel) : chord.noteOff(note);
 midi.enable();
 
-// QWERTY fallback → chord detector (hold multiple keys within 80ms = a chord)
-const KEYS = { a: 60, w: 61, s: 62, e: 63, d: 64, f: 65, t: 66, g: 67, y: 68, h: 69, u: 70, j: 71, k: 72, o: 73, l: 74 };
-window.addEventListener('keydown', (e) => {
-  if (e.repeat || e.target.tagName === 'INPUT') return;
-  let n = KEYS[e.key.toLowerCase()]; if (!n) return;
-  if (e.shiftKey) n += 12;
-  chord.noteOn(n, 0.8);
-  signals.pulse('midi/note/on', { note: n, vel: 0.8, ch: 0 });
-});
-window.addEventListener('keyup', (e) => {
-  let n = KEYS[e.key.toLowerCase()]; if (!n) return;
-  chord.noteOff(n); chord.noteOff(n + 12);
-});
+// on-screen piano + QWERTY + simulated performer — feeds the chord detector
+// through the same path a MIDI keyboard uses
+const keys = mountKeys(document.getElementById('keys'), { signals, chord, base: 48, octaves: 2 });
 
 const mapper = new Mapper({ signals, params, profile: 'garden' });
 mapper.load();
 setInterval(() => mapper.save(), 3000);
 
-const consoleUI = mountConsole(document.getElementById('console'), { timeline, params, mapper, signals, midi });
+const consoleUI = mountConsole(document.getElementById('desk'), { timeline, params, mapper, signals, midi });
 const monitor = new MonitorFeed({});
 monitor.connect();
 
 const loop = new Loop((dt) => {
+  keys.update(dt);
   timeline.advance(dt);
   mapper.update(dt);
   const state = stage.frame(dt, timeline.state());
@@ -156,4 +148,4 @@ const loop = new Loop((dt) => {
 loop.start();
 
 // expose for devtools poking (and framework debugging) — harmless in production
-window.openav = { signals, params, timeline, mapper, stage, loop };
+window.openav = { signals, params, timeline, mapper, stage, loop, keys };

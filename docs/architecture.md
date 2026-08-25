@@ -74,15 +74,26 @@ a renderer. p5, three.js, 2D canvas, SVG, DOM — the framework has no opinion.
 Constitutional rule (inherited from The Last Input): **the shell never knows the
 work.** Switching works = swapping World + automation data. The shell stays.
 
-## L4 · Output
+## L4 · Output — two branches, video and audio, both optional
 
+The output layer splits in two. Both branches hang off the same
+signals → mapping → params spine — sound is performable state, not a side effect.
+
+**Video branch**
 - **screen** is the default output; performance mode (T) gives the performer a
   teleprompter while the audience sees the stage window fullscreen (F).
-- **MIDI out**: `midi.send()/noteOn()/cc()` — one throat, observable (`onSend`)
-  so meters can watch everything, with a real `panic()`.
-- **OSC**: browser → HTTP → `osc-bridge.js` → UDP. Batched per frame; only the
-  latest message per address survives a frame (position streams don't need
-  intermediate values).
+- future: NDI gateway (see roadmap; groundwork lives in sister project WebToe).
+
+**Audio branch**
+- **MIDI out** (external synths/DAWs): `midi.send()/noteOn()/cc()` — one throat,
+  observable (`onSend`) so meters can watch everything, with a real `panic()`.
+- **In-browser synthesis**: `@openav/sound` — a small pluggable engine contract
+  (`noteOn/noteOff/set/params`) with a Tone.js engine first (CDN, loaded only on
+  enable). Engine params register as `sound/*` — a knob, a hand, or the timeline
+  plays the filter cutoff exactly the way it plays the visuals. More engines
+  (samplers, granular, custom WebAudio graphs) grow behind the same contract.
+- **OSC**: browser → HTTP → `osc-bridge.js` → UDP (Spat, Reaper, TD, lights).
+  Batched per frame; only the latest message per address survives a frame.
 
 ## Spine · Timeline
 
