@@ -74,6 +74,17 @@ Two rules make the whole thing composable:
 All examples run without any MIDI hardware (QWERTY fallback) and 01/02 run fully
 offline. Keys: **Space** play · **←/→** scene jump · **T** performance mode · **F** fullscreen.
 
+## Agent-native
+
+Worlds are visual code, and coding agents are good at code — so this repo ships
+agent-ready: [`AGENTS.md`](AGENTS.md) gives any AI coding agent the layer
+contracts and conventions, and the bundled `/create-world` skill
+([.claude/skills/create-world](.claude/skills/create-world/SKILL.md)) scaffolds a
+runnable work from a natural-language description ("a jellyfish world that blooms
+on consonant chords"). Describe the performance; the agent writes the World; the
+chassis does the rest. (Positioning kin: [open-slide](https://github.com/1weiho/open-slide),
+which does this for slide decks.)
+
 ## A world in 20 lines
 
 ```js
