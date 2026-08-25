@@ -61,6 +61,21 @@ Mirrored by default (webcam-as-mirror). y flipped: **1 = raised**.
 | `pose/height` | continuous | 0..1 | nose height (crouch ↔ stand) |
 | `pose/lean` | continuous | -1..1 | shoulder-line tilt |
 
+## @openav/pose — HandTracker (21-landmark fine control)
+
+Per-hand pinch distances = four precise continuous controllers across two hands.
+Normalized by palm size, so distance to the camera doesn't change your pinch.
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `hand/left/present` `right/…` | continuous | 0/1 | hand visible |
+| `hand/left/x` `/y` | continuous | 0..1 | palm position (y: 1 = raised) |
+| `hand/left/pinch/index` | continuous | 0..1 | thumb-tip ↔ index-tip |
+| `hand/left/pinch/middle` | continuous | 0..1 | thumb-tip ↔ middle-tip |
+| `hand/left/spread` | continuous | 0..1 | index ↔ pinky spread |
+
+(`hand/right/*` mirrors the set. Both trackers expose `skeleton(ctx, w, h)` overlays.)
+
 ## @openav/drums (simulator — analyzer-shaped)
 
 The drum machine publishes the SAME shapes the audio analyzer publishes, so a
