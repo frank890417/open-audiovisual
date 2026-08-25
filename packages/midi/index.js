@@ -10,7 +10,7 @@
 export class Midi {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js').Signals} [opts.signals] publish inputs here
+   * @param {import('../core/src/signals.js?v=0c76e80').Signals} [opts.signals] publish inputs here
    * @param {string} [opts.filterOut] regex source-name filter to avoid feedback loops (default: IAC)
    */
   constructor({ signals = null, filterOut = 'IAC' } = {}) {

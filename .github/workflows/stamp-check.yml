@@ -1,0 +1,15 @@
+git add -A && git -c user.name="Che-Yu Wu" -c user.email="frank890417@gmail.com" commit -m "🔁 cache-bust module URLs with the commit hash (tools/stamp-version.mjs)
+
+GitHub Pages serves .js with max-age=14400 (4h) but HTML with max-age=600,
+so after a deploy a visitor gets new HTML + 4-hour-old JavaScript: the page
+looks unchanged and nothing in the console says why. Every module URL now
+carries ?v=<commit>, which changes on each push.
+
+The stamper is deliberately narrow — only <script src>, import-map values,
+and relative import/import() specifiers. (A first greedy pass also stamped
+comments, JSDoc types and the MCP server's filename strings; reverted.)
+Node-side code (mcp, bridges, servers) is skipped entirely.
+
++ CI workflow running the test suite. 33 tests green, MCP verified intact.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>" && git push 2>&1 | tail -1 && node tools/stamp-version.mjs --check

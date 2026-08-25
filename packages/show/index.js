@@ -21,19 +21,19 @@
 // sound, audio, hands, pose, loop, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools.
 
-import { Signals, Params, Loop } from '../core/index.js';
-import { Midi } from '../midi/index.js';
-import { mountKeys } from '../keys/index.js';
-import { Sound, toneEngine } from '../sound/index.js';
-import { AudioAnalyzer } from '../audio/index.js';
-import { ChordDetector } from '../chord/index.js';
-import { mountDrums } from '../drums/index.js';
-import { PoseTracker, HandTracker } from '../pose/index.js';
-import { Mapper } from '../mapping/index.js';
-import { Timeline } from '../timeline/index.js';
-import { Stage } from '../stage/index.js';
-import { mountConsole } from '../console/index.js';
-import { MonitorFeed, snapshotOf } from '../monitor/index.js';
+import { Signals, Params, Loop } from '../core/index.js?v=0c76e80';
+import { Midi } from '../midi/index.js?v=0c76e80';
+import { mountKeys } from '../keys/index.js?v=0c76e80';
+import { Sound, toneEngine } from '../sound/index.js?v=0c76e80';
+import { AudioAnalyzer } from '../audio/index.js?v=0c76e80';
+import { ChordDetector } from '../chord/index.js?v=0c76e80';
+import { mountDrums } from '../drums/index.js?v=0c76e80';
+import { PoseTracker, HandTracker } from '../pose/index.js?v=0c76e80';
+import { Mapper } from '../mapping/index.js?v=0c76e80';
+import { Timeline } from '../timeline/index.js?v=0c76e80';
+import { Stage } from '../stage/index.js?v=0c76e80';
+import { mountConsole } from '../console/index.js?v=0c76e80';
+import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=0c76e80';
 
 const SHELL_CSS = `
   body { margin: 0; background: #000; height: 100vh; display: grid;
