@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>open-audiovisual · backstage</title>
+<style>
+  body { margin: 0; background: #0d1017; color: #cfd6e4;
+    font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; padding: 16px; }
+  .top { display: flex; gap: 18px; align-items: baseline; flex-wrap: wrap; }
+  .clock { font-size: 42px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+  .scene { font-size: 20px; color: #ffd166; }
+  .tag { color: #667; }
+  .tag b { color: #cfd6e4; }
+  .bar-wrap { height: 10px; background: #131826; border-radius: 5px; margin: 12px 0 18px; overflow: hidden; }
+  .bar-wrap i { display: block; height: 100%; background: #2e6df6; width: 0; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+  .panel { background: #10141f; border: 1px solid #1c2334; border-radius: 8px; padding: 10px; }
+  .panel h3 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #667; }
+  .row { display: grid; grid-template-columns: 170px 1fr 54px; gap: 8px; align-items: center; padding: 1px 0; }
+  .row label { color: #9aa5bd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row .m { height: 8px; background: #131826; border-radius: 4px; overflow: hidden; }
+  .row .m i { display: block; height: 100%; background: #37c978; }
+  .row .v { text-align: right; color: #fff; font-variant-numeric: tabular-nums; }
+  .ovr { color: #ffd166; }
+  .dead { position: fixed; inset: 0; background: rgba(13,16,23,.88); display: none;
+    align-items: center; justify-content: center; font-size: 20px; color: #ff6b6b; }
+  .dead.on { display: flex; }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="clock" id="clock">–:––</div>
+  <div class="scene" id="scene">waiting for stage…</div>
+  <div class="tag">world <b id="world">–</b></div>
+  <div class="tag">fps <b id="fps">–</b></div>
+  <div class="tag">overrides <b id="ovr">–</b></div>
+</div>
+<div class="bar-wrap"><i id="bar"></i></div>
+<div class="cols">
+  <div class="panel"><h3>Signals</h3><div id="signals"></div></div>
+  <div class="panel"><h3>Params</h3><div id="params"></div></div>
+</div>
+<div class="dead" id="dead">stage feed lost — check the performance machine</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const fmt = (t) => { const n = t < 0; t = Math.abs(t); return (n ? '-' : '') + Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0'); };
+let lastMsgAt = 0;
+
+function connect() {
+  const ws = new WebSocket(`ws://${location.host}/?role=monitor`);
+  ws.onmessage = (e) => {
+    lastMsgAt = Date.now();
+    let d; try { d = JSON.parse(e.data); } catch (err) { return; }
+    $('clock').textContent = fmt(d.t || 0) + (d.playing ? '' : ' ⏸');
+    $('scene').textContent = `#${d.sceneIndex ?? '–'} ${d.scene || ''}`;
+    $('world').textContent = d.world || '–';
+    $('fps').textContent = d.fps ?? '–';
+    $('ovr').textContent = (d.overrides || []).length ? d.overrides.join(', ') : 'none';
+    $('bar').style.width = d.total ? (100 * Math.max(0, d.t) / d.total) + '%' : '0';
+    renderRows($('signals'), (d.signals || []).map(s => ({ key: s.n, val: s.v, norm: (s.k === 'pulse' ? null : (typeof s.v === 'number' ? s.v : null)) })));
+    renderRows($('params'), Object.entries(d.state || {}).map(([k, v]) => ({ key: k, val: v, norm: null, ovr: (d.overrides || []).includes(k) })));
+  };
+  ws.onclose = () => setTimeout(connect, 2000);
+}
+const rowCache = new Map();
+function renderRows(root, items) {
+  for (const it of items) {
+    const id = root.id + '/' + it.key;
+    let row = rowCache.get(id);
+    if (!row) {
+      row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `<label>${it.key}</label><div class="m"><i></i></div><span class="v"></span>`;
+      root.appendChild(row);
+      rowCache.set(id, row);
+    }
+    row.querySelector('label').classList.toggle('ovr', !!it.ovr);
+    const norm = (typeof it.norm === 'number') ? Math.min(1, Math.max(0, it.norm)) : null;
+    row.querySelector('i').style.width = norm === null ? '0%' : (norm * 100) + '%';
+    row.querySelector('.v').textContent = typeof it.val === 'number' ? it.val.toFixed(2) : (it.val == null ? '·' : String(it.val).slice(0, 8));
+  }
+}
+setInterval(() => $('dead').classList.toggle('on', lastMsgAt > 0 && Date.now() - lastMsgAt > 4000), 1000);
+connect();
+</script>
+</body>
+</html>

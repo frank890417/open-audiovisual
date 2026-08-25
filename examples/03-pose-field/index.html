@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>open-audiovisual · 03 pose field</title>
+<script type="importmap">
+{
+  "imports": {
+    "@openav/core": "../../packages/core/index.js",
+    "@openav/midi": "../../packages/midi/index.js",
+    "@openav/pose": "../../packages/pose/index.js",
+    "@openav/audio": "../../packages/audio/index.js",
+    "@openav/mapping": "../../packages/mapping/index.js",
+    "@openav/timeline": "../../packages/timeline/index.js",
+    "@openav/stage": "../../packages/stage/index.js",
+    "@openav/console": "../../packages/console/index.js",
+    "@openav/monitor": "../../packages/monitor/index.js"
+  }
+}
+</script>
+<style>
+  body { margin: 0; background: #000; height: 100vh; display: grid;
+    grid-template-columns: 1fr 340px; overflow: hidden; }
+  #stage { position: relative; }
+  #console { height: 100vh; }
+  #start { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    z-index: 5; background: rgba(0,0,0,.8); }
+  #start button { font: 16px ui-monospace, monospace; background: #2e6df6; color: #fff;
+    border: 0; border-radius: 8px; padding: 14px 26px; cursor: pointer; }
+  #hint { position: absolute; left: 12px; bottom: 10px; color: #445; z-index: 2;
+    font: 11px ui-monospace, monospace; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="start"><button id="go">enable camera · start tracking</button></div>
+  <div id="hint">raise hands = energy · spread arms = field width · move fast = turbulence<br>needs network on first run (MediaPipe model from CDN)</div>
+</div>
+<div id="console"></div>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
