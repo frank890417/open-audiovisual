@@ -67,11 +67,12 @@ signals.define('env/pulse', { description: 'note envelope' });
 // L4 audio branch — enable from the Sound section in the side panel
 const sound = new Sound({ signals, params, engine: toneEngine() });
 
-const consoleUI = mountConsole(document.getElementById('desk'), { timeline, params, mapper, signals, midi, sound });
+const app = { timeline, params, mapper, signals, midi, sound, stage };
+const consoleUI = mountConsole(document.getElementById('desk'), app);
 const monitor = new MonitorFeed({});
 monitor.connect();
 
-const loop = new Loop((dt) => {
+const loop = app.loop = new Loop((dt) => {
   keys.update(dt);                        // simulated performer (when ticked)
   env = Math.max(0, env - dt * 2.2);
   signals.set('env/pulse', env);

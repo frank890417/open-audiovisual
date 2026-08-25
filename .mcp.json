@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "openav": {
+      "command": "node",
+      "args": ["packages/mcp/server.js"]
+    }
+  }
+}

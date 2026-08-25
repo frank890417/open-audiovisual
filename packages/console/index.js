@@ -15,6 +15,7 @@ import { buildTransport } from './src/transport.js';
 import { buildParamPanel } from './src/params-panel.js';
 import { buildSignalPanel } from './src/signals-panel.js';
 import { buildSoundPanel } from './src/sound-panel.js';
+import { buildLayersPanel } from './src/layers-panel.js';
 import { buildPerformanceMode } from './src/perf-mode.js';
 
 // every .oav-panel header toggles its section — the universal collapsible
@@ -37,6 +38,7 @@ export function mountConsole(root, app, opts = {}) {
 
   wireCollapsible(root);
   const transport = buildTransport(root, app);
+  const layers = opts.layers === false ? null : buildLayersPanel(root, app);
   const soundPanel = app.sound ? buildSoundPanel(root, app) : null;
   const params = buildParamPanel(root, app);
   const signalsPanel = opts.signals === false ? null : buildSignalPanel(root, app);
@@ -60,6 +62,7 @@ export function mountConsole(root, app, opts = {}) {
     /** Call once per frame after stage.frame(). */
     render(state) {
       transport.render();
+      layers?.render();
       soundPanel?.render();
       params.render(state);
       signalsPanel?.render();

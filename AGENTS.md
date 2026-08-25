@@ -25,6 +25,14 @@ Four layers + two spines — the contracts are in [docs/architecture.md](docs/ar
 2. **The shell never knows the work.** Never edit `packages/*` to make one
    example look right. Framework changes must make every example better.
 
+## MCP: the fast path
+
+This repo ships an MCP server (`.mcp.json` is pre-wired — Claude Code picks it
+up automatically; other agents: `node packages/mcp/server.js` over stdio).
+Tools: `list_examples` · `read_doc` (start with `agents`, then
+`writing-a-world`) · `scaffold_world` (donor-based) · `run_checks`. The manual
+path below works without it.
+
 ## How to create a new work (the common request)
 
 1. Copy `examples/01-hello-particles/` to `examples/<nn>-<name>/`.

@@ -27,6 +27,13 @@ export const css = `
 .oav-sound-btn { background: #1a2030; color: #cfd6e4; border: 1px solid #2a3348;
   border-radius: 8px; padding: 6px 14px; font: 12px ui-monospace, monospace; cursor: pointer; }
 .oav-sound-btn.on { background: #2e6df6; color: #fff; border-color: #2e6df6; }
+.oav-layers .lay { display: grid; grid-template-columns: 88px 1fr; gap: 8px; padding: 2px 0;
+  font-size: 11px; align-items: baseline; }
+.oav-layers b { font-weight: 600; }
+.oav-layers .l1 { color: #37c978; } .oav-layers .l2 { color: #7ea6ff; }
+.oav-layers .l3 { color: #ffd166; } .oav-layers .l4 { color: #b47ee6; }
+.oav-layers .v { color: #8892a8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.oav-midimeter { width: 100%; display: none; background: #0b0e15; border-radius: 6px; margin-top: 6px; }
 .oav-param { display: grid; grid-template-columns: 110px 1fr 52px auto auto; gap: 6px;
   align-items: center; padding: 2px 0; }
 .oav-param label { color: #9aa5bd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

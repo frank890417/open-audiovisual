@@ -133,11 +133,12 @@ const mapper = new Mapper({ signals, params, profile: 'garden' });
 mapper.load();
 setInterval(() => mapper.save(), 3000);
 
-const consoleUI = mountConsole(document.getElementById('desk'), { timeline, params, mapper, signals, midi });
+const app = { timeline, params, mapper, signals, midi, stage };
+const consoleUI = mountConsole(document.getElementById('desk'), app);
 const monitor = new MonitorFeed({});
 monitor.connect();
 
-const loop = new Loop((dt) => {
+const loop = app.loop = new Loop((dt) => {
   keys.update(dt);
   timeline.advance(dt);
   mapper.update(dt);

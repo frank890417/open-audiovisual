@@ -95,11 +95,12 @@ document.getElementById('go').addEventListener('click', async () => {
   }
 });
 
-const consoleUI = mountConsole(document.getElementById('console'), { timeline, params, mapper, signals });
+const app = { timeline, params, mapper, signals, stage };
+const consoleUI = mountConsole(document.getElementById('console'), app);
 const monitor = new MonitorFeed({});
 monitor.connect();
 
-const loop = new Loop((dt) => {
+const loop = app.loop = new Loop((dt) => {
   timeline.advance(dt);
   mapper.update(dt);
   const state = stage.frame(dt, timeline.state());

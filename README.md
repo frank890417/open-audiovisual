@@ -52,7 +52,7 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 ├────────────────────────────────────────────────────────────┤
 │ ⏱ @openav/timeline — param automation + scenes/cues        │
 │ 📟 @openav/monitor — backstage: clock, scene, signals, FPS  │
-│ 🎛 @openav/console — director's desk UI + performance mode  │
+│ 🎛 @openav/console — desk · Layers live view · perf mode     │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -87,7 +87,10 @@ contracts and conventions, and the bundled `/create-world` skill
 ([.claude/skills/create-world](.claude/skills/create-world/SKILL.md)) scaffolds a
 runnable work from a natural-language description ("a jellyfish world that blooms
 on consonant chords"). Describe the performance; the agent writes the World; the
-chassis does the rest. (Positioning kin: [open-slide](https://github.com/1weiho/open-slide),
+chassis does the rest. An **MCP server** ships in the box (`.mcp.json`,
+zero-dependency stdio): `list_examples` · `read_doc` · `scaffold_world` ·
+`run_checks` — connect any MCP-capable agent and it can inspect, scaffold, and
+verify a performance. (Positioning kin: [open-slide](https://github.com/1weiho/open-slide),
 which does this for slide decks.)
 
 ## A world in 20 lines

@@ -168,6 +168,11 @@ const midi = new Midi({ signals });
 midi.enable();
 const keys = mountKeys(document.getElementById('keys'), { signals, base: 48, octaves: 2 });
 
+// echo performed notes to MIDI OUT (ch1) — feeds external synths AND the
+// per-channel OUT meter in the Layers panel (lineage: TLI's stage panel)
+signals.on('midi/note/on', ({ note, vel }) => midi.noteOn(note, Math.round((vel ?? 0.8) * 127), 1));
+signals.on('midi/note/off', ({ note }) => midi.noteOff(note, 1));
+
 // ---------- L4 audio branch: Tone.js engine, living in the universal side panel ----------
 const sound = new Sound({ signals, params, engine: toneEngine() });
 
@@ -175,11 +180,12 @@ const mapper = new Mapper({ signals, params, profile: 'flake' });
 mapper.load();
 setInterval(() => mapper.save(), 3000);
 
-const consoleUI = mountConsole(document.getElementById('desk'), { timeline, params, mapper, signals, midi, sound });
+const app = { timeline, params, mapper, signals, midi, sound, stage };
+const consoleUI = mountConsole(document.getElementById('desk'), app);
 const monitor = new MonitorFeed({});
 monitor.connect();
 
-const loop = new Loop((dt) => {
+const loop = app.loop = new Loop((dt) => {
   keys.update(dt);
   timeline.advance(dt);
   mapper.update(dt);
