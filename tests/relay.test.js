@@ -4,7 +4,7 @@ import http from 'node:http';
 import { encodeFrame, readFrame, FrameParser, acceptKey, OP } from '../packages/relay/frames.js';
 import { RoomHub, cleanRoom, cleanRole } from '../packages/relay/hub.js';
 import { attachRelay } from '../packages/relay/server.js';
-import { signalMeta, aliasOf, bindSignals } from '../packages/relay/signals.js';
+import { signalMeta, aliasOf, bindSignals, fileSignal, normalizeValue } from '../packages/relay/signals.js';
 import { Signals } from '../packages/core/src/signals.js';
 
 test('acceptKey matches the RFC 6455 example', () => {
@@ -115,4 +115,36 @@ test('signals: meta table, alias, bindSignals defines pulses and aliases phone/a
   assert.equal(signals.get('phone/any/tilt/x'), 0.4);
   assert.equal(signals.meta.get('phone/any/knock').kind, 'pulse');
   assert.equal(signals.get('midi/note/on').note, 60);
+});
+
+test('signals: a struck note carries both velocity spellings, whichever the sender gave', () => {
+  assert.deepEqual(normalizeValue('midi/note/on', { note: 60, velocity: 127 }), { note: 60, velocity: 127, vel: 1 });
+  assert.deepEqual(normalizeValue('midi/note/on', { note: 60, vel: 0.5 }), { note: 60, vel: 0.5, velocity: 64 });
+  assert.deepEqual(normalizeValue('midi/minilab3/note/on', { note: 1, vel: 1 }), { note: 1, vel: 1, velocity: 127 });
+  const both = { note: 60, vel: 0.2, velocity: 99 };
+  assert.equal(normalizeValue('midi/note/on', both), both, 'both present: untouched (the sender knows best)');
+  assert.deepEqual(normalizeValue('midi/note/off', { note: 60 }), { note: 60 });
+  assert.deepEqual(normalizeValue('surface/main/pad/hit', { velocity: 3 }), { velocity: 3 }, 'other names pass through');
+  assert.equal(normalizeValue('midi/note/on', 1), 1);
+});
+
+test('signals: fileSignal declares on first sight, normalizes, pulses or sets (what every receiver does)', () => {
+  const s = new Signals(); const seen = [];
+  s.onAny((n, v) => seen.push([n, v]));
+  assert.equal(fileSignal(s, 'midi/note/on', { note: 64, velocity: 100 }), true);
+  assert.equal(s.meta.get('midi/note/on').kind, 'pulse', 'known pulse name, even without msg.pulse');
+  assert.equal(s.get('midi/note/on').vel, 100 / 127);
+  fileSignal(s, 'phone/ab/tilt/x', 0.3, { source: 'relay' });
+  assert.deepEqual([s.meta.get('phone/ab/tilt/x').min, s.meta.get('phone/ab/tilt/x').source], [-1, 'relay']);
+  fileSignal(s, 'my/own/thing', 7, { pulse: true });
+  assert.equal(s.meta.get('my/own/thing').kind, 'pulse');
+  fileSignal(s, 'unknown/cont', 3);
+  assert.equal(s.get('unknown/cont'), 3);
+  assert.equal(fileSignal(s, '', 1), false); assert.equal(fileSignal(s, 'x'.repeat(129), 1), false); assert.equal(fileSignal(s, null, 1), false);
+  assert.deepEqual(seen.map(([n]) => n), ['midi/note/on', 'phone/ab/tilt/x', 'my/own/thing', 'unknown/cont']);
+  // bindSignals goes through the same door: a relay note with only `velocity` reaches the show with `vel`
+  const t = new Signals(); const client = {};
+  bindSignals(client, t);
+  client.onSignal('midi/note/on', { note: 60, velocity: 64 }, { pulse: true });
+  assert.equal(t.get('midi/note/on').vel, 64 / 127);
 });

@@ -18,16 +18,18 @@
       "core/src/bus.js",
       "core/src/signals.js",
       "core/src/params.js",
-      "core/src/loop.js"
+      "core/src/loop.js",
+      "relay/signals.js"
     ],
     "exports": [
       "Bus",
       "Signals",
       "Params",
-      "Loop"
+      "Loop",
+      "fileSignal"
     ],
     "wire": null,
-    "autowire": "Loaded first on every run page; lab.js builds lab.signals from OpenAV.Signals.",
+    "autowire": "Loaded first on every run page; lab.js builds lab.signals from OpenAV.Signals and files every relay message with OpenAV.fileSignal (relay/signals.js: declare on first sight, normalize midi note velocity, pulse or set).",
     "remoteTab": null,
     "since": "2026-09"
   }

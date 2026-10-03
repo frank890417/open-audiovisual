@@ -34,6 +34,21 @@
       "since": "2026-10"
     },
     {
+      "module": "motion",
+      "files": [
+        "remote/sensors.js",
+        "relay/signals.js"
+      ],
+      "exports": [
+        "PhoneSensors",
+        "localSensors"
+      ],
+      "wire": "lab.motion.wire.js",
+      "autowire": "The run page itself on a phone: its own DeviceMotion/Orientation → phone/local/… via localSensors (no relay), so lab.phone.* works unchanged; iOS gets a 📱 動作感測 button (lab.enableMotion).",
+      "remoteTab": null,
+      "since": "2026-10-03"
+    },
+    {
       "module": "phone",
       "kind": "declare",
       "note": "phone/<deviceId>/… signals come from the /remote 感測 tab (packages/remote/sensors.js) over the relay; lab.js files them into lab.phone.*. Loading the module only declares that the work uses a phone.",

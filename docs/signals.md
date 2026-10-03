@@ -101,6 +101,7 @@ World's routes can be written before any phone exists.
 | `phone/<id>/knock` | pulse | `{strength, delta, t}` | acceleration jolt over a threshold (130 ms cooldown) |
 | `phone/<id>/light` | continuous | 0..1 | front-camera mean luma |
 | `phone/<id>/touch/x` `/y` `/down` | continuous | 0..1 | finger 0; `touch/<n>/…` for n ≥ 1, `touch/count` |
+| `phone/local/…` | — | — | the same sensor names when the show page ITSELF runs on a phone (`localSensors(signals)`, no relay; also mirrored to `phone/any/…`) |
 
 Surface widgets (normalized 0..1; `…/raw` carries the unscaled value when the range is not 0..1):
 
@@ -112,6 +113,10 @@ Surface widgets (normalized 0..1; `…/raw` carries the unscaled value when the 
 | `surface/<page>/<id>/hit` | pulse `{pad,row,col,vel}` | pads; `…/<n>` holds the velocity while down |
 | `surface/<page>/<id>/delta` | continuous | encoder step in turns |
 | `midi/note/on` `/off`, `midi/cc/64` | pulse / continuous | the 琴鍵 page and the `keyboard` widget — same names and shape as `@openav/midi`, plus `velocity` (1..127) and `device` |
+
+Receiving end: every relay message is filed by `fileSignal(signals, name, value, {pulse})` (`@openav/relay`; `bindSignals`
+uses it, so do hosts with their own socket such as the lab's `lab.js`). It declares the name on first sight (`signalMeta`),
+and fills in whichever velocity spelling a `midi/…/note/on|off` sender left out (`vel` 0..1 ⇄ `velocity` 1..127).
 
 ## Naming your own
 

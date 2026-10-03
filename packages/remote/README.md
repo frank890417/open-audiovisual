@@ -16,4 +16,8 @@ runner, pipes phone signals into `signals` (also as `phone/any/…`), publishes 
 `autoSurface(world.params)`, adds the routes to the Mapper, echoes param values back as feedback, and shows a
 join card (URL + connected phones). See `examples/08-remote-surface`.
 
+**The show page itself on a phone** (no second device): `localSensors(signals)` → the phone's own tilt / accel /
+rotation / knock as `phone/local/…` (mirrored to `phone/any/…`), same thresholds as the 感測 tab; call `.start()` from a
+tap (iOS, HTTPS). Example 08 shows a "📱 this phone" button on touch devices; the lab's `motion` module is this.
+
 Signals: [docs/signals.md](../../docs/signals.md#openavremote--openavsurface).

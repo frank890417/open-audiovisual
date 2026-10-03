@@ -35,20 +35,40 @@ export function aliasOf(name, alias = 'any') {
   return `phone/${alias}/${m[2]}`;
 }
 
+/** A struck note carries BOTH velocity spellings: `vel` 0..1 (what @openav/midi publishes) and
+ *  `velocity` 1..127 (a hardware keyboard's own scale). Senders give one or both — an old phone page,
+ *  a TouchOSC bridge, a sequencer — and a sketch is written against one of them, so the receiving end
+ *  fills in whichever is missing. Every other name passes through untouched. */
+const NOTE_RE = /^midi\/(?:[^/]+\/)?note\/(?:on|off)$/;
+export function normalizeValue(name, value) {
+  if (!value || typeof value !== 'object' || !NOTE_RE.test(name)) return value;
+  if (value.vel == null && value.velocity != null) return { ...value, vel: value.velocity / 127 };
+  if (value.velocity == null && value.vel != null) return { ...value, velocity: Math.round(value.vel * 127) };
+  return value;
+}
+
+/** File ONE incoming signal into a Signals registry — the receiving half of the wire format.
+ *  Declares the name the first time it is heard (signalMeta: a pulse is never mistaken for a knob,
+ *  meters get their range), normalizes the payload, then pulses or sets. Used by bindSignals, by
+ *  localSensors (the show page's own phone sensors), and by hosts that run their own socket (the lab's
+ *  runtime/lab.js) so every receiver files the same message the same way. Returns false for a bad name. */
+export function fileSignal(signals, name, value, { pulse = false, meta = signalMeta, source = '' } = {}) {
+  if (typeof name !== 'string' || !name || name.length > 128) return false;
+  if (!signals.meta.has(name)) { const d = meta(name, { pulse }); if (d) signals.define(name, source ? { ...d, source } : d); }
+  const v = normalizeValue(name, value);
+  if (pulse || signals.meta.get(name)?.kind === 'pulse') signals.pulse(name, v); else signals.set(name, v);
+  return true;
+}
+
 /** Wire a runner-side RelayClient into a Signals registry.
  *  Returns an unsubscribe function. */
 export function bindSignals(client, signals, { alias = 'any', meta = signalMeta } = {}) {
-  const apply = (name, value, pulse) => {
-    if (typeof name !== 'string' || name.length > 128) return;
-    if (!signals.meta.has(name)) { const d = meta(name, { pulse }); if (d) signals.define(name, d); }
-    if (pulse) signals.pulse(name, value); else signals.set(name, value);
-  };
   const prev = client.onSignal;
   client.onSignal = (name, value, msg) => {
     const pulse = !!msg?.pulse || signals.meta.get(name)?.kind === 'pulse';
-    apply(name, value, pulse);
+    fileSignal(signals, name, value, { pulse, meta });
     const a = alias && aliasOf(name, alias);
-    if (a) apply(a, value, pulse);
+    if (a) fileSignal(signals, a, value, { pulse, meta });
     prev?.(name, value, msg);
   };
   return () => { client.onSignal = prev; };

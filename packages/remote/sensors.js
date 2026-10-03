@@ -13,6 +13,11 @@
 //   knock                 pulse   {strength 0..1, delta, t}  — an acceleration jolt over a threshold
 //   light                 0..1    front-camera mean luma (opt-in; iOS needs HTTPS)
 //   touch/…               see attachTouchPad()
+//
+// The same class serves two places: the /remote phone page (relay → a show elsewhere) and
+// localSensors() below (the show page ITSELF running on a phone — no relay, straight into its Signals).
+
+import { fileSignal, aliasOf } from '../relay/signals.js?v=3ef3261';
 
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 
@@ -23,7 +28,7 @@ export class PhoneSensors {
    */
   constructor(io, hooks = {}) {
     this.io = io; this.hooks = hooks;
-    this.started = false; this.gotSensor = false;
+    this.started = false; this.gotSensor = false; this.denied = false;   // denied: iOS said no (stays no until Settings)
     this.rest = { x: 0, y: 0 };            // calibration offset, degrees, screen frame
     this.deg = { x: 0, y: 0 };
     this.threshold = 10;                   // m/s² vector change
@@ -43,8 +48,8 @@ export class PhoneSensors {
     if (DO && typeof DO.requestPermission === 'function') ps.push(DO.requestPermission());
     try {
       const rs = await Promise.all(ps);
-      if (rs.some((r) => r !== 'granted')) this.hooks.notify?.('感測器授權被拒絕。到 設定 → Safari → 動作與方向 開啟，再重載。');
-    } catch (err) { this.hooks.notify?.('感測器授權失敗：' + (err && err.message)); }
+      if (rs.some((r) => r !== 'granted')) { this.denied = true; this.hooks.notify?.('感測器授權被拒絕。到 設定 → Safari → 動作與方向 開啟，再重載。'); }
+    } catch (err) { this.denied = true; this.hooks.notify?.('感測器授權失敗：' + (err && err.message)); }
     window.addEventListener('deviceorientation', this._onOrient);
     window.addEventListener('devicemotion', this._onMotion);
     this.started = true;
@@ -148,4 +153,19 @@ export function attachTouchPad(pad, io, { onMove, onEnd } = {}) {
   const up = (e) => { const s = slots.get(e.pointerId); if (!s) return; slots.delete(e.pointerId); io.set(nm(s.slot, 'down'), 0); io.set('touch/count', slots.size); onEnd?.(s.slot); };
   pad.addEventListener('pointerup', up); pad.addEventListener('pointercancel', up);
   io.set('touch/down', 0); io.set('touch/count', 0);
+}
+
+/** The show page ITSELF on a phone: its own DeviceMotion/Orientation straight into `signals`, no relay.
+ *  Same names and thresholds as a remote phone, under `prefix` (default phone/local/), and — like
+ *  bindSignals does for remote phones — mirrored to phone/any/… so routes written for "the latest phone"
+ *  work whether the phone is in your hand as a controller or IS the show. `alias: null` turns that off.
+ *  Returns the PhoneSensors; call `.start()` from a user gesture (iOS permission rules; HTTPS on iOS). */
+export function localSensors(signals, { prefix = 'phone/local/', alias = 'any', source = 'local', hooks = {} } = {}) {
+  const put = (n, v, pulse) => {
+    const name = prefix + n;
+    fileSignal(signals, name, v, { pulse, source });
+    const a = alias && aliasOf(name, alias);
+    if (a) fileSignal(signals, a, v, { pulse, source });
+  };
+  return new PhoneSensors({ set: (n, v) => put(n, v, false), send: (n, v, pulse) => put(n, v, !!pulse) }, hooks);
 }
