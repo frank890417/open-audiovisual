@@ -12,6 +12,11 @@
 //   感測    phone/<id>/…         (sensors.js — same names as the lab's /control)
 //   琴鍵    midi/note/on|off     (same shape as a hardware keyboard) + midi/cc/64
 //   控制台  surface/<page>/<id>  (a layout JSON, or the show's own params via autoSurface)
+//   MIDI    midi/<device>/…      (a virtual MIDI controller — packages/midi/remote-tab.js)
+// Tabs beyond the three built-ins are PLUGINS a package declares in its package.json
+// (`lab.remoteTab`: {id, label, icon, entry}); a host may pass the list as
+// window.__REMOTE__.tabs (the lab generates it from those declarations), else
+// DEFAULT_PLUGIN_TABS below — a test keeps it equal to the declarations.
 // Where the control page's layout comes from, in priority order:
 //   1. ?surface=<url to layout.json>           (explicit)
 //   2. ?meta=<url to a JSON with .params>      → autoSurface(params)   (explicit)
@@ -86,6 +91,9 @@ const GENERIC = {
     { id: 't1', type: 'toggle', label: 'Hold', color: 'white', x: 6, y: 3, w: 2, h: 1 },
   ] }],
 };
+/** Same as the `remoteTab` declarations in packages/<pkg>/package.json (tests/remote-tabs.test.js checks). */
+export const DEFAULT_PLUGIN_TABS = [{ id: 'midi', label: 'MIDI', icon: '🎛', entry: 'midi/remote-tab.js' }];
+
 const KEYS_LAYOUT = { version: 1, pages: [{ id: 'keys', title: 'Keys', grid: { cols: 8, rows: 4 }, widgets: [{ id: 'kb', type: 'keyboard', color: 'cyan', x: 0, y: 0, w: 8, h: 4 }] }] };
 
 const h = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; };
@@ -117,9 +125,10 @@ export function mountRemote(root, opts = {}) {
   const relay = new RelayClient({
     role: 'controller', room: cfg.room, id,
     onStatus: paintStatus,
-    onFeedback: (name, value) => { controlSurface?.feedback(name, value); },
-    onConfig: (key, data) => { if (key === 'surface' && !explicit && data?.layout) loadControl(data.layout); },
+    onFeedback: (name, value) => { controlSurface?.feedback(name, value); for (const fn of fbSubs) { try { fn(name, value); } catch (e) { console.error('[remote] tab feedback', e); } } },
+    onConfig: (key, data) => { configs[key] = data; if (key === 'surface' && !explicit && data?.layout) loadControl(data.layout); for (const fn of cfgSubs) { try { fn(key, data); } catch (e) { console.error('[remote] tab config', e); } } },
   });
+  const fbSubs = new Set(), cfgSubs = new Set(), configs = {};
   if (cfg.relayUrl) relay.url = cfg.relayUrl + (cfg.relayUrl.includes('?') ? '&' : '?') + `role=controller&room=${encodeURIComponent(cfg.room)}&id=${encodeURIComponent(id)}`;
   const P = (n) => `phone/${id}/${n}`;
   const phoneIO = { set: (n, v) => relay.set(P(n), v), send: (n, v, p) => relay.send(P(n), v, p) };
@@ -130,8 +139,9 @@ export function mountRemote(root, opts = {}) {
   const hd = h('div', 'rm-hd', `<span class="rm-dot"></span><span class="st">連線中…</span><span class="sp"></span><span class="mono rm-room"></span><span class="mono">phone/${id}</span>`);
   const pg = h('div', 'rm-pg');
   const tb = h('div', 'rm-tb');
-  const PAGES = [['sense', '感測', '◎'], ['keys', '琴鍵', '♪'], ['control', '控制台', '☰']];
-  const pages = {}, tabs = {};
+  const plugins = (Array.isArray(pre.tabs) ? pre.tabs : DEFAULT_PLUGIN_TABS).filter((t) => t && /^[\w-]+$/.test(t.id || '') && typeof t.entry === 'string' && /^[\w./-]+\.js$/.test(t.entry) && !t.entry.includes('..'));
+  const PAGES = [['sense', '感測', '◎'], ['keys', '琴鍵', '♪'], ['control', '控制台', '☰'], ...plugins.map((t) => [t.id, t.label || t.id, t.icon || '◇'])];
+  const pages = {}, tabs = {}, mounted = {};
   for (const [key, label, ic] of PAGES) {
     pages[key] = h('div', 'rm-page'); pages[key].dataset.page = key; pg.appendChild(pages[key]);
     const t = h('button', 'rm-tab', `<span class="ic">${ic}</span><span>${label}</span>`); t.type = 'button';
@@ -157,6 +167,26 @@ export function mountRemote(root, opts = {}) {
     try { sessionStorage.setItem('oav.remote.tab', key); } catch {}
     if (key === 'keys' && !keysSurface) buildKeys();
     if (key === 'control' && !controlSurface) loadControl(GENERIC);
+    for (const [k, m] of Object.entries(mounted)) if (k !== key) m?.hide?.();
+    const plug = plugins.find((t) => t.id === key);
+    if (plug && !mounted[key]) mountPlugin(plug);
+  }
+
+  // ---------- plugin tabs (packages declare them; loaded on first open) ----------
+  async function mountPlugin(t) {
+    mounted[t.id] = { pending: true };
+    try {
+      const mod = await import(new URL('../' + t.entry, import.meta.url).href);
+      mounted[t.id] = mod.mount(pages[t.id], {
+        relay, sink, room: cfg.room, config: configs,
+        onFeedback: (fn) => { fbSubs.add(fn); return () => fbSubs.delete(fn); },
+        onConfig: (fn) => { cfgSubs.add(fn); return () => cfgSubs.delete(fn); },
+      }) || {};
+    } catch (e) {
+      console.error('[remote] tab', t.id, e);
+      pages[t.id].innerHTML = `<div style="padding:24px;color:#f5a524;font:14px system-ui">這個分頁載入失敗：${String(e.message || e).replace(/</g, '&lt;')}<br><small style="color:#8691a8">（JSON 模組需要 iOS／iPadOS 17.2 以上的 Safari）</small></div>`;
+      mounted[t.id] = null;
+    }
   }
 
   // ---------- 感測 ----------
@@ -245,6 +275,6 @@ export function mountRemote(root, opts = {}) {
 
   return {
     relay, show, get surface() { return controlSurface; },
-    dispose() { relay.close(); unlock(); awake.release(); controlSurface?.dispose(); keysSurface?.dispose(); rm.remove(); },
+    dispose() { relay.close(); unlock(); awake.release(); controlSurface?.dispose(); keysSurface?.dispose(); for (const m of Object.values(mounted)) m?.dispose?.(); rm.remove(); },
   };
 }

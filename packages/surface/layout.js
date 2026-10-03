@@ -177,7 +177,7 @@ export function signalNames(layout) {
       case 'xy': out.push(base + '/x', base + '/y', base + '/down'); break;
       case 'bank': for (let i = 1; i <= (w.count ?? 8); i++) out.push(`${base}/${i}`); break;
       case 'pads': out.push(base + '/hit'); for (let i = 0; i < (w.rows ?? 4) * (w.cols ?? 4); i++) out.push(`${base}/${i}`); break;
-      case 'keyboard': out.push('midi/note/on', 'midi/note/off', 'midi/cc/64'); break;
+      case 'keyboard': out.push('midi/note/on', 'midi/note/off', 'midi/cc/64', 'midi/virtual'); break;
       case 'encoder': out.push(base, base + '/delta'); break;
       case 'label': case 'meter': break;
       default: out.push(base);

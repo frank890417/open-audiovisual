@@ -1,0 +1,116 @@
+{
+ "id": "generic-keys25",
+ "short": "keys25",
+ "name": "通用 25 鍵鍵盤",
+ "nameEn": "Generic 25-key keyboard",
+ "kind": "generic",
+ "sources": [
+  {
+   "title": "open-audiovisual generic layout",
+   "note": "Keys 48–72 on channel 1 (C3–C5, scientific pitch: 60 = C4), pitch bend, mod wheel CC 1, sustain CC 64 — the General MIDI conventions every keyboard follows. Keys catch any note on their channel, so octave shifts on the hardware just scroll the on-screen keys."
+  }
+ ],
+ "face": {
+  "w": 100,
+  "h": 37.1,
+  "label": "25 KEYS"
+ },
+ "sections": [
+  {
+   "id": "wheels",
+   "label": "",
+   "x": 1.5,
+   "y": 2,
+   "w": 11,
+   "h": 27.1,
+   "cols": 2,
+   "rows": 1,
+   "controls": [
+    "pitch",
+    "mod"
+   ]
+  },
+  {
+   "id": "pedal",
+   "label": "",
+   "x": 1.5,
+   "y": 29.1,
+   "w": 11,
+   "h": 6,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "sustain"
+   ]
+  },
+  {
+   "id": "keys",
+   "label": "",
+   "x": 14,
+   "y": 2,
+   "w": 84,
+   "h": 33.1,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "wheels",
+   "cols": 3,
+   "rows": 1,
+   "weight": 1,
+   "controls": [
+    "pitch",
+    "mod",
+    "sustain"
+   ]
+  },
+  {
+   "id": "keys",
+   "cols": 1,
+   "rows": 1,
+   "weight": 4,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "pitch",
+   "type": "wheel",
+   "label": "Pitch",
+   "msg": "pitchbend",
+   "group": "pitch"
+  },
+  {
+   "id": "mod",
+   "type": "wheel",
+   "label": "Mod",
+   "msg": "cc",
+   "cc": 1,
+   "group": "pitch"
+  },
+  {
+   "id": "sustain",
+   "type": "button",
+   "label": "Sustain",
+   "msg": "cc",
+   "cc": 64,
+   "group": "pedal"
+  },
+  {
+   "id": "keys",
+   "type": "keys",
+   "label": "Keys",
+   "msg": "note",
+   "from": 48,
+   "to": 72,
+   "group": "note"
+  }
+ ]
+}

@@ -1,0 +1,232 @@
+{
+ "id": "generic-8k8p",
+ "short": "g8k8p",
+ "name": "通用 8 旋鈕 + 8 打擊墊",
+ "nameEn": "Generic 8 knobs + 8 pads",
+ "kind": "generic",
+ "sources": [
+  {
+   "title": "open-audiovisual generic layout",
+   "note": "No device behind it: default messages are a convention (knobs CC 70–77 like many 8-knob pads, faders CC 20–27 in the undefined range, pads GM drum notes from 36 on channel 10). Plug an unknown controller in, pick this layout, and auto-learn binds its messages in the order you move the controls."
+  }
+ ],
+ "face": {
+  "w": 100,
+  "h": 30,
+  "label": "8 KNOBS · 8 PADS"
+ },
+ "sections": [
+  {
+   "id": "pads",
+   "label": "Pads",
+   "x": 2,
+   "y": 4,
+   "w": 54,
+   "h": 24,
+   "cols": 4,
+   "rows": 2,
+   "controls": [
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4"
+   ]
+  },
+  {
+   "id": "knobs",
+   "label": "Knobs",
+   "x": 60,
+   "y": 4,
+   "w": 38,
+   "h": 24,
+   "cols": 4,
+   "rows": 2,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "knobs",
+   "cols": 4,
+   "rows": 2,
+   "weight": 2,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  },
+  {
+   "id": "pads",
+   "cols": 4,
+   "rows": 2,
+   "weight": 3,
+   "controls": [
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "k1",
+   "type": "knob",
+   "label": "K1",
+   "msg": "cc",
+   "cc": 70,
+   "group": "knob"
+  },
+  {
+   "id": "k2",
+   "type": "knob",
+   "label": "K2",
+   "msg": "cc",
+   "cc": 71,
+   "group": "knob"
+  },
+  {
+   "id": "k3",
+   "type": "knob",
+   "label": "K3",
+   "msg": "cc",
+   "cc": 72,
+   "group": "knob"
+  },
+  {
+   "id": "k4",
+   "type": "knob",
+   "label": "K4",
+   "msg": "cc",
+   "cc": 73,
+   "group": "knob"
+  },
+  {
+   "id": "k5",
+   "type": "knob",
+   "label": "K5",
+   "msg": "cc",
+   "cc": 74,
+   "group": "knob"
+  },
+  {
+   "id": "k6",
+   "type": "knob",
+   "label": "K6",
+   "msg": "cc",
+   "cc": 75,
+   "group": "knob"
+  },
+  {
+   "id": "k7",
+   "type": "knob",
+   "label": "K7",
+   "msg": "cc",
+   "cc": 76,
+   "group": "knob"
+  },
+  {
+   "id": "k8",
+   "type": "knob",
+   "label": "K8",
+   "msg": "cc",
+   "cc": 77,
+   "group": "knob"
+  },
+  {
+   "id": "pad1",
+   "type": "pad",
+   "label": "Pad 1",
+   "msg": "note",
+   "ch": 10,
+   "note": 36,
+   "group": "pad"
+  },
+  {
+   "id": "pad2",
+   "type": "pad",
+   "label": "Pad 2",
+   "msg": "note",
+   "ch": 10,
+   "note": 37,
+   "group": "pad"
+  },
+  {
+   "id": "pad3",
+   "type": "pad",
+   "label": "Pad 3",
+   "msg": "note",
+   "ch": 10,
+   "note": 38,
+   "group": "pad"
+  },
+  {
+   "id": "pad4",
+   "type": "pad",
+   "label": "Pad 4",
+   "msg": "note",
+   "ch": 10,
+   "note": 39,
+   "group": "pad"
+  },
+  {
+   "id": "pad5",
+   "type": "pad",
+   "label": "Pad 5",
+   "msg": "note",
+   "ch": 10,
+   "note": 40,
+   "group": "pad"
+  },
+  {
+   "id": "pad6",
+   "type": "pad",
+   "label": "Pad 6",
+   "msg": "note",
+   "ch": 10,
+   "note": 41,
+   "group": "pad"
+  },
+  {
+   "id": "pad7",
+   "type": "pad",
+   "label": "Pad 7",
+   "msg": "note",
+   "ch": 10,
+   "note": 42,
+   "group": "pad"
+  },
+  {
+   "id": "pad8",
+   "type": "pad",
+   "label": "Pad 8",
+   "msg": "note",
+   "ch": 10,
+   "note": 43,
+   "group": "pad"
+  }
+ ]
+}

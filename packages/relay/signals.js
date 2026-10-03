@@ -19,7 +19,9 @@ export function signalMeta(name, { pulse = false } = {}) {
     return { min: 0, max: 1 };             // touch/x,y,down · light
   }
   if (/^surface\//.test(name)) return /\/raw$|\/delta$/.test(name) ? {} : { min: 0, max: 1 };
-  if (name === 'midi/note/on' || name === 'midi/note/off') return { kind: 'pulse' };
+  if (name === 'midi/note/on' || name === 'midi/note/off' || name === 'midi/virtual') return { kind: 'pulse' };
+  if (/^midi\/[^/]+\/(?:[^/]+\/)?(?:hit|on|off|last)$/.test(name)) return { kind: 'pulse' };   // controller pulses (packages/midi)
+  if (/^midi\/[^/]+\/[^/]+\/raw$/.test(name)) return {};
   if (/^midi\/cc\//.test(name)) return { min: 0, max: 1 };
   return null;
 }

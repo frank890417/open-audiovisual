@@ -3,7 +3,27 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js" },
+  "exports": {
+    ".": "./index.js"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/sound" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/sound"
+  },
+  "lab": {
+    "module": "sound",
+    "files": [
+      "sound/index.js"
+    ],
+    "exports": [
+      "Sound",
+      "toneEngine"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.sound plays midi/note/* from lab.signals with Tone.js; starts on the first gesture.",
+    "remoteTab": null,
+    "since": "2026-09"
+  }
 }

@@ -3,7 +3,32 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js" },
+  "exports": {
+    ".": "./index.js"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/core" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/core"
+  },
+  "lab": {
+    "module": "core",
+    "files": [
+      "core/src/bus.js",
+      "core/src/signals.js",
+      "core/src/params.js",
+      "core/src/loop.js"
+    ],
+    "exports": [
+      "Bus",
+      "Signals",
+      "Params",
+      "Loop"
+    ],
+    "wire": null,
+    "autowire": "Loaded first on every run page; lab.js builds lab.signals from OpenAV.Signals.",
+    "remoteTab": null,
+    "since": "2026-09"
+  }
 }

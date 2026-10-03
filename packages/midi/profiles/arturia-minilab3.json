@@ -1,0 +1,464 @@
+{
+ "id": "arturia-minilab3",
+ "short": "minilab3",
+ "name": "Arturia MiniLab 3",
+ "maker": "Arturia",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "minilab\\s*3"
+  ],
+  "prefer": [
+   "midi"
+  ],
+  "avoid": [
+   "din",
+   "thru",
+   "mcu",
+   "alv"
+  ]
+ },
+ "origin": {
+  "tool": "TouchDesigner",
+  "file": "260830 minilab3 midi.toe",
+  "note": "Che-Yu Wu's TouchDesigner tool, recorded from his own MiniLab 3: base_minilab3 → out_knob (knob1–8 ← CC 74 71 76 77 93 18 19 16), out_slider (s1–s4 ← CC 82 83 85 17), out_pad (pad1–8 ← ch10 notes 36–43), out_note (25 keys, notes 48–72), out_pitch (mod CC 1 + pitch bend). Device table: in-device \"Minilab3MIDI\", channel 1. TouchDesigner's MIDI In CHOP names channels 1-based (ch1ctrl75 = CC 74, ch10n37 = note 36); the numbers here are real MIDI numbers."
+ },
+ "sources": [
+  {
+   "title": "Arturia MiniLab 3 User Manual v1.0.5",
+   "url": "https://www.arturia.com/api/download/products/minilab-3/manual/minilab-3_Manual_1_0_5_EN.pdf",
+   "note": "pads bank A notes 36–43 on channel 10 (bank B 44–51), mod strip CC 1, pitch strip = pitch bend (springs to centre), USB ports MIDI / DIN Thru / MCU / ALV"
+  },
+  {
+   "title": "260830 minilab3 midi.toe (the artist's TouchDesigner tool)",
+   "note": "knob, fader, pad, key and wheel numbers as recorded from the hardware"
+  },
+  {
+   "title": "Spectrasonics — Setting up the MiniLab mk3 (non-official)",
+   "url": "https://support.spectrasonics.net/manual/Omnisphere3HW/3/en/topic/setting-up-the-minilab-mk3",
+   "note": "knob and fader CC defaults; agree with the TD recording"
+  }
+ ],
+ "notes": "Pad pressure type is not documented: poly aftertouch is followed automatically if the unit sends it. Pad RGB LEDs are SysEx-only (not sent; sysex stays off).",
+ "face": {
+  "w": 100,
+  "h": 62,
+  "label": "MiniLab 3",
+  "body": "#1d1f24",
+  "deco": [
+   {
+    "type": "screen",
+    "x": 15,
+    "y": 5,
+    "w": 14,
+    "h": 11,
+    "text": "MiniLab 3"
+   },
+   {
+    "type": "buttons",
+    "x": 2,
+    "y": 37,
+    "w": 27,
+    "h": 4,
+    "items": [
+     "Shift",
+     "Hold",
+     "Oct−",
+     "Oct+"
+    ]
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "strips",
+   "label": "",
+   "x": 2,
+   "y": 5,
+   "w": 11,
+   "h": 30,
+   "cols": 2,
+   "rows": 1,
+   "controls": [
+    "pitch",
+    "mod"
+   ]
+  },
+  {
+   "id": "nav",
+   "label": "",
+   "x": 15,
+   "y": 18,
+   "w": 14,
+   "h": 17,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc"
+   ]
+  },
+  {
+   "id": "knobs",
+   "label": "Knobs",
+   "x": 31,
+   "y": 4,
+   "w": 38,
+   "h": 26,
+   "cols": 4,
+   "rows": 2,
+   "controls": [
+    "knob1",
+    "knob2",
+    "knob3",
+    "knob4",
+    "knob5",
+    "knob6",
+    "knob7",
+    "knob8"
+   ]
+  },
+  {
+   "id": "faders",
+   "label": "Faders",
+   "x": 71,
+   "y": 4,
+   "w": 27,
+   "h": 26,
+   "cols": 4,
+   "rows": 1,
+   "controls": [
+    "s1",
+    "s2",
+    "s3",
+    "s4"
+   ]
+  },
+  {
+   "id": "pads",
+   "label": "Pads",
+   "x": 31,
+   "y": 31,
+   "w": 67,
+   "h": 10.5,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8"
+   ]
+  },
+  {
+   "id": "keys",
+   "label": "",
+   "x": 2,
+   "y": 43,
+   "w": 96,
+   "h": 17,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "knobs",
+   "cols": 4,
+   "rows": 2,
+   "weight": 2.2,
+   "controls": [
+    "knob1",
+    "knob2",
+    "knob3",
+    "knob4",
+    "knob5",
+    "knob6",
+    "knob7",
+    "knob8"
+   ]
+  },
+  {
+   "id": "faders",
+   "cols": 4,
+   "rows": 1,
+   "weight": 2,
+   "controls": [
+    "s1",
+    "s2",
+    "s3",
+    "s4"
+   ]
+  },
+  {
+   "id": "pads",
+   "cols": 4,
+   "rows": 2,
+   "weight": 2,
+   "controls": [
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8"
+   ]
+  },
+  {
+   "id": "wheels",
+   "cols": 3,
+   "rows": 1,
+   "weight": 1.5,
+   "controls": [
+    "pitch",
+    "mod",
+    "enc"
+   ]
+  },
+  {
+   "id": "keys",
+   "cols": 1,
+   "rows": 1,
+   "weight": 3.2,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "pitch",
+   "type": "strip",
+   "label": "Pitch",
+   "msg": "pitchbend",
+   "group": "pitch",
+   "color": "white"
+  },
+  {
+   "id": "mod",
+   "type": "strip",
+   "label": "Mod",
+   "msg": "cc",
+   "cc": 1,
+   "group": "pitch",
+   "color": "white"
+  },
+  {
+   "id": "enc",
+   "type": "encoder",
+   "label": "Main",
+   "msg": "cc",
+   "cc": 28,
+   "relative": "offset64",
+   "group": "encoder",
+   "verified": false,
+   "note": "Main encoder message is not documented in the manual; CC 28 relative is a placeholder — use 學習 (learn) to bind it on your unit."
+  },
+  {
+   "id": "knob1",
+   "type": "knob",
+   "label": "1",
+   "msg": "cc",
+   "cc": 74,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "knob2",
+   "type": "knob",
+   "label": "2",
+   "msg": "cc",
+   "cc": 71,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "knob3",
+   "type": "knob",
+   "label": "3",
+   "msg": "cc",
+   "cc": 76,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "knob4",
+   "type": "knob",
+   "label": "4",
+   "msg": "cc",
+   "cc": 77,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "knob5",
+   "type": "knob",
+   "label": "5",
+   "msg": "cc",
+   "cc": 93,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "knob6",
+   "type": "knob",
+   "label": "6",
+   "msg": "cc",
+   "cc": 18,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "knob7",
+   "type": "knob",
+   "label": "7",
+   "msg": "cc",
+   "cc": 19,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "knob8",
+   "type": "knob",
+   "label": "8",
+   "msg": "cc",
+   "cc": 16,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "s1",
+   "type": "fader",
+   "label": "S1",
+   "msg": "cc",
+   "cc": 82,
+   "group": "slider",
+   "color": "amber"
+  },
+  {
+   "id": "s2",
+   "type": "fader",
+   "label": "S2",
+   "msg": "cc",
+   "cc": 83,
+   "group": "slider",
+   "color": "amber"
+  },
+  {
+   "id": "s3",
+   "type": "fader",
+   "label": "S3",
+   "msg": "cc",
+   "cc": 85,
+   "group": "slider",
+   "color": "amber"
+  },
+  {
+   "id": "s4",
+   "type": "fader",
+   "label": "S4",
+   "msg": "cc",
+   "cc": 17,
+   "group": "slider",
+   "color": "amber"
+  },
+  {
+   "id": "pad1",
+   "type": "pad",
+   "label": "1",
+   "msg": "note",
+   "ch": 10,
+   "note": 36,
+   "group": "pad",
+   "color": "magenta"
+  },
+  {
+   "id": "pad2",
+   "type": "pad",
+   "label": "2",
+   "msg": "note",
+   "ch": 10,
+   "note": 37,
+   "group": "pad",
+   "color": "magenta"
+  },
+  {
+   "id": "pad3",
+   "type": "pad",
+   "label": "3",
+   "msg": "note",
+   "ch": 10,
+   "note": 38,
+   "group": "pad",
+   "color": "magenta"
+  },
+  {
+   "id": "pad4",
+   "type": "pad",
+   "label": "4",
+   "msg": "note",
+   "ch": 10,
+   "note": 39,
+   "group": "pad",
+   "color": "magenta"
+  },
+  {
+   "id": "pad5",
+   "type": "pad",
+   "label": "5",
+   "msg": "note",
+   "ch": 10,
+   "note": 40,
+   "group": "pad",
+   "color": "magenta"
+  },
+  {
+   "id": "pad6",
+   "type": "pad",
+   "label": "6",
+   "msg": "note",
+   "ch": 10,
+   "note": 41,
+   "group": "pad",
+   "color": "magenta"
+  },
+  {
+   "id": "pad7",
+   "type": "pad",
+   "label": "7",
+   "msg": "note",
+   "ch": 10,
+   "note": 42,
+   "group": "pad",
+   "color": "magenta"
+  },
+  {
+   "id": "pad8",
+   "type": "pad",
+   "label": "8",
+   "msg": "note",
+   "ch": 10,
+   "note": 43,
+   "group": "pad",
+   "color": "magenta"
+  },
+  {
+   "id": "keys",
+   "type": "keys",
+   "label": "Keys",
+   "msg": "note",
+   "from": 48,
+   "to": 72,
+   "group": "note"
+  }
+ ]
+}

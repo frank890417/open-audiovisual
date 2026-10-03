@@ -1,0 +1,124 @@
+{
+ "id": "generic-8f",
+ "short": "g8f",
+ "name": "通用 8 推桿",
+ "nameEn": "Generic 8 faders",
+ "kind": "generic",
+ "sources": [
+  {
+   "title": "open-audiovisual generic layout",
+   "note": "No device behind it: default messages are a convention (knobs CC 70–77 like many 8-knob pads, faders CC 20–27 in the undefined range, pads GM drum notes from 36 on channel 10). Plug an unknown controller in, pick this layout, and auto-learn binds its messages in the order you move the controls."
+  }
+ ],
+ "face": {
+  "w": 100,
+  "h": 44,
+  "label": "8 FADERS"
+ },
+ "sections": [
+  {
+   "id": "faders",
+   "label": "Faders",
+   "x": 2,
+   "y": 4,
+   "w": 96,
+   "h": 38,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "faders",
+   "cols": 4,
+   "rows": 2,
+   "weight": 1,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "f1",
+   "type": "fader",
+   "label": "F1",
+   "msg": "cc",
+   "cc": 20,
+   "group": "fader"
+  },
+  {
+   "id": "f2",
+   "type": "fader",
+   "label": "F2",
+   "msg": "cc",
+   "cc": 21,
+   "group": "fader"
+  },
+  {
+   "id": "f3",
+   "type": "fader",
+   "label": "F3",
+   "msg": "cc",
+   "cc": 22,
+   "group": "fader"
+  },
+  {
+   "id": "f4",
+   "type": "fader",
+   "label": "F4",
+   "msg": "cc",
+   "cc": 23,
+   "group": "fader"
+  },
+  {
+   "id": "f5",
+   "type": "fader",
+   "label": "F5",
+   "msg": "cc",
+   "cc": 24,
+   "group": "fader"
+  },
+  {
+   "id": "f6",
+   "type": "fader",
+   "label": "F6",
+   "msg": "cc",
+   "cc": 25,
+   "group": "fader"
+  },
+  {
+   "id": "f7",
+   "type": "fader",
+   "label": "F7",
+   "msg": "cc",
+   "cc": 26,
+   "group": "fader"
+  },
+  {
+   "id": "f8",
+   "type": "fader",
+   "label": "F8",
+   "msg": "cc",
+   "cc": 27,
+   "group": "fader"
+  }
+ ]
+}

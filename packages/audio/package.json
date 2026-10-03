@@ -3,7 +3,26 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js" },
+  "exports": {
+    ".": "./index.js"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/audio" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/audio"
+  },
+  "lab": {
+    "module": "audio",
+    "files": [
+      "audio/index.js"
+    ],
+    "exports": [
+      "AudioAnalyzer"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.audio publishes audio/* into lab.signals; a 🎤 button grants the microphone (lab.enableMic).",
+    "remoteTab": null,
+    "since": "2026-09"
+  }
 }

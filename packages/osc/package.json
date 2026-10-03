@@ -3,7 +3,26 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js" },
+  "exports": {
+    ".": "./index.js"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/osc" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/osc"
+  },
+  "lab": {
+    "module": "osc",
+    "files": [
+      "osc/index.js"
+    ],
+    "exports": [
+      "OscOut"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.osc.send(addr, args), flushed every frame to the OSC bridge (?osc=<url>).",
+    "remoteTab": null,
+    "since": "2026-09"
+  }
 }

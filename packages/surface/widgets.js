@@ -14,7 +14,7 @@
 //   bank                    surface/<page>/<id>/<1..N>
 //   radio                   surface/<page>/<id>                   (idx / (n-1); raw = idx)
 //   pads                    surface/<page>/<id>/hit  pulse {pad,row,col,vel}  + /<pad> held velocity
-//   keyboard                midi/note/on|off  (same shape as a hardware keyboard) + midi/cc/64
+//   keyboard                midi/note/on|off  (same shape as a hardware keyboard) + midi/cc/64 + midi/virtual (raw bytes)
 //   text                    surface/<page>/<id>                   (string, as a pulse)
 //   label meter             — receive-only (feedback)
 
@@ -403,27 +403,32 @@ export class Keyboard extends Widget {
       this.pianos.push(piano);
     }
   }
+  // every note also travels as `midi/virtual` (the raw bytes): a host that hands old Web MIDI
+  // sketches a virtual input (the lab's shim) plays them — the sketch's own code hears a keyboard
+  off(note) { this.ctx.out('midi/note/off', { note, ch: 1, device: 'surface' }, { pulse: true }); this.ctx.out('midi/virtual', { data: [0x80, note, 0], device: 'surface' }, { pulse: true }); }
   note(note, vel01, on) {
     if (on) {
-      if (this.sustained.delete(note)) this.ctx.out('midi/note/off', { note, ch: 1, device: 'surface' }, { pulse: true });   // re-strike of a pedal-held note
+      if (this.sustained.delete(note)) this.off(note);   // re-strike of a pedal-held note
       this.sounding.add(note);
       const velocity = Math.max(1, Math.min(127, Math.round(vel01 * 127)));
       this.ctx.out('midi/note/on', { note, vel: velocity / 127, velocity, ch: 1, device: 'surface' }, { pulse: true });
+      this.ctx.out('midi/virtual', { data: [0x90, note, velocity], device: 'surface' }, { pulse: true });
       this.setActive(true);
     } else {
       this.sounding.delete(note);
       if (this.sustain) this.sustained.add(note);
-      else this.ctx.out('midi/note/off', { note, ch: 1, device: 'surface' }, { pulse: true });
+      else this.off(note);
       if (!this.sounding.size) this.setActive(false);
     }
   }
   setSustain(on) {
     this.sustain = on; this.bar.querySelector('.sus').classList.toggle('active', on);
     this.ctx.out('midi/cc/64', on ? 1 : 0);                        // same name/shape as @openav/midi's pedal
-    if (!on) { for (const n of this.sustained) this.ctx.out('midi/note/off', { note: n, ch: 1, device: 'surface' }, { pulse: true }); this.sustained.clear(); }
+    this.ctx.out('midi/virtual', { data: [0xb0, 64, on ? 127 : 0], device: 'surface' }, { pulse: true });
+    if (!on) { for (const n of this.sustained) this.off(n); this.sustained.clear(); }
     this.ctx.haptic(10);
   }
-  releaseAll() { for (const p of this.pianos) p.releaseAll(); for (const n of this.sustained) this.ctx.out('midi/note/off', { note: n, ch: 1, device: 'surface' }, { pulse: true }); this.sustained.clear(); }
+  releaseAll() { for (const p of this.pianos) p.releaseAll(); for (const n of this.sustained) this.off(n); this.sustained.clear(); }
   destroy() { this.releaseAll(); super.destroy(); }
 }
 

@@ -3,7 +3,53 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js" },
+  "exports": {
+    ".": "./index.js"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/midi" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/midi"
+  },
+  "lab": {
+    "module": "midi",
+    "files": [
+      "midi/parse.js",
+      "midi/profiles.js",
+      "midi/controller.js",
+      "midi/manager.js",
+      "midi/link.js",
+      "midi/virtual-access.js",
+      "midi/profiles/index.js",
+      "midi/view.js",
+      "midi/panel.js",
+      "midi/index.js",
+      "relay/index.js"
+    ],
+    "exports": [
+      "Midi",
+      "MidiController",
+      "MidiControllers",
+      "controllerRoutes",
+      "linkControllers",
+      "createVirtualMIDIAccess",
+      "virtualRequestMIDIAccess",
+      "PROFILES",
+      "profileById",
+      "mountMidiPanel",
+      "ControllerView",
+      "parseMessage",
+      "encodeMessage"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.midi (hardware → midi/* signals) + lab.midi.controllers (device profiles; plugged-in hardware animates the on-screen controller) + 🎹 docked panel + lab.midi.bind / meta.params[].midi → lab.setParam + a virtual Web MIDI input for sketches that call requestMIDIAccess themselves + relay link to the /remote MIDI tab.",
+    "remoteTab": {
+      "id": "midi",
+      "label": "MIDI",
+      "icon": "🎛",
+      "entry": "midi/remote-tab.js"
+    },
+    "since": "2026-10-03"
+  }
 }

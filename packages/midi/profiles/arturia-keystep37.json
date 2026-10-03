@@ -1,0 +1,205 @@
+{
+ "id": "arturia-keystep37",
+ "short": "keystep37",
+ "name": "Arturia KeyStep 37",
+ "maker": "Arturia",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "keystep\\s*37"
+  ],
+  "prefer": [
+   "midi"
+  ],
+  "avoid": []
+ },
+ "sources": [
+  {
+   "title": "KeyStep Manual v1.1.2 (Arturia)",
+   "url": "https://www.arturia.com/api/download/products/keystep/manual/KeyStep_Manual_1_1_2_EN.pdf",
+   "note": "mod strip CC 1, pitch strip = pitch bend snapping to centre, sustain CC 64; user channel set with Shift + key"
+  },
+  {
+   "title": "Spectrasonics — Setting up the KeyStep 37 (non-official)",
+   "url": "https://support.spectrasonics.net/manual/Omnisphere3HW/3/en/topic/setting-up-the-keystep-37",
+   "note": "knob bank 1: CC 74, 71, 76, 77"
+  }
+ ],
+ "notes": "Channel 1 and lowest key C3 (48) are assumptions (the manual leaves the defaults to MIDI Control Center); the keys follow any note on the channel, so an octave shift on the unit just scrolls the on-screen keys. Knob banks 2–4 are not mapped. The original 32-key KeyStep has the same strips and pedal: use this profile or generic-keys25/49.",
+ "face": {
+  "w": 100,
+  "h": 34,
+  "label": "KeyStep 37",
+  "body": "#202227"
+ },
+ "sections": [
+  {
+   "id": "strips",
+   "label": "",
+   "x": 2,
+   "y": 4,
+   "w": 9,
+   "h": 21,
+   "cols": 2,
+   "rows": 1,
+   "controls": [
+    "pitch",
+    "mod"
+   ]
+  },
+  {
+   "id": "pedal",
+   "label": "",
+   "x": 2,
+   "y": 26,
+   "w": 9,
+   "h": 6,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "sustain"
+   ]
+  },
+  {
+   "id": "knobs",
+   "label": "",
+   "x": 64,
+   "y": 2,
+   "w": 34,
+   "h": 9,
+   "cols": 4,
+   "rows": 1,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4"
+   ]
+  },
+  {
+   "id": "keys",
+   "label": "",
+   "x": 13,
+   "y": 12.5,
+   "w": 85,
+   "h": 19.5,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "knobs",
+   "cols": 4,
+   "rows": 1,
+   "weight": 1.6,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4"
+   ]
+  },
+  {
+   "id": "wheels",
+   "cols": 3,
+   "rows": 1,
+   "weight": 1.3,
+   "controls": [
+    "pitch",
+    "mod",
+    "sustain"
+   ]
+  },
+  {
+   "id": "keys",
+   "cols": 1,
+   "rows": 1,
+   "weight": 4,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "pitch",
+   "type": "strip",
+   "label": "Pitch",
+   "msg": "pitchbend",
+   "group": "pitch",
+   "color": "white"
+  },
+  {
+   "id": "mod",
+   "type": "strip",
+   "label": "Mod",
+   "msg": "cc",
+   "cc": 1,
+   "group": "pitch",
+   "color": "white"
+  },
+  {
+   "id": "sustain",
+   "type": "button",
+   "label": "Sustain",
+   "msg": "cc",
+   "cc": 64,
+   "group": "pedal"
+  },
+  {
+   "id": "k1",
+   "type": "knob",
+   "label": "1",
+   "msg": "cc",
+   "cc": 74,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false
+  },
+  {
+   "id": "k2",
+   "type": "knob",
+   "label": "2",
+   "msg": "cc",
+   "cc": 71,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false
+  },
+  {
+   "id": "k3",
+   "type": "knob",
+   "label": "3",
+   "msg": "cc",
+   "cc": 76,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false
+  },
+  {
+   "id": "k4",
+   "type": "knob",
+   "label": "4",
+   "msg": "cc",
+   "cc": 77,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false
+  },
+  {
+   "id": "keys",
+   "type": "keys",
+   "label": "Keys",
+   "msg": "note",
+   "from": 48,
+   "to": 84,
+   "group": "note",
+   "verified": false
+  }
+ ]
+}

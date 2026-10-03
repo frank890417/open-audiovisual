@@ -9,7 +9,8 @@
 //     timeline: { total, automation, scenes },
 //     routes: [{ source: 'audio/kick/env', target: 'pump' }],
 //     modules: { keys: { base: 48 }, sound: true, audio: 'mic', hands: true, pose: true,
-//                remote: { room: 'main' } },   // phones/iPads become controllers (packages/remote)
+//                remote: { room: 'main' },     // phones/iPads become controllers (packages/remote)
+//                midi: { controllers: { profile: 'arturia-minilab3' } } },  // on-screen MIDI controller (packages/midi)
 //     artwork: { title: '3D Cylinder Earth', artist: 'Che-Yu Wu 吳哲宇', year: 2020 },
 //   });
 //
@@ -123,6 +124,22 @@ export async function createShow({
   // ---------- L1 modules ----------
   const midi = modules.midi === false ? null : new Midi({ signals });
   midi?.enable();
+  // on-screen MIDI controllers: plug a known device in and it appears on screen and moves; no device → play it here.
+  // Its signals (midi/<device>/<control>) reach params through `routes` — controllerRoutes() writes them.
+  let controllers = null, midiPanel = null;
+  const ctlCfg = modules.midi && typeof modules.midi === 'object' ? modules.midi.controllers : null;
+  if (ctlCfg) {
+    const { MidiControllers, mountMidiPanel, PROFILES } = await import('../midi/index.js?v=3ef3261');
+    const o = typeof ctlCfg === 'object' ? ctlCfg : {};
+    controllers = new MidiControllers({ profiles: o.profiles || PROFILES, signals, midi, initial: new URLSearchParams(location.search).get('profile') || o.profile });
+    midiPanel = mountMidiPanel(stageEl, controllers, { mode: 'dock', contained: true, open: o.open !== false, id: 'oav-midi' });
+    const btn = document.createElement('button');
+    btn.textContent = '🎹 MIDI'; btn.title = 'on-screen MIDI controller (M)';
+    btn.style.cssText = 'position:absolute;right:12px;top:12px;z-index:6;padding:6px 12px;border-radius:10px;border:1px solid #283044;background:rgba(10,12,17,.8);color:#cfd6e4;font:600 12px system-ui;cursor:pointer';
+    btn.onclick = () => midiPanel.toggle();
+    stageEl.appendChild(btn);
+    addEventListener('keydown', (e) => { if ((e.key === 'm' || e.key === 'M') && !e.metaKey && !e.ctrlKey && !/^(input|select|textarea)$/i.test(e.target?.tagName || '')) midiPanel.toggle(); });
+  }
   const keys = modules.keys === false ? null
     : mountKeys(keysSlot, { signals, base: 48, octaves: 2, ...(typeof modules.keys === 'object' ? modules.keys : {}) });
   // drum machine: the drum sibling of the simulated performer — publishes
@@ -152,7 +169,7 @@ export async function createShow({
     const { mountRemoteHost, mountJoinCard } = await import('../remote/host.js?v=3ef3261');
     const o = typeof modules.remote === 'object' ? modules.remote : {};
     const room = o.room || new URLSearchParams(location.search).get('room') || 'default';
-    remote = mountRemoteHost({ signals, params, mapper, world: allWorlds[0], ...o, room });
+    remote = mountRemoteHost({ signals, params, mapper, world: allWorlds[0], ...o, room, controllers });
     mountJoinCard(stageEl, remote);
     remote.connect();
   }
@@ -161,12 +178,12 @@ export async function createShow({
   const sound = modules.sound ? new Sound({ signals, params, engine: (typeof modules.sound === 'object' && modules.sound.engine) || toneEngine() }) : null;
 
   // ---------- desk + backstage ----------
-  const app = { timeline, params, mapper, signals, midi, sound, stage, keys, drums, audio, hands, pose, chord, remote, artwork };
+  const app = { timeline, params, mapper, signals, midi, controllers, sound, stage, keys, drums, audio, hands, pose, chord, remote, artwork };
   const consoleUI = mountConsole(desk, app);
   const monitor = new MonitorFeed({});
   monitor.connect();
 
-  const show = { signals, params, stage, timeline, mapper, midi, keys, drums, sound, audio, hands, pose, chord, remote, console: consoleUI, app, loop: null };
+  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console: consoleUI, app, loop: null };
   const loop = app.loop = new Loop((dt) => {
     keys?.update(dt);
     drums?.update(dt);

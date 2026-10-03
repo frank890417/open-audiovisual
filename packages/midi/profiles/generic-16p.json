@@ -1,0 +1,195 @@
+{
+ "id": "generic-16p",
+ "short": "g16p",
+ "name": "通用 16 打擊墊",
+ "nameEn": "Generic 16 pads",
+ "kind": "generic",
+ "sources": [
+  {
+   "title": "open-audiovisual generic layout",
+   "note": "No device behind it: default messages are a convention (knobs CC 70–77 like many 8-knob pads, faders CC 20–27 in the undefined range, pads GM drum notes from 36 on channel 10). Plug an unknown controller in, pick this layout, and auto-learn binds its messages in the order you move the controls."
+  }
+ ],
+ "face": {
+  "w": 100,
+  "h": 100,
+  "label": "16 PADS"
+ },
+ "stack": false,
+ "sections": [
+  {
+   "id": "pads",
+   "label": "",
+   "x": 4,
+   "y": 4,
+   "w": 92,
+   "h": 92,
+   "cols": 4,
+   "rows": 4,
+   "controls": [
+    "pad13",
+    "pad14",
+    "pad15",
+    "pad16",
+    "pad9",
+    "pad10",
+    "pad11",
+    "pad12",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "pad1",
+   "type": "pad",
+   "label": "1",
+   "msg": "note",
+   "ch": 10,
+   "note": 36,
+   "group": "pad"
+  },
+  {
+   "id": "pad2",
+   "type": "pad",
+   "label": "2",
+   "msg": "note",
+   "ch": 10,
+   "note": 37,
+   "group": "pad"
+  },
+  {
+   "id": "pad3",
+   "type": "pad",
+   "label": "3",
+   "msg": "note",
+   "ch": 10,
+   "note": 38,
+   "group": "pad"
+  },
+  {
+   "id": "pad4",
+   "type": "pad",
+   "label": "4",
+   "msg": "note",
+   "ch": 10,
+   "note": 39,
+   "group": "pad"
+  },
+  {
+   "id": "pad5",
+   "type": "pad",
+   "label": "5",
+   "msg": "note",
+   "ch": 10,
+   "note": 40,
+   "group": "pad"
+  },
+  {
+   "id": "pad6",
+   "type": "pad",
+   "label": "6",
+   "msg": "note",
+   "ch": 10,
+   "note": 41,
+   "group": "pad"
+  },
+  {
+   "id": "pad7",
+   "type": "pad",
+   "label": "7",
+   "msg": "note",
+   "ch": 10,
+   "note": 42,
+   "group": "pad"
+  },
+  {
+   "id": "pad8",
+   "type": "pad",
+   "label": "8",
+   "msg": "note",
+   "ch": 10,
+   "note": 43,
+   "group": "pad"
+  },
+  {
+   "id": "pad9",
+   "type": "pad",
+   "label": "9",
+   "msg": "note",
+   "ch": 10,
+   "note": 44,
+   "group": "pad"
+  },
+  {
+   "id": "pad10",
+   "type": "pad",
+   "label": "10",
+   "msg": "note",
+   "ch": 10,
+   "note": 45,
+   "group": "pad"
+  },
+  {
+   "id": "pad11",
+   "type": "pad",
+   "label": "11",
+   "msg": "note",
+   "ch": 10,
+   "note": 46,
+   "group": "pad"
+  },
+  {
+   "id": "pad12",
+   "type": "pad",
+   "label": "12",
+   "msg": "note",
+   "ch": 10,
+   "note": 47,
+   "group": "pad"
+  },
+  {
+   "id": "pad13",
+   "type": "pad",
+   "label": "13",
+   "msg": "note",
+   "ch": 10,
+   "note": 48,
+   "group": "pad"
+  },
+  {
+   "id": "pad14",
+   "type": "pad",
+   "label": "14",
+   "msg": "note",
+   "ch": 10,
+   "note": 49,
+   "group": "pad"
+  },
+  {
+   "id": "pad15",
+   "type": "pad",
+   "label": "15",
+   "msg": "note",
+   "ch": 10,
+   "note": 50,
+   "group": "pad"
+  },
+  {
+   "id": "pad16",
+   "type": "pad",
+   "label": "16",
+   "msg": "note",
+   "ch": 10,
+   "note": 51,
+   "group": "pad"
+  }
+ ]
+}

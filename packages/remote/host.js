@@ -16,6 +16,7 @@
 
 import { RelayClient, bindSignals } from '../relay/index.js?v=3ef3261';
 import { autoSurface, feedbackFor, normalizeLayout, routesFromLayout } from '../surface/index.js?v=3ef3261';
+import { linkControllers } from '../midi/link.js?v=3ef3261';
 
 /**
  * @param {object} o
@@ -28,8 +29,11 @@ import { autoSurface, feedbackFor, normalizeLayout, routesFromLayout } from '../
  * @param {object} [o.surface]  an explicit layout (wins over world.surface)
  * @param {number} [o.feedbackHz=10]
  * @param {string} [o.url]      relay url override
+ * @param {import('../midi/manager.js').MidiControllers} [o.controllers]  on-screen MIDI controllers: the phone's
+ *        MIDI tab shows the same device (config "midi"), mirrors this machine's hardware (feedback), and its
+ *        plays are mirrored on this screen
  */
-export function mountRemoteHost({ signals, params, mapper, world = null, room = 'default', auto = {}, surface = null, feedbackHz = 10, url = null } = {}) {
+export function mountRemoteHost({ signals, params, mapper, world = null, room = 'default', auto = {}, surface = null, feedbackHz = 10, url = null, controllers = null } = {}) {
   const schema = params?.schema?.length ? params.schema : (world?.params || []);
   const layoutIn = surface || world?.surface || null;
   let built;
@@ -44,7 +48,8 @@ export function mountRemoteHost({ signals, params, mapper, world = null, room = 
 
   const relay = new RelayClient({ role: 'runner', room, id: 'show', url: url || undefined, onStatus: (c) => host.onStatus?.(c) });
   bindSignals(relay, signals);
-  const publish = () => relay.config('surface', { layout: built.layout });
+  const publish = () => { relay.config('surface', { layout: built.layout }); if (controllers) relay.config('midi', { profile: controllers.current.id }); };
+  const midiLink = controllers ? linkControllers(relay, signals, controllers) : null;
   const prevStatus = relay.onStatus;
   relay.onStatus = (c) => { if (c.status === 'open' && !host._published) { host._published = true; publish(); } if (c.status !== 'open') host._published = false; prevStatus?.(c); };
 
@@ -55,9 +60,10 @@ export function mountRemoteHost({ signals, params, mapper, world = null, room = 
     frame(dt, state) {
       acc += dt; if (acc < 1 / feedbackHz) return; acc = 0;
       for (const f of feedbackFor(state, built.bindings)) relay.feedback(f.name, f.value);
+      midiLink?.flush();
     },
     connect() { relay.connect(); return host; },
-    dispose() { relay.close(); },
+    dispose() { midiLink?.dispose(); relay.close(); },
   };
   return host;
 }

@@ -3,7 +3,26 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js" },
+  "exports": {
+    ".": "./index.js"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/mapping" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/mapping"
+  },
+  "lab": {
+    "module": "mapping",
+    "files": [
+      "mapping/index.js"
+    ],
+    "exports": [
+      "Mapper"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.mapper = new Mapper({signals: lab.signals, params: lab.params}), advanced every frame (lab.frame).",
+    "remoteTab": null,
+    "since": "2026-09"
+  }
 }

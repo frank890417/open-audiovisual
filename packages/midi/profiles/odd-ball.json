@@ -1,0 +1,219 @@
+{
+ "id": "odd-ball",
+ "short": "oddball",
+ "name": "ODD Ball",
+ "maker": "ODD",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "odd\\s*ball"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "TouchDesigner",
+  "file": "Midi_ODD_Ball_251212.tox",
+  "note": "Che-Yu Wu's TouchDesigner tool (annotated): notes N1 Tap/Bounce, N2 Shake, N3 Twist (default notes 60–62, editable in the tool); CC0 MoveSmoothed, CC1 Spin Smoothed, CC2 Free Fall, CC3–5 X/Y/Z orientation, CC6 Energy; values scaled 0..128 → 0..1, orientation → 0..360°; note gates held with a 0.4 s release lag; a Mock mode switches the MIDI In for simulated LFO signals. TouchDesigner's MIDI In CHOP names channels 1-based (ch1ctrl75 = CC 74, ch10n37 = note 36); the numbers here are real MIDI numbers."
+ },
+ "sources": [
+  {
+   "title": "Midi_ODD_Ball_251212.tox (the artist's TouchDesigner tool and its annotations)",
+   "note": "the only source used; no manufacturer document was consulted — every control is marked unverified"
+  }
+ ],
+ "notes": "Mapping comes from the artist's TD tool, not from a manufacturer chart. The on-screen version is the TD tool's Mock mode: play the ball's gestures without the ball.",
+ "face": {
+  "w": 100,
+  "h": 50,
+  "label": "ODD Ball",
+  "body": "#16171b"
+ },
+ "sections": [
+  {
+   "id": "gestures",
+   "label": "Notes",
+   "x": 2,
+   "y": 5,
+   "w": 30,
+   "h": 42,
+   "cols": 1,
+   "rows": 3,
+   "controls": [
+    "tap",
+    "shake",
+    "twist"
+   ]
+  },
+  {
+   "id": "motion",
+   "label": "Motion",
+   "x": 34,
+   "y": 5,
+   "w": 34,
+   "h": 42,
+   "cols": 2,
+   "rows": 2,
+   "controls": [
+    "move",
+    "spin",
+    "freefall",
+    "energy"
+   ]
+  },
+  {
+   "id": "orient",
+   "label": "Orientation",
+   "x": 70,
+   "y": 5,
+   "w": 28,
+   "h": 42,
+   "cols": 3,
+   "rows": 1,
+   "controls": [
+    "rotx",
+    "roty",
+    "rotz"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "gestures",
+   "cols": 3,
+   "rows": 1,
+   "weight": 1.6,
+   "controls": [
+    "tap",
+    "shake",
+    "twist"
+   ]
+  },
+  {
+   "id": "motion",
+   "cols": 4,
+   "rows": 1,
+   "weight": 1.4,
+   "controls": [
+    "move",
+    "spin",
+    "freefall",
+    "energy"
+   ]
+  },
+  {
+   "id": "orient",
+   "cols": 3,
+   "rows": 1,
+   "weight": 2.2,
+   "controls": [
+    "rotx",
+    "roty",
+    "rotz"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "move",
+   "type": "knob",
+   "label": "Move",
+   "msg": "cc",
+   "cc": 0,
+   "group": "cc",
+   "color": "violet",
+   "verified": false
+  },
+  {
+   "id": "spin",
+   "type": "knob",
+   "label": "Spin",
+   "msg": "cc",
+   "cc": 1,
+   "group": "cc",
+   "color": "violet",
+   "verified": false
+  },
+  {
+   "id": "freefall",
+   "type": "knob",
+   "label": "Free fall",
+   "msg": "cc",
+   "cc": 2,
+   "group": "cc",
+   "color": "violet",
+   "verified": false
+  },
+  {
+   "id": "rotx",
+   "type": "fader",
+   "label": "Rot X",
+   "msg": "cc",
+   "cc": 3,
+   "group": "cc",
+   "color": "violet",
+   "verified": false
+  },
+  {
+   "id": "roty",
+   "type": "fader",
+   "label": "Rot Y",
+   "msg": "cc",
+   "cc": 4,
+   "group": "cc",
+   "color": "violet",
+   "verified": false
+  },
+  {
+   "id": "rotz",
+   "type": "fader",
+   "label": "Rot Z",
+   "msg": "cc",
+   "cc": 5,
+   "group": "cc",
+   "color": "violet",
+   "verified": false
+  },
+  {
+   "id": "energy",
+   "type": "knob",
+   "label": "Energy",
+   "msg": "cc",
+   "cc": 6,
+   "group": "cc",
+   "color": "violet",
+   "verified": false
+  },
+  {
+   "id": "tap",
+   "type": "pad",
+   "label": "Tap / Bounce",
+   "msg": "note",
+   "note": 60,
+   "group": "note",
+   "color": "lime",
+   "verified": false
+  },
+  {
+   "id": "shake",
+   "type": "pad",
+   "label": "Shake",
+   "msg": "note",
+   "note": 61,
+   "group": "note",
+   "color": "lime",
+   "verified": false
+  },
+  {
+   "id": "twist",
+   "type": "pad",
+   "label": "Twist",
+   "msg": "note",
+   "note": 62,
+   "group": "note",
+   "color": "lime",
+   "verified": false
+  }
+ ]
+}

@@ -5,16 +5,43 @@
 // Output: send(bytes) with an observer hook (meters), plus a proper panic().
 //
 // Chrome-only reality: Web MIDI is not in Safari. Performance machines run
-// Chrome/Edge; audio+pose inputs cover the rest of the browsers.
+// Chrome/Edge; audio+pose inputs cover the rest of the browsers — and the
+// virtual controllers below cover "no hardware at all".
+//
+// Controllers (2026-10): device profiles as data, a live model per device, an
+// on-screen controller that hardware animates in real time, learn mode, LED
+// feedback, a Web MIDI shim for old sketches, and a phone/iPad remote tab.
+//   profiles.js  validate / match / index           controller.js  MidiController
+//   parse.js     bytes ⇄ events ⇄ signal names       manager.js     MidiControllers (hardware ⇄ profiles)
+//   view.js      ControllerView (the faceplate)      panel.js       mountMidiPanel (header + port picker + view)
+//   virtual-access.js  Web MIDI shim                 remote-tab.js  the /remote MIDI tab
+// Docs: packages/midi/README.md.
+
+import { parseMessage, genericSignals, publish, describe } from './parse.js?v=3ef3261';
+export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=3ef3261';
+export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=3ef3261';
+export { MidiController } from './controller.js?v=3ef3261';
+export { MidiControllers, controllerRoutes } from './manager.js?v=3ef3261';
+export { linkControllers } from './link.js?v=3ef3261';
+export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=3ef3261';
+export { PROFILES, profileById } from './profiles/index.js?v=3ef3261';
+export { ControllerView, VIEW_CSS } from './view.js?v=3ef3261';
+export { mountMidiPanel, PANEL_CSS } from './panel.js?v=3ef3261';
 
 export class Midi {
   /**
    * @param {object} opts
    * @param {import('../core/src/signals.js?v=3ef3261').Signals} [opts.signals] publish inputs here
    * @param {string} [opts.filterOut] regex source-name filter to avoid feedback loops (default: IAC)
+   * @param {(opts:object)=>Promise<any>} [opts.requestAccess] where MIDIAccess comes from (default
+   *        navigator.requestMIDIAccess). A host that shims Web MIDI for old sketches passes the REAL one
+   *        here, so this engine never listens to the virtual port it feeds (no loops).
    */
-  constructor({ signals = null, filterOut = 'IAC' } = {}) {
+  constructor({ signals = null, filterOut = 'IAC', requestAccess = null } = {}) {
     this.signals = signals;
+    this.requestAccess = requestAccess;
+    this._listeners = new Set();  // (bytes, port{slug,name,input}) — controllers, meters
+    this._devSubs = new Set();    // (devices) — every subscriber, unlike the single onDeviceChange hook
     this.filterOut = filterOut ? new RegExp(filterOut, 'i') : null;
     this.access = null; this.out = null;
     this.outputs = []; this.inputs = [];
@@ -33,15 +60,24 @@ export class Midi {
     return this.inputs.map(i => ({ slug: this._slugs.get(i), name: i.name || '?', listening: !this._muted.has(this._slugs.get(i)) }));
   }
   /** Mute/unmute one device (by slug) without unplugging it. */
-  setListening(slug, on) { on ? this._muted.delete(slug) : this._muted.add(slug); this.onDeviceChange?.(this.devices()); }
+  setListening(slug, on) { on ? this._muted.delete(slug) : this._muted.add(slug); this._devChanged(); }
+  /** Subscribe to device-list changes (hot-plug, mute). Returns unsubscribe. */
+  onDevices(fn) { this._devSubs.add(fn); return () => this._devSubs.delete(fn); }
+  _devChanged() {
+    const d = this.devices();
+    this.onDeviceChange?.(d);
+    for (const fn of this._devSubs) { try { fn(d); } catch (e) { console.error('[midi] devices', e); } }
+  }
 
   log(dir, text) { if (this.onMessage) this.onMessage({ dir, text }); }
 
   /** Request access and wire inputs. `preferredOut` matches by exact name, then substring. */
   async enable(preferredOut = '') {
     try {
-      this.access = await navigator.requestMIDIAccess({ sysex: false });
-    } catch (e) { this.log('in', 'WebMIDI unavailable: ' + e.message); return false; }
+      const req = this.requestAccess || (typeof navigator !== 'undefined' && navigator.requestMIDIAccess ? (o) => navigator.requestMIDIAccess(o) : null);
+      if (!req) throw new Error('this browser has no Web MIDI');
+      this.access = await req({ sysex: false });
+    } catch (e) { this.log('in', 'WebMIDI unavailable: ' + e.message); this._devChanged(); return false; }
     this.enabled = true;
     this._refresh(preferredOut);
     this.access.onstatechange = () => this._refresh(preferredOut);
@@ -67,40 +103,43 @@ export class Midi {
     }
     this.inputs.forEach(inp => { inp.onmidimessage = (m) => this._onIn(m, inp.name, this._slugs.get(inp)); });
     this.log('in', `inputs: ${this.inputs.map(i => i.name).join(', ') || '(none)'} | out: ${this.out?.name || '(none)'}`);
-    this.onDeviceChange?.(this.devices());
+    this._devChanged();
   }
 
   selectOutput(name) { const o = this.outputs.find(o => o.name === name); if (o) this.out = o; }
+  /** The output port a device answers on (LED feedback): same name as its input, else a regex match. */
+  outputFor(nameOrRe) {
+    const re = nameOrRe instanceof RegExp ? nameOrRe : null;
+    return this.outputs.find((o) => (re ? re.test(o.name || '') : o.name === nameOrRe)) || null;
+  }
+  /** Raw bytes from every (listened) input: (bytes, {slug, name, input}) → void. Returns unsubscribe. */
+  listen(fn) { this._listeners.add(fn); return () => this._listeners.delete(fn); }
 
   _onIn(msg, src, slug) {
     if (slug && this._muted.has(slug)) return;
-    const [status, d1, d2] = msg.data, type = status & 0xf0, ch = (status & 0x0f) + 1;
+    const data = msg.data;
+    for (const fn of this._listeners) { try { fn(data, { slug, name: src, input: this.inputs.find((i) => this._slugs.get(i) === slug) }); } catch (e) { console.error('[midi] listener', e); } }
+    const ev = parseMessage(data);
+    if (!ev) return;
+    if (ev.type === 'clock') return;                         // 24 per beat — not a log line
+    // generic names (parse.js genericSignals): legacy midi/note/on… + per channel midi/ch/<ch>/…
+    publish(this.signals, genericSignals(ev, { device: slug }));
     // with 2+ devices, signals also publish under midi/<slug>/… so controllers
     // don't collide; single-device stays terse (midi/cc/N) — zero-config default
     const multi = this.inputs.length > 1 && slug;
-    let text;
-    if (type === 0x90 && d2 > 0) {
-      text = `Note On  ch${ch} n${d1} v${d2}`;
-      this.onNote?.(d1, d2 / 127, true, ch);
-      this.signals?.pulse('midi/note/on', { note: d1, vel: d2 / 127, ch, device: slug });
-      if (multi) this.signals?.pulse(`midi/${slug}/note/on`, { note: d1, vel: d2 / 127, ch });
-    } else if (type === 0x80 || (type === 0x90 && d2 === 0)) {
-      text = `Note Off ch${ch} n${d1}`;
-      this.onNote?.(d1, 0, false, ch);
-      this.signals?.pulse('midi/note/off', { note: d1, ch, device: slug });
-      if (multi) this.signals?.pulse(`midi/${slug}/note/off`, { note: d1, ch });
-    } else if (type === 0xb0) {
-      text = `CC ch${ch} #${d1}=${d2}`;
-      this.onCC?.(d1, d2 / 127, ch);
-      this.signals?.set(`midi/cc/${d1}`, d2 / 127);
-      if (multi) this.signals?.set(`midi/${slug}/cc/${d1}`, d2 / 127);
-    } else if (type === 0xe0) {
-      const bend = (((d2 << 7) | d1) - 8192) / 8192;
-      text = `Bend ch${ch} ${bend.toFixed(2)}`;
-      this.signals?.set('midi/bend', bend);
-      if (multi) this.signals?.set(`midi/${slug}/bend`, bend);
-    } else text = `0x${status.toString(16)} ${d1} ${d2}`;
-    this.log('in', text + (src ? ' ·' + src.slice(0, 14) : ''));
+    if (ev.type === 'noteon') {
+      this.onNote?.(ev.note, ev.vel / 127, true, ev.ch);
+      if (multi) this.signals?.pulse(`midi/${slug}/note/on`, { note: ev.note, vel: ev.vel / 127, ch: ev.ch });
+    } else if (ev.type === 'noteoff') {
+      this.onNote?.(ev.note, 0, false, ev.ch);
+      if (multi) this.signals?.pulse(`midi/${slug}/note/off`, { note: ev.note, ch: ev.ch });
+    } else if (ev.type === 'cc') {
+      this.onCC?.(ev.cc, ev.value / 127, ev.ch);
+      if (multi) this.signals?.set(`midi/${slug}/cc/${ev.cc}`, ev.value / 127);
+    } else if (ev.type === 'pitchbend') {
+      if (multi) this.signals?.set(`midi/${slug}/bend`, this.signals.get('midi/bend'));
+    }
+    this.log('in', describe(ev) + (src ? ' ·' + src.slice(0, 14) : ''));
   }
 
   /** Send raw bytes out. onSend observer sees everything (single throat for meters). */

@@ -3,7 +3,49 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js", "./host": "./host.js" },
+  "exports": {
+    ".": "./index.js",
+    "./host": "./host.js"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/remote" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/remote"
+  },
+  "lab": [
+    {
+      "module": "remote",
+      "files": [
+        "surface/layout.js",
+        "surface/auto.js",
+        "relay/index.js"
+      ],
+      "exports": [
+        "RelayClient",
+        "autoSurface",
+        "routesFromLayout",
+        "feedbackFor",
+        "normalizeLayout"
+      ],
+      "wire": "lab.wire.js",
+      "autowire": "Runner side of the phone remote: surface/* signals → lab.setParam; lab.params echoed to the phone (feedback); the 控制台 layout comes from surface.json or meta.params.",
+      "remoteTab": null,
+      "since": "2026-10"
+    },
+    {
+      "module": "phone",
+      "kind": "declare",
+      "note": "phone/<deviceId>/… signals come from the /remote 感測 tab (packages/remote/sensors.js) over the relay; lab.js files them into lab.phone.*. Loading the module only declares that the work uses a phone.",
+      "remoteTab": null,
+      "since": "2026-09"
+    },
+    {
+      "module": "piano",
+      "kind": "declare",
+      "note": "midi/note/on|off and midi/cc/64 (+ midi/virtual bytes) come from the /remote 琴鍵 tab (the surface keyboard widget) — same names and shape as a hardware keyboard. Loading the module only declares it.",
+      "remoteTab": null,
+      "since": "2026-09"
+    }
+  ]
 }

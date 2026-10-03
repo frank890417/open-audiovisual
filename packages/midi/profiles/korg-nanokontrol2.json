@@ -1,0 +1,893 @@
+{
+ "id": "korg-nanokontrol2",
+ "short": "nano2",
+ "name": "Korg nanoKONTROL2",
+ "maker": "KORG",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "nanokontrol\\s*2"
+  ],
+  "prefer": [
+   "slider",
+   "knob",
+   "ctrl"
+  ],
+  "avoid": []
+ },
+ "sources": [
+  {
+   "title": "nanoKONTROL2 Parameter Guide (KORG)",
+   "url": "https://www.korg.com/us/support/download/manual/0/159/1913/",
+   "note": "button behaviour momentary/toggle; LED mode internal/external — external: an incoming CC assigned to a button lights its LED with the On value, the Off value turns it off"
+  },
+  {
+   "title": "nanoKONTROL2 MIDI Implementation (KORG)",
+   "url": "https://www.korg.com/us/support/download/manual/0/159/2710/",
+   "note": "transport / marker numbers 41–46, 58–62"
+  },
+  {
+   "title": "nanoKONTROL2 Owner's Manual (KORG)",
+   "url": "https://www.korg.com/us/support/download/manual/0/159/1912/",
+   "note": "CC mode: hold SET MARKER + CYCLE while connecting; ports 'nanoKONTROL2 SLIDER/KNOB' (in) and 'nanoKONTROL2 CTRL' (out)"
+  },
+  {
+   "title": "Ardour Korg_nanoKONTROL2.map (non-official)",
+   "url": "https://raw.githubusercontent.com/Ardour/ardour/master/share/midi_maps/Korg_nanoKONTROL2.map",
+   "note": "factory scene: faders CC 0–7, knobs 16–23, S 32–39, M 48–55, R 64–71, global channel 1"
+  }
+ ],
+ "notes": "Factory scene, CC mode, global channel 1. LED feedback reaches the buttons only when LED mode is set to External in the KORG KONTROL Editor (default Internal: the unit lights its own buttons).",
+ "face": {
+  "w": 100,
+  "h": 27,
+  "label": "nanoKONTROL2",
+  "body": "#1a1b1e"
+ },
+ "sections": [
+  {
+   "id": "transport",
+   "label": "",
+   "x": 1.5,
+   "y": 6,
+   "w": 21,
+   "h": 17,
+   "cols": 6,
+   "rows": 2,
+   "controls": [
+    "trackprev",
+    "tracknext",
+    "cycle",
+    "markerset",
+    "markerprev",
+    "markernext",
+    "rew",
+    "ff",
+    "stop",
+    "play",
+    "rec"
+   ]
+  },
+  {
+   "id": "knobs",
+   "label": "",
+   "x": 24,
+   "y": 2,
+   "w": 75,
+   "h": 8,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  },
+  {
+   "id": "strips",
+   "label": "",
+   "x": 24,
+   "y": 10.5,
+   "w": 75,
+   "h": 15.5,
+   "cols": 16,
+   "rows": 3,
+   "flow": "column",
+   "spans": {
+    "f1": [
+     1,
+     3
+    ],
+    "f2": [
+     1,
+     3
+    ],
+    "f3": [
+     1,
+     3
+    ],
+    "f4": [
+     1,
+     3
+    ],
+    "f5": [
+     1,
+     3
+    ],
+    "f6": [
+     1,
+     3
+    ],
+    "f7": [
+     1,
+     3
+    ],
+    "f8": [
+     1,
+     3
+    ]
+   },
+   "controls": [
+    "s1",
+    "m1",
+    "r1",
+    "f1",
+    "s2",
+    "m2",
+    "r2",
+    "f2",
+    "s3",
+    "m3",
+    "r3",
+    "f3",
+    "s4",
+    "m4",
+    "r4",
+    "f4",
+    "s5",
+    "m5",
+    "r5",
+    "f5",
+    "s6",
+    "m6",
+    "r6",
+    "f6",
+    "s7",
+    "m7",
+    "r7",
+    "f7",
+    "s8",
+    "m8",
+    "r8",
+    "f8"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "knobs",
+   "cols": 4,
+   "rows": 2,
+   "weight": 1.6,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  },
+  {
+   "id": "faders",
+   "cols": 4,
+   "rows": 2,
+   "weight": 2.8,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8"
+   ]
+  },
+  {
+   "id": "smr",
+   "cols": 8,
+   "rows": 3,
+   "weight": 1.6,
+   "controls": [
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5",
+    "s6",
+    "s7",
+    "s8",
+    "m1",
+    "m2",
+    "m3",
+    "m4",
+    "m5",
+    "m6",
+    "m7",
+    "m8",
+    "r1",
+    "r2",
+    "r3",
+    "r4",
+    "r5",
+    "r6",
+    "r7",
+    "r8"
+   ]
+  },
+  {
+   "id": "transport",
+   "cols": 6,
+   "rows": 2,
+   "weight": 1.1,
+   "controls": [
+    "trackprev",
+    "tracknext",
+    "cycle",
+    "markerset",
+    "markerprev",
+    "markernext",
+    "rew",
+    "ff",
+    "stop",
+    "play",
+    "rec"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "k1",
+   "type": "knob",
+   "label": "1",
+   "msg": "cc",
+   "cc": 16,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k2",
+   "type": "knob",
+   "label": "2",
+   "msg": "cc",
+   "cc": 17,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k3",
+   "type": "knob",
+   "label": "3",
+   "msg": "cc",
+   "cc": 18,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k4",
+   "type": "knob",
+   "label": "4",
+   "msg": "cc",
+   "cc": 19,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k5",
+   "type": "knob",
+   "label": "5",
+   "msg": "cc",
+   "cc": 20,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k6",
+   "type": "knob",
+   "label": "6",
+   "msg": "cc",
+   "cc": 21,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k7",
+   "type": "knob",
+   "label": "7",
+   "msg": "cc",
+   "cc": 22,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k8",
+   "type": "knob",
+   "label": "8",
+   "msg": "cc",
+   "cc": 23,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "f1",
+   "type": "fader",
+   "label": "1",
+   "msg": "cc",
+   "cc": 0,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f2",
+   "type": "fader",
+   "label": "2",
+   "msg": "cc",
+   "cc": 1,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f3",
+   "type": "fader",
+   "label": "3",
+   "msg": "cc",
+   "cc": 2,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f4",
+   "type": "fader",
+   "label": "4",
+   "msg": "cc",
+   "cc": 3,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f5",
+   "type": "fader",
+   "label": "5",
+   "msg": "cc",
+   "cc": 4,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f6",
+   "type": "fader",
+   "label": "6",
+   "msg": "cc",
+   "cc": 5,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f7",
+   "type": "fader",
+   "label": "7",
+   "msg": "cc",
+   "cc": 6,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f8",
+   "type": "fader",
+   "label": "8",
+   "msg": "cc",
+   "cc": 7,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "s1",
+   "type": "button",
+   "label": "S",
+   "msg": "cc",
+   "cc": 32,
+   "group": "s",
+   "color": "amber",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "s2",
+   "type": "button",
+   "label": "S",
+   "msg": "cc",
+   "cc": 33,
+   "group": "s",
+   "color": "amber",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "s3",
+   "type": "button",
+   "label": "S",
+   "msg": "cc",
+   "cc": 34,
+   "group": "s",
+   "color": "amber",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "s4",
+   "type": "button",
+   "label": "S",
+   "msg": "cc",
+   "cc": 35,
+   "group": "s",
+   "color": "amber",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "s5",
+   "type": "button",
+   "label": "S",
+   "msg": "cc",
+   "cc": 36,
+   "group": "s",
+   "color": "amber",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "s6",
+   "type": "button",
+   "label": "S",
+   "msg": "cc",
+   "cc": 37,
+   "group": "s",
+   "color": "amber",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "s7",
+   "type": "button",
+   "label": "S",
+   "msg": "cc",
+   "cc": 38,
+   "group": "s",
+   "color": "amber",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "s8",
+   "type": "button",
+   "label": "S",
+   "msg": "cc",
+   "cc": 39,
+   "group": "s",
+   "color": "amber",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "m1",
+   "type": "button",
+   "label": "M",
+   "msg": "cc",
+   "cc": 48,
+   "group": "m",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "m2",
+   "type": "button",
+   "label": "M",
+   "msg": "cc",
+   "cc": 49,
+   "group": "m",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "m3",
+   "type": "button",
+   "label": "M",
+   "msg": "cc",
+   "cc": 50,
+   "group": "m",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "m4",
+   "type": "button",
+   "label": "M",
+   "msg": "cc",
+   "cc": 51,
+   "group": "m",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "m5",
+   "type": "button",
+   "label": "M",
+   "msg": "cc",
+   "cc": 52,
+   "group": "m",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "m6",
+   "type": "button",
+   "label": "M",
+   "msg": "cc",
+   "cc": 53,
+   "group": "m",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "m7",
+   "type": "button",
+   "label": "M",
+   "msg": "cc",
+   "cc": 54,
+   "group": "m",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "m8",
+   "type": "button",
+   "label": "M",
+   "msg": "cc",
+   "cc": 55,
+   "group": "m",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "r1",
+   "type": "button",
+   "label": "R",
+   "msg": "cc",
+   "cc": 64,
+   "group": "r",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "r2",
+   "type": "button",
+   "label": "R",
+   "msg": "cc",
+   "cc": 65,
+   "group": "r",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "r3",
+   "type": "button",
+   "label": "R",
+   "msg": "cc",
+   "cc": 66,
+   "group": "r",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "r4",
+   "type": "button",
+   "label": "R",
+   "msg": "cc",
+   "cc": 67,
+   "group": "r",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "r5",
+   "type": "button",
+   "label": "R",
+   "msg": "cc",
+   "cc": 68,
+   "group": "r",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "r6",
+   "type": "button",
+   "label": "R",
+   "msg": "cc",
+   "cc": 69,
+   "group": "r",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "r7",
+   "type": "button",
+   "label": "R",
+   "msg": "cc",
+   "cc": 70,
+   "group": "r",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "r8",
+   "type": "button",
+   "label": "R",
+   "msg": "cc",
+   "cc": 71,
+   "group": "r",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "trackprev",
+   "type": "button",
+   "label": "◀",
+   "msg": "cc",
+   "cc": 58,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "tracknext",
+   "type": "button",
+   "label": "▶",
+   "msg": "cc",
+   "cc": 59,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "cycle",
+   "type": "button",
+   "label": "Cycle",
+   "msg": "cc",
+   "cc": 46,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "markerset",
+   "type": "button",
+   "label": "Set",
+   "msg": "cc",
+   "cc": 60,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "markerprev",
+   "type": "button",
+   "label": "◀",
+   "msg": "cc",
+   "cc": 61,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "markernext",
+   "type": "button",
+   "label": "▶",
+   "msg": "cc",
+   "cc": 62,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rew",
+   "type": "button",
+   "label": "◀◀",
+   "msg": "cc",
+   "cc": 43,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "ff",
+   "type": "button",
+   "label": "▶▶",
+   "msg": "cc",
+   "cc": 44,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "stop",
+   "type": "button",
+   "label": "■",
+   "msg": "cc",
+   "cc": 42,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "play",
+   "type": "button",
+   "label": "▶",
+   "msg": "cc",
+   "cc": 41,
+   "group": "transport",
+   "color": "white",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rec",
+   "type": "button",
+   "label": "●",
+   "msg": "cc",
+   "cc": 45,
+   "group": "transport",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  }
+ ]
+}

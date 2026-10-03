@@ -1,0 +1,1306 @@
+{
+ "id": "novation-launchpad-mini-mk3",
+ "short": "lpmini",
+ "name": "Novation Launchpad Mini MK3",
+ "maker": "Novation",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "lpminimk3",
+   "launchpad\\s*mini"
+  ],
+  "prefer": [
+   "midi"
+  ],
+  "avoid": [
+   "daw"
+  ]
+ },
+ "origin": {
+  "tool": "TouchDesigner",
+  "file": "LaunchPadMini_251209.tox",
+  "note": "Che-Yu Wu's TouchDesigner tool: MIDI In ch1 notes 36–99 in four groups of 16 (select1–4) = the four 4×4 drum racks; positions xy −4..−1 / 1..4 (skipping 0) or balanced −3.5..3.5; a stepped colour ramp gives each rack one colour (yellow, salmon red, lavender, green); idle pads drawn at ~16 % alpha, hit pads full colour with bloom; 'last event' (index + active) as the action output. TouchDesigner's MIDI In CHOP names channels 1-based (ch1ctrl75 = CC 74, ch10n37 = note 36); the numbers here are real MIDI numbers."
+ },
+ "sources": [
+  {
+   "title": "Launchpad Mini [MK3] Programmer's Reference Manual (Novation)",
+   "url": "https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf",
+   "note": "Drum Rack layout: lower-left 36–51, upper-left 52–67, lower-right 68–83, upper-right 84–99, rows bottom→top, left→right; top row CC 91–98; right column CC 89, 79 … 19; LED: note-on ch1 static (velocity = palette index), ch2 flash, ch3 pulse; palette 0 off, 3 white, 5 red, 13 yellow, 21 green, 45 blue, 49 purple; ports LPMiniMK3 MIDI / DAW"
+  },
+  {
+   "title": "Launchpad Mini [MK3] User Guide (Novation)",
+   "url": "https://fael-downloads-prod.focusrite.com/customer/prod/downloads/Launchpad%20Mini%20[Mk3]%20User%20Guide%20English.pdf",
+   "note": "factory Custom 1 = Drum Rack, Custom 2 = Keys, Custom 3 = User (lighting)"
+  },
+  {
+   "title": "LaunchPadMini_251209.tox (the artist's TouchDesigner tool)",
+   "note": "grid on channel 1; a top-row button recorded as CC 95"
+  }
+ ],
+ "notes": "Use the device in Custom mode 1 (Drums). Entering Programmer mode needs SysEx (F0 00 20 29 02 0D 0E 01 F7), which stays off by default — Programmer-mode notes 11–88 are a different layout. What the right-column buttons send in Custom mode is undocumented (marked unverified; 學習 rebinds). LED colours are palette indices: the rack colours mirror the TD tool's ramp.",
+ "stack": false,
+ "face": {
+  "w": 100,
+  "h": 100,
+  "label": "Launchpad Mini",
+  "body": "#121214",
+  "deco": [
+   {
+    "type": "logo",
+    "x": 89.5,
+    "y": 2,
+    "w": 8.5,
+    "h": 9.5
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "top",
+   "label": "",
+   "x": 2,
+   "y": 2,
+   "w": 86.5,
+   "h": 9.5,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "top1",
+    "top2",
+    "top3",
+    "top4",
+    "top5",
+    "top6",
+    "top7",
+    "top8"
+   ]
+  },
+  {
+   "id": "grid",
+   "label": "",
+   "x": 2,
+   "y": 12.5,
+   "w": 86.5,
+   "h": 85.5,
+   "cols": 8,
+   "rows": 8,
+   "controls": [
+    "pad29",
+    "pad30",
+    "pad31",
+    "pad32",
+    "pad61",
+    "pad62",
+    "pad63",
+    "pad64",
+    "pad25",
+    "pad26",
+    "pad27",
+    "pad28",
+    "pad57",
+    "pad58",
+    "pad59",
+    "pad60",
+    "pad21",
+    "pad22",
+    "pad23",
+    "pad24",
+    "pad53",
+    "pad54",
+    "pad55",
+    "pad56",
+    "pad17",
+    "pad18",
+    "pad19",
+    "pad20",
+    "pad49",
+    "pad50",
+    "pad51",
+    "pad52",
+    "pad13",
+    "pad14",
+    "pad15",
+    "pad16",
+    "pad45",
+    "pad46",
+    "pad47",
+    "pad48",
+    "pad9",
+    "pad10",
+    "pad11",
+    "pad12",
+    "pad41",
+    "pad42",
+    "pad43",
+    "pad44",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad37",
+    "pad38",
+    "pad39",
+    "pad40",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4",
+    "pad33",
+    "pad34",
+    "pad35",
+    "pad36"
+   ]
+  },
+  {
+   "id": "side",
+   "label": "",
+   "x": 89.5,
+   "y": 12.5,
+   "w": 8.5,
+   "h": 85.5,
+   "cols": 1,
+   "rows": 8,
+   "controls": [
+    "side1",
+    "side2",
+    "side3",
+    "side4",
+    "side5",
+    "side6",
+    "side7",
+    "side8"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "pad1",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 36,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad2",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 37,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad3",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 38,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad4",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 39,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad5",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 40,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad6",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 41,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad7",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 42,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad8",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 43,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad9",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 44,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad10",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 45,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad11",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 46,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad12",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 47,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad13",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 48,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad14",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 49,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad15",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 50,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad16",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 51,
+   "group": "pad",
+   "tint": "#ffea00",
+   "led": {
+    "msg": "note",
+    "on": 13,
+    "off": 15
+   }
+  },
+  {
+   "id": "pad17",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 52,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad18",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 53,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad19",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 54,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad20",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 55,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad21",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 56,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad22",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 57,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad23",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 58,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad24",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 59,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad25",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 60,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad26",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 61,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad27",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 62,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad28",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 63,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad29",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 64,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad30",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 65,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad31",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 66,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad32",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 67,
+   "group": "pad",
+   "tint": "#ff4b4b",
+   "led": {
+    "msg": "note",
+    "on": 5,
+    "off": 7
+   }
+  },
+  {
+   "id": "pad33",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 68,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad34",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 69,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad35",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 70,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad36",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 71,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad37",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 72,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad38",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 73,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad39",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 74,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad40",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 75,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad41",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 76,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad42",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 77,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad43",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 78,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad44",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 79,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad45",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 80,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad46",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 81,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad47",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 82,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad48",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 83,
+   "group": "pad",
+   "tint": "#a8a1ff",
+   "led": {
+    "msg": "note",
+    "on": 49,
+    "off": 51
+   }
+  },
+  {
+   "id": "pad49",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 84,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad50",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 85,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad51",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 86,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad52",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 87,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad53",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 88,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad54",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 89,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad55",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 90,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad56",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 91,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad57",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 92,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad58",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 93,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad59",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 94,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad60",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 95,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad61",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 96,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad62",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 97,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad63",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 98,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "pad64",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 99,
+   "group": "pad",
+   "tint": "#15ff00",
+   "led": {
+    "msg": "note",
+    "on": 21,
+    "off": 23
+   }
+  },
+  {
+   "id": "top1",
+   "type": "button",
+   "label": "▲",
+   "msg": "cc",
+   "cc": 91,
+   "group": "top",
+   "shape": "round",
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "top2",
+   "type": "button",
+   "label": "▼",
+   "msg": "cc",
+   "cc": 92,
+   "group": "top",
+   "shape": "round",
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "top3",
+   "type": "button",
+   "label": "◀",
+   "msg": "cc",
+   "cc": 93,
+   "group": "top",
+   "shape": "round",
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "top4",
+   "type": "button",
+   "label": "▶",
+   "msg": "cc",
+   "cc": 94,
+   "group": "top",
+   "shape": "round",
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "top5",
+   "type": "button",
+   "label": "Session",
+   "msg": "cc",
+   "cc": 95,
+   "group": "top",
+   "shape": "round",
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "top6",
+   "type": "button",
+   "label": "Drums",
+   "msg": "cc",
+   "cc": 96,
+   "group": "top",
+   "shape": "round",
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "top7",
+   "type": "button",
+   "label": "Keys",
+   "msg": "cc",
+   "cc": 97,
+   "group": "top",
+   "shape": "round",
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "top8",
+   "type": "button",
+   "label": "User",
+   "msg": "cc",
+   "cc": 98,
+   "group": "top",
+   "shape": "round",
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "side1",
+   "type": "button",
+   "label": "▸",
+   "msg": "cc",
+   "cc": 89,
+   "group": "side",
+   "shape": "round",
+   "verified": false,
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "side2",
+   "type": "button",
+   "label": "▸",
+   "msg": "cc",
+   "cc": 79,
+   "group": "side",
+   "shape": "round",
+   "verified": false,
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "side3",
+   "type": "button",
+   "label": "▸",
+   "msg": "cc",
+   "cc": 69,
+   "group": "side",
+   "shape": "round",
+   "verified": false,
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "side4",
+   "type": "button",
+   "label": "▸",
+   "msg": "cc",
+   "cc": 59,
+   "group": "side",
+   "shape": "round",
+   "verified": false,
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "side5",
+   "type": "button",
+   "label": "▸",
+   "msg": "cc",
+   "cc": 49,
+   "group": "side",
+   "shape": "round",
+   "verified": false,
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "side6",
+   "type": "button",
+   "label": "▸",
+   "msg": "cc",
+   "cc": 39,
+   "group": "side",
+   "shape": "round",
+   "verified": false,
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "side7",
+   "type": "button",
+   "label": "▸",
+   "msg": "cc",
+   "cc": 29,
+   "group": "side",
+   "shape": "round",
+   "verified": false,
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  },
+  {
+   "id": "side8",
+   "type": "button",
+   "label": "■",
+   "msg": "cc",
+   "cc": 19,
+   "group": "side",
+   "shape": "round",
+   "verified": false,
+   "led": {
+    "msg": "cc",
+    "on": 3,
+    "off": 0
+   }
+  }
+ ]
+}

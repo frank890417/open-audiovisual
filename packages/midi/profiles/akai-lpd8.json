@@ -1,0 +1,293 @@
+{
+ "id": "akai-lpd8",
+ "short": "lpd8",
+ "name": "AKAI LPD8 (mk2)",
+ "maker": "AKAI Professional",
+ "kind": "device",
+ "match": {
+  "ports": [
+   "lpd\\s*8"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "TouchDesigner",
+  "file": "AKAI_LPD8.tox",
+  "note": "Che-Yu Wu's TouchDesigner tool: MIDI In (Device ID + Active toggle) → select ch10n* → Pad1–8, select ch1ctrl* → K1–K8, math 0..127 → 0..1, bound both ways to custom parameters (Pads page: 8 momentary pulses, Knobs page: 8 floats) and to an 800×200 panel (pads left, knobs right). TouchDesigner's MIDI In CHOP names channels 1-based (ch1ctrl75 = CC 74, ch10n37 = note 36); the numbers here are real MIDI numbers."
+ },
+ "sources": [
+  {
+   "title": "LPD8 mk2 User Guide v1.2 (AKAI)",
+   "url": "https://cdn.inmusicbrands.com/akai/LPD8/LPD8%20mk2%20-%20User%20Guide%20-%20v1.2.pdf",
+   "note": "4 programs, pad modes Note / Prog Chng / CC; no default numbers listed"
+  },
+  {
+   "title": "AKAI_LPD8.tox (the artist's TouchDesigner tool)",
+   "note": "pads arrive as notes on channel 10, knobs as CCs on channel 1 on his unit"
+  },
+  {
+   "title": "Spectrasonics — Setting up the LPD8 mk2 (non-official)",
+   "url": "https://support.spectrasonics.net/manual/Omnisphere3HW/3/en/topic/setting-up-the-lpd8-mk2",
+   "note": "knobs CC 70–77 in program 1"
+  },
+  {
+   "title": "AKAI support — LPD8 MKII: How to use 16 pads and knobs in MPC Beats",
+   "url": "https://support.akaipro.com/en/support/solutions/articles/69000867977",
+   "note": "pad notes 36–43 (as a setting, not stated as the default)"
+  }
+ ],
+ "notes": "Pad note numbers are the common program-1 layout (36–43) but not printed in the manual — pads are marked unverified; 學習 rebinds them in one tap each. The pads light themselves; no LED feedback is sent.",
+ "face": {
+  "w": 100,
+  "h": 27,
+  "label": "AKAI LPD8",
+  "body": "#18191c"
+ },
+ "sections": [
+  {
+   "id": "pads",
+   "label": "Pads",
+   "x": 2,
+   "y": 4.5,
+   "w": 58,
+   "h": 21,
+   "cols": 4,
+   "rows": 2,
+   "controls": [
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4"
+   ]
+  },
+  {
+   "id": "knobs",
+   "label": "Knobs",
+   "x": 63,
+   "y": 4.5,
+   "w": 35,
+   "h": 21,
+   "cols": 4,
+   "rows": 2,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "knobs",
+   "cols": 4,
+   "rows": 2,
+   "weight": 2,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  },
+  {
+   "id": "pads",
+   "cols": 2,
+   "rows": 4,
+   "weight": 3.4,
+   "controls": [
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "pad1",
+   "type": "pad",
+   "label": "Pad 1",
+   "msg": "note",
+   "ch": 10,
+   "note": 36,
+   "group": "pad",
+   "color": "coral",
+   "verified": false
+  },
+  {
+   "id": "pad2",
+   "type": "pad",
+   "label": "Pad 2",
+   "msg": "note",
+   "ch": 10,
+   "note": 37,
+   "group": "pad",
+   "color": "coral",
+   "verified": false
+  },
+  {
+   "id": "pad3",
+   "type": "pad",
+   "label": "Pad 3",
+   "msg": "note",
+   "ch": 10,
+   "note": 38,
+   "group": "pad",
+   "color": "coral",
+   "verified": false
+  },
+  {
+   "id": "pad4",
+   "type": "pad",
+   "label": "Pad 4",
+   "msg": "note",
+   "ch": 10,
+   "note": 39,
+   "group": "pad",
+   "color": "coral",
+   "verified": false
+  },
+  {
+   "id": "pad5",
+   "type": "pad",
+   "label": "Pad 5",
+   "msg": "note",
+   "ch": 10,
+   "note": 40,
+   "group": "pad",
+   "color": "coral",
+   "verified": false
+  },
+  {
+   "id": "pad6",
+   "type": "pad",
+   "label": "Pad 6",
+   "msg": "note",
+   "ch": 10,
+   "note": 41,
+   "group": "pad",
+   "color": "coral",
+   "verified": false
+  },
+  {
+   "id": "pad7",
+   "type": "pad",
+   "label": "Pad 7",
+   "msg": "note",
+   "ch": 10,
+   "note": 42,
+   "group": "pad",
+   "color": "coral",
+   "verified": false
+  },
+  {
+   "id": "pad8",
+   "type": "pad",
+   "label": "Pad 8",
+   "msg": "note",
+   "ch": 10,
+   "note": 43,
+   "group": "pad",
+   "color": "coral",
+   "verified": false
+  },
+  {
+   "id": "k1",
+   "type": "knob",
+   "label": "K1",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 70,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k2",
+   "type": "knob",
+   "label": "K2",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 71,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k3",
+   "type": "knob",
+   "label": "K3",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 72,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k4",
+   "type": "knob",
+   "label": "K4",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 73,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k5",
+   "type": "knob",
+   "label": "K5",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 74,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k6",
+   "type": "knob",
+   "label": "K6",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 75,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k7",
+   "type": "knob",
+   "label": "K7",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 76,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k8",
+   "type": "knob",
+   "label": "K8",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 77,
+   "group": "knob",
+   "color": "amber"
+  }
+ ]
+}
