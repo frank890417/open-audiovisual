@@ -3,346 +3,586 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual — a web-native framework for audiovisual performance</title>
-<meta name="description" content="Input (MIDI · audio · chords · pose) → mapping → algorithmic worlds → output, with a timeline and a backstage monitor. Zero build, zero dependencies, MIT.">
-<meta property="og:title" content="open-audiovisual">
+<title>open-audiovisual · a web-native framework for audiovisual performance</title>
+<meta name="description" content="MIDI, microphones, chords, hands and phones become named signals, a mapping turns them into parameters, and your world draws and sounds them. A JavaScript framework for live audiovisual shows. Zero build, zero dependencies, MIT.">
+<link rel="canonical" href="https://openaudiovisual.com/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/">
+<link rel="alternate" type="text/markdown" href="./llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="open-audiovisual · a web-native framework for audiovisual performance">
 <meta property="og:description" content="Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. open-audiovisual gives you a show.">
-<meta property="og:url" content="https://openaudiovisual.com">
-<style>
-  :root { --bg:#0d1017; --panel:#10141f; --line:#1c2334; --tx:#cfd6e4; --dim:#8892a8;
-    --faint:#556; --blue:#2e6df6; --lblue:#7ea6ff; --gold:#ffd166; --green:#37c978; }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--tx);
-    font:15px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 80px; }
-  h1 { color:#fff; font-size: 34px; margin: 18px 0 6px; letter-spacing: -.01em; }
-  .tag { color: var(--gold); }
-  .tagline { color: var(--dim); font-size: 16px; margin: 0 0 26px; }
-  .tagline b { color: var(--tx); }
-  a { color: var(--lblue); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .cta { display:flex; gap:10px; flex-wrap:wrap; margin: 22px 0 40px; }
-  .btn { background: var(--blue); color:#fff; padding: 9px 18px; border-radius: 8px; font-weight:600; }
-  .btn.ghost { background: var(--panel); color: var(--tx); border: 1px solid var(--line); }
-  .btn:hover { text-decoration: none; filter: brightness(1.15); }
-  pre { background: var(--panel); border:1px solid var(--line); border-radius: 10px;
-    padding: 14px 18px; overflow-x: auto; color: var(--green); }
-  pre .c { color: var(--faint); }
-  .layers { background: var(--panel); border:1px solid var(--line); border-radius: 10px;
-    padding: 4px 18px; margin: 26px 0; }
-  .layers p { margin: 12px 0; }
-  .layers .l { color: var(--gold); }
-  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 26px 0; }
-  .card { background: var(--panel); border:1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
-  .card h3 { margin: 0 0 4px; font-size: 15px; }
-  .card p { margin: 0; color: var(--dim); font-size: 13px; }
-  h2 { color:#fff; font-size: 18px; margin: 40px 0 10px; }
-  .note { color: var(--faint); font-size: 13px; }
-  footer { margin-top: 56px; color: var(--faint); font-size: 13px; border-top: 1px solid var(--line); padding-top: 18px; }
-  .demo { display:grid; grid-template-columns: 1fr 290px; gap: 12px; margin: 14px 0 30px; }
-  .demo-main { display:flex; flex-direction:column; gap:8px; min-width:0; }
-  #demo-keys { overflow-x:auto; }
-  @media (max-width: 720px) { .demo { grid-template-columns: 1fr; } }
-  #demo-stage { position: relative; background:#000; border:1px solid var(--line); border-radius: 10px;
-    min-height: 260px; overflow: hidden; cursor: crosshair; }
-  .demo-side { display:flex; flex-direction: column; gap: 10px; }
-  .demo-hint { background: var(--panel); border:1px solid var(--line); border-radius: 10px;
-    padding: 10px 14px; font-size: 12.5px; color: var(--dim); }
-  .demo-hint b { color: var(--tx); }
-  .meters { background: var(--panel); border:1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
-  .m { display:grid; grid-template-columns: 110px 1fr; gap:8px; align-items:center; padding: 2px 0; }
-  .m label { font-size: 11px; color: var(--dim); }
-  .m.ovr label { color: var(--gold); }
-  .m .bar { height: 8px; background:#0d1017; border-radius:4px; overflow:hidden; }
-  .m .bar i { display:block; height:100%; width:0; background: var(--green); transition: width .06s linear; }
-  .m.ovr .bar i { background: var(--gold); }
-  .demo-note { font-size: 12px; color: var(--faint); }
-  .arch { width:100%; height:auto; margin: 14px 0 6px; }
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="tag">🎭 open-audiovisual</div>
-  <h1>A web-native framework for<br>audiovisual performance</h1>
-  <p class="tagline">Hydra gives you improvisation. cables gives you a platform. Tone gives you sound.<br><b>open-audiovisual gives you a show.</b></p>
-
-  <div class="cta">
-    <a class="btn" href="https://github.com/frank890417/open-audiovisual">GitHub →</a>
-    <a class="btn ghost" href="examples/01-hello-particles/">Live demo: hello particles</a>
-    <a class="btn ghost" href="examples/02-chord-garden/">chord garden</a>
-    <a class="btn ghost" href="examples/03-pose-field/">hand instrument 🖐</a>
-    <a class="btn ghost" href="examples/04-webtoe-stage/">webtoe stage</a>
-    <a class="btn ghost" href="examples/05-prebiotic-flake/">prebiotic flake ♪</a>
-    <a class="btn ghost" href="examples/06-cylinder-earth/">cylinder earth 🎤</a>
-    <a class="btn ghost" href="examples/07-firework-festival/">firework festival 🖐</a>
-  </div>
-
-  <!-- ══════ live demo — this hero IS the framework running ══════ -->
-  <h2 style="margin-top:0">Try it — right here</h2>
-  <div class="demo">
-    <div class="demo-main"><div id="demo-stage"></div><div id="demo-keys"></div></div>
-    <div class="demo-side">
-      <div class="demo-hint">▶ <b>play the piano</b> (or tick "keyboard" / "simulate performance") and <b>drag</b> the canvas.<br>
-        Notes fire <i>signals</i> → the mapper routes them to <i>params</i> → the world only sees params.</div>
-      <div class="meters">
-        <div class="m"><label>midi/note/on</label><div class="bar"><i id="m-note"></i></div></div>
-        <div class="m"><label>pointer/x</label><div class="bar"><i id="m-px"></i></div></div>
-        <div class="m"><label>pointer/energy</label><div class="bar"><i id="m-pe"></i></div></div>
-        <div class="m ovr"><label>→ param hue</label><div class="bar"><i id="m-hue"></i></div></div>
-      </div>
-      <div class="demo-note">This demo is ~50 lines using the real packages — <a href="https://github.com/frank890417/open-audiovisual/blob/main/index.html">view source</a>.</div>
-    </div>
-  </div>
-
-  <pre><span class="c"># zero build · zero dependencies · MIT</span>
-git clone https://github.com/frank890417/open-audiovisual.git
-cd open-audiovisual
-node serve.js   <span class="c"># → http://localhost:8080 (Chrome: WebMIDI + camera)</span></pre>
-
-  <!-- ══════ architecture, visually ══════ -->
-  <h2>The architecture</h2>
-  <svg class="arch" viewBox="0 0 860 620" role="img" aria-label="open-audiovisual architecture: input, mapping, world, output (video and audio branches) with timeline, console and monitor spines; WebToe as sister engine">
-    <defs>
-      <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
-        <path d="M0 0 L8 4 L0 8 z" fill="#2e6df6"/>
-      </marker>
-    </defs>
-    <style>
-      .bx { fill:#10141f; stroke:#1c2334; rx:10; }
-      .bx-in { stroke:#37c978; }
-      .bx-map { stroke:#2e6df6; }
-      .bx-world { stroke:#ffd166; }
-      .bx-out { stroke:#b47ee6; }
-      .bx-sub { fill:#0d1017; stroke:#2a3348; rx:8; }
-      .bx-spine { stroke:#2a3348; }
-      .tl { font:600 14px ui-monospace,monospace; fill:#fff; }
-      .tm { font:600 12px ui-monospace,monospace; fill:#cfd6e4; }
-      .ts { font:11px ui-monospace,monospace; fill:#8892a8; }
-      .tc { font:11px ui-monospace,monospace; fill:#556; }
-      .chip { fill:#0d1017; stroke:#1c2334; rx:6; }
-      .flow { stroke:#2e6df6; stroke-width:2; fill:none; marker-end:url(#arr);
-        stroke-dasharray:6 5; animation: dash 1.2s linear infinite; }
-      .flow-g { stroke:#37c978; }
-      @keyframes dash { to { stroke-dashoffset:-11; } }
-      .lbl { font:600 11px ui-monospace,monospace; }
-    </style>
-
-    <!-- L1 input -->
-    <rect class="bx bx-in" x="10" y="10" width="620" height="96" rx="10"/>
-    <text class="tl" x="26" y="36">L1 · INPUT</text>
-    <text class="tc" x="26" y="54">"what is happening"</text>
-    <rect class="chip" x="170" y="24" width="76" height="26" rx="6"/><text class="ts" x="190" y="41">midi</text>
-    <rect class="chip" x="254" y="24" width="76" height="26" rx="6"/><text class="ts" x="270" y="41">audio</text>
-    <rect class="chip" x="338" y="24" width="76" height="26" rx="6"/><text class="ts" x="354" y="41">chord</text>
-    <rect class="chip" x="422" y="24" width="70" height="26" rx="6"/><text class="ts" x="440" y="41">pose</text>
-    <rect class="chip" x="500" y="24" width="118" height="26" rx="6"/><text class="ts" x="508" y="41">keys + sim 🎹</text>
-    <text class="ts" x="170" y="72">→ named, normalized <tspan fill="#37c978">signals</tspan>: midi/cc/74 · chord/consonance · pose/hand/y</text>
-    <text class="tc" x="170" y="92">a knob, a hand, a QWERTY piano and a simulated performer are indistinguishable</text>
-
-    <!-- L2 mapping -->
-    <rect class="bx bx-map" x="10" y="136" width="620" height="72" rx="10"/>
-    <text class="tl" x="26" y="162">L2 · MAPPING</text>
-    <text class="tc" x="26" y="180">"what it means"</text>
-    <text class="ts" x="170" y="166">signal → param routes</text>
-    <text class="ts" x="170" y="186">curves · smoothing · many-to-many · live learn — knob ≡ hand</text>
-
-    <!-- L3 world -->
-    <rect class="bx bx-world" x="10" y="238" width="620" height="96" rx="10"/>
-    <text class="tl" x="26" y="264">L3 · WORLD</text>
-    <text class="tc" x="26" y="282">"how it behaves"</text>
-    <text class="ts" x="170" y="262">your algorithmic system — reads <tspan fill="#ffd166">params</tspan>, never inputs</text>
-    <rect class="bx-sub" x="170" y="274" width="215" height="48" rx="8"/>
-    <text class="tm" x="182" y="294">code world</text>
-    <text class="tc" x="182" y="312">p5 · three.js · canvas · …</text>
-    <rect class="bx-sub" x="397" y="274" width="220" height="48" rx="8"/>
-    <text class="tm" x="409" y="294">WebToe patch 🕸</text>
-    <text class="tc" x="409" y="312">node network · .toe import</text>
-
-    <!-- L4 output: video ∥ audio -->
-    <rect class="bx bx-out" x="10" y="364" width="620" height="150" rx="10"/>
-    <text class="tl" x="26" y="390">L4 · OUTPUT</text>
-    <text class="tc" x="26" y="408">"how it leaves"</text>
-    <rect class="bx-sub" x="170" y="380" width="215" height="118" rx="8"/>
-    <text class="tm" x="182" y="402">video</text>
-    <rect class="chip" x="182" y="412" width="86" height="24" rx="6"/><text class="ts" x="198" y="428">screen</text>
-    <rect class="chip" x="274" y="412" width="98" height="24" rx="6"/><text class="ts" x="284" y="428">future NDI</text>
-    <text class="tc" x="182" y="458">fullscreen stage ·</text>
-    <text class="tc" x="182" y="474">projection window</text>
-    <rect class="bx-sub" x="397" y="380" width="220" height="118" rx="8"/>
-    <text class="tm" x="409" y="402">audio</text>
-    <rect class="chip" x="409" y="412" width="92" height="24" rx="6"/><text class="ts" x="417" y="428">midi out</text>
-    <rect class="chip" x="507" y="412" width="100" height="24" rx="6"/><text class="ts" x="513" y="428">sound ♪ Tone</text>
-    <rect class="chip" x="409" y="442" width="92" height="24" rx="6"/><text class="ts" x="419" y="458">osc → udp</text>
-    <text class="tc" x="409" y="488">pluggable engines · sound/* params</text>
-    <text class="tc" x="170" y="510">→ Spat · Reaper · TouchDesigner · DAWs · lights — sound is performable state</text>
-
-    <!-- flows -->
-    <path class="flow flow-g" d="M320 106 L320 132"/>
-    <path class="flow" d="M320 208 L320 234"/>
-    <path class="flow" d="M320 334 L320 360"/>
-
-    <!-- spines -->
-    <rect class="bx bx-spine" x="660" y="10" width="190" height="150" rx="10"/>
-    <text class="tl" x="676" y="38">⏱ TIMELINE</text>
-    <text class="ts" x="676" y="62">param automation</text>
-    <text class="ts" x="676" y="80">scenes &amp; cues</text>
-    <text class="tc" x="676" y="106">drives L3+L4 baseline;</text>
-    <text class="tc" x="676" y="122">hands override it</text>
-    <path class="flow" d="M660 120 L634 160"/>
-
-    <rect class="bx bx-spine" x="660" y="180" width="190" height="150" rx="10"/>
-    <text class="tl" x="676" y="208">🎛 CONSOLE</text>
-    <text class="ts" x="676" y="232">director's desk</text>
-    <text class="ts" x="676" y="250">universal side panel</text>
-    <text class="tc" x="676" y="276">collapsible sections:</text>
-    <text class="tc" x="676" y="292">sound · params · signals</text>
-    <text class="tc" x="676" y="308">performance mode (T)</text>
-    <path class="flow" d="M660 255 L634 255"/>
-
-    <rect class="bx bx-spine" x="660" y="350" width="190" height="164" rx="10"/>
-    <text class="tl" x="676" y="378">📟 MONITOR</text>
-    <text class="ts" x="676" y="402">backstage on any</text>
-    <text class="ts" x="676" y="420">LAN device</text>
-    <text class="ts" x="676" y="438">clock · scene · fps</text>
-    <text class="ts" x="676" y="456">every signal live</text>
-    <path class="flow" d="M634 430 L656 430"/>
-
-    <!-- sister stack ribbon -->
-    <rect class="bx" x="10" y="540" width="840" height="44" rx="10"/>
-    <text class="tm" x="26" y="567">🕸 sister stack:</text>
-    <text class="ts" x="160" y="567">WebToe is the engine (node dataflow, .toe import) · open-audiovisual is the show — ext('name') binds a patch to the chassis</text>
-
-    <!-- legend -->
-    <text class="lbl" fill="#37c978" x="14" y="612">signals ↓</text>
-    <text class="lbl" fill="#2e6df6" x="120" y="612">routes ↓</text>
-    <text class="lbl" fill="#ffd166" x="216" y="612">params ↓</text>
-    <text class="lbl" fill="#b47ee6" x="320" y="612">render ∥ sing / send</text>
-    <text class="tc" x="620" y="612">three spines watch and drive everything</text>
-  </svg>
-
-  <div class="layers">
-    <p><span class="l">L1 INPUT</span> — MIDI · audio analysis · chord semantics · body pose → named, normalized <b>signals</b></p>
-    <p><span class="l">L2 MAPPING</span> — signal → param routes: curves · smoothing · many-to-many · live learn</p>
-    <p><span class="l">L3 WORLD</span> — your algorithmic system; reads params, never inputs. p5 / three / canvas / anything</p>
-    <p><span class="l">L4 OUTPUT</span> — screen · MIDI out · OSC → UDP bridge (Spat, Reaper, TouchDesigner, lights)</p>
-    <p><span class="l">⏱ TIMELINE</span> — param automation · scenes & cues · performance teleprompter</p>
-    <p><span class="l">📟 MONITOR</span> — backstage view on any LAN device: clock, scene, every signal, FPS</p>
-  </div>
-
-  <h2>Why</h2>
-  <p>Everything TouchDesigner-class tools do on a desktop, the browser now does with a URL — WebGL, Web MIDI, realtime audio analysis, on-device pose tracking. What everyone kept rebuilding was the <i>chassis</i>: MIDI plumbing, mapping UI, a timeline with cues, a backstage. This is that chassis, extracted from a real show — <a href="https://cheyuwu.com/exhibition/the-last-input">The Last Input</a> (IRCAM / C-LAB Taiwan Sound Lab 2026, 49.4-channel dome).</p>
-
-  <h2>Agent-native</h2>
-  <p>Worlds are visual code, and coding agents are good at code. The repo ships <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a> and a bundled <code>/create-world</code> skill: describe a performance in natural language ("a jellyfish world that blooms on consonant chords") and your agent writes a runnable World inside the chassis.</p>
-
-  <h2>Docs</h2>
-  <p>
-    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/architecture.md">Architecture</a> ·
-    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/writing-a-world.md">Writing a world</a> ·
-    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/signals.md">Signals reference</a> ·
-    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/show-control.md">Show control</a> ·
-    <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">Roadmap</a>
-  </p>
-
-  <p class="note">Demo notes: examples run right here on this static site — QWERTY keys A–L stand in for a MIDI keyboard. WebMIDI needs Chrome/Edge; the OSC bridge and backstage monitor are tiny local Node companions (<code>node packages/monitor/server.js</code>), so those two stay quiet on the hosted demos.</p>
-
-  <footer>MIT · <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a> · lineage: The Last Input → generalized as a public chassis · <a href="https://github.com/frank890417/open-audiovisual">github.com/frank890417/open-audiovisual</a></footer>
-</div>
-
+<meta property="og:url" content="https://openaudiovisual.com/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preload" href="./assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="./assets/home/home.css">
+<noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "open-audiovisual",
+  "alternateName": "OAV",
+  "description": "A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: inputs (MIDI, audio, chords, body pose, phones) publish named signals, a mapping layer routes them to parameters, and algorithmic worlds render and sound them, with a timeline, a director's console and a backstage monitor.",
+  "url": "https://openaudiovisual.com/",
+  "inLanguage": "en",
+  "codeRepository": "https://github.com/frank890417/open-audiovisual",
+  "license": "https://opensource.org/licenses/MIT",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "JavaScript"
+  },
+  "runtimePlatform": "Web browser",
+  "version": "0.1.0",
+  "author": {
+    "@type": "Person",
+    "name": "Che-Yu Wu",
+    "alternateName": "吳哲宇",
+    "url": "https://cheyuwu.com"
+  },
+  "keywords": [
+    "audiovisual performance",
+    "creative coding",
+    "Web MIDI",
+    "generative art",
+    "live visuals",
+    "OSC",
+    "show control",
+    "MCP"
+  ],
+  "image": "https://openaudiovisual.com/assets/home/og.png"
+}
+</script>
 <script type="importmap">
-{ "imports": {
+{
+  "imports": {
     "@openav/core": "./packages/core/index.js",
     "@openav/mapping": "./packages/mapping/index.js",
     "@openav/keys": "./packages/keys/index.js",
-    "@openav/stage": "./packages/stage/index.js"
-} }
+    "@openav/chord": "./packages/chord/index.js",
+    "@openav/stage": "./packages/stage/index.js",
+    "@openav/sound": "./packages/sound/index.js",
+    "@openav/midi": "./packages/midi/index.js",
+    "@openav/audio": "./packages/audio/index.js"
+  }
+}
 </script>
-<script type="module">
-// The landing demo, built with the real packages — the assembly below is the
-// whole framework idea in miniature: input → signals → mapper → params → world.
-import { Signals, Params, Loop } from '@openav/core';
-import { Mapper } from '@openav/mapping';
-import { mountKeys } from '@openav/keys';
-import { Stage, createCanvas } from '@openav/stage';
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
 
-const world = {
-  name: 'hello',
-  params: [
-    { key: 'hue', min: 0, max: 360, def: 205 },
-    { key: 'energy', min: 0, max: 1, def: 0.15 },
-  ],
+<header class="top">
+  <a class="brand" href="./" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="#play">Play</a>
+    <a href="#how">How it works</a>
+    <a href="#works">Works</a>
+    <a href="#start">Start</a>
+    <a href="#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <div class="langs" role="group" aria-label="Language">
+      <a href="./" hreflang="en" lang="en" data-lang="en" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="./zh/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ═════ 01 · the instrument: this hero IS the framework running ═════ -->
+  <section class="hero" id="play" aria-labelledby="hero-title">
+    <h1 id="hero-title"><span class="wordmark">open-<wbr>audiovisual</span> <span class="h1-sub">A web-native framework for audiovisual performance.</span></h1>
+    <div class="hero-grid">
+      <div class="hero-text">
+        <p class="lede">Keys, knobs, voices, hands and phones become named <em>signals</em>. A <em>mapping</em> turns signals into <em>parameters</em>. Your <em>world</em> reads the parameters and turns them into image and sound, in a browser tab, on a projector, on stage.</p>
+        <p class="eyebrow facts">v0.1 · MIT · zero build · zero dependencies</p>
+      </div>
+      <nav class="doors" aria-label="Where to start">
+        <a class="door door-1" href="#works"><span class="door-who">I perform</span><span class="door-what">See what it makes and play the nine works</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-2" href="#start"><span class="door-who">I write code</span><span class="door-what">Run it in a minute, then write a world</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-3" href="./llms.txt"><span class="door-who">I am an AI agent</span><span class="door-what">Read /llms.txt, then AGENTS.md</span><span class="door-arrow" aria-hidden="true">→</span></a>
+      </nav>
+    </div>
+
+    <div class="inst" id="instrument" tabindex="0" aria-labelledby="inst-title" aria-describedby="inst-help">
+      <h2 class="inst-title" id="inst-title"><span class="eyebrow">01 · Play</span> This instrument is the framework running</h2>
+      <div class="stage" id="stage" role="img" aria-label="Harmonograph: every note you play swings a pendulum at its pitch. A consonant chord draws a clean figure, a cluster draws a tangle.">
+        <noscript><img class="poster" src="./assets/home/poster.webp" width="1200" height="427" alt=""><p class="noscript">This instrument is the framework running live. Turn on JavaScript to play it.</p></noscript>
+        <span class="hud hud-tl">L3 world · harmonograph</span>
+        <span class="hud hud-tr"><span id="hud-fps">60</span> fps</span>
+        <span class="hud hud-br"><span id="hud-chord"></span><span id="hud-voices">0</span> voices</span>
+        <p class="status" id="inst-status" aria-live="polite"><span class="led" aria-hidden="true"></span><span id="status-text">Tap the keys or the stage, or press A to L, to play.</span></p>
+      </div>
+      <div class="bar">
+        <div class="switches" role="group" aria-label="Instrument switches">
+          <button type="button" class="sw" data-sw="auto" aria-pressed="false"><span class="led" aria-hidden="true"></span>Autoplay</button>
+          <button type="button" class="sw" data-sw="sound" aria-pressed="false"><span class="led" aria-hidden="true"></span>Sound</button>
+          <button type="button" class="sw" data-sw="midi" aria-pressed="false"><span class="led" aria-hidden="true"></span>MIDI</button>
+          <button type="button" class="sw" data-sw="mic" aria-pressed="false"><span class="led" aria-hidden="true"></span>Mic</button>
+        </div>
+      </div>
+      <aside class="bay" aria-labelledby="bay-title">
+        <div class="bay-head"><h3 id="bay-title">Patch bay</h3><span class="bay-live"><span class="led" aria-hidden="true"></span>live</span></div>
+        <div class="bay-cols"><p><b>Signals</b> what is happening</p><p><b>Params</b> what the world listens to</p></div>
+        <div class="bay-grid" id="bay">
+          <ul class="bay-src">
+            <li data-sig="midi/note/on" data-kind="pulse"><code>midi/note/on</code><span class="v" aria-hidden="true"></span><span class="to">→ world (event)</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="chord/consonance"><code>chord/consonance</code><span class="v" aria-hidden="true"></span><span class="to">→ order</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="pointer/x"><code>pointer/x</code><span class="v" aria-hidden="true"></span><span class="to">→ hue</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="pointer/y"><code>pointer/y</code><span class="v" aria-hidden="true"></span><span class="to">→ twist</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="midi/cc/1" data-device="midi"><code>midi/cc/1</code><span class="v" aria-hidden="true"></span><span class="to">→ twist</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="audio/rms" data-device="mic"><code>audio/rms</code><span class="v" aria-hidden="true"></span><span class="to">→ energy</span><i class="jack" aria-hidden="true"></i></li>
+          </ul>
+          <svg class="bay-wires" id="bay-wires" aria-hidden="true" focusable="false"></svg>
+          <ul class="bay-dst">
+            <li data-param="@world"><i class="jack" aria-hidden="true"></i><code>world (event)</code></li>
+            <li data-param="order"><i class="jack" aria-hidden="true"></i><code>order</code><span class="v" aria-hidden="true"></span></li>
+            <li data-param="hue"><i class="jack" aria-hidden="true"></i><code>hue</code><span class="v" aria-hidden="true"></span></li>
+            <li data-param="twist"><i class="jack" aria-hidden="true"></i><code>twist</code><span class="v" aria-hidden="true"></span></li>
+            <li data-param="energy"><i class="jack" aria-hidden="true"></i><code>energy</code><span class="v" aria-hidden="true"></span></li>
+          </ul>
+        </div>
+        <p class="bay-legend">Each wire is a route in the mapper, drawn from its real data. The world reads only the right-hand column, so you can rewire the left without touching it.</p>
+        <p class="bay-wait"><i aria-hidden="true"></i>dimmed: waiting for a device</p>
+      </aside>
+      <canvas class="roll" id="roll" aria-hidden="true"></canvas>
+      <div class="keys" id="keys" role="group" aria-label="Piano keys"></div>
+      <p class="keys-hint" id="inst-help">A–L play · Z/X octave · drag the stage</p>
+    </div>
+    <p class="inst-caption">The world on this stage is a harmonograph, the pendulum drawing machine that turned musical intervals into figures. Each note you play swings one pendulum at its pitch. The chord analyzer reads what you hold and sends its consonance through one route, <code>chord/consonance → order</code>: a triad draws a clean figure, a cluster draws a tangle. <a href="https://github.com/frank890417/open-audiovisual/blob/main/assets/home/home.js">Read the source of this instrument →</a></p>
+  </section>
+
+  <!-- ═════ 02 · how it works, in plain words ═════ -->
+  <section class="sec" id="how" aria-labelledby="how-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">02 · How it works</p>
+      <h2 id="how-title">Four layers, kept apart</h2>
+      <p class="sec-lede">A performance has four parts: something happens, it means something, a world reacts, and the result leaves the browser. open-audiovisual keeps the four apart, so you can swap any one of them and keep the rest.</p>
+    </header>
+    <ol class="layers">
+      <li class="layer layer-l1">
+        <p class="layer-tag"><span>L1</span> Input</p>
+        <p class="layer-quote">“what is happening”</p>
+        <p class="layer-text">A MIDI key, a microphone, a chord, a hand in front of the camera, a phone tilted in the air. Each one becomes a <em>signal</em>: a name and a number, usually between 0 and 1.</p>
+        <p class="layer-spec"><code><span class="k">pointer/x</span> = <b data-live-sig="pointer/x">0.50</b></code><small>from the instrument above</small></p>
+        <p class="layer-pkgs"><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/midi">midi</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/audio">audio</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/chord">chord</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/pose">pose</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/keys">keys</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/drums">drums</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/remote">remote</a></p>
+      </li>
+      <li class="layer layer-l2">
+        <p class="layer-tag"><span>L2</span> Mapping</p>
+        <p class="layer-quote">“what it means”</p>
+        <p class="layer-text">Routes connect signals to <em>params</em>, each with a curve, a range and smoothing. One knob can drive three params. Press learn, move anything, and it is wired.</p>
+        <p class="layer-spec"><code><span class="k">pointer/x</span> → <span class="k">hue</span> <span class="c">smooth 0.25</span></code><small>from the instrument above</small></p>
+        <p class="layer-pkgs"><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/mapping">mapping</a></p>
+      </li>
+      <li class="layer layer-l3">
+        <p class="layer-tag"><span>L3</span> World</p>
+        <p class="layer-quote">“how it behaves”</p>
+        <p class="layer-text">Your piece. It reads params, never inputs, and draws with whatever you like: canvas, p5, three.js, a WebToe node patch.</p>
+        <p class="layer-spec"><code><span class="k">hue</span> = <b data-live-param="hue">14</b></code><small>from the instrument above</small></p>
+        <p class="layer-pkgs"><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/stage">stage</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/world-webtoe">world-webtoe</a></p>
+      </li>
+      <li class="layer layer-l4">
+        <p class="layer-tag"><span>L4</span> Output</p>
+        <p class="layer-quote">“how it leaves”</p>
+        <p class="layer-text">The screen, and sound: a synth in the page, MIDI out to hardware and DAWs, OSC to Spat, Reaper, TouchDesigner or lights.</p>
+        <p class="layer-spec"><code><span class="k">screen</span> · <b data-live-fps>60</b> fps</code><small>from the instrument above</small></p>
+        <p class="layer-pkgs"><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/sound">sound</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/osc">osc</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/midi">midi</a></p>
+      </li>
+    </ol>
+
+    <div class="how-grid">
+      <div>
+        <h3>Around the four layers</h3>
+        <dl class="spines">
+          <div><dt>Timeline</dt><dd>The score: param automation, scenes and cues. When a hand grabs a control, the score yields.</dd></div>
+          <div><dt>Console</dt><dd>The director's desk: transport, sliders, learn, meters, and a performance mode on T.</dd></div>
+          <div><dt>Monitor</dt><dd>Backstage on any phone or laptop on the network: clock, scene, every signal, FPS, and an alarm when the stage feed drops.</dd></div>
+          <div><dt>Phones</dt><dd>Phones and iPads as controllers: tilt and knock sensors, a keyboard, and a control surface grown from the world's params.</dd></div>
+        </dl>
+      </div>
+      <div>
+        <h3>Two rules</h3>
+        <ol class="rules">
+          <li><strong>Signals are the only currency of input.</strong> A knob, a raised hand and a chord's consonance are equal citizens with names. That equality is what lets you mix them.</li>
+          <li><strong>Worlds never know who is performing them.</strong> A world reads params. The same world can be played by a pianist, a dancer, or an automation curve.</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="glossary-title">Words used on this page</h3>
+    <dl class="glossary">
+      <div><dt><dfn>Signal</dfn></dt><dd>A named value that says what is happening, such as <code>midi/cc/74</code> or <code>audio/rms</code>. Usually 0 to 1. Pulse signals carry events, like a note being struck.</dd></div>
+      <div><dt><dfn>Param</dfn></dt><dd>A value the world listens to, such as <code>hue</code> or <code>bloom</code>. The world declares it. The timeline, a slider or a route sets it.</dd></div>
+      <div><dt><dfn>Mapping, route</dfn></dt><dd>A wire from a signal to a param, with a curve, a range and smoothing. Routes are data, saved as JSON, so a wiring can travel between venues.</dd></div>
+      <div><dt><dfn>World</dfn></dt><dd>The piece itself: an object with <code>params</code>, <code>init</code>, <code>update</code>, <code>render</code> and <code>dispose</code>. The only part you have to write.</dd></div>
+      <div><dt><dfn>Timeline</dfn></dt><dd>Automation and scenes over time. The baseline that hands and knobs override.</dd></div>
+      <div><dt><dfn>Show</dfn></dt><dd>A world plus one <code>createShow()</code> call, which assembles inputs, mapping, timeline, console, sound and backstage.</dd></div>
+    </dl>
+  </section>
+
+  <!-- ═════ 03 · works ═════ -->
+  <section class="sec" id="works" aria-labelledby="works-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">03 · Works</p>
+      <h2 id="works-title">Nine works you can open now</h2>
+      <p class="sec-lede">Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments. In any example: Space plays the timeline, T is performance mode, F is fullscreen.</p>
+    </header>
+    <ol class="works">
+      <li class="work" id="work-01">
+        <div class="work-img"><img src="./assets/home/works/01.webp" width="800" height="500" loading="lazy" decoding="async" alt="Bursts of thin green and red particle trails falling on black."></div>
+        <div class="work-label">
+          <p class="work-n">01</p>
+          <h3><a class="work-link" href="./examples/01-hello-particles/">Hello particles</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> on-screen piano · QWERTY · simulated performer</p>
+          <p class="work-text">The smallest complete app. Read its <code>main.js</code> from top to bottom and you know the framework.</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/01-hello-particles">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-02">
+        <div class="work-img"><img src="./assets/home/works/02.webp" width="800" height="500" loading="lazy" decoding="async" alt="Rows of thin green and blue stems with bright tips growing from the bottom edge."></div>
+        <div class="work-label">
+          <p class="work-n">02</p>
+          <h3><a class="work-link" href="./examples/02-chord-garden/">Chord garden</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> on-screen piano · QWERTY · simulated performer</p>
+          <p class="work-text">A triad makes the garden bloom, a cluster makes it decay. The world listens to chord signals, never to keys. From The Last Input.</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/02-chord-garden">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-03">
+        <div class="work-img"><img src="./assets/home/works/03.webp" width="800" height="500" loading="lazy" decoding="async" alt="A blue and white mandala of fine layered lines."></div>
+        <div class="work-label">
+          <p class="work-n">03</p>
+          <h3><a class="work-link" href="./examples/03-pose-field/">Hand instrument</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> camera (hands) · on-screen piano · drum machine</p>
+          <p class="work-text">Fingers as an instrument: one pinch sets tightness, another grows arms, both fists bloom. Four pattern families: mandala, lissajous, spirograph, web.</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/03-pose-field">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-04">
+        <div class="work-img"><img src="./assets/home/works/04.webp" width="800" height="500" loading="lazy" decoding="async" alt="A node editor with noise, level and output nodes beside a grey cloud texture."></div>
+        <div class="work-label">
+          <p class="work-n">04</p>
+          <h3><a class="work-link" href="./examples/04-webtoe-stage/">WebToe stage</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> on-screen piano · simulated performer</p>
+          <p class="work-text">The world is a WebToe node patch, TouchDesigner-style, performed through <code>ext()</code> bindings. WebToe is the engine, open-audiovisual is the show.</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/04-webtoe-stage">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-05">
+        <div class="work-img"><img src="./assets/home/works/05.webp" width="800" height="500" loading="lazy" decoding="async" alt="A glowing yellow ring of jagged petals with small circles inside."></div>
+        <div class="work-label">
+          <p class="work-n">05</p>
+          <h3><a class="work-link" href="./examples/05-prebiotic-flake/">Prebiotic flake</a></h3>
+          <p class="work-credit">Che-Yu Wu, <cite>230616 Prebiotic Flake</cite>, 2023</p>
+          <p class="work-in"><span>Plays with</span> on-screen piano · simulated performer · sound</p>
+          <p class="work-text">A 2023 MIDI daily sketch replayed through the framework. The drawing code is the original. The flakes now have a voice through Tone.js.</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/05-prebiotic-flake">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-06">
+        <div class="work-img"><img src="./assets/home/works/06.webp" width="800" height="500" loading="lazy" decoding="async" alt="A sphere packed with colourful cylinders seen end-on, like umbrellas."></div>
+        <div class="work-label">
+          <p class="work-n">06</p>
+          <h3><a class="work-link" href="./examples/06-cylinder-earth/">Cylinder earth</a></h3>
+          <p class="work-credit">Che-Yu Wu, <cite>200412 3D Cylinder Earth</cite>, 2020</p>
+          <p class="work-in"><span>Plays with</span> microphone · drum machine</p>
+          <p class="work-text">A 2020 voice-controlled WebGL sketch. Lows pump the towers, highs shimmer the spin, a kick turns the palette.</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/06-cylinder-earth">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-07">
+        <div class="work-img"><img src="./assets/home/works/07.webp" width="800" height="500" loading="lazy" decoding="async" alt="Cyan and violet fireworks bursting over drooping coloured trails."></div>
+        <div class="work-label">
+          <p class="work-n">07</p>
+          <h3><a class="work-link" href="./examples/07-firework-festival/">Firework festival</a></h3>
+          <p class="work-credit">Che-Yu Wu, <cite>210807 Firework 花火大會</cite>, 2021</p>
+          <p class="work-in"><span>Plays with</span> camera (hands) · on-screen piano</p>
+          <p class="work-text">A 2021 sketch. Close a finger pinch and a firework launches from that hand. The particle system is the 2021 code.</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/07-firework-festival">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-08">
+        <div class="work-img"><img src="./assets/home/works/08.webp" width="800" height="500" loading="lazy" decoding="async" alt="Blue and yellow streaks exploding outward from the lower centre."></div>
+        <div class="work-label">
+          <p class="work-n">08</p>
+          <h3><a class="work-link" href="./examples/08-remote-surface/">Remote surface</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> phone or iPad · on-screen piano</p>
+          <p class="work-text">The phone is the instrument panel. The world only declares params, and the control surface on the phone grows from them. Needs <code>node serve.js</code> on your network.</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/08-remote-surface">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-09">
+        <div class="work-img"><img src="./assets/home/works/09.webp" width="800" height="500" loading="lazy" decoding="async" alt="A spiral of pink and blue dots above an on-screen MIDI keyboard controller."></div>
+        <div class="work-label">
+          <p class="work-n">09</p>
+          <h3><a class="work-link" href="./examples/09-midi-controllers/">MIDI controllers</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> MIDI controller, or the on-screen one</p>
+          <p class="work-text">On-screen MiniLab 3, LPD8, Launchpad and nanoKONTROL2. Plug the real one in and the on-screen one moves with your hands.</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/09-midi-controllers">Source ↗</a></p>
+        </div>
+      </li>
+    </ol>
+    <p class="works-note">Works 05 to 07 are artworks by Che-Yu Wu (2020 to 2023), used here as demos. The framework is MIT. The artworks remain © the artist, all rights reserved.</p>
+  </section>
+
+  <!-- ═════ 04 · start ═════ -->
+  <section class="sec" id="start" aria-labelledby="start-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">04 · Start</p>
+      <h2 id="start-title">Run it in a minute</h2>
+      <p class="sec-lede">No install, no build, no dependencies. Clone, run one file, open the browser. Use Chrome or Edge for Web MIDI and the camera.</p>
+    </header>
+    <div class="start-grid">
+      <div class="start-run">
+        
+      <div class="term ">
+        <div class="term-bar"><span>terminal</span><button type="button" class="copy" data-copy="cmd-run">Copy</button></div>
+        <pre id="cmd-run"><code>git clone https://github.com/frank890417/open-audiovisual.git
+cd open-audiovisual
+node serve.js        <span class="tc"># → http://localhost:8080</span></code></pre>
+      </div>
+        <p>Then open <code>http://localhost:8080/examples/01-hello-particles/</code> and read its <code>main.js</code>.</p>
+        
+      <div class="term term-quiet">
+        <div class="term-bar"><span>terminal</span><button type="button" class="copy" data-copy="cmd-companions">Copy</button></div>
+        <pre id="cmd-companions"><code>node packages/monitor/server.js           <span class="tc"># backstage monitor (:7457)</span>
+node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge</span></code></pre>
+      </div>
+        <p class="note">Optional, each in its own terminal: the backstage monitor and the OSC bridge to UDP.</p>
+      </div>
+      <div class="start-world">
+        <h3>A world is the only part you write</h3>
+        <p>Declare what the piece can be performed with (params), react to events, draw. Hand it to <code>createShow()</code> and the rest arrives with it: piano, mapping, timeline, console, sound, backstage. Put it next to an <code>index.html</code> with the import map, as in example 01.</p>
+        
+      <div class="term ">
+        <div class="term-bar"><span>examples/10-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">Copy</button></div>
+        <pre id="code-world"><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
+
+<span class="tk">const</span> pulse = {
+  name: <span class="ts">'pulse'</span>,
+  <span class="tc">// what the piece is performed WITH: sliders, knobs, hands, the timeline</span>
+  params: [{ key: <span class="ts">'size'</span>, min: 10, max: 200, def: 40 }],
   init({ container, signals }) {
-    this.view = createCanvas(container);
-    this.parts = [];
-    signals.on('midi/note/on', ({ note, vel }) => {
-      const { w, h } = this.view.fit();
-      this.burst(((note - 57) / 20) * w || w * Math.random(), h * 0.6, 8 + vel * 30, (note % 12) * 30);
-    });
+    <span class="tk">this</span>.view = createCanvas(container);
+    <span class="tk">this</span>.r = 0;
+    <span class="tc">// a struck note is an event, so it may come straight from a signal</span>
+    signals.on(<span class="ts">'midi/note/on'</span>, ({ vel }) =&gt; { <span class="tk">this</span>.r = 120 * vel; });
   },
-  burst(x, y, n, hs = 0) {
-    for (let i = 0; i < n; i++) {
-      const a = Math.random() * Math.PI * 2, sp = 1.5 + Math.random() * 5;
-      this.parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 2, life: 1, hs });
-    }
-    if (this.parts.length > 2500) this.parts.splice(0, this.parts.length - 2500);
-  },
-  update(dt, s) {
-    this.s = s;
-    // ambient drizzle scales with the energy param (driven by pointer via the mapper)
-    if (Math.random() < s.energy * 0.5) { const { w, h } = this.view.fit(); this.burst(Math.random() * w, h * Math.random(), 2, 120); }
-    for (const p of this.parts) { p.vy += 12 * dt; p.x += p.vx; p.y += p.vy; p.life -= dt * 0.5; }
-    this.parts = this.parts.filter(p => p.life > 0);
-  },
+  update(dt, state) { <span class="tk">this</span>.r = Math.max(0, <span class="tk">this</span>.r - dt * 90); <span class="tk">this</span>.size = state.size; },
   render() {
-    const { ctx } = this.view, { w, h } = this.view.fit(), s = this.s || {};
-    ctx.fillStyle = 'rgba(0,0,0,0.16)'; ctx.fillRect(0, 0, w, h);
-    for (const p of this.parts) {
-      ctx.fillStyle = `hsla(${(s.hue + p.hs) % 360},90%,${40 + p.life * 35}%,${p.life})`;
-      ctx.beginPath(); ctx.arc(p.x, p.y, 3.5 * p.life, 0, 7); ctx.fill();
-    }
+    <span class="tk">const</span> { ctx } = <span class="tk">this</span>.view, { w, h } = <span class="tk">this</span>.view.fit();
+    ctx.fillStyle = <span class="ts">'#000'</span>; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = <span class="ts">'#fff'</span>;
+    ctx.beginPath(); ctx.arc(w / 2, h / 2, <span class="tk">this</span>.size + <span class="tk">this</span>.r, 0, 7); ctx.fill();
   },
+  dispose() { <span class="tk">this</span>.view.dispose(); },
 };
 
-const signals = new Signals();
-const params = new Params();
-const stage = new Stage({ container: document.getElementById('demo-stage'), params, signals });
-stage.register(world); await stage.activate('hello');
+<span class="tk">await</span> createShow({ world: pulse, modules: { sound: true } });</code></pre>
+      </div>
+        <p><a class="more" href="https://github.com/frank890417/open-audiovisual/blob/main/docs/writing-a-world.md">Writing a world →</a></p>
+      </div>
+    </div>
 
-// mapping layer: pointer position/energy → world params (declared as data)
-const mapper = new Mapper({ signals, params });
-mapper.addRoute({ source: 'pointer/x', target: 'hue', smooth: 0.15 });
-mapper.addRoute({ source: 'pointer/energy', target: 'energy', smooth: 0.3 });
+    <h3 class="pkgs-title">Twenty packages, by layer</h3>
+    <p class="pkgs-lede">Plain ES modules. Import what you need through an import map, or let <code>createShow()</code> assemble them.</p>
+    <div class="pkgs">
+      <div class="pkg-group pg-l1">
+        <h4>Input</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/midi"><code>@openav/midi</code></a><span>Web MIDI in and out, many devices, on-screen controller profiles</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/audio"><code>@openav/audio</code></a><span>Microphone analysis: loudness, bands, brightness, onsets, drum hits</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/chord"><code>@openav/chord</code></a><span>Chord detection for performance: consonance, triads, clusters</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/pose"><code>@openav/pose</code></a><span>Body and 21-point hand tracking from the camera, on the device</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/keys"><code>@openav/keys</code></a><span>On-screen piano, QWERTY playing and a simulated performer</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/drums"><code>@openav/drums</code></a><span>Synth kit and step sequencer that publish analyzer-shaped signals</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-l2">
+        <h4>Mapping</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/mapping"><code>@openav/mapping</code></a><span>Signal to param routes: curves, smoothing, many-to-many, learn</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-l3">
+        <h4>World</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/stage"><code>@openav/stage</code></a><span>The world shell: lifecycle and params, no renderer opinion</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/world-webtoe"><code>@openav/world-webtoe</code></a><span>Perform a WebToe node patch as a world</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-l4">
+        <h4>Output</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/sound"><code>@openav/sound</code></a><span>Synthesis in the page behind a small engine contract, Tone.js first</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/osc"><code>@openav/osc</code></a><span>OSC out of the browser through a small Node bridge to UDP</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-sp">
+        <h4>Spines</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/timeline"><code>@openav/timeline</code></a><span>Param automation, scenes and cues: the score of the show</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/console"><code>@openav/console</code></a><span>The director's desk and performance mode</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/monitor"><code>@openav/monitor</code></a><span>Backstage view for any device on the network</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-sp">
+        <h4>Phones and tablets</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/relay"><code>@openav/relay</code></a><span>Zero-dependency room relay for phones and iPads</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/surface"><code>@openav/surface</code></a><span>TouchOSC-style widgets and autoSurface(params)</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/remote"><code>@openav/remote</code></a><span>The phone and iPad app: sensors, keyboard, control surface</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-sig">
+        <h4>Glue and agents</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/core"><code>@openav/core</code></a><span>Signals, Params and Loop: what every layer speaks</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/show"><code>@openav/show</code></a><span>createShow(): one call assembles the whole shell</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/mcp"><code>@openav/mcp</code></a><span>MCP server for coding agents: list, read, scaffold, check</span></li>
+        </ul>
+      </div>
+    </div>
 
-// "input layer": the piano (screen / QWERTY capture / simulated performer)
-let noteFlash = 0;
-signals.on('midi/note/on', () => { noteFlash = 1; });
-const keys = mountKeys(document.getElementById('demo-keys'), { signals, base: 60, octaves: 2 });
-const el = document.getElementById('demo-stage');
-let lastPX = 0.5, lastPT = 0;
-const pointer = (e) => {
-  const r = el.getBoundingClientRect();
-  const x = Math.min(1, Math.max(0, ((e.touches?.[0] ?? e).clientX - r.left) / r.width));
-  const now = performance.now();
-  signals.set('pointer/x', x);
-  signals.set('pointer/energy', Math.min(1, Math.abs(x - lastPX) / Math.max(0.016, (now - lastPT) / 1000) * 0.5));
-  lastPX = x; lastPT = now;
-};
-el.addEventListener('pointermove', pointer);
-el.addEventListener('pointerdown', (e) => { pointer(e); signals.pulse('midi/note/on', { note: 60 + Math.round(24 * lastPX), vel: 0.9 }); noteFlash = 1; });
+    <h3 class="docs-title">Documentation</h3>
+    
+    <ul class="docs">
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/architecture.md">Architecture</a><span>The layer contracts, in detail</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/writing-a-world.md">Writing a world</a><span>The world interface and the rule people break</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/signals.md">Signals reference</a><span>Every signal the built-in inputs publish</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/show-control.md">Show control</a><span>Timeline, scenes, performance mode, monitor, OSC</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">Roadmap</a><span>What a real show asked for next</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a><span>Conventions for AI coding agents</span></li>
+    </ul>
+  </section>
 
-// meters: make the signal layer visible
-const $ = (id) => document.getElementById(id);
-const loop = new Loop((dt) => {
-  keys.update(dt);
-  mapper.update(dt);
-  const state = stage.frame(dt, {});
-  noteFlash = Math.max(0, noteFlash - dt * 3);
-  $('m-note').style.width = (noteFlash * 100) + '%';
-  $('m-px').style.width = (signals.get('pointer/x') ?? 0) * 100 + '%';
-  $('m-pe').style.width = (signals.get('pointer/energy') ?? 0) * 100 + '%';
-  $('m-hue').style.width = (state.hue / 360) * 100 + '%';
-});
-loop.start();
-</script>
+  <!-- ═════ 05 · for AI agents ═════ -->
+  <section class="sec sec-agents" id="agents" aria-labelledby="agents-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">05 · For AI agents</p>
+      <h2 id="agents-title">For AI agents</h2>
+      <p class="sec-lede">Worlds are code, and coding agents are good at code. A person describes a performance in words, the agent writes the world, and the framework runs the show.</p>
+    </header>
+    <div class="agents-grid">
+      <div>
+        <h3>Paste this into Claude Code, Cursor or any coding agent</h3>
+        <div class="term term-prompt">
+          <div class="term-bar"><span>prompt</span><button type="button" class="copy" data-copy="agent-prompt">Copy</button></div>
+          <pre id="agent-prompt"><code>Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
+Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
+Create examples/10-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+
+  &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
+
+Rules from AGENTS.md: continuous control goes through params, and the mapper routes signals to them. Never edit packages/* to make one example look right.
+Done means: npm test passes, and the new example loads with zero console errors.</code></pre>
+        </div>
+      </div>
+      <div>
+        <h3>Connect the MCP server</h3>
+        <p>The repo ships a zero-dependency MCP server over stdio. Claude Code picks it up from <code>.mcp.json</code> when you open the repo. For other clients, point at the file:</p>
+        
+      <div class="term ">
+        <div class="term-bar"><span>mcp.json</span><button type="button" class="copy" data-copy="mcp-json">Copy</button></div>
+        <pre id="mcp-json"><code>{
+  <span class="ts">"mcpServers"</span>: {
+    <span class="ts">"openav"</span>: {
+      <span class="ts">"command"</span>: <span class="ts">"node"</span>,
+      <span class="ts">"args"</span>: [<span class="ts">"/path/to/open-audiovisual/packages/mcp/server.js"</span>]
+    }
+  }
+}</code></pre>
+      </div>
+        <h4>Tools</h4>
+        <dl class="tools">
+          <div><dt><code>list_examples</code></dt><dd>which works exist, with a one-line summary each</dd></div>
+          <div><dt><code>read_doc</code></dt><dd>architecture, writing-a-world, signals, show-control, agents</dd></div>
+          <div><dt><code>scaffold_world</code></dt><dd>copy a donor example into a new numbered example</dd></div>
+          <div><dt><code>run_checks</code></dt><dd>run the test suite, the same gate CI uses</dd></div>
+        </dl>
+      </div>
+    </div>
+    <h3>Machine-readable</h3>
+    <ul class="files">
+      <li><a href="./llms.txt">/llms.txt</a><span>what this is, the concepts, every doc and example, in llmstxt.org format</span></li>
+      <li><a href="./llms-full.txt">/llms-full.txt</a><span>README, AGENTS.md and the docs in one file</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a><span>the layer contracts and the two rules an agent must not break</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/.claude/skills/create-world/SKILL.md">/create-world</a><span>a Claude Code skill that scaffolds a world from a description</span></li>
+      <li><code>application/ld+json</code><span>this page carries SoftwareSourceCode JSON-LD</span></li>
+      <li><a href="./zh/" hreflang="zh-Hant">/zh/</a><span>this page in Traditional Chinese</span></li>
+    </ul>
+  </section>
+
+  <!-- ═════ 06 · lineage ═════ -->
+  <section class="sec" id="lineage" aria-labelledby="lineage-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">06 · Lineage</p>
+      <h2 id="lineage-title">Extracted from a show</h2>
+      
+    </header>
+    <div class="lineage-grid">
+      <div class="prose">
+        <p>The core of open-audiovisual comes from <a href="https://cheyuwu.com/exhibition/the-last-input"><cite>The Last Input</cite></a> (Che-Yu Wu, 2026), a 49.4-channel spatial sound performance at the IRCAM residency × C-LAB in Taipei, where a pianist feeds a living digital world. Its timeline, chord semantics, many-to-many MIDI learn and OSC batching drove a real 14-scene show before they were generalized here. The rule since then: the framework only grows features a real show asked for.</p>
+        <p>The mapping layer descends from <a href="http://libmapper.github.io/">libmapper</a>'s research on signal namespaces. The sister project <a href="https://github.com/frank890417/WebToe">WebToe</a> is a node-based dataflow engine that imports TouchDesigner projects. WebToe is the engine, open-audiovisual is the show.</p>
+      </div>
+      <figure class="pull">
+        <blockquote><p>Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. <strong>open-audiovisual gives you a show.</strong></p></blockquote>
+        <figcaption>README</figcaption>
+      </figure>
+    </div>
+    <h3>Next, from the roadmap</h3>
+    <ol class="next">
+      <li>Record the full signal stream of a performance and replay it into any world</li>
+      <li>npm packages, and a docs site built on the framework itself</li>
+      <li>A WebGPU world adapter for particle and agent worlds</li>
+      <li>An NDI gateway so browser output enters professional video pipelines</li>
+      <li>Several machines sharing one signal space over WebRTC</li>
+      <li>Agents that subscribe to signals and play alongside people</li>
+    </ol>
+    <p><a class="more" href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">Full roadmap →</a></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="./llms.txt">llms.txt</a>
+      <a href="./llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="oav-i18n">{"statusSim":"The simulated performer is playing. Your turn: tap the keys, or press A to L.","statusYou":"You are playing. Drag on the stage to bend hue and twist.","statusIdle":"Tap the keys or the stage, or press A to L, to play.","midiNone":"No MIDI device found. Plug one in and press MIDI again.","midiOn":"MIDI on: {n} device(s). Mod wheel (CC 1) also drives twist.","micOn":"Mic on. Loudness now drives energy.","micDenied":"The microphone is blocked in this browser.","soundLoading":"Loading the synth…","soundOn":"Sound on (Tone.js).","consonance":"consonance","copy":"Copy","copied":"Copied","eventTarget":"world (event)"}</script>
+<script type="module" src="./assets/home/home.js"></script>
 </body>
 </html>

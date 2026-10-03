@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>open-audiovisual｜網頁原生的影音表演框架</title>
+<meta name="description" content="MIDI、麥克風、和弦、手勢和手機，都變成有名字的訊號，經過映射接到參數，交給你的世界去畫、去發聲。一套給現場影音表演用的 JavaScript 框架。零建置、零相依、MIT 授權。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/">
+<link rel="alternate" type="text/markdown" href="../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="open-audiovisual｜網頁原生的影音表演框架">
+<meta property="og:description" content="Hydra 給你即興，cables 給你平台，Tone 給你聲音。open-audiovisual 給你一場演出。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/home/home.css">
+<noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "open-audiovisual",
+  "alternateName": "OAV",
+  "description": "網頁原生、零建置、零相依的 JavaScript 影音表演框架：MIDI、音訊、和弦、肢體姿態與手機等輸入發出有名字的訊號，映射層把訊號接到參數，演算的世界依參數產生畫面與聲音，另有時間軸、導演控台與後台監看。",
+  "url": "https://openaudiovisual.com/zh/",
+  "inLanguage": "zh-Hant-TW",
+  "codeRepository": "https://github.com/frank890417/open-audiovisual",
+  "license": "https://opensource.org/licenses/MIT",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "JavaScript"
+  },
+  "runtimePlatform": "Web browser",
+  "version": "0.1.0",
+  "author": {
+    "@type": "Person",
+    "name": "Che-Yu Wu",
+    "alternateName": "吳哲宇",
+    "url": "https://cheyuwu.com"
+  },
+  "keywords": [
+    "audiovisual performance",
+    "creative coding",
+    "Web MIDI",
+    "generative art",
+    "live visuals",
+    "OSC",
+    "show control",
+    "MCP"
+  ],
+  "image": "https://openaudiovisual.com/assets/home/og.png"
+}
+</script>
+<script type="importmap">
+{
+  "imports": {
+    "@openav/core": "../packages/core/index.js",
+    "@openav/mapping": "../packages/mapping/index.js",
+    "@openav/keys": "../packages/keys/index.js",
+    "@openav/chord": "../packages/chord/index.js",
+    "@openav/stage": "../packages/stage/index.js",
+    "@openav/sound": "../packages/sound/index.js",
+    "@openav/midi": "../packages/midi/index.js",
+    "@openav/audio": "../packages/audio/index.js"
+  }
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="./" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="#play">彈奏</a>
+    <a href="#how">運作方式</a>
+    <a href="#works">作品</a>
+    <a href="#start">開始</a>
+    <a href="#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../" hreflang="en" lang="en" data-lang="en">EN</a><span aria-hidden="true">|</span><a href="./" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ═════ 01 · the instrument: this hero IS the framework running ═════ -->
+  <section class="hero" id="play" aria-labelledby="hero-title">
+    <h1 id="hero-title"><span class="wordmark">open-<wbr>audiovisual</span> <span class="h1-sub">網頁原生的影音表演框架。</span></h1>
+    <div class="hero-grid">
+      <div class="hero-text">
+        <p class="lede">琴鍵、旋鈕、人聲、手勢、手機，都會變成有名字的<em>訊號</em>（signal）。<em>映射</em>（mapping）把訊號接到<em>參數</em>（param），你的<em>世界</em>（world）讀這些參數，變成畫面和聲音。在瀏覽器分頁、投影機、舞台上都一樣。</p>
+        <p class="eyebrow facts">v0.1 · MIT 授權 · 零建置 · 零相依</p>
+      </div>
+      <nav class="doors" aria-label="從哪裡開始">
+        <a class="door door-1" href="#works"><span class="door-who">我做表演</span><span class="door-what">看看它做得出什麼，直接玩九件作品</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-2" href="#start"><span class="door-who">我寫程式</span><span class="door-what">一分鐘跑起來，再寫自己的世界</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-3" href="../llms.txt"><span class="door-who">我是 AI 代理</span><span class="door-what">先讀 /llms.txt，再讀 AGENTS.md</span><span class="door-arrow" aria-hidden="true">→</span></a>
+      </nav>
+    </div>
+
+    <div class="inst" id="instrument" tabindex="0" aria-labelledby="inst-title" aria-describedby="inst-help">
+      <h2 class="inst-title" id="inst-title"><span class="eyebrow">01 · 彈奏</span> 這台樂器就是框架本身在跑</h2>
+      <div class="stage" id="stage" role="img" aria-label="擺錘繪圖機：你彈的每個音，會依音高擺動一支擺錘。和諧的和弦畫出乾淨的圖形，音堆畫出糾纏的線。">
+        <noscript><img class="poster" src="../assets/home/poster.webp" width="1200" height="427" alt=""><p class="noscript">這台樂器是框架即時在跑的樣子，開啟 JavaScript 就能彈。</p></noscript>
+        <span class="hud hud-tl">L3 世界 · 擺錘繪圖機</span>
+        <span class="hud hud-tr"><span id="hud-fps">60</span> fps</span>
+        <span class="hud hud-br"><span id="hud-chord"></span><span id="hud-voices">0</span> 聲部</span>
+        <p class="status" id="inst-status" aria-live="polite"><span class="led" aria-hidden="true"></span><span id="status-text">點琴鍵或畫面，或按電腦鍵盤 A 到 L，就能彈。</span></p>
+      </div>
+      <div class="bar">
+        <div class="switches" role="group" aria-label="樂器開關">
+          <button type="button" class="sw" data-sw="auto" aria-pressed="false"><span class="led" aria-hidden="true"></span>自動演奏</button>
+          <button type="button" class="sw" data-sw="sound" aria-pressed="false"><span class="led" aria-hidden="true"></span>聲音</button>
+          <button type="button" class="sw" data-sw="midi" aria-pressed="false"><span class="led" aria-hidden="true"></span>MIDI</button>
+          <button type="button" class="sw" data-sw="mic" aria-pressed="false"><span class="led" aria-hidden="true"></span>麥克風</button>
+        </div>
+      </div>
+      <aside class="bay" aria-labelledby="bay-title">
+        <div class="bay-head"><h3 id="bay-title">跳線盤</h3><span class="bay-live"><span class="led" aria-hidden="true"></span>即時</span></div>
+        <div class="bay-cols"><p><b>訊號</b> 正在發生什麼</p><p><b>參數</b> 世界在聽什麼</p></div>
+        <div class="bay-grid" id="bay">
+          <ul class="bay-src">
+            <li data-sig="midi/note/on" data-kind="pulse"><code>midi/note/on</code><span class="v" aria-hidden="true"></span><span class="to">→ 世界（事件）</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="chord/consonance"><code>chord/consonance</code><span class="v" aria-hidden="true"></span><span class="to">→ order</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="pointer/x"><code>pointer/x</code><span class="v" aria-hidden="true"></span><span class="to">→ hue</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="pointer/y"><code>pointer/y</code><span class="v" aria-hidden="true"></span><span class="to">→ twist</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="midi/cc/1" data-device="midi"><code>midi/cc/1</code><span class="v" aria-hidden="true"></span><span class="to">→ twist</span><i class="jack" aria-hidden="true"></i></li>
+            <li data-sig="audio/rms" data-device="mic"><code>audio/rms</code><span class="v" aria-hidden="true"></span><span class="to">→ energy</span><i class="jack" aria-hidden="true"></i></li>
+          </ul>
+          <svg class="bay-wires" id="bay-wires" aria-hidden="true" focusable="false"></svg>
+          <ul class="bay-dst">
+            <li data-param="@world"><i class="jack" aria-hidden="true"></i><code>世界（事件）</code></li>
+            <li data-param="order"><i class="jack" aria-hidden="true"></i><code>order</code><span class="v" aria-hidden="true"></span></li>
+            <li data-param="hue"><i class="jack" aria-hidden="true"></i><code>hue</code><span class="v" aria-hidden="true"></span></li>
+            <li data-param="twist"><i class="jack" aria-hidden="true"></i><code>twist</code><span class="v" aria-hidden="true"></span></li>
+            <li data-param="energy"><i class="jack" aria-hidden="true"></i><code>energy</code><span class="v" aria-hidden="true"></span></li>
+          </ul>
+        </div>
+        <p class="bay-legend">每一條線都是映射器裡的一條路由（route），照它真正的資料畫出來。世界只讀右邊那一欄，左邊怎麼重接，世界都不用改。</p>
+        <p class="bay-wait"><i aria-hidden="true"></i>變暗的線：等裝置接上</p>
+      </aside>
+      <canvas class="roll" id="roll" aria-hidden="true"></canvas>
+      <div class="keys" id="keys" role="group" aria-label="琴鍵"></div>
+      <p class="keys-hint" id="inst-help">A 到 L 彈奏 · Z／X 換八度 · 拖曳畫面</p>
+    </div>
+    <p class="inst-caption">舞台上的世界是一台擺錘繪圖機（harmonograph），用擺錘把音程畫成圖形的老機器。你彈的每個音，會依音高擺動一支擺錘。和弦分析器讀你按住的音，把協和度經過一條路由 <code>chord/consonance → order</code> 送進世界：三和弦畫出乾淨的圖形，音堆畫出一團糾纏的線。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/assets/home/home.js">看這台樂器的原始碼 →</a></p>
+  </section>
+
+  <!-- ═════ 02 · how it works, in plain words ═════ -->
+  <section class="sec" id="how" aria-labelledby="how-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">02 · 運作方式</p>
+      <h2 id="how-title">四層，各自分開</h2>
+      <p class="sec-lede">一場表演有四個部分：發生了什麼、它代表什麼、世界怎麼反應、結果怎麼離開瀏覽器。open-audiovisual 讓這四層各自分開，換掉其中一層，其他三層照常運作。</p>
+    </header>
+    <ol class="layers">
+      <li class="layer layer-l1">
+        <p class="layer-tag"><span>L1</span> 輸入</p>
+        <p class="layer-quote">“正在發生什麼”</p>
+        <p class="layer-text">MIDI 琴鍵、麥克風、一個和弦、鏡頭前的一隻手、在空中傾斜的手機。每一種都會變成<em>訊號</em>：一個名字加一個數值，通常在 0 到 1 之間。</p>
+        <p class="layer-spec"><code><span class="k">pointer/x</span> = <b data-live-sig="pointer/x">0.50</b></code><small>數值來自上面那台樂器</small></p>
+        <p class="layer-pkgs"><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/midi">midi</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/audio">audio</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/chord">chord</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/pose">pose</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/keys">keys</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/drums">drums</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/remote">remote</a></p>
+      </li>
+      <li class="layer layer-l2">
+        <p class="layer-tag"><span>L2</span> 映射</p>
+        <p class="layer-quote">“它代表什麼”</p>
+        <p class="layer-text">路由把訊號接到<em>參數</em>，每一條都能設曲線、範圍和平滑。一顆旋鈕可以同時推三個參數。按下 learn，隨便動一樣東西，線就接好了。</p>
+        <p class="layer-spec"><code><span class="k">pointer/x</span> → <span class="k">hue</span> <span class="c">smooth 0.25</span></code><small>數值來自上面那台樂器</small></p>
+        <p class="layer-pkgs"><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/mapping">mapping</a></p>
+      </li>
+      <li class="layer layer-l3">
+        <p class="layer-tag"><span>L3</span> 世界</p>
+        <p class="layer-quote">“系統怎麼表現”</p>
+        <p class="layer-text">你的作品。它只讀參數，不碰輸入，用什麼畫都可以：canvas、p5、three.js、WebToe 節點網路。</p>
+        <p class="layer-spec"><code><span class="k">hue</span> = <b data-live-param="hue">14</b></code><small>數值來自上面那台樂器</small></p>
+        <p class="layer-pkgs"><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/stage">stage</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/world-webtoe">world-webtoe</a></p>
+      </li>
+      <li class="layer layer-l4">
+        <p class="layer-tag"><span>L4</span> 輸出</p>
+        <p class="layer-quote">“怎麼離開瀏覽器”</p>
+        <p class="layer-text">螢幕，還有聲音：頁面裡的合成器、送到硬體和 DAW 的 MIDI、送到 Spat、Reaper、TouchDesigner 或燈光的 OSC。</p>
+        <p class="layer-spec"><code><span class="k">screen</span> · <b data-live-fps>60</b> fps</code><small>數值來自上面那台樂器</small></p>
+        <p class="layer-pkgs"><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/sound">sound</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/osc">osc</a> <a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/midi">midi</a></p>
+      </li>
+    </ol>
+
+    <div class="how-grid">
+      <div>
+        <h3>四層之外</h3>
+        <dl class="spines">
+          <div><dt>時間軸 Timeline</dt><dd>整場演出的樂譜：參數自動化、場景與 cue。手一抓住控制，樂譜就讓位。</dd></div>
+          <div><dt>控台 Console</dt><dd>導演桌：播放控制、推桿、learn、儀表，按 T 進入演出模式。</dd></div>
+          <div><dt>後台監看 Monitor</dt><dd>同一個網路裡的手機或筆電都能當後台：時鐘、場景、每個訊號、FPS，舞台畫面斷線時會警示。</dd></div>
+          <div><dt>手機 Phones</dt><dd>手機和 iPad 當控制器：傾斜和敲擊感測、琴鍵，還有依世界的參數自動長出來的控制面板。</dd></div>
+        </dl>
+      </div>
+      <div>
+        <h3>兩條規則</h3>
+        <ol class="rules">
+          <li><strong>訊號是輸入唯一的通用貨幣。</strong> 一顆旋鈕、一隻舉起的手、一個和弦的協和度，在框架裡地位相同，各有名字。所以它們可以混在一起用。</li>
+          <li><strong>世界永遠不知道誰在演奏它。</strong> 世界只讀參數。同一個世界，可以由鋼琴家、舞者，或一條自動化曲線來演奏。</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="glossary-title">這一頁用到的詞</h3>
+    <dl class="glossary">
+      <div><dt><dfn>訊號 Signal</dfn></dt><dd>一個有名字的數值，說明正在發生什麼，例如 <code>midi/cc/74</code>、<code>audio/rms</code>。通常在 0 到 1 之間。脈衝訊號（pulse）帶的是事件，例如一個音被按下。</dd></div>
+      <div><dt><dfn>參數 Param</dfn></dt><dd>世界在聽的數值，例如 <code>hue</code>、<code>bloom</code>。由世界宣告，由時間軸、推桿或路由來設定。</dd></div>
+      <div><dt><dfn>映射、路由 Mapping, route</dfn></dt><dd>一條從訊號接到參數的線，可以設曲線、範圍和平滑。路由本身就是資料，存成 JSON，接線方式可以帶到下一個場地。</dd></div>
+      <div><dt><dfn>世界 World</dfn></dt><dd>作品本身：一個帶有 <code>params</code>、<code>init</code>、<code>update</code>、<code>render</code>、<code>dispose</code> 的物件。整套框架裡，唯一一定要自己寫的部分。</dd></div>
+      <div><dt><dfn>時間軸 Timeline</dfn></dt><dd>隨時間變化的自動化與場景。手和旋鈕一動，就會蓋過它。</dd></div>
+      <div><dt><dfn>演出 Show</dfn></dt><dd>一個世界，加上一次 <code>createShow()</code> 呼叫，輸入、映射、時間軸、控台、聲音和後台就一起組好。</dd></div>
+    </dl>
+  </section>
+
+  <!-- ═════ 03 · works ═════ -->
+  <section class="sec" id="works" aria-labelledby="works-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">03 · 作品</p>
+      <h2 id="works-title">九件作品，現在就能打開</h2>
+      <p class="sec-lede">每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。進到任何一個範例：空白鍵播放時間軸，T 是演出模式，F 是全螢幕。</p>
+    </header>
+    <ol class="works">
+      <li class="work" id="work-01">
+        <div class="work-img"><img src="../assets/home/works/01.webp" width="800" height="500" loading="lazy" decoding="async" alt="黑底上，粒子拖著細細的綠色與紅色尾巴落下。"></div>
+        <div class="work-label">
+          <p class="work-n">01</p>
+          <h3><a class="work-link" href="../examples/01-hello-particles/">哈囉粒子</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> 螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者</p>
+          <p class="work-text">最小的完整範例。把 <code>main.js</code> 從頭讀到尾，整套框架就懂了。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/01-hello-particles">原始碼 ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-02">
+        <div class="work-img"><img src="../assets/home/works/02.webp" width="800" height="500" loading="lazy" decoding="async" alt="細細的綠色與藍色莖從底部長起，頂端發亮。"></div>
+        <div class="work-label">
+          <p class="work-n">02</p>
+          <h3><a class="work-link" href="../examples/02-chord-garden/">和弦花園</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> 螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者</p>
+          <p class="work-text">彈三和弦，花園開花，彈音堆，花園枯萎。世界聽的是和弦訊號，從來不看琴鍵。來自《The Last Input》。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/02-chord-garden">原始碼 ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-03">
+        <div class="work-img"><img src="../assets/home/works/03.webp" width="800" height="500" loading="lazy" decoding="async" alt="藍白色細線層層疊成的曼陀羅。"></div>
+        <div class="work-label">
+          <p class="work-n">03</p>
+          <h3><a class="work-link" href="../examples/03-pose-field/">手的樂器</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> 鏡頭（手）· 螢幕鋼琴 · 鼓機</p>
+          <p class="work-text">手指就是樂器：一組捏合控制鬆緊，另一組長出手臂，兩手握拳就綻放。四種圖案輪流切換：曼陀羅、利薩如、萬花尺、蛛網。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/03-pose-field">原始碼 ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-04">
+        <div class="work-img"><img src="../assets/home/works/04.webp" width="800" height="500" loading="lazy" decoding="async" alt="節點編輯器裡有 noise、level、out 三個節點，旁邊是灰色雲霧材質。"></div>
+        <div class="work-label">
+          <p class="work-n">04</p>
+          <h3><a class="work-link" href="../examples/04-webtoe-stage/">WebToe 舞台</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> 螢幕鋼琴 · 模擬演奏者</p>
+          <p class="work-text">這個世界是一張 WebToe 節點網路，操作方式接近 TouchDesigner，透過 <code>ext()</code> 綁定來演奏。WebToe 是引擎，open-audiovisual 是演出。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/04-webtoe-stage">原始碼 ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-05">
+        <div class="work-img"><img src="../assets/home/works/05.webp" width="800" height="500" loading="lazy" decoding="async" alt="發光的黃色鋸齒花瓣圍成一圈，中間有小圓圈。"></div>
+        <div class="work-label">
+          <p class="work-n">05</p>
+          <h3><a class="work-link" href="../examples/05-prebiotic-flake/">Prebiotic Flake</a></h3>
+          <p class="work-credit">吳哲宇，<cite>230616 Prebiotic Flake</cite>，2023</p>
+          <p class="work-in"><span>演奏方式</span> 螢幕鋼琴 · 模擬演奏者 · 聲音</p>
+          <p class="work-text">2023 年的一件 MIDI 每日創作，搬進框架重新演奏。繪圖程式碼保持原樣，雪花現在透過 Tone.js 發出聲音。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/05-prebiotic-flake">原始碼 ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-06">
+        <div class="work-img"><img src="../assets/home/works/06.webp" width="800" height="500" loading="lazy" decoding="async" alt="一顆球體擠滿彩色圓柱，從端面看去像一把把傘。"></div>
+        <div class="work-label">
+          <p class="work-n">06</p>
+          <h3><a class="work-link" href="../examples/06-cylinder-earth/">Cylinder Earth</a></h3>
+          <p class="work-credit">吳哲宇，<cite>200412 3D Cylinder Earth</cite>，2020</p>
+          <p class="work-in"><span>演奏方式</span> 麥克風 · 鼓機</p>
+          <p class="work-text">2020 年用聲音控制的 WebGL 作品。低頻推動柱體，高頻讓旋轉閃爍，大鼓一下就換一組配色。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/06-cylinder-earth">原始碼 ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-07">
+        <div class="work-img"><img src="../assets/home/works/07.webp" width="800" height="500" loading="lazy" decoding="async" alt="青色和紫色的煙火，在垂落的彩色尾跡上炸開。"></div>
+        <div class="work-label">
+          <p class="work-n">07</p>
+          <h3><a class="work-link" href="../examples/07-firework-festival/">花火大會</a></h3>
+          <p class="work-credit">吳哲宇，<cite>210807 Firework 花火大會</cite>，2021</p>
+          <p class="work-in"><span>演奏方式</span> 鏡頭（手）· 螢幕鋼琴</p>
+          <p class="work-text">2021 年的作品。手指一捏合，煙火就從那隻手的位置升空。粒子系統是 2021 年的原始程式碼。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/07-firework-festival">原始碼 ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-08">
+        <div class="work-img"><img src="../assets/home/works/08.webp" width="800" height="500" loading="lazy" decoding="async" alt="藍色和黃色的光束，從畫面下方中央向外爆開。"></div>
+        <div class="work-label">
+          <p class="work-n">08</p>
+          <h3><a class="work-link" href="../examples/08-remote-surface/">遠端控制面板</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> 手機或 iPad · 螢幕鋼琴</p>
+          <p class="work-text">手機就是樂器面板。世界只宣告參數，手機上的控制面板依參數自動長出來。需要在你的網路裡跑 <code>node serve.js</code>。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/08-remote-surface">原始碼 ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-09">
+        <div class="work-img"><img src="../assets/home/works/09.webp" width="800" height="500" loading="lazy" decoding="async" alt="粉紅與藍色圓點排成螺旋，下方是螢幕上的 MIDI 鍵盤控制器。"></div>
+        <div class="work-label">
+          <p class="work-n">09</p>
+          <h3><a class="work-link" href="../examples/09-midi-controllers/">MIDI 控制器</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> MIDI 控制器，或螢幕上那一台</p>
+          <p class="work-text">螢幕上有 MiniLab 3、LPD8、Launchpad、nanoKONTROL2。接上實體控制器，螢幕上那台會跟著你的手一起動。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/09-midi-controllers">原始碼 ↗</a></p>
+        </div>
+      </li>
+    </ol>
+    <p class="works-note">05 到 07 是吳哲宇 2020 到 2023 年的作品，在這裡當作示範。框架採 MIT 授權，作品的著作權仍屬藝術家，保留一切權利。</p>
+  </section>
+
+  <!-- ═════ 04 · start ═════ -->
+  <section class="sec" id="start" aria-labelledby="start-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">04 · 開始</p>
+      <h2 id="start-title">一分鐘跑起來</h2>
+      <p class="sec-lede">不用安裝、不用建置、沒有相依套件。clone 下來，跑一個檔案，打開瀏覽器。要用 Web MIDI 和鏡頭，請用 Chrome 或 Edge。</p>
+    </header>
+    <div class="start-grid">
+      <div class="start-run">
+        
+      <div class="term ">
+        <div class="term-bar"><span>terminal</span><button type="button" class="copy" data-copy="cmd-run">複製</button></div>
+        <pre id="cmd-run"><code>git clone https://github.com/frank890417/open-audiovisual.git
+cd open-audiovisual
+node serve.js        <span class="tc"># → http://localhost:8080</span></code></pre>
+      </div>
+        <p>接著打開 <code>http://localhost:8080/examples/01-hello-particles/</code>，讀它的 <code>main.js</code>。</p>
+        
+      <div class="term term-quiet">
+        <div class="term-bar"><span>terminal</span><button type="button" class="copy" data-copy="cmd-companions">複製</button></div>
+        <pre id="cmd-companions"><code>node packages/monitor/server.js           <span class="tc"># backstage monitor (:7457)</span>
+node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge</span></code></pre>
+      </div>
+        <p class="note">需要的話，各開一個終端機：後台監看伺服器，以及把 OSC 送到 UDP 的橋接。</p>
+      </div>
+      <div class="start-world">
+        <h3>你只需要寫一個世界</h3>
+        <p>宣告作品能被什麼演奏（參數），對事件做反應，然後畫出來。交給 <code>createShow()</code>，其他部分一起到位：鋼琴、映射、時間軸、控台、聲音、後台。旁邊放一個帶 import map 的 <code>index.html</code>，照範例 01 的寫法。</p>
+        
+      <div class="term ">
+        <div class="term-bar"><span>examples/10-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">複製</button></div>
+        <pre id="code-world"><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
+
+<span class="tk">const</span> pulse = {
+  name: <span class="ts">'pulse'</span>,
+  <span class="tc">// what the piece is performed WITH: sliders, knobs, hands, the timeline</span>
+  params: [{ key: <span class="ts">'size'</span>, min: 10, max: 200, def: 40 }],
+  init({ container, signals }) {
+    <span class="tk">this</span>.view = createCanvas(container);
+    <span class="tk">this</span>.r = 0;
+    <span class="tc">// a struck note is an event, so it may come straight from a signal</span>
+    signals.on(<span class="ts">'midi/note/on'</span>, ({ vel }) =&gt; { <span class="tk">this</span>.r = 120 * vel; });
+  },
+  update(dt, state) { <span class="tk">this</span>.r = Math.max(0, <span class="tk">this</span>.r - dt * 90); <span class="tk">this</span>.size = state.size; },
+  render() {
+    <span class="tk">const</span> { ctx } = <span class="tk">this</span>.view, { w, h } = <span class="tk">this</span>.view.fit();
+    ctx.fillStyle = <span class="ts">'#000'</span>; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = <span class="ts">'#fff'</span>;
+    ctx.beginPath(); ctx.arc(w / 2, h / 2, <span class="tk">this</span>.size + <span class="tk">this</span>.r, 0, 7); ctx.fill();
+  },
+  dispose() { <span class="tk">this</span>.view.dispose(); },
+};
+
+<span class="tk">await</span> createShow({ world: pulse, modules: { sound: true } });</code></pre>
+      </div>
+        <p><a class="more" href="https://github.com/frank890417/open-audiovisual/blob/main/docs/writing-a-world.md">怎麼寫一個世界 →</a></p>
+      </div>
+    </div>
+
+    <h3 class="pkgs-title">二十個套件，依層分類</h3>
+    <p class="pkgs-lede">全部是原生 ES module。用 import map 引入需要的套件，或交給 <code>createShow()</code> 組裝。</p>
+    <div class="pkgs">
+      <div class="pkg-group pg-l1">
+        <h4>輸入</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/midi"><code>@openav/midi</code></a><span>Web MIDI 輸入與輸出，支援多台裝置與螢幕上的控制器</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/audio"><code>@openav/audio</code></a><span>麥克風分析：音量、頻段、亮度、起音、鼓點</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/chord"><code>@openav/chord</code></a><span>為演出設計的和弦偵測：協和度、三和弦、音堆</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/pose"><code>@openav/pose</code></a><span>用鏡頭追蹤身體與手的 21 個點，全部在本機運算</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/keys"><code>@openav/keys</code></a><span>螢幕鋼琴、電腦鍵盤演奏，以及模擬演奏者</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/drums"><code>@openav/drums</code></a><span>合成鼓組與步進音序器，發出和音訊分析同樣形狀的訊號</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-l2">
+        <h4>映射</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/mapping"><code>@openav/mapping</code></a><span>訊號到參數的路由：曲線、平滑、多對多、learn</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-l3">
+        <h4>世界</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/stage"><code>@openav/stage</code></a><span>世界的外殼：管生命週期和參數，不限定繪圖方式</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/world-webtoe"><code>@openav/world-webtoe</code></a><span>把 WebToe 節點網路當成世界來演奏</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-l4">
+        <h4>輸出</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/sound"><code>@openav/sound</code></a><span>頁面裡的合成器，背後是精簡的引擎介面，先支援 Tone.js</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/osc"><code>@openav/osc</code></a><span>透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-sp">
+        <h4>時間軸、控台、監看</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/timeline"><code>@openav/timeline</code></a><span>參數自動化、場景與 cue：整場演出的樂譜</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/console"><code>@openav/console</code></a><span>導演控台與演出模式</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/monitor"><code>@openav/monitor</code></a><span>網路裡任何裝置都能看的後台畫面</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-sp">
+        <h4>手機與平板</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/relay"><code>@openav/relay</code></a><span>零相依的房間中繼，讓手機和 iPad 連進來</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/surface"><code>@openav/surface</code></a><span>類似 TouchOSC 的控制元件，以及 autoSurface(params)</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/remote"><code>@openav/remote</code></a><span>手機與 iPad 端的 app：感測器、琴鍵、控制面板</span></li>
+        </ul>
+      </div>
+      <div class="pkg-group pg-sig">
+        <h4>核心與代理</h4>
+        <ul>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/core"><code>@openav/core</code></a><span>Signals、Params、Loop：每一層共用的語言</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/show"><code>@openav/show</code></a><span>createShow()：一次呼叫組好整個外殼</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/mcp"><code>@openav/mcp</code></a><span>給程式代理用的 MCP 伺服器：列出、閱讀、建立、檢查</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="docs-title">文件</h3>
+    <p class="note">文件目前只有英文版。</p>
+    <ul class="docs">
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/architecture.md">架構</a><span>每一層的介面約定，完整說明</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/writing-a-world.md">寫一個世界</a><span>世界的介面，以及最常被打破的那條規則</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/signals.md">訊號一覽</a><span>內建輸入會發出的所有訊號</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/show-control.md">演出控制</a><span>時間軸、場景、演出模式、後台監看、OSC</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">路線圖</a><span>真實演出接下來要求的功能</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a><span>給 AI 程式代理的約定</span></li>
+    </ul>
+  </section>
+
+  <!-- ═════ 05 · for AI agents ═════ -->
+  <section class="sec sec-agents" id="agents" aria-labelledby="agents-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">05 · 給 AI 代理</p>
+      <h2 id="agents-title">給 AI 代理</h2>
+      <p class="sec-lede">世界就是程式碼，程式代理（coding agent）很會寫程式。人用文字描述一場表演，代理寫出世界，框架把演出跑起來。</p>
+    </header>
+    <div class="agents-grid">
+      <div>
+        <h3>把這段貼給 Claude Code、Cursor 或任何程式代理</h3>
+        <div class="term term-prompt">
+          <div class="term-bar"><span>prompt</span><button type="button" class="copy" data-copy="agent-prompt">複製</button></div>
+          <pre id="agent-prompt"><code>Clone https://github.com/frank890417/open-audiovisual，先讀 AGENTS.md。
+執行 `node serve.js`，打開 http://localhost:8080/examples/01-hello-particles/，看最小的完整演出長什麼樣子。
+把 01-hello-particles 複製成 examples/10-&lt;名稱&gt;/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：
+
+  &lt;描述這場表演，例如「一個遇到和諧和弦就綻放的水母世界」&gt;
+
+AGENTS.md 的規則：連續控制一律走參數，由 mapper 把訊號接過去。不要為了讓某個範例好看去改 packages/*。
+完成的條件：npm test 通過，新範例載入時主控台零錯誤。</code></pre>
+        </div>
+      </div>
+      <div>
+        <h3>接上 MCP 伺服器</h3>
+        <p>repo 內附一個零相依、走 stdio 的 MCP 伺服器。在 repo 裡打開 Claude Code，會自動從 <code>.mcp.json</code> 讀到它。其他客戶端，把路徑指到這個檔案：</p>
+        
+      <div class="term ">
+        <div class="term-bar"><span>mcp.json</span><button type="button" class="copy" data-copy="mcp-json">複製</button></div>
+        <pre id="mcp-json"><code>{
+  <span class="ts">"mcpServers"</span>: {
+    <span class="ts">"openav"</span>: {
+      <span class="ts">"command"</span>: <span class="ts">"node"</span>,
+      <span class="ts">"args"</span>: [<span class="ts">"/path/to/open-audiovisual/packages/mcp/server.js"</span>]
+    }
+  }
+}</code></pre>
+      </div>
+        <h4>工具</h4>
+        <dl class="tools">
+          <div><dt><code>list_examples</code></dt><dd>有哪些作品，每件附一行摘要</dd></div>
+          <div><dt><code>read_doc</code></dt><dd>架構、寫一個世界、訊號、演出控制、代理約定</dd></div>
+          <div><dt><code>scaffold_world</code></dt><dd>拿一個範例當底，建立新的編號範例</dd></div>
+          <div><dt><code>run_checks</code></dt><dd>跑測試，和 CI 是同一道關卡</dd></div>
+        </dl>
+      </div>
+    </div>
+    <h3>給機器讀的</h3>
+    <ul class="files">
+      <li><a href="../llms.txt">/llms.txt</a><span>這是什麼、核心概念、所有文件與範例，llmstxt.org 格式</span></li>
+      <li><a href="../llms-full.txt">/llms-full.txt</a><span>README、AGENTS.md 和所有文件合成一個檔</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a><span>每一層的介面約定，以及代理不能打破的兩條規則</span></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/.claude/skills/create-world/SKILL.md">/create-world</a><span>Claude Code 技能：從一段描述建立一個世界</span></li>
+      <li><code>application/ld+json</code><span>這一頁帶有 SoftwareSourceCode 的 JSON-LD</span></li>
+      <li><a href="../" hreflang="en">/</a><span>這一頁的英文版</span></li>
+    </ul>
+  </section>
+
+  <!-- ═════ 06 · lineage ═════ -->
+  <section class="sec" id="lineage" aria-labelledby="lineage-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">06 · 來歷</p>
+      <h2 id="lineage-title">從一場演出裡抽出來</h2>
+      
+    </header>
+    <div class="lineage-grid">
+      <div class="prose">
+        <p>open-audiovisual 的核心來自<a href="https://cheyuwu.com/zh/exhibition/the-last-input">《The Last Input 終局之前》</a>（吳哲宇，2026），IRCAM 聲鬥陣 × C-LAB 在台北的 49.4 聲道空間聲響演出，演奏者用鋼琴餵養一個活著的數位世界。時間軸、和弦語意、多對多的 MIDI learn、OSC 批次傳送，都先撐過一整場十四個場景的演出，才整理成這裡的通用框架。從那之後的規則：框架只長真實演出要求過的功能。</p>
+        <p>映射層的想法，承接 <a href="http://libmapper.github.io/">libmapper</a> 對訊號命名空間的研究。姊妹專案 <a href="https://github.com/frank890417/WebToe">WebToe</a> 是節點式的資料流引擎，可以匯入 TouchDesigner 專案。WebToe 負責引擎，open-audiovisual 負責演出。</p>
+      </div>
+      <figure class="pull">
+        <blockquote><p>Hydra 給你即興，cables 給你平台，Tone 給你聲音。<strong>open-audiovisual 給你一場演出。</strong></p></blockquote>
+        <figcaption>README</figcaption>
+      </figure>
+    </div>
+    <h3>接下來，摘自路線圖</h3>
+    <ol class="next">
+      <li>錄下一場演出完整的訊號流，再播給任何一個世界</li>
+      <li>發布 npm 套件，用這套框架本身做文件網站</li>
+      <li>WebGPU 世界轉接，給粒子與群體代理類的世界</li>
+      <li>NDI 閘道，讓瀏覽器的畫面進入專業影像流程</li>
+      <li>多台電腦透過 WebRTC 共用同一個訊號空間</li>
+      <li>訂閱訊號、和人一起演奏的 AI 演奏者</li>
+    </ol>
+    <p><a class="more" href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">完整路線圖 →</a></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../llms.txt">llms.txt</a>
+      <a href="../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="oav-i18n">{"statusSim":"模擬演奏者正在彈。換你了：點琴鍵，或按電腦鍵盤 A 到 L。","statusYou":"現在是你在彈。在畫面上拖曳，可以改色相和扭轉。","statusIdle":"點琴鍵或畫面，或按電腦鍵盤 A 到 L，就能彈。","midiNone":"找不到 MIDI 裝置。接上之後，再按一次 MIDI。","midiOn":"MIDI 已開啟，{n} 個裝置。調變輪（CC 1）也會帶動扭轉。","micOn":"麥克風已開啟，音量現在帶動能量。","micDenied":"這個瀏覽器擋下了麥克風。","soundLoading":"正在載入合成器…","soundOn":"聲音已開啟（Tone.js）。","consonance":"協和度","copy":"複製","copied":"已複製","eventTarget":"世界（事件）"}</script>
+<script type="module" src="../assets/home/home.js"></script>
+</body>
+</html>

@@ -11,7 +11,8 @@
 //
 // Deliberately narrow: only real module URLs are touched —
 //   • <script src="./main.js">                 (html)
-//   • import-map values "…/packages/x/index.js" (html)
+//   • <link rel="stylesheet" href="./x.css">    (html — the homepage's stylesheet)
+//   • import-map values "…/packages/x/index.js" (html; "./" or "../" prefixes)
 //   • import … from './rel.js' / import('./rel.js')  (js, relative paths only)
 // Comments, JSDoc types, filename strings and CDN/bare specifiers stay untouched;
 // an earlier greedy version stamped .test.js inside the MCP server and broke it.
@@ -32,8 +33,10 @@ function stampHtml(src) {
   return src
     .replace(/(<script[^>]*\ssrc=")([^"]+\.js)(\?v=[^"]*)?(")/g,
       (m, a, url, _v, z) => isLocal(url) ? a + stampUrl(url) + z : m)
+    .replace(/(<link[^>]*\shref=")([^"]+\.css)(\?v=[^"]*)?(")/g,
+      (m, a, url, _v, z) => isLocal(url) ? a + stampUrl(url) + z : m)
     // import-map values: "…/packages/foo/index.js"
-    .replace(/("(?:\.\.\/)+packages\/[\w./-]+\.js)(\?v=[^"]*)?"/g, (m, url) => `${stampUrl(url.slice(1))}"`.replace(/^/, '"'));
+    .replace(/("(?:\.\.?\/)+packages\/[\w./-]+\.js)(\?v=[^"]*)?"/g, (m, url) => `${stampUrl(url.slice(1))}"`.replace(/^/, '"'));
 }
 
 function stampJs(src) {
@@ -56,7 +59,9 @@ const walk = (dir) => {
 };
 walk(path.join(ROOT, 'examples'));
 walk(path.join(ROOT, 'packages'));
+walk(path.join(ROOT, 'assets'));                        // homepage modules (home.js → ./harmonograph.js)
 files.push(path.join(ROOT, 'index.html'));
+if (fs.existsSync(path.join(ROOT, 'zh', 'index.html'))) files.push(path.join(ROOT, 'zh', 'index.html'));
 
 let changed = 0; const stale = [];
 for (const f of files) {

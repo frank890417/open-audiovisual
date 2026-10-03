@@ -1,0 +1,77 @@
+# open-audiovisual
+
+> A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance. Inputs (MIDI, microphone, chords, body and hand pose, phones) publish named signals; a mapping layer routes signals to parameters; an algorithmic "world" reads only parameters and renders image and sound; a timeline, a director's console and a backstage monitor run the show. Plain ES modules, MIT license. Extracted from The Last Input (Che-Yu Wu, 2026), a 49.4-channel performance at the IRCAM residency × C-LAB, Taipei.
+
+Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文, Traditional Chinese)
+Repository: https://github.com/frank890417/open-audiovisual
+Author: Che-Yu Wu 吳哲宇 (https://cheyuwu.com)
+
+## Core concepts
+
+- **Signal** — a named, normalized value saying what is happening: `midi/cc/74`, `audio/rms`, `chord/consonance`, `pose/hand/right/y`, `phone/<id>/tilt/x`. Continuous (has a value, usually 0..1) or pulse (fires an event payload, e.g. `midi/note/on` → `{note, vel}`). Signals are the only currency of input.
+- **Param** — a value a world listens to (`hue`, `bloom`), declared by the world as `{ key, min, max, def }`. Resolved per frame: timeline automation, overridden by a hand/knob/route.
+- **Mapping / route** — `{ source: 'midi/cc/74', target: 'bloom', curve, inMin, inMax, smooth }`. Many-to-many; "learn" binds the next signal that moves. Routes are JSON.
+- **World** — the piece: `{ name, params, init({container, signals, params}), update(dt, state, io), render(), dispose() }`. Reads params, never inputs; may subscribe to discrete event signals. Renderer-agnostic (canvas, p5, three.js, a WebToe patch).
+- **Show** — `createShow({ world, timeline, routes, modules })` from `@openav/show` assembles inputs, mapping, timeline, console, sound and backstage around one world.
+- Two rules an agent must not break: (1) continuous control goes through params, never `signals.get()` in `update()`; (2) never edit `packages/*` to make one example look right.
+
+## Start
+
+- Run: `git clone https://github.com/frank890417/open-audiovisual.git && cd open-audiovisual && node serve.js` → http://localhost:8080 (no npm install; Chrome/Edge for Web MIDI and camera)
+- Make a new work: copy `examples/01-hello-particles/` to `examples/<nn>-<name>/`, write the World in `main.js`, open `http://localhost:8080/examples/<nn>-<name>/`.
+- Verify: `npm test` (node --test) passes; the example loads with zero console errors (a refused `ws://localhost:7457` monitor connection is expected when no monitor runs).
+
+## Docs
+
+- [AGENTS.md](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/AGENTS.md): conventions for AI coding agents, the two rules, how to create a work. Read first.
+- [README](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/README.md): overview, architecture diagram, examples, phone remote.
+- [Architecture](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/architecture.md): the frame loop and every layer's contract.
+- [Writing a world](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/writing-a-world.md): the World interface, params vs events, sound output, checklist.
+- [Signals reference](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/signals.md): every signal the built-in inputs publish.
+- [Show control](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/show-control.md): timeline, scenes, performance mode, monitor, OSC.
+- [Patch bay design](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/design/patchbay.md): multi-device MIDI and the patch bay.
+- [Full text](https://openaudiovisual.com/llms-full.txt): README, AGENTS.md and all docs in one file.
+
+## MCP server
+
+The repo ships a zero-dependency MCP server over stdio (`packages/mcp/server.js`). Claude Code picks it up from `.mcp.json` when opened in the repo. Other clients:
+
+```json
+{ "mcpServers": { "openav": { "command": "node", "args": ["/path/to/open-audiovisual/packages/mcp/server.js"] } } }
+```
+
+Tools: `list_examples` (works and one-line summaries) · `read_doc` (architecture, writing-a-world, signals, show-control, roadmap, agents, readme) · `scaffold_world` (copy a donor example into a new numbered one) · `run_checks` (the test suite CI runs). A Claude Code skill, `.claude/skills/create-world`, scaffolds a world from a description.
+
+## Examples
+
+Each runs in the browser without hardware (on-screen piano, QWERTY keys, simulated performer or drum machine). Live at https://openaudiovisual.com/examples/<dir>/, source in `examples/<dir>/main.js`.
+
+- [01-hello-particles](https://openaudiovisual.com/examples/01-hello-particles/): the smallest complete app; read main.js top to bottom.
+- [02-chord-garden](https://openaudiovisual.com/examples/02-chord-garden/): chord semantics; triads bloom, clusters decay.
+- [03-pose-field](https://openaudiovisual.com/examples/03-pose-field/): hand instrument; pinches and fists via the camera.
+- [04-webtoe-stage](https://openaudiovisual.com/examples/04-webtoe-stage/): a WebToe node patch performed as a world.
+- [05-prebiotic-flake](https://openaudiovisual.com/examples/05-prebiotic-flake/): a 2023 MIDI sketch with the Tone.js audio branch.
+- [06-cylinder-earth](https://openaudiovisual.com/examples/06-cylinder-earth/): microphone bands and the drum machine drive WebGL towers.
+- [07-firework-festival](https://openaudiovisual.com/examples/07-firework-festival/): pinch to launch fireworks (21-landmark hands).
+- [08-remote-surface](https://openaudiovisual.com/examples/08-remote-surface/): a phone/iPad control surface grown from the world's params (needs `node serve.js` on the LAN).
+- [09-midi-controllers](https://openaudiovisual.com/examples/09-midi-controllers/): on-screen MiniLab 3, LPD8, Launchpad, nanoKONTROL2 that mirror real hardware.
+
+Examples 05–07 integrate artworks © Che-Yu Wu (2020–2023), all rights reserved; the framework is MIT.
+
+## Packages
+
+All under `packages/<name>/`, imported as `@openav/<name>` through an import map.
+
+- Input: `midi` (Web MIDI in/out, multi-device, controller profiles) · `audio` (mic analysis: rms, bands, centroid, onsets, drums) · `chord` (consonance, triads, clusters) · `pose` (MediaPipe body and 21-point hands, on-device) · `keys` (on-screen piano, QWERTY, SimPlayer) · `drums` (synth kit + step sequencer, analyzer-shaped signals)
+- Mapping: `mapping` (routes, curves, smoothing, many-to-many, learn)
+- World: `stage` (world lifecycle, params, createCanvas) · `world-webtoe` (WebToe patch as a world)
+- Output: `sound` (engine contract, Tone.js engine) · `osc` (OSC via a small Node bridge to UDP) · MIDI out in `midi`
+- Spines: `timeline` (automation, scenes, cues) · `console` (director's desk, performance mode) · `monitor` (backstage over WebSocket)
+- Phones: `relay` (room relay) · `surface` (TouchOSC-style widgets, autoSurface) · `remote` (phone/iPad app)
+- Glue: `core` (Signals, Params, Loop, Bus) · `show` (createShow) · `mcp` (MCP server)
+
+## Optional
+
+- [Roadmap](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/roadmap.md): signal recording and replay, npm publish, WebGPU worlds, NDI gateway, distributed performance, agent performers.
+- [Lab integration](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/lab-integration.md): the `"lab"` package.json field.
+- [WebToe](https://github.com/frank890417/WebToe): sister project, a node-based dataflow engine that imports TouchDesigner projects.

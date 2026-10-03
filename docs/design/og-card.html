@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- Source of assets/home/og.png (1200×630). Serve the repo (node serve.js),
+     open /docs/design/og-card.html, screenshot the viewport at 1200×630.
+     The figure is the homepage world (harmonograph) holding a Cmaj7 chord. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>og card</title>
+<link rel="stylesheet" href="../../assets/home/home.css">
+<script type="importmap">
+{ "imports": { "@openav/core": "../../packages/core/index.js", "@openav/stage": "../../packages/stage/index.js" } }
+</script>
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #0b0b0c; }
+  .card { position: relative; width: 1200px; height: 630px; }
+  .fig { position: absolute; right: -40px; top: -10px; width: 700px; height: 650px;
+    background-image: linear-gradient(to right, rgba(237,235,229,.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(237,235,229,.05) 1px, transparent 1px);
+    background-size: 70px 65px; }
+  .txt { position: absolute; left: 64px; top: 70px; right: 64px; }
+  .wm { font: 800 104px/.86 var(--sans); font-stretch: 112%; letter-spacing: -.045em; color: var(--fg); margin: 0; }
+  .sub { font: 500 34px/1.2 var(--sans); color: var(--fg); margin: 22px 0 0; max-width: 640px; }
+  .q { font: 400 17px/1.55 var(--mono); color: var(--fg-2); margin: 26px 0 0; max-width: 560px; }
+  .q b { color: var(--sig); font-weight: 500; }
+  .foot { position: absolute; left: 64px; bottom: 52px; display: flex; gap: 22px; align-items: center;
+    font: 500 15px var(--mono); color: var(--fg-3); letter-spacing: .06em; text-transform: uppercase; }
+  .foot .led { width: 9px; height: 9px; background: var(--sig); box-shadow: 0 0 0 4px rgba(255,90,31,.18); }
+  .foot span:first-of-type { color: var(--fg); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="fig" id="fig"></div>
+  <div class="txt">
+    <p class="wm">open-<br>audiovisual</p>
+    <p class="sub">A web-native framework for audiovisual performance.</p>
+    <p class="q">signals → mapping → params → world.<br><b>MIDI · audio · chords · hands · phones</b></p>
+  </div>
+  <div class="foot"><i class="led"></i><span>openaudiovisual.com</span><span>MIT · zero build · zero dependencies</span></div>
+</div>
+<script type="module">
+import { Signals, Params } from '@openav/core';
+import { Stage } from '@openav/stage';
+import { harmonograph } from '../../assets/home/harmonograph.js';
+const signals = new Signals(), params = new Params();
+const stage = new Stage({ container: document.getElementById('fig'), params, signals });
+const world = harmonograph();
+stage.register(world); await stage.activate(world.name);
+for (const [note, vel] of [[48, .9], [52, .7], [55, .8], [59, .6]]) signals.pulse('midi/note/on', { note, vel });
+for (let i = 0; i < 150; i++) stage.frame(1 / 60, { hue: 16, twist: 0.35, order: 0.95, energy: 0.6 });
+document.body.dataset.ready = '1';
+</script>
+</body>
+</html>

@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 *.local
+
+# local screenshots from design reviews (docs/design/homepage-v2.md)
+docs/design/shots/
