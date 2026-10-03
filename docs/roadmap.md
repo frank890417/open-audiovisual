@@ -17,9 +17,12 @@ before it was generalized.)
 
 ## v1.x — the show grows
 
-- **Audience-device input**: QR code → phones join as sensors (touch, gyro, mic).
-  The browser's unfair advantage: no native tool can hand every audience member
-  a controller. Needs: a tiny room server + `phone/{id}/*` signal namespace.
+- **Audience-device input** — *classic controller shipped* (`@openav/relay`, `@openav/surface`,
+  `@openav/remote`): a zero-dep room server, `phone/{id}/*` sensors, a TouchOSC-style widget set,
+  layout JSON, `autoSurface(params)`, feedback to the phone. Next:
+  - [ ] QR code on the join card (needs a small zero-dep encoder)
+  - [ ] *experimental* surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like `crowd/tilt/mean`)
+  - [ ] mic as a phone sensor; per-device profiles; layout editor / import-export UI
 - **Signal recording & replay**: record the full signal stream of a performance;
   replay it into any world. Rehearse without the performer; archive the gesture,
   not just the video.

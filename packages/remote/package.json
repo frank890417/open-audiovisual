@@ -1,0 +1,9 @@
+{
+  "name": "@openav/remote",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": { ".": "./index.js", "./host": "./host.js" },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/remote" }
+}

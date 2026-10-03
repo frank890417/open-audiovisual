@@ -53,6 +53,8 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 │ ⏱ @openav/timeline — param automation + scenes/cues        │
 │ 📟 @openav/monitor — backstage: clock, scene, signals, FPS  │
 │ 🎛 @openav/console — desk · Layers live view · perf mode     │
+│ 📱 @openav/relay · surface · remote — phones/iPads as        │
+│    controllers: rooms, TouchOSC-style widgets, autoSurface  │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -76,6 +78,7 @@ Two rules make the whole thing composable:
 | [`05-prebiotic-flake`](examples/05-prebiotic-flake/) | a 2023 MIDI daily sketch replayed through the chassis — with the L4 audio branch singing (Tone.js) |
 | [`06-cylinder-earth`](examples/06-cylinder-earth/) | voice-controlled WEBGL towers (2020) — mic bands & drum onsets as instruments, or the built-in **drum machine** (@openav/drums: synth kit + TR-style sequencer publishing analyzer-shaped signals) |
 | [`07-firework-festival`](examples/07-firework-festival/) | fireworks launched by closing a finger pinch (2021, PoseNet-era) — 21-landmark hands, four precise controllers |
+| [`08-remote-surface`](examples/08-remote-surface/) | **the phone is the instrument panel**: the World only declares `params`; `modules: { remote: true }` grows the control surface (`autoSurface`), a keyboard page, tilt & knock sensors — with feedback to the phone |
 
 All examples run without MIDI hardware — every stage ships an on-screen piano
 (@openav/keys: QWERTY capture, Z/X octave) and a **simulated performer** that
@@ -136,6 +139,18 @@ C-LAB Taiwan Sound Lab / IRCAM residency, performed on a 49.4-channel speaker do
 The timeline, chord semantics, many-to-many MIDI-learn, and OSC batching all drove a
 real 14-scene show before they were generalized here. The mapping-layer philosophy
 descends from [libmapper](http://libmapper.github.io/)'s signal-namespace research.
+
+## Phone / iPad remote
+
+`node serve.js`, open an example that declares `modules: { remote: true }`, type the URL on the join card into your
+phone (same wifi). Tabs: 感測 (tilt · accel · touch · knock · light), 琴鍵 (one row landscape / two stacked rows
+portrait), 控制台 (faders, knobs, XY, pads… generated from the World's `params`, or from a layout JSON).
+
+| package | role |
+|---|---|
+| [`@openav/relay`](packages/relay/) | zero-dep room WebSocket relay (controller / runner / monitor) + browser client |
+| [`@openav/surface`](packages/surface/) | TouchOSC-style widgets, layout JSON (portrait/landscape), theme, `autoSurface(params)` |
+| [`@openav/remote`](packages/remote/) | the phone app (tabs) and the show-side adapter |
 
 ## Docs
 

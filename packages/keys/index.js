@@ -21,10 +21,10 @@ const NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const CSS = `
 .oav-keys { position: relative; height: 96px; user-select: none; touch-action: none; }
-.oav-keys .pk-key { position: absolute; top: 0; height: 92px; background: #f4f6fb; border: 1px solid #2a3348;
+.oav-keys .pk-key { position: absolute; top: 0; height: calc(100% - 4px); background: #f4f6fb; border: 1px solid #2a3348;
   border-radius: 0 0 4px 4px; cursor: pointer; box-sizing: border-box; }
 .oav-keys .pk-key.on { background: #7ea6ff; }
-.oav-keys .pk-black { height: 56px; background: #1a2030; z-index: 2; }
+.oav-keys .pk-black { height: 58%; background: #1a2030; z-index: 2; }
 .oav-keys .pk-black.on { background: #2e6df6; }
 .oav-keys .pk-lbl { position: absolute; bottom: 4px; left: 0; right: 0; text-align: center;
   font: 9px ui-monospace, monospace; color: #667; pointer-events: none; }
@@ -46,11 +46,21 @@ function injectCss() {
 }
 
 export class KeysPiano {
-  /** opts: { base=48, octaves=2, velocity=100, onNote(note, vel01, on), onOctave(base) } */
+  /** opts: { base=48, octaves=2, velocity=100, onNote(note, vel01, on), onOctave(base),
+   *           semitones (key count, overrides octaves — surface rows end on a white key),
+   *           fill (size keys as % of the container: it can be any width, no px math),
+   *           keyWidth=27 (px, when not filling), minBase=24, maxBase=84 }
+   *  Black/white pattern follows the ABSOLUTE pitch class, so a row may start on
+   *  any note (a stacked second row starts on F, not C). */
   constructor(container, opts = {}) {
     this.el = container;
     this.base = opts.base ?? 48;
     this.octaves = opts.octaves ?? 2;
+    this.semitones = opts.semitones ?? (this.octaves * 12 + 1);
+    this.fill = !!opts.fill;
+    this.keyWidth = opts.keyWidth ?? 27;
+    this.minBase = opts.minBase ?? 24;
+    this.maxBase = opts.maxBase ?? 84;
     this.onNote = opts.onNote || (() => {});
     this.onOctave = opts.onOctave || (() => {});
     this.velocity = opts.velocity ?? 100;
@@ -66,15 +76,19 @@ export class KeysPiano {
   _build() {
     this.el.innerHTML = '';
     this._keyEls.clear();
-    const total = this.octaves * 12 + 1;
+    const total = this.semitones;
+    const isBlack = (i) => BLACK.has((this.base + i) % 12);
     const whites = [];
-    for (let i = 0; i < total; i++) if (!BLACK.has(i % 12)) whites.push(i);
-    const WW = 27, BW = 17;
-    this.el.style.width = whites.length * WW + 'px';
+    for (let i = 0; i < total; i++) if (!isBlack(i)) whites.push(i);
+    const WW = this.fill ? 100 / whites.length : this.keyWidth;          // % or px
+    const BW = WW * 0.63;
+    if (!this.fill) this.el.style.width = whites.length * WW + 'px';
+    else this.el.style.width = '100%';
+    this._unit = this.fill ? '%' : 'px';
     whites.forEach((semi, wi) => this._mkKey(semi, false, wi * WW, WW));
     let wi = 0;
     for (let i = 0; i < total; i++) {
-      if (!BLACK.has(i % 12)) { wi++; continue; }
+      if (!isBlack(i)) { wi++; continue; }
       this._mkKey(i, true, wi * WW - BW / 2, BW);
     }
     this._syncLabels();
@@ -82,7 +96,7 @@ export class KeysPiano {
   _mkKey(semi, black, x, w) {
     const k = document.createElement('div');
     k.className = 'pk-key' + (black ? ' pk-black' : '');
-    k.style.left = x + 'px'; k.style.width = w + 'px';
+    k.style.left = x + this._unit; k.style.width = w + this._unit;
     k.dataset.semi = semi;
     k.appendChild(Object.assign(document.createElement('span'), { className: 'pk-lbl' }));
     k.appendChild(Object.assign(document.createElement('span'), { className: 'pk-nm' }));
@@ -103,7 +117,7 @@ export class KeysPiano {
   }
 
   setBase(n) {
-    const clamped = Math.max(24, Math.min(84, n));
+    const clamped = Math.max(this.minBase, Math.min(this.maxBase, n));
     if (clamped === this.base) return;
     this.releaseAll();                 // change octave without stuck notes
     this.base = clamped; this._syncLabels(); this.onOctave(this.base);

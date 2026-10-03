@@ -87,6 +87,32 @@ is for). Sequencer hits also travel as `midi/note/on` (ch 10, GM notes).
 | `drum/kick` `/snare` `/hat` `/clap` | pulse | `{level}` | a sequencer hit |
 | `drum/kick/env` `…` | continuous | 0..1 | decay envelope per lane (map straight onto params) |
 
+## @openav/remote · @openav/surface
+
+Phone sensors (`/packages/remote/` → 感測). `<id>` is the device id; `phone/any/…` mirrors the latest phone, so a
+World's routes can be written before any phone exists.
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `phone/<id>/tilt/x` `/y` | continuous | -1..1 | ±45° from the calibrated rest pose, in SCREEN axes (x right, y toward you) |
+| `phone/<id>/accel/x\|y\|z` | continuous | m/s² | including gravity |
+| `phone/<id>/rot/alpha\|beta\|gamma` | continuous | deg/s | rotation rate |
+| `phone/<id>/orient/alpha\|beta\|gamma` | continuous | deg | raw deviceorientation |
+| `phone/<id>/knock` | pulse | `{strength, delta, t}` | acceleration jolt over a threshold (130 ms cooldown) |
+| `phone/<id>/light` | continuous | 0..1 | front-camera mean luma |
+| `phone/<id>/touch/x` `/y` `/down` | continuous | 0..1 | finger 0; `touch/<n>/…` for n ≥ 1, `touch/count` |
+
+Surface widgets (normalized 0..1; `…/raw` carries the unscaled value when the range is not 0..1):
+
+| signal | kind | meaning |
+|---|---|---|
+| `surface/<page>/<id>` | continuous | fader · knob · number · toggle · button (0/1) · radio (idx/(n-1)) · encoder phase |
+| `surface/<page>/<id>/x` `/y` `/down` | continuous | xy pad |
+| `surface/<page>/<id>/<1..N>` | continuous | bank channels |
+| `surface/<page>/<id>/hit` | pulse `{pad,row,col,vel}` | pads; `…/<n>` holds the velocity while down |
+| `surface/<page>/<id>/delta` | continuous | encoder step in turns |
+| `midi/note/on` `/off`, `midi/cc/64` | pulse / continuous | the 琴鍵 page and the `keyboard` widget — same names and shape as `@openav/midi`, plus `velocity` (1..127) and `device` |
+
 ## Naming your own
 
 Path-style, source-first: `breath/pressure`, `phone/{id}/gyro/x`, `weather/wind`.

@@ -7,11 +7,17 @@
 // Optional companions, each in its own terminal:
 //   node packages/monitor/server.js          # backstage monitor relay (:7457)
 //   node packages/osc/bridges/osc-bridge.js  # OSC → UDP bridge (:7456)
+//
+// This server also hosts the room relay (/relay, @openav/relay) so a phone can
+// join with nothing else running: open http://<this-machine-ip>:8080/packages/remote/
+// (a show with modules.remote prints the exact URL, with its room).
 
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { attachRelay } from './packages/relay/server.js';
 
 const PORT = Number(process.argv[2] || 8080);
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
@@ -22,13 +28,24 @@ const MIME = {
   '.wasm': 'application/wasm', '.md': 'text/plain; charset=utf-8',
 };
 
-http.createServer((req, res) => {
+function lanAddresses() {
+  const out = [];
+  for (const list of Object.values(os.networkInterfaces())) for (const n of list || []) if (n.family === 'IPv4' && !n.internal) out.push(n.address);
+  return out;
+}
+
+const server = http.createServer((req, res) => {
   let urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
   // '/' serves the real landing page (same as GitHub Pages); the generated
   // example list is a fallback for stripped-down checkouts
   if (urlPath === '/') {
     if (fs.existsSync(path.join(ROOT, 'index.html'))) urlPath = '/index.html';
     else return landing(res);
+  }
+  // which address should a phone type? (the browser cannot know its own LAN ip)
+  if (urlPath === '/__info') {
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+    return res.end(JSON.stringify({ lan: lanAddresses(), port: PORT }));
   }
   if (urlPath.endsWith('/')) urlPath += 'index.html';
   const file = path.join(ROOT, path.normalize(urlPath));
@@ -42,7 +59,13 @@ http.createServer((req, res) => {
     });
     res.end(data);
   });
-}).listen(PORT, () => console.log(`[openav] http://localhost:${PORT} — use Chrome for WebMIDI`));
+});
+attachRelay(server);          // ws://host:PORT/relay — room relay for phones/iPads (zero-dep)
+server.listen(PORT, () => {
+  console.log(`[openav] http://localhost:${PORT} — use Chrome for WebMIDI`);
+  const ip = lanAddresses()[0];
+  if (ip) console.log(`[openav] phone/iPad remote: http://${ip}:${PORT}/packages/remote/  (iOS sensors need https — see packages/remote/README.md)`);
+});
 
 function landing(res) {
   const dirs = fs.readdirSync(path.join(ROOT, 'examples'), { withFileTypes: true })

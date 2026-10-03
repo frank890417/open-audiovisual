@@ -8,7 +8,8 @@
 //     world: myWorld,
 //     timeline: { total, automation, scenes },
 //     routes: [{ source: 'audio/kick/env', target: 'pump' }],
-//     modules: { keys: { base: 48 }, sound: true, audio: 'mic', hands: true, pose: true },
+//     modules: { keys: { base: 48 }, sound: true, audio: 'mic', hands: true, pose: true,
+//                remote: { room: 'main' } },   // phones/iPads become controllers (packages/remote)
 //     artwork: { title: '3D Cylinder Earth', artist: 'Che-Yu Wu 吳哲宇', year: 2020 },
 //   });
 //
@@ -18,7 +19,7 @@
 // artwork credits render automatically (artist demos stay strictly attributed).
 //
 // createShow returns { signals, params, stage, timeline, mapper, midi, keys,
-// sound, audio, hands, pose, loop, console } — every part reachable, nothing
+// sound, audio, hands, pose, remote, loop, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools.
 
 import { Signals, Params, Loop } from '../core/index.js?v=3ef3261';
@@ -143,16 +144,29 @@ export async function createShow({
   const hands = modules.hands ? new HandTracker({ signals }) : null;
   const pose = modules.pose ? new PoseTracker({ signals }) : null;
 
+  // ---------- audience devices: phones/iPads as controllers (relay + surface) ----------
+  // Loaded lazily so shows that don't declare it pay nothing. The World stays
+  // ignorant: its params become the phone's control panel (surface/autoSurface).
+  let remote = null;
+  if (modules.remote) {
+    const { mountRemoteHost, mountJoinCard } = await import('../remote/host.js?v=3ef3261');
+    const o = typeof modules.remote === 'object' ? modules.remote : {};
+    const room = o.room || new URLSearchParams(location.search).get('room') || 'default';
+    remote = mountRemoteHost({ signals, params, mapper, world: allWorlds[0], ...o, room });
+    mountJoinCard(stageEl, remote);
+    remote.connect();
+  }
+
   // ---------- L4 audio branch ----------
   const sound = modules.sound ? new Sound({ signals, params, engine: (typeof modules.sound === 'object' && modules.sound.engine) || toneEngine() }) : null;
 
   // ---------- desk + backstage ----------
-  const app = { timeline, params, mapper, signals, midi, sound, stage, keys, drums, audio, hands, pose, chord, artwork };
+  const app = { timeline, params, mapper, signals, midi, sound, stage, keys, drums, audio, hands, pose, chord, remote, artwork };
   const consoleUI = mountConsole(desk, app);
   const monitor = new MonitorFeed({});
   monitor.connect();
 
-  const show = { signals, params, stage, timeline, mapper, midi, keys, drums, sound, audio, hands, pose, chord, console: consoleUI, app, loop: null };
+  const show = { signals, params, stage, timeline, mapper, midi, keys, drums, sound, audio, hands, pose, chord, remote, console: consoleUI, app, loop: null };
   const loop = app.loop = new Loop((dt) => {
     keys?.update(dt);
     drums?.update(dt);
@@ -162,6 +176,7 @@ export async function createShow({
     mapper.update(dt);
     const state = stage.frame(dt, timeline.state());
     sound?.update(state);
+    remote?.frame(dt, state);
     consoleUI.render(state);
     monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
   });
