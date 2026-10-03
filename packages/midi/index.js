@@ -17,21 +17,21 @@
 //   virtual-access.js  Web MIDI shim                 remote-tab.js  the /remote MIDI tab
 // Docs: packages/midi/README.md.
 
-import { parseMessage, genericSignals, publish, describe } from './parse.js?v=3ef3261';
-export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=3ef3261';
-export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=3ef3261';
-export { MidiController } from './controller.js?v=3ef3261';
-export { MidiControllers, controllerRoutes } from './manager.js?v=3ef3261';
-export { linkControllers } from './link.js?v=3ef3261';
-export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=3ef3261';
-export { PROFILES, profileById } from './profiles/index.js?v=3ef3261';
-export { ControllerView, VIEW_CSS } from './view.js?v=3ef3261';
-export { mountMidiPanel, PANEL_CSS } from './panel.js?v=3ef3261';
+import { parseMessage, genericSignals, publish, describe } from './parse.js?v=32849c5';
+export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=32849c5';
+export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=32849c5';
+export { MidiController } from './controller.js?v=32849c5';
+export { MidiControllers, controllerRoutes } from './manager.js?v=32849c5';
+export { linkControllers } from './link.js?v=32849c5';
+export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=32849c5';
+export { PROFILES, profileById } from './profiles/index.js?v=32849c5';
+export { ControllerView, VIEW_CSS } from './view.js?v=32849c5';
+export { mountMidiPanel, PANEL_CSS } from './panel.js?v=32849c5';
 
 export class Midi {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js?v=3ef3261').Signals} [opts.signals] publish inputs here
+   * @param {import('../core/src/signals.js?v=32849c5').Signals} [opts.signals] publish inputs here
    * @param {string} [opts.filterOut] regex source-name filter to avoid feedback loops (default: IAC)
    * @param {(opts:object)=>Promise<any>} [opts.requestAccess] where MIDIAccess comes from (default
    *        navigator.requestMIDIAccess). A host that shims Web MIDI for old sketches passes the REAL one
