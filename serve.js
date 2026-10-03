@@ -25,7 +25,8 @@ const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css', '.json': 'application/json',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.mp3': 'audio/mpeg',
-  '.wasm': 'application/wasm', '.md': 'text/plain; charset=utf-8',
+  '.wasm': 'application/wasm', '.md': 'text/plain; charset=utf-8', '.txt': 'text/plain; charset=utf-8',
+  '.webp': 'image/webp', '.woff2': 'font/woff2', '.ico': 'image/x-icon', '.webm': 'video/webm', '.mp4': 'video/mp4',
 };
 
 function lanAddresses() {

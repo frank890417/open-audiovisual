@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# A short guide for language models: https://openaudiovisual.com/llms.txt
+# Everything in one file:          https://openaudiovisual.com/llms-full.txt
+Sitemap: https://openaudiovisual.com/sitemap.xml
