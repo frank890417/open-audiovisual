@@ -18,6 +18,7 @@ export const PAGES = {
   home: '',
   controllers: 'controllers/',
   docs: 'docs/',
+  webtoe: 'webtoe/',
 };
 
 /** The top-bar nav. `home` entries are sections of the homepage; the others are pages. */
@@ -27,6 +28,7 @@ export const NAV = [
   ['works', { home: '#works' }],
   ['controllers', { page: 'controllers' }],
   ['docs', { page: 'docs' }],
+  ['webtoe', { page: 'webtoe' }],
   ['agents', { home: '#agents' }],
 ];
 
@@ -116,6 +118,7 @@ export function siteFooter(t, c) {
       <a href="${c.to('home')}">${t.footer.homeLink}</a>
       <a href="${c.to('controllers')}">${t.ui.nav.controllers}</a>
       <a href="${c.to('docs')}">${t.ui.nav.docs}</a>
+      <a href="${c.to('webtoe')}">${t.ui.nav.webtoe}</a>
     </nav>
     <nav aria-label="${attr(t.footer.machine)}">
       <a href="${REPO}">GitHub</a>

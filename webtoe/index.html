@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WebToe · the engine half of the open-audiovisual stack</title>
+<meta name="description" content="WebToe is a web-native, node-based dataflow engine for real-time visuals: patch operators in the browser, TouchDesigner-style, on WebGL2 or WebGPU, with zero runtime dependencies. It opens real TouchDesigner projects, and @openav/world-webtoe turns a WebToe patch into an open-audiovisual world.">
+<link rel="canonical" href="https://openaudiovisual.com/webtoe/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/webtoe/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/webtoe/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/webtoe/">
+<link rel="alternate" type="text/markdown" href="../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="WebToe · the engine half of the open-audiovisual stack">
+<meta property="og:description" content="WebToe is the engine, open-audiovisual is the show.">
+<meta property="og:url" content="https://openaudiovisual.com/webtoe/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/home/home.css">
+<link rel="stylesheet" href="../assets/webtoe/webtoe.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "WebToe · the engine half of the open-audiovisual stack",
+  "description": "WebToe is a web-native, node-based dataflow engine for real-time visuals: patch operators in the browser, TouchDesigner-style, on WebGL2 or WebGPU, with zero runtime dependencies. It opens real TouchDesigner projects, and @openav/world-webtoe turns a WebToe patch into an open-audiovisual world.",
+  "url": "https://openaudiovisual.com/webtoe/",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "open-audiovisual",
+    "url": "https://openaudiovisual.com/"
+  },
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "WebToe",
+    "description": "A web-native, node-based dataflow engine and editor for real-time visuals, TouchDesigner-style, on WebGL2 and WebGPU with zero runtime dependencies. Imports TouchDesigner .toe and .tox projects.",
+    "url": "https://webtoe.openaudiovisual.com/",
+    "sameAs": [
+      "https://github.com/frank890417/WebToe"
+    ],
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web browser",
+    "license": "https://opensource.org/licenses/MIT",
+    "author": {
+      "@type": "Person",
+      "name": "Che-Yu Wu",
+      "alternateName": "吳哲宇",
+      "url": "https://cheyuwu.com"
+    }
+  },
+  "image": "https://openaudiovisual.com/assets/webtoe/hero-lfo-garden-1600.webp"
+}
+</script>
+</head>
+<body class="page-webtoe">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../#play">Play</a>
+    <a href="../#how">How it works</a>
+    <a href="../#works">Works</a>
+    <a href="../controllers/">Controllers</a>
+    <a href="../docs/">Docs</a>
+    <a href="../webtoe/" aria-current="page">WebToe</a>
+    <a href="../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../webtoe/" hreflang="en" lang="en" data-lang="en" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../zh/webtoe/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ═════ what WebToe is ═════ -->
+  <section class="wt-hero" id="intro" aria-labelledby="intro-title">
+    <p class="eyebrow"><i class="wt-dot" aria-hidden="true"></i>Sister project · the engine</p>
+    <h1 id="intro-title"><span class="wt-word">WebToe</span> <span class="wt-sub">A node-based dataflow engine for real-time visuals, in the browser.</span></h1>
+    <div class="hero-grid">
+      <div class="hero-text">
+        <p class="lede">Patch operators together the way you would in TouchDesigner: a ramp through a transform into a composite, an LFO driving a parameter through an expression, a live preview on every node. WebToe is an original engine, built from scratch for the web on WebGL2 and WebGPU, and it opens your existing TouchDesigner projects.</p>
+        <p class="wt-tagline"><strong>WebToe is the engine, open-audiovisual is the show.</strong> A WebToe patch can be performed as an open-audiovisual world, and named signals map naturally onto CHOP channels.</p>
+      </div>
+      <nav class="doors" aria-label="Open WebToe">
+        <a class="door" href="https://webtoe.openaudiovisual.com/"><span class="door-who">Open</span><span class="door-what">The editor, live in your browser, nothing to install</span><span class="door-arrow" aria-hidden="true">↗</span></a>
+        <a class="door" href="https://webtoe.openaudiovisual.com/docs/"><span class="door-who">Read</span><span class="door-what">The WebToe docs</span><span class="door-arrow" aria-hidden="true">↗</span></a>
+        <a class="door" href="https://github.com/frank890417/WebToe"><span class="door-who">Source</span><span class="door-what">frank890417/WebToe on GitHub, MIT</span><span class="door-arrow" aria-hidden="true">↗</span></a>
+        <a class="door" href="https://webtoe.openaudiovisual.com/?project=examples/toe/2022-fractals.toe"><span class="door-who">Try</span><span class="door-what">A raw 2022 .toe file, decoded in the browser</span><span class="door-arrow" aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+    <figure class="wt-shot">
+      <img src="../assets/webtoe/hero-lfo-garden-1600.webp" srcset="../assets/webtoe/hero-lfo-garden-800.webp 800w, ../assets/webtoe/hero-lfo-garden-1600.webp 1600w" sizes="(min-width: 1500px) 1440px, 100vw" width="1600" height="700" decoding="async" alt="The WebToe editor running the lfo garden example: three ramp and transform chains wired into composite, hsv adjust and out, a live preview on every node, the output in the viewer.">
+      <figcaption>Example 03, lfo garden: three ramp chains rotated by LFOs through expressions, composited and hue-shifted. Every node previews live.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ═════ 01 · the engine ═════ -->
+  <section class="sec" id="engine" aria-labelledby="engine-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">01 · The engine</p>
+      <h2 id="engine-title">Patch it live, in a browser tab</h2>
+      <p class="sec-lede">A network editor, a real-time GPU engine, and a parameter panel where any value can be an expression. No install, no build step.</p>
+    </header>
+    <dl class="wt-stats">
+      <div><dt>of JavaScript for the whole app, with zero runtime dependencies</dt><dd>~90 KB</dd></div>
+      <div><dt>two GPU backends at parity, behind one pass contract</dt><dd>WebGL2 + WebGPU</dd></div>
+      <div><dt>of 28,698 nodes from 60 real TouchDesigner projects are runnable: the measured corpus coverage</dt><dd>62.3%</dd></div>
+      <div><dt>bundled projects that run out of the box, two of them raw .toe files saved by TouchDesigner in 2022</dt><dd>12</dd></div>
+    </dl>
+    <p class="wt-source">Numbers from the WebToe README, measured on real projects.</p>
+    <div class="wt-cols">
+      <ul class="wt-points">
+        <li><strong>Patch live.</strong> Press Tab to create an operator, drag wires, step into containers. Every node shows a real-time preview, and one GPU compositor paints them all at full frame rate.</li>
+        <li><strong>Expressions anywhere.</strong> Any parameter can be an expression: <code>op('lfo1')['chan1']</code>, <code>parent().par.speed</code>, <code>time.seconds * 0.2</code>.</li>
+        <li><strong>A real-time GPU engine.</strong> A pull-based cook loop. TOPs run as GPU passes and CHOPs drive parameters: feedback, blur, compositing, displacement, edge detection, webcam and video input, and a 3D pipeline with geometry, cameras, lights and a render TOP.</li>
+        <li><strong>Six operator families.</strong> TOP, CHOP, SOP, MAT, COMP and DAT. Projects save losslessly as <code>.webtoe.json</code>, a versioned format of its own.</li>
+      </ul>
+      <figure class="wt-shot">
+      <img src="../assets/webtoe/feedback-trails-1600.webp" srcset="../assets/webtoe/feedback-trails-800.webp 800w, ../assets/webtoe/feedback-trails-1600.webp 1600w" sizes="(min-width: 1080px) 50vw, 100vw" width="1600" height="700" loading="lazy" decoding="async" alt="Example 02, feedback trails, in the WebToe editor: rectangle, transform, composite, blur and out operators, with a feedback and level loop wired back into the composite.">
+      <figcaption>Example 02, feedback trails. Move the mouse over the viewer and the rectangle leaves a trail through the feedback loop.</figcaption>
+    </figure>
+    </div>
+  </section>
+
+  <!-- ═════ 02 · with open-audiovisual: params in, ext() out ═════ -->
+  <section class="sec" id="stack" aria-labelledby="stack-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">02 · With open-audiovisual</p>
+      <h2 id="stack-title">WebToe is the engine, open-audiovisual is the show</h2>
+      <p class="sec-lede">open-audiovisual brings the inputs, the mapping, the timeline and the backstage. WebToe draws. The adapter <code>@openav/world-webtoe</code> turns a WebToe patch into a world, so a knob, a chord or a hand can play it.</p>
+    </header>
+    <ol class="wt-flow">
+      <li class="wt-step wt-step-l1">
+        <p class="wt-step-name"><span>01</span> Signal</p>
+        <p class="wt-step-code"><code>midi/cc/1</code></p>
+        <p class="wt-step-text">Something happens on stage: a key is struck, a knob turns. It arrives as a named signal.</p>
+      </li>
+      <li class="wt-step wt-step-l2">
+        <p class="wt-step-name"><span>02</span> Param</p>
+        <p class="wt-step-code"><code>midi/cc/1 → speed</code></p>
+        <p class="wt-step-text">The mapper routes the signal to a param of the world, with a curve and smoothing. The timeline can drive the same param.</p>
+      </li>
+      <li class="wt-step wt-step-l3">
+        <p class="wt-step-name"><span>03</span> Message</p>
+        <p class="wt-step-code"><code>{ type: 'webtoe:ext', values }</code></p>
+        <p class="wt-step-text">The world embeds the WebToe app in an iframe. Whenever a param moves, it posts the new values into it.</p>
+      </li>
+      <li class="wt-step wt-step-wt">
+        <p class="wt-step-name"><span>04</span> Patch</p>
+        <p class="wt-step-code"><code>ext('speed', 0.5)</code></p>
+        <p class="wt-step-text">Inside the patch, every parameter written with <code>ext()</code> follows. The second number is the fallback while nothing is connected.</p>
+      </li>
+    </ol>
+    <div class="wt-code">
+      <div>
+        <h3>The show: a world that is a WebToe patch</h3>
+        <p>Example 04, shortened. The param keys are the names the patch listens for. The project file is handed to the app as <code>?project=</code>.</p>
+        
+      <div class="term">
+        <div class="term-bar"><span>examples/04-webtoe-stage/main.js</span></div>
+        <pre><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">import</span> { webtoeWorld } <span class="tk">from</span> <span class="ts">'@openav/world-webtoe'</span>;
+
+<span class="tk">await</span> createShow({
+  world: webtoeWorld({
+    project: <span class="tk">new</span> URL(<span class="ts">'./garden.webtoe.json'</span>, location.href).href,
+    <span class="tc">// the keys are the names the patch listens for</span>
+    params: [
+      { key: <span class="ts">'speed'</span>, min: 0, max: 1, def: 0.5 },
+      { key: <span class="ts">'hue'</span>, min: 0, max: 360, def: 205 },
+    ],
+  }),
+  routes: [{ source: <span class="ts">'midi/cc/1'</span>, target: <span class="ts">'speed'</span> }],
+});</code></pre>
+      </div>
+        <p class="wt-links"><a class="more" href="../examples/04-webtoe-stage/">Open example 04, WebToe stage →</a> <a class="more" href="https://github.com/frank890417/open-audiovisual/tree/main/packages/world-webtoe">Source of @openav/world-webtoe ↗</a></p>
+      </div>
+      <div>
+        <h3>The patch: parameters that listen</h3>
+        <p>Two expressions from the example’s <code>garden.webtoe.json</code>. Put <code>ext()</code> into any parameter and it becomes playable.</p>
+        
+      <div class="term">
+        <div class="term-bar"><span>garden.webtoe.json</span></div>
+        <pre><code><span class="tc">// lfo1 · frequency</span>
+0.11 * (0.2 + ext(<span class="ts">'speed'</span>, 0.5) * 2.2)
+
+<span class="tc">// hsv1 · hueoffset</span>
+fract(ext(<span class="ts">'hue'</span>, 205) / 360 + time.seconds * 0.01)</code></pre>
+      </div>
+        <h3>Drive it from any page</h3>
+        <p>These are plain <code>postMessage</code> calls, so any page that embeds WebToe can drive it. Values must be finite numbers. <code>webtoe:load</code> opens another project without reloading the frame.</p>
+        
+      <div class="term">
+        <div class="term-bar"><span>postMessage</span></div>
+        <pre><code><span class="tk">const</span> webtoe = iframe.contentWindow;   <span class="tc">// an iframe showing the WebToe app</span>
+
+<span class="tc">// set the values every ext('name') in the patch reads</span>
+webtoe.postMessage({ type: <span class="ts">'webtoe:ext'</span>, values: { speed: 0.72 } }, <span class="ts">'*'</span>);
+
+<span class="tc">// open another project: a .webtoe.json or .toe URL the app may fetch</span>
+webtoe.postMessage({ type: <span class="ts">'webtoe:load'</span>, url: nextProjectUrl }, <span class="ts">'*'</span>);</code></pre>
+      </div>
+        <p class="wt-links"><a class="more" href="../docs/#packages-openav-world-webtoe">The adapter in the handbook →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════ 03 · TouchDesigner projects ═════ -->
+  <section class="sec" id="import" aria-labelledby="import-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">03 · TouchDesigner projects</p>
+      <h2 id="import-title">Drop a .toe and it opens</h2>
+      <p class="sec-lede">No install and no command-line step: WebToe decodes the TouchDesigner container right in the browser. Supported operators run live. Everything else becomes a stub that keeps its name, wires, layout, parameters and Python code, and an import report says what happened.</p>
+    </header>
+    <div class="wt-cols wt-cols-import">
+      <div>
+        <h3>Validated against toeexpand</h3>
+        <dl class="wt-facts">
+          <div><dt>125 / 125</dt><dd>production project files, 3 KB to 151 MB, decoded to identical file sets, byte for byte (553,230 files)</dd></div>
+          <div><dt>17.7 s</dt><dd>to decode all 125 natively, against 266.5 s for TouchDesigner’s own <code>toeexpand</code></dd></div>
+          <div><dt>4.2 s</dt><dd>for a 151 MB show file. A daily sketch takes a few milliseconds.</dd></div>
+          <div><dt>8 s</dt><dd>from drop to a running graph for a real 20 MB show file of 14,710 nodes</dd></div>
+        </dl>
+        <p><a class="more" href="https://webtoe.openaudiovisual.com/?project=examples/toe/2022-fractals.toe">Try it with a raw 2022 project file ↗</a></p>
+      </div>
+      <figure class="wt-shot">
+      <img src="../assets/webtoe/import-report-1600.webp" srcset="../assets/webtoe/import-report-800.webp 800w, ../assets/webtoe/import-report-1600.webp 1600w" sizes="(min-width: 1080px) 50vw, 100vw" width="1600" height="700" loading="lazy" decoding="async" alt="The TouchDesigner import report in WebToe after importing a 213-node production project: 71 nodes runnable, 142 kept as stubs, 9 expressions translated.">
+      <figcaption>The import report for a 213-node production project: what runs, what was kept as a stub, which expressions were translated.</figcaption>
+    </figure>
+    </div>
+    <aside class="wt-research" aria-label="Research use only">
+      <p><strong>Native .toe decoding is provided for research purposes only.</strong> It exists to study interoperability with project files you own, is not affiliated with or endorsed by Derivative Inc., and may break with any TouchDesigner release. Derivative has announced an official JSON project format, and WebToe’s project loader is ready for it.</p>
+      <p><a href="https://github.com/frank890417/WebToe/blob/main/docs/TOE-FORMAT.md">Format notes and validation (TOE-FORMAT.md) ↗</a></p>
+    </aside>
+    <div class="wt-bridge">
+      <div>
+        <h3>The reference path: your own TouchDesigner</h3>
+        <p>If native decoding fails, WebToe falls back to the official <code>toeexpand</code> tool that ships with every TouchDesigner install, run on your machine through a small bridge. The bridge listens on 127.0.0.1 only and has zero dependencies. Your project files never leave your computer.</p>
+      </div>
+      
+      <div class="term">
+        <div class="term-bar"><span>terminal</span></div>
+        <pre><code>npx webtoe        <span class="tc"># the app, served locally with the bridge: drag your .toe in</span></code></pre>
+      </div>
+    </div>
+    <p class="wt-legal">WebToe is an independent open-source project, not affiliated with or endorsed by Derivative Inc. TouchDesigner is a trademark of Derivative Inc. WebToe contains no Derivative code, binaries or assets.</p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../">Home</a>
+      <a href="../controllers/">Controllers</a>
+      <a href="../docs/">Docs</a>
+      <a href="../webtoe/">WebToe</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../llms.txt">llms.txt</a>
+      <a href="../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

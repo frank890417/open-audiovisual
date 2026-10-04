@@ -411,3 +411,16 @@ html[lang^="zh"] .sec h3 { letter-spacing: .01em; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ───────────── WebToe, the engine (sister project; full page /webtoe/, its own CSS there) ───────────── */
+.sec-webtoe { padding-top: clamp(64px, 8vw, 110px); }
+.wt-band { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 56px); align-items: center;
+  padding: clamp(20px, 2.6vw, 36px); border: 1px solid var(--line); background: var(--ink-2); }
+.wt-band .eyebrow { color: var(--sig); margin-bottom: 14px; }
+.wt-dot { display: inline-block; width: 8px; height: 8px; margin-right: 10px; background: #7c6cff; vertical-align: .05em; }   /* WebToe's colour, as a marker only */
+.wt-band h2 { font: 800 clamp(28px, 3.4vw, 50px)/1.02 var(--sans); font-stretch: 112%; letter-spacing: -.03em; margin-bottom: 16px; }
+html[lang^="zh"] .wt-band h2 { letter-spacing: 0; line-height: 1.15; }
+.wt-band-text > p { color: var(--fg-2); font-size: 15.5px; }
+.wt-band-links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin: 4px 0 0; }
+.wt-band-shot img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; border: 1px solid var(--line); background: var(--void); }
+@media (max-width: 1080px) { .wt-band { grid-template-columns: minmax(0, 1fr); } }

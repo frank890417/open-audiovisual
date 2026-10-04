@@ -36,4 +36,16 @@
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/"/>
   </url>
+  <url>
+    <loc>https://openaudiovisual.com/webtoe/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/webtoe/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/webtoe/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/webtoe/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/webtoe/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/webtoe/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/webtoe/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/webtoe/"/>
+  </url>
 </urlset>

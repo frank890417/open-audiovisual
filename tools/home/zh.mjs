@@ -19,7 +19,7 @@ export default {
   ui: {
     skip: '跳到主要內容',
     navLabel: '頁面區塊',
-    nav: { play: '彈奏', how: '運作方式', works: '作品', start: '開始', controllers: '控制器', docs: '文件', agents: '給 AI 代理' },
+    nav: { play: '彈奏', how: '運作方式', works: '作品', start: '開始', controllers: '控制器', docs: '文件', webtoe: 'WebToe', agents: '給 AI 代理' },
     langLabel: '語言',
     copy: '複製',
     copied: '已複製',
@@ -133,6 +133,15 @@ export default {
       '吳哲宇，<cite>210807 Firework 花火大會</cite>，2021',
     ],
     note: '05 到 07 是吳哲宇 2020 到 2023 年的作品，在這裡當作示範。框架採 MIT 授權，作品的著作權仍屬藝術家，保留一切權利。',
+  },
+
+  webtoe: {
+    eyebrow: '姊妹專案',
+    title: 'WebToe<br>背後的引擎',
+    text: '做即時影像的節點式資料流引擎。在瀏覽器裡就能像用 TouchDesigner 那樣接運算子，跑在 WebGL2 或 WebGPU 上，沒有執行期相依套件，還能打開真的 TouchDesigner 專案。透過 <code>@openav/world-webtoe</code>，一張網路就能變成可以演奏的世界。WebToe 負責引擎，open-audiovisual 負責演出。',
+    more: '認識 WebToe',
+    open: '打開編輯器',
+    alt: 'WebToe 編輯器：ramp 和 transform 運算子接到 composite、hsv adjust 和 out，每個節點都有即時預覽，右邊是輸出畫面。',
   },
 
   start: {

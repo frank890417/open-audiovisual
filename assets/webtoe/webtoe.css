@@ -1,0 +1,93 @@
+/* open-audiovisual — /webtoe/.
+   Loaded after assets/home/home.css: same tokens, top bar, section heads, doors, terminals and footer.
+   WebToe's own violet (#7c6cff) appears only as a marker: the dot by the eyebrow and the last step
+   of the signal path, the one that happens inside the patch. Everything else is the site's system. */
+
+:root { --wt: #7c6cff; }   /* the same violet as .wt-dot in home.css */
+
+
+/* ───────────── hero ───────────── */
+.wt-hero { max-width: var(--maxw); margin: 0 auto; padding: clamp(22px, 3.2vw, 44px) var(--pad) 0; }
+.wt-hero > .eyebrow { color: var(--sig); }
+.wt-hero h1 { margin-top: 10px; }
+.wt-word { display: block; font: 800 clamp(56px, 9.4vw, 148px)/.86 var(--sans); font-stretch: 112%; letter-spacing: -.045em; margin-left: -.04em; }
+.wt-sub { display: block; font: 500 clamp(21px, 2.5vw, 36px)/1.15 var(--sans); font-stretch: 100%; letter-spacing: -.01em; margin-top: clamp(12px, 1.3vw, 18px); }
+html[lang^="zh"] .wt-sub { letter-spacing: .02em; font-weight: 600; }
+.wt-tagline { margin: 18px 0 0; padding-left: 12px; border-left: 2px solid var(--sig); color: var(--fg-2); font-size: 15.5px; max-width: 62ch; }
+.wt-tagline strong { display: block; color: var(--fg); font-weight: 700; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.35; margin-bottom: 4px; }
+.wt-hero .door { grid-template-columns: 6.5em minmax(0, 1fr) auto; }
+html[lang^="zh"] .wt-hero .door { grid-template-columns: 5em minmax(0, 1fr) auto; }
+
+/* screenshots: the real editor, framed like the works on the homepage */
+.wt-shot { margin: 0; min-width: 0; }
+.wt-shot img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; border: 1px solid var(--line); background: var(--void); }
+.wt-shot figcaption { margin-top: 10px; color: var(--fg-3); font-size: 14px; max-width: 80ch; }
+.wt-hero > .wt-shot { margin-top: clamp(4px, 1vw, 12px); }
+
+/* ───────────── 01 · the engine ───────────── */
+.wt-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 clamp(18px, 2vw, 32px); margin: 0; }
+.wt-stats div { display: flex; flex-direction: column-reverse; justify-content: flex-end; border-top: 1px solid var(--line); padding: 14px 0 0; }
+.wt-stats dd { margin: 0; font: 800 clamp(30px, 3vw, 46px)/1.02 var(--sans); font-stretch: 112%; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.wt-stats dt { margin-top: 8px; color: var(--fg-2); font-size: 14.5px; line-height: 1.5; }
+.wt-source { margin: 16px 0 0; font: 12px var(--mono); color: var(--fg-3); }
+.wt-cols { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 4vw, 64px); align-items: start; margin-top: clamp(48px, 6vw, 80px); }
+.wt-points { list-style: none; margin: 0; padding: 0; }
+.wt-points li { border-top: 1px solid var(--line); padding: 14px 0 16px; color: var(--fg-2); font-size: 15.5px; }
+.wt-points strong { display: block; color: var(--fg); font-size: clamp(17px, 1.4vw, 20px); line-height: 1.3; margin-bottom: 4px; }
+
+/* ───────────── 02 · with open-audiovisual: the signal path into the patch ───────────── */
+.wt-flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.wt-step { position: relative; padding: 22px clamp(14px, 1.6vw, 24px) 20px; border-left: 1px solid var(--line); }
+.wt-step:last-child { border-right: 1px solid var(--line); }
+.wt-step::before { content: ''; position: absolute; left: -1px; right: 0; top: 0; height: 3px; background: var(--c); }
+.wt-step::after { content: '→'; position: absolute; right: -9px; top: 26px; z-index: 2; font: 14px var(--mono); color: var(--fg-3); background: var(--ink); line-height: 1; padding: 2px 0; }
+.wt-step:last-child::after { content: none; }
+.wt-step-l1 { --c: var(--l1); } .wt-step-l2 { --c: var(--l2); } .wt-step-l3 { --c: var(--l3); } .wt-step-wt { --c: var(--wt); }
+.wt-step-name { margin: 0 0 12px; font: 700 clamp(20px, 1.8vw, 26px)/1 var(--sans); font-stretch: 112%; }
+.wt-step-name span { font: 500 12.5px var(--mono); color: var(--c); letter-spacing: .08em; vertical-align: .35em; margin-right: 4px; }
+.wt-step-code { margin: 0 0 12px; }
+.wt-step-code code { display: block; background: var(--void); border: 1px solid var(--line); padding: 9px 10px; font-size: 12.5px; color: var(--c);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-radius: 0; }
+.wt-step-text { margin: 0; color: var(--fg-2); font-size: 15px; }
+.wt-code { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; margin-top: clamp(48px, 6vw, 80px); }
+.wt-code > div > p { color: var(--fg-2); }
+.wt-code h3:not(:first-child) { margin-top: clamp(28px, 3vw, 40px); }
+.wt-links { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+
+/* ───────────── 03 · TouchDesigner projects ───────────── */
+.wt-cols-import { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); margin-top: 0; }
+.wt-facts { margin: 0 0 22px; }
+.wt-facts div { display: grid; grid-template-columns: 8.8em minmax(0, 1fr); gap: 14px; align-items: baseline; border-top: 1px solid var(--line); padding: 12px 0 14px; }
+.wt-facts dt { font: 800 clamp(20px, 1.8vw, 26px)/1.1 var(--sans); font-stretch: 112%; letter-spacing: -.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wt-facts dd { margin: 0; color: var(--fg-2); font-size: 15px; }
+.wt-research { margin: clamp(40px, 5vw, 64px) 0 0; padding: 18px clamp(18px, 2vw, 28px); border: 1px solid var(--line); border-left: 3px solid var(--fg-3); background: var(--ink-2); max-width: 92ch; }
+.wt-research p { margin: 0 0 10px; color: var(--fg-2); font-size: 15.5px; }
+.wt-research p:last-child { margin: 0; font: 13px var(--mono); }
+.wt-research strong { color: var(--fg); }
+.wt-research a { color: var(--fg); }
+.wt-bridge { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 4vw, 64px); align-items: start; margin-top: clamp(40px, 5vw, 64px); }
+.wt-bridge p { color: var(--fg-2); }
+.wt-legal { margin: clamp(40px, 5vw, 64px) 0 0; padding-top: 14px; border-top: 1px solid var(--line); max-width: 92ch; color: var(--fg-3); font-size: 13.5px; }
+
+/* ───────────── responsive ───────────── */
+@media (max-width: 1080px) {
+  .wt-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+  .wt-stats div:nth-child(n+3) { margin-top: 18px; }
+  .wt-cols, .wt-cols-import, .wt-code, .wt-bridge { grid-template-columns: minmax(0, 1fr); }
+  .wt-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wt-step:nth-child(2) { border-right: 1px solid var(--line); }
+  .wt-step:nth-child(2)::after { content: none; }
+  .wt-step:nth-child(n+3) { margin-top: 28px; }
+}
+@media (max-width: 640px) {
+  .wt-word { font-size: clamp(56px, 19vw, 96px); line-height: .9; }
+  .wt-hero .door, html[lang^="zh"] .wt-hero .door { grid-template-columns: 1fr auto; }
+  .wt-stats { grid-template-columns: minmax(0, 1fr); }
+  .wt-stats div:nth-child(n+2) { margin-top: 18px; }
+  .wt-flow { grid-template-columns: minmax(0, 1fr); }
+  .wt-step { border-right: 1px solid var(--line); padding-bottom: 28px; }
+  .wt-step:nth-child(n+2) { margin-top: 0; }
+  .wt-step::after, .wt-step:nth-child(2)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -10px; }
+  .wt-step:last-child::after { content: none; }
+  .wt-facts div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}

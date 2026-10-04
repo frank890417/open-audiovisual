@@ -32,6 +32,10 @@ The hero routes all three explicitly: a row of three doors under the headline
 3. **Works** (`#works`) — *what does it make?* Nine examples as museum wall
    labels: screenshot, number, title, inputs ("materials"), one plain
    sentence, open / source links, artwork credit where it applies.
+   Then a compact, un-numbered band, **WebToe** (`#webtoe`) — *what engine
+   draws work 04?* The sister project in three sentences, one editor
+   screenshot, links to `/webtoe/` (the full page) and the live editor.
+   WebToe's violet appears only as a marker dot.
 4. **Start** (`#start`) — *how do I run it and write my own?* clone + `node serve.js`;
    a world in 20 lines; all 20 packages grouped by layer; docs.
 5. **For AI agents** (`#agents`) — *what should an agent do here?* A prompt to
@@ -43,7 +47,7 @@ The hero routes all three explicitly: a row of three doors under the headline
 7. Footer — license, author, every machine-readable entry point.
 
 Old URLs: `examples/*` are untouched. The old page had no section anchors, so
-nothing external can break; v2 adds stable ids (`#play #how #works #start #agents #lineage`).
+nothing external can break; v2 adds stable ids (`#play #how #works #webtoe #start #agents #lineage`).
 
 ## Visual direction
 

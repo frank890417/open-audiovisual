@@ -33,7 +33,7 @@ test('committed pages are what the template renders (run node tools/build-home.m
 
 test('both pages have the same sections, in the same order', () => {
   const ids = (s) => all(/<section[^>]*\sid="([^"]+)"/g, s);
-  assert.deepEqual(ids(html.en), ['play', 'how', 'works', 'start', 'agents', 'lineage']);
+  assert.deepEqual(ids(html.en), ['play', 'how', 'works', 'webtoe', 'start', 'agents', 'lineage']);
   assert.deepEqual(ids(html.zh), ids(html.en));
   for (const lvl of [1, 2, 3, 4]) {
     const n = (s) => (body(s).match(new RegExp(`<h${lvl}[\\s>]`, 'g')) || []).length;

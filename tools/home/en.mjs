@@ -19,7 +19,7 @@ export default {
   ui: {
     skip: 'Skip to content',
     navLabel: 'Sections',
-    nav: { play: 'Play', how: 'How it works', works: 'Works', start: 'Start', controllers: 'Controllers', docs: 'Docs', agents: 'For agents' },
+    nav: { play: 'Play', how: 'How it works', works: 'Works', start: 'Start', controllers: 'Controllers', docs: 'Docs', webtoe: 'WebToe', agents: 'For agents' },
     langLabel: 'Language',
     copy: 'Copy',
     copied: 'Copied',
@@ -133,6 +133,15 @@ export default {
       'Che-Yu Wu, <cite>210807 Firework 花火大會</cite>, 2021',
     ],
     note: 'Works 05 to 07 are artworks by Che-Yu Wu (2020 to 2023), used here as demos. The framework is MIT. The artworks remain © the artist, all rights reserved.',
+  },
+
+  webtoe: {
+    eyebrow: 'Sister project',
+    title: 'WebToe,<br>the engine',
+    text: 'A node-based dataflow engine for real-time visuals: patch operators in the browser the way you would in TouchDesigner, on WebGL2 or WebGPU, with zero runtime dependencies, and open real TouchDesigner projects. Through <code>@openav/world-webtoe</code> a patch becomes a world you can perform. WebToe is the engine, open-audiovisual is the show.',
+    more: 'About WebToe',
+    open: 'Open the editor',
+    alt: 'The WebToe editor: ramp and transform operators wired into composite, hsv adjust and out, a live preview on every node, the output in the viewer.',
   },
 
   start: {

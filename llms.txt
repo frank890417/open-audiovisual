@@ -10,6 +10,7 @@ Author: Che-Yu Wu 吳哲宇 (https://cheyuwu.com)
 
 - [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the complete documentation on one page — quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers & embedding, phones, signals, every package, MCP, troubleshooting. Generated from the Markdown in `docs/`.
 - [MIDI controller library](https://openaudiovisual.com/controllers/) ([繁體中文](https://openaudiovisual.com/zh/controllers/)): every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).
+- [WebToe](https://openaudiovisual.com/webtoe/) ([繁體中文](https://openaudiovisual.com/zh/webtoe/)): the sister project, the engine half of the stack. A web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world (the editor in an iframe, `postMessage({ type: 'webtoe:ext', values })`, read in the patch as `ext('name', fallback)`). Editor: https://webtoe.openaudiovisual.com/
 
 ## Core concepts
 

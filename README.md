@@ -168,7 +168,11 @@ portrait), 控制台 (faders, knobs, XY, pads… generated from the World's `par
 dataflow engine (TouchDesigner-style, imports real `.toe` projects). The two are
 halves of one stack: **WebToe is the engine, open-audiovisual is the show** —
 a WebToe network can become an openav World, and openav's inputs (MIDI, chords,
-pose) map naturally onto CHOP channels. Integration adapter is on the roadmap.
+pose) map naturally onto CHOP channels. The adapter is
+[`@openav/world-webtoe`](packages/world-webtoe/) (example 04): it embeds the
+[WebToe editor](https://webtoe.openaudiovisual.com/) and posts params into the
+patch, where any parameter written as `ext('name', fallback)` follows.
+More: [openaudiovisual.com/webtoe](https://openaudiovisual.com/webtoe/).
 
 ## Status & roadmap
 

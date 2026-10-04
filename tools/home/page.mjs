@@ -7,6 +7,7 @@
 // without running JavaScript. The script only brings the instrument to life.
 
 import { SITE, REPO, BLOB, TREE, pageCtx, topBar, siteFooter } from '../site/chrome.mjs';
+import { WEBTOE, SHOTS as WEBTOE_SHOTS, shot } from '../webtoe/page.mjs';
 export { SITE, REPO };
 
 export const LOCALES = {
@@ -337,6 +338,19 @@ ${topBar(t, pageCtx('home', locale))}
       }).join('\n      ')}
     </ol>
     <p class="works-note">${t.works.note}</p>
+  </section>
+
+  <!-- ═════ the engine: WebToe, the sister project (full page at /webtoe/) ═════ -->
+  <section class="sec sec-webtoe" id="webtoe" aria-labelledby="webtoe-title">
+    <div class="wt-band">
+      <div class="wt-band-text">
+        <p class="eyebrow"><i class="wt-dot" aria-hidden="true"></i>${t.webtoe.eyebrow}</p>
+        <h2 id="webtoe-title">${t.webtoe.title}</h2>
+        <p>${t.webtoe.text}</p>
+        <p class="wt-band-links"><a class="more" href="${pageCtx('home', locale).to('webtoe')}">${t.webtoe.more} →</a> <a class="more" href="${WEBTOE.app}">${t.webtoe.open} ↗</a></p>
+      </div>
+      <div class="wt-band-shot">${shot(root, WEBTOE_SHOTS.hero, t.webtoe.alt, { sizes: '(min-width: 1080px) 55vw, 100vw' })}</div>
+    </div>
   </section>
 
   <!-- ═════ 04 · start ═════ -->
