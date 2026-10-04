@@ -7,9 +7,9 @@
 //   copy buttons, #spec-<id> deep links, ?profile=<id> for the hero
 // It uses the same public pieces anyone else would: <oav-controller> and embed.js.
 
-import { PROFILES } from '../../packages/midi/element.js?v=35d96ac';
-import { describeDetail } from '../../packages/midi/embed.js?v=35d96ac';
-import { snippets, hl } from './snippets.js?v=35d96ac';
+import { PROFILES } from '../../packages/midi/element.js?v=993b491';
+import { describeDetail } from '../../packages/midi/embed.js?v=993b491';
+import { snippets, hl } from './snippets.js?v=993b491';
 
 const T = JSON.parse(document.getElementById('ctl-i18n').textContent);
 const $ = (s, el = document) => el.querySelector(s);
