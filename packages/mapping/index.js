@@ -29,8 +29,8 @@ let _nextId = 1;
 export class Mapper {
   /**
    * @param {object} deps
-   * @param {import('../core/src/signals.js?v=8dce886').Signals} deps.signals
-   * @param {import('../core/src/params.js?v=8dce886').Params} deps.params
+   * @param {import('../core/src/signals.js?v=0249f81').Signals} deps.signals
+   * @param {import('../core/src/params.js?v=0249f81').Params} deps.params
    * @param {string} [deps.profile='default'] localStorage namespace
    * @param {() => void} [deps.onChange] routes changed (UI refresh)
    * @param {(route: object, sig: string) => void} [deps.onLearn]

@@ -10,9 +10,9 @@
 // knob turned on the desk. Which device to show: the show's config "midi" ({profile}), unless
 // the player picked one here.
 
-import { MidiControllers } from './manager.js?v=8dce886';
-import { mountMidiPanel } from './panel.js?v=8dce886';
-import { PROFILES } from './profiles/index.js?v=8dce886';
+import { MidiControllers } from './manager.js?v=0249f81';
+import { mountMidiPanel } from './panel.js?v=0249f81';
+import { PROFILES } from './profiles/index.js?v=0249f81';
 
 /**
  * @param {HTMLElement} el      the tab page
