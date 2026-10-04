@@ -7,6 +7,7 @@ codec is hand-rolled (`frames.js`, pure, tested), routing is pure logic
 ```
 node serve.js                     # dev server already hosts it at ws://host:PORT/relay
 node packages/relay/server.js     # or standalone on :7458
+RELAY_HOST=127.0.0.1 node packages/relay/server.js 8903   # bind to localhost behind a reverse proxy (TLS, rate limits)
 ```
 
 Roles in a room (`?role=controller|runner|monitor&room=<name>&id=<device>`):

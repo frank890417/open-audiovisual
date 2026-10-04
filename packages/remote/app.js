@@ -108,7 +108,9 @@ export function mountRemote(root, opts = {}) {
   const pre = window.__REMOTE__ || {};
   const cfg = {
     room: opts.room || q.get('room') || pre.room || 'default',
-    relayUrl: opts.relayUrl || null,
+    // ?relay=wss://host/relay：public pages whose show runs elsewhere (the lab's public site uses a relay on its own
+    // host, close to the phones). Only ws:/wss: — a link must not be able to point the phone anywhere else.
+    relayUrl: opts.relayUrl || [q.get('relay'), pre.relay].find((u) => typeof u === 'string' && /^wss?:\/\//i.test(u)) || null,
     surfaceUrl: opts.surfaceUrl || q.get('surface') || pre.surface || null,
     metaUrl: opts.metaUrl || q.get('meta') || pre.meta || null,
     tab: q.get('tab') || null,

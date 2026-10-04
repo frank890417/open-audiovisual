@@ -67,6 +67,7 @@ export function attachRelay(server, { path = '/relay', log = () => {}, heartbeat
 // ---- standalone ----
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const PORT = Number(process.argv[2] || 7458);
+  const HOST = process.env.RELAY_HOST || undefined;   // RELAY_HOST=127.0.0.1 behind a reverse proxy (TLS, rate limits)
   const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     if (req.url === '/health') {
@@ -76,5 +77,5 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     res.writeHead(404); res.end();
   });
   const relay = attachRelay(server, { log: (s) => console.log('[relay]', s) });
-  server.listen(PORT, () => console.log(`[relay] ws on :${PORT}/relay  (health: /health)`));
+  server.listen(PORT, HOST, () => console.log(`[relay] ws on ${HOST || '*'}:${PORT}/relay  (health: /health)`));
 }
