@@ -24,9 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=2cd2e50">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=2cd2e50">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -256,6 +256,7 @@
             <li><a href="#signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker（21 個關鍵點的精細控制）</a></li>
             <li><a href="#signals-openav-drums-simulator-analyzer-shaped">@openav/drums（模擬器，訊號形狀和分析器相同）</a></li>
             <li><a href="#signals-openav-sound-output-events">@openav/sound（輸出事件）</a></li>
+            <li><a href="#signals-openav-record-take-playback">@openav/record（MIDI 錄音的播放）</a></li>
             <li><a href="#signals-openav-remote-openav-surface">@openav/remote · @openav/surface</a></li>
             <li><a href="#signals-naming-your-own">自己命名訊號</a></li>
           </ol>
@@ -276,6 +277,7 @@
             <li><a href="#packages-openav-world-webtoe">@openav/world-webtoe</a></li>
             <li><a href="#packages-openav-sound">@openav/sound</a></li>
             <li><a href="#packages-openav-osc">@openav/osc</a></li>
+            <li><a href="#packages-openav-record">@openav/record</a></li>
             <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
             <li><a href="#packages-openav-console">@openav/console</a></li>
             <li><a href="#packages-openav-monitor">@openav/monitor</a></li>
@@ -344,7 +346,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">16 章 · 145 節 · v0.1.0</p>
+      <p class="docs-stats">16 章 · 147 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -598,6 +600,7 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
 <p><strong>影像分支</strong></p>
 <ul>
 <li><strong>螢幕</strong>是預設的輸出。演出模式（T）給演奏者一個提詞畫面，觀眾看的是全螢幕的舞台視窗（F）。</li>
+<li><strong>錄製</strong>（<code>@openav/record</code>）：作品和演奏者的鏡頭合成進一張尺寸精確的畫布（直式 1080×1920 到 4K），跟作品自己的聲音交給同一個 <code>MediaRecorder</code> 錄，畫面和聲音用的是同一個時鐘。MIDI 錄音則把演奏本身錄下來，再播回演出裡。</li>
 <li>未來：NDI 閘道（見路線圖，基礎工作在姊妹專案 WebToe 裡）。</li>
 </ul>
 <p><strong>聲音分支</strong></p>
@@ -1162,7 +1165,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=2cd2e50"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1689,6 +1692,15 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td><code>sound/instrument</code></td><td>脈衝</td><td><code>{id, name}</code></td><td>換了樂器（從選單、程式或場景提示）</td></tr>
 </tbody>
 </table></div>
+<h3 id="signals-openav-record-take-playback">@openav/record（MIDI 錄音的播放）<a class="anchor" href="#signals-openav-record-take-playback" aria-label="這一節的連結">#</a></h3>
+<p><code>TakePlayer</code> 用原本的名稱（<code>midi/note/on</code>、<code>midi/ch/&lt;ch&gt;/note/&lt;n&gt;</code>、<code>midi/cc/&lt;n&gt;</code>……）發布錄下來的事件，跟鍵盤當時發布的一模一樣，另外有兩個自己的訊號。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>類型</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>take/playing</code></td><td>continuous</td><td>0 / 1</td><td>正在播放時是 1；暫停、停止，或讓位給現場演奏時是 0</td></tr>
+<tr><td><code>take/position</code></td><td>continuous</td><td>0..1</td><td>播到哪裡了</td></tr>
+</tbody>
+</table></div>
 <h3 id="signals-openav-remote-openav-surface">@openav/remote · @openav/surface<a class="anchor" href="#signals-openav-remote-openav-surface" aria-label="這一節的連結">#</a></h3>
 <p>手機感測器（<code>/packages/remote/</code> → 感測）。<code>&lt;id&gt;</code> 是裝置 id。<code>phone/any/…</code> 的值永遠來自最後送出數值的那支手機，所以還沒有手機連上，就能先寫好世界的路由。</p>
 <div class="table-wrap"><table>
@@ -1725,20 +1737,20 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">套件一覽<a class="anchor" href="#packages" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">12</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/packages.md">docs/zh/packages.md</a></span></p>
-<p>二十個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
+<p>二十一個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>層</th><th>套件</th></tr></thead>
 <tbody>
 <tr><td>L1 輸入</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>keys</code> · <code>drums</code></td></tr>
 <tr><td>L2 映射</td><td><code>mapping</code></td></tr>
 <tr><td>L3 世界</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
-<tr><td>L4 輸出</td><td><code>sound</code> · <code>osc</code>（MIDI 輸出在 <code>midi</code> 裡）</td></tr>
+<tr><td>L4 輸出</td><td><code>sound</code> · <code>osc</code> · <code>record</code>（MIDI 輸出在 <code>midi</code> 裡）</td></tr>
 <tr><td>主軸</td><td><code>timeline</code> · <code>console</code> · <code>monitor</code></td></tr>
 <tr><td>手機</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=2cd2e50"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -1905,6 +1917,29 @@ button.onclick = () =&gt; sound.enable();
 </tbody>
 </table></div>
 <p>見<a href="#show-control-osc-output">演出控制</a>。</p>
+<h3 id="packages-openav-record">@openav/record<a class="anchor" href="#packages-openav-record" aria-label="這一節的連結">#</a></h3>
+<p>L4 輸出（影像分支）· 演出影片：作品和演奏者的鏡頭合成進一張尺寸精確的畫布（直式 1080×1920、4:5、2.7K、4K、橫式、方形），跟作品自己的聲音一起交給同一個 <code>MediaRecorder</code> 錄，所以畫面和聲音從結構上就是同步的；另外還有單獨的聲音檔、事件紀錄，以及 MIDI 錄音（錄下你彈的，再播回演出裡，<code>.mid</code> 可進可出）。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Compositor</code></td><td><code>new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions, getWorkCanvas, background, mirrorCam = true, maxFps = 60, onDraw(ctx, rects, comp) })</code> · <code>start()</code> · <code>stop()</code> · <code>draw()</code> · <code>setSize(size)</code> · <code>setLayout(layout, options)</code> · <code>setCamera(stream | video | null)</code> · <code>drawOnCamera(fn(ctx, w, h))</code> · <code>canvas</code>、<code>rects</code>、<code>video</code></td></tr>
+<tr><td><code>Recorder</code></td><td><code>new Recorder({ canvas, fps = 60, audioTracks = [], audioOnly = false, videoBitsPerSecond, mimeType })</code> · <code>start({ timeslice = 1000, ondata(blob, seq), keep })</code> · <code>stop()</code> → <code>Promise&lt;{ mimeType, ext, bytes, durationMs, width, height, blob, … }&gt;</code> · <code>t0</code></td></tr>
+<tr><td><code>AudioTap</code></td><td><code>new AudioTap({ context, sources, captureDestination })</code> · <code>add(node | stream | track, { bus })</code> · <code>captureDestination()</code> · <code>addMicrophone()</code> · <code>level()</code> · <code>tracks</code>（作品＋麥克風）、<code>workTracks</code>（只有作品）</td></tr>
+<tr><td><code>EventLog</code></td><td><code>new EventLog({ now, filter, throttleMs })</code> · <code>start(at)</code> · <code>stop()</code> · <code>add(name, value)</code> · <code>attach(signals)</code> · <code>toJSON()</code> · <code>toTake()</code></td></tr>
+<tr><td><code>TakeRecorder</code> · <code>TakePlayer</code></td><td><code>new TakeRecorder({ signals, filter = /^midi\//, overdub })</code> · <code>start()</code> · <code>stop()</code> → take · <code>new TakePlayer({ signals, take, loop = true, speed = 1, yieldToLive, resumeAfter, clock })</code> · <code>play()</code> · <code>pause()</code> · <code>stop()</code> · <code>seek(ms)</code> · <code>update(dt)</code></td></tr>
+<tr><td>純函式</td><td><code>layoutRects(layout, out, src, opts)</code> · <code>PRESETS</code> · <code>presetById</code> · <code>resolveSize</code> · <code>recommendedFps(w, h)</code> · <code>recommendedBitrate(w, h, fps)</code> · <code>pickMime(isTypeSupported, { audioOnly })</code> · <code>extFor(mime)</code> · <code>normalizeTake</code> · <code>validateTake</code> · <code>trimSilence</code> · <code>quantizeTake</code> · <code>toMidiFile(take)</code> → <code>Uint8Array</code> · <code>fromMidiFile(bytes)</code> → take</td></tr>
+<tr><td>鏡頭</td><td><code>openCamera({ deviceId, width = 1920, height = 1080, fps = 30 })</code> → <code>MediaStream</code> · <code>listCameras()</code> · <code>listMicrophones()</code></td></tr>
+</tbody>
+</table></div>
+<p>版面：<code>stack</code>（作品在上、滿寬，鏡頭在下）、<code>pip</code>（鏡頭是角落的小窗）、<code>side</code>（作品在左、鏡頭在右）、<code>work</code>（只有作品）。大約 1080×1920 以內錄 60 fps，2.7K 和 4K 錄 30 fps；網路攝影機多半只到 1080p，所以 4K 畫面裡的鏡頭是放大的。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Compositor, AudioTap, Recorder, openCamera } <span class="tk">from</span> <span class="ts">'@openav/record'</span>;
+<span class="tk">const</span> comp = <span class="tk">new</span> Compositor({ size: <span class="ts">'vertical-1080p'</span>, layout: <span class="ts">'stack'</span>, getWorkCanvas: () =&gt; canvas });
+comp.start();
+<span class="tk">await</span> comp.setCamera(<span class="tk">await</span> openCamera());
+<span class="tk">const</span> tap = <span class="tk">new</span> AudioTap({ context, sources: [workOutput] });
+<span class="tk">const</span> rec = <span class="tk">new</span> Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks }).start();
+<span class="tc">// later: const { blob, mimeType } = await rec.stop();</span></code></pre></div>
+<p>套件說明（含 MIDI 錄音）：<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/record/README.md" rel="noopener">packages/record</a>。範例：<a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/10-record/main.js" rel="noopener">10-record</a>。</p>
 <h3 id="packages-openav-timeline">@openav/timeline<a class="anchor" href="#packages-openav-timeline" aria-label="這一節的連結">#</a></h3>
 <p>主軸 · 自動化、場景和播放控制（transport），純邏輯。</p>
 <div class="table-wrap"><table>
@@ -2161,7 +2196,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <li class="task"><input type="checkbox" disabled aria-label="尚未完成"> <em>實驗性的</em>控制面板：手勢／物理控制元件、多人共用的控制面板、觀眾模式（很多支手機 → 彙整成 <code>crowd/tilt/mean</code> 這類訊號）</li>
 <li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 麥克風當作手機感測器、每台裝置各自的設定檔、版面編輯器／匯入匯出介面</li>
 </ul></li>
-<li><strong>訊號錄製與重播</strong>：錄下一場演出完整的訊號流，再重播給任何一個世界。演奏者不在也能排練。存下來的不只影片，還有手勢。</li>
+<li><strong>訊號錄製與重播</strong>：<em>MIDI 錄音已經上線</em>（<code>@openav/record</code>：<code>TakeRecorder</code>、<code>TakePlayer</code>，<code>.mid</code> 可進可出；<code>EventLog</code> 已經能在錄影時記下任何訊號）。接下來：把完整的訊號流（手、身體、聲音分析）重播給任何一個世界。演奏者不在也能排練。存下來的不只影片，還有手勢。</li>
 <li><strong>把 <code>@openav/*</code> 發布到 npm</strong>，文件頁面本身也能用這套框架來演奏。</li>
 <li><strong>WebGPU 世界轉接</strong>，等 WebGPU compute 成熟，給粒子與群體代理類的世界用。</li>
 </ul>
@@ -2207,6 +2242,6 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=2cd2e50"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

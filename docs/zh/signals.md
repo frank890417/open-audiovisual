@@ -119,6 +119,15 @@
 |---|---|---|---|
 | `sound/instrument` | 脈衝 | `{id, name}` | 換了樂器（從選單、程式或場景提示） |
 
+## @openav/record（MIDI 錄音的播放）
+
+`TakePlayer` 用原本的名稱（`midi/note/on`、`midi/ch/<ch>/note/<n>`、`midi/cc/<n>`……）發布錄下來的事件，跟鍵盤當時發布的一模一樣，另外有兩個自己的訊號。
+
+| 訊號 | 類型 | 範圍 | 意義 |
+|---|---|---|---|
+| `take/playing` | continuous | 0 / 1 | 正在播放時是 1；暫停、停止，或讓位給現場演奏時是 0 |
+| `take/position` | continuous | 0..1 | 播到哪裡了 |
+
 ## @openav/remote · @openav/surface
 
 手機感測器（`/packages/remote/` → 感測）。`<id>` 是裝置 id。`phone/any/…` 的值永遠來自最後送出數值的那支手機，所以還沒有手機連上，就能先寫好世界的路由。

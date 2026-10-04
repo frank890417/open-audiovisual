@@ -92,6 +92,7 @@ Two rules make the whole thing composable:
 | [`06-cylinder-earth`](examples/06-cylinder-earth/) | voice-controlled WEBGL towers (2020) — mic bands & drum onsets as instruments, or the built-in **drum machine** (@openav/drums: synth kit + TR-style sequencer publishing analyzer-shaped signals) |
 | [`07-firework-festival`](examples/07-firework-festival/) | fireworks launched by closing a finger pinch (2021, PoseNet-era) — 21-landmark hands, four precise controllers |
 | [`08-remote-surface`](examples/08-remote-surface/) | **the phone is the instrument panel**: the World only declares `params`; `modules: { remote: true }` grows the control surface (`autoSurface`), a keyboard page, tilt & knock sensors — with feedback to the phone |
+| [`10-record`](examples/10-record/) | **the performance video** (@openav/record): the work on top, your hands from the webcam below, the work's own sound, one vertical 1080×1920 / 2.7K / 4K file in sync — plus MIDI takes you record, play back into the show, and save as `.mid` |
 
 All examples run without MIDI hardware — every stage ships an on-screen piano
 (@openav/keys: QWERTY capture, Z/X octave) and a **simulated performer** that
@@ -760,6 +761,10 @@ signals → mapping → params spine — sound is performable state, not a side 
 **Video branch**
 - **screen** is the default output; performance mode (T) gives the performer a
   teleprompter while the audience sees the stage window fullscreen (F).
+- **recording** (`@openav/record`): the work and the performer's camera composited
+  into one canvas of an exact size (vertical 1080×1920 up to 4K) and recorded with
+  the work's own sound by one `MediaRecorder`, so picture and sound share a clock.
+  MIDI takes record the playing itself and replay it into the show.
 - future: NDI gateway (see roadmap; groundwork lives in sister project WebToe).
 
 **Audio branch**
@@ -2503,6 +2508,17 @@ The in-page instruments listen to `midi/note/on|off` and the sustain pedal
 |---|---|---|---|
 | `sound/instrument` | pulse | `{id, name}` | the instrument changed (picker, code or a cue) |
 
+## @openav/record (take playback)
+
+A `TakePlayer` publishes a recorded take's events under their original names
+(`midi/note/on`, `midi/ch/<ch>/note/<n>`, `midi/cc/<n>`…), exactly as the
+keyboard did, plus two signals of its own.
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `take/playing` | continuous | 0 / 1 | 1 while a take plays; 0 when paused, stopped, or yielded to live playing |
+| `take/position` | continuous | 0..1 | how far into the take |
+
 ## @openav/remote · @openav/surface
 
 Phone sensors (`/packages/remote/` → 感測). `<id>` is the device id; `phone/any/…` carries the value from whichever phone sent it last, so a
@@ -2547,7 +2563,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Twenty packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-one packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -2557,7 +2573,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `keys` · `drums` |
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `record` (and MIDI out in `midi`) |
 | spines | `timeline` · `console` · `monitor` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
@@ -2785,6 +2801,43 @@ L4 output · OSC from the browser through a small Node bridge to UDP.
 | bridge | `node packages/osc/bridges/osc-bridge.js [httpPort=7456] [targetHost=127.0.0.1] [targetPort=3456]` |
 
 See [Show control](show-control.md#osc-output).
+
+## @openav/record
+
+L4 output (video branch) · the performance video: the work and the performer's
+camera composited into one canvas of an exact size (vertical 1080×1920, 4:5,
+2.7K, 4K, landscape, square) and recorded with the work's own sound by one
+`MediaRecorder`, so picture and sound are in sync by construction; plus the
+sound as its own file, an event log, and MIDI takes (record what you play, play
+it back into the show, `.mid` in and out).
+
+| export | signature |
+|---|---|
+| `Compositor` | `new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions, getWorkCanvas, background, mirrorCam = true, maxFps = 60, onDraw(ctx, rects, comp) })` · `start()` · `stop()` · `draw()` · `setSize(size)` · `setLayout(layout, options)` · `setCamera(stream \| video \| null)` · `drawOnCamera(fn(ctx, w, h))` · `canvas`, `rects`, `video` |
+| `Recorder` | `new Recorder({ canvas, fps = 60, audioTracks = [], audioOnly = false, videoBitsPerSecond, mimeType })` · `start({ timeslice = 1000, ondata(blob, seq), keep })` · `stop()` → `Promise<{ mimeType, ext, bytes, durationMs, width, height, blob, … }>` · `t0` |
+| `AudioTap` | `new AudioTap({ context, sources, captureDestination })` · `add(node \| stream \| track, { bus })` · `captureDestination()` · `addMicrophone()` · `level()` · `tracks` (work + mic), `workTracks` (work only) |
+| `EventLog` | `new EventLog({ now, filter, throttleMs })` · `start(at)` · `stop()` · `add(name, value)` · `attach(signals)` · `toJSON()` · `toTake()` |
+| `TakeRecorder` · `TakePlayer` | `new TakeRecorder({ signals, filter = /^midi\//, overdub })` · `start()` · `stop()` → take · `new TakePlayer({ signals, take, loop = true, speed = 1, yieldToLive, resumeAfter, clock })` · `play()` · `pause()` · `stop()` · `seek(ms)` · `update(dt)` |
+| pure helpers | `layoutRects(layout, out, src, opts)` · `PRESETS` · `presetById` · `resolveSize` · `recommendedFps(w, h)` · `recommendedBitrate(w, h, fps)` · `pickMime(isTypeSupported, { audioOnly })` · `extFor(mime)` · `normalizeTake` · `validateTake` · `trimSilence` · `quantizeTake` · `toMidiFile(take)` → `Uint8Array` · `fromMidiFile(bytes)` → take |
+| cameras | `openCamera({ deviceId, width = 1920, height = 1080, fps = 30 })` → `MediaStream` · `listCameras()` · `listMicrophones()` |
+
+Layouts: `stack` (work on top at full width, camera below), `pip` (camera inset
+in a corner), `side` (work left, camera right), `work`. 60 fps up to about
+1080×1920, 30 fps for 2.7K and 4K; webcams stop at 1080p, so a 4K frame
+enlarges the camera.
+
+```js
+import { Compositor, AudioTap, Recorder, openCamera } from '@openav/record';
+const comp = new Compositor({ size: 'vertical-1080p', layout: 'stack', getWorkCanvas: () => canvas });
+comp.start();
+await comp.setCamera(await openCamera());
+const tap = new AudioTap({ context, sources: [workOutput] });
+const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks }).start();
+// later: const { blob, mimeType } = await rec.stop();
+```
+
+Package README with the MIDI takes: [packages/record](../packages/record/README.md).
+Example: [10-record](../examples/10-record/main.js).
 
 ## @openav/timeline
 
@@ -3237,9 +3290,10 @@ before it was generalized.)
   - [ ] QR code on the join card (needs a small zero-dep encoder)
   - [ ] *experimental* surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like `crowd/tilt/mean`)
   - [ ] mic as a phone sensor; per-device profiles; layout editor / import-export UI
-- **Signal recording & replay**: record the full signal stream of a performance;
-  replay it into any world. Rehearse without the performer; archive the gesture,
-  not just the video.
+- **Signal recording & replay** — *MIDI takes shipped* (`@openav/record`: `TakeRecorder`,
+  `TakePlayer`, `.mid` in and out; `EventLog` already records any signal beside a video). Next:
+  replay the full signal stream (hands, body, audio analysis) into any world. Rehearse without
+  the performer; archive the gesture, not just the video.
 - **npm publish** of `@openav/*`, and docs pages that are themselves performable with the framework.
 - **WebGPU world adapter** as WebGPU compute matures for particle/agent worlds.
 

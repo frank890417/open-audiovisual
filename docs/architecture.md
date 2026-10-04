@@ -107,6 +107,10 @@ signals → mapping → params spine — sound is performable state, not a side 
 **Video branch**
 - **screen** is the default output; performance mode (T) gives the performer a
   teleprompter while the audience sees the stage window fullscreen (F).
+- **recording** (`@openav/record`): the work and the performer's camera composited
+  into one canvas of an exact size (vertical 1080×1920 up to 4K) and recorded with
+  the work's own sound by one `MediaRecorder`, so picture and sound share a clock.
+  MIDI takes record the playing itself and replay it into the show.
 - future: NDI gateway (see roadmap; groundwork lives in sister project WebToe).
 
 **Audio branch**

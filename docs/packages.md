@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-one packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -10,7 +10,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `keys` · `drums` |
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `record` (and MIDI out in `midi`) |
 | spines | `timeline` · `console` · `monitor` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
@@ -238,6 +238,43 @@ L4 output · OSC from the browser through a small Node bridge to UDP.
 | bridge | `node packages/osc/bridges/osc-bridge.js [httpPort=7456] [targetHost=127.0.0.1] [targetPort=3456]` |
 
 See [Show control](show-control.md#osc-output).
+
+## @openav/record
+
+L4 output (video branch) · the performance video: the work and the performer's
+camera composited into one canvas of an exact size (vertical 1080×1920, 4:5,
+2.7K, 4K, landscape, square) and recorded with the work's own sound by one
+`MediaRecorder`, so picture and sound are in sync by construction; plus the
+sound as its own file, an event log, and MIDI takes (record what you play, play
+it back into the show, `.mid` in and out).
+
+| export | signature |
+|---|---|
+| `Compositor` | `new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions, getWorkCanvas, background, mirrorCam = true, maxFps = 60, onDraw(ctx, rects, comp) })` · `start()` · `stop()` · `draw()` · `setSize(size)` · `setLayout(layout, options)` · `setCamera(stream \| video \| null)` · `drawOnCamera(fn(ctx, w, h))` · `canvas`, `rects`, `video` |
+| `Recorder` | `new Recorder({ canvas, fps = 60, audioTracks = [], audioOnly = false, videoBitsPerSecond, mimeType })` · `start({ timeslice = 1000, ondata(blob, seq), keep })` · `stop()` → `Promise<{ mimeType, ext, bytes, durationMs, width, height, blob, … }>` · `t0` |
+| `AudioTap` | `new AudioTap({ context, sources, captureDestination })` · `add(node \| stream \| track, { bus })` · `captureDestination()` · `addMicrophone()` · `level()` · `tracks` (work + mic), `workTracks` (work only) |
+| `EventLog` | `new EventLog({ now, filter, throttleMs })` · `start(at)` · `stop()` · `add(name, value)` · `attach(signals)` · `toJSON()` · `toTake()` |
+| `TakeRecorder` · `TakePlayer` | `new TakeRecorder({ signals, filter = /^midi\//, overdub })` · `start()` · `stop()` → take · `new TakePlayer({ signals, take, loop = true, speed = 1, yieldToLive, resumeAfter, clock })` · `play()` · `pause()` · `stop()` · `seek(ms)` · `update(dt)` |
+| pure helpers | `layoutRects(layout, out, src, opts)` · `PRESETS` · `presetById` · `resolveSize` · `recommendedFps(w, h)` · `recommendedBitrate(w, h, fps)` · `pickMime(isTypeSupported, { audioOnly })` · `extFor(mime)` · `normalizeTake` · `validateTake` · `trimSilence` · `quantizeTake` · `toMidiFile(take)` → `Uint8Array` · `fromMidiFile(bytes)` → take |
+| cameras | `openCamera({ deviceId, width = 1920, height = 1080, fps = 30 })` → `MediaStream` · `listCameras()` · `listMicrophones()` |
+
+Layouts: `stack` (work on top at full width, camera below), `pip` (camera inset
+in a corner), `side` (work left, camera right), `work`. 60 fps up to about
+1080×1920, 30 fps for 2.7K and 4K; webcams stop at 1080p, so a 4K frame
+enlarges the camera.
+
+```js
+import { Compositor, AudioTap, Recorder, openCamera } from '@openav/record';
+const comp = new Compositor({ size: 'vertical-1080p', layout: 'stack', getWorkCanvas: () => canvas });
+comp.start();
+await comp.setCamera(await openCamera());
+const tap = new AudioTap({ context, sources: [workOutput] });
+const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks }).start();
+// later: const { blob, mimeType } = await rec.stop();
+```
+
+Package README with the MIDI takes: [packages/record](../packages/record/README.md).
+Example: [10-record](../examples/10-record/main.js).
 
 ## @openav/timeline
 
