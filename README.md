@@ -80,6 +80,7 @@ Two rules make the whole thing composable:
 | [`07-firework-festival`](examples/07-firework-festival/) | fireworks launched by closing a finger pinch (2021, PoseNet-era) — 21-landmark hands, four precise controllers |
 | [`08-remote-surface`](examples/08-remote-surface/) | **the phone is the instrument panel**: the World only declares `params`; `modules: { remote: true }` grows the control surface (`autoSurface`), a keyboard page, tilt & knock sensors — with feedback to the phone |
 | [`10-record`](examples/10-record/) | **the performance video** (@openav/record): the work on top, your hands from the webcam below, the work's own sound, one vertical 1080×1920 / 2.7K / 4K file in sync — plus MIDI takes you record, play back into the show, and save as `.mid` |
+| [`11-controller-video`](examples/11-controller-video/) | **the performance video without a camera**: the controller you play (MiniLab 3 or any profile) drawn live under the work — keys, pads, knobs and faders as they move, sharp at 4K; a replayed MIDI take animates it too |
 
 All examples run without MIDI hardware — every stage ships an on-screen piano
 (@openav/keys: QWERTY capture, Z/X octave) and a **simulated performer** that

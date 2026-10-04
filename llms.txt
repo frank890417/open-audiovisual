@@ -62,6 +62,7 @@ Each runs in the browser without hardware (on-screen piano, QWERTY keys, simulat
 - [08-remote-surface](https://openaudiovisual.com/examples/08-remote-surface/): a phone/iPad control surface grown from the world's params (needs `node serve.js` on the LAN).
 - [09-midi-controllers](https://openaudiovisual.com/examples/09-midi-controllers/): on-screen MiniLab 3, LPD8, Launchpad, nanoKONTROL2 that mirror real hardware.
 - [10-record](https://openaudiovisual.com/examples/10-record/): a performance video: the work above the webcam in one vertical 1080×1920 to 4K file with the work's own sound; MIDI takes recorded and played back.
+- [11-controller-video](https://openaudiovisual.com/examples/11-controller-video/): the performance video without a camera: the MIDI controller being played (MiniLab 3, any profile) drawn live under the work; replayed takes animate it too.
 
 Examples 05–07 integrate artworks © Che-Yu Wu (2020–2023), all rights reserved; the framework is MIT.
 
