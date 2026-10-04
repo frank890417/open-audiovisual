@@ -61,6 +61,7 @@ Each runs in the browser without hardware (on-screen piano, QWERTY keys, simulat
 - [07-firework-festival](https://openaudiovisual.com/examples/07-firework-festival/): pinch to launch fireworks (21-landmark hands).
 - [08-remote-surface](https://openaudiovisual.com/examples/08-remote-surface/): a phone/iPad control surface grown from the world's params (needs `node serve.js` on the LAN).
 - [09-midi-controllers](https://openaudiovisual.com/examples/09-midi-controllers/): on-screen MiniLab 3, LPD8, Launchpad, nanoKONTROL2 that mirror real hardware.
+- [10-record](https://openaudiovisual.com/examples/10-record/): a performance video: the work above the webcam in one vertical 1080×1920 to 4K file with the work's own sound; MIDI takes recorded and played back.
 
 Examples 05–07 integrate artworks © Che-Yu Wu (2020–2023), all rights reserved; the framework is MIT.
 
@@ -71,7 +72,7 @@ All under `packages/<name>/`, imported as `@openav/<name>` through an import map
 - Input: `midi` (Web MIDI in/out, multi-device, controller profiles) · `audio` (mic analysis: rms, bands, centroid, onsets, drums) · `chord` (consonance, triads, clusters) · `pose` (MediaPipe body and 21-point hands, on-device) · `keys` (on-screen piano, QWERTY, SimPlayer) · `drums` (synth kit + step sequencer, analyzer-shaped signals)
 - Mapping: `mapping` (routes, curves, smoothing, many-to-many, learn)
 - World: `stage` (world lifecycle, params, createCanvas) · `world-webtoe` (WebToe patch as a world)
-- Output: `sound` (engine contract, Tone.js engine) · `osc` (OSC via a small Node bridge to UDP) · MIDI out in `midi`
+- Output: `sound` (engine contract, Tone.js engine) · `osc` (OSC via a small Node bridge to UDP) · `record` (work + webcam compositor, recorder with the work's own sound, event log, MIDI takes and .mid files) · MIDI out in `midi`
 - Spines: `timeline` (automation, scenes, cues) · `console` (director's desk, performance mode) · `monitor` (backstage over WebSocket)
 - Phones: `relay` (room relay) · `surface` (TouchOSC-style widgets, autoSurface) · `remote` (phone/iPad app)
 - Glue: `core` (Signals, Params, Loop, Bus) · `show` (createShow) · `mcp` (MCP server)

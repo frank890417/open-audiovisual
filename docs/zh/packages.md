@@ -1,13 +1,13 @@
 # 套件一覽
 
-二十個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十一個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
 | L1 輸入 | `midi` · `audio` · `chord` · `pose` · `keys` · `drums` |
 | L2 映射 | `mapping` |
 | L3 世界 | `stage` · `world-webtoe` |
-| L4 輸出 | `sound` · `osc`（MIDI 輸出在 `midi` 裡） |
+| L4 輸出 | `sound` · `osc` · `record`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `console` · `monitor` |
 | 手機 | `relay` · `surface` · `remote` |
 | 膠水 | `core` · `show` · `mcp` |
@@ -219,6 +219,34 @@ L4 輸出 · 透過一個小小的 Node 橋接程式，把 OSC 從瀏覽器送�
 | 橋接 | `node packages/osc/bridges/osc-bridge.js [httpPort=7456] [targetHost=127.0.0.1] [targetPort=3456]` |
 
 見[演出控制](show-control.md#osc-output)。
+
+## @openav/record
+
+L4 輸出（影像分支）· 演出影片：作品和演奏者的鏡頭合成進一張尺寸精確的畫布（直式 1080×1920、4:5、2.7K、4K、橫式、方形），跟作品自己的聲音一起交給同一個 `MediaRecorder` 錄，所以畫面和聲音從結構上就是同步的；另外還有單獨的聲音檔、事件紀錄，以及 MIDI 錄音（錄下你彈的，再播回演出裡，`.mid` 可進可出）。
+
+| 匯出 | 簽章 |
+|---|---|
+| `Compositor` | `new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions, getWorkCanvas, background, mirrorCam = true, maxFps = 60, onDraw(ctx, rects, comp) })` · `start()` · `stop()` · `draw()` · `setSize(size)` · `setLayout(layout, options)` · `setCamera(stream \| video \| null)` · `drawOnCamera(fn(ctx, w, h))` · `canvas`、`rects`、`video` |
+| `Recorder` | `new Recorder({ canvas, fps = 60, audioTracks = [], audioOnly = false, videoBitsPerSecond, mimeType })` · `start({ timeslice = 1000, ondata(blob, seq), keep })` · `stop()` → `Promise<{ mimeType, ext, bytes, durationMs, width, height, blob, … }>` · `t0` |
+| `AudioTap` | `new AudioTap({ context, sources, captureDestination })` · `add(node \| stream \| track, { bus })` · `captureDestination()` · `addMicrophone()` · `level()` · `tracks`（作品＋麥克風）、`workTracks`（只有作品） |
+| `EventLog` | `new EventLog({ now, filter, throttleMs })` · `start(at)` · `stop()` · `add(name, value)` · `attach(signals)` · `toJSON()` · `toTake()` |
+| `TakeRecorder` · `TakePlayer` | `new TakeRecorder({ signals, filter = /^midi\//, overdub })` · `start()` · `stop()` → take · `new TakePlayer({ signals, take, loop = true, speed = 1, yieldToLive, resumeAfter, clock })` · `play()` · `pause()` · `stop()` · `seek(ms)` · `update(dt)` |
+| 純函式 | `layoutRects(layout, out, src, opts)` · `PRESETS` · `presetById` · `resolveSize` · `recommendedFps(w, h)` · `recommendedBitrate(w, h, fps)` · `pickMime(isTypeSupported, { audioOnly })` · `extFor(mime)` · `normalizeTake` · `validateTake` · `trimSilence` · `quantizeTake` · `toMidiFile(take)` → `Uint8Array` · `fromMidiFile(bytes)` → take |
+| 鏡頭 | `openCamera({ deviceId, width = 1920, height = 1080, fps = 30 })` → `MediaStream` · `listCameras()` · `listMicrophones()` |
+
+版面：`stack`（作品在上、滿寬，鏡頭在下）、`pip`（鏡頭是角落的小窗）、`side`（作品在左、鏡頭在右）、`work`（只有作品）。大約 1080×1920 以內錄 60 fps，2.7K 和 4K 錄 30 fps；網路攝影機多半只到 1080p，所以 4K 畫面裡的鏡頭是放大的。
+
+```js
+import { Compositor, AudioTap, Recorder, openCamera } from '@openav/record';
+const comp = new Compositor({ size: 'vertical-1080p', layout: 'stack', getWorkCanvas: () => canvas });
+comp.start();
+await comp.setCamera(await openCamera());
+const tap = new AudioTap({ context, sources: [workOutput] });
+const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks }).start();
+// later: const { blob, mimeType } = await rec.stop();
+```
+
+套件說明（含 MIDI 錄音）：[packages/record](../../packages/record/README.md)。範例：[10-record](../../examples/10-record/main.js)。
 
 ## @openav/timeline
 

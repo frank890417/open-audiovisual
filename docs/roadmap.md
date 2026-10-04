@@ -26,9 +26,10 @@ before it was generalized.)
   - [ ] QR code on the join card (needs a small zero-dep encoder)
   - [ ] *experimental* surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like `crowd/tilt/mean`)
   - [ ] mic as a phone sensor; per-device profiles; layout editor / import-export UI
-- **Signal recording & replay**: record the full signal stream of a performance;
-  replay it into any world. Rehearse without the performer; archive the gesture,
-  not just the video.
+- **Signal recording & replay** — *MIDI takes shipped* (`@openav/record`: `TakeRecorder`,
+  `TakePlayer`, `.mid` in and out; `EventLog` already records any signal beside a video). Next:
+  replay the full signal stream (hands, body, audio analysis) into any world. Rehearse without
+  the performer; archive the gesture, not just the video.
 - **npm publish** of `@openav/*`, and docs pages that are themselves performable with the framework.
 - **WebGPU world adapter** as WebGPU compute matures for particle/agent worlds.
 

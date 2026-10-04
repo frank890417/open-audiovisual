@@ -135,6 +135,17 @@ The in-page instruments listen to `midi/note/on|off` and the sustain pedal
 |---|---|---|---|
 | `sound/instrument` | pulse | `{id, name}` | the instrument changed (picker, code or a cue) |
 
+## @openav/record (take playback)
+
+A `TakePlayer` publishes a recorded take's events under their original names
+(`midi/note/on`, `midi/ch/<ch>/note/<n>`, `midi/cc/<n>`…), exactly as the
+keyboard did, plus two signals of its own.
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `take/playing` | continuous | 0 / 1 | 1 while a take plays; 0 when paused, stopped, or yielded to live playing |
+| `take/position` | continuous | 0..1 | how far into the take |
+
 ## @openav/remote · @openav/surface
 
 Phone sensors (`/packages/remote/` → 感測). `<id>` is the device id; `phone/any/…` carries the value from whichever phone sent it last, so a

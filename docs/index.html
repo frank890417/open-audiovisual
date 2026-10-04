@@ -24,9 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=062bc76">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=062bc76">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -256,6 +256,7 @@
             <li><a href="#signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker (21-landmark fine control)</a></li>
             <li><a href="#signals-openav-drums-simulator-analyzer-shaped">@openav/drums (simulator — analyzer-shaped)</a></li>
             <li><a href="#signals-openav-sound-output-events">@openav/sound (output events)</a></li>
+            <li><a href="#signals-openav-record-take-playback">@openav/record (take playback)</a></li>
             <li><a href="#signals-openav-remote-openav-surface">@openav/remote · @openav/surface</a></li>
             <li><a href="#signals-naming-your-own">Naming your own</a></li>
           </ol>
@@ -276,6 +277,7 @@
             <li><a href="#packages-openav-world-webtoe">@openav/world-webtoe</a></li>
             <li><a href="#packages-openav-sound">@openav/sound</a></li>
             <li><a href="#packages-openav-osc">@openav/osc</a></li>
+            <li><a href="#packages-openav-record">@openav/record</a></li>
             <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
             <li><a href="#packages-openav-console">@openav/console</a></li>
             <li><a href="#packages-openav-monitor">@openav/monitor</a></li>
@@ -344,7 +346,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">16 chapters · 145 sections · v0.1.0</p>
+      <p class="docs-stats">16 chapters · 147 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -734,6 +736,10 @@ signals → mapping → params spine — sound is performable state, not a side 
 <ul>
 <li><strong>screen</strong> is the default output; performance mode (T) gives the performer a
 teleprompter while the audience sees the stage window fullscreen (F).</li>
+<li><strong>recording</strong> (<code>@openav/record</code>): the work and the performer's camera composited
+into one canvas of an exact size (vertical 1080×1920 up to 4K) and recorded with
+the work's own sound by one <code>MediaRecorder</code>, so picture and sound share a clock.
+MIDI takes record the playing itself and replay it into the show.</li>
 <li>future: NDI gateway (see roadmap; groundwork lives in sister project WebToe).</li>
 </ul>
 <p><strong>Audio branch</strong></p>
@@ -1526,7 +1532,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=062bc76"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2191,6 +2197,17 @@ is for). Sequencer hits also travel as <code>midi/note/on</code> (ch 10, GM note
 <tr><td><code>sound/instrument</code></td><td>pulse</td><td><code>{id, name}</code></td><td>the instrument changed (picker, code or a cue)</td></tr>
 </tbody>
 </table></div>
+<h3 id="signals-openav-record-take-playback">@openav/record (take playback)<a class="anchor" href="#signals-openav-record-take-playback" aria-label="Link to this section">#</a></h3>
+<p>A <code>TakePlayer</code> publishes a recorded take's events under their original names
+(<code>midi/note/on</code>, <code>midi/ch/&lt;ch&gt;/note/&lt;n&gt;</code>, <code>midi/cc/&lt;n&gt;</code>…), exactly as the
+keyboard did, plus two signals of its own.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>take/playing</code></td><td>continuous</td><td>0 / 1</td><td>1 while a take plays; 0 when paused, stopped, or yielded to live playing</td></tr>
+<tr><td><code>take/position</code></td><td>continuous</td><td>0..1</td><td>how far into the take</td></tr>
+</tbody>
+</table></div>
 <h3 id="signals-openav-remote-openav-surface">@openav/remote · @openav/surface<a class="anchor" href="#signals-openav-remote-openav-surface" aria-label="Link to this section">#</a></h3>
 <p>Phone sensors (<code>/packages/remote/</code> → 感測). <code>&lt;id&gt;</code> is the device id; <code>phone/any/…</code> carries the value from whichever phone sent it last, so a
 World's routes can be written before any phone exists.</p>
@@ -2232,7 +2249,7 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">12</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
-<p>Twenty packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+<p>Twenty-one packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
 npm yet.</p>
@@ -2242,7 +2259,7 @@ npm yet.</p>
 <tr><td>L1 input</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>keys</code> · <code>drums</code></td></tr>
 <tr><td>L2 mapping</td><td><code>mapping</code></td></tr>
 <tr><td>L3 world</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
-<tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> (and MIDI out in <code>midi</code>)</td></tr>
+<tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>record</code> (and MIDI out in <code>midi</code>)</td></tr>
 <tr><td>spines</td><td><code>timeline</code> · <code>console</code> · <code>monitor</code></td></tr>
 <tr><td>phones</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
 <tr><td>glue</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
@@ -2251,7 +2268,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=062bc76"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -2431,6 +2448,38 @@ button.onclick = () =&gt; sound.enable();
 </tbody>
 </table></div>
 <p>See <a href="#show-control-osc-output">Show control</a>.</p>
+<h3 id="packages-openav-record">@openav/record<a class="anchor" href="#packages-openav-record" aria-label="Link to this section">#</a></h3>
+<p>L4 output (video branch) · the performance video: the work and the performer's
+camera composited into one canvas of an exact size (vertical 1080×1920, 4:5,
+2.7K, 4K, landscape, square) and recorded with the work's own sound by one
+<code>MediaRecorder</code>, so picture and sound are in sync by construction; plus the
+sound as its own file, an event log, and MIDI takes (record what you play, play
+it back into the show, <code>.mid</code> in and out).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Compositor</code></td><td><code>new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions, getWorkCanvas, background, mirrorCam = true, maxFps = 60, onDraw(ctx, rects, comp) })</code> · <code>start()</code> · <code>stop()</code> · <code>draw()</code> · <code>setSize(size)</code> · <code>setLayout(layout, options)</code> · <code>setCamera(stream | video | null)</code> · <code>drawOnCamera(fn(ctx, w, h))</code> · <code>canvas</code>, <code>rects</code>, <code>video</code></td></tr>
+<tr><td><code>Recorder</code></td><td><code>new Recorder({ canvas, fps = 60, audioTracks = [], audioOnly = false, videoBitsPerSecond, mimeType })</code> · <code>start({ timeslice = 1000, ondata(blob, seq), keep })</code> · <code>stop()</code> → <code>Promise&lt;{ mimeType, ext, bytes, durationMs, width, height, blob, … }&gt;</code> · <code>t0</code></td></tr>
+<tr><td><code>AudioTap</code></td><td><code>new AudioTap({ context, sources, captureDestination })</code> · <code>add(node | stream | track, { bus })</code> · <code>captureDestination()</code> · <code>addMicrophone()</code> · <code>level()</code> · <code>tracks</code> (work + mic), <code>workTracks</code> (work only)</td></tr>
+<tr><td><code>EventLog</code></td><td><code>new EventLog({ now, filter, throttleMs })</code> · <code>start(at)</code> · <code>stop()</code> · <code>add(name, value)</code> · <code>attach(signals)</code> · <code>toJSON()</code> · <code>toTake()</code></td></tr>
+<tr><td><code>TakeRecorder</code> · <code>TakePlayer</code></td><td><code>new TakeRecorder({ signals, filter = /^midi\//, overdub })</code> · <code>start()</code> · <code>stop()</code> → take · <code>new TakePlayer({ signals, take, loop = true, speed = 1, yieldToLive, resumeAfter, clock })</code> · <code>play()</code> · <code>pause()</code> · <code>stop()</code> · <code>seek(ms)</code> · <code>update(dt)</code></td></tr>
+<tr><td>pure helpers</td><td><code>layoutRects(layout, out, src, opts)</code> · <code>PRESETS</code> · <code>presetById</code> · <code>resolveSize</code> · <code>recommendedFps(w, h)</code> · <code>recommendedBitrate(w, h, fps)</code> · <code>pickMime(isTypeSupported, { audioOnly })</code> · <code>extFor(mime)</code> · <code>normalizeTake</code> · <code>validateTake</code> · <code>trimSilence</code> · <code>quantizeTake</code> · <code>toMidiFile(take)</code> → <code>Uint8Array</code> · <code>fromMidiFile(bytes)</code> → take</td></tr>
+<tr><td>cameras</td><td><code>openCamera({ deviceId, width = 1920, height = 1080, fps = 30 })</code> → <code>MediaStream</code> · <code>listCameras()</code> · <code>listMicrophones()</code></td></tr>
+</tbody>
+</table></div>
+<p>Layouts: <code>stack</code> (work on top at full width, camera below), <code>pip</code> (camera inset
+in a corner), <code>side</code> (work left, camera right), <code>work</code>. 60 fps up to about
+1080×1920, 30 fps for 2.7K and 4K; webcams stop at 1080p, so a 4K frame
+enlarges the camera.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Compositor, AudioTap, Recorder, openCamera } <span class="tk">from</span> <span class="ts">'@openav/record'</span>;
+<span class="tk">const</span> comp = <span class="tk">new</span> Compositor({ size: <span class="ts">'vertical-1080p'</span>, layout: <span class="ts">'stack'</span>, getWorkCanvas: () =&gt; canvas });
+comp.start();
+<span class="tk">await</span> comp.setCamera(<span class="tk">await</span> openCamera());
+<span class="tk">const</span> tap = <span class="tk">new</span> AudioTap({ context, sources: [workOutput] });
+<span class="tk">const</span> rec = <span class="tk">new</span> Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks }).start();
+<span class="tc">// later: const { blob, mimeType } = await rec.stop();</span></code></pre></div>
+<p>Package README with the MIDI takes: <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/record/README.md" rel="noopener">packages/record</a>.
+Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/10-record/main.js" rel="noopener">10-record</a>.</p>
 <h3 id="packages-openav-timeline">@openav/timeline<a class="anchor" href="#packages-openav-timeline" aria-label="Link to this section">#</a></h3>
 <p>Spine · automation, scenes and transport; pure logic.</p>
 <div class="table-wrap"><table>
@@ -2802,9 +2851,10 @@ layout JSON, <code>autoSurface(params)</code>, feedback to the phone. Next:
 <li class="task"><input type="checkbox" disabled aria-label="not done yet"> <em>experimental</em> surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like <code>crowd/tilt/mean</code>)</li>
 <li class="task"><input type="checkbox" disabled aria-label="not done yet"> mic as a phone sensor; per-device profiles; layout editor / import-export UI</li>
 </ul></li>
-<li><strong>Signal recording &amp; replay</strong>: record the full signal stream of a performance;
-replay it into any world. Rehearse without the performer; archive the gesture,
-not just the video.</li>
+<li><strong>Signal recording &amp; replay</strong> — <em>MIDI takes shipped</em> (<code>@openav/record</code>: <code>TakeRecorder</code>,
+<code>TakePlayer</code>, <code>.mid</code> in and out; <code>EventLog</code> already records any signal beside a video). Next:
+replay the full signal stream (hands, body, audio analysis) into any world. Rehearse without
+the performer; archive the gesture, not just the video.</li>
 <li><strong>npm publish</strong> of <code>@openav/*</code>, and docs pages that are themselves performable with the framework.</li>
 <li><strong>WebGPU world adapter</strong> as WebGPU compute matures for particle/agent worlds.</li>
 </ul>
@@ -2855,6 +2905,6 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=062bc76"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>
