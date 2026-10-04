@@ -19,7 +19,7 @@ export default {
   ui: {
     skip: 'Skip to content',
     navLabel: 'Sections',
-    nav: { play: 'Play', how: 'How it works', works: 'Works', start: 'Start', agents: 'For agents' },
+    nav: { play: 'Play', how: 'How it works', works: 'Works', start: 'Start', controllers: 'Controllers', docs: 'Docs', agents: 'For agents' },
     langLabel: 'Language',
     copy: 'Copy',
     copied: 'Copied',
@@ -237,6 +237,8 @@ export default {
   },
 
   footer: {
+    pages: 'Pages',
+    homeLink: 'Home',
     license: 'MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.',
     artworks: 'Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.',
     machine: 'For machines',

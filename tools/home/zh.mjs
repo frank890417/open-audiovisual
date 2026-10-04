@@ -19,7 +19,7 @@ export default {
   ui: {
     skip: '跳到主要內容',
     navLabel: '頁面區塊',
-    nav: { play: '彈奏', how: '運作方式', works: '作品', start: '開始', agents: '給 AI 代理' },
+    nav: { play: '彈奏', how: '運作方式', works: '作品', start: '開始', controllers: '控制器', docs: '文件', agents: '給 AI 代理' },
     langLabel: '語言',
     copy: '複製',
     copied: '已複製',
@@ -237,6 +237,8 @@ export default {
   },
 
   footer: {
+    pages: '頁面',
+    homeLink: '首頁',
     license: 'MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。',
     artworks: '範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。',
     machine: '給機器讀的',

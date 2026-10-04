@@ -6,10 +6,8 @@
 // Output is static HTML on purpose: crawlers and AI agents read every word
 // without running JavaScript. The script only brings the instrument to life.
 
-export const SITE = 'https://openaudiovisual.com/';
-export const REPO = 'https://github.com/frank890417/open-audiovisual';
-const BLOB = REPO + '/blob/main/';
-const TREE = REPO + '/tree/main/';
+import { SITE, REPO, BLOB, TREE, pageCtx, topBar, siteFooter } from '../site/chrome.mjs';
+export { SITE, REPO };
 
 export const LOCALES = {
   en: { path: '', root: './', url: SITE },
@@ -134,8 +132,6 @@ function hl(code) {
   return out + esc(code.slice(i));
 }
 
-const logo = `<svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg>`;
-
 const FAVICON = 'data:image/svg+xml,' + encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#0b0b0c"/><circle cx="7" cy="16" r="3.4" fill="#ff5a1f"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9" fill="none" stroke="#edebe5" stroke-width="2.4" stroke-linecap="round"/></svg>`);
 
@@ -145,7 +141,6 @@ export function renderPage(t, { locale, other, version }) {
   const root = L.root;
   const self = L.url;
   const href = (h) => h.startsWith('#') || /^https?:/.test(h) ? h : root + h;
-  const nav = [['play', '#play'], ['how', '#how'], ['works', '#works'], ['start', '#start'], ['agents', '#agents']];
   const langHref = { en: locale === 'en' ? './' : '../', zh: locale === 'en' ? './zh/' : './' };
   const altPage = langHref[other];
 
@@ -227,20 +222,7 @@ ${JSON.stringify(importmap, null, 2)}
 </script>
 </head>
 <body>
-<a class="skip" href="#main">${t.ui.skip}</a>
-
-<header class="top">
-  <a class="brand" href="./" aria-label="${attr(t.ui.home)}">${logo}<span>open-audiovisual</span></a>
-  <nav class="nav" aria-label="${attr(t.ui.navLabel)}">
-    ${nav.map(([k, h]) => `<a href="${h}">${t.ui.nav[k]}</a>`).join('\n    ')}
-  </nav>
-  <div class="top-end">
-    <div class="langs" role="group" aria-label="${attr(t.ui.langLabel)}">
-      <a href="${langHref.en}" hreflang="en" lang="en" data-lang="en"${locale === 'en' ? ' aria-current="page"' : ''}>EN</a><span aria-hidden="true">|</span><a href="${langHref.zh}" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh"${locale === 'zh' ? ' aria-current="page"' : ''}>中文</a>
-    </div>
-    <a class="gh" href="${REPO}">GitHub</a>
-  </div>
-</header>
+${topBar(t, pageCtx('home', locale))}
 
 <main id="main">
 
@@ -446,21 +428,7 @@ ${JSON.stringify(importmap, null, 2)}
 
 </main>
 
-<footer class="foot">
-  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
-  <div class="foot-grid">
-    <div>
-      <p>${t.footer.license}</p>
-      <p class="note">${t.footer.artworks}</p>
-    </div>
-    <nav aria-label="${attr(t.footer.machine)}">
-      <a href="${REPO}">GitHub</a>
-      <a href="${root}llms.txt">llms.txt</a>
-      <a href="${root}llms-full.txt">llms-full.txt</a>
-      <a href="${BLOB}AGENTS.md">AGENTS.md</a>
-    </nav>
-  </div>
-</footer>
+${siteFooter(t, pageCtx('home', locale))}
 
 <script type="application/json" id="oav-i18n">${JSON.stringify(runtime).replace(/</g, '\\u003c')}</script>
 <script type="module" src="${root}assets/home/home.js"></script>

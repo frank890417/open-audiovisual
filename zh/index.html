@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=32849c5">
+<link rel="stylesheet" href="../assets/home/home.css">
 <noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
 <script type="application/ld+json">
 {
@@ -65,14 +65,14 @@
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "../packages/core/index.js?v=32849c5",
-    "@openav/mapping": "../packages/mapping/index.js?v=32849c5",
-    "@openav/keys": "../packages/keys/index.js?v=32849c5",
-    "@openav/chord": "../packages/chord/index.js?v=32849c5",
-    "@openav/stage": "../packages/stage/index.js?v=32849c5",
-    "@openav/sound": "../packages/sound/index.js?v=32849c5",
-    "@openav/midi": "../packages/midi/index.js?v=32849c5",
-    "@openav/audio": "../packages/audio/index.js?v=32849c5"
+    "@openav/core": "../packages/core/index.js",
+    "@openav/mapping": "../packages/mapping/index.js",
+    "@openav/keys": "../packages/keys/index.js",
+    "@openav/chord": "../packages/chord/index.js",
+    "@openav/stage": "../packages/stage/index.js",
+    "@openav/sound": "../packages/sound/index.js",
+    "@openav/midi": "../packages/midi/index.js",
+    "@openav/audio": "../packages/audio/index.js"
   }
 }
 </script>
@@ -81,17 +81,18 @@
 <a class="skip" href="#main">跳到主要內容</a>
 
 <header class="top">
-  <a class="brand" href="./" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <a class="brand" href="../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
   <nav class="nav" aria-label="頁面區塊">
     <a href="#play">彈奏</a>
     <a href="#how">運作方式</a>
     <a href="#works">作品</a>
-    <a href="#start">開始</a>
+    <a href="../zh/controllers/">控制器</a>
+    <a href="../zh/docs/">文件</a>
     <a href="#agents">給 AI 代理</a>
   </nav>
   <div class="top-end">
     <div class="langs" role="group" aria-label="語言">
-      <a href="../" hreflang="en" lang="en" data-lang="en">EN</a><span aria-hidden="true">|</span><a href="./" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" aria-current="page">中文</a>
+      <a href="../" hreflang="en" lang="en" data-lang="en">EN</a><span aria-hidden="true">|</span><a href="../zh/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" aria-current="page">中文</a>
     </div>
     <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
   </div>
@@ -573,6 +574,11 @@ AGENTS.md 的規則：連續控制一律走參數，由 mapper 把訊號接過�
       <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
       <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
     </div>
+    <nav aria-label="頁面">
+      <a href="../zh/">首頁</a>
+      <a href="../zh/controllers/">控制器</a>
+      <a href="../zh/docs/">文件</a>
+    </nav>
     <nav aria-label="給機器讀的">
       <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
       <a href="../llms.txt">llms.txt</a>
@@ -583,6 +589,6 @@ AGENTS.md 的規則：連續控制一律走參數，由 mapper 把訊號接過�
 </footer>
 
 <script type="application/json" id="oav-i18n">{"statusSim":"模擬演奏者正在彈。換你了：點琴鍵，或按電腦鍵盤 A 到 L。","statusYou":"現在是你在彈。在畫面上拖曳，可以改色相和扭轉。","statusIdle":"點琴鍵或畫面，或按電腦鍵盤 A 到 L，就能彈。","midiNone":"找不到 MIDI 裝置。接上之後，再按一次 MIDI。","midiOn":"MIDI 已開啟，{n} 個裝置。調變輪（CC 1）也會帶動扭轉。","micOn":"麥克風已開啟，音量現在帶動能量。","micDenied":"這個瀏覽器擋下了麥克風。","soundLoading":"正在載入合成器…","soundOn":"聲音已開啟（Tone.js）。","consonance":"協和度","copy":"複製","copied":"已複製","eventTarget":"世界（事件）"}</script>
-<script type="module" src="../assets/home/home.js?v=32849c5"></script>
+<script type="module" src="../assets/home/home.js"></script>
 </body>
 </html>
