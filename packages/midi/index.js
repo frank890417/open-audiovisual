@@ -14,6 +14,7 @@
 //   profiles.js  validate / match / index           controller.js  MidiController
 //   parse.js     bytes ⇄ events ⇄ signal names       manager.js     MidiControllers (hardware ⇄ profiles)
 //   view.js      ControllerView (the faceplate)      panel.js       mountMidiPanel (header + port picker + view)
+//   canvas.js    ControllerCanvas (the faceplate drawn into a 2D canvas, for video: @openav/record's setPanel)
 //   virtual-access.js  Web MIDI shim                 remote-tab.js  the /remote MIDI tab
 //   embed.js     options, event payloads, postMessage   element.js     <oav-controller> (not imported here:
 //   createController() below: one controller, its events, hardware and MIDI out — the headless embed
@@ -25,7 +26,7 @@ import { ControllerView } from './view.js?v=f860ae3';
 import { PROFILES } from './profiles/index.js?v=f860ae3';
 import { track } from './telemetry.js?v=f860ae3';
 import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=f860ae3';
-export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=f860ae3';
+export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, eventOfSignal, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=f860ae3';
 export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=f860ae3';
 export { MidiController } from './controller.js?v=f860ae3';
 export { MidiControllers, controllerRoutes } from './manager.js?v=f860ae3';
@@ -34,6 +35,7 @@ export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-acc
 export { PROFILES, profileById } from './profiles/index.js?v=f860ae3';
 export { ControllerView, VIEW_CSS } from './view.js?v=f860ae3';
 export { mountMidiPanel, PANEL_CSS } from './panel.js?v=f860ae3';
+export { ControllerCanvas, CANVAS_THEME, controllerGeometry, keyboardGeometry, keyWindow, followMidiSignals, touchText, midiNoteName, fadeLevel } from './canvas.js?v=f860ae3';
 export { parseEmbedOptions, resolveProfile, controlDetail, describeDetail, describeMessage, setControl, valuesOf, findPort, preferredAspect,
   toParent, fromParent, toFrame, fromFrame, EMBED_ATTRS, EMBED_EVENTS, FRAME_COMMANDS, POST_SOURCE } from './embed.js?v=f860ae3';
 

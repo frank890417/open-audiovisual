@@ -135,6 +135,53 @@ export function genericSignals(ev, { device = null, legacy = true, channel = tru
   return out;
 }
 
+const CH_SIG = /^midi\/ch\/(\d+)\/(note|cc|poly)\/(\d+)$/;
+const CH_SIG1 = /^midi\/ch\/(\d+)\/(bend|pressure)$/;
+const LEGACY_CC = /^midi\/cc\/(\d+)$/;
+const chOf = (v, dflt) => { const n = Math.round(+v); return n >= 1 && n <= 16 ? n : dflt; };   // the on-screen piano says ch 0
+const b7 = (v) => Math.max(0, Math.min(127, Math.round(v)));
+const num = (v) => typeof v === 'number' && Number.isFinite(v);
+
+/** The inverse of genericSignals: one generic signal → the MIDI event it came from, so anything
+ *  that only hears a Signals bus (a take playing back, the on-screen piano, a phone) can drive a
+ *  controller model as if the bytes had arrived. Device names (`midi/<short>/…`), `midi/virtual`
+ *  and anything else → null.
+ *    eventOfSignal('midi/ch/10/note/36', 0.5) → { family: 'channel', ev: { type: 'noteon', ch: 10, note: 36, vel: 64 } }
+ *    eventOfSignal('midi/cc/74', 1)           → { family: 'legacy',  ev: { type: 'cc', ch: 1, cc: 74, value: 127 } }
+ *  Legacy CC and bend carry no channel: they get `channel`. Velocity and values come back on the
+ *  0..127 scale they were published from (v × 127, rounded), so the round trip is exact.
+ *  @param {string} name @param {any} value
+ *  @param {{channel?:number}} [o] channel for names that do not say one (default 1)
+ *  @returns {{family:'channel'|'legacy', ev:object} | null} */
+export function eventOfSignal(name, value, { channel = 1 } = {}) {
+  if (typeof name !== 'string' || !name.startsWith('midi/')) return null;
+  let m;
+  if ((m = CH_SIG.exec(name))) {
+    if (!num(value)) return null;
+    const ch = chOf(m[1], 0), n = +m[3];
+    if (!ch || n > 127) return null;
+    if (m[2] === 'note') return { family: 'channel', ev: value > 0 ? { type: 'noteon', ch, note: n, vel: Math.max(1, b7(value * 127)) } : { type: 'noteoff', ch, note: n, vel: 0 } };
+    if (m[2] === 'cc') return { family: 'channel', ev: { type: 'cc', ch, cc: n, value: b7(value * 127) } };
+    return { family: 'channel', ev: { type: 'polyat', ch, note: n, value: b7(value * 127) } };
+  }
+  if ((m = CH_SIG1.exec(name))) {
+    if (!num(value)) return null;
+    const ch = chOf(m[1], 0); if (!ch) return null;
+    return m[2] === 'bend' ? { family: 'channel', ev: { type: 'pitchbend', ch, value: unitToBend(Math.max(-1, Math.min(1, value))) } }
+      : { family: 'channel', ev: { type: 'chanat', ch, value: b7(value * 127) } };
+  }
+  if (name === 'midi/note/on' || name === 'midi/note/off') {
+    if (!value || typeof value !== 'object' || !num(value.note)) return null;
+    const ch = chOf(value.ch, channel), note = b7(value.note);
+    if (name === 'midi/note/off') return { family: 'legacy', ev: { type: 'noteoff', ch, note, vel: 0 } };
+    const vel = num(value.velocity) ? b7(value.velocity) : num(value.vel) ? b7(value.vel * 127) : 100;
+    return { family: 'legacy', ev: vel > 0 ? { type: 'noteon', ch, note, vel } : { type: 'noteoff', ch, note, vel: 0 } };
+  }
+  if ((m = LEGACY_CC.exec(name))) return num(value) && +m[1] <= 127 ? { family: 'legacy', ev: { type: 'cc', ch: chOf(channel, 1), cc: +m[1], value: b7(value * 127) } } : null;
+  if (name === 'midi/bend') return num(value) ? { family: 'legacy', ev: { type: 'pitchbend', ch: chOf(channel, 1), value: unitToBend(Math.max(-1, Math.min(1, value))) } } : null;
+  return null;
+}
+
 /** Publish a list of {name, value, pulse, min, max} into a Signals registry, declaring on first sight. */
 export function publish(signals, list) {
   if (!signals) return;

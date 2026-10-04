@@ -27,6 +27,7 @@
       "midi/virtual-access.js",
       "midi/profiles/index.js",
       "midi/view.js",
+      "midi/canvas.js",
       "midi/panel.js",
       "midi/embed.js",
       "midi/telemetry.js",
@@ -46,10 +47,11 @@
       "mountMidiPanel",
       "ControllerView",
       "parseMessage",
-      "encodeMessage"
+      "encodeMessage",
+      "ControllerCanvas"
     ],
     "wire": "lab.wire.js",
-    "autowire": "lab.midi (hardware → midi/* signals) + lab.midi.controllers (device profiles; plugged-in hardware animates the on-screen controller) + 🎹 docked panel + lab.midi.bind / meta.params[].midi → lab.setParam + a virtual Web MIDI input for sketches that call requestMIDIAccess themselves + relay link to the /remote MIDI tab.",
+    "autowire": "lab.midi (hardware → midi/* signals) + lab.midi.controllers (device profiles; plugged-in hardware animates the on-screen controller) + 🎹 docked panel + lab.midi.bind / meta.params[].midi → lab.setParam + a virtual Web MIDI input for sketches that call requestMIDIAccess themselves + relay link to the /remote MIDI tab. ControllerCanvas (OpenAV.ControllerCanvas) draws a controller into a 2D canvas from lab.signals — the lab's composite recording can show it where the camera goes.",
     "remoteTab": {
       "id": "midi",
       "label": "MIDI",

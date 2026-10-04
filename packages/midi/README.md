@@ -161,6 +161,37 @@ import { createController, Midi, MidiControllers, MidiController, controllerRout
   — mapper routes (continuous control goes through params, AGENTS.md rule 1).
 - `Midi` — the engine: `enable()`, `listen(fn)`, `onDevices(fn)`, `send()`, `panic()`, `dispose()`.
 
+## Drawn into a canvas (video)
+
+The on-screen controller is DOM, and a page cannot record its own DOM. `ControllerCanvas` draws the
+same faceplate into any 2D context, every frame, at any size: the bottom of a performance video
+(`@openav/record`'s `Compositor#setPanel`), an overlay, a thumbnail.
+
+```js
+import { ControllerCanvas } from '…/packages/midi/index.js';
+
+const panel = new ControllerCanvas({ profile: 'arturia-minilab3', signals });   // follows the bus
+panel.draw(ctx, { x: 0, y: 1080, w: 1080, h: 840 });                          // each frame
+panel.renderTo(canvas);                                                        // or fill a canvas of its own
+```
+
+- **State**: with `signals`, the generic names (`midi/ch/<ch>/…`, `midi/note/on|off`, `midi/cc/<n>`,
+  `midi/bend`) are turned back into bytes (`eventOfSignal`, the inverse of `genericSignals`) for a
+  private, silent `MidiController`: hardware, the on-screen controller, the QWERTY piano, phones and a
+  `TakePlayer` replaying a clip all move it. Each message counts once although hardware publishes it
+  under two names (`followMidiSignals`). With `controller` it follows that controller instead (one
+  device exactly, its learned mapping; a replayed take does not reach it). `mapping` applies
+  `exportMapping()` of the live device to the private one.
+- **For video**: released keys and pads fade (a 20 ms staccato is still on a 30 fps frame), the control
+  a hand just moved glows, the device's screen shows the last touch (`Knob 3 · 87`, `C4 · 100`), and
+  when the area has room the held notes are written large under the faceplate (`notes: 'auto'`).
+  The keyboard follows the device's octave buttons (`keyWindow`).
+- **Options**: `theme` (`bg`, `body`, `accent` = one colour for everything, `glow` 0..1, fonts — see
+  `CANVAS_THEME`), `notes` (`'auto'` · `true` · `false`), `screen`, `padding`. `aspect` = the
+  faceplate's width ÷ height. `dispose()` stops listening.
+- **Pure helpers** (tested): `controllerGeometry(profile, rect)`, `keyboardGeometry(from, to, rect)`,
+  `keyWindow(from, to, base, note)`, `touchText(control, state, note)`, `midiNoteName`, `fadeLevel`.
+
 Signals a controller publishes: `midi/<short>/<id>` (0..1) and `/raw`; pads `/hit`
 (+ `/pressure`), encoders `/delta`, keys `/on` `/off` and `midi/<short>/n<note>`;
 `midi/<short>/last`. Generic names (`midi/cc/74`, `midi/note/on`, `midi/ch/<ch>/…`) come
@@ -234,7 +265,7 @@ Turn it off: `<oav-controller telemetry="off">` · `createController(p, { teleme
 ## Files
 
 `parse.js` bytes ⇄ events ⇄ signal names · `profiles.js` validate / match · `controller.js`
-MidiController · `manager.js` MidiControllers · `view.js` ControllerView · `panel.js` docked
-panel · `embed.js` options, payloads, postMessage (pure, tested) · `element.js` `<oav-controller>`
+MidiController · `manager.js` MidiControllers · `view.js` ControllerView · `canvas.js`
+ControllerCanvas (for video) · `panel.js` docked panel · `embed.js` options, payloads, postMessage (pure, tested) · `element.js` `<oav-controller>`
 · `index.js` Midi engine + `createController` · `virtual-access.js` Web MIDI shim ·
 `link.js` / `remote-tab.js` phones over the relay · `profiles/` the data.
