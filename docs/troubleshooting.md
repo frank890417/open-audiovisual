@@ -116,7 +116,9 @@ localStorage.removeItem('openav.map.<world name>');
 
 Browsers start audio only after a click. Press **🔊 enable sound** in the
 *L4 · Output — sound* panel. The Tone.js engine is loaded from jsDelivr at that
-moment, so the first time needs a network connection. The drum machine's kit
+moment, so the first time needs a network connection. The piano loads about 2 MB
+of samples the first time you pick it: the picker shows the progress, and the
+previous instrument keeps playing until the piano is ready. The drum machine's kit
 starts on the first hit after you tick *drum machine*.
 
 ## The phone's tilt and knocks do nothing on an iPhone

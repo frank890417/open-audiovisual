@@ -1,7 +1,9 @@
 // Sound section — the audio branch's home in the universal side panel.
-// Shows the enable button (browser audio policy needs a gesture) and engine
-// status; the engine's own params (sound/*) render in the Params panel like
-// any other performable state.
+// Shows the enable button (browser audio policy needs a gesture), engine status
+// and, for engines with instruments, the instrument picker (grouped by category,
+// switchable while playing, with loading progress and the instrument's credit).
+// The engine's own params (sound/*) render in the Params panel like any other
+// performable state; an instrument's extra knobs appear there while it plays.
 export function buildSoundPanel(root, app) {
   const { sound } = app;
   const panel = document.createElement('div');
@@ -18,6 +20,12 @@ export function buildSoundPanel(root, app) {
     try { await sound.enable(); }
     catch (e) { btn.textContent = 'failed — retry'; console.error('[sound]', e); }
   });
+  // the picker module is fetched only for shows that have sound
+  if (sound.choosable && sound.picker !== false) {
+    import('../../sound/picker.js?v=c34c79f')
+      .then(({ mountSoundPicker }) => mountSoundPicker(panel, sound))
+      .catch((e) => console.error('[console] sound picker', e));
+  }
   return {
     render() {
       if (sound.enabled && !btn.classList.contains('on')) {

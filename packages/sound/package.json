@@ -4,7 +4,10 @@
   "type": "module",
   "main": "index.js",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./registry": "./registry.js",
+    "./picker": "./picker.js",
+    "./instruments/*": "./instruments/*"
   },
   "license": "MIT",
   "repository": {
@@ -15,14 +18,35 @@
   "lab": {
     "module": "sound",
     "files": [
-      "sound/index.js"
+      "sound/index.js",
+      "sound/registry.js",
+      "sound/picker.js",
+      "sound/instruments/piano.js",
+      "sound/instruments/epiano.js",
+      "sound/instruments/organ.js",
+      "sound/instruments/strings.js",
+      "sound/instruments/choir.js",
+      "sound/instruments/harp.js",
+      "sound/instruments/modal.js",
+      "sound/instruments/xylophone.js",
+      "sound/instruments/marimba.js",
+      "sound/instruments/vibraphone.js",
+      "sound/instruments/glockenspiel.js",
+      "sound/instruments/musicbox.js",
+      "sound/instruments/synth.js"
     ],
     "exports": [
       "Sound",
-      "toneEngine"
+      "toneEngine",
+      "registerInstrument",
+      "listInstruments",
+      "getInstrument",
+      "registerSynthPreset",
+      "modalInstrument",
+      "mountSoundPicker"
     ],
     "wire": "lab.wire.js",
-    "autowire": "lab.sound plays midi/note/* from lab.signals with Tone.js; starts on the first gesture.",
+    "autowire": "lab.sound plays midi/note/* from lab.signals with Tone.js (default instrument: the warm pad; lab.sound.setInstrument('piano') etc.); starts on the first gesture.",
     "remoteTab": null,
     "since": "2026-09"
   }

@@ -189,18 +189,22 @@ L3 世界 · 把一張 [WebToe](https://github.com/frank890417/WebToe) 節點網
 
 ## @openav/sound
 
-L4 輸出 · 頁面裡的合成器，背後是一份精簡的引擎介面約定，引擎的參數會變成 `sound/*` 參數。
+L4 輸出 · 頁面裡的樂器，背後是一份精簡的引擎介面約定。有 Salamander 平台鋼琴、敲擊琴、弦樂、風琴、合唱、豎琴和合成器音色，從選單挑，引擎的參數會變成 `sound/*` 參數。
 
 | 匯出 | 簽章 |
 |---|---|
-| `Sound` | `new Sound({ signals, params, engine })` · `enable()`（要從點擊事件呼叫）· 每個影格呼叫 `update(state)` · `dispose()` · `enabled` |
-| `toneEngine` | `toneEngine({ cdn })` → 帶有 `cutoff`、`space`、`volume` 參數的引擎 |
+| `Sound` | `new Sound({ signals, params, engine, instrument, remember, picker })` · `enable()`（要從點擊事件呼叫）· 每個影格呼叫 `update(state)` · `setInstrument(id)` · `instrument` · `status` · `onChange(cb)` · `dispose()` · `enabled` |
+| `toneEngine` | `toneEngine({ instrument = 'synth/pad', baseUrl, instruments, cdn, drumChannel = 10 })` → 帶有 `cutoff`、`space`、`volume` 參數的引擎，再加上樂器自己的參數 |
+| `registerInstrument` | `registerInstrument({ id, name, category, params, defaults, credit, create(Tone, ctx) }, { replace })`，另外還有 `getInstrument`、`listInstruments`、`instrumentGroups`、`onInstrumentsChange` |
+| `registerSynthPreset` | `registerSynthPreset({ id, name, voice, oscillator, envelope, filter, effects, … })` → `synth/<id>` |
+| `modalInstrument` | `modalInstrument({ id, name, partials, strike, damp })` → 用資料寫成的敲擊類樂器 |
+| `mountSoundPicker` | `mountSoundPicker(el, sound, { lang, className })` → 控台用的那個選單 |
 
-引擎介面約定：`{ params, enable(), noteOn(note, vel01), noteOff(note), set(key, value), dispose() }`。
+引擎介面約定：`{ params, enable(), noteOn(note, vel01), noteOff(note), set(key, value), dispose() }`。樂器清單和怎麼加入新樂器，寫在[聲音](show-control.md#sound)。
 
 ```js
 import { Sound, toneEngine } from '@openav/sound';
-const sound = new Sound({ signals, params, engine: toneEngine() });
+const sound = new Sound({ signals, params, engine: toneEngine({ instrument: 'piano' }) });
 button.onclick = () => sound.enable();
 // every frame: sound.update(state);
 ```

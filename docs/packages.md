@@ -205,19 +205,25 @@ See [Writing a world](writing-a-world.md#a-webtoe-patch).
 
 ## @openav/sound
 
-L4 output · in-page synthesis behind a small engine contract; engine params
-become `sound/*` params.
+L4 output · instruments in the page behind a small engine contract: a Salamander
+grand piano, mallets, strings, organ, choir, harp and synth presets, chosen from a
+picker; engine params become `sound/*` params.
 
 | export | signature |
 |---|---|
-| `Sound` | `new Sound({ signals, params, engine })` · `enable()` (from a click) · `update(state)` per frame · `dispose()` · `enabled` |
-| `toneEngine` | `toneEngine({ cdn })` → engine with params `cutoff`, `space`, `volume` |
+| `Sound` | `new Sound({ signals, params, engine, instrument, remember, picker })` · `enable()` (from a click) · `update(state)` per frame · `setInstrument(id)` · `instrument` · `status` · `onChange(cb)` · `dispose()` · `enabled` |
+| `toneEngine` | `toneEngine({ instrument = 'synth/pad', baseUrl, instruments, cdn, drumChannel = 10 })` → engine with params `cutoff`, `space`, `volume` plus the instrument's own |
+| `registerInstrument` | `registerInstrument({ id, name, category, params, defaults, credit, create(Tone, ctx) }, { replace })`; also `getInstrument`, `listInstruments`, `instrumentGroups`, `onInstrumentsChange` |
+| `registerSynthPreset` | `registerSynthPreset({ id, name, voice, oscillator, envelope, filter, effects, … })` → `synth/<id>` |
+| `modalInstrument` | `modalInstrument({ id, name, partials, strike, damp })` → a mallet-style instrument from data |
+| `mountSoundPicker` | `mountSoundPicker(el, sound, { lang, className })` → the picker the console uses |
 
 Engine contract: `{ params, enable(), noteOn(note, vel01), noteOff(note), set(key, value), dispose() }`.
+The instrument list and how to add one: [Sound](show-control.md#sound).
 
 ```js
 import { Sound, toneEngine } from '@openav/sound';
-const sound = new Sound({ signals, params, engine: toneEngine() });
+const sound = new Sound({ signals, params, engine: toneEngine({ instrument: 'piano' }) });
 button.onclick = () => sound.enable();
 // every frame: sound.update(state);
 ```

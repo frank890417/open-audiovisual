@@ -71,7 +71,7 @@ export function buildLayersPanel(root, app) {
       const outs = [];
       if (outSeen) outs.push(`midi ${meter.totalRate}/s`);
       if (app.osc?.enabled) outs.push(`osc ${app.osc.rate?.() ?? ''}/s`);
-      if (app.sound?.enabled) outs.push('sound ♪');
+      if (app.sound?.enabled) outs.push('sound ♪' + (app.sound.instrument ? ' ' + app.sound.instrument : ''));
       el.l4.textContent = outs.join(' · ') || 'screen only';
       // meter canvas: draw only when MIDI OUT exists; keep it collapsed otherwise
       const t = now / 1000;

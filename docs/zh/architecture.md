@@ -84,7 +84,7 @@ timeline.state(t)          — the "score": automation curves per param
 
 **聲音分支**
 - **MIDI 輸出**（外接合成器、DAW）：`midi.send()/noteOn()/cc()`，所有訊息走同一個出口，而且看得到（`onSend`），儀表能顯示每一則送出的訊息。另外有一個真的派得上用場的 `panic()`。
-- **頁面內合成**：`@openav/sound`，一份精簡、可抽換的引擎介面約定（`params, enable, noteOn, noteOff, set, dispose`），先支援 Tone.js 引擎（從 CDN 載入，按下 enable 才載）。引擎的參數註冊成 `sound/*`，旋鈕、手或時間軸演奏濾波器截止頻率的方式，跟演奏畫面完全一樣。`@openav/drums` 的鼓組是用同一份介面約定寫的第二個引擎（純 WebAudio，不需要取樣音檔）。
+- **頁面內合成**：`@openav/sound`，一份精簡、可抽換的引擎介面約定（`params, enable, noteOn, noteOff, set, dispose`），先支援 Tone.js 引擎（從 CDN 載入，按下 enable 才載）。這個引擎彈的是登記好的樂器：取樣的平台鋼琴、敲擊琴、弦樂、風琴、合成器音色，一個檔案一種聲音，在控台上挑。引擎的參數註冊成 `sound/*`，旋鈕、手或時間軸演奏濾波器截止頻率的方式，跟演奏畫面完全一樣。`@openav/drums` 的鼓組是用同一份介面約定寫的第二個引擎（純 WebAudio，不需要取樣音檔）。
 - **OSC**：瀏覽器 → HTTP → `osc-bridge.js` → UDP（Spat、Reaper、TD、燈光）。每格批次送出，同一個位址在一格裡只留最新的一則訊息。
 
 ## 主軸 · 時間軸

@@ -53,8 +53,9 @@ export function mountConsole(root, app, opts = {}) {
   // keyboard
   const onKey = (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.target.tagName === 'SELECT' && e.code !== 'Space') return;   // arrows and letters choose an option
     // a clicked button keeps focus; Space must mean PLAY, not "click it again"
-    if (e.target.tagName === 'BUTTON') e.target.blur();
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT') e.target.blur();
     if (e.code === 'Space') { e.preventDefault(); app.timeline.toggle(); }
     else if (e.code === 'ArrowRight') app.timeline.jumpScene(1);
     else if (e.code === 'ArrowLeft') app.timeline.jumpScene(-1);

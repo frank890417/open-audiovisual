@@ -234,7 +234,7 @@ io.midi?.noteOn(48 + creature.species * 12, 90, 2);   // note, velocity 0..127, 
 io.osc?.send(`/source/${i}/xyz`, [x, y, z]);
 ```
 
-很多時候，直接在組裝演出的程式裡處理會更簡單，範例 05 就是這樣：`show.signals.on('midi/note/on', ({ note, vel }) => show.midi?.noteOn(note, Math.round(vel * 127), 1))`。要用頁面裡的合成器，請用 `modules.sound`（[演出控制](show-control.md#sound)）。
+很多時候，直接在組裝演出的程式裡處理會更簡單，範例 05 就是這樣：`show.signals.on('midi/note/on', ({ note, vel }) => show.midi?.noteOn(note, Math.round(vel * 127), 1))`。要用頁面裡的樂器（平台鋼琴、敲擊琴、弦樂、風琴、合成器音色），請用 `modules.sound`（[演出控制](show-control.md#sound)）。
 
 ## 演出前檢查清單
 

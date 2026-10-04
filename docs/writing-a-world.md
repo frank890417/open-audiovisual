@@ -268,7 +268,7 @@ io.osc?.send(`/source/${i}/xyz`, [x, y, z]);
 
 Often it is simpler to do it at the assembly level instead, as example 05 does:
 `show.signals.on('midi/note/on', ({ note, vel }) => show.midi?.noteOn(note, Math.round(vel * 127), 1))`.
-For a synth inside the page, use `modules.sound` ([Show control](show-control.md#sound)).
+For instruments inside the page (a grand piano, mallets, strings, organ, synth presets), use `modules.sound` ([Show control](show-control.md#sound)).
 
 ## Checklist before a show
 

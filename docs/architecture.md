@@ -114,7 +114,9 @@ signals → mapping → params spine — sound is performable state, not a side 
   observable (`onSend`) so meters can watch everything, with a real `panic()`.
 - **In-browser synthesis**: `@openav/sound` — a small pluggable engine contract
   (`params, enable, noteOn, noteOff, set, dispose`) with a Tone.js engine first
-  (CDN, loaded only on enable). Engine params register as `sound/*` — a knob, a
+  (CDN, loaded only on enable) that plays instruments from a registry: a sampled
+  grand piano, mallets, strings, organ, synth presets, one file per sound, picked
+  from the console. Engine params register as `sound/*` — a knob, a
   hand, or the timeline plays the filter cutoff exactly the way it plays the
   visuals. The drum kit in `@openav/drums` is a second engine behind the same
   contract (pure WebAudio, no samples needed).

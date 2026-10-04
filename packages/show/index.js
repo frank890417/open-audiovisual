@@ -26,7 +26,6 @@
 import { Signals, Params, Loop } from '../core/index.js?v=c34c79f';
 import { Midi } from '../midi/index.js?v=c34c79f';
 import { mountKeys } from '../keys/index.js?v=c34c79f';
-import { Sound, toneEngine } from '../sound/index.js?v=c34c79f';
 import { AudioAnalyzer } from '../audio/index.js?v=c34c79f';
 import { ChordDetector } from '../chord/index.js?v=c34c79f';
 import { mountDrums } from '../drums/index.js?v=c34c79f';
@@ -178,7 +177,16 @@ export async function createShow({
   }
 
   // ---------- L4 audio branch ----------
-  const sound = modules.sound ? new Sound({ signals, params, engine: (typeof modules.sound === 'object' && modules.sound.engine) || toneEngine() }) : null;
+  // loaded only when declared, so shows without sound never fetch the instrument library.
+  // modules.sound: true · 'piano' · { instrument, remember, picker, engine, …toneEngine options }
+  let sound = null;
+  if (modules.sound) {
+    const { Sound, toneEngine, soundOptions } = await import('../sound/index.js?v=c34c79f');
+    const o = soundOptions(modules.sound);
+    // samples come from this copy of the framework (the published default is openaudiovisual.com)
+    const engine = o.engine || toneEngine({ baseUrl: new URL('../sound/samples/', import.meta.url).href, ...o.engineOptions });
+    sound = new Sound({ signals, params, engine, instrument: o.instrument, remember: o.remember, picker: o.picker });
+  }
 
   // ---------- desk + backstage ----------
   const app = { timeline, params, mapper, signals, midi, controllers, sound, stage, keys, drums, audio, hands, pose, chord, remote, artwork };

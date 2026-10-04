@@ -126,6 +126,15 @@ is for). Sequencer hits also travel as `midi/note/on` (ch 10, GM notes).
 | `drum/kick/env` `…` | continuous | 0..1 | decay envelope per lane (map straight onto params) |
 | `midi/note/on` | pulse | `{note, vel, ch: 10}` | kick 36 · snare 38 · clap 39 · closed hat 42 |
 
+## @openav/sound (output events)
+
+The in-page instruments listen to `midi/note/on|off` and the sustain pedal
+`midi/cc/64`, and announce one event of their own.
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `sound/instrument` | pulse | `{id, name}` | the instrument changed (picker, code or a cue) |
+
 ## @openav/remote · @openav/surface
 
 Phone sensors (`/packages/remote/` → 感測). `<id>` is the device id; `phone/any/…` carries the value from whichever phone sent it last, so a

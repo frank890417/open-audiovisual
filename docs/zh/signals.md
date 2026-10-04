@@ -111,6 +111,14 @@
 | `drum/kick/env` `…` | 連續 | 0..1 | 每一軌的衰減波封（可以直接映射到參數） |
 | `midi/note/on` | 脈衝 | `{note, vel, ch: 10}` | 大鼓 36 · 小鼓 38 · 拍手 39 · 閉合 hi-hat 42 |
 
+## @openav/sound（輸出事件）
+
+頁面裡的樂器會聽 `midi/note/on|off` 和延音踏板 `midi/cc/64`，自己也會發出一個事件。
+
+| 訊號 | 種類 | 範圍 | 意義 |
+|---|---|---|---|
+| `sound/instrument` | 脈衝 | `{id, name}` | 換了樂器（從選單、程式或場景提示） |
+
 ## @openav/remote · @openav/surface
 
 手機感測器（`/packages/remote/` → 感測）。`<id>` 是裝置 id。`phone/any/…` 的值永遠來自最後送出數值的那支手機，所以還沒有手機連上，就能先寫好世界的路由。

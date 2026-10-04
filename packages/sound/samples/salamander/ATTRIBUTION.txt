@@ -1,0 +1,11 @@
+Salamander Grand Piano V3 (Yamaha C5)
+by Alexander Holm — https://archive.org/details/SalamanderGrandPianoV3
+License: Creative Commons Attribution 3.0 Unported (CC-BY 3.0)
+         https://creativecommons.org/licenses/by/3.0/
+
+These 30 files are the sparse set (A, C, D#, F# of every octave, A0 to C8,
+one velocity layer) re-encoded to mp3 by the Tone.js project and mirrored at
+https://tonejs.github.io/audio/salamander/ — byte-identical copies.
+
+Used by the "piano" instrument of @openav/sound. Anything that plays them in
+public must credit: "Salamander Grand Piano · Alexander Holm · CC-BY 3.0".

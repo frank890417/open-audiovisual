@@ -5,7 +5,7 @@
 //   analyze  @openav/chord turns held notes into chord/* signals
 //   mapping  @openav/mapping routes signals → PARAMS (the patch bay draws these routes)
 //   world    ./harmonograph.js, an ordinary World run by @openav/stage
-//   output   the canvas, and @openav/sound (Tone.js) when you switch Sound on
+//   output   the canvas, and @openav/sound (Tone.js) when you switch Sound on, with an instrument picker
 //
 // No build step: this file is served as-is, imports resolve through the page's import map.
 
@@ -152,21 +152,23 @@ async function instrument(inst) {
   stageEl.addEventListener('pointercancel', lift);
 
   // ---------- switches: autoplay, and the optional devices ----------
-  let sound = null, midi = null, audio = null;
+  let sound = null, picker = null, midi = null, audio = null;
   const devices = { midi: false, mic: false };
   inst.querySelector('.switches')?.addEventListener('click', async (e) => {
     const b = e.target.closest('.sw'); if (!b) return;
     const name = b.dataset.sw, on = b.getAttribute('aria-pressed') === 'true';
     if (name === 'auto') { setAuto(!on); return; }
     if (name === 'sound') {
-      if (on) { sound?.dispose(); sound = null; setSw('sound', false); return; }
+      if (on) { picker?.dispose(); picker = null; sound?.dispose(); sound = null; setSw('sound', false); return; }
       b.dataset.busy = ''; status(T.soundLoading, true);
       try {
-        const { Sound, toneEngine } = await import('@openav/sound');
-        sound = new Sound({ signals, params, engine: toneEngine() });
+        const { Sound, toneEngine, mountSoundPicker } = await import('@openav/sound');
+        // the samples (Salamander piano) are served next to this page; the picker remembers the last choice
+        sound = new Sound({ signals, params, engine: toneEngine({ baseUrl: new URL('../../packages/sound/samples/', import.meta.url).href }) });
         await sound.enable();
+        picker = mountSoundPicker(inst.querySelector('.bar'), sound, { className: 'pick' });
         setSw('sound', true); status(T.soundOn, true);
-      } catch (err) { console.warn('[home] sound:', err); sound = null; setSw('sound', false); }
+      } catch (err) { console.warn('[home] sound:', err); picker?.dispose(); picker = null; sound = null; setSw('sound', false); }
       return;
     }
     if (name === 'midi') {

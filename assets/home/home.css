@@ -138,6 +138,23 @@ html[lang^="zh"] .door { grid-template-columns: 7.5em minmax(0, 1fr) auto; }
 .sw[aria-pressed="true"] .led { background: var(--sig); box-shadow: 0 0 6px 1px rgba(255, 90, 31, .7); }
 .sw[data-busy] .led { animation: blink .5s steps(2) infinite; }
 @keyframes blink { 50% { opacity: .2; } }
+/* instrument picker (mountSoundPicker from @openav/sound), shown while Sound is on */
+.pick { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; font: 400 12px/1.4 var(--mono); }
+.pick [hidden] { display: none !important; }
+.pick-row { display: flex; align-items: center; gap: 10px; }
+.pick-label { color: var(--fg-3); letter-spacing: .06em; text-transform: uppercase; flex: none; }
+.pick select { flex: 1; min-width: 0; padding: 7px 28px 7px 10px; background: var(--ink-3); color: var(--fg); border: 1px solid var(--line-2);
+  border-radius: 0; font: 500 12.5px/1.2 var(--mono); appearance: none; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--fg-2) 50%), linear-gradient(135deg, var(--fg-2) 50%, transparent 50%);
+  background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+.pick select:hover { border-color: var(--fg-3); }
+.pick optgroup { color: var(--fg-3); font-style: normal; }
+.pick option { color: var(--fg); background: var(--ink-3); }
+.pick-status { display: flex; align-items: center; gap: 10px; color: var(--l3); }
+.pick-meter { width: 72px; height: 3px; background: var(--line); flex: none; overflow: hidden; }
+.pick-meter i { display: block; height: 100%; width: 0; background: var(--l3); transition: width .15s var(--ease); }
+.pick-credit { color: var(--fg-3); font-size: 11px; }
+.pick-credit a { color: var(--fg-2); }
 
 .bay { grid-area: bay; border-left: 1px solid var(--line); padding: 10px 14px 14px; display: flex; flex-direction: column;
   font: 400 12px/1.4 var(--mono); min-width: 0; }

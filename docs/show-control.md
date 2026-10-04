@@ -50,7 +50,7 @@ Without `mount`, the page body becomes a two-column grid: the stage, and a
 | `hands` | `true` | the hand tracker (starts from 🖐 hands) |
 | `pose` | `true` | the body tracker (starts from 🕺 body) |
 | `remote` | `true`; `{ room, auto, surface, feedbackHz, url }` | phones and iPads as controllers ([Phones](remote.md#the-show-side)) |
-| `sound` | `true`; `{ engine }` | an in-page synth, Tone.js by default ([Sound](#sound)) |
+| `sound` | `true`; an instrument id (`'piano'`); `{ instrument, remember, picker, engine, baseUrl }` | instruments in the page with a picker, Tone.js ([Sound](#sound)) |
 
 It returns `{ signals, params, stage, timeline, mapper, midi, controllers,
 midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app,
@@ -217,18 +217,122 @@ matches a name exactly, then as a substring). Everything sent passes through
 
 `modules: { sound: true }` adds `Sound` (`@openav/sound`) with the Tone.js
 engine. Browsers only start audio after a click, so the console shows
-**🔊 enable sound** in the *L4 · Output — sound* panel. Once enabled, every
-`midi/note/on` and `midi/note/off` plays the synth, whatever sent it (a keyboard,
-the QWERTY piano, the simulated performer, a phone).
+**🔊 enable sound** in the *L4 · Output — sound* panel, with an instrument
+picker under it. Once enabled, every `midi/note/on` and `midi/note/off` plays
+the chosen instrument, whatever sent it (a keyboard, the QWERTY piano, the
+simulated performer, a phone). Tone.js (15.0.4) is loaded from jsDelivr only
+when sound is enabled.
 
-The engine's params join the show's params under `sound/`: with the Tone engine,
+```js
+await createShow({ world, modules: { sound: true } });       // the warm pad, as before
+await createShow({ world, modules: { sound: 'piano' } });    // start on the grand piano
+await createShow({ world, modules: { sound: { instrument: 'synth/pluck', remember: false, picker: false } } });
+```
+
+### Instruments
+
+| id | sound | made of |
+|---|---|---|
+| `piano` | grand piano | the Salamander Grand Piano: 30 samples (A, C, D♯, F♯ of every octave), 2.0 MB, loaded when picked |
+| `epiano` | electric piano | two FM pairs and a stereo tremolo |
+| `xylophone`, `marimba`, `vibraphone`, `glockenspiel`, `music-box` | mallets | modal synthesis: a few decaying partials at each bar's own ratios, plus a mallet click |
+| `strings` | string ensemble | detuned saws, bowed attack, chorus, vibrato |
+| `harp` | plucked string | Karplus–Strong |
+| `organ` | drawbar organ | nine drawbars as one additive waveform, rotary tremolo |
+| `choir` | choir pad | saws through vowel formants |
+| `synth/pad` | warm pad | the original voice, still the default |
+| `synth/saw-lead`, `synth/square-lead`, `synth/pluck`, `synth/supersaw`, `synth/bass`, `synth/acid`, `synth/brass`, `synth/bell`, `synth/sub`, `synth/chip` | synth presets | one poly synth, presets as data |
+
+The piano samples are *Salamander Grand Piano* by Alexander Holm, licensed
+[CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/). The picker shows that
+credit next to the piano, and a show that plays it in public credits it too.
+They ship in `packages/sound/samples/salamander/`. If they cannot load, the
+piano plays the electric piano instead of going silent.
+
+### Choosing a sound
+
+Pick from the console, or from code:
+
+```js
+await show.sound.setInstrument('organ');   // true once it plays
+show.sound.instrument;                     // 'organ'
+show.sound.onChange((e) => console.log(e.type, e.id, e.progress));   // instrument · loading · ready · error
+show.timeline.onSceneChange((i, scene) => {
+  if (scene.id === 'chorale') show.sound.setInstrument('organ');      // a cue may switch instruments
+});
+```
+
+Switching while you play releases the notes held on the old instrument, so
+nothing hangs. A sampler keeps the old sound playing until its files are in,
+and the picker shows the progress. Each switch also fires the pulse signal
+`sound/instrument` (`{ id, name }`). The picker's last choice is remembered per
+page and wins over the declared instrument on the next visit;
+`remember: false` turns that off.
+
+The instrument is a discrete choice. What you perform continuously stays a
+param: the engine's params join the show's params under `sound/`.
 `sound/cutoff` (100–8000 Hz, default 2500), `sound/space` (reverb wet, 0–1,
-default 0.3) and `sound/volume` (−36–0 dB, default −8). They appear in the
-console, can be automated by the timeline and mapped like any param, so a knob,
-a hand or the score plays the filter the way it plays the visuals. Tone.js
-(15.0.4) is loaded from jsDelivr only when sound is enabled.
+default 0.3) and `sound/volume` (−36–0 dB, default −8) are shared by every
+instrument, so a knob, a hand or the score plays the filter the way it plays
+the visuals. An instrument may suggest starting values (the piano opens the
+filter to 8000 Hz) and add knobs of its own, which the console shows while it
+plays: the organ's `sound/drawbars` and `sound/rotor`, `sound/attack` and
+`sound/vibrato` on the strings, `sound/vowel` on the choir, `sound/tremolo` on
+the electric piano and the vibraphone. Automation and overrides always win over
+a suggested default. The sustain pedal (`midi/cc/64`) holds every instrument's
+note-offs. Notes on MIDI channel 10 (the drum machine) are left to a drum engine.
 
-An engine is a small object, so you can bring your own:
+### Add your own instrument
+
+A sound you can pick is one file: data plus a `create(Tone, ctx)` that returns
+`noteOn`, `noteOff` and `dispose`. Import it before `createShow()` and every
+picker lists it; nothing in `packages/*` changes.
+
+```js
+import { registerInstrument } from '@openav/sound';
+
+registerInstrument({
+  id: 'kalimba',
+  name: { en: 'Kalimba', zh: '拇指琴' },
+  category: 'mallets',
+  params: [{ key: 'decay', label: 'Decay (s)', min: 0.2, max: 4, def: 1.2 }],   // → sound/decay
+  create(Tone, { output }) {
+    const synth = new Tone.PolySynth(Tone.FMSynth, { harmonicity: 5.1, modulationIndex: 2,
+      envelope: { attack: 0.001, decay: 1.2, sustain: 0, release: 1 } }).connect(output);
+    const hz = (n) => 440 * 2 ** ((n - 69) / 12);
+    return {
+      noteOn: (note, vel, time) => synth.triggerAttack(hz(note), time, vel),
+      noteOff: (note, time) => synth.triggerRelease(hz(note), time),
+      set: (key, v) => key === 'decay' && synth.set({ envelope: { decay: v } }),
+      dispose: () => synth.dispose(),
+    };
+  },
+});
+```
+
+A duplicate id throws unless you pass `registerInstrument(def, { replace: true })`.
+Optional fields: `defaults` (starting `cutoff`, `space`, `volume`), `credit`,
+`gain` (dB), `transpose` (semitones), `fallback` (an id to play if loading fails)
+and, on the returned object, `ready` (a Promise: the picker shows progress while
+you call `ctx.onProgress(0..1)`), `set(key, value)` and `releaseAll(time)`.
+Mallet sounds can be pure data with `modalInstrument({ id, name, partials, strike })`.
+
+A synth preset is data as well, and becomes `synth/<id>`:
+
+```js
+import { registerSynthPreset } from '@openav/sound';
+
+registerSynthPreset({
+  id: 'glass', name: { en: 'Glass', zh: '玻璃' },
+  voice: 'fm', harmonicity: 3.01, modulationIndex: 14,
+  envelope: { attack: 0.002, decay: 1.4, sustain: 0, release: 1.2 },
+  effects: [{ type: 'chorus', frequency: 1.5, depth: 0.4, wet: 0.3 }],
+});
+```
+
+### Your own engine
+
+An engine is a small object, so you can replace the whole thing:
 
 ```js
 const sineEngine = () => {

@@ -24,9 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=c34c79f">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=c34c79f">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -255,6 +255,7 @@
             <li><a href="#signals-openav-pose">@openav/pose</a></li>
             <li><a href="#signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker (21-landmark fine control)</a></li>
             <li><a href="#signals-openav-drums-simulator-analyzer-shaped">@openav/drums (simulator — analyzer-shaped)</a></li>
+            <li><a href="#signals-openav-sound-output-events">@openav/sound (output events)</a></li>
             <li><a href="#signals-openav-remote-openav-surface">@openav/remote · @openav/surface</a></li>
             <li><a href="#signals-naming-your-own">Naming your own</a></li>
           </ol>
@@ -343,7 +344,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">16 chapters · 144 sections · v0.1.0</p>
+      <p class="docs-stats">16 chapters · 145 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -741,7 +742,9 @@ teleprompter while the audience sees the stage window fullscreen (F).</li>
 observable (<code>onSend</code>) so meters can watch everything, with a real <code>panic()</code>.</li>
 <li><strong>In-browser synthesis</strong>: <code>@openav/sound</code> — a small pluggable engine contract
 (<code>params, enable, noteOn, noteOff, set, dispose</code>) with a Tone.js engine first
-(CDN, loaded only on enable). Engine params register as <code>sound/*</code> — a knob, a
+(CDN, loaded only on enable) that plays instruments from a registry: a sampled
+grand piano, mallets, strings, organ, synth presets, one file per sound, picked
+from the console. Engine params register as <code>sound/*</code> — a knob, a
 hand, or the timeline plays the filter cutoff exactly the way it plays the
 visuals. The drum kit in <code>@openav/drums</code> is a second engine behind the same
 contract (pure WebAudio, no samples needed).</li>
@@ -987,7 +990,7 @@ io.midi?.noteOn(48 + creature.species * 12, 90, 2);   <span class="tc">// note, 
 io.osc?.send(<span class="ts">`/source/${i}/xyz`</span>, [x, y, z]);</code></pre></div>
 <p>Often it is simpler to do it at the assembly level instead, as example 05 does:
 <code>show.signals.on('midi/note/on', ({ note, vel }) =&gt; show.midi?.noteOn(note, Math.round(vel * 127), 1))</code>.
-For a synth inside the page, use <code>modules.sound</code> (<a href="#show-control-sound">Show control</a>).</p>
+For instruments inside the page (a grand piano, mallets, strings, organ, synth presets), use <code>modules.sound</code> (<a href="#show-control-sound">Show control</a>).</p>
 <h3 id="writing-a-world-checklist-before-a-show">Checklist before a show<a class="anchor" href="#writing-a-world-checklist-before-a-show" aria-label="Link to this section">#</a></h3>
 <ul class="tasks">
 <li class="task"><input type="checkbox" disabled aria-label="not done yet"> every continuous control is a param (try performing your world with ONLY the timeline)</li>
@@ -1424,7 +1427,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>hands</code></td><td><code>true</code></td><td>the hand tracker (starts from 🖐 hands)</td></tr>
 <tr><td><code>pose</code></td><td><code>true</code></td><td>the body tracker (starts from 🕺 body)</td></tr>
 <tr><td><code>remote</code></td><td><code>true</code>; <code>{ room, auto, surface, feedbackHz, url }</code></td><td>phones and iPads as controllers (<a href="#phones-the-show-side">Phones</a>)</td></tr>
-<tr><td><code>sound</code></td><td><code>true</code>; <code>{ engine }</code></td><td>an in-page synth, Tone.js by default (<a href="#show-control-sound">Sound</a>)</td></tr>
+<tr><td><code>sound</code></td><td><code>true</code>; an instrument id (<code>'piano'</code>); <code>{ instrument, remember, picker, engine, baseUrl }</code></td><td>instruments in the page with a picker, Tone.js (<a href="#show-control-sound">Sound</a>)</td></tr>
 </tbody>
 </table></div>
 <p>It returns <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app, loop }</code>; parts you did not ask for are <code>null</code>. The same object is
@@ -1523,7 +1526,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=c34c79f"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1547,16 +1550,100 @@ matches a name exactly, then as a substring). Everything sent passes through
 <h3 id="show-control-sound">Sound<a class="anchor" href="#show-control-sound" aria-label="Link to this section">#</a></h3>
 <p><code>modules: { sound: true }</code> adds <code>Sound</code> (<code>@openav/sound</code>) with the Tone.js
 engine. Browsers only start audio after a click, so the console shows
-<strong>🔊 enable sound</strong> in the <em>L4 · Output — sound</em> panel. Once enabled, every
-<code>midi/note/on</code> and <code>midi/note/off</code> plays the synth, whatever sent it (a keyboard,
-the QWERTY piano, the simulated performer, a phone).</p>
-<p>The engine's params join the show's params under <code>sound/</code>: with the Tone engine,
+<strong>🔊 enable sound</strong> in the <em>L4 · Output — sound</em> panel, with an instrument
+picker under it. Once enabled, every <code>midi/note/on</code> and <code>midi/note/off</code> plays
+the chosen instrument, whatever sent it (a keyboard, the QWERTY piano, the
+simulated performer, a phone). Tone.js (15.0.4) is loaded from jsDelivr only
+when sound is enabled.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({ world, modules: { sound: <span class="tk">true</span> } });       <span class="tc">// the warm pad, as before</span>
+<span class="tk">await</span> createShow({ world, modules: { sound: <span class="ts">'piano'</span> } });    <span class="tc">// start on the grand piano</span>
+<span class="tk">await</span> createShow({ world, modules: { sound: { instrument: <span class="ts">'synth/pluck'</span>, remember: <span class="tk">false</span>, picker: <span class="tk">false</span> } } });</code></pre></div>
+<h4 id="show-control-instruments">Instruments<a class="anchor" href="#show-control-instruments" aria-label="Link to this section">#</a></h4>
+<div class="table-wrap"><table>
+<thead><tr><th>id</th><th>sound</th><th>made of</th></tr></thead>
+<tbody>
+<tr><td><code>piano</code></td><td>grand piano</td><td>the Salamander Grand Piano: 30 samples (A, C, D♯, F♯ of every octave), 2.0 MB, loaded when picked</td></tr>
+<tr><td><code>epiano</code></td><td>electric piano</td><td>two FM pairs and a stereo tremolo</td></tr>
+<tr><td><code>xylophone</code>, <code>marimba</code>, <code>vibraphone</code>, <code>glockenspiel</code>, <code>music-box</code></td><td>mallets</td><td>modal synthesis: a few decaying partials at each bar's own ratios, plus a mallet click</td></tr>
+<tr><td><code>strings</code></td><td>string ensemble</td><td>detuned saws, bowed attack, chorus, vibrato</td></tr>
+<tr><td><code>harp</code></td><td>plucked string</td><td>Karplus–Strong</td></tr>
+<tr><td><code>organ</code></td><td>drawbar organ</td><td>nine drawbars as one additive waveform, rotary tremolo</td></tr>
+<tr><td><code>choir</code></td><td>choir pad</td><td>saws through vowel formants</td></tr>
+<tr><td><code>synth/pad</code></td><td>warm pad</td><td>the original voice, still the default</td></tr>
+<tr><td><code>synth/saw-lead</code>, <code>synth/square-lead</code>, <code>synth/pluck</code>, <code>synth/supersaw</code>, <code>synth/bass</code>, <code>synth/acid</code>, <code>synth/brass</code>, <code>synth/bell</code>, <code>synth/sub</code>, <code>synth/chip</code></td><td>synth presets</td><td>one poly synth, presets as data</td></tr>
+</tbody>
+</table></div>
+<p>The piano samples are <em>Salamander Grand Piano</em> by Alexander Holm, licensed
+<a href="https://creativecommons.org/licenses/by/3.0/" rel="noopener">CC-BY 3.0</a>. The picker shows that
+credit next to the piano, and a show that plays it in public credits it too.
+They ship in <code>packages/sound/samples/salamander/</code>. If they cannot load, the
+piano plays the electric piano instead of going silent.</p>
+<h4 id="show-control-choosing-a-sound">Choosing a sound<a class="anchor" href="#show-control-choosing-a-sound" aria-label="Link to this section">#</a></h4>
+<p>Pick from the console, or from code:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> show.sound.setInstrument(<span class="ts">'organ'</span>);   <span class="tc">// true once it plays</span>
+show.sound.instrument;                     <span class="tc">// 'organ'</span>
+show.sound.onChange((e) =&gt; console.log(e.type, e.id, e.progress));   <span class="tc">// instrument · loading · ready · error</span>
+show.timeline.onSceneChange((i, scene) =&gt; {
+  <span class="tk">if</span> (scene.id === <span class="ts">'chorale'</span>) show.sound.setInstrument(<span class="ts">'organ'</span>);      <span class="tc">// a cue may switch instruments</span>
+});</code></pre></div>
+<p>Switching while you play releases the notes held on the old instrument, so
+nothing hangs. A sampler keeps the old sound playing until its files are in,
+and the picker shows the progress. Each switch also fires the pulse signal
+<code>sound/instrument</code> (<code>{ id, name }</code>). The picker's last choice is remembered per
+page and wins over the declared instrument on the next visit;
+<code>remember: false</code> turns that off.</p>
+<p>The instrument is a discrete choice. What you perform continuously stays a
+param: the engine's params join the show's params under <code>sound/</code>.
 <code>sound/cutoff</code> (100–8000 Hz, default 2500), <code>sound/space</code> (reverb wet, 0–1,
-default 0.3) and <code>sound/volume</code> (−36–0 dB, default −8). They appear in the
-console, can be automated by the timeline and mapped like any param, so a knob,
-a hand or the score plays the filter the way it plays the visuals. Tone.js
-(15.0.4) is loaded from jsDelivr only when sound is enabled.</p>
-<p>An engine is a small object, so you can bring your own:</p>
+default 0.3) and <code>sound/volume</code> (−36–0 dB, default −8) are shared by every
+instrument, so a knob, a hand or the score plays the filter the way it plays
+the visuals. An instrument may suggest starting values (the piano opens the
+filter to 8000 Hz) and add knobs of its own, which the console shows while it
+plays: the organ's <code>sound/drawbars</code> and <code>sound/rotor</code>, <code>sound/attack</code> and
+<code>sound/vibrato</code> on the strings, <code>sound/vowel</code> on the choir, <code>sound/tremolo</code> on
+the electric piano and the vibraphone. Automation and overrides always win over
+a suggested default. The sustain pedal (<code>midi/cc/64</code>) holds every instrument's
+note-offs. Notes on MIDI channel 10 (the drum machine) are left to a drum engine.</p>
+<h4 id="show-control-add-your-own-instrument">Add your own instrument<a class="anchor" href="#show-control-add-your-own-instrument" aria-label="Link to this section">#</a></h4>
+<p>A sound you can pick is one file: data plus a <code>create(Tone, ctx)</code> that returns
+<code>noteOn</code>, <code>noteOff</code> and <code>dispose</code>. Import it before <code>createShow()</code> and every
+picker lists it; nothing in <code>packages/*</code> changes.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { registerInstrument } <span class="tk">from</span> <span class="ts">'@openav/sound'</span>;
+
+registerInstrument({
+  id: <span class="ts">'kalimba'</span>,
+  name: { en: <span class="ts">'Kalimba'</span>, zh: <span class="ts">'拇指琴'</span> },
+  category: <span class="ts">'mallets'</span>,
+  params: [{ key: <span class="ts">'decay'</span>, label: <span class="ts">'Decay (s)'</span>, min: 0.2, max: 4, def: 1.2 }],   <span class="tc">// → sound/decay</span>
+  create(Tone, { output }) {
+    <span class="tk">const</span> synth = <span class="tk">new</span> Tone.PolySynth(Tone.FMSynth, { harmonicity: 5.1, modulationIndex: 2,
+      envelope: { attack: 0.001, decay: 1.2, sustain: 0, release: 1 } }).connect(output);
+    <span class="tk">const</span> hz = (n) =&gt; 440 * 2 ** ((n - 69) / 12);
+    <span class="tk">return</span> {
+      noteOn: (note, vel, time) =&gt; synth.triggerAttack(hz(note), time, vel),
+      noteOff: (note, time) =&gt; synth.triggerRelease(hz(note), time),
+      <span class="tk">set</span>: (key, v) =&gt; key === <span class="ts">'decay'</span> &amp;&amp; synth.<span class="tk">set</span>({ envelope: { decay: v } }),
+      dispose: () =&gt; synth.dispose(),
+    };
+  },
+});</code></pre></div>
+<p>A duplicate id throws unless you pass <code>registerInstrument(def, { replace: true })</code>.
+Optional fields: <code>defaults</code> (starting <code>cutoff</code>, <code>space</code>, <code>volume</code>), <code>credit</code>,
+<code>gain</code> (dB), <code>transpose</code> (semitones), <code>fallback</code> (an id to play if loading fails)
+and, on the returned object, <code>ready</code> (a Promise: the picker shows progress while
+you call <code>ctx.onProgress(0..1)</code>), <code>set(key, value)</code> and <code>releaseAll(time)</code>.
+Mallet sounds can be pure data with <code>modalInstrument({ id, name, partials, strike })</code>.</p>
+<p>A synth preset is data as well, and becomes <code>synth/&lt;id&gt;</code>:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { registerSynthPreset } <span class="tk">from</span> <span class="ts">'@openav/sound'</span>;
+
+registerSynthPreset({
+  id: <span class="ts">'glass'</span>, name: { en: <span class="ts">'Glass'</span>, zh: <span class="ts">'玻璃'</span> },
+  voice: <span class="ts">'fm'</span>, harmonicity: 3.01, modulationIndex: 14,
+  envelope: { attack: 0.002, decay: 1.4, sustain: 0, release: 1.2 },
+  effects: [{ type: <span class="ts">'chorus'</span>, frequency: 1.5, depth: 0.4, wet: 0.3 }],
+});</code></pre></div>
+<h4 id="show-control-your-own-engine">Your own engine<a class="anchor" href="#show-control-your-own-engine" aria-label="Link to this section">#</a></h4>
+<p>An engine is a small object, so you can replace the whole thing:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> sineEngine = () =&gt; {
   <span class="tk">let</span> ctx = <span class="tk">null</span>, out = <span class="tk">null</span>;
   <span class="tk">const</span> voices = <span class="tk">new</span> Map();
@@ -2095,6 +2182,15 @@ is for). Sequencer hits also travel as <code>midi/note/on</code> (ch 10, GM note
 <tr><td><code>midi/note/on</code></td><td>pulse</td><td><code>{note, vel, ch: 10}</code></td><td>kick 36 · snare 38 · clap 39 · closed hat 42</td></tr>
 </tbody>
 </table></div>
+<h3 id="signals-openav-sound-output-events">@openav/sound (output events)<a class="anchor" href="#signals-openav-sound-output-events" aria-label="Link to this section">#</a></h3>
+<p>The in-page instruments listen to <code>midi/note/on|off</code> and the sustain pedal
+<code>midi/cc/64</code>, and announce one event of their own.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>sound/instrument</code></td><td>pulse</td><td><code>{id, name}</code></td><td>the instrument changed (picker, code or a cue)</td></tr>
+</tbody>
+</table></div>
 <h3 id="signals-openav-remote-openav-surface">@openav/remote · @openav/surface<a class="anchor" href="#signals-openav-remote-openav-surface" aria-label="Link to this section">#</a></h3>
 <p>Phone sensors (<code>/packages/remote/</code> → 感測). <code>&lt;id&gt;</code> is the device id; <code>phone/any/…</code> carries the value from whichever phone sent it last, so a
 World's routes can be written before any phone exists.</p>
@@ -2155,7 +2251,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=c34c79f"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -2305,18 +2401,24 @@ as a world; params reach the patch's <code>ext('name', fallback)</code> bindings
 </table></div>
 <p>See <a href="#writing-a-world-a-webtoe-patch">Writing a world</a>.</p>
 <h3 id="packages-openav-sound">@openav/sound<a class="anchor" href="#packages-openav-sound" aria-label="Link to this section">#</a></h3>
-<p>L4 output · in-page synthesis behind a small engine contract; engine params
-become <code>sound/*</code> params.</p>
+<p>L4 output · instruments in the page behind a small engine contract: a Salamander
+grand piano, mallets, strings, organ, choir, harp and synth presets, chosen from a
+picker; engine params become <code>sound/*</code> params.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>Sound</code></td><td><code>new Sound({ signals, params, engine })</code> · <code>enable()</code> (from a click) · <code>update(state)</code> per frame · <code>dispose()</code> · <code>enabled</code></td></tr>
-<tr><td><code>toneEngine</code></td><td><code>toneEngine({ cdn })</code> → engine with params <code>cutoff</code>, <code>space</code>, <code>volume</code></td></tr>
+<tr><td><code>Sound</code></td><td><code>new Sound({ signals, params, engine, instrument, remember, picker })</code> · <code>enable()</code> (from a click) · <code>update(state)</code> per frame · <code>setInstrument(id)</code> · <code>instrument</code> · <code>status</code> · <code>onChange(cb)</code> · <code>dispose()</code> · <code>enabled</code></td></tr>
+<tr><td><code>toneEngine</code></td><td><code>toneEngine({ instrument = 'synth/pad', baseUrl, instruments, cdn, drumChannel = 10 })</code> → engine with params <code>cutoff</code>, <code>space</code>, <code>volume</code> plus the instrument's own</td></tr>
+<tr><td><code>registerInstrument</code></td><td><code>registerInstrument({ id, name, category, params, defaults, credit, create(Tone, ctx) }, { replace })</code>; also <code>getInstrument</code>, <code>listInstruments</code>, <code>instrumentGroups</code>, <code>onInstrumentsChange</code></td></tr>
+<tr><td><code>registerSynthPreset</code></td><td><code>registerSynthPreset({ id, name, voice, oscillator, envelope, filter, effects, … })</code> → <code>synth/&lt;id&gt;</code></td></tr>
+<tr><td><code>modalInstrument</code></td><td><code>modalInstrument({ id, name, partials, strike, damp })</code> → a mallet-style instrument from data</td></tr>
+<tr><td><code>mountSoundPicker</code></td><td><code>mountSoundPicker(el, sound, { lang, className })</code> → the picker the console uses</td></tr>
 </tbody>
 </table></div>
-<p>Engine contract: <code>{ params, enable(), noteOn(note, vel01), noteOff(note), set(key, value), dispose() }</code>.</p>
+<p>Engine contract: <code>{ params, enable(), noteOn(note, vel01), noteOff(note), set(key, value), dispose() }</code>.
+The instrument list and how to add one: <a href="#show-control-sound">Sound</a>.</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Sound, toneEngine } <span class="tk">from</span> <span class="ts">'@openav/sound'</span>;
-<span class="tk">const</span> sound = <span class="tk">new</span> Sound({ signals, params, engine: toneEngine() });
+<span class="tk">const</span> sound = <span class="tk">new</span> Sound({ signals, params, engine: toneEngine({ instrument: <span class="ts">'piano'</span> }) });
 button.onclick = () =&gt; sound.enable();
 <span class="tc">// every frame: sound.update(state);</span></code></pre></div>
 <h3 id="packages-openav-osc">@openav/osc<a class="anchor" href="#packages-openav-osc" aria-label="Link to this section">#</a></h3>
@@ -2635,7 +2737,9 @@ the first time. Offline, they cannot start.</li>
 <h3 id="troubleshooting-there-is-no-sound">There is no sound<a class="anchor" href="#troubleshooting-there-is-no-sound" aria-label="Link to this section">#</a></h3>
 <p>Browsers start audio only after a click. Press <strong>🔊 enable sound</strong> in the
 <em>L4 · Output — sound</em> panel. The Tone.js engine is loaded from jsDelivr at that
-moment, so the first time needs a network connection. The drum machine's kit
+moment, so the first time needs a network connection. The piano loads about 2 MB
+of samples the first time you pick it: the picker shows the progress, and the
+previous instrument keeps playing until the piano is ready. The drum machine's kit
 starts on the first hit after you tick <em>drum machine</em>.</p>
 <h3 id="troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone">The phone's tilt and knocks do nothing on an iPhone<a class="anchor" href="#troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone" aria-label="Link to this section">#</a></h3>
 <p>iOS only gives motion sensors to <code>https://</code> pages, and only after a tap on
@@ -2751,6 +2855,6 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=c34c79f"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

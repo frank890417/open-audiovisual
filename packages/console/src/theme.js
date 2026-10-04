@@ -27,6 +27,17 @@ export const css = `
 .oav-sound-btn { background: #1a2030; color: #cfd6e4; border: 1px solid #2a3348;
   border-radius: 8px; padding: 6px 14px; font: 12px ui-monospace, monospace; cursor: pointer; }
 .oav-sound-btn.on { background: #2e6df6; color: #fff; border-color: #2e6df6; }
+.oav-sound-pick { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.oav-sound-pick [hidden] { display: none !important; }
+.oav-sound-pick-row { display: flex; gap: 8px; align-items: center; color: #9aa5bd; font-size: 11px; }
+.oav-sound-pick select { flex: 1; min-width: 0; background: #1a2030; color: #cfd6e4; border: 1px solid #2a3348;
+  border-radius: 6px; padding: 4px 6px; font: inherit; }
+.oav-sound-pick select:focus-visible { outline: 2px solid #2e6df6; outline-offset: 1px; }
+.oav-sound-pick-status { display: flex; gap: 8px; align-items: center; color: #ffd166; font-size: 10px; }
+.oav-sound-pick-meter { width: 80px; height: 4px; background: #131826; border-radius: 2px; overflow: hidden; flex: none; }
+.oav-sound-pick-meter i { display: block; height: 100%; width: 0; background: #ffd166; transition: width .15s; }
+.oav-sound-pick-credit { color: #667; font-size: 10px; }
+.oav-sound-pick-credit a { color: #8892a8; }
 .oav-layers .lay { display: grid; grid-template-columns: 88px 1fr; gap: 8px; padding: 2px 0;
   font-size: 11px; align-items: baseline; }
 .oav-layers b { font-weight: 600; }

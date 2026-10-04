@@ -46,7 +46,7 @@ const show = await createShow({
 | `hands` | `true` | 手部追蹤（按 🖐 hands 啟動） |
 | `pose` | `true` | 身體追蹤（按 🕺 body 啟動） |
 | `remote` | `true` 或 `{ room, auto, surface, feedbackHz, url }` | 手機和 iPad 當控制器（[手機](remote.md#the-show-side)） |
-| `sound` | `true` 或 `{ engine }` | 頁面裡的合成器，預設是 Tone.js（[聲音](#sound)） |
+| `sound` | `true`、樂器 id（`'piano'`）或 `{ instrument, remember, picker, engine, baseUrl }` | 頁面裡的樂器和選單，用 Tone.js（[聲音](#sound)） |
 
 它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
 
@@ -176,11 +176,91 @@ show.midi.panic();
 
 ## 聲音
 
-`modules: { sound: true }` 會加入 `Sound`（`@openav/sound`），用的是 Tone.js 引擎。瀏覽器要等使用者點一下才會開始播放音訊，所以控台會在 *L4 · Output — sound*（聲音輸出）面板放一個 **🔊 enable sound**（開啟聲音）按鈕。開啟之後，合成器就會跟著每個 `midi/note/on` 和 `midi/note/off` 彈，不管是誰送的（MIDI 鍵盤、電腦鍵盤鋼琴、模擬演奏者、手機）。
+`modules: { sound: true }` 會加入 `Sound`（`@openav/sound`），用的是 Tone.js 引擎。瀏覽器要等使用者點一下才會開始播放音訊，所以控台會在 *L4 · Output — sound*（聲音輸出）面板放一個 **🔊 enable sound**（開啟聲音）按鈕，下面是選樂器的選單。開啟之後，選好的樂器就會跟著每個 `midi/note/on` 和 `midi/note/off` 彈，不管是誰送的（MIDI 鍵盤、電腦鍵盤鋼琴、模擬演奏者、手機）。Tone.js（15.0.4）要等開啟聲音時才從 jsDelivr 載入。
 
-引擎的參數會併進演出的參數，放在 `sound/` 底下。用 Tone 引擎時，有 `sound/cutoff`（100–8000 Hz，預設 2500）、`sound/space`（殘響的 wet 比例，0–1，預設 0.3）和 `sound/volume`（−36–0 dB，預設 −8）。它們會出現在控台上，可以交給時間軸自動化，也能像其他參數一樣映射，所以一顆旋鈕、一隻手或樂譜，演奏濾波器的方式就跟演奏畫面一樣。Tone.js（15.0.4）要等開啟聲音時才從 jsDelivr 載入。
+```js
+await createShow({ world, modules: { sound: true } });       // the warm pad, as before
+await createShow({ world, modules: { sound: 'piano' } });    // start on the grand piano
+await createShow({ world, modules: { sound: { instrument: 'synth/pluck', remember: false, picker: false } } });
+```
 
-引擎只是一個小物件，你也可以自己寫一個：
+### 樂器
+
+| id | 聲音 | 怎麼做的 |
+|---|---|---|
+| `piano` | 平台鋼琴 | Salamander Grand Piano 取樣：30 個音檔（每個八度的 A、C、D♯、F♯），共 2.0 MB，選到才載入 |
+| `epiano` | 電鋼琴 | 兩組 FM 加上立體聲顫音 |
+| `xylophone`、`marimba`、`vibraphone`、`glockenspiel`、`music-box` | 木琴、馬林巴、顫音琴、鐵琴、音樂盒 | 模態合成：照每種琴鍵自己的泛音比例，疊幾個會衰減的分音，再加上琴槌敲下去的那一聲 |
+| `strings` | 弦樂合奏 | 幾個音高略為錯開的鋸齒波、像拉弓的起音、合唱效果、抖音 |
+| `harp` | 撥弦 | Karplus–Strong |
+| `organ` | 音栓風琴 | 九根音栓合成一個加法波形，再加上旋轉喇叭的顫音 |
+| `choir` | 合唱襯底 | 鋸齒波穿過母音的共振峰 |
+| `synth/pad` | 溫暖襯底 | 原本的音色，仍然是預設 |
+| `synth/saw-lead`、`synth/square-lead`、`synth/pluck`、`synth/supersaw`、`synth/bass`、`synth/acid`、`synth/brass`、`synth/bell`、`synth/sub`、`synth/chip` | 合成器音色 | 同一台複音合成器，音色寫成資料 |
+
+鋼琴取樣是 Alexander Holm 錄製的 *Salamander Grand Piano*，授權是 [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/)。選單會在鋼琴旁邊列出這行出處，公開演出用到它時，也要標上出處。音檔放在 `packages/sound/samples/salamander/`。萬一載不進來，鋼琴會改用電鋼琴彈，不會變成一片安靜。
+
+### 選聲音
+
+可以在控台上選，也可以寫在程式裡：
+
+```js
+await show.sound.setInstrument('organ');   // true once it plays
+show.sound.instrument;                     // 'organ'
+show.sound.onChange((e) => console.log(e.type, e.id, e.progress));   // instrument · loading · ready · error
+show.timeline.onSceneChange((i, scene) => {
+  if (scene.id === 'chorale') show.sound.setInstrument('organ');      // a cue may switch instruments
+});
+```
+
+邊彈邊換樂器時，舊樂器上還按著的音會先放開，不會有音卡住。取樣樂器在音檔載完之前，會繼續用舊的聲音彈，選單上看得到載入進度。每換一次，也會發出一個 `sound/instrument` 脈衝訊號（`{ id, name }`）。選單上最後一次的選擇會記在這個頁面，下次打開時會沿用，就算程式裡宣告了別的樂器也一樣。不想要這樣，就設 `remember: false`。
+
+樂器是一個離散的選擇。要連續演奏的東西仍然是參數：引擎的參數會併進演出的參數，放在 `sound/` 底下。`sound/cutoff`（100–8000 Hz，預設 2500）、`sound/space`（殘響的 wet 比例，0–1，預設 0.3）和 `sound/volume`（−36–0 dB，預設 −8）是所有樂器共用的，所以一顆旋鈕、一隻手或樂譜，演奏濾波器的方式就跟演奏畫面一樣。樂器可以建議自己的起始值（鋼琴會把濾波器開到 8000 Hz），也可以加上自己的旋鈕，它在彈的時候控台才會顯示：風琴的 `sound/drawbars` 和 `sound/rotor`，弦樂的 `sound/attack` 和 `sound/vibrato`，合唱的 `sound/vowel`，電鋼琴和顫音琴的 `sound/tremolo`。自動化和手動覆寫永遠比建議的起始值優先。延音踏板（`midi/cc/64`）對每種樂器都有效，會先留住放開的音。MIDI 第 10 頻道的音（鼓機送的）留給鼓組引擎，這裡不彈。
+
+### 加入自己的樂器
+
+一個可以選的聲音就是一個檔案：一些資料，加上一個 `create(Tone, ctx)`，回傳 `noteOn`、`noteOff` 和 `dispose`。在 `createShow()` 之前 import 這個檔案，每個選單就會列出它，`packages/*` 完全不用改。
+
+```js
+import { registerInstrument } from '@openav/sound';
+
+registerInstrument({
+  id: 'kalimba',
+  name: { en: 'Kalimba', zh: '拇指琴' },
+  category: 'mallets',
+  params: [{ key: 'decay', label: 'Decay (s)', min: 0.2, max: 4, def: 1.2 }],   // → sound/decay
+  create(Tone, { output }) {
+    const synth = new Tone.PolySynth(Tone.FMSynth, { harmonicity: 5.1, modulationIndex: 2,
+      envelope: { attack: 0.001, decay: 1.2, sustain: 0, release: 1 } }).connect(output);
+    const hz = (n) => 440 * 2 ** ((n - 69) / 12);
+    return {
+      noteOn: (note, vel, time) => synth.triggerAttack(hz(note), time, vel),
+      noteOff: (note, time) => synth.triggerRelease(hz(note), time),
+      set: (key, v) => key === 'decay' && synth.set({ envelope: { decay: v } }),
+      dispose: () => synth.dispose(),
+    };
+  },
+});
+```
+
+id 重複會丟出錯誤，真的要換掉時，寫 `registerInstrument(def, { replace: true })`。可以選填的欄位有：`defaults`（`cutoff`、`space`、`volume` 的起始值）、`credit`（出處）、`gain`（dB）、`transpose`（半音）、`fallback`（載入失敗時改用的樂器 id）。回傳的物件也可以帶 `ready`（一個 Promise，載入時呼叫 `ctx.onProgress(0..1)`，選單就會顯示進度）、`set(key, value)` 和 `releaseAll(time)`。敲擊類的聲音可以完全用資料寫，交給 `modalInstrument({ id, name, partials, strike })`。
+
+合成器音色也是資料，會變成 `synth/<id>`：
+
+```js
+import { registerSynthPreset } from '@openav/sound';
+
+registerSynthPreset({
+  id: 'glass', name: { en: 'Glass', zh: '玻璃' },
+  voice: 'fm', harmonicity: 3.01, modulationIndex: 14,
+  envelope: { attack: 0.002, decay: 1.4, sustain: 0, release: 1.2 },
+  effects: [{ type: 'chorus', frequency: 1.5, depth: 0.4, wet: 0.3 }],
+});
+```
+
+### 自己寫引擎
+
+引擎只是一個小物件，整個換掉也可以：
 
 ```js
 const sineEngine = () => {

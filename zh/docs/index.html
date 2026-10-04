@@ -24,9 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=c34c79f">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=c34c79f">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -255,6 +255,7 @@
             <li><a href="#signals-openav-pose">@openav/pose</a></li>
             <li><a href="#signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker（21 個關鍵點的精細控制）</a></li>
             <li><a href="#signals-openav-drums-simulator-analyzer-shaped">@openav/drums（模擬器，訊號形狀和分析器相同）</a></li>
+            <li><a href="#signals-openav-sound-output-events">@openav/sound（輸出事件）</a></li>
             <li><a href="#signals-openav-remote-openav-surface">@openav/remote · @openav/surface</a></li>
             <li><a href="#signals-naming-your-own">自己命名訊號</a></li>
           </ol>
@@ -343,7 +344,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">16 章 · 144 節 · v0.1.0</p>
+      <p class="docs-stats">16 章 · 145 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -602,7 +603,7 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
 <p><strong>聲音分支</strong></p>
 <ul>
 <li><strong>MIDI 輸出</strong>（外接合成器、DAW）：<code>midi.send()/noteOn()/cc()</code>，所有訊息走同一個出口，而且看得到（<code>onSend</code>），儀表能顯示每一則送出的訊息。另外有一個真的派得上用場的 <code>panic()</code>。</li>
-<li><strong>頁面內合成</strong>：<code>@openav/sound</code>，一份精簡、可抽換的引擎介面約定（<code>params, enable, noteOn, noteOff, set, dispose</code>），先支援 Tone.js 引擎（從 CDN 載入，按下 enable 才載）。引擎的參數註冊成 <code>sound/*</code>，旋鈕、手或時間軸演奏濾波器截止頻率的方式，跟演奏畫面完全一樣。<code>@openav/drums</code> 的鼓組是用同一份介面約定寫的第二個引擎（純 WebAudio，不需要取樣音檔）。</li>
+<li><strong>頁面內合成</strong>：<code>@openav/sound</code>，一份精簡、可抽換的引擎介面約定（<code>params, enable, noteOn, noteOff, set, dispose</code>），先支援 Tone.js 引擎（從 CDN 載入，按下 enable 才載）。這個引擎彈的是登記好的樂器：取樣的平台鋼琴、敲擊琴、弦樂、風琴、合成器音色，一個檔案一種聲音，在控台上挑。引擎的參數註冊成 <code>sound/*</code>，旋鈕、手或時間軸演奏濾波器截止頻率的方式，跟演奏畫面完全一樣。<code>@openav/drums</code> 的鼓組是用同一份介面約定寫的第二個引擎（純 WebAudio，不需要取樣音檔）。</li>
 <li><strong>OSC</strong>：瀏覽器 → HTTP → <code>osc-bridge.js</code> → UDP（Spat、Reaper、TD、燈光）。每格批次送出，同一個位址在一格裡只留最新的一則訊息。</li>
 </ul>
 <h3 id="architecture-spine-timeline">主軸 · 時間軸<a class="anchor" href="#architecture-spine-timeline" aria-label="這一節的連結">#</a></h3>
@@ -799,7 +800,7 @@ io.midi?.noteOn(48 + creature.species * 12, 90, 2);   <span class="tc">// note, 
 
 <span class="tc">// stream a position to a spatializer</span>
 io.osc?.send(<span class="ts">`/source/${i}/xyz`</span>, [x, y, z]);</code></pre></div>
-<p>很多時候，直接在組裝演出的程式裡處理會更簡單，範例 05 就是這樣：<code>show.signals.on('midi/note/on', ({ note, vel }) =&gt; show.midi?.noteOn(note, Math.round(vel * 127), 1))</code>。要用頁面裡的合成器，請用 <code>modules.sound</code>（<a href="#show-control-sound">演出控制</a>）。</p>
+<p>很多時候，直接在組裝演出的程式裡處理會更簡單，範例 05 就是這樣：<code>show.signals.on('midi/note/on', ({ note, vel }) =&gt; show.midi?.noteOn(note, Math.round(vel * 127), 1))</code>。要用頁面裡的樂器（平台鋼琴、敲擊琴、弦樂、風琴、合成器音色），請用 <code>modules.sound</code>（<a href="#show-control-sound">演出控制</a>）。</p>
 <h3 id="writing-a-world-checklist-before-a-show">演出前檢查清單<a class="anchor" href="#writing-a-world-checklist-before-a-show" aria-label="這一節的連結">#</a></h3>
 <ul class="tasks">
 <li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 每一個連續控制都是參數（試著<strong>只用</strong>時間軸演出你的世界）</li>
@@ -1089,7 +1090,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>hands</code></td><td><code>true</code></td><td>手部追蹤（按 🖐 hands 啟動）</td></tr>
 <tr><td><code>pose</code></td><td><code>true</code></td><td>身體追蹤（按 🕺 body 啟動）</td></tr>
 <tr><td><code>remote</code></td><td><code>true</code> 或 <code>{ room, auto, surface, feedbackHz, url }</code></td><td>手機和 iPad 當控制器（<a href="#phones-the-show-side">手機</a>）</td></tr>
-<tr><td><code>sound</code></td><td><code>true</code> 或 <code>{ engine }</code></td><td>頁面裡的合成器，預設是 Tone.js（<a href="#show-control-sound">聲音</a>）</td></tr>
+<tr><td><code>sound</code></td><td><code>true</code>、樂器 id（<code>'piano'</code>）或 <code>{ instrument, remember, picker, engine, baseUrl }</code></td><td>頁面裡的樂器和選單，用 Tone.js（<a href="#show-control-sound">聲音</a>）</td></tr>
 </tbody>
 </table></div>
 <p>它回傳 <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app, loop }</code>，你沒要的部分是 <code>null</code>。同一個物件也掛在 <code>window.openav</code>，方便在 devtools 主控台裡查看。每個影格的執行順序寫在<a href="#architecture-the-frame-loop">架構</a>。</p>
@@ -1161,7 +1162,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=c34c79f"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1178,9 +1179,69 @@ show.midi.send([0xb0, 74, 64]);         <span class="tc">// raw bytes</span>
 show.midi.panic();</code></pre></div>
 <p>還沒選輸出埠之前，用的是第一個輸出埠（<code>enable(preferredOut)</code> 先找名稱完全相同的埠，找不到再找名稱包含這個字串的）。送出的每一則訊息都會經過 <code>onSend</code>，Layers 面板裡分頻道的 MIDI OUT 儀表就是靠它更新。</p>
 <h3 id="show-control-sound">聲音<a class="anchor" href="#show-control-sound" aria-label="這一節的連結">#</a></h3>
-<p><code>modules: { sound: true }</code> 會加入 <code>Sound</code>（<code>@openav/sound</code>），用的是 Tone.js 引擎。瀏覽器要等使用者點一下才會開始播放音訊，所以控台會在 <em>L4 · Output — sound</em>（聲音輸出）面板放一個 <strong>🔊 enable sound</strong>（開啟聲音）按鈕。開啟之後，合成器就會跟著每個 <code>midi/note/on</code> 和 <code>midi/note/off</code> 彈，不管是誰送的（MIDI 鍵盤、電腦鍵盤鋼琴、模擬演奏者、手機）。</p>
-<p>引擎的參數會併進演出的參數，放在 <code>sound/</code> 底下。用 Tone 引擎時，有 <code>sound/cutoff</code>（100–8000 Hz，預設 2500）、<code>sound/space</code>（殘響的 wet 比例，0–1，預設 0.3）和 <code>sound/volume</code>（−36–0 dB，預設 −8）。它們會出現在控台上，可以交給時間軸自動化，也能像其他參數一樣映射，所以一顆旋鈕、一隻手或樂譜，演奏濾波器的方式就跟演奏畫面一樣。Tone.js（15.0.4）要等開啟聲音時才從 jsDelivr 載入。</p>
-<p>引擎只是一個小物件，你也可以自己寫一個：</p>
+<p><code>modules: { sound: true }</code> 會加入 <code>Sound</code>（<code>@openav/sound</code>），用的是 Tone.js 引擎。瀏覽器要等使用者點一下才會開始播放音訊，所以控台會在 <em>L4 · Output — sound</em>（聲音輸出）面板放一個 <strong>🔊 enable sound</strong>（開啟聲音）按鈕，下面是選樂器的選單。開啟之後，選好的樂器就會跟著每個 <code>midi/note/on</code> 和 <code>midi/note/off</code> 彈，不管是誰送的（MIDI 鍵盤、電腦鍵盤鋼琴、模擬演奏者、手機）。Tone.js（15.0.4）要等開啟聲音時才從 jsDelivr 載入。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({ world, modules: { sound: <span class="tk">true</span> } });       <span class="tc">// the warm pad, as before</span>
+<span class="tk">await</span> createShow({ world, modules: { sound: <span class="ts">'piano'</span> } });    <span class="tc">// start on the grand piano</span>
+<span class="tk">await</span> createShow({ world, modules: { sound: { instrument: <span class="ts">'synth/pluck'</span>, remember: <span class="tk">false</span>, picker: <span class="tk">false</span> } } });</code></pre></div>
+<h4 id="show-control-instruments">樂器<a class="anchor" href="#show-control-instruments" aria-label="這一節的連結">#</a></h4>
+<div class="table-wrap"><table>
+<thead><tr><th>id</th><th>聲音</th><th>怎麼做的</th></tr></thead>
+<tbody>
+<tr><td><code>piano</code></td><td>平台鋼琴</td><td>Salamander Grand Piano 取樣：30 個音檔（每個八度的 A、C、D♯、F♯），共 2.0 MB，選到才載入</td></tr>
+<tr><td><code>epiano</code></td><td>電鋼琴</td><td>兩組 FM 加上立體聲顫音</td></tr>
+<tr><td><code>xylophone</code>、<code>marimba</code>、<code>vibraphone</code>、<code>glockenspiel</code>、<code>music-box</code></td><td>木琴、馬林巴、顫音琴、鐵琴、音樂盒</td><td>模態合成：照每種琴鍵自己的泛音比例，疊幾個會衰減的分音，再加上琴槌敲下去的那一聲</td></tr>
+<tr><td><code>strings</code></td><td>弦樂合奏</td><td>幾個音高略為錯開的鋸齒波、像拉弓的起音、合唱效果、抖音</td></tr>
+<tr><td><code>harp</code></td><td>撥弦</td><td>Karplus–Strong</td></tr>
+<tr><td><code>organ</code></td><td>音栓風琴</td><td>九根音栓合成一個加法波形，再加上旋轉喇叭的顫音</td></tr>
+<tr><td><code>choir</code></td><td>合唱襯底</td><td>鋸齒波穿過母音的共振峰</td></tr>
+<tr><td><code>synth/pad</code></td><td>溫暖襯底</td><td>原本的音色，仍然是預設</td></tr>
+<tr><td><code>synth/saw-lead</code>、<code>synth/square-lead</code>、<code>synth/pluck</code>、<code>synth/supersaw</code>、<code>synth/bass</code>、<code>synth/acid</code>、<code>synth/brass</code>、<code>synth/bell</code>、<code>synth/sub</code>、<code>synth/chip</code></td><td>合成器音色</td><td>同一台複音合成器，音色寫成資料</td></tr>
+</tbody>
+</table></div>
+<p>鋼琴取樣是 Alexander Holm 錄製的 <em>Salamander Grand Piano</em>，授權是 <a href="https://creativecommons.org/licenses/by/3.0/" rel="noopener">CC-BY 3.0</a>。選單會在鋼琴旁邊列出這行出處，公開演出用到它時，也要標上出處。音檔放在 <code>packages/sound/samples/salamander/</code>。萬一載不進來，鋼琴會改用電鋼琴彈，不會變成一片安靜。</p>
+<h4 id="show-control-choosing-a-sound">選聲音<a class="anchor" href="#show-control-choosing-a-sound" aria-label="這一節的連結">#</a></h4>
+<p>可以在控台上選，也可以寫在程式裡：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">await</span> show.sound.setInstrument(<span class="ts">'organ'</span>);   <span class="tc">// true once it plays</span>
+show.sound.instrument;                     <span class="tc">// 'organ'</span>
+show.sound.onChange((e) =&gt; console.log(e.type, e.id, e.progress));   <span class="tc">// instrument · loading · ready · error</span>
+show.timeline.onSceneChange((i, scene) =&gt; {
+  <span class="tk">if</span> (scene.id === <span class="ts">'chorale'</span>) show.sound.setInstrument(<span class="ts">'organ'</span>);      <span class="tc">// a cue may switch instruments</span>
+});</code></pre></div>
+<p>邊彈邊換樂器時，舊樂器上還按著的音會先放開，不會有音卡住。取樣樂器在音檔載完之前，會繼續用舊的聲音彈，選單上看得到載入進度。每換一次，也會發出一個 <code>sound/instrument</code> 脈衝訊號（<code>{ id, name }</code>）。選單上最後一次的選擇會記在這個頁面，下次打開時會沿用，就算程式裡宣告了別的樂器也一樣。不想要這樣，就設 <code>remember: false</code>。</p>
+<p>樂器是一個離散的選擇。要連續演奏的東西仍然是參數：引擎的參數會併進演出的參數，放在 <code>sound/</code> 底下。<code>sound/cutoff</code>（100–8000 Hz，預設 2500）、<code>sound/space</code>（殘響的 wet 比例，0–1，預設 0.3）和 <code>sound/volume</code>（−36–0 dB，預設 −8）是所有樂器共用的，所以一顆旋鈕、一隻手或樂譜，演奏濾波器的方式就跟演奏畫面一樣。樂器可以建議自己的起始值（鋼琴會把濾波器開到 8000 Hz），也可以加上自己的旋鈕，它在彈的時候控台才會顯示：風琴的 <code>sound/drawbars</code> 和 <code>sound/rotor</code>，弦樂的 <code>sound/attack</code> 和 <code>sound/vibrato</code>，合唱的 <code>sound/vowel</code>，電鋼琴和顫音琴的 <code>sound/tremolo</code>。自動化和手動覆寫永遠比建議的起始值優先。延音踏板（<code>midi/cc/64</code>）對每種樂器都有效，會先留住放開的音。MIDI 第 10 頻道的音（鼓機送的）留給鼓組引擎，這裡不彈。</p>
+<h4 id="show-control-add-your-own-instrument">加入自己的樂器<a class="anchor" href="#show-control-add-your-own-instrument" aria-label="這一節的連結">#</a></h4>
+<p>一個可以選的聲音就是一個檔案：一些資料，加上一個 <code>create(Tone, ctx)</code>，回傳 <code>noteOn</code>、<code>noteOff</code> 和 <code>dispose</code>。在 <code>createShow()</code> 之前 import 這個檔案，每個選單就會列出它，<code>packages/*</code> 完全不用改。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { registerInstrument } <span class="tk">from</span> <span class="ts">'@openav/sound'</span>;
+
+registerInstrument({
+  id: <span class="ts">'kalimba'</span>,
+  name: { en: <span class="ts">'Kalimba'</span>, zh: <span class="ts">'拇指琴'</span> },
+  category: <span class="ts">'mallets'</span>,
+  params: [{ key: <span class="ts">'decay'</span>, label: <span class="ts">'Decay (s)'</span>, min: 0.2, max: 4, def: 1.2 }],   <span class="tc">// → sound/decay</span>
+  create(Tone, { output }) {
+    <span class="tk">const</span> synth = <span class="tk">new</span> Tone.PolySynth(Tone.FMSynth, { harmonicity: 5.1, modulationIndex: 2,
+      envelope: { attack: 0.001, decay: 1.2, sustain: 0, release: 1 } }).connect(output);
+    <span class="tk">const</span> hz = (n) =&gt; 440 * 2 ** ((n - 69) / 12);
+    <span class="tk">return</span> {
+      noteOn: (note, vel, time) =&gt; synth.triggerAttack(hz(note), time, vel),
+      noteOff: (note, time) =&gt; synth.triggerRelease(hz(note), time),
+      <span class="tk">set</span>: (key, v) =&gt; key === <span class="ts">'decay'</span> &amp;&amp; synth.<span class="tk">set</span>({ envelope: { decay: v } }),
+      dispose: () =&gt; synth.dispose(),
+    };
+  },
+});</code></pre></div>
+<p>id 重複會丟出錯誤，真的要換掉時，寫 <code>registerInstrument(def, { replace: true })</code>。可以選填的欄位有：<code>defaults</code>（<code>cutoff</code>、<code>space</code>、<code>volume</code> 的起始值）、<code>credit</code>（出處）、<code>gain</code>（dB）、<code>transpose</code>（半音）、<code>fallback</code>（載入失敗時改用的樂器 id）。回傳的物件也可以帶 <code>ready</code>（一個 Promise，載入時呼叫 <code>ctx.onProgress(0..1)</code>，選單就會顯示進度）、<code>set(key, value)</code> 和 <code>releaseAll(time)</code>。敲擊類的聲音可以完全用資料寫，交給 <code>modalInstrument({ id, name, partials, strike })</code>。</p>
+<p>合成器音色也是資料，會變成 <code>synth/&lt;id&gt;</code>：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { registerSynthPreset } <span class="tk">from</span> <span class="ts">'@openav/sound'</span>;
+
+registerSynthPreset({
+  id: <span class="ts">'glass'</span>, name: { en: <span class="ts">'Glass'</span>, zh: <span class="ts">'玻璃'</span> },
+  voice: <span class="ts">'fm'</span>, harmonicity: 3.01, modulationIndex: 14,
+  envelope: { attack: 0.002, decay: 1.4, sustain: 0, release: 1.2 },
+  effects: [{ type: <span class="ts">'chorus'</span>, frequency: 1.5, depth: 0.4, wet: 0.3 }],
+});</code></pre></div>
+<h4 id="show-control-your-own-engine">自己寫引擎<a class="anchor" href="#show-control-your-own-engine" aria-label="這一節的連結">#</a></h4>
+<p>引擎只是一個小物件，整個換掉也可以：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> sineEngine = () =&gt; {
   <span class="tk">let</span> ctx = <span class="tk">null</span>, out = <span class="tk">null</span>;
   <span class="tk">const</span> voices = <span class="tk">new</span> Map();
@@ -1620,6 +1681,14 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td><code>midi/note/on</code></td><td>脈衝</td><td><code>{note, vel, ch: 10}</code></td><td>大鼓 36 · 小鼓 38 · 拍手 39 · 閉合 hi-hat 42</td></tr>
 </tbody>
 </table></div>
+<h3 id="signals-openav-sound-output-events">@openav/sound（輸出事件）<a class="anchor" href="#signals-openav-sound-output-events" aria-label="這一節的連結">#</a></h3>
+<p>頁面裡的樂器會聽 <code>midi/note/on|off</code> 和延音踏板 <code>midi/cc/64</code>，自己也會發出一個事件。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>sound/instrument</code></td><td>脈衝</td><td><code>{id, name}</code></td><td>換了樂器（從選單、程式或場景提示）</td></tr>
+</tbody>
+</table></div>
 <h3 id="signals-openav-remote-openav-surface">@openav/remote · @openav/surface<a class="anchor" href="#signals-openav-remote-openav-surface" aria-label="這一節的連結">#</a></h3>
 <p>手機感測器（<code>/packages/remote/</code> → 感測）。<code>&lt;id&gt;</code> 是裝置 id。<code>phone/any/…</code> 的值永遠來自最後送出數值的那支手機，所以還沒有手機連上，就能先寫好世界的路由。</p>
 <div class="table-wrap"><table>
@@ -1669,7 +1738,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=c34c79f"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -1809,17 +1878,21 @@ stage.register(world);
 </table></div>
 <p>見<a href="#writing-a-world-a-webtoe-patch">寫一個世界</a>。</p>
 <h3 id="packages-openav-sound">@openav/sound<a class="anchor" href="#packages-openav-sound" aria-label="這一節的連結">#</a></h3>
-<p>L4 輸出 · 頁面裡的合成器，背後是一份精簡的引擎介面約定，引擎的參數會變成 <code>sound/*</code> 參數。</p>
+<p>L4 輸出 · 頁面裡的樂器，背後是一份精簡的引擎介面約定。有 Salamander 平台鋼琴、敲擊琴、弦樂、風琴、合唱、豎琴和合成器音色，從選單挑，引擎的參數會變成 <code>sound/*</code> 參數。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>Sound</code></td><td><code>new Sound({ signals, params, engine })</code> · <code>enable()</code>（要從點擊事件呼叫）· 每個影格呼叫 <code>update(state)</code> · <code>dispose()</code> · <code>enabled</code></td></tr>
-<tr><td><code>toneEngine</code></td><td><code>toneEngine({ cdn })</code> → 帶有 <code>cutoff</code>、<code>space</code>、<code>volume</code> 參數的引擎</td></tr>
+<tr><td><code>Sound</code></td><td><code>new Sound({ signals, params, engine, instrument, remember, picker })</code> · <code>enable()</code>（要從點擊事件呼叫）· 每個影格呼叫 <code>update(state)</code> · <code>setInstrument(id)</code> · <code>instrument</code> · <code>status</code> · <code>onChange(cb)</code> · <code>dispose()</code> · <code>enabled</code></td></tr>
+<tr><td><code>toneEngine</code></td><td><code>toneEngine({ instrument = 'synth/pad', baseUrl, instruments, cdn, drumChannel = 10 })</code> → 帶有 <code>cutoff</code>、<code>space</code>、<code>volume</code> 參數的引擎，再加上樂器自己的參數</td></tr>
+<tr><td><code>registerInstrument</code></td><td><code>registerInstrument({ id, name, category, params, defaults, credit, create(Tone, ctx) }, { replace })</code>，另外還有 <code>getInstrument</code>、<code>listInstruments</code>、<code>instrumentGroups</code>、<code>onInstrumentsChange</code></td></tr>
+<tr><td><code>registerSynthPreset</code></td><td><code>registerSynthPreset({ id, name, voice, oscillator, envelope, filter, effects, … })</code> → <code>synth/&lt;id&gt;</code></td></tr>
+<tr><td><code>modalInstrument</code></td><td><code>modalInstrument({ id, name, partials, strike, damp })</code> → 用資料寫成的敲擊類樂器</td></tr>
+<tr><td><code>mountSoundPicker</code></td><td><code>mountSoundPicker(el, sound, { lang, className })</code> → 控台用的那個選單</td></tr>
 </tbody>
 </table></div>
-<p>引擎介面約定：<code>{ params, enable(), noteOn(note, vel01), noteOff(note), set(key, value), dispose() }</code>。</p>
+<p>引擎介面約定：<code>{ params, enable(), noteOn(note, vel01), noteOff(note), set(key, value), dispose() }</code>。樂器清單和怎麼加入新樂器，寫在<a href="#show-control-sound">聲音</a>。</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Sound, toneEngine } <span class="tk">from</span> <span class="ts">'@openav/sound'</span>;
-<span class="tk">const</span> sound = <span class="tk">new</span> Sound({ signals, params, engine: toneEngine() });
+<span class="tk">const</span> sound = <span class="tk">new</span> Sound({ signals, params, engine: toneEngine({ instrument: <span class="ts">'piano'</span> }) });
 button.onclick = () =&gt; sound.enable();
 <span class="tc">// every frame: sound.update(state);</span></code></pre></div>
 <h3 id="packages-openav-osc">@openav/osc<a class="anchor" href="#packages-openav-osc" aria-label="這一節的連結">#</a></h3>
@@ -2049,7 +2122,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <li>手部和身體追蹤第一次啟動時，會從 jsDelivr 和 Google 的儲存空間載入 MediaPipe 和它的模型。離線時無法啟動。</li>
 </ul>
 <h3 id="troubleshooting-there-is-no-sound">沒有聲音<a class="anchor" href="#troubleshooting-there-is-no-sound" aria-label="這一節的連結">#</a></h3>
-<p>瀏覽器要點一下才會開始播放音訊。在 <em>L4 · Output — sound</em>（聲音輸出）面板按 <strong>🔊 enable sound</strong>（開啟聲音）。Tone.js 引擎在那一刻才從 jsDelivr 載入，所以第一次需要網路連線。鼓機的鼓組，是勾選 <em>drum machine</em>（鼓機）之後、打下第一拍時才啟動。</p>
+<p>瀏覽器要點一下才會開始播放音訊。在 <em>L4 · Output — sound</em>（聲音輸出）面板按 <strong>🔊 enable sound</strong>（開啟聲音）。Tone.js 引擎在那一刻才從 jsDelivr 載入，所以第一次需要網路連線。第一次選鋼琴時，要載入大約 2 MB 的取樣，選單會顯示進度，鋼琴準備好之前，會繼續用前一個樂器彈。鼓機的鼓組，是勾選 <em>drum machine</em>（鼓機）之後、打下第一拍時才啟動。</p>
 <h3 id="troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone">在 iPhone 上，手機的傾斜和敲擊都沒作用<a class="anchor" href="#troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone" aria-label="這一節的連結">#</a></h3>
 <p>iOS 只把動作感測器開放給 <code>https://</code> 頁面，而且要先點一下「開始」。在區域網路上用一般 <code>http://</code> 連線時，觸控、琴鍵和控制面板仍然能用。要用感測器，就透過 HTTPS 通道連到 <code>serve.js</code>。如果曾經拒絕過權限，iOS 會記住，要到「設定 → Safari → 動作與方向取用」改回來，再重新載入。</p>
 <h3 id="troubleshooting-after-a-deploy-the-site-still-runs-old-code">部署之後，網站還在跑舊的程式碼<a class="anchor" href="#troubleshooting-after-a-deploy-the-site-still-runs-old-code" aria-label="這一節的連結">#</a></h3>
@@ -2134,6 +2207,6 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=c34c79f"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

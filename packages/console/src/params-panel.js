@@ -8,7 +8,7 @@ export function buildParamPanel(root, app) {
   root.appendChild(panel);
 
   const rows = new Map();
-  for (const p of params.schema) {
+  const addRow = (p) => {
     const row = document.createElement('div');
     row.className = 'oav-param';
     if (p.pulse) {
@@ -33,16 +33,23 @@ export function buildParamPanel(root, app) {
     row.querySelector('[data-learn]')?.addEventListener('click', () => mapper?.learn(p.key));
     panel.appendChild(row);
     rows.set(p.key, row);
-  }
+  };
+  for (const p of params.schema) addRow(p);
 
   return {
     render(state) {
+      // params registered after mount (a newly picked instrument's knobs) get their row here
+      if (rows.size < params.schema.length) for (const p of params.schema) if (!rows.has(p.key)) addRow(p);
       for (const p of params.schema) {
         const row = rows.get(p.key);
         const v = state[p.key];
+        // p.hidden: registered but not in play right now (another instrument's knob)
+        const hide = p.hidden ? 'none' : '';
+        if (row.style.display !== hide) row.style.display = hide;
+        if (hide) continue;
         row.classList.toggle('ovr', params.isOverridden(p.key));
         const valEl = row.querySelector('.val');
-        if (!p.pulse) {
+        if (!p.pulse && typeof v === 'number') {
           const slider = row.querySelector('input');
           if (document.activeElement !== slider) slider.value = v;
           valEl.textContent = (Math.abs(v) >= 100 ? v.toFixed(0) : v.toFixed(2));

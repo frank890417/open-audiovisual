@@ -75,7 +75,7 @@ localStorage.removeItem('openav.map.<world name>');
 
 ## 沒有聲音
 
-瀏覽器要點一下才會開始播放音訊。在 *L4 · Output — sound*（聲音輸出）面板按 **🔊 enable sound**（開啟聲音）。Tone.js 引擎在那一刻才從 jsDelivr 載入，所以第一次需要網路連線。鼓機的鼓組，是勾選 *drum machine*（鼓機）之後、打下第一拍時才啟動。
+瀏覽器要點一下才會開始播放音訊。在 *L4 · Output — sound*（聲音輸出）面板按 **🔊 enable sound**（開啟聲音）。Tone.js 引擎在那一刻才從 jsDelivr 載入，所以第一次需要網路連線。第一次選鋼琴時，要載入大約 2 MB 的取樣，選單會顯示進度，鋼琴準備好之前，會繼續用前一個樂器彈。鼓機的鼓組，是勾選 *drum machine*（鼓機）之後、打下第一拍時才啟動。
 
 ## 在 iPhone 上，手機的傾斜和敲擊都沒作用
 
