@@ -9,7 +9,7 @@
 // frame (p5 may replace it; a WebGL work may resize it). It never owns the
 // camera stream either: setCamera(null) lets go, the host stops the tracks.
 
-import { layoutRects, resolveSize, LAYOUTS } from './layout.js';
+import { layoutRects, resolveSize, LAYOUTS } from './layout.js?v=f860ae3';
 
 const dims = (s) => {
   if (!s) return [0, 0];

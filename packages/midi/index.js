@@ -19,28 +19,28 @@
 //   createController() below: one controller, its events, hardware and MIDI out — the headless embed
 // Docs: packages/midi/README.md.                                         load it with its own <script>)
 
-import { parseMessage, genericSignals, publish, describe } from './parse.js?v=062bc76';
-import { MidiControllers } from './manager.js?v=062bc76';
-import { ControllerView } from './view.js?v=062bc76';
-import { PROFILES } from './profiles/index.js?v=062bc76';
-import { track } from './telemetry.js?v=062bc76';
-import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=062bc76';
-export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=062bc76';
-export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=062bc76';
-export { MidiController } from './controller.js?v=062bc76';
-export { MidiControllers, controllerRoutes } from './manager.js?v=062bc76';
-export { linkControllers } from './link.js?v=062bc76';
-export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=062bc76';
-export { PROFILES, profileById } from './profiles/index.js?v=062bc76';
-export { ControllerView, VIEW_CSS } from './view.js?v=062bc76';
-export { mountMidiPanel, PANEL_CSS } from './panel.js?v=062bc76';
+import { parseMessage, genericSignals, publish, describe } from './parse.js?v=f860ae3';
+import { MidiControllers } from './manager.js?v=f860ae3';
+import { ControllerView } from './view.js?v=f860ae3';
+import { PROFILES } from './profiles/index.js?v=f860ae3';
+import { track } from './telemetry.js?v=f860ae3';
+import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=f860ae3';
+export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=f860ae3';
+export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=f860ae3';
+export { MidiController } from './controller.js?v=f860ae3';
+export { MidiControllers, controllerRoutes } from './manager.js?v=f860ae3';
+export { linkControllers } from './link.js?v=f860ae3';
+export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=f860ae3';
+export { PROFILES, profileById } from './profiles/index.js?v=f860ae3';
+export { ControllerView, VIEW_CSS } from './view.js?v=f860ae3';
+export { mountMidiPanel, PANEL_CSS } from './panel.js?v=f860ae3';
 export { parseEmbedOptions, resolveProfile, controlDetail, describeDetail, describeMessage, setControl, valuesOf, findPort, preferredAspect,
-  toParent, fromParent, toFrame, fromFrame, EMBED_ATTRS, EMBED_EVENTS, FRAME_COMMANDS, POST_SOURCE } from './embed.js?v=062bc76';
+  toParent, fromParent, toFrame, fromFrame, EMBED_ATTRS, EMBED_EVENTS, FRAME_COMMANDS, POST_SOURCE } from './embed.js?v=f860ae3';
 
 export class Midi {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js?v=062bc76').Signals} [opts.signals] publish inputs here
+   * @param {import('../core/src/signals.js?v=f860ae3').Signals} [opts.signals] publish inputs here
    * @param {string} [opts.filterOut] regex source-name filter to avoid feedback loops (default: IAC)
    * @param {(opts:object)=>Promise<any>} [opts.requestAccess] where MIDIAccess comes from (default
    *        navigator.requestMIDIAccess). A host that shims Web MIDI for old sketches passes the REAL one
@@ -216,7 +216,7 @@ export function loadProfile(ref, o = {}) { return resolveProfile(ref, { profiles
  * @param {string|object} profile        id ('akai-lpd8'), short ('lpd8') or a profile object (loadProfile() for URLs)
  * @param {object} [o]
  * @param {object[]} [o.profiles]        the profiles a picker / `follow` may switch to (default: every shipped one)
- * @param {import('../core/src/signals.js?v=062bc76').Signals} [o.signals]   also publish midi/<short>/… into a show
+ * @param {import('../core/src/signals.js?v=f860ae3').Signals} [o.signals]   also publish midi/<short>/… into a show
  * @param {number} [o.channel]           move every control to this MIDI channel (your unit is set to another one)
  * @param {boolean} [o.follow]           plug a different known device in → show that one
  * @param {Midi} [o.midi]                use this engine (a show's) instead of the page-shared one
