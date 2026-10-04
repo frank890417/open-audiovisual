@@ -23,19 +23,19 @@
 // sound, audio, hands, pose, remote, loop, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools.
 
-import { Signals, Params, Loop } from '../core/index.js?v=993b491';
-import { Midi } from '../midi/index.js?v=993b491';
-import { mountKeys } from '../keys/index.js?v=993b491';
-import { Sound, toneEngine } from '../sound/index.js?v=993b491';
-import { AudioAnalyzer } from '../audio/index.js?v=993b491';
-import { ChordDetector } from '../chord/index.js?v=993b491';
-import { mountDrums } from '../drums/index.js?v=993b491';
-import { PoseTracker, HandTracker } from '../pose/index.js?v=993b491';
-import { Mapper } from '../mapping/index.js?v=993b491';
-import { Timeline } from '../timeline/index.js?v=993b491';
-import { Stage } from '../stage/index.js?v=993b491';
-import { mountConsole } from '../console/index.js?v=993b491';
-import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=993b491';
+import { Signals, Params, Loop } from '../core/index.js?v=8dce886';
+import { Midi } from '../midi/index.js?v=8dce886';
+import { mountKeys } from '../keys/index.js?v=8dce886';
+import { Sound, toneEngine } from '../sound/index.js?v=8dce886';
+import { AudioAnalyzer } from '../audio/index.js?v=8dce886';
+import { ChordDetector } from '../chord/index.js?v=8dce886';
+import { mountDrums } from '../drums/index.js?v=8dce886';
+import { PoseTracker, HandTracker } from '../pose/index.js?v=8dce886';
+import { Mapper } from '../mapping/index.js?v=8dce886';
+import { Timeline } from '../timeline/index.js?v=8dce886';
+import { Stage } from '../stage/index.js?v=8dce886';
+import { mountConsole } from '../console/index.js?v=8dce886';
+import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=8dce886';
 
 const SHELL_CSS = `
   body { margin: 0; background: #000; height: 100vh; display: grid;
@@ -129,7 +129,7 @@ export async function createShow({
   let controllers = null, midiPanel = null;
   const ctlCfg = modules.midi && typeof modules.midi === 'object' ? modules.midi.controllers : null;
   if (ctlCfg) {
-    const { MidiControllers, mountMidiPanel, PROFILES } = await import('../midi/index.js?v=993b491');
+    const { MidiControllers, mountMidiPanel, PROFILES } = await import('../midi/index.js?v=8dce886');
     const o = typeof ctlCfg === 'object' ? ctlCfg : {};
     controllers = new MidiControllers({ profiles: o.profiles || PROFILES, signals, midi, initial: new URLSearchParams(location.search).get('profile') || o.profile });
     midiPanel = mountMidiPanel(stageEl, controllers, { mode: 'dock', contained: true, open: o.open !== false, id: 'oav-midi' });
@@ -166,7 +166,7 @@ export async function createShow({
   // ignorant: its params become the phone's control panel (surface/autoSurface).
   let remote = null;
   if (modules.remote) {
-    const { mountRemoteHost, mountJoinCard } = await import('../remote/host.js?v=993b491');
+    const { mountRemoteHost, mountJoinCard } = await import('../remote/host.js?v=8dce886');
     const o = typeof modules.remote === 'object' ? modules.remote : {};
     const room = o.room || new URLSearchParams(location.search).get('room') || 'default';
     remote = mountRemoteHost({ signals, params, mapper, world: allWorlds[0], ...o, room, controllers });
