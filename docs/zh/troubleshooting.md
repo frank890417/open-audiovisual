@@ -10,6 +10,8 @@
 npm run monitor          # node packages/monitor/server.js
 ```
 
+用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 `ws://`，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：`new MonitorFeed({ url: 'wss://…' })`。
+
 ## 手機加入卡片顯示「relay offline」
 
 手機中繼住在 `serve.js` 裡（`/relay`）。靜態主機（GitHub Pages、openaudiovisual.com）沒有中繼，所以範例 08 和 09 在那裡連不到手機。請在跟手機同一個網路的電腦上，用 `node serve.js` 跑演出。

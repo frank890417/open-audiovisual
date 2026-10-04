@@ -6,11 +6,22 @@
 //   mon.frame({ t, scene, state, signals, fps });
 //
 // Reconnects automatically; silent when no relay is running (zero cost to always
-// leave it on in your app).
+// leave it on in your app). On https pages it stays off unless given a wss:// url.
+
+/**
+ * Where the backstage relay is, unless told otherwise: the machine serving the page, port 7457.
+ * Not on an https page: the browser blocks ws:// there (mixed content, logged as an error), and a
+ * page published over https (openaudiovisual.com, a tunnel) has no relay beside it. A show that
+ * does run one behind TLS passes { url: 'wss://…' } explicitly.
+ */
+export function defaultMonitorUrl(loc = globalThis.location) {
+  if (!loc || loc.protocol === 'https:') return null;
+  return `ws://${loc.hostname}:7457`;
+}
 
 export class MonitorFeed {
-  constructor({ url = `ws://${location.hostname}:7457`, hz = 15 } = {}) {
-    this.url = url + (url.includes('?') ? '&' : '?') + 'role=stage';
+  constructor({ url = defaultMonitorUrl(), hz = 15 } = {}) {
+    this.url = url ? url + (url.includes('?') ? '&' : '?') + 'role=stage' : null;
     this.hz = hz;
     this.ws = null;
     this.connected = false;
@@ -20,6 +31,7 @@ export class MonitorFeed {
   }
 
   connect() {
+    if (!this.url) return;                // no relay to reach from here (see defaultMonitorUrl)
     try { this.ws = new WebSocket(this.url); } catch (e) { return this._retry(); }
     this.ws.onopen = () => { this.connected = true; this._backoff = 0; this.onStatus?.(true); };
     this.ws.onclose = () => { this.connected = false; this.onStatus?.(false); this._retry(); };

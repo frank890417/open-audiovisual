@@ -2919,6 +2919,10 @@ the monitor:
 npm run monitor          # node packages/monitor/server.js
 ```
 
+Pages served over https (openaudiovisual.com, an https tunnel) don't try at all: the
+browser blocks `ws://` there, and a published site has no relay beside it. A show that
+runs a monitor behind TLS passes the address itself, `new MonitorFeed({ url: 'wss://…' })`.
+
 ## The phone join card says "relay offline"
 
 The phone relay lives inside `serve.js` (`/relay`). Static hosting (GitHub Pages,
