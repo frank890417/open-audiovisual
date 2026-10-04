@@ -82,6 +82,20 @@ Hands on the screen are sent; your real hardware is not forwarded (the DAW alrea
 The engine never listens to IAC inputs, and the element mutes an input named like its
 output, so nothing loops.
 
+## Telemetry
+
+So the project can see where its controllers and shows end up, the packages send **one anonymous hit per page load** to Google Analytics 4 (the openaudiovisual.com property, `G-1YG2JHK2WT`):
+
+| event | when | params |
+|---|---|---|
+| `oav_embed_load` | an `<oav-controller>`, `createController()` or the iframe starts | `oav_kind` (element · headless · iframe), `oav_profile`, `oav_host`, `oav_version` |
+| `oav_hardware_connect` | a real controller is plugged in and matched | `oav_kind`, `oav_profile`, `oav_host`, `oav_version` |
+| `oav_show_start` | `createShow()` starts | `oav_kind` (show), `oav_host`, `oav_version` |
+
+`oav_host` is the **origin** of the page it runs on (for the iframe, the page that holds it), never the path, query or title. Nothing anyone plays is sent, no cookies are set, and the client id is random for every page load, so visitors can't be followed. No gtag.js is loaded: a page with its own Google Analytics keeps its dataLayer untouched. Nothing is sent from localhost, LAN addresses, `file://` or openaudiovisual.com itself, or when the browser sends Do Not Track / Global Privacy Control.
+
+Turn it off: `<oav-controller telemetry="off">` · `createController(p, { telemetry: false })` · `createShow({ telemetry: false })` · the iframe's `?telemetry=0` · or `globalThis.OPENAV_TELEMETRY = false` before anything loads. Source: `packages/midi/telemetry.js`.
+
 ## Add a controller
 
 1. Copy the closest file in `packages/midi/profiles/`, or a generic layout.

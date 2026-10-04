@@ -515,6 +515,7 @@ ${topBar(home, c)}
         <ol class="daw">${E.mac.map((s) => `<li>${s}</li>`).join('')}</ol>
         <p class="note">${E.browsers}</p>
         <p class="note">${E.loop}</p>
+        <p class="note">${E.telemetry.replace('{href}', c.to('docs', '#controllers-telemetry'))}</p>
       </div>
       <div>
         <h3>${E.protocolTitle}</h3>

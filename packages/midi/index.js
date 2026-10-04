@@ -23,6 +23,7 @@ import { parseMessage, genericSignals, publish, describe } from './parse.js?v=02
 import { MidiControllers } from './manager.js?v=0249f81';
 import { ControllerView } from './view.js?v=0249f81';
 import { PROFILES } from './profiles/index.js?v=0249f81';
+import { track } from './telemetry.js?v=0249f81';
 import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=0249f81';
 export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=0249f81';
 export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=0249f81';
@@ -224,7 +225,7 @@ export function loadProfile(ref, o = {}) { return resolveProfile(ref, { profiles
 export function createController(profile = 'arturia-minilab3', o = {}) { return new ControllerHost(profile, o); }
 
 export class ControllerHost {
-  constructor(profile = 'arturia-minilab3', { profiles = PROFILES, signals = null, sink = null, channel = null, follow = false, midi = null, requestAccess = null, filterOut = 'IAC', storage = undefined } = {}) {
+  constructor(profile = 'arturia-minilab3', { profiles = PROFILES, signals = null, sink = null, channel = null, follow = false, midi = null, requestAccess = null, filterOut = 'IAC', storage = undefined, telemetry = true, embedKind = 'headless' } = {}) {
     const base = typeof profile === 'string' ? findProfile(profile, profiles) : profile;
     if (!base) throw new Error(`unknown MIDI profile "${profile}" (known: ${profiles.map((p) => p.id).join(', ')})`);
     this.channel = channel || null;
@@ -242,8 +243,11 @@ export class ControllerHost {
     this._opt = { midi, requestAccess, filterOut };
     this._subs = new Map();
     this._hwOn = false; this._hwName = null; this._hwProfile = null; this._outQuery = null; this._keep = false;
+    // one anonymous hit per page: which kind of embed, which device (telemetry.js says exactly what and how to turn it off)
+    this._tele = { enabled: telemetry !== false, kind: embedKind };
     this._offMgr = this.controllers.onChange((e) => this._onManager(e));
     this._watch();
+    track('oav_embed_load', { oav_kind: embedKind, oav_profile: this.profileId }, { enabled: this._tele.enabled });
   }
 
   /** The live model (MidiController) of the device on screen. */
@@ -385,7 +389,10 @@ export class ControllerHost {
     const name = this.controllers.midi ? this.controllers.hardwareFor(this.profileId) : null;
     if (name !== this._hwName || (name && this._hwProfile !== this.profileId)) {
       if (this._hwName) this._emit('disconnect', { port: this._hwName, profile: this._hwProfile });
-      if (name) this._emit('connect', { port: name, profile: this.profileId });
+      if (name) {
+        this._emit('connect', { port: name, profile: this.profileId });
+        track('oav_hardware_connect', { oav_kind: this._tele.kind, oav_profile: this.profileId }, { enabled: this._tele.enabled });
+      }
     }
     this._hwName = name; this._hwProfile = this.profileId;
     if (this._hwOn && this.midi) this._status({ hardware: name ? 'connected' : 'waiting', input: name });

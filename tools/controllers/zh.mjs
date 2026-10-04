@@ -135,6 +135,7 @@ export default {
     ],
     browsers: 'Chrome 和 Edge 有 Web MIDI，Firefox 會先問你是否允許這個網站。Safari 和 iPad 沒有：控制器照樣能彈、每個事件照樣送出，MIDI 輸出會顯示無法使用。',
     loop: '不會繞成迴圈。引擎本來就不聽 IAC 輸入，跟輸出同名的輸入（loopMIDI 自己的回音）也會靜音。實體控制器的動作不會再轉送一次，因為你的軟體本來就收得到那台。',
+    telemetry: '使用統計：每個嵌入在載入頁面時送出一筆匿名紀錄（哪種嵌入、哪台控制器、網頁的網域，不寫 cookie，也不送你彈了什麼）。加上 <code>telemetry="off"</code> 就關掉。<a href="{href}">實際送了哪些內容</a>。',
     protocolTitle: 'iframe 訊息',
     protocolText: 'iframe 會把每個事件傳給上層網頁，也接受幾個指令。加上 <code>&amp;frame=名稱</code> 可以分辨多個 iframe，加上 <code>&amp;origin=https://你的網站</code> 就只和你的網頁溝通。',
     apiTitle: '元素一覽',

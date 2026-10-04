@@ -29,6 +29,7 @@
       "midi/view.js",
       "midi/panel.js",
       "midi/embed.js",
+      "midi/telemetry.js",
       "midi/index.js",
       "relay/index.js"
     ],

@@ -137,7 +137,7 @@ export class OavController extends Base {
     try { profile = await loadProfile(o.profile || DEFAULT_PROFILE); } catch (e) { if (gen === this._gen) this._fail(e); return; }
     if (gen !== this._gen || !this.isConnected) return;
     let core;
-    try { core = this._core = createController(profile, { channel: o.channel, follow: o.follow }); } catch (e) { this._fail(e); return; }
+    try { core = this._core = createController(profile, { channel: o.channel, follow: o.follow, telemetry: o.telemetry, embedKind: this.dataset.oavKind === 'iframe' ? 'iframe' : 'element' }); } catch (e) { this._fail(e); return; }
     core.mount(this._body, { layout: o.layout });
     this._offs = [
       core.on('*', (name, detail) => this._emit(name, detail)),

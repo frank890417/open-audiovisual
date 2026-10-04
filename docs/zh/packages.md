@@ -52,7 +52,7 @@ L1 輸入與 L4 輸出 · Web MIDI 的輸入與輸出，可以同時接很多台
 | 解析 | `parseMessage(bytes)` → 事件 · `encodeMessage(event)` → 位元組 · `genericSignals(event, { device })` · `publish(signals, list)` · `describe(event)` · `relativeDelta(value, mode)`、`relativeValue(delta, mode)`、`RELATIVE_MODES` · `bendToUnit`、`unitToBend`、`BEND_CENTER` |
 | 控制器 | `MidiController`、`MidiControllers`、`controllerRoutes(profile, bindings)`、`PROFILES`、`profileById(id)`、`ControllerView`、`mountMidiPanel(el, controllers, opts)`、`linkControllers`，以及 profile 輔助函式（`validateProfile`、`normalizeProfile`、`matchProfile`…） |
 | Web MIDI shim | `createVirtualMIDIAccess(opts)`、`virtualRequestMIDIAccess` |
-| 嵌入 | `createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut })` → `ControllerHost`（`on(event, fn)`、`set`、`press`、`release`、`values`、`mount(el)`、`learn()`、`dispose()`）· `loadProfile(idOrUrl)` · `packages/midi/element.js` 裡的 `<oav-controller>` 元素 · `embed.js` 裡的嵌入協定輔助函式 |
+| 嵌入 | `createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut, telemetry })` → `ControllerHost`（`on(event, fn)`、`set`、`press`、`release`、`values`、`mount(el)`、`learn()`、`dispose()`）· `loadProfile(idOrUrl)` · `packages/midi/element.js` 裡的 `<oav-controller>` 元素 · `embed.js` 裡的嵌入協定輔助函式 |
 
 ```js
 import { Midi } from '@openav/midi';

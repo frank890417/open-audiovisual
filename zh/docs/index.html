@@ -24,8 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=0249f81">
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=0249f81">
+<link rel="stylesheet" href="../../assets/home/home.css">
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -223,6 +224,7 @@
             <li><a href="#controllers-without-the-element">不用自訂元素</a></li>
             <li><a href="#controllers-in-an-iframe">用 iframe</a></li>
             <li><a href="#controllers-play-your-daw-with-it">用它彈你的 DAW</a></li>
+            <li><a href="#controllers-telemetry">使用統計</a></li>
             <li><a href="#controllers-add-a-controller">加入一台控制器</a></li>
           </ol>
         </li>
@@ -341,7 +343,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">16 章 · 143 節 · v0.1.0</p>
+      <p class="docs-stats">16 章 · 144 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -1071,6 +1073,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>profile</code></td><td>世界的名稱</td><td>映射器儲存設定檔的名稱。<code>false</code> = 忽略儲存的路由（<a href="#mapping-saved-profiles">儲存的設定檔</a>）</td></tr>
 <tr><td><code>onFrame</code></td><td><code>null</code></td><td><code>(dt, show) =&gt; {}</code>，每個影格執行一次，在時間軸前進之前</td></tr>
 <tr><td><code>mount</code></td><td>自動產生</td><td>要渲染進去的 <code>{ stage, side }</code> 元素或選擇器，取代整頁版面</td></tr>
+<tr><td><code>telemetry</code></td><td><code>true</code></td><td>每次載入頁面送一筆匿名的 <code>oav_show_start</code>（見控制器章的〈使用統計〉），<code>false</code> 就不送</td></tr>
 </tbody>
 </table></div>
 <p>沒有 <code>mount</code> 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。</p>
@@ -1158,7 +1161,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=0249f81"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1307,6 +1310,18 @@ Windows：安裝 loopMIDI，新增一個埠。</li>
 Resolume：到 Preferences → MIDI。</li>
 </ol>
 <p>螢幕上彈的會送出去，實體硬體的動作不會轉送（DAW 本來就聽得到它）。引擎從不聽 IAC 輸入，元素也會把跟輸出同名的輸入靜音，所以不會繞成迴圈。</p>
+<h3 id="controllers-telemetry">使用統計<a class="anchor" href="#controllers-telemetry" aria-label="這一節的連結">#</a></h3>
+<p>為了知道控制器和演出被用在哪裡，套件在每次載入頁面時，會送出<strong>一筆匿名紀錄</strong>到 Google Analytics 4（openaudiovisual.com 的資源，<code>G-1YG2JHK2WT</code>）：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>事件</th><th>什麼時候</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td><code>oav_embed_load</code></td><td><code>&lt;oav-controller&gt;</code>、<code>createController()</code> 或 iframe 開始運作</td><td><code>oav_kind</code>（element、headless、iframe）、<code>oav_profile</code>、<code>oav_host</code>、<code>oav_version</code></td></tr>
+<tr><td><code>oav_hardware_connect</code></td><td>接上實體控制器，而且對上了機型</td><td><code>oav_kind</code>、<code>oav_profile</code>、<code>oav_host</code>、<code>oav_version</code></td></tr>
+<tr><td><code>oav_show_start</code></td><td><code>createShow()</code> 開始</td><td><code>oav_kind</code>（show）、<code>oav_host</code>、<code>oav_version</code></td></tr>
+</tbody>
+</table></div>
+<p><code>oav_host</code> 只有網頁的<strong>網域</strong>（iframe 的話是放它的那個網頁），不會送路徑、查詢字串或標題。彈了什麼不會送出，也不寫 cookie，每次載入頁面的識別碼都是隨機的，沒辦法拿來追蹤同一個訪客。套件不會載入 gtag.js，網頁自己裝的 Google Analytics 不受影響。在 localhost、區域網路、<code>file://</code>、openaudiovisual.com 本站，或瀏覽器開了「不要追蹤」（Do Not Track、Global Privacy Control）時，什麼都不送。</p>
+<p>關掉的方法：<code>&lt;oav-controller telemetry="off"&gt;</code>、<code>createController(p, { telemetry: false })</code>、<code>createShow({ telemetry: false })</code>、iframe 加 <code>?telemetry=0</code>，或在載入前設 <code>globalThis.OPENAV_TELEMETRY = false</code>。程式在 <code>packages/midi/telemetry.js</code>。</p>
 <h3 id="controllers-add-a-controller">加入一台控制器<a class="anchor" href="#controllers-add-a-controller" aria-label="這一節的連結">#</a></h3>
 <ol>
 <li>從 <code>packages/midi/profiles/</code> 複製最接近的檔案，或一個通用版面。</li>
@@ -1654,7 +1669,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=0249f81"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -1684,7 +1699,7 @@ signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0
 <tr><td>解析</td><td><code>parseMessage(bytes)</code> → 事件 · <code>encodeMessage(event)</code> → 位元組 · <code>genericSignals(event, { device })</code> · <code>publish(signals, list)</code> · <code>describe(event)</code> · <code>relativeDelta(value, mode)</code>、<code>relativeValue(delta, mode)</code>、<code>RELATIVE_MODES</code> · <code>bendToUnit</code>、<code>unitToBend</code>、<code>BEND_CENTER</code></td></tr>
 <tr><td>控制器</td><td><code>MidiController</code>、<code>MidiControllers</code>、<code>controllerRoutes(profile, bindings)</code>、<code>PROFILES</code>、<code>profileById(id)</code>、<code>ControllerView</code>、<code>mountMidiPanel(el, controllers, opts)</code>、<code>linkControllers</code>，以及 profile 輔助函式（<code>validateProfile</code>、<code>normalizeProfile</code>、<code>matchProfile</code>…）</td></tr>
 <tr><td>Web MIDI shim</td><td><code>createVirtualMIDIAccess(opts)</code>、<code>virtualRequestMIDIAccess</code></td></tr>
-<tr><td>嵌入</td><td><code>createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut })</code> → <code>ControllerHost</code>（<code>on(event, fn)</code>、<code>set</code>、<code>press</code>、<code>release</code>、<code>values</code>、<code>mount(el)</code>、<code>learn()</code>、<code>dispose()</code>）· <code>loadProfile(idOrUrl)</code> · <code>packages/midi/element.js</code> 裡的 <code>&lt;oav-controller&gt;</code> 元素 · <code>embed.js</code> 裡的嵌入協定輔助函式</td></tr>
+<tr><td>嵌入</td><td><code>createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut, telemetry })</code> → <code>ControllerHost</code>（<code>on(event, fn)</code>、<code>set</code>、<code>press</code>、<code>release</code>、<code>values</code>、<code>mount(el)</code>、<code>learn()</code>、<code>dispose()</code>）· <code>loadProfile(idOrUrl)</code> · <code>packages/midi/element.js</code> 裡的 <code>&lt;oav-controller&gt;</code> 元素 · <code>embed.js</code> 裡的嵌入協定輔助函式</td></tr>
 </tbody>
 </table></div>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Midi } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
@@ -2119,6 +2134,6 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=0249f81"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

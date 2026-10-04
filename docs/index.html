@@ -24,8 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=0249f81">
-<link rel="stylesheet" href="../assets/docs/docs.css?v=0249f81">
+<link rel="stylesheet" href="../assets/home/home.css">
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -223,6 +224,7 @@
             <li><a href="#controllers-without-the-element">Without the element</a></li>
             <li><a href="#controllers-in-an-iframe">In an iframe</a></li>
             <li><a href="#controllers-play-your-daw-with-it">Play your DAW with it</a></li>
+            <li><a href="#controllers-telemetry">Telemetry</a></li>
             <li><a href="#controllers-add-a-controller">Add a controller</a></li>
           </ol>
         </li>
@@ -341,7 +343,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">16 chapters · 143 sections · v0.1.0</p>
+      <p class="docs-stats">16 chapters · 144 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -1405,6 +1407,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>profile</code></td><td>the world's name</td><td>the mapper's saved-profile name; <code>false</code> = ignore saved routes (<a href="#mapping-saved-profiles">Saved profiles</a>)</td></tr>
 <tr><td><code>onFrame</code></td><td><code>null</code></td><td><code>(dt, show) =&gt; {}</code> every frame, before the timeline advances</td></tr>
 <tr><td><code>mount</code></td><td>generated</td><td><code>{ stage, side }</code> elements or selectors to render into, instead of a full-page layout</td></tr>
+<tr><td><code>telemetry</code></td><td><code>true</code></td><td>one anonymous <code>oav_show_start</code> hit per page (see the controllers chapter, Telemetry); <code>false</code> sends nothing</td></tr>
 </tbody>
 </table></div>
 <p>Without <code>mount</code>, the page body becomes a two-column grid: the stage, and a
@@ -1520,7 +1523,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=0249f81"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1693,6 +1696,18 @@ on it; in Resolume, Preferences → MIDI.</li>
 <p>Hands on the screen are sent; your real hardware is not forwarded (the DAW already hears it).
 The engine never listens to IAC inputs, and the element mutes an input named like its
 output, so nothing loops.</p>
+<h3 id="controllers-telemetry">Telemetry<a class="anchor" href="#controllers-telemetry" aria-label="Link to this section">#</a></h3>
+<p>So the project can see where its controllers and shows end up, the packages send <strong>one anonymous hit per page load</strong> to Google Analytics 4 (the openaudiovisual.com property, <code>G-1YG2JHK2WT</code>):</p>
+<div class="table-wrap"><table>
+<thead><tr><th>event</th><th>when</th><th>params</th></tr></thead>
+<tbody>
+<tr><td><code>oav_embed_load</code></td><td>an <code>&lt;oav-controller&gt;</code>, <code>createController()</code> or the iframe starts</td><td><code>oav_kind</code> (element · headless · iframe), <code>oav_profile</code>, <code>oav_host</code>, <code>oav_version</code></td></tr>
+<tr><td><code>oav_hardware_connect</code></td><td>a real controller is plugged in and matched</td><td><code>oav_kind</code>, <code>oav_profile</code>, <code>oav_host</code>, <code>oav_version</code></td></tr>
+<tr><td><code>oav_show_start</code></td><td><code>createShow()</code> starts</td><td><code>oav_kind</code> (show), <code>oav_host</code>, <code>oav_version</code></td></tr>
+</tbody>
+</table></div>
+<p><code>oav_host</code> is the <strong>origin</strong> of the page it runs on (for the iframe, the page that holds it), never the path, query or title. Nothing anyone plays is sent, no cookies are set, and the client id is random for every page load, so visitors can't be followed. No gtag.js is loaded: a page with its own Google Analytics keeps its dataLayer untouched. Nothing is sent from localhost, LAN addresses, <code>file://</code> or openaudiovisual.com itself, or when the browser sends Do Not Track / Global Privacy Control.</p>
+<p>Turn it off: <code>&lt;oav-controller telemetry="off"&gt;</code> · <code>createController(p, { telemetry: false })</code> · <code>createShow({ telemetry: false })</code> · the iframe's <code>?telemetry=0</code> · or <code>globalThis.OPENAV_TELEMETRY = false</code> before anything loads. Source: <code>packages/midi/telemetry.js</code>.</p>
 <h3 id="controllers-add-a-controller">Add a controller<a class="anchor" href="#controllers-add-a-controller" aria-label="Link to this section">#</a></h3>
 <ol>
 <li>Copy the closest file in <code>packages/midi/profiles/</code>, or a generic layout.</li>
@@ -2140,7 +2155,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=0249f81"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -2173,7 +2188,7 @@ on-screen controllers that mirror real hardware.</p>
 <tr><td>parsing</td><td><code>parseMessage(bytes)</code> → event · <code>encodeMessage(event)</code> → bytes · <code>genericSignals(event, { device })</code> · <code>publish(signals, list)</code> · <code>describe(event)</code> · <code>relativeDelta(value, mode)</code>, <code>relativeValue(delta, mode)</code>, <code>RELATIVE_MODES</code> · <code>bendToUnit</code>, <code>unitToBend</code>, <code>BEND_CENTER</code></td></tr>
 <tr><td>controllers</td><td><code>MidiController</code>, <code>MidiControllers</code>, <code>controllerRoutes(profile, bindings)</code>, <code>PROFILES</code>, <code>profileById(id)</code>, <code>ControllerView</code>, <code>mountMidiPanel(el, controllers, opts)</code>, <code>linkControllers</code>, profile helpers (<code>validateProfile</code>, <code>normalizeProfile</code>, <code>matchProfile</code>, …)</td></tr>
 <tr><td>Web MIDI shim</td><td><code>createVirtualMIDIAccess(opts)</code>, <code>virtualRequestMIDIAccess</code></td></tr>
-<tr><td>embedding</td><td><code>createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut })</code> → <code>ControllerHost</code> (<code>on(event, fn)</code>, <code>set</code>, <code>press</code>, <code>release</code>, <code>values</code>, <code>mount(el)</code>, <code>learn()</code>, <code>dispose()</code>) · <code>loadProfile(idOrUrl)</code> · the <code>&lt;oav-controller&gt;</code> element in <code>packages/midi/element.js</code> · embed protocol helpers in <code>embed.js</code></td></tr>
+<tr><td>embedding</td><td><code>createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut, telemetry })</code> → <code>ControllerHost</code> (<code>on(event, fn)</code>, <code>set</code>, <code>press</code>, <code>release</code>, <code>values</code>, <code>mount(el)</code>, <code>learn()</code>, <code>dispose()</code>) · <code>loadProfile(idOrUrl)</code> · the <code>&lt;oav-controller&gt;</code> element in <code>packages/midi/element.js</code> · embed protocol helpers in <code>embed.js</code></td></tr>
 </tbody>
 </table></div>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Midi } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
@@ -2736,6 +2751,6 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=0249f81"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

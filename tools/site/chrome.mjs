@@ -32,6 +32,12 @@ export const NAV = [
   ['agents', { home: '#agents' }],
 ];
 
+/** Google Analytics for the site's own pages (property "open-audiovisual (openaudiovisual.com)").
+ *  Only on openaudiovisual.com itself, so local runs and forks don't report. The packages never load this:
+ *  embeds send one anonymous hit instead (packages/midi/telemetry.js). Examples carry the same snippet. */
+export const GA_ID = 'G-1YG2JHK2WT';
+export const GA_SNIPPET = `<script>if(/(^|\\.)openaudiovisual\\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${GA_ID}');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${GA_ID}';document.head.appendChild(s)}</script>`;
+
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 export const attr = (s) => esc(s).replace(/"/g, '&quot;');
 
@@ -82,7 +88,8 @@ export function headBasics(t, c, { title, description, ogDescription = descripti
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${FAVICON}">
 <link rel="preload" href="${c.root}assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="${c.root}assets/home/home.css">`;
+<link rel="stylesheet" href="${c.root}assets/home/home.css">
+${GA_SNIPPET}`;
 }
 
 /** Skip link + sticky top bar: brand, site nav (current page marked), language switch, GitHub. */

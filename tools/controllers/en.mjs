@@ -136,6 +136,7 @@ export default {
     ],
     browsers: 'Web MIDI works in Chrome and Edge, and in Firefox after it asks you to allow the site. Safari and iPad have none: the controller still plays and fires every event, and MIDI out reports that it is unavailable.',
     loop: 'No feedback loops: the engine never listens to IAC inputs, the element mutes any input with the same name as its output (the loopMIDI echo), and moves from your real hardware are not forwarded, because your software already hears the device.',
+    telemetry: 'Usage stats: each embed sends one anonymous hit per page load (which kind, which controller, the page’s origin; no cookies, nothing you play). <code>telemetry="off"</code> turns it off. <a href="{href}">What exactly is sent</a>.',
     protocolTitle: 'iframe messages',
     protocolText: 'The iframe posts every event to its parent and accepts a few commands back. Add <code>&amp;frame=name</code> to tell several iframes apart, and <code>&amp;origin=https://your.site</code> to talk to your page only.',
     apiTitle: 'The element, in one table',

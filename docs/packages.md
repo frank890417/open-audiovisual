@@ -61,7 +61,7 @@ on-screen controllers that mirror real hardware.
 | parsing | `parseMessage(bytes)` → event · `encodeMessage(event)` → bytes · `genericSignals(event, { device })` · `publish(signals, list)` · `describe(event)` · `relativeDelta(value, mode)`, `relativeValue(delta, mode)`, `RELATIVE_MODES` · `bendToUnit`, `unitToBend`, `BEND_CENTER` |
 | controllers | `MidiController`, `MidiControllers`, `controllerRoutes(profile, bindings)`, `PROFILES`, `profileById(id)`, `ControllerView`, `mountMidiPanel(el, controllers, opts)`, `linkControllers`, profile helpers (`validateProfile`, `normalizeProfile`, `matchProfile`, …) |
 | Web MIDI shim | `createVirtualMIDIAccess(opts)`, `virtualRequestMIDIAccess` |
-| embedding | `createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut })` → `ControllerHost` (`on(event, fn)`, `set`, `press`, `release`, `values`, `mount(el)`, `learn()`, `dispose()`) · `loadProfile(idOrUrl)` · the `<oav-controller>` element in `packages/midi/element.js` · embed protocol helpers in `embed.js` |
+| embedding | `createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut, telemetry })` → `ControllerHost` (`on(event, fn)`, `set`, `press`, `release`, `values`, `mount(el)`, `learn()`, `dispose()`) · `loadProfile(idOrUrl)` · the `<oav-controller>` element in `packages/midi/element.js` · embed protocol helpers in `embed.js` |
 
 ```js
 import { Midi } from '@openav/midi';

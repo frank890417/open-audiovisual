@@ -162,6 +162,10 @@ portrait), 控制台 (faders, knobs, XY, pads… generated from the World's `par
 - [Signals reference](docs/signals.md) — names published by each input package
 - [Show control](docs/show-control.md) — timeline, scenes, performance mode, monitor, OSC
 
+## Telemetry
+
+The controller element, `createController()`, the iframe embed and `createShow()` send one anonymous usage hit per page load (kind, controller profile, the page's origin, version; no cookies, nothing anyone plays). Off with `telemetry="off"` / `{ telemetry: false }` / `?telemetry=0` / `globalThis.OPENAV_TELEMETRY = false`. Details: [packages/midi/README.md](packages/midi/README.md#telemetry).
+
 ## Sister project: WebToe
 
 [**WebToe**](https://github.com/frank890417/WebToe) is a web-native, node-based

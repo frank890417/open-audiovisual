@@ -24,8 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=0249f81">
-<link rel="stylesheet" href="../assets/controllers/controllers.css?v=0249f81">
+<link rel="stylesheet" href="../assets/home/home.css">
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<link rel="stylesheet" href="../assets/controllers/controllers.css">
 <noscript><style>.js-only { display: none !important; }</style></noscript>
 <script type="application/ld+json">
 {
@@ -7429,6 +7430,7 @@ el.ingest([0xb0, 70, 64]);   <span class="tc">// MIDI from anywhere (a WebSocket
         <ol class="daw"><li>macOS: open <b>Audio MIDI Setup</b> → Window → Show MIDI Studio, double-click <b>IAC Driver</b>, tick “Device is online”.</li><li>Windows: install <a href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI</a> and add a port.</li><li>Ableton Live: Settings → Link, Tempo &amp; MIDI → turn on Track and Remote for the IAC or loopMIDI input. TouchDesigner: a MIDI In CHOP on that device. Resolume: Preferences → MIDI.</li></ol>
         <p class="note">Web MIDI works in Chrome and Edge, and in Firefox after it asks you to allow the site. Safari and iPad have none: the controller still plays and fires every event, and MIDI out reports that it is unavailable.</p>
         <p class="note">No feedback loops: the engine never listens to IAC inputs, the element mutes any input with the same name as its output (the loopMIDI echo), and moves from your real hardware are not forwarded, because your software already hears the device.</p>
+        <p class="note">Usage stats: each embed sends one anonymous hit per page load (which kind, which controller, the page’s origin; no cookies, nothing you play). <code>telemetry="off"</code> turns it off. <a href="../docs/#controllers-telemetry">What exactly is sent</a>.</p>
       </div>
       <div>
         <h3>iframe messages</h3>
@@ -7562,6 +7564,6 @@ console.log(validateProfile(p));   <span class="tc">// [] = valid; otherwise eve
 </footer>
 
 <script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","connect":"Connect your controller","asking":"Asking for MIDI…","connected":"Connected: {port}","waiting":"Listening. Plug in a known device and it appears here.","noMidi":"This browser has no Web MIDI (Safari, iPad). Play on screen: every event still fires.","denied":"MIDI permission was blocked. Allow it in the address bar and try again.","readoutIdle":"Touch a control: its signal and MIDI message appear here.","controlsN":"{n} controls","shown":"{n} shown","eventsIdle":"Play the preview: its \u003ccode>control\u003c/code> event appears here.","fullHref":"../examples/09-midi-controllers/?view=controller&profile="}</script>
-<script type="module" src="../assets/controllers/controllers.js?v=0249f81"></script>
+<script type="module" src="../assets/controllers/controllers.js"></script>
 </body>
 </html>

@@ -31,6 +31,7 @@ const show = await createShow({
 | `profile` | 世界的名稱 | 映射器儲存設定檔的名稱。`false` = 忽略儲存的路由（[儲存的設定檔](mapping.md#saved-profiles)） |
 | `onFrame` | `null` | `(dt, show) => {}`，每個影格執行一次，在時間軸前進之前 |
 | `mount` | 自動產生 | 要渲染進去的 `{ stage, side }` 元素或選擇器，取代整頁版面 |
+| `telemetry` | `true` | 每次載入頁面送一筆匿名的 `oav_show_start`（見控制器章的〈使用統計〉），`false` 就不送 |
 
 沒有 `mount` 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。
 

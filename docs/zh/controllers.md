@@ -77,6 +77,20 @@ ctl.on('control', (e) => console.log(e.signal, e.value));
 螢幕上彈的會送出去，實體硬體的動作不會轉送（DAW 本來就聽得到它）。引擎從不聽 IAC 輸入，元素也會
 把跟輸出同名的輸入靜音，所以不會繞成迴圈。
 
+## 使用統計
+
+為了知道控制器和演出被用在哪裡，套件在每次載入頁面時，會送出**一筆匿名紀錄**到 Google Analytics 4（openaudiovisual.com 的資源，`G-1YG2JHK2WT`）：
+
+| 事件 | 什麼時候 | 內容 |
+|---|---|---|
+| `oav_embed_load` | `<oav-controller>`、`createController()` 或 iframe 開始運作 | `oav_kind`（element、headless、iframe）、`oav_profile`、`oav_host`、`oav_version` |
+| `oav_hardware_connect` | 接上實體控制器，而且對上了機型 | `oav_kind`、`oav_profile`、`oav_host`、`oav_version` |
+| `oav_show_start` | `createShow()` 開始 | `oav_kind`（show）、`oav_host`、`oav_version` |
+
+`oav_host` 只有網頁的**網域**（iframe 的話是放它的那個網頁），不會送路徑、查詢字串或標題。彈了什麼不會送出，也不寫 cookie，每次載入頁面的識別碼都是隨機的，沒辦法拿來追蹤同一個訪客。套件不會載入 gtag.js，網頁自己裝的 Google Analytics 不受影響。在 localhost、區域網路、`file://`、openaudiovisual.com 本站，或瀏覽器開了「不要追蹤」（Do Not Track、Global Privacy Control）時，什麼都不送。
+
+關掉的方法：`<oav-controller telemetry="off">`、`createController(p, { telemetry: false })`、`createShow({ telemetry: false })`、iframe 加 `?telemetry=0`，或在載入前設 `globalThis.OPENAV_TELEMETRY = false`。程式在 `packages/midi/telemetry.js`。
+
 ## 加入一台控制器
 
 1. 從 `packages/midi/profiles/` 複製最接近的檔案，或一個通用版面。

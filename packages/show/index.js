@@ -36,6 +36,7 @@ import { Timeline } from '../timeline/index.js?v=0249f81';
 import { Stage } from '../stage/index.js?v=0249f81';
 import { mountConsole } from '../console/index.js?v=0249f81';
 import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=0249f81';
+import { track } from '../midi/telemetry.js?v=0249f81';
 
 const SHELL_CSS = `
   body { margin: 0; background: #000; height: 100vh; display: grid;
@@ -62,7 +63,9 @@ export async function createShow({
   profile = null,
   onFrame = null,          // (dt, show) per-frame hook — assembly-layer logic (envelopes…)
   mount = null,            // { stage, side } elements/selectors; omitted = generated layout
+  telemetry = true,        // one anonymous oav_show_start hit per page (packages/midi/telemetry.js); false = none
 } = {}) {
+  track('oav_show_start', { oav_kind: 'show' }, { enabled: telemetry !== false });
   // ---------- DOM shell (fix the layout once, every show is fixed) ----------
   if (!document.getElementById('openav-shell-css')) {
     const st = document.createElement('style');

@@ -114,7 +114,7 @@ test('static faceplate placement follows CSS grid flow and spans (nanoKONTROL2 s
 
 test('the iframe embed page exists and loads its script', () => {
   const s = read('embed/controller/index.html');
-  assert.match(s, /<oav-controller id="ctl">/);
+  assert.match(s, /<oav-controller id="ctl"[^>]*>/);
   assert.match(s, /<script type="module" src="\.\/frame\.js/);
   assert.ok(fs.existsSync(path.join(ROOT, 'embed/controller/frame.js')));
 });

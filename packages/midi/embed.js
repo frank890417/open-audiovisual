@@ -19,7 +19,7 @@ import { encodeMessage, relativeDelta } from './parse.js?v=0249f81';
 import { validateProfile } from './profiles.js?v=0249f81';
 
 /** Attributes <oav-controller> reads (also the query params of /embed/controller/). */
-export const EMBED_ATTRS = ['profile', 'layout', 'hardware', 'midi-out', 'channel', 'learn', 'picker', 'readout', 'follow', 'theme'];
+export const EMBED_ATTRS = ['profile', 'layout', 'hardware', 'midi-out', 'channel', 'learn', 'picker', 'readout', 'follow', 'theme', 'telemetry'];
 /** DOM events <oav-controller> dispatches (bubbling, composed). */
 export const EMBED_EVENTS = ['ready', 'control', 'noteon', 'noteoff', 'connect', 'disconnect', 'status', 'profilechange', 'error'];
 export const EMBED_LAYOUTS = ['auto', 'face', 'stack'];
@@ -88,6 +88,7 @@ export function parseEmbedOptions(src) {
     picker: embedFlag(any('picker')),
     readout: embedFlag(any('readout')),
     follow: embedFlag(any('follow')),
+    telemetry: any('telemetry') === null ? true : embedFlag(any('telemetry')),   // off: telemetry="off" (see telemetry.js)
     theme: theme === 'light' ? 'light' : 'dark',
     bg: embedColor(any('bg')),
     frame: any('frame', 'id') ? String(any('frame', 'id')).slice(0, 64) : null,

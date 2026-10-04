@@ -6,7 +6,7 @@
 // Output is static HTML on purpose: crawlers and AI agents read every word
 // without running JavaScript. The script only brings the instrument to life.
 
-import { SITE, REPO, BLOB, TREE, pageCtx, topBar, siteFooter } from '../site/chrome.mjs';
+import { SITE, REPO, BLOB, TREE, pageCtx, topBar, siteFooter, GA_SNIPPET } from '../site/chrome.mjs';
 import { WEBTOE, SHOTS as WEBTOE_SHOTS, shot } from '../webtoe/page.mjs';
 export { SITE, REPO };
 
@@ -215,6 +215,7 @@ export function renderPage(t, { locale, other, version }) {
 <link rel="icon" href="${FAVICON}">
 <link rel="preload" href="${root}assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${root}assets/home/home.css">
+${GA_SNIPPET}
 <noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
 <script type="application/ld+json">
 ${JSON.stringify(ld, null, 2)}
