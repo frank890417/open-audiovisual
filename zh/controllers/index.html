@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MIDI 控制器，好好建模｜open-audiovisual</title>
-<meta name="description" content="把 MIDI 控制器寫成資料：每一顆旋鈕、每一個打擊墊、每一個琴鍵送出的 MIDI 訊息，連同數字的出處。螢幕上直接彈，接上實體控制器畫面會跟著動，一行程式碼嵌進任何網頁。Arturia、AKAI、Novation、KORG 與通用版面。">
+<title>MIDI 控制器圖鑑｜open-audiovisual</title>
+<meta name="description" content="每一顆旋鈕、打擊墊、琴鍵送出什麼 MIDI 訊息，數字出自哪一份手冊，這裡都查好了。在網頁上直接彈，接上手邊的控制器畫面會跟著動，一行程式碼就能放進自己的網頁。收錄 Arturia、AKAI、Novation、KORG、Behringer 與通用版面。">
 <link rel="canonical" href="https://openaudiovisual.com/zh/controllers/">
 <link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/">
 <link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/">
@@ -14,8 +14,8 @@
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="open-audiovisual">
-<meta property="og:title" content="MIDI 控制器，好好建模｜open-audiovisual">
-<meta property="og:description" content="每一顆旋鈕、打擊墊、琴鍵的 MIDI 訊息和出處都寫清楚。螢幕上彈，接上實體的會跟著動，一行嵌進任何網頁。">
+<meta property="og:title" content="MIDI 控制器圖鑑｜open-audiovisual">
+<meta property="og:description" content="每一顆旋鈕送出什麼 MIDI 訊息、數字出自哪份手冊，都查好了。網頁上直接彈，接上控制器會跟著動，一行程式碼放進你的網頁。">
 <meta property="og:url" content="https://openaudiovisual.com/zh/controllers/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
@@ -24,8 +24,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=4a2b66b">
-<link rel="stylesheet" href="../../assets/controllers/controllers.css?v=4a2b66b">
+<link rel="stylesheet" href="../../assets/home/home.css">
+<link rel="stylesheet" href="../../assets/controllers/controllers.css">
 <noscript><style>.js-only { display: none !important; }</style></noscript>
 <script type="application/ld+json">
 {
@@ -304,18 +304,18 @@
   <!-- ═════ 01 · play: one live controller, any device, your hardware moves it ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
     <p class="eyebrow">01 · 彈奏</p>
-    <h1 id="play-title">MIDI 控制器，好好建模。</h1>
+    <h1 id="play-title">MIDI 控制器圖鑑</h1>
     <div class="hero-cols">
-      <p class="lede">一個把 MIDI 控制器寫成資料的資料庫：每一顆旋鈕、每一個打擊墊、每一個琴鍵送出的 MIDI 訊息，連同那個數字出自哪一份文件，都寫清楚。可以在這裡直接彈，接上實體控制器看它跟著動，也可以用一行程式碼放進你自己的網頁。</p>
+      <p class="lede">每一顆旋鈕、打擊墊、琴鍵按下去送出什麼 MIDI 訊息，這個數字出自哪一份手冊，這裡都查好寫清楚了。用滑鼠或手指直接彈，接上你手邊的控制器，畫面會跟著你的手動，也可以用一行程式碼放進自己的網頁。</p>
       <div class="hero-facts">
-        <p class="why">每換一個音樂工具，就要重新對一次控制器。這裡把控制器建模一次、附上出處，大家一起用。</p>
+        <p class="why">以前每換一套軟體，就要把手上的控制器重新對一次，CC 幾號、哪個頻道，每個人都在翻同一本手冊。這裡把每一台查一次、建好模型、附上出處，之後大家直接拿去用。</p>
         <dl class="stats">
           <div><dt>台裝置</dt><dd>11</dd></div>
           <div><dt>種通用版面</dt><dd>6</dd></div>
           <div><dt>個裝置上的控制項</dt><dd>523</dd></div>
           <div><dt>份引用出處</dt><dd>39</dd></div>
         </dl>
-        <p class="unv-note">其中 93 個控制項標成<em>未確認</em>：數字是我們目前的判讀，學習模式動一下就能重新對應。</p>
+        <p class="unv-note">其中 93 個控制項標了<em>未確認</em>，還沒找到文件證實，數字先照目前的判讀。對不上的話，按「學習」再動一下那顆鈕，就會重新對應。</p>
       </div>
     </div>
 
@@ -349,11 +349,11 @@
       <oav-controller id="hero-ctl" profile="arturia-minilab3" follow><svg class="fp" viewBox="0 0 100 62" role="img" aria-label="Arturia MiniLab 3 的面板" focusable="false" preserveAspectRatio="xMidYMid meet"><rect class="fp-body" width="100" height="62" rx="2.17" fill="#1d1f24"/><text class="fp-fl" x="2" y="2.6">MINILAB 3</text><rect class="fp-screen" x="15" y="5" width="14" height="11" rx="0.5"/><text class="fp-st" x="22" y="11">MiniLab 3</text><rect class="fp-btn" x="2" y="37" width="6.3" height="4" rx="0.4"/><text class="fp-bl fp-small" x="5.15" y="39.35">Shift</text><rect class="fp-btn" x="8.9" y="37" width="6.3" height="4" rx="0.4"/><text class="fp-bl fp-small" x="12.05" y="39.35">Hold</text><rect class="fp-btn" x="15.8" y="37" width="6.3" height="4" rx="0.4"/><text class="fp-bl fp-small" x="18.95" y="39.35">Oct−</text><rect class="fp-btn" x="22.7" y="37" width="6.3" height="4" rx="0.4"/><text class="fp-bl fp-small" x="25.85" y="39.35">Oct+</text><rect class="fp-strip" x="2.72" y="5" width="3.71" height="28.3" rx="0.67"/><rect class="fp-thumb" x="3.02" y="18.8" width="3.11" height="0.7" rx="0.35" fill="#e8ecf5"/><text class="fp-cl" x="4.58" y="34.7">Pitch</text><rect class="fp-strip" x="8.57" y="5" width="3.71" height="28.3" rx="0.67"/><rect class="fp-thumb" x="8.87" y="32.15" width="3.11" height="0.7" rx="0.35" fill="#e8ecf5"/><text class="fp-cl" x="10.43" y="34.7">Mod</text><circle class="fp-ring fp-endless" cx="22" cy="25.65" r="5.88" stroke="#35d4e6"/><circle class="fp-cap" cx="22" cy="25.65" r="4.12"/><line class="fp-ptr" x1="22" y1="24.18" x2="22" y2="21.77"/><text class="fp-cl" x="22" y="34.7">Main</text><text class="fp-sl" x="31.3" y="5.2">KNOBS</text><circle class="fp-ring" cx="35.49" cy="10.9" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="35.49" cy="10.9" r="2.64"/><line class="fp-ptr" x1="34.82" y1="11.57" x2="33.73" y2="12.66"/><text class="fp-cl" x="35.49" y="17.3">1</text><circle class="fp-ring" cx="45.16" cy="10.9" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="45.16" cy="10.9" r="2.64"/><line class="fp-ptr" x1="44.5" y1="11.57" x2="43.4" y2="12.66"/><text class="fp-cl" x="45.16" y="17.3">2</text><circle class="fp-ring" cx="54.84" cy="10.9" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="54.84" cy="10.9" r="2.64"/><line class="fp-ptr" x1="54.17" y1="11.57" x2="53.08" y2="12.66"/><text class="fp-cl" x="54.84" y="17.3">3</text><circle class="fp-ring" cx="64.51" cy="10.9" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="64.51" cy="10.9" r="2.64"/><line class="fp-ptr" x1="63.85" y1="11.57" x2="62.75" y2="12.66"/><text class="fp-cl" x="64.51" y="17.3">4</text><circle class="fp-ring" cx="35.49" cy="23.3" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="35.49" cy="23.3" r="2.64"/><line class="fp-ptr" x1="34.82" y1="23.97" x2="33.73" y2="25.06"/><text class="fp-cl" x="35.49" y="29.7">5</text><circle class="fp-ring" cx="45.16" cy="23.3" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="45.16" cy="23.3" r="2.64"/><line class="fp-ptr" x1="44.5" y1="23.97" x2="43.4" y2="25.06"/><text class="fp-cl" x="45.16" y="29.7">6</text><circle class="fp-ring" cx="54.84" cy="23.3" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="54.84" cy="23.3" r="2.64"/><line class="fp-ptr" x1="54.17" y1="23.97" x2="53.08" y2="25.06"/><text class="fp-cl" x="54.84" y="29.7">7</text><circle class="fp-ring" cx="64.51" cy="23.3" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="64.51" cy="23.3" r="2.64"/><line class="fp-ptr" x1="63.85" y1="23.97" x2="62.75" y2="25.06"/><text class="fp-cl" x="64.51" y="29.7">8</text><text class="fp-sl" x="71.3" y="5.2">FADERS</text><rect class="fp-slot" x="73.71" y="6.5" width="0.8" height="21.2" rx="0.4"/><rect class="fp-fcap" x="71.81" y="26.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="74.11" y="29.7">S1</text><rect class="fp-slot" x="80.64" y="6.5" width="0.8" height="21.2" rx="0.4"/><rect class="fp-fcap" x="78.74" y="26.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="81.04" y="29.7">S2</text><rect class="fp-slot" x="87.56" y="6.5" width="0.8" height="21.2" rx="0.4"/><rect class="fp-fcap" x="85.66" y="26.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="87.96" y="29.7">S3</text><rect class="fp-slot" x="94.49" y="6.5" width="0.8" height="21.2" rx="0.4"/><rect class="fp-fcap" x="92.59" y="26.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="94.89" y="29.7">S4</text><text class="fp-sl" x="31.3" y="32.2">PADS</text><rect class="fp-pad" x="31" y="32.9" width="7.76" height="8.6" rx="0.78" fill="#ff5fb3"/><rect class="fp-pad" x="39.46" y="32.9" width="7.76" height="8.6" rx="0.78" fill="#ff5fb3"/><rect class="fp-pad" x="47.92" y="32.9" width="7.76" height="8.6" rx="0.78" fill="#ff5fb3"/><rect class="fp-pad" x="56.39" y="32.9" width="7.76" height="8.6" rx="0.78" fill="#ff5fb3"/><rect class="fp-pad" x="64.85" y="32.9" width="7.76" height="8.6" rx="0.78" fill="#ff5fb3"/><rect class="fp-pad" x="73.31" y="32.9" width="7.76" height="8.6" rx="0.78" fill="#ff5fb3"/><rect class="fp-pad" x="81.78" y="32.9" width="7.76" height="8.6" rx="0.78" fill="#ff5fb3"/><rect class="fp-pad" x="90.24" y="32.9" width="7.76" height="8.6" rx="0.78" fill="#ff5fb3"/><rect class="fp-kw" x="2" y="43" width="6.4" height="17"/><rect class="fp-kw" x="8.4" y="43" width="6.4" height="17"/><rect class="fp-kw" x="14.8" y="43" width="6.4" height="17"/><rect class="fp-kw" x="21.2" y="43" width="6.4" height="17"/><rect class="fp-kw" x="27.6" y="43" width="6.4" height="17"/><rect class="fp-kw" x="34" y="43" width="6.4" height="17"/><rect class="fp-kw" x="40.4" y="43" width="6.4" height="17"/><rect class="fp-kw" x="46.8" y="43" width="6.4" height="17"/><rect class="fp-kw" x="53.2" y="43" width="6.4" height="17"/><rect class="fp-kw" x="59.6" y="43" width="6.4" height="17"/><rect class="fp-kw" x="66" y="43" width="6.4" height="17"/><rect class="fp-kw" x="72.4" y="43" width="6.4" height="17"/><rect class="fp-kw" x="78.8" y="43" width="6.4" height="17"/><rect class="fp-kw" x="85.2" y="43" width="6.4" height="17"/><rect class="fp-kw" x="91.6" y="43" width="6.4" height="17"/><rect class="fp-kb" x="6.42" y="43" width="3.97" height="10.2"/><rect class="fp-kb" x="12.82" y="43" width="3.97" height="10.2"/><rect class="fp-kb" x="25.62" y="43" width="3.97" height="10.2"/><rect class="fp-kb" x="32.02" y="43" width="3.97" height="10.2"/><rect class="fp-kb" x="38.42" y="43" width="3.97" height="10.2"/><rect class="fp-kb" x="51.22" y="43" width="3.97" height="10.2"/><rect class="fp-kb" x="57.62" y="43" width="3.97" height="10.2"/><rect class="fp-kb" x="70.42" y="43" width="3.97" height="10.2"/><rect class="fp-kb" x="76.82" y="43" width="3.97" height="10.2"/><rect class="fp-kb" x="83.22" y="43" width="3.97" height="10.2"/></svg></oav-controller>
     </div>
     <div class="stage-foot">
-      <p class="readout js-only"><span class="ro-k">最後一則訊息</span><code id="hero-readout">動一個控制項，它的訊號和 MIDI 訊息會顯示在這裡。</code></p>
+      <p class="readout js-only"><span class="ro-k">最後一則訊息</span><code id="hero-readout">轉一顆旋鈕試試，它的訊號和 MIDI 訊息會出現在這裡。</code></p>
       <p class="stage-meta" id="hero-meta"><b id="hm-name">Arturia MiniLab 3</b> <span id="hm-count">48 個控制項</span> <a id="hm-spec" href="#spec-arturia-minilab3">規格表</a> <a id="hm-full" href="../../examples/09-midi-controllers/?view=controller&amp;profile=arturia-minilab3">全螢幕 ↗</a></p>
     </div>
     <p class="hint js-only">拖曳旋鈕和推桿 · 點打擊墊和琴鍵 · 也可以用 Tab 和方向鍵</p>
-    <noscript><p class="noscript">這是一台可以彈的控制器，開啟 JavaScript 就能彈。每台裝置完整的 MIDI 對應，都在下面的規格表裡。</p></noscript>
+    <noscript><p class="noscript">這裡是一台可以彈的控制器，打開 JavaScript 才能彈。每一台完整的 MIDI 對照，都在下面的規格表裡。</p></noscript>
   </section>
 
   <!-- ═════ 02 · catalog ═════ -->
@@ -361,8 +361,8 @@
     
     <header class="sec-head">
       <p class="eyebrow">02 · 目錄</p>
-      <h2 id="catalog-title">資料庫裡的每一台控制器</h2>
-      <p class="sec-lede">卡片上的面板就是元件本身，是活的，可以直接拖。標籤說明每個設定檔的數字從哪裡來。</p>
+      <h2 id="catalog-title">目前收錄的控制器</h2>
+      <p class="sec-lede">卡片上的面板就是元件本身，可以直接拖、直接按。底下的標籤寫著這一台的數字是從哪裡查來的。</p>
     </header>
     <div class="filters js-only" role="group" aria-label="篩選：有這些控制的">
       <span class="filters-k">篩選：有這些控制的</span>
@@ -492,7 +492,7 @@
     </div>
     <div class="cat-group">
     <h3 class="cat-h">通用版面 <span>6</span></h3>
-    <p class="cat-note">資料庫裡還沒有你的控制器：選一個最接近的版面，按「學習」，依序動你的控制項。</p>
+    <p class="cat-note">找不到你那一台的話，先挑一個最接近的版面，按「學習」，再照順序把你手上的旋鈕和推桿各動一次。</p>
     <ul class="cards">
       <li class="card" id="card-generic-8k8p" data-profile="generic-8k8p" data-has="pad knob">
         <div class="card-face" data-face="generic-8k8p"><svg class="fp" viewBox="0 0 100 30" role="img" aria-label="通用 8 旋鈕 + 8 打擊墊 的面板" focusable="false" preserveAspectRatio="xMidYMid meet"><rect class="fp-body" width="100" height="30" rx="1.05"/><text class="fp-fl" x="2" y="2.6">8 KNOBS · 8 PADS</text><text class="fp-sl" x="2.3" y="5.2">PADS</text><rect class="fp-pad" x="2" y="5.9" width="12.97" height="10.7" rx="1.07" fill="#35d4e6"/><rect class="fp-pad" x="15.67" y="5.9" width="12.97" height="10.7" rx="1.07" fill="#35d4e6"/><rect class="fp-pad" x="29.35" y="5.9" width="12.97" height="10.7" rx="1.07" fill="#35d4e6"/><rect class="fp-pad" x="43.02" y="5.9" width="12.97" height="10.7" rx="1.07" fill="#35d4e6"/><rect class="fp-pad" x="2" y="17.3" width="12.97" height="10.7" rx="1.07" fill="#35d4e6"/><rect class="fp-pad" x="15.67" y="17.3" width="12.97" height="10.7" rx="1.07" fill="#35d4e6"/><rect class="fp-pad" x="29.35" y="17.3" width="12.97" height="10.7" rx="1.07" fill="#35d4e6"/><rect class="fp-pad" x="43.02" y="17.3" width="12.97" height="10.7" rx="1.07" fill="#35d4e6"/><text class="fp-sl" x="60.3" y="5.2">KNOBS</text><circle class="fp-ring" cx="64.49" cy="10.4" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="64.49" cy="10.4" r="2.64"/><line class="fp-ptr" x1="63.82" y1="11.07" x2="62.73" y2="12.16"/><text class="fp-cl" x="64.49" y="16.3">K1</text><circle class="fp-ring" cx="74.16" cy="10.4" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="74.16" cy="10.4" r="2.64"/><line class="fp-ptr" x1="73.5" y1="11.07" x2="72.4" y2="12.16"/><text class="fp-cl" x="74.16" y="16.3">K2</text><circle class="fp-ring" cx="83.84" cy="10.4" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="83.84" cy="10.4" r="2.64"/><line class="fp-ptr" x1="83.17" y1="11.07" x2="82.08" y2="12.16"/><text class="fp-cl" x="83.84" y="16.3">K3</text><circle class="fp-ring" cx="93.51" cy="10.4" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="93.51" cy="10.4" r="2.64"/><line class="fp-ptr" x1="92.85" y1="11.07" x2="91.75" y2="12.16"/><text class="fp-cl" x="93.51" y="16.3">K4</text><circle class="fp-ring" cx="64.49" cy="21.8" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="64.49" cy="21.8" r="2.64"/><line class="fp-ptr" x1="63.82" y1="22.47" x2="62.73" y2="23.56"/><text class="fp-cl" x="64.49" y="27.7">K5</text><circle class="fp-ring" cx="74.16" cy="21.8" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="74.16" cy="21.8" r="2.64"/><line class="fp-ptr" x1="73.5" y1="22.47" x2="72.4" y2="23.56"/><text class="fp-cl" x="74.16" y="27.7">K6</text><circle class="fp-ring" cx="83.84" cy="21.8" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="83.84" cy="21.8" r="2.64"/><line class="fp-ptr" x1="83.17" y1="22.47" x2="82.08" y2="23.56"/><text class="fp-cl" x="83.84" y="27.7">K7</text><circle class="fp-ring" cx="93.51" cy="21.8" r="3.77" stroke="#35d4e6"/><circle class="fp-cap" cx="93.51" cy="21.8" r="2.64"/><line class="fp-ptr" x1="92.85" y1="22.47" x2="91.75" y2="23.56"/><text class="fp-cl" x="93.51" y="27.7">K8</text></svg></div>
@@ -563,8 +563,8 @@
     
     <header class="sec-head">
       <p class="eyebrow">03 · 規格表</p>
-      <h2 id="specs-title">每一台完整的 MIDI 對應</h2>
-      <p class="sec-lede">建置時直接從 JSON 檔產生，所以不會和元件實際送出的訊息對不上。數字和訊號名稱兩種語言一樣；說明與出處保留原文。</p>
+      <h2 id="specs-title">每一台的完整 MIDI 對照表</h2>
+      <p class="sec-lede">這些表在建置時直接從 JSON 檔產生，跟元件實際送出的訊息一定對得上。數字和訊號名稱中英文版都一樣，說明和出處保留原文。</p>
     </header>
     <div class="specs">
     <details class="spec" id="spec-akai-lpd8">
@@ -752,7 +752,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/lpd8/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/lpd8/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/lpd8/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/lpd8/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/akai-lpd8.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=akai-lpd8">全螢幕 ↗</a> <a href="#card-akai-lpd8">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -1683,7 +1683,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/apcmini2/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/apcmini2/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/apcmini2/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/apcmini2/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/akai-apc-mini-mk2.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=akai-apc-mini-mk2">全螢幕 ↗</a> <a href="#card-akai-apc-mini-mk2">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -2234,7 +2234,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/midimix/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/midimix/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/midimix/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/midimix/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/akai-midimix.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=akai-midimix">全螢幕 ↗</a> <a href="#card-akai-midimix">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -2456,7 +2456,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/mpkmini3/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/mpkmini3/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/mpkmini3/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/mpkmini3/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/akai-mpk-mini-mk3.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=akai-mpk-mini-mk3">全螢幕 ↗</a> <a href="#card-akai-mpk-mini-mk3">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -2728,7 +2728,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/minilab3/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/minilab3/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/minilab3/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/minilab3/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/arturia-minilab3.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=arturia-minilab3">全螢幕 ↗</a> <a href="#card-arturia-minilab3">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -2839,7 +2839,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/keystep37/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/keystep37/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/keystep37/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/keystep37/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/arturia-keystep37.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=arturia-keystep37">全螢幕 ↗</a> <a href="#card-arturia-keystep37">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -3200,7 +3200,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/xtouchmini/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/xtouchmini/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/xtouchmini/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/xtouchmini/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/behringer-x-touch-mini.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=behringer-x-touch-mini">全螢幕 ↗</a> <a href="#card-behringer-x-touch-mini">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -3741,7 +3741,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/nano2/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/nano2/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/nano2/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/nano2/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/korg-nanokontrol2.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=korg-nanokontrol2">全螢幕 ↗</a> <a href="#card-korg-nanokontrol2">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -4572,7 +4572,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/lpmini/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/lpmini/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/lpmini/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/lpmini/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/novation-launchpad-mini-mk3.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=novation-launchpad-mini-mk3">全螢幕 ↗</a> <a href="#card-novation-launchpad-mini-mk3">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -5163,7 +5163,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/lcxl/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/lcxl/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/lcxl/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/lcxl/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/novation-launch-control-xl-mk2.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=novation-launch-control-xl-mk2">全螢幕 ↗</a> <a href="#card-novation-launch-control-xl-mk2">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -5294,7 +5294,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/oddball/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/oddball/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/oddball/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/oddball/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/odd-ball.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=odd-ball">全螢幕 ↗</a> <a href="#card-odd-ball">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -5485,7 +5485,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/g8k8p/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/g8k8p/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/g8k8p/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/g8k8p/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/generic-8k8p.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=generic-8k8p">全螢幕 ↗</a> <a href="#card-generic-8k8p">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -5596,7 +5596,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/g8f/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/g8f/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/g8f/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/g8f/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/generic-8f.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=generic-8f">全螢幕 ↗</a> <a href="#card-generic-8f">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -5787,7 +5787,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/g16p/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/g16p/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/g16p/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/g16p/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/generic-16p.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=generic-16p">全螢幕 ↗</a> <a href="#card-generic-16p">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -5858,7 +5858,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/keys25/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/keys25/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/keys25/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/keys25/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/generic-keys25.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=generic-keys25">全螢幕 ↗</a> <a href="#card-generic-keys25">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -5929,7 +5929,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/keys49/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/keys49/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/keys49/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/keys49/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/generic-keys49.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=generic-keys49">全螢幕 ↗</a> <a href="#card-generic-keys49">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -6000,7 +6000,7 @@
           </div>
           <div>
             <h4>訊號</h4>
-            <p>每個控制項都會發出 <code>midi/keys61/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>；打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>；最後一個被動到的控制項是 <code>midi/keys61/last</code>。</p>
+            <p>每個控制項都會發出 <code>midi/keys61/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/keys61/last</code>。</p>
             <p class="spec-links"><a href="../../packages/midi/profiles/generic-keys61.json">原始 JSON ↗</a> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=generic-keys61">全螢幕 ↗</a> <a href="#card-generic-keys61">↑ 回到卡片</a></p>
           </div>
         </div>
@@ -6015,7 +6015,7 @@
     <header class="sec-head">
       <p class="eyebrow">04 · 嵌入</p>
       <h2 id="embed-title">放進你的網頁</h2>
-      <p class="sec-lede">一行 HTML、一個 iframe，或 JavaScript。選一台裝置和選項，預覽和下面每一段程式碼都會跟著變。</p>
+      <p class="sec-lede">一行 HTML、一個 iframe，或一段 JavaScript 都可以。先選機型和選項，預覽和下面每一段程式碼會跟著換。</p>
     </header>
     <div class="builder">
       <form class="b-form js-only" id="builder" aria-label="放進你的網頁">
@@ -6047,7 +6047,7 @@
       </li>
       <li class="snip">
         <h3>iframe</h3>
-        <p>給只能放 iframe 的地方。每個事件都會用 <code>postMessage</code> 傳出來；也可以把 <code>set</code>、<code>ingest</code> 傳回去。</p>
+        <p>給只能放 iframe 的地方。每個事件都會用 <code>postMessage</code> 傳出來，你也可以把 <code>set</code>、<code>ingest</code> 傳回去。</p>
         <div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-iframe">複製</button></div><pre id="snip-iframe"><code><span class="tt">&lt;iframe</span> src=<span class="ts">"https://openaudiovisual.com/embed/controller/?profile=akai-lpd8&amp;readout"</span>
         width=<span class="ts">"720"</span> height=<span class="ts">"216"</span> style=<span class="ts">"border:0;max-width:100%"</span> allow=<span class="ts">"midi"</span>
         title=<span class="ts">"AKAI LPD8 (mk2)"</span>&gt;<span class="tt">&lt;/iframe</span>&gt;
@@ -6099,7 +6099,7 @@ el.ingest([0xb0, 70, 64]);   <span class="tc">// MIDI from anywhere (a WebSocket
         <h3>MIDI 輸出到 Ableton、TouchDesigner、Resolume</h3>
         <ol class="daw"><li>macOS：打開<b>音訊 MIDI 設定</b> → 視窗 → 顯示 MIDI 工作室，雙擊 <b>IAC 驅動程式</b>，勾選「裝置已上線」。</li><li>Windows：安裝 <a href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI</a>，新增一個埠。</li><li>Ableton Live：設定 → Link, Tempo &amp; MIDI → 把 IAC 或 loopMIDI 輸入的 Track 和 Remote 打開。TouchDesigner：在那個裝置上放一個 MIDI In CHOP。Resolume：Preferences → MIDI。</li></ol>
         <p class="note">Chrome 和 Edge 有 Web MIDI，Firefox 會先問你是否允許這個網站。Safari 和 iPad 沒有：控制器照樣能彈、每個事件照樣送出，MIDI 輸出會顯示無法使用。</p>
-        <p class="note">不會形成回授迴圈：引擎從不聽 IAC 輸入；元素會把和輸出同名的輸入靜音（loopMIDI 自己的回音）；實體硬體的動作也不會轉送出去，因為你的軟體本來就聽得到那台裝置。</p>
+        <p class="note">不會繞成迴圈。引擎本來就不聽 IAC 輸入，跟輸出同名的輸入（loopMIDI 自己的回音）也會靜音。實體控制器的動作不會再轉送一次，因為你的軟體本來就收得到那台。</p>
       </div>
       <div>
         <h3>iframe 訊息</h3>
@@ -6131,8 +6131,8 @@ win.postMessage({ target: <span class="ts">'openav'</span>, type: <span class="t
         <tr><th scope="row"><code>picker · readout · learn · follow</code></th><td>屬性</td><td>裝置選單、最後一則訊息、學習按鈕、接上哪台就切到哪台</td></tr>
         <tr><th scope="row"><code>control</code></th><td>事件</td><td>任何控制項動了：id、type、value、raw、signal、message、bytes、source</td></tr>
         <tr><th scope="row"><code>noteon · noteoff</code></th><td>事件</td><td>打擊墊、琴鍵和送音符的按鈕，附音高和力度</td></tr>
-        <tr><th scope="row"><code>connect · disconnect · status</code></th><td>事件</td><td>硬體埠接上或拔掉；硬體與 MIDI 輸出的狀態</td></tr>
-        <tr><th scope="row"><code>set(id, value) · get(id) · values() · reset()</code></th><td>方法</td><td>像手一樣動一個控制項、讀一個、全部讀、全部歸位</td></tr>
+        <tr><th scope="row"><code>connect · disconnect · status</code></th><td>事件</td><td>硬體埠接上或拔掉，以及硬體與 MIDI 輸出的狀態</td></tr>
+        <tr><th scope="row"><code>set(id, value) · get(id) · values() · reset()</code></th><td>方法</td><td>用程式轉一個控制項、讀一個、全部讀、全部歸零</td></tr>
         <tr><th scope="row"><code>ingest(bytes) · send(bytes)</code></th><td>方法</td><td>從任何地方餵 MIDI 進來（面板會跟著動）· 把位元組送到輸出埠</td></tr>
         <tr><th scope="row"><code>on(name, fn)</code></th><td>方法</td><td>訂閱事件，回傳取消訂閱的函式</td></tr>
       </tbody>
@@ -6145,13 +6145,13 @@ win.postMessage({ target: <span class="ts">'openav'</span>, type: <span class="t
   <section class="sec" id="model" aria-labelledby="model-title">
     
     <header class="sec-head">
-      <p class="eyebrow">05 · 建模你的控制器</p>
+      <p class="eyebrow">05 · 自己建一台</p>
       <h2 id="model-title">加入你的控制器</h2>
-      <p class="sec-lede">一個設定檔就是一個 JSON 檔。說明書有 MIDI 實作表，設定檔就能完全準確；沒有的話，就在檔案裡寫清楚。</p>
+      <p class="sec-lede">一台控制器就是一個 JSON 檔。手冊裡有 MIDI 實作表，就照著抄，數字會完全準確。手冊沒寫的，就在檔案裡註明是怎麼查到的。</p>
     </header>
     <ol class="steps">
       <li><strong>從最接近的檔案開始</strong> 複製一台長得像你那台的裝置，或一個通用版面。面板是用面板單位排在格線上的區塊，所以螢幕上的版本看起來就像桌上那台。</li>
-      <li><strong>寫下每個控制項送什麼</strong> 類型、訊息（<code>cc</code>、<code>note</code>、<code>pitchbend</code>）、頻道、編號。無段旋鈕寫明相對值的編碼；按鈕寫按住或切換；有 LED 就寫什麼訊息會點亮它。</li>
+      <li><strong>寫下每個控制項送什麼</strong> 類型、訊息（<code>cc</code>、<code>note</code>、<code>pitchbend</code>）、頻道、編號。無段旋鈕寫明相對值怎麼編碼，按鈕寫是按住還是切換，有 LED 就寫哪個訊息會點亮它。</li>
       <li><strong>每個數字都要有出處</strong> 每份出處都有標題、連結，以及它證實了什麼。沒人確認過的數字，標上 <code>"verified": false</code> 並寫一句說明。</li>
       <li><strong>驗證</strong> <code>validateProfile()</code> 會用文字列出每一個問題，沒有問題就回傳空陣列。測試會對每個內建設定檔跑一次。</li>
       <li><strong>送出前先試</strong> <code>&lt;oav-controller profile="./my-pads.json"&gt;</code> 可以從網址載入設定檔，先在你自己的網頁上彈彈看。</li>
@@ -6189,15 +6189,15 @@ console.log(validateProfile(p));   <span class="tc">// [] = valid; otherwise eve
           <tbody>
             <tr><th scope="row"><code>knob · fader</code></th><td>CC，絕對值 0–127</td><td>0..1</td></tr>
             <tr><th scope="row"><code>encoder</code></th><td>CC，相對值（offset64、offset16、twos、signbit）</td><td>位置 0..1，另有 /delta 步數</td></tr>
-            <tr><th scope="row"><code>pad</code></th><td>帶力度的音符（或 CC）；可有觸後</td><td>按住時是力度，放開是 0，另有 /hit</td></tr>
-            <tr><th scope="row"><code>button</code></th><td>音符或 CC；按住或切換</td><td>0 或 1</td></tr>
+            <tr><th scope="row"><code>pad</code></th><td>帶力度的音符（或 CC），可能有觸後</td><td>按住時是力度，放開是 0，另有 /hit</td></tr>
+            <tr><th scope="row"><code>button</code></th><td>音符或 CC，按住或切換</td><td>0 或 1</td></tr>
             <tr><th scope="row"><code>keys</code></th><td>一段音域</td><td>/on、/off 脈衝，按住時 n&lt;音高&gt;</td></tr>
-            <tr><th scope="row"><code>wheel · strip</code></th><td>CC 或彎音；可能會回彈</td><td>0..1，雙極時 −1..1</td></tr>
+            <tr><th scope="row"><code>wheel · strip</code></th><td>CC 或彎音，可能會回彈</td><td>0..1，雙極時 −1..1</td></tr>
           </tbody>
         </table>
         </div>
         <h3>沒有說明書？用學習模式</h3>
-        <p>選一個通用版面，按「學習」，依序動你的控制項：版面會自己填上你那台裝置的訊息。<code>exportMapping()</code> 把結果存成 JSON，就是一份設定檔的起點。</p>
+        <p>選一個通用版面，按「學習」，照順序動一次你的控制項，版面會自己填上你那台送出的訊息。<code>exportMapping()</code> 把結果存成 JSON，就是一份設定檔的起點。</p>
         <ul class="model-links">
           <li><a href="https://github.com/frank890417/open-audiovisual">原始碼庫 ↗</a></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md">packages/midi/README.md ↗</a></li>
@@ -6231,7 +6231,7 @@ console.log(validateProfile(p));   <span class="tc">// [] = valid; otherwise eve
   </div>
 </footer>
 
-<script type="application/json" id="ctl-i18n">{"lang":"zh","copy":"複製","copied":"已複製","connect":"接上你的控制器","asking":"正在請求 MIDI…","connected":"已連接：{port}","waiting":"正在聆聽。接上資料庫裡有的裝置，它就會出現在這裡。","noMidi":"這個瀏覽器沒有 Web MIDI（Safari、iPad）。直接在螢幕上彈，每個事件照樣會送出。","denied":"MIDI 權限被擋下了。在網址列允許之後再試一次。","readoutIdle":"動一個控制項，它的訊號和 MIDI 訊息會顯示在這裡。","controlsN":"{n} 個控制項","shown":"顯示 {n} 台","eventsIdle":"彈一下預覽，它的 \u003ccode>control\u003c/code> 事件會出現在這裡。","fullHref":"../../examples/09-midi-controllers/?view=controller&profile="}</script>
-<script type="module" src="../../assets/controllers/controllers.js?v=4a2b66b"></script>
+<script type="application/json" id="ctl-i18n">{"lang":"zh","copy":"複製","copied":"已複製","connect":"接上你的控制器","asking":"正在請求 MIDI…","connected":"已連接：{port}","waiting":"等你接上控制器。這裡有收錄的機型，一接上就會自動切過去。","noMidi":"這個瀏覽器沒有 Web MIDI（Safari、iPad），接不了實體控制器，但在螢幕上彈照樣會送出每個事件。","denied":"MIDI 權限被擋下了。在網址列允許之後再試一次。","readoutIdle":"轉一顆旋鈕試試，它的訊號和 MIDI 訊息會出現在這裡。","controlsN":"{n} 個控制項","shown":"顯示 {n} 台","eventsIdle":"彈一下預覽，它的 \u003ccode>control\u003c/code> 事件會出現在這裡。","fullHref":"../../examples/09-midi-controllers/?view=controller&profile="}</script>
+<script type="module" src="../../assets/controllers/controllers.js"></script>
 </body>
 </html>
