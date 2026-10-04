@@ -7,7 +7,7 @@ open-audiovisual（OAV）是一套在瀏覽器裡跑的 JavaScript 框架，給�
 ## 給誰用
 
 - **演奏者**用 MIDI 鍵盤、麥克風、鏡頭、手機或螢幕鋼琴來彈範例，從控台操作一場演出。
-- **寫程式的人**大約二十行就能寫好一個世界，一次 `createShow()` 呼叫就拿到輸入、映射、時間軸、控台、聲音和後台。
+- **寫程式的人**大約二十行就能寫好一個世界，呼叫一次 `createShow()`，輸入、映射、時間軸、控台、聲音和後台就都有了。
 - **AI 代理**先讀 [AGENTS.md](../../AGENTS.md)，接上 repo 內附的 MCP 伺服器，在一個已經能跑的底盤裡寫世界。見[給 AI 代理](agents.md)。
 
 ## 四層與兩條主軸
@@ -23,11 +23,11 @@ spines       timeline (automation, scenes, cues) · monitor (backstage over WebS
 around them  console (the director's desk) · relay, surface, remote (phones as controllers)
 ```
 
-每一層只做一件事，各有一份寫明的介面約定（[架構](architecture.md)），所以換掉任何一層，都不用動到其他層。維持這個狀態的是兩條規則，說明在[核心概念](concepts.md#the-two-rules)。
+每一層只做一件事，各有一份寫明的介面約定（[架構](architecture.md)），所以換掉任何一層，都不用動到其他層。能一直這樣，靠的是兩條規則，寫在[核心概念](concepts.md#the-two-rules)。
 
 ## 從哪裡來
 
-框架的核心是從 **《The Last Input 終局之前》**（吳哲宇，2026）抽出來的。那是台北 IRCAM 聲鬥陣 × C-LAB 台灣聲響實驗室駐村的一場演出，鋼琴和一個活著的數位世界同台，在 49.4 聲道的喇叭穹頂上演出。時間軸、和弦語意、多對多的 MIDI learn、OSC 批次傳送，都先撐過一整場十四個場景的真實演出，才在這裡整理成通用的框架。從那之後的規則：框架只長真實演出要求過的功能。
+框架的核心是從 **《The Last Input 終局之前》**（吳哲宇，2026）抽出來的。那是台北 IRCAM 聲鬥陣 × C-LAB 台灣聲響實驗室駐村的一場演出，鋼琴和一個活著的數位世界同台，喇叭穹頂有 49.4 聲道。時間軸、和弦語意、多對多的 MIDI learn、OSC 批次傳送，都先撐過一整場十四個場景的真實演出，才在這裡整理成通用的框架。從那之後就定了一條規則：真實演出要求過的功能，框架才長。
 
 映射層的想法，承接 [libmapper](http://libmapper.github.io/) 對訊號命名空間的研究。姊妹專案 [WebToe](https://github.com/frank890417/WebToe) 是節點式的資料流引擎，可以匯入 TouchDesigner 專案。WebToe 是引擎，open-audiovisual 是演出。
 
@@ -38,4 +38,4 @@ around them  console (the director's desk) · relay, surface, remote (phones as 
 - 要查東西：[訊號一覽](signals.md)和[套件一覽](packages.md)。
 - 出問題了：[疑難排解](troubleshooting.md)。
 
-這裡寫的每一件事，都對照過 [packages/](../../packages/) 裡的原始碼。這一頁和程式碼不一致的時候，以程式碼為準，這一頁就是 bug：請開一個 issue。
+這裡寫的每一件事，都對照過 [packages/](../../packages/) 裡的原始碼。這一頁和程式碼對不上時，以程式碼為準，那就是這一頁的 bug，請開一個 issue。

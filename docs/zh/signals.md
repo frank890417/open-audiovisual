@@ -5,7 +5,7 @@
 慣例：
 - 除非另外註明，範圍都是 0..1
 - `pulse`（脈衝）訊號觸發的是事件，它的值就是事件帶的資料（payload）
-- 只要對演出來說比較直覺，y 軸就會反轉（1 = 舉高）；數值從來不是原始像素
+- 只要對演出來說比較直覺，y 軸就會反轉（1 = 舉高），數值絕不會是原始像素
 - `<n>` 是數字，`<ch>` 是 MIDI 頻道 1..16，`<id>` 是裝置 id，`<slug>` 是轉成網址安全格式的裝置名稱
 
 ## @openav/midi
@@ -33,7 +33,7 @@
 | `midi/<slug>/cc/<n>` | 連續 | 0..1 | 那台裝置的第 n 號控制器 |
 | `midi/<slug>/bend` | 連續 | -1..1 | 那台裝置的彎音 |
 
-螢幕上的控制器（`modules.midi.controllers`）每個控制元件發布一個名稱 `midi/<device>/<control>`（例如 `midi/minilab3/knob1`），打擊墊另外發 `/hit` 脈衝，也有 `/raw` 原始值。完整列表在 [MIDI 控制器與嵌入](controllers.md)。
+螢幕上的控制器（`modules.midi.controllers`），每個控制項發布一個 `midi/<device>/<control>`（例如 `midi/minilab3/knob1`），打擊墊另外發 `/hit` 脈衝，也有 `/raw` 原始值。完整列表在 [MIDI 控制器與嵌入](controllers.md)。
 
 ## @openav/keys
 
@@ -53,9 +53,9 @@
 | `chord/root` | 連續 | 0..127 | 最近一次彈奏裡最低的 MIDI 音 |
 | `chord/event` | 脈衝 | 完整分析結果 | `{notes, count, root, vel, pcs, consonance, isConsonant, isDissonant, isTriad, thirdsFraction, dissonanceLevel, chordType}` |
 
-`chordType`：`single` · `major` · `minor` · `sus2` · `sus4` · `dim` · `aug` · `maj7` · `min7` · `dom7` · `halfdim7` · `maj9` · `min9` · `dom9` · `six` · `min6` · `cluster`（非常不協和的一堆音）· `chord`（其他所有情況）。轉位和弦會經過音級（pitch class）輪轉，歸回原位和弦的名稱。
+`chordType`：`single` · `major` · `minor` · `sus2` · `sus4` · `dim` · `aug` · `maj7` · `min7` · `dom7` · `halfdim7` · `maj9` · `min9` · `dom9` · `six` · `min6` · `cluster`（非常不協和的一堆音）· `chord`（其他所有情況）。轉位和弦會把音級（pitch class）輪轉一遍，認回原位和弦的名稱。
 
-`dissonanceLevel`：`0` 沒有 · `1` 輕微（暴風雨警報，用來預示）· `2` 嚴重（真正的音堆，全面轉入衰敗的語彙）。這個分級來自台北 IRCAM × C-LAB 演出時一則真實的觀眾回饋：「不協和的偵測不夠嚴格。」
+`dissonanceLevel`：`0` 沒有 · `1` 輕微（暴風雨警報，用來預示）· `2` 嚴重（真正的音堆，整個換成衰敗的語彙）。會分成這三級，是因為台北 IRCAM × C-LAB 演出時，有觀眾真的這樣回饋：「不協和的偵測不夠嚴格。」
 
 ## @openav/audio
 
@@ -67,11 +67,11 @@
 | `audio/band/mid` | 連續 | 0..1 | 250 Hz–2 kHz 的能量 |
 | `audio/band/high` | 連續 | 0..1 | 2–8 kHz 的能量 |
 | `audio/centroid` | 連續 | 0..1 | 頻譜亮度 |
-| `audio/onset` | 脈衝 | `{rms}` | 高過自適應底線的瞬態（冷卻 100 ms） |
-| `audio/kick` | 脈衝 | `{level}` | 20–120 Hz 的瞬態（冷卻 90 ms） |
-| `audio/snare` | 脈衝 | `{level}` | 150–800 Hz 的瞬態（冷卻 90 ms） |
-| `audio/hat` | 脈衝 | `{level}` | 6–14 kHz 的瞬態（冷卻 60 ms） |
-| `audio/kick/env` `/snare/env` `/hat/env` | 連續 | 0..1 | 每種鼓各自的衰減包絡（可以直接映射到參數） |
+| `audio/onset` | 脈衝 | `{rms}` | 高過自動調整底線的暫態（冷卻 100 ms） |
+| `audio/kick` | 脈衝 | `{level}` | 20–120 Hz 的暫態（冷卻 90 ms） |
+| `audio/snare` | 脈衝 | `{level}` | 150–800 Hz 的暫態（冷卻 90 ms） |
+| `audio/hat` | 脈衝 | `{level}` | 6–14 kHz 的暫態（冷卻 60 ms） |
+| `audio/kick/env` `/snare/env` `/hat/env` | 連續 | 0..1 | 每種鼓各自的衰減波封（可以直接映射到參數） |
 
 ## @openav/pose
 
@@ -89,7 +89,7 @@
 
 ## @openav/pose — HandTracker（21 個關鍵點的精細控制）
 
-每隻手的捏合距離，兩隻手加起來就是四個精準的連續控制器。數值依手掌大小正規化，所以離鏡頭遠近不會改變捏合的值。
+每隻手有兩個捏合距離，兩隻手加起來就是四個精準的連續控制器。數值依手掌大小正規化，所以手離鏡頭遠或近，捏合的值都不變。
 
 | 訊號 | 種類 | 範圍 | 意義 |
 |---|---|---|---|
@@ -103,17 +103,17 @@
 
 ## @openav/drums（模擬器，訊號形狀和分析器相同）
 
-鼓機發布的訊號，形狀和音訊分析器發布的完全一樣，所以接到大鼓的世界分不出那是麥克風還是鼓機（模擬器本來就是為了這個）。音序器的每一擊也會以 `midi/note/on` 送出（頻道 10，GM 音符編號）。
+鼓機發布的訊號，跟音訊分析器的長得一模一樣，所以接到大鼓的世界分不出那是麥克風還是鼓機（做這台模擬器就是為了這個）。音序器的每一擊也會以 `midi/note/on` 送出（頻道 10，GM 音符編號）。
 
 | 訊號 | 種類 | 範圍 | 意義 |
 |---|---|---|---|
 | `drum/kick` `/snare` `/hat` `/clap` | 脈衝 | `{level}` | 音序器打了一下 |
-| `drum/kick/env` `…` | 連續 | 0..1 | 每一軌的衰減包絡（可以直接映射到參數） |
+| `drum/kick/env` `…` | 連續 | 0..1 | 每一軌的衰減波封（可以直接映射到參數） |
 | `midi/note/on` | 脈衝 | `{note, vel, ch: 10}` | 大鼓 36 · 小鼓 38 · 拍手 39 · 閉合 hi-hat 42 |
 
 ## @openav/remote · @openav/surface
 
-手機感測器（`/packages/remote/` → 感測）。`<id>` 是裝置 id；`phone/any/…` 永遠是最後一支送出數值的手機的值，所以還沒有任何手機連上，就能先寫好世界的路由。
+手機感測器（`/packages/remote/` → 感測）。`<id>` 是裝置 id。`phone/any/…` 的值永遠來自最後送出數值的那支手機，所以還沒有手機連上，就能先寫好世界的路由。
 
 | 訊號 | 種類 | 範圍 | 意義 |
 |---|---|---|---|
@@ -123,23 +123,23 @@
 | `phone/<id>/orient/alpha\|beta\|gamma` | 連續 | deg | 原始的 deviceorientation |
 | `phone/<id>/knock` | 脈衝 | `{strength, delta, t}` | 加速度突然一震、超過門檻（冷卻 130 ms） |
 | `phone/<id>/light` | 連續 | 0..1 | 前鏡頭畫面的平均亮度（luma） |
-| `phone/<id>/touch/x` `/y` `/down` | 連續 | 0..1 | 第 0 根手指；n ≥ 1 用 `touch/<n>/…`，另有 `touch/count` |
-| `phone/local/…` | — | — | 演出頁面**本身**跑在手機上時，同一套感測器名稱（`localSensors(signals)`，不經過中繼；也會鏡像到 `phone/any/…`） |
+| `phone/<id>/touch/x` `/y` `/down` | 連續 | 0..1 | 第 0 根手指。n ≥ 1 用 `touch/<n>/…`，另有 `touch/count` |
+| `phone/local/…` | — | — | 演出頁面**本身**跑在手機上時，同一套感測器名稱（`localSensors(signals)`，不經過中繼，也會複製一份到 `phone/any/…`） |
 
-控制面板元件（正規化到 0..1；範圍不是 0..1 時，`…/raw` 帶著未縮放的原始值）：
+控制面板元件（正規化到 0..1，範圍不是 0..1 的元件，另用 `…/raw` 帶未縮放的原始值）：
 
 | 訊號 | 種類 | 意義 |
 |---|---|---|
 | `surface/<page>/<id>` | 連續 | fader · knob · number · toggle · button（0/1）· radio（idx/(n-1)）· encoder 的相位 |
 | `surface/<page>/<id>/x` `/y` `/down` | 連續 | xy pad |
 | `surface/<page>/<id>/<1..N>` | 連續 | bank 的各個通道 |
-| `surface/<page>/<id>/hit` | 脈衝 `{pad,row,col,vel}` | pads；按住時 `…/<n>`（n 從 0 起算）保持力度值 |
+| `surface/<page>/<id>/hit` | 脈衝 `{pad,row,col,vel}` | pads。按住時 `…/<n>`（n 從 0 起算）保持力度值 |
 | `surface/<page>/<id>/delta` | 連續 | encoder 每一步的轉動量，單位是圈 |
 | `surface/<page>/<id>`（text） | 脈衝 | 在 `text` 元件裡輸入的字串 |
 | `midi/note/on` `/off`、`midi/cc/64` | 脈衝／連續 | 琴鍵分頁和 `keyboard` 元件，名稱和形狀都跟 `@openav/midi` 一樣：`{note, vel, velocity, ch: 1, device: 'surface'}` |
 
-接收端：每一則中繼訊息都經過 `fileSignal(signals, name, value, {pulse})` 寫進訊號（`@openav/relay`；`bindSignals` 用的就是它，自己開 socket 的宿主頁面也是，例如 lab 的 `lab.js`）。一個名稱第一次出現時，它會先宣告（`signalMeta`）；`midi/…/note/on|off` 的發送端少給了哪一種力度寫法，它就補上哪一種（`vel` 0..1 ⇄ `velocity` 1..127）。
+接收端：每一則中繼訊息都經過 `fileSignal(signals, name, value, {pulse})` 寫進訊號（`@openav/relay`，`bindSignals` 用的就是它，自己開 socket 的宿主頁面也是，例如 lab 的 `lab.js`）。一個名稱第一次出現時，它會先宣告（`signalMeta`）。`midi/…/note/on|off` 的發送端少給了哪一種力度寫法，它就補上哪一種（`vel` 0..1 ⇄ `velocity` 1..127）。
 
 ## 自己命名訊號
 
-用路徑式的寫法，來源放最前面：`breath/pressure`、`phone/{id}/gyro/x`、`weather/wind`。先用 `signals.define(name, {min, max})` 宣告範圍，儀表和 `norm()` 才算得對；之後只要 `signals.set(name, v)`。任何會變動的東西，都能拿來演出。
+用路徑式的寫法，來源放最前面：`breath/pressure`、`phone/{id}/gyro/x`、`weather/wind`。先用 `signals.define(name, {min, max})` 宣告範圍，儀表和 `norm()` 才算得對，之後只要 `signals.set(name, v)`。任何會變動的東西，都能拿來演出。

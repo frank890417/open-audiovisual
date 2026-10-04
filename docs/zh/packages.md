@@ -1,6 +1,6 @@
 # 套件一覽
 
-二十個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件；在網頁裡透過 import map，以 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
@@ -35,7 +35,7 @@ signals.set('breath/pressure', 0.4);
 
 ## @openav/show
 
-膠水 · `createShow(options)`：一次呼叫，以一個世界為中心組好整場演出，並回傳每一個部件。選項、模組和回傳值見[演出控制](show-control.md#createshow)。
+膠水 · `createShow(options)`：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見[演出控制](show-control.md#createshow)。
 
 ```js
 import { createShow } from '@openav/show';
@@ -128,14 +128,14 @@ const keys = mountKeys(document.querySelector('#keys'), { signals, base: 48 });
 
 ## @openav/drums
 
-L1 輸入與 L4 輸出 · 合成鼓組、16 步音序器和它的格狀介面；發布的 `drum/*` 和麥克風鼓點偵測的形狀相同。
+L1 輸入與 L4 輸出 · 合成鼓組、16 步音序器和它的格狀介面。發布的 `drum/*` 跟麥克風偵測鼓點時的長得一樣。
 
 | 匯出 | 簽章 |
 |---|---|
 | `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true })` → `{ seq, engine, update(dt), dispose() }` |
 | `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(name)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`、`bpm` |
 | `drumEngine` | `drumEngine({ samples })` → 一個聲音引擎（見[聲音](show-control.md#sound)） |
-| `PATTERNS`、`GM` | 節奏型預設；General MIDI 鼓的音符編號 `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
+| `PATTERNS`、`GM` | 節奏型預設，以及 General MIDI 鼓的音符編號 `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
 
 ```js
 import { mountDrums } from '@openav/drums';
@@ -179,7 +179,7 @@ await stage.activate(world.name);
 
 ## @openav/world-webtoe
 
-L3 世界 · 把一張 [WebToe](https://github.com/frank890417/WebToe) 節點網路當成世界來演奏；參數會送進網路裡的 `ext('name', fallback)` 綁定。
+L3 世界 · 把一張 [WebToe](https://github.com/frank890417/WebToe) 節點網路當成世界來演奏，參數會送進網路裡的 `ext('name', fallback)` 綁定。
 
 | 匯出 | 簽章 |
 |---|---|
@@ -189,7 +189,7 @@ L3 世界 · 把一張 [WebToe](https://github.com/frank890417/WebToe) 節點網
 
 ## @openav/sound
 
-L4 輸出 · 頁面裡的合成器，背後是一份精簡的引擎介面約定；引擎的參數會變成 `sound/*` 參數。
+L4 輸出 · 頁面裡的合成器，背後是一份精簡的引擎介面約定，引擎的參數會變成 `sound/*` 參數。
 
 | 匯出 | 簽章 |
 |---|---|
@@ -207,7 +207,7 @@ button.onclick = () => sound.enable();
 
 ## @openav/osc
 
-L4 輸出 · 透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP。
+L4 輸出 · 透過一個小小的 Node 橋接程式，把 OSC 從瀏覽器送到 UDP。
 
 | 匯出 | 簽章 |
 |---|---|
@@ -218,7 +218,7 @@ L4 輸出 · 透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP�
 
 ## @openav/timeline
 
-主軸 · 自動化、場景和播放控制（transport）；純邏輯。
+主軸 · 自動化、場景和播放控制（transport），純邏輯。
 
 | 匯出 | 簽章 |
 |---|---|
@@ -228,11 +228,11 @@ L4 輸出 · 透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP�
 
 ## @openav/console
 
-主軸 · 導演桌：播放控制、各層面板、可以 learn 的參數、訊號儀表、演出模式。
+主軸 · 導演控台：播放控制、各層面板、可以 learn 的參數、訊號儀表、演出模式。
 
 | 匯出 | 簽章 |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals })` → `{ render(state), perf, dispose() }`；`app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc? }` |
+| `mountConsole` | `mountConsole(el, app, { layers, signals })` → `{ render(state), perf, dispose() }`。`app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc? }` |
 
 見[演出控制](show-control.md#the-console)。
 
@@ -256,7 +256,7 @@ L4 輸出 · 透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP�
 |---|---|
 | `RelayClient` | `new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig })` · `connect()` · `close()` · `set(name, value)` · `send(name, value, pulse, extra)` · `feedback(name, value)` · `config(key, data)` · `status`、`latency`、`peers` |
 | 訊號輔助函式 | `bindSignals(client, signals, { alias = 'any' })` · `fileSignal(signals, name, value, { pulse })` · `signalMeta(name, { pulse })` · `aliasOf(name)` · `normalizeValue(name, value)` · `deviceId()` |
-| `@openav/relay/server` | `attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000 })` → `{ hub, close() }`；單獨執行用 `node packages/relay/server.js [port=7458]` |
+| `@openav/relay/server` | `attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000 })` → `{ hub, close() }`。單獨執行用 `node packages/relay/server.js [port=7458]` |
 
 見[手機、中繼與控制面板](remote.md#the-relay)。
 
@@ -297,4 +297,4 @@ routes.forEach((r) => mapper.addRoute(r));
 
 ## @openav/mcp
 
-膠水 · 給程式代理用的零相依 MCP 伺服器，走 stdio：`node packages/mcp/server.js`。工具和引數見[給 AI 代理](agents.md#the-mcp-server)。
+膠水 · 給 AI 代理用的零相依 MCP 伺服器，走 stdio：`node packages/mcp/server.js`。工具和引數見[給 AI 代理](agents.md#the-mcp-server)。

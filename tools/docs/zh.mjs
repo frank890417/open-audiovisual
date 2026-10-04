@@ -12,7 +12,7 @@ export default {
 
   eyebrow: '文件',
   title: 'open-audiovisual 使用手冊',
-  lede: '跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼；兩者不一致時，以程式碼為準。',
+  lede: '跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。',
   stats: '{chapters} 章 · {sections} 節 · v{version}',
   sourceNote: '內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。',
   llmsNote: '給語言模型：<a href="{llms}">/llms.txt</a> · <a href="{llmsFull}">/llms-full.txt</a>',

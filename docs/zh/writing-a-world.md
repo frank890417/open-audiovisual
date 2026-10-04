@@ -41,15 +41,15 @@ export const myWorld = {
 
 | 成員 | 什麼時候執行 | 拿到什麼 |
 |---|---|---|
-| `name` | — | 一個不重複的字串；舞台用名字註冊世界 |
+| `name` | — | 一個不重複的字串，舞台用這個名字註冊世界 |
 | `params` | 註冊世界時讀一次 | 參數宣告組成的陣列（見下方） |
-| `init(ctx)` | 世界被啟用時 | `{ container, signals, params }`。可以是 `async`；`createShow()` 會等它跑完才啟動迴圈 |
+| `init(ctx)` | 世界啟用時 | `{ container, signals, params }`。可以是 `async`，`createShow()` 會等它跑完才啟動迴圈 |
 | `update(dt, state, io)` | 每一影格 | `dt` 以秒為單位（≤ 0.1），`state` 是每個參數的 `{ key: value }`，`io` 是 `{ signals, … }` |
-| `render()` | 每一影格，緊接在 `update` 之後 | 不帶參數；用 `update` 存下來的東西來畫 |
-| `dispose()` | 另一個世界被啟用時 | 釋放 GPU 物件、DOM、訂閱 |
-| `surface` | 選用 | 手機控制面板的版面；有它的話，`modules.remote` 直接用它，不再自動產生（[手機](remote.md#the-show-side)） |
+| `render()` | 每一影格，緊接在 `update` 之後 | 不帶參數，用 `update` 存下來的東西來畫 |
+| `dispose()` | 換成另一個世界時 | 釋放 GPU 物件、DOM、訂閱 |
+| `surface` | 選用 | 手機控制面板的版面。有它的話，`modules.remote` 直接用它，不再自動產生（[手機](remote.md#the-show-side)） |
 
-`container` 是一個絕對定位、鋪滿整個舞台的元素。舞台在每次 `init` 之前都會把它清空，所以你不用收拾別人留下的 DOM。`update` 或 `render` 丟出的例外會被接住並記錄下來（`[stage] update:`／`[stage] render:`），演出照常進行。
+`container` 是一個絕對定位、鋪滿整個舞台的元素。舞台在每次 `init` 之前都會把它清空，所以你不用收拾別人留下的 DOM。`update` 或 `render` 丟出的例外，舞台會接住並記下來（`[stage] update:`／`[stage] render:`），演出照常進行。
 
 ## 參數
 
@@ -57,29 +57,29 @@ export const myWorld = {
 |---|---|
 | `key` | 路由、自動化和控台用的名字。必填。 |
 | `label` | 控台上顯示的文字。預設是 `key`。 |
-| `min`, `max` | 範圍。覆寫的值會被限制在範圍內；路由會把訊號縮放到這個範圍。 |
-| `def` | 沒有自動化、也沒有覆寫時的值。核心只讀 `def`；只有 `autoSurface()` 也看得懂 `default`。 |
-| `step` | 覆寫的值會對齊到 `step` 的倍數；在時間軸上，有 `step` 的參數會在每個關鍵影格*停住*，不做內插。 |
-| `pulse` | 設成 `true`，它就變成一個觸發，而不是一個持續的數值：控台會顯示 *fire*（觸發）按鈕，映射過來的脈衝訊號（或一個往上越過 0.5 的連續訊號）會觸發它，世界用 `params.onPulse(key, cb)` 來聽。脈衝參數在 `state` 裡沒有值。 |
-| `group` | 分組用的標籤。聲音引擎的參數用 `'sound'`；`autoSurface()` 會為每一組做一頁手機頁面。 |
-| `options` | 有 `step` 的參數，每個值各叫什麼名字（`['Circle', 'Petal', 'Star']`）；手機控制面板會把它們顯示成單選按鈕。 |
+| `min`, `max` | 範圍。覆寫的值會限制在範圍內，路由也會把訊號縮放到這個範圍。 |
+| `def` | 沒有自動化、也沒有覆寫時的值。核心只讀 `def`，只有 `autoSurface()` 另外看得懂 `default`。 |
+| `step` | 覆寫的值會對齊到 `step` 的倍數。在時間軸上，有 `step` 的參數會在每個關鍵影格*停住*，不做內插。 |
+| `pulse` | 設成 `true`，它就變成一次性的觸發：控台會顯示 *fire*（觸發）按鈕，映射過來的脈衝訊號（或一個往上越過 0.5 的連續訊號）會觸發它，世界用 `params.onPulse(key, cb)` 來聽。脈衝參數在 `state` 裡沒有值。 |
+| `group` | 分組用的標籤。聲音引擎的參數用 `'sound'`。`autoSurface()` 會替每一組做一頁手機頁面。 |
+| `options` | 有 `step` 的參數，每個值各叫什麼名字（`['Circle', 'Petal', 'Star']`），手機控制面板會把它們顯示成單選按鈕。 |
 | `surface` | 給手機控制面板的提示：`{ type, color, label }`。 |
 
-如果兩個註冊的世界宣告了同一個 key，它們會共用同一個參數（以先宣告的為準）。
+兩個註冊過的世界如果宣告了同一個 key，就共用同一個參數（以先宣告的為準）。
 
-## 最常被打破的那條規則
+## 大家最常違反的那條規則
 
 **連續控制一律走參數。事件可以直接用訊號。**
 
-如果你的世界在 `update()` 裡直接讀 `signals.get('midi/cc/74')`，它還是會動，至少今天、用你的控制器時會動。但它再也不能由時間軸、由舞者、或由別人的控制器設定檔來驅動。你把這場演出焊死在一個輸入上了。改用路由：宣告一個參數，讓映射器接上 `midi/cc/74 → yourParam`，同一個世界誰來都能演奏。
+如果你的世界在 `update()` 裡直接讀 `signals.get('midi/cc/74')`，它還是會動，至少今天、接你的控制器時會動。但時間軸、舞者、別人的控制器設定檔，就再也推不動它了。你把這場演出焊死在一個輸入上了。改用路由：宣告一個參數，讓映射器接上 `midi/cc/74 → yourParam`，同一個世界誰來都能演奏。
 
-事件不一樣：「按下一個音」「一個和弦解決了」「打到一次起音」是瞬間，不是持續的量。在 `init()` 裡訂閱這些事件是對的，也鼓勵這樣做。世界因此會*回應*，而不只是被調變。
+事件不一樣：「按下一個音」「一個和弦解決了」「打到一次起音」是瞬間，不是持續的量。在 `init()` 裡訂閱這些事件是對的，我們也鼓勵這樣做。有了這些事件，世界才會*回應*你，不然它只是被參數推著走。
 
 常用的事件訊號：`midi/note/on` 和 `midi/note/off`（任何鍵盤、螢幕鋼琴、模擬演奏者、手機都會發）、`chord/event`（每一次彈奏做一次分析）、`audio/onset`、`audio/kick`、`drum/kick`。完整清單在[訊號一覽](signals.md)。
 
 ## 場景與自動化
 
-時間軸和世界寫在一起，放在 `createShow()` 的呼叫裡設定：
+時間軸跟世界寫在一起，在呼叫 `createShow()` 時設定：
 
 ```js
 await createShow({
@@ -100,12 +100,12 @@ await createShow({
 });
 ```
 
-- 關鍵影格寫成 `[seconds, value]`，依時間排序。第一個關鍵影格之前，值是第一個值；最後一個之後，值是最後一個值。
-- 場景依 `t` 排序。`title` 和 `note` 是演奏者在演出模式（<kbd>T</kbd>）裡讀到的文字；下面會顯示下一個場景和倒數。
+- 關鍵影格寫成 `[seconds, value]`，依時間排序。第一個關鍵影格之前取第一個值，最後一個之後取最後一個值。
+- 場景依 `t` 排序。`title` 和 `note` 是演奏者在演出模式（<kbd>T</kbd>）裡讀到的文字，下方還會顯示下一個場景和倒數。
 - `t` 為負數的場景，是演出開始前的待命段落：設成 `t: -30`，時鐘就從 `-0:30` 開始走。
 - 試著**只用**時間軸演出你的世界。如果很無聊，就是少了一個參數。
 
-更多內容見[演出控制](show-control.md#timeline)。
+細節見[演出控制](show-control.md#timeline)。
 
 ## 渲染器
 
@@ -113,11 +113,11 @@ await createShow({
 
 ### 2D canvas
 
-`@openav/stage` 的 `createCanvas(container, { alpha = false })` 回傳 `{ canvas, ctx, fit, dispose }`。`fit()` 讓 canvas 保持和容器一樣大（裝置像素比最高到 2），並回傳以 CSS 像素計的 `{ w, h }`；在 `render()` 的開頭呼叫它。範例 01、02、03、07、08 和 09 都用它。
+`@openav/stage` 的 `createCanvas(container, { alpha = false })` 回傳 `{ canvas, ctx, fit, dispose }`。`fit()` 讓 canvas 跟容器一樣大（裝置像素比最高到 2），回傳以 CSS 像素計的 `{ w, h }`。在 `render()` 一開頭呼叫它。範例 01、02、03、07、08 和 09 都用它。
 
 ### p5.js
 
-在範例的 `index.html` 用 script 標籤載入 p5，再在容器裡以 instance mode 執行。p5 用自己的迴圈畫圖，所以 `update` 只負責存下 state，`render` 留空（範例 05 和 06）：
+在範例的 `index.html` 用 script 標籤載入 p5，再用 instance mode 跑在容器裡。p5 有自己的繪圖迴圈，所以 `update` 只負責存下 state，`render` 留空（範例 05 和 06）：
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
@@ -144,7 +144,7 @@ const world = {
 
 ### three.js
 
-目前還沒有內附的範例用 three.js，寫法如下。把 three 加進範例的 import map（`"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"`），把渲染器存在 `this` 上，所有東西都要 dispose：
+內附的範例目前都沒用 three.js，寫法如下。把 three 加進範例的 import map（`"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"`），渲染器存在 `this` 上，所有東西都要 dispose：
 
 ```js
 import * as THREE from 'three';
@@ -180,7 +180,7 @@ const orbit = {
 
 ### WebToe 節點網路
 
-`@openav/world-webtoe` 的 `webtoeWorld()` 把一張 [WebToe](https://github.com/frank890417/WebToe) 節點網路變成一個世界。節點網路在 iframe 裡執行；只要某一影格有參數改變，就把算好的參數值傳進 iframe，節點網路裡任何寫成 `ext('name', fallback)` 的參數都會收到（範例 04）：
+`@openav/world-webtoe` 的 `webtoeWorld()` 把一張 [WebToe](https://github.com/frank890417/WebToe) 節點網路變成一個世界。節點網路跑在 iframe 裡。哪一格有參數改變，就把算好的參數值傳進 iframe，節點網路裡寫成 `ext('name', fallback)` 的參數都會收到（範例 04）：
 
 ```js
 import { webtoeWorld } from '@openav/world-webtoe';
@@ -212,11 +212,11 @@ show.timeline.onSceneChange((i, scene) => {
 });
 ```
 
-所有世界的參數一開始就會註冊，所以控台和時間軸都能操作其中任何一個參數。如果那個世界已經啟用，`stage.activate(name)` 什麼都不做。
+所有世界的參數一開始就會註冊，所以控台和時間軸碰得到每一個世界的參數。那個世界已經啟用的話，`stage.activate(name)` 什麼都不做。
 
 ## 從世界輸出聲音
 
-`update(dt, state, io)` 會收到 `io`。用 `createShow()` 時，`io` 裡只有 `signals`；等演出建好之後再加上輸出用的物件，每個世界都看得到：
+`update(dt, state, io)` 會收到 `io`。用 `createShow()` 時，`io` 裡只有 `signals`。演出建好之後，再把輸出用的物件加上去，每個世界都看得到：
 
 ```js
 const show = await createShow({ world });
@@ -242,4 +242,4 @@ io.osc?.send(`/source/${i}/xyz`, [x, y, z]);
 - [ ] `dispose()` 會釋放 GPU 物件和事件訂閱（世界會在演出中即時切換）
 - [ ] `dt` 突然變大時，世界撐得住（Loop 會把它限制在 100 ms 以內，但別假設它是 16 ms）
 - [ ] 世界裡沒有任何地方直接讀時鐘：時間歸時間軸管
-- [ ] 頁面載入時瀏覽器主控台零錯誤，而且只用螢幕鋼琴也能運作
+- [ ] 頁面載入時瀏覽器主控台零錯誤，只用螢幕鋼琴也跑得動

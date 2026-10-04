@@ -1,6 +1,6 @@
 # 映射
 
-映射層是「發生了什麼」變成「它代表什麼」的地方。`Mapper`（`@openav/mapping`）是唯一把訊號接到參數的元件，它知道的一切，就是一份路由清單。
+在映射層，「發生了什麼」變成「它代表什麼」。把訊號接到參數的，只有 `Mapper`（`@openav/mapping`）這一個元件，它手上就只有一份路由清單。
 
 ## 路由
 
@@ -10,12 +10,12 @@
 |---|---|---|
 | `source` | — | 訊號名稱，例如 `midi/cc/74`、`hand/right/pinch/index`、`phone/any/tilt/x` |
 | `target` | — | 參數的 key，例如 `bloom`、`sound/cutoff` |
-| `inMin`, `inMax` | `0`, `1` | 取用訊號的哪一段；超出這一段的值，會被限制在邊界上 |
+| `inMin`, `inMax` | `0`, `1` | 取用訊號的哪一段，超出的值會壓在邊界上 |
 | `outMin`, `outMax` | 參數的 `min`、`max` | 寫進參數的範圍 |
 | `curve` | `'linear'` | `linear`、`exp`、`log` 或 `smooth` |
 | `invert` | `false` | 在套用曲線之前，把正規化後的值翻過來（1 − x） |
 | `smooth` | `0` | 滑到新值所需的時間，單位是秒（0 = 立即到位） |
-| `enabled` | （沒寫 = 開啟） | 設成 `false` 會讓這條路由靜音 |
+| `enabled` | （沒寫 = 開啟） | 設成 `false` 就把這條路由靜音 |
 | `id` | 自動指定 | 一個數字，移除路由時用 |
 
 ```js
@@ -49,25 +49,25 @@ show.mapper.addRoute({ source: 'hand/right/pinch/index', target: 'tightness', cu
 
 ## 輸入窗與輸出範圍
 
-`inMin`/`inMax` 決定訊號的哪一段有用；`outMin`/`outMax` 決定它落在參數的哪裡。常見用法：
+`inMin`/`inMax` 決定取訊號的哪一段，`outMin`/`outMax` 決定它落在參數的哪裡。常見用法：
 
-- 雙極訊號：`{ source: 'midi/bend', inMin: -1, inMax: 1 }`，或手機傾斜 `{ source: 'phone/any/tilt/x', inMin: -1, inMax: 1 }`；
-- 很小聲的訊號：`{ source: 'audio/rms', inMax: 0.3 }`，讓人聲實際到得了的音量，就能推滿整個參數範圍；
-- 讓旋鈕只推動參數範圍的一段：`{ source: 'midi/cc/1', target: 'hue', outMin: 180, outMax: 270 }`；
+- 雙極訊號：`{ source: 'midi/bend', inMin: -1, inMax: 1 }`，或手機傾斜 `{ source: 'phone/any/tilt/x', inMin: -1, inMax: 1 }`。
+- 很小聲的訊號：`{ source: 'audio/rms', inMax: 0.3 }`，讓人聲實際到得了的音量，就能推滿整個參數範圍。
+- 讓旋鈕只推動參數範圍的一段：`{ source: 'midi/cc/1', target: 'hue', outMin: 180, outMax: 270 }`。
 - 不用 `invert` 的反向關係：`outMin: 1, outMax: 0`。
 
 > [!WARNING]
-> `outMin`/`outMax` 的預設值，是*加入路由那一刻*目標參數的範圍。如果參數那時還不存在，預設就是 0..1。在 `createShow()` 裡，路由比聲音引擎註冊 `sound/*` 參數更早加入，所以宣告一條接到 `sound/cutoff` 的路由時，要明確寫上 `outMin: 100, outMax: 8000`。
+> `outMin`/`outMax` 的預設值，是*加入路由那一刻*目標參數的範圍。如果參數那時還不存在，預設就是 0..1。在 `createShow()` 裡，路由加入得比聲音引擎註冊 `sound/*` 參數還早，所以宣告接到 `sound/cutoff` 的路由時，要明確寫上 `outMin: 100, outMax: 8000`。
 
 ## 平滑
 
-`smooth` 是時間常數，單位是秒：過了 `smooth` 秒，參數大約走完往新值 63% 的距離（單極點濾波器，每個影格 `k = 1 − e^(−dt/smooth)`）。0.05–0.15 可以藏住 MIDI 旋鈕或 30 Hz 手機資料流的階梯感；0.2–0.5 會讓手的動作變得沉重。滑行從參數目前的值出發，所以第一下動作永遠不會跳。
+`smooth` 是時間常數，單位是秒：過了 `smooth` 秒，參數大約走完到新值 63% 的距離（單極點濾波器，每個影格 `k = 1 − e^(−dt/smooth)`）。0.05–0.15 可以藏住 MIDI 旋鈕或 30 Hz 手機資料流的階梯感，0.2–0.5 會讓手的動作變得沉重。滑行從參數目前的值出發，所以第一下動作絕不會跳。
 
 ## 脈衝目標
 
-目標是 `pulse` 參數時，路由會觸發它，而不是寫入一個數值：
+目標是 `pulse` 參數時，路由不寫數值，改成觸發它：
 
-- **脈衝**來源（`midi/note/on`、`audio/kick`、`drum/kick`、`phone/any/knock`…）每來一個事件就觸發一次；
+- **脈衝**來源（`midi/note/on`、`audio/kick`、`drum/kick`、`phone/any/knock`…）每來一個事件就觸發一次。
 - **連續**來源在正規化後的值往上越過 0.5 時觸發（手機控制面板上的按鈕從 0 變成 1、推桿推過中間）。
 
 `curve`、`invert`、`smooth` 和輸出範圍，對脈衝目標都不起作用。
@@ -76,13 +76,13 @@ show.mapper.addRoute({ source: 'hand/right/pinch/index', target: 'tightness', cu
 
 一個訊號可以推動很多個參數（加幾條 `source` 相同的路由），一個參數也可以聽很多個訊號。兩條路由寫同一個參數時，最後寫入的那條算數。*Learn* 只會新增路由，從不取代既有的路由。
 
-[跳線盤設計](../design/patchbay.md)規劃了每條路由各自的 `combine`（`last`、`max`、`add`、`avg`）和 `label` 欄位，目前還沒有實作。
+[跳線盤設計](../design/patchbay.md)規劃了每條路由的 `combine`（`last`、`max`、`add`、`avg`）和 `label` 欄位，目前還沒做。
 
 ## 覆寫與時間軸
 
-路由寫入參數的方式是**覆寫**，而覆寫會黏住：映射的訊號一動，時間軸就不再驅動那個參數。清除覆寫（按參數旁的 ✕，或 `show.params.clearOverride(key)`），參數就交還給時間軸，直到訊號再動一次。
+路由用**覆寫**的方式寫入參數，而覆寫會黏住：映射過來的訊號一動，時間軸就不再推那個參數。清掉覆寫（按參數旁的 ✕，或 `show.params.clearOverride(key)`），參數就交還給時間軸，直到訊號再動一次。
 
-*有平滑*的路由，在訊號到過一次之後，每個影格都會繼續寫入它最後的目標值，所以就算按了 ✕、就算路由已經靜音，參數仍然維持覆寫。要把參數永久交還給時間軸，就移除那條路由（**L2 · Mapping**（映射）面板裡的 ✕）。
+*有平滑*的路由，只要訊號來過一次，之後每個影格都會繼續寫入最後的目標值，所以就算按了 ✕、就算路由已經靜音，參數還是維持覆寫。要把參數永遠交還給時間軸，就移除那條路由（**L2 · Mapping**（映射）面板裡的 ✕）。
 
 ## Learn
 
@@ -94,7 +94,7 @@ show.mapper.addRoute({ source: 'hand/right/pinch/index', target: 'tightness', cu
 新路由用的是預設值：線性、不平滑、參數的完整範圍。需要曲線的話，事後再改。再點一次 *learn* 就取消。
 
 > [!CAUTION]
-> 任何脈衝都會立刻被綁定。learn 之前，先取消勾選 *simulate performance*（模擬演奏），並停掉鼓機，不然它們彈出的下一個音就會變成這條路由。
+> 任何脈衝都會馬上綁上去。learn 之前，先取消勾選 *simulate performance*（模擬演奏），並停掉鼓機，不然它們彈出的下一個音就會變成這條路由。
 
 一則 MIDI 訊息同時發出好幾個名稱時（`midi/cc/74`、`midi/ch/1/cc/74`，接兩台裝置時還有 `midi/<slug>/cc/74`），learn 綁定的是第一個，也就是聽得到每一台裝置的 `midi/cc/74`。如果只想聽其中一台，把 `source` 改成那台裝置的專屬名稱。
 
@@ -112,11 +112,11 @@ show.mapper.removeRoute(r.id);      // remove
 
 映射器把路由存在 `localStorage` 的 `openav.map.<profile>` 底下。`createShow()` 用世界的名稱當設定檔名稱（或用 `profile` 選項），並且：
 
-1. 有儲存的路由就載入，沒有的話就加入宣告的 `routes`；
-2. 已經有儲存的設定檔時，仍會補上每一條 `source → target` 組合還不存在的宣告路由，所以程式碼裡新加的路由一定會出現；
+1. 有儲存的路由就載入，沒有的話就加入宣告的 `routes`。
+2. 已經有儲存的設定檔時，宣告的路由裡 `source → target` 組合還沒出現過的，也會補進去，所以程式碼裡新加的路由一定會出現。
 3. 每 3 秒存一次。
 
-所以 learn 來的路由和你做的修改，重新載入之後都還在。反過來說：如果你在程式碼裡改了某條宣告路由的曲線或平滑，同一組 `source → target` 的儲存版本會勝出。要從乾淨的狀態開始，就傳入 `profile: false`（每次載入都從程式碼讀路由，像範例 09 那樣），或刪掉儲存的設定檔：
+所以 learn 來的路由和你做的修改，重新載入之後都還在。反過來說：如果你在程式碼裡改了某條宣告路由的曲線或平滑，同一組 `source → target` 以儲存的版本為準。要從乾淨的狀態開始，就傳入 `profile: false`（每次載入都從程式碼讀路由，像範例 09 那樣），或刪掉儲存的設定檔：
 
 ```js
 localStorage.removeItem('openav.map.particles');   // 'particles' = the world's name
@@ -133,7 +133,7 @@ show.mapper.fromJSON(routes); show.mapper.save();      // on the other machine (
 
 有幾個套件會產生同樣格式的路由：
 
-- `autoSurface(world.params)`（`@openav/surface`）會做出一個手機控制面板，以及它需要的 `surface/<page>/<widget> → param` 路由，帶 `smooth: 0.04`；`routesFromLayout(layout, params)` 對手寫的版面做同樣的事（[手機、中繼與控制面板](remote.md#autosurface)）。
+- `autoSurface(world.params)`（`@openav/surface`）會做出一個手機控制面板，以及它需要的 `surface/<page>/<widget> → param` 路由，帶 `smooth: 0.04`。`routesFromLayout(layout, params)` 對手寫的版面做一樣的事（[手機、中繼與控制面板](remote.md#autosurface)）。
 - `controllerRoutes(profile, { knob1: 'hue', pad1: 'burst' })`（`@openav/midi`）依螢幕上控制器的各個控制項寫出路由（[MIDI 控制器與嵌入](controllers.md)）。
 
 ## Mapper API
@@ -153,4 +153,4 @@ mapper.save(); mapper.load()  // localStorage 'openav.map.<profile>'; load() →
 mapper.dispose()              // stop listening to signals
 ```
 
-`onChange()` 在路由變動時執行（給介面用）；`onLearn(route, signalName)` 在 learn 完成綁定時執行。
+`onChange()` 在路由變動時執行（給介面用），`onLearn(route, signalName)` 在 learn 綁定完成時執行。
