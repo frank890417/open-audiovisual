@@ -1,0 +1,160 @@
+/* open-audiovisual — the docs handbook (/docs/, /zh/docs/).
+   Same family as the homepage: ink, bone text, one signal orange, mono labels.
+   Tokens come from assets/home/home.css, which every page loads first.
+   Layout: sticky contents on the left, one reading column (~70ch) on the right;
+   under 1000px the contents become a drawer behind a sticky "Contents" bar. */
+
+:root { --bar-h: 56px; --docs-bar-h: 0px; }
+/* jumps, not glides: smooth-scrolling 30 000 px to a deep link is slow, and fonts loading mid-glide miss the target */
+html { scroll-padding-top: calc(var(--bar-h) + var(--docs-bar-h) + 20px); scroll-behavior: auto; }
+
+/* ───────────── layout ───────────── */
+.docs-layout { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad);
+  display: grid; grid-template-columns: 272px minmax(0, 1fr); gap: 0 clamp(36px, 5vw, 88px); align-items: start; }
+.docs-main { min-width: 0; max-width: 860px; padding: clamp(36px, 5vw, 64px) 0 0; }
+.docs-bar { display: none; }
+
+/* the top bar marks the page you are on (the homepage has no current page) */
+
+/* ───────────── contents (sidebar) ───────────── */
+.docs-side { position: sticky; top: var(--bar-h); max-height: calc(100vh - var(--bar-h)); overflow-y: auto;
+  padding: 36px 8px 48px 0; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; overscroll-behavior: contain; }
+.toc-title { font: 500 12px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); margin: 0 0 14px; }
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc a { text-decoration: none; display: block; }
+.toc-ch > a { display: flex; gap: 10px; align-items: baseline; padding: 5px 0; color: var(--fg-2); font: 500 14px/1.35 var(--sans); }
+.toc-ch > a .n { font: 400 11px var(--mono); color: var(--fg-3); flex: none; width: 2.2ch; }
+.toc-ch > a:hover, .toc-secs a:hover { color: var(--fg); }
+.toc .toc-secs { margin: 2px 0 10px 9px; border-left: 1px solid var(--line); }
+.toc-secs a { padding: 3px 0 3px 14px; margin-left: -1px; border-left: 2px solid transparent; color: var(--fg-3); font-size: 13px; line-height: 1.4; }
+.toc-secs a code { font-size: .92em; }
+.toc-ch.is-current > a { color: var(--fg); }
+.toc-ch.is-current > a .n { color: var(--sig); }
+.toc a[aria-current="true"] { color: var(--fg); border-left-color: var(--sig); }
+.toc-ch > a[aria-current="true"] { border-left: 0; }
+html.js .toc-ch:not(.is-current) .toc-secs { display: none; }
+
+/* ───────────── page head ───────────── */
+.docs-head { padding-bottom: 8px; }
+.docs-head .eyebrow { color: var(--sig); }
+.docs-head h1 { margin: 14px 0 20px; font: 800 clamp(40px, 6.2vw, 92px)/.95 var(--sans); font-stretch: 112%; letter-spacing: -.035em; }
+html[lang^="zh"] .docs-head h1 { letter-spacing: 0; line-height: 1.1; }
+.docs-lede { max-width: 62ch; color: var(--fg-2); font-size: clamp(17px, 1.35vw, 20px); }
+.docs-stats, .docs-note { font: 400 12.5px/1.7 var(--mono); color: var(--fg-3); margin: 0 0 4px; }
+.docs-note a { color: var(--fg-2); }
+.docs-note code { background: none; padding: 0; }
+
+/* ───────────── chapters ───────────── */
+.chapter { position: relative; margin-top: clamp(72px, 9vw, 128px); padding-top: 22px; }
+/* the homepage's staff: five thin lines over every chapter */
+.chapter::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 17px;
+  background: repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 4px); }
+.chapter h2 { margin: 22px 0 10px; font: 800 clamp(32px, 4.2vw, 56px)/1 var(--sans); font-stretch: 112%; letter-spacing: -.03em; overflow-wrap: break-word; }
+html[lang^="zh"] .chapter h2 { letter-spacing: 0; line-height: 1.15; }
+.chapter-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: baseline; font: 400 12px/1.5 var(--mono); color: var(--fg-3); margin: 0 0 28px; }
+.chapter-n { color: var(--sig); }
+.chapter-meta a { color: var(--fg-3); }
+.chapter-meta a:hover { color: var(--fg); }
+.chapter h3 { margin: 56px 0 14px; font: 700 clamp(21px, 1.9vw, 27px)/1.2 var(--sans); font-stretch: 108%; letter-spacing: -.01em; overflow-wrap: break-word; }
+.chapter h4 { margin: 36px 0 10px; font: 700 18px/1.3 var(--sans); }
+.chapter h5, .chapter h6 { margin: 28px 0 8px; font: 500 12.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg-2); }
+html[lang^="zh"] .chapter h3, html[lang^="zh"] .chapter h4 { letter-spacing: .01em; }
+.chapter h2 code, .chapter h3 code, .chapter h4 code { font-size: .86em; background: none; padding: 0; color: inherit; }
+
+/* heading anchors: a quiet # that appears on hover; click copies the deep link */
+.anchor { margin-left: .35em; color: var(--fg-3); text-decoration: none; font-weight: 400; opacity: 0; transition: opacity .15s; }
+.chapter h2 .anchor { font-size: .55em; vertical-align: .35em; }
+:is(h2, h3, h4, h5):hover > .anchor, .anchor:focus-visible { opacity: 1; }
+.anchor:hover { color: var(--sig); }
+@media (hover: none) { .anchor { opacity: .4; } }
+
+/* ───────────── prose ───────────── */
+.chapter p, .chapter li, .chapter blockquote { color: var(--fg-2); }
+.chapter p, .chapter ul, .chapter ol, .chapter blockquote { max-width: 70ch; }
+.chapter p { margin: 0 0 1.05em; }
+.chapter strong { color: var(--fg); font-weight: 650; }
+.chapter em { color: var(--fg); }
+.chapter a:not(.anchor) { color: var(--fg); text-decoration-color: var(--line-2); }
+.chapter a:not(.anchor):hover { text-decoration-color: var(--sig); }
+.chapter code { color: var(--fg); background: var(--ink-3); padding: .08em .35em; border-radius: 3px; overflow-wrap: anywhere; }
+.chapter pre code { background: none; padding: 0; border-radius: 0; overflow-wrap: normal; }
+.chapter ul, .chapter ol { padding-left: 1.35em; margin: 0 0 1.2em; }
+.chapter li { margin: .32em 0; }
+.chapter li::marker { color: var(--fg-3); }
+.chapter ol > li::marker { font: 400 .85em var(--mono); }
+.chapter li > ul, .chapter li > ol { margin: .3em 0 .4em; }
+.chapter ul.tasks { list-style: none; padding-left: 0; }
+.chapter li.task input { accent-color: var(--sig); margin: 0 .5em 0 0; vertical-align: -.1em; }
+.chapter blockquote { margin: 1.4em 0; padding: 2px 0 2px 18px; border-left: 2px solid var(--line-2); }
+.chapter hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+kbd { font: 500 .78em var(--mono); color: var(--fg); background: var(--ink-2); border: 1px solid var(--line-2); border-bottom-width: 2px;
+  border-radius: 4px; padding: .05em .45em; white-space: nowrap; }
+
+/* code blocks reuse the homepage's .term; only spacing changes */
+.chapter .term { margin: 20px 0 26px; }
+.chapter .term pre { font-size: 13px; }
+
+/* callouts (GitHub alerts in the Markdown: > [!NOTE] …) */
+.callout { --cc: var(--l2); margin: 26px 0; padding: 14px 18px 4px; max-width: 70ch; background: var(--ink-2);
+  border: 1px solid var(--line); border-left: 3px solid var(--cc); }
+.callout .callout-title { font: 500 11.5px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--cc); margin: 0 0 6px; }
+.callout-tip { --cc: var(--l1); }
+.callout-important { --cc: var(--sig); }
+.callout-warning { --cc: var(--l3); }
+.callout-caution { --cc: var(--sig-2); }
+.callout p { margin-bottom: .7em; }
+
+/* tables: scroll inside themselves, never the page */
+.table-wrap { overflow-x: auto; margin: 20px 0 28px; border: 1px solid var(--line); background: var(--ink); scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+.table-wrap table { border-collapse: collapse; width: 100%; font-size: 14.5px; line-height: 1.5; }
+.table-wrap th { font: 500 11.5px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); text-align: left;
+  padding: 10px 14px; background: var(--ink-2); border-bottom: 1px solid var(--line-2); white-space: nowrap; }
+.table-wrap td { padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--fg-2); }
+.table-wrap tr:last-child td { border-bottom: 0; }
+.table-wrap td:first-child { color: var(--fg); }
+.table-wrap td code { overflow-wrap: normal; white-space: normal; font-size: .9em; }
+.table-wrap td:first-child code { white-space: nowrap; }
+
+.docs-end { margin: 80px 0 0; font: 400 13px var(--mono); }
+.docs-end a { color: var(--fg-2); text-decoration: none; }
+.docs-end a:hover { color: var(--fg); }
+
+/* the "link copied" toast */
+.docs-toast { position: fixed; left: 50%; bottom: 24px; z-index: 40; margin: 0; transform: translate(-50%, 12px); opacity: 0; pointer-events: none;
+  font: 500 12.5px var(--mono); background: var(--fg); color: var(--ink); padding: 8px 14px; transition: opacity .2s, transform .2s; }
+.docs-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ───────────── narrow screens: contents drawer ───────────── */
+@media (max-width: 1000px) {
+  :root { --docs-bar-h: 46px; }
+  .docs-layout { grid-template-columns: minmax(0, 1fr); }
+  .docs-main { max-width: none; padding-top: 28px; }
+  .docs-bar { display: flex; position: sticky; top: var(--bar-h); z-index: 19; height: var(--docs-bar-h); align-items: center; gap: 14px;
+    padding: 0 var(--pad); background: rgba(11, 11, 12, .92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line); }
+  .toc-toggle { display: inline-flex; align-items: center; gap: 9px; flex: none; font: 500 12.5px var(--mono); letter-spacing: .06em; text-transform: uppercase;
+    color: var(--fg); background: transparent; border: 1px solid var(--line-2); padding: 6px 11px; cursor: pointer; }
+  .toc-icon { width: 13px; height: 9px; background: linear-gradient(var(--fg) 0 0) top / 100% 1.5px no-repeat, linear-gradient(var(--fg) 0 0) center / 100% 1.5px no-repeat, linear-gradient(var(--fg) 0 0) bottom / 100% 1.5px no-repeat; }
+  .docs-bar-where { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 12.5px var(--mono); color: var(--fg-3); }
+  /* no JavaScript: the contents sit above the text, chapters only */
+  html:not(.js) .docs-bar { display: none; }
+  html:not(.js) { --docs-bar-h: 0px; }
+  html:not(.js) .docs-side { position: static; max-height: none; padding: 28px 0 0; border-bottom: 1px solid var(--line); }
+  html:not(.js) .toc-secs { display: none; }
+  /* with JavaScript: a drawer under the bars */
+  html.js .docs-side { position: fixed; z-index: 18; top: calc(var(--bar-h) + var(--docs-bar-h)); left: 0; right: 0; bottom: 0; max-height: none;
+    padding: 20px var(--pad) 48px; background: var(--ink); visibility: hidden; opacity: 0; transform: translateY(-8px);
+    transition: opacity .18s var(--ease), transform .18s var(--ease), visibility 0s .18s; }
+  html.js.toc-open .docs-side { visibility: visible; opacity: 1; transform: none; transition: opacity .18s var(--ease), transform .18s var(--ease); }
+  html.js.toc-open, html.js.toc-open body { overflow: hidden; }
+  .toc-ch > a { padding: 9px 0; font-size: 15.5px; }
+  .toc-secs a { padding: 7px 0 7px 14px; font-size: 14px; }
+}
+@media (max-width: 640px) {
+  :root { --bar-h: 52px; }
+  .chapter h3 { margin-top: 44px; }
+  .table-wrap table { min-width: 520px; font-size: 14px; }
+  .chapter .term pre { font-size: 12.5px; padding: 14px; }
+  .callout { padding: 12px 14px 2px; }
+}
+@media (prefers-reduced-motion: reduce) { html.js .docs-side { transition: none; } }

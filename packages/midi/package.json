@@ -4,7 +4,11 @@
   "type": "module",
   "main": "index.js",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./element": "./element.js",
+    "./element.js": "./element.js",
+    "./embed": "./embed.js",
+    "./profiles/*": "./profiles/*"
   },
   "license": "MIT",
   "repository": {
@@ -24,6 +28,7 @@
       "midi/profiles/index.js",
       "midi/view.js",
       "midi/panel.js",
+      "midi/embed.js",
       "midi/index.js",
       "relay/index.js"
     ],

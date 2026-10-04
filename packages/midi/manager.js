@@ -32,11 +32,39 @@ export class MidiControllers {
     this.ports = new Map();         // input slug → { profileId, name, auto }
     this._subs = new Set();
     this.current = this.get(initial && this.byId.has(initial) ? initial : profiles[0].id);
-    if (midi) {
-      this._unlisten = midi.listen((data, port) => this._hw(data, port));
-      this._undev = midi.onDevices((devs) => this._devices(devs));
-      if (midi.enabled) this._devices(midi.devices());
+    this.midi = null;
+    if (midi) this.attach(midi);
+  }
+
+  /** Start following a hardware engine (now, or later: an embed connects only when asked). */
+  attach(midi) {
+    if (!midi || (midi === this.midi && this._unlisten)) return this;
+    this.detach();
+    this.midi = midi;
+    this._unlisten = midi.listen((data, port) => this._hw(data, port));
+    this._undev = midi.onDevices((devs) => this._devices(devs));
+    if (midi.enabled) this._devices(midi.devices());
+    return this;
+  }
+  /** Stop following hardware; the on-screen controllers stay, still playable. */
+  detach() {
+    this._unlisten?.(); this._undev?.();
+    this._unlisten = this._undev = null;
+    const had = this.midi && this.ports.size;
+    this.midi = null; this.ports.clear();
+    if (had) this._emit({ type: 'ports' });
+    return this;
+  }
+  /** Add (or replace) a profile at runtime — one loaded from a URL, one moved to another channel. */
+  register(profile) {
+    const had = this.byId.has(profile.id);
+    this.profiles = [...this.profiles.filter((p) => p.id !== profile.id), profile];
+    this.byId.set(profile.id, profile);
+    if (had && this.controllers.has(profile.id)) {
+      this.controllers.delete(profile.id);
+      if (this.current?.id === profile.id) this.current = this.get(profile.id);
     }
+    return this;
   }
 
   /** The controller for a profile (created on first use, with any learned mapping restored). */
@@ -63,11 +91,12 @@ export class MidiControllers {
     for (const d of this.midi?.devices() || []) if (this.ports.get(d.slug)?.profileId === profileId && d.listening) return d.name;
     return null;
   }
-  /** Route a port to a profile by hand (unknown device → generic layout), or null to un-route. */
-  assign(slug, profileId) {
+  /** Route a port to a profile by hand (unknown device → generic layout), or null to un-route.
+   *  persist: remember the choice for this port name (default); an embed's automatic choice does not. */
+  assign(slug, profileId, { persist = true } = {}) {
     const name = this.midi?.devices().find((d) => d.slug === slug)?.name || slug;
     if (profileId) this.ports.set(slug, { profileId, name, auto: false }); else this.ports.delete(slug);
-    try { const a = JSON.parse(this.storage?.getItem('openav.midi.assign') || '{}'); if (profileId) a[name] = profileId; else delete a[name]; this.storage?.setItem('openav.midi.assign', JSON.stringify(a)); } catch { /* private mode */ }
+    if (persist) try { const a = JSON.parse(this.storage?.getItem('openav.midi.assign') || '{}'); if (profileId) a[name] = profileId; else delete a[name]; this.storage?.setItem('openav.midi.assign', JSON.stringify(a)); } catch { /* private mode */ }
     if (profileId) { this.select(profileId); this._sendSnapshot(profileId); }
     this._emit({ type: 'ports' });
   }
@@ -120,7 +149,7 @@ export class MidiControllers {
   _mapKey(profileId) { return `openav.midi.map.${profileId}`; }
   _saveMapping(c) { try { this.storage?.setItem(this._mapKey(c.id), JSON.stringify(c.exportMapping())); } catch { /* private mode */ } }
 
-  dispose() { this._unlisten?.(); this._undev?.(); }
+  dispose() { this.detach(); this._subs.clear(); }
 }
 
 /** Mapper routes for "this control drives that param" — rule #1: continuous control goes through params.

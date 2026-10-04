@@ -178,7 +178,7 @@ export default {
       roadmap: '真實演出接下來要求的功能',
       agents: '給 AI 程式代理的約定',
     },
-    docsNote: '文件目前只有英文版。',
+    docsNote: '',
     docNames: { architecture: '架構', world: '寫一個世界', signals: '訊號一覽', show: '演出控制', roadmap: '路線圖', agents: 'AGENTS.md' },
   },
 

@@ -177,7 +177,7 @@ export class Knob extends ValueWidget {
     this.paint();
   }
   paint() {
-    this.arc.setAttribute('stroke-dasharray', `${this.norm * 75} 100`);        // arc is 270° = 75 % of the circle
+    this.arc.setAttribute('stroke-dasharray', `${this.norm * 100} 1000`);       // pathLength=100 IS the 270° sweep: value 1 = the whole arc, same angle as the dot; the long gap keeps a second round cap from appearing at the far end when the dash is 0
     const a = ((135 + this.norm * 270) * Math.PI) / 180;
     this.dot.setAttribute('cx', (50 + 38 * Math.cos(a)).toFixed(2)); this.dot.setAttribute('cy', (50 + 38 * Math.sin(a)).toFixed(2));
     this.big.textContent = this.fmt(); this.valEl.textContent = '';

@@ -51,6 +51,7 @@ export class MidiController {
     this.state = new Map();          // id → {value, raw, held, pressure, toggled}
     this.keys = new Map();           // note → velocity 1..127 (held keys, any keys control)
     this._subs = new Set();
+    this._msgs = new Set();          // (bytes, ev, source, ids) — every message, once (MIDI out, monitors)
     this.learning = null;            // control id waiting for a hardware message
     this.autoLearn = !!this.profile.learn;
     this.learned = new Set();        // ids a human (or auto-learn) has bound on this device
@@ -74,6 +75,10 @@ export class MidiController {
     return g;
   }
   onChange(fn) { this._subs.add(fn); return () => this._subs.delete(fn); }
+  /** Every message that passes through, once, after state has moved: ({bytes, ev, source, ids}) → void.
+   *  ids = the controls it moved (none for a message this profile does not know). Returns unsubscribe.
+   *  An embed forwards source 'ui' to a MIDI output port here (one message, even if it moved two controls). */
+  onMessage(fn) { this._msgs.add(fn); return () => this._msgs.delete(fn); }
 
   _reindex() {
     this.index = indexProfile(this.profile);
@@ -100,11 +105,13 @@ export class MidiController {
       this._emitAll(genericSignals(ev, { device: this.short }));
       this._emit('midi/virtual', { data: Array.from(data).slice(0, 3), device: this.short, src: this.uid }, { pulse: true });
     }
-    for (const h of hits) this._apply(h, ev, { source, pub });
+    const bytes = Array.from(data);
+    for (const h of hits) this._apply(h, ev, { source, pub, bytes });
+    if (this._msgs.size) { const m = { bytes, ev, source, ids: hits.map((h) => h.control.id) }; for (const fn of this._msgs) { try { fn(m); } catch (e) { console.error('[midi controller]', e); } } }
     return ev;
   }
 
-  _apply({ control: c, note, chanat }, ev, { source, pub }) {
+  _apply({ control: c, note, chanat }, ev, { source, pub, bytes = null }) {
     const st = this.state.get(c.id), S = `midi/${this.short}/${c.id}`;
     const out = [];
     let changed = true;
@@ -170,7 +177,7 @@ export class MidiController {
       this._emit(`midi/${this.short}/last`, { id: c.id, value: st.value, note: note ?? null, source, ...this.pos.get(c.id) }, { pulse: true });
     }
     this._led(c, st, note);
-    for (const fn of this._subs) { try { fn(c.id, st, { source, ev, note }); } catch (e) { console.error('[midi controller]', e); } }
+    for (const fn of this._subs) { try { fn(c.id, st, { source, ev, note, bytes }); } catch (e) { console.error('[midi controller]', e); } }
   }
 
   _emit(name, value, { pulse = false, min = 0, max = 1 } = {}) {

@@ -7,15 +7,49 @@ Conventions:
 - ranges are 0..1 unless noted
 - `pulse` signals fire events; their value is the event payload
 - y axes are flipped where it makes *performance* sense (1 = raised), never raw pixels
+- `<n>` is a number, `<ch>` a MIDI channel 1..16, `<id>` a device id, `<slug>` a device name made URL-safe
 
 ## @openav/midi
 
+Every hardware message publishes the legacy names and the per-channel names.
+
 | signal | kind | range | meaning |
 |---|---|---|---|
-| `midi/cc/{n}` | continuous | 0..1 | controller n (any channel) |
-| `midi/note/on` | pulse | `{note, vel, ch}` | key down |
-| `midi/note/off` | pulse | `{note, ch}` | key up |
-| `midi/bend` | continuous | -1..1 | pitch bend |
+| `midi/note/on` | pulse | `{note, vel, velocity, ch, device}` | key down: `vel` 0..1, `velocity` 1..127, `ch` 1..16, `device` = port slug |
+| `midi/note/off` | pulse | `{note, ch, device}` | key up |
+| `midi/cc/<n>` | continuous | 0..1 | controller n (any channel) |
+| `midi/bend` | continuous | -1..1 | pitch bend (any channel) |
+| `midi/ch/<ch>/cc/<n>` | continuous | 0..1 | controller n on one channel |
+| `midi/ch/<ch>/note/<n>` | continuous | 0..1 | velocity while note n is held, 0 on release |
+| `midi/ch/<ch>/bend` | continuous | -1..1 | pitch bend on one channel |
+| `midi/ch/<ch>/pressure` | continuous | 0..1 | channel aftertouch |
+| `midi/ch/<ch>/poly/<n>` | continuous | 0..1 | polyphonic aftertouch on note n |
+
+With two or more MIDI inputs connected, each device also publishes under its
+slug (from the port name: `Arturia MiniLab 3` → `arturia-minilab-3`, duplicates
+get `-2`, `-3`):
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `midi/<slug>/note/on` | pulse | `{note, vel, ch}` | key down on that device |
+| `midi/<slug>/note/off` | pulse | `{note, ch}` | key up on that device |
+| `midi/<slug>/cc/<n>` | continuous | 0..1 | controller n on that device |
+| `midi/<slug>/bend` | continuous | -1..1 | pitch bend on that device |
+
+On-screen controllers (`modules.midi.controllers`) publish one name per
+control, `midi/<device>/<control>` (for example `midi/minilab3/knob1`), plus
+`/hit` pulses for pads and `/raw` values. They are listed in
+[MIDI controllers & embedding](controllers.md).
+
+## @openav/keys
+
+The on-screen piano, QWERTY playing and the simulated performer publish the
+legacy note names with a smaller payload:
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `midi/note/on` | pulse | `{note, vel, ch: 0}` | key down (`vel` 0..1) |
+| `midi/note/off` | pulse | `{note, ch: 0}` | key up |
 
 ## @openav/chord
 
@@ -26,14 +60,14 @@ Conventions:
 | `chord/root` | continuous | 0..127 | lowest MIDI note of last gesture |
 | `chord/event` | pulse | full analysis | `{notes, count, root, vel, pcs, consonance, isConsonant, isDissonant, isTriad, thirdsFraction, dissonanceLevel, chordType}` |
 
-`chordType`: `single` · `major` · `minor` · `sus2/4` · `dim` · `aug` · `maj7` ·
+`chordType`: `single` · `major` · `minor` · `sus2` · `sus4` · `dim` · `aug` · `maj7` ·
 `min7` · `dom7` · `halfdim7` · `maj9` · `min9` · `dom9` · `six` · `min6` ·
 `cluster` (very dissonant pile) · `chord` (anything else). Inversions resolve to
 their root-position name via pitch-class rotation.
 
 `dissonanceLevel`: `0` none · `1` mild (storm warning — foreshadow) · `2` severe
 (true cluster — commit to the decay language). Born from a real audience note at
-IRCAM: "dissonance detection wasn't strict enough."
+the IRCAM × C-LAB performance in Taipei: "dissonance detection wasn't strict enough."
 
 ## @openav/audio
 
@@ -46,6 +80,10 @@ IRCAM: "dissonance detection wasn't strict enough."
 | `audio/band/high` | continuous | 0..1 | 2–8 kHz energy |
 | `audio/centroid` | continuous | 0..1 | spectral brightness |
 | `audio/onset` | pulse | `{rms}` | transient over adaptive floor (100 ms refractory) |
+| `audio/kick` | pulse | `{level}` | 20–120 Hz transient (90 ms refractory) |
+| `audio/snare` | pulse | `{level}` | 150–800 Hz transient (90 ms refractory) |
+| `audio/hat` | pulse | `{level}` | 6–14 kHz transient (60 ms refractory) |
+| `audio/kick/env` `/snare/env` `/hat/env` | continuous | 0..1 | decay envelope per drum (map straight onto params) |
 
 ## @openav/pose
 
@@ -70,9 +108,9 @@ Normalized by palm size, so distance to the camera doesn't change your pinch.
 |---|---|---|---|
 | `hand/left/present` `right/…` | continuous | 0/1 | hand visible |
 | `hand/left/x` `/y` | continuous | 0..1 | palm position (y: 1 = raised) |
-| `hand/left/pinch/index` | continuous | 0..1 | thumb-tip ↔ index-tip |
+| `hand/left/pinch/index` | continuous | 0..1 | thumb-tip ↔ index-tip (0 = touching) |
 | `hand/left/pinch/middle` | continuous | 0..1 | thumb-tip ↔ middle-tip |
-| `hand/left/spread` | continuous | 0..1 | index ↔ pinky spread |
+| `hand/left/spread` | continuous | 0..1 | index-tip ↔ pinky-tip spread |
 
 (`hand/right/*` mirrors the set. Both trackers expose `skeleton(ctx, w, h)` overlays.)
 
@@ -86,10 +124,11 @@ is for). Sequencer hits also travel as `midi/note/on` (ch 10, GM notes).
 |---|---|---|---|
 | `drum/kick` `/snare` `/hat` `/clap` | pulse | `{level}` | a sequencer hit |
 | `drum/kick/env` `…` | continuous | 0..1 | decay envelope per lane (map straight onto params) |
+| `midi/note/on` | pulse | `{note, vel, ch: 10}` | kick 36 · snare 38 · clap 39 · closed hat 42 |
 
 ## @openav/remote · @openav/surface
 
-Phone sensors (`/packages/remote/` → 感測). `<id>` is the device id; `phone/any/…` mirrors the latest phone, so a
+Phone sensors (`/packages/remote/` → 感測). `<id>` is the device id; `phone/any/…` carries the value from whichever phone sent it last, so a
 World's routes can be written before any phone exists.
 
 | signal | kind | range | meaning |
@@ -110,9 +149,10 @@ Surface widgets (normalized 0..1; `…/raw` carries the unscaled value when the 
 | `surface/<page>/<id>` | continuous | fader · knob · number · toggle · button (0/1) · radio (idx/(n-1)) · encoder phase |
 | `surface/<page>/<id>/x` `/y` `/down` | continuous | xy pad |
 | `surface/<page>/<id>/<1..N>` | continuous | bank channels |
-| `surface/<page>/<id>/hit` | pulse `{pad,row,col,vel}` | pads; `…/<n>` holds the velocity while down |
+| `surface/<page>/<id>/hit` | pulse `{pad,row,col,vel}` | pads; `…/<n>` (n from 0) holds the velocity while down |
 | `surface/<page>/<id>/delta` | continuous | encoder step in turns |
-| `midi/note/on` `/off`, `midi/cc/64` | pulse / continuous | the 琴鍵 page and the `keyboard` widget — same names and shape as `@openav/midi`, plus `velocity` (1..127) and `device` |
+| `surface/<page>/<id>` (text) | pulse | the string typed into a `text` widget |
+| `midi/note/on` `/off`, `midi/cc/64` | pulse / continuous | the 琴鍵 page and the `keyboard` widget — same names and shape as `@openav/midi`: `{note, vel, velocity, ch: 1, device: 'surface'}` |
 
 Receiving end: every relay message is filed by `fileSignal(signals, name, value, {pulse})` (`@openav/relay`; `bindSignals`
 uses it, so do hosts with their own socket such as the lab's `lab.js`). It declares the name on first sight (`signalMeta`),

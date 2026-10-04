@@ -30,13 +30,14 @@ export const PACKAGE_GROUPS = [
   { layer: 'sig', pkgs: ['core', 'show', 'mcp'] },
 ];
 
+// chapters of the /docs/ handbook (ids = tools/docs/chapters.mjs)
 const DOCS = [
-  ['architecture', 'docs/architecture.md'],
-  ['world', 'docs/writing-a-world.md'],
-  ['signals', 'docs/signals.md'],
-  ['show', 'docs/show-control.md'],
-  ['roadmap', 'docs/roadmap.md'],
-  ['agents', 'AGENTS.md'],
+  ['architecture', 'architecture'],
+  ['world', 'writing-a-world'],
+  ['signals', 'signals'],
+  ['show', 'show-control'],
+  ['roadmap', 'roadmap'],
+  ['agents', 'agents'],
 ];
 
 // the hero's patch bay: sources (signals) and targets (params). The wires are
@@ -370,7 +371,7 @@ ${topBar(t, pageCtx('home', locale))}
     <h3 class="docs-title">${t.start.docsTitle}</h3>
     ${t.start.docsNote ? `<p class="note">${t.start.docsNote}</p>` : ''}
     <ul class="docs">
-      ${DOCS.map(([k, p]) => `<li><a href="${BLOB}${p}">${t.start.docNames[k]}</a><span>${t.start.docs[k]}</span></li>`).join('\n      ')}
+      ${DOCS.map(([k, id]) => `<li><a href="${pageCtx('home', locale).to('docs', '#' + id)}">${t.start.docNames[k]}</a><span>${t.start.docs[k]}</span></li>`).join('\n      ')}
     </ul>
   </section>
 

@@ -16,6 +16,9 @@ Four layers + two spines — the contracts are in [docs/architecture.md](docs/ar
 - **World** (`packages/stage`) → algorithmic system that reads params, renders anything
 - **Output** (`packages/osc`, MIDI out) + **Timeline** + **Console** + **Monitor**
 
+Full handbook (every chapter, verified against the code): https://openaudiovisual.com/docs/ —
+sources in `docs/`, one file for language models at `/llms-full.txt`.
+
 ## The two rules you must not break
 
 1. **Continuous control goes through params; discrete events may use signals.**
@@ -43,7 +46,7 @@ path below works without it.
 4. Update the import map in `index.html` only if you use extra packages
    (`@openav/chord`, `@openav/pose`…). Signal names: [docs/signals.md](docs/signals.md).
 5. Verify: `node serve.js` → open `http://localhost:8080/examples/<nn>-<name>/` —
-   QWERTY keys A–L are the no-hardware MIDI fallback; Space plays the timeline.
+   QWERTY keys A–L are the no-hardware MIDI fallback (tick *keyboard* in the console first); Space plays the timeline.
 
 ## Verifying changes
 

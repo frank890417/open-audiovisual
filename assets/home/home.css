@@ -57,6 +57,7 @@ p { margin: 0 0 1em; }
 .nav { display: flex; gap: 22px; margin-left: auto; font: 400 13px var(--mono); }
 .nav a, .gh, .langs a { text-decoration: none; color: var(--fg-2); }
 .nav a:hover, .gh:hover, .langs a:hover { color: var(--fg); }
+.nav a[aria-current="page"] { color: var(--fg); box-shadow: inset 0 -1.5px 0 var(--sig); }
 .top-end { display: flex; align-items: center; gap: 20px; font: 400 13px var(--mono); }
 .langs { display: flex; align-items: center; gap: 6px; color: var(--line-2); }
 .langs a { padding: 4px 2px; }

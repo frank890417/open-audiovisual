@@ -154,6 +154,9 @@ portrait), 控制台 (faders, knobs, XY, pads… generated from the World's `par
 
 ## Docs
 
+**The handbook: [openaudiovisual.com/docs](https://openaudiovisual.com/docs/)** ([繁體中文](https://openaudiovisual.com/zh/docs/)) — every chapter below on one page, generated from `docs/`.
+**The MIDI controller library: [openaudiovisual.com/controllers](https://openaudiovisual.com/controllers/)** — every modeled controller, playable, with its MIDI map and sources; embed one anywhere with `<script type="module" src="https://openaudiovisual.com/packages/midi/element.js"></script><oav-controller profile="akai-apc-mini-mk2"></oav-controller>`.
+
 - [Architecture](docs/architecture.md) — the layer contracts, in detail
 - [Writing a world](docs/writing-a-world.md)
 - [Signals reference](docs/signals.md) — names published by each input package

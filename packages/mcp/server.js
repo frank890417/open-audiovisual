@@ -12,7 +12,7 @@
 //
 // Tools:
 //   list_examples     what works exist (name, path, one-line summary)
-//   read_doc          architecture / writing-a-world / signals / show-control / agents
+//   read_doc          architecture / writing-a-world / signals / show-control / agents / … every handbook chapter
 //   scaffold_world    copy a donor example into a new numbered example
 //   run_checks        node --test — the same gate CI uses
 
@@ -31,6 +31,18 @@ const DOCS = {
   roadmap: 'docs/roadmap.md',
   agents: 'AGENTS.md',
   readme: 'README.md',
+  // the rest of the /docs/ handbook (https://openaudiovisual.com/docs/)
+  introduction: 'docs/introduction.md',
+  'getting-started': 'docs/getting-started.md',
+  concepts: 'docs/concepts.md',
+  inputs: 'docs/inputs.md',
+  mapping: 'docs/mapping.md',
+  controllers: 'docs/controllers.md',
+  remote: 'docs/remote.md',
+  packages: 'docs/packages.md',
+  'agents-guide': 'docs/agents.md',
+  troubleshooting: 'docs/troubleshooting.md',
+  'lab-integration': 'docs/lab-integration.md',
 };
 
 const TOOLS = [

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIDI controller · open-audiovisual embed</title>
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark light">
+<style>
+  html, body { margin: 0; height: 100%; background: var(--bg, #0b0b0c); overflow: hidden; }
+  body { display: flex; padding: var(--pad, 6px); box-sizing: border-box; }
+  oav-controller { flex: 1; min-width: 0; height: 100%; }
+  noscript p { margin: 12px; color: #edebe5; font: 13px/1.5 ui-monospace, Menlo, monospace; }
+</style>
+</head>
+<body>
+<oav-controller id="ctl"></oav-controller>
+<noscript><p>An on-screen MIDI controller from open-audiovisual. Turn on JavaScript to play it: https://openaudiovisual.com/controllers/</p></noscript>
+<!-- query params mirror <oav-controller> attributes: ?profile=akai-lpd8&layout=auto&picker&readout&learn&hardware=ask&midi-out=ask&channel=2&theme=light
+     plus bg=transparent|#hex, pad=8 (px), frame=<name> (echoed in every message), origin=https://your.site (only talk to that page), lang=zh -->
+<script type="module" src="./frame.js"></script>
+</body>
+</html>

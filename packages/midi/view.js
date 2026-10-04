@@ -12,8 +12,15 @@
 // Every control repaints from controller state: a finger here and a knob on
 // the desk look the same, and hardware moves get a brief glow ring so you can
 // see your hand arrive on screen.
+//
+// Inside a shadow root (<oav-controller>) the CSS goes into that root, not the
+// page. Keyboard: Tab reaches every control except piano keys; arrows / Page
+// keys / Home / End move knobs, faders and strips; Space or Enter strikes pads
+// and buttons (held while the key is held).
 
-const COLORS = { cyan: '#35d4e6', amber: '#ffb547', magenta: '#ff5fb3', lime: '#7be25b', violet: '#a58bff', coral: '#ff6b57', white: '#e8ecf5' };
+/** The named control colours a profile may use (`color: "amber"`); `tint` takes any CSS colour. */
+export const CONTROL_COLORS = { cyan: '#35d4e6', amber: '#ffb547', magenta: '#ff5fb3', lime: '#7be25b', violet: '#a58bff', coral: '#ff6b57', white: '#e8ecf5' };
+const COLORS = CONTROL_COLORS;
 const BLACK = new Set([1, 3, 6, 8, 10]);
 const NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -48,6 +55,8 @@ export const VIEW_CSS = `
 @keyframes mcv-arm { 50% { outline-color: #f5a524; } }
 .mcv-c.armed .mcv-hit { outline: 2px solid #f5a524 !important; animation: mcv-arm .8s infinite; }
 .mcv-c.learned .mcv-lbl { color: #f5a524; }
+.mcv-c:focus { outline: none; }
+.mcv-c:focus-visible .mcv-hit { outline: 2px solid var(--oav-focus, #ff5a1f); outline-offset: 2px; }
 
 /* knob / encoder */
 .mcv-dial { position: relative; flex: 1 1 0; min-height: 0; aspect-ratio: 1; max-width: 100%; border-radius: 50%; }
@@ -128,11 +137,19 @@ export const VIEW_CSS = `
 .mcv-deco.buttons { display: flex; gap: calc(var(--u) * .6); }
 .mcv-deco.buttons i { flex: 1; border-radius: calc(var(--u) * .4); background: #2b2e36; font: 600 calc(var(--u) * 1)/1 system-ui, sans-serif; font-style: normal;
   color: rgba(255,255,255,.4); display: grid; place-items: center; }
+.mcv-deco.label { display: flex; align-items: center; font: 700 calc(var(--u) * 1.2)/1 system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.36); white-space: nowrap; overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .mcv *, .mcv *::before, .mcv *::after { animation: none !important; transition: none !important; } }
 `;
 
-function injectCss() {
-  if (typeof document === 'undefined' || document.getElementById('openav-midi-view-css')) return;
-  const s = document.createElement('style'); s.id = 'openav-midi-view-css'; s.textContent = VIEW_CSS; document.head.appendChild(s);
+/** The view's CSS, once per document — or once per shadow root, when the view lives inside one. */
+function injectCss(node) {
+  if (typeof document === 'undefined') return;
+  const root = node && node.getRootNode ? node.getRootNode() : document;
+  const inShadow = typeof ShadowRoot !== 'undefined' && root instanceof ShadowRoot;
+  if ((inShadow ? root : document).querySelector('#openav-midi-view-css')) return;
+  const s = document.createElement('style'); s.id = 'openav-midi-view-css'; s.textContent = VIEW_CSS;
+  (inShadow ? root : document.head).appendChild(s);
 }
 
 /** Pointer helper: capture, per-pointer state, multi-touch safe. */
@@ -165,7 +182,7 @@ export class ControllerView {
    * @param {number} [o.minTouch=38]   px a control needs before `face` gives way to `stack`
    */
   constructor(container, controller, { mode = 'auto', minTouch = 38 } = {}) {
-    injectCss();
+    injectCss(container);
     this.container = container; this.forced = mode; this.minTouch = minTouch;
     this.root = h('div', 'mcv');
     container.appendChild(this.root);
@@ -186,6 +203,8 @@ export class ControllerView {
     this._fit(true);
   }
   setLearning(on) { this.learning = !!on; this.root.classList.toggle('learning', this.learning); this._paintMeta(); }
+  /** 'auto' (choose from the box) | 'face' | 'stack'. */
+  setMode(mode = 'auto') { this.forced = ['face', 'stack'].includes(mode) ? mode : 'auto'; this._fit(true); }
 
   // ---------------------------------------------------------------- layout
   _fit(force = false) {
@@ -256,6 +275,7 @@ export class ControllerView {
     Object.assign(el.style, { left: (d.x / f.w) * 100 + '%', top: (d.y / f.h) * 100 + '%', width: (d.w / f.w) * 100 + '%', height: (d.h / f.h) * 100 + '%' });
     if (d.type === 'screen') { el.innerHTML = `<div>${esc(d.text || '')}<small class="mon"></small></div>`; this.screen = el.querySelector('.mon'); }
     if (d.type === 'buttons') el.innerHTML = (d.items || []).map((t) => `<i>${esc(t)}</i>`).join('');
+    if (d.type === 'label') el.textContent = d.text || '';     // printed lettering on the faceplate
     return el;
   }
 
@@ -264,7 +284,8 @@ export class ControllerView {
     const el = h('div', `mcv-c t-${c.type}`); el.dataset.id = c.id;
     const col = c.tint || COLORS[c.color] || COLORS.cyan;
     el.style.setProperty('--c', col);
-    if (c.verified === false) { el.classList.add('unv'); el.title = c.note || '未經實機確認：可用「學習」重新對應 (unverified — use Learn)'; }
+    // c.note is a remark on cc controls but the MIDI note number on note controls
+    if (c.verified === false) { el.classList.add('unv'); el.title = (typeof c.note === 'string' && c.note) || '未經實機確認：可用「學習」重新對應 (unverified — use Learn)'; }
     const lbl = () => h('div', 'mcv-lbl', esc(c.label ?? c.id));
     const ui = { el };
     const learnTap = (e) => {
@@ -348,8 +369,45 @@ export class ControllerView {
         break;
       }
     }
+    this._a11y(el, c);
     this.els.set(c.id, ui);
     return el;
+  }
+
+  /** Keyboard + screen readers: one Tab stop per control (piano keys excepted: they are a labelled group). */
+  _a11y(el, c) {
+    const name = c.label || c.id;
+    if (c.type === 'keys') { el.setAttribute('role', 'group'); el.setAttribute('aria-label', `${name} ${noteName(c.from)}–${noteName(c.to)}`); return; }
+    const slider = c.type === 'knob' || c.type === 'fader' || c.type === 'wheel' || c.type === 'strip' || c.type === 'encoder';
+    el.tabIndex = 0;
+    el.setAttribute('aria-label', name);
+    if (slider) {
+      el.setAttribute('role', 'slider');
+      el.setAttribute('aria-valuemin', c.bipolar ? '-1' : '0'); el.setAttribute('aria-valuemax', '1');
+    } else {
+      el.setAttribute('role', 'button');
+      if (c.type === 'button' && c.mode === 'toggle') el.setAttribute('aria-pressed', 'false');
+    }
+    let down = false;
+    el.addEventListener('keydown', (e) => {
+      if (e.altKey || e.metaKey || e.ctrlKey) return;
+      if (this.learning && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); this.c.learn(c.id); this.onLearnTap?.(c.id); return; }
+      if (slider) {
+        const d = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1, PageUp: 8, PageDown: -8 }[e.key];
+        if (c.type === 'encoder' && c.relative) { if (d) { e.preventDefault(); this.c.turn(c.id, d * (e.shiftKey ? 1 : 3)); } return; }
+        const lo = c.bipolar ? -1 : 0, st = this.c.get(c.id);
+        const v = e.key === 'Home' ? lo : e.key === 'End' ? 1 : d ? st.value + (d * (e.shiftKey ? 1 : 4) * (1 - lo)) / 127 : null;
+        if (v === null) return;
+        e.preventDefault(); this.c.setValue(c.id, clamp(v, lo, 1));
+        return;
+      }
+      if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); down = true; this.c.press(c.id, c.type === 'pad' ? 0.8 : 1); }
+    });
+    el.addEventListener('keyup', (e) => {
+      if (slider) { if (c.spring && /^(Arrow|Page)/.test(e.key)) this.c.rest(c.id); return; }
+      if ((e.key === ' ' || e.key === 'Enter') && down) { down = false; this.c.release(c.id); }
+    });
+    el.addEventListener('blur', () => { if (down) { down = false; this.c.release(c.id); } });
   }
 
   _paint(id, info = {}) {
@@ -363,7 +421,8 @@ export class ControllerView {
           ui.rot.setAttribute('transform', `rotate(${((st.turns || 0) * 15) % 360} 50 50)`);
           ui.num.textContent = (st.pos * 100).toFixed(0) + '%';
         } else {
-          ui.arc.setAttribute('stroke-dasharray', `${st.value * 75} 100`);
+          // pathLength=100 is the whole 270° sweep (not a full circle), so value 1 = 100 — same angle as the pointer (gap 1000 so a zero-length dash never repeats at the far end)
+          ui.arc.setAttribute('stroke-dasharray', `${st.value * 100} 1000`);
           ui.rot.setAttribute('transform', `rotate(${-135 + st.value * 270} 50 50)`);
           ui.num.textContent = String(st.raw);
         }
@@ -380,6 +439,10 @@ export class ControllerView {
         break;
       }
       case 'keys': ui.keys.paint(info); break;
+    }
+    if (c.type !== 'keys') {
+      if (el.getAttribute('role') === 'slider') { el.setAttribute('aria-valuenow', (+st.value || 0).toFixed(2)); el.setAttribute('aria-valuetext', String(st.raw)); }
+      else if (c.type === 'button' && c.mode === 'toggle') el.setAttribute('aria-pressed', st.held ? 'true' : 'false');
     }
     if (this.screen && info.ev) this.screen.textContent = this.c.lastEvent?.text || '';
   }
@@ -406,7 +469,8 @@ class Keys {
     this.bar = h('div', 'mcv-oct', `<button type="button" data-d="-12">◀</button><span></span><button type="button" data-d="12">▶</button>`);
     this.bar.querySelectorAll('button').forEach((b) => b.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); this.shift(+b.dataset.d); }));
     el.parentElement.appendChild(this.bar);
-    const at = (e) => { const t = document.elementFromPoint(e.clientX, e.clientY); return t && t.closest && t.closest('.mcv-k'); };
+    // inside a shadow root the document only sees the host element: ask the root the keys live in
+    const at = (e) => { const r = el.getRootNode(); const t = (r && r.elementFromPoint ? r : document).elementFromPoint(e.clientX, e.clientY); return t && t.closest && t.closest('.mcv-k'); };
     const vel = (k, e) => { const r = k.getBoundingClientRect(); return clamp(0.12 + 0.88 * ((e.clientY - r.top) / r.height), 0.06, 1); };
     track(el, {
       down: (e, st) => {

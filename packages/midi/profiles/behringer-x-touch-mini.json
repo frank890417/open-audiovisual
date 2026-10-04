@@ -1,0 +1,517 @@
+{
+ "id": "behringer-x-touch-mini",
+ "short": "xtouchmini",
+ "name": "Behringer X-TOUCH MINI",
+ "maker": "Behringer",
+ "kind": "device",
+ "channel": 11,
+ "match": {
+  "ports": [
+   "x-?\\s*touch\\s*mini"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "sources": [
+  {
+   "title": "X-TOUCH MINI Quick Start Guide (Behringer / MUSIC Group, P0B3M; mirror)",
+   "url": "https://media.djmania.net/manuales/pdf/Manual_Behringer_X-Touch_Mini.pdf",
+   "note": "MIDI map: Preset A on MIDI channel 11 — encoders turn CC 1–8, push notes C-2…G-2 (0–7), upper buttons G#-2…D#-1 (8–15), lower buttons E-1…B-1 (16–23), fader CC 9; Preset B (channel 11) — CC 11–18, notes 24–47, fader CC 10. RX table (global channel): LED-ring style CC 1–8, ring value CC 9–16 (0 off, 1–13 one LED, 14–26 blink, 27 all, 28 all blink), button LEDs notes 0–15 velocity 0 off / 1 on / 2 blink, Program Change 0/1 = layer A/B, CC 127 = standard/MC mode. 8 endless encoders with 13-LED rings, 16 backlit buttons, 60 mm fader; MC mode = hold MC while plugging in; 325 × 102 mm"
+  },
+  {
+   "title": "X-Touch-Mini-FS2020 docs (non-official)",
+   "url": "https://github.com/maartentamboer/X-Touch-Mini-FS2020/blob/master/docs/getting-started/general.md",
+   "note": "encoders must be switched to Relative2 in the X-TOUCH Editor for that app — i.e. the factory encoders are not relative; editor shows encoder push as Momentary notes on channel 11"
+  },
+  {
+   "title": "Q Light Controller+ forum — Behringer X Touch Mini (non-official)",
+   "url": "http://qlcplus.org/forum/viewtopic.php?t=13966",
+   "note": "input on channel 11; the fader is CC 9 on layer A and CC 10 on layer B; buttons pressed on the unit only light while held (momentary)"
+  }
+ ],
+ "notes": "Standard mode (not MC), Layer A, as shipped: everything on channel 11. Layer B sends CC 11–18 / notes 24–47 / fader CC 10 on the same channel — a layer the faceplate cannot show, so it is not modelled (學習 rebinds). The encoders are endless but send absolute 0–127 by default (the unit keeps the value and draws it on the LED ring); switch them to a relative mode in the X-TOUCH Editor and set \"relative\" here to match. Layer A / B select presets inside the unit. LED feedback is not wired: button LEDs and LED-ring values are addressed on the unit's global channel (notes 0–15, CC 9–16), whose factory value is not documented (owners report 1 or 12). MC mode (Mackie Control) is a different protocol and is not covered.",
+ "face": {
+  "w": 100,
+  "h": 31.5,
+  "label": "X-TOUCH MINI",
+  "body": "#202125",
+  "deco": [
+   {
+    "type": "buttons",
+    "x": 84,
+    "y": 3,
+    "w": 14,
+    "h": 3.5,
+    "items": [
+     "Layer A",
+     "Layer B"
+    ]
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "encoders",
+   "label": "",
+   "x": 2,
+   "y": 2.5,
+   "w": 80,
+   "h": 9.5,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "enc1",
+    "enc2",
+    "enc3",
+    "enc4",
+    "enc5",
+    "enc6",
+    "enc7",
+    "enc8"
+   ]
+  },
+  {
+   "id": "push",
+   "label": "",
+   "x": 2,
+   "y": 12,
+   "w": 80,
+   "h": 3,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "push1",
+    "push2",
+    "push3",
+    "push4",
+    "push5",
+    "push6",
+    "push7",
+    "push8"
+   ]
+  },
+  {
+   "id": "buttons",
+   "label": "",
+   "x": 2,
+   "y": 16,
+   "w": 80,
+   "h": 13.5,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5",
+    "b6",
+    "b7",
+    "b8",
+    "b9",
+    "b10",
+    "b11",
+    "b12",
+    "b13",
+    "b14",
+    "b15",
+    "b16"
+   ]
+  },
+  {
+   "id": "fader",
+   "label": "",
+   "x": 85,
+   "y": 8,
+   "w": 12,
+   "h": 21.5,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "fader"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "encoders",
+   "cols": 4,
+   "rows": 2,
+   "weight": 2.4,
+   "controls": [
+    "enc1",
+    "enc2",
+    "enc3",
+    "enc4",
+    "enc5",
+    "enc6",
+    "enc7",
+    "enc8"
+   ]
+  },
+  {
+   "id": "push",
+   "cols": 8,
+   "rows": 1,
+   "weight": 0.6,
+   "controls": [
+    "push1",
+    "push2",
+    "push3",
+    "push4",
+    "push5",
+    "push6",
+    "push7",
+    "push8"
+   ]
+  },
+  {
+   "id": "buttons",
+   "cols": 8,
+   "rows": 2,
+   "weight": 1.6,
+   "controls": [
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5",
+    "b6",
+    "b7",
+    "b8",
+    "b9",
+    "b10",
+    "b11",
+    "b12",
+    "b13",
+    "b14",
+    "b15",
+    "b16"
+   ]
+  },
+  {
+   "id": "fader",
+   "cols": 1,
+   "rows": 1,
+   "weight": 2,
+   "controls": [
+    "fader"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "enc1",
+   "type": "encoder",
+   "label": "1",
+   "msg": "cc",
+   "cc": 1,
+   "relative": false,
+   "group": "encoder",
+   "color": "amber"
+  },
+  {
+   "id": "enc2",
+   "type": "encoder",
+   "label": "2",
+   "msg": "cc",
+   "cc": 2,
+   "relative": false,
+   "group": "encoder",
+   "color": "amber"
+  },
+  {
+   "id": "enc3",
+   "type": "encoder",
+   "label": "3",
+   "msg": "cc",
+   "cc": 3,
+   "relative": false,
+   "group": "encoder",
+   "color": "amber"
+  },
+  {
+   "id": "enc4",
+   "type": "encoder",
+   "label": "4",
+   "msg": "cc",
+   "cc": 4,
+   "relative": false,
+   "group": "encoder",
+   "color": "amber"
+  },
+  {
+   "id": "enc5",
+   "type": "encoder",
+   "label": "5",
+   "msg": "cc",
+   "cc": 5,
+   "relative": false,
+   "group": "encoder",
+   "color": "amber"
+  },
+  {
+   "id": "enc6",
+   "type": "encoder",
+   "label": "6",
+   "msg": "cc",
+   "cc": 6,
+   "relative": false,
+   "group": "encoder",
+   "color": "amber"
+  },
+  {
+   "id": "enc7",
+   "type": "encoder",
+   "label": "7",
+   "msg": "cc",
+   "cc": 7,
+   "relative": false,
+   "group": "encoder",
+   "color": "amber"
+  },
+  {
+   "id": "enc8",
+   "type": "encoder",
+   "label": "8",
+   "msg": "cc",
+   "cc": 8,
+   "relative": false,
+   "group": "encoder",
+   "color": "amber"
+  },
+  {
+   "id": "push1",
+   "type": "button",
+   "label": "Push",
+   "msg": "note",
+   "note": 0,
+   "group": "push",
+   "color": "amber",
+   "shape": "round"
+  },
+  {
+   "id": "push2",
+   "type": "button",
+   "label": "Push",
+   "msg": "note",
+   "note": 1,
+   "group": "push",
+   "color": "amber",
+   "shape": "round"
+  },
+  {
+   "id": "push3",
+   "type": "button",
+   "label": "Push",
+   "msg": "note",
+   "note": 2,
+   "group": "push",
+   "color": "amber",
+   "shape": "round"
+  },
+  {
+   "id": "push4",
+   "type": "button",
+   "label": "Push",
+   "msg": "note",
+   "note": 3,
+   "group": "push",
+   "color": "amber",
+   "shape": "round"
+  },
+  {
+   "id": "push5",
+   "type": "button",
+   "label": "Push",
+   "msg": "note",
+   "note": 4,
+   "group": "push",
+   "color": "amber",
+   "shape": "round"
+  },
+  {
+   "id": "push6",
+   "type": "button",
+   "label": "Push",
+   "msg": "note",
+   "note": 5,
+   "group": "push",
+   "color": "amber",
+   "shape": "round"
+  },
+  {
+   "id": "push7",
+   "type": "button",
+   "label": "Push",
+   "msg": "note",
+   "note": 6,
+   "group": "push",
+   "color": "amber",
+   "shape": "round"
+  },
+  {
+   "id": "push8",
+   "type": "button",
+   "label": "Push",
+   "msg": "note",
+   "note": 7,
+   "group": "push",
+   "color": "amber",
+   "shape": "round"
+  },
+  {
+   "id": "b1",
+   "type": "button",
+   "label": "1",
+   "msg": "note",
+   "note": 8,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b2",
+   "type": "button",
+   "label": "2",
+   "msg": "note",
+   "note": 9,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b3",
+   "type": "button",
+   "label": "3",
+   "msg": "note",
+   "note": 10,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b4",
+   "type": "button",
+   "label": "4",
+   "msg": "note",
+   "note": 11,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b5",
+   "type": "button",
+   "label": "5",
+   "msg": "note",
+   "note": 12,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b6",
+   "type": "button",
+   "label": "6",
+   "msg": "note",
+   "note": 13,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b7",
+   "type": "button",
+   "label": "7",
+   "msg": "note",
+   "note": 14,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b8",
+   "type": "button",
+   "label": "8",
+   "msg": "note",
+   "note": 15,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b9",
+   "type": "button",
+   "label": "9",
+   "msg": "note",
+   "note": 16,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b10",
+   "type": "button",
+   "label": "10",
+   "msg": "note",
+   "note": 17,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b11",
+   "type": "button",
+   "label": "11",
+   "msg": "note",
+   "note": 18,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b12",
+   "type": "button",
+   "label": "12",
+   "msg": "note",
+   "note": 19,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b13",
+   "type": "button",
+   "label": "13",
+   "msg": "note",
+   "note": 20,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b14",
+   "type": "button",
+   "label": "14",
+   "msg": "note",
+   "note": 21,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b15",
+   "type": "button",
+   "label": "15",
+   "msg": "note",
+   "note": 22,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "b16",
+   "type": "button",
+   "label": "16",
+   "msg": "note",
+   "note": 23,
+   "group": "button",
+   "color": "amber"
+  },
+  {
+   "id": "fader",
+   "type": "fader",
+   "label": "Fader",
+   "msg": "cc",
+   "cc": 9,
+   "group": "fader",
+   "color": "amber"
+  }
+ ]
+}

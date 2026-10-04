@@ -1,0 +1,944 @@
+{
+ "id": "novation-launch-control-xl-mk2",
+ "short": "lcxl",
+ "name": "Novation Launch Control XL (MK2)",
+ "maker": "Novation",
+ "kind": "device",
+ "channel": 9,
+ "match": {
+  "ports": [
+   "launch\\s*control\\s*xl"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "sources": [
+  {
+   "title": "Launch Control XL Programmer's Reference Guide v2 (Novation)",
+   "url": "https://fael-downloads-prod.focusrite.com/customer/prod/downloads/launch_control_xl_programmer_s_reference_guide.pdf",
+   "note": "8 user templates (slots 0–7) + 8 fixed factory templates (8–15); the MIDI channel of a message = its template, so factory template 1 is channel 9; one port named 'Launch Control XL n' (n = device ID, omitted for ID 1); buttons send 127 on press, 0 on release; LED = note-on (or CC for CC buttons) on the template's channel, velocity = 16 × green + red + 12 flags (12 off, 13/15 red low/full, 28/60 green low/full, 29/63 amber low/full, 62 yellow); knob LEDs addressed by notes 13–15, 29–31 … 125–127 (diagram p. 8)"
+  },
+  {
+   "title": "Launch Control XL Getting Started Guide v2 (Novation)",
+   "url": "https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launch%20Control%20XL%20GSG%20v2.pdf",
+   "note": "hold User or Factory and press one of the bottom pads 1–8 to select a template; factory templates output a fixed set of CCs and notes; 24 pots, 8 faders, 16 buttons + 4 mode + 4 arrow buttons; same footprint as Launchpad S"
+  },
+  {
+   "title": "Ableton Live 12 MIDI Remote Script Launch_Control_XL (decompiled; non-official)",
+   "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/Launch_Control_XL/LaunchControlXL.py",
+   "note": "selects factory template 1 (LIVE_CHANNEL = 8, i.e. MIDI channel 9) by SysEx; send A knobs CC 13–20, send B 29–36, pan/device 49–56, faders 77–84; track focus notes 41–44, 57–60; track control notes 73–76, 89–92; device/mute/solo/arm notes 105–108; up/down/left/right CC 104–107; knob LED notes 13, 29, 45 … 125 (row 1), 14 … 126, 15 … 127"
+  },
+  {
+   "title": "DrivenByMoss LaunchControlXLControlSurface.java (Bitwig; non-official)",
+   "url": "https://github.com/git-moss/DrivenByMoss/blob/master/src/main/java/de/mossgrabers/controller/novation/launchcontrol/controller/LaunchControlXLControlSurface.java",
+   "note": "same numbers; every factory template uses them, on its own channel 9–16; single-LED buttons 127 = on"
+  },
+  {
+   "title": "Ardour Novation_LaunchControl_XL.map (non-official)",
+   "url": "https://github.com/Ardour/ardour/blob/master/share/midi_maps/Novation_LaunchControl_XL.map",
+   "note": "channel 9: knobs CC 13–20 / 29–36 / 49–56, faders 77–84, focus notes 41–44 57–60, control notes 73–76 89–92, left/right CC 106/107"
+  }
+ ],
+ "notes": "Factory template 1 (MIDI channel 9) — the template Ableton Live selects; select it by holding Factory and pressing bottom-row button 1. The other factory templates send the same numbers on channels 10–16 (copy the profile and change \"channel\"). User templates are editable in Novation Components and are not modelled. The User / Factory buttons switch templates inside the unit (SysEx F0 00 20 29 02 11 77 <template> F7) and send no control message. LED feedback: track focus amber-low idle / yellow when held, track control green-low / green, mode and arrow buttons 127 = on — the unit acts on it only while factory template 1 is selected. The LEDs under the knobs (notes 13–15, 29–31 … 125–127 on channel 9) are not driven. MK1 and MK2 share this protocol (Novation publishes one reference for both).",
+ "face": {
+  "w": 100,
+  "h": 100,
+  "label": "Launch Control XL",
+  "body": "#2b2d31",
+  "deco": [
+   {
+    "type": "buttons",
+    "x": 85,
+    "y": 11,
+    "w": 13,
+    "h": 6.5,
+    "items": [
+     "User",
+     "Factory"
+    ]
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "senda",
+   "label": "Send A",
+   "x": 2,
+   "y": 7,
+   "w": 81,
+   "h": 13,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "a1",
+    "a2",
+    "a3",
+    "a4",
+    "a5",
+    "a6",
+    "a7",
+    "a8"
+   ]
+  },
+  {
+   "id": "sendb",
+   "label": "Send B",
+   "x": 2,
+   "y": 21,
+   "w": 81,
+   "h": 13,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5",
+    "b6",
+    "b7",
+    "b8"
+   ]
+  },
+  {
+   "id": "pan",
+   "label": "Pan / Device",
+   "x": 2,
+   "y": 35,
+   "w": 81,
+   "h": 13,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "p5",
+    "p6",
+    "p7",
+    "p8"
+   ]
+  },
+  {
+   "id": "sendsel",
+   "label": "Send Select",
+   "x": 85,
+   "y": 22,
+   "w": 13,
+   "h": 8.5,
+   "cols": 2,
+   "rows": 1,
+   "controls": [
+    "up",
+    "down"
+   ]
+  },
+  {
+   "id": "tracksel",
+   "label": "Track Select",
+   "x": 85,
+   "y": 35.5,
+   "w": 13,
+   "h": 8.5,
+   "cols": 2,
+   "rows": 1,
+   "controls": [
+    "left",
+    "right"
+   ]
+  },
+  {
+   "id": "faders",
+   "label": "",
+   "x": 2,
+   "y": 49,
+   "w": 81,
+   "h": 29,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8"
+   ]
+  },
+  {
+   "id": "modes",
+   "label": "",
+   "x": 85,
+   "y": 49,
+   "w": 13,
+   "h": 30,
+   "cols": 1,
+   "rows": 4,
+   "controls": [
+    "device",
+    "mute",
+    "solo",
+    "arm"
+   ]
+  },
+  {
+   "id": "focus",
+   "label": "Track Focus",
+   "x": 2,
+   "y": 79.5,
+   "w": 81,
+   "h": 8.5,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "focus1",
+    "focus2",
+    "focus3",
+    "focus4",
+    "focus5",
+    "focus6",
+    "focus7",
+    "focus8"
+   ]
+  },
+  {
+   "id": "control",
+   "label": "Track Control",
+   "x": 2,
+   "y": 89,
+   "w": 81,
+   "h": 8.5,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "ctrl1",
+    "ctrl2",
+    "ctrl3",
+    "ctrl4",
+    "ctrl5",
+    "ctrl6",
+    "ctrl7",
+    "ctrl8"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "knobs",
+   "cols": 8,
+   "rows": 3,
+   "weight": 3,
+   "controls": [
+    "a1",
+    "a2",
+    "a3",
+    "a4",
+    "a5",
+    "a6",
+    "a7",
+    "a8",
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5",
+    "b6",
+    "b7",
+    "b8",
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "p5",
+    "p6",
+    "p7",
+    "p8"
+   ]
+  },
+  {
+   "id": "faders",
+   "cols": 8,
+   "rows": 1,
+   "weight": 3,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8"
+   ]
+  },
+  {
+   "id": "buttons",
+   "cols": 8,
+   "rows": 2,
+   "weight": 1.5,
+   "controls": [
+    "focus1",
+    "focus2",
+    "focus3",
+    "focus4",
+    "focus5",
+    "focus6",
+    "focus7",
+    "focus8",
+    "ctrl1",
+    "ctrl2",
+    "ctrl3",
+    "ctrl4",
+    "ctrl5",
+    "ctrl6",
+    "ctrl7",
+    "ctrl8"
+   ]
+  },
+  {
+   "id": "side",
+   "cols": 8,
+   "rows": 1,
+   "weight": 0.8,
+   "controls": [
+    "up",
+    "down",
+    "left",
+    "right",
+    "device",
+    "mute",
+    "solo",
+    "arm"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "a1",
+   "type": "knob",
+   "label": "A1",
+   "msg": "cc",
+   "cc": 13,
+   "group": "sendA",
+   "color": "coral"
+  },
+  {
+   "id": "a2",
+   "type": "knob",
+   "label": "A2",
+   "msg": "cc",
+   "cc": 14,
+   "group": "sendA",
+   "color": "coral"
+  },
+  {
+   "id": "a3",
+   "type": "knob",
+   "label": "A3",
+   "msg": "cc",
+   "cc": 15,
+   "group": "sendA",
+   "color": "coral"
+  },
+  {
+   "id": "a4",
+   "type": "knob",
+   "label": "A4",
+   "msg": "cc",
+   "cc": 16,
+   "group": "sendA",
+   "color": "coral"
+  },
+  {
+   "id": "a5",
+   "type": "knob",
+   "label": "A5",
+   "msg": "cc",
+   "cc": 17,
+   "group": "sendA",
+   "color": "coral"
+  },
+  {
+   "id": "a6",
+   "type": "knob",
+   "label": "A6",
+   "msg": "cc",
+   "cc": 18,
+   "group": "sendA",
+   "color": "coral"
+  },
+  {
+   "id": "a7",
+   "type": "knob",
+   "label": "A7",
+   "msg": "cc",
+   "cc": 19,
+   "group": "sendA",
+   "color": "coral"
+  },
+  {
+   "id": "a8",
+   "type": "knob",
+   "label": "A8",
+   "msg": "cc",
+   "cc": 20,
+   "group": "sendA",
+   "color": "coral"
+  },
+  {
+   "id": "b1",
+   "type": "knob",
+   "label": "B1",
+   "msg": "cc",
+   "cc": 29,
+   "group": "sendB",
+   "color": "amber"
+  },
+  {
+   "id": "b2",
+   "type": "knob",
+   "label": "B2",
+   "msg": "cc",
+   "cc": 30,
+   "group": "sendB",
+   "color": "amber"
+  },
+  {
+   "id": "b3",
+   "type": "knob",
+   "label": "B3",
+   "msg": "cc",
+   "cc": 31,
+   "group": "sendB",
+   "color": "amber"
+  },
+  {
+   "id": "b4",
+   "type": "knob",
+   "label": "B4",
+   "msg": "cc",
+   "cc": 32,
+   "group": "sendB",
+   "color": "amber"
+  },
+  {
+   "id": "b5",
+   "type": "knob",
+   "label": "B5",
+   "msg": "cc",
+   "cc": 33,
+   "group": "sendB",
+   "color": "amber"
+  },
+  {
+   "id": "b6",
+   "type": "knob",
+   "label": "B6",
+   "msg": "cc",
+   "cc": 34,
+   "group": "sendB",
+   "color": "amber"
+  },
+  {
+   "id": "b7",
+   "type": "knob",
+   "label": "B7",
+   "msg": "cc",
+   "cc": 35,
+   "group": "sendB",
+   "color": "amber"
+  },
+  {
+   "id": "b8",
+   "type": "knob",
+   "label": "B8",
+   "msg": "cc",
+   "cc": 36,
+   "group": "sendB",
+   "color": "amber"
+  },
+  {
+   "id": "p1",
+   "type": "knob",
+   "label": "P1",
+   "msg": "cc",
+   "cc": 49,
+   "group": "pan",
+   "color": "lime"
+  },
+  {
+   "id": "p2",
+   "type": "knob",
+   "label": "P2",
+   "msg": "cc",
+   "cc": 50,
+   "group": "pan",
+   "color": "lime"
+  },
+  {
+   "id": "p3",
+   "type": "knob",
+   "label": "P3",
+   "msg": "cc",
+   "cc": 51,
+   "group": "pan",
+   "color": "lime"
+  },
+  {
+   "id": "p4",
+   "type": "knob",
+   "label": "P4",
+   "msg": "cc",
+   "cc": 52,
+   "group": "pan",
+   "color": "lime"
+  },
+  {
+   "id": "p5",
+   "type": "knob",
+   "label": "P5",
+   "msg": "cc",
+   "cc": 53,
+   "group": "pan",
+   "color": "lime"
+  },
+  {
+   "id": "p6",
+   "type": "knob",
+   "label": "P6",
+   "msg": "cc",
+   "cc": 54,
+   "group": "pan",
+   "color": "lime"
+  },
+  {
+   "id": "p7",
+   "type": "knob",
+   "label": "P7",
+   "msg": "cc",
+   "cc": 55,
+   "group": "pan",
+   "color": "lime"
+  },
+  {
+   "id": "p8",
+   "type": "knob",
+   "label": "P8",
+   "msg": "cc",
+   "cc": 56,
+   "group": "pan",
+   "color": "lime"
+  },
+  {
+   "id": "f1",
+   "type": "fader",
+   "label": "1",
+   "msg": "cc",
+   "cc": 77,
+   "group": "fader",
+   "color": "cyan"
+  },
+  {
+   "id": "f2",
+   "type": "fader",
+   "label": "2",
+   "msg": "cc",
+   "cc": 78,
+   "group": "fader",
+   "color": "cyan"
+  },
+  {
+   "id": "f3",
+   "type": "fader",
+   "label": "3",
+   "msg": "cc",
+   "cc": 79,
+   "group": "fader",
+   "color": "cyan"
+  },
+  {
+   "id": "f4",
+   "type": "fader",
+   "label": "4",
+   "msg": "cc",
+   "cc": 80,
+   "group": "fader",
+   "color": "cyan"
+  },
+  {
+   "id": "f5",
+   "type": "fader",
+   "label": "5",
+   "msg": "cc",
+   "cc": 81,
+   "group": "fader",
+   "color": "cyan"
+  },
+  {
+   "id": "f6",
+   "type": "fader",
+   "label": "6",
+   "msg": "cc",
+   "cc": 82,
+   "group": "fader",
+   "color": "cyan"
+  },
+  {
+   "id": "f7",
+   "type": "fader",
+   "label": "7",
+   "msg": "cc",
+   "cc": 83,
+   "group": "fader",
+   "color": "cyan"
+  },
+  {
+   "id": "f8",
+   "type": "fader",
+   "label": "8",
+   "msg": "cc",
+   "cc": 84,
+   "group": "fader",
+   "color": "cyan"
+  },
+  {
+   "id": "focus1",
+   "type": "button",
+   "label": "1",
+   "msg": "note",
+   "note": 41,
+   "group": "focus",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 62,
+    "off": 29
+   }
+  },
+  {
+   "id": "focus2",
+   "type": "button",
+   "label": "2",
+   "msg": "note",
+   "note": 42,
+   "group": "focus",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 62,
+    "off": 29
+   }
+  },
+  {
+   "id": "focus3",
+   "type": "button",
+   "label": "3",
+   "msg": "note",
+   "note": 43,
+   "group": "focus",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 62,
+    "off": 29
+   }
+  },
+  {
+   "id": "focus4",
+   "type": "button",
+   "label": "4",
+   "msg": "note",
+   "note": 44,
+   "group": "focus",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 62,
+    "off": 29
+   }
+  },
+  {
+   "id": "focus5",
+   "type": "button",
+   "label": "5",
+   "msg": "note",
+   "note": 57,
+   "group": "focus",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 62,
+    "off": 29
+   }
+  },
+  {
+   "id": "focus6",
+   "type": "button",
+   "label": "6",
+   "msg": "note",
+   "note": 58,
+   "group": "focus",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 62,
+    "off": 29
+   }
+  },
+  {
+   "id": "focus7",
+   "type": "button",
+   "label": "7",
+   "msg": "note",
+   "note": 59,
+   "group": "focus",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 62,
+    "off": 29
+   }
+  },
+  {
+   "id": "focus8",
+   "type": "button",
+   "label": "8",
+   "msg": "note",
+   "note": 60,
+   "group": "focus",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 62,
+    "off": 29
+   }
+  },
+  {
+   "id": "ctrl1",
+   "type": "button",
+   "label": "1",
+   "msg": "note",
+   "note": 73,
+   "group": "control",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 60,
+    "off": 28
+   }
+  },
+  {
+   "id": "ctrl2",
+   "type": "button",
+   "label": "2",
+   "msg": "note",
+   "note": 74,
+   "group": "control",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 60,
+    "off": 28
+   }
+  },
+  {
+   "id": "ctrl3",
+   "type": "button",
+   "label": "3",
+   "msg": "note",
+   "note": 75,
+   "group": "control",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 60,
+    "off": 28
+   }
+  },
+  {
+   "id": "ctrl4",
+   "type": "button",
+   "label": "4",
+   "msg": "note",
+   "note": 76,
+   "group": "control",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 60,
+    "off": 28
+   }
+  },
+  {
+   "id": "ctrl5",
+   "type": "button",
+   "label": "5",
+   "msg": "note",
+   "note": 89,
+   "group": "control",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 60,
+    "off": 28
+   }
+  },
+  {
+   "id": "ctrl6",
+   "type": "button",
+   "label": "6",
+   "msg": "note",
+   "note": 90,
+   "group": "control",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 60,
+    "off": 28
+   }
+  },
+  {
+   "id": "ctrl7",
+   "type": "button",
+   "label": "7",
+   "msg": "note",
+   "note": 91,
+   "group": "control",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 60,
+    "off": 28
+   }
+  },
+  {
+   "id": "ctrl8",
+   "type": "button",
+   "label": "8",
+   "msg": "note",
+   "note": 92,
+   "group": "control",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 60,
+    "off": 28
+   }
+  },
+  {
+   "id": "device",
+   "type": "button",
+   "label": "Device",
+   "msg": "note",
+   "note": 105,
+   "group": "mode",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "mute",
+   "type": "button",
+   "label": "Mute",
+   "msg": "note",
+   "note": 106,
+   "group": "mode",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "solo",
+   "type": "button",
+   "label": "Solo",
+   "msg": "note",
+   "note": 107,
+   "group": "mode",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "arm",
+   "type": "button",
+   "label": "Rec Arm",
+   "msg": "note",
+   "note": 108,
+   "group": "mode",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "up",
+   "type": "button",
+   "label": "▲",
+   "msg": "cc",
+   "cc": 104,
+   "group": "nav",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "down",
+   "type": "button",
+   "label": "▼",
+   "msg": "cc",
+   "cc": 105,
+   "group": "nav",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "left",
+   "type": "button",
+   "label": "◀",
+   "msg": "cc",
+   "cc": 106,
+   "group": "nav",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "right",
+   "type": "button",
+   "label": "▶",
+   "msg": "cc",
+   "cc": 107,
+   "group": "nav",
+   "color": "coral",
+   "led": {
+    "msg": "cc",
+    "on": 127,
+    "off": 0
+   }
+  }
+ ]
+}

@@ -1,0 +1,423 @@
+{
+ "id": "akai-mpk-mini-mk3",
+ "short": "mpkmini3",
+ "name": "AKAI MPK mini mk3",
+ "maker": "AKAI Professional",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "mpk\\s*mini\\s*(3|mk\\s*3|mkiii)"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "sources": [
+  {
+   "title": "MPK mini mk3 Quickstart Guide v1.3 (AKAI; copy hosted by Amazon)",
+   "url": "https://m.media-amazon.com/images/I/B1SIdD1oPFL.pdf",
+   "note": "25 velocity-sensitive keys; 8 assignable 360° knobs, each sends a CC; 4-axis thumbstick: left/right bends pitch, up/down applies a mod-wheel effect; 8 velocity- and pressure-sensitive pads in Bank A (red) / B (green); CC and Prog Change pad modes; 8 programs (Prog Select + pad); 31.8 × 18.1 cm"
+  },
+  {
+   "title": "AKAI support — MPK Mini MK3: how to play both pads and keys at the same time in MPC Beats",
+   "url": "https://support.akaipro.com/en/support/solutions/articles/69000863197-mpk-mini-mk3-how-to-play-both-pads-and-keys-at-the-same-time-in-mpc-beats",
+   "note": "pad MIDI channel 10, keybed MIDI channel 1"
+  },
+  {
+   "title": "mpk3-settings — program 1 read from a unit (non-official)",
+   "url": "https://github.com/tsmetana/mpk3-settings/blob/master/pkg/gui_screen_1.png",
+   "note": "Program 1 'PGM:MPC': pads bank A notes 36–43 (CC 16–23, PC 0–7), bank B notes 44–51 (CC 24–31, PC 8–15), pad channel 10, aftertouch = Channel; knobs K1–K8 CC 70–77, Absolute 0–127; joystick X = Pitchbend, Y = Dual CC 1 / 1; keybed channel 1, octave 0"
+  },
+  {
+   "title": "Spectrasonics — Setting up the MPK Mini mk3 (non-official)",
+   "url": "https://support.spectrasonics.net/manual/Omnisphere3HW/3/en/topic/setting-up-the-mpk-mini-mk3",
+   "note": "program 1 'PGM: MPC' loads at power-on; knobs CC 70–77; in CC mode bank A pad 5 = CC 20, pad 6 = CC 21"
+  },
+  {
+   "title": "Ardour AKAI_MPKmini_mk3.map (non-official)",
+   "url": "https://github.com/Ardour/ardour/blob/master/share/midi_maps/AKAI_MPKmini_mk3.map",
+   "note": "knobs CC 70–77 on channel 1; pads in Prog Change mode send program 0–15 on channel 10"
+  },
+  {
+   "title": "Ableton Live 12 MIDI Remote Script MPK_mini_mkIII (decompiled; non-official)",
+   "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/MPK_mini_mkIII/__init__.py",
+   "note": "USB model name \"MPK mini 3\"; pad translation expects notes 36–51 on channel 10"
+  }
+ ],
+ "notes": "Program 1 (\"PGM:MPC\", loaded at power-on), pads in Note mode, Bank A. Bank B (notes 44–51) and the CC (16–31) / Prog Change (0–15) pad modes re-use the same 8 pads — a layer the faceplate cannot show, so they are not modelled (學習 rebinds; they still arrive as midi/ch/10/…). The knobs are endless but send absolute 0–127 (the unit keeps the value). The joystick is drawn as two strips: X = pitch bend (springs to centre), Y = CC 1 rising from 0 whichever way you push it (\"Dual CC\", springs back to 0). Pad pressure arrives as channel aftertouch on channel 10. Arp, Tap Tempo, Octave, Full Level, Note Repeat, Bank, CC, Prog Change and Prog Select act inside the unit and send nothing of their own. The pads light themselves; no LED feedback is sent.",
+ "face": {
+  "w": 100,
+  "h": 57,
+  "label": "MPK mini",
+  "body": "#1d1e21",
+  "deco": [
+   {
+    "type": "screen",
+    "x": 61,
+    "y": 2.5,
+    "w": 9.5,
+    "h": 5.5,
+    "text": "PGM:MPC"
+   },
+   {
+    "type": "buttons",
+    "x": 72,
+    "y": 3,
+    "w": 26,
+    "h": 4,
+    "items": [
+     "Bank A/B",
+     "CC",
+     "Prog Chg",
+     "Prog Sel"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 2.5,
+    "y": 13.5,
+    "w": 12,
+    "h": 3,
+    "items": [
+     "Arp",
+     "Tap"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 2.5,
+    "y": 17.5,
+    "w": 12,
+    "h": 3,
+    "items": [
+     "Oct−",
+     "Oct+"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 2.5,
+    "y": 21.5,
+    "w": 12,
+    "h": 3,
+    "items": [
+     "Full",
+     "Repeat"
+    ]
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "joystick",
+   "label": "",
+   "x": 3,
+   "y": 2,
+   "w": 11,
+   "h": 10.5,
+   "cols": 2,
+   "rows": 1,
+   "controls": [
+    "bend",
+    "mod"
+   ]
+  },
+  {
+   "id": "pads",
+   "label": "",
+   "x": 17,
+   "y": 3,
+   "w": 43,
+   "h": 23,
+   "cols": 4,
+   "rows": 2,
+   "controls": [
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4"
+   ]
+  },
+  {
+   "id": "knobs",
+   "label": "",
+   "x": 62,
+   "y": 8.5,
+   "w": 36,
+   "h": 18.5,
+   "cols": 4,
+   "rows": 2,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  },
+  {
+   "id": "keys",
+   "label": "",
+   "x": 1,
+   "y": 29,
+   "w": 98,
+   "h": 27,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "knobs",
+   "cols": 4,
+   "rows": 2,
+   "weight": 2.2,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  },
+  {
+   "id": "pads",
+   "cols": 4,
+   "rows": 2,
+   "weight": 2.2,
+   "controls": [
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4"
+   ]
+  },
+  {
+   "id": "joystick",
+   "cols": 2,
+   "rows": 1,
+   "weight": 1.4,
+   "controls": [
+    "bend",
+    "mod"
+   ]
+  },
+  {
+   "id": "keys",
+   "cols": 1,
+   "rows": 1,
+   "weight": 3.2,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "bend",
+   "type": "wheel",
+   "label": "Bend",
+   "msg": "pitchbend",
+   "group": "joystick",
+   "color": "white"
+  },
+  {
+   "id": "mod",
+   "type": "wheel",
+   "label": "Mod",
+   "msg": "cc",
+   "cc": 1,
+   "spring": true,
+   "group": "joystick",
+   "color": "white"
+  },
+  {
+   "id": "k1",
+   "type": "knob",
+   "label": "K1",
+   "msg": "cc",
+   "cc": 70,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k2",
+   "type": "knob",
+   "label": "K2",
+   "msg": "cc",
+   "cc": 71,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k3",
+   "type": "knob",
+   "label": "K3",
+   "msg": "cc",
+   "cc": 72,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k4",
+   "type": "knob",
+   "label": "K4",
+   "msg": "cc",
+   "cc": 73,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k5",
+   "type": "knob",
+   "label": "K5",
+   "msg": "cc",
+   "cc": 74,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k6",
+   "type": "knob",
+   "label": "K6",
+   "msg": "cc",
+   "cc": 75,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k7",
+   "type": "knob",
+   "label": "K7",
+   "msg": "cc",
+   "cc": 76,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "k8",
+   "type": "knob",
+   "label": "K8",
+   "msg": "cc",
+   "cc": 77,
+   "group": "knob",
+   "color": "amber"
+  },
+  {
+   "id": "pad1",
+   "type": "pad",
+   "label": "1",
+   "msg": "note",
+   "ch": 10,
+   "note": 36,
+   "aftertouch": "channel",
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad2",
+   "type": "pad",
+   "label": "2",
+   "msg": "note",
+   "ch": 10,
+   "note": 37,
+   "aftertouch": "channel",
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad3",
+   "type": "pad",
+   "label": "3",
+   "msg": "note",
+   "ch": 10,
+   "note": 38,
+   "aftertouch": "channel",
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad4",
+   "type": "pad",
+   "label": "4",
+   "msg": "note",
+   "ch": 10,
+   "note": 39,
+   "aftertouch": "channel",
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad5",
+   "type": "pad",
+   "label": "5",
+   "msg": "note",
+   "ch": 10,
+   "note": 40,
+   "aftertouch": "channel",
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad6",
+   "type": "pad",
+   "label": "6",
+   "msg": "note",
+   "ch": 10,
+   "note": 41,
+   "aftertouch": "channel",
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad7",
+   "type": "pad",
+   "label": "7",
+   "msg": "note",
+   "ch": 10,
+   "note": 42,
+   "aftertouch": "channel",
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad8",
+   "type": "pad",
+   "label": "8",
+   "msg": "note",
+   "ch": 10,
+   "note": 43,
+   "aftertouch": "channel",
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "keys",
+   "type": "keys",
+   "label": "Keys",
+   "msg": "note",
+   "from": 48,
+   "to": 72,
+   "group": "note",
+   "verified": false,
+   "note": "Lowest key at octave 0 is not printed in the docs; C3 = 48 is assumed. Keys follow any note on channel 1, so an octave shift just scrolls the on-screen keys."
+  }
+ ]
+}

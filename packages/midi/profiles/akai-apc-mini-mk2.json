@@ -1,0 +1,1606 @@
+{
+ "id": "akai-apc-mini-mk2",
+ "short": "apcmini2",
+ "name": "AKAI APC mini mk2",
+ "maker": "AKAI Professional",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "apc\\s*mini\\s*(mk\\s*2|mkii)"
+  ],
+  "prefer": [
+   "control"
+  ],
+  "avoid": [
+   "notes",
+   "midiin2"
+  ]
+ },
+ "sources": [
+  {
+   "title": "APC mini mk2 Communications Protocol v1.0 (AKAI)",
+   "url": "https://cdn.inmusicbrands.com/akai/attachments/APC%20mini%20mk2%20-%20Communication%20Protocol%20-%20v1.0.pdf",
+   "note": "pad matrix diagram: notes 0x00–0x3F, 0x00 bottom-left, rows bottom→top, left→right; track buttons notes 0x64–0x6B (red LED), scene launch 0x70–0x77 (green LED), shift 0x7A (no LED), all channel 1 on port 0; faders 1–9 CC 0x30–0x38 channel 1, absolute; RGB LED = note-on where the channel sets behaviour (ch1–7 = 10/25/50/65/75/90/100 % brightness, ch8–11 pulse, ch12–16 blink) and velocity = palette index (0 #000000, 3 #FFFFFF, 5 #FF0000, 37 #00A9FF …); single LEDs = note-on ch1, velocity 0 off, 1 on, 2 blink"
+  },
+  {
+   "title": "APC mini mk2 User Guide v1.7 (AKAI)",
+   "url": "https://cdn.inmusicbrands.com/akai/apc-mini-mkii/APC%20mini%20mk2%20-%20User%20Guide%20-%20v1.7.pdf",
+   "note": "faceplate legends (track row: Volume, Pan, Send, Device, ▲▼◀▶; scene column soft keys: Clip Stop, Solo, Mute, Rec Arm, Select, Drum, Note, Stop All Clips); Shift + scene 6 / 7 enters Drum / Note mode; 240 × 210 mm"
+  },
+  {
+   "title": "Ableton Live 12 MIDI Remote Script APC_mini_mk2 (decompiled; non-official)",
+   "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/APC_mini_mk2/elements.py",
+   "note": "clip grid notes 0–63 on channel 1 (top row 56–63), drum-mode pads notes 64–127 on channel 10, track 100–107, scene 112–119, shift 122, faders CC 48–55, master CC 56; colors.py: FULL_BRIGHTNESS_CHANNEL = 6 (MIDI channel 7)"
+  },
+  {
+   "title": "Ardour AKAI_APCmini_mk2.map (non-official)",
+   "url": "https://github.com/Ardour/ardour/blob/master/share/midi_maps/AKAI_APCmini_mk2.map",
+   "note": "faders CC 48–56, scene notes 112–119, grid notes 0–63, all channel 1"
+  },
+  {
+   "title": "MPC_Mapper README (non-official)",
+   "url": "https://github.com/miles-p/MPC_Mapper",
+   "note": "the port that carries pads, buttons, faders and LEDs is named \"APC mini mk2 … Control\" (Linux)"
+  }
+ ],
+ "notes": "Session (clip-launch) layout, the one the unit boots into: the 8×8 grid sends notes 0–63 on channel 1, bottom-left = 0. Drum mode (Shift + scene 6: notes 64–127 on channel 10) and Note mode (Shift + scene 7: notes on the second USB port) are not modelled — 學習 can rebind. Shift (note 122) is a plain button the host reads; the printed Shift legends are host functions. The unit has two USB ports: the first (…Control on Linux, plain \"APC mini mk2\" on Windows) carries everything here; the second carries Note mode only. LED feedback: grid pads lit at 100 % brightness (channel 7) with palette 37 (#00A9FF) while held; track buttons (red) and scene buttons (green) are single-colour, velocity 1 = on.",
+ "face": {
+  "w": 100,
+  "h": 87.5,
+  "label": "APC mini mk2",
+  "body": "#1a1a1c"
+ },
+ "sections": [
+  {
+   "id": "grid",
+   "label": "",
+   "x": 3,
+   "y": 8.5,
+   "w": 83,
+   "h": 46.5,
+   "cols": 8,
+   "rows": 8,
+   "controls": [
+    "pad57",
+    "pad58",
+    "pad59",
+    "pad60",
+    "pad61",
+    "pad62",
+    "pad63",
+    "pad64",
+    "pad49",
+    "pad50",
+    "pad51",
+    "pad52",
+    "pad53",
+    "pad54",
+    "pad55",
+    "pad56",
+    "pad41",
+    "pad42",
+    "pad43",
+    "pad44",
+    "pad45",
+    "pad46",
+    "pad47",
+    "pad48",
+    "pad33",
+    "pad34",
+    "pad35",
+    "pad36",
+    "pad37",
+    "pad38",
+    "pad39",
+    "pad40",
+    "pad25",
+    "pad26",
+    "pad27",
+    "pad28",
+    "pad29",
+    "pad30",
+    "pad31",
+    "pad32",
+    "pad17",
+    "pad18",
+    "pad19",
+    "pad20",
+    "pad21",
+    "pad22",
+    "pad23",
+    "pad24",
+    "pad9",
+    "pad10",
+    "pad11",
+    "pad12",
+    "pad13",
+    "pad14",
+    "pad15",
+    "pad16",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8"
+   ]
+  },
+  {
+   "id": "scene",
+   "label": "",
+   "x": 88,
+   "y": 8.5,
+   "w": 7,
+   "h": 46.5,
+   "cols": 1,
+   "rows": 8,
+   "controls": [
+    "scene1",
+    "scene2",
+    "scene3",
+    "scene4",
+    "scene5",
+    "scene6",
+    "scene7",
+    "scene8"
+   ]
+  },
+  {
+   "id": "track",
+   "label": "",
+   "x": 3,
+   "y": 56.5,
+   "w": 83,
+   "h": 4.5,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "track1",
+    "track2",
+    "track3",
+    "track4",
+    "track5",
+    "track6",
+    "track7",
+    "track8"
+   ]
+  },
+  {
+   "id": "shift",
+   "label": "",
+   "x": 88,
+   "y": 56.5,
+   "w": 7,
+   "h": 4.5,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "shift"
+   ]
+  },
+  {
+   "id": "faders",
+   "label": "",
+   "x": 3,
+   "y": 62.5,
+   "w": 92,
+   "h": 23,
+   "cols": 9,
+   "rows": 1,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "master"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "grid",
+   "cols": 8,
+   "rows": 8,
+   "weight": 6,
+   "controls": [
+    "pad57",
+    "pad58",
+    "pad59",
+    "pad60",
+    "pad61",
+    "pad62",
+    "pad63",
+    "pad64",
+    "pad49",
+    "pad50",
+    "pad51",
+    "pad52",
+    "pad53",
+    "pad54",
+    "pad55",
+    "pad56",
+    "pad41",
+    "pad42",
+    "pad43",
+    "pad44",
+    "pad45",
+    "pad46",
+    "pad47",
+    "pad48",
+    "pad33",
+    "pad34",
+    "pad35",
+    "pad36",
+    "pad37",
+    "pad38",
+    "pad39",
+    "pad40",
+    "pad25",
+    "pad26",
+    "pad27",
+    "pad28",
+    "pad29",
+    "pad30",
+    "pad31",
+    "pad32",
+    "pad17",
+    "pad18",
+    "pad19",
+    "pad20",
+    "pad21",
+    "pad22",
+    "pad23",
+    "pad24",
+    "pad9",
+    "pad10",
+    "pad11",
+    "pad12",
+    "pad13",
+    "pad14",
+    "pad15",
+    "pad16",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8"
+   ]
+  },
+  {
+   "id": "scene",
+   "cols": 8,
+   "rows": 1,
+   "weight": 0.8,
+   "controls": [
+    "scene1",
+    "scene2",
+    "scene3",
+    "scene4",
+    "scene5",
+    "scene6",
+    "scene7",
+    "scene8"
+   ]
+  },
+  {
+   "id": "track",
+   "cols": 9,
+   "rows": 1,
+   "weight": 0.8,
+   "controls": [
+    "track1",
+    "track2",
+    "track3",
+    "track4",
+    "track5",
+    "track6",
+    "track7",
+    "track8",
+    "shift"
+   ]
+  },
+  {
+   "id": "faders",
+   "cols": 9,
+   "rows": 1,
+   "weight": 3,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "master"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "pad1",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 0,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad2",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 1,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad3",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 2,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad4",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 3,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad5",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 4,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad6",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 5,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad7",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 6,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad8",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 7,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad9",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 8,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad10",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 9,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad11",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 10,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad12",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 11,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad13",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 12,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad14",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 13,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad15",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 14,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad16",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 15,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad17",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 16,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad18",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 17,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad19",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 18,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad20",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 19,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad21",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 20,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad22",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 21,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad23",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 22,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad24",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 23,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad25",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 24,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad26",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 25,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad27",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 26,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad28",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 27,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad29",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 28,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad30",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 29,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad31",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 30,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad32",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 31,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad33",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 32,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad34",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 33,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad35",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 34,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad36",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 35,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad37",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 36,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad38",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 37,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad39",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 38,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad40",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 39,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad41",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 40,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad42",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 41,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad43",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 42,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad44",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 43,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad45",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 44,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad46",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 45,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad47",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 46,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad48",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 47,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad49",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 48,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad50",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 49,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad51",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 50,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad52",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 51,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad53",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 52,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad54",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 53,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad55",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 54,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad56",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 55,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad57",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 56,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad58",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 57,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad59",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 58,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad60",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 59,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad61",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 60,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad62",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 61,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad63",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 62,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "pad64",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "note": 63,
+   "group": "pad",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "ch": 7,
+    "on": 37,
+    "off": 0
+   }
+  },
+  {
+   "id": "track1",
+   "type": "button",
+   "label": "Vol",
+   "msg": "note",
+   "note": 100,
+   "group": "track",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "track2",
+   "type": "button",
+   "label": "Pan",
+   "msg": "note",
+   "note": 101,
+   "group": "track",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "track3",
+   "type": "button",
+   "label": "Send",
+   "msg": "note",
+   "note": 102,
+   "group": "track",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "track4",
+   "type": "button",
+   "label": "Dev",
+   "msg": "note",
+   "note": 103,
+   "group": "track",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "track5",
+   "type": "button",
+   "label": "▲",
+   "msg": "note",
+   "note": 104,
+   "group": "track",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "track6",
+   "type": "button",
+   "label": "▼",
+   "msg": "note",
+   "note": 105,
+   "group": "track",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "track7",
+   "type": "button",
+   "label": "◀",
+   "msg": "note",
+   "note": 106,
+   "group": "track",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "track8",
+   "type": "button",
+   "label": "▶",
+   "msg": "note",
+   "note": 107,
+   "group": "track",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "scene1",
+   "type": "button",
+   "label": "▸",
+   "msg": "note",
+   "note": 112,
+   "group": "scene",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "scene2",
+   "type": "button",
+   "label": "▸",
+   "msg": "note",
+   "note": 113,
+   "group": "scene",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "scene3",
+   "type": "button",
+   "label": "▸",
+   "msg": "note",
+   "note": 114,
+   "group": "scene",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "scene4",
+   "type": "button",
+   "label": "▸",
+   "msg": "note",
+   "note": 115,
+   "group": "scene",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "scene5",
+   "type": "button",
+   "label": "▸",
+   "msg": "note",
+   "note": 116,
+   "group": "scene",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "scene6",
+   "type": "button",
+   "label": "▸",
+   "msg": "note",
+   "note": 117,
+   "group": "scene",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "scene7",
+   "type": "button",
+   "label": "▸",
+   "msg": "note",
+   "note": 118,
+   "group": "scene",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "scene8",
+   "type": "button",
+   "label": "▸",
+   "msg": "note",
+   "note": 119,
+   "group": "scene",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 1,
+    "off": 0
+   }
+  },
+  {
+   "id": "shift",
+   "type": "button",
+   "label": "Shift",
+   "msg": "note",
+   "note": 122,
+   "group": "shift",
+   "color": "white"
+  },
+  {
+   "id": "f1",
+   "type": "fader",
+   "label": "1",
+   "msg": "cc",
+   "cc": 48,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f2",
+   "type": "fader",
+   "label": "2",
+   "msg": "cc",
+   "cc": 49,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f3",
+   "type": "fader",
+   "label": "3",
+   "msg": "cc",
+   "cc": 50,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f4",
+   "type": "fader",
+   "label": "4",
+   "msg": "cc",
+   "cc": 51,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f5",
+   "type": "fader",
+   "label": "5",
+   "msg": "cc",
+   "cc": 52,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f6",
+   "type": "fader",
+   "label": "6",
+   "msg": "cc",
+   "cc": 53,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f7",
+   "type": "fader",
+   "label": "7",
+   "msg": "cc",
+   "cc": 54,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f8",
+   "type": "fader",
+   "label": "8",
+   "msg": "cc",
+   "cc": 55,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "master",
+   "type": "fader",
+   "label": "Master",
+   "msg": "cc",
+   "cc": 56,
+   "group": "fader",
+   "color": "white"
+  }
+ ]
+}

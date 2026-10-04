@@ -6,6 +6,11 @@ Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ 
 Repository: https://github.com/frank890417/open-audiovisual
 Author: Che-Yu Wu 吳哲宇 (https://cheyuwu.com)
 
+## Pages
+
+- [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the complete documentation on one page — quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers & embedding, phones, signals, every package, MCP, troubleshooting. Generated from the Markdown in `docs/`.
+- [MIDI controller library](https://openaudiovisual.com/controllers/) ([繁體中文](https://openaudiovisual.com/zh/controllers/)): every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).
+
 ## Core concepts
 
 - **Signal** — a named, normalized value saying what is happening: `midi/cc/74`, `audio/rms`, `chord/consonance`, `pose/hand/right/y`, `phone/<id>/tilt/x`. Continuous (has a value, usually 0..1) or pulse (fires an event payload, e.g. `midi/note/on` → `{note, vel}`). Signals are the only currency of input.
@@ -30,7 +35,7 @@ Author: Che-Yu Wu 吳哲宇 (https://cheyuwu.com)
 - [Signals reference](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/signals.md): every signal the built-in inputs publish.
 - [Show control](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/show-control.md): timeline, scenes, performance mode, monitor, OSC.
 - [Patch bay design](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/design/patchbay.md): multi-device MIDI and the patch bay.
-- [Full text](https://openaudiovisual.com/llms-full.txt): README, AGENTS.md and all docs in one file.
+- [Full text](https://openaudiovisual.com/llms-full.txt): README, AGENTS.md and every handbook chapter in one file.
 
 ## MCP server
 

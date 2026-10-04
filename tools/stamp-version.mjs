@@ -60,6 +60,10 @@ const walk = (dir) => {
 walk(path.join(ROOT, 'examples'));
 walk(path.join(ROOT, 'packages'));
 walk(path.join(ROOT, 'assets'));                        // homepage modules (home.js → ./harmonograph.js)
+walk(path.join(ROOT, 'embed'));                         // the iframe controller (embed/controller/)
+// generated site pages (tools/build-*.mjs): stamp their stylesheet and module URLs too
+for (const p of ['controllers/index.html', 'zh/controllers/index.html', 'docs/index.html', 'zh/docs/index.html'])
+  if (fs.existsSync(path.join(ROOT, p))) files.push(path.join(ROOT, p));
 files.push(path.join(ROOT, 'index.html'));
 if (fs.existsSync(path.join(ROOT, 'zh', 'index.html'))) files.push(path.join(ROOT, 'zh', 'index.html'));
 

@@ -1,0 +1,825 @@
+{
+ "id": "akai-midimix",
+ "short": "midimix",
+ "name": "AKAI MIDImix",
+ "maker": "AKAI Professional",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "midi\\s*mix"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "sources": [
+  {
+   "title": "MIDImix User Guide v1.0 (AKAI)",
+   "url": "https://cdn.inmusicbrands.com/akai/attachments/MIDIMIX/MIDImix-UserGuide-v1.0.pdf",
+   "note": "layout: 24 knobs (3 per channel), 8 mute buttons (amber-backlit; hold Solo to make them solo buttons), 8 record-arm buttons (red-backlit), 8 + 1 master faders, Bank Left / Right, Solo, Send All; Ableton Live control surface and port name \"MIDI Mix\"; 23.9 × 20.1 cm. It prints no MIDI numbers (the MIDImix Editor holds them)."
+  },
+  {
+   "title": "Ableton Live 12 MIDI Remote Script MIDI_Mix (decompiled; non-official)",
+   "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/MIDI_Mix/MIDI_Mix.py",
+   "note": "all on channel 1: knob rows CC 16 20 24 28 46 50 54 58 / +1 / +2 (the bottom row is pan), faders CC 19 23 27 31 49 53 57 61, master CC 62; mute notes 1 4 … 22, solo (Solo held) 2 5 … 23, rec arm 3 6 … 24; bank left 25, bank right 26, solo 27; LEDs note-on 127 / 0"
+  },
+  {
+   "title": "Ardour AKAI_MIDIMix_Normal_Mode.map and AKAI_MIDIMix_EQ_Mode.map (non-official)",
+   "url": "https://github.com/Ardour/ardour/blob/master/share/midi_maps/AKAI_MIDIMix_Normal_Mode.map",
+   "note": "agree with the Ableton script: faders 19 … 61, master 62, mute / solo / rec notes 1–24, bank 25 / 26, solo 27, knobs 16–18 … 58–60 (EQ map), channel 1"
+  }
+ ],
+ "notes": "The factory mapping (what the MIDImix Editor calls the default), channel 1. AKAI's own documents print no numbers, so every number here comes from Ableton's shipped MIDI_Mix script and Ardour's maps, which agree. Holding Solo turns the Mute row into solo buttons sending notes 2, 5 … 23 — a layer the faceplate cannot show, so those notes are not modelled (they still arrive as midi/ch/1/note/<n>). Send All re-sends every knob and fader position and has no message of its own. LED feedback: mute (amber) and rec-arm (red) buttons, note-on 127 / 0, lit while held.",
+ "face": {
+  "w": 100,
+  "h": 84,
+  "label": "MIDImix",
+  "body": "#1c1d20",
+  "deco": [
+   {
+    "type": "buttons",
+    "x": 83,
+    "y": 6,
+    "w": 13,
+    "h": 4.5,
+    "items": [
+     "Send All"
+    ]
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "knobs",
+   "label": "",
+   "x": 2,
+   "y": 3,
+   "w": 79,
+   "h": 39,
+   "cols": 8,
+   "rows": 3,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8",
+    "k9",
+    "k10",
+    "k11",
+    "k12",
+    "k13",
+    "k14",
+    "k15",
+    "k16",
+    "k17",
+    "k18",
+    "k19",
+    "k20",
+    "k21",
+    "k22",
+    "k23",
+    "k24"
+   ]
+  },
+  {
+   "id": "bank",
+   "label": "",
+   "x": 83,
+   "y": 19,
+   "w": 13,
+   "h": 21,
+   "cols": 1,
+   "rows": 2,
+   "controls": [
+    "bankleft",
+    "bankright"
+   ]
+  },
+  {
+   "id": "mute",
+   "label": "",
+   "x": 2,
+   "y": 44,
+   "w": 79,
+   "h": 6,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "mute1",
+    "mute2",
+    "mute3",
+    "mute4",
+    "mute5",
+    "mute6",
+    "mute7",
+    "mute8"
+   ]
+  },
+  {
+   "id": "solo",
+   "label": "",
+   "x": 83,
+   "y": 44,
+   "w": 13,
+   "h": 6,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "solo"
+   ]
+  },
+  {
+   "id": "rec",
+   "label": "",
+   "x": 2,
+   "y": 51.5,
+   "w": 79,
+   "h": 6,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "rec1",
+    "rec2",
+    "rec3",
+    "rec4",
+    "rec5",
+    "rec6",
+    "rec7",
+    "rec8"
+   ]
+  },
+  {
+   "id": "faders",
+   "label": "",
+   "x": 2,
+   "y": 59,
+   "w": 79,
+   "h": 23,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8"
+   ]
+  },
+  {
+   "id": "master",
+   "label": "",
+   "x": 83,
+   "y": 59,
+   "w": 13,
+   "h": 23,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "master"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "knobs",
+   "cols": 8,
+   "rows": 3,
+   "weight": 3.2,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8",
+    "k9",
+    "k10",
+    "k11",
+    "k12",
+    "k13",
+    "k14",
+    "k15",
+    "k16",
+    "k17",
+    "k18",
+    "k19",
+    "k20",
+    "k21",
+    "k22",
+    "k23",
+    "k24"
+   ]
+  },
+  {
+   "id": "buttons",
+   "cols": 8,
+   "rows": 2,
+   "weight": 1.2,
+   "controls": [
+    "mute1",
+    "mute2",
+    "mute3",
+    "mute4",
+    "mute5",
+    "mute6",
+    "mute7",
+    "mute8",
+    "rec1",
+    "rec2",
+    "rec3",
+    "rec4",
+    "rec5",
+    "rec6",
+    "rec7",
+    "rec8"
+   ]
+  },
+  {
+   "id": "faders",
+   "cols": 9,
+   "rows": 1,
+   "weight": 3,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "master"
+   ]
+  },
+  {
+   "id": "side",
+   "cols": 3,
+   "rows": 1,
+   "weight": 0.7,
+   "controls": [
+    "bankleft",
+    "bankright",
+    "solo"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "k1",
+   "type": "knob",
+   "label": "1",
+   "msg": "cc",
+   "cc": 16,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k2",
+   "type": "knob",
+   "label": "2",
+   "msg": "cc",
+   "cc": 20,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k3",
+   "type": "knob",
+   "label": "3",
+   "msg": "cc",
+   "cc": 24,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k4",
+   "type": "knob",
+   "label": "4",
+   "msg": "cc",
+   "cc": 28,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k5",
+   "type": "knob",
+   "label": "5",
+   "msg": "cc",
+   "cc": 46,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k6",
+   "type": "knob",
+   "label": "6",
+   "msg": "cc",
+   "cc": 50,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k7",
+   "type": "knob",
+   "label": "7",
+   "msg": "cc",
+   "cc": 54,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k8",
+   "type": "knob",
+   "label": "8",
+   "msg": "cc",
+   "cc": 58,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k9",
+   "type": "knob",
+   "label": "9",
+   "msg": "cc",
+   "cc": 17,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k10",
+   "type": "knob",
+   "label": "10",
+   "msg": "cc",
+   "cc": 21,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k11",
+   "type": "knob",
+   "label": "11",
+   "msg": "cc",
+   "cc": 25,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k12",
+   "type": "knob",
+   "label": "12",
+   "msg": "cc",
+   "cc": 29,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k13",
+   "type": "knob",
+   "label": "13",
+   "msg": "cc",
+   "cc": 47,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k14",
+   "type": "knob",
+   "label": "14",
+   "msg": "cc",
+   "cc": 51,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k15",
+   "type": "knob",
+   "label": "15",
+   "msg": "cc",
+   "cc": 55,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k16",
+   "type": "knob",
+   "label": "16",
+   "msg": "cc",
+   "cc": 59,
+   "group": "knob",
+   "color": "cyan"
+  },
+  {
+   "id": "k17",
+   "type": "knob",
+   "label": "17",
+   "msg": "cc",
+   "cc": 18,
+   "group": "knob",
+   "color": "violet"
+  },
+  {
+   "id": "k18",
+   "type": "knob",
+   "label": "18",
+   "msg": "cc",
+   "cc": 22,
+   "group": "knob",
+   "color": "violet"
+  },
+  {
+   "id": "k19",
+   "type": "knob",
+   "label": "19",
+   "msg": "cc",
+   "cc": 26,
+   "group": "knob",
+   "color": "violet"
+  },
+  {
+   "id": "k20",
+   "type": "knob",
+   "label": "20",
+   "msg": "cc",
+   "cc": 30,
+   "group": "knob",
+   "color": "violet"
+  },
+  {
+   "id": "k21",
+   "type": "knob",
+   "label": "21",
+   "msg": "cc",
+   "cc": 48,
+   "group": "knob",
+   "color": "violet"
+  },
+  {
+   "id": "k22",
+   "type": "knob",
+   "label": "22",
+   "msg": "cc",
+   "cc": 52,
+   "group": "knob",
+   "color": "violet"
+  },
+  {
+   "id": "k23",
+   "type": "knob",
+   "label": "23",
+   "msg": "cc",
+   "cc": 56,
+   "group": "knob",
+   "color": "violet"
+  },
+  {
+   "id": "k24",
+   "type": "knob",
+   "label": "24",
+   "msg": "cc",
+   "cc": 60,
+   "group": "knob",
+   "color": "violet"
+  },
+  {
+   "id": "mute1",
+   "type": "button",
+   "label": "Mute",
+   "msg": "note",
+   "note": 1,
+   "group": "mute",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "mute2",
+   "type": "button",
+   "label": "Mute",
+   "msg": "note",
+   "note": 4,
+   "group": "mute",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "mute3",
+   "type": "button",
+   "label": "Mute",
+   "msg": "note",
+   "note": 7,
+   "group": "mute",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "mute4",
+   "type": "button",
+   "label": "Mute",
+   "msg": "note",
+   "note": 10,
+   "group": "mute",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "mute5",
+   "type": "button",
+   "label": "Mute",
+   "msg": "note",
+   "note": 13,
+   "group": "mute",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "mute6",
+   "type": "button",
+   "label": "Mute",
+   "msg": "note",
+   "note": 16,
+   "group": "mute",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "mute7",
+   "type": "button",
+   "label": "Mute",
+   "msg": "note",
+   "note": 19,
+   "group": "mute",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "mute8",
+   "type": "button",
+   "label": "Mute",
+   "msg": "note",
+   "note": 22,
+   "group": "mute",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rec1",
+   "type": "button",
+   "label": "Rec",
+   "msg": "note",
+   "note": 3,
+   "group": "rec",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rec2",
+   "type": "button",
+   "label": "Rec",
+   "msg": "note",
+   "note": 6,
+   "group": "rec",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rec3",
+   "type": "button",
+   "label": "Rec",
+   "msg": "note",
+   "note": 9,
+   "group": "rec",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rec4",
+   "type": "button",
+   "label": "Rec",
+   "msg": "note",
+   "note": 12,
+   "group": "rec",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rec5",
+   "type": "button",
+   "label": "Rec",
+   "msg": "note",
+   "note": 15,
+   "group": "rec",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rec6",
+   "type": "button",
+   "label": "Rec",
+   "msg": "note",
+   "note": 18,
+   "group": "rec",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rec7",
+   "type": "button",
+   "label": "Rec",
+   "msg": "note",
+   "note": 21,
+   "group": "rec",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "rec8",
+   "type": "button",
+   "label": "Rec",
+   "msg": "note",
+   "note": 24,
+   "group": "rec",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "f1",
+   "type": "fader",
+   "label": "1",
+   "msg": "cc",
+   "cc": 19,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f2",
+   "type": "fader",
+   "label": "2",
+   "msg": "cc",
+   "cc": 23,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f3",
+   "type": "fader",
+   "label": "3",
+   "msg": "cc",
+   "cc": 27,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f4",
+   "type": "fader",
+   "label": "4",
+   "msg": "cc",
+   "cc": 31,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f5",
+   "type": "fader",
+   "label": "5",
+   "msg": "cc",
+   "cc": 49,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f6",
+   "type": "fader",
+   "label": "6",
+   "msg": "cc",
+   "cc": 53,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f7",
+   "type": "fader",
+   "label": "7",
+   "msg": "cc",
+   "cc": 57,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "f8",
+   "type": "fader",
+   "label": "8",
+   "msg": "cc",
+   "cc": 61,
+   "group": "fader",
+   "color": "amber"
+  },
+  {
+   "id": "master",
+   "type": "fader",
+   "label": "Master",
+   "msg": "cc",
+   "cc": 62,
+   "group": "fader",
+   "color": "white"
+  },
+  {
+   "id": "bankleft",
+   "type": "button",
+   "label": "Bank ◀",
+   "msg": "note",
+   "note": 25,
+   "group": "bank",
+   "color": "white"
+  },
+  {
+   "id": "bankright",
+   "type": "button",
+   "label": "Bank ▶",
+   "msg": "note",
+   "note": 26,
+   "group": "bank",
+   "color": "white"
+  },
+  {
+   "id": "solo",
+   "type": "button",
+   "label": "Solo",
+   "msg": "note",
+   "note": 27,
+   "group": "solo",
+   "color": "white"
+  }
+ ]
+}

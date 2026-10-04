@@ -13,7 +13,10 @@ before it was generalized.)
 - [x] OSC bridge; MIDI out with observable throat + panic
 - [x] tests for all pure logic (chord, timeline, mapping, params)
 - [ ] mapping profile import/export UI (JSON file, not just localStorage)
-- [ ] example: audio-reactive world driven by a live instrument (mic)
+- [x] example: audio-reactive world driven by a live instrument (mic) — `06-cylinder-earth`
+- [x] drum machine with analyzer-shaped signals (`@openav/drums`)
+- [x] on-screen MIDI controllers that mirror real hardware (`@openav/midi`, example 09)
+- [x] a documentation site: [openaudiovisual.com/docs](https://openaudiovisual.com/docs/)
 
 ## v1.x — the show grows
 
@@ -26,7 +29,7 @@ before it was generalized.)
 - **Signal recording & replay**: record the full signal stream of a performance;
   replay it into any world. Rehearse without the performer; archive the gesture,
   not just the video.
-- **npm publish** of `@openav/*` + a docs site that is itself built on the framework.
+- **npm publish** of `@openav/*`, and docs pages that are themselves performable with the framework.
 - **WebGPU world adapter** as WebGPU compute matures for particle/agent worlds.
 
 ## v2.x — the stage widens
@@ -42,5 +45,6 @@ before it was generalized.)
 ## Non-goals
 
 - a node-based visual editor (cables.gl does this well; we are a library)
-- audio synthesis (Tone.js is the neighbor; `audio.input()` accepts its nodes)
+- a synthesis toolkit of our own (Tone.js is the neighbor: `@openav/sound` wraps it
+  behind a small engine contract, and `audio.input()` accepts its nodes)
 - being a platform: your show is your repo, not an account on our server
