@@ -1,7 +1,7 @@
 // Music box · a steel comb plucked by pins. Each tine is a bar clamped at one end,
 // so its overtones sit far apart (6.27×, 17.55×); a second, slightly detuned
 // fundamental gives the slow shimmer of a comb ringing against its neighbours.
-import { modalInstrument } from './modal.js?v=2cd2e50';
+import { modalInstrument } from './modal.js?v=114e448';
 
 export const musicBox = modalInstrument({
   id: 'music-box',

@@ -10,15 +10,15 @@
 //
 // mountConsole(el, app) where app = { timeline, params, mapper, signals, stage, midi? }
 
-import { css } from './src/theme.js?v=2cd2e50';
-import { buildTransport } from './src/transport.js?v=2cd2e50';
-import { buildParamPanel } from './src/params-panel.js?v=2cd2e50';
-import { buildSignalPanel } from './src/signals-panel.js?v=2cd2e50';
-import { buildSoundPanel } from './src/sound-panel.js?v=2cd2e50';
-import { buildLayersPanel } from './src/layers-panel.js?v=2cd2e50';
-import { buildInputPanel } from './src/input-panel.js?v=2cd2e50';
-import { buildMappingPanel } from './src/mapping-panel.js?v=2cd2e50';
-import { buildPerformanceMode } from './src/perf-mode.js?v=2cd2e50';
+import { css } from './src/theme.js?v=114e448';
+import { buildTransport } from './src/transport.js?v=114e448';
+import { buildParamPanel } from './src/params-panel.js?v=114e448';
+import { buildSignalPanel } from './src/signals-panel.js?v=114e448';
+import { buildSoundPanel } from './src/sound-panel.js?v=114e448';
+import { buildLayersPanel } from './src/layers-panel.js?v=114e448';
+import { buildInputPanel } from './src/input-panel.js?v=114e448';
+import { buildMappingPanel } from './src/mapping-panel.js?v=114e448';
+import { buildPerformanceMode } from './src/perf-mode.js?v=114e448';
 
 // every .oav-panel header toggles its section — the universal collapsible
 // panel convention all examples follow
