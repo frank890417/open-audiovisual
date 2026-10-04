@@ -1,0 +1,171 @@
+{
+ "id": "korg-nanokey2",
+ "short": "nanokey2",
+ "name": "Korg nanoKEY2",
+ "maker": "KORG",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "nanokey\\s*2"
+  ],
+  "prefer": [
+   "keyboard"
+  ],
+  "avoid": [
+   "ctrl"
+  ]
+ },
+ "sources": [
+  {
+   "title": "nanoKEY2 Parameter Guide (KORG)",
+   "url": "https://www.korg.com/us/support/download/manual/0/156/1910/",
+   "note": "factory settings: SUSTAIN button = CC 64, MOD button = CC 1 (momentary or toggle, on/off values editable); PITCH−/PITCH+ send pitch bend that returns to centre on release; keyboard, pitch, mod and sustain all transmit on the Global MIDI channel"
+  },
+  {
+   "title": "nanoKEY2 MIDI Implementation v1.00 (KORG)",
+   "url": "https://www.korg.com/us/support/download/manual/0/156/2709/",
+   "note": "transmits note on/off (keyboard; note-off velocity 64), control change (MOD, SUSTAIN), pitch bend (PITCH buttons)"
+  },
+  {
+   "title": "nanoKEY2 Owner's Manual (KORG)",
+   "url": "https://www.korg.com/us/support/download/manual/0/156/1909/",
+   "note": "ports: Mac \"nanoKEY2 KEYBOARD\" (in) / \"nanoKEY2 CTRL\" (out), Windows \"nanoKEY2\", with the KORG driver \"nanoKEY2 1 KEYBOARD\" / \"nanoKEY2 1 CTRL\"; OCT−/OCT+ shift ±4 octaves; 325 × 83 × 13 mm"
+  }
+ ],
+ "notes": "Factory settings. KORG does not print the factory Global MIDI channel; channel 1 is assumed (set it in KORG KONTROL Editor if yours differs, or use the element's channel attribute). PITCH− and PITCH+ are two buttons that send one pitch-bend message, so they are drawn as one bipolar strip. OCT−/OCT+ shift the keyboard inside the unit and send nothing of their own. No LED feedback.",
+ "face": {
+  "w": 100,
+  "h": 25.5,
+  "label": "nanoKEY2",
+  "body": "#1c1c1f",
+  "deco": [
+   {
+    "type": "buttons",
+    "x": 2.5,
+    "y": 9.5,
+    "w": 12,
+    "h": 5,
+    "items": [
+     "OCT−",
+     "OCT+"
+    ]
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "sustain",
+   "label": "",
+   "x": 15.5,
+   "y": 9.5,
+   "w": 6.5,
+   "h": 5,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "sustain"
+   ]
+  },
+  {
+   "id": "pitch",
+   "label": "",
+   "x": 2.5,
+   "y": 15.5,
+   "w": 12,
+   "h": 8,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "bend"
+   ]
+  },
+  {
+   "id": "mod",
+   "label": "",
+   "x": 15.5,
+   "y": 16,
+   "w": 6.5,
+   "h": 5,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "mod"
+   ]
+  },
+  {
+   "id": "keys",
+   "label": "",
+   "x": 24,
+   "y": 2,
+   "w": 74.5,
+   "h": 22,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "controls",
+   "cols": 3,
+   "rows": 1,
+   "weight": 1.3,
+   "controls": [
+    "bend",
+    "mod",
+    "sustain"
+   ]
+  },
+  {
+   "id": "keys",
+   "cols": 1,
+   "rows": 1,
+   "weight": 4,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "bend",
+   "type": "strip",
+   "label": "Pitch −/+",
+   "msg": "pitchbend",
+   "group": "pitch",
+   "color": "white"
+  },
+  {
+   "id": "mod",
+   "type": "button",
+   "label": "MOD",
+   "msg": "cc",
+   "cc": 1,
+   "group": "button",
+   "color": "white"
+  },
+  {
+   "id": "sustain",
+   "type": "button",
+   "label": "SUSTAIN",
+   "msg": "cc",
+   "cc": 64,
+   "group": "button",
+   "color": "white"
+  },
+  {
+   "id": "keys",
+   "type": "keys",
+   "label": "Keys",
+   "msg": "note",
+   "from": 48,
+   "to": 72,
+   "group": "note",
+   "verified": false,
+   "note": "Lowest key at octave 0 is not printed in the docs; 48 is assumed. Keys follow any note on the channel, so OCT−/OCT+ just scroll the on-screen keys."
+  }
+ ]
+}

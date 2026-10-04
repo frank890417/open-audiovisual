@@ -1,0 +1,509 @@
+{
+ "id": "arturia-beatstep",
+ "short": "beatstep",
+ "name": "Arturia BeatStep",
+ "maker": "Arturia",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "beatstep(?!\\s*pro)"
+  ],
+  "prefer": [],
+  "avoid": [
+   "pro"
+  ]
+ },
+ "sources": [
+  {
+   "title": "BeatStep User's Manual v1.0.1 (Arturia)",
+   "url": "https://downloads.arturia.com/products/beatstep/manual/BeatStep_Manual_1_0_1_EN.pdf",
+   "note": "ch. 8 default settings (CNTRL presets): encoders 1–16 CC 7 74 71 76 77 93 73 75 114 18 19 16 17 91 79 72, Absolute, Global channel; pads 1–8 notes 44–51, pads 9–16 notes 36–43, Gate; STOP / PLAY send MMC Stop (01) / Play (02) to device 127. §3.1: Global MIDI channel defaults to 1. §2.2: 16 endless encoders + the Level/Rate encoder (master level in CNTRL mode), 16 velocity- and pressure-sensitive pads; pads numbered 1–8 on the top row, 9–16 below (front-panel diagram)"
+  },
+  {
+   "title": "Ableton Live 12 MIDI Remote Script BeatStep (decompiled; non-official)",
+   "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/BeatStep/BeatStep.py",
+   "note": "same encoder CCs except encoder 1 (it re-programs the unit by SysEx and puts encoder 1 on CC 10); pad rows 44–51 (top) and 36–43 (bottom)"
+  },
+  {
+   "title": "DrivenByMoss BeatstepControllerDefinition.java (Bitwig; non-official)",
+   "url": "https://github.com/git-moss/DrivenByMoss/blob/master/src/main/java/de/mossgrabers/controller/arturia/beatstep/BeatstepControllerDefinition.java",
+   "note": "port name \"Arturia BeatStep\""
+  }
+ ],
+ "notes": "CNTRL mode (red pads) with the factory preset, Global channel 1. The big Level/Rate encoder is not modelled: the manual's default table does not list it (it \"controls the master level by default\"); if it also sends CC 7 it will move encoder 1 on screen. STOP / PLAY send MMC SysEx and are not modelled (SysEx stays off). SEQ mode plays the step sequencer on the sequencer channel instead — not modelled. The encoders are endless but send absolute values in the default preset. Pad pressure: poly aftertouch is followed automatically if the unit sends it. The original BeatStep only — the BeatStep Pro is a different device and is not matched.",
+ "face": {
+  "w": 100,
+  "h": 39.5,
+  "label": "",
+  "body": "#232427",
+  "deco": [
+   {
+    "type": "label",
+    "x": 3,
+    "y": 2,
+    "w": 13,
+    "h": 12,
+    "text": "Level · Rate"
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 19,
+    "w": 11,
+    "h": 3.5,
+    "items": [
+     "■",
+     "▶"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 23.5,
+    "w": 11,
+    "h": 3.5,
+    "items": [
+     "CNTRL/SEQ",
+     "EXT SYNC"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 28,
+    "w": 11,
+    "h": 3.5,
+    "items": [
+     "RECALL",
+     "STORE"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 32.5,
+    "w": 11,
+    "h": 3.5,
+    "items": [
+     "SHIFT",
+     "CHAN"
+    ]
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "encoders",
+   "label": "",
+   "x": 17.5,
+   "y": 1.5,
+   "w": 78.5,
+   "h": 16.5,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e16"
+   ]
+  },
+  {
+   "id": "pads",
+   "label": "",
+   "x": 17.5,
+   "y": 19,
+   "w": 78.5,
+   "h": 19,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad9",
+    "pad10",
+    "pad11",
+    "pad12",
+    "pad13",
+    "pad14",
+    "pad15",
+    "pad16"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "encoders",
+   "cols": 4,
+   "rows": 4,
+   "weight": 3,
+   "controls": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e16"
+   ]
+  },
+  {
+   "id": "pads",
+   "cols": 4,
+   "rows": 4,
+   "weight": 3.4,
+   "controls": [
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8",
+    "pad9",
+    "pad10",
+    "pad11",
+    "pad12",
+    "pad13",
+    "pad14",
+    "pad15",
+    "pad16"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "e1",
+   "type": "encoder",
+   "label": "1",
+   "msg": "cc",
+   "cc": 7,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e2",
+   "type": "encoder",
+   "label": "2",
+   "msg": "cc",
+   "cc": 74,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e3",
+   "type": "encoder",
+   "label": "3",
+   "msg": "cc",
+   "cc": 71,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e4",
+   "type": "encoder",
+   "label": "4",
+   "msg": "cc",
+   "cc": 76,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e5",
+   "type": "encoder",
+   "label": "5",
+   "msg": "cc",
+   "cc": 77,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e6",
+   "type": "encoder",
+   "label": "6",
+   "msg": "cc",
+   "cc": 93,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e7",
+   "type": "encoder",
+   "label": "7",
+   "msg": "cc",
+   "cc": 73,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e8",
+   "type": "encoder",
+   "label": "8",
+   "msg": "cc",
+   "cc": 75,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e9",
+   "type": "encoder",
+   "label": "9",
+   "msg": "cc",
+   "cc": 114,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e10",
+   "type": "encoder",
+   "label": "10",
+   "msg": "cc",
+   "cc": 18,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e11",
+   "type": "encoder",
+   "label": "11",
+   "msg": "cc",
+   "cc": 19,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e12",
+   "type": "encoder",
+   "label": "12",
+   "msg": "cc",
+   "cc": 16,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e13",
+   "type": "encoder",
+   "label": "13",
+   "msg": "cc",
+   "cc": 17,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e14",
+   "type": "encoder",
+   "label": "14",
+   "msg": "cc",
+   "cc": 91,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e15",
+   "type": "encoder",
+   "label": "15",
+   "msg": "cc",
+   "cc": 79,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "e16",
+   "type": "encoder",
+   "label": "16",
+   "msg": "cc",
+   "cc": 72,
+   "relative": false,
+   "group": "encoder",
+   "color": "coral"
+  },
+  {
+   "id": "pad1",
+   "type": "pad",
+   "label": "1",
+   "msg": "note",
+   "note": 44,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad2",
+   "type": "pad",
+   "label": "2",
+   "msg": "note",
+   "note": 45,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad3",
+   "type": "pad",
+   "label": "3",
+   "msg": "note",
+   "note": 46,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad4",
+   "type": "pad",
+   "label": "4",
+   "msg": "note",
+   "note": 47,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad5",
+   "type": "pad",
+   "label": "5",
+   "msg": "note",
+   "note": 48,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad6",
+   "type": "pad",
+   "label": "6",
+   "msg": "note",
+   "note": 49,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad7",
+   "type": "pad",
+   "label": "7",
+   "msg": "note",
+   "note": 50,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad8",
+   "type": "pad",
+   "label": "8",
+   "msg": "note",
+   "note": 51,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad9",
+   "type": "pad",
+   "label": "9",
+   "msg": "note",
+   "note": 36,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad10",
+   "type": "pad",
+   "label": "10",
+   "msg": "note",
+   "note": 37,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad11",
+   "type": "pad",
+   "label": "11",
+   "msg": "note",
+   "note": 38,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad12",
+   "type": "pad",
+   "label": "12",
+   "msg": "note",
+   "note": 39,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad13",
+   "type": "pad",
+   "label": "13",
+   "msg": "note",
+   "note": 40,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad14",
+   "type": "pad",
+   "label": "14",
+   "msg": "note",
+   "note": 41,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad15",
+   "type": "pad",
+   "label": "15",
+   "msg": "note",
+   "note": 42,
+   "group": "pad",
+   "color": "coral"
+  },
+  {
+   "id": "pad16",
+   "type": "pad",
+   "label": "16",
+   "msg": "note",
+   "note": 43,
+   "group": "pad",
+   "color": "coral"
+  }
+ ]
+}

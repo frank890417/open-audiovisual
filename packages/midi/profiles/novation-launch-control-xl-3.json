@@ -1,0 +1,776 @@
+{
+ "id": "novation-launch-control-xl-3",
+ "short": "lcxl3",
+ "name": "Novation Launch Control XL 3",
+ "maker": "Novation",
+ "kind": "device",
+ "channel": 16,
+ "match": {
+  "ports": [
+   "lcxl\\s*3"
+  ],
+  "prefer": [
+   "midi"
+  ],
+  "avoid": [
+   "daw",
+   "midiin2",
+   "port\\s*2",
+   "to\\s*din"
+  ]
+ },
+ "sources": [
+  {
+   "title": "Launch Control XL 3 appendix — Default Mode (16) parameters (Novation user guide)",
+   "url": "https://userguides.novationmusic.com/hc/en-gb/articles/26260540230162-Launch-Control-XL-3-appendix",
+   "note": "Mode 16 cannot be edited; it sends CCs on MIDI channel 16: encoder rows CC 13–20, 21–28, 29–36; faders CC 5–12; button rows CC 37–44 and 45–52 (diagram)"
+  },
+  {
+   "title": "Using Custom Modes on the Launch Control XL 3 (Novation user guide)",
+   "url": "https://userguides.novationmusic.com/hc/en-gb/articles/26190535820562-Using-Custom-Modes-on-the-Launch-Control-XL-3",
+   "note": "press Mode: the 16 buttons pick the mode; \"you can't edit mode 16, it's a default set of values\"; custom modes 1–15 are edited in Novation Components"
+  },
+  {
+   "title": "Launch Control XL 3 programmer's standalone (MIDI) mode (Novation)",
+   "url": "https://userguides.novationmusic.com/hc/en-gb/articles/27840433730450-Launch-Control-XL-3-programmer-s-standalone-MIDI-mode",
+   "note": "powers up into standalone mode; Page, Track, Record, Play, Solo/Arm and Mute/Select are unused there; Shift and Mode open menus; everything else follows the custom mode"
+  },
+  {
+   "title": "Launch Control XL 3 programmer's DAW mode (Novation)",
+   "url": "https://userguides.novationmusic.com/hc/en-gb/articles/27840466544402-Launch-Control-XL-3-programmer-s-DAW-mode",
+   "note": "encoders are absolute by default (relative per row is a DAW-mode option); DAW mode lives on the DAW interface only; LED colour messages are DAW-mode"
+  },
+  {
+   "title": "MIDI on Launch Control XL 3 and Controlling your DAW with the Launch Control XL 3 (Novation)",
+   "url": "https://userguides.novationmusic.com/hc/en-gb/articles/26190532073234-Controlling-your-DAW-with-the-Launch-Control-XL-3",
+   "note": "two USB interfaces: MIDI (custom modes) and DAW; macOS port names shown as \"LCXL3 1 MIDI Out\" / \"LCXL3 1 DAW Out\" (plus \"To DIN Out\" ports), Windows second interface \"MIDIIN2\""
+  },
+  {
+   "title": "Launch Control XL 3's Specifications (Novation)",
+   "url": "https://userguides.novationmusic.com/hc/en-gb/articles/26190536231570-Launch-Control-XL-3-s-Specifications",
+   "note": "24 encoders with RGB LEDs, eight 60 mm faders, 16 buttons (two under each fader), Page ▲▼, Track ◀▶, Record, Play, Shift, Mode, OLED screen; 250 × 239 mm"
+  },
+  {
+   "title": "Ableton Live 12 MIDI Remote Script Launch_Control_XL_3 (decompiled; non-official)",
+   "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/Launch_Control_XL_3/__init__.py",
+   "note": "USB model names \"LCXL3 1\" … \"LCXL3 8\""
+  }
+ ],
+ "notes": "Mode 16, the fixed default mode, on MIDI channel 16 — the one mode every unit has the same. Select it: press Mode, then button 16 (bottom-right), press Mode again. Custom modes 1–15 hold whatever was sent from Components and are not modelled. The encoders are endless but send absolute 0–127 by default (the unit keeps the value). Novation does not print the button press / release values for Mode 16; they are treated as momentary CC buttons. Page, Track, Record, Play, Solo/Arm and Mute/Select send nothing in standalone mode; Shift and Mode open menus. No LED feedback: in standalone the colours come from the mode itself (the colour messages in the reference are DAW-mode only). Distinct from the MK2 (port \"Launch Control XL\", factory template channels 9–16).",
+ "face": {
+  "w": 100,
+  "h": 95.5,
+  "label": "Launch Control XL 3",
+  "body": "#18181a",
+  "deco": [
+   {
+    "type": "screen",
+    "x": 3.5,
+    "y": 8,
+    "w": 12,
+    "h": 7,
+    "text": "Mode 16"
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 21,
+    "w": 11,
+    "h": 4.5,
+    "items": [
+     "▲",
+     "▼"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 33,
+    "w": 11,
+    "h": 4.5,
+    "items": [
+     "◀",
+     "▶"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 47,
+    "w": 11,
+    "h": 4,
+    "items": [
+     "● Rec"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 51.5,
+    "w": 11,
+    "h": 4,
+    "items": [
+     "▶ Play"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 64,
+    "w": 11,
+    "h": 4,
+    "items": [
+     "Shift"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 68.5,
+    "w": 11,
+    "h": 4,
+    "items": [
+     "Mode"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 79.5,
+    "w": 11,
+    "h": 4,
+    "items": [
+     "Solo / Arm"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 4,
+    "y": 86.5,
+    "w": 11,
+    "h": 4,
+    "items": [
+     "Mute / Sel"
+    ]
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "encoders",
+   "label": "",
+   "x": 19.5,
+   "y": 7.5,
+   "w": 76,
+   "h": 36,
+   "cols": 8,
+   "rows": 3,
+   "controls": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e16",
+    "e17",
+    "e18",
+    "e19",
+    "e20",
+    "e21",
+    "e22",
+    "e23",
+    "e24"
+   ]
+  },
+  {
+   "id": "faders",
+   "label": "",
+   "x": 19.5,
+   "y": 45,
+   "w": 76,
+   "h": 32.5,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8"
+   ]
+  },
+  {
+   "id": "buttons",
+   "label": "",
+   "x": 19.5,
+   "y": 79,
+   "w": 76,
+   "h": 13,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5",
+    "b6",
+    "b7",
+    "b8",
+    "b9",
+    "b10",
+    "b11",
+    "b12",
+    "b13",
+    "b14",
+    "b15",
+    "b16"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "encoders",
+   "cols": 8,
+   "rows": 3,
+   "weight": 3,
+   "controls": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e16",
+    "e17",
+    "e18",
+    "e19",
+    "e20",
+    "e21",
+    "e22",
+    "e23",
+    "e24"
+   ]
+  },
+  {
+   "id": "faders",
+   "cols": 8,
+   "rows": 1,
+   "weight": 3,
+   "controls": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8"
+   ]
+  },
+  {
+   "id": "buttons",
+   "cols": 8,
+   "rows": 2,
+   "weight": 1.4,
+   "controls": [
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5",
+    "b6",
+    "b7",
+    "b8",
+    "b9",
+    "b10",
+    "b11",
+    "b12",
+    "b13",
+    "b14",
+    "b15",
+    "b16"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "e1",
+   "type": "encoder",
+   "label": "1",
+   "msg": "cc",
+   "cc": 13,
+   "relative": false,
+   "group": "encoder",
+   "color": "magenta"
+  },
+  {
+   "id": "e2",
+   "type": "encoder",
+   "label": "2",
+   "msg": "cc",
+   "cc": 14,
+   "relative": false,
+   "group": "encoder",
+   "color": "magenta"
+  },
+  {
+   "id": "e3",
+   "type": "encoder",
+   "label": "3",
+   "msg": "cc",
+   "cc": 15,
+   "relative": false,
+   "group": "encoder",
+   "color": "magenta"
+  },
+  {
+   "id": "e4",
+   "type": "encoder",
+   "label": "4",
+   "msg": "cc",
+   "cc": 16,
+   "relative": false,
+   "group": "encoder",
+   "color": "magenta"
+  },
+  {
+   "id": "e5",
+   "type": "encoder",
+   "label": "5",
+   "msg": "cc",
+   "cc": 17,
+   "relative": false,
+   "group": "encoder",
+   "color": "magenta"
+  },
+  {
+   "id": "e6",
+   "type": "encoder",
+   "label": "6",
+   "msg": "cc",
+   "cc": 18,
+   "relative": false,
+   "group": "encoder",
+   "color": "magenta"
+  },
+  {
+   "id": "e7",
+   "type": "encoder",
+   "label": "7",
+   "msg": "cc",
+   "cc": 19,
+   "relative": false,
+   "group": "encoder",
+   "color": "magenta"
+  },
+  {
+   "id": "e8",
+   "type": "encoder",
+   "label": "8",
+   "msg": "cc",
+   "cc": 20,
+   "relative": false,
+   "group": "encoder",
+   "color": "magenta"
+  },
+  {
+   "id": "e9",
+   "type": "encoder",
+   "label": "9",
+   "msg": "cc",
+   "cc": 21,
+   "relative": false,
+   "group": "encoder",
+   "color": "cyan"
+  },
+  {
+   "id": "e10",
+   "type": "encoder",
+   "label": "10",
+   "msg": "cc",
+   "cc": 22,
+   "relative": false,
+   "group": "encoder",
+   "color": "cyan"
+  },
+  {
+   "id": "e11",
+   "type": "encoder",
+   "label": "11",
+   "msg": "cc",
+   "cc": 23,
+   "relative": false,
+   "group": "encoder",
+   "color": "cyan"
+  },
+  {
+   "id": "e12",
+   "type": "encoder",
+   "label": "12",
+   "msg": "cc",
+   "cc": 24,
+   "relative": false,
+   "group": "encoder",
+   "color": "cyan"
+  },
+  {
+   "id": "e13",
+   "type": "encoder",
+   "label": "13",
+   "msg": "cc",
+   "cc": 25,
+   "relative": false,
+   "group": "encoder",
+   "color": "cyan"
+  },
+  {
+   "id": "e14",
+   "type": "encoder",
+   "label": "14",
+   "msg": "cc",
+   "cc": 26,
+   "relative": false,
+   "group": "encoder",
+   "color": "cyan"
+  },
+  {
+   "id": "e15",
+   "type": "encoder",
+   "label": "15",
+   "msg": "cc",
+   "cc": 27,
+   "relative": false,
+   "group": "encoder",
+   "color": "cyan"
+  },
+  {
+   "id": "e16",
+   "type": "encoder",
+   "label": "16",
+   "msg": "cc",
+   "cc": 28,
+   "relative": false,
+   "group": "encoder",
+   "color": "cyan"
+  },
+  {
+   "id": "e17",
+   "type": "encoder",
+   "label": "17",
+   "msg": "cc",
+   "cc": 29,
+   "relative": false,
+   "group": "encoder",
+   "color": "lime"
+  },
+  {
+   "id": "e18",
+   "type": "encoder",
+   "label": "18",
+   "msg": "cc",
+   "cc": 30,
+   "relative": false,
+   "group": "encoder",
+   "color": "lime"
+  },
+  {
+   "id": "e19",
+   "type": "encoder",
+   "label": "19",
+   "msg": "cc",
+   "cc": 31,
+   "relative": false,
+   "group": "encoder",
+   "color": "lime"
+  },
+  {
+   "id": "e20",
+   "type": "encoder",
+   "label": "20",
+   "msg": "cc",
+   "cc": 32,
+   "relative": false,
+   "group": "encoder",
+   "color": "lime"
+  },
+  {
+   "id": "e21",
+   "type": "encoder",
+   "label": "21",
+   "msg": "cc",
+   "cc": 33,
+   "relative": false,
+   "group": "encoder",
+   "color": "lime"
+  },
+  {
+   "id": "e22",
+   "type": "encoder",
+   "label": "22",
+   "msg": "cc",
+   "cc": 34,
+   "relative": false,
+   "group": "encoder",
+   "color": "lime"
+  },
+  {
+   "id": "e23",
+   "type": "encoder",
+   "label": "23",
+   "msg": "cc",
+   "cc": 35,
+   "relative": false,
+   "group": "encoder",
+   "color": "lime"
+  },
+  {
+   "id": "e24",
+   "type": "encoder",
+   "label": "24",
+   "msg": "cc",
+   "cc": 36,
+   "relative": false,
+   "group": "encoder",
+   "color": "lime"
+  },
+  {
+   "id": "f1",
+   "type": "fader",
+   "label": "1",
+   "msg": "cc",
+   "cc": 5,
+   "group": "fader",
+   "color": "white"
+  },
+  {
+   "id": "f2",
+   "type": "fader",
+   "label": "2",
+   "msg": "cc",
+   "cc": 6,
+   "group": "fader",
+   "color": "white"
+  },
+  {
+   "id": "f3",
+   "type": "fader",
+   "label": "3",
+   "msg": "cc",
+   "cc": 7,
+   "group": "fader",
+   "color": "white"
+  },
+  {
+   "id": "f4",
+   "type": "fader",
+   "label": "4",
+   "msg": "cc",
+   "cc": 8,
+   "group": "fader",
+   "color": "white"
+  },
+  {
+   "id": "f5",
+   "type": "fader",
+   "label": "5",
+   "msg": "cc",
+   "cc": 9,
+   "group": "fader",
+   "color": "white"
+  },
+  {
+   "id": "f6",
+   "type": "fader",
+   "label": "6",
+   "msg": "cc",
+   "cc": 10,
+   "group": "fader",
+   "color": "white"
+  },
+  {
+   "id": "f7",
+   "type": "fader",
+   "label": "7",
+   "msg": "cc",
+   "cc": 11,
+   "group": "fader",
+   "color": "white"
+  },
+  {
+   "id": "f8",
+   "type": "fader",
+   "label": "8",
+   "msg": "cc",
+   "cc": 12,
+   "group": "fader",
+   "color": "white"
+  },
+  {
+   "id": "b1",
+   "type": "button",
+   "label": "1",
+   "msg": "cc",
+   "cc": 37,
+   "group": "button",
+   "color": "violet"
+  },
+  {
+   "id": "b2",
+   "type": "button",
+   "label": "2",
+   "msg": "cc",
+   "cc": 38,
+   "group": "button",
+   "color": "violet"
+  },
+  {
+   "id": "b3",
+   "type": "button",
+   "label": "3",
+   "msg": "cc",
+   "cc": 39,
+   "group": "button",
+   "color": "violet"
+  },
+  {
+   "id": "b4",
+   "type": "button",
+   "label": "4",
+   "msg": "cc",
+   "cc": 40,
+   "group": "button",
+   "color": "violet"
+  },
+  {
+   "id": "b5",
+   "type": "button",
+   "label": "5",
+   "msg": "cc",
+   "cc": 41,
+   "group": "button",
+   "color": "violet"
+  },
+  {
+   "id": "b6",
+   "type": "button",
+   "label": "6",
+   "msg": "cc",
+   "cc": 42,
+   "group": "button",
+   "color": "violet"
+  },
+  {
+   "id": "b7",
+   "type": "button",
+   "label": "7",
+   "msg": "cc",
+   "cc": 43,
+   "group": "button",
+   "color": "violet"
+  },
+  {
+   "id": "b8",
+   "type": "button",
+   "label": "8",
+   "msg": "cc",
+   "cc": 44,
+   "group": "button",
+   "color": "violet"
+  },
+  {
+   "id": "b9",
+   "type": "button",
+   "label": "9",
+   "msg": "cc",
+   "cc": 45,
+   "group": "button",
+   "color": "cyan"
+  },
+  {
+   "id": "b10",
+   "type": "button",
+   "label": "10",
+   "msg": "cc",
+   "cc": 46,
+   "group": "button",
+   "color": "cyan"
+  },
+  {
+   "id": "b11",
+   "type": "button",
+   "label": "11",
+   "msg": "cc",
+   "cc": 47,
+   "group": "button",
+   "color": "cyan"
+  },
+  {
+   "id": "b12",
+   "type": "button",
+   "label": "12",
+   "msg": "cc",
+   "cc": 48,
+   "group": "button",
+   "color": "cyan"
+  },
+  {
+   "id": "b13",
+   "type": "button",
+   "label": "13",
+   "msg": "cc",
+   "cc": 49,
+   "group": "button",
+   "color": "cyan"
+  },
+  {
+   "id": "b14",
+   "type": "button",
+   "label": "14",
+   "msg": "cc",
+   "cc": 50,
+   "group": "button",
+   "color": "cyan"
+  },
+  {
+   "id": "b15",
+   "type": "button",
+   "label": "15",
+   "msg": "cc",
+   "cc": 51,
+   "group": "button",
+   "color": "cyan"
+  },
+  {
+   "id": "b16",
+   "type": "button",
+   "label": "16",
+   "msg": "cc",
+   "cc": 52,
+   "group": "button",
+   "color": "cyan"
+  }
+ ]
+}

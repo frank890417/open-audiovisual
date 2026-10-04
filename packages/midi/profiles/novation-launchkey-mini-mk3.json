@@ -1,0 +1,545 @@
+{
+ "id": "novation-launchkey-mini-mk3",
+ "short": "lkmini3",
+ "name": "Novation Launchkey Mini MK3",
+ "maker": "Novation",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "launchkey\\s*mini\\s*(mk\\s*3|mkiii)"
+  ],
+  "prefer": [
+   "midi\\s*port",
+   "midi\\s*1"
+  ],
+  "avoid": [
+   "daw",
+   "midiin2",
+   "midi\\s*2"
+  ]
+ },
+ "sources": [
+  {
+   "title": "Launchkey Mini [MK3] User Guide 1.1 (Novation)",
+   "url": "https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchkey%20Mini%20MK3%20User%20Guide%201.1%20English%20EN.pdf",
+   "note": "pitch and modulation touch strips; 8 knobs; 16 pads with Session / Drum / Custom pad modes (hold Shift, press a top-row pad: Session, Drum, Custom left; Device, Volume, Pan, Sends, Custom pot modes right); custom modes send notes (pads) and CCs (knobs), edited in Novation Components; Shift + Transpose picks the keyboard MIDI channel; ports \"Launchkey Mini MK3 (DAW Port)\" on Mac, \"MIDI IN2\" on Windows for the DAW. No note or CC numbers are printed."
+  },
+  {
+   "title": "Launchkey [MK3] Programmer's Reference Guide v1 (Novation; the full-size MK3 family)",
+   "url": "https://fael-downloads-prod.focusrite.com/customer/prod/downloads/launchkey_mk3_programmer_s_reference_guide_v1_en.pdf",
+   "note": "the family powers into Standalone mode; keys, pitch/mod wheels, sustain and the Drum layout of the pads stay on the MIDI port, the rest of the surface talks only to a DAW on the DAW port; note-off = note-on velocity 0; mentions script compatibility with the Launchkey Mini [MK3]"
+  },
+  {
+   "title": "Ableton Live 12 MIDI Remote Script novation/launchkey_elements.py (used by Launchkey_Mini_MK3; decompiled, non-official)",
+   "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/novation/launchkey_elements.py",
+   "note": "drum pads notes 36–51 on channel 10 (DRUM_CHANNEL = 9); in DAW mode the pots are CC 21–28 on channel 16"
+  },
+  {
+   "title": "DrivenByMoss LaunchkeyPadGrid.java, Launchkey Mini MK3 (Bitwig; non-official)",
+   "url": "https://github.com/git-moss/DrivenByMoss/blob/master/src/main/java/de/mossgrabers/controller/novation/launchkey/mini/controller/LaunchkeyPadGrid.java",
+   "note": "Drum layout on the 2 × 8 pads, channel 10: bottom row 36 37 38 39 44 45 46 47, top row 40 41 42 43 48 49 50 51; Windows ports \"Launchkey Mini MK3\" and \"MIDIIN2 (Launchkey Mini MK3)\""
+  },
+  {
+   "title": "giezu/LaunchkeyMiniMK3 — reverse-engineered MIDI implementation (non-official)",
+   "url": "https://github.com/giezu/LaunchkeyMiniMK3",
+   "note": "Drum-mode pads send notes on channel 10; keys, custom-mode knobs and pads, pitch bend and modulation arrive on \"Launchkey Mini MK3 MIDI 1\", DAW traffic on \"MIDI 2\" (Linux names)"
+  },
+  {
+   "title": "Spectrasonics — Setting up the Launchkey Mini mk3 (non-official)",
+   "url": "https://support.spectrasonics.net/manual/Omnisphere3HW/3/en/topic/setting-up-the-launchkey-mini-mk3",
+   "note": "relies on the factory Custom pot mode: knobs 1–8 = CC 21–28 (hold Shift, press the Custom pad on the top row)"
+  }
+ ],
+ "notes": "Standalone, MIDI port: pads in Drum mode (hold Shift, press the 2nd top-row pad), knobs in Custom pot mode (hold Shift, press the top-right pad). Novation publishes no programmer's reference for the Mini, so: the pad notes and channel 10 are confirmed by Ableton's and DrivenByMoss's scripts (the 2 × 8 arrangement by DrivenByMoss); the knob CCs 21–28 come from Spectrasonics only and their channel is assumed — knobs, the Mod strip and the key range are marked unverified (學習 rebinds them). Session mode and the Device/Volume/Pan/Sends pot modes need a DAW and talk on the DAW port, not modelled. Shift, Transpose, Octave, >, Stop·Solo·Mute, Arp, Fixed Chord, Play and Record send nothing on the MIDI port in standalone use. No LED feedback.",
+ "face": {
+  "w": 100,
+  "h": 55,
+  "label": "Launchkey Mini",
+  "body": "#141416",
+  "deco": [
+   {
+    "type": "buttons",
+    "x": 16.5,
+    "y": 2.5,
+    "w": 6.5,
+    "h": 3.5,
+    "items": [
+     "Shift"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 16.5,
+    "y": 8.5,
+    "w": 6.5,
+    "h": 3.5,
+    "items": [
+     "Transpose"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 16.5,
+    "y": 14,
+    "w": 6.5,
+    "h": 3.5,
+    "items": [
+     "Oct +"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 16.5,
+    "y": 18.5,
+    "w": 6.5,
+    "h": 3.5,
+    "items": [
+     "Oct −"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 79,
+    "y": 9,
+    "w": 19,
+    "h": 5.5,
+    "items": [
+     ">",
+     "Arp",
+     "Fixed Chord"
+    ]
+   },
+   {
+    "type": "buttons",
+    "x": 79,
+    "y": 16.5,
+    "w": 19,
+    "h": 5.5,
+    "items": [
+     "Stop Solo Mute",
+     "▶",
+     "●"
+    ]
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "strips",
+   "label": "",
+   "x": 3,
+   "y": 2,
+   "w": 12,
+   "h": 21,
+   "cols": 2,
+   "rows": 1,
+   "controls": [
+    "pitch",
+    "mod"
+   ]
+  },
+  {
+   "id": "knobs",
+   "label": "",
+   "x": 25,
+   "y": 1.5,
+   "w": 52.5,
+   "h": 7,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  },
+  {
+   "id": "pads",
+   "label": "",
+   "x": 25,
+   "y": 9,
+   "w": 52.5,
+   "h": 14,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "pad9",
+    "pad10",
+    "pad11",
+    "pad12",
+    "pad13",
+    "pad14",
+    "pad15",
+    "pad16",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8"
+   ]
+  },
+  {
+   "id": "keys",
+   "label": "",
+   "x": 1,
+   "y": 26,
+   "w": 98,
+   "h": 28,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "knobs",
+   "cols": 4,
+   "rows": 2,
+   "weight": 2,
+   "controls": [
+    "k1",
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8"
+   ]
+  },
+  {
+   "id": "pads",
+   "cols": 4,
+   "rows": 4,
+   "weight": 3,
+   "controls": [
+    "pad9",
+    "pad10",
+    "pad11",
+    "pad12",
+    "pad13",
+    "pad14",
+    "pad15",
+    "pad16",
+    "pad1",
+    "pad2",
+    "pad3",
+    "pad4",
+    "pad5",
+    "pad6",
+    "pad7",
+    "pad8"
+   ]
+  },
+  {
+   "id": "strips",
+   "cols": 2,
+   "rows": 1,
+   "weight": 1.3,
+   "controls": [
+    "pitch",
+    "mod"
+   ]
+  },
+  {
+   "id": "keys",
+   "cols": 1,
+   "rows": 1,
+   "weight": 3,
+   "controls": [
+    "keys"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "pitch",
+   "type": "strip",
+   "label": "Pitch",
+   "msg": "pitchbend",
+   "group": "strip",
+   "color": "white"
+  },
+  {
+   "id": "mod",
+   "type": "strip",
+   "label": "Mod",
+   "msg": "cc",
+   "cc": 1,
+   "group": "strip",
+   "color": "white",
+   "verified": false,
+   "note": "Novation only calls it the Modulation strip; CC 1 is the MIDI modulation controller but no Novation document prints the number. 學習 rebinds it."
+  },
+  {
+   "id": "k1",
+   "type": "knob",
+   "label": "1",
+   "msg": "cc",
+   "cc": 21,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false,
+   "note": "Factory Custom pot mode sends CC 21–28 (Spectrasonics); its MIDI channel is not documented — channel 1 assumed. Select Custom: hold Shift, press the top-right pad."
+  },
+  {
+   "id": "k2",
+   "type": "knob",
+   "label": "2",
+   "msg": "cc",
+   "cc": 22,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false,
+   "note": "Factory Custom pot mode sends CC 21–28 (Spectrasonics); its MIDI channel is not documented — channel 1 assumed. Select Custom: hold Shift, press the top-right pad."
+  },
+  {
+   "id": "k3",
+   "type": "knob",
+   "label": "3",
+   "msg": "cc",
+   "cc": 23,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false,
+   "note": "Factory Custom pot mode sends CC 21–28 (Spectrasonics); its MIDI channel is not documented — channel 1 assumed. Select Custom: hold Shift, press the top-right pad."
+  },
+  {
+   "id": "k4",
+   "type": "knob",
+   "label": "4",
+   "msg": "cc",
+   "cc": 24,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false,
+   "note": "Factory Custom pot mode sends CC 21–28 (Spectrasonics); its MIDI channel is not documented — channel 1 assumed. Select Custom: hold Shift, press the top-right pad."
+  },
+  {
+   "id": "k5",
+   "type": "knob",
+   "label": "5",
+   "msg": "cc",
+   "cc": 25,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false,
+   "note": "Factory Custom pot mode sends CC 21–28 (Spectrasonics); its MIDI channel is not documented — channel 1 assumed. Select Custom: hold Shift, press the top-right pad."
+  },
+  {
+   "id": "k6",
+   "type": "knob",
+   "label": "6",
+   "msg": "cc",
+   "cc": 26,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false,
+   "note": "Factory Custom pot mode sends CC 21–28 (Spectrasonics); its MIDI channel is not documented — channel 1 assumed. Select Custom: hold Shift, press the top-right pad."
+  },
+  {
+   "id": "k7",
+   "type": "knob",
+   "label": "7",
+   "msg": "cc",
+   "cc": 27,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false,
+   "note": "Factory Custom pot mode sends CC 21–28 (Spectrasonics); its MIDI channel is not documented — channel 1 assumed. Select Custom: hold Shift, press the top-right pad."
+  },
+  {
+   "id": "k8",
+   "type": "knob",
+   "label": "8",
+   "msg": "cc",
+   "cc": 28,
+   "group": "knob",
+   "color": "cyan",
+   "verified": false,
+   "note": "Factory Custom pot mode sends CC 21–28 (Spectrasonics); its MIDI channel is not documented — channel 1 assumed. Select Custom: hold Shift, press the top-right pad."
+  },
+  {
+   "id": "pad1",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 36,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad2",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 37,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad3",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 38,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad4",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 39,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad5",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 44,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad6",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 45,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad7",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 46,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad8",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 47,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad9",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 40,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad10",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 41,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad11",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 42,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad12",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 43,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad13",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 48,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad14",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 49,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad15",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 50,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "pad16",
+   "type": "pad",
+   "label": "",
+   "msg": "note",
+   "ch": 10,
+   "note": 51,
+   "group": "pad",
+   "color": "lime"
+  },
+  {
+   "id": "keys",
+   "type": "keys",
+   "label": "Keys",
+   "msg": "note",
+   "from": 48,
+   "to": 72,
+   "group": "note",
+   "verified": false,
+   "note": "Lowest key at octave 0 is not printed in the docs; C2 = 48 (Novation names middle C C3) is assumed. Keys follow any note on channel 1, so octave shifts just scroll."
+  }
+ ]
+}
