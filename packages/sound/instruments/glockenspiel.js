@@ -1,7 +1,7 @@
 // Glockenspiel 鐵琴 · small steel bars, brass mallets. A free steel bar's modes are
 // inharmonic (2.76×, 5.40×, 8.93×), which is the "bell" in the sound; they ring
 // long and nothing damps them. Sounds two octaves above the written note.
-import { modalInstrument } from './modal.js?v=114e448';
+import { modalInstrument } from './modal.js?v=062bc76';
 
 export const glockenspiel = modalInstrument({
   id: 'glockenspiel',
