@@ -207,7 +207,9 @@ test('TakeRecorder: midi/* only, ms from start, held keys and the pedal closed a
   ], 'note 60 was still held and the pedal still down');
   signals.pulse('midi/note/on', { note: 70, vel: 1, ch: 1 });
   assert.equal(rec.events.length, t.events.length, 'detached after stop');
-  assert.ok(rec instanceof EventLog, 'one recorder: a take is an EventLog filtered to midi/*');
+  // by name, not instanceof: stamp-version adds ?v= to the package's own relative imports, so the test's
+  // '../packages/record/events.js' and the package's './events.js?v=…' are two module instances in Node
+  assert.equal(Object.getPrototypeOf(rec.constructor).name, EventLog.name, 'one recorder: a take is an EventLog filtered to midi/*');
 });
 
 // ───────────── TakePlayer ─────────────
