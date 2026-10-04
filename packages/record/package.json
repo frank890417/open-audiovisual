@@ -1,0 +1,42 @@
+{
+  "name": "@openav/record",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": { ".": "./index.js" },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/record" },
+  "lab": {
+    "module": "record",
+    "files": [
+      "midi/parse.js",
+      "record/layout.js",
+      "record/mime.js",
+      "record/events.js",
+      "record/take.js",
+      "record/smf.js",
+      "record/take-player.js",
+      "record/camera.js",
+      "record/audio.js",
+      "record/recorder.js",
+      "record/compositor.js"
+    ],
+    "exports": [
+      "Compositor",
+      "Recorder",
+      "AudioTap",
+      "EventLog",
+      "TakeRecorder",
+      "TakePlayer",
+      "layoutRects",
+      "listCameras",
+      "openCamera",
+      "toMidiFile",
+      "fromMidiFile"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "Only exposes the kits, wires nothing: lab.recordKit (Compositor, Recorder, AudioTap, EventLog, layoutRects, PRESETS, cameras) for work + camera performance videos, and lab.takes (TakeRecorder, TakePlayer, take helpers, toMidiFile / fromMidiFile) for MIDI takes on lab.signals. The lab host decides when to record, save and autoplay.",
+    "remoteTab": null,
+    "since": "2026-10-04"
+  }
+}
