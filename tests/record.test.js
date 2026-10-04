@@ -14,6 +14,8 @@ import { EventLog, cleanValue } from '../packages/record/events.js';
 import { Recorder } from '../packages/record/recorder.js';
 import { cameraConstraints } from '../packages/record/camera.js';
 import { Signals } from '../packages/core/index.js';
+import { Compositor } from '../packages/record/compositor.js';
+import { ControllerCanvas } from '../packages/midi/canvas.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const inside = (r, W, H) => r.x >= 0 && r.y >= 0 && r.x + r.w <= W && r.y + r.h <= H;
@@ -383,6 +385,72 @@ test('Recorder: picks a type, streams ordered chunks, waits for uploads, stops i
     assert.throws(() => new Recorder({}), /canvas/);
     assert.throws(() => new Recorder({ audioOnly: true }).start(), /audio track/);
   } finally { globalThis.MediaRecorder = saved.MR; globalThis.MediaStream = saved.MS; }
+});
+
+// ───────────── Compositor.setPanel: a controller where the camera goes ─────────────
+
+function fakeCanvas() {
+  const calls = [];
+  const ctx = new Proxy({ calls }, {
+    get: (t, k) => (k in t ? t[k] : k === 'createLinearGradient' || k === 'createRadialGradient' ? () => ({ addColorStop() {} }) : (...a) => { calls.push([k, ...a]); }),
+    set: (t, k, v) => { t[k] = v; return true; },
+  });
+  return { width: 0, height: 0, getContext: () => ctx, ctx };
+}
+
+test('Compositor.setPanel: the panel draws itself into the camera\'s area, at the output size, every layout', () => {
+  const cv = fakeCanvas(), draws = [];
+  const panel = { aspect: 100 / 62, draw: (ctx, rect, now) => draws.push({ ctx, rect, now }) };
+  const comp = new Compositor({ canvas: cv, size: 'vertical-1080p', layout: 'stack', getWorkCanvas: () => ({ width: 1080, height: 1080 }) });
+  assert.equal(comp.panel, null);
+  comp.draw();
+  assert.equal(draws.length, 0, 'no panel, no camera: the area stays empty');
+  assert.equal(comp.setPanel(panel), comp);
+  comp.draw();
+  assert.deepEqual(draws[0].rect, { x: 0, y: 1080, w: 1080, h: 840 }, 'square work on top, the panel fills the rest');
+  assert.equal(draws[0].ctx, cv.ctx);
+  assert.equal(typeof draws[0].now, 'number');
+  comp.setSize('vertical-4k'); comp.draw();
+  assert.deepEqual(draws[1].rect, { x: 0, y: 2160, w: 2160, h: 1680 }, '4K: drawn at 4K, not enlarged');
+  comp.setLayout('pip'); comp.draw();
+  const p = draws[2].rect;
+  assert.ok(Math.abs(p.w / p.h - 100 / 62) < 0.01, 'pip: a corner of the panel\'s own shape');
+  assert.ok(p.x + p.w < 2160 && p.y + p.h < 3840, 'bottom-right corner, inside the frame');
+  comp.setSize('landscape-1080p'); comp.setLayout('side'); comp.draw();
+  assert.deepEqual(draws[3].rect, { x: 1080, y: 0, w: 840, h: 1080 });
+  comp.setLayout('work'); comp.draw();
+  assert.equal(draws.length, 4, 'work alone: no panel');
+  // the camera's overlay hook does not run over a panel
+  comp.setLayout('stack'); comp.draw();
+  let called = false; comp.drawOnCamera(() => { called = true; });
+  assert.equal(called, false);
+  comp.setPanel(null); comp.draw();
+  assert.equal(draws.length, 5, 'setPanel(null): back to the camera (none here)');
+  assert.throws(() => comp.setPanel({}), /draw/);
+});
+
+test('Compositor.setPanel: a failing panel never stops the recording frame (warned once)', () => {
+  const cv = fakeCanvas(), warn = console.warn, warned = [];
+  console.warn = (...a) => warned.push(a);
+  try {
+    const comp = new Compositor({ canvas: cv, getWorkCanvas: () => null }).setPanel({ draw() { throw new Error('boom'); } });
+    assert.doesNotThrow(() => { comp.draw(); comp.draw(); });
+    assert.equal(warned.length, 1);
+    assert.equal(comp.frames, 2);
+  } finally { console.warn = warn; }
+});
+
+test('Compositor + ControllerCanvas: the MiniLab 3 played on the bus lands in the frame', () => {
+  const cv = fakeCanvas(), s = new Signals();
+  const panel = new ControllerCanvas({ profile: 'arturia-minilab3', signals: s });
+  const comp = new Compositor({ canvas: cv, size: 'vertical-1080p', getWorkCanvas: () => ({ width: 1080, height: 1080 }) }).setPanel(panel);
+  s.set('midi/ch/1/note/60', 0.8);
+  comp.draw();
+  const texts = cv.ctx.calls.filter((c) => c[0] === 'fillText').map((c) => c[1]);
+  assert.ok(texts.includes('MINILAB 3') && texts.includes('C4'), 'faceplate and the held note drawn');
+  const t = cv.ctx.calls.find((c) => c[0] === 'fillText' && c[1] === 'C4' && c[3] > 1080);
+  assert.ok(t, 'below the work');
+  panel.dispose();
 });
 
 // ───────────── classic-script safety (the lab bundles these files) ─────────────

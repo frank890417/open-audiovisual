@@ -29,6 +29,28 @@ const [v, a] = await Promise.all([video.stop(), sound.stop()]); log.stop();
 [`examples/10-record`](../../examples/10-record/) is all of it on one page: a small world on top,
 the webcam below, size and layout pickers, record, and the three downloads, plus MIDI takes.
 
+## The controller instead of the camera
+
+The camera's area can show a **panel** instead: anything with `draw(ctx, rect, now)`. `@openav/midi`'s
+`ControllerCanvas` draws the controller being played (Arturia MiniLab 3 or any profile) from the
+generic MIDI signals on the bus: keys, pads, knobs, faders and strips as they move, the device's
+screen showing the last touch, the held notes written large under it. It is vector, drawn at the
+output size (a 4K frame gets a 2160 px wide panel, not an enlarged one), and costs well under a
+millisecond of script a frame. A take played back by a `TakePlayer` publishes the same signals, so a
+replayed clip animates the panel exactly as the hands did.
+
+```js
+import { ControllerCanvas } from '@openav/midi';
+
+const panel = new ControllerCanvas({ profile: 'arturia-minilab3', signals });
+comp.setPanel(panel);          // stack: the work on top, the MiniLab below · pip: a corner of the panel's shape
+comp.setPanel(null);           // the camera again (it stayed attached)
+panel.dispose();               // the host disposes the panel, not the compositor
+```
+
+[`examples/11-controller-video`](../../examples/11-controller-video/): a work above a MiniLab 3, a demo
+take, any profile, Web MIDI hardware, record.
+
 ## Layouts
 
 | layout | what goes where | for |
@@ -122,7 +144,7 @@ const again = fromMidiFile(await file.arrayBuffer());
 
 | export | signature |
 |---|---|
-| `Compositor` | `new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions, getWorkCanvas, background = '#000', mirrorCam = true, maxFps = 60, onDraw(ctx, rects, comp), canvas })` · `start()` · `stop()` · `draw()` → rects · `setSize(size)` · `setLayout(layout, options)` · `setCamera(MediaStream \| video \| canvas \| null)` → `Promise<{w, h} \| null>` · `drawOnCamera(fn(ctx, w, h))` · `dispose()` · `canvas`, `size`, `rects`, `video`, `cameraSize`, `fps` |
+| `Compositor` | `new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions, getWorkCanvas, background = '#000', mirrorCam = true, maxFps = 60, onDraw(ctx, rects, comp), canvas })` · `start()` · `stop()` · `draw()` → rects · `setSize(size)` · `setLayout(layout, options)` · `setCamera(MediaStream \| video \| canvas \| null)` → `Promise<{w, h} \| null>` · `setPanel({ draw(ctx, rect, now), aspect } \| null)` (drawn in the camera's area) · `drawOnCamera(fn(ctx, w, h))` · `dispose()` · `canvas`, `size`, `rects`, `video`, `cameraSize`, `panel`, `fps` |
 | `Recorder` | `new Recorder({ canvas, stream, fps = 60, audioTracks = [], audioOnly = false, videoBitsPerSecond, audioBitsPerSecond = 192000, mimeType, prefer })` · `start({ timeslice = 1000, ondata(blob, seq), keep })` · `stop()` → `Promise<{ mimeType, ext, bytes, chunks, durationMs, width, height, fps, audio, blob, error }>` · `t0`, `state`, `elapsed`, `bytes` · `Recorder.supported` |
 | `AudioTap` | `new AudioTap({ context, sources = [], captureDestination = false })` · `add(source, { bus = 'work', gain = 1 })` → remove · `captureDestination()` → uninstall · `addMicrophone({ deviceId, gain })` · `removeMicrophone()` · `level()` → 0..1 · `resume()` · `dispose()` · `stream`, `tracks`, `workStream`, `workTracks`, `context` |
 | `EventLog` | `new EventLog({ now, filter(name, value, meta), throttleMs = 0 })` · `start(at)` · `stop(at)` · `add(name, value, { at, pulse })` · `mark(label, data)` · `attach(signals)` → detach · `detach()` · `between(a, b)` · `toJSON()` · `toTake({ name, meta })` · `EventLog.fromJSON(json)` · `events`, `running`, `durationMs` |

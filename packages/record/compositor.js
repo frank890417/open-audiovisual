@@ -8,6 +8,10 @@
 // It never owns the work: getWorkCanvas() is asked for the work's canvas every
 // frame (p5 may replace it; a WebGL work may resize it). It never owns the
 // camera stream either: setCamera(null) lets go, the host stops the tracks.
+//
+// The camera's area can show a panel instead: anything with draw(ctx, rect, now)
+// — @openav/midi's ControllerCanvas draws the controller being played, live, in
+// vector at the output size. setPanel(null) brings the camera back.
 
 import { layoutRects, resolveSize, LAYOUTS } from './layout.js?v=f860ae3';
 
@@ -55,6 +59,7 @@ export class Compositor {
     this.frames = 0;
     this.fps = 0;
     this._cam = null;          // what is drawn: a <video> or any canvas-like source
+    this._panel = null;        // drawn in the camera's place: { draw(ctx, rect, now), aspect? }
     this._ownVideo = null;     // the <video> we made for a MediaStream
     this._key = '';
     this._lastDraw = -1e9; this._lastTick = 0;
@@ -127,8 +132,29 @@ export class Compositor {
     return this._cam === el ? this.cameraSize : null;
   }
 
+  /** The panel drawn in the camera's area (null = the camera). */
+  get panel() { return this._panel; }
+
+  /**
+   * Draw a panel where the camera goes — e.g. `new ControllerCanvas({ profile, signals })` from
+   * @openav/midi: the controller you play, instead of your hands. The panel draws itself into the
+   * camera's rect every frame at the output size (sharp at 4K); its `aspect` (width ÷ height)
+   * shapes a picture-in-picture corner. The camera stays attached and comes back with
+   * setPanel(null). The compositor never disposes a panel: the host does.
+   * @param {{draw:(ctx:CanvasRenderingContext2D, rect:{x:number,y:number,w:number,h:number}, now:number)=>void, aspect?:number}|null} panel
+   */
+  setPanel(panel) {
+    if (panel && typeof panel.draw !== 'function') throw new TypeError('Compositor.setPanel: a panel needs draw(ctx, rect, now)');
+    this._panel = panel || null;
+    this._key = '';
+    return this;
+  }
+
   _rectsFor(work) {
-    const [ww, wh] = dims(work), [cw, ch] = dims(this._cam);
+    const [ww, wh] = dims(work);
+    // a panel reserves an area of its own shape (only pip uses it: stack and side fill the rest)
+    const pa = this._panel && this._panel.aspect > 0 ? this._panel.aspect : 16 / 9;
+    const [cw, ch] = this._panel ? [Math.round(1000 * pa), 1000] : dims(this._cam);
     const key = `${this.layout}|${this.canvas.width}x${this.canvas.height}|${ww}x${wh}|${cw}x${ch}`;
     if (key !== this._key) {
       this.rects = layoutRects(this.layout, this.size, { workW: ww, workH: wh, camW: cw, camH: ch }, this.layoutOptions);
@@ -155,8 +181,15 @@ export class Compositor {
         else ctx.drawImage(work, r.work.x, r.work.y, r.work.w, r.work.h);
       } catch (e) { /* a work canvas mid-resize can be 0×0 for a frame */ }
     }
-    const cam = this._cam, cr = r.cam;
-    if (cam && cr && cr.crop) {
+    const cam = this._cam, cr = r.cam, panel = this._panel;
+    if (panel && cr) {
+      ctx.save();
+      if (cr.radius > 0) { roundRectPath(ctx, cr.x, cr.y, cr.w, cr.h, cr.radius); ctx.clip(); }
+      else { ctx.beginPath(); ctx.rect(cr.x, cr.y, cr.w, cr.h); ctx.clip(); }
+      try { panel.draw(ctx, { x: cr.x, y: cr.y, w: cr.w, h: cr.h }, performance.now()); }
+      catch (e) { if (!this._panelWarned) { this._panelWarned = true; console.warn('[record] panel', e); } }
+      ctx.restore();
+    } else if (cam && cr && cr.crop) {
       const [cw] = dims(cam), c = cr.crop;
       ctx.save();
       if (cr.radius > 0) { roundRectPath(ctx, cr.x, cr.y, cr.w, cr.h, cr.radius); ctx.clip(); }
@@ -182,12 +215,12 @@ export class Compositor {
    * Draw over the camera in the camera's own coordinates: `fn(ctx, w, h)` gets a
    * context translated to where the WHOLE camera frame lands and clipped to the
    * visible camera rect — the shape HandTracker / PoseTracker `skeleton(ctx, w, h)`
-   * expects. Call it from onDraw. No camera, no call.
+   * expects. Call it from onDraw. No camera (or a panel in its place), no call.
    * @param {(ctx: CanvasRenderingContext2D, w: number, h: number) => void} fn
    */
   drawOnCamera(fn) {
     const cr = this.rects && this.rects.cam;
-    if (!cr || !cr.frame) return;
+    if (!cr || !cr.frame || this._panel) return;
     const { ctx } = this;
     ctx.save();
     if (cr.radius > 0) roundRectPath(ctx, cr.x, cr.y, cr.w, cr.h, cr.radius);
