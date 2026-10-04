@@ -24,9 +24,9 @@
 //   4. a small generic panel, so the page is never blank
 // A host page may preseed window.__REMOTE__ = { room, surface, meta, work } (the lab server does).
 
-import { RelayClient, deviceId } from '../relay/index.js?v=c34c79f';
-import { Surface, autoSurface, lockViewport, keepAwake, canFullscreen, toggleFullscreen, injectTheme } from '../surface/index.js?v=c34c79f';
-import { PhoneSensors, attachTouchPad } from './sensors.js?v=c34c79f';
+import { RelayClient, deviceId } from '../relay/index.js?v=2cd2e50';
+import { Surface, autoSurface, lockViewport, keepAwake, canFullscreen, toggleFullscreen, injectTheme } from '../surface/index.js?v=2cd2e50';
+import { PhoneSensors, attachTouchPad } from './sensors.js?v=2cd2e50';
 
 const CSS = `
 .rm { position: fixed; inset: 0; display: grid; background: var(--oav-bg); color: var(--oav-text); font: 14px/1.35 var(--oav-font);

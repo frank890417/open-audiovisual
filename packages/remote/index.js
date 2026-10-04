@@ -1,5 +1,5 @@
 // @openav/remote — the phone / iPad end-node app, and the runner-side adapter.
 //   mountRemote(el, opts)   the app: tabs 感測 · 琴鍵 · 控制台 (phone/iPad side)
 //   mountRemoteHost(opts)   the show side: relay runner + surface publisher + feedback (host.js)
-export { mountRemote } from './app.js?v=c34c79f';
-export { PhoneSensors, attachTouchPad, localSensors } from './sensors.js?v=c34c79f';
+export { mountRemote } from './app.js?v=2cd2e50';
+export { PhoneSensors, attachTouchPad, localSensors } from './sensors.js?v=2cd2e50';
