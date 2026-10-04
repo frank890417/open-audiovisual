@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { DrumSequencer, PATTERNS, GM } from '../packages/drums/index.js';
+import { DrumSequencer, PATTERNS, GM, voiceForNote } from '../packages/drums/index.js';
 
 test('GM notes are the standard drum map', () => {
   assert.equal(GM.kick, 36);
@@ -40,4 +40,10 @@ test('toggleCell edits the grid and marks pattern custom; toggle(false) stops fi
   seq.toggle(false);
   for (let i = 0; i < 300; i++) seq.update(1 / 60);
   assert.equal(fired, 0);
+});
+
+test('the kit covers the GM pad notes: every named voice has a note and plays', () => {
+  for (const [name, note] of Object.entries(GM)) assert.equal(voiceForNote(note), name, `${name} (${note})`);
+  assert.equal(voiceForNote(35), 'kick'); assert.equal(voiceForNote(57), 'crash'); assert.equal(voiceForNote(59), 'ride');
+  assert.equal(voiceForNote(60), null, 'melodic notes stay silent on the drum engine');
 });

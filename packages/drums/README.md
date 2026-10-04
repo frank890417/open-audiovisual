@@ -24,12 +24,19 @@ drums.update(dt);
 |---|---|
 | `mountDrums` | `mountDrums(container, { signals, engine = null, autoEnableEngine = true })` → `{ seq, engine, update(dt), dispose() }`; no `engine` = `drumEngine()`, enabled on the first hit |
 | `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(name)` · `toggleCell(lane, i)` · `toggle(on = !playing)` · `update(dt)` · `grid`, `bpm`, `playing`, `pattern` |
-| `drumEngine` | `drumEngine({ samples = null })` → a [sound engine](https://openaudiovisual.com/docs/#show-control-sound): GM notes in, synthesized drums out; `samples: { 36: 'kick.wav' }` plays files instead; one param `kitVolume` (-30..0 dB, default -6) |
+| `drumEngine` | `drumEngine({ samples = null })` → a [sound engine](https://openaudiovisual.com/docs/#show-control-sound): GM notes in, synthesized drums out (`engine.hit('crash', 0.9)` plays a voice by name); `samples: { 36: 'kick.wav' }` plays files instead; one param `kitVolume` (-30..0 dB, default -6) |
 | `PATTERNS` | `'four on floor'`, `breakbeat`, `'half time'`, `latin`, `sparse` |
-| `GM` | `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
+| `GM` | `{ kick: 36, rim: 37, snare: 38, clap: 39, lowtom: 41, hat: 42, pedalhat: 44, tom: 45, openhat: 46, hightom: 48, crash: 49, ride: 51, cowbell: 56 }` |
+| `voiceForNote` | `voiceForNote(note)` → the kit voice a General MIDI drum note plays (`35`/`36` kick, `49`/`57` crash, `51`/`59` ride…), or `null` |
 
 Signals: `drum/kick`, `drum/snare`, `drum/hat`, `drum/clap` (pulse `{level}`),
 `drum/<lane>/env` (0..1), and `midi/note/on` `{note, vel, ch: 10}` per hit ·
 [Signals reference](https://openaudiovisual.com/docs/#signals-openav-drums-simulator-analyzer-shaped).
 
 Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-drums)
+
+## In the cheyuwu-lab
+
+Declared with a `"lab"` field (module `drums`): `lab.drums` plays every note that arrives on MIDI channel 10 — the
+General MIDI drum channel keyboard pads and drum machines use — so a pad hit is never silent. From code:
+`lab.drums.hit('kick', 0.9)`, `lab.drums.voices`, `lab.drums.set('kitVolume', -12)`. Audio starts on the first gesture.

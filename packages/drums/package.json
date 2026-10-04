@@ -3,7 +3,31 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js" },
+  "exports": {
+    ".": "./index.js"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/drums" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/drums"
+  },
+  "lab": {
+    "module": "drums",
+    "files": [
+      "drums/index.js"
+    ],
+    "exports": [
+      "DrumSequencer",
+      "drumEngine",
+      "mountDrums",
+      "PATTERNS",
+      "GM",
+      "voiceForNote"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.drums plays the GM drum channel (MIDI ch 10: keyboard pads, drum machines) with a synthesized kit — kick, snare, clap, rim, three toms, closed/pedal/open hats, crash, ride, cowbell; lab.drums.hit('kick', 0.9) from code; starts on the first gesture.",
+    "remoteTab": null,
+    "since": "2026-10"
+  }
 }

@@ -20,7 +20,18 @@
 // the mapper all hear them with zero new concepts. A MIDI drum pad hitting
 // note 36 lands in exactly the same lanes.
 
-export const GM = { kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 };
+export const GM = { kick: 36, rim: 37, snare: 38, clap: 39, lowtom: 41, hat: 42, pedalhat: 44, tom: 45, openhat: 46, hightom: 48, crash: 49, ride: 51, cowbell: 56 };
+
+// General MIDI drum notes → kit voice. Pads and drum machines send these on channel 10; anything
+// unlisted stays silent rather than guessing (a wrong cymbal on a kick pad is worse than nothing).
+const BY_NOTE = {
+  35: 'kick', 36: 'kick', 37: 'rim', 38: 'snare', 40: 'snare', 39: 'clap',
+  41: 'lowtom', 43: 'lowtom', 45: 'tom', 47: 'tom', 48: 'hightom', 50: 'hightom',
+  42: 'hat', 44: 'pedalhat', 46: 'openhat',
+  49: 'crash', 52: 'crash', 55: 'crash', 57: 'crash', 51: 'ride', 53: 'ride', 59: 'ride', 56: 'cowbell',
+};
+/** The kit voice a GM drum note plays, or null. */
+export function voiceForNote(note) { return BY_NOTE[note] ?? null; }
 const LANES = ['kick', 'snare', 'hat', 'clap'];
 
 /** Synthesized drum kit — engine contract: enable/noteOn/noteOff/set/params. */
@@ -69,16 +80,50 @@ export function drumEngine({ samples = null } = {}) {
         n.connect(bp).connect(g).connect(out); n.start(t + i * 0.012); n.stop(t + i * 0.012 + 0.18);
       }
     },
-    tom(vel, t) {
+    tom(vel, t, f0 = 160) {                 // pitch sweep down an octave; low/mid/high share the body
       const o = ctx.createOscillator(), g = ctx.createGain();
-      o.frequency.setValueAtTime(160, t);
-      o.frequency.exponentialRampToValueAtTime(80, t + 0.2);
-      env(g, t, 0.002, vel * 0.8, 0.3);
-      o.connect(g).connect(out); o.start(t); o.stop(t + 0.45);
+      o.frequency.setValueAtTime(f0, t);
+      o.frequency.exponentialRampToValueAtTime(f0 / 2, t + 0.2);
+      env(g, t, 0.002, vel * 0.8, 0.3 + (160 - f0) / 400);
+      o.connect(g).connect(out); o.start(t); o.stop(t + 0.6);
+    },
+    lowtom(vel, t) { play.tom(vel, t, 105); },
+    hightom(vel, t) { play.tom(vel, t, 230); },
+    pedalhat(vel, t) {                      // the foot closing the hats: shorter and duller than a stick hit
+      const n = ctx.createBufferSource(); n.buffer = noise;
+      const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 5500;
+      const g = ctx.createGain(); env(g, t, 0.002, vel * 0.35, 0.03);
+      n.connect(hp).connect(g).connect(out); n.start(t); n.stop(t + 0.06);
+    },
+    metal(vel, t, dec, hpHz, level) {       // six detuned squares (the 808 cymbal recipe) through a high-pass
+      const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = hpHz;
+      const g = ctx.createGain(); env(g, t, 0.001, vel * level, dec);
+      hp.connect(g).connect(out);
+      for (const f of [205.3, 304.4, 369.6, 522.7, 540, 800]) {
+        const o = ctx.createOscillator(); o.type = 'square'; o.frequency.value = f * 1.6;
+        o.connect(hp); o.start(t); o.stop(t + dec + 0.1);
+      }
+    },
+    crash(vel, t) {                         // metal + a wash of noise, long tail
+      play.metal(vel, t, 1.6, 6500, 0.22);
+      const n = ctx.createBufferSource(); n.buffer = noise; n.loop = true;
+      const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 4500;
+      const g = ctx.createGain(); env(g, t, 0.003, vel * 0.35, 1.4);
+      n.connect(hp).connect(g).connect(out); n.start(t); n.stop(t + 1.6);
+    },
+    ride(vel, t) { play.metal(vel, t, 0.8, 8000, 0.18); },
+    rim(vel, t) {                           // a click and a short wooden ping
+      const o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.value = 1700;
+      const g = ctx.createGain(); env(g, t, 0.0005, vel * 0.5, 0.03);
+      o.connect(g).connect(out); o.start(t); o.stop(t + 0.06);
+    },
+    cowbell(vel, t) {
+      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 800; bp.Q.value = 2;
+      const g = ctx.createGain(); env(g, t, 0.001, vel * 0.4, 0.25);
+      bp.connect(g).connect(out);
+      for (const f of [540, 800]) { const o = ctx.createOscillator(); o.type = 'square'; o.frequency.value = f; o.connect(bp); o.start(t); o.stop(t + 0.3); }
     },
   };
-  const BY_NOTE = { 36: 'kick', 35: 'kick', 38: 'snare', 40: 'snare', 39: 'clap',
-    42: 'hat', 44: 'hat', 46: 'openhat', 45: 'tom', 41: 'tom', 47: 'tom', 48: 'tom' };
   return {
     params: [{ key: 'kitVolume', label: 'Kit volume (dB)', min: -30, max: 0, def: -6 }],
     async enable() {
@@ -101,10 +146,12 @@ export function drumEngine({ samples = null } = {}) {
         s.connect(g).connect(out); s.start(t);
         return;
       }
-      const name = BY_NOTE[note];
+      const name = voiceForNote(note);
       if (name === 'openhat') play.hat(vel01, t, true);
-      else if (play[name]) play[name](vel01, t);
+      else if (name && play[name]) play[name](vel01, t);
     },
+    /** Play a voice by name ('kick', 'crash'…) or GM note number — for code that is not a MIDI pad. */
+    hit(what, vel01 = 0.9) { const note = typeof what === 'number' ? what : GM[what]; if (note != null) this.noteOn(note, vel01); },
     noteOff() {},
     set(key, value) { if (key === 'kitVolume' && out) out.gain.value = Math.pow(10, value / 20); },
     dispose() { try { ctx?.close(); } catch (e) {} ctx = null; },
