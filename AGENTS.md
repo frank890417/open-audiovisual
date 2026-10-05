@@ -11,7 +11,7 @@
 A zero-build, zero-dependency ESM framework for audiovisual performance.
 Four layers + two spines — the contracts are in [docs/architecture.md](docs/architecture.md):
 
-- **Input** (`packages/midi`, `audio`, `chord`, `pose`) → publishes named **signals**
+- **Input** (`packages/midi`, `audio`, `chord`, `pose`, `leap`) → publishes named **signals**
 - **Mapping** (`packages/mapping`) → routes signals to **params** (curves, smoothing, live learn)
 - **World** (`packages/stage`) → algorithmic system that reads params, renders anything
 - **Output** (`packages/osc`, MIDI out) + **Timeline** + **Console** + **Monitor**

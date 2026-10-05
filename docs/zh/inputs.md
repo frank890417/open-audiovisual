@@ -12,6 +12,7 @@
 | 和弦分析 | `@openav/chord` | `chord` | 關 | `chord/…` |
 | 身體（鏡頭） | `@openav/pose` | `pose` | 關 | `pose/…` |
 | 手（鏡頭） | `@openav/pose` | `hands` | 關 | `hand/…` |
+| 手（Leap Motion） | `@openav/leap` | `leap` | 關 | `leap/…` |
 | 手機與 iPad | `@openav/remote` | `remote` | 關 | `phone/…`、`surface/…`、`midi/note/…` |
 
 麥克風、鏡頭這類需要權限、或要使用者先點一下才能開的來源，`createShow()` 會先建好，但要等你在控台的 **L1 · Input**（輸入）面板按下對應的按鈕，才會開始：🎤 mic（麥克風）、🖐 hands（手）、🕺 body（身體）。
@@ -118,6 +119,12 @@ await audio.enableMic();            // or audio.enableElement(videoEl), or someN
 - **手**：每一側各有 `hand/<side>/present`、`hand/<side>/x|y`（手掌）、`hand/<side>/pinch/index` 和 `hand/<side>/pinch/middle`（拇指尖到手指尖）、`hand/<side>/spread`（食指尖到小指尖）。距離都除以手掌大小，所以手往鏡頭靠近，捏合的值不會變。捏緊時數值接近 0：如果希望越捏越大，在路由上設 `invert: true`（範例 03）。
 
 兩種追蹤器都能把骨架畫在 2D context 上：`tracker.skeleton(ctx, w, h)`。
+
+## Leap Motion
+
+`modules: { leap: true }` 加上一個 `LeapInput`。瀏覽器讀不到感測器，所以每台電腦跑一支小橋接程式：`node packages/leap/bridge/leap-bridge.mjs`（要先裝 Ultraleap Hand Tracking；加 `--mock` 不接感測器也有兩隻會動的假手；macOS 上 `bash packages/leap/bridge/install.sh` 讓它開機就在跑）。它只在本機迴路上提供 `ws://127.0.0.1:6437`。控台的 **L1 · Input** 面板會說哪一段沒接上（橋接、追蹤服務、裝置），並畫出看到的手；面板上的 *simulate* 按鈕把滑鼠變成手。
+
+訊號：每一側各有 `leap/hand/<side>/present`、`x|y|z`（手掌在互動空間裡的位置，0..1，y 往上、z 朝向你）、`pinch`、`grab`、`roll|pitch|yaw`（弧度）、`speed`，指尖 `leap/hand/<side>/<finger>/x|y|z`；另有 `leap/hands`、`leap/both/distance`、`leap/status`；脈衝 `pinch-start|pinch-end`、`grab-start|grab-end`（每一側）與 `leap/both/pinch-start|pinch-end`，都有遲滯（捏超過 0.86 才開始、低於 0.5 才結束）。要畫手的關節，讀 `leap.hands`。同一支橋接在 `/v6.json` 回應舊的 `leap.js` 作品，在 `/raw` 送原始的手部資料（見範例 12 與套件 README）。
 
 ## 手機與 iPad
 

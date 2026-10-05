@@ -47,6 +47,7 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 ┌────────────────────────────────────────────────────────────┐
 │ L1 INPUT — "what is happening"                             │
 │   @openav/midi   @openav/audio   @openav/chord  @openav/pose│
+│   @openav/leap (Leap Motion, via a local bridge) · phones  │
 │   → all publish named, normalized SIGNALS                  │
 │     midi/cc/74 · chord/consonance · audio/rms · pose/hand/…│
 ├────────────────────────────────────────────────────────────┤
@@ -94,6 +95,7 @@ Two rules make the whole thing composable:
 | [`08-remote-surface`](examples/08-remote-surface/) | **the phone is the instrument panel**: the World only declares `params`; `modules: { remote: true }` grows the control surface (`autoSurface`), a keyboard page, tilt & knock sensors — with feedback to the phone |
 | [`10-record`](examples/10-record/) | **the performance video** (@openav/record): the work on top, your hands from the webcam below, the work's own sound, one vertical 1080×1920 / 2.7K / 4K file in sync — plus MIDI takes you record, play back into the show, and save as `.mid` |
 | [`11-controller-video`](examples/11-controller-video/) | **the performance video without a camera**: the controller you play (MiniLab 3 or any profile) drawn live under the work — keys, pads, knobs and faders as they move, sharp at 4K; a replayed MIDI take animates it too |
+| [`12-leap-hands`](examples/12-leap-hands/) | **a Leap Motion as an instrument** (@openav/leap): palm height, pinch and fist through params, the hand skeleton drawn in the work; runs on the machine's bridge (`node packages/leap/bridge/leap-bridge.mjs`, `--mock` without a sensor) or with the mouse as a simulated hand |
 
 All examples run without MIDI hardware — every stage ships an on-screen piano
 (@openav/keys: QWERTY capture, Z/X octave) and a **simulated performer** that
@@ -223,7 +225,7 @@ MIT — build shows, teach classes, fork worlds. Attribution appreciated, not re
 A zero-build, zero-dependency ESM framework for audiovisual performance.
 Four layers + two spines — the contracts are in [docs/architecture.md](docs/architecture.md):
 
-- **Input** (`packages/midi`, `audio`, `chord`, `pose`) → publishes named **signals**
+- **Input** (`packages/midi`, `audio`, `chord`, `pose`, `leap`) → publishes named **signals**
 - **Mapping** (`packages/mapping`) → routes signals to **params** (curves, smoothing, live learn)
 - **World** (`packages/stage`) → algorithmic system that reads params, renders anything
 - **Output** (`packages/osc`, MIDI out) + **Timeline** + **Console** + **Monitor**
@@ -716,6 +718,13 @@ Adding a new input modality (breath sensor, gamepad, stock ticker, weather API)
 means writing one class that calls `signals.set()` / `signals.pulse()`.
 Nothing downstream changes. That is the whole point.
 
+The inputs today: `@openav/midi` (hardware and on-screen controllers), `keys`,
+`drums`, `audio` (microphone), `pose` (camera body and hands), `leap` (Leap
+Motion / Ultraleap hands) and phones through `remote` and `surface`. Hardware a
+browser cannot open itself reaches it through a small local bridge that speaks
+a web protocol (`leap` runs one on `ws://127.0.0.1:6437`); the browser side is
+still one class that publishes signals.
+
 Analyzers sit between raw sources and mapping: `@openav/chord` subscribes to
 `midi/note/on|off` and publishes `chord/*`. It is still an input as far as the
 mapper is concerned; it just listens to other signals instead of a device.
@@ -1110,6 +1119,7 @@ The exact names and ranges are in the [Signals reference](signals.md).
 | chord analysis | `@openav/chord` | `chord` | off | `chord/…` |
 | body (camera) | `@openav/pose` | `pose` | off | `pose/…` |
 | hands (camera) | `@openav/pose` | `hands` | off | `hand/…` |
+| hands (Leap Motion) | `@openav/leap` | `leap` | off | `leap/…` |
 | phones and iPads | `@openav/remote` | `remote` | off | `phone/…`, `surface/…`, `midi/note/…` |
 
 Sources that need permission or a user gesture (microphone, camera) are created
@@ -1298,6 +1308,25 @@ default (`mirror: true`), like a mirror on stage, and y is flipped so 1 means
   value (example 03).
 
 Both trackers draw their skeleton on a 2D context: `tracker.skeleton(ctx, w, h)`.
+
+## Leap Motion
+
+`modules: { leap: true }` adds a `LeapInput`. Browsers cannot read the sensor,
+so one small bridge per machine does: `node packages/leap/bridge/leap-bridge.mjs`
+(needs Ultraleap Hand Tracking installed; `--mock` gives two animated hands
+without a sensor; `bash packages/leap/bridge/install.sh` keeps it running at
+login on macOS). It serves `ws://127.0.0.1:6437` on loopback only. The console's
+**L1 · Input** panel shows which link is missing (bridge, tracking service,
+device) and draws the hands; its *simulate* button turns the mouse into hands.
+
+Signals: per side, `leap/hand/<side>/present`, `x|y|z` (palm in the interaction
+box, 0..1, y up, z toward you), `pinch`, `grab`, `roll|pitch|yaw` (radians),
+`speed`, fingertips `leap/hand/<side>/<finger>/x|y|z`; `leap/hands`,
+`leap/both/distance`, `leap/status`; pulses `pinch-start|pinch-end`,
+`grab-start|grab-end` per side and `leap/both/pinch-start|pinch-end`, with
+hysteresis (a pinch starts above 0.86 and ends below 0.5). Joints for drawing
+the hand are on `leap.hands`. The same bridge answers old `leap.js` sketches on
+`/v6.json`, and serves raw hand lines on `/raw` (example 12, package README).
 
 ## Phones and iPads
 
@@ -2488,6 +2517,28 @@ Normalized by palm size, so distance to the camera doesn't change your pinch.
 
 (`hand/right/*` mirrors the set. Both trackers expose `skeleton(ctx, w, h)` overlays.)
 
+## @openav/leap
+
+Leap Motion / Ultraleap through the machine's bridge. Positions are the palm or
+fingertip inside the interaction box, normalized and clamped (x right, y up,
+z toward the performer). `<side>` is `left` or `right`, `<finger>` one of
+`thumb index middle ring pinky`.
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `leap/status` | continuous | 0..3 | 0 no bridge · 1 bridge, no tracking service · 2 no device · 3 tracking |
+| `leap/hands` | continuous | 0..2 | hands in view |
+| `leap/hand/<side>/present` | continuous | 0/1 | hand in view |
+| `leap/hand/<side>/x` `/y` `/z` | continuous | 0..1 | palm position |
+| `leap/hand/<side>/pinch` `/grab` | continuous | 0..1 | pinch and fist strength (0 when the hand is lost) |
+| `leap/hand/<side>/roll` `/pitch` `/yaw` | continuous | -π..π | hand rotation in radians |
+| `leap/hand/<side>/speed` | continuous | 0..1 | palm speed, 1 = 1 m/s |
+| `leap/hand/<side>/<finger>/x` `/y` `/z` | continuous | 0..1 | fingertip position |
+| `leap/both/distance` | continuous | 0..1 | palm to palm, 1 = 40 cm |
+| `leap/hand/<side>/pinch-start` `/pinch-end` | pulse | `{side, x, y, z, strength}` | pinch above 0.86 starts, below 0.5 ends |
+| `leap/hand/<side>/grab-start` `/grab-end` | pulse | `{side, x, y, z, strength}` | fist above 0.8 starts, below 0.5 ends |
+| `leap/both/pinch-start` `/pinch-end` | pulse | `{x, y, z, distance}` | both pinch above 0.8 enters, either below 0.5 exits |
+
 ## @openav/drums (simulator — analyzer-shaped)
 
 The drum machine publishes the SAME shapes the audio analyzer publishes, so a
@@ -2564,14 +2615,14 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Twenty-one packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-two packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
 
 | layer | packages |
 |---|---|
-| L1 input | `midi` · `audio` · `chord` · `pose` · `keys` · `drums` |
+| L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `record` (and MIDI out in `midi`) |
@@ -2682,6 +2733,25 @@ L1 input · body and hand tracking from the camera with MediaPipe, on the device
 import { HandTracker } from '@openav/pose';
 const hands = new HandTracker({ signals });
 button.onclick = () => hands.enable();
+```
+
+## @openav/leap
+
+L1 input · Leap Motion / Ultraleap hands through the machine's bridge
+(`node packages/leap/bridge/leap-bridge.mjs`, `ws://127.0.0.1:6437`). The same
+bridge speaks the old LeapJS protocol, so 2014–2021 `leap.js` sketches run unchanged.
+
+| export | signature |
+|---|---|
+| `LeapInput` | `new LeapInput({ signals, url, reconnect = true, fingers = true, box, thresholds })` · `connect()` · `disconnect()` · `simulate({ target })` → `stop()` · `skeleton(ctx, w, h, { view, colorLeft, colorRight, lineWidth })` · `mountPanel(el)` · `onFrame(fn)` · `onStatus(fn)` · `ingest(msg)` · `hands`, `frame`, `status`, `device` |
+| frames | `V6Converter` (raw → LeapJS v6) · `handsOf(msg)` · `normalizePoint(p, box)` · `handAngles(direction, normal)` · `mockHand(o)` · `mockFrame(t)` |
+| gestures | `HandGestures` · `Hysteresis(on, off)` · `THRESHOLDS` (pinch 0.86 / 0.5, both hands 0.8 / 0.5, grab 0.8 / 0.5) |
+
+```js
+import { LeapInput } from '@openav/leap';
+const leap = new LeapInput({ signals }).connect();   // ws://127.0.0.1:6437/v6.json
+leap.onFrame(() => leap.skeleton(ctx, w, h));          // joints in mm: leap.hands
+// no sensor: leap.simulate() — mouse = right palm, press = pinch
 ```
 
 ## @openav/keys

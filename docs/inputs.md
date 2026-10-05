@@ -14,6 +14,7 @@ The exact names and ranges are in the [Signals reference](signals.md).
 | chord analysis | `@openav/chord` | `chord` | off | `chord/…` |
 | body (camera) | `@openav/pose` | `pose` | off | `pose/…` |
 | hands (camera) | `@openav/pose` | `hands` | off | `hand/…` |
+| hands (Leap Motion) | `@openav/leap` | `leap` | off | `leap/…` |
 | phones and iPads | `@openav/remote` | `remote` | off | `phone/…`, `surface/…`, `midi/note/…` |
 
 Sources that need permission or a user gesture (microphone, camera) are created
@@ -202,6 +203,25 @@ default (`mirror: true`), like a mirror on stage, and y is flipped so 1 means
   value (example 03).
 
 Both trackers draw their skeleton on a 2D context: `tracker.skeleton(ctx, w, h)`.
+
+## Leap Motion
+
+`modules: { leap: true }` adds a `LeapInput`. Browsers cannot read the sensor,
+so one small bridge per machine does: `node packages/leap/bridge/leap-bridge.mjs`
+(needs Ultraleap Hand Tracking installed; `--mock` gives two animated hands
+without a sensor; `bash packages/leap/bridge/install.sh` keeps it running at
+login on macOS). It serves `ws://127.0.0.1:6437` on loopback only. The console's
+**L1 · Input** panel shows which link is missing (bridge, tracking service,
+device) and draws the hands; its *simulate* button turns the mouse into hands.
+
+Signals: per side, `leap/hand/<side>/present`, `x|y|z` (palm in the interaction
+box, 0..1, y up, z toward you), `pinch`, `grab`, `roll|pitch|yaw` (radians),
+`speed`, fingertips `leap/hand/<side>/<finger>/x|y|z`; `leap/hands`,
+`leap/both/distance`, `leap/status`; pulses `pinch-start|pinch-end`,
+`grab-start|grab-end` per side and `leap/both/pinch-start|pinch-end`, with
+hysteresis (a pinch starts above 0.86 and ends below 0.5). Joints for drawing
+the hand are on `leap.hands`. The same bridge answers old `leap.js` sketches on
+`/v6.json`, and serves raw hand lines on `/raw` (example 12, package README).
 
 ## Phones and iPads
 

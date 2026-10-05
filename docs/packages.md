@@ -1,13 +1,13 @@
 # Package reference
 
-Twenty-one packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-two packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
 
 | layer | packages |
 |---|---|
-| L1 input | `midi` · `audio` · `chord` · `pose` · `keys` · `drums` |
+| L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `record` (and MIDI out in `midi`) |
@@ -118,6 +118,25 @@ L1 input · body and hand tracking from the camera with MediaPipe, on the device
 import { HandTracker } from '@openav/pose';
 const hands = new HandTracker({ signals });
 button.onclick = () => hands.enable();
+```
+
+## @openav/leap
+
+L1 input · Leap Motion / Ultraleap hands through the machine's bridge
+(`node packages/leap/bridge/leap-bridge.mjs`, `ws://127.0.0.1:6437`). The same
+bridge speaks the old LeapJS protocol, so 2014–2021 `leap.js` sketches run unchanged.
+
+| export | signature |
+|---|---|
+| `LeapInput` | `new LeapInput({ signals, url, reconnect = true, fingers = true, box, thresholds })` · `connect()` · `disconnect()` · `simulate({ target })` → `stop()` · `skeleton(ctx, w, h, { view, colorLeft, colorRight, lineWidth })` · `mountPanel(el)` · `onFrame(fn)` · `onStatus(fn)` · `ingest(msg)` · `hands`, `frame`, `status`, `device` |
+| frames | `V6Converter` (raw → LeapJS v6) · `handsOf(msg)` · `normalizePoint(p, box)` · `handAngles(direction, normal)` · `mockHand(o)` · `mockFrame(t)` |
+| gestures | `HandGestures` · `Hysteresis(on, off)` · `THRESHOLDS` (pinch 0.86 / 0.5, both hands 0.8 / 0.5, grab 0.8 / 0.5) |
+
+```js
+import { LeapInput } from '@openav/leap';
+const leap = new LeapInput({ signals }).connect();   // ws://127.0.0.1:6437/v6.json
+leap.onFrame(() => leap.skeleton(ctx, w, h));          // joints in mm: leap.hands
+// no sensor: leap.simulate() — mouse = right palm, press = pinch
 ```
 
 ## @openav/keys

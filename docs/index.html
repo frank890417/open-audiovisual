@@ -24,9 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=f860ae3">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=f860ae3">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -179,6 +179,7 @@
             <li><a href="#inputs-microphone">Microphone</a></li>
             <li><a href="#inputs-chords">Chords</a></li>
             <li><a href="#inputs-body-and-hands">Body and hands</a></li>
+            <li><a href="#inputs-leap-motion">Leap Motion</a></li>
             <li><a href="#inputs-phones-and-ipads">Phones and iPads</a></li>
             <li><a href="#inputs-your-own-input">Your own input</a></li>
           </ol>
@@ -254,6 +255,7 @@
             <li><a href="#signals-openav-audio">@openav/audio</a></li>
             <li><a href="#signals-openav-pose">@openav/pose</a></li>
             <li><a href="#signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker (21-landmark fine control)</a></li>
+            <li><a href="#signals-openav-leap">@openav/leap</a></li>
             <li><a href="#signals-openav-drums-simulator-analyzer-shaped">@openav/drums (simulator — analyzer-shaped)</a></li>
             <li><a href="#signals-openav-sound-output-events">@openav/sound (output events)</a></li>
             <li><a href="#signals-openav-record-take-playback">@openav/record (take playback)</a></li>
@@ -270,6 +272,7 @@
             <li><a href="#packages-openav-audio">@openav/audio</a></li>
             <li><a href="#packages-openav-chord">@openav/chord</a></li>
             <li><a href="#packages-openav-pose">@openav/pose</a></li>
+            <li><a href="#packages-openav-leap">@openav/leap</a></li>
             <li><a href="#packages-openav-keys">@openav/keys</a></li>
             <li><a href="#packages-openav-drums">@openav/drums</a></li>
             <li><a href="#packages-openav-mapping">@openav/mapping</a></li>
@@ -346,7 +349,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">16 chapters · 147 sections · v0.1.0</p>
+      <p class="docs-stats">16 chapters · 150 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -702,6 +705,12 @@ reality — when a human grabs a control, the score yields.</p>
 <p>Adding a new input modality (breath sensor, gamepad, stock ticker, weather API)
 means writing one class that calls <code>signals.set()</code> / <code>signals.pulse()</code>.
 Nothing downstream changes. That is the whole point.</p>
+<p>The inputs today: <code>@openav/midi</code> (hardware and on-screen controllers), <code>keys</code>,
+<code>drums</code>, <code>audio</code> (microphone), <code>pose</code> (camera body and hands), <code>leap</code> (Leap
+Motion / Ultraleap hands) and phones through <code>remote</code> and <code>surface</code>. Hardware a
+browser cannot open itself reaches it through a small local bridge that speaks
+a web protocol (<code>leap</code> runs one on <code>ws://127.0.0.1:6437</code>); the browser side is
+still one class that publishes signals.</p>
 <p>Analyzers sit between raw sources and mapping: <code>@openav/chord</code> subscribes to
 <code>midi/note/on|off</code> and publishes <code>chord/*</code>. It is still an input as far as the
 mapper is concerned; it just listens to other signals instead of a device.</p>
@@ -1024,6 +1033,7 @@ The exact names and ranges are in the <a href="#signals">Signals reference</a>.<
 <tr><td>chord analysis</td><td><code>@openav/chord</code></td><td><code>chord</code></td><td>off</td><td><code>chord/…</code></td></tr>
 <tr><td>body (camera)</td><td><code>@openav/pose</code></td><td><code>pose</code></td><td>off</td><td><code>pose/…</code></td></tr>
 <tr><td>hands (camera)</td><td><code>@openav/pose</code></td><td><code>hands</code></td><td>off</td><td><code>hand/…</code></td></tr>
+<tr><td>hands (Leap Motion)</td><td><code>@openav/leap</code></td><td><code>leap</code></td><td>off</td><td><code>leap/…</code></td></tr>
 <tr><td>phones and iPads</td><td><code>@openav/remote</code></td><td><code>remote</code></td><td>off</td><td><code>phone/…</code>, <code>surface/…</code>, <code>midi/note/…</code></td></tr>
 </tbody>
 </table></div>
@@ -1186,6 +1196,22 @@ reads near 0: use <code>invert: true</code> on the route when closing should rai
 value (example 03).</li>
 </ul>
 <p>Both trackers draw their skeleton on a 2D context: <code>tracker.skeleton(ctx, w, h)</code>.</p>
+<h3 id="inputs-leap-motion">Leap Motion<a class="anchor" href="#inputs-leap-motion" aria-label="Link to this section">#</a></h3>
+<p><code>modules: { leap: true }</code> adds a <code>LeapInput</code>. Browsers cannot read the sensor,
+so one small bridge per machine does: <code>node packages/leap/bridge/leap-bridge.mjs</code>
+(needs Ultraleap Hand Tracking installed; <code>--mock</code> gives two animated hands
+without a sensor; <code>bash packages/leap/bridge/install.sh</code> keeps it running at
+login on macOS). It serves <code>ws://127.0.0.1:6437</code> on loopback only. The console's
+<strong>L1 · Input</strong> panel shows which link is missing (bridge, tracking service,
+device) and draws the hands; its <em>simulate</em> button turns the mouse into hands.</p>
+<p>Signals: per side, <code>leap/hand/&lt;side&gt;/present</code>, <code>x|y|z</code> (palm in the interaction
+box, 0..1, y up, z toward you), <code>pinch</code>, <code>grab</code>, <code>roll|pitch|yaw</code> (radians),
+<code>speed</code>, fingertips <code>leap/hand/&lt;side&gt;/&lt;finger&gt;/x|y|z</code>; <code>leap/hands</code>,
+<code>leap/both/distance</code>, <code>leap/status</code>; pulses <code>pinch-start|pinch-end</code>,
+<code>grab-start|grab-end</code> per side and <code>leap/both/pinch-start|pinch-end</code>, with
+hysteresis (a pinch starts above 0.86 and ends below 0.5). Joints for drawing
+the hand are on <code>leap.hands</code>. The same bridge answers old <code>leap.js</code> sketches on
+<code>/v6.json</code>, and serves raw hand lines on <code>/raw</code> (example 12, package README).</p>
 <h3 id="inputs-phones-and-ipads">Phones and iPads<a class="anchor" href="#inputs-phones-and-ipads" aria-label="Link to this section">#</a></h3>
 <p><code>modules: { remote: true }</code> lets phones join the show over the relay that
 <code>serve.js</code> hosts. Their sensors publish <code>phone/&lt;id&gt;/…</code> (tilt, acceleration,
@@ -1532,7 +1558,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=f860ae3"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2176,6 +2202,28 @@ Normalized by palm size, so distance to the camera doesn't change your pinch.</p
 </tbody>
 </table></div>
 <p>(<code>hand/right/*</code> mirrors the set. Both trackers expose <code>skeleton(ctx, w, h)</code> overlays.)</p>
+<h3 id="signals-openav-leap">@openav/leap<a class="anchor" href="#signals-openav-leap" aria-label="Link to this section">#</a></h3>
+<p>Leap Motion / Ultraleap through the machine's bridge. Positions are the palm or
+fingertip inside the interaction box, normalized and clamped (x right, y up,
+z toward the performer). <code>&lt;side&gt;</code> is <code>left</code> or <code>right</code>, <code>&lt;finger&gt;</code> one of
+<code>thumb index middle ring pinky</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>leap/status</code></td><td>continuous</td><td>0..3</td><td>0 no bridge · 1 bridge, no tracking service · 2 no device · 3 tracking</td></tr>
+<tr><td><code>leap/hands</code></td><td>continuous</td><td>0..2</td><td>hands in view</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/present</code></td><td>continuous</td><td>0/1</td><td>hand in view</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/x</code> <code>/y</code> <code>/z</code></td><td>continuous</td><td>0..1</td><td>palm position</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/pinch</code> <code>/grab</code></td><td>continuous</td><td>0..1</td><td>pinch and fist strength (0 when the hand is lost)</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/roll</code> <code>/pitch</code> <code>/yaw</code></td><td>continuous</td><td>-π..π</td><td>hand rotation in radians</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/speed</code></td><td>continuous</td><td>0..1</td><td>palm speed, 1 = 1 m/s</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/&lt;finger&gt;/x</code> <code>/y</code> <code>/z</code></td><td>continuous</td><td>0..1</td><td>fingertip position</td></tr>
+<tr><td><code>leap/both/distance</code></td><td>continuous</td><td>0..1</td><td>palm to palm, 1 = 40 cm</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/pinch-start</code> <code>/pinch-end</code></td><td>pulse</td><td><code>{side, x, y, z, strength}</code></td><td>pinch above 0.86 starts, below 0.5 ends</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/grab-start</code> <code>/grab-end</code></td><td>pulse</td><td><code>{side, x, y, z, strength}</code></td><td>fist above 0.8 starts, below 0.5 ends</td></tr>
+<tr><td><code>leap/both/pinch-start</code> <code>/pinch-end</code></td><td>pulse</td><td><code>{x, y, z, distance}</code></td><td>both pinch above 0.8 enters, either below 0.5 exits</td></tr>
+</tbody>
+</table></div>
 <h3 id="signals-openav-drums-simulator-analyzer-shaped">@openav/drums (simulator — analyzer-shaped)<a class="anchor" href="#signals-openav-drums-simulator-analyzer-shaped" aria-label="Link to this section">#</a></h3>
 <p>The drum machine publishes the SAME shapes the audio analyzer publishes, so a
 world mapped to a kick cannot tell mic from machine (that's what a simulator
@@ -2249,14 +2297,14 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">12</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
-<p>Twenty-one packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+<p>Twenty-two packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
 npm yet.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>layer</th><th>packages</th></tr></thead>
 <tbody>
-<tr><td>L1 input</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>keys</code> · <code>drums</code></td></tr>
+<tr><td>L1 input</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>leap</code> · <code>keys</code> · <code>drums</code></td></tr>
 <tr><td>L2 mapping</td><td><code>mapping</code></td></tr>
 <tr><td>L3 world</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
 <tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>record</code> (and MIDI out in <code>midi</code>)</td></tr>
@@ -2268,7 +2316,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=f860ae3"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -2348,6 +2396,22 @@ chord.analyze([60, 64, 67]).chordType;   <span class="tc">// 'major'</span></cod
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { HandTracker } <span class="tk">from</span> <span class="ts">'@openav/pose'</span>;
 <span class="tk">const</span> hands = <span class="tk">new</span> HandTracker({ signals });
 button.onclick = () =&gt; hands.enable();</code></pre></div>
+<h3 id="packages-openav-leap">@openav/leap<a class="anchor" href="#packages-openav-leap" aria-label="Link to this section">#</a></h3>
+<p>L1 input · Leap Motion / Ultraleap hands through the machine's bridge
+(<code>node packages/leap/bridge/leap-bridge.mjs</code>, <code>ws://127.0.0.1:6437</code>). The same
+bridge speaks the old LeapJS protocol, so 2014–2021 <code>leap.js</code> sketches run unchanged.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>LeapInput</code></td><td><code>new LeapInput({ signals, url, reconnect = true, fingers = true, box, thresholds })</code> · <code>connect()</code> · <code>disconnect()</code> · <code>simulate({ target })</code> → <code>stop()</code> · <code>skeleton(ctx, w, h, { view, colorLeft, colorRight, lineWidth })</code> · <code>mountPanel(el)</code> · <code>onFrame(fn)</code> · <code>onStatus(fn)</code> · <code>ingest(msg)</code> · <code>hands</code>, <code>frame</code>, <code>status</code>, <code>device</code></td></tr>
+<tr><td>frames</td><td><code>V6Converter</code> (raw → LeapJS v6) · <code>handsOf(msg)</code> · <code>normalizePoint(p, box)</code> · <code>handAngles(direction, normal)</code> · <code>mockHand(o)</code> · <code>mockFrame(t)</code></td></tr>
+<tr><td>gestures</td><td><code>HandGestures</code> · <code>Hysteresis(on, off)</code> · <code>THRESHOLDS</code> (pinch 0.86 / 0.5, both hands 0.8 / 0.5, grab 0.8 / 0.5)</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { LeapInput } <span class="tk">from</span> <span class="ts">'@openav/leap'</span>;
+<span class="tk">const</span> leap = <span class="tk">new</span> LeapInput({ signals }).connect();   <span class="tc">// ws://127.0.0.1:6437/v6.json</span>
+leap.onFrame(() =&gt; leap.skeleton(ctx, w, h));          <span class="tc">// joints in mm: leap.hands</span>
+<span class="tc">// no sensor: leap.simulate() — mouse = right palm, press = pinch</span></code></pre></div>
 <h3 id="packages-openav-keys">@openav/keys<a class="anchor" href="#packages-openav-keys" aria-label="Link to this section">#</a></h3>
 <p>L1 input · the on-screen piano, QWERTY playing and a simulated performer, all
 publishing <code>midi/note/on|off</code>.</p>
@@ -2905,6 +2969,6 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=f860ae3"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

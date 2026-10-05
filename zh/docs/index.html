@@ -24,9 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=f860ae3">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=f860ae3">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -179,6 +179,7 @@
             <li><a href="#inputs-microphone">麥克風</a></li>
             <li><a href="#inputs-chords">和弦</a></li>
             <li><a href="#inputs-body-and-hands">身體與手</a></li>
+            <li><a href="#inputs-leap-motion">Leap Motion</a></li>
             <li><a href="#inputs-phones-and-ipads">手機與 iPad</a></li>
             <li><a href="#inputs-your-own-input">自己做一個輸入</a></li>
           </ol>
@@ -254,6 +255,7 @@
             <li><a href="#signals-openav-audio">@openav/audio</a></li>
             <li><a href="#signals-openav-pose">@openav/pose</a></li>
             <li><a href="#signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker（21 個關鍵點的精細控制）</a></li>
+            <li><a href="#signals-openav-leap">@openav/leap</a></li>
             <li><a href="#signals-openav-drums-simulator-analyzer-shaped">@openav/drums（模擬器，訊號形狀和分析器相同）</a></li>
             <li><a href="#signals-openav-sound-output-events">@openav/sound（輸出事件）</a></li>
             <li><a href="#signals-openav-record-take-playback">@openav/record（MIDI 錄音的播放）</a></li>
@@ -270,6 +272,7 @@
             <li><a href="#packages-openav-audio">@openav/audio</a></li>
             <li><a href="#packages-openav-chord">@openav/chord</a></li>
             <li><a href="#packages-openav-pose">@openav/pose</a></li>
+            <li><a href="#packages-openav-leap">@openav/leap</a></li>
             <li><a href="#packages-openav-keys">@openav/keys</a></li>
             <li><a href="#packages-openav-drums">@openav/drums</a></li>
             <li><a href="#packages-openav-mapping">@openav/mapping</a></li>
@@ -346,7 +349,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">16 章 · 147 節 · v0.1.0</p>
+      <p class="docs-stats">16 章 · 150 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -578,6 +581,7 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
 <li>誰都可以訂閱：<code>signals.on(name, cb)</code> 或 <code>signals.onAny(cb)</code></li>
 </ul>
 <p>新增一種輸入方式（呼吸感測器、遊戲手把、股票報價、天氣 API），就是寫一個呼叫 <code>signals.set()</code>／<code>signals.pulse()</code> 的 class。下游什麼都不用改。重點就在這裡。</p>
+<p>現有的輸入：<code>@openav/midi</code>（硬體與螢幕上的控制器）、<code>keys</code>、<code>drums</code>、<code>audio</code>（麥克風）、<code>pose</code>（鏡頭看身體與手）、<code>leap</code>（Leap Motion／Ultraleap 的手），以及經由 <code>remote</code> 和 <code>surface</code> 的手機。瀏覽器自己打不開的硬體，透過一支講網頁協定的本機小橋接程式進來（<code>leap</code> 的橋接在 <code>ws://127.0.0.1:6437</code>）；瀏覽器這一側仍然只是一個發出訊號的 class。</p>
 <p>分析器位在原始來源和映射之間：<code>@openav/chord</code> 訂閱 <code>midi/note/on|off</code>，再發布 <code>chord/*</code>。對映射器來說，它還是一個輸入，只是它聽的是別的訊號，沒有直接接裝置。</p>
 <h3 id="architecture-l2-mapping-mapper">L2 · 映射：映射器（Mapper）<a class="anchor" href="#architecture-l2-mapping-mapper" aria-label="這一節的連結">#</a></h3>
 <p><strong>介面約定</strong>：把訊號接到參數的，只有它一個。路由就是資料：</p>
@@ -829,6 +833,7 @@ io.osc?.send(<span class="ts">`/source/${i}/xyz`</span>, [x, y, z]);</code></pre
 <tr><td>和弦分析</td><td><code>@openav/chord</code></td><td><code>chord</code></td><td>關</td><td><code>chord/…</code></td></tr>
 <tr><td>身體（鏡頭）</td><td><code>@openav/pose</code></td><td><code>pose</code></td><td>關</td><td><code>pose/…</code></td></tr>
 <tr><td>手（鏡頭）</td><td><code>@openav/pose</code></td><td><code>hands</code></td><td>關</td><td><code>hand/…</code></td></tr>
+<tr><td>手（Leap Motion）</td><td><code>@openav/leap</code></td><td><code>leap</code></td><td>關</td><td><code>leap/…</code></td></tr>
 <tr><td>手機與 iPad</td><td><code>@openav/remote</code></td><td><code>remote</code></td><td>關</td><td><code>phone/…</code>、<code>surface/…</code>、<code>midi/note/…</code></td></tr>
 </tbody>
 </table></div>
@@ -909,6 +914,9 @@ midi.setListening(<span class="ts">'nanokontrol2'</span>, <span class="tk">false
 <li><strong>手</strong>：每一側各有 <code>hand/&lt;side&gt;/present</code>、<code>hand/&lt;side&gt;/x|y</code>（手掌）、<code>hand/&lt;side&gt;/pinch/index</code> 和 <code>hand/&lt;side&gt;/pinch/middle</code>（拇指尖到手指尖）、<code>hand/&lt;side&gt;/spread</code>（食指尖到小指尖）。距離都除以手掌大小，所以手往鏡頭靠近，捏合的值不會變。捏緊時數值接近 0：如果希望越捏越大，在路由上設 <code>invert: true</code>（範例 03）。</li>
 </ul>
 <p>兩種追蹤器都能把骨架畫在 2D context 上：<code>tracker.skeleton(ctx, w, h)</code>。</p>
+<h3 id="inputs-leap-motion">Leap Motion<a class="anchor" href="#inputs-leap-motion" aria-label="這一節的連結">#</a></h3>
+<p><code>modules: { leap: true }</code> 加上一個 <code>LeapInput</code>。瀏覽器讀不到感測器，所以每台電腦跑一支小橋接程式：<code>node packages/leap/bridge/leap-bridge.mjs</code>（要先裝 Ultraleap Hand Tracking；加 <code>--mock</code> 不接感測器也有兩隻會動的假手；macOS 上 <code>bash packages/leap/bridge/install.sh</code> 讓它開機就在跑）。它只在本機迴路上提供 <code>ws://127.0.0.1:6437</code>。控台的 <strong>L1 · Input</strong> 面板會說哪一段沒接上（橋接、追蹤服務、裝置），並畫出看到的手；面板上的 <em>simulate</em> 按鈕把滑鼠變成手。</p>
+<p>訊號：每一側各有 <code>leap/hand/&lt;side&gt;/present</code>、<code>x|y|z</code>（手掌在互動空間裡的位置，0..1，y 往上、z 朝向你）、<code>pinch</code>、<code>grab</code>、<code>roll|pitch|yaw</code>（弧度）、<code>speed</code>，指尖 <code>leap/hand/&lt;side&gt;/&lt;finger&gt;/x|y|z</code>；另有 <code>leap/hands</code>、<code>leap/both/distance</code>、<code>leap/status</code>；脈衝 <code>pinch-start|pinch-end</code>、<code>grab-start|grab-end</code>（每一側）與 <code>leap/both/pinch-start|pinch-end</code>，都有遲滯（捏超過 0.86 才開始、低於 0.5 才結束）。要畫手的關節，讀 <code>leap.hands</code>。同一支橋接在 <code>/v6.json</code> 回應舊的 <code>leap.js</code> 作品，在 <code>/raw</code> 送原始的手部資料（見範例 12 與套件 README）。</p>
 <h3 id="inputs-phones-and-ipads">手機與 iPad<a class="anchor" href="#inputs-phones-and-ipads" aria-label="這一節的連結">#</a></h3>
 <p><code>modules: { remote: true }</code> 讓手機透過 <code>serve.js</code> 架起的中繼加入演出。手機的感測器發出 <code>phone/&lt;id&gt;/…</code>（傾斜、加速度、旋轉、敲擊、觸控、光線），同時複製一份到 <code>phone/any/…</code>。控制面板發出 <code>surface/&lt;page&gt;/&lt;widget&gt;</code>，手機上的琴鍵像一般鍵盤一樣發出 <code>midi/note/on|off</code>。演出頁面如果是在手機上打開，也能用 <code>localSensors()</code> 讀這支手機自己的動作感測器。完整說明在<a href="#phones">手機、中繼與控制面板</a>。</p>
 <h3 id="inputs-your-own-input">自己做一個輸入<a class="anchor" href="#inputs-your-own-input" aria-label="這一節的連結">#</a></h3>
@@ -1165,7 +1173,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=f860ae3"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1674,6 +1682,25 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 </tbody>
 </table></div>
 <p>（<code>hand/right/*</code> 是同樣的一組。兩種追蹤器都提供 <code>skeleton(ctx, w, h)</code> 骨架疊圖。）</p>
+<h3 id="signals-openav-leap">@openav/leap<a class="anchor" href="#signals-openav-leap" aria-label="這一節的連結">#</a></h3>
+<p>透過這台電腦的橋接程式讀 Leap Motion／Ultraleap。位置是手掌或指尖在互動空間裡的位置，正規化並夾在 0..1（x 往右、y 往上、z 朝向演出者）。<code>&lt;side&gt;</code> 是 <code>left</code> 或 <code>right</code>，<code>&lt;finger&gt;</code> 是 <code>thumb index middle ring pinky</code> 其中之一。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>leap/status</code></td><td>連續</td><td>0..3</td><td>0 沒有橋接 · 1 有橋接、沒有追蹤服務 · 2 沒有裝置 · 3 追蹤中</td></tr>
+<tr><td><code>leap/hands</code></td><td>連續</td><td>0..2</td><td>看得到幾隻手</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/present</code></td><td>連續</td><td>0/1</td><td>看得到這隻手</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/x</code> <code>/y</code> <code>/z</code></td><td>連續</td><td>0..1</td><td>手掌位置</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/pinch</code> <code>/grab</code></td><td>連續</td><td>0..1</td><td>捏合與握拳的強度（手不見了就歸 0）</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/roll</code> <code>/pitch</code> <code>/yaw</code></td><td>連續</td><td>-π..π</td><td>手的轉向，單位弧度</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/speed</code></td><td>連續</td><td>0..1</td><td>手掌速度，1 = 每秒 1 公尺</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/&lt;finger&gt;/x</code> <code>/y</code> <code>/z</code></td><td>連續</td><td>0..1</td><td>指尖位置</td></tr>
+<tr><td><code>leap/both/distance</code></td><td>連續</td><td>0..1</td><td>兩個手掌的距離，1 = 40 公分</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/pinch-start</code> <code>/pinch-end</code></td><td>脈衝</td><td><code>{side, x, y, z, strength}</code></td><td>捏超過 0.86 開始，低於 0.5 結束</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/grab-start</code> <code>/grab-end</code></td><td>脈衝</td><td><code>{side, x, y, z, strength}</code></td><td>握拳超過 0.8 開始，低於 0.5 結束</td></tr>
+<tr><td><code>leap/both/pinch-start</code> <code>/pinch-end</code></td><td>脈衝</td><td><code>{x, y, z, distance}</code></td><td>兩手都捏超過 0.8 進入，任一手低於 0.5 離開</td></tr>
+</tbody>
+</table></div>
 <h3 id="signals-openav-drums-simulator-analyzer-shaped">@openav/drums（模擬器，訊號形狀和分析器相同）<a class="anchor" href="#signals-openav-drums-simulator-analyzer-shaped" aria-label="這一節的連結">#</a></h3>
 <p>鼓機發布的訊號，跟音訊分析器的長得一模一樣，所以接到大鼓的世界分不出那是麥克風還是鼓機（做這台模擬器就是為了這個）。音序器的每一擊也會以 <code>midi/note/on</code> 送出（頻道 10，GM 音符編號）。</p>
 <div class="table-wrap"><table>
@@ -1737,11 +1764,11 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">套件一覽<a class="anchor" href="#packages" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">12</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/packages.md">docs/zh/packages.md</a></span></p>
-<p>二十一個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
+<p>二十二個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>層</th><th>套件</th></tr></thead>
 <tbody>
-<tr><td>L1 輸入</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>keys</code> · <code>drums</code></td></tr>
+<tr><td>L1 輸入</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>leap</code> · <code>keys</code> · <code>drums</code></td></tr>
 <tr><td>L2 映射</td><td><code>mapping</code></td></tr>
 <tr><td>L3 世界</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
 <tr><td>L4 輸出</td><td><code>sound</code> · <code>osc</code> · <code>record</code>（MIDI 輸出在 <code>midi</code> 裡）</td></tr>
@@ -1750,7 +1777,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=f860ae3"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -1825,6 +1852,20 @@ chord.analyze([60, 64, 67]).chordType;   <span class="tc">// 'major'</span></cod
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { HandTracker } <span class="tk">from</span> <span class="ts">'@openav/pose'</span>;
 <span class="tk">const</span> hands = <span class="tk">new</span> HandTracker({ signals });
 button.onclick = () =&gt; hands.enable();</code></pre></div>
+<h3 id="packages-openav-leap">@openav/leap<a class="anchor" href="#packages-openav-leap" aria-label="這一節的連結">#</a></h3>
+<p>L1 輸入 · 透過這台電腦的橋接程式讀 Leap Motion／Ultraleap 的手（<code>node packages/leap/bridge/leap-bridge.mjs</code>，<code>ws://127.0.0.1:6437</code>）。同一支橋接也講舊的 LeapJS 協定，所以 2014–2021 年用 <code>leap.js</code> 寫的作品不用改就能跑。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>LeapInput</code></td><td><code>new LeapInput({ signals, url, reconnect = true, fingers = true, box, thresholds })</code> · <code>connect()</code> · <code>disconnect()</code> · <code>simulate({ target })</code> → <code>stop()</code> · <code>skeleton(ctx, w, h, { view, colorLeft, colorRight, lineWidth })</code> · <code>mountPanel(el)</code> · <code>onFrame(fn)</code> · <code>onStatus(fn)</code> · <code>ingest(msg)</code> · <code>hands</code>、<code>frame</code>、<code>status</code>、<code>device</code></td></tr>
+<tr><td>幀</td><td><code>V6Converter</code>（原始格式 → LeapJS v6）· <code>handsOf(msg)</code> · <code>normalizePoint(p, box)</code> · <code>handAngles(direction, normal)</code> · <code>mockHand(o)</code> · <code>mockFrame(t)</code></td></tr>
+<tr><td>手勢</td><td><code>HandGestures</code> · <code>Hysteresis(on, off)</code> · <code>THRESHOLDS</code>（單手捏 0.86／0.5、雙手捏 0.8／0.5、握拳 0.8／0.5）</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { LeapInput } <span class="tk">from</span> <span class="ts">'@openav/leap'</span>;
+<span class="tk">const</span> leap = <span class="tk">new</span> LeapInput({ signals }).connect();   <span class="tc">// ws://127.0.0.1:6437/v6.json</span>
+leap.onFrame(() =&gt; leap.skeleton(ctx, w, h));          <span class="tc">// joints in mm: leap.hands</span>
+<span class="tc">// no sensor: leap.simulate() — mouse = right palm, press = pinch</span></code></pre></div>
 <h3 id="packages-openav-keys">@openav/keys<a class="anchor" href="#packages-openav-keys" aria-label="這一節的連結">#</a></h3>
 <p>L1 輸入 · 螢幕鋼琴、電腦鍵盤演奏和一位模擬演奏者，全都發布 <code>midi/note/on|off</code>。</p>
 <div class="table-wrap"><table>
@@ -2242,6 +2283,6 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=f860ae3"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

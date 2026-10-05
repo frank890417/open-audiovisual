@@ -101,6 +101,25 @@
 
 （`hand/right/*` 是同樣的一組。兩種追蹤器都提供 `skeleton(ctx, w, h)` 骨架疊圖。）
 
+## @openav/leap
+
+透過這台電腦的橋接程式讀 Leap Motion／Ultraleap。位置是手掌或指尖在互動空間裡的位置，正規化並夾在 0..1（x 往右、y 往上、z 朝向演出者）。`<side>` 是 `left` 或 `right`，`<finger>` 是 `thumb index middle ring pinky` 其中之一。
+
+| 訊號 | 種類 | 範圍 | 意義 |
+|---|---|---|---|
+| `leap/status` | 連續 | 0..3 | 0 沒有橋接 · 1 有橋接、沒有追蹤服務 · 2 沒有裝置 · 3 追蹤中 |
+| `leap/hands` | 連續 | 0..2 | 看得到幾隻手 |
+| `leap/hand/<side>/present` | 連續 | 0/1 | 看得到這隻手 |
+| `leap/hand/<side>/x` `/y` `/z` | 連續 | 0..1 | 手掌位置 |
+| `leap/hand/<side>/pinch` `/grab` | 連續 | 0..1 | 捏合與握拳的強度（手不見了就歸 0） |
+| `leap/hand/<side>/roll` `/pitch` `/yaw` | 連續 | -π..π | 手的轉向，單位弧度 |
+| `leap/hand/<side>/speed` | 連續 | 0..1 | 手掌速度，1 = 每秒 1 公尺 |
+| `leap/hand/<side>/<finger>/x` `/y` `/z` | 連續 | 0..1 | 指尖位置 |
+| `leap/both/distance` | 連續 | 0..1 | 兩個手掌的距離，1 = 40 公分 |
+| `leap/hand/<side>/pinch-start` `/pinch-end` | 脈衝 | `{side, x, y, z, strength}` | 捏超過 0.86 開始，低於 0.5 結束 |
+| `leap/hand/<side>/grab-start` `/grab-end` | 脈衝 | `{side, x, y, z, strength}` | 握拳超過 0.8 開始，低於 0.5 結束 |
+| `leap/both/pinch-start` `/pinch-end` | 脈衝 | `{x, y, z, distance}` | 兩手都捏超過 0.8 進入，任一手低於 0.5 離開 |
+
 ## @openav/drums（模擬器，訊號形狀和分析器相同）
 
 鼓機發布的訊號，跟音訊分析器的長得一模一樣，所以接到大鼓的世界分不出那是麥克風還是鼓機（做這台模擬器就是為了這個）。音序器的每一擊也會以 `midi/note/on` 送出（頻道 10，GM 音符編號）。

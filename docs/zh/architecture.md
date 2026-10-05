@@ -46,6 +46,8 @@ timeline.state(t)          — the "score": automation curves per param
 
 新增一種輸入方式（呼吸感測器、遊戲手把、股票報價、天氣 API），就是寫一個呼叫 `signals.set()`／`signals.pulse()` 的 class。下游什麼都不用改。重點就在這裡。
 
+現有的輸入：`@openav/midi`（硬體與螢幕上的控制器）、`keys`、`drums`、`audio`（麥克風）、`pose`（鏡頭看身體與手）、`leap`（Leap Motion／Ultraleap 的手），以及經由 `remote` 和 `surface` 的手機。瀏覽器自己打不開的硬體，透過一支講網頁協定的本機小橋接程式進來（`leap` 的橋接在 `ws://127.0.0.1:6437`）；瀏覽器這一側仍然只是一個發出訊號的 class。
+
 分析器位在原始來源和映射之間：`@openav/chord` 訂閱 `midi/note/on|off`，再發布 `chord/*`。對映射器來說，它還是一個輸入，只是它聽的是別的訊號，沒有直接接裝置。
 
 ## L2 · 映射：映射器（Mapper）

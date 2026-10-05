@@ -1,10 +1,10 @@
 # 套件一覽
 
-二十一個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十二個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
-| L1 輸入 | `midi` · `audio` · `chord` · `pose` · `keys` · `drums` |
+| L1 輸入 | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 映射 | `mapping` |
 | L3 世界 | `stage` · `world-webtoe` |
 | L4 輸出 | `sound` · `osc` · `record`（MIDI 輸出在 `midi` 裡） |
@@ -107,6 +107,23 @@ L1 輸入 · 用 MediaPipe 從鏡頭追蹤身體和手，全部在本機運算�
 import { HandTracker } from '@openav/pose';
 const hands = new HandTracker({ signals });
 button.onclick = () => hands.enable();
+```
+
+## @openav/leap
+
+L1 輸入 · 透過這台電腦的橋接程式讀 Leap Motion／Ultraleap 的手（`node packages/leap/bridge/leap-bridge.mjs`，`ws://127.0.0.1:6437`）。同一支橋接也講舊的 LeapJS 協定，所以 2014–2021 年用 `leap.js` 寫的作品不用改就能跑。
+
+| 匯出 | 簽章 |
+|---|---|
+| `LeapInput` | `new LeapInput({ signals, url, reconnect = true, fingers = true, box, thresholds })` · `connect()` · `disconnect()` · `simulate({ target })` → `stop()` · `skeleton(ctx, w, h, { view, colorLeft, colorRight, lineWidth })` · `mountPanel(el)` · `onFrame(fn)` · `onStatus(fn)` · `ingest(msg)` · `hands`、`frame`、`status`、`device` |
+| 幀 | `V6Converter`（原始格式 → LeapJS v6）· `handsOf(msg)` · `normalizePoint(p, box)` · `handAngles(direction, normal)` · `mockHand(o)` · `mockFrame(t)` |
+| 手勢 | `HandGestures` · `Hysteresis(on, off)` · `THRESHOLDS`（單手捏 0.86／0.5、雙手捏 0.8／0.5、握拳 0.8／0.5） |
+
+```js
+import { LeapInput } from '@openav/leap';
+const leap = new LeapInput({ signals }).connect();   // ws://127.0.0.1:6437/v6.json
+leap.onFrame(() => leap.skeleton(ctx, w, h));          // joints in mm: leap.hands
+// no sensor: leap.simulate() — mouse = right palm, press = pinch
 ```
 
 ## @openav/keys

@@ -61,6 +61,13 @@ Adding a new input modality (breath sensor, gamepad, stock ticker, weather API)
 means writing one class that calls `signals.set()` / `signals.pulse()`.
 Nothing downstream changes. That is the whole point.
 
+The inputs today: `@openav/midi` (hardware and on-screen controllers), `keys`,
+`drums`, `audio` (microphone), `pose` (camera body and hands), `leap` (Leap
+Motion / Ultraleap hands) and phones through `remote` and `surface`. Hardware a
+browser cannot open itself reaches it through a small local bridge that speaks
+a web protocol (`leap` runs one on `ws://127.0.0.1:6437`); the browser side is
+still one class that publishes signals.
+
 Analyzers sit between raw sources and mapping: `@openav/chord` subscribes to
 `midi/note/on|off` and publishes `chord/*`. It is still an input as far as the
 mapper is concerned; it just listens to other signals instead of a device.

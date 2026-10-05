@@ -114,6 +114,28 @@ Normalized by palm size, so distance to the camera doesn't change your pinch.
 
 (`hand/right/*` mirrors the set. Both trackers expose `skeleton(ctx, w, h)` overlays.)
 
+## @openav/leap
+
+Leap Motion / Ultraleap through the machine's bridge. Positions are the palm or
+fingertip inside the interaction box, normalized and clamped (x right, y up,
+z toward the performer). `<side>` is `left` or `right`, `<finger>` one of
+`thumb index middle ring pinky`.
+
+| signal | kind | range | meaning |
+|---|---|---|---|
+| `leap/status` | continuous | 0..3 | 0 no bridge · 1 bridge, no tracking service · 2 no device · 3 tracking |
+| `leap/hands` | continuous | 0..2 | hands in view |
+| `leap/hand/<side>/present` | continuous | 0/1 | hand in view |
+| `leap/hand/<side>/x` `/y` `/z` | continuous | 0..1 | palm position |
+| `leap/hand/<side>/pinch` `/grab` | continuous | 0..1 | pinch and fist strength (0 when the hand is lost) |
+| `leap/hand/<side>/roll` `/pitch` `/yaw` | continuous | -π..π | hand rotation in radians |
+| `leap/hand/<side>/speed` | continuous | 0..1 | palm speed, 1 = 1 m/s |
+| `leap/hand/<side>/<finger>/x` `/y` `/z` | continuous | 0..1 | fingertip position |
+| `leap/both/distance` | continuous | 0..1 | palm to palm, 1 = 40 cm |
+| `leap/hand/<side>/pinch-start` `/pinch-end` | pulse | `{side, x, y, z, strength}` | pinch above 0.86 starts, below 0.5 ends |
+| `leap/hand/<side>/grab-start` `/grab-end` | pulse | `{side, x, y, z, strength}` | fist above 0.8 starts, below 0.5 ends |
+| `leap/both/pinch-start` `/pinch-end` | pulse | `{x, y, z, distance}` | both pinch above 0.8 enters, either below 0.5 exits |
+
 ## @openav/drums (simulator — analyzer-shaped)
 
 The drum machine publishes the SAME shapes the audio analyzer publishes, so a
