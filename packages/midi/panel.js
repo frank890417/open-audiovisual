@@ -7,7 +7,7 @@
 // · which port drives it · 學習 learn · the last MIDI message (a tiny monitor,
 // so you can see that the hardware is talking before you see what it moves).
 
-import { ControllerView } from './view.js?v=f860ae3';
+import { ControllerView } from './view.js?v=e353777';
 
 const h = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; };
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -49,7 +49,7 @@ function injectCss() {
 
 /**
  * @param {HTMLElement} parent
- * @param {import('./manager.js?v=f860ae3').MidiControllers} mcs
+ * @param {import('./manager.js?v=e353777').MidiControllers} mcs
  * @param {object} [o]
  * @param {'dock'|'full'} [o.mode='full']
  * @param {boolean} [o.open=true]

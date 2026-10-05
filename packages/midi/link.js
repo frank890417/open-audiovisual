@@ -6,8 +6,8 @@
  *  hardware or panel did, so the phone's knobs follow, and (3) mirrors the phone's plays on this screen
  *  (`midi/virtual` → state + view only — nothing is published twice). Shared with the lab's midi module. */
 /** @param {{config:Function, feedback:Function}} relay   a runner RelayClient
- *  @param {import('../core/src/signals.js?v=f860ae3').Signals} signals
- *  @param {import('./manager.js?v=f860ae3').MidiControllers} controllers */
+ *  @param {import('../core/src/signals.js?v=e353777').Signals} signals
+ *  @param {import('./manager.js?v=e353777').MidiControllers} controllers */
 export function linkControllers(relay, signals, controllers) {
   const dirty = new Map();
   const watched = new Set();
