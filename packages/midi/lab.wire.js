@@ -39,9 +39,13 @@
 
   // ---- controls → params (continuous control goes through params)
   const shortOf = (pid) => (PROFILES.find((p) => p.id === pid || p.short === pid) || {}).short;
+  // meta.params[].midi is the lab's one binding list (the workbench's ⌁ learn and `lab param bind` write it), so a
+  // full signal name from another input binds too — a hand height drives a param exactly like a knob
+  const OTHER_SOURCE = /^(leap|phone|audio|pose|hand|surface|chord|drum)\//;
   const signalOf = (ref) => {
     const r = String(ref);
     if (r.startsWith('midi/')) return r;
+    if (OTHER_SOURCE.test(r)) return r;                               // another input's full name: "leap/hand/right/y"
     if (/^(cc|ch|note|bend)\b/.test(r)) return 'midi/' + r;           // generic: "cc/74", "ch/2/cc/74"
     if (r.includes('/')) return 'midi/' + r;                          // "minilab3/knob1"
     return `midi/${shortOf(cfg.profile) || controllers.current.short}/${r}`;   // "knob1" → the work's device
@@ -51,7 +55,9 @@
     return lab.signals.on(name, (v) => {                              // exact name (lab.on would also catch …/raw)
       if (typeof v !== 'number') return;
       const p = lab.paramSpecs && lab.paramSpecs[key];
-      const u = Math.min(1, Math.max(0, (lab.signals.meta.get(name)?.min ?? 0) < 0 ? (v + 1) / 2 : v));
+      const m = lab.signals.meta.get(name) || {};                      // the declared range → 0..1 (bend -1..1, roll -π..π)
+      const lo = typeof m.min === 'number' ? m.min : 0, hi = typeof m.max === 'number' ? m.max : 1;
+      const u = Math.min(1, Math.max(0, hi === lo ? 0 : (v - lo) / (hi - lo)));
       if (!p || p.type === 'number' || p.type === 'int') lab.setParam(key, p && typeof p.min === 'number' && typeof p.max === 'number' ? p.min + u * (p.max - p.min) : u);
       else if (p.type === 'bool') lab.setParam(key, u > 0.5);
       else if (p.type === 'enum' && Array.isArray(p.options) && p.options.length) { const o = p.options[Math.min(p.options.length - 1, Math.floor(u * p.options.length))]; lab.setParam(key, o && typeof o === 'object' ? o.value : o); }
@@ -59,7 +65,8 @@
   };
   midi.bind = bind;
   for (const p of (lab.meta && Array.isArray(lab.meta.params) ? lab.meta.params : [])) {
-    if (p && p.midi) for (const ref of [].concat(p.midi)) bind(ref, p.key);
+    // leap/… refs are bound by the leap module when the work declares it (no double binding)
+    if (p && p.midi) for (const ref of [].concat(p.midi)) if (!(/^leap\//.test(String(ref)) && lab.uses && lab.uses.has('leap'))) bind(ref, p.key);
   }
 
   // ---- phones (/remote?work=<id>, MIDI tab): same device there, mirrored both ways

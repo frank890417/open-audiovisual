@@ -1,7 +1,8 @@
 // L1 · Input panel — every input module's home: MIDI device list (multi-device
-// mute/unmute), and enable buttons for mic analysis, hand tracking, body
-// tracking. Sources that need a user gesture (mic/camera) live here so every
-// show exposes them the same way.
+// mute/unmute), enable buttons for mic analysis, hand tracking, body tracking,
+// and the Leap Motion status + skeleton when modules.leap is on. Sources that
+// need a user gesture (mic/camera) live here so every show exposes them the
+// same way.
 export function buildInputPanel(root, app) {
   const { midi, audio, hands, pose, signals } = app;
   const panel = document.createElement('div');
@@ -49,6 +50,9 @@ export function buildInputPanel(root, app) {
   mkEnable('🖐 hands', hands, () => hands.enable());
   mkEnable('🕺 body', pose, () => pose.enable());
   if (!modsEl.children.length) modsEl.remove();
+
+  // --- Leap Motion: bridge → service → device status, and the hands it sees (packages/leap/panel.js)
+  if (app.leap?.mountPanel) app.leap.mountPanel(panel, { width: 300, simTarget: app.leap.simTarget });
 
   return { render() {} };
 }

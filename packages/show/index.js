@@ -8,7 +8,7 @@
 //     world: myWorld,
 //     timeline: { total, automation, scenes },
 //     routes: [{ source: 'audio/kick/env', target: 'pump' }],
-//     modules: { keys: { base: 48 }, sound: true, audio: 'mic', hands: true, pose: true,
+//     modules: { keys: { base: 48 }, sound: true, audio: 'mic', hands: true, pose: true, leap: true,
 //                remote: { room: 'main' },     // phones/iPads become controllers (packages/remote)
 //                midi: { controllers: { profile: 'arturia-minilab3' } } },  // on-screen MIDI controller (packages/midi)
 //     artwork: { title: '3D Cylinder Earth', artist: 'Che-Yu Wu 吳哲宇', year: 2020 },
@@ -20,7 +20,7 @@
 // artwork credits render automatically (artist demos stay strictly attributed).
 //
 // createShow returns { signals, params, stage, timeline, mapper, midi, keys,
-// sound, audio, hands, pose, remote, loop, console } — every part reachable, nothing
+// sound, audio, hands, pose, leap, remote, loop, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools.
 
 import { Signals, Params, Loop } from '../core/index.js?v=f860ae3';
@@ -162,6 +162,17 @@ export async function createShow({
   }
   const hands = modules.hands ? new HandTracker({ signals }) : null;
   const pose = modules.pose ? new PoseTracker({ signals }) : null;
+  // Leap Motion through the machine's leap-bridge (packages/leap/bridge). Loaded only when declared.
+  // modules.leap: true · { url, simulate, fingers, box } — simulate: mouse/touch over the stage become hands
+  let leap = null;
+  if (modules.leap) {
+    const { LeapInput } = await import('../leap/index.js?v=f860ae3');
+    const o = typeof modules.leap === 'object' ? modules.leap : {};
+    const q = new URLSearchParams(location.search).get('leap');   // ?leap=sim · ?leap=ws://host:port/v6.json
+    leap = new LeapInput({ signals, ...o, ...(q && /^wss?:\/\//.test(q) ? { url: q } : {}) });
+    leap.simTarget = stageEl;
+    if (o.simulate || q === 'sim') leap.simulate({ target: stageEl }); else leap.connect();
+  }
 
   // ---------- audience devices: phones/iPads as controllers (relay + surface) ----------
   // Loaded lazily so shows that don't declare it pay nothing. The World stays
@@ -189,12 +200,12 @@ export async function createShow({
   }
 
   // ---------- desk + backstage ----------
-  const app = { timeline, params, mapper, signals, midi, controllers, sound, stage, keys, drums, audio, hands, pose, chord, remote, artwork };
+  const app = { timeline, params, mapper, signals, midi, controllers, sound, stage, keys, drums, audio, hands, pose, leap, chord, remote, artwork };
   const consoleUI = mountConsole(desk, app);
   const monitor = new MonitorFeed({});
   monitor.connect();
 
-  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console: consoleUI, app, loop: null };
+  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, console: consoleUI, app, loop: null };
   const loop = app.loop = new Loop((dt) => {
     keys?.update(dt);
     drums?.update(dt);

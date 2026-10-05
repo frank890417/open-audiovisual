@@ -1,0 +1,47 @@
+{
+  "name": "@openav/leap",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./bridge": "./bridge/leap-bridge.mjs"
+  },
+  "bin": { "openav-leap-bridge": "bridge/leap-bridge.mjs" },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/leap"
+  },
+  "lab": {
+    "module": "leap",
+    "files": [
+      "leap/frame.js",
+      "leap/gesture.js",
+      "leap/mock.js",
+      "leap/panel.js",
+      "leap/index.js"
+    ],
+    "exports": [
+      "LeapInput",
+      "leapSignals",
+      "mountLeapPanel",
+      "HandGestures",
+      "Hysteresis",
+      "THRESHOLDS",
+      "V6Converter",
+      "handsOf",
+      "handAngles",
+      "normalizePoint",
+      "mockHand",
+      "mockFrame",
+      "INTERACTION_BOX",
+      "FINGERS"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.leap = LeapInput on ws://127.0.0.1:6437/v6.json (the machine's leap-bridge; ?leap=<url>, ?leap=sim for mouse/touch): leap/* signals in lab.signals (palm x/y/z, pinch, grab, roll/pitch/yaw, speed, fingertips, pinch/grab start-end pulses with hysteresis), lab.leap.hands / .frame for skeletons, ✋ status + skeleton panel, meta.params[].leap binds a signal to a param.",
+    "remoteTab": null,
+    "since": "2026-10-05"
+  }
+}
