@@ -27,6 +27,31 @@
   if (!off && !sim) leap.connect();
   if (sim) leap.simulate();
 
+  // https 的網頁（lab.cheyuwu.com）連 127.0.0.1 要 Chrome 的「本機網路」許可（loopback-network）；被擋時狀態一直停在 connecting，
+  // ✋ 的說明會誤寫成「沒有橋接」。連 5 秒還沒連上就提示一次怎麼開（2026-10-05，Chrome 154 實測：沒許可是 ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS）
+  if (!off && !sim && typeof location !== 'undefined' && location.protocol === 'https:' && typeof document !== 'undefined') {
+    setTimeout(async () => {
+      if (leap.status !== 'connecting') return;
+      let state = '';
+      try { state = (await navigator.permissions.query({ name: 'loopback-network' })).state; } catch { /* 這個瀏覽器沒有這個許可名 */ }
+      if (leap.status !== 'connecting') return;
+      const msg = state === 'denied'
+        ? 'Leap Motion 連不上：這個網站被設成不能連到這台電腦上的程式。點網址列左邊的「網站設定」，把「這台裝置上的應用程式與服務」改成允許，再重新整理。'
+        : 'Leap Motion 還沒連上：確認這台電腦有開 Leap 橋接（open-audiovisual 的 leap-bridge，127.0.0.1:6437）；Chrome 問能不能連到這台裝置上的程式時，按允許。';
+      const box = document.createElement('div');
+      box.setAttribute('role', 'status');
+      box.style.cssText = 'position:fixed;left:12px;bottom:12px;max-width:min(420px,calc(100vw - 24px));z-index:2147483646;font:13px/1.55 system-ui,sans-serif;color:#fff;background:rgba(20,20,24,.92);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:10px 34px 10px 12px';
+      box.textContent = msg;
+      const x = document.createElement('button');
+      x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', '關閉');
+      x.style.cssText = 'position:absolute;right:6px;top:4px;background:none;border:0;color:#fff;font-size:18px;cursor:pointer';
+      x.onclick = () => box.remove();
+      box.appendChild(x);
+      (document.body || document.documentElement).appendChild(box);
+      const off2 = leap.onStatus((st) => { if (st !== 'connecting') { box.remove(); off2(); } });
+    }, 5000);
+  }
+
   // ---- signal → param (continuous control goes through params; same scaling as lab.midi.bind)
   const nameOf = (ref) => { const r = String(ref).trim(); return r.startsWith('leap/') ? r : 'leap/' + r.replace(/^\/+/, ''); };
   const bind = (ref, key) => {
