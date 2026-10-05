@@ -1,7 +1,7 @@
 // Marimba · wide rosewood bars over tube resonators, soft yarn mallets. The bar
 // is carved so the second mode lands two octaves up (4×) and the third near 10×;
 // the resonators make the fundamental bloom and ring longer than a xylophone.
-import { modalInstrument } from './modal.js?v=e353777';
+import { modalInstrument } from './modal.js?v=a8b6135';
 
 export const marimba = modalInstrument({
   id: 'marimba',
