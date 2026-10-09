@@ -38,7 +38,7 @@ const EPS = 1e-9;
 export class Director {
   /**
    * @param {object} o
-   * @param {import('./score.js?v=a8b6135').Score} o.score
+   * @param {import('./score.js?v=0cfcfd4').Score} o.score
    * @param {object[]|Object<string,object>} [o.modules]  segment modules (array: matched by .id; object: by key)
    * @param {object|(()=>object)} [o.api]                 handed to every hook as the first argument (a function is called once, lazily)
    * @param {(status:object)=>void} [o.onStatus]          called when the segment, the holding state or the failed list changes

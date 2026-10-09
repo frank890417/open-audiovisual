@@ -22,7 +22,7 @@ export function buildSoundPanel(root, app) {
   });
   // the picker module is fetched only for shows that have sound
   if (sound.choosable && sound.picker !== false) {
-    import('../../sound/picker.js?v=a8b6135')
+    import('../../sound/picker.js?v=0cfcfd4')
       .then(({ mountSoundPicker }) => mountSoundPicker(panel, sound))
       .catch((e) => console.error('[console] sound picker', e));
   }

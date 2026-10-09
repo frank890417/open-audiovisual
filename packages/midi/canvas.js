@@ -25,10 +25,10 @@
 // screen (MiniLab 3, KeyStep) shows the last thing touched, as the hardware's screen does;
 // under the faceplate, when the area has room, the notes being held are written out large.
 
-import { encodeMessage, eventOfSignal } from './parse.js?v=a8b6135';
-import { MidiController } from './controller.js?v=a8b6135';
-import { profileById } from './profiles/index.js?v=a8b6135';
-import { CONTROL_COLORS } from './view.js?v=a8b6135';
+import { encodeMessage, eventOfSignal } from './parse.js?v=0cfcfd4';
+import { MidiController } from './controller.js?v=0cfcfd4';
+import { profileById } from './profiles/index.js?v=0cfcfd4';
+import { CONTROL_COLORS } from './view.js?v=0cfcfd4';
 
 const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const BLACK_KEYS = new Set([1, 3, 6, 8, 10]);
@@ -259,7 +259,7 @@ export class ControllerCanvas {
    * @param {object} [o]
    * @param {string|object} [o.profile='arturia-minilab3'] id, short name or a profile object
    * @param {object} [o.signals] follow the generic MIDI names on this bus (live, phones, takes)
-   * @param {import('./controller.js?v=a8b6135').MidiController} [o.controller] …or follow this controller instead
+   * @param {import('./controller.js?v=0cfcfd4').MidiController} [o.controller] …or follow this controller instead
    * @param {object} [o.mapping] learned bindings (controller.exportMapping() of the live device)
    * @param {Partial<typeof CANVAS_THEME>} [o.theme]
    * @param {boolean|'auto'} [o.notes='auto'] held notes written large under the faceplate ('auto': when there is room)

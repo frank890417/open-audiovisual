@@ -19,7 +19,7 @@ const DOT = { tracking: '#37c978', simulated: '#7aa6ff', bridge: '#ffd166', 'no-
 
 /**
  * @param {HTMLElement} el      where to put it
- * @param {import('./index.js?v=a8b6135').LeapInput} leap
+ * @param {import('./index.js?v=0cfcfd4').LeapInput} leap
  * @param {object} [o]
  * @param {number} [o.width=300] canvas CSS width; height follows the interaction box (≈ 0.62 × width)
  * @param {boolean} [o.simulate=true] show a "simulate" toggle (mouse/touch → hands)
