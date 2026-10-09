@@ -14,7 +14,7 @@ Four layers + two spines — the contracts are in [docs/architecture.md](docs/ar
 - **Input** (`packages/midi`, `audio`, `chord`, `pose`, `leap`) → publishes named **signals**
 - **Mapping** (`packages/mapping`) → routes signals to **params** (curves, smoothing, live learn)
 - **World** (`packages/stage`) → algorithmic system that reads params, renders anything
-- **Output** (`packages/osc`, MIDI out) + **Timeline** + **Console** + **Monitor**
+- **Output** (`packages/osc`, MIDI out) + **Timeline** + **Score & Director** (`packages/score`: a show as segment lengths) + **Console** + **Monitor**
 
 Full handbook (every chapter, verified against the code): https://openaudiovisual.com/docs/ —
 sources in `docs/`, one file for language models at `/llms-full.txt`.
@@ -44,7 +44,8 @@ path below works without it.
 3. Declare params (what the piece is performed WITH), scenes and automation
    (what the timeline does), and any `signals.on(...)` event reactions.
 4. Update the import map in `index.html` only if you use extra packages
-   (`@openav/chord`, `@openav/pose`…). Signal names: [docs/signals.md](docs/signals.md).
+   (`@openav/chord`, `@openav/pose`…). A show with structure (cuts, cues, a hold, segment modules) declares
+   `score: { cuts, modules }` in `createShow()`: [docs/score.md](docs/score.md), example `13-score-director`. Signal names: [docs/signals.md](docs/signals.md).
 5. Verify: `node serve.js` → open `http://localhost:8080/examples/<nn>-<name>/` —
    QWERTY keys A–L are the no-hardware MIDI fallback (tick *keyboard* in the console first); Space plays the timeline.
 

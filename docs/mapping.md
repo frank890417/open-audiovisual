@@ -124,7 +124,13 @@ that:
 - **fires**, if it is a pulse (a key, a pad, a knock).
 
 The new route has the defaults: linear, no smoothing, the param's full range.
-Edit it afterwards if it needs a curve. Clicking *learn* again cancels.
+Edit it afterwards if it needs a curve. Clicking *learn* again cancels. Learn
+*adds*: a param that already has a route keeps it and gets a second one.
+
+To bind a whole list, the **L2 · Mapping** panel has **🎛 map knobs in order**: it
+arms learn for the first param, you turn one knob, it is bound and the next param is
+armed. *skip*, *back*, *stop* (or Esc) steer it. In code it is `LearnWizard`
+([details](score.md#map-the-knobs-in-order)).
 
 > [!CAUTION]
 > Any pulse binds immediately. Untick *simulate performance* and stop the drum

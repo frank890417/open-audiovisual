@@ -26,7 +26,7 @@ export const PACKAGE_GROUPS = [
   { layer: 'l2', pkgs: ['mapping'] },
   { layer: 'l3', pkgs: ['stage', 'world-webtoe'] },
   { layer: 'l4', pkgs: ['sound', 'osc'] },
-  { layer: 'sp', pkgs: ['timeline', 'console', 'monitor'] },
+  { layer: 'sp', pkgs: ['timeline', 'score', 'console', 'monitor'] },
   { layer: 'sp', pkgs: ['relay', 'surface', 'remote'] },
   { layer: 'sig', pkgs: ['core', 'show', 'mcp'] },
 ];

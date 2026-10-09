@@ -91,7 +91,9 @@ show.mapper.addRoute({ source: 'hand/right/pinch/index', target: 'tightness', cu
 - 從 learn 開始時的位置**移動**了至少宣告範圍的 5%（旋鈕、推桿、手、手機傾斜），或
 - 它是脈衝，而且**觸發**了一次（琴鍵、打擊墊、敲擊）。
 
-新路由用的是預設值：線性、不平滑、參數的完整範圍。需要曲線的話，事後再改。再點一次 *learn* 就取消。
+新路由用的是預設值：線性、不平滑、參數的完整範圍。需要曲線的話，事後再改。再點一次 *learn* 就取消。learn 是「加入」：已經有路由的參數會保留原本那條，再多一條。
+
+要一口氣綁一整串，**L2 · Mapping**（映射）面板有 **🎛 map knobs in order**：它先替第一個參數啟動 learn，你轉一顆旋鈕就綁上，接著自動換下一個參數。*skip*、*back*、*stop*（或按 Esc）可以操控它。程式裡用 `LearnWizard`（[細節](score.md#map-the-knobs-in-order)）。
 
 > [!CAUTION]
 > 任何脈衝都會馬上綁上去。learn 之前，先取消勾選 *simulate performance*（模擬演奏），並停掉鼓機，不然它們彈出的下一個音就會變成這條路由。

@@ -1,6 +1,6 @@
 // @openav/score · director — runs the segment modules of a score, and keeps the show alive when one breaks.
 //
-// A SEGMENT MODULE is the code that performs one segment (the dawn, the flood, the finale):
+// A SEGMENT MODULE is the code that performs one segment (the dawn, the storm, the finale):
 //
 //   {
 //     id: 'dusk',                         // the id of the segment it performs (or the segment's `module` name)

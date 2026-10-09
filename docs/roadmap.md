@@ -26,6 +26,10 @@ before it was generalized.)
   - [ ] QR code on the join card (needs a small zero-dep encoder)
   - [ ] *experimental* surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like `crowd/tilt/mean`)
   - [ ] mic as a phone sensor; per-device profiles; layout editor / import-export UI
+- **Score & Director** — *shipped* (`@openav/score`): cuts as segment lengths, derived versions, cues, `hold`, segment modules that fail alone, the prompter's acts, score → MIDI markers. Next:
+  - [ ] MIDI clock and transport (start / stop / song position) in and out, so a DAW can be the master clock of the score, or follow it
+  - [ ] a `clocks` table in the cut, only if a show needs engines on two different time lines (see [Score & Director](score.md#clocks-why-there-are-none))
+  - [ ] a score editor on the desk: drag a segment's length, see every cue move
 - **Signal recording & replay** — *MIDI takes shipped* (`@openav/record`: `TakeRecorder`,
   `TakePlayer`, `.mid` in and out; `EventLog` already records any signal beside a video). Next:
   replay the full signal stream (hands, body, audio analysis) into any world. Rehearse without

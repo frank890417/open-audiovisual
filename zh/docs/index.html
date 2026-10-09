@@ -24,9 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=a8b6135">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=a8b6135">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -65,6 +65,7 @@
     "輸入",
     "映射",
     "演出控制",
+    "總譜與導演",
     "MIDI 控制器與嵌入",
     "手機、中繼與控制面板",
     "訊號一覽",
@@ -217,8 +218,26 @@
             <li><a href="#show-control-pre-show-checklist">演出前檢查清單</a></li>
           </ol>
         </li>
+        <li class="toc-ch" data-ch="score">
+          <a href="#score"><span class="n">09</span><span class="t">總譜與導演</span></a>
+          <ol class="toc-secs">
+            <li><a href="#score-the-idea-lengths-never-seconds">核心想法：只寫長度，不寫秒數</a></li>
+            <li><a href="#score-a-cut">cut</a></li>
+            <li><a href="#score-the-score">總譜 Score</a></li>
+            <li><a href="#score-cues">cue</a></li>
+            <li><a href="#score-hold">Hold</a></li>
+            <li><a href="#score-segment-modules">段落模組</a></li>
+            <li><a href="#score-the-director">導演 Director</a></li>
+            <li><a href="#score-use-it-with-createshow">搭配 createShow 使用</a></li>
+            <li><a href="#score-the-desk">導演台</a></li>
+            <li><a href="#score-score-to-midi">Score to MIDI</a></li>
+            <li><a href="#score-clocks-why-there-are-none">為什麼沒有引擎時鐘</a></li>
+            <li><a href="#score-without-createshow">不用 createShow</a></li>
+            <li><a href="#score-rehearsal-checklist">排練檢查清單</a></li>
+          </ol>
+        </li>
         <li class="toc-ch" data-ch="controllers">
-          <a href="#controllers"><span class="n">09</span><span class="t">MIDI 控制器與嵌入</span></a>
+          <a href="#controllers"><span class="n">10</span><span class="t">MIDI 控制器與嵌入</span></a>
           <ol class="toc-secs">
             <li><a href="#controllers-play-one-in-a-page">放進網頁</a></li>
             <li><a href="#controllers-listen-to-it">接收它的事件</a></li>
@@ -230,7 +249,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="phones">
-          <a href="#phones"><span class="n">10</span><span class="t">手機、中繼與控制面板</span></a>
+          <a href="#phones"><span class="n">11</span><span class="t">手機、中繼與控制面板</span></a>
           <ol class="toc-secs">
             <li><a href="#phones-set-it-up">架設</a></li>
             <li><a href="#phones-the-phone-app">手機 app</a></li>
@@ -247,7 +266,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="signals">
-          <a href="#signals"><span class="n">11</span><span class="t">訊號一覽</span></a>
+          <a href="#signals"><span class="n">12</span><span class="t">訊號一覽</span></a>
           <ol class="toc-secs">
             <li><a href="#signals-openav-midi">@openav/midi</a></li>
             <li><a href="#signals-openav-keys">@openav/keys</a></li>
@@ -264,7 +283,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="packages">
-          <a href="#packages"><span class="n">12</span><span class="t">套件一覽</span></a>
+          <a href="#packages"><span class="n">13</span><span class="t">套件一覽</span></a>
           <ol class="toc-secs">
             <li><a href="#packages-openav-core">@openav/core</a></li>
             <li><a href="#packages-openav-show">@openav/show</a></li>
@@ -282,6 +301,7 @@
             <li><a href="#packages-openav-osc">@openav/osc</a></li>
             <li><a href="#packages-openav-record">@openav/record</a></li>
             <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
+            <li><a href="#packages-openav-score">@openav/score</a></li>
             <li><a href="#packages-openav-console">@openav/console</a></li>
             <li><a href="#packages-openav-monitor">@openav/monitor</a></li>
             <li><a href="#packages-openav-relay">@openav/relay</a></li>
@@ -291,7 +311,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="agents">
-          <a href="#agents"><span class="n">13</span><span class="t">給 AI 代理</span></a>
+          <a href="#agents"><span class="n">14</span><span class="t">給 AI 代理</span></a>
           <ol class="toc-secs">
             <li><a href="#agents-the-two-rules">兩條規則</a></li>
             <li><a href="#agents-start-with-agents-md">從 AGENTS.md 開始</a></li>
@@ -304,18 +324,19 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="lab-integration">
-          <a href="#lab-integration"><span class="n">14</span><span class="t">實驗室整合（"lab" 欄位）</span></a>
+          <a href="#lab-integration"><span class="n">15</span><span class="t">實驗室整合（"lab" 欄位）</span></a>
           <ol class="toc-secs">
             <li><a href="#lab-integration-single-source-of-truth-controllers-and-inputs-live-here">單一真實來源：控制器與輸入都住在這裡</a></li>
           </ol>
         </li>
         <li class="toc-ch" data-ch="troubleshooting">
-          <a href="#troubleshooting"><span class="n">15</span><span class="t">疑難排解</span></a>
+          <a href="#troubleshooting"><span class="n">16</span><span class="t">疑難排解</span></a>
           <ol class="toc-secs">
             <li><a href="#troubleshooting-the-console-shows-a-ws-7457-error">瀏覽器主控台出現 ws://…:7457 錯誤</a></li>
             <li><a href="#troubleshooting-the-phone-join-card-says-relay-offline">手機加入卡片顯示「relay offline」</a></li>
             <li><a href="#troubleshooting-no-midi-devices-appear">看不到任何 MIDI 裝置</a></li>
             <li><a href="#troubleshooting-a-daw-on-the-iac-bus-is-not-heard">聽不到 IAC 匯流排上的 DAW</a></li>
+            <li><a href="#troubleshooting-the-daw-went-silent-after-a-cable-was-pulled">線被拔掉之後，DAW 就沒聲音了</a></li>
             <li><a href="#troubleshooting-with-two-controllers-a-route-reacts-to-both">接兩台控制器時，一條路由對兩台都有反應</a></li>
             <li><a href="#troubleshooting-qwerty-keys-do-not-play">電腦鍵盤按了沒反應</a></li>
             <li><a href="#troubleshooting-learn-bound-the-wrong-signal">Learn 綁錯了訊號</a></li>
@@ -332,7 +353,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="roadmap">
-          <a href="#roadmap"><span class="n">16</span><span class="t">路線圖</span></a>
+          <a href="#roadmap"><span class="n">17</span><span class="t">路線圖</span></a>
           <ol class="toc-secs">
             <li><a href="#roadmap-v0-x-the-chassis-now">v0.x — 底盤（現在）</a></li>
             <li><a href="#roadmap-v1-x-the-show-grows">v1.x — 演出長大</a></li>
@@ -349,7 +370,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">16 章 · 150 節 · v0.1.0</p>
+      <p class="docs-stats">17 章 · 165 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -559,6 +580,7 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
   audio?.update();                               <span class="tc">//    microphone analysis → audio/* signals</span>
   onFrame?.(dt, show);                           <span class="tc">//    your assembly-level hook</span>
   timeline.advance(dt);                          <span class="tc">// 1. time moves</span>
+  director?.update(timeline.t, dt, { holding, playing }); <span class="tc">//    with a score: segment modules enter / update / exit</span>
   mapper.update(dt);                             <span class="tc">// 2. smoothed routes settle</span>
   <span class="tk">const</span> state = stage.frame(dt, timeline.state()); <span class="tc">// 3. params resolve → world updates &amp; renders</span>
   sound?.update(state);                          <span class="tc">// 4. sound/* params reach the synth</span>
@@ -569,7 +591,8 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
 <p>訊號在兩格<em>之間</em>進來，裝置或 socket 什麼時候觸發，就什麼時候到。沒有平滑的路由會立刻寫入參數，有平滑的路由則是設一個目標值，由 <code>mapper.update(dt)</code> 慢慢滑過去。<code>createShow()</code> 不包含 OSC 輸出，要用的話，在 <code>onFrame</code> 裡呼叫 flush 送出（見<a href="#show-control-osc-output">演出控制</a>）。</p>
 <p><code>dt</code> 以秒為單位，上限夾在 0.1（<code>new Loop(fn, { maxDt })</code>），所以就算卡頓，世界也不會爆掉。瀏覽器凍結 <code>requestAnimationFrame</code> 的時候（例如投影視窗被切到背景），一個 Web Worker 心跳會讓迴圈繼續跑，大約每 66 ms 一次（約每秒 15 格）。有人切了視窗，時間軸、映射中的訊號和後台資料流也不能停。</p>
 <p>參數解析的順序（整個設計的核心）：</p>
-<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">timeline.state(t)          — the "score": automation curves per param
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">timeline.state(t)          — automation curves per param
+  ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
   ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals</code></pre></div>
 <p>覆寫會<em>黏住</em>：一旦有旋鈕碰過 <code>bloom</code>，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕）。這跟演出現場一樣：人一伸手接管，樂譜就讓位。</p>
 <h3 id="architecture-l1-input-signals">L1 · 輸入：訊號（Signals）<a class="anchor" href="#architecture-l1-input-signals" aria-label="這一節的連結">#</a></h3>
@@ -614,7 +637,12 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
 <li><strong>OSC</strong>：瀏覽器 → HTTP → <code>osc-bridge.js</code> → UDP（Spat、Reaper、TD、燈光）。每格批次送出，同一個位址在一格裡只留最新的一則訊息。</li>
 </ul>
 <h3 id="architecture-spine-timeline">主軸 · 時間軸<a class="anchor" href="#architecture-spine-timeline" aria-label="這一節的連結">#</a></h3>
-<p>純邏輯，不碰 DOM：參數＋自動化關鍵影格＋場景 → <code>state(t)</code>。場景可以從負的 t 開始（開演前的待命）。<code>onSceneChange</code> 就是 cue 的掛鉤：聲音、燈光、提示都從這裡觸發。</p>
+<p>純邏輯，不碰 DOM：參數＋自動化關鍵影格＋場景 → <code>state(t)</code>。場景可以從負的 t 開始（開演前的待命）。<code>onSceneChange</code> 就是 cue 的掛鉤：聲音、燈光、提示都從這裡觸發。帶 <code>hold: true</code> 的場景，播放到它的結尾就停住，等操作者放行。</p>
+<p>有結構的演出，會把<strong>總譜</strong>（<code>@openav/score</code>）加進這條主軸：把演出寫成各段的<em>長度</em>，由 <code>Score</code> 算出每個起點、終點、cue 和倒數，再由 <code>Director</code> 去執行負責每一段的模組（進一次、出一次，某個模組壞掉只會停用它自己）。時間軸的場景和總長都從總譜來，導演則以參數層的身分接在時間軸上：</p>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ── state(t) ──→ params
+                               └─ Director ── enter / update / exit ──→ segment modules ──→ the world (through `api`)
+                                    └─ param() ── timeline.layer ──────────────────────→ Timeline</code></pre></div>
+<p>總譜只決定<em>什麼時候</em>。實際發生的事，仍然是以參數的形式傳進世界。完整說明見<a href="#score">總譜與導演</a>。</p>
 <h3 id="architecture-spine-monitor">主軸 · 後台監看<a class="anchor" href="#architecture-spine-monitor" aria-label="這一節的連結">#</a></h3>
 <p>演出頁面透過 WebSocket，把 JSON 快照（有節流，約 15 Hz）串流到一個沒有相依套件的中繼（<code>server.js</code>，手寫的 RFC 6455 實作）。區域網路裡任何一支手機或一台筆電，打開後台頁面就能看到：時鐘、場景、世界、FPS、覆寫、每個訊號和參數，還有「舞台畫面斷線」警示。後台監看在框架裡跟其他層一樣重要：沒有後台的演出，只是一場彩排。</p>
 <h3 id="architecture-around-the-spines-console-and-phones">主軸周邊：控台與手機<a class="anchor" href="#architecture-around-the-spines-console-and-phones" aria-label="這一節的連結">#</a></h3>
@@ -1012,7 +1040,8 @@ show.mapper.addRoute({ source: <span class="ts">'hand/right/pinch/index'</span>,
 <li>從 learn 開始時的位置<strong>移動</strong>了至少宣告範圍的 5%（旋鈕、推桿、手、手機傾斜），或</li>
 <li>它是脈衝，而且<strong>觸發</strong>了一次（琴鍵、打擊墊、敲擊）。</li>
 </ul>
-<p>新路由用的是預設值：線性、不平滑、參數的完整範圍。需要曲線的話，事後再改。再點一次 <em>learn</em> 就取消。</p>
+<p>新路由用的是預設值：線性、不平滑、參數的完整範圍。需要曲線的話，事後再改。再點一次 <em>learn</em> 就取消。learn 是「加入」：已經有路由的參數會保留原本那條，再多一條。</p>
+<p>要一口氣綁一整串，<strong>L2 · Mapping</strong>（映射）面板有 <strong>🎛 map knobs in order</strong>：它先替第一個參數啟動 learn，你轉一顆旋鈕就綁上，接著自動換下一個參數。<em>skip</em>、<em>back</em>、<em>stop</em>（或按 Esc）可以操控它。程式裡用 <code>LearnWizard</code>（<a href="#score-map-the-knobs-in-order">細節</a>）。</p>
 <aside class="callout callout-caution" role="note"><p class="callout-title">小心</p>
 <p>任何脈衝都會馬上綁上去。learn 之前，先取消勾選 <em>simulate performance</em>（模擬演奏），並停掉鼓機，不然它們彈出的下一個音就會變成這條路由。</p>
 </aside>
@@ -1086,6 +1115,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>onFrame</code></td><td><code>null</code></td><td><code>(dt, show) =&gt; {}</code>，每個影格執行一次，在時間軸前進之前</td></tr>
 <tr><td><code>mount</code></td><td>自動產生</td><td>要渲染進去的 <code>{ stage, side }</code> 元素或選擇器，取代整頁版面</td></tr>
 <tr><td><code>telemetry</code></td><td><code>true</code></td><td>每次載入頁面送一筆匿名的 <code>oav_show_start</code>（見控制器章的〈使用統計〉），<code>false</code> 就不送</td></tr>
+<tr><td><code>score</code></td><td><code>null</code></td><td><code>{ cuts, cut, modules, api, midi, … }</code>：把演出的結構寫成段落長度，由段落模組去演出。網址上的 <code>?cut=&lt;id&gt;</code> 決定用哪個版本（<a href="#score-use-it-with-createshow">總譜與導演</a>）</td></tr>
 </tbody>
 </table></div>
 <p>沒有 <code>mount</code> 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。</p>
@@ -1104,7 +1134,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>sound</code></td><td><code>true</code>、樂器 id（<code>'piano'</code>）或 <code>{ instrument, remember, picker, engine, baseUrl }</code></td><td>頁面裡的樂器和選單，用 Tone.js（<a href="#show-control-sound">聲音</a>）</td></tr>
 </tbody>
 </table></div>
-<p>它回傳 <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app, loop }</code>，你沒要的部分是 <code>null</code>。同一個物件也掛在 <code>window.openav</code>，方便在 devtools 主控台裡查看。每個影格的執行順序寫在<a href="#architecture-the-frame-loop">架構</a>。</p>
+<p>它回傳 <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, console, app, loop }</code>，你沒要的部分是 <code>null</code>。同一個物件也掛在 <code>window.openav</code>，方便在 devtools 主控台裡查看。每個影格的執行順序寫在<a href="#architecture-the-frame-loop">架構</a>。</p>
 <h3 id="show-control-timeline">時間軸<a class="anchor" href="#show-control-timeline" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> timeline = <span class="tk">new</span> Timeline({
   params,
@@ -1125,19 +1155,26 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <li><code>jumpScene(±1)</code>（← → 鍵）是你的緊急導航，排練時就要拿它練</li>
 <li>排練時用 <code>timeline.rate</code> 快轉（<code>rate = 4</code>）</li>
 <li>播放到 <code>total</code> 會自己停下</li>
+<li>帶 <code>hold: true</code> 的場景，播放到它的結尾就停住，直到被放行（Space、→）：見 <a href="#score-hold">Hold</a></li>
+<li><code>reset()</code> 回到 <code>start</code>（預設 0，所以 −30 的開演前待命場景要用 scrubber 才到得了。傳 <code>start: -30</code>（或 <code>start: 'first'</code>，意思是「第一個場景」），按 R 才會回到那裡）</li>
+<li>帶 <code>score</code> 時，場景、總長和起點都從<a href="#score">總譜</a>來，這時自動化曲線讀的是 <code>score.baseTime(t)</code>，用 <code>scale: 0.5</code> 衍生出來的版本會把曲線一起拉伸</li>
 </ul>
 <div class="table-wrap"><table>
 <thead><tr><th>成員</th><th>作用</th></tr></thead>
 <tbody>
-<tr><td><code>play()</code>, <code>pause()</code>, <code>toggle()</code></td><td>播放控制</td></tr>
+<tr><td><code>play()</code>, <code>pause()</code>, <code>toggle()</code></td><td>播放控制。停在 hold 時，<code>play()</code> 和 <code>toggle()</code> 會放行它</td></tr>
 <tr><td><code>seek(t)</code></td><td>跳到第 <code>t</code> 秒（下限是第一個場景的負數時間，沒有的話是 0，上限是 <code>total</code>）</td></tr>
 <tr><td><code>jumpScene(d)</code></td><td>跳到往前或往後 <code>d</code> 個場景的開頭</td></tr>
-<tr><td><code>reset()</code></td><td>停止並倒回 0</td></tr>
+<tr><td><code>next()</code>, <code>prev()</code></td><td>→ 和 ←：<code>next()</code> 在 hold 時會放行（並接著播放），其他時候就是 <code>jumpScene(1)</code></td></tr>
+<tr><td><code>release()</code></td><td>放行 hold：下一個場景開始，播放繼續。沒有在 hold 就回傳 <code>false</code></td></tr>
+<tr><td><code>reset()</code></td><td>停止、清掉 hold，並倒回 <code>start</code>（預設 0）</td></tr>
 <tr><td><code>advance(dt)</code></td><td>每個影格呼叫，播放中把 <code>t</code> 往前推 <code>dt × rate</code></td></tr>
 <tr><td><code>state(t)</code>, <code>valueAt(key, t)</code></td><td>某個時間點的自動化數值（不含覆寫）</td></tr>
 <tr><td><code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code></td><td>查詢場景</td></tr>
-<tr><td><code>onSceneChange(cb)</code></td><td>每當播放或 seek 進到另一個場景，就呼叫 <code>cb(index, scene)</code></td></tr>
-<tr><td><code>t</code>, <code>playing</code>, <code>rate</code>, <code>total</code>, <code>scenes</code>, <code>automation</code></td><td>可讀也可寫的狀態</td></tr>
+<tr><td><code>onSceneChange(cb)</code></td><td>每當播放或 seek 進到另一個場景，就呼叫 <code>cb(index, scene, { cause })</code>。<code>cause</code> 是 <code>'play'</code>、<code>'release'</code>、<code>'seek'</code>、<code>'jump'</code> 或 <code>'reset'</code></td></tr>
+<tr><td><code>onSeek(cb)</code></td><td>播放頭被手動移動時呼叫 <code>cb(t, kind)</code>（<code>'seek'</code>、<code>'jump'</code>、<code>'reset'</code>），播放中不會呼叫</td></tr>
+<tr><td><code>layer</code></td><td><code>(key, value, t) =&gt; value</code>：在覆寫之前改寫參數值（導演的 <code>param()</code> 就接在這裡）</td></tr>
+<tr><td><code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>scenes</code>, <code>automation</code>, <code>score</code></td><td>可讀也可寫的狀態</td></tr>
 </tbody>
 </table></div>
 <p>cue（換場時要觸發的燈光、音效等提示）清單，寫起來就是一個換場處理函式：</p>
@@ -1147,10 +1184,11 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 });</code></pre></div>
 <h3 id="show-control-the-console">控台<a class="anchor" href="#show-control-the-console" aria-label="這一節的連結">#</a></h3>
 <p><code>mountConsole(el, app, { layers, signals })</code>（<code>@openav/console</code>）會做出導演控台，<code>createShow()</code> 把它掛在側邊面板。<code>app</code> 就是 <code>createShow()</code> 回傳的 <code>show.app</code>（<code>timeline</code>、<code>params</code>、<code>mapper</code>、<code>signals</code>、<code>stage</code>、<code>midi</code>、<code>sound</code>、<code>audio</code>、<code>hands</code>、<code>pose</code>…），缺了哪個部分，對應的區塊就不顯示。傳入 <code>{ layers: false }</code> 或 <code>{ signals: false }</code>，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。</p>
-<p>鍵盤：<strong>Space</strong> 播放／暫停 · <strong>←/→</strong> 換場景 · <strong>R</strong> 重設 · <strong>T</strong> 演出模式 · <strong>F</strong> 全螢幕。在輸入欄位裡打字，不會觸發這些快捷鍵。</p>
+<p>鍵盤：<strong>Space</strong> 播放／暫停（停在 hold 時：放行）· <strong>→/←</strong> 下一個／上一個場景（停在 hold 時，<strong>→</strong> 放行）· <strong>R</strong> 重設 · <strong>T</strong> 演出模式 · <strong>F</strong> 全螢幕 · <strong>Esc</strong> 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，<em>字母鍵</em>歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。</p>
+<p>有總譜的時候，控台還多了導演台面板、scrubber 上的 cue 刻度，以及顯示操作者 acts 的提詞機（<a href="#score-the-desk">總譜與導演</a>）。L2 Mapping 面板有 <strong>🎛 map knobs in order</strong>，這個精靈會依序替每個參數啟動 learn（<a href="#score-map-the-knobs-in-order">細節</a>）。</p>
 <p>覆寫的規則：一碰滑桿（或有映射的控制項），那個參數就脫離時間軸，直到你按 ✕ 清掉覆寫。標籤變黃 = 已覆寫。</p>
 <h3 id="show-control-performance-mode">演出模式<a class="anchor" href="#show-control-performance-mode" aria-label="這一節的連結">#</a></h3>
-<p>按 <strong>T</strong> 切到全螢幕的提詞畫面：目前場景的標題和備註，用站在舞台上也看得清楚的大字顯示，另外有下一個場景的預覽、時鐘和場景倒數。這是給<em>演奏者</em>看的。給觀眾看的，是你按 <strong>F</strong> 開成全螢幕的舞台。同一個頁面開兩個視窗，一個當控台，一個當舞台。</p>
+<p>按 <strong>T</strong> 切到全螢幕的提詞畫面：目前場景的標題和備註，用站在舞台上也看得清楚的大字顯示，另外有操作者要做的事（場景的 <code>acts</code>）、下一個場景的預覽、時鐘和場景倒數、演出在等你時的 HOLD 橫幅，以及段落模組被停用時的警告。這是給<em>演奏者</em>看的。給觀眾看的，是你按 <strong>F</strong> 開成全螢幕的舞台。同一個頁面開兩個視窗，一個當控台，一個當舞台。</p>
 <h3 id="show-control-backstage-monitor">後台監看<a class="anchor" href="#show-control-backstage-monitor" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">node</span> packages/monitor/server.js       <span class="tc"># on the performance machine (npm run monitor)</span>
 <span class="tc"># stage manager's phone/laptop: http://&lt;performance-machine-ip&gt;:7457/</span></code></pre></div>
@@ -1173,7 +1211,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=a8b6135"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1189,6 +1227,9 @@ show.midi.cc(74, 64, 1);                <span class="tc">// controller, value 0.
 show.midi.send([0xb0, 74, 64]);         <span class="tc">// raw bytes</span>
 show.midi.panic();</code></pre></div>
 <p>還沒選輸出埠之前，用的是第一個輸出埠（<code>enable(preferredOut)</code> 先找名稱完全相同的埠，找不到再找名稱包含這個字串的）。送出的每一則訊息都會經過 <code>onSend</code>，Layers 面板裡分頻道的 MIDI OUT 儀表就是靠它更新。</p>
+<p><strong>熱插拔。</strong> 演出中拔掉一條線，不能讓 DAW 一聲不響、什麼提示都沒有。目前的輸出被拔掉時，<code>Midi</code> 會換到次佳的可用埠：先找你用 <code>selectOutput()</code> 或 <code>enable(name)</code> 選的那個，再找 <code>prefer</code> 清單（<code>new Midi({ prefer: ['IAC'] })</code>）裡第一個符合的，最後是第一個埠。你選的那個埠重新插上，輸出就換回去。無關的裝置冒出來，永遠不會把輸出搶走。每換一次，MIDI 紀錄（Signals 面板，經由 <code>midi.onMessage</code>）和瀏覽器 console 各印一行，MIDI 控制器面板會閃一下，L1 Input 面板的 <code>MIDI out →</code> 那一列也會更新。程式裡可以用 <code>midi.onOutput(({ text, reason }) =&gt; …)</code> 接。</p>
+<p><strong>回音。</strong> 送進虛擬匯流排的訊息，不能又被當成輸入收回來。名稱符合 <code>filterOut</code>（預設 <code>IAC</code>，macOS 的那條匯流排）的輸入永遠不會被聆聽。另外，任何輸入上，在 <code>echoWindow</code> 毫秒內（預設 40，<code>0</code> 就關掉）收到一則和剛送出的完全相同的訊息，就當作回音丟掉，每送出一則只抵消一則。<code>midi.echoDropped</code> 會計數。</p>
+<p>要讓外部程式跟著演出走，用 <code>ScoreMidi</code> 把總譜的段落切換和 cue 當成 note 與 CC 送出（<a href="#score-score-to-midi">Score to MIDI</a>）。</p>
 <h3 id="show-control-sound">聲音<a class="anchor" href="#show-control-sound" aria-label="這一節的連結">#</a></h3>
 <p><code>modules: { sound: true }</code> 會加入 <code>Sound</code>（<code>@openav/sound</code>），用的是 Tone.js 引擎。瀏覽器要等使用者點一下才會開始播放音訊，所以控台會在 <em>L4 · Output — sound</em>（聲音輸出）面板放一個 <strong>🔊 enable sound</strong>（開啟聲音）按鈕，下面是選樂器的選單。開啟之後，選好的樂器就會跟著每個 <code>midi/note/on</code> 和 <code>midi/note/off</code> 彈，不管是誰送的（MIDI 鍵盤、電腦鍵盤鋼琴、模擬演奏者、手機）。Tone.js（15.0.4）要等開啟聲音時才從 jsDelivr 載入。</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({ world, modules: { sound: <span class="tk">true</span> } });       <span class="tc">// the warm pad, as before</span>
@@ -1326,9 +1367,258 @@ loop.start();</code></pre></div>
 </ul>
 </section>
 
+<section class="chapter" data-chapter="score" aria-labelledby="score">
+<h2 id="score">總譜與導演<a class="anchor" href="#score" aria-label="這一節的連結">#</a></h2>
+<p class="chapter-meta"><span class="chapter-n">09</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/score.md">docs/zh/score.md</a></span></p>
+<p>一場演出長大之後，需要一個能跟著長大的結構。<strong>總譜</strong>（<code>@openav/score</code>）把演出寫成一段一段、只有「長度」的段落，<strong>導演</strong>則負責執行每一段的程式。兩者都是純邏輯、不碰 DOM。<code>createShow()</code> 會幫你把它們接上<a href="#show-control-timeline">時間軸</a>、控台和提詞機。</p>
+<h3 id="score-the-idea-lengths-never-seconds">核心想法：只寫長度，不寫秒數<a class="anchor" href="#score-the-idea-lengths-never-seconds" aria-label="這一節的連結">#</a></h3>
+<p>把時間軸寫成一張絕對秒數的表，它就長不大。第二個場景拉長一點，後面每個場景、cue、曲線，還有程式裡的每一句 <code>if (t &gt; 466)</code> 全都錯了，而且你只能在一次又一次排練裡一個一個找出來。在總譜裡你只寫每一段「多長」：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> cuts = [
+  { id: <span class="ts">'full'</span>, title: <span class="ts">'A day'</span>, segments: [
+    { id: <span class="ts">'standby'</span>, title: <span class="ts">'Standby'</span>, dur: 6, hold: <span class="tk">true</span>, acts: [<span class="ts">'Check sound'</span>, <span class="ts">'Press Space when the room is ready'</span>] },
+    { id: <span class="ts">'dawn'</span>,    title: <span class="ts">'Dawn'</span>,    dur: 24, cues: { birds: 0.3 } },
+    { id: <span class="ts">'noon'</span>,    title: <span class="ts">'Noon'</span>,    dur: 30, cues: { flare: { s: 8 }, peak: 0.5 }, acts: [<span class="ts">'Open the haze slowly'</span>] },
+    { id: <span class="ts">'dusk'</span>,    title: <span class="ts">'Dusk'</span>,    dur: 24, linger: 8 },
+    { id: <span class="ts">'night'</span>,   title: <span class="ts">'Night'</span>,   dur: 36 },
+  ] },
+  { id: <span class="ts">'short'</span>, <span class="tk">from</span>: <span class="ts">'full'</span>, scale: 0.5 },          <span class="tc">// the same show at half the length</span>
+];</code></pre></div>
+<p>每個起點、終點、cue 的時間、倒數和場景，都從這些長度算出來。把 <code>noon</code> 改成 <code>dur: 40</code>，它後面的一切往後挪十秒，前面的一切原地不動。第二個版本只是幾行資料，不是要和第一份時間軸同步維護的另一份時間軸。</p>
+<h3 id="score-a-cut">cut<a class="anchor" href="#score-a-cut" aria-label="這一節的連結">#</a></h3>
+<p>一個 cut 是演出的一個版本。它有 <code>id</code>、選填的 <code>title</code>，加上「段落」或「基底 cut 與倍率」其中一種。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>cut 欄位</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>在所有 cut 之間不重複，不能含 <code>.</code></td></tr>
+<tr><td><code>title</code></td><td>顯示在版本選單</td></tr>
+<tr><td><code>segments</code></td><td>下表的段落，依演出順序排列</td></tr>
+<tr><td><code>from</code>、<code>scale</code></td><td>衍生 cut：名為 <code>from</code> 的 cut，每個長度乘上 <code>scale</code>（<code>scale</code> 要大於 0）。衍生的 cut 可以再被衍生，倍率會相乘</td></tr>
+<tr><td><code>start</code></td><td>演出一開始停在哪一段、<code>reset</code> 回到哪一段（段落 id，預設是第一段）</td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>段落欄位</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>在 cut 內不重複，不能含 <code>.</code>。它同時是負責演出這一段的模組 id</td></tr>
+<tr><td><code>title</code>、<code>note</code></td><td>導演台和提詞機顯示的字</td></tr>
+<tr><td><code>dur</code></td><td>長度，單位秒，要大於 0。這是段落唯一的時間</td></tr>
+<tr><td><code>cues</code></td><td>段落內有名字的時刻：比例 <code>0 ≤ r &lt; 1</code>（佔這一段的幾分之幾），或 <code>{ s: 秒數 }</code>（段內第幾秒）</td></tr>
+<tr><td><code>acts</code></td><td>這一段操作者要做的事：字串陣列，顯示在導演台，也大字顯示在提詞機</td></tr>
+<tr><td><code>linger</code></td><td>段落結束後，它的模組再繼續跑幾秒（餘韻、衰減的尾巴），預設 0</td></tr>
+<tr><td><code>hold</code></td><td>播放到這一段的段尾就停住，等操作者放行（<a href="#score-hold">Hold</a>）</td></tr>
+<tr><td><code>module</code></td><td>負責演出它的模組名稱，不是段落自己的 id 時才需要</td></tr>
+</tbody>
+</table></div>
+<p>衍生 cut 會縮放 <code>dur</code>、<code>linger</code> 和 <code>{ s }</code> 形式的 cue，所以 cue 在音樂裡的位置不變。比例形式的 cue 本來就不需要動。</p>
+<p>cut 在建立總譜時就會檢查。id 重複、<code>dur</code> 等於或小於 0、<code>from</code> 指到不存在的 cut、<code>scale</code> 等於或小於 0、cut 衍生自己、cue 落在段落外面、<code>acts</code> 不是字串，每一種都會丟出 <code>ScoreError</code>，訊息裡寫明是哪個 cut、哪一段、為什麼，而且一次把所有問題列出來。有問題的總譜上不了台。</p>
+<h3 id="score-the-score">總譜 Score<a class="anchor" href="#score-the-score" aria-label="這一節的連結">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Score } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">const</span> score = <span class="tk">new</span> Score({ cuts, cut: <span class="ts">'full'</span> });      <span class="tc">// cut defaults to the first</span></code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>成員</th><th>回傳</th></tr></thead>
+<tbody>
+<tr><td><code>table()</code></td><td>每段一列：<code>{ index, id, title, start, end, dur, linger, hold }</code></td></tr>
+<tr><td><code>total</code></td><td>演出全長：各段長度的總和</td></tr>
+<tr><td><code>segmentAt(T)</code>、<code>indexAt(T)</code></td><td>演出時間 <code>T</code> 正在播的段落。一段擁有 <code>[start, end)</code>。小於 0 回第一段，超過全長回最後一段</td></tr>
+<tr><td><code>cueTime('dusk')</code></td><td>以演出秒表示的某個時刻：<code>'dusk'</code> 是段落開頭，<code>'dusk.end'</code> 是段落結尾，<code>'dusk.glow'</code> 是 cue。不認得的名字回 <code>NaN</code></td></tr>
+<tr><td><code>cuesBetween(T0, T1)</code></td><td>播放頭從 <code>T0</code> 走到 <code>T1</code> 之間經過的 cue：時間落在 <code>T0 &lt; time ≤ T1</code> 的，依時間排序。<code>T1 ≤ T0</code> 時什麼也沒有</td></tr>
+<tr><td><code>cues()</code></td><td>整個 cut 的所有 cue，依時間排序，每個帶著編號 <code>n</code></td></tr>
+<tr><td><code>scenes()</code></td><td>把段落變成給<a href="#show-control-timeline">時間軸</a>用的 <code>scenes</code> 陣列（含 <code>acts</code>、<code>hold</code>、<code>cues</code>）</td></tr>
+<tr><td><code>validate()</code></td><td>有任何問題就丟 <code>ScoreError</code>，沒問題回 <code>true</code>（建構時已經呼叫過）</td></tr>
+<tr><td><code>cut</code>、<code>title</code>、<code>segments</code>、<code>startT</code></td><td>目前的 cut，以及 <code>reset</code> 要回到哪裡</td></tr>
+<tr><td><code>cuts</code></td><td>每個 cut 的 <code>{ id, title, total, from, scale, base }</code>，做版本選單用</td></tr>
+<tr><td><code>scale</code>、<code>base</code>、<code>baseTime(T)</code></td><td>這個 cut 相對於它最終衍生來源的總倍率、那個來源的 id，以及用來源 cut 表示的 <code>T</code></td></tr>
+</tbody>
+</table></div>
+<h4 id="score-automation-on-a-derived-cut">衍生 cut 上的自動化曲線<a class="anchor" href="#score-automation-on-a-derived-cut" aria-label="這一節的連結">#</a></h4>
+<p>自動化曲線只要對著它衍生來源的那個 cut 寫一次，衍生 cut 會把它一起拉伸。<code>timeline.valueAt(key, t)</code> 讀的是 <code>score.baseTime(t)</code> 處的曲線值，也就是 <code>t / scale</code>。在上面的短版裡，<code>t = 20</code> 讀的是曲線 40 秒處。沒有被衍生的 cut 倍率是 1，什麼都不會變。</p>
+<p>如果兩個 cut 的差別在結構而不只是長度，就不要讓它們共用自動化曲線。改用段落模組的 <a href="#score-segment-modules"><code>param()</code></a> 去驅動參數，那裡的 <code>ctx.p</code> 自己就會跟著縮放。</p>
+<h3 id="score-cues">cue<a class="anchor" href="#score-cues" aria-label="這一節的連結">#</a></h3>
+<p>cue 是一個有名字的時刻：在 <code>noon</code> 段裡寫 <code>cues: { peak: 0.5 }</code>，就有了 <code>noon.peak</code>，位置在這一段的一半。有三個地方看得到它：</p>
+<ul>
+<li>時間軸 scrubber 會畫一個刻度，點一下刻度就跳到那裡。</li>
+<li>導演在播放頭「經過」它的那一刻呼叫一次 <code>onCue({ name, cue, T, n, segment })</code>，並呼叫目前這個模組的 <code>cue(name, ctx)</code>。</li>
+<li>模組裡的 <code>ctx.cue('peak')</code> 會告訴你它在哪裡，單位是進度，可以直接和 <code>ctx.p</code> 比大小（別段的 cue 寫成 <code>'noon.peak'</code>，<code>ctx.cueT(name)</code> 回傳演出秒數）。</li>
+</ul>
+<p>seek 跳過去的 cue 不算經過，播放時倒回去再經過，它會再觸發一次。剛好落在演出第一瞬間的 cue，會在第一個影格觸發。</p>
+<h3 id="score-hold">Hold<a class="anchor" href="#score-hold" aria-label="這一節的連結">#</a></h3>
+<p><code>hold: true</code> 的意思是：<strong>播放到這一段的段尾，就停住等。</strong> 最典型的用法是等現場準備好的待機段。確切的行為如下：</p>
+<ul>
+<li>時間軸停在邊界前一微秒，所以演出仍然「在」被 hold 的那一段裡，並且設定 <code>timeline.holding = true</code>、<code>timeline.playing = false</code>。時鐘就凍結在那裡，你要等多久都行。</li>
+<li>被 hold 的那一段的模組每個影格仍然會收到 <code>update()</code>，此時 <code>ctx.p === 1</code>、<code>ctx.holding === true</code>，還有 <code>ctx.held</code>，也就是已經等了幾秒。任何要在演出凍結時繼續呼吸的東西，就用 <code>ctx.held</code> 當它的時鐘。（這裡做的選擇是：演出在段尾「停住」，不是在段內循環。循環會讓 <code>p</code> 回到 0、讓 cue 重複觸發，也會打破「每個模組只 enter 一次、exit 一次」。）</li>
+<li><strong>Space</strong>、<strong>→</strong>、▶ 按鈕、<code>timeline.play()</code> 和 <code>timeline.next()</code> 都能放行：下一段立刻開始，播放繼續。程式裡用 <code>timeline.release()</code> 也一樣。</li>
+<li>seek（scrubber、<code>goto</code>、←）或 reset 會清掉 hold，而 seek 永遠不會「停在」hold 上，只有播放才會。最後一段不會 hold（演出在那裡結束）。</li>
+<li>後台監看會顯示 <code>⏸ HOLD</code>，導演台和提詞機會顯示閃動的橫幅。</li>
+</ul>
+<h3 id="score-segment-modules">段落模組<a class="anchor" href="#score-segment-modules" aria-label="這一節的連結">#</a></h3>
+<p>段落模組是負責演出某一段的程式。它的 <code>id</code> 就是那一段的 id（或是段落的 <code>module</code> 名稱）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> dusk = {
+  id: <span class="ts">'dusk'</span>,
+  enter(api, ctx)  { api.sky.caption = <span class="ts">'dusk'</span>; },        <span class="tc">// the segment began, or a seek landed inside it</span>
+  update(api, ctx) { <span class="tc">/* every frame, playing or not */</span> },
+  exit(api, ctx)   { api.sky.caption = <span class="ts">''</span>; },            <span class="tc">// it ended (after its linger) or a seek left it: give back what you took</span>
+  param(key, value, ctx) { <span class="tk">return</span> key === <span class="ts">'sun'</span> ? 1 - ctx.p : value; },   <span class="tc">// optional: bend a timeline param while this segment is current</span>
+  cue(name, ctx)   { <span class="tc">/* optional: one of this segment's cues was just passed */</span> },
+  reset(api)       { <span class="tc">/* optional: R was pressed; forget everything */</span> },
+};</code></pre></div>
+<p><code>enter</code>、<code>update</code>、<code>exit</code> 的第一個參數是 <code>api</code>（你自己給的，見下面），每個鉤子都會收到 <code>ctx</code>：</p>
+<div class="table-wrap"><table>
+<thead><tr><th><code>ctx</code></th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>p</code></td><td>這一段走了多少，0 到 1。餘韻期間大於 1，hold 時剛好是 1</td></tr>
+<tr><td><code>t</code></td><td>段內第幾秒（<code>p × dur</code>）</td></tr>
+<tr><td><code>dt</code></td><td>距離上一個影格幾秒</td></tr>
+<tr><td><code>dur</code></td><td>這一段的長度，單位秒</td></tr>
+<tr><td><code>T</code></td><td>演出時間，單位秒</td></tr>
+<tr><td><code>segment</code></td><td>這一段：<code>id</code>、<code>title</code>、<code>start</code>、<code>end</code>、<code>dur</code>、<code>cues</code>、<code>acts</code>、<code>hold</code>、<code>linger</code>、<code>index</code></td></tr>
+<tr><td><code>cue(name)</code>、<code>cueT(name)</code></td><td>cue 的位置，分別以進度和演出秒表示（不認得的名字回 <code>NaN</code>）</td></tr>
+<tr><td><code>phase</code></td><td><code>'active'</code>、<code>'linger'</code>，或 <code>'failed'</code>（只出現在崩潰後的 <code>exit()</code> 裡）</td></tr>
+<tr><td><code>holding</code>、<code>held</code></td><td>是否正停在 hold，以及已經等了幾秒</td></tr>
+<tr><td><code>playing</code></td><td>時間軸有沒有在跑（不管有沒有在播放，<code>update</code> 每個影格都會呼叫）</td></tr>
+<tr><td><code>api</code></td><td>同一個 <code>api</code> 物件，讓沒有拿到 <code>api</code> 參數的 <code>param()</code> 和 <code>cue()</code> 也碰得到演出</td></tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>進一次、出一次。</strong> 演出走進一段，那一段的模組就 enter，離開就 exit，不管是怎麼走過去的。seek 到段落中間，<code>enter</code> 收到的 <code>p</code> 是正確的值，所以模組要能從中間接上。</li>
+<li><strong><code>linger</code>。</strong> 段落結束後，它的模組仍會收到 <code>update()</code>（此時 <code>p &gt; 1</code>、<code>phase: 'linger'</code>），直到餘韻結束才 <code>exit()</code>。這段時間裡，下一段的模組已經在跑了。</li>
+<li><strong><code>param()</code>。</strong> 一段（和它的餘韻）進行中，它的模組可以改寫任何一條時間軸參數。回傳數字就取代原值，回傳其他東西就維持原值。表演者的手永遠最大：手動覆寫是在這一層<strong>之後</strong>才套用的。</li>
+<li><strong>模組丟出錯誤，只停用它自己。</strong> 每個鉤子都在自己的 <code>try/catch</code> 裡執行。如果有一個丟出錯誤，導演會對那個模組呼叫一次 <code>exit()</code>（<code>phase: 'failed'</code>）、印一行 <code>console.error</code>，之後不再呼叫它。其他模組和整場演出照常進行。導演台會用紅字警告，寫出模組名稱和錯誤訊息，按 <strong>R</strong>（reset）就能把它叫回來。影格迴圈不准因為房間裡最新、最沒測過的程式壞掉就停下來。</li>
+</ul>
+<h3 id="score-the-director">導演 Director<a class="anchor" href="#score-the-director" aria-label="這一節的連結">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Director } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">const</span> director = <span class="tk">new</span> Director({ score, modules: [dawn, noon, dusk], api: { sky } });
+<span class="tc">// every frame, after the timeline advanced:</span>
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });
+timeline.layer = (key, value, t) =&gt; director.param(key, value, t);
+timeline.onSeek((t, kind) =&gt; (kind === <span class="ts">'reset'</span> ? director.reset() : director.seek(t)));</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>選項</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>score</code></td><td>那份 <code>Score</code></td></tr>
+<tr><td><code>modules</code></td><td>模組陣列（用 <code>id</code> 對應），或是以段落 id 當 key 的物件</td></tr>
+<tr><td><code>api</code></td><td><code>enter</code>/<code>update</code>/<code>exit</code> 的第一個參數（也是 <code>ctx.api</code>）。給函式的話，第一次用到時才呼叫一次</td></tr>
+<tr><td><code>onStatus(status)</code></td><td>目前的段落、hold 狀態或被停用的模組清單有變化時才呼叫，不是每個影格</td></tr>
+<tr><td><code>onCue(cue)</code></td><td>播放頭經過每個 cue 時呼叫</td></tr>
+<tr><td><code>maxStep</code></td><td>兩次 <code>update()</code> 之間 T 跳超過這麼多秒，就當作 seek，中間的 cue 不會觸發（預設 2）。如果排練時把 <code>timeline.rate</code> 開得很高，就把它調大</td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>成員</th><th>作用</th></tr></thead>
+<tbody>
+<tr><td><code>update(T, dt, { holding, playing })</code></td><td>每個影格一次：進出並更新模組，觸發經過的 cue</td></tr>
+<tr><td><code>param(key, value, T)</code></td><td>時間軸的參數層</td></tr>
+<tr><td><code>seek(T)</code></td><td>播放頭跳走了：不再涵蓋 <code>T</code> 的段落模組立刻 exit，下一次 <code>update()</code> 以正確的 <code>p</code> 進入新的段落</td></tr>
+<tr><td><code>reset()</code></td><td>所有正在跑的模組 exit，每個模組收到 <code>reset(api)</code>，被停用的模組回來</td></tr>
+<tr><td><code>status()</code></td><td><code>{ cut, T, total, segment: { index, id, title, note, start, end, dur, t, p, remaining, hold, acts, cues }, next: { id, title, start, in } 或 null, holding, held, active, failed, errors, missing }</code></td></tr>
+<tr><td><code>register(module)</code>、<code>holding</code>、<code>failed</code></td><td>之後再加模組、讀取狀態</td></tr>
+</tbody>
+</table></div>
+<h3 id="score-use-it-with-createshow">搭配 createShow 使用<a class="anchor" href="#score-use-it-with-createshow" aria-label="這一節的連結">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world,
+  score: { cuts, cut: <span class="ts">'full'</span>, modules: [dawn, noon, dusk],
+           api: (show) =&gt; ({ sky: show.stage.active }),       <span class="tc">// what the modules may touch (default: the whole show)</span>
+           midi: <span class="tk">false</span> },                                      <span class="tc">// see "Score to MIDI"</span>
+  timeline: { automation: { haze: [[0, 0.1], [60, 0.5]] } },   <span class="tc">// optional: written against the base cut</span>
+});</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th><code>score</code> 選項</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>cuts</code>、<code>cut</code></td><td>所有的 cut，以及預設用哪一個。<strong>網址上的 <code>?cut=&lt;id&gt;</code> 優先於 <code>cut</code></strong>，不認得的 id 會警告並忽略</td></tr>
+<tr><td><code>modules</code></td><td>段落模組</td></tr>
+<tr><td><code>api</code></td><td>一個物件，或一個吃 show 的函式，預設是 show 本身</td></tr>
+<tr><td><code>onStatus</code>、<code>onCue</code>、<code>maxStep</code></td><td>直接交給導演</td></tr>
+<tr><td><code>midi</code></td><td><code>false</code>（預設）、<code>true</code> 或 <code>{ channel, segment, cue, … }</code>：<a href="#score-score-to-midi">Score to MIDI</a></td></tr>
+</tbody>
+</table></div>
+<p>有總譜的時候，時間軸的場景、總長和起點都從總譜來（你傳的 <code>timeline.scenes</code> 或 <code>timeline.total</code> 會被忽略），影格迴圈在時間軸前進之後多一步 <code>director.update(...)</code>。<code>createShow</code> 另外回傳 <code>show.score</code>、<code>show.director</code>，還有給排練和腳本用的 <code>show.show</code>（也就是 <code>window.openav.show</code>）：</p>
+<div class="table-wrap"><table>
+<thead><tr><th><code>window.openav.show</code></th><th></th></tr></thead>
+<tbody>
+<tr><td><code>table()</code></td><td>用 <code>console.table</code> 印出段落表，並回傳這些列</td></tr>
+<tr><td><code>goto('dusk')</code>、<code>goto('dusk.glow')</code>、<code>goto(2)</code></td><td>跳到某一段、某個 cue，或第幾段</td></tr>
+<tr><td><code>seek(T)</code></td><td>跳到演出秒數</td></tr>
+<tr><td><code>cue('dusk.glow')</code></td><td>回傳這個 cue 的演出秒數（哪裡也不會跳）</td></tr>
+<tr><td><code>status()</code></td><td>導演的狀態</td></tr>
+<tr><td><code>next()</code>、<code>prev()</code></td><td>和 → 與 ← 一樣</td></tr>
+<tr><td><code>cuts</code></td><td>cut 清單</td></tr>
+</tbody>
+</table></div>
+<h3 id="score-the-desk">導演台<a class="anchor" href="#score-the-desk" aria-label="這一節的連結">#</a></h3>
+<p>有總譜的時候，控台會多出這些：</p>
+<ul>
+<li><strong>Scrubber。</strong> 段落區塊、每個 cue 一個刻度（點一下就跳過去），以及 hold 段落那條虛線的尾端。</li>
+<li><strong>導演台面板。</strong> 版本選單（選別的版本會用 <code>?cut=&lt;id&gt;</code> 重新載入頁面，不會有切一半的狀態）、目前的段落（有進度條和剩餘時間）、HOLD 橫幅、下一段與倒數、操作者要做的事（<strong>acts</strong>）、這一段的 cue（經過就打勾），以及被停用的模組的紅色警告。</li>
+<li><strong>提詞機</strong>（<strong>T</strong>）。全螢幕、大字、高對比：段落標題、你要做什麼（<code>acts</code>）、剩幾秒、下一段、等待時的 HOLD 橫幅，以及被停用模組的紅字。點一下畫面或再按一次 <strong>T</strong> 離開。只要場景帶有 <code>acts</code>，一般的時間軸也能用。</li>
+</ul>
+<h4 id="score-keys">按鍵<a class="anchor" href="#score-keys" aria-label="這一節的連結">#</a></h4>
+<div class="table-wrap"><table>
+<thead><tr><th>按鍵</th><th>作用</th></tr></thead>
+<tbody>
+<tr><td><kbd>Space</kbd></td><td>播放／暫停。停在 HOLD 時：放行</td></tr>
+<tr><td><kbd>→</kbd></td><td>下一段。停在 HOLD 時：放行</td></tr>
+<tr><td><kbd>←</kbd></td><td>上一段</td></tr>
+<tr><td><kbd>R</kbd></td><td>回到起點、停止，被停用的模組回來</td></tr>
+<tr><td><kbd>T</kbd></td><td>提詞機</td></tr>
+<tr><td><kbd>F</kbd></td><td>全螢幕</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>結束旋鈕對應精靈，或離開鍵盤鋼琴的捕捉</td></tr>
+</tbody>
+</table></div>
+<p>在輸入欄位裡打字、按住不放的連發，以及帶著 ⌘、Ctrl 或 Alt 的按鍵，一律忽略。<strong>螢幕鋼琴捕捉鍵盤的時候</strong>（鋼琴列上的 <em>keyboard</em> 勾起來），<strong>字母鍵歸鋼琴</strong>：R、T、F 都沒作用，因為 T 和 F 本來就是琴鍵，而且你正在彈的時候，不小心按到 R 不該把整場演出倒帶。Space、方向鍵和 Esc 永遠有效，所以你可以用同一個鍵盤又彈又控場。MIDI 控制器的 <strong>M</strong> 鍵也照這條規則。</p>
+<h4 id="score-map-the-knobs-in-order">依序對應旋鈕<a class="anchor" href="#score-map-the-knobs-in-order" aria-label="這一節的連結">#</a></h4>
+<p>L2 Mapping 面板有一個 <strong>🎛 map knobs in order</strong>。它先替第一個參數啟動 learn，你轉一顆旋鈕就綁上，接著自動換下一個參數。<em>skip</em>、<em>back</em> 和 <em>stop</em>（或按 Esc）可以操控它。learn 永遠是「加入」路由（<code>Mapper.learn</code>），所以再跑一次是替參數多綁第二顆旋鈕，原本那顆還在。順序是參數宣告的順序，跳過隱藏的參數。想自己指定順序就用 <code>mountConsole(el, app, { learnOrder: ['hue', 'size'] })</code>。邏輯在 <code>@openav/mapping</code> 的 <code>LearnWizard</code>：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { LearnWizard } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+<span class="tk">const</span> wiz = <span class="tk">new</span> LearnWizard({ mapper, keys: () =&gt; params.schema.map((p) =&gt; p.key), onChange: (w) =&gt; draw(w) });
+wiz.start(); wiz.current; wiz.skip(); wiz.back(); wiz.stop();</code></pre></div>
+<h3 id="score-score-to-midi">Score to MIDI<a class="anchor" href="#score-score-to-midi" aria-label="這一節的連結">#</a></h3>
+<p>要跟著演出走的軟體（每一段啟動一個 clip 的 DAW、要跳場景的燈光台）讀不到總譜，但讀得到 MIDI。<code>ScoreMidi</code>（<code>@openav/midi</code>）把段落切換和 cue 變成 note 與 CC。它<strong>預設關閉</strong>，要用才開：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">score: { cuts, midi: { channel: 15,
+                       segment: { note: 36, cc: 20 },                       <span class="tc">// segment i → note 36 + i, and CC 20 = i</span>
+                       cue: { note: 84, notes: { <span class="ts">'dusk.glow'</span>: 90 }, cc: 21 } } }  <span class="tc">// a cue → note 84 (or its own note), CC 21 = its number</span></code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>選項</th><th>預設</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>channel</code></td><td>15</td><td>MIDI 頻道 1 到 16</td></tr>
+<tr><td><code>segment</code></td><td><code>{ note: 36 }</code></td><td><code>note</code>：基準音，送出的音是 <code>note + index</code>。<code>cc</code>：一個 CC，值就是段落編號。<code>velocity</code>。<code>false</code> 就不送段落標記</td></tr>
+<tr><td><code>cue</code></td><td><code>{ note: 84 }</code></td><td><code>note</code> 是所有 cue 共用的音，<code>notes: { 'seg.name': note }</code> 替特定的 cue 指定音，<code>cc</code> 的值是這個 cue 在 cut 裡的編號。<code>false</code> 就不送 cue 標記</td></tr>
+<tr><td><code>length</code></td><td>0.15</td><td>標記音的 note-off 在幾秒之後送</td></tr>
+<tr><td><code>scrub</code></td><td><code>false</code></td><td>手動移動播放頭時也送標記。預設只有演出「在播放」（或 hold 被放行）時才送，所以拖動 scrubber 不會讓 DAW 亂觸發 clip</td></tr>
+</tbody>
+</table></div>
+<p>reset 永遠不送。所有訊息都走 <code>Midi</code> 引擎自己的 <code>noteOn</code>/<code>cc</code>，所以 MIDI OUT 表會看到它們，<code>panic()</code> 也關得掉。程式裡這樣用：<code>new ScoreMidi({ midi, channel, segment, cue })</code>，再呼叫 <code>.segment({ index, cause })</code> 和 <code>.cue({ name, n })</code>。</p>
+<h3 id="score-clocks-why-there-are-none">為什麼沒有引擎時鐘<a class="anchor" href="#score-clocks-why-there-are-none" aria-label="這一節的連結">#</a></h3>
+<p>如果一場演出同時有兩條時間線（舊邏輯讀的「故事時間」，和觀眾經歷的「演出時間」），就需要替每個引擎說明它跟哪一條走：天氣從不停，城市則在插入的段落播放時暫停。那就是每個引擎一個時鐘。這個框架只有一條時間線，也就是演出的 <code>T</code>，沒有東西可以讓時鐘去選，段落模組想讓某個引擎暫停，只要自己不去推進它（<code>ctx.t</code> 是它自己的時鐘，<code>ctx.held</code> 又是另一個）。如果哪一場真實的演出需要兩條時間線，<code>clocks</code> 表就該放進 cut，和 <code>segments</code> 並排。在那之前它只是沒有人用的機器。</p>
+<h3 id="score-without-createshow">不用 createShow<a class="anchor" href="#score-without-createshow" aria-label="這一節的連結">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Score, Director } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">import</span> { Timeline } <span class="tk">from</span> <span class="ts">'@openav/timeline'</span>;
+
+<span class="tk">const</span> score = <span class="tk">new</span> Score({ cuts, cut: <span class="tk">new</span> URLSearchParams(location.search).<span class="tk">get</span>(<span class="ts">'cut'</span>) || <span class="ts">'full'</span> });
+<span class="tk">const</span> timeline = <span class="tk">new</span> Timeline({ params, score });                 <span class="tc">// scenes, total and start come from the score</span>
+<span class="tk">const</span> director = <span class="tk">new</span> Director({ score, modules, api: { world } });
+timeline.layer = (key, value, t) =&gt; director.param(key, value, t);
+timeline.onSeek((t, kind) =&gt; (kind === <span class="ts">'reset'</span> ? director.reset() : director.seek(t)));
+<span class="tk">const</span> desk = mountConsole(deskEl, { timeline, params, mapper, signals, stage, score, director });
+
+<span class="tk">const</span> loop = <span class="tk">new</span> Loop((dt) =&gt; {
+  timeline.advance(dt);
+  director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });
+  mapper.update(dt);
+  desk.render(stage.frame(dt, timeline.state()));
+});</code></pre></div>
+<h3 id="score-rehearsal-checklist">排練檢查清單<a class="anchor" href="#score-rehearsal-checklist" aria-label="這一節的連結">#</a></h3>
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> <code>show.show.table()</code> 印出來的，就是你心裡的演出順序</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 用 <code>timeline.rate = 4</code> 從頭到尾播一次：每個 cue 都響了，沒有模組被停用</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 每個版本都開 <code>?cut=</code> 試一次，確認導演台顯示的總長正確</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 每個 hold 都按一次 Space、再按一次 →，段落進行中也按一次 R</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 故意讓一個模組壞掉（在 <code>update</code> 裡 throw），看演出照常進行</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 提詞機（T）從你站的位置看得清楚</li>
+</ul>
+</section>
+
 <section class="chapter" data-chapter="controllers" aria-labelledby="controllers">
 <h2 id="controllers">MIDI 控制器與嵌入<a class="anchor" href="#controllers" aria-label="這一節的連結">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">09</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/controllers.md">docs/zh/controllers.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">10</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/controllers.md">docs/zh/controllers.md</a></span></p>
 <p>open-audiovisual 把 MIDI 控制器寫成資料：每台裝置一個 JSON 檔，記下面板配置、每個控制項送出的
 MIDI 訊息、LED 回饋、怎麼認出它的埠，以及每個數字出自哪一份文件。同一個檔案可以變成螢幕上能彈的控制器，接上實體裝置時跟著動，也能放進任何網頁。支援的裝置全部列在<a href="../../zh/controllers/">控制器頁面</a>。</p>
 <h3 id="controllers-play-one-in-a-page">放進網頁<a class="anchor" href="#controllers-play-one-in-a-page" aria-label="這一節的連結">#</a></h3>
@@ -1409,7 +1699,7 @@ pull request。</li>
 
 <section class="chapter" data-chapter="phones" aria-labelledby="phones">
 <h2 id="phones">手機、中繼與控制面板<a class="anchor" href="#phones" aria-label="這一節的連結">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">10</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/remote.md">docs/zh/remote.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">11</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/remote.md">docs/zh/remote.md</a></span></p>
 <p>手機和 iPad 可以當控制器，能用的有動作感測器、一台鋼琴，還有一個照世界的參數自動長出來、類似 TouchOSC 的控制面板。負責的是三個套件，每個都能單獨使用：</p>
 <div class="table-wrap"><table>
 <thead><tr><th>套件</th><th>角色</th></tr></thead>
@@ -1581,7 +1871,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 
 <section class="chapter" data-chapter="signals" aria-labelledby="signals">
 <h2 id="signals">訊號一覽<a class="anchor" href="#signals" aria-label="這一節的連結">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">11</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/signals.md">docs/zh/signals.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">12</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/signals.md">docs/zh/signals.md</a></span></p>
 <p>訊號是輸入層唯一的通用貨幣：有名字、經過正規化、不分來源。這一頁列出內建輸入套件發布的每一個訊號。</p>
 <p>慣例：</p>
 <ul>
@@ -1763,8 +2053,8 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">套件一覽<a class="anchor" href="#packages" aria-label="這一節的連結">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">12</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/packages.md">docs/zh/packages.md</a></span></p>
-<p>二十二個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
+<p class="chapter-meta"><span class="chapter-n">13</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/packages.md">docs/zh/packages.md</a></span></p>
+<p>二十三個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>層</th><th>套件</th></tr></thead>
 <tbody>
@@ -1772,12 +2062,12 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>L2 映射</td><td><code>mapping</code></td></tr>
 <tr><td>L3 世界</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
 <tr><td>L4 輸出</td><td><code>sound</code> · <code>osc</code> · <code>record</code>（MIDI 輸出在 <code>midi</code> 裡）</td></tr>
-<tr><td>主軸</td><td><code>timeline</code> · <code>console</code> · <code>monitor</code></td></tr>
+<tr><td>主軸</td><td><code>timeline</code> · <code>score</code> · <code>console</code> · <code>monitor</code></td></tr>
 <tr><td>手機</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=a8b6135"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -1803,7 +2093,9 @@ signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>Midi</code></td><td><code>new Midi({ signals, filterOut = 'IAC', requestAccess })</code> · <code>enable(preferredOut = '')</code> → <code>Promise&lt;boolean&gt;</code> · <code>devices()</code> → <code>[{ slug, name, listening }]</code> · <code>setListening(slug, on)</code> · <code>onDevices(fn)</code> · <code>listen(fn(bytes, port))</code> · <code>selectOutput(name)</code> · <code>outputFor(nameOrRegExp)</code> · <code>send(bytes)</code> · <code>noteOn(note, vel = 100, ch = 1)</code> · <code>noteOff(note, ch = 1)</code> · <code>cc(cc, val, ch = 1)</code> · <code>panic()</code> · <code>dispose()</code> · hook：<code>onCC</code>、<code>onNote</code>、<code>onMessage</code>、<code>onSend</code>、<code>onDeviceChange</code></td></tr>
+<tr><td><code>Midi</code></td><td><code>new Midi({ signals, filterOut = 'IAC', requestAccess, echoWindow = 40, prefer = [] })</code> · <code>enable(preferredOut = '')</code> → <code>Promise&lt;boolean&gt;</code> · <code>devices()</code> → <code>[{ slug, name, listening }]</code> · <code>setListening(slug, on)</code> · <code>onDevices(fn)</code> · <code>onOutput(fn({ text, reason, next }))</code> · <code>listen(fn(bytes, port))</code> · <code>selectOutput(name)</code> → <code>boolean</code>（並記住成你的選擇）· <code>outputFor(nameOrRegExp)</code> · <code>send(bytes)</code> · <code>noteOn(note, vel = 100, ch = 1)</code> · <code>noteOff(note, ch = 1)</code> · <code>cc(cc, val, ch = 1)</code> · <code>panic()</code> · <code>dispose()</code> · hook：<code>onCC</code>、<code>onNote</code>、<code>onMessage</code>、<code>onSend</code>、<code>onDeviceChange</code> · <code>out</code>、<code>outputs</code>、<code>preferredOut</code>、<code>echoDropped</code></td></tr>
+<tr><td>輸出熱插拔、回音</td><td><code>pickOutput(outputs, { preferred, prefer })</code> · <code>reselectOutput({ current, outputs, preferred, prefer })</code> → <code>{ next, changed, reason, text }</code> · <code>EchoGuard({ window })</code>（<code>sent(bytes)</code>、<code>isEcho(bytes)</code>）：<code>Midi</code> 背後的純邏輯，見<a href="#show-control-midi-output-and-panic">演出控制</a></td></tr>
+<tr><td>總譜轉 MIDI</td><td><code>new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })</code> · <code>segment({ index, cause })</code> · <code>cue({ name, n })</code>：把段落切換和 cue 變成 note 與 CC，見<a href="#score-score-to-midi">總譜與導演</a></td></tr>
 <tr><td>解析</td><td><code>parseMessage(bytes)</code> → 事件 · <code>encodeMessage(event)</code> → 位元組 · <code>genericSignals(event, { device })</code> · <code>publish(signals, list)</code> · <code>describe(event)</code> · <code>relativeDelta(value, mode)</code>、<code>relativeValue(delta, mode)</code>、<code>RELATIVE_MODES</code> · <code>bendToUnit</code>、<code>unitToBend</code>、<code>BEND_CENTER</code></td></tr>
 <tr><td>控制器</td><td><code>MidiController</code>、<code>MidiControllers</code>、<code>controllerRoutes(profile, bindings)</code>、<code>PROFILES</code>、<code>profileById(id)</code>、<code>ControllerView</code>、<code>mountMidiPanel(el, controllers, opts)</code>、<code>linkControllers</code>，以及 profile 輔助函式（<code>validateProfile</code>、<code>normalizeProfile</code>、<code>matchProfile</code>…）</td></tr>
 <tr><td>Web MIDI shim</td><td><code>createVirtualMIDIAccess(opts)</code>、<code>virtualRequestMIDIAccess</code></td></tr>
@@ -1900,6 +2192,7 @@ leap.onFrame(() =&gt; leap.skeleton(ctx, w, h));          <span class="tc">// jo
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
 <tr><td><code>Mapper</code></td><td><code>new Mapper({ signals, params, profile = 'default', onChange, onLearn })</code> · <code>addRoute(route)</code> · <code>removeRoute(id)</code> · <code>routesFor(target)</code> · <code>learn(target)</code> · <code>update(dt)</code> · <code>toJSON()</code> · <code>fromJSON(routes)</code> · <code>save()</code> · <code>load()</code> · <code>dispose()</code> · <code>routes</code>、<code>learnTarget</code></td></tr>
+<tr><td><code>LearnWizard</code></td><td><code>new LearnWizard({ mapper, keys, onChange })</code> · <code>start()</code> · <code>skip()</code> · <code>back()</code> · <code>stop()</code> · <code>sync()</code> · <code>active</code>、<code>current</code>、<code>index</code>、<code>total</code>、<code>done</code>、<code>added</code>：「依序對應旋鈕」，見<a href="#score-map-the-knobs-in-order">總譜與導演</a></td></tr>
 </tbody>
 </table></div>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
@@ -1986,16 +2279,32 @@ comp.start();
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600 })</code> · <code>play()</code>、<code>pause()</code>、<code>toggle()</code>、<code>seek(t)</code>、<code>jumpScene(d)</code>、<code>reset()</code> · <code>advance(dt)</code> · <code>state(t)</code>、<code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>、<code>currentScene(t)</code>、<code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene))</code> · <code>t</code>、<code>playing</code>、<code>rate</code>、<code>total</code></td></tr>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })</code> · <code>play()</code>（放行 hold）、<code>pause()</code>、<code>toggle()</code>、<code>seek(t)</code>、<code>jumpScene(d)</code>、<code>next()</code>（放行 hold，否則往後一段）、<code>prev()</code>、<code>release()</code>、<code>reset()</code>（回到 <code>start</code>，預設 0）· <code>advance(dt)</code> · <code>state(t)</code>、<code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>、<code>currentScene(t)</code>、<code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>、<code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · <code>t</code>、<code>playing</code>、<code>holding</code>、<code>rate</code>、<code>total</code>、<code>start</code>、<code>score</code></td></tr>
 </tbody>
 </table></div>
 <p>見<a href="#show-control-timeline">演出控制</a>。</p>
+<h3 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="這一節的連結">#</a></h3>
+<p>主軸 · 總譜與導演：把演出寫成段落長度，再由模組去演出每一段。純邏輯，不碰 DOM。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Score</code></td><td><code>new Score({ cuts, cut })</code> · <code>table()</code> · <code>total</code> · <code>segmentAt(T)</code>、<code>indexAt(T)</code> · <code>cueTime('seg.name')</code> · <code>cuesBetween(T0, T1)</code> · <code>cues()</code> · <code>scenes()</code> · <code>validate()</code> · <code>cuts</code>、<code>cut</code>、<code>segments</code>、<code>startT</code>、<code>scale</code>、<code>baseTime(T)</code></td></tr>
+<tr><td><code>ScoreError</code></td><td>總譜不合法時丟出，<code>problems</code> 列出每一個原因</td></tr>
+<tr><td><code>Director</code></td><td><code>new Director({ score, modules, api, onStatus, onCue, maxStep })</code> · <code>update(T, dt, { holding, playing })</code> · <code>param(key, value, T)</code> · <code>seek(T)</code> · <code>reset()</code> · <code>status()</code> · <code>register(module)</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Score, Director } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">const</span> score = <span class="tk">new</span> Score({ cuts, cut: <span class="ts">'full'</span> });
+<span class="tk">const</span> director = <span class="tk">new</span> Director({ score, modules, api });
+<span class="tc">// every frame, after timeline.advance(dt):</span>
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });</code></pre></div>
+<p>完整說明：<a href="#score">總譜與導演</a>。</p>
 <h3 id="packages-openav-console">@openav/console<a class="anchor" href="#packages-openav-console" aria-label="這一節的連結">#</a></h3>
 <p>主軸 · 導演控台：播放控制、各層面板、可以 learn 的參數、訊號儀表、演出模式。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals })</code> → <code>{ render(state), perf, dispose() }</code>。<code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc? }</code></td></tr>
+<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder })</code> → <code>{ render(state), perf, director, wizard, dispose() }</code>。<code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
 </tbody>
 </table></div>
 <p>見<a href="#show-control-the-console">演出控制</a>。</p>
@@ -2057,7 +2366,7 @@ routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
 
 <section class="chapter" data-chapter="agents" aria-labelledby="agents">
 <h2 id="agents">給 AI 代理<a class="anchor" href="#agents" aria-label="這一節的連結">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">13</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/agents.md">docs/zh/agents.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">14</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/agents.md">docs/zh/agents.md</a></span></p>
 <p>世界就是一段畫出畫面的程式碼，而程式代理很會寫程式碼。人描述一場表演（「一個遇到和諧和弦就綻放的水母世界」），代理寫出這個世界，放進已經處理好 MIDI、映射、時間軸、控台和後台的外殼裡。代理要把這件事做好，需要知道的東西都在這一章。</p>
 <h3 id="agents-the-two-rules">兩條規則<a class="anchor" href="#agents-the-two-rules" aria-label="這一節的連結">#</a></h3>
 <ol>
@@ -2124,7 +2433,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <section class="chapter" data-chapter="lab-integration" aria-labelledby="lab-integration">
 <h2 id="lab-integration">實驗室整合（<code>"lab"</code> 欄位）<a class="anchor" href="#lab-integration" aria-label="這一節的連結">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">14</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/lab-integration.md">docs/zh/lab-integration.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">15</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/lab-integration.md">docs/zh/lab-integration.md</a></span></p>
 <p><a href="https://lab.cheyuwu.com" rel="noopener">cheyuwu-lab</a> 用一般的 <code>&lt;script&gt;</code> 頁面執行作品（sketch），所以它會把需要的每個 OAV 套件，各打包成一份 classic script。實驗室的產生器（<code>tools/lab-dev/build-modules.mjs</code>）會掃描 <code>packages/*/package.json</code>，替每個宣告了 <code>"lab"</code> 欄位的套件建置模組，沒有寫死的清單。這個欄位通常是一個物件，一個套件要產出好幾個模組時，就寫成陣列。沒有宣告，就沒有模組。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>key</th><th>意義</th></tr></thead>
@@ -2153,7 +2462,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <section class="chapter" data-chapter="troubleshooting" aria-labelledby="troubleshooting">
 <h2 id="troubleshooting">疑難排解<a class="anchor" href="#troubleshooting" aria-label="這一節的連結">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">15</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/troubleshooting.md">docs/zh/troubleshooting.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">16</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/troubleshooting.md">docs/zh/troubleshooting.md</a></span></p>
 <p>這些都是排練和寫程式時真的遇過的問題，附上解法。</p>
 <h3 id="troubleshooting-the-console-shows-a-ws-7457-error">瀏覽器主控台出現 ws://…:7457 錯誤<a class="anchor" href="#troubleshooting-the-console-shows-a-ws-7457-error" aria-label="這一節的連結">#</a></h3>
 <p>每個用 <code>createShow()</code> 做的演出，都會試著把資料串流到 <code>ws://&lt;the page's host&gt;:7457</code> 的後台監看。監看伺服器沒在跑時，瀏覽器會記下被拒絕的連線。這是預期中的，也無害：頁面會重試，間隔從大約 5 秒拉長到 30 秒，不會一直洗版。想讓它消失，就把監看伺服器跑起來：</p>
@@ -2177,10 +2486,14 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <span class="tk">const</span> midi = <span class="tk">new</span> Midi({ signals: show.signals, filterOut: <span class="tk">null</span> });   <span class="tc">// or a narrower regex</span>
 <span class="tk">await</span> midi.enable();</code></pre></div>
 <p>你的引擎發出的是同一組訊號，所以路由和世界都不用改。（控台的裝置清單和 MIDI 儀表，只跟著 <code>createShow()</code> 建立的那個引擎走。）不要把 MIDI 送到你正在聽的同一條 IAC 匯流排。</p>
+<p>另外有第二道防線，不用設定：任何輸入上，在 40 毫秒內收到一則和引擎剛<em>送出</em>的完全相同的訊息，就當作回音丟掉（<code>new Midi({ echoWindow })</code>，<code>0</code> 就關掉，<code>midi.echoDropped</code> 會計數）。</p>
+<h3 id="troubleshooting-the-daw-went-silent-after-a-cable-was-pulled">線被拔掉之後，DAW 就沒聲音了<a class="anchor" href="#troubleshooting-the-daw-went-silent-after-a-cable-was-pulled" aria-label="這一節的連結">#</a></h3>
+<p>現在不會了。輸出埠被拔掉時，<code>Midi</code> 會換到次佳的可用埠，在 MIDI 紀錄和瀏覽器 console 各印一行（<code>MIDI out: switched to "…" ("…" was unplugged)</code>），L1 · Input 面板的 <code>MIDI out →</code> 那一列也會跟著變。你選的那個埠重新插上，輸出就換回去。如果那一行寫的是 <code>no output left</code>，就是現在什麼都沒插：訊息會被丟掉，直到有埠出現。用 <code>midi.selectOutput(name)</code>（或 <code>enable(name)</code>）選好你的埠，換回來的就是它。再加上 <code>new Midi({ prefer: ['IAC'] })</code> 指定誰先頂替。</p>
 <h3 id="troubleshooting-with-two-controllers-a-route-reacts-to-both">接兩台控制器時，一條路由對兩台都有反應<a class="anchor" href="#troubleshooting-with-two-controllers-a-route-reacts-to-both" aria-label="這一節的連結">#</a></h3>
 <p>接兩個以上的 MIDI 輸入時，每台裝置會用自己的名稱（<code>midi/&lt;slug&gt;/cc/74</code>）發出訊號，<em>同時</em>也用共用的舊名稱（<code>midi/cc/74</code>）發出。接在 <code>midi/cc/74</code> 上的路由聽得到每一台裝置，把它的 source 改成那台裝置專屬的名稱就好。各裝置的 slug 會顯示在 <strong>L1 · Input</strong> 面板。</p>
 <h3 id="troubleshooting-qwerty-keys-do-not-play">電腦鍵盤按了沒反應<a class="anchor" href="#troubleshooting-qwerty-keys-do-not-play" aria-label="這一節的連結">#</a></h3>
 <p>先勾選鋼琴上方的 <em>keyboard</em>（電腦鍵盤擷取）。擷取預設是關的，這樣打字才不會跟控台的快捷鍵打架。勾選之後，<code>A W S E D F T G Y H U J K O L P ;</code> 可以彈奏，<kbd>Z</kbd>/<kbd>X</kbd> 切換八度。</p>
+<p><em>keyboard</em> 勾著的時候，字母鍵歸鋼琴，所以控台的 R（重設）、T（提詞機）、F（全螢幕）都沒作用：T 和 F 本來就是琴鍵，而且你正在彈的時候，不小心按到 R 不該把整場演出倒帶。Space、方向鍵和 <kbd>Esc</kbd> 仍然有效，按 Esc 就離開擷取。</p>
 <h3 id="troubleshooting-learn-bound-the-wrong-signal">Learn 綁錯了訊號<a class="anchor" href="#troubleshooting-learn-bound-the-wrong-signal" aria-label="這一節的連結">#</a></h3>
 <p>Learn 綁定的是第一個移動超過自身範圍 5% 的訊號，或第一個出現的脈衝（不分種類）。模擬演奏者和鼓機一直在送脈衝。先取消勾選 <em>simulate performance</em>（模擬演奏），停掉鼓機，再點一次 <em>learn</em>。用 <strong>L2 · Mapping</strong>（映射）面板裡的 ✕ 移除綁錯的路由。</p>
 <h3 id="troubleshooting-the-timeline-no-longer-moves-a-param">時間軸不再推動某個參數<a class="anchor" href="#troubleshooting-the-timeline-no-longer-moves-a-param" aria-label="這一節的連結">#</a></h3>
@@ -2213,7 +2526,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <section class="chapter" data-chapter="roadmap" aria-labelledby="roadmap">
 <h2 id="roadmap">路線圖<a class="anchor" href="#roadmap" aria-label="這一節的連結">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">16</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/roadmap.md">docs/zh/roadmap.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">17</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/roadmap.md">docs/zh/roadmap.md</a></span></p>
 <p>指導原則：真實演出要求過的功能，框架才長。（核心就是這樣來的：這裡的每個模組，都先撐過一場真正的演出，才整理成通用的形式。）</p>
 <h3 id="roadmap-v0-x-the-chassis-now">v0.x — 底盤（現在）<a class="anchor" href="#roadmap-v0-x-the-chassis-now" aria-label="這一節的連結">#</a></h3>
 <ul class="tasks">
@@ -2236,6 +2549,12 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 加入卡片上的 QR code（需要一個小型、零相依的編碼器）</li>
 <li class="task"><input type="checkbox" disabled aria-label="尚未完成"> <em>實驗性的</em>控制面板：手勢／物理控制元件、多人共用的控制面板、觀眾模式（很多支手機 → 彙整成 <code>crowd/tilt/mean</code> 這類訊號）</li>
 <li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 麥克風當作手機感測器、每台裝置各自的設定檔、版面編輯器／匯入匯出介面</li>
+</ul></li>
+<li><strong>總譜與導演</strong>：<em>已經上線</em>（<code>@openav/score</code>）：用段落長度寫成的版本、衍生版本、cue、<code>hold</code>、壞了只停自己的段落模組、提詞機上的 acts、總譜轉 MIDI 標記。接下來：
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 進出都支援 MIDI clock 與 transport（start / stop / song position），讓 DAW 當總譜的主時鐘，或跟著總譜走</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> cut 裡的 <code>clocks</code> 表，只有哪一場演出需要引擎跑在兩條不同的時間線上才做（見<a href="#score-clocks-why-there-are-none">總譜與導演</a>）</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 導演台上的總譜編輯器：拖一段的長度，看每個 cue 跟著移動</li>
 </ul></li>
 <li><strong>訊號錄製與重播</strong>：<em>MIDI 錄音已經上線</em>（<code>@openav/record</code>：<code>TakeRecorder</code>、<code>TakePlayer</code>，<code>.mid</code> 可進可出；<code>EventLog</code> 已經能在錄影時記下任何訊號）。接下來：把完整的訊號流（手、身體、聲音分析）重播給任何一個世界。演奏者不在也能排練。存下來的不只影片，還有手勢。</li>
 <li><strong>把 <code>@openav/*</code> 發布到 npm</strong>，文件頁面本身也能用這套框架來演奏。</li>
@@ -2283,6 +2602,6 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=a8b6135"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

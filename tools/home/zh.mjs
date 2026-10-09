@@ -153,7 +153,7 @@ export default {
     worldTitle: '你只需要寫一個世界',
     worldText: '宣告作品能被什麼演奏（參數），對事件做反應，然後畫出來。交給 <code>createShow()</code>，其他部分一起到位：鋼琴、映射、時間軸、控台、聲音、後台。旁邊放一個帶 import map 的 <code>index.html</code>，照範例 01 的寫法。',
     worldLink: '怎麼寫一個世界',
-    packagesTitle: '二十個套件，依層分類',
+    packagesTitle: '二十一個套件，依層分類',
     packagesLede: '全部是原生 ES module。用 import map 引入需要的套件，或交給 <code>createShow()</code> 組裝。',
     groups: ['輸入', '映射', '世界', '輸出', '時間軸、控台、監看', '手機與平板', '核心與代理'],
     packages: {
@@ -168,7 +168,8 @@ export default {
       'world-webtoe': '把 WebToe 節點網路當成世界來演奏',
       sound: '頁面裡的樂器（Salamander 鋼琴、敲擊琴、弦樂、風琴、合成器音色），加一個檔案就能放進自己的聲音',
       osc: '透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP',
-      timeline: '參數自動化、場景與 cue：整場演出的樂譜',
+      timeline: '參數自動化、場景與 cue：整場演出的時鐘',
+      score: '把演出寫成段落長度：版本、cue、hold，還有模組壞掉時讓演出不中斷的導演',
       console: '導演控台與演出模式',
       monitor: '網路裡任何裝置都能看的後台畫面',
       relay: '零相依的房間中繼，讓手機和 iPad 連進來',

@@ -153,7 +153,7 @@ export default {
     worldTitle: 'A world is the only part you write',
     worldText: 'Declare what the piece can be performed with (params), react to events, draw. Hand it to <code>createShow()</code> and the rest arrives with it: piano, mapping, timeline, console, sound, backstage. Put it next to an <code>index.html</code> with the import map, as in example 01.',
     worldLink: 'Writing a world',
-    packagesTitle: 'Twenty packages, by layer',
+    packagesTitle: 'Twenty-one packages, by layer',
     packagesLede: 'Plain ES modules. Import what you need through an import map, or let <code>createShow()</code> assemble them.',
     groups: ['Input', 'Mapping', 'World', 'Output', 'Spines', 'Phones and tablets', 'Glue and agents'],
     packages: {
@@ -168,7 +168,8 @@ export default {
       'world-webtoe': 'Perform a WebToe node patch as a world',
       sound: 'Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own',
       osc: 'OSC out of the browser through a small Node bridge to UDP',
-      timeline: 'Param automation, scenes and cues: the score of the show',
+      timeline: 'Param automation, scenes and cues: the clock of the show',
+      score: 'The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails',
       console: 'The director\'s desk and performance mode',
       monitor: 'Backstage view for any device on the network',
       relay: 'Zero-dependency room relay for phones and iPads',

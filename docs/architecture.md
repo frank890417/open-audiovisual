@@ -16,6 +16,7 @@ const loop = new Loop((dt) => {
   audio?.update();                               //    microphone analysis → audio/* signals
   onFrame?.(dt, show);                           //    your assembly-level hook
   timeline.advance(dt);                          // 1. time moves
+  director?.update(timeline.t, dt, { holding, playing }); //    with a score: segment modules enter / update / exit
   mapper.update(dt);                             // 2. smoothed routes settle
   const state = stage.frame(dt, timeline.state()); // 3. params resolve → world updates & renders
   sound?.update(state);                          // 4. sound/* params reach the synth
@@ -39,7 +40,8 @@ the backstage feed must not stop because someone switched windows.
 Param resolution order (the heart of the design):
 
 ```text
-timeline.state(t)          — the "score": automation curves per param
+timeline.state(t)          — automation curves per param
+  ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
   ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals
 ```
 
@@ -138,7 +140,23 @@ signals → mapping → params spine — sound is performable state, not a side 
 
 Pure logic, no DOM: params + automation keyframes + scenes → `state(t)`.
 Scenes may start at negative t (pre-show standby). `onSceneChange` is the cue
-hook — fire sound, lights, prompts from it.
+hook — fire sound, lights, prompts from it. A scene with `hold: true` stops
+playback at its end until the operator releases it.
+
+A show with structure adds the **score** to this spine (`@openav/score`): the show
+written as segment *lengths*, from which `Score` computes every start, end, cue and
+countdown, and `Director` runs the module that performs each segment (enter once,
+exit once, a crash switches off only that module). The timeline takes its scenes
+and total from the score, and the director plugs into it as a param layer:
+
+```text
+cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ── state(t) ──→ params
+                               └─ Director ── enter / update / exit ──→ segment modules ──→ the world (through `api`)
+                                    └─ param() ── timeline.layer ──────────────────────→ Timeline
+```
+
+The score only decides *when*. What happens still reaches the world as params.
+Full reference: [Score & Director](score.md).
 
 ## Spine · Monitor
 

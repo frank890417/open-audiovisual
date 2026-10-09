@@ -38,6 +38,12 @@ await midi.enable();
 
 你的引擎發出的是同一組訊號，所以路由和世界都不用改。（控台的裝置清單和 MIDI 儀表，只跟著 `createShow()` 建立的那個引擎走。）不要把 MIDI 送到你正在聽的同一條 IAC 匯流排。
 
+另外有第二道防線，不用設定：任何輸入上，在 40 毫秒內收到一則和引擎剛*送出*的完全相同的訊息，就當作回音丟掉（`new Midi({ echoWindow })`，`0` 就關掉，`midi.echoDropped` 會計數）。
+
+## 線被拔掉之後，DAW 就沒聲音了
+
+現在不會了。輸出埠被拔掉時，`Midi` 會換到次佳的可用埠，在 MIDI 紀錄和瀏覽器 console 各印一行（`MIDI out: switched to "…" ("…" was unplugged)`），L1 · Input 面板的 `MIDI out →` 那一列也會跟著變。你選的那個埠重新插上，輸出就換回去。如果那一行寫的是 `no output left`，就是現在什麼都沒插：訊息會被丟掉，直到有埠出現。用 `midi.selectOutput(name)`（或 `enable(name)`）選好你的埠，換回來的就是它。再加上 `new Midi({ prefer: ['IAC'] })` 指定誰先頂替。
+
 ## 接兩台控制器時，一條路由對兩台都有反應
 
 接兩個以上的 MIDI 輸入時，每台裝置會用自己的名稱（`midi/<slug>/cc/74`）發出訊號，*同時*也用共用的舊名稱（`midi/cc/74`）發出。接在 `midi/cc/74` 上的路由聽得到每一台裝置，把它的 source 改成那台裝置專屬的名稱就好。各裝置的 slug 會顯示在 **L1 · Input** 面板。
@@ -45,6 +51,8 @@ await midi.enable();
 ## 電腦鍵盤按了沒反應
 
 先勾選鋼琴上方的 *keyboard*（電腦鍵盤擷取）。擷取預設是關的，這樣打字才不會跟控台的快捷鍵打架。勾選之後，`A W S E D F T G Y H U J K O L P ;` 可以彈奏，<kbd>Z</kbd>/<kbd>X</kbd> 切換八度。
+
+*keyboard* 勾著的時候，字母鍵歸鋼琴，所以控台的 R（重設）、T（提詞機）、F（全螢幕）都沒作用：T 和 F 本來就是琴鍵，而且你正在彈的時候，不小心按到 R 不該把整場演出倒帶。Space、方向鍵和 <kbd>Esc</kbd> 仍然有效，按 Esc 就離開擷取。
 
 ## Learn 綁錯了訊號
 

@@ -32,6 +32,7 @@ const show = await createShow({
 | `onFrame` | `null` | `(dt, show) => {}`，每個影格執行一次，在時間軸前進之前 |
 | `mount` | 自動產生 | 要渲染進去的 `{ stage, side }` 元素或選擇器，取代整頁版面 |
 | `telemetry` | `true` | 每次載入頁面送一筆匿名的 `oav_show_start`（見控制器章的〈使用統計〉），`false` 就不送 |
+| `score` | `null` | `{ cuts, cut, modules, api, midi, … }`：把演出的結構寫成段落長度，由段落模組去演出。網址上的 `?cut=<id>` 決定用哪個版本（[總譜與導演](score.md#use-it-with-createshow)） |
 
 沒有 `mount` 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。
 
@@ -48,7 +49,7 @@ const show = await createShow({
 | `remote` | `true` 或 `{ room, auto, surface, feedbackHz, url }` | 手機和 iPad 當控制器（[手機](remote.md#the-show-side)） |
 | `sound` | `true`、樂器 id（`'piano'`）或 `{ instrument, remember, picker, engine, baseUrl }` | 頁面裡的樂器和選單，用 Tone.js（[聲音](#sound)） |
 
-它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
+它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
 
 ## 時間軸
 
@@ -73,18 +74,25 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 - `jumpScene(±1)`（← → 鍵）是你的緊急導航，排練時就要拿它練
 - 排練時用 `timeline.rate` 快轉（`rate = 4`）
 - 播放到 `total` 會自己停下
+- 帶 `hold: true` 的場景，播放到它的結尾就停住，直到被放行（Space、→）：見 [Hold](score.md#hold)
+- `reset()` 回到 `start`（預設 0，所以 −30 的開演前待命場景要用 scrubber 才到得了。傳 `start: -30`（或 `start: 'first'`，意思是「第一個場景」），按 R 才會回到那裡）
+- 帶 `score` 時，場景、總長和起點都從[總譜](score.md)來，這時自動化曲線讀的是 `score.baseTime(t)`，用 `scale: 0.5` 衍生出來的版本會把曲線一起拉伸
 
 | 成員 | 作用 |
 |---|---|
-| `play()`, `pause()`, `toggle()` | 播放控制 |
+| `play()`, `pause()`, `toggle()` | 播放控制。停在 hold 時，`play()` 和 `toggle()` 會放行它 |
 | `seek(t)` | 跳到第 `t` 秒（下限是第一個場景的負數時間，沒有的話是 0，上限是 `total`） |
 | `jumpScene(d)` | 跳到往前或往後 `d` 個場景的開頭 |
-| `reset()` | 停止並倒回 0 |
+| `next()`, `prev()` | → 和 ←：`next()` 在 hold 時會放行（並接著播放），其他時候就是 `jumpScene(1)` |
+| `release()` | 放行 hold：下一個場景開始，播放繼續。沒有在 hold 就回傳 `false` |
+| `reset()` | 停止、清掉 hold，並倒回 `start`（預設 0） |
 | `advance(dt)` | 每個影格呼叫，播放中把 `t` 往前推 `dt × rate` |
 | `state(t)`, `valueAt(key, t)` | 某個時間點的自動化數值（不含覆寫） |
 | `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` | 查詢場景 |
-| `onSceneChange(cb)` | 每當播放或 seek 進到另一個場景，就呼叫 `cb(index, scene)` |
-| `t`, `playing`, `rate`, `total`, `scenes`, `automation` | 可讀也可寫的狀態 |
+| `onSceneChange(cb)` | 每當播放或 seek 進到另一個場景，就呼叫 `cb(index, scene, { cause })`。`cause` 是 `'play'`、`'release'`、`'seek'`、`'jump'` 或 `'reset'` |
+| `onSeek(cb)` | 播放頭被手動移動時呼叫 `cb(t, kind)`（`'seek'`、`'jump'`、`'reset'`），播放中不會呼叫 |
+| `layer` | `(key, value, t) => value`：在覆寫之前改寫參數值（導演的 `param()` 就接在這裡） |
+| `t`, `playing`, `holding`, `rate`, `total`, `start`, `scenes`, `automation`, `score` | 可讀也可寫的狀態 |
 
 cue（換場時要觸發的燈光、音效等提示）清單，寫起來就是一個換場處理函式：
 
@@ -99,13 +107,15 @@ show.timeline.onSceneChange((i, scene) => {
 
 `mountConsole(el, app, { layers, signals })`（`@openav/console`）會做出導演控台，`createShow()` 把它掛在側邊面板。`app` 就是 `createShow()` 回傳的 `show.app`（`timeline`、`params`、`mapper`、`signals`、`stage`、`midi`、`sound`、`audio`、`hands`、`pose`…），缺了哪個部分，對應的區塊就不顯示。傳入 `{ layers: false }` 或 `{ signals: false }`，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。
 
-鍵盤：**Space** 播放／暫停 · **←/→** 換場景 · **R** 重設 · **T** 演出模式 · **F** 全螢幕。在輸入欄位裡打字，不會觸發這些快捷鍵。
+鍵盤：**Space** 播放／暫停（停在 hold 時：放行）· **→/←** 下一個／上一個場景（停在 hold 時，**→** 放行）· **R** 重設 · **T** 演出模式 · **F** 全螢幕 · **Esc** 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，*字母鍵*歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。
+
+有總譜的時候，控台還多了導演台面板、scrubber 上的 cue 刻度，以及顯示操作者 acts 的提詞機（[總譜與導演](score.md#the-desk)）。L2 Mapping 面板有 **🎛 map knobs in order**，這個精靈會依序替每個參數啟動 learn（[細節](score.md#map-the-knobs-in-order)）。
 
 覆寫的規則：一碰滑桿（或有映射的控制項），那個參數就脫離時間軸，直到你按 ✕ 清掉覆寫。標籤變黃 = 已覆寫。
 
 ## 演出模式
 
-按 **T** 切到全螢幕的提詞畫面：目前場景的標題和備註，用站在舞台上也看得清楚的大字顯示，另外有下一個場景的預覽、時鐘和場景倒數。這是給*演奏者*看的。給觀眾看的，是你按 **F** 開成全螢幕的舞台。同一個頁面開兩個視窗，一個當控台，一個當舞台。
+按 **T** 切到全螢幕的提詞畫面：目前場景的標題和備註，用站在舞台上也看得清楚的大字顯示，另外有操作者要做的事（場景的 `acts`）、下一個場景的預覽、時鐘和場景倒數、演出在等你時的 HOLD 橫幅，以及段落模組被停用時的警告。這是給*演奏者*看的。給觀眾看的，是你按 **F** 開成全螢幕的舞台。同一個頁面開兩個視窗，一個當控台，一個當舞台。
 
 ## 後台監看
 
@@ -173,6 +183,12 @@ show.midi.panic();
 ```
 
 還沒選輸出埠之前，用的是第一個輸出埠（`enable(preferredOut)` 先找名稱完全相同的埠，找不到再找名稱包含這個字串的）。送出的每一則訊息都會經過 `onSend`，Layers 面板裡分頻道的 MIDI OUT 儀表就是靠它更新。
+
+**熱插拔。** 演出中拔掉一條線，不能讓 DAW 一聲不響、什麼提示都沒有。目前的輸出被拔掉時，`Midi` 會換到次佳的可用埠：先找你用 `selectOutput()` 或 `enable(name)` 選的那個，再找 `prefer` 清單（`new Midi({ prefer: ['IAC'] })`）裡第一個符合的，最後是第一個埠。你選的那個埠重新插上，輸出就換回去。無關的裝置冒出來，永遠不會把輸出搶走。每換一次，MIDI 紀錄（Signals 面板，經由 `midi.onMessage`）和瀏覽器 console 各印一行，MIDI 控制器面板會閃一下，L1 Input 面板的 `MIDI out →` 那一列也會更新。程式裡可以用 `midi.onOutput(({ text, reason }) => …)` 接。
+
+**回音。** 送進虛擬匯流排的訊息，不能又被當成輸入收回來。名稱符合 `filterOut`（預設 `IAC`，macOS 的那條匯流排）的輸入永遠不會被聆聽。另外，任何輸入上，在 `echoWindow` 毫秒內（預設 40，`0` 就關掉）收到一則和剛送出的完全相同的訊息，就當作回音丟掉，每送出一則只抵消一則。`midi.echoDropped` 會計數。
+
+要讓外部程式跟著演出走，用 `ScoreMidi` 把總譜的段落切換和 cue 當成 note 與 CC 送出（[Score to MIDI](score.md#score-to-midi)）。
 
 ## 聲音
 

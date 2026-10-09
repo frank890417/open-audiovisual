@@ -20,7 +20,7 @@ Claude Code picks it up from the repository's `.mcp.json`. Other clients:
 | tool | arguments | returns |
 |---|---|---|
 | `list_examples` | none | `[{ dir, title, summary }]`: each example's folder, its `<title>` and the first comment line of `main.js` |
-| `read_doc` | `doc` (required): `architecture`, `writing-a-world`, `signals`, `show-control`, `roadmap`, `agents`, `readme` | the Markdown text; `agents` = AGENTS.md, `readme` = README.md, the rest `docs/<name>.md` |
+| `read_doc` | `doc` (required): `architecture`, `writing-a-world`, `signals`, `show-control`, `score`, `roadmap`, `agents`, `readme` | the Markdown text; `agents` = AGENTS.md, `readme` = README.md, the rest `docs/<name>.md` |
 | `scaffold_world` | `slug` (required, kebab-case), `donor = '01-hello-particles'` | `{ created, next_steps }`; copies `examples/<donor>/` to `examples/<next number>-<slug>/` |
 | `run_checks` | none | `{ pass, fail, ok }` from `node --test tests/*.test.js` (60 s timeout), or `{ ok: false, output }` |
 

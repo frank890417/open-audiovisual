@@ -65,6 +65,8 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 │          · @openav/osc → UDP bridge                        │
 ├────────────────────────────────────────────────────────────┤
 │ ⏱ @openav/timeline — param automation + scenes/cues        │
+│ 📜 @openav/score — segment lengths → cuts, cues, holds;      │
+│    the director runs a module per segment                   │
 │ 📟 @openav/monitor — backstage: clock, scene, signals, FPS  │
 │ 🎛 @openav/console — desk · Layers live view · perf mode     │
 │ 📱 @openav/relay · surface · remote — phones/iPads as        │
@@ -96,10 +98,11 @@ Two rules make the whole thing composable:
 | [`10-record`](examples/10-record/) | **the performance video** (@openav/record): the work on top, your hands from the webcam below, the work's own sound, one vertical 1080×1920 / 2.7K / 4K file in sync — plus MIDI takes you record, play back into the show, and save as `.mid` |
 | [`11-controller-video`](examples/11-controller-video/) | **the performance video without a camera**: the controller you play (MiniLab 3 or any profile) drawn live under the work — keys, pads, knobs and faders as they move, sharp at 4K; a replayed MIDI take animates it too |
 | [`12-leap-hands`](examples/12-leap-hands/) | **a Leap Motion as an instrument** (@openav/leap): palm height, pinch and fist through params, the hand skeleton drawn in the work; runs on the machine's bridge (`node packages/leap/bridge/leap-bridge.mjs`, `--mock` without a sensor) or with the mouse as a simulated hand |
+| [`13-score-director`](examples/13-score-director/) | **a show with structure** (@openav/score): "a day of sky" written as segment lengths, two cuts (full and half length, `?cut=short`), a standby that holds until you release it, cues on the scrubber, operator acts on the desk and prompter, and a segment module that can crash (`?break=dusk`) without stopping the show |
 
 All examples run without MIDI hardware — every stage ships an on-screen piano
 (@openav/keys: QWERTY capture, Z/X octave) and a **simulated performer** that
-plays the piece hands-free. 01/02 run fully offline. Keys: **Space** play · **←/→** scene jump · **T** performance mode · **F** fullscreen.
+plays the piece hands-free. 01/02 run fully offline. Keys: **Space** play (at a hold: release) · **←/→** scene jump · **T** performance mode · **F** fullscreen.
 
 Examples are assembled with **`createShow()`** (`@openav/show`) — a World plus one
 declarative call; the layer-aligned side panel, inputs, sound, and backstage all
@@ -178,6 +181,7 @@ portrait), 控制台 (faders, knobs, XY, pads… generated from the World's `par
 - [Writing a world](docs/writing-a-world.md)
 - [Signals reference](docs/signals.md) — names published by each input package
 - [Show control](docs/show-control.md) — timeline, scenes, performance mode, monitor, OSC
+- [Score & Director](docs/score.md) — a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score → MIDI
 
 ## Telemetry
 
@@ -228,7 +232,7 @@ Four layers + two spines — the contracts are in [docs/architecture.md](docs/ar
 - **Input** (`packages/midi`, `audio`, `chord`, `pose`, `leap`) → publishes named **signals**
 - **Mapping** (`packages/mapping`) → routes signals to **params** (curves, smoothing, live learn)
 - **World** (`packages/stage`) → algorithmic system that reads params, renders anything
-- **Output** (`packages/osc`, MIDI out) + **Timeline** + **Console** + **Monitor**
+- **Output** (`packages/osc`, MIDI out) + **Timeline** + **Score & Director** (`packages/score`: a show as segment lengths) + **Console** + **Monitor**
 
 Full handbook (every chapter, verified against the code): https://openaudiovisual.com/docs/ —
 sources in `docs/`, one file for language models at `/llms-full.txt`.
@@ -258,7 +262,8 @@ path below works without it.
 3. Declare params (what the piece is performed WITH), scenes and automation
    (what the timeline does), and any `signals.on(...)` event reactions.
 4. Update the import map in `index.html` only if you use extra packages
-   (`@openav/chord`, `@openav/pose`…). Signal names: [docs/signals.md](docs/signals.md).
+   (`@openav/chord`, `@openav/pose`…). A show with structure (cuts, cues, a hold, segment modules) declares
+   `score: { cuts, modules }` in `createShow()`: [docs/score.md](docs/score.md), example `13-score-director`. Signal names: [docs/signals.md](docs/signals.md).
 5. Verify: `node serve.js` → open `http://localhost:8080/examples/<nn>-<name>/` —
    QWERTY keys A–L are the no-hardware MIDI fallback (tick *keyboard* in the console first); Space plays the timeline.
 
@@ -673,6 +678,7 @@ const loop = new Loop((dt) => {
   audio?.update();                               //    microphone analysis → audio/* signals
   onFrame?.(dt, show);                           //    your assembly-level hook
   timeline.advance(dt);                          // 1. time moves
+  director?.update(timeline.t, dt, { holding, playing }); //    with a score: segment modules enter / update / exit
   mapper.update(dt);                             // 2. smoothed routes settle
   const state = stage.frame(dt, timeline.state()); // 3. params resolve → world updates & renders
   sound?.update(state);                          // 4. sound/* params reach the synth
@@ -696,7 +702,8 @@ the backstage feed must not stop because someone switched windows.
 Param resolution order (the heart of the design):
 
 ```text
-timeline.state(t)          — the "score": automation curves per param
+timeline.state(t)          — automation curves per param
+  ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
   ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals
 ```
 
@@ -795,7 +802,23 @@ signals → mapping → params spine — sound is performable state, not a side 
 
 Pure logic, no DOM: params + automation keyframes + scenes → `state(t)`.
 Scenes may start at negative t (pre-show standby). `onSceneChange` is the cue
-hook — fire sound, lights, prompts from it.
+hook — fire sound, lights, prompts from it. A scene with `hold: true` stops
+playback at its end until the operator releases it.
+
+A show with structure adds the **score** to this spine (`@openav/score`): the show
+written as segment *lengths*, from which `Score` computes every start, end, cue and
+countdown, and `Director` runs the module that performs each segment (enter once,
+exit once, a crash switches off only that module). The timeline takes its scenes
+and total from the score, and the director plugs into it as a param layer:
+
+```text
+cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ── state(t) ──→ params
+                               └─ Director ── enter / update / exit ──→ segment modules ──→ the world (through `api`)
+                                    └─ param() ── timeline.layer ──────────────────────→ Timeline
+```
+
+The score only decides *when*. What happens still reaches the world as params.
+Full reference: [Score & Director](score.md).
 
 ## Spine · Monitor
 
@@ -1492,7 +1515,13 @@ that:
 - **fires**, if it is a pulse (a key, a pad, a knock).
 
 The new route has the defaults: linear, no smoothing, the param's full range.
-Edit it afterwards if it needs a curve. Clicking *learn* again cancels.
+Edit it afterwards if it needs a curve. Clicking *learn* again cancels. Learn
+*adds*: a param that already has a route keeps it and gets a second one.
+
+To bind a whole list, the **L2 · Mapping** panel has **🎛 map knobs in order**: it
+arms learn for the first param, you turn one knob, it is bound and the next param is
+armed. *skip*, *back*, *stop* (or Esc) steer it. In code it is `LearnWizard`
+([details](score.md#map-the-knobs-in-order)).
 
 > [!CAUTION]
 > Any pulse binds immediately. Untick *simulate performance* and stop the drum
@@ -1614,6 +1643,7 @@ const show = await createShow({
 | `onFrame` | `null` | `(dt, show) => {}` every frame, before the timeline advances |
 | `mount` | generated | `{ stage, side }` elements or selectors to render into, instead of a full-page layout |
 | `telemetry` | `true` | one anonymous `oav_show_start` hit per page (see the controllers chapter, Telemetry); `false` sends nothing |
+| `score` | `null` | `{ cuts, cut, modules, api, midi, … }`: the show's structure as segment lengths, performed by segment modules; `?cut=<id>` in the URL picks the version ([Score & Director](score.md#use-it-with-createshow)) |
 
 Without `mount`, the page body becomes a two-column grid: the stage, and a
 340 px side panel with the piano and the console.
@@ -1632,8 +1662,8 @@ Without `mount`, the page body becomes a two-column grid: the stage, and a
 | `sound` | `true`; an instrument id (`'piano'`); `{ instrument, remember, picker, engine, baseUrl }` | instruments in the page with a picker, Tone.js ([Sound](#sound)) |
 
 It returns `{ signals, params, stage, timeline, mapper, midi, controllers,
-midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app,
-loop }`; parts you did not ask for are `null`. The same object is
+midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director,
+console, app, loop }`; parts you did not ask for are `null`. The same object is
 `window.openav`, for the devtools console. The frame order is in
 [Architecture](architecture.md#the-frame-loop).
 
@@ -1660,18 +1690,25 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 - `jumpScene(±1)` (← → keys) is your emergency navigation — rehearse with it
 - `timeline.rate` exists for rehearsal speed-through (`rate = 4`)
 - playback stops by itself at `total`
+- a scene with `hold: true` stops playback at its end until it is released (Space, →): see [Hold](score.md#hold)
+- `reset()` goes to `start` (default 0, so a pre-show standby scene at −30 is reached with the scrubber; pass `start: -30`, or `start: 'first'` for "the first scene", to make R return to it)
+- with `score` the scenes, total and start come from a [score](score.md); then automation is read at `score.baseTime(t)`, so a cut derived with `scale: 0.5` stretches it
 
 | member | what it does |
 |---|---|
-| `play()`, `pause()`, `toggle()` | transport |
+| `play()`, `pause()`, `toggle()` | transport. At a hold, `play()` and `toggle()` release it |
 | `seek(t)` | jump to `t` seconds (clamped between the first scene's negative time, or 0, and `total`) |
 | `jumpScene(d)` | go to the start of the scene `d` steps away |
-| `reset()` | stop and rewind to 0 |
+| `next()`, `prev()` | → and ←: `next()` releases a hold (and plays on), otherwise it is `jumpScene(1)` |
+| `release()` | let a hold go: the next scene starts and playback continues. `false` when nothing was holding |
+| `reset()` | stop, clear a hold and rewind to `start` (default 0) |
 | `advance(dt)` | per frame; moves `t` by `dt × rate` while playing |
 | `state(t)`, `valueAt(key, t)` | the automation values at a time (no overrides) |
 | `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` | scene lookup |
-| `onSceneChange(cb)` | `cb(index, scene)` whenever playback or a seek lands in a different scene |
-| `t`, `playing`, `rate`, `total`, `scenes`, `automation` | state you can read (and set) |
+| `onSceneChange(cb)` | `cb(index, scene, { cause })` whenever playback or a seek lands in a different scene; `cause` is `'play'`, `'release'`, `'seek'`, `'jump'` or `'reset'` |
+| `onSeek(cb)` | `cb(t, kind)` when the playhead is moved by hand (`'seek'`, `'jump'`, `'reset'`), never while playing |
+| `layer` | `(key, value, t) => value`: rewrite a param before overrides (the director's `param()` plugs in here) |
+| `t`, `playing`, `holding`, `rate`, `total`, `start`, `scenes`, `automation`, `score` | state you can read (and set) |
 
 A cue list is just a scene-change handler:
 
@@ -1693,8 +1730,10 @@ those panels. It gives you transport + scrubber with scene blocks, the Layers
 overview, L1 Input, L2 Mapping, L3 Params (sliders with override and learn
 chips), L4 sound, live signal meters and a MIDI log.
 
-Keyboard: **Space** play/pause · **←/→** scenes · **R** reset · **T** performance
-mode · **F** fullscreen. Keys typed into an input field are ignored.
+Keyboard: **Space** play/pause (at a hold: release) · **→/←** next / previous scene (→ at a hold: release) · **R** reset · **T** performance
+mode · **F** fullscreen · **Esc** leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the *letters* belong to the piano (T and F are piano keys), so R, T and F do nothing until you untick it or press Esc; Space and the arrows always work.
+
+With a score the desk also has the Director panel, cue ticks on the scrubber and a prompter with the operator's acts ([Score & Director](score.md#the-desk)). The L2 Mapping panel has **🎛 map knobs in order**, a wizard that arms learn for each param in turn ([details](score.md#map-the-knobs-in-order)).
 
 Override semantics: touch a slider (or a mapped control) and that param leaves
 the timeline's hands until you clear it (✕). Yellow label = overridden.
@@ -1702,7 +1741,7 @@ the timeline's hands until you clear it (✕). Yellow label = overridden.
 ## Performance mode
 
 **T** flips to a fullscreen teleprompter: current scene title + note in stage-
-readable type, next scene preview, clock + scene countdown. This is for the
+readable type, what the operator does (the scene's `acts`), next scene preview, clock + scene countdown, a HOLD banner while the show waits, and a warning when a segment module was switched off. This is for the
 *performer*; the audience-facing window is your stage in fullscreen (**F**).
 Two windows of the same page = one desk, one stage.
 
@@ -1791,6 +1830,12 @@ show.midi.panic();
 The first output port is used until you choose another (`enable(preferredOut)`
 matches a name exactly, then as a substring). Everything sent passes through
 `onSend`, which feeds the per-channel MIDI OUT meter in the Layers panel.
+
+**Hot-plug.** A cable pulled mid-show must not leave the DAW silent without a word. When the current output is unplugged, `Midi` moves to the next best live port: the one you chose with `selectOutput()` or `enable(name)`, then the first match of the `prefer` list (`new Midi({ prefer: ['IAC'] })`), then the first port. When the port you chose is plugged in again, the output goes back to it. An unrelated device appearing never steals the output. Every switch prints one line in the MIDI log (the Signals panel, via `midi.onMessage`) and one in the browser console, flashes in the MIDI controller panel, and updates the `MIDI out →` row of the L1 Input panel. In code: `midi.onOutput(({ text, reason }) => …)`.
+
+**Echo.** What you send into a virtual bus must not come back as input. Inputs whose name matches `filterOut` (default `IAC`, the macOS bus) are never listened to, and a message identical to one just sent that arrives on any input within `echoWindow` milliseconds (default 40; `0` turns it off) is dropped as echo, once per message sent. `midi.echoDropped` counts them.
+
+To make an external program follow the show, `ScoreMidi` sends the score's segment changes and cues as notes and CCs ([Score to MIDI](score.md#score-to-midi)).
 
 ## Sound
 
@@ -1995,6 +2040,291 @@ loop.start();
 - [ ] monitor server running; stage manager's device on the same network
 - [ ] sound enabled with a click, and the panic pad mapped
 - [ ] rehearse the failure: kill the tab, restart, be performing again in <30 s
+
+---
+
+<!-- source: docs/score.md -->
+
+# Score & Director
+
+A show that outgrows one afternoon needs a structure that can grow. The **score** (`@openav/score`) writes a show down as segments with *lengths*, and the **director** runs the code that performs each segment. They are pure logic with no DOM, and `createShow()` wires them to the [timeline](show-control.md#timeline), the console and the prompter for you.
+
+## The idea: lengths, never seconds
+
+A timeline written as a table of absolute seconds cannot grow. Make the second scene longer and every later scene, cue, curve and `if (t > 466)` in your code is now wrong, and you find them one rehearsal at a time. In a score you write only how *long* each segment is:
+
+```js
+const cuts = [
+  { id: 'full', title: 'A day', segments: [
+    { id: 'standby', title: 'Standby', dur: 6, hold: true, acts: ['Check sound', 'Press Space when the room is ready'] },
+    { id: 'dawn',    title: 'Dawn',    dur: 24, cues: { birds: 0.3 } },
+    { id: 'noon',    title: 'Noon',    dur: 30, cues: { flare: { s: 8 }, peak: 0.5 }, acts: ['Open the haze slowly'] },
+    { id: 'dusk',    title: 'Dusk',    dur: 24, linger: 8 },
+    { id: 'night',   title: 'Night',   dur: 36 },
+  ] },
+  { id: 'short', from: 'full', scale: 0.5 },          // the same show at half the length
+];
+```
+
+Every start, end, cue time, countdown and scene is computed from those lengths. Change `noon` to `dur: 40` and everything after it moves by ten seconds while everything before it stays put. A second version of the show is a few lines of data, not a second timeline to keep in step.
+
+## A cut
+
+A cut is one version of the show. It has an `id`, an optional `title`, and either segments or a base cut and a scale.
+
+| cut field | meaning |
+|---|---|
+| `id` | unique among the cuts; no `.` |
+| `title` | shown in the cut picker |
+| `segments` | the list below, in playing order |
+| `from`, `scale` | a derived cut: the cut named `from` with every length times `scale` (`scale` > 0). It can be derived again; the scales multiply |
+| `start` | the id of the segment the show opens on and `reset` returns to (default: the first) |
+
+| segment field | meaning |
+|---|---|
+| `id` | unique within the cut; no `.`. It is also the id of the module that performs it |
+| `title`, `note` | what the desk and the prompter show |
+| `dur` | length in seconds, greater than 0. The only time a segment has |
+| `cues` | named moments inside the segment: a ratio `0 ≤ r < 1` (a fraction of the segment) or `{ s: seconds }` (seconds into it) |
+| `acts` | what the human operator does in this segment: an array of strings, shown on the desk and, large, on the prompter |
+| `linger` | seconds the segment's module keeps running after the segment ends (a decay, a tail). Default 0 |
+| `hold` | playback stops at the end of this segment and waits for the operator ([Hold](#hold)) |
+| `module` | the name of the module that performs it, when that is not the segment's own id |
+
+A derived cut scales `dur`, `linger` and `{ s }` cues, so a cue stays in the same place in the music. The ratio cues did not need to move.
+
+A cut is checked when the score is built. Duplicate ids, a `dur` of 0 or below, a `from` that is not a cut, a `scale` of 0 or below, a cut derived from itself, a cue outside its segment, `acts` that are not strings: each throws a `ScoreError` that names the cut, the segment and the reason, and lists every problem at once. Nothing half-valid can reach the stage.
+
+## The Score
+
+```js
+import { Score } from '@openav/score';
+const score = new Score({ cuts, cut: 'full' });      // cut defaults to the first
+```
+
+| member | what it gives |
+|---|---|
+| `table()` | one row per segment: `{ index, id, title, start, end, dur, linger, hold }` |
+| `total` | the show's length: the sum of the segment lengths |
+| `segmentAt(T)`, `indexAt(T)` | the segment playing at show time `T`. A segment owns `[start, end)`; before 0 answers the first, after the end the last |
+| `cueTime('dusk')` | a moment in show seconds: `'dusk'` is the segment's start, `'dusk.end'` its end, `'dusk.glow'` a cue. `NaN` for anything unknown |
+| `cuesBetween(T0, T1)` | the cues a playhead passed from `T0` to `T1`: those with `T0 < time ≤ T1`, in time order. Nothing when `T1 ≤ T0` |
+| `cues()` | every cue of the cut in time order, each with its number `n` |
+| `scenes()` | the segments as a `scenes` array for the [timeline](show-control.md#timeline) (with `acts`, `hold` and `cues`) |
+| `validate()` | throws a `ScoreError` when anything is wrong; returns `true` otherwise (the constructor already calls it) |
+| `cut`, `title`, `segments`, `startT` | the active cut, and where `reset` goes |
+| `cuts` | every cut as `{ id, title, total, from, scale, base }`, for a version picker |
+| `scale`, `base`, `baseTime(T)` | the cut's total scale against the cut it was derived from, that cut's id, and `T` expressed on it |
+
+### Automation on a derived cut
+
+Automation curves are written once, against the cut they were derived from, and a derived cut stretches them. `timeline.valueAt(key, t)` reads the curve at `score.baseTime(t)`, which is `t / scale`. On the short cut above, `t = 20` reads the curve at 40. A cut that is not derived has scale 1 and nothing changes.
+
+If two cuts differ in structure and not just in length, do not share automation between them. Drive the params from the segment modules instead ([`param()`](#segment-modules)), where `ctx.p` already scales for free.
+
+## Cues
+
+A cue is a named moment: `cues: { peak: 0.5 }` in segment `noon` makes `noon.peak`, half way through. Three places see it:
+
+- the scrubber draws a tick for it, and a click on the tick jumps there;
+- the director calls `onCue({ name, cue, T, n, segment })` once each time the playhead *passes* it while playing, and calls the active module's `cue(name, ctx)` hook;
+- `ctx.cue('peak')` inside a module tells you where it sits, as a progress you can compare with `ctx.p` (`'noon.peak'` works for another segment's cue, `ctx.cueT(name)` answers in show seconds).
+
+A seek does not pass the cues it jumps over, and playing back over a cue fires it again. A cue sitting exactly on the first instant of the show fires on the first frame.
+
+## Hold
+
+`hold: true` means: *when playback reaches the end of this segment, stop and wait.* A standby that waits for the room to be ready is the typical use. Exactly what happens:
+
+- The timeline stops a microsecond before the boundary, so the show is still *inside* the held segment, and sets `timeline.holding = true` and `timeline.playing = false`. The clock freezes there for as long as you like.
+- The held segment's module keeps getting `update()` every frame, with `ctx.p === 1`, `ctx.holding === true` and `ctx.held`, the number of seconds waited so far. Use `ctx.held` as the clock for anything that should keep breathing while the show is frozen. (This is the choice made: the show *stops* at the end of the segment rather than looping inside it. Looping would send `p` back to 0, fire the cues again and break "every module enters once, exits once".)
+- **Space**, **→**, the ▶ button, `timeline.play()` and `timeline.next()` all release it: the next segment starts at once and playback continues. `timeline.release()` does the same in code.
+- A seek (scrubber, `goto`, ←) or a reset clears the hold, and a seek never *stops* at a hold: only playback does. The last segment never holds (the show ends there).
+- The backstage monitor shows `⏸ HOLD`; the desk and the prompter show a pulsing banner.
+
+## Segment modules
+
+A segment module is the code that performs one segment. Its `id` is the id of the segment (or the segment's `module` name):
+
+```js
+const dusk = {
+  id: 'dusk',
+  enter(api, ctx)  { api.sky.caption = 'dusk'; },        // the segment began, or a seek landed inside it
+  update(api, ctx) { /* every frame, playing or not */ },
+  exit(api, ctx)   { api.sky.caption = ''; },            // it ended (after its linger) or a seek left it: give back what you took
+  param(key, value, ctx) { return key === 'sun' ? 1 - ctx.p : value; },   // optional: bend a timeline param while this segment is current
+  cue(name, ctx)   { /* optional: one of this segment's cues was just passed */ },
+  reset(api)       { /* optional: R was pressed; forget everything */ },
+};
+```
+
+`enter`, `update` and `exit` get the `api` object first (yours, see below). Every hook gets a `ctx`:
+
+| `ctx` | meaning |
+|---|---|
+| `p` | progress through the segment, 0 to 1. Above 1 during `linger`; exactly 1 while holding |
+| `t` | seconds into the segment (`p × dur`) |
+| `dt` | seconds since the previous frame |
+| `dur` | the segment's length in seconds |
+| `T` | show time in seconds |
+| `segment` | the segment: `id`, `title`, `start`, `end`, `dur`, `cues`, `acts`, `hold`, `linger`, `index` |
+| `cue(name)`, `cueT(name)` | where a cue sits, as a progress and in show seconds (`NaN` when unknown) |
+| `phase` | `'active'`, `'linger'`, or `'failed'` (only inside `exit()` after a crash) |
+| `holding`, `held` | waiting at a hold, and for how many seconds |
+| `playing` | whether the timeline is running (`update` is called every frame regardless) |
+| `api` | the same `api` object, so `param()` and `cue()` can reach the show too |
+
+- **Enter once, exit once.** The module of a segment is entered when the show enters it and exited when it leaves it, however it got there. A seek into the middle of a segment calls `enter` with the right `p`, so the module must be able to start from the middle.
+- **`linger`.** After the segment ends its module keeps getting `update()` (with `p > 1` and `phase: 'linger'`) until the linger is over, and only then `exit()`. The next segment's module is already running meanwhile.
+- **`param()`.** While a segment (or its linger) is current its module may rewrite any timeline param. Return a number to replace the value, anything else leaves it. The performer's hand still wins: an override is applied *after* this layer.
+- **A module that throws is switched off, alone.** Each hook runs inside its own `try/catch`. If one throws, the director calls that module's `exit()` once (with `phase: 'failed'`), prints one `console.error`, and never calls it again. The other modules and the show carry on. The desk shows a red warning with the module's name and the error; **R** (reset) switches it back on. A frame loop is not allowed to stop because the youngest code in the room failed.
+
+## The Director
+
+```js
+import { Director } from '@openav/score';
+const director = new Director({ score, modules: [dawn, noon, dusk], api: { sky } });
+// every frame, after the timeline advanced:
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });
+timeline.layer = (key, value, t) => director.param(key, value, t);
+timeline.onSeek((t, kind) => (kind === 'reset' ? director.reset() : director.seek(t)));
+```
+
+| option | meaning |
+|---|---|
+| `score` | the `Score` |
+| `modules` | an array of modules (matched by `id`) or an object keyed by segment id |
+| `api` | the first argument of `enter`/`update`/`exit` (also `ctx.api`). A function is called once, the first time it is needed |
+| `onStatus(status)` | called when the segment, the holding state or the list of switched-off modules changes, not every frame |
+| `onCue(cue)` | called for every cue the playhead passes |
+| `maxStep` | a jump bigger than this many seconds between two `update()` calls counts as a seek, so cues in between are not fired (default 2). Raise it if you rehearse at a very high `timeline.rate` |
+
+| member | what it does |
+|---|---|
+| `update(T, dt, { holding, playing })` | once per frame: enter, update and exit the modules, fire the cues passed |
+| `param(key, value, T)` | the timeline's param layer |
+| `seek(T)` | the playhead jumped: modules whose segment no longer covers `T` exit now, the next `update()` enters the new ones with the right `p` |
+| `reset()` | every active module exits, every module hears `reset(api)`, switched-off modules come back |
+| `status()` | `{ cut, T, total, segment: { index, id, title, note, start, end, dur, t, p, remaining, hold, acts, cues }, next: { id, title, start, in } or null, holding, held, active, failed, errors, missing }` |
+| `register(module)`, `holding`, `failed` | add a module later; read the state |
+
+## Use it with createShow
+
+```js
+const show = await createShow({
+  world,
+  score: { cuts, cut: 'full', modules: [dawn, noon, dusk],
+           api: (show) => ({ sky: show.stage.active }),       // what the modules may touch (default: the whole show)
+           midi: false },                                      // see "Score to MIDI"
+  timeline: { automation: { haze: [[0, 0.1], [60, 0.5]] } },   // optional: written against the base cut
+});
+```
+
+| `score` option | meaning |
+|---|---|
+| `cuts`, `cut` | the cuts, and the default one. **`?cut=<id>` in the URL wins** over `cut`; an unknown id is warned about and ignored |
+| `modules` | the segment modules |
+| `api` | an object, or a function of the show; default is the show itself |
+| `onStatus`, `onCue`, `maxStep` | passed to the director |
+| `midi` | `false` (default), `true` or `{ channel, segment, cue, … }`: [Score to MIDI](#score-to-midi) |
+
+With a score, the timeline's scenes, total and start come from it (anything you pass as `timeline.scenes` or `timeline.total` is ignored), and the frame loop gains one step after the timeline advances, `director.update(...)`. `createShow` also returns `show.score`, `show.director` and, for rehearsal and scripts, `show.show` (so `window.openav.show`):
+
+| `window.openav.show` | |
+|---|---|
+| `table()` | prints the segment table with `console.table` and returns the rows |
+| `goto('dusk')`, `goto('dusk.glow')`, `goto(2)` | jump to a segment, a cue or a segment by number |
+| `seek(T)` | jump to show seconds |
+| `cue('dusk.glow')` | the cue's show seconds (it jumps nowhere) |
+| `status()` | the director's status |
+| `next()`, `prev()` | the same as → and ← |
+| `cuts` | the list of cuts |
+
+## The desk
+
+With a score the console adds:
+
+- **Scrubber.** Segment blocks, a tick for every cue (click to jump) and a dashed end on a segment that holds.
+- **Director panel.** A cut picker (choosing one reloads the page with `?cut=<id>`, so nothing is half-switched), the current segment with a progress bar and the time left, the HOLD banner, the next segment and the countdown, the operator's **acts**, this segment's cues (ticked as they pass), and the red warning for modules that were switched off.
+- **Prompter** (**T**). Fullscreen, large, high-contrast: the segment title, what you do (`acts`), seconds left, the next segment, a HOLD banner while the show waits, and a red line for switched-off modules. Click it or press **T** again to leave. It also works for plain timeline scenes that carry `acts`.
+
+### Keys
+
+| key | does |
+|---|---|
+| <kbd>Space</kbd> | play / pause. At a HOLD: release it |
+| <kbd>→</kbd> | next segment. At a HOLD: release it |
+| <kbd>←</kbd> | previous segment |
+| <kbd>R</kbd> | back to the start; stopped; switched-off modules come back |
+| <kbd>T</kbd> | prompter |
+| <kbd>F</kbd> | fullscreen |
+| <kbd>Esc</kbd> | stop the knob-mapping wizard, or leave keyboard-piano capture |
+
+Typing in a field, a held key (auto-repeat) and any key with ⌘, Ctrl or Alt are ignored. **While the on-screen piano captures the keyboard** (the *keyboard* box ticked in the piano bar) the *letters* belong to the piano: R, T and F do nothing, because T and F are piano keys, and an accidental R must not rewind a show you are playing. Space, the arrows and Esc always work, so you can play and run the show from one keyboard. The MIDI-controller key **M** follows the same rule.
+
+### Map the knobs in order
+
+The L2 Mapping panel has **🎛 map knobs in order**. It arms learn for the first param, you turn one knob, it is bound and the next param is armed; *skip*, *back* and *stop* (or Esc) steer it. Learn only ever **adds** routes (`Mapper.learn`), so running it again puts a second knob on a param and keeps the first. The order is the declared order of the params, skipping hidden ones; pass `mountConsole(el, app, { learnOrder: ['hue', 'size'] })` for your own. The logic is `LearnWizard` in `@openav/mapping`:
+
+```js
+import { LearnWizard } from '@openav/mapping';
+const wiz = new LearnWizard({ mapper, keys: () => params.schema.map((p) => p.key), onChange: (w) => draw(w) });
+wiz.start(); wiz.current; wiz.skip(); wiz.back(); wiz.stop();
+```
+
+## Score to MIDI
+
+Software that should follow the show (a DAW launching a clip per segment, a lighting desk jumping scenes) cannot read the score, but it can read MIDI. `ScoreMidi` (`@openav/midi`) turns segment changes and cues into notes and CCs. It is **off** unless you ask:
+
+```js
+score: { cuts, midi: { channel: 15,
+                       segment: { note: 36, cc: 20 },                       // segment i → note 36 + i, and CC 20 = i
+                       cue: { note: 84, notes: { 'dusk.glow': 90 }, cc: 21 } } }  // a cue → note 84 (or its own note), CC 21 = its number
+```
+
+| option | default | meaning |
+|---|---|---|
+| `channel` | 15 | MIDI channel 1 to 16 |
+| `segment` | `{ note: 36 }` | `note`: base note, the note sent is `note + index`. `cc`: a CC whose value is the index. `velocity`. `false` turns segment markers off |
+| `cue` | `{ note: 84 }` | `note` for every cue, `notes: { 'seg.name': note }` for particular ones, `cc` whose value is the cue's number in the cut. `false` turns cue markers off |
+| `length` | 0.15 | seconds before a marker note's note-off |
+| `scrub` | `false` | also mark when the playhead is moved by hand. By default markers go out only while the show *plays* (or a hold is released), so dragging the scrubber does not launch clips |
+
+A reset never sends. Everything goes through the `Midi` engine's own `noteOn`/`cc`, so the MIDI OUT meter shows it and `panic()` silences it. In code: `new ScoreMidi({ midi, channel, segment, cue })`, then `.segment({ index, cause })` and `.cue({ name, n })`.
+
+## Clocks: why there are none
+
+A show that keeps two time lines (a *story* time that old logic reads and a *show* time the audience lives) needs a way to say which engine follows which: weather that never stops, a city that pauses while an inserted segment plays. That is a clock per engine. This framework has one time line, the show's `T`, so there is nothing for a clock to choose between, and a segment module that wants to pause an engine simply stops advancing it (`ctx.t` is its own clock, `ctx.held` another). If a real show brings back the two-time-line case, a `clocks` table belongs in the cut next to `segments`. Until then it would be machinery with no user.
+
+## Without createShow
+
+```js
+import { Score, Director } from '@openav/score';
+import { Timeline } from '@openav/timeline';
+
+const score = new Score({ cuts, cut: new URLSearchParams(location.search).get('cut') || 'full' });
+const timeline = new Timeline({ params, score });                 // scenes, total and start come from the score
+const director = new Director({ score, modules, api: { world } });
+timeline.layer = (key, value, t) => director.param(key, value, t);
+timeline.onSeek((t, kind) => (kind === 'reset' ? director.reset() : director.seek(t)));
+const desk = mountConsole(deskEl, { timeline, params, mapper, signals, stage, score, director });
+
+const loop = new Loop((dt) => {
+  timeline.advance(dt);
+  director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });
+  mapper.update(dt);
+  desk.render(stage.frame(dt, timeline.state()));
+});
+```
+
+## Rehearsal checklist
+
+- [ ] `show.show.table()` reads like the running order you meant
+- [ ] play it once start to finish at `timeline.rate = 4`; every cue fired, no module switched off
+- [ ] open `?cut=` for every version and check the desk shows the right total
+- [ ] press Space on every hold, press → on every hold, press R during a segment
+- [ ] break a module on purpose (throw in `update`) and watch the show carry on
+- [ ] the prompter (T) reads from the position you will stand in
 
 ---
 
@@ -2615,7 +2945,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Twenty-two packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-three packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -2626,7 +2956,7 @@ npm yet.
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `record` (and MIDI out in `midi`) |
-| spines | `timeline` · `console` · `monitor` |
+| spines | `timeline` · `score` · `console` · `monitor` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
 
@@ -2672,7 +3002,9 @@ on-screen controllers that mirror real hardware.
 
 | export | signature |
 |---|---|
-| `Midi` | `new Midi({ signals, filterOut = 'IAC', requestAccess })` · `enable(preferredOut = '')` → `Promise<boolean>` · `devices()` → `[{ slug, name, listening }]` · `setListening(slug, on)` · `onDevices(fn)` · `listen(fn(bytes, port))` · `selectOutput(name)` · `outputFor(nameOrRegExp)` · `send(bytes)` · `noteOn(note, vel = 100, ch = 1)` · `noteOff(note, ch = 1)` · `cc(cc, val, ch = 1)` · `panic()` · `dispose()` · hooks `onCC`, `onNote`, `onMessage`, `onSend`, `onDeviceChange` |
+| `Midi` | `new Midi({ signals, filterOut = 'IAC', requestAccess, echoWindow = 40, prefer = [] })` · `enable(preferredOut = '')` → `Promise<boolean>` · `devices()` → `[{ slug, name, listening }]` · `setListening(slug, on)` · `onDevices(fn)` · `onOutput(fn({ text, reason, next }))` · `listen(fn(bytes, port))` · `selectOutput(name)` → `boolean` (and remembered as your choice) · `outputFor(nameOrRegExp)` · `send(bytes)` · `noteOn(note, vel = 100, ch = 1)` · `noteOff(note, ch = 1)` · `cc(cc, val, ch = 1)` · `panic()` · `dispose()` · hooks `onCC`, `onNote`, `onMessage`, `onSend`, `onDeviceChange` · `out`, `outputs`, `preferredOut`, `echoDropped` |
+| output hot-plug, echo | `pickOutput(outputs, { preferred, prefer })` · `reselectOutput({ current, outputs, preferred, prefer })` → `{ next, changed, reason, text }` · `EchoGuard({ window })` (`sent(bytes)`, `isEcho(bytes)`): the pure logic behind `Midi`, see [Show control](show-control.md#midi-output-and-panic) |
+| score to MIDI | `new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })` · `segment({ index, cause })` · `cue({ name, n })`: segment changes and cues as notes and CCs, see [Score & Director](score.md#score-to-midi) |
 | parsing | `parseMessage(bytes)` → event · `encodeMessage(event)` → bytes · `genericSignals(event, { device })` · `publish(signals, list)` · `describe(event)` · `relativeDelta(value, mode)`, `relativeValue(delta, mode)`, `RELATIVE_MODES` · `bendToUnit`, `unitToBend`, `BEND_CENTER` |
 | controllers | `MidiController`, `MidiControllers`, `controllerRoutes(profile, bindings)`, `PROFILES`, `profileById(id)`, `ControllerView`, `mountMidiPanel(el, controllers, opts)`, `linkControllers`, profile helpers (`validateProfile`, `normalizeProfile`, `matchProfile`, …) |
 | Web MIDI shim | `createVirtualMIDIAccess(opts)`, `virtualRequestMIDIAccess` |
@@ -2799,6 +3131,7 @@ saved profiles.
 | export | signature |
 |---|---|
 | `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`, `learnTarget` |
+| `LearnWizard` | `new LearnWizard({ mapper, keys, onChange })` · `start()` · `skip()` · `back()` · `stop()` · `sync()` · `active`, `current`, `index`, `total`, `done`, `added`: "map the knobs in order", see [Score & Director](score.md#map-the-knobs-in-order) |
 
 ```js
 import { Mapper } from '@openav/mapping';
@@ -2916,9 +3249,29 @@ Spine · automation, scenes and transport; pure logic.
 
 | export | signature |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600 })` · `play()`, `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `reset()` · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene))` · `t`, `playing`, `rate`, `total` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
 
 See [Show control](show-control.md#timeline).
+
+## @openav/score
+
+Spine · the score and the director: a show written as segment lengths, and the modules that perform the segments. Pure logic, no DOM.
+
+| export | signature |
+|---|---|
+| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`, `indexAt(T)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`, `cut`, `segments`, `startT`, `scale`, `baseTime(T)` |
+| `ScoreError` | thrown by an invalid score; `problems` lists every reason |
+| `Director` | `new Director({ score, modules, api, onStatus, onCue, maxStep })` · `update(T, dt, { holding, playing })` · `param(key, value, T)` · `seek(T)` · `reset()` · `status()` · `register(module)` |
+
+```js
+import { Score, Director } from '@openav/score';
+const score = new Score({ cuts, cut: 'full' });
+const director = new Director({ score, modules, api });
+// every frame, after timeline.advance(dt):
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });
+```
+
+Full reference: [Score & Director](score.md).
 
 ## @openav/console
 
@@ -2927,7 +3280,7 @@ meters, performance mode.
 
 | export | signature |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals })` → `{ render(state), perf, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc? }` |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder })` → `{ render(state), perf, director, wizard, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
 
 See [Show control](show-control.md#the-console).
 
@@ -3224,6 +3577,21 @@ Your engine publishes into the same signals, so routes and worlds work
 unchanged. (The console's device list and MIDI meter only follow the engine
 `createShow()` made.) Do not send MIDI out to the same IAC bus you listen to.
 
+A second guard needs no setting: a message that arrives on any input within 40 ms
+of an identical one the engine just *sent* is taken for the echo and dropped
+(`new Midi({ echoWindow })`, `0` turns it off, `midi.echoDropped` counts them).
+
+## The DAW went silent after a cable was pulled
+
+It should not any more. When the output port is unplugged `Midi` moves to the next
+best live port, prints one line in the MIDI log and one in the browser console
+(`MIDI out: switched to "…" ("…" was unplugged)`), and the L1 · Input panel's
+`MIDI out →` row follows. When the port you chose is plugged in again the output
+goes back to it. If the line says `no output left`, nothing is plugged in: messages
+are dropped until a port appears. Choose your port with `midi.selectOutput(name)`
+(or `enable(name)`) so it is the one that returns, and add
+`new Midi({ prefer: ['IAC'] })` to say which port stands in first.
+
 ## With two controllers, a route reacts to both
 
 With two or more MIDI inputs, each device publishes under its own name
@@ -3236,6 +3604,11 @@ The slugs are shown in the **L1 · Input** panel.
 Tick *keyboard* above the piano first. Capture is off by default so that typing
 never fights the console's hotkeys. Then `A W S E D F T G Y H U J K O L P ;`
 play, <kbd>Z</kbd>/<kbd>X</kbd> change octave.
+
+While *keyboard* is ticked the letters belong to the piano, so the console's R
+(reset), T (prompter) and F (fullscreen) do nothing: T and F are piano keys, and an
+accidental R must not rewind a show you are playing. Space, the arrows and
+<kbd>Esc</kbd> still work, and Esc leaves capture.
 
 ## Learn bound the wrong signal
 
@@ -3361,6 +3734,10 @@ before it was generalized.)
   - [ ] QR code on the join card (needs a small zero-dep encoder)
   - [ ] *experimental* surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like `crowd/tilt/mean`)
   - [ ] mic as a phone sensor; per-device profiles; layout editor / import-export UI
+- **Score & Director** — *shipped* (`@openav/score`): cuts as segment lengths, derived versions, cues, `hold`, segment modules that fail alone, the prompter's acts, score → MIDI markers. Next:
+  - [ ] MIDI clock and transport (start / stop / song position) in and out, so a DAW can be the master clock of the score, or follow it
+  - [ ] a `clocks` table in the cut, only if a show needs engines on two different time lines (see [Score & Director](score.md#clocks-why-there-are-none))
+  - [ ] a score editor on the desk: drag a segment's length, see every cue move
 - **Signal recording & replay** — *MIDI takes shipped* (`@openav/record`: `TakeRecorder`,
   `TakePlayer`, `.mid` in and out; `EventLog` already records any signal beside a video). Next:
   replay the full signal stream (hands, body, audio analysis) into any world. Rehearse without

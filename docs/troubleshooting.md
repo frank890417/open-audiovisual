@@ -55,6 +55,21 @@ Your engine publishes into the same signals, so routes and worlds work
 unchanged. (The console's device list and MIDI meter only follow the engine
 `createShow()` made.) Do not send MIDI out to the same IAC bus you listen to.
 
+A second guard needs no setting: a message that arrives on any input within 40 ms
+of an identical one the engine just *sent* is taken for the echo and dropped
+(`new Midi({ echoWindow })`, `0` turns it off, `midi.echoDropped` counts them).
+
+## The DAW went silent after a cable was pulled
+
+It should not any more. When the output port is unplugged `Midi` moves to the next
+best live port, prints one line in the MIDI log and one in the browser console
+(`MIDI out: switched to "…" ("…" was unplugged)`), and the L1 · Input panel's
+`MIDI out →` row follows. When the port you chose is plugged in again the output
+goes back to it. If the line says `no output left`, nothing is plugged in: messages
+are dropped until a port appears. Choose your port with `midi.selectOutput(name)`
+(or `enable(name)`) so it is the one that returns, and add
+`new Midi({ prefer: ['IAC'] })` to say which port stands in first.
+
 ## With two controllers, a route reacts to both
 
 With two or more MIDI inputs, each device publishes under its own name
@@ -67,6 +82,11 @@ The slugs are shown in the **L1 · Input** panel.
 Tick *keyboard* above the piano first. Capture is off by default so that typing
 never fights the console's hotkeys. Then `A W S E D F T G Y H U J K O L P ;`
 play, <kbd>Z</kbd>/<kbd>X</kbd> change octave.
+
+While *keyboard* is ticked the letters belong to the piano, so the console's R
+(reset), T (prompter) and F (fullscreen) do nothing: T and F are piano keys, and an
+accidental R must not rewind a show you are playing. Space, the arrows and
+<kbd>Esc</kbd> still work, and Esc leaves capture.
 
 ## Learn bound the wrong signal
 

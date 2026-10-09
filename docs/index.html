@@ -24,9 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=a8b6135">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=a8b6135">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -65,6 +65,7 @@
     "Inputs",
     "Mapping",
     "Show control",
+    "Score & Director",
     "MIDI controllers & embedding",
     "Phones, relay & surfaces",
     "Signals reference",
@@ -217,8 +218,26 @@
             <li><a href="#show-control-pre-show-checklist">Pre-show checklist</a></li>
           </ol>
         </li>
+        <li class="toc-ch" data-ch="score">
+          <a href="#score"><span class="n">09</span><span class="t">Score &amp; Director</span></a>
+          <ol class="toc-secs">
+            <li><a href="#score-the-idea-lengths-never-seconds">The idea: lengths, never seconds</a></li>
+            <li><a href="#score-a-cut">A cut</a></li>
+            <li><a href="#score-the-score">The Score</a></li>
+            <li><a href="#score-cues">Cues</a></li>
+            <li><a href="#score-hold">Hold</a></li>
+            <li><a href="#score-segment-modules">Segment modules</a></li>
+            <li><a href="#score-the-director">The Director</a></li>
+            <li><a href="#score-use-it-with-createshow">Use it with createShow</a></li>
+            <li><a href="#score-the-desk">The desk</a></li>
+            <li><a href="#score-score-to-midi">Score to MIDI</a></li>
+            <li><a href="#score-clocks-why-there-are-none">Clocks: why there are none</a></li>
+            <li><a href="#score-without-createshow">Without createShow</a></li>
+            <li><a href="#score-rehearsal-checklist">Rehearsal checklist</a></li>
+          </ol>
+        </li>
         <li class="toc-ch" data-ch="controllers">
-          <a href="#controllers"><span class="n">09</span><span class="t">MIDI controllers &amp; embedding</span></a>
+          <a href="#controllers"><span class="n">10</span><span class="t">MIDI controllers &amp; embedding</span></a>
           <ol class="toc-secs">
             <li><a href="#controllers-play-one-in-a-page">Play one in a page</a></li>
             <li><a href="#controllers-listen-to-it">Listen to it</a></li>
@@ -230,7 +249,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="phones">
-          <a href="#phones"><span class="n">10</span><span class="t">Phones, relay &amp; surfaces</span></a>
+          <a href="#phones"><span class="n">11</span><span class="t">Phones, relay &amp; surfaces</span></a>
           <ol class="toc-secs">
             <li><a href="#phones-set-it-up">Set it up</a></li>
             <li><a href="#phones-the-phone-app">The phone app</a></li>
@@ -247,7 +266,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="signals">
-          <a href="#signals"><span class="n">11</span><span class="t">Signals reference</span></a>
+          <a href="#signals"><span class="n">12</span><span class="t">Signals reference</span></a>
           <ol class="toc-secs">
             <li><a href="#signals-openav-midi">@openav/midi</a></li>
             <li><a href="#signals-openav-keys">@openav/keys</a></li>
@@ -264,7 +283,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="packages">
-          <a href="#packages"><span class="n">12</span><span class="t">Package reference</span></a>
+          <a href="#packages"><span class="n">13</span><span class="t">Package reference</span></a>
           <ol class="toc-secs">
             <li><a href="#packages-openav-core">@openav/core</a></li>
             <li><a href="#packages-openav-show">@openav/show</a></li>
@@ -282,6 +301,7 @@
             <li><a href="#packages-openav-osc">@openav/osc</a></li>
             <li><a href="#packages-openav-record">@openav/record</a></li>
             <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
+            <li><a href="#packages-openav-score">@openav/score</a></li>
             <li><a href="#packages-openav-console">@openav/console</a></li>
             <li><a href="#packages-openav-monitor">@openav/monitor</a></li>
             <li><a href="#packages-openav-relay">@openav/relay</a></li>
@@ -291,7 +311,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="agents">
-          <a href="#agents"><span class="n">13</span><span class="t">For AI agents</span></a>
+          <a href="#agents"><span class="n">14</span><span class="t">For AI agents</span></a>
           <ol class="toc-secs">
             <li><a href="#agents-the-two-rules">The two rules</a></li>
             <li><a href="#agents-start-with-agents-md">Start with AGENTS.md</a></li>
@@ -304,18 +324,19 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="lab-integration">
-          <a href="#lab-integration"><span class="n">14</span><span class="t">Lab integration (the "lab" field)</span></a>
+          <a href="#lab-integration"><span class="n">15</span><span class="t">Lab integration (the "lab" field)</span></a>
           <ol class="toc-secs">
             <li><a href="#lab-integration-single-source-of-truth-controllers-and-inputs-live-here">Single source of truth: controllers and inputs live here</a></li>
           </ol>
         </li>
         <li class="toc-ch" data-ch="troubleshooting">
-          <a href="#troubleshooting"><span class="n">15</span><span class="t">Troubleshooting</span></a>
+          <a href="#troubleshooting"><span class="n">16</span><span class="t">Troubleshooting</span></a>
           <ol class="toc-secs">
             <li><a href="#troubleshooting-the-console-shows-a-ws-7457-error">The console shows a ws://…:7457 error</a></li>
             <li><a href="#troubleshooting-the-phone-join-card-says-relay-offline">The phone join card says "relay offline"</a></li>
             <li><a href="#troubleshooting-no-midi-devices-appear">No MIDI devices appear</a></li>
             <li><a href="#troubleshooting-a-daw-on-the-iac-bus-is-not-heard">A DAW on the IAC bus is not heard</a></li>
+            <li><a href="#troubleshooting-the-daw-went-silent-after-a-cable-was-pulled">The DAW went silent after a cable was pulled</a></li>
             <li><a href="#troubleshooting-with-two-controllers-a-route-reacts-to-both">With two controllers, a route reacts to both</a></li>
             <li><a href="#troubleshooting-qwerty-keys-do-not-play">QWERTY keys do not play</a></li>
             <li><a href="#troubleshooting-learn-bound-the-wrong-signal">Learn bound the wrong signal</a></li>
@@ -332,7 +353,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="roadmap">
-          <a href="#roadmap"><span class="n">16</span><span class="t">Roadmap</span></a>
+          <a href="#roadmap"><span class="n">17</span><span class="t">Roadmap</span></a>
           <ol class="toc-secs">
             <li><a href="#roadmap-v0-x-the-chassis-now">v0.x — the chassis (now)</a></li>
             <li><a href="#roadmap-v1-x-the-show-grows">v1.x — the show grows</a></li>
@@ -349,7 +370,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">16 chapters · 150 sections · v0.1.0</p>
+      <p class="docs-stats">17 chapters · 165 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -671,6 +692,7 @@ runs each frame (<code>packages/show/index.js</code>):</p>
   audio?.update();                               <span class="tc">//    microphone analysis → audio/* signals</span>
   onFrame?.(dt, show);                           <span class="tc">//    your assembly-level hook</span>
   timeline.advance(dt);                          <span class="tc">// 1. time moves</span>
+  director?.update(timeline.t, dt, { holding, playing }); <span class="tc">//    with a score: segment modules enter / update / exit</span>
   mapper.update(dt);                             <span class="tc">// 2. smoothed routes settle</span>
   <span class="tk">const</span> state = stage.frame(dt, timeline.state()); <span class="tc">// 3. params resolve → world updates &amp; renders</span>
   sound?.update(state);                          <span class="tc">// 4. sound/* params reach the synth</span>
@@ -688,7 +710,8 @@ never makes a world explode. When the browser freezes <code>requestAnimationFram
 loop ticking, about every 66 ms (~15 frames per second): the timeline, mapped signals and
 the backstage feed must not stop because someone switched windows.</p>
 <p>Param resolution order (the heart of the design):</p>
-<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">timeline.state(t)          — the "score": automation curves per param
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">timeline.state(t)          — automation curves per param
+  ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
   ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals</code></pre></div>
 <p>An override is <em>sticky</em>: once a knob touched <code>bloom</code>, the timeline no longer moves
 it until the override is cleared (✕ in the console). This matches performance
@@ -769,7 +792,18 @@ Batched per frame; only the latest message per address survives a frame.</li>
 <h3 id="architecture-spine-timeline">Spine · Timeline<a class="anchor" href="#architecture-spine-timeline" aria-label="Link to this section">#</a></h3>
 <p>Pure logic, no DOM: params + automation keyframes + scenes → <code>state(t)</code>.
 Scenes may start at negative t (pre-show standby). <code>onSceneChange</code> is the cue
-hook — fire sound, lights, prompts from it.</p>
+hook — fire sound, lights, prompts from it. A scene with <code>hold: true</code> stops
+playback at its end until the operator releases it.</p>
+<p>A show with structure adds the <strong>score</strong> to this spine (<code>@openav/score</code>): the show
+written as segment <em>lengths</em>, from which <code>Score</code> computes every start, end, cue and
+countdown, and <code>Director</code> runs the module that performs each segment (enter once,
+exit once, a crash switches off only that module). The timeline takes its scenes
+and total from the score, and the director plugs into it as a param layer:</p>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ── state(t) ──→ params
+                               └─ Director ── enter / update / exit ──→ segment modules ──→ the world (through `api`)
+                                    └─ param() ── timeline.layer ──────────────────────→ Timeline</code></pre></div>
+<p>The score only decides <em>when</em>. What happens still reaches the world as params.
+Full reference: <a href="#score">Score &amp; Director</a>.</p>
 <h3 id="architecture-spine-monitor">Spine · Monitor<a class="anchor" href="#architecture-spine-monitor" aria-label="Link to this section">#</a></h3>
 <p>The performance page streams JSON snapshots (throttled, ~15 Hz) over WebSocket
 to a dependency-free relay (<code>server.js</code>, hand-rolled RFC 6455). Any phone or
@@ -1349,7 +1383,12 @@ started (a knob, a fader, a hand, a phone tilt), or</li>
 <li><strong>fires</strong>, if it is a pulse (a key, a pad, a knock).</li>
 </ul>
 <p>The new route has the defaults: linear, no smoothing, the param's full range.
-Edit it afterwards if it needs a curve. Clicking <em>learn</em> again cancels.</p>
+Edit it afterwards if it needs a curve. Clicking <em>learn</em> again cancels. Learn
+<em>adds</em>: a param that already has a route keeps it and gets a second one.</p>
+<p>To bind a whole list, the <strong>L2 · Mapping</strong> panel has <strong>🎛 map knobs in order</strong>: it
+arms learn for the first param, you turn one knob, it is bound and the next param is
+armed. <em>skip</em>, <em>back</em>, <em>stop</em> (or Esc) steer it. In code it is <code>LearnWizard</code>
+(<a href="#score-map-the-knobs-in-order">details</a>).</p>
 <aside class="callout callout-caution" role="note"><p class="callout-title">Caution</p>
 <p>Any pulse binds immediately. Untick <em>simulate performance</em> and stop the drum
 machine before you learn, or the next note they play becomes the route.</p>
@@ -1443,6 +1482,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>onFrame</code></td><td><code>null</code></td><td><code>(dt, show) =&gt; {}</code> every frame, before the timeline advances</td></tr>
 <tr><td><code>mount</code></td><td>generated</td><td><code>{ stage, side }</code> elements or selectors to render into, instead of a full-page layout</td></tr>
 <tr><td><code>telemetry</code></td><td><code>true</code></td><td>one anonymous <code>oav_show_start</code> hit per page (see the controllers chapter, Telemetry); <code>false</code> sends nothing</td></tr>
+<tr><td><code>score</code></td><td><code>null</code></td><td><code>{ cuts, cut, modules, api, midi, … }</code>: the show's structure as segment lengths, performed by segment modules; <code>?cut=&lt;id&gt;</code> in the URL picks the version (<a href="#score-use-it-with-createshow">Score &amp; Director</a>)</td></tr>
 </tbody>
 </table></div>
 <p>Without <code>mount</code>, the page body becomes a two-column grid: the stage, and a
@@ -1462,7 +1502,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>sound</code></td><td><code>true</code>; an instrument id (<code>'piano'</code>); <code>{ instrument, remember, picker, engine, baseUrl }</code></td><td>instruments in the page with a picker, Tone.js (<a href="#show-control-sound">Sound</a>)</td></tr>
 </tbody>
 </table></div>
-<p>It returns <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app, loop }</code>; parts you did not ask for are <code>null</code>. The same object is
+<p>It returns <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, console, app, loop }</code>; parts you did not ask for are <code>null</code>. The same object is
 <code>window.openav</code>, for the devtools console. The frame order is in
 <a href="#architecture-the-frame-loop">Architecture</a>.</p>
 <h3 id="show-control-timeline">Timeline<a class="anchor" href="#show-control-timeline" aria-label="Link to this section">#</a></h3>
@@ -1485,19 +1525,26 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <li><code>jumpScene(±1)</code> (← → keys) is your emergency navigation — rehearse with it</li>
 <li><code>timeline.rate</code> exists for rehearsal speed-through (<code>rate = 4</code>)</li>
 <li>playback stops by itself at <code>total</code></li>
+<li>a scene with <code>hold: true</code> stops playback at its end until it is released (Space, →): see <a href="#score-hold">Hold</a></li>
+<li><code>reset()</code> goes to <code>start</code> (default 0, so a pre-show standby scene at −30 is reached with the scrubber; pass <code>start: -30</code>, or <code>start: 'first'</code> for "the first scene", to make R return to it)</li>
+<li>with <code>score</code> the scenes, total and start come from a <a href="#score">score</a>; then automation is read at <code>score.baseTime(t)</code>, so a cut derived with <code>scale: 0.5</code> stretches it</li>
 </ul>
 <div class="table-wrap"><table>
 <thead><tr><th>member</th><th>what it does</th></tr></thead>
 <tbody>
-<tr><td><code>play()</code>, <code>pause()</code>, <code>toggle()</code></td><td>transport</td></tr>
+<tr><td><code>play()</code>, <code>pause()</code>, <code>toggle()</code></td><td>transport. At a hold, <code>play()</code> and <code>toggle()</code> release it</td></tr>
 <tr><td><code>seek(t)</code></td><td>jump to <code>t</code> seconds (clamped between the first scene's negative time, or 0, and <code>total</code>)</td></tr>
 <tr><td><code>jumpScene(d)</code></td><td>go to the start of the scene <code>d</code> steps away</td></tr>
-<tr><td><code>reset()</code></td><td>stop and rewind to 0</td></tr>
+<tr><td><code>next()</code>, <code>prev()</code></td><td>→ and ←: <code>next()</code> releases a hold (and plays on), otherwise it is <code>jumpScene(1)</code></td></tr>
+<tr><td><code>release()</code></td><td>let a hold go: the next scene starts and playback continues. <code>false</code> when nothing was holding</td></tr>
+<tr><td><code>reset()</code></td><td>stop, clear a hold and rewind to <code>start</code> (default 0)</td></tr>
 <tr><td><code>advance(dt)</code></td><td>per frame; moves <code>t</code> by <code>dt × rate</code> while playing</td></tr>
 <tr><td><code>state(t)</code>, <code>valueAt(key, t)</code></td><td>the automation values at a time (no overrides)</td></tr>
 <tr><td><code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code></td><td>scene lookup</td></tr>
-<tr><td><code>onSceneChange(cb)</code></td><td><code>cb(index, scene)</code> whenever playback or a seek lands in a different scene</td></tr>
-<tr><td><code>t</code>, <code>playing</code>, <code>rate</code>, <code>total</code>, <code>scenes</code>, <code>automation</code></td><td>state you can read (and set)</td></tr>
+<tr><td><code>onSceneChange(cb)</code></td><td><code>cb(index, scene, { cause })</code> whenever playback or a seek lands in a different scene; <code>cause</code> is <code>'play'</code>, <code>'release'</code>, <code>'seek'</code>, <code>'jump'</code> or <code>'reset'</code></td></tr>
+<tr><td><code>onSeek(cb)</code></td><td><code>cb(t, kind)</code> when the playhead is moved by hand (<code>'seek'</code>, <code>'jump'</code>, <code>'reset'</code>), never while playing</td></tr>
+<tr><td><code>layer</code></td><td><code>(key, value, t) =&gt; value</code>: rewrite a param before overrides (the director's <code>param()</code> plugs in here)</td></tr>
+<tr><td><code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>scenes</code>, <code>automation</code>, <code>score</code></td><td>state you can read (and set)</td></tr>
 </tbody>
 </table></div>
 <p>A cue list is just a scene-change handler:</p>
@@ -1514,13 +1561,14 @@ hide their section. Pass <code>{ layers: false }</code> or <code>{ signals: fals
 those panels. It gives you transport + scrubber with scene blocks, the Layers
 overview, L1 Input, L2 Mapping, L3 Params (sliders with override and learn
 chips), L4 sound, live signal meters and a MIDI log.</p>
-<p>Keyboard: <strong>Space</strong> play/pause · <strong>←/→</strong> scenes · <strong>R</strong> reset · <strong>T</strong> performance
-mode · <strong>F</strong> fullscreen. Keys typed into an input field are ignored.</p>
+<p>Keyboard: <strong>Space</strong> play/pause (at a hold: release) · <strong>→/←</strong> next / previous scene (→ at a hold: release) · <strong>R</strong> reset · <strong>T</strong> performance
+mode · <strong>F</strong> fullscreen · <strong>Esc</strong> leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the <em>letters</em> belong to the piano (T and F are piano keys), so R, T and F do nothing until you untick it or press Esc; Space and the arrows always work.</p>
+<p>With a score the desk also has the Director panel, cue ticks on the scrubber and a prompter with the operator's acts (<a href="#score-the-desk">Score &amp; Director</a>). The L2 Mapping panel has <strong>🎛 map knobs in order</strong>, a wizard that arms learn for each param in turn (<a href="#score-map-the-knobs-in-order">details</a>).</p>
 <p>Override semantics: touch a slider (or a mapped control) and that param leaves
 the timeline's hands until you clear it (✕). Yellow label = overridden.</p>
 <h3 id="show-control-performance-mode">Performance mode<a class="anchor" href="#show-control-performance-mode" aria-label="Link to this section">#</a></h3>
 <p><strong>T</strong> flips to a fullscreen teleprompter: current scene title + note in stage-
-readable type, next scene preview, clock + scene countdown. This is for the
+readable type, what the operator does (the scene's <code>acts</code>), next scene preview, clock + scene countdown, a HOLD banner while the show waits, and a warning when a segment module was switched off. This is for the
 <em>performer</em>; the audience-facing window is your stage in fullscreen (<strong>F</strong>).
 Two windows of the same page = one desk, one stage.</p>
 <h3 id="show-control-backstage-monitor">Backstage monitor<a class="anchor" href="#show-control-backstage-monitor" aria-label="Link to this section">#</a></h3>
@@ -1558,7 +1606,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=a8b6135"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1579,6 +1627,9 @@ show.midi.panic();</code></pre></div>
 <p>The first output port is used until you choose another (<code>enable(preferredOut)</code>
 matches a name exactly, then as a substring). Everything sent passes through
 <code>onSend</code>, which feeds the per-channel MIDI OUT meter in the Layers panel.</p>
+<p><strong>Hot-plug.</strong> A cable pulled mid-show must not leave the DAW silent without a word. When the current output is unplugged, <code>Midi</code> moves to the next best live port: the one you chose with <code>selectOutput()</code> or <code>enable(name)</code>, then the first match of the <code>prefer</code> list (<code>new Midi({ prefer: ['IAC'] })</code>), then the first port. When the port you chose is plugged in again, the output goes back to it. An unrelated device appearing never steals the output. Every switch prints one line in the MIDI log (the Signals panel, via <code>midi.onMessage</code>) and one in the browser console, flashes in the MIDI controller panel, and updates the <code>MIDI out →</code> row of the L1 Input panel. In code: <code>midi.onOutput(({ text, reason }) =&gt; …)</code>.</p>
+<p><strong>Echo.</strong> What you send into a virtual bus must not come back as input. Inputs whose name matches <code>filterOut</code> (default <code>IAC</code>, the macOS bus) are never listened to, and a message identical to one just sent that arrives on any input within <code>echoWindow</code> milliseconds (default 40; <code>0</code> turns it off) is dropped as echo, once per message sent. <code>midi.echoDropped</code> counts them.</p>
+<p>To make an external program follow the show, <code>ScoreMidi</code> sends the score's segment changes and cues as notes and CCs (<a href="#score-score-to-midi">Score to MIDI</a>).</p>
 <h3 id="show-control-sound">Sound<a class="anchor" href="#show-control-sound" aria-label="Link to this section">#</a></h3>
 <p><code>modules: { sound: true }</code> adds <code>Sound</code> (<code>@openav/sound</code>) with the Tone.js
 engine. Browsers only start audio after a click, so the console shows
@@ -1752,9 +1803,258 @@ loop.start();</code></pre></div>
 </ul>
 </section>
 
+<section class="chapter" data-chapter="score" aria-labelledby="score">
+<h2 id="score">Score &amp; Director<a class="anchor" href="#score" aria-label="Link to this section">#</a></h2>
+<p class="chapter-meta"><span class="chapter-n">09</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/score.md">docs/score.md</a></span></p>
+<p>A show that outgrows one afternoon needs a structure that can grow. The <strong>score</strong> (<code>@openav/score</code>) writes a show down as segments with <em>lengths</em>, and the <strong>director</strong> runs the code that performs each segment. They are pure logic with no DOM, and <code>createShow()</code> wires them to the <a href="#show-control-timeline">timeline</a>, the console and the prompter for you.</p>
+<h3 id="score-the-idea-lengths-never-seconds">The idea: lengths, never seconds<a class="anchor" href="#score-the-idea-lengths-never-seconds" aria-label="Link to this section">#</a></h3>
+<p>A timeline written as a table of absolute seconds cannot grow. Make the second scene longer and every later scene, cue, curve and <code>if (t &gt; 466)</code> in your code is now wrong, and you find them one rehearsal at a time. In a score you write only how <em>long</em> each segment is:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> cuts = [
+  { id: <span class="ts">'full'</span>, title: <span class="ts">'A day'</span>, segments: [
+    { id: <span class="ts">'standby'</span>, title: <span class="ts">'Standby'</span>, dur: 6, hold: <span class="tk">true</span>, acts: [<span class="ts">'Check sound'</span>, <span class="ts">'Press Space when the room is ready'</span>] },
+    { id: <span class="ts">'dawn'</span>,    title: <span class="ts">'Dawn'</span>,    dur: 24, cues: { birds: 0.3 } },
+    { id: <span class="ts">'noon'</span>,    title: <span class="ts">'Noon'</span>,    dur: 30, cues: { flare: { s: 8 }, peak: 0.5 }, acts: [<span class="ts">'Open the haze slowly'</span>] },
+    { id: <span class="ts">'dusk'</span>,    title: <span class="ts">'Dusk'</span>,    dur: 24, linger: 8 },
+    { id: <span class="ts">'night'</span>,   title: <span class="ts">'Night'</span>,   dur: 36 },
+  ] },
+  { id: <span class="ts">'short'</span>, <span class="tk">from</span>: <span class="ts">'full'</span>, scale: 0.5 },          <span class="tc">// the same show at half the length</span>
+];</code></pre></div>
+<p>Every start, end, cue time, countdown and scene is computed from those lengths. Change <code>noon</code> to <code>dur: 40</code> and everything after it moves by ten seconds while everything before it stays put. A second version of the show is a few lines of data, not a second timeline to keep in step.</p>
+<h3 id="score-a-cut">A cut<a class="anchor" href="#score-a-cut" aria-label="Link to this section">#</a></h3>
+<p>A cut is one version of the show. It has an <code>id</code>, an optional <code>title</code>, and either segments or a base cut and a scale.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>cut field</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>unique among the cuts; no <code>.</code></td></tr>
+<tr><td><code>title</code></td><td>shown in the cut picker</td></tr>
+<tr><td><code>segments</code></td><td>the list below, in playing order</td></tr>
+<tr><td><code>from</code>, <code>scale</code></td><td>a derived cut: the cut named <code>from</code> with every length times <code>scale</code> (<code>scale</code> &gt; 0). It can be derived again; the scales multiply</td></tr>
+<tr><td><code>start</code></td><td>the id of the segment the show opens on and <code>reset</code> returns to (default: the first)</td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>segment field</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>unique within the cut; no <code>.</code>. It is also the id of the module that performs it</td></tr>
+<tr><td><code>title</code>, <code>note</code></td><td>what the desk and the prompter show</td></tr>
+<tr><td><code>dur</code></td><td>length in seconds, greater than 0. The only time a segment has</td></tr>
+<tr><td><code>cues</code></td><td>named moments inside the segment: a ratio <code>0 ≤ r &lt; 1</code> (a fraction of the segment) or <code>{ s: seconds }</code> (seconds into it)</td></tr>
+<tr><td><code>acts</code></td><td>what the human operator does in this segment: an array of strings, shown on the desk and, large, on the prompter</td></tr>
+<tr><td><code>linger</code></td><td>seconds the segment's module keeps running after the segment ends (a decay, a tail). Default 0</td></tr>
+<tr><td><code>hold</code></td><td>playback stops at the end of this segment and waits for the operator (<a href="#score-hold">Hold</a>)</td></tr>
+<tr><td><code>module</code></td><td>the name of the module that performs it, when that is not the segment's own id</td></tr>
+</tbody>
+</table></div>
+<p>A derived cut scales <code>dur</code>, <code>linger</code> and <code>{ s }</code> cues, so a cue stays in the same place in the music. The ratio cues did not need to move.</p>
+<p>A cut is checked when the score is built. Duplicate ids, a <code>dur</code> of 0 or below, a <code>from</code> that is not a cut, a <code>scale</code> of 0 or below, a cut derived from itself, a cue outside its segment, <code>acts</code> that are not strings: each throws a <code>ScoreError</code> that names the cut, the segment and the reason, and lists every problem at once. Nothing half-valid can reach the stage.</p>
+<h3 id="score-the-score">The Score<a class="anchor" href="#score-the-score" aria-label="Link to this section">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Score } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">const</span> score = <span class="tk">new</span> Score({ cuts, cut: <span class="ts">'full'</span> });      <span class="tc">// cut defaults to the first</span></code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>member</th><th>what it gives</th></tr></thead>
+<tbody>
+<tr><td><code>table()</code></td><td>one row per segment: <code>{ index, id, title, start, end, dur, linger, hold }</code></td></tr>
+<tr><td><code>total</code></td><td>the show's length: the sum of the segment lengths</td></tr>
+<tr><td><code>segmentAt(T)</code>, <code>indexAt(T)</code></td><td>the segment playing at show time <code>T</code>. A segment owns <code>[start, end)</code>; before 0 answers the first, after the end the last</td></tr>
+<tr><td><code>cueTime('dusk')</code></td><td>a moment in show seconds: <code>'dusk'</code> is the segment's start, <code>'dusk.end'</code> its end, <code>'dusk.glow'</code> a cue. <code>NaN</code> for anything unknown</td></tr>
+<tr><td><code>cuesBetween(T0, T1)</code></td><td>the cues a playhead passed from <code>T0</code> to <code>T1</code>: those with <code>T0 &lt; time ≤ T1</code>, in time order. Nothing when <code>T1 ≤ T0</code></td></tr>
+<tr><td><code>cues()</code></td><td>every cue of the cut in time order, each with its number <code>n</code></td></tr>
+<tr><td><code>scenes()</code></td><td>the segments as a <code>scenes</code> array for the <a href="#show-control-timeline">timeline</a> (with <code>acts</code>, <code>hold</code> and <code>cues</code>)</td></tr>
+<tr><td><code>validate()</code></td><td>throws a <code>ScoreError</code> when anything is wrong; returns <code>true</code> otherwise (the constructor already calls it)</td></tr>
+<tr><td><code>cut</code>, <code>title</code>, <code>segments</code>, <code>startT</code></td><td>the active cut, and where <code>reset</code> goes</td></tr>
+<tr><td><code>cuts</code></td><td>every cut as <code>{ id, title, total, from, scale, base }</code>, for a version picker</td></tr>
+<tr><td><code>scale</code>, <code>base</code>, <code>baseTime(T)</code></td><td>the cut's total scale against the cut it was derived from, that cut's id, and <code>T</code> expressed on it</td></tr>
+</tbody>
+</table></div>
+<h4 id="score-automation-on-a-derived-cut">Automation on a derived cut<a class="anchor" href="#score-automation-on-a-derived-cut" aria-label="Link to this section">#</a></h4>
+<p>Automation curves are written once, against the cut they were derived from, and a derived cut stretches them. <code>timeline.valueAt(key, t)</code> reads the curve at <code>score.baseTime(t)</code>, which is <code>t / scale</code>. On the short cut above, <code>t = 20</code> reads the curve at 40. A cut that is not derived has scale 1 and nothing changes.</p>
+<p>If two cuts differ in structure and not just in length, do not share automation between them. Drive the params from the segment modules instead (<a href="#score-segment-modules"><code>param()</code></a>), where <code>ctx.p</code> already scales for free.</p>
+<h3 id="score-cues">Cues<a class="anchor" href="#score-cues" aria-label="Link to this section">#</a></h3>
+<p>A cue is a named moment: <code>cues: { peak: 0.5 }</code> in segment <code>noon</code> makes <code>noon.peak</code>, half way through. Three places see it:</p>
+<ul>
+<li>the scrubber draws a tick for it, and a click on the tick jumps there;</li>
+<li>the director calls <code>onCue({ name, cue, T, n, segment })</code> once each time the playhead <em>passes</em> it while playing, and calls the active module's <code>cue(name, ctx)</code> hook;</li>
+<li><code>ctx.cue('peak')</code> inside a module tells you where it sits, as a progress you can compare with <code>ctx.p</code> (<code>'noon.peak'</code> works for another segment's cue, <code>ctx.cueT(name)</code> answers in show seconds).</li>
+</ul>
+<p>A seek does not pass the cues it jumps over, and playing back over a cue fires it again. A cue sitting exactly on the first instant of the show fires on the first frame.</p>
+<h3 id="score-hold">Hold<a class="anchor" href="#score-hold" aria-label="Link to this section">#</a></h3>
+<p><code>hold: true</code> means: <em>when playback reaches the end of this segment, stop and wait.</em> A standby that waits for the room to be ready is the typical use. Exactly what happens:</p>
+<ul>
+<li>The timeline stops a microsecond before the boundary, so the show is still <em>inside</em> the held segment, and sets <code>timeline.holding = true</code> and <code>timeline.playing = false</code>. The clock freezes there for as long as you like.</li>
+<li>The held segment's module keeps getting <code>update()</code> every frame, with <code>ctx.p === 1</code>, <code>ctx.holding === true</code> and <code>ctx.held</code>, the number of seconds waited so far. Use <code>ctx.held</code> as the clock for anything that should keep breathing while the show is frozen. (This is the choice made: the show <em>stops</em> at the end of the segment rather than looping inside it. Looping would send <code>p</code> back to 0, fire the cues again and break "every module enters once, exits once".)</li>
+<li><strong>Space</strong>, <strong>→</strong>, the ▶ button, <code>timeline.play()</code> and <code>timeline.next()</code> all release it: the next segment starts at once and playback continues. <code>timeline.release()</code> does the same in code.</li>
+<li>A seek (scrubber, <code>goto</code>, ←) or a reset clears the hold, and a seek never <em>stops</em> at a hold: only playback does. The last segment never holds (the show ends there).</li>
+<li>The backstage monitor shows <code>⏸ HOLD</code>; the desk and the prompter show a pulsing banner.</li>
+</ul>
+<h3 id="score-segment-modules">Segment modules<a class="anchor" href="#score-segment-modules" aria-label="Link to this section">#</a></h3>
+<p>A segment module is the code that performs one segment. Its <code>id</code> is the id of the segment (or the segment's <code>module</code> name):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> dusk = {
+  id: <span class="ts">'dusk'</span>,
+  enter(api, ctx)  { api.sky.caption = <span class="ts">'dusk'</span>; },        <span class="tc">// the segment began, or a seek landed inside it</span>
+  update(api, ctx) { <span class="tc">/* every frame, playing or not */</span> },
+  exit(api, ctx)   { api.sky.caption = <span class="ts">''</span>; },            <span class="tc">// it ended (after its linger) or a seek left it: give back what you took</span>
+  param(key, value, ctx) { <span class="tk">return</span> key === <span class="ts">'sun'</span> ? 1 - ctx.p : value; },   <span class="tc">// optional: bend a timeline param while this segment is current</span>
+  cue(name, ctx)   { <span class="tc">/* optional: one of this segment's cues was just passed */</span> },
+  reset(api)       { <span class="tc">/* optional: R was pressed; forget everything */</span> },
+};</code></pre></div>
+<p><code>enter</code>, <code>update</code> and <code>exit</code> get the <code>api</code> object first (yours, see below). Every hook gets a <code>ctx</code>:</p>
+<div class="table-wrap"><table>
+<thead><tr><th><code>ctx</code></th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>p</code></td><td>progress through the segment, 0 to 1. Above 1 during <code>linger</code>; exactly 1 while holding</td></tr>
+<tr><td><code>t</code></td><td>seconds into the segment (<code>p × dur</code>)</td></tr>
+<tr><td><code>dt</code></td><td>seconds since the previous frame</td></tr>
+<tr><td><code>dur</code></td><td>the segment's length in seconds</td></tr>
+<tr><td><code>T</code></td><td>show time in seconds</td></tr>
+<tr><td><code>segment</code></td><td>the segment: <code>id</code>, <code>title</code>, <code>start</code>, <code>end</code>, <code>dur</code>, <code>cues</code>, <code>acts</code>, <code>hold</code>, <code>linger</code>, <code>index</code></td></tr>
+<tr><td><code>cue(name)</code>, <code>cueT(name)</code></td><td>where a cue sits, as a progress and in show seconds (<code>NaN</code> when unknown)</td></tr>
+<tr><td><code>phase</code></td><td><code>'active'</code>, <code>'linger'</code>, or <code>'failed'</code> (only inside <code>exit()</code> after a crash)</td></tr>
+<tr><td><code>holding</code>, <code>held</code></td><td>waiting at a hold, and for how many seconds</td></tr>
+<tr><td><code>playing</code></td><td>whether the timeline is running (<code>update</code> is called every frame regardless)</td></tr>
+<tr><td><code>api</code></td><td>the same <code>api</code> object, so <code>param()</code> and <code>cue()</code> can reach the show too</td></tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Enter once, exit once.</strong> The module of a segment is entered when the show enters it and exited when it leaves it, however it got there. A seek into the middle of a segment calls <code>enter</code> with the right <code>p</code>, so the module must be able to start from the middle.</li>
+<li><strong><code>linger</code>.</strong> After the segment ends its module keeps getting <code>update()</code> (with <code>p &gt; 1</code> and <code>phase: 'linger'</code>) until the linger is over, and only then <code>exit()</code>. The next segment's module is already running meanwhile.</li>
+<li><strong><code>param()</code>.</strong> While a segment (or its linger) is current its module may rewrite any timeline param. Return a number to replace the value, anything else leaves it. The performer's hand still wins: an override is applied <em>after</em> this layer.</li>
+<li><strong>A module that throws is switched off, alone.</strong> Each hook runs inside its own <code>try/catch</code>. If one throws, the director calls that module's <code>exit()</code> once (with <code>phase: 'failed'</code>), prints one <code>console.error</code>, and never calls it again. The other modules and the show carry on. The desk shows a red warning with the module's name and the error; <strong>R</strong> (reset) switches it back on. A frame loop is not allowed to stop because the youngest code in the room failed.</li>
+</ul>
+<h3 id="score-the-director">The Director<a class="anchor" href="#score-the-director" aria-label="Link to this section">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Director } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">const</span> director = <span class="tk">new</span> Director({ score, modules: [dawn, noon, dusk], api: { sky } });
+<span class="tc">// every frame, after the timeline advanced:</span>
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });
+timeline.layer = (key, value, t) =&gt; director.param(key, value, t);
+timeline.onSeek((t, kind) =&gt; (kind === <span class="ts">'reset'</span> ? director.reset() : director.seek(t)));</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>option</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>score</code></td><td>the <code>Score</code></td></tr>
+<tr><td><code>modules</code></td><td>an array of modules (matched by <code>id</code>) or an object keyed by segment id</td></tr>
+<tr><td><code>api</code></td><td>the first argument of <code>enter</code>/<code>update</code>/<code>exit</code> (also <code>ctx.api</code>). A function is called once, the first time it is needed</td></tr>
+<tr><td><code>onStatus(status)</code></td><td>called when the segment, the holding state or the list of switched-off modules changes, not every frame</td></tr>
+<tr><td><code>onCue(cue)</code></td><td>called for every cue the playhead passes</td></tr>
+<tr><td><code>maxStep</code></td><td>a jump bigger than this many seconds between two <code>update()</code> calls counts as a seek, so cues in between are not fired (default 2). Raise it if you rehearse at a very high <code>timeline.rate</code></td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>member</th><th>what it does</th></tr></thead>
+<tbody>
+<tr><td><code>update(T, dt, { holding, playing })</code></td><td>once per frame: enter, update and exit the modules, fire the cues passed</td></tr>
+<tr><td><code>param(key, value, T)</code></td><td>the timeline's param layer</td></tr>
+<tr><td><code>seek(T)</code></td><td>the playhead jumped: modules whose segment no longer covers <code>T</code> exit now, the next <code>update()</code> enters the new ones with the right <code>p</code></td></tr>
+<tr><td><code>reset()</code></td><td>every active module exits, every module hears <code>reset(api)</code>, switched-off modules come back</td></tr>
+<tr><td><code>status()</code></td><td><code>{ cut, T, total, segment: { index, id, title, note, start, end, dur, t, p, remaining, hold, acts, cues }, next: { id, title, start, in } or null, holding, held, active, failed, errors, missing }</code></td></tr>
+<tr><td><code>register(module)</code>, <code>holding</code>, <code>failed</code></td><td>add a module later; read the state</td></tr>
+</tbody>
+</table></div>
+<h3 id="score-use-it-with-createshow">Use it with createShow<a class="anchor" href="#score-use-it-with-createshow" aria-label="Link to this section">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world,
+  score: { cuts, cut: <span class="ts">'full'</span>, modules: [dawn, noon, dusk],
+           api: (show) =&gt; ({ sky: show.stage.active }),       <span class="tc">// what the modules may touch (default: the whole show)</span>
+           midi: <span class="tk">false</span> },                                      <span class="tc">// see "Score to MIDI"</span>
+  timeline: { automation: { haze: [[0, 0.1], [60, 0.5]] } },   <span class="tc">// optional: written against the base cut</span>
+});</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th><code>score</code> option</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>cuts</code>, <code>cut</code></td><td>the cuts, and the default one. <strong><code>?cut=&lt;id&gt;</code> in the URL wins</strong> over <code>cut</code>; an unknown id is warned about and ignored</td></tr>
+<tr><td><code>modules</code></td><td>the segment modules</td></tr>
+<tr><td><code>api</code></td><td>an object, or a function of the show; default is the show itself</td></tr>
+<tr><td><code>onStatus</code>, <code>onCue</code>, <code>maxStep</code></td><td>passed to the director</td></tr>
+<tr><td><code>midi</code></td><td><code>false</code> (default), <code>true</code> or <code>{ channel, segment, cue, … }</code>: <a href="#score-score-to-midi">Score to MIDI</a></td></tr>
+</tbody>
+</table></div>
+<p>With a score, the timeline's scenes, total and start come from it (anything you pass as <code>timeline.scenes</code> or <code>timeline.total</code> is ignored), and the frame loop gains one step after the timeline advances, <code>director.update(...)</code>. <code>createShow</code> also returns <code>show.score</code>, <code>show.director</code> and, for rehearsal and scripts, <code>show.show</code> (so <code>window.openav.show</code>):</p>
+<div class="table-wrap"><table>
+<thead><tr><th><code>window.openav.show</code></th><th></th></tr></thead>
+<tbody>
+<tr><td><code>table()</code></td><td>prints the segment table with <code>console.table</code> and returns the rows</td></tr>
+<tr><td><code>goto('dusk')</code>, <code>goto('dusk.glow')</code>, <code>goto(2)</code></td><td>jump to a segment, a cue or a segment by number</td></tr>
+<tr><td><code>seek(T)</code></td><td>jump to show seconds</td></tr>
+<tr><td><code>cue('dusk.glow')</code></td><td>the cue's show seconds (it jumps nowhere)</td></tr>
+<tr><td><code>status()</code></td><td>the director's status</td></tr>
+<tr><td><code>next()</code>, <code>prev()</code></td><td>the same as → and ←</td></tr>
+<tr><td><code>cuts</code></td><td>the list of cuts</td></tr>
+</tbody>
+</table></div>
+<h3 id="score-the-desk">The desk<a class="anchor" href="#score-the-desk" aria-label="Link to this section">#</a></h3>
+<p>With a score the console adds:</p>
+<ul>
+<li><strong>Scrubber.</strong> Segment blocks, a tick for every cue (click to jump) and a dashed end on a segment that holds.</li>
+<li><strong>Director panel.</strong> A cut picker (choosing one reloads the page with <code>?cut=&lt;id&gt;</code>, so nothing is half-switched), the current segment with a progress bar and the time left, the HOLD banner, the next segment and the countdown, the operator's <strong>acts</strong>, this segment's cues (ticked as they pass), and the red warning for modules that were switched off.</li>
+<li><strong>Prompter</strong> (<strong>T</strong>). Fullscreen, large, high-contrast: the segment title, what you do (<code>acts</code>), seconds left, the next segment, a HOLD banner while the show waits, and a red line for switched-off modules. Click it or press <strong>T</strong> again to leave. It also works for plain timeline scenes that carry <code>acts</code>.</li>
+</ul>
+<h4 id="score-keys">Keys<a class="anchor" href="#score-keys" aria-label="Link to this section">#</a></h4>
+<div class="table-wrap"><table>
+<thead><tr><th>key</th><th>does</th></tr></thead>
+<tbody>
+<tr><td><kbd>Space</kbd></td><td>play / pause. At a HOLD: release it</td></tr>
+<tr><td><kbd>→</kbd></td><td>next segment. At a HOLD: release it</td></tr>
+<tr><td><kbd>←</kbd></td><td>previous segment</td></tr>
+<tr><td><kbd>R</kbd></td><td>back to the start; stopped; switched-off modules come back</td></tr>
+<tr><td><kbd>T</kbd></td><td>prompter</td></tr>
+<tr><td><kbd>F</kbd></td><td>fullscreen</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>stop the knob-mapping wizard, or leave keyboard-piano capture</td></tr>
+</tbody>
+</table></div>
+<p>Typing in a field, a held key (auto-repeat) and any key with ⌘, Ctrl or Alt are ignored. <strong>While the on-screen piano captures the keyboard</strong> (the <em>keyboard</em> box ticked in the piano bar) the <em>letters</em> belong to the piano: R, T and F do nothing, because T and F are piano keys, and an accidental R must not rewind a show you are playing. Space, the arrows and Esc always work, so you can play and run the show from one keyboard. The MIDI-controller key <strong>M</strong> follows the same rule.</p>
+<h4 id="score-map-the-knobs-in-order">Map the knobs in order<a class="anchor" href="#score-map-the-knobs-in-order" aria-label="Link to this section">#</a></h4>
+<p>The L2 Mapping panel has <strong>🎛 map knobs in order</strong>. It arms learn for the first param, you turn one knob, it is bound and the next param is armed; <em>skip</em>, <em>back</em> and <em>stop</em> (or Esc) steer it. Learn only ever <strong>adds</strong> routes (<code>Mapper.learn</code>), so running it again puts a second knob on a param and keeps the first. The order is the declared order of the params, skipping hidden ones; pass <code>mountConsole(el, app, { learnOrder: ['hue', 'size'] })</code> for your own. The logic is <code>LearnWizard</code> in <code>@openav/mapping</code>:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { LearnWizard } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+<span class="tk">const</span> wiz = <span class="tk">new</span> LearnWizard({ mapper, keys: () =&gt; params.schema.map((p) =&gt; p.key), onChange: (w) =&gt; draw(w) });
+wiz.start(); wiz.current; wiz.skip(); wiz.back(); wiz.stop();</code></pre></div>
+<h3 id="score-score-to-midi">Score to MIDI<a class="anchor" href="#score-score-to-midi" aria-label="Link to this section">#</a></h3>
+<p>Software that should follow the show (a DAW launching a clip per segment, a lighting desk jumping scenes) cannot read the score, but it can read MIDI. <code>ScoreMidi</code> (<code>@openav/midi</code>) turns segment changes and cues into notes and CCs. It is <strong>off</strong> unless you ask:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">score: { cuts, midi: { channel: 15,
+                       segment: { note: 36, cc: 20 },                       <span class="tc">// segment i → note 36 + i, and CC 20 = i</span>
+                       cue: { note: 84, notes: { <span class="ts">'dusk.glow'</span>: 90 }, cc: 21 } } }  <span class="tc">// a cue → note 84 (or its own note), CC 21 = its number</span></code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>option</th><th>default</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>channel</code></td><td>15</td><td>MIDI channel 1 to 16</td></tr>
+<tr><td><code>segment</code></td><td><code>{ note: 36 }</code></td><td><code>note</code>: base note, the note sent is <code>note + index</code>. <code>cc</code>: a CC whose value is the index. <code>velocity</code>. <code>false</code> turns segment markers off</td></tr>
+<tr><td><code>cue</code></td><td><code>{ note: 84 }</code></td><td><code>note</code> for every cue, <code>notes: { 'seg.name': note }</code> for particular ones, <code>cc</code> whose value is the cue's number in the cut. <code>false</code> turns cue markers off</td></tr>
+<tr><td><code>length</code></td><td>0.15</td><td>seconds before a marker note's note-off</td></tr>
+<tr><td><code>scrub</code></td><td><code>false</code></td><td>also mark when the playhead is moved by hand. By default markers go out only while the show <em>plays</em> (or a hold is released), so dragging the scrubber does not launch clips</td></tr>
+</tbody>
+</table></div>
+<p>A reset never sends. Everything goes through the <code>Midi</code> engine's own <code>noteOn</code>/<code>cc</code>, so the MIDI OUT meter shows it and <code>panic()</code> silences it. In code: <code>new ScoreMidi({ midi, channel, segment, cue })</code>, then <code>.segment({ index, cause })</code> and <code>.cue({ name, n })</code>.</p>
+<h3 id="score-clocks-why-there-are-none">Clocks: why there are none<a class="anchor" href="#score-clocks-why-there-are-none" aria-label="Link to this section">#</a></h3>
+<p>A show that keeps two time lines (a <em>story</em> time that old logic reads and a <em>show</em> time the audience lives) needs a way to say which engine follows which: weather that never stops, a city that pauses while an inserted segment plays. That is a clock per engine. This framework has one time line, the show's <code>T</code>, so there is nothing for a clock to choose between, and a segment module that wants to pause an engine simply stops advancing it (<code>ctx.t</code> is its own clock, <code>ctx.held</code> another). If a real show brings back the two-time-line case, a <code>clocks</code> table belongs in the cut next to <code>segments</code>. Until then it would be machinery with no user.</p>
+<h3 id="score-without-createshow">Without createShow<a class="anchor" href="#score-without-createshow" aria-label="Link to this section">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Score, Director } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">import</span> { Timeline } <span class="tk">from</span> <span class="ts">'@openav/timeline'</span>;
+
+<span class="tk">const</span> score = <span class="tk">new</span> Score({ cuts, cut: <span class="tk">new</span> URLSearchParams(location.search).<span class="tk">get</span>(<span class="ts">'cut'</span>) || <span class="ts">'full'</span> });
+<span class="tk">const</span> timeline = <span class="tk">new</span> Timeline({ params, score });                 <span class="tc">// scenes, total and start come from the score</span>
+<span class="tk">const</span> director = <span class="tk">new</span> Director({ score, modules, api: { world } });
+timeline.layer = (key, value, t) =&gt; director.param(key, value, t);
+timeline.onSeek((t, kind) =&gt; (kind === <span class="ts">'reset'</span> ? director.reset() : director.seek(t)));
+<span class="tk">const</span> desk = mountConsole(deskEl, { timeline, params, mapper, signals, stage, score, director });
+
+<span class="tk">const</span> loop = <span class="tk">new</span> Loop((dt) =&gt; {
+  timeline.advance(dt);
+  director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });
+  mapper.update(dt);
+  desk.render(stage.frame(dt, timeline.state()));
+});</code></pre></div>
+<h3 id="score-rehearsal-checklist">Rehearsal checklist<a class="anchor" href="#score-rehearsal-checklist" aria-label="Link to this section">#</a></h3>
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> <code>show.show.table()</code> reads like the running order you meant</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> play it once start to finish at <code>timeline.rate = 4</code>; every cue fired, no module switched off</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> open <code>?cut=</code> for every version and check the desk shows the right total</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> press Space on every hold, press → on every hold, press R during a segment</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> break a module on purpose (throw in <code>update</code>) and watch the show carry on</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> the prompter (T) reads from the position you will stand in</li>
+</ul>
+</section>
+
 <section class="chapter" data-chapter="controllers" aria-labelledby="controllers">
 <h2 id="controllers">MIDI controllers &amp; embedding<a class="anchor" href="#controllers" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">09</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/controllers.md">docs/controllers.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">10</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/controllers.md">docs/controllers.md</a></span></p>
 <p>open-audiovisual models MIDI controllers as data: one JSON file per device, with the
 faceplate layout, every control's exact MIDI message, LED feedback, how to recognise its
 port, and the document each number came from. The same file drives an on-screen controller
@@ -1842,7 +2142,7 @@ output, so nothing loops.</p>
 
 <section class="chapter" data-chapter="phones" aria-labelledby="phones">
 <h2 id="phones">Phones, relay &amp; surfaces<a class="anchor" href="#phones" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">10</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/remote.md">docs/remote.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">11</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/remote.md">docs/remote.md</a></span></p>
 <p>Phones and iPads can be controllers: their motion sensors, a piano, and a
 TouchOSC-style control panel that grows from the world's params. Three packages
 do it, each usable alone:</p>
@@ -2088,7 +2388,7 @@ network or a room name nobody will guess.</p>
 
 <section class="chapter" data-chapter="signals" aria-labelledby="signals">
 <h2 id="signals">Signals reference<a class="anchor" href="#signals" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">11</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/signals.md">docs/signals.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">12</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/signals.md">docs/signals.md</a></span></p>
 <p>Signals are the single currency of the input layer: named, normalized, source-blind.
 This page lists every signal published by the built-in input packages.</p>
 <p>Conventions:</p>
@@ -2296,8 +2596,8 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">12</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
-<p>Twenty-two packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+<p class="chapter-meta"><span class="chapter-n">13</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
+<p>Twenty-three packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
 npm yet.</p>
@@ -2308,7 +2608,7 @@ npm yet.</p>
 <tr><td>L2 mapping</td><td><code>mapping</code></td></tr>
 <tr><td>L3 world</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
 <tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>record</code> (and MIDI out in <code>midi</code>)</td></tr>
-<tr><td>spines</td><td><code>timeline</code> · <code>console</code> · <code>monitor</code></td></tr>
+<tr><td>spines</td><td><code>timeline</code> · <code>score</code> · <code>console</code> · <code>monitor</code></td></tr>
 <tr><td>phones</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
 <tr><td>glue</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
@@ -2316,7 +2616,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=a8b6135"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -2345,7 +2645,9 @@ on-screen controllers that mirror real hardware.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>Midi</code></td><td><code>new Midi({ signals, filterOut = 'IAC', requestAccess })</code> · <code>enable(preferredOut = '')</code> → <code>Promise&lt;boolean&gt;</code> · <code>devices()</code> → <code>[{ slug, name, listening }]</code> · <code>setListening(slug, on)</code> · <code>onDevices(fn)</code> · <code>listen(fn(bytes, port))</code> · <code>selectOutput(name)</code> · <code>outputFor(nameOrRegExp)</code> · <code>send(bytes)</code> · <code>noteOn(note, vel = 100, ch = 1)</code> · <code>noteOff(note, ch = 1)</code> · <code>cc(cc, val, ch = 1)</code> · <code>panic()</code> · <code>dispose()</code> · hooks <code>onCC</code>, <code>onNote</code>, <code>onMessage</code>, <code>onSend</code>, <code>onDeviceChange</code></td></tr>
+<tr><td><code>Midi</code></td><td><code>new Midi({ signals, filterOut = 'IAC', requestAccess, echoWindow = 40, prefer = [] })</code> · <code>enable(preferredOut = '')</code> → <code>Promise&lt;boolean&gt;</code> · <code>devices()</code> → <code>[{ slug, name, listening }]</code> · <code>setListening(slug, on)</code> · <code>onDevices(fn)</code> · <code>onOutput(fn({ text, reason, next }))</code> · <code>listen(fn(bytes, port))</code> · <code>selectOutput(name)</code> → <code>boolean</code> (and remembered as your choice) · <code>outputFor(nameOrRegExp)</code> · <code>send(bytes)</code> · <code>noteOn(note, vel = 100, ch = 1)</code> · <code>noteOff(note, ch = 1)</code> · <code>cc(cc, val, ch = 1)</code> · <code>panic()</code> · <code>dispose()</code> · hooks <code>onCC</code>, <code>onNote</code>, <code>onMessage</code>, <code>onSend</code>, <code>onDeviceChange</code> · <code>out</code>, <code>outputs</code>, <code>preferredOut</code>, <code>echoDropped</code></td></tr>
+<tr><td>output hot-plug, echo</td><td><code>pickOutput(outputs, { preferred, prefer })</code> · <code>reselectOutput({ current, outputs, preferred, prefer })</code> → <code>{ next, changed, reason, text }</code> · <code>EchoGuard({ window })</code> (<code>sent(bytes)</code>, <code>isEcho(bytes)</code>): the pure logic behind <code>Midi</code>, see <a href="#show-control-midi-output-and-panic">Show control</a></td></tr>
+<tr><td>score to MIDI</td><td><code>new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })</code> · <code>segment({ index, cause })</code> · <code>cue({ name, n })</code>: segment changes and cues as notes and CCs, see <a href="#score-score-to-midi">Score &amp; Director</a></td></tr>
 <tr><td>parsing</td><td><code>parseMessage(bytes)</code> → event · <code>encodeMessage(event)</code> → bytes · <code>genericSignals(event, { device })</code> · <code>publish(signals, list)</code> · <code>describe(event)</code> · <code>relativeDelta(value, mode)</code>, <code>relativeValue(delta, mode)</code>, <code>RELATIVE_MODES</code> · <code>bendToUnit</code>, <code>unitToBend</code>, <code>BEND_CENTER</code></td></tr>
 <tr><td>controllers</td><td><code>MidiController</code>, <code>MidiControllers</code>, <code>controllerRoutes(profile, bindings)</code>, <code>PROFILES</code>, <code>profileById(id)</code>, <code>ControllerView</code>, <code>mountMidiPanel(el, controllers, opts)</code>, <code>linkControllers</code>, profile helpers (<code>validateProfile</code>, <code>normalizeProfile</code>, <code>matchProfile</code>, …)</td></tr>
 <tr><td>Web MIDI shim</td><td><code>createVirtualMIDIAccess(opts)</code>, <code>virtualRequestMIDIAccess</code></td></tr>
@@ -2450,6 +2752,7 @@ saved profiles.</p>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
 <tr><td><code>Mapper</code></td><td><code>new Mapper({ signals, params, profile = 'default', onChange, onLearn })</code> · <code>addRoute(route)</code> · <code>removeRoute(id)</code> · <code>routesFor(target)</code> · <code>learn(target)</code> · <code>update(dt)</code> · <code>toJSON()</code> · <code>fromJSON(routes)</code> · <code>save()</code> · <code>load()</code> · <code>dispose()</code> · <code>routes</code>, <code>learnTarget</code></td></tr>
+<tr><td><code>LearnWizard</code></td><td><code>new LearnWizard({ mapper, keys, onChange })</code> · <code>start()</code> · <code>skip()</code> · <code>back()</code> · <code>stop()</code> · <code>sync()</code> · <code>active</code>, <code>current</code>, <code>index</code>, <code>total</code>, <code>done</code>, <code>added</code>: "map the knobs in order", see <a href="#score-map-the-knobs-in-order">Score &amp; Director</a></td></tr>
 </tbody>
 </table></div>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
@@ -2549,17 +2852,33 @@ Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/exam
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600 })</code> · <code>play()</code>, <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>reset()</code> · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene))</code> · <code>t</code>, <code>playing</code>, <code>rate</code>, <code>total</code></td></tr>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
 </tbody>
 </table></div>
 <p>See <a href="#show-control-timeline">Show control</a>.</p>
+<h3 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="Link to this section">#</a></h3>
+<p>Spine · the score and the director: a show written as segment lengths, and the modules that perform the segments. Pure logic, no DOM.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Score</code></td><td><code>new Score({ cuts, cut })</code> · <code>table()</code> · <code>total</code> · <code>segmentAt(T)</code>, <code>indexAt(T)</code> · <code>cueTime('seg.name')</code> · <code>cuesBetween(T0, T1)</code> · <code>cues()</code> · <code>scenes()</code> · <code>validate()</code> · <code>cuts</code>, <code>cut</code>, <code>segments</code>, <code>startT</code>, <code>scale</code>, <code>baseTime(T)</code></td></tr>
+<tr><td><code>ScoreError</code></td><td>thrown by an invalid score; <code>problems</code> lists every reason</td></tr>
+<tr><td><code>Director</code></td><td><code>new Director({ score, modules, api, onStatus, onCue, maxStep })</code> · <code>update(T, dt, { holding, playing })</code> · <code>param(key, value, T)</code> · <code>seek(T)</code> · <code>reset()</code> · <code>status()</code> · <code>register(module)</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Score, Director } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">const</span> score = <span class="tk">new</span> Score({ cuts, cut: <span class="ts">'full'</span> });
+<span class="tk">const</span> director = <span class="tk">new</span> Director({ score, modules, api });
+<span class="tc">// every frame, after timeline.advance(dt):</span>
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });</code></pre></div>
+<p>Full reference: <a href="#score">Score &amp; Director</a>.</p>
 <h3 id="packages-openav-console">@openav/console<a class="anchor" href="#packages-openav-console" aria-label="Link to this section">#</a></h3>
 <p>Spine · the director's desk: transport, layer panels, params with learn, signal
 meters, performance mode.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals })</code> → <code>{ render(state), perf, dispose() }</code>; <code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc? }</code></td></tr>
+<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder })</code> → <code>{ render(state), perf, director, wizard, dispose() }</code>; <code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
 </tbody>
 </table></div>
 <p>See <a href="#show-control-the-console">Show control</a>.</p>
@@ -2623,7 +2942,7 @@ routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
 
 <section class="chapter" data-chapter="agents" aria-labelledby="agents">
 <h2 id="agents">For AI agents<a class="anchor" href="#agents" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">13</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/agents.md">docs/agents.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">14</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/agents.md">docs/agents.md</a></span></p>
 <p>Worlds are visual code, and coding agents are good at code. A person describes a
 performance ("a jellyfish world that blooms on consonant chords"); an agent
 writes the world inside a chassis that already handles MIDI, mapping, timeline,
@@ -2719,7 +3038,7 @@ the world listens to.</li>
 
 <section class="chapter" data-chapter="lab-integration" aria-labelledby="lab-integration">
 <h2 id="lab-integration">Lab integration (the <code>"lab"</code> field)<a class="anchor" href="#lab-integration" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">14</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/lab-integration.md">docs/lab-integration.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">15</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/lab-integration.md">docs/lab-integration.md</a></span></p>
 <p><a href="https://lab.cheyuwu.com" rel="noopener">cheyuwu-lab</a> runs sketches in plain <code>&lt;script&gt;</code> pages, so it builds a
 classic-script bundle of each OAV package it wants. Instead of a hard-coded list, the lab's generator
 (<code>tools/lab-dev/build-modules.mjs</code>) scans <code>packages/*/package.json</code> and builds every package that declares a
@@ -2764,7 +3083,7 @@ capture/record API), and the dev server's relay and routes. A new kind of contro
 
 <section class="chapter" data-chapter="troubleshooting" aria-labelledby="troubleshooting">
 <h2 id="troubleshooting">Troubleshooting<a class="anchor" href="#troubleshooting" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">15</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/troubleshooting.md">docs/troubleshooting.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">16</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/troubleshooting.md">docs/troubleshooting.md</a></span></p>
 <p>Real problems, found in rehearsals and in the code, with what to do about them.</p>
 <h3 id="troubleshooting-the-console-shows-a-ws-7457-error">The console shows a ws://…:7457 error<a class="anchor" href="#troubleshooting-the-console-shows-a-ws-7457-error" aria-label="Link to this section">#</a></h3>
 <p>Every show made with <code>createShow()</code> tries to stream to the backstage monitor at
@@ -2805,6 +3124,18 @@ receive from a DAW over IAC, turn the built-in engine off and make your own:</p>
 <p>Your engine publishes into the same signals, so routes and worlds work
 unchanged. (The console's device list and MIDI meter only follow the engine
 <code>createShow()</code> made.) Do not send MIDI out to the same IAC bus you listen to.</p>
+<p>A second guard needs no setting: a message that arrives on any input within 40 ms
+of an identical one the engine just <em>sent</em> is taken for the echo and dropped
+(<code>new Midi({ echoWindow })</code>, <code>0</code> turns it off, <code>midi.echoDropped</code> counts them).</p>
+<h3 id="troubleshooting-the-daw-went-silent-after-a-cable-was-pulled">The DAW went silent after a cable was pulled<a class="anchor" href="#troubleshooting-the-daw-went-silent-after-a-cable-was-pulled" aria-label="Link to this section">#</a></h3>
+<p>It should not any more. When the output port is unplugged <code>Midi</code> moves to the next
+best live port, prints one line in the MIDI log and one in the browser console
+(<code>MIDI out: switched to "…" ("…" was unplugged)</code>), and the L1 · Input panel's
+<code>MIDI out →</code> row follows. When the port you chose is plugged in again the output
+goes back to it. If the line says <code>no output left</code>, nothing is plugged in: messages
+are dropped until a port appears. Choose your port with <code>midi.selectOutput(name)</code>
+(or <code>enable(name)</code>) so it is the one that returns, and add
+<code>new Midi({ prefer: ['IAC'] })</code> to say which port stands in first.</p>
 <h3 id="troubleshooting-with-two-controllers-a-route-reacts-to-both">With two controllers, a route reacts to both<a class="anchor" href="#troubleshooting-with-two-controllers-a-route-reacts-to-both" aria-label="Link to this section">#</a></h3>
 <p>With two or more MIDI inputs, each device publishes under its own name
 (<code>midi/&lt;slug&gt;/cc/74</code>) <em>and</em> under the shared legacy name (<code>midi/cc/74</code>). A route
@@ -2814,6 +3145,10 @@ The slugs are shown in the <strong>L1 · Input</strong> panel.</p>
 <p>Tick <em>keyboard</em> above the piano first. Capture is off by default so that typing
 never fights the console's hotkeys. Then <code>A W S E D F T G Y H U J K O L P ;</code>
 play, <kbd>Z</kbd>/<kbd>X</kbd> change octave.</p>
+<p>While <em>keyboard</em> is ticked the letters belong to the piano, so the console's R
+(reset), T (prompter) and F (fullscreen) do nothing: T and F are piano keys, and an
+accidental R must not rewind a show you are playing. Space, the arrows and
+<kbd>Esc</kbd> still work, and Esc leaves capture.</p>
 <h3 id="troubleshooting-learn-bound-the-wrong-signal">Learn bound the wrong signal<a class="anchor" href="#troubleshooting-learn-bound-the-wrong-signal" aria-label="Link to this section">#</a></h3>
 <p>Learn binds the first signal that moves by 5% of its range, or the first pulse
 of any kind. The simulated performer and the drum machine send pulses all the
@@ -2887,7 +3222,7 @@ point elsewhere, with <code>new MonitorFeed({ url: 'ws://host:7460' })</code> an
 
 <section class="chapter" data-chapter="roadmap" aria-labelledby="roadmap">
 <h2 id="roadmap">Roadmap<a class="anchor" href="#roadmap" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">16</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">docs/roadmap.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">17</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">docs/roadmap.md</a></span></p>
 <p>Guiding rule: the framework only grows features that a real show demanded.
 (This is how the core was born — every module here drove an actual performance
 before it was generalized.)</p>
@@ -2914,6 +3249,12 @@ layout JSON, <code>autoSurface(params)</code>, feedback to the phone. Next:
 <li class="task"><input type="checkbox" disabled aria-label="not done yet"> QR code on the join card (needs a small zero-dep encoder)</li>
 <li class="task"><input type="checkbox" disabled aria-label="not done yet"> <em>experimental</em> surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like <code>crowd/tilt/mean</code>)</li>
 <li class="task"><input type="checkbox" disabled aria-label="not done yet"> mic as a phone sensor; per-device profiles; layout editor / import-export UI</li>
+</ul></li>
+<li><strong>Score &amp; Director</strong> — <em>shipped</em> (<code>@openav/score</code>): cuts as segment lengths, derived versions, cues, <code>hold</code>, segment modules that fail alone, the prompter's acts, score → MIDI markers. Next:
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> MIDI clock and transport (start / stop / song position) in and out, so a DAW can be the master clock of the score, or follow it</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> a <code>clocks</code> table in the cut, only if a show needs engines on two different time lines (see <a href="#score-clocks-why-there-are-none">Score &amp; Director</a>)</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> a score editor on the desk: drag a segment's length, see every cue move</li>
 </ul></li>
 <li><strong>Signal recording &amp; replay</strong> — <em>MIDI takes shipped</em> (<code>@openav/record</code>: <code>TakeRecorder</code>,
 <code>TakePlayer</code>, <code>.mid</code> in and out; <code>EventLog</code> already records any signal beside a video). Next:
@@ -2969,6 +3310,6 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=a8b6135"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

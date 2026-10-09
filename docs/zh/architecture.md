@@ -13,6 +13,7 @@ const loop = new Loop((dt) => {
   audio?.update();                               //    microphone analysis → audio/* signals
   onFrame?.(dt, show);                           //    your assembly-level hook
   timeline.advance(dt);                          // 1. time moves
+  director?.update(timeline.t, dt, { holding, playing }); //    with a score: segment modules enter / update / exit
   mapper.update(dt);                             // 2. smoothed routes settle
   const state = stage.frame(dt, timeline.state()); // 3. params resolve → world updates & renders
   sound?.update(state);                          // 4. sound/* params reach the synth
@@ -29,7 +30,8 @@ const loop = new Loop((dt) => {
 參數解析的順序（整個設計的核心）：
 
 ```text
-timeline.state(t)          — the "score": automation curves per param
+timeline.state(t)          — automation curves per param
+  ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
   ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals
 ```
 
@@ -92,7 +94,17 @@ timeline.state(t)          — the "score": automation curves per param
 
 ## 主軸 · 時間軸
 
-純邏輯，不碰 DOM：參數＋自動化關鍵影格＋場景 → `state(t)`。場景可以從負的 t 開始（開演前的待命）。`onSceneChange` 就是 cue 的掛鉤：聲音、燈光、提示都從這裡觸發。
+純邏輯，不碰 DOM：參數＋自動化關鍵影格＋場景 → `state(t)`。場景可以從負的 t 開始（開演前的待命）。`onSceneChange` 就是 cue 的掛鉤：聲音、燈光、提示都從這裡觸發。帶 `hold: true` 的場景，播放到它的結尾就停住，等操作者放行。
+
+有結構的演出，會把**總譜**（`@openav/score`）加進這條主軸：把演出寫成各段的*長度*，由 `Score` 算出每個起點、終點、cue 和倒數，再由 `Director` 去執行負責每一段的模組（進一次、出一次，某個模組壞掉只會停用它自己）。時間軸的場景和總長都從總譜來，導演則以參數層的身分接在時間軸上：
+
+```text
+cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ── state(t) ──→ params
+                               └─ Director ── enter / update / exit ──→ segment modules ──→ the world (through `api`)
+                                    └─ param() ── timeline.layer ──────────────────────→ Timeline
+```
+
+總譜只決定*什麼時候*。實際發生的事，仍然是以參數的形式傳進世界。完整說明見[總譜與導演](score.md)。
 
 ## 主軸 · 後台監看
 

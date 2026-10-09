@@ -28,6 +28,7 @@ const DOCS = {
   'writing-a-world': 'docs/writing-a-world.md',
   signals: 'docs/signals.md',
   'show-control': 'docs/show-control.md',
+  score: 'docs/score.md',
   roadmap: 'docs/roadmap.md',
   agents: 'AGENTS.md',
   readme: 'README.md',

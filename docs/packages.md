@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty-two packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-three packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -11,7 +11,7 @@ npm yet.
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `record` (and MIDI out in `midi`) |
-| spines | `timeline` · `console` · `monitor` |
+| spines | `timeline` · `score` · `console` · `monitor` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
 
@@ -57,7 +57,9 @@ on-screen controllers that mirror real hardware.
 
 | export | signature |
 |---|---|
-| `Midi` | `new Midi({ signals, filterOut = 'IAC', requestAccess })` · `enable(preferredOut = '')` → `Promise<boolean>` · `devices()` → `[{ slug, name, listening }]` · `setListening(slug, on)` · `onDevices(fn)` · `listen(fn(bytes, port))` · `selectOutput(name)` · `outputFor(nameOrRegExp)` · `send(bytes)` · `noteOn(note, vel = 100, ch = 1)` · `noteOff(note, ch = 1)` · `cc(cc, val, ch = 1)` · `panic()` · `dispose()` · hooks `onCC`, `onNote`, `onMessage`, `onSend`, `onDeviceChange` |
+| `Midi` | `new Midi({ signals, filterOut = 'IAC', requestAccess, echoWindow = 40, prefer = [] })` · `enable(preferredOut = '')` → `Promise<boolean>` · `devices()` → `[{ slug, name, listening }]` · `setListening(slug, on)` · `onDevices(fn)` · `onOutput(fn({ text, reason, next }))` · `listen(fn(bytes, port))` · `selectOutput(name)` → `boolean` (and remembered as your choice) · `outputFor(nameOrRegExp)` · `send(bytes)` · `noteOn(note, vel = 100, ch = 1)` · `noteOff(note, ch = 1)` · `cc(cc, val, ch = 1)` · `panic()` · `dispose()` · hooks `onCC`, `onNote`, `onMessage`, `onSend`, `onDeviceChange` · `out`, `outputs`, `preferredOut`, `echoDropped` |
+| output hot-plug, echo | `pickOutput(outputs, { preferred, prefer })` · `reselectOutput({ current, outputs, preferred, prefer })` → `{ next, changed, reason, text }` · `EchoGuard({ window })` (`sent(bytes)`, `isEcho(bytes)`): the pure logic behind `Midi`, see [Show control](show-control.md#midi-output-and-panic) |
+| score to MIDI | `new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })` · `segment({ index, cause })` · `cue({ name, n })`: segment changes and cues as notes and CCs, see [Score & Director](score.md#score-to-midi) |
 | parsing | `parseMessage(bytes)` → event · `encodeMessage(event)` → bytes · `genericSignals(event, { device })` · `publish(signals, list)` · `describe(event)` · `relativeDelta(value, mode)`, `relativeValue(delta, mode)`, `RELATIVE_MODES` · `bendToUnit`, `unitToBend`, `BEND_CENTER` |
 | controllers | `MidiController`, `MidiControllers`, `controllerRoutes(profile, bindings)`, `PROFILES`, `profileById(id)`, `ControllerView`, `mountMidiPanel(el, controllers, opts)`, `linkControllers`, profile helpers (`validateProfile`, `normalizeProfile`, `matchProfile`, …) |
 | Web MIDI shim | `createVirtualMIDIAccess(opts)`, `virtualRequestMIDIAccess` |
@@ -184,6 +186,7 @@ saved profiles.
 | export | signature |
 |---|---|
 | `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`, `learnTarget` |
+| `LearnWizard` | `new LearnWizard({ mapper, keys, onChange })` · `start()` · `skip()` · `back()` · `stop()` · `sync()` · `active`, `current`, `index`, `total`, `done`, `added`: "map the knobs in order", see [Score & Director](score.md#map-the-knobs-in-order) |
 
 ```js
 import { Mapper } from '@openav/mapping';
@@ -301,9 +304,29 @@ Spine · automation, scenes and transport; pure logic.
 
 | export | signature |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600 })` · `play()`, `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `reset()` · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene))` · `t`, `playing`, `rate`, `total` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
 
 See [Show control](show-control.md#timeline).
+
+## @openav/score
+
+Spine · the score and the director: a show written as segment lengths, and the modules that perform the segments. Pure logic, no DOM.
+
+| export | signature |
+|---|---|
+| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`, `indexAt(T)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`, `cut`, `segments`, `startT`, `scale`, `baseTime(T)` |
+| `ScoreError` | thrown by an invalid score; `problems` lists every reason |
+| `Director` | `new Director({ score, modules, api, onStatus, onCue, maxStep })` · `update(T, dt, { holding, playing })` · `param(key, value, T)` · `seek(T)` · `reset()` · `status()` · `register(module)` |
+
+```js
+import { Score, Director } from '@openav/score';
+const score = new Score({ cuts, cut: 'full' });
+const director = new Director({ score, modules, api });
+// every frame, after timeline.advance(dt):
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });
+```
+
+Full reference: [Score & Director](score.md).
 
 ## @openav/console
 
@@ -312,7 +335,7 @@ meters, performance mode.
 
 | export | signature |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals })` → `{ render(state), perf, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc? }` |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder })` → `{ render(state), perf, director, wizard, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
 
 See [Show control](show-control.md#the-console).
 

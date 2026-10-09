@@ -8,7 +8,7 @@ Author: Che-Yu Wu 吳哲宇 (https://cheyuwu.com)
 
 ## Pages
 
-- [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the complete documentation on one page — quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers & embedding, phones, signals, every package, MCP, troubleshooting. Generated from the Markdown in `docs/`.
+- [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the complete documentation on one page — quick start, concepts, writing a world, inputs, mapping, show control, score & director, MIDI controllers & embedding, phones, signals, every package, MCP, troubleshooting. Generated from the Markdown in `docs/`.
 - [MIDI controller library](https://openaudiovisual.com/controllers/) ([繁體中文](https://openaudiovisual.com/zh/controllers/)): every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).
 - [WebToe](https://openaudiovisual.com/webtoe/) ([繁體中文](https://openaudiovisual.com/zh/webtoe/)): the sister project, the engine half of the stack. A web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world (the editor in an iframe, `postMessage({ type: 'webtoe:ext', values })`, read in the patch as `ext('name', fallback)`). Editor: https://webtoe.openaudiovisual.com/
 
@@ -19,6 +19,7 @@ Author: Che-Yu Wu 吳哲宇 (https://cheyuwu.com)
 - **Mapping / route** — `{ source: 'midi/cc/74', target: 'bloom', curve, inMin, inMax, smooth }`. Many-to-many; "learn" binds the next signal that moves. Routes are JSON.
 - **World** — the piece: `{ name, params, init({container, signals, params}), update(dt, state, io), render(), dispose() }`. Reads params, never inputs; may subscribe to discrete event signals. Renderer-agnostic (canvas, p5, three.js, a WebToe patch).
 - **Show** — `createShow({ world, timeline, routes, modules })` from `@openav/show` assembles inputs, mapping, timeline, console, sound and backstage around one world.
+- **Score** — a show with structure: `createShow({ score: { cuts, modules } })` (`@openav/score`). A cut is a list of segments with *lengths* (`{ id, dur, cues, acts, linger, hold }`), never absolute seconds; a derived cut is `{ id, from, scale }`. A Director runs one module per segment (`enter / update / exit / param`), a module that throws is switched off alone, `?cut=<id>` picks the version, `hold: true` waits for Space. `window.openav.show.table()/goto()/status()`.
 - Two rules an agent must not break: (1) continuous control goes through params, never `signals.get()` in `update()`; (2) never edit `packages/*` to make one example look right.
 
 ## Start
@@ -35,6 +36,7 @@ Author: Che-Yu Wu 吳哲宇 (https://cheyuwu.com)
 - [Writing a world](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/writing-a-world.md): the World interface, params vs events, sound output, checklist.
 - [Signals reference](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/signals.md): every signal the built-in inputs publish.
 - [Show control](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/show-control.md): timeline, scenes, performance mode, monitor, OSC.
+- [Score & Director](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/score.md): a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.
 - [Patch bay design](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/design/patchbay.md): multi-device MIDI and the patch bay.
 - [Full text](https://openaudiovisual.com/llms-full.txt): README, AGENTS.md and every handbook chapter in one file.
 

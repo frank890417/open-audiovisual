@@ -1,6 +1,6 @@
 # 套件一覽
 
-二十二個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十三個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
@@ -8,7 +8,7 @@
 | L2 映射 | `mapping` |
 | L3 世界 | `stage` · `world-webtoe` |
 | L4 輸出 | `sound` · `osc` · `record`（MIDI 輸出在 `midi` 裡） |
-| 主軸 | `timeline` · `console` · `monitor` |
+| 主軸 | `timeline` · `score` · `console` · `monitor` |
 | 手機 | `relay` · `surface` · `remote` |
 | 膠水 | `core` · `show` · `mcp` |
 
@@ -48,7 +48,9 @@ L1 輸入與 L4 輸出 · Web MIDI 的輸入與輸出，可以同時接很多台
 
 | 匯出 | 簽章 |
 |---|---|
-| `Midi` | `new Midi({ signals, filterOut = 'IAC', requestAccess })` · `enable(preferredOut = '')` → `Promise<boolean>` · `devices()` → `[{ slug, name, listening }]` · `setListening(slug, on)` · `onDevices(fn)` · `listen(fn(bytes, port))` · `selectOutput(name)` · `outputFor(nameOrRegExp)` · `send(bytes)` · `noteOn(note, vel = 100, ch = 1)` · `noteOff(note, ch = 1)` · `cc(cc, val, ch = 1)` · `panic()` · `dispose()` · hook：`onCC`、`onNote`、`onMessage`、`onSend`、`onDeviceChange` |
+| `Midi` | `new Midi({ signals, filterOut = 'IAC', requestAccess, echoWindow = 40, prefer = [] })` · `enable(preferredOut = '')` → `Promise<boolean>` · `devices()` → `[{ slug, name, listening }]` · `setListening(slug, on)` · `onDevices(fn)` · `onOutput(fn({ text, reason, next }))` · `listen(fn(bytes, port))` · `selectOutput(name)` → `boolean`（並記住成你的選擇）· `outputFor(nameOrRegExp)` · `send(bytes)` · `noteOn(note, vel = 100, ch = 1)` · `noteOff(note, ch = 1)` · `cc(cc, val, ch = 1)` · `panic()` · `dispose()` · hook：`onCC`、`onNote`、`onMessage`、`onSend`、`onDeviceChange` · `out`、`outputs`、`preferredOut`、`echoDropped` |
+| 輸出熱插拔、回音 | `pickOutput(outputs, { preferred, prefer })` · `reselectOutput({ current, outputs, preferred, prefer })` → `{ next, changed, reason, text }` · `EchoGuard({ window })`（`sent(bytes)`、`isEcho(bytes)`）：`Midi` 背後的純邏輯，見[演出控制](show-control.md#midi-output-and-panic) |
+| 總譜轉 MIDI | `new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })` · `segment({ index, cause })` · `cue({ name, n })`：把段落切換和 cue 變成 note 與 CC，見[總譜與導演](score.md#score-to-midi) |
 | 解析 | `parseMessage(bytes)` → 事件 · `encodeMessage(event)` → 位元組 · `genericSignals(event, { device })` · `publish(signals, list)` · `describe(event)` · `relativeDelta(value, mode)`、`relativeValue(delta, mode)`、`RELATIVE_MODES` · `bendToUnit`、`unitToBend`、`BEND_CENTER` |
 | 控制器 | `MidiController`、`MidiControllers`、`controllerRoutes(profile, bindings)`、`PROFILES`、`profileById(id)`、`ControllerView`、`mountMidiPanel(el, controllers, opts)`、`linkControllers`，以及 profile 輔助函式（`validateProfile`、`normalizeProfile`、`matchProfile`…） |
 | Web MIDI shim | `createVirtualMIDIAccess(opts)`、`virtualRequestMIDIAccess` |
@@ -167,6 +169,7 @@ L2 映射 · 從訊號接到參數的路由，含曲線、平滑、learn，以�
 | 匯出 | 簽章 |
 |---|---|
 | `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`、`learnTarget` |
+| `LearnWizard` | `new LearnWizard({ mapper, keys, onChange })` · `start()` · `skip()` · `back()` · `stop()` · `sync()` · `active`、`current`、`index`、`total`、`done`、`added`：「依序對應旋鈕」，見[總譜與導演](score.md#map-the-knobs-in-order) |
 
 ```js
 import { Mapper } from '@openav/mapping';
@@ -271,9 +274,29 @@ const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks
 
 | 匯出 | 簽章 |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600 })` · `play()`、`pause()`、`toggle()`、`seek(t)`、`jumpScene(d)`、`reset()` · `advance(dt)` · `state(t)`、`valueAt(key, t)` · `sceneIndexAt(t)`、`currentScene(t)`、`sceneEnd(i)` · `onSceneChange(cb(i, scene))` · `t`、`playing`、`rate`、`total` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })` · `play()`（放行 hold）、`pause()`、`toggle()`、`seek(t)`、`jumpScene(d)`、`next()`（放行 hold，否則往後一段）、`prev()`、`release()`、`reset()`（回到 `start`，預設 0）· `advance(dt)` · `state(t)`、`valueAt(key, t)` · `sceneIndexAt(t)`、`currentScene(t)`、`sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`、`onSeek(cb(t, kind))` · `layer(key, value, t)` · `t`、`playing`、`holding`、`rate`、`total`、`start`、`score` |
 
 見[演出控制](show-control.md#timeline)。
+
+## @openav/score
+
+主軸 · 總譜與導演：把演出寫成段落長度，再由模組去演出每一段。純邏輯，不碰 DOM。
+
+| 匯出 | 簽章 |
+|---|---|
+| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`、`indexAt(T)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`、`cut`、`segments`、`startT`、`scale`、`baseTime(T)` |
+| `ScoreError` | 總譜不合法時丟出，`problems` 列出每一個原因 |
+| `Director` | `new Director({ score, modules, api, onStatus, onCue, maxStep })` · `update(T, dt, { holding, playing })` · `param(key, value, T)` · `seek(T)` · `reset()` · `status()` · `register(module)` |
+
+```js
+import { Score, Director } from '@openav/score';
+const score = new Score({ cuts, cut: 'full' });
+const director = new Director({ score, modules, api });
+// every frame, after timeline.advance(dt):
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });
+```
+
+完整說明：[總譜與導演](score.md)。
 
 ## @openav/console
 
@@ -281,7 +304,7 @@ const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks
 
 | 匯出 | 簽章 |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals })` → `{ render(state), perf, dispose() }`。`app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc? }` |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder })` → `{ render(state), perf, director, wizard, dispose() }`。`app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
 
 見[演出控制](show-control.md#the-console)。
 

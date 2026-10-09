@@ -35,6 +35,7 @@ const show = await createShow({
 | `onFrame` | `null` | `(dt, show) => {}` every frame, before the timeline advances |
 | `mount` | generated | `{ stage, side }` elements or selectors to render into, instead of a full-page layout |
 | `telemetry` | `true` | one anonymous `oav_show_start` hit per page (see the controllers chapter, Telemetry); `false` sends nothing |
+| `score` | `null` | `{ cuts, cut, modules, api, midi, … }`: the show's structure as segment lengths, performed by segment modules; `?cut=<id>` in the URL picks the version ([Score & Director](score.md#use-it-with-createshow)) |
 
 Without `mount`, the page body becomes a two-column grid: the stage, and a
 340 px side panel with the piano and the console.
@@ -53,8 +54,8 @@ Without `mount`, the page body becomes a two-column grid: the stage, and a
 | `sound` | `true`; an instrument id (`'piano'`); `{ instrument, remember, picker, engine, baseUrl }` | instruments in the page with a picker, Tone.js ([Sound](#sound)) |
 
 It returns `{ signals, params, stage, timeline, mapper, midi, controllers,
-midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app,
-loop }`; parts you did not ask for are `null`. The same object is
+midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director,
+console, app, loop }`; parts you did not ask for are `null`. The same object is
 `window.openav`, for the devtools console. The frame order is in
 [Architecture](architecture.md#the-frame-loop).
 
@@ -81,18 +82,25 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 - `jumpScene(±1)` (← → keys) is your emergency navigation — rehearse with it
 - `timeline.rate` exists for rehearsal speed-through (`rate = 4`)
 - playback stops by itself at `total`
+- a scene with `hold: true` stops playback at its end until it is released (Space, →): see [Hold](score.md#hold)
+- `reset()` goes to `start` (default 0, so a pre-show standby scene at −30 is reached with the scrubber; pass `start: -30`, or `start: 'first'` for "the first scene", to make R return to it)
+- with `score` the scenes, total and start come from a [score](score.md); then automation is read at `score.baseTime(t)`, so a cut derived with `scale: 0.5` stretches it
 
 | member | what it does |
 |---|---|
-| `play()`, `pause()`, `toggle()` | transport |
+| `play()`, `pause()`, `toggle()` | transport. At a hold, `play()` and `toggle()` release it |
 | `seek(t)` | jump to `t` seconds (clamped between the first scene's negative time, or 0, and `total`) |
 | `jumpScene(d)` | go to the start of the scene `d` steps away |
-| `reset()` | stop and rewind to 0 |
+| `next()`, `prev()` | → and ←: `next()` releases a hold (and plays on), otherwise it is `jumpScene(1)` |
+| `release()` | let a hold go: the next scene starts and playback continues. `false` when nothing was holding |
+| `reset()` | stop, clear a hold and rewind to `start` (default 0) |
 | `advance(dt)` | per frame; moves `t` by `dt × rate` while playing |
 | `state(t)`, `valueAt(key, t)` | the automation values at a time (no overrides) |
 | `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` | scene lookup |
-| `onSceneChange(cb)` | `cb(index, scene)` whenever playback or a seek lands in a different scene |
-| `t`, `playing`, `rate`, `total`, `scenes`, `automation` | state you can read (and set) |
+| `onSceneChange(cb)` | `cb(index, scene, { cause })` whenever playback or a seek lands in a different scene; `cause` is `'play'`, `'release'`, `'seek'`, `'jump'` or `'reset'` |
+| `onSeek(cb)` | `cb(t, kind)` when the playhead is moved by hand (`'seek'`, `'jump'`, `'reset'`), never while playing |
+| `layer` | `(key, value, t) => value`: rewrite a param before overrides (the director's `param()` plugs in here) |
+| `t`, `playing`, `holding`, `rate`, `total`, `start`, `scenes`, `automation`, `score` | state you can read (and set) |
 
 A cue list is just a scene-change handler:
 
@@ -114,8 +122,10 @@ those panels. It gives you transport + scrubber with scene blocks, the Layers
 overview, L1 Input, L2 Mapping, L3 Params (sliders with override and learn
 chips), L4 sound, live signal meters and a MIDI log.
 
-Keyboard: **Space** play/pause · **←/→** scenes · **R** reset · **T** performance
-mode · **F** fullscreen. Keys typed into an input field are ignored.
+Keyboard: **Space** play/pause (at a hold: release) · **→/←** next / previous scene (→ at a hold: release) · **R** reset · **T** performance
+mode · **F** fullscreen · **Esc** leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the *letters* belong to the piano (T and F are piano keys), so R, T and F do nothing until you untick it or press Esc; Space and the arrows always work.
+
+With a score the desk also has the Director panel, cue ticks on the scrubber and a prompter with the operator's acts ([Score & Director](score.md#the-desk)). The L2 Mapping panel has **🎛 map knobs in order**, a wizard that arms learn for each param in turn ([details](score.md#map-the-knobs-in-order)).
 
 Override semantics: touch a slider (or a mapped control) and that param leaves
 the timeline's hands until you clear it (✕). Yellow label = overridden.
@@ -123,7 +133,7 @@ the timeline's hands until you clear it (✕). Yellow label = overridden.
 ## Performance mode
 
 **T** flips to a fullscreen teleprompter: current scene title + note in stage-
-readable type, next scene preview, clock + scene countdown. This is for the
+readable type, what the operator does (the scene's `acts`), next scene preview, clock + scene countdown, a HOLD banner while the show waits, and a warning when a segment module was switched off. This is for the
 *performer*; the audience-facing window is your stage in fullscreen (**F**).
 Two windows of the same page = one desk, one stage.
 
@@ -212,6 +222,12 @@ show.midi.panic();
 The first output port is used until you choose another (`enable(preferredOut)`
 matches a name exactly, then as a substring). Everything sent passes through
 `onSend`, which feeds the per-channel MIDI OUT meter in the Layers panel.
+
+**Hot-plug.** A cable pulled mid-show must not leave the DAW silent without a word. When the current output is unplugged, `Midi` moves to the next best live port: the one you chose with `selectOutput()` or `enable(name)`, then the first match of the `prefer` list (`new Midi({ prefer: ['IAC'] })`), then the first port. When the port you chose is plugged in again, the output goes back to it. An unrelated device appearing never steals the output. Every switch prints one line in the MIDI log (the Signals panel, via `midi.onMessage`) and one in the browser console, flashes in the MIDI controller panel, and updates the `MIDI out →` row of the L1 Input panel. In code: `midi.onOutput(({ text, reason }) => …)`.
+
+**Echo.** What you send into a virtual bus must not come back as input. Inputs whose name matches `filterOut` (default `IAC`, the macOS bus) are never listened to, and a message identical to one just sent that arrives on any input within `echoWindow` milliseconds (default 40; `0` turns it off) is dropped as echo, once per message sent. `midi.echoDropped` counts them.
+
+To make an external program follow the show, `ScoreMidi` sends the score's segment changes and cues as notes and CCs ([Score to MIDI](score.md#score-to-midi)).
 
 ## Sound
 

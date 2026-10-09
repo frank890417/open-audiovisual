@@ -52,6 +52,8 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 │          · @openav/osc → UDP bridge                        │
 ├────────────────────────────────────────────────────────────┤
 │ ⏱ @openav/timeline — param automation + scenes/cues        │
+│ 📜 @openav/score — segment lengths → cuts, cues, holds;      │
+│    the director runs a module per segment                   │
 │ 📟 @openav/monitor — backstage: clock, scene, signals, FPS  │
 │ 🎛 @openav/console — desk · Layers live view · perf mode     │
 │ 📱 @openav/relay · surface · remote — phones/iPads as        │
@@ -83,10 +85,11 @@ Two rules make the whole thing composable:
 | [`10-record`](examples/10-record/) | **the performance video** (@openav/record): the work on top, your hands from the webcam below, the work's own sound, one vertical 1080×1920 / 2.7K / 4K file in sync — plus MIDI takes you record, play back into the show, and save as `.mid` |
 | [`11-controller-video`](examples/11-controller-video/) | **the performance video without a camera**: the controller you play (MiniLab 3 or any profile) drawn live under the work — keys, pads, knobs and faders as they move, sharp at 4K; a replayed MIDI take animates it too |
 | [`12-leap-hands`](examples/12-leap-hands/) | **a Leap Motion as an instrument** (@openav/leap): palm height, pinch and fist through params, the hand skeleton drawn in the work; runs on the machine's bridge (`node packages/leap/bridge/leap-bridge.mjs`, `--mock` without a sensor) or with the mouse as a simulated hand |
+| [`13-score-director`](examples/13-score-director/) | **a show with structure** (@openav/score): "a day of sky" written as segment lengths, two cuts (full and half length, `?cut=short`), a standby that holds until you release it, cues on the scrubber, operator acts on the desk and prompter, and a segment module that can crash (`?break=dusk`) without stopping the show |
 
 All examples run without MIDI hardware — every stage ships an on-screen piano
 (@openav/keys: QWERTY capture, Z/X octave) and a **simulated performer** that
-plays the piece hands-free. 01/02 run fully offline. Keys: **Space** play · **←/→** scene jump · **T** performance mode · **F** fullscreen.
+plays the piece hands-free. 01/02 run fully offline. Keys: **Space** play (at a hold: release) · **←/→** scene jump · **T** performance mode · **F** fullscreen.
 
 Examples are assembled with **`createShow()`** (`@openav/show`) — a World plus one
 declarative call; the layer-aligned side panel, inputs, sound, and backstage all
@@ -165,6 +168,7 @@ portrait), 控制台 (faders, knobs, XY, pads… generated from the World's `par
 - [Writing a world](docs/writing-a-world.md)
 - [Signals reference](docs/signals.md) — names published by each input package
 - [Show control](docs/show-control.md) — timeline, scenes, performance mode, monitor, OSC
+- [Score & Director](docs/score.md) — a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score → MIDI
 
 ## Telemetry
 
