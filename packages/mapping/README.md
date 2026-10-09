@@ -31,6 +31,12 @@ mapper.update(dt);
   (localStorage key `openav.map.<profile>`) · `dispose()`
 - `routes`, `learnTarget`
 
+`LearnWizard` ("map the knobs in order")
+- `new LearnWizard({ mapper, keys, onChange })` · `keys`: param keys in order, or a function returning them (read at `start()`)
+- `start()` arms the first param; turning a knob binds it (learn *adds* routes) and arms the next · `skip()` · `back()` · `stop()` ·
+  `sync()` per frame (keeps learn armed while it runs)
+- `active`, `current`, `index`, `total`, `done`, `added` (`[{ key, source }]`)
+
 Route: `source`, `target` (required) · `inMin = 0`, `inMax = 1` · `outMin`, `outMax` (the
 param's range when the route is added, else 0..1) · `curve = 'linear'` (`exp`, `log`,
 `smooth`) · `invert = false` · `smooth = 0` (seconds) · `enabled` (`false` mutes) · `id`

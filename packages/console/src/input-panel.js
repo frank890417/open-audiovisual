@@ -7,7 +7,7 @@ export function buildInputPanel(root, app) {
   const { midi, audio, hands, pose, signals } = app;
   const panel = document.createElement('div');
   panel.className = 'oav-panel';
-  panel.innerHTML = '<h3>L1 · Input</h3><div class="devs"></div><div class="oav-row mods"></div>';
+  panel.innerHTML = '<h3>L1 · Input</h3><div class="devs"></div><div class="oav-devrow none outrow"></div><div class="oav-row mods"></div>';
   root.appendChild(panel);
   const devsEl = panel.querySelector('.devs');
   const modsEl = panel.querySelector('.mods');
@@ -27,10 +27,15 @@ export function buildInputPanel(root, app) {
       devsEl.appendChild(row);
     }
   };
+  // the MIDI output the show sends to; a hot-plug switch changes this line (and prints one line in the MIDI log)
+  const outEl = panel.querySelector('.outrow');
+  const renderOut = () => { outEl.textContent = midi?.out ? `MIDI out → ${midi.out.name}` : 'MIDI out: none'; outEl.title = 'if this port is unplugged the output moves to the next one; your choice returns when it is plugged in again'; };
   if (midi) {
-    midi.onDeviceChange = renderDevices;
+    midi.onDeviceChange = (d) => { renderDevices(d); renderOut(); };
+    midi.onOutput?.(renderOut);
     renderDevices(midi.devices());
-  } else devsEl.remove();
+    renderOut();
+  } else { devsEl.remove(); outEl.remove(); }
 
   // --- gesture-gated sources: mic / hands / body ---
   const mkEnable = (label, obj, enable) => {

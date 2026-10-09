@@ -54,7 +54,7 @@ function connect() {
   ws.onmessage = (e) => {
     lastMsgAt = Date.now();
     let d; try { d = JSON.parse(e.data); } catch (err) { return; }
-    $('clock').textContent = fmt(d.t || 0) + (d.playing ? '' : ' ⏸');
+    $('clock').textContent = fmt(d.t || 0) + (d.holding ? ' ⏸ HOLD' : d.playing ? '' : ' ⏸');
     $('scene').textContent = `#${d.sceneIndex ?? '–'} ${d.scene || ''}`;
     $('world').textContent = d.world || '–';
     $('fps').textContent = d.fps ?? '–';

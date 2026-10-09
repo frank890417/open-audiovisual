@@ -162,3 +162,5 @@ export class Mapper {
   }
   dispose() { this._unsub?.(); }
 }
+
+export { LearnWizard } from './wizard.js?v=a8b6135';

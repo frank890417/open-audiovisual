@@ -37,9 +37,10 @@ const show = await createShow({
 | `modules` | `{}` · `midi` (on; `false`; `{ controllers }`), `keys` (on; `false`; `{ base, octaves, sim, capture }`), `drums`, `audio`, `chord`, `hands`, `pose`, `remote`, `sound` |
 | `artwork`, `hint` | `null`, `''` · credit line `{ title, artist, year, note }`; an HTML hint on the stage |
 | `profile` | the world's name · mapper profile; `false` ignores saved routes |
+| `score` | `null` · `{ cuts, cut, modules, api, onStatus, onCue, maxStep, midi }`: the show's structure (`@openav/score`); `?cut=<id>` picks the version. The timeline's scenes/total come from it; returns `show.score`, `show.director`, `show.show` (`table()`, `goto()`, `seek()`, `cue()`, `status()`, `next()`, `prev()`) |
 | `onFrame`, `mount` | `null`, generated · `(dt, show)` each frame before the timeline advances; `{ stage, side }` elements or selectors |
 
-Returns `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, console, app, loop }`
+Returns `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, scoreMidi, console, app, loop }`
 (parts you did not ask for are `null`), also set as `window.openav`. Import map: copy `examples/01-hello-particles/index.html`.
 
 Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-show) · [createShow](https://openaudiovisual.com/docs/#show-control-createshow)

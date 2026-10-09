@@ -12,6 +12,9 @@
 //                remote: { room: 'main' },     // phones/iPads become controllers (packages/remote)
 //                midi: { controllers: { profile: 'arturia-minilab3' } } },  // on-screen MIDI controller (packages/midi)
 //     artwork: { title: '3D Cylinder Earth', artist: 'Che-Yu Wu 吳哲宇', year: 2020 },
+//     // a show with structure: segments as lengths, modules that perform them (packages/score)
+//     score: { cuts: [{ id: 'full', segments: [{ id: 'dawn', dur: 20 }, …] }, { id: 'short', from: 'full', scale: 0.5 }],
+//              modules: [{ id: 'dawn', enter, update, exit }] },        // ?cut=short in the URL picks a version
 //   });
 //
 // One factory, so every work evolves together: add a module to the framework,
@@ -20,8 +23,8 @@
 // artwork credits render automatically (artist demos stay strictly attributed).
 //
 // createShow returns { signals, params, stage, timeline, mapper, midi, keys,
-// sound, audio, hands, pose, leap, remote, loop, console } — every part reachable, nothing
-// hidden. It also sets window.openav for devtools.
+// sound, audio, hands, pose, leap, remote, score, director, loop, console } — every part reachable, nothing
+// hidden. It also sets window.openav for devtools (with a score: window.openav.show.goto('dusk'), .table(), …).
 
 import { Signals, Params, Loop } from '../core/index.js?v=a8b6135';
 import { Midi } from '../midi/index.js?v=a8b6135';
@@ -63,6 +66,7 @@ export async function createShow({
   onFrame = null,          // (dt, show) per-frame hook — assembly-layer logic (envelopes…)
   mount = null,            // { stage, side } elements/selectors; omitted = generated layout
   telemetry = true,        // one anonymous oav_show_start hit per page (packages/midi/telemetry.js); false = none
+  score: scoreCfg = null,  // { cuts, cut, modules, api, onStatus, onCue, maxStep, midi } — the show's structure (packages/score); ?cut=<id> picks the version
 } = {}) {
   track('oav_show_start', { oav_kind: 'show' }, { enabled: telemetry !== false });
   // ---------- DOM shell (fix the layout once, every show is fixed) ----------
@@ -110,7 +114,27 @@ export async function createShow({
   for (const w of allWorlds) stage.register(w);
   if (allWorlds.length) await stage.activate(allWorlds[0].name);
 
-  const timeline = new Timeline({ params, ...timelineCfg });
+  // ---------- the score: structure as segment lengths, performed by segment modules (loaded only when declared) ----------
+  let score = null, director = null, scoreMidi = null;
+  if (scoreCfg) {
+    const { Score, Director } = await import('../score/index.js?v=a8b6135');
+    const cutId = new URLSearchParams(location.search).get('cut') || scoreCfg.cut;
+    const known = new Score({ cuts: scoreCfg.cuts, cut: scoreCfg.cut }).cuts.map((c) => c.id);
+    if (cutId && !known.includes(cutId)) console.warn(`[score] ?cut=${cutId} is not a cut of this show (${known.join(', ')}); playing ${scoreCfg.cut || known[0]}`);
+    score = new Score({ cuts: scoreCfg.cuts, cut: known.includes(cutId) ? cutId : scoreCfg.cut });
+    director = new Director({
+      score, modules: scoreCfg.modules || [], maxStep: scoreCfg.maxStep, onStatus: scoreCfg.onStatus,
+      // the modules reach the show through `api`: yours (an object, or a function of the show), or the show itself
+      api: () => (typeof scoreCfg.api === 'function' ? scoreCfg.api(show) : scoreCfg.api ?? show),
+      onCue: (c) => { scoreMidi?.cue(c); scoreCfg.onCue?.(c); },
+    });
+  }
+  const timeline = new Timeline({ params, ...timelineCfg, score });
+  if (director) {
+    timeline.layer = (key, value, t) => director.param(key, value, t);                 // modules rewrite params; a performer's override still wins
+    timeline.onSeek((t, kind) => (kind === 'reset' ? director.reset() : director.seek(t)));
+    timeline.onSceneChange((i, scene, info) => scoreMidi?.segment({ index: i, id: scene?.id, cause: info?.cause }));
+  }
   const mapper = new Mapper({ signals, params, profile: profile || allWorlds[0]?.name || 'show' });
   const loaded = profile !== false && mapper.load();
   if (!loaded) {
@@ -126,6 +150,11 @@ export async function createShow({
   // ---------- L1 modules ----------
   const midi = modules.midi === false ? null : new Midi({ signals });
   midi?.enable();
+  // the score → MIDI out (off unless declared): segment changes and cues leave as notes / CCs so a DAW can follow the show
+  if (scoreCfg?.midi && midi) {
+    const { ScoreMidi } = await import('../midi/score-out.js?v=a8b6135');
+    scoreMidi = new ScoreMidi({ midi, ...(typeof scoreCfg.midi === 'object' ? scoreCfg.midi : {}) });
+  }
   // on-screen MIDI controllers: plug a known device in and it appears on screen and moves; no device → play it here.
   // Its signals (midi/<device>/<control>) reach params through `routes` — controllerRoutes() writes them.
   let controllers = null, midiPanel = null;
@@ -140,7 +169,7 @@ export async function createShow({
     btn.style.cssText = 'position:absolute;right:12px;top:12px;z-index:6;padding:6px 12px;border-radius:10px;border:1px solid #283044;background:rgba(10,12,17,.8);color:#cfd6e4;font:600 12px system-ui;cursor:pointer';
     btn.onclick = () => midiPanel.toggle();
     stageEl.appendChild(btn);
-    addEventListener('keydown', (e) => { if ((e.key === 'm' || e.key === 'M') && !e.metaKey && !e.ctrlKey && !/^(input|select|textarea)$/i.test(e.target?.tagName || '')) midiPanel.toggle(); });
+    addEventListener('keydown', (e) => { if ((e.key === 'm' || e.key === 'M') && !e.metaKey && !e.ctrlKey && !keys?.piano?.captureEnabled && !/^(input|select|textarea)$/i.test(e.target?.tagName || '')) midiPanel.toggle(); });
   }
   const keys = modules.keys === false ? null
     : mountKeys(keysSlot, { signals, base: 48, octaves: 2, ...(typeof modules.keys === 'object' ? modules.keys : {}) });
@@ -200,18 +229,20 @@ export async function createShow({
   }
 
   // ---------- desk + backstage ----------
-  const app = { timeline, params, mapper, signals, midi, controllers, sound, stage, keys, drums, audio, hands, pose, leap, chord, remote, artwork };
+  const app = { timeline, params, mapper, signals, midi, controllers, sound, stage, keys, drums, audio, hands, pose, leap, chord, remote, artwork, score, director };
   const consoleUI = mountConsole(desk, app);
   const monitor = new MonitorFeed({});
   monitor.connect();
 
-  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, console: consoleUI, app, loop: null };
+  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, console: consoleUI, app, loop: null };
+  if (score) show.show = scoreControls(timeline, score, director);
   const loop = app.loop = new Loop((dt) => {
     keys?.update(dt);
     drums?.update(dt);
     audio?.update();
     onFrame?.(dt, show);
     timeline.advance(dt);
+    director?.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });   // 1b. the segment modules perform the segment
     mapper.update(dt);
     const state = stage.frame(dt, timeline.state());
     sound?.update(state);
@@ -223,4 +254,27 @@ export async function createShow({
   loop.start();
   window.openav = show;
   return show;
+}
+
+/**
+ * window.openav.show — the score at the devtools console (or a rehearsal script):
+ *   table()        the segments as a table        goto('dusk') / goto('dusk.glow') / goto(2)   jump to a segment or a cue
+ *   seek(T)        jump to show seconds           cue('dusk.glow')   the cue's show seconds (jumps nowhere)
+ *   status()       current segment, next one + countdown, modules that are off    next() / prev()   → / ←
+ */
+function scoreControls(timeline, score, director) {
+  return {
+    table() { const rows = score.table(); console.table(rows); return rows; },
+    goto(where) {
+      const T = typeof where === 'number' ? score.segments[where]?.start : score.cueTime(String(where));
+      if (!Number.isFinite(T)) { console.warn(`[score] cut "${score.cut}" has no segment or cue "${where}". Segments: ${score.segments.map((s) => s.id).join(', ')}`); return false; }
+      timeline.seek(T, 'jump'); return true;
+    },
+    seek(T) { timeline.seek(T); return timeline.t; },
+    cue(name) { return score.cueTime(name); },
+    status() { return director.status(); },
+    next() { return timeline.next(); },
+    prev() { return timeline.prev(); },
+    cuts: score.cuts,
+  };
 }

@@ -60,6 +60,7 @@ export function snapshotOf({ timeline, params, signals, stage, loop }, state) {
   return {
     t: timeline?.t ?? 0,
     playing: timeline?.playing ?? false,
+    holding: timeline?.holding ?? false,        // parked at the end of a `hold` segment, waiting for the operator
     total: timeline?.total ?? 0,
     sceneIndex: timeline?.sceneIndexAt() ?? 0,
     scene: timeline?.currentScene()?.title || timeline?.currentScene()?.id || '',
