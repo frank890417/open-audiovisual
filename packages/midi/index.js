@@ -25,9 +25,12 @@ import { MidiControllers } from './manager.js?v=a8b6135';
 import { ControllerView } from './view.js?v=a8b6135';
 import { PROFILES } from './profiles/index.js?v=a8b6135';
 import { track } from './telemetry.js?v=a8b6135';
+import { reselectOutput, inputFilter, EchoGuard } from './ports.js?v=a8b6135';
 import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=a8b6135';
 export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, eventOfSignal, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=a8b6135';
 export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=a8b6135';
+export { pickOutput, reselectOutput, EchoGuard, isLive } from './ports.js?v=a8b6135';
+export { ScoreMidi } from './score-out.js?v=a8b6135';
 export { MidiController } from './controller.js?v=a8b6135';
 export { MidiControllers, controllerRoutes } from './manager.js?v=a8b6135';
 export { linkControllers } from './link.js?v=a8b6135';
@@ -43,17 +46,27 @@ export class Midi {
   /**
    * @param {object} opts
    * @param {import('../core/src/signals.js?v=a8b6135').Signals} [opts.signals] publish inputs here
-   * @param {string} [opts.filterOut] regex source-name filter to avoid feedback loops (default: IAC)
+   * @param {string|RegExp} [opts.filterOut] regex (source) of input NAMES never to listen to, so what we send into a virtual bus
+   *        does not come back as input (default: IAC, the macOS bus you send into Ableton / TouchDesigner)
+   * @param {number} [opts.echoWindow=40] ms: an input message identical to one we just SENT is our own echo and is dropped
+   *        (a DAW returning it on a port whose name the filter does not know). 0 = off.
+   * @param {Array<string|RegExp>} [opts.prefer] output priority after the one you chose by name: the first match wins, else the first port
    * @param {(opts:object)=>Promise<any>} [opts.requestAccess] where MIDIAccess comes from (default
    *        navigator.requestMIDIAccess). A host that shims Web MIDI for old sketches passes the REAL one
    *        here, so this engine never listens to the virtual port it feeds (no loops).
    */
-  constructor({ signals = null, filterOut = 'IAC', requestAccess = null } = {}) {
+  constructor({ signals = null, filterOut = 'IAC', requestAccess = null, echoWindow = 40, prefer = [] } = {}) {
     this.signals = signals;
     this.requestAccess = requestAccess;
     this._listeners = new Set();  // (bytes, port{slug,name,input}) — controllers, meters
     this._devSubs = new Set();    // (devices) — every subscriber, unlike the single onDeviceChange hook
-    this.filterOut = filterOut ? new RegExp(filterOut, 'i') : null;
+    this._outSubs = new Set();    // (change) — output hot-plug lines for the panels
+    this.filterOut = inputFilter(filterOut);
+    this.echo = new EchoGuard({ window: echoWindow });
+    this.echoDropped = 0;         // inputs ignored as our own echo
+    this.prefer = prefer;
+    this.preferredOut = '';       // the output you asked for by name: it is switched back to when it is plugged in again
+    this._wanted = '';            // …and with no choice made, the port the engine started on (never a stand-in)
     this.access = null; this.out = null;
     this.outputs = []; this.inputs = [];
     this.enabled = false;
@@ -90,16 +103,15 @@ export class Midi {
       this.access = await req({ sysex: false });
     } catch (e) { this.log('in', 'WebMIDI unavailable: ' + e.message); this._devChanged(); return false; }
     this.enabled = true;
-    this._refresh(preferredOut);
-    this.access.onstatechange = () => this._refresh(preferredOut);
+    if (preferredOut) this.preferredOut = preferredOut;
+    this._refresh(true);
+    this.access.onstatechange = () => this._refresh(false);
     return true;
   }
 
-  _refresh(preferredOut) {
+  _refresh(initial = false) {
     this.outputs = Array.from(this.access.outputs.values());
-    const exact = this.outputs.find(o => o.name === preferredOut);
-    const sub = preferredOut ? this.outputs.find(o => o.name && o.name.includes(preferredOut)) : null;
-    this.out = exact || sub || this.out || this.outputs[0] || null;
+    this._reselectOut(initial);
     this.inputs = Array.from(this.access.inputs.values())
       .filter(i => !(this.filterOut && this.filterOut.test(i.name || '')));   // don't listen to our own OUT
     // slug by NAME (not port id): a device that drops and reconnects keeps its
@@ -117,7 +129,39 @@ export class Midi {
     this._devChanged();
   }
 
-  selectOutput(name) { const o = this.outputs.find(o => o.name === name); if (o) this.out = o; }
+  /**
+   * Output hot-plug (every Web MIDI state change lands here): a port that was unplugged is replaced
+   * by the next best one, and the port you chose by name is switched back to when it returns. Each
+   * switch prints one line to the MIDI log (onMessage) and to the browser console, and tells onOutput subscribers.
+   */
+  _reselectOut(initial = false) {
+    const r = reselectOutput({ current: this.out, outputs: this.outputs, preferred: this.preferredOut || this._wanted, prefer: this.prefer });
+    if (!r.changed) return;
+    this.out = r.next;
+    if (!this._wanted && r.next && (r.reason === 'found')) this._wanted = r.next.name;   // the first port we ever sat on is the one to return to
+    if (initial) return;                       // the first pick is part of the `inputs … | out …` line
+    this._announceOut(r);
+  }
+  _announceOut(r) {
+    this.log('out', r.text);
+    console.warn('[midi] ' + r.text);
+    for (const fn of this._outSubs) { try { fn({ ...r, out: this.out }); } catch (e) { console.error('[midi] output subscriber', e); } }
+  }
+  /** Subscribe to output changes (hot-plug, switch back, your own selectOutput): fn({ text, reason, next, out }). Returns unsubscribe. */
+  onOutput(fn) { this._outSubs.add(fn); return () => this._outSubs.delete(fn); }
+
+  /** Send to this output from now on, and remember it as THE one you want: if it is unplugged and plugged in again, the output returns to it. */
+  selectOutput(name) {
+    const o = this.outputs.find(o => o.name === name);
+    if (!o) return false;
+    this.preferredOut = name;
+    if (o !== this.out) {
+      const text = `MIDI out: switched to "${o.name}"${this.out ? ` (was "${this.out.name}")` : ''}`;
+      this.out = o;
+      this._announceOut({ next: o, changed: true, reason: 'select', text });
+    }
+    return true;
+  }
   /** The output port a device answers on (LED feedback): same name as its input, else a regex match. */
   outputFor(nameOrRe) {
     const re = nameOrRe instanceof RegExp ? nameOrRe : null;
@@ -129,6 +173,8 @@ export class Midi {
   _onIn(msg, src, slug) {
     if (slug && this._muted.has(slug)) return;
     const data = msg.data;
+    // our own message coming back (a DAW returning it on a port the name filter did not catch): not input
+    if (this.echo.isEcho(data)) { this.echoDropped++; return; }
     for (const fn of this._listeners) { try { fn(data, { slug, name: src, input: this.inputs.find((i) => this._slugs.get(i) === slug) }); } catch (e) { console.error('[midi] listener', e); } }
     const ev = parseMessage(data);
     if (!ev) return;
@@ -154,7 +200,8 @@ export class Midi {
   }
 
   /** Send raw bytes out. onSend observer sees everything (single throat for meters). */
-  send(bytes) {
+  send(bytes, { echo = true } = {}) {
+    if (echo) this.echo.sent(bytes);
     if (this.onSend) try { this.onSend(bytes); } catch (e) {}
     if (this.out) try { this.out.send(bytes); } catch (e) {}
   }
@@ -166,18 +213,19 @@ export class Midi {
   dispose() {
     for (const i of this.inputs) { try { if (i.onmidimessage) i.onmidimessage = null; } catch { /* port gone */ } }
     if (this.access) this.access.onstatechange = null;
-    this._listeners.clear(); this._devSubs.clear();
+    this._listeners.clear(); this._devSubs.clear(); this._outSubs.clear(); this.echo.clear();
     this.inputs = []; this.outputs = []; this.out = null; this.access = null; this.enabled = false;
   }
 
   /** Full panic — all notes off / all sound off / sustain off / per-note insurance.
    *  Goes through send() so observers see the sweep and meters don't show stuck notes. */
   panic() {
+    const q = { echo: false };          // a sweep is not something to wait for an echo of
     for (let ch = 0; ch < 16; ch++) {
-      this.send([0xb0 | ch, 123, 0]);
-      this.send([0xb0 | ch, 120, 0]);
-      this.send([0xb0 | ch, 64, 0]);
-      for (let n = 0; n < 128; n++) this.send([0x80 | ch, n, 0]);
+      this.send([0xb0 | ch, 123, 0], q);
+      this.send([0xb0 | ch, 120, 0], q);
+      this.send([0xb0 | ch, 64, 0], q);
+      for (let n = 0; n < 128; n++) this.send([0x80 | ch, n, 0], q);
     }
   }
 }

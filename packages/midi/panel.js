@@ -132,18 +132,26 @@ export function mountMidiPanel(parent, mcs, { mode = 'full', open = true, id = n
     grip.addEventListener('pointermove', mv); grip.addEventListener('pointerup', up);
   });
 
+  // output hot-plug: when the MIDI output switches (unplugged, or your choice is back) the monitor line says so
+  let offOut = null, outOf = null;
+  const watchOut = () => {
+    if (mcs.midi === outOf) return;
+    offOut?.(); outOf = mcs.midi;
+    offOut = mcs.midi?.onOutput?.((c) => { mon.textContent = c.text; mon.classList.add('fresh'); clearTimeout(monT); monT = setTimeout(() => mon.classList.remove('fresh'), 6000); }) || null;
+  };
   const off = mcs.onChange((e) => {
     if (e.type === 'select') { learning = false; view?.setController(mcs.current); view?.setLearning(false); watch(); }
+    watchOut();
     paint();
   });
-  watch(); paint(); ensureView();
+  watch(); watchOut(); paint(); ensureView();
 
   const api = {
     el, get view() { return view; }, get isOpen() { return !el.classList.contains('closed'); },
     open() { el.classList.remove('closed'); ensureView(); onToggle?.(true); return api; },
     close() { el.classList.add('closed'); mcs.current.releaseAll(); onToggle?.(false); return api; },
     toggle() { return api.isOpen ? api.close() : api.open(); },
-    dispose() { off(); unsubC?.(); view?.dispose(); el.remove(); },
+    dispose() { off(); offOut?.(); unsubC?.(); view?.dispose(); el.remove(); },
   };
   return api;
 }

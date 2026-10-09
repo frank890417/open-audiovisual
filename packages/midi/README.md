@@ -60,6 +60,22 @@ are not forwarded (your software already hears the device). No feedback loops: t
 engine's input filter (`filterOut`, default `'IAC'`) never listens to the IAC bus you send
 into, and an input with the same name as the chosen output (the loopMIDI echo) is muted.
 
+### Output hot-plug, echo, and score markers
+
+The `Midi` engine keeps the output you chose, and tells you when it moves:
+
+- **Hot-plug.** The output is unplugged → `Midi` switches to the next best live port (your choice by name, then the
+  `prefer` list, e.g. `new Midi({ prefer: ['IAC'] })`, then the first port); the port you chose is plugged in again → it
+  switches back; an unrelated device never steals the output. Each switch is one line in the MIDI log (`onMessage`) and one
+  `console.warn`, shown in the console's `MIDI out →` row and the controller panel's monitor. `midi.onOutput(({ text, reason, next }) => …)`
+  (`reason`: `found`, `fallback`, `back`, `none`, `select`) and `midi.selectOutput(name)` (remembers it as your choice).
+- **Echo.** Inputs named like `filterOut` (default `IAC`) are never listened to, and an input message identical to one just
+  sent (within `echoWindow` ms, default 40, `0` = off) is our own echo and is dropped (`midi.echoDropped` counts them).
+- **Score markers.** `new ScoreMidi({ midi, channel: 15, segment: { note: 36, cc: 20 }, cue: { note: 84, notes: { 'dusk.glow': 90 }, cc: 21 } })`
+  sends a note (and/or CC) for each segment change and cue so a DAW can follow the show; `createShow({ score: { …, midi: { channel: 15 } } })`
+  wires it. Off unless asked; only while the show plays (`scrub: true` also marks hand-made jumps). Pure logic for all three is
+  in `ports.js` and `score-out.js`; docs: [Score & Director](https://openaudiovisual.com/docs/#score-score-to-midi).
+
 ## `<oav-controller>`
 
 ### Attributes (each reflected as a property)
