@@ -31,6 +31,8 @@
       "midi/panel.js",
       "midi/embed.js",
       "midi/telemetry.js",
+      "midi/ports.js",
+      "midi/score-out.js",
       "midi/index.js",
       "relay/index.js"
     ],
