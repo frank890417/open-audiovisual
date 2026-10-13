@@ -18,7 +18,8 @@
  *
  * With OP Configurator (OpenProcessing's OPC library): `OPC.slider('radius', 10)` names a variable and its range;
  * this file then wires the controller to it, in order — knob 1 → the first slider, knob 2 → the second, the faders
- * after the knobs, pad 1 → the first toggle or button. OPC's own panel moves with the knob.
+ * after the knobs, pad 1 → the first toggle or button. OPC's own panel moves with the knob. On OpenProcessing, whose
+ * OPC panel can learn hardware itself (its MIDI switch), hardware is left to it once it is seen working.
  *
  * Three inputs, one stream of MIDI bytes, so a sketch never knows which one played:
  *   hardware  a real controller over Web MIDI (Chrome, Edge, Firefox; Safari and iPad have no Web MIDI)
@@ -41,7 +42,7 @@
  * OpenProcessing passes its page's ?sketch_oav_key=value through to the sketch):
  *   hardware  auto (ask for Web MIDI at once; the browser remembers) | click (ask from the 🎹 panel) | off
  *   panel     closed (just 🎹) | open | off        profile  the on-screen controller (default arturia-minilab3)
- *   dock      bottom | top (default top on OpenProcessing, whose console floats over the bottom of the sketch)
+ *   dock      bottom | top · corner right | left (OpenProcessing: top-left — its console floats over the bottom, OPC's icon sits top-right)
  *   opc       on | off (wire the controller to OPC variables)   shim  on | off (the virtual port)
  *   relay / room   the phone relay (wss://remote.cheyuwu.com/relay) and room (one per browser)
  *   telemetry off | on — @openav/midi's one anonymous page-load hit (packages/midi/README "Telemetry")
@@ -49,7 +50,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.2.1';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.2.2';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -73,15 +74,18 @@
   var onOP = false;
   try { onOP = /(^|\.)openprocessing\.org$/.test(g.location.hostname); } catch (e) { /* */ }
   O.dock = opt('dock', onOP ? 'top' : 'bottom') === 'top' ? 'top' : 'bottom';
+  O.corner = opt('corner', onOP ? 'left' : 'right') === 'left' ? 'left' : 'right';   // OpenProcessing puts OPC's icon top-right
   var profileChosen = opt('profile', null) != null;   // nobody chose ⇒ the panel follows the controller that is plugged in
   var zh = /^zh/i.test((g.navigator && g.navigator.language) || '');
   var T = zh
     ? { btn: 'MIDI：接鍵盤、按螢幕上的控制器，或用手機彈', phone: '📱 手機', close: '收起', hwOff: '沒接 MIDI 裝置', knob: '旋鈕', fader: '推桿', pad: '打擊墊',
         hwNone: '這個瀏覽器沒有 Web MIDI（Safari）：用螢幕上的控制器或手機', hwDenied: 'MIDI 權限被擋下了：網址列左邊可以重新允許',
-        scan: '用手機掃描，打開 MIDI 分頁就能彈這個作品', room: '房間', wired: '已接上 OPC' }
+        scan: '用手機掃描，打開 MIDI 分頁就能彈這個作品', room: '房間', wired: '已接上 OPC',
+        opMidi: 'OpenProcessing 的 OPC MIDI 對應開著：實體控制器交給它，OAV 只接螢幕上的控制器和手機' }
     : { btn: 'MIDI: plug in a controller, play the one on screen, or use a phone', phone: '📱 Phone', close: 'Hide', hwOff: 'No MIDI device', knob: 'knob', fader: 'fader', pad: 'pad',
         hwNone: 'No Web MIDI in this browser (Safari): use the on-screen controller or a phone',
-        hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room', wired: 'Wired to OPC' };
+        hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room', wired: 'Wired to OPC',
+        opMidi: "OpenProcessing's own OPC MIDI mapping is on: hardware is left to it; OAV wires the on-screen controller and the phone" };
 
   // ---------------------------------------------------------------- state the sketch reads
   function zeros(n) { var a = new Array(n); for (var i = 0; i < n; i++) a[i] = 0; return a; }
@@ -209,7 +213,19 @@
     pads.forEach(function (s, i) { out.push({ control: 'pad' + (i + 1), name: s.name }); });
     return out.filter(function (w) { return w.control; });
   }
-  function opcDrive(t, kind, n, value, on) {
+  // OpenProcessing (24.x) maps hardware to OPC itself when its OPC panel's MIDI switch is on (learned per sketch).
+  // Seen working = an OPC_update from the page right after our own hardware message: from then on hardware is its job,
+  // and OAV only wires what OpenProcessing cannot see — the on-screen controller and the phone.
+  var lastHw = -1e9, opMapsHardware = false;
+  var clock = function () { return typeof performance !== 'undefined' ? performance.now() : Date.now(); };
+  if (onOP && g.addEventListener) g.addEventListener('message', function (e) {
+    var d = e && e.data;
+    if (opMapsHardware || !d || d.messageType !== 'OPC_update' || clock() - lastHw > 250) return;
+    opMapsHardware = true;
+    if (g.console) console.info('[oav-p5] ' + T.opMidi);
+  });
+  function opcDrive(t, kind, n, value, on, source) {
+    if (source === 'hardware' && opMapsHardware) return;
     var o = opcRef(), x = o && opcTarget(t, kind, n);
     if (!x) return;
     try {
@@ -239,6 +255,7 @@
     var b0 = data[0] | 0, b1 = (data[1] | 0) & 127, b2 = (data[2] | 0) & 127;
     if (b0 < 0x80 || b0 >= 0xF0) return;               // clock (0xF8 ×24 per beat), sysex, running status: not for sketches
     var type = b0 & 0xF0, ch = (b0 & 0x0F) + 1, bytes = [b0, b1, b2];
+    if (source === 'hardware') lastHw = clock();
     if (source !== 'hardware' && virtualPort) virtualPort.emit(bytes);   // hardware already reaches the sketch's own Web MIDI code
     if (source !== 'screen' && view && view.ingest) { try { view.ingest(bytes); } catch (e) { /* never block a note on the faceplate */ } }
     var t = tableFor(dev || (source === 'screen' ? 'screen' : null));
@@ -254,7 +271,7 @@
       if (m) { CTL.pad[m[1]] = v; put('pad' + m[1], v); }
       call('midiMessage', [bytes, source]);
       call(on ? 'noteOn' : 'noteOff', on ? [b1, v, ch] : [b1, ch]);
-      if (m) { call(on ? 'padPressed' : 'padReleased', on ? [m[1], v] : [m[1]]); opcDrive(t, 'pad', m[1], v, on); }
+      if (m) { call(on ? 'padPressed' : 'padReleased', on ? [m[1], v] : [m[1]]); opcDrive(t, 'pad', m[1], v, on, source); }
       if (!m || !has(on ? 'padPressed' : 'padReleased')) call(on ? 'notePressed' : 'noteReleased', on ? [b1, v] : [b1]);
     } else if (type === 0xB0) {
       var c = b2 / 127, k = t && t.cc[ch + ':' + b1];
@@ -265,10 +282,10 @@
       if (k && (k[0] === 'knob' || k[0] === 'fader')) {
         CTL[k[0]][k[1]] = c; put(k[0] + k[1], c);
         call(k[0] === 'knob' ? 'knobMoved' : 'faderMoved', [k[1], c]);
-        opcDrive(t, k[0], k[1], c, true);
+        opcDrive(t, k[0], k[1], c, true, source);
       } else if (k && k[0] === 'pad') {                // a pad in CC mode
         CTL.pad[k[1]] = c; put('pad' + k[1], c);
-        call(c > 0 ? 'padPressed' : 'padReleased', c > 0 ? [k[1], c] : [k[1]]); opcDrive(t, 'pad', k[1], c, c > 0);
+        call(c > 0 ? 'padPressed' : 'padReleased', c > 0 ? [k[1], c] : [k[1]]); opcDrive(t, 'pad', k[1], c, c > 0, source);
       }
     } else if (type === 0xE0) {
       var raw = (b2 << 7) | b1;
@@ -354,7 +371,7 @@
   }
   function placeButton() {
     if (O.panel === 'off' || btn || !doc || !doc.body) return;
-    btn = el('button', 'position:fixed;right:10px;' + O.dock + ':10px;z-index:' + Z + ';display:flex;align-items:center;gap:6px;padding:6px 10px;' +
+    btn = el('button', 'position:fixed;' + O.corner + ':10px;' + O.dock + ':10px;z-index:' + Z + ';display:flex;align-items:center;gap:6px;padding:6px 10px;' +
       'border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(18,18,22,.78);color:#fff;font:600 13px system-ui,sans-serif;' +
       'cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)');
     btn.type = 'button'; btn.id = 'oav-p5-button';
@@ -383,7 +400,7 @@
       'backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)');
     dock.id = 'oav-p5-panel';
     fence(dock);
-    var bar = el('div', 'display:flex;gap:8px;align-items:center;margin-bottom:4px;font:600 12px system-ui,sans-serif;color:#ddd');
+    var bar = el('div', 'display:flex;gap:8px;align-items:center;margin-bottom:4px;font:600 12px system-ui,sans-serif;color:#ddd' + (O.corner === 'left' ? ';flex-direction:row-reverse' : ''));
     legend = el('div', 'flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9fd8ff;font-weight:500');
     var ph = el('button', 'padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;cursor:pointer;font:inherit', T.phone);
     ph.type = 'button'; ph.addEventListener('click', function () { openPhone(); });

@@ -218,3 +218,30 @@ test('a sketch that has its own `note` or `velocity` keeps them', () => {
   assert.equal(w.note, 'also mine');
   assert.equal(w.midi.last.note, 64);
 });
+
+test("on OpenProcessing, once its own OPC MIDI mapping is seen working, hardware is left to it (screen still wired)", () => {
+  const OPC = fakeOPC();
+  let onMessage = null;
+  const w = page({ OPC, location: { search: '', hostname: 'preview.openprocessing.org' },
+    addEventListener: (type, fn) => { if (type === 'message') onMessage = fn; } });
+  assert.equal(typeof onMessage, 'function');
+  w.midi.input([0xB0, 74, 127], 'hardware', 'arturia-minilab3');   // before: OAV drives radius
+  assert.equal(OPC.options.radius.value, 100);
+  // OpenProcessing's panel answers that knob with its own mapping right away
+  onMessage({ data: { messageType: 'OPC_update', message: JSON.stringify({ name: 'speed', value: 1.5 }) } });
+  w.midi.input([0xB0, 74, 0], 'hardware', 'arturia-minilab3');
+  assert.equal(OPC.options.radius.value, 100);                      // hardware: left alone now
+  assert.equal(w.knob1, 0);                                         // the p5-style name still follows it
+  w.midi.input([0xB0, 74, 0]);                                      // the on-screen controller: still wired
+  assert.equal(OPC.options.radius.value, 0);
+});
+
+test('an OPC_update with no hardware just before (someone dragging the panel) changes nothing', () => {
+  const OPC = fakeOPC();
+  let onMessage = null;
+  const w = page({ OPC, location: { search: '', hostname: 'preview.openprocessing.org' },
+    addEventListener: (type, fn) => { if (type === 'message') onMessage = fn; } });
+  onMessage({ data: { messageType: 'OPC_update', message: '{}' } });
+  w.midi.input([0xB0, 74, 127], 'hardware', 'arturia-minilab3');
+  assert.equal(OPC.options.radius.value, 100);
+});
