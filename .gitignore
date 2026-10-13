@@ -4,3 +4,7 @@ node_modules/
 
 # local screenshots from design reviews (docs/design/homepage-v2.md)
 docs/design/shots/
+
+# oav-p5 smoke run: local p5 builds and the panel screenshot
+p5/test/vendor/
+p5/test/*.png
