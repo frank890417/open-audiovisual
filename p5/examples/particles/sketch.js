@@ -1,10 +1,9 @@
-// 第一行：Open Audio Visual 一行注入——接上 MIDI 鍵盤、按右下角 🎹 的螢幕控制器，或用手機彈，都會進到下面的 noteOn。
+// 第一行：Open Audio Visual 一行注入。接上 MIDI 鍵盤、按右下角 🎹 的螢幕控制器，或用手機彈，都會進到下面。
 document.head.append(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
 
 // 按一個鍵：從那個音高的位置噴出一團粒子，按得越用力越多、飛得越高。
-// 轉任何一顆旋鈕：整體顏色跟著轉。按著不放的鍵，底下那一格會一直亮。
+// 旋鈕 1 轉顏色，旋鈕 2 調重力。按著不放的鍵，底下那一格會一直亮。
 let particles = [];
-let hue = 200;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -14,8 +13,10 @@ function setup() {
 
 function draw() {
   background(230, 30, 8, 30);
+  const hue = knob1 * 360;            // knob1：旋鈕 1，0–1，跟 mouseX 一樣直接讀
+  const gravity = 0.02 + knob2 * 0.3;
   for (const p of particles) {
-    p.vy += 0.08;
+    p.vy += gravity;
     p.x += p.vx;
     p.y += p.vy;
     p.life -= 1.2;
@@ -24,16 +25,16 @@ function draw() {
   }
   particles = particles.filter((p) => p.life > 0 && p.y < height + 40);
 
-  // midi.note[n] 是那個鍵現在的力度（0–1），放開就回到 0
   for (let n = 36; n <= 84; n++) {
-    if (midi.note[n] > 0) {
-      fill(hue, 60, 100, 40 + 60 * midi.note[n]);
+    if (noteIsDown(n)) {               // 像 keyIsDown()：這個鍵現在有沒有按著
+      fill(hue, 60, 100);
       rect(keyX(n) - 6, height - 14, 12, 14);
     }
   }
 }
 
-function noteOn(note, velocity) {
+// 像 keyPressed()：按下任何一個鍵（或打擊墊）就會叫它
+function notePressed(note, velocity) {
   const count = 6 + floor(velocity * 40);
   for (let i = 0; i < count; i++) {
     particles.push({
@@ -42,10 +43,6 @@ function noteOn(note, velocity) {
       size: random(4, 14) * (0.5 + velocity), life: 100, shift: random(-40, 40),
     });
   }
-}
-
-function controlChange(cc, value) {
-  hue = value * 360;
 }
 
 // MIDI 36（C2）到 84（C6）鋪滿畫面寬度

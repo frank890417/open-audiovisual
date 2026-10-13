@@ -104,3 +104,117 @@ test('a page that already has its own `midi` keeps it', () => {
   assert.equal(w.midi, mine);
   assert.equal(typeof w.OAVp5.note, 'object');
 });
+
+// ---------------------------------------------------------------- v0.2: the p5-style names, devices, OPC
+
+const json = (f) => JSON.parse(readFileSync(new URL(`../packages/midi/profiles/${f}`, import.meta.url), 'utf8'));
+const plain = (o) => JSON.parse(JSON.stringify(o));          // out of the vm realm before deepEqual
+
+test('the built-in MiniLab 3 and LPD8 tables are exactly what their profiles say', () => {
+  const w = page();
+  const [ml3, lpd8] = w.OAVp5._builtin;
+  assert.deepEqual(plain(w.OAVp5._tableOf(ml3)), plain(w.OAVp5._tableOf(json('arturia-minilab3.json'))));
+  assert.deepEqual(plain(w.OAVp5._tableOf(lpd8)), plain(w.OAVp5._tableOf(json('akai-lpd8.json'))));
+});
+
+test('knob1 is knob 1 on whichever controller played: MiniLab 3 CC 74, LPD8 CC 70', () => {
+  const moved = [];
+  const w = page({ knobMoved: (n, v) => moved.push([n, v]) });
+  assert.equal(w.knob1, 0);
+  w.midi.input([0xB0, 74, 127]);                              // the on-screen MiniLab 3 (default)
+  assert.equal(w.knob1, 1);
+  w.midi.input([0xB0, 70, 0], 'hardware', 'akai-lpd8');       // an LPD8: CC 70 is its K1
+  assert.equal(w.knob1, 0);
+  w.midi.input([0xB0, 74, 127], 'hardware', 'akai-lpd8');     // CC 74 on an LPD8 is K5, not knob 1
+  assert.equal(w.knob5, 1);
+  assert.equal(w.knob(5), 1);
+  w.midi.input([0xB0, 82, 127]);                              // MiniLab 3 fader S1
+  assert.equal(w.fader1, 1);
+  assert.deepEqual(moved, [[1, 1], [1, 0], [5, 1]]);
+  assert.equal(w.midi.last.control, 'fader1');
+});
+
+test('keys: notePressed / noteReleased, note, velocity, noteIsPressed, noteIsDown', () => {
+  const log = [];
+  const w = page({ notePressed: (n, v) => log.push(['p', n, v]), noteReleased: (n) => log.push(['r', n]) });
+  w.midi.input([0x90, 60, 127]);
+  assert.equal(w.note, 60); assert.equal(w.velocity, 1); assert.equal(w.noteIsPressed, true); assert.equal(w.noteIsDown(60), true);
+  w.midi.input([0x80, 60, 0]);
+  assert.equal(w.noteIsPressed, false); assert.equal(w.noteIsDown(60), false);
+  assert.deepEqual(log, [['p', 60, 1], ['r', 60]]);
+});
+
+test('pads: pad1 + padPressed; a pad calls notePressed only when the sketch has no padPressed', () => {
+  const a = [];
+  const w1 = page({ notePressed: (n) => a.push(n) });
+  w1.midi.input([0x99, 36, 127]);                             // MiniLab 3 pad 1 (ch 10, note 36)
+  assert.equal(w1.pad1, 1);
+  assert.deepEqual(a, [36]);
+  const b = [], c = [];
+  const w2 = page({ notePressed: (n) => b.push(n), padPressed: (n, v) => c.push([n, v]), padReleased: (n) => c.push(['up', n]) });
+  w2.midi.input([0x99, 37, 127]); w2.midi.input([0x89, 37, 0]);
+  assert.deepEqual(b, []);
+  assert.deepEqual(c, [[2, 1], ['up', 2]]);
+  assert.equal(w2.pad2, 0);
+});
+
+test('a controller OAV does not know: the first knob turned is knob1, the next knob2', async () => {
+  const w = page();
+  w.midi.input([0xB0, 20, 64], 'hardware', 'Mystery Box');   // profiles start loading; this message has no number yet
+  await new Promise((r) => setTimeout(r, 20));                // (in node the profile import fails ⇒ learn by order)
+  w.midi.input([0xB0, 20, 127], 'hardware', 'Mystery Box');
+  w.midi.input([0xB0, 9, 127], 'hardware', 'Mystery Box');
+  assert.equal(w.knob1, 1); assert.equal(w.knob2, 1);
+});
+
+/** a stand-in for OP Configurator 3000: the same `options` shape and calls OpenProcessing's preview uses */
+function fakeOPC() {
+  const o = {
+    options: {
+      radius: { name: 'radius', type: 'slider', value: 10, min: 0, max: 100, step: 1 },
+      speed: { name: 'speed', type: 'slider', value: 1, min: 0, max: 2, step: 0.1 },
+      hasFill: { name: 'hasFill', type: 'toggle', value: false },
+      boom: { name: 'boom', type: 'button', value: 'Boom' },
+    },
+    log: [],
+    set(n, v) { o.options[n].value = v; o.log.push(['set', n, v]); },
+    buttonPressed(n) { o.log.push(['down', n]); },
+    buttonReleased(n) { o.log.push(['up', n]); },
+  };
+  return o;
+}
+
+test('OPC: knobs drive the sliders in order (scaled, on the step), pads flip toggles and press buttons', () => {
+  const OPC = fakeOPC();
+  const w = page({ OPC });
+  w.midi.input([0xB0, 74, 64]);                               // knob 1 → radius 0..100, step 1
+  w.midi.input([0xB0, 71, 127]);                              // knob 2 → speed 0..2
+  w.midi.input([0x99, 36, 100]); w.midi.input([0x89, 36, 0]); // pad 1 → hasFill flips on press only
+  w.midi.input([0x99, 37, 100]); w.midi.input([0x89, 37, 0]); // pad 2 → boom: pressed, released
+  assert.equal(OPC.options.radius.value, 50);
+  assert.equal(OPC.options.speed.value, 2);
+  assert.equal(OPC.options.hasFill.value, true);
+  assert.deepEqual(OPC.log.slice(-2), [['down', 'boom'], ['up', 'boom']]);
+  assert.deepEqual(plain(w.midi.wiring()), [
+    { control: 'knob1', name: 'radius' }, { control: 'knob2', name: 'speed' },
+    { control: 'pad1', name: 'hasFill' }, { control: 'pad2', name: 'boom' }]);
+});
+
+test('OPC wiring can be turned off', () => {
+  const OPC = fakeOPC();
+  const w = page({ OPC, OAV_P5: { opc: 'off' } });
+  w.midi.input([0xB0, 74, 127]);
+  assert.equal(OPC.options.radius.value, 10);
+  assert.equal(w.knob1, 1);
+});
+
+test('a sketch that has its own `note` or `velocity` keeps them', () => {
+  const w = page({ velocity: 'mine' });                      // already there when the line ran
+  w.midi.input([0x90, 62, 127]);
+  assert.equal(w.velocity, 'mine');
+  assert.equal(w.note, 62);
+  w.note = 'also mine';                                       // assigned later by the sketch
+  w.midi.input([0x90, 64, 127]);
+  assert.equal(w.note, 'also mine');
+  assert.equal(w.midi.last.note, 64);
+});

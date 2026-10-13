@@ -2,45 +2,50 @@
  *
  *   document.head.append(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }))
  *
- * (or paste the same URL into OpenProcessing → Sketch → Libraries → Add Custom Library). Works in p5 1.x and 2.x
- * global mode; no import, nothing to call in setup().
+ * (or paste the same URL into OpenProcessing → Sketch → Libraries → Add Custom Library). p5 1.x and 2.x, global mode.
+ *
+ * Written the way p5 writes the mouse and the keyboard — read a variable, or define a function:
+ *   knob1 … knob8       0..1, the controller's knobs in the order printed on it      knob(n) for any n
+ *   fader1 … fader8     0..1, its faders                                              fader(n)
+ *   pad1 … pad16        velocity 0..1 while the pad is held, 0 when released          pad(n)
+ *   note, velocity      the last key (MIDI number) and how hard (0..1)                noteIsPressed, noteIsDown(60)
+ *   function notePressed(note, velocity) {}   function noteReleased(note) {}
+ *   function knobMoved(n, value) {}           function faderMoved(n, value) {}
+ *   function padPressed(n, velocity) {}       function padReleased(n) {}
+ *   (a pad also calls notePressed, unless the sketch defines padPressed)
+ * Knob 1 is knob 1 on any controller OAV knows (MiniLab 3, LPD8, nanoKONTROL2, … 21 profiles); on one it doesn't,
+ * the first knob you turn becomes knob1, the next knob2.
+ *
+ * With OP Configurator (OpenProcessing's OPC library): `OPC.slider('radius', 10)` names a variable and its range;
+ * this file then wires the controller to it, in order — knob 1 → the first slider, knob 2 → the second, the faders
+ * after the knobs, pad 1 → the first toggle or button. OPC's own panel moves with the knob.
  *
  * Three inputs, one stream of MIDI bytes, so a sketch never knows which one played:
  *   hardware  a real controller over Web MIDI (Chrome, Edge, Firefox; Safari and iPad have no Web MIDI)
- *   screen    the on-screen controller: 🎹 bottom-right opens @openav/midi's <oav-controller> (MiniLab 3 by default)
- *   phone     📱 in that panel: a QR code to the OAV remote page; the phone's MIDI tab plays this sketch over the relay
+ *   screen    🎹 bottom-right opens @openav/midi's <oav-controller>, the controller drawn on screen
+ *   phone     📱 in that panel: a QR code to the OAV remote page; its MIDI tab plays the sketch over the relay
  *
- * What the sketch gets:
- *   midi.note[60]   velocity 0..1 while key 60 is held, 0 once released       midi.held   notes held now, low → high
- *   midi.cc[74]     the last value of CC 74, 0..1                              midi.bend   pitch bend −1..1
- *   midi.last       the last message { type, note | cc, value, channel, source }
- *   function noteOn(note, velocity, channel) {}       define any of these four and they are called (velocity 0..1)
- *   function noteOff(note, channel) {}
- *   function controlChange(cc, value, channel) {}    value 0..1
- *   function midiMessage(bytes, source) {}            every message, raw; source = 'hardware' | 'screen' | 'phone'
- *   midi.on('noteOn', fn) → off()                     the same, for instance mode or several listeners
- *   midi.panel.open() / close() / toggle()            midi.phone() opens the QR card
- * A sketch that already uses Web MIDI itself (navigator.requestMIDIAccess, WebMidi.js) also hears the screen and the
- * phone: they appear as one more input port, "OAV Virtual MIDI", after the real ones (@openav/midi virtual-access.js).
+ * MIDI-level access for those who want it: midi.note[60], midi.cc[74] (0..1), midi.bend, midi.held, midi.last
+ * ({ type, note | cc, value, channel, source, control }), noteOn / noteOff / controlChange / pitchBend /
+ * midiMessage(bytes, source), midi.on(event, fn) → off(), midi.play(60, 0.8). A sketch with its own Web MIDI code
+ * (navigator.requestMIDIAccess, WebMidi.js) hears the screen and the phone as one more input, "OAV Virtual MIDI".
  *
- * Why one async line is enough: p5 1.x and 2.x start global mode on window `load`, and a script inserted while the page
- * is still loading holds `load` back until it has run, so this file is in place before setup(). A page that runs the
- * sketch after `load` gets it a moment later: callbacks still fire (they are looked up when a message arrives), but code
- * that reads `midi` in the first frames would throw — the Custom Library route has no such gap.
+ * Why one async line is enough: p5 1.x and 2.x start global mode on window `load`, and a script inserted while the
+ * page is still loading holds `load` back until it has run, so this file is in place before setup(). If it cannot
+ * load at all, code that reads knob1 / midi stops with "… is not defined": that message means the line did not load.
  *
- * Options (any of: window.OAV_P5 = {…} before this line, ?key=value on this script's URL, ?oav_key=value on the page —
+ * Options (window.OAV_P5 = {…} before the line, ?key=value on this script's URL, or ?oav_key=value on the page —
  * OpenProcessing passes its page's ?sketch_oav_key=value through to the sketch):
- *   hardware  auto (ask for Web MIDI at once; the browser remembers the answer) | click (ask from the 🎹 panel) | off
- *   panel     closed (just the 🎹 button) | open | off (no on-screen UI at all)
- *   profile   arturia-minilab3 | akai-lpd8 | any @openav/midi profile id
- *   shim      on | off — the virtual port for sketches that call requestMIDIAccess themselves
- *   relay     wss://remote.cheyuwu.com/relay (the OAV public relay)   room   a name; default one per browser
- *   telemetry off | on — @openav/midi's one anonymous page-load hit (README "Telemetry"); off here unless asked
+ *   hardware  auto (ask for Web MIDI at once; the browser remembers) | click (ask from the 🎹 panel) | off
+ *   panel     closed (just 🎹) | open | off        profile  the on-screen controller (default arturia-minilab3)
+ *   opc       on | off (wire the controller to OPC variables)   shim  on | off (the virtual port)
+ *   relay / room   the phone relay (wss://remote.cheyuwu.com/relay) and room (one per browser)
+ *   telemetry off | on — @openav/midi's one anonymous page-load hit (packages/midi/README "Telemetry")
  */
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var VERSION = '0.1.0';
+  var VERSION = '0.2.0';
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -57,81 +62,210 @@
   try { if (src) BASE = new URL('../', src).href; } catch (e) { /* */ }
   var O = {
     hardware: opt('hardware', 'auto'), panel: opt('panel', 'closed'), profile: opt('profile', 'arturia-minilab3'),
-    shim: opt('shim', 'on'), relay: opt('relay', 'wss://remote.cheyuwu.com/relay'), room: opt('room', ''),
+    opc: opt('opc', 'on'), shim: opt('shim', 'on'), relay: opt('relay', 'wss://remote.cheyuwu.com/relay'), room: opt('room', ''),
     telemetry: opt('telemetry', 'off'), remote: opt('remote', 'https://openaudiovisual.com/packages/remote/'),
   };
+  var profileChosen = opt('profile', null) != null;   // nobody chose ⇒ the panel follows the controller that is plugged in
   var zh = /^zh/i.test((g.navigator && g.navigator.language) || '');
   var T = zh
-    ? { btn: 'MIDI：接鍵盤、按螢幕上的控制器，或用手機彈', phone: '📱 手機', close: '收起', hwOff: '沒接 MIDI 裝置', hwAsk: '連接 MIDI',
+    ? { btn: 'MIDI：接鍵盤、按螢幕上的控制器，或用手機彈', phone: '📱 手機', close: '收起', hwOff: '沒接 MIDI 裝置', knob: '旋鈕', fader: '推桿', pad: '打擊墊',
         hwNone: '這個瀏覽器沒有 Web MIDI（Safari）：用螢幕上的控制器或手機', hwDenied: 'MIDI 權限被擋下了：網址列左邊可以重新允許',
-        scan: '用手機掃描，打開 MIDI 分頁就能彈這個作品', room: '房間' }
-    : { btn: 'MIDI: plug in a controller, play the one on screen, or use a phone', phone: '📱 Phone', close: 'Hide', hwOff: 'No MIDI device',
-        hwAsk: 'Connect MIDI', hwNone: 'No Web MIDI in this browser (Safari): use the on-screen controller or a phone',
-        hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room' };
+        scan: '用手機掃描，打開 MIDI 分頁就能彈這個作品', room: '房間', wired: '已接上 OPC' }
+    : { btn: 'MIDI: plug in a controller, play the one on screen, or use a phone', phone: '📱 Phone', close: 'Hide', hwOff: 'No MIDI device', knob: 'knob', fader: 'fader', pad: 'pad',
+        hwNone: 'No Web MIDI in this browser (Safari): use the on-screen controller or a phone',
+        hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room', wired: 'Wired to OPC' };
 
   // ---------------------------------------------------------------- state the sketch reads
-  function zeros() { var a = new Array(128); for (var i = 0; i < 128; i++) a[i] = 0; return a; }
-  var subs = { noteOn: [], noteOff: [], controlChange: [], pitchBend: [], midiMessage: [] };
+  function zeros(n) { var a = new Array(n); for (var i = 0; i < n; i++) a[i] = 0; return a; }
+  var EVENTS = ['notePressed', 'noteReleased', 'knobMoved', 'faderMoved', 'padPressed', 'padReleased',
+    'noteOn', 'noteOff', 'controlChange', 'pitchBend', 'midiMessage'];
+  var subs = {}; EVENTS.forEach(function (k) { subs[k] = []; });
+  var CTL = { knob: zeros(129), fader: zeros(129), pad: zeros(129) };   // 1-based, as printed on the controller
   var midi = {
-    version: VERSION, note: zeros(), cc: zeros(), bend: 0, held: [], last: null,
+    version: VERSION, note: zeros(128), cc: zeros(128), bend: 0, held: [], last: null,
     hardware: 'off', devices: [], options: O,
-    /** subscribe: 'noteOn' | 'noteOff' | 'controlChange' | 'pitchBend' | 'midiMessage' → returns off() */
+    /** subscribe to any of the events above (noteon / noteoff spelled either way) → returns off() */
     on: function (name, fn) {
       var k = String(name).replace(/^note(on|off)$/i, function (m, s) { return 'note' + (s.toLowerCase() === 'on' ? 'On' : 'Off'); });
-      if (!subs[k]) throw new Error('[oav-p5] unknown event "' + name + '" (noteOn, noteOff, controlChange, pitchBend, midiMessage)');
+      if (!subs[k]) throw new Error('[oav-p5] unknown event "' + name + '" (' + EVENTS.join(', ') + ')');
       subs[k].push(fn);
       return function () { var i = subs[k].indexOf(fn); if (i >= 0) subs[k].splice(i, 1); };
     },
     /** play as if a controller did: midi.play(60, 0.8) … midi.play(60, 0) releases; source 'screen' */
     play: function (note, velocity) { var v = Math.max(0, Math.min(127, Math.round((velocity == null ? 1 : velocity) * 127))); input([v > 0 ? 0x90 : 0x80, note & 127, v], 'screen'); },
-    /** feed raw bytes from anywhere (a WebSocket, a test): one message [status, d1, d2] */
-    input: function (bytes, source) { input(bytes, source || 'screen'); },
+    /** feed raw bytes from anywhere (a WebSocket, a test): one message [status, d1, d2]; device = a profile id */
+    input: function (bytes, source, device) { input(bytes, source || 'screen', device ? 'id:' + device : null); },
     connectHardware: function () { return connectHardware(); },
     panel: { open: function () { return openPanel(true); }, close: function () { return openPanel(false); }, toggle: function () { return openPanel(); } },
     phone: function () { return openPhone(); },
+    /** which controller drives which OPC variable right now: [{ control: 'knob1', name: 'radius' }, …] */
+    wiring: function (dev) { return opcWiring(tableFor(dev || 'screen')); },
   };
 
+  // p5-style globals: what the mouse is to p5 (mouseX, mouseIsPressed, keyIsDown) the controller is here
+  function setGlobal(name, value) { try { g[name] = value; } catch (e) { /* a sketch's own const of that name */ } }
+  // a name is ours only while it still holds what we last wrote: a sketch that has (or later assigns) its own
+  // `note` / `velocity` / `knob1` keeps it, and this file stops writing there (midi.last and knob(n) still work)
+  var owned = {};
+  function claim(name, value) { if (typeof g[name] === 'undefined') { setGlobal(name, value); if (g[name] === value) owned[name] = { v: value }; } }
+  function put(name, value) {
+    var o = owned[name];
+    if (!o) return;
+    if (g[name] !== o.v) { delete owned[name]; if (g.console) console.info('[oav-p5] the sketch has its own `' + name + '`: left alone'); return; }
+    setGlobal(name, value); o.v = value;
+  }
+  var GLOBALS = { note: 0, velocity: 0, noteIsPressed: false };
+  for (var gi = 1; gi <= 8; gi++) { GLOBALS['knob' + gi] = 0; GLOBALS['fader' + gi] = 0; }
+  for (gi = 1; gi <= 16; gi++) GLOBALS['pad' + gi] = 0;
+  var FUNCS = {
+    knob: function (n) { return CTL.knob[n | 0] || 0; },
+    fader: function (n) { return CTL.fader[n | 0] || 0; },
+    pad: function (n) { return CTL.pad[n | 0] || 0; },
+    noteIsDown: function (n) { return midi.note[n & 127] > 0; },
+  };
+
+  // ---------------------------------------------------------------- which control is which (per device)
+  // An OAV profile (packages/midi/profiles/*.json) → { cc: {'ch:cc': [kind, n]}, note: {'ch:note': [kind, n]} },
+  // knobs / faders / pads numbered in the order the profile lists them (= as printed on the device).
+  function tableOf(p) {
+    var t = { id: p.id, short: p.short, cc: {}, note: {}, count: { knob: 0, fader: 0, pad: 0 }, learn: false };
+    var dch = p.channel || 1;
+    (p.controls || []).forEach(function (c) {
+      var kind = c.type === 'knob' ? 'knob' : c.type === 'fader' ? 'fader' : c.type === 'pad' ? 'pad' : null;
+      if (!kind) return;
+      var n = ++t.count[kind], ch = c.ch || dch;
+      if (c.msg === 'cc' && c.cc != null) t.cc[ch + ':' + c.cc] = [kind, n];
+      else if (c.msg === 'note' && c.note != null) t.note[ch + ':' + c.note] = [kind, n];
+    });
+    return t;
+  }
+  // the two controllers the course recommends, in profile shape so they go through tableOf like any other;
+  // tests/p5-inject.test.js checks they still match packages/midi/profiles/*.json
+  function mini(id, short, port, knobs, faders, pads) {
+    var c = [];
+    knobs.forEach(function (cc) { c.push({ type: 'knob', msg: 'cc', cc: cc, ch: 1 }); });
+    faders.forEach(function (cc) { c.push({ type: 'fader', msg: 'cc', cc: cc, ch: 1 }); });
+    pads.forEach(function (n) { c.push({ type: 'pad', msg: 'note', note: n, ch: 10 }); });
+    return { id: id, short: short, kind: 'device', match: { ports: [port] }, channel: 1, controls: c };
+  }
+  var PADS = [36, 37, 38, 39, 40, 41, 42, 43];
+  var BUILTIN = [
+    mini('arturia-minilab3', 'minilab3', 'minilab\\s*3', [74, 71, 76, 77, 93, 18, 19, 16], [82, 83, 85, 17], PADS),
+    mini('akai-lpd8', 'lpd8', 'lpd\\s*8', [70, 71, 72, 73, 74, 75, 76, 77], [], PADS),
+  ];
+  var profiles = null, profilesLoading = null;      // every OAV profile, loaded the first time a device needs one
+  function loadProfiles() {
+    if (!profilesLoading) {
+      profilesLoading = Promise.resolve().then(function () { return import(BASE + 'packages/midi/profiles/index.js'); }).then(function (m) { profiles = m.PROFILES || []; tables = {}; return profiles; },
+        function (e) { if (g.console) console.info('[oav-p5] controller profiles did not load (' + (e && e.message) + '): unknown devices map knobs in the order you turn them'); profiles = []; return profiles; });
+    }
+    return profilesLoading;
+  }
+  function findProfile(ref) {      // ref: an id / short name, or a port name to match
+    var all = BUILTIN.concat(profiles || []);
+    for (var i = 0; i < all.length; i++) if (all[i].id === ref || all[i].short === ref) return all[i];
+    for (i = 0; i < all.length; i++) {
+      var p = all[i];
+      if (p.kind === 'device' && p.match && (p.match.ports || []).some(function (r) { return new RegExp(r, 'i').test(ref); })) return p;
+    }
+    return null;
+  }
+  var tables = {}, screenProfile = null;
+  function tableFor(dev) {          // dev: 'hw:<port>' · 'screen' · 'id:<profile>' · null (= the on-screen profile)
+    dev = dev || 'screen';
+    if (tables[dev]) return tables[dev];
+    var p = dev === 'screen' ? (screenProfile || findProfile(O.profile)) : findProfile(dev.replace(/^(hw|id):/, ''));
+    if (!p && profiles === null) { loadProfiles(); return null; }   // not known yet: fetch every profile; this one message goes by without a knob number
+    var t = p ? tableOf(p) : { id: null, cc: {}, note: {}, count: { knob: 0, fader: 0, pad: 0 }, learn: true };
+    tables[dev] = t;
+    return t;
+  }
+
+  // ---------------------------------------------------------------- the OPC bridge (OP Configurator 3000)
+  function opcRef() { try { return typeof OPC !== 'undefined' && OPC && OPC.options ? OPC : null; } catch (e) { return null; } }
+  function opcOf(types) {
+    var o = opcRef(), out = [];
+    if (!o || O.opc === 'off') return out;
+    for (var k in o.options) { var x = o.options[k]; if (x && types.indexOf(x.type) >= 0) out.push(x); }
+    return out;
+  }
+  // knobs → sliders in order, then the faders; pads → toggles and buttons in order
+  function opcTarget(t, kind, n) {
+    if (kind === 'pad') return opcOf(['toggle', 'button'])[n - 1] || null;
+    var sliders = opcOf(['slider']);
+    return sliders[(kind === 'fader' ? ((t && t.count.knob) || 0) : 0) + n - 1] || null;
+  }
+  function opcWiring(t) {
+    var out = [], sliders = opcOf(['slider']), pads = opcOf(['toggle', 'button']), nk = (t && t.count.knob) || 8, nf = (t && t.count.fader) || 0;
+    sliders.forEach(function (s, i) { out.push({ control: i < nk ? 'knob' + (i + 1) : i < nk + nf ? 'fader' + (i - nk + 1) : null, name: s.name }); });
+    pads.forEach(function (s, i) { out.push({ control: 'pad' + (i + 1), name: s.name }); });
+    return out.filter(function (w) { return w.control; });
+  }
+  function opcDrive(t, kind, n, value, on) {
+    var o = opcRef(), x = o && opcTarget(t, kind, n);
+    if (!x) return;
+    try {
+      if (x.type === 'slider') {
+        var lo = +x.min || 0, hi = x.max == null ? lo + 1 : +x.max, v = lo + value * (hi - lo);
+        if (x.step) v = Math.round((v - lo) / x.step) * x.step + lo;
+        o.set(x.name, +v.toFixed(6));
+      } else if (x.type === 'toggle') { if (on) o.set(x.name, !x.value); }
+      else if (x.type === 'button') { if (on) o.buttonPressed(x.name, x.value); else o.buttonReleased(x.name, x.value); }
+    } catch (e) { report('OPC', e); }
+  }
+
   // ---------------------------------------------------------------- one parser for every source
-  var CALLBACKS = { noteOn: 1, noteOff: 1, controlChange: 1, pitchBend: 1, midiMessage: 1 };
   function call(name, args) {
     var fn = g[name];
-    if (typeof fn === 'function' && CALLBACKS[name]) {
-      try { fn.apply(g, args); } catch (e) { report(name, e); }
-    }
+    if (typeof fn === 'function') { try { fn.apply(g, args); } catch (e) { report(name, e); } }
     var list = subs[name].slice();
     for (var i = 0; i < list.length; i++) { try { list[i].apply(g, args); } catch (e) { report(name, e); } }
   }
+  function has(name) { return typeof g[name] === 'function' || subs[name].length > 0; }
   // the sketch's own error: show it like p5 would (the console, with its stack), keep the MIDI loop alive
   function report(name, e) { if (g.console) console.error('[oav-p5] error inside ' + name + '():', e); }
 
   var virtualPort = null;                              // the shim's virtual input, once a sketch asked for Web MIDI
-  function input(data, source) {
+  function input(data, source, dev) {
     if (!data || data.length < 1) return;
     var b0 = data[0] | 0, b1 = (data[1] | 0) & 127, b2 = (data[2] | 0) & 127;
     if (b0 < 0x80 || b0 >= 0xF0) return;               // clock (0xF8 ×24 per beat), sysex, running status: not for sketches
     var type = b0 & 0xF0, ch = (b0 & 0x0F) + 1, bytes = [b0, b1, b2];
-    if (source !== 'hardware' && virtualPort) virtualPort.emit(bytes);   // hardware already reaches the sketch's own Web MIDI code directly
-    if (source !== 'screen' && view && view.ingest) { try { view.ingest(bytes); } catch (e) { /* the faceplate follows; never block a note on it */ } }
-    if (type === 0x90 && b2 > 0) {
-      var v = b2 / 127;
+    if (source !== 'hardware' && virtualPort) virtualPort.emit(bytes);   // hardware already reaches the sketch's own Web MIDI code
+    if (source !== 'screen' && view && view.ingest) { try { view.ingest(bytes); } catch (e) { /* never block a note on the faceplate */ } }
+    var t = tableFor(dev || (source === 'screen' ? 'screen' : null));
+    var on = type === 0x90 && b2 > 0;
+    if (type === 0x90 || type === 0x80) {
+      var v = on ? b2 / 127 : 0, m = t && t.note[ch + ':' + b1];
       midi.note[b1] = v;
-      if (midi.held.indexOf(b1) < 0) { midi.held.push(b1); midi.held.sort(function (a, b) { return a - b; }); }
-      midi.last = { type: 'noteOn', note: b1, value: v, channel: ch, source: source };
-      call('midiMessage', [bytes, source]); call('noteOn', [b1, v, ch]);
-    } else if (type === 0x80 || type === 0x90) {
-      midi.note[b1] = 0;
-      var i = midi.held.indexOf(b1); if (i >= 0) midi.held.splice(i, 1);
-      midi.last = { type: 'noteOff', note: b1, value: 0, channel: ch, source: source };
-      call('midiMessage', [bytes, source]); call('noteOff', [b1, ch]);
+      var i = midi.held.indexOf(b1);
+      if (on && i < 0) { midi.held.push(b1); midi.held.sort(function (a, b) { return a - b; }); } else if (!on && i >= 0) midi.held.splice(i, 1);
+      midi.last = { type: on ? 'noteOn' : 'noteOff', note: b1, value: v, channel: ch, source: source, control: m ? m[0] + m[1] : null };
+      put('noteIsPressed', midi.held.length > 0);
+      if (on) { put('note', b1); put('velocity', v); }
+      if (m) { CTL.pad[m[1]] = v; put('pad' + m[1], v); }
+      call('midiMessage', [bytes, source]);
+      call(on ? 'noteOn' : 'noteOff', on ? [b1, v, ch] : [b1, ch]);
+      if (m) { call(on ? 'padPressed' : 'padReleased', on ? [m[1], v] : [m[1]]); opcDrive(t, 'pad', m[1], v, on); }
+      if (!m || !has(on ? 'padPressed' : 'padReleased')) call(on ? 'notePressed' : 'noteReleased', on ? [b1, v] : [b1]);
     } else if (type === 0xB0) {
-      var c = b2 / 127;
+      var c = b2 / 127, k = t && t.cc[ch + ':' + b1];
+      if (!k && t && t.learn && t.count.knob < 128) { k = t.cc[ch + ':' + b1] = ['knob', ++t.count.knob]; }   // unknown device: in the order turned
       midi.cc[b1] = c;
-      midi.last = { type: 'controlChange', cc: b1, value: c, channel: ch, source: source };
+      midi.last = { type: 'controlChange', cc: b1, value: c, channel: ch, source: source, control: k ? k[0] + k[1] : null };
       call('midiMessage', [bytes, source]); call('controlChange', [b1, c, ch]);
+      if (k && (k[0] === 'knob' || k[0] === 'fader')) {
+        CTL[k[0]][k[1]] = c; put(k[0] + k[1], c);
+        call(k[0] === 'knob' ? 'knobMoved' : 'faderMoved', [k[1], c]);
+        opcDrive(t, k[0], k[1], c, true);
+      } else if (k && k[0] === 'pad') {                // a pad in CC mode
+        CTL.pad[k[1]] = c; put('pad' + k[1], c);
+        call(c > 0 ? 'padPressed' : 'padReleased', c > 0 ? [k[1], c] : [k[1]]); opcDrive(t, 'pad', k[1], c, c > 0);
+      }
     } else if (type === 0xE0) {
       var raw = (b2 << 7) | b1;
       midi.bend = raw >= 8192 ? (raw - 8192) / 8191 : (raw - 8192) / 8192;
-      midi.last = { type: 'pitchBend', value: midi.bend, channel: ch, source: source };
+      midi.last = { type: 'pitchBend', value: midi.bend, channel: ch, source: source, control: null };
       call('midiMessage', [bytes, source]); call('pitchBend', [midi.bend, ch]);
     } else {
       call('midiMessage', [bytes, source]);              // aftertouch, program change: raw only
@@ -143,16 +277,19 @@
   var realRequest = typeof nav.requestMIDIAccess === 'function' ? nav.requestMIDIAccess.bind(nav) : null;
   var access = null, wired = typeof WeakSet === 'function' ? new WeakSet() : null, asking = null;
   function setHardware(s) { midi.hardware = s; paintButton(); }
-  function onPortMessage(e) { input(e.data, 'hardware'); }
   function wire() {
     var names = [];
     access.inputs.forEach(function (inp) {
       if (inp.state === 'disconnected') return;
-      names.push(inp.name || 'MIDI');
+      var name = inp.name || 'MIDI';
+      names.push(name);
       if (wired && wired.has(inp)) return;
       if (wired) wired.add(inp);
+      if (!findProfile(name)) loadProfiles().then(function () { delete tables['hw:' + name]; });   // nanoKONTROL2 & co.
       // addEventListener, not onmidimessage: the sketch's own Web MIDI code may hold the same port object
-      try { inp.addEventListener('midimessage', onPortMessage); if (inp.open) inp.open().catch(function () {}); } catch (e) { /* */ }
+      try { inp.addEventListener('midimessage', function (e) { input(e.data, 'hardware', 'hw:' + name); }); if (inp.open) inp.open().catch(function () {}); } catch (e) { /* */ }
+      var p = findProfile(name);
+      if (p && !profileChosen) { O.profile = p.id; screenProfile = null; delete tables.screen; if (view) view.setAttribute('profile', p.id); }
     });
     midi.devices = names;
     setHardware(names.length ? 'connected' : 'waiting');
@@ -190,7 +327,7 @@
   }
 
   // ---------------------------------------------------------------- on-screen UI: 🎹 button → docked controller
-  var doc = g.document, btn = null, dock = null, view = null, panelOpen = false, loading = null;
+  var doc = g.document, btn = null, dock = null, view = null, legend = null, panelOpen = false, loading = null;
   var Z = 2147483000;
   function el(tag, css, text) { var e = doc.createElement(tag); if (css) e.style.cssText = css; if (text != null) e.textContent = text; return e; }
   // a press on the panel is not a press on the sketch (p5 listens on window)
@@ -201,6 +338,11 @@
     btn.firstChild.style.background = dot;
     var hint = midi.hardware === 'connected' ? midi.devices.join(', ') : midi.hardware === 'unavailable' ? T.hwNone : midi.hardware === 'denied' ? T.hwDenied : T.hwOff;
     btn.title = T.btn + '\n' + hint;
+  }
+  function wiringText() {
+    var w = opcWiring(tableFor('screen'));
+    if (!w.length) return '';
+    return T.wired + '：' + w.map(function (x) { var m = /^(\D+)(\d+)$/.exec(x.control); return T[m[1]] + m[2] + ' → ' + x.name; }).join(' · ');
   }
   function placeButton() {
     if (O.panel === 'off' || btn || !doc || !doc.body) return;
@@ -215,6 +357,8 @@
     doc.body.appendChild(btn);
     paintButton();
     if (O.panel === 'open') openPanel(true);
+    // say once, in the console, what the controller is wired to (OPC variables are declared by now)
+    setTimeout(function () { var s = wiringText(); if (s && g.console) console.info('[oav-p5] ' + s); }, 0);
   }
   function lift() { if (btn) btn.style.bottom = (10 + (panelOpen && dock ? dock.getBoundingClientRect().height : 0)) + 'px'; }
   function openPanel(want) {
@@ -223,7 +367,7 @@
     if (!on) { panelOpen = false; if (dock) dock.style.display = 'none'; lift(); return Promise.resolve(null); }
     if (O.hardware === 'click' && midi.hardware === 'off') connectHardware();
     if (!loading) loading = buildDock();
-    return loading.then(function (d) { panelOpen = true; d.style.display = 'block'; lift(); return d; });
+    return loading.then(function (d) { panelOpen = true; d.style.display = 'block'; if (legend) legend.textContent = wiringText(); lift(); return d; });
   }
   function buildDock() {
     dock = el('div', 'position:fixed;left:0;right:0;bottom:0;z-index:' + (Z - 1) + ';max-height:50vh;overflow:auto;display:none;' +
@@ -231,12 +375,13 @@
       'backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)');
     dock.id = 'oav-p5-panel';
     fence(dock);
-    var bar = el('div', 'display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-bottom:4px;font:600 12px system-ui,sans-serif;color:#ddd');
+    var bar = el('div', 'display:flex;gap:8px;align-items:center;margin-bottom:4px;font:600 12px system-ui,sans-serif;color:#ddd');
+    legend = el('div', 'flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9fd8ff;font-weight:500');
     var ph = el('button', 'padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;cursor:pointer;font:inherit', T.phone);
     ph.type = 'button'; ph.addEventListener('click', function () { openPhone(); });
     var cl = el('button', 'padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;cursor:pointer;font:inherit', T.close);
     cl.type = 'button'; cl.addEventListener('click', function () { openPanel(false); });
-    bar.appendChild(ph); bar.appendChild(cl);
+    bar.appendChild(legend); bar.appendChild(ph); bar.appendChild(cl);
     dock.appendChild(bar);
     doc.body.appendChild(dock);
     return import(BASE + 'packages/midi/element.js').then(function () {
@@ -252,10 +397,8 @@
         var d = e.detail || {};
         if (d.source !== 'ui' || !d.bytes || !d.bytes.length) return;
         var list = Array.isArray(d.bytes[0]) ? d.bytes : [d.bytes];
-        for (var i = 0; i < list.length; i++) input(list[i], 'screen');
+        for (var i = 0; i < list.length; i++) input(list[i], 'screen', 'screen');
       });
-      view.addEventListener('profilechange', function (e) { if (relay && e.detail) relay.config('midi', { profile: e.detail.profile }); });
-      dock.appendChild(view);
       // the whole faceplate in one screen: on a wide window, shrink it to the dock's height (the keys are at the bottom);
       // a narrow one (a phone) gets the element's own stacked layout instead
       var fit = function () {
@@ -267,7 +410,14 @@
         view.style.width = Math.max(320, Math.min(dock.clientWidth - 20, room * f.w / f.h)) + 'px';
         view.style.margin = '0 auto';
       };
-      view.addEventListener('ready', fit); view.addEventListener('profilechange', fit); g.addEventListener('resize', fit);
+      var follow = function () {                          // the device on screen decides what knob1 means for the screen
+        screenProfile = view.profileData || null; delete tables.screen;
+        if (legend) legend.textContent = wiringText();
+        if (relay && view.profileData) relay.config('midi', { profile: view.profileData.id });
+        fit();
+      };
+      view.addEventListener('ready', follow); view.addEventListener('profilechange', follow); g.addEventListener('resize', fit);
+      dock.appendChild(view);
       if (typeof ResizeObserver === 'function') new ResizeObserver(lift).observe(dock);
       return dock;
     }, function (e) {
@@ -294,10 +444,10 @@
         var url = O.relay + (O.relay.indexOf('?') >= 0 ? '&' : '?') + 'role=runner&room=' + encodeURIComponent(room) + '&id=p5-' + Math.random().toString(36).slice(2, 6);
         relay = new m.RelayClient({
           role: 'runner', room: room, url: url,
-          onStatus: function (c) { if (c.status === 'open') c.config('midi', { profile: (view && view.profile) || O.profile }); },
-          // the phone's MIDI tab sends `midi/virtual` = the raw bytes it played (it also sends midi/note/…, midi/cc/…
-          // for shows — taking only the bytes means every press counts once)
-          onSignal: function (name, value) { if (name === 'midi/virtual' && value && Array.isArray(value.data)) input(value.data, 'phone'); },
+          onStatus: function (c) { if (c.status === 'open') c.config('midi', { profile: (view && view.profileData && view.profileData.id) || O.profile }); },
+          // the phone's MIDI tab sends `midi/virtual` = the raw bytes it played, and which device it shows (it also
+          // sends midi/note/…, midi/cc/… for shows — taking only the bytes means every press counts once)
+          onSignal: function (name, value) { if (name === 'midi/virtual' && value && Array.isArray(value.data)) input(value.data, 'phone', value.device ? 'id:' + value.device : 'screen'); },
         });
         relay.connect();
       }, function (e) { if (g.console) console.warn('[oav-p5] relay client did not load', e); });
@@ -328,12 +478,16 @@
 
   // ---------------------------------------------------------------- publish + start
   g.OAVp5 = midi;
-  // `midi` is the name a sketch reads; a sketch that already has its own `midi` keeps it (then use OAVp5 / oavMidi)
+  midi._tableOf = tableOf; midi._builtin = BUILTIN;   // for tests: the built-in tables are checked against the profiles
+  // `midi` is the name MIDI-minded sketches read; a page that already has its own keeps it (then use OAVp5)
   var taken = false;
   try { taken = typeof g.midi !== 'undefined' && g.midi !== midi; } catch (e) { taken = true; }
-  if (!taken) { try { /* a top-level `let midi` elsewhere would shadow this; then the warning below is the hint */ g.midi = midi; } catch (e) { taken = true; } }
-  if (taken && g.console) console.warn('[oav-p5] this page already has a `midi` — read OAVp5.note / OAVp5.cc instead');
+  if (!taken) setGlobal('midi', midi);
+  else if (g.console) console.warn('[oav-p5] this page already has a `midi` — read OAVp5.note / OAVp5.cc instead');
   g.oavMidi = midi;
+  // the p5-style names: never over a sketch's own variable or function of the same name
+  Object.keys(GLOBALS).forEach(function (k) { claim(k, GLOBALS[k]); });
+  Object.keys(FUNCS).forEach(function (k) { if (typeof g[k] === 'undefined') setGlobal(k, FUNCS[k]); });
 
   if (O.hardware === 'auto') connectHardware();
   if (doc) { if (doc.body) placeButton(); else doc.addEventListener('DOMContentLoaded', placeButton); }
