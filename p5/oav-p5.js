@@ -38,6 +38,7 @@
  * OpenProcessing passes its page's ?sketch_oav_key=value through to the sketch):
  *   hardware  auto (ask for Web MIDI at once; the browser remembers) | click (ask from the 🎹 panel) | off
  *   panel     closed (just 🎹) | open | off        profile  the on-screen controller (default arturia-minilab3)
+ *   dock      bottom | top (default top on OpenProcessing, whose console floats over the bottom of the sketch)
  *   opc       on | off (wire the controller to OPC variables)   shim  on | off (the virtual port)
  *   relay / room   the phone relay (wss://remote.cheyuwu.com/relay) and room (one per browser)
  *   telemetry off | on — @openav/midi's one anonymous page-load hit (packages/midi/README "Telemetry")
@@ -45,7 +46,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var VERSION = '0.2.0';
+  var OAV_P5_VERSION = '0.2.1';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -65,6 +66,10 @@
     opc: opt('opc', 'on'), shim: opt('shim', 'on'), relay: opt('relay', 'wss://remote.cheyuwu.com/relay'), room: opt('room', ''),
     telemetry: opt('telemetry', 'off'), remote: opt('remote', 'https://openaudiovisual.com/packages/remote/'),
   };
+  // OpenProcessing's console floats over the bottom of the sketch, so there the 🎹 and its panel live at the top
+  var onOP = false;
+  try { onOP = /(^|\.)openprocessing\.org$/.test(g.location.hostname); } catch (e) { /* */ }
+  O.dock = opt('dock', onOP ? 'top' : 'bottom') === 'top' ? 'top' : 'bottom';
   var profileChosen = opt('profile', null) != null;   // nobody chose ⇒ the panel follows the controller that is plugged in
   var zh = /^zh/i.test((g.navigator && g.navigator.language) || '');
   var T = zh
@@ -82,7 +87,7 @@
   var subs = {}; EVENTS.forEach(function (k) { subs[k] = []; });
   var CTL = { knob: zeros(129), fader: zeros(129), pad: zeros(129) };   // 1-based, as printed on the controller
   var midi = {
-    version: VERSION, note: zeros(128), cc: zeros(128), bend: 0, held: [], last: null,
+    version: OAV_P5_VERSION, note: zeros(128), cc: zeros(128), bend: 0, held: [], last: null,
     hardware: 'off', devices: [], options: O,
     /** subscribe to any of the events above (noteon / noteoff spelled either way) → returns off() */
     on: function (name, fn) {
@@ -196,8 +201,8 @@
     return sliders[(kind === 'fader' ? ((t && t.count.knob) || 0) : 0) + n - 1] || null;
   }
   function opcWiring(t) {
-    var out = [], sliders = opcOf(['slider']), pads = opcOf(['toggle', 'button']), nk = (t && t.count.knob) || 8, nf = (t && t.count.fader) || 0;
-    sliders.forEach(function (s, i) { out.push({ control: i < nk ? 'knob' + (i + 1) : i < nk + nf ? 'fader' + (i - nk + 1) : null, name: s.name }); });
+    var out = [], sliders = opcOf(['slider']), pads = opcOf(['toggle', 'button']), nKnob = (t && t.count.knob) || 8, nFader = (t && t.count.fader) || 0;
+    sliders.forEach(function (s, i) { out.push({ control: i < nKnob ? 'knob' + (i + 1) : i < nKnob + nFader ? 'fader' + (i - nKnob + 1) : null, name: s.name }); });
     pads.forEach(function (s, i) { out.push({ control: 'pad' + (i + 1), name: s.name }); });
     return out.filter(function (w) { return w.control; });
   }
@@ -329,7 +334,7 @@
   // ---------------------------------------------------------------- on-screen UI: 🎹 button → docked controller
   var doc = g.document, btn = null, dock = null, view = null, legend = null, panelOpen = false, loading = null;
   var Z = 2147483000;
-  function el(tag, css, text) { var e = doc.createElement(tag); if (css) e.style.cssText = css; if (text != null) e.textContent = text; return e; }
+  function el(tag, css, txt) { var e = doc.createElement(tag); if (css) e.style.cssText = css; if (txt != null) e.textContent = txt; return e; }
   // a press on the panel is not a press on the sketch (p5 listens on window)
   function fence(e) { ['mousedown', 'mouseup', 'click', 'touchstart', 'touchend', 'pointerdown', 'pointerup', 'wheel', 'keydown', 'keyup'].forEach(function (t) { e.addEventListener(t, function (ev) { ev.stopPropagation(); }); }); }
   function paintButton() {
@@ -346,7 +351,7 @@
   }
   function placeButton() {
     if (O.panel === 'off' || btn || !doc || !doc.body) return;
-    btn = el('button', 'position:fixed;right:10px;bottom:10px;z-index:' + Z + ';display:flex;align-items:center;gap:6px;padding:6px 10px;' +
+    btn = el('button', 'position:fixed;right:10px;' + O.dock + ':10px;z-index:' + Z + ';display:flex;align-items:center;gap:6px;padding:6px 10px;' +
       'border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(18,18,22,.78);color:#fff;font:600 13px system-ui,sans-serif;' +
       'cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)');
     btn.type = 'button'; btn.id = 'oav-p5-button';
@@ -360,7 +365,7 @@
     // say once, in the console, what the controller is wired to (OPC variables are declared by now)
     setTimeout(function () { var s = wiringText(); if (s && g.console) console.info('[oav-p5] ' + s); }, 0);
   }
-  function lift() { if (btn) btn.style.bottom = (10 + (panelOpen && dock ? dock.getBoundingClientRect().height : 0)) + 'px'; }
+  function lift() { if (btn) btn.style[O.dock] = (10 + (panelOpen && dock ? dock.getBoundingClientRect().height : 0)) + 'px'; }
   function openPanel(want) {
     if (!doc || O.panel === 'off') return Promise.resolve(null);
     var on = want == null ? !panelOpen : !!want;
@@ -370,8 +375,8 @@
     return loading.then(function (d) { panelOpen = true; d.style.display = 'block'; if (legend) legend.textContent = wiringText(); lift(); return d; });
   }
   function buildDock() {
-    dock = el('div', 'position:fixed;left:0;right:0;bottom:0;z-index:' + (Z - 1) + ';max-height:50vh;overflow:auto;display:none;' +
-      'background:rgba(14,14,18,.92);border-top:1px solid rgba(255,255,255,.18);padding:6px 10px 10px;box-sizing:border-box;' +
+    dock = el('div', 'position:fixed;left:0;right:0;' + O.dock + ':0;z-index:' + (Z - 1) + ';max-height:50vh;overflow:auto;display:none;' +
+      'background:rgba(14,14,18,.92);border-' + (O.dock === 'top' ? 'bottom' : 'top') + ':1px solid rgba(255,255,255,.18);padding:6px 10px 10px;box-sizing:border-box;' +
       'backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)');
     dock.id = 'oav-p5-panel';
     fence(dock);
@@ -456,12 +461,12 @@
     if (card) { card.style.display = card.style.display === 'none' ? 'flex' : 'none'; return room; }
     card = el('div', 'position:fixed;inset:0;z-index:' + (Z + 1) + ';display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55)');
     fence(card);
-    var box = el('div', 'background:#fff;color:#111;border-radius:14px;padding:16px;max-width:300px;text-align:center;font:500 13px/1.45 system-ui,sans-serif');
+    var cardBox = el('div', 'background:#fff;color:#111;border-radius:14px;padding:16px;max-width:300px;text-align:center;font:500 13px/1.45 system-ui,sans-serif');
     var link = phoneURL(room);
     var qr = el('div', 'margin:0 auto 10px;width:220px;height:220px;display:flex;align-items:center;justify-content:center;color:#888', '…');
     var a = el('a', 'word-break:break-all;color:#225;font-size:11px', link); a.href = link; a.target = '_blank'; a.rel = 'noopener';
-    box.appendChild(qr); box.appendChild(el('div', 'margin-bottom:6px', T.scan)); box.appendChild(el('div', 'font:700 15px ui-monospace,monospace;margin-bottom:6px', T.room + ' ' + room)); box.appendChild(a);
-    card.appendChild(box);
+    cardBox.appendChild(qr); cardBox.appendChild(el('div', 'margin-bottom:6px', T.scan)); cardBox.appendChild(el('div', 'font:700 15px ui-monospace,monospace;margin-bottom:6px', T.room + ' ' + room)); cardBox.appendChild(a);
+    card.appendChild(cardBox);
     card.addEventListener('click', function (e) { if (e.target === card) card.style.display = 'none'; });
     doc.body.appendChild(card);
     // a small MIT QR encoder, loaded only when someone asks for a phone (qrcode-generator, Kazuhiko Arase)
