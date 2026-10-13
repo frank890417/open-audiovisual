@@ -14,7 +14,7 @@
 // ?origin=https://your.site restricts both directions to that page. `allow="midi"` lets hardware / midi-out work in the frame.
 
 import '../../packages/midi/element.js?v=32849c5';
-import { parseEmbedOptions, toParent, fromParent, EMBED_ATTRS, EMBED_EVENTS } from '../../packages/midi/embed.js?v=0cfcfd4';
+import { parseEmbedOptions, toParent, fromParent, EMBED_ATTRS, EMBED_EVENTS } from '../../packages/midi/embed.js?v=1b4606c';
 
 const q = new URLSearchParams(location.search);
 const o = parseEmbedOptions(q);
