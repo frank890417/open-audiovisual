@@ -1,5 +1,5 @@
-// 第一行：Open Audio Visual 一行注入。接上 MIDI 鍵盤、按右下角 🎹 的螢幕控制器，或用手機彈，都會進到下面。
-document.head.append(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
+// 第一行：Open Audio Visual 一行注入。接上 MIDI 鍵盤、按 🎹 打開螢幕上的控制器，或用手機彈，都會進到下面。
+document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
 
 // 按一個鍵：從那個音高的位置噴出一團粒子，按得越用力越多、飛得越高。
 // 旋鈕 1 轉顏色，旋鈕 2 調重力。按著不放的鍵，底下那一格會一直亮。

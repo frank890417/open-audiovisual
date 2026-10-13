@@ -4,7 +4,7 @@
 > would live. Until then, test with the jsDelivr URL of a pushed commit (see *Versions*).
 
 ```js
-document.head.append(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
+document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
 ```
 
 Put that as the first line of a p5.js sketch (OpenProcessing, the p5 editor, any page), or paste the URL into

@@ -1,6 +1,6 @@
 /* oav-p5.js — Open Audio Visual for p5.js sketches. One line at the top of a sketch and it plays from MIDI.
  *
- *   document.head.append(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }))
+ *   document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }))
  *
  * (or paste the same URL into OpenProcessing → Sketch → Libraries → Add Custom Library). p5 1.x and 2.x, global mode.
  *
@@ -29,6 +29,9 @@
  * ({ type, note | cc, value, channel, source, control }), noteOn / noteOff / controlChange / pitchBend /
  * midiMessage(bytes, source), midi.on(event, fn) → off(), midi.play(60, 0.8). A sketch with its own Web MIDI code
  * (navigator.requestMIDIAccess, WebMidi.js) hears the screen and the phone as one more input, "OAV Virtual MIDI".
+ *
+ * Why `prepend`: p5's friendly errors read the page's last <script> as the sketch; first in <head>, this file is never
+ * mistaken for the student's code (with `append` it was: p5 checked this file instead of theirs).
  *
  * Why one async line is enough: p5 1.x and 2.x start global mode on window `load`, and a script inserted while the
  * page is still loading holds `load` back until it has run, so this file is in place before setup(). If it cannot
@@ -339,8 +342,8 @@
   function fence(e) { ['mousedown', 'mouseup', 'click', 'touchstart', 'touchend', 'pointerdown', 'pointerup', 'wheel', 'keydown', 'keyup'].forEach(function (t) { e.addEventListener(t, function (ev) { ev.stopPropagation(); }); }); }
   function paintButton() {
     if (!btn) return;
-    var dot = { connected: '#5fe08a', waiting: '#e0c25f', asking: '#e0c25f', denied: '#e06b5f', unavailable: '#8a8a8a', off: '#8a8a8a' }[midi.hardware] || '#8a8a8a';
-    btn.firstChild.style.background = dot;
+    var hwColor = { connected: '#5fe08a', waiting: '#e0c25f', asking: '#e0c25f', denied: '#e06b5f', unavailable: '#8a8a8a', off: '#8a8a8a' }[midi.hardware] || '#8a8a8a';
+    btn.firstChild.style.background = hwColor;
     var hint = midi.hardware === 'connected' ? midi.devices.join(', ') : midi.hardware === 'unavailable' ? T.hwNone : midi.hardware === 'denied' ? T.hwDenied : T.hwOff;
     btn.title = T.btn + '\n' + hint;
   }

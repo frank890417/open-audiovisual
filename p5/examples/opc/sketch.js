@@ -1,5 +1,5 @@
 // 第一行：Open Audio Visual 一行注入。
-document.head.append(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
+document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
 
 // 用 OpenProcessing 的 OP Configurator 3000（右側 Libraries 打開它）宣告有名字、有範圍的變數；
 // OAV 會把控制器依序接上：第 1 個 slider 給旋鈕 1、第 2 個給旋鈕 2……，第 1 個 toggle 給打擊墊 1。
