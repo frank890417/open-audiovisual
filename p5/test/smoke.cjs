@@ -18,7 +18,8 @@ const SKETCH = fs.readFileSync(path.join(ROOT, 'p5/examples/particles/sketch.js'
 const OPC_SKETCH = fs.readFileSync(path.join(ROOT, 'p5/examples/opc/sketch.js'), 'utf8');
 // OP Configurator 3000 as OpenProcessing loads it (a classic script that declares `class OPC`), pinned
 const OPC_URL = 'https://cdn.jsdelivr.net/gh/msawired/OPC@v0.7.1/opc.min.js';
-const VERSIONS = (process.env.P5_VERSIONS || '1.11.11,2.0.5').split(',');
+// `2.3.4full` = the unminified build OpenProcessing serves by default (p5 friendly errors run only there)
+const VERSIONS = (process.env.P5_VERSIONS || '1.11.11,2.0.5,2.3.4full').split(',');
 const ROUTES = (process.env.ROUTES || 'line,slow,lib,opc').split(',');
 const MIME = { '.js': 'text/javascript', '.json': 'application/json', '.html': 'text/html', '.css': 'text/css' };
 
@@ -74,7 +75,7 @@ c.connect(); window.phone = c;</script>`);
   const baseline = {};
   for (const v of VERSIONS) {
     const p = await b.newPage(); const seen = [];
-    p.on('console', (m) => { if (m.type() === 'error') seen.push(m.text()); });
+    p.on('console', (m) => { if (m.type() === 'error' || /redeclared|🌸 p5\.js says/.test(m.text())) seen.push(m.text()); });
     await p.goto(`${base}/bare?v=${v}`); await p.waitForTimeout(1200); await p.close();
     baseline[v] = new Set(seen);
     if (seen.length) console.log(`ℹ️  p5 ${v} without oav-p5 already prints: ${[...baseline[v]].join(' | ')}`);
@@ -84,7 +85,12 @@ c.connect(); window.phone = c;</script>`);
     const ctx = await b.newContext({ viewport: { width: 900, height: 600 } });
     const p = await ctx.newPage(); const errs = [];
     p.on('pageerror', (e) => errs.push(e.message));
-    p.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|favicon/.test(m.text()) && !baseline[v].has(m.text())) errs.push('console: ' + m.text()); });
+    p.on('console', (m) => {
+      const t = m.text();
+      if (m.type() === 'error' && !/Failed to load resource|favicon/.test(t) && !baseline[v].has(t)) errs.push('console: ' + t);
+      // p5's friendly errors (only in the unminified build, the one OpenProcessing serves): nothing about this file
+      if (/redeclared|🌸 p5\.js says/.test(t) && !baseline[v].has(t)) errs.push('p5 FES: ' + t.slice(0, 160));
+    });
     const tag = `p5 ${v} ${route}`;
     await p.goto(`${base}/page?v=${v}&route=${route}`);
     await p.waitForTimeout(route === 'slow' ? 2600 : 1200);

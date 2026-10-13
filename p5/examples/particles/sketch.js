@@ -13,21 +13,21 @@ function setup() {
 
 function draw() {
   background(230, 30, 8, 30);
-  const hue = knob1 * 360;            // knob1：旋鈕 1，0–1，跟 mouseX 一樣直接讀
+  const baseHue = knob1 * 360;        // knob1：旋鈕 1，0–1，跟 mouseX 一樣直接讀（不叫 hue：p5 有 hue()）
   const gravity = 0.02 + knob2 * 0.3;
   for (const p of particles) {
     p.vy += gravity;
     p.x += p.vx;
     p.y += p.vy;
     p.life -= 1.2;
-    fill((hue + p.shift + 360) % 360, 70, 100, p.life);
+    fill((baseHue + p.shift + 360) % 360, 70, 100, p.life);
     circle(p.x, p.y, p.size);
   }
   particles = particles.filter((p) => p.life > 0 && p.y < height + 40);
 
   for (let n = 36; n <= 84; n++) {
     if (noteIsDown(n)) {               // 像 keyIsDown()：這個鍵現在有沒有按著
-      fill(hue, 60, 100);
+      fill(baseHue, 60, 100);
       rect(keyX(n) - 6, height - 14, 12, 14);
     }
   }

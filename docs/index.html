@@ -24,9 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=0cfcfd4">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=0cfcfd4">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {
@@ -67,6 +67,7 @@
     "Show control",
     "Score & Director",
     "MIDI controllers & embedding",
+    "p5.js in one line",
     "Phones, relay & surfaces",
     "Signals reference",
     "Package reference",
@@ -248,8 +249,17 @@
             <li><a href="#controllers-add-a-controller">Add a controller</a></li>
           </ol>
         </li>
+        <li class="toc-ch" data-ch="p5">
+          <a href="#p5"><span class="n">11</span><span class="t">p5.js in one line</span></a>
+          <ol class="toc-secs">
+            <li><a href="#p5-read-it-like-the-mouse">Read it like the mouse</a></li>
+            <li><a href="#p5-with-op-configurator">With OP Configurator</a></li>
+            <li><a href="#p5-three-inputs">Three inputs</a></li>
+            <li><a href="#p5-notes">Notes</a></li>
+          </ol>
+        </li>
         <li class="toc-ch" data-ch="phones">
-          <a href="#phones"><span class="n">11</span><span class="t">Phones, relay &amp; surfaces</span></a>
+          <a href="#phones"><span class="n">12</span><span class="t">Phones, relay &amp; surfaces</span></a>
           <ol class="toc-secs">
             <li><a href="#phones-set-it-up">Set it up</a></li>
             <li><a href="#phones-the-phone-app">The phone app</a></li>
@@ -266,7 +276,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="signals">
-          <a href="#signals"><span class="n">12</span><span class="t">Signals reference</span></a>
+          <a href="#signals"><span class="n">13</span><span class="t">Signals reference</span></a>
           <ol class="toc-secs">
             <li><a href="#signals-openav-midi">@openav/midi</a></li>
             <li><a href="#signals-openav-keys">@openav/keys</a></li>
@@ -283,7 +293,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="packages">
-          <a href="#packages"><span class="n">13</span><span class="t">Package reference</span></a>
+          <a href="#packages"><span class="n">14</span><span class="t">Package reference</span></a>
           <ol class="toc-secs">
             <li><a href="#packages-openav-core">@openav/core</a></li>
             <li><a href="#packages-openav-show">@openav/show</a></li>
@@ -311,7 +321,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="agents">
-          <a href="#agents"><span class="n">14</span><span class="t">For AI agents</span></a>
+          <a href="#agents"><span class="n">15</span><span class="t">For AI agents</span></a>
           <ol class="toc-secs">
             <li><a href="#agents-the-two-rules">The two rules</a></li>
             <li><a href="#agents-start-with-agents-md">Start with AGENTS.md</a></li>
@@ -324,13 +334,13 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="lab-integration">
-          <a href="#lab-integration"><span class="n">15</span><span class="t">Lab integration (the "lab" field)</span></a>
+          <a href="#lab-integration"><span class="n">16</span><span class="t">Lab integration (the "lab" field)</span></a>
           <ol class="toc-secs">
             <li><a href="#lab-integration-single-source-of-truth-controllers-and-inputs-live-here">Single source of truth: controllers and inputs live here</a></li>
           </ol>
         </li>
         <li class="toc-ch" data-ch="troubleshooting">
-          <a href="#troubleshooting"><span class="n">16</span><span class="t">Troubleshooting</span></a>
+          <a href="#troubleshooting"><span class="n">17</span><span class="t">Troubleshooting</span></a>
           <ol class="toc-secs">
             <li><a href="#troubleshooting-the-console-shows-a-ws-7457-error">The console shows a ws://…:7457 error</a></li>
             <li><a href="#troubleshooting-the-phone-join-card-says-relay-offline">The phone join card says "relay offline"</a></li>
@@ -353,7 +363,7 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="roadmap">
-          <a href="#roadmap"><span class="n">17</span><span class="t">Roadmap</span></a>
+          <a href="#roadmap"><span class="n">18</span><span class="t">Roadmap</span></a>
           <ol class="toc-secs">
             <li><a href="#roadmap-v0-x-the-chassis-now">v0.x — the chassis (now)</a></li>
             <li><a href="#roadmap-v1-x-the-show-grows">v1.x — the show grows</a></li>
@@ -370,7 +380,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">17 chapters · 165 sections · v0.1.0</p>
+      <p class="docs-stats">18 chapters · 169 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -1606,7 +1616,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=0cfcfd4"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2140,9 +2150,87 @@ output, so nothing loops.</p>
 <code>controller.exportMapping()</code> as the start of a profile.</p>
 </section>
 
+<section class="chapter" data-chapter="p5" aria-labelledby="p5">
+<h2 id="p5">p5.js in one line<a class="anchor" href="#p5" aria-label="Link to this section">#</a></h2>
+<p class="chapter-meta"><span class="chapter-n">11</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/p5.md">docs/p5.md</a></span></p>
+<p>Any p5.js sketch (OpenProcessing, the p5 editor, your own page) can be played from a MIDI controller, from a
+controller drawn on screen, or from a phone, by adding one line at the top:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+<p>On OpenProcessing you can instead paste the URL into Sketch → Libraries → <strong>+</strong> (custom library). Both work in p5 1.x
+and 2.x global mode, and nothing has to be called in <code>setup()</code>.</p>
+<h3 id="p5-read-it-like-the-mouse">Read it like the mouse<a class="anchor" href="#p5-read-it-like-the-mouse" aria-label="Link to this section">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> draw() {
+  background(knob1 * 255);                 <span class="tc">// knob 1, 0..1, like mouseX</span>
+  circle(width / 2, height / 2, 50 + knob2 * 300);
+}
+
+<span class="tk">function</span> notePressed(note, velocity) {     <span class="tc">// like keyPressed(): any key, or a pad</span>
+  circle(random(width), random(height), velocity * 100);
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>read</th><th>value</th></tr></thead>
+<tbody>
+<tr><td><code>knob1</code> … <code>knob8</code>, <code>knob(n)</code></td><td>0..1, numbered as printed on the controller</td></tr>
+<tr><td><code>fader1</code> … <code>fader8</code>, <code>fader(n)</code></td><td>0..1</td></tr>
+<tr><td><code>pad1</code> … <code>pad16</code>, <code>pad(n)</code></td><td>the velocity while the pad is held, 0 when released</td></tr>
+<tr><td><code>note</code>, <code>velocity</code></td><td>the last key (MIDI number) and how hard (0..1)</td></tr>
+<tr><td><code>noteIsPressed</code>, <code>noteIsDown(60)</code></td><td>like <code>keyIsPressed</code> and <code>keyIsDown()</code></td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>define</th><th>called when</th></tr></thead>
+<tbody>
+<tr><td><code>notePressed(note, velocity)</code>, <code>noteReleased(note)</code></td><td>a key goes down / up (a pad too, unless you define <code>padPressed</code>)</td></tr>
+<tr><td><code>knobMoved(n, value)</code>, <code>faderMoved(n, value)</code></td><td>a knob or fader moves</td></tr>
+<tr><td><code>padPressed(n, velocity)</code>, <code>padReleased(n)</code></td><td>a pad is hit / let go</td></tr>
+</tbody>
+</table></div>
+<p>Knob 1 is knob 1 on whichever controller played it: the <a href="#controllers">controller profiles</a> say which MIDI message
+each knob sends (MiniLab 3's knob 1 is CC 74, LPD8's is CC 70). On a controller OAV has no profile for, the first
+knob you turn becomes <code>knob1</code>, the next <code>knob2</code>. A sketch that already has its own <code>note</code>, <code>velocity</code> or <code>knob1</code>
+keeps it.</p>
+<h3 id="p5-with-op-configurator">With OP Configurator<a class="anchor" href="#p5-with-op-configurator" aria-label="Link to this section">#</a></h3>
+<p><a href="https://github.com/msawired/OPC" rel="noopener">OP Configurator 3000</a> (OPC, built into OpenProcessing) names a variable and its
+range. With this line on the page the controller is wired to those variables in order, with no mapping step:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">OPC.slider(<span class="ts">'radius'</span>, 60, 10, 300);   <span class="tc">// knob 1</span>
+OPC.slider(<span class="ts">'speed'</span>, 1, 0, 5, 0.1);   <span class="tc">// knob 2</span>
+OPC.toggle(<span class="ts">'trails'</span>, <span class="tk">true</span>);          <span class="tc">// pad 1 flips it</span></code></pre></div>
+<p>Knobs drive the sliders in the order they are declared, the faders continue after the knobs, and pads drive toggles
+and buttons. OPC's panel moves with the knob, and <code>parameterChanged()</code> fires as usual. OpenProcessing's OPC panel can
+also learn hardware by itself (its MIDI switch); once that mapping is seen working, hardware is left to it and this
+line keeps wiring the on-screen controller and the phone, which OpenProcessing cannot see. Avoid OPC names that are
+also p5 functions (<code>hue</code>, <code>fill</code>): p5 1.x clashes with them.</p>
+<h3 id="p5-three-inputs">Three inputs<a class="anchor" href="#p5-three-inputs" aria-label="Link to this section">#</a></h3>
+<div class="table-wrap"><table>
+<thead><tr><th>input</th><th>how</th></tr></thead>
+<tbody>
+<tr><td>a real controller</td><td>Web MIDI in Chrome, Edge and Firefox; the browser asks once</td></tr>
+<tr><td>the on-screen controller</td><td>🎹 opens <code>&lt;oav-controller&gt;</code>, which follows the controller you plug in</td></tr>
+<tr><td>a phone</td><td>📱 in that panel shows a QR code; the phone's <a href="#phones">remote page</a> MIDI tab plays the sketch</td></tr>
+</tbody>
+</table></div>
+<p>All three arrive as the same MIDI bytes, so the sketch cannot tell them apart (<code>midi.last.source</code> can). Safari and
+iPad have no Web MIDI; the on-screen controller and the phone still work there. A sketch that uses Web MIDI itself
+(<code>navigator.requestMIDIAccess</code>, WebMidi.js) also hears the screen and the phone, as one more input called
+<strong>OAV Virtual MIDI</strong>.</p>
+<h3 id="p5-notes">Notes<a class="anchor" href="#p5-notes" aria-label="Link to this section">#</a></h3>
+<ul>
+<li><strong>Why <code>prepend</code>.</strong> p5's friendly-error checker reads the last <code>&lt;script&gt;</code> on the page as your sketch. Put first, this
+file is never mistaken for your code.</li>
+<li><strong>Why one asynchronous line is enough.</strong> p5 starts global mode on the window's <code>load</code> event, and a script inserted
+while the page is loading holds <code>load</code> back until it has run, so <code>knob1</code> already exists in <code>setup()</code>.</li>
+<li><strong>When the line does not load</strong> (offline, a typo in the URL), code that reads <code>knob1</code> stops with <em>knob1 is not
+defined</em>.</li>
+<li><strong>Embedding a sketch elsewhere.</strong> OpenProcessing's own pages allow MIDI in the sketch frame. The embed code it gives
+you does not: add <code>allow="midi"</code> to that <code>&lt;iframe&gt;</code> if the embedded sketch should hear a hardware controller.</li>
+<li><strong>Options, MIDI-level access and tests</strong>: <a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>.
+Examples: <code>p5/examples/particles/</code> and <code>p5/examples/opc/</code>.</li>
+</ul>
+</section>
+
 <section class="chapter" data-chapter="phones" aria-labelledby="phones">
 <h2 id="phones">Phones, relay &amp; surfaces<a class="anchor" href="#phones" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">11</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/remote.md">docs/remote.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">12</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/remote.md">docs/remote.md</a></span></p>
 <p>Phones and iPads can be controllers: their motion sensors, a piano, and a
 TouchOSC-style control panel that grows from the world's params. Three packages
 do it, each usable alone:</p>
@@ -2388,7 +2476,7 @@ network or a room name nobody will guess.</p>
 
 <section class="chapter" data-chapter="signals" aria-labelledby="signals">
 <h2 id="signals">Signals reference<a class="anchor" href="#signals" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">12</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/signals.md">docs/signals.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">13</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/signals.md">docs/signals.md</a></span></p>
 <p>Signals are the single currency of the input layer: named, normalized, source-blind.
 This page lists every signal published by the built-in input packages.</p>
 <p>Conventions:</p>
@@ -2596,7 +2684,7 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">13</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">14</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
 <p>Twenty-three packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
@@ -2616,7 +2704,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=0cfcfd4"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -2942,7 +3030,7 @@ routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
 
 <section class="chapter" data-chapter="agents" aria-labelledby="agents">
 <h2 id="agents">For AI agents<a class="anchor" href="#agents" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">14</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/agents.md">docs/agents.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">15</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/agents.md">docs/agents.md</a></span></p>
 <p>Worlds are visual code, and coding agents are good at code. A person describes a
 performance ("a jellyfish world that blooms on consonant chords"); an agent
 writes the world inside a chassis that already handles MIDI, mapping, timeline,
@@ -3038,7 +3126,7 @@ the world listens to.</li>
 
 <section class="chapter" data-chapter="lab-integration" aria-labelledby="lab-integration">
 <h2 id="lab-integration">Lab integration (the <code>"lab"</code> field)<a class="anchor" href="#lab-integration" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">15</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/lab-integration.md">docs/lab-integration.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">16</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/lab-integration.md">docs/lab-integration.md</a></span></p>
 <p><a href="https://lab.cheyuwu.com" rel="noopener">cheyuwu-lab</a> runs sketches in plain <code>&lt;script&gt;</code> pages, so it builds a
 classic-script bundle of each OAV package it wants. Instead of a hard-coded list, the lab's generator
 (<code>tools/lab-dev/build-modules.mjs</code>) scans <code>packages/*/package.json</code> and builds every package that declares a
@@ -3083,7 +3171,7 @@ capture/record API), and the dev server's relay and routes. A new kind of contro
 
 <section class="chapter" data-chapter="troubleshooting" aria-labelledby="troubleshooting">
 <h2 id="troubleshooting">Troubleshooting<a class="anchor" href="#troubleshooting" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">16</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/troubleshooting.md">docs/troubleshooting.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">17</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/troubleshooting.md">docs/troubleshooting.md</a></span></p>
 <p>Real problems, found in rehearsals and in the code, with what to do about them.</p>
 <h3 id="troubleshooting-the-console-shows-a-ws-7457-error">The console shows a ws://…:7457 error<a class="anchor" href="#troubleshooting-the-console-shows-a-ws-7457-error" aria-label="Link to this section">#</a></h3>
 <p>Every show made with <code>createShow()</code> tries to stream to the backstage monitor at
@@ -3222,7 +3310,7 @@ point elsewhere, with <code>new MonitorFeed({ url: 'ws://host:7460' })</code> an
 
 <section class="chapter" data-chapter="roadmap" aria-labelledby="roadmap">
 <h2 id="roadmap">Roadmap<a class="anchor" href="#roadmap" aria-label="Link to this section">#</a></h2>
-<p class="chapter-meta"><span class="chapter-n">17</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">docs/roadmap.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">18</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/roadmap.md">docs/roadmap.md</a></span></p>
 <p>Guiding rule: the framework only grows features that a real show demanded.
 (This is how the core was born — every module here drove an actual performance
 before it was generalized.)</p>
@@ -3310,6 +3398,6 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=0cfcfd4"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 </body>
 </html>

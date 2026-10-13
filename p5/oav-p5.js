@@ -50,7 +50,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.2.3';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.2.4';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -62,7 +62,8 @@
   try { new URLSearchParams(g.location.search).forEach(function (v, k) { if (k.indexOf('oav_') === 0) page[k.slice(4)] = v; }); } catch (e) { /* */ }
   var user = (g.OAV_P5 && typeof g.OAV_P5 === 'object') ? g.OAV_P5 : {};
   function opt(k, d) { return user[k] != null ? String(user[k]) : page[k] != null ? page[k] : fromSrc[k] != null ? fromSrc[k] : d; }
-  // where the rest of OAV lives: next to this file (a jsDelivr tag pins the whole tree), else the site
+  // where the rest of OAV lives: next to this file (a jsDelivr tag pins the whole tree), else the site; the imports
+  // carry ?v=p5-<version> because the site's .js is cached for 4 h (tools/stamp-version.mjs does this for pages)
   var BASE = 'https://openaudiovisual.com/';
   try { if (src) BASE = new URL('../', src).href; } catch (e) { /* */ }
   var O = {
@@ -170,7 +171,7 @@
   var profiles = null, profilesLoading = null;      // every OAV profile, loaded the first time a device needs one
   function loadProfiles() {
     if (!profilesLoading) {
-      profilesLoading = Promise.resolve().then(function () { return import(BASE + 'packages/midi/profiles/index.js'); }).then(function (m) { profiles = m.PROFILES || []; tables = {}; return profiles; },
+      profilesLoading = Promise.resolve().then(function () { return import(BASE + 'packages/midi/profiles/index.js?v=p5-' + OAV_P5_VERSION); }).then(function (m) { profiles = m.PROFILES || []; tables = {}; return profiles; },
         function (e) { if (g.console) console.info('[oav-p5] controller profiles did not load (' + (e && e.message) + '): unknown devices map knobs in the order you turn them'); profiles = []; return profiles; });
     }
     return profilesLoading;
@@ -313,8 +314,16 @@
       if (wired && wired.has(inp)) return;
       if (wired) wired.add(inp);
       if (!findProfile(name)) loadProfiles().then(function () { delete tables['hw:' + name]; });   // nanoKONTROL2 & co.
-      // addEventListener, not onmidimessage: the sketch's own Web MIDI code may hold the same port object
-      try { inp.addEventListener('midimessage', function (e) { input(e.data, 'hardware', 'hw:' + name); }); if (inp.open) inp.open().catch(function () {}); } catch (e) { /* */ }
+      // A listener, plus onmidimessage only while nobody else has set one: the sketch's own Web MIDI code (WebMidi.js
+      // sets onmidimessage) may hold the same port object, and a browser that opens a port only for onmidimessage still
+      // delivers. The same event reaching both is counted once.
+      var seen = null;
+      var onPort = function (e) { if (e === seen) return; seen = e; input(e.data, 'hardware', 'hw:' + name); };
+      try {
+        inp.addEventListener('midimessage', onPort);
+        if (!inp.onmidimessage) inp.onmidimessage = onPort;
+        if (inp.open) inp.open().catch(function () {});
+      } catch (e) { /* */ }
       var p = findProfile(name);
       if (p && !profileChosen) { O.profile = p.id; screenProfile = null; delete tables.screen; if (view) view.setAttribute('profile', p.id); }
     });
@@ -342,7 +351,7 @@
   // Safari / iPad included: there the sketch gets the virtual port alone, so a WebMidi.js sketch still runs
   if (O.shim !== 'off' && g.navigator) {
     nav.requestMIDIAccess = function (opts) {
-      return import(BASE + 'packages/midi/virtual-access.js').then(function (m) {
+      return import(BASE + 'packages/midi/virtual-access.js?v=p5-' + OAV_P5_VERSION).then(function (m) {
         var make = function () {
           if (!virtualPort) virtualPort = m.createVirtualMIDIAccess({ name: 'OAV Virtual MIDI', manufacturer: 'open-audiovisual', id: 'oav-p5' });
           return virtualPort;
@@ -427,7 +436,7 @@
     var wait = el('div', 'padding:18px;text-align:center;color:#aaa;font:500 13px system-ui,sans-serif', T.loading);
     dock.appendChild(wait);
     doc.body.appendChild(dock);
-    return import(BASE + 'packages/midi/element.js').then(function () {
+    return import(BASE + 'packages/midi/element.js?v=p5-' + OAV_P5_VERSION).then(function () {
       view = doc.createElement('oav-controller');
       view.setAttribute('profile', O.profile);
       view.setAttribute('picker', '');
@@ -485,7 +494,7 @@
     var room = roomName();
     if (!relay) {
       relay = { config: function () {} };              // placeholder until the client module is in
-      import(BASE + 'packages/relay/index.js').then(function (m) {
+      import(BASE + 'packages/relay/index.js?v=p5-' + OAV_P5_VERSION).then(function (m) {
         var url = O.relay + (O.relay.indexOf('?') >= 0 ? '&' : '?') + 'role=runner&room=' + encodeURIComponent(room) + '&id=p5-' + Math.random().toString(36).slice(2, 6);
         relay = new m.RelayClient({
           role: 'runner', room: room, url: url,
