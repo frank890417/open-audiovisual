@@ -50,7 +50,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.2.2';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.2.3';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -75,16 +75,18 @@
   try { onOP = /(^|\.)openprocessing\.org$/.test(g.location.hostname); } catch (e) { /* */ }
   O.dock = opt('dock', onOP ? 'top' : 'bottom') === 'top' ? 'top' : 'bottom';
   O.corner = opt('corner', onOP ? 'left' : 'right') === 'left' ? 'left' : 'right';   // OpenProcessing puts OPC's icon top-right
+  var DEBUG = opt('debug', '') !== '' && opt('debug', '') !== '0';   // ?debug=1: say in the console what the 🎹 sees
+  function dbg() { if (DEBUG && g.console) console.log.apply(console, ['[oav-p5 debug]'].concat([].slice.call(arguments))); }
   var profileChosen = opt('profile', null) != null;   // nobody chose ⇒ the panel follows the controller that is plugged in
   var zh = /^zh/i.test((g.navigator && g.navigator.language) || '');
   var T = zh
     ? { btn: 'MIDI：接鍵盤、按螢幕上的控制器，或用手機彈', phone: '📱 手機', close: '收起', hwOff: '沒接 MIDI 裝置', knob: '旋鈕', fader: '推桿', pad: '打擊墊',
         hwNone: '這個瀏覽器沒有 Web MIDI（Safari）：用螢幕上的控制器或手機', hwDenied: 'MIDI 權限被擋下了：網址列左邊可以重新允許',
-        scan: '用手機掃描，打開 MIDI 分頁就能彈這個作品', room: '房間', wired: '已接上 OPC',
+        scan: '用手機掃描，打開 MIDI 分頁就能彈這個作品', room: '房間', wired: '已接上 OPC', loading: '載入控制器中…（第一次要幾秒）',
         opMidi: 'OpenProcessing 的 OPC MIDI 對應開著：實體控制器交給它，OAV 只接螢幕上的控制器和手機' }
     : { btn: 'MIDI: plug in a controller, play the one on screen, or use a phone', phone: '📱 Phone', close: 'Hide', hwOff: 'No MIDI device', knob: 'knob', fader: 'fader', pad: 'pad',
         hwNone: 'No Web MIDI in this browser (Safari): use the on-screen controller or a phone',
-        hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room', wired: 'Wired to OPC',
+        hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room', wired: 'Wired to OPC', loading: 'Loading the controller… (a few seconds the first time)',
         opMidi: "OpenProcessing's own OPC MIDI mapping is on: hardware is left to it; OAV wires the on-screen controller and the phone" };
 
   // ---------------------------------------------------------------- state the sketch reads
@@ -369,21 +371,33 @@
     if (!w.length) return '';
     return T.wired + '：' + w.map(function (x) { var m = /^(\D+)(\d+)$/.exec(x.control); return T[m[1]] + m[2] + ' → ' + x.name; }).join(' · ');
   }
+  // one click handler on the window (capture), not on the button: a host page that re-renders its <body> after this file
+  // ran leaves a copy of the 🎹 with no listeners; the id still finds it
+  function onClick(e) {
+    var b = e.target && e.target.closest && e.target.closest('#oav-p5-button');
+    if (DEBUG && e.type === 'pointerdown') { var top = doc.elementFromPoint(e.clientX, e.clientY); dbg('pointerdown', Math.round(e.clientX), Math.round(e.clientY), 'target', e.target.tagName + '#' + e.target.id, 'top', top && (top.tagName + '#' + top.id), 'button is ours', doc.getElementById('oav-p5-button') === btn); }
+    if (!b || e.type !== 'click') return;
+    if (b !== btn) { dbg('the page replaced the 🎹: re-adopting the copy'); btn = b; fence(btn); paintButton(); }
+    e.stopPropagation(); openPanel(); try { btn.blur(); } catch (x) { /* */ }
+  }
   function placeButton() {
     if (O.panel === 'off' || btn || !doc || !doc.body) return;
+    g.addEventListener('click', onClick, true);
+    if (DEBUG) g.addEventListener('pointerdown', onClick, true);
     btn = el('button', 'position:fixed;' + O.corner + ':10px;' + O.dock + ':10px;z-index:' + Z + ';display:flex;align-items:center;gap:6px;padding:6px 10px;' +
       'border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(18,18,22,.78);color:#fff;font:600 13px system-ui,sans-serif;' +
       'cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)');
     btn.type = 'button'; btn.id = 'oav-p5-button';
     btn.appendChild(el('span', 'width:7px;height:7px;border-radius:50%;background:#8a8a8a;display:inline-block'));
     btn.appendChild(el('span', '', '🎹'));
-    btn.addEventListener('click', function () { openPanel(); btn.blur(); });
     fence(btn);
     doc.body.appendChild(btn);
     paintButton();
     if (O.panel === 'open') openPanel(true);
     // say once, in the console, what the controller is wired to (OPC variables are declared by now)
-    setTimeout(function () { var s = wiringText(); if (s && g.console) console.info('[oav-p5] ' + s); }, 0);
+    var hint = function () { setTimeout(function () { var s = wiringText(); if (s && g.console) console.info('[oav-p5] ' + s); }, 0); };
+    if (doc.readyState === 'complete') hint(); else g.addEventListener('load', hint);
+    if (DEBUG) setTimeout(function () { dbg('2 s after placing: the 🎹 in the page is ours:', doc.getElementById('oav-p5-button') === btn, '| base', BASE); }, 2000);
   }
   function lift() { if (btn) btn.style[O.dock] = (10 + (panelOpen && dock ? dock.getBoundingClientRect().height : 0)) + 'px'; }
   function openPanel(want) {
@@ -392,7 +406,9 @@
     if (!on) { panelOpen = false; if (dock) dock.style.display = 'none'; lift(); return Promise.resolve(null); }
     if (O.hardware === 'click' && midi.hardware === 'off') connectHardware();
     if (!loading) loading = buildDock();
-    return loading.then(function (d) { panelOpen = true; d.style.display = 'block'; if (legend) legend.textContent = wiringText(); lift(); return d; });
+    // show the panel at once (the controller itself can take seconds to arrive the first time), so a click is never silent
+    panelOpen = true; dock.style.display = 'block'; lift(); dbg('panel open; controller', view ? 'ready' : 'loading');
+    return loading.then(function (d) { if (panelOpen) { d.style.display = 'block'; if (legend) legend.textContent = wiringText(); lift(); } return d; });
   }
   function buildDock() {
     dock = el('div', 'position:fixed;left:0;right:0;' + O.dock + ':0;z-index:' + (Z - 1) + ';max-height:50vh;overflow:auto;display:none;' +
@@ -408,6 +424,8 @@
     cl.type = 'button'; cl.addEventListener('click', function () { openPanel(false); });
     bar.appendChild(legend); bar.appendChild(ph); bar.appendChild(cl);
     dock.appendChild(bar);
+    var wait = el('div', 'padding:18px;text-align:center;color:#aaa;font:500 13px system-ui,sans-serif', T.loading);
+    dock.appendChild(wait);
     doc.body.appendChild(dock);
     return import(BASE + 'packages/midi/element.js').then(function () {
       view = doc.createElement('oav-controller');
@@ -442,10 +460,12 @@
         fit();
       };
       view.addEventListener('ready', follow); view.addEventListener('profilechange', follow); g.addEventListener('resize', fit);
+      if (wait.parentNode) wait.parentNode.removeChild(wait);
       dock.appendChild(view);
       if (typeof ResizeObserver === 'function') new ResizeObserver(lift).observe(dock);
       return dock;
     }, function (e) {
+      if (wait.parentNode) wait.parentNode.removeChild(wait);
       dock.appendChild(el('div', 'color:#e06b5f;font:12px system-ui,sans-serif', '[oav-p5] could not load the on-screen controller: ' + (e && e.message)));
       return dock;
     });
