@@ -407,12 +407,13 @@ export class ControllerCanvas {
   }
 
   _label(ctx, c, cell, u) {
+    if (c.label === '') return;
     this._text(ctx, String(c.label ?? c.id), cell.x + cell.w / 2, cell.y + cell.h - 0.15 * u, { size: 1.15 * u, color: this.theme.label, align: 'center', baseline: 'bottom' });
   }
 
   _knob(ctx, c, cell, u, col, hot, now) {
     const st = this.controller.get(c.id), T = this.theme;
-    const lh = 1.7 * u, d = Math.max(2, Math.min(cell.w, cell.h - lh) * 0.96), k = d / 100;
+    const lh = c.label === '' ? 0 : 1.7 * u, d = Math.max(2, Math.min(cell.w, cell.h - lh) * 0.96), k = d / 100;   // label: '' = no label, no room kept for one
     const cx = cell.x + cell.w / 2, cy = cell.y + (cell.h - lh - d) / 2 + d / 2;
     const endless = c.type === 'encoder' && c.relative;
     ctx.lineCap = 'round';
@@ -431,7 +432,7 @@ export class ControllerCanvas {
       }
     }
     ctx.beginPath(); ctx.arc(cx, cy, (endless ? 36 : 30) * k, 0, Math.PI * 2);
-    ctx.fillStyle = T.cap; ctx.fill(); ctx.strokeStyle = '#0d0e11'; ctx.lineWidth = 2 * k; ctx.stroke();
+    ctx.fillStyle = c.cap || T.cap; ctx.fill(); ctx.strokeStyle = '#0d0e11'; ctx.lineWidth = 2 * k; ctx.stroke();
     if (hot > 0.01) { ctx.save(); ctx.globalAlpha = 0.5 * hot; ctx.strokeStyle = col; ctx.lineWidth = 2.5 * k; ctx.stroke(); ctx.restore(); }
     const a = deg((endless ? ((st.turns || 0) * 15) % 360 : -135 + clamp01(st.value) * 270) - 90);
     const r0 = (endless ? 16 : 12) * k, r1 = (endless ? 30 : 24) * k;
@@ -484,9 +485,9 @@ export class ControllerCanvas {
     const x = cell.x + (cell.w - w) / 2, y = cell.y + (cell.h - h) / 2;
     ctx.save();
     if (st.held) this._glow(ctx, col, this.theme.glow * 0.8, u);
-    roundRect(ctx, x, y, w, h, round ? w / 2 : 0.6 * u); ctx.fillStyle = st.held ? col : this.theme.button; ctx.fill();
+    roundRect(ctx, x, y, w, h, round ? w / 2 : 0.6 * u); ctx.fillStyle = st.held ? col : (c.cap || this.theme.button); ctx.fill();
     ctx.restore();
-    if (c.label) this._text(ctx, String(c.label), x + w / 2, y + h / 2, { size: (round ? 1.05 : 1.15) * u, weight: 700, color: st.held ? '#0b0c0f' : 'rgba(255,255,255,.62)', align: 'center', baseline: 'middle' });
+    if (c.label) this._text(ctx, String(c.label), x + w / 2, y + h / 2, { size: (round ? 1.05 : 1.15) * u, weight: 700, color: st.held ? '#0b0c0f' : (c.ink || 'rgba(255,255,255,.62)'), align: 'center', baseline: 'middle' });
   }
 
   _strip(ctx, c, cell, u, col, hot) {
@@ -549,11 +550,15 @@ export class ControllerCanvas {
       const items = d.items || [], g = 0.6 * u, w = (d.w - g * (items.length - 1)) / Math.max(1, items.length);
       items.forEach((t, i) => {
         const x = d.x + i * (w + g);
-        roundRect(ctx, x, d.y, w, d.h, 0.4 * u); ctx.fillStyle = T.button; ctx.fill();
+        roundRect(ctx, x, d.y, w, d.h, 0.4 * u);
+        if (d.outline) { ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.lineWidth = Math.max(1, 0.1 * u); ctx.stroke(); } else { ctx.fillStyle = T.button; ctx.fill(); }
         this._text(ctx, String(t), x + w / 2, d.y + d.h / 2, { size: 1 * u, color: 'rgba(255,255,255,.4)', align: 'center', baseline: 'middle' });
       });
     } else if (d.type === 'label') {
-      this._text(ctx, String(d.text || '').toUpperCase(), d.x, d.y + d.h / 2, { size: 1.2 * u, weight: 700, color: T.dim, spacing: 0.12, baseline: 'middle' });
+      ctx.save();
+      if (d.rotate) { ctx.translate(d.x + d.w / 2, d.y + d.h / 2); ctx.rotate((d.rotate * Math.PI) / 180); ctx.translate(-(d.x + d.w / 2), -(d.y + d.h / 2)); }   // about its centre, like the CSS
+      this._text(ctx, String(d.text || '').toUpperCase(), d.x, d.y + d.h / 2, { size: (d.size > 0 ? d.size : 1.2) * u, weight: 700, color: T.dim, spacing: 0.12, baseline: 'middle' });
+      ctx.restore();
     } else if (d.type === 'logo') {
       roundRect(ctx, d.x, d.y, d.w, d.h, 0.5 * u);
       if (typeof ctx.createConicGradient === 'function') {

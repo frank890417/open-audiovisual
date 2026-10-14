@@ -61,7 +61,7 @@ export const VIEW_CSS = `
 /* knob / encoder */
 .mcv-dial { position: relative; flex: 1 1 0; min-height: 0; aspect-ratio: 1; max-width: 100%; border-radius: 50%; }
 .mcv-dial svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.mcv-dial .cap { fill: #2a2d35; stroke: #0d0e11; stroke-width: 2; }
+.mcv-dial .cap { fill: var(--cap, #2a2d35); stroke: #0d0e11; stroke-width: 2; }
 .mcv-dial .cap2 { fill: url(#mcv-cap); }
 .mcv-dial .bg { fill: none; stroke: rgba(255,255,255,.09); stroke-width: 7; stroke-linecap: round; }
 .mcv-dial .arc { fill: none; stroke: var(--c); stroke-width: 7; stroke-linecap: round; filter: drop-shadow(0 0 3px var(--c)); }
@@ -98,9 +98,9 @@ export const VIEW_CSS = `
 .mcv-face.stack .mcv-c.padc .mcv-pad { flex: none; width: min(100cqw, 100cqh * 1.8); height: min(100cqh, 100cqw); }
 
 /* button */
-.mcv-btn { position: relative; flex: 1 1 0; min-height: 0; width: 100%; max-height: calc(var(--u) * 5); border-radius: calc(var(--u) * .6); background: #2b2e36;
+.mcv-btn { position: relative; flex: 1 1 0; min-height: 0; width: 100%; max-height: calc(var(--u) * 5); border-radius: calc(var(--u) * .6); background: var(--cap, #2b2e36);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.07), 0 2px 0 #0c0d10; display: grid; place-items: center; font: 700 calc(var(--u) * 1.15)/1 system-ui, sans-serif;
-  color: rgba(255,255,255,.62); letter-spacing: .03em; overflow: hidden; white-space: nowrap; }
+  color: var(--ink, rgba(255,255,255,.62)); letter-spacing: .03em; overflow: hidden; white-space: nowrap; }
 .mcv-btn.round { border-radius: 50%; aspect-ratio: 1; width: auto; max-width: 100%; max-height: 100%; font-size: calc(var(--u) * 1.05); }
 .mcv-c.on .mcv-btn { background: var(--c); color: #0b0c0f; box-shadow: 0 0 calc(var(--u) * 1.8) var(--c); }
 .mcv-c.btnc .mcv-lbl { display: none; }
@@ -137,6 +137,7 @@ export const VIEW_CSS = `
 .mcv-deco.buttons { display: flex; gap: calc(var(--u) * .6); }
 .mcv-deco.buttons i { flex: 1; border-radius: calc(var(--u) * .4); background: #2b2e36; font: 600 calc(var(--u) * 1)/1 system-ui, sans-serif; font-style: normal;
   color: rgba(255,255,255,.4); display: grid; place-items: center; }
+.mcv-deco.buttons.outline i { background: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.3); }   /* a printed, outlined tag */
 .mcv-deco.label { display: flex; align-items: center; font: 700 calc(var(--u) * 1.2)/1 system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase;
   color: rgba(255,255,255,.36); white-space: nowrap; overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .mcv *, .mcv *::before, .mcv *::after { animation: none !important; transition: none !important; } }
@@ -271,11 +272,13 @@ export class ControllerView {
   }
 
   _deco(d, f) {
-    const el = h('div', 'mcv-deco ' + d.type);
+    const el = h('div', 'mcv-deco ' + d.type + (d.outline ? ' outline' : ''));
     Object.assign(el.style, { left: (d.x / f.w) * 100 + '%', top: (d.y / f.h) * 100 + '%', width: (d.w / f.w) * 100 + '%', height: (d.h / f.h) * 100 + '%' });
     if (d.type === 'screen') { el.innerHTML = `<div>${esc(d.text || '')}<small class="mon"></small></div>`; this.screen = el.querySelector('.mon'); }
     if (d.type === 'buttons') el.innerHTML = (d.items || []).map((t) => `<i>${esc(t)}</i>`).join('');
     if (d.type === 'label') el.textContent = d.text || '';     // printed lettering on the faceplate
+    if (d.rotate) el.style.transform = `rotate(${d.rotate}deg)`;   // lettering that runs up an edge (−90)
+    if (d.type === 'label' && d.size > 0) el.style.fontSize = `calc(var(--u) * ${d.size})`;   // face units; default 1.2
     return el;
   }
 
@@ -284,6 +287,8 @@ export class ControllerView {
     const el = h('div', `mcv-c t-${c.type}`); el.dataset.id = c.id;
     const col = c.tint || COLORS[c.color] || COLORS.cyan;
     el.style.setProperty('--c', col);
+    if (c.cap) el.style.setProperty('--cap', c.cap);           // the cap's own colour at rest (coloured knob caps)
+    if (c.ink) el.style.setProperty('--ink', c.ink);           // a button's label colour (a red record dot)
     // c.note is a remark on cc controls but the MIDI note number on note controls
     if (c.verified === false) { el.classList.add('unv'); el.title = (typeof c.note === 'string' && c.note) || '未經實機確認：可用「學習」重新對應 (unverified — use Learn)'; }
     const lbl = () => h('div', 'mcv-lbl', esc(c.label ?? c.id));

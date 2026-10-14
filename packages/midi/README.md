@@ -239,9 +239,11 @@ A profile is one JSON file in `profiles/` (registered in `profiles/index.js`):
 | `wheel`, `strip` | `cc` or `pitchbend`; `bipolar`, `spring` | 0..1 or −1..1 |
 
 Other fields: `channel` (profile default), per-control `ch`, `label`, `color`
-(`cyan amber magenta lime violet coral white`) or `tint` (any CSS colour), `led`
+(`cyan amber magenta lime violet coral white`) or `tint` (any CSS colour), `cap` (the resting
+colour of a knob or button cap, any CSS colour — coloured knob caps), `ink` (a button's label colour — a red
+record dot), `led`
 (`{ msg: 'note'|'cc', on, off, ch?, velocity? }`), `verified: false` with a `note` (text)
-explaining why, `group`; `face.body`, `face.deco` (`screen`, `logo`, `buttons`, `label`);
+explaining why, `group`; `face.body`, `face.deco` (`screen`, `logo`, `buttons`, `label` — a label takes `rotate` in degrees and `size` in face units, `buttons` take `outline: true`);
 sections `label`, `flow: 'column'`, `spans: { id: [cols, rows] }`; `stack: false` keeps the
 face on tall screens; `origin` (where the profile came from); `notes`. Careful: on note
 controls `note` is the MIDI note number; elsewhere it is a remark.

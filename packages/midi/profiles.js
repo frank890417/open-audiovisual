@@ -77,6 +77,8 @@ export function validateProfile(p) {
     if (c.type === 'encoder' && c.msg === 'cc' && c.relative !== false && !RELATIVE_MODES.includes(c.relative)) errs.push(`${at}: encoder needs relative ∈ ${RELATIVE_MODES.join('|')} (or false for absolute)`);
     if (c.type === 'pad' && c.msg !== 'note' && c.msg !== 'cc') errs.push(`${at}: pads send note or cc`);
     if (c.mode && !['momentary', 'toggle'].includes(c.mode)) errs.push(`${at}: mode must be momentary or toggle`);
+    if (c.cap !== undefined && (typeof c.cap !== 'string' || !c.cap)) errs.push(`${at}: cap must be a CSS colour string`);
+    if (c.ink !== undefined && (typeof c.ink !== 'string' || !c.ink)) errs.push(`${at}: ink must be a CSS colour string`);
     if (c.led) {
       if (!['note', 'cc'].includes(c.led.msg)) errs.push(`${at}: led.msg must be note or cc`);
       if (c.led.msg === 'note' && !isInt(c.led.note ?? c.note, 0, 127)) errs.push(`${at}: led note`);
