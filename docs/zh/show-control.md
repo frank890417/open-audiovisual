@@ -58,7 +58,7 @@ const timeline = new Timeline({
   params,
   total: 2400,                       // seconds (default 600 when used directly; createShow uses 120)
   automation: {
-    growth: [[0, 0.2], [300, 1.0], [1200, 0.4]],   // [t, value] keyframes, linear
+    growth: [[0, 0.2], [300, 1.0, 'ease'], [1200, 0.4, 'out']],   // [t, value, curve?] keyframes; no curve = linear
     mode:   [[0, 0], [600, 1], [1800, 2]],          // step params hold (no interp)
   },
   scenes: [
@@ -75,6 +75,7 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 - 排練時用 `timeline.rate` 快轉（`rate = 4`）
 - 播放到 `total` 會自己停下
 - 帶 `hold: true` 的場景，播放到它的結尾就停住，直到被放行（Space、→）：見 [Hold](score.md#hold)
+- `loop: true` 播到 `total` 就繞回開頭繼續播；`loop: 'scene'` 重複播放頭所在的場景，直到你往下走：見[曲線、loop、cue、錄製](#curves-loop-cues-recording)
 - `reset()` 回到 `start`（預設 0，所以 −30 的開演前待命場景要用 scrubber 才到得了。傳 `start: -30`（或 `start: 'first'`，意思是「第一個場景」），按 R 才會回到那裡）
 - 帶 `score` 時，場景、總長和起點都從[總譜](score.md)來，這時自動化曲線讀的是 `score.baseTime(t)`，用 `scale: 0.5` 衍生出來的版本會把曲線一起拉伸
 
@@ -89,10 +90,38 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 | `advance(dt)` | 每個影格呼叫，播放中把 `t` 往前推 `dt × rate` |
 | `state(t)`, `valueAt(key, t)` | 某個時間點的自動化數值（不含覆寫） |
 | `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` | 查詢場景 |
-| `onSceneChange(cb)` | 每當播放或 seek 進到另一個場景，就呼叫 `cb(index, scene, { cause })`。`cause` 是 `'play'`、`'release'`、`'seek'`、`'jump'` 或 `'reset'` |
+| `onSceneChange(cb)` | 每當播放或 seek 進到另一個場景，就呼叫 `cb(index, scene, { cause })`。`cause` 是 `'play'`、`'release'`、`'seek'`、`'jump'`、`'reset'` 或 `'loop'` |
+| `onCue(cb)`、`cues()`、`fireCue(cue)` | 播放經過時觸發的場景 cue、cue 清單，以及手動觸發 |
+| `loop`、`onLoop(cb)`、`loopRange()`、`loops` | 讓整段、場景或一段範圍繞回去重播 |
+| `record(key, source)`、`stopRecording()`、`onRecord(cb)`、`mergeTake(key, take)` | 把一個數值來源錄進一條 lane |
 | `onSeek(cb)` | 播放頭被手動移動時呼叫 `cb(t, kind)`（`'seek'`、`'jump'`、`'reset'`），播放中不會呼叫 |
 | `layer` | `(key, value, t) => value`：在覆寫之前改寫參數值（導演的 `param()` 就接在這裡） |
 | `t`, `playing`, `holding`, `rate`, `total`, `start`, `scenes`, `automation`, `score` | 可讀也可寫的狀態 |
+
+### 曲線、loop、cue、錄製
+
+**曲線。** 關鍵影格寫成 `[t, value, curve?]`。第三項是「抵達這個影格的那一段」怎麼走：`'linear'`（預設，不寫就跟以前一樣）、`'ease'`（慢、快、慢）、`'in'`（起頭慢）、`'out'`（起頭快）、`'step'`（先守住舊值，到影格那一刻才跳），也可以放自己的 0..1 函式。`CURVES` 有匯出。帶 `step` 的參數不論寫什麼曲線都照舊守住。
+
+```js
+automation: { speed: [[0, 0.3], [16, 1.6, 'in'], [20, 3.4, 'step'], [30, 0.8, 'out']] }
+```
+
+**Loop。** `loop: true` 在 `total` 繞回 0 繼續播；`'scene'` 重複播放頭所在的場景（`next()` 會把循環帶到下一個場景）；寫場景 id 就循環那個場景；`{ from, to }` 循環一段範圍（秒數或場景 id）。它是個屬性，`timeline.loop = !timeline.loop` 就是整個 L 鍵。`onLoop(cb)` 會告訴你每一圈，繞進另一個場景時 `onSceneChange` 的 `cause` 是 `'loop'`。範圍裡的 `hold` 照樣會停住。
+
+**Cue。** `scene.cues` 是 `[{ name, t }]`（控台的時間列本來就把它們畫成小刻度）。`onCue((cue, { cause }) => …)` 在*播放*經過時觸發，一次，而 seek、跳場景、拖時間列、reset 都不觸發：拖著看不算演出。loop 每一圈會再觸發一次。`fireCue(cue)` 可以手動觸發。用[總譜](score.md)時由導演自己觸發 cue；一般的時間軸才用 `onCue`。
+
+```js
+show.timeline.onCue((cue) => show.params.firePulse(cue.name));   // scenes: [{ …, cues: [{ name: 'flash', t: 20 }] }]
+```
+
+**錄製。** `record(key, source)` 把一條 lane 設為待錄。時間軸播放時，每個影格讀一次 `source()`：回傳數字就寫進一段 take，回傳 `null` 表示沒人在碰，這一段就收尾。
+
+```js
+timeline.record('hue', () => params.isOverridden('hue') ? params.overrides.hue : null);
+timeline.onRecord(({ key }) => params.clearOverride(key));      // the curve takes over again
+```
+
+暫停、seek、reset、hold、整場結束、loop 每圈結尾，也都會收尾一段 take，錄製器本身保持待命，直到 `stop()` 或 `stopRecording()`。合併規則（`mergeTake()`）：先把 take 抽稀（數值動了超過該參數範圍的 0.6%，或隔了 0.5 秒，才留下），再用它**取代它時間範圍內的既有影格**。範圍外的影格原封不動，所以 lane 會從前一個影格滑向 take 的第一點，再從 take 的最後一點滑向下一個影格；範圍外既有的曲線種類不會變。有 score 時，影格寫的是基準版本的時間，跟你宣告的那些一樣。
 
 cue（換場時要觸發的燈光、音效等提示）清單，寫起來就是一個換場處理函式：
 

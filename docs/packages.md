@@ -304,7 +304,9 @@ Spine · automation, scenes and transport; pure logic.
 
 | export | signature |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · keyframes `[t, value, curve?]` (`'linear'` · `'ease'` · `'in'` · `'out'` · `'step'`) · `loop` (`true`, `'scene'`, a scene id, `{ from, to }`), `onLoop(cb)` · `cues()`, `onCue(cb(cue, { cause }))`, `fireCue(cue)` · `record(key, source)`, `stopRecording()`, `onRecord(cb)`, `mergeTake(key, take, opts)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
+
+A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's `cues` fire when playback passes them, never on a seek. `record()` writes a value source (a knob override) into a lane while the timeline plays. `CURVES` is exported too.
 
 See [Show control](show-control.md#timeline).
 

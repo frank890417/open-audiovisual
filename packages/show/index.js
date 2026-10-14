@@ -6,7 +6,7 @@
 //
 //   const show = await createShow({
 //     world: myWorld,
-//     timeline: { total, automation, scenes },
+//     timeline: { total, automation, scenes, loop, onCue },   // keyframes [t, value, curve?] · loop: true|'scene'|{from,to}
 //     routes: [{ source: 'audio/kick/env', target: 'pump' }],
 //     modules: { keys: { base: 48 }, sound: true, audio: 'mic', hands: true, pose: true, leap: true,
 //                remote: { room: 'main' },     // phones/iPads become controllers (packages/remote)

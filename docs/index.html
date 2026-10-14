@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=02fdc94">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=02fdc94">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -1480,7 +1480,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
   params,
   total: 2400,                       <span class="tc">// seconds (default 600 when used directly; createShow uses 120)</span>
   automation: {
-    growth: [[0, 0.2], [300, 1.0], [1200, 0.4]],   <span class="tc">// [t, value] keyframes, linear</span>
+    growth: [[0, 0.2], [300, 1.0, <span class="ts">'ease'</span>], [1200, 0.4, <span class="ts">'out'</span>]],   <span class="tc">// [t, value, curve?] keyframes; no curve = linear</span>
     mode:   [[0, 0], [600, 1], [1800, 2]],          <span class="tc">// step params hold (no interp)</span>
   },
   scenes: [
@@ -1496,6 +1496,7 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <li><code>timeline.rate</code> exists for rehearsal speed-through (<code>rate = 4</code>)</li>
 <li>playback stops by itself at <code>total</code></li>
 <li>a scene with <code>hold: true</code> stops playback at its end until it is released (Space, →): see <a href="#score-hold">Hold</a></li>
+<li><code>loop: true</code> wraps the show at <code>total</code> and plays on; <code>loop: 'scene'</code> repeats the scene the playhead is in until you move on: see <a href="#show-control-curves-loop-cues-recording">Curves, loop, cues, recording</a></li>
 <li><code>reset()</code> goes to <code>start</code> (default 0, so a pre-show standby scene at −30 is reached with the scrubber; pass <code>start: -30</code>, or <code>start: 'first'</code> for "the first scene", to make R return to it)</li>
 <li>with <code>score</code> the scenes, total and start come from a <a href="#score">score</a>; then automation is read at <code>score.baseTime(t)</code>, so a cut derived with <code>scale: 0.5</code> stretches it</li>
 </ul>
@@ -1511,12 +1512,40 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <tr><td><code>advance(dt)</code></td><td>per frame; moves <code>t</code> by <code>dt × rate</code> while playing</td></tr>
 <tr><td><code>state(t)</code>, <code>valueAt(key, t)</code></td><td>the automation values at a time (no overrides)</td></tr>
 <tr><td><code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code></td><td>scene lookup</td></tr>
-<tr><td><code>onSceneChange(cb)</code></td><td><code>cb(index, scene, { cause })</code> whenever playback or a seek lands in a different scene; <code>cause</code> is <code>'play'</code>, <code>'release'</code>, <code>'seek'</code>, <code>'jump'</code> or <code>'reset'</code></td></tr>
+<tr><td><code>onSceneChange(cb)</code></td><td><code>cb(index, scene, { cause })</code> whenever playback or a seek lands in a different scene; <code>cause</code> is <code>'play'</code>, <code>'release'</code>, <code>'seek'</code>, <code>'jump'</code>, <code>'reset'</code> or <code>'loop'</code></td></tr>
+<tr><td><code>onCue(cb)</code>, <code>cues()</code>, <code>fireCue(cue)</code></td><td>scene cues fired by playback, the list of them, and the manual trigger</td></tr>
+<tr><td><code>loop</code>, <code>onLoop(cb)</code>, <code>loopRange()</code>, <code>loops</code></td><td>wrap the show, a scene or a range</td></tr>
+<tr><td><code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take)</code></td><td>write a value source into a lane</td></tr>
 <tr><td><code>onSeek(cb)</code></td><td><code>cb(t, kind)</code> when the playhead is moved by hand (<code>'seek'</code>, <code>'jump'</code>, <code>'reset'</code>), never while playing</td></tr>
 <tr><td><code>layer</code></td><td><code>(key, value, t) =&gt; value</code>: rewrite a param before overrides (the director's <code>param()</code> plugs in here)</td></tr>
 <tr><td><code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>scenes</code>, <code>automation</code>, <code>score</code></td><td>state you can read (and set)</td></tr>
 </tbody>
 </table></div>
+<h4 id="show-control-curves-loop-cues-recording">Curves, loop, cues, recording<a class="anchor" href="#show-control-curves-loop-cues-recording" aria-label="Link to this section">#</a></h4>
+<p><strong>Curves.</strong> A keyframe is <code>[t, value, curve?]</code>. The third item says how the segment that <em>ends</em> at that keyframe gets
+there: <code>'linear'</code> (the default: leave it out and you get what the timeline always did), <code>'ease'</code> (slow, fast, slow),
+<code>'in'</code> (starts slow), <code>'out'</code> (starts fast), <code>'step'</code> (hold the old value until the keyframe, then jump), or your own
+function of 0..1. <code>CURVES</code> is exported. A param with <code>step</code> still holds, whatever the curve says.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">automation: { speed: [[0, 0.3], [16, 1.6, <span class="ts">'in'</span>], [20, 3.4, <span class="ts">'step'</span>], [30, 0.8, <span class="ts">'out'</span>]] }</code></pre></div>
+<p><strong>Loop.</strong> <code>loop: true</code> wraps at <code>total</code> (back to 0) and keeps playing; <code>'scene'</code> repeats the scene the playhead is in
+(<code>next()</code> moves the loop on to the next scene); a scene id loops that scene; <code>{ from, to }</code> loops a range in seconds or
+scene ids. It is a property: <code>timeline.loop = !timeline.loop</code> is the whole L key. <code>onLoop(cb)</code> tells you each lap, and a
+loop that wraps into another scene is an <code>onSceneChange</code> with <code>cause: 'loop'</code>. A <code>hold</code> inside the range still holds.</p>
+<p><strong>Cues.</strong> <code>scene.cues</code> is <code>[{ name, t }]</code> (the console scrubber already draws them as ticks). <code>onCue((cue, { cause }) =&gt; …)</code>
+fires one when <em>playback</em> passes it, once, and never when you seek, jump, drag the scrubber or reset: a scrub is not a
+performance. Each lap of a loop fires them again. <code>fireCue(cue)</code> sets one off by hand. With a <a href="#score">score</a> the director
+fires its own cues; use <code>onCue</code> on plain timelines.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">show.timeline.onCue((cue) =&gt; show.params.firePulse(cue.name));   <span class="tc">// scenes: [{ …, cues: [{ name: 'flash', t: 20 }] }]</span></code></pre></div>
+<p><strong>Recording.</strong> <code>record(key, source)</code> arms a lane. While the timeline plays, <code>source()</code> is read every frame: a number is
+written into a take, <code>null</code> means nobody is touching and closes it.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">timeline.record(<span class="ts">'hue'</span>, () =&gt; params.isOverridden(<span class="ts">'hue'</span>) ? params.overrides.hue : <span class="tk">null</span>);
+timeline.onRecord(({ key }) =&gt; params.clearOverride(key));      <span class="tc">// the curve takes over again</span></code></pre></div>
+<p>A take also closes on pause, seek, reset, a hold, the end of the show and the end of each loop lap, while the recorder
+stays armed until <code>stop()</code> / <code>stopRecording()</code>. The merge rule (<code>mergeTake()</code>): the take is thinned (a point stays when
+it moved more than 0.6 % of the param's range, or 0.5 s passed), and it <strong>replaces the keyframes inside its time span</strong>.
+Keyframes outside stay, so the lane glides from the previous keyframe to the take's first point, and from its last point
+to the next keyframe. Existing curves outside the take are untouched. With a score the keyframes are written in the base
+cut's time, like the ones you declared.</p>
 <p>A cue list is just a scene-change handler:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">show.timeline.onSceneChange((i, scene) =&gt; {
   <span class="tk">if</span> (scene.id === <span class="ts">'storm'</span>) show.stage.activate(<span class="ts">'storm'</span>);   <span class="tc">// switch worlds</span>
@@ -1576,7 +1605,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=02fdc94"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2664,7 +2693,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=02fdc94"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -2900,9 +2929,10 @@ Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/exam
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · keyframes <code>[t, value, curve?]</code> (<code>'linear'</code> · <code>'ease'</code> · <code>'in'</code> · <code>'out'</code> · <code>'step'</code>) · <code>loop</code> (<code>true</code>, <code>'scene'</code>, a scene id, <code>{ from, to }</code>), <code>onLoop(cb)</code> · <code>cues()</code>, <code>onCue(cb(cue, { cause }))</code>, <code>fireCue(cue)</code> · <code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take, opts)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
 </tbody>
 </table></div>
+<p>A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's <code>cues</code> fire when playback passes them, never on a seek. <code>record()</code> writes a value source (a knob override) into a lane while the timeline plays. <code>CURVES</code> is exported too.</p>
 <p>See <a href="#show-control-timeline">Show control</a>.</p>
 <h3 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="Link to this section">#</a></h3>
 <p>Spine · the score and the director: a show written as segment lengths, and the modules that perform the segments. Pure logic, no DOM.</p>
@@ -3358,7 +3388,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=02fdc94"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

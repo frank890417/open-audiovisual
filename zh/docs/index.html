@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/#article","url":"https://openaudiovisual.com/zh/docs/","name":"文件｜open-audiovisual","description":"open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"open-audiovisual 使用手冊","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["簡介","快速開始","核心概念","架構","寫一個世界","輸入","映射","演出控制","總譜與導演","MIDI 控制器與嵌入","p5.js 一行接上","手機、中繼與控制面板","訊號一覽","套件一覽","給 AI 代理","實驗室整合（\"lab\" 欄位）","疑難排解","路線圖"],"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -1110,7 +1110,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
   params,
   total: 2400,                       <span class="tc">// seconds (default 600 when used directly; createShow uses 120)</span>
   automation: {
-    growth: [[0, 0.2], [300, 1.0], [1200, 0.4]],   <span class="tc">// [t, value] keyframes, linear</span>
+    growth: [[0, 0.2], [300, 1.0, <span class="ts">'ease'</span>], [1200, 0.4, <span class="ts">'out'</span>]],   <span class="tc">// [t, value, curve?] keyframes; no curve = linear</span>
     mode:   [[0, 0], [600, 1], [1800, 2]],          <span class="tc">// step params hold (no interp)</span>
   },
   scenes: [
@@ -1126,6 +1126,7 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <li>排練時用 <code>timeline.rate</code> 快轉（<code>rate = 4</code>）</li>
 <li>播放到 <code>total</code> 會自己停下</li>
 <li>帶 <code>hold: true</code> 的場景，播放到它的結尾就停住，直到被放行（Space、→）：見 <a href="#score-hold">Hold</a></li>
+<li><code>loop: true</code> 播到 <code>total</code> 就繞回開頭繼續播；<code>loop: 'scene'</code> 重複播放頭所在的場景，直到你往下走：見<a href="#show-control-curves-loop-cues-recording">曲線、loop、cue、錄製</a></li>
 <li><code>reset()</code> 回到 <code>start</code>（預設 0，所以 −30 的開演前待命場景要用 scrubber 才到得了。傳 <code>start: -30</code>（或 <code>start: 'first'</code>，意思是「第一個場景」），按 R 才會回到那裡）</li>
 <li>帶 <code>score</code> 時，場景、總長和起點都從<a href="#score">總譜</a>來，這時自動化曲線讀的是 <code>score.baseTime(t)</code>，用 <code>scale: 0.5</code> 衍生出來的版本會把曲線一起拉伸</li>
 </ul>
@@ -1141,12 +1142,25 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <tr><td><code>advance(dt)</code></td><td>每個影格呼叫，播放中把 <code>t</code> 往前推 <code>dt × rate</code></td></tr>
 <tr><td><code>state(t)</code>, <code>valueAt(key, t)</code></td><td>某個時間點的自動化數值（不含覆寫）</td></tr>
 <tr><td><code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code></td><td>查詢場景</td></tr>
-<tr><td><code>onSceneChange(cb)</code></td><td>每當播放或 seek 進到另一個場景，就呼叫 <code>cb(index, scene, { cause })</code>。<code>cause</code> 是 <code>'play'</code>、<code>'release'</code>、<code>'seek'</code>、<code>'jump'</code> 或 <code>'reset'</code></td></tr>
+<tr><td><code>onSceneChange(cb)</code></td><td>每當播放或 seek 進到另一個場景，就呼叫 <code>cb(index, scene, { cause })</code>。<code>cause</code> 是 <code>'play'</code>、<code>'release'</code>、<code>'seek'</code>、<code>'jump'</code>、<code>'reset'</code> 或 <code>'loop'</code></td></tr>
+<tr><td><code>onCue(cb)</code>、<code>cues()</code>、<code>fireCue(cue)</code></td><td>播放經過時觸發的場景 cue、cue 清單，以及手動觸發</td></tr>
+<tr><td><code>loop</code>、<code>onLoop(cb)</code>、<code>loopRange()</code>、<code>loops</code></td><td>讓整段、場景或一段範圍繞回去重播</td></tr>
+<tr><td><code>record(key, source)</code>、<code>stopRecording()</code>、<code>onRecord(cb)</code>、<code>mergeTake(key, take)</code></td><td>把一個數值來源錄進一條 lane</td></tr>
 <tr><td><code>onSeek(cb)</code></td><td>播放頭被手動移動時呼叫 <code>cb(t, kind)</code>（<code>'seek'</code>、<code>'jump'</code>、<code>'reset'</code>），播放中不會呼叫</td></tr>
 <tr><td><code>layer</code></td><td><code>(key, value, t) =&gt; value</code>：在覆寫之前改寫參數值（導演的 <code>param()</code> 就接在這裡）</td></tr>
 <tr><td><code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>scenes</code>, <code>automation</code>, <code>score</code></td><td>可讀也可寫的狀態</td></tr>
 </tbody>
 </table></div>
+<h4 id="show-control-curves-loop-cues-recording">曲線、loop、cue、錄製<a class="anchor" href="#show-control-curves-loop-cues-recording" aria-label="這一節的連結">#</a></h4>
+<p><strong>曲線。</strong> 關鍵影格寫成 <code>[t, value, curve?]</code>。第三項是「抵達這個影格的那一段」怎麼走：<code>'linear'</code>（預設，不寫就跟以前一樣）、<code>'ease'</code>（慢、快、慢）、<code>'in'</code>（起頭慢）、<code>'out'</code>（起頭快）、<code>'step'</code>（先守住舊值，到影格那一刻才跳），也可以放自己的 0..1 函式。<code>CURVES</code> 有匯出。帶 <code>step</code> 的參數不論寫什麼曲線都照舊守住。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">automation: { speed: [[0, 0.3], [16, 1.6, <span class="ts">'in'</span>], [20, 3.4, <span class="ts">'step'</span>], [30, 0.8, <span class="ts">'out'</span>]] }</code></pre></div>
+<p><strong>Loop。</strong> <code>loop: true</code> 在 <code>total</code> 繞回 0 繼續播；<code>'scene'</code> 重複播放頭所在的場景（<code>next()</code> 會把循環帶到下一個場景）；寫場景 id 就循環那個場景；<code>{ from, to }</code> 循環一段範圍（秒數或場景 id）。它是個屬性，<code>timeline.loop = !timeline.loop</code> 就是整個 L 鍵。<code>onLoop(cb)</code> 會告訴你每一圈，繞進另一個場景時 <code>onSceneChange</code> 的 <code>cause</code> 是 <code>'loop'</code>。範圍裡的 <code>hold</code> 照樣會停住。</p>
+<p><strong>Cue。</strong> <code>scene.cues</code> 是 <code>[{ name, t }]</code>（控台的時間列本來就把它們畫成小刻度）。<code>onCue((cue, { cause }) =&gt; …)</code> 在<em>播放</em>經過時觸發，一次，而 seek、跳場景、拖時間列、reset 都不觸發：拖著看不算演出。loop 每一圈會再觸發一次。<code>fireCue(cue)</code> 可以手動觸發。用<a href="#score">總譜</a>時由導演自己觸發 cue；一般的時間軸才用 <code>onCue</code>。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">show.timeline.onCue((cue) =&gt; show.params.firePulse(cue.name));   <span class="tc">// scenes: [{ …, cues: [{ name: 'flash', t: 20 }] }]</span></code></pre></div>
+<p><strong>錄製。</strong> <code>record(key, source)</code> 把一條 lane 設為待錄。時間軸播放時，每個影格讀一次 <code>source()</code>：回傳數字就寫進一段 take，回傳 <code>null</code> 表示沒人在碰，這一段就收尾。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">timeline.record(<span class="ts">'hue'</span>, () =&gt; params.isOverridden(<span class="ts">'hue'</span>) ? params.overrides.hue : <span class="tk">null</span>);
+timeline.onRecord(({ key }) =&gt; params.clearOverride(key));      <span class="tc">// the curve takes over again</span></code></pre></div>
+<p>暫停、seek、reset、hold、整場結束、loop 每圈結尾，也都會收尾一段 take，錄製器本身保持待命，直到 <code>stop()</code> 或 <code>stopRecording()</code>。合併規則（<code>mergeTake()</code>）：先把 take 抽稀（數值動了超過該參數範圍的 0.6%，或隔了 0.5 秒，才留下），再用它<strong>取代它時間範圍內的既有影格</strong>。範圍外的影格原封不動，所以 lane 會從前一個影格滑向 take 的第一點，再從 take 的最後一點滑向下一個影格；範圍外既有的曲線種類不會變。有 score 時，影格寫的是基準版本的時間，跟你宣告的那些一樣。</p>
 <p>cue（換場時要觸發的燈光、音效等提示）清單，寫起來就是一個換場處理函式：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">show.timeline.onSceneChange((i, scene) =&gt; {
   <span class="tk">if</span> (scene.id === <span class="ts">'storm'</span>) show.stage.activate(<span class="ts">'storm'</span>);   <span class="tc">// switch worlds</span>
@@ -1181,7 +1195,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=02fdc94"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2104,7 +2118,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=02fdc94"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -2316,9 +2330,10 @@ comp.start();
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })</code> · <code>play()</code>（放行 hold）、<code>pause()</code>、<code>toggle()</code>、<code>seek(t)</code>、<code>jumpScene(d)</code>、<code>next()</code>（放行 hold，否則往後一段）、<code>prev()</code>、<code>release()</code>、<code>reset()</code>（回到 <code>start</code>，預設 0）· <code>advance(dt)</code> · <code>state(t)</code>、<code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>、<code>currentScene(t)</code>、<code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>、<code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · <code>t</code>、<code>playing</code>、<code>holding</code>、<code>rate</code>、<code>total</code>、<code>start</code>、<code>score</code></td></tr>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })</code> · <code>play()</code>（放行 hold）、<code>pause()</code>、<code>toggle()</code>、<code>seek(t)</code>、<code>jumpScene(d)</code>、<code>next()</code>（放行 hold，否則往後一段）、<code>prev()</code>、<code>release()</code>、<code>reset()</code>（回到 <code>start</code>，預設 0）· <code>advance(dt)</code> · <code>state(t)</code>、<code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>、<code>currentScene(t)</code>、<code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>、<code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · 關鍵影格 <code>[t, value, curve?]</code>（<code>'linear'</code>、<code>'ease'</code>、<code>'in'</code>、<code>'out'</code>、<code>'step'</code>）· <code>loop</code>（<code>true</code>、<code>'scene'</code>、場景 id、<code>{ from, to }</code>）、<code>onLoop(cb)</code> · <code>cues()</code>、<code>onCue(cb(cue, { cause }))</code>、<code>fireCue(cue)</code> · <code>record(key, source)</code>、<code>stopRecording()</code>、<code>onRecord(cb)</code>、<code>mergeTake(key, take, opts)</code> · <code>t</code>、<code>playing</code>、<code>holding</code>、<code>rate</code>、<code>total</code>、<code>start</code>、<code>score</code></td></tr>
 </tbody>
 </table></div>
+<p>關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 <code>cues</code> 在播放經過時觸發，seek 不會觸發。<code>record()</code> 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。<code>CURVES</code> 也有匯出。</p>
 <p>見<a href="#show-control-timeline">演出控制</a>。</p>
 <h3 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="這一節的連結">#</a></h3>
 <p>主軸 · 總譜與導演：把演出寫成段落長度，再由模組去演出每一段。純邏輯，不碰 DOM。</p>
@@ -2639,7 +2654,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=02fdc94"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>
