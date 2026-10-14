@@ -14,7 +14,7 @@
 // (`midi/minilab3/pad1`): replaying all of them is what makes it faithful.
 // Conversions to MIDI (midiEventsOf, toMidiFile) pick ONE family so nothing doubles.
 
-import { bendToUnit, unitToBend } from '../midi/parse.js?v=5964a1e';
+import { bendToUnit, unitToBend } from '../midi/parse.js?v=f77929d';
 
 export const TAKE_VERSION = 1;
 

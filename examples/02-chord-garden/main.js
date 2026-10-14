@@ -22,7 +22,7 @@
 
 import { createShow } from '@openav/show';
 import { createCanvas } from '@openav/stage';
-import { growSkeleton, makeGene } from './lsystem.js?v=5964a1e';
+import { growSkeleton, makeGene } from './lsystem.js?v=f77929d';
 
 const TAU = Math.PI * 2;
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
