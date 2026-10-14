@@ -239,6 +239,44 @@ html[lang^="zh"] .page-controller .ch-hero h1 { font-size: clamp(30px, 4vw, 64px
 .step .back { justify-content: center; align-self: center; font: 500 12.5px var(--mono); color: var(--fg-2); border-bottom: 1px solid var(--line-2); padding: 4px 0; }
 
 /* ───────────── responsive ───────────── */
+/* ── choose: the comparison table, the LED note, "not on the list?", the no-Web-MIDI strip ── */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.filters button b { margin-left: 4px; color: var(--sig); font-weight: 500; font-variant-numeric: tabular-nums; }
+.sec table.compare th[scope="row"] { min-width: 15em; white-space: normal; }
+.sec table.compare th[scope="row"] a { color: var(--fg); text-decoration: none; }
+.sec table.compare th[scope="row"] a:hover { color: var(--sig); }
+.sec table.compare th[scope="row"] small { display: block; margin-top: 2px; font: 400 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); }
+.sec table.compare td.n { text-align: right; }
+.sec table.compare td[data-led="yes"] { color: var(--l1); text-align: center; }
+.sec table.compare td[data-col="good"] { white-space: normal; min-width: 12em; }
+.sec table.compare thead th:not(:first-child) { text-align: right; }
+.sec table.compare thead th:nth-last-child(1), .sec table.compare thead th:nth-last-child(4) { text-align: left; }
+.sec table.compare tbody tr:target th, .sec table.compare tbody tr:target td { background: rgba(255, 90, 31, .12); }
+.sec table.compare tbody tr:target th { box-shadow: inset 3px 0 0 var(--sig); }
+.sec table.compare tr[hidden] { display: none; }
+#choose .note { max-width: 78ch; margin: 12px 0 0; }
+.led-note { max-width: 78ch; margin-top: 34px; padding-top: 4px; }
+.led-note p { color: var(--fg-2); font-size: 15px; }
+.led-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 14px; padding: 0; }
+.led-list li a { display: block; padding: 7px 10px; border: 1px solid var(--line-2); color: var(--fg); font: 500 12.5px/1 var(--mono); text-decoration: none; }
+.led-list li a:hover { border-color: var(--sig); }
+.led-line { max-width: 78ch; margin: 12px 0 0; color: var(--fg-2); font-size: 14.5px; }
+.cmp-link { margin: 18px 0 0; }
+.request { margin-top: 34px; padding: 18px 20px; border: 1px dashed var(--line-2); background: var(--ink-2); }
+.request h3 { margin-top: 0; }
+.request p { max-width: 70ch; color: var(--fg-2); font-size: 15px; }
+.request .model-links { margin-bottom: 0; }
+.no-midi { display: flex; align-items: center; gap: 14px; max-width: var(--maxw); margin: 12px auto 0; padding: 10px 14px; width: calc(100% - 2 * var(--pad)); box-sizing: border-box;
+  border: 1px solid var(--line-2); border-left: 3px solid var(--l2); background: var(--ink-2); }
+.no-midi[hidden] { display: none; }
+.no-midi p { flex: 1; min-width: 0; margin: 0; color: var(--fg); font-size: 14.5px; line-height: 1.5; }
+.no-midi button { flex: none; padding: 8px 12px; border: 1px solid var(--fg-3); background: transparent; color: var(--fg); font: 500 12px/1 var(--mono); cursor: pointer; }
+.no-midi button:hover { border-color: var(--sig); }
+@media (max-width: 640px) {
+  .sec table.compare th[scope="row"] { position: sticky; left: 0; z-index: 1; min-width: 11em; background: var(--void); }
+  .no-midi { align-items: flex-start; flex-direction: column; gap: 10px; }
+}
+
 @media (max-width: 1080px) {
   .hero-cols, .builder, .embed-grid, .model-grid { grid-template-columns: minmax(0, 1fr); }
   .spec-grid, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }

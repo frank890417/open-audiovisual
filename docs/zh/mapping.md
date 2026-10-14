@@ -124,11 +124,66 @@ show.mapper.removeRoute(r.id);      // remove
 localStorage.removeItem('openav.map.particles');   // 'particles' = the world's name
 ```
 
-要把一套接線帶到另一台電腦，就匯出再匯入 JSON（目前還沒有檔案介面，已經列在[路線圖](roadmap.md)上）：
+要把一套接線帶到另一台電腦、或另一個世界，用對應檔（[下一節](#map-files-export-import-and-share)）。
+
+## 對應檔：匯出、匯入與分享
+
+**L2 · Mapping** 面板在「map knobs in order」下面有三個按鈕：
+
+- **⬇ export**：把目前的路由下載成 `oav-map-<世界名>.json`。
+- **⬆ import**：選一個對應檔。也可以**把 `.json` 拖進頁面任何地方**。匯入會*取代*現有路由，新的這組馬上被記住。
+- **clear**：移除全部路由（要點兩下）。下次載入時，世界宣告的路由會回來，跟第一次來一樣。
+
+按鈕下面會寫最近一次匯入的結果：進來幾條、**略過**哪幾條、為什麼。讀不了的檔案會說明原因，而且不動任何路由。
+
+### 格式
+
+```json
+{
+  "format": "openav.map",
+  "version": 1,
+  "world": "particles",
+  "exported": "2026-10-15T08:30:00.000Z",
+  "routes": [
+    { "signal": "midi/cc/74", "param": "bloom", "curve": "exp",
+      "range": { "in": [0, 1], "out": [0, 100] }, "smooth": 0.1, "invert": false },
+    { "signal": "audio/rms", "param": "energy", "curve": "linear",
+      "range": { "in": [0, 0.3], "out": [0, 1] }, "smooth": 0, "invert": false, "enabled": false }
+  ]
+}
+```
+
+路由用 `signal` 和 `param` 的名字指認，不用 id，所以檔案可以在不同世界之間搬：
+
+- 這個世界沒有的 **param**：略過並列出來。
+- 這場演出裡沒有東西能產生的 **signal**（例如沒有 Leap Motion 模組卻有 `leap/palm/x`）：略過並列出來。要等第一則訊息才會出現的訊號（`midi/…`、`surface/…`、`phone/…`、`osc/…`、`key…`、`take/…`）會留下，算作「等待中」。
+- 檔案的 `world` 跟現在不同時，`range.out` 會丟掉，讓每個 param 用自己的範圍（`in` 窗、曲線、平滑、反相照樣帶過來）。
+- `version` 比這個版本讀得懂的新，會拒絕並說明。`mapper.toJSON()` 的純陣列（舊作法）仍然可以匯入，當作版本 0。
+- 超過 256 KB 或超過 500 條路由的檔案會被拒絕。
+
+### 開頁就載入：`?map=`
+
+```
+https://openaudiovisual.com/examples/01-hello-particles/?map=https://example.com/my-map.json
+https://openaudiovisual.com/examples/01-hello-particles/?map=maps/stage-left.json
+```
+
+`?map=<網址>` 在頁面打開時抓檔案，像匯入一樣載入。只接受**同源**位址（含相對路徑）或絕對的 **https** 位址；指向其他主機的 `http:`、`data:`、`javascript:`、`file:`，以及帶帳號密碼的位址都會被拒絕。跨站的檔案要有 CORS（`Access-Control-Allow-Origin: *`；raw GitHub 和 gist 都有）。演出照常開始：位址被拒、抓取失敗或檔案有問題時，面板會顯示原因，路由維持原樣。明確寫的 `?map=` 優先於被記住的接線，載入的內容也會像匯入一樣被記住。程式裡 `createShow({ map: 'maps/a.json' })` 效果相同，`map: false` 則忽略 `?map=`。
+
+### 自動記住
+
+映射器每 3 秒、以及每次匯入或清除之後，把路由存進 `localStorage`（`openav.map.<世界名>`），每個世界一格，下次打開從你停下的地方繼續。每次讀寫都包了 try/catch：私密視窗或儲存被擋時什麼都不會壞，只是不會被記住。
+
+程式裡：
 
 ```js
-copy(JSON.stringify(show.mapper.toJSON(), null, 2));   // devtools: copies the routes
-show.mapper.fromJSON(routes); show.mapper.save();      // on the other machine (replaces all routes)
+import { loadMapUrl, parseMap } from '@openav/mapping';
+
+const file = show.mapper.exportMap();                    // the object above
+const report = show.mapper.importMap(text);              // text or object; { mode: 'add' } keeps current routes
+// → { ok, added, skipped: [{ signal, param, reason: 'param' | 'signal' }], waiting, dropped, crossWorld }
+await loadMapUrl(show.mapper, 'maps/a.json');            // what ?map= calls; never throws
+parseMap(text);                                          // validate without touching a mapper
 ```
 
 ## 替你寫好的路由
@@ -151,6 +206,9 @@ mapper.routes                 // the live array
 mapper.learn('bloom')         // arm / cancel learn; mapper.learnTarget is the armed key
 mapper.update(dt)             // every frame: advances smoothed routes
 mapper.toJSON(); mapper.fromJSON(array)
+mapper.exportMap(); mapper.importMap(text|object, { mode })   // the portable file, see above
+mapper.clear()                // remove every route (and forget them)
+mapper.report                 // what the last import / ?map= said
 mapper.save(); mapper.load()  // localStorage 'openav.map.<profile>'; load() → true if found
 mapper.dispose()              // stop listening to signals
 ```

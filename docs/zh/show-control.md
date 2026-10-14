@@ -28,6 +28,7 @@ const show = await createShow({
 | `modules` | `{}` | 要打開的輸入與輸出（見下表） |
 | `artwork` | `null` | `{ title, artist, year, note }`：舞台上的一行作品署名，以及一個 `<meta name="artwork">` |
 | `hint` | `''` | 舞台左下角的一行 HTML |
+| `map` | 網址裡的 `?map=` | 開始時載入的對應檔：同源或 https 網址。`false` = 忽略 `?map=`（[對應檔](mapping.md#map-files-export-import-and-share)） |
 | `profile` | 世界的名稱 | 映射器儲存設定檔的名稱。`false` = 忽略儲存的路由（[儲存的設定檔](mapping.md#saved-profiles)） |
 | `onFrame` | `null` | `(dt, show) => {}`，每個影格執行一次，在時間軸前進之前 |
 | `mount` | 自動產生 | 要渲染進去的 `{ stage, side }` 元素或選擇器，取代整頁版面 |
