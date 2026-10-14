@@ -84,6 +84,7 @@
         <li class="toc-ch" data-ch="quick-start">
           <a href="#quick-start"><span class="n">02</span><span class="t">Quick start</span></a>
           <ol class="toc-secs">
+            <li><a href="#quick-start-three-ways-in">Three ways in</a></li>
             <li><a href="#quick-start-run-it">Run it</a></li>
             <li><a href="#quick-start-which-browser">Which browser</a></li>
             <li><a href="#quick-start-what-you-are-looking-at">What you are looking at</a></li>
@@ -160,6 +161,7 @@
             <li><a href="#mapping-learn">Learn</a></li>
             <li><a href="#mapping-muting-and-removing">Muting and removing</a></li>
             <li><a href="#mapping-saved-profiles">Saved profiles</a></li>
+            <li><a href="#mapping-map-files-export-import-and-share">Map files: export, import and share</a></li>
             <li><a href="#mapping-routes-written-for-you">Routes written for you</a></li>
             <li><a href="#mapping-mapper-api">Mapper API</a></li>
           </ol>
@@ -340,7 +342,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">18 chapters · 169 sections · v0.1.0</p>
+      <p class="docs-stats">18 chapters · 171 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -408,6 +410,18 @@ right and this page is a bug: please open an issue.</p>
 <section class="chapter" data-chapter="quick-start" aria-labelledby="quick-start">
 <h2 id="quick-start">Quick start<a class="anchor" href="#quick-start" aria-label="Link to this section">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">02</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/getting-started.md">docs/getting-started.md</a></span></p>
+<h3 id="quick-start-three-ways-in">Three ways in<a class="anchor" href="#quick-start-three-ways-in" aria-label="Link to this section">#</a></h3>
+<p>Pick the one that matches what you already have. They get bigger as you go down.</p>
+<ol>
+<li><strong>One line in a p5.js sketch.</strong> Any p5.js sketch (OpenProcessing, the p5 editor, your own page) can be played from a
+MIDI controller, from a controller drawn on screen, or from a phone, by adding one line at the top. Read
+<a href="#p5">p5.js in one line</a>, and play the sketch that carries it: <a href="../examples/15-p5-one-line/">example 15</a>.</li>
+<li><strong>One controller in a page.</strong> <code>&lt;oav-controller profile="akai-lpd8"&gt;</code> puts a controller you can play into any web
+page. Read <a href="#controllers">MIDI controllers &amp; embedding</a>, and pick yours in the
+<a href="../controllers/">controller library</a>.</li>
+<li><strong>A whole show.</strong> A World plus one <code>createShow()</code> call assembles inputs, mapping, timeline, console, sound and
+backstage. Start from <a href="../examples/01-hello-particles/">example 01</a> and keep reading below.</li>
+</ol>
 <h3 id="quick-start-run-it">Run it<a class="anchor" href="#quick-start-run-it" aria-label="Link to this section">#</a></h3>
 <p>You need Node.js (any current version; CI runs the tests on Node 22) and a
 browser. There is nothing to install: no <code>npm install</code>, no bundler.</p>
@@ -1387,10 +1401,69 @@ curve or smoothing of a declared route in code, the saved copy of that
 <code>source → target</code> pair wins. To start clean, pass <code>profile: false</code> (routes come
 from code on every load, as in example 09) or remove the saved profile:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">localStorage.removeItem(<span class="ts">'openav.map.particles'</span>);   <span class="tc">// 'particles' = the world's name</span></code></pre></div>
-<p>To carry a wiring to another machine, export and import the JSON (there is no
-file UI yet; it is on the <a href="#roadmap">roadmap</a>):</p>
-<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">copy(JSON.stringify(show.mapper.toJSON(), <span class="tk">null</span>, 2));   <span class="tc">// devtools: copies the routes</span>
-show.mapper.fromJSON(routes); show.mapper.save();      <span class="tc">// on the other machine (replaces all routes)</span></code></pre></div>
+<p>To carry a wiring to another machine or another world, use a map file
+(<a href="#mapping-map-files-export-import-and-share">next section</a>).</p>
+<h3 id="mapping-map-files-export-import-and-share">Map files: export, import and share<a class="anchor" href="#mapping-map-files-export-import-and-share" aria-label="Link to this section">#</a></h3>
+<p>The <strong>L2 · Mapping</strong> panel has three buttons under <em>map knobs in order</em>:</p>
+<ul>
+<li><strong>⬇ export</strong> downloads the routes as <code>oav-map-&lt;world&gt;.json</code>.</li>
+<li><strong>⬆ import</strong> picks a map file. You can also <strong>drop a <code>.json</code> anywhere on the page</strong>.
+Import <em>replaces</em> the routes; the new set is remembered at once.</li>
+<li><strong>clear</strong> removes every route (click twice). On the next load the world's declared
+routes come back, as on a first visit.</li>
+</ul>
+<p>Below the buttons the panel says what the last import did: how many routes came in, and
+every route it <strong>skipped</strong> and why. A file that cannot be read says so and changes nothing.</p>
+<h4 id="mapping-the-format">The format<a class="anchor" href="#mapping-the-format" aria-label="Link to this section">#</a></h4>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{
+  <span class="ts">"format"</span>: <span class="ts">"openav.map"</span>,
+  <span class="ts">"version"</span>: 1,
+  <span class="ts">"world"</span>: <span class="ts">"particles"</span>,
+  <span class="ts">"exported"</span>: <span class="ts">"2026-10-15T08:30:00.000Z"</span>,
+  <span class="ts">"routes"</span>: [
+    { <span class="ts">"signal"</span>: <span class="ts">"midi/cc/74"</span>, <span class="ts">"param"</span>: <span class="ts">"bloom"</span>, <span class="ts">"curve"</span>: <span class="ts">"exp"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 1], <span class="ts">"out"</span>: [0, 100] }, <span class="ts">"smooth"</span>: 0.1, <span class="ts">"invert"</span>: <span class="tk">false</span> },
+    { <span class="ts">"signal"</span>: <span class="ts">"audio/rms"</span>, <span class="ts">"param"</span>: <span class="ts">"energy"</span>, <span class="ts">"curve"</span>: <span class="ts">"linear"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 0.3], <span class="ts">"out"</span>: [0, 1] }, <span class="ts">"smooth"</span>: 0, <span class="ts">"invert"</span>: <span class="tk">false</span>, <span class="ts">"enabled"</span>: <span class="tk">false</span> }
+  ]
+}</code></pre></div>
+<p>Routes are named by <code>signal</code> and <code>param</code>, never by id, so a file travels between worlds:</p>
+<ul>
+<li>a route whose <strong>param</strong> this world does not have is skipped and listed;</li>
+<li>a route whose <strong>signal</strong> nothing in this show can produce (say <code>leap/palm/x</code> without a
+Leap Motion module) is skipped and listed. Signals that only appear when the first message
+arrives (<code>midi/…</code>, <code>surface/…</code>, <code>phone/…</code>, <code>osc/…</code>, <code>key…</code>, <code>take/…</code>) are kept and counted as
+<em>waiting</em>;</li>
+<li>when the file's <code>world</code> is a different one, the <code>range.out</code> is dropped so each param keeps its
+own range (the <code>in</code> window, curve, smoothing and invert come along);</li>
+<li><code>version</code> newer than this build reads is refused with a message. A bare array from
+<code>mapper.toJSON()</code> (the old way) still imports, as version 0.</li>
+<li>Files over 256 KB or with over 500 routes are refused.</li>
+</ul>
+<h4 id="mapping-load-on-open-map">Load on open: <code>?map=</code><a class="anchor" href="#mapping-load-on-open-map" aria-label="Link to this section">#</a></h4>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code>https://openaudiovisual.com/examples/01-hello-particles/?map=https://example.com/my-map.json
+https://openaudiovisual.com/examples/01-hello-particles/?map=maps/stage-left.json</code></pre></div>
+<p><code>?map=&lt;url&gt;</code> fetches the file when the page opens and loads it like an import. It accepts a
+<strong>same-origin</strong> address (relative paths included) or an absolute <strong>https</strong> one; <code>http:</code> to another
+host, <code>data:</code>, <code>javascript:</code>, <code>file:</code> and addresses with a login are refused. A cross-site file
+must be served with CORS (<code>Access-Control-Allow-Origin: *</code>; raw GitHub and gists do this).
+The show starts regardless: if the address is refused, the fetch fails or the file is bad, the
+panel shows the reason and the routes stay as they were. An explicit <code>?map=</code> beats the remembered
+wiring, and what it loads is remembered like any import. In code, <code>createShow({ map: 'maps/a.json' })</code>
+does the same and <code>map: false</code> ignores <code>?map=</code>.</p>
+<h4 id="mapping-remembered-for-you">Remembered for you<a class="anchor" href="#mapping-remembered-for-you" aria-label="Link to this section">#</a></h4>
+<p>The mapper saves its routes to <code>localStorage</code> (<code>openav.map.&lt;world&gt;</code>) every 3 seconds and right
+after an import or clear, one slot per world name, so the next visit starts where you stopped.
+Every read and write is wrapped: in a private window or with storage blocked nothing breaks,
+the wiring just is not remembered.</p>
+<p>In code:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { loadMapUrl, parseMap } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+
+<span class="tk">const</span> file = show.mapper.exportMap();                    <span class="tc">// the object above</span>
+<span class="tk">const</span> report = show.mapper.importMap(text);              <span class="tc">// text or object; { mode: 'add' } keeps current routes</span>
+<span class="tc">// → { ok, added, skipped: [{ signal, param, reason: 'param' | 'signal' }], waiting, dropped, crossWorld }</span>
+<span class="tk">await</span> loadMapUrl(show.mapper, <span class="ts">'maps/a.json'</span>);            <span class="tc">// what ?map= calls; never throws</span>
+parseMap(text);                                          <span class="tc">// validate without touching a mapper</span></code></pre></div>
 <h3 id="mapping-routes-written-for-you">Routes written for you<a class="anchor" href="#mapping-routes-written-for-you" aria-label="Link to this section">#</a></h3>
 <p>Several packages generate routes in this same shape:</p>
 <ul>
@@ -1413,6 +1486,9 @@ mapper.routes                 <span class="tc">// the live array</span>
 mapper.learn(<span class="ts">'bloom'</span>)         <span class="tc">// arm / cancel learn; mapper.learnTarget is the armed key</span>
 mapper.update(dt)             <span class="tc">// every frame: advances smoothed routes</span>
 mapper.toJSON(); mapper.fromJSON(array)
+mapper.exportMap(); mapper.importMap(text|object, { mode })   <span class="tc">// the portable file, see above</span>
+mapper.clear()                <span class="tc">// remove every route (and forget them)</span>
+mapper.report                 <span class="tc">// what the last import / ?map= said</span>
 mapper.save(); mapper.load()  <span class="tc">// localStorage 'openav.map.&lt;profile&gt;'; load() → true if found</span>
 mapper.dispose()              <span class="tc">// stop listening to signals</span></code></pre></div>
 <p><code>onChange()</code> runs when routes change (for UIs); <code>onLearn(route, signalName)</code> runs
@@ -1448,6 +1524,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>modules</code></td><td><code>{}</code></td><td>inputs and outputs to switch on (below)</td></tr>
 <tr><td><code>artwork</code></td><td><code>null</code></td><td><code>{ title, artist, year, note }</code>: a credit line on the stage and a <code>&lt;meta name="artwork"&gt;</code></td></tr>
 <tr><td><code>hint</code></td><td><code>''</code></td><td>a line of HTML at the bottom left of the stage</td></tr>
+<tr><td><code>map</code></td><td><code>?map=</code> in the page address</td><td>a map file to load on start: a same-origin or https URL; <code>false</code> ignores <code>?map=</code> (<a href="#mapping-map-files-export-import-and-share">Map files</a>)</td></tr>
 <tr><td><code>profile</code></td><td>the world's name</td><td>the mapper's saved-profile name; <code>false</code> = ignore saved routes (<a href="#mapping-saved-profiles">Saved profiles</a>)</td></tr>
 <tr><td><code>onFrame</code></td><td><code>null</code></td><td><code>(dt, show) =&gt; {}</code> every frame, before the timeline advances</td></tr>
 <tr><td><code>mount</code></td><td>generated</td><td><code>{ stage, side }</code> elements or selectors to render into, instead of a full-page layout</td></tr>
@@ -1480,7 +1557,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
   params,
   total: 2400,                       <span class="tc">// seconds (default 600 when used directly; createShow uses 120)</span>
   automation: {
-    growth: [[0, 0.2], [300, 1.0], [1200, 0.4]],   <span class="tc">// [t, value] keyframes, linear</span>
+    growth: [[0, 0.2], [300, 1.0, <span class="ts">'ease'</span>], [1200, 0.4, <span class="ts">'out'</span>]],   <span class="tc">// [t, value, curve?] keyframes; no curve = linear</span>
     mode:   [[0, 0], [600, 1], [1800, 2]],          <span class="tc">// step params hold (no interp)</span>
   },
   scenes: [
@@ -1496,6 +1573,7 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <li><code>timeline.rate</code> exists for rehearsal speed-through (<code>rate = 4</code>)</li>
 <li>playback stops by itself at <code>total</code></li>
 <li>a scene with <code>hold: true</code> stops playback at its end until it is released (Space, →): see <a href="#score-hold">Hold</a></li>
+<li><code>loop: true</code> wraps the show at <code>total</code> and plays on; <code>loop: 'scene'</code> repeats the scene the playhead is in until you move on: see <a href="#show-control-curves-loop-cues-recording">Curves, loop, cues, recording</a></li>
 <li><code>reset()</code> goes to <code>start</code> (default 0, so a pre-show standby scene at −30 is reached with the scrubber; pass <code>start: -30</code>, or <code>start: 'first'</code> for "the first scene", to make R return to it)</li>
 <li>with <code>score</code> the scenes, total and start come from a <a href="#score">score</a>; then automation is read at <code>score.baseTime(t)</code>, so a cut derived with <code>scale: 0.5</code> stretches it</li>
 </ul>
@@ -1511,12 +1589,40 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <tr><td><code>advance(dt)</code></td><td>per frame; moves <code>t</code> by <code>dt × rate</code> while playing</td></tr>
 <tr><td><code>state(t)</code>, <code>valueAt(key, t)</code></td><td>the automation values at a time (no overrides)</td></tr>
 <tr><td><code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code></td><td>scene lookup</td></tr>
-<tr><td><code>onSceneChange(cb)</code></td><td><code>cb(index, scene, { cause })</code> whenever playback or a seek lands in a different scene; <code>cause</code> is <code>'play'</code>, <code>'release'</code>, <code>'seek'</code>, <code>'jump'</code> or <code>'reset'</code></td></tr>
+<tr><td><code>onSceneChange(cb)</code></td><td><code>cb(index, scene, { cause })</code> whenever playback or a seek lands in a different scene; <code>cause</code> is <code>'play'</code>, <code>'release'</code>, <code>'seek'</code>, <code>'jump'</code>, <code>'reset'</code> or <code>'loop'</code></td></tr>
+<tr><td><code>onCue(cb)</code>, <code>cues()</code>, <code>fireCue(cue)</code></td><td>scene cues fired by playback, the list of them, and the manual trigger</td></tr>
+<tr><td><code>loop</code>, <code>onLoop(cb)</code>, <code>loopRange()</code>, <code>loops</code></td><td>wrap the show, a scene or a range</td></tr>
+<tr><td><code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take)</code></td><td>write a value source into a lane</td></tr>
 <tr><td><code>onSeek(cb)</code></td><td><code>cb(t, kind)</code> when the playhead is moved by hand (<code>'seek'</code>, <code>'jump'</code>, <code>'reset'</code>), never while playing</td></tr>
 <tr><td><code>layer</code></td><td><code>(key, value, t) =&gt; value</code>: rewrite a param before overrides (the director's <code>param()</code> plugs in here)</td></tr>
 <tr><td><code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>scenes</code>, <code>automation</code>, <code>score</code></td><td>state you can read (and set)</td></tr>
 </tbody>
 </table></div>
+<h4 id="show-control-curves-loop-cues-recording">Curves, loop, cues, recording<a class="anchor" href="#show-control-curves-loop-cues-recording" aria-label="Link to this section">#</a></h4>
+<p><strong>Curves.</strong> A keyframe is <code>[t, value, curve?]</code>. The third item says how the segment that <em>ends</em> at that keyframe gets
+there: <code>'linear'</code> (the default: leave it out and you get what the timeline always did), <code>'ease'</code> (slow, fast, slow),
+<code>'in'</code> (starts slow), <code>'out'</code> (starts fast), <code>'step'</code> (hold the old value until the keyframe, then jump), or your own
+function of 0..1. <code>CURVES</code> is exported. A param with <code>step</code> still holds, whatever the curve says.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">automation: { speed: [[0, 0.3], [16, 1.6, <span class="ts">'in'</span>], [20, 3.4, <span class="ts">'step'</span>], [30, 0.8, <span class="ts">'out'</span>]] }</code></pre></div>
+<p><strong>Loop.</strong> <code>loop: true</code> wraps at <code>total</code> (back to 0) and keeps playing; <code>'scene'</code> repeats the scene the playhead is in
+(<code>next()</code> moves the loop on to the next scene); a scene id loops that scene; <code>{ from, to }</code> loops a range in seconds or
+scene ids. It is a property: <code>timeline.loop = !timeline.loop</code> is the whole L key. <code>onLoop(cb)</code> tells you each lap, and a
+loop that wraps into another scene is an <code>onSceneChange</code> with <code>cause: 'loop'</code>. A <code>hold</code> inside the range still holds.</p>
+<p><strong>Cues.</strong> <code>scene.cues</code> is <code>[{ name, t }]</code> (the console scrubber already draws them as ticks). <code>onCue((cue, { cause }) =&gt; …)</code>
+fires one when <em>playback</em> passes it, once, and never when you seek, jump, drag the scrubber or reset: a scrub is not a
+performance. Each lap of a loop fires them again. <code>fireCue(cue)</code> sets one off by hand. With a <a href="#score">score</a> the director
+fires its own cues; use <code>onCue</code> on plain timelines.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">show.timeline.onCue((cue) =&gt; show.params.firePulse(cue.name));   <span class="tc">// scenes: [{ …, cues: [{ name: 'flash', t: 20 }] }]</span></code></pre></div>
+<p><strong>Recording.</strong> <code>record(key, source)</code> arms a lane. While the timeline plays, <code>source()</code> is read every frame: a number is
+written into a take, <code>null</code> means nobody is touching and closes it.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">timeline.record(<span class="ts">'hue'</span>, () =&gt; params.isOverridden(<span class="ts">'hue'</span>) ? params.overrides.hue : <span class="tk">null</span>);
+timeline.onRecord(({ key }) =&gt; params.clearOverride(key));      <span class="tc">// the curve takes over again</span></code></pre></div>
+<p>A take also closes on pause, seek, reset, a hold, the end of the show and the end of each loop lap, while the recorder
+stays armed until <code>stop()</code> / <code>stopRecording()</code>. The merge rule (<code>mergeTake()</code>): the take is thinned (a point stays when
+it moved more than 0.6 % of the param's range, or 0.5 s passed), and it <strong>replaces the keyframes inside its time span</strong>.
+Keyframes outside stay, so the lane glides from the previous keyframe to the take's first point, and from its last point
+to the next keyframe. Existing curves outside the take are untouched. With a score the keyframes are written in the base
+cut's time, like the ones you declared.</p>
 <p>A cue list is just a scene-change handler:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">show.timeline.onSceneChange((i, scene) =&gt; {
   <span class="tk">if</span> (scene.id === <span class="ts">'storm'</span>) show.stage.activate(<span class="ts">'storm'</span>);   <span class="tc">// switch worlds</span>
@@ -2117,7 +2223,8 @@ output, so nothing loops.</p>
 controller drawn on screen, or from a phone, by adding one line at the top:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
 <p>On OpenProcessing you can instead paste the URL into Sketch → Libraries → <strong>+</strong> (custom library). Both work in p5 1.x
-and 2.x global mode, and nothing has to be called in <code>setup()</code>.</p>
+and 2.x global mode, and nothing has to be called in <code>setup()</code>.
+A sketch that carries this line, playable right now: <a href="../examples/15-p5-one-line/">example 15</a>.</p>
 <h3 id="p5-read-it-like-the-mouse">Read it like the mouse<a class="anchor" href="#p5-read-it-like-the-mouse" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> draw() {
   background(knob1 * 255);                 <span class="tc">// knob 1, 0..1, like mouseX</span>
@@ -2922,9 +3029,10 @@ Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/exam
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · keyframes <code>[t, value, curve?]</code> (<code>'linear'</code> · <code>'ease'</code> · <code>'in'</code> · <code>'out'</code> · <code>'step'</code>) · <code>loop</code> (<code>true</code>, <code>'scene'</code>, a scene id, <code>{ from, to }</code>), <code>onLoop(cb)</code> · <code>cues()</code>, <code>onCue(cb(cue, { cause }))</code>, <code>fireCue(cue)</code> · <code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take, opts)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
 </tbody>
 </table></div>
+<p>A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's <code>cues</code> fire when playback passes them, never on a seek. <code>record()</code> writes a value source (a knob override) into a lane while the timeline plays. <code>CURVES</code> is exported too.</p>
 <p>See <a href="#show-control-timeline">Show control</a>.</p>
 <h3 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="Link to this section">#</a></h3>
 <p>Spine · the score and the director: a show written as segment lengths, and the modules that perform the segments. Pure logic, no DOM.</p>
@@ -3057,6 +3165,10 @@ JSON-RPC error with code −32000 and a message.</p>
 <tr><td><code>read_doc</code></td><td><code>doc</code> (required): <code>architecture</code>, <code>writing-a-world</code>, <code>signals</code>, <code>show-control</code>, <code>roadmap</code>, <code>agents</code>, <code>readme</code></td><td>the Markdown text. <code>agents</code> is AGENTS.md, <code>readme</code> the README; the others are <code>docs/&lt;name&gt;.md</code></td></tr>
 <tr><td><code>scaffold_world</code></td><td><code>slug</code> (required, kebab-case), <code>donor</code> (default <code>01-hello-particles</code>)</td><td><code>{ created, next_steps }</code>. Copies every file of <code>examples/&lt;donor&gt;/</code> into <code>examples/&lt;next number&gt;-&lt;slug&gt;/</code></td></tr>
 <tr><td><code>run_checks</code></td><td>none</td><td><code>{ pass, fail, ok }</code> from <code>node --test tests/*.test.js</code> (60 s timeout), or <code>{ ok: false, output }</code> with the failing lines</td></tr>
+<tr><td><code>list_controllers</code></td><td>none</td><td><code>{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }</code>: every shipped MIDI profile, its control mix (<code>{ knob: 8, pad: 8, keys: 25 }</code>), how many controls are still flagged unverified, and its page <code>https://openaudiovisual.com/controllers/&lt;id&gt;/</code></td></tr>
+<tr><td><code>read_profile</code></td><td><code>id</code> (required): a profile id or its <code>short</code></td><td><code>{ id, url, unverified, profile, mapping }</code>: the profile JSON as shipped, and a readable MIDI map (control, type, <code>CC 74, ch 1</code>, signal <code>midi/&lt;short&gt;/&lt;id&gt;</code>, verified)</td></tr>
+<tr><td><code>validate_profile</code></td><td><code>profile</code> (required): an object or a JSON string</td><td><code>{ ok, problems, conflicts }</code>: the problems <code>validateProfile</code> finds, plus clashes with shipped profiles (same <code>id</code>, same <code>short</code>, overlapping <code>match.ports</code>)</td></tr>
+<tr><td><code>scaffold_profile</code></td><td><code>maker</code>, <code>model</code>, <code>controls</code> (all required): <code>[{ type, count, from? }]</code></td><td><code>{ profile, problems, unverified, next_steps }</code>: a skeleton that passes <code>validateProfile</code>, every number a placeholder with <code>"verified": false</code>, and the steps to source and register it. Nothing is written to disk</td></tr>
 </tbody>
 </table></div>
 <p>Good donors for <code>scaffold_world</code>: <code>01-hello-particles</code> (minimal 2D canvas),
@@ -3090,7 +3202,7 @@ openav.mapper.routes                                    <span class="tc">// the 
 <h3 id="agents-a-prompt-to-paste">A prompt to paste<a class="anchor" href="#agents-a-prompt-to-paste" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/10-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/16-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 
@@ -3321,7 +3433,7 @@ before it was generalized.)</p>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> backstage monitor (zero-dep WS relay, LAN devices)</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> OSC bridge; MIDI out with observable throat + panic</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> tests for all pure logic (chord, timeline, mapping, params)</li>
-<li class="task"><input type="checkbox" disabled aria-label="not done yet"> mapping profile import/export UI (JSON file, not just localStorage)</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="done"> mapping profile import/export UI (JSON file, drag-and-drop, <code>?map=&lt;url&gt;</code>, remembered per world)</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> example: audio-reactive world driven by a live instrument (mic) — <code>06-cylinder-earth</code></li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> drum machine with analyzer-shaped signals (<code>@openav/drums</code>)</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> on-screen MIDI controllers that mirror real hardware (<code>@openav/midi</code>, example 09)</li>
@@ -3382,8 +3494,10 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
     </div>
     <nav aria-label="Pages">
       <a href="../">Home</a>
+      <a href="../examples/">Examples</a>
       <a href="../controllers/">Controllers</a>
       <a href="../docs/">Docs</a>
+      <a href="../p5/">p5.js in one line</a>
       <a href="../webtoe/">WebToe</a>
     </nav>
     <nav aria-label="For machines">
