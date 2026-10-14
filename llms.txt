@@ -1,16 +1,23 @@
 # open-audiovisual
 
-> A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance. Inputs (MIDI, microphone, chords, body and hand pose, phones) publish named signals; a mapping layer routes signals to parameters; an algorithmic "world" reads only parameters and renders image and sound; a timeline, a director's console and a backstage monitor run the show. Plain ES modules, MIT license. Extracted from The Last Input (Che-Yu Wu, 2026), a 49.4-channel performance at the IRCAM residency × C-LAB, Taipei.
+> open-audiovisual is a zero-build JavaScript framework that turns MIDI controllers, microphones, hand tracking and phones into signals for browser-based audiovisual performance: p5.js, WebGL or WebToe worlds, MIT licensed.
+
+Inputs (MIDI, microphone, chords, body and hand pose, phones) publish named signals; a mapping layer routes signals to parameters; an algorithmic "world" reads only parameters and renders image and sound; a timeline, a director's console and a backstage monitor run the show. Plain ES modules, no build, no dependencies. Extracted from The Last Input (Che-Yu Wu, 2026), a 49.4-channel performance at the IRCAM residency × C-LAB, Taipei.
+
+Today: 23 packages, 15 examples, 24 MIDI controller profiles (18 devices and 6 generic layouts), version 0.1.0.
 
 Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文, Traditional Chinese)
 Repository: https://github.com/frank890417/open-audiovisual
 Author: Che-Yu Wu 吳哲宇 (https://cheyuwu.com)
+How to cite: cite the canonical URL of the page you read. Code is MIT; examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.
 
 ## Pages
 
-- [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the complete documentation on one page — quick start, concepts, writing a world, inputs, mapping, show control, score & director, MIDI controllers & embedding, phones, signals, every package, MCP, troubleshooting. Generated from the Markdown in `docs/`.
+- [Homepage](https://openaudiovisual.com/) ([繁體中文](https://openaudiovisual.com/zh/)): a playable instrument, how it works, the works, quick start, for AI agents.
+- [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the complete documentation on one page: every chapter listed below, in one HTML file. Generated from the Markdown in `docs/`.
 - [MIDI controller library](https://openaudiovisual.com/controllers/) ([繁體中文](https://openaudiovisual.com/zh/controllers/)): every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).
-- [WebToe](https://openaudiovisual.com/webtoe/) ([繁體中文](https://openaudiovisual.com/zh/webtoe/)): the sister project, the engine half of the stack. A web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world (the editor in an iframe, `postMessage({ type: 'webtoe:ext', values })`, read in the patch as `ext('name', fallback)`). Editor: https://webtoe.openaudiovisual.com/
+- [p5.js in one line](https://openaudiovisual.com/p5/): load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone.
+- [WebToe](https://openaudiovisual.com/webtoe/) ([繁體中文](https://openaudiovisual.com/zh/webtoe/)): the sister project and the engine half of the stack: a web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world. Editor: https://webtoe.openaudiovisual.com/
 
 ## Core concepts
 
@@ -25,19 +32,32 @@ Author: Che-Yu Wu 吳哲宇 (https://cheyuwu.com)
 ## Start
 
 - Run: `git clone https://github.com/frank890417/open-audiovisual.git && cd open-audiovisual && node serve.js` → http://localhost:8080 (no npm install; Chrome/Edge for Web MIDI and camera)
-- Make a new work: copy `examples/01-hello-particles/` to `examples/<nn>-<name>/`, write the World in `main.js`, open `http://localhost:8080/examples/<nn>-<name>/`.
+- Make a new work: copy `examples/01-hello-particles/` to `examples/16-<name>/`, write the World in `main.js`, open `http://localhost:8080/examples/16-<name>/`.
 - Verify: `npm test` (node --test) passes; the example loads with zero console errors (a refused `ws://localhost:7457` monitor connection is expected when no monitor runs).
 
 ## Docs
 
-- [AGENTS.md](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/AGENTS.md): conventions for AI coding agents, the two rules, how to create a work. Read first.
-- [README](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/README.md): overview, architecture diagram, examples, phone remote.
-- [Architecture](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/architecture.md): the frame loop and every layer's contract.
-- [Writing a world](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/writing-a-world.md): the World interface, params vs events, sound output, checklist.
-- [Signals reference](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/signals.md): every signal the built-in inputs publish.
-- [Show control](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/show-control.md): timeline, scenes, performance mode, monitor, OSC.
-- [Score & Director](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/score.md): a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.
-- [Patch bay design](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/design/patchbay.md): multi-device MIDI and the patch bay.
+- [AGENTS.md](https://openaudiovisual.com/AGENTS.md): conventions for AI coding agents, the two rules, how to create a work. Read first.
+- [README](https://openaudiovisual.com/README.md): overview, architecture diagram, examples, phone remote.
+- [Introduction](https://openaudiovisual.com/docs/introduction.md): what it is, who it is for, what it handles so a show does not rebuild it.
+- [Quick start](https://openaudiovisual.com/docs/getting-started.md): run it, play it, make a new work.
+- [Core concepts](https://openaudiovisual.com/docs/concepts.md): signal, param, route, world, timeline, show, and the two rules that hold them together.
+- [Architecture](https://openaudiovisual.com/docs/architecture.md): the frame loop and every layer's contract.
+- [Writing a world](https://openaudiovisual.com/docs/writing-a-world.md): the World interface, params vs events, sound output, checklist.
+- [Inputs](https://openaudiovisual.com/docs/inputs.md): every input package and the `modules` key that switches it on.
+- [Mapping](https://openaudiovisual.com/docs/mapping.md): routes, curves, smoothing, many-to-many and "learn".
+- [Show control](https://openaudiovisual.com/docs/show-control.md): timeline, scenes, performance mode, console, monitor, OSC.
+- [Score & Director](https://openaudiovisual.com/docs/score.md): a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.
+- [MIDI controllers & embedding](https://openaudiovisual.com/docs/controllers.md): MIDI controllers as JSON profiles, the `<oav-controller>` element and the iframe embed.
+- [p5.js in one line](https://openaudiovisual.com/docs/p5.md): one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone.
+- [Phones, relay & surfaces](https://openaudiovisual.com/docs/remote.md): phones and iPads as controllers: relay, sensors, control surfaces.
+- [Signals reference](https://openaudiovisual.com/docs/signals.md): every signal the built-in inputs publish, with ranges.
+- [Package reference](https://openaudiovisual.com/docs/packages.md): every package, by layer.
+- [For AI agents](https://openaudiovisual.com/docs/agents.md): conventions for AI coding agents, the two rules, how to create a work.
+- [Lab integration (the `"lab"` field)](https://openaudiovisual.com/docs/lab-integration.md): the `"lab"` field in package.json.
+- [Troubleshooting](https://openaudiovisual.com/docs/troubleshooting.md): real problems found in rehearsals, and what to do about them.
+- [Roadmap](https://openaudiovisual.com/docs/roadmap.md): signal recording and replay, npm publish, WebGPU worlds, NDI gateway, distributed performance, agent performers.
+- [Patch bay design](https://openaudiovisual.com/docs/design/patchbay.md): multi-device MIDI and the patch bay.
 - [Full text](https://openaudiovisual.com/llms-full.txt): README, AGENTS.md and every handbook chapter in one file.
 
 ## MCP server
@@ -66,23 +86,55 @@ Each runs in the browser without hardware (on-screen piano, QWERTY keys, simulat
 - [10-record](https://openaudiovisual.com/examples/10-record/): a performance video: the work above the webcam in one vertical 1080×1920 to 4K file with the work's own sound; MIDI takes recorded and played back.
 - [11-controller-video](https://openaudiovisual.com/examples/11-controller-video/): the performance video without a camera: the MIDI controller being played (MiniLab 3, any profile) drawn live under the work; replayed takes animate it too.
 - [12-leap-hands](https://openaudiovisual.com/examples/12-leap-hands/): a Leap Motion as an instrument through the local bridge (`node packages/leap/bridge/leap-bridge.mjs`, `--mock` without a sensor); the mouse simulates hands when no bridge runs.
+- [13-score-director](https://openaudiovisual.com/examples/13-score-director/): a show with structure: "A day of sky" written once as segment lengths; a Director runs one module per segment, `?cut=<id>` picks a version, Space continues a hold.
+- [14-timeline](https://openaudiovisual.com/examples/14-timeline/): timeline: automation you can see.
+- [15-p5-one-line](https://openaudiovisual.com/examples/15-p5-one-line/): p5.js in one line: a plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone.
 
 Examples 05–07 integrate artworks © Che-Yu Wu (2020–2023), all rights reserved; the framework is MIT.
 
+## MIDI controllers
+
+24 controller profiles, one page each with every control's exact MIDI message (channel, CC or note), LED feedback and cited sources. The profile JSON is the data behind the page.
+
+- [AKAI LPD8 (mk2)](https://openaudiovisual.com/controllers/akai-lpd8/): 16 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/akai-lpd8.json
+- [AKAI APC mini mk2](https://openaudiovisual.com/controllers/akai-apc-mini-mk2/): 90 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/akai-apc-mini-mk2.json
+- [AKAI MIDImix](https://openaudiovisual.com/controllers/akai-midimix/): 52 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/akai-midimix.json
+- [AKAI MPK mini mk3](https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/): 43 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/akai-mpk-mini-mk3.json
+- [Arturia MiniLab 3](https://openaudiovisual.com/controllers/arturia-minilab3/): 48 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/arturia-minilab3.json
+- [Arturia KeyStep 37](https://openaudiovisual.com/controllers/arturia-keystep37/): 44 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/arturia-keystep37.json
+- [Arturia BeatStep](https://openaudiovisual.com/controllers/arturia-beatstep/): 32 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/arturia-beatstep.json
+- [Behringer X-TOUCH MINI](https://openaudiovisual.com/controllers/behringer-x-touch-mini/): 33 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/behringer-x-touch-mini.json
+- [Korg nanoKONTROL2](https://openaudiovisual.com/controllers/korg-nanokontrol2/): 51 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/korg-nanokontrol2.json
+- [Korg nanoKEY2](https://openaudiovisual.com/controllers/korg-nanokey2/): 28 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/korg-nanokey2.json
+- [Novation Launchpad Mini MK3](https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/): 80 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-mini-mk3.json
+- [Novation Launch Control XL (MK2)](https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/): 56 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/novation-launch-control-xl-mk2.json
+- [Novation Launch Control XL 3](https://openaudiovisual.com/controllers/novation-launch-control-xl-3/): 48 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/novation-launch-control-xl-3.json
+- [Novation Launchkey Mini MK3](https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/): 51 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-mini-mk3.json
+- [Novation Launchkey 25 MK4](https://openaudiovisual.com/controllers/novation-launchkey-25-mk4/): 52 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-25-mk4.json
+- [Novation Launchkey 37 MK4](https://openaudiovisual.com/controllers/novation-launchkey-37-mk4/): 64 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-37-mk4.json
+- [ODD Ball](https://openaudiovisual.com/controllers/odd-ball/): 10 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/odd-ball.json
+- [teenage engineering OP-1 field](https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/): 61 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/teenage-engineering-op-1-field.json
+- [Generic 8 knobs + 8 pads](https://openaudiovisual.com/controllers/generic-8k8p/): 16 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/generic-8k8p.json
+- [Generic 8 faders](https://openaudiovisual.com/controllers/generic-8f/): 8 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/generic-8f.json
+- [Generic 16 pads](https://openaudiovisual.com/controllers/generic-16p/): 16 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/generic-16p.json
+- [Generic 25-key keyboard](https://openaudiovisual.com/controllers/generic-keys25/): 28 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/generic-keys25.json
+- [Generic 49-key keyboard](https://openaudiovisual.com/controllers/generic-keys49/): 52 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/generic-keys49.json
+- [Generic 61-key keyboard](https://openaudiovisual.com/controllers/generic-keys61/): 64 controls, every MIDI message; profile https://openaudiovisual.com/packages/midi/profiles/generic-keys61.json
+
 ## Packages
 
-All under `packages/<name>/`, imported as `@openav/<name>` through an import map.
+23 packages under `packages/<name>/`, imported as `@openav/<name>` through an import map.
 
-- Input: `midi` (Web MIDI in/out, multi-device, controller profiles) · `audio` (mic analysis: rms, bands, centroid, onsets, drums) · `chord` (consonance, triads, clusters) · `pose` (MediaPipe body and 21-point hands, on-device) · `keys` (on-screen piano, QWERTY, SimPlayer) · `drums` (synth kit + step sequencer, analyzer-shaped signals)
-- Mapping: `mapping` (routes, curves, smoothing, many-to-many, learn)
-- World: `stage` (world lifecycle, params, createCanvas) · `world-webtoe` (WebToe patch as a world)
-- Output: `sound` (engine contract, Tone.js engine) · `osc` (OSC via a small Node bridge to UDP) · `record` (work + webcam compositor, recorder with the work's own sound, event log, MIDI takes and .mid files) · MIDI out in `midi`
-- Spines: `timeline` (automation, scenes, cues) · `console` (director's desk, performance mode) · `monitor` (backstage over WebSocket)
-- Phones: `relay` (room relay) · `surface` (TouchOSC-style widgets, autoSurface) · `remote` (phone/iPad app)
-- Glue: `core` (Signals, Params, Loop, Bus) · `show` (createShow) · `mcp` (MCP server)
+- Input: `midi` (Web MIDI in and out, many devices, on-screen controller profiles) · `audio` (Microphone analysis: loudness, bands, brightness, onsets, drum hits) · `chord` (Chord detection for performance: consonance, triads, clusters) · `pose` (Body and 21-point hand tracking from the camera, on the device) · `keys` (On-screen piano, QWERTY playing and a simulated performer) · `drums` (Synth kit and step sequencer that publish analyzer-shaped signals) · `leap` (Leap Motion hands through a small local bridge, as 21-point hand signals)
+- Mapping: `mapping` (Signal to param routes: curves, smoothing, many-to-many, learn)
+- World: `stage` (The world shell: lifecycle and params, no renderer opinion) · `world-webtoe` (Perform a WebToe node patch as a world)
+- Output: `sound` (Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own) · `osc` (OSC out of the browser through a small Node bridge to UDP) · `record` (Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed)
+- Spines: `timeline` (Param automation, scenes and cues: the clock of the show) · `score` (The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails) · `console` (The director's desk and performance mode) · `monitor` (Backstage view for any device on the network)
+- Phones and tablets: `relay` (Zero-dependency room relay for phones and iPads) · `surface` (TouchOSC-style widgets and autoSurface(params)) · `remote` (The phone and iPad app: sensors, keyboard, control surface)
+- Glue and agents: `core` (Signals, Params and Loop: what every layer speaks) · `show` (createShow(): one call assembles the whole shell) · `mcp` (MCP server for coding agents: list, read, scaffold, check)
 
 ## Optional
 
-- [Roadmap](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/roadmap.md): signal recording and replay, npm publish, WebGPU worlds, NDI gateway, distributed performance, agent performers.
-- [Lab integration](https://raw.githubusercontent.com/frank890417/open-audiovisual/main/docs/lab-integration.md): the `"lab"` package.json field.
+- [Roadmap](https://openaudiovisual.com/docs/roadmap.md): signal recording and replay, npm publish, WebGPU worlds, NDI gateway, distributed performance, agent performers.
+- [Lab integration](https://openaudiovisual.com/docs/lab-integration.md): the `"lab"` field in package.json.
 - [WebToe](https://github.com/frank890417/WebToe): sister project, a node-based dataflow engine that imports TouchDesigner projects.

@@ -1,6 +1,37 @@
+# open-audiovisual is MIT-licensed; being found, cited and learned from is the point. Cite the page URL you read.
+
 User-agent: *
 Allow: /
 
-# A short guide for language models: https://openaudiovisual.com/llms.txt
-# Everything in one file:          https://openaudiovisual.com/llms-full.txt
+# AI search / answer engines and user-triggered fetchers: welcome.
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Applebot
+User-agent: Bingbot
+User-agent: DuckAssistBot
+User-agent: YouBot
+User-agent: Meta-WebIndexer
+User-agent: Meta-ExternalFetcher
+User-agent: facebookexternalhit
+User-agent: Amzn-SearchBot
+Allow: /
+
+# Training crawlers: allowed (the whole project is MIT; being learned is the point).
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Meta-ExternalAgent
+User-agent: Amazonbot
+User-agent: CCBot
+User-agent: Bytespider
+Allow: /
+
+# Reading guides (comments, not directives):
+# https://openaudiovisual.com/llms.txt   https://openaudiovisual.com/zh/llms.txt   https://openaudiovisual.com/llms-full.txt
+
 Sitemap: https://openaudiovisual.com/sitemap.xml

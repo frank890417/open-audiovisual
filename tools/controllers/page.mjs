@@ -14,22 +14,22 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SITE, REPO, BLOB, TREE, pageCtx, headBasics, topBar, siteFooter, esc, attr } from '../site/chrome.mjs';
+import { SITE, REPO, BLOB, TREE, PERSON_ID, SOFTWARE_ID, pageCtx, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFooter, guardEmail, esc, attr } from '../site/chrome.mjs';
 import { PROFILES } from '../../packages/midi/profiles/index.js';
 import { normalizeProfile } from '../../packages/midi/profiles.js';
 import { CONTROL_COLORS } from '../../packages/midi/view.js';
 import { snippets, hl } from '../../assets/controllers/snippets.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const PROFILE_DIR = 'packages/midi/profiles';
+export const PROFILE_DIR = 'packages/midi/profiles';
 export const HERO_DEFAULT = 'arturia-minilab3';
 export const BUILDER_DEFAULT = 'akai-lpd8';
 export const SECTIONS = ['play', 'catalog', 'specs', 'embed', 'model'];
-const TYPE_ORDER = ['pad', 'keys', 'knob', 'encoder', 'fader', 'button', 'strip', 'wheel'];
+export const TYPE_ORDER = ['pad', 'keys', 'knob', 'encoder', 'fader', 'button', 'strip', 'wheel'];
 const FILTERS = ['all', 'pad', 'keys', 'knob', 'fader', 'encoder', 'led'];
 const NOTE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-const noteName = (n) => NOTE[((n % 12) + 12) % 12] + (Math.floor(n / 12) - 1);
-const fill = (s, o) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in o ? o[k] : m));
+export const noteName = (n) => NOTE[((n % 12) + 12) % 12] + (Math.floor(n / 12) - 1);
+export const fill = (s, o) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in o ? o[k] : m));
 const num = (v) => String(+v.toFixed(2));
 
 // ------------------------------------------------------------------ data
@@ -43,7 +43,7 @@ export function profileFiles() {
   return map;
 }
 
-const physical = (c) => (c.type === 'keys' ? c.to - c.from + 1 : 1);
+export const physical = (c) => (c.type === 'keys' ? c.to - c.from + 1 : 1);
 const isTool = (s) => /\.(tox|toe)\b/i.test(s.title || '');
 const isCommunity = (s) => /non-official|community/i.test(`${s.title || ''} ${s.note || ''}`);
 export function sourceKind(s, p) {
@@ -89,8 +89,11 @@ export function catalog() {
   return { all, devices, generic, stats, byId: new Map(all.map((x) => [x.p.id, x])) };
 }
 
-const nameOf = (p, locale) => (locale === 'zh' ? p.name : p.nameEn || p.name);
-const countsText = (t, d) => TYPE_ORDER.filter((k) => d.counts.has(k)).map((k) => { const n = d.counts.get(k); return fill(t.types[k][n === 1 ? 0 : 1], { n }); }).join(' · ');
+export const nameOf = (p, locale) => (locale === 'zh' ? p.name : p.nameEn || p.name);
+/** Where a device's own page lives: /controllers/<id>/ and /zh/controllers/<id>/ (the id is the profile's `id`). */
+export const detailPath = (id, locale) => (locale === 'zh' ? 'zh/' : '') + 'controllers/' + id + '/';
+export const detailUrl = (id, locale) => SITE + detailPath(id, locale);
+export const countsText = (t, d) => TYPE_ORDER.filter((k) => d.counts.has(k)).map((k) => { const n = d.counts.get(k); return fill(t.types[k][n === 1 ? 0 : 1], { n }); }).join(' · ');
 
 // ------------------------------------------------------------------ the static faceplate (SVG)
 // Drawn from the same sections / grid / spans the live view uses, in face units, so the
@@ -234,7 +237,9 @@ function sigText(p, c) {
   return c.type === 'keys' ? `${b}/on · ${b}/off · midi/${p.short}/n${c.from}…n${c.to}` : b;
 }
 
-function specSheet(t, d, c, locale) {
+/** The pieces of one device's spec sheet, as HTML: the MIDI table, per-control remarks, sources, origin, notes, port rules.
+ *  The detail page (detail.mjs) lays them out; they are the only place a control's row is written. */
+export function specParts(t, d, c, locale) {
   const p = d.p, S = t.specs, name = nameOf(p, locale);
   const rows = p.controls.map((x) => `<tr${x.verified === false ? ' class="unv"' : ''}>
             <th scope="row">${x.label && x.label !== x.id ? `${esc(x.label)} ` : ''}<code class="cid">${esc(x.id)}</code></th>
@@ -248,13 +253,10 @@ function specSheet(t, d, c, locale) {
           </tr>`).join('\n          ');
   // `note` is the MIDI note number on note controls and a remark (text) on the others
   const notes = p.controls.filter((x) => typeof x.note === 'string' && x.note);
-  const src = (s) => `<li><span class="src-kind">${S.sourceKinds[sourceKind(s, p)]}</span> ${s.url ? `<a href="${attr(s.url)}">${esc(s.title)}</a>` : esc(s.title)}${s.note ? `<span class="src-note">${esc(s.note)}</span>` : ''}</li>`;
+  const src = (s) => `<li><span class="src-kind">${S.sourceKinds[sourceKind(s, p)]}</span> ${s.url ? `<a href="${attr(s.url)}" rel="noopener">${esc(s.title)}</a>` : esc(s.title)}${s.note ? `<span class="src-note">${esc(s.note)}</span>` : ''}</li>`;
   const m = p.match || {};
-  const ports = p.kind === 'generic' ? `<p>${S.noMatch}</p>` : `<dl class="ports">${['ports', 'prefer', 'avoid'].filter((k) => (m[k] || []).length).map((k) => `<div><dt>${S.match[k]}</dt><dd>${m[k].map((r) => `<code>/${esc(r)}/i</code>`).join(' ')}</dd></div>`).join('')}</dl>`;
-  return `<details class="spec" id="spec-${p.id}">
-      <summary><span class="spec-name">${esc(name)}</span><span class="spec-meta">${esc(p.maker || t.catalog.badges.generic)} · ${fill(t.hero.controlsN, { n: d.total })} · <code>midi/${esc(p.short)}/…</code></span></summary>
-      <div class="spec-body">
-        <div class="table-scroll" role="region" aria-label="${attr(fill(S.caption, { name }))}" tabindex="0">
+  return {
+    table: `<div class="table-scroll" role="region" aria-label="${attr(fill(S.caption, { name }))}" tabindex="0">
         <table>
           <caption>${esc(fill(S.caption, { name }))}</caption>
           <thead><tr>${['control', 'type', 'message', 'ch', 'number', 'signal', 'led', 'verified'].map((k) => `<th scope="col">${S.cols[k]}</th>`).join('')}</tr></thead>
@@ -262,28 +264,14 @@ function specSheet(t, d, c, locale) {
           ${rows}
           </tbody>
         </table>
-        </div>
-        ${notes.length ? `<h4>${S.controlNotes}</h4>
-        <ul class="cnotes">${notes.map((x) => `<li><code>${esc(x.id)}</code> ${esc(x.note)}</li>`).join('')}</ul>` : ''}
-        <div class="spec-grid">
-          <div>
-            <h4>${S.sources}</h4>
-            <ul class="sources">${(p.sources || []).map(src).join('')}</ul>
-            ${p.origin ? `<h4>${S.origin}</h4><p class="raw-note">${esc(p.origin.note || '')}${p.origin.file ? ` <code>${esc(p.origin.file)}</code>` : ''}</p>` : ''}
-          </div>
-          <div>
-            ${p.notes ? `<h4>${S.notes}</h4><p class="raw-note">${esc(p.notes)}</p>` : ''}
-            <h4>${S.ports}</h4>
-            ${ports}
-          </div>
-          <div>
-            <h4>${S.signals}</h4>
-            <p>${fill(S.signalsText, { short: esc(p.short) })}</p>
-            <p class="spec-links"><a href="${c.root}${PROFILE_DIR}/${d.file}">${S.raw} ↗</a> <a href="${c.root}examples/09-midi-controllers/?view=controller&amp;profile=${p.id}">${t.catalog.links.full} ↗</a> <a href="#card-${p.id}">↑ ${S.toCard}</a></p>
-          </div>
-        </div>
-      </div>
-    </details>`;
+        </div>`,
+    controlNotes: notes.length ? `<ul class="cnotes">${notes.map((x) => `<li><code>${esc(x.id)}</code> ${esc(x.note)}</li>`).join('')}</ul>` : '',
+    sources: `<ul class="sources">${(p.sources || []).map(src).join('')}</ul>`,
+    origin: p.origin ? `<p class="raw-note">${esc(p.origin.note || '')}${p.origin.file ? ` <code>${esc(p.origin.file)}</code>` : ''}</p>` : '',
+    notes: p.notes ? `<p class="raw-note">${esc(p.notes)}</p>` : '',
+    ports: p.kind === 'generic' ? `<p>${S.noMatch}</p>` : `<dl class="ports">${['ports', 'prefer', 'avoid'].filter((k) => (m[k] || []).length).map((k) => `<div><dt>${S.match[k]}</dt><dd>${m[k].map((r) => `<code>/${esc(r)}/i</code>`).join(' ')}</dd></div>`).join('')}</dl>`,
+    signals: `<p>${fill(S.signalsText, { short: esc(p.short) })}</p>`,
+  };
 }
 
 // ------------------------------------------------------------------ cards
@@ -297,13 +285,13 @@ function card(t, d, c, locale) {
   if (d.prov.led) badges.push(`<li class="b-led">${B.led}</li>`);
   if (d.prov.unverified) badges.push(`<li class="b-unv">${fill(B.unverified, { n: d.prov.unverified })}</li>`);
   return `<li class="card" id="card-${p.id}" data-profile="${p.id}" data-has="${d.has.join(' ')}">
-        <div class="card-face" data-face="${p.id}">${faceSvg(p, fill(t.catalog.faceLabel, { name }))}</div>
+        <div class="card-face" data-face="${p.id}"><a class="card-face-link" href="${p.id}/" tabindex="-1" aria-hidden="true">${faceSvg(p, fill(t.catalog.faceLabel, { name }))}</a></div>
         <div class="card-body">
           <p class="card-maker">${esc(p.maker || B.generic)}</p>
-          <h4 class="card-name"><a href="#spec-${p.id}">${esc(name)}</a></h4>
+          <h4 class="card-name"><a href="${p.id}/">${esc(name)}</a></h4>
           <p class="card-counts">${countsText(t, d)}</p>
           <ul class="badges">${badges.join('')}</ul>
-          <p class="card-links"><a href="#play" data-play="${p.id}">${L.play}</a><a href="${c.root}examples/09-midi-controllers/?view=controller&amp;profile=${p.id}">${L.full} ↗</a><a href="${c.root}${PROFILE_DIR}/${d.file}">${L.json}</a><a href="#embed" data-embed="${p.id}">${L.embed}</a></p>
+          <p class="card-links"><a href="${p.id}/">${L.spec}</a><a href="#play" data-play="${p.id}">${L.play}</a><a href="${c.root}examples/09-midi-controllers/?view=controller&amp;profile=${p.id}">${L.full} ↗</a><a href="${c.root}${PROFILE_DIR}/${d.file}">${L.json}</a><a href="#embed" data-embed="${p.id}">${L.embed}</a></p>
         </div>
       </li>`;
 }
@@ -342,6 +330,14 @@ import p from './packages/midi/profiles/my-pads.json' with { type: 'json' };
 
 console.log(validateProfile(p));   // [] = valid; otherwise every problem, in words`;
 
+// ------------------------------------------------------------------ old links
+/** Gallery links from before every device had a page: /controllers/#spec-<id> and /controllers/?profile=<id> go to
+ *  /controllers/<id>/. Runs in <head>, before first paint; only ids that exist are followed (no open redirect). */
+function legacyRedirect(cat) {
+  const ids = JSON.stringify(cat.all.map((d) => d.p.id));
+  return `(function(){var ids=${ids},m=/^#spec-([\\w-]+)$/.exec(location.hash),q=/[?&]profile=([\\w-]+)/.exec(location.search),id=m?m[1]:q&&q[1];if(!id||ids.indexOf(id)<0)return;var b=location.pathname.replace(/index\\.html$/,'');if(b.slice(-1)!=='/')b+='/';location.replace(b+id+'/')})()`;
+}
+
 // ------------------------------------------------------------------ the page
 export function renderPage(t, home, locale) {
   const c = pageCtx('controllers', locale);
@@ -364,23 +360,24 @@ export function renderPage(t, home, locale) {
   const term = (label, id, code) => `<div class="term"><div class="term-bar"><span>${label}</span>${copyBtn(id)}</div><pre id="${id}"><code>${hl(code)}</code></pre></div>`;
   const opt = (x) => `<option value="${x.p.id}"${x.p.id === buildD.p.id ? ' selected' : ''}>${esc(nameOf(x.p, locale))}</option>`;
 
-  const ld = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Dataset', '@id': c.self + '#dataset', name: t.meta.ldName, description: t.meta.ldDescription, url: c.self, inLanguage: home.ldLanguage,
-        license: 'https://opensource.org/licenses/MIT', isAccessibleForFree: true,
-        creator: { '@type': 'Person', name: 'Che-Yu Wu', alternateName: '吳哲宇', url: 'https://cheyuwu.com' },
-        isPartOf: { '@type': 'SoftwareSourceCode', name: 'open-audiovisual', codeRepository: REPO },
-        keywords: ['MIDI', 'MIDI controller', 'MIDI implementation chart', 'Web MIDI', 'web component', 'TouchDesigner', 'Ableton Live'],
-        distribution: cat.all.map((d) => ({ '@type': 'DataDownload', name: d.p.nameEn || d.p.name, encodingFormat: 'application/json', contentUrl: SITE + `${PROFILE_DIR}/${d.file}` })),
-      },
-      {
-        '@type': 'ItemList', name: t.meta.ldList, numberOfItems: cat.all.length,
-        itemListElement: [...cat.devices, ...cat.generic].map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.p.nameEn || d.p.name, url: `${c.self}#spec-${d.p.id}` })),
-      },
-    ],
-  };
+  // the shared graph (WebSite, Person, software) is added by headBasics; these are the gallery's own nodes
+  const ld = [
+    pageNode(c, home, { type: 'CollectionPage', name: t.meta.title, description: t.meta.description, about: { '@id': SOFTWARE_ID },
+      breadcrumb: { '@id': c.self + '#breadcrumb' }, mainEntity: { '@id': c.self + '#dataset' } }),
+    breadcrumbNode(c, [['open-audiovisual', homeUrl(c)], [home.ui.nav.controllers, c.self]]),
+    {
+      '@type': 'Dataset', '@id': c.self + '#dataset', name: t.meta.ldName, description: t.meta.ldDescription, url: c.self, inLanguage: home.ldLanguage,
+      license: 'https://opensource.org/licenses/MIT', isAccessibleForFree: true,
+      creator: { '@id': PERSON_ID },
+      isPartOf: { '@id': SOFTWARE_ID },
+      keywords: ['MIDI', 'MIDI controller', 'MIDI implementation chart', 'Web MIDI', 'web component', 'TouchDesigner', 'Ableton Live'],
+      distribution: cat.all.map((d) => ({ '@type': 'DataDownload', name: d.p.nameEn || d.p.name, encodingFormat: 'application/json', contentUrl: SITE + `${PROFILE_DIR}/${d.file}` })),
+    },
+    {
+      '@type': 'ItemList', '@id': c.self + '#list', name: t.meta.ldList, numberOfItems: cat.all.length,
+      itemListElement: [...cat.devices, ...cat.generic].map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.p.nameEn || d.p.name, url: detailUrl(d.p.id, locale) })),
+    },
+  ];
 
   const runtime = {
     lang: locale, copy: home.ui.copy, copied: home.ui.copied,
@@ -389,17 +386,15 @@ export function renderPage(t, home, locale) {
     fullHref: `${c.root}examples/09-midi-controllers/?view=controller&profile=`,
   };
 
-  const chip = (d) => `<a class="chip" href="#spec-${d.p.id}" data-profile="${d.p.id}"${d === heroD ? ' aria-current="true"' : ''}>${esc(nameOf(d.p, locale))}</a>`;
+  const chip = (d) => `<a class="chip" href="${d.p.id}/" data-profile="${d.p.id}"${d === heroD ? ' aria-current="true"' : ''}>${esc(nameOf(d.p, locale))}</a>`;
 
-  return `<!DOCTYPE html>
+  return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld })}
 <link rel="stylesheet" href="${c.root}assets/controllers/controllers.css">
 <noscript><style>.js-only { display: none !important; }</style></noscript>
-<script type="application/ld+json">
-${JSON.stringify(ld, null, 2)}
-</script>
+<script>${legacyRedirect(cat)}</script>
 </head>
 <body class="page-controllers">
 ${topBar(home, c)}
@@ -440,7 +435,7 @@ ${topBar(home, c)}
     </div>
     <div class="stage-foot">
       <p class="readout js-only"><span class="ro-k">${t.hero.readoutLabel}</span><code id="hero-readout">${t.hero.readoutIdle}</code></p>
-      <p class="stage-meta" id="hero-meta"><b id="hm-name">${esc(nameOf(heroD.p, locale))}</b> <span id="hm-count">${fill(t.hero.controlsN, { n: heroD.total })}</span> <a id="hm-spec" href="#spec-${heroD.p.id}">${t.hero.specLink}</a> <a id="hm-full" href="${c.root}examples/09-midi-controllers/?view=controller&amp;profile=${heroD.p.id}">${t.hero.fullLink} ↗</a></p>
+      <p class="stage-meta" id="hero-meta"><b id="hm-name">${esc(nameOf(heroD.p, locale))}</b> <span id="hm-count">${fill(t.hero.controlsN, { n: heroD.total })}</span> <a id="hm-spec" href="${heroD.p.id}/">${t.hero.specLink}</a> <a id="hm-full" href="${c.root}examples/09-midi-controllers/?view=controller&amp;profile=${heroD.p.id}">${t.hero.fullLink} ↗</a></p>
     </div>
     <p class="hint js-only">${t.hero.hint}</p>
     <noscript><p class="noscript">${t.hero.noscript}</p></noscript>
@@ -472,8 +467,13 @@ ${topBar(home, c)}
   <!-- ═════ 03 · spec sheets: the full MIDI map, static ═════ -->
   <section class="sec" id="specs" aria-labelledby="specs-title">
     ${sec('specs', t.specs.eyebrow, t.specs.title, t.specs.lede)}
-    <div class="specs">
-    ${[...cat.devices, ...cat.generic].map((d) => specSheet(t, d, c, locale)).join('\n    ')}
+    <div class="table-scroll" role="region" aria-label="${attr(t.specs.title)}" tabindex="0">
+    <table class="index">
+      <thead><tr>${['device', 'maker', 'controls', 'page'].map((k) => `<th scope="col">${t.specs.indexCols[k]}</th>`).join('')}</tr></thead>
+      <tbody>
+        ${[...cat.devices, ...cat.generic].map((d) => `<tr id="spec-${d.p.id}"><th scope="row"><a href="${d.p.id}/">${esc(nameOf(d.p, locale))}</a></th><td>${esc(d.p.maker || t.catalog.badges.generic)}</td><td>${countsText(t, d)}</td><td><a href="${d.p.id}/">${t.specs.open} →</a></td></tr>`).join('\n        ')}
+      </tbody>
+    </table>
     </div>
   </section>
 
@@ -579,5 +579,5 @@ ${siteFooter(home, c)}
 <script type="module" src="${c.root}assets/controllers/controllers.js"></script>
 </body>
 </html>
-`;
+`);
 }

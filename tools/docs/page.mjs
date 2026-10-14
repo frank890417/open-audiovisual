@@ -7,7 +7,7 @@
 // JavaScript. assets/docs/docs.js only adds scroll-spy, the narrow-screen
 // contents drawer, copy buttons and copy-link on heading anchors.
 
-import { SITE, REPO, BLOB, esc, attr, headBasics, topBar, siteFooter } from '../site/chrome.mjs';
+import { SITE, BLOB, SOFTWARE_ID, esc, attr, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFooter, guardEmail } from '../site/chrome.mjs';
 
 const fill = (s, vars) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 const pad2 = (n) => String(n).padStart(2, '0');
@@ -23,22 +23,15 @@ const pad2 = (n) => String(n).padStart(2, '0');
  */
 export function renderDocsPage(t, home, { c, chapters, version, assets }) {
   const sections = chapters.reduce((n, ch) => n + ch.sections.length, 0);
-  const ld = {
-    '@context': 'https://schema.org',
-    '@type': 'TechArticle',
-    headline: t.title,
-    name: t.meta.title,
-    description: t.meta.description,
-    url: c.self,
-    inLanguage: t.ldLanguage,
-    version,
-    license: 'https://opensource.org/licenses/MIT',
-    author: { '@type': 'Person', name: 'Che-Yu Wu', alternateName: '吳哲宇', url: 'https://cheyuwu.com' },
-    isPartOf: { '@type': 'WebSite', name: 'open-audiovisual', url: SITE },
-    about: { '@type': 'SoftwareSourceCode', name: 'open-audiovisual', codeRepository: REPO, programmingLanguage: 'JavaScript' },
-    articleSection: chapters.map((ch) => ch.title),
-    image: SITE + 'assets/home/og.png',
-  };
+  const ld = [
+    pageNode(c, home, {
+      type: 'TechArticle', '@id': c.self + '#article', headline: t.title, name: t.meta.title, description: t.meta.description,
+      version, license: 'https://opensource.org/licenses/MIT',
+      about: { '@id': SOFTWARE_ID }, articleSection: chapters.map((ch) => ch.title),
+      breadcrumb: { '@id': c.self + '#breadcrumb' },
+    }),
+    breadcrumbNode(c, [['open-audiovisual', homeUrl(c)], [home.ui.nav.docs, c.self]]),
+  ];
   const runtime = { copy: t.copy, copied: t.copied, linkCopied: t.linkCopied, tocButton: t.tocButton, tocClose: t.tocClose };
 
   const toc = `<nav class="toc" aria-label="${attr(t.tocLabel)}">
@@ -64,15 +57,12 @@ ${body}
 </section>`;
   };
 
-  return `<!DOCTYPE html>
+  return guardEmail(`<!DOCTYPE html>
 <html lang="${home.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ogType: 'article', ld })}
 <link rel="stylesheet" href="${c.root}assets/docs/docs.css?v=${assets.css}">
 <script>document.documentElement.classList.add('js')</script>
-<script type="application/ld+json">
-${JSON.stringify(ld, null, 2)}
-</script>
 </head>
 <body class="docs-page">
 ${topBar(home, c)}
@@ -109,5 +99,5 @@ ${siteFooter(home, c)}
 <script type="module" src="${c.root}assets/docs/docs.js?v=${assets.js}"></script>
 </body>
 </html>
-`;
+`);
 }

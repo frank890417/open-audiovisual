@@ -2,6 +2,9 @@
 // Shape must match zh.mjs key for key — tools/build-home.mjs refuses to build otherwise.
 // Strings may contain inline HTML (authored, trusted). Code, signal names and URLs live in page.mjs.
 
+import { getFacts, enWords, cap } from '../site/facts.mjs';
+const facts = getFacts();
+
 export default {
   lang: 'en',
   htmlLang: 'en',
@@ -10,10 +13,15 @@ export default {
   ldLanguage: 'en',
 
   meta: {
-    title: 'open-audiovisual · a web-native framework for audiovisual performance',
-    description: 'MIDI, microphones, chords, hands and phones become named signals, a mapping turns them into parameters, and your world draws and sounds them. A JavaScript framework for live audiovisual shows. Zero build, zero dependencies, MIT.',
+    title: 'open-audiovisual · Web MIDI framework for live visuals',
+    description: 'Zero-build JavaScript framework: MIDI controllers, mics, hands and phones become signals that drive p5.js, WebGL or WebToe worlds in the browser. MIT.',
+    definition: 'open-audiovisual is a zero-build JavaScript framework that turns MIDI controllers, microphones, hand tracking and phones into signals for browser-based audiovisual performance: p5.js, WebGL or WebToe worlds, MIT licensed.',
     ogDescription: 'Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. open-audiovisual gives you a show.',
     ld: 'A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: inputs (MIDI, audio, chords, body pose, phones) publish named signals, a mapping layer routes them to parameters, and algorithmic worlds render and sound them, with a timeline, a director\'s console and a backstage monitor.',
+  },
+
+  seo: {
+    ogImageAlt: 'open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.',
   },
 
   ui: {
@@ -34,7 +42,7 @@ export default {
     lede: 'Keys, knobs, voices, hands and phones become named <em>signals</em>. A <em>mapping</em> turns signals into <em>parameters</em>. Your <em>world</em> reads the parameters and turns them into image and sound, in a browser tab, on a projector, on stage.',
     doorsLabel: 'Where to start',
     doors: [
-      { who: 'I perform', what: 'See what it makes and play the nine works', href: '#works' },
+      { who: 'I perform', what: 'See what it makes and play the ten works', href: '#works' },
       { who: 'I write code', what: 'Run it in a minute, then write a world', href: '#start' },
       { who: 'I am an AI agent', what: 'Read /llms.txt, then AGENTS.md', href: 'llms.txt' },
     ],
@@ -113,12 +121,12 @@ export default {
 
   works: {
     eyebrow: '03 · Works',
-    title: 'Nine works you can open now',
+    title: 'Ten works you can open now',
     lede: 'Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments. In any example: Space plays the timeline, T is performance mode, F is fullscreen.',
     playsWith: 'Plays with',
     items: [
       { title: 'Hello particles', inputs: 'on-screen piano · QWERTY · simulated performer', text: 'The smallest complete app. Read its <code>main.js</code> from top to bottom and you know the framework.', alt: 'Bursts of thin green and red particle trails falling on black.' },
-      { title: 'Chord garden', inputs: 'on-screen piano · QWERTY · simulated performer', text: 'A triad makes the garden bloom, a cluster makes it decay. The world listens to chord signals, never to keys. From The Last Input.', alt: 'Rows of thin green and blue stems with bright tips growing from the bottom edge.' },
+      { title: 'Chord garden', inputs: 'on-screen piano · QWERTY · simulated performer', text: 'A note drops a seed, a triad opens flowers along the branches, a cluster makes them droop and fall. The branches are The Last Input\'s own L-system plants. The world listens to chord signals, never to keys.', alt: 'Slender branching plants in a night garden, with green leaves and small blue, red and pink flowers.' },
       { title: 'Hand instrument', inputs: 'camera (hands) · on-screen piano · drum machine', text: 'Fingers as an instrument: one pinch sets tightness, another grows arms, both fists bloom. Four pattern families: mandala, lissajous, spirograph, web.', alt: 'A blue and white mandala of fine layered lines.' },
       { title: 'WebToe stage', inputs: 'on-screen piano · simulated performer', text: 'The world is a WebToe node patch, TouchDesigner-style, performed through <code>ext()</code> bindings. WebToe is the engine, open-audiovisual is the show.', alt: 'A node editor with noise, level and output nodes beside a grey cloud texture.' },
       { title: 'Prebiotic flake', inputs: 'on-screen piano · simulated performer · sound', text: 'A 2023 MIDI daily sketch replayed through the framework. The drawing code is the original. The flakes now have a voice through Tone.js.', alt: 'A glowing yellow ring of jagged petals with small circles inside.' },
@@ -126,6 +134,7 @@ export default {
       { title: 'Firework festival', inputs: 'camera (hands) · on-screen piano', text: 'A 2021 sketch. Close a finger pinch and a firework launches from that hand. The particle system is the 2021 code.', alt: 'Cyan and violet fireworks bursting over drooping coloured trails.' },
       { title: 'Remote surface', inputs: 'phone or iPad · on-screen piano', text: 'The phone is the instrument panel. The world only declares params, and the control surface on the phone grows from them. Needs <code>node serve.js</code> on your network.', alt: 'Blue and yellow streaks exploding outward from the lower centre.' },
       { title: 'MIDI controllers', inputs: 'MIDI controller, or the on-screen one', text: 'On-screen MiniLab 3, LPD8, Launchpad and nanoKONTROL2. Plug the real one in and the on-screen one moves with your hands.', alt: 'A spiral of pink and blue dots above an on-screen MIDI keyboard controller.' },
+      { title: 'Timeline', inputs: 'nothing: it plays itself · knobs on screen', text: 'Automation you can see. Five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes, and any knob you touch takes over until you let go. Record a knob move to write a new curve.', alt: 'A hexagonal ring of orange and yellow dots above a timeline with five curve lanes, scene blocks and a playhead.' },
     ],
     credits: [
       'Che-Yu Wu, <cite>230616 Prebiotic Flake</cite>, 2023',
@@ -153,7 +162,7 @@ export default {
     worldTitle: 'A world is the only part you write',
     worldText: 'Declare what the piece can be performed with (params), react to events, draw. Hand it to <code>createShow()</code> and the rest arrives with it: piano, mapping, timeline, console, sound, backstage. Put it next to an <code>index.html</code> with the import map, as in example 01.',
     worldLink: 'Writing a world',
-    packagesTitle: 'Twenty-one packages, by layer',
+    packagesTitle: `${cap(enWords(facts.packageCount))} packages, by layer`,
     packagesLede: 'Plain ES modules. Import what you need through an import map, or let <code>createShow()</code> assemble them.',
     groups: ['Input', 'Mapping', 'World', 'Output', 'Spines', 'Phones and tablets', 'Glue and agents'],
     packages: {
@@ -163,11 +172,13 @@ export default {
       pose: 'Body and 21-point hand tracking from the camera, on the device',
       keys: 'On-screen piano, QWERTY playing and a simulated performer',
       drums: 'Synth kit and step sequencer that publish analyzer-shaped signals',
+      leap: 'Leap Motion hands through a small local bridge, as 21-point hand signals',
       mapping: 'Signal to param routes: curves, smoothing, many-to-many, learn',
       stage: 'The world shell: lifecycle and params, no renderer opinion',
       'world-webtoe': 'Perform a WebToe node patch as a world',
       sound: 'Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own',
       osc: 'OSC out of the browser through a small Node bridge to UDP',
+      record: 'Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed',
       timeline: 'Param automation, scenes and cues: the clock of the show',
       score: 'The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails',
       console: 'The director\'s desk and performance mode',
@@ -200,7 +211,7 @@ export default {
     prompt: [
       'Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.',
       'Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.',
-      'Create examples/10-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:',
+      `Create examples/${facts.nextExampleNumber}-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:`,
       '',
       '  <describe the performance, e.g. "a jellyfish world that blooms on consonant chords">',
       '',

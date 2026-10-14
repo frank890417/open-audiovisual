@@ -4,12 +4,12 @@
 //   the catalog: live faceplates mounted lazily (mouse / pen only — on a phone a card scrolls,
 //                and Play sends it to the big one), filters by control type
 //   the builder: options → the preview element's attributes + every snippet, the last event
-//   copy buttons, #spec-<id> deep links, ?profile=<id> for the hero
+//   copy buttons; old #spec-<id> / ?profile=<id> links go to the device's own page (inline script in <head>)
 // It uses the same public pieces anyone else would: <oav-controller> and embed.js.
 
-import { PROFILES } from '../../packages/midi/element.js?v=1b4606c';
-import { describeDetail } from '../../packages/midi/embed.js?v=1b4606c';
-import { snippets, hl } from './snippets.js?v=1b4606c';
+import { PROFILES } from '../../packages/midi/element.js?v=02fdc94';
+import { describeDetail } from '../../packages/midi/embed.js?v=02fdc94';
+import { snippets, hl } from './snippets.js?v=02fdc94';
 
 const T = JSON.parse(document.getElementById('ctl-i18n').textContent);
 const $ = (s, el = document) => el.querySelector(s);
@@ -41,7 +41,7 @@ function paintHero(id) {
   }
   $('#hm-name').textContent = nameOf(p);
   $('#hm-count').textContent = fill(T.controlsN, { n: total(p) });
-  $('#hm-spec').href = '#spec-' + id;
+  $('#hm-spec').href = id + '/';
   $('#hm-full').href = T.fullHref + id;
   readout.textContent = T.readoutIdle; readout.removeAttribute('data-hw');
 }
@@ -109,10 +109,8 @@ if (fine && 'IntersectionObserver' in window) {
     if (!busy && queue.length) { busy = true; idle(next); }
   }, { rootMargin: '240px 0px' });
   for (const f of $$('.card-face')) io.observe(f);
-} else {
-  // touch: a card face is a picture; tapping it plays that device on the big one
-  for (const f of $$('.card-face')) { f.dataset.tap = ''; f.addEventListener('click', () => playOnHero(f.dataset.face)); }
 }
+// touch (and no JS): a card face is a picture that links to the device's own page, where it is playable at full size
 
 // filters by control type (works for any number of devices)
 const filterBtns = $$('[data-filter]');
@@ -176,13 +174,4 @@ document.addEventListener('click', async (e) => {
   setTimeout(() => { b.textContent = T.copy; delete b.dataset.done; }, 1400);
 });
 
-function openFromHash() {
-  const m = /^#spec-([\w-]+)$/.exec(location.hash);
-  const d = m && document.getElementById('spec-' + m[1]);
-  if (d && d.tagName === 'DETAILS') d.open = true;
-}
-addEventListener('hashchange', openFromHash);
-openFromHash();
-
-const q = new URLSearchParams(location.search).get('profile');
-if (q && byId.has(q)) showHero(q);
+// old links (/controllers/#spec-<id>, /controllers/?profile=<id>) are sent to /controllers/<id>/ by the script in <head>

@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildAll, shapeDiff } from '../tools/build-home.mjs';
+import { ldNode } from './_ld.js';
 import en from '../tools/home/en.mjs';
 import zh from '../tools/home/zh.mjs';
 
@@ -55,11 +56,11 @@ test('language metadata: lang, canonical, hreflang, JSON-LD', () => {
     assert.match(s, new RegExp(`<link rel="canonical" href="${p.url}">`));
     for (const [hl, url] of [['en', PAGES.en.url], ['zh-Hant', PAGES.zh.url], ['x-default', PAGES.en.url]])
       assert.match(s, new RegExp(`<link rel="alternate" hreflang="${hl}" href="${url}">`), `${lang} hreflang ${hl}`);
-    const ld = JSON.parse(s.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
-    assert.equal(ld['@type'], 'SoftwareSourceCode');
-    assert.equal(ld.inLanguage, want[lang][1]);
-    assert.equal(ld.codeRepository, 'https://github.com/frank890417/open-audiovisual');
-    assert.equal(ld.url, p.url);
+    const page = ldNode(s, 'WebPage'), sw = ldNode(s, 'SoftwareSourceCode');
+    assert.equal(page.inLanguage, want[lang][1]);
+    assert.equal(page.url, p.url);
+    assert.equal(sw.codeRepository, 'https://github.com/frank890417/open-audiovisual');
+    assert.equal(page.about['@id'], sw['@id']);
   }
 });
 

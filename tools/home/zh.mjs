@@ -2,6 +2,9 @@
 // 結構必須和 en.mjs 一模一樣（每個 key、每個陣列長度），tools/build-home.mjs 會檢查。
 // 字串可以含 inline HTML。程式碼、訊號名稱與網址放在 page.mjs，兩種語言共用。
 
+import { getFacts, zhWords } from '../site/facts.mjs';
+const facts = getFacts();
+
 export default {
   lang: 'zh',
   htmlLang: 'zh-Hant-TW',
@@ -10,10 +13,15 @@ export default {
   ldLanguage: 'zh-Hant-TW',
 
   meta: {
-    title: 'open-audiovisual｜網頁原生的影音表演框架',
-    description: 'MIDI、麥克風、和弦、手勢和手機，都變成有名字的訊號，經過映射接到參數，交給你的世界去畫、去發聲。一套給現場影音表演用的 JavaScript 框架。零建置、零相依、MIT 授權。',
+    title: 'open-audiovisual｜網頁 MIDI 即時影像表演框架',
+    description: '零建置的 JavaScript 框架：MIDI 控制器、麥克風、手勢和手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界。MIT 授權。',
+    definition: 'open-audiovisual 是零建置的 JavaScript 框架：把 MIDI 控制器、麥克風、手勢與手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界，用於現場影音表演。MIT 授權。',
     ogDescription: 'Hydra 給你即興，cables 給你平台，Tone 給你聲音。open-audiovisual 給你一場演出。',
     ld: '網頁原生、零建置、零相依的 JavaScript 影音表演框架：MIDI、音訊、和弦、肢體姿態與手機等輸入發出有名字的訊號，映射層把訊號接到參數，演算的世界依參數產生畫面與聲音，另有時間軸、導演控台與後台監看。',
+  },
+
+  seo: {
+    ogImageAlt: 'open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。',
   },
 
   ui: {
@@ -34,7 +42,7 @@ export default {
     lede: '琴鍵、旋鈕、人聲、手勢、手機，都會變成有名字的<em>訊號</em>（signal）。<em>映射</em>（mapping）把訊號接到<em>參數</em>（param），你的<em>世界</em>（world）讀這些參數，變成畫面和聲音。在瀏覽器分頁、投影機、舞台上都一樣。',
     doorsLabel: '從哪裡開始',
     doors: [
-      { who: '我做表演', what: '看看它做得出什麼，直接玩九件作品', href: '#works' },
+      { who: '我做表演', what: '看看它做得出什麼，直接玩十件作品', href: '#works' },
       { who: '我寫程式', what: '一分鐘跑起來，再寫自己的世界', href: '#start' },
       { who: '我是 AI 代理', what: '先讀 /llms.txt，再讀 AGENTS.md', href: 'llms.txt' },
     ],
@@ -113,12 +121,12 @@ export default {
 
   works: {
     eyebrow: '03 · 作品',
-    title: '九件作品，現在就能打開',
+    title: '十件作品，現在就能打開',
     lede: '每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。進到任何一個範例：空白鍵播放時間軸，T 是演出模式，F 是全螢幕。',
     playsWith: '演奏方式',
     items: [
       { title: '哈囉粒子', inputs: '螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者', text: '最小的完整範例。把 <code>main.js</code> 從頭讀到尾，整套框架就懂了。', alt: '黑底上，粒子拖著細細的綠色與紅色尾巴落下。' },
-      { title: '和弦花園', inputs: '螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者', text: '彈三和弦，花園開花，彈音堆，花園枯萎。世界聽的是和弦訊號，從來不看琴鍵。來自《The Last Input》。', alt: '細細的綠色與藍色莖從底部長起，頂端發亮。' },
+      { title: '和弦花園', inputs: '螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者', text: '一個音落下一顆種子，三和弦讓枝條開花，音堆讓花與葉垂下、落盡。枝條是《The Last Input》的 L-system 植物。世界聽的是和弦訊號，從來不看琴鍵。', alt: '夜裡的花園，細長分岔的植物長著綠葉，枝端開出藍、紅、粉色的小花。' },
       { title: '手的樂器', inputs: '鏡頭（手）· 螢幕鋼琴 · 鼓機', text: '手指就是樂器：一組捏合控制鬆緊，另一組長出手臂，兩手握拳就綻放。四種圖案輪流切換：曼陀羅、利薩如、萬花尺、蛛網。', alt: '藍白色細線層層疊成的曼陀羅。' },
       { title: 'WebToe 舞台', inputs: '螢幕鋼琴 · 模擬演奏者', text: '這個世界是一張 WebToe 節點網路，操作方式接近 TouchDesigner，透過 <code>ext()</code> 綁定來演奏。WebToe 是引擎，open-audiovisual 是演出。', alt: '節點編輯器裡有 noise、level、out 三個節點，旁邊是灰色雲霧材質。' },
       { title: 'Prebiotic Flake', inputs: '螢幕鋼琴 · 模擬演奏者 · 聲音', text: '2023 年的一件 MIDI 每日創作，搬進框架重新演奏。繪圖程式碼保持原樣，雪花現在透過 Tone.js 發出聲音。', alt: '發光的黃色鋸齒花瓣圍成一圈，中間有小圓圈。' },
@@ -126,6 +134,7 @@ export default {
       { title: '花火大會', inputs: '鏡頭（手）· 螢幕鋼琴', text: '2021 年的作品。手指一捏合，煙火就從那隻手的位置升空。粒子系統是 2021 年的原始程式碼。', alt: '青色和紫色的煙火，在垂落的彩色尾跡上炸開。' },
       { title: '遠端控制面板', inputs: '手機或 iPad · 螢幕鋼琴', text: '手機就是樂器面板。世界只宣告參數，手機上的控制面板依參數自動長出來。需要在你的網路裡跑 <code>node serve.js</code>。', alt: '藍色和黃色的光束，從畫面下方中央向外爆開。' },
       { title: 'MIDI 控制器', inputs: 'MIDI 控制器，或螢幕上那一台', text: '螢幕上有 MiniLab 3、LPD8、Launchpad、nanoKONTROL2。接上實體控制器，螢幕上那台會跟著你的手一起動。', alt: '粉紅與藍色圓點排成螺旋，下方是螢幕上的 MIDI 鍵盤控制器。' },
+      { title: '時間軸', inputs: '什麼都不用做，它自己會播 · 螢幕旋鈕', text: '看得見的自動化。五條關鍵影格曲線帶動一圈光點，場景負責切換，cue 觸發一次性的閃光，你一碰旋鈕就接手，放開再還給曲線。把旋鈕的動作錄下來，就寫成一條新曲線。', alt: '橘黃色圓點排成六邊形，下方是時間軸：五條曲線、場景區塊和一條播放頭。' },
     ],
     credits: [
       '吳哲宇，<cite>230616 Prebiotic Flake</cite>，2023',
@@ -153,7 +162,7 @@ export default {
     worldTitle: '你只需要寫一個世界',
     worldText: '宣告作品能被什麼演奏（參數），對事件做反應，然後畫出來。交給 <code>createShow()</code>，其他部分一起到位：鋼琴、映射、時間軸、控台、聲音、後台。旁邊放一個帶 import map 的 <code>index.html</code>，照範例 01 的寫法。',
     worldLink: '怎麼寫一個世界',
-    packagesTitle: '二十一個套件，依層分類',
+    packagesTitle: `${zhWords(facts.packageCount)}個套件，依層分類`,
     packagesLede: '全部是原生 ES module。用 import map 引入需要的套件，或交給 <code>createShow()</code> 組裝。',
     groups: ['輸入', '映射', '世界', '輸出', '時間軸、控台、監看', '手機與平板', '核心與代理'],
     packages: {
@@ -163,11 +172,13 @@ export default {
       pose: '用鏡頭追蹤身體與手的 21 個點，全部在本機運算',
       keys: '螢幕鋼琴、電腦鍵盤演奏，以及模擬演奏者',
       drums: '合成鼓組與步進音序器，發出和音訊分析同樣形狀的訊號',
+      leap: '透過本機的小橋接，把 Leap Motion 的手變成 21 點手部訊號',
       mapping: '訊號到參數的路由：曲線、平滑、多對多、learn',
       stage: '世界的外殼：管生命週期和參數，不限定繪圖方式',
       'world-webtoe': '把 WebToe 節點網路當成世界來演奏',
       sound: '頁面裡的樂器（Salamander 鋼琴、敲擊琴、弦樂、風琴、合成器音色），加一個檔案就能放進自己的聲音',
       osc: '透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP',
+      record: '演出影片：作品疊在鏡頭畫面上、連同作品自己的聲音錄成一個檔；MIDI 演奏可錄下再重播',
       timeline: '參數自動化、場景與 cue：整場演出的時鐘',
       score: '把演出寫成段落長度：版本、cue、hold，還有模組壞掉時讓演出不中斷的導演',
       console: '導演控台與演出模式',
@@ -200,7 +211,7 @@ export default {
     prompt: [
       'Clone https://github.com/frank890417/open-audiovisual，先讀 AGENTS.md。',
       '執行 `node serve.js`，打開 http://localhost:8080/examples/01-hello-particles/，看最小的完整演出長什麼樣子。',
-      '把 01-hello-particles 複製成 examples/10-<名稱>/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：',
+      `把 01-hello-particles 複製成 examples/${facts.nextExampleNumber}-<名稱>/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：`,
       '',
       '  <描述這場表演，例如「一個遇到和諧和弦就綻放的水母世界」>',
       '',

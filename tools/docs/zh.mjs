@@ -5,7 +5,7 @@
 export default {
   meta: {
     title: '文件｜open-audiovisual',
-    description: 'open-audiovisual 使用手冊：快速開始、核心概念、寫一個世界、輸入、映射、演出控制、MIDI 控制器、手機，每一個訊號與套件的說明，以及 AI 代理怎麼使用它。',
+    description: 'open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。',
     ogDescription: '一頁讀完每一章：用 open-audiovisual 在瀏覽器裡做一場現場影音演出。',
   },
   ldLanguage: 'zh-Hant-TW',

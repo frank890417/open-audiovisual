@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { buildPages, stalePages, PAGES } from '../tools/build-controllers.mjs';
 import { shapeDiff } from '../tools/build-home.mjs';
 import { catalog, placeSection } from '../tools/controllers/page.mjs';
+import { ldNode } from './_ld.js';
 import en from '../tools/controllers/en.mjs';
 import zh from '../tools/controllers/zh.mjs';
 import { PROFILES } from '../packages/midi/profiles/index.js';
@@ -28,22 +29,21 @@ test('committed pages are what the template renders (run node tools/build-contro
   assert.deepEqual(stalePages(buildPages()), []);
 });
 
-test('every registered profile has a card, a spec sheet with one row per control, and a hero chip', () => {
+test('every registered profile has a card, an index row (the old #spec-<id> anchor) and a hero chip, all linking to its own page', () => {
   for (const lang of ['en', 'zh']) {
     const s = html[lang];
     for (const p of PROFILES) {
       assert.match(s, new RegExp(`<li class="card" id="card-${p.id}"`), `${lang}: card ${p.id}`);
-      const m = s.match(new RegExp(`<details class="spec" id="spec-${p.id}">([\\s\\S]*?)</details>`));
-      assert.ok(m, `${lang}: spec ${p.id}`);
-      assert.equal((m[1].match(/<tr[\s>]/g) || []).length - 1, p.controls.length, `${lang}: ${p.id} rows`);
-      for (const c of p.controls) assert.ok(m[1].includes(`<code class="cid">${c.id}</code>`), `${lang}: ${p.id}/${c.id}`);
-      assert.match(s, new RegExp(`class="chip" href="#spec-${p.id}" data-profile="${p.id}"`), `${lang}: chip ${p.id}`);
+      assert.match(s, new RegExp(`<tr id="spec-${p.id}"><th scope="row"><a href="${p.id}/">`), `${lang}: index row / #spec-${p.id} anchor`);
+      assert.match(s, new RegExp(`class="chip" href="${p.id}/" data-profile="${p.id}"`), `${lang}: chip ${p.id}`);
+      assert.match(s, new RegExp(`<h4 class="card-name"><a href="${p.id}/">`), `${lang}: card name link ${p.id}`);
+      assert.match(s, new RegExp(`<a class="card-face-link" href="${p.id}/"`), `${lang}: card face link ${p.id}`);
     }
   }
 });
 
 test('numbers on the page come from the profiles (a few spot checks)', () => {
-  const lpd8 = html.en.match(/<details class="spec" id="spec-akai-lpd8">([\s\S]*?)<\/details>/)[1];
+  const lpd8 = read('controllers/akai-lpd8/index.html');
   assert.match(lpd8, /K1 <code class="cid">k1<\/code><\/th>\s*<td>knob<\/td>\s*<td>CC<\/td>\s*<td class="n">1<\/td>\s*<td class="n">70<\/td>/);
   assert.match(lpd8, /Pad 1 <code class="cid">pad1<\/code><\/th>\s*<td>pad<\/td>\s*<td>Note · velocity<\/td>\s*<td class="n">10<\/td>\s*<td class="n">36 · C2<\/td>/);
   const { stats } = catalog();
@@ -73,8 +73,7 @@ test('language metadata: lang, canonical, hreflang trio, JSON-LD', () => {
     assert.match(s, new RegExp(`<link rel="canonical" href="${URLS[lang]}">`));
     for (const [hl, url] of [['en', URLS.en], ['zh-Hant', URLS.zh], ['x-default', URLS.en]])
       assert.match(s, new RegExp(`<link rel="alternate" hreflang="${hl}" href="${url}">`), `${lang} hreflang ${hl}`);
-    const ld = JSON.parse(s.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
-    const [ds, list] = ld['@graph'];
+    const ds = ldNode(s, 'Dataset'), list = ldNode(s, 'ItemList');
     assert.equal(ds['@type'], 'Dataset'); assert.equal(ds.distribution.length, PROFILES.length);
     assert.equal(list['@type'], 'ItemList'); assert.equal(list.numberOfItems, PROFILES.length);
   }
@@ -97,9 +96,19 @@ test('every local link and asset exists, every #anchor has a target', () => {
   }
 });
 
-test('no-JS readers get everything: every spec sheet is in the HTML, the hero has a static faceplate', () => {
+test('no-JS readers get everything: the hero has a static faceplate, every card has a link, the index lists every profile', () => {
   assert.match(html.en, /<oav-controller id="hero-ctl"[^>]*><svg class="fp"/);
-  assert.equal((html.en.match(/<details class="spec"/g) || []).length, PROFILES.length);
+  assert.equal((html.en.match(/<tr id="spec-/g) || []).length, PROFILES.length);
+});
+
+test('old links keep working: #spec-<id> and ?profile=<id> are redirected to /controllers/<id>/ by a script in <head>', () => {
+  for (const lang of ['en', 'zh']) {
+    const head = html[lang].slice(0, html[lang].indexOf('</head>'));
+    const m = head.match(/<script>\(function\(\)\{var ids=(\[[^\]]*\])[\s\S]*?location\.replace\([\s\S]*?<\/script>/);
+    assert.ok(m, `${lang}: redirect script`);
+    assert.deepEqual(JSON.parse(m[1]), PROFILES.map((p) => p.id));
+    assert.match(m[0], /#spec-/); assert.match(m[0], /profile=/);
+  }
 });
 
 test('static faceplate placement follows CSS grid flow and spans (nanoKONTROL2 strips)', () => {

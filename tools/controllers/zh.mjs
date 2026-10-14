@@ -3,13 +3,16 @@
 // 字串可以含 inline HTML。裝置資料、程式碼、訊號名稱與網址來自 packages/midi/profiles/*.json
 // 和 tools/controllers/page.mjs，兩種語言共用。{n}、{tool}、{port} 由頁面填入。
 
+import { getFacts } from '../site/facts.mjs';
+const facts = getFacts();
+
 export default {
   lang: 'zh',
   htmlLang: 'zh-Hant-TW',
 
   meta: {
-    title: 'MIDI 控制器圖鑑｜open-audiovisual',
-    description: '每一顆旋鈕、打擊墊、琴鍵送出什麼 MIDI 訊息，數字出自哪一份手冊，這裡都查好了。在網頁上直接彈，接上手邊的控制器畫面會跟著動，一行程式碼就能放進自己的網頁。收錄 Arturia、AKAI、Novation、KORG、Behringer、teenage engineering 與通用版面。',
+    title: 'MIDI 控制器圖鑑：CC 對照表｜open-audiovisual',
+    description: `${facts.deviceCount} 台 MIDI 控制器做成 JSON：每顆旋鈕、鼓墊與琴鍵的確切 MIDI 訊息和出處。網頁上直接彈，一行程式碼嵌進你的網頁。`,
     ogDescription: '每一顆旋鈕送出什麼 MIDI 訊息、數字出自哪份手冊，都查好了。網頁上直接彈，接上控制器會跟著動，一行程式碼放進你的網頁。',
     ldName: 'open-audiovisual MIDI 控制器設定檔',
     ldDescription: '機器可讀的硬體 MIDI 控制器實作表：面板配置、每個控制項的 MIDI 訊息、LED 回饋、埠名稱比對與引用出處，JSON 格式（MIT 授權）。',
@@ -52,7 +55,7 @@ export default {
     filters: { all: '全部', pad: '打擊墊', keys: '琴鍵', knob: '旋鈕', fader: '推桿', encoder: '無段旋鈕', led: 'LED 回饋' },
     shown: '顯示 {n} 台',
     badges: { maker: '原廠文件', community: '社群整理', tool: '作者的 {tool} 工具', generic: '通用版面', unverified: '{n} 個未確認', led: 'LED 回饋' },
-    links: { play: '彈奏', full: '全螢幕', json: 'JSON', embed: '嵌入', spec: '規格表' },
+    links: { play: '彈奏', full: '全螢幕', json: 'JSON', embed: '嵌入', spec: 'MIDI 對照' },
     faceLabel: '{name} 的面板',
     tapToPlay: '按「彈奏」，換到上面的大面板去彈。',
   },
@@ -71,8 +74,9 @@ export default {
 
   specs: {
     eyebrow: '03 · 規格表',
-    title: '每一台的完整 MIDI 對照表',
-    lede: '這些表在建置時直接從 JSON 檔產生，跟元件實際送出的訊息一定對得上。數字和訊號名稱中英文版都一樣，說明和出處保留原文。',
+    title: '每一台都有自己的頁面',
+    lede: '每台控制器一頁，附完整 MIDI 對照表、出處、嵌入碼，以及在 p5.js 裡各個旋鈕叫什麼名字。頁面在建置時直接從 JSON 檔產生，跟元件實際送出的訊息一定對得上。',
+    indexCols: { device: '控制器', maker: '廠牌', controls: '面板上有', page: '頁面' },
     cols: { control: '控制項', type: '類型', message: '訊息', ch: '頻道', number: '編號', signal: '訊號', led: 'LED 回饋', verified: '已確認' },
     caption: '{name} 的 MIDI 實作表',
     msg: { cc: 'CC', note: '音符', pitchbend: '彎音', chanat: '通道觸後', program: '音色切換' },
@@ -101,7 +105,7 @@ export default {
     signals: '訊號',
     signalsText: '每個控制項都會發出 <code>midi/{short}/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/{short}/last</code>。',
     raw: '原始 JSON',
-    open: '打開規格表',
+    open: 'MIDI 對照表',
     toCard: '回到卡片',
   },
 
@@ -184,5 +188,55 @@ export default {
     learnTitle: '沒有說明書？用學習模式',
     learnText: '選一個通用版面，按「學習」，照順序動一次你的控制項，版面會自己填上你那台送出的訊息。<code>exportMapping()</code> 把結果存成 JSON，就是一份設定檔的起點。',
     links: { repo: '原始碼庫', readme: 'packages/midi/README.md', folder: '所有設定檔', issue: '許願一台控制器' },
+  },
+
+  // 每台控制器一頁：/zh/controllers/<id>/（tools/controllers/detail.mjs）
+  detail: {
+    title: { device: '{name} MIDI 對照表與可彈奏面板｜open-audiovisual', generic: '{name} MIDI 版面與可彈奏面板｜open-audiovisual' },
+    desc: {
+      head: { device: '{name} 的 MIDI 對照表：{counts}。', generic: '{name}的 MIDI 版面：{counts}。' },
+      tails: ['每個控制項的 CC／音符編號、頻道與出處都查好了。', '網頁上直接彈，一行嵌入，p5.js 也能用。'],
+      max: 80,
+    },
+    and: '與',
+    sep: '、',
+    crumbs: { label: '麵包屑', home: '首頁', controllers: '控制器圖鑑' },
+    eyebrowGeneric: '通用版面',
+    ledeDevice: '{name} 是 {maker} 的 MIDI 硬體控制器：{counts}。',
+    ledeGeneric: '{name}是通用版面，不對應任何一款產品：{counts}。它的訊息是慣例，不是哪個廠牌的對照表。找不到你那一台的話，先挑它，按「學習」，再照順序動每個控制項。',
+    ledeData: '它在 {channels} 送出 {messages}，設定檔引用了 {sources}。',
+    sourcesN: ['{n} 份出處', '{n} 份出處'],
+    unvSome: '其中 {n} 個控制項標了<em>未確認</em>：數字是照目前出處的最佳判讀，按「學習」一次就能重新對應。',
+    unvNone: '沒有任何控制項被標為未確認。',
+    channelWord: ['頻道 {list}', '頻道 {list}'],
+    facts: { maker: '廠牌', controls: '控制項', messages: '訊息種類', channels: 'MIDI 頻道', led: 'LED 回饋', ledYes: '有，燈光由 MIDI 控制', ledNo: '不會送出', signals: '訊號', port: '埠名稱比對', portNone: '無：手動指定，再用學習模式', kind: '類型', kindDevice: '硬體裝置', kindGeneric: '通用版面' },
+    play: { eyebrow: '彈奏', title: '在畫面上彈 {name}', hint: '拖曳旋鈕和推桿 · 點打擊墊和琴鍵 · 或接上真機按「接上」。除非你加了 MIDI 輸出，否則什麼都不會送出去。', full: '全螢幕', back: '全部控制器', noscript: '這是一台可以彈的控制器，打開 JavaScript 才能彈。完整的 MIDI 對照表在下面的表格裡。' },
+    spec: { eyebrow: 'MIDI 實作表', title: '{name} 每個控制項送出什麼', lede: '直接從設定檔產生，跟畫面上彈的是同一張表。頻道是 1–16，編號是真正的 MIDI 編號。', notesTitle: '個別控制項的說明' },
+    use: {
+      eyebrow: '用起來',
+      title: '把 {name} 用在你的作品裡',
+      embedTitle: '一行嵌入',
+      embedText: '不用 import map，也不用建置。可以改 <code>layout</code>，加上 <code>hardware="ask"</code> 就有「接上」按鈕。',
+      iframeTitle: '或用 iframe',
+      iframeText: '給只能貼 iframe 的地方。每個事件都以 <code>postMessage</code> 傳回來。',
+      outTitle: '送進 Ableton、TouchDesigner、Resolume',
+      outText: '你在畫面上彈的，會變成真正的 MIDI，從 macOS 的 IAC 匯流排或 Windows 的 loopMIDI 埠送出。步驟在<a href="{href}">圖鑑頁</a>。',
+      outSteps: 'macOS：音訊 MIDI 設定 → MIDI 工作室 → IAC 驅動程式 → 勾「裝置在線上」。Windows：安裝 loopMIDI 並新增一個埠，用 <code>midi-out="loopMIDI"</code>。',
+      p5Title: '在 p5.js 裡，只要一行',
+      p5Text: '一行注入會依這份設定檔裡的順序（也就是上面表格的順序）替旋鈕、推桿和打擊墊編號。網址加上 <code>?profile={id}</code>，畫面上的控制器就是這一台；真的 {name} 接上時，會依埠名稱自動認出來。',
+      p5TextGeneric: '一行注入會依這個版面裡的順序（也就是上面表格的順序）替旋鈕、推桿和打擊墊編號。網址加上 <code>?profile={id}</code>，畫面上的控制器就是這個版面。',
+      p5Cols: { read: '在草稿裡', control: '控制項', message: '訊息' },
+      p5Knob: '旋鈕', p5Fader: '推桿', p5Pad: '打擊墊',
+      p5More: '… 還有 {n} 個，一路到 <code>{kind}({last})</code>，順序相同',
+      p5Keys: '{from}–{to}（{a}–{b}）',
+      p5KeysRow: '琴鍵按下',
+      p5Other: '無段旋鈕、按鈕、滾輪和觸控條沒有編號：用 <code>midi.cc[編號]</code> 讀（編號見上面的表），或寫 <code>controlChange(cc, value, ch)</code> 接。',
+      p5Generic: '這是通用版面，要在畫面上選它當控制器，編號才會照這份設定。接上不認識的真機時，旋鈕會依你轉動的順序編號。',
+      p5Sketch: 'p5.js 草稿',
+      p5Docs: 'p5.js 完整說明',
+    },
+    more: { eyebrow: '這台的周圍', title: '相關控制器', prev: '上一台', next: '下一台', back: '回到全部控制器', relatedLabel: '相關控制器', stepLabel: '相鄰的控制器' },
+    report: { title: '這台的資料有錯嗎？', text: '這一頁的每個數字都來自一個 JSON 檔。如果跟你的機器或手冊對不上，告訴我們你查的是哪個韌體版本，我們就改檔案。', issue: '到 GitHub 回報', issueTitle: '控制器資料：{name}（{id}）', file: 'GitHub 上的設定檔', raw: '原始 JSON' },
+    ld: { dataset: '{name} MIDI 對照表', datasetDesc: 'open-audiovisual 收錄的 {name} 機器可讀 MIDI 實作表：面板配置、每個控制項的 MIDI 訊息、LED 回饋、埠名稱比對與引用出處，JSON 格式（MIT 授權）。', category: 'MIDI 控制器', categoryGeneric: '通用 MIDI 控制器版面', image: 'open-audiovisual：MIDI 控制器圖鑑' },
   },
 };

@@ -4,8 +4,8 @@
 
 export default {
   meta: {
-    title: 'WebToe｜open-audiovisual 背後的引擎',
-    description: 'WebToe 是網頁原生、節點式的即時影像資料流引擎。在瀏覽器裡像用 TouchDesigner 一樣接運算子，跑在 WebGL2 或 WebGPU 上，沒有任何執行期相依套件，還能打開真的 TouchDesigner 專案。透過 @openav/world-webtoe，一張 WebToe 網路就能變成 open-audiovisual 的世界。',
+    title: 'WebToe｜瀏覽器裡的 TouchDesigner 式節點引擎',
+    description: 'WebToe 是瀏覽器裡的 TouchDesigner 式節點引擎（WebGL2／WebGPU），能打開真的 .toe 專案，也能當 open-audiovisual 的世界演奏。',
     ogDescription: 'WebToe 負責引擎，open-audiovisual 負責演出。',
     ld: '網頁原生、節點式的即時影像資料流引擎與編輯器，操作方式接近 TouchDesigner，跑在 WebGL2 與 WebGPU 上，沒有執行期相依套件，可以匯入 TouchDesigner 的 .toe 與 .tox 專案。',
   },

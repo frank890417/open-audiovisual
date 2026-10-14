@@ -52,7 +52,14 @@ const server = http.createServer((req, res) => {
   const file = path.join(ROOT, path.normalize(urlPath));
   if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
   fs.readFile(file, (err, data) => {
-    if (err) { res.writeHead(404); return res.end('404 ' + urlPath); }
+    if (err) {
+      // like GitHub Pages: a missing page answers 404 with the site's own 404.html (if the page asked for html)
+      const page = path.join(ROOT, '404.html');
+      if (!path.extname(file) || file.endsWith('.html')) {
+        return fs.readFile(page, (e2, html) => { res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(e2 ? '404 ' + urlPath : html); });
+      }
+      res.writeHead(404); return res.end('404 ' + urlPath);
+    }
     res.writeHead(200, {
       'Content-Type': MIME[path.extname(file)] || 'application/octet-stream',
       'Cache-Control': 'no-store',   // performance dev: stale code on stage is a nightmare

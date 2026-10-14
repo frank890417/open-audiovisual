@@ -245,3 +245,39 @@ test('an OPC_update with no hardware just before (someone dragging the panel) ch
   w.midi.input([0xB0, 74, 127], 'hardware', 'arturia-minilab3');
   assert.equal(OPC.options.radius.value, 100);
 });
+
+// ---------------------------------------------------------------- example 15: the line, shown on a page
+
+const ONE_LINE = "document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));";
+const EX15 = (f) => new URL(`../examples/15-p5-one-line/${f}`, import.meta.url);
+
+test('example 15: the sketch file starts with the one line, and the README shows the very same line', () => {
+  const sketch = readFileSync(EX15('sketch.js'), 'utf8');
+  assert.equal(sketch.split('\n')[0], ONE_LINE);
+  assert.ok(readFileSync(new URL('../p5/README.md', import.meta.url), 'utf8').includes(ONE_LINE));
+});
+
+test('example 15: the page runs that sketch file (last script, p5 from the CDN, no framework) and the source panel reads the same file', () => {
+  const html = readFileSync(EX15('index.html'), 'utf8');
+  const scripts = [...html.matchAll(/<script\b([^>]*)>/g)].map((m) => m[1]);
+  assert.match(scripts[scripts.length - 1], /src="\.\/sketch\.js(\?v=[^"]*)?"/, 'sketch.js is the last <script>: p5 reads the last script as the sketch (stamp-version may add ?v=)');
+  assert.ok(scripts.some((a) => /src="https:\/\/cdn\.jsdelivr\.net\/npm\/p5@1\.11\.\d+\/lib\/p5\.min\.js"/.test(a)), 'p5 1.11.x from the CDN');
+  assert.ok(!/importmap|createShow|@openav\//.test(html), 'the point is the one line: no import map, no createShow');
+  assert.ok(!html.includes("document.head.prepend"), 'the line is not copied into the page: it is read from sketch.js');
+  assert.match(html, /fetch\(\s*['"]\.\/sketch\.js['"]/, 'the source panel fetches ./sketch.js');
+  assert.equal([...html.matchAll(/sketch\.js/g)].length >= 2, true);
+  assert.match(html, /<title>open-audiovisual · 15 p5\.js in one line<\/title>/);
+  assert.match(html, /<meta name="description"/);
+  assert.match(html, /openaudiovisual\.com\/docs\/#p5/);
+  assert.match(html, /openaudiovisual\.com\/zh\/docs\/#p5/);
+});
+
+test('example 15: the sketch uses the p5-style names the page promises, and the thumbnail exists', () => {
+  const s = readFileSync(EX15('sketch.js'), 'utf8');
+  for (const name of ['knob1', 'knob2', 'knob3', 'knob4', 'notePressed', 'noteReleased', 'noteIsDown', 'padPressed']) assert.ok(s.includes(name), name);
+  assert.ok(/pad\(/.test(s) || /pad1/.test(s));
+  const webp = readFileSync(new URL('../assets/home/works/15.webp', import.meta.url));
+  assert.ok(webp.length > 1000 && webp.length <= 120 * 1024, `15.webp is ${webp.length} bytes`);
+  assert.equal(webp.subarray(0, 4).toString(), 'RIFF');
+  assert.equal(webp.subarray(8, 12).toString(), 'WEBP');
+});

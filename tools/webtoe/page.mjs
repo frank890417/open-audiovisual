@@ -8,7 +8,7 @@
 // what it is, how packages/world-webtoe plugs it into a show, and what its
 // TouchDesigner import can and cannot promise. Static HTML, no script.
 
-import { SITE, TREE, pageCtx, headBasics, topBar, siteFooter, esc, attr } from '../site/chrome.mjs';
+import { SITE, TREE, PERSON_ID, SOFTWARE_ID, pageCtx, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFooter, guardEmail, esc, attr } from '../site/chrome.mjs';
 import { hl } from '../../assets/controllers/snippets.js';
 
 /** WebToe's own addresses, shared with the homepage section. */
@@ -80,16 +80,14 @@ const shell = (s) => esc(s).replace(/(^|\s)(#[^\n]*)/g, '$1<span class="tc">$2</
 export function renderPage(t, home, locale) {
   const c = pageCtx('webtoe', locale);
   const root = c.root;
-  const ld = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: t.meta.title,
-    description: t.meta.description,
-    url: c.self,
-    inLanguage: home.ldLanguage,
-    isPartOf: { '@type': 'WebSite', name: 'open-audiovisual', url: SITE },
-    about: {
-      '@type': 'SoftwareApplication',
+  const ld = [
+    pageNode(c, home, {
+      name: t.meta.title, description: t.meta.description, breadcrumb: { '@id': c.self + '#breadcrumb' },
+      about: { '@id': WEBTOE.app + '#software' }, mentions: { '@id': SOFTWARE_ID },
+    }),
+    breadcrumbNode(c, [['open-audiovisual', homeUrl(c)], [home.ui.nav.webtoe, c.self]]),
+    {
+      '@type': 'SoftwareApplication', '@id': WEBTOE.app + '#software',
       name: 'WebToe',
       description: t.meta.ld,
       url: WEBTOE.app,
@@ -97,10 +95,10 @@ export function renderPage(t, home, locale) {
       applicationCategory: 'MultimediaApplication',
       operatingSystem: 'Web browser',
       license: 'https://opensource.org/licenses/MIT',
-      author: { '@type': 'Person', name: 'Che-Yu Wu', alternateName: '吳哲宇', url: 'https://cheyuwu.com' },
+      author: { '@id': PERSON_ID },
+      image: `${SITE}assets/webtoe/${SHOTS.hero}-1600.webp`,
     },
-    image: `${SITE}assets/webtoe/${SHOTS.hero}-1600.webp`,
-  };
+  ];
 
   const sec = (id, eyebrow, title, lede = '') => `
     <header class="sec-head">
@@ -118,14 +116,11 @@ export function renderPage(t, home, locale) {
       <figcaption>${caption}</figcaption>
     </figure>`;
 
-  return `<!DOCTYPE html>
+  return guardEmail(`<!DOCTYPE html>
 <html lang="${home.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld })}
 <link rel="stylesheet" href="${root}assets/webtoe/webtoe.css">
-<script type="application/ld+json">
-${JSON.stringify(ld, null, 2)}
-</script>
 </head>
 <body class="page-webtoe">
 ${topBar(home, c)}
@@ -224,5 +219,5 @@ ${topBar(home, c)}
 ${siteFooter(home, c)}
 </body>
 </html>
-`;
+`);
 }

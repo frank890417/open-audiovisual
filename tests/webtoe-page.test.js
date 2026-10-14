@@ -11,6 +11,7 @@ import { buildPages, stalePages, PAGES } from '../tools/build-webtoe.mjs';
 import { shapeDiff } from '../tools/build-home.mjs';
 import { SECTIONS, WEBTOE } from '../tools/webtoe/page.mjs';
 import { NAV, PAGES as SITE_PAGES } from '../tools/site/chrome.mjs';
+import { ldNode, ldGraph } from './_ld.js';
 import en from '../tools/webtoe/en.mjs';
 import zh from '../tools/webtoe/zh.mjs';
 import homeEn from '../tools/home/en.mjs';
@@ -55,11 +56,12 @@ test('language metadata: lang, canonical, hreflang trio, OG, JSON-LD', () => {
     assert.match(s, new RegExp(`<meta property="og:url" content="${URLS[lang]}">`));
     for (const [hl, url] of [['en', URLS.en], ['zh-Hant', URLS.zh], ['x-default', URLS.en]])
       assert.match(s, new RegExp(`<link rel="alternate" hreflang="${hl}" href="${url}">`), `${lang} hreflang ${hl}`);
-    const ld = JSON.parse(s.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    const ld = ldNode(s, 'WebPage');
     assert.equal(ld.url, URLS[lang]);
     assert.equal(ld.inLanguage, want);
-    assert.equal(ld.about.name, 'WebToe');
-    assert.equal(ld.about.url, WEBTOE.app);
+    const toe = ldGraph(s).find((n) => n['@id'] === ld.about['@id']);
+    assert.equal(toe.name, 'WebToe');
+    assert.equal(toe.url, WEBTOE.app);
   }
 });
 

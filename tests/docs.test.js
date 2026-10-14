@@ -11,6 +11,7 @@ import { renderMarkdown, inline, highlight, slugify, splitRow } from '../tools/d
 import { buildDocs, githubSlug } from '../tools/build-docs.mjs';
 import { CHAPTERS } from '../tools/docs/chapters.mjs';
 import { shapeDiff } from '../tools/build-home.mjs';
+import { ldNode } from './_ld.js';
 import en from '../tools/docs/en.mjs';
 import zh from '../tools/docs/zh.mjs';
 
@@ -166,8 +167,8 @@ test('language metadata: lang, canonical, hreflang, JSON-LD TechArticle', () => 
     assert.match(s, new RegExp(`<link rel="canonical" href="${p.url}">`));
     for (const [hl, url] of [['en', PAGES.en.url], ['zh-Hant', PAGES.zh.url], ['x-default', PAGES.en.url]])
       assert.match(s, new RegExp(`<link rel="alternate" hreflang="${hl}" href="${url}">`), `${lang} hreflang ${hl}`);
-    const ld = JSON.parse(s.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
-    assert.equal(ld['@type'], 'TechArticle');
+    const ld = ldNode(s, 'TechArticle');
+    assert.ok(ld, 'a TechArticle node in the @graph');
     assert.equal(ld.inLanguage, want[lang][1]);
     assert.equal(ld.url, p.url);
     assert.equal(ld.articleSection.length, CHAPTERS.length);

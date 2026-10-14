@@ -3,82 +3,57 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual｜網頁原生的影音表演框架</title>
-<meta name="description" content="MIDI、麥克風、和弦、手勢和手機，都變成有名字的訊號，經過映射接到參數，交給你的世界去畫、去發聲。一套給現場影音表演用的 JavaScript 框架。零建置、零相依、MIT 授權。">
+<title>open-audiovisual｜網頁 MIDI 即時影像表演框架</title>
+<meta name="description" content="零建置的 JavaScript 框架：MIDI 控制器、麥克風、手勢和手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界。MIT 授權。">
 <link rel="canonical" href="https://openaudiovisual.com/zh/">
 <link rel="alternate" hreflang="en" href="https://openaudiovisual.com/">
 <link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/">
 <link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/">
-<link rel="alternate" type="text/markdown" href="../llms.txt" title="llms.txt">
+<link rel="describedby" href="../llms.txt" title="llms.txt">
 <meta name="theme-color" content="#0b0b0c">
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="open-audiovisual">
-<meta property="og:title" content="open-audiovisual｜網頁原生的影音表演框架">
+<meta property="og:title" content="open-audiovisual｜網頁 MIDI 即時影像表演框架">
 <meta property="og:description" content="Hydra 給你即興，cables 給你平台，Tone 給你聲音。open-audiovisual 給你一場演出。">
 <meta property="og:url" content="https://openaudiovisual.com/zh/">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<meta name="twitter:title" content="open-audiovisual｜網頁 MIDI 即時影像表演框架">
+<meta name="twitter:description" content="Hydra 給你即興，cables 給你平台，Tone 給你聲音。open-audiovisual 給你一場演出。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=1b4606c">
+<link rel="stylesheet" href="../assets/home/home.css?v=02fdc94">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/zh/#webpage","url":"https://openaudiovisual.com/zh/","name":"open-audiovisual｜網頁 MIDI 即時影像表演框架","description":"零建置的 JavaScript 框架：MIDI 控制器、麥克風、手勢和手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界。MIT 授權。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/#software"}}]}</script>
 <noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  "name": "open-audiovisual",
-  "alternateName": "OAV",
-  "description": "網頁原生、零建置、零相依的 JavaScript 影音表演框架：MIDI、音訊、和弦、肢體姿態與手機等輸入發出有名字的訊號，映射層把訊號接到參數，演算的世界依參數產生畫面與聲音，另有時間軸、導演控台與後台監看。",
-  "url": "https://openaudiovisual.com/zh/",
-  "inLanguage": "zh-Hant-TW",
-  "codeRepository": "https://github.com/frank890417/open-audiovisual",
-  "license": "https://opensource.org/licenses/MIT",
-  "programmingLanguage": {
-    "@type": "ComputerLanguage",
-    "name": "JavaScript"
-  },
-  "runtimePlatform": "Web browser",
-  "version": "0.1.0",
-  "author": {
-    "@type": "Person",
-    "name": "Che-Yu Wu",
-    "alternateName": "吳哲宇",
-    "url": "https://cheyuwu.com"
-  },
-  "keywords": [
-    "audiovisual performance",
-    "creative coding",
-    "Web MIDI",
-    "generative art",
-    "live visuals",
-    "OSC",
-    "show control",
-    "MCP"
-  ],
-  "image": "https://openaudiovisual.com/assets/home/og.png"
-}
-</script>
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "../packages/core/index.js?v=1b4606c",
-    "@openav/mapping": "../packages/mapping/index.js?v=1b4606c",
-    "@openav/keys": "../packages/keys/index.js?v=1b4606c",
-    "@openav/chord": "../packages/chord/index.js?v=1b4606c",
-    "@openav/stage": "../packages/stage/index.js?v=1b4606c",
-    "@openav/sound": "../packages/sound/index.js?v=1b4606c",
-    "@openav/midi": "../packages/midi/index.js?v=1b4606c",
-    "@openav/audio": "../packages/audio/index.js?v=1b4606c"
+    "@openav/core": "../packages/core/index.js?v=02fdc94",
+    "@openav/mapping": "../packages/mapping/index.js?v=02fdc94",
+    "@openav/keys": "../packages/keys/index.js?v=02fdc94",
+    "@openav/chord": "../packages/chord/index.js?v=02fdc94",
+    "@openav/stage": "../packages/stage/index.js?v=02fdc94",
+    "@openav/sound": "../packages/sound/index.js?v=02fdc94",
+    "@openav/midi": "../packages/midi/index.js?v=02fdc94",
+    "@openav/audio": "../packages/audio/index.js?v=02fdc94"
   }
 }
 </script>
 </head>
 <body>
+<!--email_off-->
 <a class="skip" href="#main">跳到主要內容</a>
 
 <header class="top">
@@ -111,7 +86,7 @@
         <p class="eyebrow facts">v0.1 · MIT 授權 · 零建置 · 零相依</p>
       </div>
       <nav class="doors" aria-label="從哪裡開始">
-        <a class="door door-1" href="#works"><span class="door-who">我做表演</span><span class="door-what">看看它做得出什麼，直接玩九件作品</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-1" href="#works"><span class="door-who">我做表演</span><span class="door-what">看看它做得出什麼，直接玩十件作品</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-2" href="#start"><span class="door-who">我寫程式</span><span class="door-what">一分鐘跑起來，再寫自己的世界</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-3" href="../llms.txt"><span class="door-who">我是 AI 代理</span><span class="door-what">先讀 /llms.txt，再讀 AGENTS.md</span><span class="door-arrow" aria-hidden="true">→</span></a>
       </nav>
@@ -239,7 +214,7 @@
     
     <header class="sec-head">
       <p class="eyebrow">03 · 作品</p>
-      <h2 id="works-title">九件作品，現在就能打開</h2>
+      <h2 id="works-title">十件作品，現在就能打開</h2>
       <p class="sec-lede">每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。進到任何一個範例：空白鍵播放時間軸，T 是演出模式，F 是全螢幕。</p>
     </header>
     <ol class="works">
@@ -255,13 +230,13 @@
         </div>
       </li>
       <li class="work" id="work-02">
-        <div class="work-img"><img src="../assets/home/works/02.webp" width="800" height="500" loading="lazy" decoding="async" alt="細細的綠色與藍色莖從底部長起，頂端發亮。"></div>
+        <div class="work-img"><img src="../assets/home/works/02.webp" width="800" height="500" loading="lazy" decoding="async" alt="夜裡的花園，細長分岔的植物長著綠葉，枝端開出藍、紅、粉色的小花。"></div>
         <div class="work-label">
           <p class="work-n">02</p>
           <h3><a class="work-link" href="../examples/02-chord-garden/">和弦花園</a></h3>
           
           <p class="work-in"><span>演奏方式</span> 螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者</p>
-          <p class="work-text">彈三和弦，花園開花，彈音堆，花園枯萎。世界聽的是和弦訊號，從來不看琴鍵。來自《The Last Input》。</p>
+          <p class="work-text">一個音落下一顆種子，三和弦讓枝條開花，音堆讓花與葉垂下、落盡。枝條是《The Last Input》的 L-system 植物。世界聽的是和弦訊號，從來不看琴鍵。</p>
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/02-chord-garden">原始碼 ↗</a></p>
         </div>
       </li>
@@ -342,6 +317,17 @@
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/09-midi-controllers">原始碼 ↗</a></p>
         </div>
       </li>
+      <li class="work" id="work-14">
+        <div class="work-img"><img src="../assets/home/works/14.webp" width="800" height="500" loading="lazy" decoding="async" alt="橘黃色圓點排成六邊形，下方是時間軸：五條曲線、場景區塊和一條播放頭。"></div>
+        <div class="work-label">
+          <p class="work-n">14</p>
+          <h3><a class="work-link" href="../examples/14-timeline/">時間軸</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> 什麼都不用做，它自己會播 · 螢幕旋鈕</p>
+          <p class="work-text">看得見的自動化。五條關鍵影格曲線帶動一圈光點，場景負責切換，cue 觸發一次性的閃光，你一碰旋鈕就接手，放開再還給曲線。把旋鈕的動作錄下來，就寫成一條新曲線。</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/14-timeline">原始碼 ↗</a></p>
+        </div>
+      </li>
     </ol>
     <p class="works-note">05 到 07 是吳哲宇 2020 到 2023 年的作品，在這裡當作示範。框架採 MIT 授權，作品的著作權仍屬藝術家，保留一切權利。</p>
   </section>
@@ -390,7 +376,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p>宣告作品能被什麼演奏（參數），對事件做反應，然後畫出來。交給 <code>createShow()</code>，其他部分一起到位：鋼琴、映射、時間軸、控台、聲音、後台。旁邊放一個帶 import map 的 <code>index.html</code>，照範例 01 的寫法。</p>
         
       <div class="term ">
-        <div class="term-bar"><span>examples/10-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">複製</button></div>
+        <div class="term-bar"><span>examples/16-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">複製</button></div>
         <pre id="code-world"><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
 
@@ -420,7 +406,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
       </div>
     </div>
 
-    <h3 class="pkgs-title">二十一個套件，依層分類</h3>
+    <h3 class="pkgs-title">二十三個套件，依層分類</h3>
     <p class="pkgs-lede">全部是原生 ES module。用 import map 引入需要的套件，或交給 <code>createShow()</code> 組裝。</p>
     <div class="pkgs">
       <div class="pkg-group pg-l1">
@@ -432,6 +418,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/pose"><code>@openav/pose</code></a><span>用鏡頭追蹤身體與手的 21 個點，全部在本機運算</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/keys"><code>@openav/keys</code></a><span>螢幕鋼琴、電腦鍵盤演奏，以及模擬演奏者</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/drums"><code>@openav/drums</code></a><span>合成鼓組與步進音序器，發出和音訊分析同樣形狀的訊號</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/leap"><code>@openav/leap</code></a><span>透過本機的小橋接，把 Leap Motion 的手變成 21 點手部訊號</span></li>
         </ul>
       </div>
       <div class="pkg-group pg-l2">
@@ -452,6 +439,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <ul>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/sound"><code>@openav/sound</code></a><span>頁面裡的樂器（Salamander 鋼琴、敲擊琴、弦樂、風琴、合成器音色），加一個檔案就能放進自己的聲音</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/osc"><code>@openav/osc</code></a><span>透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/record"><code>@openav/record</code></a><span>演出影片：作品疊在鏡頭畫面上、連同作品自己的聲音錄成一個檔；MIDI 演奏可錄下再重播</span></li>
         </ul>
       </div>
       <div class="pkg-group pg-sp">
@@ -508,7 +496,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <div class="term-bar"><span>prompt</span><button type="button" class="copy" data-copy="agent-prompt">複製</button></div>
           <pre id="agent-prompt"><code>Clone https://github.com/frank890417/open-audiovisual，先讀 AGENTS.md。
 執行 `node serve.js`，打開 http://localhost:8080/examples/01-hello-particles/，看最小的完整演出長什麼樣子。
-把 01-hello-particles 複製成 examples/10-&lt;名稱&gt;/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：
+把 01-hello-particles 複製成 examples/16-&lt;名稱&gt;/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：
 
   &lt;描述這場表演，例如「一個遇到和諧和弦就綻放的水母世界」&gt;
 
@@ -606,6 +594,7 @@ AGENTS.md 的規則：連續控制一律走參數，由 mapper 把訊號接過�
 </footer>
 
 <script type="application/json" id="oav-i18n">{"statusSim":"模擬演奏者正在彈。換你了：點琴鍵，或按電腦鍵盤 A 到 L。","statusYou":"現在是你在彈。在畫面上拖曳，可以改色相和扭轉。","statusIdle":"點琴鍵或畫面，或按電腦鍵盤 A 到 L，就能彈。","midiNone":"找不到 MIDI 裝置。接上之後，再按一次 MIDI。","midiOn":"MIDI 已開啟，{n} 個裝置。調變輪（CC 1）也會帶動扭轉。","micOn":"麥克風已開啟，音量現在帶動能量。","micDenied":"這個瀏覽器擋下了麥克風。","soundLoading":"正在載入聲音引擎…","soundOn":"聲音已開啟，可以在開關下方換樂器。","consonance":"協和度","copy":"複製","copied":"已複製","eventTarget":"世界（事件）"}</script>
-<script type="module" src="../assets/home/home.js?v=1b4606c"></script>
+<script type="module" src="../assets/home/home.js?v=02fdc94"></script>
+<!--/email_off-->
 </body>
 </html>

@@ -23,6 +23,7 @@ import { renderMarkdown, slugify, stripMd } from './docs/markdown.mjs';
 import { renderDocsPage } from './docs/page.mjs';
 import { SITE, BLOB, TREE, PAGES, pageCtx } from './site/chrome.mjs';
 import { shapeDiff } from './build-home.mjs';
+import { sitemapXml, unstamp } from './site/pages.mjs';
 import en from './docs/en.mjs';
 import zh from './docs/zh.mjs';
 import homeEn from './home/en.mjs';
@@ -172,11 +173,10 @@ export function buildDocs() {
 /** { 'docs/index.html': html, 'zh/docs/index.html': html } */
 export function buildPages() { return buildDocs().pages; }
 
-const unstamp = (s) => s.replace(/\?v=[\w.-]+/g, '');
-
 if (import.meta.url === `file://${process.argv[1]}`) {
   const check = process.argv.includes('--check');
-  const { pages, warnings } = buildDocs();
+  const { pages: docPages, warnings } = buildDocs();
+  const pages = { ...docPages, 'sitemap.xml': sitemapXml() };   // sitemap.xml: the one file every build-*.mjs writes
   for (const w of warnings) console.warn('⚠️ ', w);
   const stale = [];
   for (const [rel, out] of Object.entries(pages)) {
@@ -189,6 +189,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
   if (check) {
     if (stale.length) { console.error('stale (run node tools/build-docs.mjs):\n  ' + stale.join('\n  ')); process.exit(1); }
-    console.log('✅ docs up to date (en, zh)');
+    console.log('✅ docs up to date (en, zh, sitemap.xml)');
   }
 }

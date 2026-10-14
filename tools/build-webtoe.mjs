@@ -16,6 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderPage } from './webtoe/page.mjs';
 import { shapeDiff } from './build-home.mjs';
+import { sitemapXml, unstamp } from './site/pages.mjs';
 import en from './webtoe/en.mjs';
 import zh from './webtoe/zh.mjs';
 import homeEn from './home/en.mjs';
@@ -34,7 +35,7 @@ export function buildPages() {
   };
 }
 
-export const unstamp = (s) => s.replace(/\?v=[\w.+-]+/g, '');
+export { unstamp };
 
 /** Which committed pages differ from what the template renders now. */
 export function stalePages(files = buildPages()) {
@@ -48,7 +49,7 @@ export function stalePages(files = buildPages()) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const files = buildPages();
+  const files = { ...buildPages(), 'sitemap.xml': sitemapXml() };   // sitemap.xml: the one file every build-*.mjs writes
   if (process.argv.includes('--check')) {
     const stale = stalePages(files);
     if (stale.length) { console.error('stale (run node tools/build-webtoe.mjs):\n  ' + stale.join('\n  ')); process.exit(1); }
