@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/#article","url":"https://openaudiovisual.com/zh/docs/","name":"文件｜open-audiovisual","description":"open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"open-audiovisual 使用手冊","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["簡介","快速開始","核心概念","架構","寫一個世界","輸入","映射","演出控制","總譜與導演","MIDI 控制器與嵌入","p5.js 一行接上","手機、中繼與控制面板","訊號一覽","套件一覽","給 AI 代理","實驗室整合（\"lab\" 欄位）","疑難排解","路線圖"],"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -160,6 +160,7 @@
             <li><a href="#mapping-learn">Learn</a></li>
             <li><a href="#mapping-muting-and-removing">靜音與移除</a></li>
             <li><a href="#mapping-saved-profiles">儲存的設定檔</a></li>
+            <li><a href="#mapping-map-files-export-import-and-share">對應檔：匯出、匯入與分享</a></li>
             <li><a href="#mapping-routes-written-for-you">替你寫好的路由</a></li>
             <li><a href="#mapping-mapper-api">Mapper API</a></li>
           </ol>
@@ -340,7 +341,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">18 章 · 169 節 · v0.1.0</p>
+      <p class="docs-stats">18 章 · 170 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -1030,9 +1031,50 @@ show.mapper.removeRoute(r.id);      <span class="tc">// remove</span></code></pr
 </ol>
 <p>所以 learn 來的路由和你做的修改，重新載入之後都還在。反過來說：如果你在程式碼裡改了某條宣告路由的曲線或平滑，同一組 <code>source → target</code> 以儲存的版本為準。要從乾淨的狀態開始，就傳入 <code>profile: false</code>（每次載入都從程式碼讀路由，像範例 09 那樣），或刪掉儲存的設定檔：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">localStorage.removeItem(<span class="ts">'openav.map.particles'</span>);   <span class="tc">// 'particles' = the world's name</span></code></pre></div>
-<p>要把一套接線帶到另一台電腦，就匯出再匯入 JSON（目前還沒有檔案介面，已經列在<a href="#roadmap">路線圖</a>上）：</p>
-<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">copy(JSON.stringify(show.mapper.toJSON(), <span class="tk">null</span>, 2));   <span class="tc">// devtools: copies the routes</span>
-show.mapper.fromJSON(routes); show.mapper.save();      <span class="tc">// on the other machine (replaces all routes)</span></code></pre></div>
+<p>要把一套接線帶到另一台電腦、或另一個世界，用對應檔（<a href="#mapping-map-files-export-import-and-share">下一節</a>）。</p>
+<h3 id="mapping-map-files-export-import-and-share">對應檔：匯出、匯入與分享<a class="anchor" href="#mapping-map-files-export-import-and-share" aria-label="這一節的連結">#</a></h3>
+<p><strong>L2 · Mapping</strong> 面板在「map knobs in order」下面有三個按鈕：</p>
+<ul>
+<li><strong>⬇ export</strong>：把目前的路由下載成 <code>oav-map-&lt;世界名&gt;.json</code>。</li>
+<li><strong>⬆ import</strong>：選一個對應檔。也可以<strong>把 <code>.json</code> 拖進頁面任何地方</strong>。匯入會<em>取代</em>現有路由，新的這組馬上被記住。</li>
+<li><strong>clear</strong>：移除全部路由（要點兩下）。下次載入時，世界宣告的路由會回來，跟第一次來一樣。</li>
+</ul>
+<p>按鈕下面會寫最近一次匯入的結果：進來幾條、<strong>略過</strong>哪幾條、為什麼。讀不了的檔案會說明原因，而且不動任何路由。</p>
+<h4 id="mapping-the-format">格式<a class="anchor" href="#mapping-the-format" aria-label="這一節的連結">#</a></h4>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-json">{
+  <span class="ts">"format"</span>: <span class="ts">"openav.map"</span>,
+  <span class="ts">"version"</span>: 1,
+  <span class="ts">"world"</span>: <span class="ts">"particles"</span>,
+  <span class="ts">"exported"</span>: <span class="ts">"2026-10-15T08:30:00.000Z"</span>,
+  <span class="ts">"routes"</span>: [
+    { <span class="ts">"signal"</span>: <span class="ts">"midi/cc/74"</span>, <span class="ts">"param"</span>: <span class="ts">"bloom"</span>, <span class="ts">"curve"</span>: <span class="ts">"exp"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 1], <span class="ts">"out"</span>: [0, 100] }, <span class="ts">"smooth"</span>: 0.1, <span class="ts">"invert"</span>: <span class="tk">false</span> },
+    { <span class="ts">"signal"</span>: <span class="ts">"audio/rms"</span>, <span class="ts">"param"</span>: <span class="ts">"energy"</span>, <span class="ts">"curve"</span>: <span class="ts">"linear"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 0.3], <span class="ts">"out"</span>: [0, 1] }, <span class="ts">"smooth"</span>: 0, <span class="ts">"invert"</span>: <span class="tk">false</span>, <span class="ts">"enabled"</span>: <span class="tk">false</span> }
+  ]
+}</code></pre></div>
+<p>路由用 <code>signal</code> 和 <code>param</code> 的名字指認，不用 id，所以檔案可以在不同世界之間搬：</p>
+<ul>
+<li>這個世界沒有的 <strong>param</strong>：略過並列出來。</li>
+<li>這場演出裡沒有東西能產生的 <strong>signal</strong>（例如沒有 Leap Motion 模組卻有 <code>leap/palm/x</code>）：略過並列出來。要等第一則訊息才會出現的訊號（<code>midi/…</code>、<code>surface/…</code>、<code>phone/…</code>、<code>osc/…</code>、<code>key…</code>、<code>take/…</code>）會留下，算作「等待中」。</li>
+<li>檔案的 <code>world</code> 跟現在不同時，<code>range.out</code> 會丟掉，讓每個 param 用自己的範圍（<code>in</code> 窗、曲線、平滑、反相照樣帶過來）。</li>
+<li><code>version</code> 比這個版本讀得懂的新，會拒絕並說明。<code>mapper.toJSON()</code> 的純陣列（舊作法）仍然可以匯入，當作版本 0。</li>
+<li>超過 256 KB 或超過 500 條路由的檔案會被拒絕。</li>
+</ul>
+<h4 id="mapping-load-on-open-map">開頁就載入：<code>?map=</code><a class="anchor" href="#mapping-load-on-open-map" aria-label="這一節的連結">#</a></h4>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code>https://openaudiovisual.com/examples/01-hello-particles/?map=https://example.com/my-map.json
+https://openaudiovisual.com/examples/01-hello-particles/?map=maps/stage-left.json</code></pre></div>
+<p><code>?map=&lt;網址&gt;</code> 在頁面打開時抓檔案，像匯入一樣載入。只接受<strong>同源</strong>位址（含相對路徑）或絕對的 <strong>https</strong> 位址；指向其他主機的 <code>http:</code>、<code>data:</code>、<code>javascript:</code>、<code>file:</code>，以及帶帳號密碼的位址都會被拒絕。跨站的檔案要有 CORS（<code>Access-Control-Allow-Origin: *</code>；raw GitHub 和 gist 都有）。演出照常開始：位址被拒、抓取失敗或檔案有問題時，面板會顯示原因，路由維持原樣。明確寫的 <code>?map=</code> 優先於被記住的接線，載入的內容也會像匯入一樣被記住。程式裡 <code>createShow({ map: 'maps/a.json' })</code> 效果相同，<code>map: false</code> 則忽略 <code>?map=</code>。</p>
+<h4 id="mapping-remembered-for-you">自動記住<a class="anchor" href="#mapping-remembered-for-you" aria-label="這一節的連結">#</a></h4>
+<p>映射器每 3 秒、以及每次匯入或清除之後，把路由存進 <code>localStorage</code>（<code>openav.map.&lt;世界名&gt;</code>），每個世界一格，下次打開從你停下的地方繼續。每次讀寫都包了 try/catch：私密視窗或儲存被擋時什麼都不會壞，只是不會被記住。</p>
+<p>程式裡：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { loadMapUrl, parseMap } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+
+<span class="tk">const</span> file = show.mapper.exportMap();                    <span class="tc">// the object above</span>
+<span class="tk">const</span> report = show.mapper.importMap(text);              <span class="tc">// text or object; { mode: 'add' } keeps current routes</span>
+<span class="tc">// → { ok, added, skipped: [{ signal, param, reason: 'param' | 'signal' }], waiting, dropped, crossWorld }</span>
+<span class="tk">await</span> loadMapUrl(show.mapper, <span class="ts">'maps/a.json'</span>);            <span class="tc">// what ?map= calls; never throws</span>
+parseMap(text);                                          <span class="tc">// validate without touching a mapper</span></code></pre></div>
 <h3 id="mapping-routes-written-for-you">替你寫好的路由<a class="anchor" href="#mapping-routes-written-for-you" aria-label="這一節的連結">#</a></h3>
 <p>有幾個套件會產生同樣格式的路由：</p>
 <ul>
@@ -1050,6 +1092,9 @@ mapper.routes                 <span class="tc">// the live array</span>
 mapper.learn(<span class="ts">'bloom'</span>)         <span class="tc">// arm / cancel learn; mapper.learnTarget is the armed key</span>
 mapper.update(dt)             <span class="tc">// every frame: advances smoothed routes</span>
 mapper.toJSON(); mapper.fromJSON(array)
+mapper.exportMap(); mapper.importMap(text|object, { mode })   <span class="tc">// the portable file, see above</span>
+mapper.clear()                <span class="tc">// remove every route (and forget them)</span>
+mapper.report                 <span class="tc">// what the last import / ?map= said</span>
 mapper.save(); mapper.load()  <span class="tc">// localStorage 'openav.map.&lt;profile&gt;'; load() → true if found</span>
 mapper.dispose()              <span class="tc">// stop listening to signals</span></code></pre></div>
 <p><code>onChange()</code> 在路由變動時執行（給介面用），<code>onLearn(route, signalName)</code> 在 learn 綁定完成時執行。</p>
@@ -1081,6 +1126,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>modules</code></td><td><code>{}</code></td><td>要打開的輸入與輸出（見下表）</td></tr>
 <tr><td><code>artwork</code></td><td><code>null</code></td><td><code>{ title, artist, year, note }</code>：舞台上的一行作品署名，以及一個 <code>&lt;meta name="artwork"&gt;</code></td></tr>
 <tr><td><code>hint</code></td><td><code>''</code></td><td>舞台左下角的一行 HTML</td></tr>
+<tr><td><code>map</code></td><td>網址裡的 <code>?map=</code></td><td>開始時載入的對應檔：同源或 https 網址。<code>false</code> = 忽略 <code>?map=</code>（<a href="#mapping-map-files-export-import-and-share">對應檔</a>）</td></tr>
 <tr><td><code>profile</code></td><td>世界的名稱</td><td>映射器儲存設定檔的名稱。<code>false</code> = 忽略儲存的路由（<a href="#mapping-saved-profiles">儲存的設定檔</a>）</td></tr>
 <tr><td><code>onFrame</code></td><td><code>null</code></td><td><code>(dt, show) =&gt; {}</code>，每個影格執行一次，在時間軸前進之前</td></tr>
 <tr><td><code>mount</code></td><td>自動產生</td><td>要渲染進去的 <code>{ stage, side }</code> 元素或選擇器，取代整頁版面</td></tr>
@@ -1181,7 +1227,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=02fdc94"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2104,7 +2150,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=02fdc94"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -2573,7 +2619,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 後台監看（零相依的 WS 中繼，支援區域網路裡的裝置）</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> OSC 橋接、MIDI 輸出（走同一個看得到的出口，附 panic）</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 所有純邏輯都有測試（和弦、時間軸、映射、參數）</li>
-<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 映射設定檔的匯入／匯出介面（除了 localStorage，也能存成 JSON 檔案）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 映射設定檔的匯入／匯出介面（JSON 檔案、拖進頁面、<code>?map=&lt;網址&gt;</code>，每個世界各記一份）</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 範例：由現場樂器（麥克風）驅動、隨聲音反應的世界，<code>06-cylinder-earth</code></li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 鼓機，送出的訊號跟分析器的長得一樣（<code>@openav/drums</code>）</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 螢幕上的 MIDI 控制器，跟著真實硬體同步動作（<code>@openav/midi</code>，範例 09）</li>
@@ -2639,7 +2685,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=02fdc94"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

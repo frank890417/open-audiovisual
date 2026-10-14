@@ -1593,12 +1593,85 @@ from code on every load, as in example 09) or remove the saved profile:
 localStorage.removeItem('openav.map.particles');   // 'particles' = the world's name
 ```
 
-To carry a wiring to another machine, export and import the JSON (there is no
-file UI yet; it is on the [roadmap](roadmap.md)):
+To carry a wiring to another machine or another world, use a map file
+([next section](#map-files-export-import-and-share)).
+
+## Map files: export, import and share
+
+The **L2 · Mapping** panel has three buttons under *map knobs in order*:
+
+- **⬇ export** downloads the routes as `oav-map-<world>.json`.
+- **⬆ import** picks a map file. You can also **drop a `.json` anywhere on the page**.
+  Import *replaces* the routes; the new set is remembered at once.
+- **clear** removes every route (click twice). On the next load the world's declared
+  routes come back, as on a first visit.
+
+Below the buttons the panel says what the last import did: how many routes came in, and
+every route it **skipped** and why. A file that cannot be read says so and changes nothing.
+
+### The format
+
+```json
+{
+  "format": "openav.map",
+  "version": 1,
+  "world": "particles",
+  "exported": "2026-10-15T08:30:00.000Z",
+  "routes": [
+    { "signal": "midi/cc/74", "param": "bloom", "curve": "exp",
+      "range": { "in": [0, 1], "out": [0, 100] }, "smooth": 0.1, "invert": false },
+    { "signal": "audio/rms", "param": "energy", "curve": "linear",
+      "range": { "in": [0, 0.3], "out": [0, 1] }, "smooth": 0, "invert": false, "enabled": false }
+  ]
+}
+```
+
+Routes are named by `signal` and `param`, never by id, so a file travels between worlds:
+
+- a route whose **param** this world does not have is skipped and listed;
+- a route whose **signal** nothing in this show can produce (say `leap/palm/x` without a
+  Leap Motion module) is skipped and listed. Signals that only appear when the first message
+  arrives (`midi/…`, `surface/…`, `phone/…`, `osc/…`, `key…`, `take/…`) are kept and counted as
+  *waiting*;
+- when the file's `world` is a different one, the `range.out` is dropped so each param keeps its
+  own range (the `in` window, curve, smoothing and invert come along);
+- `version` newer than this build reads is refused with a message. A bare array from
+  `mapper.toJSON()` (the old way) still imports, as version 0.
+- Files over 256 KB or with over 500 routes are refused.
+
+### Load on open: `?map=`
+
+```
+https://openaudiovisual.com/examples/01-hello-particles/?map=https://example.com/my-map.json
+https://openaudiovisual.com/examples/01-hello-particles/?map=maps/stage-left.json
+```
+
+`?map=<url>` fetches the file when the page opens and loads it like an import. It accepts a
+**same-origin** address (relative paths included) or an absolute **https** one; `http:` to another
+host, `data:`, `javascript:`, `file:` and addresses with a login are refused. A cross-site file
+must be served with CORS (`Access-Control-Allow-Origin: *`; raw GitHub and gists do this).
+The show starts regardless: if the address is refused, the fetch fails or the file is bad, the
+panel shows the reason and the routes stay as they were. An explicit `?map=` beats the remembered
+wiring, and what it loads is remembered like any import. In code, `createShow({ map: 'maps/a.json' })`
+does the same and `map: false` ignores `?map=`.
+
+### Remembered for you
+
+The mapper saves its routes to `localStorage` (`openav.map.<world>`) every 3 seconds and right
+after an import or clear, one slot per world name, so the next visit starts where you stopped.
+Every read and write is wrapped: in a private window or with storage blocked nothing breaks,
+the wiring just is not remembered.
+
+In code:
 
 ```js
-copy(JSON.stringify(show.mapper.toJSON(), null, 2));   // devtools: copies the routes
-show.mapper.fromJSON(routes); show.mapper.save();      // on the other machine (replaces all routes)
+import { loadMapUrl, parseMap } from '@openav/mapping';
+
+const file = show.mapper.exportMap();                    // the object above
+const report = show.mapper.importMap(text);              // text or object; { mode: 'add' } keeps current routes
+// → { ok, added, skipped: [{ signal, param, reason: 'param' | 'signal' }], waiting, dropped, crossWorld }
+await loadMapUrl(show.mapper, 'maps/a.json');            // what ?map= calls; never throws
+parseMap(text);                                          // validate without touching a mapper
 ```
 
 ## Routes written for you
@@ -1626,6 +1699,9 @@ mapper.routes                 // the live array
 mapper.learn('bloom')         // arm / cancel learn; mapper.learnTarget is the armed key
 mapper.update(dt)             // every frame: advances smoothed routes
 mapper.toJSON(); mapper.fromJSON(array)
+mapper.exportMap(); mapper.importMap(text|object, { mode })   // the portable file, see above
+mapper.clear()                // remove every route (and forget them)
+mapper.report                 // what the last import / ?map= said
 mapper.save(); mapper.load()  // localStorage 'openav.map.<profile>'; load() → true if found
 mapper.dispose()              // stop listening to signals
 ```
@@ -1670,6 +1746,7 @@ const show = await createShow({
 | `modules` | `{}` | inputs and outputs to switch on (below) |
 | `artwork` | `null` | `{ title, artist, year, note }`: a credit line on the stage and a `<meta name="artwork">` |
 | `hint` | `''` | a line of HTML at the bottom left of the stage |
+| `map` | `?map=` in the page address | a map file to load on start: a same-origin or https URL; `false` ignores `?map=` ([Map files](mapping.md#map-files-export-import-and-share)) |
 | `profile` | the world's name | the mapper's saved-profile name; `false` = ignore saved routes ([Saved profiles](mapping.md#saved-profiles)) |
 | `onFrame` | `null` | `(dt, show) => {}` every frame, before the timeline advances |
 | `mount` | generated | `{ stage, side }` elements or selectors to render into, instead of a full-page layout |
@@ -3842,7 +3919,7 @@ before it was generalized.)
 - [x] backstage monitor (zero-dep WS relay, LAN devices)
 - [x] OSC bridge; MIDI out with observable throat + panic
 - [x] tests for all pure logic (chord, timeline, mapping, params)
-- [ ] mapping profile import/export UI (JSON file, not just localStorage)
+- [x] mapping profile import/export UI (JSON file, drag-and-drop, `?map=<url>`, remembered per world)
 - [x] example: audio-reactive world driven by a live instrument (mic) — `06-cylinder-earth`
 - [x] drum machine with analyzer-shaped signals (`@openav/drums`)
 - [x] on-screen MIDI controllers that mirror real hardware (`@openav/midi`, example 09)

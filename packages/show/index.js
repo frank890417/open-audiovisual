@@ -33,7 +33,7 @@ import { AudioAnalyzer } from '../audio/index.js?v=02fdc94';
 import { ChordDetector } from '../chord/index.js?v=02fdc94';
 import { mountDrums } from '../drums/index.js?v=02fdc94';
 import { PoseTracker, HandTracker } from '../pose/index.js?v=02fdc94';
-import { Mapper } from '../mapping/index.js?v=02fdc94';
+import { Mapper, loadMapUrl } from '../mapping/index.js?v=02fdc94';
 import { Timeline } from '../timeline/index.js?v=02fdc94';
 import { Stage } from '../stage/index.js?v=02fdc94';
 import { mountConsole } from '../console/index.js?v=02fdc94';
@@ -63,6 +63,7 @@ export async function createShow({
   artwork = null,
   hint = '',
   profile = null,
+  map = null,              // a map file to load on start: a URL (same origin or https); default = ?map=<url> in the page address; false = ignore ?map= (docs/mapping.md)
   onFrame = null,          // (dt, show) per-frame hook — assembly-layer logic (envelopes…)
   mount = null,            // { stage, side } elements/selectors; omitted = generated layout
   telemetry = true,        // one anonymous oav_show_start hit per page (packages/midi/telemetry.js); false = none
@@ -146,6 +147,12 @@ export async function createShow({
     for (const r of routes) if (!have.has(r.source + '→' + r.target)) mapper.addRoute(r);
   }
   setInterval(() => mapper.save(), 3000);
+  // ?map=<url>: an explicit wiring beats the remembered one. Async and failure-proof: the show starts
+  // regardless, and a bad address or file is reported in the L2 · Mapping panel.
+  if (map !== false && typeof location !== 'undefined') {
+    const mapParam = map || new URLSearchParams(location.search).get('map');
+    if (mapParam) loadMapUrl(mapper, mapParam);
+  }
 
   // ---------- L1 modules ----------
   const midi = modules.midi === false ? null : new Midi({ signals });

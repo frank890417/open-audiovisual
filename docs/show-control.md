@@ -31,6 +31,7 @@ const show = await createShow({
 | `modules` | `{}` | inputs and outputs to switch on (below) |
 | `artwork` | `null` | `{ title, artist, year, note }`: a credit line on the stage and a `<meta name="artwork">` |
 | `hint` | `''` | a line of HTML at the bottom left of the stage |
+| `map` | `?map=` in the page address | a map file to load on start: a same-origin or https URL; `false` ignores `?map=` ([Map files](mapping.md#map-files-export-import-and-share)) |
 | `profile` | the world's name | the mapper's saved-profile name; `false` = ignore saved routes ([Saved profiles](mapping.md#saved-profiles)) |
 | `onFrame` | `null` | `(dt, show) => {}` every frame, before the timeline advances |
 | `mount` | generated | `{ stage, side }` elements or selectors to render into, instead of a full-page layout |
