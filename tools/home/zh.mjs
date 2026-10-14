@@ -34,7 +34,7 @@ export default {
     lede: '琴鍵、旋鈕、人聲、手勢、手機，都會變成有名字的<em>訊號</em>（signal）。<em>映射</em>（mapping）把訊號接到<em>參數</em>（param），你的<em>世界</em>（world）讀這些參數，變成畫面和聲音。在瀏覽器分頁、投影機、舞台上都一樣。',
     doorsLabel: '從哪裡開始',
     doors: [
-      { who: '我做表演', what: '看看它做得出什麼，直接玩九件作品', href: '#works' },
+      { who: '我做表演', what: '看看它做得出什麼，直接玩十件作品', href: '#works' },
       { who: '我寫程式', what: '一分鐘跑起來，再寫自己的世界', href: '#start' },
       { who: '我是 AI 代理', what: '先讀 /llms.txt，再讀 AGENTS.md', href: 'llms.txt' },
     ],
@@ -113,7 +113,7 @@ export default {
 
   works: {
     eyebrow: '03 · 作品',
-    title: '九件作品，現在就能打開',
+    title: '十件作品，現在就能打開',
     lede: '每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。進到任何一個範例：空白鍵播放時間軸，T 是演出模式，F 是全螢幕。',
     playsWith: '演奏方式',
     items: [
@@ -126,6 +126,7 @@ export default {
       { title: '花火大會', inputs: '鏡頭（手）· 螢幕鋼琴', text: '2021 年的作品。手指一捏合，煙火就從那隻手的位置升空。粒子系統是 2021 年的原始程式碼。', alt: '青色和紫色的煙火，在垂落的彩色尾跡上炸開。' },
       { title: '遠端控制面板', inputs: '手機或 iPad · 螢幕鋼琴', text: '手機就是樂器面板。世界只宣告參數，手機上的控制面板依參數自動長出來。需要在你的網路裡跑 <code>node serve.js</code>。', alt: '藍色和黃色的光束，從畫面下方中央向外爆開。' },
       { title: 'MIDI 控制器', inputs: 'MIDI 控制器，或螢幕上那一台', text: '螢幕上有 MiniLab 3、LPD8、Launchpad、nanoKONTROL2。接上實體控制器，螢幕上那台會跟著你的手一起動。', alt: '粉紅與藍色圓點排成螺旋，下方是螢幕上的 MIDI 鍵盤控制器。' },
+      { title: '時間軸', inputs: '什麼都不用做，它自己會播 · 螢幕旋鈕', text: '看得見的自動化。五條關鍵影格曲線帶動一圈光點，場景負責切換，cue 觸發一次性的閃光，你一碰旋鈕就接手，放開再還給曲線。把旋鈕的動作錄下來，就寫成一條新曲線。', alt: '橘黃色圓點排成六邊形，下方是時間軸：五條曲線、場景區塊和一條播放頭。' },
     ],
     credits: [
       '吳哲宇，<cite>230616 Prebiotic Flake</cite>，2023',
