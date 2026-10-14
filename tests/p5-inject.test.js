@@ -260,7 +260,7 @@ test('example 15: the sketch file starts with the one line, and the README shows
 test('example 15: the page runs that sketch file (last script, p5 from the CDN, no framework) and the source panel reads the same file', () => {
   const html = readFileSync(EX15('index.html'), 'utf8');
   const scripts = [...html.matchAll(/<script\b([^>]*)>/g)].map((m) => m[1]);
-  assert.match(scripts[scripts.length - 1], /src="\.\/sketch\.js"/, 'sketch.js is the last <script>: p5 reads the last script as the sketch');
+  assert.match(scripts[scripts.length - 1], /src="\.\/sketch\.js(\?v=[^"]*)?"/, 'sketch.js is the last <script>: p5 reads the last script as the sketch (stamp-version may add ?v=)');
   assert.ok(scripts.some((a) => /src="https:\/\/cdn\.jsdelivr\.net\/npm\/p5@1\.11\.\d+\/lib\/p5\.min\.js"/.test(a)), 'p5 1.11.x from the CDN');
   assert.ok(!/importmap|createShow|@openav\//.test(html), 'the point is the one line: no import map, no createShow');
   assert.ok(!html.includes("document.head.prepend"), 'the line is not copied into the page: it is read from sketch.js');
