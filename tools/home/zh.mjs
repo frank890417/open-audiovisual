@@ -2,6 +2,9 @@
 // 結構必須和 en.mjs 一模一樣（每個 key、每個陣列長度），tools/build-home.mjs 會檢查。
 // 字串可以含 inline HTML。程式碼、訊號名稱與網址放在 page.mjs，兩種語言共用。
 
+import { getFacts, zhWords } from '../site/facts.mjs';
+const facts = getFacts();
+
 export default {
   lang: 'zh',
   htmlLang: 'zh-Hant-TW',
@@ -10,10 +13,15 @@ export default {
   ldLanguage: 'zh-Hant-TW',
 
   meta: {
-    title: 'open-audiovisual｜網頁原生的影音表演框架',
-    description: 'MIDI、麥克風、和弦、手勢和手機，都變成有名字的訊號，經過映射接到參數，交給你的世界去畫、去發聲。一套給現場影音表演用的 JavaScript 框架。零建置、零相依、MIT 授權。',
+    title: 'open-audiovisual｜網頁 MIDI 即時影像表演框架',
+    description: '零建置的 JavaScript 框架：MIDI 控制器、麥克風、手勢和手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界。MIT 授權。',
+    definition: 'open-audiovisual 是零建置的 JavaScript 框架：把 MIDI 控制器、麥克風、手勢與手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界，用於現場影音表演。MIT 授權。',
     ogDescription: 'Hydra 給你即興，cables 給你平台，Tone 給你聲音。open-audiovisual 給你一場演出。',
     ld: '網頁原生、零建置、零相依的 JavaScript 影音表演框架：MIDI、音訊、和弦、肢體姿態與手機等輸入發出有名字的訊號，映射層把訊號接到參數，演算的世界依參數產生畫面與聲音，另有時間軸、導演控台與後台監看。',
+  },
+
+  seo: {
+    ogImageAlt: 'open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。',
   },
 
   ui: {
@@ -153,7 +161,7 @@ export default {
     worldTitle: '你只需要寫一個世界',
     worldText: '宣告作品能被什麼演奏（參數），對事件做反應，然後畫出來。交給 <code>createShow()</code>，其他部分一起到位：鋼琴、映射、時間軸、控台、聲音、後台。旁邊放一個帶 import map 的 <code>index.html</code>，照範例 01 的寫法。',
     worldLink: '怎麼寫一個世界',
-    packagesTitle: '二十一個套件，依層分類',
+    packagesTitle: `${zhWords(facts.packageCount)}個套件，依層分類`,
     packagesLede: '全部是原生 ES module。用 import map 引入需要的套件，或交給 <code>createShow()</code> 組裝。',
     groups: ['輸入', '映射', '世界', '輸出', '時間軸、控台、監看', '手機與平板', '核心與代理'],
     packages: {
@@ -163,11 +171,13 @@ export default {
       pose: '用鏡頭追蹤身體與手的 21 個點，全部在本機運算',
       keys: '螢幕鋼琴、電腦鍵盤演奏，以及模擬演奏者',
       drums: '合成鼓組與步進音序器，發出和音訊分析同樣形狀的訊號',
+      leap: '透過本機的小橋接，把 Leap Motion 的手變成 21 點手部訊號',
       mapping: '訊號到參數的路由：曲線、平滑、多對多、learn',
       stage: '世界的外殼：管生命週期和參數，不限定繪圖方式',
       'world-webtoe': '把 WebToe 節點網路當成世界來演奏',
       sound: '頁面裡的樂器（Salamander 鋼琴、敲擊琴、弦樂、風琴、合成器音色），加一個檔案就能放進自己的聲音',
       osc: '透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP',
+      record: '演出影片：作品疊在鏡頭畫面上、連同作品自己的聲音錄成一個檔；MIDI 演奏可錄下再重播',
       timeline: '參數自動化、場景與 cue：整場演出的時鐘',
       score: '把演出寫成段落長度：版本、cue、hold，還有模組壞掉時讓演出不中斷的導演',
       console: '導演控台與演出模式',
@@ -200,7 +210,7 @@ export default {
     prompt: [
       'Clone https://github.com/frank890417/open-audiovisual，先讀 AGENTS.md。',
       '執行 `node serve.js`，打開 http://localhost:8080/examples/01-hello-particles/，看最小的完整演出長什麼樣子。',
-      '把 01-hello-particles 複製成 examples/10-<名稱>/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：',
+      `把 01-hello-particles 複製成 examples/${facts.nextExampleNumber}-<名稱>/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：`,
       '',
       '  <描述這場表演，例如「一個遇到和諧和弦就綻放的水母世界」>',
       '',

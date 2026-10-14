@@ -7,8 +7,9 @@
 
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execFileSync } from 'node:child_process';
-import { SITE, REPO, BLOB, PAGES, headBasics, topBar, siteFooter, esc, attr, pageCtx } from '../site/chrome.mjs';
+import { SITE, REPO, BLOB, PERSON_ID, SOFTWARE_ID, pathCtx, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFooter, guardEmail, esc, attr } from '../site/chrome.mjs';
+import { lastmodOf } from '../site/git.mjs';
+export { lastmodOf };
 import { snippets, hl } from '../../assets/controllers/snippets.js';
 import { catalog, faceSvg, specParts, nameOf, countsText, detailPath, detailUrl, fill, noteName, TYPE_ORDER, PROFILE_DIR } from './page.mjs';
 
@@ -17,29 +18,9 @@ const OG_IMAGE = SITE + 'assets/home/og.png';
 const P5_SRC = SITE + 'p5/oav-p5.js';
 
 // ------------------------------------------------------------------ context
-/** pageCtx() for a page that is not in PAGES: /controllers/<id>/ is two levels deeper than /controllers/. */
+/** Where /controllers/<id>/ sits: two levels deeper than /controllers/ (so the top-bar nav still marks "controllers"). */
 export function detailCtx(id, locale) {
-  const base = pageCtx('controllers', locale);
-  const depth = (locale === 'zh' ? 1 : 0) + 2;
-  const root = '../'.repeat(depth);
-  return {
-    ...base, root,
-    self: detailUrl(id, locale),
-    url: { en: detailUrl(id, 'en'), zh: detailUrl(id, 'zh') },
-    lang: { en: root + detailPath(id, 'en'), zh: root + detailPath(id, 'zh') },
-    to: (other, hash = '') => (root + (locale === 'zh' ? 'zh/' : '') + PAGES[other]) + hash || './',
-  };
-}
-
-/** Date of the last commit that touched a file (YYYY-MM-DD), '' when git cannot say (new file, no history). */
-const lm = new Map();
-export function lastmodOf(rel) {
-  if (!lm.has(rel)) {
-    let out = '';
-    try { out = execFileSync('git', ['log', '-1', '--format=%cs', '--', rel], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { /* no git */ }
-    lm.set(rel, /^\d{4}-\d{2}-\d{2}$/.test(out) ? out : '');
-  }
-  return lm.get(rel);
+  return pathCtx(`controllers/${id}/`, locale, { page: 'controllers' });
 }
 
 // ------------------------------------------------------------------ words from data
@@ -133,46 +114,31 @@ function p5Table(t, d, names) {
 }
 
 // ------------------------------------------------------------------ JSON-LD
+/** The page's own nodes; the shared graph (WebSite, Person, software) is added by headBasics. */
 function jsonLd(t, home, c, d, locale, { title, description, file }) {
   const D = t.detail, p = d.p, self = c.self, name = fullName(p, locale);
   const galleryUrl = SITE + (locale === 'zh' ? 'zh/' : '') + 'controllers/';
-  const homeUrl = SITE + (locale === 'zh' ? 'zh/' : '');
   const jsonUrl = `${SITE}${PROFILE_DIR}/${file}`;
   const thing = p.kind === 'device'
     ? { '@type': 'Product', '@id': self + '#product', name: p.name, model: modelName(p), brand: { '@type': 'Brand', name: p.maker }, category: D.ld.category, description }
     : { '@type': 'Thing', '@id': self + '#product', name: nameOf(p, locale), alternateName: p.name === nameOf(p, locale) ? undefined : p.name, description: D.ld.categoryGeneric };
-  return {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'BreadcrumbList', '@id': self + '#breadcrumb',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: D.crumbs.home, item: homeUrl },
-          { '@type': 'ListItem', position: 2, name: D.crumbs.controllers, item: galleryUrl },
-          { '@type': 'ListItem', position: 3, name, item: self },
-        ],
-      },
-      {
-        '@type': 'WebPage', '@id': self + '#webpage', url: self, name: title, description, inLanguage: home.ldLanguage,
-        isPartOf: { '@type': 'WebSite', name: 'open-audiovisual', url: SITE },
-        breadcrumb: { '@id': self + '#breadcrumb' },
-        about: { '@id': self + '#product' },
-        mainEntity: { '@id': self + '#dataset' },
-        primaryImageOfPage: { '@type': 'ImageObject', url: OG_IMAGE, width: 1200, height: 630 },
-      },
-      thing,
-      {
-        '@type': 'Dataset', '@id': self + '#dataset', name: fill(D.ld.dataset, { name }), description: fill(D.ld.datasetDesc, { name }), url: self, inLanguage: home.ldLanguage,
-        license: 'https://opensource.org/licenses/MIT', isAccessibleForFree: true,
-        creator: { '@type': 'Person', name: 'Che-Yu Wu', alternateName: '吳哲宇', url: 'https://cheyuwu.com' },
-        isPartOf: { '@id': galleryUrl + '#dataset' },
-        about: { '@id': self + '#product' },
-        keywords: ['MIDI', 'MIDI controller', 'MIDI implementation chart', 'Web MIDI', name, ...(p.maker ? [p.maker] : [])],
-        distribution: [{ '@type': 'DataDownload', name: file, encodingFormat: 'application/json', contentUrl: jsonUrl }],
-        ...((p.sources || []).length ? { citation: p.sources.map((s) => ({ '@type': 'CreativeWork', name: s.title, ...(s.url ? { url: s.url } : {}) })) } : {}),
-      },
-    ],
-  };
+  return [
+    breadcrumbNode(c, [[D.crumbs.home, homeUrl(c)], [D.crumbs.controllers, galleryUrl], [name, self]]),
+    pageNode(c, home, { name: title, description, image: OG_IMAGE, breadcrumb: { '@id': self + '#breadcrumb' }, about: { '@id': self + '#product' }, mainEntity: { '@id': self + '#dataset' } }),
+    thing,
+    {
+      '@type': 'Dataset', '@id': self + '#dataset', name: fill(D.ld.dataset, { name }), description: fill(D.ld.datasetDesc, { name }), url: self, inLanguage: home.ldLanguage,
+      license: 'https://opensource.org/licenses/MIT', isAccessibleForFree: true,
+      creator: { '@id': PERSON_ID },
+      isPartOf: { '@id': galleryUrl + '#dataset' },
+      about: { '@id': self + '#product' },
+      keywords: ['MIDI', 'MIDI controller', 'MIDI implementation chart', 'Web MIDI', name, ...(p.maker ? [p.maker] : [])],
+      distribution: [{ '@type': 'DataDownload', name: file, encodingFormat: 'application/json', contentUrl: jsonUrl }],
+      ...((p.sources || []).length ? { citation: p.sources.map((s) => ({ '@type': 'CreativeWork', name: s.title, ...(s.url ? { url: s.url } : {}) })) } : {}),
+    },
+    // the gallery's dataset this one belongs to: named here so the reference resolves inside this page's graph
+    { '@type': 'Dataset', '@id': galleryUrl + '#dataset', name: t.meta.ldName, url: galleryUrl, isPartOf: { '@id': SOFTWARE_ID } },
+  ];
 }
 
 // ------------------------------------------------------------------ the page
@@ -234,23 +200,14 @@ export function renderDetail(t, home, locale, d, cat) {
   const issueUrl = `${REPO}/issues/new?title=${encodeURIComponent(fill(D.report.issueTitle, { name, id }))}`;
   const runtime = { lang: locale, copy: home.ui.copy, copied: home.ui.copied, profile: id };
 
-  const head = headBasics(home, c, { title, description, ogDescription: description });
-  return `<!DOCTYPE html>
+  const head = headBasics(home, c, { title, description, ogDescription: description, ogImage: OG_IMAGE, ogImageAlt: D.ld.image, robots: 'index, follow, max-image-preview:large, max-snippet:-1', ld });
+  return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
 ${head}
-<meta property="og:image:alt" content="${attr(D.ld.image)}">
-<meta name="twitter:title" content="${attr(title)}">
-<meta name="twitter:description" content="${attr(description)}">
-<meta name="twitter:image" content="${OG_IMAGE}">
-<meta name="twitter:image:alt" content="${attr(D.ld.image)}">
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="alternate" type="application/json" href="${c.root}${jsonRel}" title="${attr(name)} MIDI profile (JSON)">
 <link rel="stylesheet" href="${c.root}assets/controllers/controllers.css">
 <noscript><style>.js-only { display: none !important; }</style></noscript>
-<script type="application/ld+json">
-${JSON.stringify(ld, null, 2)}
-</script>
 </head>
 <body class="page-controllers page-controller">
 ${topBar(home, c)}
@@ -364,5 +321,5 @@ ${siteFooter(home, c)}
 <script type="module" src="${c.root}assets/controllers/detail.js"></script>
 </body>
 </html>
-`;
+`);
 }

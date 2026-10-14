@@ -14,7 +14,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SITE, REPO, BLOB, TREE, pageCtx, headBasics, topBar, siteFooter, esc, attr } from '../site/chrome.mjs';
+import { SITE, REPO, BLOB, TREE, PERSON_ID, SOFTWARE_ID, pageCtx, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFooter, guardEmail, esc, attr } from '../site/chrome.mjs';
 import { PROFILES } from '../../packages/midi/profiles/index.js';
 import { normalizeProfile } from '../../packages/midi/profiles.js';
 import { CONTROL_COLORS } from '../../packages/midi/view.js';
@@ -360,23 +360,24 @@ export function renderPage(t, home, locale) {
   const term = (label, id, code) => `<div class="term"><div class="term-bar"><span>${label}</span>${copyBtn(id)}</div><pre id="${id}"><code>${hl(code)}</code></pre></div>`;
   const opt = (x) => `<option value="${x.p.id}"${x.p.id === buildD.p.id ? ' selected' : ''}>${esc(nameOf(x.p, locale))}</option>`;
 
-  const ld = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Dataset', '@id': c.self + '#dataset', name: t.meta.ldName, description: t.meta.ldDescription, url: c.self, inLanguage: home.ldLanguage,
-        license: 'https://opensource.org/licenses/MIT', isAccessibleForFree: true,
-        creator: { '@type': 'Person', name: 'Che-Yu Wu', alternateName: '吳哲宇', url: 'https://cheyuwu.com' },
-        isPartOf: { '@type': 'SoftwareSourceCode', name: 'open-audiovisual', codeRepository: REPO },
-        keywords: ['MIDI', 'MIDI controller', 'MIDI implementation chart', 'Web MIDI', 'web component', 'TouchDesigner', 'Ableton Live'],
-        distribution: cat.all.map((d) => ({ '@type': 'DataDownload', name: d.p.nameEn || d.p.name, encodingFormat: 'application/json', contentUrl: SITE + `${PROFILE_DIR}/${d.file}` })),
-      },
-      {
-        '@type': 'ItemList', name: t.meta.ldList, numberOfItems: cat.all.length,
-        itemListElement: [...cat.devices, ...cat.generic].map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.p.nameEn || d.p.name, url: detailUrl(d.p.id, locale) })),
-      },
-    ],
-  };
+  // the shared graph (WebSite, Person, software) is added by headBasics; these are the gallery's own nodes
+  const ld = [
+    pageNode(c, home, { type: 'CollectionPage', name: t.meta.title, description: t.meta.description, about: { '@id': SOFTWARE_ID },
+      breadcrumb: { '@id': c.self + '#breadcrumb' }, mainEntity: { '@id': c.self + '#dataset' } }),
+    breadcrumbNode(c, [['open-audiovisual', homeUrl(c)], [home.ui.nav.controllers, c.self]]),
+    {
+      '@type': 'Dataset', '@id': c.self + '#dataset', name: t.meta.ldName, description: t.meta.ldDescription, url: c.self, inLanguage: home.ldLanguage,
+      license: 'https://opensource.org/licenses/MIT', isAccessibleForFree: true,
+      creator: { '@id': PERSON_ID },
+      isPartOf: { '@id': SOFTWARE_ID },
+      keywords: ['MIDI', 'MIDI controller', 'MIDI implementation chart', 'Web MIDI', 'web component', 'TouchDesigner', 'Ableton Live'],
+      distribution: cat.all.map((d) => ({ '@type': 'DataDownload', name: d.p.nameEn || d.p.name, encodingFormat: 'application/json', contentUrl: SITE + `${PROFILE_DIR}/${d.file}` })),
+    },
+    {
+      '@type': 'ItemList', '@id': c.self + '#list', name: t.meta.ldList, numberOfItems: cat.all.length,
+      itemListElement: [...cat.devices, ...cat.generic].map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.p.nameEn || d.p.name, url: detailUrl(d.p.id, locale) })),
+    },
+  ];
 
   const runtime = {
     lang: locale, copy: home.ui.copy, copied: home.ui.copied,
@@ -387,16 +388,13 @@ export function renderPage(t, home, locale) {
 
   const chip = (d) => `<a class="chip" href="${d.p.id}/" data-profile="${d.p.id}"${d === heroD ? ' aria-current="true"' : ''}>${esc(nameOf(d.p, locale))}</a>`;
 
-  return `<!DOCTYPE html>
+  return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld })}
 <link rel="stylesheet" href="${c.root}assets/controllers/controllers.css">
 <noscript><style>.js-only { display: none !important; }</style></noscript>
 <script>${legacyRedirect(cat)}</script>
-<script type="application/ld+json">
-${JSON.stringify(ld, null, 2)}
-</script>
 </head>
 <body class="page-controllers">
 ${topBar(home, c)}
@@ -581,5 +579,5 @@ ${siteFooter(home, c)}
 <script type="module" src="${c.root}assets/controllers/controllers.js"></script>
 </body>
 </html>
-`;
+`);
 }

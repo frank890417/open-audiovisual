@@ -5,7 +5,7 @@
 export default {
   meta: {
     title: 'Documentation · open-audiovisual',
-    description: 'The open-audiovisual handbook: quick start, core concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, every signal and every package, and how AI agents work with it.',
+    description: 'The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.',
     ogDescription: 'One page, every chapter: how to build a live audiovisual show in the browser with open-audiovisual.',
   },
   ldLanguage: 'en',

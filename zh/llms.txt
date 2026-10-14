@@ -1,0 +1,139 @@
+# open-audiovisual
+
+> open-audiovisual 是零建置的 JavaScript 框架：把 MIDI 控制器、麥克風、手勢與手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界，用於現場影音表演。MIT 授權。
+
+輸入（MIDI、麥克風、和弦、身體與手部姿態、手機）發出有名字的訊號；映射層把訊號接到參數；演算的「世界」只讀參數，產生畫面與聲音；時間軸、導演控台與後台監看負責把演出跑起來。原生 ES module，零建置、零相依。從《The Last Input》（吳哲宇，2026；IRCAM 駐村 × C-LAB，臺北，49.4 聲道表演）抽出來。
+
+目前：23 個套件、14 個範例、24 份 MIDI 控制器設定檔（18 台真機與 6 種通用版型），版本 0.1.0。
+
+網站：https://openaudiovisual.com/（English）· https://openaudiovisual.com/zh/（繁體中文）
+原始碼：https://github.com/frank890417/open-audiovisual
+作者：吳哲宇 Che-Yu Wu（https://cheyuwu.com）
+引用方式：請引用你讀到的那一頁的正式網址。程式碼為 MIT 授權；範例 05 至 07 整合了吳哲宇的作品，版權所有。
+
+## Pages
+
+- [首頁](https://openaudiovisual.com/zh/) ([English](https://openaudiovisual.com/)): 能玩的樂器、運作方式、作品、快速開始、給 AI 代理。
+- [手冊](https://openaudiovisual.com/zh/docs/) ([English](https://openaudiovisual.com/docs/)): 完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。
+- [MIDI 控制器圖鑑](https://openaudiovisual.com/zh/controllers/) ([English](https://openaudiovisual.com/controllers/)): 每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。
+- [p5.js 一行指令](https://openaudiovisual.com/p5/): 載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。
+- [WebToe](https://openaudiovisual.com/zh/webtoe/) ([English](https://openaudiovisual.com/webtoe/)): 姊妹專案，整套的引擎那一半：網頁原生、節點式的即時影像資料流引擎（TouchDesigner 式、WebGL2 + WebGPU、零執行期相依），能打開 TouchDesigner `.toe` 專案；`@openav/world-webtoe` 如何把 WebToe 網路當世界演奏。編輯器：https://webtoe.openaudiovisual.com/
+
+## Core concepts
+
+- **訊號（Signal）**：有名字、已正規化的值，說明現在發生了什麼：`midi/cc/74`、`audio/rms`、`chord/consonance`、`pose/hand/right/y`、`phone/<id>/tilt/x`。連續型（有值，通常 0..1）或脈衝型（觸發事件，例如 `midi/note/on` → `{note, vel}`）。訊號是輸入端唯一的貨幣。
+- **參數（Param）**：世界會去聽的值（`hue`、`bloom`），由世界宣告為 `{ key, min, max, def }`。每幀解析：時間軸自動化，被手、旋鈕或路由覆蓋。
+- **映射／路由（Mapping / route）**：`{ source: 'midi/cc/74', target: 'bloom', curve, inMin, inMax, smooth }`。多對多；learn 會綁定下一個在動的訊號。路由是 JSON。
+- **世界（World）**：作品本身：`{ name, params, init({container, signals, params}), update(dt, state, io), render(), dispose() }`。只讀參數、不讀輸入；可訂閱離散事件訊號。不限繪圖方式（canvas、p5、three.js、WebToe 網路）。
+- **演出（Show）**：`createShow({ world, timeline, routes, modules })`（`@openav/show`）把輸入、映射、時間軸、控台、聲音與後台組在一個世界周圍。
+- **樂譜（Score）**：有結構的演出：`createShow({ score: { cuts, modules } })`（`@openav/score`）。一個 cut 是一串有「長度」的段落（`{ id, dur, cues, acts, linger, hold }`），絕不寫絕對秒數；衍生 cut 是 `{ id, from, scale }`。導演為每段跑一個模組（`enter / update / exit / param`），拋錯的模組只關掉自己，`?cut=<id>` 選版本，`hold: true` 等空白鍵。`window.openav.show.table()/goto()/status()`。
+- 代理不能破壞的兩條規則：(1) 連續控制走參數，不在 `update()` 裡直接讀 `signals.get()`；(2) 不為了讓某個範例好看去改 `packages/*`。
+
+## Start
+
+- 執行：`git clone https://github.com/frank890417/open-audiovisual.git && cd open-audiovisual && node serve.js` → http://localhost:8080（不用 npm install；Web MIDI 與鏡頭請用 Chrome／Edge）
+- 做一件新作品：把 `examples/01-hello-particles/` 複製成 `examples/16-<名稱>/`，在 `main.js` 寫 World，打開 `http://localhost:8080/examples/16-<名稱>/`。
+- 驗證：`npm test`（node --test）全過；範例載入時 console 沒有錯誤（沒開監看時，被拒絕的 `ws://localhost:7457` 連線是正常的）。
+
+## Docs
+
+- [AGENTS.md](https://openaudiovisual.com/AGENTS.md)：給 AI 程式代理的慣例、兩條規則、怎麼做一件作品。先讀這份。
+- [README](https://openaudiovisual.com/README.md)：總覽、架構圖、範例、手機遙控。
+- [簡介](https://openaudiovisual.com/docs/zh/introduction.md): 它是什麼、給誰用、替每場演出省掉哪些重複工作。
+- [快速開始](https://openaudiovisual.com/docs/zh/getting-started.md): 跑起來、玩一玩、做一件新作品。
+- [核心概念](https://openaudiovisual.com/docs/zh/concepts.md): 訊號、參數、路由、世界、時間軸、演出，以及把它們綁在一起的兩條規則。
+- [架構](https://openaudiovisual.com/docs/zh/architecture.md): 每一幀怎麼跑，以及每一層的契約。
+- [寫一個世界](https://openaudiovisual.com/docs/zh/writing-a-world.md): World 介面、參數與事件、聲音輸出、檢查清單。
+- [輸入](https://openaudiovisual.com/docs/zh/inputs.md): 每個輸入套件，與開啟它的 `modules` 鍵。
+- [映射](https://openaudiovisual.com/docs/zh/mapping.md): 路由、曲線、平滑、多對多與 learn。
+- [演出控制](https://openaudiovisual.com/docs/zh/show-control.md): 時間軸、場景、演出模式、控台、後台監看、OSC。
+- [總譜與導演](https://openaudiovisual.com/docs/zh/score.md): 把演出寫成段落長度：版本、cue、hold、段落模組、提詞器、樂譜轉 MIDI。
+- [MIDI 控制器與嵌入](https://openaudiovisual.com/docs/zh/controllers.md): 把 MIDI 控制器寫成 JSON 設定檔，以及 `<oav-controller>` 元件與 iframe 嵌入。
+- [p5.js 一行接上](https://openaudiovisual.com/docs/zh/p5.md): 一行指令，讓任何 p5.js 草圖能用 MIDI、螢幕上的控制器或手機彈。
+- [手機、中繼與控制面板](https://openaudiovisual.com/docs/zh/remote.md): 手機與 iPad 當控制器：中繼、感測器、控制面板。
+- [訊號一覽](https://openaudiovisual.com/docs/zh/signals.md): 內建輸入發出的每一個訊號與範圍。
+- [套件一覽](https://openaudiovisual.com/docs/zh/packages.md): 每個套件，依層分類。
+- [給 AI 代理](https://openaudiovisual.com/docs/zh/agents.md): 給 AI 程式代理的慣例、兩條規則、怎麼做一件作品。
+- [實驗室整合（`"lab"` 欄位）](https://openaudiovisual.com/docs/zh/lab-integration.md): package.json 的 `"lab"` 欄位。
+- [疑難排解](https://openaudiovisual.com/docs/zh/troubleshooting.md): 排練中遇到的真實問題，與處理方式。
+- [路線圖](https://openaudiovisual.com/docs/zh/roadmap.md): 訊號錄製與重播、npm 發佈、WebGPU 世界、NDI 閘道、分散式演出、代理演奏者。
+- [Patch bay design](https://openaudiovisual.com/docs/design/patchbay.md): 多裝置 MIDI 與 patch bay 的設計。
+- [全文](https://openaudiovisual.com/llms-full.txt)：README、AGENTS.md 與手冊每一章，合成一個檔案。
+
+## MCP server
+
+專案內附零相依的 MCP 伺服器（stdio，`packages/mcp/server.js`）。在專案裡開 Claude Code 會從 `.mcp.json` 自動載入。其他客戶端：
+
+```json
+{ "mcpServers": { "openav": { "command": "node", "args": ["/path/to/open-audiovisual/packages/mcp/server.js"] } } }
+```
+
+工具：`list_examples`（作品與一句話摘要）· `read_doc`（architecture、writing-a-world、signals、show-control、roadmap、agents、readme）· `scaffold_world`（把一個範例複製成新的編號範例）· `run_checks`（CI 跑的測試）。Claude Code 技能 `.claude/skills/create-world` 可依描述建立世界。
+
+## Examples
+
+每個都能在瀏覽器裡免硬體執行（螢幕鋼琴、QWERTY 鍵、模擬演奏者或鼓機）。線上位址 https://openaudiovisual.com/examples/<dir>/，原始碼在 `examples/<dir>/main.js`。
+
+- [01-hello-particles](https://openaudiovisual.com/examples/01-hello-particles/): 最小的完整作品，從上讀到下就懂整個框架。
+- [02-chord-garden](https://openaudiovisual.com/examples/02-chord-garden/): 和弦語意：三和弦開花，音堆凋零。
+- [03-pose-field](https://openaudiovisual.com/examples/03-pose-field/): 手勢樂器：用鏡頭抓捏合與握拳。
+- [04-webtoe-stage](https://openaudiovisual.com/examples/04-webtoe-stage/): 把 WebToe 節點網路當成世界來演奏。
+- [05-prebiotic-flake](https://openaudiovisual.com/examples/05-prebiotic-flake/): 2023 年的 MIDI 草圖，接上 Tone.js 音訊支線。
+- [06-cylinder-earth](https://openaudiovisual.com/examples/06-cylinder-earth/): 麥克風頻段與鼓機驅動 WebGL 圓柱塔。
+- [07-firework-festival](https://openaudiovisual.com/examples/07-firework-festival/): 捏合手指放煙火（21 點手部追蹤）。
+- [08-remote-surface](https://openaudiovisual.com/examples/08-remote-surface/): 從世界的參數長出來的手機／iPad 控制面板（區網內要跑 `node serve.js`）。
+- [09-midi-controllers](https://openaudiovisual.com/examples/09-midi-controllers/): 螢幕上的 MiniLab 3、LPD8、Launchpad、nanoKONTROL2，和真機同步。
+- [10-record](https://openaudiovisual.com/examples/10-record/): 演出影片：作品疊在鏡頭畫面上，連同作品自己的聲音錄成一個直式 1080×1920 到 4K 的檔案；MIDI 演奏可錄下再重播。
+- [11-controller-video](https://openaudiovisual.com/examples/11-controller-video/): 不用鏡頭的演出影片：作品下方即時畫出正在彈的 MIDI 控制器（MiniLab 3 或任何設定檔），重播的演奏也會動。
+- [12-leap-hands](https://openaudiovisual.com/examples/12-leap-hands/): 把 Leap Motion 當樂器，經本機橋接（`node packages/leap/bridge/leap-bridge.mjs`，沒有感測器用 `--mock`）；沒開橋接時用滑鼠模擬手。
+- [13-score-director](https://openaudiovisual.com/examples/13-score-director/): 有結構的演出：「一天的天空」只寫一次段落長度；導演為每段跑一個模組，`?cut=<id>` 選版本，空白鍵放行 hold。
+- [15-p5-one-line](https://openaudiovisual.com/examples/15-p5-one-line/): p5.js 一行指令：一份普通的 p5 草圖，第一行載入 oav-p5.js，就能用 MIDI 控制器、螢幕上的控制器或手機彈。
+
+範例 05–07 整合了吳哲宇的作品（2020–2023），版權所有；框架為 MIT 授權。
+
+## MIDI controllers
+
+24 份控制器設定檔，每台一頁，列出每個控制項確切的 MIDI 訊息（頻道、CC 或音符）、LED 回饋與引用出處。設定檔 JSON 就是這一頁背後的資料。
+
+- [AKAI LPD8 (mk2)](https://openaudiovisual.com/zh/controllers/akai-lpd8/): 16 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/akai-lpd8.json
+- [AKAI APC mini mk2](https://openaudiovisual.com/zh/controllers/akai-apc-mini-mk2/): 90 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/akai-apc-mini-mk2.json
+- [AKAI MIDImix](https://openaudiovisual.com/zh/controllers/akai-midimix/): 52 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/akai-midimix.json
+- [AKAI MPK mini mk3](https://openaudiovisual.com/zh/controllers/akai-mpk-mini-mk3/): 43 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/akai-mpk-mini-mk3.json
+- [Arturia MiniLab 3](https://openaudiovisual.com/zh/controllers/arturia-minilab3/): 48 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/arturia-minilab3.json
+- [Arturia KeyStep 37](https://openaudiovisual.com/zh/controllers/arturia-keystep37/): 44 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/arturia-keystep37.json
+- [Arturia BeatStep](https://openaudiovisual.com/zh/controllers/arturia-beatstep/): 32 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/arturia-beatstep.json
+- [Behringer X-TOUCH MINI](https://openaudiovisual.com/zh/controllers/behringer-x-touch-mini/): 33 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/behringer-x-touch-mini.json
+- [Korg nanoKONTROL2](https://openaudiovisual.com/zh/controllers/korg-nanokontrol2/): 51 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/korg-nanokontrol2.json
+- [Korg nanoKEY2](https://openaudiovisual.com/zh/controllers/korg-nanokey2/): 28 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/korg-nanokey2.json
+- [Novation Launchpad Mini MK3](https://openaudiovisual.com/zh/controllers/novation-launchpad-mini-mk3/): 80 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-mini-mk3.json
+- [Novation Launch Control XL (MK2)](https://openaudiovisual.com/zh/controllers/novation-launch-control-xl-mk2/): 56 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launch-control-xl-mk2.json
+- [Novation Launch Control XL 3](https://openaudiovisual.com/zh/controllers/novation-launch-control-xl-3/): 48 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launch-control-xl-3.json
+- [Novation Launchkey Mini MK3](https://openaudiovisual.com/zh/controllers/novation-launchkey-mini-mk3/): 51 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-mini-mk3.json
+- [Novation Launchkey 25 MK4](https://openaudiovisual.com/zh/controllers/novation-launchkey-25-mk4/): 52 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-25-mk4.json
+- [Novation Launchkey 37 MK4](https://openaudiovisual.com/zh/controllers/novation-launchkey-37-mk4/): 64 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-37-mk4.json
+- [ODD Ball](https://openaudiovisual.com/zh/controllers/odd-ball/): 10 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/odd-ball.json
+- [teenage engineering OP-1 field](https://openaudiovisual.com/zh/controllers/teenage-engineering-op-1-field/): 61 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/teenage-engineering-op-1-field.json
+- [通用 8 旋鈕 + 8 打擊墊](https://openaudiovisual.com/zh/controllers/generic-8k8p/): 16 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-8k8p.json
+- [通用 8 推桿](https://openaudiovisual.com/zh/controllers/generic-8f/): 8 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-8f.json
+- [通用 16 打擊墊](https://openaudiovisual.com/zh/controllers/generic-16p/): 16 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-16p.json
+- [通用 25 鍵鍵盤](https://openaudiovisual.com/zh/controllers/generic-keys25/): 28 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-keys25.json
+- [通用 49 鍵鍵盤](https://openaudiovisual.com/zh/controllers/generic-keys49/): 52 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-keys49.json
+- [通用 61 鍵鍵盤](https://openaudiovisual.com/zh/controllers/generic-keys61/): 64 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-keys61.json
+
+## Packages
+
+23 個套件在 `packages/<name>/`，透過 import map 以 `@openav/<name>` 引入。
+
+- 輸入: `midi` (Web MIDI 輸入與輸出，支援多台裝置與螢幕上的控制器) · `audio` (麥克風分析：音量、頻段、亮度、起音、鼓點) · `chord` (為演出設計的和弦偵測：協和度、三和弦、音堆) · `pose` (用鏡頭追蹤身體與手的 21 個點，全部在本機運算) · `keys` (螢幕鋼琴、電腦鍵盤演奏，以及模擬演奏者) · `drums` (合成鼓組與步進音序器，發出和音訊分析同樣形狀的訊號) · `leap` (透過本機的小橋接，把 Leap Motion 的手變成 21 點手部訊號)
+- 映射: `mapping` (訊號到參數的路由：曲線、平滑、多對多、learn)
+- 世界: `stage` (世界的外殼：管生命週期和參數，不限定繪圖方式) · `world-webtoe` (把 WebToe 節點網路當成世界來演奏)
+- 輸出: `sound` (頁面裡的樂器（Salamander 鋼琴、敲擊琴、弦樂、風琴、合成器音色），加一個檔案就能放進自己的聲音) · `osc` (透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP) · `record` (演出影片：作品疊在鏡頭畫面上、連同作品自己的聲音錄成一個檔；MIDI 演奏可錄下再重播)
+- 時間軸、控台、監看: `timeline` (參數自動化、場景與 cue：整場演出的時鐘) · `score` (把演出寫成段落長度：版本、cue、hold，還有模組壞掉時讓演出不中斷的導演) · `console` (導演控台與演出模式) · `monitor` (網路裡任何裝置都能看的後台畫面)
+- 手機與平板: `relay` (零相依的房間中繼，讓手機和 iPad 連進來) · `surface` (類似 TouchOSC 的控制元件，以及 autoSurface(params)) · `remote` (手機與 iPad 端的 app：感測器、琴鍵、控制面板)
+- 核心與代理: `core` (Signals、Params、Loop：每一層共用的語言) · `show` (createShow()：一次呼叫組好整個外殼) · `mcp` (給程式代理用的 MCP 伺服器：列出、閱讀、建立、檢查)
+
+## Optional
+
+- [Roadmap](https://openaudiovisual.com/docs/zh/roadmap.md): 訊號錄製與重播、npm 發佈、WebGPU 世界、NDI 閘道、分散式演出、代理演奏者。
+- [Lab integration](https://openaudiovisual.com/docs/zh/lab-integration.md): package.json 的 `"lab"` 欄位。
+- [WebToe](https://github.com/frank890417/WebToe): 姊妹專案，能匯入 TouchDesigner 專案的節點式資料流引擎。

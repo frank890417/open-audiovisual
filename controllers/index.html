@@ -3,368 +3,45 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MIDI controllers, modeled · open-audiovisual</title>
-<meta name="description" content="MIDI controllers described as data: every knob, pad and key with its exact MIDI message and the document it came from. Play them on screen, plug the real one in, embed one in any page with one line. Arturia, AKAI, Novation, KORG, Behringer, teenage engineering and generic layouts.">
+<title>MIDI controller library: CC &amp; note maps · open-audiovisual</title>
+<meta name="description" content="18 MIDI controllers modeled as JSON: every knob, pad and key with its exact MIDI message and source. Play on screen, embed with one line.">
 <link rel="canonical" href="https://openaudiovisual.com/controllers/">
 <link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/">
 <link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/">
 <link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/">
-<link rel="alternate" type="text/markdown" href="../llms.txt" title="llms.txt">
+<link rel="describedby" href="../llms.txt" title="llms.txt">
 <meta name="theme-color" content="#0b0b0c">
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="open-audiovisual">
-<meta property="og:title" content="MIDI controllers, modeled · open-audiovisual">
+<meta property="og:title" content="MIDI controller library: CC &amp; note maps · open-audiovisual">
 <meta property="og:description" content="Every knob, pad and key with its exact MIDI message and its source. Play it on screen, plug the real one in, embed it with one line.">
 <meta property="og:url" content="https://openaudiovisual.com/controllers/">
 <meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
 <meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<meta name="twitter:title" content="MIDI controller library: CC &amp; note maps · open-audiovisual">
+<meta name="twitter:description" content="Every knob, pad and key with its exact MIDI message and its source. Play it on screen, plug the real one in, embed it with one line.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=4518b33">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<link rel="stylesheet" href="../assets/controllers/controllers.css?v=4518b33">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"CollectionPage","@id":"https://openaudiovisual.com/controllers/#webpage","url":"https://openaudiovisual.com/controllers/","name":"MIDI controller library: CC & note maps · open-audiovisual","description":"18 MIDI controllers modeled as JSON: every knob, pad and key with its exact MIDI message and source. Play on screen, embed with one line.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"breadcrumb":{"@id":"https://openaudiovisual.com/controllers/#breadcrumb"},"mainEntity":{"@id":"https://openaudiovisual.com/controllers/#dataset"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/controllers/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Controllers","item":"https://openaudiovisual.com/controllers/"}]},{"@type":"Dataset","@id":"https://openaudiovisual.com/controllers/#dataset","name":"open-audiovisual MIDI controller profiles","description":"Machine-readable MIDI implementation charts for hardware controllers: faceplate layout, every control's MIDI message, LED feedback, port-name matching and cited sources, as JSON (MIT).","url":"https://openaudiovisual.com/controllers/","inLanguage":"en","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"creator":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#software"},"keywords":["MIDI","MIDI controller","MIDI implementation chart","Web MIDI","web component","TouchDesigner","Ableton Live"],"distribution":[{"@type":"DataDownload","name":"Arturia MiniLab 3","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/arturia-minilab3.json"},{"@type":"DataDownload","name":"AKAI LPD8 (mk2)","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/akai-lpd8.json"},{"@type":"DataDownload","name":"Novation Launchpad Mini MK3","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-mini-mk3.json"},{"@type":"DataDownload","name":"Korg nanoKONTROL2","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/korg-nanokontrol2.json"},{"@type":"DataDownload","name":"Arturia KeyStep 37","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/arturia-keystep37.json"},{"@type":"DataDownload","name":"AKAI APC mini mk2","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/akai-apc-mini-mk2.json"},{"@type":"DataDownload","name":"Novation Launch Control XL (MK2)","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/novation-launch-control-xl-mk2.json"},{"@type":"DataDownload","name":"Novation Launch Control XL 3","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/novation-launch-control-xl-3.json"},{"@type":"DataDownload","name":"AKAI MIDImix","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/akai-midimix.json"},{"@type":"DataDownload","name":"AKAI MPK mini mk3","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/akai-mpk-mini-mk3.json"},{"@type":"DataDownload","name":"Novation Launchkey Mini MK3","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-mini-mk3.json"},{"@type":"DataDownload","name":"Novation Launchkey 25 MK4","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-25-mk4.json"},{"@type":"DataDownload","name":"Novation Launchkey 37 MK4","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-37-mk4.json"},{"@type":"DataDownload","name":"Behringer X-TOUCH MINI","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/behringer-x-touch-mini.json"},{"@type":"DataDownload","name":"Arturia BeatStep","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/arturia-beatstep.json"},{"@type":"DataDownload","name":"Korg nanoKEY2","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/korg-nanokey2.json"},{"@type":"DataDownload","name":"OP-1 field","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/teenage-engineering-op-1-field.json"},{"@type":"DataDownload","name":"ODD Ball","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/odd-ball.json"},{"@type":"DataDownload","name":"Generic 8 knobs + 8 pads","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/generic-8k8p.json"},{"@type":"DataDownload","name":"Generic 8 faders","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/generic-8f.json"},{"@type":"DataDownload","name":"Generic 16 pads","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/generic-16p.json"},{"@type":"DataDownload","name":"Generic 25-key keyboard","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/generic-keys25.json"},{"@type":"DataDownload","name":"Generic 49-key keyboard","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/generic-keys49.json"},{"@type":"DataDownload","name":"Generic 61-key keyboard","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/generic-keys61.json"}]},{"@type":"ItemList","@id":"https://openaudiovisual.com/controllers/#list","name":"MIDI controllers in the open-audiovisual library","numberOfItems":24,"itemListElement":[{"@type":"ListItem","position":1,"name":"AKAI LPD8 (mk2)","url":"https://openaudiovisual.com/controllers/akai-lpd8/"},{"@type":"ListItem","position":2,"name":"AKAI APC mini mk2","url":"https://openaudiovisual.com/controllers/akai-apc-mini-mk2/"},{"@type":"ListItem","position":3,"name":"AKAI MIDImix","url":"https://openaudiovisual.com/controllers/akai-midimix/"},{"@type":"ListItem","position":4,"name":"AKAI MPK mini mk3","url":"https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/"},{"@type":"ListItem","position":5,"name":"Arturia MiniLab 3","url":"https://openaudiovisual.com/controllers/arturia-minilab3/"},{"@type":"ListItem","position":6,"name":"Arturia KeyStep 37","url":"https://openaudiovisual.com/controllers/arturia-keystep37/"},{"@type":"ListItem","position":7,"name":"Arturia BeatStep","url":"https://openaudiovisual.com/controllers/arturia-beatstep/"},{"@type":"ListItem","position":8,"name":"Behringer X-TOUCH MINI","url":"https://openaudiovisual.com/controllers/behringer-x-touch-mini/"},{"@type":"ListItem","position":9,"name":"Korg nanoKONTROL2","url":"https://openaudiovisual.com/controllers/korg-nanokontrol2/"},{"@type":"ListItem","position":10,"name":"Korg nanoKEY2","url":"https://openaudiovisual.com/controllers/korg-nanokey2/"},{"@type":"ListItem","position":11,"name":"Novation Launchpad Mini MK3","url":"https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/"},{"@type":"ListItem","position":12,"name":"Novation Launch Control XL (MK2)","url":"https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/"},{"@type":"ListItem","position":13,"name":"Novation Launch Control XL 3","url":"https://openaudiovisual.com/controllers/novation-launch-control-xl-3/"},{"@type":"ListItem","position":14,"name":"Novation Launchkey Mini MK3","url":"https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/"},{"@type":"ListItem","position":15,"name":"Novation Launchkey 25 MK4","url":"https://openaudiovisual.com/controllers/novation-launchkey-25-mk4/"},{"@type":"ListItem","position":16,"name":"Novation Launchkey 37 MK4","url":"https://openaudiovisual.com/controllers/novation-launchkey-37-mk4/"},{"@type":"ListItem","position":17,"name":"ODD Ball","url":"https://openaudiovisual.com/controllers/odd-ball/"},{"@type":"ListItem","position":18,"name":"OP-1 field","url":"https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/"},{"@type":"ListItem","position":19,"name":"Generic 8 knobs + 8 pads","url":"https://openaudiovisual.com/controllers/generic-8k8p/"},{"@type":"ListItem","position":20,"name":"Generic 8 faders","url":"https://openaudiovisual.com/controllers/generic-8f/"},{"@type":"ListItem","position":21,"name":"Generic 16 pads","url":"https://openaudiovisual.com/controllers/generic-16p/"},{"@type":"ListItem","position":22,"name":"Generic 25-key keyboard","url":"https://openaudiovisual.com/controllers/generic-keys25/"},{"@type":"ListItem","position":23,"name":"Generic 49-key keyboard","url":"https://openaudiovisual.com/controllers/generic-keys49/"},{"@type":"ListItem","position":24,"name":"Generic 61-key keyboard","url":"https://openaudiovisual.com/controllers/generic-keys61/"}]}]}</script>
+<link rel="stylesheet" href="../assets/controllers/controllers.css">
 <noscript><style>.js-only { display: none !important; }</style></noscript>
 <script>(function(){var ids=["arturia-minilab3","akai-lpd8","novation-launchpad-mini-mk3","korg-nanokontrol2","arturia-keystep37","akai-apc-mini-mk2","novation-launch-control-xl-mk2","novation-launch-control-xl-3","akai-midimix","akai-mpk-mini-mk3","novation-launchkey-mini-mk3","novation-launchkey-25-mk4","novation-launchkey-37-mk4","behringer-x-touch-mini","arturia-beatstep","korg-nanokey2","teenage-engineering-op-1-field","odd-ball","generic-8k8p","generic-8f","generic-16p","generic-keys25","generic-keys49","generic-keys61"],m=/^#spec-([\w-]+)$/.exec(location.hash),q=/[?&]profile=([\w-]+)/.exec(location.search),id=m?m[1]:q&&q[1];if(!id||ids.indexOf(id)<0)return;var b=location.pathname.replace(/index\.html$/,'');if(b.slice(-1)!=='/')b+='/';location.replace(b+id+'/')})()</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Dataset",
-      "@id": "https://openaudiovisual.com/controllers/#dataset",
-      "name": "open-audiovisual MIDI controller profiles",
-      "description": "Machine-readable MIDI implementation charts for hardware controllers: faceplate layout, every control's MIDI message, LED feedback, port-name matching and cited sources, as JSON (MIT).",
-      "url": "https://openaudiovisual.com/controllers/",
-      "inLanguage": "en",
-      "license": "https://opensource.org/licenses/MIT",
-      "isAccessibleForFree": true,
-      "creator": {
-        "@type": "Person",
-        "name": "Che-Yu Wu",
-        "alternateName": "吳哲宇",
-        "url": "https://cheyuwu.com"
-      },
-      "isPartOf": {
-        "@type": "SoftwareSourceCode",
-        "name": "open-audiovisual",
-        "codeRepository": "https://github.com/frank890417/open-audiovisual"
-      },
-      "keywords": [
-        "MIDI",
-        "MIDI controller",
-        "MIDI implementation chart",
-        "Web MIDI",
-        "web component",
-        "TouchDesigner",
-        "Ableton Live"
-      ],
-      "distribution": [
-        {
-          "@type": "DataDownload",
-          "name": "Arturia MiniLab 3",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/arturia-minilab3.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "AKAI LPD8 (mk2)",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/akai-lpd8.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Novation Launchpad Mini MK3",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-mini-mk3.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Korg nanoKONTROL2",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/korg-nanokontrol2.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Arturia KeyStep 37",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/arturia-keystep37.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "AKAI APC mini mk2",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/akai-apc-mini-mk2.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Novation Launch Control XL (MK2)",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/novation-launch-control-xl-mk2.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Novation Launch Control XL 3",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/novation-launch-control-xl-3.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "AKAI MIDImix",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/akai-midimix.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "AKAI MPK mini mk3",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/akai-mpk-mini-mk3.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Novation Launchkey Mini MK3",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-mini-mk3.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Novation Launchkey 25 MK4",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-25-mk4.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Novation Launchkey 37 MK4",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-37-mk4.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Behringer X-TOUCH MINI",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/behringer-x-touch-mini.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Arturia BeatStep",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/arturia-beatstep.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Korg nanoKEY2",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/korg-nanokey2.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "OP-1 field",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/teenage-engineering-op-1-field.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "ODD Ball",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/odd-ball.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Generic 8 knobs + 8 pads",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/generic-8k8p.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Generic 8 faders",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/generic-8f.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Generic 16 pads",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/generic-16p.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Generic 25-key keyboard",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/generic-keys25.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Generic 49-key keyboard",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/generic-keys49.json"
-        },
-        {
-          "@type": "DataDownload",
-          "name": "Generic 61-key keyboard",
-          "encodingFormat": "application/json",
-          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/generic-keys61.json"
-        }
-      ]
-    },
-    {
-      "@type": "ItemList",
-      "name": "MIDI controllers in the open-audiovisual library",
-      "numberOfItems": 24,
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "AKAI LPD8 (mk2)",
-          "url": "https://openaudiovisual.com/controllers/akai-lpd8/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "AKAI APC mini mk2",
-          "url": "https://openaudiovisual.com/controllers/akai-apc-mini-mk2/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "AKAI MIDImix",
-          "url": "https://openaudiovisual.com/controllers/akai-midimix/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "AKAI MPK mini mk3",
-          "url": "https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "name": "Arturia MiniLab 3",
-          "url": "https://openaudiovisual.com/controllers/arturia-minilab3/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 6,
-          "name": "Arturia KeyStep 37",
-          "url": "https://openaudiovisual.com/controllers/arturia-keystep37/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 7,
-          "name": "Arturia BeatStep",
-          "url": "https://openaudiovisual.com/controllers/arturia-beatstep/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 8,
-          "name": "Behringer X-TOUCH MINI",
-          "url": "https://openaudiovisual.com/controllers/behringer-x-touch-mini/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 9,
-          "name": "Korg nanoKONTROL2",
-          "url": "https://openaudiovisual.com/controllers/korg-nanokontrol2/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 10,
-          "name": "Korg nanoKEY2",
-          "url": "https://openaudiovisual.com/controllers/korg-nanokey2/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 11,
-          "name": "Novation Launchpad Mini MK3",
-          "url": "https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 12,
-          "name": "Novation Launch Control XL (MK2)",
-          "url": "https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 13,
-          "name": "Novation Launch Control XL 3",
-          "url": "https://openaudiovisual.com/controllers/novation-launch-control-xl-3/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 14,
-          "name": "Novation Launchkey Mini MK3",
-          "url": "https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 15,
-          "name": "Novation Launchkey 25 MK4",
-          "url": "https://openaudiovisual.com/controllers/novation-launchkey-25-mk4/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 16,
-          "name": "Novation Launchkey 37 MK4",
-          "url": "https://openaudiovisual.com/controllers/novation-launchkey-37-mk4/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 17,
-          "name": "ODD Ball",
-          "url": "https://openaudiovisual.com/controllers/odd-ball/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 18,
-          "name": "OP-1 field",
-          "url": "https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 19,
-          "name": "Generic 8 knobs + 8 pads",
-          "url": "https://openaudiovisual.com/controllers/generic-8k8p/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 20,
-          "name": "Generic 8 faders",
-          "url": "https://openaudiovisual.com/controllers/generic-8f/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 21,
-          "name": "Generic 16 pads",
-          "url": "https://openaudiovisual.com/controllers/generic-16p/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 22,
-          "name": "Generic 25-key keyboard",
-          "url": "https://openaudiovisual.com/controllers/generic-keys25/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 23,
-          "name": "Generic 49-key keyboard",
-          "url": "https://openaudiovisual.com/controllers/generic-keys49/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 24,
-          "name": "Generic 61-key keyboard",
-          "url": "https://openaudiovisual.com/controllers/generic-keys61/"
-        }
-      ]
-    }
-  ]
-}
-</script>
 </head>
 <body class="page-controllers">
+<!--email_off-->
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
@@ -988,6 +665,7 @@ console.log(validateProfile(p));   <span class="tc">// [] = valid; otherwise eve
 </footer>
 
 <script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","connect":"Connect your controller","asking":"Asking for MIDI…","connected":"Connected: {port}","waiting":"Listening. Plug in a known device and it appears here.","noMidi":"This browser has no Web MIDI (Safari, iPad). Play on screen: every event still fires.","denied":"MIDI permission was blocked. Allow it in the address bar and try again.","readoutIdle":"Touch a control: its signal and MIDI message appear here.","controlsN":"{n} controls","shown":"{n} shown","eventsIdle":"Play the preview: its \u003ccode>control\u003c/code> event appears here.","fullHref":"../examples/09-midi-controllers/?view=controller&profile="}</script>
-<script type="module" src="../assets/controllers/controllers.js?v=4518b33"></script>
+<script type="module" src="../assets/controllers/controllers.js"></script>
+<!--/email_off-->
 </body>
 </html>

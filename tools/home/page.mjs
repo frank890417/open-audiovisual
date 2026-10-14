@@ -6,7 +6,8 @@
 // Output is static HTML on purpose: crawlers and AI agents read every word
 // without running JavaScript. The script only brings the instrument to life.
 
-import { SITE, REPO, BLOB, TREE, pageCtx, topBar, siteFooter, GA_SNIPPET } from '../site/chrome.mjs';
+import { SITE, REPO, BLOB, TREE, pageCtx, headBasics, pageNode, SOFTWARE_ID, topBar, siteFooter, guardEmail } from '../site/chrome.mjs';
+import { getFacts } from '../site/facts.mjs';
 import { WEBTOE, SHOTS as WEBTOE_SHOTS, shot } from '../webtoe/page.mjs';
 export { SITE, REPO };
 
@@ -22,10 +23,10 @@ export const WORKS = [
 const CREDITED = { 4: 0, 5: 1, 6: 2 };          // works index → credits index (artworks by the author)
 
 export const PACKAGE_GROUPS = [
-  { layer: 'l1', pkgs: ['midi', 'audio', 'chord', 'pose', 'keys', 'drums'] },
+  { layer: 'l1', pkgs: ['midi', 'audio', 'chord', 'pose', 'keys', 'drums', 'leap'] },
   { layer: 'l2', pkgs: ['mapping'] },
   { layer: 'l3', pkgs: ['stage', 'world-webtoe'] },
-  { layer: 'l4', pkgs: ['sound', 'osc'] },
+  { layer: 'l4', pkgs: ['sound', 'osc', 'record'] },
   { layer: 'sp', pkgs: ['timeline', 'score', 'console', 'monitor'] },
   { layer: 'sp', pkgs: ['relay', 'surface', 'remote'] },
   { layer: 'sig', pkgs: ['core', 'show', 'mcp'] },
@@ -134,9 +135,6 @@ function hl(code) {
   return out + esc(code.slice(i));
 }
 
-const FAVICON = 'data:image/svg+xml,' + encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#0b0b0c"/><circle cx="7" cy="16" r="3.4" fill="#ff5a1f"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9" fill="none" stroke="#edebe5" stroke-width="2.4" stroke-linecap="round"/></svg>`);
-
 // ---------- the page ----------
 export function renderPage(t, { locale, other, version }) {
   const L = LOCALES[locale];
@@ -146,23 +144,9 @@ export function renderPage(t, { locale, other, version }) {
   const langHref = { en: locale === 'en' ? './' : '../', zh: locale === 'en' ? './zh/' : './' };
   const altPage = langHref[other];
 
-  const ld = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareSourceCode',
-    name: 'open-audiovisual',
-    alternateName: 'OAV',
-    description: t.meta.ld,
-    url: self,
-    inLanguage: t.ldLanguage,
-    codeRepository: REPO,
-    license: 'https://opensource.org/licenses/MIT',
-    programmingLanguage: { '@type': 'ComputerLanguage', name: 'JavaScript' },
-    runtimePlatform: 'Web browser',
-    version,
-    author: { '@type': 'Person', name: 'Che-Yu Wu', alternateName: '吳哲宇', url: 'https://cheyuwu.com' },
-    keywords: ['audiovisual performance', 'creative coding', 'Web MIDI', 'generative art', 'live visuals', 'OSC', 'show control', 'MCP'],
-    image: SITE + 'assets/home/og.png',
-  };
+  const c = pageCtx('home', locale);
+  // the page's own JSON-LD node; the software, the site and the person come from the shared graph (chrome.mjs)
+  const ld = [pageNode(c, t, { name: t.meta.title, description: t.meta.description, about: { '@id': SOFTWARE_ID }, mainEntity: { '@id': SOFTWARE_ID } })];
 
   // strings the instrument needs at runtime
   const runtime = {
@@ -188,38 +172,11 @@ export function renderPage(t, { locale, other, version }) {
         <pre id="${id}"><code>${hl(code)}</code></pre>
       </div>`;
 
-  return `<!DOCTYPE html>
+  return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(t.meta.title)}</title>
-<meta name="description" content="${attr(t.meta.description)}">
-<link rel="canonical" href="${self}">
-<link rel="alternate" hreflang="en" href="${LOCALES.en.url}">
-<link rel="alternate" hreflang="zh-Hant" href="${LOCALES.zh.url}">
-<link rel="alternate" hreflang="x-default" href="${LOCALES.en.url}">
-<link rel="alternate" type="text/markdown" href="${root}llms.txt" title="llms.txt">
-<meta name="theme-color" content="#0b0b0c">
-<meta name="color-scheme" content="dark">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="open-audiovisual">
-<meta property="og:title" content="${attr(t.meta.title)}">
-<meta property="og:description" content="${attr(t.meta.ogDescription)}">
-<meta property="og:url" content="${self}">
-<meta property="og:locale" content="${t.ogLocale}">
-<meta property="og:image" content="${SITE}assets/home/og.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="${FAVICON}">
-<link rel="preload" href="${root}assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="${root}assets/home/home.css">
-${GA_SNIPPET}
+${headBasics(t, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld })}
 <noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
-<script type="application/ld+json">
-${JSON.stringify(ld, null, 2)}
-</script>
 <script type="importmap">
 ${JSON.stringify(importmap, null, 2)}
 </script>
@@ -367,7 +324,7 @@ ${topBar(t, pageCtx('home', locale))}
       <div class="start-world">
         <h3>${t.start.worldTitle}</h3>
         <p>${t.start.worldText}</p>
-        ${term('examples/10-pulse/main.js', 'code-world', WORLD_CODE)}
+        ${term(`examples/${getFacts().nextExampleNumber}-pulse/main.js`, 'code-world', WORLD_CODE)}
         <p><a class="more" href="${BLOB}docs/writing-a-world.md">${t.start.worldLink} →</a></p>
       </div>
     </div>
@@ -450,7 +407,7 @@ ${siteFooter(t, pageCtx('home', locale))}
 <script type="module" src="${root}assets/home/home.js"></script>
 </body>
 </html>
-`;
+`);
 }
 
 export { strip };

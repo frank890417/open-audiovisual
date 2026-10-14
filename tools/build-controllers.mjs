@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // build-controllers — render /controllers/ (en), /zh/controllers/ (繁中) and one page per device from ONE template,
-// and keep the /controllers/ urls in sitemap.xml current.
+// and write sitemap.xml (the same file every build-*.mjs writes).
 //
 //   node tools/build-controllers.mjs          # write controllers/ (gallery + <id>/), zh/controllers/, sitemap.xml
 //   node tools/build-controllers.mjs --check  # exit 1 if the committed pages are stale
@@ -19,9 +19,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderPage, catalog, PROFILE_DIR, detailPath, detailUrl } from './controllers/page.mjs';
-import { renderDetail, lastmodOf } from './controllers/detail.mjs';
+import { renderDetail } from './controllers/detail.mjs';
 import { shapeDiff } from './build-home.mjs';
-import { SITE } from './site/chrome.mjs';
+import { registry, urlBlocks, sitemapXml, unstamp } from './site/pages.mjs';
+export { unstamp };
 import en from './controllers/en.mjs';
 import zh from './controllers/zh.mjs';
 import homeEn from './home/en.mjs';
@@ -34,32 +35,9 @@ export const SITEMAP = 'sitemap.xml';
 /** Where a device's own page is written: controllers/<id>/index.html, zh/controllers/<id>/index.html. */
 export const detailFile = (id, lang) => detailPath(id, lang) + 'index.html';
 
-/** The urls the sitemap lists for /controllers/: the gallery and one page per profile, both languages, with hreflang. */
-export function sitemapEntries(cat = catalog()) {
-  const lm = (d) => lastmodOf(`${PROFILE_DIR}/${d.file}`);
-  const all = [...cat.devices, ...cat.generic];
-  const newest = all.map(lm).filter(Boolean).sort().pop() || '';
-  const entry = (en_, zh_, lastmod) => ['en', 'zh'].map((l) => {
-    const loc = l === 'en' ? en_ : zh_;
-    return `  <url>\n    <loc>${loc}</loc>\n${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ''}`
-      + `    <xhtml:link rel="alternate" hreflang="en" href="${en_}"/>\n    <xhtml:link rel="alternate" hreflang="zh-Hant" href="${zh_}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${en_}"/>\n  </url>\n`;
-  }).join('');
-  return entry(SITE + 'controllers/', SITE + 'zh/controllers/', newest)
-    + all.map((d) => entry(detailUrl(d.p.id, 'en'), detailUrl(d.p.id, 'zh'), lm(d))).join('');
-}
-
-const MARK = ['  <!-- controllers: written by tools/build-controllers.mjs -->\n', '  <!-- /controllers -->\n'];
-const ownUrl = /[ \t]*<url>\s*<loc>https:\/\/openaudiovisual\.com\/(?:zh\/)?controllers\/[^<]*<\/loc>[\s\S]*?<\/url>[ \t]*\n?/g;
-
-/** sitemap.xml with the /controllers/ urls regenerated; every other url is left exactly as it was. */
-export function sitemapWith(current, entries = sitemapEntries()) {
-  const block = MARK[0] + entries + MARK[1];
-  const i = current.indexOf(MARK[0]), j = current.indexOf(MARK[1]);
-  if (i >= 0 && j > i) return current.slice(0, i) + block + current.slice(j + MARK[1].length);
-  let placed = false;
-  const out = current.replace(ownUrl, () => (placed ? '' : ((placed = true), block)));
-  return placed ? out : out.replace('</urlset>', block + '</urlset>');
-}
+/** The <url> blocks the sitemap lists for /controllers/: the gallery and one page per profile, both languages, with hreflang
+ *  and a <lastmod> from git. (sitemap.xml itself is written by tools/site/pages.mjs, the same file whichever generator runs.) */
+export const sitemapEntries = () => urlBlocks(registry().filter((e) => e.group === 'controllers'));
 
 export function buildPages() {
   const diff = shapeDiff(en, zh);
@@ -73,13 +51,9 @@ export function buildPages() {
     files[detailFile(d.p.id, 'en')] = renderDetail(en, homeEn, 'en', d, cat);
     files[detailFile(d.p.id, 'zh')] = renderDetail(zh, homeZh, 'zh', d, cat);
   }
-  const sm = path.join(ROOT, SITEMAP);
-  files[SITEMAP] = sitemapWith(fs.existsSync(sm) ? fs.readFileSync(sm, 'utf8') : '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n</urlset>\n', sitemapEntries(cat));
+  files[SITEMAP] = sitemapXml();
   return files;
 }
-
-// ?v= stamps and <lastmod> dates are not template output: the first is stamp-version's, the second is git's
-export const unstamp = (s) => s.replace(/\?v=[\w.+-]+/g, '').replace(/<lastmod>[^<]*<\/lastmod>\s*/g, '');
 
 /** Which committed pages differ from what the template renders now (and which device pages no profile asks for any more). */
 export function stalePages(files = buildPages()) {

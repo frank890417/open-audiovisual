@@ -4,13 +4,16 @@
 // come from packages/midi/profiles/*.json and tools/controllers/page.mjs, never from here.
 // {n}, {tool}, {port} … are filled in by the page.
 
+import { getFacts } from '../site/facts.mjs';
+const facts = getFacts();
+
 export default {
   lang: 'en',
   htmlLang: 'en',
 
   meta: {
-    title: 'MIDI controllers, modeled · open-audiovisual',
-    description: 'MIDI controllers described as data: every knob, pad and key with its exact MIDI message and the document it came from. Play them on screen, plug the real one in, embed one in any page with one line. Arturia, AKAI, Novation, KORG, Behringer, teenage engineering and generic layouts.',
+    title: 'MIDI controller library: CC & note maps · open-audiovisual',
+    description: `${facts.deviceCount} MIDI controllers modeled as JSON: every knob, pad and key with its exact MIDI message and source. Play on screen, embed with one line.`,
     ogDescription: 'Every knob, pad and key with its exact MIDI message and its source. Play it on screen, plug the real one in, embed it with one line.',
     ldName: 'open-audiovisual MIDI controller profiles',
     ldDescription: 'Machine-readable MIDI implementation charts for hardware controllers: faceplate layout, every control\'s MIDI message, LED feedback, port-name matching and cited sources, as JSON (MIT).',

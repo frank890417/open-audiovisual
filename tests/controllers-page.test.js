@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { buildPages, stalePages, PAGES } from '../tools/build-controllers.mjs';
 import { shapeDiff } from '../tools/build-home.mjs';
 import { catalog, placeSection } from '../tools/controllers/page.mjs';
+import { ldNode } from './_ld.js';
 import en from '../tools/controllers/en.mjs';
 import zh from '../tools/controllers/zh.mjs';
 import { PROFILES } from '../packages/midi/profiles/index.js';
@@ -72,8 +73,7 @@ test('language metadata: lang, canonical, hreflang trio, JSON-LD', () => {
     assert.match(s, new RegExp(`<link rel="canonical" href="${URLS[lang]}">`));
     for (const [hl, url] of [['en', URLS.en], ['zh-Hant', URLS.zh], ['x-default', URLS.en]])
       assert.match(s, new RegExp(`<link rel="alternate" hreflang="${hl}" href="${url}">`), `${lang} hreflang ${hl}`);
-    const ld = JSON.parse(s.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
-    const [ds, list] = ld['@graph'];
+    const ds = ldNode(s, 'Dataset'), list = ldNode(s, 'ItemList');
     assert.equal(ds['@type'], 'Dataset'); assert.equal(ds.distribution.length, PROFILES.length);
     assert.equal(list['@type'], 'ItemList'); assert.equal(list.numberOfItems, PROFILES.length);
   }

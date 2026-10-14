@@ -5,8 +5,8 @@
 
 export default {
   meta: {
-    title: 'WebToe · the engine half of the open-audiovisual stack',
-    description: 'WebToe is a web-native, node-based dataflow engine for real-time visuals: patch operators in the browser, TouchDesigner-style, on WebGL2 or WebGPU, with zero runtime dependencies. It opens real TouchDesigner projects, and @openav/world-webtoe turns a WebToe patch into an open-audiovisual world.',
+    title: 'WebToe · TouchDesigner-style node engine in the browser',
+    description: 'WebToe is a browser-based, TouchDesigner-style node engine on WebGL2 and WebGPU. It opens real .toe projects and plays as an open-audiovisual world.',
     ogDescription: 'WebToe is the engine, open-audiovisual is the show.',
     ld: 'A web-native, node-based dataflow engine and editor for real-time visuals, TouchDesigner-style, on WebGL2 and WebGPU with zero runtime dependencies. Imports TouchDesigner .toe and .tox projects.',
   },
