@@ -160,6 +160,7 @@
             <li><a href="#mapping-learn">Learn</a></li>
             <li><a href="#mapping-muting-and-removing">Muting and removing</a></li>
             <li><a href="#mapping-saved-profiles">Saved profiles</a></li>
+            <li><a href="#mapping-map-files-export-import-and-share">Map files: export, import and share</a></li>
             <li><a href="#mapping-routes-written-for-you">Routes written for you</a></li>
             <li><a href="#mapping-mapper-api">Mapper API</a></li>
           </ol>
@@ -340,7 +341,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">18 chapters · 169 sections · v0.1.0</p>
+      <p class="docs-stats">18 chapters · 170 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -1387,10 +1388,69 @@ curve or smoothing of a declared route in code, the saved copy of that
 <code>source → target</code> pair wins. To start clean, pass <code>profile: false</code> (routes come
 from code on every load, as in example 09) or remove the saved profile:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">localStorage.removeItem(<span class="ts">'openav.map.particles'</span>);   <span class="tc">// 'particles' = the world's name</span></code></pre></div>
-<p>To carry a wiring to another machine, export and import the JSON (there is no
-file UI yet; it is on the <a href="#roadmap">roadmap</a>):</p>
-<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">copy(JSON.stringify(show.mapper.toJSON(), <span class="tk">null</span>, 2));   <span class="tc">// devtools: copies the routes</span>
-show.mapper.fromJSON(routes); show.mapper.save();      <span class="tc">// on the other machine (replaces all routes)</span></code></pre></div>
+<p>To carry a wiring to another machine or another world, use a map file
+(<a href="#mapping-map-files-export-import-and-share">next section</a>).</p>
+<h3 id="mapping-map-files-export-import-and-share">Map files: export, import and share<a class="anchor" href="#mapping-map-files-export-import-and-share" aria-label="Link to this section">#</a></h3>
+<p>The <strong>L2 · Mapping</strong> panel has three buttons under <em>map knobs in order</em>:</p>
+<ul>
+<li><strong>⬇ export</strong> downloads the routes as <code>oav-map-&lt;world&gt;.json</code>.</li>
+<li><strong>⬆ import</strong> picks a map file. You can also <strong>drop a <code>.json</code> anywhere on the page</strong>.
+Import <em>replaces</em> the routes; the new set is remembered at once.</li>
+<li><strong>clear</strong> removes every route (click twice). On the next load the world's declared
+routes come back, as on a first visit.</li>
+</ul>
+<p>Below the buttons the panel says what the last import did: how many routes came in, and
+every route it <strong>skipped</strong> and why. A file that cannot be read says so and changes nothing.</p>
+<h4 id="mapping-the-format">The format<a class="anchor" href="#mapping-the-format" aria-label="Link to this section">#</a></h4>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{
+  <span class="ts">"format"</span>: <span class="ts">"openav.map"</span>,
+  <span class="ts">"version"</span>: 1,
+  <span class="ts">"world"</span>: <span class="ts">"particles"</span>,
+  <span class="ts">"exported"</span>: <span class="ts">"2026-10-15T08:30:00.000Z"</span>,
+  <span class="ts">"routes"</span>: [
+    { <span class="ts">"signal"</span>: <span class="ts">"midi/cc/74"</span>, <span class="ts">"param"</span>: <span class="ts">"bloom"</span>, <span class="ts">"curve"</span>: <span class="ts">"exp"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 1], <span class="ts">"out"</span>: [0, 100] }, <span class="ts">"smooth"</span>: 0.1, <span class="ts">"invert"</span>: <span class="tk">false</span> },
+    { <span class="ts">"signal"</span>: <span class="ts">"audio/rms"</span>, <span class="ts">"param"</span>: <span class="ts">"energy"</span>, <span class="ts">"curve"</span>: <span class="ts">"linear"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 0.3], <span class="ts">"out"</span>: [0, 1] }, <span class="ts">"smooth"</span>: 0, <span class="ts">"invert"</span>: <span class="tk">false</span>, <span class="ts">"enabled"</span>: <span class="tk">false</span> }
+  ]
+}</code></pre></div>
+<p>Routes are named by <code>signal</code> and <code>param</code>, never by id, so a file travels between worlds:</p>
+<ul>
+<li>a route whose <strong>param</strong> this world does not have is skipped and listed;</li>
+<li>a route whose <strong>signal</strong> nothing in this show can produce (say <code>leap/palm/x</code> without a
+Leap Motion module) is skipped and listed. Signals that only appear when the first message
+arrives (<code>midi/…</code>, <code>surface/…</code>, <code>phone/…</code>, <code>osc/…</code>, <code>key…</code>, <code>take/…</code>) are kept and counted as
+<em>waiting</em>;</li>
+<li>when the file's <code>world</code> is a different one, the <code>range.out</code> is dropped so each param keeps its
+own range (the <code>in</code> window, curve, smoothing and invert come along);</li>
+<li><code>version</code> newer than this build reads is refused with a message. A bare array from
+<code>mapper.toJSON()</code> (the old way) still imports, as version 0.</li>
+<li>Files over 256 KB or with over 500 routes are refused.</li>
+</ul>
+<h4 id="mapping-load-on-open-map">Load on open: <code>?map=</code><a class="anchor" href="#mapping-load-on-open-map" aria-label="Link to this section">#</a></h4>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code>https://openaudiovisual.com/examples/01-hello-particles/?map=https://example.com/my-map.json
+https://openaudiovisual.com/examples/01-hello-particles/?map=maps/stage-left.json</code></pre></div>
+<p><code>?map=&lt;url&gt;</code> fetches the file when the page opens and loads it like an import. It accepts a
+<strong>same-origin</strong> address (relative paths included) or an absolute <strong>https</strong> one; <code>http:</code> to another
+host, <code>data:</code>, <code>javascript:</code>, <code>file:</code> and addresses with a login are refused. A cross-site file
+must be served with CORS (<code>Access-Control-Allow-Origin: *</code>; raw GitHub and gists do this).
+The show starts regardless: if the address is refused, the fetch fails or the file is bad, the
+panel shows the reason and the routes stay as they were. An explicit <code>?map=</code> beats the remembered
+wiring, and what it loads is remembered like any import. In code, <code>createShow({ map: 'maps/a.json' })</code>
+does the same and <code>map: false</code> ignores <code>?map=</code>.</p>
+<h4 id="mapping-remembered-for-you">Remembered for you<a class="anchor" href="#mapping-remembered-for-you" aria-label="Link to this section">#</a></h4>
+<p>The mapper saves its routes to <code>localStorage</code> (<code>openav.map.&lt;world&gt;</code>) every 3 seconds and right
+after an import or clear, one slot per world name, so the next visit starts where you stopped.
+Every read and write is wrapped: in a private window or with storage blocked nothing breaks,
+the wiring just is not remembered.</p>
+<p>In code:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { loadMapUrl, parseMap } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+
+<span class="tk">const</span> file = show.mapper.exportMap();                    <span class="tc">// the object above</span>
+<span class="tk">const</span> report = show.mapper.importMap(text);              <span class="tc">// text or object; { mode: 'add' } keeps current routes</span>
+<span class="tc">// → { ok, added, skipped: [{ signal, param, reason: 'param' | 'signal' }], waiting, dropped, crossWorld }</span>
+<span class="tk">await</span> loadMapUrl(show.mapper, <span class="ts">'maps/a.json'</span>);            <span class="tc">// what ?map= calls; never throws</span>
+parseMap(text);                                          <span class="tc">// validate without touching a mapper</span></code></pre></div>
 <h3 id="mapping-routes-written-for-you">Routes written for you<a class="anchor" href="#mapping-routes-written-for-you" aria-label="Link to this section">#</a></h3>
 <p>Several packages generate routes in this same shape:</p>
 <ul>
@@ -1413,6 +1473,9 @@ mapper.routes                 <span class="tc">// the live array</span>
 mapper.learn(<span class="ts">'bloom'</span>)         <span class="tc">// arm / cancel learn; mapper.learnTarget is the armed key</span>
 mapper.update(dt)             <span class="tc">// every frame: advances smoothed routes</span>
 mapper.toJSON(); mapper.fromJSON(array)
+mapper.exportMap(); mapper.importMap(text|object, { mode })   <span class="tc">// the portable file, see above</span>
+mapper.clear()                <span class="tc">// remove every route (and forget them)</span>
+mapper.report                 <span class="tc">// what the last import / ?map= said</span>
 mapper.save(); mapper.load()  <span class="tc">// localStorage 'openav.map.&lt;profile&gt;'; load() → true if found</span>
 mapper.dispose()              <span class="tc">// stop listening to signals</span></code></pre></div>
 <p><code>onChange()</code> runs when routes change (for UIs); <code>onLearn(route, signalName)</code> runs
@@ -1448,6 +1511,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>modules</code></td><td><code>{}</code></td><td>inputs and outputs to switch on (below)</td></tr>
 <tr><td><code>artwork</code></td><td><code>null</code></td><td><code>{ title, artist, year, note }</code>: a credit line on the stage and a <code>&lt;meta name="artwork"&gt;</code></td></tr>
 <tr><td><code>hint</code></td><td><code>''</code></td><td>a line of HTML at the bottom left of the stage</td></tr>
+<tr><td><code>map</code></td><td><code>?map=</code> in the page address</td><td>a map file to load on start: a same-origin or https URL; <code>false</code> ignores <code>?map=</code> (<a href="#mapping-map-files-export-import-and-share">Map files</a>)</td></tr>
 <tr><td><code>profile</code></td><td>the world's name</td><td>the mapper's saved-profile name; <code>false</code> = ignore saved routes (<a href="#mapping-saved-profiles">Saved profiles</a>)</td></tr>
 <tr><td><code>onFrame</code></td><td><code>null</code></td><td><code>(dt, show) =&gt; {}</code> every frame, before the timeline advances</td></tr>
 <tr><td><code>mount</code></td><td>generated</td><td><code>{ stage, side }</code> elements or selectors to render into, instead of a full-page layout</td></tr>
@@ -3063,6 +3127,10 @@ JSON-RPC error with code −32000 and a message.</p>
 <tr><td><code>read_doc</code></td><td><code>doc</code> (required): <code>architecture</code>, <code>writing-a-world</code>, <code>signals</code>, <code>show-control</code>, <code>roadmap</code>, <code>agents</code>, <code>readme</code></td><td>the Markdown text. <code>agents</code> is AGENTS.md, <code>readme</code> the README; the others are <code>docs/&lt;name&gt;.md</code></td></tr>
 <tr><td><code>scaffold_world</code></td><td><code>slug</code> (required, kebab-case), <code>donor</code> (default <code>01-hello-particles</code>)</td><td><code>{ created, next_steps }</code>. Copies every file of <code>examples/&lt;donor&gt;/</code> into <code>examples/&lt;next number&gt;-&lt;slug&gt;/</code></td></tr>
 <tr><td><code>run_checks</code></td><td>none</td><td><code>{ pass, fail, ok }</code> from <code>node --test tests/*.test.js</code> (60 s timeout), or <code>{ ok: false, output }</code> with the failing lines</td></tr>
+<tr><td><code>list_controllers</code></td><td>none</td><td><code>{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }</code>: every shipped MIDI profile, its control mix (<code>{ knob: 8, pad: 8, keys: 25 }</code>), how many controls are still flagged unverified, and its page <code>https://openaudiovisual.com/controllers/&lt;id&gt;/</code></td></tr>
+<tr><td><code>read_profile</code></td><td><code>id</code> (required): a profile id or its <code>short</code></td><td><code>{ id, url, unverified, profile, mapping }</code>: the profile JSON as shipped, and a readable MIDI map (control, type, <code>CC 74, ch 1</code>, signal <code>midi/&lt;short&gt;/&lt;id&gt;</code>, verified)</td></tr>
+<tr><td><code>validate_profile</code></td><td><code>profile</code> (required): an object or a JSON string</td><td><code>{ ok, problems, conflicts }</code>: the problems <code>validateProfile</code> finds, plus clashes with shipped profiles (same <code>id</code>, same <code>short</code>, overlapping <code>match.ports</code>)</td></tr>
+<tr><td><code>scaffold_profile</code></td><td><code>maker</code>, <code>model</code>, <code>controls</code> (all required): <code>[{ type, count, from? }]</code></td><td><code>{ profile, problems, unverified, next_steps }</code>: a skeleton that passes <code>validateProfile</code>, every number a placeholder with <code>"verified": false</code>, and the steps to source and register it. Nothing is written to disk</td></tr>
 </tbody>
 </table></div>
 <p>Good donors for <code>scaffold_world</code>: <code>01-hello-particles</code> (minimal 2D canvas),
@@ -3312,7 +3380,7 @@ before it was generalized.)</p>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> backstage monitor (zero-dep WS relay, LAN devices)</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> OSC bridge; MIDI out with observable throat + panic</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> tests for all pure logic (chord, timeline, mapping, params)</li>
-<li class="task"><input type="checkbox" disabled aria-label="not done yet"> mapping profile import/export UI (JSON file, not just localStorage)</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="done"> mapping profile import/export UI (JSON file, drag-and-drop, <code>?map=&lt;url&gt;</code>, remembered per world)</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> example: audio-reactive world driven by a live instrument (mic) — <code>06-cylinder-earth</code></li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> drum machine with analyzer-shaped signals (<code>@openav/drums</code>)</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="done"> on-screen MIDI controllers that mirror real hardware (<code>@openav/midi</code>, example 09)</li>
