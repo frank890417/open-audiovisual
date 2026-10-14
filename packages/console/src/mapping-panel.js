@@ -4,7 +4,7 @@
 //
 // 🎛 "map the knobs in order": the LearnWizard (packages/mapping/wizard.js) walks the params one
 // by one — turn a knob, it is bound, the next param is armed. Learn adds routes, never replaces.
-import { LearnWizard } from '../../mapping/wizard.js?v=02fdc94';
+import { LearnWizard } from '../../mapping/wizard.js?v=b55db04';
 
 export function buildMappingPanel(root, app, opts = {}) {
   const { mapper, params } = app;
