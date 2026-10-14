@@ -95,9 +95,9 @@ oav-controller > .fp { display: block; width: 100%; height: 100%; }
 .card[hidden] { display: none; }
 .card:target { border-color: var(--sig); }
 .card-face { position: relative; aspect-ratio: 16 / 10; min-height: 0; overflow: hidden; background: var(--void); border-bottom: 1px solid var(--line); }
-.card-face > .fp, .card-face oav-controller { position: absolute; left: 14px; top: 14px; width: calc(100% - 28px); height: calc(100% - 28px); display: block; }
-.card-face.live > .fp { visibility: hidden; }
-.card-face[data-tap] { cursor: pointer; }
+.card-face-link { position: absolute; inset: 0; display: block; color: inherit; }
+.card-face-link > .fp, .card-face oav-controller { position: absolute; left: 14px; top: 14px; width: calc(100% - 28px); height: calc(100% - 28px); display: block; }
+.card-face.live .card-face-link { visibility: hidden; }
 .card-body { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px 14px; }
 .card-maker { margin: 0; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
 .sec .card-name { margin: 0; font: 700 19px/1.2 var(--sans); font-stretch: 108%; letter-spacing: -.01em; text-transform: none; color: var(--fg); }
@@ -116,20 +116,12 @@ html[lang^="zh"] .sec .card-name { letter-spacing: .01em; }
 .card-links a:hover { color: var(--fg); border-color: var(--sig); }
 .card-links a[data-play] { color: var(--fg); border-color: var(--sig); }
 
-/* ───────────── spec sheets ───────────── */
-.specs { border-top: 1px solid var(--line); }
-.spec { border-bottom: 1px solid var(--line); }
-.spec > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; padding: 14px 4px; list-style: none; cursor: pointer; }
-.spec > summary::-webkit-details-marker { display: none; }
-.spec > summary::before { content: '+'; width: 1em; font: 500 16px var(--mono); color: var(--sig); }
-.spec[open] > summary::before { content: '−'; }
-.spec > summary:hover .spec-name { color: var(--sig); }
-.spec-name { font: 700 clamp(18px, 1.6vw, 22px)/1.2 var(--sans); font-stretch: 108%; }
-.spec-meta { font: 12.5px var(--mono); color: var(--fg-3); }
-.spec-meta code { padding: 0; background: none; color: var(--fg-2); }
-.spec-body { padding: 4px 0 30px; }
-.spec:target { box-shadow: inset 3px 0 0 var(--sig); }
-.spec h4 { margin: 20px 0 8px; }
+/* ───────────── gallery index of the device pages · MIDI tables ───────────── */
+.sec table.index th a { color: var(--fg); text-decoration: none; }
+.sec table.index th a:hover, .sec table.index td a:hover { color: var(--sig); }
+.sec table.index td a { color: var(--fg-2); text-decoration-color: var(--line-2); }
+.sec table.index tr:target > * { background: rgba(255, 90, 31, .08); }
+.sec table.index td { white-space: normal; min-width: 14ch; }
 .table-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--line); background: var(--void); }
 .table-scroll:focus-visible { outline: 2px solid var(--sig); outline-offset: 2px; }
 .sec table { width: 100%; border-collapse: collapse; font: 12.5px/1.45 var(--mono); }
@@ -201,6 +193,51 @@ fieldset.f > legend { margin-bottom: 6px; }
 .model-links { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 18px 0 0; padding: 0; font: 13px var(--mono); }
 .model-links a { color: var(--fg); text-decoration-color: var(--sig); }
 
+/* ───────────── one controller's own page ───────────── */
+.crumbs { margin: 0 0 14px; font: 12.5px/1.4 var(--mono); color: var(--fg-3); }
+.crumbs ol { display: flex; flex-wrap: wrap; gap: 2px 0; margin: 0; padding: 0; list-style: none; }
+.crumbs li + li::before { content: '›'; margin: 0 9px; color: var(--fg-3); }
+.crumbs a { color: var(--fg-2); text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.crumbs a:hover { color: var(--fg); border-color: var(--sig); }
+.crumbs [aria-current] { color: var(--fg); overflow-wrap: anywhere; }
+.page-controller .ch-hero h1 { font-size: clamp(32px, 4.2vw, 68px); overflow-wrap: anywhere; }
+html[lang^="zh"] .page-controller .ch-hero h1 { font-size: clamp(30px, 4vw, 64px); }
+.d-lede p { margin: 0 0 12px; }
+.d-lede .badges { margin-top: 14px; }
+.d-lede em { font-style: normal; color: var(--sig); }
+.d-facts { margin: 0; border-top: 1px solid var(--line); font-size: 14.5px; }
+.d-facts div { display: grid; grid-template-columns: minmax(8.5em, 11em) minmax(0, 1fr); gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.d-facts dt { font: 500 11.5px/1.7 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); }
+.d-facts dd { margin: 0; color: var(--fg); overflow-wrap: anywhere; }
+.d-facts code { padding: 0; background: none; font-size: 13px; }
+.page-controller .stage oav-controller { height: 100%; }
+.page-controller .stage { height: clamp(240px, 36vw, 540px); }
+.page-controller .sec-head h2 { font-size: clamp(26px, 3.1vw, 46px); line-height: 1.08; }
+.page-controller .spec-grid { margin-top: 30px; }
+.page-controller .spec-grid h3 { margin-top: 0; }
+.page-controller .snips { margin-bottom: clamp(28px, 4vw, 48px); }
+.snip .note { margin: 10px 0 0; color: var(--fg-2); font-size: 14px; }
+.p5-block { max-width: 1000px; }
+.p5-block > p { color: var(--fg-2); }
+.p5-block .term { margin: 14px 0; }
+.p5-block .table-scroll { margin: 14px 0; }
+.p5-block .note { color: var(--fg-2); font-size: 14.5px; }
+.sec table.p5 td { white-space: normal; }
+.sec table.p5 th code { color: var(--fg); }
+.more { color: var(--fg); text-decoration-color: var(--sig); }
+.sec h3 + .cnotes, .sec .table-scroll + h3 { margin-top: 26px; }
+.rel { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 0 clamp(18px, 2.4vw, 36px); margin: 0 0 26px; padding: 0; }
+.rel li { display: flex; flex-direction: column; gap: 2px; padding: 12px 0; border-top: 1px solid var(--line); min-width: 0; }
+.rel a { color: var(--fg); font: 700 17px/1.25 var(--sans); font-stretch: 106%; text-decoration: none; overflow-wrap: anywhere; }
+.rel a:hover { color: var(--sig); }
+.rel span { color: var(--fg-3); font: 12.5px/1.45 var(--mono); }
+.step { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 12px; align-items: stretch; border-top: 1px solid var(--line); padding-top: 14px; }
+.step a { display: flex; flex-direction: column; gap: 2px; padding: 8px 0; color: var(--fg); text-decoration: none; font-weight: 600; overflow-wrap: anywhere; }
+.step a:hover { color: var(--sig); }
+.step small { font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.step a[rel="next"] { text-align: right; }
+.step .back { justify-content: center; align-self: center; font: 500 12.5px var(--mono); color: var(--fg-2); border-bottom: 1px solid var(--line-2); padding: 4px 0; }
+
 /* ───────────── responsive ───────────── */
 @media (max-width: 1080px) {
   .hero-cols, .builder, .embed-grid, .model-grid { grid-template-columns: minmax(0, 1fr); }
@@ -214,11 +251,16 @@ fieldset.f > legend { margin-bottom: 6px; }
   /* the instrument first on a phone, the words after it (as on the homepage) */
   .ch-hero { display: flex; flex-direction: column; }
   .ch-hero > .hero-cols { order: 9; margin: 26px 0 0; }
+  .ch-hero > .crumbs { order: -1; }
+  .d-facts div { grid-template-columns: minmax(7em, 9em) minmax(0, 1fr); }
+  .step { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .step .back { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
   .ch-hero h1 { margin-bottom: 16px; }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stage-bar { flex-direction: column; align-items: stretch; }
   .connect { justify-content: center; max-width: none; }
   .stage { height: min(66vh, 560px); height: min(66svh, 560px); padding: 6px; }
+  .page-controller .stage { height: min(66vh, 560px); height: min(66svh, 560px); }
   .stage-foot { padding: 8px 10px; }
   .spec-grid, .steps { grid-template-columns: minmax(0, 1fr); }
   .card-face { aspect-ratio: 16 / 11; }

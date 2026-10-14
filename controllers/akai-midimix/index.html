@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AKAI MIDImix MIDI map &amp; playable controller — open-audiovisual</title>
+<meta name="description" content="AKAI MIDImix MIDI map: 24 knobs, 9 faders and 19 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.">
+<link rel="canonical" href="https://openaudiovisual.com/controllers/akai-midimix/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/akai-midimix/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/akai-midimix/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/akai-midimix/">
+<link rel="alternate" type="text/markdown" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="AKAI MIDImix MIDI map &amp; playable controller — open-audiovisual">
+<meta property="og:description" content="AKAI MIDImix MIDI map: 24 knobs, 9 faders and 19 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.">
+<meta property="og:url" content="https://openaudiovisual.com/controllers/akai-midimix/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=1b4606c">
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta property="og:image:alt" content="open-audiovisual: MIDI controllers, modeled">
+<meta name="twitter:title" content="AKAI MIDImix MIDI map &amp; playable controller — open-audiovisual">
+<meta name="twitter:description" content="AKAI MIDImix MIDI map: 24 knobs, 9 faders and 19 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: MIDI controllers, modeled">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="alternate" type="application/json" href="../../packages/midi/profiles/akai-midimix.json" title="AKAI MIDImix MIDI profile (JSON)">
+<link rel="stylesheet" href="../../assets/controllers/controllers.css?v=1b4606c">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://openaudiovisual.com/controllers/akai-midimix/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://openaudiovisual.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Controllers",
+          "item": "https://openaudiovisual.com/controllers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "AKAI MIDImix",
+          "item": "https://openaudiovisual.com/controllers/akai-midimix/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://openaudiovisual.com/controllers/akai-midimix/#webpage",
+      "url": "https://openaudiovisual.com/controllers/akai-midimix/",
+      "name": "AKAI MIDImix MIDI map & playable controller — open-audiovisual",
+      "description": "AKAI MIDImix MIDI map: 24 knobs, 9 faders and 19 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "open-audiovisual",
+        "url": "https://openaudiovisual.com/"
+      },
+      "breadcrumb": {
+        "@id": "https://openaudiovisual.com/controllers/akai-midimix/#breadcrumb"
+      },
+      "about": {
+        "@id": "https://openaudiovisual.com/controllers/akai-midimix/#product"
+      },
+      "mainEntity": {
+        "@id": "https://openaudiovisual.com/controllers/akai-midimix/#dataset"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://openaudiovisual.com/assets/home/og.png",
+        "width": 1200,
+        "height": 630
+      }
+    },
+    {
+      "@type": "Product",
+      "@id": "https://openaudiovisual.com/controllers/akai-midimix/#product",
+      "name": "AKAI MIDImix",
+      "model": "MIDImix",
+      "brand": {
+        "@type": "Brand",
+        "name": "AKAI Professional"
+      },
+      "category": "MIDI controller",
+      "description": "AKAI MIDImix MIDI map: 24 knobs, 9 faders and 19 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js."
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://openaudiovisual.com/controllers/akai-midimix/#dataset",
+      "name": "AKAI MIDImix MIDI map",
+      "description": "Machine-readable MIDI implementation of AKAI MIDImix for open-audiovisual: faceplate, every control's MIDI message, LED feedback, port-name matching and cited sources, as JSON (MIT).",
+      "url": "https://openaudiovisual.com/controllers/akai-midimix/",
+      "inLanguage": "en",
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "creator": {
+        "@type": "Person",
+        "name": "Che-Yu Wu",
+        "alternateName": "吳哲宇",
+        "url": "https://cheyuwu.com"
+      },
+      "isPartOf": {
+        "@id": "https://openaudiovisual.com/controllers/#dataset"
+      },
+      "about": {
+        "@id": "https://openaudiovisual.com/controllers/akai-midimix/#product"
+      },
+      "keywords": [
+        "MIDI",
+        "MIDI controller",
+        "MIDI implementation chart",
+        "Web MIDI",
+        "AKAI MIDImix",
+        "AKAI Professional"
+      ],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "name": "akai-midimix.json",
+          "encodingFormat": "application/json",
+          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/akai-midimix.json"
+        }
+      ],
+      "citation": [
+        {
+          "@type": "CreativeWork",
+          "name": "MIDImix User Guide v1.0 (AKAI)",
+          "url": "https://cdn.inmusicbrands.com/akai/attachments/MIDIMIX/MIDImix-UserGuide-v1.0.pdf"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Ableton Live 12 MIDI Remote Script MIDI_Mix (decompiled; non-official)",
+          "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/MIDI_Mix/MIDI_Mix.py"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Ardour AKAI_MIDIMix_Normal_Mode.map and AKAI_MIDIMix_EQ_Mode.map (non-official)",
+          "url": "https://github.com/Ardour/ardour/blob/master/share/midi_maps/AKAI_MIDIMix_Normal_Mode.map"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="page-controllers page-controller">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/" aria-current="page">Controllers</a>
+    <a href="../../docs/">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../controllers/akai-midimix/" hreflang="en" lang="en" data-lang="en" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/controllers/akai-midimix/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ═════ the instrument first, then the words ═════ -->
+  <section class="ch-hero" id="play" aria-labelledby="play-title">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../../">Home</a></li>
+        <li><a href="../../controllers/">Controllers</a></li>
+        <li aria-current="page">AKAI MIDImix</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">AKAI Professional</p>
+    <h1 id="play-title">AKAI MIDImix</h1>
+    <div class="hero-cols">
+      <div class="lede d-lede">
+        <p>AKAI MIDImix is a MIDI hardware controller by AKAI Professional: 24 knobs, 9 faders and 19 buttons.</p>
+        <p>It sends CC and Note on channel 1. The profile cites 3 sources. No control is flagged unverified.</p>
+        <ul class="badges"><li class="b-maker">Manufacturer docs</li><li class="b-comm">Community notes</li><li class="b-led">LED feedback</li></ul>
+      </div>
+      <div class="hero-facts">
+        <dl class="d-facts">
+          <div><dt>Kind</dt><dd>hardware device</dd></div>
+          <div><dt>Maker</dt><dd>AKAI Professional</dd></div>
+          <div><dt>Controls</dt><dd>52 controls</dd></div>
+          <div><dt>Messages</dt><dd>CC · Note</dd></div>
+          <div><dt>MIDI channels</dt><dd>1</dd></div>
+          <div><dt>LED feedback</dt><dd>yes, lights are driven by MIDI</dd></div>
+          <div><dt>Signals</dt><dd><code>midi/midimix/…</code></dd></div>
+          <div><dt>Port name matches</dt><dd><code>/midi\s*mix/i</code></dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="stage">
+      <oav-controller id="d-ctl" profile="akai-midimix" hardware="ask" readout><svg class="fp" viewBox="0 0 100 84" role="img" aria-label="Faceplate of AKAI MIDImix" focusable="false" preserveAspectRatio="xMidYMid meet"><rect class="fp-body" width="100" height="84" rx="2.94" fill="#1c1d20"/><text class="fp-fl" x="2" y="2.6">MIDIMIX</text><rect class="fp-btn" x="83" y="6" width="13" height="4.5" rx="0.4"/><text class="fp-bl fp-small" x="89.5" y="8.6">Send All</text><circle class="fp-ring" cx="6.63" cy="8.42" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="6.63" cy="8.42" r="2.72"/><line class="fp-ptr" x1="5.94" y1="9.1" x2="4.82" y2="10.23"/><text class="fp-cl" x="6.63" y="15.23">1</text><circle class="fp-ring" cx="16.59" cy="8.42" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="16.59" cy="8.42" r="2.72"/><line class="fp-ptr" x1="15.91" y1="9.1" x2="14.78" y2="10.23"/><text class="fp-cl" x="16.59" y="15.23">2</text><circle class="fp-ring" cx="26.56" cy="8.42" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="26.56" cy="8.42" r="2.72"/><line class="fp-ptr" x1="25.87" y1="9.1" x2="24.74" y2="10.23"/><text class="fp-cl" x="26.56" y="15.23">3</text><circle class="fp-ring" cx="36.52" cy="8.42" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="36.52" cy="8.42" r="2.72"/><line class="fp-ptr" x1="35.83" y1="9.1" x2="34.7" y2="10.23"/><text class="fp-cl" x="36.52" y="15.23">4</text><circle class="fp-ring" cx="46.48" cy="8.42" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="46.48" cy="8.42" r="2.72"/><line class="fp-ptr" x1="45.79" y1="9.1" x2="44.67" y2="10.23"/><text class="fp-cl" x="46.48" y="15.23">5</text><circle class="fp-ring" cx="56.44" cy="8.42" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="56.44" cy="8.42" r="2.72"/><line class="fp-ptr" x1="55.76" y1="9.1" x2="54.63" y2="10.23"/><text class="fp-cl" x="56.44" y="15.23">6</text><circle class="fp-ring" cx="66.41" cy="8.42" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="66.41" cy="8.42" r="2.72"/><line class="fp-ptr" x1="65.72" y1="9.1" x2="64.59" y2="10.23"/><text class="fp-cl" x="66.41" y="15.23">7</text><circle class="fp-ring" cx="76.37" cy="8.42" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="76.37" cy="8.42" r="2.72"/><line class="fp-ptr" x1="75.68" y1="9.1" x2="74.55" y2="10.23"/><text class="fp-cl" x="76.37" y="15.23">8</text><circle class="fp-ring" cx="6.63" cy="21.65" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="6.63" cy="21.65" r="2.72"/><line class="fp-ptr" x1="5.94" y1="22.34" x2="4.82" y2="23.47"/><text class="fp-cl" x="6.63" y="28.47">9</text><circle class="fp-ring" cx="16.59" cy="21.65" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="16.59" cy="21.65" r="2.72"/><line class="fp-ptr" x1="15.91" y1="22.34" x2="14.78" y2="23.47"/><text class="fp-cl" x="16.59" y="28.47">10</text><circle class="fp-ring" cx="26.56" cy="21.65" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="26.56" cy="21.65" r="2.72"/><line class="fp-ptr" x1="25.87" y1="22.34" x2="24.74" y2="23.47"/><text class="fp-cl" x="26.56" y="28.47">11</text><circle class="fp-ring" cx="36.52" cy="21.65" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="36.52" cy="21.65" r="2.72"/><line class="fp-ptr" x1="35.83" y1="22.34" x2="34.7" y2="23.47"/><text class="fp-cl" x="36.52" y="28.47">12</text><circle class="fp-ring" cx="46.48" cy="21.65" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="46.48" cy="21.65" r="2.72"/><line class="fp-ptr" x1="45.79" y1="22.34" x2="44.67" y2="23.47"/><text class="fp-cl" x="46.48" y="28.47">13</text><circle class="fp-ring" cx="56.44" cy="21.65" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="56.44" cy="21.65" r="2.72"/><line class="fp-ptr" x1="55.76" y1="22.34" x2="54.63" y2="23.47"/><text class="fp-cl" x="56.44" y="28.47">14</text><circle class="fp-ring" cx="66.41" cy="21.65" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="66.41" cy="21.65" r="2.72"/><line class="fp-ptr" x1="65.72" y1="22.34" x2="64.59" y2="23.47"/><text class="fp-cl" x="66.41" y="28.47">15</text><circle class="fp-ring" cx="76.37" cy="21.65" r="3.89" stroke="#35d4e6"/><circle class="fp-cap" cx="76.37" cy="21.65" r="2.72"/><line class="fp-ptr" x1="75.68" y1="22.34" x2="74.55" y2="23.47"/><text class="fp-cl" x="76.37" y="28.47">16</text><circle class="fp-ring" cx="6.63" cy="34.88" r="3.89" stroke="#a58bff"/><circle class="fp-cap" cx="6.63" cy="34.88" r="2.72"/><line class="fp-ptr" x1="5.94" y1="35.57" x2="4.82" y2="36.7"/><text class="fp-cl" x="6.63" y="41.7">17</text><circle class="fp-ring" cx="16.59" cy="34.88" r="3.89" stroke="#a58bff"/><circle class="fp-cap" cx="16.59" cy="34.88" r="2.72"/><line class="fp-ptr" x1="15.91" y1="35.57" x2="14.78" y2="36.7"/><text class="fp-cl" x="16.59" y="41.7">18</text><circle class="fp-ring" cx="26.56" cy="34.88" r="3.89" stroke="#a58bff"/><circle class="fp-cap" cx="26.56" cy="34.88" r="2.72"/><line class="fp-ptr" x1="25.87" y1="35.57" x2="24.74" y2="36.7"/><text class="fp-cl" x="26.56" y="41.7">19</text><circle class="fp-ring" cx="36.52" cy="34.88" r="3.89" stroke="#a58bff"/><circle class="fp-cap" cx="36.52" cy="34.88" r="2.72"/><line class="fp-ptr" x1="35.83" y1="35.57" x2="34.7" y2="36.7"/><text class="fp-cl" x="36.52" y="41.7">20</text><circle class="fp-ring" cx="46.48" cy="34.88" r="3.89" stroke="#a58bff"/><circle class="fp-cap" cx="46.48" cy="34.88" r="2.72"/><line class="fp-ptr" x1="45.79" y1="35.57" x2="44.67" y2="36.7"/><text class="fp-cl" x="46.48" y="41.7">21</text><circle class="fp-ring" cx="56.44" cy="34.88" r="3.89" stroke="#a58bff"/><circle class="fp-cap" cx="56.44" cy="34.88" r="2.72"/><line class="fp-ptr" x1="55.76" y1="35.57" x2="54.63" y2="36.7"/><text class="fp-cl" x="56.44" y="41.7">22</text><circle class="fp-ring" cx="66.41" cy="34.88" r="3.89" stroke="#a58bff"/><circle class="fp-cap" cx="66.41" cy="34.88" r="2.72"/><line class="fp-ptr" x1="65.72" y1="35.57" x2="64.59" y2="36.7"/><text class="fp-cl" x="66.41" y="41.7">23</text><circle class="fp-ring" cx="76.37" cy="34.88" r="3.89" stroke="#a58bff"/><circle class="fp-cap" cx="76.37" cy="34.88" r="2.72"/><line class="fp-ptr" x1="75.68" y1="35.57" x2="74.55" y2="36.7"/><text class="fp-cl" x="76.37" y="41.7">24</text><rect class="fp-btn" x="83" y="21.57" width="13" height="5" rx="0.75"/><rect class="fp-btn" x="83" y="32.43" width="13" height="5" rx="0.75"/><rect class="fp-btn" x="2" y="44.5" width="9.26" height="5" rx="0.75"/><rect class="fp-btn" x="11.96" y="44.5" width="9.26" height="5" rx="0.75"/><rect class="fp-btn" x="21.92" y="44.5" width="9.26" height="5" rx="0.75"/><rect class="fp-btn" x="31.89" y="44.5" width="9.26" height="5" rx="0.75"/><rect class="fp-btn" x="41.85" y="44.5" width="9.26" height="5" rx="0.75"/><rect class="fp-btn" x="51.81" y="44.5" width="9.26" height="5" rx="0.75"/><rect class="fp-btn" x="61.77" y="44.5" width="9.26" height="5" rx="0.75"/><rect class="fp-btn" x="71.74" y="44.5" width="9.26" height="5" rx="0.75"/><rect class="fp-btn" x="83" y="44.5" width="13" height="5" rx="0.75"/><rect class="fp-btn" x="2" y="52" width="9.26" height="5" rx="0.75"/><text class="fp-bl" x="6.63" y="54.95">Rec</text><rect class="fp-btn" x="11.96" y="52" width="9.26" height="5" rx="0.75"/><text class="fp-bl" x="16.59" y="54.95">Rec</text><rect class="fp-btn" x="21.92" y="52" width="9.26" height="5" rx="0.75"/><text class="fp-bl" x="26.56" y="54.95">Rec</text><rect class="fp-btn" x="31.89" y="52" width="9.26" height="5" rx="0.75"/><text class="fp-bl" x="36.52" y="54.95">Rec</text><rect class="fp-btn" x="41.85" y="52" width="9.26" height="5" rx="0.75"/><text class="fp-bl" x="46.48" y="54.95">Rec</text><rect class="fp-btn" x="51.81" y="52" width="9.26" height="5" rx="0.75"/><text class="fp-bl" x="56.44" y="54.95">Rec</text><rect class="fp-btn" x="61.77" y="52" width="9.26" height="5" rx="0.75"/><text class="fp-bl" x="66.41" y="54.95">Rec</text><rect class="fp-btn" x="71.74" y="52" width="9.26" height="5" rx="0.75"/><text class="fp-bl" x="76.37" y="54.95">Rec</text><rect class="fp-slot" x="6.23" y="59.6" width="0.8" height="20.1" rx="0.4"/><rect class="fp-fcap" x="4.33" y="78.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="6.63" y="81.7">1</text><rect class="fp-slot" x="16.19" y="59.6" width="0.8" height="20.1" rx="0.4"/><rect class="fp-fcap" x="14.29" y="78.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="16.59" y="81.7">2</text><rect class="fp-slot" x="26.16" y="59.6" width="0.8" height="20.1" rx="0.4"/><rect class="fp-fcap" x="24.26" y="78.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="26.56" y="81.7">3</text><rect class="fp-slot" x="36.12" y="59.6" width="0.8" height="20.1" rx="0.4"/><rect class="fp-fcap" x="34.22" y="78.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="36.52" y="81.7">4</text><rect class="fp-slot" x="46.08" y="59.6" width="0.8" height="20.1" rx="0.4"/><rect class="fp-fcap" x="44.18" y="78.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="46.48" y="81.7">5</text><rect class="fp-slot" x="56.04" y="59.6" width="0.8" height="20.1" rx="0.4"/><rect class="fp-fcap" x="54.14" y="78.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="56.44" y="81.7">6</text><rect class="fp-slot" x="66.01" y="59.6" width="0.8" height="20.1" rx="0.4"/><rect class="fp-fcap" x="64.11" y="78.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="66.41" y="81.7">7</text><rect class="fp-slot" x="75.97" y="59.6" width="0.8" height="20.1" rx="0.4"/><rect class="fp-fcap" x="74.07" y="78.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="76.37" y="81.7">8</text><rect class="fp-slot" x="89.1" y="59.6" width="0.8" height="20.1" rx="0.4"/><rect class="fp-fcap" x="87.2" y="78.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="89.5" y="81.7">Master</text></svg></oav-controller>
+    </div>
+    <div class="stage-foot">
+      <p class="stage-meta"><b>Play AKAI MIDImix on screen</b> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=akai-midimix">Full screen ↗</a> <a href="../../packages/midi/profiles/akai-midimix.json">Raw JSON ↗</a> <a href="../../controllers/">All controllers</a></p>
+    </div>
+    <p class="hint js-only">Drag knobs and faders · tap pads and keys · or plug the real one in and press Connect. Nothing is sent anywhere unless you add a MIDI out.</p>
+    <noscript><p class="noscript">This is a live, playable controller: turn on JavaScript to play it. The complete MIDI map is in the table below.</p></noscript>
+  </section>
+
+  <!-- ═════ the full MIDI implementation ═════ -->
+  <section class="sec" id="midi-map" aria-labelledby="midi-map-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">MIDI implementation</p>
+      <h2 id="midi-map-title">Every control of AKAI MIDImix and the message it sends</h2>
+      <p class="sec-lede">Generated from the profile file, so it is the same table the on-screen controller plays. Channels are 1–16; numbers are real MIDI numbers.</p>
+    </header>
+    <div class="table-scroll" role="region" aria-label="MIDI implementation of AKAI MIDImix" tabindex="0">
+        <table>
+          <caption>MIDI implementation of AKAI MIDImix</caption>
+          <thead><tr><th scope="col">Control</th><th scope="col">Type</th><th scope="col">Message</th><th scope="col">Ch</th><th scope="col">Number</th><th scope="col">Signal</th><th scope="col">LED feedback</th><th scope="col">Verified</th></tr></thead>
+          <tbody>
+          <tr>
+            <th scope="row">1 <code class="cid">k1</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">16</td>
+            <td><code>midi/midimix/k1</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">2 <code class="cid">k2</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">20</td>
+            <td><code>midi/midimix/k2</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">3 <code class="cid">k3</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">24</td>
+            <td><code>midi/midimix/k3</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">4 <code class="cid">k4</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">28</td>
+            <td><code>midi/midimix/k4</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">5 <code class="cid">k5</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">46</td>
+            <td><code>midi/midimix/k5</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">6 <code class="cid">k6</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">50</td>
+            <td><code>midi/midimix/k6</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">7 <code class="cid">k7</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">54</td>
+            <td><code>midi/midimix/k7</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">8 <code class="cid">k8</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">58</td>
+            <td><code>midi/midimix/k8</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">9 <code class="cid">k9</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">17</td>
+            <td><code>midi/midimix/k9</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">10 <code class="cid">k10</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">21</td>
+            <td><code>midi/midimix/k10</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">11 <code class="cid">k11</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">25</td>
+            <td><code>midi/midimix/k11</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">12 <code class="cid">k12</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">29</td>
+            <td><code>midi/midimix/k12</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">13 <code class="cid">k13</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">47</td>
+            <td><code>midi/midimix/k13</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">14 <code class="cid">k14</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">51</td>
+            <td><code>midi/midimix/k14</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">15 <code class="cid">k15</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">55</td>
+            <td><code>midi/midimix/k15</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">16 <code class="cid">k16</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">59</td>
+            <td><code>midi/midimix/k16</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">17 <code class="cid">k17</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">18</td>
+            <td><code>midi/midimix/k17</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">18 <code class="cid">k18</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">22</td>
+            <td><code>midi/midimix/k18</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">19 <code class="cid">k19</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">26</td>
+            <td><code>midi/midimix/k19</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">20 <code class="cid">k20</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">30</td>
+            <td><code>midi/midimix/k20</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">21 <code class="cid">k21</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">48</td>
+            <td><code>midi/midimix/k21</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">22 <code class="cid">k22</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">52</td>
+            <td><code>midi/midimix/k22</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">23 <code class="cid">k23</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">56</td>
+            <td><code>midi/midimix/k23</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">24 <code class="cid">k24</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">60</td>
+            <td><code>midi/midimix/k24</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Mute <code class="cid">mute1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">1 · C#-1</td>
+            <td><code>midi/midimix/mute1</code></td>
+            <td>note 1 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Mute <code class="cid">mute2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">4 · E-1</td>
+            <td><code>midi/midimix/mute2</code></td>
+            <td>note 4 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Mute <code class="cid">mute3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">7 · G-1</td>
+            <td><code>midi/midimix/mute3</code></td>
+            <td>note 7 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Mute <code class="cid">mute4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">10 · A#-1</td>
+            <td><code>midi/midimix/mute4</code></td>
+            <td>note 10 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Mute <code class="cid">mute5</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">13 · C#0</td>
+            <td><code>midi/midimix/mute5</code></td>
+            <td>note 13 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Mute <code class="cid">mute6</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">16 · E0</td>
+            <td><code>midi/midimix/mute6</code></td>
+            <td>note 16 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Mute <code class="cid">mute7</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">19 · G0</td>
+            <td><code>midi/midimix/mute7</code></td>
+            <td>note 19 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Mute <code class="cid">mute8</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">22 · A#0</td>
+            <td><code>midi/midimix/mute8</code></td>
+            <td>note 22 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Rec <code class="cid">rec1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">3 · D#-1</td>
+            <td><code>midi/midimix/rec1</code></td>
+            <td>note 3 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Rec <code class="cid">rec2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">6 · F#-1</td>
+            <td><code>midi/midimix/rec2</code></td>
+            <td>note 6 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Rec <code class="cid">rec3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">9 · A-1</td>
+            <td><code>midi/midimix/rec3</code></td>
+            <td>note 9 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Rec <code class="cid">rec4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">12 · C0</td>
+            <td><code>midi/midimix/rec4</code></td>
+            <td>note 12 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Rec <code class="cid">rec5</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">15 · D#0</td>
+            <td><code>midi/midimix/rec5</code></td>
+            <td>note 15 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Rec <code class="cid">rec6</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">18 · F#0</td>
+            <td><code>midi/midimix/rec6</code></td>
+            <td>note 18 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Rec <code class="cid">rec7</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">21 · A0</td>
+            <td><code>midi/midimix/rec7</code></td>
+            <td>note 21 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Rec <code class="cid">rec8</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">24 · C1</td>
+            <td><code>midi/midimix/rec8</code></td>
+            <td>note 24 · on 127 / off 0</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">1 <code class="cid">f1</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">19</td>
+            <td><code>midi/midimix/f1</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">2 <code class="cid">f2</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">23</td>
+            <td><code>midi/midimix/f2</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">3 <code class="cid">f3</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">27</td>
+            <td><code>midi/midimix/f3</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">4 <code class="cid">f4</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">31</td>
+            <td><code>midi/midimix/f4</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">5 <code class="cid">f5</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">49</td>
+            <td><code>midi/midimix/f5</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">6 <code class="cid">f6</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">53</td>
+            <td><code>midi/midimix/f6</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">7 <code class="cid">f7</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">57</td>
+            <td><code>midi/midimix/f7</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">8 <code class="cid">f8</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">61</td>
+            <td><code>midi/midimix/f8</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Master <code class="cid">master</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">62</td>
+            <td><code>midi/midimix/master</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Bank ◀ <code class="cid">bankleft</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">25 · C#1</td>
+            <td><code>midi/midimix/bankleft</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Bank ▶ <code class="cid">bankright</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">26 · D1</td>
+            <td><code>midi/midimix/bankright</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Solo <code class="cid">solo</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">27 · D#1</td>
+            <td><code>midi/midimix/solo</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          </tbody>
+        </table>
+        </div>
+    
+    <div class="spec-grid">
+      <div>
+        <h3>Sources</h3>
+        <ul class="sources"><li><span class="src-kind">manufacturer</span> <a href="https://cdn.inmusicbrands.com/akai/attachments/MIDIMIX/MIDImix-UserGuide-v1.0.pdf" rel="noopener">MIDImix User Guide v1.0 (AKAI)</a><span class="src-note">layout: 24 knobs (3 per channel), 8 mute buttons (amber-backlit; hold Solo to make them solo buttons), 8 record-arm buttons (red-backlit), 8 + 1 master faders, Bank Left / Right, Solo, Send All; Ableton Live control surface and port name "MIDI Mix"; 23.9 × 20.1 cm. It prints no MIDI numbers (the MIDImix Editor holds them).</span></li><li><span class="src-kind">community</span> <a href="https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/MIDI_Mix/MIDI_Mix.py" rel="noopener">Ableton Live 12 MIDI Remote Script MIDI_Mix (decompiled; non-official)</a><span class="src-note">all on channel 1: knob rows CC 16 20 24 28 46 50 54 58 / +1 / +2 (the bottom row is pan), faders CC 19 23 27 31 49 53 57 61, master CC 62; mute notes 1 4 … 22, solo (Solo held) 2 5 … 23, rec arm 3 6 … 24; bank left 25, bank right 26, solo 27; LEDs note-on 127 / 0</span></li><li><span class="src-kind">community</span> <a href="https://github.com/Ardour/ardour/blob/master/share/midi_maps/AKAI_MIDIMix_Normal_Mode.map" rel="noopener">Ardour AKAI_MIDIMix_Normal_Mode.map and AKAI_MIDIMix_EQ_Mode.map (non-official)</a><span class="src-note">agree with the Ableton script: faders 19 … 61, master 62, mute / solo / rec notes 1–24, bank 25 / 26, solo 27, knobs 16–18 … 58–60 (EQ map), channel 1</span></li></ul>
+        
+      </div>
+      <div>
+        <h3>Notes</h3><p class="raw-note">The factory mapping (what the MIDImix Editor calls the default), channel 1. AKAI's own documents print no numbers, so every number here comes from Ableton's shipped MIDI_Mix script and Ardour's maps, which agree. Holding Solo turns the Mute row into solo buttons sending notes 2, 5 … 23 — a layer the faceplate cannot show, so those notes are not modelled (they still arrive as midi/ch/1/note/&lt;n&gt;). Send All re-sends every knob and fader position and has no message of its own. LED feedback: mute (amber) and rec-arm (red) buttons, note-on 127 / 0, lit while held.</p>
+        <h3>Port names it recognises</h3>
+        <dl class="ports"><div><dt>matches</dt><dd><code>/midi\s*mix/i</code></dd></div></dl>
+      </div>
+      <div>
+        <h3>Signals</h3>
+        <p>Every control publishes <code>midi/midimix/&lt;control&gt;</code> (0..1), plus <code>/raw</code>; pads add <code>/hit</code>, encoders <code>/delta</code>, keys <code>/on</code> <code>/off</code> and <code>n&lt;note&gt;</code>; the last control touched is <code>midi/midimix/last</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════ use it ═════ -->
+  <section class="sec" id="use" aria-labelledby="use-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Use it</p>
+      <h2 id="use-title">Use AKAI MIDImix in your own work</h2>
+    </header>
+    <ol class="snips">
+      <li class="snip"><h3>Embed it with one line</h3><p>No import map, no build step. Change <code>layout</code>, add <code>hardware="ask"</code> for a Connect button.</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-element">Copy</button></div><pre id="snip-element"><code><span class="tt">&lt;script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;<span class="tt">&lt;/script</span>&gt;
+<span class="tt">&lt;oav-controller</span> profile=<span class="ts">"akai-midimix"</span> readout&gt;<span class="tt">&lt;/oav-controller</span>&gt;</code></pre></div></li>
+      <li class="snip"><h3>Or as an iframe</h3><p>For places that only take an iframe. Every event arrives as a <code>postMessage</code>.</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-iframe">Copy</button></div><pre id="snip-iframe"><code><span class="tt">&lt;iframe</span> src=<span class="ts">"https://openaudiovisual.com/embed/controller/?profile=akai-midimix&amp;readout"</span>
+        width=<span class="ts">"720"</span> height=<span class="ts">"627"</span> style=<span class="ts">"border:0;max-width:100%"</span> allow=<span class="ts">"midi"</span>
+        title=<span class="ts">"AKAI MIDImix"</span>&gt;<span class="tt">&lt;/iframe</span>&gt;
+<span class="tt">&lt;script</span>&gt;
+  <span class="tc">// every control the visitor plays arrives here</span>
+  addEventListener(<span class="ts">'message'</span>, (e) =&gt; {
+    <span class="tk">if</span> (e.data?.source !== <span class="ts">'openav'</span> || e.data.type !== <span class="ts">'control'</span>) <span class="tk">return</span>;
+    console.log(e.data.detail.signal, e.data.detail.value);
+  });
+<span class="tt">&lt;/script</span>&gt;</code></pre></div></li>
+      <li class="snip"><h3>Send it to Ableton, TouchDesigner or Resolume</h3><p>What you play on screen leaves as real MIDI on the IAC bus (macOS) or a loopMIDI port (Windows). The steps are on the <a href="../../controllers/#embed">catalog page</a>.</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-daw">Copy</button></div><pre id="snip-daw"><code><span class="tc">&lt;!-- what you play on this controller → the IAC bus (macOS) → Ableton, TouchDesigner, Resolume --&gt;</span>
+<span class="tt">&lt;script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;<span class="tt">&lt;/script</span>&gt;
+<span class="tt">&lt;oav-controller</span> profile=<span class="ts">"akai-midimix"</span> midi-out=<span class="ts">"IAC"</span> readout&gt;<span class="tt">&lt;/oav-controller</span>&gt;
+<span class="tc">&lt;!-- Windows: midi-out="loopMIDI" · let the visitor pick a port: midi-out="ask" --&gt;</span></code></pre></div><p class="note">macOS: Audio MIDI Setup → MIDI Studio → IAC Driver → “Device is online”. Windows: install loopMIDI and add a port; use <code>midi-out="loopMIDI"</code>.</p></li>
+    </ol>
+    <div class="p5-block" id="p5">
+      <h3>In p5.js, with one line</h3>
+      <p>The one-line injection names knobs, faders and pads by their order in this profile, the order of the table above. Add <code>?profile=akai-midimix</code> to make the on-screen controller this one; a real AKAI MIDImix is recognised by its port name.</p>
+      <div class="term"><div class="term-bar"><span>javascript</span><button type="button" class="copy" data-copy="snip-p5">Copy</button></div><pre id="snip-p5"><code>document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js?profile=akai-midimix'</span> }));</code></pre></div>
+      <div class="table-scroll" role="region" aria-label="In p5.js, with one line" tabindex="0">
+      <table class="p5">
+        <thead><tr><th scope="col">In your sketch</th><th scope="col">Control</th><th scope="col">Message</th></tr></thead>
+        <tbody>
+        <tr><th scope="row"><code>knob1</code></th><td>1 <code class="cid">k1</code></td><td>CC 16 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob2</code></th><td>2 <code class="cid">k2</code></td><td>CC 20 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob3</code></th><td>3 <code class="cid">k3</code></td><td>CC 24 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob4</code></th><td>4 <code class="cid">k4</code></td><td>CC 28 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob5</code></th><td>5 <code class="cid">k5</code></td><td>CC 46 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob6</code></th><td>6 <code class="cid">k6</code></td><td>CC 50 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob7</code></th><td>7 <code class="cid">k7</code></td><td>CC 54 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob8</code></th><td>8 <code class="cid">k8</code></td><td>CC 58 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob(9)</code></th><td>9 <code class="cid">k9</code></td><td>CC 17 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob(10)</code></th><td>10 <code class="cid">k10</code></td><td>CC 21 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob(11)</code></th><td>11 <code class="cid">k11</code></td><td>CC 25 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob(12)</code></th><td>12 <code class="cid">k12</code></td><td>CC 29 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob(13)</code></th><td>13 <code class="cid">k13</code></td><td>CC 47 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob(14)</code></th><td>14 <code class="cid">k14</code></td><td>CC 51 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob(15)</code></th><td>15 <code class="cid">k15</code></td><td>CC 55 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob(16)</code></th><td>16 <code class="cid">k16</code></td><td>CC 59 · Ch 1</td></tr>
+        <tr><td colspan="3">… and 8 more, up to <code>knob(24)</code>, in the same order</td></tr>
+        <tr><th scope="row"><code>fader1</code></th><td>1 <code class="cid">f1</code></td><td>CC 19 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader2</code></th><td>2 <code class="cid">f2</code></td><td>CC 23 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader3</code></th><td>3 <code class="cid">f3</code></td><td>CC 27 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader4</code></th><td>4 <code class="cid">f4</code></td><td>CC 31 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader5</code></th><td>5 <code class="cid">f5</code></td><td>CC 49 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader6</code></th><td>6 <code class="cid">f6</code></td><td>CC 53 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader7</code></th><td>7 <code class="cid">f7</code></td><td>CC 57 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader8</code></th><td>8 <code class="cid">f8</code></td><td>CC 61 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader(9)</code></th><td>Master <code class="cid">master</code></td><td>CC 62 · Ch 1</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="term"><div class="term-bar"><span>p5.js sketch</span><button type="button" class="copy" data-copy="snip-p5-sketch">Copy</button></div><pre id="snip-p5-sketch"><code><span class="tk">function</span> draw() {
+  background(knob1 * 255);   <span class="tc">// 1 · CC 16</span>
+  circle(width / 2, height / 2, 50 + knob2 * 300);   <span class="tc">// 2 · CC 20</span>
+}</code></pre></div>
+      <p class="note">Encoders, buttons, wheels and strips are not numbered: read them as <code>midi.cc[number]</code> in the table above, or react in <code>controlChange(cc, value, ch)</code>.</p>
+      
+      <p><a class="more" href="../../docs/#p5">The whole p5.js page →</a></p>
+    </div>
+  </section>
+
+  <!-- ═════ around it ═════ -->
+  <section class="sec" id="related" aria-labelledby="related-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Around this controller</p>
+      <h2 id="related-title">Related controllers</h2>
+    </header>
+    <ul class="rel" aria-label="Related controllers">
+      <li><a href="../akai-apc-mini-mk2/">AKAI APC mini mk2</a><span>AKAI Professional · 64 pads · 9 faders · 17 buttons</span></li>
+      <li><a href="../akai-lpd8/">AKAI LPD8 (mk2)</a><span>AKAI Professional · 8 pads · 8 knobs</span></li>
+      <li><a href="../akai-mpk-mini-mk3/">AKAI MPK mini mk3</a><span>AKAI Professional · 8 pads · 25 keys · 8 knobs · 2 wheels</span></li>
+      <li><a href="../korg-nanokontrol2/">Korg nanoKONTROL2</a><span>KORG · 8 knobs · 8 faders · 35 buttons</span></li>
+      <li><a href="../novation-launch-control-xl-mk2/">Novation Launch Control XL (MK2)</a><span>Novation · 24 knobs · 8 faders · 24 buttons</span></li>
+      <li><a href="../behringer-x-touch-mini/">Behringer X-TOUCH MINI</a><span>Behringer · 8 encoders · 1 fader · 24 buttons</span></li>
+    </ul>
+    <nav class="step" aria-label="Neighbouring controllers">
+      <a rel="prev" href="../akai-apc-mini-mk2/"><small>← Previous</small>AKAI APC mini mk2</a>
+      <a class="back" href="../../controllers/">Back to all controllers</a>
+      <a rel="next" href="../akai-mpk-mini-mk3/"><small>Next →</small>AKAI MPK mini mk3</a>
+    </nav>
+  </section>
+
+  <!-- ═════ wrong data? ═════ -->
+  <section class="sec" id="report" aria-labelledby="report-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">GitHub</p>
+      <h2 id="report-title">Is something in this data wrong?</h2>
+      <p class="sec-lede">Every number on this page comes from one JSON file. If it disagrees with your unit or the manual, tell us which firmware you checked and we fix the file.</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?title=Controller%20data%3A%20AKAI%20MIDImix%20(akai-midimix)">Report it on GitHub ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/profiles/akai-midimix.json">The profile file on GitHub ↗</a></li>
+      <li><a href="../../packages/midi/profiles/akai-midimix.json">Raw JSON</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../webtoe/">WebToe</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"akai-midimix"}</script>
+<script type="module" src="../../assets/controllers/detail.js?v=1b4606c"></script>
+</body>
+</html>

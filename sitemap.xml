@@ -12,18 +12,330 @@
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/"/>
   </url>
+  <!-- controllers: written by tools/build-controllers.mjs -->
   <url>
     <loc>https://openaudiovisual.com/controllers/</loc>
+    <lastmod>2026-10-13</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/controllers/</loc>
+    <lastmod>2026-10-13</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/"/>
   </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/akai-lpd8/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/akai-lpd8/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/akai-lpd8/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/akai-lpd8/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/akai-lpd8/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/akai-lpd8/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/akai-lpd8/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/akai-lpd8/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/akai-apc-mini-mk2/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/akai-apc-mini-mk2/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/akai-apc-mini-mk2/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/akai-apc-mini-mk2/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/akai-apc-mini-mk2/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/akai-apc-mini-mk2/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/akai-apc-mini-mk2/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/akai-apc-mini-mk2/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/akai-midimix/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/akai-midimix/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/akai-midimix/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/akai-midimix/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/akai-midimix/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/akai-midimix/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/akai-midimix/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/akai-midimix/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/akai-mpk-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/akai-mpk-mini-mk3/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/akai-mpk-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/arturia-minilab3/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/arturia-minilab3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/arturia-minilab3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/arturia-minilab3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/arturia-minilab3/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/arturia-minilab3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/arturia-minilab3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/arturia-minilab3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/arturia-keystep37/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/arturia-keystep37/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/arturia-keystep37/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/arturia-keystep37/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/arturia-keystep37/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/arturia-keystep37/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/arturia-keystep37/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/arturia-keystep37/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/arturia-beatstep/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/arturia-beatstep/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/arturia-beatstep/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/arturia-beatstep/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/arturia-beatstep/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/arturia-beatstep/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/arturia-beatstep/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/arturia-beatstep/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/behringer-x-touch-mini/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/behringer-x-touch-mini/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/behringer-x-touch-mini/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/behringer-x-touch-mini/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/behringer-x-touch-mini/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/behringer-x-touch-mini/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/behringer-x-touch-mini/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/behringer-x-touch-mini/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/korg-nanokontrol2/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/korg-nanokontrol2/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/korg-nanokontrol2/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/korg-nanokontrol2/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/korg-nanokontrol2/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/korg-nanokontrol2/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/korg-nanokontrol2/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/korg-nanokontrol2/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/korg-nanokey2/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/korg-nanokey2/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/korg-nanokey2/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/korg-nanokey2/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/korg-nanokey2/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/korg-nanokey2/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/korg-nanokey2/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/korg-nanokey2/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/novation-launchpad-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/novation-launchpad-mini-mk3/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/novation-launchpad-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/novation-launch-control-xl-mk2/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/novation-launch-control-xl-mk2/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/novation-launch-control-xl-mk2/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/novation-launch-control-xl-3/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/novation-launch-control-xl-3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/novation-launch-control-xl-3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/novation-launch-control-xl-3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/novation-launch-control-xl-3/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/novation-launch-control-xl-3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/novation-launch-control-xl-3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/novation-launch-control-xl-3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/novation-launchkey-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/novation-launchkey-mini-mk3/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/novation-launchkey-mini-mk3/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/odd-ball/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/odd-ball/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/odd-ball/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/odd-ball/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/odd-ball/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/odd-ball/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/odd-ball/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/odd-ball/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/teenage-engineering-op-1-field/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/teenage-engineering-op-1-field/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/teenage-engineering-op-1-field/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/generic-8k8p/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-8k8p/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-8k8p/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-8k8p/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/generic-8k8p/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-8k8p/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-8k8p/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-8k8p/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/generic-8f/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-8f/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-8f/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-8f/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/generic-8f/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-8f/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-8f/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-8f/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/generic-16p/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-16p/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-16p/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-16p/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/generic-16p/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-16p/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-16p/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-16p/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/generic-keys25/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-keys25/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-keys25/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-keys25/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/generic-keys25/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-keys25/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-keys25/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-keys25/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/generic-keys49/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-keys49/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-keys49/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-keys49/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/generic-keys49/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-keys49/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-keys49/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-keys49/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/controllers/generic-keys61/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-keys61/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-keys61/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-keys61/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/controllers/generic-keys61/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/generic-keys61/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/generic-keys61/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/generic-keys61/"/>
+  </url>
+  <!-- /controllers -->
   <url>
     <loc>https://openaudiovisual.com/docs/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/"/>
