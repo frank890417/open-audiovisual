@@ -29,8 +29,8 @@ let _nextId = 1;
 export class Mapper {
   /**
    * @param {object} deps
-   * @param {import('../core/src/signals.js?v=b55db04').Signals} deps.signals
-   * @param {import('../core/src/params.js?v=b55db04').Params} deps.params
+   * @param {import('../core/src/signals.js?v=b43116d').Signals} deps.signals
+   * @param {import('../core/src/params.js?v=b43116d').Params} deps.params
    * @param {string} [deps.profile='default'] localStorage namespace
    * @param {() => void} [deps.onChange] routes changed (UI refresh)
    * @param {(route: object, sig: string) => void} [deps.onLearn]
@@ -163,4 +163,4 @@ export class Mapper {
   dispose() { this._unsub?.(); }
 }
 
-export { LearnWizard } from './wizard.js?v=b55db04';
+export { LearnWizard } from './wizard.js?v=b43116d';
