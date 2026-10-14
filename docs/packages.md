@@ -394,7 +394,9 @@ Phones · the phone/iPad app and the show-side adapter.
 | `PhoneSensors` | `new PhoneSensors({ set, send }, { onKnock, onSample, notify })` · `start()` (from a tap) · `stop()` · `calibrate()` · `setCamera(on)` · `denied` |
 | `localSensors` | `localSensors(signals, { prefix = 'phone/local/', alias = 'any' })` → `PhoneSensors` |
 | `attachTouchPad` | `attachTouchPad(el, io, { onMove, onEnd })` |
-| `@openav/remote/host` | `mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, controllers })` → host · `mountJoinCard(parent, host)` |
+| `@openav/remote/host` | `mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, mode, controllers })` → host · `mountJoinCard(parent, host)` (URL, QR code, status) |
+| `@openav/remote/relay-pick` | `pickRelay({ hostname, search, declared, storage })` → `{ mode: 'local'\|'public'\|'custom'\|'off', url, room, shared }` · `isLocalHost(h)` · `PUBLIC_RELAY` · `phoneUrl({ base, room, relay })` |
+| `@openav/remote/qr` | `qrSvg(text, { ecc = 'M', margin = 2, scale })` → an `<svg>` string · `qrMatrix(text, { ecc })` → `{ version, size, mask, rows }` (byte mode, versions 1–10) |
 
 See [Phones, relay & surfaces](remote.md).
 

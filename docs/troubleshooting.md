@@ -20,10 +20,26 @@ runs a monitor behind TLS passes the address itself, `new MonitorFeed({ url: 'ws
 
 ## The phone join card says "relay offline"
 
-The phone relay lives inside `serve.js` (`/relay`). Static hosting (GitHub Pages,
-openaudiovisual.com) has no relay, so examples 08 and 09 cannot reach phones
-there. Run the show from `node serve.js` on a machine on the same network as the
-phones.
+On your own machine the phone relay lives inside `serve.js` (`/relay`). So the
+card says "relay offline" when the page was opened from a file, or from a server that
+is not `node serve.js`: run the show with `node serve.js` and open it from there.
+
+On a static host (openaudiovisual.com, GitHub Pages) the show uses the **public
+relay** instead and the card reads `relay ok · … · public relay` with a QR code.
+If it says `can't reach the relay (wss://remote.cheyuwu.com/relay) — retrying`:
+
+- the network blocks WebSockets (some school and office Wi-Fi does): try a phone
+  hotspot, or run `node serve.js` on a laptop on the same network as the phones;
+- the public relay is busy or down: it limits each address to 24 connections and
+  30 new connections a minute, which a whole classroom behind one router can hit.
+  Run your own (`node packages/relay/server.js`) and open the show with
+  `?relay=wss://your.host/relay`;
+- `?relay=off` is in the URL, which turns the remote off (the card is not drawn).
+
+The phone opens the link in the QR code, which carries the room and the relay.
+If the phone says it is connected but nothing moves, check that both show the same
+`#room` and that the computer's page was not reloaded into a new room (the room is
+kept per browser, so another browser or a private window gets a different one).
 
 ## No MIDI devices appear
 

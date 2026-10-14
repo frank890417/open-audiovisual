@@ -14,7 +14,15 @@ npm run monitor          # node packages/monitor/server.js
 
 ## 手機加入卡片顯示「relay offline」
 
-手機中繼住在 `serve.js` 裡（`/relay`）。靜態主機（GitHub Pages、openaudiovisual.com）沒有中繼，所以範例 08 和 09 在那裡連不到手機。請在跟手機同一個網路的電腦上，用 `node serve.js` 跑演出。
+在你自己的電腦上，手機中繼住在 `serve.js` 裡（`/relay`）。所以頁面如果是從檔案、或從不是 `node serve.js` 的伺服器打開的，卡片就會寫「relay offline」：請用 `node serve.js` 跑，再從那裡打開。
+
+在靜態主機（openaudiovisual.com、GitHub Pages）上，演出改用**公開中繼**，卡片會寫 `relay ok · … · public relay`，並附 QR code。如果寫的是 `can't reach the relay (wss://remote.cheyuwu.com/relay) — retrying`：
+
+- 網路擋了 WebSocket（有些學校和辦公室的 Wi-Fi 會）：換成手機熱點，或在跟手機同一個網路的筆電上跑 `node serve.js`；
+- 公開中繼忙線或停了：它限制每個位址同時 24 條連線、每分鐘 30 次新連線，一整間教室躲在同一台路由器後面可能就撞到。自己跑一個（`node packages/relay/server.js`），打開演出時加上 `?relay=wss://your.host/relay`；
+- 網址裡有 `?relay=off`，遙控被關掉了（這時不會畫卡片）。
+
+手機要開的是 QR code 裡的連結，它帶著房間和中繼。手機顯示已連線卻沒反應的話，檢查兩邊的 `#room` 是不是同一個，以及電腦上的頁面有沒有重新載入成新房間（房間是每個瀏覽器各記一個，換瀏覽器或用無痕視窗會得到另一間）。
 
 ## 看不到任何 MIDI 裝置
 

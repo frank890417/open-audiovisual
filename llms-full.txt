@@ -193,8 +193,8 @@ descends from [libmapper](http://libmapper.github.io/)'s signal-namespace resear
 
 ## Phone / iPad remote
 
-`node serve.js`, open an example that declares `modules: { remote: true }`, type the URL on the join card into your
-phone (same wifi). Tabs: 感測 (tilt · accel · touch · knock · light), 琴鍵 (one row landscape / two stacked rows
+`node serve.js`, open an example that declares `modules: { remote: true }`, scan the QR code on the join card (or type its URL; same wifi).
+On [openaudiovisual.com](https://openaudiovisual.com/examples/08-remote-surface/) there is no `serve.js`: the example uses the public relay and a random room, and the QR code works the same. Tabs: 感測 (tilt · accel · touch · knock · light), 琴鍵 (one row landscape / two stacked rows
 portrait), 控制台 (faders, knobs, XY, pads… generated from the World's `params`, or from a layout JSON).
 
 | package | role |
@@ -2593,8 +2593,29 @@ connect them to params.
 4. Open that URL on a phone on the same network. The card counts connected
    phones.
 
-The relay only exists where `serve.js` runs. On a static host such as
-openaudiovisual.com the card says *relay offline*.
+The card also draws a **QR code** of that URL: point a phone's camera at it.
+
+### On openaudiovisual.com (and any static host)
+
+There is no `serve.js` there, so no relay of its own. A show that declares
+`modules: { remote: true }` uses the **public relay** (`wss://remote.cheyuwu.com/relay`)
+instead, and the card says so (`public relay`). Open
+[example 08](https://openaudiovisual.com/examples/08-remote-surface/) on the computer, scan the QR code
+with the phone, and the phone's faders move the show.
+
+- **The room is random** (`show-` plus 10 characters), made once and kept in this
+  browser's `localStorage`, so a reload keeps the same room and two visitors never
+  share one. A room name declared in the show (`room: 'main'`) is ignored here for
+  that reason; `?room=class-7` in the page URL always wins, which is how a
+  classroom puts everyone in one show.
+- `?relay=wss://your.host/relay` uses a relay of your own (the phone link carries
+  it along); `?relay=off` turns the remote off for that page.
+- The choice is `pickRelay()` in `@openav/remote/relay-pick`: this machine or its
+  LAN (`localhost`, `192.168.x.x`, `*.local`…) keeps the same-origin `/relay` and
+  works exactly as before; any other host gets the public relay.
+- The public relay has no accounts and no authentication. The room name is the
+  only secret, so treat the QR code like one: whoever scans it can drive that show.
+  Don't put it on a slide you share.
 
 ## The phone app
 
@@ -2620,7 +2641,7 @@ room, the phone's id) and tabs:
 | `tab=sense\|keys\|control\|midi` | the tab to open first |
 | `surface=<url>` | a layout JSON for the control tab |
 | `meta=<url>` | a JSON file with a `params` array; the control tab becomes `autoSurface(params)` |
-| `relay=ws://…` | a relay somewhere else than the page's own server |
+| `relay=ws://…` | a relay somewhere else than the page's own server (the QR code on the join card carries it when the show uses the public relay) |
 
 Each phone keeps a short random id in `localStorage`; it is the `<id>` in
 `phone/<id>/…`.
@@ -2655,7 +2676,8 @@ and open the tunnel's address on the phone; the relay follows the page's origin
 | `auto` | `{}` | options for `autoSurface` (`pairs`, `meters`, `style`, `perPage`, `smooth`, `title`) |
 | `surface` | `world.surface` | an explicit layout (wins over the world's) |
 | `feedbackHz` | `10` | how often param values are echoed |
-| `url` | same-origin `/relay` | the relay's WebSocket URL |
+| `relay` | chosen by `pickRelay()` | `'wss://host/relay'` for a relay of your own, `false` for no remote. Without it: same-origin `/relay` on this machine or LAN, the public relay on a static host. `?relay=` in the page URL overrides it |
+| `url` | the same | alias of `relay` (and the option `mountRemoteHost()` takes: it appends `role`, `room` and `id`) |
 
 Routes for sensors are written at author time with the `phone/any/…` alias,
 because nobody knows a stranger's device id in advance (example 08):
@@ -2847,7 +2869,8 @@ button.onclick = async () => { await own.start(); if (own.denied) alert('motion 
 
 The relay has no authentication. Anyone on the same network who knows the room
 name can join as a controller and move your params. For a show, use a closed
-network or a room name nobody will guess.
+network or a room name nobody will guess. On the public relay the room is random
+and lives in the QR code; it is a convenience for trying a show, not a lock.
 
 ---
 
@@ -3461,7 +3484,9 @@ Phones · the phone/iPad app and the show-side adapter.
 | `PhoneSensors` | `new PhoneSensors({ set, send }, { onKnock, onSample, notify })` · `start()` (from a tap) · `stop()` · `calibrate()` · `setCamera(on)` · `denied` |
 | `localSensors` | `localSensors(signals, { prefix = 'phone/local/', alias = 'any' })` → `PhoneSensors` |
 | `attachTouchPad` | `attachTouchPad(el, io, { onMove, onEnd })` |
-| `@openav/remote/host` | `mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, controllers })` → host · `mountJoinCard(parent, host)` |
+| `@openav/remote/host` | `mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, mode, controllers })` → host · `mountJoinCard(parent, host)` (URL, QR code, status) |
+| `@openav/remote/relay-pick` | `pickRelay({ hostname, search, declared, storage })` → `{ mode: 'local'\|'public'\|'custom'\|'off', url, room, shared }` · `isLocalHost(h)` · `PUBLIC_RELAY` · `phoneUrl({ base, room, relay })` |
+| `@openav/remote/qr` | `qrSvg(text, { ecc = 'M', margin = 2, scale })` → an `<svg>` string · `qrMatrix(text, { ecc })` → `{ version, size, mask, rows }` (byte mode, versions 1–10) |
 
 See [Phones, relay & surfaces](remote.md).
 
@@ -3664,10 +3689,26 @@ runs a monitor behind TLS passes the address itself, `new MonitorFeed({ url: 'ws
 
 ## The phone join card says "relay offline"
 
-The phone relay lives inside `serve.js` (`/relay`). Static hosting (GitHub Pages,
-openaudiovisual.com) has no relay, so examples 08 and 09 cannot reach phones
-there. Run the show from `node serve.js` on a machine on the same network as the
-phones.
+On your own machine the phone relay lives inside `serve.js` (`/relay`). So the
+card says "relay offline" when the page was opened from a file, or from a server that
+is not `node serve.js`: run the show with `node serve.js` and open it from there.
+
+On a static host (openaudiovisual.com, GitHub Pages) the show uses the **public
+relay** instead and the card reads `relay ok · … · public relay` with a QR code.
+If it says `can't reach the relay (wss://remote.cheyuwu.com/relay) — retrying`:
+
+- the network blocks WebSockets (some school and office Wi-Fi does): try a phone
+  hotspot, or run `node serve.js` on a laptop on the same network as the phones;
+- the public relay is busy or down: it limits each address to 24 connections and
+  30 new connections a minute, which a whole classroom behind one router can hit.
+  Run your own (`node packages/relay/server.js`) and open the show with
+  `?relay=wss://your.host/relay`;
+- `?relay=off` is in the URL, which turns the remote off (the card is not drawn).
+
+The phone opens the link in the QR code, which carries the room and the relay.
+If the phone says it is connected but nothing moves, check that both show the same
+`#room` and that the computer's page was not reloaded into a new room (the room is
+kept per browser, so another browser or a private window gets a different one).
 
 ## No MIDI devices appear
 
@@ -3853,7 +3894,7 @@ before it was generalized.)
 - **Audience-device input** — *classic controller shipped* (`@openav/relay`, `@openav/surface`,
   `@openav/remote`): a zero-dep room server, `phone/{id}/*` sensors, a TouchOSC-style widget set,
   layout JSON, `autoSurface(params)`, feedback to the phone. Next:
-  - [ ] QR code on the join card (needs a small zero-dep encoder)
+  - [x] QR code on the join card (`@openav/remote/qr`, a ~150-line zero-dep encoder) — and on static hosts the show uses the public relay with a random room, so the examples on openaudiovisual.com take phones too
   - [ ] *experimental* surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like `crowd/tilt/mean`)
   - [ ] mic as a phone sensor; per-device profiles; layout editor / import-export UI
 - **Score & Director** — *shipped* (`@openav/score`): cuts as segment lengths, derived versions, cues, `hold`, segment modules that fail alone, the prompter's acts, score → MIDI markers. Next:

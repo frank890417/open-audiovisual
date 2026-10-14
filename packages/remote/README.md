@@ -14,7 +14,13 @@ publishes over the relay → a small generic panel.
 **Show**: `createShow({ modules: { remote: true } })` (or `{ room, auto: {pairs, meters}, surface }`). It joins as
 runner, pipes phone signals into `signals` (also as `phone/any/…`), publishes `world.surface` or
 `autoSurface(world.params)`, adds the routes to the Mapper, echoes param values back as feedback, and shows a
-join card (URL + connected phones). See `examples/08-remote-surface`.
+join card (a QR code, the URL, connected phones). See `examples/08-remote-surface`.
+
+**Relay choice** (`relay-pick.js`, pure, tested): on `node serve.js` (localhost, LAN, `*.local`) the show uses its own
+`/relay` and the room you declared; on a static host (openaudiovisual.com) it uses the public relay
+`wss://remote.cheyuwu.com/relay` with a random room kept in `localStorage`, so the online examples take phones too.
+`?relay=wss://…` picks another relay, `?relay=off` none, `?room=` always wins. `qr.js` is the zero-dep QR encoder the
+card uses (byte mode, v1–v10; checked against a reference encoder in `tests/qr.test.js`).
 
 **The show page itself on a phone** (no second device): `localSensors(signals)` → the phone's own tilt / accel /
 rotation / knock as `phone/local/…` (mirrored to `phone/any/…`), same thresholds as the 感測 tab; call `.start()` from a

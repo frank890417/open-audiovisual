@@ -119,7 +119,7 @@ if (typeof DeviceMotionEvent !== 'undefined' && 'ontouchstart' in window) {
   const { localSensors } = await import('@openav/remote');
   const own = localSensors(show.signals);
   const b = Object.assign(document.createElement('button'), { textContent: '📱 this phone' });
-  b.style.cssText = 'position:fixed;left:12px;bottom:12px;z-index:20;padding:10px 14px;border-radius:10px;border:1px solid #2a3348;background:#12151c;color:#e8ecf4;font:600 14px system-ui';
+  b.style.cssText = 'position:absolute;right:12px;top:12px;z-index:20;padding:10px 14px;border-radius:10px;border:1px solid #2a3348;background:#12151c;color:#e8ecf4;font:600 14px system-ui';
   b.onclick = async () => { await own.start(); if (!own.denied) b.remove(); };
-  document.body.appendChild(b);
+  document.querySelector('.oav-stage').appendChild(b);   // on the stage, not over the panel (upright phones scroll the panel under it)
 }

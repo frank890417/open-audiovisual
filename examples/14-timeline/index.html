@@ -31,10 +31,10 @@
   /* the stage and the timeline stacked in one column; the desk stays on the right (phones: everything stacks) */
   #left { display: flex; flex-direction: column; min-width: 0; height: 100vh; }
   #stage { flex: 1; min-height: 0; }
-  @media (max-width: 760px) {
-    html body { grid-template-columns: minmax(0, 1fr); height: auto; overflow: auto; }
+  @media (max-width: 820px) and (orientation: portrait) {   /* the same rule as packages/show/layout.js STACK_QUERY */
+    html body { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; height: auto; overflow: auto; }
     html body #left { height: auto; }
-    html body #stage { flex: none; height: 54vh; min-height: 300px; }
+    html body #stage { flex: none; height: 58vh; height: 58svh; min-height: 300px; }
     html body .oav-side { height: auto; }
     html body .oav-desk { overflow: visible; }
   }

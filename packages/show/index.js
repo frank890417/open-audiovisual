@@ -9,7 +9,7 @@
 //     timeline: { total, automation, scenes },
 //     routes: [{ source: 'audio/kick/env', target: 'pump' }],
 //     modules: { keys: { base: 48 }, sound: true, audio: 'mic', hands: true, pose: true, leap: true,
-//                remote: { room: 'main' },     // phones/iPads become controllers (packages/remote)
+//                remote: { room: 'main' },     // phones/iPads become controllers (packages/remote); on a static host: the public relay, a random room, a QR code
 //                midi: { controllers: { profile: 'arturia-minilab3' } } },  // on-screen MIDI controller (packages/midi)
 //     artwork: { title: '3D Cylinder Earth', artist: 'Che-Yu Wu 吳哲宇', year: 2020 },
 //     // a show with structure: segments as lengths, modules that perform them (packages/score)
@@ -39,20 +39,7 @@ import { Stage } from '../stage/index.js?v=02fdc94';
 import { mountConsole } from '../console/index.js?v=02fdc94';
 import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=02fdc94';
 import { track } from '../midi/telemetry.js?v=02fdc94';
-
-const SHELL_CSS = `
-  body { margin: 0; background: #000; height: 100vh; display: grid;
-    grid-template-columns: minmax(0, 1fr) 340px; overflow: hidden; }
-  .oav-stage { position: relative; min-width: 0; overflow: hidden; }
-  .oav-side { height: 100vh; display: flex; flex-direction: column; min-width: 0; }
-  .oav-keys-slot { padding: 8px 10px; background: #0d1017; border-bottom: 1px solid #1c2334; overflow-x: auto; flex: none; }
-  .oav-desk { flex: 1; overflow-y: auto; min-height: 0; }
-  .oav-hint { position: absolute; left: 12px; bottom: 10px; color: #445; z-index: 2;
-    font: 11px ui-monospace, monospace; pointer-events: none; }
-  .oav-credit { position: absolute; right: 12px; bottom: 10px; color: #556; z-index: 2;
-    font: 10px ui-monospace, monospace; text-align: right; pointer-events: none; }
-  .oav-credit b { color: #8892a8; }
-`;
+import { SHELL_CSS } from './layout.js?v=02fdc94';
 
 export async function createShow({
   world = null,
@@ -209,11 +196,18 @@ export async function createShow({
   let remote = null;
   if (modules.remote) {
     const { mountRemoteHost, mountJoinCard } = await import('../remote/host.js?v=02fdc94');
+    const { pickRelay } = await import('../remote/relay-pick.js?v=02fdc94');
     const o = typeof modules.remote === 'object' ? modules.remote : {};
-    const room = o.room || new URLSearchParams(location.search).get('room') || 'default';
-    remote = mountRemoteHost({ signals, params, mapper, world: allWorlds[0], ...o, room, controllers });
-    mountJoinCard(stageEl, remote);
-    remote.connect();
+    // which relay and room: this machine's own on `node serve.js`; the public relay with a random room on a static host
+    // (openaudiovisual.com); ?relay=wss://… or ?relay=off override; ?room=… always wins
+    let storage = null; try { storage = localStorage; } catch { /* blocked */ }
+    const pick = pickRelay({ hostname: location.hostname, search: location.search, declared: o, storage });
+    if (pick.mode !== 'off') {
+      const { relay: _r, ...rest } = o;
+      remote = mountRemoteHost({ signals, params, mapper, world: allWorlds[0], ...rest, room: pick.room, url: pick.url, mode: pick.mode, controllers });
+      mountJoinCard(stageEl, remote);
+      remote.connect();
+    }
   }
 
   // ---------- L4 audio branch ----------

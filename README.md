@@ -149,8 +149,8 @@ descends from [libmapper](http://libmapper.github.io/)'s signal-namespace resear
 
 ## Phone / iPad remote
 
-`node serve.js`, open an example that declares `modules: { remote: true }`, type the URL on the join card into your
-phone (same wifi). Tabs: 感測 (tilt · accel · touch · knock · light), 琴鍵 (one row landscape / two stacked rows
+`node serve.js`, open an example that declares `modules: { remote: true }`, scan the QR code on the join card (or type its URL; same wifi).
+On [openaudiovisual.com](https://openaudiovisual.com/examples/08-remote-surface/) there is no `serve.js`: the example uses the public relay and a random room, and the QR code works the same. Tabs: 感測 (tilt · accel · touch · knock · light), 琴鍵 (one row landscape / two stacked rows
 portrait), 控制台 (faders, knobs, XY, pads… generated from the World's `params`, or from a layout JSON).
 
 | package | role |

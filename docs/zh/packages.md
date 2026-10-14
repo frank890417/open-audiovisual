@@ -363,7 +363,9 @@ routes.forEach((r) => mapper.addRoute(r));
 | `PhoneSensors` | `new PhoneSensors({ set, send }, { onKnock, onSample, notify })` · `start()`（要從觸控事件呼叫）· `stop()` · `calibrate()` · `setCamera(on)` · `denied` |
 | `localSensors` | `localSensors(signals, { prefix = 'phone/local/', alias = 'any' })` → `PhoneSensors` |
 | `attachTouchPad` | `attachTouchPad(el, io, { onMove, onEnd })` |
-| `@openav/remote/host` | `mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, controllers })` → host 物件 · `mountJoinCard(parent, host)` |
+| `@openav/remote/host` | `mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, mode, controllers })` → host 物件 · `mountJoinCard(parent, host)`（網址、QR code、狀態） |
+| `@openav/remote/relay-pick` | `pickRelay({ hostname, search, declared, storage })` → `{ mode: 'local'\|'public'\|'custom'\|'off', url, room, shared }` · `isLocalHost(h)` · `PUBLIC_RELAY` · `phoneUrl({ base, room, relay })` |
+| `@openav/remote/qr` | `qrSvg(text, { ecc = 'M', margin = 2, scale })` → `<svg>` 字串 · `qrMatrix(text, { ecc })` → `{ version, size, mask, rows }`（byte 模式，版本 1–10） |
 
 見[手機、中繼與控制面板](remote.md)。
 

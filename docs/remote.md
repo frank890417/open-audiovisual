@@ -25,8 +25,29 @@ connect them to params.
 4. Open that URL on a phone on the same network. The card counts connected
    phones.
 
-The relay only exists where `serve.js` runs. On a static host such as
-openaudiovisual.com the card says *relay offline*.
+The card also draws a **QR code** of that URL: point a phone's camera at it.
+
+### On openaudiovisual.com (and any static host)
+
+There is no `serve.js` there, so no relay of its own. A show that declares
+`modules: { remote: true }` uses the **public relay** (`wss://remote.cheyuwu.com/relay`)
+instead, and the card says so (`public relay`). Open
+[example 08](https://openaudiovisual.com/examples/08-remote-surface/) on the computer, scan the QR code
+with the phone, and the phone's faders move the show.
+
+- **The room is random** (`show-` plus 10 characters), made once and kept in this
+  browser's `localStorage`, so a reload keeps the same room and two visitors never
+  share one. A room name declared in the show (`room: 'main'`) is ignored here for
+  that reason; `?room=class-7` in the page URL always wins, which is how a
+  classroom puts everyone in one show.
+- `?relay=wss://your.host/relay` uses a relay of your own (the phone link carries
+  it along); `?relay=off` turns the remote off for that page.
+- The choice is `pickRelay()` in `@openav/remote/relay-pick`: this machine or its
+  LAN (`localhost`, `192.168.x.x`, `*.local`…) keeps the same-origin `/relay` and
+  works exactly as before; any other host gets the public relay.
+- The public relay has no accounts and no authentication. The room name is the
+  only secret, so treat the QR code like one: whoever scans it can drive that show.
+  Don't put it on a slide you share.
 
 ## The phone app
 
@@ -52,7 +73,7 @@ room, the phone's id) and tabs:
 | `tab=sense\|keys\|control\|midi` | the tab to open first |
 | `surface=<url>` | a layout JSON for the control tab |
 | `meta=<url>` | a JSON file with a `params` array; the control tab becomes `autoSurface(params)` |
-| `relay=ws://…` | a relay somewhere else than the page's own server |
+| `relay=ws://…` | a relay somewhere else than the page's own server (the QR code on the join card carries it when the show uses the public relay) |
 
 Each phone keeps a short random id in `localStorage`; it is the `<id>` in
 `phone/<id>/…`.
@@ -87,7 +108,8 @@ and open the tunnel's address on the phone; the relay follows the page's origin
 | `auto` | `{}` | options for `autoSurface` (`pairs`, `meters`, `style`, `perPage`, `smooth`, `title`) |
 | `surface` | `world.surface` | an explicit layout (wins over the world's) |
 | `feedbackHz` | `10` | how often param values are echoed |
-| `url` | same-origin `/relay` | the relay's WebSocket URL |
+| `relay` | chosen by `pickRelay()` | `'wss://host/relay'` for a relay of your own, `false` for no remote. Without it: same-origin `/relay` on this machine or LAN, the public relay on a static host. `?relay=` in the page URL overrides it |
+| `url` | the same | alias of `relay` (and the option `mountRemoteHost()` takes: it appends `role`, `room` and `id`) |
 
 Routes for sensors are written at author time with the `phone/any/…` alias,
 because nobody knows a stranger's device id in advance (example 08):
@@ -279,4 +301,5 @@ button.onclick = async () => { await own.start(); if (own.denied) alert('motion 
 
 The relay has no authentication. Anyone on the same network who knows the room
 name can join as a controller and move your params. For a show, use a closed
-network or a room name nobody will guess.
+network or a room name nobody will guess. On the public relay the room is random
+and lives in the QR code; it is a convenience for trying a show, not a lock.

@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=02fdc94">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=02fdc94">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -1576,7 +1576,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=02fdc94"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2216,8 +2216,28 @@ at <code>/__info</code>) and the room: <code>http://&lt;lan-ip&gt;:8080/packages
 <li>Open that URL on a phone on the same network. The card counts connected
 phones.</li>
 </ol>
-<p>The relay only exists where <code>serve.js</code> runs. On a static host such as
-openaudiovisual.com the card says <em>relay offline</em>.</p>
+<p>The card also draws a <strong>QR code</strong> of that URL: point a phone's camera at it.</p>
+<h4 id="phones-on-openaudiovisual-com-and-any-static-host">On openaudiovisual.com (and any static host)<a class="anchor" href="#phones-on-openaudiovisual-com-and-any-static-host" aria-label="Link to this section">#</a></h4>
+<p>There is no <code>serve.js</code> there, so no relay of its own. A show that declares
+<code>modules: { remote: true }</code> uses the <strong>public relay</strong> (<code>wss://remote.cheyuwu.com/relay</code>)
+instead, and the card says so (<code>public relay</code>). Open
+<a href="../examples/08-remote-surface/">example 08</a> on the computer, scan the QR code
+with the phone, and the phone's faders move the show.</p>
+<ul>
+<li><strong>The room is random</strong> (<code>show-</code> plus 10 characters), made once and kept in this
+browser's <code>localStorage</code>, so a reload keeps the same room and two visitors never
+share one. A room name declared in the show (<code>room: 'main'</code>) is ignored here for
+that reason; <code>?room=class-7</code> in the page URL always wins, which is how a
+classroom puts everyone in one show.</li>
+<li><code>?relay=wss://your.host/relay</code> uses a relay of your own (the phone link carries
+it along); <code>?relay=off</code> turns the remote off for that page.</li>
+<li>The choice is <code>pickRelay()</code> in <code>@openav/remote/relay-pick</code>: this machine or its
+LAN (<code>localhost</code>, <code>192.168.x.x</code>, <code>*.local</code>…) keeps the same-origin <code>/relay</code> and
+works exactly as before; any other host gets the public relay.</li>
+<li>The public relay has no accounts and no authentication. The room name is the
+only secret, so treat the QR code like one: whoever scans it can drive that show.
+Don't put it on a slide you share.</li>
+</ul>
 <h3 id="phones-the-phone-app">The phone app<a class="anchor" href="#phones-the-phone-app" aria-label="Link to this section">#</a></h3>
 <p><code>/packages/remote/</code> is a single page with a status header (connection, latency,
 room, the phone's id) and tabs:</p>
@@ -2242,7 +2262,7 @@ finally a small generic panel so the page is never blank.</li>
 <tr><td><code>tab=sense|keys|control|midi</code></td><td>the tab to open first</td></tr>
 <tr><td><code>surface=&lt;url&gt;</code></td><td>a layout JSON for the control tab</td></tr>
 <tr><td><code>meta=&lt;url&gt;</code></td><td>a JSON file with a <code>params</code> array; the control tab becomes <code>autoSurface(params)</code></td></tr>
-<tr><td><code>relay=ws://…</code></td><td>a relay somewhere else than the page's own server</td></tr>
+<tr><td><code>relay=ws://…</code></td><td>a relay somewhere else than the page's own server (the QR code on the join card carries it when the show uses the public relay)</td></tr>
 </tbody>
 </table></div>
 <p>Each phone keeps a short random id in <code>localStorage</code>; it is the <code>&lt;id&gt;</code> in
@@ -2275,7 +2295,8 @@ follow the timeline and other controllers.</li>
 <tr><td><code>auto</code></td><td><code>{}</code></td><td>options for <code>autoSurface</code> (<code>pairs</code>, <code>meters</code>, <code>style</code>, <code>perPage</code>, <code>smooth</code>, <code>title</code>)</td></tr>
 <tr><td><code>surface</code></td><td><code>world.surface</code></td><td>an explicit layout (wins over the world's)</td></tr>
 <tr><td><code>feedbackHz</code></td><td><code>10</code></td><td>how often param values are echoed</td></tr>
-<tr><td><code>url</code></td><td>same-origin <code>/relay</code></td><td>the relay's WebSocket URL</td></tr>
+<tr><td><code>relay</code></td><td>chosen by <code>pickRelay()</code></td><td><code>'wss://host/relay'</code> for a relay of your own, <code>false</code> for no remote. Without it: same-origin <code>/relay</code> on this machine or LAN, the public relay on a static host. <code>?relay=</code> in the page URL overrides it</td></tr>
+<tr><td><code>url</code></td><td>the same</td><td>alias of <code>relay</code> (and the option <code>mountRemoteHost()</code> takes: it appends <code>role</code>, <code>room</code> and <code>id</code>)</td></tr>
 </tbody>
 </table></div>
 <p>Routes for sensors are written at author time with the <code>phone/any/…</code> alias,
@@ -2431,7 +2452,8 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <h3 id="phones-security">Security<a class="anchor" href="#phones-security" aria-label="Link to this section">#</a></h3>
 <p>The relay has no authentication. Anyone on the same network who knows the room
 name can join as a controller and move your params. For a show, use a closed
-network or a room name nobody will guess.</p>
+network or a room name nobody will guess. On the public relay the room is random
+and lives in the QR code; it is a convenience for trying a show, not a lock.</p>
 </section>
 
 <section class="chapter" data-chapter="signals" aria-labelledby="signals">
@@ -2664,7 +2686,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=02fdc94"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -2978,7 +3000,9 @@ routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
 <tr><td><code>PhoneSensors</code></td><td><code>new PhoneSensors({ set, send }, { onKnock, onSample, notify })</code> · <code>start()</code> (from a tap) · <code>stop()</code> · <code>calibrate()</code> · <code>setCamera(on)</code> · <code>denied</code></td></tr>
 <tr><td><code>localSensors</code></td><td><code>localSensors(signals, { prefix = 'phone/local/', alias = 'any' })</code> → <code>PhoneSensors</code></td></tr>
 <tr><td><code>attachTouchPad</code></td><td><code>attachTouchPad(el, io, { onMove, onEnd })</code></td></tr>
-<tr><td><code>@openav/remote/host</code></td><td><code>mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, controllers })</code> → host · <code>mountJoinCard(parent, host)</code></td></tr>
+<tr><td><code>@openav/remote/host</code></td><td><code>mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, mode, controllers })</code> → host · <code>mountJoinCard(parent, host)</code> (URL, QR code, status)</td></tr>
+<tr><td><code>@openav/remote/relay-pick</code></td><td><code>pickRelay({ hostname, search, declared, storage })</code> → <code>{ mode: 'local'|'public'|'custom'|'off', url, room, shared }</code> · <code>isLocalHost(h)</code> · <code>PUBLIC_RELAY</code> · <code>phoneUrl({ base, room, relay })</code></td></tr>
+<tr><td><code>@openav/remote/qr</code></td><td><code>qrSvg(text, { ecc = 'M', margin = 2, scale })</code> → an <code>&lt;svg&gt;</code> string · <code>qrMatrix(text, { ecc })</code> → <code>{ version, size, mask, rows }</code> (byte mode, versions 1–10)</td></tr>
 </tbody>
 </table></div>
 <p>See <a href="#phones">Phones, relay &amp; surfaces</a>.</p>
@@ -3144,10 +3168,25 @@ the monitor:</p>
 browser blocks <code>ws://</code> there, and a published site has no relay beside it. A show that
 runs a monitor behind TLS passes the address itself, <code>new MonitorFeed({ url: 'wss://…' })</code>.</p>
 <h3 id="troubleshooting-the-phone-join-card-says-relay-offline">The phone join card says "relay offline"<a class="anchor" href="#troubleshooting-the-phone-join-card-says-relay-offline" aria-label="Link to this section">#</a></h3>
-<p>The phone relay lives inside <code>serve.js</code> (<code>/relay</code>). Static hosting (GitHub Pages,
-openaudiovisual.com) has no relay, so examples 08 and 09 cannot reach phones
-there. Run the show from <code>node serve.js</code> on a machine on the same network as the
-phones.</p>
+<p>On your own machine the phone relay lives inside <code>serve.js</code> (<code>/relay</code>). So the
+card says "relay offline" when the page was opened from a file, or from a server that
+is not <code>node serve.js</code>: run the show with <code>node serve.js</code> and open it from there.</p>
+<p>On a static host (openaudiovisual.com, GitHub Pages) the show uses the <strong>public
+relay</strong> instead and the card reads <code>relay ok · … · public relay</code> with a QR code.
+If it says <code>can't reach the relay (wss://remote.cheyuwu.com/relay) — retrying</code>:</p>
+<ul>
+<li>the network blocks WebSockets (some school and office Wi-Fi does): try a phone
+hotspot, or run <code>node serve.js</code> on a laptop on the same network as the phones;</li>
+<li>the public relay is busy or down: it limits each address to 24 connections and
+30 new connections a minute, which a whole classroom behind one router can hit.
+Run your own (<code>node packages/relay/server.js</code>) and open the show with
+<code>?relay=wss://your.host/relay</code>;</li>
+<li><code>?relay=off</code> is in the URL, which turns the remote off (the card is not drawn).</li>
+</ul>
+<p>The phone opens the link in the QR code, which carries the room and the relay.
+If the phone says it is connected but nothing moves, check that both show the same
+<code>#room</code> and that the computer's page was not reloaded into a new room (the room is
+kept per browser, so another browser or a private window gets a different one).</p>
 <h3 id="troubleshooting-no-midi-devices-appear">No MIDI devices appear<a class="anchor" href="#troubleshooting-no-midi-devices-appear" aria-label="Link to this section">#</a></h3>
 <ul>
 <li>Use Chrome or Edge. Safari has no Web MIDI.</li>
@@ -3294,7 +3333,7 @@ before it was generalized.)</p>
 <code>@openav/remote</code>): a zero-dep room server, <code>phone/{id}/*</code> sensors, a TouchOSC-style widget set,
 layout JSON, <code>autoSurface(params)</code>, feedback to the phone. Next:
 <ul class="tasks">
-<li class="task"><input type="checkbox" disabled aria-label="not done yet"> QR code on the join card (needs a small zero-dep encoder)</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="done"> QR code on the join card (<code>@openav/remote/qr</code>, a ~150-line zero-dep encoder) — and on static hosts the show uses the public relay with a random room, so the examples on openaudiovisual.com take phones too</li>
 <li class="task"><input type="checkbox" disabled aria-label="not done yet"> <em>experimental</em> surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like <code>crowd/tilt/mean</code>)</li>
 <li class="task"><input type="checkbox" disabled aria-label="not done yet"> mic as a phone sensor; per-device profiles; layout editor / import-export UI</li>
 </ul></li>
@@ -3358,7 +3397,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=02fdc94"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

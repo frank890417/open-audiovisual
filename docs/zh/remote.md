@@ -17,7 +17,16 @@
 3. 舞台左上角的加入卡片會顯示手機該打開的網址，裡面已經填好演出電腦的區域網路位址（頁面會到 `/__info` 向 `serve.js` 詢問）和房間：`http://<lan-ip>:8080/packages/remote/?room=default`。
 4. 用同一個網路裡的手機打開那個網址。卡片會顯示目前連上幾支手機。
 
-有跑 `serve.js` 的地方才有中繼。在 openaudiovisual.com 這類靜態主機上，卡片會顯示 *relay offline*（中繼離線）。
+卡片上同時畫出這個網址的 **QR code**，用手機相機對著掃就行。
+
+### 在 openaudiovisual.com（以及任何靜態主機）
+
+那裡沒有 `serve.js`，也就沒有自己的中繼。宣告了 `modules: { remote: true }` 的演出會改接**公開中繼**（`wss://remote.cheyuwu.com/relay`），卡片上會寫 `public relay`。在電腦上打開[範例 08](https://openaudiovisual.com/examples/08-remote-surface/)，用手機掃 QR code，手機上的推桿就能推動演出。
+
+- **房間是隨機的**（`show-` 加 10 個字元），第一次進來產生，記在這個瀏覽器的 `localStorage`，重新整理還是同一間，兩位訪客也不會撞進同一間。演出裡宣告的房間名（`room: 'main'`）在這裡會被忽略，原因就在這；網址上的 `?room=class-7` 永遠優先，教室裡要大家進同一場演出就用這個。
+- `?relay=wss://your.host/relay` 用你自己的中繼（手機連結會一併帶上）；`?relay=off` 把那一頁的遙控關掉。
+- 選哪個中繼由 `@openav/remote/relay-pick` 的 `pickRelay()` 決定：本機或區域網路（`localhost`、`192.168.x.x`、`*.local`…）照舊用同源的 `/relay`，行為完全不變；其他主機一律用公開中繼。
+- 公開中繼沒有帳號，也沒有身分驗證。房間名稱是唯一的祕密，所以 QR code 要當成祕密看待：掃到的人就能操控那場演出。不要把它放進會分享出去的簡報。
 
 ## 手機 app
 
@@ -58,7 +67,8 @@ iOS Safari 只把動作感測器和鏡頭開放給透過 `https://` 提供的頁
 | `auto` | `{}` | 傳給 `autoSurface` 的選項（`pairs`、`meters`、`style`、`perPage`、`smooth`、`title`） |
 | `surface` | `world.surface` | 指定的版面（比世界自帶的版面優先） |
 | `feedbackHz` | `10` | 每秒回送幾次參數值 |
-| `url` | 同源的 `/relay` | 中繼的 WebSocket 網址 |
+| `relay` | 由 `pickRelay()` 決定 | `'wss://host/relay'` 用你自己的中繼，`false` 不要遙控。沒設的話：本機或區域網路用同源 `/relay`，靜態主機用公開中繼。網址上的 `?relay=` 會蓋過它 |
+| `url` | 同上 | `relay` 的別名（也是 `mountRemoteHost()` 吃的選項：它會自己補上 `role`、`room`、`id`） |
 
 感測器的路由在寫作品時就寫好，用 `phone/any/…` 這個別名，因為沒人能事先知道別人手機的裝置 id（範例 08）：
 
@@ -204,4 +214,4 @@ button.onclick = async () => { await own.start(); if (own.denied) alert('motion 
 
 ## 安全性
 
-中繼沒有身分驗證。同一個網路裡，任何知道房間名稱的人，都能以 controller 身分加入，動你的參數。正式演出時，請用封閉的網路，或取一個沒人猜得到的房間名稱。
+中繼沒有身分驗證。同一個網路裡，任何知道房間名稱的人，都能以 controller 身分加入，動你的參數。正式演出時，請用封閉的網路，或取一個沒人猜得到的房間名稱。公開中繼上的房間是隨機的、寫在 QR code 裡，它方便你試玩，不是一把鎖。

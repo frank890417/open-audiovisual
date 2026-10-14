@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/#article","url":"https://openaudiovisual.com/zh/docs/","name":"文件｜open-audiovisual","description":"open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"open-audiovisual 使用手冊","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["簡介","快速開始","核心概念","架構","寫一個世界","輸入","映射","演出控制","總譜與導演","MIDI 控制器與嵌入","p5.js 一行接上","手機、中繼與控制面板","訊號一覽","套件一覽","給 AI 代理","實驗室整合（\"lab\" 欄位）","疑難排解","路線圖"],"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -1181,7 +1181,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=02fdc94"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1754,7 +1754,15 @@ Web MIDI，螢幕上的控制器和手機照樣能用。草圖自己寫了 Web M
 <li>舞台左上角的加入卡片會顯示手機該打開的網址，裡面已經填好演出電腦的區域網路位址（頁面會到 <code>/__info</code> 向 <code>serve.js</code> 詢問）和房間：<code>http://&lt;lan-ip&gt;:8080/packages/remote/?room=default</code>。</li>
 <li>用同一個網路裡的手機打開那個網址。卡片會顯示目前連上幾支手機。</li>
 </ol>
-<p>有跑 <code>serve.js</code> 的地方才有中繼。在 openaudiovisual.com 這類靜態主機上，卡片會顯示 <em>relay offline</em>（中繼離線）。</p>
+<p>卡片上同時畫出這個網址的 <strong>QR code</strong>，用手機相機對著掃就行。</p>
+<h4 id="phones-on-openaudiovisual-com-and-any-static-host">在 openaudiovisual.com（以及任何靜態主機）<a class="anchor" href="#phones-on-openaudiovisual-com-and-any-static-host" aria-label="這一節的連結">#</a></h4>
+<p>那裡沒有 <code>serve.js</code>，也就沒有自己的中繼。宣告了 <code>modules: { remote: true }</code> 的演出會改接<strong>公開中繼</strong>（<code>wss://remote.cheyuwu.com/relay</code>），卡片上會寫 <code>public relay</code>。在電腦上打開<a href="../../examples/08-remote-surface/">範例 08</a>，用手機掃 QR code，手機上的推桿就能推動演出。</p>
+<ul>
+<li><strong>房間是隨機的</strong>（<code>show-</code> 加 10 個字元），第一次進來產生，記在這個瀏覽器的 <code>localStorage</code>，重新整理還是同一間，兩位訪客也不會撞進同一間。演出裡宣告的房間名（<code>room: 'main'</code>）在這裡會被忽略，原因就在這；網址上的 <code>?room=class-7</code> 永遠優先，教室裡要大家進同一場演出就用這個。</li>
+<li><code>?relay=wss://your.host/relay</code> 用你自己的中繼（手機連結會一併帶上）；<code>?relay=off</code> 把那一頁的遙控關掉。</li>
+<li>選哪個中繼由 <code>@openav/remote/relay-pick</code> 的 <code>pickRelay()</code> 決定：本機或區域網路（<code>localhost</code>、<code>192.168.x.x</code>、<code>*.local</code>…）照舊用同源的 <code>/relay</code>，行為完全不變；其他主機一律用公開中繼。</li>
+<li>公開中繼沒有帳號，也沒有身分驗證。房間名稱是唯一的祕密，所以 QR code 要當成祕密看待：掃到的人就能操控那場演出。不要把它放進會分享出去的簡報。</li>
+</ul>
 <h3 id="phones-the-phone-app">手機 app<a class="anchor" href="#phones-the-phone-app" aria-label="這一節的連結">#</a></h3>
 <p><code>/packages/remote/</code> 是單一頁面，上方是狀態列（連線、延遲、房間、這支手機的 id），下面是幾個分頁：</p>
 <ul>
@@ -1792,7 +1800,8 @@ Web MIDI，螢幕上的控制器和手機照樣能用。草圖自己寫了 Web M
 <tr><td><code>auto</code></td><td><code>{}</code></td><td>傳給 <code>autoSurface</code> 的選項（<code>pairs</code>、<code>meters</code>、<code>style</code>、<code>perPage</code>、<code>smooth</code>、<code>title</code>）</td></tr>
 <tr><td><code>surface</code></td><td><code>world.surface</code></td><td>指定的版面（比世界自帶的版面優先）</td></tr>
 <tr><td><code>feedbackHz</code></td><td><code>10</code></td><td>每秒回送幾次參數值</td></tr>
-<tr><td><code>url</code></td><td>同源的 <code>/relay</code></td><td>中繼的 WebSocket 網址</td></tr>
+<tr><td><code>relay</code></td><td>由 <code>pickRelay()</code> 決定</td><td><code>'wss://host/relay'</code> 用你自己的中繼，<code>false</code> 不要遙控。沒設的話：本機或區域網路用同源 <code>/relay</code>，靜態主機用公開中繼。網址上的 <code>?relay=</code> 會蓋過它</td></tr>
+<tr><td><code>url</code></td><td>同上</td><td><code>relay</code> 的別名（也是 <code>mountRemoteHost()</code> 吃的選項：它會自己補上 <code>role</code>、<code>room</code>、<code>id</code>）</td></tr>
 </tbody>
 </table></div>
 <p>感測器的路由在寫作品時就寫好，用 <code>phone/any/…</code> 這個別名，因為沒人能事先知道別人手機的裝置 id（範例 08）：</p>
@@ -1903,7 +1912,7 @@ phone.send(<span class="ts">'midi/note/on'</span>, { note: 60 }, <span class="tk
 <span class="tk">const</span> own = localSensors(show.signals);
 button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await</span> own.start(); <span class="tk">if</span> (own.denied) alert(<span class="ts">'motion access denied'</span>); };</code></pre></div>
 <h3 id="phones-security">安全性<a class="anchor" href="#phones-security" aria-label="這一節的連結">#</a></h3>
-<p>中繼沒有身分驗證。同一個網路裡，任何知道房間名稱的人，都能以 controller 身分加入，動你的參數。正式演出時，請用封閉的網路，或取一個沒人猜得到的房間名稱。</p>
+<p>中繼沒有身分驗證。同一個網路裡，任何知道房間名稱的人，都能以 controller 身分加入，動你的參數。正式演出時，請用封閉的網路，或取一個沒人猜得到的房間名稱。公開中繼上的房間是隨機的、寫在 QR code 裡，它方便你試玩，不是一把鎖。</p>
 </section>
 
 <section class="chapter" data-chapter="signals" aria-labelledby="signals">
@@ -2104,7 +2113,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=02fdc94"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -2393,7 +2402,9 @@ routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
 <tr><td><code>PhoneSensors</code></td><td><code>new PhoneSensors({ set, send }, { onKnock, onSample, notify })</code> · <code>start()</code>（要從觸控事件呼叫）· <code>stop()</code> · <code>calibrate()</code> · <code>setCamera(on)</code> · <code>denied</code></td></tr>
 <tr><td><code>localSensors</code></td><td><code>localSensors(signals, { prefix = 'phone/local/', alias = 'any' })</code> → <code>PhoneSensors</code></td></tr>
 <tr><td><code>attachTouchPad</code></td><td><code>attachTouchPad(el, io, { onMove, onEnd })</code></td></tr>
-<tr><td><code>@openav/remote/host</code></td><td><code>mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, controllers })</code> → host 物件 · <code>mountJoinCard(parent, host)</code></td></tr>
+<tr><td><code>@openav/remote/host</code></td><td><code>mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, mode, controllers })</code> → host 物件 · <code>mountJoinCard(parent, host)</code>（網址、QR code、狀態）</td></tr>
+<tr><td><code>@openav/remote/relay-pick</code></td><td><code>pickRelay({ hostname, search, declared, storage })</code> → <code>{ mode: 'local'|'public'|'custom'|'off', url, room, shared }</code> · <code>isLocalHost(h)</code> · <code>PUBLIC_RELAY</code> · <code>phoneUrl({ base, room, relay })</code></td></tr>
+<tr><td><code>@openav/remote/qr</code></td><td><code>qrSvg(text, { ecc = 'M', margin = 2, scale })</code> → <code>&lt;svg&gt;</code> 字串 · <code>qrMatrix(text, { ecc })</code> → <code>{ version, size, mask, rows }</code>（byte 模式，版本 1–10）</td></tr>
 </tbody>
 </table></div>
 <p>見<a href="#phones">手機、中繼與控制面板</a>。</p>
@@ -2506,7 +2517,14 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">npm</span> run monitor          <span class="tc"># node packages/monitor/server.js</span></code></pre></div>
 <p>用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 <code>ws://</code>，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：<code>new MonitorFeed({ url: 'wss://…' })</code>。</p>
 <h3 id="troubleshooting-the-phone-join-card-says-relay-offline">手機加入卡片顯示「relay offline」<a class="anchor" href="#troubleshooting-the-phone-join-card-says-relay-offline" aria-label="這一節的連結">#</a></h3>
-<p>手機中繼住在 <code>serve.js</code> 裡（<code>/relay</code>）。靜態主機（GitHub Pages、openaudiovisual.com）沒有中繼，所以範例 08 和 09 在那裡連不到手機。請在跟手機同一個網路的電腦上，用 <code>node serve.js</code> 跑演出。</p>
+<p>在你自己的電腦上，手機中繼住在 <code>serve.js</code> 裡（<code>/relay</code>）。所以頁面如果是從檔案、或從不是 <code>node serve.js</code> 的伺服器打開的，卡片就會寫「relay offline」：請用 <code>node serve.js</code> 跑，再從那裡打開。</p>
+<p>在靜態主機（openaudiovisual.com、GitHub Pages）上，演出改用<strong>公開中繼</strong>，卡片會寫 <code>relay ok · … · public relay</code>，並附 QR code。如果寫的是 <code>can't reach the relay (wss://remote.cheyuwu.com/relay) — retrying</code>：</p>
+<ul>
+<li>網路擋了 WebSocket（有些學校和辦公室的 Wi-Fi 會）：換成手機熱點，或在跟手機同一個網路的筆電上跑 <code>node serve.js</code>；</li>
+<li>公開中繼忙線或停了：它限制每個位址同時 24 條連線、每分鐘 30 次新連線，一整間教室躲在同一台路由器後面可能就撞到。自己跑一個（<code>node packages/relay/server.js</code>），打開演出時加上 <code>?relay=wss://your.host/relay</code>；</li>
+<li>網址裡有 <code>?relay=off</code>，遙控被關掉了（這時不會畫卡片）。</li>
+</ul>
+<p>手機要開的是 QR code 裡的連結，它帶著房間和中繼。手機顯示已連線卻沒反應的話，檢查兩邊的 <code>#room</code> 是不是同一個，以及電腦上的頁面有沒有重新載入成新房間（房間是每個瀏覽器各記一個，換瀏覽器或用無痕視窗會得到另一間）。</p>
 <h3 id="troubleshooting-no-midi-devices-appear">看不到任何 MIDI 裝置<a class="anchor" href="#troubleshooting-no-midi-devices-appear" aria-label="這一節的連結">#</a></h3>
 <ul>
 <li>請用 Chrome 或 Edge。Safari 沒有 Web MIDI。</li>
@@ -2583,7 +2601,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <ul>
 <li><strong>觀眾裝置輸入</strong>：<em>經典控制器已經上線</em>（<code>@openav/relay</code>、<code>@openav/surface</code>、<code>@openav/remote</code>）：零相依的房間伺服器、<code>phone/{id}/*</code> 感測器、一組類似 TouchOSC 的控制元件、版面 JSON、<code>autoSurface(params)</code>、回饋到手機。接下來：
 <ul class="tasks">
-<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 加入卡片上的 QR code（需要一個小型、零相依的編碼器）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 加入卡片上的 QR code（<code>@openav/remote/qr</code>，約 150 行、零相依的編碼器）：在靜態主機上，演出改用公開中繼加隨機房間，所以 openaudiovisual.com 上的範例也能接手機</li>
 <li class="task"><input type="checkbox" disabled aria-label="尚未完成"> <em>實驗性的</em>控制面板：手勢／物理控制元件、多人共用的控制面板、觀眾模式（很多支手機 → 彙整成 <code>crowd/tilt/mean</code> 這類訊號）</li>
 <li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 麥克風當作手機感測器、每台裝置各自的設定檔、版面編輯器／匯入匯出介面</li>
 </ul></li>
@@ -2639,7 +2657,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=02fdc94"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

@@ -23,7 +23,7 @@ before it was generalized.)
 - **Audience-device input** — *classic controller shipped* (`@openav/relay`, `@openav/surface`,
   `@openav/remote`): a zero-dep room server, `phone/{id}/*` sensors, a TouchOSC-style widget set,
   layout JSON, `autoSurface(params)`, feedback to the phone. Next:
-  - [ ] QR code on the join card (needs a small zero-dep encoder)
+  - [x] QR code on the join card (`@openav/remote/qr`, a ~150-line zero-dep encoder) — and on static hosts the show uses the public relay with a random room, so the examples on openaudiovisual.com take phones too
   - [ ] *experimental* surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like `crowd/tilt/mean`)
   - [ ] mic as a phone sensor; per-device profiles; layout editor / import-export UI
 - **Score & Director** — *shipped* (`@openav/score`): cuts as segment lengths, derived versions, cues, `hold`, segment modules that fail alone, the prompter's acts, score → MIDI markers. Next:
