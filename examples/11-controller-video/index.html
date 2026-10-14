@@ -1,17 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- oav:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual · 11 controller video</title>
-<link rel="icon" href="data:,">
+<title>Controller video · open-audiovisual example</title>
+<meta name="description" content="The performance video without a camera: the controller you play, drawn live. Plays with MIDI controller · on-screen piano · QWERTY · a demo take.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/11-controller-video/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Controller video · open-audiovisual example">
+<meta property="og:description" content="The performance video without a camera: the controller you play, drawn live. Plays with MIDI controller · on-screen piano · QWERTY · a demo take.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/11-controller-video/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Controller video · open-audiovisual example">
+<meta name="twitter:description" content="The performance video without a camera: the controller you play, drawn live. Plays with MIDI controller · on-screen piano · QWERTY · a demo take.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/11-controller-video/#webpage","url":"https://openaudiovisual.com/examples/11-controller-video/","name":"Controller video · open-audiovisual example","description":"The performance video without a camera: the controller you play, drawn live. Plays with MIDI controller · on-screen piano · QWERTY · a demo take.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/11-controller-video/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/11-controller-video/#breadcrumb"}},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/11-controller-video/#code","name":"Controller video (open-audiovisual example 11)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/11-controller-video","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/11-controller-video/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Controller video","item":"https://openaudiovisual.com/examples/11-controller-video/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css?v=f77929d">
+<!-- /oav:head -->
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "../../packages/core/index.js?v=02fdc94",
-    "@openav/keys": "../../packages/keys/index.js?v=02fdc94",
-    "@openav/midi": "../../packages/midi/index.js?v=02fdc94",
-    "@openav/record": "../../packages/record/index.js?v=02fdc94"
+    "@openav/core": "../../packages/core/index.js?v=f77929d",
+    "@openav/keys": "../../packages/keys/index.js?v=f77929d",
+    "@openav/midi": "../../packages/midi/index.js?v=f77929d",
+    "@openav/record": "../../packages/record/index.js?v=f77929d"
   }
 }
 </script>
@@ -54,10 +81,38 @@
 </style>
 </head>
 <body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 11 · <a href="../../examples/#route-output">Take it out of the browser</a></span><span lang="zh-Hant">範例 11 · <a href="../../zh/examples/#route-output">輸出與留存</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Controller video</span><span lang="zh-Hant">控制器影片</span></h1>
+    <p class="g-teaches"><span lang="en">The performance video without a camera: the controller you play, drawn live.</span><span lang="zh-Hant">不用鏡頭的演出影片：作品下方即時畫出正在彈的 MIDI 控制器（MiniLab 3 或任何設定檔），重播的演奏也會動。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Play the piano or the QWERTY keys A to L: the controller drawn next to the work moves with them.</li><li>Press ▶ Demo take: a replayed take animates the panel exactly as the hands did.</li><li>Pick another device and a look (device colours, one accent, flat), then press ● Record.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>彈鋼琴或電腦鍵盤 A 到 L：畫在作品旁的控制器會跟著動。</li><li>按 ▶ Demo take：重播的演奏讓面板動起來，就和手彈的一樣。</li><li>換一台裝置、換一種外觀（device colours、one accent、flat），再按 ● Record。</li></ol>
+    <p class="g-row"><span lang="en"><b>Needs:</b> MIDI controller.</span><span lang="zh-Hant"><b>需要：</b>MIDI 控制器。</span>
+        <span lang="en">No hardware? Use On-screen piano · QWERTY keys · A demo take.</span><span lang="zh-Hant">沒有硬體？用螢幕鋼琴、電腦鍵盤、一段示範演奏。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/11-controller-video/main.js#L79"><code>main.js:79</code></a> <span lang="en">ControllerCanvas draws a controller profile; Arturia MiniLab 3 by default, any profile in the library.</span><span lang="zh-Hant">ControllerCanvas 畫出一份控制器設定檔；預設是 Arturia MiniLab 3，資料庫裡任何一台都行。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/11-controller-video/main.js#L98-L100"><code>main.js:98–100</code></a> <span lang="en">The panel goes into the bottom of the Compositor every frame.</span><span lang="zh-Hant">面板每一幀都被畫進 Compositor 的下半部。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/11-controller-video/main.js#L105-L107"><code>main.js:105–107</code></a> <span lang="en">The demo is a take: a recorded clip animates the panel like live hands.</span><span lang="zh-Hant">示範演奏是一份 take：錄好的片段讓面板動起來，就像現場的手。</span></li></ul>
+    <p class="g-row g-p5"><span lang="en"><b>Take this input into your own p5 sketch: one line.</b></span><span lang="zh-Hant"><b>把這個輸入帶進你自己的 p5 草圖：一行。</b></span> <span lang="en"><a href="../../examples/15-p5-one-line/">Example 15</a> · <a href="../../docs/#p5">Docs: p5.js in one line</a></span><span lang="zh-Hant"><a href="../../examples/15-p5-one-line/">範例 15</a> · <a href="../../zh/docs/#p5">文件：p5.js 一行接上</a></span></p>
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#packages-openav-record">@openav/record</a></span><span lang="zh-Hant"><a href="../../zh/docs/#packages-openav-record">@openav/record</a></span> · <span lang="en"><a href="../../docs/#controllers">MIDI controllers &amp; embedding</a></span><span lang="zh-Hant"><a href="../../zh/docs/#controllers">MIDI 控制器與嵌入</a></span></p>
+    <p class="g-next"><span lang="en">That was the last one.</span><span lang="zh-Hant">這是最後一個範例。</span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js?v=f77929d"></script>
+<!-- /oav:guide -->
 <main id="preview"><span id="frame-label"></span></main>
 <div id="keys"></div>
 <aside id="panel"></aside>
-<script type="module" src="./main.js?v=02fdc94"></script>
+<script type="module" src="./main.js?v=f77929d"></script>
 <noscript>A performance video without a camera: the work on top, the MIDI controller you are playing (Arturia MiniLab 3 and every other profile) drawn live below — keys, pads, knobs and faders as they move — in one vertical 1080×1920, 2.7K or 4K file.</noscript>
 </body>
 </html>

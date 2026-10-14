@@ -72,8 +72,44 @@ export default {
   },
   typeNames: { knob: '旋鈕', encoder: '無段旋鈕', fader: '推桿', pad: '打擊墊', button: '按鈕', keys: '琴鍵', wheel: '滾輪', strip: '觸控條' },
 
+  // 第 03 節：把控制器並排比較（數字全部從設定檔算出來，見 tools/controllers/page.mjs）
+  choose: {
+    eyebrow: '03 · 怎麼選',
+    title: '你彈的東西，要哪一台？',
+    lede: '這張表的數字都是從設定檔數出來的，不會跟各台的頁面對不上。按下你需要的，表裡就只留下有這個的機型。',
+    filterLabel: '我要',
+    filters: { all: '全部', keys: '琴鍵', pad: '打擊墊', fader: '推桿', knob: '旋鈕或無段旋鈕', led: 'LED 回饋' },
+    caption: '每一台上面有什麼，從設定檔數出來',
+    cols: { device: '控制器', keys: '琴鍵', pad: '打擊墊', knob: '旋鈕', encoder: '無段旋鈕', fader: '推桿', button: '按鈕', led: 'LED', unverified: '未確認', sources: '出處', good: '適合' },
+    yes: '有',
+    tags: { melody: '彈旋律', trigger: '打點觸發', params: '調很多參數', mix: '混音推桿' },
+    legend: '旋鈕送出的是絕對位置；無段旋鈕可以一直轉，送出的是一格一格的變化。橫線代表沒有。「未確認」是數字只是我們目前的判讀、還沒找到文件證實的控制項。',
+    tagRule: '「適合」是依控制項數量自動分的：有琴鍵 → 彈旋律；打擊墊 8 個以上 → 打點觸發；旋鈕加無段旋鈕 8 個以上 → 調很多參數；推桿 4 支以上 → 混音推桿。這是經驗法則，不是評測。',
+    led: {
+      title: 'LED 回饋',
+      text: 'LED 回饋是控制器自己的打擊墊和按鈕會亮燈。設定檔寫了這一項，就會註明哪個音符或 CC 讓哪個控制項亮、什麼數值是亮與滅。{total} 份設定檔裡有 {n} 份寫了：',
+      use: '接上其中一台的時候，控制項一變動，OAV 就把這些訊息送到它的輸出埠，裝置連上時也會先送一次，所以燈可以跟著畫面上發生的事一起亮。',
+      rest: '其餘 {m} 份還沒有 LED 訊息：OAV 不會讓它們亮燈，但每個控制項照樣可以彈、照樣送出各自的訊息。設定檔在每個控制項上可以加一項 <code>led</code>。',
+    },
+  },
+
+  // 找不到你那台：畫廊和每一台的頁面都有
+  request: {
+    title: '沒有你那台？',
+    text: '開一張 issue，寫廠牌型號、手上有沒有這台、手冊的連結。設定檔就是一個 JSON 檔，想自己寫的話，步驟在<a href="#model">加入你的控制器</a>。',
+    issue: '許願一台控制器',
+    contributing: '怎麼自己加',
+  },
+
+  // 沒有 Web MIDI 的瀏覽器，由頁面的 script 判斷後才顯示
+  noMidi: {
+    text: '這台裝置沒有 Web MIDI，接不了實體控制器，但可以直接用手指在螢幕上彈。要接你的控制器，請用電腦的 Chrome 或 Edge 開這一頁。',
+    ok: '知道了',
+    close: '關掉這則提示',
+  },
+
   specs: {
-    eyebrow: '03 · 規格表',
+    eyebrow: '04 · 規格表',
     title: '每一台都有自己的頁面',
     lede: '每台控制器一頁，附完整 MIDI 對照表、出處、嵌入碼，以及在 p5.js 裡各個旋鈕叫什麼名字。頁面在建置時直接從 JSON 檔產生，跟元件實際送出的訊息一定對得上。',
     indexCols: { device: '控制器', maker: '廠牌', controls: '面板上有', page: '頁面' },
@@ -110,7 +146,7 @@ export default {
   },
 
   embed: {
-    eyebrow: '04 · 嵌入',
+    eyebrow: '05 · 嵌入',
     title: '放進你的網頁',
     lede: '一行 HTML、一個 iframe，或一段 JavaScript 都可以。先選機型和選項，預覽和下面每一段程式碼會跟著換。',
     form: {
@@ -162,7 +198,7 @@ export default {
   },
 
   model: {
-    eyebrow: '05 · 自己建一台',
+    eyebrow: '06 · 自己建一台',
     title: '加入你的控制器',
     lede: '一台控制器就是一個 JSON 檔。手冊裡有 MIDI 實作表，就照著抄，數字會完全準確。手冊沒寫的，就在檔案裡註明是怎麼查到的。',
     steps: [
@@ -211,7 +247,8 @@ export default {
     channelWord: ['頻道 {list}', '頻道 {list}'],
     facts: { maker: '廠牌', controls: '控制項', messages: '訊息種類', channels: 'MIDI 頻道', led: 'LED 回饋', ledYes: '有，燈光由 MIDI 控制', ledNo: '不會送出', signals: '訊號', port: '埠名稱比對', portNone: '無：手動指定，再用學習模式', kind: '類型', kindDevice: '硬體裝置', kindGeneric: '通用版面' },
     play: { eyebrow: '彈奏', title: '在畫面上彈 {name}', hint: '拖曳旋鈕和推桿 · 點打擊墊和琴鍵 · 或接上真機按「接上」。除非你加了 MIDI 輸出，否則什麼都不會送出去。', full: '全螢幕', back: '全部控制器', noscript: '這是一台可以彈的控制器，打開 JavaScript 才能彈。完整的 MIDI 對照表在下面的表格裡。' },
-    spec: { eyebrow: 'MIDI 實作表', title: '{name} 每個控制項送出什麼', lede: '直接從設定檔產生，跟畫面上彈的是同一張表。頻道是 1–16，編號是真正的 MIDI 編號。', notesTitle: '個別控制項的說明' },
+    spec: { eyebrow: 'MIDI 實作表', title: '{name} 每個控制項送出什麼', lede: '直接從設定檔產生，跟畫面上彈的是同一張表。頻道是 1–16，編號是真正的 MIDI 編號。', notesTitle: '個別控制項的說明', ledYes: '這一台有 {n} 個控制項寫了 LED 回饋，上面表格的 LED 欄就是讓它亮的訊息。', ledNo: '這一台還沒有寫 LED 回饋，OAV 不會讓它的燈亮，但每個控制項照樣可以彈、照樣送出各自的訊息。' },
+    request: { eyebrow: '找不到', title: '沒有你那台？', text: '開一張 issue，寫廠牌型號、手上有沒有這台、手冊的連結。也可以自己寫設定檔，它就是一個 JSON 檔。', issue: '許願一台控制器', contributing: '怎麼自己加' },
     use: {
       eyebrow: '用起來',
       title: '把 {name} 用在你的作品裡',
@@ -235,7 +272,7 @@ export default {
       p5Sketch: 'p5.js 草稿',
       p5Docs: 'p5.js 完整說明',
     },
-    more: { eyebrow: '這台的周圍', title: '相關控制器', prev: '上一台', next: '下一台', back: '回到全部控制器', relatedLabel: '相關控制器', stepLabel: '相鄰的控制器' },
+    more: { eyebrow: '這台的周圍', title: '相關控制器', prev: '上一台', next: '下一台', back: '回到全部控制器', relatedLabel: '相關控制器', stepLabel: '相鄰的控制器', compare: '把 {name} 跟其他台比較：琴鍵、打擊墊、旋鈕、推桿、LED 回饋' },
     report: { title: '這台的資料有錯嗎？', text: '這一頁的每個數字都來自一個 JSON 檔。如果跟你的機器或手冊對不上，告訴我們你查的是哪個韌體版本，我們就改檔案。', issue: '到 GitHub 回報', issueTitle: '控制器資料：{name}（{id}）', file: 'GitHub 上的設定檔', raw: '原始 JSON' },
     ld: { dataset: '{name} MIDI 對照表', datasetDesc: 'open-audiovisual 收錄的 {name} 機器可讀 MIDI 實作表：面板配置、每個控制項的 MIDI 訊息、LED 回饋、埠名稱比對與引用出處，JSON 格式（MIT 授權）。', category: 'MIDI 控制器', categoryGeneric: '通用 MIDI 控制器版面', image: 'open-audiovisual：MIDI 控制器圖鑑' },
   },

@@ -1,33 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- oav:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual · 12 leap hands</title>
+<title>Leap hands · open-audiovisual example</title>
+<meta name="description" content="A Leap Motion as an instrument; the mouse is a simulated hand when you have none. Plays with Leap Motion · mouse as a simulated hand.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/12-leap-hands/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Leap hands · open-audiovisual example">
+<meta property="og:description" content="A Leap Motion as an instrument; the mouse is a simulated hand when you have none. Plays with Leap Motion · mouse as a simulated hand.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/12-leap-hands/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Leap hands · open-audiovisual example">
+<meta name="twitter:description" content="A Leap Motion as an instrument; the mouse is a simulated hand when you have none. Plays with Leap Motion · mouse as a simulated hand.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/12-leap-hands/#webpage","url":"https://openaudiovisual.com/examples/12-leap-hands/","name":"Leap hands · open-audiovisual example","description":"A Leap Motion as an instrument; the mouse is a simulated hand when you have none. Plays with Leap Motion · mouse as a simulated hand.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/12-leap-hands/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/12-leap-hands/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/08-remote-surface/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/12-leap-hands/#code","name":"Leap hands (open-audiovisual example 12)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/12-leap-hands","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/12-leap-hands/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Leap hands","item":"https://openaudiovisual.com/examples/12-leap-hands/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css?v=f77929d">
+<!-- /oav:head -->
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "../../packages/core/index.js?v=02fdc94",
-    "@openav/midi": "../../packages/midi/index.js?v=02fdc94",
-    "@openav/keys": "../../packages/keys/index.js?v=02fdc94",
-    "@openav/chord": "../../packages/chord/index.js?v=02fdc94",
-    "@openav/audio": "../../packages/audio/index.js?v=02fdc94",
-    "@openav/pose": "../../packages/pose/index.js?v=02fdc94",
-    "@openav/leap": "../../packages/leap/index.js?v=02fdc94",
-    "@openav/sound": "../../packages/sound/index.js?v=02fdc94",
-    "@openav/mapping": "../../packages/mapping/index.js?v=02fdc94",
-    "@openav/timeline": "../../packages/timeline/index.js?v=02fdc94",
-    "@openav/stage": "../../packages/stage/index.js?v=02fdc94",
-    "@openav/console": "../../packages/console/index.js?v=02fdc94",
-    "@openav/monitor": "../../packages/monitor/index.js?v=02fdc94",
-    "@openav/show": "../../packages/show/index.js?v=02fdc94",
-    "@openav/world-webtoe": "../../packages/world-webtoe/index.js?v=02fdc94"
+    "@openav/core": "../../packages/core/index.js?v=f77929d",
+    "@openav/midi": "../../packages/midi/index.js?v=f77929d",
+    "@openav/keys": "../../packages/keys/index.js?v=f77929d",
+    "@openav/chord": "../../packages/chord/index.js?v=f77929d",
+    "@openav/audio": "../../packages/audio/index.js?v=f77929d",
+    "@openav/pose": "../../packages/pose/index.js?v=f77929d",
+    "@openav/leap": "../../packages/leap/index.js?v=f77929d",
+    "@openav/sound": "../../packages/sound/index.js?v=f77929d",
+    "@openav/mapping": "../../packages/mapping/index.js?v=f77929d",
+    "@openav/timeline": "../../packages/timeline/index.js?v=f77929d",
+    "@openav/stage": "../../packages/stage/index.js?v=f77929d",
+    "@openav/console": "../../packages/console/index.js?v=f77929d",
+    "@openav/monitor": "../../packages/monitor/index.js?v=f77929d",
+    "@openav/show": "../../packages/show/index.js?v=f77929d",
+    "@openav/world-webtoe": "../../packages/world-webtoe/index.js?v=f77929d"
   }
 }
 </script>
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 </head>
 <body>
-<script type="module" src="./main.js?v=02fdc94"></script>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 12 · <a href="../../examples/#route-inputs">Anything can be an instrument</a></span><span lang="zh-Hant">範例 12 · <a href="../../zh/examples/#route-inputs">什麼都能當樂器</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Leap hands</span><span lang="zh-Hant">Leap 雙手</span></h1>
+    <p class="g-teaches"><span lang="en">A Leap Motion as an instrument; the mouse is a simulated hand when you have none.</span><span lang="zh-Hant">把 Leap Motion 當樂器，經本機橋接；沒開橋接時用滑鼠模擬手。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>No sensor? The page falls back to the simulator after two seconds (or press “simulate” in the L1 panel): the mouse is your right palm, its height sets energy and its position sets hue.</li><li>Press the mouse button to pinch: a ring of ink starts at the index fingertip.</li><li>Hold Shift for the left hand and right-click for a fist: the ink falls.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>沒有感測器？頁面會在兩秒後改用模擬（或在 L1 面板按 simulate）：滑鼠就是你的右手掌，高度決定 energy，左右位置決定 hue。</li><li>按住滑鼠鍵就是捏合：食指指尖會畫出一圈墨。</li><li>按住 Shift 是左手，按右鍵是握拳：墨會落下。</li></ol>
+    <p class="g-row"><span lang="en"><b>Needs:</b> Leap Motion.</span><span lang="zh-Hant"><b>需要：</b>Leap Motion。</span>
+        <span lang="en">No hardware? Use Mouse as a hand.</span><span lang="zh-Hant">沒有硬體？用用滑鼠當手。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/12-leap-hands/main.js#L49-L51"><code>main.js:49–51</code></a> <span lang="en">Drawing the hand is the one place a world reads the input directly.</span><span lang="zh-Hant">畫出手，是世界唯一直接讀輸入的地方。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/12-leap-hands/main.js#L92-L110"><code>main.js:92–110</code></a> <span lang="en">The gestures reach the world through params: the timeline or a MIDI knob can play them too.</span><span lang="zh-Hant">手勢經由參數送進世界：時間軸或 MIDI 旋鈕也能彈它們。</span></li></ul>
+    
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#inputs-leap-motion">Leap Motion</a></span><span lang="zh-Hant"><a href="../../zh/docs/#inputs-leap-motion">Leap Motion</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/08-remote-surface/">08 Remote surface →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/08-remote-surface/">08 遠端控制面板 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js?v=f77929d"></script>
+<!-- /oav:guide -->
+<script type="module" src="./main.js?v=f77929d"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@ export default {
   ldLanguage: 'en',
 
   meta: {
-    title: 'open-audiovisual · Web MIDI framework for live visuals',
+    title: 'open-audiovisual · a framework for audiovisual performance',
     description: 'Zero-build JavaScript framework: MIDI controllers, mics, hands and phones become signals that drive p5.js, WebGL or WebToe worlds in the browser. MIT.',
     definition: 'open-audiovisual is a zero-build JavaScript framework that turns MIDI controllers, microphones, hand tracking and phones into signals for browser-based audiovisual performance: p5.js, WebGL or WebToe worlds, MIT licensed.',
     ogDescription: 'Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. open-audiovisual gives you a show.',
@@ -42,7 +42,7 @@ export default {
     lede: 'Keys, knobs, voices, hands and phones become named <em>signals</em>. A <em>mapping</em> turns signals into <em>parameters</em>. Your <em>world</em> reads the parameters and turns them into image and sound, in a browser tab, on a projector, on stage.',
     doorsLabel: 'Where to start',
     doors: [
-      { who: 'I perform', what: 'See what it makes and play the ten works', href: '#works' },
+      { who: 'I perform', what: `See what it makes and play the ${enWords(facts.exampleCount)} works`, href: '#works' },
       { who: 'I write code', what: 'Run it in a minute, then write a world', href: '#start' },
       { who: 'I am an AI agent', what: 'Read /llms.txt, then AGENTS.md', href: 'llms.txt' },
     ],
@@ -121,26 +121,10 @@ export default {
 
   works: {
     eyebrow: '03 · Works',
-    title: 'Ten works you can open now',
+    title: `${cap(enWords(facts.exampleCount))} works you can open now`,
     lede: 'Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments. In any example: Space plays the timeline, T is performance mode, F is fullscreen.',
     playsWith: 'Plays with',
-    items: [
-      { title: 'Hello particles', inputs: 'on-screen piano · QWERTY · simulated performer', text: 'The smallest complete app. Read its <code>main.js</code> from top to bottom and you know the framework.', alt: 'Bursts of thin green and red particle trails falling on black.' },
-      { title: 'Chord garden', inputs: 'on-screen piano · QWERTY · simulated performer', text: 'A note drops a seed, a triad opens flowers along the branches, a cluster makes them droop and fall. The branches are The Last Input\'s own L-system plants. The world listens to chord signals, never to keys.', alt: 'Slender branching plants in a night garden, with green leaves and small blue, red and pink flowers.' },
-      { title: 'Hand instrument', inputs: 'camera (hands) · on-screen piano · drum machine', text: 'Fingers as an instrument: one pinch sets tightness, another grows arms, both fists bloom. Four pattern families: mandala, lissajous, spirograph, web.', alt: 'A blue and white mandala of fine layered lines.' },
-      { title: 'WebToe stage', inputs: 'on-screen piano · simulated performer', text: 'The world is a WebToe node patch, TouchDesigner-style, performed through <code>ext()</code> bindings. WebToe is the engine, open-audiovisual is the show.', alt: 'A node editor with noise, level and output nodes beside a grey cloud texture.' },
-      { title: 'Prebiotic flake', inputs: 'on-screen piano · simulated performer · sound', text: 'A 2023 MIDI daily sketch replayed through the framework. The drawing code is the original. The flakes now have a voice through Tone.js.', alt: 'A glowing yellow ring of jagged petals with small circles inside.' },
-      { title: 'Cylinder earth', inputs: 'microphone · drum machine', text: 'A 2020 voice-controlled WebGL sketch. Lows pump the towers, highs shimmer the spin, a kick turns the palette.', alt: 'A sphere packed with colourful cylinders seen end-on, like umbrellas.' },
-      { title: 'Firework festival', inputs: 'camera (hands) · on-screen piano', text: 'A 2021 sketch. Close a finger pinch and a firework launches from that hand. The particle system is the 2021 code.', alt: 'Cyan and violet fireworks bursting over drooping coloured trails.' },
-      { title: 'Remote surface', inputs: 'phone or iPad · on-screen piano', text: 'The phone is the instrument panel. The world only declares params, and the control surface on the phone grows from them. Needs <code>node serve.js</code> on your network.', alt: 'Blue and yellow streaks exploding outward from the lower centre.' },
-      { title: 'MIDI controllers', inputs: 'MIDI controller, or the on-screen one', text: 'On-screen MiniLab 3, LPD8, Launchpad and nanoKONTROL2. Plug the real one in and the on-screen one moves with your hands.', alt: 'A spiral of pink and blue dots above an on-screen MIDI keyboard controller.' },
-      { title: 'Timeline', inputs: 'nothing: it plays itself · knobs on screen', text: 'Automation you can see. Five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes, and any knob you touch takes over until you let go. Record a knob move to write a new curve.', alt: 'A hexagonal ring of orange and yellow dots above a timeline with five curve lanes, scene blocks and a playhead.' },
-    ],
-    credits: [
-      'Che-Yu Wu, <cite>230616 Prebiotic Flake</cite>, 2023',
-      'Che-Yu Wu, <cite>200412 3D Cylinder Earth</cite>, 2020',
-      'Che-Yu Wu, <cite>210807 Firework 花火大會</cite>, 2021',
-    ],
+    all: 'Explore all the examples by route',
     note: 'Works 05 to 07 are artworks by Che-Yu Wu (2020 to 2023), used here as demos. The framework is MIT. The artworks remain © the artist, all rights reserved.',
   },
 
@@ -203,6 +187,59 @@ export default {
     docNames: { architecture: 'Architecture', world: 'Writing a world', signals: 'Signals reference', show: 'Show control', roadmap: 'Roadmap', agents: 'AGENTS.md' },
   },
 
+  // ─────────────── FAQ: visible questions and answers (AEO). Every answer is made only of sentences that already
+  // exist in the docs, the README or this page: each part names its source file (`src`) and quotes it exactly;
+  // tests/examples-faq.test.js checks the quote is in the file. Google no longer shows FAQ rich results, so there is no
+  // FAQPage markup, only text a reader and a crawler can both see.
+  faq: {
+    eyebrow: 'FAQ',
+    title: 'Common questions',
+    more: 'More',
+    items: [
+      // source: tools/home/en.mjs meta.definition (this page's own definition sentence)
+      { q: 'What is open-audiovisual?', more: { label: 'How it works', href: '#how' }, a: [
+        { src: 'tools/home/en.mjs', code: false, text: 'open-audiovisual is a zero-build JavaScript framework that turns MIDI controllers, microphones, hand tracking and phones into signals for browser-based audiovisual performance: p5.js, WebGL or WebToe worlds, MIT licensed.' },
+      ] },
+      // source: docs/p5.md, first paragraph (the sentence and the one line) and README.md § "p5.js in one line" ("No `setup()` call, p5 1.x and 2.x.")
+      { q: 'Can I play p5.js sketches with a MIDI controller?', more: { label: 'p5.js in one line', href: 'p5/' }, a: [
+        { src: 'docs/p5.md', code: false, text: 'Any p5.js sketch (OpenProcessing, the p5 editor, your own page) can be played from a MIDI controller, from a controller drawn on screen, or from a phone, by adding one line at the top.' },
+        { src: 'docs/p5.md', code: true, text: "document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));" },
+        { src: 'README.md', code: false, text: 'No `setup()` call, p5 1.x and 2.x.' },
+      ] },
+      // source: this page, works.lede (first two sentences); docs/getting-started.md § "Play without hardware" (last paragraph)
+      { q: 'Does it work without hardware?', more: { label: 'Examples', href: 'examples/' }, a: [
+        { src: 'tools/home/en.mjs', code: false, text: 'Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments.' },
+        { src: 'docs/getting-started.md', code: false, text: 'All of these publish the same signals as real hardware, so nothing downstream can tell the difference.' },
+      ] },
+      // source: docs/getting-started.md § "Which browser" (first two bullets); docs/p5.md § "Three inputs" (last paragraph)
+      { q: 'Which browsers support MIDI?', more: { label: 'Quick start', href: 'docs/#quick-start-which-browser' }, a: [
+        { src: 'docs/getting-started.md', code: false, text: 'Chrome or Edge for a show. They have Web MIDI; Safari does not.' },
+        { src: 'docs/p5.md', code: false, text: 'Safari and iPad have no Web MIDI; the on-screen controller and the phone still work there.' },
+        { src: 'docs/getting-started.md', code: false, text: 'Camera and microphone only work in a secure context: `http://localhost` or `https://`.' },
+      ] },
+      // source: README.md § "MIDI controller library" (first paragraph, both sentences)
+      { q: 'Which MIDI controllers are supported, and what is each one\'s CC map?', more: { label: 'MIDI controller library', href: 'controllers/' }, a: [
+        { src: 'README.md', code: false, text: 'Controllers are data: one JSON file per device with the faceplate, every control\'s exact MIDI message, LED feedback, how to recognise its port, and the document each number came from.' },
+        { src: 'README.md', code: false, text: 'The same file drives an on-screen controller you can play, follows the real device when you plug it in, and drops into any web page.' },
+      ] },
+      // source: docs/controllers.md § "Play one in a page" (the two lines of HTML, "That is the whole integration.", the Web MIDI sentence)
+      { q: 'Can I embed a MIDI controller on my own website?', more: { label: 'MIDI controllers & embedding', href: 'docs/#controllers-play-one-in-a-page' }, a: [
+        { src: 'docs/controllers.md', code: true, text: '<script type="module" src="https://openaudiovisual.com/packages/midi/element.js"></script>\n<oav-controller profile="akai-lpd8" readout></oav-controller>' },
+        { src: 'docs/controllers.md', code: false, text: 'That is the whole integration. The element works without Web MIDI (Safari, iPad): it plays and fires events; only hardware and MIDI out report that they are unavailable.' },
+      ] },
+      // source: this page, agents.lede; README.md § "Agent-native" (the MCP sentence)
+      { q: 'Can an AI agent build a world for me?', more: { label: 'For AI agents', href: '#agents' }, a: [
+        { src: 'tools/home/en.mjs', code: false, text: 'Worlds are code, and coding agents are good at code. A person describes a performance in words, the agent writes the world, and the framework runs the show.' },
+        { src: 'README.md', code: false, text: 'An MCP server ships in the box (`.mcp.json`, zero-dependency stdio)' },
+      ] },
+      // source: README.md § "License" (first sentence); this page, footer.artworks
+      { q: 'What does it cost and what is the license?', more: { label: 'License on GitHub', href: 'https://github.com/frank890417/open-audiovisual/blob/main/LICENSE' }, a: [
+        { src: 'README.md', code: false, text: 'MIT: build shows, teach classes, fork worlds. Attribution appreciated, not required.' },
+        { src: 'tools/home/en.mjs', code: false, text: 'Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.' },
+      ] },
+    ],
+  },
+
   agents: {
     eyebrow: '05 · For AI agents',
     title: 'For AI agents',
@@ -226,6 +263,10 @@ export default {
       read_doc: 'architecture, writing-a-world, signals, show-control, agents',
       scaffold_world: 'copy a donor example into a new numbered example',
       run_checks: 'run the test suite, the same gate CI uses',
+      list_controllers: 'every MIDI controller profile, with its control mix and unverified count',
+      read_profile: 'one profile in full, plus a readable MIDI map',
+      validate_profile: 'check a profile JSON and catch clashes with shipped ones',
+      scaffold_profile: 'a valid skeleton for a new controller, every number marked unverified',
     },
     filesTitle: 'Machine-readable',
     files: {
@@ -260,6 +301,8 @@ export default {
   footer: {
     pages: 'Pages',
     homeLink: 'Home',
+    examples: 'Examples',
+    p5: 'p5.js in one line',
     license: 'MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.',
     artworks: 'Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.',
     machine: 'For machines',

@@ -23,9 +23,9 @@ import { STACK_QUERY } from '../show/layout.js?v=02fdc94';
 
 /**
  * @param {object} o
- * @param {import('../core/src/signals.js?v=02fdc94').Signals} o.signals
- * @param {import('../core/src/params.js?v=02fdc94').Params} o.params
- * @param {import('../mapping/index.js?v=02fdc94').Mapper} o.mapper
+ * @param {import('../core/src/signals.js?v=f77929d').Signals} o.signals
+ * @param {import('../core/src/params.js?v=f77929d').Params} o.params
+ * @param {import('../mapping/index.js?v=f77929d').Mapper} o.mapper
  * @param {{name?:string, params?:object[], surface?:object}} [o.world]
  * @param {string} [o.room='default']
  * @param {object} [o.auto]     autoSurface options (pairs, meters, style, perPage…)

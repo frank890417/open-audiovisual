@@ -7,9 +7,9 @@
 //   copy buttons; old #spec-<id> / ?profile=<id> links go to the device's own page (inline script in <head>)
 // It uses the same public pieces anyone else would: <oav-controller> and embed.js.
 
-import { PROFILES } from '../../packages/midi/element.js?v=02fdc94';
-import { describeDetail } from '../../packages/midi/embed.js?v=02fdc94';
-import { snippets, hl } from './snippets.js?v=02fdc94';
+import { PROFILES } from '../../packages/midi/element.js?v=f77929d';
+import { describeDetail } from '../../packages/midi/embed.js?v=f77929d';
+import { snippets, hl } from './snippets.js?v=f77929d';
 
 const T = JSON.parse(document.getElementById('ctl-i18n').textContent);
 const $ = (s, el = document) => el.querySelector(s);
@@ -123,6 +123,18 @@ function applyFilter(f) {
   shown.textContent = f === 'all' ? '' : fill(T.shown, { n });
 }
 for (const b of filterBtns) b.addEventListener('click', () => applyFilter(b.dataset.filter));
+
+// the comparison table: "I want …" keeps the rows that have it (the counts on the buttons were computed at build time)
+const pickBtns = $$('[data-pick]');
+const pickRows = $$('#choose tbody tr');
+const pickShown = $('#pick-shown');
+function applyPick(f) {
+  let n = 0;
+  for (const b of pickBtns) b.setAttribute('aria-pressed', String(b.dataset.pick === f));
+  for (const r of pickRows) { const ok = f === 'all' || r.dataset.has.split(' ').includes(f); r.hidden = !ok; if (ok) n++; }
+  if (pickShown) pickShown.textContent = f === 'all' ? '' : fill(T.shown, { n });
+}
+for (const b of pickBtns) b.addEventListener('click', () => applyPick(b.dataset.pick));
 
 // ------------------------------------------------------------------ builder
 const form = $('#builder');

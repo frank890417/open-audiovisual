@@ -12,7 +12,7 @@ before it was generalized.)
 - [x] backstage monitor (zero-dep WS relay, LAN devices)
 - [x] OSC bridge; MIDI out with observable throat + panic
 - [x] tests for all pure logic (chord, timeline, mapping, params)
-- [ ] mapping profile import/export UI (JSON file, not just localStorage)
+- [x] mapping profile import/export UI (JSON file, drag-and-drop, `?map=<url>`, remembered per world)
 - [x] example: audio-reactive world driven by a live instrument (mic) — `06-cylinder-earth`
 - [x] drum machine with analyzer-shaped signals (`@openav/drums`)
 - [x] on-screen MIDI controllers that mirror real hardware (`@openav/midi`, example 09)

@@ -1,0 +1,63 @@
+/* The guide card on every example page: a small panel in a corner that says what the example teaches, three things
+   to try, what it needs, and which lines to read. It is plain HTML (readable without JavaScript); guide.js adds the
+   collapse, the language switch and the remembered state. It never takes layout space: position: fixed. */
+
+.oav-guide {
+  --g-bg: rgba(11, 13, 18, .94); --g-line: #323b50; --g-ink: #e8ecf5; --g-dim: #9aa3b8; --g-acc: #7ea6ff; --g-sig: #ff5a1f;
+  position: fixed; z-index: 2147483000; left: 12px; bottom: 12px; width: min(360px, calc(100vw - 24px));
+  box-sizing: border-box; color: var(--g-ink); background: var(--g-bg); border: 1px solid var(--g-line); border-radius: 12px;
+  box-shadow: 0 10px 36px #000a; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  font: 13px/1.5 system-ui, -apple-system, 'Segoe UI', 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+  text-align: left; letter-spacing: 0;
+}
+.oav-guide *, .oav-guide *::before, .oav-guide *::after { box-sizing: border-box; }
+.oav-guide a { color: var(--g-acc); text-decoration-color: #7ea6ff66; text-underline-offset: .18em; }
+.oav-guide a:hover { text-decoration-color: var(--g-acc); }
+.oav-guide code { font: 12px/1.4 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; color: #fff; background: #ffffff14; padding: 0 4px; border-radius: 3px; }
+.oav-guide button { font: inherit; color: var(--g-ink); background: #1b2130; border: 1px solid #323b50; border-radius: 7px; padding: 3px 9px; cursor: pointer; line-height: 1.4; }
+.oav-guide button:hover { border-color: var(--g-acc); }
+.oav-guide button[aria-pressed="true"] { background: #22305a; border-color: var(--g-acc); }
+
+.oav-guide .g-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px 8px 14px; }
+.oav-guide .g-eyebrow { margin: 0; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--g-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.oav-guide .g-eyebrow a { color: var(--g-dim); }
+.oav-guide .g-tools { display: inline-flex; gap: 4px; flex: none; }
+.oav-guide .g-tools[hidden] { display: none; }
+.oav-guide .g-lang { padding: 2px 7px; font-size: 11.5px; }
+.oav-guide .g-lang:first-of-type { border-radius: 7px 0 0 7px; } .oav-guide .g-lang:nth-of-type(2) { border-radius: 0 7px 7px 0; margin-left: -5px; }
+.oav-guide .g-toggle { margin-left: 4px; }
+
+.oav-guide .g-body { padding: 0 14px 14px; max-height: min(60vh, 520px); overflow-y: auto; overscroll-behavior: contain; border-top: 1px solid var(--g-line); scrollbar-width: thin; scrollbar-color: #3a4560 transparent; }
+.oav-guide h1 { margin: 12px 0 4px; font-size: 18px; line-height: 1.25; font-weight: 700; }
+.oav-guide h2 { margin: 14px 0 4px; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--g-dim); font-weight: 600; }
+.oav-guide p { margin: 6px 0; }
+.oav-guide .g-teaches { color: var(--g-ink); }
+.oav-guide ol, .oav-guide ul { margin: 4px 0; padding-left: 1.25em; }
+.oav-guide li { margin: 3px 0; }
+.oav-guide .g-read { list-style: none; padding-left: 0; }
+.oav-guide .g-read li { padding-left: 0; color: var(--g-dim); }
+.oav-guide .g-read a code { color: var(--g-acc); background: none; padding: 0; }
+.oav-guide .g-row { color: var(--g-dim); }
+.oav-guide .g-row b { color: var(--g-ink); font-weight: 600; }
+.oav-guide .g-p5 { padding: 8px 10px; border-left: 3px solid var(--g-sig); background: #ff5a1f14; border-radius: 0 8px 8px 0; color: var(--g-ink); }
+.oav-guide .g-next { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--g-line); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.oav-guide .g-next span, .oav-guide .g-next a { white-space: normal; }
+.oav-guide .g-credit { color: var(--g-dim); font-size: 12px; }
+
+/* one language at a time (the card is bilingual so a zh visitor gets zh without another page) */
+.oav-guide[data-ui="en"] [lang="zh-Hant"], .oav-guide[data-ui="zh"] [lang="en"] { display: none !important; }
+.oav-guide [lang="zh-Hant"] { letter-spacing: .01em; }
+
+/* JavaScript is on and the card is folded: a small pill, nothing else */
+.oav-guide.is-collapsed { width: auto; max-width: calc(100vw - 24px); top: 50%; bottom: auto; left: 0; transform: translateY(-50%); border-left: 0; border-radius: 0 999px 999px 0; }
+.oav-guide.is-collapsed .g-body, .oav-guide.is-collapsed .g-eyebrow, .oav-guide.is-collapsed .g-lang { display: none; }
+.oav-guide.is-collapsed .g-bar { padding: 4px 6px; }
+.oav-guide.is-collapsed .g-toggle { margin: 0; border: 0; background: transparent; padding: 4px 10px; font-weight: 600; }
+.oav-guide.is-collapsed .g-toggle::before { content: 'ⓘ '; color: var(--g-sig); }
+
+@media (max-width: 640px) {
+  .oav-guide { left: 8px; bottom: 8px; width: calc(100vw - 16px); }
+  .oav-guide.is-collapsed { top: auto; bottom: 8px; left: 8px; transform: none; border-left: 1px solid var(--g-line); border-radius: 999px; }
+  .oav-guide .g-body { max-height: 58vh; }
+}
+@media print { .oav-guide { display: none; } }

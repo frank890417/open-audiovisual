@@ -1,0 +1,1092 @@
+{
+ "id": "djtechtools-midi-fighter-twister",
+ "short": "twister",
+ "name": "DJ TechTools Midi Fighter Twister",
+ "maker": "DJ TechTools",
+ "kind": "device",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "midi\\s*fighter\\s*twister"
+  ],
+  "prefer": [],
+  "avoid": [
+   "boot"
+  ]
+ },
+ "sources": [
+  {
+   "title": "Midi Fighter Twister User Guide v1.01 (DJ TechTools)",
+   "url": "https://s3.amazonaws.com/MF_Support_Docs/Midi+Fighter+Twister+User+Guide.pdf",
+   "note": "official. Appendix 1, Bank 1: encoders CC 0–15, switches CC 0–15 (switch type defaults to CC), side switches CC 8–13; the guide counts channels 0–15, so its 'channel 0' is MIDI channel 1 on the wire; encoder types CC / Note / 'Enc 3FH/41H' (relative: 65 per clockwise step, 63 per anti-clockwise step); switch actions CC hold / toggle, note hold / toggle, reset, fine, shift; RGB segment: 'a MIDI message of the same MIDI number, on channel 1' (= MIDI channel 2), 0 = inactive colour, 127 = active colour, 1–126 a colour on the scale; animation messages on the next channel; bank change notes; banks 2–4 use CC 16–31, 32–47, 48–63"
+  },
+  {
+   "title": "Midi Fighter Twister User Guide v1.03 (DJ TechTools; copy hosted by a retailer, justmusic.de)",
+   "url": "http://media.justmusic.de/shop/assets/handbuch/DJ%20Techtools%20Midi-Fighter-Twister-User-Guide-2016.pdf",
+   "note": "official document, third-party host. Says it in 1-based channels: 'Channel 1: Encoders & LED Rings · Channel 2: Encoder Switches (RGB) · Channel 3: Encoder Switches animations & brightness · Channel 4: System MIDI Channel (Banks & Side Buttons) · Channel 5: Shift Encoders & LED Rings'; side-button messages on the system channel (4 by default); bank-select notes on channel 4, CC 0–3; the animation values 1–16 and brightness 17–47"
+  }
+ ],
+ "notes": "Models the factory configuration of the Midi Fighter Utility, Bank 1 of 4 (the unit starts on Bank 1; the middle side buttons change bank by default, an action that sends no CC). Each of the 16 encoders is two controls: the encoder (CC 0–15, channel 1, absolute 0–127) and its push switch (CC 0–15, channel 2, 127 while held, 0 on release). The encoder is endless in your hand but sends an absolute value by default. Switch an encoder to 'Enc 3FH/41H' in the Utility and it becomes relative: 65 for each clockwise step, 63 for each anti-clockwise one, which is relative \"offset64\" in this format (set it on the control or with learn). Banks 2–4 send encoders and switches on the same channels with CC 16–31, 32–47 and 48–63 (the v1.01 guide's bank 3 switch column skips CC 37; the encoder column does not), and the side buttons move up with the bank: none of that is modelled, and any encoder or switch you remap in the Utility leaves this table. LED feedback: send the push switch's own CC on channel 2 (value 0 = its inactive colour, 127 = its active colour, 1–126 a colour on the guide's scale) and the 11-LED ring follows a CC of the same number on channel 1: that is how a DAW or this page shows a parameter's value on the unit. Animations (strobe 1–8, pulse 9–16, rainbow 127) go to channel 3. The six side buttons send on channel 4; their numbers are the manual's but its factory function for them is not printed, so they are flagged. On the unit they sit on the left and right edges; here they are drawn beside the grid. Ring colours follow DJ TechTools' product image (a yellow-to-red gradient, row by row).",
+ "face": {
+  "w": 100,
+  "h": 88,
+  "label": "Midi Fighter Twister",
+  "body": "#0d0d0f"
+ },
+ "sections": [
+  {
+   "id": "enc1",
+   "label": "",
+   "x": 14.0,
+   "y": 8.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc1"
+   ]
+  },
+  {
+   "id": "enc2",
+   "label": "",
+   "x": 32.0,
+   "y": 8.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc2"
+   ]
+  },
+  {
+   "id": "enc3",
+   "label": "",
+   "x": 50.0,
+   "y": 8.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc3"
+   ]
+  },
+  {
+   "id": "enc4",
+   "label": "",
+   "x": 68.0,
+   "y": 8.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc4"
+   ]
+  },
+  {
+   "id": "enc5",
+   "label": "",
+   "x": 14.0,
+   "y": 26.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc5"
+   ]
+  },
+  {
+   "id": "enc6",
+   "label": "",
+   "x": 32.0,
+   "y": 26.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc6"
+   ]
+  },
+  {
+   "id": "enc7",
+   "label": "",
+   "x": 50.0,
+   "y": 26.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc7"
+   ]
+  },
+  {
+   "id": "enc8",
+   "label": "",
+   "x": 68.0,
+   "y": 26.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc8"
+   ]
+  },
+  {
+   "id": "enc9",
+   "label": "",
+   "x": 14.0,
+   "y": 44.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc9"
+   ]
+  },
+  {
+   "id": "enc10",
+   "label": "",
+   "x": 32.0,
+   "y": 44.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc10"
+   ]
+  },
+  {
+   "id": "enc11",
+   "label": "",
+   "x": 50.0,
+   "y": 44.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc11"
+   ]
+  },
+  {
+   "id": "enc12",
+   "label": "",
+   "x": 68.0,
+   "y": 44.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc12"
+   ]
+  },
+  {
+   "id": "enc13",
+   "label": "",
+   "x": 14.0,
+   "y": 62.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc13"
+   ]
+  },
+  {
+   "id": "enc14",
+   "label": "",
+   "x": 32.0,
+   "y": 62.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc14"
+   ]
+  },
+  {
+   "id": "enc15",
+   "label": "",
+   "x": 50.0,
+   "y": 62.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc15"
+   ]
+  },
+  {
+   "id": "enc16",
+   "label": "",
+   "x": 68.0,
+   "y": 62.0,
+   "w": 18.0,
+   "h": 18.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "enc16"
+   ]
+  },
+  {
+   "id": "push1",
+   "label": "",
+   "x": 19.0,
+   "y": 12.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push1"
+   ]
+  },
+  {
+   "id": "push2",
+   "label": "",
+   "x": 37.0,
+   "y": 12.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push2"
+   ]
+  },
+  {
+   "id": "push3",
+   "label": "",
+   "x": 55.0,
+   "y": 12.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push3"
+   ]
+  },
+  {
+   "id": "push4",
+   "label": "",
+   "x": 73.0,
+   "y": 12.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push4"
+   ]
+  },
+  {
+   "id": "push5",
+   "label": "",
+   "x": 19.0,
+   "y": 30.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push5"
+   ]
+  },
+  {
+   "id": "push6",
+   "label": "",
+   "x": 37.0,
+   "y": 30.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push6"
+   ]
+  },
+  {
+   "id": "push7",
+   "label": "",
+   "x": 55.0,
+   "y": 30.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push7"
+   ]
+  },
+  {
+   "id": "push8",
+   "label": "",
+   "x": 73.0,
+   "y": 30.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push8"
+   ]
+  },
+  {
+   "id": "push9",
+   "label": "",
+   "x": 19.0,
+   "y": 48.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push9"
+   ]
+  },
+  {
+   "id": "push10",
+   "label": "",
+   "x": 37.0,
+   "y": 48.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push10"
+   ]
+  },
+  {
+   "id": "push11",
+   "label": "",
+   "x": 55.0,
+   "y": 48.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push11"
+   ]
+  },
+  {
+   "id": "push12",
+   "label": "",
+   "x": 73.0,
+   "y": 48.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push12"
+   ]
+  },
+  {
+   "id": "push13",
+   "label": "",
+   "x": 19.0,
+   "y": 66.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push13"
+   ]
+  },
+  {
+   "id": "push14",
+   "label": "",
+   "x": 37.0,
+   "y": 66.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push14"
+   ]
+  },
+  {
+   "id": "push15",
+   "label": "",
+   "x": 55.0,
+   "y": 66.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push15"
+   ]
+  },
+  {
+   "id": "push16",
+   "label": "",
+   "x": 73.0,
+   "y": 66.1,
+   "w": 8.0,
+   "h": 8.0,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "push16"
+   ]
+  },
+  {
+   "id": "sidel",
+   "label": "",
+   "x": 3.2,
+   "y": 30,
+   "w": 7.2,
+   "h": 28,
+   "cols": 1,
+   "rows": 3,
+   "controls": [
+    "sidel1",
+    "sidel2",
+    "sidel3"
+   ]
+  },
+  {
+   "id": "sider",
+   "label": "",
+   "x": 89.6,
+   "y": 30,
+   "w": 7.2,
+   "h": 28,
+   "cols": 1,
+   "rows": 3,
+   "controls": [
+    "sider1",
+    "sider2",
+    "sider3"
+   ]
+  }
+ ],
+ "portrait": [
+  {
+   "id": "encoders",
+   "cols": 4,
+   "rows": 4,
+   "weight": 4,
+   "controls": [
+    "enc1",
+    "enc2",
+    "enc3",
+    "enc4",
+    "enc5",
+    "enc6",
+    "enc7",
+    "enc8",
+    "enc9",
+    "enc10",
+    "enc11",
+    "enc12",
+    "enc13",
+    "enc14",
+    "enc15",
+    "enc16"
+   ]
+  },
+  {
+   "id": "pushes",
+   "cols": 4,
+   "rows": 4,
+   "weight": 2.2,
+   "controls": [
+    "push1",
+    "push2",
+    "push3",
+    "push4",
+    "push5",
+    "push6",
+    "push7",
+    "push8",
+    "push9",
+    "push10",
+    "push11",
+    "push12",
+    "push13",
+    "push14",
+    "push15",
+    "push16"
+   ]
+  },
+  {
+   "id": "side",
+   "cols": 6,
+   "rows": 1,
+   "weight": 0.7,
+   "controls": [
+    "sidel1",
+    "sidel2",
+    "sidel3",
+    "sider1",
+    "sider2",
+    "sider3"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "enc1",
+   "type": "encoder",
+   "label": "1",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 0,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ffb800"
+  },
+  {
+   "id": "enc2",
+   "type": "encoder",
+   "label": "2",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 1,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ffb800"
+  },
+  {
+   "id": "enc3",
+   "type": "encoder",
+   "label": "3",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 2,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ffb800"
+  },
+  {
+   "id": "enc4",
+   "type": "encoder",
+   "label": "4",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 3,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ffb800"
+  },
+  {
+   "id": "enc5",
+   "type": "encoder",
+   "label": "5",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 4,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff8c00"
+  },
+  {
+   "id": "enc6",
+   "type": "encoder",
+   "label": "6",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 5,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff8c00"
+  },
+  {
+   "id": "enc7",
+   "type": "encoder",
+   "label": "7",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 6,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff8c00"
+  },
+  {
+   "id": "enc8",
+   "type": "encoder",
+   "label": "8",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 7,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff8c00"
+  },
+  {
+   "id": "enc9",
+   "type": "encoder",
+   "label": "9",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 8,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff5a1f"
+  },
+  {
+   "id": "enc10",
+   "type": "encoder",
+   "label": "10",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 9,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff5a1f"
+  },
+  {
+   "id": "enc11",
+   "type": "encoder",
+   "label": "11",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 10,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff5a1f"
+  },
+  {
+   "id": "enc12",
+   "type": "encoder",
+   "label": "12",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 11,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff5a1f"
+  },
+  {
+   "id": "enc13",
+   "type": "encoder",
+   "label": "13",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 12,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff2f55"
+  },
+  {
+   "id": "enc14",
+   "type": "encoder",
+   "label": "14",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 13,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff2f55"
+  },
+  {
+   "id": "enc15",
+   "type": "encoder",
+   "label": "15",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 14,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff2f55"
+  },
+  {
+   "id": "enc16",
+   "type": "encoder",
+   "label": "16",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 15,
+   "relative": false,
+   "group": "encoder",
+   "tint": "#ff2f55"
+  },
+  {
+   "id": "push1",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 0,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ffb800",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push2",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 1,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ffb800",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push3",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 2,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ffb800",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push4",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 3,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ffb800",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push5",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 4,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff8c00",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push6",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 5,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff8c00",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push7",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 6,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff8c00",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push8",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 7,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff8c00",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push9",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 8,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff5a1f",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push10",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 9,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff5a1f",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push11",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 10,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff5a1f",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push12",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 11,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff5a1f",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push13",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 12,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff2f55",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push14",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 13,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff2f55",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push15",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 14,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff2f55",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "push16",
+   "type": "button",
+   "label": "",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 15,
+   "mode": "momentary",
+   "shape": "round",
+   "group": "button",
+   "tint": "#ff2f55",
+   "led": {
+    "msg": "cc",
+    "ch": 2,
+    "on": 127,
+    "off": 0
+   }
+  },
+  {
+   "id": "sidel1",
+   "type": "button",
+   "label": "L1",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 8,
+   "mode": "momentary",
+   "group": "side",
+   "color": "white",
+   "verified": false,
+   "note": "Left side button 1 (top). Bank 1: CC 8 / note G#-1 on the system channel (4). The manual lists this number for a side button set to a MIDI function; which function the factory configuration gives it is not printed, so the number is the manual's, the default behaviour unconfirmed."
+  },
+  {
+   "id": "sidel2",
+   "type": "button",
+   "label": "◀",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 9,
+   "mode": "momentary",
+   "group": "side",
+   "color": "white",
+   "verified": false,
+   "note": "Left side button 2 (middle). By default it decrements the bank (an internal action, no MIDI): the manual's Bank 1 table lists CC 9 / note A-1 for it only when the Utility makes it a MIDI button."
+  },
+  {
+   "id": "sidel3",
+   "type": "button",
+   "label": "L3",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 10,
+   "mode": "momentary",
+   "group": "side",
+   "color": "white",
+   "verified": false,
+   "note": "Left side button 3 (bottom). Bank 1: CC 10 / note A#-1 on the system channel (4); factory function not printed."
+  },
+  {
+   "id": "sider1",
+   "type": "button",
+   "label": "R1",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 11,
+   "mode": "momentary",
+   "group": "side",
+   "color": "white",
+   "verified": false,
+   "note": "Right side button 1 (top). Bank 1: CC 11 / note B-1 on the system channel (4); factory function not printed."
+  },
+  {
+   "id": "sider2",
+   "type": "button",
+   "label": "▶",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 12,
+   "mode": "momentary",
+   "group": "side",
+   "color": "white",
+   "verified": false,
+   "note": "Right side button 2 (middle). By default it increments the bank (an internal action, no MIDI): the manual's Bank 1 table lists CC 12 / note C0 for it only when the Utility makes it a MIDI button."
+  },
+  {
+   "id": "sider3",
+   "type": "button",
+   "label": "R3",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 13,
+   "mode": "momentary",
+   "group": "side",
+   "color": "white",
+   "verified": false,
+   "note": "Right side button 3 (bottom). Bank 1: CC 13 / note C#0 on the system channel (4); factory function not printed."
+  }
+ ]
+}

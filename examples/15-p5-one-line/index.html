@@ -1,11 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" data-ui="en">
 <head>
+<!-- oav:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual · 15 p5.js in one line</title>
-<meta name="description" content="Add one line to any p5.js sketch (OpenProcessing, the p5 editor, your own page) and play it from a MIDI controller, a controller drawn on screen, or your phone. 一行指令，p5.js 草圖就能被 MIDI 控制器、螢幕上的控制器和手機彈。">
+<title>p5.js in one line · open-audiovisual example</title>
+<meta name="description" content="A plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone. Plays with MIDI controller · on-screen controller · phone.">
 <link rel="canonical" href="https://openaudiovisual.com/examples/15-p5-one-line/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="p5.js in one line · open-audiovisual example">
+<meta property="og:description" content="A plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone. Plays with MIDI controller · on-screen controller · phone.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/15-p5-one-line/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="p5.js in one line · open-audiovisual example">
+<meta name="twitter:description" content="A plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone. Plays with MIDI controller · on-screen controller · phone.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/15-p5-one-line/#webpage","url":"https://openaudiovisual.com/examples/15-p5-one-line/","name":"p5.js in one line · open-audiovisual example","description":"A plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone. Plays with MIDI controller · on-screen controller · phone.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/15-p5-one-line/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/15-p5-one-line/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/09-midi-controllers/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/15-p5-one-line/#code","name":"p5.js in one line (open-audiovisual example 15)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/15-p5-one-line","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/15-p5-one-line/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"p5.js in one line","item":"https://openaudiovisual.com/examples/15-p5-one-line/"}]}]}</script>
+<!-- /oav:head -->
 <style>
   :root { --bg: #0a0b14; --panel: #12141f; --line: #262a3d; --ink: #e8eaf4; --dim: #9aa0b8; --acc: #7ee0ff; --hot: #ffd36e; }
   * { box-sizing: border-box; }
@@ -132,6 +157,12 @@ OPC.toggle('trails', true);           // pad 1 (flips on each hit)</code></pre>
 </section>
 </div>
 
+<!-- oav:next -->
+<nav class="oav-next" aria-label="Next" style="max-width:920px;margin:0 auto;padding:8px 20px 0">
+  <p class="links"><span lang="en">Next: <a href="../../examples/09-midi-controllers/">09 MIDI controllers →</a></span><span lang="zh-Hant">下一個：<a href="../../examples/09-midi-controllers/">09 MIDI 控制器 →</a></span>
+  <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+</nav>
+<!-- /oav:next -->
 <footer>© 2026 Che-Yu Wu (吳哲宇) and open-audiovisual contributors · MIT · <a href="https://openaudiovisual.com/">openaudiovisual.com</a></footer>
 
 <script>
@@ -172,6 +203,6 @@ OPC.toggle('trails', true);           // pad 1 (flips on each hit)</code></pre>
 })();
 </script>
 <!-- last <script> on purpose: p5's friendly errors read the page's last script as the sketch -->
-<script src="./sketch.js?v=02fdc94"></script>
+<script src="./sketch.js?v=f77929d"></script>
 </body>
 </html>

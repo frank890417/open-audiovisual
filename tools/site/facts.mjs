@@ -80,7 +80,7 @@ export function zhWords(n) {
 }
 
 // ---------------------------------------------------------------------------- README marker block
-export const README_MARK = ['<!-- facts:start (written by tools/build-home.mjs) -->', '<!-- facts:end -->'];
+export const README_MARK = ['<!-- facts:start (written by tools/build-examples.mjs) -->', '<!-- facts:end -->'];
 
 /** The lines the README can carry between README_MARK, so its numbers come from here too. */
 export function readmeBlock(f = getFacts()) {
@@ -88,6 +88,19 @@ export function readmeBlock(f = getFacts()) {
     `${f.packageCount} packages · ${f.exampleCount} examples · ${f.controllerCount} MIDI controller profiles `
       + `(${f.deviceCount} devices, ${f.genericCount} generic layouts, ${f.controlCount} controls) · ${f.testCount} tests`,
   ].join('\n');
+}
+
+/**
+ * Named blocks: every <!--gen:NAME-->…<!--/gen:NAME--> in the text gets blocks[NAME] between its markers (inline or
+ * multi-line). A marker pair with no value in `blocks` is left alone, and so is text without markers.
+ */
+export function applyBlocks(text, blocks) {
+  return text.replace(/<!--gen:([\w-]+)-->([\s\S]*?)<!--\/gen:\1-->/g, (m, name, cur) => {
+    if (!(name in blocks)) return m;
+    const val = String(blocks[name]);
+    // a multi-line block sits on its own lines; an inline one hugs its markers
+    return val.includes('\n') ? `<!--gen:${name}-->\n${val}\n<!--/gen:${name}-->` : `<!--gen:${name}-->${val}<!--/gen:${name}-->`;
+  });
 }
 
 /** README text with the block between the markers replaced (unchanged when the markers are absent). */

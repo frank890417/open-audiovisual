@@ -11,16 +11,16 @@
 // MiniLab and a real MiniLab are the SAME object: whichever hand moves it, the
 // work receives the same midi/minilab3/… signals.
 
-import { MidiController } from './controller.js?v=02fdc94';
-import { matchProfile, pickPort } from './profiles.js?v=02fdc94';
+import { MidiController } from './controller.js?v=f77929d';
+import { matchProfile, pickPort } from './profiles.js?v=f77929d';
 
 export class MidiControllers {
   /**
    * @param {object} o
    * @param {object[]} o.profiles             profile JSON list (packages/midi/profiles)
-   * @param {import('../core/src/signals.js?v=02fdc94').Signals} [o.signals]
+   * @param {import('../core/src/signals.js?v=f77929d').Signals} [o.signals]
    * @param {(name:string, value:any, info:object)=>void} [o.sink]   publish here instead (a phone → relay)
-   * @param {import('./index.js?v=02fdc94').Midi} [o.midi]   hardware engine (enabled or about to be)
+   * @param {import('./index.js?v=f77929d').Midi} [o.midi]   hardware engine (enabled or about to be)
    * @param {string} [o.initial]               profile id shown before any hardware
    * @param {Storage} [o.storage]              learned mappings & manual port assignments persist here
    */

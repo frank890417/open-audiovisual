@@ -93,14 +93,14 @@ const MCP = {
 { "mcpServers": { "openav": { "command": "node", "args": ["/path/to/open-audiovisual/packages/mcp/server.js"] } } }
 \`\`\`
 
-Tools: \`list_examples\` (works and one-line summaries) · \`read_doc\` (architecture, writing-a-world, signals, show-control, roadmap, agents, readme) · \`scaffold_world\` (copy a donor example into a new numbered one) · \`run_checks\` (the test suite CI runs). A Claude Code skill, \`.claude/skills/create-world\`, scaffolds a world from a description.`,
+Tools: \`list_examples\` (works and one-line summaries) · \`read_doc\` (architecture, writing-a-world, signals, show-control, roadmap, agents, readme) · \`scaffold_world\` (copy a donor example into a new numbered one) · \`run_checks\` (the test suite CI runs) · \`list_controllers\` / \`read_profile\` / \`validate_profile\` / \`scaffold_profile\` (MIDI controller profiles: browse, read, check, start a new one). A Claude Code skill, \`.claude/skills/create-world\`, scaffolds a world from a description.`,
   zh: `專案內附零相依的 MCP 伺服器（stdio，\`packages/mcp/server.js\`）。在專案裡開 Claude Code 會從 \`.mcp.json\` 自動載入。其他客戶端：
 
 \`\`\`json
 { "mcpServers": { "openav": { "command": "node", "args": ["/path/to/open-audiovisual/packages/mcp/server.js"] } } }
 \`\`\`
 
-工具：\`list_examples\`（作品與一句話摘要）· \`read_doc\`（architecture、writing-a-world、signals、show-control、roadmap、agents、readme）· \`scaffold_world\`（把一個範例複製成新的編號範例）· \`run_checks\`（CI 跑的測試）。Claude Code 技能 \`.claude/skills/create-world\` 可依描述建立世界。`,
+工具：\`list_examples\`（作品與一句話摘要）· \`read_doc\`（architecture、writing-a-world、signals、show-control、roadmap、agents、readme）· \`scaffold_world\`（把一個範例複製成新的編號範例）· \`run_checks\`（CI 跑的測試）· \`list_controllers\` / \`read_profile\` / \`validate_profile\` / \`scaffold_profile\`（MIDI 控制器設定檔：列出、讀取、檢查、開新檔）。Claude Code 技能 \`.claude/skills/create-world\` 可依描述建立世界。`,
 };
 
 // ---------------------------------------------------------------------------- pieces

@@ -35,6 +35,8 @@ export const PAGES = {
   controllers: 'controllers/',
   docs: 'docs/',
   webtoe: 'webtoe/',
+  examples: 'examples/',
+  p5: 'p5/',
 };
 
 /** The top-bar nav. `home` entries are sections of the homepage; the others are pages. */
@@ -179,10 +181,11 @@ const OG_LOCALE = { en: 'en_US', zh: 'zh_TW' };
  *   markdownHref                        this page's own Markdown twin (rel="alternate" type="text/markdown")
  *   ld                                  the page's JSON-LD nodes, added to the shared graph; false → no JSON-LD at all
  *   siteCss                             false → no site font preload / home.css (a page with its own styles, like an example)
+ *   analytics                           false → no Google Analytics snippet (a page that already carries its own, like an example)
  */
 export function headBasics(t, c, {
   title, description, ogDescription = description, ogImage = SITE + 'assets/home/og.png', ogImageAlt = t.seo.ogImageAlt,
-  ogType = 'website', noindex = false, robots = '', markdownHref = '', ld = [], siteCss = true,
+  ogType = 'website', noindex = false, robots = '', markdownHref = '', ld = [], siteCss = true, analytics = true,
 }) {
   const canonical = !noindex && c.self;
   const twin = canonical && c.both;
@@ -222,7 +225,7 @@ export function headBasics(t, c, {
     `<link rel="manifest" href="${c.root}${ICON_FILES.manifest}">`,
     siteCss ? `<link rel="preload" href="${c.root}assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>` : '',
     siteCss ? `<link rel="stylesheet" href="${c.root}assets/home/home.css">` : '',
-    GA_SNIPPET,
+    analytics ? GA_SNIPPET : '',
     ld === false ? '' : ldScript(jsonLdGraph(c, t, ld)),
   ];
   return lines.filter(Boolean).join('\n');
@@ -269,8 +272,10 @@ export function siteFooter(t, c) {
     </div>
     <nav aria-label="${attr(t.footer.pages)}">
       <a href="${c.to('home')}">${t.footer.homeLink}</a>
+      <a href="${c.to('examples')}">${t.footer.examples}</a>
       <a href="${c.to('controllers')}">${t.ui.nav.controllers}</a>
       <a href="${c.to('docs')}">${t.ui.nav.docs}</a>
+      <a href="${c.to('p5')}">${t.footer.p5}</a>
       <a href="${c.to('webtoe')}">${t.ui.nav.webtoe}</a>
     </nav>
     <nav aria-label="${attr(t.footer.machine)}">
