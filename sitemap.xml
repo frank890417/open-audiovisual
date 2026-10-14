@@ -436,12 +436,14 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/check/</loc>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/check/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/check/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/check/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/check/</loc>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/check/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/check/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/check/"/>
