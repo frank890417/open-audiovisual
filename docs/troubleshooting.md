@@ -18,6 +18,24 @@ Pages served over https (openaudiovisual.com, an https tunnel) don't try at all:
 browser blocks `ws://` there, and a published site has no relay beside it. A show that
 runs a monitor behind TLS passes the address itself, `new MonitorFeed({ url: 'wss://…' })`.
 
+## Chrome asks about the local network, or about apps on this device
+
+Chrome's Local Network Access check puts a permission prompt in front of a **public** https page that tries to reach your own machine or network; a page served from your machine is not covered ([Chrome blog](https://developer.chrome.com/blog/local-network-access)). What it gates, by Chrome version (checked 2026-10-15):
+
+- Chrome 142: `fetch` requests ([Chrome blog](https://developer.chrome.com/blog/local-network-access)).
+- Chrome 145: two permissions, one for the local network and one for this device itself, called loopback ([Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)).
+- Chrome 147: WebSocket and WebTransport connections as well ([Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)).
+- Chrome 154: `new WebSocket(url, { targetAddressSpace })` lets a page say which kind of address it expects ([Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)).
+
+When a show runs on openaudiovisual.com or another https site, three things of ours reach for your machine: the OSC bridge (`OscOut` posts to `http://127.0.0.1:7456`), the backstage monitor (`ws://127.0.0.1:7457`) and the Leap bridge. The first time, Chrome asks. If you chose Block, the connection fails, and the console shows `net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS` (seen on Chrome 154, [Leap package notes](https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md)).
+
+What to do:
+
+- Press **Allow**. If you blocked it, open the page's site settings (the icon left of the address) and allow it again, then reload.
+- Or open the page from your own machine: `node serve.js`, then `http://localhost:8080/…`. That page is not a public site, so Chrome does not ask. This is the safest way to teach or rehearse the OAV → OSC → TouchDesigner path.
+- In an `<iframe>`, a cross-origin frame needs `allow="loopback-network"`; a same-origin frame inherits it; a `sandbox`ed frame cannot get it (verified on Chrome 154, [Leap package notes](https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md)).
+- The [device check](https://openaudiovisual.com/check/) has a button that tries the bridge and the monitor and says which one answered. It connects only when you press it.
+
 ## The phone join card says "relay offline"
 
 On your own machine the phone relay lives inside `serve.js` (`/relay`). So the
@@ -43,8 +61,10 @@ kept per browser, so another browser or a private window gets a different one).
 
 ## No MIDI devices appear
 
-- Use Chrome or Edge. Safari has no Web MIDI.
-- Allow MIDI when the browser asks. The permission is per site: allowing it on
+Run the [device check](https://openaudiovisual.com/check/) first: it tells you whether this browser has Web MIDI at all.
+
+- Use Chrome or Edge. Safari has no Web MIDI ([WebKit bug 107250](https://bugs.webkit.org/show_bug.cgi?id=107250), still open), and Firefox has it only after you install its site-permission add-on ([Firefox 108](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108)). More in [Which browser](getting-started.md#which-browser).
+- Allow MIDI when the browser asks. Since Chrome 124 it asks for any MIDI use ([Chrome blog](https://developer.chrome.com/blog/web-midi-permission-prompt)). The permission is per site: allowing it on
   `localhost:8080` does not allow it on `localhost:3000`.
 - The device was plugged in after the page loaded: it should appear by itself.
   If it does not, reload.

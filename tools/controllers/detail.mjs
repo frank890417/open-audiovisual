@@ -213,7 +213,7 @@ ${head}
 ${topBar(home, c)}
 
 <main id="main">
-  ${noMidiStrip(t)}
+  ${noMidiStrip(t, c)}
 
   <!-- ═════ the instrument first, then the words ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">

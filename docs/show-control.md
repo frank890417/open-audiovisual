@@ -247,6 +247,13 @@ show.app.osc = osc;          // the Layers panel shows the OSC rate
 show.stage.io.osc = osc;     // worlds can send from update(dt, state, io)
 ```
 
+### TouchDesigner as the receiver
+
+OSC goes to TouchDesigner as above. TouchDesigner can also show an open-audiovisual page as a picture with its Web Render TOP, which draws a web page inside TouchDesigner on the same machine ([Web Render TOP](https://docs.derivative.ca/Web_Render_TOP)). We have not checked whether the Web Render TOP supports Web MIDI or WebGPU. Keep the control on OSC.
+
+If the page comes from openaudiovisual.com, Chrome asks before the page may reach the bridge on `127.0.0.1`: see [Chrome asks about the local network](troubleshooting.md#chrome-asks-about-the-local-network-or-about-apps-on-this-device) ([Chrome blog](https://developer.chrome.com/blog/local-network-access)). Running `node serve.js` and opening the page from `http://localhost:8080` avoids the prompt.
+
+
 ## MIDI output and panic
 
 `midi.noteOn/noteOff/cc/send` go to the selected output port — and `midi.panic()` sends all-notes-off +

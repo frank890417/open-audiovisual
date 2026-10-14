@@ -453,3 +453,12 @@ html[lang^="zh"] .wt-band h2 { letter-spacing: 0; line-height: 1.15; }
 .faq-item .term pre { font-size: 12.5px; }
 .faq-more { font-size: 14px; }
 @media (max-width: 900px) { .sec-faq .faq-list { grid-template-columns: minmax(0, 1fr); } }
+
+/* the strip for browsers without Web MIDI: shared by the homepage and the controller pages (tools/controllers/page.mjs noMidiStrip) */
+.no-midi { display: flex; align-items: center; gap: 14px; max-width: var(--maxw); margin: 12px auto 0; padding: 10px 14px; width: calc(100% - 2 * var(--pad)); box-sizing: border-box;
+  border: 1px solid var(--line-2); border-left: 3px solid var(--l2); background: var(--ink-2); }
+.no-midi[hidden] { display: none; }
+.no-midi p { flex: 1; min-width: 0; margin: 0; color: var(--fg); font-size: 14.5px; line-height: 1.5; }
+.no-midi button { flex: none; padding: 8px 12px; border: 1px solid var(--fg-3); background: transparent; color: var(--fg); font: 500 12px/1 var(--mono); cursor: pointer; }
+.no-midi button:hover { border-color: var(--sig); }
+.no-midi a { color: var(--fg); text-decoration-color: var(--sig); white-space: nowrap; }

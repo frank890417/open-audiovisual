@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=7792f7b">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=7792f7b">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -305,6 +305,7 @@
           <a href="#troubleshooting"><span class="n">17</span><span class="t">Troubleshooting</span></a>
           <ol class="toc-secs">
             <li><a href="#troubleshooting-the-console-shows-a-ws-7457-error">The console shows a ws://…:7457 error</a></li>
+            <li><a href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome asks about the local network, or about apps on this device</a></li>
             <li><a href="#troubleshooting-the-phone-join-card-says-relay-offline">The phone join card says "relay offline"</a></li>
             <li><a href="#troubleshooting-no-midi-devices-appear">No MIDI devices appear</a></li>
             <li><a href="#troubleshooting-a-daw-on-the-iac-bus-is-not-heard">A DAW on the IAC bus is not heard</a></li>
@@ -342,7 +343,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">18 chapters · 171 sections · v0.1.0</p>
+      <p class="docs-stats">18 chapters · 172 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -444,8 +445,22 @@ npm scripts:</p>
 <p>Open <code>http://localhost:8080/examples/01-hello-particles/</code>. Every example runs
 without hardware.</p>
 <h3 id="quick-start-which-browser">Which browser<a class="anchor" href="#quick-start-which-browser" aria-label="Link to this section">#</a></h3>
+<p>Not sure what your device can do? Open the <a href="../check/">device check</a>. It looks at your browser, Web MIDI, microphone, camera and graphics, and says what to do about each. Nothing runs until you press a button, and nothing leaves your device.</p>
+<p>Web MIDI is the one that differs most between browsers (sources checked 2026-10-15):</p>
 <ul>
-<li><strong>Chrome or Edge</strong> for a show. They have Web MIDI; Safari does not.</li>
+<li><strong>Chrome and Edge</strong> have it. Use them for a show. Since Chrome 124 any use of MIDI asks for permission, where before only system-exclusive access did (<a href="https://developer.chrome.com/blog/web-midi-permission-prompt" rel="noopener">Chrome blog</a>).</li>
+<li><strong>Firefox</strong> has Web MIDI on desktop from version 108, after you install Firefox's site-permission add-on (<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108" rel="noopener">Firefox 108 release notes</a>).</li>
+<li><strong>Safari</strong> on Mac, iPhone and iPad has no Web MIDI (<a href="https://caniuse.com/midi" rel="noopener">caniuse</a>). WebKit lists it as not implemented because of fingerprinting concerns (<a href="https://webkit.org/tracking-prevention/" rel="noopener">WebKit</a>), and <a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">bug 107250</a> is still open and unassigned. Chrome on an iPhone or iPad is WebKit underneath, so it has none either. On a Mac there is a third-party Safari extension, <a href="https://github.com/triglav-modular/Safari-WebMIDI" rel="noopener">Safari-WebMIDI</a>; we have not tested it.</li>
+</ul>
+<p>Where the browser has no Web MIDI, there are three routes:</p>
+<ul>
+<li><strong>Play on screen.</strong> Every controller in the <a href="../controllers/">library</a> plays with a finger, and every event still fires.</li>
+<li><strong>Use a phone as the controller.</strong> See <a href="#phones">Phones, relay &amp; surfaces</a>.</li>
+<li><strong>A browser app for the iPad.</strong> <a href="https://apps.apple.com/app/midiweb-browser/id6757226617" rel="noopener">MIDIWeb Browser</a> is a third-party app for iOS 17.6 and later that gives pages Web MIDI. We have not tested it with open-audiovisual.</li>
+</ul>
+<p>On Windows 11 the built-in Windows MIDI Services (released 2026-02-17) give apps shared MIDI ports and a loopback, so loopMIDI is no longer needed to send MIDI from the browser to a DAW (<a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/" rel="noopener">Windows blog</a>); see <a href="#controllers-play-your-daw-with-it">Play your DAW with it</a>.</p>
+<p>Two more rules apply to every browser:</p>
+<ul>
 <li><strong>Camera and microphone</strong> only work in a secure context: <code>http://localhost</code>
 or <code>https://</code>. Open the show on the machine that runs <code>serve.js</code> through
 <code>localhost</code>, not through its LAN address.</li>
@@ -1682,12 +1697,15 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=7792f7b"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
 show.app.osc = osc;          <span class="tc">// the Layers panel shows the OSC rate</span>
 show.stage.io.osc = osc;     <span class="tc">// worlds can send from update(dt, state, io)</span></code></pre></div>
+<h4 id="show-control-touchdesigner-as-the-receiver">TouchDesigner as the receiver<a class="anchor" href="#show-control-touchdesigner-as-the-receiver" aria-label="Link to this section">#</a></h4>
+<p>OSC goes to TouchDesigner as above. TouchDesigner can also show an open-audiovisual page as a picture with its Web Render TOP, which draws a web page inside TouchDesigner on the same machine (<a href="https://docs.derivative.ca/Web_Render_TOP" rel="noopener">Web Render TOP</a>). We have not checked whether the Web Render TOP supports Web MIDI or WebGPU. Keep the control on OSC.</p>
+<p>If the page comes from openaudiovisual.com, Chrome asks before the page may reach the bridge on <code>127.0.0.1</code>: see <a href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome asks about the local network</a> (<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome blog</a>). Running <code>node serve.js</code> and opening the page from <code>http://localhost:8080</code> avoids the prompt.</p>
 <h3 id="show-control-midi-output-and-panic">MIDI output and panic<a class="anchor" href="#show-control-midi-output-and-panic" aria-label="Link to this section">#</a></h3>
 <p><code>midi.noteOn/noteOff/cc/send</code> go to the selected output port — and <code>midi.panic()</code> sends all-notes-off +
 all-sound-off + sustain-off + per-note note-offs on all 16 channels, through the
@@ -2141,7 +2159,7 @@ page. Every device is on the <a href="../controllers/">controllers page</a>.</p>
 &lt;<span class="tk">oav-controller</span> profile=<span class="ts">"akai-lpd8"</span> readout&gt;&lt;/<span class="tk">oav-controller</span>&gt;</code></pre></div>
 <p>That is the whole integration. The element works without Web MIDI (Safari, iPad): it plays
 and fires events; only hardware and MIDI out report that they are unavailable. It never asks
-for MIDI permission unless you turn on <code>hardware</code>, <code>midi-out</code> or learn.</p>
+for MIDI permission unless you turn on <code>hardware</code>, <code>midi-out</code> or learn. Safari has none because WebKit has not implemented it (<a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">bug 107250</a>, still open).</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Attribute</th><th>What it does</th></tr></thead>
 <tbody>
@@ -2183,8 +2201,8 @@ and accepts <code>{ target: 'openav', type: 'set' | 'ingest' | 'press' | 'releas
 <h3 id="controllers-play-your-daw-with-it">Play your DAW with it<a class="anchor" href="#controllers-play-your-daw-with-it" aria-label="Link to this section">#</a></h3>
 <ol>
 <li>macOS: Audio MIDI Setup → Window → Show MIDI Studio → IAC Driver → “Device is online”.
-Windows: install loopMIDI and add a port.</li>
-<li><code>&lt;oav-controller profile="akai-lpd8" midi-out="IAC"&gt;</code> (Windows: <code>midi-out="loopMIDI"</code>).</li>
+Windows 11: the built-in Windows MIDI Services (released 2026-02-17, rolled out in stages to 24H2 and 25H2) share MIDI ports between apps and include a loopback, and Microsoft's announcement says web pages using Web MIDI can use it (<a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/" rel="noopener">Windows blog</a>). We have not tested it with open-audiovisual. Older Windows: install loopMIDI and add a port; that still works.</li>
+<li><code>&lt;oav-controller profile="akai-lpd8" midi-out="IAC"&gt;</code> (on Windows, give the name of the port you made or the one Windows shows).</li>
 <li>In Ableton Live, turn on Track and Remote for that input; in TouchDesigner, a MIDI In CHOP
 on it; in Resolume, Preferences → MIDI.</li>
 </ol>
@@ -2793,7 +2811,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=7792f7b"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -3279,6 +3297,22 @@ the monitor:</p>
 <p>Pages served over https (openaudiovisual.com, an https tunnel) don't try at all: the
 browser blocks <code>ws://</code> there, and a published site has no relay beside it. A show that
 runs a monitor behind TLS passes the address itself, <code>new MonitorFeed({ url: 'wss://…' })</code>.</p>
+<h3 id="troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome asks about the local network, or about apps on this device<a class="anchor" href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" aria-label="Link to this section">#</a></h3>
+<p>Chrome's Local Network Access check puts a permission prompt in front of a <strong>public</strong> https page that tries to reach your own machine or network; a page served from your machine is not covered (<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome blog</a>). What it gates, by Chrome version (checked 2026-10-15):</p>
+<ul>
+<li>Chrome 142: <code>fetch</code> requests (<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome blog</a>).</li>
+<li>Chrome 145: two permissions, one for the local network and one for this device itself, called loopback (<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>).</li>
+<li>Chrome 147: WebSocket and WebTransport connections as well (<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>).</li>
+<li>Chrome 154: <code>new WebSocket(url, { targetAddressSpace })</code> lets a page say which kind of address it expects (<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>).</li>
+</ul>
+<p>When a show runs on openaudiovisual.com or another https site, three things of ours reach for your machine: the OSC bridge (<code>OscOut</code> posts to <code>http://127.0.0.1:7456</code>), the backstage monitor (<code>ws://127.0.0.1:7457</code>) and the Leap bridge. The first time, Chrome asks. If you chose Block, the connection fails, and the console shows <code>net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS</code> (seen on Chrome 154, <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">Leap package notes</a>).</p>
+<p>What to do:</p>
+<ul>
+<li>Press <strong>Allow</strong>. If you blocked it, open the page's site settings (the icon left of the address) and allow it again, then reload.</li>
+<li>Or open the page from your own machine: <code>node serve.js</code>, then <code>http://localhost:8080/…</code>. That page is not a public site, so Chrome does not ask. This is the safest way to teach or rehearse the OAV → OSC → TouchDesigner path.</li>
+<li>In an <code>&lt;iframe&gt;</code>, a cross-origin frame needs <code>allow="loopback-network"</code>; a same-origin frame inherits it; a <code>sandbox</code>ed frame cannot get it (verified on Chrome 154, <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">Leap package notes</a>).</li>
+<li>The <a href="../check/">device check</a> has a button that tries the bridge and the monitor and says which one answered. It connects only when you press it.</li>
+</ul>
 <h3 id="troubleshooting-the-phone-join-card-says-relay-offline">The phone join card says "relay offline"<a class="anchor" href="#troubleshooting-the-phone-join-card-says-relay-offline" aria-label="Link to this section">#</a></h3>
 <p>On your own machine the phone relay lives inside <code>serve.js</code> (<code>/relay</code>). So the
 card says "relay offline" when the page was opened from a file, or from a server that
@@ -3300,9 +3334,10 @@ If the phone says it is connected but nothing moves, check that both show the sa
 <code>#room</code> and that the computer's page was not reloaded into a new room (the room is
 kept per browser, so another browser or a private window gets a different one).</p>
 <h3 id="troubleshooting-no-midi-devices-appear">No MIDI devices appear<a class="anchor" href="#troubleshooting-no-midi-devices-appear" aria-label="Link to this section">#</a></h3>
+<p>Run the <a href="../check/">device check</a> first: it tells you whether this browser has Web MIDI at all.</p>
 <ul>
-<li>Use Chrome or Edge. Safari has no Web MIDI.</li>
-<li>Allow MIDI when the browser asks. The permission is per site: allowing it on
+<li>Use Chrome or Edge. Safari has no Web MIDI (<a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">WebKit bug 107250</a>, still open), and Firefox has it only after you install its site-permission add-on (<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108" rel="noopener">Firefox 108</a>). More in <a href="#quick-start-which-browser">Which browser</a>.</li>
+<li>Allow MIDI when the browser asks. Since Chrome 124 it asks for any MIDI use (<a href="https://developer.chrome.com/blog/web-midi-permission-prompt" rel="noopener">Chrome blog</a>). The permission is per site: allowing it on
 <code>localhost:8080</code> does not allow it on <code>localhost:3000</code>.</li>
 <li>The device was plugged in after the page loaded: it should appear by itself.
 If it does not, reload.</li>
@@ -3511,7 +3546,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=7792f7b"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

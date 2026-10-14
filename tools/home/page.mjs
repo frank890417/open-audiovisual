@@ -9,6 +9,9 @@
 import { SITE, REPO, BLOB, TREE, pageCtx, headBasics, pageNode, SOFTWARE_ID, topBar, siteFooter, guardEmail } from '../site/chrome.mjs';
 import { getFacts } from '../site/facts.mjs';
 import { WEBTOE, SHOTS as WEBTOE_SHOTS, shot } from '../webtoe/page.mjs';
+import { noMidiStrip } from '../controllers/page.mjs';
+import ctlEn from '../controllers/en.mjs';
+import ctlZh from '../controllers/zh.mjs';
 import { routeGroups, L as pick } from '../examples/catalog.mjs';
 import { ROUTE_NAMES, routeMark } from '../examples/strings.mjs';
 export { SITE, REPO };
@@ -185,6 +188,7 @@ ${JSON.stringify(importmap, null, 2)}
 ${topBar(t, pageCtx('home', locale))}
 
 <main id="main">
+  ${noMidiStrip(locale === 'zh' ? ctlZh : ctlEn, pageCtx('home', locale))}
 
   <!-- ═════ 01 · the instrument: this hero IS the framework running ═════ -->
   <section class="hero" id="play" aria-labelledby="hero-title">

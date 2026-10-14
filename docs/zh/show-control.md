@@ -198,6 +198,13 @@ show.app.osc = osc;          // the Layers panel shows the OSC rate
 show.stage.io.osc = osc;     // worlds can send from update(dt, state, io)
 ```
 
+### TouchDesigner 當接收端
+
+OSC 照上面的方式送進 TouchDesigner。TouchDesigner 也可以用 Web Render TOP 把 open-audiovisual 的頁面當成畫面，它把網頁畫在同一台機器的 TouchDesigner 裡（[Web Render TOP](https://docs.derivative.ca/Web_Render_TOP)）。Web Render TOP 支不支援 Web MIDI 或 WebGPU，我們還沒有驗證。控制請維持走 OSC。
+
+頁面如果來自 openaudiovisual.com，Chrome 會先問，才讓頁面連到 `127.0.0.1` 上的橋接：見[Chrome 跳出「區域網路」的詢問](troubleshooting.md#chrome-asks-about-the-local-network-or-about-apps-on-this-device)（[Chrome 部落格](https://developer.chrome.com/blog/local-network-access)）。跑 `node serve.js`、從 `http://localhost:8080` 打開頁面，就不會跳出詢問。
+
+
 ## MIDI 輸出與緊急靜音
 
 `midi.noteOn/noteOff/cc/send` 會送到選定的輸出埠。`midi.panic()` 會在全部 16 個頻道送出 all-notes-off、all-sound-off、放開延音踏板，再逐音送 note-off。它跟其他輸出走同一個出口，一樣看得到。把它綁在一個摸黑也找得到的打擊墊上。每個演奏者遲早都會用到它，在這裡只要呼叫一次。

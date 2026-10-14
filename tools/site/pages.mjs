@@ -39,6 +39,8 @@ export const STATIC = [
   { id: 'docs', path: 'docs/', langs: ['en', 'zh'], src: ['docs', 'tools/docs'] },
   { derive: 'controllers' },
   { id: 'webtoe', path: 'webtoe/', langs: ['en', 'zh'], src: ['tools/webtoe'] },
+  // the device check: tools/build-check.mjs, behaviour in assets/check/
+  { id: 'check', path: 'check/', langs: ['en', 'zh'], src: ['tools/check', 'assets/check'] },
   // the examples index (tools/build-examples.mjs reads examples/catalog.json), then one page per example (derived)
   { id: 'examples', path: 'examples/', langs: ['en', 'zh'], src: ['examples/catalog.json', 'tools/examples', 'assets/examples/pages.css'] },
   { derive: 'examples' },

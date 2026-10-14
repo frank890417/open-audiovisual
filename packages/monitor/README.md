@@ -21,6 +21,10 @@ monitor.connect();
 monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
 ```
 
+## From an https page
+
+`createShow()` does not try the monitor on an https page. A hand-assembled show on public https that connects to `ws://127.0.0.1:7457` meets Chrome's Local Network Access prompt, which covers WebSocket connections from Chrome 147 ([Chrome blog](https://developer.chrome.com/blog/local-network-access)). Press Allow, or open the page from `http://localhost`. Details: [Troubleshooting](https://openaudiovisual.com/docs/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device).
+
 ## Exports
 
 | export | signature |

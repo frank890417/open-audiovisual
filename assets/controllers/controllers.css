@@ -266,12 +266,6 @@ html[lang^="zh"] .page-controller .ch-hero h1 { font-size: clamp(30px, 4vw, 64px
 .request h3 { margin-top: 0; }
 .request p { max-width: 70ch; color: var(--fg-2); font-size: 15px; }
 .request .model-links { margin-bottom: 0; }
-.no-midi { display: flex; align-items: center; gap: 14px; max-width: var(--maxw); margin: 12px auto 0; padding: 10px 14px; width: calc(100% - 2 * var(--pad)); box-sizing: border-box;
-  border: 1px solid var(--line-2); border-left: 3px solid var(--l2); background: var(--ink-2); }
-.no-midi[hidden] { display: none; }
-.no-midi p { flex: 1; min-width: 0; margin: 0; color: var(--fg); font-size: 14.5px; line-height: 1.5; }
-.no-midi button { flex: none; padding: 8px 12px; border: 1px solid var(--fg-3); background: transparent; color: var(--fg); font: 500 12px/1 var(--mono); cursor: pointer; }
-.no-midi button:hover { border-color: var(--sig); }
 @media (max-width: 640px) {
   .sec table.compare th[scope="row"] { position: sticky; left: 0; z-index: 1; min-width: 11em; background: var(--void); }
   .no-midi { align-items: flex-start; flex-direction: column; gap: 10px; }

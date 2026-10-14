@@ -56,7 +56,7 @@ run_tests() {
 guard_untracked() {
   # untracked files are committed only where the site lives; anything else stops the release
   local bad
-  bad=$(git ls-files --others --exclude-standard | grep -vE '^(\.github|assets|controllers|docs|embed|examples|p5|packages|tests|tools|webtoe|zh)/|^[^/]+\.(html|txt|xml|webmanifest|ico|svg|png|md|json)$' || true)
+  bad=$(git ls-files --others --exclude-standard | grep -vE '^(\.github|assets|check|controllers|docs|embed|examples|p5|packages|tests|tools|webtoe|zh)/|^[^/]+\.(html|txt|xml|webmanifest|ico|svg|png|md|json)$' || true)
   [[ -z "$bad" ]] || { echo "✗ untracked files outside the site, not committing:" >&2; echo "$bad" >&2; exit 1; }
 }
 commit_if_changed() {

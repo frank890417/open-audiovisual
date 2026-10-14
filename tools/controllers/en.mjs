@@ -105,6 +105,7 @@ export default {
   // strip shown by a script on browsers that have no Web MIDI
   noMidi: {
     text: 'This device has no Web MIDI, so a hardware controller cannot connect here. You can still play on screen with your fingers. To plug in yours, open this page in Chrome or Edge on a computer.',
+    check: 'Check this device',
     ok: 'Got it',
     close: 'Close this note',
   },
@@ -171,7 +172,7 @@ export default {
     dawTitle: 'MIDI out to Ableton, TouchDesigner, Resolume',
     mac: [
       'macOS: open <b>Audio MIDI Setup</b> → Window → Show MIDI Studio, double-click <b>IAC Driver</b>, tick “Device is online”.',
-      'Windows: install <a href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI</a> and add a port.',
+      'Windows 11: the built-in <a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/">Windows MIDI Services</a> include a loopback port (not tested by us). Older Windows: install <a href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI</a> and add a port.',
       'Ableton Live: Settings → Link, Tempo &amp; MIDI → turn on Track and Remote for the IAC or loopMIDI input. TouchDesigner: a MIDI In CHOP on that device. Resolume: Preferences → MIDI.',
     ],
     browsers: 'Web MIDI works in Chrome and Edge, and in Firefox after it asks you to allow the site. Safari and iPad have none: the controller still plays and fires every event, and MIDI out reports that it is unavailable.',
@@ -259,7 +260,7 @@ export default {
       iframeText: 'For places that only take an iframe. Every event arrives as a <code>postMessage</code>.',
       outTitle: 'Send it to Ableton, TouchDesigner or Resolume',
       outText: 'What you play on screen leaves as real MIDI on the IAC bus (macOS) or a loopMIDI port (Windows). The steps are on the <a href="{href}">catalog page</a>.',
-      outSteps: 'macOS: Audio MIDI Setup → MIDI Studio → IAC Driver → “Device is online”. Windows: install loopMIDI and add a port; use <code>midi-out="loopMIDI"</code>.',
+      outSteps: 'macOS: Audio MIDI Setup → MIDI Studio → IAC Driver → “Device is online”. Windows 11: the built-in <a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/">Windows MIDI Services</a> have a loopback (not tested by us); older Windows: install loopMIDI, add a port and use <code>midi-out="loopMIDI"</code>.',
       p5Title: 'In p5.js, with one line',
       p5Text: 'The one-line injection names knobs, faders and pads by their order in this profile, the order of the table above. Add <code>?profile={id}</code> to make the on-screen controller this one; a real {name} is recognised by its port name.',
       p5TextGeneric: 'The one-line injection names knobs, faders and pads by their order in this layout, the order of the table above. Add <code>?profile={id}</code> to make the on-screen controller this one.',

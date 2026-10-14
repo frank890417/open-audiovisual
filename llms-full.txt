@@ -372,7 +372,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5**, an MCP server, and a handbook site.
 
-23 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 513 tests
+23 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 537 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -592,7 +592,24 @@ without hardware.
 
 ## Which browser
 
-- **Chrome or Edge** for a show. They have Web MIDI; Safari does not.
+Not sure what your device can do? Open the [device check](https://openaudiovisual.com/check/). It looks at your browser, Web MIDI, microphone, camera and graphics, and says what to do about each. Nothing runs until you press a button, and nothing leaves your device.
+
+Web MIDI is the one that differs most between browsers (sources checked 2026-10-15):
+
+- **Chrome and Edge** have it. Use them for a show. Since Chrome 124 any use of MIDI asks for permission, where before only system-exclusive access did ([Chrome blog](https://developer.chrome.com/blog/web-midi-permission-prompt)).
+- **Firefox** has Web MIDI on desktop from version 108, after you install Firefox's site-permission add-on ([Firefox 108 release notes](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108)).
+- **Safari** on Mac, iPhone and iPad has no Web MIDI ([caniuse](https://caniuse.com/midi)). WebKit lists it as not implemented because of fingerprinting concerns ([WebKit](https://webkit.org/tracking-prevention/)), and [bug 107250](https://bugs.webkit.org/show_bug.cgi?id=107250) is still open and unassigned. Chrome on an iPhone or iPad is WebKit underneath, so it has none either. On a Mac there is a third-party Safari extension, [Safari-WebMIDI](https://github.com/triglav-modular/Safari-WebMIDI); we have not tested it.
+
+Where the browser has no Web MIDI, there are three routes:
+
+- **Play on screen.** Every controller in the [library](https://openaudiovisual.com/controllers/) plays with a finger, and every event still fires.
+- **Use a phone as the controller.** See [Phones, relay & surfaces](remote.md).
+- **A browser app for the iPad.** [MIDIWeb Browser](https://apps.apple.com/app/midiweb-browser/id6757226617) is a third-party app for iOS 17.6 and later that gives pages Web MIDI. We have not tested it with open-audiovisual.
+
+On Windows 11 the built-in Windows MIDI Services (released 2026-02-17) give apps shared MIDI ports and a loopback, so loopMIDI is no longer needed to send MIDI from the browser to a DAW ([Windows blog](https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/)); see [Play your DAW with it](controllers.md#play-your-daw-with-it).
+
+Two more rules apply to every browser:
+
 - **Camera and microphone** only work in a secure context: `http://localhost`
   or `https://`. Open the show on the machine that runs `serve.js` through
   `localhost`, not through its LAN address.
@@ -2132,6 +2149,12 @@ show.app.osc = osc;          // the Layers panel shows the OSC rate
 show.stage.io.osc = osc;     // worlds can send from update(dt, state, io)
 ```
 
+### TouchDesigner as the receiver
+
+OSC goes to TouchDesigner as above. TouchDesigner can also show an open-audiovisual page as a picture with its Web Render TOP, which draws a web page inside TouchDesigner on the same machine ([Web Render TOP](https://docs.derivative.ca/Web_Render_TOP)). We have not checked whether the Web Render TOP supports Web MIDI or WebGPU. Keep the control on OSC.
+
+If the page comes from openaudiovisual.com, Chrome asks before the page may reach the bridge on `127.0.0.1`: see [Chrome asks about the local network](troubleshooting.md#chrome-asks-about-the-local-network-or-about-apps-on-this-device) ([Chrome blog](https://developer.chrome.com/blog/local-network-access)). Running `node serve.js` and opening the page from `http://localhost:8080` avoids the prompt.
+
 ## MIDI output and panic
 
 `midi.noteOn/noteOff/cc/send` go to the selected output port — and `midi.panic()` sends all-notes-off +
@@ -2669,7 +2692,7 @@ page. Every device is on the [controllers page](https://openaudiovisual.com/cont
 
 That is the whole integration. The element works without Web MIDI (Safari, iPad): it plays
 and fires events; only hardware and MIDI out report that they are unavailable. It never asks
-for MIDI permission unless you turn on `hardware`, `midi-out` or learn.
+for MIDI permission unless you turn on `hardware`, `midi-out` or learn. Safari has none because WebKit has not implemented it ([bug 107250](https://bugs.webkit.org/show_bug.cgi?id=107250), still open).
 
 | Attribute | What it does |
 |---|---|
@@ -2727,8 +2750,8 @@ and accepts `{ target: 'openav', type: 'set' | 'ingest' | 'press' | 'release' | 
 ## Play your DAW with it
 
 1. macOS: Audio MIDI Setup → Window → Show MIDI Studio → IAC Driver → “Device is online”.
-   Windows: install loopMIDI and add a port.
-2. `<oav-controller profile="akai-lpd8" midi-out="IAC">` (Windows: `midi-out="loopMIDI"`).
+   Windows 11: the built-in Windows MIDI Services (released 2026-02-17, rolled out in stages to 24H2 and 25H2) share MIDI ports between apps and include a loopback, and Microsoft's announcement says web pages using Web MIDI can use it ([Windows blog](https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/)). We have not tested it with open-audiovisual. Older Windows: install loopMIDI and add a port; that still works.
+2. `<oav-controller profile="akai-lpd8" midi-out="IAC">` (on Windows, give the name of the port you made or the one Windows shows).
 3. In Ableton Live, turn on Track and Remote for that input; in TouchDesigner, a MIDI In CHOP
    on it; in Resolume, Preferences → MIDI.
 
@@ -3985,6 +4008,24 @@ Pages served over https (openaudiovisual.com, an https tunnel) don't try at all:
 browser blocks `ws://` there, and a published site has no relay beside it. A show that
 runs a monitor behind TLS passes the address itself, `new MonitorFeed({ url: 'wss://…' })`.
 
+## Chrome asks about the local network, or about apps on this device
+
+Chrome's Local Network Access check puts a permission prompt in front of a **public** https page that tries to reach your own machine or network; a page served from your machine is not covered ([Chrome blog](https://developer.chrome.com/blog/local-network-access)). What it gates, by Chrome version (checked 2026-10-15):
+
+- Chrome 142: `fetch` requests ([Chrome blog](https://developer.chrome.com/blog/local-network-access)).
+- Chrome 145: two permissions, one for the local network and one for this device itself, called loopback ([Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)).
+- Chrome 147: WebSocket and WebTransport connections as well ([Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)).
+- Chrome 154: `new WebSocket(url, { targetAddressSpace })` lets a page say which kind of address it expects ([Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)).
+
+When a show runs on openaudiovisual.com or another https site, three things of ours reach for your machine: the OSC bridge (`OscOut` posts to `http://127.0.0.1:7456`), the backstage monitor (`ws://127.0.0.1:7457`) and the Leap bridge. The first time, Chrome asks. If you chose Block, the connection fails, and the console shows `net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS` (seen on Chrome 154, [Leap package notes](https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md)).
+
+What to do:
+
+- Press **Allow**. If you blocked it, open the page's site settings (the icon left of the address) and allow it again, then reload.
+- Or open the page from your own machine: `node serve.js`, then `http://localhost:8080/…`. That page is not a public site, so Chrome does not ask. This is the safest way to teach or rehearse the OAV → OSC → TouchDesigner path.
+- In an `<iframe>`, a cross-origin frame needs `allow="loopback-network"`; a same-origin frame inherits it; a `sandbox`ed frame cannot get it (verified on Chrome 154, [Leap package notes](https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md)).
+- The [device check](https://openaudiovisual.com/check/) has a button that tries the bridge and the monitor and says which one answered. It connects only when you press it.
+
 ## The phone join card says "relay offline"
 
 On your own machine the phone relay lives inside `serve.js` (`/relay`). So the
@@ -4010,8 +4051,10 @@ kept per browser, so another browser or a private window gets a different one).
 
 ## No MIDI devices appear
 
-- Use Chrome or Edge. Safari has no Web MIDI.
-- Allow MIDI when the browser asks. The permission is per site: allowing it on
+Run the [device check](https://openaudiovisual.com/check/) first: it tells you whether this browser has Web MIDI at all.
+
+- Use Chrome or Edge. Safari has no Web MIDI ([WebKit bug 107250](https://bugs.webkit.org/show_bug.cgi?id=107250), still open), and Firefox has it only after you install its site-permission add-on ([Firefox 108](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108)). More in [Which browser](getting-started.md#which-browser).
+- Allow MIDI when the browser asks. Since Chrome 124 it asks for any MIDI use ([Chrome blog](https://developer.chrome.com/blog/web-midi-permission-prompt)). The permission is per site: allowing it on
   `localhost:8080` does not allow it on `localhost:3000`.
 - The device was plugged in after the page loaded: it should appear by itself.
   If it does not, reload.

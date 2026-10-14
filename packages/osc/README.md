@@ -24,6 +24,10 @@ show.app.osc = osc;                   // the Layers panel shows OSC traffic
 show.stage.io.osc = osc;              // worlds can send from update(dt, state, io)
 ```
 
+## From an https page
+
+`OscOut` posts to `http://127.0.0.1:7456`. When the page is public https (openaudiovisual.com, OpenProcessing), Chrome 142 and later ask for Local Network Access first ([Chrome blog](https://developer.chrome.com/blog/local-network-access)), with a separate permission for this device itself from Chrome 145 ([Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)). Press Allow, or open the page from `http://localhost` with `node serve.js`. Details and the fix: [Troubleshooting](https://openaudiovisual.com/docs/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device).
+
 ## Exports
 
 | export | signature |

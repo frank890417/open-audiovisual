@@ -1,0 +1,48 @@
+/* open-audiovisual — /check/.
+   Loaded after assets/home/home.css: same tokens, top bar and footer. A state is never colour alone:
+   the badge says it in words, and the dot is a filled, half or empty shape as well as a colour. */
+
+.chk-hero { max-width: var(--maxw); margin: 0 auto; padding: clamp(22px, 3.2vw, 44px) var(--pad) 0; }
+.chk-hero > .eyebrow { color: var(--sig); }
+.chk-hero h1 { margin: 10px 0 0 -.04em; font: 800 clamp(38px, 5.4vw, 88px)/.95 var(--sans); font-stretch: 112%; letter-spacing: -.045em; }
+html[lang^="zh"] .chk-hero h1 { margin-left: 0; letter-spacing: 0; line-height: 1.12; font-size: clamp(34px, 5vw, 80px); }
+.chk-hero .lede { margin: clamp(14px, 1.6vw, 22px) 0 0; max-width: 64ch; color: var(--fg-2); font-size: clamp(16.5px, 1.32vw, 19.5px); }
+.chk-promise { margin: 18px 0 0; max-width: 64ch; padding-left: 12px; border-left: 2px solid var(--sig); color: var(--fg); font-size: 15.5px; }
+
+.chk-body { max-width: var(--maxw); margin: 0 auto; padding: clamp(22px, 3vw, 40px) var(--pad) clamp(40px, 6vw, 90px); }
+.chk-list { list-style: none; margin: 0; padding: 0; align-items: start; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.chk { min-width: 0; padding: 16px 18px 14px; border: 1px solid var(--line); background: var(--ink-2); --c: var(--fg-3); }
+.chk[data-state="ok"] { --c: #4fd98a; }
+.chk[data-state="warn"] { --c: #f2c14e; }
+.chk[data-state="bad"] { --c: #ff5a5a; }
+.chk[data-state="ok"], .chk[data-state="warn"], .chk[data-state="bad"] { border-color: var(--line-2); border-left: 3px solid var(--c); }
+.chk-head { display: flex; align-items: center; gap: 10px; }
+.chk-head h2 { flex: 1; min-width: 0; margin: 0; font: 700 18px/1.25 var(--sans); }
+.chk-dot { flex: none; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--c); box-sizing: border-box; }
+.chk[data-state="ok"] .chk-dot { background: var(--c); }
+.chk[data-state="warn"] .chk-dot { background: linear-gradient(90deg, var(--c) 50%, transparent 50%); }
+.chk[data-state="bad"] .chk-dot { background: var(--c); border-radius: 2px; }
+.chk-badge { flex: none; padding: 3px 8px; border: 1px solid var(--c); color: var(--c); font: 500 11.5px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.chk-msg { margin: 10px 0 0; color: var(--fg); font-size: 15px; line-height: 1.55; overflow-wrap: anywhere; }
+.chk-act { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0 0; }
+.chk-btn { padding: 9px 13px; border: 1px solid var(--fg-3); background: transparent; color: var(--fg); font: 500 12.5px/1 var(--mono); letter-spacing: .04em; cursor: pointer; }
+.chk-btn:hover:not([disabled]) { border-color: var(--sig); }
+.chk-btn[disabled] { opacity: .5; cursor: default; }
+.chk-note { flex: 1 1 14em; color: var(--fg-3); font-size: 13.5px; line-height: 1.45; }
+.chk-doc { margin: 12px 0 0; color: var(--fg-3); font-size: 13.5px; }
+.chk-doc a { color: var(--fg-2); }
+.chk-video { display: block; width: 100%; max-height: 220px; margin-top: 10px; background: #000; object-fit: cover; }
+.chk-meter { height: 8px; margin-top: 10px; background: var(--line); }
+.chk-meter i { display: block; height: 100%; width: 0; background: var(--c); }
+
+.chk-foot { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.chk-summary { margin: 0; font: 500 14px/1.4 var(--mono); color: var(--fg-2); }
+.chk-out { display: block; width: 100%; box-sizing: border-box; margin-top: 12px; padding: 10px; background: var(--void); color: var(--fg); border: 1px solid var(--line-2); font: 12.5px/1.5 var(--mono); }
+.chk-links { margin: 18px 0 0; color: var(--fg-3); font-size: 14px; }
+
+@media (max-width: 760px) {
+  .chk-list { grid-template-columns: minmax(0, 1fr); }
+  .chk-btn { padding: 12px 14px; }
+}
+
+.chk-video[hidden], .chk-meter[hidden], .chk-out[hidden] { display: none; }

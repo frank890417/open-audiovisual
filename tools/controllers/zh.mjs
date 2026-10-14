@@ -104,6 +104,7 @@ export default {
   // 沒有 Web MIDI 的瀏覽器，由頁面的 script 判斷後才顯示
   noMidi: {
     text: '這台裝置沒有 Web MIDI，接不了實體控制器，但可以直接用手指在螢幕上彈。要接你的控制器，請用電腦的 Chrome 或 Edge 開這一頁。',
+    check: '檢查這台裝置',
     ok: '知道了',
     close: '關掉這則提示',
   },
@@ -170,7 +171,7 @@ export default {
     dawTitle: 'MIDI 輸出到 Ableton、TouchDesigner、Resolume',
     mac: [
       'macOS：打開<b>音訊 MIDI 設定</b> → 視窗 → 顯示 MIDI 工作室，雙擊 <b>IAC 驅動程式</b>，勾選「裝置已上線」。',
-      'Windows：安裝 <a href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI</a>，新增一個埠。',
+      'Windows 11：內建的 <a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/">Windows MIDI Services</a> 有 loopback 埠（我們沒有實測）。舊版 Windows：安裝 <a href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI</a>，新增一個埠。',
       'Ableton Live：設定 → Link, Tempo &amp; MIDI → 把 IAC 或 loopMIDI 輸入的 Track 和 Remote 打開。TouchDesigner：在那個裝置上放一個 MIDI In CHOP。Resolume：Preferences → MIDI。',
     ],
     browsers: 'Chrome 和 Edge 有 Web MIDI，Firefox 會先問你是否允許這個網站。Safari 和 iPad 沒有：控制器照樣能彈、每個事件照樣送出，MIDI 輸出會顯示無法使用。',
@@ -258,7 +259,7 @@ export default {
       iframeText: '給只能貼 iframe 的地方。每個事件都以 <code>postMessage</code> 傳回來。',
       outTitle: '送進 Ableton、TouchDesigner、Resolume',
       outText: '你在畫面上彈的，會變成真正的 MIDI，從 macOS 的 IAC 匯流排或 Windows 的 loopMIDI 埠送出。步驟在<a href="{href}">圖鑑頁</a>。',
-      outSteps: 'macOS：音訊 MIDI 設定 → MIDI 工作室 → IAC 驅動程式 → 勾「裝置在線上」。Windows：安裝 loopMIDI 並新增一個埠，用 <code>midi-out="loopMIDI"</code>。',
+      outSteps: 'macOS：音訊 MIDI 設定 → MIDI 工作室 → IAC 驅動程式 → 勾「裝置在線上」。Windows 11：內建的 <a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/">Windows MIDI Services</a> 有 loopback（我們沒有實測）；舊版 Windows：安裝 loopMIDI、新增一個埠，用 <code>midi-out="loopMIDI"</code>。',
       p5Title: '在 p5.js 裡，只要一行',
       p5Text: '一行注入會依這份設定檔裡的順序（也就是上面表格的順序）替旋鈕、推桿和打擊墊編號。網址加上 <code>?profile={id}</code>，畫面上的控制器就是這一台；真的 {name} 接上時，會依埠名稱自動認出來。',
       p5TextGeneric: '一行注入會依這個版面裡的順序（也就是上面表格的順序）替旋鈕、推桿和打擊墊編號。網址加上 <code>?profile={id}</code>，畫面上的控制器就是這個版面。',

@@ -37,6 +37,7 @@ export const PAGES = {
   webtoe: 'webtoe/',
   examples: 'examples/',
   p5: 'p5/',
+  check: 'check/',
 };
 
 /** The top-bar nav. `home` entries are sections of the homepage; the others are pages. */

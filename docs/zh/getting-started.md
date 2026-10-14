@@ -35,7 +35,24 @@ node serve.js            # → http://localhost:8080
 
 ## 用哪個瀏覽器
 
-- 演出請用 **Chrome 或 Edge**。它們有 Web MIDI，Safari 沒有。
+不確定你這台裝置能做什麼？打開[裝置體檢](https://openaudiovisual.com/zh/check/)。它會看你的瀏覽器、Web MIDI、麥克風、鏡頭和繪圖能力，每一項都告訴你怎麼辦。按了按鈕才會開始，也不會把任何東西送出裝置。
+
+Web MIDI 是各瀏覽器差最多的一項（出處查證於 2026-10-15）：
+
+- **Chrome 和 Edge** 有。演出請用它們。從 Chrome 124 起，任何 MIDI 的使用都會問你要不要允許；以前只有系統專用（system-exclusive）才問（[Chrome 部落格](https://developer.chrome.com/blog/web-midi-permission-prompt)）。
+- **Firefox** 桌面版從 108 版起有 Web MIDI，但要先裝 Firefox 的網站權限附加元件（[Firefox 108 版本說明](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108)）。
+- **Safari**（Mac、iPhone、iPad）沒有 Web MIDI（[caniuse](https://caniuse.com/midi)）。WebKit 把它列為不實作，理由是指紋辨識的疑慮（[WebKit](https://webkit.org/tracking-prevention/)），[bug 107250](https://bugs.webkit.org/show_bug.cgi?id=107250) 至今還開著、沒人認領。iPhone 和 iPad 上的 Chrome 底層也是 WebKit，所以一樣沒有。Mac 上有第三方的 Safari 擴充 [Safari-WebMIDI](https://github.com/triglav-modular/Safari-WebMIDI)，我們沒有實測。
+
+瀏覽器沒有 Web MIDI 的時候，有三條路：
+
+- **直接在螢幕上彈。** [圖鑑](https://openaudiovisual.com/zh/controllers/)裡每一台控制器都能用手指彈，事件照常觸發。
+- **把手機當控制器。** 見[手機、中繼與控制面板](remote.md)。
+- **iPad 上的瀏覽器 App。** [MIDIWeb Browser](https://apps.apple.com/app/midiweb-browser/id6757226617) 是第三方 App（iOS 17.6 以上），讓網頁用得到 Web MIDI。我們沒有拿它跟 open-audiovisual 一起實測。
+
+Windows 11 內建的 Windows MIDI Services（2026-02-17 釋出）讓各程式共用 MIDI 埠並附有 loopback，從瀏覽器送 MIDI 到 DAW 不必再裝 loopMIDI（[Windows 部落格](https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/)）；見[用它彈你的 DAW](controllers.md#play-your-daw-with-it)。
+
+不管哪個瀏覽器，還有兩條規則：
+
 - **鏡頭和麥克風**只在安全環境（secure context）裡能用：`http://localhost` 或 `https://`。在跑 `serve.js` 的那台電腦上，請用 `localhost` 打開演出，不要用它的區域網路位址。
 - **手機**在區域網路裡用一般的 `http://` 連進來，就能用觸控、琴鍵和控制面板。iOS 只把動作感測器和鏡頭開放給 `https://` 頁面（見[手機、中繼與控制面板](remote.md#ios-and-https)）。
 

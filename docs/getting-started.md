@@ -41,7 +41,24 @@ without hardware.
 
 ## Which browser
 
-- **Chrome or Edge** for a show. They have Web MIDI; Safari does not.
+Not sure what your device can do? Open the [device check](https://openaudiovisual.com/check/). It looks at your browser, Web MIDI, microphone, camera and graphics, and says what to do about each. Nothing runs until you press a button, and nothing leaves your device.
+
+Web MIDI is the one that differs most between browsers (sources checked 2026-10-15):
+
+- **Chrome and Edge** have it. Use them for a show. Since Chrome 124 any use of MIDI asks for permission, where before only system-exclusive access did ([Chrome blog](https://developer.chrome.com/blog/web-midi-permission-prompt)).
+- **Firefox** has Web MIDI on desktop from version 108, after you install Firefox's site-permission add-on ([Firefox 108 release notes](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108)).
+- **Safari** on Mac, iPhone and iPad has no Web MIDI ([caniuse](https://caniuse.com/midi)). WebKit lists it as not implemented because of fingerprinting concerns ([WebKit](https://webkit.org/tracking-prevention/)), and [bug 107250](https://bugs.webkit.org/show_bug.cgi?id=107250) is still open and unassigned. Chrome on an iPhone or iPad is WebKit underneath, so it has none either. On a Mac there is a third-party Safari extension, [Safari-WebMIDI](https://github.com/triglav-modular/Safari-WebMIDI); we have not tested it.
+
+Where the browser has no Web MIDI, there are three routes:
+
+- **Play on screen.** Every controller in the [library](https://openaudiovisual.com/controllers/) plays with a finger, and every event still fires.
+- **Use a phone as the controller.** See [Phones, relay & surfaces](remote.md).
+- **A browser app for the iPad.** [MIDIWeb Browser](https://apps.apple.com/app/midiweb-browser/id6757226617) is a third-party app for iOS 17.6 and later that gives pages Web MIDI. We have not tested it with open-audiovisual.
+
+On Windows 11 the built-in Windows MIDI Services (released 2026-02-17) give apps shared MIDI ports and a loopback, so loopMIDI is no longer needed to send MIDI from the browser to a DAW ([Windows blog](https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/)); see [Play your DAW with it](controllers.md#play-your-daw-with-it).
+
+Two more rules apply to every browser:
+
 - **Camera and microphone** only work in a secure context: `http://localhost`
   or `https://`. Open the show on the machine that runs `serve.js` through
   `localhost`, not through its LAN address.

@@ -33,21 +33,21 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=7792f7b">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/zh/#webpage","url":"https://openaudiovisual.com/zh/","name":"open-audiovisual｜網頁原生的影音表演框架","description":"零建置的 JavaScript 框架：MIDI 控制器、麥克風、手勢和手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界。MIT 授權。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/#software"}}]}</script>
 <noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "../packages/core/index.js?v=7792f7b",
-    "@openav/mapping": "../packages/mapping/index.js?v=7792f7b",
-    "@openav/keys": "../packages/keys/index.js?v=7792f7b",
-    "@openav/chord": "../packages/chord/index.js?v=7792f7b",
-    "@openav/stage": "../packages/stage/index.js?v=7792f7b",
-    "@openav/sound": "../packages/sound/index.js?v=7792f7b",
-    "@openav/midi": "../packages/midi/index.js?v=7792f7b",
-    "@openav/audio": "../packages/audio/index.js?v=7792f7b"
+    "@openav/core": "../packages/core/index.js",
+    "@openav/mapping": "../packages/mapping/index.js",
+    "@openav/keys": "../packages/keys/index.js",
+    "@openav/chord": "../packages/chord/index.js",
+    "@openav/stage": "../packages/stage/index.js",
+    "@openav/sound": "../packages/sound/index.js",
+    "@openav/midi": "../packages/midi/index.js",
+    "@openav/audio": "../packages/audio/index.js"
   }
 }
 </script>
@@ -76,6 +76,11 @@
 </header>
 
 <main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>這台裝置沒有 Web MIDI，接不了實體控制器，但可以直接用手指在螢幕上彈。要接你的控制器，請用電腦的 Chrome 或 Edge 開這一頁。 <a href="../zh/check/">檢查這台裝置</a></p>
+    <button type="button" aria-label="關掉這則提示">知道了</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
 
   <!-- ═════ 01 · the instrument: this hero IS the framework running ═════ -->
   <section class="hero" id="play" aria-labelledby="hero-title">
@@ -585,7 +590,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
       </div>
       <div class="faq-item">
         <h3 id="faq-4">哪些瀏覽器支援 MIDI？</h3>
-        <p>演出請用 Chrome 或 Edge。它們有 Web MIDI，Safari 沒有。</p>
+        <p>Chrome 和 Edge 有。演出請用它們。</p>
         <p>Safari 和 iPad 沒有 Web MIDI，螢幕上的控制器和手機照樣能用。</p>
         <p>鏡頭和麥克風只在安全環境（secure context）裡能用：<code>http://localhost</code> 或 <code>https://</code>。</p>
         <p class="faq-more"><a class="more" href="../zh/docs/#quick-start-which-browser">延伸閱讀: 快速開始 →</a></p>
@@ -741,7 +746,7 @@ AGENTS.md 的規則：連續控制一律走參數，由 mapper 把訊號接過�
 </footer>
 
 <script type="application/json" id="oav-i18n">{"statusSim":"模擬演奏者正在彈。換你了：點琴鍵，或按電腦鍵盤 A 到 L。","statusYou":"現在是你在彈。在畫面上拖曳，可以改色相和扭轉。","statusIdle":"點琴鍵或畫面，或按電腦鍵盤 A 到 L，就能彈。","midiNone":"找不到 MIDI 裝置。接上之後，再按一次 MIDI。","midiOn":"MIDI 已開啟，{n} 個裝置。調變輪（CC 1）也會帶動扭轉。","micOn":"麥克風已開啟，音量現在帶動能量。","micDenied":"這個瀏覽器擋下了麥克風。","soundLoading":"正在載入聲音引擎…","soundOn":"聲音已開啟，可以在開關下方換樂器。","consonance":"協和度","copy":"複製","copied":"已複製","eventTarget":"世界（事件）"}</script>
-<script type="module" src="../assets/home/home.js?v=7792f7b"></script>
+<script type="module" src="../assets/home/home.js"></script>
 <!--/email_off-->
 </body>
 </html>

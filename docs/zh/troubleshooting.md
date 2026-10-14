@@ -12,6 +12,24 @@ npm run monitor          # node packages/monitor/server.js
 
 用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 `ws://`，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：`new MonitorFeed({ url: 'wss://…' })`。
 
+## Chrome 跳出「區域網路」或「這台裝置上的應用程式」的詢問
+
+Chrome 的 Local Network Access（區域網路存取）檢查，會在**公開的** https 頁面要連你自己的電腦或網路時，先跳出權限詢問；從你自己這台機器提供的頁面不在範圍內（[Chrome 部落格](https://developer.chrome.com/blog/local-network-access)）。依 Chrome 版本，它管的範圍是（查證於 2026-10-15）：
+
+- Chrome 142：`fetch` 請求（[Chrome 部落格](https://developer.chrome.com/blog/local-network-access)）。
+- Chrome 145：分成兩種權限，一種管區域網路，一種管這台裝置本身，也就是 loopback（[Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)）。
+- Chrome 147：WebSocket 和 WebTransport 連線也管了（[Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)）。
+- Chrome 154：`new WebSocket(url, { targetAddressSpace })` 讓頁面說明它預期連的是哪一種位址（[Chrome Platform Status](https://chromestatus.com/feature/5197681148428288)）。
+
+演出跑在 openaudiovisual.com 或別的 https 網站上時，我們有三樣東西會去連你的電腦：OSC 橋接（`OscOut` 送到 `http://127.0.0.1:7456`）、後台監看（`ws://127.0.0.1:7457`）和 Leap 橋接。第一次 Chrome 會問。選了「封鎖」，連線就失敗，主控台會出現 `net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS`（在 Chrome 154 上看到的，見 [Leap 套件說明](https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md)）。
+
+怎麼辦：
+
+- 按**允許**。如果已經封鎖了，打開這個頁面的網站設定（網址列左邊的圖示），重新允許，再重新載入。
+- 或者從你自己的電腦打開頁面：`node serve.js`，然後開 `http://localhost:8080/…`。那個頁面不是公開網站，Chrome 不會問。排練或教 OAV → OSC → TouchDesigner 這條路，這是最穩的做法。
+- 在 `<iframe>` 裡，跨網域的框架要加 `allow="loopback-network"`；同網域的框架會繼承；加了 `sandbox` 的框架拿不到（在 Chrome 154 上驗證過，見 [Leap 套件說明](https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md)）。
+- [裝置體檢](https://openaudiovisual.com/zh/check/)有一顆按鈕，會試連橋接和後台監看，告訴你哪一個有回應。你按了才會連。
+
 ## 手機加入卡片顯示「relay offline」
 
 在你自己的電腦上，手機中繼住在 `serve.js` 裡（`/relay`）。所以頁面如果是從檔案、或從不是 `node serve.js` 的伺服器打開的，卡片就會寫「relay offline」：請用 `node serve.js` 跑，再從那裡打開。
@@ -26,8 +44,10 @@ npm run monitor          # node packages/monitor/server.js
 
 ## 看不到任何 MIDI 裝置
 
-- 請用 Chrome 或 Edge。Safari 沒有 Web MIDI。
-- 瀏覽器詢問時，允許 MIDI。權限依網站分開：在 `localhost:8080` 允許了，不代表 `localhost:3000` 也允許。
+先跑一次[裝置體檢](https://openaudiovisual.com/zh/check/)，它會告訴你這個瀏覽器到底有沒有 Web MIDI。
+
+- 請用 Chrome 或 Edge。Safari 沒有 Web MIDI（[WebKit bug 107250](https://bugs.webkit.org/show_bug.cgi?id=107250)，至今還開著），Firefox 要先裝它的網站權限附加元件才有（[Firefox 108](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108)）。詳見[用哪個瀏覽器](getting-started.md#which-browser)。
+- 瀏覽器詢問時，允許 MIDI。從 Chrome 124 起，任何 MIDI 的使用都會問（[Chrome 部落格](https://developer.chrome.com/blog/web-midi-permission-prompt)）。權限依網站分開：在 `localhost:8080` 允許了，不代表 `localhost:3000` 也允許。
 - 裝置在頁面載入之後才接上：它應該會自己出現。沒出現的話，重新載入頁面。
 - 檢查 **L1 · Input**（輸入）面板：沒勾選的裝置是靜音的。
 - 可能有別的程式獨占了這個埠（Windows 上有些 DAW 和驅動程式會這樣）。把它關掉。

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Device check · what this device can do with open-audiovisual</title>
+<meta name="description" content="One page that checks this browser for Web MIDI, microphone, camera, graphics and the local OSC bridge, and says what to do about each. Nothing runs until you press a button.">
+<link rel="canonical" href="https://openaudiovisual.com/check/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/check/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/check/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/check/">
+<link rel="describedby" href="../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Device check · what this device can do with open-audiovisual">
+<meta property="og:description" content="Check this device: Web MIDI, microphone, camera, graphics and the local bridge, with one line of advice for each.">
+<meta property="og:url" content="https://openaudiovisual.com/check/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Device check · what this device can do with open-audiovisual">
+<meta name="twitter:description" content="Check this device: Web MIDI, microphone, camera, graphics and the local bridge, with one line of advice for each.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/home/home.css">
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/check/#webpage","url":"https://openaudiovisual.com/check/","name":"Device check · what this device can do with open-audiovisual","description":"One page that checks this browser for Web MIDI, microphone, camera, graphics and the local OSC bridge, and says what to do about each. Nothing runs until you press a button.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"breadcrumb":{"@id":"https://openaudiovisual.com/check/#breadcrumb"},"mentions":{"@id":"https://openaudiovisual.com/#software"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/check/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Device check","item":"https://openaudiovisual.com/check/"}]}]}</script>
+<link rel="stylesheet" href="../assets/check/check.css">
+</head>
+<body class="page-check">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../#play">Play</a>
+    <a href="../#how">How it works</a>
+    <a href="../#works">Works</a>
+    <a href="../controllers/">Controllers</a>
+    <a href="../docs/">Docs</a>
+    <a href="../webtoe/">WebToe</a>
+    <a href="../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../check/" hreflang="en" lang="en" data-lang="en" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../zh/check/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="chk-hero" aria-labelledby="chk-title">
+    <p class="eyebrow">Device check</p>
+    <h1 id="chk-title">What can this device do?</h1>
+    <p class="lede">This page looks at your browser and says what works with open-audiovisual, what needs one more step, and what to do about it. Green works. Yellow works with a step or a limit. Red is blocked.</p>
+    <p class="chk-promise">Nothing runs until you press a button, and nothing leaves your device. MIDI inputs are listed, never played, and no MIDI output is ever opened.</p>
+  </section>
+
+  <section class="chk-body" aria-label="Device check">
+    <ol class="chk-list">
+    <li class="chk" id="chk-browser" data-state="idle">
+      <div class="chk-head">
+        <span class="chk-dot" aria-hidden="true"></span>
+        <h2>Browser and system</h2>
+        <span class="chk-badge">Not tested</span>
+      </div>
+      <p class="chk-msg" aria-live="polite">Looking…</p>
+      
+      <p class="chk-doc">Read: <a href="../docs/#quick-start-which-browser">Which browser</a></p>
+    </li>
+    <li class="chk" id="chk-secure" data-state="idle">
+      <div class="chk-head">
+        <span class="chk-dot" aria-hidden="true"></span>
+        <h2>Secure page</h2>
+        <span class="chk-badge">Not tested</span>
+      </div>
+      <p class="chk-msg" aria-live="polite">Looking…</p>
+      
+      <p class="chk-doc">Read: <a href="../docs/#troubleshooting-the-camera-or-microphone-does-not-start">If the camera or microphone will not start</a></p>
+    </li>
+    <li class="chk" id="chk-midi" data-state="idle">
+      <div class="chk-head">
+        <span class="chk-dot" aria-hidden="true"></span>
+        <h2>Web MIDI</h2>
+        <span class="chk-badge">Not tested</span>
+      </div>
+      <p class="chk-msg" aria-live="polite">Looking…</p>
+      <p class="chk-act"><button type="button" id="btn-midi" class="chk-btn">List my MIDI devices</button> <span class="chk-note">Asks the browser for MIDI permission and lists the names of your inputs. It never opens an output.</span></p>
+      <p class="chk-doc">Read: <a href="../docs/#troubleshooting-no-midi-devices-appear">If no MIDI devices appear</a></p>
+    </li>
+    <li class="chk" id="chk-mic" data-state="idle">
+      <div class="chk-head">
+        <span class="chk-dot" aria-hidden="true"></span>
+        <h2>Microphone</h2>
+        <span class="chk-badge">Not tested</span>
+      </div>
+      <p class="chk-msg" aria-live="polite">Not tested. Press the button to ask for the microphone; you see a level for a few seconds, then it stops.</p>
+      <div class="chk-meter" id="chk-meter" hidden><i></i></div>
+      <p class="chk-act"><button type="button" id="btn-mic" class="chk-btn">Test the microphone</button> <span class="chk-note">The browser asks first.</span></p>
+      <p class="chk-doc">Read: <a href="../docs/#troubleshooting-the-camera-or-microphone-does-not-start">If the camera or microphone will not start</a></p>
+    </li>
+    <li class="chk" id="chk-camera" data-state="idle">
+      <div class="chk-head">
+        <span class="chk-dot" aria-hidden="true"></span>
+        <h2>Camera</h2>
+        <span class="chk-badge">Not tested</span>
+      </div>
+      <p class="chk-msg" aria-live="polite">Not tested. Press the button to ask for the camera; you see the picture for a few seconds, then it stops.</p>
+      <video class="chk-video" id="chk-video" muted playsinline hidden></video>
+      <p class="chk-act"><button type="button" id="btn-camera" class="chk-btn">Test the camera</button> <span class="chk-note">The browser asks first.</span></p>
+      <p class="chk-doc">Read: <a href="../docs/#troubleshooting-the-camera-or-microphone-does-not-start">If the camera or microphone will not start</a></p>
+    </li>
+    <li class="chk" id="chk-graphics" data-state="idle">
+      <div class="chk-head">
+        <span class="chk-dot" aria-hidden="true"></span>
+        <h2>Graphics</h2>
+        <span class="chk-badge">Not tested</span>
+      </div>
+      <p class="chk-msg" aria-live="polite">Looking…</p>
+      
+      <p class="chk-doc">Read: <a href="../docs/#troubleshooting">All troubleshooting</a></p>
+    </li>
+    <li class="chk" id="chk-local" data-state="idle">
+      <div class="chk-head">
+        <span class="chk-dot" aria-hidden="true"></span>
+        <h2>Bridges on this computer</h2>
+        <span class="chk-badge">Not tested</span>
+      </div>
+      <p class="chk-msg" aria-live="polite">Not tested. Press the button to try the OSC bridge (port 7456) and the backstage monitor (port 7457) on this computer. Nothing connects until you press.</p>
+      <p class="chk-act"><button type="button" id="btn-local" class="chk-btn">Test the connection</button> <span class="chk-note">Connects to 127.0.0.1 only. Nothing else is contacted.</span></p>
+      <p class="chk-doc">Read: <a href="../docs/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome asks about the local network</a></p>
+    </li>
+    </ol>
+
+    <div class="chk-foot">
+      <p class="chk-summary" id="chk-summary" aria-live="polite"></p>
+      <p class="chk-act"><button type="button" id="btn-copy" class="chk-btn">Copy results</button> <span class="chk-note" id="copy-note">Plain text, for pasting into a chat or an issue. It stays on your device until you paste it.</span></p>
+      <textarea id="chk-out" class="chk-out" readonly rows="9" hidden aria-label="Copy results"></textarea>
+      <p class="chk-links"><a href="../docs/#troubleshooting">All troubleshooting</a> · <a href="../controllers/">Controller library</a> · <a href="../docs/">Docs</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../">Home</a>
+      <a href="../examples/">Examples</a>
+      <a href="../controllers/">Controllers</a>
+      <a href="../docs/">Docs</a>
+      <a href="../p5/">p5.js in one line</a>
+      <a href="../webtoe/">WebToe</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../llms.txt">llms.txt</a>
+      <a href="../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+<script type="application/json" id="chk-strings">{"state":{"ok":"Works","warn":"Check","bad":"Blocked","idle":"Not tested"},"summary":"{ok} green · {warn} yellow · {bad} red · {idle} not tested yet","copy":{"head":"open-audiovisual device check","ua":"User agent"},"browser":{"is":"{name} {version} on {os}.","chrome":"Chrome and Edge have Web MIDI: use them for a show.","firefox":"Firefox has Web MIDI on desktop after you install its site-permission add-on.","safari":"Safari has no Web MIDI. You can still play every controller on screen.","ios":"On an iPhone or iPad every browser is WebKit underneath, so none has Web MIDI. You can play on screen and use a phone as a controller.","mobile":"On a phone you can play on screen. To plug in a controller, open the page in Chrome or Edge on a computer.","other":"Not one of the browsers we test with. Chrome or Edge on a computer is the safe choice for a show."},"secure":{"ok":"This page is secure ({where}), so the microphone and camera can work.","bad":"This page is not secure ({where}): the browser blocks the camera and microphone. Use http://localhost or https://.","file":"This page was opened from a file. Open it through http://localhost or https:// so the camera and microphone can work.","https":"https","localhost":"localhost"},"midi":{"yes":"This browser has Web MIDI. Nothing has been asked yet.","no":"This device has no Web MIDI, so a hardware controller cannot connect here. You can still play on screen with your fingers. To plug in yours, open this page in Chrome or Edge on a computer.","asking":"Waiting for your answer in the browser…","none":"Allowed, but no MIDI input was found. Plug the controller in; if it was plugged in after the page loaded and still does not show, reload.","list":"{n} MIDI input(s): {names}.","denied":"MIDI was blocked. Allow it in the address bar and press the button again.","failed":"The browser could not open MIDI ({reason})."},"media":{"none":"This page cannot reach the {what}: the browser only offers it on https:// or http://localhost.","asking":"Waiting for your answer in the browser…","micOk":"The microphone works: {label}. Loudest level heard: {level}%.","micQuiet":"The microphone opened but we heard nothing. Make some noise and press again, or check which input your system uses.","camOk":"The camera works: {label}, {size}.","denied":"The browser blocked the {what}. Allow it for this site in the address bar and press again. On macOS the browser also needs access in System Settings → Privacy & Security.","missing":"No {what} was found on this device.","busy":"The {what} could not start ({reason}). Another program may be using it.","mic":"microphone","camera":"camera","unnamed":"unnamed device"},"graphics":{"ok":"WebGL 2: {gl2}. WebGPU: {gpu}.","weak":"Only WebGL 1 is available. WebGPU: {gpu}.","bad":"No WebGL: worlds that draw with WebGL (p5 WEBGL, WebToe) will not show. Try another browser.","yes":"yes","no":"no"},"local":{"testing":"Trying 127.0.0.1…","bridge":"OSC bridge (port 7456): {r}","monitor":"Backstage monitor (port 7457): {r}","answered":"answered","silent":"no answer","ok":"Something on this computer answered.","none":"Nothing answered. Either the bridge and monitor are not running (npm run bridge, npm run monitor), or Chrome asked about the local network and you chose Block.","publicPage":"This page is public https, so Chrome asks before it may reach your computer."}}</script>
+<script src="../assets/check/check.js" defer></script>
+<!--/email_off-->
+</body>
+</html>

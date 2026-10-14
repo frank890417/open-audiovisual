@@ -12,7 +12,7 @@ MIDI 訊息、LED 回饋、怎麼認出它的埠，以及每個數字出自哪�
 ```
 
 這樣就接好了。沒有 Web MIDI 的瀏覽器（Safari、iPad）一樣能彈、一樣送出事件，只有硬體和 MIDI
-輸出這兩項會顯示無法使用。沒打開 `hardware`、`midi-out` 或學習模式，它就不會跟瀏覽器要 MIDI 權限。
+輸出這兩項會顯示無法使用。沒打開 `hardware`、`midi-out` 或學習模式，它就不會跟瀏覽器要 MIDI 權限。Safari 沒有，是因為 WebKit 沒有實作（[bug 107250](https://bugs.webkit.org/show_bug.cgi?id=107250)，至今還開著）。
 
 | 屬性 | 作用 |
 |---|---|
@@ -69,8 +69,8 @@ ctl.on('control', (e) => console.log(e.signal, e.value));
 ## 用它彈你的 DAW
 
 1. macOS：音訊 MIDI 設定 → 視窗 → 顯示 MIDI 工作室 → IAC 驅動程式 → 勾選「裝置已上線」。
-   Windows：安裝 loopMIDI，新增一個埠。
-2. `<oav-controller profile="akai-lpd8" midi-out="IAC">`（Windows：`midi-out="loopMIDI"`）。
+   Windows 11：內建的 Windows MIDI Services（2026-02-17 釋出，24H2、25H2 分批推送）讓各程式共用 MIDI 埠，並附有 loopback；微軟的公告寫明，用 Web MIDI 的網頁也能用（[Windows 部落格](https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/)）。我們沒有拿它跟 open-audiovisual 一起實測。舊版 Windows：安裝 loopMIDI，新增一個埠，這條路仍然可用。
+2. `<oav-controller profile="akai-lpd8" midi-out="IAC">`（Windows 上填你建立的埠名，或 Windows 顯示的埠名）。
 3. Ableton Live：把那個輸入的 Track 和 Remote 打開。TouchDesigner：放一個 MIDI In CHOP。
    Resolume：到 Preferences → MIDI。
 

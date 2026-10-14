@@ -15,7 +15,7 @@ page. Every device is on the [controllers page](https://openaudiovisual.com/cont
 
 That is the whole integration. The element works without Web MIDI (Safari, iPad): it plays
 and fires events; only hardware and MIDI out report that they are unavailable. It never asks
-for MIDI permission unless you turn on `hardware`, `midi-out` or learn.
+for MIDI permission unless you turn on `hardware`, `midi-out` or learn. Safari has none because WebKit has not implemented it ([bug 107250](https://bugs.webkit.org/show_bug.cgi?id=107250), still open).
 
 | Attribute | What it does |
 |---|---|
@@ -73,8 +73,8 @@ and accepts `{ target: 'openav', type: 'set' | 'ingest' | 'press' | 'release' | 
 ## Play your DAW with it
 
 1. macOS: Audio MIDI Setup → Window → Show MIDI Studio → IAC Driver → “Device is online”.
-   Windows: install loopMIDI and add a port.
-2. `<oav-controller profile="akai-lpd8" midi-out="IAC">` (Windows: `midi-out="loopMIDI"`).
+   Windows 11: the built-in Windows MIDI Services (released 2026-02-17, rolled out in stages to 24H2 and 25H2) share MIDI ports between apps and include a loopback, and Microsoft's announcement says web pages using Web MIDI can use it ([Windows blog](https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/)). We have not tested it with open-audiovisual. Older Windows: install loopMIDI and add a port; that still works.
+2. `<oav-controller profile="akai-lpd8" midi-out="IAC">` (on Windows, give the name of the port you made or the one Windows shows).
 3. In Ableton Live, turn on Track and Remote for that input; in TouchDesigner, a MIDI In CHOP
    on it; in Resolume, Preferences → MIDI.
 

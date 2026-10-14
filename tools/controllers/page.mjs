@@ -375,16 +375,16 @@ function requestBlock(t) {
 }
 
 /** The strip for browsers without Web MIDI. Hidden in the HTML; the script under it asks the browser and shows it. */
-export function noMidiStrip(t) {
+export function noMidiStrip(t, c) {
   const N = t.noMidi;
   return `<aside class="no-midi" id="no-midi" role="note" hidden>
-    <p>${N.text}</p>
+    <p>${N.text} <a href="${c.to('check')}">${N.check}</a></p>
     <button type="button" aria-label="${attr(N.close)}">${N.ok}</button>
   </aside>
   <script>${NO_MIDI_SCRIPT}</script>`;
 }
 // Feature test, not a user-agent guess: a browser that has no requestMIDIAccess gets the strip, once (dismissed → remembered).
-const NO_MIDI_SCRIPT = `(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()`;
+export const NO_MIDI_SCRIPT = `(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()`;
 
 // ------------------------------------------------------------------ code shown on the page
 const PROTOCOL = `// iframe → your page, for every event
@@ -490,7 +490,7 @@ ${headBasics(home, c, { title: t.meta.title, description: t.meta.description, og
 ${topBar(home, c)}
 
 <main id="main">
-  ${noMidiStrip(t)}
+  ${noMidiStrip(t, c)}
 
   <!-- ═════ 01 · play: one live controller, any device, your hardware moves it ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">

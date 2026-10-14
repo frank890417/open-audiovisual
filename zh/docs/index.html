@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=7792f7b">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/#article","url":"https://openaudiovisual.com/zh/docs/","name":"文件｜open-audiovisual","description":"open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"open-audiovisual 使用手冊","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["簡介","快速開始","核心概念","架構","寫一個世界","輸入","映射","演出控制","總譜與導演","MIDI 控制器與嵌入","p5.js 一行接上","手機、中繼與控制面板","訊號一覽","套件一覽","給 AI 代理","實驗室整合（\"lab\" 欄位）","疑難排解","路線圖"],"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=7792f7b">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -305,6 +305,7 @@
           <a href="#troubleshooting"><span class="n">17</span><span class="t">疑難排解</span></a>
           <ol class="toc-secs">
             <li><a href="#troubleshooting-the-console-shows-a-ws-7457-error">瀏覽器主控台出現 ws://…:7457 錯誤</a></li>
+            <li><a href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome 跳出「區域網路」或「這台裝置上的應用程式」的詢問</a></li>
             <li><a href="#troubleshooting-the-phone-join-card-says-relay-offline">手機加入卡片顯示「relay offline」</a></li>
             <li><a href="#troubleshooting-no-midi-devices-appear">看不到任何 MIDI 裝置</a></li>
             <li><a href="#troubleshooting-a-daw-on-the-iac-bus-is-not-heard">聽不到 IAC 匯流排上的 DAW</a></li>
@@ -342,7 +343,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">18 章 · 171 節 · v0.1.0</p>
+      <p class="docs-stats">18 章 · 172 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -411,8 +412,22 @@ MIDI 控制器、螢幕上的控制器或手機來彈。讀 <a href="#p5">p5.js 
 </table></div>
 <p>打開 <code>http://localhost:8080/examples/01-hello-particles/</code>。每個範例都不需要硬體就能跑。</p>
 <h3 id="quick-start-which-browser">用哪個瀏覽器<a class="anchor" href="#quick-start-which-browser" aria-label="這一節的連結">#</a></h3>
+<p>不確定你這台裝置能做什麼？打開<a href="../../zh/check/">裝置體檢</a>。它會看你的瀏覽器、Web MIDI、麥克風、鏡頭和繪圖能力，每一項都告訴你怎麼辦。按了按鈕才會開始，也不會把任何東西送出裝置。</p>
+<p>Web MIDI 是各瀏覽器差最多的一項（出處查證於 2026-10-15）：</p>
 <ul>
-<li>演出請用 <strong>Chrome 或 Edge</strong>。它們有 Web MIDI，Safari 沒有。</li>
+<li><strong>Chrome 和 Edge</strong> 有。演出請用它們。從 Chrome 124 起，任何 MIDI 的使用都會問你要不要允許；以前只有系統專用（system-exclusive）才問（<a href="https://developer.chrome.com/blog/web-midi-permission-prompt" rel="noopener">Chrome 部落格</a>）。</li>
+<li><strong>Firefox</strong> 桌面版從 108 版起有 Web MIDI，但要先裝 Firefox 的網站權限附加元件（<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108" rel="noopener">Firefox 108 版本說明</a>）。</li>
+<li><strong>Safari</strong>（Mac、iPhone、iPad）沒有 Web MIDI（<a href="https://caniuse.com/midi" rel="noopener">caniuse</a>）。WebKit 把它列為不實作，理由是指紋辨識的疑慮（<a href="https://webkit.org/tracking-prevention/" rel="noopener">WebKit</a>），<a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">bug 107250</a> 至今還開著、沒人認領。iPhone 和 iPad 上的 Chrome 底層也是 WebKit，所以一樣沒有。Mac 上有第三方的 Safari 擴充 <a href="https://github.com/triglav-modular/Safari-WebMIDI" rel="noopener">Safari-WebMIDI</a>，我們沒有實測。</li>
+</ul>
+<p>瀏覽器沒有 Web MIDI 的時候，有三條路：</p>
+<ul>
+<li><strong>直接在螢幕上彈。</strong> <a href="../../zh/controllers/">圖鑑</a>裡每一台控制器都能用手指彈，事件照常觸發。</li>
+<li><strong>把手機當控制器。</strong> 見<a href="#phones">手機、中繼與控制面板</a>。</li>
+<li><strong>iPad 上的瀏覽器 App。</strong> <a href="https://apps.apple.com/app/midiweb-browser/id6757226617" rel="noopener">MIDIWeb Browser</a> 是第三方 App（iOS 17.6 以上），讓網頁用得到 Web MIDI。我們沒有拿它跟 open-audiovisual 一起實測。</li>
+</ul>
+<p>Windows 11 內建的 Windows MIDI Services（2026-02-17 釋出）讓各程式共用 MIDI 埠並附有 loopback，從瀏覽器送 MIDI 到 DAW 不必再裝 loopMIDI（<a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/" rel="noopener">Windows 部落格</a>）；見<a href="#controllers-play-your-daw-with-it">用它彈你的 DAW</a>。</p>
+<p>不管哪個瀏覽器，還有兩條規則：</p>
+<ul>
 <li><strong>鏡頭和麥克風</strong>只在安全環境（secure context）裡能用：<code>http://localhost</code> 或 <code>https://</code>。在跑 <code>serve.js</code> 的那台電腦上，請用 <code>localhost</code> 打開演出，不要用它的區域網路位址。</li>
 <li><strong>手機</strong>在區域網路裡用一般的 <code>http://</code> 連進來，就能用觸控、琴鍵和控制面板。iOS 只把動作感測器和鏡頭開放給 <code>https://</code> 頁面（見<a href="#phones-ios-and-https">手機、中繼與控制面板</a>）。</li>
 </ul>
@@ -1253,12 +1268,15 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=7792f7b"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
 show.app.osc = osc;          <span class="tc">// the Layers panel shows the OSC rate</span>
 show.stage.io.osc = osc;     <span class="tc">// worlds can send from update(dt, state, io)</span></code></pre></div>
+<h4 id="show-control-touchdesigner-as-the-receiver">TouchDesigner 當接收端<a class="anchor" href="#show-control-touchdesigner-as-the-receiver" aria-label="這一節的連結">#</a></h4>
+<p>OSC 照上面的方式送進 TouchDesigner。TouchDesigner 也可以用 Web Render TOP 把 open-audiovisual 的頁面當成畫面，它把網頁畫在同一台機器的 TouchDesigner 裡（<a href="https://docs.derivative.ca/Web_Render_TOP" rel="noopener">Web Render TOP</a>）。Web Render TOP 支不支援 Web MIDI 或 WebGPU，我們還沒有驗證。控制請維持走 OSC。</p>
+<p>頁面如果來自 openaudiovisual.com，Chrome 會先問，才讓頁面連到 <code>127.0.0.1</code> 上的橋接：見<a href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome 跳出「區域網路」的詢問</a>（<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome 部落格</a>）。跑 <code>node serve.js</code>、從 <code>http://localhost:8080</code> 打開頁面，就不會跳出詢問。</p>
 <h3 id="show-control-midi-output-and-panic">MIDI 輸出與緊急靜音<a class="anchor" href="#show-control-midi-output-and-panic" aria-label="這一節的連結">#</a></h3>
 <p><code>midi.noteOn/noteOff/cc/send</code> 會送到選定的輸出埠。<code>midi.panic()</code> 會在全部 16 個頻道送出 all-notes-off、all-sound-off、放開延音踏板，再逐音送 note-off。它跟其他輸出走同一個出口，一樣看得到。把它綁在一個摸黑也找得到的打擊墊上。每個演奏者遲早都會用到它，在這裡只要呼叫一次。</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">show.midi.outputs.map((o) =&gt; o.name);   <span class="tc">// available output ports</span>
@@ -1667,7 +1685,7 @@ MIDI 訊息、LED 回饋、怎麼認出它的埠，以及每個數字出自哪�
 <div class="term" data-lang="html"><div class="term-bar"><span>html</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-html">&lt;<span class="tk">script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;&lt;/<span class="tk">script</span>&gt;
 &lt;<span class="tk">oav-controller</span> profile=<span class="ts">"akai-lpd8"</span> readout&gt;&lt;/<span class="tk">oav-controller</span>&gt;</code></pre></div>
 <p>這樣就接好了。沒有 Web MIDI 的瀏覽器（Safari、iPad）一樣能彈、一樣送出事件，只有硬體和 MIDI
-輸出這兩項會顯示無法使用。沒打開 <code>hardware</code>、<code>midi-out</code> 或學習模式，它就不會跟瀏覽器要 MIDI 權限。</p>
+輸出這兩項會顯示無法使用。沒打開 <code>hardware</code>、<code>midi-out</code> 或學習模式，它就不會跟瀏覽器要 MIDI 權限。Safari 沒有，是因為 WebKit 沒有實作（<a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">bug 107250</a>，至今還開著）。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>屬性</th><th>作用</th></tr></thead>
 <tbody>
@@ -1708,8 +1726,8 @@ ctl.on(<span class="ts">'control'</span>, (e) =&gt; console.log(e.signal, e.valu
 <h3 id="controllers-play-your-daw-with-it">用它彈你的 DAW<a class="anchor" href="#controllers-play-your-daw-with-it" aria-label="這一節的連結">#</a></h3>
 <ol>
 <li>macOS：音訊 MIDI 設定 → 視窗 → 顯示 MIDI 工作室 → IAC 驅動程式 → 勾選「裝置已上線」。
-Windows：安裝 loopMIDI，新增一個埠。</li>
-<li><code>&lt;oav-controller profile="akai-lpd8" midi-out="IAC"&gt;</code>（Windows：<code>midi-out="loopMIDI"</code>）。</li>
+Windows 11：內建的 Windows MIDI Services（2026-02-17 釋出，24H2、25H2 分批推送）讓各程式共用 MIDI 埠，並附有 loopback；微軟的公告寫明，用 Web MIDI 的網頁也能用（<a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/" rel="noopener">Windows 部落格</a>）。我們沒有拿它跟 open-audiovisual 一起實測。舊版 Windows：安裝 loopMIDI，新增一個埠，這條路仍然可用。</li>
+<li><code>&lt;oav-controller profile="akai-lpd8" midi-out="IAC"&gt;</code>（Windows 上填你建立的埠名，或 Windows 顯示的埠名）。</li>
 <li>Ableton Live：把那個輸入的 Track 和 Remote 打開。TouchDesigner：放一個 MIDI In CHOP。
 Resolume：到 Preferences → MIDI。</li>
 </ol>
@@ -2185,7 +2203,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=7792f7b"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -2593,6 +2611,22 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <p>每個用 <code>createShow()</code> 做的演出，都會試著把資料串流到 <code>ws://&lt;the page's host&gt;:7457</code> 的後台監看。監看伺服器沒在跑時，瀏覽器會記下被拒絕的連線。這是預期中的，也無害：頁面會重試，間隔從大約 5 秒拉長到 30 秒，不會一直洗版。想讓它消失，就把監看伺服器跑起來：</p>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">npm</span> run monitor          <span class="tc"># node packages/monitor/server.js</span></code></pre></div>
 <p>用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 <code>ws://</code>，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：<code>new MonitorFeed({ url: 'wss://…' })</code>。</p>
+<h3 id="troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome 跳出「區域網路」或「這台裝置上的應用程式」的詢問<a class="anchor" href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" aria-label="這一節的連結">#</a></h3>
+<p>Chrome 的 Local Network Access（區域網路存取）檢查，會在<strong>公開的</strong> https 頁面要連你自己的電腦或網路時，先跳出權限詢問；從你自己這台機器提供的頁面不在範圍內（<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome 部落格</a>）。依 Chrome 版本，它管的範圍是（查證於 2026-10-15）：</p>
+<ul>
+<li>Chrome 142：<code>fetch</code> 請求（<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome 部落格</a>）。</li>
+<li>Chrome 145：分成兩種權限，一種管區域網路，一種管這台裝置本身，也就是 loopback（<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>）。</li>
+<li>Chrome 147：WebSocket 和 WebTransport 連線也管了（<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>）。</li>
+<li>Chrome 154：<code>new WebSocket(url, { targetAddressSpace })</code> 讓頁面說明它預期連的是哪一種位址（<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>）。</li>
+</ul>
+<p>演出跑在 openaudiovisual.com 或別的 https 網站上時，我們有三樣東西會去連你的電腦：OSC 橋接（<code>OscOut</code> 送到 <code>http://127.0.0.1:7456</code>）、後台監看（<code>ws://127.0.0.1:7457</code>）和 Leap 橋接。第一次 Chrome 會問。選了「封鎖」，連線就失敗，主控台會出現 <code>net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS</code>（在 Chrome 154 上看到的，見 <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">Leap 套件說明</a>）。</p>
+<p>怎麼辦：</p>
+<ul>
+<li>按<strong>允許</strong>。如果已經封鎖了，打開這個頁面的網站設定（網址列左邊的圖示），重新允許，再重新載入。</li>
+<li>或者從你自己的電腦打開頁面：<code>node serve.js</code>，然後開 <code>http://localhost:8080/…</code>。那個頁面不是公開網站，Chrome 不會問。排練或教 OAV → OSC → TouchDesigner 這條路，這是最穩的做法。</li>
+<li>在 <code>&lt;iframe&gt;</code> 裡，跨網域的框架要加 <code>allow="loopback-network"</code>；同網域的框架會繼承；加了 <code>sandbox</code> 的框架拿不到（在 Chrome 154 上驗證過，見 <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">Leap 套件說明</a>）。</li>
+<li><a href="../../zh/check/">裝置體檢</a>有一顆按鈕，會試連橋接和後台監看，告訴你哪一個有回應。你按了才會連。</li>
+</ul>
 <h3 id="troubleshooting-the-phone-join-card-says-relay-offline">手機加入卡片顯示「relay offline」<a class="anchor" href="#troubleshooting-the-phone-join-card-says-relay-offline" aria-label="這一節的連結">#</a></h3>
 <p>在你自己的電腦上，手機中繼住在 <code>serve.js</code> 裡（<code>/relay</code>）。所以頁面如果是從檔案、或從不是 <code>node serve.js</code> 的伺服器打開的，卡片就會寫「relay offline」：請用 <code>node serve.js</code> 跑，再從那裡打開。</p>
 <p>在靜態主機（openaudiovisual.com、GitHub Pages）上，演出改用<strong>公開中繼</strong>，卡片會寫 <code>relay ok · … · public relay</code>，並附 QR code。如果寫的是 <code>can't reach the relay (wss://remote.cheyuwu.com/relay) — retrying</code>：</p>
@@ -2603,9 +2637,10 @@ Done means: npm test passes, and the new example loads with zero console errors.
 </ul>
 <p>手機要開的是 QR code 裡的連結，它帶著房間和中繼。手機顯示已連線卻沒反應的話，檢查兩邊的 <code>#room</code> 是不是同一個，以及電腦上的頁面有沒有重新載入成新房間（房間是每個瀏覽器各記一個，換瀏覽器或用無痕視窗會得到另一間）。</p>
 <h3 id="troubleshooting-no-midi-devices-appear">看不到任何 MIDI 裝置<a class="anchor" href="#troubleshooting-no-midi-devices-appear" aria-label="這一節的連結">#</a></h3>
+<p>先跑一次<a href="../../zh/check/">裝置體檢</a>，它會告訴你這個瀏覽器到底有沒有 Web MIDI。</p>
 <ul>
-<li>請用 Chrome 或 Edge。Safari 沒有 Web MIDI。</li>
-<li>瀏覽器詢問時，允許 MIDI。權限依網站分開：在 <code>localhost:8080</code> 允許了，不代表 <code>localhost:3000</code> 也允許。</li>
+<li>請用 Chrome 或 Edge。Safari 沒有 Web MIDI（<a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">WebKit bug 107250</a>，至今還開著），Firefox 要先裝它的網站權限附加元件才有（<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108" rel="noopener">Firefox 108</a>）。詳見<a href="#quick-start-which-browser">用哪個瀏覽器</a>。</li>
+<li>瀏覽器詢問時，允許 MIDI。從 Chrome 124 起，任何 MIDI 的使用都會問（<a href="https://developer.chrome.com/blog/web-midi-permission-prompt" rel="noopener">Chrome 部落格</a>）。權限依網站分開：在 <code>localhost:8080</code> 允許了，不代表 <code>localhost:3000</code> 也允許。</li>
 <li>裝置在頁面載入之後才接上：它應該會自己出現。沒出現的話，重新載入頁面。</li>
 <li>檢查 <strong>L1 · Input</strong>（輸入）面板：沒勾選的裝置是靜音的。</li>
 <li>可能有別的程式獨占了這個埠（Windows 上有些 DAW 和驅動程式會這樣）。把它關掉。</li>
@@ -2736,7 +2771,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=7792f7b"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

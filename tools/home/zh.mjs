@@ -212,7 +212,7 @@ export default {
       ] },
       // 出處：docs/zh/getting-started.md「用哪個瀏覽器」前兩點；docs/zh/p5.md「三種輸入」最後一段
       { q: '哪些瀏覽器支援 MIDI？', more: { label: '快速開始', href: 'docs/#quick-start-which-browser' }, a: [
-        { src: 'docs/zh/getting-started.md', code: false, text: '演出請用 Chrome 或 Edge。它們有 Web MIDI，Safari 沒有。' },
+        { src: 'docs/zh/getting-started.md', code: false, text: 'Chrome 和 Edge 有。演出請用它們。' },
         { src: 'docs/zh/p5.md', code: false, text: 'Safari 和 iPad 沒有 Web MIDI，螢幕上的控制器和手機照樣能用。' },
         { src: 'docs/zh/getting-started.md', code: false, text: '鏡頭和麥克風只在安全環境（secure context）裡能用：`http://localhost` 或 `https://`。' },
       ] },

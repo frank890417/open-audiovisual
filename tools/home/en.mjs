@@ -213,7 +213,7 @@ export default {
       ] },
       // source: docs/getting-started.md § "Which browser" (first two bullets); docs/p5.md § "Three inputs" (last paragraph)
       { q: 'Which browsers support MIDI?', more: { label: 'Quick start', href: 'docs/#quick-start-which-browser' }, a: [
-        { src: 'docs/getting-started.md', code: false, text: 'Chrome or Edge for a show. They have Web MIDI; Safari does not.' },
+        { src: 'docs/getting-started.md', code: false, text: 'Chrome and Edge have it. Use them for a show.' },
         { src: 'docs/p5.md', code: false, text: 'Safari and iPad have no Web MIDI; the on-screen controller and the phone still work there.' },
         { src: 'docs/getting-started.md', code: false, text: 'Camera and microphone only work in a secure context: `http://localhost` or `https://`.' },
       ] },
