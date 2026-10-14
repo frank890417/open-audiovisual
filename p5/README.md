@@ -46,6 +46,40 @@ OPC's own panel moves with the knob. On OpenProcessing, whose OPC panel can also
 switch), hardware is left to that mapping as soon as it is seen working, and OAV keeps wiring the on-screen
 controller and the phone. Don't name an OPC variable after a p5 function (`hue`, `fill`, …): p5 1.x will clash with it.
 
+## Microphone
+
+The same line reads the microphone, as variables (off until a sketch reads one, calls `startMic()`, or 🎹 → 🎤 is pressed):
+
+```js
+function draw() {
+  fill(200 + bass * 160, 70, 100);                      // 0..1
+  circle(width / 2, height / 2, 50 + micLevel * 300);   // 0..1
+}
+function beatDetected(level) { /* a beat */ }
+```
+
+| read | | define | |
+|---|---|---|---|
+| `micLevel` | 0..1, how loud (smoothed) | `beatDetected(level)` | a jump in loudness |
+| `bass`, `mid`, `treble` | 0..1, 20–250 · 250–2000 · 2000–8000 Hz | `kickDetected(level)`, `snareDetected`, `hatDetected` | a hit in that band |
+| `beat` | true for one frame per beat | | |
+| `micIsOn`, `startMic()`, `stopMic()` | | | |
+
+Nothing is requested when the page loads; the first read asks the browser, and every value is `0` until it answers. The
+first click or key starts it again if the browser held it back, so there is no `userStartAudio()`. The analysis is
+`@openav/audio`, loaded from next to this file, on its own `AudioContext`: `p5.sound` can run on the same page. A sketch's own
+`bass` / `mid` / … is left alone. `OAVp5.mic` (`state`, `gain`, `on('beat' | 'kick' | 'snare' | 'hat', fn)`, `start()`,
+`stop()`, `analyzer`); the option `mic=click` (only 🎤 / `startMic()`) or `mic=off` (nothing can start it). Embedded in an iframe: `allow="microphone"`.
+
+## In Hydra
+
+```js
+await loadScript('https://openaudiovisual.com/p5/oav-p5.js')
+osc(10, 0.1, () => knob1 * 2).out()
+```
+
+`knob1`, `note`, `micLevel`, … are there; subscribe with `midi.on('notePressed', fn)` (Hydra is not p5, so no callbacks to define).
+
 ## Three inputs, one stream of bytes
 
 | input | how |
@@ -85,6 +119,7 @@ message means the line did not load.
 | `panel` | `closed` (just 🎹) · `open` · `off` | `closed` |
 | `profile` | any @openav/midi profile id (`akai-lpd8`, …) | follows the plugged-in device, else `arturia-minilab3` |
 | `opc` | `on` · `off` | `on` |
+| `mic` | `auto` (the first read asks for the microphone) · `click` (only 🎤 / `startMic()`) · `off` | `auto` |
 | `dock` / `corner` | `bottom`·`top` / `right`·`left` | top-left on OpenProcessing, bottom-right elsewhere |
 | `shim` | `on` · `off` (the virtual port) | `on` |
 | `relay` / `room` | the phone relay and room | `wss://remote.cheyuwu.com/relay` / one per browser |
@@ -93,8 +128,8 @@ message means the line did not load.
 
 ## Size, versions
 
-`oav-p5.js` is about 40 KB (13 KB gzip) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
-its modules, ~130 KB transferred, from next to it), a phone is asked for (`packages/relay`, a QR encoder), or an
+`oav-p5.js` is about 50 KB (17 KB gzip) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
+its modules, ~130 KB transferred, from next to it), the microphone is read (`packages/audio`, ~7 KB), a phone is asked for (`packages/relay`, a QR encoder), or an
 unknown controller is plugged in (`packages/midi/profiles`). Because it loads the rest of OAV from next to itself,
 one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.jsdelivr.net/gh/frank890417/open-audiovisual@<tag>/p5/oav-p5.js` is frozen.
 
@@ -105,6 +140,11 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
 - `PW=<playwright> P5_DIR=<p5 builds> BROWSER=chromium|webkit|firefox node p5/test/smoke.cjs`: p5 1.11.11 and 2.x ×
   the line, the line 1.5 s late, the custom-library route and OPC — the sketch runs, `midi` exists in `setup()`, keys,
   knobs and pads reach it, the 🎹 controller plays it, `requestMIDIAccess` gets the virtual port, a phone over a local
-  relay plays it, no page errors; with no MIDI hardware and no permission.
+  relay plays it, no page errors; with no MIDI hardware and no permission. (`CHROME=<binary>` picks the browser.)
+- `p5/test/mic-smoke.cjs` (same arguments, plus `P5_DIR` files `p5sound-1.11.11.min.js`, `p5sound-0.4.1.min.js`; Chromium with a
+  fake microphone): a sketch that reads nothing never asks; `micLevel`, the bands, `beat` and `beatDetected()` on p5 1.x and
+  2.x, next to p5.sound; the 🎤 button; a refused microphone; none of our names is a p5 / p5.sound name.
+- `p5/test/hydra-smoke.cjs`: hydra-synth 1.4.0 (CDN, or `HYDRA_JS=<file>`) loads the line with `loadScript`; `knob1`, `note`, the
+  🎹, pixels, and `micLevel` in an arrow function.
 
-Examples: `p5/examples/particles/` (`knob1`, `notePressed`) and `p5/examples/opc/` (OPC sliders on knobs).
+Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` (OPC sliders on knobs) and `p5/examples/mic/` (`micLevel`, `bass`, `beat`).

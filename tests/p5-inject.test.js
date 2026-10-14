@@ -281,3 +281,112 @@ test('example 15: the sketch uses the p5-style names the page promises, and the 
   assert.equal(webp.subarray(0, 4).toString(), 'RIFF');
   assert.equal(webp.subarray(8, 12).toString(), 'WEBP');
 });
+
+// ---------------------------------------------------------------- the microphone (0.3.0)
+// Browser half (fake microphone, p5 1.x and 2.x, p5.sound next to it): p5/test/mic-smoke.cjs.
+function micPage(globals = {}) {
+  const asked = { getUserMedia: 0 };
+  const navigator = { mediaDevices: { getUserMedia() { asked.getUserMedia++; return Promise.reject(Object.assign(new Error('no'), { name: 'NotAllowedError' })); } } };
+  const w = page({ navigator, ...globals });
+  return { w, asked };
+}
+const FEAT = (o = {}) => ({ rms: 0.1, peak: 0.3, low: 0.5, mid: 0.25, high: 0.125, centroid: 0.2, onset: false,
+  kick: { hit: false, level: 0, env: 0 }, snare: { hit: false, level: 0, env: 0 }, hat: { hit: false, level: 0, env: 0 }, ...o });
+
+test('mic: the page loads without touching the microphone; the names are there but quiet until read', () => {
+  const { w, asked } = micPage();
+  assert.equal(w.OAVp5.mic.state, 'off');
+  assert.equal(asked.getUserMedia, 0);
+  assert.equal(typeof w.startMic, 'function');
+  assert.equal(typeof w.stopMic, 'function');
+  assert.equal(w.micIsOn, false);
+  for (const n of ['micLevel', 'bass', 'mid', 'treble', 'beat']) {
+    const d = Object.getOwnPropertyDescriptor(w, n);
+    assert.ok(d && typeof d.get === 'function', n + ' is a reader, not a value');
+    assert.equal(d.enumerable, false, n + ' is not listed when the page lists its globals');
+  }
+  assert.equal(w.OAVp5.mic.state, 'off', 'looking at the descriptors read nothing');
+});
+
+test('mic: the first read starts it (and returns 0); the options click and off never do', () => {
+  const a = micPage();
+  assert.equal(a.w.micLevel, 0);
+  assert.equal(a.w.OAVp5.mic.state, 'asking');
+  assert.equal(a.w.bass + a.w.mid + a.w.treble, 0);
+  for (const mic of ['click', 'off']) {
+    const b = micPage({ OAV_P5: { mic } });
+    assert.equal(b.w.micLevel, 0);
+    assert.equal(b.w.OAVp5.mic.state, 'off', 'mic=' + mic);
+  }
+  const o = micPage({ OAV_P5: { mic: 'off' } });
+  o.w.startMic();
+  assert.equal(o.w.OAVp5.mic.state, 'off', 'mic=off: not even startMic() opens it');
+  const c = micPage({ OAV_P5: { mic: 'click' } });
+  c.w.startMic();
+  assert.equal(c.w.OAVp5.mic.state, 'asking', 'startMic() works whatever the option');
+});
+
+test('mic: a browser with no getUserMedia (http, old) says "unavailable" and the reads stay 0', () => {
+  const w = page();
+  assert.equal(w.micLevel, 0);
+  assert.equal(w.OAVp5.mic.state, 'unavailable');
+  assert.equal(w.bass, 0);
+});
+
+test('mic: features become micLevel / bass / mid / treble, 0..1, and the gain scales them', () => {
+  const { w } = micPage({ OAV_P5: { mic: 'click' } });
+  const m = w.OAVp5.mic;
+  m._frame(FEAT());
+  assert.ok(w.micLevel > 0 && w.micLevel <= 1, 'micLevel ' + w.micLevel);
+  assert.equal(w.bass, 0.5); assert.equal(w.mid, 0.25); assert.equal(w.treble, 0.125);
+  m._frame(FEAT({ rms: 0 })); assert.equal(w.micLevel, 0);
+  m._frame(FEAT({ rms: 1, low: 1 })); assert.equal(w.micLevel, 1);
+  m.gain = 4; m._frame(FEAT()); assert.equal(w.bass, 1); assert.equal(w.mid, 1); assert.equal(w.treble, 0.5);
+});
+
+test('mic: beatDetected(level), kickDetected, snareDetected, hatDetected are called like notePressed; mic.on() hears them too', () => {
+  const calls = [];
+  const { w } = micPage({ OAV_P5: { mic: 'click' }, beatDetected: (l) => calls.push(['beat', l]), kickDetected: (l) => calls.push(['kick', l]),
+    snareDetected: () => calls.push(['snare']), hatDetected: () => { throw new Error('boom'); } });
+  const heard = []; const off = w.OAVp5.mic.on('beat', (l) => heard.push(l));
+  w.OAVp5.mic._frame(FEAT({ onset: true, kick: { hit: true, level: 0.6, env: 0.6 }, snare: { hit: true, level: 0.4, env: 0.4 }, hat: { hit: true, level: 0.2, env: 0.2 } }));
+  assert.deepEqual(calls.map((c) => c[0]), ['beat', 'kick', 'snare']);
+  assert.ok(calls[0][1] > 0 && calls[0][1] <= 1);
+  assert.equal(calls[1][1], 0.6);
+  assert.equal(heard.length, 1);
+  off(); w.OAVp5.mic._frame(FEAT({ onset: true })); assert.equal(heard.length, 1);
+  assert.throws(() => w.OAVp5.mic.on('nope', () => {}), /unknown mic event/);
+});
+
+test('mic: `beat` is true for exactly one p5 frame per beat, however often it is read', () => {
+  const { w } = micPage({ OAV_P5: { mic: 'click' }, frameCount: 1 });
+  const m = w.OAVp5.mic;
+  assert.equal(w.beat, false);
+  m._frame(FEAT({ onset: true }));
+  w.frameCount = 2;
+  assert.equal(w.beat, true); assert.equal(w.beat, true, 'same frame, same answer');
+  w.frameCount = 3; assert.equal(w.beat, false);
+  m._frame(FEAT({ onset: true })); m._frame(FEAT({ onset: true }));   // two beats between two frames count as one frame
+  w.frameCount = 4; assert.equal(w.beat, true);
+  w.frameCount = 5; assert.equal(w.beat, false);
+});
+
+test('mic: a name the sketch already has is left alone (and reading it never starts the microphone)', () => {
+  const { w, asked } = micPage({ bass: 7 });
+  assert.equal(w.bass, 7);
+  assert.equal(w.OAVp5.mic.state, 'off');
+  // a sketch that assigns the name later keeps its own value, and never wakes the microphone
+  const b = micPage();
+  b.w.treble = 3;
+  assert.equal(b.w.treble, 3);
+  assert.equal(b.w.OAVp5.mic.state, 'off');
+  assert.equal(asked.getUserMedia + b.asked.getUserMedia, 0);
+});
+
+test('mic: nothing here collides with the names p5 and p5.sound own', () => {
+  // the names this file adds to the page for the microphone; the browser half checks them against p5 1.11.11, 2.0.5, 2.3.4
+  // and p5.sound 1.x / 0.4.1; these are the ones by hand
+  const ours = ['micLevel', 'micIsOn', 'startMic', 'stopMic', 'bass', 'mid', 'treble', 'beat', 'beatDetected', 'kickDetected', 'snareDetected', 'hatDetected'];
+  const p5sound = ['getAudioContext', 'userStartAudio', 'getOutputVolume', 'outputVolume', 'soundFormats', 'loadSound', 'createConvolver', 'getLevel', 'AudioIn', 'FFT', 'Amplitude', 'masterVolume', 'sampleRate', 'freqToMidi', 'midiToFreq', 'noteToFreq'];
+  for (const n of ours) assert.ok(!p5sound.includes(n), n);
+});

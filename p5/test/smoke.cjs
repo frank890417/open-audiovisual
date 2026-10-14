@@ -67,7 +67,7 @@ c.connect(); window.phone = c;</script>`);
   });
   await new Promise((ok) => srv.listen(0, '127.0.0.1', ok));
   const base = `http://127.0.0.1:${srv.address().port}`;
-  const b = await PW[ENGINE].launch({ headless: true });
+  const b = await PW[ENGINE].launch({ headless: true, ...(process.env.CHROME && ENGINE === 'chromium' ? { executablePath: process.env.CHROME } : {}) });   // CHROME=<a Chrome for Testing binary> when the bundled headless shell is not installed
   let bad = 0;
   const row = (ok, label, extra = '') => { if (!ok) bad++; console.log(`${ok ? '✅' : '❌'} ${label}${extra ? '  ' + extra : ''}`); };
 

@@ -34,11 +34,11 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=7792f7b">
+<link rel="stylesheet" href="../../assets/home/home.css?v=d874044">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/p5/#article","url":"https://openaudiovisual.com/zh/p5/","name":"oav-p5：用 MIDI 控制器玩任何 p5.js 草圖","description":"在任何 p5.js 草圖最上面加一行，就能用 MIDI 控制器、螢幕上的控制器或手機彈。支援 p5 1.x 與 2.x，包含 OpenProcessing。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"p5.js 一行接上","about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/zh/p5/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/zh/p5/#breadcrumb"},"mentions":[]},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/zh/p5/#code","name":"oav-p5","url":"https://openaudiovisual.com/p5/oav-p5.js","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser, p5.js 1.x and 2.x","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/p5/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"p5.js 一行接上","item":"https://openaudiovisual.com/zh/p5/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=7792f7b">
-<link rel="stylesheet" href="../../assets/examples/pages.css?v=7792f7b">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=d874044">
+<link rel="stylesheet" href="../../assets/examples/pages.css?v=d874044">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page p5-page">
@@ -115,7 +115,46 @@ OPC.toggle(<span class="ts">'trails'</span>, <span class="tk">true</span>);     
 <p>旋鈕依序接 slider，推桿接在旋鈕後面，打擊墊接 toggle 和 button。轉旋鈕時 OPC 面板上的滑桿跟著動，
 <code>parameterChanged()</code> 照常會被叫。OpenProcessing 的 OPC 面板自己也能學實體控制器（面板上的 MIDI 開關），一看到它的對應在動，實體控制器就交給它，這一行繼續接螢幕上的控制器和手機（這兩個 OpenProcessing 看不到）。
 OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill</code>），p5 1.x 會撞名。</p>
-<h3 id="p5-3">三種輸入<a class="anchor" href="#p5-3" aria-label="#">#</a></h3>
+<h3 id="p5-3">麥克風<a class="anchor" href="#p5-3" aria-label="#">#</a></h3>
+<p>同一行也接得上麥克風，草圖讀它的方式一樣：讀變數。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> draw() {
+  background(230, 40, 10);
+  fill(200 + bass * 160, 70, 100);                      <span class="tc">// bass: the low end, 0..1</span>
+  circle(width / 2, height / 2, 50 + micLevel * 300);   <span class="tc">// micLevel: how loud, 0..1</span>
+}
+
+<span class="tk">function</span> beatDetected(level) {                          <span class="tc">// like keyPressed(): a beat just landed</span>
+  <span class="tc">// flash, spawn, jump to the next scene</span>
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>讀</th><th>值</th></tr></thead>
+<tbody>
+<tr><td><code>micLevel</code></td><td>0 到 1，現在多大聲（有平滑；安靜的房間是 0，很近很大聲是 1）</td></tr>
+<tr><td><code>bass</code>、<code>mid</code>、<code>treble</code></td><td>0 到 1，20–250 Hz、250–2000 Hz、2000–8000 Hz 三段的能量</td></tr>
+<tr><td><code>beat</code></td><td>每個拍子有一格是 <code>true</code>，像按著滑鼠時的 <code>mouseIsPressed</code></td></tr>
+<tr><td><code>micIsOn</code></td><td>麥克風有沒有在跑</td></tr>
+<tr><td><code>startMic()</code>、<code>stopMic()</code></td><td>用程式開、關（回傳 promise）</td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>寫這個函式</th><th>什麼時候被叫</th></tr></thead>
+<tbody>
+<tr><td><code>beatDetected(level)</code></td><td>一個拍子：音量比房間剛才的樣子突然跳起來（level 0 到 1）</td></tr>
+<tr><td><code>kickDetected(level)</code>、<code>snareDetected(level)</code>、<code>hatDetected(level)</code></td><td>低、中、高頻段各自打一下（20–120 Hz、150–800 Hz、6–14 kHz）</td></tr>
+</tbody>
+</table></div>
+<p><strong>草圖開口要，它才開。</strong> 頁面載入時什麼都不會要。草圖第一次讀到 <code>micLevel</code>、<code>bass</code>、<code>mid</code>、<code>treble</code>、<code>beat</code>，或呼叫 <code>startMic()</code>，瀏覽器才會問你要不要給麥克風；答案回來之前，每個值都是 <code>0</code>。只寫了 <code>beatDetected()</code>、什麼值都沒讀的草圖，會在第一次點擊或按鍵時開。🎹 面板裡的 <strong>🎤</strong> 按鈕可以手動開關、顯示音量；瀏覽器擋下麥克風時，它會寫出來（從網址列左邊重新允許之後，再按一次）。</p>
+<ul>
+<li><strong>瀏覽器要你先點一下的話。</strong> 瀏覽器在頁面被點過之前不讓聲音動起來。這個檔在 <code>draw()</code> 一讀到值就去要，瀏覽器擋住的話，第一次點擊或按鍵再開一次，所以不用寫 <code>userStartAudio()</code>。</li>
+<li><strong>跟 p5.sound 並存。</strong> 分析用的是 <a href="../../zh/docs/#packages"><code>@openav/audio</code></a>（一個 <code>AnalyserNode</code>），第一次用到時從這個檔旁邊載入，有自己的 <code>AudioContext</code>。同一頁可以放 <code>p5.sound</code>（<code>p5.AudioIn</code>、<code>p5.FFT</code>），兩邊的麥克風互不相干，這裡新增的名字也沒有一個跟 p5 或 p5.sound 的名字重複。p5 1.x、2.x 的全域模式都能用。</li>
+<li><strong>麥克風太小聲或太大聲。</strong> <code>OAVp5.mic.gain = 3</code> 把 <code>micLevel</code> 和三個頻段乘三倍（上限還是 1）。
+<code>OAVp5.mic.on('beat', fn)</code> 跟定義 <code>beatDetected</code> 一樣，回傳一個可以取消的函式。</li>
+<li><strong>你自己的名字優先。</strong> 草圖裡已經有 <code>bass</code>、<code>mid</code>（<code>let</code>、函式、別的函式庫）的話，原本的會留著，這個檔也不會為了它去開麥克風。</li>
+<li><strong>關掉自動開。</strong> <code>?mic=click</code>（或 <code>window.OAV_P5 = { mic: 'click' }</code>）：只有 🎤 和 <code>startMic()</code> 能開；
+<code>mic=off</code> 就什麼都開不起來（名字還在，值一直是 0）。跟所有用麥克風的頁面一樣，要 <code>https</code> 或 <code>localhost</code>。</li>
+<li>現成可開的麥克風草圖：<code>p5/examples/mic/</code>。</li>
+</ul>
+<h3 id="p5-4">三種輸入<a class="anchor" href="#p5-4" aria-label="#">#</a></h3>
 <div class="table-wrap"><table>
 <thead><tr><th>輸入</th><th>怎麼用</th></tr></thead>
 <tbody>
@@ -126,14 +165,22 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 </table></div>
 <p>三種輸入進來都是同一串 MIDI，草圖分不出是誰彈的（想知道的話看 <code>midi.last.source</code>）。Safari 和 iPad 沒有
 Web MIDI，螢幕上的控制器和手機照樣能用。草圖自己寫了 Web MIDI（<code>navigator.requestMIDIAccess</code>、WebMidi.js）的話，螢幕和手機會變成多出來的一個輸入，名字叫 <strong>OAV Virtual MIDI</strong>。</p>
-<h3 id="p5-4">細節<a class="anchor" href="#p5-4" aria-label="#">#</a></h3>
+<h3 id="p5-hydra">在 Hydra 裡用<a class="anchor" href="#p5-hydra" aria-label="#">#</a></h3>
+<p><a href="https://hydra.ojack.xyz" rel="noopener">Hydra</a> 有自己的載入函式；同一個檔在那裡也能用，Hydra 的箭頭函式每一格都會重讀變數：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">await</span> loadScript(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)
+osc(10, 0.1, () =&gt; knob1 * 2).out()                     <span class="tc">// knob 1 sets the colour offset</span></code></pre></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">osc(10, 0.1, () =&gt; 1 + micLevel * 3).out()              <span class="tc">// the microphone, asked for when this line first runs</span></code></pre></div>
+<p><code>note</code>、<code>velocity</code>、<code>knob1</code> … <code>knob8</code>、<code>fader1</code> …、<code>pad1</code> …，還有 🎹 螢幕上的控制器，都一樣在。
+Hydra 不是 p5，沒有可以定義的 <code>notePressed()</code> 回呼，改用訂閱：
+<code>midi.on('notePressed', (note, velocity) =&gt; { … })</code>（回傳一個取消訂閱的函式）。測試用的是 hydra-synth 1.4.0，也就是編輯器跑的那個函式庫（<code>p5/test/hydra-smoke.cjs</code>）。</p>
+<h3 id="p5-6">細節<a class="anchor" href="#p5-6" aria-label="#">#</a></h3>
 <ul>
 <li><strong>為什麼用 <code>prepend</code></strong>：p5 的友善錯誤檢查會把頁面上最後一個 <code>&lt;script&gt;</code> 當成你的草圖。這個檔放在最前面，就不會被誤當成你的程式。</li>
 <li><strong>為什麼非同步載入的一行就夠</strong>：p5 等到視窗的 <code>load</code> 事件才開始全域模式，而頁面載入中插進來的 script 會讓
 <code>load</code> 等它跑完，所以 <code>setup()</code> 裡就已經有 <code>knob1</code>。</li>
 <li><strong>這一行沒載到時</strong>（沒網路、網址打錯），讀 <code>knob1</code> 的程式會停在「knob1 is not defined」。</li>
-<li><strong>嵌到別的網站</strong>：OpenProcessing 自己的頁面允許草圖用 MIDI，它給的嵌入碼沒有。要讓嵌入的草圖聽實體控制器，在那個 <code>&lt;iframe&gt;</code> 加上 <code>allow="midi"</code>。</li>
-<li><strong>選項、MIDI 層的寫法和測試</strong>：<a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>。範例：<code>p5/examples/particles/</code>、<code>p5/examples/opc/</code>。</li>
+<li><strong>嵌到別的網站</strong>：OpenProcessing 自己的頁面允許草圖用 MIDI 和麥克風，它給的嵌入碼沒有。要讓嵌入的草圖聽實體控制器，在那個 <code>&lt;iframe&gt;</code> 加上 <code>allow="midi"</code>；要它聽麥克風，加 <code>allow="microphone"</code>。</li>
+<li><strong>選項、MIDI 層的寫法和測試</strong>：<a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>。範例：<code>p5/examples/particles/</code>、<code>p5/examples/opc/</code>、<code>p5/examples/mic/</code>。</li>
 </ul>
   </section>
 
@@ -166,7 +213,7 @@ Web MIDI，螢幕上的控制器和手機照樣能用。草圖自己寫了 Web M
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"","tocButton":"","tocClose":""}</script>
-<script type="module" src="../../assets/docs/docs.js?v=7792f7b"></script>
+<script type="module" src="../../assets/docs/docs.js?v=d874044"></script>
 <!--/email_off-->
 </body>
 </html>
