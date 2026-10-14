@@ -959,8 +959,8 @@
       "read": [
         {
           "file": "config.js",
-          "from": 40,
-          "to": 46,
+          "from": 31,
+          "to": 37,
           "match": "export const LANES = [",
           "note": {
             "en": "One lane of keyframes per param.",
@@ -969,12 +969,12 @@
         },
         {
           "file": "main.js",
-          "from": 115,
-          "to": 115,
-          "match": "timeline: { total: TOTAL, automation, scenes: SCENES },",
+          "from": 113,
+          "to": 113,
+          "match": "timeline: { total: TOTAL, automation: compile(lanes), scenes: SCENES, loop: true },",
           "note": {
-            "en": "The timeline gets the compiled lanes and the scenes: nothing else in the world changes.",
-            "zh": "時間軸拿到編好的曲線與場景：世界本身完全不用動。"
+            "en": "The timeline gets the lanes (each keyframe carries its curve), the scenes and a loop: nothing else in the world changes.",
+            "zh": "時間軸拿到曲線（每個關鍵影格自帶曲線種類）、場景與循環：世界本身完全不用動。"
           }
         }
       ],
