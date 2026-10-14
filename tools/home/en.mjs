@@ -13,7 +13,7 @@ export default {
   ldLanguage: 'en',
 
   meta: {
-    title: 'open-audiovisual · Web MIDI framework for live visuals',
+    title: 'open-audiovisual · a web-native framework for audiovisual performance',
     description: 'Zero-build JavaScript framework: MIDI controllers, mics, hands and phones become signals that drive p5.js, WebGL or WebToe worlds in the browser. MIT.',
     definition: 'open-audiovisual is a zero-build JavaScript framework that turns MIDI controllers, microphones, hand tracking and phones into signals for browser-based audiovisual performance: p5.js, WebGL or WebToe worlds, MIT licensed.',
     ogDescription: 'Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. open-audiovisual gives you a show.',
@@ -263,6 +263,10 @@ export default {
       read_doc: 'architecture, writing-a-world, signals, show-control, agents',
       scaffold_world: 'copy a donor example into a new numbered example',
       run_checks: 'run the test suite, the same gate CI uses',
+      list_controllers: 'every MIDI controller profile, with its control mix and unverified count',
+      read_profile: 'one profile in full, plus a readable MIDI map',
+      validate_profile: 'check a profile JSON and catch clashes with shipped ones',
+      scaffold_profile: 'a valid skeleton for a new controller, every number marked unverified',
     },
     filesTitle: 'Machine-readable',
     files: {

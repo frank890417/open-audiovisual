@@ -13,7 +13,7 @@ export default {
   ldLanguage: 'zh-Hant-TW',
 
   meta: {
-    title: 'open-audiovisual｜網頁 MIDI 即時影像表演框架',
+    title: 'open-audiovisual｜網頁原生的影音表演框架',
     description: '零建置的 JavaScript 框架：MIDI 控制器、麥克風、手勢和手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界。MIT 授權。',
     definition: 'open-audiovisual 是零建置的 JavaScript 框架：把 MIDI 控制器、麥克風、手勢與手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界，用於現場影音表演。MIT 授權。',
     ogDescription: 'Hydra 給你即興，cables 給你平台，Tone 給你聲音。open-audiovisual 給你一場演出。',
@@ -262,6 +262,10 @@ export default {
       read_doc: '架構、寫一個世界、訊號、演出控制、代理約定',
       scaffold_world: '拿一個範例當底，建立新的編號範例',
       run_checks: '跑測試，和 CI 是同一道關卡',
+      list_controllers: '所有 MIDI 控制器設定檔，附控制項組成與未確認數量',
+      read_profile: '讀一台完整的設定檔，附好讀的 MIDI 對照',
+      validate_profile: '檢查設定檔 JSON，抓出和內建機型的衝突',
+      scaffold_profile: '為新控制器產一份合法骨架，每個數字都標未確認',
     },
     filesTitle: '給機器讀的',
     files: {

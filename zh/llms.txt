@@ -69,7 +69,7 @@
 { "mcpServers": { "openav": { "command": "node", "args": ["/path/to/open-audiovisual/packages/mcp/server.js"] } } }
 ```
 
-工具：`list_examples`（作品與一句話摘要）· `read_doc`（architecture、writing-a-world、signals、show-control、roadmap、agents、readme）· `scaffold_world`（把一個範例複製成新的編號範例）· `run_checks`（CI 跑的測試）。Claude Code 技能 `.claude/skills/create-world` 可依描述建立世界。
+工具：`list_examples`（作品與一句話摘要）· `read_doc`（architecture、writing-a-world、signals、show-control、roadmap、agents、readme）· `scaffold_world`（把一個範例複製成新的編號範例）· `run_checks`（CI 跑的測試）· `list_controllers` / `read_profile` / `validate_profile` / `scaffold_profile`（MIDI 控制器設定檔：列出、讀取、檢查、開新檔）。Claude Code 技能 `.claude/skills/create-world` 可依描述建立世界。
 
 ## Examples
 

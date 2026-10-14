@@ -300,7 +300,8 @@ on consonant chords"). Describe the performance; the agent writes the World; the
 chassis does the rest.
 
 An **MCP server** ships in the box ([`.mcp.json`](.mcp.json), zero-dependency stdio):
-`list_examples` · `read_doc` · `scaffold_world` · `run_checks`. Connect any MCP-capable
+`list_examples` · `read_doc` · `scaffold_world` · `run_checks` · `list_controllers` ·
+`read_profile` · `validate_profile` · `scaffold_profile`. Connect any MCP-capable
 agent and it can inspect, scaffold and verify a performance. Machine-readable entry points:
 [`llms.txt`](llms.txt) · [`llms-full.txt`](llms-full.txt). (Positioning kin:
 [open-slide](https://github.com/1weiho/open-slide), which does this for slide decks.)

@@ -4,8 +4,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { Timeline } from '../packages/timeline/index.js';
-import { TOTAL, PARAMS, SCENES, LANES, CURVES, compile, cues } from '../examples/14-timeline/config.js';
+import { Timeline, CURVES } from '../packages/timeline/index.js';
+import { TOTAL, PARAMS, SCENES, LANES, compile, cues } from '../examples/14-timeline/config.js';
 
 const byKey = Object.fromEntries(PARAMS.map((p) => [p.key, p]));
 const near = (a, b, e = 1e-6) => assert.ok(Math.abs(a - b) <= e, `${a} !~ ${b}`);
@@ -67,7 +67,7 @@ test('cues: each sits inside its own scene, fires a declared pulse, none duplica
   for (const s of SCENES) for (const c of s.cues || []) assert.ok(typeof c.t === 'number' && c.name, 'scene.cues keep the {name,t} shape the console scrubber draws');
 });
 
-test('compile(): the baked automation hits every anchor and never leaves the param range', () => {
+test('compile(): the automation hits every anchor and never leaves the param range', () => {
   const automation = compile(LANES);
   const tl = new Timeline({ params: PARAMS, automation, scenes: SCENES, total: TOTAL });
   for (const lane of LANES) {
@@ -80,7 +80,7 @@ test('compile(): the baked automation hits every anchor and never leaves the par
   }
 });
 
-test('compile(): curves differ — ease/in/out/step are not the linear midpoint', () => {
+test('the curve kinds on a keyframe differ — ease/in/out/step are not the linear midpoint', () => {
   const mid = (kind) => { const a = compile([{ key: 'x', anchors: [[0, 0], [10, 100, kind]] }]).x; const tl = new Timeline({ params: [{ key: 'x', min: 0, max: 100, def: 0 }], automation: { x: a }, total: 10 }); return tl.valueAt('x', 5); };
   near(mid('linear'), 50);
   near(mid('ease'), 50, 0.5);            // smoothstep is symmetric
@@ -89,6 +89,25 @@ test('compile(): curves differ — ease/in/out/step are not the linear midpoint'
   near(mid('step'), 0);                  // holds the old value until the anchor, then jumps
   const stepTl = new Timeline({ params: [{ key: 'x', min: 0, max: 100, def: 0 }], automation: compile([{ key: 'x', anchors: [[0, 0], [10, 100, 'step']] }]), total: 10 });
   near(stepTl.valueAt('x', 10), 100);
+});
+
+test('compile() hands the anchors over as copies (a recording must not edit the declaration)', () => {
+  const auto = compile(LANES);
+  assert.deepEqual(auto.hue, LANES[0].anchors);
+  auto.hue[0][1] = 999; auto.hue.push([41, 0]);
+  assert.equal(LANES[0].anchors[0][1], 200); assert.equal(LANES[0].anchors.length, 5);
+});
+
+test('the timeline fires the example\'s cues itself: playing through gives them in order, once; the loop gives them again', () => {
+  const tl = new Timeline({ params: PARAMS, automation: compile(LANES), scenes: SCENES, total: TOTAL, loop: true });
+  const got = []; tl.onCue((c) => got.push(c.t));
+  tl.play();
+  for (let i = 0; i < 400; i++) tl.advance(0.1);            // one full lap (give or take a float)
+  assert.deepEqual(got, cues(SCENES).map((c) => c.t));
+  for (let i = 0; i < 150; i++) tl.advance(0.1);            // about 15 s into lap two (past the cues at 8 and 14)
+  assert.deepEqual(got, [...cues(SCENES).map((c) => c.t), 8, 14]);
+  tl.seek(5); tl.seek(39);                                  // scrubbing past fires nothing
+  assert.equal(got.length, cues(SCENES).length + 2);
 });
 
 test('a `step` param holds each keyframe (shape never lands between two shapes)', () => {

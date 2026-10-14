@@ -274,7 +274,9 @@ const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks
 
 | 匯出 | 簽章 |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })` · `play()`（放行 hold）、`pause()`、`toggle()`、`seek(t)`、`jumpScene(d)`、`next()`（放行 hold，否則往後一段）、`prev()`、`release()`、`reset()`（回到 `start`，預設 0）· `advance(dt)` · `state(t)`、`valueAt(key, t)` · `sceneIndexAt(t)`、`currentScene(t)`、`sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`、`onSeek(cb(t, kind))` · `layer(key, value, t)` · `t`、`playing`、`holding`、`rate`、`total`、`start`、`score` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })` · `play()`（放行 hold）、`pause()`、`toggle()`、`seek(t)`、`jumpScene(d)`、`next()`（放行 hold，否則往後一段）、`prev()`、`release()`、`reset()`（回到 `start`，預設 0）· `advance(dt)` · `state(t)`、`valueAt(key, t)` · `sceneIndexAt(t)`、`currentScene(t)`、`sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`、`onSeek(cb(t, kind))` · `layer(key, value, t)` · 關鍵影格 `[t, value, curve?]`（`'linear'`、`'ease'`、`'in'`、`'out'`、`'step'`）· `loop`（`true`、`'scene'`、場景 id、`{ from, to }`）、`onLoop(cb)` · `cues()`、`onCue(cb(cue, { cause }))`、`fireCue(cue)` · `record(key, source)`、`stopRecording()`、`onRecord(cb)`、`mergeTake(key, take, opts)` · `t`、`playing`、`holding`、`rate`、`total`、`start`、`score` |
+
+關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 `cues` 在播放經過時觸發，seek 不會觸發。`record()` 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。`CURVES` 也有匯出。
 
 見[演出控制](show-control.md#timeline)。
 

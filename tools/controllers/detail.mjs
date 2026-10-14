@@ -11,7 +11,7 @@ import { SITE, REPO, BLOB, PERSON_ID, SOFTWARE_ID, pathCtx, headBasics, pageNode
 import { lastmodOf } from '../site/git.mjs';
 export { lastmodOf };
 import { snippets, hl } from '../../assets/controllers/snippets.js';
-import { catalog, faceSvg, specParts, nameOf, countsText, detailPath, detailUrl, fill, noteName, TYPE_ORDER, PROFILE_DIR } from './page.mjs';
+import { ISSUE_NEW, CONTRIBUTING, noMidiStrip, catalog, faceSvg, specParts, nameOf, countsText, detailPath, detailUrl, fill, noteName, TYPE_ORDER, PROFILE_DIR } from './page.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const OG_IMAGE = SITE + 'assets/home/og.png';
@@ -213,6 +213,7 @@ ${head}
 ${topBar(home, c)}
 
 <main id="main">
+  ${noMidiStrip(t)}
 
   <!-- ═════ the instrument first, then the words ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
@@ -251,6 +252,7 @@ ${topBar(home, c)}
   <section class="sec" id="midi-map" aria-labelledby="midi-map-title">
     ${sec('midi-map', D.spec.eyebrow, fill(D.spec.title, { name: esc(name) }), D.spec.lede)}
     ${sp.table}
+    <p class="led-line" data-led="${d.prov.led ? 'yes' : 'no'}">${d.prov.led ? fill(D.spec.ledYes, { n: d.p.controls.filter((x) => x.led).length }) : D.spec.ledNo}</p>
     ${sp.controlNotes ? `<h3>${D.spec.notesTitle}</h3>\n    ${sp.controlNotes}` : ''}
     <div class="spec-grid">
       <div>
@@ -296,11 +298,21 @@ ${topBar(home, c)}
     <ul class="rel" aria-label="${attr(D.more.relatedLabel)}">
       ${rel.map((x) => `<li><a href="${href(x)}">${esc(fullName(x.p, locale))}</a><span>${esc(x.p.maker || B.generic)} · ${countsText(t, x)}</span></li>`).join('\n      ')}
     </ul>
+    <p class="cmp-link"><a href="../#cmp-${id}">${fill(D.more.compare, { name: esc(name) })} →</a></p>
     <nav class="step" aria-label="${attr(D.more.stepLabel)}">
       <a rel="prev" href="${href(prev)}"><small>← ${D.more.prev}</small>${esc(fullName(prev.p, locale))}</a>
       <a class="back" href="${c.to('controllers')}">${D.more.back}</a>
       <a rel="next" href="${href(next)}"><small>${D.more.next} →</small>${esc(fullName(next.p, locale))}</a>
     </nav>
+  </section>
+
+  <!-- ═════ not here? ═════ -->
+  <section class="sec" id="request" aria-labelledby="request-title">
+    ${sec('request', D.request.eyebrow, D.request.title, D.request.text)}
+    <ul class="model-links">
+      <li><a href="${ISSUE_NEW}">${D.request.issue} ↗</a></li>
+      <li><a href="${CONTRIBUTING}">${D.request.contributing} ↗</a></li>
+    </ul>
   </section>
 
   <!-- ═════ wrong data? ═════ -->
