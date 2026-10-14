@@ -226,6 +226,10 @@ export default {
       read_doc: '架構、寫一個世界、訊號、演出控制、代理約定',
       scaffold_world: '拿一個範例當底，建立新的編號範例',
       run_checks: '跑測試，和 CI 是同一道關卡',
+      list_controllers: '所有 MIDI 控制器設定檔，附控制項組成與未確認數量',
+      read_profile: '讀一台完整的設定檔，附好讀的 MIDI 對照',
+      validate_profile: '檢查設定檔 JSON，抓出和內建機型的衝突',
+      scaffold_profile: '為新控制器產一份合法骨架，每個數字都標未確認',
     },
     filesTitle: '給機器讀的',
     files: {

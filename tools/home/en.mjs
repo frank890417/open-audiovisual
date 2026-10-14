@@ -226,6 +226,10 @@ export default {
       read_doc: 'architecture, writing-a-world, signals, show-control, agents',
       scaffold_world: 'copy a donor example into a new numbered example',
       run_checks: 'run the test suite, the same gate CI uses',
+      list_controllers: 'every MIDI controller profile, with its control mix and unverified count',
+      read_profile: 'one profile in full, plus a readable MIDI map',
+      validate_profile: 'check a profile JSON and catch clashes with shipped ones',
+      scaffold_profile: 'a valid skeleton for a new controller, every number marked unverified',
     },
     filesTitle: 'Machine-readable',
     files: {

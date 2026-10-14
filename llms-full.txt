@@ -153,7 +153,8 @@ runnable work from a natural-language description ("a jellyfish world that bloom
 on consonant chords"). Describe the performance; the agent writes the World; the
 chassis does the rest. An **MCP server** ships in the box (`.mcp.json`,
 zero-dependency stdio): `list_examples` · `read_doc` · `scaffold_world` ·
-`run_checks` — connect any MCP-capable agent and it can inspect, scaffold, and
+`run_checks` · `list_controllers` · `read_profile` · `validate_profile` ·
+`scaffold_profile` — connect any MCP-capable agent and it can inspect, scaffold, and
 verify a performance. (Positioning kin: [open-slide](https://github.com/1weiho/open-slide),
 which does this for slide decks.)
 
@@ -282,7 +283,8 @@ sources in `docs/`, one file for language models at `/llms-full.txt`.
 This repo ships an MCP server (`.mcp.json` is pre-wired — Claude Code picks it
 up automatically; other agents: `node packages/mcp/server.js` over stdio).
 Tools: `list_examples` · `read_doc` (start with `agents`, then
-`writing-a-world`) · `scaffold_world` (donor-based) · `run_checks`. The manual
+`writing-a-world`) · `scaffold_world` (donor-based) · `run_checks` · controller profiles:
+`list_controllers` · `read_profile` · `validate_profile` · `scaffold_profile`. The manual
 path below works without it.
 
 ## How to create a new work (the common request)
@@ -3528,6 +3530,10 @@ JSON-RPC error with code −32000 and a message.
 | `read_doc` | `doc` (required): `architecture`, `writing-a-world`, `signals`, `show-control`, `roadmap`, `agents`, `readme` | the Markdown text. `agents` is AGENTS.md, `readme` the README; the others are `docs/<name>.md` |
 | `scaffold_world` | `slug` (required, kebab-case), `donor` (default `01-hello-particles`) | `{ created, next_steps }`. Copies every file of `examples/<donor>/` into `examples/<next number>-<slug>/` |
 | `run_checks` | none | `{ pass, fail, ok }` from `node --test tests/*.test.js` (60 s timeout), or `{ ok: false, output }` with the failing lines |
+| `list_controllers` | none | `{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }`: every shipped MIDI profile, its control mix (`{ knob: 8, pad: 8, keys: 25 }`), how many controls are still flagged unverified, and its page `https://openaudiovisual.com/controllers/<id>/` |
+| `read_profile` | `id` (required): a profile id or its `short` | `{ id, url, unverified, profile, mapping }`: the profile JSON as shipped, and a readable MIDI map (control, type, `CC 74, ch 1`, signal `midi/<short>/<id>`, verified) |
+| `validate_profile` | `profile` (required): an object or a JSON string | `{ ok, problems, conflicts }`: the problems `validateProfile` finds, plus clashes with shipped profiles (same `id`, same `short`, overlapping `match.ports`) |
+| `scaffold_profile` | `maker`, `model`, `controls` (all required): `[{ type, count, from? }]` | `{ profile, problems, unverified, next_steps }`: a skeleton that passes `validateProfile`, every number a placeholder with `"verified": false`, and the steps to source and register it. Nothing is written to disk |
 
 Good donors for `scaffold_world`: `01-hello-particles` (minimal 2D canvas),
 `02-chord-garden` (chord-driven), `03-pose-field` (camera, hands),

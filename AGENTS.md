@@ -33,7 +33,8 @@ sources in `docs/`, one file for language models at `/llms-full.txt`.
 This repo ships an MCP server (`.mcp.json` is pre-wired — Claude Code picks it
 up automatically; other agents: `node packages/mcp/server.js` over stdio).
 Tools: `list_examples` · `read_doc` (start with `agents`, then
-`writing-a-world`) · `scaffold_world` (donor-based) · `run_checks`. The manual
+`writing-a-world`) · `scaffold_world` (donor-based) · `run_checks` · controller profiles:
+`list_controllers` · `read_profile` · `validate_profile` · `scaffold_profile`. The manual
 path below works without it.
 
 ## How to create a new work (the common request)

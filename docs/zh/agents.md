@@ -36,6 +36,10 @@ repo 內附一個 Model Context Protocol（MCP，讓 AI 工具呼叫外部功能
 | `read_doc` | `doc`（必填）：`architecture`、`writing-a-world`、`signals`、`show-control`、`roadmap`、`agents`、`readme` | Markdown 文字。`agents` 是 AGENTS.md，`readme` 是 README，其他的是 `docs/<name>.md` |
 | `scaffold_world` | `slug`（必填，kebab-case）、`donor`（預設 `01-hello-particles`） | `{ created, next_steps }`。把 `examples/<donor>/` 的每個檔案複製到 `examples/<next number>-<slug>/` |
 | `run_checks` | 無 | 執行 `node --test tests/*.test.js`（逾時 60 秒）得到的 `{ pass, fail, ok }`，或是附上失敗那幾行的 `{ ok: false, output }` |
+| `list_controllers` | 無 | `{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }`：每一台內建的 MIDI 控制器設定檔、控制項組成（`{ knob: 8, pad: 8, keys: 25 }`）、還標著未確認的數量，以及詳細頁 `https://openaudiovisual.com/controllers/<id>/` |
+| `read_profile` | `id`（必填）：設定檔 id 或它的 `short` | `{ id, url, unverified, profile, mapping }`：內建的設定檔 JSON，加上一份讀得懂的 MIDI 對照（控制項、型態、`CC 74, ch 1`、訊號 `midi/<short>/<id>`、是否確認） |
+| `validate_profile` | `profile`（必填）：物件或 JSON 字串 | `{ ok, problems, conflicts }`：`validateProfile` 找到的問題，加上和內建設定檔的衝突（同 `id`、同 `short`、`match.ports` 重疊） |
+| `scaffold_profile` | `maker`、`model`、`controls`（都必填）：`[{ type, count, from? }]` | `{ profile, problems, unverified, next_steps }`：一份能過 `validateProfile` 的骨架，每個數字都是佔位值、標 `"verified": false`，附上「找出處、登記」的下一步。不會寫任何檔案 |
 
 適合給 `scaffold_world` 當底的範例：`01-hello-particles`（最精簡的 2D canvas）、`02-chord-garden`（和弦驅動）、`03-pose-field`（鏡頭、手）、`05-prebiotic-flake`（p5 加聲音）。先 `read_doc agents`，再 `read_doc writing-a-world`。
 

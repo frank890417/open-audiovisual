@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=02fdc94">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=02fdc94">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -1576,7 +1576,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=02fdc94"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2664,7 +2664,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=02fdc94"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -3033,6 +3033,10 @@ JSON-RPC error with code −32000 and a message.</p>
 <tr><td><code>read_doc</code></td><td><code>doc</code> (required): <code>architecture</code>, <code>writing-a-world</code>, <code>signals</code>, <code>show-control</code>, <code>roadmap</code>, <code>agents</code>, <code>readme</code></td><td>the Markdown text. <code>agents</code> is AGENTS.md, <code>readme</code> the README; the others are <code>docs/&lt;name&gt;.md</code></td></tr>
 <tr><td><code>scaffold_world</code></td><td><code>slug</code> (required, kebab-case), <code>donor</code> (default <code>01-hello-particles</code>)</td><td><code>{ created, next_steps }</code>. Copies every file of <code>examples/&lt;donor&gt;/</code> into <code>examples/&lt;next number&gt;-&lt;slug&gt;/</code></td></tr>
 <tr><td><code>run_checks</code></td><td>none</td><td><code>{ pass, fail, ok }</code> from <code>node --test tests/*.test.js</code> (60 s timeout), or <code>{ ok: false, output }</code> with the failing lines</td></tr>
+<tr><td><code>list_controllers</code></td><td>none</td><td><code>{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }</code>: every shipped MIDI profile, its control mix (<code>{ knob: 8, pad: 8, keys: 25 }</code>), how many controls are still flagged unverified, and its page <code>https://openaudiovisual.com/controllers/&lt;id&gt;/</code></td></tr>
+<tr><td><code>read_profile</code></td><td><code>id</code> (required): a profile id or its <code>short</code></td><td><code>{ id, url, unverified, profile, mapping }</code>: the profile JSON as shipped, and a readable MIDI map (control, type, <code>CC 74, ch 1</code>, signal <code>midi/&lt;short&gt;/&lt;id&gt;</code>, verified)</td></tr>
+<tr><td><code>validate_profile</code></td><td><code>profile</code> (required): an object or a JSON string</td><td><code>{ ok, problems, conflicts }</code>: the problems <code>validateProfile</code> finds, plus clashes with shipped profiles (same <code>id</code>, same <code>short</code>, overlapping <code>match.ports</code>)</td></tr>
+<tr><td><code>scaffold_profile</code></td><td><code>maker</code>, <code>model</code>, <code>controls</code> (all required): <code>[{ type, count, from? }]</code></td><td><code>{ profile, problems, unverified, next_steps }</code>: a skeleton that passes <code>validateProfile</code>, every number a placeholder with <code>"verified": false</code>, and the steps to source and register it. Nothing is written to disk</td></tr>
 </tbody>
 </table></div>
 <p>Good donors for <code>scaffold_world</code>: <code>01-hello-particles</code> (minimal 2D canvas),
@@ -3358,7 +3362,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=02fdc94"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

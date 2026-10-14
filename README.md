@@ -109,7 +109,8 @@ runnable work from a natural-language description ("a jellyfish world that bloom
 on consonant chords"). Describe the performance; the agent writes the World; the
 chassis does the rest. An **MCP server** ships in the box (`.mcp.json`,
 zero-dependency stdio): `list_examples` · `read_doc` · `scaffold_world` ·
-`run_checks` — connect any MCP-capable agent and it can inspect, scaffold, and
+`run_checks` · `list_controllers` · `read_profile` · `validate_profile` ·
+`scaffold_profile` — connect any MCP-capable agent and it can inspect, scaffold, and
 verify a performance. (Positioning kin: [open-slide](https://github.com/1weiho/open-slide),
 which does this for slide decks.)
 
