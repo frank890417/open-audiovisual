@@ -8,8 +8,8 @@
 // stream them somewhere (the lab POSTs each one to its server, so an hour-long
 // 4K take never sits in the tab's memory) and/or keep them for a Blob at the end.
 
-import { pickMime, extFor } from './mime.js?v=7792f7b';
-import { recommendedBitrate } from './layout.js?v=7792f7b';
+import { pickMime, extFor } from './mime.js?v=d874044';
+import { recommendedBitrate } from './layout.js?v=d874044';
 
 const now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
 const MR = () => globalThis.MediaRecorder;
