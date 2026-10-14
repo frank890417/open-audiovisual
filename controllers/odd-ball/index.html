@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ODD Ball MIDI map &amp; playable controller — open-audiovisual</title>
+<meta name="description" content="ODD Ball MIDI map: 3 pads, 4 knobs and 3 faders. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.">
+<link rel="canonical" href="https://openaudiovisual.com/controllers/odd-ball/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/odd-ball/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/odd-ball/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/odd-ball/">
+<link rel="alternate" type="text/markdown" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="ODD Ball MIDI map &amp; playable controller — open-audiovisual">
+<meta property="og:description" content="ODD Ball MIDI map: 3 pads, 4 knobs and 3 faders. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.">
+<meta property="og:url" content="https://openaudiovisual.com/controllers/odd-ball/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230b0b0c%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2216%22%20r%3D%223.4%22%20fill%3D%22%23ff5a1f%22%2F%3E%3Cpath%20d%3D%22M11%2016c2.6%200%202.9-9%206-9s3.2%2018%206.2%2018%203-9%205.8-9%22%20fill%3D%22none%22%20stroke%3D%22%23edebe5%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=ad43f28">
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta property="og:image:alt" content="open-audiovisual: MIDI controllers, modeled">
+<meta name="twitter:title" content="ODD Ball MIDI map &amp; playable controller — open-audiovisual">
+<meta name="twitter:description" content="ODD Ball MIDI map: 3 pads, 4 knobs and 3 faders. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: MIDI controllers, modeled">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="alternate" type="application/json" href="../../packages/midi/profiles/odd-ball.json" title="ODD Ball MIDI profile (JSON)">
+<link rel="stylesheet" href="../../assets/controllers/controllers.css?v=ad43f28">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://openaudiovisual.com/controllers/odd-ball/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://openaudiovisual.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Controllers",
+          "item": "https://openaudiovisual.com/controllers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ODD Ball",
+          "item": "https://openaudiovisual.com/controllers/odd-ball/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://openaudiovisual.com/controllers/odd-ball/#webpage",
+      "url": "https://openaudiovisual.com/controllers/odd-ball/",
+      "name": "ODD Ball MIDI map & playable controller — open-audiovisual",
+      "description": "ODD Ball MIDI map: 3 pads, 4 knobs and 3 faders. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "open-audiovisual",
+        "url": "https://openaudiovisual.com/"
+      },
+      "breadcrumb": {
+        "@id": "https://openaudiovisual.com/controllers/odd-ball/#breadcrumb"
+      },
+      "about": {
+        "@id": "https://openaudiovisual.com/controllers/odd-ball/#product"
+      },
+      "mainEntity": {
+        "@id": "https://openaudiovisual.com/controllers/odd-ball/#dataset"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://openaudiovisual.com/assets/home/og.png",
+        "width": 1200,
+        "height": 630
+      }
+    },
+    {
+      "@type": "Product",
+      "@id": "https://openaudiovisual.com/controllers/odd-ball/#product",
+      "name": "ODD Ball",
+      "model": "Ball",
+      "brand": {
+        "@type": "Brand",
+        "name": "ODD"
+      },
+      "category": "MIDI controller",
+      "description": "ODD Ball MIDI map: 3 pads, 4 knobs and 3 faders. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js."
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://openaudiovisual.com/controllers/odd-ball/#dataset",
+      "name": "ODD Ball MIDI map",
+      "description": "Machine-readable MIDI implementation of ODD Ball for open-audiovisual: faceplate, every control's MIDI message, LED feedback, port-name matching and cited sources, as JSON (MIT).",
+      "url": "https://openaudiovisual.com/controllers/odd-ball/",
+      "inLanguage": "en",
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "creator": {
+        "@type": "Person",
+        "name": "Che-Yu Wu",
+        "alternateName": "吳哲宇",
+        "url": "https://cheyuwu.com"
+      },
+      "isPartOf": {
+        "@id": "https://openaudiovisual.com/controllers/#dataset"
+      },
+      "about": {
+        "@id": "https://openaudiovisual.com/controllers/odd-ball/#product"
+      },
+      "keywords": [
+        "MIDI",
+        "MIDI controller",
+        "MIDI implementation chart",
+        "Web MIDI",
+        "ODD Ball",
+        "ODD"
+      ],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "name": "odd-ball.json",
+          "encodingFormat": "application/json",
+          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/odd-ball.json"
+        }
+      ],
+      "citation": [
+        {
+          "@type": "CreativeWork",
+          "name": "Midi_ODD_Ball_251212.tox (the artist's TouchDesigner tool and its annotations)"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="page-controllers page-controller">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/" aria-current="page">Controllers</a>
+    <a href="../../docs/">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../controllers/odd-ball/" hreflang="en" lang="en" data-lang="en" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/controllers/odd-ball/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ═════ the instrument first, then the words ═════ -->
+  <section class="ch-hero" id="play" aria-labelledby="play-title">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../../">Home</a></li>
+        <li><a href="../../controllers/">Controllers</a></li>
+        <li aria-current="page">ODD Ball</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">ODD</p>
+    <h1 id="play-title">ODD Ball</h1>
+    <div class="hero-cols">
+      <div class="lede d-lede">
+        <p>ODD Ball is a MIDI hardware controller by ODD: 3 pads, 4 knobs and 3 faders.</p>
+        <p>It sends CC and Note on channel 1. The profile cites 1 source. 10 of its controls are marked <em>unverified</em>: the number is our best reading, and Learn rebinds it in one move.</p>
+        <ul class="badges"><li class="b-tool">Artist's TouchDesigner tool</li><li class="b-unv">10 unverified</li></ul>
+      </div>
+      <div class="hero-facts">
+        <dl class="d-facts">
+          <div><dt>Kind</dt><dd>hardware device</dd></div>
+          <div><dt>Maker</dt><dd>ODD</dd></div>
+          <div><dt>Controls</dt><dd>10 controls</dd></div>
+          <div><dt>Messages</dt><dd>CC · Note</dd></div>
+          <div><dt>MIDI channels</dt><dd>1</dd></div>
+          <div><dt>LED feedback</dt><dd>none sent</dd></div>
+          <div><dt>Signals</dt><dd><code>midi/oddball/…</code></dd></div>
+          <div><dt>Port name matches</dt><dd><code>/odd\s*ball/i</code></dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="stage">
+      <oav-controller id="d-ctl" profile="odd-ball" hardware="ask" readout><svg class="fp" viewBox="0 0 100 50" role="img" aria-label="Faceplate of ODD Ball" focusable="false" preserveAspectRatio="xMidYMid meet"><rect class="fp-body" width="100" height="50" rx="1.75" fill="#16171b"/><text class="fp-fl" x="2" y="2.6">ODD BALL</text><text class="fp-sl" x="2.3" y="6.2">NOTES</text><rect class="fp-pad" x="2" y="6.9" width="30" height="12.9" rx="1.29" fill="#7be25b"/><rect class="fp-pad" x="2" y="20.5" width="30" height="12.9" rx="1.29" fill="#7be25b"/><rect class="fp-pad" x="2" y="34.1" width="30" height="12.9" rx="1.29" fill="#7be25b"/><text class="fp-sl" x="34.3" y="6.2">MOTION</text><circle class="fp-ring" cx="42.33" cy="15.9" r="6.99" stroke="#a58bff"/><circle class="fp-cap" cx="42.33" cy="15.9" r="4.9"/><line class="fp-ptr" x1="41.09" y1="17.14" x2="39.06" y2="19.16"/><text class="fp-cl" x="42.33" y="26.3">Move</text><circle class="fp-ring" cx="59.67" cy="15.9" r="6.99" stroke="#a58bff"/><circle class="fp-cap" cx="59.67" cy="15.9" r="4.9"/><line class="fp-ptr" x1="58.44" y1="17.14" x2="56.41" y2="19.16"/><text class="fp-cl" x="59.67" y="26.3">Spin</text><circle class="fp-ring" cx="42.33" cy="36.3" r="6.99" stroke="#a58bff"/><circle class="fp-cap" cx="42.33" cy="36.3" r="4.9"/><line class="fp-ptr" x1="41.09" y1="37.54" x2="39.06" y2="39.56"/><text class="fp-cl" x="42.33" y="46.7">Free fall</text><circle class="fp-ring" cx="59.67" cy="36.3" r="6.99" stroke="#a58bff"/><circle class="fp-cap" cx="59.67" cy="36.3" r="4.9"/><line class="fp-ptr" x1="58.44" y1="37.54" x2="56.41" y2="39.56"/><text class="fp-cl" x="59.67" y="46.7">Energy</text><text class="fp-sl" x="70.3" y="6.2">ORIENTATION</text><rect class="fp-slot" x="74.03" y="7.5" width="0.8" height="37.2" rx="0.4"/><rect class="fp-fcap" x="72.13" y="43.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="74.43" y="46.7">Rot X</text><rect class="fp-slot" x="83.6" y="7.5" width="0.8" height="37.2" rx="0.4"/><rect class="fp-fcap" x="81.7" y="43.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="84" y="46.7">Rot Y</text><rect class="fp-slot" x="93.17" y="7.5" width="0.8" height="37.2" rx="0.4"/><rect class="fp-fcap" x="91.27" y="43.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="93.57" y="46.7">Rot Z</text></svg></oav-controller>
+    </div>
+    <div class="stage-foot">
+      <p class="stage-meta"><b>Play ODD Ball on screen</b> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=odd-ball">Full screen ↗</a> <a href="../../packages/midi/profiles/odd-ball.json">Raw JSON ↗</a> <a href="../../controllers/">All controllers</a></p>
+    </div>
+    <p class="hint js-only">Drag knobs and faders · tap pads and keys · or plug the real one in and press Connect. Nothing is sent anywhere unless you add a MIDI out.</p>
+    <noscript><p class="noscript">This is a live, playable controller: turn on JavaScript to play it. The complete MIDI map is in the table below.</p></noscript>
+  </section>
+
+  <!-- ═════ the full MIDI implementation ═════ -->
+  <section class="sec" id="midi-map" aria-labelledby="midi-map-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">MIDI implementation</p>
+      <h2 id="midi-map-title">Every control of ODD Ball and the message it sends</h2>
+      <p class="sec-lede">Generated from the profile file, so it is the same table the on-screen controller plays. Channels are 1–16; numbers are real MIDI numbers.</p>
+    </header>
+    <div class="table-scroll" role="region" aria-label="MIDI implementation of ODD Ball" tabindex="0">
+        <table>
+          <caption>MIDI implementation of ODD Ball</caption>
+          <thead><tr><th scope="col">Control</th><th scope="col">Type</th><th scope="col">Message</th><th scope="col">Ch</th><th scope="col">Number</th><th scope="col">Signal</th><th scope="col">LED feedback</th><th scope="col">Verified</th></tr></thead>
+          <tbody>
+          <tr class="unv">
+            <th scope="row">Move <code class="cid">move</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">0</td>
+            <td><code>midi/oddball/move</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Spin <code class="cid">spin</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">1</td>
+            <td><code>midi/oddball/spin</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Free fall <code class="cid">freefall</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">2</td>
+            <td><code>midi/oddball/freefall</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Rot X <code class="cid">rotx</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">3</td>
+            <td><code>midi/oddball/rotx</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Rot Y <code class="cid">roty</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">4</td>
+            <td><code>midi/oddball/roty</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Rot Z <code class="cid">rotz</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">5</td>
+            <td><code>midi/oddball/rotz</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Energy <code class="cid">energy</code></th>
+            <td>knob</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">6</td>
+            <td><code>midi/oddball/energy</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Tap / Bounce <code class="cid">tap</code></th>
+            <td>pad</td>
+            <td>Note · velocity</td>
+            <td class="n">1</td>
+            <td class="n">60 · C4</td>
+            <td><code>midi/oddball/tap</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Shake <code class="cid">shake</code></th>
+            <td>pad</td>
+            <td>Note · velocity</td>
+            <td class="n">1</td>
+            <td class="n">61 · C#4</td>
+            <td><code>midi/oddball/shake</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Twist <code class="cid">twist</code></th>
+            <td>pad</td>
+            <td>Note · velocity</td>
+            <td class="n">1</td>
+            <td class="n">62 · D4</td>
+            <td><code>midi/oddball/twist</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          </tbody>
+        </table>
+        </div>
+    
+    <div class="spec-grid">
+      <div>
+        <h3>Sources</h3>
+        <ul class="sources"><li><span class="src-kind">artist's tool</span> Midi_ODD_Ball_251212.tox (the artist's TouchDesigner tool and its annotations)<span class="src-note">the only source used; no manufacturer document was consulted — every control is marked unverified</span></li></ul>
+        <h3>Where this profile comes from</h3><p class="raw-note">Che-Yu Wu's TouchDesigner tool (annotated): notes N1 Tap/Bounce, N2 Shake, N3 Twist (default notes 60–62, editable in the tool); CC0 MoveSmoothed, CC1 Spin Smoothed, CC2 Free Fall, CC3–5 X/Y/Z orientation, CC6 Energy; values scaled 0..128 → 0..1, orientation → 0..360°; note gates held with a 0.4 s release lag; a Mock mode switches the MIDI In for simulated LFO signals. TouchDesigner's MIDI In CHOP names channels 1-based (ch1ctrl75 = CC 74, ch10n37 = note 36); the numbers here are real MIDI numbers. <code>Midi_ODD_Ball_251212.tox</code></p>
+      </div>
+      <div>
+        <h3>Notes</h3><p class="raw-note">Mapping comes from the artist's TD tool, not from a manufacturer chart. The on-screen version is the TD tool's Mock mode: play the ball's gestures without the ball.</p>
+        <h3>Port names it recognises</h3>
+        <dl class="ports"><div><dt>matches</dt><dd><code>/odd\s*ball/i</code></dd></div></dl>
+      </div>
+      <div>
+        <h3>Signals</h3>
+        <p>Every control publishes <code>midi/oddball/&lt;control&gt;</code> (0..1), plus <code>/raw</code>; pads add <code>/hit</code>, encoders <code>/delta</code>, keys <code>/on</code> <code>/off</code> and <code>n&lt;note&gt;</code>; the last control touched is <code>midi/oddball/last</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════ use it ═════ -->
+  <section class="sec" id="use" aria-labelledby="use-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Use it</p>
+      <h2 id="use-title">Use ODD Ball in your own work</h2>
+    </header>
+    <ol class="snips">
+      <li class="snip"><h3>Embed it with one line</h3><p>No import map, no build step. Change <code>layout</code>, add <code>hardware="ask"</code> for a Connect button.</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-element">Copy</button></div><pre id="snip-element"><code><span class="tt">&lt;script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;<span class="tt">&lt;/script</span>&gt;
+<span class="tt">&lt;oav-controller</span> profile=<span class="ts">"odd-ball"</span> readout&gt;<span class="tt">&lt;/oav-controller</span>&gt;</code></pre></div></li>
+      <li class="snip"><h3>Or as an iframe</h3><p>For places that only take an iframe. Every event arrives as a <code>postMessage</code>.</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-iframe">Copy</button></div><pre id="snip-iframe"><code><span class="tt">&lt;iframe</span> src=<span class="ts">"https://openaudiovisual.com/embed/controller/?profile=odd-ball&amp;readout"</span>
+        width=<span class="ts">"720"</span> height=<span class="ts">"382"</span> style=<span class="ts">"border:0;max-width:100%"</span> allow=<span class="ts">"midi"</span>
+        title=<span class="ts">"ODD Ball"</span>&gt;<span class="tt">&lt;/iframe</span>&gt;
+<span class="tt">&lt;script</span>&gt;
+  <span class="tc">// every control the visitor plays arrives here</span>
+  addEventListener(<span class="ts">'message'</span>, (e) =&gt; {
+    <span class="tk">if</span> (e.data?.source !== <span class="ts">'openav'</span> || e.data.type !== <span class="ts">'control'</span>) <span class="tk">return</span>;
+    console.log(e.data.detail.signal, e.data.detail.value);
+  });
+<span class="tt">&lt;/script</span>&gt;</code></pre></div></li>
+      <li class="snip"><h3>Send it to Ableton, TouchDesigner or Resolume</h3><p>What you play on screen leaves as real MIDI on the IAC bus (macOS) or a loopMIDI port (Windows). The steps are on the <a href="../../controllers/#embed">catalog page</a>.</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-daw">Copy</button></div><pre id="snip-daw"><code><span class="tc">&lt;!-- what you play on this controller → the IAC bus (macOS) → Ableton, TouchDesigner, Resolume --&gt;</span>
+<span class="tt">&lt;script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;<span class="tt">&lt;/script</span>&gt;
+<span class="tt">&lt;oav-controller</span> profile=<span class="ts">"odd-ball"</span> midi-out=<span class="ts">"IAC"</span> readout&gt;<span class="tt">&lt;/oav-controller</span>&gt;
+<span class="tc">&lt;!-- Windows: midi-out="loopMIDI" · let the visitor pick a port: midi-out="ask" --&gt;</span></code></pre></div><p class="note">macOS: Audio MIDI Setup → MIDI Studio → IAC Driver → “Device is online”. Windows: install loopMIDI and add a port; use <code>midi-out="loopMIDI"</code>.</p></li>
+    </ol>
+    <div class="p5-block" id="p5">
+      <h3>In p5.js, with one line</h3>
+      <p>The one-line injection names knobs, faders and pads by their order in this profile, the order of the table above. Add <code>?profile=odd-ball</code> to make the on-screen controller this one; a real ODD Ball is recognised by its port name.</p>
+      <div class="term"><div class="term-bar"><span>javascript</span><button type="button" class="copy" data-copy="snip-p5">Copy</button></div><pre id="snip-p5"><code>document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js?profile=odd-ball'</span> }));</code></pre></div>
+      <div class="table-scroll" role="region" aria-label="In p5.js, with one line" tabindex="0">
+      <table class="p5">
+        <thead><tr><th scope="col">In your sketch</th><th scope="col">Control</th><th scope="col">Message</th></tr></thead>
+        <tbody>
+        <tr><th scope="row"><code>knob1</code></th><td>Move <code class="cid">move</code></td><td>CC 0 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob2</code></th><td>Spin <code class="cid">spin</code></td><td>CC 1 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob3</code></th><td>Free fall <code class="cid">freefall</code></td><td>CC 2 · Ch 1</td></tr>
+        <tr><th scope="row"><code>knob4</code></th><td>Energy <code class="cid">energy</code></td><td>CC 6 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader1</code></th><td>Rot X <code class="cid">rotx</code></td><td>CC 3 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader2</code></th><td>Rot Y <code class="cid">roty</code></td><td>CC 4 · Ch 1</td></tr>
+        <tr><th scope="row"><code>fader3</code></th><td>Rot Z <code class="cid">rotz</code></td><td>CC 5 · Ch 1</td></tr>
+        <tr><th scope="row"><code>pad1</code></th><td>Tap / Bounce <code class="cid">tap</code></td><td>Note 60 · C4 · Ch 1</td></tr>
+        <tr><th scope="row"><code>pad2</code></th><td>Shake <code class="cid">shake</code></td><td>Note 61 · C#4 · Ch 1</td></tr>
+        <tr><th scope="row"><code>pad3</code></th><td>Twist <code class="cid">twist</code></td><td>Note 62 · D4 · Ch 1</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="term"><div class="term-bar"><span>p5.js sketch</span><button type="button" class="copy" data-copy="snip-p5-sketch">Copy</button></div><pre id="snip-p5-sketch"><code><span class="tk">function</span> draw() {
+  background(knob1 * 255);   <span class="tc">// Move · CC 0</span>
+  circle(width / 2, height / 2, 50 + knob2 * 300);   <span class="tc">// Spin · CC 1</span>
+}
+
+<span class="tk">function</span> padPressed(n, velocity) {      <span class="tc">// n = 1…3, as in the table</span>
+  circle(random(width), random(height), velocity * 100);
+}</code></pre></div>
+      
+      
+      <p><a class="more" href="../../docs/#p5">The whole p5.js page →</a></p>
+    </div>
+  </section>
+
+  <!-- ═════ around it ═════ -->
+  <section class="sec" id="related" aria-labelledby="related-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Around this controller</p>
+      <h2 id="related-title">Related controllers</h2>
+    </header>
+    <ul class="rel" aria-label="Related controllers">
+      <li><a href="../akai-lpd8/">AKAI LPD8 (mk2)</a><span>AKAI Professional · 8 pads · 8 knobs</span></li>
+      <li><a href="../generic-8k8p/">Generic 8 knobs + 8 pads</a><span>Generic layout · 8 pads · 8 knobs</span></li>
+      <li><a href="../arturia-minilab3/">Arturia MiniLab 3</a><span>Arturia · 8 pads · 25 keys · 8 knobs · 1 encoder · 4 faders · 2 touch strips</span></li>
+      <li><a href="../akai-apc-mini-mk2/">AKAI APC mini mk2</a><span>AKAI Professional · 64 pads · 9 faders · 17 buttons</span></li>
+      <li><a href="../akai-midimix/">AKAI MIDImix</a><span>AKAI Professional · 24 knobs · 9 faders · 19 buttons</span></li>
+      <li><a href="../akai-mpk-mini-mk3/">AKAI MPK mini mk3</a><span>AKAI Professional · 8 pads · 25 keys · 8 knobs · 2 wheels</span></li>
+    </ul>
+    <nav class="step" aria-label="Neighbouring controllers">
+      <a rel="prev" href="../novation-launchkey-37-mk4/"><small>← Previous</small>Novation Launchkey 37 MK4</a>
+      <a class="back" href="../../controllers/">Back to all controllers</a>
+      <a rel="next" href="../teenage-engineering-op-1-field/"><small>Next →</small>teenage engineering OP-1 field</a>
+    </nav>
+  </section>
+
+  <!-- ═════ wrong data? ═════ -->
+  <section class="sec" id="report" aria-labelledby="report-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">GitHub</p>
+      <h2 id="report-title">Is something in this data wrong?</h2>
+      <p class="sec-lede">Every number on this page comes from one JSON file. If it disagrees with your unit or the manual, tell us which firmware you checked and we fix the file.</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?title=Controller%20data%3A%20ODD%20Ball%20(odd-ball)">Report it on GitHub ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/profiles/odd-ball.json">The profile file on GitHub ↗</a></li>
+      <li><a href="../../packages/midi/profiles/odd-ball.json">Raw JSON</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../webtoe/">WebToe</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"odd-ball"}</script>
+<script type="module" src="../../assets/controllers/detail.js?v=ad43f28"></script>
+</body>
+</html>

@@ -17,7 +17,7 @@
 // The same class serves two places: the /remote phone page (relay → a show elsewhere) and
 // localSensors() below (the show page ITSELF running on a phone — no relay, straight into its Signals).
 
-import { fileSignal, aliasOf } from '../relay/signals.js?v=49a1472';
+import { fileSignal, aliasOf } from '../relay/signals.js?v=ad43f28';
 
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 

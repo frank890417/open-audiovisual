@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-ui="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>open-audiovisual · 15 p5.js in one line</title>
+<meta name="description" content="Add one line to any p5.js sketch (OpenProcessing, the p5 editor, your own page) and play it from a MIDI controller, a controller drawn on screen, or your phone. 一行指令，p5.js 草圖就能被 MIDI 控制器、螢幕上的控制器和手機彈。">
+<link rel="canonical" href="https://openaudiovisual.com/examples/15-p5-one-line/">
+<style>
+  :root { --bg: #0a0b14; --panel: #12141f; --line: #262a3d; --ink: #e8eaf4; --dim: #9aa0b8; --acc: #7ee0ff; --hot: #ffd36e; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.65 system-ui, -apple-system, "Segoe UI", "Noto Sans TC", sans-serif; }
+  /* the sketch's canvas is the stage behind the first screen; the panels below cover it as you scroll */
+  canvas { position: fixed !important; inset: 0; z-index: 0; display: block; }
+  a { color: var(--acc); }
+  .hero { position: relative; z-index: 1; min-height: 100vh; min-height: 100svh; padding: 20px 20px 0; pointer-events: none; display: flex; flex-direction: column; }
+  .hero > * { pointer-events: auto; align-self: flex-start; }
+  .hero h1 { margin: 0; font-size: clamp(22px, 4.4vw, 34px); line-height: 1.2; letter-spacing: -0.01em; text-shadow: 0 1px 12px #000a; }
+  .hero p { margin: 8px 0 0; max-width: 34em; color: var(--ink); text-shadow: 0 1px 10px #000c; font-size: 15px; }
+  .hero .go { margin-top: 12px; font-size: 14px; color: var(--acc); text-shadow: 0 1px 10px #000; }
+  .lang { position: absolute; top: 16px; right: 16px; z-index: 2; pointer-events: auto; font-size: 13px; }
+  .lang button { background: #0008; color: var(--ink); border: 1px solid var(--line); padding: 3px 9px; cursor: pointer; font: inherit; }
+  .lang button[aria-pressed="true"] { background: var(--acc); color: #04121a; }
+  .lang button:first-child { border-radius: 6px 0 0 6px; } .lang button:last-child { border-radius: 0 6px 6px 0; }
+  /* not <main>: p5 puts its canvas into the first <main> it finds */
+  .content { position: relative; z-index: 1; background: var(--bg); border-top: 1px solid var(--line); }
+  section { max-width: 920px; margin: 0 auto; padding: 44px 20px 8px; }
+  h2 { margin: 0 0 10px; font-size: 22px; }
+  h3 { margin: 22px 0 6px; font-size: 16px; }
+  p { margin: 8px 0; }
+  .dim { color: var(--dim); }
+  html[data-ui="en"] [lang="zh-Hant"], html[data-ui="zh"] [lang="en"] { display: none; }
+  code, pre { font: 13px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  :not(pre) > code { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .bar button { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; font: inherit; font-size: 14px; cursor: pointer; }
+  .bar button:hover { border-color: var(--acc); }
+  .bar button.hotbtn { background: var(--hot); color: #1b1300; border-color: var(--hot); font-weight: 600; }
+  .src { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); overflow: auto; max-height: 70vh; }
+  .src pre { margin: 0; padding: 10px 0; min-width: max-content; }
+  .src .ln { display: block; padding: 0 16px 0 0; white-space: pre; }
+  .src .ln::before { content: attr(data-n); display: inline-block; width: 3.2em; padding-right: 1em; text-align: right; color: #596080; user-select: none; }
+  .src .ln.hot { background: #ffd36e22; box-shadow: inset 3px 0 var(--hot); color: #fff2cf; }
+  .src .ln.cm { color: #8b93b8; }
+  pre.snip { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; overflow: auto; margin: 8px 0; }
+  ol.steps { padding-left: 1.3em; } ol.steps li { margin: 12px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 10px 0; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--dim); font-weight: 500; }
+  .note { border-left: 3px solid var(--hot); background: #ffd36e14; padding: 8px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; }
+  .links a { display: inline-block; margin: 4px 14px 4px 0; }
+  footer { max-width: 920px; margin: 0 auto; padding: 36px 20px 60px; color: var(--dim); font-size: 13px; }
+  @media (max-width: 560px) { section { padding-top: 34px; } }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+</head>
+<body>
+
+<div class="lang" role="group" aria-label="Language">
+  <button type="button" data-set="en" aria-pressed="true">EN</button><button type="button" data-set="zh" aria-pressed="false">中文</button>
+</div>
+
+<header class="hero">
+  <h1>p5.js in one line</h1>
+  <p lang="en"><strong>This is a plain p5.js sketch.</strong> Its first line is the whole integration. Click the <strong>🎹</strong> at the bottom right, turn a knob, hit a pad, press a key. No hardware needed.</p>
+  <p lang="zh-Hant"><strong>這是一份普通的 p5.js 草圖。</strong>它的第一行就是全部的接線。點右下角的 <strong>🎹</strong>，轉旋鈕、敲打擊墊、按琴鍵，不需要任何硬體。</p>
+  <a class="go" href="#line"><span lang="en">↓ the line, and how to use it in your own sketch</span><span lang="zh-Hant">↓ 那一行，和怎麼用在你自己的草圖</span></a>
+</header>
+
+<div class="content">
+<section id="line">
+  <h2><span lang="en">The line</span><span lang="zh-Hant">那一行</span></h2>
+  <p lang="en">This is the exact file running behind this page (<code>sketch.js</code>), read live, not a copy. Line 1 is highlighted. Everything under it is ordinary p5.js.</p>
+  <p lang="zh-Hant">下面是這個頁面正在跑的那份檔案（<code>sketch.js</code>），現場讀出來，不是另外抄的。第一行標亮；它底下全是普通的 p5.js。</p>
+  <div class="bar">
+    <button type="button" id="copy-line" class="hotbtn"><span lang="en">Copy the line</span><span lang="zh-Hant">複製這一行</span></button>
+    <button type="button" id="copy-all"><span lang="en">Copy the whole sketch</span><span lang="zh-Hant">複製整份草圖</span></button>
+    <span id="copied" class="dim" role="status" aria-live="polite" style="align-self:center"></span>
+  </div>
+  <div class="src"><pre id="source" aria-label="sketch.js">loading sketch.js …</pre></div>
+
+  <h3><span lang="en">What you can play here</span><span lang="zh-Hant">這張草圖裡能彈什麼</span></h3>
+  <table>
+    <tr><th>read</th><th lang="en">what it does</th><th lang="zh-Hant">做什麼</th></tr>
+    <tr><td><code>knob1</code> … <code>knob5</code></td><td lang="en">colour · petals · size · trails · spin (0..1, read like <code>mouseX</code>)</td><td lang="zh-Hant">顏色・花瓣數・大小・殘影・轉速（0..1，像 <code>mouseX</code> 直接讀）</td></tr>
+    <tr><td><code>padPressed(n, v)</code>, <code>pad(n)</code></td><td lang="en">pad 1–8: a ring bursts from its spot on the outer circle; the marker glows while held</td><td lang="zh-Hant">打擊墊 1–8：在外圈對應的位置炸出一圈，按著時圓點發亮</td></tr>
+    <tr><td><code>notePressed</code>, <code>noteReleased</code>, <code>noteIsDown(n)</code></td><td lang="en">keys: sparks fly up, a beam stays while held and fades on release, the strip at the bottom lights</td><td lang="zh-Hant">琴鍵：噴火花，按著有光柱、放開淡出，底部那條會亮</td></tr>
+  </table>
+</section>
+
+<section id="yours">
+  <h2><span lang="en">Use it in your own sketch</span><span lang="zh-Hant">用在你自己的草圖</span></h2>
+  <ol class="steps">
+    <li><strong lang="en">OpenProcessing:</strong><strong lang="zh-Hant">OpenProcessing：</strong>
+      <span lang="en">paste the line as the first line of your sketch. Or: Sketch → Libraries → <b>+</b> → paste <code>https://openaudiovisual.com/p5/oav-p5.js</code>.</span>
+      <span lang="zh-Hant">把那一行貼在草圖的第一行。或：Sketch → Libraries → <b>+</b> → 貼上 <code>https://openaudiovisual.com/p5/oav-p5.js</code>。</span></li>
+    <li><strong lang="en">p5 editor (editor.p5js.org):</strong><strong lang="zh-Hant">p5 editor（editor.p5js.org）：</strong>
+      <span lang="en">paste it at the top of <code>sketch.js</code>.</span><span lang="zh-Hant">貼在 <code>sketch.js</code> 的最上面。</span></li>
+    <li><strong lang="en">Your own page:</strong><strong lang="zh-Hant">自己的網頁：</strong>
+      <span lang="en">the same line, first in the sketch file, after the p5 script tag. The sketch file should be the last <code>&lt;script&gt;</code> on the page.</span>
+      <span lang="zh-Hant">同一行，放在草圖檔的第一行，p5 的 script 之後；草圖檔放在頁面最後一個 <code>&lt;script&gt;</code>。</span></li>
+  </ol>
+  <p lang="en">Then read the controller like the mouse: <code>knob1</code> (0..1), <code>pad1</code>, <code>note</code>, <code>velocity</code>, and define <code>notePressed()</code>, <code>noteReleased()</code>, <code>knobMoved()</code>, <code>padPressed()</code> like <code>keyPressed()</code>. Nothing to call in <code>setup()</code>. p5 1.x and 2.x, global mode.</p>
+  <p lang="zh-Hant">之後像讀滑鼠一樣讀控制器：<code>knob1</code>（0..1）、<code>pad1</code>、<code>note</code>、<code>velocity</code>；像寫 <code>keyPressed()</code> 一樣定義 <code>notePressed()</code>、<code>noteReleased()</code>、<code>knobMoved()</code>、<code>padPressed()</code>。<code>setup()</code> 裡什麼都不用叫。支援 p5 1.x 與 2.x 的 global mode。</p>
+
+  <h3>OP Configurator (OPC)</h3>
+  <p lang="en">On OpenProcessing, if you already name your variables with OPC, the controller is wired to them in order: knobs drive the sliders, pads flip toggles and press buttons. <strong>OPC exists only on OpenProcessing</strong>; on other pages the lines below have nothing to run on.</p>
+  <p lang="zh-Hant">在 OpenProcessing 上，如果你本來就用 OPC 宣告變數，控制器會依序接上去：旋鈕推 slider，打擊墊切換 toggle、按 button。<strong>OPC 只有 OpenProcessing 有</strong>，在其他頁面這幾行沒有東西可接。</p>
+  <pre class="snip"><code>OPC.slider('radius', 60, 10, 300);    // knob 1
+OPC.slider('speed', 1, 0, 5, 0.1);    // knob 2
+OPC.toggle('trails', true);           // pad 1 (flips on each hit)</code></pre>
+  <p class="dim" lang="en">Don't name an OPC variable after a p5 function (<code>hue</code>, <code>fill</code>, …).</p>
+  <p class="dim" lang="zh-Hant">OPC 的變數別取 p5 已有的函式名（<code>hue</code>、<code>fill</code>……）。</p>
+</section>
+
+<section id="nohw">
+  <h2><span lang="en">No hardware? Three ways in</span><span lang="zh-Hant">沒有硬體也能玩</span></h2>
+  <p lang="en"><strong>🎹</strong> opens a controller on screen (it follows the one you plug in). <strong>📱 Phone</strong> inside that panel shows a QR code: scan it and your phone becomes the controller, over the public relay. A real MIDI controller works in Chrome, Edge and Firefox; the browser asks once. Safari and iPad have no Web MIDI, but the screen and the phone still work.</p>
+  <p lang="zh-Hant"><strong>🎹</strong> 打開螢幕上的控制器（你接上實體控制器時它會跟著變）。面板裡的 <strong>📱 手機</strong> 會出現 QR code，掃了手機就是控制器（走公開 relay）。實體 MIDI 控制器在 Chrome、Edge、Firefox 可用，瀏覽器只問一次；Safari 與 iPad 沒有 Web MIDI，螢幕和手機照樣能彈。</p>
+  <div class="note" lang="en">The sketch can't tell the three apart. That is the point: write it once.</div>
+  <div class="note" lang="zh-Hant">草圖分不出這三種輸入，這就是重點：寫一次，三種都能彈。</div>
+
+  <p class="links">
+    <a href="https://openaudiovisual.com/docs/#p5">Docs: p5.js in one line</a>
+    <a href="https://openaudiovisual.com/zh/docs/#p5">文件：p5.js 一行指令</a>
+    <a href="https://github.com/frank890417/open-audiovisual/tree/main/p5">p5/README</a>
+    <a href="../01-hello-particles/">01 hello particles</a>
+    <a href="../09-midi-controllers/">09 midi controllers</a>
+  </p>
+</section>
+</div>
+
+<footer>© 2026 Che-Yu Wu (吳哲宇) and open-audiovisual contributors · MIT · <a href="https://openaudiovisual.com/">openaudiovisual.com</a></footer>
+
+<script>
+// PAGE SHELL, not part of the sketch (外殼，不是草圖的一部分): language toggle, and the source panel.
+// The panel fetches ./sketch.js, the very file the last <script> below runs, so what you read is what is playing.
+(function () {
+  var root = document.documentElement;
+  function setUi(v) {
+    root.dataset.ui = v; root.lang = v === 'zh' ? 'zh-Hant' : 'en';
+    document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === v)); });
+    try { localStorage.setItem('oav-ui', v); } catch (e) { /* private mode */ }
+  }
+  var saved = null; try { saved = localStorage.getItem('oav-ui'); } catch (e) { /* */ }
+  setUi(saved || (/^zh/i.test(navigator.language || '') ? 'zh' : 'en'));
+  document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { setUi(b.dataset.set); }); });
+
+  var source = '', LINE1 = '';
+  var panel = document.getElementById('source'), said = document.getElementById('copied');
+  function say(t) { said.textContent = t; clearTimeout(say.t); say.t = setTimeout(function () { said.textContent = ''; }, 2200); }
+  function copy(text, what) {
+    var done = function () { say((root.dataset.ui === 'zh' ? '已複製：' : 'Copied: ') + what); };
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(done, fallback);
+    fallback();
+    function fallback() { var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) { say('✗'); } t.remove(); }
+  }
+  fetch('./sketch.js', { cache: 'no-cache' }).then(function (r) { return r.text(); }).then(function (text) {
+    source = text.replace(/\n$/, ''); LINE1 = source.split('\n')[0];
+    panel.textContent = '';
+    source.split('\n').forEach(function (l, i) {
+      var s = document.createElement('span');
+      s.className = 'ln' + (i === 0 ? ' hot' : /^\s*\/\//.test(l) ? ' cm' : '');
+      s.dataset.n = i + 1; s.textContent = l || ' ';
+      panel.appendChild(s);
+    });
+  }).catch(function () { panel.textContent = 'could not read ./sketch.js'; });
+  document.getElementById('copy-line').addEventListener('click', function () { if (LINE1) copy(LINE1, root.dataset.ui === 'zh' ? '第一行' : 'line 1'); });
+  document.getElementById('copy-all').addEventListener('click', function () { if (source) copy(source + '\n', root.dataset.ui === 'zh' ? '整份草圖' : 'the whole sketch'); });
+})();
+</script>
+<!-- last <script> on purpose: p5's friendly errors read the page's last script as the sketch -->
+<script src="./sketch.js?v=ad43f28"></script>
+</body>
+</html>

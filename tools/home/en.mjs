@@ -34,7 +34,7 @@ export default {
     lede: 'Keys, knobs, voices, hands and phones become named <em>signals</em>. A <em>mapping</em> turns signals into <em>parameters</em>. Your <em>world</em> reads the parameters and turns them into image and sound, in a browser tab, on a projector, on stage.',
     doorsLabel: 'Where to start',
     doors: [
-      { who: 'I perform', what: 'See what it makes and play the nine works', href: '#works' },
+      { who: 'I perform', what: 'See what it makes and play the ten works', href: '#works' },
       { who: 'I write code', what: 'Run it in a minute, then write a world', href: '#start' },
       { who: 'I am an AI agent', what: 'Read /llms.txt, then AGENTS.md', href: 'llms.txt' },
     ],
@@ -113,7 +113,7 @@ export default {
 
   works: {
     eyebrow: '03 · Works',
-    title: 'Nine works you can open now',
+    title: 'Ten works you can open now',
     lede: 'Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments. In any example: Space plays the timeline, T is performance mode, F is fullscreen.',
     playsWith: 'Plays with',
     items: [
@@ -126,6 +126,7 @@ export default {
       { title: 'Firework festival', inputs: 'camera (hands) · on-screen piano', text: 'A 2021 sketch. Close a finger pinch and a firework launches from that hand. The particle system is the 2021 code.', alt: 'Cyan and violet fireworks bursting over drooping coloured trails.' },
       { title: 'Remote surface', inputs: 'phone or iPad · on-screen piano', text: 'The phone is the instrument panel. The world only declares params, and the control surface on the phone grows from them. Needs <code>node serve.js</code> on your network.', alt: 'Blue and yellow streaks exploding outward from the lower centre.' },
       { title: 'MIDI controllers', inputs: 'MIDI controller, or the on-screen one', text: 'On-screen MiniLab 3, LPD8, Launchpad and nanoKONTROL2. Plug the real one in and the on-screen one moves with your hands.', alt: 'A spiral of pink and blue dots above an on-screen MIDI keyboard controller.' },
+      { title: 'Timeline', inputs: 'nothing: it plays itself · knobs on screen', text: 'Automation you can see. Five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes, and any knob you touch takes over until you let go. Record a knob move to write a new curve.', alt: 'A hexagonal ring of orange and yellow dots above a timeline with five curve lanes, scene blocks and a playhead.' },
     ],
     credits: [
       'Che-Yu Wu, <cite>230616 Prebiotic Flake</cite>, 2023',
