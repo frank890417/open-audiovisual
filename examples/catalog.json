@@ -1,0 +1,1240 @@
+{
+  "routes": [
+    "start",
+    "inputs",
+    "engines",
+    "show-control",
+    "output"
+  ],
+  "examples": [
+    {
+      "id": "01-hello-particles",
+      "num": "01",
+      "dir": "examples/01-hello-particles/",
+      "route": "start",
+      "title": {
+        "en": "Hello particles",
+        "zh": "哈囉粒子"
+      },
+      "teaches": {
+        "en": "The smallest complete app. Read main.js top to bottom and you know the framework.",
+        "zh": "最小的完整範例。把 main.js 從頭讀到尾，整套框架就懂了。"
+      },
+      "summary": {
+        "en": "The smallest complete app. Read its <code>main.js</code> from top to bottom and you know the framework.",
+        "zh": "最小的完整範例。把 <code>main.js</code> 從頭讀到尾，整套框架就懂了。"
+      },
+      "plays": {
+        "en": "on-screen piano · QWERTY · simulated performer",
+        "zh": "螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者"
+      },
+      "needs": [],
+      "standIn": [
+        "piano",
+        "qwerty",
+        "sim"
+      ],
+      "p5Line": true,
+      "thumb": "assets/home/works/01.webp",
+      "alt": {
+        "en": "Bursts of thin green and red particle trails falling on black.",
+        "zh": "黑底上，粒子拖著細細的綠色與紅色尾巴落下。"
+      },
+      "docs": [
+        {
+          "id": "writing-a-world",
+          "en": "Writing a world",
+          "zh": "寫一個世界"
+        },
+        {
+          "id": "quick-start",
+          "en": "Quick start",
+          "zh": "快速開始"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Click the on-screen piano, or tick “keyboard” and play A to L: every note launches a burst.",
+          "Tick “simulate performance”, then drag the Hue and Gravity sliders while it plays.",
+          "Press Space to play the timeline: the same params now move on their own."
+        ],
+        "zh": [
+          "點螢幕鋼琴，或勾選 keyboard 用 A 到 L 彈：每個音都放出一團粒子。",
+          "勾選 simulate performance，在它彈奏時拖動 Hue 與 Gravity 推桿。",
+          "按空白鍵播放時間軸：同樣的參數，現在自己動了。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 12,
+          "to": 18,
+          "match": "params: [",
+          "note": {
+            "en": "Params: what the piece can be performed with.",
+            "zh": "參數：這件作品能被什麼演奏。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 25,
+          "to": 29,
+          "match": "signals.on('midi/note/on', ({ note, vel }) => {",
+          "note": {
+            "en": "A struck note is an event, so it may come straight from a signal.",
+            "zh": "按下的音是事件，可以直接從訊號來。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 63,
+          "to": 79,
+          "match": "await createShow({",
+          "note": {
+            "en": "One createShow() call brings piano, mapping, timeline, console, sound and backstage.",
+            "zh": "一次 createShow() 呼叫，就帶來鋼琴、映射、時間軸、控台、聲音和後台。"
+          }
+        }
+      ],
+      "next": "15-p5-one-line"
+    },
+    {
+      "id": "15-p5-one-line",
+      "num": "15",
+      "dir": "examples/15-p5-one-line/",
+      "route": "start",
+      "title": {
+        "en": "p5.js in one line",
+        "zh": "p5.js 一行指令"
+      },
+      "teaches": {
+        "en": "A plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone.",
+        "zh": "一份普通的 p5 草圖，第一行載入 oav-p5.js，就能用 MIDI 控制器、螢幕上的控制器或手機彈。"
+      },
+      "summary": {
+        "en": "A plain p5 sketch whose first line loads <code>oav-p5.js</code>, then plays from a MIDI controller, an on-screen controller or a phone.",
+        "zh": "一份普通的 p5 草圖，第一行載入 <code>oav-p5.js</code>，就能用 MIDI 控制器、螢幕上的控制器或手機彈。"
+      },
+      "plays": {
+        "en": "MIDI controller · on-screen controller · phone",
+        "zh": "MIDI 控制器 · 螢幕上的控制器 · 手機"
+      },
+      "needs": [
+        "midi"
+      ],
+      "standIn": [
+        "controller",
+        "phone"
+      ],
+      "p5Line": false,
+      "guide": false,
+      "thumb": "assets/home/works/15.webp",
+      "alt": {
+        "en": "A flower of layered green and yellow petals with coloured circles around it and four tall red, green and blue beams.",
+        "zh": "一朵綠黃色層層花瓣的花，周圍有彩色圓圈，還有四道紅、綠、藍色的光柱。"
+      },
+      "docs": [
+        {
+          "id": "p5",
+          "en": "p5.js in one line",
+          "zh": "p5.js 一行接上"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Click the 🎹 at the bottom right, then turn a knob, hit a pad, press a key.",
+          "Click 📱 Phone in that panel and scan the QR code: your phone becomes the controller.",
+          "Press “Copy the line” and paste it as the first line of your own sketch."
+        ],
+        "zh": [
+          "點右下角的 🎹，轉旋鈕、敲打擊墊、按琴鍵。",
+          "點面板裡的 📱 手機，掃 QR code：你的手機就是控制器。",
+          "按「複製這一行」，貼在你自己草圖的第一行。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 1,
+          "to": 1,
+          "match": "document.head.prepend(Object.assign(document.createElement('",
+          "note": {
+            "en": "Line 1 is the whole integration.",
+            "zh": "第一行就是全部的接線。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 21,
+          "to": 24,
+          "match": "background(235, 40, 6, lerp(35, 4, knob4));             // k",
+          "note": {
+            "en": "knob1 reads like mouseX: 0..1, nothing to set up.",
+            "zh": "knob1 像 mouseX 一樣讀：0 到 1，不用設定。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 87,
+          "to": 87,
+          "match": "function padPressed(n, velocity) { ring(n, velocity); kick =",
+          "note": {
+            "en": "Pads call padPressed(n, velocity), keys call notePressed(note, velocity): the same idea as keyPressed().",
+            "zh": "打擊墊呼叫 padPressed(n, velocity)，琴鍵呼叫 notePressed(note, velocity)：概念和 keyPressed() 一樣。"
+          }
+        }
+      ],
+      "next": "09-midi-controllers"
+    },
+    {
+      "id": "09-midi-controllers",
+      "num": "09",
+      "dir": "examples/09-midi-controllers/",
+      "route": "inputs",
+      "title": {
+        "en": "MIDI controllers",
+        "zh": "MIDI 控制器"
+      },
+      "teaches": {
+        "en": "On-screen controllers that move with the real ones you plug in.",
+        "zh": "螢幕上的控制器，會跟著你接上的實體控制器一起動。"
+      },
+      "summary": {
+        "en": "On-screen MiniLab 3, LPD8, Launchpad and nanoKONTROL2. Plug the real one in and the on-screen one moves with your hands.",
+        "zh": "螢幕上有 MiniLab 3、LPD8、Launchpad、nanoKONTROL2。接上實體控制器，螢幕上那台會跟著你的手一起動。"
+      },
+      "plays": {
+        "en": "MIDI controller, or the on-screen one",
+        "zh": "MIDI 控制器，或螢幕上那一台"
+      },
+      "needs": [
+        "midi"
+      ],
+      "standIn": [
+        "controller"
+      ],
+      "p5Line": true,
+      "thumb": "assets/home/works/09.webp",
+      "alt": {
+        "en": "A spiral of pink and blue dots above an on-screen MIDI keyboard controller.",
+        "zh": "粉紅與藍色圓點排成螺旋，下方是螢幕上的 MIDI 鍵盤控制器。"
+      },
+      "docs": [
+        {
+          "id": "controllers",
+          "en": "MIDI controllers & embedding",
+          "zh": "MIDI 控制器與嵌入"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Play the on-screen MiniLab 3 with the mouse: knobs, pads, keys and strips all move the work.",
+          "Pick another device (LPD8, Launchpad, nanoKONTROL2): the same params follow, because every device has its own routes table into them.",
+          "Plug in a real controller in Chrome or Edge: the one on screen moves with your hands."
+        ],
+        "zh": [
+          "用滑鼠彈螢幕上的 MiniLab 3：旋鈕、打擊墊、琴鍵和觸控條都會帶動作品。",
+          "換成另一台（LPD8、Launchpad、nanoKONTROL2）：同樣的參數照樣跟著動，因為每台都有自己的路由表接到它們。",
+          "在 Chrome 或 Edge 接上實體控制器：螢幕上那台會跟著你的手一起動。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 93,
+          "to": 98,
+          "match": "...controllerRoutes(profileById('arturia-minilab3'), { ...ob",
+          "note": {
+            "en": "One routes table per device, all into the same params.",
+            "zh": "每台一張路由表，全都接到同一組參數。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 100,
+          "to": 107,
+          "match": "await createShow({",
+          "note": {
+            "en": "modules.midi.controllers puts the controller on screen; modules.remote makes the phone one too.",
+            "zh": "modules.midi.controllers 把控制器放上螢幕；modules.remote 讓手機也能當控制器。"
+          }
+        }
+      ],
+      "next": "02-chord-garden"
+    },
+    {
+      "id": "02-chord-garden",
+      "num": "02",
+      "dir": "examples/02-chord-garden/",
+      "route": "inputs",
+      "title": {
+        "en": "Chord garden",
+        "zh": "和弦花園"
+      },
+      "teaches": {
+        "en": "Triads bloom, clusters decay. The world listens to chords, never to keys.",
+        "zh": "和弦語意：三和弦開花，音堆凋零。世界聽的是和弦訊號，從來不看琴鍵。"
+      },
+      "summary": {
+        "en": "A note drops a seed, a triad opens flowers along the branches, a cluster makes them droop and fall. The branches are The Last Input's own L-system plants. The world listens to chord signals, never to keys.",
+        "zh": "一個音落下一顆種子，三和弦讓枝條開花，音堆讓花與葉垂下、落盡。枝條是《The Last Input》的 L-system 植物。世界聽的是和弦訊號，從來不看琴鍵。"
+      },
+      "plays": {
+        "en": "on-screen piano · QWERTY · simulated performer",
+        "zh": "螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者"
+      },
+      "needs": [],
+      "standIn": [
+        "piano",
+        "qwerty",
+        "sim"
+      ],
+      "p5Line": true,
+      "thumb": "assets/home/works/02.webp",
+      "alt": {
+        "en": "Slender branching plants in a night garden, with green leaves and small blue, red and pink flowers.",
+        "zh": "夜裡的花園，細長分岔的植物長著綠葉，枝端開出藍、紅、粉色的小花。"
+      },
+      "docs": [
+        {
+          "id": "inputs-chords",
+          "en": "Chords",
+          "zh": "和弦"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Play a triad: flowers open along the branches.",
+          "Play a cluster of adjacent keys: branches droop and the petals fall.",
+          "Do nothing: the gardener plays itself until you touch a key."
+        ],
+        "zh": [
+          "彈一個三和弦：枝條上開出花。",
+          "彈幾個相鄰的琴鍵（音堆）：枝條垂下，花瓣落盡。",
+          "什麼都不做：園丁會自己彈，直到你碰琴鍵。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 294,
+          "to": 294,
+          "match": "this._unsub = signals.on('chord/event', (a) => this.onChord(",
+          "note": {
+            "en": "The world subscribes to chord events, not to keys.",
+            "zh": "世界訂閱的是和弦事件，不是琴鍵。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 337,
+          "to": 360,
+          "match": "onChord(a) {",
+          "note": {
+            "en": "A triad blooms, a mild dissonance sends wind, a cluster decays.",
+            "zh": "三和弦開花，輕微的不協和吹起風，音堆凋零。"
+          }
+        }
+      ],
+      "next": "06-cylinder-earth",
+      "credit": {
+        "home": false,
+        "en": "Branch language © Che-Yu Wu, <cite>The Last Input</cite>, 2026",
+        "zh": "枝條語言 © 吳哲宇，<cite>The Last Input</cite>，2026",
+        "rights": {
+          "en": "Used here as a demo, all rights reserved. The framework is MIT.",
+          "zh": "在這裡當作示範，版權所有。框架採 MIT 授權。"
+        }
+      }
+    },
+    {
+      "id": "06-cylinder-earth",
+      "num": "06",
+      "dir": "examples/06-cylinder-earth/",
+      "route": "inputs",
+      "title": {
+        "en": "Cylinder earth",
+        "zh": "Cylinder Earth"
+      },
+      "teaches": {
+        "en": "A 2020 voice-controlled WebGL sketch; mic bands or the built-in drum machine play it.",
+        "zh": "2020 年用聲音控制的 WebGL 作品。低頻推動柱體，高頻讓旋轉閃爍，大鼓一下就換一組配色。"
+      },
+      "summary": {
+        "en": "A 2020 voice-controlled WebGL sketch. Lows pump the towers, highs shimmer the spin, a kick turns the palette.",
+        "zh": "2020 年用聲音控制的 WebGL 作品。低頻推動柱體，高頻讓旋轉閃爍，大鼓一下就換一組配色。"
+      },
+      "plays": {
+        "en": "microphone · drum machine",
+        "zh": "麥克風 · 鼓機"
+      },
+      "needs": [
+        "mic"
+      ],
+      "standIn": [
+        "drums"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/06.webp",
+      "alt": {
+        "en": "A sphere packed with colourful cylinders seen end-on, like umbrellas.",
+        "zh": "一顆球體擠滿彩色圓柱，從端面看去像一把把傘。"
+      },
+      "docs": [
+        {
+          "id": "inputs-microphone",
+          "en": "Microphone",
+          "zh": "麥克風"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Turn on 🎤 mic in the L1 panel and clap or sing: lows pump the towers, highs shimmer the spin.",
+          "No microphone? The drum machine plays it: a kick turns the palette.",
+          "Drag Pump or Density in the params panel to hear and see what each one does."
+        ],
+        "zh": [
+          "在 L1 面板打開 🎤 mic，拍手或唱歌：低頻推動柱體，高頻讓旋轉閃爍。",
+          "沒有麥克風？用鼓機彈它：大鼓一下就換一組配色。",
+          "在參數面板拖動 Pump 或 Density，看每一個參數做什麼。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 101,
+          "to": 109,
+          "match": "routes: [",
+          "note": {
+            "en": "Mic bands and drum onsets reach the params, one route each.",
+            "zh": "麥克風的頻段與鼓的起音，各自一條路由接到參數。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 111,
+          "to": 111,
+          "match": "modules: { keys: false, drums: true, audio: 'mic', sound: fa",
+          "note": {
+            "en": "audio: 'mic' switches the analyzer on; drums: true brings the stand-in.",
+            "zh": "audio: 'mic' 開啟分析器；drums: true 帶來替身。"
+          }
+        }
+      ],
+      "next": "03-pose-field",
+      "credit": {
+        "home": true,
+        "en": "Che-Yu Wu, <cite>200412 3D Cylinder Earth</cite>, 2020",
+        "zh": "吳哲宇，<cite>200412 3D Cylinder Earth</cite>，2020",
+        "rights": {
+          "en": "Artwork © Che-Yu Wu, used here as a demo, all rights reserved. The framework is MIT.",
+          "zh": "作品 © 吳哲宇，在這裡當作示範，版權所有。框架採 MIT 授權。"
+        }
+      }
+    },
+    {
+      "id": "03-pose-field",
+      "num": "03",
+      "dir": "examples/03-pose-field/",
+      "route": "inputs",
+      "title": {
+        "en": "Hand instrument",
+        "zh": "手的樂器"
+      },
+      "teaches": {
+        "en": "Fingers as an instrument: pinch, fists, four pattern families.",
+        "zh": "手指就是樂器：一組捏合控制鬆緊，另一組長出手臂，兩手握拳就綻放。"
+      },
+      "summary": {
+        "en": "Fingers as an instrument: one pinch sets tightness, another grows arms, both fists bloom. Four pattern families: mandala, lissajous, spirograph, web.",
+        "zh": "手指就是樂器：一組捏合控制鬆緊，另一組長出手臂，兩手握拳就綻放。四種圖案輪流切換：曼陀羅、利薩如、萬花尺、蛛網。"
+      },
+      "plays": {
+        "en": "camera (hands) · on-screen piano · drum machine",
+        "zh": "鏡頭（手）· 螢幕鋼琴 · 鼓機"
+      },
+      "needs": [
+        "camera"
+      ],
+      "standIn": [
+        "piano",
+        "drums"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/03.webp",
+      "alt": {
+        "en": "A blue and white mandala of fine layered lines.",
+        "zh": "藍白色細線層層疊成的曼陀羅。"
+      },
+      "docs": [
+        {
+          "id": "inputs-body-and-hands",
+          "en": "Body and hands",
+          "zh": "身體與手"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Turn on 🖐 hands. Pinch thumb and index of your right hand: the figure tightens. Pinch thumb and middle finger: it grows arms.",
+          "Close your left fist: the pattern changes between mandala, lissajous, spirograph and web.",
+          "No camera? Play the on-screen piano: the notes move the figure too."
+        ],
+        "zh": [
+          "打開 🖐 hands。右手拇指捏食指：圖形變緊；捏中指：長出手臂。",
+          "握起左拳：圖案在曼陀羅、利薩如、萬花尺、蛛網之間切換。",
+          "沒有鏡頭？彈螢幕鋼琴：音符一樣會帶動圖形。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 46,
+          "to": 47,
+          "match": "signals.on('midi/note/on', ({ note }) => {          // piano",
+          "note": {
+            "en": "The piano works without a camera.",
+            "zh": "沒有鏡頭，鋼琴照樣能彈。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 219,
+          "to": 226,
+          "match": "routes: [",
+          "note": {
+            "en": "Each pinch reaches a param through a route: the world never reads the hand.",
+            "zh": "每個捏合都經過一條路由接到參數：世界從不直接讀手。"
+          }
+        }
+      ],
+      "next": "12-leap-hands"
+    },
+    {
+      "id": "12-leap-hands",
+      "num": "12",
+      "dir": "examples/12-leap-hands/",
+      "route": "inputs",
+      "title": {
+        "en": "Leap hands",
+        "zh": "Leap 雙手"
+      },
+      "teaches": {
+        "en": "A Leap Motion as an instrument; the mouse is a simulated hand when you have none.",
+        "zh": "把 Leap Motion 當樂器，經本機橋接；沒開橋接時用滑鼠模擬手。"
+      },
+      "summary": {
+        "en": "A Leap Motion as an instrument through the local bridge; the mouse simulates hands when no bridge runs.",
+        "zh": "把 Leap Motion 當樂器，經本機橋接；沒開橋接時用滑鼠模擬手。"
+      },
+      "plays": {
+        "en": "Leap Motion · mouse as a simulated hand",
+        "zh": "Leap Motion · 用滑鼠模擬手"
+      },
+      "needs": [
+        "leap"
+      ],
+      "standIn": [
+        "mouse"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/12.webp",
+      "alt": {
+        "en": "A violet hand skeleton above green and blue ink strokes that fall like rain on black.",
+        "zh": "黑底上，一副紫色的手骨架，上方是像雨一樣垂落的綠色與藍色墨跡。"
+      },
+      "docs": [
+        {
+          "id": "inputs-leap-motion",
+          "en": "Leap Motion",
+          "zh": "Leap Motion"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "No sensor? The page falls back to the simulator after two seconds (or press “simulate” in the L1 panel): the mouse is your right palm, its height sets energy and its position sets hue.",
+          "Press the mouse button to pinch: a ring of ink starts at the index fingertip.",
+          "Hold Shift for the left hand and right-click for a fist: the ink falls."
+        ],
+        "zh": [
+          "沒有感測器？頁面會在兩秒後改用模擬（或在 L1 面板按 simulate）：滑鼠就是你的右手掌，高度決定 energy，左右位置決定 hue。",
+          "按住滑鼠鍵就是捏合：食指指尖會畫出一圈墨。",
+          "按住 Shift 是左手，按右鍵是握拳：墨會落下。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 49,
+          "to": 51,
+          "match": "const hand = this.leap?.hand('right');",
+          "note": {
+            "en": "Drawing the hand is the one place a world reads the input directly.",
+            "zh": "畫出手，是世界唯一直接讀輸入的地方。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 92,
+          "to": 110,
+          "match": "const show = await createShow({",
+          "note": {
+            "en": "The gestures reach the world through params: the timeline or a MIDI knob can play them too.",
+            "zh": "手勢經由參數送進世界：時間軸或 MIDI 旋鈕也能彈它們。"
+          }
+        }
+      ],
+      "next": "08-remote-surface"
+    },
+    {
+      "id": "08-remote-surface",
+      "num": "08",
+      "dir": "examples/08-remote-surface/",
+      "route": "inputs",
+      "title": {
+        "en": "Remote surface",
+        "zh": "遠端控制面板"
+      },
+      "teaches": {
+        "en": "The phone is the instrument panel; the surface grows from the world's params.",
+        "zh": "手機就是樂器面板。世界只宣告參數，手機上的控制面板依參數自動長出來。"
+      },
+      "summary": {
+        "en": "The phone is the instrument panel. The world only declares params, and the control surface on the phone grows from them. Needs <code>node serve.js</code> on your network.",
+        "zh": "手機就是樂器面板。世界只宣告參數，手機上的控制面板依參數自動長出來。需要在你的網路裡跑 <code>node serve.js</code>。"
+      },
+      "plays": {
+        "en": "phone or iPad · on-screen piano",
+        "zh": "手機或 iPad · 螢幕鋼琴"
+      },
+      "needs": [
+        "phone"
+      ],
+      "standIn": [
+        "piano"
+      ],
+      "p5Line": true,
+      "thumb": "assets/home/works/08.webp",
+      "alt": {
+        "en": "Blue and yellow streaks exploding outward from the lower centre.",
+        "zh": "藍色和黃色的光束，從畫面下方中央向外爆開。"
+      },
+      "docs": [
+        {
+          "id": "phones-autosurface",
+          "en": "autoSurface",
+          "zh": "autoSurface"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Run node serve.js on your network, then type the phone URL shown at the top left into a phone on the same wifi.",
+          "On the phone's 控制台 tab move a fader: the matching param moves here.",
+          "Tilt the phone to change Drift, knock on it for a Burst. Without a phone, the on-screen piano plays notes."
+        ],
+        "zh": [
+          "在你的網路裡跑 node serve.js，把左上角的手機網址輸入同一個 wifi 裡的手機。",
+          "在手機的「控制台」分頁推動推桿：這裡對應的參數會跟著動。",
+          "傾斜手機改變 Drift，敲一下手機放出 Burst。沒有手機時，螢幕鋼琴照樣彈音符。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 25,
+          "to": 34,
+          "match": "params: [",
+          "note": {
+            "en": "The world declares params. That is all the phone needs.",
+            "zh": "世界宣告參數。手機需要的就只有這些。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 104,
+          "to": 105,
+          "match": "{ source: 'phone/any/tilt/x', target: 'drift', inMin: -1, in",
+          "note": {
+            "en": "Phone sensors reach params through routes written once: phone/any is the latest phone.",
+            "zh": "手機感測器經由寫一次的路由接到參數：phone/any 指最近連上的那支手機。"
+          }
+        }
+      ],
+      "next": "04-webtoe-stage"
+    },
+    {
+      "id": "04-webtoe-stage",
+      "num": "04",
+      "dir": "examples/04-webtoe-stage/",
+      "route": "engines",
+      "title": {
+        "en": "WebToe stage",
+        "zh": "WebToe 舞台"
+      },
+      "teaches": {
+        "en": "A WebToe node patch performed as a World through ext() bindings.",
+        "zh": "這個世界是一張 WebToe 節點網路，操作方式接近 TouchDesigner，透過 ext() 綁定來演奏。"
+      },
+      "summary": {
+        "en": "The world is a WebToe node patch, TouchDesigner-style, performed through <code>ext()</code> bindings. WebToe is the engine, open-audiovisual is the show.",
+        "zh": "這個世界是一張 WebToe 節點網路，操作方式接近 TouchDesigner，透過 <code>ext()</code> 綁定來演奏。WebToe 是引擎，open-audiovisual 是演出。"
+      },
+      "plays": {
+        "en": "on-screen piano · simulated performer",
+        "zh": "螢幕鋼琴 · 模擬演奏者"
+      },
+      "needs": [],
+      "standIn": [
+        "piano",
+        "sim"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/04.webp",
+      "alt": {
+        "en": "A node editor with noise, level and output nodes beside a grey cloud texture.",
+        "zh": "節點編輯器裡有 noise、level、out 三個節點，旁邊是灰色雲霧材質。"
+      },
+      "docs": [
+        {
+          "id": "writing-a-world-a-webtoe-patch",
+          "en": "A WebToe patch",
+          "zh": "WebToe 節點網路"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Play the piano or tick “simulate performance”: each note pulses the patch.",
+          "Press Space to play the timeline: LFO speed and hue follow their lanes through Drift, Swell and Spin.",
+          "Drag Zoom in the params panel: the patch follows through ext('zoom')."
+        ],
+        "zh": [
+          "彈鋼琴，或勾選 simulate performance：每個音都讓節點網路跳動一下。",
+          "按空白鍵播放時間軸：LFO speed 與 hue 沿著各自的曲線走過 Drift、Swell、Spin。",
+          "在參數面板拖動 Zoom：節點網路透過 ext('zoom') 跟著動。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 11,
+          "to": 20,
+          "match": "world: webtoeWorld({",
+          "note": {
+            "en": "The stage is a WebToe patch; params flow in as ext('name').",
+            "zh": "舞台是一張 WebToe 節點網路；參數以 ext('name') 流進去。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 33,
+          "to": 33,
+          "match": "routes: [{ source: 'env/pulse', target: 'pulse', smooth: 0.0",
+          "note": {
+            "en": "A note envelope shaped at the assembly layer becomes the pulse param.",
+            "zh": "在組裝層做出來的音符包絡線，變成 pulse 參數。"
+          }
+        }
+      ],
+      "next": "05-prebiotic-flake"
+    },
+    {
+      "id": "05-prebiotic-flake",
+      "num": "05",
+      "dir": "examples/05-prebiotic-flake/",
+      "route": "engines",
+      "title": {
+        "en": "Prebiotic flake",
+        "zh": "Prebiotic Flake"
+      },
+      "teaches": {
+        "en": "A 2023 MIDI sketch replayed through the framework, now with a Tone.js voice.",
+        "zh": "2023 年的一件 MIDI 每日創作，搬進框架重新演奏。繪圖程式碼保持原樣，雪花現在透過 Tone.js 發出聲音。"
+      },
+      "summary": {
+        "en": "A 2023 MIDI daily sketch replayed through the framework. The drawing code is the original. The flakes now have a voice through Tone.js.",
+        "zh": "2023 年的一件 MIDI 每日創作，搬進框架重新演奏。繪圖程式碼保持原樣，雪花現在透過 Tone.js 發出聲音。"
+      },
+      "plays": {
+        "en": "on-screen piano · simulated performer · sound",
+        "zh": "螢幕鋼琴 · 模擬演奏者 · 聲音"
+      },
+      "needs": [],
+      "standIn": [
+        "piano",
+        "sim"
+      ],
+      "p5Line": true,
+      "thumb": "assets/home/works/05.webp",
+      "alt": {
+        "en": "A glowing yellow ring of jagged petals with small circles inside.",
+        "zh": "發光的黃色鋸齒花瓣圍成一圈，中間有小圓圈。"
+      },
+      "docs": [
+        {
+          "id": "writing-a-world-p5-js",
+          "en": "p5.js",
+          "zh": "p5.js"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Play a note: each one is one flake, and the feedback zoom breathes.",
+          "Open L4 · Output and enable sound: the flakes get a voice.",
+          "Drag Zoom breathe or Hue shift in the params panel."
+        ],
+        "zh": [
+          "彈一個音：每個音是一片雪花，回饋放大會呼吸。",
+          "打開 L4 · Output 啟用聲音：雪花就有了聲音。",
+          "在參數面板拖動 Zoom breathe 或 Hue shift。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 28,
+          "to": 30,
+          "match": "this.p5 = new p5((sk) => {",
+          "note": {
+            "en": "The 2023 drawing code, almost verbatim, in p5 instance mode.",
+            "zh": "2023 年的繪圖程式碼幾乎原樣，用 p5 的 instance mode。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 154,
+          "to": 154,
+          "match": "modules: { keys: { base: 48 }, sound: true },",
+          "note": {
+            "en": "sound: true is the L4 audio branch: Tone.js gives the flakes a voice.",
+            "zh": "sound: true 是 L4 的音訊支線：Tone.js 讓雪花發出聲音。"
+          }
+        }
+      ],
+      "next": "07-firework-festival",
+      "credit": {
+        "home": true,
+        "en": "Che-Yu Wu, <cite>230616 Prebiotic Flake</cite>, 2023",
+        "zh": "吳哲宇，<cite>230616 Prebiotic Flake</cite>，2023",
+        "rights": {
+          "en": "Artwork © Che-Yu Wu, used here as a demo, all rights reserved. The framework is MIT.",
+          "zh": "作品 © 吳哲宇，在這裡當作示範，版權所有。框架採 MIT 授權。"
+        }
+      }
+    },
+    {
+      "id": "07-firework-festival",
+      "num": "07",
+      "dir": "examples/07-firework-festival/",
+      "route": "engines",
+      "title": {
+        "en": "Firework festival",
+        "zh": "花火大會"
+      },
+      "teaches": {
+        "en": "Close a finger pinch and a firework launches from that hand (2021).",
+        "zh": "2021 年的作品。手指一捏合，煙火就從那隻手的位置升空。"
+      },
+      "summary": {
+        "en": "A 2021 sketch. Close a finger pinch and a firework launches from that hand. The particle system is the 2021 code.",
+        "zh": "2021 年的作品。手指一捏合，煙火就從那隻手的位置升空。粒子系統是 2021 年的原始程式碼。"
+      },
+      "plays": {
+        "en": "camera (hands) · on-screen piano",
+        "zh": "鏡頭（手）· 螢幕鋼琴"
+      },
+      "needs": [
+        "camera"
+      ],
+      "standIn": [
+        "piano"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/07.webp",
+      "alt": {
+        "en": "Cyan and violet fireworks bursting over drooping coloured trails.",
+        "zh": "青色和紫色的煙火，在垂落的彩色尾跡上炸開。"
+      },
+      "docs": [
+        {
+          "id": "inputs-body-and-hands",
+          "en": "Body and hands",
+          "zh": "身體與手"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Turn on 🖐 hands and close a pinch: a firework launches at that hand, and the pinch distance sets the shell size.",
+          "No camera? Press a piano key: it launches one too.",
+          "Drag Richness or Gravity in the params panel to change the shells."
+        ],
+        "zh": [
+          "打開 🖐 hands，捏合手指：煙火從那隻手的位置升空，捏合的距離決定煙火大小。",
+          "沒有鏡頭？按一個鋼琴鍵，一樣會放煙火。",
+          "在參數面板拖動 Richness 或 Gravity，改變煙火的樣子。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 76,
+          "to": 78,
+          "match": "// pinch-close = a launch AT that hand; pinch value rides th",
+          "note": {
+            "en": "A pinch closing is an edge: the launch happens at that hand.",
+            "zh": "捏合是一個「邊緣」：煙火就在那隻手的位置發射。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 79,
+          "to": 80,
+          "match": "signals.on('midi/note/on', ({ vel }) => {           // piano",
+          "note": {
+            "en": "The piano also launches, so the work needs no camera.",
+            "zh": "鋼琴也能放煙火，所以作品不需要鏡頭。"
+          }
+        }
+      ],
+      "next": "14-timeline",
+      "credit": {
+        "home": true,
+        "en": "Che-Yu Wu, <cite>210807 Firework 花火大會</cite>, 2021",
+        "zh": "吳哲宇，<cite>210807 Firework 花火大會</cite>，2021",
+        "rights": {
+          "en": "Artwork © Che-Yu Wu, used here as a demo, all rights reserved. The framework is MIT.",
+          "zh": "作品 © 吳哲宇，在這裡當作示範，版權所有。框架採 MIT 授權。"
+        }
+      }
+    },
+    {
+      "id": "14-timeline",
+      "num": "14",
+      "dir": "examples/14-timeline/",
+      "route": "show-control",
+      "title": {
+        "en": "Timeline",
+        "zh": "時間軸"
+      },
+      "teaches": {
+        "en": "Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes.",
+        "zh": "看得見的自動化。五條關鍵影格曲線帶動一圈光點，場景負責切換，cue 觸發一次性的閃光。"
+      },
+      "summary": {
+        "en": "Automation you can see. Five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes, and any knob you touch takes over until you let go. Record a knob move to write a new curve.",
+        "zh": "看得見的自動化。五條關鍵影格曲線帶動一圈光點，場景負責切換，cue 觸發一次性的閃光，你一碰旋鈕就接手，放開再還給曲線。把旋鈕的動作錄下來，就寫成一條新曲線。"
+      },
+      "plays": {
+        "en": "nothing: it plays itself · knobs on screen",
+        "zh": "什麼都不用做，它自己會播 · 螢幕旋鈕"
+      },
+      "needs": [],
+      "standIn": [
+        "auto",
+        "knobs"
+      ],
+      "p5Line": true,
+      "thumb": "assets/home/works/14.webp",
+      "alt": {
+        "en": "A hexagonal ring of orange and yellow dots above a timeline with five curve lanes, scene blocks and a playhead.",
+        "zh": "橘黃色圓點排成六邊形，下方是時間軸：五條曲線、場景區塊和一條播放頭。"
+      },
+      "docs": [
+        {
+          "id": "show-control-timeline",
+          "en": "Timeline",
+          "zh": "時間軸"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Press Space and watch the playhead run over five lanes of curves; scenes cut, and ◆ cues fire flashes and ripples.",
+          "Drag a knob: it takes over from its lane (the amber dot is where you took it, the hollow one is where the curve would be).",
+          "Press ● to arm recording, play, and move a knob: the move is written into the lane as new keyframes."
+        ],
+        "zh": [
+          "按空白鍵，看播放頭走過五條曲線；場景切換，◆ cue 放出閃光與漣漪。",
+          "拖動一個旋鈕：它從曲線手上接手（琥珀色圓點是你接手的位置，空心圓點是曲線原本會在的位置）。",
+          "按 ● 準備錄製，播放時轉動旋鈕：你的動作會寫成這條曲線上的新關鍵影格。"
+        ]
+      },
+      "read": [
+        {
+          "file": "config.js",
+          "from": 40,
+          "to": 46,
+          "match": "export const LANES = [",
+          "note": {
+            "en": "One lane of keyframes per param.",
+            "zh": "每個參數一條關鍵影格曲線。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 115,
+          "to": 115,
+          "match": "timeline: { total: TOTAL, automation, scenes: SCENES },",
+          "note": {
+            "en": "The timeline gets the compiled lanes and the scenes: nothing else in the world changes.",
+            "zh": "時間軸拿到編好的曲線與場景：世界本身完全不用動。"
+          }
+        }
+      ],
+      "next": "13-score-director"
+    },
+    {
+      "id": "13-score-director",
+      "num": "13",
+      "dir": "examples/13-score-director/",
+      "route": "show-control",
+      "title": {
+        "en": "Score & director",
+        "zh": "總譜與導演"
+      },
+      "teaches": {
+        "en": "A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash.",
+        "zh": "有結構的演出：「一天的天空」只寫一次段落長度；導演為每段跑一個模組，?cut=<id> 選版本，空白鍵放行 hold。"
+      },
+      "summary": {
+        "en": "A show with structure: \"A day of sky\" written once as segment lengths; a Director runs one module per segment, <code>?cut=&lt;id&gt;</code> picks a version, Space continues a hold.",
+        "zh": "有結構的演出：「一天的天空」只寫一次段落長度；導演為每段跑一個模組，<code>?cut=&lt;id&gt;</code> 選版本，空白鍵放行 hold。"
+      },
+      "plays": {
+        "en": "on-screen piano · keyboard: Space, ← →",
+        "zh": "螢幕鋼琴 · 鍵盤：空白鍵、← →"
+      },
+      "needs": [],
+      "standIn": [
+        "piano",
+        "qwerty"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/13.webp",
+      "alt": {
+        "en": "A pale moon in a blue and teal dusk sky, with the word dusk in the corner.",
+        "zh": "藍色與青綠色的黃昏天空，有一輪淡色的月亮，角落寫著 dusk。"
+      },
+      "docs": [
+        {
+          "id": "score",
+          "en": "Score & Director",
+          "zh": "總譜與導演"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Press Space: the standby waits at its end (a hold). Press Space again to release it.",
+          "Open ?cut=short: the same show, half as long, from the same score.",
+          "Open ?break=dusk: the dusk module throws on purpose, the desk shows a warning and the show carries on; R brings the module back."
+        ],
+        "zh": [
+          "按空白鍵：待命段停在結尾（hold），再按一次空白鍵放行。",
+          "打開 ?cut=short：同一份總譜，同一場演出，長度減半。",
+          "打開 ?break=dusk：dusk 的模組故意出錯，控台顯示警告，演出照常進行；按 R 把模組救回來。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 80,
+          "to": 91,
+          "match": "const cuts = [",
+          "note": {
+            "en": "A cut is a list of segments with lengths, never absolute seconds.",
+            "zh": "一個 cut 是一串有長度的段落，絕不寫絕對秒數。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 145,
+          "to": 149,
+          "match": "score: {",
+          "note": {
+            "en": "The score and its segment modules go into createShow().",
+            "zh": "總譜與段落模組一起交給 createShow()。"
+          }
+        }
+      ],
+      "next": "10-record"
+    },
+    {
+      "id": "10-record",
+      "num": "10",
+      "dir": "examples/10-record/",
+      "route": "output",
+      "title": {
+        "en": "Record",
+        "zh": "演出影片"
+      },
+      "teaches": {
+        "en": "The work plus your hands plus its own sound, in one synced video. MIDI takes too.",
+        "zh": "作品疊在鏡頭畫面上，連同作品自己的聲音錄成一個直式 1080×1920 到 4K 的檔案；MIDI 演奏可錄下再重播。"
+      },
+      "summary": {
+        "en": "A performance video: the work above the webcam in one vertical 1080×1920 to 4K file with the work's own sound; MIDI takes recorded and played back.",
+        "zh": "演出影片：作品疊在鏡頭畫面上，連同作品自己的聲音錄成一個直式 1080×1920 到 4K 的檔案；MIDI 演奏可錄下再重播。"
+      },
+      "plays": {
+        "en": "on-screen piano · QWERTY · simulated performer · camera (optional)",
+        "zh": "螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者 · 鏡頭（選用）"
+      },
+      "needs": [
+        "camera"
+      ],
+      "standIn": [
+        "piano",
+        "qwerty",
+        "sim"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/10.webp",
+      "alt": {
+        "en": "Overlapping pink, yellow and green rings spreading over a dark field, each one a struck note.",
+        "zh": "深色畫面上，粉紅、黃與綠色的圓環層層疊疊向外擴散，每一圈都是一個被彈下的音。"
+      },
+      "docs": [
+        {
+          "id": "packages-openav-record",
+          "en": "@openav/record",
+          "zh": "@openav/record"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Pick a size and a layout (vertical 1080p, 4:5, 2.7K, 4K; stack, pip, side or work) and watch the frame change.",
+          "Press ● Rec take, play something, then ▶ Play: the show plays it back as if it were you.",
+          "Save the take as .json or .mid, or load a .mid back."
+        ],
+        "zh": [
+          "選尺寸和版型（直式 1080p、4:5、2.7K、4K；stack、pip、side、work），看畫面框怎麼變。",
+          "按 ● Rec take，彈點什麼，再按 ▶ Play：演出會把它當成你在彈一樣放回去。",
+          "把演奏存成 .json 或 .mid，或讀回一個 .mid。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 108,
+          "to": 115,
+          "match": "const comp = new Compositor({",
+          "note": {
+            "en": "A Compositor puts the work and the webcam into one canvas of an exact size.",
+            "zh": "Compositor 把作品和鏡頭放進同一個尺寸精確的畫布。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 247,
+          "to": 249,
+          "match": "const video = new Recorder({ canvas: comp.canvas, fps, audio",
+          "note": {
+            "en": "One Recorder records that canvas with the work's own sound, so picture and sound share one clock.",
+            "zh": "一個 Recorder 把畫布連同作品自己的聲音錄下來，畫面與聲音共用同一個時鐘。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 277,
+          "to": 278,
+          "match": "const takeRec = new TakeRecorder({ signals, name: 'take' });",
+          "note": {
+            "en": "A TakeRecorder keeps what you play; a TakePlayer plays it back into the show.",
+            "zh": "TakeRecorder 記下你彈的；TakePlayer 把它放回演出裡。"
+          }
+        }
+      ],
+      "next": "11-controller-video"
+    },
+    {
+      "id": "11-controller-video",
+      "num": "11",
+      "dir": "examples/11-controller-video/",
+      "route": "output",
+      "title": {
+        "en": "Controller video",
+        "zh": "控制器影片"
+      },
+      "teaches": {
+        "en": "The performance video without a camera: the controller you play, drawn live.",
+        "zh": "不用鏡頭的演出影片：作品下方即時畫出正在彈的 MIDI 控制器（MiniLab 3 或任何設定檔），重播的演奏也會動。"
+      },
+      "summary": {
+        "en": "The performance video without a camera: the MIDI controller being played (MiniLab 3, any profile) drawn live under the work; replayed takes animate it too.",
+        "zh": "不用鏡頭的演出影片：作品下方即時畫出正在彈的 MIDI 控制器（MiniLab 3 或任何設定檔），重播的演奏也會動。"
+      },
+      "plays": {
+        "en": "MIDI controller · on-screen piano · QWERTY · a demo take",
+        "zh": "MIDI 控制器 · 螢幕鋼琴 · 電腦鍵盤 · 一段示範演奏"
+      },
+      "needs": [
+        "midi"
+      ],
+      "standIn": [
+        "piano",
+        "qwerty",
+        "take"
+      ],
+      "p5Line": true,
+      "thumb": "assets/home/works/11.webp",
+      "alt": {
+        "en": "Overlapping pink, purple and yellow rings beside an on-screen MiniLab 3 with the last note written under it.",
+        "zh": "粉紅、紫與黃色的圓環層層交疊，旁邊是螢幕上的 MiniLab 3，下方寫著最後彈下的音。"
+      },
+      "docs": [
+        {
+          "id": "packages-openav-record",
+          "en": "@openav/record",
+          "zh": "@openav/record"
+        },
+        {
+          "id": "controllers",
+          "en": "MIDI controllers & embedding",
+          "zh": "MIDI 控制器與嵌入"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Play the piano or the QWERTY keys A to L: the controller drawn next to the work moves with them.",
+          "Press ▶ Demo take: a replayed take animates the panel exactly as the hands did.",
+          "Pick another device and a look (device colours, one accent, flat), then press ● Record."
+        ],
+        "zh": [
+          "彈鋼琴或電腦鍵盤 A 到 L：畫在作品旁的控制器會跟著動。",
+          "按 ▶ Demo take：重播的演奏讓面板動起來，就和手彈的一樣。",
+          "換一台裝置、換一種外觀（device colours、one accent、flat），再按 ● Record。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 79,
+          "to": 79,
+          "match": "let panel = new ControllerCanvas({ profile: 'arturia-minilab",
+          "note": {
+            "en": "ControllerCanvas draws a controller profile; Arturia MiniLab 3 by default, any profile in the library.",
+            "zh": "ControllerCanvas 畫出一份控制器設定檔；預設是 Arturia MiniLab 3，資料庫裡任何一台都行。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 98,
+          "to": 100,
+          "match": "const comp = new Compositor({ size: 'vertical-1080p', layout",
+          "note": {
+            "en": "The panel goes into the bottom of the Compositor every frame.",
+            "zh": "面板每一幀都被畫進 Compositor 的下半部。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 105,
+          "to": 107,
+          "match": "function demoTake() {",
+          "note": {
+            "en": "The demo is a take: a recorded clip animates the panel like live hands.",
+            "zh": "示範演奏是一份 take：錄好的片段讓面板動起來，就像現場的手。"
+          }
+        }
+      ],
+      "next": null
+    }
+  ]
+}

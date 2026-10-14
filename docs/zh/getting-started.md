@@ -1,5 +1,17 @@
 # 快速開始
 
+## 三種進場方式
+
+挑一個最接近你手上東西的。越往下，東西越大。
+
+1. **在 p5.js 草圖裡加一行。** 任何一份 p5.js 草圖（OpenProcessing、p5 編輯器、你自己的網頁）在最前面加一行，就能用
+   MIDI 控制器、螢幕上的控制器或手機來彈。讀 [p5.js 一行接上](p5.md)，再玩帶著這一行的草圖：
+   [範例 15](https://openaudiovisual.com/examples/15-p5-one-line/)。
+2. **在網頁裡放一台控制器。** `<oav-controller profile="akai-lpd8">` 把一台能彈的控制器放進任何網頁。讀
+   [MIDI 控制器與嵌入](controllers.md)，到[控制器圖鑑](https://openaudiovisual.com/zh/controllers/)挑你的那一台。
+3. **一整場演出。** 一個世界加上一次 `createShow()` 呼叫，輸入、映射、時間軸、控台、聲音和後台就一起組好。從
+   [範例 01](https://openaudiovisual.com/examples/01-hello-particles/) 開始，接著往下讀。
+
 ## 跑起來
 
 你需要 Node.js（目前任何一個版本都可以，CI 用 Node 22 跑測試）和一個瀏覽器。不用安裝任何東西：沒有 `npm install`，也沒有打包工具。

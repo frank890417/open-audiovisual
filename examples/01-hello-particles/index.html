@@ -1,9 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- oav:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual · 01 hello particles</title>
+<title>Hello particles · open-audiovisual example</title>
+<meta name="description" content="The smallest complete app. Read main.js top to bottom and you know the framework. Runs in the browser, no hardware needed.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/01-hello-particles/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Hello particles · open-audiovisual example">
+<meta property="og:description" content="The smallest complete app. Read main.js top to bottom and you know the framework. Runs in the browser, no hardware needed.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/01-hello-particles/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hello particles · open-audiovisual example">
+<meta name="twitter:description" content="The smallest complete app. Read main.js top to bottom and you know the framework. Runs in the browser, no hardware needed.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/01-hello-particles/#webpage","url":"https://openaudiovisual.com/examples/01-hello-particles/","name":"Hello particles · open-audiovisual example","description":"The smallest complete app. Read main.js top to bottom and you know the framework. Runs in the browser, no hardware needed.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/01-hello-particles/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/01-hello-particles/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/15-p5-one-line/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/01-hello-particles/#code","name":"Hello particles (open-audiovisual example 01)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/01-hello-particles","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/01-hello-particles/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Hello particles","item":"https://openaudiovisual.com/examples/01-hello-particles/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css">
+<!-- /oav:head -->
 <script type="importmap">
 {
   "imports": {
@@ -27,6 +55,33 @@
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 </head>
 <body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 01 · <a href="../../examples/#route-start">First open</a></span><span lang="zh-Hant">範例 01 · <a href="../../zh/examples/#route-start">第一次打開</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Hello particles</span><span lang="zh-Hant">哈囉粒子</span></h1>
+    <p class="g-teaches"><span lang="en">The smallest complete app. Read main.js top to bottom and you know the framework.</span><span lang="zh-Hant">最小的完整範例。把 main.js 從頭讀到尾，整套框架就懂了。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Click the on-screen piano, or tick “keyboard” and play A to L: every note launches a burst.</li><li>Tick “simulate performance”, then drag the Hue and Gravity sliders while it plays.</li><li>Press Space to play the timeline: the same params now move on their own.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>點螢幕鋼琴，或勾選 keyboard 用 A 到 L 彈：每個音都放出一團粒子。</li><li>勾選 simulate performance，在它彈奏時拖動 Hue 與 Gravity 推桿。</li><li>按空白鍵播放時間軸：同樣的參數，現在自己動了。</li></ol>
+    <p class="g-row"><span lang="en"><b>No hardware needed.</b> On-screen piano · QWERTY keys · Simulated performer.</span><span lang="zh-Hant"><b>不需要硬體。</b>螢幕鋼琴、電腦鍵盤、模擬演奏者。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/01-hello-particles/main.js#L12-L18"><code>main.js:12–18</code></a> <span lang="en">Params: what the piece can be performed with.</span><span lang="zh-Hant">參數：這件作品能被什麼演奏。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/01-hello-particles/main.js#L25-L29"><code>main.js:25–29</code></a> <span lang="en">A struck note is an event, so it may come straight from a signal.</span><span lang="zh-Hant">按下的音是事件，可以直接從訊號來。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/01-hello-particles/main.js#L63-L79"><code>main.js:63–79</code></a> <span lang="en">One createShow() call brings piano, mapping, timeline, console, sound and backstage.</span><span lang="zh-Hant">一次 createShow() 呼叫，就帶來鋼琴、映射、時間軸、控台、聲音和後台。</span></li></ul>
+    <p class="g-row g-p5"><span lang="en"><b>Take this input into your own p5 sketch: one line.</b></span><span lang="zh-Hant"><b>把這個輸入帶進你自己的 p5 草圖：一行。</b></span> <span lang="en"><a href="../../examples/15-p5-one-line/">Example 15</a> · <a href="../../docs/#p5">Docs: p5.js in one line</a></span><span lang="zh-Hant"><a href="../../examples/15-p5-one-line/">範例 15</a> · <a href="../../zh/docs/#p5">文件：p5.js 一行接上</a></span></p>
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#writing-a-world">Writing a world</a></span><span lang="zh-Hant"><a href="../../zh/docs/#writing-a-world">寫一個世界</a></span> · <span lang="en"><a href="../../docs/#quick-start">Quick start</a></span><span lang="zh-Hant"><a href="../../zh/docs/#quick-start">快速開始</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/15-p5-one-line/">15 p5.js in one line →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/15-p5-one-line/">15 p5.js 一行指令 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js"></script>
+<!-- /oav:guide -->
 <script type="module" src="./main.js?v=02fdc94"></script>
 </body>
 </html>

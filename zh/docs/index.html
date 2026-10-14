@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/#article","url":"https://openaudiovisual.com/zh/docs/","name":"文件｜open-audiovisual","description":"open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"open-audiovisual 使用手冊","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["簡介","快速開始","核心概念","架構","寫一個世界","輸入","映射","演出控制","總譜與導演","MIDI 控制器與嵌入","p5.js 一行接上","手機、中繼與控制面板","訊號一覽","套件一覽","給 AI 代理","實驗室整合（\"lab\" 欄位）","疑難排解","路線圖"],"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -84,6 +84,7 @@
         <li class="toc-ch" data-ch="quick-start">
           <a href="#quick-start"><span class="n">02</span><span class="t">快速開始</span></a>
           <ol class="toc-secs">
+            <li><a href="#quick-start-three-ways-in">三種進場方式</a></li>
             <li><a href="#quick-start-run-it">跑起來</a></li>
             <li><a href="#quick-start-which-browser">用哪個瀏覽器</a></li>
             <li><a href="#quick-start-what-you-are-looking-at">你看到的是什麼</a></li>
@@ -340,7 +341,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">18 章 · 169 節 · v0.1.0</p>
+      <p class="docs-stats">18 章 · 170 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -381,6 +382,17 @@ around them  console (the director's desk) · relay, surface, remote (phones as 
 <section class="chapter" data-chapter="quick-start" aria-labelledby="quick-start">
 <h2 id="quick-start">快速開始<a class="anchor" href="#quick-start" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">02</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/getting-started.md">docs/zh/getting-started.md</a></span></p>
+<h3 id="quick-start-three-ways-in">三種進場方式<a class="anchor" href="#quick-start-three-ways-in" aria-label="這一節的連結">#</a></h3>
+<p>挑一個最接近你手上東西的。越往下，東西越大。</p>
+<ol>
+<li><strong>在 p5.js 草圖裡加一行。</strong> 任何一份 p5.js 草圖（OpenProcessing、p5 編輯器、你自己的網頁）在最前面加一行，就能用
+MIDI 控制器、螢幕上的控制器或手機來彈。讀 <a href="#p5">p5.js 一行接上</a>，再玩帶著這一行的草圖：
+<a href="../../examples/15-p5-one-line/">範例 15</a>。</li>
+<li><strong>在網頁裡放一台控制器。</strong> <code>&lt;oav-controller profile="akai-lpd8"&gt;</code> 把一台能彈的控制器放進任何網頁。讀
+<a href="#controllers">MIDI 控制器與嵌入</a>，到<a href="../../zh/controllers/">控制器圖鑑</a>挑你的那一台。</li>
+<li><strong>一整場演出。</strong> 一個世界加上一次 <code>createShow()</code> 呼叫，輸入、映射、時間軸、控台、聲音和後台就一起組好。從
+<a href="../../examples/01-hello-particles/">範例 01</a> 開始，接著往下讀。</li>
+</ol>
 <h3 id="quick-start-run-it">跑起來<a class="anchor" href="#quick-start-run-it" aria-label="這一節的連結">#</a></h3>
 <p>你需要 Node.js（目前任何一個版本都可以，CI 用 Node 22 跑測試）和一個瀏覽器。不用安裝任何東西：沒有 <code>npm install</code>，也沒有打包工具。</p>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">git</span> clone https://github.com/frank890417/open-audiovisual.<span class="tk">git</span>
@@ -1181,7 +1193,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=02fdc94"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1673,7 +1685,7 @@ pull request。</li>
 <p>任何一份 p5.js 草圖（OpenProcessing、p5 編輯器、你自己的網頁）在最前面加一行，就能用 MIDI 控制器、螢幕上的控制器或手機來彈：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
 <p>在 OpenProcessing 也可以不寫這行，改把網址貼到右側 Libraries 的 <strong>＋</strong>（自訂函式庫）。p5 1.x、2.x 的全域模式都能用，
-<code>setup()</code> 裡不用呼叫任何東西。</p>
+<code>setup()</code> 裡不用呼叫任何東西。帶著這一行、現在就能彈的草圖：<a href="../../examples/15-p5-one-line/">範例 15</a>。</p>
 <h3 id="p5-read-it-like-the-mouse">像讀滑鼠一樣讀它<a class="anchor" href="#p5-read-it-like-the-mouse" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> draw() {
   background(knob1 * 255);                 <span class="tc">// knob 1, 0..1, like mouseX</span>
@@ -2104,7 +2116,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=02fdc94"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -2452,7 +2464,7 @@ openav.mapper.routes                                    <span class="tc">// the 
 <h3 id="agents-a-prompt-to-paste">一段可以直接貼上的提示詞<a class="anchor" href="#agents-a-prompt-to-paste" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/10-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/16-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 
@@ -2624,8 +2636,10 @@ Done means: npm test passes, and the new example loads with zero console errors.
     </div>
     <nav aria-label="頁面">
       <a href="../../zh/">首頁</a>
+      <a href="../../zh/examples/">範例</a>
       <a href="../../zh/controllers/">控制器</a>
       <a href="../../zh/docs/">文件</a>
+      <a href="../../zh/p5/">p5.js 一行接上</a>
       <a href="../../zh/webtoe/">WebToe</a>
     </nav>
     <nav aria-label="給機器讀的">
@@ -2639,7 +2653,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=02fdc94"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

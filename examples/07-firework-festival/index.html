@@ -1,9 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- oav:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual · 07 firework festival</title>
+<title>Firework festival · open-audiovisual example</title>
+<meta name="description" content="Close a finger pinch and a firework launches from that hand (2021). Plays with camera (hands) · on-screen piano.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/07-firework-festival/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Firework festival · open-audiovisual example">
+<meta property="og:description" content="Close a finger pinch and a firework launches from that hand (2021). Plays with camera (hands) · on-screen piano.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/07-firework-festival/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Firework festival · open-audiovisual example">
+<meta name="twitter:description" content="Close a finger pinch and a firework launches from that hand (2021). Plays with camera (hands) · on-screen piano.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/07-firework-festival/#webpage","url":"https://openaudiovisual.com/examples/07-firework-festival/","name":"Firework festival · open-audiovisual example","description":"Close a finger pinch and a firework launches from that hand (2021). Plays with camera (hands) · on-screen piano.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/07-firework-festival/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/07-firework-festival/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/14-timeline/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/07-firework-festival/#code","name":"Firework festival (open-audiovisual example 07)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/07-firework-festival","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"},"copyrightNotice":"Che-Yu Wu, 210807 Firework 花火大會, 2021. Artwork © Che-Yu Wu, used here as a demo, all rights reserved. The framework is MIT."},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/07-firework-festival/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Firework festival","item":"https://openaudiovisual.com/examples/07-firework-festival/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css">
+<!-- /oav:head -->
 <script type="importmap">
 {
   "imports": {
@@ -26,6 +54,34 @@
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 </head>
 <body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 07 · <a href="../../examples/#route-engines">Bring another picture engine</a></span><span lang="zh-Hant">範例 07 · <a href="../../zh/examples/#route-engines">接上別的畫面引擎</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Firework festival</span><span lang="zh-Hant">花火大會</span></h1>
+    <p class="g-teaches"><span lang="en">Close a finger pinch and a firework launches from that hand (2021).</span><span lang="zh-Hant">2021 年的作品。手指一捏合，煙火就從那隻手的位置升空。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Turn on 🖐 hands and close a pinch: a firework launches at that hand, and the pinch distance sets the shell size.</li><li>No camera? Press a piano key: it launches one too.</li><li>Drag Richness or Gravity in the params panel to change the shells.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>打開 🖐 hands，捏合手指：煙火從那隻手的位置升空，捏合的距離決定煙火大小。</li><li>沒有鏡頭？按一個鋼琴鍵，一樣會放煙火。</li><li>在參數面板拖動 Richness 或 Gravity，改變煙火的樣子。</li></ol>
+    <p class="g-row"><span lang="en"><b>Needs:</b> Camera (hands).</span><span lang="zh-Hant"><b>需要：</b>鏡頭（手）。</span>
+        <span lang="en">No hardware? Use On-screen piano.</span><span lang="zh-Hant">沒有硬體？用螢幕鋼琴。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/07-firework-festival/main.js#L76-L78"><code>main.js:76–78</code></a> <span lang="en">A pinch closing is an edge: the launch happens at that hand.</span><span lang="zh-Hant">捏合是一個「邊緣」：煙火就在那隻手的位置發射。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/07-firework-festival/main.js#L79-L80"><code>main.js:79–80</code></a> <span lang="en">The piano also launches, so the work needs no camera.</span><span lang="zh-Hant">鋼琴也能放煙火，所以作品不需要鏡頭。</span></li></ul>
+    
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#inputs-body-and-hands">Body and hands</a></span><span lang="zh-Hant"><a href="../../zh/docs/#inputs-body-and-hands">身體與手</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/14-timeline/">14 Timeline →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/14-timeline/">14 時間軸 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    <p class="g-credit"><span lang="en">Artwork credit: Che-Yu Wu, <cite>210807 Firework 花火大會</cite>, 2021. Artwork © Che-Yu Wu, used here as a demo, all rights reserved. The framework is MIT.</span><span lang="zh-Hant">作品版權：吳哲宇，<cite>210807 Firework 花火大會</cite>，2021。作品 © 吳哲宇，在這裡當作示範，版權所有。框架採 MIT 授權。</span></p>
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js"></script>
+<!-- /oav:guide -->
 <script type="module" src="./main.js?v=02fdc94"></script>
 </body>
 </html>

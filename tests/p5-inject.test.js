@@ -266,7 +266,7 @@ test('example 15: the page runs that sketch file (last script, p5 from the CDN, 
   assert.ok(!html.includes("document.head.prepend"), 'the line is not copied into the page: it is read from sketch.js');
   assert.match(html, /fetch\(\s*['"]\.\/sketch\.js['"]/, 'the source panel fetches ./sketch.js');
   assert.equal([...html.matchAll(/sketch\.js/g)].length >= 2, true);
-  assert.match(html, /<title>open-audiovisual · 15 p5\.js in one line<\/title>/);
+  assert.match(html, /<title>p5\.js in one line · open-audiovisual example<\/title>/);   // the head region of tools/build-examples.mjs
   assert.match(html, /<meta name="description"/);
   assert.match(html, /openaudiovisual\.com\/docs\/#p5/);
   assert.match(html, /openaudiovisual\.com\/zh\/docs\/#p5/);

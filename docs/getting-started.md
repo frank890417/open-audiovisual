@@ -1,5 +1,18 @@
 # Quick start
 
+## Three ways in
+
+Pick the one that matches what you already have. They get bigger as you go down.
+
+1. **One line in a p5.js sketch.** Any p5.js sketch (OpenProcessing, the p5 editor, your own page) can be played from a
+   MIDI controller, from a controller drawn on screen, or from a phone, by adding one line at the top. Read
+   [p5.js in one line](p5.md), and play the sketch that carries it: [example 15](https://openaudiovisual.com/examples/15-p5-one-line/).
+2. **One controller in a page.** `<oav-controller profile="akai-lpd8">` puts a controller you can play into any web
+   page. Read [MIDI controllers & embedding](controllers.md), and pick yours in the
+   [controller library](https://openaudiovisual.com/controllers/).
+3. **A whole show.** A World plus one `createShow()` call assembles inputs, mapping, timeline, console, sound and
+   backstage. Start from [example 01](https://openaudiovisual.com/examples/01-hello-particles/) and keep reading below.
+
 ## Run it
 
 You need Node.js (any current version; CI runs the tests on Node 22) and a

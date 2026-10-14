@@ -16,7 +16,8 @@ How to cite: cite the canonical URL of the page you read. Code is MIT; examples 
 - [Homepage](https://openaudiovisual.com/) ([繁體中文](https://openaudiovisual.com/zh/)): a playable instrument, how it works, the works, quick start, for AI agents.
 - [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the complete documentation on one page: every chapter listed below, in one HTML file. Generated from the Markdown in `docs/`.
 - [MIDI controller library](https://openaudiovisual.com/controllers/) ([繁體中文](https://openaudiovisual.com/zh/controllers/)): every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).
-- [p5.js in one line](https://openaudiovisual.com/p5/): load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone.
+- [Examples](https://openaudiovisual.com/examples/) ([繁體中文](https://openaudiovisual.com/zh/examples/)): every example, with a thumbnail and what it needs.
+- [p5.js in one line](https://openaudiovisual.com/p5/) ([繁體中文](https://openaudiovisual.com/zh/p5/)): load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone.
 - [WebToe](https://openaudiovisual.com/webtoe/) ([繁體中文](https://openaudiovisual.com/zh/webtoe/)): the sister project and the engine half of the stack: a web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world. Editor: https://webtoe.openaudiovisual.com/
 
 ## Core concepts
@@ -74,21 +75,21 @@ Tools: `list_examples` (works and one-line summaries) · `read_doc` (architectur
 
 Each runs in the browser without hardware (on-screen piano, QWERTY keys, simulated performer or drum machine). Live at https://openaudiovisual.com/examples/<dir>/, source in `examples/<dir>/main.js`.
 
-- [01-hello-particles](https://openaudiovisual.com/examples/01-hello-particles/): the smallest complete app; read main.js top to bottom.
-- [02-chord-garden](https://openaudiovisual.com/examples/02-chord-garden/): chord semantics; triads bloom, clusters decay.
-- [03-pose-field](https://openaudiovisual.com/examples/03-pose-field/): hand instrument; pinches and fists via the camera.
-- [04-webtoe-stage](https://openaudiovisual.com/examples/04-webtoe-stage/): a WebToe node patch performed as a world.
-- [05-prebiotic-flake](https://openaudiovisual.com/examples/05-prebiotic-flake/): a 2023 MIDI sketch with the Tone.js audio branch.
-- [06-cylinder-earth](https://openaudiovisual.com/examples/06-cylinder-earth/): microphone bands and the drum machine drive WebGL towers.
-- [07-firework-festival](https://openaudiovisual.com/examples/07-firework-festival/): pinch to launch fireworks (21-landmark hands).
-- [08-remote-surface](https://openaudiovisual.com/examples/08-remote-surface/): a phone/iPad control surface grown from the world's params (needs `node serve.js` on the LAN).
-- [09-midi-controllers](https://openaudiovisual.com/examples/09-midi-controllers/): on-screen MiniLab 3, LPD8, Launchpad, nanoKONTROL2 that mirror real hardware.
-- [10-record](https://openaudiovisual.com/examples/10-record/): a performance video: the work above the webcam in one vertical 1080×1920 to 4K file with the work's own sound; MIDI takes recorded and played back.
-- [11-controller-video](https://openaudiovisual.com/examples/11-controller-video/): the performance video without a camera: the MIDI controller being played (MiniLab 3, any profile) drawn live under the work; replayed takes animate it too.
-- [12-leap-hands](https://openaudiovisual.com/examples/12-leap-hands/): a Leap Motion as an instrument through the local bridge (`node packages/leap/bridge/leap-bridge.mjs`, `--mock` without a sensor); the mouse simulates hands when no bridge runs.
-- [13-score-director](https://openaudiovisual.com/examples/13-score-director/): a show with structure: "A day of sky" written once as segment lengths; a Director runs one module per segment, `?cut=<id>` picks a version, Space continues a hold.
-- [14-timeline](https://openaudiovisual.com/examples/14-timeline/): timeline: automation you can see.
-- [15-p5-one-line](https://openaudiovisual.com/examples/15-p5-one-line/): p5.js in one line: a plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone.
+- [01-hello-particles](https://openaudiovisual.com/examples/01-hello-particles/): The smallest complete app. Read its main.js from top to bottom and you know the framework. (plays with on-screen piano · QWERTY · simulated performer)
+- [02-chord-garden](https://openaudiovisual.com/examples/02-chord-garden/): A note drops a seed, a triad opens flowers along the branches, a cluster makes them droop and fall. The branches are The Last Input's own L-system plants. The world listens to chord signals, never to keys. (plays with on-screen piano · QWERTY · simulated performer)
+- [03-pose-field](https://openaudiovisual.com/examples/03-pose-field/): Fingers as an instrument: one pinch sets tightness, another grows arms, both fists bloom. Four pattern families: mandala, lissajous, spirograph, web. (plays with camera (hands) · on-screen piano · drum machine)
+- [04-webtoe-stage](https://openaudiovisual.com/examples/04-webtoe-stage/): The world is a WebToe node patch, TouchDesigner-style, performed through ext() bindings. WebToe is the engine, open-audiovisual is the show. (plays with on-screen piano · simulated performer)
+- [05-prebiotic-flake](https://openaudiovisual.com/examples/05-prebiotic-flake/): A 2023 MIDI daily sketch replayed through the framework. The drawing code is the original. The flakes now have a voice through Tone.js. (plays with on-screen piano · simulated performer · sound)
+- [06-cylinder-earth](https://openaudiovisual.com/examples/06-cylinder-earth/): A 2020 voice-controlled WebGL sketch. Lows pump the towers, highs shimmer the spin, a kick turns the palette. (plays with microphone · drum machine)
+- [07-firework-festival](https://openaudiovisual.com/examples/07-firework-festival/): A 2021 sketch. Close a finger pinch and a firework launches from that hand. The particle system is the 2021 code. (plays with camera (hands) · on-screen piano)
+- [08-remote-surface](https://openaudiovisual.com/examples/08-remote-surface/): The phone is the instrument panel. The world only declares params, and the control surface on the phone grows from them. Needs node serve.js on your network. (plays with phone or iPad · on-screen piano)
+- [09-midi-controllers](https://openaudiovisual.com/examples/09-midi-controllers/): On-screen MiniLab 3, LPD8, Launchpad and nanoKONTROL2. Plug the real one in and the on-screen one moves with your hands. (plays with MIDI controller, or the on-screen one)
+- [10-record](https://openaudiovisual.com/examples/10-record/): A performance video: the work above the webcam in one vertical 1080×1920 to 4K file with the work's own sound; MIDI takes recorded and played back. (plays with on-screen piano · QWERTY · simulated performer · camera (optional))
+- [11-controller-video](https://openaudiovisual.com/examples/11-controller-video/): The performance video without a camera: the MIDI controller being played (MiniLab 3, any profile) drawn live under the work; replayed takes animate it too. (plays with MIDI controller · on-screen piano · QWERTY · a demo take)
+- [12-leap-hands](https://openaudiovisual.com/examples/12-leap-hands/): A Leap Motion as an instrument through the local bridge; the mouse simulates hands when no bridge runs. (plays with Leap Motion · mouse as a simulated hand)
+- [13-score-director](https://openaudiovisual.com/examples/13-score-director/): A show with structure: "A day of sky" written once as segment lengths; a Director runs one module per segment, ?cut=<id> picks a version, Space continues a hold. (plays with on-screen piano · keyboard: Space, ← →)
+- [14-timeline](https://openaudiovisual.com/examples/14-timeline/): Automation you can see. Five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes, and any knob you touch takes over until you let go. Record a knob move to write a new curve. (plays with nothing: it plays itself · knobs on screen)
+- [15-p5-one-line](https://openaudiovisual.com/examples/15-p5-one-line/): A plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone. (plays with MIDI controller · on-screen controller · phone)
 
 Examples 05–07 integrate artworks © Che-Yu Wu (2020–2023), all rights reserved; the framework is MIT.
 

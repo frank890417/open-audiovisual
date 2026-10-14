@@ -1,0 +1,40 @@
+/* open-audiovisual — /examples/, /zh/examples/ and /p5/, /zh/p5/.
+   Loaded after assets/home/home.css (tokens, top bar, .sec, .works cards); /p5/ also loads assets/docs/docs.css. */
+
+/* the page title is an h1 here, set like the homepage's section titles */
+.examples-page .sec-head h1 { grid-column: 2; margin: 0; padding-top: 22px; font: 800 clamp(34px, 5.4vw, 80px)/.98 var(--sans); font-stretch: 112%; letter-spacing: -.035em; }
+html[lang^="zh"] .examples-page .sec-head h1 { letter-spacing: 0; line-height: 1.12; }
+.ex-intro { padding-top: clamp(40px, 6vw, 80px); }
+.route { padding-top: clamp(64px, 9vw, 120px); }
+.ex-end { padding-top: clamp(32px, 4vw, 56px); padding-bottom: 24px; }
+
+/* the five routes, as a row of links under the title */
+.route-nav ol { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: clamp(26px, 3vw, 40px) 0 0; padding: 0; }
+.route-nav a { display: inline-flex; gap: 8px; align-items: baseline; padding: 8px 13px; border: 1px solid var(--line-2); text-decoration: none; color: var(--fg-2); font: 500 13px/1.3 var(--mono); }
+.route-nav a:hover { color: var(--fg); border-color: var(--sig); }
+.route-nav .rn-mark { color: var(--sig); }
+.route-nav small { color: var(--fg-3); font-size: 11.5px; }
+.ex-intro .works-note { margin-top: clamp(22px, 2.6vw, 34px); }
+
+/* needs / stand-ins on a card */
+.chip-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 8px; margin: 0 0 6px; }
+.chip-label { font: 500 11px/1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.chip-label.chip-ok { color: var(--l1); }
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 5px; margin: 0; padding: 0; }
+.chip { font: 400 12px/1.4 var(--mono); padding: 1px 8px; border: 1px solid var(--line-2); color: var(--fg-2); }
+.chip-need { border-color: var(--sig-2); color: var(--fg); }
+.work-links { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 4px; }
+.work-open { position: relative; z-index: 2; color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--sig); }
+.work-open:hover { color: var(--sig); }
+
+/* /p5/ */
+.p5-main { margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); max-width: 920px; }
+.p5-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin: 26px 0 8px; }
+.p5-cta .cta { background: var(--sig); color: #000; text-decoration: none; padding: 11px 18px; font: 600 14px/1 var(--mono); border: 1px solid var(--sig); }
+.p5-cta .cta:hover { background: transparent; color: var(--sig); }
+.p5-chapter { margin-top: clamp(40px, 5vw, 64px); }
+.p5-chapter h3:first-child { margin-top: 0; }
+
+@media (max-width: 640px) {
+  .examples-page .sec-head h1 { grid-column: 1; padding-top: 12px; }
+}

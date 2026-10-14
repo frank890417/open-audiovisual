@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- oav:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual · 13 score &amp; director</title>
-<link rel="icon" href="data:,">
+<title>Score &amp; director · open-audiovisual example</title>
+<meta name="description" content="A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash. Runs in the browser, no hardware needed.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/13-score-director/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Score &amp; director · open-audiovisual example">
+<meta property="og:description" content="A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash. Runs in the browser, no hardware needed.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/13-score-director/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Score &amp; director · open-audiovisual example">
+<meta name="twitter:description" content="A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash. Runs in the browser, no hardware needed.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/13-score-director/#webpage","url":"https://openaudiovisual.com/examples/13-score-director/","name":"Score & director · open-audiovisual example","description":"A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash. Runs in the browser, no hardware needed.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/13-score-director/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/13-score-director/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/10-record/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/13-score-director/#code","name":"Score & director (open-audiovisual example 13)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/13-score-director","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/13-score-director/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Score & director","item":"https://openaudiovisual.com/examples/13-score-director/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css">
+<!-- /oav:head -->
 <script type="importmap">
 {
   "imports": {
@@ -29,6 +56,33 @@
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 </head>
 <body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 13 · <a href="../../examples/#route-show-control">Run a show</a></span><span lang="zh-Hant">範例 13 · <a href="../../zh/examples/#route-show-control">演出控制</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Score &amp; director</span><span lang="zh-Hant">總譜與導演</span></h1>
+    <p class="g-teaches"><span lang="en">A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash.</span><span lang="zh-Hant">有結構的演出：「一天的天空」只寫一次段落長度；導演為每段跑一個模組，?cut=&lt;id&gt; 選版本，空白鍵放行 hold。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Press Space: the standby waits at its end (a hold). Press Space again to release it.</li><li>Open ?cut=short: the same show, half as long, from the same score.</li><li>Open ?break=dusk: the dusk module throws on purpose, the desk shows a warning and the show carries on; R brings the module back.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>按空白鍵：待命段停在結尾（hold），再按一次空白鍵放行。</li><li>打開 ?cut=short：同一份總譜，同一場演出，長度減半。</li><li>打開 ?break=dusk：dusk 的模組故意出錯，控台顯示警告，演出照常進行；按 R 把模組救回來。</li></ol>
+    <p class="g-row"><span lang="en"><b>No hardware needed.</b> On-screen piano · QWERTY keys.</span><span lang="zh-Hant"><b>不需要硬體。</b>螢幕鋼琴、電腦鍵盤。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/13-score-director/main.js#L80-L91"><code>main.js:80–91</code></a> <span lang="en">A cut is a list of segments with lengths, never absolute seconds.</span><span lang="zh-Hant">一個 cut 是一串有長度的段落，絕不寫絕對秒數。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/13-score-director/main.js#L145-L149"><code>main.js:145–149</code></a> <span lang="en">The score and its segment modules go into createShow().</span><span lang="zh-Hant">總譜與段落模組一起交給 createShow()。</span></li></ul>
+    
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#score">Score &amp; Director</a></span><span lang="zh-Hant"><a href="../../zh/docs/#score">總譜與導演</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/10-record/">10 Record →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/10-record/">10 演出影片 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js"></script>
+<!-- /oav:guide -->
 <script type="module" src="./main.js?v=02fdc94"></script>
 <noscript>A four-part suite, "a day of sky", with two cuts (long and half length), a standby that holds until released, cues, operator ACTS and a segment module that can be made to crash without stopping the show.</noscript>
 </body>

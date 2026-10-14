@@ -42,7 +42,7 @@ export default {
     lede: '琴鍵、旋鈕、人聲、手勢、手機，都會變成有名字的<em>訊號</em>（signal）。<em>映射</em>（mapping）把訊號接到<em>參數</em>（param），你的<em>世界</em>（world）讀這些參數，變成畫面和聲音。在瀏覽器分頁、投影機、舞台上都一樣。',
     doorsLabel: '從哪裡開始',
     doors: [
-      { who: '我做表演', what: '看看它做得出什麼，直接玩十件作品', href: '#works' },
+      { who: '我做表演', what: `看看它做得出什麼，直接玩${zhWords(facts.exampleCount)}件作品`, href: '#works' },
       { who: '我寫程式', what: '一分鐘跑起來，再寫自己的世界', href: '#start' },
       { who: '我是 AI 代理', what: '先讀 /llms.txt，再讀 AGENTS.md', href: 'llms.txt' },
     ],
@@ -121,26 +121,10 @@ export default {
 
   works: {
     eyebrow: '03 · 作品',
-    title: '十件作品，現在就能打開',
+    title: `${zhWords(facts.exampleCount)}件作品，現在就能打開`,
     lede: '每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。進到任何一個範例：空白鍵播放時間軸，T 是演出模式，F 是全螢幕。',
     playsWith: '演奏方式',
-    items: [
-      { title: '哈囉粒子', inputs: '螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者', text: '最小的完整範例。把 <code>main.js</code> 從頭讀到尾，整套框架就懂了。', alt: '黑底上，粒子拖著細細的綠色與紅色尾巴落下。' },
-      { title: '和弦花園', inputs: '螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者', text: '一個音落下一顆種子，三和弦讓枝條開花，音堆讓花與葉垂下、落盡。枝條是《The Last Input》的 L-system 植物。世界聽的是和弦訊號，從來不看琴鍵。', alt: '夜裡的花園，細長分岔的植物長著綠葉，枝端開出藍、紅、粉色的小花。' },
-      { title: '手的樂器', inputs: '鏡頭（手）· 螢幕鋼琴 · 鼓機', text: '手指就是樂器：一組捏合控制鬆緊，另一組長出手臂，兩手握拳就綻放。四種圖案輪流切換：曼陀羅、利薩如、萬花尺、蛛網。', alt: '藍白色細線層層疊成的曼陀羅。' },
-      { title: 'WebToe 舞台', inputs: '螢幕鋼琴 · 模擬演奏者', text: '這個世界是一張 WebToe 節點網路，操作方式接近 TouchDesigner，透過 <code>ext()</code> 綁定來演奏。WebToe 是引擎，open-audiovisual 是演出。', alt: '節點編輯器裡有 noise、level、out 三個節點，旁邊是灰色雲霧材質。' },
-      { title: 'Prebiotic Flake', inputs: '螢幕鋼琴 · 模擬演奏者 · 聲音', text: '2023 年的一件 MIDI 每日創作，搬進框架重新演奏。繪圖程式碼保持原樣，雪花現在透過 Tone.js 發出聲音。', alt: '發光的黃色鋸齒花瓣圍成一圈，中間有小圓圈。' },
-      { title: 'Cylinder Earth', inputs: '麥克風 · 鼓機', text: '2020 年用聲音控制的 WebGL 作品。低頻推動柱體，高頻讓旋轉閃爍，大鼓一下就換一組配色。', alt: '一顆球體擠滿彩色圓柱，從端面看去像一把把傘。' },
-      { title: '花火大會', inputs: '鏡頭（手）· 螢幕鋼琴', text: '2021 年的作品。手指一捏合，煙火就從那隻手的位置升空。粒子系統是 2021 年的原始程式碼。', alt: '青色和紫色的煙火，在垂落的彩色尾跡上炸開。' },
-      { title: '遠端控制面板', inputs: '手機或 iPad · 螢幕鋼琴', text: '手機就是樂器面板。世界只宣告參數，手機上的控制面板依參數自動長出來。需要在你的網路裡跑 <code>node serve.js</code>。', alt: '藍色和黃色的光束，從畫面下方中央向外爆開。' },
-      { title: 'MIDI 控制器', inputs: 'MIDI 控制器，或螢幕上那一台', text: '螢幕上有 MiniLab 3、LPD8、Launchpad、nanoKONTROL2。接上實體控制器，螢幕上那台會跟著你的手一起動。', alt: '粉紅與藍色圓點排成螺旋，下方是螢幕上的 MIDI 鍵盤控制器。' },
-      { title: '時間軸', inputs: '什麼都不用做，它自己會播 · 螢幕旋鈕', text: '看得見的自動化。五條關鍵影格曲線帶動一圈光點，場景負責切換，cue 觸發一次性的閃光，你一碰旋鈕就接手，放開再還給曲線。把旋鈕的動作錄下來，就寫成一條新曲線。', alt: '橘黃色圓點排成六邊形，下方是時間軸：五條曲線、場景區塊和一條播放頭。' },
-    ],
-    credits: [
-      '吳哲宇，<cite>230616 Prebiotic Flake</cite>，2023',
-      '吳哲宇，<cite>200412 3D Cylinder Earth</cite>，2020',
-      '吳哲宇，<cite>210807 Firework 花火大會</cite>，2021',
-    ],
+    all: '依路線瀏覽所有範例',
     note: '05 到 07 是吳哲宇 2020 到 2023 年的作品，在這裡當作示範。框架採 MIT 授權，作品的著作權仍屬藝術家，保留一切權利。',
   },
 
@@ -203,6 +187,58 @@ export default {
     docNames: { architecture: '架構', world: '寫一個世界', signals: '訊號一覽', show: '演出控制', roadmap: '路線圖', agents: 'AGENTS.md' },
   },
 
+  // ─────────────── 常見問題（AEO）：可見的問與答。每一則答案只由網站、README 或文件裡已經存在的句子組成：每一段用 `src`
+  // 標出來源檔，並逐字引用；tests/examples-faq.test.js 會檢查引文真的在那個檔案裡。Google 已不再顯示 FAQ 豐富結果，
+  // 所以不加 FAQPage 標記，只留讀者與爬蟲都看得到的文字。
+  faq: {
+    eyebrow: '常見問題',
+    title: '大家常問的',
+    more: '延伸閱讀',
+    items: [
+      // 出處：tools/home/zh.mjs meta.definition（這一頁自己的定義句）
+      { q: 'open-audiovisual 是什麼？', more: { label: '運作方式', href: '#how' }, a: [
+        { src: 'tools/home/zh.mjs', code: false, text: 'open-audiovisual 是零建置的 JavaScript 框架：把 MIDI 控制器、麥克風、手勢與手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界，用於現場影音表演。MIT 授權。' },
+      ] },
+      // 出處：docs/zh/p5.md 開頭一段（那句話與那一行）、同一段後面的「setup() 裡不用呼叫任何東西」
+      { q: '可以用 MIDI 控制器玩 p5.js 草圖嗎？', more: { label: 'p5.js 一行接上', href: 'p5/' }, a: [
+        { src: 'docs/zh/p5.md', code: false, text: '任何一份 p5.js 草圖（OpenProcessing、p5 編輯器、你自己的網頁）在最前面加一行，就能用 MIDI 控制器、螢幕上的控制器或手機來彈。' },
+        { src: 'docs/zh/p5.md', code: true, text: "document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));" },
+        { src: 'docs/zh/p5.md', code: false, text: 'p5 1.x、2.x 的全域模式都能用，`setup()` 裡不用呼叫任何東西。' },
+      ] },
+      // 出處：這一頁 works.lede（前兩句）；docs/zh/getting-started.md「不用硬體也能彈」最後一段
+      { q: '沒有硬體也能用嗎？', more: { label: '範例', href: 'examples/' }, a: [
+        { src: 'tools/home/zh.mjs', code: false, text: '每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。' },
+        { src: 'docs/zh/getting-started.md', code: false, text: '這些送出的訊號都跟真實硬體一樣，所以下游分不出差別。' },
+      ] },
+      // 出處：docs/zh/getting-started.md「用哪個瀏覽器」前兩點；docs/zh/p5.md「三種輸入」最後一段
+      { q: '哪些瀏覽器支援 MIDI？', more: { label: '快速開始', href: 'docs/#quick-start-which-browser' }, a: [
+        { src: 'docs/zh/getting-started.md', code: false, text: '演出請用 Chrome 或 Edge。它們有 Web MIDI，Safari 沒有。' },
+        { src: 'docs/zh/p5.md', code: false, text: 'Safari 和 iPad 沒有 Web MIDI，螢幕上的控制器和手機照樣能用。' },
+        { src: 'docs/zh/getting-started.md', code: false, text: '鏡頭和麥克風只在安全環境（secure context）裡能用：`http://localhost` 或 `https://`。' },
+      ] },
+      // 出處：docs/zh/controllers.md 開頭一段（兩句）
+      { q: '支援哪些 MIDI 控制器？每台的 CC 對照表在哪？', more: { label: 'MIDI 控制器圖鑑', href: 'controllers/' }, a: [
+        { src: 'docs/zh/controllers.md', code: false, text: 'open-audiovisual 把 MIDI 控制器寫成資料：每台裝置一個 JSON 檔，記下面板配置、每個控制項送出的 MIDI 訊息、LED 回饋、怎麼認出它的埠，以及每個數字出自哪一份文件。' },
+        { src: 'docs/zh/controllers.md', code: false, text: '同一個檔案可以變成螢幕上能彈的控制器，接上實體裝置時跟著動，也能放進任何網頁。' },
+      ] },
+      // 出處：docs/zh/controllers.md「放進網頁」（那兩行 HTML、「這樣就接好了。」、Web MIDI 那一句）
+      { q: '可以把控制器嵌進我自己的網站嗎？', more: { label: 'MIDI 控制器與嵌入', href: 'docs/#controllers-play-one-in-a-page' }, a: [
+        { src: 'docs/zh/controllers.md', code: true, text: '<script type="module" src="https://openaudiovisual.com/packages/midi/element.js"></script>\n<oav-controller profile="akai-lpd8" readout></oav-controller>' },
+        { src: 'docs/zh/controllers.md', code: false, text: '這樣就接好了。沒有 Web MIDI 的瀏覽器（Safari、iPad）一樣能彈、一樣送出事件，只有硬體和 MIDI 輸出這兩項會顯示無法使用。' },
+      ] },
+      // 出處：這一頁 agents.lede 與 agents.mcpText 的第一句
+      { q: 'AI 代理可以幫我做世界嗎？', more: { label: '給 AI 代理', href: '#agents' }, a: [
+        { src: 'tools/home/zh.mjs', code: false, text: '世界就是程式碼，程式代理（coding agent）很會寫程式。人用文字描述一場表演，代理寫出世界，框架把演出跑起來。' },
+        { src: 'tools/home/zh.mjs', code: false, text: 'repo 內附一個零相依、走 stdio 的 MCP 伺服器。' },
+      ] },
+      // 出處：這一頁 footer.license 與 footer.artworks
+      { q: '要錢嗎？授權是什麼？', more: { label: 'GitHub 上的授權', href: 'https://github.com/frank890417/open-audiovisual/blob/main/LICENSE' }, a: [
+        { src: 'tools/home/zh.mjs', code: false, text: 'MIT 授權。' },
+        { src: 'tools/home/zh.mjs', code: false, text: '範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。' },
+      ] },
+    ],
+  },
+
   agents: {
     eyebrow: '05 · 給 AI 代理',
     title: '給 AI 代理',
@@ -260,6 +296,8 @@ export default {
   footer: {
     pages: '頁面',
     homeLink: '首頁',
+    examples: '範例',
+    p5: 'p5.js 一行接上',
     license: 'MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。',
     artworks: '範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。',
     machine: '給機器讀的',

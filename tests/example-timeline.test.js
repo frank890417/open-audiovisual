@@ -100,7 +100,7 @@ test('a `step` param holds each keyframe (shape never lands between two shapes)'
 test('the page wires the example: importmap has the packages it uses, thumbnail exists', () => {
   const html = fs.readFileSync('examples/14-timeline/index.html', 'utf8');
   for (const m of ['@openav/show', '@openav/stage', '@openav/timeline', '@openav/console']) assert.ok(html.includes(`"${m}"`), m);
-  assert.ok(/<title>open-audiovisual · 14 timeline<\/title>/.test(html));
+  assert.ok(/<title>Timeline · open-audiovisual example<\/title>/.test(html));   // the head region of tools/build-examples.mjs
   assert.ok(fs.existsSync('assets/home/works/14.webp'));
   assert.ok(fs.statSync('assets/home/works/14.webp').size <= 120 * 1024);
 });

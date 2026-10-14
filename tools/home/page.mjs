@@ -9,6 +9,8 @@
 import { SITE, REPO, BLOB, TREE, pageCtx, headBasics, pageNode, SOFTWARE_ID, topBar, siteFooter, guardEmail } from '../site/chrome.mjs';
 import { getFacts } from '../site/facts.mjs';
 import { WEBTOE, SHOTS as WEBTOE_SHOTS, shot } from '../webtoe/page.mjs';
+import { routeGroups, L as pick } from '../examples/catalog.mjs';
+import { ROUTE_NAMES, routeMark } from '../examples/strings.mjs';
 export { SITE, REPO };
 
 export const LOCALES = {
@@ -16,11 +18,8 @@ export const LOCALES = {
   zh: { path: 'zh/', root: '../', url: SITE + 'zh/' },
 };
 
-export const WORKS = [
-  '01-hello-particles', '02-chord-garden', '03-pose-field', '04-webtoe-stage', '05-prebiotic-flake',
-  '06-cylinder-earth', '07-firework-festival', '08-remote-surface', '09-midi-controllers', '14-timeline',
-];
-const CREDITED = { 4: 0, 5: 1, 6: 2 };          // works index → credits index (artworks by the author)
+/** The works, in route order (examples/catalog.json is the one list: tools/examples/catalog.mjs). */
+export const WORKS = routeGroups().flatMap((g) => g.items);
 
 export const PACKAGE_GROUPS = [
   { layer: 'l1', pkgs: ['midi', 'audio', 'chord', 'pose', 'keys', 'drums', 'leap'] },
@@ -141,6 +140,7 @@ export function renderPage(t, { locale, other, version }) {
   const root = L.root;
   const self = L.url;
   const href = (h) => h.startsWith('#') || /^https?:/.test(h) ? h : root + h;
+  const faqHref = (h) => h.startsWith('#') || /^https?:/.test(h) ? h : root + (locale === 'zh' ? 'zh/' : '') + h;   // site pages, in this language
   const langHref = { en: locale === 'en' ? './' : '../', zh: locale === 'en' ? './zh/' : './' };
   const altPage = langHref[other];
 
@@ -279,22 +279,24 @@ ${topBar(t, pageCtx('home', locale))}
   <section class="sec" id="works" aria-labelledby="works-title">
     ${sec('works', t.works.eyebrow, t.works.title, t.works.lede)}
     <ol class="works">
-      ${WORKS.map((dir, i) => {
-        const w = t.works.items[i], n = dir.slice(0, 2);
-        const credit = i in CREDITED ? `<p class="work-credit">${t.works.credits[CREDITED[i]]}</p>` : '';
-        return `<li class="work" id="work-${n}">
-        <div class="work-img"><img src="${root}assets/home/works/${n}.webp" width="800" height="500" loading="lazy" decoding="async" alt="${attr(w.alt)}"></div>
+      ${WORKS.map((e) => {
+        const credit = e.credit && e.credit.home ? `<p class="work-credit">${pick(e.credit, locale)}</p>` : '';
+        const route = `<p class="work-route"><span>${routeMark(e.route)}</span> ${ROUTE_NAMES[e.route][locale === 'zh' ? 1 : 0]}</p>`;
+        return `<li class="work" id="work-${e.num}">
+        <div class="work-img"><img src="${root}${e.thumb}" width="800" height="500" loading="lazy" decoding="async" alt="${attr(pick(e.alt, locale))}"></div>
         <div class="work-label">
-          <p class="work-n">${n}</p>
-          <h3><a class="work-link" href="${root}examples/${dir}/">${w.title}</a></h3>
+          <p class="work-n">${e.num}</p>
+          <h3><a class="work-link" href="${root}${e.dir}">${pick(e.title, locale)}</a></h3>
           ${credit}
-          <p class="work-in"><span>${t.works.playsWith}</span> ${w.inputs}</p>
-          <p class="work-text">${w.text}</p>
-          <p class="work-links"><a class="work-src" href="${TREE}examples/${dir}">${t.ui.source} ↗</a></p>
+          <p class="work-in"><span>${t.works.playsWith}</span> ${pick(e.plays, locale)}</p>
+          <p class="work-text">${pick(e.summary, locale)}</p>
+          ${route}
+          <p class="work-links"><a class="work-src" href="${TREE}${e.dir.replace(/\/$/, '')}">${t.ui.source} ↗</a></p>
         </div>
       </li>`;
       }).join('\n      ')}
     </ol>
+    <p class="works-all"><a class="more" href="${pageCtx('home', locale).to('examples')}">${t.works.all} →</a></p>
     <p class="works-note">${t.works.note}</p>
   </section>
 
@@ -345,6 +347,20 @@ ${topBar(t, pageCtx('home', locale))}
     <ul class="docs">
       ${DOCS.map(([k, id]) => `<li><a href="${pageCtx('home', locale).to('docs', '#' + id)}">${t.start.docNames[k]}</a><span>${t.start.docs[k]}</span></li>`).join('\n      ')}
     </ul>
+  </section>
+
+  <!-- ═════ FAQ: visible questions and answers; every answer is quoted from the docs/README/this page (tools/home/en.mjs faq) ═════ -->
+  <section class="sec sec-faq" id="faq" aria-labelledby="faq-title">
+    ${sec('faq', t.faq.eyebrow, t.faq.title)}
+    <div class="faq-list">
+      ${t.faq.items.map((it, i) => `<div class="faq-item">
+        <h3 id="faq-${i + 1}">${esc(it.q)}</h3>
+        ${it.a.map((p, j) => p.code
+          ? term(p.src, `faq-${i + 1}-code`, p.text)
+          : `<p>${esc(p.text).replace(/`([^`]+)`/g, '<code>$1</code>')}</p>`).join('\n        ')}
+        <p class="faq-more"><a class="more" href="${faqHref(it.more.href)}">${t.faq.more}: ${esc(it.more.label)} →</a></p>
+      </div>`).join('\n      ')}
+    </div>
   </section>
 
   <!-- ═════ 05 · for AI agents ═════ -->
