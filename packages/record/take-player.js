@@ -15,8 +15,8 @@
 // player did not press (your keyboard, the on-screen piano, a phone), the take
 // falls silent and you take over; `resumeAfter` brings it back after you stop.
 
-import { EventLog } from './events.js?v=d874044';
-import { normalizeTake, noteOf, noteOffFor } from './take.js?v=d874044';
+import { EventLog } from './events.js?v=cfa1d7c';
+import { normalizeTake, noteOf, noteOffFor } from './take.js?v=cfa1d7c';
 
 const defaultNow = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
 const PEDAL = /\/cc\/64$/;
