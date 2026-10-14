@@ -16,7 +16,6 @@
 //   langs  ['en'] → one url, no hreflang · ['en','zh'] → two urls, hreflang-linked (both files must exist)
 //   src    repo paths whose last commit is the page's <lastmod> (files or directories; none → no <lastmod>)
 //   files  {en, zh}: the file that proves the page exists, when it is not <path>index.html
-//          (e.g. /p5/ is rendered from p5/README.md by GitHub Pages)
 //
 // A test (tests/site.test.js) checks that every registered page exists on disk, and that every indexable
 // index.html on disk is registered: a page cannot be forgotten, or promised and not built.
@@ -40,9 +39,11 @@ export const STATIC = [
   { id: 'docs', path: 'docs/', langs: ['en', 'zh'], src: ['docs', 'tools/docs'] },
   { derive: 'controllers' },
   { id: 'webtoe', path: 'webtoe/', langs: ['en', 'zh'], src: ['tools/webtoe'] },
+  // the examples index (tools/build-examples.mjs reads examples/catalog.json), then one page per example (derived)
+  { id: 'examples', path: 'examples/', langs: ['en', 'zh'], src: ['examples/catalog.json', 'tools/examples', 'assets/examples/pages.css'] },
   { derive: 'examples' },
-  // /p5/ is README.md rendered by GitHub Pages' Jekyll; a built, bilingual page replaces it later (then: langs ['en','zh'], no `files`)
-  { id: 'p5', path: 'p5/', langs: ['en'], src: ['p5/README.md', 'docs/p5.md'], files: { en: 'p5/README.md' } },
+  // /p5/ and /zh/p5/: docs/p5.md and docs/zh/p5.md in the site's frame (tools/build-examples.mjs); p5/oav-p5.js is untouched
+  { id: 'p5', path: 'p5/', langs: ['en', 'zh'], src: ['docs/p5.md', 'docs/zh/p5.md', 'tools/examples/page.mjs'] },
 ];
 
 const GALLERY_SRC = [PROFILE_DIR, 'tools/controllers/page.mjs', 'tools/controllers/en.mjs', 'tools/controllers/zh.mjs'];

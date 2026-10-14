@@ -1,10 +1,10 @@
 // 14 · timeline — the show, declared as data. No DOM and no bare imports, so tests/example-timeline.test.js
 // can check it in Node: params, scenes (with cues) and one lane of keyframes per automated param.
 //
-// What @openav/timeline really does with a lane: it reads `[[t, value], …]` and interpolates LINEARLY
-// between keyframes (a param with `step` holds each value instead). Everything else you see on a lane,
-// the eases and the hard step, is baked here into more keyframes by compile(): the lane keeps the few
-// anchors a human would place, the timeline gets the dense list it knows how to read.
+// What @openav/timeline does with a lane: it reads `[[t, value, curve?], …]` and interpolates between keyframes.
+// The third item names how the segment ENDING at that keyframe gets there: 'linear' (the default), 'ease',
+// 'in', 'out' or 'step' (hold the old value, then jump). The lane below keeps the few anchors a human would place;
+// compile() only hands them over in the timeline's format.
 
 export const TOTAL = 40;
 
@@ -19,22 +19,13 @@ export const PARAMS = [
 ];
 
 // scenes: where the show changes character. `cues` are one-shot events inside a scene: the console
-// scrubber already draws scene.cues ({name, t}) as ticks; firing them is this example's job (main.js).
+// scrubber draws scene.cues ({name, t}) as ticks, and the timeline fires them when the playhead PLAYS over them (onCue).
 export const SCENES = [
   { id: 'dawn',      t: 0,  title: 'Dawn',      note: 'a slow circle, almost still' },
   { id: 'swell',     t: 8,  title: 'Swell',     note: 'it learns corners and speeds up', cues: [{ name: 'ripple', t: 8 }, { name: 'ripple', t: 14 }] },
   { id: 'drop',      t: 20, title: 'Drop',      note: 'everything jumps at once',        cues: [{ name: 'flash', t: 20 }, { name: 'flash', t: 25 }] },
   { id: 'afterglow', t: 30, title: 'Afterglow', note: 'it falls back to a circle',       cues: [{ name: 'ripple', t: 32 }] },
 ];
-
-// the five ways a segment can arrive at its anchor: the third item of an anchor, [t, value, kind]
-export const CURVES = {
-  linear: (f) => f,
-  ease:   (f) => f * f * (3 - 2 * f),    // smoothstep: slow, fast, slow
-  in:     (f) => f * f,                  // starts slow
-  out:    (f) => 1 - (1 - f) * (1 - f),  // starts fast
-  step:   () => 0,                       // holds the old value until the anchor, then jumps
-};
 
 // one lane per automated param. [time, value, curve the segment ENDING here uses]
 export const LANES = [
@@ -45,22 +36,9 @@ export const LANES = [
   { key: 'shape',   tag: 'step',          anchors: [[0, 0], [8, 1], [14, 2], [20, 3], [30, 0]] },
 ];
 
-const SEG = 16;   // keyframes baked per curved segment
-
-/** lanes → the `automation` object the Timeline wants: { key: [[t, value], …] } */
+/** lanes → the `automation` object the Timeline wants: { key: [[t, value, curve?], …] } (copies, so a recording never edits the declaration) */
 export function compile(lanes) {
-  const out = {};
-  for (const { key, anchors } of lanes) {
-    const kf = [[anchors[0][0], anchors[0][1]]];
-    for (let i = 1; i < anchors.length; i++) {
-      const [t0, v0] = anchors[i - 1], [t1, v1, kind = 'linear'] = anchors[i];
-      if (kind === 'step') { kf.push([Math.max(t0, t1 - 0.001), v0], [t1, v1]); continue; }
-      if (kind !== 'linear') for (let k = 1; k < SEG; k++) { const f = k / SEG; kf.push([t0 + (t1 - t0) * f, v0 + (v1 - v0) * CURVES[kind](f)]); }
-      kf.push([t1, v1]);
-    }
-    out[key] = kf;
-  }
-  return out;
+  return Object.fromEntries(lanes.map(({ key, anchors }) => [key, anchors.map((a) => [...a])]));
 }
 
 /** every cue of every scene, with its scene id, in time order */

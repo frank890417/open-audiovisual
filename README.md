@@ -1,25 +1,44 @@
-# open-audiovisual
+<div align="center">
 
-> **A web-native framework for audiovisual performance.**
-> Input (MIDI · audio · chords · body) → Mapping → algorithmic worlds → Output —
-> with a timeline, a director's console, and a backstage monitor.
->
+<a href="https://openaudiovisual.com"><img src="assets/home/og.png" width="720" alt="open-audiovisual: a web-native framework for audiovisual performance. signals → mapping → params → world. MIDI, audio, chords, hands, phones."></a>
+
+**A web-native framework for audiovisual performance.**<br>
+MIDI, microphones, chords, hands and phones become named signals; a mapping turns them into parameters; your world draws and sounds them.
+
+<a href="https://github.com/frank890417/open-audiovisual/actions/workflows/checks.yml"><img src="https://img.shields.io/github/actions/workflow/status/frank890417/open-audiovisual/checks.yml?branch=main&amp;label=tests&amp;style=flat-square&labelColor=0e0e10" alt="tests"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-ff5a1f?style=flat-square&labelColor=0e0e10" alt="MIT license"></a>
+<img src="https://img.shields.io/badge/dependencies-0-ff5a1f?style=flat-square&labelColor=0e0e10" alt="zero dependencies">
+<img src="https://img.shields.io/badge/build_step-none-ff5a1f?style=flat-square&labelColor=0e0e10" alt="zero build">
+<img src="https://img.shields.io/badge/Web_MIDI-ready-ff5a1f?style=flat-square&labelColor=0e0e10" alt="Web MIDI">
+<!--gen:badge-controllers--><a href="https://openaudiovisual.com/controllers/"><img src="https://img.shields.io/badge/MIDI_controllers-18-ff5a1f?style=flat-square&labelColor=0e0e10" alt="18 MIDI controllers"></a><!--/gen:badge-controllers-->
+<a href="https://openaudiovisual.com/docs/"><img src="https://img.shields.io/badge/docs-handbook-ff5a1f?style=flat-square&labelColor=0e0e10" alt="docs"></a>
+<a href="https://openaudiovisual.com/zh/docs/"><img src="https://img.shields.io/badge/%E6%96%87%E4%BB%B6-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-ff5a1f?style=flat-square&labelColor=0e0e10" alt="繁體中文文件"></a>
+
+[**Website**](https://openaudiovisual.com) · [**Docs**](https://openaudiovisual.com/docs/) · [**繁體中文**](https://openaudiovisual.com/zh/docs/) · [**Controllers**](https://openaudiovisual.com/controllers/) · [**Examples**](#-examples) · [**p5.js in one line**](#-p5js-in-one-line)
+
+</div>
+
 > Hydra gives you improvisation. cables gives you a platform. Tone gives you sound.
 > **open-audiovisual gives you a *show*.**
 
 Everything TouchDesigner-class tools do on a desktop, the browser can now do with a URL:
 WebGL/WebGPU rendering, Web MIDI, realtime audio analysis, on-device pose tracking.
-What's been missing is the *chassis* — the part everyone rebuilds for every performance:
+What's been missing is the *chassis*, the part everyone rebuilds for every performance:
 MIDI plumbing, signal-to-parameter mapping, a timeline with scenes and cues, a
 performance mode, a backstage view. This repo is that chassis.
+
+## ⚡ Quick start
 
 **Zero build step. Zero dependencies.** Clone it, run one file, you're on stage:
 
 ```bash
 git clone https://github.com/frank890417/open-audiovisual.git
 cd open-audiovisual
-node serve.js          # → http://localhost:8080  (Chrome: WebMIDI + camera)
+node serve.js          # → http://localhost:8080  (Chrome or Edge: Web MIDI + camera)
 ```
+
+Then open <http://localhost:8080/examples/01-hello-particles/> and read its `main.js`.
+Every example runs without hardware: an on-screen piano, QWERTY keys and a simulated performer stand in for instruments.
 
 Optional companions (each ~100 dependency-free lines, run in their own terminal):
 
@@ -28,7 +47,46 @@ node packages/monitor/server.js           # backstage monitor for the stage mana
 node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD, lights…)
 ```
 
-## The architecture (4 layers + 2 spines)
+## ✨ What's in the box
+
+<table>
+<tr>
+<td width="33%" valign="top"><img src="assets/readme/icons/midi-controller.svg" width="40" height="40" alt=""><br><b>MIDI controllers</b><br><!--gen:n-devices-->18<!--/gen:n-devices--> real devices modeled as data: every knob, pad and key with its exact message. Play them on screen, plug the real one in.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/audio.svg" width="40" height="40" alt=""><br><b>Audio analysis</b><br>Microphone or any Web Audio node: loudness, bands, brightness, onsets, kick / snare / hat.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/chord.svg" width="40" height="40" alt=""><br><b>Chord semantics</b><br>Notes struck together become one gesture: consonance, triad, cluster. Harmony decides bloom or decay.</td>
+</tr>
+<tr>
+<td width="33%" valign="top"><img src="assets/readme/icons/hand.svg" width="40" height="40" alt=""><br><b>Hands &amp; body</b><br>21-point hand and body tracking in the browser, on the device. Leap Motion through one local bridge.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/phone.svg" width="40" height="40" alt=""><br><b>Phone &amp; iPad remote</b><br>Tilt, knock, a keyboard, and a TouchOSC-style control surface grown from your world's params.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/mapping.svg" width="40" height="40" alt=""><br><b>Mapping &amp; LEARN</b><br>Signal to param routes with curve, range and smoothing. Many-to-many. Press learn, move anything, it is wired.</td>
+</tr>
+<tr>
+<td width="33%" valign="top"><img src="assets/readme/icons/world.svg" width="40" height="40" alt=""><br><b>Worlds</b><br>Your piece reads params, never inputs. Draw with canvas, p5, three.js or a WebToe node patch.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/timeline.svg" width="40" height="40" alt=""><br><b>Timeline &amp; Score</b><br>Automation, scenes and cues; a show written as segment lengths, with cuts, holds and a director.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/console.svg" width="40" height="40" alt=""><br><b>Console</b><br>The director's desk: transport, sliders, learn, meters, and a performance mode on <kbd>T</kbd>.</td>
+</tr>
+<tr>
+<td width="33%" valign="top"><img src="assets/readme/icons/monitor.svg" width="40" height="40" alt=""><br><b>Backstage monitor</b><br>Clock, scene, every signal and FPS on any phone or laptop on the network.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/record.svg" width="40" height="40" alt=""><br><b>Performance video</b><br>The work, your hands and the work's own sound in one synced vertical or 4K file. Record MIDI takes too.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/agent.svg" width="40" height="40" alt=""><br><b>Agent-native</b><br>AGENTS.md, a <code>/create-world</code> skill and an MCP server: describe a show, an agent writes the world.</td>
+</tr>
+</table>
+
+## 🏗 Architecture
+
+<p align="center"><img src="assets/readme/architecture.svg" width="900" alt="Four layers: L1 input (midi, audio, chord, pose, leap, keys, drums, phones) publishes signals; L2 mapping routes signals to params; L3 world reads params and draws; L4 output sends video and audio out of the browser. Timeline, score, monitor, console and relay run alongside all four."></p>
+
+Two rules make the whole thing composable:
+
+1. **Signals are the only currency of input.** A knob, a raised hand, and a chord's
+   consonance are equal citizens with names. That equality *is* input fusion.
+2. **Worlds never know who is performing them.** A world reads params. Whether a
+   param came from the timeline, a MIDI knob, a dancer's wrist, or a slider is
+   invisible to it, so the same world can be played by a pianist, a dancer,
+   or an automation curve.
+
+<details>
+<summary>The same diagram as text (for terminals, screen readers and AI agents)</summary>
 
 ```
 ┌────────────────────────────────────────────────────────────┐
@@ -47,7 +105,7 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 │   anything. Swap works; keep the shell.                    │
 ├────────────────────────────────────────────────────────────┤
 │ L4 OUTPUT — "how it leaves the browser" (video ∥ audio)    │
-│   video: screen · future NDI                               │
+│   video: screen · @openav/record · future NDI              │
 │   audio: @openav/midi out · @openav/sound (Tone.js engine) │
 │          · @openav/osc → UDP bridge                        │
 ├────────────────────────────────────────────────────────────┤
@@ -61,59 +119,143 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 └────────────────────────────────────────────────────────────┘
 ```
 
-Two rules make the whole thing composable:
+</details>
 
-1. **Signals are the only currency of input.** A knob, a raised hand, and a chord's
-   consonance are equal citizens with names. That equality *is* input fusion.
-2. **Worlds never know who is performing them.** A world reads params. Whether a
-   param came from the timeline, a MIDI knob, a dancer's wrist, or a slider is
-   invisible to it — so the same world can be played by a pianist, a dancer,
-   or an automation curve.
+## 🖼 Examples
 
-## Examples
+<!--gen:w-examples-->Fifteen<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
 
-| | what it teaches |
-|---|---|
-| [`01-hello-particles`](examples/01-hello-particles/) | the smallest complete app — read `main.js` top-to-bottom and you know the framework |
-| [`02-chord-garden`](examples/02-chord-garden/) | performance semantics: triads bloom, clusters decay (lineage: *The Last Input*, IRCAM 2026) |
-| [`03-pose-field`](examples/03-pose-field/) | **fingers as an instrument**: pinch = tightness, second pinch = arms, both fists = bloom, left fist = next pattern family (mandala · lissajous · spirograph · web) |
-| [`04-webtoe-stage`](examples/04-webtoe-stage/) | the sister stack: a WebToe node patch performed as a World (`ext()` bindings) |
-| [`05-prebiotic-flake`](examples/05-prebiotic-flake/) | a 2023 MIDI daily sketch replayed through the chassis — with the L4 audio branch singing (Tone.js) |
-| [`06-cylinder-earth`](examples/06-cylinder-earth/) | voice-controlled WEBGL towers (2020) — mic bands & drum onsets as instruments, or the built-in **drum machine** (@openav/drums: synth kit + TR-style sequencer publishing analyzer-shaped signals) |
-| [`07-firework-festival`](examples/07-firework-festival/) | fireworks launched by closing a finger pinch (2021, PoseNet-era) — 21-landmark hands, four precise controllers |
-| [`08-remote-surface`](examples/08-remote-surface/) | **the phone is the instrument panel**: the World only declares `params`; `modules: { remote: true }` grows the control surface (`autoSurface`), a keyboard page, tilt & knock sensors — with feedback to the phone |
-| [`10-record`](examples/10-record/) | **the performance video** (@openav/record): the work on top, your hands from the webcam below, the work's own sound, one vertical 1080×1920 / 2.7K / 4K file in sync — plus MIDI takes you record, play back into the show, and save as `.mid` |
-| [`11-controller-video`](examples/11-controller-video/) | **the performance video without a camera**: the controller you play (MiniLab 3 or any profile) drawn live under the work — keys, pads, knobs and faders as they move, sharp at 4K; a replayed MIDI take animates it too |
-| [`12-leap-hands`](examples/12-leap-hands/) | **a Leap Motion as an instrument** (@openav/leap): palm height, pinch and fist through params, the hand skeleton drawn in the work; runs on the machine's bridge (`node packages/leap/bridge/leap-bridge.mjs`, `--mock` without a sensor) or with the mouse as a simulated hand |
-| [`13-score-director`](examples/13-score-director/) | **a show with structure** (@openav/score): "a day of sky" written as segment lengths, two cuts (full and half length, `?cut=short`), a standby that holds until you release it, cues on the scrubber, operator acts on the desk and prompter, and a segment module that can crash (`?break=dusk`) without stopping the show |
+<!--gen:examples-grid-->
+All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
 
-All examples run without MIDI hardware — every stage ships an on-screen piano
-(@openav/keys: QWERTY capture, Z/X octave) and a **simulated performer** that
-plays the piece hands-free. 01/02 run fully offline. Keys: **Space** play (at a hold: release) · **←/→** scene jump · **T** performance mode · **F** fullscreen.
+**① First open**: Read the whole framework in one file, then add one line to a p5 sketch you already have.
 
-Examples are assembled with **`createShow()`** (`@openav/show`) — a World plus one
-declarative call; the layer-aligned side panel, inputs, sound, and backstage all
-come from the factory, so every work evolves together when the framework grows.
+<table>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/01-hello-particles/"><img src="assets/home/works/01.webp" width="260" alt="Bursts of thin green and red particle trails falling on black."></a><br><b>01 · Hello particles</b><br>The smallest complete app. Read main.js top to bottom and you know the framework.<br><a href="https://openaudiovisual.com/examples/01-hello-particles/">play</a> · <a href="examples/01-hello-particles/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/15-p5-one-line/"><img src="assets/home/works/15.webp" width="260" alt="A flower of layered green and yellow petals with coloured circles around it and four tall red, green and blue beams."></a><br><b>15 · p5.js in one line</b><br>A plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone.<br><a href="https://openaudiovisual.com/examples/15-p5-one-line/">play</a> · <a href="examples/15-p5-one-line/">source</a></td>
+<td></td>
+</tr>
+</table>
+
+**② Anything can be an instrument**: A controller, a chord, a microphone, bare hands, a Leap Motion, a phone.
+
+<table>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/09-midi-controllers/"><img src="assets/home/works/09.webp" width="260" alt="A spiral of pink and blue dots above an on-screen MIDI keyboard controller."></a><br><b>09 · MIDI controllers</b><br>On-screen controllers that move with the real ones you plug in.<br><a href="https://openaudiovisual.com/examples/09-midi-controllers/">play</a> · <a href="examples/09-midi-controllers/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/02-chord-garden/"><img src="assets/home/works/02.webp" width="260" alt="Slender branching plants in a night garden, with green leaves and small blue, red and pink flowers."></a><br><b>02 · Chord garden</b><br>Triads bloom, clusters decay. The world listens to chords, never to keys.<br><a href="https://openaudiovisual.com/examples/02-chord-garden/">play</a> · <a href="examples/02-chord-garden/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/06-cylinder-earth/"><img src="assets/home/works/06.webp" width="260" alt="A sphere packed with colourful cylinders seen end-on, like umbrellas."></a><br><b>06 · Cylinder earth</b><br>A 2020 voice-controlled WebGL sketch; mic bands or the built-in drum machine play it.<br><a href="https://openaudiovisual.com/examples/06-cylinder-earth/">play</a> · <a href="examples/06-cylinder-earth/">source</a></td>
+</tr>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/03-pose-field/"><img src="assets/home/works/03.webp" width="260" alt="A blue and white mandala of fine layered lines."></a><br><b>03 · Hand instrument</b><br>Fingers as an instrument: pinch, fists, four pattern families.<br><a href="https://openaudiovisual.com/examples/03-pose-field/">play</a> · <a href="examples/03-pose-field/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/12-leap-hands/"><img src="assets/home/works/12.webp" width="260" alt="A violet hand skeleton above green and blue ink strokes that fall like rain on black."></a><br><b>12 · Leap hands</b><br>A Leap Motion as an instrument; the mouse is a simulated hand when you have none.<br><a href="https://openaudiovisual.com/examples/12-leap-hands/">play</a> · <a href="examples/12-leap-hands/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/08-remote-surface/"><img src="assets/home/works/08.webp" width="260" alt="Blue and yellow streaks exploding outward from the lower centre."></a><br><b>08 · Remote surface</b><br>The phone is the instrument panel; the surface grows from the world's params.<br><a href="https://openaudiovisual.com/examples/08-remote-surface/">play</a> · <a href="examples/08-remote-surface/">source</a></td>
+</tr>
+</table>
+
+**③ Bring another picture engine**: Bring your own: a node patch, a 2023 p5 sketch, a 2021 particle system.
+
+<table>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/04-webtoe-stage/"><img src="assets/home/works/04.webp" width="260" alt="A node editor with noise, level and output nodes beside a grey cloud texture."></a><br><b>04 · WebToe stage</b><br>A WebToe node patch performed as a World through ext() bindings.<br><a href="https://openaudiovisual.com/examples/04-webtoe-stage/">play</a> · <a href="examples/04-webtoe-stage/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/05-prebiotic-flake/"><img src="assets/home/works/05.webp" width="260" alt="A glowing yellow ring of jagged petals with small circles inside."></a><br><b>05 · Prebiotic flake</b><br>A 2023 MIDI sketch replayed through the framework, now with a Tone.js voice.<br><a href="https://openaudiovisual.com/examples/05-prebiotic-flake/">play</a> · <a href="examples/05-prebiotic-flake/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/07-firework-festival/"><img src="assets/home/works/07.webp" width="260" alt="Cyan and violet fireworks bursting over drooping coloured trails."></a><br><b>07 · Firework festival</b><br>Close a finger pinch and a firework launches from that hand (2021).<br><a href="https://openaudiovisual.com/examples/07-firework-festival/">play</a> · <a href="examples/07-firework-festival/">source</a></td>
+</tr>
+</table>
+
+**④ Run a show**: The show, not just the piece: a timeline you can see, and a score with a director.
+
+<table>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/14-timeline/"><img src="assets/home/works/14.webp" width="260" alt="A hexagonal ring of orange and yellow dots above a timeline with five curve lanes, scene blocks and a playhead."></a><br><b>14 · Timeline</b><br>Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes.<br><a href="https://openaudiovisual.com/examples/14-timeline/">play</a> · <a href="examples/14-timeline/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/13-score-director/"><img src="assets/home/works/13.webp" width="260" alt="A pale moon in a blue and teal dusk sky, with the word dusk in the corner."></a><br><b>13 · Score &amp; director</b><br>A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash.<br><a href="https://openaudiovisual.com/examples/13-score-director/">play</a> · <a href="examples/13-score-director/">source</a></td>
+<td></td>
+</tr>
+</table>
+
+**⑤ Take it out of the browser**: One synced video, with or without a camera.
+
+<table>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/10-record/"><img src="assets/home/works/10.webp" width="260" alt="Overlapping pink, yellow and green rings spreading over a dark field, each one a struck note."></a><br><b>10 · Record</b><br>The work plus your hands plus its own sound, in one synced video. MIDI takes too.<br><a href="https://openaudiovisual.com/examples/10-record/">play</a> · <a href="examples/10-record/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/11-controller-video/"><img src="assets/home/works/11.webp" width="260" alt="Overlapping pink, purple and yellow rings beside an on-screen MiniLab 3 with the last note written under it."></a><br><b>11 · Controller video</b><br>The performance video without a camera: the controller you play, drawn live.<br><a href="https://openaudiovisual.com/examples/11-controller-video/">play</a> · <a href="examples/11-controller-video/">source</a></td>
+<td></td>
+</tr>
+</table>
+<!--/gen:examples-grid-->
+
+All examples run without MIDI hardware: every stage ships an on-screen piano
+(`@openav/keys`: QWERTY capture, <kbd>Z</kbd>/<kbd>X</kbd> octave) and a **simulated performer** that
+plays the piece hands-free. 01 and 02 run fully offline. Examples are assembled with
+**`createShow()`** (`@openav/show`), a World plus one declarative call; the layer-aligned side
+panel, inputs, sound and backstage all come from the factory, so every work evolves together
+when the framework grows.
 
 **Artwork attribution**: examples 05–07 integrate original artworks by
-**Che-Yu Wu 吳哲宇** (2020–2023), used here strictly as demos — the framework is
-MIT, the artworks remain © the artist, all rights reserved.
+**Che-Yu Wu 吳哲宇** (2020–2023), used here strictly as demos. The framework is
+MIT; the artworks remain © the artist, all rights reserved.
 
-## Agent-native
+## 🎹 MIDI controller library
 
-Worlds are visual code, and coding agents are good at code — so this repo ships
-agent-ready: [`AGENTS.md`](AGENTS.md) gives any AI coding agent the layer
-contracts and conventions, and the bundled `/create-world` skill
-([.claude/skills/create-world](.claude/skills/create-world/SKILL.md)) scaffolds a
-runnable work from a natural-language description ("a jellyfish world that blooms
-on consonant chords"). Describe the performance; the agent writes the World; the
-chassis does the rest. An **MCP server** ships in the box (`.mcp.json`,
-zero-dependency stdio): `list_examples` · `read_doc` · `scaffold_world` ·
-`run_checks` — connect any MCP-capable agent and it can inspect, scaffold, and
-verify a performance. (Positioning kin: [open-slide](https://github.com/1weiho/open-slide),
-which does this for slide decks.)
+<a href="https://openaudiovisual.com/controllers/"><img src="assets/readme/controllers-gallery.webp" width="900" alt="The controllers page: MIDI controllers, modeled. 16 devices, 6 generic layouts, 743 controls, with an on-screen Arturia MiniLab 3 you can play."></a>
 
-## A world in 20 lines
+Controllers are **data**: one JSON file per device with the faceplate, every control's exact MIDI
+message, LED feedback, how to recognise its port, and the document each number came from.
+The same file drives an on-screen controller you can play, follows the real device when you plug it in,
+and drops into any web page. **<!--gen:devices-line-->18 devices, 859 controls<!--/gen:devices-line-->** (plus <!--gen:n-generic-->6<!--/gen:n-generic--> generic layouts), each with its sources.
+
+<!--gen:controllers-table-->
+| maker | devices (spec sheet with the full MIDI map) |
+|---|---|
+| AKAI Professional | [**LPD8 (mk2)**](https://openaudiovisual.com/controllers/akai-lpd8/) · [**APC mini mk2**](https://openaudiovisual.com/controllers/akai-apc-mini-mk2/) · [**MIDImix**](https://openaudiovisual.com/controllers/akai-midimix/) · [**MPK mini mk3**](https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/) |
+| Arturia | [**MiniLab 3**](https://openaudiovisual.com/controllers/arturia-minilab3/) · [**KeyStep 37**](https://openaudiovisual.com/controllers/arturia-keystep37/) · [**BeatStep**](https://openaudiovisual.com/controllers/arturia-beatstep/) |
+| Behringer | [**X-TOUCH MINI**](https://openaudiovisual.com/controllers/behringer-x-touch-mini/) |
+| KORG | [**nanoKONTROL2**](https://openaudiovisual.com/controllers/korg-nanokontrol2/) · [**nanoKEY2**](https://openaudiovisual.com/controllers/korg-nanokey2/) |
+| Novation | [**Launchpad Mini MK3**](https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/) · [**Launch Control XL (MK2)**](https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/) · [**Launch Control XL 3**](https://openaudiovisual.com/controllers/novation-launch-control-xl-3/) · [**Launchkey Mini MK3**](https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/) · [**Launchkey 25 MK4**](https://openaudiovisual.com/controllers/novation-launchkey-25-mk4/) · [**Launchkey 37 MK4**](https://openaudiovisual.com/controllers/novation-launchkey-37-mk4/) |
+| ODD | [**ODD Ball**](https://openaudiovisual.com/controllers/odd-ball/) |
+| teenage engineering | [**OP-1 field**](https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/) |
+<!--/gen:controllers-table-->
+
+Embed one anywhere, one line:
+
+```html
+<script type="module" src="https://openaudiovisual.com/packages/midi/element.js"></script>
+<oav-controller profile="akai-apc-mini-mk2"></oav-controller>
+```
+
+**Is your controller missing?** [Request it](https://github.com/frank890417/open-audiovisual/issues/new?title=MIDI%20controller%20request%3A%20) (a manual or a MIDI implementation chart helps), or add it yourself:
+
+1. Copy the closest file in [`packages/midi/profiles/`](packages/midi/profiles/) (or a generic layout) and write each control's type and message from the manual.
+2. Cite every source; mark anything unconfirmed `"verified": false` with a note.
+3. `validateProfile(profile)` lists every problem, `npm test` checks every shipped profile; try it with `<oav-controller profile="./my-device.json">`.
+4. Register it in `profiles/index.js` and open a pull request. Full steps: [docs/controllers.md](docs/controllers.md#add-a-controller).
+
+## 🎨 p5.js in one line
+
+Any p5.js sketch (OpenProcessing, the p5 editor, your own page) can be played from a MIDI controller,
+a controller drawn on screen, or a phone. Add one line at the top:
+
+```js
+document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
+```
+
+Then read the controller the way p5 reads the mouse:
+
+```js
+function draw() {
+  background(knob1 * 255);                 // knob 1, 0..1, like mouseX
+  circle(width / 2, height / 2, 50 + knob2 * 300);
+}
+
+function notePressed(note, velocity) {     // like keyPressed(): any key, or a pad
+  circle(random(width), random(height), velocity * 100);
+}
+```
+
+No `setup()` call, p5 1.x and 2.x. On OpenProcessing it also wires to OP Configurator sliders in order.
+Details: [openaudiovisual.com/docs/#p5](https://openaudiovisual.com/docs/#p5) · [docs/p5.md](docs/p5.md) · [`p5/`](p5/).
+
+## 🧩 A world in 20 lines
 
 ```js
 export const myWorld = {
@@ -135,66 +277,136 @@ export const myWorld = {
 };
 ```
 
-Register it on a `Stage`, feed it a `Timeline`, mount the `Console` — see
+Register it on a `Stage`, feed it a `Timeline`, mount the `Console`: see
 [`examples/01-hello-particles/main.js`](examples/01-hello-particles/main.js) for
-the ~40 lines of assembly.
+the ~40 lines of assembly, and [docs/writing-a-world.md](docs/writing-a-world.md) for the full contract.
 
-## Design lineage
+## 📱 Phone / iPad remote
 
-The core of this framework was extracted from **The Last Input** (Che-Yu Wu, 2026 —
-C-LAB Taiwan Sound Lab / IRCAM residency, performed on a 49.4-channel speaker dome).
-The timeline, chord semantics, many-to-many MIDI-learn, and OSC batching all drove a
-real 14-scene show before they were generalized here. The mapping-layer philosophy
-descends from [libmapper](http://libmapper.github.io/)'s signal-namespace research.
+`node serve.js`, open an example that declares `modules: { remote: true }` (try
+[08](examples/08-remote-surface/)), and type the URL on the join card into your phone (same wifi).
+Tabs: 感測 sensors (tilt · accel · touch · knock · light), 琴鍵 keys (one row landscape, two stacked rows
+portrait), 控制台 control surface (faders, knobs, XY, pads… generated from the World's `params`, or from a layout JSON),
+and MIDI. Details: [docs/remote.md](docs/remote.md).
 
-## Phone / iPad remote
+## 🤖 Agent-native
 
-`node serve.js`, open an example that declares `modules: { remote: true }`, type the URL on the join card into your
-phone (same wifi). Tabs: 感測 (tilt · accel · touch · knock · light), 琴鍵 (one row landscape / two stacked rows
-portrait), 控制台 (faders, knobs, XY, pads… generated from the World's `params`, or from a layout JSON).
+Worlds are visual code, and coding agents are good at code, so this repo ships
+agent-ready: [`AGENTS.md`](AGENTS.md) gives any AI coding agent the layer
+contracts and conventions, and the bundled `/create-world` skill
+([.claude/skills/create-world](.claude/skills/create-world/SKILL.md)) scaffolds a
+runnable work from a natural-language description ("a jellyfish world that blooms
+on consonant chords"). Describe the performance; the agent writes the World; the
+chassis does the rest.
 
-| package | role |
+An **MCP server** ships in the box ([`.mcp.json`](.mcp.json), zero-dependency stdio):
+`list_examples` · `read_doc` · `scaffold_world` · `run_checks` · `list_controllers` ·
+`read_profile` · `validate_profile` · `scaffold_profile`. Connect any MCP-capable
+agent and it can inspect, scaffold and verify a performance. Machine-readable entry points:
+[`llms.txt`](llms.txt) · [`llms-full.txt`](llms-full.txt). (Positioning kin:
+[open-slide](https://github.com/1weiho/open-slide), which does this for slide decks.)
+
+## 📦 Packages
+
+<!--gen:w-packages-->Twenty-three<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
+
+| layer | package | role |
+|---|---|---|
+| L1 input | [`@openav/midi`](packages/midi/) | Web MIDI in and out, many devices, the controller profile library |
+|  | [`@openav/audio`](packages/audio/) | Microphone analysis: loudness, bands, brightness, onsets, drum hits |
+|  | [`@openav/chord`](packages/chord/) | Chord detection for performance: consonance, triads, clusters |
+|  | [`@openav/pose`](packages/pose/) | Body and 21-point hand tracking from the camera, on the device |
+|  | [`@openav/leap`](packages/leap/) | Leap Motion / Ultraleap hands, through one local bridge |
+|  | [`@openav/keys`](packages/keys/) | On-screen piano, QWERTY playing and a simulated performer |
+|  | [`@openav/drums`](packages/drums/) | Synth kit and step sequencer that publish analyzer-shaped signals |
+| L2 mapping | [`@openav/mapping`](packages/mapping/) | Signal to param routes: curves, smoothing, many-to-many, learn |
+| L3 world | [`@openav/stage`](packages/stage/) | The world shell: lifecycle and params, no renderer opinion |
+|  | [`@openav/world-webtoe`](packages/world-webtoe/) | Perform a WebToe node patch as a world |
+| L4 output | [`@openav/sound`](packages/sound/) | Instruments in the page (Salamander piano, mallets, strings, organ, synth presets) |
+|  | [`@openav/osc`](packages/osc/) | OSC out of the browser through a small Node bridge to UDP |
+|  | [`@openav/record`](packages/record/) | The performance video: work and camera in one synced file, MIDI takes |
+| spines | [`@openav/timeline`](packages/timeline/) | Param automation, scenes and cues: the clock of the show |
+|  | [`@openav/score`](packages/score/) | The show as segment lengths: cuts, cues, holds, and a director that survives a failing module |
+|  | [`@openav/console`](packages/console/) | The director's desk and performance mode |
+|  | [`@openav/monitor`](packages/monitor/) | Backstage view for any device on the network |
+| phones | [`@openav/relay`](packages/relay/) | Zero-dependency room relay for phones and iPads |
+|  | [`@openav/surface`](packages/surface/) | TouchOSC-style widgets and <code>autoSurface(params)</code> |
+|  | [`@openav/remote`](packages/remote/) | The phone and iPad app: sensors, keyboard, control surface |
+| glue | [`@openav/core`](packages/core/) | Signals, Params and Loop: what every layer speaks |
+|  | [`@openav/show`](packages/show/) | <code>createShow()</code>: one call assembles the whole shell |
+|  | [`@openav/mcp`](packages/mcp/) | MCP server for coding agents: list, read, scaffold, check |
+
+## 📚 Docs
+
+**The handbook: [openaudiovisual.com/docs](https://openaudiovisual.com/docs/)** ([繁體中文](https://openaudiovisual.com/zh/docs/)): every chapter on one page, generated from [`docs/`](docs/).
+**The MIDI controller library: [openaudiovisual.com/controllers](https://openaudiovisual.com/controllers/)**: every modeled controller, playable, with its MIDI map and sources.
+
+| start here | go deeper |
 |---|---|
-| [`@openav/relay`](packages/relay/) | zero-dep room WebSocket relay (controller / runner / monitor) + browser client |
-| [`@openav/surface`](packages/surface/) | TouchOSC-style widgets, layout JSON (portrait/landscape), theme, `autoSurface(params)` |
-| [`@openav/remote`](packages/remote/) | the phone app (tabs) and the show-side adapter |
+| [Introduction](docs/introduction.md) · [Getting started](docs/getting-started.md) · [Core concepts](docs/concepts.md) | [Architecture](docs/architecture.md): the layer contracts, in detail |
+| [Writing a world](docs/writing-a-world.md) · [Signals reference](docs/signals.md) · [Mapping](docs/mapping.md) | [Show control](docs/show-control.md): timeline, scenes, performance mode, monitor, OSC |
+| [Inputs](docs/inputs.md) · [Controllers](docs/controllers.md) · [p5.js in one line](docs/p5.md) | [Score & Director](docs/score.md): a show as segment lengths |
+| [Phones & remote](docs/remote.md) · [For AI agents](docs/agents.md) · [Troubleshooting](docs/troubleshooting.md) | [Roadmap](docs/roadmap.md) · [Packages](docs/packages.md) · [Lab integration](docs/lab-integration.md) |
 
-## Docs
+## 🔭 Sister project: WebToe
 
-**The handbook: [openaudiovisual.com/docs](https://openaudiovisual.com/docs/)** ([繁體中文](https://openaudiovisual.com/zh/docs/)) — every chapter below on one page, generated from `docs/`.
-**The MIDI controller library: [openaudiovisual.com/controllers](https://openaudiovisual.com/controllers/)** — every modeled controller, playable, with its MIDI map and sources; embed one anywhere with `<script type="module" src="https://openaudiovisual.com/packages/midi/element.js"></script><oav-controller profile="akai-apc-mini-mk2"></oav-controller>`.
-
-- [Architecture](docs/architecture.md) — the layer contracts, in detail
-- [Writing a world](docs/writing-a-world.md)
-- [Signals reference](docs/signals.md) — names published by each input package
-- [Show control](docs/show-control.md) — timeline, scenes, performance mode, monitor, OSC
-- [Score & Director](docs/score.md) — a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score → MIDI
-
-## Telemetry
-
-The controller element, `createController()`, the iframe embed and `createShow()` send one anonymous usage hit per page load (kind, controller profile, the page's origin, version; no cookies, nothing anyone plays). Off with `telemetry="off"` / `{ telemetry: false }` / `?telemetry=0` / `globalThis.OPENAV_TELEMETRY = false`. Details: [packages/midi/README.md](packages/midi/README.md#telemetry).
-
-## Sister project: WebToe
+<a href="https://openaudiovisual.com/webtoe/"><img align="right" src="assets/webtoe/hero-lfo-garden-800.webp" width="320" alt="The WebToe editor: operators wired together with a live preview on every node."></a>
 
 [**WebToe**](https://github.com/frank890417/WebToe) is a web-native, node-based
 dataflow engine (TouchDesigner-style, imports real `.toe` projects). The two are
-halves of one stack: **WebToe is the engine, open-audiovisual is the show** —
-a WebToe network can become an openav World, and openav's inputs (MIDI, chords,
+halves of one stack: **WebToe is the engine, open-audiovisual is the show**.
+A WebToe network can become an openav World, and openav's inputs (MIDI, chords,
 pose) map naturally onto CHOP channels. The adapter is
 [`@openav/world-webtoe`](packages/world-webtoe/) (example 04): it embeds the
 [WebToe editor](https://webtoe.openaudiovisual.com/) and posts params into the
 patch, where any parameter written as `ext('name', fallback)` follows.
 More: [openaudiovisual.com/webtoe](https://openaudiovisual.com/webtoe/).
 
-## Status & roadmap
+<br clear="right">
 
-`v0.1` — four layers (with the L4 video/audio split) + timeline + console +
-monitor + on-screen piano & simulated performer + 5 examples (including the
-WebToe sister-stack world and a Tone.js-voiced 2023 sketch), tests green.
-Planned: audience-device inputs (phones as sensors via QR), signal recording/replay,
-more sound engines behind the @openav/sound contract, WebGPU world adapter,
-NDI gateway research. See [docs/roadmap.md](docs/roadmap.md).
+## 🌱 Design lineage
+
+The core of this framework was extracted from **The Last Input** (Che-Yu Wu, 2026,
+C-LAB Taiwan Sound Lab / IRCAM residency, performed on a 49.4-channel speaker dome).
+The timeline, chord semantics, many-to-many MIDI-learn, and OSC batching all drove a
+real 14-scene show before they were generalized here. The rule since then: the framework
+only grows features a real show asked for. The mapping-layer philosophy
+descends from [libmapper](http://libmapper.github.io/)'s signal-namespace research.
+
+## 🛰 Telemetry
+
+The controller element, `createController()`, the iframe embed and `createShow()` send one anonymous usage hit per page load (kind, controller profile, the page's origin, version; no cookies, nothing anyone plays). Nothing is sent from localhost, LAN addresses or `file://`. Off with `telemetry="off"` / `{ telemetry: false }` / `?telemetry=0` / `globalThis.OPENAV_TELEMETRY = false`. Details: [packages/midi/README.md](packages/midi/README.md#telemetry).
+
+## 🗺 Status & roadmap
+
+Version `0.1.0` (nothing is on npm yet). The chassis is complete and in use: the four layers with the
+L4 video/audio split, timeline, **Score &amp; Director**, console, backstage monitor, phones as controllers,
+**performance video** recording and MIDI takes, **Leap Motion** hands, a **<!--gen:n-devices-->18<!--/gen:n-devices-->-device MIDI controller library**,
+**oav-p5**, an MCP server, and a handbook site.
+
+<!-- facts:start (written by tools/build-examples.mjs) -->
+23 packages · 15 examples · 24 MIDI controller profiles (18 devices, 6 generic layouts, 859 controls) · 483 tests
+<!-- facts:end -->
+
+Planned ([full roadmap](docs/roadmap.md)):
+
+- Replay the full signal stream (hands, body, audio analysis) into any world; mapping profile import/export
+- MIDI clock and transport in and out, a score editor on the desk, a QR code on the phone join card
+- Audience-device input: many phones as aggregate signals
+- npm publish of `@openav/*`, a WebGPU world adapter
+- An NDI gateway; several machines sharing one signal space over WebRTC; agents that play alongside people
+
+## 🤝 Contributing
+
+- **A controller you want:** [open an issue](https://github.com/frank890417/open-audiovisual/issues/new?title=MIDI%20controller%20request%3A%20). **A controller profile you made:** open a pull request ([how](docs/controllers.md#add-a-controller)).
+- Read [`AGENTS.md`](AGENTS.md) first, human or agent: vanilla ESM, no build step, no runtime dependencies (a hard constraint), and the two rules above. Framework changes must make every example better; never edit `packages/*` to make one example look right.
+- `npm test` (`node --test tests/*.test.js`) must stay green; add cases for any logic you touch.
+
+Thanks to **[Miffy Chen](https://github.com/miffycs)**, whose pull request [#2](https://github.com/frank890417/open-audiovisual/pull/2) added the
+teenage engineering **OP-1 field** profile (38 controls, every one checked on a real unit over USB), a few opt-in faceplate options for devices that don't look like the default, and the Behringer line in the controllers gallery description.
 
 ## License
 
-MIT — build shows, teach classes, fork worlds. Attribution appreciated, not required.
+MIT: build shows, teach classes, fork worlds. Attribution appreciated, not required.
+Examples 05–07 are artworks by Che-Yu Wu, © the artist, all rights reserved (see above).

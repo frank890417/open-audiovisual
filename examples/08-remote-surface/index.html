@@ -1,35 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- oav:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual · 08 remote surface</title>
+<title>Remote surface · open-audiovisual example</title>
+<meta name="description" content="The phone is the instrument panel; the surface grows from the world's params. Plays with phone or iPad · on-screen piano.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/08-remote-surface/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Remote surface · open-audiovisual example">
+<meta property="og:description" content="The phone is the instrument panel; the surface grows from the world's params. Plays with phone or iPad · on-screen piano.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/08-remote-surface/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Remote surface · open-audiovisual example">
+<meta name="twitter:description" content="The phone is the instrument panel; the surface grows from the world's params. Plays with phone or iPad · on-screen piano.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/08-remote-surface/#webpage","url":"https://openaudiovisual.com/examples/08-remote-surface/","name":"Remote surface · open-audiovisual example","description":"The phone is the instrument panel; the surface grows from the world's params. Plays with phone or iPad · on-screen piano.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/08-remote-surface/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/08-remote-surface/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/04-webtoe-stage/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/08-remote-surface/#code","name":"Remote surface (open-audiovisual example 08)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/08-remote-surface","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/08-remote-surface/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Remote surface","item":"https://openaudiovisual.com/examples/08-remote-surface/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css?v=5964a1e">
+<!-- /oav:head -->
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "../../packages/core/index.js?v=02fdc94",
-    "@openav/midi": "../../packages/midi/index.js?v=02fdc94",
-    "@openav/keys": "../../packages/keys/index.js?v=02fdc94",
-    "@openav/chord": "../../packages/chord/index.js?v=02fdc94",
-    "@openav/audio": "../../packages/audio/index.js?v=02fdc94",
-    "@openav/pose": "../../packages/pose/index.js?v=02fdc94",
-    "@openav/sound": "../../packages/sound/index.js?v=02fdc94",
-    "@openav/mapping": "../../packages/mapping/index.js?v=02fdc94",
-    "@openav/timeline": "../../packages/timeline/index.js?v=02fdc94",
-    "@openav/stage": "../../packages/stage/index.js?v=02fdc94",
-    "@openav/console": "../../packages/console/index.js?v=02fdc94",
-    "@openav/monitor": "../../packages/monitor/index.js?v=02fdc94",
-    "@openav/show": "../../packages/show/index.js?v=02fdc94",
-    "@openav/world-webtoe": "../../packages/world-webtoe/index.js?v=02fdc94",
-    "@openav/relay": "../../packages/relay/index.js?v=02fdc94",
-    "@openav/surface": "../../packages/surface/index.js?v=02fdc94",
-    "@openav/remote": "../../packages/remote/index.js?v=02fdc94"
+    "@openav/core": "../../packages/core/index.js?v=5964a1e",
+    "@openav/midi": "../../packages/midi/index.js?v=5964a1e",
+    "@openav/keys": "../../packages/keys/index.js?v=5964a1e",
+    "@openav/chord": "../../packages/chord/index.js?v=5964a1e",
+    "@openav/audio": "../../packages/audio/index.js?v=5964a1e",
+    "@openav/pose": "../../packages/pose/index.js?v=5964a1e",
+    "@openav/sound": "../../packages/sound/index.js?v=5964a1e",
+    "@openav/mapping": "../../packages/mapping/index.js?v=5964a1e",
+    "@openav/timeline": "../../packages/timeline/index.js?v=5964a1e",
+    "@openav/stage": "../../packages/stage/index.js?v=5964a1e",
+    "@openav/console": "../../packages/console/index.js?v=5964a1e",
+    "@openav/monitor": "../../packages/monitor/index.js?v=5964a1e",
+    "@openav/show": "../../packages/show/index.js?v=5964a1e",
+    "@openav/world-webtoe": "../../packages/world-webtoe/index.js?v=5964a1e",
+    "@openav/relay": "../../packages/relay/index.js?v=5964a1e",
+    "@openav/surface": "../../packages/surface/index.js?v=5964a1e",
+    "@openav/remote": "../../packages/remote/index.js?v=5964a1e"
   }
 }
 </script>
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 </head>
 <body>
-<script type="module" src="./main.js?v=02fdc94"></script>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 08 · <a href="../../examples/#route-inputs">Anything can be an instrument</a></span><span lang="zh-Hant">範例 08 · <a href="../../zh/examples/#route-inputs">什麼都能當樂器</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Remote surface</span><span lang="zh-Hant">遠端控制面板</span></h1>
+    <p class="g-teaches"><span lang="en">The phone is the instrument panel; the surface grows from the world's params.</span><span lang="zh-Hant">手機就是樂器面板。世界只宣告參數，手機上的控制面板依參數自動長出來。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Run node serve.js on your network, then type the phone URL shown at the top left into a phone on the same wifi.</li><li>On the phone's 控制台 tab move a fader: the matching param moves here.</li><li>Tilt the phone to change Drift, knock on it for a Burst. Without a phone, the on-screen piano plays notes.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>在你的網路裡跑 node serve.js，把左上角的手機網址輸入同一個 wifi 裡的手機。</li><li>在手機的「控制台」分頁推動推桿：這裡對應的參數會跟著動。</li><li>傾斜手機改變 Drift，敲一下手機放出 Burst。沒有手機時，螢幕鋼琴照樣彈音符。</li></ol>
+    <p class="g-row"><span lang="en"><b>Needs:</b> Phone or iPad.</span><span lang="zh-Hant"><b>需要：</b>手機或 iPad。</span>
+        <span lang="en">No hardware? Use On-screen piano.</span><span lang="zh-Hant">沒有硬體？用螢幕鋼琴。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/08-remote-surface/main.js#L25-L34"><code>main.js:25–34</code></a> <span lang="en">The world declares params. That is all the phone needs.</span><span lang="zh-Hant">世界宣告參數。手機需要的就只有這些。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/08-remote-surface/main.js#L104-L105"><code>main.js:104–105</code></a> <span lang="en">Phone sensors reach params through routes written once: phone/any is the latest phone.</span><span lang="zh-Hant">手機感測器經由寫一次的路由接到參數：phone/any 指最近連上的那支手機。</span></li></ul>
+    <p class="g-row g-p5"><span lang="en"><b>Take this input into your own p5 sketch: one line.</b></span><span lang="zh-Hant"><b>把這個輸入帶進你自己的 p5 草圖：一行。</b></span> <span lang="en"><a href="../../examples/15-p5-one-line/">Example 15</a> · <a href="../../docs/#p5">Docs: p5.js in one line</a></span><span lang="zh-Hant"><a href="../../examples/15-p5-one-line/">範例 15</a> · <a href="../../zh/docs/#p5">文件：p5.js 一行接上</a></span></p>
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#phones-autosurface">autoSurface</a></span><span lang="zh-Hant"><a href="../../zh/docs/#phones-autosurface">autoSurface</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/04-webtoe-stage/">04 WebToe stage →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/04-webtoe-stage/">04 WebToe 舞台 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js?v=5964a1e"></script>
+<!-- /oav:guide -->
+<script type="module" src="./main.js?v=5964a1e"></script>
 </body>
 </html>

@@ -292,6 +292,9 @@ html[lang^="zh"] .sec h3 { letter-spacing: .01em; }
 .work-links { margin: 0; font: 12.5px var(--mono); }
 .work-src { position: relative; z-index: 2; color: var(--fg-2); text-decoration: none; border-bottom: 1px solid var(--line-2); }
 .work-src:hover { color: var(--fg); border-color: var(--sig); }
+.work-route { margin: 0 0 8px; font: 500 11.5px/1.4 var(--mono); letter-spacing: .04em; color: var(--fg-3); }
+.work-route span { color: var(--sig); }
+.works-all { margin: clamp(28px, 3.4vw, 44px) 0 0; }
 .works-note { margin-top: clamp(32px, 4vw, 48px); max-width: 80ch; color: var(--fg-3); font-size: 14px; }
 
 /* start */
@@ -441,3 +444,12 @@ html[lang^="zh"] .wt-band h2 { letter-spacing: 0; line-height: 1.15; }
 .wt-band-links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin: 4px 0 0; }
 .wt-band-shot img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; border: 1px solid var(--line); background: var(--void); }
 @media (max-width: 1080px) { .wt-band { grid-template-columns: minmax(0, 1fr); } }
+
+/* faq: visible questions and answers */
+.sec-faq .faq-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 3.4vw, 48px) clamp(24px, 4vw, 64px); margin-top: clamp(28px, 3vw, 44px); }
+.faq-item h3 { margin: 0 0 10px; }
+.faq-item p { color: var(--fg-2); margin: 0 0 10px; }
+.faq-item .term { margin: 6px 0 12px; }
+.faq-item .term pre { font-size: 12.5px; }
+.faq-more { font-size: 14px; }
+@media (max-width: 900px) { .sec-faq .faq-list { grid-template-columns: minmax(0, 1fr); } }

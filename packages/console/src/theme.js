@@ -59,6 +59,14 @@ export const css = `
 .oav-devrow.none { color: #556; cursor: default; }
 .oav-routerow { display: flex; gap: 6px; align-items: center; padding: 2px 0; font-size: 11px;
   color: #9aa5bd; }
+.oav-mapfile { margin-top: 4px; }
+.oav-mapnote { font-size: 11px; line-height: 1.4; padding: 5px 8px; margin: 4px 0; border-radius: 6px;
+  border: 1px solid #2a3348; color: #9aa5bd; }
+.oav-mapnote.ok { border-color: #2f7d55; color: #8fd4ae; }
+.oav-mapnote.warn { border-color: #8a6d1f; color: #ffd166; }
+.oav-mapnote.bad { border-color: #8a3030; color: #ff9b9b; }
+.oav-mapnote ul { margin: 2px 0 0; padding-left: 16px; }
+.oav-panel.dropping { outline: 2px dashed #2e6df6; outline-offset: 2px; }
 .oav-routerow input { accent-color: #2e6df6; }
 .oav-routerow span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .oav-param { display: grid; grid-template-columns: 110px 1fr 52px auto auto; gap: 6px;

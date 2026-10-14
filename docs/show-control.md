@@ -31,6 +31,7 @@ const show = await createShow({
 | `modules` | `{}` | inputs and outputs to switch on (below) |
 | `artwork` | `null` | `{ title, artist, year, note }`: a credit line on the stage and a `<meta name="artwork">` |
 | `hint` | `''` | a line of HTML at the bottom left of the stage |
+| `map` | `?map=` in the page address | a map file to load on start: a same-origin or https URL; `false` ignores `?map=` ([Map files](mapping.md#map-files-export-import-and-share)) |
 | `profile` | the world's name | the mapper's saved-profile name; `false` = ignore saved routes ([Saved profiles](mapping.md#saved-profiles)) |
 | `onFrame` | `null` | `(dt, show) => {}` every frame, before the timeline advances |
 | `mount` | generated | `{ stage, side }` elements or selectors to render into, instead of a full-page layout |
@@ -66,7 +67,7 @@ const timeline = new Timeline({
   params,
   total: 2400,                       // seconds (default 600 when used directly; createShow uses 120)
   automation: {
-    growth: [[0, 0.2], [300, 1.0], [1200, 0.4]],   // [t, value] keyframes, linear
+    growth: [[0, 0.2], [300, 1.0, 'ease'], [1200, 0.4, 'out']],   // [t, value, curve?] keyframes; no curve = linear
     mode:   [[0, 0], [600, 1], [1800, 2]],          // step params hold (no interp)
   },
   scenes: [
@@ -83,6 +84,7 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 - `timeline.rate` exists for rehearsal speed-through (`rate = 4`)
 - playback stops by itself at `total`
 - a scene with `hold: true` stops playback at its end until it is released (Space, →): see [Hold](score.md#hold)
+- `loop: true` wraps the show at `total` and plays on; `loop: 'scene'` repeats the scene the playhead is in until you move on: see [Curves, loop, cues, recording](#curves-loop-cues-recording)
 - `reset()` goes to `start` (default 0, so a pre-show standby scene at −30 is reached with the scrubber; pass `start: -30`, or `start: 'first'` for "the first scene", to make R return to it)
 - with `score` the scenes, total and start come from a [score](score.md); then automation is read at `score.baseTime(t)`, so a cut derived with `scale: 0.5` stretches it
 
@@ -97,10 +99,53 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 | `advance(dt)` | per frame; moves `t` by `dt × rate` while playing |
 | `state(t)`, `valueAt(key, t)` | the automation values at a time (no overrides) |
 | `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` | scene lookup |
-| `onSceneChange(cb)` | `cb(index, scene, { cause })` whenever playback or a seek lands in a different scene; `cause` is `'play'`, `'release'`, `'seek'`, `'jump'` or `'reset'` |
+| `onSceneChange(cb)` | `cb(index, scene, { cause })` whenever playback or a seek lands in a different scene; `cause` is `'play'`, `'release'`, `'seek'`, `'jump'`, `'reset'` or `'loop'` |
+| `onCue(cb)`, `cues()`, `fireCue(cue)` | scene cues fired by playback, the list of them, and the manual trigger |
+| `loop`, `onLoop(cb)`, `loopRange()`, `loops` | wrap the show, a scene or a range |
+| `record(key, source)`, `stopRecording()`, `onRecord(cb)`, `mergeTake(key, take)` | write a value source into a lane |
 | `onSeek(cb)` | `cb(t, kind)` when the playhead is moved by hand (`'seek'`, `'jump'`, `'reset'`), never while playing |
 | `layer` | `(key, value, t) => value`: rewrite a param before overrides (the director's `param()` plugs in here) |
 | `t`, `playing`, `holding`, `rate`, `total`, `start`, `scenes`, `automation`, `score` | state you can read (and set) |
+
+### Curves, loop, cues, recording
+
+**Curves.** A keyframe is `[t, value, curve?]`. The third item says how the segment that *ends* at that keyframe gets
+there: `'linear'` (the default: leave it out and you get what the timeline always did), `'ease'` (slow, fast, slow),
+`'in'` (starts slow), `'out'` (starts fast), `'step'` (hold the old value until the keyframe, then jump), or your own
+function of 0..1. `CURVES` is exported. A param with `step` still holds, whatever the curve says.
+
+```js
+automation: { speed: [[0, 0.3], [16, 1.6, 'in'], [20, 3.4, 'step'], [30, 0.8, 'out']] }
+```
+
+**Loop.** `loop: true` wraps at `total` (back to 0) and keeps playing; `'scene'` repeats the scene the playhead is in
+(`next()` moves the loop on to the next scene); a scene id loops that scene; `{ from, to }` loops a range in seconds or
+scene ids. It is a property: `timeline.loop = !timeline.loop` is the whole L key. `onLoop(cb)` tells you each lap, and a
+loop that wraps into another scene is an `onSceneChange` with `cause: 'loop'`. A `hold` inside the range still holds.
+
+**Cues.** `scene.cues` is `[{ name, t }]` (the console scrubber already draws them as ticks). `onCue((cue, { cause }) => …)`
+fires one when *playback* passes it, once, and never when you seek, jump, drag the scrubber or reset: a scrub is not a
+performance. Each lap of a loop fires them again. `fireCue(cue)` sets one off by hand. With a [score](score.md) the director
+fires its own cues; use `onCue` on plain timelines.
+
+```js
+show.timeline.onCue((cue) => show.params.firePulse(cue.name));   // scenes: [{ …, cues: [{ name: 'flash', t: 20 }] }]
+```
+
+**Recording.** `record(key, source)` arms a lane. While the timeline plays, `source()` is read every frame: a number is
+written into a take, `null` means nobody is touching and closes it.
+
+```js
+timeline.record('hue', () => params.isOverridden('hue') ? params.overrides.hue : null);
+timeline.onRecord(({ key }) => params.clearOverride(key));      // the curve takes over again
+```
+
+A take also closes on pause, seek, reset, a hold, the end of the show and the end of each loop lap, while the recorder
+stays armed until `stop()` / `stopRecording()`. The merge rule (`mergeTake()`): the take is thinned (a point stays when
+it moved more than 0.6 % of the param's range, or 0.5 s passed), and it **replaces the keyframes inside its time span**.
+Keyframes outside stay, so the lane glides from the previous keyframe to the take's first point, and from its last point
+to the next keyframe. Existing curves outside the take are untouched. With a score the keyframes are written in the base
+cut's time, like the ones you declared.
 
 A cue list is just a scene-change handler:
 

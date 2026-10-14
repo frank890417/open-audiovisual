@@ -24,7 +24,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 export const PROFILE_DIR = 'packages/midi/profiles';
 export const HERO_DEFAULT = 'arturia-minilab3';
 export const BUILDER_DEFAULT = 'akai-lpd8';
-export const SECTIONS = ['play', 'catalog', 'specs', 'embed', 'model'];
+export const SECTIONS = ['play', 'catalog', 'choose', 'specs', 'embed', 'model'];
+export const ISSUE_NEW = REPO + '/issues/new?template=controller-request.yml';
+export const CONTRIBUTING = BLOB + 'CONTRIBUTING.md';
 export const TYPE_ORDER = ['pad', 'keys', 'knob', 'encoder', 'fader', 'button', 'strip', 'wheel'];
 const FILTERS = ['all', 'pad', 'keys', 'knob', 'fader', 'encoder', 'led'];
 const NOTE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -296,6 +298,94 @@ function card(t, d, c, locale) {
       </li>`;
 }
 
+
+// ------------------------------------------------------------------ how to choose: the comparison table, LED, wishes, the no-Web-MIDI strip
+/** What a visitor can ask the table for. Counted from the profile, never written by hand. */
+export const PICKS = ['keys', 'pad', 'fader', 'knob', 'led'];
+export const pickHas = (d) => ({
+  keys: d.counts.has('keys'), pad: d.counts.has('pad'), fader: d.counts.has('fader'),
+  knob: d.counts.has('knob') || d.counts.has('encoder'), led: d.prov.led,
+});
+/** "Good for" tags, assigned from the control counts alone (the rule is printed under the table). */
+export const TAG_RULES = [['melody', (n) => n.keys >= 1], ['trigger', (n) => n.pad >= 8], ['params', (n) => n.knob + n.encoder >= 8], ['mix', (n) => n.fader >= 4]];
+const n0 = (d, k) => d.counts.get(k) || 0;
+export const goodFor = (d) => { const n = { keys: n0(d, 'keys'), pad: n0(d, 'pad'), knob: n0(d, 'knob'), encoder: n0(d, 'encoder'), fader: n0(d, 'fader') }; return TAG_RULES.filter(([, f]) => f(n)).map(([k]) => k); };
+/** How many profiles each filter keeps (the number printed on its button). */
+export function pickCounts(cat) {
+  const all = [...cat.devices, ...cat.generic], out = { all: all.length };
+  for (const k of PICKS) out[k] = all.filter((d) => pickHas(d)[k]).length;
+  return out;
+}
+
+const COLS = ['keys', 'pad', 'knob', 'encoder', 'fader', 'button'];
+
+function compareRow(t, d, locale) {
+  const p = d.p, C = t.choose, num = (k) => (n0(d, k) ? String(n0(d, k)) : '–');
+  const has = PICKS.filter((k) => pickHas(d)[k]);
+  return `<tr id="cmp-${p.id}" data-has="${has.join(' ')}">
+          <th scope="row"><a href="${p.id}/">${esc(nameOf(p, locale))}</a><small>${esc(p.maker || t.catalog.badges.generic)}</small></th>
+          ${COLS.map((k) => `<td class="n" data-col="${k}">${num(k)}</td>`).join('')}
+          <td data-col="led" data-led="${d.prov.led ? 'yes' : 'no'}">${d.prov.led ? `<span aria-hidden="true">●</span><span class="sr">${C.yes}</span>` : '–'}</td>
+          <td class="n" data-col="unverified">${d.prov.unverified || '–'}</td>
+          <td class="n" data-col="sources">${(p.sources || []).length}</td>
+          <td data-col="good">${goodFor(d).map((k) => C.tags[k]).join(' · ') || '–'}</td>
+        </tr>`;
+}
+
+/** Section 03: pick what you need, read the counts side by side. */
+function chooseSection(t, cat, locale, sec) {
+  const C = t.choose, counts = pickCounts(cat), rows = [...cat.devices, ...cat.generic];
+  const withLed = rows.filter((d) => d.prov.led), without = rows.length - withLed.length;
+  return `<section class="sec" id="choose" aria-labelledby="choose-title">
+    ${sec('choose', C.eyebrow, C.title, C.lede)}
+    <div class="filters js-only" role="group" aria-label="${attr(C.filterLabel)}">
+      <span class="filters-k">${C.filterLabel}</span>
+      ${['all', ...PICKS].map((f) => `<button type="button" data-pick="${f}" aria-pressed="${f === 'all'}">${C.filters[f]} <b>${counts[f]}</b></button>`).join('\n      ')}
+      <span class="shown" id="pick-shown" aria-live="polite"></span>
+    </div>
+    <div class="table-scroll" role="region" aria-label="${attr(C.caption)}" tabindex="0">
+    <table class="compare">
+      <caption>${C.caption}</caption>
+      <thead><tr><th scope="col">${C.cols.device}</th>${[...COLS, 'led', 'unverified', 'sources', 'good'].map((k) => `<th scope="col">${C.cols[k]}</th>`).join('')}</tr></thead>
+      <tbody>
+        ${rows.map((d) => compareRow(t, d, locale)).join('\n        ')}
+      </tbody>
+    </table>
+    </div>
+    <p class="note">${C.legend}</p>
+    <p class="note">${C.tagRule}</p>
+    <div class="led-note" id="led">
+      <h3>${C.led.title}</h3>
+      <p>${fill(C.led.text, { n: withLed.length, total: rows.length })}</p>
+      <ul class="led-list">${withLed.map((d) => `<li><a href="${d.p.id}/">${esc(nameOf(d.p, locale))}</a></li>`).join('')}</ul>
+      <p>${C.led.use}</p>
+      <p>${fill(C.led.rest, { m: without })}</p>
+    </div>
+  </section>`;
+}
+
+/** "Not here?" block of the gallery. */
+function requestBlock(t) {
+  const R = t.request;
+  return `<div class="request" id="request">
+      <h3>${R.title}</h3>
+      <p>${R.text}</p>
+      <ul class="model-links"><li><a href="${ISSUE_NEW}">${R.issue} ↗</a></li><li><a href="${CONTRIBUTING}">${R.contributing} ↗</a></li></ul>
+    </div>`;
+}
+
+/** The strip for browsers without Web MIDI. Hidden in the HTML; the script under it asks the browser and shows it. */
+export function noMidiStrip(t) {
+  const N = t.noMidi;
+  return `<aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>${N.text}</p>
+    <button type="button" aria-label="${attr(N.close)}">${N.ok}</button>
+  </aside>
+  <script>${NO_MIDI_SCRIPT}</script>`;
+}
+// Feature test, not a user-agent guess: a browser that has no requestMIDIAccess gets the strip, once (dismissed → remembered).
+const NO_MIDI_SCRIPT = `(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()`;
+
 // ------------------------------------------------------------------ code shown on the page
 const PROTOCOL = `// iframe → your page, for every event
 { source: 'openav', v: 1, type: 'control', frame: 'pads',
@@ -400,6 +490,7 @@ ${headBasics(home, c, { title: t.meta.title, description: t.meta.description, og
 ${topBar(home, c)}
 
 <main id="main">
+  ${noMidiStrip(t)}
 
   <!-- ═════ 01 · play: one live controller, any device, your hardware moves it ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
@@ -462,9 +553,13 @@ ${topBar(home, c)}
       ${cat.generic.map((d) => card(t, d, c, locale)).join('\n      ')}
     </ul>
     </div>
+    ${requestBlock(t)}
   </section>
 
-  <!-- ═════ 03 · spec sheets: the full MIDI map, static ═════ -->
+  <!-- ═════ 03 · choose: the same controllers side by side ═════ -->
+  ${chooseSection(t, cat, locale, sec)}
+
+  <!-- ═════ 04 · spec sheets: the full MIDI map, static ═════ -->
   <section class="sec" id="specs" aria-labelledby="specs-title">
     ${sec('specs', t.specs.eyebrow, t.specs.title, t.specs.lede)}
     <div class="table-scroll" role="region" aria-label="${attr(t.specs.title)}" tabindex="0">
@@ -477,7 +572,7 @@ ${topBar(home, c)}
     </div>
   </section>
 
-  <!-- ═════ 04 · embed it ═════ -->
+  <!-- ═════ 05 · embed it ═════ -->
   <section class="sec" id="embed" aria-labelledby="embed-title">
     ${sec('embed', E.eyebrow, E.title, E.lede)}
     <div class="builder">
@@ -536,7 +631,7 @@ ${topBar(home, c)}
     <p><a class="more" href="${BLOB}packages/midi/README.md">${E.readme} →</a></p>
   </section>
 
-  <!-- ═════ 05 · model yours ═════ -->
+  <!-- ═════ 06 · model yours ═════ -->
   <section class="sec" id="model" aria-labelledby="model-title">
     ${sec('model', t.model.eyebrow, t.model.title, t.model.lede)}
     <ol class="steps">
@@ -565,7 +660,7 @@ ${topBar(home, c)}
           <li><a href="${REPO}">${t.model.links.repo} ↗</a></li>
           <li><a href="${BLOB}packages/midi/README.md">${t.model.links.readme} ↗</a></li>
           <li><a href="${TREE}packages/midi/profiles">${t.model.links.folder} ↗</a></li>
-          <li><a href="${REPO}/issues/new?title=MIDI%20controller%20request%3A%20">${t.model.links.issue} ↗</a></li>
+          <li><a href="${ISSUE_NEW}">${t.model.links.issue} ↗</a></li>
         </ul>
       </div>
     </div>

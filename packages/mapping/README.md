@@ -28,6 +28,9 @@ mapper.update(dt);
 - `addRoute(route)` → the filled-in route · `removeRoute(id)` · `routesFor(target)`
 - `learn(target)` toggles learn: the next signal that moves at least 5 % of its range (or any pulse) is bound
 - `update(dt)` per frame · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` → boolean
+- `exportMap()` / `importMap(text|object, { mode })` — the portable `openav.map` file; skipped routes come back in the report · `clear()` · `report`
+
+Also exported: `loadMapUrl(mapper, url)` (what `?map=` calls), `parseMap`, `serializeMap`, `parseMapUrl`, `MAP_FORMAT`, `MAP_VERSION`.
   (localStorage key `openav.map.<profile>`) · `dispose()`
 - `routes`, `learnTarget`
 

@@ -4,26 +4,26 @@
 // is none of its business. Here the answer is the TIMELINE: one lane of keyframes per param,
 // drawn under the stage, and the playhead is the only thing that moves them.
 //
-//   · lanes     a lane is `[[t, value], …]`; the timeline interpolates linearly, a `step` param holds.
-//               The eases and the hard step on the lanes are baked into keyframes (config.js: compile()).
+//   · lanes     a lane is `[[t, value, curve?], …]`; the timeline interpolates between keyframes with the curve
+//               written on the keyframe (linear · ease · in · out · step), and a `step` param holds.
 //   · scenes    the strip on top; the playhead crossing a boundary is the scene change (→ title, cuts)
-//   · cues      ◆ one-shot events inside a scene: flash / ripple. Fired when the playhead PLAYS over
-//               them; scrubbing past does not, clicking a ◆ does.
+//   · cues      ◆ one-shot events inside a scene: flash / ripple. The timeline fires them (onCue) when the
+//               playhead PLAYS over them; scrubbing past does not, clicking a ◆ does (fireCue).
 //   · scrub     press and drag anywhere on the lanes: the world follows the playhead, curves and all
 //   · knobs     move a knob (here, or on the desk, or a mapped MIDI knob) and it OVERRIDES its lane:
 //               the amber dot is where you took it, the hollow one is where the curve would be.
 //               Latch (the timeline's own rule): you stay in charge until ↩. Touch: let go and it
 //               falls back to the curve.
-//   · record    ● arms recording; while the show plays, whatever a knob does is written into that
-//               lane as new keyframes, over the old ones, and the curve takes over again.
-//   · loop / hold   L loops the show; ⏸ makes the current scene a HOLD: the playhead parks at its
+//   · record    ● arms timeline.record() on every lane; while the show plays, whatever a knob does is written
+//               into that lane as new keyframes, over the old ones, and the curve takes over again.
+//   · loop / hold   L loops the show (timeline.loop); ⏸ makes the current scene a HOLD: the playhead parks at its
 //               end until Space or → (the same `hold` the score uses, here on a single scene)
 //
 // Space play · ← → scene · T performance mode · F fullscreen · R rewind · L loop.  No hardware needed.
 
 import { createShow } from '@openav/show';
 import { createCanvas } from '@openav/stage';
-import { TOTAL, PARAMS, SCENES, LANES, CURVES, compile, cues as cueList } from './config.js?v=02fdc94';
+import { TOTAL, PARAMS, SCENES, LANES, compile } from './config.js?v=5964a1e';
 
 const TAU = Math.PI * 2;
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
@@ -104,68 +104,35 @@ const ring = {
 };
 
 // ── the show ────────────────────────────────────────────────────────────────────────────────────
-const lanes = structuredClone(LANES);            // the anchors; recording rewrites them
-const automation = compile(lanes);               // what the Timeline reads (same object: we replace its arrays in place)
-const CUES = cueList(SCENES);
-const state = { loop: true, touch: false, rec: false, take: {}, lastT: 0, fired: 0, toast: null };
+const lanes = structuredClone(LANES);            // key + tag for the panel; the keyframes live in timeline.automation
+const state = { touch: false, fired: 0 };
 let ui = null;                                   // the panel, built below once the show exists
 
 const show = await createShow({
   world: ring,
-  timeline: { total: TOTAL, automation, scenes: SCENES },
+  timeline: { total: TOTAL, automation: compile(lanes), scenes: SCENES, loop: true },
   mount: { stage: '#stage', side: '#side' },
   modules: { keys: false },
   hint: 'Space play · ←/→ scene · L loop · T performance mode · F fullscreen · drag the lanes to scrub · move a knob to take over',
-  onFrame: (dt, sh) => onFrame(dt, sh),
 });
 const { timeline: tl, params } = show;
+const CUES = tl.cues();                          // for the ticks on the ruler
 
+// cues fire when the playhead PLAYS over them (a scrub or a jump is not a performance): the timeline decides, we perform
 function fireCue(c) {
   params.firePulse(c.name);
   state.fired++;
   ui?.toast.cue(c);
 }
-
-function onFrame() {
-  const t = tl.t, dt = t - state.lastT;
-  // cues fire when the playhead PLAYS over them (a small forward step); a scrub or a jump is not a performance
-  if (tl.playing && dt > 0 && dt < 0.5) for (const c of CUES) if (state.lastT < c.t && c.t <= t) fireCue(c);
-  if ((dt < -0.001 || dt > 0.5) && state.rec) commitAll();     // the playhead jumped or wrapped: close the takes, keep recording
-  if (state.rec && tl.playing) record(t);
-  state.lastT = t;
-  // loop: advance() stops at the end; start again
-  if (state.loop && !tl.playing && !tl.holding && t >= TOTAL - 1e-6) { commitAll(); tl.seek(0); tl.play(); state.lastT = 0; }
-}
-tl.onSeek((t) => { state.lastT = t; });
+tl.onCue((c) => fireCue(c));
 tl.onSceneChange((i, sc) => ui?.toast.scene(i, sc));
 
 // ── recording: knob moves become keyframes ──────────────────────────────────────────────────────
-// A param that is overridden while recording and playing writes [t, value] every frame. When the
-// override is released (↩, touch-mode let-go, stop, or the playhead wrapping) the take is thinned,
-// stitched over the lane's anchors for the time it covered, and the curve takes over again.
-function record(t) {
-  for (const p of PARAMS) {
-    if (p.pulse) continue;
-    if (params.isOverridden(p.key)) (state.take[p.key] ||= []).push([t, params.overrides[p.key]]);
-    else if (state.take[p.key]) commit(p.key);
-  }
-}
-function commit(key) {
-  const raw = state.take[key]; delete state.take[key];
-  if (!raw || raw.length < 2) return;
-  const p = params.get(key), eps = (p.max - p.min) * 0.006, pts = [raw[0]];
-  for (let i = 1; i < raw.length - 1; i++) {
-    const last = pts[pts.length - 1];
-    if (Math.abs(raw[i][1] - last[1]) > eps || raw[i][0] - last[0] > 0.5) pts.push(raw[i]);
-  }
-  pts.push(raw[raw.length - 1]);
-  const lane = lanes.find((l) => l.key === key), t0 = pts[0][0], t1 = pts[pts.length - 1][0];
-  lane.anchors = [...lane.anchors.filter((a) => a[0] < t0 - 1e-3 || a[0] > t1 + 1e-3), ...pts.map(([t, v]) => [+t.toFixed(3), +v.toFixed(4), 'linear'])].sort((a, b) => a[0] - b[0]);
-  automation[key] = compile([lane])[key];
-  params.clearOverride(key);
-  ui?.laneChanged(key);
-}
-function commitAll() { for (const k of Object.keys(state.take)) commit(k); }
+// timeline.record(key, source) writes source() into the lane while the show plays; null means "nobody is touching".
+// A take closes when the override is released (↩, touch-mode let-go), the show stops or jumps, or the loop wraps:
+// the timeline thins it, stitches it over the lane's keyframes for the time it covered, and the curve takes over again.
+const armRecording = () => { for (const p of PARAMS) if (!p.pulse) tl.record(p.key, () => (params.isOverridden(p.key) ? params.overrides[p.key] : null)); };
+tl.onRecord((e) => { params.clearOverride(e.key); ui?.laneChanged(e.key); });
 
 // ── the timeline panel ──────────────────────────────────────────────────────────────────────────
 const COLORS = { hue: '#ff8ad8', speed: '#6fd3ff', density: '#9be37a', zoom: '#ffc86b', shape: '#b9a2ff' };
@@ -250,22 +217,22 @@ function buildPanel(root) {
     heads.appendChild(row);
     rows[lane.key] = { row, input, val: row.querySelector('.val'), back: row.querySelector('button') };
   }
-  function releaseKnob(key) { if (state.rec && state.take[key]) commit(key); else params.clearOverride(key); }
+  function releaseKnob(key) { if (tl.recorders.get(key)?.take.length) tl.recorders.get(key).commit('release'); else params.clearOverride(key); }
 
   // buttons
   root.querySelector('.bar').addEventListener('click', (e) => {
     const a = e.target.closest('button')?.dataset.a;
     if (a === 'play') tl.toggle();
-    else if (a === 'loop') state.loop = !state.loop;
+    else if (a === 'loop') tl.loop = !tl.loop;
     else if (a === 'hold') { const sc = tl.currentScene(); if (tl.sceneIndexAt() < SCENES.length - 1) sc.hold = !sc.hold; }
-    else if (a === 'rec') { state.rec = !state.rec; if (!state.rec) commitAll(); if (state.rec && !tl.playing) tl.play(); }
+    else if (a === 'rec') { if (tl.recording) tl.stopRecording(); else { armRecording(); if (!tl.playing) tl.play(); } }
     else if (a === 'mode') state.touch = !state.touch;
-    else if (a === 'free') { if (state.rec) commitAll(); params.clearAllOverrides(); }
+    else if (a === 'free') { for (const r of tl.recorders.values()) r.commit('manual'); params.clearAllOverrides(); }
     e.target.closest('button')?.blur();
   });
   addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey || e.repeat || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
-    if (e.key === 'l' || e.key === 'L') state.loop = !state.loop;
+    if (e.key === 'l' || e.key === 'L') tl.loop = !tl.loop;
   });
 
   // the stage overlay: scene title + the cue that just fired
@@ -313,7 +280,7 @@ function buildPanel(root) {
     cv.setPointerCapture(e.pointerId);
     if (y > SCENE_H && y < TOP) {
       const c = CUES.find((q) => Math.abs(xOf(q.t) - x) < 8);
-      if (c) { tl.seek(c.t, 'jump'); fireCue(c); return; }
+      if (c) { tl.seek(c.t, 'jump'); tl.fireCue(c); return; }
     }
     drag = { wasPlaying: tl.playing }; tl.pause();
     tl.seek(tOf(x));
@@ -329,12 +296,13 @@ function buildPanel(root) {
     put(scEl, `#${cur + 1} ${SCENES[cur].title}${tl.holding ? ' · HOLD' : ''}`);
     put(btn('play'), tl.holding ? 'HOLD' : tl.playing ? '⏸' : '▶');
     btn('play').classList.toggle('on', tl.playing);
-    btn('loop').classList.toggle('on', state.loop);
+    btn('loop').classList.toggle('on', !!tl.loop);
     btn('hold').classList.toggle('on', !!SCENES[cur].hold);
     btn('hold').disabled = cur === SCENES.length - 1;
-    btn('rec').classList.toggle('on', state.rec);
+    const rec = tl.recording;
+    btn('rec').classList.toggle('on', rec);
     put(btn('mode'), state.touch ? 'knob: touch' : 'knob: latch');
-    root.classList.toggle('rec', state.rec);
+    root.classList.toggle('rec', rec);
     const base = tl.state();
     for (const lane of lanes) {
       const r = rows[lane.key], man = lane.key in over, v = man ? over[lane.key] : base[lane.key];
@@ -342,7 +310,7 @@ function buildPanel(root) {
       put(r.val, (Math.abs(v) >= 100 ? v.toFixed(0) : v.toFixed(2)) + (man ? ' ✋' : ''));
       if (document.activeElement !== r.input) r.input.value = v;
     }
-    put(help, state.rec
+    put(help, rec
       ? '● REC: let the show play and move a knob. What it does is written into that lane, over the old curve. ↩ (or stop) closes the take.'
       : tl.holding ? 'HOLD: parked at the end of the scene. Space or → lets the show go on.'
       : 'Press and drag the lanes to scrub. Move a knob and it takes over its lane (amber); ↩ gives it back. ● rec writes knob moves into the curve. ⏸ hold scene parks the show at the end of the scene you are in.');
@@ -383,12 +351,13 @@ function buildPanel(root) {
       ctx.lineWidth = 1.6; ctx.strokeStyle = col; ctx.globalAlpha = man ? 0.35 : 0.9; ctx.stroke(p);
       ctx.globalAlpha = 1;
       // the take being recorded
-      const take = state.take[key];
+      const take = tl.recorders.get(key)?.take;
       if (take?.length > 1) { ctx.strokeStyle = '#ff4d5e'; ctx.lineWidth = 2.4; ctx.beginPath(); take.forEach(([tt, v], k) => (k ? ctx.lineTo(xOf(tt), yOf(li, v)) : ctx.moveTo(xOf(tt), yOf(li, v)))); ctx.stroke(); }
       // keyframe anchors, coloured by the curve that ARRIVES at them
-      for (const [tt, v, kind = 'linear'] of lane.anchors) {
+      const anchors = tl.automation[key];
+      for (const [tt, v, kind = 'linear'] of anchors) {
         const x = xOf(tt), y = yOf(li, v); ctx.fillStyle = KIND_COLORS[kind] || '#8fa3c7';
-        if (kind === 'step') ctx.fillRect(x - 3, y - 3, 6, 6); else { ctx.beginPath(); ctx.arc(x, y, lane.anchors.length > 12 ? 2 : 3, 0, TAU); ctx.fill(); }
+        if (kind === 'step') ctx.fillRect(x - 3, y - 3, 6, 6); else { ctx.beginPath(); ctx.arc(x, y, anchors.length > 12 ? 2 : 3, 0, TAU); ctx.fill(); }
       }
       // the playhead's value: hollow on the curve, amber where a knob holds it
       const cy = yOf(li, base[key]);

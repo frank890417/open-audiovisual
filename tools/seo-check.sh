@@ -127,12 +127,12 @@ fi
 # ---- 9. the repository: generators are current, tests pass
 if [[ "$REPO_CHECKS" == 1 && -f "$HERE/package.json" ]]; then
   out=""; ok=1
-  for g in home docs controllers webtoe; do
+  for g in home docs controllers webtoe examples; do
     if ! o=$(cd "$HERE" && node "tools/build-$g.mjs" --check 2>&1); then ok=0; out="$out build-$g(stale)"; fi
   done
   t=$(cd "$HERE" && node --test tests/*.test.js 2>&1 | grep -E '^# (pass|fail)' | tr '\n' ' ')
   [[ "$t" == *"# fail 0"* ]] || ok=0
-  if [[ $ok == 1 ]]; then say PASS '' "9  repository: build-home/docs/controllers/webtoe --check are current; tests: $t"
+  if [[ $ok == 1 ]]; then say PASS '' "9  repository: build-home/docs/controllers/webtoe/examples --check are current; tests: $t"
   else say FAIL '' "9  repository:$out tests: $t"; fi
 else
   say SKIP '' "9  repository checks skipped (--no-repo)"

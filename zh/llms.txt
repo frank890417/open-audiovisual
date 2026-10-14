@@ -16,7 +16,8 @@
 - [首頁](https://openaudiovisual.com/zh/) ([English](https://openaudiovisual.com/)): 能玩的樂器、運作方式、作品、快速開始、給 AI 代理。
 - [手冊](https://openaudiovisual.com/zh/docs/) ([English](https://openaudiovisual.com/docs/)): 完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。
 - [MIDI 控制器圖鑑](https://openaudiovisual.com/zh/controllers/) ([English](https://openaudiovisual.com/controllers/)): 每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。
-- [p5.js 一行指令](https://openaudiovisual.com/p5/): 載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。
+- [範例](https://openaudiovisual.com/zh/examples/) ([English](https://openaudiovisual.com/examples/)): 所有範例，附縮圖與需要什麼。
+- [p5.js 一行指令](https://openaudiovisual.com/zh/p5/) ([English](https://openaudiovisual.com/p5/)): 載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。
 - [WebToe](https://openaudiovisual.com/zh/webtoe/) ([English](https://openaudiovisual.com/webtoe/)): 姊妹專案，整套的引擎那一半：網頁原生、節點式的即時影像資料流引擎（TouchDesigner 式、WebGL2 + WebGPU、零執行期相依），能打開 TouchDesigner `.toe` 專案；`@openav/world-webtoe` 如何把 WebToe 網路當世界演奏。編輯器：https://webtoe.openaudiovisual.com/
 
 ## Core concepts
@@ -68,27 +69,27 @@
 { "mcpServers": { "openav": { "command": "node", "args": ["/path/to/open-audiovisual/packages/mcp/server.js"] } } }
 ```
 
-工具：`list_examples`（作品與一句話摘要）· `read_doc`（architecture、writing-a-world、signals、show-control、roadmap、agents、readme）· `scaffold_world`（把一個範例複製成新的編號範例）· `run_checks`（CI 跑的測試）。Claude Code 技能 `.claude/skills/create-world` 可依描述建立世界。
+工具：`list_examples`（作品與一句話摘要）· `read_doc`（architecture、writing-a-world、signals、show-control、roadmap、agents、readme）· `scaffold_world`（把一個範例複製成新的編號範例）· `run_checks`（CI 跑的測試）· `list_controllers` / `read_profile` / `validate_profile` / `scaffold_profile`（MIDI 控制器設定檔：列出、讀取、檢查、開新檔）。Claude Code 技能 `.claude/skills/create-world` 可依描述建立世界。
 
 ## Examples
 
 每個都能在瀏覽器裡免硬體執行（螢幕鋼琴、QWERTY 鍵、模擬演奏者或鼓機）。線上位址 https://openaudiovisual.com/examples/<dir>/，原始碼在 `examples/<dir>/main.js`。
 
-- [01-hello-particles](https://openaudiovisual.com/examples/01-hello-particles/): 最小的完整作品，從上讀到下就懂整個框架。
-- [02-chord-garden](https://openaudiovisual.com/examples/02-chord-garden/): 和弦語意：三和弦開花，音堆凋零。
-- [03-pose-field](https://openaudiovisual.com/examples/03-pose-field/): 手勢樂器：用鏡頭抓捏合與握拳。
-- [04-webtoe-stage](https://openaudiovisual.com/examples/04-webtoe-stage/): 把 WebToe 節點網路當成世界來演奏。
-- [05-prebiotic-flake](https://openaudiovisual.com/examples/05-prebiotic-flake/): 2023 年的 MIDI 草圖，接上 Tone.js 音訊支線。
-- [06-cylinder-earth](https://openaudiovisual.com/examples/06-cylinder-earth/): 麥克風頻段與鼓機驅動 WebGL 圓柱塔。
-- [07-firework-festival](https://openaudiovisual.com/examples/07-firework-festival/): 捏合手指放煙火（21 點手部追蹤）。
-- [08-remote-surface](https://openaudiovisual.com/examples/08-remote-surface/): 從世界的參數長出來的手機／iPad 控制面板（區網內要跑 `node serve.js`）。
-- [09-midi-controllers](https://openaudiovisual.com/examples/09-midi-controllers/): 螢幕上的 MiniLab 3、LPD8、Launchpad、nanoKONTROL2，和真機同步。
-- [10-record](https://openaudiovisual.com/examples/10-record/): 演出影片：作品疊在鏡頭畫面上，連同作品自己的聲音錄成一個直式 1080×1920 到 4K 的檔案；MIDI 演奏可錄下再重播。
-- [11-controller-video](https://openaudiovisual.com/examples/11-controller-video/): 不用鏡頭的演出影片：作品下方即時畫出正在彈的 MIDI 控制器（MiniLab 3 或任何設定檔），重播的演奏也會動。
-- [12-leap-hands](https://openaudiovisual.com/examples/12-leap-hands/): 把 Leap Motion 當樂器，經本機橋接（`node packages/leap/bridge/leap-bridge.mjs`，沒有感測器用 `--mock`）；沒開橋接時用滑鼠模擬手。
-- [13-score-director](https://openaudiovisual.com/examples/13-score-director/): 有結構的演出：「一天的天空」只寫一次段落長度；導演為每段跑一個模組，`?cut=<id>` 選版本，空白鍵放行 hold。
-- [14-timeline](https://openaudiovisual.com/examples/14-timeline/): timeline: automation you can see.
-- [15-p5-one-line](https://openaudiovisual.com/examples/15-p5-one-line/): p5.js 一行指令：一份普通的 p5 草圖，第一行載入 oav-p5.js，就能用 MIDI 控制器、螢幕上的控制器或手機彈。
+- [01-hello-particles](https://openaudiovisual.com/examples/01-hello-particles/): 最小的完整範例。把 main.js 從頭讀到尾，整套框架就懂了。 （螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者）
+- [02-chord-garden](https://openaudiovisual.com/examples/02-chord-garden/): 一個音落下一顆種子，三和弦讓枝條開花，音堆讓花與葉垂下、落盡。枝條是《The Last Input》的 L-system 植物。世界聽的是和弦訊號，從來不看琴鍵。 （螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者）
+- [03-pose-field](https://openaudiovisual.com/examples/03-pose-field/): 手指就是樂器：一組捏合控制鬆緊，另一組長出手臂，兩手握拳就綻放。四種圖案輪流切換：曼陀羅、利薩如、萬花尺、蛛網。 （鏡頭（手）· 螢幕鋼琴 · 鼓機）
+- [04-webtoe-stage](https://openaudiovisual.com/examples/04-webtoe-stage/): 這個世界是一張 WebToe 節點網路，操作方式接近 TouchDesigner，透過 ext() 綁定來演奏。WebToe 是引擎，open-audiovisual 是演出。 （螢幕鋼琴 · 模擬演奏者）
+- [05-prebiotic-flake](https://openaudiovisual.com/examples/05-prebiotic-flake/): 2023 年的一件 MIDI 每日創作，搬進框架重新演奏。繪圖程式碼保持原樣，雪花現在透過 Tone.js 發出聲音。 （螢幕鋼琴 · 模擬演奏者 · 聲音）
+- [06-cylinder-earth](https://openaudiovisual.com/examples/06-cylinder-earth/): 2020 年用聲音控制的 WebGL 作品。低頻推動柱體，高頻讓旋轉閃爍，大鼓一下就換一組配色。 （麥克風 · 鼓機）
+- [07-firework-festival](https://openaudiovisual.com/examples/07-firework-festival/): 2021 年的作品。手指一捏合，煙火就從那隻手的位置升空。粒子系統是 2021 年的原始程式碼。 （鏡頭（手）· 螢幕鋼琴）
+- [08-remote-surface](https://openaudiovisual.com/examples/08-remote-surface/): 手機就是樂器面板。世界只宣告參數，手機上的控制面板依參數自動長出來。需要在你的網路裡跑 node serve.js。 （手機或 iPad · 螢幕鋼琴）
+- [09-midi-controllers](https://openaudiovisual.com/examples/09-midi-controllers/): 螢幕上有 MiniLab 3、LPD8、Launchpad、nanoKONTROL2。接上實體控制器，螢幕上那台會跟著你的手一起動。 （MIDI 控制器，或螢幕上那一台）
+- [10-record](https://openaudiovisual.com/examples/10-record/): 演出影片：作品疊在鏡頭畫面上，連同作品自己的聲音錄成一個直式 1080×1920 到 4K 的檔案；MIDI 演奏可錄下再重播。 （螢幕鋼琴 · 電腦鍵盤 · 模擬演奏者 · 鏡頭（選用））
+- [11-controller-video](https://openaudiovisual.com/examples/11-controller-video/): 不用鏡頭的演出影片：作品下方即時畫出正在彈的 MIDI 控制器（MiniLab 3 或任何設定檔），重播的演奏也會動。 （MIDI 控制器 · 螢幕鋼琴 · 電腦鍵盤 · 一段示範演奏）
+- [12-leap-hands](https://openaudiovisual.com/examples/12-leap-hands/): 把 Leap Motion 當樂器，經本機橋接；沒開橋接時用滑鼠模擬手。 （Leap Motion · 用滑鼠模擬手）
+- [13-score-director](https://openaudiovisual.com/examples/13-score-director/): 有結構的演出：「一天的天空」只寫一次段落長度；導演為每段跑一個模組，?cut=<id> 選版本，空白鍵放行 hold。 （螢幕鋼琴 · 鍵盤：空白鍵、← →）
+- [14-timeline](https://openaudiovisual.com/examples/14-timeline/): 看得見的自動化。五條關鍵影格曲線帶動一圈光點，場景負責切換，cue 觸發一次性的閃光，你一碰旋鈕就接手，放開再還給曲線。把旋鈕的動作錄下來，就寫成一條新曲線。 （什麼都不用做，它自己會播 · 螢幕旋鈕）
+- [15-p5-one-line](https://openaudiovisual.com/examples/15-p5-one-line/): 一份普通的 p5 草圖，第一行載入 oav-p5.js，就能用 MIDI 控制器、螢幕上的控制器或手機彈。 （MIDI 控制器 · 螢幕上的控制器 · 手機）
 
 範例 05–07 整合了吳哲宇的作品（2020–2023），版權所有；框架為 MIT 授權。
 

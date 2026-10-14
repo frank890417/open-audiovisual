@@ -1,28 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- oav:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>open-audiovisual · 14 timeline</title>
-<meta name="description" content="Timeline automation you can see: five lanes of keyframe curves drive a living ring, scenes cut it, cues fire one-shot flashes, and any knob you touch takes over until you let go. Record a knob move into a new curve.">
-<link rel="icon" href="data:,">
+<title>Timeline · open-audiovisual example</title>
+<meta name="description" content="Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes. Runs in the browser, no hardware needed.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/14-timeline/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Timeline · open-audiovisual example">
+<meta property="og:description" content="Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes. Runs in the browser, no hardware needed.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/14-timeline/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Timeline · open-audiovisual example">
+<meta name="twitter:description" content="Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes. Runs in the browser, no hardware needed.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/14-timeline/#webpage","url":"https://openaudiovisual.com/examples/14-timeline/","name":"Timeline · open-audiovisual example","description":"Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes. Runs in the browser, no hardware needed.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/14-timeline/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/14-timeline/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/13-score-director/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/14-timeline/#code","name":"Timeline (open-audiovisual example 14)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/14-timeline","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/14-timeline/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Timeline","item":"https://openaudiovisual.com/examples/14-timeline/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css?v=5964a1e">
+<!-- /oav:head -->
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "../../packages/core/index.js?v=02fdc94",
-    "@openav/midi": "../../packages/midi/index.js?v=02fdc94",
-    "@openav/keys": "../../packages/keys/index.js?v=02fdc94",
-    "@openav/chord": "../../packages/chord/index.js?v=02fdc94",
-    "@openav/audio": "../../packages/audio/index.js?v=02fdc94",
-    "@openav/pose": "../../packages/pose/index.js?v=02fdc94",
-    "@openav/sound": "../../packages/sound/index.js?v=02fdc94",
-    "@openav/mapping": "../../packages/mapping/index.js?v=02fdc94",
-    "@openav/timeline": "../../packages/timeline/index.js?v=02fdc94",
-    "@openav/stage": "../../packages/stage/index.js?v=02fdc94",
-    "@openav/console": "../../packages/console/index.js?v=02fdc94",
-    "@openav/monitor": "../../packages/monitor/index.js?v=02fdc94",
-    "@openav/show": "../../packages/show/index.js?v=02fdc94",
-    "@openav/world-webtoe": "../../packages/world-webtoe/index.js?v=02fdc94"
+    "@openav/core": "../../packages/core/index.js?v=5964a1e",
+    "@openav/midi": "../../packages/midi/index.js?v=5964a1e",
+    "@openav/keys": "../../packages/keys/index.js?v=5964a1e",
+    "@openav/chord": "../../packages/chord/index.js?v=5964a1e",
+    "@openav/audio": "../../packages/audio/index.js?v=5964a1e",
+    "@openav/pose": "../../packages/pose/index.js?v=5964a1e",
+    "@openav/sound": "../../packages/sound/index.js?v=5964a1e",
+    "@openav/mapping": "../../packages/mapping/index.js?v=5964a1e",
+    "@openav/timeline": "../../packages/timeline/index.js?v=5964a1e",
+    "@openav/stage": "../../packages/stage/index.js?v=5964a1e",
+    "@openav/console": "../../packages/console/index.js?v=5964a1e",
+    "@openav/monitor": "../../packages/monitor/index.js?v=5964a1e",
+    "@openav/show": "../../packages/show/index.js?v=5964a1e",
+    "@openav/world-webtoe": "../../packages/world-webtoe/index.js?v=5964a1e"
   }
 }
 </script>
@@ -41,9 +67,36 @@
 </style>
 </head>
 <body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 14 · <a href="../../examples/#route-show-control">Run a show</a></span><span lang="zh-Hant">範例 14 · <a href="../../zh/examples/#route-show-control">演出控制</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Timeline</span><span lang="zh-Hant">時間軸</span></h1>
+    <p class="g-teaches"><span lang="en">Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes.</span><span lang="zh-Hant">看得見的自動化。五條關鍵影格曲線帶動一圈光點，場景負責切換，cue 觸發一次性的閃光。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Press Space and watch the playhead run over five lanes of curves; scenes cut, and ◆ cues fire flashes and ripples.</li><li>Drag a knob: it takes over from its lane (the amber dot is where you took it, the hollow one is where the curve would be).</li><li>Press ● to arm recording, play, and move a knob: the move is written into the lane as new keyframes.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>按空白鍵，看播放頭走過五條曲線；場景切換，◆ cue 放出閃光與漣漪。</li><li>拖動一個旋鈕：它從曲線手上接手（琥珀色圓點是你接手的位置，空心圓點是曲線原本會在的位置）。</li><li>按 ● 準備錄製，播放時轉動旋鈕：你的動作會寫成這條曲線上的新關鍵影格。</li></ol>
+    <p class="g-row"><span lang="en"><b>No hardware needed.</b> Plays itself · Knobs on screen.</span><span lang="zh-Hant"><b>不需要硬體。</b>它自己會播、螢幕旋鈕。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/14-timeline/config.js#L31-L37"><code>config.js:31–37</code></a> <span lang="en">One lane of keyframes per param.</span><span lang="zh-Hant">每個參數一條關鍵影格曲線。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/14-timeline/main.js#L113"><code>main.js:113</code></a> <span lang="en">The timeline gets the lanes (each keyframe carries its curve), the scenes and a loop: nothing else in the world changes.</span><span lang="zh-Hant">時間軸拿到曲線（每個關鍵影格自帶曲線種類）、場景與循環：世界本身完全不用動。</span></li></ul>
+    <p class="g-row g-p5"><span lang="en"><b>Take this input into your own p5 sketch: one line.</b></span><span lang="zh-Hant"><b>把這個輸入帶進你自己的 p5 草圖：一行。</b></span> <span lang="en"><a href="../../examples/15-p5-one-line/">Example 15</a> · <a href="../../docs/#p5">Docs: p5.js in one line</a></span><span lang="zh-Hant"><a href="../../examples/15-p5-one-line/">範例 15</a> · <a href="../../zh/docs/#p5">文件：p5.js 一行接上</a></span></p>
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#show-control-timeline">Timeline</a></span><span lang="zh-Hant"><a href="../../zh/docs/#show-control-timeline">時間軸</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/13-score-director/">13 Score &amp; director →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/13-score-director/">13 總譜與導演 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js?v=5964a1e"></script>
+<!-- /oav:guide -->
 <div id="left"><div id="stage"></div><div id="tl"></div></div>
 <div id="side"></div>
-<script type="module" src="./main.js?v=02fdc94"></script>
+<script type="module" src="./main.js?v=5964a1e"></script>
 <noscript>A timeline you can see: five keyframe lanes (linear, eased and stepped curves) drive a ring of light, four scenes cut it, cues fire one-shot flashes and ripples, the playhead scrubs, and any knob you move takes over from the curve. Record a knob move to write a new curve.</noscript>
 </body>
 </html>

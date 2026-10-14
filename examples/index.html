@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fifteen examples, five routes · open-audiovisual</title>
+<meta name="description" content="Fifteen playable examples of open-audiovisual, grouped in five routes: MIDI, mic and hands as instruments, p5 and WebToe worlds, timelines and scores, video output. No hardware needed.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/examples/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/examples/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/examples/">
+<link rel="describedby" href="../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Fifteen examples, five routes · open-audiovisual">
+<meta property="og:description" content="Fifteen playable examples of open-audiovisual, grouped in five routes: MIDI, mic and hands as instruments, p5 and WebToe worlds, timelines and scores, video output. No hardware needed.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fifteen examples, five routes · open-audiovisual">
+<meta name="twitter:description" content="Fifteen playable examples of open-audiovisual, grouped in five routes: MIDI, mic and hands as instruments, p5 and WebToe worlds, timelines and scores, video output. No hardware needed.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/home/home.css?v=5964a1e">
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"CollectionPage","@id":"https://openaudiovisual.com/examples/#webpage","url":"https://openaudiovisual.com/examples/","name":"Fifteen examples, five routes · open-audiovisual","description":"Fifteen playable examples of open-audiovisual, grouped in five routes: MIDI, mic and hands as instruments, p5 and WebToe worlds, timelines and scores, video output. No hardware needed.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/#list"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/#breadcrumb"}},{"@type":"ItemList","@id":"https://openaudiovisual.com/examples/#list","name":"Fifteen examples, five routes","numberOfItems":15,"itemListOrder":"https://schema.org/ItemListOrderAscending","itemListElement":[{"@type":"ListItem","position":1,"url":"https://openaudiovisual.com/examples/01-hello-particles/","name":"Hello particles"},{"@type":"ListItem","position":2,"url":"https://openaudiovisual.com/examples/15-p5-one-line/","name":"p5.js in one line"},{"@type":"ListItem","position":3,"url":"https://openaudiovisual.com/examples/09-midi-controllers/","name":"MIDI controllers"},{"@type":"ListItem","position":4,"url":"https://openaudiovisual.com/examples/02-chord-garden/","name":"Chord garden"},{"@type":"ListItem","position":5,"url":"https://openaudiovisual.com/examples/06-cylinder-earth/","name":"Cylinder earth"},{"@type":"ListItem","position":6,"url":"https://openaudiovisual.com/examples/03-pose-field/","name":"Hand instrument"},{"@type":"ListItem","position":7,"url":"https://openaudiovisual.com/examples/12-leap-hands/","name":"Leap hands"},{"@type":"ListItem","position":8,"url":"https://openaudiovisual.com/examples/08-remote-surface/","name":"Remote surface"},{"@type":"ListItem","position":9,"url":"https://openaudiovisual.com/examples/04-webtoe-stage/","name":"WebToe stage"},{"@type":"ListItem","position":10,"url":"https://openaudiovisual.com/examples/05-prebiotic-flake/","name":"Prebiotic flake"},{"@type":"ListItem","position":11,"url":"https://openaudiovisual.com/examples/07-firework-festival/","name":"Firework festival"},{"@type":"ListItem","position":12,"url":"https://openaudiovisual.com/examples/14-timeline/","name":"Timeline"},{"@type":"ListItem","position":13,"url":"https://openaudiovisual.com/examples/13-score-director/","name":"Score & director"},{"@type":"ListItem","position":14,"url":"https://openaudiovisual.com/examples/10-record/","name":"Record"},{"@type":"ListItem","position":15,"url":"https://openaudiovisual.com/examples/11-controller-video/","name":"Controller video"}]},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"}]}]}</script>
+<link rel="stylesheet" href="../assets/examples/pages.css?v=5964a1e">
+</head>
+<body class="examples-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../#play">Play</a>
+    <a href="../#how">How it works</a>
+    <a href="../#works">Works</a>
+    <a href="../controllers/">Controllers</a>
+    <a href="../docs/">Docs</a>
+    <a href="../webtoe/">WebToe</a>
+    <a href="../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../examples/" hreflang="en" lang="en" data-lang="en" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../zh/examples/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="sec ex-intro" aria-labelledby="ex-title">
+    <header class="sec-head">
+      <p class="eyebrow">Examples</p>
+      <h1 id="ex-title">Fifteen examples, five routes</h1>
+      <p class="sec-lede">Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments. In any example: Space plays the timeline, T is performance mode, F is fullscreen.</p>
+    </header>
+    <nav class="route-nav" aria-label="Route">
+      <ol>
+        <li><a href="#route-start"><span class="rn-mark">①</span> First open <small>2</small></a></li>
+        <li><a href="#route-inputs"><span class="rn-mark">②</span> Anything can be an instrument <small>6</small></a></li>
+        <li><a href="#route-engines"><span class="rn-mark">③</span> Bring another picture engine <small>3</small></a></li>
+        <li><a href="#route-show-control"><span class="rn-mark">④</span> Run a show <small>2</small></a></li>
+        <li><a href="#route-output"><span class="rn-mark">⑤</span> Take it out of the browser <small>2</small></a></li>
+      </ol>
+    </nav>
+    <p class="works-note">Each card says what the example teaches, what it plays with, and what stands in when you have no hardware. Open it, try the three things on its guide card, read the lines it points to, then follow the Next link.</p>
+  </section>
+
+  <section class="sec route" id="route-start" aria-labelledby="route-start-title">
+    <header class="sec-head">
+      <p class="eyebrow">① Route</p>
+      <h2 id="route-start-title">First open</h2>
+      <p class="sec-lede">Read the whole framework in one file, then add one line to a p5 sketch you already have.</p>
+    </header>
+    <ol class="works">
+      <li class="work" id="ex-01">
+        <div class="work-img"><img src="../assets/home/works/01.webp" width="800" height="500" loading="lazy" decoding="async" alt="Bursts of thin green and red particle trails falling on black."></div>
+        <div class="work-label">
+          <p class="work-n">01</p>
+          <h3><a class="work-link" data-ex href="../examples/01-hello-particles/">Hello particles</a></h3>
+          <p class="work-text">The smallest complete app. Read main.js top to bottom and you know the framework.</p>
+          <div class="chip-row"><span class="chip-label chip-ok">No hardware needed</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li><li class="chip chip-stand">QWERTY keys</li><li class="chip chip-stand">Simulated performer</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/01-hello-particles/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/01-hello-particles">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-15">
+        <div class="work-img"><img src="../assets/home/works/15.webp" width="800" height="500" loading="lazy" decoding="async" alt="A flower of layered green and yellow petals with coloured circles around it and four tall red, green and blue beams."></div>
+        <div class="work-label">
+          <p class="work-n">15</p>
+          <h3><a class="work-link" data-ex href="../examples/15-p5-one-line/">p5.js in one line</a></h3>
+          <p class="work-text">A plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone.</p>
+          <div class="chip-row"><span class="chip-label">Needs</span><ul class="chips"><li class="chip chip-need">MIDI controller</li></ul></div>
+        <div class="chip-row"><span class="chip-label">No hardware?</span><ul class="chips"><li class="chip chip-stand">On-screen controller</li><li class="chip chip-stand">Phone or iPad</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/15-p5-one-line/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/15-p5-one-line">Source ↗</a></p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="sec route" id="route-inputs" aria-labelledby="route-inputs-title">
+    <header class="sec-head">
+      <p class="eyebrow">② Route · L1</p>
+      <h2 id="route-inputs-title">Anything can be an instrument</h2>
+      <p class="sec-lede">A controller, a chord, a microphone, bare hands, a Leap Motion, a phone.</p>
+    </header>
+    <ol class="works">
+      <li class="work" id="ex-09">
+        <div class="work-img"><img src="../assets/home/works/09.webp" width="800" height="500" loading="lazy" decoding="async" alt="A spiral of pink and blue dots above an on-screen MIDI keyboard controller."></div>
+        <div class="work-label">
+          <p class="work-n">09</p>
+          <h3><a class="work-link" data-ex href="../examples/09-midi-controllers/">MIDI controllers</a></h3>
+          <p class="work-text">On-screen controllers that move with the real ones you plug in.</p>
+          <div class="chip-row"><span class="chip-label">Needs</span><ul class="chips"><li class="chip chip-need">MIDI controller</li></ul></div>
+        <div class="chip-row"><span class="chip-label">No hardware?</span><ul class="chips"><li class="chip chip-stand">On-screen controller</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/09-midi-controllers/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/09-midi-controllers">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-02">
+        <div class="work-img"><img src="../assets/home/works/02.webp" width="800" height="500" loading="lazy" decoding="async" alt="Slender branching plants in a night garden, with green leaves and small blue, red and pink flowers."></div>
+        <div class="work-label">
+          <p class="work-n">02</p>
+          <h3><a class="work-link" data-ex href="../examples/02-chord-garden/">Chord garden</a></h3>
+          <p class="work-text">Triads bloom, clusters decay. The world listens to chords, never to keys.</p>
+          <div class="chip-row"><span class="chip-label chip-ok">No hardware needed</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li><li class="chip chip-stand">QWERTY keys</li><li class="chip chip-stand">Simulated performer</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/02-chord-garden/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/02-chord-garden">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-06">
+        <div class="work-img"><img src="../assets/home/works/06.webp" width="800" height="500" loading="lazy" decoding="async" alt="A sphere packed with colourful cylinders seen end-on, like umbrellas."></div>
+        <div class="work-label">
+          <p class="work-n">06</p>
+          <h3><a class="work-link" data-ex href="../examples/06-cylinder-earth/">Cylinder earth</a></h3>
+          <p class="work-text">A 2020 voice-controlled WebGL sketch; mic bands or the built-in drum machine play it.</p>
+          <div class="chip-row"><span class="chip-label">Needs</span><ul class="chips"><li class="chip chip-need">Microphone</li></ul></div>
+        <div class="chip-row"><span class="chip-label">No hardware?</span><ul class="chips"><li class="chip chip-stand">Drum machine</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/06-cylinder-earth/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/06-cylinder-earth">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-03">
+        <div class="work-img"><img src="../assets/home/works/03.webp" width="800" height="500" loading="lazy" decoding="async" alt="A blue and white mandala of fine layered lines."></div>
+        <div class="work-label">
+          <p class="work-n">03</p>
+          <h3><a class="work-link" data-ex href="../examples/03-pose-field/">Hand instrument</a></h3>
+          <p class="work-text">Fingers as an instrument: pinch, fists, four pattern families.</p>
+          <div class="chip-row"><span class="chip-label">Needs</span><ul class="chips"><li class="chip chip-need">Camera (hands)</li></ul></div>
+        <div class="chip-row"><span class="chip-label">No hardware?</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li><li class="chip chip-stand">Drum machine</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/03-pose-field/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/03-pose-field">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-12">
+        <div class="work-img"><img src="../assets/home/works/12.webp" width="800" height="500" loading="lazy" decoding="async" alt="A violet hand skeleton above green and blue ink strokes that fall like rain on black."></div>
+        <div class="work-label">
+          <p class="work-n">12</p>
+          <h3><a class="work-link" data-ex href="../examples/12-leap-hands/">Leap hands</a></h3>
+          <p class="work-text">A Leap Motion as an instrument; the mouse is a simulated hand when you have none.</p>
+          <div class="chip-row"><span class="chip-label">Needs</span><ul class="chips"><li class="chip chip-need">Leap Motion</li></ul></div>
+        <div class="chip-row"><span class="chip-label">No hardware?</span><ul class="chips"><li class="chip chip-stand">Mouse as a hand</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/12-leap-hands/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/12-leap-hands">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-08">
+        <div class="work-img"><img src="../assets/home/works/08.webp" width="800" height="500" loading="lazy" decoding="async" alt="Blue and yellow streaks exploding outward from the lower centre."></div>
+        <div class="work-label">
+          <p class="work-n">08</p>
+          <h3><a class="work-link" data-ex href="../examples/08-remote-surface/">Remote surface</a></h3>
+          <p class="work-text">The phone is the instrument panel; the surface grows from the world's params.</p>
+          <div class="chip-row"><span class="chip-label">Needs</span><ul class="chips"><li class="chip chip-need">Phone or iPad</li></ul></div>
+        <div class="chip-row"><span class="chip-label">No hardware?</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/08-remote-surface/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/08-remote-surface">Source ↗</a></p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="sec route" id="route-engines" aria-labelledby="route-engines-title">
+    <header class="sec-head">
+      <p class="eyebrow">③ Route · L3</p>
+      <h2 id="route-engines-title">Bring another picture engine</h2>
+      <p class="sec-lede">Bring your own: a node patch, a 2023 p5 sketch, a 2021 particle system.</p>
+    </header>
+    <ol class="works">
+      <li class="work" id="ex-04">
+        <div class="work-img"><img src="../assets/home/works/04.webp" width="800" height="500" loading="lazy" decoding="async" alt="A node editor with noise, level and output nodes beside a grey cloud texture."></div>
+        <div class="work-label">
+          <p class="work-n">04</p>
+          <h3><a class="work-link" data-ex href="../examples/04-webtoe-stage/">WebToe stage</a></h3>
+          <p class="work-text">A WebToe node patch performed as a World through ext() bindings.</p>
+          <div class="chip-row"><span class="chip-label chip-ok">No hardware needed</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li><li class="chip chip-stand">Simulated performer</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/04-webtoe-stage/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/04-webtoe-stage">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-05">
+        <div class="work-img"><img src="../assets/home/works/05.webp" width="800" height="500" loading="lazy" decoding="async" alt="A glowing yellow ring of jagged petals with small circles inside."></div>
+        <div class="work-label">
+          <p class="work-n">05</p>
+          <h3><a class="work-link" data-ex href="../examples/05-prebiotic-flake/">Prebiotic flake</a></h3>
+          <p class="work-text">A 2023 MIDI sketch replayed through the framework, now with a Tone.js voice.</p>
+          <div class="chip-row"><span class="chip-label chip-ok">No hardware needed</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li><li class="chip chip-stand">Simulated performer</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/05-prebiotic-flake/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/05-prebiotic-flake">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-07">
+        <div class="work-img"><img src="../assets/home/works/07.webp" width="800" height="500" loading="lazy" decoding="async" alt="Cyan and violet fireworks bursting over drooping coloured trails."></div>
+        <div class="work-label">
+          <p class="work-n">07</p>
+          <h3><a class="work-link" data-ex href="../examples/07-firework-festival/">Firework festival</a></h3>
+          <p class="work-text">Close a finger pinch and a firework launches from that hand (2021).</p>
+          <div class="chip-row"><span class="chip-label">Needs</span><ul class="chips"><li class="chip chip-need">Camera (hands)</li></ul></div>
+        <div class="chip-row"><span class="chip-label">No hardware?</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/07-firework-festival/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/07-firework-festival">Source ↗</a></p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="sec route" id="route-show-control" aria-labelledby="route-show-control-title">
+    <header class="sec-head">
+      <p class="eyebrow">④ Route · Timeline · Score</p>
+      <h2 id="route-show-control-title">Run a show</h2>
+      <p class="sec-lede">The show, not just the piece: a timeline you can see, and a score with a director.</p>
+    </header>
+    <ol class="works">
+      <li class="work" id="ex-14">
+        <div class="work-img"><img src="../assets/home/works/14.webp" width="800" height="500" loading="lazy" decoding="async" alt="A hexagonal ring of orange and yellow dots above a timeline with five curve lanes, scene blocks and a playhead."></div>
+        <div class="work-label">
+          <p class="work-n">14</p>
+          <h3><a class="work-link" data-ex href="../examples/14-timeline/">Timeline</a></h3>
+          <p class="work-text">Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes.</p>
+          <div class="chip-row"><span class="chip-label chip-ok">No hardware needed</span><ul class="chips"><li class="chip chip-stand">Plays itself</li><li class="chip chip-stand">Knobs on screen</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/14-timeline/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/14-timeline">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-13">
+        <div class="work-img"><img src="../assets/home/works/13.webp" width="800" height="500" loading="lazy" decoding="async" alt="A pale moon in a blue and teal dusk sky, with the word dusk in the corner."></div>
+        <div class="work-label">
+          <p class="work-n">13</p>
+          <h3><a class="work-link" data-ex href="../examples/13-score-director/">Score &amp; director</a></h3>
+          <p class="work-text">A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash.</p>
+          <div class="chip-row"><span class="chip-label chip-ok">No hardware needed</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li><li class="chip chip-stand">QWERTY keys</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/13-score-director/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/13-score-director">Source ↗</a></p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="sec route" id="route-output" aria-labelledby="route-output-title">
+    <header class="sec-head">
+      <p class="eyebrow">⑤ Route · L4</p>
+      <h2 id="route-output-title">Take it out of the browser</h2>
+      <p class="sec-lede">One synced video, with or without a camera.</p>
+    </header>
+    <ol class="works">
+      <li class="work" id="ex-10">
+        <div class="work-img"><img src="../assets/home/works/10.webp" width="800" height="500" loading="lazy" decoding="async" alt="Overlapping pink, yellow and green rings spreading over a dark field, each one a struck note."></div>
+        <div class="work-label">
+          <p class="work-n">10</p>
+          <h3><a class="work-link" data-ex href="../examples/10-record/">Record</a></h3>
+          <p class="work-text">The work plus your hands plus its own sound, in one synced video. MIDI takes too.</p>
+          <div class="chip-row"><span class="chip-label">Needs</span><ul class="chips"><li class="chip chip-need">Camera (hands)</li></ul></div>
+        <div class="chip-row"><span class="chip-label">No hardware?</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li><li class="chip chip-stand">QWERTY keys</li><li class="chip chip-stand">Simulated performer</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/10-record/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/10-record">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="ex-11">
+        <div class="work-img"><img src="../assets/home/works/11.webp" width="800" height="500" loading="lazy" decoding="async" alt="Overlapping pink, purple and yellow rings beside an on-screen MiniLab 3 with the last note written under it."></div>
+        <div class="work-label">
+          <p class="work-n">11</p>
+          <h3><a class="work-link" data-ex href="../examples/11-controller-video/">Controller video</a></h3>
+          <p class="work-text">The performance video without a camera: the controller you play, drawn live.</p>
+          <div class="chip-row"><span class="chip-label">Needs</span><ul class="chips"><li class="chip chip-need">MIDI controller</li></ul></div>
+        <div class="chip-row"><span class="chip-label">No hardware?</span><ul class="chips"><li class="chip chip-stand">On-screen piano</li><li class="chip chip-stand">QWERTY keys</li><li class="chip chip-stand">A demo take</li></ul></div>
+          <p class="work-links"><a class="work-open" data-ex href="../examples/11-controller-video/">Open →</a> <a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/11-controller-video">Source ↗</a></p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="sec ex-end">
+    <p class="works-note">Works 05 to 07 are artworks by Che-Yu Wu (2020 to 2023), used here as demos. The framework is MIT. The artworks remain © the artist, all rights reserved.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../">Home</a>
+      <a href="../examples/">Examples</a>
+      <a href="../controllers/">Controllers</a>
+      <a href="../docs/">Docs</a>
+      <a href="../p5/">p5.js in one line</a>
+      <a href="../webtoe/">WebToe</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../llms.txt">llms.txt</a>
+      <a href="../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-ex]');if(a){try{localStorage.setItem('oav-ui','en')}catch(x){}}})</script>
+<!--/email_off-->
+</body>
+</html>
