@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MIDI controllers, modeled · open-audiovisual</title>
-<meta name="description" content="MIDI controllers described as data: every knob, pad and key with its exact MIDI message and the document it came from. Play them on screen, plug the real one in, embed one in any page with one line. Arturia, AKAI, Novation, KORG, Behringer and generic layouts.">
+<meta name="description" content="MIDI controllers described as data: every knob, pad and key with its exact MIDI message and the document it came from. Play them on screen, plug the real one in, embed one in any page with one line. Arturia, AKAI, Novation, KORG, Behringer, teenage engineering and generic layouts.">
 <link rel="canonical" href="https://openaudiovisual.com/controllers/">
 <link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/">
 <link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/">
@@ -148,6 +148,12 @@
         },
         {
           "@type": "DataDownload",
+          "name": "OP-1 field",
+          "encodingFormat": "application/json",
+          "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/teenage-engineering-op-1-field.json"
+        },
+        {
+          "@type": "DataDownload",
           "name": "ODD Ball",
           "encodingFormat": "application/json",
           "contentUrl": "https://openaudiovisual.com/packages/midi/profiles/odd-ball.json"
@@ -193,7 +199,7 @@
     {
       "@type": "ItemList",
       "name": "MIDI controllers in the open-audiovisual library",
-      "numberOfItems": 21,
+      "numberOfItems": 22,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -288,36 +294,42 @@
         {
           "@type": "ListItem",
           "position": 16,
+          "name": "OP-1 field",
+          "url": "https://openaudiovisual.com/controllers/#spec-teenage-engineering-op-1-field"
+        },
+        {
+          "@type": "ListItem",
+          "position": 17,
           "name": "Generic 8 knobs + 8 pads",
           "url": "https://openaudiovisual.com/controllers/#spec-generic-8k8p"
         },
         {
           "@type": "ListItem",
-          "position": 17,
+          "position": 18,
           "name": "Generic 8 faders",
           "url": "https://openaudiovisual.com/controllers/#spec-generic-8f"
         },
         {
           "@type": "ListItem",
-          "position": 18,
+          "position": 19,
           "name": "Generic 16 pads",
           "url": "https://openaudiovisual.com/controllers/#spec-generic-16p"
         },
         {
           "@type": "ListItem",
-          "position": 19,
+          "position": 20,
           "name": "Generic 25-key keyboard",
           "url": "https://openaudiovisual.com/controllers/#spec-generic-keys25"
         },
         {
           "@type": "ListItem",
-          "position": 20,
+          "position": 21,
           "name": "Generic 49-key keyboard",
           "url": "https://openaudiovisual.com/controllers/#spec-generic-keys49"
         },
         {
           "@type": "ListItem",
-          "position": 21,
+          "position": 22,
           "name": "Generic 61-key keyboard",
           "url": "https://openaudiovisual.com/controllers/#spec-generic-keys61"
         }
@@ -360,10 +372,10 @@
       <div class="hero-facts">
         <p class="why">Every music tool makes you map your controller again. Here a controller is modeled once, with sources, for everyone to use.</p>
         <dl class="stats">
-          <div><dt>devices</dt><dd>15</dd></div>
+          <div><dt>devices</dt><dd>16</dd></div>
           <div><dt>generic layouts</dt><dd>6</dd></div>
-          <div><dt>controls on the devices</dt><dd>682</dd></div>
-          <div><dt>sources cited</dt><dd>58</dd></div>
+          <div><dt>controls on the devices</dt><dd>743</dd></div>
+          <div><dt>sources cited</dt><dd>60</dd></div>
         </dl>
         <p class="unv-note">152 of those controls are marked <em>unverified</em>: the number is our best reading, and learn mode rebinds it in one move.</p>
       </div>
@@ -387,6 +399,7 @@
         <a class="chip" href="#spec-novation-launch-control-xl-3" data-profile="novation-launch-control-xl-3">Novation Launch Control XL 3</a>
         <a class="chip" href="#spec-novation-launchkey-mini-mk3" data-profile="novation-launchkey-mini-mk3">Novation Launchkey Mini MK3</a>
         <a class="chip" href="#spec-odd-ball" data-profile="odd-ball">ODD Ball</a>
+        <a class="chip" href="#spec-teenage-engineering-op-1-field" data-profile="teenage-engineering-op-1-field">OP-1 field</a>
         <span class="switch-k">Generic</span>
         <a class="chip" href="#spec-generic-8k8p" data-profile="generic-8k8p">Generic 8 knobs + 8 pads</a>
         <a class="chip" href="#spec-generic-8f" data-profile="generic-8f">Generic 8 faders</a>
@@ -430,7 +443,7 @@
       <span class="shown" id="shown" aria-live="polite"></span>
     </div>
     <div class="cat-group">
-    <h3 class="cat-h">Devices <span>15</span></h3>
+    <h3 class="cat-h">Devices <span>16</span></h3>
     <ul class="cards">
       <li class="card" id="card-akai-lpd8" data-profile="akai-lpd8" data-has="pad knob">
         <div class="card-face" data-face="akai-lpd8"><svg class="fp" viewBox="0 0 100 27" role="img" aria-label="Faceplate of AKAI LPD8 (mk2)" focusable="false" preserveAspectRatio="xMidYMid meet"><rect class="fp-body" width="100" height="27" rx="0.95" fill="#18191c"/><text class="fp-fl" x="2" y="2.43">AKAI LPD8</text><text class="fp-sl" x="2.3" y="5.7">PADS</text><rect class="fp-pad" x="2" y="6.4" width="13.97" height="9.2" rx="0.92" fill="#ff6b57"/><rect class="fp-pad" x="16.67" y="6.4" width="13.97" height="9.2" rx="0.92" fill="#ff6b57"/><rect class="fp-pad" x="31.35" y="6.4" width="13.97" height="9.2" rx="0.92" fill="#ff6b57"/><rect class="fp-pad" x="46.02" y="6.4" width="13.97" height="9.2" rx="0.92" fill="#ff6b57"/><rect class="fp-pad" x="2" y="16.3" width="13.97" height="9.2" rx="0.92" fill="#ff6b57"/><rect class="fp-pad" x="16.67" y="16.3" width="13.97" height="9.2" rx="0.92" fill="#ff6b57"/><rect class="fp-pad" x="31.35" y="16.3" width="13.97" height="9.2" rx="0.92" fill="#ff6b57"/><rect class="fp-pad" x="46.02" y="16.3" width="13.97" height="9.2" rx="0.92" fill="#ff6b57"/><text class="fp-sl" x="63.3" y="5.7">KNOBS</text><circle class="fp-ring" cx="67.11" cy="10.15" r="3.15" stroke="#ffb547"/><circle class="fp-cap" cx="67.11" cy="10.15" r="2.21"/><line class="fp-ptr" x1="66.56" y1="10.71" x2="65.64" y2="11.62"/><text class="fp-cl" x="67.11" y="15.3">K1</text><circle class="fp-ring" cx="76.04" cy="10.15" r="3.15" stroke="#ffb547"/><circle class="fp-cap" cx="76.04" cy="10.15" r="2.21"/><line class="fp-ptr" x1="75.48" y1="10.71" x2="74.57" y2="11.62"/><text class="fp-cl" x="76.04" y="15.3">K2</text><circle class="fp-ring" cx="84.96" cy="10.15" r="3.15" stroke="#ffb547"/><circle class="fp-cap" cx="84.96" cy="10.15" r="2.21"/><line class="fp-ptr" x1="84.41" y1="10.71" x2="83.49" y2="11.62"/><text class="fp-cl" x="84.96" y="15.3">K3</text><circle class="fp-ring" cx="93.89" cy="10.15" r="3.15" stroke="#ffb547"/><circle class="fp-cap" cx="93.89" cy="10.15" r="2.21"/><line class="fp-ptr" x1="93.33" y1="10.71" x2="92.42" y2="11.62"/><text class="fp-cl" x="93.89" y="15.3">K4</text><circle class="fp-ring" cx="67.11" cy="20.05" r="3.15" stroke="#ffb547"/><circle class="fp-cap" cx="67.11" cy="20.05" r="2.21"/><line class="fp-ptr" x1="66.56" y1="20.61" x2="65.64" y2="21.52"/><text class="fp-cl" x="67.11" y="25.2">K5</text><circle class="fp-ring" cx="76.04" cy="20.05" r="3.15" stroke="#ffb547"/><circle class="fp-cap" cx="76.04" cy="20.05" r="2.21"/><line class="fp-ptr" x1="75.48" y1="20.61" x2="74.57" y2="21.52"/><text class="fp-cl" x="76.04" y="25.2">K6</text><circle class="fp-ring" cx="84.96" cy="20.05" r="3.15" stroke="#ffb547"/><circle class="fp-cap" cx="84.96" cy="20.05" r="2.21"/><line class="fp-ptr" x1="84.41" y1="20.61" x2="83.49" y2="21.52"/><text class="fp-cl" x="84.96" y="25.2">K7</text><circle class="fp-ring" cx="93.89" cy="20.05" r="3.15" stroke="#ffb547"/><circle class="fp-cap" cx="93.89" cy="20.05" r="2.21"/><line class="fp-ptr" x1="93.33" y1="20.61" x2="92.42" y2="21.52"/><text class="fp-cl" x="93.89" y="25.2">K8</text></svg></div>
@@ -580,6 +593,16 @@
           <p class="card-counts">3 pads · 4 knobs · 3 faders</p>
           <ul class="badges"><li class="b-tool">Artist's TouchDesigner tool</li><li class="b-unv">10 unverified</li></ul>
           <p class="card-links"><a href="#play" data-play="odd-ball">Play</a><a href="../examples/09-midi-controllers/?view=controller&amp;profile=odd-ball">Full screen ↗</a><a href="../packages/midi/profiles/odd-ball.json">JSON</a><a href="#embed" data-embed="odd-ball">Embed</a></p>
+        </div>
+      </li>
+      <li class="card" id="card-teenage-engineering-op-1-field" data-profile="teenage-engineering-op-1-field" data-has="keys encoder button">
+        <div class="card-face" data-face="teenage-engineering-op-1-field"><svg class="fp" viewBox="0 0 100 36" role="img" aria-label="Faceplate of OP-1 field" focusable="false" preserveAspectRatio="xMidYMid meet"><rect class="fp-body" width="100" height="36" rx="1.26" fill="#161719"/><rect class="fp-btn" x="1.54" y="1.88" width="10.55" height="10.55" rx="0.4"/><text class="fp-bl fp-small" x="6.82" y="7.5"></text><text class="fp-sl" x="3.91" y="3.08">·</text><text class="fp-sl" x="4.81" y="3.08">·</text><text class="fp-sl" x="5.7" y="3.08">·</text><text class="fp-sl" x="6.6" y="3.08">·</text><text class="fp-sl" x="7.49" y="3.08">·</text><text class="fp-sl" x="8.38" y="3.08">·</text><text class="fp-sl" x="9.28" y="3.08">·</text><text class="fp-sl" x="3.01" y="3.97">·</text><text class="fp-sl" x="3.91" y="3.97">·</text><text class="fp-sl" x="4.81" y="3.97">·</text><text class="fp-sl" x="5.7" y="3.97">·</text><text class="fp-sl" x="6.6" y="3.97">·</text><text class="fp-sl" x="7.49" y="3.97">·</text><text class="fp-sl" x="8.38" y="3.97">·</text><text class="fp-sl" x="9.28" y="3.97">·</text><text class="fp-sl" x="10.18" y="3.97">·</text><text class="fp-sl" x="2.12" y="4.87">·</text><text class="fp-sl" x="3.01" y="4.87">·</text><text class="fp-sl" x="3.91" y="4.87">·</text><text class="fp-sl" x="4.81" y="4.87">·</text><text class="fp-sl" x="5.7" y="4.87">·</text><text class="fp-sl" x="6.6" y="4.87">·</text><text class="fp-sl" x="7.49" y="4.87">·</text><text class="fp-sl" x="8.38" y="4.87">·</text><text class="fp-sl" x="9.28" y="4.87">·</text><text class="fp-sl" x="10.18" y="4.87">·</text><text class="fp-sl" x="11.07" y="4.87">·</text><text class="fp-sl" x="2.12" y="5.77">·</text><text class="fp-sl" x="3.01" y="5.77">·</text><text class="fp-sl" x="3.91" y="5.77">·</text><text class="fp-sl" x="4.81" y="5.77">·</text><text class="fp-sl" x="5.7" y="5.77">·</text><text class="fp-sl" x="6.6" y="5.77">·</text><text class="fp-sl" x="7.49" y="5.77">·</text><text class="fp-sl" x="8.38" y="5.77">·</text><text class="fp-sl" x="9.28" y="5.77">·</text><text class="fp-sl" x="10.18" y="5.77">·</text><text class="fp-sl" x="11.07" y="5.77">·</text><text class="fp-sl" x="2.12" y="6.66">·</text><text class="fp-sl" x="3.01" y="6.66">·</text><text class="fp-sl" x="3.91" y="6.66">·</text><text class="fp-sl" x="4.81" y="6.66">·</text><text class="fp-sl" x="5.7" y="6.66">·</text><text class="fp-sl" x="6.6" y="6.66">·</text><text class="fp-sl" x="7.49" y="6.66">·</text><text class="fp-sl" x="8.38" y="6.66">·</text><text class="fp-sl" x="9.28" y="6.66">·</text><text class="fp-sl" x="10.18" y="6.66">·</text><text class="fp-sl" x="11.07" y="6.66">·</text><text class="fp-sl" x="2.12" y="7.56">·</text><text class="fp-sl" x="3.01" y="7.56">·</text><text class="fp-sl" x="3.91" y="7.56">·</text><text class="fp-sl" x="4.81" y="7.56">·</text><text class="fp-sl" x="5.7" y="7.56">·</text><text class="fp-sl" x="6.6" y="7.56">·</text><text class="fp-sl" x="7.49" y="7.56">·</text><text class="fp-sl" x="8.38" y="7.56">·</text><text class="fp-sl" x="9.28" y="7.56">·</text><text class="fp-sl" x="10.18" y="7.56">·</text><text class="fp-sl" x="11.07" y="7.56">·</text><text class="fp-sl" x="2.12" y="8.45">·</text><text class="fp-sl" x="3.01" y="8.45">·</text><text class="fp-sl" x="3.91" y="8.45">·</text><text class="fp-sl" x="4.81" y="8.45">·</text><text class="fp-sl" x="5.7" y="8.45">·</text><text class="fp-sl" x="6.6" y="8.45">·</text><text class="fp-sl" x="7.49" y="8.45">·</text><text class="fp-sl" x="8.38" y="8.45">·</text><text class="fp-sl" x="9.28" y="8.45">·</text><text class="fp-sl" x="10.18" y="8.45">·</text><text class="fp-sl" x="11.07" y="8.45">·</text><text class="fp-sl" x="2.12" y="9.35">·</text><text class="fp-sl" x="3.01" y="9.35">·</text><text class="fp-sl" x="3.91" y="9.35">·</text><text class="fp-sl" x="4.81" y="9.35">·</text><text class="fp-sl" x="5.7" y="9.35">·</text><text class="fp-sl" x="6.6" y="9.35">·</text><text class="fp-sl" x="7.49" y="9.35">·</text><text class="fp-sl" x="8.38" y="9.35">·</text><text class="fp-sl" x="9.28" y="9.35">·</text><text class="fp-sl" x="10.18" y="9.35">·</text><text class="fp-sl" x="11.07" y="9.35">·</text><text class="fp-sl" x="2.12" y="10.24">·</text><text class="fp-sl" x="3.01" y="10.24">·</text><text class="fp-sl" x="3.91" y="10.24">·</text><text class="fp-sl" x="4.81" y="10.24">·</text><text class="fp-sl" x="5.7" y="10.24">·</text><text class="fp-sl" x="6.6" y="10.24">·</text><text class="fp-sl" x="7.49" y="10.24">·</text><text class="fp-sl" x="8.38" y="10.24">·</text><text class="fp-sl" x="9.28" y="10.24">·</text><text class="fp-sl" x="10.18" y="10.24">·</text><text class="fp-sl" x="11.07" y="10.24">·</text><text class="fp-sl" x="3.01" y="11.14">·</text><text class="fp-sl" x="3.91" y="11.14">·</text><text class="fp-sl" x="4.81" y="11.14">·</text><text class="fp-sl" x="5.7" y="11.14">·</text><text class="fp-sl" x="6.6" y="11.14">·</text><text class="fp-sl" x="7.49" y="11.14">·</text><text class="fp-sl" x="8.38" y="11.14">·</text><text class="fp-sl" x="9.28" y="11.14">·</text><text class="fp-sl" x="10.18" y="11.14">·</text><text class="fp-sl" x="3.91" y="12.03">·</text><text class="fp-sl" x="4.81" y="12.03">·</text><text class="fp-sl" x="5.7" y="12.03">·</text><text class="fp-sl" x="6.6" y="12.03">·</text><text class="fp-sl" x="7.49" y="12.03">·</text><text class="fp-sl" x="8.38" y="12.03">·</text><text class="fp-sl" x="9.28" y="12.03">·</text><rect class="fp-btn" x="12.44" y="1.88" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="14.99" y="4.78">vol</text><rect class="fp-btn" x="17.89" y="1.88" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="20.44" y="4.78"></text><rect class="fp-screen" x="23.16" y="1.7" width="21.8" height="10.9" rx="0.5"/><text class="fp-st" x="34.06" y="7.65">OP-1 field</text><text class="fp-sl" x="93.2" y="26.4">OP–1</text><rect class="fp-btn" x="95.6" y="30.75" width="3.2" height="1.4" rx="0.4"/><text class="fp-bl fp-small" x="97.2" y="31.8">field</text><rect class="fp-btn" x="12.44" y="7.33" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="14.99" y="10.23"></text><rect class="fp-btn" x="17.89" y="7.33" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="20.44" y="10.23"></text><rect class="fp-btn" x="88.73" y="1.88" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="91.28" y="4.78"></text><rect class="fp-btn" x="88.73" y="7.33" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="91.28" y="10.23"></text><rect class="fp-btn" x="1.54" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="4.09" y="15.68"></text><rect class="fp-btn" x="6.99" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="9.54" y="15.68"></text><rect class="fp-btn" x="12.44" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="14.99" y="15.68"></text><rect class="fp-btn" x="17.89" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="20.44" y="15.68"></text><rect class="fp-btn" x="23.34" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="25.89" y="15.68"></text><rect class="fp-btn" x="28.79" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="31.34" y="15.68"></text><rect class="fp-btn" x="34.23" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="36.78" y="15.68"></text><rect class="fp-btn" x="39.68" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="42.23" y="15.68"></text><rect class="fp-btn" x="45.13" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="47.68" y="15.68"></text><rect class="fp-btn" x="50.59" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="53.14" y="15.68"></text><rect class="fp-btn" x="56.03" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="58.58" y="15.68"></text><rect class="fp-btn" x="61.48" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="64.03" y="15.68"></text><rect class="fp-btn" x="66.94" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="69.49" y="15.68"></text><rect class="fp-btn" x="72.39" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="74.94" y="15.68"></text><rect class="fp-btn" x="77.83" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="80.38" y="15.68"></text><rect class="fp-btn" x="83.28" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="85.83" y="15.68"></text><rect class="fp-btn" x="88.73" y="12.78" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="91.28" y="15.68"></text><rect class="fp-btn" x="1.54" y="18.23" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="4.09" y="21.13"></text><rect class="fp-btn" x="6.99" y="18.23" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="9.54" y="21.13"></text><rect class="fp-btn" x="12.44" y="18.23" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="14.99" y="21.13"></text><rect class="fp-btn" x="1.54" y="23.68" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="4.09" y="26.58"></text><rect class="fp-btn" x="6.99" y="23.68" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="9.54" y="26.58"></text><rect class="fp-btn" x="12.44" y="23.68" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="14.99" y="26.58"></text><rect class="fp-btn" x="1.54" y="29.13" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="4.09" y="32.03"></text><rect class="fp-btn" x="6.99" y="29.13" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="9.54" y="32.03"></text><rect class="fp-btn" x="12.44" y="29.13" width="5.1" height="5.1" rx="0.4"/><text class="fp-bl fp-small" x="14.99" y="32.03">shift</text><rect class="fp-btn" x="45.13" y="1.88" width="10.55" height="10.55" rx="0.4"/><text class="fp-bl fp-small" x="50.41" y="7.5"></text><rect class="fp-btn" x="56.03" y="1.88" width="10.55" height="10.55" rx="0.4"/><text class="fp-bl fp-small" x="61.3" y="7.5"></text><rect class="fp-btn" x="66.94" y="1.88" width="10.55" height="10.55" rx="0.4"/><text class="fp-bl fp-small" x="72.22" y="7.5"></text><rect class="fp-btn" x="77.83" y="1.88" width="10.55" height="10.55" rx="0.4"/><text class="fp-bl fp-small" x="83.11" y="7.5"></text><circle class="fp-ring" cx="50.41" cy="6.3" r="1.97" stroke="#c9ccd3"/><circle class="fp-cap" cx="50.41" cy="6.3" r="1.38"/><line class="fp-ptr" x1="50.06" y1="6.65" x2="49.49" y2="7.22"/><circle class="fp-ring" cx="61.31" cy="6.3" r="1.97" stroke="#d4a03a"/><circle class="fp-cap" cx="61.31" cy="6.3" r="1.38"/><line class="fp-ptr" x1="60.96" y1="6.65" x2="60.39" y2="7.22"/><circle class="fp-ring" cx="72.21" cy="6.3" r="1.97" stroke="#b4b8c0"/><circle class="fp-cap" cx="72.21" cy="6.3" r="1.38"/><line class="fp-ptr" x1="71.86" y1="6.65" x2="71.29" y2="7.22"/><circle class="fp-ring" cx="83.11" cy="6.3" r="1.97" stroke="#ff7a1a"/><circle class="fp-cap" cx="83.11" cy="6.3" r="1.38"/><line class="fp-ptr" x1="82.76" y1="6.65" x2="82.19" y2="7.22"/><circle class="fp-btn" cx="50.41" cy="7.05" r="1.48"/><circle class="fp-btn" cx="61.31" cy="7.05" r="1.48"/><circle class="fp-btn" cx="72.21" cy="7.05" r="1.48"/><circle class="fp-btn" cx="83.11" cy="7.05" r="1.48"/><circle class="fp-btn" cx="14.98" cy="9.88" r="1.38"/><circle class="fp-btn" cx="20.44" cy="9.88" r="1.38"/><circle class="fp-btn" cx="91.28" cy="4.43" r="1.38"/><circle class="fp-btn" cx="91.28" cy="9.88" r="1.38"/><circle class="fp-btn" cx="4.08" cy="15.32" r="1.38"/><circle class="fp-btn" cx="9.54" cy="15.32" r="1.38"/><circle class="fp-btn" cx="14.98" cy="15.32" r="1.38"/><circle class="fp-btn" cx="20.44" cy="15.32" r="1.38"/><circle class="fp-btn" cx="25.89" cy="15.32" r="1.38"/><circle class="fp-btn" cx="31.34" cy="15.32" r="1.38"/><circle class="fp-btn" cx="36.79" cy="15.32" r="1.38"/><circle class="fp-btn" cx="42.23" cy="15.32" r="1.38"/><circle class="fp-btn" cx="47.69" cy="15.32" r="1.38"/><circle class="fp-btn" cx="53.13" cy="15.32" r="1.38"/><circle class="fp-btn" cx="58.59" cy="15.32" r="1.38"/><circle class="fp-btn" cx="64.03" cy="15.32" r="1.38"/><circle class="fp-btn" cx="69.48" cy="15.32" r="1.38"/><circle class="fp-btn" cx="74.93" cy="15.32" r="1.38"/><circle class="fp-btn" cx="80.38" cy="15.32" r="1.38"/><circle class="fp-btn" cx="85.83" cy="15.32" r="1.38"/><circle class="fp-btn" cx="91.28" cy="15.32" r="1.38"/><circle class="fp-btn" cx="4.08" cy="20.78" r="1.38"/><circle class="fp-btn" cx="9.54" cy="20.78" r="1.38"/><circle class="fp-btn" cx="14.98" cy="20.78" r="1.38"/><circle class="fp-btn" cx="4.08" cy="26.23" r="1.38"/><circle class="fp-btn" cx="9.54" cy="26.23" r="1.38"/><circle class="fp-btn" cx="14.98" cy="26.23" r="1.38"/><circle class="fp-btn" cx="4.08" cy="31.68" r="1.38"/><circle class="fp-btn" cx="9.54" cy="31.68" r="1.38"/><rect class="fp-kw" x="17.71" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="23.16" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="28.61" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="34.06" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="39.51" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="44.96" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="50.41" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="55.86" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="61.31" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="66.76" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="72.21" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="77.66" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="83.11" y="18.05" width="5.45" height="16.35"/><rect class="fp-kw" x="88.56" y="18.05" width="5.45" height="16.35"/><rect class="fp-kb" x="21.47" y="18.05" width="3.38" height="9.81"/><rect class="fp-kb" x="26.92" y="18.05" width="3.38" height="9.81"/><rect class="fp-kb" x="32.37" y="18.05" width="3.38" height="9.81"/><rect class="fp-kb" x="43.27" y="18.05" width="3.38" height="9.81"/><rect class="fp-kb" x="48.72" y="18.05" width="3.38" height="9.81"/><rect class="fp-kb" x="59.62" y="18.05" width="3.38" height="9.81"/><rect class="fp-kb" x="65.07" y="18.05" width="3.38" height="9.81"/><rect class="fp-kb" x="70.52" y="18.05" width="3.38" height="9.81"/><rect class="fp-kb" x="81.42" y="18.05" width="3.38" height="9.81"/><rect class="fp-kb" x="86.87" y="18.05" width="3.38" height="9.81"/></svg></div>
+        <div class="card-body">
+          <p class="card-maker">teenage engineering</p>
+          <h4 class="card-name"><a href="#spec-teenage-engineering-op-1-field">OP-1 field</a></h4>
+          <p class="card-counts">24 keys · 4 encoders · 33 buttons</p>
+          <ul class="badges"><li class="b-maker">Manufacturer docs</li><li class="b-comm">Community notes</li></ul>
+          <p class="card-links"><a href="#play" data-play="teenage-engineering-op-1-field">Play</a><a href="../examples/09-midi-controllers/?view=controller&amp;profile=teenage-engineering-op-1-field">Full screen ↗</a><a href="../packages/midi/profiles/teenage-engineering-op-1-field.json">JSON</a><a href="#embed" data-embed="teenage-engineering-op-1-field">Embed</a></p>
         </div>
       </li>
     </ul>
@@ -6630,6 +6653,418 @@
         </div>
       </div>
     </details>
+    <details class="spec" id="spec-teenage-engineering-op-1-field">
+      <summary><span class="spec-name">OP-1 field</span><span class="spec-meta">teenage engineering · 61 controls · <code>midi/op1field/…</code></span></summary>
+      <div class="spec-body">
+        <div class="table-scroll" role="region" aria-label="MIDI implementation of OP-1 field" tabindex="0">
+        <table>
+          <caption>MIDI implementation of OP-1 field</caption>
+          <thead><tr><th scope="col">Control</th><th scope="col">Type</th><th scope="col">Message</th><th scope="col">Ch</th><th scope="col">Number</th><th scope="col">Signal</th><th scope="col">LED feedback</th><th scope="col">Verified</th></tr></thead>
+          <tbody>
+          <tr>
+            <th scope="row"><code class="cid">enc1</code></th>
+            <td>encoder</td>
+            <td>CC · absolute</td>
+            <td class="n">1</td>
+            <td class="n">1</td>
+            <td><code>midi/op1field/enc1</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row"><code class="cid">enc2</code></th>
+            <td>encoder</td>
+            <td>CC · absolute</td>
+            <td class="n">1</td>
+            <td class="n">2</td>
+            <td><code>midi/op1field/enc2</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row"><code class="cid">enc3</code></th>
+            <td>encoder</td>
+            <td>CC · absolute</td>
+            <td class="n">1</td>
+            <td class="n">3</td>
+            <td><code>midi/op1field/enc3</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row"><code class="cid">enc4</code></th>
+            <td>encoder</td>
+            <td>CC · absolute</td>
+            <td class="n">1</td>
+            <td class="n">4</td>
+            <td><code>midi/op1field/enc4</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row"><code class="cid">push1</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">66</td>
+            <td><code>midi/op1field/push1</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row"><code class="cid">push2</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">67</td>
+            <td><code>midi/op1field/push2</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row"><code class="cid">push3</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">68</td>
+            <td><code>midi/op1field/push3</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row"><code class="cid">push4</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">69</td>
+            <td><code>midi/op1field/push4</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">? <code class="cid">help</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">5</td>
+            <td><code>midi/op1field/help</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">♩ <code class="cid">metronome</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">6</td>
+            <td><code>midi/op1field/metronome</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">↗ <code class="cid">input</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">48</td>
+            <td><code>midi/op1field/input</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row"><code class="cid">com</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">49</td>
+            <td><code>midi/op1field/com</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">∿∿ <code class="cid">synth</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">7</td>
+            <td><code>midi/op1field/synth</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">◉ <code class="cid">drum</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">8</td>
+            <td><code>midi/op1field/drum</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">ꝏ <code class="cid">tape</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">9</td>
+            <td><code>midi/op1field/tape</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">ılı <code class="cid">mixer</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">10</td>
+            <td><code>midi/op1field/mixer</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">1 <code class="cid">t1</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">11</td>
+            <td><code>midi/op1field/t1</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">2 <code class="cid">t2</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">12</td>
+            <td><code>midi/op1field/t2</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">3 <code class="cid">t3</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">13</td>
+            <td><code>midi/op1field/t3</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">4 <code class="cid">t4</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">14</td>
+            <td><code>midi/op1field/t4</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">1 in <code class="cid">k1</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">50</td>
+            <td><code>midi/op1field/k1</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">2 out <code class="cid">k2</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">51</td>
+            <td><code>midi/op1field/k2</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">3 ↺ <code class="cid">k3</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">52</td>
+            <td><code>midi/op1field/k3</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">4 ꝏ <code class="cid">k4</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">21</td>
+            <td><code>midi/op1field/k4</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">5 я <code class="cid">k5</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">22</td>
+            <td><code>midi/op1field/k5</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">6 ⋯ <code class="cid">k6</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">23</td>
+            <td><code>midi/op1field/k6</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">7 m1 <code class="cid">k7</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">24</td>
+            <td><code>midi/op1field/k7</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">8 m2 <code class="cid">k8</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">25</td>
+            <td><code>midi/op1field/k8</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">⋰ <code class="cid">seq</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">26</td>
+            <td><code>midi/op1field/seq</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">⤒ <code class="cid">lift</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">15</td>
+            <td><code>midi/op1field/lift</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">⤓ <code class="cid">drop</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">16</td>
+            <td><code>midi/op1field/drop</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">✂ <code class="cid">split</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">17</td>
+            <td><code>midi/op1field/split</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">● <code class="cid">rec</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">38</td>
+            <td><code>midi/op1field/rec</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">▶ <code class="cid">play</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">39</td>
+            <td><code>midi/op1field/play</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">■ <code class="cid">stop</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">40</td>
+            <td><code>midi/op1field/stop</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">← <code class="cid">left</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">41</td>
+            <td><code>midi/op1field/left</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">→ <code class="cid">right</code></th>
+            <td>button</td>
+            <td>CC · momentary</td>
+            <td class="n">1</td>
+            <td class="n">42</td>
+            <td><code>midi/op1field/right</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Keys <code class="cid">keys</code></th>
+            <td>keys</td>
+            <td>Note · velocity</td>
+            <td class="n">1</td>
+            <td class="n">53–76 (F3–E5)</td>
+            <td><code>midi/op1field/keys/on · midi/op1field/keys/off · midi/op1field/n53…n76</code></td>
+            <td>—</td>
+            <td>yes</td>
+          </tr>
+          </tbody>
+        </table>
+        </div>
+        <h4>Notes on single controls</h4>
+        <ul class="cnotes"><li><code>enc1</code> CC 1, tested on hardware: absolute 0–127 (the unit's CTRL page has encoders set to absolute). Set to relative, the original OP-1 is reported to send 1 per step right and 127 per step left: change relative to "twos".</li><li><code>enc2</code> CC 2, tested on hardware: absolute 0–127 (the unit's CTRL page has encoders set to absolute). Set to relative, the original OP-1 is reported to send 1 per step right and 127 per step left: change relative to "twos".</li><li><code>enc3</code> CC 3, tested on hardware: absolute 0–127 (the unit's CTRL page has encoders set to absolute). Set to relative, the original OP-1 is reported to send 1 per step right and 127 per step left: change relative to "twos".</li><li><code>enc4</code> CC 4, tested on hardware: absolute 0–127 (the unit's CTRL page has encoders set to absolute). Set to relative, the original OP-1 is reported to send 1 per step right and 127 per step left: change relative to "twos".</li><li><code>push1</code> Pressing the blue encoder, tested on hardware: CC 66, 127 while held, 0 on release. On release the unit also sends a one-off CC 59 127/0 pulse, not modelled.</li><li><code>push2</code> Pressing the ochre encoder, tested on hardware: CC 67, 127 while held, 0 on release. On release the unit also sends a one-off CC 60 127/0 pulse, not modelled.</li><li><code>push3</code> Pressing the gray encoder, tested on hardware: CC 68, 127 while held, 0 on release. On release the unit also sends a one-off CC 61 127/0 pulse, not modelled.</li><li><code>push4</code> Pressing the orange encoder, tested on hardware: CC 69, 127 while held, 0 on release. On release the unit also sends a one-off CC 62 127/0 pulse, not modelled.</li><li><code>keys</code> Tested on hardware: the 24 keys run F3 (53) to E5 (76) at the default octave, velocity was 127 on every press in the test. Keys follow any note on the channel, so octave shifts just scroll the on-screen keys.</li></ul>
+        <div class="spec-grid">
+          <div>
+            <h4>Sources</h4>
+            <ul class="sources"><li><span class="src-kind">manufacturer</span> <a href="https://assets.teenage.engineering/_img/69f248938d433104c4dd1846_original.pdf">OP-1 field user guide, fw 1.7 (teenage engineering)</a><span class="src-note">CTRL mode (shift + COM → T2) turns the unit into a controller; control MIDI channel settable 1–16; encoders send relative or absolute (unit setting); MIDI over USB and Bluetooth LE; the field's encoders are blue, ochre, gray and orange</span></li><li><span class="src-kind">community</span> <a href="https://discourse.zynthian.org/t/support-for-teenage-engineering-op-1/12201">Support for Teenage Engineering OP-1 — Zynthian forum (non-official)</a><span class="src-note">community report for the original OP-1: encoders = CC 1–4 (blue, green, white, orange on the original — blue, ochre, gray, orange on the field — in the MIDI log's column order), relative 1 = right, 127 = left; encoder push = CC 64–67, 127 press / 0 release. On the tested OP-1 field the encoders matched (CC 1–4); its pushes send CC 66–69 instead</span></li></ul>
+            
+          </div>
+          <div>
+            <h4>Notes</h4><p class="raw-note">Before anything is sent: COM → T1 sys → midi, set NOTES and OTHER to OUT (both were OFF on the unit this was tested on, and CTRL mode sent nothing until they were set). Then CTRL mode: shift + COM → T2. Tested over USB on an OP-1 field. Its MIDI port is named just "OP-1" (macOS, USB 2367:8102), so the port match cannot tell it from the original OP-1. Control channel 1 (settable 1–16 on the CTRL page; use the element's channel attribute if yours differs). Every control was pressed once on the tested unit: encoders CC 1–4 (absolute as tested; the CTRL page can switch them to relative), encoder pushes CC 66–69, T1–T4 CC 11–14, help 5, metronome 6, synth/drum/tape/mixer 7–10, lift/drop/scissors 15–17, keys 1–3 CC 50–52, keys 4–8 CC 21–25, sequencer 26, record/play/stop 38–40, input 48, COM 49, ← → 41–42 (with OCTAVE off) — all 127 press / 0 release. Hold shift on the CTRL page for its settings: MIDI CH, KNOBS (abs/rel) and OCTAVE. With OCTAVE on, the ← → arrows shift the keyboard an octave and send nothing; turn it off to use them as CC 41/42. Shift and the volume knob send nothing (both tested): they are drawn, not mapped. On screen, tap a knob's centre to press it and drag its ring to turn it. The faceplate follows the top view in TE's user guide. No LED feedback.</p>
+            <h4>Port names it recognises</h4>
+            <dl class="ports"><div><dt>matches</dt><dd><code>/\bop-?1\b/i</code></dd></div></dl>
+          </div>
+          <div>
+            <h4>Signals</h4>
+            <p>Every control publishes <code>midi/op1field/&lt;control&gt;</code> (0..1), plus <code>/raw</code>; pads add <code>/hit</code>, encoders <code>/delta</code>, keys <code>/on</code> <code>/off</code> and <code>n&lt;note&gt;</code>; the last control touched is <code>midi/op1field/last</code>.</p>
+            <p class="spec-links"><a href="../packages/midi/profiles/teenage-engineering-op-1-field.json">Raw JSON ↗</a> <a href="../examples/09-midi-controllers/?view=controller&amp;profile=teenage-engineering-op-1-field">Full screen ↗</a> <a href="#card-teenage-engineering-op-1-field">↑ Its card</a></p>
+          </div>
+        </div>
+      </div>
+    </details>
     <details class="spec" id="spec-generic-8k8p">
       <summary><span class="spec-name">Generic 8 knobs + 8 pads</span><span class="spec-meta">Generic layout · 16 controls · <code>midi/g8k8p/…</code></span></summary>
       <div class="spec-body">
@@ -7350,7 +7785,7 @@
     <div class="builder">
       <form class="b-form js-only" id="builder" aria-label="Put one in your page">
         <label class="f"><span>Device</span>
-          <select name="profile"><optgroup label="Devices"><option value="akai-lpd8" selected>AKAI LPD8 (mk2)</option><option value="akai-apc-mini-mk2">AKAI APC mini mk2</option><option value="akai-midimix">AKAI MIDImix</option><option value="akai-mpk-mini-mk3">AKAI MPK mini mk3</option><option value="arturia-minilab3">Arturia MiniLab 3</option><option value="arturia-keystep37">Arturia KeyStep 37</option><option value="arturia-beatstep">Arturia BeatStep</option><option value="behringer-x-touch-mini">Behringer X-TOUCH MINI</option><option value="korg-nanokontrol2">Korg nanoKONTROL2</option><option value="korg-nanokey2">Korg nanoKEY2</option><option value="novation-launchpad-mini-mk3">Novation Launchpad Mini MK3</option><option value="novation-launch-control-xl-mk2">Novation Launch Control XL (MK2)</option><option value="novation-launch-control-xl-3">Novation Launch Control XL 3</option><option value="novation-launchkey-mini-mk3">Novation Launchkey Mini MK3</option><option value="odd-ball">ODD Ball</option></optgroup><optgroup label="Generic layouts"><option value="generic-8k8p">Generic 8 knobs + 8 pads</option><option value="generic-8f">Generic 8 faders</option><option value="generic-16p">Generic 16 pads</option><option value="generic-keys25">Generic 25-key keyboard</option><option value="generic-keys49">Generic 49-key keyboard</option><option value="generic-keys61">Generic 61-key keyboard</option></optgroup></select></label>
+          <select name="profile"><optgroup label="Devices"><option value="akai-lpd8" selected>AKAI LPD8 (mk2)</option><option value="akai-apc-mini-mk2">AKAI APC mini mk2</option><option value="akai-midimix">AKAI MIDImix</option><option value="akai-mpk-mini-mk3">AKAI MPK mini mk3</option><option value="arturia-minilab3">Arturia MiniLab 3</option><option value="arturia-keystep37">Arturia KeyStep 37</option><option value="arturia-beatstep">Arturia BeatStep</option><option value="behringer-x-touch-mini">Behringer X-TOUCH MINI</option><option value="korg-nanokontrol2">Korg nanoKONTROL2</option><option value="korg-nanokey2">Korg nanoKEY2</option><option value="novation-launchpad-mini-mk3">Novation Launchpad Mini MK3</option><option value="novation-launch-control-xl-mk2">Novation Launch Control XL (MK2)</option><option value="novation-launch-control-xl-3">Novation Launch Control XL 3</option><option value="novation-launchkey-mini-mk3">Novation Launchkey Mini MK3</option><option value="odd-ball">ODD Ball</option><option value="teenage-engineering-op-1-field">OP-1 field</option></optgroup><optgroup label="Generic layouts"><option value="generic-8k8p">Generic 8 knobs + 8 pads</option><option value="generic-8f">Generic 8 faders</option><option value="generic-16p">Generic 16 pads</option><option value="generic-keys25">Generic 25-key keyboard</option><option value="generic-keys49">Generic 49-key keyboard</option><option value="generic-keys61">Generic 61-key keyboard</option></optgroup></select></label>
         <fieldset class="f"><legend>Layout</legend>
           <label class="r"><input type="radio" name="layout" value="auto" checked> Auto</label><label class="r"><input type="radio" name="layout" value="face"> Faceplate</label><label class="r"><input type="radio" name="layout" value="stack"> Stacked</label></fieldset>
         <fieldset class="f"><legend>Show</legend>
