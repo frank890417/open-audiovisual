@@ -145,3 +145,34 @@ test('the iframe embed and the element are untouched by the pages', () => {
   assert.match(emb, /<oav-controller id="ctl" data-oav-kind="iframe">/);
   for (const { s } of pages.slice(0, 4)) assert.ok(!/midi-out=/.test(s.match(/<oav-controller id="d-ctl"[^>]*>/)[0]), 'the live element never sends MIDI by itself');
 });
+
+// ------------------------------------------------------------------ choose / wish / no Web MIDI, on every device page
+const ISSUE_URL = 'https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml';
+
+test('every device page links the request template under "no yours?"', () => {
+  for (const { id, lang, s } of pages) {
+    const blk = (s.match(/<section class="sec" id="request"[\s\S]*?<\/section>/) || [''])[0];
+    assert.ok(blk.includes(`href="${ISSUE_URL}"`), `${id} ${lang}: request link`);
+  }
+});
+
+test('every device page links back to its own row of the comparison table', () => {
+  for (const { id, lang, s } of pages) assert.ok(s.includes(`href="../#cmp-${id}"`), `${id} ${lang}: compare link`);
+  const g = fs.readFileSync(path.join(ROOT, 'controllers/index.html'), 'utf8');
+  for (const p of PROFILES) assert.ok(g.includes(`<tr id="cmp-${p.id}"`), `the row it points at exists: ${p.id}`);
+});
+
+test('every device page says whether its LED feedback is modeled, from the profile', () => {
+  for (const { p, id, lang, s } of pages) {
+    const has = p.controls.some((c) => c.led);
+    const blk = (s.match(/<p class="led-line" data-led="(yes|no)">/) || [])[1];
+    assert.equal(blk, has ? 'yes' : 'no', `${id} ${lang}`);
+  }
+});
+
+test('every device page carries the hidden no-Web-MIDI strip and the detector', () => {
+  for (const { id, lang, s } of pages) {
+    assert.match(s, /<aside class="no-midi" id="no-midi" role="note" hidden>/, `${id} ${lang}`);
+    assert.match(s, /<script>[^<]*requestMIDIAccess[^<]*no-midi[^<]*<\/script>|<script>[^<]*no-midi[^<]*requestMIDIAccess[^<]*<\/script>/, `${id} ${lang}: detector`);
+  }
+});

@@ -1,0 +1,46 @@
+name: MIDI controller request
+description: Ask for a controller that is not in the library yet.
+title: "MIDI controller request: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A profile is one JSON file with the MIDI message of every control and the document each number came from. Check the [controller library](https://openaudiovisual.com/controllers/) first, then tell us which one is missing.
+  - type: input
+    id: maker-model
+    attributes:
+      label: Brand and model
+      description: As printed on the unit, with the version if there is one (for example "Novation Launchkey Mini MK3").
+    validations:
+      required: true
+  - type: dropdown
+    id: have-unit
+    attributes:
+      label: Do you have the unit?
+      options:
+        - "Yes, I have it here"
+        - "No, I am thinking of buying it"
+        - "No, I know someone who has it"
+    validations:
+      required: true
+  - type: dropdown
+    id: can-test
+    attributes:
+      label: Could you help test a profile on the real unit?
+      options:
+        - "Yes"
+        - "Maybe, ask me"
+        - "No"
+    validations:
+      required: true
+  - type: input
+    id: manual
+    attributes:
+      label: Link to the manual or the MIDI implementation chart
+      description: The profile cites its sources, so a link to the manufacturer's document is the most useful thing here.
+      placeholder: https://
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: Firmware version, the mode the unit is in, what you want to do with it.

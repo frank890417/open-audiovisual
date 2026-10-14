@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Is your controller already in the library?
+    url: https://openaudiovisual.com/controllers/
+    about: The library lists every controller with its MIDI map, sources and a comparison table.
+  - name: Add a controller yourself
+    url: https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md
+    about: A profile is one JSON file. The steps are in CONTRIBUTING.md.

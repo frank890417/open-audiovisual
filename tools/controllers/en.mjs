@@ -73,8 +73,44 @@ export default {
   },
   typeNames: { knob: 'knob', encoder: 'encoder', fader: 'fader', pad: 'pad', button: 'button', keys: 'keys', wheel: 'wheel', strip: 'touch strip' },
 
+  // section 03: the controllers side by side (counted from the profiles; see tools/controllers/page.mjs)
+  choose: {
+    eyebrow: '03 · Choose',
+    title: 'Which one fits what you play?',
+    lede: 'Every number here is counted from the profile files, so the table cannot disagree with the pages. Press what you need and the table keeps the controllers that have it.',
+    filterLabel: 'I want',
+    filters: { all: 'All', keys: 'Keys', pad: 'Pads', fader: 'Faders', knob: 'Knobs or encoders', led: 'LED feedback' },
+    caption: 'What is on each controller, counted from its profile',
+    cols: { device: 'Controller', keys: 'Keys', pad: 'Pads', knob: 'Knobs', encoder: 'Encoders', fader: 'Faders', button: 'Buttons', led: 'LED', unverified: 'Unverified', sources: 'Sources', good: 'Good for' },
+    yes: 'yes',
+    tags: { melody: 'Melody', trigger: 'Triggers', params: 'Many parameters', mix: 'Mixing' },
+    legend: 'Knobs send an absolute position; encoders turn without end and send steps. A dash means none. Unverified counts the controls whose number is our best reading.',
+    tagRule: '“Good for” is assigned by a rule from the counts: keys → melody; 8 or more pads → triggers; 8 or more knobs or encoders → many parameters; 4 or more faders → mixing. It is a rule of thumb, not a review.',
+    led: {
+      title: 'LED feedback',
+      text: 'LED feedback is a controller lighting its own pads and buttons. A profile that models it says which note or CC lights each control and which values mean on and off. {n} of the {total} profiles have it:',
+      use: 'When one of them is plugged in, OAV sends those messages to its output port as a control changes, and once when the device connects, so the lights can follow what happens on screen.',
+      rest: 'The other {m} have no LED messages in their profile yet: OAV does not light them, but every control still plays and sends its message. A profile takes an <code>led</code> entry on each control.',
+    },
+  },
+
+  // "not here?" on the gallery and on every device page
+  request: {
+    title: 'Not on the list?',
+    text: 'Open an issue with the brand and model, whether you have the unit and a link to the manual. A profile is one JSON file, so if you would rather write it yourself, the steps are in <a href="#model">Add your controller</a>.',
+    issue: 'Ask for a controller',
+    contributing: 'How to add one',
+  },
+
+  // strip shown by a script on browsers that have no Web MIDI
+  noMidi: {
+    text: 'This device has no Web MIDI, so a hardware controller cannot connect here. You can still play on screen with your fingers. To plug in yours, open this page in Chrome or Edge on a computer.',
+    ok: 'Got it',
+    close: 'Close this note',
+  },
+
   specs: {
-    eyebrow: '03 · Spec sheets',
+    eyebrow: '04 · Spec sheets',
     title: 'One page for each controller',
     lede: 'Every controller has its own page with the full MIDI map, its sources, embed code and the names it gets in p5.js. They are generated from the JSON files at build time, so they cannot drift from what the component plays.',
     indexCols: { device: 'Controller', maker: 'Maker', controls: 'On the faceplate', page: 'Page' },
@@ -111,7 +147,7 @@ export default {
   },
 
   embed: {
-    eyebrow: '04 · Embed it',
+    eyebrow: '05 · Embed it',
     title: 'Put one in your page',
     lede: 'One line of HTML, an iframe, or JavaScript. Choose a device and options: the preview and every snippet below follow.',
     form: {
@@ -163,7 +199,7 @@ export default {
   },
 
   model: {
-    eyebrow: '05 · Model yours',
+    eyebrow: '06 · Model yours',
     title: 'Add your controller',
     lede: 'A profile is one JSON file. If the manual has a MIDI implementation chart, the profile can be exact; if it does not, say so in the file.',
     steps: [
@@ -212,7 +248,8 @@ export default {
     channelWord: ['channel {list}', 'channels {list}'],
     facts: { maker: 'Maker', controls: 'Controls', messages: 'Messages', channels: 'MIDI channels', led: 'LED feedback', ledYes: 'yes, lights are driven by MIDI', ledNo: 'none sent', signals: 'Signals', port: 'Port name matches', portNone: 'none: assign by hand, then learn', kind: 'Kind', kindDevice: 'hardware device', kindGeneric: 'generic layout' },
     play: { eyebrow: 'Play', title: 'Play {name} on screen', hint: 'Drag knobs and faders · tap pads and keys · or plug the real one in and press Connect. Nothing is sent anywhere unless you add a MIDI out.', full: 'Full screen', back: 'All controllers', noscript: 'This is a live, playable controller: turn on JavaScript to play it. The complete MIDI map is in the table below.' },
-    spec: { eyebrow: 'MIDI implementation', title: 'Every control of {name} and the message it sends', lede: 'Generated from the profile file, so it is the same table the on-screen controller plays. Channels are 1–16; numbers are real MIDI numbers.', notesTitle: 'Notes on single controls' },
+    spec: { eyebrow: 'MIDI implementation', title: 'Every control of {name} and the message it sends', lede: 'Generated from the profile file, so it is the same table the on-screen controller plays. Channels are 1–16; numbers are real MIDI numbers.', notesTitle: 'Notes on single controls', ledYes: 'LED feedback is modeled for {n} of its controls: the LED column says which message lights each one.', ledNo: 'LED feedback is not modeled for this one yet, so OAV does not light its LEDs. Every control still plays and sends its message.' },
+    request: { eyebrow: 'Missing', title: 'Is your controller not here?', text: 'Open an issue with the brand and model, whether you have the unit and a link to the manual. Or write the profile yourself: it is one JSON file.', issue: 'Ask for a controller', contributing: 'How to add one' },
     use: {
       eyebrow: 'Use it',
       title: 'Use {name} in your own work',
@@ -236,7 +273,7 @@ export default {
       p5Sketch: 'p5.js sketch',
       p5Docs: 'The whole p5.js page',
     },
-    more: { eyebrow: 'Around this controller', title: 'Related controllers', prev: 'Previous', next: 'Next', back: 'Back to all controllers', relatedLabel: 'Related controllers', stepLabel: 'Neighbouring controllers' },
+    more: { eyebrow: 'Around this controller', title: 'Related controllers', prev: 'Previous', next: 'Next', back: 'Back to all controllers', relatedLabel: 'Related controllers', stepLabel: 'Neighbouring controllers', compare: 'Compare {name} with the rest, by keys, pads, knobs, faders and LED feedback' },
     report: { title: 'Is something in this data wrong?', text: 'Every number on this page comes from one JSON file. If it disagrees with your unit or the manual, tell us which firmware you checked and we fix the file.', issue: 'Report it on GitHub', issueTitle: 'Controller data: {name} ({id})', file: 'The profile file on GitHub', raw: 'Raw JSON' },
     ld: { dataset: '{name} MIDI map', datasetDesc: 'Machine-readable MIDI implementation of {name} for open-audiovisual: faceplate, every control\'s MIDI message, LED feedback, port-name matching and cited sources, as JSON (MIT).', category: 'MIDI controller', categoryGeneric: 'Generic MIDI controller layout', image: 'open-audiovisual: MIDI controllers, modeled' },
   },

@@ -68,7 +68,7 @@ The repo ships a zero-dependency MCP server over stdio (`packages/mcp/server.js`
 { "mcpServers": { "openav": { "command": "node", "args": ["/path/to/open-audiovisual/packages/mcp/server.js"] } } }
 ```
 
-Tools: `list_examples` (works and one-line summaries) · `read_doc` (architecture, writing-a-world, signals, show-control, roadmap, agents, readme) · `scaffold_world` (copy a donor example into a new numbered one) · `run_checks` (the test suite CI runs). A Claude Code skill, `.claude/skills/create-world`, scaffolds a world from a description.
+Tools: `list_examples` (works and one-line summaries) · `read_doc` (architecture, writing-a-world, signals, show-control, roadmap, agents, readme) · `scaffold_world` (copy a donor example into a new numbered one) · `run_checks` (the test suite CI runs) · `list_controllers` / `read_profile` / `validate_profile` / `scaffold_profile` (MIDI controller profiles: browse, read, check, start a new one). A Claude Code skill, `.claude/skills/create-world`, scaffolds a world from a description.
 
 ## Examples
 
