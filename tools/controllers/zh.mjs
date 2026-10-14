@@ -9,7 +9,7 @@ export default {
 
   meta: {
     title: 'MIDI 控制器圖鑑｜open-audiovisual',
-    description: '每一顆旋鈕、打擊墊、琴鍵送出什麼 MIDI 訊息，數字出自哪一份手冊，這裡都查好了。在網頁上直接彈，接上手邊的控制器畫面會跟著動，一行程式碼就能放進自己的網頁。收錄 Arturia、AKAI、Novation、KORG、Behringer 與通用版面。',
+    description: '每一顆旋鈕、打擊墊、琴鍵送出什麼 MIDI 訊息，數字出自哪一份手冊，這裡都查好了。在網頁上直接彈，接上手邊的控制器畫面會跟著動，一行程式碼就能放進自己的網頁。收錄 Arturia、AKAI、Novation、KORG、Behringer、teenage engineering 與通用版面。',
     ogDescription: '每一顆旋鈕送出什麼 MIDI 訊息、數字出自哪份手冊，都查好了。網頁上直接彈，接上控制器會跟著動，一行程式碼放進你的網頁。',
     ldName: 'open-audiovisual MIDI 控制器設定檔',
     ldDescription: '機器可讀的硬體 MIDI 控制器實作表：面板配置、每個控制項的 MIDI 訊息、LED 回饋、埠名稱比對與引用出處，JSON 格式（MIT 授權）。',

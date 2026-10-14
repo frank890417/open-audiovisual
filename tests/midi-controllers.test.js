@@ -33,9 +33,9 @@ test('every shipped profile validates; ids and signal namespaces are unique', ()
 test('validateProfile reports every problem', () => {
   const bad = { id: 'X', short: 'cc', name: '', kind: 'device', face: { w: 10, h: 10 }, sources: [],
     sections: [{ id: 's', x: 0, y: 0, w: 20, h: 5, cols: 1, rows: 1, controls: ['a', 'zz'] }],
-    controls: [{ id: 'a', type: 'knob', msg: 'cc', cc: 200 }, { id: 'b', type: 'knob', msg: 'cc', cc: 1 }, { id: 'c', type: 'knob', msg: 'cc', cc: 1 }, { id: 'last', type: 'nope', msg: 'cc', cc: 2 }] };
+    controls: [{ id: 'a', type: 'knob', msg: 'cc', cc: 200 }, { id: 'b', type: 'knob', msg: 'cc', cc: 1 }, { id: 'c', type: 'knob', msg: 'cc', cc: 1 }, { id: 'last', type: 'nope', msg: 'cc', cc: 2 }, { id: 'd', type: 'button', msg: 'cc', cc: 3, cap: 7, ink: '' }] };
   const errs = validateProfile(bad).join('\n');
-  for (const want of ['id "X"', 'short "cc" is reserved', 'missing name', 'cite at least one source', 'cc must be 0..127', 'both listen to cc:1:1', 'reserved', 'unknown type', 'outside the faceplate', 'unknown control "zz"', '"b" is not shown']) assert.match(errs, new RegExp(want.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), want);
+  for (const want of ['id "X"', 'short "cc" is reserved', 'missing name', 'cite at least one source', 'cc must be 0..127', 'both listen to cc:1:1', 'reserved', 'unknown type', 'outside the faceplate', 'unknown control "zz"', '"b" is not shown', 'cap must be a CSS colour', 'ink must be a CSS colour']) assert.match(errs, new RegExp(want.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), want);
 });
 
 test('MiniLab 3 mirrors the TouchDesigner tool (260830 minilab3 midi.toe)', () => {

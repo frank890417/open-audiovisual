@@ -10,7 +10,7 @@ export default {
 
   meta: {
     title: 'MIDI controllers, modeled · open-audiovisual',
-    description: 'MIDI controllers described as data: every knob, pad and key with its exact MIDI message and the document it came from. Play them on screen, plug the real one in, embed one in any page with one line. Arturia, AKAI, Novation, KORG and generic layouts.',
+    description: 'MIDI controllers described as data: every knob, pad and key with its exact MIDI message and the document it came from. Play them on screen, plug the real one in, embed one in any page with one line. Arturia, AKAI, Novation, KORG, Behringer, teenage engineering and generic layouts.',
     ogDescription: 'Every knob, pad and key with its exact MIDI message and its source. Play it on screen, plug the real one in, embed it with one line.',
     ldName: 'open-audiovisual MIDI controller profiles',
     ldDescription: 'Machine-readable MIDI implementation charts for hardware controllers: faceplate layout, every control\'s MIDI message, LED feedback, port-name matching and cited sources, as JSON (MIT).',

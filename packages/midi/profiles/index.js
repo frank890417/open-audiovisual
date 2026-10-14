@@ -18,6 +18,7 @@ import launchkeyMini3 from './novation-launchkey-mini-mk3.json' with { type: 'js
 import lcxl3 from './novation-launch-control-xl-3.json' with { type: 'json' };
 import beatstep from './arturia-beatstep.json' with { type: 'json' };
 import nanoKey2 from './korg-nanokey2.json' with { type: 'json' };
+import op1Field from './teenage-engineering-op-1-field.json' with { type: 'json' };
 import oddBall from './odd-ball.json' with { type: 'json' };
 import generic8k8p from './generic-8k8p.json' with { type: 'json' };
 import generic8f from './generic-8f.json' with { type: 'json' };
@@ -27,7 +28,7 @@ import genericKeys49 from './generic-keys49.json' with { type: 'json' };
 import genericKeys61 from './generic-keys61.json' with { type: 'json' };
 
 export const PROFILES = [minilab3, lpd8, launchpadMini, nanoKontrol2, keystep37,
-  apcMini2, lcxl, lcxl3, midimix, mpkMini3, launchkeyMini3, xTouchMini, beatstep, nanoKey2, oddBall,
+  apcMini2, lcxl, lcxl3, midimix, mpkMini3, launchkeyMini3, xTouchMini, beatstep, nanoKey2, op1Field, oddBall,
   generic8k8p, generic8f, generic16p, genericKeys25, genericKeys49, genericKeys61];
 
 /** Look a profile up by id or by its signal namespace (`short`). */
