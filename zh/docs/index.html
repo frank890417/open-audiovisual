@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/home/home.css?v=b55db04">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/#article","url":"https://openaudiovisual.com/zh/docs/","name":"文件｜open-audiovisual","description":"open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"open-audiovisual 使用手冊","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["簡介","快速開始","核心概念","架構","寫一個世界","輸入","映射","演出控制","總譜與導演","MIDI 控制器與嵌入","p5.js 一行接上","手機、中繼與控制面板","訊號一覽","套件一覽","給 AI 代理","實驗室整合（\"lab\" 欄位）","疑難排解","路線圖"],"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=02fdc94">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=b55db04">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -1181,7 +1181,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=02fdc94"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=b55db04"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2104,7 +2104,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=02fdc94"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=b55db04"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -2431,6 +2431,10 @@ routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
 <tr><td><code>read_doc</code></td><td><code>doc</code>（必填）：<code>architecture</code>、<code>writing-a-world</code>、<code>signals</code>、<code>show-control</code>、<code>roadmap</code>、<code>agents</code>、<code>readme</code></td><td>Markdown 文字。<code>agents</code> 是 AGENTS.md，<code>readme</code> 是 README，其他的是 <code>docs/&lt;name&gt;.md</code></td></tr>
 <tr><td><code>scaffold_world</code></td><td><code>slug</code>（必填，kebab-case）、<code>donor</code>（預設 <code>01-hello-particles</code>）</td><td><code>{ created, next_steps }</code>。把 <code>examples/&lt;donor&gt;/</code> 的每個檔案複製到 <code>examples/&lt;next number&gt;-&lt;slug&gt;/</code></td></tr>
 <tr><td><code>run_checks</code></td><td>無</td><td>執行 <code>node --test tests/*.test.js</code>（逾時 60 秒）得到的 <code>{ pass, fail, ok }</code>，或是附上失敗那幾行的 <code>{ ok: false, output }</code></td></tr>
+<tr><td><code>list_controllers</code></td><td>無</td><td><code>{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }</code>：每一台內建的 MIDI 控制器設定檔、控制項組成（<code>{ knob: 8, pad: 8, keys: 25 }</code>）、還標著未確認的數量，以及詳細頁 <code>https://openaudiovisual.com/controllers/&lt;id&gt;/</code></td></tr>
+<tr><td><code>read_profile</code></td><td><code>id</code>（必填）：設定檔 id 或它的 <code>short</code></td><td><code>{ id, url, unverified, profile, mapping }</code>：內建的設定檔 JSON，加上一份讀得懂的 MIDI 對照（控制項、型態、<code>CC 74, ch 1</code>、訊號 <code>midi/&lt;short&gt;/&lt;id&gt;</code>、是否確認）</td></tr>
+<tr><td><code>validate_profile</code></td><td><code>profile</code>（必填）：物件或 JSON 字串</td><td><code>{ ok, problems, conflicts }</code>：<code>validateProfile</code> 找到的問題，加上和內建設定檔的衝突（同 <code>id</code>、同 <code>short</code>、<code>match.ports</code> 重疊）</td></tr>
+<tr><td><code>scaffold_profile</code></td><td><code>maker</code>、<code>model</code>、<code>controls</code>（都必填）：<code>[{ type, count, from? }]</code></td><td><code>{ profile, problems, unverified, next_steps }</code>：一份能過 <code>validateProfile</code> 的骨架，每個數字都是佔位值、標 <code>"verified": false</code>，附上「找出處、登記」的下一步。不會寫任何檔案</td></tr>
 </tbody>
 </table></div>
 <p>適合給 <code>scaffold_world</code> 當底的範例：<code>01-hello-particles</code>（最精簡的 2D canvas）、<code>02-chord-garden</code>（和弦驅動）、<code>03-pose-field</code>（鏡頭、手）、<code>05-prebiotic-flake</code>（p5 加聲音）。先 <code>read_doc agents</code>，再 <code>read_doc writing-a-world</code>。</p>
@@ -2639,7 +2643,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=02fdc94"></script>
+<script type="module" src="../../assets/docs/docs.js?v=b55db04"></script>
 <!--/email_off-->
 </body>
 </html>
