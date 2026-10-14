@@ -6,7 +6,7 @@
 > Handbook: https://openaudiovisual.com/docs/ · MIDI controller library: https://openaudiovisual.com/controllers/ · WebToe, the sister engine: https://openaudiovisual.com/webtoe/
 > p5.js in one line: https://openaudiovisual.com/p5/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 23 packages, 15 examples, 24 MIDI controller profiles (18 devices, 6 generic layouts).
+> Today: 23 packages, 15 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -16,10 +16,12 @@ One page and one JSON profile each; the page lists every control with its exact 
 - AKAI APC mini mk2: 90 controls · https://openaudiovisual.com/controllers/akai-apc-mini-mk2/ · https://openaudiovisual.com/packages/midi/profiles/akai-apc-mini-mk2.json
 - AKAI MIDImix: 52 controls · https://openaudiovisual.com/controllers/akai-midimix/ · https://openaudiovisual.com/packages/midi/profiles/akai-midimix.json
 - AKAI MPK mini mk3: 43 controls · https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/ · https://openaudiovisual.com/packages/midi/profiles/akai-mpk-mini-mk3.json
+- AKAI APC40 mkII: 139 controls · https://openaudiovisual.com/controllers/akai-apc40-mk2/ · https://openaudiovisual.com/packages/midi/profiles/akai-apc40-mk2.json
 - Arturia MiniLab 3: 48 controls · https://openaudiovisual.com/controllers/arturia-minilab3/ · https://openaudiovisual.com/packages/midi/profiles/arturia-minilab3.json
 - Arturia KeyStep 37: 44 controls · https://openaudiovisual.com/controllers/arturia-keystep37/ · https://openaudiovisual.com/packages/midi/profiles/arturia-keystep37.json
 - Arturia BeatStep: 32 controls · https://openaudiovisual.com/controllers/arturia-beatstep/ · https://openaudiovisual.com/packages/midi/profiles/arturia-beatstep.json
 - Behringer X-TOUCH MINI: 33 controls · https://openaudiovisual.com/controllers/behringer-x-touch-mini/ · https://openaudiovisual.com/packages/midi/profiles/behringer-x-touch-mini.json
+- DJ TechTools Midi Fighter Twister: 38 controls · https://openaudiovisual.com/controllers/djtechtools-midi-fighter-twister/ · https://openaudiovisual.com/packages/midi/profiles/djtechtools-midi-fighter-twister.json
 - Korg nanoKONTROL2: 51 controls · https://openaudiovisual.com/controllers/korg-nanokontrol2/ · https://openaudiovisual.com/packages/midi/profiles/korg-nanokontrol2.json
 - Korg nanoKEY2: 28 controls · https://openaudiovisual.com/controllers/korg-nanokey2/ · https://openaudiovisual.com/packages/midi/profiles/korg-nanokey2.json
 - Novation Launchpad Mini MK3: 80 controls · https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/ · https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-mini-mk3.json
@@ -28,6 +30,7 @@ One page and one JSON profile each; the page lists every control with its exact 
 - Novation Launchkey Mini MK3: 51 controls · https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/ · https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-mini-mk3.json
 - Novation Launchkey 25 MK4: 52 controls · https://openaudiovisual.com/controllers/novation-launchkey-25-mk4/ · https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-25-mk4.json
 - Novation Launchkey 37 MK4: 64 controls · https://openaudiovisual.com/controllers/novation-launchkey-37-mk4/ · https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-37-mk4.json
+- Novation Launchpad Pro MK3: 105 controls · https://openaudiovisual.com/controllers/novation-launchpad-pro-mk3/ · https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-pro-mk3.json
 - ODD Ball: 10 controls · https://openaudiovisual.com/controllers/odd-ball/ · https://openaudiovisual.com/packages/midi/profiles/odd-ball.json
 - teenage engineering OP-1 field: 61 controls · https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/ · https://openaudiovisual.com/packages/midi/profiles/teenage-engineering-op-1-field.json
 - Generic 8 knobs + 8 pads: 16 controls · https://openaudiovisual.com/controllers/generic-8k8p/ · https://openaudiovisual.com/packages/midi/profiles/generic-8k8p.json

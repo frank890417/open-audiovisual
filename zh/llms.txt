@@ -4,7 +4,7 @@
 
 輸入（MIDI、麥克風、和弦、身體與手部姿態、手機）發出有名字的訊號；映射層把訊號接到參數；演算的「世界」只讀參數，產生畫面與聲音；時間軸、導演控台與後台監看負責把演出跑起來。原生 ES module，零建置、零相依。從《The Last Input》（吳哲宇，2026；IRCAM 駐村 × C-LAB，臺北，49.4 聲道表演）抽出來。
 
-目前：23 個套件、15 個範例、24 份 MIDI 控制器設定檔（18 台真機與 6 種通用版型），版本 0.1.0。
+目前：23 個套件、15 個範例、27 份 MIDI 控制器設定檔（21 台真機與 6 種通用版型），版本 0.1.0。
 
 網站：https://openaudiovisual.com/（English）· https://openaudiovisual.com/zh/（繁體中文）
 原始碼：https://github.com/frank890417/open-audiovisual
@@ -94,16 +94,18 @@
 
 ## MIDI controllers
 
-24 份控制器設定檔，每台一頁，列出每個控制項確切的 MIDI 訊息（頻道、CC 或音符）、LED 回饋與引用出處。設定檔 JSON 就是這一頁背後的資料。
+27 份控制器設定檔，每台一頁，列出每個控制項確切的 MIDI 訊息（頻道、CC 或音符）、LED 回饋與引用出處。設定檔 JSON 就是這一頁背後的資料。
 
 - [AKAI LPD8 (mk2)](https://openaudiovisual.com/zh/controllers/akai-lpd8/): 16 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/akai-lpd8.json
 - [AKAI APC mini mk2](https://openaudiovisual.com/zh/controllers/akai-apc-mini-mk2/): 90 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/akai-apc-mini-mk2.json
 - [AKAI MIDImix](https://openaudiovisual.com/zh/controllers/akai-midimix/): 52 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/akai-midimix.json
 - [AKAI MPK mini mk3](https://openaudiovisual.com/zh/controllers/akai-mpk-mini-mk3/): 43 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/akai-mpk-mini-mk3.json
+- [AKAI APC40 mkII](https://openaudiovisual.com/zh/controllers/akai-apc40-mk2/): 139 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/akai-apc40-mk2.json
 - [Arturia MiniLab 3](https://openaudiovisual.com/zh/controllers/arturia-minilab3/): 48 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/arturia-minilab3.json
 - [Arturia KeyStep 37](https://openaudiovisual.com/zh/controllers/arturia-keystep37/): 44 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/arturia-keystep37.json
 - [Arturia BeatStep](https://openaudiovisual.com/zh/controllers/arturia-beatstep/): 32 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/arturia-beatstep.json
 - [Behringer X-TOUCH MINI](https://openaudiovisual.com/zh/controllers/behringer-x-touch-mini/): 33 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/behringer-x-touch-mini.json
+- [DJ TechTools Midi Fighter Twister](https://openaudiovisual.com/zh/controllers/djtechtools-midi-fighter-twister/): 38 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/djtechtools-midi-fighter-twister.json
 - [Korg nanoKONTROL2](https://openaudiovisual.com/zh/controllers/korg-nanokontrol2/): 51 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/korg-nanokontrol2.json
 - [Korg nanoKEY2](https://openaudiovisual.com/zh/controllers/korg-nanokey2/): 28 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/korg-nanokey2.json
 - [Novation Launchpad Mini MK3](https://openaudiovisual.com/zh/controllers/novation-launchpad-mini-mk3/): 80 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-mini-mk3.json
@@ -112,6 +114,7 @@
 - [Novation Launchkey Mini MK3](https://openaudiovisual.com/zh/controllers/novation-launchkey-mini-mk3/): 51 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-mini-mk3.json
 - [Novation Launchkey 25 MK4](https://openaudiovisual.com/zh/controllers/novation-launchkey-25-mk4/): 52 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-25-mk4.json
 - [Novation Launchkey 37 MK4](https://openaudiovisual.com/zh/controllers/novation-launchkey-37-mk4/): 64 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchkey-37-mk4.json
+- [Novation Launchpad Pro MK3](https://openaudiovisual.com/zh/controllers/novation-launchpad-pro-mk3/): 105 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-pro-mk3.json
 - [ODD Ball](https://openaudiovisual.com/zh/controllers/odd-ball/): 10 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/odd-ball.json
 - [teenage engineering OP-1 field](https://openaudiovisual.com/zh/controllers/teenage-engineering-op-1-field/): 61 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/teenage-engineering-op-1-field.json
 - [通用 8 旋鈕 + 8 打擊墊](https://openaudiovisual.com/zh/controllers/generic-8k8p/): 16 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-8k8p.json
