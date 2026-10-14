@@ -6,7 +6,7 @@
 > Handbook: https://openaudiovisual.com/docs/ · MIDI controller library: https://openaudiovisual.com/controllers/ · WebToe, the sister engine: https://openaudiovisual.com/webtoe/
 > p5.js in one line: https://openaudiovisual.com/p5/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 23 packages, 14 examples, 24 MIDI controller profiles (18 devices, 6 generic layouts).
+> Today: 23 packages, 15 examples, 24 MIDI controller profiles (18 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 

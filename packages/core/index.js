@@ -7,7 +7,7 @@
 //
 // Zero dependencies. ESM. Works from a <script type="module"> with no build step.
 
-export { Bus } from './src/bus.js?v=4518b33';
-export { Signals } from './src/signals.js?v=4518b33';
-export { Params } from './src/params.js?v=4518b33';
-export { Loop } from './src/loop.js?v=4518b33';
+export { Bus } from './src/bus.js?v=ec617d3';
+export { Signals } from './src/signals.js?v=ec617d3';
+export { Params } from './src/params.js?v=ec617d3';
+export { Loop } from './src/loop.js?v=ec617d3';

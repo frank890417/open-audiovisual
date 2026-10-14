@@ -4,7 +4,7 @@
 
 輸入（MIDI、麥克風、和弦、身體與手部姿態、手機）發出有名字的訊號；映射層把訊號接到參數；演算的「世界」只讀參數，產生畫面與聲音；時間軸、導演控台與後台監看負責把演出跑起來。原生 ES module，零建置、零相依。從《The Last Input》（吳哲宇，2026；IRCAM 駐村 × C-LAB，臺北，49.4 聲道表演）抽出來。
 
-目前：23 個套件、14 個範例、24 份 MIDI 控制器設定檔（18 台真機與 6 種通用版型），版本 0.1.0。
+目前：23 個套件、15 個範例、24 份 MIDI 控制器設定檔（18 台真機與 6 種通用版型），版本 0.1.0。
 
 網站：https://openaudiovisual.com/（English）· https://openaudiovisual.com/zh/（繁體中文）
 原始碼：https://github.com/frank890417/open-audiovisual
@@ -87,6 +87,7 @@
 - [11-controller-video](https://openaudiovisual.com/examples/11-controller-video/): 不用鏡頭的演出影片：作品下方即時畫出正在彈的 MIDI 控制器（MiniLab 3 或任何設定檔），重播的演奏也會動。
 - [12-leap-hands](https://openaudiovisual.com/examples/12-leap-hands/): 把 Leap Motion 當樂器，經本機橋接（`node packages/leap/bridge/leap-bridge.mjs`，沒有感測器用 `--mock`）；沒開橋接時用滑鼠模擬手。
 - [13-score-director](https://openaudiovisual.com/examples/13-score-director/): 有結構的演出：「一天的天空」只寫一次段落長度；導演為每段跑一個模組，`?cut=<id>` 選版本，空白鍵放行 hold。
+- [14-timeline](https://openaudiovisual.com/examples/14-timeline/): timeline: automation you can see.
 - [15-p5-one-line](https://openaudiovisual.com/examples/15-p5-one-line/): p5.js 一行指令：一份普通的 p5 草圖，第一行載入 oav-p5.js，就能用 MIDI 控制器、螢幕上的控制器或手機彈。
 
 範例 05–07 整合了吳哲宇的作品（2020–2023），版權所有；框架為 MIT 授權。

@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://openaudiovisual.com/</loc>
-    <lastmod>2026-10-10</lastmod>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/</loc>
-    <lastmod>2026-10-10</lastmod>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/"/>
@@ -380,14 +380,14 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/webtoe/</loc>
-    <lastmod>2026-10-04</lastmod>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/webtoe/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/webtoe/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/webtoe/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/webtoe/</loc>
-    <lastmod>2026-10-04</lastmod>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/webtoe/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/webtoe/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/webtoe/"/>
@@ -443,6 +443,9 @@
   <url>
     <loc>https://openaudiovisual.com/examples/13-score-director/</loc>
     <lastmod>2026-10-15</lastmod>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/examples/14-timeline/</loc>
   </url>
   <url>
     <loc>https://openaudiovisual.com/examples/15-p5-one-line/</loc>

@@ -4,7 +4,7 @@
 
 Inputs (MIDI, microphone, chords, body and hand pose, phones) publish named signals; a mapping layer routes signals to parameters; an algorithmic "world" reads only parameters and renders image and sound; a timeline, a director's console and a backstage monitor run the show. Plain ES modules, no build, no dependencies. Extracted from The Last Input (Che-Yu Wu, 2026), a 49.4-channel performance at the IRCAM residency × C-LAB, Taipei.
 
-Today: 23 packages, 14 examples, 24 MIDI controller profiles (18 devices and 6 generic layouts), version 0.1.0.
+Today: 23 packages, 15 examples, 24 MIDI controller profiles (18 devices and 6 generic layouts), version 0.1.0.
 
 Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文, Traditional Chinese)
 Repository: https://github.com/frank890417/open-audiovisual
@@ -87,6 +87,7 @@ Each runs in the browser without hardware (on-screen piano, QWERTY keys, simulat
 - [11-controller-video](https://openaudiovisual.com/examples/11-controller-video/): the performance video without a camera: the MIDI controller being played (MiniLab 3, any profile) drawn live under the work; replayed takes animate it too.
 - [12-leap-hands](https://openaudiovisual.com/examples/12-leap-hands/): a Leap Motion as an instrument through the local bridge (`node packages/leap/bridge/leap-bridge.mjs`, `--mock` without a sensor); the mouse simulates hands when no bridge runs.
 - [13-score-director](https://openaudiovisual.com/examples/13-score-director/): a show with structure: "A day of sky" written once as segment lengths; a Director runs one module per segment, `?cut=<id>` picks a version, Space continues a hold.
+- [14-timeline](https://openaudiovisual.com/examples/14-timeline/): timeline: automation you can see.
 - [15-p5-one-line](https://openaudiovisual.com/examples/15-p5-one-line/): p5.js in one line: a plain p5 sketch whose first line loads oav-p5.js, then plays from a MIDI controller, an on-screen controller or a phone.
 
 Examples 05–07 integrate artworks © Che-Yu Wu (2020–2023), all rights reserved; the framework is MIT.

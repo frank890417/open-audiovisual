@@ -18,7 +18,7 @@ export const LOCALES = {
 
 export const WORKS = [
   '01-hello-particles', '02-chord-garden', '03-pose-field', '04-webtoe-stage', '05-prebiotic-flake',
-  '06-cylinder-earth', '07-firework-festival', '08-remote-surface', '09-midi-controllers',
+  '06-cylinder-earth', '07-firework-festival', '08-remote-surface', '09-midi-controllers', '14-timeline',
 ];
 const CREDITED = { 4: 0, 5: 1, 6: 2 };          // works index → credits index (artworks by the author)
 
