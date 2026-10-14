@@ -64,6 +64,11 @@
 </header>
 
 <main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>This device has no Web MIDI, so a hardware controller cannot connect here. You can still play on screen with your fingers. To plug in yours, open this page in Chrome or Edge on a computer.</p>
+    <button type="button" aria-label="Close this note">Got it</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
 
   <!-- ═════ 01 · play: one live controller, any device, your hardware moves it ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
@@ -397,13 +402,247 @@
       </li>
     </ul>
     </div>
+    <div class="request" id="request">
+      <h3>Not on the list?</h3>
+      <p>Open an issue with the brand and model, whether you have the unit and a link to the manual. A profile is one JSON file, so if you would rather write it yourself, the steps are in <a href="#model">Add your controller</a>.</p>
+      <ul class="model-links"><li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">Ask for a controller ↗</a></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md">How to add one ↗</a></li></ul>
+    </div>
   </section>
 
-  <!-- ═════ 03 · spec sheets: the full MIDI map, static ═════ -->
+  <!-- ═════ 03 · choose: the same controllers side by side ═════ -->
+  <section class="sec" id="choose" aria-labelledby="choose-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">03 · Choose</p>
+      <h2 id="choose-title">Which one fits what you play?</h2>
+      <p class="sec-lede">Every number here is counted from the profile files, so the table cannot disagree with the pages. Press what you need and the table keeps the controllers that have it.</p>
+    </header>
+    <div class="filters js-only" role="group" aria-label="I want">
+      <span class="filters-k">I want</span>
+      <button type="button" data-pick="all" aria-pressed="true">All <b>24</b></button>
+      <button type="button" data-pick="keys" aria-pressed="false">Keys <b>11</b></button>
+      <button type="button" data-pick="pad" aria-pressed="false">Pads <b>12</b></button>
+      <button type="button" data-pick="fader" aria-pressed="false">Faders <b>9</b></button>
+      <button type="button" data-pick="knob" aria-pressed="false">Knobs or encoders <b>16</b></button>
+      <button type="button" data-pick="led" aria-pressed="false">LED feedback <b>5</b></button>
+      <span class="shown" id="pick-shown" aria-live="polite"></span>
+    </div>
+    <div class="table-scroll" role="region" aria-label="What is on each controller, counted from its profile" tabindex="0">
+    <table class="compare">
+      <caption>What is on each controller, counted from its profile</caption>
+      <thead><tr><th scope="col">Controller</th><th scope="col">Keys</th><th scope="col">Pads</th><th scope="col">Knobs</th><th scope="col">Encoders</th><th scope="col">Faders</th><th scope="col">Buttons</th><th scope="col">LED</th><th scope="col">Unverified</th><th scope="col">Sources</th><th scope="col">Good for</th></tr></thead>
+      <tbody>
+        <tr id="cmp-akai-lpd8" data-has="pad knob">
+          <th scope="row"><a href="akai-lpd8/">AKAI LPD8 (mk2)</a><small>AKAI Professional</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">8</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">8</td>
+          <td class="n" data-col="sources">4</td>
+          <td data-col="good">Triggers · Many parameters</td>
+        </tr>
+        <tr id="cmp-akai-apc-mini-mk2" data-has="pad fader led">
+          <th scope="row"><a href="akai-apc-mini-mk2/">AKAI APC mini mk2</a><small>AKAI Professional</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">64</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">9</td><td class="n" data-col="button">17</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">yes</span></td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">5</td>
+          <td data-col="good">Triggers · Mixing</td>
+        </tr>
+        <tr id="cmp-akai-midimix" data-has="fader knob led">
+          <th scope="row"><a href="akai-midimix/">AKAI MIDImix</a><small>AKAI Professional</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">24</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">9</td><td class="n" data-col="button">19</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">yes</span></td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">Many parameters · Mixing</td>
+        </tr>
+        <tr id="cmp-akai-mpk-mini-mk3" data-has="keys pad knob">
+          <th scope="row"><a href="akai-mpk-mini-mk3/">AKAI MPK mini mk3</a><small>AKAI Professional</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">8</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">25</td>
+          <td class="n" data-col="sources">6</td>
+          <td data-col="good">Melody · Triggers · Many parameters</td>
+        </tr>
+        <tr id="cmp-arturia-minilab3" data-has="keys pad fader knob">
+          <th scope="row"><a href="arturia-minilab3/">Arturia MiniLab 3</a><small>Arturia</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">8</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">1</td><td class="n" data-col="fader">4</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">1</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">Melody · Triggers · Many parameters · Mixing</td>
+        </tr>
+        <tr id="cmp-arturia-keystep37" data-has="keys knob">
+          <th scope="row"><a href="arturia-keystep37/">Arturia KeyStep 37</a><small>Arturia</small></th>
+          <td class="n" data-col="keys">37</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">4</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">41</td>
+          <td class="n" data-col="sources">2</td>
+          <td data-col="good">Melody</td>
+        </tr>
+        <tr id="cmp-arturia-beatstep" data-has="pad knob">
+          <th scope="row"><a href="arturia-beatstep/">Arturia BeatStep</a><small>Arturia</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">16</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">Triggers · Many parameters</td>
+        </tr>
+        <tr id="cmp-behringer-x-touch-mini" data-has="fader knob">
+          <th scope="row"><a href="behringer-x-touch-mini/">Behringer X-TOUCH MINI</a><small>Behringer</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">8</td><td class="n" data-col="fader">1</td><td class="n" data-col="button">24</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">Many parameters</td>
+        </tr>
+        <tr id="cmp-korg-nanokontrol2" data-has="fader knob led">
+          <th scope="row"><a href="korg-nanokontrol2/">Korg nanoKONTROL2</a><small>KORG</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">8</td><td class="n" data-col="button">35</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">yes</span></td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">4</td>
+          <td data-col="good">Many parameters · Mixing</td>
+        </tr>
+        <tr id="cmp-korg-nanokey2" data-has="keys">
+          <th scope="row"><a href="korg-nanokey2/">Korg nanoKEY2</a><small>KORG</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">2</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">25</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">Melody</td>
+        </tr>
+        <tr id="cmp-novation-launchpad-mini-mk3" data-has="pad led">
+          <th scope="row"><a href="novation-launchpad-mini-mk3/">Novation Launchpad Mini MK3</a><small>Novation</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">64</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">16</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">yes</span></td>
+          <td class="n" data-col="unverified">8</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">Triggers</td>
+        </tr>
+        <tr id="cmp-novation-launch-control-xl-mk2" data-has="fader knob led">
+          <th scope="row"><a href="novation-launch-control-xl-mk2/">Novation Launch Control XL (MK2)</a><small>Novation</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">24</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">8</td><td class="n" data-col="button">24</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">yes</span></td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">5</td>
+          <td data-col="good">Many parameters · Mixing</td>
+        </tr>
+        <tr id="cmp-novation-launch-control-xl-3" data-has="fader knob">
+          <th scope="row"><a href="novation-launch-control-xl-3/">Novation Launch Control XL 3</a><small>Novation</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">24</td><td class="n" data-col="fader">8</td><td class="n" data-col="button">16</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">7</td>
+          <td data-col="good">Many parameters · Mixing</td>
+        </tr>
+        <tr id="cmp-novation-launchkey-mini-mk3" data-has="keys pad knob">
+          <th scope="row"><a href="novation-launchkey-mini-mk3/">Novation Launchkey Mini MK3</a><small>Novation</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">34</td>
+          <td class="n" data-col="sources">6</td>
+          <td data-col="good">Melody · Triggers · Many parameters</td>
+        </tr>
+        <tr id="cmp-novation-launchkey-25-mk4" data-has="keys pad knob">
+          <th scope="row"><a href="novation-launchkey-25-mk4/">Novation Launchkey 25 MK4</a><small>Novation</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">8</td>
+          <td class="n" data-col="sources">6</td>
+          <td data-col="good">Melody · Triggers · Many parameters</td>
+        </tr>
+        <tr id="cmp-novation-launchkey-37-mk4" data-has="keys pad knob">
+          <th scope="row"><a href="novation-launchkey-37-mk4/">Novation Launchkey 37 MK4</a><small>Novation</small></th>
+          <td class="n" data-col="keys">37</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">8</td>
+          <td class="n" data-col="sources">6</td>
+          <td data-col="good">Melody · Triggers · Many parameters</td>
+        </tr>
+        <tr id="cmp-odd-ball" data-has="pad fader knob">
+          <th scope="row"><a href="odd-ball/">ODD Ball</a><small>ODD</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">3</td><td class="n" data-col="knob">4</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">3</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">10</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">–</td>
+        </tr>
+        <tr id="cmp-teenage-engineering-op-1-field" data-has="keys knob">
+          <th scope="row"><a href="teenage-engineering-op-1-field/">OP-1 field</a><small>teenage engineering</small></th>
+          <td class="n" data-col="keys">24</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">4</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">33</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">2</td>
+          <td data-col="good">Melody</td>
+        </tr>
+        <tr id="cmp-generic-8k8p" data-has="pad knob">
+          <th scope="row"><a href="generic-8k8p/">Generic 8 knobs + 8 pads</a><small>Generic layout</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">8</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">Triggers · Many parameters</td>
+        </tr>
+        <tr id="cmp-generic-8f" data-has="fader">
+          <th scope="row"><a href="generic-8f/">Generic 8 faders</a><small>Generic layout</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">8</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">Mixing</td>
+        </tr>
+        <tr id="cmp-generic-16p" data-has="pad">
+          <th scope="row"><a href="generic-16p/">Generic 16 pads</a><small>Generic layout</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">Triggers</td>
+        </tr>
+        <tr id="cmp-generic-keys25" data-has="keys">
+          <th scope="row"><a href="generic-keys25/">Generic 25-key keyboard</a><small>Generic layout</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">Melody</td>
+        </tr>
+        <tr id="cmp-generic-keys49" data-has="keys">
+          <th scope="row"><a href="generic-keys49/">Generic 49-key keyboard</a><small>Generic layout</small></th>
+          <td class="n" data-col="keys">49</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">Melody</td>
+        </tr>
+        <tr id="cmp-generic-keys61" data-has="keys">
+          <th scope="row"><a href="generic-keys61/">Generic 61-key keyboard</a><small>Generic layout</small></th>
+          <td class="n" data-col="keys">61</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">Melody</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">Knobs send an absolute position; encoders turn without end and send steps. A dash means none. Unverified counts the controls whose number is our best reading.</p>
+    <p class="note">“Good for” is assigned by a rule from the counts: keys → melody; 8 or more pads → triggers; 8 or more knobs or encoders → many parameters; 4 or more faders → mixing. It is a rule of thumb, not a review.</p>
+    <div class="led-note" id="led">
+      <h3>LED feedback</h3>
+      <p>LED feedback is a controller lighting its own pads and buttons. A profile that models it says which note or CC lights each control and which values mean on and off. 5 of the 24 profiles have it:</p>
+      <ul class="led-list"><li><a href="akai-apc-mini-mk2/">AKAI APC mini mk2</a></li><li><a href="akai-midimix/">AKAI MIDImix</a></li><li><a href="korg-nanokontrol2/">Korg nanoKONTROL2</a></li><li><a href="novation-launchpad-mini-mk3/">Novation Launchpad Mini MK3</a></li><li><a href="novation-launch-control-xl-mk2/">Novation Launch Control XL (MK2)</a></li></ul>
+      <p>When one of them is plugged in, OAV sends those messages to its output port as a control changes, and once when the device connects, so the lights can follow what happens on screen.</p>
+      <p>The other 19 have no LED messages in their profile yet: OAV does not light them, but every control still plays and sends its message. A profile takes an <code>led</code> entry on each control.</p>
+    </div>
+  </section>
+
+  <!-- ═════ 04 · spec sheets: the full MIDI map, static ═════ -->
   <section class="sec" id="specs" aria-labelledby="specs-title">
     
     <header class="sec-head">
-      <p class="eyebrow">03 · Spec sheets</p>
+      <p class="eyebrow">04 · Spec sheets</p>
       <h2 id="specs-title">One page for each controller</h2>
       <p class="sec-lede">Every controller has its own page with the full MIDI map, its sources, embed code and the names it gets in p5.js. They are generated from the JSON files at build time, so they cannot drift from what the component plays.</p>
     </header>
@@ -440,11 +679,11 @@
     </div>
   </section>
 
-  <!-- ═════ 04 · embed it ═════ -->
+  <!-- ═════ 05 · embed it ═════ -->
   <section class="sec" id="embed" aria-labelledby="embed-title">
     
     <header class="sec-head">
-      <p class="eyebrow">04 · Embed it</p>
+      <p class="eyebrow">05 · Embed it</p>
       <h2 id="embed-title">Put one in your page</h2>
       <p class="sec-lede">One line of HTML, an iframe, or JavaScript. Choose a device and options: the preview and every snippet below follow.</p>
     </header>
@@ -573,11 +812,11 @@ win.postMessage({ target: <span class="ts">'openav'</span>, type: <span class="t
     <p><a class="more" href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md">Everything, with every field of every payload: the package README →</a></p>
   </section>
 
-  <!-- ═════ 05 · model yours ═════ -->
+  <!-- ═════ 06 · model yours ═════ -->
   <section class="sec" id="model" aria-labelledby="model-title">
     
     <header class="sec-head">
-      <p class="eyebrow">05 · Model yours</p>
+      <p class="eyebrow">06 · Model yours</p>
       <h2 id="model-title">Add your controller</h2>
       <p class="sec-lede">A profile is one JSON file. If the manual has a MIDI implementation chart, the profile can be exact; if it does not, say so in the file.</p>
     </header>
@@ -634,7 +873,7 @@ console.log(validateProfile(p));   <span class="tc">// [] = valid; otherwise eve
           <li><a href="https://github.com/frank890417/open-audiovisual">The repository ↗</a></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md">packages/midi/README.md ↗</a></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/midi/profiles">All profile files ↗</a></li>
-          <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?title=MIDI%20controller%20request%3A%20">Ask for a controller ↗</a></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">Ask for a controller ↗</a></li>
         </ul>
       </div>
     </div>

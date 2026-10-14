@@ -65,6 +65,11 @@
 </header>
 
 <main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>This device has no Web MIDI, so a hardware controller cannot connect here. You can still play on screen with your fingers. To plug in yours, open this page in Chrome or Edge on a computer.</p>
+    <button type="button" aria-label="Close this note">Got it</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
 
   <!-- ═════ the instrument first, then the words ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
@@ -503,6 +508,7 @@
           </tbody>
         </table>
         </div>
+    <p class="led-line" data-led="no">LED feedback is not modeled for this one yet, so OAV does not light its LEDs. Every control still plays and sends its message.</p>
     <h3>Notes on single controls</h3>
     <ul class="cnotes"><li><code>enc1</code> CC 1, tested on hardware: absolute 0–127 (the unit's CTRL page has encoders set to absolute). Set to relative, the original OP-1 is reported to send 1 per step right and 127 per step left: change relative to "twos".</li><li><code>enc2</code> CC 2, tested on hardware: absolute 0–127 (the unit's CTRL page has encoders set to absolute). Set to relative, the original OP-1 is reported to send 1 per step right and 127 per step left: change relative to "twos".</li><li><code>enc3</code> CC 3, tested on hardware: absolute 0–127 (the unit's CTRL page has encoders set to absolute). Set to relative, the original OP-1 is reported to send 1 per step right and 127 per step left: change relative to "twos".</li><li><code>enc4</code> CC 4, tested on hardware: absolute 0–127 (the unit's CTRL page has encoders set to absolute). Set to relative, the original OP-1 is reported to send 1 per step right and 127 per step left: change relative to "twos".</li><li><code>push1</code> Pressing the blue encoder, tested on hardware: CC 66, 127 while held, 0 on release. On release the unit also sends a one-off CC 59 127/0 pulse, not modelled.</li><li><code>push2</code> Pressing the ochre encoder, tested on hardware: CC 67, 127 while held, 0 on release. On release the unit also sends a one-off CC 60 127/0 pulse, not modelled.</li><li><code>push3</code> Pressing the gray encoder, tested on hardware: CC 68, 127 while held, 0 on release. On release the unit also sends a one-off CC 61 127/0 pulse, not modelled.</li><li><code>push4</code> Pressing the orange encoder, tested on hardware: CC 69, 127 while held, 0 on release. On release the unit also sends a one-off CC 62 127/0 pulse, not modelled.</li><li><code>keys</code> Tested on hardware: the 24 keys run F3 (53) to E5 (76) at the default octave, velocity was 127 on every press in the test. Keys follow any note on the channel, so octave shifts just scroll the on-screen keys.</li></ul>
     <div class="spec-grid">
@@ -588,11 +594,26 @@
       <li><a href="../generic-keys49/">Generic 49-key keyboard</a><span>Generic layout · 49 keys · 1 button · 2 wheels</span></li>
       <li><a href="../generic-keys61/">Generic 61-key keyboard</a><span>Generic layout · 61 keys · 1 button · 2 wheels</span></li>
     </ul>
+    <p class="cmp-link"><a href="../#cmp-teenage-engineering-op-1-field">Compare teenage engineering OP-1 field with the rest, by keys, pads, knobs, faders and LED feedback →</a></p>
     <nav class="step" aria-label="Neighbouring controllers">
       <a rel="prev" href="../odd-ball/"><small>← Previous</small>ODD Ball</a>
       <a class="back" href="../../controllers/">Back to all controllers</a>
       <a rel="next" href="../generic-8k8p/"><small>Next →</small>Generic 8 knobs + 8 pads</a>
     </nav>
+  </section>
+
+  <!-- ═════ not here? ═════ -->
+  <section class="sec" id="request" aria-labelledby="request-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Missing</p>
+      <h2 id="request-title">Is your controller not here?</h2>
+      <p class="sec-lede">Open an issue with the brand and model, whether you have the unit and a link to the manual. Or write the profile yourself: it is one JSON file.</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">Ask for a controller ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md">How to add one ↗</a></li>
+    </ul>
   </section>
 
   <!-- ═════ wrong data? ═════ -->

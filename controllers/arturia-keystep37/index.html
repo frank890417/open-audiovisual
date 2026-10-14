@@ -65,6 +65,11 @@
 </header>
 
 <main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>This device has no Web MIDI, so a hardware controller cannot connect here. You can still play on screen with your fingers. To plug in yours, open this page in Chrome or Edge on a computer.</p>
+    <button type="button" aria-label="Close this note">Got it</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
 
   <!-- ═════ the instrument first, then the words ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
@@ -203,6 +208,7 @@
           </tbody>
         </table>
         </div>
+    <p class="led-line" data-led="no">LED feedback is not modeled for this one yet, so OAV does not light its LEDs. Every control still plays and sends its message.</p>
     
     <div class="spec-grid">
       <div>
@@ -292,11 +298,26 @@
       <li><a href="../novation-launchkey-25-mk4/">Novation Launchkey 25 MK4</a><span>Novation · 16 pads · 25 keys · 8 knobs · 1 button · 2 wheels</span></li>
       <li><a href="../novation-launchkey-37-mk4/">Novation Launchkey 37 MK4</a><span>Novation · 16 pads · 37 keys · 8 knobs · 1 button · 2 wheels</span></li>
     </ul>
+    <p class="cmp-link"><a href="../#cmp-arturia-keystep37">Compare Arturia KeyStep 37 with the rest, by keys, pads, knobs, faders and LED feedback →</a></p>
     <nav class="step" aria-label="Neighbouring controllers">
       <a rel="prev" href="../arturia-minilab3/"><small>← Previous</small>Arturia MiniLab 3</a>
       <a class="back" href="../../controllers/">Back to all controllers</a>
       <a rel="next" href="../arturia-beatstep/"><small>Next →</small>Arturia BeatStep</a>
     </nav>
+  </section>
+
+  <!-- ═════ not here? ═════ -->
+  <section class="sec" id="request" aria-labelledby="request-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Missing</p>
+      <h2 id="request-title">Is your controller not here?</h2>
+      <p class="sec-lede">Open an issue with the brand and model, whether you have the unit and a link to the manual. Or write the profile yourself: it is one JSON file.</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">Ask for a controller ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md">How to add one ↗</a></li>
+    </ul>
   </section>
 
   <!-- ═════ wrong data? ═════ -->

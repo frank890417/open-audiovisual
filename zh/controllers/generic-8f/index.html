@@ -65,6 +65,11 @@
 </header>
 
 <main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>這台裝置沒有 Web MIDI，接不了實體控制器，但可以直接用手指在螢幕上彈。要接你的控制器，請用電腦的 Chrome 或 Edge 開這一頁。</p>
+    <button type="button" aria-label="關掉這則提示">知道了</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
 
   <!-- ═════ the instrument first, then the words ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
@@ -201,6 +206,7 @@
           </tbody>
         </table>
         </div>
+    <p class="led-line" data-led="no">這一台還沒有寫 LED 回饋，OAV 不會讓它的燈亮，但每個控制項照樣可以彈、照樣送出各自的訊息。</p>
     
     <div class="spec-grid">
       <div>
@@ -289,11 +295,26 @@
       <li><a href="../akai-midimix/">AKAI MIDImix</a><span>AKAI Professional · 24 顆旋鈕 · 9 支推桿 · 19 顆按鈕</span></li>
       <li><a href="../korg-nanokontrol2/">Korg nanoKONTROL2</a><span>KORG · 8 顆旋鈕 · 8 支推桿 · 35 顆按鈕</span></li>
     </ul>
+    <p class="cmp-link"><a href="../#cmp-generic-8f">把 通用 8 推桿 跟其他台比較：琴鍵、打擊墊、旋鈕、推桿、LED 回饋 →</a></p>
     <nav class="step" aria-label="相鄰的控制器">
       <a rel="prev" href="../generic-8k8p/"><small>← 上一台</small>通用 8 旋鈕 + 8 打擊墊</a>
       <a class="back" href="../../../zh/controllers/">回到全部控制器</a>
       <a rel="next" href="../generic-16p/"><small>下一台 →</small>通用 16 打擊墊</a>
     </nav>
+  </section>
+
+  <!-- ═════ not here? ═════ -->
+  <section class="sec" id="request" aria-labelledby="request-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">找不到</p>
+      <h2 id="request-title">沒有你那台？</h2>
+      <p class="sec-lede">開一張 issue，寫廠牌型號、手上有沒有這台、手冊的連結。也可以自己寫設定檔，它就是一個 JSON 檔。</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">許願一台控制器 ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md">怎麼自己加 ↗</a></li>
+    </ul>
   </section>
 
   <!-- ═════ wrong data? ═════ -->

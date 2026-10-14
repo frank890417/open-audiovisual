@@ -283,7 +283,8 @@ on consonant chords"). Describe the performance; the agent writes the World; the
 chassis does the rest.
 
 An **MCP server** ships in the box ([`.mcp.json`](.mcp.json), zero-dependency stdio):
-`list_examples` · `read_doc` · `scaffold_world` · `run_checks`. Connect any MCP-capable
+`list_examples` · `read_doc` · `scaffold_world` · `run_checks` · `list_controllers` ·
+`read_profile` · `validate_profile` · `scaffold_profile`. Connect any MCP-capable
 agent and it can inspect, scaffold and verify a performance. Machine-readable entry points:
 [`llms.txt`](llms.txt) · [`llms-full.txt`](llms-full.txt). (Positioning kin:
 [open-slide](https://github.com/1weiho/open-slide), which does this for slide decks.)
@@ -365,7 +366,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **18-device MIDI controller library**,
 **oav-p5**, an MCP server, and a handbook site.
 
-23 packages · 15 examples · 24 MIDI controller profiles (18 devices, 6 generic layouts, 859 controls) · 422 tests
+23 packages · 15 examples · 24 MIDI controller profiles (18 devices, 6 generic layouts, 859 controls) · 483 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -428,7 +429,8 @@ sources in `docs/`, one file for language models at `/llms-full.txt`.
 This repo ships an MCP server (`.mcp.json` is pre-wired — Claude Code picks it
 up automatically; other agents: `node packages/mcp/server.js` over stdio).
 Tools: `list_examples` · `read_doc` (start with `agents`, then
-`writing-a-world`) · `scaffold_world` (donor-based) · `run_checks`. The manual
+`writing-a-world`) · `scaffold_world` (donor-based) · `run_checks` · controller profiles:
+`list_controllers` · `read_profile` · `validate_profile` · `scaffold_profile`. The manual
 path below works without it.
 
 ## How to create a new work (the common request)
@@ -451,6 +453,9 @@ path below works without it.
 - Manual smoke: every example must load with zero console errors (the
   `ws://…7457` monitor reconnect warning is expected when no relay runs).
 - `window.openav` is exposed in every example for devtools/scripted poking.
+- Shipping: `tools/release.sh "message"` is the only way to deploy (a push to `main`
+  is a deploy). It builds, tests, commits, stamps, pushes and checks the live site in
+  a fixed order; see [RELEASING.md](RELEASING.md) for why.
 
 ## Conventions
 
@@ -1752,12 +1757,85 @@ from code on every load, as in example 09) or remove the saved profile:
 localStorage.removeItem('openav.map.particles');   // 'particles' = the world's name
 ```
 
-To carry a wiring to another machine, export and import the JSON (there is no
-file UI yet; it is on the [roadmap](roadmap.md)):
+To carry a wiring to another machine or another world, use a map file
+([next section](#map-files-export-import-and-share)).
+
+## Map files: export, import and share
+
+The **L2 · Mapping** panel has three buttons under *map knobs in order*:
+
+- **⬇ export** downloads the routes as `oav-map-<world>.json`.
+- **⬆ import** picks a map file. You can also **drop a `.json` anywhere on the page**.
+  Import *replaces* the routes; the new set is remembered at once.
+- **clear** removes every route (click twice). On the next load the world's declared
+  routes come back, as on a first visit.
+
+Below the buttons the panel says what the last import did: how many routes came in, and
+every route it **skipped** and why. A file that cannot be read says so and changes nothing.
+
+### The format
+
+```json
+{
+  "format": "openav.map",
+  "version": 1,
+  "world": "particles",
+  "exported": "2026-10-15T08:30:00.000Z",
+  "routes": [
+    { "signal": "midi/cc/74", "param": "bloom", "curve": "exp",
+      "range": { "in": [0, 1], "out": [0, 100] }, "smooth": 0.1, "invert": false },
+    { "signal": "audio/rms", "param": "energy", "curve": "linear",
+      "range": { "in": [0, 0.3], "out": [0, 1] }, "smooth": 0, "invert": false, "enabled": false }
+  ]
+}
+```
+
+Routes are named by `signal` and `param`, never by id, so a file travels between worlds:
+
+- a route whose **param** this world does not have is skipped and listed;
+- a route whose **signal** nothing in this show can produce (say `leap/palm/x` without a
+  Leap Motion module) is skipped and listed. Signals that only appear when the first message
+  arrives (`midi/…`, `surface/…`, `phone/…`, `osc/…`, `key…`, `take/…`) are kept and counted as
+  *waiting*;
+- when the file's `world` is a different one, the `range.out` is dropped so each param keeps its
+  own range (the `in` window, curve, smoothing and invert come along);
+- `version` newer than this build reads is refused with a message. A bare array from
+  `mapper.toJSON()` (the old way) still imports, as version 0.
+- Files over 256 KB or with over 500 routes are refused.
+
+### Load on open: `?map=`
+
+```
+https://openaudiovisual.com/examples/01-hello-particles/?map=https://example.com/my-map.json
+https://openaudiovisual.com/examples/01-hello-particles/?map=maps/stage-left.json
+```
+
+`?map=<url>` fetches the file when the page opens and loads it like an import. It accepts a
+**same-origin** address (relative paths included) or an absolute **https** one; `http:` to another
+host, `data:`, `javascript:`, `file:` and addresses with a login are refused. A cross-site file
+must be served with CORS (`Access-Control-Allow-Origin: *`; raw GitHub and gists do this).
+The show starts regardless: if the address is refused, the fetch fails or the file is bad, the
+panel shows the reason and the routes stay as they were. An explicit `?map=` beats the remembered
+wiring, and what it loads is remembered like any import. In code, `createShow({ map: 'maps/a.json' })`
+does the same and `map: false` ignores `?map=`.
+
+### Remembered for you
+
+The mapper saves its routes to `localStorage` (`openav.map.<world>`) every 3 seconds and right
+after an import or clear, one slot per world name, so the next visit starts where you stopped.
+Every read and write is wrapped: in a private window or with storage blocked nothing breaks,
+the wiring just is not remembered.
+
+In code:
 
 ```js
-copy(JSON.stringify(show.mapper.toJSON(), null, 2));   // devtools: copies the routes
-show.mapper.fromJSON(routes); show.mapper.save();      // on the other machine (replaces all routes)
+import { loadMapUrl, parseMap } from '@openav/mapping';
+
+const file = show.mapper.exportMap();                    // the object above
+const report = show.mapper.importMap(text);              // text or object; { mode: 'add' } keeps current routes
+// → { ok, added, skipped: [{ signal, param, reason: 'param' | 'signal' }], waiting, dropped, crossWorld }
+await loadMapUrl(show.mapper, 'maps/a.json');            // what ?map= calls; never throws
+parseMap(text);                                          // validate without touching a mapper
 ```
 
 ## Routes written for you
@@ -1785,6 +1863,9 @@ mapper.routes                 // the live array
 mapper.learn('bloom')         // arm / cancel learn; mapper.learnTarget is the armed key
 mapper.update(dt)             // every frame: advances smoothed routes
 mapper.toJSON(); mapper.fromJSON(array)
+mapper.exportMap(); mapper.importMap(text|object, { mode })   // the portable file, see above
+mapper.clear()                // remove every route (and forget them)
+mapper.report                 // what the last import / ?map= said
 mapper.save(); mapper.load()  // localStorage 'openav.map.<profile>'; load() → true if found
 mapper.dispose()              // stop listening to signals
 ```
@@ -1829,6 +1910,7 @@ const show = await createShow({
 | `modules` | `{}` | inputs and outputs to switch on (below) |
 | `artwork` | `null` | `{ title, artist, year, note }`: a credit line on the stage and a `<meta name="artwork">` |
 | `hint` | `''` | a line of HTML at the bottom left of the stage |
+| `map` | `?map=` in the page address | a map file to load on start: a same-origin or https URL; `false` ignores `?map=` ([Map files](mapping.md#map-files-export-import-and-share)) |
 | `profile` | the world's name | the mapper's saved-profile name; `false` = ignore saved routes ([Saved profiles](mapping.md#saved-profiles)) |
 | `onFrame` | `null` | `(dt, show) => {}` every frame, before the timeline advances |
 | `mount` | generated | `{ stage, side }` elements or selectors to render into, instead of a full-page layout |
@@ -1864,7 +1946,7 @@ const timeline = new Timeline({
   params,
   total: 2400,                       // seconds (default 600 when used directly; createShow uses 120)
   automation: {
-    growth: [[0, 0.2], [300, 1.0], [1200, 0.4]],   // [t, value] keyframes, linear
+    growth: [[0, 0.2], [300, 1.0, 'ease'], [1200, 0.4, 'out']],   // [t, value, curve?] keyframes; no curve = linear
     mode:   [[0, 0], [600, 1], [1800, 2]],          // step params hold (no interp)
   },
   scenes: [
@@ -1881,6 +1963,7 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 - `timeline.rate` exists for rehearsal speed-through (`rate = 4`)
 - playback stops by itself at `total`
 - a scene with `hold: true` stops playback at its end until it is released (Space, →): see [Hold](score.md#hold)
+- `loop: true` wraps the show at `total` and plays on; `loop: 'scene'` repeats the scene the playhead is in until you move on: see [Curves, loop, cues, recording](#curves-loop-cues-recording)
 - `reset()` goes to `start` (default 0, so a pre-show standby scene at −30 is reached with the scrubber; pass `start: -30`, or `start: 'first'` for "the first scene", to make R return to it)
 - with `score` the scenes, total and start come from a [score](score.md); then automation is read at `score.baseTime(t)`, so a cut derived with `scale: 0.5` stretches it
 
@@ -1895,10 +1978,53 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 | `advance(dt)` | per frame; moves `t` by `dt × rate` while playing |
 | `state(t)`, `valueAt(key, t)` | the automation values at a time (no overrides) |
 | `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` | scene lookup |
-| `onSceneChange(cb)` | `cb(index, scene, { cause })` whenever playback or a seek lands in a different scene; `cause` is `'play'`, `'release'`, `'seek'`, `'jump'` or `'reset'` |
+| `onSceneChange(cb)` | `cb(index, scene, { cause })` whenever playback or a seek lands in a different scene; `cause` is `'play'`, `'release'`, `'seek'`, `'jump'`, `'reset'` or `'loop'` |
+| `onCue(cb)`, `cues()`, `fireCue(cue)` | scene cues fired by playback, the list of them, and the manual trigger |
+| `loop`, `onLoop(cb)`, `loopRange()`, `loops` | wrap the show, a scene or a range |
+| `record(key, source)`, `stopRecording()`, `onRecord(cb)`, `mergeTake(key, take)` | write a value source into a lane |
 | `onSeek(cb)` | `cb(t, kind)` when the playhead is moved by hand (`'seek'`, `'jump'`, `'reset'`), never while playing |
 | `layer` | `(key, value, t) => value`: rewrite a param before overrides (the director's `param()` plugs in here) |
 | `t`, `playing`, `holding`, `rate`, `total`, `start`, `scenes`, `automation`, `score` | state you can read (and set) |
+
+### Curves, loop, cues, recording
+
+**Curves.** A keyframe is `[t, value, curve?]`. The third item says how the segment that *ends* at that keyframe gets
+there: `'linear'` (the default: leave it out and you get what the timeline always did), `'ease'` (slow, fast, slow),
+`'in'` (starts slow), `'out'` (starts fast), `'step'` (hold the old value until the keyframe, then jump), or your own
+function of 0..1. `CURVES` is exported. A param with `step` still holds, whatever the curve says.
+
+```js
+automation: { speed: [[0, 0.3], [16, 1.6, 'in'], [20, 3.4, 'step'], [30, 0.8, 'out']] }
+```
+
+**Loop.** `loop: true` wraps at `total` (back to 0) and keeps playing; `'scene'` repeats the scene the playhead is in
+(`next()` moves the loop on to the next scene); a scene id loops that scene; `{ from, to }` loops a range in seconds or
+scene ids. It is a property: `timeline.loop = !timeline.loop` is the whole L key. `onLoop(cb)` tells you each lap, and a
+loop that wraps into another scene is an `onSceneChange` with `cause: 'loop'`. A `hold` inside the range still holds.
+
+**Cues.** `scene.cues` is `[{ name, t }]` (the console scrubber already draws them as ticks). `onCue((cue, { cause }) => …)`
+fires one when *playback* passes it, once, and never when you seek, jump, drag the scrubber or reset: a scrub is not a
+performance. Each lap of a loop fires them again. `fireCue(cue)` sets one off by hand. With a [score](score.md) the director
+fires its own cues; use `onCue` on plain timelines.
+
+```js
+show.timeline.onCue((cue) => show.params.firePulse(cue.name));   // scenes: [{ …, cues: [{ name: 'flash', t: 20 }] }]
+```
+
+**Recording.** `record(key, source)` arms a lane. While the timeline plays, `source()` is read every frame: a number is
+written into a take, `null` means nobody is touching and closes it.
+
+```js
+timeline.record('hue', () => params.isOverridden('hue') ? params.overrides.hue : null);
+timeline.onRecord(({ key }) => params.clearOverride(key));      // the curve takes over again
+```
+
+A take also closes on pause, seek, reset, a hold, the end of the show and the end of each loop lap, while the recorder
+stays armed until `stop()` / `stopRecording()`. The merge rule (`mergeTake()`): the take is thinned (a point stays when
+it moved more than 0.6 % of the param's range, or 0.5 s passed), and it **replaces the keyframes inside its time span**.
+Keyframes outside stay, so the lane glides from the previous keyframe to the take's first point, and from its last point
+to the next keyframe. Existing curves outside the take are untouched. With a score the keyframes are written in the base
+cut's time, like the ones you declared.
 
 A cue list is just a scene-change handler:
 
@@ -3531,7 +3657,9 @@ Spine · automation, scenes and transport; pure logic.
 
 | export | signature |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · keyframes `[t, value, curve?]` (`'linear'` · `'ease'` · `'in'` · `'out'` · `'step'`) · `loop` (`true`, `'scene'`, a scene id, `{ from, to }`), `onLoop(cb)` · `cues()`, `onCue(cb(cue, { cause }))`, `fireCue(cue)` · `record(key, source)`, `stopRecording()`, `onRecord(cb)`, `mergeTake(key, take, opts)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
+
+A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's `cues` fire when playback passes them, never on a seek. `record()` writes a value source (a knob override) into a lane while the timeline plays. `CURVES` is exported too.
 
 See [Show control](show-control.md#timeline).
 
@@ -3688,6 +3816,10 @@ JSON-RPC error with code −32000 and a message.
 | `read_doc` | `doc` (required): `architecture`, `writing-a-world`, `signals`, `show-control`, `roadmap`, `agents`, `readme` | the Markdown text. `agents` is AGENTS.md, `readme` the README; the others are `docs/<name>.md` |
 | `scaffold_world` | `slug` (required, kebab-case), `donor` (default `01-hello-particles`) | `{ created, next_steps }`. Copies every file of `examples/<donor>/` into `examples/<next number>-<slug>/` |
 | `run_checks` | none | `{ pass, fail, ok }` from `node --test tests/*.test.js` (60 s timeout), or `{ ok: false, output }` with the failing lines |
+| `list_controllers` | none | `{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }`: every shipped MIDI profile, its control mix (`{ knob: 8, pad: 8, keys: 25 }`), how many controls are still flagged unverified, and its page `https://openaudiovisual.com/controllers/<id>/` |
+| `read_profile` | `id` (required): a profile id or its `short` | `{ id, url, unverified, profile, mapping }`: the profile JSON as shipped, and a readable MIDI map (control, type, `CC 74, ch 1`, signal `midi/<short>/<id>`, verified) |
+| `validate_profile` | `profile` (required): an object or a JSON string | `{ ok, problems, conflicts }`: the problems `validateProfile` finds, plus clashes with shipped profiles (same `id`, same `short`, overlapping `match.ports`) |
+| `scaffold_profile` | `maker`, `model`, `controls` (all required): `[{ type, count, from? }]` | `{ profile, problems, unverified, next_steps }`: a skeleton that passes `validateProfile`, every number a placeholder with `"verified": false`, and the steps to source and register it. Nothing is written to disk |
 
 Good donors for `scaffold_world`: `01-hello-particles` (minimal 2D canvas),
 `02-chord-garden` (chord-driven), `03-pose-field` (camera, hands),
@@ -4002,7 +4134,7 @@ before it was generalized.)
 - [x] backstage monitor (zero-dep WS relay, LAN devices)
 - [x] OSC bridge; MIDI out with observable throat + panic
 - [x] tests for all pure logic (chord, timeline, mapping, params)
-- [ ] mapping profile import/export UI (JSON file, not just localStorage)
+- [x] mapping profile import/export UI (JSON file, drag-and-drop, `?map=<url>`, remembered per world)
 - [x] example: audio-reactive world driven by a live instrument (mic) — `06-cylinder-earth`
 - [x] drum machine with analyzer-shaped signals (`@openav/drums`)
 - [x] on-screen MIDI controllers that mirror real hardware (`@openav/midi`, example 09)

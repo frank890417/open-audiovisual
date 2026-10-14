@@ -394,12 +394,14 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/examples/</loc>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/examples/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/examples/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/examples/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/examples/</loc>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/examples/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/examples/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/examples/"/>
@@ -466,14 +468,14 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/p5/</loc>
-    <lastmod>2026-10-14</lastmod>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/p5/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/p5/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/p5/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/p5/</loc>
-    <lastmod>2026-10-14</lastmod>
+    <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/p5/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/p5/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/p5/"/>

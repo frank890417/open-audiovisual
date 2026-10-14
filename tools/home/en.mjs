@@ -13,7 +13,7 @@ export default {
   ldLanguage: 'en',
 
   meta: {
-    title: 'open-audiovisual · a web-native framework for audiovisual performance',
+    title: 'open-audiovisual · a framework for audiovisual performance',
     description: 'Zero-build JavaScript framework: MIDI controllers, mics, hands and phones become signals that drive p5.js, WebGL or WebToe worlds in the browser. MIT.',
     definition: 'open-audiovisual is a zero-build JavaScript framework that turns MIDI controllers, microphones, hand tracking and phones into signals for browser-based audiovisual performance: p5.js, WebGL or WebToe worlds, MIT licensed.',
     ogDescription: 'Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. open-audiovisual gives you a show.',

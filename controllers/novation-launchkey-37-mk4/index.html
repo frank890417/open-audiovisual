@@ -65,6 +65,11 @@
 </header>
 
 <main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>This device has no Web MIDI, so a hardware controller cannot connect here. You can still play on screen with your fingers. To plug in yours, open this page in Chrome or Edge on a computer.</p>
+    <button type="button" aria-label="Close this note">Got it</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
 
   <!-- ═════ the instrument first, then the words ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
@@ -403,6 +408,7 @@
           </tbody>
         </table>
         </div>
+    <p class="led-line" data-led="no">LED feedback is not modeled for this one yet, so OAV does not light its LEDs. Every control still plays and sends its message.</p>
     <h3>Notes on single controls</h3>
     <ul class="cnotes"><li><code>pitch</code> Pitch wheel: Novation says it sends pitch bend messages; the channel is not printed — it follows the Keys Channel (default 1), assumed.</li><li><code>mod</code> Default CC 1 per the Launchkey MK4 Components Guide (Mod Wheel/Strip tab: "default is CC 1"; editable in Components). Its MIDI channel is not printed — the Keys Channel (default 1) is assumed.</li><li><code>k1</code> The power-on Encoder mode is Custom 1 (Settings → Power On Modes), but Novation prints no default CC for it — the values are set in Components. CC 21–28 on channel 1 is a placeholder: CC 21–28 are the encoders' DAW-mode numbers (channel 16) in the Programmer's Reference. Check the number and channel in Components, or use 學習. Absolute vs relative is also a Components option (relative not assumed).</li><li><code>k2</code> The power-on Encoder mode is Custom 1 (Settings → Power On Modes), but Novation prints no default CC for it — the values are set in Components. CC 21–28 on channel 1 is a placeholder: CC 21–28 are the encoders' DAW-mode numbers (channel 16) in the Programmer's Reference. Check the number and channel in Components, or use 學習. Absolute vs relative is also a Components option (relative not assumed).</li><li><code>k3</code> The power-on Encoder mode is Custom 1 (Settings → Power On Modes), but Novation prints no default CC for it — the values are set in Components. CC 21–28 on channel 1 is a placeholder: CC 21–28 are the encoders' DAW-mode numbers (channel 16) in the Programmer's Reference. Check the number and channel in Components, or use 學習. Absolute vs relative is also a Components option (relative not assumed).</li><li><code>k4</code> The power-on Encoder mode is Custom 1 (Settings → Power On Modes), but Novation prints no default CC for it — the values are set in Components. CC 21–28 on channel 1 is a placeholder: CC 21–28 are the encoders' DAW-mode numbers (channel 16) in the Programmer's Reference. Check the number and channel in Components, or use 學習. Absolute vs relative is also a Components option (relative not assumed).</li><li><code>k5</code> The power-on Encoder mode is Custom 1 (Settings → Power On Modes), but Novation prints no default CC for it — the values are set in Components. CC 21–28 on channel 1 is a placeholder: CC 21–28 are the encoders' DAW-mode numbers (channel 16) in the Programmer's Reference. Check the number and channel in Components, or use 學習. Absolute vs relative is also a Components option (relative not assumed).</li><li><code>k6</code> The power-on Encoder mode is Custom 1 (Settings → Power On Modes), but Novation prints no default CC for it — the values are set in Components. CC 21–28 on channel 1 is a placeholder: CC 21–28 are the encoders' DAW-mode numbers (channel 16) in the Programmer's Reference. Check the number and channel in Components, or use 學習. Absolute vs relative is also a Components option (relative not assumed).</li><li><code>k7</code> The power-on Encoder mode is Custom 1 (Settings → Power On Modes), but Novation prints no default CC for it — the values are set in Components. CC 21–28 on channel 1 is a placeholder: CC 21–28 are the encoders' DAW-mode numbers (channel 16) in the Programmer's Reference. Check the number and channel in Components, or use 學習. Absolute vs relative is also a Components option (relative not assumed).</li><li><code>k8</code> The power-on Encoder mode is Custom 1 (Settings → Power On Modes), but Novation prints no default CC for it — the values are set in Components. CC 21–28 on channel 1 is a placeholder: CC 21–28 are the encoders' DAW-mode numbers (channel 16) in the Programmer's Reference. Check the number and channel in Components, or use 學習. Absolute vs relative is also a Components option (relative not assumed).</li><li><code>sustain</code> Sustain pedal jack: default CC 64 per the Launchkey MK4 Components Guide (Pedal tab: "default is CC 64"; editable). Channel is not printed — the Keys Channel (default 1) is assumed.</li></ul>
     <div class="spec-grid">
@@ -517,11 +523,26 @@
       <li><a href="../novation-launch-control-xl-3/">Novation Launch Control XL 3</a><span>Novation · 24 encoders · 8 faders · 16 buttons</span></li>
       <li><a href="../akai-mpk-mini-mk3/">AKAI MPK mini mk3</a><span>AKAI Professional · 8 pads · 25 keys · 8 knobs · 2 wheels</span></li>
     </ul>
+    <p class="cmp-link"><a href="../#cmp-novation-launchkey-37-mk4">Compare Novation Launchkey 37 MK4 with the rest, by keys, pads, knobs, faders and LED feedback →</a></p>
     <nav class="step" aria-label="Neighbouring controllers">
       <a rel="prev" href="../novation-launchkey-25-mk4/"><small>← Previous</small>Novation Launchkey 25 MK4</a>
       <a class="back" href="../../controllers/">Back to all controllers</a>
       <a rel="next" href="../odd-ball/"><small>Next →</small>ODD Ball</a>
     </nav>
+  </section>
+
+  <!-- ═════ not here? ═════ -->
+  <section class="sec" id="request" aria-labelledby="request-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Missing</p>
+      <h2 id="request-title">Is your controller not here?</h2>
+      <p class="sec-lede">Open an issue with the brand and model, whether you have the unit and a link to the manual. Or write the profile yourself: it is one JSON file.</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">Ask for a controller ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md">How to add one ↗</a></li>
+    </ul>
   </section>
 
   <!-- ═════ wrong data? ═════ -->
