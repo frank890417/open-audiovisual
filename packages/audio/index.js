@@ -24,7 +24,7 @@
 export class AudioAnalyzer {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js?v=73b0e01').Signals} [opts.signals]
+   * @param {import('../core/src/signals.js?v=1d58b5f').Signals} [opts.signals]
    * @param {number} [opts.fftSize=2048]
    * @param {number} [opts.smooth=0.7] rms smoothing 0..1 (higher = smoother)
    */

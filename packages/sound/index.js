@@ -28,28 +28,28 @@
 // The instrument is a discrete choice (sound.setInstrument, the picker); what
 // you PERFORM — cutoff, space, volume, an instrument's own knobs — stays params.
 
-import { SOUND_PARAMS, registerInstrument, getInstrument } from './registry.js?v=73b0e01';
-import { piano } from './instruments/piano.js?v=73b0e01';
-import { epiano } from './instruments/epiano.js?v=73b0e01';
-import { organ } from './instruments/organ.js?v=73b0e01';
-import { strings } from './instruments/strings.js?v=73b0e01';
-import { choir } from './instruments/choir.js?v=73b0e01';
-import { harp } from './instruments/harp.js?v=73b0e01';
-import { xylophone } from './instruments/xylophone.js?v=73b0e01';
-import { marimba } from './instruments/marimba.js?v=73b0e01';
-import { vibraphone } from './instruments/vibraphone.js?v=73b0e01';
-import { glockenspiel } from './instruments/glockenspiel.js?v=73b0e01';
-import { musicBox } from './instruments/musicbox.js?v=73b0e01';
-import { SYNTH_PRESETS, synthInstrument } from './instruments/synth.js?v=73b0e01';
+import { SOUND_PARAMS, registerInstrument, getInstrument } from './registry.js?v=1d58b5f';
+import { piano } from './instruments/piano.js?v=1d58b5f';
+import { epiano } from './instruments/epiano.js?v=1d58b5f';
+import { organ } from './instruments/organ.js?v=1d58b5f';
+import { strings } from './instruments/strings.js?v=1d58b5f';
+import { choir } from './instruments/choir.js?v=1d58b5f';
+import { harp } from './instruments/harp.js?v=1d58b5f';
+import { xylophone } from './instruments/xylophone.js?v=1d58b5f';
+import { marimba } from './instruments/marimba.js?v=1d58b5f';
+import { vibraphone } from './instruments/vibraphone.js?v=1d58b5f';
+import { glockenspiel } from './instruments/glockenspiel.js?v=1d58b5f';
+import { musicBox } from './instruments/musicbox.js?v=1d58b5f';
+import { SYNTH_PRESETS, synthInstrument } from './instruments/synth.js?v=1d58b5f';
 
 export {
   SOUND_PARAMS, CATEGORIES, registerInstrument, unregisterInstrument, getInstrument, listInstruments,
   instrumentName, instrumentGroups, onInstrumentsChange, validateInstrument,
-} from './registry.js?v=73b0e01';
-export { SYNTH_PRESETS, synthInstrument, registerSynthPreset, validateSynthPreset } from './instruments/synth.js?v=73b0e01';
-export { modalInstrument } from './instruments/modal.js?v=73b0e01';
-export { salamanderMap, SALAMANDER_NOTES } from './instruments/piano.js?v=73b0e01';
-export { mountSoundPicker } from './picker.js?v=73b0e01';
+} from './registry.js?v=1d58b5f';
+export { SYNTH_PRESETS, synthInstrument, registerSynthPreset, validateSynthPreset } from './instruments/synth.js?v=1d58b5f';
+export { modalInstrument } from './instruments/modal.js?v=1d58b5f';
+export { salamanderMap, SALAMANDER_NOTES } from './instruments/piano.js?v=1d58b5f';
+export { mountSoundPicker } from './picker.js?v=1d58b5f';
 
 export const TONE_CDN = 'https://cdn.jsdelivr.net/npm/tone@15.0.4/+esm';
 /** Where the built-in sample sets live when nobody says otherwise (GitHub Pages sends CORS headers).
@@ -90,8 +90,8 @@ const pageKey = () => {
 export class Sound {
   /**
    * @param {object} deps
-   * @param {import('../core/src/signals.js?v=73b0e01').Signals} deps.signals
-   * @param {import('../core/src/params.js?v=73b0e01').Params} [deps.params] register engine params (prefixed sound/)
+   * @param {import('../core/src/signals.js?v=1d58b5f').Signals} deps.signals
+   * @param {import('../core/src/params.js?v=1d58b5f').Params} [deps.params] register engine params (prefixed sound/)
    * @param {object} deps.engine engine implementing the contract above
    * @param {string} [deps.instrument] starting instrument (engines that have instruments)
    * @param {boolean|string} [deps.remember] keep the picker's last choice per page in localStorage (a string = your own key)
