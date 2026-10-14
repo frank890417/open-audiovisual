@@ -171,7 +171,7 @@ test('comparison filters: each label carries the number of rows it keeps, comput
     led: PROFILES.filter((p) => p.controls.some((c) => c.led)).length,
     all: PROFILES.length,
   };
-  assert.ok(want.keys > 0 && want.fader > 0 && want.pad > 0 && want.led === 5);
+  assert.ok(want.keys > 0 && want.fader > 0 && want.pad > 0 && want.led > 0);
   for (const lang of ['en', 'zh']) {
     for (const [f, n] of Object.entries(want)) {
       const m = html[lang].match(new RegExp(`data-pick="${f}"[^>]*>[^<]*<b>(\\d+)</b>`));

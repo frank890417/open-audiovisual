@@ -84,6 +84,7 @@
         <li class="toc-ch" data-ch="quick-start">
           <a href="#quick-start"><span class="n">02</span><span class="t">快速開始</span></a>
           <ol class="toc-secs">
+            <li><a href="#quick-start-three-ways-in">三種進場方式</a></li>
             <li><a href="#quick-start-run-it">跑起來</a></li>
             <li><a href="#quick-start-which-browser">用哪個瀏覽器</a></li>
             <li><a href="#quick-start-what-you-are-looking-at">你看到的是什麼</a></li>
@@ -160,6 +161,7 @@
             <li><a href="#mapping-learn">Learn</a></li>
             <li><a href="#mapping-muting-and-removing">靜音與移除</a></li>
             <li><a href="#mapping-saved-profiles">儲存的設定檔</a></li>
+            <li><a href="#mapping-map-files-export-import-and-share">對應檔：匯出、匯入與分享</a></li>
             <li><a href="#mapping-routes-written-for-you">替你寫好的路由</a></li>
             <li><a href="#mapping-mapper-api">Mapper API</a></li>
           </ol>
@@ -340,7 +342,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">18 章 · 169 節 · v0.1.0</p>
+      <p class="docs-stats">18 章 · 171 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -381,6 +383,17 @@ around them  console (the director's desk) · relay, surface, remote (phones as 
 <section class="chapter" data-chapter="quick-start" aria-labelledby="quick-start">
 <h2 id="quick-start">快速開始<a class="anchor" href="#quick-start" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">02</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/getting-started.md">docs/zh/getting-started.md</a></span></p>
+<h3 id="quick-start-three-ways-in">三種進場方式<a class="anchor" href="#quick-start-three-ways-in" aria-label="這一節的連結">#</a></h3>
+<p>挑一個最接近你手上東西的。越往下，東西越大。</p>
+<ol>
+<li><strong>在 p5.js 草圖裡加一行。</strong> 任何一份 p5.js 草圖（OpenProcessing、p5 編輯器、你自己的網頁）在最前面加一行，就能用
+MIDI 控制器、螢幕上的控制器或手機來彈。讀 <a href="#p5">p5.js 一行接上</a>，再玩帶著這一行的草圖：
+<a href="../../examples/15-p5-one-line/">範例 15</a>。</li>
+<li><strong>在網頁裡放一台控制器。</strong> <code>&lt;oav-controller profile="akai-lpd8"&gt;</code> 把一台能彈的控制器放進任何網頁。讀
+<a href="#controllers">MIDI 控制器與嵌入</a>，到<a href="../../zh/controllers/">控制器圖鑑</a>挑你的那一台。</li>
+<li><strong>一整場演出。</strong> 一個世界加上一次 <code>createShow()</code> 呼叫，輸入、映射、時間軸、控台、聲音和後台就一起組好。從
+<a href="../../examples/01-hello-particles/">範例 01</a> 開始，接著往下讀。</li>
+</ol>
 <h3 id="quick-start-run-it">跑起來<a class="anchor" href="#quick-start-run-it" aria-label="這一節的連結">#</a></h3>
 <p>你需要 Node.js（目前任何一個版本都可以，CI 用 Node 22 跑測試）和一個瀏覽器。不用安裝任何東西：沒有 <code>npm install</code>，也沒有打包工具。</p>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">git</span> clone https://github.com/frank890417/open-audiovisual.<span class="tk">git</span>
@@ -1030,9 +1043,50 @@ show.mapper.removeRoute(r.id);      <span class="tc">// remove</span></code></pr
 </ol>
 <p>所以 learn 來的路由和你做的修改，重新載入之後都還在。反過來說：如果你在程式碼裡改了某條宣告路由的曲線或平滑，同一組 <code>source → target</code> 以儲存的版本為準。要從乾淨的狀態開始，就傳入 <code>profile: false</code>（每次載入都從程式碼讀路由，像範例 09 那樣），或刪掉儲存的設定檔：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">localStorage.removeItem(<span class="ts">'openav.map.particles'</span>);   <span class="tc">// 'particles' = the world's name</span></code></pre></div>
-<p>要把一套接線帶到另一台電腦，就匯出再匯入 JSON（目前還沒有檔案介面，已經列在<a href="#roadmap">路線圖</a>上）：</p>
-<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">copy(JSON.stringify(show.mapper.toJSON(), <span class="tk">null</span>, 2));   <span class="tc">// devtools: copies the routes</span>
-show.mapper.fromJSON(routes); show.mapper.save();      <span class="tc">// on the other machine (replaces all routes)</span></code></pre></div>
+<p>要把一套接線帶到另一台電腦、或另一個世界，用對應檔（<a href="#mapping-map-files-export-import-and-share">下一節</a>）。</p>
+<h3 id="mapping-map-files-export-import-and-share">對應檔：匯出、匯入與分享<a class="anchor" href="#mapping-map-files-export-import-and-share" aria-label="這一節的連結">#</a></h3>
+<p><strong>L2 · Mapping</strong> 面板在「map knobs in order」下面有三個按鈕：</p>
+<ul>
+<li><strong>⬇ export</strong>：把目前的路由下載成 <code>oav-map-&lt;世界名&gt;.json</code>。</li>
+<li><strong>⬆ import</strong>：選一個對應檔。也可以<strong>把 <code>.json</code> 拖進頁面任何地方</strong>。匯入會<em>取代</em>現有路由，新的這組馬上被記住。</li>
+<li><strong>clear</strong>：移除全部路由（要點兩下）。下次載入時，世界宣告的路由會回來，跟第一次來一樣。</li>
+</ul>
+<p>按鈕下面會寫最近一次匯入的結果：進來幾條、<strong>略過</strong>哪幾條、為什麼。讀不了的檔案會說明原因，而且不動任何路由。</p>
+<h4 id="mapping-the-format">格式<a class="anchor" href="#mapping-the-format" aria-label="這一節的連結">#</a></h4>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-json">{
+  <span class="ts">"format"</span>: <span class="ts">"openav.map"</span>,
+  <span class="ts">"version"</span>: 1,
+  <span class="ts">"world"</span>: <span class="ts">"particles"</span>,
+  <span class="ts">"exported"</span>: <span class="ts">"2026-10-15T08:30:00.000Z"</span>,
+  <span class="ts">"routes"</span>: [
+    { <span class="ts">"signal"</span>: <span class="ts">"midi/cc/74"</span>, <span class="ts">"param"</span>: <span class="ts">"bloom"</span>, <span class="ts">"curve"</span>: <span class="ts">"exp"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 1], <span class="ts">"out"</span>: [0, 100] }, <span class="ts">"smooth"</span>: 0.1, <span class="ts">"invert"</span>: <span class="tk">false</span> },
+    { <span class="ts">"signal"</span>: <span class="ts">"audio/rms"</span>, <span class="ts">"param"</span>: <span class="ts">"energy"</span>, <span class="ts">"curve"</span>: <span class="ts">"linear"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 0.3], <span class="ts">"out"</span>: [0, 1] }, <span class="ts">"smooth"</span>: 0, <span class="ts">"invert"</span>: <span class="tk">false</span>, <span class="ts">"enabled"</span>: <span class="tk">false</span> }
+  ]
+}</code></pre></div>
+<p>路由用 <code>signal</code> 和 <code>param</code> 的名字指認，不用 id，所以檔案可以在不同世界之間搬：</p>
+<ul>
+<li>這個世界沒有的 <strong>param</strong>：略過並列出來。</li>
+<li>這場演出裡沒有東西能產生的 <strong>signal</strong>（例如沒有 Leap Motion 模組卻有 <code>leap/palm/x</code>）：略過並列出來。要等第一則訊息才會出現的訊號（<code>midi/…</code>、<code>surface/…</code>、<code>phone/…</code>、<code>osc/…</code>、<code>key…</code>、<code>take/…</code>）會留下，算作「等待中」。</li>
+<li>檔案的 <code>world</code> 跟現在不同時，<code>range.out</code> 會丟掉，讓每個 param 用自己的範圍（<code>in</code> 窗、曲線、平滑、反相照樣帶過來）。</li>
+<li><code>version</code> 比這個版本讀得懂的新，會拒絕並說明。<code>mapper.toJSON()</code> 的純陣列（舊作法）仍然可以匯入，當作版本 0。</li>
+<li>超過 256 KB 或超過 500 條路由的檔案會被拒絕。</li>
+</ul>
+<h4 id="mapping-load-on-open-map">開頁就載入：<code>?map=</code><a class="anchor" href="#mapping-load-on-open-map" aria-label="這一節的連結">#</a></h4>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code>https://openaudiovisual.com/examples/01-hello-particles/?map=https://example.com/my-map.json
+https://openaudiovisual.com/examples/01-hello-particles/?map=maps/stage-left.json</code></pre></div>
+<p><code>?map=&lt;網址&gt;</code> 在頁面打開時抓檔案，像匯入一樣載入。只接受<strong>同源</strong>位址（含相對路徑）或絕對的 <strong>https</strong> 位址；指向其他主機的 <code>http:</code>、<code>data:</code>、<code>javascript:</code>、<code>file:</code>，以及帶帳號密碼的位址都會被拒絕。跨站的檔案要有 CORS（<code>Access-Control-Allow-Origin: *</code>；raw GitHub 和 gist 都有）。演出照常開始：位址被拒、抓取失敗或檔案有問題時，面板會顯示原因，路由維持原樣。明確寫的 <code>?map=</code> 優先於被記住的接線，載入的內容也會像匯入一樣被記住。程式裡 <code>createShow({ map: 'maps/a.json' })</code> 效果相同，<code>map: false</code> 則忽略 <code>?map=</code>。</p>
+<h4 id="mapping-remembered-for-you">自動記住<a class="anchor" href="#mapping-remembered-for-you" aria-label="這一節的連結">#</a></h4>
+<p>映射器每 3 秒、以及每次匯入或清除之後，把路由存進 <code>localStorage</code>（<code>openav.map.&lt;世界名&gt;</code>），每個世界一格，下次打開從你停下的地方繼續。每次讀寫都包了 try/catch：私密視窗或儲存被擋時什麼都不會壞，只是不會被記住。</p>
+<p>程式裡：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { loadMapUrl, parseMap } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+
+<span class="tk">const</span> file = show.mapper.exportMap();                    <span class="tc">// the object above</span>
+<span class="tk">const</span> report = show.mapper.importMap(text);              <span class="tc">// text or object; { mode: 'add' } keeps current routes</span>
+<span class="tc">// → { ok, added, skipped: [{ signal, param, reason: 'param' | 'signal' }], waiting, dropped, crossWorld }</span>
+<span class="tk">await</span> loadMapUrl(show.mapper, <span class="ts">'maps/a.json'</span>);            <span class="tc">// what ?map= calls; never throws</span>
+parseMap(text);                                          <span class="tc">// validate without touching a mapper</span></code></pre></div>
 <h3 id="mapping-routes-written-for-you">替你寫好的路由<a class="anchor" href="#mapping-routes-written-for-you" aria-label="這一節的連結">#</a></h3>
 <p>有幾個套件會產生同樣格式的路由：</p>
 <ul>
@@ -1050,6 +1104,9 @@ mapper.routes                 <span class="tc">// the live array</span>
 mapper.learn(<span class="ts">'bloom'</span>)         <span class="tc">// arm / cancel learn; mapper.learnTarget is the armed key</span>
 mapper.update(dt)             <span class="tc">// every frame: advances smoothed routes</span>
 mapper.toJSON(); mapper.fromJSON(array)
+mapper.exportMap(); mapper.importMap(text|object, { mode })   <span class="tc">// the portable file, see above</span>
+mapper.clear()                <span class="tc">// remove every route (and forget them)</span>
+mapper.report                 <span class="tc">// what the last import / ?map= said</span>
 mapper.save(); mapper.load()  <span class="tc">// localStorage 'openav.map.&lt;profile&gt;'; load() → true if found</span>
 mapper.dispose()              <span class="tc">// stop listening to signals</span></code></pre></div>
 <p><code>onChange()</code> 在路由變動時執行（給介面用），<code>onLearn(route, signalName)</code> 在 learn 綁定完成時執行。</p>
@@ -1081,6 +1138,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>modules</code></td><td><code>{}</code></td><td>要打開的輸入與輸出（見下表）</td></tr>
 <tr><td><code>artwork</code></td><td><code>null</code></td><td><code>{ title, artist, year, note }</code>：舞台上的一行作品署名，以及一個 <code>&lt;meta name="artwork"&gt;</code></td></tr>
 <tr><td><code>hint</code></td><td><code>''</code></td><td>舞台左下角的一行 HTML</td></tr>
+<tr><td><code>map</code></td><td>網址裡的 <code>?map=</code></td><td>開始時載入的對應檔：同源或 https 網址。<code>false</code> = 忽略 <code>?map=</code>（<a href="#mapping-map-files-export-import-and-share">對應檔</a>）</td></tr>
 <tr><td><code>profile</code></td><td>世界的名稱</td><td>映射器儲存設定檔的名稱。<code>false</code> = 忽略儲存的路由（<a href="#mapping-saved-profiles">儲存的設定檔</a>）</td></tr>
 <tr><td><code>onFrame</code></td><td><code>null</code></td><td><code>(dt, show) =&gt; {}</code>，每個影格執行一次，在時間軸前進之前</td></tr>
 <tr><td><code>mount</code></td><td>自動產生</td><td>要渲染進去的 <code>{ stage, side }</code> 元素或選擇器，取代整頁版面</td></tr>
@@ -1110,7 +1168,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
   params,
   total: 2400,                       <span class="tc">// seconds (default 600 when used directly; createShow uses 120)</span>
   automation: {
-    growth: [[0, 0.2], [300, 1.0], [1200, 0.4]],   <span class="tc">// [t, value] keyframes, linear</span>
+    growth: [[0, 0.2], [300, 1.0, <span class="ts">'ease'</span>], [1200, 0.4, <span class="ts">'out'</span>]],   <span class="tc">// [t, value, curve?] keyframes; no curve = linear</span>
     mode:   [[0, 0], [600, 1], [1800, 2]],          <span class="tc">// step params hold (no interp)</span>
   },
   scenes: [
@@ -1126,6 +1184,7 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <li>排練時用 <code>timeline.rate</code> 快轉（<code>rate = 4</code>）</li>
 <li>播放到 <code>total</code> 會自己停下</li>
 <li>帶 <code>hold: true</code> 的場景，播放到它的結尾就停住，直到被放行（Space、→）：見 <a href="#score-hold">Hold</a></li>
+<li><code>loop: true</code> 播到 <code>total</code> 就繞回開頭繼續播；<code>loop: 'scene'</code> 重複播放頭所在的場景，直到你往下走：見<a href="#show-control-curves-loop-cues-recording">曲線、loop、cue、錄製</a></li>
 <li><code>reset()</code> 回到 <code>start</code>（預設 0，所以 −30 的開演前待命場景要用 scrubber 才到得了。傳 <code>start: -30</code>（或 <code>start: 'first'</code>，意思是「第一個場景」），按 R 才會回到那裡）</li>
 <li>帶 <code>score</code> 時，場景、總長和起點都從<a href="#score">總譜</a>來，這時自動化曲線讀的是 <code>score.baseTime(t)</code>，用 <code>scale: 0.5</code> 衍生出來的版本會把曲線一起拉伸</li>
 </ul>
@@ -1141,12 +1200,25 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <tr><td><code>advance(dt)</code></td><td>每個影格呼叫，播放中把 <code>t</code> 往前推 <code>dt × rate</code></td></tr>
 <tr><td><code>state(t)</code>, <code>valueAt(key, t)</code></td><td>某個時間點的自動化數值（不含覆寫）</td></tr>
 <tr><td><code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code></td><td>查詢場景</td></tr>
-<tr><td><code>onSceneChange(cb)</code></td><td>每當播放或 seek 進到另一個場景，就呼叫 <code>cb(index, scene, { cause })</code>。<code>cause</code> 是 <code>'play'</code>、<code>'release'</code>、<code>'seek'</code>、<code>'jump'</code> 或 <code>'reset'</code></td></tr>
+<tr><td><code>onSceneChange(cb)</code></td><td>每當播放或 seek 進到另一個場景，就呼叫 <code>cb(index, scene, { cause })</code>。<code>cause</code> 是 <code>'play'</code>、<code>'release'</code>、<code>'seek'</code>、<code>'jump'</code>、<code>'reset'</code> 或 <code>'loop'</code></td></tr>
+<tr><td><code>onCue(cb)</code>、<code>cues()</code>、<code>fireCue(cue)</code></td><td>播放經過時觸發的場景 cue、cue 清單，以及手動觸發</td></tr>
+<tr><td><code>loop</code>、<code>onLoop(cb)</code>、<code>loopRange()</code>、<code>loops</code></td><td>讓整段、場景或一段範圍繞回去重播</td></tr>
+<tr><td><code>record(key, source)</code>、<code>stopRecording()</code>、<code>onRecord(cb)</code>、<code>mergeTake(key, take)</code></td><td>把一個數值來源錄進一條 lane</td></tr>
 <tr><td><code>onSeek(cb)</code></td><td>播放頭被手動移動時呼叫 <code>cb(t, kind)</code>（<code>'seek'</code>、<code>'jump'</code>、<code>'reset'</code>），播放中不會呼叫</td></tr>
 <tr><td><code>layer</code></td><td><code>(key, value, t) =&gt; value</code>：在覆寫之前改寫參數值（導演的 <code>param()</code> 就接在這裡）</td></tr>
 <tr><td><code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>scenes</code>, <code>automation</code>, <code>score</code></td><td>可讀也可寫的狀態</td></tr>
 </tbody>
 </table></div>
+<h4 id="show-control-curves-loop-cues-recording">曲線、loop、cue、錄製<a class="anchor" href="#show-control-curves-loop-cues-recording" aria-label="這一節的連結">#</a></h4>
+<p><strong>曲線。</strong> 關鍵影格寫成 <code>[t, value, curve?]</code>。第三項是「抵達這個影格的那一段」怎麼走：<code>'linear'</code>（預設，不寫就跟以前一樣）、<code>'ease'</code>（慢、快、慢）、<code>'in'</code>（起頭慢）、<code>'out'</code>（起頭快）、<code>'step'</code>（先守住舊值，到影格那一刻才跳），也可以放自己的 0..1 函式。<code>CURVES</code> 有匯出。帶 <code>step</code> 的參數不論寫什麼曲線都照舊守住。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">automation: { speed: [[0, 0.3], [16, 1.6, <span class="ts">'in'</span>], [20, 3.4, <span class="ts">'step'</span>], [30, 0.8, <span class="ts">'out'</span>]] }</code></pre></div>
+<p><strong>Loop。</strong> <code>loop: true</code> 在 <code>total</code> 繞回 0 繼續播；<code>'scene'</code> 重複播放頭所在的場景（<code>next()</code> 會把循環帶到下一個場景）；寫場景 id 就循環那個場景；<code>{ from, to }</code> 循環一段範圍（秒數或場景 id）。它是個屬性，<code>timeline.loop = !timeline.loop</code> 就是整個 L 鍵。<code>onLoop(cb)</code> 會告訴你每一圈，繞進另一個場景時 <code>onSceneChange</code> 的 <code>cause</code> 是 <code>'loop'</code>。範圍裡的 <code>hold</code> 照樣會停住。</p>
+<p><strong>Cue。</strong> <code>scene.cues</code> 是 <code>[{ name, t }]</code>（控台的時間列本來就把它們畫成小刻度）。<code>onCue((cue, { cause }) =&gt; …)</code> 在<em>播放</em>經過時觸發，一次，而 seek、跳場景、拖時間列、reset 都不觸發：拖著看不算演出。loop 每一圈會再觸發一次。<code>fireCue(cue)</code> 可以手動觸發。用<a href="#score">總譜</a>時由導演自己觸發 cue；一般的時間軸才用 <code>onCue</code>。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">show.timeline.onCue((cue) =&gt; show.params.firePulse(cue.name));   <span class="tc">// scenes: [{ …, cues: [{ name: 'flash', t: 20 }] }]</span></code></pre></div>
+<p><strong>錄製。</strong> <code>record(key, source)</code> 把一條 lane 設為待錄。時間軸播放時，每個影格讀一次 <code>source()</code>：回傳數字就寫進一段 take，回傳 <code>null</code> 表示沒人在碰，這一段就收尾。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">timeline.record(<span class="ts">'hue'</span>, () =&gt; params.isOverridden(<span class="ts">'hue'</span>) ? params.overrides.hue : <span class="tk">null</span>);
+timeline.onRecord(({ key }) =&gt; params.clearOverride(key));      <span class="tc">// the curve takes over again</span></code></pre></div>
+<p>暫停、seek、reset、hold、整場結束、loop 每圈結尾，也都會收尾一段 take，錄製器本身保持待命，直到 <code>stop()</code> 或 <code>stopRecording()</code>。合併規則（<code>mergeTake()</code>）：先把 take 抽稀（數值動了超過該參數範圍的 0.6%，或隔了 0.5 秒，才留下），再用它<strong>取代它時間範圍內的既有影格</strong>。範圍外的影格原封不動，所以 lane 會從前一個影格滑向 take 的第一點，再從 take 的最後一點滑向下一個影格；範圍外既有的曲線種類不會變。有 score 時，影格寫的是基準版本的時間，跟你宣告的那些一樣。</p>
 <p>cue（換場時要觸發的燈光、音效等提示）清單，寫起來就是一個換場處理函式：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">show.timeline.onSceneChange((i, scene) =&gt; {
   <span class="tk">if</span> (scene.id === <span class="ts">'storm'</span>) show.stage.activate(<span class="ts">'storm'</span>);   <span class="tc">// switch worlds</span>
@@ -1673,7 +1745,7 @@ pull request。</li>
 <p>任何一份 p5.js 草圖（OpenProcessing、p5 編輯器、你自己的網頁）在最前面加一行，就能用 MIDI 控制器、螢幕上的控制器或手機來彈：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
 <p>在 OpenProcessing 也可以不寫這行，改把網址貼到右側 Libraries 的 <strong>＋</strong>（自訂函式庫）。p5 1.x、2.x 的全域模式都能用，
-<code>setup()</code> 裡不用呼叫任何東西。</p>
+<code>setup()</code> 裡不用呼叫任何東西。帶著這一行、現在就能彈的草圖：<a href="../../examples/15-p5-one-line/">範例 15</a>。</p>
 <h3 id="p5-read-it-like-the-mouse">像讀滑鼠一樣讀它<a class="anchor" href="#p5-read-it-like-the-mouse" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> draw() {
   background(knob1 * 255);                 <span class="tc">// knob 1, 0..1, like mouseX</span>
@@ -2316,9 +2388,10 @@ comp.start();
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null })</code> · <code>play()</code>（放行 hold）、<code>pause()</code>、<code>toggle()</code>、<code>seek(t)</code>、<code>jumpScene(d)</code>、<code>next()</code>（放行 hold，否則往後一段）、<code>prev()</code>、<code>release()</code>、<code>reset()</code>（回到 <code>start</code>，預設 0）· <code>advance(dt)</code> · <code>state(t)</code>、<code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>、<code>currentScene(t)</code>、<code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>、<code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · <code>t</code>、<code>playing</code>、<code>holding</code>、<code>rate</code>、<code>total</code>、<code>start</code>、<code>score</code></td></tr>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })</code> · <code>play()</code>（放行 hold）、<code>pause()</code>、<code>toggle()</code>、<code>seek(t)</code>、<code>jumpScene(d)</code>、<code>next()</code>（放行 hold，否則往後一段）、<code>prev()</code>、<code>release()</code>、<code>reset()</code>（回到 <code>start</code>，預設 0）· <code>advance(dt)</code> · <code>state(t)</code>、<code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>、<code>currentScene(t)</code>、<code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>、<code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · 關鍵影格 <code>[t, value, curve?]</code>（<code>'linear'</code>、<code>'ease'</code>、<code>'in'</code>、<code>'out'</code>、<code>'step'</code>）· <code>loop</code>（<code>true</code>、<code>'scene'</code>、場景 id、<code>{ from, to }</code>）、<code>onLoop(cb)</code> · <code>cues()</code>、<code>onCue(cb(cue, { cause }))</code>、<code>fireCue(cue)</code> · <code>record(key, source)</code>、<code>stopRecording()</code>、<code>onRecord(cb)</code>、<code>mergeTake(key, take, opts)</code> · <code>t</code>、<code>playing</code>、<code>holding</code>、<code>rate</code>、<code>total</code>、<code>start</code>、<code>score</code></td></tr>
 </tbody>
 </table></div>
+<p>關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 <code>cues</code> 在播放經過時觸發，seek 不會觸發。<code>record()</code> 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。<code>CURVES</code> 也有匯出。</p>
 <p>見<a href="#show-control-timeline">演出控制</a>。</p>
 <h3 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="這一節的連結">#</a></h3>
 <p>主軸 · 總譜與導演：把演出寫成段落長度，再由模組去演出每一段。純邏輯，不碰 DOM。</p>
@@ -2431,6 +2504,10 @@ routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
 <tr><td><code>read_doc</code></td><td><code>doc</code>（必填）：<code>architecture</code>、<code>writing-a-world</code>、<code>signals</code>、<code>show-control</code>、<code>roadmap</code>、<code>agents</code>、<code>readme</code></td><td>Markdown 文字。<code>agents</code> 是 AGENTS.md，<code>readme</code> 是 README，其他的是 <code>docs/&lt;name&gt;.md</code></td></tr>
 <tr><td><code>scaffold_world</code></td><td><code>slug</code>（必填，kebab-case）、<code>donor</code>（預設 <code>01-hello-particles</code>）</td><td><code>{ created, next_steps }</code>。把 <code>examples/&lt;donor&gt;/</code> 的每個檔案複製到 <code>examples/&lt;next number&gt;-&lt;slug&gt;/</code></td></tr>
 <tr><td><code>run_checks</code></td><td>無</td><td>執行 <code>node --test tests/*.test.js</code>（逾時 60 秒）得到的 <code>{ pass, fail, ok }</code>，或是附上失敗那幾行的 <code>{ ok: false, output }</code></td></tr>
+<tr><td><code>list_controllers</code></td><td>無</td><td><code>{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }</code>：每一台內建的 MIDI 控制器設定檔、控制項組成（<code>{ knob: 8, pad: 8, keys: 25 }</code>）、還標著未確認的數量，以及詳細頁 <code>https://openaudiovisual.com/controllers/&lt;id&gt;/</code></td></tr>
+<tr><td><code>read_profile</code></td><td><code>id</code>（必填）：設定檔 id 或它的 <code>short</code></td><td><code>{ id, url, unverified, profile, mapping }</code>：內建的設定檔 JSON，加上一份讀得懂的 MIDI 對照（控制項、型態、<code>CC 74, ch 1</code>、訊號 <code>midi/&lt;short&gt;/&lt;id&gt;</code>、是否確認）</td></tr>
+<tr><td><code>validate_profile</code></td><td><code>profile</code>（必填）：物件或 JSON 字串</td><td><code>{ ok, problems, conflicts }</code>：<code>validateProfile</code> 找到的問題，加上和內建設定檔的衝突（同 <code>id</code>、同 <code>short</code>、<code>match.ports</code> 重疊）</td></tr>
+<tr><td><code>scaffold_profile</code></td><td><code>maker</code>、<code>model</code>、<code>controls</code>（都必填）：<code>[{ type, count, from? }]</code></td><td><code>{ profile, problems, unverified, next_steps }</code>：一份能過 <code>validateProfile</code> 的骨架，每個數字都是佔位值、標 <code>"verified": false</code>，附上「找出處、登記」的下一步。不會寫任何檔案</td></tr>
 </tbody>
 </table></div>
 <p>適合給 <code>scaffold_world</code> 當底的範例：<code>01-hello-particles</code>（最精簡的 2D canvas）、<code>02-chord-garden</code>（和弦驅動）、<code>03-pose-field</code>（鏡頭、手）、<code>05-prebiotic-flake</code>（p5 加聲音）。先 <code>read_doc agents</code>，再 <code>read_doc writing-a-world</code>。</p>
@@ -2452,7 +2529,7 @@ openav.mapper.routes                                    <span class="tc">// the 
 <h3 id="agents-a-prompt-to-paste">一段可以直接貼上的提示詞<a class="anchor" href="#agents-a-prompt-to-paste" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/10-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/16-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 
@@ -2573,7 +2650,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 後台監看（零相依的 WS 中繼，支援區域網路裡的裝置）</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> OSC 橋接、MIDI 輸出（走同一個看得到的出口，附 panic）</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 所有純邏輯都有測試（和弦、時間軸、映射、參數）</li>
-<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 映射設定檔的匯入／匯出介面（除了 localStorage，也能存成 JSON 檔案）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 映射設定檔的匯入／匯出介面（JSON 檔案、拖進頁面、<code>?map=&lt;網址&gt;</code>，每個世界各記一份）</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 範例：由現場樂器（麥克風）驅動、隨聲音反應的世界，<code>06-cylinder-earth</code></li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 鼓機，送出的訊號跟分析器的長得一樣（<code>@openav/drums</code>）</li>
 <li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 螢幕上的 MIDI 控制器，跟著真實硬體同步動作（<code>@openav/midi</code>，範例 09）</li>
@@ -2624,8 +2701,10 @@ Done means: npm test passes, and the new example loads with zero console errors.
     </div>
     <nav aria-label="頁面">
       <a href="../../zh/">首頁</a>
+      <a href="../../zh/examples/">範例</a>
       <a href="../../zh/controllers/">控制器</a>
       <a href="../../zh/docs/">文件</a>
+      <a href="../../zh/p5/">p5.js 一行接上</a>
       <a href="../../zh/webtoe/">WebToe</a>
     </nav>
     <nav aria-label="給機器讀的">

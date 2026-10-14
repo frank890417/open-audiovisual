@@ -10,7 +10,7 @@ MIDI, microphones, chords, hands and phones become named signals; a mapping turn
 <img src="https://img.shields.io/badge/dependencies-0-ff5a1f?style=flat-square&labelColor=0e0e10" alt="zero dependencies">
 <img src="https://img.shields.io/badge/build_step-none-ff5a1f?style=flat-square&labelColor=0e0e10" alt="zero build">
 <img src="https://img.shields.io/badge/Web_MIDI-ready-ff5a1f?style=flat-square&labelColor=0e0e10" alt="Web MIDI">
-<!--gen:badge-controllers--><a href="https://openaudiovisual.com/controllers/"><img src="https://img.shields.io/badge/MIDI_controllers-18-ff5a1f?style=flat-square&labelColor=0e0e10" alt="18 MIDI controllers"></a><!--/gen:badge-controllers-->
+<!--gen:badge-controllers--><a href="https://openaudiovisual.com/controllers/"><img src="https://img.shields.io/badge/MIDI_controllers-21-ff5a1f?style=flat-square&labelColor=0e0e10" alt="21 MIDI controllers"></a><!--/gen:badge-controllers-->
 <a href="https://openaudiovisual.com/docs/"><img src="https://img.shields.io/badge/docs-handbook-ff5a1f?style=flat-square&labelColor=0e0e10" alt="docs"></a>
 <a href="https://openaudiovisual.com/zh/docs/"><img src="https://img.shields.io/badge/%E6%96%87%E4%BB%B6-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-ff5a1f?style=flat-square&labelColor=0e0e10" alt="繁體中文文件"></a>
 
@@ -51,7 +51,7 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 
 <table>
 <tr>
-<td width="33%" valign="top"><img src="assets/readme/icons/midi-controller.svg" width="40" height="40" alt=""><br><b>MIDI controllers</b><br><!--gen:n-devices-->18<!--/gen:n-devices--> real devices modeled as data: every knob, pad and key with its exact message. Play them on screen, plug the real one in.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/midi-controller.svg" width="40" height="40" alt=""><br><b>MIDI controllers</b><br><!--gen:n-devices-->21<!--/gen:n-devices--> real devices modeled as data: every knob, pad and key with its exact message. Play them on screen, plug the real one in.</td>
 <td width="33%" valign="top"><img src="assets/readme/icons/audio.svg" width="40" height="40" alt=""><br><b>Audio analysis</b><br>Microphone or any Web Audio node: loudness, bands, brightness, onsets, kick / snare / hat.</td>
 <td width="33%" valign="top"><img src="assets/readme/icons/chord.svg" width="40" height="40" alt=""><br><b>Chord semantics</b><br>Notes struck together become one gesture: consonance, triad, cluster. Harmony decides bloom or decay.</td>
 </tr>
@@ -202,16 +202,17 @@ MIT; the artworks remain © the artist, all rights reserved.
 Controllers are **data**: one JSON file per device with the faceplate, every control's exact MIDI
 message, LED feedback, how to recognise its port, and the document each number came from.
 The same file drives an on-screen controller you can play, follows the real device when you plug it in,
-and drops into any web page. **<!--gen:devices-line-->18 devices, 859 controls<!--/gen:devices-line-->** (plus <!--gen:n-generic-->6<!--/gen:n-generic--> generic layouts), each with its sources.
+and drops into any web page. **<!--gen:devices-line-->21 devices, 1141 controls<!--/gen:devices-line-->** (plus <!--gen:n-generic-->6<!--/gen:n-generic--> generic layouts), each with its sources.
 
 <!--gen:controllers-table-->
 | maker | devices (spec sheet with the full MIDI map) |
 |---|---|
-| AKAI Professional | [**LPD8 (mk2)**](https://openaudiovisual.com/controllers/akai-lpd8/) · [**APC mini mk2**](https://openaudiovisual.com/controllers/akai-apc-mini-mk2/) · [**MIDImix**](https://openaudiovisual.com/controllers/akai-midimix/) · [**MPK mini mk3**](https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/) |
+| AKAI Professional | [**LPD8 (mk2)**](https://openaudiovisual.com/controllers/akai-lpd8/) · [**APC mini mk2**](https://openaudiovisual.com/controllers/akai-apc-mini-mk2/) · [**MIDImix**](https://openaudiovisual.com/controllers/akai-midimix/) · [**MPK mini mk3**](https://openaudiovisual.com/controllers/akai-mpk-mini-mk3/) · [**APC40 mkII**](https://openaudiovisual.com/controllers/akai-apc40-mk2/) |
 | Arturia | [**MiniLab 3**](https://openaudiovisual.com/controllers/arturia-minilab3/) · [**KeyStep 37**](https://openaudiovisual.com/controllers/arturia-keystep37/) · [**BeatStep**](https://openaudiovisual.com/controllers/arturia-beatstep/) |
 | Behringer | [**X-TOUCH MINI**](https://openaudiovisual.com/controllers/behringer-x-touch-mini/) |
+| DJ TechTools | [**TechTools Midi Fighter Twister**](https://openaudiovisual.com/controllers/djtechtools-midi-fighter-twister/) |
 | KORG | [**nanoKONTROL2**](https://openaudiovisual.com/controllers/korg-nanokontrol2/) · [**nanoKEY2**](https://openaudiovisual.com/controllers/korg-nanokey2/) |
-| Novation | [**Launchpad Mini MK3**](https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/) · [**Launch Control XL (MK2)**](https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/) · [**Launch Control XL 3**](https://openaudiovisual.com/controllers/novation-launch-control-xl-3/) · [**Launchkey Mini MK3**](https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/) · [**Launchkey 25 MK4**](https://openaudiovisual.com/controllers/novation-launchkey-25-mk4/) · [**Launchkey 37 MK4**](https://openaudiovisual.com/controllers/novation-launchkey-37-mk4/) |
+| Novation | [**Launchpad Mini MK3**](https://openaudiovisual.com/controllers/novation-launchpad-mini-mk3/) · [**Launch Control XL (MK2)**](https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/) · [**Launch Control XL 3**](https://openaudiovisual.com/controllers/novation-launch-control-xl-3/) · [**Launchkey Mini MK3**](https://openaudiovisual.com/controllers/novation-launchkey-mini-mk3/) · [**Launchkey 25 MK4**](https://openaudiovisual.com/controllers/novation-launchkey-25-mk4/) · [**Launchkey 37 MK4**](https://openaudiovisual.com/controllers/novation-launchkey-37-mk4/) · [**Launchpad Pro MK3**](https://openaudiovisual.com/controllers/novation-launchpad-pro-mk3/) |
 | ODD | [**ODD Ball**](https://openaudiovisual.com/controllers/odd-ball/) |
 | teenage engineering | [**OP-1 field**](https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/) |
 <!--/gen:controllers-table-->
@@ -382,11 +383,11 @@ The controller element, `createController()`, the iframe embed and `createShow()
 
 Version `0.1.0` (nothing is on npm yet). The chassis is complete and in use: the four layers with the
 L4 video/audio split, timeline, **Score &amp; Director**, console, backstage monitor, phones as controllers,
-**performance video** recording and MIDI takes, **Leap Motion** hands, a **<!--gen:n-devices-->18<!--/gen:n-devices-->-device MIDI controller library**,
+**performance video** recording and MIDI takes, **Leap Motion** hands, a **<!--gen:n-devices-->21<!--/gen:n-devices-->-device MIDI controller library**,
 **oav-p5**, an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-23 packages · 15 examples · 24 MIDI controller profiles (18 devices, 6 generic layouts, 859 controls) · 483 tests
+23 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 495 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

@@ -65,6 +65,11 @@
 </header>
 
 <main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>這台裝置沒有 Web MIDI，接不了實體控制器，但可以直接用手指在螢幕上彈。要接你的控制器，請用電腦的 Chrome 或 Edge 開這一頁。</p>
+    <button type="button" aria-label="關掉這則提示">知道了</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
 
   <!-- ═════ the instrument first, then the words ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
@@ -313,6 +318,7 @@
           </tbody>
         </table>
         </div>
+    <p class="led-line" data-led="no">這一台還沒有寫 LED 回饋，OAV 不會讓它的燈亮，但每個控制項照樣可以彈、照樣送出各自的訊息。</p>
     <h3>個別控制項的說明</h3>
     <ul class="cnotes"><li><code>keys</code> Lowest key at octave 0 is not printed in the docs; C3 = 48 is assumed. Keys follow any note on channel 1, so an octave shift just scrolls the on-screen keys.</li></ul>
     <div class="spec-grid">
@@ -419,11 +425,26 @@
       <li><a href="../novation-launchkey-25-mk4/">Novation Launchkey 25 MK4</a><span>Novation · 16 個打擊墊 · 25 個琴鍵 · 8 顆旋鈕 · 1 顆按鈕 · 2 個滾輪</span></li>
       <li><a href="../novation-launchkey-37-mk4/">Novation Launchkey 37 MK4</a><span>Novation · 16 個打擊墊 · 37 個琴鍵 · 8 顆旋鈕 · 1 顆按鈕 · 2 個滾輪</span></li>
     </ul>
+    <p class="cmp-link"><a href="../#cmp-akai-mpk-mini-mk3">把 AKAI MPK mini mk3 跟其他台比較：琴鍵、打擊墊、旋鈕、推桿、LED 回饋 →</a></p>
     <nav class="step" aria-label="相鄰的控制器">
       <a rel="prev" href="../akai-midimix/"><small>← 上一台</small>AKAI MIDImix</a>
       <a class="back" href="../../../zh/controllers/">回到全部控制器</a>
       <a rel="next" href="../akai-apc40-mk2/"><small>下一台 →</small>AKAI APC40 mkII</a>
     </nav>
+  </section>
+
+  <!-- ═════ not here? ═════ -->
+  <section class="sec" id="request" aria-labelledby="request-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">找不到</p>
+      <h2 id="request-title">沒有你那台？</h2>
+      <p class="sec-lede">開一張 issue，寫廠牌型號、手上有沒有這台、手冊的連結。也可以自己寫設定檔，它就是一個 JSON 檔。</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">許願一台控制器 ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md">怎麼自己加 ↗</a></li>
+    </ul>
   </section>
 
   <!-- ═════ wrong data? ═════ -->
@@ -452,8 +473,10 @@
     </div>
     <nav aria-label="頁面">
       <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
       <a href="../../../zh/controllers/">控制器</a>
       <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
       <a href="../../../zh/webtoe/">WebToe</a>
     </nav>
     <nav aria-label="給機器讀的">

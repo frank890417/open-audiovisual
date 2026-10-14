@@ -64,6 +64,11 @@
 </header>
 
 <main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>這台裝置沒有 Web MIDI，接不了實體控制器，但可以直接用手指在螢幕上彈。要接你的控制器，請用電腦的 Chrome 或 Edge 開這一頁。</p>
+    <button type="button" aria-label="關掉這則提示">知道了</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
 
   <!-- ═════ 01 · play: one live controller, any device, your hardware moves it ═════ -->
   <section class="ch-hero" id="play" aria-labelledby="play-title">
@@ -430,13 +435,271 @@
       </li>
     </ul>
     </div>
+    <div class="request" id="request">
+      <h3>沒有你那台？</h3>
+      <p>開一張 issue，寫廠牌型號、手上有沒有這台、手冊的連結。設定檔就是一個 JSON 檔，想自己寫的話，步驟在<a href="#model">加入你的控制器</a>。</p>
+      <ul class="model-links"><li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">許願一台控制器 ↗</a></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md">怎麼自己加 ↗</a></li></ul>
+    </div>
   </section>
 
-  <!-- ═════ 03 · spec sheets: the full MIDI map, static ═════ -->
+  <!-- ═════ 03 · choose: the same controllers side by side ═════ -->
+  <section class="sec" id="choose" aria-labelledby="choose-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">03 · 怎麼選</p>
+      <h2 id="choose-title">你彈的東西，要哪一台？</h2>
+      <p class="sec-lede">這張表的數字都是從設定檔數出來的，不會跟各台的頁面對不上。按下你需要的，表裡就只留下有這個的機型。</p>
+    </header>
+    <div class="filters js-only" role="group" aria-label="我要">
+      <span class="filters-k">我要</span>
+      <button type="button" data-pick="all" aria-pressed="true">全部 <b>27</b></button>
+      <button type="button" data-pick="keys" aria-pressed="false">琴鍵 <b>11</b></button>
+      <button type="button" data-pick="pad" aria-pressed="false">打擊墊 <b>14</b></button>
+      <button type="button" data-pick="fader" aria-pressed="false">推桿 <b>10</b></button>
+      <button type="button" data-pick="knob" aria-pressed="false">旋鈕或無段旋鈕 <b>18</b></button>
+      <button type="button" data-pick="led" aria-pressed="false">LED 回饋 <b>8</b></button>
+      <span class="shown" id="pick-shown" aria-live="polite"></span>
+    </div>
+    <div class="table-scroll" role="region" aria-label="每一台上面有什麼，從設定檔數出來" tabindex="0">
+    <table class="compare">
+      <caption>每一台上面有什麼，從設定檔數出來</caption>
+      <thead><tr><th scope="col">控制器</th><th scope="col">琴鍵</th><th scope="col">打擊墊</th><th scope="col">旋鈕</th><th scope="col">無段旋鈕</th><th scope="col">推桿</th><th scope="col">按鈕</th><th scope="col">LED</th><th scope="col">未確認</th><th scope="col">出處</th><th scope="col">適合</th></tr></thead>
+      <tbody>
+        <tr id="cmp-akai-lpd8" data-has="pad knob">
+          <th scope="row"><a href="akai-lpd8/">AKAI LPD8 (mk2)</a><small>AKAI Professional</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">8</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">8</td>
+          <td class="n" data-col="sources">4</td>
+          <td data-col="good">打點觸發 · 調很多參數</td>
+        </tr>
+        <tr id="cmp-akai-apc-mini-mk2" data-has="pad fader led">
+          <th scope="row"><a href="akai-apc-mini-mk2/">AKAI APC mini mk2</a><small>AKAI Professional</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">64</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">9</td><td class="n" data-col="button">17</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">有</span></td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">5</td>
+          <td data-col="good">打點觸發 · 混音推桿</td>
+        </tr>
+        <tr id="cmp-akai-midimix" data-has="fader knob led">
+          <th scope="row"><a href="akai-midimix/">AKAI MIDImix</a><small>AKAI Professional</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">24</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">9</td><td class="n" data-col="button">19</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">有</span></td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">調很多參數 · 混音推桿</td>
+        </tr>
+        <tr id="cmp-akai-mpk-mini-mk3" data-has="keys pad knob">
+          <th scope="row"><a href="akai-mpk-mini-mk3/">AKAI MPK mini mk3</a><small>AKAI Professional</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">8</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">25</td>
+          <td class="n" data-col="sources">6</td>
+          <td data-col="good">彈旋律 · 打點觸發 · 調很多參數</td>
+        </tr>
+        <tr id="cmp-akai-apc40-mk2" data-has="pad fader knob led">
+          <th scope="row"><a href="akai-apc40-mk2/">AKAI APC40 mkII</a><small>AKAI Professional</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">40</td><td class="n" data-col="knob">16</td><td class="n" data-col="encoder">2</td><td class="n" data-col="fader">10</td><td class="n" data-col="button">71</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">有</span></td>
+          <td class="n" data-col="unverified">40</td>
+          <td class="n" data-col="sources">4</td>
+          <td data-col="good">打點觸發 · 調很多參數 · 混音推桿</td>
+        </tr>
+        <tr id="cmp-arturia-minilab3" data-has="keys pad fader knob">
+          <th scope="row"><a href="arturia-minilab3/">Arturia MiniLab 3</a><small>Arturia</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">8</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">1</td><td class="n" data-col="fader">4</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">1</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">彈旋律 · 打點觸發 · 調很多參數 · 混音推桿</td>
+        </tr>
+        <tr id="cmp-arturia-keystep37" data-has="keys knob">
+          <th scope="row"><a href="arturia-keystep37/">Arturia KeyStep 37</a><small>Arturia</small></th>
+          <td class="n" data-col="keys">37</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">4</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">41</td>
+          <td class="n" data-col="sources">2</td>
+          <td data-col="good">彈旋律</td>
+        </tr>
+        <tr id="cmp-arturia-beatstep" data-has="pad knob">
+          <th scope="row"><a href="arturia-beatstep/">Arturia BeatStep</a><small>Arturia</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">16</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">打點觸發 · 調很多參數</td>
+        </tr>
+        <tr id="cmp-behringer-x-touch-mini" data-has="fader knob">
+          <th scope="row"><a href="behringer-x-touch-mini/">Behringer X-TOUCH MINI</a><small>Behringer</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">8</td><td class="n" data-col="fader">1</td><td class="n" data-col="button">24</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">調很多參數</td>
+        </tr>
+        <tr id="cmp-djtechtools-midi-fighter-twister" data-has="knob led">
+          <th scope="row"><a href="djtechtools-midi-fighter-twister/">DJ TechTools Midi Fighter Twister</a><small>DJ TechTools</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">16</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">22</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">有</span></td>
+          <td class="n" data-col="unverified">6</td>
+          <td class="n" data-col="sources">2</td>
+          <td data-col="good">調很多參數</td>
+        </tr>
+        <tr id="cmp-korg-nanokontrol2" data-has="fader knob led">
+          <th scope="row"><a href="korg-nanokontrol2/">Korg nanoKONTROL2</a><small>KORG</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">8</td><td class="n" data-col="button">35</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">有</span></td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">4</td>
+          <td data-col="good">調很多參數 · 混音推桿</td>
+        </tr>
+        <tr id="cmp-korg-nanokey2" data-has="keys">
+          <th scope="row"><a href="korg-nanokey2/">Korg nanoKEY2</a><small>KORG</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">2</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">25</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">彈旋律</td>
+        </tr>
+        <tr id="cmp-novation-launchpad-mini-mk3" data-has="pad led">
+          <th scope="row"><a href="novation-launchpad-mini-mk3/">Novation Launchpad Mini MK3</a><small>Novation</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">64</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">16</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">有</span></td>
+          <td class="n" data-col="unverified">8</td>
+          <td class="n" data-col="sources">3</td>
+          <td data-col="good">打點觸發</td>
+        </tr>
+        <tr id="cmp-novation-launch-control-xl-mk2" data-has="fader knob led">
+          <th scope="row"><a href="novation-launch-control-xl-mk2/">Novation Launch Control XL (MK2)</a><small>Novation</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">24</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">8</td><td class="n" data-col="button">24</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">有</span></td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">5</td>
+          <td data-col="good">調很多參數 · 混音推桿</td>
+        </tr>
+        <tr id="cmp-novation-launch-control-xl-3" data-has="fader knob">
+          <th scope="row"><a href="novation-launch-control-xl-3/">Novation Launch Control XL 3</a><small>Novation</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">24</td><td class="n" data-col="fader">8</td><td class="n" data-col="button">16</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">7</td>
+          <td data-col="good">調很多參數 · 混音推桿</td>
+        </tr>
+        <tr id="cmp-novation-launchkey-mini-mk3" data-has="keys pad knob">
+          <th scope="row"><a href="novation-launchkey-mini-mk3/">Novation Launchkey Mini MK3</a><small>Novation</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">34</td>
+          <td class="n" data-col="sources">6</td>
+          <td data-col="good">彈旋律 · 打點觸發 · 調很多參數</td>
+        </tr>
+        <tr id="cmp-novation-launchkey-25-mk4" data-has="keys pad knob">
+          <th scope="row"><a href="novation-launchkey-25-mk4/">Novation Launchkey 25 MK4</a><small>Novation</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">8</td>
+          <td class="n" data-col="sources">6</td>
+          <td data-col="good">彈旋律 · 打點觸發 · 調很多參數</td>
+        </tr>
+        <tr id="cmp-novation-launchkey-37-mk4" data-has="keys pad knob">
+          <th scope="row"><a href="novation-launchkey-37-mk4/">Novation Launchkey 37 MK4</a><small>Novation</small></th>
+          <td class="n" data-col="keys">37</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">8</td>
+          <td class="n" data-col="sources">6</td>
+          <td data-col="good">彈旋律 · 打點觸發 · 調很多參數</td>
+        </tr>
+        <tr id="cmp-novation-launchpad-pro-mk3" data-has="pad led">
+          <th scope="row"><a href="novation-launchpad-pro-mk3/">Novation Launchpad Pro MK3</a><small>Novation</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">64</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">41</td>
+          <td data-col="led" data-led="yes"><span aria-hidden="true">●</span><span class="sr">有</span></td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">2</td>
+          <td data-col="good">打點觸發</td>
+        </tr>
+        <tr id="cmp-odd-ball" data-has="pad fader knob">
+          <th scope="row"><a href="odd-ball/">ODD Ball</a><small>ODD</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">3</td><td class="n" data-col="knob">4</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">3</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">10</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">–</td>
+        </tr>
+        <tr id="cmp-teenage-engineering-op-1-field" data-has="keys knob">
+          <th scope="row"><a href="teenage-engineering-op-1-field/">OP-1 field</a><small>teenage engineering</small></th>
+          <td class="n" data-col="keys">24</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">4</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">33</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">2</td>
+          <td data-col="good">彈旋律</td>
+        </tr>
+        <tr id="cmp-generic-8k8p" data-has="pad knob">
+          <th scope="row"><a href="generic-8k8p/">通用 8 旋鈕 + 8 打擊墊</a><small>通用版面</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">8</td><td class="n" data-col="knob">8</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">打點觸發 · 調很多參數</td>
+        </tr>
+        <tr id="cmp-generic-8f" data-has="fader">
+          <th scope="row"><a href="generic-8f/">通用 8 推桿</a><small>通用版面</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">8</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">混音推桿</td>
+        </tr>
+        <tr id="cmp-generic-16p" data-has="pad">
+          <th scope="row"><a href="generic-16p/">通用 16 打擊墊</a><small>通用版面</small></th>
+          <td class="n" data-col="keys">–</td><td class="n" data-col="pad">16</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">–</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">打點觸發</td>
+        </tr>
+        <tr id="cmp-generic-keys25" data-has="keys">
+          <th scope="row"><a href="generic-keys25/">通用 25 鍵鍵盤</a><small>通用版面</small></th>
+          <td class="n" data-col="keys">25</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">彈旋律</td>
+        </tr>
+        <tr id="cmp-generic-keys49" data-has="keys">
+          <th scope="row"><a href="generic-keys49/">通用 49 鍵鍵盤</a><small>通用版面</small></th>
+          <td class="n" data-col="keys">49</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">彈旋律</td>
+        </tr>
+        <tr id="cmp-generic-keys61" data-has="keys">
+          <th scope="row"><a href="generic-keys61/">通用 61 鍵鍵盤</a><small>通用版面</small></th>
+          <td class="n" data-col="keys">61</td><td class="n" data-col="pad">–</td><td class="n" data-col="knob">–</td><td class="n" data-col="encoder">–</td><td class="n" data-col="fader">–</td><td class="n" data-col="button">1</td>
+          <td data-col="led" data-led="no">–</td>
+          <td class="n" data-col="unverified">–</td>
+          <td class="n" data-col="sources">1</td>
+          <td data-col="good">彈旋律</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">旋鈕送出的是絕對位置；無段旋鈕可以一直轉，送出的是一格一格的變化。橫線代表沒有。「未確認」是數字只是我們目前的判讀、還沒找到文件證實的控制項。</p>
+    <p class="note">「適合」是依控制項數量自動分的：有琴鍵 → 彈旋律；打擊墊 8 個以上 → 打點觸發；旋鈕加無段旋鈕 8 個以上 → 調很多參數；推桿 4 支以上 → 混音推桿。這是經驗法則，不是評測。</p>
+    <div class="led-note" id="led">
+      <h3>LED 回饋</h3>
+      <p>LED 回饋是控制器自己的打擊墊和按鈕會亮燈。設定檔寫了這一項，就會註明哪個音符或 CC 讓哪個控制項亮、什麼數值是亮與滅。27 份設定檔裡有 8 份寫了：</p>
+      <ul class="led-list"><li><a href="akai-apc-mini-mk2/">AKAI APC mini mk2</a></li><li><a href="akai-midimix/">AKAI MIDImix</a></li><li><a href="akai-apc40-mk2/">AKAI APC40 mkII</a></li><li><a href="djtechtools-midi-fighter-twister/">DJ TechTools Midi Fighter Twister</a></li><li><a href="korg-nanokontrol2/">Korg nanoKONTROL2</a></li><li><a href="novation-launchpad-mini-mk3/">Novation Launchpad Mini MK3</a></li><li><a href="novation-launch-control-xl-mk2/">Novation Launch Control XL (MK2)</a></li><li><a href="novation-launchpad-pro-mk3/">Novation Launchpad Pro MK3</a></li></ul>
+      <p>接上其中一台的時候，控制項一變動，OAV 就把這些訊息送到它的輸出埠，裝置連上時也會先送一次，所以燈可以跟著畫面上發生的事一起亮。</p>
+      <p>其餘 19 份還沒有 LED 訊息：OAV 不會讓它們亮燈，但每個控制項照樣可以彈、照樣送出各自的訊息。設定檔在每個控制項上可以加一項 <code>led</code>。</p>
+    </div>
+  </section>
+
+  <!-- ═════ 04 · spec sheets: the full MIDI map, static ═════ -->
   <section class="sec" id="specs" aria-labelledby="specs-title">
     
     <header class="sec-head">
-      <p class="eyebrow">03 · 規格表</p>
+      <p class="eyebrow">04 · 規格表</p>
       <h2 id="specs-title">每一台都有自己的頁面</h2>
       <p class="sec-lede">每台控制器一頁，附完整 MIDI 對照表、出處、嵌入碼，以及在 p5.js 裡各個旋鈕叫什麼名字。頁面在建置時直接從 JSON 檔產生，跟元件實際送出的訊息一定對得上。</p>
     </header>
@@ -476,11 +739,11 @@
     </div>
   </section>
 
-  <!-- ═════ 04 · embed it ═════ -->
+  <!-- ═════ 05 · embed it ═════ -->
   <section class="sec" id="embed" aria-labelledby="embed-title">
     
     <header class="sec-head">
-      <p class="eyebrow">04 · 嵌入</p>
+      <p class="eyebrow">05 · 嵌入</p>
       <h2 id="embed-title">放進你的網頁</h2>
       <p class="sec-lede">一行 HTML、一個 iframe，或一段 JavaScript 都可以。先選機型和選項，預覽和下面每一段程式碼會跟著換。</p>
     </header>
@@ -609,11 +872,11 @@ win.postMessage({ target: <span class="ts">'openav'</span>, type: <span class="t
     <p><a class="more" href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md">全部的細節，包括每個事件的每個欄位：套件的 README →</a></p>
   </section>
 
-  <!-- ═════ 05 · model yours ═════ -->
+  <!-- ═════ 06 · model yours ═════ -->
   <section class="sec" id="model" aria-labelledby="model-title">
     
     <header class="sec-head">
-      <p class="eyebrow">05 · 自己建一台</p>
+      <p class="eyebrow">06 · 自己建一台</p>
       <h2 id="model-title">加入你的控制器</h2>
       <p class="sec-lede">一台控制器就是一個 JSON 檔。手冊裡有 MIDI 實作表，就照著抄，數字會完全準確。手冊沒寫的，就在檔案裡註明是怎麼查到的。</p>
     </header>
@@ -670,7 +933,7 @@ console.log(validateProfile(p));   <span class="tc">// [] = valid; otherwise eve
           <li><a href="https://github.com/frank890417/open-audiovisual">原始碼庫 ↗</a></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md">packages/midi/README.md ↗</a></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/midi/profiles">所有設定檔 ↗</a></li>
-          <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?title=MIDI%20controller%20request%3A%20">許願一台控制器 ↗</a></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">許願一台控制器 ↗</a></li>
         </ul>
       </div>
     </div>
@@ -687,8 +950,10 @@ console.log(validateProfile(p));   <span class="tc">// [] = valid; otherwise eve
     </div>
     <nav aria-label="頁面">
       <a href="../../zh/">首頁</a>
+      <a href="../../zh/examples/">範例</a>
       <a href="../../zh/controllers/">控制器</a>
       <a href="../../zh/docs/">文件</a>
+      <a href="../../zh/p5/">p5.js 一行接上</a>
       <a href="../../zh/webtoe/">WebToe</a>
     </nav>
     <nav aria-label="給機器讀的">
