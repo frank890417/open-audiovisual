@@ -23,7 +23,7 @@
 
 import { createShow } from '@openav/show';
 import { createCanvas } from '@openav/stage';
-import { TOTAL, PARAMS, SCENES, LANES, compile } from './config.js?v=1d58b5f';
+import { TOTAL, PARAMS, SCENES, LANES, compile } from './config.js?v=5964a1e';
 
 const TAU = Math.PI * 2;
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
