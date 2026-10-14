@@ -20,6 +20,7 @@ import { fileURLToPath } from 'node:url';
 import { renderPage, LOCALES } from './home/page.mjs';
 import { PAGES, pageCtx } from './site/chrome.mjs';
 import { CHAPTERS } from './docs/chapters.mjs';
+import { sitemapEntries, sitemapWith } from './build-controllers.mjs';
 import en from './home/en.mjs';
 import zh from './home/zh.mjs';
 
@@ -84,7 +85,9 @@ export function buildAll() {
     [LOCALES.en.path + 'index.html']: renderPage(en, { locale: 'en', other: 'zh', version }),
     [LOCALES.zh.path + 'index.html']: renderPage(zh, { locale: 'zh', other: 'en', version }),
     'llms-full.txt': llmsFull(),
-    'sitemap.xml': sitemap(),
+    // one sitemap, two writers: the controllers block (one url per device page) is composed in here too,
+    // so running either build-home or build-controllers leaves the same file.
+    'sitemap.xml': sitemapWith(sitemap(), sitemapEntries()),
   };
 }
 
