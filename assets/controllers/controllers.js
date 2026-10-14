@@ -124,6 +124,18 @@ function applyFilter(f) {
 }
 for (const b of filterBtns) b.addEventListener('click', () => applyFilter(b.dataset.filter));
 
+// the comparison table: "I want …" keeps the rows that have it (the counts on the buttons were computed at build time)
+const pickBtns = $$('[data-pick]');
+const pickRows = $$('#choose tbody tr');
+const pickShown = $('#pick-shown');
+function applyPick(f) {
+  let n = 0;
+  for (const b of pickBtns) b.setAttribute('aria-pressed', String(b.dataset.pick === f));
+  for (const r of pickRows) { const ok = f === 'all' || r.dataset.has.split(' ').includes(f); r.hidden = !ok; if (ok) n++; }
+  if (pickShown) pickShown.textContent = f === 'all' ? '' : fill(T.shown, { n });
+}
+for (const b of pickBtns) b.addEventListener('click', () => applyPick(b.dataset.pick));
+
 // ------------------------------------------------------------------ builder
 const form = $('#builder');
 const bctl = $('#b-ctl');
