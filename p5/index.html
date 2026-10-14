@@ -34,11 +34,11 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=7792f7b">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/p5/#article","url":"https://openaudiovisual.com/p5/","name":"oav-p5: play any p5.js sketch from a MIDI controller","description":"Add one line to any p5.js sketch and play it from a MIDI controller, an on-screen controller or a phone. Works with p5 1.x and 2.x, OpenProcessing included.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"p5.js in one line","about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/p5/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/p5/#breadcrumb"},"mentions":[]},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/p5/#code","name":"oav-p5","url":"https://openaudiovisual.com/p5/oav-p5.js","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser, p5.js 1.x and 2.x","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/p5/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"p5.js in one line","item":"https://openaudiovisual.com/p5/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=7792f7b">
-<link rel="stylesheet" href="../assets/examples/pages.css?v=7792f7b">
+<link rel="stylesheet" href="../assets/docs/docs.css">
+<link rel="stylesheet" href="../assets/examples/pages.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page p5-page">
@@ -121,6 +121,54 @@ and buttons. OPC's panel moves with the knob, and <code>parameterChanged()</code
 also learn hardware by itself (its MIDI switch); once that mapping is seen working, hardware is left to it and this
 line keeps wiring the on-screen controller and the phone, which OpenProcessing cannot see. Avoid OPC names that are
 also p5 functions (<code>hue</code>, <code>fill</code>): p5 1.x clashes with them.</p>
+<h3 id="p5-the-microphone">The microphone<a class="anchor" href="#p5-the-microphone" aria-label="#">#</a></h3>
+<p>The same line reads the microphone, and the sketch reads it the same way: as variables.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> draw() {
+  background(230, 40, 10);
+  fill(200 + bass * 160, 70, 100);                      <span class="tc">// bass: the low end, 0..1</span>
+  circle(width / 2, height / 2, 50 + micLevel * 300);   <span class="tc">// micLevel: how loud, 0..1</span>
+}
+
+<span class="tk">function</span> beatDetected(level) {                          <span class="tc">// like keyPressed(): a beat just landed</span>
+  <span class="tc">// flash, spawn, jump to the next scene</span>
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>read</th><th>value</th></tr></thead>
+<tbody>
+<tr><td><code>micLevel</code></td><td>0..1, how loud it is now (smoothed; a quiet room is 0, close and loud is 1)</td></tr>
+<tr><td><code>bass</code>, <code>mid</code>, <code>treble</code></td><td>0..1, the energy in 20–250 Hz, 250–2000 Hz and 2000–8000 Hz</td></tr>
+<tr><td><code>beat</code></td><td><code>true</code> for one frame per beat, like <code>mouseIsPressed</code> while a button is down</td></tr>
+<tr><td><code>micIsOn</code></td><td>whether the microphone is running</td></tr>
+<tr><td><code>startMic()</code>, <code>stopMic()</code></td><td>turn it on or off from code (they return a promise)</td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>write this function</th><th>when it is called</th></tr></thead>
+<tbody>
+<tr><td><code>beatDetected(level)</code></td><td>a beat: a jump in loudness over what the room has been doing (level 0..1)</td></tr>
+<tr><td><code>kickDetected(level)</code>, <code>snareDetected(level)</code>, <code>hatDetected(level)</code></td><td>a hit in the low, middle or high band (20–120 Hz, 150–800 Hz, 6–14 kHz)</td></tr>
+</tbody>
+</table></div>
+<p><strong>It is off until the sketch asks.</strong> Nothing is requested when the page loads. The first time the sketch reads
+<code>micLevel</code>, <code>bass</code>, <code>mid</code>, <code>treble</code> or <code>beat</code>, or calls <code>startMic()</code>, the browser asks for the microphone; until the
+answer arrives every value is <code>0</code>. A sketch that defines <code>beatDetected()</code> and reads nothing starts it on the first
+click or key. In the 🎹 panel the <strong>🎤</strong> button turns it on and off by hand and shows the level, and it says so when
+the browser blocked the microphone (click it again after allowing it from the address bar).</p>
+<ul>
+<li><strong>Click first, if the browser wants one.</strong> Browsers keep audio quiet until the page has been clicked. This file
+asks as soon as <code>draw()</code> reads a value and starts the microphone again on the first click or key if the browser
+held it back, so no <code>userStartAudio()</code> is needed.</li>
+<li><strong>Next to p5.sound.</strong> The analysis is <a href="../docs/#packages"><code>@openav/audio</code></a> (an <code>AnalyserNode</code>), loaded from next to this
+file the first time it is needed, with its own <code>AudioContext</code>. <code>p5.sound</code> (<code>p5.AudioIn</code>, <code>p5.FFT</code>) can run on the same page; the two
+microphones do not share anything, and none of these names is a p5 or p5.sound name. It works in p5 1.x and 2.x global mode.</li>
+<li><strong>Quiet or loud microphones.</strong> <code>OAVp5.mic.gain = 3</code> multiplies <code>micLevel</code> and the three bands (still capped at 1).
+<code>OAVp5.mic.on('beat', fn)</code> is the same as defining <code>beatDetected</code>, and returns a function that stops it.</li>
+<li><strong>Your own names win.</strong> A sketch that already has a <code>bass</code> or <code>mid</code> (a <code>let</code>, a function, a library) keeps it, and this
+file never starts the microphone for it.</li>
+<li><strong>Off switch.</strong> <code>?mic=click</code> (or <code>window.OAV_P5 = { mic: 'click' }</code>) means only 🎤 and <code>startMic()</code> turn it on;
+<code>mic=off</code> means nothing can start it (the names stay <code>0</code>). <code>https</code> or <code>localhost</code> is required, as for any microphone page.</li>
+<li>A sketch with a microphone, ready to open: <code>p5/examples/mic/</code>.</li>
+</ul>
 <h3 id="p5-three-inputs">Three inputs<a class="anchor" href="#p5-three-inputs" aria-label="#">#</a></h3>
 <div class="table-wrap"><table>
 <thead><tr><th>input</th><th>how</th></tr></thead>
@@ -134,6 +182,16 @@ also p5 functions (<code>hue</code>, <code>fill</code>): p5 1.x clashes with the
 iPad have no Web MIDI; the on-screen controller and the phone still work there. A sketch that uses Web MIDI itself
 (<code>navigator.requestMIDIAccess</code>, WebMidi.js) also hears the screen and the phone, as one more input called
 <strong>OAV Virtual MIDI</strong>.</p>
+<h3 id="p5-in-hydra">In Hydra<a class="anchor" href="#p5-in-hydra" aria-label="#">#</a></h3>
+<p><a href="https://hydra.ojack.xyz" rel="noopener">Hydra</a> has a loader of its own; the same file works there, and Hydra's arrow functions read the
+variables each frame:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> loadScript(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)
+osc(10, 0.1, () =&gt; knob1 * 2).out()                     <span class="tc">// knob 1 sets the colour offset</span></code></pre></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">osc(10, 0.1, () =&gt; 1 + micLevel * 3).out()              <span class="tc">// the microphone, asked for when this line first runs</span></code></pre></div>
+<p><code>note</code>, <code>velocity</code>, <code>knob1</code> … <code>knob8</code>, <code>fader1</code> …, <code>pad1</code> … and the 🎹 on-screen controller are there the same way.
+Hydra is not p5, so there are no <code>notePressed()</code> callbacks to define; subscribe instead:
+<code>midi.on('notePressed', (note, velocity) =&gt; { … })</code> (it returns a function that unsubscribes). Checked against
+hydra-synth 1.4.0, the library the editor runs (<code>p5/test/hydra-smoke.cjs</code>).</p>
 <h3 id="p5-notes">Notes<a class="anchor" href="#p5-notes" aria-label="#">#</a></h3>
 <ul>
 <li><strong>Why <code>prepend</code>.</strong> p5's friendly-error checker reads the last <code>&lt;script&gt;</code> on the page as your sketch. Put first, this
@@ -142,10 +200,11 @@ file is never mistaken for your code.</li>
 while the page is loading holds <code>load</code> back until it has run, so <code>knob1</code> already exists in <code>setup()</code>.</li>
 <li><strong>When the line does not load</strong> (offline, a typo in the URL), code that reads <code>knob1</code> stops with <em>knob1 is not
 defined</em>.</li>
-<li><strong>Embedding a sketch elsewhere.</strong> OpenProcessing's own pages allow MIDI in the sketch frame. The embed code it gives
-you does not: add <code>allow="midi"</code> to that <code>&lt;iframe&gt;</code> if the embedded sketch should hear a hardware controller.</li>
+<li><strong>Embedding a sketch elsewhere.</strong> OpenProcessing's own pages allow MIDI and the microphone in the sketch frame. The
+embed code it gives you does not: add <code>allow="midi"</code> to that <code>&lt;iframe&gt;</code> if the embedded sketch should hear a hardware
+controller, and <code>allow="microphone"</code> if it should hear the microphone.</li>
 <li><strong>Options, MIDI-level access and tests</strong>: <a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>.
-Examples: <code>p5/examples/particles/</code> and <code>p5/examples/opc/</code>.</li>
+Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code> and <code>p5/examples/mic/</code>.</li>
 </ul>
   </section>
 
@@ -178,7 +237,7 @@ Examples: <code>p5/examples/particles/</code> and <code>p5/examples/opc/</code>.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"","tocButton":"","tocClose":""}</script>
-<script type="module" src="../assets/docs/docs.js?v=7792f7b"></script>
+<script type="module" src="../assets/docs/docs.js"></script>
 <!--/email_off-->
 </body>
 </html>

@@ -13,6 +13,12 @@
  *   function knobMoved(n, value) {}           function faderMoved(n, value) {}
  *   function padPressed(n, velocity) {}       function padReleased(n) {}
  *   (a pad also calls notePressed, unless the sketch defines padPressed)
+ * The microphone reads the same way (off until the sketch reads one of these, calls startMic(), or 🎹 → 🎤 is pressed):
+ *   micLevel            0..1, how loud (smoothed)                                     micIsOn, startMic(), stopMic()
+ *   bass, mid, treble   0..1, the energy in 20–250 Hz, 250–2000 Hz, 2000–8000 Hz
+ *   beat                true for one frame per beat — the way mouseIsPressed is true while pressed
+ *   function beatDetected(level) {}           function kickDetected(level) {}   snareDetected, hatDetected
+ *   (the analysis is @openav/audio, loaded from next to this file the first time; no p5.sound needed, none disturbed)
  * Knob 1 is knob 1 on any controller OAV knows (MiniLab 3, LPD8, nanoKONTROL2, … 21 profiles); on one it doesn't,
  * the first knob you turn becomes knob1, the next knob2.
  *
@@ -44,13 +50,14 @@
  *   panel     closed (just 🎹) | open | off        profile  the on-screen controller (default arturia-minilab3)
  *   dock      bottom | top · corner right | left (OpenProcessing: top-left — its console floats over the bottom, OPC's icon sits top-right)
  *   opc       on | off (wire the controller to OPC variables)   shim  on | off (the virtual port)
+ *   mic       auto (the first read of micLevel / bass / … asks for the microphone) | click (only 🎹 → 🎤 or startMic()) | off
  *   relay / room   the phone relay (wss://remote.cheyuwu.com/relay) and room (one per browser)
  *   telemetry off | on — @openav/midi's one anonymous page-load hit (packages/midi/README "Telemetry")
  */
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.2.4';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.3.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -69,6 +76,7 @@
   var O = {
     hardware: opt('hardware', 'auto'), panel: opt('panel', 'closed'), profile: opt('profile', 'arturia-minilab3'),
     opc: opt('opc', 'on'), shim: opt('shim', 'on'), relay: opt('relay', 'wss://remote.cheyuwu.com/relay'), room: opt('room', ''),
+    mic: opt('mic', 'auto') === 'click' ? 'click' : opt('mic', 'auto') === 'off' ? 'off' : 'auto',
     telemetry: opt('telemetry', 'off'), remote: opt('remote', 'https://openaudiovisual.com/packages/remote/'),
   };
   // OpenProcessing's console floats over the bottom of the sketch, so there the 🎹 and its panel live at the top
@@ -84,11 +92,15 @@
     ? { btn: 'MIDI：接鍵盤、按螢幕上的控制器，或用手機彈', phone: '📱 手機', close: '收起', hwOff: '沒接 MIDI 裝置', knob: '旋鈕', fader: '推桿', pad: '打擊墊',
         hwNone: '這個瀏覽器沒有 Web MIDI（Safari）：用螢幕上的控制器或手機', hwDenied: 'MIDI 權限被擋下了：網址列左邊可以重新允許',
         scan: '用手機掃描，打開 MIDI 分頁就能彈這個作品', room: '房間', wired: '已接上 OPC', loading: '載入控制器中…（第一次要幾秒）',
-        opMidi: 'OpenProcessing 的 OPC MIDI 對應開著：實體控制器交給它，OAV 只接螢幕上的控制器和手機' }
+        opMidi: 'OpenProcessing 的 OPC MIDI 對應開著：實體控制器交給它，OAV 只接螢幕上的控制器和手機',
+        micOn: '🎤 開麥克風', micOff: '🎤 關麥克風', micAsking: '🎤 等你允許麥克風…', micDenied: '🎤 麥克風被擋下，再試一次', micDeniedHint: '網址列左邊可以重新允許，然後按這個鈕', micNone: '🎤 這裡拿不到麥克風（要 https 或 localhost）',
+        micHint: 'micLevel、bass、mid、treble、beat' }
     : { btn: 'MIDI: plug in a controller, play the one on screen, or use a phone', phone: '📱 Phone', close: 'Hide', hwOff: 'No MIDI device', knob: 'knob', fader: 'fader', pad: 'pad',
         hwNone: 'No Web MIDI in this browser (Safari): use the on-screen controller or a phone',
         hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room', wired: 'Wired to OPC', loading: 'Loading the controller… (a few seconds the first time)',
-        opMidi: "OpenProcessing's own OPC MIDI mapping is on: hardware is left to it; OAV wires the on-screen controller and the phone" };
+        opMidi: "OpenProcessing's own OPC MIDI mapping is on: hardware is left to it; OAV wires the on-screen controller and the phone",
+        micOn: '🎤 Turn on microphone', micOff: '🎤 Turn off microphone', micAsking: '🎤 Waiting for you to allow the microphone…', micDenied: '🎤 Blocked: try again', micDeniedHint: 'Allow the microphone again from the address bar, then press this button', micNone: '🎤 No microphone here (needs https or localhost)',
+        micHint: 'micLevel, bass, mid, treble, beat' };
 
   // ---------------------------------------------------------------- state the sketch reads
   function zeros(n) { var a = new Array(n); for (var i = 0; i < n; i++) a[i] = 0; return a; }
@@ -129,7 +141,7 @@
     if (g[name] !== o.v) { delete owned[name]; if (g.console) console.info('[oav-p5] the sketch has its own `' + name + '`: left alone'); return; }
     setGlobal(name, value); o.v = value;
   }
-  var GLOBALS = { note: 0, velocity: 0, noteIsPressed: false };
+  var GLOBALS = { note: 0, velocity: 0, noteIsPressed: false, micIsOn: false };
   for (var gi = 1; gi <= 8; gi++) { GLOBALS['knob' + gi] = 0; GLOBALS['fader' + gi] = 0; }
   for (gi = 1; gi <= 16; gi++) GLOBALS['pad' + gi] = 0;
   var FUNCS = {
@@ -362,6 +374,150 @@
     };
   }
 
+  // ---------------------------------------------------------------- the microphone: micLevel · bass · mid · treble · beat
+  // Off until a sketch asks: it reads one of the names below, calls startMic(), or someone presses 🎤 in the 🎹 panel.
+  // The analysis is @openav/audio's AudioAnalyzer (loaded from next to this file, the first time) with its own
+  // AudioContext, so p5.sound can run beside it. Browsers want a click before audio plays: a read from draw() asks
+  // for the microphone at once, and the first click or key afterwards starts it if the browser held it back.
+  var micCbs = { beat: 'beatDetected', kick: 'kickDetected', snare: 'snareDetected', hat: 'hatDetected' };
+  var micSubs = { beat: [], kick: [], snare: [], hat: [] };
+  var mic = {
+    state: 'off',                                   // off · asking · on · denied · unavailable
+    gain: 1,                                        // multiplies micLevel / bass / mid / treble (clamped to 1): for a quiet microphone
+    level: 0, bass: 0, mid: 0, treble: 0, error: null, analyzer: null,
+    start: function () { micStopped = false; return startMic(); }, stop: function () { return stopMic(); },
+    /** mic.on('beat' | 'kick' | 'snare' | 'hat', fn(level)) → off() */
+    on: function (name, fn) {
+      if (!micSubs[name]) throw new Error('[oav-p5] unknown mic event "' + name + '" (' + Object.keys(micSubs).join(', ') + ')');
+      micSubs[name].push(fn);
+      return function () { var i = micSubs[name].indexOf(fn); if (i >= 0) micSubs[name].splice(i, 1); };
+    },
+    _frame: function (f) { return micFrame(f); },   // for tests: one analyser frame in
+  };
+  midi.mic = mic;
+  var micStarting = null, micAudio = null, micStopped = false, micTries = 0, micRead = false, micLoop = false;
+  var micSeq = 0, micSeen = 0, micTick = 0, micFrameAt = null, micFrameBeat = false;
+  function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function setMic(s) {
+    if (mic.state === s) return;
+    mic.state = s; put('micIsOn', s === 'on'); paintMic();
+    if (s === 'on' && g.console) console.info('[oav-p5] microphone on: ' + T.micHint + ' · beatDetected(level), kickDetected, snareDetected, hatDetected');
+  }
+  function micNeeded(why) {                          // a sketch read a mic name
+    if (O.mic !== 'auto' || micStopped || mic.state !== 'off') return;
+    micRead = true; dbg('microphone asked for by a read of', why);
+    startMic();
+  }
+  function startMic() {
+    if (O.mic === 'off') return Promise.resolve(false);   // the option is a promise to the page: nothing here opens the microphone
+    if (mic.state === 'on') return Promise.resolve(true);
+    if (micStarting) return micStarting;
+    var md = nav.mediaDevices;
+    if (!md || typeof md.getUserMedia !== 'function') {
+      mic.error = 'no getUserMedia'; setMic('unavailable');
+      if (g.console) console.info('[oav-p5] no microphone here: the browser offers none to this page (it needs https or localhost)');
+      return Promise.resolve(false);
+    }
+    micTries++; setMic('asking');
+    var p = micStarting = Promise.resolve().then(function () { return import(BASE + 'packages/audio/index.js?v=p5-' + OAV_P5_VERSION); }).then(function (m) {
+      var a = new m.AudioAnalyzer({ fftSize: 2048 });
+      return a.enableMic().then(function () { micAudio = a; mic.analyzer = a; mic.error = null; micStopped = false; setMic('on'); runMic(); return true; });
+    }).then(null, function (e) {
+      mic.error = (e && (e.name || e.message)) || String(e);
+      setMic(e && (e.name === 'NotAllowedError' || e.name === 'SecurityError') ? 'denied' : 'unavailable');
+      if (g.console) console.info('[oav-p5] no microphone (' + mic.error + '): ' + (mic.state === 'denied' ? 'allow it from the address bar, then click once' : 'is one plugged in?'));
+      return false;
+    });
+    p.then(function () { if (micStarting === p) micStarting = null; });
+    return p;
+  }
+  function stopMic() {
+    micStopped = true;
+    try { var s = micAudio && micAudio.source && micAudio.source.mediaStream; if (s) s.getTracks().forEach(function (t) { t.stop(); }); } catch (e) { /* */ }
+    try { if (micAudio && micAudio.ctx && micAudio.ctx.close) micAudio.ctx.close(); } catch (e) { /* */ }
+    micAudio = null; mic.analyzer = null; micStarting = null;
+    mic.level = mic.bass = mic.mid = mic.treble = 0;
+    setMic('off'); paintMic();
+    return Promise.resolve(false);
+  }
+  function runMic() {
+    if (micLoop) return;
+    micLoop = true;
+    var raf = typeof g.requestAnimationFrame === 'function' ? function (fn) { g.requestAnimationFrame(fn); } : function (fn) { setTimeout(fn, 16); };
+    (function tick() {
+      if (mic.state !== 'on' || !micAudio) { micLoop = false; return; }
+      var f = null;
+      try { f = micAudio.update(); } catch (e) { report('microphone', e); }
+      if (f) micFrame(f);
+      raf(tick);
+    })();
+  }
+  function micCall(kind, level) {
+    var name = micCbs[kind], fn = g[name];
+    if (typeof fn === 'function') { try { fn.call(g, level); } catch (e) { report(name, e); } }
+    var list = micSubs[kind].slice();
+    for (var i = 0; i < list.length; i++) { try { list[i].call(g, level); } catch (e) { report(name, e); } }
+  }
+  function micFrame(f) {
+    var k = mic.gain;
+    var db = f.rms > 1e-5 ? 20 * Math.log10(f.rms) : -100;
+    mic.level = clamp01((db + 60) / 50 * k);          // -60 dB (a quiet room) → 0, -10 dB (loud, close) → 1
+    mic.bass = clamp01(f.low * k); mic.mid = clamp01(f.mid * k); mic.treble = clamp01(f.high * k);
+    micTick++;
+    if (f.onset) { micSeq++; micCall('beat', mic.level); }
+    if (f.kick && f.kick.hit) micCall('kick', clamp01(f.kick.level * k));
+    if (f.snare && f.snare.hit) micCall('snare', clamp01(f.snare.level * k));
+    if (f.hat && f.hat.hit) micCall('hat', clamp01(f.hat.level * k));
+    paintMic();
+  }
+  // `beat`: true in the first p5 frame after a beat, the same answer however often that frame reads it
+  function beatNow() {
+    var at = typeof g.frameCount === 'number' ? g.frameCount : micTick;
+    if (at !== micFrameAt) { micFrameAt = at; micFrameBeat = micSeq !== micSeen; micSeen = micSeq; }
+    return micFrameBeat;
+  }
+  // the names are readers on the page: the first read is the sketch saying it wants the microphone. Not listed (so
+  // nothing that lists the page's globals wakes it); a sketch with its own `bass` keeps it, and assigning one later
+  // turns the name into a plain variable again.
+  function micName(name, read) {
+    if (name in g) return;
+    try {
+      Object.defineProperty(g, name, {
+        configurable: true, enumerable: false,
+        get: function () { micNeeded(name); return read(); },
+        set: function (v) { Object.defineProperty(g, name, { value: v, writable: true, configurable: true, enumerable: true }); },
+      });
+    } catch (e) { /* a page that sealed its globals */ }
+  }
+  micName('micLevel', function () { return mic.level; });
+  micName('bass', function () { return mic.bass; });
+  micName('mid', function () { return mic.mid; });
+  micName('treble', function () { return mic.treble; });
+  micName('beat', beatNow);
+  FUNCS.startMic = function () { return mic.start(); };
+  FUNCS.stopMic = function () { return mic.stop(); };
+  // first click or key: resume audio a browser held back; start a microphone the sketch asked for but the browser refused
+  // without a gesture; start one for a sketch that defines beatDetected() & co. but reads nothing
+  function micGesture() {
+    if (O.mic === 'off' || micStopped) return;
+    if (mic.state === 'on') { try { if (micAudio.ctx.state === 'suspended') micAudio.ctx.resume(); } catch (e) { /* */ } return; }
+    var wants = micRead || (O.mic === 'auto' && Object.keys(micCbs).some(function (kd) { return typeof g[micCbs[kd]] === 'function'; }));
+    if (wants && (mic.state === 'off' || (mic.state === 'denied' && micTries < 3))) startMic();
+  }
+  if (O.mic !== 'off' && g.addEventListener) ['pointerdown', 'keydown', 'touchend'].forEach(function (t) { g.addEventListener(t, micGesture, { capture: true, passive: true }); });
+  var micBtn = null, micMeter = null;
+  function paintMic() {
+    if (btn && btn.querySelector) {                  // 🎹 grows a small 🎤, underlined green / yellow / red, once the microphone is in play
+      var dot = btn.querySelector('#oav-p5-mic-dot');
+      if (mic.state !== 'off' && !dot) { dot = el('span', 'font-size:12px;line-height:1;border-bottom:2px solid #8a8a8a', '🎤'); dot.id = 'oav-p5-mic-dot'; btn.appendChild(dot); }
+      if (dot) dot.style.borderBottomColor = { on: '#5fe08a', asking: '#e0c25f', denied: '#e06b5f', unavailable: '#8a8a8a', off: '#8a8a8a' }[mic.state];
+    }
+    if (!micBtn) return;
+    micBtn.firstChild.textContent = { on: T.micOff, asking: T.micAsking, denied: T.micDenied, unavailable: T.micNone, off: T.micOn }[mic.state];
+    micBtn.title = mic.state === 'denied' ? T.micDeniedHint : '';
+    micMeter.style.width = (mic.state === 'on' ? Math.round(mic.level * 100) : 0) + '%';
+  }
+
   // ---------------------------------------------------------------- on-screen UI: 🎹 button → docked controller
   var doc = g.document, btn = null, dock = null, view = null, legend = null, panelOpen = false, loading = null;
   var Z = 2147483000;
@@ -431,7 +587,14 @@
     ph.type = 'button'; ph.addEventListener('click', function () { openPhone(); });
     var cl = el('button', 'padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;cursor:pointer;font:inherit', T.close);
     cl.type = 'button'; cl.addEventListener('click', function () { openPanel(false); });
-    bar.appendChild(legend); bar.appendChild(ph); bar.appendChild(cl);
+    micBtn = el('button', 'position:relative;overflow:hidden;padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;cursor:pointer;font:inherit;max-width:46vw');
+    micBtn.id = 'oav-p5-mic'; micBtn.type = 'button';
+    micBtn.appendChild(el('span', 'position:relative;white-space:nowrap'));
+    micMeter = el('span', 'position:absolute;left:0;bottom:0;height:3px;width:0;background:#5fe08a');
+    micBtn.appendChild(micMeter);
+    micBtn.addEventListener('click', function () { if (mic.state === 'on') mic.stop(); else mic.start(); });
+    paintMic();
+    bar.appendChild(legend); bar.appendChild(micBtn); bar.appendChild(ph); bar.appendChild(cl);
     dock.appendChild(bar);
     var wait = el('div', 'padding:18px;text-align:center;color:#aaa;font:500 13px system-ui,sans-serif', T.loading);
     dock.appendChild(wait);
