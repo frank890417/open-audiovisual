@@ -14,22 +14,22 @@
 //      the timeline and other controllers, and meters show the work breathing
 // Wire it into a show with `createShow({ modules: { remote: true } })`.
 
-import { RelayClient, bindSignals } from '../relay/index.js?v=68829e2';
-import { autoSurface, feedbackFor, normalizeLayout, routesFromLayout } from '../surface/index.js?v=68829e2';
-import { linkControllers } from '../midi/link.js?v=68829e2';
+import { RelayClient, bindSignals } from '../relay/index.js?v=cf74913';
+import { autoSurface, feedbackFor, normalizeLayout, routesFromLayout } from '../surface/index.js?v=cf74913';
+import { linkControllers } from '../midi/link.js?v=cf74913';
 
 /**
  * @param {object} o
- * @param {import('../core/src/signals.js?v=68829e2').Signals} o.signals
- * @param {import('../core/src/params.js?v=68829e2').Params} o.params
- * @param {import('../mapping/index.js?v=68829e2').Mapper} o.mapper
+ * @param {import('../core/src/signals.js?v=cf74913').Signals} o.signals
+ * @param {import('../core/src/params.js?v=cf74913').Params} o.params
+ * @param {import('../mapping/index.js?v=cf74913').Mapper} o.mapper
  * @param {{name?:string, params?:object[], surface?:object}} [o.world]
  * @param {string} [o.room='default']
  * @param {object} [o.auto]     autoSurface options (pairs, meters, style, perPage…)
  * @param {object} [o.surface]  an explicit layout (wins over world.surface)
  * @param {number} [o.feedbackHz=10]
  * @param {string} [o.url]      relay url override
- * @param {import('../midi/manager.js?v=68829e2').MidiControllers} [o.controllers]  on-screen MIDI controllers: the phone's
+ * @param {import('../midi/manager.js?v=cf74913').MidiControllers} [o.controllers]  on-screen MIDI controllers: the phone's
  *        MIDI tab shows the same device (config "midi"), mirrors this machine's hardware (feedback), and its
  *        plays are mirrored on this screen
  */
