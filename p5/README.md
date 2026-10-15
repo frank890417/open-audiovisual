@@ -323,7 +323,7 @@ as one more input, **OAV Virtual MIDI**, after the real ports.
   a drum machine that is up (`startDrums()`) plays at its tempo on its downbeat and starts / stops with it (its card says
   "following an external clock · 128 BPM"); a start sent three times with one timestamp counts once. `OAVp5.clock.info`
   `{ state, bpm, running, following, source, clocks, dupes, … }`, `OAVp5.clock.phase`. Measured at 128 bpm on strudel.cc:
-  `drumPhase` within 1.2 ms of Strudel's bar, kicks within 5 ms of its beat. `clock=off` ignores it; with no clock nothing changes.
+  `drumPhase` within 1.2 ms of Strudel's bar, kicks within 6 ms of its beat (three runs). `clock=off` ignores it; with no clock nothing changes.
   The counting is @openav/midi's `MidiClock` (`packages/midi/clock.js`), the steering `DrumTransport.follow()`.
 - **`link=<room>`: pages hear each other's programs.** Every OAV page with the same room — another tab, another computer —
   gets what this page's programs play into the virtual output (notes, CCs, the clock), over the phone relay, played there

@@ -2671,7 +2671,7 @@ $: midicmd(<span class="ts">"clock*96, &lt;start stop&gt;/8"</span>).midi(<span 
 <p><code>drumPhase</code>, <code>beatPhase</code>, <code>drumBar</code>, <code>drumStep</code> and <code>drumBpm</code> follow it. A drum machine started with <code>startDrums()</code>
 plays at Strudel's tempo, on Strudel's downbeat, and starts and stops with it (the card says "following an external
 clock · 128 BPM"). Measured at 128 bpm: <code>drumPhase</code> within 1.2 ms of Strudel's bar (median 0.04 ms), every kick within
-5 ms of Strudel's beat; Strudel's start, which arrives three times with one timestamp, counts once. Without a clock
+6 ms of Strudel's beat (three runs); Strudel's start, which arrives three times with one timestamp, counts once. Without a clock
 nothing changes; <code>clock=off</code> ignores one.</p>
 <p><strong>In another tab, or on another computer.</strong> Give both pages the same room. In Strudel's prebake:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">window.OAV_P5 = { link: <span class="ts">'my-room'</span> }

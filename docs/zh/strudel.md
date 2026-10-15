@@ -76,7 +76,7 @@ $: midicmd("clock*96, <start stop>/8").midi('OAV Virtual MIDI')
 
 `drumPhase`、`beatPhase`、`drumBar`、`drumStep`、`drumBpm` 都跟著它走。用 `startDrums()` 開的鼓機會照 Strudel 的速度、
 在 Strudel 的小節起點上打，跟著它開始和停止（鼓機卡上寫「跟著外部時鐘 · 128 BPM」）。128 bpm 實測：`drumPhase` 和
-Strudel 的小節差 1.2 ms 以內（中位數 0.04 ms），每一下大鼓和 Strudel 的拍點差 5 ms 以內；Strudel 的 start 會用同一個
+Strudel 的小節差 1.2 ms 以內（中位數 0.04 ms），每一下大鼓和 Strudel 的拍點差 6 ms 以內（跑三次）；Strudel 的 start 會用同一個
 時間戳送三次，只算一次。沒有時鐘時什麼都不變；`clock=off` 會忽略時鐘。
 
 **另一個分頁，或另一台電腦。** 兩邊設同一個房間。Strudel 的 prebake：

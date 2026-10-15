@@ -2097,7 +2097,7 @@ Strudel 裡沒有草圖：用 <code>OAVp5.on('notePressed', fn)</code>），CC �
 $: s(<span class="ts">"bd*4, [~ sd]*2, hh*8"</span>)
 $: midicmd(<span class="ts">"clock*96, &lt;start stop&gt;/8"</span>).midi(<span class="ts">'OAV Virtual MIDI'</span>)</code></pre></div>
 <p><code>drumPhase</code>、<code>beatPhase</code>、<code>drumBar</code>、<code>drumStep</code>、<code>drumBpm</code> 都跟著它走。用 <code>startDrums()</code> 開的鼓機會照 Strudel 的速度、在 Strudel 的小節起點上打，跟著它開始和停止（鼓機卡上寫「跟著外部時鐘 · 128 BPM」）。128 bpm 實測：<code>drumPhase</code> 和
-Strudel 的小節差 1.2 ms 以內（中位數 0.04 ms），每一下大鼓和 Strudel 的拍點差 5 ms 以內；Strudel 的 start 會用同一個時間戳送三次，只算一次。沒有時鐘時什麼都不變；<code>clock=off</code> 會忽略時鐘。</p>
+Strudel 的小節差 1.2 ms 以內（中位數 0.04 ms），每一下大鼓和 Strudel 的拍點差 6 ms 以內（跑三次）；Strudel 的 start 會用同一個時間戳送三次，只算一次。沒有時鐘時什麼都不變；<code>clock=off</code> 會忽略時鐘。</p>
 <p><strong>另一個分頁，或另一台電腦。</strong> 兩邊設同一個房間。Strudel 的 prebake：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">window.OAV_P5 = { link: <span class="ts">'my-room'</span> }
 <span class="tk">await</span> <span class="tk">import</span>(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)</code></pre></div>

@@ -82,7 +82,7 @@ $: midicmd("clock*96, <start stop>/8").midi('OAV Virtual MIDI')
 `drumPhase`, `beatPhase`, `drumBar`, `drumStep` and `drumBpm` follow it. A drum machine started with `startDrums()`
 plays at Strudel's tempo, on Strudel's downbeat, and starts and stops with it (the card says "following an external
 clock · 128 BPM"). Measured at 128 bpm: `drumPhase` within 1.2 ms of Strudel's bar (median 0.04 ms), every kick within
-5 ms of Strudel's beat; Strudel's start, which arrives three times with one timestamp, counts once. Without a clock
+6 ms of Strudel's beat (three runs); Strudel's start, which arrives three times with one timestamp, counts once. Without a clock
 nothing changes; `clock=off` ignores one.
 
 **In another tab, or on another computer.** Give both pages the same room. In Strudel's prebake:
