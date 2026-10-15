@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- oav:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p5 lag: smooth a jumpy value · open-audiovisual example</title>
+<meta name="description" content="lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page. Plays with microphone · drum machine (🥁).">
+<link rel="canonical" href="https://openaudiovisual.com/examples/22-p5-lag/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="p5 lag: smooth a jumpy value · open-audiovisual example">
+<meta property="og:description" content="lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page. Plays with microphone · drum machine (🥁).">
+<meta property="og:url" content="https://openaudiovisual.com/examples/22-p5-lag/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="p5 lag: smooth a jumpy value · open-audiovisual example">
+<meta name="twitter:description" content="lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page. Plays with microphone · drum machine (🥁).">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/22-p5-lag/#webpage","url":"https://openaudiovisual.com/examples/22-p5-lag/","name":"p5 lag: smooth a jumpy value · open-audiovisual example","description":"lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page. Plays with microphone · drum machine (🥁).","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/22-p5-lag/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/22-p5-lag/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/09-midi-controllers/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/22-p5-lag/#code","name":"p5 lag: smooth a jumpy value (open-audiovisual example 22)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/22-p5-lag","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/22-p5-lag/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"p5 lag: smooth a jumpy value","item":"https://openaudiovisual.com/examples/22-p5-lag/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css">
+<!-- /oav:head -->
+<style>
+  /* the sketch is the page: its canvas fills the window (createCanvas(windowWidth, windowHeight)) */
+  html, body { margin: 0; background: #111; overflow: hidden; }
+  canvas { display: block; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+</head>
+<body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 22 · <a href="../../examples/#route-inputs">Anything can be an instrument</a></span><span lang="zh-Hant">範例 22 · <a href="../../zh/examples/#route-inputs">什麼都能當樂器</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">p5 lag: smooth a jumpy value</span><span lang="zh-Hant">p5 lag：讓跳動的數值變順</span></h1>
+    <p class="g-teaches"><span lang="en">lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page.</span><span lang="zh-Hant">lag(micLevel, 0.03, 0.4) 把跳動的數值變順，跟 TouchDesigner 的 Lag CHOP 一樣，秒數也一樣。scope() 在網頁角落畫出兩條線。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Allow the microphone and clap: the left circle (micLevel) jumps, the right one (lagged) opens at once and closes slowly, like a VU meter.</li><li>Watch the scope in the corner and the strip below: green is micLevel, yellow is lag(micLevel, 0.03, 0.4).</li><li>Nothing to hear? 🎹 → 🥁 plays drums through the speakers, and a laptop's own microphone hears them.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>允許麥克風，拍一下手：左邊的圓（micLevel）一抖一抖，右邊的圓（lag 後）立刻撐開、慢慢收，像 VU 表。</li><li>看角落的示波器和下面那一條：綠色是 micLevel，黃色是 lag(micLevel, 0.03, 0.4)。</li><li>身邊沒有聲音？🎹 → 🥁 讓喇叭打鼓，筆電自己的麥克風就聽得到。</li></ol>
+    <p class="g-row"><span lang="en"><b>Needs:</b> Microphone.</span><span lang="zh-Hant"><b>需要：</b>麥克風。</span>
+        <span lang="en">No hardware? Use Drum machine.</span><span lang="zh-Hant">沒有硬體？用鼓機。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/22-p5-lag/sketch.js#L16-L17"><code>sketch.js:16–17</code></a> <span lang="en">One call in draw(), nothing to declare: 0.03 s up, 0.4 s down.</span><span lang="zh-Hant">draw() 裡一行，不用宣告：上升 0.03 秒、下降 0.4 秒。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/22-p5-lag/sketch.js#L18-L19"><code>sketch.js:18–19</code></a> <span lang="en">scope(value, 'label'): a plot in a corner of the page, never in a recording.</span><span lang="zh-Hant">scope(value, 'label')：畫在網頁角落，不會錄進影片。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/22-p5-lag/sketch.js#L35-L36"><code>sketch.js:35–36</code></a> <span lang="en">trail() keeps the last 3 seconds and drawTrail() draws them on the canvas, so a recording has them.</span><span lang="zh-Hant">trail() 留住最近 3 秒，drawTrail() 把它畫在畫布上，錄影也錄得到。</span></li></ul>
+    
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#p5-values-over-time-lag-env-speed-spring-trail">Values over time: lag, env, speed, spring, trail</a></span><span lang="zh-Hant"><a href="../../zh/docs/#p5-values-over-time-lag-env-speed-spring-trail">數值隨時間：lag、env、speed、spring、trail</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/09-midi-controllers/">09 MIDI controllers →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/09-midi-controllers/">09 MIDI 控制器 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js"></script>
+<!-- /oav:guide -->
+<noscript>p5 lag: smooth a jumpy value: a p5.js sketch played through oav-p5, the one line for p5. lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page.</noscript>
+<!-- sketch.js is p5/examples/lag/sketch.js, copied here by tools/build-examples.mjs (the same file the handbook and p5/examples/ open).
+     Its first lines load oav-p5.js from openaudiovisual.com, as in any sketch on OpenProcessing. -->
+<!-- last <script> on purpose: p5's friendly errors read the page's last script as the sketch -->
+<script src="./sketch.js"></script>
+</body>
+</html>

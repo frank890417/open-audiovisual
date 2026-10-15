@@ -52,7 +52,7 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 <table>
 <tr>
 <td width="33%" valign="top"><img src="assets/readme/icons/midi-controller.svg" width="40" height="40" alt=""><br><b>MIDI controllers</b><br><!--gen:n-devices-->21<!--/gen:n-devices--> real devices modeled as data: every knob, pad and key with its exact message. Play them on screen, plug the real one in.</td>
-<td width="33%" valign="top"><img src="assets/readme/icons/audio.svg" width="40" height="40" alt=""><br><b>Audio analysis</b><br>Microphone or any Web Audio node: loudness, bands, brightness, onsets, kick / snare / hat.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/audio.svg" width="40" height="40" alt=""><br><b>Audio analysis</b><br>Microphone or any Web Audio node: loudness, bands, brightness, onsets, kick / snare / hat. In a p5 sketch: <code>micLevel</code>.</td>
 <td width="33%" valign="top"><img src="assets/readme/icons/chord.svg" width="40" height="40" alt=""><br><b>Chord semantics</b><br>Notes struck together become one gesture: consonance, triad, cluster. Harmony decides bloom or decay.</td>
 </tr>
 <tr>
@@ -67,7 +67,7 @@ node packages/osc/bridges/osc-bridge.js   # OSC → UDP bridge (Spat, Reaper, TD
 </tr>
 <tr>
 <td width="33%" valign="top"><img src="assets/readme/icons/monitor.svg" width="40" height="40" alt=""><br><b>Backstage monitor</b><br>Clock, scene, every signal and FPS on any phone or laptop on the network.</td>
-<td width="33%" valign="top"><img src="assets/readme/icons/record.svg" width="40" height="40" alt=""><br><b>Performance video</b><br>The work, your hands and the work's own sound in one synced vertical or 4K file. Record MIDI takes too.</td>
+<td width="33%" valign="top"><img src="assets/readme/icons/record.svg" width="40" height="40" alt=""><br><b>Performance video</b><br>The work, your hands and the work's own sound in one synced vertical or 4K file. Record MIDI takes too. In a p5 sketch: <code>startRecording()</code>.</td>
 <td width="33%" valign="top"><img src="assets/readme/icons/agent.svg" width="40" height="40" alt=""><br><b>Agent-native</b><br>AGENTS.md, a <code>/create-world</code> skill and an MCP server: describe a show, an agent writes the world.</td>
 </tr>
 </table>
@@ -123,7 +123,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-<!--gen:w-examples-->Fifteen<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
+<!--gen:w-examples-->Twenty-three<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
 
 <!--gen:examples-grid-->
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
@@ -138,9 +138,14 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 </tr>
 </table>
 
-**② Anything can be an instrument**: A controller, a chord, a microphone, bare hands, a Leap Motion, a phone.
+**② Anything can be an instrument**: A controller, a chord, a microphone, bare hands, a Leap Motion, a phone, Strudel in another tab.
 
 <table>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/16-p5-sound/"><img src="assets/home/works/16.webp" width="260" alt="Streaks of green, purple and red particle dots bursting over black, above an on-screen MiniLab 3 controller with its keys and sound buttons."></a><br><b>16 · p5 keys with sound</b><br>startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles.<br><a href="https://openaudiovisual.com/examples/16-p5-sound/">play</a> · <a href="examples/16-p5-sound/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/17-p5-microphone/"><img src="assets/home/works/17.webp" width="260" alt="A large pink circle with a thin grey ring around it on dark blue."></a><br><b>17 · p5 microphone</b><br>micLevel, bass and beat read the microphone the way p5 reads mouseX: a circle that grows when you speak, and no p5.sound.<br><a href="https://openaudiovisual.com/examples/17-p5-microphone/">play</a> · <a href="examples/17-p5-microphone/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/22-p5-lag/"><img src="assets/home/works/22.webp" width="260" alt="A small green circle (micLevel) and a larger yellow one (lagged) over two traces: the green drops at once, the yellow falls slowly. A small scope sits in the corner."></a><br><b>22 · p5 lag: smooth a jumpy value</b><br>lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page.<br><a href="https://openaudiovisual.com/examples/22-p5-lag/">play</a> · <a href="examples/22-p5-lag/">source</a></td>
+</tr>
 <tr>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/09-midi-controllers/"><img src="assets/home/works/09.webp" width="260" alt="A spiral of pink and blue dots above an on-screen MIDI keyboard controller."></a><br><b>09 · MIDI controllers</b><br>On-screen controllers that move with the real ones you plug in.<br><a href="https://openaudiovisual.com/examples/09-midi-controllers/">play</a> · <a href="examples/09-midi-controllers/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/02-chord-garden/"><img src="assets/home/works/02.webp" width="260" alt="Slender branching plants in a night garden, with green leaves and small blue, red and pink flowers."></a><br><b>02 · Chord garden</b><br>Triads bloom, clusters decay. The world listens to chords, never to keys.<br><a href="https://openaudiovisual.com/examples/02-chord-garden/">play</a> · <a href="examples/02-chord-garden/">source</a></td>
@@ -150,6 +155,11 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/03-pose-field/"><img src="assets/home/works/03.webp" width="260" alt="A blue and white mandala of fine layered lines."></a><br><b>03 · Hand instrument</b><br>Fingers as an instrument: pinch, fists, four pattern families.<br><a href="https://openaudiovisual.com/examples/03-pose-field/">play</a> · <a href="examples/03-pose-field/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/12-leap-hands/"><img src="assets/home/works/12.webp" width="260" alt="A violet hand skeleton above green and blue ink strokes that fall like rain on black."></a><br><b>12 · Leap hands</b><br>A Leap Motion as an instrument; the mouse is a simulated hand when you have none.<br><a href="https://openaudiovisual.com/examples/12-leap-hands/">play</a> · <a href="examples/12-leap-hands/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/08-remote-surface/"><img src="assets/home/works/08.webp" width="260" alt="Blue and yellow streaks exploding outward from the lower centre."></a><br><b>08 · Remote surface</b><br>The phone is the instrument panel; the surface grows from the world's params.<br><a href="https://openaudiovisual.com/examples/08-remote-surface/">play</a> · <a href="examples/08-remote-surface/">source</a></td>
+</tr>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/23-p5-with-strudel/"><img src="assets/home/works/23.webp" width="260" alt="Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom."></a><br><b>23 · p5 with Strudel</b><br>Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase.<br><a href="https://openaudiovisual.com/examples/23-p5-with-strudel/">play</a> · <a href="examples/23-p5-with-strudel/">source</a></td>
+<td></td>
+<td></td>
 </tr>
 </table>
 
@@ -163,23 +173,28 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 </tr>
 </table>
 
-**④ Run a show**: The show, not just the piece: a timeline you can see, and a score with a director.
+**④ Run a show**: The show, not just the piece: a timeline you can see, a drum machine that counts the bars, and a score with a director.
 
 <table>
 <tr>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/14-timeline/"><img src="assets/home/works/14.webp" width="260" alt="A hexagonal ring of orange and yellow dots above a timeline with five curve lanes, scene blocks and a playhead."></a><br><b>14 · Timeline</b><br>Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes.<br><a href="https://openaudiovisual.com/examples/14-timeline/">play</a> · <a href="examples/14-timeline/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/18-p5-drums/"><img src="assets/home/works/18.webp" width="260" alt="A yellow and orange flower of long petals below a 16-step drum grid with kick, snare, hat and clap rows."></a><br><b>18 · p5 drums and bars</b><br>startDrums('breakbeat', 110) puts a 16-step drum machine on the page; kickDetected() and cueFired() turn its hits and its bars into the picture.<br><a href="https://openaudiovisual.com/examples/18-p5-drums/">play</a> · <a href="examples/18-p5-drums/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/19-p5-rhythm/"><img src="assets/home/works/19.webp" width="260" alt="A blue circle with a yellow hand sweeping round it, below a drum card that shows the line bd*4, [~ sd]*2, hh*8 and its 16 steps."></a><br><b>19 · p5 one line of rhythm</b><br>startDrums("bd*4, [~ sd]*2, hh*8") writes the drums as one line of rhythm; drumPhase and beatPhase turn a hand once a bar and swell a circle on every beat.<br><a href="https://openaudiovisual.com/examples/19-p5-rhythm/">play</a> · <a href="examples/19-p5-rhythm/">source</a></td>
+</tr>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/20-p5-rhythm-visual/"><img src="assets/home/works/20.webp" width="260" alt="One rhythm drawn three ways on the canvas: a ring of coloured steps with a white hand, a spiral of the last four bars, and a 16-step grid with a playhead, under the drum card."></a><br><b>20 · p5 rhythm you can see</b><br>drawRhythm() draws the rhythm on the canvas as a grid, a circle or a spiral, so a recording has it; the cells and the line on the card edit each other.<br><a href="https://openaudiovisual.com/examples/20-p5-rhythm-visual/">play</a> · <a href="examples/20-p5-rhythm-visual/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/13-score-director/"><img src="assets/home/works/13.webp" width="260" alt="A pale moon in a blue and teal dusk sky, with the word dusk in the corner."></a><br><b>13 · Score &amp; director</b><br>A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash.<br><a href="https://openaudiovisual.com/examples/13-score-director/">play</a> · <a href="examples/13-score-director/">source</a></td>
 <td></td>
 </tr>
 </table>
 
-**⑤ Take it out of the browser**: One synced video, with or without a camera.
+**⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera.
 
 <table>
 <tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/21-p5-record/"><img src="assets/home/works/21.webp" width="260" alt="A pink dot in the middle of glowing pink and yellow rings spreading out, below the drum card playing four on the floor."></a><br><b>21 · p5 record a video</b><br>startRecording() saves the canvas and the sketch's own sound as one video, MP4 where the browser can write it; ⏺ and 📷 in the 🎹 panel need no code.<br><a href="https://openaudiovisual.com/examples/21-p5-record/">play</a> · <a href="examples/21-p5-record/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/10-record/"><img src="assets/home/works/10.webp" width="260" alt="Overlapping pink, yellow and green rings spreading over a dark field, each one a struck note."></a><br><b>10 · Record</b><br>The work plus your hands plus its own sound, in one synced video. MIDI takes too.<br><a href="https://openaudiovisual.com/examples/10-record/">play</a> · <a href="examples/10-record/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/11-controller-video/"><img src="assets/home/works/11.webp" width="260" alt="Overlapping pink, purple and yellow rings beside an on-screen MiniLab 3 with the last note written under it."></a><br><b>11 · Controller video</b><br>The performance video without a camera: the controller you play, drawn live.<br><a href="https://openaudiovisual.com/examples/11-controller-video/">play</a> · <a href="examples/11-controller-video/">source</a></td>
-<td></td>
 </tr>
 </table>
 <!--/gen:examples-grid-->
@@ -254,6 +269,17 @@ function notePressed(note, velocity) {     // like keyPressed(): any key, or a p
 ```
 
 No `setup()` call, p5 1.x and 2.x. On OpenProcessing it also wires to OP Configurator sliders in order.
+
+The same line does more, each one a call or a name in the p5 style (oav-p5 <!--gen:p5-version-->0.7.0<!--/gen:p5-version-->, [changelog](https://openaudiovisual.com/changelog/)):
+
+| write | and | play it |
+|---|---|---|
+| `startSound('piano')` | every key from a keyboard, the 🎹 on screen or a phone is heard ([sound](https://openaudiovisual.com/docs/#p5-sound-what-is-played-is-heard)) | [16](https://openaudiovisual.com/examples/16-p5-sound/) |
+| `micLevel`, `bass`, `beatDetected()` | the microphone, read like `mouseX`, no p5.sound ([microphone](https://openaudiovisual.com/docs/#p5-the-microphone)) | [17](https://openaudiovisual.com/examples/17-p5-microphone/) |
+| `startDrums("bd*4, [~ sd]*2, hh*8")`, `cue(5, 'bloom')` | a drum machine written as one line of rhythm (click its grid and the line rewrites itself), and a timeline of bars ([drum machine](https://openaudiovisual.com/docs/#p5-drum-machine)) | [18](https://openaudiovisual.com/examples/18-p5-drums/) · [19](https://openaudiovisual.com/examples/19-p5-rhythm/) · [20](https://openaudiovisual.com/examples/20-p5-rhythm-visual/) |
+| `startRecording()` | the canvas and the sketch's own sound in one video; ⏺ in the 🎹 panel needs no code ([recording](https://openaudiovisual.com/docs/#p5-recording-a-video-with-its-sound)) | [21](https://openaudiovisual.com/examples/21-p5-record/) |
+| `lag(micLevel, 0.03, 0.4)` | a jumpy value smoothed like TouchDesigner's Lag CHOP, in its seconds; `env()`, `spring()`, `scope()` too ([values over time](https://openaudiovisual.com/docs/#p5-values-over-time-lag-env-speed-spring-trail)) | [22](https://openaudiovisual.com/examples/22-p5-lag/) |
+| Strudel | load the line in strudel.cc: knobs, a phone and the microphone become Strudel's parameters, and its notes and clock reach a sketch ([With Strudel](https://openaudiovisual.com/docs/#strudel)) | [23](https://openaudiovisual.com/examples/23-p5-with-strudel/) |
 Details: [openaudiovisual.com/docs/#p5](https://openaudiovisual.com/docs/#p5) · [docs/p5.md](docs/p5.md) · [`p5/`](p5/).
 
 ## 🧩 A world in 20 lines
@@ -389,19 +415,21 @@ The controller element, `createController()`, the iframe embed and `createShow()
 
 ## 🗺 Status & roadmap
 
-Version `0.1.0` (nothing is on npm yet). The chassis is complete and in use: the four layers with the
+Framework version `0.1.0` (nothing is on npm yet); oav-p5, the one line for p5.js, is versioned on its own:
+<!--gen:p5-version-->0.7.0<!--/gen:p5-version--> ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
 L4 video/audio split, timeline, **Score &amp; Director**, console, backstage monitor, phones as controllers,
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **<!--gen:n-devices-->21<!--/gen:n-devices-->-device MIDI controller library**,
-**oav-p5**, an MCP server, and a handbook site.
+**oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
+an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-27 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 734 tests
+27 packages · 23 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 735 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):
 
-- Replay the full signal stream (hands, body, audio analysis) into any world; mapping profile import/export
-- MIDI clock and transport in and out, a score editor on the desk, a QR code on the phone join card
+- Replay the full signal stream (hands, body, audio analysis) into any world
+- The score on an external MIDI clock (clock in already moves oav-p5's drums), clock and transport out, a score editor on the desk
 - Audience-device input: many phones as aggregate signals
 - npm publish of `@openav/*`, a WebGPU world adapter
 - An NDI gateway; several machines sharing one signal space over WebRTC; agents that play alongside people

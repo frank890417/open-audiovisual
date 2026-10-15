@@ -15,6 +15,10 @@
 - [x] 鼓機，送出的訊號跟分析器的長得一樣（`@openav/drums`）
 - [x] 螢幕上的 MIDI 控制器，跟著真實硬體同步動作（`@openav/midi`，範例 09）
 - [x] 文件網站：[openaudiovisual.com/docs](https://openaudiovisual.com/docs/)
+- [x] oav-p5：任何 p5.js 草圖加一行，就有控制器、手機、麥克風、聲音、能用一行字寫節奏的鼓機、小節與 cue、錄影，版本號自己算（[更新紀錄](https://openaudiovisual.com/zh/changelog/)）
+- [x] 一行節奏：TidalCycles／Strudel 式的 mini-notation（`@openav/pattern`）
+- [x] 像 TouchDesigner 的 CHOP 那樣處理隨時間變的數值：lag、包絡、速度、彈簧、trail（`@openav/chop`）
+- [x] 和 Strudel 並排：程式送進 OAV Virtual MIDI 的音、外部 MIDI 時鐘、`link=房間名` 跨分頁也跨電腦（[和 Strudel 一起用](strudel.md)）
 
 ## v1.x — 演出長大
 
@@ -23,7 +27,8 @@
   - [ ] *實驗性的*控制面板：手勢／物理控制元件、多人共用的控制面板、觀眾模式（很多支手機 → 彙整成 `crowd/tilt/mean` 這類訊號）
   - [ ] 麥克風當作手機感測器、每台裝置各自的設定檔、版面編輯器／匯入匯出介面
 - **總譜與導演**：*已經上線*（`@openav/score`）：用段落長度寫成的版本、衍生版本、cue、`hold`、壞了只停自己的段落模組、提詞機上的 acts、總譜轉 MIDI 標記。接下來：
-  - [ ] 進出都支援 MIDI clock 與 transport（start / stop / song position），讓 DAW 當總譜的主時鐘，或跟著總譜走
+  - [x] 收 MIDI clock：`@openav/midi` 的 `MidiClock` 跟著 start、stop、song position 走，oav-p5 的鼓機和 `drumPhase` 也跟著它（0.7）
+  - [ ] 總譜跟著外部時鐘走，以及送出 clock 與 transport，讓 DAW 當總譜的主時鐘，或跟著總譜走
   - [ ] cut 裡的 `clocks` 表，只有哪一場演出需要引擎跑在兩條不同的時間線上才做（見[總譜與導演](score.md#clocks-why-there-are-none)）
   - [ ] 導演台上的總譜編輯器：拖一段的長度，看每個 cue 跟著移動
 - **訊號錄製與重播**：*MIDI 錄音已經上線*（`@openav/record`：`TakeRecorder`、`TakePlayer`，`.mid` 可進可出；`EventLog` 已經能在錄影時記下任何訊號）。接下來：把完整的訊號流（手、身體、聲音分析）重播給任何一個世界。演奏者不在也能排練。存下來的不只影片，還有手勢。

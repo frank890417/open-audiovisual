@@ -33,21 +33,21 @@
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="manifest" href="./site.webmanifest">
 <link rel="preload" href="./assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="./assets/home/home.css?v=af13a9f">
+<link rel="stylesheet" href="./assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/#webpage","url":"https://openaudiovisual.com/","name":"open-audiovisual · a framework for audiovisual performance","description":"Zero-build JavaScript framework: MIDI controllers, mics, hands and phones become signals that drive p5.js, WebGL or WebToe worlds in the browser. MIT.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/#software"}}]}</script>
 <noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "./packages/core/index.js?v=af13a9f",
-    "@openav/mapping": "./packages/mapping/index.js?v=af13a9f",
-    "@openav/keys": "./packages/keys/index.js?v=af13a9f",
-    "@openav/chord": "./packages/chord/index.js?v=af13a9f",
-    "@openav/stage": "./packages/stage/index.js?v=af13a9f",
-    "@openav/sound": "./packages/sound/index.js?v=af13a9f",
-    "@openav/midi": "./packages/midi/index.js?v=af13a9f",
-    "@openav/audio": "./packages/audio/index.js?v=af13a9f"
+    "@openav/core": "./packages/core/index.js",
+    "@openav/mapping": "./packages/mapping/index.js",
+    "@openav/keys": "./packages/keys/index.js",
+    "@openav/chord": "./packages/chord/index.js",
+    "@openav/stage": "./packages/stage/index.js",
+    "@openav/sound": "./packages/sound/index.js",
+    "@openav/midi": "./packages/midi/index.js",
+    "@openav/audio": "./packages/audio/index.js"
   }
 }
 </script>
@@ -91,7 +91,7 @@
         <p class="eyebrow facts"><a href="./changelog/">oav-p5 0.7 · framework 0.1</a> · MIT · zero build · zero dependencies</p>
       </div>
       <nav class="doors" aria-label="Where to start">
-        <a class="door door-1" href="#works"><span class="door-who">I perform</span><span class="door-what">See what it makes and play the fifteen works</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-1" href="#works"><span class="door-who">I perform</span><span class="door-what">See what it makes and play the twenty-three works</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-2" href="#start"><span class="door-who">I write code</span><span class="door-what">Run it in a minute, then write a world</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-3" href="./llms.txt"><span class="door-who">I am an AI agent</span><span class="door-what">Read /llms.txt, then AGENTS.md</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-4" href="./p5/"><span class="door-who">I use p5.js / OpenProcessing</span><span class="door-what">One line: a controller, sound, drums, video</span><span class="door-arrow" aria-hidden="true">→</span></a>
@@ -220,7 +220,7 @@
     
     <header class="sec-head">
       <p class="eyebrow">03 · Works</p>
-      <h2 id="works-title">Fifteen works you can open now</h2>
+      <h2 id="works-title">Twenty-three works you can open now</h2>
       <p class="sec-lede">Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments. In any example: Space plays the timeline, T is performance mode, F is fullscreen.</p>
     </header>
     <ol class="works">
@@ -246,6 +246,42 @@
           <p class="work-text">A plain p5 sketch whose first line loads <code>oav-p5.js</code>, then plays from a MIDI controller, an on-screen controller or a phone.</p>
           <p class="work-route"><span>①</span> First open</p>
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/15-p5-one-line">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-16">
+        <div class="work-img"><img src="./assets/home/works/16.webp" width="800" height="500" loading="lazy" decoding="async" alt="Streaks of green, purple and red particle dots bursting over black, above an on-screen MiniLab 3 controller with its keys and sound buttons."></div>
+        <div class="work-label">
+          <p class="work-n">16</p>
+          <h3><a class="work-link" href="./examples/16-p5-sound/">p5 keys with sound</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> MIDI keyboard · on-screen controller · phone</p>
+          <p class="work-text"><code>startSound('piano')</code> in <code>setup()</code>: every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles.</p>
+          <p class="work-route"><span>②</span> Anything can be an instrument</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/16-p5-sound">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-17">
+        <div class="work-img"><img src="./assets/home/works/17.webp" width="800" height="500" loading="lazy" decoding="async" alt="A large pink circle with a thin grey ring around it on dark blue."></div>
+        <div class="work-label">
+          <p class="work-n">17</p>
+          <h3><a class="work-link" href="./examples/17-p5-microphone/">p5 microphone</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> microphone · drum machine (🥁)</p>
+          <p class="work-text"><code>micLevel</code>, <code>bass</code> and <code>beat</code> read the microphone the way p5 reads <code>mouseX</code>: a circle that grows when you speak, and no p5.sound.</p>
+          <p class="work-route"><span>②</span> Anything can be an instrument</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/17-p5-microphone">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-22">
+        <div class="work-img"><img src="./assets/home/works/22.webp" width="800" height="500" loading="lazy" decoding="async" alt="A small green circle (micLevel) and a larger yellow one (lagged) over two traces: the green drops at once, the yellow falls slowly. A small scope sits in the corner."></div>
+        <div class="work-label">
+          <p class="work-n">22</p>
+          <h3><a class="work-link" href="./examples/22-p5-lag/">p5 lag: smooth a jumpy value</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> microphone · drum machine (🥁)</p>
+          <p class="work-text"><code>lag(micLevel, 0.03, 0.4)</code> smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; <code>scope()</code> plots both in a corner of the page.</p>
+          <p class="work-route"><span>②</span> Anything can be an instrument</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/22-p5-lag">Source ↗</a></p>
         </div>
       </li>
       <li class="work" id="work-09">
@@ -320,6 +356,18 @@
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/08-remote-surface">Source ↗</a></p>
         </div>
       </li>
+      <li class="work" id="work-23">
+        <div class="work-img"><img src="./assets/home/works/23.webp" width="800" height="500" loading="lazy" decoding="async" alt="Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom."></div>
+        <div class="work-label">
+          <p class="work-n">23</p>
+          <h3><a class="work-link" href="./examples/23-p5-with-strudel/">p5 with Strudel</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> Strudel in another tab · on-screen controller</p>
+          <p class="work-text">Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls <code>notePressed()</code>, and its clock turns <code>drumPhase</code>.</p>
+          <p class="work-route"><span>②</span> Anything can be an instrument</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/23-p5-with-strudel">Source ↗</a></p>
+        </div>
+      </li>
       <li class="work" id="work-04">
         <div class="work-img"><img src="./assets/home/works/04.webp" width="800" height="500" loading="lazy" decoding="async" alt="A node editor with noise, level and output nodes beside a grey cloud texture."></div>
         <div class="work-label">
@@ -368,6 +416,42 @@
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/14-timeline">Source ↗</a></p>
         </div>
       </li>
+      <li class="work" id="work-18">
+        <div class="work-img"><img src="./assets/home/works/18.webp" width="800" height="500" loading="lazy" decoding="async" alt="A yellow and orange flower of long petals below a 16-step drum grid with kick, snare, hat and clap rows."></div>
+        <div class="work-label">
+          <p class="work-n">18</p>
+          <h3><a class="work-link" href="./examples/18-p5-drums/">p5 drums and bars</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> drum machine · its 16-step grid</p>
+          <p class="work-text"><code>startDrums('breakbeat', 110)</code> puts a 16-step drum machine on the page; <code>kickDetected()</code> and <code>cueFired()</code> turn its hits and its bars into the picture.</p>
+          <p class="work-route"><span>④</span> Run a show</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/18-p5-drums">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-19">
+        <div class="work-img"><img src="./assets/home/works/19.webp" width="800" height="500" loading="lazy" decoding="async" alt="A blue circle with a yellow hand sweeping round it, below a drum card that shows the line bd*4, [~ sd]*2, hh*8 and its 16 steps."></div>
+        <div class="work-label">
+          <p class="work-n">19</p>
+          <h3><a class="work-link" href="./examples/19-p5-rhythm/">p5 one line of rhythm</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> drum machine · one line you can edit</p>
+          <p class="work-text"><code>startDrums("bd*4, [~ sd]*2, hh*8")</code> writes the drums as one line of rhythm; <code>drumPhase</code> and <code>beatPhase</code> turn a hand once a bar and swell a circle on every beat.</p>
+          <p class="work-route"><span>④</span> Run a show</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/19-p5-rhythm">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-20">
+        <div class="work-img"><img src="./assets/home/works/20.webp" width="800" height="500" loading="lazy" decoding="async" alt="One rhythm drawn three ways on the canvas: a ring of coloured steps with a white hand, a spiral of the last four bars, and a 16-step grid with a playhead, under the drum card."></div>
+        <div class="work-label">
+          <p class="work-n">20</p>
+          <h3><a class="work-link" href="./examples/20-p5-rhythm-visual/">p5 rhythm you can see</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> drum machine · its cells and its line</p>
+          <p class="work-text"><code>drawRhythm()</code> draws the rhythm on the canvas as a grid, a circle or a spiral, so a recording has it; the cells and the line on the card edit each other.</p>
+          <p class="work-route"><span>④</span> Run a show</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/20-p5-rhythm-visual">Source ↗</a></p>
+        </div>
+      </li>
       <li class="work" id="work-13">
         <div class="work-img"><img src="./assets/home/works/13.webp" width="800" height="500" loading="lazy" decoding="async" alt="A pale moon in a blue and teal dusk sky, with the word dusk in the corner."></div>
         <div class="work-label">
@@ -378,6 +462,18 @@
           <p class="work-text">A show with structure: "A day of sky" written once as segment lengths; a Director runs one module per segment, <code>?cut=&lt;id&gt;</code> picks a version, Space continues a hold.</p>
           <p class="work-route"><span>④</span> Run a show</p>
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/13-score-director">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-21">
+        <div class="work-img"><img src="./assets/home/works/21.webp" width="800" height="500" loading="lazy" decoding="async" alt="A pink dot in the middle of glowing pink and yellow rings spreading out, below the drum card playing four on the floor."></div>
+        <div class="work-label">
+          <p class="work-n">21</p>
+          <h3><a class="work-link" href="./examples/21-p5-record/">p5 record a video</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> QWERTY keys A–K · on-screen controller · drum machine</p>
+          <p class="work-text"><code>startRecording()</code> saves the canvas and the sketch's own sound as one video, MP4 where the browser can write it; ⏺ and 📷 in the 🎹 panel need no code.</p>
+          <p class="work-route"><span>⑤</span> Take it out of the browser</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/21-p5-record">Source ↗</a></p>
         </div>
       </li>
       <li class="work" id="work-10">
@@ -453,7 +549,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p>Declare what the piece can be performed with (params), react to events, draw. Hand it to <code>createShow()</code> and the rest arrives with it: piano, mapping, timeline, console, sound, backstage. Put it next to an <code>index.html</code> with the import map, as in example 01.</p>
         
       <div class="term ">
-        <div class="term-bar"><span>examples/16-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">Copy</button></div>
+        <div class="term-bar"><span>examples/24-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">Copy</button></div>
         <pre id="code-world"><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
 
@@ -588,43 +684,74 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p class="faq-more"><a class="more" href="./p5/">More: p5.js in one line →</a></p>
       </div>
       <div class="faq-item">
-        <h3 id="faq-3">Does it work without hardware?</h3>
+        <h3 id="faq-3">Can a p5.js sketch make sound, keep a beat and record itself?</h3>
+        <p>Sound: <code>startSound('piano')</code>. Every note from a keyboard, the 🎹 on screen or a phone is heard; 🔊 in the panel switches instruments.</p>
+        <p>A drum machine: <code>startDrums()</code>, a 16-step grid with four tracks and five patterns.</p>
+        <p>One line of rhythm: <code>startDrums("bd*4, [~ sd]*2, hh*8")</code>. The notation comes from TidalCycles and Strudel; OAV implements it independently, from the public documentation (<code>@openav/pattern</code>).</p>
+        <p>Record a video with its sound: <code>startRecording()</code>, <code>stopRecording()</code>, <code>recordingSaved(info)</code>. ⏺ and 📷 in the 🎹 panel need no code.</p>
+        <p class="faq-more"><a class="more" href="./p5/">More: p5.js in one line →</a></p>
+      </div>
+      <div class="faq-item">
+        <h3 id="faq-4">How do I smooth a jumpy value, like TouchDesigner's Lag CHOP?</h3>
+        <p>Values over time, like TouchDesigner's CHOPs: <code>lag(micLevel, 0.03, 0.4)</code> (Lag CHOP, in TouchDesigner's seconds: about the time to follow 90%), <code>env('kick', 0.01, 0.3)</code> (Trigger), <code>speed()</code>, <code>spring()</code>, <code>trail()</code>, <code>slope()</code>, <code>count()</code>, one call each in <code>draw()</code>, nothing to declare.</p>
+        
+      <div class="term ">
+        <div class="term-bar"><span>docs/p5.md</span><button type="button" class="copy" data-copy="faq-4-code">Copy</button></div>
+        <pre id="faq-4-code"><code>circle(width / 2, height / 2, 50 + lag(micLevel, 0.03, 0.4) * 300);   <span class="tc">// a VU meter: opens at once, closes slowly</span></code></pre>
+      </div>
+        <p class="faq-more"><a class="more" href="./docs/#p5-values-over-time-lag-env-speed-spring-trail">More: Values over time →</a></p>
+      </div>
+      <div class="faq-item">
+        <h3 id="faq-5">Does it work with Strudel?</h3>
+        <p>Strudel is a live-coding environment for music in the browser, a JavaScript version of TidalCycles. OAV is a separate program.</p>
+        <p>With Strudel: load the line in strudel.cc and the knobs, a phone and the microphone become Strudel's parameters; notes Strudel sends with <code>.midi('OAV Virtual MIDI')</code> reach <code>notePressed</code> at their timestamps (4.5 ms at most, measured), its clock leads the drum machine and <code>drumPhase</code>, and <code>link=&lt;room&gt;</code> carries notes and clock to another tab or computer.</p>
+        <p>They meet through MIDI (OAV's virtual port, "OAV Virtual MIDI") and through the page's own variables (<code>knob1</code>, <code>micLevel</code>, <code>drumPhase</code>).</p>
+        
+      <div class="term ">
+        <div class="term-bar"><span>docs/strudel.md</span><button type="button" class="copy" data-copy="faq-5-code">Copy</button></div>
+        <pre id="faq-5-code"><code><span class="tk">await</span> <span class="tk">import</span>(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)</code></pre>
+      </div>
+        <p>OAV never loads or calls any of Strudel's code.</p>
+        <p class="faq-more"><a class="more" href="./docs/#strudel">More: With Strudel →</a></p>
+      </div>
+      <div class="faq-item">
+        <h3 id="faq-6">Does it work without hardware?</h3>
         <p>Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments.</p>
         <p>All of these publish the same signals as real hardware, so nothing downstream can tell the difference.</p>
         <p class="faq-more"><a class="more" href="./examples/">More: Examples →</a></p>
       </div>
       <div class="faq-item">
-        <h3 id="faq-4">Which browsers support MIDI?</h3>
+        <h3 id="faq-7">Which browsers support MIDI?</h3>
         <p>Chrome and Edge have it. Use them for a show.</p>
         <p>Safari and iPad have no Web MIDI; the on-screen controller and the phone still work there.</p>
         <p>Camera and microphone only work in a secure context: <code>http://localhost</code> or <code>https://</code>.</p>
         <p class="faq-more"><a class="more" href="./docs/#quick-start-which-browser">More: Quick start →</a></p>
       </div>
       <div class="faq-item">
-        <h3 id="faq-5">Which MIDI controllers are supported, and what is each one's CC map?</h3>
+        <h3 id="faq-8">Which MIDI controllers are supported, and what is each one's CC map?</h3>
         <p>Controllers are data: one JSON file per device with the faceplate, every control's exact MIDI message, LED feedback, how to recognise its port, and the document each number came from.</p>
         <p>The same file drives an on-screen controller you can play, follows the real device when you plug it in, and drops into any web page.</p>
         <p class="faq-more"><a class="more" href="./controllers/">More: MIDI controller library →</a></p>
       </div>
       <div class="faq-item">
-        <h3 id="faq-6">Can I embed a MIDI controller on my own website?</h3>
+        <h3 id="faq-9">Can I embed a MIDI controller on my own website?</h3>
         
       <div class="term ">
-        <div class="term-bar"><span>docs/controllers.md</span><button type="button" class="copy" data-copy="faq-6-code">Copy</button></div>
-        <pre id="faq-6-code"><code>&lt;script type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;&lt;/script&gt;
+        <div class="term-bar"><span>docs/controllers.md</span><button type="button" class="copy" data-copy="faq-9-code">Copy</button></div>
+        <pre id="faq-9-code"><code>&lt;script type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;&lt;/script&gt;
 &lt;oav-controller profile=<span class="ts">"akai-lpd8"</span> readout&gt;&lt;/oav-controller&gt;</code></pre>
       </div>
         <p>That is the whole integration. The element works without Web MIDI (Safari, iPad): it plays and fires events; only hardware and MIDI out report that they are unavailable.</p>
         <p class="faq-more"><a class="more" href="./docs/#controllers-play-one-in-a-page">More: MIDI controllers &amp; embedding →</a></p>
       </div>
       <div class="faq-item">
-        <h3 id="faq-7">Can an AI agent build a world for me?</h3>
+        <h3 id="faq-10">Can an AI agent build a world for me?</h3>
         <p>Worlds are code, and coding agents are good at code. A person describes a performance in words, the agent writes the world, and the framework runs the show.</p>
         <p>An MCP server ships in the box (<code>.mcp.json</code>, zero-dependency stdio)</p>
         <p class="faq-more"><a class="more" href="#agents">More: For AI agents →</a></p>
       </div>
       <div class="faq-item">
-        <h3 id="faq-8">What does it cost and what is the license?</h3>
+        <h3 id="faq-11">What does it cost and what is the license?</h3>
         <p>MIT: build shows, teach classes, fork worlds. Attribution appreciated, not required.</p>
         <p>Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
         <p class="faq-more"><a class="more" href="https://github.com/frank890417/open-audiovisual/blob/main/LICENSE">More: License on GitHub →</a></p>
@@ -647,7 +774,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <div class="term-bar"><span>prompt</span><button type="button" class="copy" data-copy="agent-prompt">Copy</button></div>
           <pre id="agent-prompt"><code>Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/16-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/24-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 
@@ -752,7 +879,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 </footer>
 
 <script type="application/json" id="oav-i18n">{"statusSim":"The simulated performer is playing. Your turn: tap the keys, or press A to L.","statusYou":"You are playing. Drag on the stage to bend hue and twist.","statusIdle":"Tap the keys or the stage, or press A to L, to play.","midiNone":"No MIDI device found. Plug one in and press MIDI again.","midiOn":"MIDI on: {n} device(s). Mod wheel (CC 1) also drives twist.","micOn":"Mic on. Loudness now drives energy.","micDenied":"The microphone is blocked in this browser.","soundLoading":"Loading the sound engine…","soundOn":"Sound on. Pick an instrument under the switches.","consonance":"consonance","copy":"Copy","copied":"Copied","eventTarget":"world (event)"}</script>
-<script type="module" src="./assets/home/home.js?v=af13a9f"></script>
+<script type="module" src="./assets/home/home.js"></script>
 <!--/email_off-->
 </body>
 </html>

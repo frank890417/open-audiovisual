@@ -213,6 +213,26 @@ export default {
         { src: 'docs/p5.md', code: true, text: "document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));" },
         { src: 'README.md', code: false, text: 'No `setup()` call, p5 1.x and 2.x.' },
       ] },
+      // source: docs/changelog.md, oav-p5 0.4.0 (Sound, A drum machine), 0.6.0 (One line of rhythm), 0.5.0 (Record a video)
+      { q: 'Can a p5.js sketch make sound, keep a beat and record itself?', more: { label: 'p5.js in one line', href: 'p5/' }, a: [
+        { src: 'docs/changelog.md', code: false, text: 'Sound: `startSound(\'piano\')`. Every note from a keyboard, the 🎹 on screen or a phone is heard; 🔊 in the panel switches instruments.' },
+        { src: 'docs/changelog.md', code: false, text: 'A drum machine: `startDrums()`, a 16-step grid with four tracks and five patterns.' },
+        { src: 'docs/changelog.md', code: false, text: 'One line of rhythm: `startDrums("bd*4, [~ sd]*2, hh*8")`. The notation comes from TidalCycles and Strudel; OAV implements it independently, from the public documentation (`@openav/pattern`).' },
+        { src: 'docs/changelog.md', code: false, text: 'Record a video with its sound: `startRecording()`, `stopRecording()`, `recordingSaved(info)`. ⏺ and 📷 in the 🎹 panel need no code.' },
+      ] },
+      // source: docs/changelog.md, oav-p5 0.7.0 (Values over time); docs/p5.md § "Values over time" (the first line of code)
+      { q: 'How do I smooth a jumpy value, like TouchDesigner\'s Lag CHOP?', more: { label: 'Values over time', href: 'docs/#p5-values-over-time-lag-env-speed-spring-trail' }, a: [
+        { src: 'docs/changelog.md', code: false, text: 'Values over time, like TouchDesigner\'s CHOPs: `lag(micLevel, 0.03, 0.4)` (Lag CHOP, in TouchDesigner\'s seconds: about the time to follow 90%), `env(\'kick\', 0.01, 0.3)` (Trigger), `speed()`, `spring()`, `trail()`, `slope()`, `count()`, one call each in `draw()`, nothing to declare.' },
+        { src: 'docs/p5.md', code: true, text: 'circle(width / 2, height / 2, 50 + lag(micLevel, 0.03, 0.4) * 300);   // a VU meter: opens at once, closes slowly' },
+      ] },
+      // source: docs/strudel.md, first paragraph (the first two sentences and the last two), § "Load OAV in Strudel" (the line); docs/changelog.md, oav-p5 0.7.0 (With Strudel)
+      { q: 'Does it work with Strudel?', more: { label: 'With Strudel', href: 'docs/#strudel' }, a: [
+        { src: 'docs/strudel.md', code: false, text: 'Strudel is a live-coding environment for music in the browser, a JavaScript version of TidalCycles. OAV is a separate program.' },
+        { src: 'docs/changelog.md', code: false, text: 'With Strudel: load the line in strudel.cc and the knobs, a phone and the microphone become Strudel\'s parameters; notes Strudel sends with `.midi(\'OAV Virtual MIDI\')` reach `notePressed` at their timestamps (4.5 ms at most, measured), its clock leads the drum machine and `drumPhase`, and `link=<room>` carries notes and clock to another tab or computer.' },
+        { src: 'docs/strudel.md', code: false, text: 'They meet through MIDI (OAV\'s virtual port, "OAV Virtual MIDI") and through the page\'s own variables (`knob1`, `micLevel`, `drumPhase`).' },
+        { src: 'docs/strudel.md', code: true, text: "await import('https://openaudiovisual.com/p5/oav-p5.js')" },
+        { src: 'docs/strudel.md', code: false, text: 'OAV never loads or calls any of Strudel\'s code.' },
+      ] },
       // source: this page, works.lede (first two sentences); docs/getting-started.md § "Play without hardware" (last paragraph)
       { q: 'Does it work without hardware?', more: { label: 'Examples', href: 'examples/' }, a: [
         { src: 'tools/home/en.mjs', code: false, text: 'Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments.' },

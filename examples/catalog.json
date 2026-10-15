@@ -184,6 +184,268 @@
           }
         }
       ],
+      "next": "16-p5-sound"
+    },
+    {
+      "id": "16-p5-sound",
+      "num": "16",
+      "dir": "examples/16-p5-sound/",
+      "route": "inputs",
+      "title": {
+        "en": "p5 keys with sound",
+        "zh": "p5 彈出聲音"
+      },
+      "teaches": {
+        "en": "startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles.",
+        "zh": "在 setup() 寫 startSound('piano')：MIDI 鍵盤、螢幕上的 🎹、手機彈的每個音都聽得到，也炸開一團粒子。"
+      },
+      "summary": {
+        "en": "<code>startSound('piano')</code> in <code>setup()</code>: every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles.",
+        "zh": "在 <code>setup()</code> 寫 <code>startSound('piano')</code>：MIDI 鍵盤、螢幕上的 🎹、手機彈的每個音都聽得到，也炸開一團粒子。"
+      },
+      "plays": {
+        "en": "MIDI keyboard · on-screen controller · phone",
+        "zh": "MIDI 鍵盤 · 螢幕上的控制器 · 手機"
+      },
+      "needs": [
+        "midi"
+      ],
+      "standIn": [
+        "controller",
+        "phone"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/keys/sketch.js",
+      "thumb": "assets/home/works/16.webp",
+      "alt": {
+        "en": "Streaks of green, purple and red particle dots bursting over black, above an on-screen MiniLab 3 controller with its keys and sound buttons.",
+        "zh": "黑底上，綠、紫、紅色的粒子點一串串炸開，下方是螢幕上的 MiniLab 3 控制器，有琴鍵和聲音按鈕。"
+      },
+      "docs": [
+        {
+          "id": "p5-sound-what-is-played-is-heard",
+          "en": "Sound: what is played is heard",
+          "zh": "聲音：彈什麼就聽到什麼"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Click the page once (browsers keep sound off until then), then play the keys of the controller that opens at the bottom.",
+          "Pick another instrument in that panel: marimba, strings, a synth. 🔊 turns the sound off and on.",
+          "Hit a pad: notes on MIDI channel 10 play the drum kit, not the piano."
+        ],
+        "zh": [
+          "先點一下畫面（瀏覽器要點過才出聲），再彈下方打開的控制器上的琴鍵。",
+          "在面板裡換樂器：馬林巴、弦樂、合成器。🔊 可以關掉、再打開聲音。",
+          "敲打擊墊：第 10 軌的音打鼓，不會彈成鋼琴。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 2,
+          "to": 2,
+          "match": "document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));",
+          "note": {
+            "en": "The one line. Everything below it is plain p5.js.",
+            "zh": "那一行。它下面全是普通的 p5.js。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 13,
+          "to": 14,
+          "match": "startSound('piano');",
+          "note": {
+            "en": "Sound on, and the controller on screen open: two calls in setup().",
+            "zh": "開聲音、打開螢幕上的控制器：setup() 裡兩行。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 35,
+          "to": 46,
+          "match": "function notePressed(note, velocity) {",
+          "note": {
+            "en": "Every note, from any of the three inputs, calls notePressed(): the pitch picks the colour and the place, the velocity how far it bursts.",
+            "zh": "三種輸入彈的每個音都呼叫 notePressed()：音高決定顏色和位置，力度決定散多開。"
+          }
+        }
+      ],
+      "next": "17-p5-microphone"
+    },
+    {
+      "id": "17-p5-microphone",
+      "num": "17",
+      "dir": "examples/17-p5-microphone/",
+      "route": "inputs",
+      "title": {
+        "en": "p5 microphone",
+        "zh": "p5 麥克風"
+      },
+      "teaches": {
+        "en": "micLevel, bass and beat read the microphone the way p5 reads mouseX: a circle that grows when you speak, and no p5.sound.",
+        "zh": "micLevel、bass、beat 像 mouseX 一樣讀麥克風：說話時圓會變大，不用 p5.sound。"
+      },
+      "summary": {
+        "en": "<code>micLevel</code>, <code>bass</code> and <code>beat</code> read the microphone the way p5 reads <code>mouseX</code>: a circle that grows when you speak, and no p5.sound.",
+        "zh": "<code>micLevel</code>、<code>bass</code>、<code>beat</code> 像 <code>mouseX</code> 一樣讀麥克風：說話時圓會變大，不用 p5.sound。"
+      },
+      "plays": {
+        "en": "microphone · drum machine (🥁)",
+        "zh": "麥克風 · 鼓機（🥁）"
+      },
+      "needs": [
+        "mic"
+      ],
+      "standIn": [
+        "drums"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/mic/sketch.js",
+      "thumb": "assets/home/works/17.webp",
+      "alt": {
+        "en": "A large pink circle with a thin grey ring around it on dark blue.",
+        "zh": "深藍底上一個大大的粉紅色圓，外面圍著一圈細細的灰色圓環。"
+      },
+      "docs": [
+        {
+          "id": "p5-the-microphone",
+          "en": "The microphone",
+          "zh": "麥克風"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Allow the microphone when the browser asks, then talk, clap or play music: the circle grows with how loud it sounds.",
+          "A low voice or a bass line turns the colour towards magenta: that is bass.",
+          "No microphone? 🎹 → 🥁 starts the drum machine: each kick and snare sets beat, and the ring bursts."
+        ],
+        "zh": [
+          "瀏覽器問的時候允許麥克風，然後說話、拍手或放音樂：圓跟著聽起來多大聲變大。",
+          "低沉的聲音或貝斯，顏色會往紫紅走：那就是 bass。",
+          "沒有麥克風？🎹 → 🥁 開鼓機：每個大鼓、小鼓都讓 beat 變成 true，外圈彈出一圈。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 17,
+          "to": 18,
+          "match": "fill(200 + bass * 160, 70, 100);",
+          "note": {
+            "en": "bass and micLevel: 0 to 1, read like mouseX.",
+            "zh": "bass 和 micLevel：0 到 1，像 mouseX 一樣直接讀。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 19,
+          "to": 19,
+          "match": "if (beat) ring = 1;",
+          "note": {
+            "en": "beat is true for one frame on each beat, like mouseIsPressed.",
+            "zh": "beat 在每個拍子的那一格是 true，像 mouseIsPressed。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 25,
+          "to": 25,
+          "match": "if (!micIsOn)",
+          "note": {
+            "en": "micIsOn: until the microphone runs, say what to do.",
+            "zh": "micIsOn：麥克風開好之前，告訴看的人要做什麼。"
+          }
+        }
+      ],
+      "next": "22-p5-lag"
+    },
+    {
+      "id": "22-p5-lag",
+      "num": "22",
+      "dir": "examples/22-p5-lag/",
+      "route": "inputs",
+      "title": {
+        "en": "p5 lag: smooth a jumpy value",
+        "zh": "p5 lag：讓跳動的數值變順"
+      },
+      "teaches": {
+        "en": "lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page.",
+        "zh": "lag(micLevel, 0.03, 0.4) 把跳動的數值變順，跟 TouchDesigner 的 Lag CHOP 一樣，秒數也一樣。scope() 在網頁角落畫出兩條線。"
+      },
+      "summary": {
+        "en": "<code>lag(micLevel, 0.03, 0.4)</code> smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; <code>scope()</code> plots both in a corner of the page.",
+        "zh": "<code>lag(micLevel, 0.03, 0.4)</code> 把跳動的數值變順，跟 TouchDesigner 的 Lag CHOP 一樣，秒數也一樣。<code>scope()</code> 在網頁角落畫出兩條線。"
+      },
+      "plays": {
+        "en": "microphone · drum machine (🥁)",
+        "zh": "麥克風 · 鼓機（🥁）"
+      },
+      "needs": [
+        "mic"
+      ],
+      "standIn": [
+        "drums"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/lag/sketch.js",
+      "thumb": "assets/home/works/22.webp",
+      "alt": {
+        "en": "A small green circle (micLevel) and a larger yellow one (lagged) over two traces: the green drops at once, the yellow falls slowly. A small scope sits in the corner.",
+        "zh": "左邊小小的綠色圓（micLevel），右邊比較大的黃色圓（lag 後），下面兩條曲線：綠色一下就掉，黃色慢慢落下。角落有一個小示波器。"
+      },
+      "docs": [
+        {
+          "id": "p5-values-over-time-lag-env-speed-spring-trail",
+          "en": "Values over time: lag, env, speed, spring, trail",
+          "zh": "數值隨時間：lag、env、speed、spring、trail"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Allow the microphone and clap: the left circle (micLevel) jumps, the right one (lagged) opens at once and closes slowly, like a VU meter.",
+          "Watch the scope in the corner and the strip below: green is micLevel, yellow is lag(micLevel, 0.03, 0.4).",
+          "Nothing to hear? 🎹 → 🥁 plays drums through the speakers, and a laptop's own microphone hears them."
+        ],
+        "zh": [
+          "允許麥克風，拍一下手：左邊的圓（micLevel）一抖一抖，右邊的圓（lag 後）立刻撐開、慢慢收，像 VU 表。",
+          "看角落的示波器和下面那一條：綠色是 micLevel，黃色是 lag(micLevel, 0.03, 0.4)。",
+          "身邊沒有聲音？🎹 → 🥁 讓喇叭打鼓，筆電自己的麥克風就聽得到。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 16,
+          "to": 17,
+          "match": "const raw = micLevel;",
+          "note": {
+            "en": "One call in draw(), nothing to declare: 0.03 s up, 0.4 s down.",
+            "zh": "draw() 裡一行，不用宣告：上升 0.03 秒、下降 0.4 秒。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 18,
+          "to": 19,
+          "match": "scope(raw, 'mic');",
+          "note": {
+            "en": "scope(value, 'label'): a plot in a corner of the page, never in a recording.",
+            "zh": "scope(value, 'label')：畫在網頁角落，不會錄進影片。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 35,
+          "to": 36,
+          "match": "stroke(95, 224, 138); drawTrail(trail(raw, 3), 16, top, width - 32, h);",
+          "note": {
+            "en": "trail() keeps the last 3 seconds and drawTrail() draws them on the canvas, so a recording has them.",
+            "zh": "trail() 留住最近 3 秒，drawTrail() 把它畫在畫布上，錄影也錄得到。"
+          }
+        }
+      ],
       "next": "09-midi-controllers"
     },
     {
@@ -659,6 +921,98 @@
           }
         }
       ],
+      "next": "23-p5-with-strudel"
+    },
+    {
+      "id": "23-p5-with-strudel",
+      "num": "23",
+      "dir": "examples/23-p5-with-strudel/",
+      "route": "inputs",
+      "title": {
+        "en": "p5 with Strudel",
+        "zh": "p5 跟 Strudel 一起"
+      },
+      "teaches": {
+        "en": "Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase.",
+        "zh": "Strudel 在另一個分頁演奏，這份草圖畫畫面：Strudel 送到 OAV Virtual MIDI 的每個音都呼叫 notePressed()，它的時鐘推著 drumPhase 轉。"
+      },
+      "summary": {
+        "en": "Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls <code>notePressed()</code>, and its clock turns <code>drumPhase</code>.",
+        "zh": "Strudel 在另一個分頁演奏，這份草圖畫畫面：Strudel 送到 OAV Virtual MIDI 的每個音都呼叫 <code>notePressed()</code>，它的時鐘推著 <code>drumPhase</code> 轉。"
+      },
+      "plays": {
+        "en": "Strudel in another tab · on-screen controller",
+        "zh": "另一個分頁的 Strudel · 螢幕上的控制器"
+      },
+      "needs": [
+        "strudel"
+      ],
+      "standIn": [
+        "controller"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/with-strudel/sketch.js",
+      "thumb": "assets/home/works/23.webp",
+      "alt": {
+        "en": "Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom.",
+        "zh": "下半部一排顏色柔和的圓往上飄，細圓環裡一根黃色指針朝上，底下寫著房間名 oav-strudel-demo。"
+      },
+      "docs": [
+        {
+          "id": "strudel-recipe-2-strudel-plays-a-p5-sketch-draws",
+          "en": "Recipe 2: Strudel plays, a p5 sketch draws",
+          "zh": "配方二：Strudel 演奏，p5 草圖畫畫面"
+        },
+        {
+          "id": "strudel",
+          "en": "With Strudel",
+          "zh": "和 Strudel 一起用"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Open strudel.cc in another tab, paste lines 5 to 7 of sketch.js (the comment at the top, without the //) and press Ctrl+Enter: Strudel's notes rise here as circles.",
+          "Add ?room=your-name to this page's address and use the same name in Strudel: then only your two tabs share notes.",
+          "No Strudel open? Click the 🎹 and play: the same notePressed() draws them."
+        ],
+        "zh": [
+          "在另一個分頁打開 strudel.cc，貼上 sketch.js 開頭註解的第 5 到 7 行（拿掉 //），按 Ctrl+Enter：Strudel 的音符會在這裡變成往上飄的圓。",
+          "在這一頁的網址後面加上 ?room=你的名字，Strudel 那邊也用同一個名字，就只有你的兩個分頁互通。",
+          "沒有開 Strudel？點 🎹 彈幾個音：同一個 notePressed() 也會畫出來。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 9,
+          "to": 10,
+          "match": "window.OAV_P5 = window.OAV_P5 || { link: 'oav-strudel-demo' };",
+          "note": {
+            "en": "The room first, then the one line: pages in the same room hear each other's programs.",
+            "zh": "先寫房間名，再寫那一行：同一個房間的頁面，聽得到彼此的程式。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 21,
+          "to": 23,
+          "match": "function notePressed(n, v) {",
+          "note": {
+            "en": "Strudel's notes arrive as notePressed(), at the moment Strudel stamped them.",
+            "zh": "Strudel 的音符照它標的時間呼叫 notePressed()。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 34,
+          "to": 34,
+          "match": "rotate(drumPhase * TWO_PI - HALF_PI);",
+          "note": {
+            "en": "drumPhase follows Strudel's clock: once round a bar.",
+            "zh": "drumPhase 跟著 Strudel 的時鐘走：一小節轉一圈。"
+          }
+        }
+      ],
       "next": "04-webtoe-stage"
     },
     {
@@ -978,6 +1332,271 @@
           }
         }
       ],
+      "next": "18-p5-drums"
+    },
+    {
+      "id": "18-p5-drums",
+      "num": "18",
+      "dir": "examples/18-p5-drums/",
+      "route": "show-control",
+      "title": {
+        "en": "p5 drums and bars",
+        "zh": "p5 鼓機與小節"
+      },
+      "teaches": {
+        "en": "startDrums('breakbeat', 110) puts a 16-step drum machine on the page; kickDetected() and cueFired() turn its hits and its bars into the picture.",
+        "zh": "startDrums('breakbeat', 110) 在頁面上放一台 16 格的鼓機，kickDetected()、cueFired() 把它的鼓點和小節變成畫面。"
+      },
+      "summary": {
+        "en": "<code>startDrums('breakbeat', 110)</code> puts a 16-step drum machine on the page; <code>kickDetected()</code> and <code>cueFired()</code> turn its hits and its bars into the picture.",
+        "zh": "<code>startDrums('breakbeat', 110)</code> 在頁面上放一台 16 格的鼓機，<code>kickDetected()</code>、<code>cueFired()</code> 把它的鼓點和小節變成畫面。"
+      },
+      "plays": {
+        "en": "drum machine · its 16-step grid",
+        "zh": "鼓機 · 它的 16 格"
+      },
+      "needs": [],
+      "standIn": [
+        "drums"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/drums/sketch.js",
+      "thumb": "assets/home/works/18.webp",
+      "alt": {
+        "en": "A yellow and orange flower of long petals below a 16-step drum grid with kick, snare, hat and clap rows.",
+        "zh": "長花瓣的黃橘色花朵，上方是一台 16 格的鼓機，有大鼓、小鼓、鈸、拍手四排。"
+      },
+      "docs": [
+        {
+          "id": "p5-drum-machine",
+          "en": "Drum machine",
+          "zh": "鼓機"
+        },
+        {
+          "id": "p5-timeline-bars-and-cues",
+          "en": "Timeline: bars and cues",
+          "zh": "時間軸：小節與 cue"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Click the page once to hear the drums (browsers start sound on a click); the hits move the flower either way.",
+          "Click cells in the grid at the top: the beat changes at once, and the petals follow.",
+          "Wait for bars 5 and 9: cue() names them, cueFired() changes the scene."
+        ],
+        "zh": [
+          "點一下畫面就聽得到鼓（瀏覽器要點過才出聲）。沒點也一樣，鼓點照樣推著花。",
+          "點上方鼓機的格子：節奏馬上換，花瓣跟著變。",
+          "等到第 5、第 9 小節：cue() 先寫好，cueFired() 換場景。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 20,
+          "to": 23,
+          "match": "startDrums('breakbeat', 110);",
+          "note": {
+            "en": "A drum machine and three cues: the whole timeline is in setup().",
+            "zh": "一台鼓機加三個 cue：整條時間軸都寫在 setup() 裡。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 70,
+          "to": 72,
+          "match": "function kickDetected(level) { swell = 0.6 + level; }",
+          "note": {
+            "en": "The microphone's own callbacks: take startDrums() out, turn the microphone on, and the sketch still moves.",
+            "zh": "跟麥克風同名的函式：拿掉 startDrums()、開麥克風，草圖照樣會動。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 73,
+          "to": 74,
+          "match": "function barStarted(bar) { drift += 9; }",
+          "note": {
+            "en": "barStarted() on every bar, cueFired() on the bars cue() named.",
+            "zh": "每一小節呼叫 barStarted()，cue() 指定的小節呼叫 cueFired()。"
+          }
+        }
+      ],
+      "next": "19-p5-rhythm"
+    },
+    {
+      "id": "19-p5-rhythm",
+      "num": "19",
+      "dir": "examples/19-p5-rhythm/",
+      "route": "show-control",
+      "title": {
+        "en": "p5 one line of rhythm",
+        "zh": "p5 一行節奏"
+      },
+      "teaches": {
+        "en": "startDrums(\"bd*4, [~ sd]*2, hh*8\") writes the drums as one line of rhythm; drumPhase and beatPhase turn a hand once a bar and swell a circle on every beat.",
+        "zh": "startDrums(\"bd*4, [~ sd]*2, hh*8\") 用一行字寫鼓，drumPhase、beatPhase 讓指針一小節轉一圈、圓在每一拍鼓起來。"
+      },
+      "summary": {
+        "en": "<code>startDrums(\"bd*4, [~ sd]*2, hh*8\")</code> writes the drums as one line of rhythm; <code>drumPhase</code> and <code>beatPhase</code> turn a hand once a bar and swell a circle on every beat.",
+        "zh": "<code>startDrums(\"bd*4, [~ sd]*2, hh*8\")</code> 用一行字寫鼓，<code>drumPhase</code>、<code>beatPhase</code> 讓指針一小節轉一圈、圓在每一拍鼓起來。"
+      },
+      "plays": {
+        "en": "drum machine · one line you can edit",
+        "zh": "鼓機 · 可以改的一行字"
+      },
+      "needs": [],
+      "standIn": [
+        "drums"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/rhythm/sketch.js",
+      "thumb": "assets/home/works/19.webp",
+      "alt": {
+        "en": "A blue circle with a yellow hand sweeping round it, below a drum card that shows the line bd*4, [~ sd]*2, hh*8 and its 16 steps.",
+        "zh": "藍色的圓，一根黃色指針繞著它轉，上方的鼓機卡寫著 bd*4, [~ sd]*2, hh*8 和它的 16 格。"
+      },
+      "docs": [
+        {
+          "id": "p5-one-line-of-rhythm",
+          "en": "One line of rhythm",
+          "zh": "一行節奏"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Click the page once to hear it. The card at the top shows the line, and the word that sounds lights up.",
+          "Click the line on the card and change hh*8 to hh*16, or bd*4 to bd(3,8): pause, and it plays.",
+          "Make a typo: the word turns red, a card says what is wrong, and the last line that worked keeps playing."
+        ],
+        "zh": [
+          "點一下畫面就有聲音。上方的卡片顯示那一行，正在響的字會亮。",
+          "點卡片上那一行，把 hh*8 改成 hh*16，或把 bd*4 改成 bd(3,8)：停手就換。",
+          "故意打錯一個字：那個字變紅，卡片說哪裡錯，鼓機繼續打上一個能用的版本。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 7,
+          "to": 7,
+          "match": "const RHYTHM = \"bd*4, [~ sd]*2, hh*8\";",
+          "note": {
+            "en": "The rhythm is one line: bd kick, sd snare, hh hat, ~ a rest, *n n times, and a comma starts another layer.",
+            "zh": "節奏就是一行字：bd 大鼓、sd 小鼓、hh 鈸、~ 休息、*n 打 n 下，逗號後面是疊上去的另一層。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 26,
+          "to": 26,
+          "match": "rotate(drumPhase * TWO_PI - HALF_PI);",
+          "note": {
+            "en": "drumPhase: how far through the bar, 0 to 1, smooth. The hand turns once a bar.",
+            "zh": "drumPhase：這一小節走到哪，0 到 1，連續的。指針一小節轉一圈。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 35,
+          "to": 35,
+          "match": "circle(0, 0, R * (0.55 + 0.3 * (1 - beatPhase)) + swell * 70);",
+          "note": {
+            "en": "1 - beatPhase is largest as each beat starts and shrinks towards the next.",
+            "zh": "1 - beatPhase 在每一拍開頭最大，慢慢縮到下一拍。"
+          }
+        }
+      ],
+      "next": "20-p5-rhythm-visual"
+    },
+    {
+      "id": "20-p5-rhythm-visual",
+      "num": "20",
+      "dir": "examples/20-p5-rhythm-visual/",
+      "route": "show-control",
+      "title": {
+        "en": "p5 rhythm you can see",
+        "zh": "p5 看得見的節奏"
+      },
+      "teaches": {
+        "en": "drawRhythm() draws the rhythm on the canvas as a grid, a circle or a spiral, so a recording has it; the cells and the line on the card edit each other.",
+        "zh": "drawRhythm() 把節奏畫在畫布上（格子、圓、螺旋三種），錄影錄得到。卡片上的格子和那一行字互相改。"
+      },
+      "summary": {
+        "en": "<code>drawRhythm()</code> draws the rhythm on the canvas as a grid, a circle or a spiral, so a recording has it; the cells and the line on the card edit each other.",
+        "zh": "<code>drawRhythm()</code> 把節奏畫在畫布上（格子、圓、螺旋三種），錄影錄得到。卡片上的格子和那一行字互相改。"
+      },
+      "plays": {
+        "en": "drum machine · its cells and its line",
+        "zh": "鼓機 · 格子和那一行字"
+      },
+      "needs": [],
+      "standIn": [
+        "drums"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/rhythm-visual/sketch.js",
+      "thumb": "assets/home/works/20.webp",
+      "alt": {
+        "en": "One rhythm drawn three ways on the canvas: a ring of coloured steps with a white hand, a spiral of the last four bars, and a 16-step grid with a playhead, under the drum card.",
+        "zh": "同一個節奏在畫布上畫成三種樣子：一圈彩色格子加一根白色指針、最近四小節繞成的螺旋、一條有播放頭的 16 格，上方是鼓機卡。"
+      },
+      "docs": [
+        {
+          "id": "p5-the-rhythm-on-the-canvas",
+          "en": "The rhythm on the canvas",
+          "zh": "把節奏畫在畫布上"
+        },
+        {
+          "id": "p5-the-cells-and-the-line-edit-each-other",
+          "en": "The cells and the line edit each other",
+          "zh": "格子和那一行互相改"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Click a cell on the card at the top: the line is rewritten the way a person would write it, and the canvas follows.",
+          "Press ↶ to step back, Copy for a startDrums(\"…\") line, or Open in Strudel to take the same rhythm to strudel.cc.",
+          "Press R: eight seconds of the canvas and the drums, saved as one video with the rhythm drawn in it."
+        ],
+        "zh": [
+          "點上方卡片的格子：那一行字照人會寫的樣子改寫，畫布跟著變。",
+          "按 ↶ 回上一步，按「複製」拿到一行 startDrums(\"…\")，按「在 Strudel 打開」把同一個節奏帶去 strudel.cc。",
+          "按 R：畫布連同鼓聲錄 8 秒，存成一支影片，畫上去的節奏也在裡面。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 22,
+          "to": 22,
+          "match": "drawRhythm(width * 0.27 - s / 2, height * 0.46 - s / 2, s, s, 'circle');",
+          "note": {
+            "en": "'circle': a ring of 16 steps for each drum, a hand turned by drumPhase.",
+            "zh": "'circle'：每種鼓一圈 16 格，指針照 drumPhase 轉。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 24,
+          "to": 26,
+          "match": "drawRhythm(width * 0.73 - s / 2, height * 0.46 - s / 2, s, s, 'spiral', { bars: 4 });",
+          "note": {
+            "en": "'spiral' winds the last 4 bars outwards; 'grid' is the card's 16 steps, in your own colours.",
+            "zh": "'spiral' 把最近 4 小節往外繞，'grid' 就是卡片上的 16 格，顏色可以自己給。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 38,
+          "to": 38,
+          "match": "function rhythmChanged(src, how) { line = src; }",
+          "note": {
+            "en": "rhythmChanged() says the line changed (code, a cell, typing, ↶), so the canvas can show it.",
+            "zh": "rhythmChanged() 告訴草圖那一行換了（程式、點格子、打字、↶），畫布就能跟著顯示。"
+          }
+        }
+      ],
       "next": "13-score-director"
     },
     {
@@ -1050,6 +1669,93 @@
           "note": {
             "en": "The score and its segment modules go into createShow().",
             "zh": "總譜與段落模組一起交給 createShow()。"
+          }
+        }
+      ],
+      "next": "21-p5-record"
+    },
+    {
+      "id": "21-p5-record",
+      "num": "21",
+      "dir": "examples/21-p5-record/",
+      "route": "output",
+      "title": {
+        "en": "p5 record a video",
+        "zh": "p5 錄成影片"
+      },
+      "teaches": {
+        "en": "startRecording() saves the canvas and the sketch's own sound as one video, MP4 where the browser can write it; ⏺ and 📷 in the 🎹 panel need no code.",
+        "zh": "startRecording() 把畫布連同草圖自己的聲音錄成一支影片（瀏覽器能錄 MP4 就是 MP4）。🎹 面板上的 ⏺ 和 📷 不寫程式也能用。"
+      },
+      "summary": {
+        "en": "<code>startRecording()</code> saves the canvas and the sketch's own sound as one video, MP4 where the browser can write it; ⏺ and 📷 in the 🎹 panel need no code.",
+        "zh": "<code>startRecording()</code> 把畫布連同草圖自己的聲音錄成一支影片（瀏覽器能錄 MP4 就是 MP4）。🎹 面板上的 ⏺ 和 📷 不寫程式也能用。"
+      },
+      "plays": {
+        "en": "QWERTY keys A–K · on-screen controller · drum machine",
+        "zh": "電腦鍵盤 A–K · 螢幕上的控制器 · 鼓機"
+      },
+      "needs": [],
+      "standIn": [
+        "qwerty",
+        "controller",
+        "drums"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/record/sketch.js",
+      "thumb": "assets/home/works/21.webp",
+      "alt": {
+        "en": "A pink dot in the middle of glowing pink and yellow rings spreading out, below the drum card playing four on the floor.",
+        "zh": "中間一顆粉紅色圓點，外面是發光的粉紅與黃色圓環往外擴散，上方是正在打 four on floor 的鼓機卡。"
+      },
+      "docs": [
+        {
+          "id": "p5-recording-a-video-with-its-sound",
+          "en": "Recording: a video with its sound",
+          "zh": "錄影：畫面和聲音一起錄"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Click the page once for sound, then play A S D F G H J K over the drums.",
+          "Press R to start recording and R again to stop: the video downloads, and a card says its length, its size and whether it has sound.",
+          "Press P (or 📷 in the 🎹 panel) to save the canvas alone as a PNG."
+        ],
+        "zh": [
+          "點一下畫面就有聲音，然後跟著鼓用 A S D F G H J K 彈。",
+          "按 R 開始錄，再按一次 R 停：影片會下載，卡片寫出長度、大小、有沒有聲音。",
+          "按 P（或 🎹 面板上的 📷），只把畫布存成一張 PNG。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 17,
+          "to": 18,
+          "match": "startDrums('four on floor', 100);",
+          "note": {
+            "en": "Drums and a plucked synth: both go into the video.",
+            "zh": "鼓機和撥奏的合成器：兩個都會錄進影片。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 55,
+          "to": 58,
+          "match": "if (k === 'r') {",
+          "note": {
+            "en": "R starts and stops a take; startRecording(10) would stop by itself after ten seconds.",
+            "zh": "R 開始、再按一次停止。寫 startRecording(10) 就是錄 10 秒自動停。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 73,
+          "to": 75,
+          "match": "function recordingSaved(info) {",
+          "note": {
+            "en": "recordingSaved(info): the file's name, length, size and format, once it is saved.",
+            "zh": "recordingSaved(info)：存好之後拿到檔名、長度、大小和格式。"
           }
         }
       ],

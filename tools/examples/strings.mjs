@@ -22,6 +22,7 @@ export const TAGS = {
   take: ['A demo take', '一段示範演奏'],
   auto: ['Plays itself', '它自己會播'],
   knobs: ['Knobs on screen', '螢幕旋鈕'],
+  strudel: ['Strudel in another tab', '另一個分頁的 Strudel'],
 };
 
 export const ROUTE_NAMES = {
@@ -42,20 +43,20 @@ export const ROUTE_INTRO = {
     '一個檔案讀完整個框架，再替你已有的 p5 草圖加上一行。',
   ],
   inputs: [
-    'A controller, a chord, a microphone, bare hands, a Leap Motion, a phone.',
-    '控制器、和弦、麥克風、空手、Leap Motion、手機。',
+    'A controller, a chord, a microphone, bare hands, a Leap Motion, a phone, Strudel in another tab.',
+    '控制器、和弦、麥克風、空手、Leap Motion、手機、另一個分頁的 Strudel。',
   ],
   engines: [
     'Bring your own: a node patch, a 2023 p5 sketch, a 2021 particle system.',
     '帶你自己的：節點網路、2023 年的 p5 草圖、2021 年的粒子系統。',
   ],
   'show-control': [
-    'The show, not just the piece: a timeline you can see, and a score with a director.',
-    '演的是一場演出，不只一件作品：看得見的時間軸，以及有導演的總譜。',
+    'The show, not just the piece: a timeline you can see, a drum machine that counts the bars, and a score with a director.',
+    '演的是一場演出，不只一件作品：看得見的時間軸、會數小節的鼓機，以及有導演的總譜。',
   ],
   output: [
-    'One synced video, with or without a camera.',
-    '同步的一支影片，有鏡頭或沒有鏡頭都行。',
+    'One synced video, from one line in a p5 sketch, with or without a camera.',
+    '同步的一支影片：p5 草圖加一行就能錄，有鏡頭或沒有鏡頭都行。',
   ],
 };
 
@@ -87,7 +88,7 @@ export const STRINGS = {
       eyebrow: 'p5.js · one line',
       lede: 'The same line also plays sound, runs a drum machine you can write as one line of rhythm, listens to the microphone, and records the canvas with its sound as a video. Each one reads like the mouse: a variable to read, a function to write.',
       try: 'Try it live: example 15', tryNote: 'The sketch on that page is plain p5.js with this one line first. Click the 🎹, turn a knob, hit a pad; 🔊, 🥁 and ⏺ are in the same panel.',
-      docsLink: 'The same page in the handbook', github: 'p5/ on GitHub', file: 'oav-p5.js',
+      docsLink: 'The same page in the handbook', strudel: 'With Strudel', github: 'p5/ on GitHub', file: 'oav-p5.js',
       sketches: 'Ready-made sketches:',
     },
     /** p5/examples/<name>/, in the order docs/p5.md teaches them (a new folder needs a name here: tests/changelog.test.js). */
@@ -129,7 +130,7 @@ export const STRINGS = {
       eyebrow: 'p5.js · 一行',
       lede: '同一行還能出聲音、開一台鼓機（節奏可以用一行字寫）、聽麥克風，也能把畫布連同聲音錄成影片。每一樣都像讀滑鼠：讀一個變數，寫一個函式。',
       try: '現場試玩：範例 15', tryNote: '那一頁的草圖就是普通的 p5.js，第一行是這一行。點 🎹、轉旋鈕、敲打擊墊。🔊、🥁、⏺ 也在同一個面板裡。',
-      docsLink: '手冊裡的同一章', github: 'GitHub 上的 p5/', file: 'oav-p5.js',
+      docsLink: '手冊裡的同一章', strudel: '和 Strudel 一起用', github: 'GitHub 上的 p5/', file: 'oav-p5.js',
       sketches: '現成草圖：',
     },
     sketches: {

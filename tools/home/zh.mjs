@@ -212,6 +212,26 @@ export default {
         { src: 'docs/zh/p5.md', code: true, text: "document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));" },
         { src: 'docs/zh/p5.md', code: false, text: 'p5 1.x、2.x 的全域模式都能用，`setup()` 裡不用呼叫任何東西。' },
       ] },
+      // 出處：docs/zh/changelog.md 的 oav-p5 0.4.0（聲音、鼓機）、0.6.0（一行字寫節奏）、0.5.0（錄影，連聲音一起）
+      { q: 'p5.js 草圖能出聲音、打鼓、錄成影片嗎？', more: { label: 'p5.js 一行接上', href: 'p5/' }, a: [
+        { src: 'docs/zh/changelog.md', code: false, text: '聲音：`startSound(\'piano\')`。鍵盤、螢幕上的 🎹、手機彈的每個音都聽得到，面板上的 🔊 可以換樂器。' },
+        { src: 'docs/zh/changelog.md', code: false, text: '鼓機：`startDrums()`，16 格、四軌、五種節奏。' },
+        { src: 'docs/zh/changelog.md', code: false, text: '一行字寫節奏：`startDrums("bd*4, [~ sd]*2, hh*8")`。寫法來自 TidalCycles 與 Strudel，OAV 依公開文件獨立實作（`@openav/pattern`）。' },
+        { src: 'docs/zh/changelog.md', code: false, text: '錄影，連聲音一起：`startRecording()`、`stopRecording()`、`recordingSaved(info)`。🎹 面板上的 ⏺ 和 📷 不寫程式也能用。' },
+      ] },
+      // 出處：docs/zh/changelog.md 的 oav-p5 0.7.0（像 TouchDesigner CHOP 的數值工具），docs/zh/p5.md「數值隨時間」的第一行程式
+      { q: '數值跳來跳去，怎麼像 TouchDesigner 的 Lag CHOP 那樣變順？', more: { label: '數值隨時間', href: 'docs/#p5-values-over-time-lag-env-speed-spring-trail' }, a: [
+        { src: 'docs/zh/changelog.md', code: false, text: '像 TouchDesigner CHOP 的數值工具：`lag(micLevel, 0.03, 0.4)`（Lag CHOP，秒數跟 TouchDesigner 一樣：大約跟上 90% 的時間）、`env(\'kick\', 0.01, 0.3)`（Trigger）、`speed()`、`spring()`、`trail()`、`slope()`、`count()`，`draw()` 裡一行一個，不用宣告。' },
+        { src: 'docs/zh/p5.md', code: true, text: 'circle(width / 2, height / 2, 50 + lag(micLevel, 0.03, 0.4) * 300);   // a VU meter: opens at once, closes slowly' },
+      ] },
+      // 出處：docs/zh/strudel.md 第一段（前兩句）、「在 Strudel 載入 OAV」那一行、第一段最後一句，docs/zh/changelog.md 的 oav-p5 0.7.0（跟 Strudel 一起用）
+      { q: '可以跟 Strudel 一起用嗎？', more: { label: '和 Strudel 一起用', href: 'docs/#strudel' }, a: [
+        { src: 'docs/zh/strudel.md', code: false, text: 'Strudel 是在瀏覽器裡即興寫音樂的 live coding 環境，TidalCycles 的 JavaScript 版。OAV 是另一個獨立的程式。' },
+        { src: 'docs/zh/changelog.md', code: false, text: '跟 Strudel 一起用：在 strudel.cc 載入這一行，旋鈕、手機、麥克風就能當 Strudel 的參數。' },
+        { src: 'docs/zh/changelog.md', code: false, text: 'Strudel 的 `.midi(\'OAV Virtual MIDI\')` 送來的音符照時間戳進到 `notePressed`（實測誤差最大 4.5 毫秒），它的節拍時鐘讓鼓機和 `drumPhase` 跟著走。' },
+        { src: 'docs/zh/strudel.md', code: true, text: "await import('https://openaudiovisual.com/p5/oav-p5.js')" },
+        { src: 'docs/zh/strudel.md', code: false, text: 'OAV 不載入、也不呼叫 Strudel 的任何程式。' },
+      ] },
       // 出處：這一頁 works.lede（前兩句）；docs/zh/getting-started.md「不用硬體也能彈」最後一段
       { q: '沒有硬體也能用嗎？', more: { label: '範例', href: 'examples/' }, a: [
         { src: 'tools/home/zh.mjs', code: false, text: '每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。' },

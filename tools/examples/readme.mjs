@@ -5,7 +5,7 @@
 //   <!-- facts:start … --> … <!-- facts:end -->   the one-line numbers block (readmeBlock in facts.mjs)
 //
 // Blocks: badge-controllers, n-devices, n-controls, n-generic, w-examples (Fifteen), w-packages (Twenty-three),
-//         devices-line (18 devices, 859 controls), examples-grid, controllers-table,
+//         devices-line (18 devices, 859 controls), examples-grid, controllers-table, p5-version (0.7.0: oav-p5's own, p5/oav-p5.js),
 //         packages-table (every package, by layer: the homepage's groups and one-liners, which tests/site.test.js keeps complete).
 
 import { getFacts, enWords, cap } from '../site/facts.mjs';
@@ -66,6 +66,7 @@ export function readmeBlocks(f = getFacts()) {
     'devices-line': `${f.deviceCount} devices, ${f.controlCount} controls`,
     'w-examples': cap(enWords(f.exampleCount)),
     'w-packages': cap(enWords(f.packageCount)),
+    'p5-version': f.p5Version,
     'examples-grid': examplesGrid(),
     'controllers-table': controllersTable(),
     'packages-table': packagesTable(),

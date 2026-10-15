@@ -350,7 +350,7 @@ export function renderP5(locale) {
     <h1 id="p5">${esc(heading)}</h1>
     <p class="docs-lede">${esc(S.p5.lede)}</p>
     ${versionsLine(t, c)}
-    <p class="p5-cta"><a class="cta" href="${ex15}">${esc(S.p5.try)} →</a> <a class="more" href="${c.to('docs', '#p5')}">${esc(S.p5.docsLink)}</a> <a class="more" href="${TREE}p5">${esc(S.p5.github)} ↗</a></p>
+    <p class="p5-cta"><a class="cta" href="${ex15}">${esc(S.p5.try)} →</a> <a class="more" href="${c.to('docs', '#p5')}">${esc(S.p5.docsLink)}</a> <a class="more" href="${c.to('docs', '#strudel')}">${esc(S.p5.strudel)}</a> <a class="more" href="${TREE}p5">${esc(S.p5.github)} ↗</a></p>
     <p class="docs-note">${esc(S.p5.tryNote)}</p>
     <p class="docs-note p5-sketches">${esc(S.p5.sketches)} ${sketches}</p>`;
   return markdownFrame(t, c, {

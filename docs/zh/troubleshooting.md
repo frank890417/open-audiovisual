@@ -113,6 +113,20 @@ localStorage.removeItem('openav.map.<world name>');
 
 瀏覽器要點一下才會開始播放音訊。在 *L4 · Output — sound*（聲音輸出）面板按 **🔊 enable sound**（開啟聲音）。Tone.js 引擎在那一刻才從 jsDelivr 載入，所以第一次需要網路連線。第一次選鋼琴時，要載入大約 2 MB 的取樣，選單會顯示進度，鋼琴準備好之前，會繼續用前一個樂器彈。鼓機的鼓組，是勾選 *drum machine*（鼓機）之後、打下第一拍時才啟動。
 
+## 加了那一行的 p5.js 草圖不對勁
+
+oav-p5 會把出了什麼事寫在畫面上：🎹 旁邊一張卡片，用瀏覽器的語言寫發生什麼、為什麼、按哪裡（[出狀況的時候](p5.md#when-something-goes-wrong)）。🎹 → 🩺 把版本、麥克風、MIDI、聲音、鼓機和接線放在同一張卡上，問人的時候截這張圖。常見的幾種：
+
+- 出現 *knob1 is not defined*：那一行沒載到（離線，或網址打錯）。它要放在草圖最前面，`setup()` 的上面。
+- 沒有聲音：瀏覽器要先點過頁面才出聲，按 MIDI 鍵盤上的鍵不算。點一下畫布，在那之前 🎹 按鈕上的 🔊 是黃色的。
+- 接藍牙喇叭時鼓慢半拍（0.15 到 0.25 秒）：`?oav_drumlatency=200` 用毫秒手動設定延遲。
+- 錄出來的檔是 WebM：Firefox 和舊版 Chrome 寫不出 MP4，Instagram 不收 WebM。改用 Chrome 126 以後的版本、Edge 或 Safari 錄。
+- 草圖嵌進別的網頁，麥克風一直是 0：那個 `<iframe>` 要加 `allow="microphone"`（要接實體控制器再加 `allow="midi"`）。
+
+## Strudel 收不到 OAV Virtual MIDI
+
+OAV 比 Strudel 的 `midin()` 晚載入，`midin('OAV Virtual MIDI')` 就收不到東西、也不報錯。把 `await import('https://openaudiovisual.com/p5/oav-p5.js')` 放進 Strudel 的 settings → prebake（網址用單引號），按 save 再重新整理：prebake 會在你的程式之前跑。在那之前 🩺 會寫「沒有程式向 OAV Virtual MIDI 要過 MIDI」。詳見[和 Strudel 一起用](strudel.md#load-oav-in-strudel)。
+
 ## 在 iPhone 上，手機的傾斜和敲擊都沒作用
 
 iOS 只把動作感測器開放給 `https://` 頁面，而且要先點一下「開始」。在區域網路上用一般 `http://` 連線時，觸控、琴鍵和控制面板仍然能用。要用感測器，就透過 HTTPS 通道連到 `serve.js`。如果曾經拒絕過權限，iOS 會記住，要到「設定 → Safari → 動作與方向取用」改回來，再重新載入。

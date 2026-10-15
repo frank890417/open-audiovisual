@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- oav:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p5 keys with sound · open-audiovisual example</title>
+<meta name="description" content="startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles. Plays with MIDI keyboard · on-screen controller · phone.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/16-p5-sound/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="p5 keys with sound · open-audiovisual example">
+<meta property="og:description" content="startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles. Plays with MIDI keyboard · on-screen controller · phone.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/16-p5-sound/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="p5 keys with sound · open-audiovisual example">
+<meta name="twitter:description" content="startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles. Plays with MIDI keyboard · on-screen controller · phone.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/16-p5-sound/#webpage","url":"https://openaudiovisual.com/examples/16-p5-sound/","name":"p5 keys with sound · open-audiovisual example","description":"startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles. Plays with MIDI keyboard · on-screen controller · phone.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/16-p5-sound/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/16-p5-sound/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/17-p5-microphone/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/16-p5-sound/#code","name":"p5 keys with sound (open-audiovisual example 16)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/16-p5-sound","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/16-p5-sound/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"p5 keys with sound","item":"https://openaudiovisual.com/examples/16-p5-sound/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css">
+<!-- /oav:head -->
+<style>
+  /* the sketch is the page: its canvas fills the window (createCanvas(windowWidth, windowHeight)) */
+  html, body { margin: 0; background: #111; overflow: hidden; }
+  canvas { display: block; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+</head>
+<body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 16 · <a href="../../examples/#route-inputs">Anything can be an instrument</a></span><span lang="zh-Hant">範例 16 · <a href="../../zh/examples/#route-inputs">什麼都能當樂器</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">p5 keys with sound</span><span lang="zh-Hant">p5 彈出聲音</span></h1>
+    <p class="g-teaches"><span lang="en">startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles.</span><span lang="zh-Hant">在 setup() 寫 startSound('piano')：MIDI 鍵盤、螢幕上的 🎹、手機彈的每個音都聽得到，也炸開一團粒子。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Click the page once (browsers keep sound off until then), then play the keys of the controller that opens at the bottom.</li><li>Pick another instrument in that panel: marimba, strings, a synth. 🔊 turns the sound off and on.</li><li>Hit a pad: notes on MIDI channel 10 play the drum kit, not the piano.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>先點一下畫面（瀏覽器要點過才出聲），再彈下方打開的控制器上的琴鍵。</li><li>在面板裡換樂器：馬林巴、弦樂、合成器。🔊 可以關掉、再打開聲音。</li><li>敲打擊墊：第 10 軌的音打鼓，不會彈成鋼琴。</li></ol>
+    <p class="g-row"><span lang="en"><b>Needs:</b> MIDI controller.</span><span lang="zh-Hant"><b>需要：</b>MIDI 控制器。</span>
+        <span lang="en">No hardware? Use On-screen controller · Phone or iPad.</span><span lang="zh-Hant">沒有硬體？用螢幕上的控制器、手機或 iPad。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/16-p5-sound/sketch.js#L2"><code>sketch.js:2</code></a> <span lang="en">The one line. Everything below it is plain p5.js.</span><span lang="zh-Hant">那一行。它下面全是普通的 p5.js。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/16-p5-sound/sketch.js#L13-L14"><code>sketch.js:13–14</code></a> <span lang="en">Sound on, and the controller on screen open: two calls in setup().</span><span lang="zh-Hant">開聲音、打開螢幕上的控制器：setup() 裡兩行。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/16-p5-sound/sketch.js#L35-L46"><code>sketch.js:35–46</code></a> <span lang="en">Every note, from any of the three inputs, calls notePressed(): the pitch picks the colour and the place, the velocity how far it bursts.</span><span lang="zh-Hant">三種輸入彈的每個音都呼叫 notePressed()：音高決定顏色和位置，力度決定散多開。</span></li></ul>
+    
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#p5-sound-what-is-played-is-heard">Sound: what is played is heard</a></span><span lang="zh-Hant"><a href="../../zh/docs/#p5-sound-what-is-played-is-heard">聲音：彈什麼就聽到什麼</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/17-p5-microphone/">17 p5 microphone →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/17-p5-microphone/">17 p5 麥克風 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js"></script>
+<!-- /oav:guide -->
+<noscript>p5 keys with sound: a p5.js sketch played through oav-p5, the one line for p5. startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles.</noscript>
+<!-- sketch.js is p5/examples/keys/sketch.js, copied here by tools/build-examples.mjs (the same file the handbook and p5/examples/ open).
+     Its first lines load oav-p5.js from openaudiovisual.com, as in any sketch on OpenProcessing. -->
+<!-- last <script> on purpose: p5's friendly errors read the page's last script as the sketch -->
+<script src="./sketch.js"></script>
+</body>
+</html>

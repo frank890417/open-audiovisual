@@ -125,3 +125,8 @@ The first tagged version; it gathers 0.1 to 0.2.4 (from 2026-10-13).
   profiles: `list_controllers`, `read_profile`, `validate_profile`, `scaffold_profile`.
 - A new README, and `tools/release.sh`: every change ships in one fixed order.
 - **The site catches up with oav-p5**: this page (the changelog), "oav-p5 version · framework version" on the home page and the handbook headers, a fourth door on the home page ("I use p5.js / OpenProcessing"), the ready-made sketches listed on /p5/, and example paths in the handbook that you can click. The entry script (`/p5/oav-p5.js`) reaches every sketch about a minute after a release.
+- **The site catches up with oav-p5, part two:** the ready-made p5 sketches are examples now, each with a guide card
+  and a thumbnail: 16 keys with sound, 17 microphone, 18 drums and bars, 19 one line of rhythm, 20 rhythm you can see,
+  21 record a video, 22 lag, 23 with Strudel ([Examples](https://openaudiovisual.com/examples/)). Three more questions
+  on the home page (sound, drums and video; smoothing like a Lag CHOP; Strudel), a link from /p5/ to
+  [With Strudel](strudel.md), and the quick start, troubleshooting, roadmap and README now say what oav-p5 does.

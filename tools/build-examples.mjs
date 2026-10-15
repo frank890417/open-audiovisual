@@ -12,6 +12,8 @@
 //       <!-- oav:head -->…<!-- /oav:head -->       title, description, canonical, Open Graph, JSON-LD (replaces the page's own charset/viewport/title/description/canonical)
 //       <!-- oav:guide -->…<!-- /oav:guide -->     the guide card (description, three things to try, needs, lines to read, next) + assets/examples/guide.js
 //       <!-- oav:next -->…<!-- /oav:next -->       example 15 only (it explains itself): the link to the next example
+//   examples/NN-p5-*/sketch.js                     a copy of the catalog's `sketch` (p5/examples/<name>/sketch.js): the
+//                                                  example page runs the very sketch the handbook and the course open
 //   README.md                                      <!--gen:NAME--> blocks and the facts block (tools/examples/readme.mjs)
 //   docs/agents.md, docs/zh/agents.md, docs/packages.md, docs/zh/packages.md   the next example number and the package count, from the facts
 //   docs/introduction.md, docs/zh/introduction.md                              the number of examples, from the facts
@@ -89,6 +91,11 @@ export function buildAll() {
     const cur = read(rel);
     if (cur === null) throw new Error(`catalog lists ${e.id} but ${rel} does not exist`);
     files[rel] = patchExample(cur, e);
+    if (e.sketch) {
+      const src = read(e.sketch);
+      if (src === null) throw new Error(`catalog: ${e.id} runs ${e.sketch}, which does not exist`);
+      files[`${e.dir}sketch.js`] = src;
+    }
   }
   const f = getFacts({ fresh: true });
   files['README.md'] = applyReadmeBlock(applyBlocks(read('README.md'), readmeBlocks(f)), f);

@@ -16,10 +16,10 @@ const unstamp = (s) => s.replace(/\?v=[\w.+-]+/g, '');
 const catalogMod = () => import('../tools/examples/catalog.mjs');
 const dirs = (rel) => fs.readdirSync(path.join(ROOT, rel), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort();
 
-test('catalog: 15 entries, one per examples/NN-* folder, with every field', async () => {
+test('catalog: 23 entries, one per examples/NN-* folder, with every field', async () => {
   const { EXAMPLES, ROUTES } = await catalogMod();
   const folders = dirs('examples').filter((d) => /^\d\d-/.test(d));
-  assert.equal(EXAMPLES.length, 15);
+  assert.equal(EXAMPLES.length, 23);
   assert.deepEqual(EXAMPLES.map((e) => e.id).sort(), folders, 'the catalog lists exactly the example folders');
   for (const e of EXAMPLES) {
     assert.ok(exists(`examples/${e.id}/index.html`), `${e.id}: folder`);
@@ -67,11 +67,11 @@ test('catalog: docs anchors exist in the handbook, with the heading text as labe
   }
 });
 
-test('catalog: "next" makes one chain through all 15, no loop, ending at the index', async () => {
+test('catalog: "next" makes one chain through all 23, no loop, ending at the index', async () => {
   const { EXAMPLES, chain, byId } = await catalogMod();
   const ids = chain();
-  assert.equal(ids.length, 15);
-  assert.equal(new Set(ids).size, 15);
+  assert.equal(ids.length, EXAMPLES.length);
+  assert.equal(new Set(ids).size, EXAMPLES.length);
   assert.equal(byId.get(ids[ids.length - 1]).next, null);
   assert.equal(ids[0], '01-hello-particles');
   const { routeGroups } = await catalogMod();
@@ -96,7 +96,7 @@ test('homepage: the works section lists the whole catalog in route order, titled
   assert.ok(!/Ten works/.test(read('index.html')) && !/十件作品/.test(read('zh/index.html')));
 });
 
-test('/examples/ and /zh/examples/: a card per example, grouped by route, ItemList of 15, breadcrumb', async () => {
+test('/examples/ and /zh/examples/: a card per example, grouped by route, ItemList of every example, breadcrumb', async () => {
   const { EXAMPLES, ROUTES } = await catalogMod();
   for (const [file, lang] of [['examples/index.html', 'en'], ['zh/examples/index.html', 'zh']]) {
     assert.ok(exists(file), file);
@@ -106,7 +106,7 @@ test('/examples/ and /zh/examples/: a card per example, grouped by route, ItemLi
     assert.equal((html.match(/<h1[\s>]/g) || []).length, 1);
     const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];
     const list = ld.find((n) => n['@type'] === 'ItemList');
-    assert.equal(list.numberOfItems, 15); assert.equal(list.itemListElement.length, 15);
+    assert.equal(list.numberOfItems, EXAMPLES.length); assert.equal(list.itemListElement.length, EXAMPLES.length);
     assert.ok(ld.some((n) => n['@type'] === 'BreadcrumbList'));
     assert.ok(html.includes(`rel="canonical" href="https://openaudiovisual.com/${lang === 'zh' ? 'zh/' : ''}examples/"`));
     assert.ok(html.includes('hreflang="zh-Hant"') && html.includes('<!--email_off-->'));
@@ -146,6 +146,23 @@ test('every example page: regions are current, description, canonical, guide rea
     assert.ok(EXAMPLES.find((e) => e.id === id).p5Line, `${id} carries the p5 line`);
 });
 
+test('p5 one-line examples (16–23): the page runs the very p5/examples sketch, last, with p5 from the CDN and nothing of the framework', async () => {
+  const { EXAMPLES } = await catalogMod();
+  const p5 = EXAMPLES.filter((e) => e.sketch);
+  assert.ok(p5.length >= 8, 'the p5 sketches are in the catalog');
+  for (const e of p5) {
+    assert.match(e.sketch, /^p5\/examples\/[a-z0-9-]+\/sketch\.js$/, `${e.id}: sketch is a p5/examples/<name>/sketch.js`);
+    assert.equal(read(`${e.dir}sketch.js`), read(e.sketch), `${e.id}: sketch.js is a copy of ${e.sketch} (node tools/build-examples.mjs)`);
+    assert.ok(read(e.sketch).includes("{ src: 'https://openaudiovisual.com/p5/oav-p5.js' }"), `${e.id}: the sketch carries the one line`);
+    const html = unstamp(read(`${e.dir}index.html`));
+    assert.ok(html.includes('https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js'), `${e.id}: p5 1.11.11 from the CDN`);
+    assert.ok(!/importmap|packages\//.test(html), `${e.id}: no framework on the page, only the line`);
+    const scripts = [...html.matchAll(/<script\b[^>]*\ssrc="([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(scripts[scripts.length - 1], './sketch.js', `${e.id}: the sketch is the last script (p5's friendly errors read it as the sketch)`);
+    assert.equal(e.p5Line, false, `${e.id}: a p5 sketch needs no "take it into p5" row`);
+  }
+});
+
 test('/p5/ and /zh/p5/: built pages, no Jekyll, one line + copy button + example 15; p5/oav-p5.js is byte-identical', () => {
   for (const [file, lang] of [['p5/index.html', 'en'], ['zh/p5/index.html', 'zh']]) {
     assert.ok(exists(file), file);
@@ -160,7 +177,7 @@ test('/p5/ and /zh/p5/: built pages, no Jekyll, one line + copy button + example
   assert.equal(sha, '10535a19ea0e017d1cb6d4a50aa6856691fef0ad4c70707ff4f84a614bde0bf8', 'p5/oav-p5.js changed: student sketches load it, so a change is a release on purpose (bump the version inside, run p5/test/*.cjs, then update this hash)');
 });
 
-test('README: generated blocks are current, 15 examples, the controller list links every device page', async () => {
+test('README: generated blocks are current, every example, the controller list links every device page', async () => {
   const { readmeBlocks } = await import('../tools/examples/readme.mjs');
   const { applyBlocks, applyReadmeBlock, getFacts } = await import('../tools/site/facts.mjs');
   const f = getFacts({ fresh: true });
@@ -194,9 +211,9 @@ test('docs: the next example number and the package count are the facts', async 
   }
 });
 
-test('homepage FAQ: 8 visible questions per language, every answer sentence quoted from a named source, no FAQPage markup', async () => {
+test('homepage FAQ: 11 visible questions per language, every answer sentence quoted from a named source, no FAQPage markup', async () => {
   const en = (await import('../tools/home/en.mjs')).default, zh = (await import('../tools/home/zh.mjs')).default;
-  assert.equal(en.faq.items.length, 8); assert.equal(zh.faq.items.length, 8);
+  assert.equal(en.faq.items.length, 11); assert.equal(zh.faq.items.length, 11);
   const norm = (s) => s.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/\*\*|`/g, '').replace(/\s+/g, '');
   const trim = (s) => s.replace(/[.。:：;；]+$/, '');
   for (const [lang, t, file] of [['en', en, 'tools/home/en.mjs'], ['zh', zh, 'tools/home/zh.mjs']]) {
@@ -215,7 +232,7 @@ test('homepage FAQ: 8 visible questions per language, every answer sentence quot
       assert.match(before, /(source|出處)[:：]\s*\S+/, `${lang} Q${i + 1}: a source comment above the question`);
     });
     const html = read(lang === 'en' ? 'index.html' : 'zh/index.html');
-    assert.equal((html.match(/class="faq-item"/g) || []).length, 8);
+    assert.equal((html.match(/class="faq-item"/g) || []).length, 11);
     assert.ok(!/FAQPage/.test(html), 'Google retired FAQ rich results: visible text only');
   }
 });

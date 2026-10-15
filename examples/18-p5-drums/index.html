@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- oav:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p5 drums and bars · open-audiovisual example</title>
+<meta name="description" content="startDrums('breakbeat', 110) puts a 16-step drum machine on the page; kickDetected() and cueFired() turn its hits and its bars into the picture. Runs in the browser, no hardware needed.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/18-p5-drums/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="p5 drums and bars · open-audiovisual example">
+<meta property="og:description" content="startDrums('breakbeat', 110) puts a 16-step drum machine on the page; kickDetected() and cueFired() turn its hits and its bars into the picture. Runs in the browser, no hardware needed.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/18-p5-drums/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="p5 drums and bars · open-audiovisual example">
+<meta name="twitter:description" content="startDrums('breakbeat', 110) puts a 16-step drum machine on the page; kickDetected() and cueFired() turn its hits and its bars into the picture. Runs in the browser, no hardware needed.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/18-p5-drums/#webpage","url":"https://openaudiovisual.com/examples/18-p5-drums/","name":"p5 drums and bars · open-audiovisual example","description":"startDrums('breakbeat', 110) puts a 16-step drum machine on the page; kickDetected() and cueFired() turn its hits and its bars into the picture. Runs in the browser, no hardware needed.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/18-p5-drums/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/18-p5-drums/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/19-p5-rhythm/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/18-p5-drums/#code","name":"p5 drums and bars (open-audiovisual example 18)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/18-p5-drums","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/18-p5-drums/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"p5 drums and bars","item":"https://openaudiovisual.com/examples/18-p5-drums/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css">
+<!-- /oav:head -->
+<style>
+  /* the sketch is the page: its canvas fills the window (createCanvas(windowWidth, windowHeight)) */
+  html, body { margin: 0; background: #111; overflow: hidden; }
+  canvas { display: block; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+</head>
+<body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 18 · <a href="../../examples/#route-show-control">Run a show</a></span><span lang="zh-Hant">範例 18 · <a href="../../zh/examples/#route-show-control">演出控制</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">p5 drums and bars</span><span lang="zh-Hant">p5 鼓機與小節</span></h1>
+    <p class="g-teaches"><span lang="en">startDrums('breakbeat', 110) puts a 16-step drum machine on the page; kickDetected() and cueFired() turn its hits and its bars into the picture.</span><span lang="zh-Hant">startDrums('breakbeat', 110) 在頁面上放一台 16 格的鼓機，kickDetected()、cueFired() 把它的鼓點和小節變成畫面。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Click the page once to hear the drums (browsers start sound on a click); the hits move the flower either way.</li><li>Click cells in the grid at the top: the beat changes at once, and the petals follow.</li><li>Wait for bars 5 and 9: cue() names them, cueFired() changes the scene.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>點一下畫面就聽得到鼓（瀏覽器要點過才出聲）。沒點也一樣，鼓點照樣推著花。</li><li>點上方鼓機的格子：節奏馬上換，花瓣跟著變。</li><li>等到第 5、第 9 小節：cue() 先寫好，cueFired() 換場景。</li></ol>
+    <p class="g-row"><span lang="en"><b>No hardware needed.</b> Drum machine.</span><span lang="zh-Hant"><b>不需要硬體。</b>鼓機。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/18-p5-drums/sketch.js#L20-L23"><code>sketch.js:20–23</code></a> <span lang="en">A drum machine and three cues: the whole timeline is in setup().</span><span lang="zh-Hant">一台鼓機加三個 cue：整條時間軸都寫在 setup() 裡。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/18-p5-drums/sketch.js#L70-L72"><code>sketch.js:70–72</code></a> <span lang="en">The microphone's own callbacks: take startDrums() out, turn the microphone on, and the sketch still moves.</span><span lang="zh-Hant">跟麥克風同名的函式：拿掉 startDrums()、開麥克風，草圖照樣會動。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/18-p5-drums/sketch.js#L73-L74"><code>sketch.js:73–74</code></a> <span lang="en">barStarted() on every bar, cueFired() on the bars cue() named.</span><span lang="zh-Hant">每一小節呼叫 barStarted()，cue() 指定的小節呼叫 cueFired()。</span></li></ul>
+    
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#p5-drum-machine">Drum machine</a></span><span lang="zh-Hant"><a href="../../zh/docs/#p5-drum-machine">鼓機</a></span> · <span lang="en"><a href="../../docs/#p5-timeline-bars-and-cues">Timeline: bars and cues</a></span><span lang="zh-Hant"><a href="../../zh/docs/#p5-timeline-bars-and-cues">時間軸：小節與 cue</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/19-p5-rhythm/">19 p5 one line of rhythm →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/19-p5-rhythm/">19 p5 一行節奏 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js"></script>
+<!-- /oav:guide -->
+<noscript>p5 drums and bars: a p5.js sketch played through oav-p5, the one line for p5. startDrums('breakbeat', 110) puts a 16-step drum machine on the page; kickDetected() and cueFired() turn its hits and its bars into the picture.</noscript>
+<!-- sketch.js is p5/examples/drums/sketch.js, copied here by tools/build-examples.mjs (the same file the handbook and p5/examples/ open).
+     Its first lines load oav-p5.js from openaudiovisual.com, as in any sketch on OpenProcessing. -->
+<!-- last <script> on purpose: p5's friendly errors read the page's last script as the sketch -->
+<script src="./sketch.js"></script>
+</body>
+</html>

@@ -104,3 +104,7 @@
   `read_profile`、`validate_profile`、`scaffold_profile`。
 - 新的 README，以及 `tools/release.sh`：每次更新都照同一個固定順序發佈。
 - **網站跟上 oav-p5**：這一頁（更新紀錄）、首頁與手冊頁首並列「oav-p5 版本 · 框架版本」、首頁第四扇門「我用 p5.js／OpenProcessing」、/p5/ 列出現成草圖、手冊裡的範例路徑可以點。入口檔（`/p5/oav-p5.js`）發佈後約一分鐘就換新版。
+- **網站跟上 oav-p5（第二批）：**p5 的現成草圖變成範例，每個都有帶路卡和縮圖：16 彈出聲音、17 麥克風、18 鼓機與小節、
+  19 一行節奏、20 看得見的節奏、21 錄成影片、22 lag、23 跟 Strudel 一起（[範例](https://openaudiovisual.com/examples/)）。
+  首頁多三個常見問題（聲音、鼓和錄影，像 Lag CHOP 那樣讓數值變順，Strudel），/p5/ 連到[和 Strudel 一起用](strudel.md)，
+  手冊的快速開始、疑難排解、路線圖和 README 都寫上 oav-p5 現在能做的事。

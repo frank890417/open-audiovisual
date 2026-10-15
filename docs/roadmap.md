@@ -17,6 +17,12 @@ before it was generalized.)
 - [x] drum machine with analyzer-shaped signals (`@openav/drums`)
 - [x] on-screen MIDI controllers that mirror real hardware (`@openav/midi`, example 09)
 - [x] a documentation site: [openaudiovisual.com/docs](https://openaudiovisual.com/docs/)
+- [x] oav-p5: one line for any p5.js sketch, with controllers, a phone, the microphone, sound, a drum machine you can
+  write as one line of rhythm, bars and cues, and video recording; versioned on its own ([changelog](https://openaudiovisual.com/changelog/))
+- [x] one line of rhythm, TidalCycles/Strudel-style mini-notation (`@openav/pattern`)
+- [x] values over time as TouchDesigner's CHOPs shape them: lag, envelope, speed, spring, trail (`@openav/chop`)
+- [x] next to Strudel: what a program plays into OAV Virtual MIDI, an external MIDI clock, and `link=<room>` across
+  tabs and computers ([With Strudel](strudel.md))
 
 ## v1.x — the show grows
 
@@ -27,7 +33,8 @@ before it was generalized.)
   - [ ] *experimental* surfaces: gesture/physics widgets, shared multi-user surfaces, audience-mode (many phones → aggregate signals like `crowd/tilt/mean`)
   - [ ] mic as a phone sensor; per-device profiles; layout editor / import-export UI
 - **Score & Director** — *shipped* (`@openav/score`): cuts as segment lengths, derived versions, cues, `hold`, segment modules that fail alone, the prompter's acts, score → MIDI markers. Next:
-  - [ ] MIDI clock and transport (start / stop / song position) in and out, so a DAW can be the master clock of the score, or follow it
+  - [x] MIDI clock in: `MidiClock` (`@openav/midi`) follows start, stop and song position, and oav-p5's drum machine and `drumPhase` follow it (0.7)
+  - [ ] the score on an external clock, and clock and transport out, so a DAW can be the master clock of the score, or follow it
   - [ ] a `clocks` table in the cut, only if a show needs engines on two different time lines (see [Score & Director](score.md#clocks-why-there-are-none))
   - [ ] a score editor on the desk: drag a segment's length, see every cue move
 - **Signal recording & replay** — *MIDI takes shipped* (`@openav/record`: `TakeRecorder`,

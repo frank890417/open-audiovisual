@@ -177,6 +177,30 @@ of samples the first time you pick it: the picker shows the progress, and the
 previous instrument keeps playing until the piano is ready. The drum machine's kit
 starts on the first hit after you tick *drum machine*.
 
+## A p5.js sketch with the one line misbehaves
+
+oav-p5 says what went wrong on the page: a card beside the 🎹, in the browser's language, with what happened, why
+and what to press ([When something goes wrong](p5.md#when-something-goes-wrong)). 🎹 → 🩺 puts the version, the
+microphone, MIDI, sound, the drums and the wiring on one card: screenshot it when you ask for help. The common ones:
+
+- *knob1 is not defined*: the line did not load (offline, or a typo in the URL). It goes first in the sketch,
+  above `setup()`.
+- Silence: browsers play audio only after the page has been clicked, and a key on a MIDI keyboard does not count.
+  Click the canvas once; until then the 🔊 on the 🎹 button is yellow.
+- The drums are late on a Bluetooth speaker (0.15–0.25 s): `?oav_drumlatency=200` sets the delay by hand, in
+  milliseconds.
+- The video is WebM: Firefox and older Chrome cannot write MP4, and Instagram does not take WebM. Record in Chrome
+  126 or later, Edge or Safari.
+- The microphone stays at 0 in a sketch embedded in another page: its `<iframe>` needs `allow="microphone"` (and
+  `allow="midi"` for a hardware controller).
+
+## Strudel does not hear OAV Virtual MIDI
+
+OAV was loaded after Strudel's `midin()` ran, so `midin('OAV Virtual MIDI')` gets nothing and says nothing. Put
+`await import('https://openaudiovisual.com/p5/oav-p5.js')` in Strudel's settings → prebake (single quotes), save and
+reload: the prebake runs before your code. Until then 🩺 says "no program has asked OAV Virtual MIDI for MIDI".
+More in [With Strudel](strudel.md#load-oav-in-strudel).
+
 ## The phone's tilt and knocks do nothing on an iPhone
 
 iOS only gives motion sensors to `https://` pages, and only after a tap on
