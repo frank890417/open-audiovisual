@@ -7,9 +7,9 @@
 //   copy buttons; old #spec-<id> / ?profile=<id> links go to the device's own page (inline script in <head>)
 // It uses the same public pieces anyone else would: <oav-controller> and embed.js.
 
-import { PROFILES } from '../../packages/midi/element.js?v=5e75007';
-import { describeDetail } from '../../packages/midi/embed.js?v=5e75007';
-import { snippets, hl } from './snippets.js?v=5e75007';
+import { PROFILES } from '../../packages/midi/element.js?v=77a4e4f';
+import { describeDetail } from '../../packages/midi/embed.js?v=77a4e4f';
+import { snippets, hl } from './snippets.js?v=77a4e4f';
 
 const T = JSON.parse(document.getElementById('ctl-i18n').textContent);
 const $ = (s, el = document) => el.querySelector(s);
