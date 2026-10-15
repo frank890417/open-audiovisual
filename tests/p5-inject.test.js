@@ -435,7 +435,7 @@ function fakeDrums(log) {
 
 test('0.4.0: a sketch that calls none of it gets the names, and nothing loads or changes', () => {
   const { w, loaded, click } = kitPage();
-  assert.equal(w.OAVp5.version, '0.6.0');
+  assert.equal(w.OAVp5.version, '0.7.0');
   for (const n of ['startSound', 'stopSound', 'startDrums', 'stopDrums', 'cue']) assert.equal(typeof w[n], 'function', n);
   assert.deepEqual([w.soundIsOn, w.drumsAreOn, w.drumStep, w.drumBar, w.drumBpm, w.cueName], [false, false, 0, 0, 112, '']);
   w.midi.play(60, 0.8); w.midi.play(60, 0); w.midi.input([0x99, 36, 100]); click();
@@ -455,7 +455,7 @@ test('sound: startSound() waits for the first click, then every note goes throug
   assert.equal(w.soundIsOn, false);
   w.midi.play(60, 0.8);
   assert.deepEqual(played, [], 'not heard before the click');
-  assert.ok(loaded.some((u) => /packages\/sound\/index\.js\?v=p5-0\.6\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
+  assert.ok(loaded.some((u) => /packages\/sound\/index\.js\?v=p5-0\.7\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
   click();
   assert.equal(await on, true);
   assert.equal(w.soundIsOn, true);
@@ -735,7 +735,7 @@ test('OAVp5.check(): microphone, MIDI, sound, drums, wiring and the hints, as on
   const w = page({ OPC: fakeOPC(), navigator: { language: 'zh-TW', userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/141.0 Safari/537.36' } });
   void w.knob1; w.midi.play(60, 1);
   const r = w.OAVp5.check({ show: false });
-  assert.equal(r.version, '0.6.0');
+  assert.equal(r.version, '0.7.0');
   assert.equal(r.browser, 'Chrome 141 · macOS');
   assert.equal(r.midi.webMidi, false);
   assert.equal(r.microphone.state, 'off');
@@ -804,7 +804,7 @@ test('0.5.0: startRecording / stopRecording / recordingIsOn are there; a sketch 
   const { FakeMR, made } = fakeRecorder();
   const { w, loaded, click } = kitPage({ MediaRecorder: FakeMR, AudioContext: FakeAC });
   FakeAC.made.length = 0;
-  assert.equal(w.OAVp5.version, '0.6.0');
+  assert.equal(w.OAVp5.version, '0.7.0');
   assert.equal(typeof w.startRecording, 'function');
   assert.equal(typeof w.stopRecording, 'function');
   assert.equal(w.recordingIsOn, false);
@@ -829,7 +829,7 @@ test('recording: startRecording(seconds) records the canvas with @openav/record\
     assert.equal(w.OAVp5.record.state, 'on');
     assert.equal(await w.startRecording({ canvas }), true, 'a second start while it runs: still the one take');
     assert.equal(made.length, 1);
-    assert.ok(loaded.some((u) => /packages\/record\/recorder\.js\?v=p5-0\.6\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
+    assert.ok(loaded.some((u) => /packages\/record\/recorder\.js\?v=p5-0\.7\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
     assert.equal(made[0].opts.mimeType, 'video/mp4;codecs=avc1.640033,mp4a.40.2', 'MP4 (H.264 + AAC) first');
     assert.equal(made[0].opts.videoBitsPerSecond, 4e6, 'a small canvas still gets 4 Mb/s');
     assert.equal(made[0].stream.getVideoTracks().length, 1);
@@ -1074,7 +1074,7 @@ test('0.6.0: startDrums(arg) — names, grids, numbers as in 0.5; any other text
   assert.ok(!loaded.some((u) => /pattern/.test(u)), 'no names or grids load @openav/pattern');
   const a = await r('bd*4, hh*8');
   assert.equal(a.text, 'bd*4, hh*8'); assert.equal(typeof a.pattern.eventsInBar, 'function');
-  assert.ok(loaded.some((u) => /packages\/pattern\/index\.js\?v=p5-0\.6\.0$/.test(u)), 'loaded from next to this file, the first time a line is used');
+  assert.ok(loaded.some((u) => /packages\/pattern\/index\.js\?v=p5-0\.7\.0$/.test(u)), 'loaded from next to this file, the first time a line is used');
   await r('bd*4, hh*8');
   assert.deepEqual(seen, ['bd*4, hh*8'], 'the same line twice (a cue that comes back) is compiled once');
   assert.deepEqual([...w.OAVp5.hints].map((h) => h.id), [], 'no card for any of these');
@@ -1120,4 +1120,140 @@ test('0.6.0: the check-up says which clock moves the drums', () => {
   const r = w.OAVp5.check({ show: false });
   assert.match(r.text, /Worker heartbeat, 0\.1 s ahead, output latency 12 ms/);
   assert.equal(r.drums.clock.heartbeat, 'worker');
+});
+
+// ---------------------------------------------------------------- 0.7.0: the cells and the line edit each other, Strudel in and out, drawRhythm
+// Browser half (clicks, typing, undo, Copy, the strudel.cc link, drawRhythm's pixels and a recording of it): p5/test/rhythm-smoke.cjs.
+const realPattern = () => import('../packages/pattern/index.js');
+
+test('0.7.0: startDrums() takes a line copied from strudel.cc: s / sound, quotes or backticks, .fast / .slow; .bank and the rest are said', async () => {
+  const { w } = kitPage({ navigator: { language: 'zh-TW' } }, { 'packages/drums/index.js': realDrums, 'packages/pattern/index.js': realPattern });
+  const r = (x) => w.OAVp5.drums._resolve(x);
+  const a = await r('s("bd*4, [~ sd]*2").fast(2)');
+  assert.equal(a.text, '[bd*4, [~ sd]*2]*2');
+  assert.equal(a.pattern.eventsInBar(1).filter((e) => e.voice === 'kick').length, 8, '.fast(2): twice the kicks');
+  assert.deepEqual([...w.OAVp5.hints].map((h) => h.id), [], 'nothing to say about .fast');
+  for (const x of ["sound('bd*4')", 's(`bd*4`)', '$: s("bd*4")']) assert.equal((await r(x)).text, 'bd*4', x);
+  const b = await r('setcpm(110/4)\ns("bd*4, hh*8").bank("RolandTR909").jux(rev)');
+  assert.equal(b.text, 'bd*4, hh*8'); assert.equal(b.bpm, 110);
+  const h = [...w.OAVp5.hints];
+  assert.ok(h.some((x) => x.id === 'rhythmBank:.bank("RolandTR909")' && /先略過/.test(x.what) && /在 Strudel 打開/.test(x.next)), JSON.stringify(h));
+  assert.ok(h.some((x) => x.id === 'rhythmChain:.jux(rev)' && x.what === '.jux(rev) 這段 OAV 還不支援' && /在 Strudel 打開/.test(x.next)));
+  assert.deepEqual(plain(await r('s("")')), { pattern: 'four on floor' });
+  assert.ok([...w.OAVp5.hints].some((x) => /^rhythmNoS:/.test(x.id)), 'an s() with nothing in it: a card, four on floor');
+  assert.deepEqual(plain(await r('s("bd [sd")')), { pattern: 'four on floor' });
+  assert.match([...w.OAVp5.hints].at(-1).why, /"bd ⟦\[⟧sd"/, 'a mistake inside s("…") points into the line itself');
+});
+
+test('0.7.0: rhythmChanged(src, how) and drums.on("rhythm") hear every new line; its own error is the sketch\'s', () => {
+  const got = [];
+  const w = page({ rhythmChanged: (src, how) => got.push([src, how]) });
+  const off = w.OAVp5.drums.on('rhythm', (src) => got.push(['on', src]));
+  w.OAVp5.drums._rhythm('bd*4, hh*8', { how: 'cell' });
+  off();
+  w.OAVp5.drums._rhythm('bd*2', {});
+  assert.deepEqual(got, [['bd*4, hh*8', 'cell'], ['on', 'bd*4, hh*8'], ['bd*2', 'code']]);
+  const bad = page({ rhythmChanged: () => { throw new Error('oops'); } });
+  bad.OAVp5.drums._rhythm('bd', { how: 'type' });
+  assert.ok([...bad.OAVp5.hints].some((h) => h.id === 'err:rhythmChanged:oops'), 'reported like any callback of the sketch');
+  for (const n of ['rhythmChanged', 'drawRhythm']) assert.ok(!['draw', 'redraw', 'loop', 'drawingContext', 'keyPressed', 'getAudioContext', 'userStartAudio', 'loadSound'].includes(n));
+  const mine = () => 'mine';
+  assert.equal(page({ drawRhythm: mine }).drawRhythm, mine, "a sketch's own drawRhythm is left alone");
+});
+
+test('0.7.0: a click on a line the grid cannot hold says what goes (once per line); a typed mistake keeps one card that follows it', () => {
+  const w = page({ navigator: { language: 'zh-TW' } });
+  w.OAVp5.drums._lossy({ text: 'bd(3,8), [sd sd sd]*2, <hh oh>', bar: 2, lost: { offGrid: 4, varies: true, random: false, samples: false, stacked: 0 } });
+  w.OAVp5.drums._lossy({ text: 'bd(3,8), [sd sd sd]*2, <hh oh>', bar: 2, lost: { offGrid: 4, varies: true } });
+  const h = [...w.OAVp5.hints];
+  assert.equal(h.length, 1);
+  assert.equal(h[0].what, '格子寫不出這一行的全部');
+  assert.match(h[0].why, /4 下不在 16 格上的音（像三連音）、每小節不一樣的部分（< >、\/2，只留第 2 小節）/);
+  assert.match(h[0].next, /↶（或 ⌘Z／Ctrl\+Z）/);
+  w.OAVp5.drums._edit({ code: 'unknown-word', index: 3, length: 3, message: 'x' }, 'bd kik');
+  w.OAVp5.drums._edit({ code: 'unclosed', index: 3, length: 1, message: 'x' }, 'bd [sd');
+  const live = () => [...w.OAVp5.hints].filter((x) => x.id === 'rhythmEdit');
+  assert.equal(live().length, 1, 'one card, the latest (the console keeps both)');
+  assert.match(live().at(-1).why, /"bd ⟦\[⟧sd"/);
+  assert.match(live().at(-1).next, /鼓機先照上一個能用的版本打/, 'not four on floor: the last line that worked keeps playing');
+  w.OAVp5.drums._edit(null);
+  w.OAVp5.drums._edit({ code: 'unclosed', index: 3, length: 1 }, 'bd [sd');
+  assert.equal(live().length, 1, 'fixed, then broken again: a new card, still one');
+});
+
+test('0.7.0: OAVp5.drums.src / strudelUrl / history / undo / edit / copyText ask the machine', () => {
+  const w = page();
+  assert.equal(w.OAVp5.drums.src, ''); assert.equal(w.OAVp5.drums.strudelUrl, ''); assert.deepEqual([...w.OAVp5.drums.history], []);
+  assert.equal(w.OAVp5.drums.undo(), false);
+  const hist = ['bd*4'];
+  w.OAVp5.drums.machine = { src: () => 'bd*4, hh*8', strudelUrl: () => 'https://strudel.cc/#x', history: hist, undo: () => !!hist.pop(), edit: (t) => ({ ok: t !== 'kik', error: null }), copyText: () => 'startDrums("bd*4, hh*8", 112)' };
+  assert.equal(w.OAVp5.drums.src, 'bd*4, hh*8');
+  assert.equal(w.OAVp5.drums.strudelUrl, 'https://strudel.cc/#x');
+  assert.equal(w.OAVp5.drums.history, hist);
+  assert.equal(w.OAVp5.drums.copyText, 'startDrums("bd*4, hh*8", 112)');
+  assert.equal(w.OAVp5.drums.edit('kik').ok, false);
+  assert.equal(w.OAVp5.drums.undo(), true); assert.equal(hist.length, 0);
+});
+
+/** a p5 that records what is drawn (global mode: the functions on window) */
+function fakeP5(gl = false) {
+  const log = [], depth = { n: 0, max: 0 };
+  const col = (...a) => { const c = typeof a[0] === 'object' && a[0] && a[0].rgba ? a[0].rgba.slice() : a.length >= 3 ? [a[0], a[1], a[2], a[3] ?? 255] : [128, 128, 128, 255]; return { rgba: c }; };
+  const p = {
+    width: 400, height: 300, RGB: 'rgb', CORNER: 'corner', CENTER: 'center', CLOSE: 'close',
+    drawingContext: gl ? { getParameter() {} } : { fillRect() {} },
+    push: () => { depth.n++; depth.max = Math.max(depth.max, depth.n); log.push(['push']); }, pop: () => { depth.n--; log.push(['pop']); },
+    colorMode() {}, rectMode() {}, ellipseMode() {}, noStroke() {}, noFill() {}, strokeWeight() {},
+    stroke: (c) => log.push(['stroke', c]), fill: (c) => log.push(['fill', c]),
+    rect: (...a) => log.push(['rect', ...a]), line: (...a) => log.push(['line', ...a]), circle: (...a) => log.push(['circle', ...a]),
+    beginShape: () => log.push(['begin']), vertex: (x, y) => log.push(['vertex', x, y]), endShape: () => log.push(['end']),
+    color: col, red: (c) => c.rgba[0], green: (c) => c.rgba[1], blue: (c) => c.rgba[2], alpha: (c) => c.rgba[3],
+    lerpColor: (a, b, t) => ({ rgba: a.rgba.map((x, i) => x + (b.rgba[i] - x) * t), lit: t }),
+  };
+  return { p, log, depth };
+}
+function rhythmMachine(pos) {
+  return {
+    phase: () => ({ pos, bar: pos - Math.floor(pos), beat: (pos * 4) % 1 }), src: () => 'bd*4, [~ sd]*2, hh*8', seq: { mode: 'string', pattern: 'x' },
+    voices: () => ['kick', 'snare', 'hat', 'clap'],
+    barEvents: () => [{ voice: 'kick', pos: 0 }, { voice: 'kick', pos: 0.25 }, { voice: 'kick', pos: 0.5 }, { voice: 'kick', pos: 0.75 }, { voice: 'snare', pos: 0.25 }, { voice: 'snare', pos: 0.75 },
+      ...[0, 1, 2, 3, 4, 5, 6, 7].map((i) => ({ voice: 'hat', pos: i / 8 }))],
+  };
+}
+test('0.7.0: drawRhythm grid: a cell per step and drum that plays, the hits where they fall, the one just heard lit, a playhead; push/pop balanced', () => {
+  const { p, log, depth } = fakeP5();
+  const w = page(p);
+  w.OAVp5.drums.machine = rhythmMachine(2.26); w.OAVp5.drums.state = 'on';   // bar 3, just after the snare at 1/4
+  assert.equal(w.drawRhythm(10, 20, 320, 60, 'grid'), true);
+  assert.equal(depth.n, 0); assert.equal(depth.max, 1);
+  const rects = log.filter((x) => x[0] === 'rect');
+  assert.equal(rects.length, 3 * 16 + 14, 'three drums play (clap does not): 48 cells and 14 hits');
+  const lit = log.filter((x) => x[0] === 'fill' && x[1].lit > 0);
+  assert.ok(lit.length >= 2 && lit.length <= 4, 'the kick, snare and hat at 1/4 were just heard: lit');
+  const head = log.find((x) => x[0] === 'line');
+  assert.ok(Math.abs(head[1] - (10 + 0.26 * 320)) < 0.5, 'the playhead at drumPhase');
+  const snare = rects.filter((r) => r[2] > 20 + 20 && r[2] < 20 + 40).slice(16);
+  assert.ok(snare.length === 2 && Math.abs(snare[0][1] - (10 + 0.25 * 320)) < 3, 'snare on 2 and 4, in the second row');
+});
+test('0.7.0: drawRhythm circle and spiral: sectors and a hand / bands along a spiral and a tip; WEBGL boxes are centred; no p5 → false', () => {
+  const c = fakeP5();
+  const w = page(c.p);
+  w.OAVp5.drums.machine = rhythmMachine(5.5); w.OAVp5.drums.state = 'on';
+  w.drawRhythm(0, 0, 300, 300, 'circle', { colors: { kick: c.p.color(255, 0, 0) } });
+  assert.equal(c.log.filter((x) => x[0] === 'begin').length, 3 * 16 + 14, 'a sector per cell, one per hit');
+  const hand = c.log.find((x) => x[0] === 'line');
+  assert.ok(Math.abs(hand[3] - 150) < 1 && hand[4] > 290, 'half way through the bar the hand points down');
+  assert.ok(c.log.some((x) => x[0] === 'fill' && x[1].rgba[0] === 255 && x[1].rgba[1] === 0), 'colors: { kick } used');
+  const s = fakeP5();
+  const w2 = page(s.p);
+  w2.OAVp5.drums.machine = rhythmMachine(5.5); w2.OAVp5.drums.state = 'on';
+  w2.OAVp5.drums.draw(0, 0, 300, 300, { style: 'spiral', bars: 3 });
+  assert.equal(s.log.filter((x) => x[0] === 'begin').length, 1 + 3 * 14, 'the guide, and three bars of 14 hits as bands along it');
+  assert.equal(s.log.filter((x) => x[0] === 'circle').length, 1, 'the tip');
+  const g = fakeP5(true);
+  const w3 = page(g.p);
+  w3.drawRhythm();
+  const r0 = g.log.find((x) => x[0] === 'rect');
+  assert.ok(r0[1] < 0 && r0[2] > 0, 'WEBGL, no box: a strip along the bottom, in centred coordinates');
+  assert.equal(page().drawRhythm(0, 0, 10, 10), false, 'no p5 on the page: nothing drawn, no error');
 });

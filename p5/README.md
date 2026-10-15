@@ -127,8 +127,9 @@ function drumHit(lane, velocity) {}   // every hit: 'kick' · 'snare' · 'hat' �
 | `drumBar` | 1, 2, 3 … since `startDrums()` | `snareDetected(level)` | snare and clap (and rim) |
 | `drumBpm` | the tempo (the grid's slider moves it too) | `hatDetected(level)` | hat (and open / pedal hat) |
 | `drumPhase` | 0..1 through the bar, smoothly, as heard | `beatDetected(level)` | a kick or a snare, once per step (`beat` too) |
-| `beatPhase` | 0..1 through the beat (a quarter note), as heard | | |
+| `beatPhase` | 0..1 through the beat (a quarter note), as heard | `rhythmChanged(src, how)` | the line changed (0.7: a click, a key, ↶, `startDrums()`) |
 | `startDrums(pattern, bpm)`, `stopDrums()` | | | |
+| `drawRhythm(x, y, w, h, style)` | the rhythm on the canvas (0.7, below) | | |
 
 `rotate(drumPhase * TWO_PI)` turns a shape once a bar; `1 - beatPhase` swells on every beat and shrinks until the next one.
 Both are read at the moment of the read from the time the sound reaches the speakers, so they move smoothly between frames
@@ -170,16 +171,51 @@ Any text that is not a pattern name is a line of rhythm. The line shows over the
 and fades. The writing, in short: words are drums (`bd` kick · `sd` snare · `hh` hat · `oh` open hat · `cp` clap · `rim` ·
 `lt` `mt` `ht` toms · `cr` crash · `rd` ride · `cb` cowbell), `~` is a rest, words share the bar evenly, `[ ]` shares one place,
 `*4` plays it four times there, `,` lays lines on top of each other, `<a b>` takes one a bar, `bd(3,8)` spreads 3 hits over 8
-steps; the full list is [@openav/pattern](../packages/pattern/README.md)'s, loaded from next to this file the first time a line
-is used. Drums with no lane on the grid (crash, ride, toms, open hat) get a row of their own and call `drumHit()`; hits off
-the 16 steps (a triplet) are drawn where they fall inside their step. A click on a cell hands the beat to the cells: the
-line becomes the grid it was playing in that bar (a card says what changed), and `startDrums("…")` again brings it back.
-A mistake shows a card, in the page's language, with the character it is at, why and how to fix it
-(`節奏字串第 4 個字有問題` · `"bd ⟦[⟧sd"` · `補上 ]`), and the machine plays `'four on floor'` meanwhile; `'x...x...'` alone
-(the grid's lane text) says to put it inside `{ kick: … }`.
+steps; the full list is [@openav/pattern](../packages/pattern/README.md)'s, loaded from next to this file with the drums.
+Drums with no lane on the grid (crash, ride, toms, open hat) get a row of their own and call `drumHit()`; hits off the 16 steps
+(a triplet) are drawn where they fall inside their step. A mistake in `startDrums("…")` shows a card, in the page's language,
+with the character it is at, why and how to fix it (`節奏字串第 4 個字有問題` · `"bd ⟦[⟧sd"` · `補上 ]`), and the machine plays
+`'four on floor'` meanwhile; `'x...x...'` alone (the grid's lane text) says to put it inside `{ kick: … }`.
+
+A line copied from strudel.cc plays too (0.7): `startDrums('s("bd*4, [~ sd]*2").fast(2)')` is `[bd*4, [~ sd]*2]*2`. Read:
+`s("…")` / `sound("…")` with `"`, `'` or `` ` ``, several `$: s(…)` as layers, `.fast(n)`, `.slow(n)`, and `setcpm(x)` /
+`setcps(x)` as the tempo when `startDrums()` gives none. `.bank(…)` is left out with a card (OAV's kit is its own); any other
+call (`.jux(rev)`, `.every(…)`, `.gain(…)`, `note(…)`) gets a card that says OAV does not do it yet and points at
+"Open in Strudel"; the rest plays.
 
 The way of writing one line of rhythm comes from TidalCycles / Strudel ([strudel.cc](https://strudel.cc)); OAV implements it
 independently from their public documentation.
+
+### The cells and the line edit each other (0.7)
+
+The line over the grid is always there (a preset shows its grid as a line: `'four on floor'` is `bd*4, [~ sd]*2, hh*8`).
+
+| do | what happens |
+|---|---|
+| click a cell | the line is rewritten (`@openav/pattern`'s `fromGrid`) and plays at once: steady hits `bd*4`, one per group `[~ sd]*2`, a Euclidean rhythm `bd(3,8,2)` (r = starts r steps later, as strudel.cc plays it), else beat by beat `bd [~ ~ ~ bd] bd*2 ~`. A line the 16 steps cannot hold (triplets, `< >`, `/2`, `?`, `bd:2`): the first click shows a card saying what would go, the next one rewrites it |
+| type in the line | Enter, or 400 ms without a key, plays it and the cells follow; a mistake is marked red with a card, and the last line that worked keeps playing (not `'four on floor'`); Escape drops what is not played yet; the keys never reach `keyPressed()` |
+| ↶, or ⌘Z / Ctrl+Z after touching the card | back one line (`OAVp5.drums.history`, oldest first; `OAVp5.drums.undo()`) |
+| Copy | `startDrums("…", bpm)` on the clipboard |
+| Open in Strudel | a new tab at `https://strudel.cc/#<base64 of the code>`: `// from the OAV drum machine`, `setcpm(bpm/4)` (an OAV bar is a Strudel cycle of four beats), `s("…")` with Strudel's drum names (`kick` → `bd`). `OAVp5.drums.strudelUrl` |
+
+`function rhythmChanged(src, how) {}` hears every new line (`how`: `'code'` · `'cell'` · `'type'` · `'undo'` · `'menu'`), and so
+does `OAVp5.drums.on('rhythm', fn)`. `OAVp5.drums.src` is the line playing, `OAVp5.drums.edit("…")` plays one as if typed.
+
+### The rhythm on the canvas: drawRhythm (0.7)
+
+The card is DOM, so a recording (the canvas alone) never has it; `drawRhythm()` draws on the canvas:
+
+```js
+drawRhythm(20, 20, 360, 90, 'grid');        // 16 steps, a row per drum that plays, a playhead
+drawRhythm(20, 130, 300, 300, 'circle');    // a ring of 16 per drum, a hand turned by drumPhase
+drawRhythm(340, 130, 300, 300, 'spiral', { bars: 4, colors: { kick: '#ff7b54' } });   // the last bars wound outwards, now at the tip
+```
+
+A hit lights up the moment it is heard (the clock `drumPhase` reads); triplets sit where they fall. Options: `colors`
+(`{ voice: color }`), `color` (all), `off` (empty steps), `playhead` (a color or `false`), `bg`, `bars` (spiral, default 4). It
+draws inside `push()` / `pop()` with p5's own shapes (rect, beginShape, line, circle), so 2D and WEBGL, p5 1.x and 2.x; in
+WEBGL (0, 0) is the middle of the canvas: `drawRhythm(-width / 2, -height / 2, width, height)`. No box: a strip along the
+bottom (`'grid'`) or a square in the middle. `OAVp5.drums.draw(…)` is the same. Example: `p5/examples/rhythm-visual/`.
 
 ## Timeline: bars and cues
 
@@ -347,10 +383,10 @@ message means the line did not load.
 
 ## Size, versions
 
-`oav-p5.js` is about 161 KB (55 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
+`oav-p5.js` is about 178 KB (60 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
 its modules, ~130 KB transferred, from next to it), the microphone is read (`packages/audio`, ~7 KB), a phone is asked for (`packages/relay`, a QR encoder),
 an unknown controller is plugged in (`packages/midi/profiles`), sound is turned on (`packages/sound`, ~21 KB gzip, Tone.js ~230 KB
-from jsDelivr, and the piano's 2 MB of samples when the piano is picked), the drums are (`packages/drums`, ~18 KB gzip; `packages/pattern` the first time a line of rhythm is used), or a take is
+from jsDelivr, and the piano's 2 MB of samples when the piano is picked), the drums are (`packages/drums`, ~22 KB gzip, and `packages/pattern`, ~15 KB gzip, beside it), or a take is
 recorded (`packages/record/recorder.js` with its `mime.js` and `layout.js`, ~9 KB gzip). Because it loads the rest of OAV from next to itself,
 one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.jsdelivr.net/gh/frank890417/open-audiovisual@<tag>/p5/oav-p5.js` is frozen.
 
@@ -363,7 +399,11 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   in which language, the file and line of a callback's error, a sketch's own `let note`), `micLevel` for a quiet voice and a shout,
   a room that hums, `micSensitivity()`, a knob read under OPC, and `OAVp5.check()`; 0.6: `drumPhase` / `beatPhase`, a step told
   quietly, the order of the callbacks on the real lookahead clock, `startDrums(arg)` sorting names, grids and lines of rhythm,
-  the mistake cards (zh / en), @openav/pattern missing. `tests/drums-clock.test.js` has the clock itself under a fake clock and a
+  the mistake cards (zh / en), @openav/pattern missing; 0.7: a line copied from strudel.cc (quotes, `.fast`, `setcpm`, the
+  `.bank` / `.jux` cards), `rhythmChanged` and `drums.on('rhythm')`, the lossy-click and typing cards, `OAVp5.drums.src` & co.,
+  `drawRhythm` grid / circle / spiral against a recording fake p5 (cells, hits, the lit one, the playhead, push/pop, WEBGL's
+  centred box). `tests/pattern.test.js` has `fromGrid` (the presets, each rule, 1000 random grids round-tripped), `toGrid`,
+  `fromStrudel`, `toStrudel` / `strudelUrl` (against the links strudel.cc's address bar showed). `tests/drums-clock.test.js` has the clock itself under a fake clock and a
   fake AudioContext: 1000 bars with no drift (< 1 µs), the heartbeat alone (no frames), a tempo change mid-bar (nothing twice,
   nothing missing), nothing heard before the click and no backlog after it, the order, a hidden tab, a stalled frame loop, the
   lookahead growing, a pattern change heard at once, triplets and a crash, the phases, the output latency.
@@ -375,6 +415,13 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   card, the word lit in `kickDetected()` / `snareDetected()` / `hatDetected()`, Chinese lanes and the bar number, contrast on
   the card, `drumPhase`, a click handing over to the cells, triplets and a crash row, a mistake's card, `drums=frame`, an English
   page. Until `packages/pattern` is merged it uses `p5/test/pattern-stub.js` (`STUB_PATTERN=0`: the package itself).
+- `p5/test/rhythm-sync-smoke.cjs` (same arguments; ffmpeg on the path, `REC=0` skips the recording): 0.7 — a click on a cell
+  rewrites the line and the machine plays it (kicks heard where the new line puts them), ↶ and ⌘Z (only after the card was
+  touched), Copy (the clipboard read back), the strudel.cc link decoded, typing (a pause plays it, the cells follow, a mistake
+  marked red with a card while the last line keeps playing, Enter, Escape, no key reaches the sketch), a line the grid cannot hold
+  (card first, then rewritten, ↶ back), a line copied from strudel.cc (`setcpm`, `.bank`, `.fast`, `.jux`), a preset shown as its
+  line; `drawRhythm` grid / circle / spiral in 2D and WEBGL on p5 1.11.11 and 2.3.4 read back pixel by pixel, and a frame of a
+  `startRecording(2)` take (ffmpeg) with it in; `p5/examples/rhythm-visual`.
 - `PW=<playwright> P5_DIR=<p5 builds> BROWSER=chromium|webkit|firefox node p5/test/smoke.cjs`: p5 1.11.11 and 2.x ×
   the line, the line 1.5 s late, the custom-library route and OPC — the sketch runs, `midi` exists in `setup()`, keys,
   knobs and pads reach it, the 🎹 controller plays it, `requestMIDIAccess` gets the virtual port, a phone over a local
@@ -405,5 +452,6 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
 
 Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` (OPC sliders on knobs), `p5/examples/mic/` (`micLevel`, `bass`, `beat`),
 `p5/examples/keys/` (`startSound('piano')`, particles from every key, the 🎹 open), `p5/examples/drums/` (`startDrums`, `kickDetected`, `cue`, `cueFired`),
-`p5/examples/rhythm/` (one line of rhythm, `drumPhase` turning a hand once a bar, `beatPhase` breathing on every beat)
+`p5/examples/rhythm/` (one line of rhythm, `drumPhase` turning a hand once a bar, `beatPhase` breathing on every beat),
+`p5/examples/rhythm-visual/` (`drawRhythm` in its three styles and the line drawn on the canvas, `rhythmChanged`, R records 8 s)
 and `p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`).

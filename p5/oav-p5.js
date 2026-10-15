@@ -24,6 +24,11 @@
  *   startDrums('breakbeat', 120), stopDrums()     a 16-step × 4-lane machine on screen (@openav/drums); drumsAreOn
  *   startDrums("bd*4, [~ sd]*2, hh*8")            or one line of rhythm (@openav/pattern; the line shows over the grid, the
  *                                                 word that sounds lights up); a mistake shows a card and plays 'four on floor'
+ *   startDrums('s("bd*4").fast(2)')               or a line copied from strudel.cc (s / sound, .fast, .slow; the rest is said)
+ *   (0.7) a click on a cell rewrites the line, the line can be typed into and the cells follow; ↶ / ⌘Z undoes;
+ *   Copy gives startDrums("…") back, "Open in Strudel" opens the line at strudel.cc; OAVp5.drums.src / .strudelUrl / .history
+ *   function rhythmChanged(src, how) {}          the line changed (how: 'code' · 'cell' · 'type' · 'undo' · 'menu')
+ *   drawRhythm(x, y, w, h, 'grid' | 'circle' | 'spiral')   the rhythm drawn on the canvas, so a recording has it too
  *   drumStep 0..15, drumBar 1, 2, 3 …, drumBpm    where the machine is
  *   drumPhase 0..1, beatPhase 0..1                how far through the bar / the beat, smoothly, as it is heard
  *   function drumHit(lane, velocity) {}           and each hit also calls kickDetected / snareDetected / hatDetected
@@ -82,7 +87,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.6.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.7.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -129,7 +134,8 @@
         sndOn: '🔊 開聲音', sndOff: '🔊 關聲音', sndLoading: '🔊 載入聲音中…', sndWaiting: '🔊 點一下就有聲音', sndError: '🔊 聲音沒載到，再按一次',
         sndHint: '點一下畫面（或按一個鍵）就聽得到：瀏覽器要網頁被點過才讓它出聲', drumsOn: '🥁 鼓機', drumsOff: '🥁 關鼓機', fold: '收起格子', closeDrums: '關掉鼓機', check: '🩺 體檢',
         recOn: '⏺ 錄影', recStop: '⏹ 停止 {t}', recStarting: '⏺ 準備中…', recSaving: '⏺ 存檔中…', recTitle: '錄下畫布和作品的聲音（MP4，IG 可以直接用；🎹 和提示不會進影片）',
-        recDot: '錄影中：按這裡停止', shot: '📷 存圖', shotTitle: '把畫布存成一張 PNG（不含 🎹 和提示）', share: '分享', download: '下載' }
+        recDot: '錄影中：按這裡停止', shot: '📷 存圖', shotTitle: '把畫布存成一張 PNG（不含 🎹 和提示）', share: '分享', download: '下載',
+        fromOAV: '來自 OAV 鼓機（openaudiovisual.com）' }
     : { btn: 'MIDI: plug in a controller, play the one on screen, or use a phone', phone: '📱 Phone', close: 'Hide', hwOff: 'No MIDI device', knob: 'knob', fader: 'fader', pad: 'pad',
         hwNone: 'No Web MIDI in this browser (Safari): use the on-screen controller or a phone',
         hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room', wired: 'Wiring', opcMark: ' (OPC)', readOnly: '{read} (sketch)', readSlider: '{read} (sketch; {opc} by its slider)', loading: 'Loading the controller… (a few seconds the first time)',
@@ -139,7 +145,8 @@
         sndOn: '🔊 Turn on sound', sndOff: '🔊 Turn off sound', sndLoading: '🔊 Loading sound…', sndWaiting: '🔊 Click to hear', sndError: '🔊 Sound did not load: try again',
         sndHint: 'click the page (or press a key) once to hear it: browsers let a page play audio only after a click', drumsOn: '🥁 Drums', drumsOff: '🥁 Stop drums', fold: 'Fold the grid', closeDrums: 'Stop the drum machine', check: '🩺 Check',
         recOn: '⏺ Record', recStop: '⏹ Stop {t}', recStarting: '⏺ Starting…', recSaving: '⏺ Saving…', recTitle: "Record the canvas and the sketch's sound (MP4, ready for Instagram; the 🎹 and the cards stay out)",
-        recDot: 'Recording: click to stop', shot: '📷 Save image', shotTitle: 'Save the canvas as a PNG (without the 🎹 and the cards)', share: 'Share', download: 'Download' };
+        recDot: 'Recording: click to stop', shot: '📷 Save image', shotTitle: 'Save the canvas as a PNG (without the 🎹 and the cards)', share: 'Share', download: 'Download',
+        fromOAV: 'from the OAV drum machine (openaudiovisual.com)' };
 
   // ---------------------------------------------------------------- state the sketch reads
   function zeros(n) { var a = new Array(n); for (var i = 0; i < n; i++) a[i] = 0; return a; }
@@ -357,7 +364,7 @@
   function has(name) { return typeof g[name] === 'function' || subs[name].length > 0; }
   // the sketch's own error: show it like p5 would (the console, with its stack), keep the MIDI loop alive, and say it on
   // the page too (a hint with the file and line), because nobody watches the console while playing
-  var SKETCH_FNS = { beatDetected: 1, kickDetected: 1, snareDetected: 1, hatDetected: 1, drumHit: 1, barStarted: 1, stepStarted: 1, cueFired: 1, recordingSaved: 1 };
+  var SKETCH_FNS = { beatDetected: 1, kickDetected: 1, snareDetected: 1, hatDetected: 1, drumHit: 1, barStarted: 1, stepStarted: 1, cueFired: 1, recordingSaved: 1, rhythmChanged: 1 };
   EVENTS.forEach(function (k) { SKETCH_FNS[k] = 1; });
   function report(name, e) {
     var mine = SKETCH_FNS[name] === 1;
@@ -708,6 +715,12 @@
       preset: "節奏名稱要一字不差：startDrums('{preset}')。", empty: '至少寫一個鼓，例如 "bd*4"。', 'bad-number': '例如 "hh*8"、"bd@3"、"hh?0.3"。',
       dot: "休止用 ~ 或 -；一軌 16 格的 'x...' 要放進 { kick: 'x...' }。", other: '{hint}' },
     rhythmLost: { offGrid: '{n} 下不在 16 格上的音移到最近的格子', dropped: '格子沒有{voices}這幾軌，先拿掉', varied: '每小節輪替的部分只留第 {bar} 小節', none: '節奏一樣，之後照格子改', sep: '；' },
+    rhythmKeep: ['節奏字串第 {n} 個字有問題', '{line}\n{why}', '{fix}鼓機先照上一個能用的版本打。'],
+    rhythmLossy: ['格子寫不出這一行的全部', '這一行有格子表達不了的東西：{lost}。再點一次格子，就換成格子寫得出的寫法。', '換了以後，按鼓機卡上的 ↶（或 ⌘Z／Ctrl+Z）回到原本那一行。'],
+    rhythmLossyWhat: { offGrid: '{n} 下不在 16 格上的音（像三連音）', varies: '每小節不一樣的部分（< >、/2，只留第 {bar} 小節）', random: '? 的隨機', samples: 'bd:2 這種樣本編號', stacked: '同一格疊兩下', sep: '、' },
+    rhythmBank: ['{call} 先略過', 'OAV 的鼓機用自己合成的鼓組，沒有那組取樣音色；節奏照打。', '想聽那組音色：按鼓機卡上的「在 Strudel 打開」。'],
+    rhythmChain: ['{call} 這段 OAV 還不支援', 'OAV 讀 s("…")／sound("…") 裡的節奏和 .fast()、.slow()；其他的先略過，主體照打。', '按鼓機卡上的「在 Strudel 打開」，在那邊玩完整的寫法。'],
+    rhythmNoS: ['這段 Strudel 程式裡沒有鼓的節奏', '鼓機只讀 s("…") 或 sound("…") 裡的字串。', '寫成 startDrums(\'s("bd*4, hh*8")\')，或直接 startDrums("bd*4, hh*8")。鼓機先打 four on floor。'],
     moduleFail: ['{name} 載不到', '連不上 {host}。', '檢查網路，重新整理再試。'],
     recStart: ['開始錄影（{len}）', '只錄畫布和作品的聲音（{audio}）；🎹、鼓機格子和這些提示不會進影片。{micNote}', '{stop}'],
     recSaved: ['錄好了：{name}', '{format} · {dur} · {size} · {wh} · {sound}', '{next}'],
@@ -757,6 +770,12 @@
       preset: "Rhythm names are spelled exactly: startDrums('{preset}'). ", empty: 'Write at least one drum, e.g. "bd*4". ', 'bad-number': 'E.g. "hh*8", "bd@3", "hh?0.3". ',
       dot: "A rest is ~ or -; one lane of 16 steps, 'x...', goes inside { kick: 'x...' }. ", other: '{hint} ' },
     rhythmLost: { offGrid: '{n} hit(s) off the 16 steps moved to the nearest one', dropped: 'the grid has no lane for {voices}, so they are out', varied: 'what changed from bar to bar keeps bar {bar} only', none: 'the same rhythm, now on the cells', sep: '; ' },
+    rhythmKeep: ['The rhythm has a problem at character {n}', '{line}\n{why}', '{fix}The machine keeps playing the last line that worked.'],
+    rhythmLossy: ['The cells cannot hold all of this line', 'It has what 16 steps cannot write: {lost}. Click a cell again to rewrite it the way the grid can.', 'Afterwards ↶ on the drum card (or ⌘Z / Ctrl+Z) brings the original line back.'],
+    rhythmLossyWhat: { offGrid: '{n} hit(s) between the steps (a triplet)', varies: 'what changes from bar to bar (< >, /2: bar {bar} stays)', random: 'the chance of ?', samples: 'sample numbers like bd:2', stacked: 'two hits in one step', sep: ', ' },
+    rhythmBank: ['{call} is left out', "OAV's drum machine plays its own synthesized kit, not that sample bank; the rhythm plays.", 'To hear that bank: "Open in Strudel" on the drum card.'],
+    rhythmChain: ['OAV does not do {call} yet', 'It reads the rhythm in s("…") / sound("…") with .fast() and .slow(); the rest is left out and the main line plays.', 'Press "Open in Strudel" on the drum card and play the whole thing there.'],
+    rhythmNoS: ['No drum rhythm in this Strudel code', 'The machine reads the text inside s("…") or sound("…").', 'Write startDrums(\'s("bd*4, hh*8")\'), or just startDrums("bd*4, hh*8"). \'four on floor\' plays meanwhile.'],
     moduleFail: ['{name} did not load', 'No connection to {host}.', 'Check the network and reload.'],
     recStart: ['Recording ({len})', "The canvas and the sketch's sound only ({audio}); the 🎹, the drum grid and these cards stay out of the video. {micNote}", '{stop}'],
     recSaved: ['Saved: {name}', '{format} · {dur} · {size} · {wh} · {sound}', '{next}'],
@@ -1018,7 +1037,7 @@
   // ?oav_drums=frame is 0.5's machine, moved by the frames (the safety net for a class).
   var DRUM_CB = { kick: 'kickDetected', snare: 'snareDetected', clap: 'snareDetected', rim: 'snareDetected', hat: 'hatDetected', openhat: 'hatDetected', pedalhat: 'hatDetected' };
   var DRUM_BEAT = { kick: 1, snare: 1, clap: 1, rim: 1 };   // what a microphone would call a beat: the kick and the snare family
-  var drumSubs = { hit: [], step: [], bar: [], cue: [] };
+  var drumSubs = { hit: [], step: [], bar: [], cue: [], rhythm: [] };
   var drumBus = bus(), drumsMod = null, drumsModP = null, kit = null, kitStarted = false, machineP = null, drumsWanted = false;
   var drumBeatAt = -1, drumLoop = false, drumCard = null, drumBtn = null, drumReq = 0, patternModP = null, rhythms = {}, preDraw = '';
   var cues = [];
@@ -1027,7 +1046,7 @@
     step: 0, bar: 0, count: -1, bpm: 112, pattern: 'four on floor', lastCue: '', cues: cues, machine: null,
     start: function (pattern, bpm) { return startDrums(pattern, bpm); }, stop: function () { return stopDrums(); },
     cue: function (bar, name, every) { return addCue(bar, name, every); },
-    /** drums.on('hit' | 'step' | 'bar' | 'cue', fn) → off(): what the callbacks hear, for Hydra and libraries */
+    /** drums.on('hit' | 'step' | 'bar' | 'cue' | 'rhythm', fn) → off(): what the callbacks hear, for Hydra and libraries */
     on: function (name, fn) {
       if (!drumSubs[name]) throw new Error('[oav-p5] unknown drums event "' + name + '" (' + Object.keys(drumSubs).join(', ') + ')');
       drumSubs[name].push(fn);
@@ -1041,6 +1060,22 @@
     get clock() { var m = drums.machine; var i = m && m.info ? m.info() : { clock: O.drums, heartbeat: 'none' }; i.preDraw = preDraw; return i; },
     _step: function (i, n, ev) { drumStepped(i, n, ev); }, _hit: function (lane, v) { drumHitIn(lane, v); },   // for tests
     _resolve: function (p) { return resolvePattern(p); },
+    _rhythm: function (src, info) { rhythmChangedIn(src, info); }, _lossy: function (info) { lossyHint(info); }, _edit: function (err, text) { editHint(err, text); },
+    // ---- 0.7: the line and the cells edit each other
+    /** the line that plays now ('bd*4, [~ sd]*2, hh*8'; a preset's grid as its line; '' before the drums and @openav/pattern load) */
+    get src() { var m = drums.machine; return m && m.src ? m.src() : ''; },
+    /** the line as a strudel.cc link (open it in a new tab); '' when there is none */
+    get strudelUrl() { var m = drums.machine; return m && m.strudelUrl ? m.strudelUrl() : ''; },
+    /** earlier lines, oldest first: every click on a cell, line typed, or menu pick leaves the one before here */
+    get history() { var m = drums.machine; return m && m.history ? m.history : []; },
+    /** back one line (↶ on the card, ⌘Z / Ctrl+Z after touching the card) → true if there was one */
+    undo: function () { var m = drums.machine; return !!(m && m.undo && m.undo()); },
+    /** play a line as if it was typed on the card → { ok, error }; a mistake keeps the last line that worked playing */
+    edit: function (text) { var m = drums.machine; return m && m.edit ? m.edit(text) : { ok: false, error: null }; },
+    /** what Copy puts on the clipboard: startDrums("…", bpm) */
+    get copyText() { var m = drums.machine; return m && m.copyText ? m.copyText() : ''; },
+    /** drawRhythm(x, y, w, h, style, options) as a method */
+    draw: function (x, y, w, h, style, o) { return drawRhythm(x, y, w, h, style, o); },
   };
   midi.drums = drums;
   function drumEmit(kind, cb, args) {
@@ -1137,9 +1172,14 @@
       var m = drumsMod.mountDrums(host, { signals: drumBus, engine: k, autoEnableEngine: false, onStep: drumStepped, bpm: drums.bpm,
         pattern: typeof drums.pattern === 'string' && !drumsMod.PATTERNS[drums.pattern] ? 'four on floor' : drums.pattern,
         clock: O.drums === 'frame' ? 'frame' : 'lookahead', lang: zh ? 'zh' : 'en', latency: O.drumlatency,
-        onHit: function (voice, v) { drumHitIn(voice, v); }, onTakeover: takeoverHint });
+        onHit: function (voice, v) { drumHitIn(voice, v); }, onTakeover: takeoverHint,
+        onRhythm: rhythmChangedIn, onLossy: lossyHint, onEditError: editHint, strudelComment: T.fromOAV,
+        copyText: function (line, bpm) { return 'startDrums(' + JSON.stringify(line) + (bpm ? ', ' + Math.round(bpm * 100) / 100 : '') + ')'; } });
       drums.machine = m;
       if (O.drums !== 'frame') hookPreDraw();
+      // the line over the grid and its editing come with @openav/pattern: for a preset too, so its grid shows as the line
+      // it is (a few KB, loaded beside the drums; if it cannot load, the grid works as in 0.6)
+      if (m.useRhythm) loadPattern().then(function (pm) { if (pm && pm.fromGrid) m.useRhythm(pm); }, function () { /* the grid alone, as 0.6 */ });
       return m;
     }).then(null, function (e) {
       machineP = null; setDrums('error');
@@ -1161,7 +1201,7 @@
     return patternModP;
   }
   var CLOSE = { '[': ']', '<': '>', '(': ')', '{': '}' };
-  function rhythmHint(text, err) {
+  function rhythmWords(text, err) {
     err = err || {};
     var code = String(err.code || ''), idx = Math.max(0, Math.min(text.length, err.index | 0)), len = Math.max(0, err.length | 0);
     var word = text.slice(idx, idx + Math.max(1, len)), ch = text.charAt(idx) || text.charAt(text.length - 1) || '';
@@ -1170,7 +1210,30 @@
     if (code === 'unclosed' && !CLOSE[ch]) { for (var j = idx; j >= 0; j--) if (CLOSE[text.charAt(j)]) { ch = text.charAt(j); break; } }
     var o = { n: idx + 1, ch: ch, word: word, close: CLOSE[ch] || ']', msg: err.message || code || '?', hint: err.hint || '', preset: presetLike(text) };
     var fixKey = o.preset && (code === 'unknown-word' || key === 'other') ? 'preset' : H.rhythmFix[key] ? key : 'other';
-    hint('rhythm:' + text, 'rhythmBad', { n: o.n, line: '"' + line + '"', why: fill(H.rhythmWhy[key], o), fix: fill(H.rhythmFix[fixKey], o) }, 'warn');
+    return { n: o.n, line: '"' + line + '"', why: fill(H.rhythmWhy[key], o), fix: fill(H.rhythmFix[fixKey], o) };
+  }
+  function rhythmHint(text, err) { hint('rhythm:' + text, 'rhythmBad', rhythmWords(text, err), 'warn'); }
+  // typing on the card: one card that follows the line being typed (a new mistake replaces it, a fixed line takes it away)
+  function editHint(err, text) {
+    unhint('rhythmEdit');
+    for (var i = hintList.length - 1; i >= 0; i--) if (hintList[i].id === 'rhythmEdit') hintList.splice(i, 1);   // 🩺 lists the latest only
+    if (err) hint('rhythmEdit', 'rhythmKeep', rhythmWords(String(text || ''), err), 'warn');
+  }
+  // the first click on a line the 16 steps cannot hold: say what goes; the next click rewrites it (↶ brings it back)
+  function lossyHint(info) {
+    var W = H.rhythmLossyWhat, l = (info && info.lost) || {}, parts = [];
+    if (l.offGrid) parts.push(fill(W.offGrid, { n: l.offGrid }));
+    if (l.varies) parts.push(fill(W.varies, { bar: info.bar }));
+    if (l.random) parts.push(W.random);
+    if (l.samples) parts.push(W.samples);
+    if (l.stacked) parts.push(W.stacked);
+    hint('rhythmLossy:' + info.text, 'rhythmLossy', { lost: parts.join(W.sep) }, 'info');
+  }
+  // the line changed (startDrums, a click on a cell, a line typed, ↶, the menu): rhythmChanged(src, how) and drums.on('rhythm')
+  function rhythmChangedIn(src, info) {
+    var how = (info && info.how) || 'code';
+    if (how !== 'code') unhint('rhythmTakeover');
+    drumEmit('rhythm', 'rhythmChanged', [src, how]);
   }
   function takeoverHint(info) {
     var L = H.rhythmLost, parts = [];
@@ -1192,10 +1255,18 @@
       }
       if (rhythms[p]) return rhythms[p];
       return loadPattern().then(function (pm) {
-        var c = null;
-        try { c = pm.compile(p); } catch (e) { c = { ok: false, error: { code: 'other', index: 0, length: 0, message: String((e && e.message) || e) } }; }
-        if (!c || !c.ok || typeof c.eventsInBar !== 'function') { rhythmHint(p, c && c.error); return { pattern: 'four on floor' }; }
-        return (rhythms[p] = { pattern: c, text: p });
+        var c = null, text = p, bpm = null;
+        // copied from strudel.cc: s("…") / sound("…") with .fast / .slow; .bank and the rest are said on a card, the line plays
+        var st = typeof pm.fromStrudel === 'function' ? pm.fromStrudel(p) : null;
+        if (st && st.strudel) {
+          (st.ignored || []).forEach(function (call) { hint('rhythmBank:' + call, 'rhythmBank', { call: call }, 'info'); });
+          (st.unsupported || []).forEach(function (call) { hint('rhythmChain:' + call, 'rhythmChain', { call: call.length > 60 ? call.slice(0, 57) + '…' : call }, 'info'); });
+          if (!st.ok) { hint('rhythmNoS:' + p, 'rhythmNoS', null, 'warn'); return { pattern: 'four on floor' }; }
+          text = st.src; bpm = st.bpm;
+        }
+        try { c = pm.compile(text); } catch (e) { c = { ok: false, error: { code: 'other', index: 0, length: 0, message: String((e && e.message) || e) } }; }
+        if (!c || !c.ok || typeof c.eventsInBar !== 'function') { rhythmHint(text, c && c.error); return { pattern: 'four on floor' }; }
+        return (rhythms[p] = { pattern: c, text: text, bpm: bpm });
       }, function () {
         hint('modfail:pattern', 'moduleFail', { name: '@openav/pattern', host: hostOf(BASE) }, 'error');
         return { pattern: 'four on floor' };
@@ -1205,7 +1276,8 @@
   function startDrums(pattern, bpm) {
     if (typeof pattern === 'number' && bpm == null) { bpm = pattern; pattern = null; }
     if (pattern != null) drums.pattern = pattern;
-    if (bpm != null && +bpm > 0) drums.bpm = Math.max(30, Math.min(300, +bpm));
+    var bpmGiven = bpm != null && +bpm > 0;
+    if (bpmGiven) drums.bpm = Math.max(30, Math.min(300, +bpm));
     drumsWanted = true;
     var req = ++drumReq;
     return ensureMachine().then(function (m) {
@@ -1214,6 +1286,7 @@
         if (!drumsWanted) return false;
         if (req !== drumReq) return true;              // a later startDrums() is on its way: it decides what plays
         if (r && !(r.text && m.seq.mode === 'string' && m.seq.text === r.text)) m.setPattern(r.pattern, r.text ? { text: r.text } : undefined);
+        if (r && r.bpm > 0 && !bpmGiven) drums.bpm = Math.max(30, Math.min(300, r.bpm));   // setcpm(110/4) in the copied code
         m.setBpm(drums.bpm);
         showDrums(true);
         if (!m.seq.playing) m.play(true);
@@ -1267,6 +1340,131 @@
   }
   readerName('drumPhase', function () { return drumPhaseNow().bar; });
   readerName('beatPhase', function () { return drumPhaseNow().beat; });
+
+  // ---- drawRhythm(x, y, w, h, style): the rhythm drawn ON the canvas, so a recording (which takes the canvas alone) has it.
+  // 'grid' is the card's 16 steps with a playhead; 'circle' one ring of 16 per drum with a hand turned by drumPhase; 'spiral' the
+  // last few bars wound outwards, now at the tip. A hit lights up the moment it is heard (the same clock drumPhase reads), off-grid
+  // hits (triplets) sit where they fall. Drawn with p5's own shapes inside push() / pop(), so 2D and WEBGL, p5 1.x and 2.x alike;
+  // in WEBGL (0, 0) is the middle of the canvas: drawRhythm(-width / 2, -height / 2, width, height) fills it.
+  var RHYTHM_COLORS = { kick: '#ff6b6b', snare: '#ffd166', hat: '#6fd3ff', clap: '#c792ff', openhat: '#7ff0c8', pedalhat: '#5fb4d9', rim: '#ffb38a',
+    lowtom: '#f08bd0', tom: '#e57bff', hightom: '#b18cff', crash: '#ffa94d', ride: '#a0e7a0', cowbell: '#f2e394' };
+  var RHYTHM_LANES = ['kick', 'snare', 'hat', 'clap'];
+  var rhythmRows = { key: null, rows: RHYTHM_LANES };
+  /** the drums as drawRhythm needs them: rows (voices that play), bar (1-based), phase 0..1, pos (bars since the start), events(bar) */
+  function rhythmState() {
+    var m = drums.machine, ph = drumPhaseNow(), pos = ph && ph.pos != null ? +ph.pos || 0 : 0;
+    var events = function (b) { try { return m && m.barEvents && b >= 1 ? m.barEvents(b) || [] : []; } catch (e) { return []; } };
+    var key = m ? (m.src ? m.src() : '') + '|' + (m.seq && m.seq.mode) + '|' + (m.seq && m.seq.pattern) : null;
+    if (key !== rhythmRows.key) {
+      var used = {}, rows = [], order = m && m.voices ? m.voices() : RHYTHM_LANES;
+      for (var b = 1; b <= 8; b++) events(b).forEach(function (e) { used[e.voice] = 1; });
+      order.forEach(function (v) { if (used[v]) rows.push(v); });
+      Object.keys(used).forEach(function (v) { if (rows.indexOf(v) < 0) rows.push(v); });
+      rhythmRows = { key: key, rows: rows.length ? rows : RHYTHM_LANES };
+    }
+    return { rows: rhythmRows.rows, pos: pos, bar: Math.floor(pos) + 1, phase: pos - Math.floor(pos), playing: drums.state === 'on', events: events };
+  }
+  function drawRhythm(x, y, w, h, style, opts) {
+    var P = g, gl = false;
+    if (typeof P.push !== 'function' || typeof P.rect !== 'function' || typeof P.color !== 'function') return false;   // no p5 (global mode) here
+    if (style && typeof style === 'object') { opts = style; style = opts.style; }
+    opts = opts || {};
+    style = style === 'circle' || style === 'spiral' ? style : 'grid';
+    try { gl = !!(P.drawingContext && typeof P.drawingContext.getParameter === 'function'); } catch (e) { /* */ }
+    var W = +P.width || 400, Hh = +P.height || 400;
+    if (x == null || y == null || w == null || h == null) {     // no box given: a strip along the bottom (grid), the middle (circle, spiral)
+      var side = Math.min(W, Hh) * 0.8;
+      if (style === 'grid') { x = W * 0.05; y = Hh * 0.8; w = W * 0.9; h = Hh * 0.15; } else { x = (W - side) / 2; y = (Hh - side) / 2; w = side; h = side; }
+      if (gl) { x -= W / 2; y -= Hh / 2; }
+    }
+    x = +x; y = +y; w = +w; h = +h;
+    if (!(w > 0) || !(h > 0)) return false;
+    var S = rhythmState();
+    P.push();
+    try {
+      P.colorMode(P.RGB, 255, 255, 255, 255);
+      P.rectMode(P.CORNER); P.ellipseMode(P.CENTER);
+      var cache = {};
+      var col = function (v) {
+        if (cache[v]) return cache[v];
+        var c = opts.color != null ? opts.color : opts.colors && opts.colors[v] != null ? opts.colors[v] : RHYTHM_COLORS[v] || '#cfd6e4';
+        return (cache[v] = P.color(c));
+      };
+      var fade = function (c, a) { return P.color(P.red(c), P.green(c), P.blue(c), P.alpha(c) * Math.max(0, Math.min(1, a))); };
+      var white = P.color(255);
+      var lit = function (c, k) { return k > 0 ? P.lerpColor(c, white, 0.65 * k) : c; };
+      var off = P.color(opts.off != null ? opts.off : 'rgba(255,255,255,0.10)');
+      var offBeat = P.color(P.red(off), P.green(off), P.blue(off), Math.min(255, P.alpha(off) * 1.8));   // the four beats a little brighter
+      var head = P.color(opts.playhead != null ? opts.playhead : '#ffffff');
+      // how lit a hit at bar-position t is now: 1 the moment it is heard, gone two 16ths later
+      var glow = function (t) { var a = (S.pos - t) * 16; return S.playing && a >= 0 && a < 2 ? 1 - a / 2 : 0; };
+      if (opts.bg != null) { P.noStroke(); P.fill(opts.bg); P.rect(x, y, w, h); }
+      var rows = S.rows, n = rows.length, base = S.bar - 1;
+      if (style === 'grid') {
+        var cw = w / 16, ch = h / n, gap = Math.max(1, Math.min(cw, ch) * 0.14);
+        P.noStroke();
+        for (var r = 0; r < n; r++) for (var i = 0; i < 16; i++) { P.fill(i % 4 === 0 ? offBeat : off); P.rect(x + i * cw + gap / 2, y + r * ch + gap / 2, cw - gap, ch - gap); }
+        S.events(S.bar).forEach(function (e) {
+          var r = rows.indexOf(e.voice); if (r < 0) return;
+          var k = glow(base + e.pos), grow = k * gap * 0.5;
+          P.fill(lit(col(e.voice), k));
+          P.rect(x + e.pos * w + gap / 2 - grow, y + r * ch + gap / 2 - grow, cw - gap + grow * 2, ch - gap + grow * 2);
+        });
+        if (S.playing && opts.playhead !== false) { P.stroke(head); P.strokeWeight(Math.max(1.5, cw * 0.08)); P.line(x + S.phase * w, y, x + S.phase * w, y + h); }
+      } else if (style === 'circle') {
+        var cx = x + w / 2, cy = y + h / 2, R = Math.min(w, h) / 2, r0 = R * 0.3, t = (R - r0) / n, TAU = Math.PI * 2, gapA = TAU / 16 * 0.12;
+        var sector = function (ri, ro, a0, a1) {
+          P.beginShape();
+          for (var k = 0; k <= 4; k++) { var a = a0 + (a1 - a0) * k / 4; P.vertex(cx + Math.cos(a) * ro, cy + Math.sin(a) * ro); }
+          for (k = 4; k >= 0; k--) { a = a0 + (a1 - a0) * k / 4; P.vertex(cx + Math.cos(a) * ri, cy + Math.sin(a) * ri); }
+          P.endShape(P.CLOSE);
+        };
+        P.noStroke();
+        for (var q = 0; q < n; q++) for (var j = 0; j < 16; j++) {
+          var a0 = -Math.PI / 2 + j * TAU / 16;
+          P.fill(j % 4 === 0 ? offBeat : off); sector(r0 + q * t + t * 0.08, r0 + (q + 1) * t - t * 0.08, a0 + gapA / 2, a0 + TAU / 16 - gapA / 2);
+        }
+        S.events(S.bar).forEach(function (e) {
+          var q = rows.indexOf(e.voice); if (q < 0) return;
+          var k = glow(base + e.pos), a0 = -Math.PI / 2 + e.pos * TAU, pad = t * (0.08 - 0.08 * k);
+          P.fill(lit(col(e.voice), k)); sector(r0 + q * t + pad, r0 + (q + 1) * t - pad, a0 + gapA / 2, a0 + TAU / 16 - gapA / 2);
+        });
+        if (opts.playhead !== false) {
+          var ah = -Math.PI / 2 + S.phase * TAU;
+          P.stroke(head); P.strokeWeight(Math.max(2, R * 0.02));
+          P.line(cx, cy, cx + Math.cos(ah) * R, cy + Math.sin(ah) * R);
+          P.noStroke(); P.fill(head); P.circle(cx, cy, Math.max(4, r0 * 0.35));
+        }
+      } else {
+        // a spiral punch card: each hit a short band along the spiral, one lane per drum, the turns one bar apart, now at the tip
+        var B = Math.max(1, Math.min(16, Math.round(+opts.bars || 4))), cx2 = x + w / 2, cy2 = y + h / 2, R2 = Math.min(w, h) / 2, rin = R2 * 0.14;
+        var first = Math.floor(S.pos) - B + 1, turn = (R2 - rin) / (B + 0.5), TAU2 = Math.PI * 2, band = turn / n;
+        var rad = function (tt) { return rin + (tt - first + 0.5) * turn; }, ang = function (tt) { return -Math.PI / 2 + (tt - Math.floor(tt)) * TAU2; };
+        var pt = function (tt, dr) { var a = ang(tt), r = rad(tt) + dr; return [cx2 + Math.cos(a) * r, cy2 + Math.sin(a) * r]; };
+        P.noFill(); P.stroke(off); P.strokeWeight(Math.max(1, turn * 0.04));
+        P.beginShape();
+        for (var u = first * 64; u <= (first + B) * 64; u++) { var g0 = pt(u / 64, -turn / 2); P.vertex(g0[0], g0[1]); }
+        P.endShape();
+        P.noStroke();
+        for (var bb = Math.max(1, first + 1); bb <= first + B; bb++) {
+          S.events(bb).forEach(function (e) {
+            var q = rows.indexOf(e.voice); if (q < 0) return;
+            var t0 = bb - 1 + e.pos, ahead = t0 > S.pos + 1e-9, k = glow(t0), age = (S.pos - t0) / B;
+            var mid = (q - (n - 1) / 2) * band, half = band * (0.36 + 0.14 * k), t1 = t0 + 1 / 16 - 1 / 160;
+            P.fill(fade(lit(col(e.voice), k), ahead ? 0.3 : 1 - 0.6 * Math.max(0, age)));
+            P.beginShape();
+            for (var z = 0; z <= 4; z++) { var o = pt(t0 + (t1 - t0) * z / 4, mid + half); P.vertex(o[0], o[1]); }
+            for (z = 4; z >= 0; z--) { var i2 = pt(t0 + (t1 - t0) * z / 4, mid - half); P.vertex(i2[0], i2[1]); }
+            P.endShape(P.CLOSE);
+          });
+        }
+        if (opts.playhead !== false) { var tip = pt(S.pos, 0); P.fill(head); P.circle(tip[0], tip[1], Math.max(5, Math.min(turn * 0.5, band * 1.6))); }
+      }
+    } catch (e) { report('drawRhythm', e); }
+    finally { P.pop(); }
+    return true;
+  }
+  FUNCS.drawRhythm = function (x, y, w, h, style, o) { return drawRhythm(x, y, w, h, style, o); };
 
   // ---------------------------------------------------------------- recording: the canvas and what the sketch sounds like, one file
   // ⏺ in the 🎹 panel, or startRecording(): the p5 canvas (the canvas alone, so the 🎹, the drum grid and the cards never show
@@ -2018,7 +2216,7 @@
       microphone: { state: mic.state, error: mic.error, level: Math.round(mic.level * 100) / 100, db: Math.round(mic.db), floor: Math.round(mic.floor), sensitivity: mic.sensitivity },
       midi: { webMidi: !!realRequest, hardware: midi.hardware, devices: midi.devices.slice(), last: midi.last ? { type: midi.last.type, value: midi.last.note != null ? midi.last.note : midi.last.cc, source: midi.last.source } : null },
       sound: { state: snd.state, instrument: snd.instrument, status: snd.status.state, error: snd.error },
-      drums: { state: drums.state, bar: drums.bar, bpm: drums.bpm, pattern: typeof drums.pattern === 'string' ? drums.pattern : 'custom', cues: cues.length, clock: drums.machine ? drums.clock : null },
+      drums: { state: drums.state, bar: drums.bar, bpm: drums.bpm, pattern: typeof drums.pattern === 'string' ? drums.pattern : 'custom', cues: cues.length, clock: drums.machine ? drums.clock : null, src: drums.src },
       wiring: wiringText(), own: own,
       hints: hintList.map(function (h) { return h.what; }),
     };
@@ -2033,7 +2231,7 @@
       C.midi + (zh ? '：' : ': ') + (realRequest ? st(midi.hardware === 'waiting' ? 'no device' : midi.hardware) + (midi.devices.length ? ' ' + midi.devices.join(', ') : '') : C.webMidiNo) +
         (r.midi.last ? ' · ' + C.last + ' ' + r.midi.last.type + ' ' + r.midi.last.value + ' ← ' + r.midi.last.source : ''),
       C.sound + (zh ? '：' : ': ') + st(snd.state) + (snd.instrument ? ' · ' + snd.instrument + '（' + st(r.sound.status) + '）' : '') + (snd.error ? ' · ' + snd.error : ''),
-      C.drums + (zh ? '：' : ': ') + st(drums.state) + (drums.state === 'on' ? ' · ' + fill(C.bar, { n: drums.bar }) + ' · ' + Math.round(drums.bpm) + ' bpm' : '') + (drums.machine ? ' · ' + clockText(drums.clock) : ''),
+      C.drums + (zh ? '：' : ': ') + st(drums.state) + (drums.state === 'on' ? ' · ' + fill(C.bar, { n: drums.bar }) + ' · ' + Math.round(drums.bpm) + ' bpm' : '') + (drums.machine ? ' · ' + clockText(drums.clock) : '') + (r.drums.src ? ' · "' + r.drums.src + '"' : ''),
       C.rec + (zh ? '：' : ': ') + (O.record === 'off' ? C.recOff : (rf.mp4 ? C.recMp4 : rf.webm ? C.recWebm : C.recNone) +
         (rf.mp4 || rf.webm ? ' · ' + O.recfps + ' fps · ' + fill(C.recMax, { m: fmtMin(O.reclimit) }) + (O.record === 'nomic' ? ' · ' + C.recNoMic : '') : '') +
         (record.state === 'on' ? ' · ' + C.recNow + ' ' + mmss(record.seconds) : '') +

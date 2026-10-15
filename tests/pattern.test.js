@@ -4,8 +4,8 @@
 // not a dependency of these tests. Euclidean rows are checked against Toussaint (2005) as well.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { compile, parse, WORDS, euclid } from '../packages/pattern/index.js';
-import { GM } from '../packages/drums/index.js';
+import { compile, parse, WORDS, euclid, fromGrid, toGrid, fromStrudel, toStrudel, strudelUrl, SHORT } from '../packages/pattern/index.js';
+import { GM, PATTERNS } from '../packages/drums/index.js';
 
 /** { voice: [pos…] } for one bar. */
 const byVoice = (src, bar = 1, opts) => {
@@ -464,3 +464,184 @@ test('strudel.cc difference: rotations of n steps or more wrap around in OAV', (
 for (const src of ['bd [sd', 'bd(3,8', '[bd sd', 'bd]', 'bd,', ',bd', 'bd,,sd', '[]', '<>', 'bd [] sd', 'bd*', 'bd(3)', 'bd(3,)', 'bd(,8)']) {
   test(`strudel.cc refuses ${JSON.stringify(src)}, so does OAV`, () => assert.equal(compile(src).ok, false));
 }
+
+// ------------------------------------------------------------------------------------------- 0.7: grid → line → grid
+const bitsOf = (s) => s.split('').map((c) => (c === 'x' || c === '1' ? 1 : 0));
+test('fromGrid: the five presets read the way a person writes them', () => {
+  const want = {
+    'four on floor': 'bd*4, [~ sd]*2, hh*8',
+    breakbeat: 'bd [~ ~ ~ bd] bd*2 ~, ~ sd ~ [sd ~ ~ sd], hh*8, ~ cp ~ ~',
+    'half time': 'bd ~ ~ bd, ~ sd, hh*8, ~ cp',
+    latin: 'bd(3,8,5), [~ sd] [~ sd ~ ~] [~ sd] [~ sd ~ ~], [hh ~ hh hh]*4',
+    sparse: 'bd ~ [~ bd] ~, [~ hh]*4, ~ cp',
+  };
+  for (const [name, line] of Object.entries(want)) {
+    assert.equal(fromGrid(PATTERNS[name]), line, name);
+    const back = toGrid(line);
+    assert.ok(back.exact, name);
+    for (const lane of ['kick', 'snare', 'hat', 'clap']) assert.deepEqual(back.grid[lane] || Array(16).fill(0), bitsOf(PATTERNS[name][lane]), `${name} ${lane}`);
+  }
+});
+test('fromGrid: steady hits *n, one hit per group [~ sd]*n, single hits on the coarsest grid, beat by beat otherwise', () => {
+  const one = (lane) => fromGrid({ kick: lane });
+  assert.equal(one('x...............'), 'bd');
+  assert.equal(one('x.......x.......'), 'bd*2');
+  assert.equal(one('xxxxxxxxxxxxxxxx'), 'bd*16');
+  assert.equal(one('........x.......'), '~ bd');
+  assert.equal(one('....x...........'), '~ bd ~ ~');
+  assert.equal(one('..x.............'), '[~ bd] ~ ~ ~');
+  assert.equal(one('...x............'), '[~ ~ ~ bd] ~ ~ ~');
+  assert.equal(one('x...........x...'), 'bd ~ ~ bd');
+  assert.equal(one('..x...x...x...x.'), '[~ bd]*4');
+  assert.equal(one('.x.x.x.x.x.x.x.x'), '[~ bd]*8');
+  assert.equal(one('...x...x...x...x'), '[~ ~ ~ bd]*4');
+  assert.equal(one('x.x.............'), 'bd*2 ~ ~ ~');
+  assert.equal(one('xxxx....x.......'), 'bd*4 ~ bd ~');
+  assert.equal(one('x.......x.x.....'), 'bd ~ bd*2 ~');
+  assert.equal(one('.x.x............'), '[~ bd ~ bd] ~ ~ ~');
+});
+test('fromGrid: a Euclidean rhythm is written as one, rotation r = starts r steps later (as strudel.cc plays it)', () => {
+  assert.equal(fromGrid({ kick: 'x.....x.....x...' }), 'bd(3,8)');
+  assert.equal(fromGrid({ kick: 'x...x.....x.....' }), 'bd(3,8,2)');       // strudel.cc: bd(3,8,2) → 0, 2/8, 5/8
+  assert.equal(fromGrid({ kick: '..x.....x.....x.' }), 'bd(3,8,1)');       // strudel.cc: bd(3,8,1) → 1/8, 4/8, 7/8
+  assert.equal(fromGrid({ kick: 'x.xx.xx.x.xx.xx.' }), 'bd(5,8)*2');
+  assert.equal(fromGrid({ kick: 'x..x..x.x..x..x.' }), 'bd(3,8)*2');
+  assert.equal(fromGrid({ kick: 'x....x....x.....' }), 'bd(3,16)');
+  for (let r = 0; r < 8; r++) {
+    const lane = euclid(5, 8, r).flatMap((b) => [b ? 1 : 0, 0]);
+    assert.equal(fromGrid({ kick: lane }), `bd(5,8${r ? ',' + r : ''})`, `E(5,8,${r})`);
+  }
+  assert.equal(fromGrid({ kick: 'x.......x.......' }), 'bd*2', 'two hits are not "Euclidean": steady wins');
+  assert.equal(fromGrid({ hat: 'xxx.xxx.xxx.xxx.' }), '[hh hh hh ~]*4', 'no Euclid on 4 slots: four steps read better');
+});
+test('fromGrid: lanes in order, words kept, words or voices as lanes, empty lanes out, nothing → "~", never throws', () => {
+  assert.equal(fromGrid({ hat: 'x.x.x.x.x.x.x.x.', kick: 'x...x...x...x...' }), 'hh*8, bd*4', 'the grid\'s own order');
+  assert.equal(fromGrid({ hat: 'x.x.x.x.x.x.x.x.', kick: 'x...x...x...x...' }, { order: ['kick'] }), 'bd*4, hh*8');
+  assert.equal(fromGrid({ bd: 'x...x...x...x...', sn: '....x.......x...' }), 'bd*4, [~ sd]*2');
+  assert.equal(fromGrid({ kick: 'x...x...x...x...', snare: '....x.......x...' }, { words: { kick: 'kick', snare: 'sn' } }), 'kick*4, [~ sn]*2');
+  assert.equal(fromGrid({ kick: 'x...', snare: '', crash: [1], nonsense: 'xxxx' }), 'bd, cr');
+  assert.equal(fromGrid({ kick: [true, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, 0, 0, 1, 0, 0, 0] }), 'bd*4', 'true, 1 and a velocity count as hits');
+  assert.equal(fromGrid({}), '~');
+  assert.equal(fromGrid({ kick: '................' }), '~');
+  assert.equal(fromGrid(null), '~');
+  assert.ok(compile('~').ok, '"~" compiles (and plays nothing)');
+  assert.equal(fromGrid({ ride: 'x..x..x..x..' }, { steps: 12 }), 'rd*4');
+  assert.equal(fromGrid({ kick: 'x.x.x...' }, { steps: 8 }), 'bd bd bd ~');
+  for (const v of Object.keys(SHORT)) assert.equal(WORDS[SHORT[v]], v, `${SHORT[v]} is ${v}`);
+});
+
+// property test: a thousand grids, each written out and read back
+function rng(seed) { return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function randomLane(R, steps) {
+  const kind = R();
+  if (kind < 0.4) { const d = R(); return Array.from({ length: steps }, () => (R() < d ? 1 : 0)); }
+  if (kind < 0.7) {                                         // a short figure repeated: what people click
+    const ps = [1, 2, 4, 8, 16].filter((p) => steps % p === 0 && p <= steps), p = ps[Math.floor(R() * ps.length)];
+    const seg = Array.from({ length: p }, () => (R() < 0.45 ? 1 : 0));
+    return Array.from({ length: steps }, (_, i) => seg[i % p]);
+  }
+  const ns = [4, 8, 16].filter((n) => steps % n === 0), n = ns[Math.floor(R() * ns.length)] || steps;
+  const e = euclid(Math.floor(R() * (n + 1)), n, Math.floor(R() * n)), s = steps / n;
+  return Array.from({ length: steps }, (_, i) => (i % s === 0 && e[i / s] ? 1 : 0));
+}
+function roundTrip(R, steps) {
+  const voices = ['kick', 'snare', 'hat', 'clap'];
+  for (const extra of ['openhat', 'rim', 'lowtom', 'tom', 'hightom', 'crash', 'ride', 'cowbell', 'pedalhat']) if (R() < 0.12) voices.push(extra);
+  const grid = {};
+  for (const v of voices) grid[v] = randomLane(R, steps);
+  const line = fromGrid(grid, { steps });
+  const c = compile(line);
+  assert.ok(c.ok, `${line}: ${JSON.stringify(c.error)}`);
+  const back = toGrid(c, { steps });
+  assert.ok(back.exact, `${line} should fit the grid exactly: ${JSON.stringify(back.lost)}`);
+  for (const v of voices) assert.deepEqual(back.grid[v] || Array(steps).fill(0), grid[v], `${v} of ${JSON.stringify(grid)} → ${line}`);
+  for (const v of Object.keys(back.grid)) assert.ok(voices.includes(v), `no stray ${v}`);
+  // what the drum machine hears from it is the same in every bar
+  for (const bar of [2, 7]) assert.deepEqual(c.eventsInBar(bar).map((e) => e.voice + e.pos), c.eventsInBar(1).map((e) => e.voice + e.pos));
+  return line;
+}
+test('fromGrid round trip: 1000 random 16-step grids → line → compile → the same 16 steps', () => {
+  const R = rng(20261015), lines = new Set();
+  for (let i = 0; i < 1000; i++) lines.add(roundTrip(R, 16));
+  assert.ok(lines.size > 900, 'the generator really varies');
+});
+test('fromGrid round trip: other step counts (8, 12, 32)', () => {
+  const R = rng(7);
+  for (const steps of [8, 12, 32]) for (let i = 0; i < 150; i++) roundTrip(R, steps);
+});
+
+test('toGrid: exact for a line the grid holds; says what it cannot hold', () => {
+  const a = toGrid('bd*4, [~ sd]*2, hh*8');
+  assert.equal(a.exact, true);
+  assert.deepEqual(a.grid.snare, bitsOf('....x.......x...'));
+  assert.deepEqual(a.voices, ['kick', 'snare', 'hat']);
+  assert.deepEqual(a.words, { kick: 'bd', snare: 'sd', hat: 'hh' });
+  assert.equal(toGrid('[sd sd sd]*2').lost.offGrid, 4, 'triplets: 4 of the 6 are between steps');
+  assert.equal(toGrid('<bd sd>').lost.varies, true);
+  assert.equal(toGrid('bd/2').lost.varies, true);
+  assert.equal(toGrid('hh*8?').lost.random, true);
+  assert.equal(toGrid('bd:2 sd').lost.samples, true);
+  assert.equal(toGrid('[bd, bd]').lost.stacked, 1);
+  assert.equal(toGrid('kick*4, sn').words.snare, 'sn', 'the words the line used');
+  const b = toGrid('<bd sd>', { bar: 2 });
+  assert.deepEqual(b.grid.snare, bitsOf('x...............'));
+  assert.deepEqual(b.grid.kick, Array(16).fill(0), 'every voice of the line has a lane, even one silent in this bar');
+  assert.equal(toGrid('bd [').ok, false);
+  assert.equal(toGrid(compile('bd(3,8)')).exact, true, 'a compiled pattern works too');
+});
+
+// ------------------------------------------------------------------------------------------- 0.7: Strudel ↔ OAV
+test('fromStrudel: s("…"), sound("…"), single quotes and backticks', () => {
+  for (const code of ['s("bd*4, hh*8")', 'sound("bd*4, hh*8")', "s('bd*4, hh*8')", 's(`bd*4, hh*8`)', '  s ( "bd*4, hh*8" ) ;', '$: s("bd*4, hh*8")']) {
+    const r = fromStrudel(code);
+    assert.equal(r.strudel, true, code);
+    assert.equal(r.src, 'bd*4, hh*8', code);
+    assert.deepEqual([...r.unsupported, ...r.ignored], [], code);
+  }
+  assert.equal(fromStrudel('s(`bd*4,\n   hh*8`)'.replace('\\n', '\n')).src, 'bd*4, hh*8', 'a line break inside backticks is a space');
+});
+test('fromStrudel: .fast(n) / .slow(n) fold into the line; .bank is ignored; anything else is unsupported, the rest plays', () => {
+  assert.equal(fromStrudel('s("bd*4, [~ sd]*2").fast(2)').src, '[bd*4, [~ sd]*2]*2');
+  assert.equal(fromStrudel('s("bd sd").slow(2)').src, '[bd sd]/2');
+  assert.equal(fromStrudel('s("bd sd").fast(3).slow(2)').src, '[bd sd]*1.5');
+  assert.equal(fromStrudel('s("bd sd").fast("2")').src, '[bd sd]*2');
+  assert.equal(fromStrudel('s("bd sd").fast(2).slow(2)').src, 'bd sd');
+  const r = fromStrudel('s("bd*4").bank("RolandTR909").jux(rev).every(4, x => x.fast(2))\n  .gain(.8)');
+  assert.equal(r.src, 'bd*4');
+  assert.deepEqual(r.ignored, ['.bank("RolandTR909")']);
+  assert.deepEqual(r.unsupported, ['.jux(rev)', '.every(4, x => x.fast(2))', '.gain(.8)']);
+  assert.deepEqual(fromStrudel('s("bd").fast("<1 2>")').unsupported, ['.fast("<1 2>")'], 'a patterned speed is not a number');
+  assert.equal(compile(fromStrudel('s("bd*4, [~ sd]*2").fast(2)').src).ok, true);
+});
+test('fromStrudel: tempo from setcps / setcpm; several patterns are layers; other statements are unsupported', () => {
+  assert.equal(fromStrudel('setcpm(110/4)\ns("bd*4")').bpm, 110);
+  assert.equal(fromStrudel('setcps(0.5)\ns("bd*4")').bpm, 120);
+  assert.equal(fromStrudel('setcps(110/60/4); s("bd*4")').bpm, 110);
+  assert.equal(fromStrudel('s("bd*4")').bpm, null);
+  const r = fromStrudel('// my beat\nsamples("github:tidalcycles/dirt-samples")\n$: s("bd*4")\nhats: s("hh*8").slow(2)\nnote("c e g").s("piano")');
+  assert.equal(r.src, 'bd*4, [hh*8]/2');
+  assert.deepEqual(r.unsupported, ['samples("github:tidalcycles/dirt-samples")', 'note("c e g").s("piano")']);
+  assert.equal(fromStrudel('note("c e g")').strudel, false, 'no s(…) at all: not a drum line');
+});
+test('fromStrudel: mini-notation and names are not Strudel code; never throws', () => {
+  for (const x of ['bd*4, [~ sd]*2, hh*8', 'breakbeat', 'bd(3,8)', '', null, 'x...x...', 'hs(3,8)', 's("', 's(")', 's("bd").fast(', '`']) {
+    const r = fromStrudel(x);
+    assert.equal(typeof r.strudel, 'boolean', String(x));
+    if (r.strudel) assert.equal(r.ok, !!r.src);
+  }
+  assert.equal(fromStrudel('bd*4, hh*8').strudel, false);
+  assert.equal(fromStrudel('s("bd*4"').ok, false, 'not closed: nothing to play');
+});
+test('toStrudel / strudelUrl: Strudel\'s drum names, setcpm(bpm/4), the address-bar format strudel.cc uses', () => {
+  // the two links observed in strudel.cc's address bar on 2026-10-15 (field note §6)
+  assert.equal(strudelUrl('bd*4, [~ sd]*2, hh*8'), 'https://strudel.cc/#cygiYmQqNCwgW34gc2RdKjIsIGhoKjgiKQ%3D%3D');
+  assert.equal(strudelUrl('bd*4, [~ sd]*2, hh*8', { comment: '鼓機：OAV' }), 'https://strudel.cc/#Ly8g6byT5qmf77yaT0FWCnMoImJkKjQsIFt%2BIHNkXSoyLCBoaCo4Iik%3D');
+  assert.equal(toStrudel('kick*4, [~ snare]*2, hat*8, pedalhat:3 openhat', { bpm: 110 }), 'setcpm(110/4)\ns("bd*4, [~ sd]*2, hh*8, hh:3 oh")');
+  assert.equal(toStrudel('bd(3,8,10), [hh sd](5,16,-17)'), 's("bd(3,8,2), [hh sd](5,16,15)")', 'a rotation of n or more: the one OAV plays');
+  assert.equal(toStrudel('bd [', { bpm: 0 }), 's("bd [")', 'a broken line goes as it is');
+  const url = strudelUrl('bd*4', { bpm: 112.5, comment: 'from the OAV drum machine' });
+  const code = new TextDecoder().decode(Uint8Array.from(atob(decodeURIComponent(url.split('#')[1])), (c) => c.charCodeAt(0)));
+  assert.equal(code, '// from the OAV drum machine\nsetcpm(112.5/4)\ns("bd*4")');
+  assert.equal(fromStrudel(code).src, 'bd*4', 'and back');
+  assert.equal(fromStrudel(code).bpm, 112.5);
+});

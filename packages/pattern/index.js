@@ -20,6 +20,12 @@
 //   at(t)       the events that are SOUNDING at instant t  (what a Euclidean pulse picks up)
 // The second one is why "[bd sd](3,8)" plays bd bd sd: each pulse takes whatever the bracket is
 // playing at that moment, which is what strudel.cc does.
+//
+// Since 0.7 the way back too (the drum card's cells and its line edit each other):
+//   fromGrid({ kick: 'x...x...x...x...', snare: … })  → 'bd*4, [~ sd]*2'   (a line a person would write)
+//   toGrid('bd(3,8), hh*8', { bar: 1 })              → { grid, exact, lost }  (what the 16 steps can hold)
+//   fromStrudel('s("bd*4").fast(2)')                  → { src: '[bd*4]*2', … }  (a line copied from strudel.cc)
+//   toStrudel / strudelUrl(src, { bpm })              → the same line, opened in strudel.cc
 
 /** Drum words → kit voices of @openav/drums (its `GM` names). Tidal/Strudel short names plus OAV's own names. */
 export const WORDS = Object.freeze({
@@ -531,3 +537,336 @@ export function compile(src, { words = WORDS } = {}) {
     return failed({ code: 'internal', index: 0, length: Math.max(1, src.length), message: `Could not read the pattern (${e && e.message}).`, hint: 'Try a simpler pattern, like "bd sd"' });
   }
 }
+
+// ---------------------------------------------------------------------------------------------- grid ↔ line (0.7)
+// A click on the drum card's grid rewrites the line, so the grid needs a way back to text that a person would have written:
+// steady hits as "bd*4" / "hh*8", one hit per beat-group as "[~ sd]*2", a Euclidean rhythm as "bd(3,8)" (rotation r = starts
+// r steps later, as strudel.cc plays it), anything else beat by beat ("bd [~ ~ ~ bd] bd*2 ~"). Each rule is exact, and
+// tests/pattern.test.js checks compile(fromGrid(g)) against g for a thousand random grids.
+
+/** Kit voice → the short word Tidal / Strudel write for it (pedalhat has none: OAV's own word). */
+export const SHORT = Object.freeze({ kick: 'bd', snare: 'sd', hat: 'hh', openhat: 'oh', clap: 'cp', rim: 'rim', lowtom: 'lt', tom: 'mt',
+  hightom: 'ht', crash: 'cr', ride: 'rd', cowbell: 'cb', pedalhat: 'pedalhat' });
+
+const divisors = (n) => { const out = []; for (let d = 1; d <= n; d++) if (n % d === 0) out.push(d); return out; };
+const hit = (c) => (typeof c === 'number' ? c > 0 : c === true || c === '1' || c === 'x' || c === 'X');
+/** a lane as written anywhere in OAV ('x...x...', '1000…', [1, 0, true…]) → `steps` 0/1 */
+function laneBits(v, steps) {
+  const src = Array.isArray(v) ? v : typeof v === 'string' ? v.replace(/[\s|]/g, '').split('') : [];
+  const out = [];
+  for (let i = 0; i < steps; i++) out.push(hit(src[i]) ? 1 : 0);
+  return out;
+}
+/** the shortest p (dividing the length) the lane repeats after */
+function smallestPeriod(bits) {
+  const n = bits.length;
+  for (const p of divisors(n)) if (bits.every((b, i) => b === bits[i % p])) return p;
+  return n;
+}
+/** the fewest even slots that still hold every hit: 'x...x...' needs 2, 'x..x' needs 4 */
+function coarsest(bits) {
+  const n = bits.length;
+  for (const d of divisors(n)) { const s = n / d; if (bits.every((b, i) => !b || i % s === 0)) return d; }
+  return n;
+}
+const slots = (bits, d) => { const s = bits.length / d; return Array.from({ length: d }, (_, j) => bits[j * s]); };
+const count = (bits) => bits.reduce((a, b) => a + b, 0);
+/** "bd(3,8)" / "bd(5,16,2)" when the hits are a Euclidean rhythm on 8 or 16 even slots (3 or more hits, not all of them) */
+function euclidText(word, bits) {
+  for (const n of divisors(bits.length)) {
+    if (n < 8) continue;
+    const s = bits.length / n;
+    if (!bits.every((b, i) => !b || i % s === 0)) continue;
+    const want = slots(bits, n), k = count(want);
+    if (k < 3 || k >= n) continue;
+    for (let r = 0; r < n; r++) {
+      const e = euclid(k, n, r);
+      if (e.every((x, j) => (x ? 1 : 0) === want[j])) return `${word}(${k},${n}${r ? ',' + r : ''})`;
+    }
+  }
+  return null;
+}
+/** one beat (or any short group) as one step of a sequence: "~", "bd", "bd*2", "[~ bd]", "[bd ~ ~ bd]" */
+function groupText(word, bits) {
+  if (!count(bits)) return '~';
+  const d = coarsest(bits), t = slots(bits, d);
+  if (d === 1) return word;
+  if (t.every(Boolean)) return `${word}*${d}`;
+  return '[' + t.map((x) => (x ? word : '~')).join(' ') + ']';
+}
+/** the whole bar beat by beat (4 groups when the steps divide by 4) */
+function byBeat(word, bits) {
+  const n = bits.length, g = n % 4 === 0 ? 4 : n % 2 === 0 ? 2 : 1;
+  if (g === 1) { const d = coarsest(bits); return slots(bits, d).map((x) => (x ? word : '~')).join(' '); }
+  const L = n / g;
+  return Array.from({ length: g }, (_, k) => groupText(word, bits.slice(k * L, k * L + L))).join(' ');
+}
+/** one lane → one layer of the line (null when it never plays) */
+function laneText(word, bits) {
+  if (!count(bits)) return null;
+  const n = bits.length, p = smallestPeriod(bits), k = n / p, seg = bits.slice(0, p);
+  let unit, kind;
+  if (seg[0] && count(seg) === 1) { unit = word; kind = 'atom'; }
+  else if ((unit = euclidText(word, seg))) kind = 'atom';
+  else {
+    const d = coarsest(seg);
+    if (d <= 4) { unit = slots(seg, d).map((x) => (x ? word : '~')).join(' '); kind = 'flat'; }
+    else kind = 'complex';
+  }
+  if (kind === 'complex') return byBeat(word, bits);
+  if (k === 1) return unit;
+  return kind === 'atom' ? `${unit}*${k}` : `[${unit}]*${k}`;
+}
+
+/**
+ * A grid → one line of mini-notation that plays exactly it, written the way a person would.
+ *   fromGrid({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' }) → 'bd*4, [~ sd]*2, hh*8'
+ * grid: { lane: '…' | [0/1 …] } with kit voices (kick, snare…) or words (bd, sd…) as lanes; unknown lanes are left out.
+ * { steps = 16, words: { voice: word } (keep someone's own spelling, e.g. { kick: 'kick' }), order: [voices first, in this order] }.
+ * Lanes with no hit are left out; nothing at all is '~'. Never throws.
+ */
+export function fromGrid(grid, { steps = 16, words = null, order = null } = {}) {
+  steps = Math.max(1, Math.floor(+steps) || 16);
+  const lanes = new Map();
+  for (const key of Object.keys(grid || {})) {
+    const voice = WORDS[key] ?? WORDS[String(key).toLowerCase()];
+    if (!voice) continue;
+    const bits = laneBits(grid[key], steps), had = lanes.get(voice);
+    lanes.set(voice, had ? had.map((b, i) => b | bits[i]) : bits);
+  }
+  const keys = [...lanes.keys()];
+  const first = (order || []).map((v) => WORDS[v] ?? v).filter((v) => lanes.has(v));
+  const seq = [...new Set([...first, ...keys])];
+  const out = [];
+  for (const voice of seq) {
+    const word = (words && words[voice] && (WORDS[words[voice]] ?? WORDS[String(words[voice]).toLowerCase()]) === voice) ? words[voice] : SHORT[voice] || voice;
+    const t = laneText(word, lanes.get(voice));
+    if (t) out.push(t);
+  }
+  return out.length ? out.join(', ') : '~';
+}
+
+/**
+ * What one bar of a line looks like on a grid, and what the grid cannot hold.
+ *   toGrid('bd(3,8), [sd sd sd]*2', { bar: 1 }) → { ok, grid: { kick: [1,0,…], snare: […] }, words: { kick: 'bd' }, voices,
+ *     exact, lost: { offGrid, stacked, varies, random, samples } }
+ * p: a line or a compiled pattern. offGrid: hits that are not on a step (triplets), moved to the nearest one; stacked: two hits
+ * of one voice in one step; varies: other bars differ (< >, /2); random: "?"; samples: "bd:2" numbers. exact: none of these.
+ */
+export function toGrid(p, { bar = 1, steps = 16, seed = 0, bars = 16, words = WORDS } = {}) {
+  const c = typeof p === 'string' || p == null ? compile(p, { words }) : p;
+  steps = Math.max(1, Math.floor(+steps) || 16);
+  const lost = { offGrid: 0, stacked: 0, varies: false, random: false, samples: false };
+  const out = { ok: !!(c && c.ok), grid: {}, words: {}, voices: [], exact: false, lost };
+  if (!out.ok || typeof c.eventsInBar !== 'function') return out;
+  const blank = () => new Array(steps).fill(0);
+  for (const v of c.voices || []) out.grid[v] = blank();
+  const parsed = typeof c.src === 'string' ? parse(c.src) : { ok: false };
+  if (parsed.ok) {
+    const look = (node) => {
+      if (node.type === 'maybe') lost.random = true;
+      if (node.type === 'step') { const v = words[node.word] ?? words[node.word.toLowerCase()]; if (v && !(v in out.words)) out.words[v] = node.word; }
+      for (const s of node.steps || []) look(s.node);
+      for (const l of node.layers || []) look(l);
+      if (node.node) look(node.node);
+    };
+    look(parsed.tree);
+  }
+  const sig = (b) => c.eventsInBar(b, { seed }).map((e) => e.voice + '@' + e.pos.toFixed(7) + (e.n != null ? ':' + e.n : '')).join(',');
+  for (const e of c.eventsInBar(bar, { seed })) {
+    if (!out.grid[e.voice]) out.grid[e.voice] = blank();
+    if (!(e.voice in out.words)) out.words[e.voice] = e.word;
+    const x = e.pos * steps, r = Math.round(x), i = Math.min(steps - 1, r);
+    if (Math.abs(x - r) > 1e-6) lost.offGrid++;
+    if (out.grid[e.voice][i]) lost.stacked++;
+    out.grid[e.voice][i] = 1;
+    if (e.n != null) lost.samples = true;
+  }
+  const here = sig(bar), last = Math.max(1, Math.min(bars, c.period || 1, 64));
+  for (let b = 1; b <= last && !lost.varies; b++) if (b !== bar && sig(b) !== here) lost.varies = true;
+  for (let b = 1; b <= last && !lost.samples; b++) if (c.eventsInBar(b, { seed }).some((e) => e.n != null)) lost.samples = true;
+  out.voices = Object.keys(out.grid);
+  out.exact = !lost.offGrid && !lost.stacked && !lost.varies && !lost.random && !lost.samples;
+  return out;
+}
+
+// ---------------------------------------------------------------------------------------------- Strudel ↔ OAV (0.7)
+// Two independent programs that meet in text: a line copied out of strudel.cc goes into startDrums(), and the drum card opens
+// its line in strudel.cc (a new tab: https://strudel.cc/# + the URL-encoded base64 of the code, the format its address bar
+// shows). One OAV bar is one Strudel cycle of four beats, so a tempo of b bpm is setcpm(b/4) there (strudel.cc's docs:
+// "To set a specific bpm, use setcpm(bpm/bpc)", bpc = beats per cycle). No Strudel code runs or ships here.
+
+const STRUDEL_NAME = Object.freeze({ ...SHORT, pedalhat: 'hh' });
+
+/** a number written in code: 2, 1.5, 110/4, 110/60/4 (only digits, . * / ( ) and spaces; anything else → NaN) */
+function arithmetic(s) {
+  s = String(s).trim().replace(/^["'`]\s*|\s*["'`]$/g, '');
+  if (!/^[\d.\s*/()+-]+$/.test(s)) return NaN;
+  let i = 0;
+  const ws = () => { while (s[i] === ' ') i++; };
+  const atom = () => {
+    ws();
+    if (s[i] === '(') { i++; const v = sum(); ws(); if (s[i] !== ')') throw 0; i++; return v; }
+    if (s[i] === '-') { i++; return -atom(); }
+    const m = /^\d+(\.\d+)?|^\.\d+/.exec(s.slice(i)); if (!m) throw 0; i += m[0].length; return Number(m[0]);
+  };
+  const prod = () => { let v = atom(); for (;;) { ws(); const c = s[i]; if (c !== '*' && c !== '/') return v; i++; const r = atom(); v = c === '*' ? v * r : v / r; } };
+  const sum = () => { let v = prod(); for (;;) { ws(); const c = s[i]; if (c !== '+' && c !== '-') return v; i++; const r = prod(); v = c === '+' ? v + r : v - r; } };
+  try { const v = sum(); ws(); return i === s.length && Number.isFinite(v) ? v : NaN; } catch (e) { return NaN; }
+}
+const fmtNum = (x) => String(Math.round(x * 1e6) / 1e6);
+
+/**
+ * Code copied from strudel.cc → the line OAV plays.
+ *   fromStrudel('setcpm(110/4)\ns("bd*4, [~ sd]*2").bank("RolandTR909").fast(2)')
+ *     → { strudel: true, ok: true, src: '[bd*4, [~ sd]*2]*2', bpm: 110, ignored: ['.bank("RolandTR909")'], unsupported: [] }
+ * Reads s("…") / sound("…") with ", ' or ` quotes (several of them, $: or name: in front, are layers), then .fast(n) / .slow(n);
+ * .bank(…) is `ignored` (OAV's kit is its own); any other call in the chain or statement is `unsupported` (the rest plays);
+ * setcps(x) / setcpm(x) give `bpm` (x·240 / x·4). Text that is no s(…) at all → { strudel: false }. Never throws.
+ */
+export function fromStrudel(code) {
+  code = code == null ? '' : String(code);
+  const none = { strudel: false, ok: false, src: '', bpm: null, ignored: [], unsupported: [] };
+  if (!/(^|[\s;:({,])(s|sound)\s*\(\s*["'`]/.test(code)) return none;
+  const out = { strudel: true, ok: false, src: '', bpm: null, ignored: [], unsupported: [] };
+  const layers = [];
+  let i = 0;
+  const n = code.length;
+  const skip = () => {
+    for (;;) {
+      while (i < n && /[\s;]/.test(code[i])) i++;
+      if (code.startsWith('//', i)) { while (i < n && code[i] !== '\n') i++; continue; }
+      if (code.startsWith('/*', i)) { const e = code.indexOf('*/', i + 2); i = e < 0 ? n : e + 2; continue; }
+      return;
+    }
+  };
+  const str = () => {                       // a quoted string at i → its text (i after the closing quote), or null
+    const q = code[i];
+    if (q !== '"' && q !== "'" && q !== '`') return null;
+    let j = i + 1, t = '';
+    while (j < n && code[j] !== q) { if (code[j] === '\\' && j + 1 < n) { t += code[j + 1]; j += 2; } else t += code[j++]; }
+    if (j >= n) return null;
+    i = j + 1; return t;
+  };
+  const args = () => {                      // at "(": the text inside the balanced parentheses (i after ")"), or null
+    if (code[i] !== '(') return null;
+    let depth = 0, j = i;
+    for (; j < n; j++) {
+      const c = code[j];
+      if (c === '"' || c === "'" || c === '`') { const save = i; i = j; if (str() == null) { i = save; return null; } j = i - 1; i = save; continue; }
+      if (c === '(') depth++;
+      else if (c === ')' && --depth === 0) break;
+    }
+    if (j >= n) return null;
+    const inner = code.slice(i + 1, j); i = j + 1; return inner;
+  };
+  const ident = () => { const m = /^[A-Za-z_$][\w$]*/.exec(code.slice(i)); if (!m) return null; i += m[0].length; return m[0]; };
+  const restOfStatement = (from) => {        // an unsupported statement: skip it (balanced) to the end of its line
+    let depth = 0;
+    while (i < n) {
+      const c = code[i];
+      if (c === '"' || c === "'" || c === '`') { if (str() == null) i++; continue; }
+      if (c === '(' || c === '[' || c === '{') depth++;
+      else if (c === ')' || c === ']' || c === '}') depth--;
+      else if ((c === '\n' || c === ';') && depth <= 0) break;
+      i++;
+    }
+    return code.slice(from, i).trim();
+  };
+  while (skip(), i < n) {
+    const at = i;
+    const label = /^(\$|[A-Za-z_]\w*)\s*:(?!:)/.exec(code.slice(i));
+    if (label && !/^(https?|s|sound)$/.test(label[1])) { i += label[0].length; continue; }
+    const name = ident();
+    let inner;
+    if (name && /^set(cps|cpm)$/i.test(name) && (skip(), (inner = args()) != null)) {
+      const x = arithmetic(inner);
+      if (x > 0) out.bpm = /cps/i.test(name) ? x * 240 : x * 4; else out.unsupported.push(code.slice(at, i).trim());
+      continue;
+    }
+    if (name === 's' || name === 'sound') {
+      const save = i;
+      skip();
+      if (code[i] === '(') {
+        i++; skip();
+        const text = str();
+        skip();
+        if (text != null && code[i] === ')') {
+          i++;
+          let factor = 1;
+          for (;;) {
+            const before = i;
+            skip();
+            if (code[i] !== '.') { i = before; break; }
+            const callAt = i; i++;
+            const fn = ident(); skip();
+            const a = fn ? args() : null;
+            if (!fn || a == null) { i = callAt; out.unsupported.push(restOfStatement(callAt)); break; }
+            const call = code.slice(callAt, i).trim();
+            if (fn === 'bank') out.ignored.push(call);
+            else if ((fn === 'fast' || fn === 'slow') && arithmetic(a) > 0) factor *= fn === 'fast' ? arithmetic(a) : 1 / arithmetic(a);
+            else out.unsupported.push(call);
+          }
+          const body = text.replace(/\s+/g, ' ').trim();
+          if (body) {
+            const f = Math.round(factor * 1e9) / 1e9;
+            layers.push(f === 1 ? body : f > 1 ? `[${body}]*${fmtNum(f)}` : `[${body}]/${fmtNum(1 / f)}`);
+          }
+          continue;
+        }
+      }
+      i = save;
+    }
+    i = at;
+    const stmt = restOfStatement(at);
+    if (stmt) out.unsupported.push(stmt);
+    if (i === at) i++;                       // never stuck
+  }
+  out.src = layers.join(', ');
+  out.ok = !!out.src;
+  return out;
+}
+
+/** OAV's line → Strudel code: the words become Strudel's drum names (kick → bd), a tempo line (setcpm(bpm/4)) and a comment
+ *  line in front if given. toStrudel('kick*4, hh*8', { bpm: 110, comment: 'from OAV' }) → '// from OAV\nsetcpm(110/4)\ns("bd*4, hh*8")' */
+export function toStrudel(src, { bpm = null, comment = '', words = WORDS } = {}) {
+  src = src == null ? '' : String(src);
+  let line = src;
+  const parsed = parse(src);
+  if (parsed.ok) {
+    const cuts = [];
+    const walk = (node) => {
+      if (node.type === 'step') {
+        const v = words[node.word] ?? words[node.word.toLowerCase()];
+        const to = v && STRUDEL_NAME[v];
+        if (to && to !== node.word) cuts.push({ at: node.start, len: node.word.length, to });
+      }
+      // a rotation of n steps or more wraps around in OAV, and strudel.cc plays it unrotated: send the one OAV plays
+      if (node.type === 'euclid' && Math.abs(node.rotate) >= node.slots) {
+        const open = src.lastIndexOf('(', node.end - 1), r = ((node.rotate % node.slots) + node.slots) % node.slots;
+        if (open >= node.start) cuts.push({ at: open, len: node.end - open, to: `(${node.pulses},${node.slots}${r ? ',' + r : ''})` });
+      }
+      for (const s of node.steps || []) walk(s.node);
+      for (const l of node.layers || []) walk(l);
+      if (node.node) walk(node.node);
+    };
+    walk(parsed.tree);
+    cuts.sort((a, b) => b.at - a.at);
+    for (const c of cuts) line = line.slice(0, c.at) + c.to + line.slice(c.at + c.len);
+  }
+  const out = [];
+  if (comment) out.push('// ' + String(comment).replace(/\n/g, ' '));
+  if (+bpm > 0) out.push(`setcpm(${fmtNum(+bpm)}/4)`);
+  out.push(`s(${JSON.stringify(line)})`);
+  return out.join('\n');
+}
+
+const base64 = (text) => {
+  const bytes = new TextEncoder().encode(text);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return typeof btoa === 'function' ? btoa(bin) : Buffer.from(bin, 'binary').toString('base64');
+};
+/** The line as a strudel.cc link: 'https://strudel.cc/#' + encodeURIComponent(base64(UTF-8 code)) — open it in a NEW tab
+ *  (a strudel.cc tab that is already open does not re-read a changed #). Options as toStrudel(). */
+export function strudelUrl(src, opts = {}) { return 'https://strudel.cc/#' + encodeURIComponent(base64(toStrudel(src, opts))); }

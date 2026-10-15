@@ -167,7 +167,7 @@ detection.
 
 | export | signature |
 |---|---|
-| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`; `clock: 'lookahead'` schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; `lang: 'zh'` names the lanes in Chinese |
+| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`; `clock: 'lookahead'` schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; `lang: 'zh'` names the lanes in Chinese; `rhythm: <@openav/pattern>` (or `useRhythm(mod)`) makes the line over the grid editable and the cells rewrite it, with `history` / `undo()`, Copy and Open in Strudel (0.7) |
 | `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`, `bpm` (the frame clock) |
 | `DrumScheduler`, `DrumTransport` | the lookahead clock: a grid or a compiled line → timed events, positions in bars turned into seconds by a tempo map (no drift); the runtime with a Web Worker heartbeat, the audio clock, and steps / hits told when heard |
 | `drumEngine` | `drumEngine({ samples })` → a sound engine (see [Sound](show-control.md#sound)); `noteOn(note, vel, time)` plays at `time` on its own AudioContext and returns `{ time, cancel() }` |
@@ -364,6 +364,10 @@ Spine · rhythm in one line: mini-notation, the way TidalCycles and Strudel writ
 | `parse` | `parse(src)` → `{ ok, tree }` or `{ ok: false, error }`: nodes `step` `rest` `seq` `layer` `alt` `fast` `slow` `euclid` `maybe`, each with its character range |
 | `WORDS` | `bd` kick · `sd` snare · `hh` hat · `oh` openhat · `cp` clap · `rim`/`rs` · `lt` `mt` `ht` toms · `cr` crash · `rd` ride · `cb` cowbell, and the kit's own names |
 | `euclid` | `euclid(pulses, steps, rotate = 0)` → booleans (Toussaint 2005) |
+| `fromGrid` | `fromGrid(grid, { steps = 16, words, order })` → a line that plays exactly the grid, written the way a person would: `bd*4`, `[~ sd]*2`, `bd(3,8,2)`, else beat by beat `bd [~ ~ ~ bd] bd*2 ~` (0.7) |
+| `toGrid` | `toGrid(src, { bar = 1, steps = 16 })` → `{ grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`: one bar on the steps and what they cannot hold (0.7) |
+| `fromStrudel` | `fromStrudel(code)` → `{ strudel, ok, src, bpm, ignored, unsupported }`: `s("…")` / `sound("…")` copied from strudel.cc, `.fast` / `.slow` folded in, `setcpm` / `setcps` as `bpm` (0.7) |
+| `toStrudel`, `strudelUrl` | `strudelUrl(src, { bpm, comment })` → `https://strudel.cc/#…` (the line as `s("…")` with `setcpm(bpm/4)`, base64 in the `#`); open it in a new tab (0.7) |
 
 Writing: spaces (steps share the bar) · `~` `-` rest · `[ ]` group · `,` layers · `*n` faster · `/n` slower, across bars · `< >` one per bar · `(k,n,r)` Euclidean · `!n` and `!` repeat · `@n` and `_` longer · `?` `?0.3` drop by chance (seeded) · `bd:2` sample number. `.` `|` `{ }` are refused with a hint (rests are `~` or `-`).
 
