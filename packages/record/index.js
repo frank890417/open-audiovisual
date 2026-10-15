@@ -6,13 +6,13 @@
 // Pure (unit-tested): layout.js · mime.js · events.js · take.js · smf.js.
 // Browser: compositor.js · recorder.js · audio.js · camera.js · take-player.js (clock-injectable).
 
-export { LAYOUTS, PRESETS, presetById, resolveSize, layoutRects, framePoint, recommendedFps, recommendedBitrate } from './layout.js?v=472707a';
-export { VIDEO_MIMES, AUDIO_MIMES, pickMime, extFor } from './mime.js?v=472707a';
-export { EventLog, cleanValue } from './events.js?v=472707a';
-export { TAKE_VERSION, normalizeTake, validateTake, trimSilence, quantizeTake, takeStats, midiEventsOf, signalsOfMidi, noteOf, noteOffFor } from './take.js?v=472707a';
-export { toMidiFile, fromMidiFile } from './smf.js?v=472707a';
-export { TakeRecorder, TakePlayer } from './take-player.js?v=472707a';
-export { Compositor } from './compositor.js?v=472707a';
-export { Recorder, mixTracks } from './recorder.js?v=472707a';
-export { AudioTap } from './audio.js?v=472707a';
-export { cameraConstraints, listCameras, listMicrophones, openCamera } from './camera.js?v=472707a';
+export { LAYOUTS, PRESETS, presetById, resolveSize, layoutRects, framePoint, recommendedFps, recommendedBitrate } from './layout.js?v=02aa19c';
+export { VIDEO_MIMES, AUDIO_MIMES, pickMime, extFor } from './mime.js?v=02aa19c';
+export { EventLog, cleanValue } from './events.js?v=02aa19c';
+export { TAKE_VERSION, normalizeTake, validateTake, trimSilence, quantizeTake, takeStats, midiEventsOf, signalsOfMidi, noteOf, noteOffFor } from './take.js?v=02aa19c';
+export { toMidiFile, fromMidiFile } from './smf.js?v=02aa19c';
+export { TakeRecorder, TakePlayer } from './take-player.js?v=02aa19c';
+export { Compositor } from './compositor.js?v=02aa19c';
+export { Recorder, mixTracks } from './recorder.js?v=02aa19c';
+export { AudioTap } from './audio.js?v=02aa19c';
+export { cameraConstraints, listCameras, listMicrophones, openCamera } from './camera.js?v=02aa19c';

@@ -27,8 +27,8 @@
 //   midi/<short>/<keys>/on|off pulses {note, vel, velocity, ch}      midi/<short>/n<note> while held
 //   midi/<short>/last          pulse {id, value, source} — the last thing touched
 
-import { parseMessage, encodeMessage, genericSignals, relativeDelta, relativeValue, bendToUnit, unitToBend, describe } from './parse.js?v=472707a';
-import { normalizeProfile, indexProfile, eventKey } from './profiles.js?v=472707a';
+import { parseMessage, encodeMessage, genericSignals, relativeDelta, relativeValue, bendToUnit, unitToBend, describe } from './parse.js?v=02aa19c';
+import { normalizeProfile, indexProfile, eventKey } from './profiles.js?v=02aa19c';
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 let instances = 0;
@@ -37,7 +37,7 @@ export class MidiController {
   /**
    * @param {object} profile                       raw or normalized profile JSON
    * @param {object} [o]
-   * @param {import('../core/src/signals.js?v=472707a').Signals} [o.signals]   publish here…
+   * @param {import('../core/src/signals.js?v=02aa19c').Signals} [o.signals]   publish here…
    * @param {(name:string, value:any, info:{pulse?:boolean,min?:number,max?:number})=>void} [o.sink]  …or here (a relay)
    * @param {string} [o.short]                     override the signal namespace (two of the same device)
    * @param {(bytes:number[])=>void} [o.onLed]     LED feedback bytes for the hardware's MIDI out
