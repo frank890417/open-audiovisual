@@ -237,6 +237,54 @@ function stepStarted(step, bar) {}   // every 16th
 adds nothing, so it may sit in `draw()`. `cueName` is the last cue that fired (`''` before one). On one step the cues fire
 in the order they were declared, then `barStarted`, `stepStarted`, then that step's hits. A silent clock: `startDrums({})`.
 
+## Values over time: lag, env, speed, spring, trail
+
+A knob or `micLevel` jumps; what looks good is how it moves between the jumps. TouchDesigner does this with CHOPs; the
+same operators are here, one call each in `draw()`, nothing to declare, and seconds are seconds (the same curve at 30 and
+at 144 fps):
+
+```js
+circle(width / 2, height / 2, 50 + lag(micLevel, 0.03, 0.4) * 300);   // a VU meter: opens at once, closes slowly
+scale(1 + env('kick', 0.01, 0.3));                                     // the drum machine: every kick swells it, gone in 0.3 s
+rotate(spring(knob1, 100, 6) * TWO_PI);                                // flick a knob: it overshoots and settles
+```
+
+| TouchDesigner | oav-p5 | |
+|---|---|---|
+| Lag CHOP (Lag 1 / Lag 2) | `lag(value, up, down)` | follows `value`: `up` seconds while it rises, `down` while it falls (`down` = `up` if left out; 0.1) |
+| Trigger CHOP (attack, decay) | `env('kick', attack, decay)`, `trigger('boom')` | 0..1: up to 1 in `attack` seconds after each event, back to 0 in `decay` (0.01, 0.3). Events: `'kick'` `'snare'` `'hat'` `'beat'` (the microphone or the drum machine, the hits `kickDetected` hears), `'note'` (any key), `'bar'` `'step'` (the drums), a cue's name, `trigger('boom')`; or a switch: `env(mouseIsPressed, …)` |
+| Speed CHOP | `speed(rate)` | adds `rate` every second: `rotate(speed(TWO_PI))` turns once a second |
+| Spring CHOP | `spring(value, stiffness, damping)` | follows like a mass on a spring (100, 6: two or three bounces; damping 20: none) |
+| Trail CHOP | `trail(value, seconds)` | the last `seconds` (2) as an array, 60 values a second, oldest first, the newest last |
+| Slope CHOP | `slope(value)` | how fast it changes, per second |
+| Count CHOP | `count(beat)`, `count(beat, 4)`, `count('kick')` | how many times it turned on; with 4: 0 1 2 3 0 …; a name: how many of those events so far |
+| a CHOP's viewer | `scope(value, 'label')` | a small plot in the corner of the page (below) |
+| | `drawTrail(values, x, y, w, h)` | the same plot on the canvas, in the work and in a recording |
+
+**Seconds, here and in TouchDesigner.** A lag here is a time constant: after `up` seconds the value has covered 63% of a
+jump (the `smooth` of `@openav/mapping` means the same). TouchDesigner's Lag CHOP quotes its lag as about the time to
+follow 90%, 2.3 times longer: `lag(x, 0.1)` moves like a Lag CHOP at about 0.23. Attack and decay are lengths in both.
+
+**Nothing to declare.** The first `lag()` in `draw()` keeps the first lag's memory, the second the second, every frame;
+`spring()`, `speed()`, `trail()` … are counted each on their own. Put one inside an `if`, or in a loop whose length
+changes, and the order slips: a card says so, and from then on oav-p5 matches each call by the line it is written on. The
+sure way is a name, a string at the end: `lag(p.size, 0.1, 0.5, 'p' + p.id)`. A named one is the same wherever it is called,
+`draw()`, `setup()` or `mousePressed()`; an unnamed one outside `draw()` has nothing to remember by and returns its input
+(`speed` 0, `trail` `[]`), and a card says that too. `env()`, `trigger()` and `count('kick')` are about events and work
+anywhere. A sketch with its own `speed` or `count` keeps it; `OAVp5.chop.speed(…)` is the same function under another name.
+
+**Seeing the values.** `scope(value, 'label')` returns `value`, so it can wrap an expression:
+`circle(x, y, scope(lag(micLevel, 0.03, 0.4), 'lag') * 300)`. Each label is one line in a small oscilloscope across the
+page from the 🎹: the last 4 seconds and the value now; `scope(micLevel, 'mic')` beside it shows what the lag did. It lives
+on the page, not on the canvas: never in a recording or a 📷, never in the way of a click; `hints=off` or `scope=off` hides
+it. To draw it in the work: `stroke(255); drawTrail(trail(micLevel, 3), 0, height - 100, width, 100)` (or
+`drawTrail(micLevel, …)`, which keeps its own 2 seconds): 0 at the bottom of the box, 1 at the top (`lo`, `hi` after `h`),
+the sketch's `stroke()` (white under `noStroke()`).
+
+The math is [@openav/chop](../packages/chop/README.md), loaded from next to this file the first time one of these is called;
+until it arrives (a few frames) each returns its input as it is. What each parameter means follows Derivative's
+TouchDesigner documentation; the code is OAV's own. Raw against lagged, side by side, with the scope: `p5/examples/lag/`.
+
 ## Recording: the canvas and its sound, one file
 
 ```js
@@ -399,6 +447,7 @@ message means the line did not load.
 | `opc` | `on` · `off` | `on` |
 | `mic` | `auto` (the first read asks for the microphone) · `click` (only 🎤 / `startMic()`) · `off` | `auto` |
 | `hints` | `on` (cards beside the 🎹) · `off` (the console only) | `on` |
+| `scope` | `on` (`scope()` draws in the corner across from the 🎹) · `off` (`scope()` only returns its value); `hints=off` turns it off too | `on` |
 | `sound` | `click` (`startSound()` or 🔊) · `off` · an instrument id (`piano`, `organ`, …: heard from the first click, no code) | `click` |
 | `tone` | where Tone.js 15 comes from (an ES module URL) | `https://cdn.jsdelivr.net/npm/tone@15.0.4/+esm` |
 | `dock` / `corner` | `bottom`·`top` / `right`·`left` | top-left on OpenProcessing, bottom-right elsewhere |
@@ -424,7 +473,7 @@ its modules, ~130 KB transferred, from next to it), the microphone is read (`pac
 an unknown controller is plugged in (`packages/midi/profiles`), sound is turned on (`packages/sound`, ~21 KB gzip, Tone.js ~230 KB
 from jsDelivr, and the piano's 2 MB of samples when the piano is picked), the drums are (`packages/drums`, ~22 KB gzip, and `packages/pattern`, ~15 KB gzip, beside it), a take is
 recorded (`packages/record/recorder.js` with its `mime.js` and `layout.js`, ~9 KB gzip), an external clock arrives (`packages/midi/clock.js`, ~4 KB gzip)
-or `link=` is set (`packages/relay/link.js` with the relay client, ~6 KB gzip). Because it loads the rest of OAV from next to itself,
+`link=` is set (`packages/relay/link.js` with the relay client, ~6 KB gzip), or `lag()` and its family are first called (`packages/chop`, ~5 KB gzip). Because it loads the rest of OAV from next to itself,
 one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.jsdelivr.net/gh/frank890417/open-audiovisual@<tag>/p5/oav-p5.js` is frozen.
 
 ## Tests
@@ -454,6 +503,16 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   strudel.cc, oav-p5 served from this checkout: `.midi('OAV Virtual MIDI')` → `notePressed` (ms against Strudel's timestamps),
   `midikeys` → `.midi` with no loop, Strudel's clock → the drum machine and `drumPhase` (ms), the stop, the compact panel and 🩺,
   two tabs in one room (ms), the docs' three recipes as written (prebake, knob1 heard, micLevel, Hydra on Strudel's clock).
+- `node --test tests/chop.test.js` (part of `npm test`): `@openav/chop` under a fake clock — a lag of 0.1 at 63% after 0.1 s,
+  30 fps against 144 fps (a knob moved in steps: equal; a 1 Hz sine: within 3%), the envelope's attack, decay and retrigger,
+  springs (bounce, critical, a 10 s step), the trail's fixed length; then 0.7's `lag()` family in `oav-p5.js`: passing through
+  until the module arrives, the Nth call is the Nth slot, a name is its own, outside `draw()`, a call inside an `if` (the card,
+  matching by line, the borrowed frame undone), `env('kick')` from the drums and the microphone, `env(gate)`, a name nobody
+  triggers, `drawTrail()`'s line.
+- `p5/test/chop-smoke.cjs` (same arguments; a fake microphone): p5 1.11.11 and 2.x — none of the new names is a p5 / p5.sound
+  name; an old sketch loads no `packages/chop` and shows no scope; `lag(micLevel, …)` rising quickly and falling on its own time;
+  `env('kick')` jumping to 1 on each kick of the drum machine and falling; the scope in its corner, missing from a recorded frame
+  while `drawTrail()` is in it; `p5/examples/lag/`.
 - `p5/test/timing-probe.cjs` (same arguments; `OAV_OLD=<a 0.5.0 checkout>` adds it side by side; `BACKGROUND=1 CHROME=<Chrome
   for Testing>` adds a headed hidden-tab run over the DevTools protocol): four on floor at 120 bpm, a `draw()` busy 30 ms a frame,
   10 s of the kit's output through an AudioWorklet that notes each onset's sample frame; the spread of the intervals. Then 30 s
@@ -503,3 +562,6 @@ Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` 
 `p5/examples/rhythm-visual/` (`drawRhythm` in its three styles and the line drawn on the canvas, `rhythmChanged`, R records 8 s),
 `p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`)
 and `p5/examples/with-strudel/` (the picture side of Strudel in another tab: `link`, `notePressed`, `drumPhase` on Strudel's clock).
+`p5/examples/rhythm/` (one line of rhythm, `drumPhase` turning a hand once a bar, `beatPhase` breathing on every beat)
+`p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`)
+and `p5/examples/lag/` (the microphone raw and lagged side by side, `env('kick')`, `spring(knob1)`, `scope()`, `drawTrail()`).

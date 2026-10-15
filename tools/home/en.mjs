@@ -161,6 +161,7 @@ export default {
       drums: 'Synth kit and step sequencer that publish analyzer-shaped signals',
       leap: 'Leap Motion hands through a small local bridge, as 21-point hand signals',
       mapping: 'Signal to param routes: curves, smoothing, many-to-many, learn',
+      chop: 'Values over time, as TouchDesigner\'s CHOPs shape them: lag, envelope, speed, spring, trail, slope, count; the same curve at any frame rate',
       stage: 'The world shell: lifecycle and params, no renderer opinion',
       'world-webtoe': 'Perform a WebToe node patch as a world',
       sound: 'Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own',

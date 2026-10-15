@@ -161,6 +161,7 @@ export default {
       drums: '合成鼓組與步進音序器，發出和音訊分析同樣形狀的訊號',
       leap: '透過本機的小橋接，把 Leap Motion 的手變成 21 點手部訊號',
       mapping: '訊號到參數的路由：曲線、平滑、多對多、learn',
+      chop: '數值隨時間的變化，像 TouchDesigner 的 CHOP：lag、包絡、速度、彈簧、軌跡、斜率、計數；任何幀率畫出同一條曲線',
       stage: '世界的外殼：管生命週期和參數，不限定繪圖方式',
       'world-webtoe': '把 WebToe 節點網路當成世界來演奏',
       sound: '頁面裡的樂器（Salamander 鋼琴、敲擊琴、弦樂、風琴、合成器音色），加一個檔案就能放進自己的聲音',

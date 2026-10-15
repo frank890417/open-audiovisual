@@ -26,7 +26,7 @@ export const WORKS = routeGroups().flatMap((g) => g.items);
 
 export const PACKAGE_GROUPS = [
   { layer: 'l1', pkgs: ['midi', 'audio', 'chord', 'pose', 'keys', 'drums', 'leap'] },
-  { layer: 'l2', pkgs: ['mapping'] },
+  { layer: 'l2', pkgs: ['mapping', 'chop'] },
   { layer: 'l3', pkgs: ['stage', 'world-webtoe'] },
   { layer: 'l4', pkgs: ['sound', 'osc', 'out', 'record', 'fab'] },
   { layer: 'sp', pkgs: ['timeline', 'score', 'pattern', 'console', 'monitor'] },

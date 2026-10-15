@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty-six packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-seven packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -8,7 +8,7 @@ npm yet.
 | layer | packages |
 |---|---|
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
-| L2 mapping | `mapping` |
+| L2 mapping | `mapping` · `chop` |
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` |
@@ -198,6 +198,28 @@ mapper.addRoute({ source: 'midi/cc/74', target: 'bloom', curve: 'exp', smooth: 0
 ```
 
 Full reference: [Mapping](mapping.md).
+
+## @openav/chop
+
+L2 mapping · values over time, the way TouchDesigner's CHOPs shape them: Lag, Trigger (`envelope`), Speed, Spring, Trail, Slope, Count. Pure logic, no clock of its own: every step is told the seconds that went by and is solved exactly over them, so 30 fps and 144 fps draw the same curve. What the parameters mean follows Derivative's TouchDesigner documentation; the code is OAV's own. In a p5 sketch, oav-p5 gives these one call each: [p5 one line](p5.md#values-over-time-lag-env-speed-spring-trail).
+
+| export | signature |
+|---|---|
+| `approach` | `approach(current, target, seconds, dt)` → one step of a one-pole lag; `seconds` = time to 63% of a change (the `smooth` of `@openav/mapping`, which steps with it) |
+| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → output · `reset(v?)`: `up` while rising, `down` while falling (Lag CHOP's Lag 1 / Lag 2) |
+| `envelope` | `envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)` → the Trigger CHOP's level at `t` for events at `times` (seconds, oldest first): a straight attack (0 → peak), then 0 after exactly `decay`; a retrigger starts where it is · `envelopeStage(elapsed, attack, decay, from, peak)` |
+| `Speed` | `new Speed()` · `step(rate, dt)` → position: `rate` per second |
+| `Spring` | `new Spring({ stiffness = 100, damping = 6 })` · `step(target, dt)` → position (`velocity` alongside): a mass on a spring pulled to the input, solved exactly · `springStep(x, v, target, k, c, dt)` → `[x, v]` |
+| `Trail` | `new Trail({ seconds = 2, rate = 60 })` · `step(value, dt)` → the last `seconds`, 60 values a second plus the newest, oldest first, fixed length |
+| `Slope` | `new Slope()` · `step(value, dt)` → change per second |
+| `Count` | `new Count({ threshold = 0.5 })` · `step(on, limit = 0)` → times it turned on, looped to 0 … limit − 1 with a limit · `wrapCount(total, limit)` |
+| `TD_LAG_RATIO`, `DEFAULTS` | `Math.LN10`: TouchDesigner quotes a lag as the time to ~90%, 2.3 time constants (a lag of 0.1 here ≈ a Lag CHOP at 0.23); the defaults above |
+
+```js
+import { Lag, envelope } from '@openav/chop';
+const vu = new Lag({ up: 0.03, down: 0.4 });       // opens at once, closes slowly
+// every frame: r = 50 + vu.step(level, dt) * 300; pump = envelope(kickTimes, now, 0.01, 0.3);
+```
 
 ## @openav/stage
 

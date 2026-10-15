@@ -19,6 +19,9 @@
 // Files: exportMap()/importMap() read and write the portable `openav.map` JSON (see MAP_FORMAT below),
 // and loadMapUrl() fetches one for `?map=<url>`. docs/mapping.md#save-load-and-share.
 
+// the one-pole lag a smoothed route steps with: the same function oav-p5's lag() uses (packages/chop)
+import { approach } from '../chop/index.js';
+
 const CURVES = {
   linear: (x) => x,
   exp: (x) => x * x,
@@ -254,8 +257,7 @@ export class Mapper {
     for (const r of this.routes) {
       if (r.smooth > 0 && r._target !== undefined) {
         const cur = this._values.get(r.id) ?? r._target;
-        const k = 1 - Math.exp(-dt / r.smooth);
-        const next = cur + (r._target - cur) * k;
+        const next = approach(cur, r._target, r.smooth, dt);
         this._values.set(r.id, next);
         this.params.override(r.target, next);
       }
