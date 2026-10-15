@@ -51,6 +51,7 @@
 - [總譜與導演](https://openaudiovisual.com/docs/zh/score.md): 把演出寫成段落長度：版本、cue、hold、段落模組、提詞器、樂譜轉 MIDI。
 - [MIDI 控制器與嵌入](https://openaudiovisual.com/docs/zh/controllers.md): 把 MIDI 控制器寫成 JSON 設定檔，以及 `<oav-controller>` 元件與 iframe 嵌入。
 - [p5.js 一行接上](https://openaudiovisual.com/docs/zh/p5.md): 一行指令，讓任何 p5.js 草圖能用 MIDI、螢幕上的控制器或手機彈。
+- [和 Strudel 一起用](https://openaudiovisual.com/docs/zh/strudel.md): Strudel 和 OAV 並排用：旋鈕、手機、麥克風變成 Strudel 的參數；Strudel 的音符和時鐘在同一頁或另一個分頁（link=）的 p5 草圖裡畫出來；Hydra。
 - [手機、中繼與控制面板](https://openaudiovisual.com/docs/zh/remote.md): 手機與 iPad 當控制器：中繼、感測器、控制面板。
 - [訊號一覽](https://openaudiovisual.com/docs/zh/signals.md): 內建輸入發出的每一個訊號與範圍。
 - [套件一覽](https://openaudiovisual.com/docs/zh/packages.md): 每個套件，依層分類。

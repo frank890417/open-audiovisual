@@ -55,6 +55,13 @@
  * midiMessage(bytes, source), midi.on(event, fn) → off(), midi.play(60, 0.8). A sketch with its own Web MIDI code
  * (navigator.requestMIDIAccess, WebMidi.js) hears the screen and the phone as one more input, "OAV Virtual MIDI".
  *
+ * Other programs (0.7). What a program plays INTO "OAV Virtual MIDI" — Strudel's .midi('OAV Virtual MIDI'), a WebMidi.js
+ * sketch — is heard like a keyboard, at the timestamp it gave (midi.last.source 'virtual-out'), and never handed back out
+ * of the virtual input. An external MIDI clock (24 a beat, start / continue / stop) moves drumPhase, beatPhase, drumBar,
+ * drumBpm and a drum machine that is up (OAVp5.clock). link=<room> joins pages over the phone relay: what one page's
+ * programs play, every other page in the room hears when it sounds there (OAVp5.link). On strudel.cc the names Strudel
+ * owns (note, velocity, beat) are said once, MIDI waits for its midin(), the panel is compact. openaudiovisual.com/docs/#strudel
+ *
  * Why `prepend`: p5's friendly errors read the page's last <script> as the sketch; first in <head>, this file is never
  * mistaken for the student's code (with `append` it was: p5 checked this file instead of theirs).
  *
@@ -78,11 +85,14 @@
  *   drums     lookahead (hits handed to the audio clock ahead of time by a worker heartbeat) | frame (0.5's way: moved by
  *             the frames, the safety net)      drumlatency  auto (the output latency the browser reports) | a number of ms
  *   telemetry off | on — @openav/midi's one anonymous page-load hit (packages/midi/README "Telemetry")
+ *   link      a room: pages with the same one hear each other's programs, over the relay   linkdelay  ms of extra buffer (0)
+ *   clock     follow (an external MIDI clock moves drumPhase and the drums) | off
+ *   strudel   auto (strudel.cc, or Strudel's functions on the page) | on | off      compact  on | off (the panel in a corner box)
  */
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.6.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.7.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -115,6 +125,22 @@
   try { onOP = /(^|\.)openprocessing\.org$/.test(g.location.hostname); } catch (e) { /* */ }
   O.dock = opt('dock', onOP ? 'top' : 'bottom') === 'top' ? 'top' : 'bottom';
   O.corner = opt('corner', onOP ? 'left' : 'right') === 'left' ? 'left' : 'right';   // OpenProcessing puts OPC's icon top-right
+  // 0.7 — other programs: an external MIDI clock to follow, a room to link pages in, and Strudel as a neighbour.
+  // strudel.cc (or a page where Strudel's own functions are already there: note() and s() with stack() or samples()) is a
+  // live-coding editor, not a sketch: the names it owns are said once, MIDI waits for its midin() to ask, the panel is
+  // the compact one. We only look at the address and at what the page's globals are; nothing of Strudel is called.
+  var onStrudel = false;
+  try {
+    onStrudel = opt('strudel', 'auto') === 'on' || (opt('strudel', 'auto') !== 'off' && (/(^|\.)strudel\.cc$/.test(g.location.hostname) ||
+      (typeof g.note === 'function' && typeof g.s === 'function' && (typeof g.stack === 'function' || typeof g.samples === 'function'))));
+  } catch (e) { /* */ }
+  if (onStrudel && opt('hardware', null) == null) O.hardware = 'click';   // Strudel's midin() asks for MIDI; not us at load
+  O.compact = opt('compact', onStrudel ? 'on' : 'off') === 'on';          // the panel as a box in the corner, a third of the height
+  // how far from the window's edge the 🎹 sits: in Strudel above its side panel's bottom row (import · export · save)
+  var EDGE = onStrudel && O.dock === 'bottom' ? 46 : 10;
+  O.clock = opt('clock', 'follow') === 'off' ? 'off' : 'follow';          // follow an external MIDI clock (start / stop / tempo)
+  O.link = String(opt('link', '')).replace(/[^\w-]/g, '').slice(0, 32);   // a room: pages in it hear each other's programs
+  O.linkdelay = Math.max(0, Math.min(2000, parseFloat(opt('linkdelay', 0)) || 0));   // ms of extra buffer on a linked page's notes
   var DEBUG = opt('debug', '') !== '' && opt('debug', '') !== '0';   // ?debug=1: say in the console what the 🎹 sees
   function dbg() { if (DEBUG && g.console) console.log.apply(console, ['[oav-p5 debug]'].concat([].slice.call(arguments))); }
   var profileChosen = opt('profile', null) != null;   // nobody chose ⇒ the panel follows the controller that is plugged in
@@ -140,6 +166,18 @@
         sndHint: 'click the page (or press a key) once to hear it: browsers let a page play audio only after a click', drumsOn: '🥁 Drums', drumsOff: '🥁 Stop drums', fold: 'Fold the grid', closeDrums: 'Stop the drum machine', check: '🩺 Check',
         recOn: '⏺ Record', recStop: '⏹ Stop {t}', recStarting: '⏺ Starting…', recSaving: '⏺ Saving…', recTitle: "Record the canvas and the sketch's sound (MP4, ready for Instagram; the 🎹 and the cards stay out)",
         recDot: 'Recording: click to stop', shot: '📷 Save image', shotTitle: 'Save the canvas as a PNG (without the 🎹 and the cards)', share: 'Share', download: 'Download' };
+
+  if (onStrudel) {                                      // in Strudel there is no sketch: what reads a knob is "your code"
+    T.readOnly = zh ? '{read}（你的程式）' : '{read} (your code)';
+    T.readSlider = zh ? '{read}（你的程式；{opc} 改用滑桿）' : '{read} (your code; {opc} by its slider)';
+  }
+  T.linkOn = '🔗 {room}';
+  T.linkTitle = zh ? 'link 房間 {room}：{state}' : 'link room {room}: {state}';
+  T.linkPeers = zh ? '另 {n} 頁' : '{n} other page(s)';
+  T.linkAlone = zh ? '只有這頁' : 'no other page yet';
+  T.linkWait = zh ? '連線中…' : 'connecting…';
+  T.linkClosed = zh ? '斷線，重連中' : 'disconnected, retrying';
+  T.clockChip = zh ? '⏱ 外部時鐘 {bpm} BPM' : '⏱ external clock {bpm} BPM';
 
   // ---------------------------------------------------------------- state the sketch reads
   function zeros(n) { var a = new Array(n); for (var i = 0; i < n; i++) a[i] = 0; return a; }
@@ -172,8 +210,8 @@
   function setGlobal(name, value) { try { g[name] = value; } catch (e) { /* a sketch's own const of that name */ } }
   // a name is ours only while it still holds what we last wrote: a sketch that has (or later assigns) its own
   // `note` / `velocity` / `knob1` keeps it, and this file stops writing there (midi.last and knob(n) still work)
-  var owned = {};
-  function claim(name, value) { if (typeof g[name] === 'undefined') { setGlobal(name, value); if (g[name] === value) owned[name] = { v: value }; } }
+  var owned = {}, yielded = [];                       // yielded: names the page had before us (Strudel's note, beat …)
+  function claim(name, value) { if (typeof g[name] === 'undefined') { setGlobal(name, value); if (g[name] === value) owned[name] = { v: value }; } else yielded.push(name); }
   function put(name, value) {
     if (readers[name]) {                               // knob1 & co. are read through a getter: only check who owns the name
       var d = Object.getOwnPropertyDescriptor(g, name);
@@ -206,9 +244,13 @@
     soundIsOn: "OAVp5.sound.state === 'on'", drumsAreOn: "OAVp5.drums.state === 'on'", drumStep: 'OAVp5.drums.step', drumBar: 'OAVp5.drums.bar',
     drumBpm: 'OAVp5.drums.bpm', cueName: 'OAVp5.drums.lastCue', recordingIsOn: "OAVp5.record.state === 'on'" };
   function ownName(name) {
+    if (onStrudel && yielded.indexOf(name) >= 0) return;   // said once at load, in Strudel's words (strudelNames)
     var m = /^(knob|fader|pad)(\d+)$/.exec(name);
     hint('own:' + name, 'ownName', { name: name, alt: m ? m[1] + '(' + m[2] + ')' : ALT[name] || 'OAVp5' }, 'info');
   }
+  // in Strudel: what to read instead of a name Strudel already has
+  var STRUDEL_ALT = { note: 'OAVp5.last.note', velocity: 'OAVp5.last.value', beat: "OAVp5.mic.on('beat', fn)", noteIsPressed: 'OAVp5.held.length > 0',
+    bass: 'OAVp5.mic.bass', mid: 'OAVp5.mic.mid', treble: 'OAVp5.mic.treble', micLevel: 'OAVp5.mic.level' };
   var GLOBALS = { note: 0, velocity: 0, noteIsPressed: false, micIsOn: false,
     soundIsOn: false, drumsAreOn: false, drumStep: 0, drumBar: 0, drumBpm: 112, cueName: '', recordingIsOn: false };
   // knob1 … knob8, fader1 … fader8, pad1 … pad16 are readers, like the microphone's names: reading one says the sketch
@@ -216,7 +258,7 @@
   var readers = {}, READ = {};
   function ctlName(kind, n) {
     var name = kind + n;
-    if (typeof g[name] !== 'undefined') return;        // the sketch's own (a var with a value, a function): ownName() on first use
+    if (typeof g[name] !== 'undefined') { yielded.push(name); return; }   // the sketch's own (a var with a value, a function): ownName() on first use
     try {
       Object.defineProperty(g, name, {
         configurable: true, enumerable: false,
@@ -369,13 +411,18 @@
   }
 
   var virtualPort = null;                              // the shim's virtual input, once a sketch asked for Web MIDI
-  function input(data, source, dev) {
+  // t: when it is heard (performance.now() ms; a hardware event's timeStamp, a program's send() timestamp), for the clock
+  function input(data, source, dev, t) {
     if (!data || data.length < 1) return;
     var b0 = data[0] | 0, b1 = (data[1] | 0) & 127, b2 = (data[2] | 0) & 127;
-    if (b0 < 0x80 || b0 >= 0xF0) return;               // clock (0xF8 ×24 per beat), sysex, running status: not for sketches
+    if (b0 >= 0xF8 || b0 === 0xF2) { clockIn(data, t, source); return; }   // clock, start / stop, song position: the clock's
+    if (b0 < 0x80 || b0 >= 0xF0) return;               // sysex, running status: not for sketches
     var type = b0 & 0xF0, ch = (b0 & 0x0F) + 1, bytes = [b0, b1, b2];
     if (source === 'hardware') lastHw = clock();
-    if (source !== 'hardware' && virtualPort) virtualPort.emit(bytes);   // hardware already reaches the sketch's own Web MIDI code
+    // hardware already reaches the sketch's own Web MIDI code; what a program played INTO the virtual output never goes
+    // back out of the virtual input (Strudel's midin ↔ .midi('OAV Virtual MIDI') would play each other forever)
+    if (source === 'link') linkHeard(bytes);             // before the program hears it: its echo is caught
+    if (source !== 'hardware' && source !== 'virtual-out' && virtualPort) virtualPort.emit(bytes);
     if (source !== 'screen' && view && view.ingest) { try { view.ingest(bytes); } catch (e) { /* never block a note on the faceplate */ } }
     var t = tableFor(dev || (source === 'screen' ? 'screen' : null));
     var on = type === 0x90 && b2 > 0;
@@ -450,7 +497,7 @@
       // sets onmidimessage) may hold the same port object, and a browser that opens a port only for onmidimessage still
       // delivers. The same event reaching both is counted once.
       var seen = null;
-      var onPort = function (e) { if (e === seen) return; seen = e; input(e.data, 'hardware', 'hw:' + name); };
+      var onPort = function (e) { if (e === seen) return; seen = e; input(e.data, 'hardware', 'hw:' + name, e.timeStamp || e.receivedTime); };
       try {
         inp.addEventListener('midimessage', onPort);
         if (!inp.onmidimessage) inp.onmidimessage = onPort;
@@ -481,11 +528,16 @@
 
   // ---------------------------------------------------------------- the shim: sketches with their own Web MIDI code
   // Safari / iPad included: there the sketch gets the virtual port alone, so a WebMidi.js sketch still runs
+  // (0.7) The virtual port has an OUTPUT of the same name too, and what a program plays into it is now heard: Strudel's
+  // `.midi('OAV Virtual MIDI')` moves notePressed(), knob1, the pads, startSound()'s instrument, as a keyboard would.
+  var vmod = null;
   if (O.shim !== 'off' && g.navigator) {
     nav.requestMIDIAccess = function (opts) {
       return load('packages/midi/virtual-access.js').then(function (m) {
+        vmod = m;
         var make = function () {
-          if (!virtualPort) virtualPort = m.createVirtualMIDIAccess({ name: 'OAV Virtual MIDI', manufacturer: 'open-audiovisual', id: 'oav-p5' });
+          if (!virtualPort) virtualPort = m.createVirtualMIDIAccess({ name: 'OAV Virtual MIDI', manufacturer: 'open-audiovisual', id: 'oav-p5',
+            onOutput: fromOutput, onClear: clearOutput });
           return virtualPort;
         };
         // the sketch's request asks for real ports too (its own permission prompt, its own answer)
@@ -493,6 +545,228 @@
       });
     };
   }
+
+  // ---------------------------------------------------------------- other programs: the virtual output, a clock, a link (0.7)
+  // A program that plays out to "OAV Virtual MIDI" sends each message with a timestamp — Strudel 0.2–0.3 s before it
+  // should sound, as it would to a hardware synth, which waits for that moment. So do we: a note is told to the sketch
+  // (notePressed, knob1 …) when it sounds, not when it was sent (measured on strudel.cc: within 5 ms, median 0.2 ms). One queue, in time
+  // order and then send order (a note-off and the next note-on 1 ms apart stay in that order). Clock messages go to the
+  // clock at once, with their time: knowing a beat early is what lets the drums land on it.
+  var ext = { out: 0, outLast: null, outAt: 0, echoes: 0 };   // for 🩺: what came out of the port, when, and the echoes held back
+  var outQ = [], outTimer = null, outSeq = 0;
+  function nowMs() { return clock(); }
+  function fromOutput(bytes, ts) {
+    var list = vmod && vmod.splitMidi ? vmod.splitMidi(bytes) : [Array.prototype.slice.call(bytes)];
+    var now = nowMs(), t = typeof ts === 'number' && isFinite(ts) && Math.abs(ts - now) < 10000 ? ts : now;   // a timestamp on another clock: now
+    for (var i = 0; i < list.length; i++) {
+      var msg = list[i], s = msg[0];
+      if (s >= 0xF0 && !(s >= 0xF8 || s === 0xF2)) continue;   // sysex & co.: not for sketches, not for a link
+      ext.out++; ext.outLast = msg; ext.outAt = now;
+      if (link && O.link) linkOut(msg, t);
+      if (s >= 0xF8 || s === 0xF2) clockIn(msg, t, 'virtual-out');
+      else later(msg, t, 'virtual-out');
+    }
+  }
+  /** to the sketch at time t (performance.now() ms); now, if that is now or past and nothing waits before it */
+  function later(msg, t, source) {
+    if (t <= nowMs() + 0.5 && !outQ.length) { input(msg, source, null, t); return; }
+    var x = { t: t, k: outSeq++, msg: msg, source: source }, i = outQ.length;
+    while (i > 0 && (outQ[i - 1].t > t)) i--;              // stable: equal times keep the order they came in
+    outQ.splice(i, 0, x);
+    arm();
+  }
+  function arm() {
+    if (outTimer) { clearTimeout(outTimer); outTimer = null; }
+    if (!outQ.length) return;
+    outTimer = setTimeout(drainOut, Math.max(0, outQ[0].t - nowMs()));
+  }
+  function drainOut() {
+    outTimer = null;
+    var now = nowMs();
+    while (outQ.length && outQ[0].t <= now + 0.5) { var x = outQ.shift(); input(x.msg, x.source, null, x.t); }
+    arm();
+  }
+  // Web MIDI's output.clear(): what waits is dropped — but a note-off still lands now, so no key is left held
+  function clearOutput() {
+    var keep = [], offs = [];
+    outQ.forEach(function (x) { if (x.source !== 'virtual-out') keep.push(x); else if ((x.msg[0] & 0xF0) === 0x80 || ((x.msg[0] & 0xF0) === 0x90 && !x.msg[2])) offs.push(x); });
+    outQ = keep; arm();
+    offs.forEach(function (x) { input(x.msg, 'virtual-out', null, nowMs()); });
+  }
+
+  // ---- the external clock: 0xF8 ×24 a beat, start / continue / stop, from any input (Strudel's midicmd, a DAW, hardware,
+  // a linked page). @openav/midi's MidiClock (packages/midi/clock.js) does the counting; here it drives:
+  //   the drum machine, when the sketch started one (startDrums / 🥁): its tempo, where bar 1 starts and drumPhase follow
+  //     the clock (DrumTransport.follow: a small error is pulled in by a slightly faster or slower tempo; a large one — the
+  //     machine started on its own, a relocate — is a jump onto the external grid),
+  //     an external stop stops it, a start starts it on the downbeat;
+  //   without the machine: drumPhase, beatPhase, drumBar, drumStep and drumBpm read the external clock itself.
+  // clock=off ignores it all. With no clock coming in nothing here runs: 0.6 exactly.
+  var clk = null, clkModP = null, clkBuf = [], clkLoop = false, clkFixAt = -1e9, clkBpmFixed = 0, clkStopT = null, clkSaid = false;
+  var clkInfo = { source: null };
+  function clockIn(msg, t, source) {
+    if (O.clock === 'off') return;
+    var now = nowMs();
+    if (!(typeof t === 'number' && isFinite(t)) || Math.abs(t - now) > 10000) t = now;
+    clkInfo.source = source;
+    if (!clk) {
+      clkBuf.push([Array.prototype.slice.call(msg), t]);
+      if (clkBuf.length > 4000) clkBuf.shift();
+      if (!clkModP) clkModP = load('packages/midi/clock.js').then(function (m) {
+        clk = new m.MidiClock();
+        var b = clkBuf; clkBuf = [];
+        for (var i = 0; i < b.length; i++) clockEvent(clk.feed(b[i][0], b[i][1] / 1000), b[i][1] / 1000);
+      }, function () { clkModP = null; hint('modfail:clock', 'moduleFail', { name: '@openav/midi clock', host: hostOf(BASE) }, 'error'); });
+      return;
+    }
+    clockEvent(clk.feed(msg, t / 1000), t / 1000);
+  }
+  midi.clock = {
+    /** { state: 'none' | 'running' | 'stopped' | 'lost', bpm, running, following (the drums follow it), source, clocks, … } */
+    get info() { var i = clk ? clk.info(nowMs() / 1000) : { state: 'none', bpm: null, running: false, clocks: 0 }; i.source = clkInfo.source; i.following = following(); return i; },
+    get bpm() { return clk ? clk.bpm : null; },
+    /** { pos, bar 0..1, beat 0..1, bpm, running } as heard now, or null */
+    get phase() { return clk ? clk.phaseAt(nowMs() / 1000) : null; },
+    _clock: function () { return clk; },
+  };
+  /** an external clock is there and moving (not stopped, not lost) */
+  function following() { return !!clk && O.clock !== 'off' && clk.state(nowMs() / 1000) === 'running' && clk.bpm != null; }
+  /** one that was stopped by its program (its position holds), still sending or not long gone */
+  function stoppedClock() { return !!clk && O.clock !== 'off' && clk.state(nowMs() / 1000) === 'stopped' && clk.bpm != null; }
+  function clockEvent(r, tSec) {
+    if (!r || r === 'dupe' || r === 'spp') return;
+    var m = drums.machine, seq = m && m.seq;
+    if (!clkSaid && clk.bpm) { clkSaid = true; if (g.console) console.info('[oav-p5] ' + (zh ? '收到外部 MIDI 時鐘（' : 'an external MIDI clock (') + Math.round(clk.bpm) + ' BPM' + (zh ? '）：鼓機和 drumPhase 跟著它（clock=off 不跟）' : '): the drums and drumPhase follow it (clock=off: they do not)')); }
+    runClock();
+    if (r === 'start' || r === 'continue') {
+      if (clkStopT) { clearTimeout(clkStopT); clkStopT = null; }
+      if (seq && typeof seq.follow === 'function' && machineUp()) {
+        if (seq.playing) seq.stop();
+        var a = clk.anchor();
+        seq.follow({ pos: a ? a.pos : 0, at: a ? a.at : tSec, bpm: clk.bpm ? r100(clk.bpm) : drums.bpm });
+        clkFixAt = nowMs(); clkBpmFixed = clk.bpm || 0;
+        playBox(m, true); setDrums('on'); showDrums(true); runDrums();
+      }
+      return;
+    }
+    if (r === 'stop') {
+      if (clkStopT) clearTimeout(clkStopT);
+      clkStopT = setTimeout(function () {                // at the moment it is heard, not when it was sent
+        clkStopT = null;
+        var mm = drums.machine;
+        if (mm && mm.seq && mm.seq.playing && machineUp()) { mm.seq.stop(); playBox(mm, false); syncDrums(); }
+      }, Math.max(0, tSec * 1000 - nowMs()));
+      return;
+    }
+    // a clock: keep the machine on it — at once when it is not yet, then every quarter second or on a tempo change
+    if (seq && typeof seq.follow === 'function' && seq.playing && machineUp() && clk.bpm && clk.running) {
+      var now = nowMs(), moved = clkBpmFixed && Math.abs(clk.bpm - clkBpmFixed) / clkBpmFixed > 0.003;
+      if (now - clkFixAt > 250 || moved || !seq.followInfo()) {
+        var an = clk.anchor();
+        if (an) { seq.follow({ pos: an.pos, at: an.at, bpm: r100(clk.bpm) }, { jump: 1 / 32 }); clkFixAt = now; clkBpmFixed = clk.bpm; }
+      }
+    } else if (seq && typeof seq.follow !== 'function' && m.setBpm && clk.bpm && Math.abs(clk.bpm - drums.bpm) > 0.5) {
+      m.setBpm(Math.round(clk.bpm * 10) / 10);           // drums=frame: no clock to steer, the tempo at least
+    }
+  }
+  // the machine is up (startDrums() or 🥁: playing, or stopped with its grid on screen): an external clock may move it
+  // the tempo the machine gets: to a hundredth of a bpm (what drumBpm prints); the phase is steered anyway
+  function r100(x) { return Math.round(x * 100) / 100; }
+  function machineUp() { return drums.state === 'on' || drums.state === 'stopped'; }
+  // the grid's own play checkbox says what the machine does (mountDrums' root is public)
+  function playBox(m, on) { try { var b = m.root && m.root.querySelector('[data-play]'); if (b) b.checked = on; } catch (e) { /* */ } }
+  // without the machine, the timeline names read the external clock; with it, a line on the drum card says who leads
+  var followBadge = null;
+  function runClock() {
+    if (clkLoop) return;
+    clkLoop = true;
+    (function tick() {
+      if (!clk || clk.state(nowMs() / 1000) === 'none') { clkLoop = false; return; }
+      var on = following(), m = drums.machine, mine = m && m.seq && m.seq.playing;
+      if (on && !mine) {
+        var p = clk.phaseAt(nowMs() / 1000);
+        if (p) { var n = Math.floor(p.pos * 16 + 1e-9); put('drumStep', n % 16); put('drumBar', Math.floor(p.pos + 1e-9) + 1); put('drumBpm', Math.round(clk.bpm * 10) / 10); }
+      }
+      paintFollow(on);
+      raf(tick);
+    })();
+  }
+  function paintFollow(on) {
+    var show = on && drumCard && drums.machine && machineUp();
+    if (show && !followBadge) {
+      followBadge = el('div', 'margin-top:4px;font:600 11.5px system-ui,sans-serif;color:#9fd8ff;font-variant-numeric:tabular-nums');
+      followBadge.id = 'oav-p5-follow';
+      drumCard.appendChild(followBadge);
+    }
+    if (followBadge) {
+      followBadge.style.display = show ? '' : 'none';
+      if (show) {
+        var b = Math.round(clk.bpm * 10) / 10, txt = fill(zh ? '⏱ 跟著外部時鐘 · {bpm} BPM' : '⏱ following an external clock · {bpm} BPM', { bpm: b });
+        if (followBadge.textContent !== txt) {
+          followBadge.textContent = txt;
+          // the grid's own tempo slider and number say the same (mountDrums' root is public; its slider is left alone otherwise)
+          try { var r = drums.machine.root, sl = r && r.querySelector('[data-bpm]'), nv = r && r.querySelector('[data-bpmv]'); if (sl) sl.value = Math.round(b); if (nv) nv.textContent = Math.round(b); } catch (e) { /* */ }
+        }
+      }
+    }
+    paintExt();
+  }
+  // the 🎹 grows a 🔗 while linked (green: another page is there; yellow: connecting or alone; red: the relay is gone), and the
+  // panel's bar says the room, the other pages and the trip; ⏱ and the tempo while an external clock leads
+  var extChip = null, extText = '';
+  function paintExt() {
+    var L = O.link ? (linkState || { state: link ? 'connecting' : 'off', peers: 0 }) : null;
+    if (L && btn && btn.querySelector) {
+      var dot = btn.querySelector('#oav-p5-link-dot');
+      if (!dot) { dot = el('span', 'font-size:12px;line-height:1;border-bottom:2px solid #e0c25f'); dot.textContent = '🔗'; dot.id = 'oav-p5-link-dot'; btn.appendChild(dot); }
+      dot.style.borderBottomColor = L.state === 'open' ? (L.peers ? '#5fe08a' : '#e0c25f') : L.state === 'closed' ? '#e06b5f' : '#e0c25f';
+      dot.title = fill(T.linkTitle, { room: O.link, state: L.state === 'open' ? (L.peers ? fill(T.linkPeers, { n: L.peers }) : T.linkAlone) : L.state === 'closed' ? T.linkClosed : T.linkWait });
+    }
+    if (!extChip) return;
+    var parts = [];
+    if (L) parts.push(fill(T.linkOn, { room: O.link }) + ' · ' + (L.state === 'open' ? (L.peers ? fill(T.linkPeers, { n: L.peers }) + (L.trip != null ? ' · ' + L.trip + ' ms' : '') : T.linkAlone) : L.state === 'closed' ? T.linkClosed : T.linkWait));
+    if (following()) parts.push(fill(T.clockChip, { bpm: Math.round(clk.bpm * 10) / 10 }));
+    var txt = parts.join('   ');
+    if (txt === extText) return;
+    extText = txt; extChip.textContent = txt; extChip.title = txt; extChip.style.display = txt ? '' : 'none';
+  }
+
+  // ---- a link: pages in one room hear each other's programs (link=<room>; @openav/relay's MidiLink over the phone relay).
+  // What this page's programs play into the virtual output (Strudel's .midi(), clock and all) goes to every other page in
+  // the room, with its time; what comes from them is told here when it sounds there (see packages/relay/link.js for how two
+  // computers' clocks are lined up). It is never sent on again — and a program that plays back out what it heard from the
+  // link (midikeys → .midi on the other page) is caught as an echo within 600 ms and not sent back.
+  var link = null, linkState = null, linkEcho = {}, linkEchoN = 0;
+  function startLink() {
+    if (!O.link || link) return;
+    link = { send: function () {} };                     // placeholder until the module is in
+    load('packages/relay/link.js').then(function (m) {
+      link = new m.MidiLink({ url: O.relay, room: O.link, delay: O.linkdelay,
+        onStatus: function (s) { linkState = s; paintExt(); },
+        onMessages: function (list) {
+          for (var i = 0; i < list.length; i++) {
+            var x = list[i], s = x.bytes[0];
+            if (s >= 0xF8 || s === 0xF2) clockIn(x.bytes, x.at, 'link'); else later(x.bytes, x.at, 'link');
+          }
+        } });
+      link.connect();
+      if (g.console) console.info('[oav-p5] link: ' + (zh ? '房間 ' : 'room ') + O.link + (zh ? '（同房間的 oav-p5 頁面互相聽得到虛擬埠送出的 MIDI）' : ' (oav-p5 pages in this room hear what each other\'s programs play)'));
+    }, function () { link = null; hint('modfail:link', 'moduleFail', { name: '@openav/relay link', host: hostOf(BASE) }, 'error'); });
+  }
+  function sig(b) { return (b[0] | 0) + ',' + (b[1] | 0) + ',' + (b[2] | 0); }
+  function linkHeard(bytes) { if (++linkEchoN > 512) { linkEcho = {}; linkEchoN = 0; } linkEcho[sig(bytes)] = nowMs(); }
+  function linkOut(msg, t) {
+    if (!(msg[0] >= 0xF8 || msg[0] === 0xF2)) {
+      var k = sig(msg), at = linkEcho[k];
+      if (at != null && nowMs() - at < 600) { ext.echoes++; return; }   // what the link just played, played back: not again
+    }
+    if (link && link.send) link.send(msg, t);
+  }
+  midi.link = {
+    /** { room, state: 'connecting' | 'open' | 'closed', peers (other pages heard in 6 s), rtt, trip, diff, lead, late, sent, received } */
+    get info() { return linkState || (O.link ? { room: O.link, state: link ? 'connecting' : 'off', peers: 0 } : null); },
+    _link: function () { return link; },
+  };
 
   // ---------------------------------------------------------------- the microphone: micLevel · bass · mid · treble · beat
   // Off until a sketch asks: it reads one of the names below, calls startMic(), or someone presses 🎤 in the 🎹 panel.
@@ -634,7 +908,7 @@
   // nothing that lists the page's globals wakes it); a sketch with its own `bass` keeps it, and assigning one later
   // turns the name into a plain variable again.
   function micName(name, read) {
-    if (name in g) return;
+    if (name in g) { yielded.push(name); return; }
     try {
       Object.defineProperty(g, name, {
         configurable: true, enumerable: false,
@@ -691,6 +965,7 @@
     midiNone: ['這個瀏覽器沒有 Web MIDI', 'Safari 和 iPad 接不到實體 MIDI 鍵盤。', '按 🎹 用螢幕上的鍵盤，或 📱 用手機彈；要接實體鍵盤請改用 Chrome 或 Edge。'],
     midiDenied: ['MIDI 權限被擋下了', '實體鍵盤、控制器的訊號進不來。', '點網址列左邊的鎖頭 → MIDI 裝置選「允許」→ 重新整理；或先按 🎹 用螢幕上的鍵盤。'],
     cbError: ['你的 {name}() 出錯了：{msg}', '{where}草圖還在跑，只是這一下沒做完。', '去看{line}；console 裡有完整的錯誤。'],
+    strudelNames: ['這頁已經有 {names}（Strudel 的）', 'oav-p5 不動它們：Strudel 的 note()、velocity() 照常能用。旋鈕、麥克風照樣讀 knob1、micLevel。', '控制器和麥克風的這幾個值改讀：{alts}。'],
     ownName: ['你的草圖自己有一個 {name}', '（let、var 或 function 宣告了同名的東西）所以 oav-p5 不寫它：草圖讀到的是你自己的 {name}。', '要讀控制器的值：改用 {alt}，或把你自己的變數改個名字。'],
     knobBoth: ['{ctl}交給你的草圖了', '你的草圖直接讀 {read}，OPC 的拉桿 {opc} 原本也接在{ctl}：一顆旋鈕不同時動兩件事。', '{opc} 改用 OPC 面板的滑桿拉；想用旋鈕控制 {opc}，就在草圖裡用 {opc}、不要讀 {read}。'],
     sndClick: ['聲音準備好了，還沒響', '瀏覽器要網頁被點過一下才讓它出聲（按 MIDI 鍵盤不算）。', '點一下畫面任何地方（或按一個鍵）。'],
@@ -740,6 +1015,7 @@
     midiNone: ['No Web MIDI in this browser', 'Safari and iPad cannot reach a MIDI keyboard.', 'Press 🎹 for the keyboard on screen, or 📱 to play from a phone; for a real keyboard use Chrome or Edge.'],
     midiDenied: ['MIDI permission is blocked', 'Keyboards and controllers cannot reach the page.', 'Click the lock left of the address → MIDI devices: Allow → reload; or press 🎹 for the keyboard on screen.'],
     cbError: ['Your {name}() threw an error: {msg}', '{where}The sketch keeps running; only this call did not finish.', 'Look at {line}; the console has the whole error.'],
+    strudelNames: ["This page already has {names} (Strudel's)", "oav-p5 leaves them alone: Strudel's note() and velocity() work as before. Knobs and the microphone still read as knob1, micLevel.", 'For these values of the controller and the microphone, read: {alts}.'],
     ownName: ['Your sketch has its own {name}', '(a let, var or function of that name), so oav-p5 leaves it alone: the sketch reads its own {name}.', 'For the controller, read {alt} instead, or rename your variable.'],
     knobBoth: ['{ctl} is now the sketch\'s', 'Your sketch reads {read}, and OPC\'s slider {opc} was wired to {ctl} too: one knob does not move two things.', 'Drag {opc} on the OPC panel; to turn {opc} with the knob, use {opc} in the sketch instead of {read}.'],
     sndClick: ['Sound is ready but silent', 'Browsers let a page play audio only after a click (a MIDI key does not count).', 'Click anywhere on the canvas (or press a key).'],
@@ -805,7 +1081,7 @@
   }
   function showHint(h) {
     if (!hintBox) {
-      hintBox = el('div', 'position:fixed;' + O.corner + ':10px;' + O.dock + ':52px;z-index:' + (Z + 2) + ';display:flex;flex-direction:' + (O.dock === 'top' ? 'column' : 'column-reverse') +
+      hintBox = el('div', 'position:fixed;' + O.corner + ':10px;' + O.dock + ':' + (EDGE + 42) + 'px;z-index:' + (Z + 2) + ';display:flex;flex-direction:' + (O.dock === 'top' ? 'column' : 'column-reverse') +
         ';gap:6px;width:min(340px,calc(100vw - 20px));pointer-events:none');
       hintBox.id = 'oav-p5-hints';
       doc.body.appendChild(hintBox);
@@ -1072,6 +1348,10 @@
   var phaseAt = -1, phaseNow = { bar: 0, beat: 0 };
   function drumPhaseNow() {
     var m = drums.machine, t = clock();
+    if (clk && !(m && m.seq && m.seq.playing) && (following() || stoppedClock())) {   // no machine playing: the external clock's own phase (0.7; held where it stopped)
+      var xp = clk.phaseAt(t / 1000);
+      return xp ? { bar: xp.bar, beat: xp.beat } : phaseNow;
+    }
     if (!m || !m.phase) return phaseNow;
     if (t - phaseAt > 1) { phaseAt = t; try { phaseNow = m.phase(); } catch (e) { /* */ } }   // read once a millisecond at most
     return phaseNow;
@@ -1257,7 +1537,7 @@
   // drumPhase / beatPhase: readers, like the microphone's names, so each read is as fresh as the moment it is read (a value
   // written once a frame would lag a frame behind the sound). A sketch's own drumPhase keeps it.
   function readerName(name, read) {
-    if (name in g) return;
+    if (name in g) { yielded.push(name); return; }
     try {
       Object.defineProperty(g, name, {
         configurable: true, enumerable: false, get: read,
@@ -1740,7 +2020,7 @@
     if (O.panel === 'off' || btn || !doc || !doc.body) return;
     g.addEventListener('click', onClick, true);
     if (DEBUG) g.addEventListener('pointerdown', onClick, true);
-    btn = el('button', 'position:fixed;' + O.corner + ':10px;' + O.dock + ':10px;z-index:' + Z + ';display:flex;align-items:center;gap:6px;padding:6px 10px;' +
+    btn = el('button', 'position:fixed;' + O.corner + ':10px;' + O.dock + ':' + EDGE + 'px;z-index:' + Z + ';display:flex;align-items:center;gap:6px;padding:6px 10px;' +
       'border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(18,18,22,.78);color:#fff;font:600 13px system-ui,sans-serif;' +
       'cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)');
     btn.type = 'button'; btn.id = 'oav-p5-button';
@@ -1748,7 +2028,7 @@
     btn.appendChild(el('span', '', '🎹'));
     fence(btn);
     doc.body.appendChild(btn);
-    paintButton(); paintRec();
+    paintButton(); paintRec(); paintExt();
     flushHints();
     if (O.panel === 'open') openPanel(true);
     // say once, in the console, what the controller is wired to (OPC variables are declared by now)
@@ -1757,9 +2037,9 @@
     if (DEBUG) setTimeout(function () { dbg('2 s after placing: the 🎹 in the page is ours:', doc.getElementById('oav-p5-button') === btn, '| base', BASE); }, 2000);
   }
   function lift() {
-    var h = panelOpen && dock ? dock.getBoundingClientRect().height : 0;
-    if (btn) btn.style[O.dock] = (10 + h) + 'px';
-    if (hintBox) hintBox.style[O.dock] = (O.panel === 'off' ? 10 : 52) + h + 'px';
+    var h = panelOpen && dock ? dock.getBoundingClientRect().height + (O.compact ? 10 : 0) : 0;
+    if (btn) btn.style[O.dock] = (EDGE + h) + 'px';
+    if (hintBox) hintBox.style[O.dock] = (O.panel === 'off' ? EDGE : EDGE + 42) + h + 'px';
     if (drumCard) drumCard.style.top = O.dock === 'top' && h ? (10 + h) + 'px' : '';   // below a panel docked at the top (OpenProcessing)
   }
   function openPanel(want) {
@@ -1836,9 +2116,13 @@
   }
 
   function buildDock() {
-    dock = el('div', 'position:fixed;left:0;right:0;' + O.dock + ':0;z-index:' + (Z - 1) + ';max-height:50vh;overflow:auto;display:none;' +
-      'background:rgba(14,14,18,.92);border-' + (O.dock === 'top' ? 'bottom' : 'top') + ':1px solid rgba(255,255,255,.18);padding:6px 10px 10px;box-sizing:border-box;' +
-      'backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)');
+    // compact (Strudel): a box in the corner, a third of the height, so the code beside it stays in view
+    dock = el('div', (O.compact
+      ? 'position:fixed;' + O.corner + ':10px;' + O.dock + ':' + EDGE + 'px;width:min(560px,calc(100vw - 20px));z-index:' + (Z - 1) + ';max-height:34vh;overflow:auto;display:none;' +
+        'border:1px solid rgba(255,255,255,.18);border-radius:12px;'
+      : 'position:fixed;left:0;right:0;' + O.dock + ':0;z-index:' + (Z - 1) + ';max-height:50vh;overflow:auto;display:none;' +
+        'border-' + (O.dock === 'top' ? 'bottom' : 'top') + ':1px solid rgba(255,255,255,.18);') +
+      'background:rgba(14,14,18,.92);padding:6px 10px 10px;box-sizing:border-box;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)');
     dock.id = 'oav-p5-panel';
     fence(dock);
     var bar = el('div', 'display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin-bottom:4px;font:600 12px system-ui,sans-serif;color:#ddd' + (O.corner === 'left' ? ';flex-direction:row-reverse' : ''));
@@ -1869,7 +2153,9 @@
     shotBtn.addEventListener('click', function () { saveShot(); });
     if (O.record === 'off') { recBtn.style.display = 'none'; shotBtn.style.display = 'none'; }
     paintRec();
-    bar.appendChild(legend); bar.appendChild(micBtn); bar.appendChild(sndBtn); bar.appendChild(drumBtn); bar.appendChild(recBtn); bar.appendChild(shotBtn);
+    extChip = el('div', 'flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9fd8ff;font-weight:600;display:none');
+    extChip.id = 'oav-p5-ext';
+    bar.appendChild(legend); bar.appendChild(extChip); paintExt(); bar.appendChild(micBtn); bar.appendChild(sndBtn); bar.appendChild(drumBtn); bar.appendChild(recBtn); bar.appendChild(shotBtn);
     bar.appendChild(ph); bar.appendChild(ck); bar.appendChild(cl);
     dock.appendChild(bar);
     sndRow = el('div', 'display:none;margin:0 0 6px'); sndRow.id = 'oav-p5-sound';
@@ -1900,8 +2186,8 @@
         var wide = g.innerWidth >= 600, layout = wide ? 'face' : 'auto';
         if (view.getAttribute('layout') !== layout) view.setAttribute('layout', layout);   // auto would re-grid a shrunk face into a tall stack
         if (!f || !f.w || !f.h || !wide) { view.style.width = ''; return; }
-        var room = g.innerHeight * 0.5 - 86;               // the dock's cap minus its bar and the element's picker row
-        view.style.width = Math.max(320, Math.min(dock.clientWidth - 20, room * f.w / f.h)) + 'px';
+        var room = g.innerHeight * (O.compact ? 0.34 : 0.5) - (O.compact ? 96 : 86);   // the dock's cap minus its bar and the element's picker row
+        view.style.width = Math.max(O.compact ? 240 : 320, Math.min(dock.clientWidth - 20, room * f.w / f.h)) + 'px';
         view.style.margin = '0 auto';
       };
       var follow = function () {                          // the device on screen decides what knob1 means for the screen
@@ -1926,6 +2212,7 @@
   var relay = null, card = null;
   function roomName() {
     if (O.room) return O.room.replace(/[^\w-]/g, '').slice(0, 32) || 'default';
+    if (O.link) return O.link;                           // linked pages share their room with the phones: one QR plays them all
     var r = null;
     try { r = g.localStorage.getItem('oav.p5.room'); } catch (e) { /* */ }
     if (!r) { r = 'p5-' + Math.random().toString(36).slice(2, 7); try { g.localStorage.setItem('oav.p5.room', r); } catch (e) { /* */ } }
@@ -1981,6 +2268,11 @@
       connected: '已連上', 'no device': '沒偵測到裝置', ready: '好了', idle: '還沒開始' }, webMidiNo: '這個瀏覽器沒有 Web MIDI', last: '最後收到', bar: '第 {n} 小節',
     rec: '錄影', recMp4: '可以錄 MP4（IG 可以直接用）', recWebm: '只能錄 WebM（IG 不收：換新版 Chrome 或 Safari）', recNone: '這個瀏覽器不能錄', recOff: '關掉了（record=off）',
     recMax: '最長 {m} 分鐘', recNoMic: '不收麥克風', recNow: '錄影中', recLast: '上一段',
+    ext: '外部程式', extNone: '沒有程式向 OAV Virtual MIDI 要過 MIDI（這頁要是在 oav-p5 載入之前就開過 MIDI，重新整理、讓 oav-p5 先載）', extNoShim: '虛擬埠關著（shim=off）',
+    extAsked: 'OAV Virtual MIDI 被要過 {n} 次', extListen: '輸入有 {n} 個在聽', extOut: '輸出收到 {n} 則（最近 {what}，{ago} 秒前）', extOutNone: '輸出還沒收到東西',
+    extClock: '時鐘 {bpm} BPM（{state}{lead}）', extClockLead: ' · 鼓機跟著', extClockNone: '沒有外部時鐘', extEcho: '擋下回音 {n} 則',
+    extLink: 'link 房間 {room}（{state}{peers}{trip}{late}）', extPeers: ' · 另 {n} 頁', extTrip: ' · 單程約 {ms} ms', extLate: ' · 晚到 {n} 則',
+    clockStates: { running: '跑著', stopped: '停著', lost: '斷了', none: '沒有' }, linkStates: { open: '連上', connecting: '連線中', closed: '斷線', off: '關著' },
     clockFrame: '逐幀推進（drums=frame）', clockAhead: '提前排程（{beat} 心跳、提前 {ahead} 秒、輸出延遲 {lat} ms）', clockLate: '畫面太忙排晚了 {n} 下，提前量已拉到 0.3 秒', clockNoPre: '回呼由 OAV 自己的每幀叫（沒接上 p5 的 draw 前）' }
     : { title: '🩺 oav-p5 check-up', page: 'Page', frame: 'inside another page (iframe)', top: 'opened directly', browser: 'Browser', mic: 'Microphone', midi: 'MIDI',
     sound: 'Sound', drums: 'Drums', wiring: 'Wiring', own: "The sketch's own names", hints: 'Hints shown', none: 'none', copy: 'Copy text', copied: 'Copied', more: 'Full device check →',
@@ -1988,6 +2280,11 @@
       connected: 'connected', 'no device': 'no device found', ready: 'ready', idle: 'not started' }, webMidiNo: 'no Web MIDI in this browser', last: 'last', bar: 'bar {n}',
     rec: 'Recording', recMp4: 'MP4 (ready for Instagram)', recWebm: 'WebM only (not for Instagram: use a recent Chrome or Safari)', recNone: 'this browser cannot record', recOff: 'off (record=off)',
     recMax: 'up to {m} min', recNoMic: 'microphone left out', recNow: 'recording', recLast: 'last take',
+    ext: 'Other programs', extNone: 'no program has asked OAV Virtual MIDI for MIDI (if this page opened MIDI before oav-p5 loaded, reload so oav-p5 comes first)', extNoShim: 'the virtual port is off (shim=off)',
+    extAsked: 'OAV Virtual MIDI handed out {n}×', extListen: '{n} listening on its input', extOut: 'its output got {n} (last {what}, {ago} s ago)', extOutNone: 'nothing on its output yet',
+    extClock: 'clock {bpm} BPM ({state}{lead})', extClockLead: ' · the drums follow', extClockNone: 'no external clock', extEcho: '{n} echo(es) held back',
+    extLink: 'link room {room} ({state}{peers}{trip}{late})', extPeers: ' · {n} other page(s)', extTrip: ' · one way ≈ {ms} ms', extLate: ' · {n} late',
+    clockStates: { running: 'running', stopped: 'stopped', lost: 'lost', none: 'none' }, linkStates: { open: 'connected', connecting: 'connecting', closed: 'disconnected', off: 'off' },
     clockFrame: 'moved by the frames (drums=frame)', clockAhead: 'scheduled ahead ({beat} heartbeat, {ahead} s ahead, output latency {lat} ms)', clockLate: '{n} hit(s) handed over late (a busy frame): 0.3 s ahead from then on', clockNoPre: "callbacks from OAV's own frame loop (no p5 pre-draw hook)" };
   function st(x) { return C.states[x] || x; }
   // the drum clock, for the check-up: which heartbeat, how far ahead, the output latency the timing allows for, late hits
@@ -2022,6 +2319,7 @@
       wiring: wiringText(), own: own,
       hints: hintList.map(function (h) { return h.what; }),
     };
+    r.external = externalInfo();
     var rf = recFormats(), last = record.last;
     r.recording = { state: record.state, option: O.record, recorder: rf.recorder, mp4: rf.mp4, webm: rf.webm, mime: rf.mime, fps: O.recfps, limit: O.reclimit,
       last: last ? { name: last.name, format: last.format, seconds: last.seconds, bytes: last.bytes, audio: last.audio, heard: last.heard, warnings: last.warnings.slice() } : null };
@@ -2038,11 +2336,45 @@
         (rf.mp4 || rf.webm ? ' · ' + O.recfps + ' fps · ' + fill(C.recMax, { m: fmtMin(O.reclimit) }) + (O.record === 'nomic' ? ' · ' + C.recNoMic : '') : '') +
         (record.state === 'on' ? ' · ' + C.recNow + ' ' + mmss(record.seconds) : '') +
         (last ? ' · ' + C.recLast + ' ' + last.name + (zh ? '（' : ' (') + last.seconds + ' s, ' + fmtBytes(last.bytes) + ', ' + (last.audio ? (last.heard ? H.rec.heard : H.rec.silent) : H.rec.noTrack) + (zh ? '）' : ')') : '')),
+      C.ext + (zh ? '：' : ': ') + externalText(r.external),
       C.wiring + (zh ? '：' : ': ') + (r.wiring ? r.wiring.replace(/^[^:：]*[:：]\s*/, '') : C.none),
       C.own + (zh ? '：' : ': ') + (own.length ? own.join(', ') : C.none),
       C.hints + (zh ? '：' : ': ') + (r.hints.length ? r.hints.join('；') : C.none)];
     r.text = L.join('\n');
     return r;
+  }
+  // 🩺 "Other programs": did anything take the virtual port (the silent failure when Strudel opened MIDI first), what came
+  // out of it, the clock, the link — only OAV's own state and the browser's, nothing of the other program is read
+  function msgName(b) {
+    if (!b || !b.length) return '?';
+    var s = b[0], t = s & 0xF0;
+    if (s === 0xF8) return 'clock'; if (s === 0xFA) return 'start'; if (s === 0xFB) return 'continue'; if (s === 0xFC) return 'stop'; if (s === 0xF2) return 'song position';
+    if (t === 0x90 && b[2]) return 'noteOn ' + b[1]; if (t === 0x80 || t === 0x90) return 'noteOff ' + b[1]; if (t === 0xB0) return 'cc ' + b[1] + ' = ' + b[2];
+    if (t === 0xE0) return 'pitchBend'; return '0x' + s.toString(16);
+  }
+  function externalInfo() {
+    var vp = virtualPort, ci = midi.clock.info, li = midi.link.info;
+    return { shim: O.shim !== 'off', asked: vp ? vp.requests || 0 : 0, listening: vp && vp.input ? vp.input.listening || 0 : 0,
+      out: ext.out, last: ext.outLast ? msgName(ext.outLast) : null, ago: ext.outLast ? Math.round((nowMs() - ext.outAt) / 100) / 10 : null, echoes: ext.echoes,
+      clock: { state: ci.state, bpm: ci.bpm, following: !!(ci.state === 'running' && drums.machine && drums.machine.seq && drums.machine.seq.playing && machineUp()), source: ci.source },
+      link: li, strudel: onStrudel };
+  }
+  function externalText(x) {
+    var parts = [];
+    if (!x.shim) parts.push(C.extNoShim);
+    else if (!x.asked) parts.push(C.extNone);
+    else {
+      parts.push(fill(C.extAsked, { n: x.asked }));
+      if (x.listening) parts.push(fill(C.extListen, { n: x.listening }));
+      parts.push(x.out ? fill(C.extOut, { n: x.out, what: x.last, ago: x.ago }) : C.extOutNone);
+    }
+    parts.push(x.clock.state === 'none' ? C.extClockNone : fill(C.extClock, { bpm: x.clock.bpm == null ? '?' : Math.round(x.clock.bpm * 10) / 10,
+      state: C.clockStates[x.clock.state] || x.clock.state, lead: x.clock.following ? C.extClockLead : '' }));
+    if (x.echoes) parts.push(fill(C.extEcho, { n: x.echoes }));
+    if (x.link) parts.push(fill(C.extLink, { room: x.link.room, state: C.linkStates[x.link.state] || x.link.state,
+      peers: x.link.state === 'open' ? fill(C.extPeers, { n: x.link.peers || 0 }) : '', trip: x.link.trip != null ? fill(C.extTrip, { ms: x.link.trip }) : '',
+      late: x.link.late ? fill(C.extLate, { n: x.link.late }) : '' }));
+    return parts.join(' · ');
   }
   var checkCard = null;
   function check(opts) {
@@ -2081,7 +2413,14 @@
   // the p5-style names: never over a sketch's own variable or function of the same name
   Object.keys(GLOBALS).forEach(function (k) { claim(k, GLOBALS[k]); });
   for (var ri = 1; ri <= 16; ri++) { if (ri <= 8) { ctlName('knob', ri); ctlName('fader', ri); } ctlName('pad', ri); }
-  Object.keys(FUNCS).forEach(function (k) { if (typeof g[k] === 'undefined') setGlobal(k, FUNCS[k]); });
+  Object.keys(FUNCS).forEach(function (k) { if (typeof g[k] === 'undefined') setGlobal(k, FUNCS[k]); else yielded.push(k); });
+  // In Strudel the names that stepped aside are Strudel's own functions (note, velocity, beat), not a sketch's variables:
+  // one card says which, and what to read instead, at once (in a sketch the card comes the first time one is written)
+  if (onStrudel && yielded.length) {
+    var alts = yielded.filter(function (k) { return STRUDEL_ALT[k]; }).map(function (k) { return k + ' → ' + STRUDEL_ALT[k]; });
+    hint('strudelNames', null, { names: yielded.join(zh ? '、' : ', '), alts: alts.length ? alts.join(zh ? '；' : '; ') : 'OAVp5.…' }, 'info', { ttl: 15000 });
+  }
+  if (O.link) startLink();
 
   if (O.hardware === 'auto') connectHardware();
   if (g.addEventListener) g.addEventListener('load', function () { setTimeout(midiTrouble, 0); });

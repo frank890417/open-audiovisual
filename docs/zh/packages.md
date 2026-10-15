@@ -53,7 +53,8 @@ L1 輸入與 L4 輸出 · Web MIDI 的輸入與輸出，可以同時接很多台
 | 總譜轉 MIDI | `new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })` · `segment({ index, cause })` · `cue({ name, n })`：把段落切換和 cue 變成 note 與 CC，見[總譜與導演](score.md#score-to-midi) |
 | 解析 | `parseMessage(bytes)` → 事件 · `encodeMessage(event)` → 位元組 · `genericSignals(event, { device })` · `publish(signals, list)` · `describe(event)` · `relativeDelta(value, mode)`、`relativeValue(delta, mode)`、`RELATIVE_MODES` · `bendToUnit`、`unitToBend`、`BEND_CENTER` |
 | 控制器 | `MidiController`、`MidiControllers`、`controllerRoutes(profile, bindings)`、`PROFILES`、`profileById(id)`、`ControllerView`、`mountMidiPanel(el, controllers, opts)`、`linkControllers`，以及 profile 輔助函式（`validateProfile`、`normalizeProfile`、`matchProfile`…） |
-| Web MIDI shim | `createVirtualMIDIAccess(opts)`、`virtualRequestMIDIAccess` |
+| Web MIDI shim | `createVirtualMIDIAccess({ name, onOutput(bytes, timestamp), onClear })`、`virtualRequestMIDIAccess`、`splitMidi(bytes)`：它的輸出會連同每次送出的時間戳被聽到 |
+| `MidiClock`（`clock.js`） | `new MidiClock({ ppq = 24, beatsPerBar = 4 })` · `feed(bytes, t)` → `'clock'·'start'·'continue'·'stop'·'spp'·'dupe'` · `bpm` · `phaseAt(t)` → `{ pos, bar, beat, bpm, running }` · `anchor()` · `state(t)`：跟著外部 MIDI 時鐘（[和 Strudel 一起用](strudel.md)） |
 | 嵌入 | `createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut, telemetry })` → `ControllerHost`（`on(event, fn)`、`set`、`press`、`release`、`values`、`mount(el)`、`learn()`、`dispose()`）· `loadProfile(idOrUrl)` · `packages/midi/element.js` 裡的 `<oav-controller>` 元素 · `embed.js` 裡的嵌入協定輔助函式 |
 
 ```js
@@ -153,7 +154,7 @@ L1 輸入與 L4 輸出 · 合成鼓組、16 步音序器和它的格狀介面。
 |---|---|
 | `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`；`clock: 'lookahead'` 照鼓組的音訊時鐘提前排程（oav-p5 0.6 用這個），也能照寫的樣子打編譯好的一行節奏；`lang: 'zh'` 軌道名用中文 |
 | `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`、`bpm`（逐幀推進的時鐘） |
-| `DrumScheduler`、`DrumTransport` | 提前排程的時鐘：格子或編譯好的一行節奏 → 帶時間的事件，小節位置用速度錨點換成秒（不累積漂移）；外層是 Web Worker 心跳、音訊時鐘、聽到時才告訴頁面的步與鼓 |
+| `DrumScheduler`、`DrumTransport` | 提前排程的時鐘：格子或編譯好的一行節奏 → 帶時間的事件，小節位置用速度錨點換成秒（不累積漂移）；外層是 Web Worker 心跳、音訊時鐘、聽到時才告訴頁面的步與鼓；`follow({ pos, at, bpm })` 跟著外部時鐘打（小誤差用速度慢慢拉回，大誤差直接跳到它的格線上）、`followInfo()`、`unfollow()` |
 | `drumEngine` | `drumEngine({ samples })` → 一個聲音引擎（見[聲音](show-control.md#sound)）；`noteOn(note, vel, time)` 在自己 AudioContext 的 `time` 響，回傳 `{ time, cancel() }` |
 | `PATTERNS`、`GM` | 節奏型預設，以及 General MIDI 鼓的音符編號 `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
 
@@ -372,6 +373,7 @@ p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
 | `RelayClient` | `new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig })` · `connect()` · `close()` · `set(name, value)` · `send(name, value, pulse, extra)` · `feedback(name, value)` · `config(key, data)` · `status`、`latency`、`peers` |
 | 訊號輔助函式 | `bindSignals(client, signals, { alias = 'any' })` · `fileSignal(signals, name, value, { pulse })` · `signalMeta(name, { pulse })` · `aliasOf(name)` · `normalizeValue(name, value)` · `deviceId()` |
 | `@openav/relay/server` | `attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000 })` → `{ hub, close() }`。單獨執行用 `node packages/relay/server.js [port=7458]` |
+| `MidiLink`（`link.js`） | `new MidiLink({ url, room, delay = 0, onMessages(list, from), onStatus })` · `connect()` · `send(bytes, whenMs)` · `info()` → `{ state, peers, rtt, trip, diff, lead, late, sent, received }` · `close()`；`LinkTiming`：同一個房間的頁面之間傳 MIDI，在送出那頁響的那一刻演奏（[和 Strudel 一起用](strudel.md)） |
 
 見[手機、中繼與控制面板](remote.md#the-relay)。
 

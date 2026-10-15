@@ -51,6 +51,7 @@ How to cite: cite the canonical URL of the page you read. Code is MIT; examples 
 - [Score & Director](https://openaudiovisual.com/docs/score.md): a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.
 - [MIDI controllers & embedding](https://openaudiovisual.com/docs/controllers.md): MIDI controllers as JSON profiles, the `<oav-controller>` element and the iframe embed.
 - [p5.js in one line](https://openaudiovisual.com/docs/p5.md): one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone.
+- [With Strudel](https://openaudiovisual.com/docs/strudel.md): Strudel and OAV side by side: knobs, phone and microphone as Strudel parameters; Strudel's notes and clock drawn in a p5 sketch on the same page or in another tab (link=); Hydra.
 - [Phones, relay & surfaces](https://openaudiovisual.com/docs/remote.md): phones and iPads as controllers: relay, sensors, control surfaces.
 - [Signals reference](https://openaudiovisual.com/docs/signals.md): every signal the built-in inputs publish, with ranges.
 - [Package reference](https://openaudiovisual.com/docs/packages.md): every package, by layer.

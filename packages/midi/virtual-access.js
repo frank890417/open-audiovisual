@@ -12,6 +12,11 @@
 //   navigator.requestMIDIAccess = async () => v.access;
 //   v.emit([0x90, 60, 100]);                          // → every listener on the virtual input
 //
+// The virtual OUTPUT is a real-looking port too: a program that plays out to "OAV Virtual MIDI" (Strudel's
+// `.midi('OAV Virtual MIDI')`, a WebMidi.js sketch) calls `send(bytes, timestamp)` on it, and onOutput(bytes,
+// timestamp) hears both — the timestamp is when the bytes should sound (performance.now() milliseconds; missing = now),
+// exactly what a hardware port would wait for. `clear()` (Web MIDI: drop what is still waiting) calls onClear().
+//
 // Port order: real inputs FIRST, the virtual one last — sketches that only
 // listen to `inputs[0]` (WebMidi.inputs[0]) take the hardware when it is
 // there and the virtual controller when it is not. Real ports are passed
@@ -38,7 +43,7 @@ class VirtualPort extends ET {
     Object.assign(this, { id, name, manufacturer, type, version });
     this.state = 'connected';
     this.connection = 'closed';
-    this._on = null; this._onstate = null;
+    this._on = null; this._onstate = null; this._fns = new Set();
   }
   get onmidimessage() { return this._on; }
   set onmidimessage(fn) { this._on = typeof fn === 'function' ? fn : null; if (this._on) this.connection = 'open'; }
@@ -46,7 +51,13 @@ class VirtualPort extends ET {
   set onstatechange(fn) { this._onstate = typeof fn === 'function' ? fn : null; }
   open() { this.connection = 'open'; return Promise.resolve(this); }
   close() { this.connection = 'closed'; return Promise.resolve(this); }
-  addEventListener(t, f, o) { if (t === 'midimessage') this.connection = 'open'; return super.addEventListener(t, f, o); }
+  addEventListener(t, f, o) {
+    if (t === 'midimessage') { this.connection = 'open'; if (typeof f === 'function' && !this._fns.has(f)) this._fns.add(f); }
+    return super.addEventListener(t, f, o);
+  }
+  removeEventListener(t, f, o) { if (t === 'midimessage') this._fns.delete(f); return super.removeEventListener(t, f, o); }
+  /** how many listeners a program has on this port (onmidimessage counts as one): "is anybody listening?" */
+  get listening() { return (this._on ? 1 : 0) + this._fns.size; }
   toJSON() { return { id: this.id, name: this.name, manufacturer: this.manufacturer, type: this.type, state: this.state, connection: this.connection }; }
 }
 
@@ -62,9 +73,45 @@ class VirtualInput extends VirtualPort {
 }
 
 class VirtualOutput extends VirtualPort {
-  constructor(o, onSend) { super(o); this._send = onSend; }
-  send(data) { try { this._send?.(Array.from(data)); } catch (e) { console.error('[virtual midi] out', e); } }
-  clear() {}
+  constructor(o, onSend, onClear) { super(o); this._send = onSend; this._clear = onClear; this.sent = 0; this.lastSend = null; }
+  /** Web MIDI's send(data, timestamp): `timestamp` (performance.now() ms) is when it should sound; left out = now */
+  send(data, timestamp) {
+    this.sent++; this.lastSend = now();
+    const t = typeof timestamp === 'number' && isFinite(timestamp) && timestamp > 0 ? timestamp : undefined;
+    try { this._send?.(Array.from(data), t); } catch (e) { console.error('[virtual midi] out', e); }
+  }
+  /** Web MIDI's clear(): what is still waiting to be sent is dropped */
+  clear() { try { this._clear?.(); } catch (e) { console.error('[virtual midi] clear', e); } }
+}
+
+/** One send() may carry several MIDI messages back to back (Web MIDI allows it): split them, each one whole.
+ *  Running status is not allowed in send(), so a data byte with no status before it is dropped; sysex runs to 0xF7.
+ *  @param {ArrayLike<number>} bytes  @returns {number[][]} */
+export function splitMidi(bytes) {
+  const out = [], b = Array.from(bytes || [], (x) => x & 0xFF);
+  let i = 0;
+  while (i < b.length) {
+    const s = b[i];
+    if (s < 0x80) { i++; continue; }
+    let n;
+    if (s === 0xF0) { let j = i + 1; while (j < b.length && b[j] !== 0xF7) j++; n = j - i + 1; }
+    else if (s >= 0xF8 || s === 0xF6 || s === 0xF7 || s === 0xF4 || s === 0xF5) n = 1;
+    else if (s === 0xF1 || s === 0xF3) n = 2;
+    else if (s === 0xF2) n = 3;
+    else { const hi = s & 0xF0; n = hi === 0xC0 || hi === 0xD0 ? 2 : 3; }
+    const m = b.slice(i, i + n);
+    // a realtime byte (clock) may sit inside another message: lift it out, keep the message whole
+    const rt = m.slice(1).filter((x) => x >= 0xF8);
+    if (rt.length && s !== 0xF0) {
+      const rest = [s];
+      let j = i + 1;
+      while (rest.length < n && j < b.length) { if (b[j] >= 0xF8) out.push([b[j]]); else rest.push(b[j]); j++; }
+      out.push(rest); i = j; continue;
+    }
+    if (m.length === n || s === 0xF0) out.push(m);
+    i += n;
+  }
+  return out;
 }
 
 class VirtualAccess extends ET {
@@ -85,12 +132,14 @@ class VirtualAccess extends ET {
  * @param {string} [o.manufacturer]
  * @param {string} [o.id]
  * @param {boolean} [o.sysex]        what access.sysexEnabled reports
- * @param {(bytes:number[])=>void} [o.onOutput]   bytes a sketch sends to the virtual OUTPUT (mirror them on screen)
+ * @param {(bytes:number[], timestamp?:number)=>void} [o.onOutput]   bytes a program sends to the virtual OUTPUT, and when
+ *                                    they should sound (performance.now() ms; undefined = now)
+ * @param {()=>void} [o.onClear]      the program called output.clear(): drop what is still waiting
  */
-export function createVirtualMIDIAccess({ name = 'OAV Virtual MIDI', manufacturer = 'open-audiovisual', id = 'oav-virtual', sysex = false, onOutput = null } = {}) {
+export function createVirtualMIDIAccess({ name = 'OAV Virtual MIDI', manufacturer = 'open-audiovisual', id = 'oav-virtual', sysex = false, onOutput = null, onClear = null } = {}) {
   const access = new VirtualAccess(sysex);
   const input = new VirtualInput({ id: id + '-in', name, manufacturer, type: 'input' });
-  const output = new VirtualOutput({ id: id + '-out', name, manufacturer, type: 'output' }, (b) => onOutput?.(b));
+  const output = new VirtualOutput({ id: id + '-out', name, manufacturer, type: 'output' }, (b, t) => onOutput?.(b, t), () => onClear?.());
   output.connection = 'open';
   let real = null, realListener = null;
 
@@ -109,9 +158,13 @@ export function createVirtualMIDIAccess({ name = 'OAV Virtual MIDI', manufacture
   };
   sync();
 
+  let handedOut = 0;
   return {
     access, input, output,
     get real() { return real; },
+    /** how many times a program asked for this access (virtualRequestMIDIAccess counts) */
+    get requests() { return handedOut; },
+    _handed() { handedOut++; },
     /** Feed bytes in as if the virtual device played them. */
     emit: (data) => input.emit(data),
     /** Merge a real MIDIAccess (now or later). Ports added after the sketch got its access arrive as statechange events. */
@@ -150,6 +203,7 @@ export function createVirtualMIDIAccess({ name = 'OAV Virtual MIDI', manufacture
 export function virtualRequestMIDIAccess({ real = null, make, waitMs = 1200 }) {
   return function requestMIDIAccess(opts = {}) {
     const v = make(opts);
+    v._handed?.();
     if (!real) return Promise.resolve(v.access);
     let settled = false;
     const r = Promise.resolve().then(() => real(opts)).then((acc) => { v.addReal(acc); return true; }, () => false);

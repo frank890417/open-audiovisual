@@ -43,6 +43,7 @@ export const DOC_BLURB = {
   score: ['a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.', '把演出寫成段落長度：版本、cue、hold、段落模組、提詞器、樂譜轉 MIDI。'],
   controllers: ['MIDI controllers as JSON profiles, the `<oav-controller>` element and the iframe embed.', '把 MIDI 控制器寫成 JSON 設定檔，以及 `<oav-controller>` 元件與 iframe 嵌入。'],
   p5: ['one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone.', '一行指令，讓任何 p5.js 草圖能用 MIDI、螢幕上的控制器或手機彈。'],
+  strudel: ['Strudel and OAV side by side: knobs, phone and microphone as Strudel parameters; Strudel\'s notes and clock drawn in a p5 sketch on the same page or in another tab (link=); Hydra.', 'Strudel 和 OAV 並排用：旋鈕、手機、麥克風變成 Strudel 的參數；Strudel 的音符和時鐘在同一頁或另一個分頁（link=）的 p5 草圖裡畫出來；Hydra。'],
   phones: ['phones and iPads as controllers: relay, sensors, control surfaces.', '手機與 iPad 當控制器：中繼、感測器、控制面板。'],
   signals: ['every signal the built-in inputs publish, with ranges.', '內建輸入發出的每一個訊號與範圍。'],
   packages: ['every package, by layer.', '每個套件，依層分類。'],

@@ -30,3 +30,24 @@ const phone = new RelayClient({ role: 'controller', room: 'main' }).connect();
 phone.set('phone/me/tilt/x', 0.3);        // continuous: 30 Hz batch + 1 Hz refresh
 phone.send('midi/note/on', { note: 60 }, true);   // pulse: immediate, never coalesced
 ```
+
+## `link.js`: MIDI between pages in one room
+
+`MidiLink` joins a room twice (a `controller` socket that sends, a `runner` socket that hears, so the relay as deployed
+routes it unchanged) and carries MIDI between pages: Strudel in one tab and a p5 sketch in another, or two computers.
+oav-p5's `link=<room>` uses it.
+
+```js
+import { MidiLink } from '@openav/relay/link.js';
+const link = new MidiLink({ url: 'wss://remote.cheyuwu.com/relay', room: 'class4', onMessages: (list) => list.forEach(({ bytes, at }) => …) });
+link.connect();
+link.send([0x90, 60, 100], performance.now() + 250);   // when it should sound, on this page's clock
+```
+
+Each message carries when it left and when each item should sound, on the sender's clock. The receiver keeps the smallest
+`arrival − departure` of the last 10 s (the clock difference plus the fastest trip) and subtracts the trip that both ends'
+smallest ping round trips of the last 30 s say ((rtt sender + rtt receiver) / 2): an item then plays when it plays at the
+sender, or at once if that is past (`late`). `delay` (ms) buffers more. A page drops its own messages and any message twice;
+beacons every 2 s say who is in the room (`peerCount()`, `info()`). `LinkTiming` is the clock-difference estimate alone.
+Measured on strudel.cc, two tabs over wss://remote.cheyuwu.com (one way ≈ 61 ms): within −3 … +7 ms of Strudel's timestamps
+(two runs). A page on https (strudel.cc) cannot reach a `ws://` relay on the same machine or LAN in Chrome (local-network checks).
