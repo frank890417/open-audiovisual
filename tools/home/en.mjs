@@ -167,6 +167,7 @@ export default {
       fab: 'Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files',
       timeline: 'Param automation, scenes and cues: the clock of the show',
       score: 'The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails',
+      pattern: 'Rhythm in one line: TidalCycles/Strudel-style mini-notation read into the hits of each bar (Euclidean rhythms, one-per-bar alternation, seeded chance)',
       console: 'The director\'s desk and performance mode',
       monitor: 'Backstage view for any device on the network',
       relay: 'Zero-dependency room relay for phones and iPads',

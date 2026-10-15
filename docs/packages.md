@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty-five packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-six packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -11,7 +11,7 @@ npm yet.
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
-| spines | `timeline` · `score` · `console` · `monitor` |
+| spines | `timeline` · `score` · `pattern` · `console` · `monitor` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
 
@@ -352,6 +352,25 @@ director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.p
 ```
 
 Full reference: [Score & Director](score.md).
+
+## @openav/pattern
+
+Spine · rhythm in one line: mini-notation, the way TidalCycles and Strudel write rhythm, read into the hits of each bar. Pure logic. An independent implementation from their public documentation (the writing comes from [TidalCycles](https://tidalcycles.org) and [Strudel](https://strudel.cc)).
+
+| export | signature |
+|---|---|
+| `compile` | `compile(src, { words = WORDS })` → `{ ok, error, src, voices, layers, period, eventsInBar(bar, { seed = 0 }) }`, never throws · `eventsInBar` (bars from 1) → `[{ word, voice, n, pos, dur, vel, layer, token: { start, end } }]` sorted by `pos` (0..1 in the bar) · `error` → `{ code, index, length, message, hint }`, `code` one of `empty` `unclosed` `unexpected` `bad-number` `bad-euclid` `unknown-word` `unsupported` |
+| `parse` | `parse(src)` → `{ ok, tree }` or `{ ok: false, error }`: nodes `step` `rest` `seq` `layer` `alt` `fast` `slow` `euclid` `maybe`, each with its character range |
+| `WORDS` | `bd` kick · `sd` snare · `hh` hat · `oh` openhat · `cp` clap · `rim`/`rs` · `lt` `mt` `ht` toms · `cr` crash · `rd` ride · `cb` cowbell, and the kit's own names |
+| `euclid` | `euclid(pulses, steps, rotate = 0)` → booleans (Toussaint 2005) |
+
+Writing: spaces (steps share the bar) · `~` `-` rest · `[ ]` group · `,` layers · `*n` faster · `/n` slower, across bars · `< >` one per bar · `(k,n,r)` Euclidean · `!n` and `!` repeat · `@n` and `_` longer · `?` `?0.3` drop by chance (seeded) · `bd:2` sample number. `.` `|` `{ }` are refused with a hint (rests are `~` or `-`).
+
+```js
+import { compile } from '@openav/pattern';
+const p = compile('bd*4, [~ sd]*2, hh*8');
+p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
+```
 
 ## @openav/console
 

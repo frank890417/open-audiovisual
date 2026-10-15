@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="../assets/home/home.css?v=02aa19c">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=02aa19c">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -283,6 +283,7 @@
             <li><a href="#packages-openav-fab">@openav/fab</a></li>
             <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
             <li><a href="#packages-openav-score">@openav/score</a></li>
+            <li><a href="#packages-openav-pattern">@openav/pattern</a></li>
             <li><a href="#packages-openav-console">@openav/console</a></li>
             <li><a href="#packages-openav-monitor">@openav/monitor</a></li>
             <li><a href="#packages-openav-relay">@openav/relay</a></li>
@@ -352,7 +353,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">18 chapters · 181 sections · v0.1.0</p>
+      <p class="docs-stats">18 chapters · 182 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -3025,7 +3026,7 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">14</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
-<p>Twenty-five packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+<p>Twenty-six packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
 npm yet.</p>
@@ -3036,7 +3037,7 @@ npm yet.</p>
 <tr><td>L2 mapping</td><td><code>mapping</code></td></tr>
 <tr><td>L3 world</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
 <tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>out</code> · <code>record</code> · <code>fab</code> (and MIDI out in <code>midi</code>)</td></tr>
-<tr><td>spines</td><td><code>timeline</code> · <code>score</code> · <code>console</code> · <code>monitor</code></td></tr>
+<tr><td>spines</td><td><code>timeline</code> · <code>score</code> · <code>pattern</code> · <code>console</code> · <code>monitor</code></td></tr>
 <tr><td>phones</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
 <tr><td>glue</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
@@ -3323,6 +3324,21 @@ Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/exam
 <span class="tc">// every frame, after timeline.advance(dt):</span>
 director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });</code></pre></div>
 <p>Full reference: <a href="#score">Score &amp; Director</a>.</p>
+<h3 id="packages-openav-pattern">@openav/pattern<a class="anchor" href="#packages-openav-pattern" aria-label="Link to this section">#</a></h3>
+<p>Spine · rhythm in one line: mini-notation, the way TidalCycles and Strudel write rhythm, read into the hits of each bar. Pure logic. An independent implementation from their public documentation (the writing comes from <a href="https://tidalcycles.org" rel="noopener">TidalCycles</a> and <a href="https://strudel.cc" rel="noopener">Strudel</a>).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>compile</code></td><td><code>compile(src, { words = WORDS })</code> → <code>{ ok, error, src, voices, layers, period, eventsInBar(bar, { seed = 0 }) }</code>, never throws · <code>eventsInBar</code> (bars from 1) → <code>[{ word, voice, n, pos, dur, vel, layer, token: { start, end } }]</code> sorted by <code>pos</code> (0..1 in the bar) · <code>error</code> → <code>{ code, index, length, message, hint }</code>, <code>code</code> one of <code>empty</code> <code>unclosed</code> <code>unexpected</code> <code>bad-number</code> <code>bad-euclid</code> <code>unknown-word</code> <code>unsupported</code></td></tr>
+<tr><td><code>parse</code></td><td><code>parse(src)</code> → <code>{ ok, tree }</code> or <code>{ ok: false, error }</code>: nodes <code>step</code> <code>rest</code> <code>seq</code> <code>layer</code> <code>alt</code> <code>fast</code> <code>slow</code> <code>euclid</code> <code>maybe</code>, each with its character range</td></tr>
+<tr><td><code>WORDS</code></td><td><code>bd</code> kick · <code>sd</code> snare · <code>hh</code> hat · <code>oh</code> openhat · <code>cp</code> clap · <code>rim</code>/<code>rs</code> · <code>lt</code> <code>mt</code> <code>ht</code> toms · <code>cr</code> crash · <code>rd</code> ride · <code>cb</code> cowbell, and the kit's own names</td></tr>
+<tr><td><code>euclid</code></td><td><code>euclid(pulses, steps, rotate = 0)</code> → booleans (Toussaint 2005)</td></tr>
+</tbody>
+</table></div>
+<p>Writing: spaces (steps share the bar) · <code>~</code> <code>-</code> rest · <code>[ ]</code> group · <code>,</code> layers · <code>*n</code> faster · <code>/n</code> slower, across bars · <code>&lt; &gt;</code> one per bar · <code>(k,n,r)</code> Euclidean · <code>!n</code> and <code>!</code> repeat · <code>@n</code> and <code>_</code> longer · <code>?</code> <code>?0.3</code> drop by chance (seeded) · <code>bd:2</code> sample number. <code>.</code> <code>|</code> <code>{ }</code> are refused with a hint (rests are <code>~</code> or <code>-</code>).</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { compile } <span class="tk">from</span> <span class="ts">'@openav/pattern'</span>;
+<span class="tk">const</span> p = compile(<span class="ts">'bd*4, [~ sd]*2, hh*8'</span>);
+p.eventsInBar(1);   <span class="tc">// kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8</span></code></pre></div>
 <h3 id="packages-openav-console">@openav/console<a class="anchor" href="#packages-openav-console" aria-label="Link to this section">#</a></h3>
 <p>Spine · the director's desk: transport, layer panels, params with learn, signal
 meters, performance mode.</p>
@@ -3801,7 +3817,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=02aa19c"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>
