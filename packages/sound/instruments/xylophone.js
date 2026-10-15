@@ -1,7 +1,7 @@
 // Xylophone · rosewood bars, hard mallets. The bar is tuned so its second mode
 // sits at 3× (a twelfth above); the third is untuned and dies almost at once.
 // Sounds an octave above the written note, like the real instrument.
-import { modalInstrument } from './modal.js?v=e629115';
+import { modalInstrument } from './modal.js?v=15b294a';
 
 export const xylophone = modalInstrument({
   id: 'xylophone',
