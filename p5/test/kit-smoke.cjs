@@ -24,7 +24,7 @@ const VERSIONS = (process.env.P5_VERSIONS || '1.11.11,2.0.5,2.3.4full').split(',
 const REAL_TONE = process.env.REAL_TONE !== '0';
 const SKETCH = { plain: 'particles', drums: 'drums', keys: 'keys' };
 const NEW_NAMES = ['startSound', 'stopSound', 'soundIsOn', 'startDrums', 'stopDrums', 'drumsAreOn', 'drumStep', 'drumBar', 'drumBpm', 'cue', 'cueName',
-  'drumHit', 'barStarted', 'stepStarted', 'cueFired'];
+  'drumHit', 'barStarted', 'stepStarted', 'cueFired', 'micSensitivity'];
 const MIME = { '.js': 'text/javascript', '.json': 'application/json', '.html': 'text/html', '.css': 'text/css', '.mp3': 'audio/mpeg' };
 const soundFor = (v) => (v.startsWith('1.') ? 'p5sound-1.11.11.min.js' : 'p5sound-0.4.1.min.js');
 

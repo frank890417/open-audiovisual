@@ -46,6 +46,11 @@ OPC's own panel moves with the knob. On OpenProcessing, whose OPC panel can also
 switch), hardware is left to that mapping as soon as it is seen working, and OAV keeps wiring the on-screen
 controller and the phone. Don't name an OPC variable after a p5 function (`hue`, `fill`, …): p5 1.x will clash with it.
 
+**One knob, one job.** A sketch that also reads `knob1` itself (gravity, say) gets knob 1: the first OPC slider stops
+following it (drag it on OPC's panel), knob 2 still drives the second slider, and a hint says so once. The panel's first
+line is the wiring: `接線：旋鈕1 → knob1（草圖；radius 改用滑桿） · 旋鈕2 → speed（OPC）` (in English: `Wiring: knob1 → knob1
+(sketch; radius by its slider) · knob2 → speed (OPC)`); `midi.wiring()` marks such a control `sketch: true`.
+
 ## Microphone
 
 The same line reads the microphone, as variables (off until a sketch reads one, calls `startMic()`, or 🎹 → 🎤 is pressed):
@@ -60,16 +65,24 @@ function beatDetected(level) { /* a beat */ }
 
 | read | | define | |
 |---|---|---|---|
-| `micLevel` | 0..1, how loud (smoothed) | `beatDetected(level)` | a jump in loudness |
+| `micLevel` | 0..1, how loud it sounds (see below) | `beatDetected(level)` | a jump in loudness |
 | `bass`, `mid`, `treble` | 0..1, 20–250 · 250–2000 · 2000–8000 Hz | `kickDetected(level)`, `snareDetected`, `hatDetected` | a hit in that band |
 | `beat` | true for one frame per beat | | |
 | `micIsOn`, `startMic()`, `stopMic()` | | | |
+| `micSensitivity(2)` | twice as sensitive (+6 dB on `micLevel`, ×2 on the bands); `micSensitivity()` says what it is | | |
+
+`micLevel` is a loudness, not a raw signal: decibels, with the room itself at 0. The bottom of the scale follows the room's
+own noise (it settles within a second or two and climbs at most 1.5 dB a second, so a voice does not become the floor);
+−10 dBFS (shouting into a laptop) is 1. So `50 + micLevel * 300` grows visibly when someone talks (a quiet voice ≈ 0.3–0.45,
+talking ≈ 0.4–0.6) and a humming classroom rests near 0. The raw values are in `OAVp5.mic`: `rms` (0..1, smoothed),
+`db` (dBFS), `floor` (the room, dBFS). (0.3.0 used a fixed −60…−10 dB window over 8-bit samples: below about −42 dB it read
+0 or jumped a whole step; @openav/audio now reads float samples.)
 
 Nothing is requested when the page loads; the first read asks the browser, and every value is `0` until it answers. The
 first click or key starts it again if the browser held it back, so there is no `userStartAudio()`. The analysis is
 `@openav/audio`, loaded from next to this file, on its own `AudioContext`: `p5.sound` can run on the same page. A sketch's own
-`bass` / `mid` / … is left alone. `OAVp5.mic` (`state`, `gain`, `on('beat' | 'kick' | 'snare' | 'hat', fn)`, `start()`,
-`stop()`, `analyzer`); the option `mic=click` (only 🎤 / `startMic()`) or `mic=off` (nothing can start it). Embedded in an iframe: `allow="microphone"`.
+`bass` / `mid` / … is left alone. `OAVp5.mic` (`state`, `sensitivity`, `rms`, `db`, `floor`, `on('beat' | 'kick' | 'snare' | 'hat', fn)`,
+`start()`, `stop()`, `analyzer`); the option `mic=click` (only 🎤 / `startMic()`) or `mic=off` (nothing can start it). Embedded in an iframe: `allow="microphone"`.
 
 ## Sound: what is played is heard
 
@@ -145,6 +158,34 @@ function stepStarted(step, bar) {}   // every 16th
 adds nothing, so it may sit in `draw()`. `cueName` is the last cue that fired (`''` before one). On one step the cues fire
 in the order they were declared, then `barStarted`, `stepStarted`, then that step's hits. A silent clock: `startDrums({})`.
 
+## When something is wrong: hints on the page
+
+Students look at the canvas, not at OpenProcessing's console under it, so what goes wrong is said on the page: a small
+card beside the 🎹 (never over the middle of the canvas), in the browser's language (Chinese or English), once per page,
+with a ×. Each says what happened, why, and what to press. The console gets the same sentence.
+
+| situation | the card says |
+|---|---|
+| the microphone is refused | 麥克風被擋下了 → the lock left of the address → allow → click the canvas |
+| …by the computer's settings (macOS) | System Settings → Privacy & Security → Microphone |
+| …by an embed without `allow="microphone"` | open the sketch's own page; the embedder adds `allow="microphone"` |
+| no microphone, another app holds it, an `http:` page | plug one in · quit Zoom/OBS · open it from `https://` |
+| the browser is still asking (3.5 s) | look for the box under the address bar |
+| Safari / iPad: no Web MIDI; MIDI permission refused | 🎹 on screen or 📱 a phone; Chrome or Edge for a keyboard · the lock → allow → reload |
+| an error inside `notePressed()`, `kickDetected()`, `drumHit()`, … | 你的 notePressed() 出錯了：<message>, with the file and line; the sketch keeps running |
+| the sketch has its own `note`, `knob1`, … (`let`, `var`, `function`) | it keeps it; read `midi.last.note` / `knob(1)` … for the controller |
+| one knob, two jobs (OPC) | knob 1 is now the sketch's; drag the OPC slider |
+| sound: waiting for a click · a sampler loading (the electric piano meanwhile) · it failed (epiano instead) · Tone.js unreachable | click the canvas · wait · keep playing · another network or `tone=` |
+| the drum machine plays but silently | click the canvas |
+
+MIDI troubles are said only to a sketch that plays from MIDI (it defines a MIDI callback or reads a knob); a sketch that uses
+none of this never sees a card. `hints=off` keeps them in the console. `OAVp5.hints` lists what was said.
+
+**🩺 Check-up.** 🩺 in the 🎹 panel, or `OAVp5.check()`, opens a card with the version, the page (framed or not, https),
+the browser, the microphone (state, error, level), MIDI (Web MIDI, hardware, devices, the last message), sound, drums, the
+wiring, the sketch's own names and the hints shown: one screenshot for Discord, a *copy* button, and a link to the site's
+full device check (`/check/`). `OAVp5.check({ show: false })` returns the same as an object (`text` included).
+
 ## In Hydra
 
 ```js
@@ -195,6 +236,7 @@ message means the line did not load.
 | `profile` | any @openav/midi profile id (`akai-lpd8`, …) | follows the plugged-in device, else `arturia-minilab3` |
 | `opc` | `on` · `off` | `on` |
 | `mic` | `auto` (the first read asks for the microphone) · `click` (only 🎤 / `startMic()`) · `off` | `auto` |
+| `hints` | `on` (cards beside the 🎹) · `off` (the console only) | `on` |
 | `sound` | `click` (`startSound()` or 🔊) · `off` · an instrument id (`piano`, `organ`, …: heard from the first click, no code) | `click` |
 | `tone` | where Tone.js 15 comes from (an ES module URL) | `https://cdn.jsdelivr.net/npm/tone@15.0.4/+esm` |
 | `dock` / `corner` | `bottom`·`top` / `right`·`left` | top-left on OpenProcessing, bottom-right elsewhere |
@@ -205,7 +247,7 @@ message means the line did not load.
 
 ## Size, versions
 
-`oav-p5.js` is about 76 KB (24 KB gzip) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
+`oav-p5.js` is about 105 KB (35 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
 its modules, ~130 KB transferred, from next to it), the microphone is read (`packages/audio`, ~7 KB), a phone is asked for (`packages/relay`, a QR encoder),
 an unknown controller is plugged in (`packages/midi/profiles`), sound is turned on (`packages/sound`, ~21 KB gzip, Tone.js ~230 KB
 from jsDelivr, and the piano's 2 MB of samples when the piano is picked), or the drums are (`packages/drums`, ~6 KB gzip). Because it loads the rest of OAV from next to itself,
@@ -216,7 +258,9 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
 - `node --test tests/p5-inject.test.js` (part of `npm test`): parsing, the p5-style names, device numbering checked
   against the profiles, pads, unknown devices, OPC wiring and the OpenProcessing hand-over, names a sketch already owns;
   the microphone; sound through the real `@openav/sound` with a stand-in Tone.js (the click, the pads, the pedal, a sampler's
-  fallback first), the drum callbacks, `beat`, cues, and a microphone sketch moved to the drums.
+  fallback first), the drum callbacks, `beat`, cues, and a microphone sketch moved to the drums; the hints (which ones, when,
+  in which language, the file and line of a callback's error, a sketch's own `let note`), `micLevel` for a quiet voice and a shout,
+  a room that hums, `micSensitivity()`, a knob read under OPC, and `OAVp5.check()`.
 - `PW=<playwright> P5_DIR=<p5 builds> BROWSER=chromium|webkit|firefox node p5/test/smoke.cjs`: p5 1.11.11 and 2.x ×
   the line, the line 1.5 s late, the custom-library route and OPC — the sketch runs, `midi` exists in `setup()`, keys,
   knobs and pads reach it, the 🎹 controller plays it, `requestMIDIAccess` gets the virtual port, a phone over a local
@@ -226,6 +270,9 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   2.x, next to p5.sound; the 🎤 button; a refused microphone; none of our names is a p5 / p5.sound name.
 - `p5/test/hydra-smoke.cjs`: hydra-synth 1.4.0 (CDN, or `HYDRA_JS=<file>`) loads the line with `loadScript`; `knob1`, `note`, the
   🎹, pixels, and `micLevel` in an arrow function.
+- `p5/test/hints-smoke.cjs` (same arguments; a Chinese browser): a sketch that uses nothing shows no card; a refused microphone, a
+  `notePressed()` that throws (file and line; the sketch keeps going), `hints=off`, "click to hear" before and after the click, a
+  knob read under an OPC slider and the panel's wiring line, 🩺.
 - `p5/test/kit-smoke.cjs` (same arguments; the last check needs jsDelivr, `REAL_TONE=0` skips it): none of the new names is a p5 /
   p5.sound name; an old sketch loads no sound, no drums, no Tone.js and shows no grid; `examples/drums` in OpenProcessing's layout
   (the grid clear of the 🎹, OPC's corner and the console, below an open 🎹 panel), its steps, bars, cue and hits, the kit from the

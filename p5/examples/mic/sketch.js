@@ -3,6 +3,7 @@ document.head.prepend(Object.assign(document.createElement('script'), { src: 'ht
 
 // 出聲：圓變大。低音多：顏色往紫紅走。每個拍子：外面彈出一圈。
 // 沒有 p5.sound，也不用寫 userStartAudio()。🎹 → 🎤 也能手動開關。
+// micLevel 是「聽起來多大聲」：房間本身是 0，說話大約 0.4–0.6，大喊接近 1。麥克風太小聲：在 setup() 寫 micSensitivity(3)。
 let ring = 0;
 
 function setup() {
@@ -14,7 +15,7 @@ function draw() {
   background(230, 40, 10);
   noStroke();
   fill(200 + bass * 160, 70, 100);              // bass：低音，0–1，跟 mouseX 一樣直接讀
-  circle(width / 2, height / 2, 50 + micLevel * 300);   // micLevel：多大聲，0–1
+  circle(width / 2, height / 2, 50 + micLevel * 300);   // micLevel：聽起來多大聲，0–1
   if (beat) ring = 1;                           // beat：這一格剛好有一個拍子
   if (ring > 0) {
     noFill(); stroke(0, 0, 100, ring * 80); strokeWeight(4);
