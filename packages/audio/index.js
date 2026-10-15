@@ -24,7 +24,7 @@
 export class AudioAnalyzer {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js?v=cfa1d7c').Signals} [opts.signals]
+   * @param {import('../core/src/signals.js?v=e629115').Signals} [opts.signals]
    * @param {number} [opts.fftSize=2048]
    * @param {number} [opts.smooth=0.7] rms smoothing 0..1 (higher = smoother)
    */
@@ -78,7 +78,10 @@ export class AudioAnalyzer {
     this.analyser.fftSize = this.fftSize;
     this.analyser.smoothingTimeConstant = 0.5;
     this._freq = new Uint8Array(this.analyser.frequencyBinCount);
-    this._time = new Uint8Array(this.fftSize);
+    // float samples where the browser has them: bytes are 1/128 a step (≈ −42 dBFS), so a soft voice or a quiet room
+    // reads 0 or jumps a whole step; floats keep the loudness honest down to the noise floor
+    this._float = typeof this.analyser.getFloatTimeDomainData === 'function';
+    this._time = this._float ? new Float32Array(this.fftSize) : new Uint8Array(this.fftSize);
   }
 
   /** Call once per frame. Returns the features object (also published as signals). */
@@ -86,12 +89,13 @@ export class AudioAnalyzer {
     if (!this.analyser) return null;
     if (this.ctx.state === 'suspended') this.ctx.resume();
     this.analyser.getByteFrequencyData(this._freq);
-    this.analyser.getByteTimeDomainData(this._time);
+    if (this._float) this.analyser.getFloatTimeDomainData(this._time);
+    else this.analyser.getByteTimeDomainData(this._time);
 
-    // rms + peak from time domain
+    // rms + peak from time domain (-1..1 either way)
     let sum = 0, peak = 0;
     for (let i = 0; i < this._time.length; i++) {
-      const v = (this._time[i] - 128) / 128;
+      const v = this._float ? this._time[i] : (this._time[i] - 128) / 128;
       sum += v * v; const a = Math.abs(v); if (a > peak) peak = a;
     }
     const rmsNow = Math.sqrt(sum / this._time.length);

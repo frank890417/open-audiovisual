@@ -231,9 +231,9 @@ test("on OpenProcessing, once its own OPC MIDI mapping is seen working, hardware
   onMessage({ data: { messageType: 'OPC_update', message: JSON.stringify({ name: 'speed', value: 1.5 }) } });
   w.midi.input([0xB0, 74, 0], 'hardware', 'arturia-minilab3');
   assert.equal(OPC.options.radius.value, 100);                      // hardware: left alone now
-  assert.equal(w.knob1, 0);                                         // the p5-style name still follows it
   w.midi.input([0xB0, 74, 0]);                                      // the on-screen controller: still wired
   assert.equal(OPC.options.radius.value, 0);
+  assert.equal(w.knob1, 0);                                         // the p5-style name still follows it (read last: a read takes knob 1 from OPC)
 });
 
 test('an OPC_update with no hardware just before (someone dragging the panel) changes nothing', () => {
@@ -386,7 +386,358 @@ test('mic: a name the sketch already has is left alone (and reading it never sta
 test('mic: nothing here collides with the names p5 and p5.sound own', () => {
   // the names this file adds to the page for the microphone; the browser half checks them against p5 1.11.11, 2.0.5, 2.3.4
   // and p5.sound 1.x / 0.4.1; these are the ones by hand
-  const ours = ['micLevel', 'micIsOn', 'startMic', 'stopMic', 'bass', 'mid', 'treble', 'beat', 'beatDetected', 'kickDetected', 'snareDetected', 'hatDetected'];
+  const ours = ['micLevel', 'micIsOn', 'startMic', 'stopMic', 'micSensitivity', 'bass', 'mid', 'treble', 'beat', 'beatDetected', 'kickDetected', 'snareDetected', 'hatDetected'];
   const p5sound = ['getAudioContext', 'userStartAudio', 'getOutputVolume', 'outputVolume', 'soundFormats', 'loadSound', 'createConvolver', 'getLevel', 'AudioIn', 'FFT', 'Amplitude', 'masterVolume', 'sampleRate', 'freqToMidi', 'midiToFreq', 'noteToFreq'];
   for (const n of ours) assert.ok(!p5sound.includes(n), n);
+});
+
+// ---------------------------------------------------------------- sound, the drum machine, cues (0.4.0)
+// Browser half (p5 1.11.11 and 2.x, a stubbed and a real Tone.js, the grid on screen): p5/test/kit-smoke.cjs.
+const NEW_NAMES = ['startSound', 'stopSound', 'soundIsOn', 'startDrums', 'stopDrums', 'drumsAreOn', 'drumStep', 'drumBar', 'drumBpm', 'cue', 'cueName'];
+const NEW_CALLBACKS = ['drumHit', 'barStarted', 'stepStarted', 'cueFired'];
+
+/** a page whose gesture listeners we can fire, whose lazy modules come from a map instead of the network */
+function kitPage(globals = {}, modules = {}) {
+  const listeners = {};
+  const w = page({ addEventListener: (type, fn) => { (listeners[type] = listeners[type] || []).push(fn); }, ...globals });
+  const loaded = [];
+  w.OAVp5._import = (url) => {
+    loaded.push(url);
+    const key = Object.keys(modules).find((k) => url.includes(k));
+    return key ? Promise.resolve(modules[key]()) : Promise.reject(new Error('not in this test: ' + url));
+  };
+  const click = () => (listeners.pointerdown || []).forEach((fn) => fn({ type: 'pointerdown' }));
+  return { w, loaded, click };
+}
+const settle = async () => { for (let i = 0; i < 20; i++) await new Promise((r) => setTimeout(r, 0)); };
+const FAKE_TONE = 'data:text/javascript,' + encodeURIComponent(`
+  class P { constructor() { this.value = 0; } rampTo(v) { this.value = v; } }
+  class N { constructor(v) { this.input = {}; this.gain = v; this.frequency = new P(); this.wet = new P(); this.volume = new P(); }
+    connect() { return this; } toDestination() { return this; } dispose() {} }
+  export default { start: async () => {}, Gain: N, Limiter: N, Volume: N, Reverb: N, Filter: N,
+    dbToGain: (d) => 10 ** (d / 20), immediate: () => 0, getContext: () => ({ rawContext: {} }) };`);
+const played = [];
+let soundModule = null;
+async function realSound() {
+  if (soundModule) return soundModule;
+  soundModule = await import('../packages/sound/index.js');
+  const inst = (id, extra = {}) => ({ id, name: id, category: 'other', tail: 0, ...extra, create: () => ({
+    noteOn: (n, v) => played.push([id, 'on', n, +v.toFixed(3)]), noteOff: (n) => played.push([id, 'off', n]),
+    releaseAll: () => played.push([id, 'releaseAll']), dispose() {} }) });
+  soundModule.registerInstrument(inst('test/keys'));
+  soundModule.registerInstrument(inst('test/sampler', { fallback: 'test/keys', create: () => ({ ready: Promise.resolve(),
+    noteOn: (n, v) => played.push(['test/sampler', 'on', n, +v.toFixed(3)]), noteOff: (n) => played.push(['test/sampler', 'off', n]), dispose() {} }) }));
+  return soundModule;
+}
+function fakeDrums(log) {
+  return { PATTERNS: { 'four on floor': {} }, drumEngine: () => ({ context: null, enable: async () => { log.push('kit enabled'); }, noteOn: (n, v) => log.push(['kit', n, v]) }) };
+}
+
+test('0.4.0: a sketch that calls none of it gets the names, and nothing loads or changes', () => {
+  const { w, loaded, click } = kitPage();
+  assert.equal(w.OAVp5.version, '0.4.0');
+  for (const n of ['startSound', 'stopSound', 'startDrums', 'stopDrums', 'cue']) assert.equal(typeof w[n], 'function', n);
+  assert.deepEqual([w.soundIsOn, w.drumsAreOn, w.drumStep, w.drumBar, w.drumBpm, w.cueName], [false, false, 0, 0, 112, '']);
+  w.midi.play(60, 0.8); w.midi.play(60, 0); w.midi.input([0x99, 36, 100]); click();
+  assert.equal(w.OAVp5.sound.state, 'off');
+  assert.equal(w.OAVp5.drums.state, 'off');
+  assert.deepEqual(loaded, [], 'no module was asked for');
+  for (const n of [...NEW_NAMES, ...NEW_CALLBACKS]) assert.ok(!['getAudioContext', 'userStartAudio', 'setBPM', 'loadSound', 'soundFormats', 'outputVolume', 'midiToFreq', 'freqToMidi'].includes(n), n);
+});
+
+test('sound: startSound() waits for the first click, then every note goes through @openav/sound; pads play the kit', async () => {
+  const kitLog = [];
+  const { w, loaded, click } = kitPage({ OAV_P5: { tone: FAKE_TONE } }, { 'packages/sound/index.js': realSound, 'packages/drums/index.js': () => fakeDrums(kitLog), [FAKE_TONE]: () => import(FAKE_TONE) });
+  await realSound(); played.length = 0;
+  const on = w.startSound('test/keys');
+  await settle();
+  assert.equal(w.OAVp5.sound.state, 'waiting', 'no click yet: a browser would keep it quiet');
+  assert.equal(w.soundIsOn, false);
+  w.midi.play(60, 0.8);
+  assert.deepEqual(played, [], 'not heard before the click');
+  assert.ok(loaded.some((u) => /packages\/sound\/index\.js\?v=p5-0\.4\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
+  click();
+  assert.equal(await on, true);
+  assert.equal(w.soundIsOn, true);
+  assert.equal(w.OAVp5.sound.state, 'on');
+  w.midi.play(60, 0.8); w.midi.play(60, 0);                          // the 🎹 on screen / midi.play
+  w.midi.input([0x90, 64, 127], 'hardware'); w.midi.input([0x80, 64, 0], 'hardware');
+  w.midi.input([0x90, 67, 64], 'phone');
+  assert.deepEqual(played, [['test/keys', 'on', 60, 0.803], ['test/keys', 'off', 60], ['test/keys', 'on', 64, 1], ['test/keys', 'off', 64], ['test/keys', 'on', 67, 0.504]]);
+  w.midi.input([0x99, 36, 127]);                                      // a pad (channel 10): the drum kit, not the keys
+  await settle();
+  assert.ok(kitLog.some((x) => Array.isArray(x) && x[1] === 36 && x[2] === 1), JSON.stringify(kitLog));
+  assert.equal(played.filter((p) => p[2] === 36).length, 0, 'a pad is never a piano note');
+  w.midi.input([0xB0, 64, 127]); w.midi.play(72, 1); w.midi.play(72, 0);   // sustain pedal holds the note-off
+  assert.deepEqual(played.slice(-1), [['test/keys', 'on', 72, 1]]);
+  w.midi.input([0xB0, 64, 0]);
+  assert.deepEqual(played.slice(-1), [['test/keys', 'off', 72]]);
+  const n = played.length;
+  w.stopSound();
+  assert.equal(w.soundIsOn, false);
+  w.midi.play(62, 1);
+  assert.equal(played.length, n + 1, 'stopSound releases what rings…');
+  assert.equal(played.at(-1)[1], 'releaseAll', '…and nothing new sounds');
+  assert.equal(await w.startSound(), true, 'on again at once: the engine is already running');
+  w.midi.play(62, 1);
+  assert.deepEqual(played.at(-1), ['test/keys', 'on', 62, 1]);
+});
+
+test('sound: a sampler starts on its fallback, then takes over; startSound(id) switches; an unknown id changes nothing', async () => {
+  const { w, click } = kitPage({ OAV_P5: { tone: FAKE_TONE } }, { 'packages/sound/index.js': realSound, 'packages/drums/index.js': () => fakeDrums([]), [FAKE_TONE]: () => import(FAKE_TONE) });
+  await realSound(); played.length = 0;
+  click();                                                            // a click before: it starts at once
+  assert.equal(await w.startSound('test/sampler'), true);
+  await settle();
+  assert.equal(w.OAVp5.sound.instrument, 'test/sampler');
+  w.midi.play(60, 1);
+  assert.deepEqual(played.at(-1), ['test/sampler', 'on', 60, 1]);
+  await w.startSound('test/keys'); await settle();
+  w.midi.play(61, 1);
+  assert.deepEqual(played.at(-1), ['test/keys', 'on', 61, 1]);
+  await w.startSound('no/such'); await settle();
+  assert.equal(w.OAVp5.sound.instrument, 'test/keys');
+});
+
+test('sound=off: startSound() is a no-op; sound=<instrument> starts by itself and waits for the click', async () => {
+  const a = kitPage({ OAV_P5: { sound: 'off' } });
+  assert.equal(await a.w.startSound('piano'), false);
+  assert.equal(a.w.OAVp5.sound.state, 'off');
+  assert.deepEqual(a.loaded, []);
+  const b = kitPage({ OAV_P5: { sound: 'test/keys', tone: FAKE_TONE } });
+  assert.equal(b.w.OAVp5.sound.state, 'loading');
+  assert.ok(b.loaded.length === 0 || b.loaded.every((u) => /packages\/sound/.test(u)));
+});
+
+test('drums: each hit calls drumHit and the microphone callbacks; steps move drumStep / drumBar and call stepStarted / barStarted', () => {
+  const log = [];
+  const w = page({ drumHit: (l, v) => log.push(['hit', l, v]), kickDetected: (v) => log.push(['kick', v]), snareDetected: (v) => log.push(['snare', v]),
+    hatDetected: (v) => log.push(['hat', v]), beatDetected: (v) => log.push(['beat', v]), barStarted: (b) => log.push(['bar', b]),
+    stepStarted: (s, b) => log.push(['step', s, b]) });
+  const d = w.OAVp5.drums;
+  d._step(0, 0); d._hit('kick', 0.9); d._hit('hat', 0.5);
+  d._step(4, 4); d._hit('snare', 0.7); d._hit('clap', 0.6);
+  assert.deepEqual(log, [['bar', 1], ['step', 0, 1], ['hit', 'kick', 0.9], ['kick', 0.9], ['beat', 0.9], ['hit', 'hat', 0.5], ['hat', 0.5],
+    ['step', 4, 1], ['hit', 'snare', 0.7], ['snare', 0.7], ['beat', 0.7], ['hit', 'clap', 0.6], ['snare', 0.6]]);
+  assert.equal(w.drumStep, 4); assert.equal(w.drumBar, 1);
+  d._step(0, 16);
+  assert.equal(w.drumBar, 2); assert.deepEqual(log.slice(-2), [['bar', 2], ['step', 0, 2]]);
+  const heard = []; const off = d.on('hit', (l) => heard.push(l)); d._hit('hat', 0.2); off(); d._hit('hat', 0.2);
+  assert.deepEqual(heard, ['hat']);
+  assert.throws(() => d.on('nope', () => {}), /unknown drums event/);
+});
+
+test('drums: a drum beat makes `beat` true for one frame, like a microphone beat', () => {
+  const w = page({ frameCount: 1 });
+  assert.equal(w.beat, false);
+  w.OAVp5.drums._step(0, 0); w.OAVp5.drums._hit('kick', 1);
+  w.frameCount = 2; assert.equal(w.beat, true);
+  w.frameCount = 3; assert.equal(w.beat, false);
+});
+
+test('cue(bar, name, every): fires on its step, repeats, half bars work, a repeated call adds nothing; cueName', () => {
+  const fired = [];
+  const w = page({ cueFired: (name, bar) => fired.push([name, bar]) });
+  w.cue(1, 'calm', 4); w.cue(3, 'storm', 4); w.cue(2.5, 'flash'); w.cue(3, 'storm', 4); w.cue(0, 'never');
+  assert.equal(w.OAVp5.drums.cues.length, 3);
+  for (let n = 0; n < 16 * 9; n++) w.OAVp5.drums._step(n % 16, n);
+  assert.deepEqual(fired, [['calm', 1], ['flash', 2], ['storm', 3], ['calm', 5], ['storm', 7], ['calm', 9]]);
+  assert.equal(w.cueName, 'calm');
+});
+
+test("a sketch's own drumBar / cueName / soundIsOn is left alone", () => {
+  const w = page({ drumBar: 'mine', soundIsOn: 'also mine' });
+  w.cue(1, 'a');
+  w.OAVp5.drums._step(0, 0);
+  assert.equal(w.drumBar, 'mine');
+  assert.equal(w.soundIsOn, 'also mine');
+  assert.equal(w.cueName, 'a');
+  w.cueName = 'set by the sketch';
+  w.OAVp5.drums._step(0, 16);
+  assert.equal(w.cueName, 'set by the sketch');
+  assert.equal(w.OAVp5.drums.lastCue, 'a');
+});
+
+test('startDrums() with no page to draw on (no document) says false instead of throwing', async () => {
+  const w = page();
+  assert.equal(await w.startDrums('breakbeat', 120), false);
+  assert.equal(w.drumsAreOn, false);
+});
+
+test('a microphone sketch moved to the drum machine: defining kickDetected() no longer opens the microphone on the first click', () => {
+  const run = (drums) => {
+    const navigator = { mediaDevices: { getUserMedia() { return Promise.reject(Object.assign(new Error('no'), { name: 'NotAllowedError' })); } } };
+    const { w, click } = kitPage({ navigator, kickDetected() {} });
+    if (drums) w.startDrums();
+    click();
+    return w.OAVp5.mic.state;
+  };
+  assert.equal(run(false), 'asking', 'without drums: as in 0.3.0, the click starts the microphone');
+  assert.equal(run(true), 'off', 'with startDrums(): the drums feed kickDetected, the microphone stays off');
+});
+
+// ---------------------------------------------------------------- hints, micLevel, the knob both ways, the check-up (0.4.0, second part)
+// Browser half (the cards on the page, a refused microphone, a throwing callback, hints=off, OPC): p5/test/hints-smoke.cjs.
+const ids = (w) => [...w.OAVp5.hints].map((h) => h.id);
+const chrome = (more = {}) => ({ navigator: { requestMIDIAccess: () => Promise.resolve({ inputs: new Map(), addEventListener() {} }) }, ...more });
+function loadPage(globals = {}) {
+  const on = {};
+  const w = page({ addEventListener: (type, fn) => { (on[type] = on[type] || []).push(fn); }, ...globals });
+  const fire = async (type) => { (on[type] || []).forEach((fn) => fn({ type })); await settle(); };
+  return { w, fire };
+}
+
+test('hints: a sketch that uses none of it gets none, whatever happens on the page', async () => {
+  const { w, fire } = loadPage();                            // Safari-like: no Web MIDI, no microphone
+  await fire('load'); await fire('pointerdown'); await fire('keydown');
+  w.midi.play(60, 0.8); w.midi.input([0xB0, 74, 127]);
+  assert.deepEqual(ids(w), []);
+});
+
+test("hints: an error inside the sketch's notePressed() is said with its file and line, and the next note still plays", () => {
+  let n = 0;
+  const w = page({ notePressed: () => { n++; const e = new TypeError("Cannot read properties of undefined (reading 'x')");
+    e.stack = "TypeError: Cannot read properties of undefined (reading 'x')\n    at notePressed (https://preview.openprocessing.org/sketch/123/mySketch.js:23:9)\n    at call (https://openaudiovisual.com/p5/oav-p5.js:280:10)"; throw e; } });
+  w.midi.play(60, 1); w.midi.play(62, 1); w.midi.play(64, 1);
+  assert.equal(n, 3, 'every note still reaches the sketch');
+  const h = [...w.OAVp5.hints].filter((x) => x.id.startsWith('err:'));
+  assert.equal(h.length, 1, 'the same error is said once');
+  assert.ok(ids(w).includes('midiNone'), 'and this Safari-like page (no Web MIDI) tells a sketch with notePressed() to use the 🎹 or a phone');
+  assert.equal(h[0].kind, 'error');
+  assert.match(h[0].what, /notePressed\(\).*reading 'x'/);
+  assert.match(h[0].why, /mySketch\.js/);
+  assert.match(h[0].why + h[0].next, /23/);
+});
+
+test('hints: in Chinese for a Chinese browser — what happened, why, and what to press', () => {
+  const w = page({ navigator: { language: 'zh-TW' }, kickDetected: () => { throw new Error('boom'); } });
+  w.OAVp5.drums._hit('kick', 1);
+  const h = w.OAVp5.hints[0];
+  assert.match(h.what, /你的 kickDetected\(\) 出錯了：boom/);
+  assert.match(h.why, /草圖還在跑/);
+  assert.match(h.next, /console/);
+});
+
+test('hints: why the microphone did not come — blocked, blocked by the iframe, by the system, missing, busy, http', async () => {
+  const run = async (error, globals = {}) => {
+    const navigator = { language: 'zh-TW', mediaDevices: { getUserMedia: () => Promise.reject(error) } };
+    const w = page({ navigator, ...globals });
+    w.OAVp5._import = () => Promise.resolve({ AudioAnalyzer: class { enableMic() { return navigator.mediaDevices.getUserMedia(); } } });
+    await w.startMic(); await settle();
+    return [ids(w).join(','), w.OAVp5.hints[0] && w.OAVp5.hints[0].next];
+  };
+  const err = (name, message = '') => Object.assign(new Error(message), { name });
+  const denied = await run(err('NotAllowedError', 'Permission denied'));
+  assert.equal(denied[0], 'micDenied'); assert.match(denied[1], /鎖頭/);
+  assert.equal((await run(err('NotAllowedError', 'Permission denied by system')))[0], 'micSystem');
+  const framed = { self: {}, top: {}, document: { featurePolicy: { allowsFeature: (f) => f !== 'microphone' }, addEventListener() {} } };
+  assert.equal((await run(err('NotAllowedError', 'Permission denied'), framed))[0], 'micFrame');
+  assert.equal((await run(err('NotFoundError')))[0], 'micMissing');
+  assert.equal((await run(err('NotReadableError')))[0], 'micBusy');
+  const http = page({ location: { search: '', protocol: 'http:', hostname: 'example.com' }, navigator: {} });
+  await http.startMic();
+  assert.deepEqual(ids(http), ['micInsecure']);
+});
+
+test('hints: no Web MIDI (Safari) or a refused MIDI permission is said only to a sketch that plays from MIDI', async () => {
+  const a = loadPage({ notePressed() {} });
+  await a.fire('load');
+  assert.deepEqual(ids(a.w), ['midiNone']);
+  assert.equal(a.w.OAVp5.hints[0].kind, 'info');
+  const b = loadPage();                                       // no MIDI callbacks: nothing to say …
+  await b.fire('load');
+  assert.deepEqual(ids(b.w), []);
+  void b.w.knob1;                                             // … until it reads a knob
+  assert.deepEqual(ids(b.w), ['midiNone']);
+  const denied = () => Promise.reject(Object.assign(new Error('no'), { name: 'NotAllowedError' }));
+  const c = loadPage({ navigator: { requestMIDIAccess: denied }, knobMoved() {} });
+  await settle();
+  assert.equal(c.w.midi.hardware, 'denied');
+  assert.deepEqual(ids(c.w), ['midiDenied']);
+});
+
+test("hints: the sketch's own `let note` (not a window property) is found and named, once; var and assignment too", () => {
+  const w = page(chrome());
+  vm.runInContext('let note = "mine";', w);
+  w.midi.play(60, 1); w.midi.play(61, 1);
+  assert.equal(w.midi.last.note, 61);
+  assert.deepEqual(ids(w), ['own:note']);
+  assert.match(w.OAVp5.hints[0].next, /midi\.last\.note/);
+  const v = page(chrome({ velocity: 'mine' }));
+  v.midi.play(60, 1);
+  assert.deepEqual(ids(v), ['own:velocity']);
+  const k = page(chrome());
+  vm.runInContext('let knob1 = 0.5;', k);
+  k.midi.input([0xB0, 74, 127]);
+  assert.deepEqual(ids(k), ['own:knob1']);
+  assert.match(k.OAVp5.hints[0].next, /knob\(1\)/);
+  const plain = page(chrome());                              // no own names: our note is written and nothing is said
+  plain.midi.play(60, 1); plain.midi.input([0xB0, 74, 127]);
+  assert.equal(plain.note, 60); assert.equal(plain.knob1, 1);
+  assert.deepEqual(ids(plain), []);
+});
+
+test('the knob both ways: a sketch that reads knob1 takes knob 1 from OPC\'s first slider, says so once, and the wiring shows it', () => {
+  const OPC = fakeOPC();
+  const w = page(chrome({ OPC }));
+  w.midi.input([0xB0, 74, 127]);
+  assert.equal(OPC.options.radius.value, 100, 'before the sketch reads knob1: knob 1 drives radius');
+  assert.equal(w.knob1, 1);                                   // the sketch reads knob1 (gravity, say)
+  assert.deepEqual(ids(w), ['both:knob1']);
+  assert.match(w.OAVp5.hints[0].why, /radius/);
+  w.midi.input([0xB0, 74, 0]);
+  assert.equal(w.knob1, 0);
+  assert.equal(OPC.options.radius.value, 100, 'knob 1 no longer moves radius');
+  w.midi.input([0xB0, 71, 0]);
+  assert.equal(OPC.options.speed.value, 0, 'knob 2 still drives the second slider');
+  assert.deepEqual(plain(w.midi.wiring()).slice(0, 2), [{ control: 'knob1', name: 'radius', sketch: true }, { control: 'knob2', name: 'speed' }]);
+  void w.knob1; void w.knob(1);
+  assert.equal(w.OAVp5.hints.length, 1, 'said once');
+  const off = page(chrome({ OPC: fakeOPC(), OAV_P5: { opc: 'off' } }));
+  void off.knob1;
+  assert.deepEqual(ids(off), [], 'opc=off: nothing to collide with');
+});
+
+test('micLevel is how loud it sounds: a quiet voice (RMS 0.02) is clearly up, shouting (0.2) is near 1, the room is 0', () => {
+  const { w } = micPage({ OAV_P5: { mic: 'click' } });
+  const m = w.OAVp5.mic;
+  const at = (rms, t) => { m._frame(FEAT({ rms }), t); return w.micLevel; };
+  const room = at(0.001, 0), soft = at(0.02, 16), loud = at(0.2, 32);
+  assert.equal(room, 0, 'a quiet room (-60 dB)');
+  assert.ok(soft > 0.35 && soft < 0.6, 'a quiet voice: ' + soft);
+  assert.ok(loud > 0.85 && loud <= 1, 'shouting: ' + loud);
+  assert.ok(50 + soft * 300 > 150, 'circle(…, 50 + micLevel * 300) grows by a third of the screen when someone talks');
+  assert.equal(m.rms, 0.2); assert.equal(Math.round(m.db), -14);
+  // a humming classroom (-42 dB for 20 s) becomes the new 0: the room rests near 0, a voice over it still reads
+  let t = 100;
+  for (let i = 0; i < 1200; i++) at(0.008, (t += 16.7));
+  assert.ok(m.floor > -46 && m.floor <= -45, 'floor ' + m.floor);
+  assert.ok(at(0.008, (t += 16.7)) < 0.05, 'the room itself');
+  assert.ok(at(0.04, (t += 16.7)) > 0.3, 'a voice over it (-28 dB)');
+  // and falls back within a second or two when the room goes quiet
+  for (let i = 0; i < 120; i++) at(0.0005, (t += 16.7));
+  assert.ok(m.floor < -60, 'floor ' + m.floor);
+});
+
+test('micSensitivity(): twice as sensitive is +6 dB on micLevel and ×2 on the bands; it says what it is', () => {
+  const { w } = micPage({ OAV_P5: { mic: 'click' } });
+  w.OAVp5.mic._frame(FEAT({ rms: 0.01 }), 0);
+  const before = w.micLevel;
+  assert.equal(w.micSensitivity(), 1);
+  assert.equal(w.micSensitivity(2), 2);
+  w.OAVp5.mic._frame(FEAT({ rms: 0.01 }), 16);
+  assert.ok(Math.abs(w.micLevel - before - 6 / 44) < 0.02, `${before} → ${w.micLevel}`);
+  assert.equal(w.bass, 1); assert.equal(w.mid, 0.5);
+  assert.equal(w.OAVp5.mic.gain, 2, "0.3.0's mic.gain is the same knob");
+});
+
+test('OAVp5.check(): microphone, MIDI, sound, drums, wiring and the hints, as one text to screenshot', () => {
+  const w = page({ OPC: fakeOPC(), navigator: { language: 'zh-TW', userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/141.0 Safari/537.36' } });
+  void w.knob1; w.midi.play(60, 1);
+  const r = w.OAVp5.check({ show: false });
+  assert.equal(r.version, '0.4.0');
+  assert.equal(r.browser, 'Chrome 141 · macOS');
+  assert.equal(r.midi.webMidi, false);
+  assert.equal(r.microphone.state, 'off');
+  for (const line of ['麥克風：關著', 'MIDI：這個瀏覽器沒有 Web MIDI', '聲音：關著', '鼓機：關著', '接線：旋鈕1 → knob1（草圖；radius 改用滑桿） · 旋鈕2 → speed（OPC）', '提示過：這個瀏覽器沒有 Web MIDI；旋鈕1交給你的草圖了']) assert.ok(r.text.includes(line), line + '\n' + r.text);
 });

@@ -19,7 +19,7 @@ const SHOTS = process.env.SHOTS || __dirname;
 const MIC_SKETCH = fs.readFileSync(path.join(ROOT, 'p5/examples/mic/sketch.js'), 'utf8');
 const PLAIN_SKETCH = fs.readFileSync(path.join(ROOT, 'p5/examples/particles/sketch.js'), 'utf8');
 const VERSIONS = (process.env.P5_VERSIONS || '1.11.11,2.0.5,2.3.4full').split(',');
-const OURS = ['micLevel', 'micIsOn', 'startMic', 'stopMic', 'bass', 'mid', 'treble', 'beat', 'beatDetected', 'kickDetected', 'snareDetected', 'hatDetected'];
+const OURS = ['micLevel', 'micIsOn', 'startMic', 'stopMic', 'micSensitivity', 'bass', 'mid', 'treble', 'beat', 'beatDetected', 'kickDetected', 'snareDetected', 'hatDetected'];
 const MIME = { '.js': 'text/javascript', '.json': 'application/json', '.html': 'text/html', '.css': 'text/css' };
 const soundFor = (v) => (v.startsWith('1.') ? 'p5sound-1.11.11.min.js' : 'p5sound-0.4.1.min.js');
 

@@ -151,8 +151,8 @@ L1 輸入與 L4 輸出 · 合成鼓組、16 步音序器和它的格狀介面。
 
 | 匯出 | 簽章 |
 |---|---|
-| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true })` → `{ seq, engine, update(dt), dispose() }` |
-| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(name)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`、`bpm` |
+| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, bpm = 112, pattern })` → `{ seq, engine, root, play(on), setPattern(p), setBpm(bpm), update(dt), dispose() }` |
+| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`、`bpm` |
 | `drumEngine` | `drumEngine({ samples })` → 一個聲音引擎（見[聲音](show-control.md#sound)） |
 | `PATTERNS`、`GM` | 節奏型預設，以及 General MIDI 鼓的音符編號 `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
 

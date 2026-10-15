@@ -25,7 +25,8 @@ const f = audio.update();                    // null until a source is enabled
 - `enableMic()` → Promise<true> (echo cancellation, noise suppression and AGC off)
 - `enableElement(mediaEl)` → true · the element keeps playing to the speakers
 - `input()` → the `AnalyserNode`: `node.connect(audio.input())` for Tone.js or your own graph
-- `update()` once per frame → `{ rms, peak, low, mid, high, centroid, onset, kick, snare, hat }`,
+- `update()` once per frame → `{ rms, peak, low, mid, high, centroid, onset, kick, snare, hat }` (`rms` and `peak` from float
+  samples where the browser has `getFloatTimeDomainData`, so a quiet room and a soft voice are measured, not rounded to one 8-bit step),
   where `kick` / `snare` / `hat` are `{ hit, level, env }`
 
 Signals: `audio/rms`, `audio/peak`, `audio/band/low`, `audio/band/mid`, `audio/band/high`,

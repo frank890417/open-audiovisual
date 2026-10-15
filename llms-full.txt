@@ -7,7 +7,7 @@
 > Examples: https://openaudiovisual.com/examples/
 > p5.js in one line: https://openaudiovisual.com/p5/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 24 packages, 15 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
+> Today: 23 packages, 15 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -297,7 +297,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-Twenty-four plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+Twenty-three plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 | layer | package | role |
@@ -372,7 +372,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5**, an MCP server, and a handbook site.
 
-24 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 556 tests
+23 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 568 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -2851,6 +2851,10 @@ also learn hardware by itself (its MIDI switch); once that mapping is seen worki
 line keeps wiring the on-screen controller and the phone, which OpenProcessing cannot see. Avoid OPC names that are
 also p5 functions (`hue`, `fill`): p5 1.x clashes with them.
 
+**One knob, one job.** If the sketch also reads `knob1` itself, knob 1 is the sketch's: the first OPC slider no longer
+follows it (drag it on OPC's panel), the other knobs stay wired, and a hint says so once. The first line of the 🎹 panel
+is the wiring, for example *knob1 → knob1 (sketch; radius by its slider) · knob2 → speed (OPC)*.
+
 ## The microphone
 
 The same line reads the microphone, and the sketch reads it the same way: as variables.
@@ -2869,11 +2873,12 @@ function beatDetected(level) {                          // like keyPressed(): a 
 
 | read | value |
 |---|---|
-| `micLevel` | 0..1, how loud it is now (smoothed; a quiet room is 0, close and loud is 1) |
+| `micLevel` | 0..1, how loud it sounds: the room's own noise is 0, talking is about 0.4–0.6, shouting is near 1 |
 | `bass`, `mid`, `treble` | 0..1, the energy in 20–250 Hz, 250–2000 Hz and 2000–8000 Hz |
 | `beat` | `true` for one frame per beat, like `mouseIsPressed` while a button is down |
 | `micIsOn` | whether the microphone is running |
 | `startMic()`, `stopMic()` | turn it on or off from code (they return a promise) |
+| `micSensitivity(2)` | twice as sensitive; `micSensitivity()` returns the current value |
 
 | write this function | when it is called |
 |---|---|
@@ -2892,13 +2897,116 @@ the browser blocked the microphone (click it again after allowing it from the ad
 - **Next to p5.sound.** The analysis is [`@openav/audio`](packages.md) (an `AnalyserNode`), loaded from next to this
   file the first time it is needed, with its own `AudioContext`. `p5.sound` (`p5.AudioIn`, `p5.FFT`) can run on the same page; the two
   microphones do not share anything, and none of these names is a p5 or p5.sound name. It works in p5 1.x and 2.x global mode.
-- **Quiet or loud microphones.** `OAVp5.mic.gain = 3` multiplies `micLevel` and the three bands (still capped at 1).
+- **How loud is loud.** `micLevel` is a loudness in decibels, measured from the room: its bottom follows the room's own
+  noise (it settles in a second or two, and rises at most 1.5 dB a second, so a voice never becomes the new silence), and
+  −10 dBFS, shouting into a laptop, is 1. So `50 + micLevel * 300` visibly grows when someone talks. A quiet or far
+  microphone: `micSensitivity(3)` (+9.5 dB on `micLevel`, ×3 on the bands, still capped at 1). The raw numbers are
+  `OAVp5.mic.rms` (0..1), `OAVp5.mic.db` and `OAVp5.mic.floor` (the room, in dBFS).
   `OAVp5.mic.on('beat', fn)` is the same as defining `beatDetected`, and returns a function that stops it.
 - **Your own names win.** A sketch that already has a `bass` or `mid` (a `let`, a function, a library) keeps it, and this
   file never starts the microphone for it.
 - **Off switch.** `?mic=click` (or `window.OAV_P5 = { mic: 'click' }`) means only 🎤 and `startMic()` turn it on;
   `mic=off` means nothing can start it (the names stay `0`). `https` or `localhost` is required, as for any microphone page.
 - A sketch with a microphone, ready to open: `p5/examples/mic/`.
+
+## Sound: what is played is heard
+
+```js
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  startSound('piano');          // every key is heard: a keyboard, the 🎹 on screen, a phone
+}
+```
+
+| call / read | value |
+|---|---|
+| `startSound(instrument)` | turn sound on (default `'piano'`), or switch instruments while it plays |
+| `stopSound()` | turn it off |
+| `soundIsOn` | whether notes are heard now |
+
+The instruments are those of [`@openav/sound`](packages.md): `piano` (the Salamander grand; its 2 MB of samples load the
+first time, and the electric piano plays meanwhile, or instead if they cannot load), `epiano`, `organ`, `strings`, `choir`,
+`harp`, `marimba`, `vibraphone`, `xylophone`, `glockenspiel`, `music-box` and the `synth/…` presets. In the 🎹 panel,
+**🔊** turns sound on and off and shows a picker with every instrument and the loading progress.
+
+- **Off until asked.** Nothing loads before `startSound()` or 🔊; then `@openav/sound` from next to this file and Tone.js 15
+  from jsDelivr (the option `tone=<url>` loads it from elsewhere).
+- **The first click.** Browsers play audio only after the page has been clicked, and a key on a MIDI keyboard does not count.
+  A sketch that calls `startSound()` in `setup()` is heard from the first click or key; until then the 🔊 on the 🎹 button is yellow.
+- **Pads are drums.** Notes on MIDI channel 10 (MiniLab 3 and LPD8 pads, the General MIDI drum channel) play the drum kit,
+  not the piano. The sustain pedal holds notes.
+- **No code at all.** `?oav_sound=piano` on the page (any instrument id; on OpenProcessing `?sketch_oav_sound=piano`) makes any sketch heard
+  from the first click; `sound=off` keeps it silent.
+- A sketch that plays and draws, ready to open: `p5/examples/keys/`.
+
+## Drum machine
+
+```js
+function setup() {
+  startDrums('breakbeat', 110);   // a 16-step grid on screen; click a cell to change the beat
+}
+
+function kickDetected(level) {    // the microphone's own callback
+  // swell, flash, spawn
+}
+
+function drumHit(lane, velocity) {   // every hit: 'kick', 'snare', 'hat' or 'clap'
+}
+```
+
+| read | value |
+|---|---|
+| `drumsAreOn` | whether the machine is playing |
+| `drumStep` | 0..15, the step that just played |
+| `drumBar` | 1, 2, 3 …, counted from `startDrums()` |
+| `drumBpm` | the tempo (the grid's slider changes it too) |
+| `startDrums(pattern, bpm)`, `stopDrums()` | start (or change the pattern and tempo while it plays), stop |
+
+| write this function | when it is called |
+|---|---|
+| `drumHit(lane, velocity)` | every hit, all four lanes |
+| `kickDetected(level)`, `snareDetected(level)`, `hatDetected(level)` | a kick; a snare or a clap; a hat |
+| `beatDetected(level)` | a kick or a snare, once per step (and `beat` is true for a frame) |
+
+**A microphone sketch moves over unchanged.** Each hit calls the same functions the microphone does, so a sketch written for
+the microphone reacts to the machine as it is. Once a sketch has started the machine, defining `kickDetected()` no longer
+opens the microphone on the first click (a sketch that reads `micLevel` still asks, and then both call it).
+
+- **Patterns.** `'four on floor'`, `breakbeat`, `'half time'`, `latin`, `sparse`, or your own:
+  `startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })` (a lane left out is silent).
+- **Where the grid sits.** At the top centre: on OpenProcessing between the 🎹 and OPC's icon and clear of the console, and
+  below the 🎹 panel while that is open. – folds it, × stops the machine, and **🥁** in the 🎹 panel starts and stops it with
+  no code at all.
+- **The kit.** [`@openav/drums`](packages.md)' synthesized kit (no samples), heard from the first click like sound; the
+  callbacks run from the start either way.
+
+## Timeline: bars and cues
+
+The drum machine is also the clock: sixteen steps a bar, counted from `startDrums()`. Declare what happens at which bar:
+
+```js
+function setup() {
+  startDrums('breakbeat', 110);
+  cue(1, 'calm', 12);             // bar 1, and again every 12 bars
+  cue(5, 'bloom', 12);
+  cue(9, 'storm', 12);
+}
+
+function cueFired(name, bar) {    // or read cueName in draw()
+  look = SCENES[name];
+}
+```
+
+| call / read / define | |
+|---|---|
+| `cue(bar, name, every)` | at bar `bar` (1 is the first, `4.5` is halfway through bar 4); `every` bars again if given |
+| `cueName` | the last cue that fired (`''` before the first) |
+| `cueFired(name, bar)` | a cue's bar has come |
+| `barStarted(bar)`, `stepStarted(step, bar)` | the first step of every bar; every step |
+
+The same `cue()` twice adds nothing, so it may also sit in `draw()`. On one step the cues fire in the order they were
+declared, then `barStarted`, `stepStarted` and that step's hits. A silent clock: `startDrums({})`. The whole of it, ready to
+open: `p5/examples/drums/`.
 
 ## Three inputs
 
@@ -2912,6 +3020,28 @@ All three arrive as the same MIDI bytes, so the sketch cannot tell them apart (`
 iPad have no Web MIDI; the on-screen controller and the phone still work there. A sketch that uses Web MIDI itself
 (`navigator.requestMIDIAccess`, WebMidi.js) also hears the screen and the phone, as one more input called
 **OAV Virtual MIDI**.
+
+## When something goes wrong
+
+Nobody watches OpenProcessing's console while playing, so problems are said on the page: a small card beside the 🎹, never
+over the middle of the canvas, in the browser's language, once per page, with a × to close it. Each card says **what
+happened, why, and what to press**, and the console gets the same sentence.
+
+- **The microphone**: refused (the lock left of the address → allow → click the canvas), refused by the computer's settings,
+  by an embed without `allow="microphone"`, missing, held by another app (Zoom, OBS), an `http:` page, or the browser still asking.
+- **MIDI**: no Web MIDI (Safari, iPad: use the 🎹 or a phone), or the permission refused. Only for a sketch that plays from
+  MIDI; a sketch that uses none of this never sees a card.
+- **Your own code**: an error inside `notePressed()`, `kickDetected()`, `drumHit()` and the other callbacks shows the
+  message with the file and line, and the sketch keeps running. A sketch that declares its own `note` or `knob1` (`let`,
+  `var`, `function`) keeps it, and the card says what to read instead (`midi.last.note`, `knob(1)`).
+- **Sound and drums**: waiting for the first click, the piano still loading (the electric piano meanwhile), an instrument
+  that failed (the fallback plays), Tone.js unreachable, the drum machine playing silently until a click.
+
+`?oav_hints=off` (or `window.OAV_P5 = { hints: 'off' }`) keeps them in the console only; `OAVp5.hints` lists what was said.
+
+**🩺 Check-up.** 🩺 in the 🎹 panel (or `OAVp5.check()`) shows the version, the page, the browser, the microphone, MIDI,
+sound, drums, the wiring, the sketch's own names and the hints so far, as one card to screenshot, with a *copy* button and a
+link to the full [device check](https://openaudiovisual.com/check/).
 
 ## In Hydra
 
@@ -2927,9 +3057,10 @@ osc(10, 0.1, () => knob1 * 2).out()                     // knob 1 sets the colou
 osc(10, 0.1, () => 1 + micLevel * 3).out()              // the microphone, asked for when this line first runs
 ```
 
-`note`, `velocity`, `knob1` … `knob8`, `fader1` …, `pad1` … and the 🎹 on-screen controller are there the same way.
+`note`, `velocity`, `knob1` … `knob8`, `fader1` …, `pad1` …, `drumStep` and the 🎹 on-screen controller are there the same way.
 Hydra is not p5, so there are no `notePressed()` callbacks to define; subscribe instead:
-`midi.on('notePressed', (note, velocity) => { … })` (it returns a function that unsubscribes). Checked against
+`midi.on('notePressed', (note, velocity) => { … })` or `OAVp5.drums.on('hit', (lane, velocity) => { … })` (each returns a
+function that unsubscribes). Checked against
 hydra-synth 1.4.0, the library the editor runs (`p5/test/hydra-smoke.cjs`).
 
 ## Notes
@@ -2944,7 +3075,7 @@ hydra-synth 1.4.0, the library the editor runs (`p5/test/hydra-smoke.cjs`).
   embed code it gives you does not: add `allow="midi"` to that `<iframe>` if the embedded sketch should hear a hardware
   controller, and `allow="microphone"` if it should hear the microphone.
 - **Options, MIDI-level access and tests**: [`p5/README.md`](https://github.com/frank890417/open-audiovisual/tree/main/p5).
-  Examples: `p5/examples/particles/`, `p5/examples/opc/` and `p5/examples/mic/`.
+  Examples: `p5/examples/particles/`, `p5/examples/opc/`, `p5/examples/mic/`, `p5/examples/keys/` and `p5/examples/drums/`.
 
 ---
 
@@ -3474,7 +3605,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Twenty-four packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-three packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -3484,7 +3615,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` · `record` · `fab` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `record` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `console` · `monitor` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
@@ -3641,8 +3772,8 @@ detection.
 
 | export | signature |
 |---|---|
-| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true })` → `{ seq, engine, update(dt), dispose() }` |
-| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(name)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`, `bpm` |
+| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, bpm = 112, pattern })` → `{ seq, engine, root, play(on), setPattern(p), setBpm(bpm), update(dt), dispose() }` |
+| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`, `bpm` |
 | `drumEngine` | `drumEngine({ samples })` → a sound engine (see [Sound](show-control.md#sound)) |
 | `PATTERNS`, `GM` | pattern presets; General MIDI drum notes `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
 
@@ -3771,15 +3902,6 @@ const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks
 
 Package README with the MIDI takes: [packages/record](../packages/record/README.md).
 Example: [10-record](../examples/10-record/main.js).
-
-## @openav/fab
-
-L4 output (physical branch) · can it be made? A manufacturability report for any mesh (watertight, volume, overhang, thinnest wall, grams of PETG / PLA, one Chinese warning per problem) and STL / OBJ / GLB files; STEP and DXF when the shape is a smlibwasm Part or Shape. smlibwasm and manifold-3d are not bundled: `smlib()` / `manifold()` `import()` them from a URL on first use.
-
-| export | signature |
-|---|---|
-| `Fab` | `new Fab({ urls: { smlib, manifold }, scale, importer, download, context })` · `check(x, opts)` → report · `export(x, fmt, opts)` → `Promise<{ bytes, mime, ext, report }>` (`stl` `obj` `glb` `step` `dxf`) · `save(x, fmt, { name, params, note })` through `saver(bytes, info)` or a browser download · `smlib()` · `manifold()` · `meshOf(x)` |
-| pure functions | `checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })` · `weldMesh(mesh)` · `meshOf(x, { scale })` (TriMesh, smlibwasm Part, three.js Mesh/Object3D, Y up becomes Z up) · `toStlBytes` · `toObjText` · `toGlbBytes` |
 
 ## @openav/timeline
 

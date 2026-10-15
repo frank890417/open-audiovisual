@@ -126,6 +126,8 @@ export function drumEngine({ samples = null } = {}) {
   };
   return {
     params: [{ key: 'kitVolume', label: 'Kit volume (dB)', min: -30, max: 0, def: -6 }],
+    /** the kit's AudioContext once enabled (null before): a page resumes it from a click when the browser held it back */
+    get context() { return ctx; },
     async enable() {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
       out = ctx.createGain(); out.gain.value = 0.5; out.connect(ctx.destination);
@@ -181,27 +183,47 @@ export const PATTERNS = {
   },
 };
 
+/** A lane written as text or a list → 16 steps of 0/1. 'x... x... x... x...' and '1000100010001000' are the
+ *  same four-on-the-floor kick ('x', 'X', '1' are hits; spaces and '|' only help the eye); [1, 0, true, …] works too.
+ *  Short lanes are padded with rests, long ones cut at 16. */
+export function laneSteps(v) {
+  const src = Array.isArray(v) ? v : String(v ?? '').replace(/[\s|]/g, '').split('');
+  const out = [];
+  for (let i = 0; i < 16; i++) { const c = src[i]; out.push(c === true || c === 1 || c === '1' || c === 'x' || c === 'X' ? 1 : 0); }
+  return out;
+}
+
 /** 16-step × 4-lane pattern clock. Pure logic — unit-testable with a fake emitter.
- *  update(dt) fires hits through onHit(lane, velocity); swing shifts every other
- *  16th, humanize jitters timing and velocity so it grooves, not ticks. */
+ *  update(dt) fires hits through onHit(lane, velocity) and every step through
+ *  onStep(index 0..15, count since start); swing shifts every other 16th,
+ *  humanize jitters timing and velocity so it grooves, not ticks. */
 export class DrumSequencer {
-  constructor({ onHit, bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' } = {}) {
+  constructor({ onHit, onStep = null, bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' } = {}) {
     this.onHit = onHit || (() => {});
+    this.onStep = onStep;                  // the clock itself: a piece that counts bars or fires cues listens here
     this.bpm = bpm; this.swing = swing; this.humanize = humanize;
     this.grid = {};                        // lane -> [0|1] × 16
     this.setPattern(pattern);
     this.playing = false;
     this._t = 0; this._nextStep = 0; this._step = 0;
   }
-  setPattern(name) {
-    const p = PATTERNS[name] || PATTERNS['four on floor'];
-    for (const lane of LANES) this.grid[lane] = (p[lane] || '0'.repeat(16)).split('').map(Number);
+  /** A preset name ('breakbeat'), or your own grid { kick: 'x...x...x...x...', snare: …, hat: …, clap: … } (= 'custom';
+   *  a lane left out is silent). An unknown name plays 'four on floor' and says so in `pattern`. */
+  setPattern(p) {
+    if (p && typeof p === 'object') {
+      for (const lane of LANES) this.grid[lane] = laneSteps(p[lane]);
+      this.pattern = 'custom';
+      return;
+    }
+    const name = PATTERNS[p] ? p : 'four on floor';
+    for (const lane of LANES) this.grid[lane] = laneSteps(PATTERNS[name][lane]);
     this.pattern = name;
   }
   toggleCell(lane, i) { this.grid[lane][i] = this.grid[lane][i] ? 0 : 1; this.pattern = 'custom'; }
   toggle(on = !this.playing) {
     this.playing = on;
     if (on) { this._t = 0; this._nextStep = 0; this._step = 0; }
+    this._pending = null;                    // a hit humanized past the stop never lands on the next start
     return on;
   }
   stepDur() { return 60 / this.bpm / 4; }   // 16ths
@@ -210,6 +232,7 @@ export class DrumSequencer {
     this._t += dt;
     while (this._t >= this._nextStep) {
       const i = this._step % 16;
+      if (this.onStep) this.onStep(i, this._step);
       for (const lane of LANES) {
         if (!this.grid[lane][i]) continue;
         const late = this.humanize * (Math.random() - 0.3) * 0.02;
@@ -246,8 +269,9 @@ const CSS = `
 `;
 
 /** mountDrums — TR-style grid + transport, publishing standard signals.
- *  Returns { seq, engine, update(dt), dispose }. */
-export function mountDrums(container, { signals, engine = null, autoEnableEngine = true } = {}) {
+ *  Returns { seq, engine, root, play(on), setPattern(p), setBpm(bpm), update(dt), dispose }:
+ *  play / setPattern / setBpm are what the checkbox, the menu and the slider do, for code. */
+export function mountDrums(container, { signals, engine = null, autoEnableEngine = true, onStep = null, bpm = 112, pattern = 'four on floor' } = {}) {
   if (!document.getElementById('openav-drums-css')) {
     const st = document.createElement('style');
     st.id = 'openav-drums-css';
@@ -259,9 +283,9 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
   root.innerHTML = `
     <div class="bar">
       <label style="cursor:pointer"><input type="checkbox" data-play> drum machine</label>
-      <select data-pattern>${Object.keys(PATTERNS).map(p => `<option>${p}</option>`).join('')}</select>
-      <label>bpm <input type="range" data-bpm min="60" max="180" value="112" style="width:70px"></label>
-      <span data-bpmv>112</span>
+      <select data-pattern>${Object.keys(PATTERNS).map(p => `<option>${p}</option>`).join('')}<option hidden>custom</option></select>
+      <label>bpm <input type="range" data-bpm min="60" max="180" value="${bpm}" style="width:70px"></label>
+      <span data-bpmv>${bpm}</span>
     </div>
     <div class="grid"></div>`;
   container.appendChild(root);
@@ -277,6 +301,7 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
   }
 
   const seq = new DrumSequencer({
+    onStep, bpm, pattern,
     onHit: async (lane, vel) => {
       if (!kitReady && autoEnableEngine) { kitReady = true; await kit.enable(); }
       kit.noteOn(GM[lane], vel);
@@ -289,6 +314,9 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
 
   // grid UI
   const grid = root.querySelector('.grid');
+  const playEl = root.querySelector('[data-play]'), patEl = root.querySelector('[data-pattern]');
+  const bpmEl = root.querySelector('[data-bpm]'), bpmV = root.querySelector('[data-bpmv]');
+  const showPattern = () => { patEl.value = seq.pattern; };
   const cells = {};
   const buildGrid = () => {
     grid.innerHTML = '';
@@ -298,23 +326,29 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
       for (let i = 0; i < 16; i++) {
         const c = document.createElement('div');
         c.className = 'cell' + (i % 4 === 0 ? ' beat' : '') + (seq.grid[lane][i] ? ' on' : '');
-        c.addEventListener('click', () => { seq.toggleCell(lane, i); c.classList.toggle('on'); });
+        c.addEventListener('click', () => { seq.toggleCell(lane, i); c.classList.toggle('on'); showPattern(); });
         grid.appendChild(c);
         cells[lane].push(c);
       }
     }
   };
   buildGrid();
+  showPattern();
 
-  root.querySelector('[data-play]').addEventListener('change', (e) => seq.toggle(e.target.checked));
-  root.querySelector('[data-pattern]').addEventListener('change', (e) => { seq.setPattern(e.target.value); buildGrid(); });
-  const bpmEl = root.querySelector('[data-bpm]');
-  bpmEl.addEventListener('input', () => { seq.bpm = Number(bpmEl.value); root.querySelector('[data-bpmv]').textContent = bpmEl.value; });
+  playEl.addEventListener('change', (e) => seq.toggle(e.target.checked));
+  patEl.addEventListener('change', (e) => { if (e.target.value !== 'custom') { seq.setPattern(e.target.value); buildGrid(); } });
+  bpmEl.addEventListener('input', () => { seq.bpm = Number(bpmEl.value); bpmV.textContent = bpmEl.value; });
 
   let lastStep = -1;
   return {
     seq,
     engine: kit,
+    root,
+    /** start (true) or stop (false) the machine, as the checkbox does; no argument flips it */
+    play(on = !seq.playing) { seq.toggle(!!on); playEl.checked = seq.playing; return seq.playing; },
+    /** a preset name or your own { kick: 'x...x...', … } grid; the menu and the cells follow */
+    setPattern(p) { seq.setPattern(p); showPattern(); buildGrid(); return seq.pattern; },
+    setBpm(v) { seq.bpm = Number(v) || seq.bpm; bpmEl.value = seq.bpm; bpmV.textContent = Math.round(seq.bpm); return seq.bpm; },
     update(dt) {
       seq.update(dt);
       for (const l of LANES) {

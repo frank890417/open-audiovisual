@@ -20,32 +20,32 @@
 //   createController() below: one controller, its events, hardware and MIDI out — the headless embed
 // Docs: packages/midi/README.md.                                         load it with its own <script>)
 
-import { parseMessage, genericSignals, publish, describe } from './parse.js?v=cfa1d7c';
-import { MidiControllers } from './manager.js?v=cfa1d7c';
-import { ControllerView } from './view.js?v=cfa1d7c';
-import { PROFILES } from './profiles/index.js?v=cfa1d7c';
-import { track } from './telemetry.js?v=cfa1d7c';
-import { reselectOutput, inputFilter, EchoGuard } from './ports.js?v=cfa1d7c';
-import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=cfa1d7c';
-export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, eventOfSignal, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=cfa1d7c';
-export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=cfa1d7c';
-export { pickOutput, reselectOutput, EchoGuard, isLive } from './ports.js?v=cfa1d7c';
-export { ScoreMidi } from './score-out.js?v=cfa1d7c';
-export { MidiController } from './controller.js?v=cfa1d7c';
-export { MidiControllers, controllerRoutes } from './manager.js?v=cfa1d7c';
-export { linkControllers } from './link.js?v=cfa1d7c';
-export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=cfa1d7c';
-export { PROFILES, profileById } from './profiles/index.js?v=cfa1d7c';
-export { ControllerView, VIEW_CSS } from './view.js?v=cfa1d7c';
-export { mountMidiPanel, PANEL_CSS } from './panel.js?v=cfa1d7c';
-export { ControllerCanvas, CANVAS_THEME, controllerGeometry, keyboardGeometry, keyWindow, followMidiSignals, touchText, midiNoteName, fadeLevel } from './canvas.js?v=cfa1d7c';
+import { parseMessage, genericSignals, publish, describe } from './parse.js?v=e629115';
+import { MidiControllers } from './manager.js?v=e629115';
+import { ControllerView } from './view.js?v=e629115';
+import { PROFILES } from './profiles/index.js?v=e629115';
+import { track } from './telemetry.js?v=e629115';
+import { reselectOutput, inputFilter, EchoGuard } from './ports.js?v=e629115';
+import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=e629115';
+export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, eventOfSignal, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=e629115';
+export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=e629115';
+export { pickOutput, reselectOutput, EchoGuard, isLive } from './ports.js?v=e629115';
+export { ScoreMidi } from './score-out.js?v=e629115';
+export { MidiController } from './controller.js?v=e629115';
+export { MidiControllers, controllerRoutes } from './manager.js?v=e629115';
+export { linkControllers } from './link.js?v=e629115';
+export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=e629115';
+export { PROFILES, profileById } from './profiles/index.js?v=e629115';
+export { ControllerView, VIEW_CSS } from './view.js?v=e629115';
+export { mountMidiPanel, PANEL_CSS } from './panel.js?v=e629115';
+export { ControllerCanvas, CANVAS_THEME, controllerGeometry, keyboardGeometry, keyWindow, followMidiSignals, touchText, midiNoteName, fadeLevel } from './canvas.js?v=e629115';
 export { parseEmbedOptions, resolveProfile, controlDetail, describeDetail, describeMessage, setControl, valuesOf, findPort, preferredAspect,
-  toParent, fromParent, toFrame, fromFrame, EMBED_ATTRS, EMBED_EVENTS, FRAME_COMMANDS, POST_SOURCE } from './embed.js?v=cfa1d7c';
+  toParent, fromParent, toFrame, fromFrame, EMBED_ATTRS, EMBED_EVENTS, FRAME_COMMANDS, POST_SOURCE } from './embed.js?v=e629115';
 
 export class Midi {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js?v=cfa1d7c').Signals} [opts.signals] publish inputs here
+   * @param {import('../core/src/signals.js?v=e629115').Signals} [opts.signals] publish inputs here
    * @param {string|RegExp} [opts.filterOut] regex (source) of input NAMES never to listen to, so what we send into a virtual bus
    *        does not come back as input (default: IAC, the macOS bus you send into Ableton / TouchDesigner)
    * @param {number} [opts.echoWindow=40] ms: an input message identical to one we just SENT is our own echo and is dropped
@@ -266,7 +266,7 @@ export function loadProfile(ref, o = {}) { return resolveProfile(ref, { profiles
  * @param {string|object} profile        id ('akai-lpd8'), short ('lpd8') or a profile object (loadProfile() for URLs)
  * @param {object} [o]
  * @param {object[]} [o.profiles]        the profiles a picker / `follow` may switch to (default: every shipped one)
- * @param {import('../core/src/signals.js?v=cfa1d7c').Signals} [o.signals]   also publish midi/<short>/… into a show
+ * @param {import('../core/src/signals.js?v=e629115').Signals} [o.signals]   also publish midi/<short>/… into a show
  * @param {number} [o.channel]           move every control to this MIDI channel (your unit is set to another one)
  * @param {boolean} [o.follow]           plug a different known device in → show that one
  * @param {Midi} [o.midi]                use this engine (a show's) instead of the page-shared one

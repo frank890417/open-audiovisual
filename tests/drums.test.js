@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { DrumSequencer, PATTERNS, GM, voiceForNote } from '../packages/drums/index.js';
+import { DrumSequencer, PATTERNS, GM, voiceForNote, laneSteps } from '../packages/drums/index.js';
 
 test('GM notes are the standard drum map', () => {
   assert.equal(GM.kick, 36);
@@ -46,4 +46,39 @@ test('the kit covers the GM pad notes: every named voice has a note and plays', 
   for (const [name, note] of Object.entries(GM)) assert.equal(voiceForNote(note), name, `${name} (${note})`);
   assert.equal(voiceForNote(35), 'kick'); assert.equal(voiceForNote(57), 'crash'); assert.equal(voiceForNote(59), 'ride');
   assert.equal(voiceForNote(60), null, 'melodic notes stay silent on the drum engine');
+});
+
+test('onStep: every 16th is announced once, in order, with the count since start (the clock a timeline counts bars on)', () => {
+  const steps = [], hits = [];
+  const seq = new DrumSequencer({ onStep: (i, n) => steps.push([i, n]), onHit: (l) => hits.push([l, steps.length]), bpm: 120, swing: 0, humanize: 0 });
+  seq.toggle(true);
+  for (let t = 0; t < 4 - 1e-9; t += 1 / 60) seq.update(1 / 60);       // two bars at 120 bpm
+  assert.equal(steps.length, 32);
+  assert.deepEqual(steps.slice(14, 18), [[14, 14], [15, 15], [0, 16], [1, 17]]);
+  assert.equal(hits[0][1], 1, 'a step is announced before its hits');
+  seq.toggle(false); seq.toggle(true); seq.update(0.001);
+  assert.deepEqual(steps.at(-1), [0, 0], 'a restart counts from 0');
+});
+
+test('setPattern: a preset, your own grid as text or lists, an unknown name falls back and says so', () => {
+  assert.deepEqual(laneSteps('x... x... x... x...'), laneSteps('1000100010001000'));
+  assert.deepEqual(laneSteps([1, 0, true]).slice(0, 4), [1, 0, 1, 0]);
+  assert.equal(laneSteps('x'.repeat(40)).length, 16);
+  const seq = new DrumSequencer({ pattern: 'latin' });
+  assert.equal(seq.pattern, 'latin');
+  seq.setPattern({ kick: 'x...x...x...x...', hat: [0, 1, 0, 1] });
+  assert.equal(seq.pattern, 'custom');
+  assert.deepEqual(seq.grid.kick, laneSteps(PATTERNS['four on floor'].kick));
+  assert.deepEqual(seq.grid.hat.slice(0, 4), [0, 1, 0, 1]);
+  assert.deepEqual(seq.grid.snare, Array(16).fill(0), 'a lane left out is silent');
+  seq.setPattern('no such thing');
+  assert.equal(seq.pattern, 'four on floor');
+});
+
+test('a hit humanized past a stop never lands after the next start', () => {
+  let n = 0;
+  const seq = new DrumSequencer({ onHit: () => n++, bpm: 120, swing: 0, humanize: 1, pattern: 'four on floor' });
+  seq._pending = [{ lane: 'kick', vel: 1, at: 99 }];
+  seq.toggle(false); seq.toggle(true);
+  assert.equal(seq._pending, null);
 });
