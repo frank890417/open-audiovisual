@@ -238,7 +238,35 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 </tbody>
 </table></div>
 <p>同樣的 <code>cue()</code> 叫兩次不會多一個，所以放在 <code>draw()</code> 裡也可以。同一格上先照宣告順序觸發 cue，再來 <code>barStarted</code>、<code>stepStarted</code>、那一格的鼓。只要時鐘不要聲音：<code>startDrums({})</code>。全部用上的草圖：<code>p5/examples/drums/</code>。</p>
-<h3 id="p5-7">三種輸入<a class="anchor" href="#p5-7" aria-label="#">#</a></h3>
+<h3 id="p5-7">錄影：畫面和聲音一起錄<a class="anchor" href="#p5-7" aria-label="#">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
+  <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
+}
+
+<span class="tk">function</span> recordingSaved(info) {   <span class="tc">// info.name, info.seconds, info.bytes, info.format ('mp4' or 'webm')</span>
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>呼叫／讀／定義</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>startRecording()</code>、<code>startRecording(秒數)</code></td><td>錄下畫布和作品的聲音；給秒數就錄那麼久自動停；一段最長 5 分鐘</td></tr>
+<tr><td><code>stopRecording()</code></td><td>停止，檔案自動下載</td></tr>
+<tr><td><code>recordingIsOn</code></td><td>現在有沒有在錄</td></tr>
+<tr><td><code>recordingSaved(info)</code></td><td>存好了：<code>name</code>、<code>seconds</code>、<code>bytes</code>、<code>format</code>、<code>width</code>、<code>height</code>、<code>audio</code>、<code>sources</code>、<code>warnings</code>、<code>blob</code>、<code>url</code></td></tr>
+</tbody>
+</table></div>
+<p>🎹 面板上的 <strong>⏺</strong> 不寫程式也能開始、停止；錄影中 🎹 按鈕上有紅點和時間（點紅點就停）。<strong>📷</strong> 把畫布存成一張 PNG。</p>
+<ul>
+<li><strong>影片裡有什麼。</strong> p5 的畫布，用它實際的像素（Retina 螢幕是兩倍），每秒 30 格；加上這個檔發出的所有聲音：<code>startSound()</code>、鼓機和打擊墊、開著的麥克風、p5.sound 1.x，混成一軌，喇叭照常出聲。🎹、鼓機格子、提示卡片、OPC 面板都不在畫布上，所以不會進影片。</li>
+<li><strong>檔案。</strong> 瀏覽器能錄 MP4（H.264＋AAC）就錄 MP4：Chrome 126 以後、Edge、Safari，IG、YouTube、剪輯軟體都直接吃。其他瀏覽器（Firefox、舊版 Chrome）錄成 WebM，卡片會說 IG 不收。檔名像 <code>oav-20261015-183005.mp4</code>；電腦上直接存到「下載」，手機上卡片有 <strong>分享</strong> 按鈕，可以存進相簿或直接傳到 IG。</li>
+<li><strong>每錄完一段都會檢查。</strong> 卡片寫出錄到什麼（格式、長度、大小、有沒有聲音）；有問題就說發生什麼、為什麼：開著聲音卻什麼都沒錄進去（還沒點過畫面、沒有彈）、錄成 WebM、檔案幾乎是空的、畫布有畫面但影片全黑（Safari 錄 WebGL 畫布，WebKit 229611）、畫布上有別的網站的圖（沒有 CORS）、這個瀏覽器不能錄。</li>
+<li><strong>麥克風</strong>開著就會一起錄：戴耳機，不然喇叭的聲音會被錄兩次。<code>record=nomic</code> 不收麥克風。</li>
+<li><strong>p5.sound。</strong> 給 p5 1.x 的 p5.sound 1.x 會一起錄。給 p5 2.x 的 p5.sound 把每個聲音直接接到喇叭，沒有總輸出可以接進錄影：錄不到，卡片會說。草圖改用 p5 1.11，或改用 <code>startSound()</code>、<code>startDrums()</code>。草圖自己用 Tone.js、Web Audio 做的聲音也錄不到。</li>
+<li><strong>靜態圖。</strong> 📷（或 <code>OAVp5.record.shot()</code>）只存畫布，檔名 <code>oav-&lt;日期&gt;-&lt;時間&gt;.png</code>，不含 🎹 和卡片；在程式裡用 p5 自己的 <code>saveCanvas('名字', 'png')</code> 也一樣。</li>
+<li><strong>選項。</strong> <code>record=nomic</code>（不收麥克風）、<code>record=off</code>（沒有 ⏺ 和 📷，<code>startRecording()</code> 什麼都不做）、<code>recfps=60</code>、
+<code>reclimit=600</code>（秒）、<code>title=作品名</code>（放進檔名）；只改這一段：<code>startRecording({ seconds, fps, mic: false, name })</code>。</li>
+<li>全部用上的草圖：<code>p5/examples/record/</code>。</li>
+</ul>
+<h3 id="p5-8">三種輸入<a class="anchor" href="#p5-8" aria-label="#">#</a></h3>
 <div class="table-wrap"><table>
 <thead><tr><th>輸入</th><th>怎麼用</th></tr></thead>
 <tbody>
@@ -249,16 +277,17 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 </table></div>
 <p>三種輸入進來都是同一串 MIDI，草圖分不出是誰彈的（想知道的話看 <code>midi.last.source</code>）。Safari 和 iPad 沒有
 Web MIDI，螢幕上的控制器和手機照樣能用。草圖自己寫了 Web MIDI（<code>navigator.requestMIDIAccess</code>、WebMidi.js）的話，螢幕和手機會變成多出來的一個輸入，名字叫 <strong>OAV Virtual MIDI</strong>。</p>
-<h3 id="p5-8">出狀況的時候<a class="anchor" href="#p5-8" aria-label="#">#</a></h3>
+<h3 id="p5-9">出狀況的時候<a class="anchor" href="#p5-9" aria-label="#">#</a></h3>
 <p>彈的時候沒人會去看 OpenProcessing 畫布下面的 console，所以出狀況會直接寫在畫面上：🎹 旁邊一張小卡片，不擋畫布中間，用瀏覽器的語言，同一則只跳一次，按 × 關掉。每張都寫三件事：<strong>發生什麼、為什麼、下一步按哪裡</strong>，console 也同步寫一樣的話。</p>
 <ul>
 <li><strong>麥克風</strong>：被擋下（網址列左邊的鎖頭 → 允許 → 回來點一下畫面）、被電腦的系統設定擋住、在沒有 <code>allow="microphone"</code> 的嵌入框裡、找不到麥克風、被別的程式（Zoom、OBS）占用、網址不是 https、瀏覽器還在等你按允許。</li>
 <li><strong>MIDI</strong>：瀏覽器沒有 Web MIDI（Safari、iPad：改用 🎹 或手機）、MIDI 權限被擋。只對有用 MIDI 的草圖說；什麼功能都沒用到的草圖不會跳任何卡片。</li>
 <li><strong>你自己的程式</strong>：<code>notePressed()</code>、<code>kickDetected()</code>、<code>drumHit()</code> 這些回呼裡出錯，卡片寫出錯誤訊息、哪個檔第幾行，草圖照樣繼續跑。草圖自己宣告了 <code>note</code>、<code>knob1</code>（<code>let</code>、<code>var</code>、<code>function</code>），原本的會留著，卡片告訴你改讀什麼（<code>midi.last.note</code>、<code>knob(1)</code>）。</li>
 <li><strong>聲音和鼓機</strong>：要先點一下畫面、鋼琴還在載入（先用電鋼琴頂著）、某個樂器載不到（改用備用的）、Tone.js 連不上、鼓機在打但還沒點過畫面所以沒聲音。</li>
+<li><strong>錄影</strong>：開始錄了（錄到哪些聲音、怎麼停）、錄好了（格式、長度、大小、有沒有聲音）、錄到的影片沒有聲音、錄成 WebM（IG 不收）、整段黑、檔案幾乎是空的、畫布上有別的網站的圖、這個瀏覽器不能錄。</li>
 </ul>
 <p><code>?oav_hints=off</code>（或 <code>window.OAV_P5 = { hints: 'off' }</code>）只寫在 console；<code>OAVp5.hints</code> 列出說過的提示。</p>
-<p><strong>🩺 體檢。</strong> 🎹 面板上的 🩺（或 <code>OAVp5.check()</code>）把版本、頁面、瀏覽器、麥克風、MIDI、聲音、鼓機、接線、草圖自己的名字、目前為止的提示整理成一張卡，截圖貼到 Discord 就能遠端看；有「複製文字」按鈕，也連到完整的<a href="https://openaudiovisual.com/zh/check/">裝置檢查</a>。</p>
+<p><strong>🩺 體檢。</strong> 🎹 面板上的 🩺（或 <code>OAVp5.check()</code>）把版本、頁面、瀏覽器、麥克風、MIDI、聲音、鼓機、錄影（這裡能錄 MP4 還是 WebM、上一段）、接線、草圖自己的名字、目前為止的提示整理成一張卡，截圖貼到 Discord 就能遠端看；有「複製文字」按鈕，也連到完整的<a href="https://openaudiovisual.com/zh/check/">裝置檢查</a>。</p>
 <h3 id="p5-hydra">在 Hydra 裡用<a class="anchor" href="#p5-hydra" aria-label="#">#</a></h3>
 <p><a href="https://hydra.ojack.xyz" rel="noopener">Hydra</a> 有自己的載入函式；同一個檔在那裡也能用，Hydra 的箭頭函式每一格都會重讀變數：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">await</span> loadScript(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)
@@ -267,14 +296,14 @@ osc(10, 0.1, () =&gt; knob1 * 2).out()                     <span class="tc">// k
 <p><code>note</code>、<code>velocity</code>、<code>knob1</code> … <code>knob8</code>、<code>fader1</code> …、<code>pad1</code> …、<code>drumStep</code>，還有 🎹 螢幕上的控制器，都一樣在。
 Hydra 不是 p5，沒有可以定義的 <code>notePressed()</code> 回呼，改用訂閱：
 <code>midi.on('notePressed', (note, velocity) =&gt; { … })</code> 或 <code>OAVp5.drums.on('hit', (lane, velocity) =&gt; { … })</code>（都回傳一個取消訂閱的函式）。測試用的是 hydra-synth 1.4.0，也就是編輯器跑的那個函式庫（<code>p5/test/hydra-smoke.cjs</code>）。</p>
-<h3 id="p5-10">細節<a class="anchor" href="#p5-10" aria-label="#">#</a></h3>
+<h3 id="p5-11">細節<a class="anchor" href="#p5-11" aria-label="#">#</a></h3>
 <ul>
 <li><strong>為什麼用 <code>prepend</code></strong>：p5 的友善錯誤檢查會把頁面上最後一個 <code>&lt;script&gt;</code> 當成你的草圖。這個檔放在最前面，就不會被誤當成你的程式。</li>
 <li><strong>為什麼非同步載入的一行就夠</strong>：p5 等到視窗的 <code>load</code> 事件才開始全域模式，而頁面載入中插進來的 script 會讓
 <code>load</code> 等它跑完，所以 <code>setup()</code> 裡就已經有 <code>knob1</code>。</li>
 <li><strong>這一行沒載到時</strong>（沒網路、網址打錯），讀 <code>knob1</code> 的程式會停在「knob1 is not defined」。</li>
 <li><strong>嵌到別的網站</strong>：OpenProcessing 自己的頁面允許草圖用 MIDI 和麥克風，它給的嵌入碼沒有。要讓嵌入的草圖聽實體控制器，在那個 <code>&lt;iframe&gt;</code> 加上 <code>allow="midi"</code>；要它聽麥克風，加 <code>allow="microphone"</code>。</li>
-<li><strong>選項、MIDI 層的寫法和測試</strong>：<a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>。範例：<code>p5/examples/particles/</code>、<code>p5/examples/opc/</code>、<code>p5/examples/mic/</code>、<code>p5/examples/keys/</code>、<code>p5/examples/drums/</code>。</li>
+<li><strong>選項、MIDI 層的寫法和測試</strong>：<a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>。範例：<code>p5/examples/particles/</code>、<code>p5/examples/opc/</code>、<code>p5/examples/mic/</code>、<code>p5/examples/keys/</code>、<code>p5/examples/drums/</code>、<code>p5/examples/record/</code>。</li>
 </ul>
   </section>
 

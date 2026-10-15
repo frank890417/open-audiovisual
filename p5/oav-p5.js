@@ -26,6 +26,11 @@
  *   function drumHit(lane, velocity) {}           and each hit also calls kickDetected / snareDetected / hatDetected
  *   function barStarted(bar) {}                   function stepStarted(step, bar) {}   (beatDetected on kick and snare)
  *   cue(5, 'storm'), cue(1, 'calm', 8)            at bar 5 (every 8 bars) → function cueFired(name, bar) {}; cueName
+ * Recording (nothing loads until ⏺ in the 🎹 panel is pressed or the sketch calls it):
+ *   startRecording(), startRecording(10), stopRecording(), recordingIsOn     the canvas + what the sketch sounds like
+ *   function recordingSaved(info) {}              info = { name, blob, url, format: 'mp4' | 'webm', seconds, bytes, … }
+ *   (the canvas only, never the 🎹 or the cards; startSound(), the drums, the microphone and p5.sound 1.x mixed into one
+ *   track; MP4 where the browser writes it, else WebM; downloaded when done, a share button on a phone; 📷 saves a PNG)
  * When something goes wrong (a blocked microphone, no Web MIDI, an error inside notePressed(), a sketch's own `let note`, a
  * knob that both OPC and the sketch read, sound waiting for a click) a small card beside the 🎹 says what, why and what to
  * press, in the page's language; 🩺 in the panel or OAVp5.check() is a check-up to screenshot.
@@ -64,13 +69,15 @@
  *   sound     click (startSound() or 🎹 → 🔊) | off | an instrument id: heard from the first click, no code (piano, organ, …)
  *   tone      where Tone.js 15 comes from (an ES module URL; default jsDelivr)
  *   hints     on | off (the cards beside the 🎹; the console says the same either way)
+ *   record    on | nomic (the microphone stays out of recordings) | off (no ⏺ / 📷; startRecording() does nothing)
+ *   recfps    30 | 60     reclimit  300 (seconds: one take stops by itself there)     title  a name for the files
  *   relay / room   the phone relay (wss://remote.cheyuwu.com/relay) and room (one per browser)
  *   telemetry off | on — @openav/midi's one anonymous page-load hit (packages/midi/README "Telemetry")
  */
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.4.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.5.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -92,6 +99,9 @@
     mic: opt('mic', 'auto') === 'click' ? 'click' : opt('mic', 'auto') === 'off' ? 'off' : 'auto',
     telemetry: opt('telemetry', 'off'), remote: opt('remote', 'https://openaudiovisual.com/packages/remote/'),
     sound: opt('sound', 'click'), tone: opt('tone', ''),   // sound: click | off | an instrument id to start with
+    record: opt('record', 'on') === 'off' ? 'off' : opt('record', 'on') === 'nomic' ? 'nomic' : 'on',
+    recfps: Math.max(1, Math.min(60, Math.round(+opt('recfps', 30)) || 30)),
+    reclimit: Math.max(1, +opt('reclimit', 300) || 300), title: opt('title', ''),
   };
   // OpenProcessing's console floats over the bottom of the sketch, so there the 🎹 and its panel live at the top
   var onOP = false;
@@ -110,7 +120,9 @@
         micOn: '🎤 開麥克風', micOff: '🎤 關麥克風', micAsking: '🎤 等你允許麥克風…', micDenied: '🎤 麥克風被擋下，再試一次', micDeniedHint: '網址列左邊可以重新允許，然後按這個鈕', micNone: '🎤 這裡拿不到麥克風（要 https 或 localhost）',
         micHint: 'micLevel、bass、mid、treble、beat',
         sndOn: '🔊 開聲音', sndOff: '🔊 關聲音', sndLoading: '🔊 載入聲音中…', sndWaiting: '🔊 點一下就有聲音', sndError: '🔊 聲音沒載到，再按一次',
-        sndHint: '點一下畫面（或按一個鍵）就聽得到：瀏覽器要網頁被點過才讓它出聲', drumsOn: '🥁 鼓機', drumsOff: '🥁 關鼓機', fold: '收起格子', closeDrums: '關掉鼓機', check: '🩺 體檢' }
+        sndHint: '點一下畫面（或按一個鍵）就聽得到：瀏覽器要網頁被點過才讓它出聲', drumsOn: '🥁 鼓機', drumsOff: '🥁 關鼓機', fold: '收起格子', closeDrums: '關掉鼓機', check: '🩺 體檢',
+        recOn: '⏺ 錄影', recStop: '⏹ 停止 {t}', recStarting: '⏺ 準備中…', recSaving: '⏺ 存檔中…', recTitle: '錄下畫布和作品的聲音（MP4，IG 可以直接用；🎹 和提示不會進影片）',
+        recDot: '錄影中：按這裡停止', shot: '📷 存圖', shotTitle: '把畫布存成一張 PNG（不含 🎹 和提示）', share: '分享', download: '下載' }
     : { btn: 'MIDI: plug in a controller, play the one on screen, or use a phone', phone: '📱 Phone', close: 'Hide', hwOff: 'No MIDI device', knob: 'knob', fader: 'fader', pad: 'pad',
         hwNone: 'No Web MIDI in this browser (Safari): use the on-screen controller or a phone',
         hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room', wired: 'Wiring', opcMark: ' (OPC)', readOnly: '{read} (sketch)', readSlider: '{read} (sketch; {opc} by its slider)', loading: 'Loading the controller… (a few seconds the first time)',
@@ -118,7 +130,9 @@
         micOn: '🎤 Turn on microphone', micOff: '🎤 Turn off microphone', micAsking: '🎤 Waiting for you to allow the microphone…', micDenied: '🎤 Blocked: try again', micDeniedHint: 'Allow the microphone again from the address bar, then press this button', micNone: '🎤 No microphone here (needs https or localhost)',
         micHint: 'micLevel, bass, mid, treble, beat',
         sndOn: '🔊 Turn on sound', sndOff: '🔊 Turn off sound', sndLoading: '🔊 Loading sound…', sndWaiting: '🔊 Click to hear', sndError: '🔊 Sound did not load: try again',
-        sndHint: 'click the page (or press a key) once to hear it: browsers let a page play audio only after a click', drumsOn: '🥁 Drums', drumsOff: '🥁 Stop drums', fold: 'Fold the grid', closeDrums: 'Stop the drum machine', check: '🩺 Check' };
+        sndHint: 'click the page (or press a key) once to hear it: browsers let a page play audio only after a click', drumsOn: '🥁 Drums', drumsOff: '🥁 Stop drums', fold: 'Fold the grid', closeDrums: 'Stop the drum machine', check: '🩺 Check',
+        recOn: '⏺ Record', recStop: '⏹ Stop {t}', recStarting: '⏺ Starting…', recSaving: '⏺ Saving…', recTitle: "Record the canvas and the sketch's sound (MP4, ready for Instagram; the 🎹 and the cards stay out)",
+        recDot: 'Recording: click to stop', shot: '📷 Save image', shotTitle: 'Save the canvas as a PNG (without the 🎹 and the cards)', share: 'Share', download: 'Download' };
 
   // ---------------------------------------------------------------- state the sketch reads
   function zeros(n) { var a = new Array(n); for (var i = 0; i < n; i++) a[i] = 0; return a; }
@@ -183,13 +197,13 @@
   }
   var ALT = { note: 'midi.last.note', velocity: 'midi.last.value', noteIsPressed: 'midi.held.length > 0', micIsOn: "OAVp5.mic.state === 'on'",
     soundIsOn: "OAVp5.sound.state === 'on'", drumsAreOn: "OAVp5.drums.state === 'on'", drumStep: 'OAVp5.drums.step', drumBar: 'OAVp5.drums.bar',
-    drumBpm: 'OAVp5.drums.bpm', cueName: 'OAVp5.drums.lastCue' };
+    drumBpm: 'OAVp5.drums.bpm', cueName: 'OAVp5.drums.lastCue', recordingIsOn: "OAVp5.record.state === 'on'" };
   function ownName(name) {
     var m = /^(knob|fader|pad)(\d+)$/.exec(name);
     hint('own:' + name, 'ownName', { name: name, alt: m ? m[1] + '(' + m[2] + ')' : ALT[name] || 'OAVp5' }, 'info');
   }
   var GLOBALS = { note: 0, velocity: 0, noteIsPressed: false, micIsOn: false,
-    soundIsOn: false, drumsAreOn: false, drumStep: 0, drumBar: 0, drumBpm: 112, cueName: '' };
+    soundIsOn: false, drumsAreOn: false, drumStep: 0, drumBar: 0, drumBpm: 112, cueName: '', recordingIsOn: false };
   // knob1 … knob8, fader1 … fader8, pad1 … pad16 are readers, like the microphone's names: reading one says the sketch
   // plays from that control (so its MIDI troubles are worth a hint, and an OPC slider on the same knob steps aside)
   var readers = {}, READ = {};
@@ -336,7 +350,7 @@
   function has(name) { return typeof g[name] === 'function' || subs[name].length > 0; }
   // the sketch's own error: show it like p5 would (the console, with its stack), keep the MIDI loop alive, and say it on
   // the page too (a hint with the file and line), because nobody watches the console while playing
-  var SKETCH_FNS = { beatDetected: 1, kickDetected: 1, snareDetected: 1, hatDetected: 1, drumHit: 1, barStarted: 1, stepStarted: 1, cueFired: 1 };
+  var SKETCH_FNS = { beatDetected: 1, kickDetected: 1, snareDetected: 1, hatDetected: 1, drumHit: 1, barStarted: 1, stepStarted: 1, cueFired: 1, recordingSaved: 1 };
   EVENTS.forEach(function (k) { SKETCH_FNS[k] = 1; });
   function report(name, e) {
     var mine = SKETCH_FNS[name] === 1;
@@ -678,6 +692,25 @@
     sndTone: ['聲音引擎（Tone.js）載不到', '連不上 {host}（網路、學校防火牆或擋廣告的外掛）。', '換個網路後按 🎹 → 🔊 再試；或用選項 tone= 指到別的 Tone.js。'],
     drumsClick: ['鼓機在打，但還沒有聲音', '瀏覽器要網頁被點過一下才讓它出聲；畫面上的反應照樣會動。', '點一下畫面任何地方。'],
     moduleFail: ['{name} 載不到', '連不上 {host}。', '檢查網路，重新整理再試。'],
+    recStart: ['開始錄影（{len}）', '只錄畫布和作品的聲音（{audio}）；🎹、鼓機格子和這些提示不會進影片。{micNote}', '{stop}'],
+    recSaved: ['錄好了：{name}', '{format} · {dur} · {size} · {wh} · {sound}', '{next}'],
+    recWebm: ['這段是 WebM：IG 不收', '{browser} 不能直接錄 MP4（新版 Chrome 和 Safari 可以）。', '用新版 Chrome（126 以後）或 Safari 再錄一次；或把檔案轉成 MP4（HandBrake 或線上轉檔）。'],
+    recNone: ['這個瀏覽器不能錄影', '{why}。', '改用電腦版 Chrome、Edge 或 Safari；或按 🎹 → 📷 存圖。'],
+    recNoCanvas: ['找不到要錄的畫布', '頁面上還沒有 p5 的畫布。', '在 setup() 裡先 createCanvas(…)，再按 ⏺ 或呼叫 startRecording()。'],
+    recTainted: ['這個畫布不能錄', '畫布上畫過別的網站的圖片（沒有 CORS），瀏覽器就不讓錄影、也不讓存圖。', '把圖片上傳到 OpenProcessing 的 Files（或放在同一個網站），用 loadImage("檔名") 讀進來。'],
+    recBlack: ['錄出來整段是黑的', '畫布上明明有畫面，影片卻全黑：iPhone／Safari 錄 WebGL 畫布有這個已知問題（WebKit 229611）。', '改用電腦版 Chrome 再錄；一定要在手機錄，就先試 2D 畫布（createCanvas 不加 WEBGL）。'],
+    recSilent: ['影片裡沒有聲音', '錄的時候{src}開著，但從頭到尾沒有聲音進到錄影裡。', '先點一下畫面、確定聽得到聲音（彈幾個音或開鼓機），再按 ⏺ 錄一次。'],
+    recNoAudio: ['影片沒有音軌', '這個瀏覽器沒辦法把網頁的聲音接進錄影（{why}）。', '改用電腦版 Chrome 或 Safari 再錄。'],
+    recEmpty: ['錄到的檔案幾乎是空的', '只有 {size}：瀏覽器的錄影器沒有吐出畫面。', '重新整理再錄一次；還是一樣就換電腦版 Chrome。'],
+    recLimit: ['錄到 {m} 分鐘上限，自動停了', '太長的影片會吃光記憶體，所以一段最多 {m} 分鐘；錄到的已經存好。', '要更長就分段錄，或用選項 reclimit=（秒數）放寬。'],
+    recError: ['錄影中斷了：{msg}', '瀏覽器的錄影器出錯；已經錄到的部分照樣會存下來。', '再按一次 ⏺；一直這樣就換電腦版 Chrome。'],
+    recP5sound: ['p5.sound 的聲音不會進影片', '這頁的 p5.sound 是給 p5 2.x 的版本：它的每個聲音直接接到喇叭，沒有總輸出可以接進錄影。', '要錄它的聲音：OpenProcessing 把 p5.js 版本切到 1.11；或改用 startSound()、startDrums()。'],
+    shotSaved: ['存好了：{name}', '{wh} 的 PNG，只有畫布（不含 🎹 和提示）。', '{next}'],
+    rec: { secs: '錄 {n} 秒', max: '最長 {m} 分鐘', stopSecs: '{n} 秒後自動停，錄完自動下載。', stopBtn: '按 ⏹（或 🎹 旁的紅點）停止，錄完自動下載。', stopPhone: '按 ⏹（或 🎹 旁的紅點）停止，錄完按「分享」存影片。',
+      micNote: '麥克風也會收：戴耳機才不會把喇叭的聲音又錄一次（不要麥克風：選項 record=nomic）。', none: '還沒有聲音在播；開了 🔊、🥁、🎤 會自動加進來',
+      src: { sound: '🔊 聲音', drums: '🥁 鼓機', mic: '🎤 麥克風', p5sound: 'p5.sound' }, sep: '、', sec: ' 秒', heard: '有聲音', silent: '無聲', noTrack: '沒有音軌',
+      saved: '已經存到「下載」；IG、YouTube 都能直接上傳。', savedWebm: '已經存到「下載」（WebM：IG 不收，看下一則）。', phone: '按「分享」→ 儲存影片，或直接傳到 IG。', shotSaved: '在「下載」資料夾。', shotPhone: '按「分享」→ 儲存影像。',
+      whyRecorder: '它沒有錄影的功能（MediaRecorder）', whyCapture: '它不能擷取畫布（captureStream）', whyAudio: '沒有 Web Audio', browser: '這個瀏覽器' },
     close: '關掉這則提示', line: '第 {n} 行', at: '在 {file} 第 {n} 行。',
   } : {
     micDenied: ['The microphone is blocked', 'This page has no permission to use it, so micLevel and bass stay at 0.', 'Click the lock (or ⓘ) left of the address → Microphone: Allow → click the canvas once.'],
@@ -698,17 +731,39 @@
     sndTone: ['The sound engine (Tone.js) did not load', 'No connection to {host} (network, a school firewall or an ad blocker).', 'On another network try 🎹 → 🔊 again, or point the tone= option at another copy of Tone.js.'],
     drumsClick: ['The drum machine plays, silently', 'Browsers let a page play audio only after a click; the visuals react anyway.', 'Click anywhere on the canvas.'],
     moduleFail: ['{name} did not load', 'No connection to {host}.', 'Check the network and reload.'],
+    recStart: ['Recording ({len})', "The canvas and the sketch's sound only ({audio}); the 🎹, the drum grid and these cards stay out of the video. {micNote}", '{stop}'],
+    recSaved: ['Saved: {name}', '{format} · {dur} · {size} · {wh} · {sound}', '{next}'],
+    recWebm: ['This one is WebM: Instagram will not take it', '{browser} cannot record MP4 itself (a recent Chrome and Safari can).', 'Record again in Chrome 126 or later, or in Safari; or convert the file to MP4 (HandBrake, an online converter).'],
+    recNone: ['This browser cannot record video', '{why}.', 'Use Chrome, Edge or Safari on a computer; or 🎹 → 📷 to save an image.'],
+    recNoCanvas: ['No canvas to record', 'There is no p5 canvas on the page yet.', 'Call createCanvas(…) in setup() first, then ⏺ or startRecording().'],
+    recTainted: ['This canvas cannot be recorded', 'It has drawn an image from another site (without CORS), and browsers then refuse to record or save it.', 'Upload the image to the sketch\'s Files on OpenProcessing (or the same site) and loadImage("file name") it.'],
+    recBlack: ['The recording is black from start to end', 'The canvas shows a picture but the video does not: a known problem when Safari / iPhone records a WebGL canvas (WebKit 229611).', 'Record in Chrome on a computer; on a phone, try a 2D canvas (createCanvas without WEBGL).'],
+    recSilent: ['The video has no sound', '{src}: on while recording, yet nothing ever reached the recording.', 'Click the canvas once and make sure you hear it (play a few notes, start the drums), then ⏺ again.'],
+    recNoAudio: ['The video has no audio track', 'This browser cannot route the page\'s sound into a recording ({why}).', 'Record in Chrome or Safari on a computer.'],
+    recEmpty: ['The file is almost empty', 'Only {size}: the browser\'s recorder produced no picture.', 'Reload and record again; if it stays this way, use Chrome on a computer.'],
+    recLimit: ['Stopped at the {m}-minute limit', 'Longer takes would fill the tab\'s memory, so one is {m} minutes at most; what was recorded is saved.', 'Record in parts, or raise it with the option reclimit= (seconds).'],
+    recError: ['Recording stopped: {msg}', 'The browser\'s recorder failed; what was recorded so far is still saved.', 'Press ⏺ again; if it keeps happening, use Chrome on a computer.'],
+    recP5sound: ['p5.sound will not be in the video', 'This page runs the p5.sound made for p5 2.x: each of its sounds goes straight to the speakers, with no output a recording can tap.', 'To record it: set the p5.js version to 1.11 (OpenProcessing: sketch settings), or use startSound() and startDrums().'],
+    shotSaved: ['Saved: {name}', 'A {wh} PNG of the canvas alone (no 🎹, no cards).', '{next}'],
+    rec: { secs: '{n} s', max: 'up to {m} min', stopSecs: 'It stops by itself after {n} s and downloads.', stopBtn: 'Press ⏹ (or the red dot beside the 🎹) to stop; it downloads by itself.', stopPhone: 'Press ⏹ (or the red dot beside the 🎹) to stop, then Share to keep the video.',
+      micNote: 'The microphone is recorded too: wear headphones, or the speakers are recorded twice (leave it out: the option record=nomic).', none: 'nothing sounds yet; 🔊, 🥁 and 🎤 join the recording when they come on',
+      src: { sound: '🔊 sound', drums: '🥁 drums', mic: '🎤 microphone', p5sound: 'p5.sound' }, sep: ', ', sec: ' s', heard: 'with sound', silent: 'silent', noTrack: 'no audio track',
+      saved: 'In your Downloads; Instagram and YouTube take it as it is.', savedWebm: 'In your Downloads (WebM: not for Instagram, see the next card).', phone: 'Share → Save Video, or send it straight to Instagram.', shotSaved: 'In your Downloads.', shotPhone: 'Share → Save Image.',
+      whyRecorder: 'It has no video recorder (MediaRecorder)', whyCapture: 'It cannot capture a canvas (captureStream)', whyAudio: 'no Web Audio', browser: 'This browser' },
     close: 'Close this hint', line: 'line {n}', at: 'At {file} line {n}. ',
   };
   var hinted = {}, hintList = [], hintBox = null, hintQueue = [];
   midi.hints = hintList;                              // what was said, for OAVp5.check() and tests: [{ id, kind, what, why, next }]
   function fill(t, o) { return String(t || '').replace(/\{(\w+)\}/g, function (m, k) { return o && o[k] != null ? o[k] : ''; }); }
-  /** hint('micDenied') or hint(id, 'cbError', { name, msg }) — once per id per page; kind: error · warn · info */
-  function hint(id, key, o, kind) {
+  /** hint('micDenied') or hint(id, 'cbError', { name, msg }) — once per id per page; kind: error · warn · info;
+   *  x: { actions: [{ label, fn }] (buttons on the card: Share, Download), ttl: ms until it goes by itself } */
+  function hint(id, key, o, kind, x) {
     if (hinted[id]) return null;
     var t = H[key || id];
     if (!t) return null;
     var h = { id: id, kind: kind || 'warn', what: fill(t[0], o), why: fill(t[1], o), next: fill(t[2], o) };
+    if (x && x.actions && x.actions.length) h.actions = x.actions;
+    if (x && x.ttl && HINTS_ON && doc) setTimeout(function () { if (hinted[id] === h) unhint(id); }, x.ttl);   // a card on screen only
     hinted[id] = h; hintList.push(h);
     if (g.console) (h.kind === 'info' ? console.info : console.warn).call(console, '[oav-p5] ' + h.what + (zh ? '：' : ': ') + h.why + (h.next ? ' → ' + h.next : ''));
     if (HINTS_ON && doc) { if (doc.body) showHint(h); else hintQueue.push(h); }
@@ -736,6 +791,16 @@
     card.appendChild(el('div', 'font-weight:700;color:#fff;margin-bottom:2px;word-break:break-word', h.what));
     if (h.why) card.appendChild(el('div', 'color:#c9cbd4', h.why));
     if (h.next) card.appendChild(el('div', 'color:' + color + ';margin-top:3px', '→ ' + h.next));
+    if (h.actions) {
+      var row = el('div', 'display:flex;flex-wrap:wrap;gap:6px;margin-top:7px');
+      h.actions.forEach(function (a) {
+        var b = el('button', 'padding:4px 12px;border-radius:8px;border:1px solid ' + color + ';background:rgba(255,255,255,.06);color:#fff;cursor:pointer;font:600 12.5px system-ui,sans-serif', a.label);
+        b.type = 'button';
+        b.addEventListener('click', function () { try { a.fn(); } catch (e) { report('a hint button', e); } });
+        row.appendChild(b);
+      });
+      card.appendChild(row);
+    }
     var x = el('button', 'position:absolute;top:4px;right:5px;width:22px;height:22px;padding:0;border:0;border-radius:6px;background:none;color:#aaa;cursor:pointer;font:600 15px/1 system-ui,sans-serif', '×');
     x.type = 'button'; x.title = H.close; x.setAttribute('aria-label', H.close);
     x.addEventListener('click', function () { if (card.parentNode) card.parentNode.removeChild(card); });
@@ -801,6 +866,7 @@
     for (var i = 0; i < w.length; i++) { try { w[i](); } catch (e) { report('audio', e); } }
     try { if (toneMod && sndWanted) toneMod.start(); } catch (e) { /* */ }
     try { var c = kit && kit.context; if (c && c.state === 'suspended') c.resume(); } catch (e) { /* */ }
+    try { var r = recS && recS.mix && recS.mix.ctx; if (r && r.state === 'suspended') r.resume(); } catch (e) { /* */ }   // a recording started before any click
   }
   if (g.addEventListener) ['pointerdown', 'keydown', 'touchend'].forEach(function (t) { g.addEventListener(t, audioGesture, { capture: true, passive: true }); });
 
@@ -1057,6 +1123,442 @@
   FUNCS.stopDrums = function () { return drums.stop(); };
   FUNCS.cue = function (bar, name, every) { drums.cue(bar, name, every); };
 
+  // ---------------------------------------------------------------- recording: the canvas and what the sketch sounds like, one file
+  // ⏺ in the 🎹 panel, or startRecording(): the p5 canvas (the canvas alone, so the 🎹, the drum grid and the cards never show
+  // in the video) and every sound this file makes: startSound()'s instrument (Tone.js), the drum kit, the microphone while it is
+  // on, and p5.sound 1.x. Each of them plays in an AudioContext of its own, and Chrome's MediaRecorder keeps only the first audio
+  // track of a stream, so each is bridged through a MediaStream into one more context that mixes them into ONE track. The
+  // speakers are not touched: they keep playing what they played. A source that comes on during a take (🔊 pressed halfway)
+  // joins it. MP4 (H.264 + AAC: what Instagram and every editor take) where the browser writes it (Chrome 126+, Safari), else
+  // WebM. The recorder is @openav/record's Recorder (packages/record/recorder.js), loaded from next to this file on the first ⏺.
+  var REC_MIMES = ['video/mp4;codecs=avc1.640033,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4',
+    'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];   // @openav/record's VIDEO_MIMES, MP4 first (a test checks)
+  var recSubs = { start: [], saved: [] };
+  var recS = null, recSeq = 0, shotSeq = 0, recModP = null, recBtn = null, shotBtn = null, probeCv = null;
+  var record = {
+    state: 'off',                                   // off · starting (the recorder loading) · on · saving
+    seconds: 0, last: null, fps: O.recfps, limit: O.reclimit,
+    /** startRecording(10) or startRecording({ seconds, fps, mic: false, name, canvas, bitrate }) → Promise<boolean> (it started) */
+    start: function (o) { return startRecording(o); },
+    /** → Promise<info | null>, once the file is saved and checked (the same info recordingSaved(info) gets) */
+    stop: function () { return stopRecording(); },
+    /** the canvas as a PNG: downloaded (on a phone, a Share button) → Promise<{ name, blob, url, width, height, bytes } | null> */
+    shot: function (o) { return saveShot(o); },
+    /** what this browser can record: { recorder, mp4, webm, mime } (mime: what ⏺ asks for first) */
+    formats: function () { return recFormats(); },
+    /** record.on('start' | 'saved', fn) → off() */
+    on: function (name, fn) {
+      if (!recSubs[name]) throw new Error('[oav-p5] unknown record event "' + name + '" (' + Object.keys(recSubs).join(', ') + ')');
+      recSubs[name].push(fn);
+      return function () { var i = recSubs[name].indexOf(fn); if (i >= 0) recSubs[name].splice(i, 1); };
+    },
+    /** what the take hears right now: 'sound' · 'drums' · 'mic' · 'p5sound' */
+    get sources() { return recS ? recLive(recS) : []; },
+    _findings: recFindings, _mimes: REC_MIMES, _name: recName,   // for tests
+  };
+  midi.record = record;
+  function pad2(x) { return (x < 10 ? '0' : '') + x; }
+  function mmss(sec) { sec = Math.max(0, Math.floor(sec || 0)); return pad2(Math.floor(sec / 60)) + ':' + pad2(sec % 60); }
+  function fmtBytes(b) { return b < 1048576 ? Math.max(1, Math.round(b / 1024)) + ' KB' : (b / 1048576).toFixed(1) + ' MB'; }
+  function fmtMin(s) { return String(Math.round(s / 6) / 10); }
+  function recEmit(name, args) { var l = recSubs[name].slice(); for (var i = 0; i < l.length; i++) { try { l[i].apply(g, args); } catch (e) { report('recordingSaved', e); } } }
+  function setRec(s) { record.state = s; put('recordingIsOn', s === 'on'); paintRec(); }
+  /** oav-20261015-183012.mp4 (oav-<title>-… with the title option or startRecording({ name })) */
+  function recName(title, ext, d) {
+    d = d || new Date();
+    var t = String(title || O.title || '').replace(/[\s\\/:*?"<>|#%&{}$!'@+`=^~;,]+/g, '-').replace(/^[-.]+|[-.]+$/g, '').slice(0, 40);
+    return 'oav-' + (t ? t + '-' : '') + d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate()) + '-' + pad2(d.getHours()) + pad2(d.getMinutes()) + pad2(d.getSeconds()) + '.' + ext;
+  }
+  function recFormats() {
+    var M = g.MediaRecorder, f = { recorder: typeof M === 'function', mp4: false, webm: false, mime: '' };
+    if (!f.recorder || typeof M.isTypeSupported !== 'function') return f;
+    for (var i = 0; i < REC_MIMES.length; i++) {
+      var ok = false;
+      try { ok = !!M.isTypeSupported(REC_MIMES[i]); } catch (e) { /* a check that throws is a no */ }
+      if (!ok) continue;
+      if (/^video\/mp4/.test(REC_MIMES[i])) f.mp4 = true; else f.webm = true;
+      if (!f.mime) f.mime = REC_MIMES[i];
+    }
+    return f;
+  }
+  // 0.16 bit per pixel per frame: 1080p30 ≈ 10 Mb/s, enough for thin lines and particles; capped (16 Mb/s, 24 at 60 fps) so a
+  // full-window retina canvas over five minutes still fits in the tab's memory. Instagram re-encodes it anyway.
+  function recBitrate(w, h, fps) {
+    var b = w * h * fps * 0.16, cap = fps > 30 ? 24e6 : 16e6;
+    return Math.round(Math.max(4e6, Math.min(cap, b)) / 1e5) * 1e5;
+  }
+  /** the canvas to record: one given (a <canvas>, a p5.Graphics, a p5.Element), else p5's own: the largest visible p5Canvas.
+   *  Not by id: p5 2.x numbers its canvases as it makes them (2.3.4's main one can be #defaultCanvas1) and gives a
+   *  createGraphics() buffer the same class, hidden; a hidden canvas is never the one on screen. */
+  function recCanvas(c) {
+    if (c) return c.elt || c.canvas || c;
+    if (!doc || !doc.getElementsByTagName) return null;
+    var all = doc.getElementsByTagName('canvas'), best = null, score = 0;
+    for (var i = 0; i < all.length; i++) {
+      var x = all[i];
+      if (x.closest && x.closest('#oav-p5-panel,#oav-p5-drums,#oav-p5-hints,#oav-p5-check')) continue;
+      var sc = (x.offsetWidth || 0) * (x.offsetHeight || 0);
+      if (sc && /(^|\s)p5Canvas(\s|$)/.test(x.className || '')) sc += 1e12;
+      if (sc > score) { score = sc; best = x; }
+    }
+    return best;
+  }
+  // the mix: one more AudioContext, made inside the click that asked for it (so it runs), a limiter above -2 dBFS so several
+  // sources at once never clip the file (below that it changes nothing), and a long analyser to know whether anything sounded
+  function recMixer() {
+    var Ctx = g.AudioContext || g.webkitAudioContext;
+    if (!Ctx) return null;
+    try {
+      var ctx = new Ctx(), bus = ctx.createGain(), lim = ctx.createDynamicsCompressor(), dest = ctx.createMediaStreamDestination(), an = ctx.createAnalyser();
+      lim.threshold.value = -2; lim.knee.value = 0; lim.ratio.value = 20; lim.attack.value = 0.002; lim.release.value = 0.15;
+      an.fftSize = 32768;                           // 0.7 s a read, read every 0.25 s: no drum hit falls between two reads
+      bus.connect(lim); lim.connect(dest); lim.connect(an);
+      if (ctx.state === 'suspended' && ctx.resume) ctx.resume().then(null, function () {});
+      return { ctx: ctx, bus: bus, dest: dest, an: an, buf: new Float32Array(an.fftSize), track: dest.stream.getAudioTracks()[0] || null };
+    } catch (e) { dbg('no mix for the recording', e); return null; }
+  }
+  /** a source from another AudioContext into the mix, through a MediaStream: make() → { stream, off } */
+  function recBridge(s, make) {
+    var t = null;
+    try {
+      t = make();
+      var src = s.mix.ctx.createMediaStreamSource(t.stream);
+      src.connect(s.mix.bus);
+      return { stream: t.stream, off: function () { try { src.disconnect(); } catch (e) { /* */ } try { t.off(); } catch (e) { /* */ } } };
+    } catch (e) {
+      if (t) { try { t.off(); } catch (x) { /* */ } }    // half made: undo the tap on the source's side
+      dbg('recording: a source could not be tapped', e);
+      return { failed: String((e && e.message) || e), off: function () {} };
+    }
+  }
+  function p5soundOut() { try { var o = g.p5 && g.p5.soundOut && g.p5.soundOut.output; return o && o.context && typeof o.connect === 'function' ? o : null; } catch (e) { return null; } }
+  function p5soundNew() { try { return !!(g.p5 && g.p5.p5soundNode && !g.p5.soundOut); } catch (e) { return false; } }
+  // every sound this file makes, tapped where it leaves for the speakers; called at the start and four times a second, so a
+  // source that comes on during the take joins it
+  function recAttach(s) {
+    if (!s.mix || s.done) return;
+    var t = s.taps;
+    if (!t.sound && sndOn && toneMod) {
+      t.sound = recBridge(s, function () {
+        var T = toneMod, out = typeof T.getDestination === 'function' ? T.getDestination() : T.Destination;
+        var d = T.getContext().createMediaStreamDestination();   // Tone's own context (standardized-audio-context): a native node would not do
+        out.connect(d);
+        return { stream: d.stream, off: function () { out.disconnect(d); } };
+      });
+    }
+    if (!t.drums && kit && kit.context && kit.output) {
+      t.drums = recBridge(s, function () {
+        var d = kit.context.createMediaStreamDestination(), out = kit.output;
+        out.connect(d);
+        return { stream: d.stream, off: function () { out.disconnect(d); } };
+      });
+    }
+    var ms = s.mic && mic.state === 'on' && micAudio && micAudio.source && micAudio.source.mediaStream;
+    if (ms && (!t.mic || t.mic.stream !== ms)) {     // a microphone stopped and started again is a new stream
+      if (t.mic) t.mic.off();
+      t.mic = recBridge(s, function () { return { stream: ms, off: function () {} }; });
+    }
+    var p5o = !t.p5sound && p5soundOut();
+    if (p5o) {
+      t.p5sound = recBridge(s, function () {
+        var d = p5o.context.createMediaStreamDestination();
+        p5o.connect(d);
+        return { stream: d.stream, off: function () { p5o.disconnect(d); } };
+      });
+    }
+  }
+  function recLive(s) { return Object.keys(s.taps).filter(function (k) { return s.taps[k] && !s.taps[k].failed; }); }
+  function recCleanup(s) {
+    if (s.done) return;
+    s.done = true;
+    clearTimeout(s.timer); clearInterval(s.tick);
+    Object.keys(s.taps).forEach(function (k) { try { s.taps[k].off(); } catch (e) { /* */ } });
+    if (s.mix) { try { s.mix.ctx.close().then(null, function () {}); } catch (e) { /* */ } }
+  }
+  /** the brightest of 48 × 48 averaged cells of a canvas or a video frame, 0..255; null where it cannot be read */
+  function lumaMax(src) {
+    if (!doc || !doc.createElement) return null;
+    try {
+      if (!probeCv) { probeCv = doc.createElement('canvas'); probeCv.width = probeCv.height = 48; }
+      var c = probeCv.getContext('2d', { willReadFrequently: true });
+      c.fillStyle = '#000'; c.fillRect(0, 0, 48, 48);
+      c.drawImage(src, 0, 0, 48, 48);
+      var d = c.getImageData(0, 0, 48, 48).data, m = 0;
+      for (var i = 0; i < d.length; i += 4) { var v = d[i] > d[i + 1] ? d[i] : d[i + 1]; if (d[i + 2] > v) v = d[i + 2]; if (v > m) m = v; }
+      return m;
+    } catch (e) { return null; }
+  }
+  // the iOS check (WebKit 229611: Safari has recorded a WebGL canvas as a black video): three frames of the file itself, at
+  // 30 %, 60 % and 90 %, compared with what the canvas showed while recording; null when this browser cannot decode them
+  function recFrames(blob, dur) {
+    return new Promise(function (done) {
+      var v, url, at = [0.3, 0.6, 0.9], i = 0, m = -1, over = false, t = null;
+      var end = function () { if (over) return; over = true; clearTimeout(t); try { v.removeAttribute('src'); v.load(); } catch (e) { /* */ } try { URL.revokeObjectURL(url); } catch (e) { /* */ } done(m >= 0 ? m : null); };
+      try {
+        v = doc.createElement('video'); url = URL.createObjectURL(blob);
+        v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto';
+        v.onerror = end;
+        v.onloadeddata = function () { v.currentTime = Math.max(0.05, dur * at[0]); };
+        v.onseeked = function () { var x = lumaMax(v); if (x != null && x > m) m = x; if (++i >= at.length) end(); else v.currentTime = Math.max(0.05, dur * at[i]); };
+        t = setTimeout(end, 4000);
+        v.src = url;
+      } catch (e) { end(); }
+    });
+  }
+  /** what is worth saying about a take: hint ids, in order. f: { bytes, format, audio, peak, on: [sources that were on], live, frames } */
+  function recFindings(f) {
+    var out = [], on = (f.on || []).length > 0;
+    if (f.bytes < 4096) out.push('recEmpty');
+    if (f.format === 'webm') out.push('recWebm');
+    if (on && !f.audio) out.push('recNoAudio');
+    else if (on && !(f.peak > 1e-4)) out.push('recSilent');          // -80 dBFS: nothing at all reached the mix
+    if (f.frames != null && f.live != null && f.frames <= 12 && f.live >= 40) out.push('recBlack');
+    return out;
+  }
+  function recPhone() { try { return !!(g.matchMedia && g.matchMedia('(pointer: coarse)').matches); } catch (e) { return false; } }
+  function recFile(blob, name) { try { return new File([blob], name, { type: String(blob.type || '').split(';')[0] }); } catch (e) { return null; } }
+  function recCanShare(file) { try { return !!(file && typeof nav.share === 'function' && typeof nav.canShare === 'function' && nav.canShare({ files: [file] })); } catch (e) { return false; } }
+  function recDownload(url, name) {
+    if (!url || !doc || !doc.body) return false;
+    var a = doc.createElement('a');
+    a.href = url; a.download = name; a.style.display = 'none';
+    a.addEventListener('click', function (e) { e.stopPropagation(); });   // not a click on the sketch (p5 listens on window)
+    doc.body.appendChild(a);
+    try { a.click(); } catch (e) { /* */ }
+    setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); }, 0);
+    return true;
+  }
+  // Web Share needs the tap itself (a take that stopped by a timer has none), so on a phone the card carries the button
+  function recShare(file, url, name) {
+    try { nav.share({ files: [file], title: name }).then(null, function (e) { if (!e || e.name !== 'AbortError') recDownload(url, name); }); }
+    catch (e) { recDownload(url, name); }
+  }
+  /** a computer: the file is downloaded at once; a phone that can share files: Share and Download buttons on the card */
+  function recDeliver(blob, url, name) {
+    var file = recFile(blob, name), share = recCanShare(file), phone = recPhone() && share && HINTS_ON && !!(doc && doc.body), actions = [];
+    if (!phone) recDownload(url, name);
+    if (share) actions.push({ label: T.share, fn: function () { recShare(file, url, name); } });
+    if (phone) actions.push({ label: T.download, fn: function () { recDownload(url, name); } });
+    return { phone: phone, actions: actions };
+  }
+  function recLabel(list) { return list.map(function (k) { return H.rec.src[k] || k; }).join(H.rec.sep); }
+  function recFormatLabel(mime, ext) {
+    var v = /avc1|h264/i.test(mime) ? 'H.264' : /vp09|vp9/i.test(mime) ? 'VP9' : /vp08|vp8/i.test(mime) ? 'VP8' : /av01/i.test(mime) ? 'AV1' : '';
+    var a = /mp4a|aac/i.test(mime) ? 'AAC' : /opus/i.test(mime) ? 'Opus' : '';
+    return (ext === 'mp4' ? 'MP4' : 'WebM') + (v ? (zh ? '（' : ' (') + v + (a ? (zh ? '＋' : ' + ') + a : '') + (zh ? '）' : ')') : '');
+  }
+  function loadRecorder() {
+    if (!recModP) recModP = load('packages/record/recorder.js').then(null, function (e) { recModP = null; throw Object.assign(e || new Error('load'), { oavLoad: true }); });
+    return recModP;
+  }
+  function startRecording(arg) {
+    if (O.record === 'off') return Promise.resolve(false);   // the option is a promise to the page
+    if (recS) return Promise.resolve(record.state === 'on' || record.state === 'starting');
+    var o = typeof arg === 'number' ? { seconds: arg } : arg && typeof arg === 'object' ? arg : {};
+    var canvas = recCanvas(o.canvas);
+    if (!canvas) { hint('recNoCanvas', null, null, 'error'); return Promise.resolve(false); }
+    var M = g.MediaRecorder;
+    if (typeof M !== 'function' || typeof canvas.captureStream !== 'function') {
+      hint('recNone', null, { why: typeof M !== 'function' ? H.rec.whyRecorder : H.rec.whyCapture }, 'error');
+      return Promise.resolve(false);
+    }
+    var sec = +o.seconds > 0 ? Math.min(+o.seconds, O.reclimit) : 0;
+    if (+o.seconds > O.reclimit && g.console) console.info('[oav-p5] startRecording(' + o.seconds + '): one take is ' + O.reclimit + ' s at most (the option reclimit)');
+    var s = recS = { id: ++recSeq, canvas: canvas, seconds: sec, fps: +o.fps > 0 ? Math.min(60, +o.fps) : O.recfps, name: o.name,
+      mic: o.mic != null ? !!o.mic : O.record !== 'nomic', taps: {}, on: {}, peak: 0, live: null, ticks: 0, rec: null, mix: recMixer() };
+    record.seconds = 0;
+    setRec('starting');
+    return loadRecorder().then(function (m) {
+      if (recS !== s || s.done) return false;        // stopped while the recorder was loading
+      recAttach(s);
+      var tracks = s.mix && s.mix.track ? [s.mix.track] : [];
+      var bps = +o.bitrate > 0 ? +o.bitrate : recBitrate(canvas.width, canvas.height, s.fps);
+      var f = recFormats(), tries = [], r = null, err = null;
+      if (f.mime) tries.push(f.mime);
+      if (f.mp4 && f.webm) {                         // an MP4 the browser says yes to and then refuses (no encoder on this machine): WebM
+        for (var k = 0; k < REC_MIMES.length; k++) {
+          var yes = false;
+          try { yes = /webm/.test(REC_MIMES[k]) && g.MediaRecorder.isTypeSupported(REC_MIMES[k]); } catch (e) { /* */ }
+          if (yes) { tries.push(REC_MIMES[k]); break; }
+        }
+      }
+      tries.push('');                                // last: whatever the browser records by default
+      for (var i = 0; i < tries.length && !r; i++) {
+        var x = null;
+        try {
+          x = new m.Recorder({ canvas: canvas, fps: s.fps, audioTracks: tracks, videoBitsPerSecond: bps, mimeType: tries[i] });
+          x.start({ timeslice: 1000 });
+          r = x;
+        } catch (e) {
+          if (x && x._own) x._own.forEach(function (tr) { try { tr.stop(); } catch (y) { /* */ } });
+          err = err || e;
+          if (e && e.name === 'SecurityError') break;   // a tainted canvas: no format will do
+        }
+      }
+      if (!r) throw err || new Error('MediaRecorder');
+      s.rec = r; s.t0 = clock();
+      setRec('on');
+      if (sec) s.timer = setTimeout(function () { if (recS === s) stopRecording(); }, sec * 1000);
+      else s.timer = setTimeout(function () { if (recS !== s) return; hint('recLimit:' + s.id, 'recLimit', { m: fmtMin(O.reclimit) }, 'info'); stopRecording(); }, O.reclimit * 1000);
+      s.tick = setInterval(recTick, 250);
+      var live = recLive(s);
+      hint('recStart:' + s.id, 'recStart', {
+        len: sec ? fill(H.rec.secs, { n: sec }) : fill(H.rec.max, { m: fmtMin(O.reclimit) }),
+        audio: live.length ? recLabel(live) : H.rec.none, micNote: live.indexOf('mic') >= 0 ? H.rec.micNote : '',
+        stop: sec ? fill(H.rec.stopSecs, { n: sec }) : recPhone() ? H.rec.stopPhone : H.rec.stopBtn }, 'info', { ttl: 8000 });
+      if (p5soundNew()) hint('recP5sound', null, null, 'info');
+      if (g.console) console.info('[oav-p5] recording ' + canvas.width + '×' + canvas.height + ' @' + s.fps + ' fps, ' + (r.mimeType || 'the browser\'s format') + ', ' + Math.round(bps / 1e5) / 10 + ' Mb/s; sound: ' + (live.join(', ') || 'none yet'));
+      recEmit('start', [{ width: canvas.width, height: canvas.height, fps: s.fps, type: r.mimeType, seconds: sec }]);
+      return true;
+    }).then(null, function (e) {
+      if (recS === s) { recCleanup(s); recS = null; setRec('off'); }
+      if (e && e.oavLoad) hint('modfail:record', 'moduleFail', { name: '@openav/record', host: hostOf(BASE) }, 'error');
+      else if (e && e.name === 'SecurityError') hint('recTainted', null, null, 'error');
+      else hint('recError:' + s.id, 'recError', { msg: (e && (e.message || e.name)) || String(e) }, 'error');
+      return false;
+    });
+  }
+  function recTick() {
+    var s = recS;
+    if (!s || !s.rec || s.done) return;
+    record.seconds = (clock() - s.t0) / 1000;
+    recAttach(s);
+    if (sndOn) s.on.sound = 1;
+    if (kitStarted && drums.state === 'on') s.on.drums = 1;
+    if (s.taps.mic && !s.taps.mic.failed && mic.state === 'on') s.on.mic = 1;
+    var mx = s.mix;
+    if (mx) {
+      try {
+        mx.an.getFloatTimeDomainData(mx.buf);
+        for (var i = 0, p = s.peak, b = mx.buf; i < b.length; i++) { var a = b[i] < 0 ? -b[i] : b[i]; if (a > p) p = a; }
+        s.peak = p;
+      } catch (e) { /* */ }
+    }
+    // what the canvas shows, for the black-take check: a few looks (at 0.25, 0.5, 1, 2, 4 … s), none once it is known to show something
+    var n = ++s.ticks;
+    if ((s.live == null || s.live < 40) && (n & (n - 1)) === 0) { var l = lumaMax(s.canvas); if (l != null) s.live = Math.max(s.live || 0, l); }
+    if (s.rec.error && !s.failed) {
+      s.failed = true;
+      var er = s.rec.error;
+      hint('recError:' + s.id, 'recError', { msg: (er && (er.message || er.name)) || String(er) }, 'error');
+      stopRecording();
+      return;
+    }
+    paintRec();
+  }
+  function stopRecording() {
+    var s = recS;
+    if (!s) return Promise.resolve(null);
+    if (s.stopping) return s.stopping;
+    if (!s.rec) { recCleanup(s); recS = null; setRec('off'); unhint('recStart:' + s.id); return Promise.resolve(null); }   // still loading: nothing recorded
+    recTick();                                       // the last quarter second's level
+    clearTimeout(s.timer); clearInterval(s.tick);
+    setRec('saving');
+    s.stopping = s.rec.stop().then(function (r) { return recFinish(s, r); }).then(null, function (e) {
+      recCleanup(s);
+      report('the recording', e);
+      return null;
+    }).then(function (info) {
+      if (recS === s) recS = null;
+      setRec('off');
+      return info;
+    });
+    return s.stopping;
+  }
+  function recFinish(s, r) {
+    recCleanup(s);
+    unhint('recStart:' + s.id);
+    var mime = r.mimeType || '', ext = /mp4/i.test(mime) || r.ext === 'mp4' ? 'mp4' : 'webm';
+    var info = {
+      name: recName(s.name, ext), blob: r.blob, url: null, type: mime, format: ext, bytes: r.bytes || 0,
+      seconds: Math.round((r.durationMs || 0) / 100) / 10, width: ext === 'mp4' ? r.width - (r.width % 2) : r.width,
+      height: ext === 'mp4' ? r.height - (r.height % 2) : r.height, fps: r.fps, audio: !!r.audio, heard: s.peak > 1e-4,
+      sources: recLive(s), warnings: [] };
+    record.seconds = info.seconds;
+    try { if (r.blob && g.URL && URL.createObjectURL) info.url = URL.createObjectURL(r.blob); } catch (e) { /* */ }
+    var old = record.last;
+    record.last = info;
+    if (old && old.url) setTimeout(function () { try { URL.revokeObjectURL(old.url); } catch (e) { /* */ } }, 60000);   // one take's URL lives until a minute after the next
+    var out = r.blob ? recDeliver(r.blob, info.url, info.name) : { phone: false, actions: [] };
+    hint('recSaved:' + s.id, 'recSaved', {
+      name: info.name, format: recFormatLabel(mime, ext), size: fmtBytes(info.bytes), wh: info.width + '×' + info.height,
+      dur: info.seconds < 60 ? info.seconds.toFixed(1) + H.rec.sec : mmss(info.seconds),
+      sound: !info.audio ? H.rec.noTrack : info.heard ? H.rec.heard : H.rec.silent,
+      next: out.phone ? H.rec.phone : ext === 'webm' ? H.rec.savedWebm : H.rec.saved }, 'info', { actions: out.actions });
+    var f = { bytes: info.bytes, format: ext, audio: info.audio, peak: s.peak, on: Object.keys(s.on), live: s.live, frames: null };
+    var said = {};
+    var say = function (list) {
+      list.forEach(function (k) {
+        if (said[k]) return;
+        said[k] = 1;
+        hint(k + ':' + s.id, k, { browser: browserName(), src: recLabel(f.on), why: H.rec.whyAudio, size: fmtBytes(info.bytes) },
+          k === 'recEmpty' || k === 'recBlack' ? 'error' : 'warn');
+      });
+    };
+    say(recFindings(f));
+    var look = s.live != null && s.live >= 40 && r.blob && doc && g.URL ? recFrames(r.blob, info.seconds) : Promise.resolve(null);
+    return look.then(function (fm) {
+      f.frames = fm;
+      info.warnings = recFindings(f);
+      say(info.warnings);
+      if (g.console) console.info('[oav-p5] saved ' + info.name + ': ' + info.width + '×' + info.height + ', ' + info.seconds + ' s, ' + fmtBytes(info.bytes) + ', ' + (info.audio ? (info.heard ? 'with sound (' + info.sources.join(', ') + ')' : 'silent') : 'no audio track') + (info.warnings.length ? ' · ' + info.warnings.join(', ') : ''));
+      callSketch('recordingSaved', [info]);
+      recEmit('saved', [info]);
+      return info;
+    });
+  }
+  function saveShot(o) {
+    o = o || {};
+    var c = recCanvas(o.canvas);
+    if (!c || typeof c.toBlob !== 'function') { hint('recNoCanvas', null, null, 'error'); return Promise.resolve(null); }
+    var name = recName(o.name, 'png');
+    return new Promise(function (ok) {
+      try {
+        c.toBlob(function (b) {
+          if (!b) { ok(null); return; }
+          var info = { name: name, blob: b, url: null, width: c.width, height: c.height, bytes: b.size };
+          try { info.url = URL.createObjectURL(b); } catch (e) { /* */ }
+          var out = recDeliver(b, info.url, name), id = ++shotSeq;
+          hint('shot:' + id, 'shotSaved', { name: name, wh: c.width + '×' + c.height, next: out.phone ? H.rec.shotPhone : H.rec.shotSaved }, 'info', { actions: out.actions, ttl: out.phone ? 0 : 6000 });
+          if (info.url && !out.phone) setTimeout(function () { try { URL.revokeObjectURL(info.url); } catch (e) { /* */ } }, 60000);
+          ok(info);
+        }, 'image/png');
+      } catch (e) {
+        if (e && e.name === 'SecurityError') hint('recTainted', null, null, 'error'); else report('📷', e);
+        ok(null);
+      }
+    });
+  }
+  // ⏺ on the 🎹 itself while a take runs: a red dot and the time, for whoever has the panel closed; a click there stops it
+  function paintRec() {
+    var st = record.state, busy = st !== 'off';
+    if (btn && btn.querySelector) {
+      var dot = btn.querySelector('#oav-p5-rec-dot');
+      if (busy && !dot) {
+        dot = el('span', 'display:inline-flex;align-items:center;gap:4px;padding:2px 7px 2px 6px;border-radius:999px;background:rgba(224,60,50,.25);color:#ff6b5f;font:700 12px/1.2 ui-monospace,Menlo,monospace;white-space:nowrap');
+        dot.id = 'oav-p5-rec-dot'; dot.title = T.recDot; dot.setAttribute('aria-label', T.recDot);
+        dot.appendChild(el('span', 'font-size:11px', '●')); dot.appendChild(el('span', ''));
+        btn.appendChild(dot);
+      }
+      if (dot && !busy) { if (dot.parentNode) dot.parentNode.removeChild(dot); }
+      else if (dot) {
+        dot.lastChild.textContent = st === 'on' ? mmss(record.seconds) : '…';
+        dot.firstChild.style.opacity = st === 'on' && Math.floor(record.seconds * 2) % 2 ? '0.3' : '1';
+      }
+    }
+    if (recBtn) {
+      var label = st === 'on' ? fill(T.recStop, { t: mmss(record.seconds) }) : st === 'starting' ? T.recStarting : st === 'saving' ? T.recSaving : T.recOn;
+      var cut = label.indexOf(' ');                  // ⏺ / ⏹ in red (a text font draws them white), the words as they are
+      recBtn.textContent = '';
+      recBtn.appendChild(el('span', 'color:#ff5a4f', label.slice(0, cut)));
+      recBtn.appendChild(doc.createTextNode(label.slice(cut)));
+      recBtn.style.background = st === 'on' ? 'rgba(224,60,50,.32)' : 'none';
+      recBtn.style.borderColor = st === 'on' ? '#e06b5f' : 'rgba(255,255,255,.3)';
+    }
+  }
+  FUNCS.startRecording = function (o) { return record.start(o); };
+  FUNCS.stopRecording = function () { return record.stop(); };
+
   // ---------------------------------------------------------------- on-screen UI: 🎹 button → docked controller
   var doc = g.document, btn = null, dock = null, view = null, legend = null, panelOpen = false, loading = null;
   var Z = 2147483000;
@@ -1084,7 +1586,10 @@
     if (DEBUG && e.type === 'pointerdown') { var top = doc.elementFromPoint(e.clientX, e.clientY); dbg('pointerdown', Math.round(e.clientX), Math.round(e.clientY), 'target', e.target.tagName + '#' + e.target.id, 'top', top && (top.tagName + '#' + top.id), 'button is ours', doc.getElementById('oav-p5-button') === btn); }
     if (!b || e.type !== 'click') return;
     if (b !== btn) { dbg('the page replaced the 🎹: re-adopting the copy'); btn = b; fence(btn); paintButton(); }
-    e.stopPropagation(); openPanel(); try { btn.blur(); } catch (x) { /* */ }
+    e.stopPropagation();
+    if (e.target.closest('#oav-p5-rec-dot') && (record.state === 'on' || record.state === 'starting')) stopRecording();   // the red dot: stop
+    else openPanel();
+    try { btn.blur(); } catch (x) { /* */ }
   }
   function placeButton() {
     if (O.panel === 'off' || btn || !doc || !doc.body) return;
@@ -1098,7 +1603,7 @@
     btn.appendChild(el('span', '', '🎹'));
     fence(btn);
     doc.body.appendChild(btn);
-    paintButton();
+    paintButton(); paintRec();
     flushHints();
     if (O.panel === 'open') openPanel(true);
     // say once, in the console, what the controller is wired to (OPC variables are declared by now)
@@ -1213,7 +1718,14 @@
     setDrums(drums.state);
     var ck = el('button', small, T.check); ck.id = 'oav-p5-check-button'; ck.type = 'button';
     ck.addEventListener('click', function () { check(); });
-    bar.appendChild(legend); bar.appendChild(micBtn); bar.appendChild(sndBtn); bar.appendChild(drumBtn); bar.appendChild(ph); bar.appendChild(ck); bar.appendChild(cl);
+    recBtn = el('button', small + ';font-variant-numeric:tabular-nums'); recBtn.id = 'oav-p5-rec-button'; recBtn.type = 'button'; recBtn.title = T.recTitle;
+    recBtn.addEventListener('click', function () { if (record.state === 'on' || record.state === 'starting') stopRecording(); else if (record.state === 'off') startRecording(); });
+    shotBtn = el('button', small, T.shot); shotBtn.id = 'oav-p5-shot-button'; shotBtn.type = 'button'; shotBtn.title = T.shotTitle;
+    shotBtn.addEventListener('click', function () { saveShot(); });
+    if (O.record === 'off') { recBtn.style.display = 'none'; shotBtn.style.display = 'none'; }
+    paintRec();
+    bar.appendChild(legend); bar.appendChild(micBtn); bar.appendChild(sndBtn); bar.appendChild(drumBtn); bar.appendChild(recBtn); bar.appendChild(shotBtn);
+    bar.appendChild(ph); bar.appendChild(ck); bar.appendChild(cl);
     dock.appendChild(bar);
     sndRow = el('div', 'display:none;margin:0 0 6px'); sndRow.id = 'oav-p5-sound';
     dock.appendChild(sndRow);
@@ -1321,11 +1833,15 @@
   var C = zh ? { title: '🩺 oav-p5 體檢', page: '頁面', frame: '嵌在別的網頁裡（iframe）', top: '直接打開', browser: '瀏覽器', mic: '麥克風', midi: 'MIDI',
     sound: '聲音', drums: '鼓機', wiring: '接線', own: '草圖自己的名字', hints: '提示過', none: '沒有', copy: '複製文字', copied: '已複製', more: '更完整的裝置檢查 →',
     states: { off: '關著', asking: '等你允許', on: '開著', denied: '被擋下', unavailable: '拿不到', waiting: '等你點一下', loading: '載入中', error: '出錯', stopped: '停著',
-      connected: '已連上', 'no device': '沒偵測到裝置', ready: '好了', idle: '還沒開始' }, webMidiNo: '這個瀏覽器沒有 Web MIDI', last: '最後收到', bar: '第 {n} 小節' }
+      connected: '已連上', 'no device': '沒偵測到裝置', ready: '好了', idle: '還沒開始' }, webMidiNo: '這個瀏覽器沒有 Web MIDI', last: '最後收到', bar: '第 {n} 小節',
+    rec: '錄影', recMp4: '可以錄 MP4（IG 可以直接用）', recWebm: '只能錄 WebM（IG 不收：換新版 Chrome 或 Safari）', recNone: '這個瀏覽器不能錄', recOff: '關掉了（record=off）',
+    recMax: '最長 {m} 分鐘', recNoMic: '不收麥克風', recNow: '錄影中', recLast: '上一段' }
     : { title: '🩺 oav-p5 check-up', page: 'Page', frame: 'inside another page (iframe)', top: 'opened directly', browser: 'Browser', mic: 'Microphone', midi: 'MIDI',
     sound: 'Sound', drums: 'Drums', wiring: 'Wiring', own: "The sketch's own names", hints: 'Hints shown', none: 'none', copy: 'Copy text', copied: 'Copied', more: 'Full device check →',
     states: { off: 'off', asking: 'waiting for permission', on: 'on', denied: 'blocked', unavailable: 'unavailable', waiting: 'waiting for a click', loading: 'loading', error: 'failed', stopped: 'stopped',
-      connected: 'connected', 'no device': 'no device found', ready: 'ready', idle: 'not started' }, webMidiNo: 'no Web MIDI in this browser', last: 'last', bar: 'bar {n}' };
+      connected: 'connected', 'no device': 'no device found', ready: 'ready', idle: 'not started' }, webMidiNo: 'no Web MIDI in this browser', last: 'last', bar: 'bar {n}',
+    rec: 'Recording', recMp4: 'MP4 (ready for Instagram)', recWebm: 'WebM only (not for Instagram: use a recent Chrome or Safari)', recNone: 'this browser cannot record', recOff: 'off (record=off)',
+    recMax: 'up to {m} min', recNoMic: 'microphone left out', recNow: 'recording', recLast: 'last take' };
   function st(x) { return C.states[x] || x; }
   function browserName() {
     var ua = (nav && nav.userAgent) || '', m = /(Edg|OPR|Firefox|Chrome|Version)\/(\d+)/.exec(ua);
@@ -1349,6 +1865,9 @@
       wiring: wiringText(), own: own,
       hints: hintList.map(function (h) { return h.what; }),
     };
+    var rf = recFormats(), last = record.last;
+    r.recording = { state: record.state, option: O.record, recorder: rf.recorder, mp4: rf.mp4, webm: rf.webm, mime: rf.mime, fps: O.recfps, limit: O.reclimit,
+      last: last ? { name: last.name, format: last.format, seconds: last.seconds, bytes: last.bytes, audio: last.audio, heard: last.heard, warnings: last.warnings.slice() } : null };
     var d = new Date(), two = function (x) { return (x < 10 ? '0' : '') + x; };
     var L = [C.title + ' ' + r.version + ' · ' + d.getFullYear() + '-' + two(d.getMonth() + 1) + '-' + two(d.getDate()) + ' ' + two(d.getHours()) + ':' + two(d.getMinutes()),
       C.page + (zh ? '：' : ': ') + (r.page.url || '?') + ' · ' + (framed ? C.frame : C.top) + (r.page.secure ? '' : ' · http') + (r.page.p5 ? ' · p5 ' + r.page.p5 : ''),
@@ -1358,6 +1877,10 @@
         (r.midi.last ? ' · ' + C.last + ' ' + r.midi.last.type + ' ' + r.midi.last.value + ' ← ' + r.midi.last.source : ''),
       C.sound + (zh ? '：' : ': ') + st(snd.state) + (snd.instrument ? ' · ' + snd.instrument + '（' + st(r.sound.status) + '）' : '') + (snd.error ? ' · ' + snd.error : ''),
       C.drums + (zh ? '：' : ': ') + st(drums.state) + (drums.state === 'on' ? ' · ' + fill(C.bar, { n: drums.bar }) + ' · ' + Math.round(drums.bpm) + ' bpm' : ''),
+      C.rec + (zh ? '：' : ': ') + (O.record === 'off' ? C.recOff : (rf.mp4 ? C.recMp4 : rf.webm ? C.recWebm : C.recNone) +
+        (rf.mp4 || rf.webm ? ' · ' + O.recfps + ' fps · ' + fill(C.recMax, { m: fmtMin(O.reclimit) }) + (O.record === 'nomic' ? ' · ' + C.recNoMic : '') : '') +
+        (record.state === 'on' ? ' · ' + C.recNow + ' ' + mmss(record.seconds) : '') +
+        (last ? ' · ' + C.recLast + ' ' + last.name + (zh ? '（' : ' (') + last.seconds + ' s, ' + fmtBytes(last.bytes) + ', ' + (last.audio ? (last.heard ? H.rec.heard : H.rec.silent) : H.rec.noTrack) + (zh ? '）' : ')') : '')),
       C.wiring + (zh ? '：' : ': ') + (r.wiring ? r.wiring.replace(/^[^:：]*[:：]\s*/, '') : C.none),
       C.own + (zh ? '：' : ': ') + (own.length ? own.join(', ') : C.none),
       C.hints + (zh ? '：' : ': ') + (r.hints.length ? r.hints.join('；') : C.none)];

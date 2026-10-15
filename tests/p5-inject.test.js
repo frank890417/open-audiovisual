@@ -9,7 +9,7 @@ const SRC = readFileSync(new URL('../p5/oav-p5.js', import.meta.url), 'utf8');
 
 /** a fresh "page": no document, no Web MIDI (Safari-like), whatever globals the sketch defines */
 function page(globals = {}) {
-  const win = { console: { info() {}, warn() {}, error() {} }, navigator: {}, location: { search: '' }, URL, URLSearchParams, Promise, setTimeout, ...globals };
+  const win = { console: { info() {}, warn() {}, error() {} }, navigator: {}, location: { search: '' }, URL, URLSearchParams, Promise, setTimeout, clearTimeout, setInterval, clearInterval, ...globals };
   win.window = win; win.globalThis = win;
   vm.runInNewContext(SRC, win);
   return win;
@@ -435,7 +435,7 @@ function fakeDrums(log) {
 
 test('0.4.0: a sketch that calls none of it gets the names, and nothing loads or changes', () => {
   const { w, loaded, click } = kitPage();
-  assert.equal(w.OAVp5.version, '0.4.0');
+  assert.equal(w.OAVp5.version, '0.5.0');
   for (const n of ['startSound', 'stopSound', 'startDrums', 'stopDrums', 'cue']) assert.equal(typeof w[n], 'function', n);
   assert.deepEqual([w.soundIsOn, w.drumsAreOn, w.drumStep, w.drumBar, w.drumBpm, w.cueName], [false, false, 0, 0, 112, '']);
   w.midi.play(60, 0.8); w.midi.play(60, 0); w.midi.input([0x99, 36, 100]); click();
@@ -455,7 +455,7 @@ test('sound: startSound() waits for the first click, then every note goes throug
   assert.equal(w.soundIsOn, false);
   w.midi.play(60, 0.8);
   assert.deepEqual(played, [], 'not heard before the click');
-  assert.ok(loaded.some((u) => /packages\/sound\/index\.js\?v=p5-0\.4\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
+  assert.ok(loaded.some((u) => /packages\/sound\/index\.js\?v=p5-0\.5\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
   click();
   assert.equal(await on, true);
   assert.equal(w.soundIsOn, true);
@@ -735,9 +735,272 @@ test('OAVp5.check(): microphone, MIDI, sound, drums, wiring and the hints, as on
   const w = page({ OPC: fakeOPC(), navigator: { language: 'zh-TW', userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/141.0 Safari/537.36' } });
   void w.knob1; w.midi.play(60, 1);
   const r = w.OAVp5.check({ show: false });
-  assert.equal(r.version, '0.4.0');
+  assert.equal(r.version, '0.5.0');
   assert.equal(r.browser, 'Chrome 141 · macOS');
   assert.equal(r.midi.webMidi, false);
   assert.equal(r.microphone.state, 'off');
   for (const line of ['麥克風：關著', 'MIDI：這個瀏覽器沒有 Web MIDI', '聲音：關著', '鼓機：關著', '接線：旋鈕1 → knob1（草圖；radius 改用滑桿） · 旋鈕2 → speed（OPC）', '提示過：這個瀏覽器沒有 Web MIDI；旋鈕1交給你的草圖了']) assert.ok(r.text.includes(line), line + '\n' + r.text);
+});
+
+// ---------------------------------------------------------------- recording (0.5.0)
+// Browser half (p5 1.11.11 and 2.x, Chrome and Chromium, the downloaded files read back with ffprobe / volumedetect, the ⏺ button,
+// the red dot, the cards, 📷): p5/test/rec-smoke.cjs. Here: the real @openav/record Recorder over a stand-in MediaRecorder.
+const REC_NAMES = ['startRecording', 'stopRecording', 'recordingIsOn', 'recordingSaved'];
+
+/** a MediaRecorder stand-in: says yes to the types `formats` matches, hands over 8 KB a second (and on stop) */
+function fakeRecorder(formats = /mp4/) {
+  const made = [];
+  class FakeMR {
+    static isTypeSupported(t) { return formats.test(t); }
+    constructor(stream, opts = {}) {
+      if (opts.mimeType && !formats.test(opts.mimeType)) throw Object.assign(new Error('type'), { name: 'NotSupportedError' });
+      this.stream = stream; this.opts = opts; this.state = 'inactive';
+      this.mimeType = opts.mimeType || (formats.test('video/webm') ? 'video/webm;codecs=vp8,opus' : 'video/mp4');
+      made.push(this);
+    }
+    start(slice) {
+      this.state = 'recording';
+      this._iv = setInterval(() => this.ondataavailable({ data: new Blob([new Uint8Array(8192)]) }), slice || 1000);
+      this._iv.unref?.();
+    }
+    stop() {
+      clearInterval(this._iv); this.state = 'inactive';
+      setTimeout(() => { this.ondataavailable({ data: new Blob([new Uint8Array(8192)]) }); this.onstop(); }, 5);
+    }
+  }
+  return { FakeMR, made };
+}
+class FakeStream {
+  constructor(tracks = []) { this.tracks = tracks; }
+  getVideoTracks() { return this.tracks.filter((t) => t.kind === 'video'); }
+  getAudioTracks() { return this.tracks.filter((t) => t.kind === 'audio'); }
+}
+const track = (kind) => ({ kind, readyState: 'live', stopped: false, stop() { this.stopped = true; } });
+const fakeCanvas = (w = 641, h = 361) => ({ width: w, height: h, captureStream() { return new FakeStream([track('video')]); } });
+/** WebAudio enough for the mix: every MediaStreamSource it makes is kept, the analyser reads `FakeAC.level` */
+class FakeNode { constructor(ctx, kind) { this.context = ctx; this.kind = kind; this.to = []; } connect(n) { this.to.push(n); return n; } disconnect() { this.to = []; } }
+class FakeAC {
+  constructor() { this.state = 'running'; this.sources = []; FakeAC.made.push(this); }
+  createGain() { return Object.assign(new FakeNode(this, 'gain'), { gain: { value: 1 } }); }
+  createDynamicsCompressor() { const n = new FakeNode(this, 'limiter'); for (const k of ['threshold', 'knee', 'ratio', 'attack', 'release']) n[k] = { value: 0 }; return n; }
+  createMediaStreamDestination() { return Object.assign(new FakeNode(this, 'dest'), { stream: new FakeStream([track('audio')]) }); }
+  createAnalyser() { return Object.assign(new FakeNode(this, 'analyser'), { fftSize: 2048, getFloatTimeDomainData: (b) => b.fill(FakeAC.level) }); }
+  createMediaStreamSource(s) { const n = Object.assign(new FakeNode(this, 'source'), { mediaStream: s }); this.sources.push(n); return n; }
+  resume() { this.state = 'running'; return Promise.resolve(); }
+  close() { this.state = 'closed'; return Promise.resolve(); }
+}
+FakeAC.made = []; FakeAC.level = 0.2;
+const fakeMicModule = (stream) => ({ AudioAnalyzer: class { constructor() { this.ctx = { state: 'running', close() {} }; } enableMic() { this.source = { mediaStream: stream }; return Promise.resolve(true); } update() { return null; } } });
+const until = async (fn, ms = 3000) => { const t0 = Date.now(); while (!fn() && Date.now() - t0 < ms) await new Promise((r) => setTimeout(r, 10)); return fn(); };
+/** @openav/record's Recorder reads MediaRecorder and MediaStream from its own realm (here node's): lend it the stand-ins */
+function lend(FakeMR) {
+  const keep = { MediaRecorder: globalThis.MediaRecorder, MediaStream: globalThis.MediaStream };
+  globalThis.MediaRecorder = FakeMR; globalThis.MediaStream = FakeStream;
+  return () => { globalThis.MediaRecorder = keep.MediaRecorder; globalThis.MediaStream = keep.MediaStream; };
+}
+const recorderModule = () => import('../packages/record/recorder.js');
+
+test('0.5.0: startRecording / stopRecording / recordingIsOn are there; a sketch that records nothing builds no MediaRecorder and loads nothing', () => {
+  const { FakeMR, made } = fakeRecorder();
+  const { w, loaded, click } = kitPage({ MediaRecorder: FakeMR, AudioContext: FakeAC });
+  FakeAC.made.length = 0;
+  assert.equal(w.OAVp5.version, '0.5.0');
+  assert.equal(typeof w.startRecording, 'function');
+  assert.equal(typeof w.stopRecording, 'function');
+  assert.equal(w.recordingIsOn, false);
+  assert.equal(w.OAVp5.record.state, 'off');
+  click(); w.midi.play(60, 0.8); w.midi.play(60, 0);
+  assert.equal(made.length, 0, 'no MediaRecorder');
+  assert.equal(FakeAC.made.length, 0, 'no AudioContext');
+  assert.deepEqual(loaded, [], 'packages/record is not asked for');
+  assert.deepEqual(ids(w), [], 'no card');
+});
+
+test('recording: startRecording(seconds) records the canvas with @openav/record\'s Recorder as MP4, stops by itself, names the file, calls recordingSaved(info)', async () => {
+  const { FakeMR, made } = fakeRecorder(/mp4/);
+  const back = lend(FakeMR);
+  try {
+    const saved = [];
+    const { w, loaded } = kitPage({ MediaRecorder: FakeMR, recordingSaved: (i) => saved.push(i) }, { 'packages/record/recorder.js': recorderModule });
+    const heard = []; w.OAVp5.record.on('saved', (i) => heard.push(i.name));
+    const canvas = fakeCanvas(641, 361);
+    assert.equal(await w.startRecording({ seconds: 0.3, canvas }), true);
+    assert.equal(w.recordingIsOn, true);
+    assert.equal(w.OAVp5.record.state, 'on');
+    assert.equal(await w.startRecording({ canvas }), true, 'a second start while it runs: still the one take');
+    assert.equal(made.length, 1);
+    assert.ok(loaded.some((u) => /packages\/record\/recorder\.js\?v=p5-0\.5\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
+    assert.equal(made[0].opts.mimeType, 'video/mp4;codecs=avc1.640033,mp4a.40.2', 'MP4 (H.264 + AAC) first');
+    assert.equal(made[0].opts.videoBitsPerSecond, 4e6, 'a small canvas still gets 4 Mb/s');
+    assert.equal(made[0].stream.getVideoTracks().length, 1);
+    assert.equal(made[0].stream.getAudioTracks().length, 0, 'no WebAudio on this page: no audio track');
+    await until(() => saved.length === 1);
+    const i = saved[0];
+    assert.match(i.name, /^oav-\d{8}-\d{6}\.mp4$/);
+    assert.equal(i.format, 'mp4');
+    assert.deepEqual([i.width, i.height], [640, 360], 'H.264 is even-sized: the info says what the file is');
+    assert.ok(i.bytes >= 8192 && i.blob && i.blob.size === i.bytes);
+    assert.ok(i.seconds >= 0.2 && i.seconds < 1.5, String(i.seconds));
+    assert.equal(i.audio, false);
+    assert.deepEqual([...i.warnings], []);
+    assert.deepEqual(heard, [i.name], 'record.on("saved") hears it too');
+    assert.equal(w.recordingIsOn, false);
+    assert.equal(w.OAVp5.record.state, 'off');
+    assert.equal(w.OAVp5.record.last, i);
+    assert.equal(await w.stopRecording(), null, 'nothing to stop');
+    assert.ok(canvas.captureStream && made[0].stream.getVideoTracks()[0].stopped, 'the canvas track is stopped');
+  } finally { back(); }
+});
+
+test('recording: the mix takes the microphone (it is on by default, record=nomic leaves it out), a source that comes on during a take joins it', async () => {
+  for (const nomic of [false, true]) {
+    const { FakeMR, made } = fakeRecorder(/mp4/);
+    const back = lend(FakeMR);
+    try {
+      FakeAC.made.length = 0; FakeAC.level = 0.2;
+      const micStream = new FakeStream([track('audio')]);
+      const navigator = { mediaDevices: { getUserMedia() { return Promise.resolve(micStream); } } };
+      const { w } = kitPage({ MediaRecorder: FakeMR, AudioContext: FakeAC, navigator, OAV_P5: nomic ? { record: 'nomic' } : {} },
+        { 'packages/record/recorder.js': recorderModule, 'packages/audio/index.js': () => fakeMicModule(micStream) });
+      assert.equal(await w.startRecording({ canvas: fakeCanvas() }), true);
+      const mix = FakeAC.made[0];
+      assert.ok(mix, 'the mix: one AudioContext, made by startRecording');
+      assert.equal(made[0].stream.getAudioTracks().length, 1, 'ONE audio track, the mix');
+      assert.deepEqual([...w.OAVp5.record.sources], [], 'nothing sounds yet');
+      assert.equal(await w.startMic(), true);                          // the microphone comes on during the take
+      await until(() => mix.sources.length > 0, nomic ? 600 : 3000);
+      const tapped = mix.sources.some((n) => n.mediaStream === micStream);
+      const info = await w.stopRecording();
+      if (!nomic) {
+        assert.ok(tapped, 'the microphone joined the take');
+        assert.deepEqual([...info.sources], ['mic']);
+        assert.equal(info.audio, true); assert.equal(info.heard, true);
+        assert.deepEqual([...info.warnings], []);
+        assert.equal(mix.state, 'closed', 'the mix is closed with the take');
+      } else {
+        assert.ok(!tapped, 'record=nomic: the microphone stays out');
+        assert.deepEqual([...info.sources], []);
+        assert.deepEqual([...info.warnings], [], 'nothing was meant to be heard: no warning');
+      }
+      w.stopMic();
+    } finally { back(); }
+  }
+});
+
+test('recording: a sound that was on but silent, WebM only, no MediaRecorder, no canvas, record=off: each says so (in Chinese for a Chinese browser)', async () => {
+  // a microphone on, and nothing reaches the mix
+  {
+    const { FakeMR } = fakeRecorder(/mp4/);
+    const back = lend(FakeMR);
+    try {
+      FakeAC.level = 0;
+      const micStream = new FakeStream([track('audio')]);
+      const { w } = kitPage({ MediaRecorder: FakeMR, AudioContext: FakeAC, navigator: { language: 'zh-TW', mediaDevices: { getUserMedia: () => Promise.resolve(micStream) } } },
+        { 'packages/record/recorder.js': recorderModule, 'packages/audio/index.js': () => fakeMicModule(micStream) });
+      await w.startMic();
+      await w.startRecording({ canvas: fakeCanvas() });
+      await new Promise((r) => setTimeout(r, 300));
+      const info = await w.stopRecording();
+      assert.deepEqual([...info.warnings], ['recSilent']);
+      const h = w.OAVp5.hints.find((x) => /^recSilent/.test(x.id));
+      assert.equal(h.what, '影片裡沒有聲音');
+      assert.match(h.why, /🎤 麥克風開著/);
+      assert.ok(w.OAVp5.hints.some((x) => /^recSaved/.test(x.id) && /無聲/.test(x.why)), 'the saved card says silent');
+      w.stopMic();
+    } finally { back(); FakeAC.level = 0.2; }
+  }
+  // WebM only (Firefox, Chrome before 126)
+  {
+    const { FakeMR, made } = fakeRecorder(/webm/);
+    const back = lend(FakeMR);
+    try {
+      const { w } = kitPage({ MediaRecorder: FakeMR, navigator: { language: 'zh-TW', userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0' } }, { 'packages/record/recorder.js': recorderModule });
+      assert.equal(w.OAVp5.record.formats().mp4, false);
+      await w.startRecording({ canvas: fakeCanvas() });
+      assert.equal(made[0].opts.mimeType, 'video/webm;codecs=vp9,opus');
+      const info = await w.stopRecording();
+      assert.equal(info.format, 'webm'); assert.match(info.name, /\.webm$/);
+      assert.deepEqual([...info.warnings], ['recWebm']);
+      const h = w.OAVp5.hints.find((x) => /^recWebm/.test(x.id));
+      assert.equal(h.what, '這段是 WebM：IG 不收');
+      assert.match(h.why, /^Firefox 131 · macOS 不能直接錄 MP4/);
+      assert.match(w.OAVp5.check({ show: false }).text, /錄影：只能錄 WebM（IG 不收/);
+    } finally { back(); }
+  }
+  // an MP4 the browser says yes to and then refuses: the WebM instead
+  {
+    const { FakeMR, made } = fakeRecorder(/mp4|webm/);
+    const refuse = class extends FakeMR { start(s) { if (/mp4/.test(this.mimeType)) throw Object.assign(new Error('no encoder'), { name: 'NotSupportedError' }); super.start(s); } };
+    const back = lend(refuse);
+    try {
+      const { w } = kitPage({ MediaRecorder: refuse }, { 'packages/record/recorder.js': recorderModule });
+      assert.equal(await w.startRecording({ canvas: fakeCanvas() }), true);
+      assert.deepEqual(made.map((m) => m.opts.mimeType), ['video/mp4;codecs=avc1.640033,mp4a.40.2', 'video/webm;codecs=vp9,opus']);
+      assert.equal((await w.stopRecording()).format, 'webm');
+    } finally { back(); }
+  }
+  // no MediaRecorder (an old Safari), no canvas yet, record=off
+  {
+    const a = kitPage({ navigator: { language: 'zh-TW' } });
+    assert.equal(await a.w.startRecording({ canvas: fakeCanvas() }), false);
+    assert.equal(a.w.OAVp5.hints.find((x) => x.id === 'recNone').what, '這個瀏覽器不能錄影');
+    assert.equal(await a.w.startRecording(), false);
+    assert.ok(a.w.OAVp5.hints.some((x) => x.id === 'recNoCanvas'), 'no document, no canvas: said, not thrown');
+    assert.deepEqual(a.loaded, []);
+    const { FakeMR, made } = fakeRecorder();
+    const b = kitPage({ MediaRecorder: FakeMR, OAV_P5: { record: 'off' } });
+    assert.equal(await b.w.startRecording({ canvas: fakeCanvas() }), false);
+    assert.equal(made.length, 0); assert.deepEqual(b.loaded, []);
+    assert.match(b.w.OAVp5.check({ show: false }).text, /Recording: off \(record=off\)/);
+  }
+});
+
+test('recording: what is worth saying about a take', () => {
+  const w = page();
+  const f = w.OAVp5.record._findings;
+  const ok = { bytes: 1e6, format: 'mp4', audio: true, peak: 0.3, on: ['sound'], live: 200, frames: 180 };
+  assert.deepEqual([...f(ok)], []);
+  assert.deepEqual([...f({ ...ok, bytes: 900 })], ['recEmpty']);
+  assert.deepEqual([...f({ ...ok, format: 'webm' })], ['recWebm']);
+  assert.deepEqual([...f({ ...ok, audio: false })], ['recNoAudio']);
+  assert.deepEqual([...f({ ...ok, peak: 0 })], ['recSilent']);
+  assert.deepEqual([...f({ ...ok, peak: 0, on: [] })], [], 'nothing was on: silence is what it is');
+  assert.deepEqual([...f({ ...ok, frames: 4 })], ['recBlack'], 'the file black, the canvas was not: WebKit 229611');
+  assert.deepEqual([...f({ ...ok, frames: 4, live: 9 })], [], 'a black sketch is not a black take');
+  assert.deepEqual([...f({ ...ok, frames: null })], [], 'frames this browser could not decode: no claim');
+});
+
+test('recording: the MIME list is @openav/record\'s VIDEO_MIMES with MP4 first; file names; the drum kit hands out its output', async () => {
+  const { VIDEO_MIMES, pickMime } = await import('../packages/record/mime.js');
+  const w = page();
+  const mp4 = (m) => m.startsWith('video/mp4');
+  assert.deepEqual([...w.OAVp5.record._mimes], [...VIDEO_MIMES.filter(mp4), ...VIDEO_MIMES.filter((m) => !mp4(m))]);
+  assert.equal(pickMime((m) => /webm/.test(m), { prefer: 'mp4' }), w.OAVp5.record._mimes.find((m) => /webm/.test(m)));
+  const d = new Date(2026, 9, 15, 18, 30, 5);
+  assert.equal(w.OAVp5.record._name('', 'mp4', d), 'oav-20261015-183005.mp4');
+  assert.equal(w.OAVp5.record._name('作品四 音像互動/v2', 'webm', d), 'oav-作品四-音像互動-v2-20261015-183005.webm');
+  const t = page({ OAV_P5: { title: 'my piece' } });
+  assert.equal(t.OAVp5.record._name(null, 'png', d), 'oav-my-piece-20261015-183005.png');
+  const { drumEngine } = await import('../packages/drums/index.js');
+  assert.equal(drumEngine().output, null, 'null before enable(); the gain that goes to the speakers after');
+});
+
+test('recording: none of the new names is a p5 / p5.sound name; a sketch\'s own startRecording or recordingIsOn is left alone', () => {
+  const p5ish = ['saveCanvas', 'saveFrames', 'saveGif', 'createCapture', 'getAudioContext', 'userStartAudio', 'SoundRecorder', 'record', 'save'];
+  for (const n of REC_NAMES) assert.ok(!p5ish.includes(n), n);
+  const mine = () => 'mine';
+  const w = page({ startRecording: mine, recordingIsOn: 'yes' });
+  assert.equal(w.startRecording, mine);
+  assert.equal(w.recordingIsOn, 'yes');
+  assert.equal(typeof w.OAVp5.record.start, 'function', 'OAVp5.record.start still records');
+});
+
+test('recording: the check-up has a line for it', () => {
+  const { FakeMR } = fakeRecorder(/mp4|webm/);
+  const w = page({ MediaRecorder: FakeMR, navigator: { language: 'zh-TW' } });
+  const r = w.OAVp5.check({ show: false });
+  assert.equal(r.recording.mp4, true); assert.equal(r.recording.fps, 30); assert.equal(r.recording.limit, 300);
+  assert.ok(r.text.includes('錄影：可以錄 MP4（IG 可以直接用） · 30 fps · 最長 5 分鐘'), r.text);
+  const n = page({ MediaRecorder: FakeMR, OAV_P5: { record: 'nomic', recfps: 60, reclimit: 90 } });
+  assert.ok(n.OAVp5.check({ show: false }).text.includes('Recording: MP4 (ready for Instagram) · 60 fps · up to 1.5 min · microphone left out'));
 });

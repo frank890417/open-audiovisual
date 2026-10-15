@@ -128,6 +128,8 @@ export function drumEngine({ samples = null } = {}) {
     params: [{ key: 'kitVolume', label: 'Kit volume (dB)', min: -30, max: 0, def: -6 }],
     /** the kit's AudioContext once enabled (null before): a page resumes it from a click when the browser held it back */
     get context() { return ctx; },
+    /** the kit's output node (null before enable): it goes to the speakers; a recorder taps it here too */
+    get output() { return out; },
     async enable() {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
       out = ctx.createGain(); out.gain.value = 0.5; out.connect(ctx.destination);

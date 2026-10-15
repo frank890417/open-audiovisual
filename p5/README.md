@@ -158,6 +158,57 @@ function stepStarted(step, bar) {}   // every 16th
 adds nothing, so it may sit in `draw()`. `cueName` is the last cue that fired (`''` before one). On one step the cues fire
 in the order they were declared, then `barStarted`, `stepStarted`, then that step's hits. A silent clock: `startDrums({})`.
 
+## Recording: the canvas and its sound, one file
+
+```js
+function keyPressed() {
+  if (key === 'r') recordingIsOn ? stopRecording() : startRecording();   // startRecording(10): ten seconds, then it stops
+}
+function recordingSaved(info) {}   // { name, blob, url, format: 'mp4' | 'webm', type, seconds, bytes, width, height, fps, audio, heard, sources, warnings }
+```
+
+| call / read / define | |
+|---|---|
+| `startRecording()`, `startRecording(seconds)`, `startRecording({ seconds, fps, mic, name, canvas, bitrate })` | a promise: `true` once it records |
+| `stopRecording()` | a promise of the `info` above, once the file is saved and checked (`null` when nothing ran) |
+| `recordingIsOn` | |
+| `recordingSaved(info)` | the file is saved; `OAVp5.record.on('start' \| 'saved', fn)` → `off()` hears the same |
+
+**⏺** in the 🎹 panel does it with no code: the button turns into ⏹ and the time, and the 🎹 button itself grows a red dot and
+the time, so a closed panel still shows a take is running (a click on the dot stops it). **📷** saves the canvas as a PNG
+(`OAVp5.record.shot()`), named `oav-<date>-<time>.png`: the canvas alone, which a screenshot is not (p5's own
+`saveCanvas('name', 'png')` is the same from code). For the course's
+audiovisual assignment (ten stills and one video): 📷 for the stills while it plays, ⏺ for the video.
+
+- **Picture.** The p5 canvas, found as the largest visible `.p5Canvas` (not by id: p5 2.3.4's main canvas can be
+  `#defaultCanvas1`, and 2.x gives hidden `createGraphics()` buffers the same class), 2D or WEBGL, at its pixel size
+  (`pixelDensity` included), 30 fps (`recfps=60`). Only the canvas is captured, so the 🎹, the drum grid, the cards and OPC's
+  panel never show. Bitrate 0.16 bit per pixel per frame, at least 4 and at most 16 Mb/s (24 at 60 fps): 1080p30 ≈ 10 Mb/s.
+  H.264 is even-sized: a 641×361 canvas is a 640×360 MP4 (and `info` says so).
+- **Sound.** Everything this file makes: `startSound()`'s Tone.js, the drum kit (the machine and the pads), the microphone
+  while it is on, p5.sound 1.x (`p5.soundOut`). Each plays in an `AudioContext` of its own, and Chrome's MediaRecorder keeps
+  only the first audio track of a stream, so each is bridged (`createMediaStreamDestination` in its context →
+  `createMediaStreamSource` in one more) into a single mix, with a limiter above −2 dBFS so several at once never clip; the
+  speakers are untouched. A source that comes on during a take (🔊 halfway, `startMic()`) joins it within a quarter second.
+  The mix's context is made inside the click that started the take; started from `setup()`, it resumes on the first click.
+- **Not recorded.** The p5.sound made for p5 2.x (0.x, on its own Tone.js) connects every node straight to its context's
+  speakers and has no master output: what it plays cannot be tapped (only nodes connected after a hook is installed could
+  be, and a hook on `AudioNode.prototype.connect` from the page's first line would change every sketch), so a card says so
+  (`recP5sound`) and points at p5 1.11 or `startSound()`. A sketch's own Tone.js or Web Audio is not tapped either.
+- **The file.** MP4 (`video/mp4;codecs=avc1.640033,mp4a.40.2` first: @openav/record's `VIDEO_MIMES`, MP4 first) where the
+  browser writes it (Chrome 126+, Edge, Safari), else WebM; an MP4 the browser accepts and then refuses at `start()` (no
+  encoder on that machine) falls back to WebM. The recorder is [@openav/record](../packages/record/README.md)'s `Recorder`
+  (`packages/record/recorder.js`, loaded the first time; it timestamps picture and sound from one clock). A take stops by
+  itself at `reclimit` (300 s). On a computer the file downloads at once; on a phone (`pointer: coarse` and
+  `navigator.canShare({ files })`) the card carries **Share** and **Download**, because Web Share needs the tap itself.
+- **Checks** (the 水裡學 lessons): the saved card (format, length, size, size in pixels, sound or silent), then `recEmpty`
+  (under 4 KB), `recWebm` (Instagram will not take it), `recNoAudio` / `recSilent` (a source was on but nothing reached the
+  mix: its analyser peak stayed under −80 dBFS), `recBlack` (three frames of the file itself, at 30, 60 and 90 %, all black
+  while the canvas was not: WebKit 229611, Safari recording a WebGL canvas), `recTainted` (a cross-origin image on the canvas),
+  `recNone` / `recNoCanvas`, `recLimit`, `recError`. `info.warnings` lists them.
+- A sketch that never records builds no `MediaRecorder` and no `AudioContext` and loads nothing: the only new thing it sees
+  is ⏺ and 📷 in the panel. A sketch's own `startRecording` or `recordingIsOn` is left alone (⏺ still works).
+
 ## When something is wrong: hints on the page
 
 Students look at the canvas, not at OpenProcessing's console under it, so what goes wrong is said on the page: a small
@@ -177,13 +228,14 @@ with a ×. Each says what happened, why, and what to press. The console gets the
 | one knob, two jobs (OPC) | knob 1 is now the sketch's; drag the OPC slider |
 | sound: waiting for a click · a sampler loading (the electric piano meanwhile) · it failed (epiano instead) · Tone.js unreachable | click the canvas · wait · keep playing · another network or `tone=` |
 | the drum machine plays but silently | click the canvas |
+| recording: started · saved (format, length, size, sound) · no sound reached it · WebM · black · almost empty · another site's image · no recorder | how to stop · the file is in Downloads / Share · click, play, again · Chrome 126+ or Safari · Chrome on a computer · reload · upload the image · another browser |
 
 MIDI troubles are said only to a sketch that plays from MIDI (it defines a MIDI callback or reads a knob); a sketch that uses
 none of this never sees a card. `hints=off` keeps them in the console. `OAVp5.hints` lists what was said.
 
 **🩺 Check-up.** 🩺 in the 🎹 panel, or `OAVp5.check()`, opens a card with the version, the page (framed or not, https),
-the browser, the microphone (state, error, level), MIDI (Web MIDI, hardware, devices, the last message), sound, drums, the
-wiring, the sketch's own names and the hints shown: one screenshot for Discord, a *copy* button, and a link to the site's
+the browser, the microphone (state, error, level), MIDI (Web MIDI, hardware, devices, the last message), sound, drums,
+recording (MP4 or WebM here, fps, the limit, the last take), the wiring, the sketch's own names and the hints shown: one screenshot for Discord, a *copy* button, and a link to the site's
 full device check (`/check/`). `OAVp5.check({ show: false })` returns the same as an object (`text` included).
 
 ## In Hydra
@@ -243,14 +295,18 @@ message means the line did not load.
 | `shim` | `on` · `off` (the virtual port) | `on` |
 | `relay` / `room` | the phone relay and room | `wss://remote.cheyuwu.com/relay` / one per browser |
 | `telemetry` | `off` · `on` (@openav/midi's anonymous page-load hit) | `off` |
+| `record` | `on` · `nomic` (the microphone stays out of recordings) · `off` (no ⏺ / 📷, `startRecording()` does nothing) | `on` |
+| `recfps` / `reclimit` | frames a second (1–60) / seconds a take lasts at most | `30` / `300` |
+| `title` | a name in the recorded files: `oav-<title>-<date>-<time>.mp4` | none |
 | `debug` | `1`: trace clicks and loading in the console | off |
 
 ## Size, versions
 
-`oav-p5.js` is about 105 KB (35 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
+`oav-p5.js` is about 146 KB (49 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
 its modules, ~130 KB transferred, from next to it), the microphone is read (`packages/audio`, ~7 KB), a phone is asked for (`packages/relay`, a QR encoder),
 an unknown controller is plugged in (`packages/midi/profiles`), sound is turned on (`packages/sound`, ~21 KB gzip, Tone.js ~230 KB
-from jsDelivr, and the piano's 2 MB of samples when the piano is picked), or the drums are (`packages/drums`, ~6 KB gzip). Because it loads the rest of OAV from next to itself,
+from jsDelivr, and the piano's 2 MB of samples when the piano is picked), the drums are (`packages/drums`, ~6 KB gzip), or a take is
+recorded (`packages/record/recorder.js` with its `mime.js` and `layout.js`, ~9 KB gzip). Because it loads the rest of OAV from next to itself,
 one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.jsdelivr.net/gh/frank890417/open-audiovisual@<tag>/p5/oav-p5.js` is frozen.
 
 ## Tests
@@ -278,6 +334,17 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   (the grid clear of the 🎹, OPC's corner and the console, below an open 🎹 panel), its steps, bars, cue and hits, the kit from the
   first click, the microphone left alone; `examples/keys` with a stubbed Tone.js (nothing before the click, then `midi.play(60, 0.8)`
   reaches the engine and `Sampler.triggerAttack` at 261.6 Hz, a pad does not; the 🔊 picker) and once with the real Tone.js and piano.
+- `p5/test/rec-smoke.cjs` (same arguments plus `CHROME=<Google Chrome>`, `CHROMIUM=<Playwright's Chromium>`, ffmpeg on the path;
+  a fake microphone; the sound check needs jsDelivr): every take is the file the browser downloaded, read back with ffprobe
+  (streams, codecs, length) and ffmpeg (`volumedetect`, `signalstats`). Per p5 version: none of the new names is a p5 / p5.sound
+  name; an old sketch builds no MediaRecorder, loads no `packages/record`, shows nothing new but ⏺ and 📷; `examples/record`
+  records 3 s of picture and sound (startSound + drums); the fake microphone is in the take, and out of it with `record=nomic`;
+  a WEBGL canvas; p5.sound 1.x in the take, 2.x's p5.sound said not to be; a sound that was on but silent; a 641×361 canvas;
+  a browser without MP4 (WebM + the Instagram card); a black take (simulated); ⏺, the red dot, the saved card, 📷, `record=off`, 🩺.
+  `node --test tests/p5-inject.test.js` has the logic: the real `Recorder` over a stand-in MediaRecorder (MP4 first, the bitrate,
+  even sizes, the file name, `recordingSaved`), the mix (the microphone joining mid-take, `record=nomic`), the WebM fallback after
+  a refused MP4, and which cards a take earns.
 
 Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` (OPC sliders on knobs), `p5/examples/mic/` (`micLevel`, `bass`, `beat`),
-`p5/examples/keys/` (`startSound('piano')`, particles from every key, the 🎹 open) and `p5/examples/drums/` (`startDrums`, `kickDetected`, `cue`, `cueFired`).
+`p5/examples/keys/` (`startSound('piano')`, particles from every key, the 🎹 open), `p5/examples/drums/` (`startDrums`, `kickDetected`, `cue`, `cueFired`)
+and `p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`).

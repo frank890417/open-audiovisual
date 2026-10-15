@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="../assets/home/home.css?v=472707a">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=472707a">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -220,6 +220,7 @@
             <li><a href="#p5-sound-what-is-played-is-heard">Sound: what is played is heard</a></li>
             <li><a href="#p5-drum-machine">Drum machine</a></li>
             <li><a href="#p5-timeline-bars-and-cues">Timeline: bars and cues</a></li>
+            <li><a href="#p5-recording-a-video-with-its-sound">Recording: a video with its sound</a></li>
             <li><a href="#p5-three-inputs">Three inputs</a></li>
             <li><a href="#p5-when-something-goes-wrong">When something goes wrong</a></li>
             <li><a href="#p5-in-hydra">In Hydra</a></li>
@@ -351,7 +352,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">18 chapters · 180 sections · v0.1.0</p>
+      <p class="docs-stats">18 chapters · 181 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -2442,6 +2443,48 @@ callbacks run from the start either way.</li>
 <p>The same <code>cue()</code> twice adds nothing, so it may also sit in <code>draw()</code>. On one step the cues fire in the order they were
 declared, then <code>barStarted</code>, <code>stepStarted</code> and that step's hits. A silent clock: <code>startDrums({})</code>. The whole of it, ready to
 open: <code>p5/examples/drums/</code>.</p>
+<h3 id="p5-recording-a-video-with-its-sound">Recording: a video with its sound<a class="anchor" href="#p5-recording-a-video-with-its-sound" aria-label="Link to this section">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
+  <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
+}
+
+<span class="tk">function</span> recordingSaved(info) {   <span class="tc">// info.name, info.seconds, info.bytes, info.format ('mp4' or 'webm')</span>
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>call / read / define</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>startRecording()</code>, <code>startRecording(seconds)</code></td><td>record the canvas and the sketch's sound; with seconds it stops by itself; a take is 5 minutes at most</td></tr>
+<tr><td><code>stopRecording()</code></td><td>stop; the file downloads</td></tr>
+<tr><td><code>recordingIsOn</code></td><td>whether a take is running</td></tr>
+<tr><td><code>recordingSaved(info)</code></td><td>the file is saved: <code>name</code>, <code>seconds</code>, <code>bytes</code>, <code>format</code>, <code>width</code>, <code>height</code>, <code>audio</code>, <code>sources</code>, <code>warnings</code>, <code>blob</code>, <code>url</code></td></tr>
+</tbody>
+</table></div>
+<p>In the 🎹 panel, <strong>⏺</strong> starts and stops a take with no code; while it runs, the 🎹 button shows a red dot and the time (a
+click on the dot stops it). <strong>📷</strong> saves the canvas as a PNG.</p>
+<ul>
+<li><strong>What is in the video.</strong> The p5 canvas at its own pixel size (a retina screen doubles it), 30 frames a second, and every
+sound this file makes: <code>startSound()</code>, the drum machine and the pads, the microphone while it is on, and p5.sound 1.x, mixed
+into one track while the speakers play as before. The 🎹, the drum grid, the cards and OPC's panel are not on the canvas,
+so they are not in the video.</li>
+<li><strong>The file.</strong> MP4 (H.264 + AAC), which Instagram, YouTube and every editor take, wherever the browser can write it: Chrome
+126 and later, Edge, Safari. Elsewhere (Firefox, an older Chrome) WebM, and a card says Instagram will not take it. It is
+named <code>oav-20261015-183005.mp4</code>; on a computer it lands in Downloads, on a phone a <strong>Share</strong> button on the card saves it to
+the photo library or sends it to Instagram.</li>
+<li><strong>Checked after every take.</strong> A card says what was recorded (format, length, size, with or without sound) and, when something
+is wrong, what and why: nothing reached the recording although a sound was on (no click on the page yet, nothing played), WebM,
+an almost empty file, a black video of a canvas that was not black (Safari recording a WebGL canvas, WebKit 229611), an image
+from another site on the canvas (no CORS), no recorder in this browser.</li>
+<li><strong>The microphone</strong> is in the take while it is on: wear headphones, or the speakers are recorded twice. <code>record=nomic</code> leaves
+it out.</li>
+<li><strong>p5.sound.</strong> p5.sound 1.x (the one for p5 1.x) is recorded. The p5.sound made for p5 2.x connects each sound straight to
+the speakers, with no output a recording can tap: it is not in the take, and a card says so. Switch the sketch to p5 1.11, or
+use <code>startSound()</code> and <code>startDrums()</code>. Sound the sketch makes with its own Tone.js or Web Audio code is not recorded either.</li>
+<li><strong>Stills.</strong> 📷 (or <code>OAVp5.record.shot()</code>) saves the canvas alone as <code>oav-&lt;date&gt;-&lt;time&gt;.png</code>, without the 🎹 or the cards;
+from code, p5's own <code>saveCanvas('name', 'png')</code> does the same.</li>
+<li><strong>Options.</strong> <code>record=nomic</code> (no microphone) or <code>record=off</code> (no ⏺ or 📷; <code>startRecording()</code> does nothing), <code>recfps=60</code>,
+<code>reclimit=600</code> (seconds), <code>title=my-piece</code> (in the file name); for one take, <code>startRecording({ seconds, fps, mic: false, name })</code>.</li>
+<li>The whole of it, ready to open: <code>p5/examples/record/</code>.</li>
+</ul>
 <h3 id="p5-three-inputs">Three inputs<a class="anchor" href="#p5-three-inputs" aria-label="Link to this section">#</a></h3>
 <div class="table-wrap"><table>
 <thead><tr><th>input</th><th>how</th></tr></thead>
@@ -2469,10 +2512,12 @@ message with the file and line, and the sketch keeps running. A sketch that decl
 <code>var</code>, <code>function</code>) keeps it, and the card says what to read instead (<code>midi.last.note</code>, <code>knob(1)</code>).</li>
 <li><strong>Sound and drums</strong>: waiting for the first click, the piano still loading (the electric piano meanwhile), an instrument
 that failed (the fallback plays), Tone.js unreachable, the drum machine playing silently until a click.</li>
+<li><strong>Recording</strong>: started (what it hears, how to stop), saved (format, length, size, sound), a take with no sound in it, WebM
+(not for Instagram), a black take, an almost empty file, a canvas with another site's image, no recorder in this browser.</li>
 </ul>
 <p><code>?oav_hints=off</code> (or <code>window.OAV_P5 = { hints: 'off' }</code>) keeps them in the console only; <code>OAVp5.hints</code> lists what was said.</p>
 <p><strong>🩺 Check-up.</strong> 🩺 in the 🎹 panel (or <code>OAVp5.check()</code>) shows the version, the page, the browser, the microphone, MIDI,
-sound, drums, the wiring, the sketch's own names and the hints so far, as one card to screenshot, with a <em>copy</em> button and a
+sound, drums, recording (MP4 or WebM here, the last take), the wiring, the sketch's own names and the hints so far, as one card to screenshot, with a <em>copy</em> button and a
 link to the full <a href="../check/">device check</a>.</p>
 <h3 id="p5-in-hydra">In Hydra<a class="anchor" href="#p5-in-hydra" aria-label="Link to this section">#</a></h3>
 <p><a href="https://hydra.ojack.xyz" rel="noopener">Hydra</a> has a loader of its own; the same file works there, and Hydra's arrow functions read the
@@ -2497,7 +2542,7 @@ defined</em>.</li>
 embed code it gives you does not: add <code>allow="midi"</code> to that <code>&lt;iframe&gt;</code> if the embedded sketch should hear a hardware
 controller, and <code>allow="microphone"</code> if it should hear the microphone.</li>
 <li><strong>Options, MIDI-level access and tests</strong>: <a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>.
-Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <code>p5/examples/mic/</code>, <code>p5/examples/keys/</code> and <code>p5/examples/drums/</code>.</li>
+Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <code>p5/examples/mic/</code>, <code>p5/examples/keys/</code>, <code>p5/examples/drums/</code> and <code>p5/examples/record/</code>.</li>
 </ul>
 </section>
 
@@ -3756,7 +3801,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=472707a"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>
