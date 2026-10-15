@@ -101,6 +101,20 @@ test('Part-like stubs are routed to the (fake) kernel; plain meshes cannot becom
   await assert.rejects(fab.export(part, 'xyz'), /不支援/);
 });
 
+// smlibwasm 0.3.0 has no Part.tessellate(): the module function tessellate(part) does it (2026-10-15, real kernel in Node:
+// the first version assumed a method and every real Part failed with「找不到 positions／vertices」— only stubs had been tested).
+test('real-kernel shape: a Part with faces()/bbox() but no .tessellate() goes through the module tessellate()', async () => {
+  const realPart = { faces: () => [], bbox: () => ({}), vertices: () => [] };   // vertices is a *method* on a real Part
+  const sm = { tessellate: (p) => { assert.equal(p, realPart); return { vertices: cube(10).vertices, triangles: cube(10).triangles }; }, toStep: () => 'ISO-10303-21;' };
+  const fab = new Fab({ importer: async () => sm });
+  assert.throws(() => fab.check(realPart), /先載入核心/, 'before the kernel is loaded, check() says how to load it');
+  const report = await fab.checkAsync(realPart);
+  assert.equal(report.watertight, true); assert.equal(report.triangles, 12);
+  assert.equal(fab.check(realPart).watertight, true, 'after smlib() resolved, the sync check works');
+  assert.equal((await fab.export(realPart, 'stl')).bytes.length, 84 + 50 * 12);
+  assert.equal(new TextDecoder().decode((await fab.export(realPart, 'step')).bytes), 'ISO-10303-21;');
+});
+
 test('OBJ and GLB writers: shared vertices, valid glTF container', () => {
   const obj = toObjText(soup(cube(10)));
   assert.equal(obj.split('\n').filter((l) => l.startsWith('v ')).length, 8);

@@ -22,7 +22,7 @@ export class Fab {
   }
   _kernel(kind) {
     if (!this._k[kind]) {
-      this._k[kind] = loadKernel(kind, this.opts);
+      this._k[kind] = loadKernel(kind, this.opts).then((m) => { if (kind === 'smlib') this._sm = m; return m; });
       this._k[kind].catch(() => { delete this._k[kind]; });   // a failed load can be retried
     }
     return this._k[kind];
@@ -30,9 +30,12 @@ export class Fab {
   smlib() { return this._kernel('smlib'); }
   manifold() { return this._kernel('manifold'); }
 
-  meshOf(x, opts = {}) { return meshOf(x, { scale: this.opts.scale, ...opts }); }
-  meshOfAsync(x, opts = {}) { return meshOfAsync(x, { scale: this.opts.scale, ...opts }); }
+  // Once smlibwasm is loaded, its module-level tessellate() turns Parts into meshes (sync check() needs it loaded).
+  _tess() { return this._sm && typeof this._sm.tessellate === 'function' ? (s) => this._sm.tessellate(s) : undefined; }
+  meshOf(x, opts = {}) { return meshOf(x, { scale: this.opts.scale, tessellator: this._tess(), ...opts }); }
+  meshOfAsync(x, opts = {}) { return meshOfAsync(x, { scale: this.opts.scale, tessellator: this._tess(), kernel: { smlib: () => this.smlib() }, ...opts }); }
   check(x, opts = {}) { return checkMesh(this.meshOf(x, opts), opts); }
+  async checkAsync(x, opts = {}) { return checkMesh(await this.meshOfAsync(x, opts), opts); }
 
   async export(x, fmt, opts = {}) {
     return exportAs(x, fmt, { scale: this.opts.scale, ...opts }, { smlib: () => this.smlib() });

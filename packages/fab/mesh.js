@@ -67,20 +67,45 @@ function fromThree(root, scale) {
   return { vertices: Float64Array.from(verts), triangles: Uint32Array.from(tris), units: 'mm' };
 }
 
+// A plain mesh-like object carries its points as an array (a smlibwasm Part has `vertices()` as a *method*).
+export const looksMeshLike = (m) => !!m && ['positions', 'vertices', 'points', 'position'].some((k) => m[k] != null && typeof m[k] !== 'function' && typeof m[k].length === 'number');
+const isThreeLike = (x) => !!x && (x.isObject3D || (x.attributes && x.attributes.position) || (x.geometry && x.geometry.attributes));
+
+// A smlibwasm Part / Shape / Sketch: not a mesh, not three.js, and shaped like a kernel body.
+// smlibwasm 0.3.0 tessellates with the *module* function `tessellate(part)`; bodies have no `.tessellate()`
+// (2026-10-15: the first version assumed a method and failed on every real Part — only stubs had been tested).
+export const isKernelShape = (x) => x != null && typeof x === 'object' && !isTri(x) && !isThreeLike(x) && !looksMeshLike(x)
+  && (typeof x.tessellate === 'function' || typeof x.bbox === 'function' || typeof x.faces === 'function');
+
+const KERNEL_HINT = 'fab：這看起來是 smlibwasm 的實體或形狀，要先載入核心：await lab.fab.smlib() 之後再檢查，或直接用 await lab.fab.meshOfAsync(x)／lab.fab.export(x, …)。';
+
+// opts.tessellator: (shape) → smlibwasm Mesh — the Fab class passes the module's `tessellate` once the kernel is loaded.
 export function meshOf(x, opts = {}) {
   const scale = opts.scale != null ? opts.scale : 1;
   if (x == null) throw new Error('fab：沒有給任何東西可以轉成網格。');
   if (isTri(x)) return { vertices: x.vertices, triangles: x.triangles instanceof Uint32Array ? x.triangles : Uint32Array.from(x.triangles), units: x.units || 'mm' };
-  if (x.isObject3D || (x.attributes && x.attributes.position) || (x.geometry && x.geometry.attributes)) return fromThree(x, scale);
+  if (isThreeLike(x)) return fromThree(x, scale);
   if (typeof x.tessellate === 'function') {
     const r = x.tessellate(opts.tessellate);
     if (isThenable(r)) throw new Error('fab：tessellate 回傳 Promise，請改用 await lab.fab.meshOfAsync(x)。');
     return fromMeshLike(r, scale);
   }
+  if (looksMeshLike(x)) return fromMeshLike(x, scale);
+  if (isKernelShape(x)) {
+    if (typeof opts.tessellator !== 'function') throw new Error(KERNEL_HINT);
+    return fromMeshLike(opts.tessellator(x), scale);
+  }
   return fromMeshLike(x, scale);
 }
 
+// opts.kernel: { smlib: () => Promise<module> } — lets an unloaded kernel be fetched on demand.
 export async function meshOfAsync(x, opts = {}) {
-  if (x && !isTri(x) && !x.isObject3D && typeof x.tessellate === 'function') return fromMeshLike(await x.tessellate(opts.tessellate), opts.scale != null ? opts.scale : 1);
+  const scale = opts.scale != null ? opts.scale : 1;
+  if (x && !isTri(x) && !isThreeLike(x) && typeof x.tessellate === 'function') return fromMeshLike(await x.tessellate(opts.tessellate), scale);
+  if (isKernelShape(x) && typeof opts.tessellator !== 'function' && opts.kernel && typeof opts.kernel.smlib === 'function') {
+    const sm = await opts.kernel.smlib();
+    if (typeof sm.tessellate !== 'function') throw new Error('fab：這版 smlibwasm 沒有 tessellate。');
+    return fromMeshLike(await sm.tessellate(x), scale);
+  }
   return meshOf(x, opts);
 }

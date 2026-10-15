@@ -1,6 +1,6 @@
 // TriMesh → STL / OBJ / minimal GLB bytes, and the format router (step / dxf / glb of smlibwasm Parts go through the kernel).
 import { weldMesh, checkMesh } from './checks.js';
-import { meshOfAsync } from './mesh.js';
+import { meshOfAsync, isKernelShape } from './mesh.js';
 
 export const MIME = { stl: 'model/stl', obj: 'model/obj', step: 'model/step', dxf: 'image/vnd.dxf', glb: 'model/gltf-binary' };
 const ALIAS = { stp: 'step', gltf: 'glb' };
@@ -90,14 +90,19 @@ const toBytes = async (r, what) => {
   throw new Error(`fab：看不懂 smlibwasm ${what} 回傳的型別。`);
 };
 
-const isKernelShape = (x) => x != null && typeof x.tessellate === 'function';
 
 // export(x, fmt, opts) → { bytes, mime, ext, report }.  `kernel.smlib()` is only awaited for step / dxf / glb-of-a-Part.
 export async function exportAs(x, fmt, opts = {}, kernel = null) {
   const f = ALIAS[String(fmt).toLowerCase()] || String(fmt).toLowerCase();
   if (!MIME[f]) throw new Error(`fab：不支援的格式「${fmt}」（可用：stl、obj、step、dxf、glb）。`);
-  const mesh = await meshOfAsync(x, opts);
-  const report = checkMesh(mesh, opts);
+  // STEP／DXF come straight from the kernel; their report is best-effort (a 2D sketch has no closed mesh).
+  let mesh = null, report = null;
+  try {
+    mesh = await meshOfAsync(x, { ...opts, kernel: opts.kernel || kernel });
+    report = checkMesh(mesh, opts);
+  } catch (e) {
+    if (f !== 'step' && f !== 'dxf') throw e;
+  }
   let bytes;
   if (f === 'stl') bytes = toStlBytes(mesh);
   else if (f === 'obj') bytes = new TextEncoder().encode(toObjText(mesh, opts.name));
