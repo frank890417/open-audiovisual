@@ -14,7 +14,7 @@ let drops = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
-  textFont('ui-monospace, Menlo, monospace');
+  textFont('monospace');   // one family name: p5 reads a CSS list as a single (missing) font and falls back to serif
 }
 
 // Strudel 的每個音：音高決定顏色和位置，力度決定大小
