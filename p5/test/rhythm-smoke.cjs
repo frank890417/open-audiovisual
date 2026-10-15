@@ -132,12 +132,14 @@ const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - 
         await p.screenshot({ path: path.join(SHOTS, 'rhythm-score-zh.png') });
         await p.locator('#oav-p5-drums').screenshot({ path: path.join(SHOTS, 'rhythm-score-zh-card.png') });
       }
-      // the cells take over
+      // a click on a cell: 0.7 rewrites the line (packages/pattern's fromGrid); the 0.6 stub has no fromGrid, so the cells take over
+      await p.waitForFunction((stub) => stub || (OAVp5.drums.machine && OAVp5.drums.machine.rhythm), !!STUB, { timeout: 5000 }).catch(() => {});
       await p.evaluate(() => { const lanes = [...document.querySelectorAll('#oav-p5-drums .lane-lbl')]; const i = [...lanes[0].parentNode.children].indexOf(lanes[0]); lanes[0].parentNode.children[i + 3].click(); });
       await p.waitForTimeout(300);
       const t = await card(p), h = await hints(p);
       const ho = h.find((x) => x.id === 'rhythmTakeover');
-      row(t.mode === 'grid' && t.pattern === 'custom' && t.score === null && ho && ho.shown && /格子接手了/.test(ho.what), `p5 ${v}: a click on a cell: the cells take over (the grid it was playing, one card)`, JSON.stringify({ mode: t.mode, pattern: t.pattern, hint: ho && ho.why }));
+      if (STUB) row(t.mode === 'grid' && t.pattern === 'custom' && t.score === null && ho && ho.shown && /格子接手了/.test(ho.what), `p5 ${v}: a click on a cell: the cells take over (the grid it was playing, one card)`, JSON.stringify({ mode: t.mode, pattern: t.pattern, hint: ho && ho.why }));
+      else row(t.mode === 'string' && t.score === 'bd*2 bd bd bd, [~ sd]*2, hh*8' && !ho, `p5 ${v}: a click on a cell rewrites the line (0.7), no takeover card`, JSON.stringify({ mode: t.mode, score: t.score }));
       if (first) await p.screenshot({ path: path.join(SHOTS, 'rhythm-takeover-zh.png') });
       row(errs.length === 0, `p5 ${v}: no page errors`, errs.join(' | ').slice(0, 300));
       await ctx.close();

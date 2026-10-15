@@ -2,13 +2,17 @@
 
 Spine · rhythm in one line. A string of mini-notation (the way TidalCycles and Strudel write rhythm)
 goes in; what plays in each bar comes out. Pure logic, no DOM, no audio: the drum machine and
-oav-p5 ask it "what happens in bar 3?" and schedule the answer.
+oav-p5 ask it "what happens in bar 3?" and schedule the answer. Since 0.7 it also goes the other way — a grid of steps
+back to a line a person would write (`fromGrid`), so the drum card's cells and its line edit each other — and in and
+out of strudel.cc (`fromStrudel`, `strudelUrl`).
 
 > **Credit and clean room.** The mini-notation way of writing comes from TidalCycles and Strudel
 > ([tidalcycles.org](https://tidalcycles.org), [strudel.cc](https://strudel.cc)). This package is an
 > independent implementation written from their public user documentation, the output of the
 > strudel.cc REPL, and the papers below; no Strudel or Tidal source code was read or copied.
 > 依公開文件與論文獨立實作；mini-notation 的寫法來自 TidalCycles／Strudel（https://tidalcycles.org、https://strudel.cc）。
+> `fromGrid`, `toGrid`, `fromStrudel`, `toStrudel` and `strudelUrl` (0.7) are OAV's own as well, written from the same public
+> documentation and the strudel.cc REPL as a user sees it.
 > Strudel is AGPL-3.0; this package, like the rest of open-audiovisual, is MIT.
 
 ```js
@@ -28,6 +32,12 @@ for (const e of p.eventsInBar(1, { seed: 1 })) {
 | `parse` | `parse(src)` → `{ ok: true, tree }` or `{ ok: false, error }`. Nodes: `step` `{ word, n }` · `rest` · `seq` `{ steps: [{ node, weight }] }` · `layer` `{ layers }` · `alt` `{ steps }` · `fast` / `slow` `{ factor, node }` · `euclid` `{ pulses, slots, rotate, node }` · `maybe` `{ chance, id, node }`; every node has `start`/`end`. Fractions are `[numerator, denominator]` |
 | `WORDS` | drum words → kit voices of [`@openav/drums`](../drums/README.md) (`GM` names): `bd` kick · `sd`/`sn` snare · `hh` hat · `oh` openhat · `cp` clap · `rim`/`rs` rim · `lt` lowtom · `mt` tom · `ht` hightom · `cr` crash · `rd` ride · `cb` cowbell, and each voice name itself (`kick`, `snare`, `hat`, `pedalhat`…). Any letter case |
 | `euclid` | `euclid(pulses, steps, rotate = 0)` → `steps` booleans (Toussaint 2005, below) |
+| `fromGrid` | `fromGrid(grid, { steps = 16, words, order })` → one line that plays exactly `grid` (rules below). `grid`: `{ lane: 'x...x...' \| [0/1 …] }`, lanes named by voice (`kick`) or word (`bd`); `words: { kick: 'kick' }` keeps someone's own spelling; `order: ['kick', …]` puts those layers first (else the grid's key order). No hit anywhere → `'~'`. Never throws |
+| `toGrid` | `toGrid(srcOrCompiled, { bar = 1, steps = 16, seed = 0, bars = 16 })` → `{ ok, grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`: bar `bar` on the steps (hits between steps moved to the nearest), the words the line used, and what the steps cannot hold — `offGrid` triplets, `stacked` two hits in one step, `varies` other bars differ (`< >`, `/2`), `random` a `?`, `samples` `bd:2` |
+| `fromStrudel` | `fromStrudel(code)` → `{ strudel, ok, src, bpm, ignored, unsupported }`: code copied from strudel.cc → the line OAV plays (below). `strudel: false` when there is no `s(…)` / `sound(…)` in it. Never throws |
+| `toStrudel` | `toStrudel(src, { bpm, comment })` → Strudel code: `// comment`, `setcpm(bpm/4)`, `s("…")` with Strudel's drum names (`kick` → `bd`, `pedalhat` → `hh`) and a rotation of n or more written as the one OAV plays |
+| `strudelUrl` | `strudelUrl(src, { bpm, comment })` → `'https://strudel.cc/#' + encodeURIComponent(base64(UTF-8 code))`, the format strudel.cc's address bar shows; open it in a **new** tab (a strudel.cc tab already open does not re-read a changed `#`) |
+| `SHORT` | voice → the short word: `kick` `bd` · `snare` `sd` · `hat` `hh` · `openhat` `oh` · `clap` `cp` · `rim` · `lowtom` `lt` · `tom` `mt` · `hightom` `ht` · `crash` `cr` · `ride` `rd` · `cowbell` `cb` · `pedalhat` (no short word) |
 
 ## What you can write
 
@@ -53,6 +63,43 @@ Modifiers chain in the order written (`bd(3,8)*2`, `hh*8?`), and may follow a sp
 **Not supported, with an `unsupported` error and a hint:** `.` (grouping), `|` (random choice), `{ }` (polymeter),
 `%`, `..` (ranges), `^`. The `.` matters most: OAV's older lane strings use `.` as a rest (`'x...x...'`), Strudel
 uses it to group, so a dot is refused rather than guessed. Rests are `~` or `-`.
+
+## Grid → line: `fromGrid`
+
+A click on the drum card rewrites the line, so a grid has to come back as text a person would have written. Each lane
+(16 steps) becomes one layer, layers joined with `, `, by these rules in order:
+
+| the lane | written | e.g. |
+|---|---|---|
+| steady hits from the downbeat | `bd`, `bd*2`, `bd*4`, `hh*8`, `hh*16` | `x...x...x...x...` → `bd*4` |
+| a figure that repeats, one hit (or up to four even places) in it | `[~ sd]*2`, `[~ hh]*4`, `[hh ~ hh hh]*4` | `....x.......x...` → `[~ sd]*2` |
+| a Euclidean rhythm on 8 or 16 even places (3 or more hits) | `bd(3,8)`, `bd(5,8,2)`, `bd(3,8)*2` | `x.....x.....x...` → `bd(3,8)` |
+| hits only on the beats (or halves) | `~ bd`, `bd ~ ~ bd`, `~ cp ~ ~` | `x...........x...` → `bd ~ ~ bd` |
+| anything else: beat by beat, each beat `~`, `bd`, `bd*2`, `[~ bd]` or four places | `bd [~ ~ ~ bd] bd*2 ~` | `x......xx.x.....` |
+
+A rotation `r` means the rhythm starts `r` steps later, the direction strudel.cc plays (`bd(3,8,1)` → steps 1, 4, 7). The five
+presets come out as `bd*4, [~ sd]*2, hh*8` (four on floor), `bd [~ ~ ~ bd] bd*2 ~, ~ sd ~ [sd ~ ~ sd], hh*8, ~ cp ~ ~`
+(breakbeat), `bd ~ ~ bd, ~ sd, hh*8, ~ cp` (half time), `bd(3,8,5), [~ sd] [~ sd ~ ~] [~ sd] [~ sd ~ ~], [hh ~ hh hh]*4` (latin),
+`bd ~ [~ bd] ~, [~ hh]*4, ~ cp` (sparse). Every rule is exact: `tests/pattern.test.js` writes out 1000 random 16-step grids
+(and 450 of 8, 12 and 32 steps), compiles each line and checks it lands back on the same steps, the same in every bar.
+
+## Strudel in and out
+
+`fromStrudel` reads what someone copies out of strudel.cc: `s("…")` or `sound("…")` with `"`, `'` or `` ` `` quotes (a line
+break inside becomes a space), labels (`$:`, `name:`) and several patterns (each a layer), then `.fast(n)` / `.slow(n)` (a
+number, `"2"`, or `110/4`) folded into the line as `[…]*n` / `[…]/n`, and `setcps(x)` / `setcpm(x)` as `bpm` (x·240 / x·4).
+`.bank(…)` goes to `ignored`; any other call in a chain or other statement (`.jux(rev)`, `.every(…)`, `.gain(…)`,
+`samples(…)`, `note(…)`) goes to `unsupported`, and the rest still plays.
+
+```js
+fromStrudel('setcpm(110/4)\ns("bd*4, [~ sd]*2").bank("RolandTR909").fast(2).jux(rev)')
+// → { strudel: true, ok: true, src: '[bd*4, [~ sd]*2]*2', bpm: 110, ignored: ['.bank("RolandTR909")'], unsupported: ['.jux(rev)'] }
+strudelUrl('bd*4, [~ sd]*2, hh*8')   // → 'https://strudel.cc/#cygiYmQqNCwgW34gc2RdKjIsIGhoKjgiKQ%3D%3D'
+```
+
+One OAV bar is one Strudel cycle of four beats, so `b` bpm is `setcpm(b/4)` (strudel.cc's docs: "To set a specific bpm, use
+`setcpm(bpm/bpc)`", bpc = beats per cycle). The link format was read off strudel.cc's address bar (2026-10-15); no Strudel
+code runs in, or ships with, OAV.
 
 ## Errors
 

@@ -151,7 +151,7 @@ L1 輸入與 L4 輸出 · 合成鼓組、16 步音序器和它的格狀介面。
 
 | 匯出 | 簽章 |
 |---|---|
-| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`；`clock: 'lookahead'` 照鼓組的音訊時鐘提前排程（oav-p5 0.6 用這個），也能照寫的樣子打編譯好的一行節奏；`lang: 'zh'` 軌道名用中文 |
+| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`；`clock: 'lookahead'` 照鼓組的音訊時鐘提前排程（oav-p5 0.6 用這個），也能照寫的樣子打編譯好的一行節奏；`lang: 'zh'` 軌道名用中文；`rhythm: <@openav/pattern>`（或 `useRhythm(mod)`）讓格子上方那一行可以直接改、點格子會改寫它，附 `history`／`undo()`、複製、在 Strudel 打開（0.7） |
 | `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`、`bpm`（逐幀推進的時鐘） |
 | `DrumScheduler`、`DrumTransport` | 提前排程的時鐘：格子或編譯好的一行節奏 → 帶時間的事件，小節位置用速度錨點換成秒（不累積漂移）；外層是 Web Worker 心跳、音訊時鐘、聽到時才告訴頁面的步與鼓 |
 | `drumEngine` | `drumEngine({ samples })` → 一個聲音引擎（見[聲音](show-control.md#sound)）；`noteOn(note, vel, time)` 在自己 AudioContext 的 `time` 響，回傳 `{ time, cancel() }` |
@@ -332,6 +332,10 @@ director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.p
 | `parse` | `parse(src)` → `{ ok, tree }` 或 `{ ok: false, error }`：節點 `step` `rest` `seq` `layer` `alt` `fast` `slow` `euclid` `maybe`，每個都帶字元範圍 |
 | `WORDS` | `bd` 大鼓 · `sd` 小鼓 · `hh` 鈸 · `oh` 開鈸 · `cp` 拍手 · `rim`／`rs` · `lt` `mt` `ht` 中鼓 · `cr` 碎音鈸 · `rd` 疊音鈸 · `cb` 牛鈴，也接受鼓組自己的名字 |
 | `euclid` | `euclid(pulses, steps, rotate = 0)` → 布林陣列（Toussaint 2005） |
+| `fromGrid` | `fromGrid(grid, { steps = 16, words, order })` → 照人會寫的樣子把格子寫成一行、打出來一模一樣：`bd*4`、`[~ sd]*2`、`bd(3,8,2)`，其他一拍一拍寫 `bd [~ ~ ~ bd] bd*2 ~`（0.7） |
+| `toGrid` | `toGrid(src, { bar = 1, steps = 16 })` → `{ grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`：一小節放上格子，以及格子放不下的東西（0.7） |
+| `fromStrudel` | `fromStrudel(code)` → `{ strudel, ok, src, bpm, ignored, unsupported }`：從 strudel.cc 複製來的 `s("…")`／`sound("…")`，`.fast`／`.slow` 併進那一行，`setcpm`／`setcps` 當速度（0.7） |
+| `toStrudel`、`strudelUrl` | `strudelUrl(src, { bpm, comment })` → `https://strudel.cc/#…`（寫成 `s("…")`、前面加 `setcpm(bpm/4)`，`#` 後面是 base64）；用新分頁開（0.7） |
 
 寫法：空白（等分一小節）· `~` `-` 休止 · `[ ]` 細分 · `,` 疊層 · `*n` 加快 · `/n` 放慢、跨小節 · `< >` 每小節輪一個 · `(k,n,r)` 歐幾里得 · `!n` 與 `!` 重複 · `@n` 與 `_` 拉長 · `?` `?0.3` 隨機省略（有種子）· `bd:2` 取樣編號。`.` `|` `{ }` 會回錯誤與提示（休止請用 `~` 或 `-`）。
 

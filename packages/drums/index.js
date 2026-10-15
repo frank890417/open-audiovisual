@@ -704,9 +704,27 @@ const CSS = `
 .oav-drums .cell.on.now { background: #ffd166; }
 .oav-drums .cell.on.part.now { background: #2b3550; }
 .oav-drums .cell.now i { background: #ffd166; }
-.oav-drums .score { margin: 0 0 6px; font: 13px/1.6 ui-monospace, Menlo, monospace; color: #cfd6e4; white-space: pre-wrap; word-break: break-all; }
+.oav-drums .scorebar { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: flex-start; margin: 0 0 6px; }
+.oav-drums .scorebar[hidden], .oav-drums .note[hidden] { display: none; }
+.oav-drums .score { position: relative; flex: 1 1 220px; min-width: 0; margin: 0; font: 13px/1.6 ui-monospace, Menlo, monospace; color: #cfd6e4; white-space: pre-wrap; word-break: break-all; }
+.oav-drums .score .view { white-space: pre-wrap; word-break: break-all; min-height: 1.6em; }
 .oav-drums .score .tok { border-radius: 3px; transition: background-color .3s ease-out, color .3s ease-out; }
 .oav-drums .score .tok.lit { background: #ffd166; color: #14141a; transition: none; }
+.oav-drums .score .bad { border-radius: 3px; background: rgba(224, 107, 95, .3); color: #ffc2b8; text-decoration: underline wavy #ff8a7a; }
+.oav-drums .score.edit { cursor: text; border-radius: 4px; box-shadow: 0 0 0 1px #2a3348; padding: 0 3px; }
+.oav-drums .score.edit:hover { box-shadow: 0 0 0 1px #3a4a6a; }
+.oav-drums .score.edit:focus-within { box-shadow: 0 0 0 1px #6f9bff; }
+.oav-drums .score textarea { position: absolute; inset: 0 3px; width: calc(100% - 6px); height: 100%; box-sizing: border-box; margin: 0; padding: 0; border: 0;
+  outline: 0; resize: none; overflow: hidden; background: transparent; color: transparent; caret-color: #ffd166; font: inherit; letter-spacing: inherit;
+  white-space: pre-wrap; word-break: break-all; overflow-wrap: anywhere; }
+.oav-drums .score textarea::selection { background: rgba(111, 155, 255, .45); color: transparent; }
+.oav-drums .tools { display: flex; gap: 4px; flex: none; }
+.oav-drums .tools button, .oav-drums .tools a { font: 11px/1.6 ui-monospace, Menlo, monospace; padding: 1px 6px; border: 1px solid #2a3348; border-radius: 5px;
+  background: #1a2030; color: #cfd6e4; cursor: pointer; text-decoration: none; white-space: nowrap; }
+.oav-drums .tools button:hover, .oav-drums .tools a:hover { border-color: #6f9bff; }
+.oav-drums .tools button:disabled { opacity: .4; cursor: default; border-color: #2a3348; }
+.oav-drums .note { margin: -2px 0 6px; color: #e0c25f; font-size: 11px; }
+.oav-drums .cell.armed { outline: 1px dashed #e0c25f; outline-offset: -1px; }
 `;
 
 // the lane names a person reads; the voices themselves keep their English names everywhere in code
@@ -717,23 +735,38 @@ const DRUM_NAMES = {
     tom: '中鼓', hightom: '高音中鼓', crash: '碎音鈸', ride: '疊音鈸', cowbell: '牛鈴' },
 };
 const DRUM_WORDS = {
-  en: { machine: 'drum machine', bar: 'bar {n}', rhythm: 'rhythm string' },
-  zh: { machine: '鼓機', bar: '第 {n} 小節', rhythm: '節奏字串' },
+  en: { machine: 'drum machine', bar: 'bar {n}', rhythm: 'rhythm string', undo: '↶', undoTitle: 'Undo the last change (⌘Z / Ctrl+Z)', copy: 'Copy',
+    copied: 'Copied', copyFail: 'Select and copy', copyTitle: 'Copy this line', strudel: 'Open in Strudel', strudelTitle: 'Open this line in strudel.cc (a new tab)',
+    editTitle: 'Click to change it: Enter, or a short pause, plays it', lossy: 'The cells cannot hold all of this line: click again to rewrite it the grid\'s way (↶ brings it back).' },
+  zh: { machine: '鼓機', bar: '第 {n} 小節', rhythm: '節奏字串', undo: '↶', undoTitle: '復原上一步（⌘Z／Ctrl+Z）', copy: '複製',
+    copied: '已複製', copyFail: '請選取後複製', copyTitle: '複製這一行', strudel: '在 Strudel 打開', strudelTitle: '在 strudel.cc 打開這一行（新分頁）',
+    editTitle: '點一下就能改：按 Enter 或停手一下就套用', lossy: '格子寫不出這一行的全部：再點一次就換成格子的寫法（↶ 可以復原）。' },
 };
 /** the name a person reads for a voice: drumName('kick', 'zh') → '大鼓' */
 export function drumName(voice, lang = 'en') { return (DRUM_NAMES[lang === 'zh' ? 'zh' : 'en'] || DRUM_NAMES.en)[voice] || voice; }
 
 /** mountDrums — TR-style grid + transport, publishing standard signals.
  *  Returns { seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(),
- *  info(), dispose }: play / setPattern / setBpm are what the checkbox, the menu and the slider do, for code.
+ *  info(), dispose } and, with a rhythm module (0.7): useRhythm(mod), src(), strudelUrl(), history, undo(), edit(text), copy(),
+ *  copyText(), barEvents(bar), voices(). play / setPattern / setBpm are what the checkbox, the menu and the slider do, for code.
  *  clock: 'frame' (default; the machine moves in update(dt), as a show's loop calls it) or 'lookahead' (hits are handed to
  *  the kit ahead of time on its audio clock by a heartbeat of their own, and told in update() when heard: steady under a
  *  heavy frame and in a hidden tab; a compiled rhythm string plays as written). lang: 'zh' names the lanes in Chinese.
  *  onHit(voice, velocity, ev) and onStep(i, n, ev) are told when a hit / a 16th is heard (ev.quiet: told while nobody
  *  watches — hidden — or late; ev.announce: a bar start to announce). onTakeover({ text, bar, offGrid, dropped }): a click
- *  on a cell turned a rhythm string into the grid it was playing. */
+ *  on a cell turned a rhythm string into the grid it was playing (only without a rhythm module).
+ *
+ *  rhythm: @openav/pattern (or anything with its compile, fromGrid, toGrid, strudelUrl; also later through useRhythm(mod)).
+ *  With it the cells and the line edit each other: the line over the grid is always there (a preset shows the line its grid
+ *  is) and can be typed into (Enter, or 400 ms without a key, plays it; a mistake is marked red, onEditError(error, text) is
+ *  told and the last line that worked keeps playing; onEditError(null) once it is fixed); a click on a cell rewrites the line
+ *  (fromGrid), and when the line holds more than the 16 steps can (triplets, < >, ?, /2, bd:2) the first click only calls
+ *  onLossy({ text, bar, lost }) and the next one rewrites it. Every change from a click or a key is kept in `history` (↶ on
+ *  the card, ⌘Z / Ctrl+Z after touching the card). onRhythm(line, { how: 'code' | 'cell' | 'type' | 'undo' | 'menu' }) hears
+ *  every new line. copyText(line, bpm) shapes what Copy puts on the clipboard; strudelComment heads the strudel.cc code. */
 export function mountDrums(container, { signals, engine = null, autoEnableEngine = true, onStep = null, onHit = null, onTakeover = null,
-  bpm = 112, pattern = 'four on floor', clock = 'frame', lang = 'en', heartbeat = 'auto', latency = 'auto', now, hidden } = {}) {
+  bpm = 112, pattern = 'four on floor', clock = 'frame', lang = 'en', heartbeat = 'auto', latency = 'auto', now, hidden,
+  rhythm = null, onRhythm = null, onLossy = null, onEditError = null, copyText = null, strudelComment = '' } = {}) {
   if (!document.getElementById('openav-drums-css')) {
     const st = document.createElement('style');
     st.id = 'openav-drums-css';
@@ -752,7 +785,15 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
       <span data-bpmv>${bpm}</span>
       <span class="barno" data-barno></span>
     </div>
-    <div class="score" data-score hidden></div>
+    <div class="scorebar" data-scorebar hidden>
+      <div class="score" data-score hidden><div class="view"></div></div>
+      <div class="tools" data-tools hidden>
+        <button type="button" data-undo title="${W.undoTitle}" aria-label="${W.undoTitle}" disabled>${W.undo}</button>
+        <button type="button" data-copy title="${W.copyTitle}">${W.copy}</button>
+        <a data-strudel target="_blank" rel="noopener" title="${W.strudelTitle}">${W.strudel}</a>
+      </div>
+    </div>
+    <div class="note" data-note hidden></div>
     <div class="grid"></div>`;
   container.appendChild(root);
 
@@ -796,9 +837,13 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
       },
     });
   const sched = () => (ahead ? seq.scheduler : null);
+  let R = rhythm && typeof rhythm.compile === 'function' && typeof rhythm.fromGrid === 'function' ? rhythm : null;
 
-  // grid UI: the four lanes, plus a row for each other voice a rhythm string plays (crash, ride, toms…; read-only)
+  // grid UI: the four lanes, plus a row for each other voice a rhythm string plays (crash, ride, toms…; clickable with a rhythm module)
   const grid = root.querySelector('.grid'), scoreEl = root.querySelector('[data-score]'), barEl = root.querySelector('[data-barno]');
+  const viewEl = scoreEl.querySelector('.view'), scoreBar = root.querySelector('[data-scorebar]'), toolsEl = root.querySelector('[data-tools]');
+  const undoEl = root.querySelector('[data-undo]'), copyEl = root.querySelector('[data-copy]'), strudelEl = root.querySelector('[data-strudel]');
+  const noteEl = root.querySelector('[data-note]');
   const playEl = root.querySelector('[data-play]'), patEl = root.querySelector('[data-pattern]');
   const bpmEl = root.querySelector('[data-bpm]'), bpmV = root.querySelector('[data-bpmv]');
   const showPattern = () => { patEl.value = seq.mode === 'string' ? 'rhythm' : seq.pattern; };
@@ -830,8 +875,61 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
     }
     for (const v of rows) for (let i = 0; i < STEPS; i++) { const c = cells[v][i]; c.classList.toggle('on', !!seq.grid[v][i]); c.classList.remove('part'); if (c.firstChild) c.innerHTML = ''; }
   };
+
+  // ---- the line (0.7): what plays, as text; with a rhythm module it is always there and the cells and the keys both edit it
+  const lineNow = () => {
+    if (seq.mode === 'string') return seq.text;
+    if (frameText) return frameText;
+    if (!R) return '';
+    try { return R.fromGrid(seq.grid, { order: LANES }); } catch (e) { return ''; }
+  };
+  const history = [];
+  let how = 'code', lastLine = null, armed = null, armedCell = null;
+  const remember = (prev) => {
+    if (prev == null || prev === '' || history[history.length - 1] === prev) return;
+    history.push(prev);
+    if (history.length > 50) history.shift();
+  };
+  // a compiled line plays: on the lookahead clock as written; the frame clock plays its first bar on the grid
+  const playCompiled = (c, text) => {
+    if (!ahead) {
+      const r = new DrumScheduler({ pattern: c }).gridOf(1);
+      seq.setPattern(r.grid); frameText = text;
+      if ((r.offGrid || r.dropped.length) && typeof console !== 'undefined') console.info(`[drums] the frame clock plays 16 steps on four lanes: ${r.offGrid} hit(s) moved to the nearest 16th${r.dropped.length ? ', ' + r.dropped.join(', ') + ' left out' : ''}`);
+    } else seq.setPattern(c, { text });
+  };
+  // a line from a person (typed, a click, undo): compiled, played, kept in history → { ok, error }
+  const setLine = (text, why) => {
+    if (!R) return { ok: false, error: { code: 'no-rhythm', index: 0, length: 0, message: 'no rhythm module' } };
+    text = String(text ?? '');
+    let src = text;
+    if (typeof R.fromStrudel === 'function') { const s = R.fromStrudel(text); if (s.strudel && s.ok) src = s.src; }
+    const c = R.compile(src);
+    if (!c.ok) return { ok: false, error: c.error, text: src };
+    const prev = lineNow();
+    if (why !== 'undo') remember(prev);
+    playCompiled(c, src);
+    how = why; armed = null; draft = null; bad = null;
+    rebuild();
+    return { ok: true, error: null, text: src };
+  };
+
   const clickCell = (lane, i) => {
-    if (seq.mode === 'string') {           // the cells take over: the string becomes the grid it was playing in this bar
+    if (seq.mode === 'string' && R && typeof R.toGrid === 'function') {
+      const text = seq.text, bar = shown;
+      const g = R.toGrid(sched().source, { bar, steps: STEPS });
+      if (!g.ok) return;
+      if (!g.exact && armed !== text) {              // say first what the grid cannot keep; the next click rewrites it
+        armed = text; armedCell?.classList.remove('armed'); armedCell = cells[lane][i]; armedCell.classList.add('armed');
+        if (onLossy) onLossy({ text, bar, lost: g.lost }); else { noteEl.textContent = W.lossy; noteEl.hidden = false; }
+        return;
+      }
+      if (!g.grid[lane]) g.grid[lane] = new Array(STEPS).fill(0);
+      g.grid[lane][i] = g.grid[lane][i] ? 0 : 1;
+      setLine(R.fromGrid(g.grid, { steps: STEPS, words: g.words, order: g.voices }), 'cell');
+      return;
+    }
+    if (seq.mode === 'string') {           // no rhythm module: the cells take over (0.6), the string becomes the grid it was playing
       const text = seq.text, bar = shown;
       const r = seq.takeover(bar);
       seq.toggleCell(lane, i);
@@ -839,18 +937,23 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
       if (onTakeover) onTakeover({ text, bar, offGrid: r.offGrid, dropped: r.dropped, varied: varies });
       return;
     }
+    if (!LANE_SET.has(lane)) return;
+    const prev = R ? lineNow() : null;
     seq.toggleCell(lane, i); cells[lane][i].classList.toggle('on'); showPattern();
+    if (frameText) frameText = R ? R.fromGrid(seq.grid, { order: LANES }) : '';
+    if (R) { remember(prev); how = 'cell'; }
+    refreshLine();
   };
   const buildGrid = () => {
-    grid.innerHTML = ''; cells = {}; rows = voicesNow(); lastStep = -1;
+    grid.innerHTML = ''; cells = {}; rows = voicesNow(); lastStep = -1; armedCell = null;
     for (const v of rows) {
-      const x = !LANE_SET.has(v);
+      const x = !LANE_SET.has(v), fixed = x && !R;
       grid.appendChild(Object.assign(document.createElement('div'), { className: 'lane-lbl' + (x ? ' x' : ''), textContent: drumName(v, L) }));
       cells[v] = [];
       for (let i = 0; i < STEPS; i++) {
         const c = document.createElement('div');
-        c.className = 'cell' + (i % 4 === 0 ? ' beat' : '') + (x ? ' x' : '');
-        if (!x) c.addEventListener('click', () => clickCell(v, i));
+        c.className = 'cell' + (i % 4 === 0 ? ' beat' : '') + (fixed ? ' x' : '');
+        if (!fixed) c.addEventListener('click', () => clickCell(v, i));
         grid.appendChild(c);
         cells[v].push(c);
       }
@@ -860,6 +963,7 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
 
   // the score line: the rhythm string over the grid; the word that sounds lights up and fades (never the whole line)
   let segs = [], ranges = new Map(), litUntil = new Map();
+  let draft = null, bad = null, typing = null, composing = false, ta = null;
   const addRange = (t) => {
     if (!t || !(t.end > t.start)) return false;
     const key = t.start + ':' + t.end;
@@ -867,12 +971,22 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
     ranges.set(key, { start: t.start, end: t.end });
     return true;
   };
-  const scoreText = () => (seq.mode === 'string' ? seq.text : frameText);
   const renderScore = () => {
-    const text = scoreText();
-    scoreEl.innerHTML = ''; segs = []; litUntil.clear();
-    scoreEl.hidden = !text;
-    if (!text) return;
+    const text = draft != null ? draft : lineNow();
+    viewEl.innerHTML = ''; segs = []; litUntil.clear();
+    const show = !!text || draft != null;
+    scoreEl.hidden = !show; scoreBar.hidden = !show;
+    if (ta && draft == null && ta.value !== text) ta.value = text;
+    if (!text) { viewEl.textContent = '​'; return; }
+    if (draft != null) {                    // being typed: the text as it is, the mistake marked
+      if (bad && bad.end > bad.start) {
+        const a = Math.max(0, Math.min(text.length, bad.start)), b = Math.max(a, Math.min(text.length, bad.end));
+        viewEl.append(text.slice(0, a));
+        const m = document.createElement('span'); m.className = 'bad'; m.textContent = text.slice(a, b) || ' ';
+        viewEl.append(m, text.slice(b));
+      } else viewEl.textContent = text;
+      return;
+    }
     const cut = new Set([0, text.length]);
     for (const r of ranges.values()) { cut.add(Math.max(0, Math.min(text.length, r.start))); cut.add(Math.max(0, Math.min(text.length, r.end))); }
     const at = [...cut].sort((a, b) => a - b);
@@ -880,7 +994,7 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
       const a = at[k], b = at[k + 1], span = document.createElement('span');
       span.textContent = text.slice(a, b);
       if ([...ranges.values()].some((r) => r.start <= a && b <= r.end)) span.className = 'tok';
-      scoreEl.appendChild(span);
+      viewEl.appendChild(span);
       segs.push({ a, b, el: span });
     }
   };
@@ -891,7 +1005,7 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
   };
   const clockNow = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
   function light(t) {
-    if (!segs.length || seq.mode !== 'string') return;
+    if (!segs.length || seq.mode !== 'string' || draft != null) return;
     if (addRange(t)) renderScore();
     const until = clockNow() + 120;
     for (const s of segs) if (s.a >= t.start && s.b <= t.end && s.b > s.a) { s.el.classList.add('lit'); litUntil.set(s, { until, start: t.start, end: t.end }); }
@@ -901,15 +1015,115 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
     const t = clockNow();
     for (const [s, x] of litUntil) if (x.until <= t) { s.el.classList.remove('lit'); litUntil.delete(s); }
   };
+  const strudelHref = () => (R && typeof R.strudelUrl === 'function' && lineNow() ? R.strudelUrl(lineNow(), { bpm: seq.bpm, comment: strudelComment }) : '');
+  const paintTools = () => {
+    toolsEl.hidden = !R;
+    undoEl.disabled = !history.length;
+    const href = strudelHref();
+    if (href) strudelEl.href = href; else strudelEl.removeAttribute('href');
+    strudelEl.hidden = !href;
+  };
+  // the line moved on: the view, the tools, and whoever listens (once per new line)
+  const refreshLine = () => {
+    showScore(); paintTools();
+    if (!armed) { noteEl.hidden = true; armedCell?.classList.remove('armed'); armedCell = null; }
+    const line = lineNow();
+    if (line !== lastLine) {
+      const was = lastLine; lastLine = line;
+      if (onRhythm && (line || was)) { try { onRhythm(line, { how, prev: was }); } catch (e) { console.error('[drums] onRhythm', e); } }
+    }
+    how = 'code';
+  };
   const rebuild = () => {
     varies = seq.mode === 'string' && [2, 3, 4, 5, 6, 7, 8].some((b) => sig(b) !== sig(1));
-    buildGrid(); showPattern(); showScore();
+    buildGrid(); showPattern(); refreshLine();
   };
+
+  // ---- typing into the line: the textarea lies over the view, its own text invisible, so the lit words stay where they are
+  const editable = () => {
+    if (ta || !R) return;
+    ta = document.createElement('textarea');
+    ta.spellcheck = false; ta.rows = 1; ta.setAttribute('autocomplete', 'off'); ta.setAttribute('autocapitalize', 'off');
+    ta.setAttribute('aria-label', W.rhythm); ta.title = W.editTitle;
+    scoreEl.classList.add('edit'); scoreEl.title = W.editTitle;
+    scoreEl.appendChild(ta);
+    ta.value = lineNow();
+    const apply = () => {
+      clearTimeout(typing); typing = null;
+      if (draft == null) return;
+      const text = draft, r = setLine(text, 'type');
+      if (r.ok) { if (onEditError) onEditError(null); return; }
+      bad = { start: r.error.index | 0, end: (r.error.index | 0) + Math.max(1, r.error.length | 0) };
+      renderScore();
+      if (onEditError) onEditError(r.error, text);
+    };
+    ta.addEventListener('input', () => {
+      draft = ta.value === lineNow() ? null : ta.value;
+      bad = null;
+      renderScore();
+      clearTimeout(typing);
+      if (draft == null) { if (onEditError) onEditError(null); return; }
+      if (!composing) typing = setTimeout(apply, 400);
+    });
+    ta.addEventListener('compositionstart', () => { composing = true; clearTimeout(typing); });
+    ta.addEventListener('compositionend', () => { composing = false; clearTimeout(typing); if (draft != null) typing = setTimeout(apply, 400); });
+    ta.addEventListener('keydown', (e) => {
+      e.stopPropagation();                    // typed letters are not the sketch's keys, nor a show's QWERTY keyboard
+      if (e.isComposing || composing) return;
+      if (e.key === 'Enter') { e.preventDefault(); apply(); }
+      else if (e.key === 'Escape') { clearTimeout(typing); draft = null; bad = null; ta.value = lineNow(); renderScore(); ta.blur(); if (onEditError) onEditError(null); }
+      else if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey && (e.key === 'z' || e.key === 'Z') && draft == null && history.length) { e.preventDefault(); undo(); }
+    });
+    for (const t of ['keyup', 'keypress']) ta.addEventListener(t, (e) => e.stopPropagation());
+    ta.addEventListener('blur', () => { if (draft != null && !bad) apply(); });
+  };
+  const undo = () => {
+    if (!R || !history.length) return false;
+    const prev = history.pop(), r = setLine(prev, 'undo');
+    if (!r.ok) { paintTools(); return false; }
+    if (onEditError) onEditError(null);
+    if (ta && document.activeElement !== ta) ta.value = lineNow();
+    return true;
+  };
+  let lastCopied = '';
+  const copyNow = () => (copyText ? copyText(lineNow(), seq.bpm) : lineNow());
+  const copy = async () => {
+    const text = copyNow();
+    let ok = false;
+    try { if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(text); ok = true; } } catch (e) { /* an iframe without clipboard-write */ }
+    if (!ok) {
+      try {
+        const t = document.createElement('textarea');
+        t.value = text; t.setAttribute('readonly', ''); t.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+        root.appendChild(t); t.select(); ok = document.execCommand('copy'); t.remove();
+      } catch (e) { ok = false; }
+    }
+    lastCopied = text;
+    copyEl.textContent = ok ? W.copied : W.copyFail;
+    if (!ok && ta) { ta.focus(); ta.select(); }
+    setTimeout(() => { copyEl.textContent = W.copy; }, 1400);
+    return { ok, text };
+  };
+  undoEl.addEventListener('click', () => undo());
+  copyEl.addEventListener('click', () => { copy(); });
+  // ⌘Z / Ctrl+Z after the last press was on the card (a press on the canvas gives the keys back to the sketch)
+  const win = root.ownerDocument && root.ownerDocument.defaultView;
+  let touched = false;
+  const onDown = (e) => { touched = root.contains(e.target); };
+  const onKey = (e) => {
+    if (!touched || !(e.metaKey || e.ctrlKey) || e.shiftKey || e.altKey || (e.key !== 'z' && e.key !== 'Z')) return;
+    const t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName || ''))) return;
+    if (undo()) e.preventDefault();
+  };
+  if (win) { win.addEventListener('pointerdown', onDown, true); win.addEventListener('keydown', onKey, true); }
+
+  if (R) editable();
   rebuild();
 
   playEl.addEventListener('change', (e) => seq.toggle(e.target.checked));
-  patEl.addEventListener('change', (e) => { const v = e.target.value; if (v !== 'custom' && v !== 'rhythm') { frameText = ''; seq.setPattern(v); rebuild(); } });
-  const tempo = (v) => { if (ahead) seq.setBpm(v); else seq.bpm = v; };
+  patEl.addEventListener('change', (e) => { const v = e.target.value; if (v !== 'custom' && v !== 'rhythm') { const prev = lineNow(); frameText = ''; seq.setPattern(v); if (R) { remember(prev); how = 'menu'; } rebuild(); } });
+  const tempo = (v) => { if (ahead) seq.setBpm(v); else seq.bpm = v; paintTools(); };
   bpmEl.addEventListener('input', () => { tempo(Number(bpmEl.value)); bpmV.textContent = bpmEl.value; });
 
   const paintNow = () => {
@@ -929,6 +1143,13 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
   };
   let lastPhase = { pos: 0, bar: 0, beat: 0 };
   const phase = () => (ahead ? seq.phase() : (lastPhase = seq.playing ? framePhase() : lastPhase));
+  /** the hits of bar `bar` as they play: [{ voice, pos 0..1, dur? }] (a line's own bar, or the grid) */
+  const barEvents = (bar) => {
+    if (ahead) return sched().barEvents(Math.max(1, Math.floor(bar) || 1));
+    const out = [];
+    for (const lane of LANES) for (let i = 0; i < STEPS; i++) if (seq.grid[lane] && seq.grid[lane][i]) out.push({ voice: lane, pos: i / STEPS });
+    return out;
+  };
   return {
     seq,
     engine: kit,
@@ -939,11 +1160,10 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
     /** a preset name, your own { kick: 'x...x...', … }, or a compiled rhythm string ({ text } shows the line over the grid);
      *  the menu, the cells and the score line follow. The frame clock plays a rhythm string's first bar on the grid. */
     setPattern(p, o = {}) {
-      if (!ahead && p && typeof p.eventsInBar === 'function') {
-        const r = new DrumScheduler({ pattern: p }).gridOf(1);
-        seq.setPattern(r.grid); frameText = o.text || '';
-        if ((r.offGrid || r.dropped.length) && typeof console !== 'undefined') console.info(`[drums] the frame clock plays 16 steps on four lanes: ${r.offGrid} hit(s) moved to the nearest 16th${r.dropped.length ? ', ' + r.dropped.join(', ') + ' left out' : ''}`);
-      } else { frameText = ''; seq.setPattern(p, o); }
+      if (p && typeof p.eventsInBar === 'function') playCompiled(p, o.text || '');
+      else { frameText = ''; seq.setPattern(p, o); }
+      armed = null;
+      if (!(ta && draft != null && document.activeElement === ta)) { draft = null; bad = null; }   // a cue never wipes what is being typed
       rebuild();
       return seq.pattern;
     },
@@ -964,9 +1184,45 @@ export function mountDrums(container, { signals, engine = null, autoEnableEngine
     now() {
       const p = phase(), tokens = [], seen = new Set();
       for (const x of litUntil.values()) { const k = x.start + ':' + x.end; if (!seen.has(k)) { seen.add(k); tokens.push({ start: x.start, end: x.end }); } }
-      return { bar: curBar, step: curStep, phase: p.bar, beatPhase: p.beat, tokens, mode: seq.mode, text: scoreText() };
+      return { bar: curBar, step: curStep, phase: p.bar, beatPhase: p.beat, tokens, mode: seq.mode, text: lineNow() };
     },
     info() { return ahead ? seq.info() : { clock: 'frame', heartbeat: 'frame', lookahead: 0, late: 0, extended: false, audio: !!(kit.context && kit.context.state === 'running'), latency: 0 }; },
-    dispose() { seq.toggle(false); kit.dispose?.(); root.remove(); },
+    /** hand over @openav/pattern later (it loads on its own): the line appears and becomes editable */
+    useRhythm(mod) {
+      if (R || !mod || typeof mod.compile !== 'function' || typeof mod.fromGrid !== 'function') return !!R;
+      R = mod; editable(); rebuild();
+      return true;
+    },
+    get rhythm() { return R; },
+    /** the line that plays now ('' without a rhythm module while a grid plays) */
+    src: lineNow,
+    /** the line as a strudel.cc link (open it in a new tab), '' when there is none */
+    strudelUrl: strudelHref,
+    /** earlier lines, oldest first (a click, a key, the menu); undo() goes back one */
+    history,
+    undo,
+    /** play a line as if typed: { ok, error }; a mistake is marked on the line, the last line that worked keeps playing */
+    edit(text) {
+      if (!R) return { ok: false, error: null };
+      const r = setLine(text, 'type');
+      if (!r.ok) {
+        draft = String(text ?? ''); bad = { start: r.error.index | 0, end: (r.error.index | 0) + Math.max(1, r.error.length | 0) };
+        if (ta) ta.value = draft;
+        renderScore();
+        if (onEditError) onEditError(r.error, draft);
+      } else if (onEditError) onEditError(null);
+      return r;
+    },
+    /** what Copy puts on the clipboard; copy() → Promise<{ ok, text }> */
+    copyText: copyNow,
+    copy,
+    get copied() { return lastCopied; },
+    barEvents,
+    /** the rows on the grid now: the four lanes, then a line's other voices */
+    voices() { return rows.slice(); },
+    dispose() {
+      seq.toggle(false); kit.dispose?.(); root.remove(); clearTimeout(typing);
+      if (win) { win.removeEventListener('pointerdown', onDown, true); win.removeEventListener('keydown', onKey, true); }
+    },
   };
 }

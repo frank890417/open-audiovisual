@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=5e75007">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=5e75007">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -1707,7 +1707,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=5e75007"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2408,6 +2408,7 @@ from the first click; <code>sound=off</code> keeps it silent.</li>
 <tr><td><code>drumHit(lane, velocity)</code></td><td>every hit, every drum (a line of rhythm's crash, ride or toms too)</td></tr>
 <tr><td><code>kickDetected(level)</code>, <code>snareDetected(level)</code>, <code>hatDetected(level)</code></td><td>a kick; a snare, a clap or a rim; a hat (closed, open or pedal)</td></tr>
 <tr><td><code>beatDetected(level)</code></td><td>a kick or a snare, once per step (and <code>beat</code> is true for a frame)</td></tr>
+<tr><td><code>rhythmChanged(src, how)</code></td><td>the line changed: <code>startDrums()</code>, a click on a cell, a line typed, ↶ (0.7)</td></tr>
 </tbody>
 </table></div>
 <p><strong>A microphone sketch moves over unchanged.</strong> Each hit calls the same functions the microphone does, so a sketch written for
@@ -2460,15 +2461,53 @@ the grid, and the word that sounds lights up and fades.</p>
 <tr><td><code>(k,n)</code></td><td>k hits spread over n steps</td><td><code>"bd(3,8)"</code></td></tr>
 </tbody>
 </table></div>
-<p>The whole list is in <a href="#packages"><code>@openav/pattern</code></a>, loaded from next to <code>oav-p5.js</code> the first time a line is used. Drums the
-grid has no lane for (crash, ride, toms, open hat) get a row of their own; a hit off the sixteen steps (a triplet) is drawn
-where it falls inside its step. <strong>A click on a cell</strong> hands the beat to the cells: the line becomes the grid it was playing in
-that bar, a card says what changed (triplets moved to the nearest step, drums with no lane left out), and calling
-<code>startDrums("…")</code> again brings the line back. <strong>A mistake</strong> shows a card in the page's language with the character it is at,
-why, and how to fix it, and the machine plays <code>'four on floor'</code> meanwhile; <code>'x...x...'</code> on its own (one lane of the grid)
-says to put it inside <code>{ kick: … }</code>.</p>
+<p>The whole list is in <a href="#packages"><code>@openav/pattern</code></a>, loaded from next to <code>oav-p5.js</code> with the drums. Drums the grid has no
+lane for (crash, ride, toms, open hat) get a row of their own; a hit off the sixteen steps (a triplet) is drawn where it falls
+inside its step. <strong>A mistake</strong> in <code>startDrums("…")</code> shows a card in the page's language with the character it is at, why, and
+how to fix it, and the machine plays <code>'four on floor'</code> meanwhile; <code>'x...x...'</code> on its own (one lane of the grid) says to put it
+inside <code>{ kick: … }</code>.</p>
+<p><strong>A line copied from strudel.cc</strong> works too: <code>startDrums('s("bd*4, [~ sd]*2").fast(2)')</code> plays <code>[bd*4, [~ sd]*2]*2</code>.
+<code>s("…")</code>, <code>sound("…")</code>, with <code>"</code>, <code>'</code> or <code>`</code> quotes, several of them (<code>$: s(…)</code>) as layers, <code>.fast(n)</code> and <code>.slow(n)</code>;
+<code>setcpm(110/4)</code> or <code>setcps(…)</code> sets the tempo when <code>startDrums()</code> is given none. <code>.bank("…")</code> is left out (OAV plays its own
+synthesized kit) and anything else in the chain (<code>.jux(rev)</code>, <code>.every(…)</code>, <code>.gain(…)</code>) gets a card that says OAV does not do it
+yet and points at <strong>Open in Strudel</strong>; the rest plays.</p>
 <p>The way of writing one line of rhythm comes from TidalCycles / Strudel (<a href="https://strudel.cc" rel="noopener">strudel.cc</a>); OAV implements it
 independently from their public documentation.</p>
+<h4 id="p5-the-cells-and-the-line-edit-each-other">The cells and the line edit each other<a class="anchor" href="#p5-the-cells-and-the-line-edit-each-other" aria-label="Link to this section">#</a></h4>
+<p>Since 0.7 the line over the grid is always there (a preset shows the line its grid is: <code>'four on floor'</code> is
+<code>bd*4, [~ sd]*2, hh*8</code>) and both ways work:</p>
+<ul>
+<li><strong>Click a cell</strong>: the line is rewritten the way a person would write it, and the machine plays the new line at once.
+Steady hits become <code>bd*4</code> / <code>hh*8</code>, one hit per group <code>[~ sd]*2</code>, a Euclidean rhythm <code>bd(3,8)</code> (with its rotation:
+<code>bd(3,8,2)</code> starts two steps later), anything else beat by beat: <code>bd [~ ~ ~ bd] bd*2 ~</code>. Lines are joined with <code>, </code>.
+When the line holds more than sixteen steps can (triplets, <code>&lt; &gt;</code>, <code>/2</code>, <code>?</code>, <code>bd:2</code>), the first click shows a card saying
+what would go, and the next click rewrites it.</li>
+<li><strong>Type in the line</strong>: click it, change it; Enter, or a pause of 400 ms, plays it and the cells follow. A mistake marks the
+word in red, a card says what is wrong, and <strong>the last line that worked keeps playing</strong> (not <code>'four on floor'</code>). Escape
+drops what is not played yet. Typed keys never reach the sketch's <code>keyPressed()</code>.</li>
+<li><strong>↶</strong> on the card (or ⌘Z / Ctrl+Z after touching the card) goes back one line; <code>OAVp5.drums.history</code> lists them.</li>
+<li><strong>Copy</strong> puts <code>startDrums("…", 110)</code> on the clipboard, ready to paste into <code>setup()</code>.</li>
+<li><strong>Open in Strudel</strong> opens the same line at strudel.cc in a new tab, as <code>s("…")</code> with <code>setcpm(bpm/4)</code> (one OAV bar is one
+Strudel cycle of four beats; strudel.cc's docs: <code>setcpm(bpm/bpc)</code>). <code>OAVp5.drums.strudelUrl</code> is the link.</li>
+</ul>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> rhythmChanged(src, how) {   <span class="tc">// how: 'code' · 'cell' · 'type' · 'undo' · 'menu'</span>
+  line = src;                        <span class="tc">// e.g. draw the line on the canvas, so a recording shows it</span>
+}</code></pre></div>
+<p><code>OAVp5.drums.src</code> is the line that plays, <code>OAVp5.drums.edit("…")</code> plays a line as if typed, <code>OAVp5.drums.undo()</code> goes back.</p>
+<h4 id="p5-the-rhythm-on-the-canvas">The rhythm on the canvas<a class="anchor" href="#p5-the-rhythm-on-the-canvas" aria-label="Link to this section">#</a></h4>
+<p>The card is part of the page, not the canvas, so a recording never shows it. <code>drawRhythm()</code> draws the rhythm on the canvas:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> draw() {
+  background(0);
+  drawRhythm(20, 20, 360, 90, <span class="ts">'grid'</span>);          <span class="tc">// the sixteen steps, a playhead</span>
+  drawRhythm(20, 130, 300, 300, <span class="ts">'circle'</span>);      <span class="tc">// a ring of 16 per drum, a hand turned by drumPhase</span>
+  drawRhythm(340, 130, 300, 300, <span class="ts">'spiral'</span>, { bars: 4, colors: { kick: <span class="ts">'#ff7b54'</span> } });   <span class="tc">// the last 4 bars, wound outwards</span>
+}</code></pre></div>
+<p><code>drawRhythm(x, y, w, h, style, options)</code>: <code>style</code> is <code>'grid'</code>, <code>'circle'</code> or <code>'spiral'</code>; a hit lights up the moment it is
+heard (the clock <code>drumPhase</code> reads) and a triplet sits where it falls. Options: <code>colors</code> (<code>{ kick: '#f66', … }</code>, any p5 color),
+<code>color</code> (one for all), <code>off</code> (the empty steps), <code>playhead</code> (a color, or <code>false</code>), <code>bg</code>, <code>bars</code> (spiral). Drawn inside
+<code>push()</code> / <code>pop()</code> with p5's own shapes, in 2D and WEBGL, p5 1.x and 2.x; <strong>in WEBGL (0, 0) is the middle of the canvas</strong>:
+<code>drawRhythm(-width / 2, -height / 2, width, height, 'circle')</code>. With no box it draws a strip along the bottom (<code>'grid'</code>) or a
+square in the middle. A sketch with all three: <code>p5/examples/rhythm-visual/</code>.</p>
 <h3 id="p5-timeline-bars-and-cues">Timeline: bars and cues<a class="anchor" href="#p5-timeline-bars-and-cues" aria-label="Link to this section">#</a></h3>
 <p>The drum machine is also the clock: sixteen steps a bar, counted from <code>startDrums()</code>. Declare what happens at which bar:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
@@ -2492,7 +2531,7 @@ independently from their public documentation.</p>
 </table></div>
 <p>The same <code>cue()</code> twice adds nothing, so it may also sit in <code>draw()</code>. On one step the cues fire in the order they were
 declared, then <code>barStarted</code>, <code>stepStarted</code> and that step's hits. A silent clock: <code>startDrums({})</code>. The whole of it, ready to
-open: <code>p5/examples/drums/</code>; a line of rhythm with <code>drumPhase</code> and <code>beatPhase</code>: <code>p5/examples/rhythm/</code>.</p>
+open: <code>p5/examples/drums/</code>; a line of rhythm with <code>drumPhase</code> and <code>beatPhase</code>: <code>p5/examples/rhythm/</code>; the rhythm drawn on the canvas: <code>p5/examples/rhythm-visual/</code>.</p>
 <h3 id="p5-recording-a-video-with-its-sound">Recording: a video with its sound<a class="anchor" href="#p5-recording-a-video-with-its-sound" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
   <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
@@ -2592,7 +2631,7 @@ defined</em>.</li>
 embed code it gives you does not: add <code>allow="midi"</code> to that <code>&lt;iframe&gt;</code> if the embedded sketch should hear a hardware
 controller, and <code>allow="microphone"</code> if it should hear the microphone.</li>
 <li><strong>Options, MIDI-level access and tests</strong>: <a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>.
-Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <code>p5/examples/mic/</code>, <code>p5/examples/keys/</code>, <code>p5/examples/drums/</code>, <code>p5/examples/rhythm/</code> and <code>p5/examples/record/</code>.</li>
+Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <code>p5/examples/mic/</code>, <code>p5/examples/keys/</code>, <code>p5/examples/drums/</code>, <code>p5/examples/rhythm/</code>, <code>p5/examples/rhythm-visual/</code> and <code>p5/examples/record/</code>.</li>
 </ul>
 </section>
 
@@ -3094,7 +3133,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=5e75007"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -3214,7 +3253,7 @@ detection.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>mountDrums</code></td><td><code>mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })</code> → <code>{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }</code>; <code>clock: 'lookahead'</code> schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; <code>lang: 'zh'</code> names the lanes in Chinese</td></tr>
+<tr><td><code>mountDrums</code></td><td><code>mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })</code> → <code>{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }</code>; <code>clock: 'lookahead'</code> schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; <code>lang: 'zh'</code> names the lanes in Chinese; <code>rhythm: &lt;@openav/pattern&gt;</code> (or <code>useRhythm(mod)</code>) makes the line over the grid editable and the cells rewrite it, with <code>history</code> / <code>undo()</code>, Copy and Open in Strudel (0.7)</td></tr>
 <tr><td><code>DrumSequencer</code></td><td><code>new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })</code> · <code>setPattern(nameOrGrid)</code> · <code>toggleCell(lane, i)</code> · <code>toggle(on)</code> · <code>update(dt)</code> · <code>grid</code>, <code>bpm</code> (the frame clock)</td></tr>
 <tr><td><code>DrumScheduler</code>, <code>DrumTransport</code></td><td>the lookahead clock: a grid or a compiled line → timed events, positions in bars turned into seconds by a tempo map (no drift); the runtime with a Web Worker heartbeat, the audio clock, and steps / hits told when heard</td></tr>
 <tr><td><code>drumEngine</code></td><td><code>drumEngine({ samples })</code> → a sound engine (see <a href="#show-control-sound">Sound</a>); <code>noteOn(note, vel, time)</code> plays at <code>time</code> on its own AudioContext and returns <code>{ time, cancel() }</code></td></tr>
@@ -3383,6 +3422,10 @@ director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.p
 <tr><td><code>parse</code></td><td><code>parse(src)</code> → <code>{ ok, tree }</code> or <code>{ ok: false, error }</code>: nodes <code>step</code> <code>rest</code> <code>seq</code> <code>layer</code> <code>alt</code> <code>fast</code> <code>slow</code> <code>euclid</code> <code>maybe</code>, each with its character range</td></tr>
 <tr><td><code>WORDS</code></td><td><code>bd</code> kick · <code>sd</code> snare · <code>hh</code> hat · <code>oh</code> openhat · <code>cp</code> clap · <code>rim</code>/<code>rs</code> · <code>lt</code> <code>mt</code> <code>ht</code> toms · <code>cr</code> crash · <code>rd</code> ride · <code>cb</code> cowbell, and the kit's own names</td></tr>
 <tr><td><code>euclid</code></td><td><code>euclid(pulses, steps, rotate = 0)</code> → booleans (Toussaint 2005)</td></tr>
+<tr><td><code>fromGrid</code></td><td><code>fromGrid(grid, { steps = 16, words, order })</code> → a line that plays exactly the grid, written the way a person would: <code>bd*4</code>, <code>[~ sd]*2</code>, <code>bd(3,8,2)</code>, else beat by beat <code>bd [~ ~ ~ bd] bd*2 ~</code> (0.7)</td></tr>
+<tr><td><code>toGrid</code></td><td><code>toGrid(src, { bar = 1, steps = 16 })</code> → <code>{ grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }</code>: one bar on the steps and what they cannot hold (0.7)</td></tr>
+<tr><td><code>fromStrudel</code></td><td><code>fromStrudel(code)</code> → <code>{ strudel, ok, src, bpm, ignored, unsupported }</code>: <code>s("…")</code> / <code>sound("…")</code> copied from strudel.cc, <code>.fast</code> / <code>.slow</code> folded in, <code>setcpm</code> / <code>setcps</code> as <code>bpm</code> (0.7)</td></tr>
+<tr><td><code>toStrudel</code>, <code>strudelUrl</code></td><td><code>strudelUrl(src, { bpm, comment })</code> → <code>https://strudel.cc/#…</code> (the line as <code>s("…")</code> with <code>setcpm(bpm/4)</code>, base64 in the <code>#</code>); open it in a new tab (0.7)</td></tr>
 </tbody>
 </table></div>
 <p>Writing: spaces (steps share the bar) · <code>~</code> <code>-</code> rest · <code>[ ]</code> group · <code>,</code> layers · <code>*n</code> faster · <code>/n</code> slower, across bars · <code>&lt; &gt;</code> one per bar · <code>(k,n,r)</code> Euclidean · <code>!n</code> and <code>!</code> repeat · <code>@n</code> and <code>_</code> longer · <code>?</code> <code>?0.3</code> drop by chance (seeded) · <code>bd:2</code> sample number. <code>.</code> <code>|</code> <code>{ }</code> are refused with a hint (rests are <code>~</code> or <code>-</code>).</p>
@@ -3867,7 +3910,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=5e75007"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

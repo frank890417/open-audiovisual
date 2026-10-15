@@ -45,16 +45,28 @@ drums.phase();                      // { bar: 0..1 through the bar, beat: 0..1 t
 
 A **compiled rhythm line** (anything with `eventsInBar(bar, { seed })`: @openav/pattern's `compile(text)`) plays as written —
 hits anywhere in the bar (triplets), any GM voice (crash, ride, toms get a row of their own on the grid), the line over the
-grid with the word that sounds lit (`ev.token`). A click on a cell turns the line into the grid it plays in that bar
-(`onTakeover({ text, bar, offGrid, dropped })`). The frame clock plays a line's first bar on the grid. The way of writing one
+grid with the word that sounds lit (`ev.token`). The frame clock plays a line's first bar on the grid. The way of writing one
 line of rhythm comes from TidalCycles / Strudel ([strudel.cc](https://strudel.cc)); OAV implements it independently from
 their public documentation.
+
+**The cells and the line edit each other (0.7).** Give `mountDrums` the @openav/pattern module (`rhythm: mod`, or
+`useRhythm(mod)` once it has loaded) and the line over the grid is always there — a preset shows its grid as a line — and both
+ways work. A click on a cell rewrites the line (`fromGrid`; the rows of a line's other voices, crash, ride, toms, are clickable
+too) and it plays at once; when the line holds more than the 16 steps can (triplets, `< >`, `/2`, `?`, `bd:2`), the first click
+calls `onLossy({ text, bar, lost })` (or shows a note on the card) and only the next one rewrites it. The line is a textarea over
+the lit words: Enter, or 400 ms without a key, plays what was typed and the cells follow; a mistake is marked red,
+`onEditError(error, text)` is told (`onEditError(null)` once fixed) and **the last line that worked keeps playing**; Escape drops
+what was not played. Every change from a click, a key or the menu is kept (`history`), and ↶ on the card — or ⌘Z / Ctrl+Z after
+the last press was on the card — goes back. Copy puts `copyText(line, bpm)` (default: the line) on the clipboard; "Open in
+Strudel" is a new-tab link to `strudelUrl(line, { bpm, comment: strudelComment })`. `onRhythm(line, { how, prev })` hears every
+new line (`how`: `'code'` · `'cell'` · `'type'` · `'undo'` · `'menu'`). Without a rhythm module a click on a line's cell turns it
+into the grid it plays (`onTakeover({ text, bar, offGrid, dropped })`), as in 0.6.
 
 ## Exports
 
 | export | signature |
 |---|---|
-| `mountDrums` | `mountDrums(container, { signals, engine = null, autoEnableEngine = true, onStep = null, onHit = null, onTakeover = null, bpm = 112, pattern = 'four on floor', clock = 'frame', lang = 'en', heartbeat = 'auto', latency = 'auto' })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`; no `engine` = `drumEngine()`, enabled on the first hit. `play` / `setPattern` / `setBpm` do what the checkbox, the menu and the slider do, and the grid follows. `onHit(voice, vel, ev)` / `onStep(i, n, ev)`: told when heard. `deliver()`: tell what is heard by now without painting (call it right before drawing). `now()` → `{ bar, step, phase, beatPhase, tokens, mode, text }`; `info()` → `{ clock, heartbeat, lookahead, late, extended, latency, … }`. `lang: 'zh'`: 大鼓 小鼓 鈸 拍手 |
+| `mountDrums` | `mountDrums(container, { signals, engine = null, autoEnableEngine = true, onStep = null, onHit = null, onTakeover = null, bpm = 112, pattern = 'four on floor', clock = 'frame', lang = 'en', heartbeat = 'auto', latency = 'auto', rhythm = null, onRhythm, onLossy, onEditError, copyText, strudelComment })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose(), useRhythm(mod), src(), strudelUrl(), history, undo(), edit(text) → { ok, error }, copy() → Promise<{ ok, text }>, copyText(), barEvents(bar), voices() }`; no `engine` = `drumEngine()`, enabled on the first hit. `play` / `setPattern` / `setBpm` do what the checkbox, the menu and the slider do, and the grid follows. `onHit(voice, vel, ev)` / `onStep(i, n, ev)`: told when heard. `deliver()`: tell what is heard by now without painting (call it right before drawing). `now()` → `{ bar, step, phase, beatPhase, tokens, mode, text }`; `info()` → `{ clock, heartbeat, lookahead, late, extended, latency, … }`. `lang: 'zh'`: 大鼓 小鼓 鈸 拍手 |
 | `DrumScheduler` | pure logic: `new DrumScheduler({ bpm, swing = 0, humanize = 0.35, lookahead = 0.1, pattern, seed, random })` · `start(t)` · `stop()` → dropped · `advance(now)` → the new events up to now + lookahead · `due(t)` → those heard by t · `rewind(t)` · `setBpm(bpm, t)` · `posAt(t)` / `timeAt(pos)` / `phaseAt(t)` · `setPattern(p, { text })` · `toggleCell` · `gridOf(bar)` · `takeover(bar)` · `barEvents(bar)`. Events: `{ kind: 'step', i, n, bar, pos, time }`, `{ kind: 'hit', voice, vel, pos, n, bar, token, word, layer, time }` |
 | `DrumTransport` | `new DrumTransport({ scheduler, engine, onStep, onHit, heartbeat = 'auto' \| 'interval' \| false, tick = 0.025, latency = 'auto', stale = 0.25, now, hidden })` · `start()` · `stop()` · `toggle(on)` · `setPattern` · `toggleCell` · `takeover` · `setBpm` · `pump()` (the heartbeat) · `frame()` (once a frame) · `times()` → `{ sched, heard, live }` · `phase()` · `info()`; it has `DrumSequencer`'s `playing`, `pattern`, `grid`, `bpm`, `swing`, `humanize` |
 | `drumName` | `drumName('kick', 'zh')` → `'大鼓'`: the name a person reads for a voice |
