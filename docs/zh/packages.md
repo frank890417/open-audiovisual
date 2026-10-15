@@ -1,11 +1,11 @@
 # 套件一覽
 
-二十六個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十七個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
 | L1 輸入 | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
-| L2 映射 | `mapping` |
+| L2 映射 | `mapping` · `chop` |
 | L3 世界 | `stage` · `world-webtoe` |
 | L4 輸出 | `sound` · `osc` · `out` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` |
@@ -180,6 +180,28 @@ mapper.addRoute({ source: 'midi/cc/74', target: 'bloom', curve: 'exp', smooth: 0
 ```
 
 完整說明：見[映射](mapping.md)。
+
+## @openav/chop
+
+L2 映射 · 數值隨時間的變化，像 TouchDesigner 的 CHOP 那樣塑形：Lag、Trigger（這裡叫 `envelope`）、Speed、Spring、Trail、Slope、Count。純邏輯，沒有自己的時鐘：每一步都告訴它過了幾秒，並在那段時間裡精確求解，所以 30 fps 和 144 fps 畫出同一條曲線。參數意義參考 TouchDesigner 官方文件（Derivative），程式由 OAV 自行實作。在 p5 草圖裡，oav-p5 把它們做成一行一個：見 [p5 一行注入](p5.md#values-over-time-lag-env-speed-spring-trail)。
+
+| 匯出 | 簽章 |
+|---|---|
+| `approach` | `approach(current, target, seconds, dt)` → 一極點 lag 的一步；`seconds`＝跟上 63% 變化的時間（`@openav/mapping` 的 `smooth` 就是用它算） |
+| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → 輸出 · `reset(v?)`：上升用 `up`、下降用 `down`（Lag CHOP 的 Lag 1／Lag 2） |
+| `envelope` | `envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)` → Trigger CHOP 在時間 `t` 的值（事件時間 `times`，秒，舊的在前）：直線上升（0 → peak），`decay` 秒後剛好回到 0；還沒落完又觸發，從當下的高度接著走 · `envelopeStage(elapsed, attack, decay, from, peak)` |
+| `Speed` | `new Speed()` · `step(rate, dt)` → 位置：每秒加 `rate` |
+| `Spring` | `new Spring({ stiffness = 100, damping = 6 })` · `step(target, dt)` → 位置（另有 `velocity`）：掛在彈簧上的質點被拉向輸入，精確解 · `springStep(x, v, target, k, c, dt)` → `[x, v]` |
+| `Trail` | `new Trail({ seconds = 2, rate = 60 })` · `step(value, dt)` → 最近 `seconds` 秒，每秒 60 個值再加上最新的一個，舊的在前，長度固定 |
+| `Slope` | `new Slope()` · `step(value, dt)` → 每秒變化量 |
+| `Count` | `new Count({ threshold = 0.5 })` · `step(on, limit = 0)` → 打開過幾次；給 limit 就在 0 … limit − 1 之間循環 · `wrapCount(total, limit)` |
+| `TD_LAG_RATIO`、`DEFAULTS` | `Math.LN10`：TouchDesigner 的 lag 指的是大約跟上 90% 的時間，等於 2.3 個時間常數（這裡的 0.1 ≈ Lag CHOP 的 0.23）；上面那些預設值 |
+
+```js
+import { Lag, envelope } from '@openav/chop';
+const vu = new Lag({ up: 0.03, down: 0.4 });       // opens at once, closes slowly
+// every frame: r = 50 + vu.step(level, dt) * 300; pump = envelope(kickTimes, now, 0.01, 0.3);
+```
 
 ## @openav/stage
 

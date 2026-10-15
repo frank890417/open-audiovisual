@@ -311,7 +311,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-<!--gen:w-packages-->Twenty-six<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+<!--gen:w-packages-->Twenty-seven<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 | layer | package | role |
@@ -324,6 +324,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 |  | [`@openav/keys`](packages/keys/) | On-screen piano, QWERTY playing and a simulated performer |
 |  | [`@openav/drums`](packages/drums/) | Synth kit and step sequencer that publish analyzer-shaped signals |
 | L2 mapping | [`@openav/mapping`](packages/mapping/) | Signal to param routes: curves, smoothing, many-to-many, learn |
+|  | [`@openav/chop`](packages/chop/) | Values over time, as TouchDesigner's CHOPs shape them: lag, envelope, speed, spring, trail, slope, count |
 | L3 world | [`@openav/stage`](packages/stage/) | The world shell: lifecycle and params, no renderer opinion |
 |  | [`@openav/world-webtoe`](packages/world-webtoe/) | Perform a WebToe node patch as a world |
 | L4 output | [`@openav/sound`](packages/sound/) | Instruments in the page (Salamander piano, mallets, strings, organ, synth presets) |
@@ -389,7 +390,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5**, an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-26 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 667 tests
+27 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 687 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

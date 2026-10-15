@@ -15,6 +15,7 @@
   "lab": {
     "module": "mapping",
     "files": [
+      "chop/index.js",
       "mapping/index.js"
     ],
     "exports": [

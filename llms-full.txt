@@ -7,7 +7,7 @@
 > Examples: https://openaudiovisual.com/examples/
 > p5.js in one line: https://openaudiovisual.com/p5/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 26 packages, 15 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
+> Today: 27 packages, 15 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -297,7 +297,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-Twenty-six plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+Twenty-seven plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 | layer | package | role |
@@ -310,6 +310,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 |  | [`@openav/keys`](packages/keys/) | On-screen piano, QWERTY playing and a simulated performer |
 |  | [`@openav/drums`](packages/drums/) | Synth kit and step sequencer that publish analyzer-shaped signals |
 | L2 mapping | [`@openav/mapping`](packages/mapping/) | Signal to param routes: curves, smoothing, many-to-many, learn |
+|  | [`@openav/chop`](packages/chop/) | Values over time, as TouchDesigner's CHOPs shape them: lag, envelope, speed, spring, trail, slope, count |
 | L3 world | [`@openav/stage`](packages/stage/) | The world shell: lifecycle and params, no renderer opinion |
 |  | [`@openav/world-webtoe`](packages/world-webtoe/) | Perform a WebToe node patch as a world |
 | L4 output | [`@openav/sound`](packages/sound/) | Instruments in the page (Salamander piano, mallets, strings, organ, synth presets) |
@@ -372,7 +373,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5**, an MCP server, and a handbook site.
 
-26 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 667 tests
+27 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 687 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -3062,6 +3063,54 @@ The same `cue()` twice adds nothing, so it may also sit in `draw()`. On one step
 declared, then `barStarted`, `stepStarted` and that step's hits. A silent clock: `startDrums({})`. The whole of it, ready to
 open: `p5/examples/drums/`; a line of rhythm with `drumPhase` and `beatPhase`: `p5/examples/rhythm/`.
 
+## Values over time: lag, env, speed, spring, trail
+
+A knob or `micLevel` jumps; what looks good is how it moves between the jumps. TouchDesigner does this with CHOPs; the
+same operators are here, one call each in `draw()`, nothing to declare, and seconds are seconds (the same curve at 30 and
+at 144 fps):
+
+```js
+circle(width / 2, height / 2, 50 + lag(micLevel, 0.03, 0.4) * 300);   // a VU meter: opens at once, closes slowly
+scale(1 + env('kick', 0.01, 0.3));                                     // the drum machine: every kick swells it, gone in 0.3 s
+rotate(spring(knob1, 100, 6) * TWO_PI);                                // flick a knob: it overshoots and settles
+```
+
+| TouchDesigner | oav-p5 | |
+|---|---|---|
+| Lag CHOP (Lag 1 / Lag 2) | `lag(value, up, down)` | follows `value`: `up` seconds while it rises, `down` while it falls (`down` = `up` if left out; 0.1) |
+| Trigger CHOP (attack, decay) | `env('kick', attack, decay)`, `trigger('boom')` | 0..1: up to 1 in `attack` seconds after each event, back to 0 in `decay` (0.01, 0.3). Events: `'kick'` `'snare'` `'hat'` `'beat'` (the microphone or the drum machine, the hits `kickDetected` hears), `'note'` (any key), `'bar'` `'step'` (the drums), a cue's name, `trigger('boom')`; or a switch: `env(mouseIsPressed, …)` |
+| Speed CHOP | `speed(rate)` | adds `rate` every second: `rotate(speed(TWO_PI))` turns once a second |
+| Spring CHOP | `spring(value, stiffness, damping)` | follows like a mass on a spring (100, 6: two or three bounces; damping 20: none) |
+| Trail CHOP | `trail(value, seconds)` | the last `seconds` (2) as an array, 60 values a second, oldest first, the newest last |
+| Slope CHOP | `slope(value)` | how fast it changes, per second |
+| Count CHOP | `count(beat)`, `count(beat, 4)`, `count('kick')` | how many times it turned on; with 4: 0 1 2 3 0 …; a name: how many of those events so far |
+| a CHOP's viewer | `scope(value, 'label')` | a small plot in the corner of the page (below) |
+| | `drawTrail(values, x, y, w, h)` | the same plot on the canvas, in the work and in a recording |
+
+**Seconds, here and in TouchDesigner.** A lag here is a time constant: after `up` seconds the value has covered 63% of a
+jump (the `smooth` of `@openav/mapping` means the same). TouchDesigner's Lag CHOP quotes its lag as about the time to
+follow 90%, 2.3 times longer: `lag(x, 0.1)` moves like a Lag CHOP at about 0.23. Attack and decay are lengths in both.
+
+**Nothing to declare.** The first `lag()` in `draw()` keeps the first lag's memory, the second the second, every frame;
+`spring()`, `speed()`, `trail()` … are counted each on their own. Put one inside an `if`, or in a loop whose length
+changes, and the order slips: a card says so, and from then on oav-p5 matches each call by the line it is written on. The
+sure way is a name, a string at the end: `lag(p.size, 0.1, 0.5, 'p' + p.id)`. A named one is the same wherever it is called,
+`draw()`, `setup()` or `mousePressed()`; an unnamed one outside `draw()` has nothing to remember by and returns its input
+(`speed` 0, `trail` `[]`), and a card says that too. `env()`, `trigger()` and `count('kick')` are about events and work
+anywhere. A sketch with its own `speed` or `count` keeps it; `OAVp5.chop.speed(…)` is the same function under another name.
+
+**Seeing the values.** `scope(value, 'label')` returns `value`, so it can wrap an expression:
+`circle(x, y, scope(lag(micLevel, 0.03, 0.4), 'lag') * 300)`. Each label is one line in a small oscilloscope across the
+page from the 🎹: the last 4 seconds and the value now; `scope(micLevel, 'mic')` beside it shows what the lag did. It lives
+on the page, not on the canvas: never in a recording or a 📷, never in the way of a click; `hints=off` or `scope=off` hides
+it. To draw it in the work: `stroke(255); drawTrail(trail(micLevel, 3), 0, height - 100, width, 100)` (or
+`drawTrail(micLevel, …)`, which keeps its own 2 seconds): 0 at the bottom of the box, 1 at the top (`lo`, `hi` after `h`),
+the sketch's `stroke()` (white under `noStroke()`).
+
+The math is [@openav/chop](packages.md#openav-chop), loaded from next to this file the first time one of these is called;
+until it arrives (a few frames) each returns its input as it is. What each parameter means follows Derivative's
+TouchDesigner documentation; the code is OAV's own. Raw against lagged, side by side, with the scope: `p5/examples/lag/`.
+
 ## Recording: a video with its sound
 
 ```js
@@ -3705,7 +3754,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Twenty-six packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-seven packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -3713,7 +3762,7 @@ npm yet.
 | layer | packages |
 |---|---|
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
-| L2 mapping | `mapping` |
+| L2 mapping | `mapping` · `chop` |
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` |
@@ -3902,6 +3951,28 @@ mapper.addRoute({ source: 'midi/cc/74', target: 'bloom', curve: 'exp', smooth: 0
 ```
 
 Full reference: [Mapping](mapping.md).
+
+## @openav/chop
+
+L2 mapping · values over time, the way TouchDesigner's CHOPs shape them: Lag, Trigger (`envelope`), Speed, Spring, Trail, Slope, Count. Pure logic, no clock of its own: every step is told the seconds that went by and is solved exactly over them, so 30 fps and 144 fps draw the same curve. What the parameters mean follows Derivative's TouchDesigner documentation; the code is OAV's own. In a p5 sketch, oav-p5 gives these one call each: [p5 one line](p5.md#values-over-time-lag-env-speed-spring-trail).
+
+| export | signature |
+|---|---|
+| `approach` | `approach(current, target, seconds, dt)` → one step of a one-pole lag; `seconds` = time to 63% of a change (the `smooth` of `@openav/mapping`, which steps with it) |
+| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → output · `reset(v?)`: `up` while rising, `down` while falling (Lag CHOP's Lag 1 / Lag 2) |
+| `envelope` | `envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)` → the Trigger CHOP's level at `t` for events at `times` (seconds, oldest first): a straight attack (0 → peak), then 0 after exactly `decay`; a retrigger starts where it is · `envelopeStage(elapsed, attack, decay, from, peak)` |
+| `Speed` | `new Speed()` · `step(rate, dt)` → position: `rate` per second |
+| `Spring` | `new Spring({ stiffness = 100, damping = 6 })` · `step(target, dt)` → position (`velocity` alongside): a mass on a spring pulled to the input, solved exactly · `springStep(x, v, target, k, c, dt)` → `[x, v]` |
+| `Trail` | `new Trail({ seconds = 2, rate = 60 })` · `step(value, dt)` → the last `seconds`, 60 values a second plus the newest, oldest first, fixed length |
+| `Slope` | `new Slope()` · `step(value, dt)` → change per second |
+| `Count` | `new Count({ threshold = 0.5 })` · `step(on, limit = 0)` → times it turned on, looped to 0 … limit − 1 with a limit · `wrapCount(total, limit)` |
+| `TD_LAG_RATIO`, `DEFAULTS` | `Math.LN10`: TouchDesigner quotes a lag as the time to ~90%, 2.3 time constants (a lag of 0.1 here ≈ a Lag CHOP at 0.23); the defaults above |
+
+```js
+import { Lag, envelope } from '@openav/chop';
+const vu = new Lag({ up: 0.03, down: 0.4 });       // opens at once, closes slowly
+// every frame: r = 50 + vu.step(level, dt) * 300; pump = envelope(kickTimes, now, 0.01, 0.3);
+```
 
 ## @openav/stage
 

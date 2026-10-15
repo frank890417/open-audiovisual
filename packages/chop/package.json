@@ -1,0 +1,10 @@
+{
+  "name": "@openav/chop",
+  "version": "0.1.0",
+  "description": "Values over time, the way TouchDesigner's CHOPs shape them: lag, envelope, speed, spring, trail, slope, count. Pure logic, frame-rate independent.",
+  "type": "module",
+  "main": "index.js",
+  "exports": { ".": "./index.js" },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/chop" }
+}

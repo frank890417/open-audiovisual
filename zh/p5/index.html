@@ -34,11 +34,11 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=5e75007">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/p5/#article","url":"https://openaudiovisual.com/zh/p5/","name":"oav-p5：用 MIDI 控制器玩任何 p5.js 草圖","description":"在任何 p5.js 草圖最上面加一行，就能用 MIDI 控制器、螢幕上的控制器或手機彈。支援 p5 1.x 與 2.x，包含 OpenProcessing。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"p5.js 一行接上","about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/zh/p5/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/zh/p5/#breadcrumb"},"mentions":[]},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/zh/p5/#code","name":"oav-p5","url":"https://openaudiovisual.com/p5/oav-p5.js","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser, p5.js 1.x and 2.x","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/p5/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"p5.js 一行接上","item":"https://openaudiovisual.com/zh/p5/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=5e75007">
-<link rel="stylesheet" href="../../assets/examples/pages.css?v=5e75007">
+<link rel="stylesheet" href="../../assets/docs/docs.css">
+<link rel="stylesheet" href="../../assets/examples/pages.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page p5-page">
@@ -271,7 +271,40 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 </tbody>
 </table></div>
 <p>同樣的 <code>cue()</code> 叫兩次不會多一個，所以放在 <code>draw()</code> 裡也可以。同一格上先照宣告順序觸發 cue，再來 <code>barStarted</code>、<code>stepStarted</code>、那一格的鼓。只要時鐘不要聲音：<code>startDrums({})</code>。全部用上的草圖：<code>p5/examples/drums/</code>；一行節奏加 <code>drumPhase</code>、<code>beatPhase</code>：<code>p5/examples/rhythm/</code>。</p>
-<h3 id="p5-8">錄影：畫面和聲音一起錄<a class="anchor" href="#p5-8" aria-label="#">#</a></h3>
+<h3 id="p5-lag-env-speed-spring-trail">數值隨時間：lag、env、speed、spring、trail<a class="anchor" href="#p5-lag-env-speed-spring-trail" aria-label="#">#</a></h3>
+<p>旋鈕和 <code>micLevel</code> 是跳著變的；好看的是它在兩次跳動之間怎麼動。TouchDesigner 用 CHOP 做這件事；這裡有同樣的運算子，在 <code>draw()</code> 裡一個一行，不用宣告；秒就是秒（30 fps 和 144 fps 畫出同一條曲線）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">circle(width / 2, height / 2, 50 + lag(micLevel, 0.03, 0.4) * 300);   <span class="tc">// a VU meter: opens at once, closes slowly</span>
+scale(1 + env(<span class="ts">'kick'</span>, 0.01, 0.3));                                     <span class="tc">// the drum machine: every kick swells it, gone in 0.3 s</span>
+rotate(spring(knob1, 100, 6) * TWO_PI);                                <span class="tc">// flick a knob: it overshoots and settles</span></code></pre></div>
+<p>第一行像 VU 表：一出聲立刻撐開、安靜下來慢慢收。第二行：鼓機每打一下大鼓就撐開一下，0.3 秒收回。第三行：旋鈕一甩，會衝過頭再彈回來停下。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>TouchDesigner</th><th>oav-p5</th><th></th></tr></thead>
+<tbody>
+<tr><td>Lag CHOP（Lag 1／Lag 2）</td><td><code>lag(value, up, down)</code></td><td>跟著 <code>value</code> 走：往上用 <code>up</code> 秒、往下用 <code>down</code> 秒（不給 <code>down</code> 就等於 <code>up</code>；預設 0.1）</td></tr>
+<tr><td>Trigger CHOP（attack、decay）</td><td><code>env('kick', attack, decay)</code>、<code>trigger('boom')</code></td><td>0..1：每個事件之後 <code>attack</code> 秒升到 1，<code>decay</code> 秒回到 0（預設 0.01、0.3）。事件：<code>'kick'</code> <code>'snare'</code> <code>'hat'</code> <code>'beat'</code>（麥克風或鼓機，跟 <code>kickDetected</code> 聽到的是同一套）、<code>'note'</code>（任何琴鍵）、<code>'bar'</code> <code>'step'</code>（鼓機）、cue 的名字、草圖自己的 <code>trigger('boom')</code>；也可以給開關：<code>env(mouseIsPressed, …)</code></td></tr>
+<tr><td>Speed CHOP</td><td><code>speed(rate)</code></td><td>每秒加 <code>rate</code>：<code>rotate(speed(TWO_PI))</code> 一秒轉一圈</td></tr>
+<tr><td>Spring CHOP</td><td><code>spring(value, stiffness, damping)</code></td><td>像掛在彈簧上的東西一樣跟著走（100、6：彈兩三下；damping 20：不彈）</td></tr>
+<tr><td>Trail CHOP</td><td><code>trail(value, seconds)</code></td><td>最近 <code>seconds</code> 秒（2）的值，一個陣列，每秒 60 個，舊的在前、最新的在最後</td></tr>
+<tr><td>Slope CHOP</td><td><code>slope(value)</code></td><td>每秒變化多少</td></tr>
+<tr><td>Count CHOP</td><td><code>count(beat)</code>、<code>count(beat, 4)</code>、<code>count('kick')</code></td><td>打開過幾次；給 4 就 0 1 2 3 0 … 循環；給名字：那個事件到現在幾次</td></tr>
+<tr><td>CHOP 的檢視器</td><td><code>scope(value, 'label')</code></td><td>頁面角落的小示波器（見下面）</td></tr>
+<tr><td></td><td><code>drawTrail(values, x, y, w, h)</code></td><td>同樣的曲線畫在畫布上，作品裡看得到、錄影也錄得到</td></tr>
+</tbody>
+</table></div>
+<p><strong>秒數，這裡和 TouchDesigner。</strong> 這裡的 lag 是時間常數：<code>up</code> 秒後跟上一次跳動的 63%（<code>@openav/mapping</code> 的 <code>smooth</code>
+也是這個意思）。TouchDesigner 的 Lag CHOP 說的是大約跟上 90% 的時間，長 2.3 倍：<code>lag(x, 0.1)</code> 動起來像 Lag CHOP 填 0.23。
+attack、decay 兩邊都是長度。</p>
+<p><strong>不用宣告。</strong> <code>draw()</code> 裡第一個 <code>lag()</code> 記第一個 lag 的值、第二個記第二個，每一幀都一樣；<code>spring()</code>、<code>speed()</code>、<code>trail()</code> …
+各自分開數。把它放進 <code>if</code>，或放在長度會變的迴圈裡，順序就會錯開：畫面上會有一張提示說明，之後 oav-p5 改成照「寫在哪一行」對應。最穩的是給它名字，最後一個參數放字串：<code>lag(p.size, 0.1, 0.5, 'p' + p.id)</code>。有名字的在哪裡呼叫都是同一個，<code>draw()</code>、<code>setup()</code>、
+<code>mousePressed()</code> 都行；沒名字的在 <code>draw()</code> 外面沒有東西可以對，直接回傳原值（<code>speed</code> 回 0、<code>trail</code> 回 <code>[]</code>），也會有提示。
+<code>env()</code>、<code>trigger()</code>、<code>count('kick')</code> 是跟著事件走的，在哪裡都能用。草圖自己有 <code>speed</code> 或 <code>count</code> 變數的話照用自己的；
+<code>OAVp5.chop.speed(…)</code> 是同一個函式換個地方拿。</p>
+<p><strong>看得見的值。</strong> <code>scope(value, 'label')</code> 會把 <code>value</code> 原樣回傳，所以可以直接包住一段算式：
+<code>circle(x, y, scope(lag(micLevel, 0.03, 0.4), 'lag') * 300)</code>。每個標籤是一條線，畫在 🎹 對面角落的小示波器裡：最近 4 秒和現在的值；旁邊再放一個 <code>scope(micLevel, 'mic')</code>，就看得到 lag 做了什麼。它在網頁上、不在畫布上：不會錄進影片和 📷，也不會擋到點擊；
+<code>hints=off</code> 或 <code>scope=off</code> 就不顯示。要畫進作品裡：<code>stroke(255); drawTrail(trail(micLevel, 3), 0, height - 100, width, 100)</code>
+（或 <code>drawTrail(micLevel, …)</code>，它自己記 2 秒）：框的底是 0、頂是 1（<code>h</code> 後面可以給 <code>lo</code>、<code>hi</code>），用草圖的 <code>stroke()</code>（<code>noStroke()</code> 時用白色）。</p>
+<p>數學在 <a href="../../zh/docs/#packages-openav-chop">@openav/chop</a>，第一次呼叫時從這支檔案旁邊載入；載好之前（幾幀）每個函式都直接回傳原值。參數意義參考 TouchDesigner 官方文件（Derivative），程式由 OAV 自行實作。原值和 lag 後並排、配 scope 的範例：<code>p5/examples/lag/</code>。</p>
+<h3 id="p5-9">錄影：畫面和聲音一起錄<a class="anchor" href="#p5-9" aria-label="#">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
   <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
 }
@@ -299,7 +332,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <code>reclimit=600</code>（秒）、<code>title=作品名</code>（放進檔名）；只改這一段：<code>startRecording({ seconds, fps, mic: false, name })</code>。</li>
 <li>全部用上的草圖：<code>p5/examples/record/</code>。</li>
 </ul>
-<h3 id="p5-9">三種輸入<a class="anchor" href="#p5-9" aria-label="#">#</a></h3>
+<h3 id="p5-10">三種輸入<a class="anchor" href="#p5-10" aria-label="#">#</a></h3>
 <div class="table-wrap"><table>
 <thead><tr><th>輸入</th><th>怎麼用</th></tr></thead>
 <tbody>
@@ -310,7 +343,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 </table></div>
 <p>三種輸入進來都是同一串 MIDI，草圖分不出是誰彈的（想知道的話看 <code>midi.last.source</code>）。Safari 和 iPad 沒有
 Web MIDI，螢幕上的控制器和手機照樣能用。草圖自己寫了 Web MIDI（<code>navigator.requestMIDIAccess</code>、WebMidi.js）的話，螢幕和手機會變成多出來的一個輸入，名字叫 <strong>OAV Virtual MIDI</strong>。</p>
-<h3 id="p5-10">出狀況的時候<a class="anchor" href="#p5-10" aria-label="#">#</a></h3>
+<h3 id="p5-11">出狀況的時候<a class="anchor" href="#p5-11" aria-label="#">#</a></h3>
 <p>彈的時候沒人會去看 OpenProcessing 畫布下面的 console，所以出狀況會直接寫在畫面上：🎹 旁邊一張小卡片，不擋畫布中間，用瀏覽器的語言，同一則只跳一次，按 × 關掉。每張都寫三件事：<strong>發生什麼、為什麼、下一步按哪裡</strong>，console 也同步寫一樣的話。</p>
 <ul>
 <li><strong>麥克風</strong>：被擋下（網址列左邊的鎖頭 → 允許 → 回來點一下畫面）、被電腦的系統設定擋住、在沒有 <code>allow="microphone"</code> 的嵌入框裡、找不到麥克風、被別的程式（Zoom、OBS）占用、網址不是 https、瀏覽器還在等你按允許。</li>
@@ -329,7 +362,7 @@ osc(10, 0.1, () =&gt; knob1 * 2).out()                     <span class="tc">// k
 <p><code>note</code>、<code>velocity</code>、<code>knob1</code> … <code>knob8</code>、<code>fader1</code> …、<code>pad1</code> …、<code>drumStep</code>，還有 🎹 螢幕上的控制器，都一樣在。
 Hydra 不是 p5，沒有可以定義的 <code>notePressed()</code> 回呼，改用訂閱：
 <code>midi.on('notePressed', (note, velocity) =&gt; { … })</code> 或 <code>OAVp5.drums.on('hit', (lane, velocity) =&gt; { … })</code>（都回傳一個取消訂閱的函式）。測試用的是 hydra-synth 1.4.0，也就是編輯器跑的那個函式庫（<code>p5/test/hydra-smoke.cjs</code>）。</p>
-<h3 id="p5-12">細節<a class="anchor" href="#p5-12" aria-label="#">#</a></h3>
+<h3 id="p5-13">細節<a class="anchor" href="#p5-13" aria-label="#">#</a></h3>
 <ul>
 <li><strong>為什麼用 <code>prepend</code></strong>：p5 的友善錯誤檢查會把頁面上最後一個 <code>&lt;script&gt;</code> 當成你的草圖。這個檔放在最前面，就不會被誤當成你的程式。</li>
 <li><strong>為什麼非同步載入的一行就夠</strong>：p5 等到視窗的 <code>load</code> 事件才開始全域模式，而頁面載入中插進來的 script 會讓
@@ -369,7 +402,7 @@ Hydra 不是 p5，沒有可以定義的 <code>notePressed()</code> 回呼，改�
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"","tocButton":"","tocClose":""}</script>
-<script type="module" src="../../assets/docs/docs.js?v=5e75007"></script>
+<script type="module" src="../../assets/docs/docs.js"></script>
 <!--/email_off-->
 </body>
 </html>

@@ -34,6 +34,11 @@
  *   function recordingSaved(info) {}              info = { name, blob, url, format: 'mp4' | 'webm', seconds, bytes, … }
  *   (the canvas only, never the 🎹 or the cards; startSound(), the drums, the microphone and p5.sound 1.x mixed into one
  *   track; MP4 where the browser writes it, else WebM; downloaded when done, a share button on a phone; 📷 saves a PNG)
+ * Values over time, the way TouchDesigner's CHOPs shape them (one call in draw(), nothing to declare; @openav/chop):
+ *   lag(micLevel, 0.03, 0.4)                       follows a value: 0.03 s up, 0.4 s down (Lag CHOP) — a VU meter in one call
+ *   env('kick', 0.01, 0.3)                        0..1 after each kick / snare / hat / beat / note / bar, or trigger('boom') (Trigger)
+ *   speed(rate) · spring(value, 100, 6) · trail(value, 2) · slope(value) · count(beat, 4)          (Speed, Spring, Trail, Slope, Count)
+ *   scope(value, 'label')                         a small oscilloscope in the corner (never in a recording) · drawTrail(values, x, y, w, h)
  * When something goes wrong (a blocked microphone, no Web MIDI, an error inside notePressed(), a sketch's own `let note`, a
  * knob that both OPC and the sketch read, sound waiting for a click) a small card beside the 🎹 says what, why and what to
  * press, in the page's language; 🩺 in the panel or OAVp5.check() is a check-up to screenshot.
@@ -71,7 +76,7 @@
  *   mic       auto (the first read of micLevel / bass / … asks for the microphone) | click (only 🎹 → 🎤 or startMic()) | off
  *   sound     click (startSound() or 🎹 → 🔊) | off | an instrument id: heard from the first click, no code (piano, organ, …)
  *   tone      where Tone.js 15 comes from (an ES module URL; default jsDelivr)
- *   hints     on | off (the cards beside the 🎹; the console says the same either way)
+ *   hints     on | off (the cards beside the 🎹; the console says the same either way)     scope  on | off (scope()'s corner plot)
  *   record    on | nomic (the microphone stays out of recordings) | off (no ⏺ / 📷; startRecording() does nothing)
  *   recfps    30 | 60     reclimit  300 (seconds: one take stops by itself there)     title  a name for the files
  *   relay / room   the phone relay (wss://remote.cheyuwu.com/relay) and room (one per browser)
@@ -82,7 +87,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.6.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.7.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -2068,6 +2073,368 @@
     return r;
   }
   midi.check = check;
+
+  // ---------------------------------------------------------------- values over time: lag · env · speed · spring · trail (0.7)
+  // TouchDesigner's Lag, Trigger, Speed, Spring, Trail, Slope and Count CHOPs, written the p5 way: one call in draw(), nothing
+  // to declare. `circle(x, y, 50 + lag(micLevel, 0.03, 0.4) * 300)` opens at once when someone speaks and closes slowly.
+  // The math is @openav/chop (packages/chop: pure, frame-rate independent, tested with a fake clock), loaded from next to this
+  // file the first time one of these is called; until it arrives (a few frames, while the microphone and the drums are still
+  // arriving too) each returns its input as it is. Seconds are seconds: 30 fps and 144 fps draw the same curve.
+  //
+  // Which memory a call uses, with nothing declared (immediate mode): the Nth unnamed lag() in a draw() is the Nth lag slot,
+  // every frame; spring(), speed(), trail() … are counted each on their own. A string at the end names the slot instead —
+  // lag(micLevel, 0.03, 0.4, 'mic') — and a named slot is the same one wherever it is called. When the number of unnamed calls
+  // changes between two frames (a call inside an if, a loop that grows), order no longer finds the right memory: a card says
+  // so, and that kind switches to matching each call by the line it is written on (its call site; the order of the calls on
+  // one line), keeping every slot whose line it knows. The frame in which the order broke may have handed a call its
+  // neighbour's memory: that one step is undone (each slot keeps its state from before the frame), so a speed() keeps its
+  // own angle; what that frame drew is the only trace. An if / else with one call on each side keeps the count and is not
+  // seen: name those.
+  // Outside draw() (setup, mousePressed …) an unnamed call has no place among the frame's calls: it returns its input
+  // (speed 0, trail []) and says so once. env('kick'), trigger() and count('kick') are about events, not places: anywhere.
+  var CHOP_FNS = ['lag', 'env', 'trigger', 'speed', 'spring', 'trail', 'slope', 'count', 'scope', 'drawTrail'];
+  var chopKinds = {};                                  // kind → { list (by order), site (by call site, once order broke), named, i, prev }
+  var chop = {
+    state: 'off',                                     // off · loading · on · error (@openav/chop did not load: everything passes through)
+    module: null,
+    /** every slot in use: [{ kind, key, mode: 'order' | 'site' | 'name', value }] (for a check-up, for tests) */
+    slots: function () {
+      var out = [];
+      Object.keys(chopKinds).forEach(function (k) {
+        var K = chopKinds[k], v = function (s) { return s.s && s.s.value; };
+        K.list.forEach(function (s, i) { if (s) out.push({ kind: k, key: '#' + (i + 1), mode: 'order', value: v(s) }); });
+        if (K.site) Object.keys(K.site).forEach(function (key) { out.push({ kind: k, key: key, mode: 'site', value: v(K.site[key]) }); });
+        Object.keys(K.named).forEach(function (key) { out.push({ kind: k, key: key, mode: 'name', value: v(K.named[key]) }); });
+      });
+      return out;
+    },
+    /** forget a named slot (reset('spin')), or every slot (reset()) */
+    reset: function (name) {
+      if (name == null) { Object.keys(chopKinds).forEach(function (k) { delete chopKinds[k]; }); return; }
+      Object.keys(chopKinds).forEach(function (k) { delete chopKinds[k].named[name]; });
+    },
+    _kinds: chopKinds,
+  };
+  midi.chop = chop;
+  var chopModP = null;
+  function chopMod() {                                  // the module, or null (asked for the first time: it is on its way)
+    if (chop.module) return chop.module;
+    if (!chopModP) {
+      chop.state = 'loading';
+      chopModP = load('packages/chop/index.js').then(function (m) { chop.module = m; chop.state = 'on'; return m; }, function () {
+        chop.state = 'error';
+        hint('modfail:chop', 'moduleFail', { name: '@openav/chop', host: hostOf(BASE) }, 'error');
+        return null;
+      });
+    }
+    return null;
+  }
+  // -- the frame: p5's frameCount says when a new one began; its time is the clock at the first call in it (seconds)
+  var cf = { frame: null, now: 0, at: -1e9, seq: 0, n: 0 };
+  function p5inst() { try { var P = g.p5; return P && P.instance && typeof P.instance === 'object' ? P.instance : null; } catch (e) { return null; } }
+  function inDraw() { var p = p5inst(); return !p || !!p._inUserDraw; }   // no p5 here (Hydra): every call is a frame's
+  function chopTick() {
+    var t = clock(), p = p5inst();
+    var fc = p && typeof p.frameCount === 'number' ? p.frameCount : typeof g.frameCount === 'number' ? g.frameCount : null;
+    if (fc === null) { if (t - cf.at > 4) cf.seq++; fc = 'x' + cf.seq; }   // no frameCount: calls 4 ms apart are another frame
+    cf.at = t;
+    if (fc !== cf.frame) chopFrame(fc, t);
+    return cf.now;
+  }
+  function chopFrame(fc, t) {
+    var ended = cf.n;
+    cf.frame = fc; cf.now = t / 1000; cf.n++;
+    Object.keys(chopKinds).forEach(function (k) {
+      var K = chopKinds[k];
+      if (!K.site && K.prev >= 0 && K.i !== K.prev && cf.n > 3) chopReorder(k, K, K.i, K.prev, ended);
+      K.prev = K.i; K.i = 0; K.occ = {};
+    });
+    if (cf.n % 300 === 0) chopSweep(cf.now);
+  }
+  // -- call sites: the line of the sketch a call is written on, from a stack trace (only when a slot is made, or once the
+  //    order broke: ~2 µs a call). Our own frames are the ones in this file.
+  function frameFile(line) { var m = /(?:\(|@|\s|^)([^\s()@]+?):\d+(?::\d+)?\)?\s*$/.exec(line); return m ? m[1] : ''; }
+  var OWN_FILE = (function () { try { var s = String(new Error().stack || '').split('\n'); for (var i = 0; i < s.length; i++) { var f = frameFile(s[i]); if (f) return f; } } catch (e) { /* */ } return ''; })();
+  function callSite() {
+    if (!OWN_FILE) return '';
+    var lim = Error.stackTraceLimit, s;
+    try { Error.stackTraceLimit = 12; s = String(new Error().stack || ''); } catch (e) { s = ''; } finally { Error.stackTraceLimit = lim; }
+    var lines = s.split('\n');
+    for (var i = 0; i < lines.length; i++) { var f = frameFile(lines[i]); if (f && f !== OWN_FILE) return lines[i].trim(); }
+    return '';
+  }
+  function chopReorder(kind, K, n, m, ended) {
+    hint('chopOrder:' + kind, 'chopOrder', { fn: kind, n: n, m: m, example: CHOP_EX[kind] || CHOP_EX.lag }, 'info');
+    if (!OWN_FILE) return;                             // no stack traces here: it stays by order
+    var site = {}, occ = {};
+    K.list.forEach(function (s) {
+      if (!s || !s.at || s.born === ended) return;      // made in the frame the order broke: whose it is, nobody knows
+      if (s.stepN === ended && s.undo) { chopUnsnap(s.s, s.undo.st); s.t = s.undo.t; }   // that frame it may have served a neighbour: undone
+      var key = s.at + '#' + (occ[s.at] = (occ[s.at] || 0) + 1);   // the line it was made on (the oldest one there first)
+      if (!site[key]) site[key] = s;
+    });
+    K.site = site; K.list = [];
+  }
+  // a slot's state before this frame's step, for that undo: plain fields, arrays copied (Lag, Speed, Spring, Trail … are no more)
+  function chopSnap(o) { var c = {}; for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) c[k] = Array.isArray(o[k]) ? o[k].slice() : o[k]; return c; }
+  function chopUnsnap(o, c) { for (var k in c) o[k] = Array.isArray(c[k]) ? c[k].slice() : c[k]; }
+  function chopSweep(now) {                            // a sketch with many names (one per particle) forgets the ones it stopped calling
+    Object.keys(chopKinds).forEach(function (k) {
+      var K = chopKinds[k];
+      [K.named, K.site].forEach(function (map) {
+        if (!map) return;
+        var keys = Object.keys(map);
+        if (keys.length > 32) keys.forEach(function (key) { if (now - map[key].t > 30) delete map[key]; });
+      });
+      while (K.list.length > 32 && K.list[K.list.length - 1] && now - K.list[K.list.length - 1].t > 30) K.list.pop();
+    });
+  }
+  /** the memory one call uses → { s: its state (null until @openav/chop is here), dt: seconds since it was last used, now }
+   *  · null: an unnamed call outside draw(). The places are kept from the first frame, module or not. */
+  function slotOf(kind, name, make) {
+    var K = chopKinds[kind] || (chopKinds[kind] = { list: [], site: null, named: {}, i: 0, prev: -1, occ: {} });
+    var drawing = inDraw(), now = drawing ? chopTick() : clock() / 1000, s, M = chopMod();
+    if (name != null) {
+      s = K.named[name] || (K.named[name] = { s: null, t: now });
+    } else if (!drawing) {
+      hint('chopOut:' + kind, 'chopOutside', { fn: kind, example: CHOP_EX[kind] || CHOP_EX.lag }, 'info');
+      return null;
+    } else {
+      var i = K.i++;
+      if (K.site) {
+        var at = callSite(), key = at + '#' + (K.occ[at] = (K.occ[at] || 0) + 1);
+        s = K.site[key] || (K.site[key] = { s: null, t: now, at: at });
+      } else {
+        s = K.list[i] || (K.list[i] = { s: null, t: now, at: callSite(), born: cf.n });
+        if (s.stepN !== cf.n) { s.undo = s.s ? { st: chopSnap(s.s), t: s.t } : null; s.stepN = cf.n; }
+      }
+    }
+    if (!s.s && M) s.s = make(M);                       // its first step takes the input as it is: nothing glides in from 0
+    s.dt = Math.max(0, now - s.t); s.t = now; s.now = now;
+    return s;
+  }
+  // a string at the end names the slot; so does anything given in the name's own place (lag's 4th: 'p' + i, or a number)
+  function chopName(args, pos) {
+    var n = args.length, last = args[n - 1];
+    if (n > 1 && typeof last === 'string') return last;
+    return n > pos && args[pos] != null ? args[pos] : null;
+  }
+  function chopNum(v, d) { return typeof v === 'number' && isFinite(v) ? v : d; }
+  var CHOP_EX = { lag: "lag(knob1, 0.1, 0.5, 'a')", spring: "spring(knob1, 100, 6, 'a')", speed: "speed(micLevel, 'a')", trail: "trail(micLevel, 2, 'a')",
+    slope: "slope(knob1, 'a')", count: "count(beat, 4, 'a')", env: "env(mouseIsPressed, 0.01, 0.3, 'a')", drawTrail: "drawTrail(micLevel, 0, 0, width, 100, 0, 1, 'a')", scope: "scope(micLevel, 'mic')" };
+
+  // -- events: what env('kick') and count('kick') hear. The microphone's hits and the drum machine's (the same names
+  //    kickDetected() hears), any key, the machine's bars and steps, its cues by name, and trigger('anything').
+  var evTimes = {}, evCount = {}, evOff = {}, evBeatAt = -1;
+  var EV_HITS = { kick: 1, snare: 1, hat: 1, beat: 1 }, EV_BUILTIN = { kick: 1, snare: 1, hat: 1, beat: 1, note: 1, bar: 1, step: 1 };
+  function evPush(name) {
+    var a = evTimes[name] || (evTimes[name] = []);
+    a.push(clock() / 1000);
+    if (a.length > 32) a.splice(0, a.length - 32);
+    evCount[name] = (evCount[name] || 0) + 1;
+  }
+  function evDrums() {                                 // subscribed once: drums.on() is what drumHit() hears (no new UI, nothing loads)
+    if (evOff.drums) return;
+    evOff.drums = [
+      drums.on('hit', function (lane) {
+        var cb = DRUM_CB[lane];
+        if (cb) evPush(cb.replace('Detected', ''));    // kickDetected → 'kick': the lanes the sketch's own callbacks hear
+        if (DRUM_BEAT[lane] && drums.count !== evBeatAt) { evBeatAt = drums.count; evPush('beat'); }   // one beat per step, as beatDetected
+      }),
+      drums.on('bar', function () { evPush('bar'); }),
+      drums.on('step', function () { evPush('step'); }),
+      drums.on('cue', function (name) { evPush(String(name)); }),
+    ];
+  }
+  function evListen(name) {
+    evDrums();
+    if (EV_HITS[name]) {
+      if (!evOff['mic:' + name]) evOff['mic:' + name] = mic.on(name, function () { evPush(name); });
+      if (!drumsWanted && !drums.machine) micNeeded('env');   // no drums asked for: the hits are the microphone's (as a read of micLevel)
+    } else if (name === 'note') {
+      if (!evOff.note) evOff.note = midi.on('noteOn', function () { evPush('note'); });
+    } else if (!EV_BUILTIN[name] && !evOff['wait:' + name]) {   // a name of the sketch's own: say so if nothing ever triggers it
+      evOff['wait:' + name] = true;
+      var tm = setTimeout(function () { if (!evCount[name]) hint('chopEvent:' + name, 'chopNoEvent', { name: name }, 'info'); }, 4000);
+      if (tm && tm.unref) tm.unref();                  // (Node, in the tests: never what keeps it running)
+    }
+  }
+  function evNow() { return inDraw() ? chopTick() : clock() / 1000; }
+
+  /** lag(value, up, down, name): follows value, up seconds while it rises, down while it falls (down = up when left out) */
+  FUNCS.lag = function (value, up, down) {
+    var name = chopName(arguments, 3), u = Math.max(0, chopNum(up, 0.1)), d = Math.max(0, chopNum(down, u));
+    var s = slotOf('lag', name, function (M) { return new M.Lag({ up: u, down: d }); });
+    return s && s.s ? s.s.step(value, s.dt, u, d) : value;
+  };
+  /** env('kick', attack, decay): 1 right after each kick (attack seconds to get there), 0 again after decay seconds.
+   *  env(mouseIsPressed, …): the same on every press (a boolean, or a number above 0.5, turning on) */
+  FUNCS.env = function (event, attack, decay) {
+    var a = Math.max(0, chopNum(attack, 0.01)), d = Math.max(0, chopNum(decay, 0.3));
+    if (event == null || typeof event === 'string') {
+      var name = event == null ? 'beat' : event;
+      evListen(name);
+      var M = chopMod(), times = evTimes[name];
+      return M && times ? M.envelope(times, evNow(), a, d) : 0;
+    }
+    var s = slotOf('env', chopName(arguments, 3), function () { return { on: false, times: [], value: 0 }; });
+    if (!s || !s.s) return 0;
+    var on = event === true || (typeof event === 'number' && event > 0.5);
+    if (on && !s.s.on) { s.s.times.push(s.now); if (s.s.times.length > 32) s.s.times.shift(); }
+    s.s.on = on;
+    return (s.s.value = chop.module.envelope(s.s.times, s.now, a, d));
+  };
+  /** trigger('boom'): an event of the sketch's own, for env('boom') and count('boom') */
+  FUNCS.trigger = function (name) { evPush(name == null ? 'trigger' : String(name)); };
+  /** speed(rate, name): adds rate every second → rotate(speed(TWO_PI)) is one turn a second */
+  FUNCS.speed = function (rate) {
+    var s = slotOf('speed', chopName(arguments, 1), function (M) { return new M.Speed(); });
+    return s && s.s ? s.s.step(rate, Math.min(s.dt, 0.25)) : 0;   // a frame counts 0.25 s at most: back from a hidden tab, no leap
+  };
+  /** spring(value, stiffness, damping, name): follows value like a mass on a spring (overshoots, settles) */
+  FUNCS.spring = function (value, stiffness, damping) {
+    var k = Math.max(0, chopNum(stiffness, 100)), c = Math.max(0, chopNum(damping, 6));
+    var s = slotOf('spring', chopName(arguments, 3), function (M) { return new M.Spring({ stiffness: k, damping: c }); });
+    return s && s.s ? s.s.step(value, s.dt, k, c) : value;
+  };
+  /** trail(value, seconds, name): the last seconds (2) of value, 60 a second, oldest first, the newest last */
+  function trailOf(kind, value, seconds, name) {
+    var sec = Math.max(0.05, Math.min(600, chopNum(seconds, 2)));
+    var s = slotOf(kind, name, function (M) { return new M.Trail({ seconds: sec }); });
+    return s && s.s ? s.s.step(value, s.dt, sec) : [];
+  }
+  FUNCS.trail = function (value, seconds) { return trailOf('trail', value, seconds, chopName(arguments, 2)); };
+  /** slope(value, name): how fast value changes, per second */
+  FUNCS.slope = function (value) {
+    var s = slotOf('slope', chopName(arguments, 1), function (M) { return new M.Slope(); });
+    return s && s.s ? s.s.step(value, s.dt) : 0;
+  };
+  /** count(beat): how many times it turned on · count(beat, 4): 0 1 2 3 0 … · count('kick'): how many kicks so far */
+  FUNCS.count = function (on, limit) {
+    var M = chopMod(), lim = chopNum(limit, 0);
+    if (typeof on === 'string') { evListen(on); return M ? M.wrapCount(evCount[on] || 0, lim) : 0; }
+    var s = slotOf('count', chopName(arguments, 2), function (M2) { return new M2.Count(); });
+    if (!s || !s.s) return 0;
+    s.s.value = s.s.step(on, lim);
+    return s.s.value;
+  };
+
+  // -- scope(value, label): a small oscilloscope in the corner across from the 🎹, the last few seconds of each value the frame
+  //    passed to it, one line per label. DOM over the page (pointer-events: none), so it is never in a recording or a 📷, and
+  //    never takes a click from the sketch. hints=off or scope=off: none (scope() still returns its value).
+  var SCOPE_ON = HINTS_ON && opt('scope', 'on') !== 'off', SCOPE_SECONDS = 4;
+  var SCOPE_COLORS = ['#5fe08a', '#ffd36b', '#9fd8ff', '#ff7ab6', '#ff9a5c', '#c3a6ff'];
+  var scopeBox = null, scopeCv = null, scopeRun = false, scopeSeen = -1e9, scopeOrder = 0, scopeTick = 0;
+  FUNCS.scope = function (value, label) {
+    var x = typeof value === 'boolean' ? +value : value;
+    if (!SCOPE_ON || !doc || typeof x !== 'number' || !isFinite(x) || !inDraw()) return value;
+    var s = slotOf('scope', label != null ? String(label) : null, function (M) { return { trail: new M.Trail({ seconds: SCOPE_SECONDS }), order: ++scopeOrder, label: label != null ? String(label) : '' }; });
+    if (!s || !s.s) return value;
+    s.s.trail.step(x, s.dt); s.s.value = x; s.s.seen = s.now;
+    scopeSeen = clock();
+    if (!scopeRun) { scopeRun = true; raf(scopePaint); }
+    return value;
+  };
+  function scopeChannels() {
+    var K = chopKinds.scope, out = [], now = clock() / 1000;
+    if (!K) return out;
+    var add = function (s) { if (s && s.s && now - s.s.seen < 1) out.push(s.s); };
+    K.list.forEach(add);
+    if (K.site) Object.keys(K.site).forEach(function (k) { add(K.site[k]); });
+    Object.keys(K.named).forEach(function (k) { add(K.named[k]); });
+    return out.sort(function (a, b) { return a.order - b.order; });
+  }
+  function placeScope() {
+    var side = O.corner === 'right' ? 'left' : 'right', edge = O.dock, off = 10;
+    if (panelOpen && dock) off += dock.getBoundingClientRect().height;
+    if (edge === 'top' && side === 'right' && onOP) off += 46;   // OpenProcessing: OPC's icon sits top-right
+    if (edge === 'top' && drumCard && drumCard.offsetParent) {   // the drum grid, top centre: keep below it where they would meet
+      var d = drumCard.getBoundingClientRect(), b = scopeBox.getBoundingClientRect();
+      if (d.left < b.right && d.right > b.left) off = Math.max(off, d.bottom + 8);
+    }
+    scopeBox.style[side] = '10px'; scopeBox.style[edge] = off + 'px';
+  }
+  function scopePaint() {
+    if (clock() - scopeSeen > 1500 || !doc.body) { if (scopeBox) scopeBox.style.display = 'none'; scopeRun = false; return; }
+    if (!scopeBox) {
+      scopeBox = el('div', 'position:fixed;z-index:' + (Z - 3) + ';pointer-events:none;border-radius:10px;overflow:hidden;' +
+        'background:rgba(14,14,18,.84);border:1px solid rgba(255,255,255,.18);box-shadow:0 6px 24px rgba(0,0,0,.3)');
+      scopeBox.id = 'oav-p5-scope'; scopeBox.setAttribute('aria-hidden', 'true');
+      scopeCv = el('canvas', 'display:block'); scopeBox.appendChild(scopeCv);
+      doc.body.appendChild(scopeBox);
+    }
+    scopeBox.style.display = 'block';
+    var ch = scopeChannels(), W = 264, rows = Math.max(1, Math.ceil(ch.length / 2)), top = 8 + rows * 16, PH = 84, H = top + PH + 18;
+    var dpr = Math.min(3, g.devicePixelRatio || 1);
+    if (scopeCv.width !== Math.round(W * dpr) || scopeCv.height !== Math.round(H * dpr)) {
+      scopeCv.width = Math.round(W * dpr); scopeCv.height = Math.round(H * dpr); scopeCv.style.width = W + 'px'; scopeCv.style.height = H + 'px';
+    }
+    if (scopeTick++ % 15 === 0) placeScope();
+    var c = scopeCv.getContext('2d');
+    if (!c) { raf(scopePaint); return; }
+    c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+    var lo = 0, hi = 1;
+    ch.forEach(function (s) { var v = s.trail.values(); for (var i = 0; i < v.length; i++) { if (v[i] < lo) lo = v[i]; if (v[i] > hi) hi = v[i]; } });
+    c.font = '600 11px ui-monospace,Menlo,monospace'; c.textBaseline = 'middle';
+    ch.forEach(function (s, i) {                       // the legend: two to a row, the label and the value now
+      var x = 10 + (i % 2) * 126, y = 12 + Math.floor(i / 2) * 16, col = SCOPE_COLORS[(s.order - 1) % SCOPE_COLORS.length];
+      c.fillStyle = col; c.fillRect(x, y - 1.5, 10, 3);
+      var t = (s.label || String(s.order)); if (t.length > 9) t = t.slice(0, 8) + '…';
+      c.fillText(t + ' ' + (Math.abs(s.value) >= 100 ? s.value.toFixed(0) : s.value.toFixed(2)), x + 14, y);
+    });
+    var x0 = 8, x1 = W - 34, y0 = top, y1 = top + PH, yOf = function (v) { return y1 - (v - lo) / (hi - lo || 1) * (y1 - y0); };
+    c.strokeStyle = 'rgba(255,255,255,.16)'; c.lineWidth = 1; c.beginPath();
+    [lo, hi].concat(lo < 0 && hi > 0 ? [0] : []).forEach(function (v) { var y = Math.round(yOf(v)) + 0.5; c.moveTo(x0, y); c.lineTo(x1, y); });
+    c.stroke();
+    c.fillStyle = 'rgba(255,255,255,.55)'; c.font = '500 10px ui-monospace,Menlo,monospace';
+    var lbl = function (v) { return Math.abs(v) >= 100 ? v.toFixed(0) : String(+v.toFixed(2)); };
+    c.fillText(lbl(hi), x1 + 4, y0); c.fillText(lbl(lo), x1 + 4, y1); c.fillText('−' + SCOPE_SECONDS + ' s', x0, y1 + 10);
+    ch.forEach(function (s) {
+      var v = s.trail.values(), n = v.length;
+      if (n < 2) return;
+      c.strokeStyle = SCOPE_COLORS[(s.order - 1) % SCOPE_COLORS.length]; c.lineWidth = 1.6; c.lineJoin = 'round'; c.beginPath();
+      for (var i = 0; i < n; i++) { var px = x0 + (x1 - x0) * i / (n - 1), py = yOf(v[i]); if (i) c.lineTo(px, py); else c.moveTo(px, py); }
+      c.stroke();
+    });
+    raf(scopePaint);
+  }
+  // -- drawTrail(values, x, y, w, h, lo, hi): the same picture ON the canvas (so it is in the work, and in a recording): a line
+  //    through the values, the oldest at x, lo at the bottom and hi at the top (0 and 1). A number instead of an array keeps its
+  //    own trail of the last 2 s. The sketch's stroke(); with noStroke() in effect, white.
+  function strokeOff() {
+    try { var r = p5inst() && p5inst()._renderer; if (!r) return false; if (r._doStroke === false) return true; if (r.states && 'strokeColor' in r.states && !r.states.strokeColor) return true; } catch (e) { /* */ }
+    return false;
+  }
+  FUNCS.drawTrail = function (values, x, y, w, h, lo, hi) {
+    var a = values;
+    if (!a || typeof a !== 'object' || typeof a.length !== 'number') a = trailOf('drawTrail', values, 2, chopName(arguments, 7));
+    if (typeof g.beginShape !== 'function' || a.length < 2) return a;
+    x = chopNum(x, 0); y = chopNum(y, 0); w = chopNum(w, chopNum(g.width, 100)); h = chopNum(h, chopNum(g.height, 100));
+    lo = chopNum(lo, 0); hi = chopNum(hi, 1);
+    var n = a.length;
+    g.push(); g.noFill();
+    if (strokeOff()) g.stroke(255);
+    g.beginShape();
+    for (var i = 0; i < n; i++) {
+      var v = typeof a[i] === 'boolean' ? +a[i] : a[i];
+      if (typeof v !== 'number' || !isFinite(v)) continue;
+      var u = hi === lo ? 0.5 : (v - lo) / (hi - lo);
+      g.vertex(x + w * i / (n - 1), y + h - (u < 0 ? 0 : u > 1 ? 1 : u) * h);
+    }
+    g.endShape(); g.pop();
+    return a;
+  };
+  CHOP_FNS.forEach(function (k) { chop[k] = FUNCS[k]; });   // OAVp5.chop.speed(…): for a sketch whose own `speed` is a number
+  var HC = zh ? {
+    chopOrder: ['{fn}() 每一幀呼叫的次數變了', '上一幀 {m} 次、這一幀 {n} 次。沒有名字的 {fn}() 照呼叫的先後找回自己上一幀的值，次數一變先後就對不上；從現在起改成照「寫在哪一行」對應（同一行照先後）。', '放在 if 或迴圈裡、時有時無的，給它一個名字最穩：{example}'],
+    chopOutside: ['{fn}() 在 draw() 外面被呼叫', '沒有名字的 {fn}() 靠 draw() 每一幀的呼叫順序記住上一幀；在 setup()、mousePressed() 這類地方它不記東西，直接回傳原值。', '移到 draw() 裡；或給它一個名字，在哪裡呼叫都是同一個：{example}'],
+    chopNoEvent: ["env('{name}') 一直沒有動", '沒有東西觸發「{name}」。內建的事件：kick、snare、hat、beat（麥克風或鼓機）、note（任何琴鍵）、bar、step（鼓機）；其他名字要自己觸發。', "檢查拼字；或在 mousePressed() 這類地方寫 trigger('{name}')。"],
+  } : {
+    chopOrder: ['{fn}() was called a different number of times this frame', '{m} times in the last frame, {n} in this one. An unnamed {fn}() finds its memory by the order of the calls, and the order no longer lines up; from now on each call is matched by the line it is written on (in order on one line).', 'For one inside an if, or in a loop that grows and shrinks, a name is the sure way: {example}'],
+    chopOutside: ['{fn}() was called outside draw()', 'An unnamed {fn}() remembers the last frame by its place among the calls in draw(); in setup(), mousePressed() and the like it remembers nothing and returns its input as it is.', 'Move it into draw(), or give it a name and it is the same one wherever it is called: {example}'],
+    chopNoEvent: ["env('{name}') never moves", 'Nothing triggers "{name}". Built in: kick, snare, hat, beat (microphone or drums), note (any key), bar, step (drums); any other name is the sketch\'s own.', "Check the spelling, or call trigger('{name}') somewhere, e.g. in mousePressed()."],
+  };
+  Object.keys(HC).forEach(function (k) { H[k] = HC[k]; });
 
   // ---------------------------------------------------------------- publish + start
   g.OAVp5 = midi;
