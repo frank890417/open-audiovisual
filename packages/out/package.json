@@ -1,0 +1,31 @@
+{
+  "name": "@openav/out",
+  "version": "0.1.0",
+  "description": "Web-page parameters to physical hardware through one local bridge: WLED (DDP), serial motor boards, OSC — with a watchdog that falls back to safe values.",
+  "type": "module",
+  "main": "client.js",
+  "exports": {
+    ".": "./client.js",
+    "./bridge": "./bridge/out-bridge.mjs"
+  },
+  "bin": { "openav-out-bridge": "bridge/out-bridge.mjs" },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/out"
+  },
+  "lab": {
+    "module": "out",
+    "files": [
+      "out/client.js"
+    ],
+    "exports": [
+      "OutClient"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.out = OutClient on ws://127.0.0.1:6450/out (this machine's out-bridge; ?out=sim records values only, ?out=ws://… another bridge, ?out=0 off): lab.out.set(ch, v) / batch({…}) once per frame per channel, .status / .onStatus, and meta.params[].out binds a param (normalized 0..1, or raw with outRaw) to a channel such as light/1/r.",
+    "remoteTab": null,
+    "since": "2026-10"
+  }
+}

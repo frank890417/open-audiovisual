@@ -1,0 +1,10 @@
+{
+  "channels": [
+    { "match": "light/*", "sink": "ddp",    "host": "192.168.1.50", "port": 4048, "pixels": 60, "map": "rgb-index" },
+    { "match": "motor/*", "sink": "serial", "path": "/dev/cu.usbmodem1101", "baud": 115200, "format": "line" },
+    { "match": "osc/*",   "sink": "osc",    "host": "127.0.0.1", "port": 9000 },
+    { "match": "*",       "sink": "log" }
+  ],
+  "safe": { "light/*": 0, "motor/*": 0.5 },
+  "timeoutMs": 500
+}
