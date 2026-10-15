@@ -1,13 +1,13 @@
 # 套件一覽
 
-二十四個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十五個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
 | L1 輸入 | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 映射 | `mapping` |
 | L3 世界 | `stage` · `world-webtoe` |
-| L4 輸出 | `sound` · `osc` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
+| L4 輸出 | `sound` · `osc` · `out` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `score` · `console` · `monitor` |
 | 手機 | `relay` · `surface` · `remote` |
 | 膠水 | `core` · `show` · `mcp` |
@@ -239,6 +239,18 @@ L4 輸出 · 透過一個小小的 Node 橋接程式，把 OSC 從瀏覽器送�
 | 橋接 | `node packages/osc/bridges/osc-bridge.js [httpPort=7456] [targetHost=127.0.0.1] [targetPort=3456]` |
 
 見[演出控制](show-control.md#osc-output)。
+
+## @openav/out
+
+L4 輸出 · 把網頁作品的參數經一支本機橋接（`node packages/out/bridge/out-bridge.mjs --config out.json`，`ws://127.0.0.1:6450/out`）送到實體硬體：WLED 燈條（DDP）、序列埠馬達板、OSC。頁面安靜下來或最後一個連線離開時，看門狗會把每個通道退回設定好的安全值。
+
+| export | 簽名 |
+|---|---|
+| `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`、`last`、`bridge`：同一通道每個 frame 只送一個值，斷線以退避重連，有心跳 |
+| 橋接 | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sink：`ddp` `serial` `osc` `udp-json` `log` |
+| 實驗室 | `meta.params[i].out: "light/1/r"` 綁定參數（照 min–max 正規化到 0..1，`outRaw` 送原值）；`?out=sim` · `?out=0` · `?out=ws://…` |
+
+設定檔與看門狗規則見套件的 README。
 
 ## @openav/record
 

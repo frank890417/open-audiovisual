@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty-four packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-five packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -10,7 +10,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` · `record` · `fab` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `console` · `monitor` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
@@ -260,6 +260,20 @@ L4 output · OSC from the browser through a small Node bridge to UDP.
 | bridge | `node packages/osc/bridges/osc-bridge.js [httpPort=7456] [targetHost=127.0.0.1] [targetPort=3456]` |
 
 See [Show control](show-control.md#osc-output).
+
+## @openav/out
+
+L4 output · page parameters to physical hardware through one local bridge
+(`node packages/out/bridge/out-bridge.mjs --config out.json`, `ws://127.0.0.1:6450/out`): WLED light strips (DDP),
+serial motor boards, OSC. A watchdog sends every channel its configured safe value when the page goes quiet or the last client leaves.
+
+| export | signature |
+|---|---|
+| `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`, `last`, `bridge` — one value per channel per frame, reconnects with backoff, heartbeat |
+| bridge | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sinks `ddp` `serial` `osc` `udp-json` `log` |
+| lab | `meta.params[i].out: "light/1/r"` binds a param (0..1 by min–max, `outRaw` for the raw value); `?out=sim` · `?out=0` · `?out=ws://…` |
+
+See the package README for the config file and the watchdog rules.
 
 ## @openav/record
 

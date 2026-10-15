@@ -4,7 +4,7 @@
 
 輸入（MIDI、麥克風、和弦、身體與手部姿態、手機）發出有名字的訊號；映射層把訊號接到參數；演算的「世界」只讀參數，產生畫面與聲音；時間軸、導演控台與後台監看負責把演出跑起來。原生 ES module，零建置、零相依。從《The Last Input》（吳哲宇，2026；IRCAM 駐村 × C-LAB，臺北，49.4 聲道表演）抽出來。
 
-目前：24 個套件、15 個範例、27 份 MIDI 控制器設定檔（21 台真機與 6 種通用版型），版本 0.1.0。
+目前：25 個套件、15 個範例、27 份 MIDI 控制器設定檔（21 台真機與 6 種通用版型），版本 0.1.0。
 
 網站：https://openaudiovisual.com/（English）· https://openaudiovisual.com/zh/（繁體中文）
 原始碼：https://github.com/frank890417/open-audiovisual
@@ -127,12 +127,12 @@
 
 ## Packages
 
-24 個套件在 `packages/<name>/`，透過 import map 以 `@openav/<name>` 引入。
+25 個套件在 `packages/<name>/`，透過 import map 以 `@openav/<name>` 引入。
 
 - 輸入: `midi` (Web MIDI 輸入與輸出，支援多台裝置與螢幕上的控制器) · `audio` (麥克風分析：音量、頻段、亮度、起音、鼓點) · `chord` (為演出設計的和弦偵測：協和度、三和弦、音堆) · `pose` (用鏡頭追蹤身體與手的 21 個點，全部在本機運算) · `keys` (螢幕鋼琴、電腦鍵盤演奏，以及模擬演奏者) · `drums` (合成鼓組與步進音序器，發出和音訊分析同樣形狀的訊號) · `leap` (透過本機的小橋接，把 Leap Motion 的手變成 21 點手部訊號)
 - 映射: `mapping` (訊號到參數的路由：曲線、平滑、多對多、learn)
 - 世界: `stage` (世界的外殼：管生命週期和參數，不限定繪圖方式) · `world-webtoe` (把 WebToe 節點網路當成世界來演奏)
-- 輸出: `sound` (頁面裡的樂器（Salamander 鋼琴、敲擊琴、弦樂、風琴、合成器音色），加一個檔案就能放進自己的聲音) · `osc` (透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP) · `record` (演出影片：作品疊在鏡頭畫面上、連同作品自己的聲音錄成一個檔；MIDI 演奏可錄下再重播) · `fab` (做得出來嗎？對任何網格做 3D 列印檢查（水密、懸空、最薄壁、重量），匯出 STL、OBJ、GLB、STEP)
+- 輸出: `sound` (頁面裡的樂器（Salamander 鋼琴、敲擊琴、弦樂、風琴、合成器音色），加一個檔案就能放進自己的聲音) · `osc` (透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP) · `out` (把網頁作品的參數經一支本機橋接送到 WLED 燈條、序列埠馬達板和 OSC，斷線時看門狗退回安全值) · `record` (演出影片：作品疊在鏡頭畫面上、連同作品自己的聲音錄成一個檔；MIDI 演奏可錄下再重播) · `fab` (做得出來嗎？對任何網格做 3D 列印檢查（水密、懸空、最薄壁、重量），匯出 STL、OBJ、GLB、STEP)
 - 時間軸、控台、監看: `timeline` (參數自動化、場景與 cue：整場演出的時鐘) · `score` (把演出寫成段落長度：版本、cue、hold，還有模組壞掉時讓演出不中斷的導演) · `console` (導演控台與演出模式) · `monitor` (網路裡任何裝置都能看的後台畫面)
 - 手機與平板: `relay` (零相依的房間中繼，讓手機和 iPad 連進來) · `surface` (類似 TouchOSC 的控制元件，以及 autoSurface(params)) · `remote` (手機與 iPad 端的 app：感測器、琴鍵、控制面板)
 - 核心與代理: `core` (Signals、Params、Loop：每一層共用的語言) · `show` (createShow()：一次呼叫組好整個外殼) · `mcp` (給程式代理用的 MCP 伺服器：列出、閱讀、建立、檢查)

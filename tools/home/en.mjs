@@ -163,6 +163,7 @@ export default {
       sound: 'Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own',
       osc: 'OSC out of the browser through a small Node bridge to UDP',
       record: 'Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed',
+      out: 'Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values',
       fab: 'Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files',
       timeline: 'Param automation, scenes and cues: the clock of the show',
       score: 'The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails',

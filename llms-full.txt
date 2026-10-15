@@ -7,7 +7,7 @@
 > Examples: https://openaudiovisual.com/examples/
 > p5.js in one line: https://openaudiovisual.com/p5/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 23 packages, 15 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
+> Today: 25 packages, 15 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -297,7 +297,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-Twenty-three plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+Twenty-five plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 | layer | package | role |
@@ -372,7 +372,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5**, an MCP server, and a handbook site.
 
-23 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 568 tests
+25 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 603 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -3605,7 +3605,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Twenty-three packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-five packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -3615,7 +3615,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` · `record` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `console` · `monitor` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
@@ -3866,6 +3866,20 @@ L4 output · OSC from the browser through a small Node bridge to UDP.
 
 See [Show control](show-control.md#osc-output).
 
+## @openav/out
+
+L4 output · page parameters to physical hardware through one local bridge
+(`node packages/out/bridge/out-bridge.mjs --config out.json`, `ws://127.0.0.1:6450/out`): WLED light strips (DDP),
+serial motor boards, OSC. A watchdog sends every channel its configured safe value when the page goes quiet or the last client leaves.
+
+| export | signature |
+|---|---|
+| `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`, `last`, `bridge` — one value per channel per frame, reconnects with backoff, heartbeat |
+| bridge | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sinks `ddp` `serial` `osc` `udp-json` `log` |
+| lab | `meta.params[i].out: "light/1/r"` binds a param (0..1 by min–max, `outRaw` for the raw value); `?out=sim` · `?out=0` · `?out=ws://…` |
+
+See the package README for the config file and the watchdog rules.
+
 ## @openav/record
 
 L4 output (video branch) · the performance video: the work and the performer's
@@ -3902,6 +3916,15 @@ const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks
 
 Package README with the MIDI takes: [packages/record](../packages/record/README.md).
 Example: [10-record](../examples/10-record/main.js).
+
+## @openav/fab
+
+L4 output (physical branch) · can it be made? A manufacturability report for any mesh (watertight, volume, overhang, thinnest wall, grams of PETG / PLA, one Chinese warning per problem) and STL / OBJ / GLB files; STEP and DXF when the shape is a smlibwasm Part or Shape. smlibwasm and manifold-3d are not bundled: `smlib()` / `manifold()` `import()` them from a URL on first use.
+
+| export | signature |
+|---|---|
+| `Fab` | `new Fab({ urls: { smlib, manifold }, scale, importer, download, context })` · `check(x, opts)` → report · `export(x, fmt, opts)` → `Promise<{ bytes, mime, ext, report }>` (`stl` `obj` `glb` `step` `dxf`) · `save(x, fmt, { name, params, note })` through `saver(bytes, info)` or a browser download · `smlib()` · `manifold()` · `meshOf(x)` |
+| pure functions | `checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })` · `weldMesh(mesh)` · `meshOf(x, { scale })` (TriMesh, smlibwasm Part, three.js Mesh/Object3D, Y up becomes Z up) · `toStlBytes` · `toObjText` · `toGlbBytes` |
 
 ## @openav/timeline
 
