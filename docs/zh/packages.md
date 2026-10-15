@@ -1,13 +1,13 @@
 # 套件一覽
 
-二十三個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十四個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
 | L1 輸入 | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 映射 | `mapping` |
 | L3 世界 | `stage` · `world-webtoe` |
-| L4 輸出 | `sound` · `osc` · `record`（MIDI 輸出在 `midi` 裡） |
+| L4 輸出 | `sound` · `osc` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `score` · `console` · `monitor` |
 | 手機 | `relay` · `surface` · `remote` |
 | 膠水 | `core` · `show` · `mcp` |
@@ -267,6 +267,15 @@ const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks
 ```
 
 套件說明（含 MIDI 錄音）：[packages/record](../../packages/record/README.md)。範例：[10-record](../../examples/10-record/main.js)。
+
+## @openav/fab
+
+L4 輸出（實體分支）· 做得出來嗎？對任何網格出可製造性報告（水密、體積、懸空、最薄壁、PETG／PLA 估重，每個問題一句中文警告），並匯出 STL／OBJ／GLB；形狀來自 smlibwasm 的 Part／Shape 時還能出 STEP、DXF。smlibwasm 與 manifold-3d 不打包：`smlib()`／`manifold()` 第一次用到時才從網址 `import()`。
+
+| 匯出 | 簽章 |
+|---|---|
+| `Fab` | `new Fab({ urls: { smlib, manifold }, scale, importer, download, context })` · `check(x, opts)` → 報告 · `export(x, fmt, opts)` → `Promise<{ bytes, mime, ext, report }>`（`stl` `obj` `glb` `step` `dxf`）· `save(x, fmt, { name, params, note })` 交給 `saver(bytes, info)`，沒有就瀏覽器下載 · `smlib()` · `manifold()` · `meshOf(x)` |
+| 純函式 | `checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })` · `weldMesh(mesh)` · `meshOf(x, { scale })`（TriMesh、smlibwasm Part、three.js Mesh／Object3D，Y 朝上轉 Z 朝上）· `toStlBytes` · `toObjText` · `toGlbBytes` |
 
 ## @openav/timeline
 

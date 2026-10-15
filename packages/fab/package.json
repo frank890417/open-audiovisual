@@ -1,0 +1,33 @@
+{
+  "name": "@openav/fab",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": { ".": "./index.js" },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/fab" },
+  "lab": {
+    "module": "fab",
+    "files": [
+      "fab/checks.js",
+      "fab/mesh.js",
+      "fab/export.js",
+      "fab/kernel.js",
+      "fab/index.js"
+    ],
+    "exports": [
+      "Fab",
+      "checkMesh",
+      "weldMesh",
+      "meshOf",
+      "meshOfAsync",
+      "toStlBytes",
+      "toObjText",
+      "toGlbBytes"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.fab = Fab: check(x) manufacturability report (watertight, volume, overhang, thinnest wall, PETG/PLA grams, Chinese warnings), export(x, 'stl'|'obj'|'glb'|'step'|'dxf'), save() POSTs to the dev server's /api/fab/<id> (or downloads when there is none), and smlib()/manifold() import the CAD kernels on first use from window.__LAB__.vendor; draws no UI.",
+    "remoteTab": null,
+    "since": "2026-10"
+  }
+}

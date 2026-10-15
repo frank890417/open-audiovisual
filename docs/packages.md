@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty-three packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-four packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -10,7 +10,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` · `record` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `console` · `monitor` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
@@ -297,6 +297,15 @@ const rec = new Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks
 
 Package README with the MIDI takes: [packages/record](../packages/record/README.md).
 Example: [10-record](../examples/10-record/main.js).
+
+## @openav/fab
+
+L4 output (physical branch) · can it be made? A manufacturability report for any mesh (watertight, volume, overhang, thinnest wall, grams of PETG / PLA, one Chinese warning per problem) and STL / OBJ / GLB files; STEP and DXF when the shape is a smlibwasm Part or Shape. smlibwasm and manifold-3d are not bundled: `smlib()` / `manifold()` `import()` them from a URL on first use.
+
+| export | signature |
+|---|---|
+| `Fab` | `new Fab({ urls: { smlib, manifold }, scale, importer, download, context })` · `check(x, opts)` → report · `export(x, fmt, opts)` → `Promise<{ bytes, mime, ext, report }>` (`stl` `obj` `glb` `step` `dxf`) · `save(x, fmt, { name, params, note })` through `saver(bytes, info)` or a browser download · `smlib()` · `manifold()` · `meshOf(x)` |
+| pure functions | `checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })` · `weldMesh(mesh)` · `meshOf(x, { scale })` (TriMesh, smlibwasm Part, three.js Mesh/Object3D, Y up becomes Z up) · `toStlBytes` · `toObjText` · `toGlbBytes` |
 
 ## @openav/timeline
 

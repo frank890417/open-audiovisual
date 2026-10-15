@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="../assets/home/home.css?v=cfa1d7c">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=cfa1d7c">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -274,6 +274,7 @@
             <li><a href="#packages-openav-sound">@openav/sound</a></li>
             <li><a href="#packages-openav-osc">@openav/osc</a></li>
             <li><a href="#packages-openav-record">@openav/record</a></li>
+            <li><a href="#packages-openav-fab">@openav/fab</a></li>
             <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
             <li><a href="#packages-openav-score">@openav/score</a></li>
             <li><a href="#packages-openav-console">@openav/console</a></li>
@@ -345,7 +346,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">18 chapters · 174 sections · v0.1.0</p>
+      <p class="docs-stats">18 chapters · 175 sections · v0.1.0</p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -2853,7 +2854,7 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">14</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
-<p>Twenty-three packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+<p>Twenty-four packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
 npm yet.</p>
@@ -2863,7 +2864,7 @@ npm yet.</p>
 <tr><td>L1 input</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>leap</code> · <code>keys</code> · <code>drums</code></td></tr>
 <tr><td>L2 mapping</td><td><code>mapping</code></td></tr>
 <tr><td>L3 world</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
-<tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>record</code> (and MIDI out in <code>midi</code>)</td></tr>
+<tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>record</code> · <code>fab</code> (and MIDI out in <code>midi</code>)</td></tr>
 <tr><td>spines</td><td><code>timeline</code> · <code>score</code> · <code>console</code> · <code>monitor</code></td></tr>
 <tr><td>phones</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
 <tr><td>glue</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
@@ -3103,6 +3104,15 @@ comp.start();
 <span class="tc">// later: const { blob, mimeType } = await rec.stop();</span></code></pre></div>
 <p>Package README with the MIDI takes: <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/record/README.md" rel="noopener">packages/record</a>.
 Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/10-record/main.js" rel="noopener">10-record</a>.</p>
+<h3 id="packages-openav-fab">@openav/fab<a class="anchor" href="#packages-openav-fab" aria-label="Link to this section">#</a></h3>
+<p>L4 output (physical branch) · can it be made? A manufacturability report for any mesh (watertight, volume, overhang, thinnest wall, grams of PETG / PLA, one Chinese warning per problem) and STL / OBJ / GLB files; STEP and DXF when the shape is a smlibwasm Part or Shape. smlibwasm and manifold-3d are not bundled: <code>smlib()</code> / <code>manifold()</code> <code>import()</code> them from a URL on first use.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Fab</code></td><td><code>new Fab({ urls: { smlib, manifold }, scale, importer, download, context })</code> · <code>check(x, opts)</code> → report · <code>export(x, fmt, opts)</code> → <code>Promise&lt;{ bytes, mime, ext, report }&gt;</code> (<code>stl</code> <code>obj</code> <code>glb</code> <code>step</code> <code>dxf</code>) · <code>save(x, fmt, { name, params, note })</code> through <code>saver(bytes, info)</code> or a browser download · <code>smlib()</code> · <code>manifold()</code> · <code>meshOf(x)</code></td></tr>
+<tr><td>pure functions</td><td><code>checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })</code> · <code>weldMesh(mesh)</code> · <code>meshOf(x, { scale })</code> (TriMesh, smlibwasm Part, three.js Mesh/Object3D, Y up becomes Z up) · <code>toStlBytes</code> · <code>toObjText</code> · <code>toGlbBytes</code></td></tr>
+</tbody>
+</table></div>
 <h3 id="packages-openav-timeline">@openav/timeline<a class="anchor" href="#packages-openav-timeline" aria-label="Link to this section">#</a></h3>
 <p>Spine · automation, scenes and transport; pure logic.</p>
 <div class="table-wrap"><table>
@@ -3607,7 +3617,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=cfa1d7c"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

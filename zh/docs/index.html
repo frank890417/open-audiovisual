@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="../../assets/home/home.css?v=cfa1d7c">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/#article","url":"https://openaudiovisual.com/zh/docs/","name":"文件｜open-audiovisual","description":"open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"open-audiovisual 使用手冊","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["簡介","快速開始","核心概念","架構","寫一個世界","輸入","映射","演出控制","總譜與導演","MIDI 控制器與嵌入","p5.js 一行接上","手機、中繼與控制面板","訊號一覽","套件一覽","給 AI 代理","實驗室整合（\"lab\" 欄位）","疑難排解","路線圖"],"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=cfa1d7c">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -274,6 +274,7 @@
             <li><a href="#packages-openav-sound">@openav/sound</a></li>
             <li><a href="#packages-openav-osc">@openav/osc</a></li>
             <li><a href="#packages-openav-record">@openav/record</a></li>
+            <li><a href="#packages-openav-fab">@openav/fab</a></li>
             <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
             <li><a href="#packages-openav-score">@openav/score</a></li>
             <li><a href="#packages-openav-console">@openav/console</a></li>
@@ -345,7 +346,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">18 章 · 174 節 · v0.1.0</p>
+      <p class="docs-stats">18 章 · 175 節 · v0.1.0</p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -2239,14 +2240,14 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">套件一覽<a class="anchor" href="#packages" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">14</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/packages.md">docs/zh/packages.md</a></span></p>
-<p>二十三個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
+<p>二十四個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>層</th><th>套件</th></tr></thead>
 <tbody>
 <tr><td>L1 輸入</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>leap</code> · <code>keys</code> · <code>drums</code></td></tr>
 <tr><td>L2 映射</td><td><code>mapping</code></td></tr>
 <tr><td>L3 世界</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
-<tr><td>L4 輸出</td><td><code>sound</code> · <code>osc</code> · <code>record</code>（MIDI 輸出在 <code>midi</code> 裡）</td></tr>
+<tr><td>L4 輸出</td><td><code>sound</code> · <code>osc</code> · <code>record</code> · <code>fab</code>（MIDI 輸出在 <code>midi</code> 裡）</td></tr>
 <tr><td>主軸</td><td><code>timeline</code> · <code>score</code> · <code>console</code> · <code>monitor</code></td></tr>
 <tr><td>手機</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
@@ -2459,6 +2460,15 @@ comp.start();
 <span class="tk">const</span> rec = <span class="tk">new</span> Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks }).start();
 <span class="tc">// later: const { blob, mimeType } = await rec.stop();</span></code></pre></div>
 <p>套件說明（含 MIDI 錄音）：<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/record/README.md" rel="noopener">packages/record</a>。範例：<a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/10-record/main.js" rel="noopener">10-record</a>。</p>
+<h3 id="packages-openav-fab">@openav/fab<a class="anchor" href="#packages-openav-fab" aria-label="這一節的連結">#</a></h3>
+<p>L4 輸出（實體分支）· 做得出來嗎？對任何網格出可製造性報告（水密、體積、懸空、最薄壁、PETG／PLA 估重，每個問題一句中文警告），並匯出 STL／OBJ／GLB；形狀來自 smlibwasm 的 Part／Shape 時還能出 STEP、DXF。smlibwasm 與 manifold-3d 不打包：<code>smlib()</code>／<code>manifold()</code> 第一次用到時才從網址 <code>import()</code>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Fab</code></td><td><code>new Fab({ urls: { smlib, manifold }, scale, importer, download, context })</code> · <code>check(x, opts)</code> → 報告 · <code>export(x, fmt, opts)</code> → <code>Promise&lt;{ bytes, mime, ext, report }&gt;</code>（<code>stl</code> <code>obj</code> <code>glb</code> <code>step</code> <code>dxf</code>）· <code>save(x, fmt, { name, params, note })</code> 交給 <code>saver(bytes, info)</code>，沒有就瀏覽器下載 · <code>smlib()</code> · <code>manifold()</code> · <code>meshOf(x)</code></td></tr>
+<tr><td>純函式</td><td><code>checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })</code> · <code>weldMesh(mesh)</code> · <code>meshOf(x, { scale })</code>（TriMesh、smlibwasm Part、three.js Mesh／Object3D，Y 朝上轉 Z 朝上）· <code>toStlBytes</code> · <code>toObjText</code> · <code>toGlbBytes</code></td></tr>
+</tbody>
+</table></div>
 <h3 id="packages-openav-timeline">@openav/timeline<a class="anchor" href="#packages-openav-timeline" aria-label="這一節的連結">#</a></h3>
 <p>主軸 · 自動化、場景和播放控制（transport），純邏輯。</p>
 <div class="table-wrap"><table>
@@ -2820,7 +2830,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=cfa1d7c"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>
