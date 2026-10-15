@@ -602,6 +602,69 @@ export class DrumTransport {
   }
   dispose() { this.stop(); }
 
+  // ---- following an external clock (0.7): another program keeps the time — Strudel, a DAW, a linked page — and the
+  // machine plays on its grid. Nothing below changes how the machine schedules: it only steers the tempo map the same
+  // way setBpm() does (anchors from a moment still free to change), so no hit is ever doubled or dropped by a correction.
+
+  /** the scheduler's time line (what is heard) at a moment of the `now` clock (performance.now() / 1000 in a page) */
+  heardAt(at) { return this._heardOff(this.times()) + at; }
+  // heard − now, as steady as it can be read: an AudioContext's clock moves in 128-frame steps (2.7 ms), so one reading of
+  // it is up to a step behind; the largest of the last two seconds' readings is the true offset (a jump of over 10 ms is
+  // a new clock — the context started or stopped — and starts the readings again)
+  _heardOff(c) {
+    const p = this._perf(), v = c.heard - p, h = this._hoff || (this._hoff = []);
+    if (h.length && Math.abs(v - h[h.length - 1].v) > 0.01) h.length = 0;
+    h.push({ p, v });
+    while (h.length > 1 && p - h[0].p > 2) h.shift();
+    if (h.length > 200) h.splice(0, h.length - 200);
+    let m = -Infinity; for (const x of h) if (x.v > m) m = x.v;
+    return m;
+  }
+  /** play on an external clock: position `pos` (bars from its start; 0 = the downbeat of bar 1) is heard at `at` (the
+   *  `now` clock: performance.now() / 1000, the MIDI timestamp / 1000), the tempo is `bpm`.
+   *  Stopped: starts so that bar 1's downbeat falls on the external pos 0 (in the future: it waits for it; a start that
+   *  is already past: it comes in on the external grid, the bars that went by skipped, the bar numbers the external ones).
+   *  Playing: an error over `jump` bars (a start, a relocate, the first call) does the same; a smaller one is taken up
+   *  over `catchUp` seconds by a tempo a little faster or slower (at most `pull` of it), then the external tempo again.
+   *  → the error found, in seconds (positive: the machine was behind). */
+  follow({ pos = 0, at, bpm } = {}, { catchUp = 0.5, jump = 0.125, pull = 0.08, still = 0.0005 } = {}) {
+    bpm = +bpm;
+    if (!(bpm > 0) || !(at >= 0 || at < 0)) return 0;
+    const c = this.times(), T = this._heardOff(c) + at;
+    const ext = (t) => pos + (t - T) * bpm / 240;          // where the external clock is at heard-time t
+    const f = this._follow || (this._follow = { bpm, err: 0, jumps: 0, steers: 0, at: 0 });
+    f.bpm = bpm; f.at = this._perf();
+    const s = this.scheduler;
+    if (!this.playing) { this._followStart(c, T - pos * 240 / bpm, ext(c.sched), bpm); f.jumps++; f.err = 0; return 0; }
+    const cut = c.sched + 0.01;
+    const err = ext(cut) - s.posAt(cut);                    // bars; > 0: the machine is behind
+    f.err = err * 240 / bpm;
+    if (Math.abs(err) > jump) { this._followStart(c, T - pos * 240 / bpm, ext(c.sched), bpm); f.jumps++; return f.err; }
+    if (Math.abs(f.err) < still && Math.abs(s.bpm - bpm) < 1e-9) return f.err;   // on it already: nothing taken back, nothing redone
+    const lean = Math.max(-pull, Math.min(pull, err * 240 / catchUp / bpm));   // the tempo that closes the gap in catchUp s
+    const dropped = s.setBpm(bpm * (1 + lean), cut);
+    s.setBpm(bpm, cut + catchUp);                           // and the external tempo again from then on
+    if (lean) f.steers++;
+    this._cancel(dropped, c);
+    this._fill(c);
+    if (!this._hb) this._beat();
+    return f.err;
+  }
+  /** { bpm, err (s, the last correction), jumps, steers, at } while following; null when it never did */
+  followInfo() { return this._follow ? Object.assign({}, this._follow) : null; }
+  /** stop following (the machine keeps the tempo it has, on its own clock) */
+  unfollow() { this._follow = null; }
+  // start with bar 1's downbeat at heard-time t0; whatever of the external timeline is already past (before `posNow`) is
+  // skipped the way advance() skips a frozen page's backlog, so the bar numbers stay the external ones
+  _followStart(c, t0, posNow, bpm) {
+    if (this.playing) this._cancel(this.scheduler.stop(), c);
+    this.scheduler.setBpm(bpm);
+    this.scheduler.start(t0);
+    if (posNow > 0) this.scheduler._to = Math.ceil(posNow * STEPS - 1e-9) / STEPS;
+    this._fill(c);
+    this._beat();
+  }
+
   _fill(c) {
     const q = this.scheduler.queue;
     if (c.live && this._wentLive) {        // audio just came on: what is still ahead goes to the kit, what is past stays silent

@@ -377,6 +377,10 @@ from code, p5's own <code>saveCanvas('name', 'png')</code> does the same.</li>
 iPad have no Web MIDI; the on-screen controller and the phone still work there. A sketch that uses Web MIDI itself
 (<code>navigator.requestMIDIAccess</code>, WebMidi.js) also hears the screen and the phone, as one more input called
 <strong>OAV Virtual MIDI</strong>.</p>
+<p>Other programs are a fourth input (0.7). What a program plays into OAV Virtual MIDI's <strong>output</strong> — Strudel's
+<code>.midi('OAV Virtual MIDI')</code> — reaches the sketch at the moment it was stamped with (<code>midi.last.source</code> is <code>virtual-out</code>);
+an external MIDI clock moves <code>drumPhase</code>, <code>drumBar</code> and a drum machine; and <code>link=&lt;room&gt;</code> brings another tab's or another
+computer's programs into this sketch. All of it: <a href="../docs/#strudel">With Strudel</a>.</p>
 <h3 id="p5-when-something-goes-wrong">When something goes wrong<a class="anchor" href="#p5-when-something-goes-wrong" aria-label="#">#</a></h3>
 <p>Nobody watches OpenProcessing's console while playing, so problems are said on the page: a small card beside the 🎹, never
 over the middle of the canvas, in the browser's language, once per page, with a × to close it. Each card says <strong>what

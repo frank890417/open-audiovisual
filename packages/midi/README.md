@@ -176,6 +176,15 @@ import { createController, Midi, MidiControllers, MidiController, controllerRout
   `select`, `assign`). `ControllerView` — the faceplate. `controllerRoutes(profile, { knob1: 'hue' })`
   — mapper routes (continuous control goes through params, AGENTS.md rule 1).
 - `Midi` — the engine: `enable()`, `listen(fn)`, `onDevices(fn)`, `send()`, `panic()`, `dispose()`.
+- `createVirtualMIDIAccess({ name, onOutput(bytes, timestamp), onClear })` (`virtual-access.js`) — a Web MIDI access with one
+  more input and output of its own: what a program `send(bytes, timestamp)`s to the output reaches `onOutput` with the
+  moment it should sound (performance.now() ms); `output.clear()` calls `onClear`; `input.listening` counts listeners,
+  `requests` how often it was handed out. `splitMidi(bytes)` splits one send into whole messages.
+- `MidiClock` (`clock.js`, pure) — follows an external MIDI clock: `feed(bytes, t)` for 0xF8 / start / continue / stop / song
+  position at time t (seconds) → `'clock' | 'start' | … | 'dupe'`; `bpm` (a line through the last 24 clocks), `phaseAt(t)`
+  → `{ pos, bar, beat, bpm, running }`, `anchor()`, `state(t)` (`none · running · stopped · lost`). A start repeated with one
+  timestamp counts once (Strudel sends three); a clock with the start's timestamp is the downbeat whichever came first.
+  oav-p5 drives `DrumTransport.follow()` (@openav/drums) with it.
 
 ## Drawn into a canvas (video)
 
@@ -285,5 +294,5 @@ Turn it off: `<oav-controller telemetry="off">` · `createController(p, { teleme
 `parse.js` bytes ⇄ events ⇄ signal names · `profiles.js` validate / match · `controller.js`
 MidiController · `manager.js` MidiControllers · `view.js` ControllerView · `canvas.js`
 ControllerCanvas (for video) · `panel.js` docked panel · `embed.js` options, payloads, postMessage (pure, tested) · `element.js` `<oav-controller>`
-· `index.js` Midi engine + `createController` · `virtual-access.js` Web MIDI shim ·
+· `index.js` Midi engine + `createController` · `virtual-access.js` Web MIDI shim (its output heard, 0.7) · `clock.js` MidiClock ·
 `link.js` / `remote-tab.js` phones over the relay · `profiles/` the data.

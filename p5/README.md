@@ -347,6 +347,37 @@ channel, source, control }`); `noteOn(note, velocity, channel)`, `noteOff`, `con
 A sketch with its own Web MIDI code (`navigator.requestMIDIAccess`, WebMidi.js) also hears the screen and the phone
 as one more input, **OAV Virtual MIDI**, after the real ports.
 
+## Other programs: Strudel, a clock, a linked page (0.7)
+
+- **What a program plays into "OAV Virtual MIDI" is heard.** Strudel's `note("c3 e3 g3").midi('OAV Virtual MIDI')`, a
+  WebMidi.js sketch's `output.send(bytes, timestamp)`: `notePressed()`, `knob1`, the pads, `startSound()`'s instrument, as from a
+  keyboard, at the timestamp it gave (Strudel sends 0.21–0.32 s ahead; measured on strudel.cc: within 5 ms, median 0.1 ms).
+  `midi.last.source` is `'virtual-out'`. What came in on the output never goes back out of the virtual input (Strudel's
+  `midin` ↔ `.midi` would play each other forever); `output.clear()` drops what waits, a waiting note-off lands at once.
+- **An external clock is followed.** 0xF8 ×24 a beat, start / continue / stop, song position (`midicmd("clock*96, <start
+  stop>/8")` in Strudel, a DAW over IAC, a drum machine on a cable) → `drumPhase`, `beatPhase`, `drumBar`, `drumStep`, `drumBpm`;
+  a drum machine that is up (`startDrums()`) plays at its tempo on its downbeat and starts / stops with it (its card says
+  "following an external clock · 128 BPM"); a start sent three times with one timestamp counts once. `OAVp5.clock.info`
+  `{ state, bpm, running, following, source, clocks, dupes, … }`, `OAVp5.clock.phase`. Measured at 128 bpm on strudel.cc:
+  `drumPhase` within 1.2 ms of Strudel's bar, kicks within 6 ms of its beat (three runs). `clock=off` ignores it; with no clock nothing changes.
+  The counting is @openav/midi's `MidiClock` (`packages/midi/clock.js`), the steering `DrumTransport.follow()`.
+- **`link=<room>`: pages hear each other's programs.** Every OAV page with the same room — another tab, another computer —
+  gets what this page's programs play into the virtual output (notes, CCs, the clock), over the phone relay, played there
+  when it sounds here (`midi.last.source` `'link'`; @openav/relay's `MidiLink`, `packages/relay/link.js`, says how two
+  clocks are lined up). Measured, two tabs over wss://remote.cheyuwu.com (one way ≈ 61 ms): within −3 … +7 ms of Strudel's
+  timestamps (two runs). From strudel.cc keep a `wss://` relay: Chrome blocks its way to `ws://127.0.0.1` (local-network checks). Nothing received is sent on; a linked note a program plays back out within 600 ms is held back as an echo.
+  `linkdelay=` (ms) buffers more. The room is the phones' room too. 🎹 grows a 🔗 (green: another page is there) and the
+  panel says room, pages and trip; `OAVp5.link.info`. `p5/examples/with-strudel/` is the sketch side.
+- **In Strudel** (strudel.cc, or `note()` and `s()` with `stack()` / `samples()` already on the page; `strudel=on|off`):
+  one card says which names Strudel owns (`note`, `velocity`, `beat`: left alone) and what to read instead; MIDI is asked
+  for by Strudel's `midin()`, not at load (`hardware=click`); the 🎹 panel is a box in the corner a third of the window high
+  (`compact`), the 🎹 sits above Strudel's side-panel buttons; the wiring line says "(your code)".
+- **🩺 "Other programs":** whether anything asked for OAV Virtual MIDI (no ⇒ "this page opened MIDI before oav-p5 loaded:
+  reload", Strudel's silent failure), how many listen on its input, what came out of its output and when, the clock, the
+  echoes held back, the link (room, pages, one-way trip, late notes).
+- The whole chapter, with three recipes run on strudel.cc and the credits: [docs → With Strudel](https://openaudiovisual.com/docs/#strudel).
+  OAV contains no Strudel code and calls none of it; they meet over MIDI.
+
 ## Why `prepend`, and why one async line is enough
 
 p5's friendly errors read the page's last `<script>` as the sketch: first in `<head>`, this file is never mistaken
@@ -362,7 +393,7 @@ message means the line did not load.
 
 | key | values | default |
 |---|---|---|
-| `hardware` | `auto` (ask at once) · `click` (ask from the 🎹 panel) · `off` | `auto` |
+| `hardware` | `auto` (ask at once) · `click` (ask from the 🎹 panel) · `off` | `auto` (`click` in Strudel) |
 | `panel` | `closed` (just 🎹) · `open` · `off` | `closed` |
 | `profile` | any @openav/midi profile id (`akai-lpd8`, …) | follows the plugged-in device, else `arturia-minilab3` |
 | `opc` | `on` · `off` | `on` |
@@ -379,15 +410,21 @@ message means the line did not load.
 | `title` | a name in the recorded files: `oav-<title>-<date>-<time>.mp4` | none |
 | `drums` | `lookahead` (scheduled ahead on the audio clock) · `frame` (0.5's machine, moved by the frames: a safety net) | `lookahead` |
 | `drumlatency` | `auto` (the output latency the browser reports) · milliseconds (a Bluetooth speaker: try `200`) | `auto` |
+| `link` | a room: OAV pages with the same one hear each other's programs, over the `relay` (0.7) | none |
+| `linkdelay` | milliseconds of extra buffer on a linked page's notes | `0` |
+| `clock` | `follow` (an external MIDI clock moves `drumPhase` & co. and a drum machine that is up) · `off` | `follow` |
+| `strudel` | `auto` (strudel.cc, or Strudel's functions on the page) · `on` · `off` | `auto` |
+| `compact` | `on` (the 🎹 panel as a box in the corner, a third of the height) · `off` | `on` in Strudel |
 | `debug` | `1`: trace clicks and loading in the console | off |
 
 ## Size, versions
 
-`oav-p5.js` is about 178 KB (60 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
+`oav-p5.js` is about 186 KB (64 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
 its modules, ~130 KB transferred, from next to it), the microphone is read (`packages/audio`, ~7 KB), a phone is asked for (`packages/relay`, a QR encoder),
 an unknown controller is plugged in (`packages/midi/profiles`), sound is turned on (`packages/sound`, ~21 KB gzip, Tone.js ~230 KB
-from jsDelivr, and the piano's 2 MB of samples when the piano is picked), the drums are (`packages/drums`, ~22 KB gzip, and `packages/pattern`, ~15 KB gzip, beside it), or a take is
-recorded (`packages/record/recorder.js` with its `mime.js` and `layout.js`, ~9 KB gzip). Because it loads the rest of OAV from next to itself,
+from jsDelivr, and the piano's 2 MB of samples when the piano is picked), the drums are (`packages/drums`, ~22 KB gzip, and `packages/pattern`, ~15 KB gzip, beside it), a take is
+recorded (`packages/record/recorder.js` with its `mime.js` and `layout.js`, ~9 KB gzip), an external clock arrives (`packages/midi/clock.js`, ~4 KB gzip)
+or `link=` is set (`packages/relay/link.js` with the relay client, ~6 KB gzip). Because it loads the rest of OAV from next to itself,
 one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.jsdelivr.net/gh/frank890417/open-audiovisual@<tag>/p5/oav-p5.js` is frozen.
 
 ## Tests
@@ -407,6 +444,16 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   fake AudioContext: 1000 bars with no drift (< 1 µs), the heartbeat alone (no frames), a tempo change mid-bar (nothing twice,
   nothing missing), nothing heard before the click and no backlog after it, the order, a hidden tab, a stalled frame loop, the
   lookahead growing, a pattern change heard at once, triplets and a crash, the phases, the output latency.
+- `node --test tests/strudel-link.test.js tests/external-clock.test.js` (part of `npm test`; 0.7): a program's output heard at its
+  timestamps and in order, no loop between the virtual output and input, `output.clear()`; Strudel's clock (start ×3, 0.25 s
+  ahead) moving `drumPhase` & co. and a drum machine (start, tempo, stop), `clock=off`; `link=` sending with times, receiving
+  on time, an echo held back; `MidiLink` over a real local relay (on time, not its own, once each, late ones at once) and its
+  clock-difference estimate; Strudel's names, `hardware=click`, compact; 🩺's row. `MidiClock` (tempo, dedupe, the downbeat
+  either way round, stop / continue / song position, a clock with no start) and `DrumTransport.follow()` under a fake audio clock.
+- `PW=<playwright> CHROME=<binary> [RELAY=live|local] [ONLY=page,link,recipes] node p5/test/strudel-smoke.cjs`: on the real
+  strudel.cc, oav-p5 served from this checkout: `.midi('OAV Virtual MIDI')` → `notePressed` (ms against Strudel's timestamps),
+  `midikeys` → `.midi` with no loop, Strudel's clock → the drum machine and `drumPhase` (ms), the stop, the compact panel and 🩺,
+  two tabs in one room (ms), the docs' three recipes as written (prebake, knob1 heard, micLevel, Hydra on Strudel's clock).
 - `p5/test/timing-probe.cjs` (same arguments; `OAV_OLD=<a 0.5.0 checkout>` adds it side by side; `BACKGROUND=1 CHROME=<Chrome
   for Testing>` adds a headed hidden-tab run over the DevTools protocol): four on floor at 120 bpm, a `draw()` busy 30 ms a frame,
   10 s of the kit's output through an AudioWorklet that notes each onset's sample frame; the spread of the intervals. Then 30 s
@@ -453,5 +500,6 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
 Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` (OPC sliders on knobs), `p5/examples/mic/` (`micLevel`, `bass`, `beat`),
 `p5/examples/keys/` (`startSound('piano')`, particles from every key, the 🎹 open), `p5/examples/drums/` (`startDrums`, `kickDetected`, `cue`, `cueFired`),
 `p5/examples/rhythm/` (one line of rhythm, `drumPhase` turning a hand once a bar, `beatPhase` breathing on every beat),
-`p5/examples/rhythm-visual/` (`drawRhythm` in its three styles and the line drawn on the canvas, `rhythmChanged`, R records 8 s)
-and `p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`).
+`p5/examples/rhythm-visual/` (`drawRhythm` in its three styles and the line drawn on the canvas, `rhythmChanged`, R records 8 s),
+`p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`)
+and `p5/examples/with-strudel/` (the picture side of Strudel in another tab: `link`, `notePressed`, `drumPhase` on Strudel's clock).

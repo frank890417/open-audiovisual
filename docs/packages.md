@@ -62,7 +62,8 @@ on-screen controllers that mirror real hardware.
 | score to MIDI | `new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })` · `segment({ index, cause })` · `cue({ name, n })`: segment changes and cues as notes and CCs, see [Score & Director](score.md#score-to-midi) |
 | parsing | `parseMessage(bytes)` → event · `encodeMessage(event)` → bytes · `genericSignals(event, { device })` · `publish(signals, list)` · `describe(event)` · `relativeDelta(value, mode)`, `relativeValue(delta, mode)`, `RELATIVE_MODES` · `bendToUnit`, `unitToBend`, `BEND_CENTER` |
 | controllers | `MidiController`, `MidiControllers`, `controllerRoutes(profile, bindings)`, `PROFILES`, `profileById(id)`, `ControllerView`, `mountMidiPanel(el, controllers, opts)`, `linkControllers`, profile helpers (`validateProfile`, `normalizeProfile`, `matchProfile`, …) |
-| Web MIDI shim | `createVirtualMIDIAccess(opts)`, `virtualRequestMIDIAccess` |
+| Web MIDI shim | `createVirtualMIDIAccess({ name, onOutput(bytes, timestamp), onClear })`, `virtualRequestMIDIAccess`, `splitMidi(bytes)`: its output is heard with each send's timestamp |
+| `MidiClock` (`clock.js`) | `new MidiClock({ ppq = 24, beatsPerBar = 4 })` · `feed(bytes, t)` → `'clock'·'start'·'continue'·'stop'·'spp'·'dupe'` · `bpm` · `phaseAt(t)` → `{ pos, bar, beat, bpm, running }` · `anchor()` · `state(t)`: follow an external MIDI clock ([With Strudel](strudel.md)) |
 | embedding | `createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut, telemetry })` → `ControllerHost` (`on(event, fn)`, `set`, `press`, `release`, `values`, `mount(el)`, `learn()`, `dispose()`) · `loadProfile(idOrUrl)` · the `<oav-controller>` element in `packages/midi/element.js` · embed protocol helpers in `embed.js` |
 
 ```js
@@ -169,7 +170,7 @@ detection.
 |---|---|
 | `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`; `clock: 'lookahead'` schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; `lang: 'zh'` names the lanes in Chinese; `rhythm: <@openav/pattern>` (or `useRhythm(mod)`) makes the line over the grid editable and the cells rewrite it, with `history` / `undo()`, Copy and Open in Strudel (0.7) |
 | `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`, `bpm` (the frame clock) |
-| `DrumScheduler`, `DrumTransport` | the lookahead clock: a grid or a compiled line → timed events, positions in bars turned into seconds by a tempo map (no drift); the runtime with a Web Worker heartbeat, the audio clock, and steps / hits told when heard |
+| `DrumScheduler`, `DrumTransport` | the lookahead clock: a grid or a compiled line → timed events, positions in bars turned into seconds by a tempo map (no drift); the runtime with a Web Worker heartbeat, the audio clock, and steps / hits told when heard; `follow({ pos, at, bpm })` plays on an external clock (a small error pulled in by tempo, a large one a jump onto its grid), `followInfo()`, `unfollow()` |
 | `drumEngine` | `drumEngine({ samples })` → a sound engine (see [Sound](show-control.md#sound)); `noteOn(note, vel, time)` plays at `time` on its own AudioContext and returns `{ time, cancel() }` |
 | `PATTERNS`, `GM` | pattern presets; General MIDI drum notes `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
 
@@ -409,6 +410,7 @@ Phones · room-scoped WebSocket relay (server) and its browser client.
 | `RelayClient` | `new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig })` · `connect()` · `close()` · `set(name, value)` · `send(name, value, pulse, extra)` · `feedback(name, value)` · `config(key, data)` · `status`, `latency`, `peers` |
 | signals helpers | `bindSignals(client, signals, { alias = 'any' })` · `fileSignal(signals, name, value, { pulse })` · `signalMeta(name, { pulse })` · `aliasOf(name)` · `normalizeValue(name, value)` · `deviceId()` |
 | `@openav/relay/server` | `attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000 })` → `{ hub, close() }`; standalone `node packages/relay/server.js [port=7458]` |
+| `MidiLink` (`link.js`) | `new MidiLink({ url, room, delay = 0, onMessages(list, from), onStatus })` · `connect()` · `send(bytes, whenMs)` · `info()` → `{ state, peers, rtt, trip, diff, lead, late, sent, received }` · `close()`; `LinkTiming`: MIDI between pages in one room, played when it sounds at the sender ([With Strudel](strudel.md)) |
 
 See [Phones, relay & surfaces](remote.md#the-relay).
 
