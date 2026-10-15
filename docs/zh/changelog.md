@@ -6,6 +6,24 @@
 
 ## oav-p5
 
+### 0.7.0
+
+2026-10-15 · [89c05ac](https://github.com/frank890417/open-audiovisual/commit/89c05ac)
+
+- **格子和那一行字是同一個東西。** 點鼓機的格子，那一行字跟著改寫（`bd*4`、`bd(3,8)`、`[~ sd]*2` 這種人會寫的樣子）；
+  直接在樂譜行打字，停手就套用，格子跟著變。打錯的字標紅，鼓機繼續打上一個能用的版本。↶ 或 ⌘Z 回上一步，
+  「複製」給你一行 `startDrums("…", 120)`，「在 Strudel 打開」把同一個節奏帶去 strudel.cc。[一行節奏](p5.md#one-line-of-rhythm)
+- **`drawRhythm(x, y, w, h, 'circle')`：**把節奏畫在畫布上，三種樣子（`grid`、`circle`、`spiral`），跟著 `drumPhase` 轉，
+  錄影錄得進去。[畫在畫布上的節奏](p5.md#the-rhythm-on-the-canvas)
+- **像 TouchDesigner CHOP 的數值工具：**`lag(micLevel, 0.03, 0.4)`（Lag CHOP，秒數跟 TouchDesigner 一樣：大約跟上
+  90% 的時間）、`env('kick', 0.01, 0.3)`（Trigger）、`speed()`、`spring()`、`trail()`、`slope()`、`count()`，
+  `draw()` 裡一行一個，不用宣告；`scope(值, '標籤')` 在角落畫出數值的曲線（不會錄進影片），`drawTrail()` 畫在畫布上。
+  新套件 `@openav/chop`。
+- **跟 Strudel 一起用：**在 strudel.cc 載入這一行，旋鈕、手機、麥克風就能當 Strudel 的參數；Strudel 的
+  `.midi('OAV Virtual MIDI')` 送來的音符照時間戳進到 `notePressed`（實測誤差最大 4.5 毫秒），它的節拍時鐘讓鼓機和
+  `drumPhase` 跟著走；`link=房間名` 把音符和時鐘轉到另一個分頁或另一台電腦。新文件〈[跟 Strudel 一起用](strudel.md)〉。
+- 現成草圖：`p5/examples/rhythm-visual/`、`p5/examples/lag/`、`p5/examples/with-strudel/`。
+
 ### 0.6.0
 
 2026-10-15 · [5e75007](https://github.com/frank890417/open-audiovisual/commit/5e75007)

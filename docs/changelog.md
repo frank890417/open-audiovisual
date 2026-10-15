@@ -7,6 +7,26 @@ it. **The framework and the site** are listed by day. Every entry links its comm
 
 ## oav-p5
 
+### 0.7.0
+
+2026-10-15 · [89c05ac](https://github.com/frank890417/open-audiovisual/commit/89c05ac)
+
+- **The grid and the line of rhythm are one thing.** Click a cell and the line is rewritten the way a person would write
+  it (`bd*4`, `bd(3,8)`, `[~ sd]*2`); type in the line and the grid follows once you pause. A typo is marked red and the
+  drums keep playing the last line that worked. ↶ or ⌘Z steps back, Copy gives you `startDrums("…", 120)`, and Open in
+  Strudel takes the same rhythm to strudel.cc. [One line of rhythm](p5.md#one-line-of-rhythm)
+- **`drawRhythm(x, y, w, h, 'circle')`:** the rhythm drawn on the canvas in three styles (`grid`, `circle`, `spiral`),
+  turning with `drumPhase`, so a recording has it. [The rhythm on the canvas](p5.md#the-rhythm-on-the-canvas)
+- **Values over time, like TouchDesigner's CHOPs:** `lag(micLevel, 0.03, 0.4)` (Lag CHOP, in TouchDesigner's seconds:
+  about the time to follow 90%), `env('kick', 0.01, 0.3)` (Trigger), `speed()`, `spring()`, `trail()`, `slope()`,
+  `count()`, one call each in `draw()`, nothing to declare; `scope(value, 'label')` plots a value in a corner (never
+  recorded) and `drawTrail()` plots it on the canvas. New package `@openav/chop`.
+- **With Strudel:** load the line in strudel.cc and the knobs, a phone and the microphone become Strudel's parameters;
+  notes Strudel sends with `.midi('OAV Virtual MIDI')` reach `notePressed` at their timestamps (4.5 ms at most, measured),
+  its clock leads the drum machine and `drumPhase`, and `link=<room>` carries notes and clock to another tab or computer.
+  New page: [With Strudel](strudel.md).
+- Ready-made sketches: `p5/examples/rhythm-visual/`, `p5/examples/lag/`, `p5/examples/with-strudel/`.
+
 ### 0.6.0
 
 2026-10-15 · [5e75007](https://github.com/frank890417/open-audiovisual/commit/5e75007)
