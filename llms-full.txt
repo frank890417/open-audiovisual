@@ -372,7 +372,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5**, an MCP server, and a handbook site.
 
-23 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 545 tests
+23 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 558 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -2900,6 +2900,105 @@ the browser blocked the microphone (click it again after allowing it from the ad
   `mic=off` means nothing can start it (the names stay `0`). `https` or `localhost` is required, as for any microphone page.
 - A sketch with a microphone, ready to open: `p5/examples/mic/`.
 
+## Sound: what is played is heard
+
+```js
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  startSound('piano');          // every key is heard: a keyboard, the 🎹 on screen, a phone
+}
+```
+
+| call / read | value |
+|---|---|
+| `startSound(instrument)` | turn sound on (default `'piano'`), or switch instruments while it plays |
+| `stopSound()` | turn it off |
+| `soundIsOn` | whether notes are heard now |
+
+The instruments are those of [`@openav/sound`](packages.md): `piano` (the Salamander grand; its 2 MB of samples load the
+first time, and the electric piano plays meanwhile, or instead if they cannot load), `epiano`, `organ`, `strings`, `choir`,
+`harp`, `marimba`, `vibraphone`, `xylophone`, `glockenspiel`, `music-box` and the `synth/…` presets. In the 🎹 panel,
+**🔊** turns sound on and off and shows a picker with every instrument and the loading progress.
+
+- **Off until asked.** Nothing loads before `startSound()` or 🔊; then `@openav/sound` from next to this file and Tone.js 15
+  from jsDelivr (the option `tone=<url>` loads it from elsewhere).
+- **The first click.** Browsers play audio only after the page has been clicked, and a key on a MIDI keyboard does not count.
+  A sketch that calls `startSound()` in `setup()` is heard from the first click or key; until then the 🔊 on the 🎹 button is yellow.
+- **Pads are drums.** Notes on MIDI channel 10 (MiniLab 3 and LPD8 pads, the General MIDI drum channel) play the drum kit,
+  not the piano. The sustain pedal holds notes.
+- **No code at all.** `?oav_sound=piano` on the page (any instrument id; on OpenProcessing `?sketch_oav_sound=piano`) makes any sketch heard
+  from the first click; `sound=off` keeps it silent.
+- A sketch that plays and draws, ready to open: `p5/examples/keys/`.
+
+## Drum machine
+
+```js
+function setup() {
+  startDrums('breakbeat', 110);   // a 16-step grid on screen; click a cell to change the beat
+}
+
+function kickDetected(level) {    // the microphone's own callback
+  // swell, flash, spawn
+}
+
+function drumHit(lane, velocity) {   // every hit: 'kick', 'snare', 'hat' or 'clap'
+}
+```
+
+| read | value |
+|---|---|
+| `drumsAreOn` | whether the machine is playing |
+| `drumStep` | 0..15, the step that just played |
+| `drumBar` | 1, 2, 3 …, counted from `startDrums()` |
+| `drumBpm` | the tempo (the grid's slider changes it too) |
+| `startDrums(pattern, bpm)`, `stopDrums()` | start (or change the pattern and tempo while it plays), stop |
+
+| write this function | when it is called |
+|---|---|
+| `drumHit(lane, velocity)` | every hit, all four lanes |
+| `kickDetected(level)`, `snareDetected(level)`, `hatDetected(level)` | a kick; a snare or a clap; a hat |
+| `beatDetected(level)` | a kick or a snare, once per step (and `beat` is true for a frame) |
+
+**A microphone sketch moves over unchanged.** Each hit calls the same functions the microphone does, so a sketch written for
+the microphone reacts to the machine as it is. Once a sketch has started the machine, defining `kickDetected()` no longer
+opens the microphone on the first click (a sketch that reads `micLevel` still asks, and then both call it).
+
+- **Patterns.** `'four on floor'`, `breakbeat`, `'half time'`, `latin`, `sparse`, or your own:
+  `startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })` (a lane left out is silent).
+- **Where the grid sits.** At the top centre: on OpenProcessing between the 🎹 and OPC's icon and clear of the console, and
+  below the 🎹 panel while that is open. – folds it, × stops the machine, and **🥁** in the 🎹 panel starts and stops it with
+  no code at all.
+- **The kit.** [`@openav/drums`](packages.md)' synthesized kit (no samples), heard from the first click like sound; the
+  callbacks run from the start either way.
+
+## Timeline: bars and cues
+
+The drum machine is also the clock: sixteen steps a bar, counted from `startDrums()`. Declare what happens at which bar:
+
+```js
+function setup() {
+  startDrums('breakbeat', 110);
+  cue(1, 'calm', 12);             // bar 1, and again every 12 bars
+  cue(5, 'bloom', 12);
+  cue(9, 'storm', 12);
+}
+
+function cueFired(name, bar) {    // or read cueName in draw()
+  look = SCENES[name];
+}
+```
+
+| call / read / define | |
+|---|---|
+| `cue(bar, name, every)` | at bar `bar` (1 is the first, `4.5` is halfway through bar 4); `every` bars again if given |
+| `cueName` | the last cue that fired (`''` before the first) |
+| `cueFired(name, bar)` | a cue's bar has come |
+| `barStarted(bar)`, `stepStarted(step, bar)` | the first step of every bar; every step |
+
+The same `cue()` twice adds nothing, so it may also sit in `draw()`. On one step the cues fire in the order they were
+declared, then `barStarted`, `stepStarted` and that step's hits. A silent clock: `startDrums({})`. The whole of it, ready to
+open: `p5/examples/drums/`.
+
 ## Three inputs
 
 | input | how |
@@ -2927,9 +3026,10 @@ osc(10, 0.1, () => knob1 * 2).out()                     // knob 1 sets the colou
 osc(10, 0.1, () => 1 + micLevel * 3).out()              // the microphone, asked for when this line first runs
 ```
 
-`note`, `velocity`, `knob1` … `knob8`, `fader1` …, `pad1` … and the 🎹 on-screen controller are there the same way.
+`note`, `velocity`, `knob1` … `knob8`, `fader1` …, `pad1` …, `drumStep` and the 🎹 on-screen controller are there the same way.
 Hydra is not p5, so there are no `notePressed()` callbacks to define; subscribe instead:
-`midi.on('notePressed', (note, velocity) => { … })` (it returns a function that unsubscribes). Checked against
+`midi.on('notePressed', (note, velocity) => { … })` or `OAVp5.drums.on('hit', (lane, velocity) => { … })` (each returns a
+function that unsubscribes). Checked against
 hydra-synth 1.4.0, the library the editor runs (`p5/test/hydra-smoke.cjs`).
 
 ## Notes
@@ -2944,7 +3044,7 @@ hydra-synth 1.4.0, the library the editor runs (`p5/test/hydra-smoke.cjs`).
   embed code it gives you does not: add `allow="midi"` to that `<iframe>` if the embedded sketch should hear a hardware
   controller, and `allow="microphone"` if it should hear the microphone.
 - **Options, MIDI-level access and tests**: [`p5/README.md`](https://github.com/frank890417/open-audiovisual/tree/main/p5).
-  Examples: `p5/examples/particles/`, `p5/examples/opc/` and `p5/examples/mic/`.
+  Examples: `p5/examples/particles/`, `p5/examples/opc/`, `p5/examples/mic/`, `p5/examples/keys/` and `p5/examples/drums/`.
 
 ---
 
@@ -3641,8 +3741,8 @@ detection.
 
 | export | signature |
 |---|---|
-| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true })` → `{ seq, engine, update(dt), dispose() }` |
-| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(name)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`, `bpm` |
+| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, bpm = 112, pattern })` → `{ seq, engine, root, play(on), setPattern(p), setBpm(bpm), update(dt), dispose() }` |
+| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`, `bpm` |
 | `drumEngine` | `drumEngine({ samples })` → a sound engine (see [Sound](show-control.md#sound)) |
 | `PATTERNS`, `GM` | pattern presets; General MIDI drum notes `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
 

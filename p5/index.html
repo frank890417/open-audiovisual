@@ -34,11 +34,11 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=cfa1d7c">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/p5/#article","url":"https://openaudiovisual.com/p5/","name":"oav-p5: play any p5.js sketch from a MIDI controller","description":"Add one line to any p5.js sketch and play it from a MIDI controller, an on-screen controller or a phone. Works with p5 1.x and 2.x, OpenProcessing included.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"p5.js in one line","about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/p5/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/p5/#breadcrumb"},"mentions":[]},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/p5/#code","name":"oav-p5","url":"https://openaudiovisual.com/p5/oav-p5.js","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser, p5.js 1.x and 2.x","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/p5/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"p5.js in one line","item":"https://openaudiovisual.com/p5/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=cfa1d7c">
-<link rel="stylesheet" href="../assets/examples/pages.css?v=cfa1d7c">
+<link rel="stylesheet" href="../assets/docs/docs.css">
+<link rel="stylesheet" href="../assets/examples/pages.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page p5-page">
@@ -169,6 +169,99 @@ file never starts the microphone for it.</li>
 <code>mic=off</code> means nothing can start it (the names stay <code>0</code>). <code>https</code> or <code>localhost</code> is required, as for any microphone page.</li>
 <li>A sketch with a microphone, ready to open: <code>p5/examples/mic/</code>.</li>
 </ul>
+<h3 id="p5-sound-what-is-played-is-heard">Sound: what is played is heard<a class="anchor" href="#p5-sound-what-is-played-is-heard" aria-label="#">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(windowWidth, windowHeight);
+  startSound(<span class="ts">'piano'</span>);          <span class="tc">// every key is heard: a keyboard, the 🎹 on screen, a phone</span>
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>call / read</th><th>value</th></tr></thead>
+<tbody>
+<tr><td><code>startSound(instrument)</code></td><td>turn sound on (default <code>'piano'</code>), or switch instruments while it plays</td></tr>
+<tr><td><code>stopSound()</code></td><td>turn it off</td></tr>
+<tr><td><code>soundIsOn</code></td><td>whether notes are heard now</td></tr>
+</tbody>
+</table></div>
+<p>The instruments are those of <a href="../docs/#packages"><code>@openav/sound</code></a>: <code>piano</code> (the Salamander grand; its 2 MB of samples load the
+first time, and the electric piano plays meanwhile, or instead if they cannot load), <code>epiano</code>, <code>organ</code>, <code>strings</code>, <code>choir</code>,
+<code>harp</code>, <code>marimba</code>, <code>vibraphone</code>, <code>xylophone</code>, <code>glockenspiel</code>, <code>music-box</code> and the <code>synth/…</code> presets. In the 🎹 panel,
+<strong>🔊</strong> turns sound on and off and shows a picker with every instrument and the loading progress.</p>
+<ul>
+<li><strong>Off until asked.</strong> Nothing loads before <code>startSound()</code> or 🔊; then <code>@openav/sound</code> from next to this file and Tone.js 15
+from jsDelivr (the option <code>tone=&lt;url&gt;</code> loads it from elsewhere).</li>
+<li><strong>The first click.</strong> Browsers play audio only after the page has been clicked, and a key on a MIDI keyboard does not count.
+A sketch that calls <code>startSound()</code> in <code>setup()</code> is heard from the first click or key; until then the 🔊 on the 🎹 button is yellow.</li>
+<li><strong>Pads are drums.</strong> Notes on MIDI channel 10 (MiniLab 3 and LPD8 pads, the General MIDI drum channel) play the drum kit,
+not the piano. The sustain pedal holds notes.</li>
+<li><strong>No code at all.</strong> <code>?oav_sound=piano</code> on the page (any instrument id; on OpenProcessing <code>?sketch_oav_sound=piano</code>) makes any sketch heard
+from the first click; <code>sound=off</code> keeps it silent.</li>
+<li>A sketch that plays and draws, ready to open: <code>p5/examples/keys/</code>.</li>
+</ul>
+<h3 id="p5-drum-machine">Drum machine<a class="anchor" href="#p5-drum-machine" aria-label="#">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  startDrums(<span class="ts">'breakbeat'</span>, 110);   <span class="tc">// a 16-step grid on screen; click a cell to change the beat</span>
+}
+
+<span class="tk">function</span> kickDetected(level) {    <span class="tc">// the microphone's own callback</span>
+  <span class="tc">// swell, flash, spawn</span>
+}
+
+<span class="tk">function</span> drumHit(lane, velocity) {   <span class="tc">// every hit: 'kick', 'snare', 'hat' or 'clap'</span>
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>read</th><th>value</th></tr></thead>
+<tbody>
+<tr><td><code>drumsAreOn</code></td><td>whether the machine is playing</td></tr>
+<tr><td><code>drumStep</code></td><td>0..15, the step that just played</td></tr>
+<tr><td><code>drumBar</code></td><td>1, 2, 3 …, counted from <code>startDrums()</code></td></tr>
+<tr><td><code>drumBpm</code></td><td>the tempo (the grid's slider changes it too)</td></tr>
+<tr><td><code>startDrums(pattern, bpm)</code>, <code>stopDrums()</code></td><td>start (or change the pattern and tempo while it plays), stop</td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>write this function</th><th>when it is called</th></tr></thead>
+<tbody>
+<tr><td><code>drumHit(lane, velocity)</code></td><td>every hit, all four lanes</td></tr>
+<tr><td><code>kickDetected(level)</code>, <code>snareDetected(level)</code>, <code>hatDetected(level)</code></td><td>a kick; a snare or a clap; a hat</td></tr>
+<tr><td><code>beatDetected(level)</code></td><td>a kick or a snare, once per step (and <code>beat</code> is true for a frame)</td></tr>
+</tbody>
+</table></div>
+<p><strong>A microphone sketch moves over unchanged.</strong> Each hit calls the same functions the microphone does, so a sketch written for
+the microphone reacts to the machine as it is. Once a sketch has started the machine, defining <code>kickDetected()</code> no longer
+opens the microphone on the first click (a sketch that reads <code>micLevel</code> still asks, and then both call it).</p>
+<ul>
+<li><strong>Patterns.</strong> <code>'four on floor'</code>, <code>breakbeat</code>, <code>'half time'</code>, <code>latin</code>, <code>sparse</code>, or your own:
+<code>startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })</code> (a lane left out is silent).</li>
+<li><strong>Where the grid sits.</strong> At the top centre: on OpenProcessing between the 🎹 and OPC's icon and clear of the console, and
+below the 🎹 panel while that is open. – folds it, × stops the machine, and <strong>🥁</strong> in the 🎹 panel starts and stops it with
+no code at all.</li>
+<li><strong>The kit.</strong> <a href="../docs/#packages"><code>@openav/drums</code></a>' synthesized kit (no samples), heard from the first click like sound; the
+callbacks run from the start either way.</li>
+</ul>
+<h3 id="p5-timeline-bars-and-cues">Timeline: bars and cues<a class="anchor" href="#p5-timeline-bars-and-cues" aria-label="#">#</a></h3>
+<p>The drum machine is also the clock: sixteen steps a bar, counted from <code>startDrums()</code>. Declare what happens at which bar:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  startDrums(<span class="ts">'breakbeat'</span>, 110);
+  cue(1, <span class="ts">'calm'</span>, 12);             <span class="tc">// bar 1, and again every 12 bars</span>
+  cue(5, <span class="ts">'bloom'</span>, 12);
+  cue(9, <span class="ts">'storm'</span>, 12);
+}
+
+<span class="tk">function</span> cueFired(name, bar) {    <span class="tc">// or read cueName in draw()</span>
+  look = SCENES[name];
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>call / read / define</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>cue(bar, name, every)</code></td><td>at bar <code>bar</code> (1 is the first, <code>4.5</code> is halfway through bar 4); <code>every</code> bars again if given</td></tr>
+<tr><td><code>cueName</code></td><td>the last cue that fired (<code>''</code> before the first)</td></tr>
+<tr><td><code>cueFired(name, bar)</code></td><td>a cue's bar has come</td></tr>
+<tr><td><code>barStarted(bar)</code>, <code>stepStarted(step, bar)</code></td><td>the first step of every bar; every step</td></tr>
+</tbody>
+</table></div>
+<p>The same <code>cue()</code> twice adds nothing, so it may also sit in <code>draw()</code>. On one step the cues fire in the order they were
+declared, then <code>barStarted</code>, <code>stepStarted</code> and that step's hits. A silent clock: <code>startDrums({})</code>. The whole of it, ready to
+open: <code>p5/examples/drums/</code>.</p>
 <h3 id="p5-three-inputs">Three inputs<a class="anchor" href="#p5-three-inputs" aria-label="#">#</a></h3>
 <div class="table-wrap"><table>
 <thead><tr><th>input</th><th>how</th></tr></thead>
@@ -188,9 +281,10 @@ variables each frame:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> loadScript(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)
 osc(10, 0.1, () =&gt; knob1 * 2).out()                     <span class="tc">// knob 1 sets the colour offset</span></code></pre></div>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">osc(10, 0.1, () =&gt; 1 + micLevel * 3).out()              <span class="tc">// the microphone, asked for when this line first runs</span></code></pre></div>
-<p><code>note</code>, <code>velocity</code>, <code>knob1</code> … <code>knob8</code>, <code>fader1</code> …, <code>pad1</code> … and the 🎹 on-screen controller are there the same way.
+<p><code>note</code>, <code>velocity</code>, <code>knob1</code> … <code>knob8</code>, <code>fader1</code> …, <code>pad1</code> …, <code>drumStep</code> and the 🎹 on-screen controller are there the same way.
 Hydra is not p5, so there are no <code>notePressed()</code> callbacks to define; subscribe instead:
-<code>midi.on('notePressed', (note, velocity) =&gt; { … })</code> (it returns a function that unsubscribes). Checked against
+<code>midi.on('notePressed', (note, velocity) =&gt; { … })</code> or <code>OAVp5.drums.on('hit', (lane, velocity) =&gt; { … })</code> (each returns a
+function that unsubscribes). Checked against
 hydra-synth 1.4.0, the library the editor runs (<code>p5/test/hydra-smoke.cjs</code>).</p>
 <h3 id="p5-notes">Notes<a class="anchor" href="#p5-notes" aria-label="#">#</a></h3>
 <ul>
@@ -204,7 +298,7 @@ defined</em>.</li>
 embed code it gives you does not: add <code>allow="midi"</code> to that <code>&lt;iframe&gt;</code> if the embedded sketch should hear a hardware
 controller, and <code>allow="microphone"</code> if it should hear the microphone.</li>
 <li><strong>Options, MIDI-level access and tests</strong>: <a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>.
-Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code> and <code>p5/examples/mic/</code>.</li>
+Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <code>p5/examples/mic/</code>, <code>p5/examples/keys/</code> and <code>p5/examples/drums/</code>.</li>
 </ul>
   </section>
 
@@ -237,7 +331,7 @@ Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code> and
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"","tocButton":"","tocClose":""}</script>
-<script type="module" src="../assets/docs/docs.js?v=cfa1d7c"></script>
+<script type="module" src="../assets/docs/docs.js"></script>
 <!--/email_off-->
 </body>
 </html>

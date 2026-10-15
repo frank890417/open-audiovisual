@@ -71,6 +71,80 @@ first click or key starts it again if the browser held it back, so there is no `
 `bass` / `mid` / … is left alone. `OAVp5.mic` (`state`, `gain`, `on('beat' | 'kick' | 'snare' | 'hat', fn)`, `start()`,
 `stop()`, `analyzer`); the option `mic=click` (only 🎤 / `startMic()`) or `mic=off` (nothing can start it). Embedded in an iframe: `allow="microphone"`.
 
+## Sound: what is played is heard
+
+```js
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  startSound('piano');          // every key is heard: a keyboard, the 🎹 on screen, a phone, midi.play()
+}
+```
+
+| call / read | |
+|---|---|
+| `startSound(instrument = 'piano')` | turn it on, or switch instruments while it plays; returns a promise (`true` once it sounds) |
+| `stopSound()`, `soundIsOn` | |
+
+The instruments are [@openav/sound](../packages/sound/README.md)'s: `piano` (the Salamander grand, 2 MB of samples: the
+electric piano plays while they load, and stays if they cannot), `epiano`, `organ`, `strings`, `choir`, `harp`, `marimba`,
+`vibraphone`, `xylophone`, `glockenspiel`, `music-box`, `synth/pad`, `synth/pluck` … (🎹 → 🔊 lists them all, with the
+loading progress and the piano's CC-BY credit). Nothing loads until `startSound()` or 🔊: then `packages/sound` from next to
+this file and Tone.js 15 from jsDelivr (`tone=<url>` loads it from elsewhere).
+
+Browsers play audio only after a click on the page, and a key on a MIDI keyboard is not a click: a sketch that calls
+`startSound()` in `setup()` is heard from the first click or key (the 🔊 on the 🎹 stays yellow until then, and the console
+says so). Pads on MIDI channel 10 (MiniLab 3, LPD8: the General MIDI drum channel) play the drum kit, not the piano; the
+sustain pedal (CC 64) holds notes. `OAVp5.sound` (`state`: off · waiting · loading · on · error, `instrument`, `status`,
+`engine`); the option `sound=piano` (any instrument id) turns it on with no code, `sound=off` keeps it off.
+
+## Drum machine
+
+```js
+function setup() {
+  startDrums('breakbeat', 110);   // a 16-step × 4-lane grid on screen: click a cell to change the beat
+}
+function kickDetected(level) {}   // the microphone's own callbacks: a sketch written for the microphone moves over unchanged
+function drumHit(lane, velocity) {}   // every hit: 'kick' · 'snare' · 'hat' · 'clap'
+```
+
+| read | | define | called on |
+|---|---|---|---|
+| `drumsAreOn` | | `drumHit(lane, velocity)` | every hit, all four lanes |
+| `drumStep` | 0..15, the step that just played | `kickDetected(level)` | kick |
+| `drumBar` | 1, 2, 3 … since `startDrums()` | `snareDetected(level)` | snare and clap |
+| `drumBpm` | the tempo (the grid's slider moves it too) | `hatDetected(level)` | hat |
+| `startDrums(pattern, bpm)`, `stopDrums()` | | `beatDetected(level)` | a kick or a snare, once per step (`beat` too) |
+
+Patterns: `'four on floor'`, `breakbeat`, `'half time'`, `latin`, `sparse`, or your own:
+`startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })` (a lane left out is silent).
+Calling it again while it plays changes the pattern or the tempo without restarting. The kit is @openav/drums' synthesized
+one (no samples); like sound it is heard from the first click, while the callbacks run from the start. A sketch that started
+the machine and defines `kickDetected()` no longer opens the microphone on the first click (one that reads `micLevel` still
+does, and then both call it). The grid sits at the top centre: on OpenProcessing between the 🎹 and OPC's icon, below the 🎹
+panel while that is open, clear of the console. – folds it, × stops the machine, and 🥁 in the 🎹 panel starts and stops it
+with no code. `OAVp5.drums` (`state`, `step`, `bar`, `bpm`, `pattern`, `cues`, `machine` = the `mountDrums` handle,
+`on('hit' | 'step' | 'bar' | 'cue', fn)` → `off()`).
+
+## Timeline: bars and cues
+
+The drum machine is the clock: 16 steps a bar, counted from `startDrums()`.
+
+```js
+function setup() {
+  startDrums('breakbeat', 110);
+  cue(1, 'calm', 12);             // bar 1, and again every 12 bars
+  cue(5, 'bloom', 12);
+  cue(9, 'storm', 12);
+}
+function cueFired(name, bar) {}   // or read cueName in draw()
+function barStarted(bar) {}       // the first step of every bar
+function stepStarted(step, bar) {}   // every 16th
+```
+
+`cue(bar, name, every)`: bar 1 is the first, `4.5` is halfway through bar 4, `every` (in bars) repeats it; the same call twice
+adds nothing, so it may sit in `draw()`. `cueName` is the last cue that fired (`''` before one). On one step the cues fire
+in the order they were declared, then `barStarted`, `stepStarted`, then that step's hits. A silent clock: `startDrums({})`.
+
 ## In Hydra
 
 ```js
@@ -78,7 +152,8 @@ await loadScript('https://openaudiovisual.com/p5/oav-p5.js')
 osc(10, 0.1, () => knob1 * 2).out()
 ```
 
-`knob1`, `note`, `micLevel`, … are there; subscribe with `midi.on('notePressed', fn)` (Hydra is not p5, so no callbacks to define).
+`knob1`, `note`, `micLevel`, `drumStep`, … are there; subscribe with `midi.on('notePressed', fn)` and `OAVp5.drums.on('hit', fn)`
+(Hydra is not p5, so no callbacks to define). `startSound()` and `startDrums()` work there too.
 
 ## Three inputs, one stream of bytes
 
@@ -120,6 +195,8 @@ message means the line did not load.
 | `profile` | any @openav/midi profile id (`akai-lpd8`, …) | follows the plugged-in device, else `arturia-minilab3` |
 | `opc` | `on` · `off` | `on` |
 | `mic` | `auto` (the first read asks for the microphone) · `click` (only 🎤 / `startMic()`) · `off` | `auto` |
+| `sound` | `click` (`startSound()` or 🔊) · `off` · an instrument id (`piano`, `organ`, …: heard from the first click, no code) | `click` |
+| `tone` | where Tone.js 15 comes from (an ES module URL) | `https://cdn.jsdelivr.net/npm/tone@15.0.4/+esm` |
 | `dock` / `corner` | `bottom`·`top` / `right`·`left` | top-left on OpenProcessing, bottom-right elsewhere |
 | `shim` | `on` · `off` (the virtual port) | `on` |
 | `relay` / `room` | the phone relay and room | `wss://remote.cheyuwu.com/relay` / one per browser |
@@ -128,15 +205,18 @@ message means the line did not load.
 
 ## Size, versions
 
-`oav-p5.js` is about 50 KB (17 KB gzip) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
-its modules, ~130 KB transferred, from next to it), the microphone is read (`packages/audio`, ~7 KB), a phone is asked for (`packages/relay`, a QR encoder), or an
-unknown controller is plugged in (`packages/midi/profiles`). Because it loads the rest of OAV from next to itself,
+`oav-p5.js` is about 76 KB (24 KB gzip) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
+its modules, ~130 KB transferred, from next to it), the microphone is read (`packages/audio`, ~7 KB), a phone is asked for (`packages/relay`, a QR encoder),
+an unknown controller is plugged in (`packages/midi/profiles`), sound is turned on (`packages/sound`, ~21 KB gzip, Tone.js ~230 KB
+from jsDelivr, and the piano's 2 MB of samples when the piano is picked), or the drums are (`packages/drums`, ~6 KB gzip). Because it loads the rest of OAV from next to itself,
 one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.jsdelivr.net/gh/frank890417/open-audiovisual@<tag>/p5/oav-p5.js` is frozen.
 
 ## Tests
 
 - `node --test tests/p5-inject.test.js` (part of `npm test`): parsing, the p5-style names, device numbering checked
-  against the profiles, pads, unknown devices, OPC wiring and the OpenProcessing hand-over, names a sketch already owns.
+  against the profiles, pads, unknown devices, OPC wiring and the OpenProcessing hand-over, names a sketch already owns;
+  the microphone; sound through the real `@openav/sound` with a stand-in Tone.js (the click, the pads, the pedal, a sampler's
+  fallback first), the drum callbacks, `beat`, cues, and a microphone sketch moved to the drums.
 - `PW=<playwright> P5_DIR=<p5 builds> BROWSER=chromium|webkit|firefox node p5/test/smoke.cjs`: p5 1.11.11 and 2.x ×
   the line, the line 1.5 s late, the custom-library route and OPC — the sketch runs, `midi` exists in `setup()`, keys,
   knobs and pads reach it, the 🎹 controller plays it, `requestMIDIAccess` gets the virtual port, a phone over a local
@@ -146,5 +226,11 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   2.x, next to p5.sound; the 🎤 button; a refused microphone; none of our names is a p5 / p5.sound name.
 - `p5/test/hydra-smoke.cjs`: hydra-synth 1.4.0 (CDN, or `HYDRA_JS=<file>`) loads the line with `loadScript`; `knob1`, `note`, the
   🎹, pixels, and `micLevel` in an arrow function.
+- `p5/test/kit-smoke.cjs` (same arguments; the last check needs jsDelivr, `REAL_TONE=0` skips it): none of the new names is a p5 /
+  p5.sound name; an old sketch loads no sound, no drums, no Tone.js and shows no grid; `examples/drums` in OpenProcessing's layout
+  (the grid clear of the 🎹, OPC's corner and the console, below an open 🎹 panel), its steps, bars, cue and hits, the kit from the
+  first click, the microphone left alone; `examples/keys` with a stubbed Tone.js (nothing before the click, then `midi.play(60, 0.8)`
+  reaches the engine and `Sampler.triggerAttack` at 261.6 Hz, a pad does not; the 🔊 picker) and once with the real Tone.js and piano.
 
-Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` (OPC sliders on knobs) and `p5/examples/mic/` (`micLevel`, `bass`, `beat`).
+Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` (OPC sliders on knobs), `p5/examples/mic/` (`micLevel`, `bass`, `beat`),
+`p5/examples/keys/` (`startSound('piano')`, particles from every key, the 🎹 open) and `p5/examples/drums/` (`startDrums`, `kickDetected`, `cue`, `cueFired`).
