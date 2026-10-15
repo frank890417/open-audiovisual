@@ -4,15 +4,17 @@
 //   exampleGuide(e)            the guide card region: a readable description that needs no JavaScript, collapsible with it
 //   exampleNext(e)             example 15 only: the "next example" link (its page has its own explanation)
 //   renderP5(locale)           /p5/ and /zh/p5/, from docs/p5.md and docs/zh/p5.md
+//   renderChangelog(locale)    /changelog/ and /zh/changelog/, from docs/changelog.md and docs/zh/changelog.md (same frame as /p5/)
 //
-// tools/build-examples.mjs writes the results; nothing here touches the disk except reading docs/p5.md.
+// tools/build-examples.mjs writes the results; nothing here touches the disk except reading docs/p5.md and docs/changelog.md.
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  SITE, REPO, BLOB, TREE, SOFTWARE_ID, PERSON_ID, esc, attr, pathCtx, pageCtx, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFooter, guardEmail,
+  SITE, REPO, BLOB, TREE, PAGES, SOFTWARE_ID, PERSON_ID, esc, attr, pathCtx, pageCtx, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFooter, guardEmail,
 } from '../site/chrome.mjs';
+import { getFacts, sketchHref } from '../site/facts.mjs';
 import { EXAMPLES, routeGroups, byId, nextOf, L, plainText, exampleUrl, sourceUrl, lineUrl } from './catalog.mjs';
 import { STRINGS, TAGS, ROUTE_NAMES, ROUTE_INTRO, ROUTE_LAYER, routeMark } from './strings.mjs';
 import { CHAPTERS } from '../docs/chapters.mjs';
@@ -216,8 +218,12 @@ export function exampleNext(e) {
 </nav>`;
 }
 
-// ---------------------------------------------------------------------------- /p5/
+// ---------------------------------------------------------------------------- pages made of one Markdown file: /p5/, /changelog/
+// Both are a Markdown source in docs/ set in the site's frame: docs.css + pages.css, a header written here, the
+// Markdown as one chapter. The # heading becomes the page's h1; the zh page takes the English headings' ids, so
+// /p5/#p5-drum-machine and /zh/p5/#p5-drum-machine are the same section (as on /docs/ and /zh/docs/).
 const CHAPTER_OF = new Map(CHAPTERS.map((ch) => [path.posix.basename(ch.en), ch.id]));
+const readSrc = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
 
 function p5Resolver(c) {
   return (h) => {
@@ -228,54 +234,68 @@ function p5Resolver(c) {
   };
 }
 
-export const P5_SOURCE = { en: 'docs/p5.md', zh: 'docs/zh/p5.md' };
+/**
+ * Links inside docs/changelog.md (written so they also work on GitHub): `p5.md#drum-machine` → this language's
+ * /p5/#p5-drum-machine, another chapter → /docs/#<chapter>-<frag>, a page of this site → that page in this language,
+ * a repository path → GitHub.
+ */
+function changelogResolver(c, src) {
+  return (h) => {
+    if (!h || h.startsWith('#')) return h;
+    if (h.startsWith(SITE)) {
+      const [rest, frag] = h.slice(SITE.length).split('#');
+      const page = Object.keys(PAGES).find((k) => PAGES[k] === rest);
+      return page !== undefined ? c.to(page, frag ? '#' + frag : '') : c.root + h.slice(SITE.length);
+    }
+    if (/^[a-z][\w+.-]*:/i.test(h)) return h;
+    const [p, frag] = h.split('#');
+    const base = path.posix.basename(p);
+    if (base === 'p5.md') return c.to('p5', frag ? `#p5-${frag}` : '');
+    const id = CHAPTER_OF.get(base);
+    if (id) return c.to('docs', '#' + (frag ? `${id}-${frag}` : id));
+    const repoPath = path.posix.normalize(path.posix.join(path.posix.dirname(src), p)).replace(/\/$/, '');
+    const isDir = p.endsWith('/') || (fs.existsSync(path.join(ROOT, repoPath)) && fs.statSync(path.join(ROOT, repoPath)).isDirectory());
+    return isDir ? `${TREE}${repoPath}/` : `${BLOB}${repoPath}${frag ? '#' + frag : ''}`;
+  };
+}
 
-export function renderP5(locale) {
-  const t = HOME[locale], S = STRINGS[locale], c = pageCtx('p5', locale);
-  const md = fs.readFileSync(path.join(ROOT, P5_SOURCE[locale]), 'utf8');
+/** One Markdown source rendered for a page: { heading, html (without the # heading), headings }. `twin`: the English headings, for zh. */
+function renderSource(rel, c, { idPrefix, resolveLink, twin = null }) {
+  const md = readSrc(rel);
   const heading = /^#\s+(.+)$/m.exec(md)[1].trim();
   const body = md.replace(/^#\s+.+\n+/, '');
-  const used = new Set(['top', 'main', 'toc']);
   const r = renderMarkdown(`# ${heading}\n\n${body}`, {
-    idPrefix: 'p5', shift: 1, used, site: SITE, resolveLink: p5Resolver(c),
-    labels: { note: 'Note', tip: 'Tip', important: 'Important', warning: 'Warning', caution: 'Caution', copy: t.ui.copy }, anchorLabel: '#',
+    idPrefix, shift: 1, twin, used: new Set(['top', 'main', 'toc']), site: SITE, resolveLink,
+    codeHref: (code) => sketchHref(code, c.root),   // `p5/examples/mic/` opens the sketch
+    labels: { note: 'Note', tip: 'Tip', important: 'Important', warning: 'Warning', caution: 'Caution', copy: HOME[c.locale].ui.copy }, anchorLabel: '#',
   });
-  const description = locale === 'en'
-    ? 'Add one line to any p5.js sketch and play it from a MIDI controller, an on-screen controller or a phone. Works with p5 1.x and 2.x, OpenProcessing included.'
-    : '在任何 p5.js 草圖最上面加一行，就能用 MIDI 控制器、螢幕上的控制器或手機彈。支援 p5 1.x 與 2.x，包含 OpenProcessing。';
-  const title = S.p5.title;
-  const swNode = {
-    '@type': 'SoftwareSourceCode', '@id': c.self + '#code', name: 'oav-p5', url: SITE + 'p5/oav-p5.js', codeRepository: REPO,
-    programmingLanguage: 'JavaScript', runtimePlatform: 'Web browser, p5.js 1.x and 2.x', isPartOf: { '@id': SOFTWARE_ID }, author: { '@id': PERSON_ID },
-  };
-  const ld = [
-    pageNode(c, t, { type: 'TechArticle', '@id': c.self + '#article', headline: heading, name: title, description, about: { '@id': SOFTWARE_ID }, mainEntity: { '@id': swNode['@id'] }, breadcrumb: { '@id': c.self + '#breadcrumb' }, mentions: [{ '@id': SITE + 'examples/15-p5-one-line/' }].slice(0, 0) }),
-    swNode,
-    breadcrumbNode(c, [[S.crumbs.home, homeUrl(c)], [S.crumbs.p5, c.self]]),
-  ];
-  const ex15 = c.root + 'examples/15-p5-one-line/';
+  return { heading, html: r.html.replace(/^<h2[^>]*>[\s\S]*?<\/h2>\n?/, ''), headings: r.headings };
+}
+
+/** The same source's English headings below the title: the ids the zh page reuses. */
+const enTwin = (rel, c, o) => renderSource(rel, { ...c, locale: 'en' }, o).headings.filter((h) => h.mdLevel > 1);
+
+/** The page around one rendered source. `header` is the inside of <header class="docs-head">. */
+function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, chapter, header, html }) {
   const runtime = { copy: t.ui.copy, copied: t.ui.copied, linkCopied: '', tocButton: '', tocClose: '' };
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-${headBasics(t, c, { title, description, ogType: 'article', markdownHref: `${c.root}${P5_SOURCE[locale]}`, ld })}
+${headBasics(t, c, { title, description, ogType: 'article', markdownHref, ld })}
 <link rel="stylesheet" href="${c.root}assets/docs/docs.css">
 <link rel="stylesheet" href="${c.root}assets/examples/pages.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
-<body class="docs-page p5-page">
+<body class="docs-page ${bodyClass}">
 ${topBar(t, c)}
 
 <main id="main" class="docs-main p5-main">
   <header class="docs-head" id="top">
-    <p class="eyebrow">${esc(S.p5.eyebrow)}</p>
-    <h1>${esc(heading)}</h1>
-    <p class="p5-cta"><a class="cta" href="${ex15}">${esc(S.p5.try)} →</a> <a class="more" href="${c.to('docs', '#p5')}">${esc(S.p5.docsLink)}</a> <a class="more" href="${TREE}p5">${esc(S.p5.github)} ↗</a></p>
-    <p class="docs-note">${esc(S.p5.tryNote)}</p>
+${header}
   </header>
 
-  <section class="chapter p5-chapter" data-chapter="p5" aria-labelledby="p5">
-${r.html.replace(/^<h2[^>]*>[\s\S]*?<\/h2>\n?/, '')}
+  <section class="chapter p5-chapter" data-chapter="${chapter}" aria-labelledby="${chapter}">
+${html}
   </section>
 
   <p class="docs-end"><a href="#top">↑</a></p>
@@ -289,4 +309,99 @@ ${siteFooter(t, c)}
 </body>
 </html>
 `);
+}
+
+/** The versions line (oav-p5 0.6 · framework 0.1), linked to /changelog/. */
+const versionsLine = (t, c) => `<p class="docs-stats"><a href="${c.to('changelog')}">${esc(t.ui.versions)}</a></p>`;
+
+// ---------------------------------------------------------------------------- /p5/
+export const P5_SOURCE = { en: 'docs/p5.md', zh: 'docs/zh/p5.md' };
+
+/** p5/examples/<name>/, in the order the chapter teaches them; a folder not named here follows, by name. */
+export function p5Sketches(f = getFacts()) {
+  const order = Object.keys(STRINGS.en.sketches);
+  const rank = (n) => (order.includes(n) ? order.indexOf(n) : order.length);
+  return [...f.p5Sketches].sort((a, b) => rank(a.name) - rank(b.name) || a.name.localeCompare(b.name));
+}
+
+export function renderP5(locale) {
+  const t = HOME[locale], S = STRINGS[locale], c = pageCtx('p5', locale);
+  const opts = { idPrefix: 'p5', resolveLink: p5Resolver(c) };
+  const twin = locale === 'zh' ? enTwin(P5_SOURCE.en, c, opts) : null;
+  const { heading, html } = renderSource(P5_SOURCE[locale], c, { ...opts, twin });
+  const { title, description } = S.p5;
+  const swNode = {
+    '@type': 'SoftwareSourceCode', '@id': c.self + '#code', name: 'oav-p5', url: SITE + 'p5/oav-p5.js', codeRepository: REPO,
+    programmingLanguage: 'JavaScript', runtimePlatform: 'Web browser, p5.js 1.x and 2.x', isPartOf: { '@id': SOFTWARE_ID }, author: { '@id': PERSON_ID },
+    version: getFacts().p5Version,
+  };
+  const ld = [
+    pageNode(c, t, { type: 'TechArticle', '@id': c.self + '#article', headline: heading, name: title, description, about: { '@id': SOFTWARE_ID }, mainEntity: { '@id': swNode['@id'] }, breadcrumb: { '@id': c.self + '#breadcrumb' } }),
+    swNode,
+    breadcrumbNode(c, [[S.crumbs.home, homeUrl(c)], [S.crumbs.p5, c.self]]),
+  ];
+  const ex15 = c.root + 'examples/15-p5-one-line/';
+  // the ready-made sketches: a page on this site, or (no page: an OpenProcessing sketch) its source on GitHub
+  const sketches = p5Sketches().map((x) => {
+    const href = sketchHref(`p5/examples/${x.name}/`, c.root);
+    return `<a href="${href}">${esc(S.sketches[x.name] || x.name)}${x.page ? '' : ' ↗'}</a>`;
+  }).join(' · ');
+  const header = `    <p class="eyebrow">${esc(S.p5.eyebrow)}</p>
+    <h1 id="p5">${esc(heading)}</h1>
+    <p class="docs-lede">${esc(S.p5.lede)}</p>
+    ${versionsLine(t, c)}
+    <p class="p5-cta"><a class="cta" href="${ex15}">${esc(S.p5.try)} →</a> <a class="more" href="${c.to('docs', '#p5')}">${esc(S.p5.docsLink)}</a> <a class="more" href="${TREE}p5">${esc(S.p5.github)} ↗</a></p>
+    <p class="docs-note">${esc(S.p5.tryNote)}</p>
+    <p class="docs-note p5-sketches">${esc(S.p5.sketches)} ${sketches}</p>`;
+  return markdownFrame(t, c, {
+    title, description, markdownHref: `${c.root}${P5_SOURCE[locale]}`, ld, bodyClass: 'p5-page', chapter: 'p5', header, html,
+  });
+}
+
+// ---------------------------------------------------------------------------- /changelog/
+export const CHANGELOG_SOURCE = { en: 'docs/changelog.md', zh: 'docs/zh/changelog.md' };
+
+/**
+ * What a changelog says, read from its Markdown: the oav-p5 versions (`### 0.6.0` under `## oav-p5…`, then a line
+ * `2026-10-15 · [5e75007](…/commit/5e75007)`), newest first, and the days of the framework section (`### 2026-10-15`).
+ * tests/changelog.test.js holds the newest version to p5/oav-p5.js.
+ */
+export function parseChangelog(md) {
+  const out = { p5: [], days: [] };
+  let section = null;
+  const lines = md.split('\n');
+  lines.forEach((line, i) => {
+    const h2 = /^##\s+(.+)$/.exec(line);
+    if (h2) { section = /^oav-p5\b/.test(h2[1]) ? 'p5' : 'site'; return; }
+    const h3 = /^###\s+(.+?)\s*$/.exec(line);
+    if (!h3) return;
+    if (section === 'p5') {
+      const next = lines.slice(i + 1).find((l) => l.trim()) || '';
+      const m = /^(\d{4}-\d{2}-\d{2}) · \[([0-9a-f]{7,40})\]\(https:\/\/github\.com\/frank890417\/open-audiovisual\/commit\/\2\)/.exec(next);
+      out.p5.push({ version: h3[1], date: m ? m[1] : null, commit: m ? m[2] : null });
+    } else if (section === 'site') out.days.push(h3[1]);
+  });
+  return out;
+}
+
+export function renderChangelog(locale) {
+  const t = HOME[locale], S = STRINGS[locale], c = pageCtx('changelog', locale);
+  const opts = { idPrefix: 'changelog', resolveLink: changelogResolver(c, CHANGELOG_SOURCE[locale]) };
+  const twin = locale === 'zh' ? enTwin(CHANGELOG_SOURCE.en, c, { ...opts, resolveLink: changelogResolver(c, CHANGELOG_SOURCE.en) }) : null;
+  const { heading, html } = renderSource(CHANGELOG_SOURCE[locale], c, { ...opts, twin });
+  const log = parseChangelog(readSrc(CHANGELOG_SOURCE[locale]));
+  const title = S.changelog.title;
+  const description = S.changelog.description(log.p5[log.p5.length - 1].version, log.p5[0].version);
+  const newest = [...log.p5.map((v) => v.date), ...log.days].filter(Boolean).sort().pop();
+  const ld = [
+    pageNode(c, t, { name: title, description, about: { '@id': SOFTWARE_ID }, dateModified: newest, breadcrumb: { '@id': c.self + '#breadcrumb' } }),
+    breadcrumbNode(c, [[S.crumbs.home, homeUrl(c)], [S.crumbs.changelog, c.self]]),
+  ];
+  const header = `    <p class="eyebrow">${esc(S.changelog.eyebrow)}</p>
+    <h1 id="changelog">${esc(heading)}</h1>
+    <p class="docs-stats">${esc(t.ui.versions)}</p>
+    <p class="docs-note">${S.changelog.source} <a href="${BLOB}${CHANGELOG_SOURCE[locale]}">GitHub ↗</a></p>`;
+  return markdownFrame(t, c, {
+    title, description, markdownHref: `${c.root}${CHANGELOG_SOURCE[locale]}`, ld, bodyClass: 'changelog-page', chapter: 'changelog', header, html,
+  });
 }

@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css?v=5e75007">
+<link rel="stylesheet" href="../../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/#article","url":"https://openaudiovisual.com/zh/docs/","name":"文件｜open-audiovisual","description":"open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"open-audiovisual 使用手冊","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["簡介","快速開始","核心概念","架構","寫一個世界","輸入","映射","演出控制","總譜與導演","MIDI 控制器與嵌入","p5.js 一行接上","手機、中繼與控制面板","訊號一覽","套件一覽","給 AI 代理","實驗室整合（\"lab\" 欄位）","疑難排解","路線圖"],"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=5e75007">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -353,7 +353,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">18 章 · 182 節 · v0.1.0</p>
+      <p class="docs-stats">18 章 · 182 節 · <a href="../../zh/changelog/">oav-p5 0.6 · 框架 0.1</a></p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -361,7 +361,7 @@
 <h2 id="introduction">簡介<a class="anchor" href="#introduction" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">01</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/introduction.md">docs/zh/introduction.md</a></span></p>
 <p>open-audiovisual（OAV）是一套在瀏覽器裡跑的 JavaScript 框架，給現場影音表演用。它只用原生的 ES module：不用建置、沒有相依套件、不用註冊帳號。把 repo clone 下來，跑一個檔案，打開一個網頁，就可以開始了。</p>
-<p>每一場演出都要從頭重做的那一塊，由它來處理：MIDI 的底層接線、把輸入變成參數、有場景的時間軸、導演控台、給演奏者的演出模式，以及給舞台監督的後台頁面。你只要寫<em>世界</em>，也就是作品本身。框架的介紹、一台即時在跑的樂器，還有九件範例作品，都在<a href="../../zh/">首頁</a>。</p>
+<p>每一場演出都要從頭重做的那一塊，由它來處理：MIDI 的底層接線、把輸入變成參數、有場景的時間軸、導演控台、給演奏者的演出模式，以及給舞台監督的後台頁面。你只要寫<em>世界</em>，也就是作品本身。框架的介紹、一台即時在跑的樂器，還有十五件範例作品，都在<a href="../../zh/">首頁</a>。</p>
 <h3 id="introduction-who-it-is-for">給誰用<a class="anchor" href="#introduction-who-it-is-for" aria-label="這一節的連結">#</a></h3>
 <ul>
 <li><strong>演奏者</strong>用 MIDI 鍵盤、麥克風、鏡頭、手機或螢幕鋼琴來彈範例，從控台操作一場演出。</li>
@@ -1278,7 +1278,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 osc.send(<span class="ts">'/source/3/xyz'</span>, [x, y, z]);
 osc.flush();                       <span class="tc">// once per frame (batches, dedupes per address)</span></code></pre></div>
 <p>數字以 OSC float 送出，Spat、Reaper 和 TouchDesigner 要的正是這個，其他型別一律當字串送。每個位址在一格裡只留最新的一則訊息。橋接程式不見的話，<code>OscOut</code> 會透過 <code>onStatus(ok, info)</code> 回報，連續 30 次 flush 失敗之後就不再試。</p>
-<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js?v=5e75007"</code> 加進頁面的 import map）：</p>
+<p><code>createShow()</code> 不會幫你建 <code>OscOut</code>，要自己加一個（並把 <code>"@openav/osc": "../../packages/osc/index.js"</code> 加進頁面的 import map）：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -1852,7 +1852,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <li><strong>你自己的名字優先。</strong> 草圖裡已經有 <code>bass</code>、<code>mid</code>（<code>let</code>、函式、別的函式庫）的話，原本的會留著，這個檔也不會為了它去開麥克風。</li>
 <li><strong>關掉自動開。</strong> <code>?mic=click</code>（或 <code>window.OAV_P5 = { mic: 'click' }</code>）：只有 🎤 和 <code>startMic()</code> 能開；
 <code>mic=off</code> 就什麼都開不起來（名字還在，值一直是 0）。跟所有用麥克風的頁面一樣，要 <code>https</code> 或 <code>localhost</code>。</li>
-<li>現成可開的麥克風草圖：<code>p5/examples/mic/</code>。</li>
+<li>現成可開的麥克風草圖：<a href="../../p5/examples/mic/"><code>p5/examples/mic/</code></a>。</li>
 </ul>
 <h3 id="p5-sound-what-is-played-is-heard">聲音：彈什麼就聽到什麼<a class="anchor" href="#p5-sound-what-is-played-is-heard" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
@@ -1875,7 +1875,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <li><strong>先點一下。</strong> 瀏覽器要網頁被點過才讓它出聲，按 MIDI 鍵盤不算。<code>setup()</code> 裡呼叫 <code>startSound()</code> 的草圖，第一次點擊或按鍵之後才聽得到；在那之前 🎹 按鈕上的 🔊 是黃的。</li>
 <li><strong>打擊墊是鼓。</strong> 第 10 軌的音（MiniLab 3、LPD8 的打擊墊，General MIDI 的鼓軌）打的是鼓組，不會彈成鋼琴。延音踏板會讓音延長。</li>
 <li><strong>一行程式都不用寫。</strong> 頁面網址加 <code>?oav_sound=piano</code>（任何樂器名；OpenProcessing 用 <code>?sketch_oav_sound=piano</code>），任何草圖點一下之後就有聲音；<code>sound=off</code> 則保持安靜。</li>
-<li>現成可開、邊彈邊畫的草圖：<code>p5/examples/keys/</code>。</li>
+<li>現成可開、邊彈邊畫的草圖：<a href="../../p5/examples/keys/"><code>p5/examples/keys/</code></a>。</li>
 </ul>
 <h3 id="p5-drum-machine">鼓機<a class="anchor" href="#p5-drum-machine" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
@@ -1967,7 +1967,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <tr><td><code>barStarted(bar)</code>、<code>stepStarted(step, bar)</code></td><td>每一小節的第一格；每一格</td></tr>
 </tbody>
 </table></div>
-<p>同樣的 <code>cue()</code> 叫兩次不會多一個，所以放在 <code>draw()</code> 裡也可以。同一格上先照宣告順序觸發 cue，再來 <code>barStarted</code>、<code>stepStarted</code>、那一格的鼓。只要時鐘不要聲音：<code>startDrums({})</code>。全部用上的草圖：<code>p5/examples/drums/</code>；一行節奏加 <code>drumPhase</code>、<code>beatPhase</code>：<code>p5/examples/rhythm/</code>。</p>
+<p>同樣的 <code>cue()</code> 叫兩次不會多一個，所以放在 <code>draw()</code> 裡也可以。同一格上先照宣告順序觸發 cue，再來 <code>barStarted</code>、<code>stepStarted</code>、那一格的鼓。只要時鐘不要聲音：<code>startDrums({})</code>。全部用上的草圖：<a href="../../p5/examples/drums/"><code>p5/examples/drums/</code></a>；一行節奏加 <code>drumPhase</code>、<code>beatPhase</code>：<a href="../../p5/examples/rhythm/"><code>p5/examples/rhythm/</code></a>。</p>
 <h3 id="p5-recording-a-video-with-its-sound">錄影：畫面和聲音一起錄<a class="anchor" href="#p5-recording-a-video-with-its-sound" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
   <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
@@ -1994,7 +1994,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <li><strong>靜態圖。</strong> 📷（或 <code>OAVp5.record.shot()</code>）只存畫布，檔名 <code>oav-&lt;日期&gt;-&lt;時間&gt;.png</code>，不含 🎹 和卡片；在程式裡用 p5 自己的 <code>saveCanvas('名字', 'png')</code> 也一樣。</li>
 <li><strong>選項。</strong> <code>record=nomic</code>（不收麥克風）、<code>record=off</code>（沒有 ⏺ 和 📷，<code>startRecording()</code> 什麼都不做）、<code>recfps=60</code>、
 <code>reclimit=600</code>（秒）、<code>title=作品名</code>（放進檔名）；只改這一段：<code>startRecording({ seconds, fps, mic: false, name })</code>。</li>
-<li>全部用上的草圖：<code>p5/examples/record/</code>。</li>
+<li>全部用上的草圖：<a href="../../p5/examples/record/"><code>p5/examples/record/</code></a>。</li>
 </ul>
 <h3 id="p5-three-inputs">三種輸入<a class="anchor" href="#p5-three-inputs" aria-label="這一節的連結">#</a></h3>
 <div class="table-wrap"><table>
@@ -2033,7 +2033,7 @@ Hydra 不是 p5，沒有可以定義的 <code>notePressed()</code> 回呼，改�
 <code>load</code> 等它跑完，所以 <code>setup()</code> 裡就已經有 <code>knob1</code>。</li>
 <li><strong>這一行沒載到時</strong>（沒網路、網址打錯），讀 <code>knob1</code> 的程式會停在「knob1 is not defined」。</li>
 <li><strong>嵌到別的網站</strong>：OpenProcessing 自己的頁面允許草圖用 MIDI 和麥克風，它給的嵌入碼沒有。要讓嵌入的草圖聽實體控制器，在那個 <code>&lt;iframe&gt;</code> 加上 <code>allow="midi"</code>；要它聽麥克風，加 <code>allow="microphone"</code>。</li>
-<li><strong>選項、MIDI 層的寫法和測試</strong>：<a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>。範例：<code>p5/examples/particles/</code>、<code>p5/examples/opc/</code>、<code>p5/examples/mic/</code>、<code>p5/examples/keys/</code>、<code>p5/examples/drums/</code>、<code>p5/examples/rhythm/</code>、<code>p5/examples/record/</code>。</li>
+<li><strong>選項、MIDI 層的寫法和測試</strong>：<a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>。範例：<a href="../../p5/examples/particles/"><code>p5/examples/particles/</code></a>、<a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/examples/opc/sketch.js"><code>p5/examples/opc/</code></a>、<a href="../../p5/examples/mic/"><code>p5/examples/mic/</code></a>、<a href="../../p5/examples/keys/"><code>p5/examples/keys/</code></a>、<a href="../../p5/examples/drums/"><code>p5/examples/drums/</code></a>、<a href="../../p5/examples/rhythm/"><code>p5/examples/rhythm/</code></a>、<a href="../../p5/examples/record/"><code>p5/examples/record/</code></a>。</li>
 </ul>
 </section>
 
@@ -2416,7 +2416,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
-<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=5e75007"</code>。</p>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js"</code>。</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
 <div class="table-wrap"><table>
@@ -3008,6 +3008,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
       <a href="../../zh/docs/">文件</a>
       <a href="../../zh/p5/">p5.js 一行接上</a>
       <a href="../../zh/webtoe/">WebToe</a>
+      <a href="../../zh/changelog/">更新紀錄</a>
     </nav>
     <nav aria-label="給機器讀的">
       <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
@@ -3020,7 +3021,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=5e75007"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

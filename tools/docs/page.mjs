@@ -82,7 +82,7 @@ ${topBar(home, c)}
       <p class="eyebrow">${esc(t.eyebrow)}</p>
       <h1>${esc(t.title)}</h1>
       <p class="docs-lede">${esc(t.lede)}</p>
-      <p class="docs-stats">${esc(fill(t.stats, { chapters: chapters.length, sections, version }))}</p>
+      <p class="docs-stats">${esc(fill(t.stats, { chapters: chapters.length, sections }))} · <a href="${c.to('changelog')}">${esc(home.ui.versions)}</a></p>
       <p class="docs-note">${t.sourceNote} <a href="${BLOB}${c.locale === 'zh' ? 'docs/zh/' : 'docs/'}">GitHub ↗</a> · ${fill(t.llmsNote, { llms: c.root + 'llms.txt', llmsFull: c.root + 'llms-full.txt' })}</p>
     </header>
 

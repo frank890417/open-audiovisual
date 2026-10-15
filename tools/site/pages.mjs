@@ -46,6 +46,8 @@ export const STATIC = [
   { derive: 'examples' },
   // /p5/ and /zh/p5/: docs/p5.md and docs/zh/p5.md in the site's frame (tools/build-examples.mjs); p5/oav-p5.js is untouched
   { id: 'p5', path: 'p5/', langs: ['en', 'zh'], src: ['docs/p5.md', 'docs/zh/p5.md', 'tools/examples/page.mjs'] },
+  // /changelog/ and /zh/changelog/: docs/changelog.md and docs/zh/changelog.md in the same frame as /p5/ (tools/build-examples.mjs)
+  { id: 'changelog', path: 'changelog/', langs: ['en', 'zh'], src: ['docs/changelog.md', 'docs/zh/changelog.md'] },
 ];
 
 const GALLERY_SRC = [PROFILE_DIR, 'tools/controllers/page.mjs', 'tools/controllers/en.mjs', 'tools/controllers/zh.mjs'];

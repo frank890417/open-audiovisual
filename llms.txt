@@ -4,7 +4,7 @@
 
 Inputs (MIDI, microphone, chords, body and hand pose, phones) publish named signals; a mapping layer routes signals to parameters; an algorithmic "world" reads only parameters and renders image and sound; a timeline, a director's console and a backstage monitor run the show. Plain ES modules, no build, no dependencies. Extracted from The Last Input (Che-Yu Wu, 2026), a 49.4-channel performance at the IRCAM residency × C-LAB, Taipei.
 
-Today: 26 packages, 15 examples, 27 MIDI controller profiles (21 devices and 6 generic layouts), version 0.1.0.
+Today: 26 packages, 15 examples, 27 MIDI controller profiles (21 devices and 6 generic layouts), version 0.1.0; oav-p5 0.6.0 (https://openaudiovisual.com/changelog/).
 
 Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文, Traditional Chinese)
 Repository: https://github.com/frank890417/open-audiovisual
@@ -17,8 +17,9 @@ How to cite: cite the canonical URL of the page you read. Code is MIT; examples 
 - [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the complete documentation on one page: every chapter listed below, in one HTML file. Generated from the Markdown in `docs/`.
 - [MIDI controller library](https://openaudiovisual.com/controllers/) ([繁體中文](https://openaudiovisual.com/zh/controllers/)): every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).
 - [Examples](https://openaudiovisual.com/examples/) ([繁體中文](https://openaudiovisual.com/zh/examples/)): every example, with a thumbnail and what it needs.
-- [p5.js in one line](https://openaudiovisual.com/p5/) ([繁體中文](https://openaudiovisual.com/zh/p5/)): load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone.
+- [p5.js in one line](https://openaudiovisual.com/p5/) ([繁體中文](https://openaudiovisual.com/zh/p5/)): load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone; the same line adds sound (`startSound`), a drum machine with one line of rhythm (`startDrums("bd*4, [~ sd]*2, hh*8")`), the microphone (`micLevel`) and video recording (`startRecording`). Ready-made sketches in `p5/examples/`.
 - [WebToe](https://openaudiovisual.com/webtoe/) ([繁體中文](https://openaudiovisual.com/zh/webtoe/)): the sister project and the engine half of the stack: a web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world. Editor: https://webtoe.openaudiovisual.com/
+- [Changelog](https://openaudiovisual.com/changelog/) ([繁體中文](https://openaudiovisual.com/zh/changelog/)): what changed, newest first: oav-p5 version by version, the framework and the site by day, each with its commit.
 
 ## Core concepts
 
@@ -50,7 +51,7 @@ How to cite: cite the canonical URL of the page you read. Code is MIT; examples 
 - [Show control](https://openaudiovisual.com/docs/show-control.md): timeline, scenes, performance mode, console, monitor, OSC.
 - [Score & Director](https://openaudiovisual.com/docs/score.md): a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.
 - [MIDI controllers & embedding](https://openaudiovisual.com/docs/controllers.md): MIDI controllers as JSON profiles, the `<oav-controller>` element and the iframe embed.
-- [p5.js in one line](https://openaudiovisual.com/docs/p5.md): one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone.
+- [p5.js in one line](https://openaudiovisual.com/docs/p5.md): one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone, with sound, a drum machine you can write as one line of rhythm, the microphone and video recording.
 - [Phones, relay & surfaces](https://openaudiovisual.com/docs/remote.md): phones and iPads as controllers: relay, sensors, control surfaces.
 - [Signals reference](https://openaudiovisual.com/docs/signals.md): every signal the built-in inputs publish, with ranges.
 - [Package reference](https://openaudiovisual.com/docs/packages.md): every package, by layer.

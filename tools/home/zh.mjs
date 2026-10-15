@@ -2,7 +2,7 @@
 // 結構必須和 en.mjs 一模一樣（每個 key、每個陣列長度），tools/build-home.mjs 會檢查。
 // 字串可以含 inline HTML。程式碼、訊號名稱與網址放在 page.mjs，兩種語言共用。
 
-import { getFacts, zhWords } from '../site/facts.mjs';
+import { getFacts, zhWords, minor } from '../site/facts.mjs';
 const facts = getFacts();
 
 export default {
@@ -34,10 +34,12 @@ export default {
     open: '開啟',
     source: '原始碼',
     home: 'open-audiovisual 首頁',
+    // 兩個版本並列，網站上寫到版本的地方（首頁、/p5/、/docs/）都用這一句，連到 /zh/changelog/
+    versions: `oav-p5 ${minor(facts.p5Version)} · 框架 ${minor(facts.version)}`,
   },
 
   hero: {
-    eyebrow: 'v0.1 · MIT 授權 · 零建置 · 零相依',
+    eyebrow: 'MIT 授權 · 零建置 · 零相依',
     sub: '網頁原生的影音表演框架。',
     lede: '琴鍵、旋鈕、人聲、手勢、手機，都會變成有名字的<em>訊號</em>（signal）。<em>映射</em>（mapping）把訊號接到<em>參數</em>（param），你的<em>世界</em>（world）讀這些參數，變成畫面和聲音。在瀏覽器分頁、投影機、舞台上都一樣。',
     doorsLabel: '從哪裡開始',
@@ -45,6 +47,7 @@ export default {
       { who: '我做表演', what: `看看它做得出什麼，直接玩${zhWords(facts.exampleCount)}件作品`, href: '#works' },
       { who: '我寫程式', what: '一分鐘跑起來，再寫自己的世界', href: '#start' },
       { who: '我是 AI 代理', what: '先讀 /llms.txt，再讀 AGENTS.md', href: 'llms.txt' },
+      { who: '我用 p5.js／OpenProcessing', what: '加一行，就有控制器、聲音、鼓機和錄影', href: 'zh/p5/' },
     ],
   },
 
@@ -305,6 +308,7 @@ export default {
     homeLink: '首頁',
     examples: '範例',
     p5: 'p5.js 一行接上',
+    changelog: '更新紀錄',
     license: 'MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。',
     artworks: '範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。',
     machine: '給機器讀的',

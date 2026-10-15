@@ -1,7 +1,7 @@
 // The site's numbers, computed from the repository — never typed by hand.
 //
 //   import { getFacts, enWords, zhWords } from '../site/facts.mjs';
-//   const f = getFacts();   // f.packageCount, f.exampleCount, f.controllerCount, f.nextExampleNumber …
+//   const f = getFacts();   // f.packageCount, f.exampleCount, f.controllerCount, f.nextExampleNumber, f.p5Version …
 //
 // The homepage, llms.txt, llms-full.txt and (through `readmeBlock()`) the README read these instead of
 // writing "twenty-one packages" into prose that goes stale the day the twenty-second lands.
@@ -13,6 +13,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { catalog } from '../controllers/page.mjs';
 import { CHAPTERS } from '../docs/chapters.mjs';
+import { BLOB } from './chrome.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const dirs = (rel) => fs.readdirSync(path.join(ROOT, rel), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort();
@@ -22,6 +23,20 @@ export function listExamples() {
   return dirs('examples')
     .filter((d) => /^\d\d-/.test(d) && fs.existsSync(path.join(ROOT, 'examples', d, 'index.html')))
     .map((id) => ({ id, num: Number(id.slice(0, 2)) }));
+}
+
+/** oav-p5's own version: the OAV_P5_VERSION line in p5/oav-p5.js (the file students load; it is read, never written). */
+export function readP5Version() {
+  const m = /\bOAV_P5_VERSION\s*=\s*'(\d+\.\d+\.\d+)'/.exec(fs.readFileSync(path.join(ROOT, 'p5/oav-p5.js'), 'utf8'));
+  if (!m) throw new Error('p5/oav-p5.js: no OAV_P5_VERSION = \'x.y.z\' line');
+  return m[1];
+}
+
+/** p5/examples/<name>/ with a sketch.js: the ready-made oav-p5 sketches. `page`: the folder has an index.html, so the site serves it. */
+export function listP5Sketches() {
+  return dirs('p5/examples')
+    .filter((d) => fs.existsSync(path.join(ROOT, 'p5/examples', d, 'sketch.js')))
+    .map((name) => ({ name, page: fs.existsSync(path.join(ROOT, 'p5/examples', name, 'index.html')) }));
 }
 
 /** Test cases, counted from the source (test( / it( at the start of a line): a floor that needs no test run. */
@@ -42,6 +57,8 @@ export function getFacts({ fresh = false } = {}) {
   const tests = countTests();
   memo = {
     version: JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version,
+    p5Version: readP5Version(),              // oav-p5, the one line for p5.js sketches: versioned on its own (/changelog/)
+    p5Sketches: listP5Sketches(),
     examples,
     exampleCount: examples.length,
     nextExampleNumber: String(nextNum).padStart(2, '0'),
@@ -57,6 +74,21 @@ export function getFacts({ fresh = false } = {}) {
     testCount: tests.cases,
   };
   return memo;
+}
+
+/** "0.6.0" → "0.6": how the site names a version in running text (the full number is on /changelog/). */
+export const minor = (v) => String(v).split('.').slice(0, 2).join('.');
+
+/**
+ * Where a sketch folder named in the docs (`p5/examples/mic/`) can be opened: its page on this site when the folder
+ * has one, else its sketch.js on GitHub (p5/examples/opc/ is an OpenProcessing sketch, there is no page). `root` is the
+ * page's relative path to the site root. null for any other text, so only that exact shape becomes a link.
+ */
+export function sketchHref(code, root, f = getFacts()) {
+  const m = /^p5\/examples\/([a-z0-9-]+)\/$/.exec(code);
+  const s = m && f.p5Sketches.find((x) => x.name === m[1]);
+  if (!s) return null;
+  return s.page ? `${root}p5/examples/${s.name}/` : `${BLOB}p5/examples/${s.name}/sketch.js`;
 }
 
 // ---------------------------------------------------------------------------- numbers as words

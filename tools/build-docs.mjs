@@ -12,7 +12,8 @@
 // Links inside the Markdown are rewritten so the same file reads well on GitHub
 // and on the site: a link to another chapter's .md becomes an in-page #anchor,
 // a link to a code file becomes a GitHub URL, a link to a site page stays on the
-// site in the page's language. --check ignores ?v= stamps.
+// site in the page's language, and a ready-made sketch named as code (`p5/examples/mic/`)
+// links to its page. --check ignores ?v= stamps.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -24,6 +25,7 @@ import { renderDocsPage } from './docs/page.mjs';
 import { SITE, BLOB, TREE, PAGES, pageCtx } from './site/chrome.mjs';
 import { shapeDiff } from './build-home.mjs';
 import { sitemapXml, unstamp } from './site/pages.mjs';
+import { sketchHref } from './site/facts.mjs';
 import en from './docs/en.mjs';
 import zh from './docs/zh.mjs';
 import homeEn from './home/en.mjs';
@@ -136,6 +138,7 @@ function renderLocale(locale, enHeads, warnings) {
     const r = renderMarkdown(body, {
       idPrefix: ch.id, shift: 1, twin, used, site: SITE,
       resolveLink: linkResolver({ srcPath: src, chapterId: ch.id, c, enHeads, warnings }),
+      codeHref: (code) => sketchHref(code, c.root),   // `p5/examples/mic/` opens the sketch
       labels: { ...t.alerts, copy: t.copy }, anchorLabel: t.anchorLabel,
     });
     if (!r.title) warnings.push(`${src}: no "# Title" line`);

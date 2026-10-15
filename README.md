@@ -314,31 +314,36 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 <!--gen:w-packages-->Twenty-six<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
+<!--gen:packages-table-->
 | layer | package | role |
 |---|---|---|
-| L1 input | [`@openav/midi`](packages/midi/) | Web MIDI in and out, many devices, the controller profile library |
+| L1 input | [`@openav/midi`](packages/midi/) | Web MIDI in and out, many devices, on-screen controller profiles |
 |  | [`@openav/audio`](packages/audio/) | Microphone analysis: loudness, bands, brightness, onsets, drum hits |
 |  | [`@openav/chord`](packages/chord/) | Chord detection for performance: consonance, triads, clusters |
 |  | [`@openav/pose`](packages/pose/) | Body and 21-point hand tracking from the camera, on the device |
-|  | [`@openav/leap`](packages/leap/) | Leap Motion / Ultraleap hands, through one local bridge |
 |  | [`@openav/keys`](packages/keys/) | On-screen piano, QWERTY playing and a simulated performer |
 |  | [`@openav/drums`](packages/drums/) | Synth kit and step sequencer that publish analyzer-shaped signals |
+|  | [`@openav/leap`](packages/leap/) | Leap Motion hands through a small local bridge, as 21-point hand signals |
 | L2 mapping | [`@openav/mapping`](packages/mapping/) | Signal to param routes: curves, smoothing, many-to-many, learn |
 | L3 world | [`@openav/stage`](packages/stage/) | The world shell: lifecycle and params, no renderer opinion |
 |  | [`@openav/world-webtoe`](packages/world-webtoe/) | Perform a WebToe node patch as a world |
-| L4 output | [`@openav/sound`](packages/sound/) | Instruments in the page (Salamander piano, mallets, strings, organ, synth presets) |
+| L4 output | [`@openav/sound`](packages/sound/) | Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own |
 |  | [`@openav/osc`](packages/osc/) | OSC out of the browser through a small Node bridge to UDP |
-|  | [`@openav/record`](packages/record/) | The performance video: work and camera in one synced file, MIDI takes |
+|  | [`@openav/out`](packages/out/) | Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values |
+|  | [`@openav/record`](packages/record/) | Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed |
+|  | [`@openav/fab`](packages/fab/) | Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files |
 | spines | [`@openav/timeline`](packages/timeline/) | Param automation, scenes and cues: the clock of the show |
-|  | [`@openav/score`](packages/score/) | The show as segment lengths: cuts, cues, holds, and a director that survives a failing module |
+|  | [`@openav/score`](packages/score/) | The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails |
+|  | [`@openav/pattern`](packages/pattern/) | Rhythm in one line: TidalCycles/Strudel-style mini-notation read into the hits of each bar (Euclidean rhythms, one-per-bar alternation, seeded chance) |
 |  | [`@openav/console`](packages/console/) | The director's desk and performance mode |
 |  | [`@openav/monitor`](packages/monitor/) | Backstage view for any device on the network |
-| phones | [`@openav/relay`](packages/relay/) | Zero-dependency room relay for phones and iPads |
-|  | [`@openav/surface`](packages/surface/) | TouchOSC-style widgets and <code>autoSurface(params)</code> |
+| phones and tablets | [`@openav/relay`](packages/relay/) | Zero-dependency room relay for phones and iPads |
+|  | [`@openav/surface`](packages/surface/) | TouchOSC-style widgets and autoSurface(params) |
 |  | [`@openav/remote`](packages/remote/) | The phone and iPad app: sensors, keyboard, control surface |
-| glue | [`@openav/core`](packages/core/) | Signals, Params and Loop: what every layer speaks |
-|  | [`@openav/show`](packages/show/) | <code>createShow()</code>: one call assembles the whole shell |
+| glue and agents | [`@openav/core`](packages/core/) | Signals, Params and Loop: what every layer speaks |
+|  | [`@openav/show`](packages/show/) | createShow(): one call assembles the whole shell |
 |  | [`@openav/mcp`](packages/mcp/) | MCP server for coding agents: list, read, scaffold, check |
+<!--/gen:packages-table-->
 
 ## 📚 Docs
 
@@ -389,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5**, an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-26 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 667 tests
+26 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 675 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

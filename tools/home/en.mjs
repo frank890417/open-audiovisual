@@ -2,7 +2,7 @@
 // Shape must match zh.mjs key for key — tools/build-home.mjs refuses to build otherwise.
 // Strings may contain inline HTML (authored, trusted). Code, signal names and URLs live in page.mjs.
 
-import { getFacts, enWords, cap } from '../site/facts.mjs';
+import { getFacts, enWords, cap, minor } from '../site/facts.mjs';
 const facts = getFacts();
 
 export default {
@@ -34,10 +34,12 @@ export default {
     open: 'Open',
     source: 'Source',
     home: 'open-audiovisual home',
+    // the two versions, side by side wherever the site names one (homepage, /p5/, /docs/), linked to /changelog/
+    versions: `oav-p5 ${minor(facts.p5Version)} · framework ${minor(facts.version)}`,
   },
 
   hero: {
-    eyebrow: 'v0.1 · MIT · zero build · zero dependencies',
+    eyebrow: 'MIT · zero build · zero dependencies',
     sub: 'A web-native framework for audiovisual performance.',
     lede: 'Keys, knobs, voices, hands and phones become named <em>signals</em>. A <em>mapping</em> turns signals into <em>parameters</em>. Your <em>world</em> reads the parameters and turns them into image and sound, in a browser tab, on a projector, on stage.',
     doorsLabel: 'Where to start',
@@ -45,6 +47,7 @@ export default {
       { who: 'I perform', what: `See what it makes and play the ${enWords(facts.exampleCount)} works`, href: '#works' },
       { who: 'I write code', what: 'Run it in a minute, then write a world', href: '#start' },
       { who: 'I am an AI agent', what: 'Read /llms.txt, then AGENTS.md', href: 'llms.txt' },
+      { who: 'I use p5.js / OpenProcessing', what: 'One line: a controller, sound, drums, video', href: 'p5/' },
     ],
   },
 
@@ -306,6 +309,7 @@ export default {
     homeLink: 'Home',
     examples: 'Examples',
     p5: 'p5.js in one line',
+    changelog: 'Changelog',
     license: 'MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.',
     artworks: 'Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.',
     machine: 'For machines',

@@ -42,7 +42,7 @@ export const DOC_BLURB = {
   'show-control': ['timeline, scenes, performance mode, console, monitor, OSC.', '時間軸、場景、演出模式、控台、後台監看、OSC。'],
   score: ['a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.', '把演出寫成段落長度：版本、cue、hold、段落模組、提詞器、樂譜轉 MIDI。'],
   controllers: ['MIDI controllers as JSON profiles, the `<oav-controller>` element and the iframe embed.', '把 MIDI 控制器寫成 JSON 設定檔，以及 `<oav-controller>` 元件與 iframe 嵌入。'],
-  p5: ['one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone.', '一行指令，讓任何 p5.js 草圖能用 MIDI、螢幕上的控制器或手機彈。'],
+  p5: ['one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone, with sound, a drum machine you can write as one line of rhythm, the microphone and video recording.', '一行指令，讓任何 p5.js 草圖能用 MIDI、螢幕上的控制器或手機彈，還有聲音、能用一行字寫節奏的鼓機、麥克風與錄影。'],
   phones: ['phones and iPads as controllers: relay, sensors, control surfaces.', '手機與 iPad 當控制器：中繼、感測器、控制面板。'],
   signals: ['every signal the built-in inputs publish, with ranges.', '內建輸入發出的每一個訊號與範圍。'],
   packages: ['every package, by layer.', '每個套件，依層分類。'],
@@ -57,12 +57,14 @@ const PAGE_BLURB = {
   'docs/': ['the complete documentation on one page: every chapter listed below, in one HTML file. Generated from the Markdown in `docs/`.', '完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。'],
   'controllers/': ['every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).', '每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。'],
   'examples/': ['every example, with a thumbnail and what it needs.', '所有範例，附縮圖與需要什麼。'],
-  'p5/': ['load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone.', '載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。'],
+  'p5/': ['load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone; the same line adds sound (`startSound`), a drum machine with one line of rhythm (`startDrums("bd*4, [~ sd]*2, hh*8")`), the microphone (`micLevel`) and video recording (`startRecording`). Ready-made sketches in `p5/examples/`.', '載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。同一行還有聲音（`startSound`）、能用一行字寫節奏的鼓機（`startDrums("bd*4, [~ sd]*2, hh*8")`）、麥克風（`micLevel`）與錄影（`startRecording`）。現成草圖在 `p5/examples/`。'],
+  'changelog/': ['what changed, newest first: oav-p5 version by version, the framework and the site by day, each with its commit.', '改了什麼，新的在上：oav-p5 依版本，框架與網站依日期，每一條附 commit。'],
   'webtoe/': ['the sister project and the engine half of the stack: a web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world. Editor: https://webtoe.openaudiovisual.com/', '姊妹專案，整套的引擎那一半：網頁原生、節點式的即時影像資料流引擎（TouchDesigner 式、WebGL2 + WebGPU、零執行期相依），能打開 TouchDesigner `.toe` 專案；`@openav/world-webtoe` 如何把 WebToe 網路當世界演奏。編輯器：https://webtoe.openaudiovisual.com/'],
 };
 const PAGE_TITLE = {
   '': ['Homepage', '首頁'], 'docs/': ['Handbook', '手冊'], 'controllers/': ['MIDI controller library', 'MIDI 控制器圖鑑'],
   'examples/': ['Examples', '範例'], 'p5/': ['p5.js in one line', 'p5.js 一行指令'], 'webtoe/': ['WebToe', 'WebToe'],
+  'changelog/': ['Changelog', '更新紀錄'],
 };
 
 const CONCEPTS = {
@@ -112,7 +114,7 @@ function pagesSection(locale) {
   const reg = registry();
   const has = (p) => reg.some((e) => e.path === p);
   const lines = [];
-  for (const p of ['', 'docs/', 'controllers/', 'examples/', 'p5/', 'webtoe/']) {
+  for (const p of ['', 'docs/', 'controllers/', 'examples/', 'p5/', 'webtoe/', 'changelog/']) {
     if (!has(p)) continue;
     const e = reg.find((x) => x.path === p);
     const en = SITE + p, zh = SITE + 'zh/' + p, both = e.langs.includes('zh');
@@ -175,8 +177,8 @@ export function llmsTxt(locale) {
       `輸入（MIDI、麥克風、和弦、身體與手部姿態、手機）發出有名字的訊號；映射層把訊號接到參數；演算的「世界」只讀參數，產生畫面與聲音；時間軸、導演控台與後台監看負責把演出跑起來。原生 ES module，零建置、零相依。從《The Last Input》（吳哲宇，2026；IRCAM 駐村 × C-LAB，臺北，49.4 聲道表演）抽出來。`),
     ``,
     T(
-      `Today: ${f.packageCount} packages, ${f.exampleCount} examples, ${f.controllerCount} MIDI controller profiles (${f.deviceCount} devices and ${f.genericCount} generic layouts), version ${f.version}.`,
-      `目前：${f.packageCount} 個套件、${f.exampleCount} 個範例、${f.controllerCount} 份 MIDI 控制器設定檔（${f.deviceCount} 台真機與 ${f.genericCount} 種通用版型），版本 ${f.version}。`),
+      `Today: ${f.packageCount} packages, ${f.exampleCount} examples, ${f.controllerCount} MIDI controller profiles (${f.deviceCount} devices and ${f.genericCount} generic layouts), version ${f.version}; oav-p5 ${f.p5Version} (${SITE}changelog/).`,
+      `目前：${f.packageCount} 個套件、${f.exampleCount} 個範例、${f.controllerCount} 份 MIDI 控制器設定檔（${f.deviceCount} 台真機與 ${f.genericCount} 種通用版型），版本 ${f.version}，oav-p5 ${f.p5Version}（${SITE}zh/changelog/）。`),
     ``,
     T(`Site: ${SITE} (English) · ${SITE}zh/ (繁體中文, Traditional Chinese)`, `網站：${SITE}（English）· ${SITE}zh/（繁體中文）`),
     T(`Repository: ${REPO}`, `原始碼：${REPO}`),
@@ -323,7 +325,7 @@ export function llmsFull() {
 > Every document of open-audiovisual in one file: README, AGENTS.md and every chapter of the handbook (docs/).
 > Generated by tools/build-home.mjs from the repository (version ${f.version}); the short index is /llms.txt (${SITE}llms.txt, Traditional Chinese: ${SITE}zh/llms.txt).
 > Site: ${SITE} (English) · ${SITE}zh/ (繁體中文)
-> Handbook: ${SITE}docs/ · MIDI controller library: ${SITE}controllers/ · WebToe, the sister engine: ${SITE}webtoe/${has('examples/') ? `\n> Examples: ${SITE}examples/` : ''}${has('p5/') ? `\n> p5.js in one line: ${SITE}p5/` : ''}
+> Handbook: ${SITE}docs/ · MIDI controller library: ${SITE}controllers/ · WebToe, the sister engine: ${SITE}webtoe/${has('examples/') ? `\n> Examples: ${SITE}examples/` : ''}${has('p5/') ? `\n> p5.js in one line: ${SITE}p5/ (oav-p5 ${f.p5Version})` : ''}${has('changelog/') ? `\n> Changelog: ${SITE}changelog/` : ''}
 > Repository: ${REPO} (MIT)
 > Today: ${f.packageCount} packages, ${f.exampleCount} examples, ${f.controllerCount} MIDI controller profiles (${f.deviceCount} devices, ${f.genericCount} generic layouts).
 

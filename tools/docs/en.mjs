@@ -13,7 +13,7 @@ export default {
   eyebrow: 'Documentation',
   title: 'The open-audiovisual handbook',
   lede: 'Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.',
-  stats: '{chapters} chapters · {sections} sections · v{version}',
+  stats: '{chapters} chapters · {sections} sections',   // then the versions, linked to /changelog/ (home ui.versions)
   sourceNote: 'Written in Markdown in <code>docs/</code>; this page is generated from it.',
   llmsNote: 'For language models: <a href="{llms}">/llms.txt</a> · <a href="{llmsFull}">/llms-full.txt</a>',
 

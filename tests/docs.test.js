@@ -110,6 +110,30 @@ test('markdown: links go through the resolver', () => {
   assert.deepEqual(seen, ['mapping.md#curves', '../packages/core/index.js']);
 });
 
+test('markdown: a code span that names something openable becomes a link (codeHref), never inside a link', () => {
+  const codeHref = (c) => (c === 'p5/examples/mic/' ? '../p5/examples/mic/' : null);
+  assert.equal(inline('open `p5/examples/mic/` or `knob1`', { codeHref }), 'open <a href="../p5/examples/mic/"><code>p5/examples/mic/</code></a> or <code>knob1</code>');
+  assert.equal(inline('open `p5/examples/mic/`'), 'open <code>p5/examples/mic/</code>', 'no codeHref, no link');
+  assert.equal(inline('[`p5/examples/mic/`](x)', { codeHref, resolveLink: (h) => h }), '<a href="x"><code>p5/examples/mic/</code></a>', 'no link inside a link');
+});
+
+test('docs: a ready-made sketch named as code (`p5/examples/<name>/`) links to its page, or to its source when it has none', async () => {
+  const { getFacts } = await import('../tools/site/facts.mjs');
+  const f = getFacts();
+  assert.ok(f.p5Sketches.length >= 7, 'p5/examples has its sketches');
+  for (const [file, root] of [['docs/index.html', '../'], ['zh/docs/index.html', '../../'], ['p5/index.html', '../'], ['zh/p5/index.html', '../../']]) {
+    const s = read(file);
+    assert.ok(!/(?<!">)<code>p5\/examples\/[a-z0-9-]+\/<\/code>/.test(s), `${file}: every p5/examples/<name>/ in the text is a link`);
+    for (const x of f.p5Sketches) {
+      if (!s.includes(`<code>p5/examples/${x.name}/</code>`)) continue;
+      const href = x.page ? `${root}p5/examples/${x.name}/` : `https://github.com/frank890417/open-audiovisual/blob/main/p5/examples/${x.name}/sketch.js`;
+      assert.ok(s.includes(`<a href="${href}"><code>p5/examples/${x.name}/</code></a>`), `${file}: ${x.name} → ${href}`);
+      if (x.page) assert.ok(fs.existsSync(path.join(ROOT, `p5/examples/${x.name}/index.html`)));
+    }
+  }
+  assert.ok(read('docs/index.html').includes('<a href="../p5/examples/mic/"><code>p5/examples/mic/</code></a>'), 'the microphone sketch is linked on /docs/');
+});
+
 // ───────────── the built pages ─────────────
 
 const built = buildDocs();

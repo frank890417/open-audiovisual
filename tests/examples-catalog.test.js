@@ -172,6 +172,11 @@ test('README: generated blocks are current, 15 examples, the controller list lin
   for (const d of catalog().devices) assert.ok(md.includes(`https://openaudiovisual.com/controllers/${d.p.id}/`), `README: ${d.p.id}`);
   assert.ok(md.includes(`MIDI_controllers-${f.deviceCount}-`) && !/Thirteen works|MIDI_controllers-16/.test(md));
   assert.ok(!md.includes('assets/readme/examples/'));
+  // the package table: every package once, generated from the homepage's groups
+  const table = md.match(/<!--gen:packages-table-->([\s\S]*?)<!--\/gen:packages-table-->/);
+  assert.ok(table, 'README: the package table is a generated block');
+  const listed = [...table[1].matchAll(/\[`@openav\/([\w-]+)`\]\(packages\/\1\/\)/g)].map((m) => m[1]);
+  assert.deepEqual([...listed].sort(), f.packages, 'README: the package table lists every package once');
 });
 
 test('docs: the next example number and the package count are the facts', async () => {
@@ -180,6 +185,8 @@ test('docs: the next example number and the package count are the facts', async 
   for (const rel of ['docs/agents.md', 'docs/zh/agents.md']) assert.ok(read(rel).includes(`Create examples/${f.nextExampleNumber}-<name>/`), rel);
   assert.ok(read('docs/packages.md').startsWith(`# `) && read('docs/packages.md').includes(`${cap(enWords(f.packageCount))} packages live in`));
   assert.ok(read('docs/zh/packages.md').includes(`${zhWords(f.packageCount)}個套件放在`));
+  assert.ok(/a live instrument and the\s+(\S+) example works/.exec(read('docs/introduction.md'))[1] === enWords(f.exampleCount), 'docs/introduction.md: the example count');
+  assert.ok(read('docs/zh/introduction.md').includes(`還有${zhWords(f.exampleCount)}件範例作品`), 'docs/zh/introduction.md: the example count');
   for (const rel of ['docs/getting-started.md', 'docs/zh/getting-started.md']) {
     const s = read(rel);
     assert.ok(/^## (Three ways in|三種進場方式)$/m.test(s));

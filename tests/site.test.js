@@ -21,7 +21,8 @@ const git = (...args) => { try { return execFileSync('git', args, { cwd: ROOT, e
 
 /** Every generated page (not the hand-written example pages, which the examples workstream owns): { rel, html }. */
 function generatedPages() {
-  const rels = ['index.html', 'zh/index.html', 'docs/index.html', 'zh/docs/index.html', 'controllers/index.html', 'zh/controllers/index.html', 'webtoe/index.html', 'zh/webtoe/index.html'];
+  const rels = ['index.html', 'zh/index.html', 'docs/index.html', 'zh/docs/index.html', 'controllers/index.html', 'zh/controllers/index.html', 'webtoe/index.html', 'zh/webtoe/index.html',
+    'p5/index.html', 'zh/p5/index.html', 'changelog/index.html', 'zh/changelog/index.html'];
   for (const base of ['controllers', 'zh/controllers']) for (const d of dirs(base)) if (exists(`${base}/${d}/index.html`)) rels.push(`${base}/${d}/index.html`);
   return rels.map((rel) => ({ rel, html: read(rel) }));
 }
@@ -49,6 +50,8 @@ test('facts: the numbers equal what is on disk', async () => {
   const max = Math.max(...examples.map((d) => Number(d.slice(0, 2))));
   assert.equal(f.nextExampleNumber, String(max + 1).padStart(2, '0'));
   assert.equal(f.version, JSON.parse(read('package.json')).version);
+  assert.equal(f.p5Version, /OAV_P5_VERSION = '([\d.]+)'/.exec(read('p5/oav-p5.js'))[1], 'oav-p5 version read from p5/oav-p5.js');
+  assert.deepEqual(f.p5Sketches.map((x) => x.name), dirs('p5/examples').filter((d) => exists(`p5/examples/${d}/sketch.js`)));
 });
 
 test('facts: numbers as words (en, zh) and the README block', async () => {

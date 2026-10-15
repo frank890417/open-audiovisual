@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=5e75007">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=5e75007">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -353,7 +353,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">18 chapters · 182 sections · v0.1.0</p>
+      <p class="docs-stats">18 chapters · 182 sections · <a href="../changelog/">oav-p5 0.6 · framework 0.1</a></p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -368,7 +368,7 @@ page.</p>
 inputs into parameters, a timeline with scenes, a director's console, a
 performance mode for the performer, and a backstage page for the stage manager.
 You write the <em>world</em>, the piece itself. The pitch, a live instrument and the
-nine example works are on the <a href="../">homepage</a>.</p>
+fifteen example works are on the <a href="../">homepage</a>.</p>
 <h3 id="introduction-who-it-is-for">Who it is for<a class="anchor" href="#introduction-who-it-is-for" aria-label="Link to this section">#</a></h3>
 <ul>
 <li><strong>Performers</strong> play the examples with a MIDI keyboard, a microphone, a camera,
@@ -1707,7 +1707,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=5e75007"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2349,7 +2349,7 @@ microphone: <code>micSensitivity(3)</code> (+9.5 dB on <code>micLevel</code>, ×
 file never starts the microphone for it.</li>
 <li><strong>Off switch.</strong> <code>?mic=click</code> (or <code>window.OAV_P5 = { mic: 'click' }</code>) means only 🎤 and <code>startMic()</code> turn it on;
 <code>mic=off</code> means nothing can start it (the names stay <code>0</code>). <code>https</code> or <code>localhost</code> is required, as for any microphone page.</li>
-<li>A sketch with a microphone, ready to open: <code>p5/examples/mic/</code>.</li>
+<li>A sketch with a microphone, ready to open: <a href="../p5/examples/mic/"><code>p5/examples/mic/</code></a>.</li>
 </ul>
 <h3 id="p5-sound-what-is-played-is-heard">Sound: what is played is heard<a class="anchor" href="#p5-sound-what-is-played-is-heard" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
@@ -2377,7 +2377,7 @@ A sketch that calls <code>startSound()</code> in <code>setup()</code> is heard f
 not the piano. The sustain pedal holds notes.</li>
 <li><strong>No code at all.</strong> <code>?oav_sound=piano</code> on the page (any instrument id; on OpenProcessing <code>?sketch_oav_sound=piano</code>) makes any sketch heard
 from the first click; <code>sound=off</code> keeps it silent.</li>
-<li>A sketch that plays and draws, ready to open: <code>p5/examples/keys/</code>.</li>
+<li>A sketch that plays and draws, ready to open: <a href="../p5/examples/keys/"><code>p5/examples/keys/</code></a>.</li>
 </ul>
 <h3 id="p5-drum-machine">Drum machine<a class="anchor" href="#p5-drum-machine" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
@@ -2492,7 +2492,7 @@ independently from their public documentation.</p>
 </table></div>
 <p>The same <code>cue()</code> twice adds nothing, so it may also sit in <code>draw()</code>. On one step the cues fire in the order they were
 declared, then <code>barStarted</code>, <code>stepStarted</code> and that step's hits. A silent clock: <code>startDrums({})</code>. The whole of it, ready to
-open: <code>p5/examples/drums/</code>; a line of rhythm with <code>drumPhase</code> and <code>beatPhase</code>: <code>p5/examples/rhythm/</code>.</p>
+open: <a href="../p5/examples/drums/"><code>p5/examples/drums/</code></a>; a line of rhythm with <code>drumPhase</code> and <code>beatPhase</code>: <a href="../p5/examples/rhythm/"><code>p5/examples/rhythm/</code></a>.</p>
 <h3 id="p5-recording-a-video-with-its-sound">Recording: a video with its sound<a class="anchor" href="#p5-recording-a-video-with-its-sound" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
   <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
@@ -2533,7 +2533,7 @@ use <code>startSound()</code> and <code>startDrums()</code>. Sound the sketch ma
 from code, p5's own <code>saveCanvas('name', 'png')</code> does the same.</li>
 <li><strong>Options.</strong> <code>record=nomic</code> (no microphone) or <code>record=off</code> (no ⏺ or 📷; <code>startRecording()</code> does nothing), <code>recfps=60</code>,
 <code>reclimit=600</code> (seconds), <code>title=my-piece</code> (in the file name); for one take, <code>startRecording({ seconds, fps, mic: false, name })</code>.</li>
-<li>The whole of it, ready to open: <code>p5/examples/record/</code>.</li>
+<li>The whole of it, ready to open: <a href="../p5/examples/record/"><code>p5/examples/record/</code></a>.</li>
 </ul>
 <h3 id="p5-three-inputs">Three inputs<a class="anchor" href="#p5-three-inputs" aria-label="Link to this section">#</a></h3>
 <div class="table-wrap"><table>
@@ -2592,7 +2592,7 @@ defined</em>.</li>
 embed code it gives you does not: add <code>allow="midi"</code> to that <code>&lt;iframe&gt;</code> if the embedded sketch should hear a hardware
 controller, and <code>allow="microphone"</code> if it should hear the microphone.</li>
 <li><strong>Options, MIDI-level access and tests</strong>: <a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>.
-Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <code>p5/examples/mic/</code>, <code>p5/examples/keys/</code>, <code>p5/examples/drums/</code>, <code>p5/examples/rhythm/</code> and <code>p5/examples/record/</code>.</li>
+Examples: <a href="../p5/examples/particles/"><code>p5/examples/particles/</code></a>, <a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/examples/opc/sketch.js"><code>p5/examples/opc/</code></a>, <a href="../p5/examples/mic/"><code>p5/examples/mic/</code></a>, <a href="../p5/examples/keys/"><code>p5/examples/keys/</code></a>, <a href="../p5/examples/drums/"><code>p5/examples/drums/</code></a>, <a href="../p5/examples/rhythm/"><code>p5/examples/rhythm/</code></a> and <a href="../p5/examples/record/"><code>p5/examples/record/</code></a>.</li>
 </ul>
 </section>
 
@@ -3094,7 +3094,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=5e75007"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -3855,6 +3855,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
       <a href="../docs/">Docs</a>
       <a href="../p5/">p5.js in one line</a>
       <a href="../webtoe/">WebToe</a>
+      <a href="../changelog/">Changelog</a>
     </nav>
     <nav aria-label="For machines">
       <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
@@ -3867,7 +3868,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=5e75007"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

@@ -20,6 +20,7 @@
 //     twin: [{ level, id }],        // positional ids from the other language (zh takes en's ids)
 //     used: new Set(),              // ids already on the page (kept unique page-wide)
 //     resolveLink: (href) => href,  // rewrite links (docs .md → #anchor, code → GitHub)
+//     codeHref: (code) => href|null,// an `inline code` span that names something openable becomes a link (p5/examples/mic/)
 //     labels: { note: 'Note', … },  // alert titles
 //     anchorLabel: 'Link to this section',
 //   });
@@ -97,10 +98,13 @@ export function inline(src, ctx = {}, slots = []) {
   let s = String(src).replace(CJK_BREAK, '$1$2');
 
   // code spans: a run of N backticks closes on the next run of exactly N
-  s = s.replace(/(`+)([\s\S]*?[^`])\1(?!`)/g, (m, ticks, body) => {
+  s = s.replace(/(`+)([\s\S]*?[^`])\1(?!`)/g, (m, ticks, body, at, all) => {
     let b = body.replace(/\n/g, ' ');
     if (/^ .* $/.test(b) && b.trim()) b = b.slice(1, -1);
-    return put(`<code>${esc(b)}</code>`);
+    // a code span that names something openable (ctx.codeHref, e.g. `p5/examples/mic/`) becomes a link,
+    // unless it already sits inside a link's text ([`…`](…)): no link inside a link
+    const href = ctx.codeHref && all[at - 1] !== '[' ? ctx.codeHref(b) : null;
+    return put(href ? `<a href="${attr(href)}"><code>${esc(b)}</code></a>` : `<code>${esc(b)}</code>`);
   });
   // backslash escapes (ASCII punctuation)
   s = s.replace(/\\([\\`*_{}[\]()#+\-.!|<>~])/g, (m, ch) => put(esc(ch)));
@@ -192,6 +196,7 @@ export function renderMarkdown(src, opts = {}) {
     twin: opts.twin || null,
     used: opts.used || new Set(),
     resolveLink: opts.resolveLink || null,
+    codeHref: opts.codeHref || null,
     site: opts.site || '',
     labels: { note: 'Note', tip: 'Tip', important: 'Important', warning: 'Warning', caution: 'Caution', ...(opts.labels || {}) },
     anchorLabel: opts.anchorLabel || 'Link to this section',

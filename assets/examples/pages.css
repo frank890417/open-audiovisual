@@ -34,6 +34,7 @@ html[lang^="zh"] .examples-page .sec-head h1 { letter-spacing: 0; line-height: 1
 .p5-cta .cta:hover { background: transparent; color: var(--sig); }
 .p5-chapter { margin-top: clamp(40px, 5vw, 64px); }
 .p5-chapter h3:first-child { margin-top: 0; }
+.p5-sketches a { white-space: nowrap; }
 
 @media (max-width: 640px) {
   .examples-page .sec-head h1 { grid-column: 1; padding-top: 12px; }

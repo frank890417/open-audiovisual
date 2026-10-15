@@ -5,12 +5,15 @@
 //   <!-- facts:start … --> … <!-- facts:end -->   the one-line numbers block (readmeBlock in facts.mjs)
 //
 // Blocks: badge-controllers, n-devices, n-controls, n-generic, w-examples (Fifteen), w-packages (Twenty-three),
-//         devices-line (18 devices, 859 controls), examples-grid, controllers-table.
+//         devices-line (18 devices, 859 controls), examples-grid, controllers-table,
+//         packages-table (every package, by layer: the homepage's groups and one-liners, which tests/site.test.js keeps complete).
 
 import { getFacts, enWords, cap } from '../site/facts.mjs';
 import { catalog, nameOf, detailUrl } from '../controllers/page.mjs';
 import { routeGroups, exampleUrl, L } from './catalog.mjs';
 import { ROUTE_NAMES, ROUTE_INTRO, routeMark } from './strings.mjs';
+import { PACKAGE_GROUPS } from '../home/page.mjs';
+import homeEn from '../home/en.mjs';
 
 const SITE = 'https://openaudiovisual.com/';
 const attr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -43,6 +46,16 @@ function controllersTable() {
     ...makers.map((m) => `| ${m} | ${cat.devices.filter((d) => d.p.maker === m).map((d) => `[**${short(d)}**](${detailUrl(d.p.id, 'en')})`).join(' · ')} |`)].join('\n');
 }
 
+/** Every package, by layer: the same groups and one-liners as the homepage's package list, so a new package cannot be left out. */
+function packagesTable() {
+  const t = homeEn.start;
+  const TAG = { l1: 'L1 ', l2: 'L2 ', l3: 'L3 ', l4: 'L4 ' };
+  const cell = (x) => String(x).replace(/\|/g, '\\|');
+  const rows = PACKAGE_GROUPS.flatMap((g, gi) => g.pkgs.map((p, i) =>
+    `| ${i ? '' : (TAG[g.layer] || '') + t.groups[gi].toLowerCase()} | [\`@openav/${p}\`](packages/${p}/) | ${cell(t.packages[p])} |`));
+  return ['| layer | package | role |', '|---|---|---|', ...rows].join('\n');
+}
+
 /** name → the text written between its markers. */
 export function readmeBlocks(f = getFacts()) {
   return {
@@ -55,5 +68,6 @@ export function readmeBlocks(f = getFacts()) {
     'w-packages': cap(enWords(f.packageCount)),
     'examples-grid': examplesGrid(),
     'controllers-table': controllersTable(),
+    'packages-table': packagesTable(),
   };
 }

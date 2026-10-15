@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>oav-p5: play any p5.js sketch from a MIDI controller</title>
-<meta name="description" content="Add one line to any p5.js sketch and play it from a MIDI controller, an on-screen controller or a phone. Works with p5 1.x and 2.x, OpenProcessing included.">
+<title>oav-p5: one line for MIDI, sound, drums and video in p5.js</title>
+<meta name="description" content="One line at the top of any p5.js sketch: play it from MIDI, the screen or a phone, with sound, a drum machine, one line of rhythm, the microphone and video. p5 1.x and 2.x.">
 <link rel="canonical" href="https://openaudiovisual.com/p5/">
 <link rel="alternate" hreflang="en" href="https://openaudiovisual.com/p5/">
 <link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/p5/">
@@ -15,8 +15,8 @@
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="open-audiovisual">
-<meta property="og:title" content="oav-p5: play any p5.js sketch from a MIDI controller">
-<meta property="og:description" content="Add one line to any p5.js sketch and play it from a MIDI controller, an on-screen controller or a phone. Works with p5 1.x and 2.x, OpenProcessing included.">
+<meta property="og:title" content="oav-p5: one line for MIDI, sound, drums and video in p5.js">
+<meta property="og:description" content="One line at the top of any p5.js sketch: play it from MIDI, the screen or a phone, with sound, a drum machine, one line of rhythm, the microphone and video. p5 1.x and 2.x.">
 <meta property="og:url" content="https://openaudiovisual.com/p5/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="zh_TW">
@@ -25,8 +25,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="oav-p5: play any p5.js sketch from a MIDI controller">
-<meta name="twitter:description" content="Add one line to any p5.js sketch and play it from a MIDI controller, an on-screen controller or a phone. Works with p5 1.x and 2.x, OpenProcessing included.">
+<meta name="twitter:title" content="oav-p5: one line for MIDI, sound, drums and video in p5.js">
+<meta name="twitter:description" content="One line at the top of any p5.js sketch: play it from MIDI, the screen or a phone, with sound, a drum machine, one line of rhythm, the microphone and video. p5 1.x and 2.x.">
 <meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
 <meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
 <link rel="icon" href="../favicon.ico" sizes="48x48">
@@ -34,11 +34,11 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=5e75007">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/p5/#article","url":"https://openaudiovisual.com/p5/","name":"oav-p5: play any p5.js sketch from a MIDI controller","description":"Add one line to any p5.js sketch and play it from a MIDI controller, an on-screen controller or a phone. Works with p5 1.x and 2.x, OpenProcessing included.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"p5.js in one line","about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/p5/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/p5/#breadcrumb"},"mentions":[]},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/p5/#code","name":"oav-p5","url":"https://openaudiovisual.com/p5/oav-p5.js","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser, p5.js 1.x and 2.x","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/p5/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"p5.js in one line","item":"https://openaudiovisual.com/p5/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=5e75007">
-<link rel="stylesheet" href="../assets/examples/pages.css?v=5e75007">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/p5/#article","url":"https://openaudiovisual.com/p5/","name":"oav-p5: one line for MIDI, sound, drums and video in p5.js","description":"One line at the top of any p5.js sketch: play it from MIDI, the screen or a phone, with sound, a drum machine, one line of rhythm, the microphone and video. p5 1.x and 2.x.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"p5.js in one line","about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/p5/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/p5/#breadcrumb"}},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/p5/#code","name":"oav-p5","url":"https://openaudiovisual.com/p5/oav-p5.js","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser, p5.js 1.x and 2.x","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"},"version":"0.6.0"},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/p5/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"p5.js in one line","item":"https://openaudiovisual.com/p5/"}]}]}</script>
+<link rel="stylesheet" href="../assets/docs/docs.css">
+<link rel="stylesheet" href="../assets/examples/pages.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page p5-page">
@@ -66,10 +66,13 @@
 
 <main id="main" class="docs-main p5-main">
   <header class="docs-head" id="top">
-    <p class="eyebrow">p5.js · MIDI · one line</p>
-    <h1>p5.js in one line</h1>
+    <p class="eyebrow">p5.js · one line</p>
+    <h1 id="p5">p5.js in one line</h1>
+    <p class="docs-lede">The same line also plays sound, runs a drum machine you can write as one line of rhythm, listens to the microphone, and records the canvas with its sound as a video. Each one reads like the mouse: a variable to read, a function to write.</p>
+    <p class="docs-stats"><a href="../changelog/">oav-p5 0.6 · framework 0.1</a></p>
     <p class="p5-cta"><a class="cta" href="../examples/15-p5-one-line/">Try it live: example 15 →</a> <a class="more" href="../docs/#p5">The same page in the handbook</a> <a class="more" href="https://github.com/frank890417/open-audiovisual/tree/main/p5">p5/ on GitHub ↗</a></p>
-    <p class="docs-note">The sketch on that page is plain p5.js with this one line first. Click the 🎹, turn a knob, hit a pad.</p>
+    <p class="docs-note">The sketch on that page is plain p5.js with this one line first. Click the 🎹, turn a knob, hit a pad; 🔊, 🥁 and ⏺ are in the same panel.</p>
+    <p class="docs-note p5-sketches">Ready-made sketches: <a href="../p5/examples/particles/">Particles</a> · <a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/examples/opc/sketch.js">OP Configurator ↗</a> · <a href="../p5/examples/mic/">Microphone</a> · <a href="../p5/examples/keys/">Keys with sound</a> · <a href="../p5/examples/drums/">Drums and bars</a> · <a href="../p5/examples/rhythm/">One line of rhythm</a> · <a href="../p5/examples/record/">Record a video</a></p>
   </header>
 
   <section class="chapter p5-chapter" data-chapter="p5" aria-labelledby="p5">
@@ -175,7 +178,7 @@ microphone: <code>micSensitivity(3)</code> (+9.5 dB on <code>micLevel</code>, ×
 file never starts the microphone for it.</li>
 <li><strong>Off switch.</strong> <code>?mic=click</code> (or <code>window.OAV_P5 = { mic: 'click' }</code>) means only 🎤 and <code>startMic()</code> turn it on;
 <code>mic=off</code> means nothing can start it (the names stay <code>0</code>). <code>https</code> or <code>localhost</code> is required, as for any microphone page.</li>
-<li>A sketch with a microphone, ready to open: <code>p5/examples/mic/</code>.</li>
+<li>A sketch with a microphone, ready to open: <a href="../p5/examples/mic/"><code>p5/examples/mic/</code></a>.</li>
 </ul>
 <h3 id="p5-sound-what-is-played-is-heard">Sound: what is played is heard<a class="anchor" href="#p5-sound-what-is-played-is-heard" aria-label="#">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
@@ -203,7 +206,7 @@ A sketch that calls <code>startSound()</code> in <code>setup()</code> is heard f
 not the piano. The sustain pedal holds notes.</li>
 <li><strong>No code at all.</strong> <code>?oav_sound=piano</code> on the page (any instrument id; on OpenProcessing <code>?sketch_oav_sound=piano</code>) makes any sketch heard
 from the first click; <code>sound=off</code> keeps it silent.</li>
-<li>A sketch that plays and draws, ready to open: <code>p5/examples/keys/</code>.</li>
+<li>A sketch that plays and draws, ready to open: <a href="../p5/examples/keys/"><code>p5/examples/keys/</code></a>.</li>
 </ul>
 <h3 id="p5-drum-machine">Drum machine<a class="anchor" href="#p5-drum-machine" aria-label="#">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
@@ -318,7 +321,7 @@ independently from their public documentation.</p>
 </table></div>
 <p>The same <code>cue()</code> twice adds nothing, so it may also sit in <code>draw()</code>. On one step the cues fire in the order they were
 declared, then <code>barStarted</code>, <code>stepStarted</code> and that step's hits. A silent clock: <code>startDrums({})</code>. The whole of it, ready to
-open: <code>p5/examples/drums/</code>; a line of rhythm with <code>drumPhase</code> and <code>beatPhase</code>: <code>p5/examples/rhythm/</code>.</p>
+open: <a href="../p5/examples/drums/"><code>p5/examples/drums/</code></a>; a line of rhythm with <code>drumPhase</code> and <code>beatPhase</code>: <a href="../p5/examples/rhythm/"><code>p5/examples/rhythm/</code></a>.</p>
 <h3 id="p5-recording-a-video-with-its-sound">Recording: a video with its sound<a class="anchor" href="#p5-recording-a-video-with-its-sound" aria-label="#">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
   <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
@@ -359,7 +362,7 @@ use <code>startSound()</code> and <code>startDrums()</code>. Sound the sketch ma
 from code, p5's own <code>saveCanvas('name', 'png')</code> does the same.</li>
 <li><strong>Options.</strong> <code>record=nomic</code> (no microphone) or <code>record=off</code> (no ⏺ or 📷; <code>startRecording()</code> does nothing), <code>recfps=60</code>,
 <code>reclimit=600</code> (seconds), <code>title=my-piece</code> (in the file name); for one take, <code>startRecording({ seconds, fps, mic: false, name })</code>.</li>
-<li>The whole of it, ready to open: <code>p5/examples/record/</code>.</li>
+<li>The whole of it, ready to open: <a href="../p5/examples/record/"><code>p5/examples/record/</code></a>.</li>
 </ul>
 <h3 id="p5-three-inputs">Three inputs<a class="anchor" href="#p5-three-inputs" aria-label="#">#</a></h3>
 <div class="table-wrap"><table>
@@ -418,7 +421,7 @@ defined</em>.</li>
 embed code it gives you does not: add <code>allow="midi"</code> to that <code>&lt;iframe&gt;</code> if the embedded sketch should hear a hardware
 controller, and <code>allow="microphone"</code> if it should hear the microphone.</li>
 <li><strong>Options, MIDI-level access and tests</strong>: <a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>.
-Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <code>p5/examples/mic/</code>, <code>p5/examples/keys/</code>, <code>p5/examples/drums/</code>, <code>p5/examples/rhythm/</code> and <code>p5/examples/record/</code>.</li>
+Examples: <a href="../p5/examples/particles/"><code>p5/examples/particles/</code></a>, <a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/examples/opc/sketch.js"><code>p5/examples/opc/</code></a>, <a href="../p5/examples/mic/"><code>p5/examples/mic/</code></a>, <a href="../p5/examples/keys/"><code>p5/examples/keys/</code></a>, <a href="../p5/examples/drums/"><code>p5/examples/drums/</code></a>, <a href="../p5/examples/rhythm/"><code>p5/examples/rhythm/</code></a> and <a href="../p5/examples/record/"><code>p5/examples/record/</code></a>.</li>
 </ul>
   </section>
 
@@ -439,6 +442,7 @@ Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <c
       <a href="../docs/">Docs</a>
       <a href="../p5/">p5.js in one line</a>
       <a href="../webtoe/">WebToe</a>
+      <a href="../changelog/">Changelog</a>
     </nav>
     <nav aria-label="For machines">
       <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
@@ -451,7 +455,7 @@ Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <c
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"","tocButton":"","tocClose":""}</script>
-<script type="module" src="../assets/docs/docs.js?v=5e75007"></script>
+<script type="module" src="../assets/docs/docs.js"></script>
 <!--/email_off-->
 </body>
 </html>

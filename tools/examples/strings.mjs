@@ -1,5 +1,5 @@
-// Strings for the examples pages (/examples/, /zh/examples/), the guide card on every example page, and the
-// /p5/ page: English and Traditional Chinese, same keys. Where a sentence already lived somewhere else on the
+// Strings for the examples pages (/examples/, /zh/examples/), the guide card on every example page, the
+// /p5/ page and the /changelog/ page: English and Traditional Chinese, same keys. Where a sentence already lived somewhere else on the
 // site (the homepage's works lede, the examples' own comments, docs/p5.md) it is reused, not rewritten:
 // ROUTE_INTRO, the route names in English, the guide labels and the page headings are the new sentences.
 
@@ -82,12 +82,26 @@ export const STRINGS = {
       copyright: 'Artwork credit',
     },
     p5: {
-      title: 'oav-p5: play any p5.js sketch from a MIDI controller',
-      eyebrow: 'p5.js · MIDI · one line',
-      try: 'Try it live: example 15', tryNote: 'The sketch on that page is plain p5.js with this one line first. Click the 🎹, turn a knob, hit a pad.',
+      title: 'oav-p5: one line for MIDI, sound, drums and video in p5.js',
+      description: 'One line at the top of any p5.js sketch: play it from MIDI, the screen or a phone, with sound, a drum machine, one line of rhythm, the microphone and video. p5 1.x and 2.x.',
+      eyebrow: 'p5.js · one line',
+      lede: 'The same line also plays sound, runs a drum machine you can write as one line of rhythm, listens to the microphone, and records the canvas with its sound as a video. Each one reads like the mouse: a variable to read, a function to write.',
+      try: 'Try it live: example 15', tryNote: 'The sketch on that page is plain p5.js with this one line first. Click the 🎹, turn a knob, hit a pad; 🔊, 🥁 and ⏺ are in the same panel.',
       docsLink: 'The same page in the handbook', github: 'p5/ on GitHub', file: 'oav-p5.js',
+      sketches: 'Ready-made sketches:',
     },
-    crumbs: { home: 'open-audiovisual', examples: 'Examples', p5: 'p5.js in one line' },
+    /** p5/examples/<name>/, in the order docs/p5.md teaches them (a new folder needs a name here: tests/changelog.test.js). */
+    sketches: {
+      particles: 'Particles', opc: 'OP Configurator', mic: 'Microphone', keys: 'Keys with sound',
+      drums: 'Drums and bars', rhythm: 'One line of rhythm', record: 'Record a video',
+    },
+    changelog: {
+      title: 'Changelog · open-audiovisual',
+      description: (first, last) => `What changed in open-audiovisual, newest first: oav-p5, the one line for p5.js, version by version from ${first} to ${last}, and the framework and the site by day.`,
+      eyebrow: 'Changelog',
+      source: 'Written in Markdown in <code>docs/changelog.md</code>; this page is generated from it.',
+    },
+    crumbs: { home: 'open-audiovisual', examples: 'Examples', p5: 'p5.js in one line', changelog: 'Changelog' },
   },
   zh: {
     index: {
@@ -109,11 +123,24 @@ export const STRINGS = {
       copyright: '作品版權',
     },
     p5: {
-      title: 'oav-p5：用 MIDI 控制器玩任何 p5.js 草圖',
-      eyebrow: 'p5.js · MIDI · 一行',
-      try: '現場試玩：範例 15', tryNote: '那一頁的草圖就是普通的 p5.js，第一行是這一行。點 🎹、轉旋鈕、敲打擊墊。',
+      title: 'oav-p5：一行讓 p5.js 草圖有 MIDI、聲音、鼓機和錄影',
+      description: '在任何 p5.js 草圖最上面加一行：用 MIDI 控制器、螢幕或手機彈，還有聲音、鼓機與一行節奏、麥克風，也能錄成影片。支援 p5 1.x 與 2.x，包含 OpenProcessing。',
+      eyebrow: 'p5.js · 一行',
+      lede: '同一行還能出聲音、開一台鼓機（節奏可以用一行字寫）、聽麥克風，也能把畫布連同聲音錄成影片。每一樣都像讀滑鼠：讀一個變數，寫一個函式。',
+      try: '現場試玩：範例 15', tryNote: '那一頁的草圖就是普通的 p5.js，第一行是這一行。點 🎹、轉旋鈕、敲打擊墊。🔊、🥁、⏺ 也在同一個面板裡。',
       docsLink: '手冊裡的同一章', github: 'GitHub 上的 p5/', file: 'oav-p5.js',
+      sketches: '現成草圖：',
     },
-    crumbs: { home: 'open-audiovisual', examples: '範例', p5: 'p5.js 一行接上' },
+    sketches: {
+      particles: '粒子', opc: 'OP Configurator', mic: '麥克風', keys: '彈出聲音',
+      drums: '鼓機與小節', rhythm: '一行節奏', record: '錄成影片',
+    },
+    changelog: {
+      title: '更新紀錄｜open-audiovisual',
+      description: (first, last) => `open-audiovisual 改了什麼，新的在上：p5.js 一行接上的 oav-p5 依版本列出（${first} 到 ${last}），框架與網站依日期列出。`,
+      eyebrow: '更新紀錄',
+      source: '內容以 Markdown 寫在 <code>docs/zh/changelog.md</code>，這一頁由它產生。',
+    },
+    crumbs: { home: 'open-audiovisual', examples: '範例', p5: 'p5.js 一行接上', changelog: '更新紀錄' },
   },
 };

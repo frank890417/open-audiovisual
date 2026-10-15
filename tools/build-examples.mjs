@@ -7,12 +7,14 @@
 // Writes:
 //   examples/index.html, zh/examples/index.html   the examples by route (tools/examples/page.mjs renderIndex)
 //   p5/index.html, zh/p5/index.html               docs/p5.md and docs/zh/p5.md in the site's frame (p5/oav-p5.js is never touched)
+//   changelog/index.html, zh/changelog/index.html docs/changelog.md and docs/zh/changelog.md in the same frame
 //   examples/NN-*/index.html                      three marked regions, the rest of each page is hand-written and untouched:
 //       <!-- oav:head -->…<!-- /oav:head -->       title, description, canonical, Open Graph, JSON-LD (replaces the page's own charset/viewport/title/description/canonical)
 //       <!-- oav:guide -->…<!-- /oav:guide -->     the guide card (description, three things to try, needs, lines to read, next) + assets/examples/guide.js
 //       <!-- oav:next -->…<!-- /oav:next -->       example 15 only (it explains itself): the link to the next example
 //   README.md                                      <!--gen:NAME--> blocks and the facts block (tools/examples/readme.mjs)
 //   docs/agents.md, docs/zh/agents.md, docs/packages.md, docs/zh/packages.md   the next example number and the package count, from the facts
+//   docs/introduction.md, docs/zh/introduction.md                              the number of examples, from the facts
 //   sitemap.xml                                    the one file every build-*.mjs writes
 //
 // Like the other generators this is a site build, not a framework build step; --check ignores ?v= stamps
@@ -21,7 +23,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderIndex, renderP5, exampleHead, exampleGuide, exampleNext } from './examples/page.mjs';
+import { renderIndex, renderP5, renderChangelog, exampleHead, exampleGuide, exampleNext } from './examples/page.mjs';
 import { readmeBlocks } from './examples/readme.mjs';
 import { EXAMPLES } from './examples/catalog.mjs';
 import { STRINGS } from './examples/strings.mjs';
@@ -59,14 +61,16 @@ export function patchExample(html, e) {
 }
 
 // ---------------------------------------------------------------------------- facts written into the docs sources
-/** The next example number and the package count, as literal text in the Markdown (so GitHub, the MCP server and llms-full read the same). */
+/** The next example number, the package count and the example count, as literal text in the Markdown (so GitHub, the MCP server and llms-full read the same). */
 export function applyDocsFacts(rel, text, f = getFacts()) {
   if (/agents\.md$/.test(rel)) return text.replace(/(Create examples\/)\d\d(-<name>\/)/, `$1${f.nextExampleNumber}$2`);
+  if (rel === 'docs/introduction.md') return text.replace(/(a live instrument and the\s+)[a-z]+(?:-[a-z]+)?( example works)/, `$1${enWords(f.exampleCount)}$2`);
+  if (rel === 'docs/zh/introduction.md') return text.replace(/(還有)[一二三四五六七八九十]+(件範例作品)/, `$1${zhWords(f.exampleCount)}$2`);
   if (rel === 'docs/packages.md') return text.replace(/^[A-Z][a-z]+(?:-[a-z]+)? packages live in/m, `${cap(enWords(f.packageCount))} packages live in`);
   if (rel === 'docs/zh/packages.md') return text.replace(/^[一二三四五六七八九十]+個套件放在/m, `${zhWords(f.packageCount)}個套件放在`);
   return text;
 }
-export const DOCS_WITH_FACTS = ['docs/agents.md', 'docs/zh/agents.md', 'docs/packages.md', 'docs/zh/packages.md'];
+export const DOCS_WITH_FACTS = ['docs/agents.md', 'docs/zh/agents.md', 'docs/packages.md', 'docs/zh/packages.md', 'docs/introduction.md', 'docs/zh/introduction.md'];
 
 /** Every file this generator owns: { rel: content }. */
 export function buildAll() {
@@ -77,6 +81,8 @@ export function buildAll() {
     'zh/examples/index.html': renderIndex('zh'),
     'p5/index.html': renderP5('en'),
     'zh/p5/index.html': renderP5('zh'),
+    'changelog/index.html': renderChangelog('en'),
+    'zh/changelog/index.html': renderChangelog('zh'),
   };
   for (const e of EXAMPLES) {
     const rel = `${e.dir}index.html`;
@@ -108,6 +114,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   }
   if (check) {
     if (stale.length) { console.error('stale (run node tools/build-examples.mjs):\n  ' + stale.join('\n  ')); process.exit(1); }
-    console.log(`✅ examples up to date (${EXAMPLES.length} example pages, /examples/ ×2, /p5/ ×2, README, docs facts, sitemap.xml)`);
+    console.log(`✅ examples up to date (${EXAMPLES.length} example pages, /examples/ ×2, /p5/ ×2, /changelog/ ×2, README, docs facts, sitemap.xml)`);
   } else console.log(`${n} file(s) written, ${Object.keys(files).length - n} unchanged`);
 }

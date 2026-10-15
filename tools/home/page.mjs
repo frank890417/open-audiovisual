@@ -196,7 +196,7 @@ ${topBar(t, pageCtx('home', locale))}
     <div class="hero-grid">
       <div class="hero-text">
         <p class="lede">${t.hero.lede}</p>
-        <p class="eyebrow facts">${t.hero.eyebrow}</p>
+        <p class="eyebrow facts"><a href="${c.to('changelog')}">${t.ui.versions}</a> · ${t.hero.eyebrow}</p>
       </div>
       <nav class="doors" aria-label="${attr(t.hero.doorsLabel)}">
         ${t.hero.doors.map((d, i) => `<a class="door door-${i + 1}" href="${href(d.href)}"><span class="door-who">${d.who}</span><span class="door-what">${d.what}</span><span class="door-arrow" aria-hidden="true">→</span></a>`).join('\n        ')}

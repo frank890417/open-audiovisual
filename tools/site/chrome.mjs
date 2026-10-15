@@ -38,6 +38,7 @@ export const PAGES = {
   examples: 'examples/',
   p5: 'p5/',
   check: 'check/',
+  changelog: 'changelog/',
 };
 
 /** The top-bar nav. `home` entries are sections of the homepage; the others are pages. */
@@ -278,6 +279,7 @@ export function siteFooter(t, c) {
       <a href="${c.to('docs')}">${t.ui.nav.docs}</a>
       <a href="${c.to('p5')}">${t.footer.p5}</a>
       <a href="${c.to('webtoe')}">${t.ui.nav.webtoe}</a>
+      <a href="${c.to('changelog')}">${t.footer.changelog}</a>
     </nav>
     <nav aria-label="${attr(t.footer.machine)}">
       <a href="${REPO}">GitHub</a>
