@@ -4,7 +4,7 @@
 
 Inputs (MIDI, microphone, chords, body and hand pose, phones) publish named signals; a mapping layer routes signals to parameters; an algorithmic "world" reads only parameters and renders image and sound; a timeline, a director's console and a backstage monitor run the show. Plain ES modules, no build, no dependencies. Extracted from The Last Input (Che-Yu Wu, 2026), a 49.4-channel performance at the IRCAM residency × C-LAB, Taipei.
 
-Today: 26 packages, 15 examples, 27 MIDI controller profiles (21 devices and 6 generic layouts), version 0.1.0; oav-p5 0.6.0 (https://openaudiovisual.com/changelog/).
+Today: 27 packages, 15 examples, 27 MIDI controller profiles (21 devices and 6 generic layouts), version 0.1.0; oav-p5 0.7.0 (https://openaudiovisual.com/changelog/).
 
 Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文, Traditional Chinese)
 Repository: https://github.com/frank890417/open-audiovisual
@@ -52,6 +52,7 @@ How to cite: cite the canonical URL of the page you read. Code is MIT; examples 
 - [Score & Director](https://openaudiovisual.com/docs/score.md): a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.
 - [MIDI controllers & embedding](https://openaudiovisual.com/docs/controllers.md): MIDI controllers as JSON profiles, the `<oav-controller>` element and the iframe embed.
 - [p5.js in one line](https://openaudiovisual.com/docs/p5.md): one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone, with sound, a drum machine you can write as one line of rhythm, the microphone and video recording.
+- [With Strudel](https://openaudiovisual.com/docs/strudel.md): Strudel and OAV side by side: knobs, phone and microphone as Strudel parameters; Strudel's notes and clock drawn in a p5 sketch on the same page or in another tab (link=); Hydra.
 - [Phones, relay & surfaces](https://openaudiovisual.com/docs/remote.md): phones and iPads as controllers: relay, sensors, control surfaces.
 - [Signals reference](https://openaudiovisual.com/docs/signals.md): every signal the built-in inputs publish, with ranges.
 - [Package reference](https://openaudiovisual.com/docs/packages.md): every package, by layer.
@@ -128,10 +129,10 @@ Examples 05–07 integrate artworks © Che-Yu Wu (2020–2023), all rights reser
 
 ## Packages
 
-26 packages under `packages/<name>/`, imported as `@openav/<name>` through an import map.
+27 packages under `packages/<name>/`, imported as `@openav/<name>` through an import map.
 
 - Input: `midi` (Web MIDI in and out, many devices, on-screen controller profiles) · `audio` (Microphone analysis: loudness, bands, brightness, onsets, drum hits) · `chord` (Chord detection for performance: consonance, triads, clusters) · `pose` (Body and 21-point hand tracking from the camera, on the device) · `keys` (On-screen piano, QWERTY playing and a simulated performer) · `drums` (Synth kit and step sequencer that publish analyzer-shaped signals) · `leap` (Leap Motion hands through a small local bridge, as 21-point hand signals)
-- Mapping: `mapping` (Signal to param routes: curves, smoothing, many-to-many, learn)
+- Mapping: `mapping` (Signal to param routes: curves, smoothing, many-to-many, learn) · `chop` (Values over time, as TouchDesigner's CHOPs shape them: lag, envelope, speed, spring, trail, slope, count; the same curve at any frame rate)
 - World: `stage` (The world shell: lifecycle and params, no renderer opinion) · `world-webtoe` (Perform a WebToe node patch as a world)
 - Output: `sound` (Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own) · `osc` (OSC out of the browser through a small Node bridge to UDP) · `out` (Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values) · `record` (Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed) · `fab` (Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files)
 - Spines: `timeline` (Param automation, scenes and cues: the clock of the show) · `score` (The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails) · `pattern` (Rhythm in one line: TidalCycles/Strudel-style mini-notation read into the hits of each bar (Euclidean rhythms, one-per-bar alternation, seeded chance)) · `console` (The director's desk and performance mode) · `monitor` (Backstage view for any device on the network)

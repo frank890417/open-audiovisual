@@ -1,0 +1,109 @@
+{
+ "env": {
+  "hardware": "click",
+  "compact": true,
+  "hints": [
+   "strudelNames: 這頁已經有 beat、note、velocity、env、speed（Strudel 的） / 控制器和麥克風的這幾個值改讀：beat → OAVp5.mic.on('beat', fn)；note → OAVp5.last.note；velocity → OAVp5.last.value。"
+  ],
+  "note": "function",
+  "s": "function",
+  "velocity": "function",
+  "beat": "function"
+ },
+ "samePage": {
+  "notes": 10,
+  "heard": 10,
+  "sources": [
+   "virtual-out"
+  ],
+  "errorMs": {
+   "n": 10,
+   "min": -0.33,
+   "median": 4.31,
+   "max": 4.48,
+   "meanAbs": 2.89
+  },
+  "strudelLeadMs": {
+   "n": 10,
+   "min": 210.04,
+   "median": 283.24,
+   "max": 304.92,
+   "meanAbs": 260.04
+  }
+ },
+ "loop": {
+  "sent": 2,
+  "heard": [
+   "screen",
+   "virtual-out"
+  ]
+ },
+ "clock": {
+  "starts": 3,
+  "startTimestamps": 1,
+  "clockIntervalMs": 19.53,
+  "drumsBpm": 128,
+  "clockInfo": {
+   "state": "running",
+   "bpm": 128,
+   "running": true,
+   "implicit": false,
+   "clocks": 361,
+   "dupes": 2,
+   "starts": 1,
+   "stops": 0,
+   "continues": 0,
+   "source": "virtual-out",
+   "following": true
+  },
+  "follow": {
+   "bpm": 128,
+   "err": 0.000006359350195606073,
+   "jumps": 1,
+   "steers": 5,
+   "at": 29.49347499999404
+  },
+  "card": "⏱ 跟著外部時鐘 · 128 BPM",
+  "kickVsStrudelBeatMs": {
+   "n": 12,
+   "min": 0.02,
+   "median": 1.83,
+   "max": 4.15,
+   "meanAbs": 1.49
+  },
+  "drumPhaseVsClockMs": {
+   "n": 563,
+   "min": -1.23,
+   "median": -0.03,
+   "max": -0.01,
+   "meanAbs": 0.1
+  },
+  "outputLatencyS": 0.016,
+  "afterStop": {
+   "state": "stopped",
+   "playing": false,
+   "clock": "stopped"
+  }
+ },
+ "panel": {
+  "panel": {
+   "x": 870,
+   "y": 548,
+   "w": 560,
+   "h": 306
+  },
+  "editor": {
+   "x": 20,
+   "y": 50,
+   "w": 820
+  },
+  "vh": 900,
+  "vw": 1440
+ },
+ "check": "🩺 oav-p5 體檢 0.7.0 · 2026-10-15 22:24\n頁面：https://strudel.cc/ · 直接打開\n瀏覽器：Chrome 151 · macOS\n麥克風：關著\nMIDI：已連上 IAC DriverPort1, IAC DriverPort2, IAC DriverPort3, AG06/AG03 · 最後收到 noteOff 64 ← virtual-out\n聲音：關著\n鼓機：關著 · 提前排程（none 心跳、提前 0.1 秒、輸出延遲 15 ms） · 回呼由 OAV 自己的每幀叫（沒接上 p5 的 draw 前） · \"bd*4, [~ sd]*2, hh*8\"\n錄影：可以錄 MP4（IG 可以直接用） · 30 fps · 最長 5 分鐘\n外部程式：OAV Virtual MIDI 被要過 2 次 · 輸入有 1 個在聽 · 輸出收到 541 則（最近 clock，3.1 秒前） · 時鐘 128 BPM（斷了）\n接線：沒有\n草圖自己的名字：沒有\n提示過：這頁已經有 beat、note、velocity、env、speed（Strudel 的）",
+ "logs": [
+  "[A] info: [oav-p5] 這頁已經有 beat、note、velocity、env、speed（Strudel 的）：oav-p5 不動它們：Strudel 的 note()、velocity() 照常能用。旋鈕、麥克風照樣讀 knob1、micLevel。 → 控制器和麥克風的這幾個值改讀：beat → OAVp5.mic.on('beat', fn)；note → OAVp5.last.note；velocity → OAVp5.last.value。",
+  "[A] info: [oav-p5] 收到外部 MIDI 時鐘（128 BPM）：鼓機和 drumPhase 跟著它（clock=off 不跟）",
+  "[A] info: 🩺 oav-p5 體檢 0.7.0 · 2026-10-15 22:24\n頁面：https://strudel.cc/ · 直接打開\n瀏覽器：Chrome 151 · macOS\n麥克風：關著\nMIDI：已連上 IAC DriverPort1, IAC DriverPort2, IAC DriverPort3, AG06/AG03 · 最後收到 noteOff 64 ← virtual-out\n聲音：關著\n鼓機：關著 · 提前排程（none 心跳、提前 0.1 秒、輸出延遲 15 ms） · 回呼由 OAV 自己的每幀叫（沒接上 p5 的 draw 前） · \"bd*4, [~ sd]*2, hh*8\"\n錄影：可以錄 MP4（IG 可以直接用） · 30 fps · 最長 5 分鐘\n外部程式：OAV Virtual MIDI 被要過 2 次 · 輸入有 1 個在聽 · 輸出收到 541 則（最近 clock，3.1 秒前） · 時鐘 128 BPM（斷了）\n接線：沒有\n草圖自己的名字：沒有\n提示過：這頁已經有 beat、note、velocity、env、speed（Strudel 的）"
+ ]
+}

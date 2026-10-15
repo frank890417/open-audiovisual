@@ -5,10 +5,10 @@
 > Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文)
 > Handbook: https://openaudiovisual.com/docs/ · MIDI controller library: https://openaudiovisual.com/controllers/ · WebToe, the sister engine: https://openaudiovisual.com/webtoe/
 > Examples: https://openaudiovisual.com/examples/
-> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.6.0)
+> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.7.0)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 26 packages, 15 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
+> Today: 27 packages, 15 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -298,7 +298,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-Twenty-six plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+Twenty-seven plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 | layer | package | role |
@@ -311,6 +311,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 |  | [`@openav/drums`](packages/drums/) | Synth kit and step sequencer that publish analyzer-shaped signals |
 |  | [`@openav/leap`](packages/leap/) | Leap Motion hands through a small local bridge, as 21-point hand signals |
 | L2 mapping | [`@openav/mapping`](packages/mapping/) | Signal to param routes: curves, smoothing, many-to-many, learn |
+|  | [`@openav/chop`](packages/chop/) | Values over time, as TouchDesigner's CHOPs shape them: lag, envelope, speed, spring, trail, slope, count; the same curve at any frame rate |
 | L3 world | [`@openav/stage`](packages/stage/) | The world shell: lifecycle and params, no renderer opinion |
 |  | [`@openav/world-webtoe`](packages/world-webtoe/) | Perform a WebToe node patch as a world |
 | L4 output | [`@openav/sound`](packages/sound/) | Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own |
@@ -376,7 +377,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5**, an MCP server, and a handbook site.
 
-26 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 675 tests
+27 packages · 15 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 734 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -2973,6 +2974,7 @@ function drumHit(lane, velocity) {   // every hit: 'kick', 'snare', 'hat' or 'cl
 | `drumHit(lane, velocity)` | every hit, every drum (a line of rhythm's crash, ride or toms too) |
 | `kickDetected(level)`, `snareDetected(level)`, `hatDetected(level)` | a kick; a snare, a clap or a rim; a hat (closed, open or pedal) |
 | `beatDetected(level)` | a kick or a snare, once per step (and `beat` is true for a frame) |
+| `rhythmChanged(src, how)` | the line changed: `startDrums()`, a click on a cell, a line typed, ↶ (0.7) |
 
 **A microphone sketch moves over unchanged.** Each hit calls the same functions the microphone does, so a sketch written for
 the microphone reacts to the machine as it is. Once a sketch has started the machine, defining `kickDetected()` no longer
@@ -3027,16 +3029,66 @@ the grid, and the word that sounds lights up and fades.
 | `< >` | one per bar, in turn | `"<bd*4 [bd ~ bd ~]>"` |
 | `(k,n)` | k hits spread over n steps | `"bd(3,8)"` |
 
-The whole list is in [`@openav/pattern`](packages.md), loaded from next to `oav-p5.js` the first time a line is used. Drums the
-grid has no lane for (crash, ride, toms, open hat) get a row of their own; a hit off the sixteen steps (a triplet) is drawn
-where it falls inside its step. **A click on a cell** hands the beat to the cells: the line becomes the grid it was playing in
-that bar, a card says what changed (triplets moved to the nearest step, drums with no lane left out), and calling
-`startDrums("…")` again brings the line back. **A mistake** shows a card in the page's language with the character it is at,
-why, and how to fix it, and the machine plays `'four on floor'` meanwhile; `'x...x...'` on its own (one lane of the grid)
-says to put it inside `{ kick: … }`.
+The whole list is in [`@openav/pattern`](packages.md), loaded from next to `oav-p5.js` with the drums. Drums the grid has no
+lane for (crash, ride, toms, open hat) get a row of their own; a hit off the sixteen steps (a triplet) is drawn where it falls
+inside its step. **A mistake** in `startDrums("…")` shows a card in the page's language with the character it is at, why, and
+how to fix it, and the machine plays `'four on floor'` meanwhile; `'x...x...'` on its own (one lane of the grid) says to put it
+inside `{ kick: … }`.
+
+**A line copied from strudel.cc** works too: `startDrums('s("bd*4, [~ sd]*2").fast(2)')` plays `[bd*4, [~ sd]*2]*2`.
+`s("…")`, `sound("…")`, with `"`, `'` or `` ` `` quotes, several of them (`$: s(…)`) as layers, `.fast(n)` and `.slow(n)`;
+`setcpm(110/4)` or `setcps(…)` sets the tempo when `startDrums()` is given none. `.bank("…")` is left out (OAV plays its own
+synthesized kit) and anything else in the chain (`.jux(rev)`, `.every(…)`, `.gain(…)`) gets a card that says OAV does not do it
+yet and points at **Open in Strudel**; the rest plays.
 
 The way of writing one line of rhythm comes from TidalCycles / Strudel ([strudel.cc](https://strudel.cc)); OAV implements it
 independently from their public documentation.
+
+### The cells and the line edit each other
+
+Since 0.7 the line over the grid is always there (a preset shows the line its grid is: `'four on floor'` is
+`bd*4, [~ sd]*2, hh*8`) and both ways work:
+
+- **Click a cell**: the line is rewritten the way a person would write it, and the machine plays the new line at once.
+  Steady hits become `bd*4` / `hh*8`, one hit per group `[~ sd]*2`, a Euclidean rhythm `bd(3,8)` (with its rotation:
+  `bd(3,8,2)` starts two steps later), anything else beat by beat: `bd [~ ~ ~ bd] bd*2 ~`. Lines are joined with `, `.
+  When the line holds more than sixteen steps can (triplets, `< >`, `/2`, `?`, `bd:2`), the first click shows a card saying
+  what would go, and the next click rewrites it.
+- **Type in the line**: click it, change it; Enter, or a pause of 400 ms, plays it and the cells follow. A mistake marks the
+  word in red, a card says what is wrong, and **the last line that worked keeps playing** (not `'four on floor'`). Escape
+  drops what is not played yet. Typed keys never reach the sketch's `keyPressed()`.
+- **↶** on the card (or ⌘Z / Ctrl+Z after touching the card) goes back one line; `OAVp5.drums.history` lists them.
+- **Copy** puts `startDrums("…", 110)` on the clipboard, ready to paste into `setup()`.
+- **Open in Strudel** opens the same line at strudel.cc in a new tab, as `s("…")` with `setcpm(bpm/4)` (one OAV bar is one
+  Strudel cycle of four beats; strudel.cc's docs: `setcpm(bpm/bpc)`). `OAVp5.drums.strudelUrl` is the link.
+
+```js
+function rhythmChanged(src, how) {   // how: 'code' · 'cell' · 'type' · 'undo' · 'menu'
+  line = src;                        // e.g. draw the line on the canvas, so a recording shows it
+}
+```
+
+`OAVp5.drums.src` is the line that plays, `OAVp5.drums.edit("…")` plays a line as if typed, `OAVp5.drums.undo()` goes back.
+
+### The rhythm on the canvas
+
+The card is part of the page, not the canvas, so a recording never shows it. `drawRhythm()` draws the rhythm on the canvas:
+
+```js
+function draw() {
+  background(0);
+  drawRhythm(20, 20, 360, 90, 'grid');          // the sixteen steps, a playhead
+  drawRhythm(20, 130, 300, 300, 'circle');      // a ring of 16 per drum, a hand turned by drumPhase
+  drawRhythm(340, 130, 300, 300, 'spiral', { bars: 4, colors: { kick: '#ff7b54' } });   // the last 4 bars, wound outwards
+}
+```
+
+`drawRhythm(x, y, w, h, style, options)`: `style` is `'grid'`, `'circle'` or `'spiral'`; a hit lights up the moment it is
+heard (the clock `drumPhase` reads) and a triplet sits where it falls. Options: `colors` (`{ kick: '#f66', … }`, any p5 color),
+`color` (one for all), `off` (the empty steps), `playhead` (a color, or `false`), `bg`, `bars` (spiral). Drawn inside
+`push()` / `pop()` with p5's own shapes, in 2D and WEBGL, p5 1.x and 2.x; **in WEBGL (0, 0) is the middle of the canvas**:
+`drawRhythm(-width / 2, -height / 2, width, height, 'circle')`. With no box it draws a strip along the bottom (`'grid'`) or a
+square in the middle. A sketch with all three: `p5/examples/rhythm-visual/`.
 
 ## Timeline: bars and cues
 
@@ -3064,7 +3116,56 @@ function cueFired(name, bar) {    // or read cueName in draw()
 
 The same `cue()` twice adds nothing, so it may also sit in `draw()`. On one step the cues fire in the order they were
 declared, then `barStarted`, `stepStarted` and that step's hits. A silent clock: `startDrums({})`. The whole of it, ready to
-open: `p5/examples/drums/`; a line of rhythm with `drumPhase` and `beatPhase`: `p5/examples/rhythm/`.
+open: `p5/examples/drums/`; a line of rhythm with `drumPhase` and `beatPhase`: `p5/examples/rhythm/`; the rhythm drawn on the canvas: `p5/examples/rhythm-visual/`.
+
+## Values over time: lag, env, speed, spring, trail
+
+A knob or `micLevel` jumps; what looks good is how it moves between the jumps. TouchDesigner does this with CHOPs; the
+same operators are here, one call each in `draw()`, nothing to declare, and seconds are seconds (the same curve at 30 and
+at 144 fps):
+
+```js
+circle(width / 2, height / 2, 50 + lag(micLevel, 0.03, 0.4) * 300);   // a VU meter: opens at once, closes slowly
+scale(1 + env('kick', 0.01, 0.3));                                     // the drum machine: every kick swells it, gone in 0.3 s
+rotate(spring(knob1, 100, 6) * TWO_PI);                                // flick a knob: it overshoots and settles
+```
+
+| TouchDesigner | oav-p5 | |
+|---|---|---|
+| Lag CHOP (Lag 1 / Lag 2) | `lag(value, up, down)` | follows `value`: `up` seconds while it rises, `down` while it falls (`down` = `up` if left out; 0.1) |
+| Trigger CHOP (attack, decay) | `env('kick', attack, decay)`, `trigger('boom')` | 0..1: up to 1 in `attack` seconds after each event, back to 0 in `decay` (0.01, 0.3). Events: `'kick'` `'snare'` `'hat'` `'beat'` (the microphone or the drum machine, the hits `kickDetected` hears), `'note'` (any key), `'bar'` `'step'` (the drums), a cue's name, `trigger('boom')`; or a switch: `env(mouseIsPressed, …)` |
+| Speed CHOP | `speed(rate)` | adds `rate` every second: `rotate(speed(TWO_PI))` turns once a second |
+| Spring CHOP | `spring(value, stiffness, damping)` | follows like a mass on a spring (100, 6: two or three bounces; damping 20: none) |
+| Trail CHOP | `trail(value, seconds)` | the last `seconds` (2) as an array, 60 values a second, oldest first, the newest last |
+| Slope CHOP | `slope(value)` | how fast it changes, per second |
+| Count CHOP | `count(beat)`, `count(beat, 4)`, `count('kick')` | how many times it turned on; with 4: 0 1 2 3 0 …; a name: how many of those events so far |
+| a CHOP's viewer | `scope(value, 'label')` | a small plot in the corner of the page (below) |
+| | `drawTrail(values, x, y, w, h)` | the same plot on the canvas, in the work and in a recording |
+
+**Seconds, the same as in TouchDesigner.** A lag's seconds mean what a Lag CHOP's do: about the time the value takes to
+follow 90% of a jump, so `lag(x, 0.1)` here moves like a Lag CHOP set to 0.1 ([Lag CHOP](https://docs.derivative.ca/Lag_CHOP)).
+Underneath it is a one-pole lag with a time constant of seconds ÷ 2.3 (ln 10); `@openav/mapping`'s `smooth` keeps its
+own 63% time constant. Attack and decay are lengths in both.
+
+**Nothing to declare.** The first `lag()` in `draw()` keeps the first lag's memory, the second the second, every frame;
+`spring()`, `speed()`, `trail()` … are counted each on their own. Put one inside an `if`, or in a loop whose length
+changes, and the order slips: a card says so, and from then on oav-p5 matches each call by the line it is written on. The
+sure way is a name, a string at the end: `lag(p.size, 0.1, 0.5, 'p' + p.id)`. A named one is the same wherever it is called,
+`draw()`, `setup()` or `mousePressed()`; an unnamed one outside `draw()` has nothing to remember by and returns its input
+(`speed` 0, `trail` `[]`), and a card says that too. `env()`, `trigger()` and `count('kick')` are about events and work
+anywhere. A sketch with its own `speed` or `count` keeps it; `OAVp5.chop.speed(…)` is the same function under another name.
+
+**Seeing the values.** `scope(value, 'label')` returns `value`, so it can wrap an expression:
+`circle(x, y, scope(lag(micLevel, 0.03, 0.4), 'lag') * 300)`. Each label is one line in a small oscilloscope across the
+page from the 🎹: the last 4 seconds and the value now; `scope(micLevel, 'mic')` beside it shows what the lag did. It lives
+on the page, not on the canvas: never in a recording or a 📷, never in the way of a click; `hints=off` or `scope=off` hides
+it. To draw it in the work: `stroke(255); drawTrail(trail(micLevel, 3), 0, height - 100, width, 100)` (or
+`drawTrail(micLevel, …)`, which keeps its own 2 seconds): 0 at the bottom of the box, 1 at the top (`lo`, `hi` after `h`),
+the sketch's `stroke()` (white under `noStroke()`).
+
+The math is [@openav/chop](packages.md#openav-chop), loaded from next to this file the first time one of these is called;
+until it arrives (a few frames) each returns its input as it is. What each parameter means follows Derivative's
+TouchDesigner documentation; the code is OAV's own. Raw against lagged, side by side, with the scope: `p5/examples/lag/`.
 
 ## Recording: a video with its sound
 
@@ -3123,6 +3224,11 @@ iPad have no Web MIDI; the on-screen controller and the phone still work there. 
 (`navigator.requestMIDIAccess`, WebMidi.js) also hears the screen and the phone, as one more input called
 **OAV Virtual MIDI**.
 
+Other programs are a fourth input (0.7). What a program plays into OAV Virtual MIDI's **output** — Strudel's
+`.midi('OAV Virtual MIDI')` — reaches the sketch at the moment it was stamped with (`midi.last.source` is `virtual-out`);
+an external MIDI clock moves `drumPhase`, `drumBar` and a drum machine; and `link=<room>` brings another tab's or another
+computer's programs into this sketch. All of it: [With Strudel](strudel.md).
+
 ## When something goes wrong
 
 Nobody watches OpenProcessing's console while playing, so problems are said on the page: a small card beside the 🎹, never
@@ -3179,7 +3285,167 @@ hydra-synth 1.4.0, the library the editor runs (`p5/test/hydra-smoke.cjs`).
   embed code it gives you does not: add `allow="midi"` to that `<iframe>` if the embedded sketch should hear a hardware
   controller, and `allow="microphone"` if it should hear the microphone.
 - **Options, MIDI-level access and tests**: [`p5/README.md`](https://github.com/frank890417/open-audiovisual/tree/main/p5).
-  Examples: `p5/examples/particles/`, `p5/examples/opc/`, `p5/examples/mic/`, `p5/examples/keys/`, `p5/examples/drums/`, `p5/examples/rhythm/` and `p5/examples/record/`.
+  Examples: `p5/examples/particles/`, `p5/examples/opc/`, `p5/examples/mic/`, `p5/examples/keys/`, `p5/examples/drums/`, `p5/examples/rhythm/`, `p5/examples/rhythm-visual/` and `p5/examples/record/`.
+
+---
+
+<!-- source: docs/strudel.md -->
+
+# With Strudel
+
+[Strudel](https://strudel.cc) is a live-coding environment for music in the browser, a JavaScript version of
+[TidalCycles](https://tidalcycles.org). OAV is a separate program. The two run side by side the way two programs on a
+stage do: Strudel plays, and OAV brings what Strudel does not have — knobs on screen and on a phone, a microphone that
+is analysed, Web MIDI where the browser has none — and draws what Strudel plays in a p5.js sketch, on the same page or
+in another tab or on another computer. They meet through MIDI (OAV's virtual port, "OAV Virtual MIDI") and through
+the page's own variables (`knob1`, `micLevel`, `drumPhase`). OAV never loads or calls any of Strudel's code.
+
+Everything on this page was run on strudel.cc as a user runs it (its editor, Ctrl+Enter, its documented functions):
+`p5/test/strudel-smoke.cjs` does it again.
+
+## Load OAV in Strudel
+
+Strudel → **settings** → **prebake**, add one line at the end, **save**:
+
+```js
+await import('https://openaudiovisual.com/p5/oav-p5.js')
+```
+
+- **Single quotes.** Strudel reads text in double quotes (and backticks) as mini-notation: a URL in double quotes is a
+  `[mini] parse error`.
+- **Why the prebake.** It runs before your code, also after a reload (about 2.5 s after the editor appears), so OAV is
+  on the page before anything opens MIDI. If Strudel's `midin()` ran before OAV loaded, `midin('OAV Virtual MIDI')` gets
+  nothing and says nothing: reload. 🩺 then shows "no program has asked OAV Virtual MIDI for MIDI".
+- The line can also be the first line of your code. Options go on the line before it:
+  `window.OAV_P5 = { link: 'my-room' }`.
+- Strudel's **share** button puts the prebake into the link (with "share with patterns" ticked): whoever opens it gets
+  OAV too.
+
+On strudel.cc OAV changes its manners. It does not ask for MIDI when it loads (`hardware=click`: Strudel's `midin()`
+asks). The 🎹 panel is a box in the corner, a third of the window high, so the code stays in view. One card says which
+names Strudel already has — `note`, `velocity`, `beat` are Strudel's functions, OAV leaves them alone — and what to
+read instead: `OAVp5.last.note`, `OAVp5.last.value`, `OAVp5.mic.on('beat', fn)`. `knob1`, `micLevel`, `drumPhase`
+and the rest are free names there.
+
+## Recipe 1: knobs, a phone and the microphone as Strudel's parameters
+
+Strudel's `signal()` turns a function into a parameter; OAV's names are plain values a function can return.
+
+```js
+s("bd*4").gain(signal(() => knob1))
+s("hh*8").lpf(signal(() => 300 + micLevel * 8000))
+```
+
+- `knob1` moves with knob 1 of the 🎹 on screen, of a MIDI controller, or of a phone (🎹 → 📱, scan the code).
+  `knob(2)`, `fader1`, `pad1` are there too. Measured: knob 1 at 0, the kick is silent; at 127, it is heard (RMS 0.58).
+- Strudel reads the value when it schedules, 0.2–0.3 s before the sound: a knob is heard that much later.
+- `micLevel`, `bass`, `mid`, `treble` are OAV's analysis of the microphone (Strudel has none); reading one asks for the
+  microphone. Wear headphones: the microphone hears the speakers, and `gain(signal(() => micLevel))` feeds back.
+- Strudel's own MIDI input works on OAV's port too, also in Safari (no Web MIDI there; OAV's port is virtual):
+
+```js
+const cc = await midin('OAV Virtual MIDI')
+s("bd*4").gain(cc(74))
+```
+
+Knob 1 of the on-screen MiniLab 3 is CC 74. `midikeys('OAV Virtual MIDI')` makes the 🎹 keys and the phone Strudel's
+keyboard.
+
+## Recipe 2: Strudel plays, a p5 sketch draws
+
+**On the same page.** Send to OAV's port:
+
+```js
+note("c3 [e3 g3] <a3 b3> c4").midi('OAV Virtual MIDI')
+```
+
+Strudel hands each note over 0.21–0.32 s early with the moment it should sound; OAV waits for that moment and then
+calls `notePressed(note, velocity)` (in Strudel, with no sketch: `OAVp5.on('notePressed', fn)`), moves `knob1` for a CC,
+plays a pad. Measured: within 5 ms of Strudel's timestamps (median 0.1 ms). What arrives on the port is never handed
+back to OAV's input, so `midikeys('OAV Virtual MIDI')` played into `.midi('OAV Virtual MIDI')` is one echo, not a loop.
+
+**Strudel's clock.** MIDI counts 24 clocks a beat, so a cycle of one 4-beat bar sends 96:
+
+```js
+setcps(128 / 60 / 4)
+$: s("bd*4, [~ sd]*2, hh*8")
+$: midicmd("clock*96, <start stop>/8").midi('OAV Virtual MIDI')
+```
+
+`drumPhase`, `beatPhase`, `drumBar`, `drumStep` and `drumBpm` follow it. A drum machine started with `startDrums()`
+plays at Strudel's tempo, on Strudel's downbeat, and starts and stops with it (the card says "following an external
+clock · 128 BPM"). Measured at 128 bpm: `drumPhase` within 1.2 ms of Strudel's bar (median 0.04 ms), every kick within
+6 ms of Strudel's beat (three runs); Strudel's start, which arrives three times with one timestamp, counts once. Without a clock
+nothing changes; `clock=off` ignores one.
+
+**In another tab, or on another computer.** Give both pages the same room. In Strudel's prebake:
+
+```js
+window.OAV_P5 = { link: 'my-room' }
+await import('https://openaudiovisual.com/p5/oav-p5.js')
+```
+
+and in the p5 sketch (OpenProcessing: before the one line; or `?sketch_oav_link=my-room` on the page's address):
+
+```js
+window.OAV_P5 = { link: 'my-room' };
+document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
+```
+
+Everything Strudel sends to OAV's port — notes, CCs, the clock — reaches every other OAV page in the room, through the
+same relay the phones use. 🎹 grows a 🔗: green when another page is there; the panel says the room, the pages and the
+trip. The receiving page plays each note when Strudel plays it, not when it arrives: it lines the two clocks up from the
+fastest trips it has seen and the round trips both pages measure (packages/relay/link.js explains how), and Strudel's
+quarter-second head start covers the trip. Measured with two tabs on one Mac over wss://remote.cheyuwu.com (one way
+≈ 61 ms): notes within −3 … +7 ms of Strudel's timestamps (two runs). Across two computers add the difference between the
+two halves of a round trip (usually a few ms). Keep the default relay (`wss://`): Chrome does not let strudel.cc reach a
+relay on your own machine or network (`ws://127.0.0.1…` is blocked by its local-network checks). On a network whose jitter is longer than Strudel's head start, `linkdelay=` (ms)
+buffers more. A page never sends on what it received, and a program that plays a linked note back out is caught as an
+echo. The room is the phones' room too: one QR code plays every page in it.
+
+The sketch side, ready to run: `p5/examples/with-strudel/` (?room=… on its address).
+
+## Recipe 3: Strudel, Hydra and OAV on one page
+
+With OAV in the prebake:
+
+```js
+await initHydra()
+osc(10, 0.1, () => knob1 * 2).rotate(() => drumPhase * 6.28).color(1, () => micLevel, 0.6).out()
+setcps(120 / 60 / 4)
+$: s("bd*4, [~ sd]*2, hh*8").gain(signal(() => 0.3 + knob1))
+$: midicmd("clock*96").midi('OAV Virtual MIDI')
+```
+
+Hydra turns once a bar on Strudel's clock (through `drumPhase`), knob 1 drives Hydra and Strudel at once, and the
+microphone colours the picture.
+
+## Options for Strudel
+
+Set before the line (`window.OAV_P5 = { … }`), or `?oav_key=value` on a p5 page's address.
+
+| key | values | default |
+|---|---|---|
+| `link` | a room name (letters, digits, `-`, `_`): pages in it hear each other's programs | none |
+| `linkdelay` | milliseconds of extra buffer on a linked page's notes | `0` |
+| `clock` | `follow` (an external MIDI clock moves `drumPhase` and the drums) · `off` | `follow` |
+| `strudel` | `auto` (strudel.cc, or Strudel's functions already on the page) · `on` · `off` | `auto` |
+| `compact` | `on` (the panel as a box in the corner) · `off` | `on` in Strudel |
+| `hardware` | `auto` · `click` · `off` | `click` in Strudel |
+
+## Credits and licences
+
+Strudel is © its contributors (begun by Felix Roos and Alex McLean), free software under the GNU Affero General
+Public License v3: [strudel.cc](https://strudel.cc), source at [codeberg.org/uzu/strudel](https://codeberg.org/uzu/strudel).
+TidalCycles, whose way of writing patterns Strudel carries to the browser, is Alex McLean's. Music you make with Strudel is
+yours (Strudel's FAQ).
+
+OAV is MIT-licensed and a separate program. It contains no Strudel code, does not load `@strudel/*` at run time and calls
+none of Strudel's functions: it only looks at the page's address and at which names the page already has, to choose its
+manners. The two meet the way two programs on a stage meet, over MIDI. OAV's own rhythm strings (`startDrums("bd*4,
+hh*8")`, @openav/pattern) are an independent implementation of the TidalCycles / Strudel way of writing rhythm, from their
+public documentation. Please do not ask Strudel's community for help with OAV: OAV's issues are on
+[GitHub](https://github.com/frank890417/open-audiovisual/issues).
 
 ---
 
@@ -3709,7 +3975,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Twenty-six packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-seven packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -3717,7 +3983,7 @@ npm yet.
 | layer | packages |
 |---|---|
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
-| L2 mapping | `mapping` |
+| L2 mapping | `mapping` · `chop` |
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` |
@@ -3771,7 +4037,8 @@ on-screen controllers that mirror real hardware.
 | score to MIDI | `new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })` · `segment({ index, cause })` · `cue({ name, n })`: segment changes and cues as notes and CCs, see [Score & Director](score.md#score-to-midi) |
 | parsing | `parseMessage(bytes)` → event · `encodeMessage(event)` → bytes · `genericSignals(event, { device })` · `publish(signals, list)` · `describe(event)` · `relativeDelta(value, mode)`, `relativeValue(delta, mode)`, `RELATIVE_MODES` · `bendToUnit`, `unitToBend`, `BEND_CENTER` |
 | controllers | `MidiController`, `MidiControllers`, `controllerRoutes(profile, bindings)`, `PROFILES`, `profileById(id)`, `ControllerView`, `mountMidiPanel(el, controllers, opts)`, `linkControllers`, profile helpers (`validateProfile`, `normalizeProfile`, `matchProfile`, …) |
-| Web MIDI shim | `createVirtualMIDIAccess(opts)`, `virtualRequestMIDIAccess` |
+| Web MIDI shim | `createVirtualMIDIAccess({ name, onOutput(bytes, timestamp), onClear })`, `virtualRequestMIDIAccess`, `splitMidi(bytes)`: its output is heard with each send's timestamp |
+| `MidiClock` (`clock.js`) | `new MidiClock({ ppq = 24, beatsPerBar = 4 })` · `feed(bytes, t)` → `'clock'·'start'·'continue'·'stop'·'spp'·'dupe'` · `bpm` · `phaseAt(t)` → `{ pos, bar, beat, bpm, running }` · `anchor()` · `state(t)`: follow an external MIDI clock ([With Strudel](strudel.md)) |
 | embedding | `createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut, telemetry })` → `ControllerHost` (`on(event, fn)`, `set`, `press`, `release`, `values`, `mount(el)`, `learn()`, `dispose()`) · `loadProfile(idOrUrl)` · the `<oav-controller>` element in `packages/midi/element.js` · embed protocol helpers in `embed.js` |
 
 ```js
@@ -3876,9 +4143,9 @@ detection.
 
 | export | signature |
 |---|---|
-| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`; `clock: 'lookahead'` schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; `lang: 'zh'` names the lanes in Chinese |
+| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`; `clock: 'lookahead'` schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; `lang: 'zh'` names the lanes in Chinese; `rhythm: <@openav/pattern>` (or `useRhythm(mod)`) makes the line over the grid editable and the cells rewrite it, with `history` / `undo()`, Copy and Open in Strudel (0.7) |
 | `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`, `bpm` (the frame clock) |
-| `DrumScheduler`, `DrumTransport` | the lookahead clock: a grid or a compiled line → timed events, positions in bars turned into seconds by a tempo map (no drift); the runtime with a Web Worker heartbeat, the audio clock, and steps / hits told when heard |
+| `DrumScheduler`, `DrumTransport` | the lookahead clock: a grid or a compiled line → timed events, positions in bars turned into seconds by a tempo map (no drift); the runtime with a Web Worker heartbeat, the audio clock, and steps / hits told when heard; `follow({ pos, at, bpm })` plays on an external clock (a small error pulled in by tempo, a large one a jump onto its grid), `followInfo()`, `unfollow()` |
 | `drumEngine` | `drumEngine({ samples })` → a sound engine (see [Sound](show-control.md#sound)); `noteOn(note, vel, time)` plays at `time` on its own AudioContext and returns `{ time, cancel() }` |
 | `PATTERNS`, `GM` | pattern presets; General MIDI drum notes `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
 
@@ -3906,6 +4173,28 @@ mapper.addRoute({ source: 'midi/cc/74', target: 'bloom', curve: 'exp', smooth: 0
 ```
 
 Full reference: [Mapping](mapping.md).
+
+## @openav/chop
+
+L2 mapping · values over time, the way TouchDesigner's CHOPs shape them: Lag, Trigger (`envelope`), Speed, Spring, Trail, Slope, Count. Pure logic, no clock of its own: every step is told the seconds that went by and is solved exactly over them, so 30 fps and 144 fps draw the same curve. What the parameters mean follows Derivative's TouchDesigner documentation; the code is OAV's own. In a p5 sketch, oav-p5 gives these one call each: [p5 one line](p5.md#values-over-time-lag-env-speed-spring-trail).
+
+| export | signature |
+|---|---|
+| `approach` | `approach(current, target, seconds, dt)` → one step of a one-pole lag; `seconds` = time to 63% of a change (the `smooth` of `@openav/mapping`, which steps with it) |
+| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → output · `reset(v?)`: `up` while rising, `down` while falling (Lag CHOP's Lag 1 / Lag 2) |
+| `envelope` | `envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)` → the Trigger CHOP's level at `t` for events at `times` (seconds, oldest first): a straight attack (0 → peak), then 0 after exactly `decay`; a retrigger starts where it is · `envelopeStage(elapsed, attack, decay, from, peak)` |
+| `Speed` | `new Speed()` · `step(rate, dt)` → position: `rate` per second |
+| `Spring` | `new Spring({ stiffness = 100, damping = 6 })` · `step(target, dt)` → position (`velocity` alongside): a mass on a spring pulled to the input, solved exactly · `springStep(x, v, target, k, c, dt)` → `[x, v]` |
+| `Trail` | `new Trail({ seconds = 2, rate = 60 })` · `step(value, dt)` → the last `seconds`, 60 values a second plus the newest, oldest first, fixed length |
+| `Slope` | `new Slope()` · `step(value, dt)` → change per second |
+| `Count` | `new Count({ threshold = 0.5 })` · `step(on, limit = 0)` → times it turned on, looped to 0 … limit − 1 with a limit · `wrapCount(total, limit)` |
+| `TD_LAG_RATIO`, `DEFAULTS` | `Math.LN10`: TouchDesigner quotes a lag as the time to ~90%, 2.3 time constants (a lag of 0.1 here ≈ a Lag CHOP at 0.23); the defaults above |
+
+```js
+import { Lag, envelope } from '@openav/chop';
+const vu = new Lag({ up: 0.03, down: 0.4 });       // opens at once, closes slowly
+// every frame: r = 50 + vu.step(level, dt) * 300; pump = envelope(kickTimes, now, 0.01, 0.3);
+```
 
 ## @openav/stage
 
@@ -4073,6 +4362,10 @@ Spine · rhythm in one line: mini-notation, the way TidalCycles and Strudel writ
 | `parse` | `parse(src)` → `{ ok, tree }` or `{ ok: false, error }`: nodes `step` `rest` `seq` `layer` `alt` `fast` `slow` `euclid` `maybe`, each with its character range |
 | `WORDS` | `bd` kick · `sd` snare · `hh` hat · `oh` openhat · `cp` clap · `rim`/`rs` · `lt` `mt` `ht` toms · `cr` crash · `rd` ride · `cb` cowbell, and the kit's own names |
 | `euclid` | `euclid(pulses, steps, rotate = 0)` → booleans (Toussaint 2005) |
+| `fromGrid` | `fromGrid(grid, { steps = 16, words, order })` → a line that plays exactly the grid, written the way a person would: `bd*4`, `[~ sd]*2`, `bd(3,8,2)`, else beat by beat `bd [~ ~ ~ bd] bd*2 ~` (0.7) |
+| `toGrid` | `toGrid(src, { bar = 1, steps = 16 })` → `{ grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`: one bar on the steps and what they cannot hold (0.7) |
+| `fromStrudel` | `fromStrudel(code)` → `{ strudel, ok, src, bpm, ignored, unsupported }`: `s("…")` / `sound("…")` copied from strudel.cc, `.fast` / `.slow` folded in, `setcpm` / `setcps` as `bpm` (0.7) |
+| `toStrudel`, `strudelUrl` | `strudelUrl(src, { bpm, comment })` → `https://strudel.cc/#…` (the line as `s("…")` with `setcpm(bpm/4)`, base64 in the `#`); open it in a new tab (0.7) |
 
 Writing: spaces (steps share the bar) · `~` `-` rest · `[ ]` group · `,` layers · `*n` faster · `/n` slower, across bars · `< >` one per bar · `(k,n,r)` Euclidean · `!n` and `!` repeat · `@n` and `_` longer · `?` `?0.3` drop by chance (seeded) · `bd:2` sample number. `.` `|` `{ }` are refused with a hint (rests are `~` or `-`).
 
@@ -4114,6 +4407,7 @@ Phones · room-scoped WebSocket relay (server) and its browser client.
 | `RelayClient` | `new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig })` · `connect()` · `close()` · `set(name, value)` · `send(name, value, pulse, extra)` · `feedback(name, value)` · `config(key, data)` · `status`, `latency`, `peers` |
 | signals helpers | `bindSignals(client, signals, { alias = 'any' })` · `fileSignal(signals, name, value, { pulse })` · `signalMeta(name, { pulse })` · `aliasOf(name)` · `normalizeValue(name, value)` · `deviceId()` |
 | `@openav/relay/server` | `attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000 })` → `{ hub, close() }`; standalone `node packages/relay/server.js [port=7458]` |
+| `MidiLink` (`link.js`) | `new MidiLink({ url, room, delay = 0, onMessages(list, from), onStatus })` · `connect()` · `send(bytes, whenMs)` · `info()` → `{ state, peers, rtt, trip, diff, lead, late, sent, received }` · `close()`; `LinkTiming`: MIDI between pages in one room, played when it sounds at the sender ([With Strudel](strudel.md)) |
 
 See [Phones, relay & surfaces](remote.md#the-relay).
 

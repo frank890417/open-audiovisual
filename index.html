@@ -33,21 +33,21 @@
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="manifest" href="./site.webmanifest">
 <link rel="preload" href="./assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="./assets/home/home.css?v=77a4e4f">
+<link rel="stylesheet" href="./assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/#webpage","url":"https://openaudiovisual.com/","name":"open-audiovisual · a framework for audiovisual performance","description":"Zero-build JavaScript framework: MIDI controllers, mics, hands and phones become signals that drive p5.js, WebGL or WebToe worlds in the browser. MIT.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/#software"}}]}</script>
 <noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "./packages/core/index.js?v=77a4e4f",
-    "@openav/mapping": "./packages/mapping/index.js?v=77a4e4f",
-    "@openav/keys": "./packages/keys/index.js?v=77a4e4f",
-    "@openav/chord": "./packages/chord/index.js?v=77a4e4f",
-    "@openav/stage": "./packages/stage/index.js?v=77a4e4f",
-    "@openav/sound": "./packages/sound/index.js?v=77a4e4f",
-    "@openav/midi": "./packages/midi/index.js?v=77a4e4f",
-    "@openav/audio": "./packages/audio/index.js?v=77a4e4f"
+    "@openav/core": "./packages/core/index.js",
+    "@openav/mapping": "./packages/mapping/index.js",
+    "@openav/keys": "./packages/keys/index.js",
+    "@openav/chord": "./packages/chord/index.js",
+    "@openav/stage": "./packages/stage/index.js",
+    "@openav/sound": "./packages/sound/index.js",
+    "@openav/midi": "./packages/midi/index.js",
+    "@openav/audio": "./packages/audio/index.js"
   }
 }
 </script>
@@ -88,7 +88,7 @@
     <div class="hero-grid">
       <div class="hero-text">
         <p class="lede">Keys, knobs, voices, hands and phones become named <em>signals</em>. A <em>mapping</em> turns signals into <em>parameters</em>. Your <em>world</em> reads the parameters and turns them into image and sound, in a browser tab, on a projector, on stage.</p>
-        <p class="eyebrow facts"><a href="./changelog/">oav-p5 0.6 · framework 0.1</a> · MIT · zero build · zero dependencies</p>
+        <p class="eyebrow facts"><a href="./changelog/">oav-p5 0.7 · framework 0.1</a> · MIT · zero build · zero dependencies</p>
       </div>
       <nav class="doors" aria-label="Where to start">
         <a class="door door-1" href="#works"><span class="door-who">I perform</span><span class="door-what">See what it makes and play the fifteen works</span><span class="door-arrow" aria-hidden="true">→</span></a>
@@ -483,7 +483,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
       </div>
     </div>
 
-    <h3 class="pkgs-title">Twenty-six packages, by layer</h3>
+    <h3 class="pkgs-title">Twenty-seven packages, by layer</h3>
     <p class="pkgs-lede">Plain ES modules. Import what you need through an import map, or let <code>createShow()</code> assemble them.</p>
     <div class="pkgs">
       <div class="pkg-group pg-l1">
@@ -502,6 +502,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <h4>Mapping</h4>
         <ul>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/mapping"><code>@openav/mapping</code></a><span>Signal to param routes: curves, smoothing, many-to-many, learn</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/chop"><code>@openav/chop</code></a><span>Values over time, as TouchDesigner's CHOPs shape them: lag, envelope, speed, spring, trail, slope, count; the same curve at any frame rate</span></li>
         </ul>
       </div>
       <div class="pkg-group pg-l3">
@@ -751,7 +752,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 </footer>
 
 <script type="application/json" id="oav-i18n">{"statusSim":"The simulated performer is playing. Your turn: tap the keys, or press A to L.","statusYou":"You are playing. Drag on the stage to bend hue and twist.","statusIdle":"Tap the keys or the stage, or press A to L, to play.","midiNone":"No MIDI device found. Plug one in and press MIDI again.","midiOn":"MIDI on: {n} device(s). Mod wheel (CC 1) also drives twist.","micOn":"Mic on. Loudness now drives energy.","micDenied":"The microphone is blocked in this browser.","soundLoading":"Loading the sound engine…","soundOn":"Sound on. Pick an instrument under the switches.","consonance":"consonance","copy":"Copy","copied":"Copied","eventTarget":"world (event)"}</script>
-<script type="module" src="./assets/home/home.js?v=77a4e4f"></script>
+<script type="module" src="./assets/home/home.js"></script>
 <!--/email_off-->
 </body>
 </html>
