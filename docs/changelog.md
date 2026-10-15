@@ -104,3 +104,4 @@ The first tagged version; it gathers 0.1 to 0.2.4 (from 2026-10-13).
 - **For agents and search engines:** llms.txt in English and Chinese, one sitemap, and MCP tools for controller
   profiles: `list_controllers`, `read_profile`, `validate_profile`, `scaffold_profile`.
 - A new README, and `tools/release.sh`: every change ships in one fixed order.
+- **The site catches up with oav-p5**: this page (the changelog), "oav-p5 version · framework version" on the home page and the handbook headers, a fourth door on the home page ("I use p5.js / OpenProcessing"), the ready-made sketches listed on /p5/, and example paths in the handbook that you can click. The entry script (`/p5/oav-p5.js`) reaches every sketch about a minute after a release.

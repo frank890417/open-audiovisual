@@ -85,3 +85,4 @@
 - **給 AI 代理和搜尋引擎：**中英兩版 llms.txt、一份 sitemap，以及處理控制器設定檔的 MCP 工具：`list_controllers`、
   `read_profile`、`validate_profile`、`scaffold_profile`。
 - 新的 README，以及 `tools/release.sh`：每次更新都照同一個固定順序發佈。
+- **網站跟上 oav-p5**：這一頁（更新紀錄）、首頁與手冊頁首並列「oav-p5 版本 · 框架版本」、首頁第四扇門「我用 p5.js／OpenProcessing」、/p5/ 列出現成草圖、手冊裡的範例路徑可以點。入口檔（`/p5/oav-p5.js`）發佈後約一分鐘就換新版。
