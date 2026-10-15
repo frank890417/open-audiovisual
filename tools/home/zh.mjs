@@ -167,6 +167,7 @@ export default {
       fab: '做得出來嗎？對任何網格做 3D 列印檢查（水密、懸空、最薄壁、重量），匯出 STL、OBJ、GLB、STEP',
       timeline: '參數自動化、場景與 cue：整場演出的時鐘',
       score: '把演出寫成段落長度：版本、cue、hold，還有模組壞掉時讓演出不中斷的導演',
+      pattern: '一行字寫節奏：TidalCycles／Strudel 式的 mini-notation 解析成每一小節的鼓點（歐幾里得節奏、每小節輪替、有種子的隨機）',
       console: '導演控台與演出模式',
       monitor: '網路裡任何裝置都能看的後台畫面',
       relay: '零相依的房間中繼，讓手機和 iPad 連進來',

@@ -1,6 +1,6 @@
 # 套件一覽
 
-二十五個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十六個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
@@ -8,7 +8,7 @@
 | L2 映射 | `mapping` |
 | L3 世界 | `stage` · `world-webtoe` |
 | L4 輸出 | `sound` · `osc` · `out` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
-| 主軸 | `timeline` · `score` · `console` · `monitor` |
+| 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` |
 | 手機 | `relay` · `surface` · `remote` |
 | 膠水 | `core` · `show` · `mcp` |
 
@@ -321,6 +321,25 @@ director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.p
 ```
 
 完整說明：[總譜與導演](score.md)。
+
+## @openav/pattern
+
+主軸 · 一行字寫節奏：把 mini-notation（TidalCycles 與 Strudel 寫節奏的方式）解析成每一小節的鼓點。純邏輯。依公開文件與論文獨立實作，寫法來自 [TidalCycles](https://tidalcycles.org) 與 [Strudel](https://strudel.cc)。
+
+| 匯出 | 簽章 |
+|---|---|
+| `compile` | `compile(src, { words = WORDS })` → `{ ok, error, src, voices, layers, period, eventsInBar(bar, { seed = 0 }) }`，不丟例外 · `eventsInBar`（小節從 1 起算）→ 依 `pos`（小節內 0..1）排序的 `[{ word, voice, n, pos, dur, vel, layer, token: { start, end } }]` · `error` → `{ code, index, length, message, hint }`，`code` 是 `empty` `unclosed` `unexpected` `bad-number` `bad-euclid` `unknown-word` `unsupported` 其中之一 |
+| `parse` | `parse(src)` → `{ ok, tree }` 或 `{ ok: false, error }`：節點 `step` `rest` `seq` `layer` `alt` `fast` `slow` `euclid` `maybe`，每個都帶字元範圍 |
+| `WORDS` | `bd` 大鼓 · `sd` 小鼓 · `hh` 鈸 · `oh` 開鈸 · `cp` 拍手 · `rim`／`rs` · `lt` `mt` `ht` 中鼓 · `cr` 碎音鈸 · `rd` 疊音鈸 · `cb` 牛鈴，也接受鼓組自己的名字 |
+| `euclid` | `euclid(pulses, steps, rotate = 0)` → 布林陣列（Toussaint 2005） |
+
+寫法：空白（等分一小節）· `~` `-` 休止 · `[ ]` 細分 · `,` 疊層 · `*n` 加快 · `/n` 放慢、跨小節 · `< >` 每小節輪一個 · `(k,n,r)` 歐幾里得 · `!n` 與 `!` 重複 · `@n` 與 `_` 拉長 · `?` `?0.3` 隨機省略（有種子）· `bd:2` 取樣編號。`.` `|` `{ }` 會回錯誤與提示（休止請用 `~` 或 `-`）。
+
+```js
+import { compile } from '@openav/pattern';
+const p = compile('bd*4, [~ sd]*2, hh*8');
+p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
+```
 
 ## @openav/console
 
