@@ -74,7 +74,9 @@ if [[ $DRY == 0 ]]; then
   say "origin/main must already be in this branch"
   git fetch -q origin
   git merge-base --is-ancestor origin/main HEAD || { echo "✗ origin/main has commits this branch lacks: git merge origin/main, then rerun" >&2; exit 1; }
-  START=$(git rev-parse HEAD)
+  # START = what the site serves now. Commits made on this branch before the script ran are part of the release too,
+  # so the log and the undo range start at origin/main, not at HEAD (0.4.0 printed c71ff42.. and left two commits out).
+  START=$(git rev-parse origin/main)
 fi
 
 say "generators"; build_all

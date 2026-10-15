@@ -26,7 +26,7 @@ tools/release.sh "…" --no-push               # everything up to the push
 
 ## Why the order is fixed
 
-- **Stamps.** The generators write pages without `?v=` stamps. GitHub Pages caches JavaScript for 4 hours and HTML for 10
+- **Stamps.** The generators write pages without `?v=` stamps. Browsers keep JavaScript for 4 hours (the zone's Cloudflare Browser Cache TTL, 14400 s, over GitHub Pages' own 600 s) and HTML for 10
   minutes, so new HTML with an unstamped module URL can run old JavaScript for hours. Stamping is always the last write
   before the push.
 - **lastmod.** The sitemap's dates are the last commit of each page's sources. Regenerating before that commit (for example
@@ -43,6 +43,34 @@ git revert <first>..<last> && tools/release.sh "revert …"
 
 ## Not in the script (need a person)
 
-- Cloudflare settings (AI crawler policy, Email Obfuscation, Always Use HTTPS, cache rules): dashboard only.
+- Cloudflare settings (AI crawler policy, Email Obfuscation, Always Use HTTPS, cache rules): dashboard or the `cf` CLI, by a person or with their go-ahead.
 - Search Console sitemap resubmission and URL Inspection, Bing import, IndexNow submission.
 - Posting on GitHub issues or anywhere public.
+
+## Caching of the entry scripts
+
+Pages outside this site load OAV by URLs without a stamp: `/p5/oav-p5.js` (the one line in a p5 sketch) and
+`/packages/**/*.js` (`<oav-controller>`, `packages/midi/index.js`). Under the zone default they were kept 4 hours, so the
+0.4.0 release (2026-10-15) still served 0.3.0 to that line until the file was purged by hand.
+
+One Cloudflare cache rule (zone ruleset `http_request_cache_settings`, rule
+`8f5df2025a4f4b0980f9a79feeadc8fa`, added 2026-10-15) covers them:
+
+```
+(http.request.uri.path eq "/p5/oav-p5.js")
+or (starts_with(http.request.uri.path, "/packages/") and ends_with(http.request.uri.path, ".js") and http.request.uri.query eq "")
+→ cache, edge TTL 60 s, browser TTL 60 s (override origin)
+```
+
+Measured right after: the rule asks for 60 s, but browsers get GitHub Pages' own `max-age=600` (it was 14400 before), so
+a release reaches every sketch within about ten minutes; the edge copy is at most a minute old. Modules loaded with `?v=` are untouched.
+In a hurry (a fix during a live class): purge the one file.
+
+```bash
+cf cache purge -z openaudiovisual.com --force --body '{"files":["https://openaudiovisual.com/p5/oav-p5.js"]}'
+```
+
+To check: `curl -sI https://openaudiovisual.com/p5/oav-p5.js | grep -iE 'cache-control|cf-cache-status|age'`.
+To remove the rule: `cf rulesets rules delete <ruleset-id> 8f5df2025a4f4b0980f9a79feeadc8fa -z openaudiovisual.com`
+(`cf rulesets entrypoint get http_request_cache_settings -z openaudiovisual.com` shows the ruleset id).
+
