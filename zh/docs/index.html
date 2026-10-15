@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="../../assets/home/home.css?v=02aa19c">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/#article","url":"https://openaudiovisual.com/zh/docs/","name":"文件｜open-audiovisual","description":"open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"open-audiovisual 使用手冊","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["簡介","快速開始","核心概念","架構","寫一個世界","輸入","映射","演出控制","總譜與導演","MIDI 控制器與嵌入","p5.js 一行接上","手機、中繼與控制面板","訊號一覽","套件一覽","給 AI 代理","實驗室整合（\"lab\" 欄位）","疑難排解","路線圖"],"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=02aa19c">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -1894,24 +1894,57 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <tr><td><code>drumStep</code></td><td>0 到 15，剛打到第幾格</td></tr>
 <tr><td><code>drumBar</code></td><td>1、2、3……，從 <code>startDrums()</code> 開始數第幾小節</td></tr>
 <tr><td><code>drumBpm</code></td><td>速度（格子上的滑桿也會改它）</td></tr>
+<tr><td><code>drumPhase</code></td><td>0 到 1，這一小節走到哪，連續的、照聽到的時間算：<code>rotate(drumPhase * TWO_PI)</code> 一小節轉一圈</td></tr>
+<tr><td><code>beatPhase</code></td><td>0 到 1，這一拍（四分音符）走到哪：<code>1 - beatPhase</code> 每一拍一開始最大，慢慢縮到下一拍</td></tr>
 <tr><td><code>startDrums(pattern, bpm)</code>、<code>stopDrums()</code></td><td>開始（打著的時候再叫一次就換節奏、換速度）、停</td></tr>
 </tbody>
 </table></div>
 <div class="table-wrap"><table>
 <thead><tr><th>寫這個函式</th><th>什麼時候被叫</th></tr></thead>
 <tbody>
-<tr><td><code>drumHit(lane, velocity)</code></td><td>每打一下，四軌都會叫</td></tr>
-<tr><td><code>kickDetected(level)</code>、<code>snareDetected(level)</code>、<code>hatDetected(level)</code></td><td>大鼓；小鼓或拍手；Hi-hat</td></tr>
+<tr><td><code>drumHit(lane, velocity)</code></td><td>每打一下，每一種鼓都叫（一行節奏裡的碎音鈸、疊音鈸、中鼓也是）</td></tr>
+<tr><td><code>kickDetected(level)</code>、<code>snareDetected(level)</code>、<code>hatDetected(level)</code></td><td>大鼓；小鼓、拍手或鼓邊；鈸（閉鈸、開鈸、踩鈸）</td></tr>
 <tr><td><code>beatDetected(level)</code></td><td>大鼓或小鼓，每一格最多一次（<code>beat</code> 也會有一格是 true）</td></tr>
 </tbody>
 </table></div>
 <p><strong>寫給麥克風的草圖，換成鼓機照樣動。</strong> 鼓機每打一下，叫的就是麥克風會叫的那幾個函式，所以麥克風草圖不用改就跟著鼓機動。草圖開了鼓機之後，只是寫了 <code>kickDetected()</code> 不會在第一次點擊時去開麥克風（有讀 <code>micLevel</code> 的草圖還是會問，那時兩邊都會叫它）。</p>
 <ul>
-<li><strong>節奏。</strong> <code>'four on floor'</code>、<code>breakbeat</code>、<code>'half time'</code>、<code>latin</code>、<code>sparse</code>，或自己寫：
-<code>startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })</code>（沒寫的那軌不打）。</li>
+<li><strong>節奏。</strong> <code>'four on floor'</code>、<code>breakbeat</code>、<code>'half time'</code>、<code>latin</code>、<code>sparse</code>，自己寫的格子
+<code>startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })</code>（沒寫的那軌不打），或一行節奏（下面一節）。</li>
+<li><strong>鼓機卡。</strong> 中文瀏覽器的軌道名是中文（大鼓、小鼓、鈸、拍手），速度旁邊顯示現在第幾小節，正在響的那一欄是黃框（跟深色卡片的對比 13:1，投影也看得清楚）。</li>
 <li><strong>格子放在哪。</strong> 畫面上方正中間：在 OpenProcessing 是 🎹 和 OPC 圖示中間，不擋到下面的 console；🎹 面板打開時移到面板下面。「–」收起格子，「×」關掉鼓機；🎹 面板裡的 <strong>🥁</strong> 不寫程式也能開關。</li>
 <li><strong>鼓組。</strong> <a href="#packages"><code>@openav/drums</code></a> 的合成鼓組（沒有取樣），跟聲音一樣點一下之後才聽得到；回呼從一開始就會被叫。</li>
 </ul>
+<p><strong>畫面再重，鼓都不歪。</strong> 鼓是照音訊時鐘提前排好的：Web Worker 裡的心跳每 25 毫秒醒一次，把接下來 0.1 秒內要打的鼓，照精確的時間交給鼓組。用鼓組自己的輸出量（<code>draw()</code> 每一格故意忙 30 毫秒）：大鼓到大鼓的間隔，差異是 0.000 毫秒；
+0.5 版在畫面輪到那一格才打，差異是 15 毫秒。回呼還是在畫面的某一格叫，叫的是聲音<strong>聽得到</strong>的那一格（排定的時間加上瀏覽器回報的輸出延遲），在 <code>draw()</code> 之前，順序跟以前一樣。</p>
+<ul>
+<li><strong>切到別的分頁</strong>：聲音照響、照數小節，<code>drumBar</code> 跟牆上的時間一致，cue 照樣觸發，<code>barStarted</code> 每小節叫一次。每一下的鼓和 <code>stepStarted</code> 在沒人看得到的時候先不叫，回到這個分頁也不補，所以「每打一下就加一顆粒子」的草圖不會一回來就爆出一大堆。</li>
+<li><strong><code>draw()</code> 一格超過 0.1 秒</strong>：鼓機從那之後提前 0.3 秒排（🩺 會寫）；代價是點格子改節奏，最多晚 0.3 秒才聽到。</li>
+<li><strong>藍牙喇叭</strong>會晚 0.15 到 0.25 秒；瀏覽器有回報時回呼會等它，也可以用 <code>?oav_drumlatency=200</code>（毫秒）自己設。</li>
+<li><strong>保險</strong>：<code>?oav_drums=frame</code>（OpenProcessing 是 <code>?sketch_oav_drums=frame</code>）退回 0.5 版逐幀推進的鼓機。</li>
+</ul>
+<h4 id="p5-one-line-of-rhythm">一行節奏<a class="anchor" href="#p5-one-line-of-rhythm" aria-label="這一節的連結">#</a></h4>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  startDrums(<span class="ts">"bd*4, [~ sd]*2, hh*8"</span>, 110);   <span class="tc">// a kick on every beat, a snare on 2 and 4, eight hats</span>
+}</code></pre></div>
+<p>不是節奏名稱的字串，就當成一行節奏；節奏名稱、自己寫的格子、數字，行為跟以前一模一樣。這一行字會顯示在格子上方，正在響的那個字會亮起來、再淡掉。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>寫</th><th>意思</th><th>例</th></tr></thead>
+<tbody>
+<tr><td>一個字</td><td>一種鼓：<code>bd</code> 大鼓、<code>sd</code> 小鼓、<code>hh</code> 鈸、<code>oh</code> 開鈸、<code>cp</code> 拍手、<code>rim</code> 鼓邊、<code>lt</code> <code>mt</code> <code>ht</code> 中鼓、<code>cr</code> 碎音鈸、<code>rd</code> 疊音鈸、<code>cb</code> 牛鈴</td><td><code>"bd sd bd sd"</code></td></tr>
+<tr><td><code>~</code></td><td>休息</td><td><code>"bd ~ sd ~"</code></td></tr>
+<tr><td>空白</td><td>幾個字平分一小節</td><td><code>"bd hh sd hh"</code></td></tr>
+<tr><td><code>[ ]</code></td><td>一組擠進一格</td><td><code>"bd [sd sd]"</code></td></tr>
+<tr><td><code>*n</code></td><td>在那一格打 n 下</td><td><code>"hh*8"</code></td></tr>
+<tr><td><code>,</code></td><td>再疊一行</td><td><code>"bd*4, hh*8"</code></td></tr>
+<tr><td><code>&lt; &gt;</code></td><td>每小節輪一個</td><td><code>"&lt;bd*4 [bd ~ bd ~]&gt;"</code></td></tr>
+<tr><td><code>(k,n)</code></td><td>n 格裡平均打 k 下</td><td><code>"bd(3,8)"</code></td></tr>
+</tbody>
+</table></div>
+<p>完整的寫法在 <a href="#packages"><code>@openav/pattern</code></a>，第一次用到一行節奏時才從 <code>oav-p5.js</code> 旁邊載入。格子上沒有那一軌的鼓（碎音鈸、疊音鈸、中鼓、開鈸）會多一列；不在 16 格上的音（三連音）畫在它落在那一格裡的位置。<strong>點格子</strong>就換成格子打：那一行變成它在這一小節打的樣子，跳一張卡說哪裡變了（三連音移到最近的格子、格子沒有的鼓先拿掉），再叫一次
+<code>startDrums("…")</code> 就回到那一行字。<strong>寫錯了</strong>會跳一張卡（照頁面語言）說第幾個字、為什麼、怎麼改，鼓機先打
+<code>'four on floor'</code>；只寫 <code>'x...x...'</code>（格子的一軌）會提醒你放進 <code>{ kick: … }</code>。</p>
+<p>一行節奏的寫法來自 TidalCycles／Strudel（<a href="https://strudel.cc" rel="noopener">strudel.cc</a>），OAV 是依公開文件獨立實作。</p>
 <h3 id="p5-timeline-bars-and-cues">時間軸：小節與 cue<a class="anchor" href="#p5-timeline-bars-and-cues" aria-label="這一節的連結">#</a></h3>
 <p>鼓機也是時鐘：一小節十六格，從 <code>startDrums()</code> 開始數。宣告第幾小節要發生什麼：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
@@ -1933,7 +1966,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <tr><td><code>barStarted(bar)</code>、<code>stepStarted(step, bar)</code></td><td>每一小節的第一格；每一格</td></tr>
 </tbody>
 </table></div>
-<p>同樣的 <code>cue()</code> 叫兩次不會多一個，所以放在 <code>draw()</code> 裡也可以。同一格上先照宣告順序觸發 cue，再來 <code>barStarted</code>、<code>stepStarted</code>、那一格的鼓。只要時鐘不要聲音：<code>startDrums({})</code>。全部用上的草圖：<code>p5/examples/drums/</code>。</p>
+<p>同樣的 <code>cue()</code> 叫兩次不會多一個，所以放在 <code>draw()</code> 裡也可以。同一格上先照宣告順序觸發 cue，再來 <code>barStarted</code>、<code>stepStarted</code>、那一格的鼓。只要時鐘不要聲音：<code>startDrums({})</code>。全部用上的草圖：<code>p5/examples/drums/</code>；一行節奏加 <code>drumPhase</code>、<code>beatPhase</code>：<code>p5/examples/rhythm/</code>。</p>
 <h3 id="p5-recording-a-video-with-its-sound">錄影：畫面和聲音一起錄<a class="anchor" href="#p5-recording-a-video-with-its-sound" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
   <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
@@ -1999,7 +2032,7 @@ Hydra 不是 p5，沒有可以定義的 <code>notePressed()</code> 回呼，改�
 <code>load</code> 等它跑完，所以 <code>setup()</code> 裡就已經有 <code>knob1</code>。</li>
 <li><strong>這一行沒載到時</strong>（沒網路、網址打錯），讀 <code>knob1</code> 的程式會停在「knob1 is not defined」。</li>
 <li><strong>嵌到別的網站</strong>：OpenProcessing 自己的頁面允許草圖用 MIDI 和麥克風，它給的嵌入碼沒有。要讓嵌入的草圖聽實體控制器，在那個 <code>&lt;iframe&gt;</code> 加上 <code>allow="midi"</code>；要它聽麥克風，加 <code>allow="microphone"</code>。</li>
-<li><strong>選項、MIDI 層的寫法和測試</strong>：<a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>。範例：<code>p5/examples/particles/</code>、<code>p5/examples/opc/</code>、<code>p5/examples/mic/</code>、<code>p5/examples/keys/</code>、<code>p5/examples/drums/</code>、<code>p5/examples/record/</code>。</li>
+<li><strong>選項、MIDI 層的寫法和測試</strong>：<a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>。範例：<code>p5/examples/particles/</code>、<code>p5/examples/opc/</code>、<code>p5/examples/mic/</code>、<code>p5/examples/keys/</code>、<code>p5/examples/drums/</code>、<code>p5/examples/rhythm/</code>、<code>p5/examples/record/</code>。</li>
 </ul>
 </section>
 
@@ -2492,9 +2525,10 @@ leap.onFrame(() =&gt; leap.skeleton(ctx, w, h));          <span class="tc">// jo
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>mountDrums</code></td><td><code>mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, bpm = 112, pattern })</code> → <code>{ seq, engine, root, play(on), setPattern(p), setBpm(bpm), update(dt), dispose() }</code></td></tr>
-<tr><td><code>DrumSequencer</code></td><td><code>new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })</code> · <code>setPattern(nameOrGrid)</code> · <code>toggleCell(lane, i)</code> · <code>toggle(on)</code> · <code>update(dt)</code> · <code>grid</code>、<code>bpm</code></td></tr>
-<tr><td><code>drumEngine</code></td><td><code>drumEngine({ samples })</code> → 一個聲音引擎（見<a href="#show-control-sound">聲音</a>）</td></tr>
+<tr><td><code>mountDrums</code></td><td><code>mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })</code> → <code>{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }</code>；<code>clock: 'lookahead'</code> 照鼓組的音訊時鐘提前排程（oav-p5 0.6 用這個），也能照寫的樣子打編譯好的一行節奏；<code>lang: 'zh'</code> 軌道名用中文</td></tr>
+<tr><td><code>DrumSequencer</code></td><td><code>new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })</code> · <code>setPattern(nameOrGrid)</code> · <code>toggleCell(lane, i)</code> · <code>toggle(on)</code> · <code>update(dt)</code> · <code>grid</code>、<code>bpm</code>（逐幀推進的時鐘）</td></tr>
+<tr><td><code>DrumScheduler</code>、<code>DrumTransport</code></td><td>提前排程的時鐘：格子或編譯好的一行節奏 → 帶時間的事件，小節位置用速度錨點換成秒（不累積漂移）；外層是 Web Worker 心跳、音訊時鐘、聽到時才告訴頁面的步與鼓</td></tr>
+<tr><td><code>drumEngine</code></td><td><code>drumEngine({ samples })</code> → 一個聲音引擎（見<a href="#show-control-sound">聲音</a>）；<code>noteOn(note, vel, time)</code> 在自己 AudioContext 的 <code>time</code> 響，回傳 <code>{ time, cancel() }</code></td></tr>
 <tr><td><code>PATTERNS</code>、<code>GM</code></td><td>節奏型預設，以及 General MIDI 鼓的音符編號 <code>{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }</code></td></tr>
 </tbody>
 </table></div>
@@ -2970,7 +3004,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=02aa19c"></script>
+<script type="module" src="../../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

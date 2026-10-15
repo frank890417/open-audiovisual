@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="../assets/home/home.css?v=02aa19c">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=02aa19c">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -2396,14 +2396,16 @@ from the first click; <code>sound=off</code> keeps it silent.</li>
 <tr><td><code>drumStep</code></td><td>0..15, the step that just played</td></tr>
 <tr><td><code>drumBar</code></td><td>1, 2, 3 …, counted from <code>startDrums()</code></td></tr>
 <tr><td><code>drumBpm</code></td><td>the tempo (the grid's slider changes it too)</td></tr>
+<tr><td><code>drumPhase</code></td><td>0..1, how far through the bar, smoothly, as heard: <code>rotate(drumPhase * TWO_PI)</code> turns once a bar</td></tr>
+<tr><td><code>beatPhase</code></td><td>0..1, how far through the beat (a quarter note): <code>1 - beatPhase</code> swells on each beat and shrinks to the next</td></tr>
 <tr><td><code>startDrums(pattern, bpm)</code>, <code>stopDrums()</code></td><td>start (or change the pattern and tempo while it plays), stop</td></tr>
 </tbody>
 </table></div>
 <div class="table-wrap"><table>
 <thead><tr><th>write this function</th><th>when it is called</th></tr></thead>
 <tbody>
-<tr><td><code>drumHit(lane, velocity)</code></td><td>every hit, all four lanes</td></tr>
-<tr><td><code>kickDetected(level)</code>, <code>snareDetected(level)</code>, <code>hatDetected(level)</code></td><td>a kick; a snare or a clap; a hat</td></tr>
+<tr><td><code>drumHit(lane, velocity)</code></td><td>every hit, every drum (a line of rhythm's crash, ride or toms too)</td></tr>
+<tr><td><code>kickDetected(level)</code>, <code>snareDetected(level)</code>, <code>hatDetected(level)</code></td><td>a kick; a snare, a clap or a rim; a hat (closed, open or pedal)</td></tr>
 <tr><td><code>beatDetected(level)</code></td><td>a kick or a snare, once per step (and <code>beat</code> is true for a frame)</td></tr>
 </tbody>
 </table></div>
@@ -2411,14 +2413,61 @@ from the first click; <code>sound=off</code> keeps it silent.</li>
 the microphone reacts to the machine as it is. Once a sketch has started the machine, defining <code>kickDetected()</code> no longer
 opens the microphone on the first click (a sketch that reads <code>micLevel</code> still asks, and then both call it).</p>
 <ul>
-<li><strong>Patterns.</strong> <code>'four on floor'</code>, <code>breakbeat</code>, <code>'half time'</code>, <code>latin</code>, <code>sparse</code>, or your own:
-<code>startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })</code> (a lane left out is silent).</li>
+<li><strong>Patterns.</strong> <code>'four on floor'</code>, <code>breakbeat</code>, <code>'half time'</code>, <code>latin</code>, <code>sparse</code>, your own
+<code>startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })</code> (a lane left out is silent),
+or one line of rhythm (below).</li>
+<li><strong>The card.</strong> The lanes are named in the page's language (大鼓 小鼓 鈸 拍手 in a Chinese browser), the bar it is in shows
+beside the tempo, and the step that sounds is a yellow column (13:1 against the dark card, readable on a projector).</li>
 <li><strong>Where the grid sits.</strong> At the top centre: on OpenProcessing between the 🎹 and OPC's icon and clear of the console, and
 below the 🎹 panel while that is open. – folds it, × stops the machine, and <strong>🥁</strong> in the 🎹 panel starts and stops it with
 no code at all.</li>
 <li><strong>The kit.</strong> <a href="#packages"><code>@openav/drums</code></a>' synthesized kit (no samples), heard from the first click like sound; the
 callbacks run from the start either way.</li>
 </ul>
+<p><strong>On time, however heavy the sketch.</strong> The hits are handed to the kit ahead of time, on its audio clock: a heartbeat in a
+Web Worker wakes every 25 ms and schedules what falls in the next 0.1 s at its exact time. Measured on the kit's own output
+with a <code>draw()</code> that keeps the page busy 30 ms a frame, the kick-to-kick interval varies by 0.000 ms (0.5, which played each
+hit in the frame it was due, varied by 15 ms). The callbacks still come in a frame: the one in which the hit is <em>heard</em> (its
+time plus the output latency the browser reports), right before <code>draw()</code>, in the same order as before.</p>
+<ul>
+<li><strong>A tab in the background</strong> keeps playing and counting: <code>drumBar</code> follows the clock on the wall and the cues fire, with one
+<code>barStarted</code> a bar. The hits and <code>stepStarted</code> are not told while nobody can see them, and nothing is told twice when the
+tab comes back, so a sketch that adds a particle per hit does not burst.</li>
+<li><strong>A <code>draw()</code> longer than 0.1 s</strong> makes the machine look 0.3 s ahead from then on (🩺 says so); a click on a cell is then
+heard up to 0.3 s later.</li>
+<li><strong>A Bluetooth speaker</strong> is late by 0.15–0.25 s; where the browser reports it the callbacks wait for it, and
+<code>?oav_drumlatency=200</code> (milliseconds) sets it by hand.</li>
+<li><strong>The safety net</strong>: <code>?oav_drums=frame</code> (on OpenProcessing <code>?sketch_oav_drums=frame</code>) brings back 0.5's machine, moved by the
+frames.</li>
+</ul>
+<h4 id="p5-one-line-of-rhythm">One line of rhythm<a class="anchor" href="#p5-one-line-of-rhythm" aria-label="Link to this section">#</a></h4>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  startDrums(<span class="ts">"bd*4, [~ sd]*2, hh*8"</span>, 110);   <span class="tc">// a kick on every beat, a snare on 2 and 4, eight hats</span>
+}</code></pre></div>
+<p>Any text that is not a pattern name is a line of rhythm; names, grids and numbers work exactly as before. The line shows over
+the grid, and the word that sounds lights up and fades.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>write</th><th>means</th><th>e.g.</th></tr></thead>
+<tbody>
+<tr><td>a word</td><td>a drum: <code>bd</code> kick, <code>sd</code> snare, <code>hh</code> hat, <code>oh</code> open hat, <code>cp</code> clap, <code>rim</code>, <code>lt</code> <code>mt</code> <code>ht</code> toms, <code>cr</code> crash, <code>rd</code> ride, <code>cb</code> cowbell</td><td><code>"bd sd bd sd"</code></td></tr>
+<tr><td><code>~</code></td><td>a rest</td><td><code>"bd ~ sd ~"</code></td></tr>
+<tr><td>space</td><td>the words share the bar evenly</td><td><code>"bd hh sd hh"</code></td></tr>
+<tr><td><code>[ ]</code></td><td>a group shares one place</td><td><code>"bd [sd sd]"</code></td></tr>
+<tr><td><code>*n</code></td><td>n times in that place</td><td><code>"hh*8"</code></td></tr>
+<tr><td><code>,</code></td><td>another line on top</td><td><code>"bd*4, hh*8"</code></td></tr>
+<tr><td><code>&lt; &gt;</code></td><td>one per bar, in turn</td><td><code>"&lt;bd*4 [bd ~ bd ~]&gt;"</code></td></tr>
+<tr><td><code>(k,n)</code></td><td>k hits spread over n steps</td><td><code>"bd(3,8)"</code></td></tr>
+</tbody>
+</table></div>
+<p>The whole list is in <a href="#packages"><code>@openav/pattern</code></a>, loaded from next to <code>oav-p5.js</code> the first time a line is used. Drums the
+grid has no lane for (crash, ride, toms, open hat) get a row of their own; a hit off the sixteen steps (a triplet) is drawn
+where it falls inside its step. <strong>A click on a cell</strong> hands the beat to the cells: the line becomes the grid it was playing in
+that bar, a card says what changed (triplets moved to the nearest step, drums with no lane left out), and calling
+<code>startDrums("…")</code> again brings the line back. <strong>A mistake</strong> shows a card in the page's language with the character it is at,
+why, and how to fix it, and the machine plays <code>'four on floor'</code> meanwhile; <code>'x...x...'</code> on its own (one lane of the grid)
+says to put it inside <code>{ kick: … }</code>.</p>
+<p>The way of writing one line of rhythm comes from TidalCycles / Strudel (<a href="https://strudel.cc" rel="noopener">strudel.cc</a>); OAV implements it
+independently from their public documentation.</p>
 <h3 id="p5-timeline-bars-and-cues">Timeline: bars and cues<a class="anchor" href="#p5-timeline-bars-and-cues" aria-label="Link to this section">#</a></h3>
 <p>The drum machine is also the clock: sixteen steps a bar, counted from <code>startDrums()</code>. Declare what happens at which bar:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> setup() {
@@ -2442,7 +2491,7 @@ callbacks run from the start either way.</li>
 </table></div>
 <p>The same <code>cue()</code> twice adds nothing, so it may also sit in <code>draw()</code>. On one step the cues fire in the order they were
 declared, then <code>barStarted</code>, <code>stepStarted</code> and that step's hits. A silent clock: <code>startDrums({})</code>. The whole of it, ready to
-open: <code>p5/examples/drums/</code>.</p>
+open: <code>p5/examples/drums/</code>; a line of rhythm with <code>drumPhase</code> and <code>beatPhase</code>: <code>p5/examples/rhythm/</code>.</p>
 <h3 id="p5-recording-a-video-with-its-sound">Recording: a video with its sound<a class="anchor" href="#p5-recording-a-video-with-its-sound" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
   <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
@@ -2542,7 +2591,7 @@ defined</em>.</li>
 embed code it gives you does not: add <code>allow="midi"</code> to that <code>&lt;iframe&gt;</code> if the embedded sketch should hear a hardware
 controller, and <code>allow="microphone"</code> if it should hear the microphone.</li>
 <li><strong>Options, MIDI-level access and tests</strong>: <a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>.
-Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <code>p5/examples/mic/</code>, <code>p5/examples/keys/</code>, <code>p5/examples/drums/</code> and <code>p5/examples/record/</code>.</li>
+Examples: <code>p5/examples/particles/</code>, <code>p5/examples/opc/</code>, <code>p5/examples/mic/</code>, <code>p5/examples/keys/</code>, <code>p5/examples/drums/</code>, <code>p5/examples/rhythm/</code> and <code>p5/examples/record/</code>.</li>
 </ul>
 </section>
 
@@ -3164,9 +3213,10 @@ detection.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>mountDrums</code></td><td><code>mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, bpm = 112, pattern })</code> → <code>{ seq, engine, root, play(on), setPattern(p), setBpm(bpm), update(dt), dispose() }</code></td></tr>
-<tr><td><code>DrumSequencer</code></td><td><code>new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })</code> · <code>setPattern(nameOrGrid)</code> · <code>toggleCell(lane, i)</code> · <code>toggle(on)</code> · <code>update(dt)</code> · <code>grid</code>, <code>bpm</code></td></tr>
-<tr><td><code>drumEngine</code></td><td><code>drumEngine({ samples })</code> → a sound engine (see <a href="#show-control-sound">Sound</a>)</td></tr>
+<tr><td><code>mountDrums</code></td><td><code>mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })</code> → <code>{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }</code>; <code>clock: 'lookahead'</code> schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; <code>lang: 'zh'</code> names the lanes in Chinese</td></tr>
+<tr><td><code>DrumSequencer</code></td><td><code>new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })</code> · <code>setPattern(nameOrGrid)</code> · <code>toggleCell(lane, i)</code> · <code>toggle(on)</code> · <code>update(dt)</code> · <code>grid</code>, <code>bpm</code> (the frame clock)</td></tr>
+<tr><td><code>DrumScheduler</code>, <code>DrumTransport</code></td><td>the lookahead clock: a grid or a compiled line → timed events, positions in bars turned into seconds by a tempo map (no drift); the runtime with a Web Worker heartbeat, the audio clock, and steps / hits told when heard</td></tr>
+<tr><td><code>drumEngine</code></td><td><code>drumEngine({ samples })</code> → a sound engine (see <a href="#show-control-sound">Sound</a>); <code>noteOn(note, vel, time)</code> plays at <code>time</code> on its own AudioContext and returns <code>{ time, cancel() }</code></td></tr>
 <tr><td><code>PATTERNS</code>, <code>GM</code></td><td>pattern presets; General MIDI drum notes <code>{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }</code></td></tr>
 </tbody>
 </table></div>
@@ -3801,7 +3851,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=02aa19c"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

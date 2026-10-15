@@ -167,9 +167,10 @@ detection.
 
 | export | signature |
 |---|---|
-| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, bpm = 112, pattern })` → `{ seq, engine, root, play(on), setPattern(p), setBpm(bpm), update(dt), dispose() }` |
-| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`, `bpm` |
-| `drumEngine` | `drumEngine({ samples })` → a sound engine (see [Sound](show-control.md#sound)) |
+| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`; `clock: 'lookahead'` schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; `lang: 'zh'` names the lanes in Chinese |
+| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`, `bpm` (the frame clock) |
+| `DrumScheduler`, `DrumTransport` | the lookahead clock: a grid or a compiled line → timed events, positions in bars turned into seconds by a tempo map (no drift); the runtime with a Web Worker heartbeat, the audio clock, and steps / hits told when heard |
+| `drumEngine` | `drumEngine({ samples })` → a sound engine (see [Sound](show-control.md#sound)); `noteOn(note, vel, time)` plays at `time` on its own AudioContext and returns `{ time, cancel() }` |
 | `PATTERNS`, `GM` | pattern presets; General MIDI drum notes `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
 
 ```js

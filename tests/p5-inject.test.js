@@ -435,7 +435,7 @@ function fakeDrums(log) {
 
 test('0.4.0: a sketch that calls none of it gets the names, and nothing loads or changes', () => {
   const { w, loaded, click } = kitPage();
-  assert.equal(w.OAVp5.version, '0.5.0');
+  assert.equal(w.OAVp5.version, '0.6.0');
   for (const n of ['startSound', 'stopSound', 'startDrums', 'stopDrums', 'cue']) assert.equal(typeof w[n], 'function', n);
   assert.deepEqual([w.soundIsOn, w.drumsAreOn, w.drumStep, w.drumBar, w.drumBpm, w.cueName], [false, false, 0, 0, 112, '']);
   w.midi.play(60, 0.8); w.midi.play(60, 0); w.midi.input([0x99, 36, 100]); click();
@@ -455,7 +455,7 @@ test('sound: startSound() waits for the first click, then every note goes throug
   assert.equal(w.soundIsOn, false);
   w.midi.play(60, 0.8);
   assert.deepEqual(played, [], 'not heard before the click');
-  assert.ok(loaded.some((u) => /packages\/sound\/index\.js\?v=p5-0\.5\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
+  assert.ok(loaded.some((u) => /packages\/sound\/index\.js\?v=p5-0\.6\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
   click();
   assert.equal(await on, true);
   assert.equal(w.soundIsOn, true);
@@ -735,7 +735,7 @@ test('OAVp5.check(): microphone, MIDI, sound, drums, wiring and the hints, as on
   const w = page({ OPC: fakeOPC(), navigator: { language: 'zh-TW', userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/141.0 Safari/537.36' } });
   void w.knob1; w.midi.play(60, 1);
   const r = w.OAVp5.check({ show: false });
-  assert.equal(r.version, '0.5.0');
+  assert.equal(r.version, '0.6.0');
   assert.equal(r.browser, 'Chrome 141 · macOS');
   assert.equal(r.midi.webMidi, false);
   assert.equal(r.microphone.state, 'off');
@@ -804,7 +804,7 @@ test('0.5.0: startRecording / stopRecording / recordingIsOn are there; a sketch 
   const { FakeMR, made } = fakeRecorder();
   const { w, loaded, click } = kitPage({ MediaRecorder: FakeMR, AudioContext: FakeAC });
   FakeAC.made.length = 0;
-  assert.equal(w.OAVp5.version, '0.5.0');
+  assert.equal(w.OAVp5.version, '0.6.0');
   assert.equal(typeof w.startRecording, 'function');
   assert.equal(typeof w.stopRecording, 'function');
   assert.equal(w.recordingIsOn, false);
@@ -829,7 +829,7 @@ test('recording: startRecording(seconds) records the canvas with @openav/record\
     assert.equal(w.OAVp5.record.state, 'on');
     assert.equal(await w.startRecording({ canvas }), true, 'a second start while it runs: still the one take');
     assert.equal(made.length, 1);
-    assert.ok(loaded.some((u) => /packages\/record\/recorder\.js\?v=p5-0\.5\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
+    assert.ok(loaded.some((u) => /packages\/record\/recorder\.js\?v=p5-0\.6\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
     assert.equal(made[0].opts.mimeType, 'video/mp4;codecs=avc1.640033,mp4a.40.2', 'MP4 (H.264 + AAC) first');
     assert.equal(made[0].opts.videoBitsPerSecond, 4e6, 'a small canvas still gets 4 Mb/s');
     assert.equal(made[0].stream.getVideoTracks().length, 1);
@@ -1003,4 +1003,121 @@ test('recording: the check-up has a line for it', () => {
   assert.ok(r.text.includes('錄影：可以錄 MP4（IG 可以直接用） · 30 fps · 最長 5 分鐘'), r.text);
   const n = page({ MediaRecorder: FakeMR, OAV_P5: { record: 'nomic', recfps: 60, reclimit: 90 } });
   assert.ok(n.OAVp5.check({ show: false }).text.includes('Recording: MP4 (ready for Instagram) · 60 fps · up to 1.5 min · microphone left out'));
+});
+
+// ---------------------------------------------------------------- 0.6.0: drums on the audio clock, one line of rhythm, drumPhase
+// Browser half (a real kit, a busy draw(), the score line lighting up, a hidden tab): p5/test/timing-probe.cjs and rhythm-smoke.cjs.
+const realDrums = () => import('../packages/drums/index.js');
+/** a stand-in for @openav/pattern (its own branch): the interface is fixed — compile(text) → { ok, error, eventsInBar } */
+const stubPattern = (log = []) => ({ compile(text) {
+  log.push(text);
+  const bad = (code, index, length, message) => ({ ok: false, error: { code, index, length, message, hint: '' } });
+  if (/\[[^\]]*$/.test(text)) return bad('unclosed', text.lastIndexOf('['), 1, 'unclosed [');
+  if (/\(\d+,?\)?$/.test(text) || /\(\d+,\d+$/.test(text)) return bad('bad-euclid', text.indexOf('('), text.length - text.indexOf('('), 'bad euclid');
+  const dot = text.indexOf(' . ');
+  if (dot >= 0) return bad('unexpected', dot + 1, 1, 'unexpected "."');
+  const w = /(^|[\s,[<])([a-z]{3,}|kik)(?=$|[\s,\]>*])/i.exec(text);
+  if (w && !['rim'].includes(w[2])) return bad('unknown-word', w.index + w[1].length, w[2].length, 'unknown word');
+  if (!text.trim()) return bad('empty', 0, 0, 'empty');
+  return { ok: true, error: null, eventsInBar: () => [{ word: 'bd', voice: 'kick', pos: 0, dur: 0.25, vel: 1, layer: 0, token: { start: 0, end: 2 } }] };
+} });
+
+test('0.6.0: drumPhase and beatPhase are there (0 until the drums play), read what the machine hears, and are no p5 names', () => {
+  const { w, loaded } = kitPage();
+  assert.equal(w.drumPhase, 0); assert.equal(w.beatPhase, 0);
+  assert.deepEqual(loaded, [], 'reading them loads nothing');
+  w.OAVp5.drums.machine = { phase: () => ({ bar: 0.25, beat: 0.5 }) };
+  assert.equal(w.drumPhase, 0.25); assert.equal(w.beatPhase, 0.5);
+  assert.equal(w.OAVp5.drums.phase, 0.25);
+  const mine = page({ drumPhase: 'mine' });
+  assert.equal(mine.drumPhase, 'mine', "a sketch's own drumPhase is left alone");
+  for (const n of ['drumPhase', 'beatPhase']) assert.ok(!['getAudioContext', 'userStartAudio', 'setBPM', 'loadSound', 'outputVolume', 'frameRate', 'deltaTime'].includes(n));
+});
+
+test('0.6.0: a step told quietly (hidden tab) moves the clock and fires cues, announces only the bar it is asked to, no stepStarted', () => {
+  const log = [];
+  const w = page({ barStarted: (b) => log.push(['bar', b]), stepStarted: (s, b) => log.push(['step', s, b]), cueFired: (n, b) => log.push(['cue', n, b]) });
+  w.cue(2, 'storm');
+  const d = w.OAVp5.drums;
+  d._step(0, 0, { quiet: true, announce: false });
+  d._step(0, 16, { quiet: true, announce: true });
+  d._step(1, 17, { quiet: true, announce: false });
+  assert.deepEqual(log, [['cue', 'storm', 2], ['bar', 2]]);
+  assert.equal(w.drumBar, 2); assert.equal(w.drumStep, 1); assert.equal(w.cueName, 'storm');
+});
+
+test('0.6.0: on the real lookahead clock the sketch hears cue → barStarted → stepStarted → hits, in the order 0.5 told them', async () => {
+  const { DrumScheduler, DrumTransport } = await realDrums();
+  const log = [];
+  const w = page({ cueFired: (n) => log.push('cue:' + n), barStarted: (b) => log.push('bar' + b), stepStarted: (s) => { if (s % 4 === 0) log.push('step' + s); },
+    kickDetected: () => log.push('kick'), snareDetected: () => log.push('snare'), drumHit: (l) => { if (l === 'clap') log.push('clap'); } });
+  w.cue(1, 'calm'); w.cue(2, 'storm');
+  let T = 50;
+  const t = new DrumTransport({ scheduler: new DrumScheduler({ bpm: 120, humanize: 0, pattern: 'breakbeat' }), heartbeat: false, now: () => T, hidden: () => false,
+    onStep: (i, n, ev) => w.OAVp5.drums._step(i, n, ev), onHit: (v, vel) => w.OAVp5.drums._hit(v, vel) });
+  t.start();
+  while (T < 54.01) { T += 1 / 30; t.frame(); }       // 30 fps: several steps can land in one frame
+  const bar2 = log.indexOf('cue:storm');
+  assert.deepEqual(log.slice(0, 4), ['cue:calm', 'bar1', 'step0', 'kick']);
+  assert.deepEqual(log.slice(bar2, bar2 + 4), ['cue:storm', 'bar2', 'step0', 'kick']);
+  assert.equal(log.filter((x) => x === 'clap').length, 2, "breakbeat's clap, once a bar");
+});
+
+test('0.6.0: startDrums(arg) — names, grids, numbers as in 0.5; any other text is a line of rhythm, compiled once', async () => {
+  const seen = [];
+  const { w, loaded } = kitPage({}, { 'packages/drums/index.js': realDrums, 'packages/pattern/index.js': () => stubPattern(seen) });
+  const r = (x) => w.OAVp5.drums._resolve(x);
+  assert.equal(await r(null), null);
+  assert.deepEqual(plain(await r('breakbeat')), { pattern: 'breakbeat' });
+  const grid = { kick: 'x...x...x...x...' };
+  assert.equal((await r(grid)).pattern, grid);
+  assert.ok(!loaded.some((u) => /pattern/.test(u)), 'no names or grids load @openav/pattern');
+  const a = await r('bd*4, hh*8');
+  assert.equal(a.text, 'bd*4, hh*8'); assert.equal(typeof a.pattern.eventsInBar, 'function');
+  assert.ok(loaded.some((u) => /packages\/pattern\/index\.js\?v=p5-0\.6\.0$/.test(u)), 'loaded from next to this file, the first time a line is used');
+  await r('bd*4, hh*8');
+  assert.deepEqual(seen, ['bd*4, hh*8'], 'the same line twice (a cue that comes back) is compiled once');
+  assert.deepEqual([...w.OAVp5.hints].map((h) => h.id), [], 'no card for any of these');
+});
+
+test('0.6.0: a mistake in the line: a card in the page\'s language that says which character and how to fix it; four on floor plays', async () => {
+  const { w } = kitPage({ navigator: { language: 'zh-TW' } }, { 'packages/drums/index.js': realDrums, 'packages/pattern/index.js': () => stubPattern() });
+  const r = (x) => w.OAVp5.drums._resolve(x);
+  assert.deepEqual(plain(await r('bd [sd')), { pattern: 'four on floor' });
+  const h = [...w.OAVp5.hints];
+  assert.equal(h[0].what, '節奏字串第 4 個字有問題');
+  assert.match(h[0].why, /"bd ⟦\[⟧sd"/);
+  assert.match(h[0].why, /「\[」打開了沒有關上/);
+  assert.match(h[0].next, /補上 \]/);
+  assert.match(h[0].next, /four on floor/);
+  await r('bd kik');
+  assert.match([...w.OAVp5.hints].at(-1).why, /不認得「kik」/);
+  assert.equal([...w.OAVp5.hints].at(-1).what, '節奏字串第 4 個字有問題');
+  await r('bd . sd');
+  assert.match([...w.OAVp5.hints].at(-1).why, /「\.」在節奏字串裡不是休止/);
+  assert.match([...w.OAVp5.hints].at(-1).next, /休止用 ~ 或 -/);
+  await r('bd(3,8');
+  assert.match([...w.OAVp5.hints].at(-1).why, /歐幾里得/);
+  await r('Breakbeat');
+  assert.match([...w.OAVp5.hints].at(-1).next, /startDrums\('breakbeat'\)/, 'a name with a capital: the card shows the spelling');
+  assert.deepEqual(plain(await r('x...x...x...x...')), { pattern: 'four on floor' });
+  assert.match([...w.OAVp5.hints].at(-1).next, /startDrums\(\{ kick: 'x\.\.\.x\.\.\.x\.\.\.x\.\.\.' \}\)/, "the old lane text: put it in { kick: … }");
+  const en = kitPage({ navigator: { language: 'en-US' } }, { 'packages/drums/index.js': realDrums, 'packages/pattern/index.js': () => stubPattern() });
+  await en.w.OAVp5.drums._resolve('bd [sd');
+  assert.equal([...en.w.OAVp5.hints][0].what, 'The rhythm has a problem at character 4');
+});
+
+test('0.6.0: @openav/pattern cannot load: one card, four on floor plays', async () => {
+  const { w } = kitPage({}, { 'packages/drums/index.js': realDrums });
+  assert.deepEqual(plain(await w.OAVp5.drums._resolve('bd*4')), { pattern: 'four on floor' });
+  assert.ok([...w.OAVp5.hints].some((h) => h.id === 'modfail:pattern'));
+});
+
+test('0.6.0: the check-up says which clock moves the drums', () => {
+  const w = page();
+  w.OAVp5.drums.machine = { info: () => ({ clock: 'lookahead', heartbeat: 'worker', lookahead: 0.1, late: 0, extended: false, latency: 0.012 }), phase: () => ({ bar: 0, beat: 0 }) };
+  w.OAVp5.drums.state = 'on';
+  const r = w.OAVp5.check({ show: false });
+  assert.match(r.text, /Worker heartbeat, 0\.1 s ahead, output latency 12 ms/);
+  assert.equal(r.drums.clock.heartbeat, 'worker');
 });

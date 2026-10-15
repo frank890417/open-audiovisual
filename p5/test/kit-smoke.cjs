@@ -24,7 +24,7 @@ const VERSIONS = (process.env.P5_VERSIONS || '1.11.11,2.0.5,2.3.4full').split(',
 const REAL_TONE = process.env.REAL_TONE !== '0';
 const SKETCH = { plain: 'particles', drums: 'drums', keys: 'keys' };
 const NEW_NAMES = ['startSound', 'stopSound', 'soundIsOn', 'startDrums', 'stopDrums', 'drumsAreOn', 'drumStep', 'drumBar', 'drumBpm', 'cue', 'cueName',
-  'drumHit', 'barStarted', 'stepStarted', 'cueFired', 'micSensitivity'];
+  'drumHit', 'barStarted', 'stepStarted', 'cueFired', 'micSensitivity', 'drumPhase', 'beatPhase'];
 const MIME = { '.js': 'text/javascript', '.json': 'application/json', '.html': 'text/html', '.css': 'text/css', '.mp3': 'audio/mpeg' };
 const soundFor = (v) => (v.startsWith('1.') ? 'p5sound-1.11.11.min.js' : 'p5sound-0.4.1.min.js');
 
@@ -152,11 +152,11 @@ const overlap = (a, b) => a && b && !(a.right <= b.left || b.right <= a.left || 
       await p.waitForTimeout(2800);                                   // > one bar at 110 bpm
       const s = await p.evaluate(() => {
         const r = (id) => { const e = document.getElementById(id); if (!e) return null; const b = e.getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, bottom: b.bottom }; };
-        return { cells: document.querySelectorAll('#oav-p5-drums .oav-drums .cell').length, lanes: [...document.querySelectorAll('#oav-p5-drums .lane-lbl')].map((e) => e.textContent).join(','),
+        return { cells: document.querySelectorAll('#oav-p5-drums .oav-drums .cell').length, lanes: [...document.querySelectorAll('#oav-p5-drums .lane-lbl')].map((e) => e.textContent).join(','), zh: /^zh/i.test(navigator.language),
           on: drumsAreOn, step: drumStep, bar: drumBar, bpm: drumBpm, cue: cueName, d: window.__d, card: r('oav-p5-drums'), btn: r('oav-p5-button'), w: innerWidth, h: innerHeight,
           state: OAVp5.drums.state, pattern: OAVp5.drums.pattern };
       });
-      row(s.cells === 64 && s.lanes === 'kick,snare,hat,clap', `p5 ${v}: startDrums() puts the 16 × 4 grid on screen`, `cells=${s.cells} lanes=${s.lanes}`);
+      row(s.cells === 64 && s.lanes === (s.zh ? '大鼓,小鼓,鈸,拍手' : 'kick,snare,hat,clap'), `p5 ${v}: startDrums() puts the 16 × 4 grid on screen, lanes named in the page's language`, `cells=${s.cells} lanes=${s.lanes}`);
       row(s.on === true && s.state === 'on' && Object.keys(s.d.steps).length >= 8 && s.bar >= 2 && s.bpm === 110 && s.pattern === 'breakbeat',
         `p5 ${v}: the machine runs: drumStep moves, drumBar counts, drumBpm`, JSON.stringify({ steps: Object.keys(s.d.steps).length, bar: s.bar, bpm: s.bpm, pattern: s.pattern }));
       row(s.d.kick >= 2 && s.d.hit >= 4 && s.d.bars.length >= 2 && s.d.bars[0] === 1 && s.cue === 'calm' && s.d.cues[0] === 'calm@1',

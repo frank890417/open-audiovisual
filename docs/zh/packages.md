@@ -151,9 +151,10 @@ L1 輸入與 L4 輸出 · 合成鼓組、16 步音序器和它的格狀介面。
 
 | 匯出 | 簽章 |
 |---|---|
-| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, bpm = 112, pattern })` → `{ seq, engine, root, play(on), setPattern(p), setBpm(bpm), update(dt), dispose() }` |
-| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`、`bpm` |
-| `drumEngine` | `drumEngine({ samples })` → 一個聲音引擎（見[聲音](show-control.md#sound)） |
+| `mountDrums` | `mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })` → `{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }`；`clock: 'lookahead'` 照鼓組的音訊時鐘提前排程（oav-p5 0.6 用這個），也能照寫的樣子打編譯好的一行節奏；`lang: 'zh'` 軌道名用中文 |
+| `DrumSequencer` | `new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })` · `setPattern(nameOrGrid)` · `toggleCell(lane, i)` · `toggle(on)` · `update(dt)` · `grid`、`bpm`（逐幀推進的時鐘） |
+| `DrumScheduler`、`DrumTransport` | 提前排程的時鐘：格子或編譯好的一行節奏 → 帶時間的事件，小節位置用速度錨點換成秒（不累積漂移）；外層是 Web Worker 心跳、音訊時鐘、聽到時才告訴頁面的步與鼓 |
+| `drumEngine` | `drumEngine({ samples })` → 一個聲音引擎（見[聲音](show-control.md#sound)）；`noteOn(note, vel, time)` 在自己 AudioContext 的 `time` 響，回傳 `{ time, cancel() }` |
 | `PATTERNS`、`GM` | 節奏型預設，以及 General MIDI 鼓的音符編號 `{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }` |
 
 ```js

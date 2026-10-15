@@ -122,21 +122,64 @@ function drumHit(lane, velocity) {}   // every hit: 'kick' · 'snare' · 'hat' �
 
 | read | | define | called on |
 |---|---|---|---|
-| `drumsAreOn` | | `drumHit(lane, velocity)` | every hit, all four lanes |
+| `drumsAreOn` | | `drumHit(lane, velocity)` | every hit, every drum (a rhythm line's `crash`, `ride`, toms too) |
 | `drumStep` | 0..15, the step that just played | `kickDetected(level)` | kick |
-| `drumBar` | 1, 2, 3 … since `startDrums()` | `snareDetected(level)` | snare and clap |
-| `drumBpm` | the tempo (the grid's slider moves it too) | `hatDetected(level)` | hat |
-| `startDrums(pattern, bpm)`, `stopDrums()` | | `beatDetected(level)` | a kick or a snare, once per step (`beat` too) |
+| `drumBar` | 1, 2, 3 … since `startDrums()` | `snareDetected(level)` | snare and clap (and rim) |
+| `drumBpm` | the tempo (the grid's slider moves it too) | `hatDetected(level)` | hat (and open / pedal hat) |
+| `drumPhase` | 0..1 through the bar, smoothly, as heard | `beatDetected(level)` | a kick or a snare, once per step (`beat` too) |
+| `beatPhase` | 0..1 through the beat (a quarter note), as heard | | |
+| `startDrums(pattern, bpm)`, `stopDrums()` | | | |
+
+`rotate(drumPhase * TWO_PI)` turns a shape once a bar; `1 - beatPhase` swells on every beat and shrinks until the next one.
+Both are read at the moment of the read from the time the sound reaches the speakers, so they move smoothly between frames
+and never run ahead of what is heard.
 
 Patterns: `'four on floor'`, `breakbeat`, `'half time'`, `latin`, `sparse`, or your own:
-`startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })` (a lane left out is silent).
-Calling it again while it plays changes the pattern or the tempo without restarting. The kit is @openav/drums' synthesized
+`startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })` (a lane left out is silent),
+or one line of rhythm (next section). Calling it again while it plays changes the pattern or the tempo without restarting.
+The grid names its lanes in the page's language (大鼓 小鼓 鈸 拍手 in a Chinese browser), shows the bar it is in, and marks the
+step that sounds (a yellow column, 13:1 against the card). The kit is @openav/drums' synthesized
 one (no samples); like sound it is heard from the first click, while the callbacks run from the start. A sketch that started
 the machine and defines `kickDetected()` no longer opens the microphone on the first click (one that reads `micLevel` still
 does, and then both call it). The grid sits at the top centre: on OpenProcessing between the 🎹 and OPC's icon, below the 🎹
 panel while that is open, clear of the console. – folds it, × stops the machine, and 🥁 in the 🎹 panel starts and stops it
 with no code. `OAVp5.drums` (`state`, `step`, `bar`, `bpm`, `pattern`, `cues`, `machine` = the `mountDrums` handle,
-`on('hit' | 'step' | 'bar' | 'cue', fn)` → `off()`).
+`on('hit' | 'step' | 'bar' | 'cue', fn)` → `off()`, `phase`, `beatPhase`, `now` = `{ bar, step, phase, beatPhase, tokens, mode,
+text }`, `clock` = which clock moves it).
+
+**On time, even when the sketch is heavy or hidden (0.6).** The hits are handed to the kit ahead of time on its audio clock:
+a heartbeat in a Web Worker wakes every 25 ms and schedules what falls in the next 0.1 s at its exact time (Chris Wilson's
+[A tale of two clocks](https://web.dev/articles/audio-scheduling)). Measured on the kit's output with a `draw()` that keeps the
+page busy 30 ms a frame (`p5/test/timing-probe.cjs`): the spread of the kick-to-kick interval is 0.000 ms, where 0.5 had 15 ms
+(a hit waited for the next frame). The callbacks still come in a frame: the one in which each hit is **heard** (its time plus
+the output latency the browser reports, `drumlatency=` to set your own), right before your `draw()`, in the same order as
+before. A tab in the background keeps playing and counting (`drumBar` follows the clock on the wall, cues fire, one
+`barStarted` a bar), but the hits and `stepStarted` are not told while nobody can see them, and nothing is told twice when
+the tab comes back. If a `draw()` ever holds the page longer than 0.1 s, the machine looks 0.3 s ahead from then on (🩺 says
+so; a click on a cell is then heard up to 0.3 s later). `drums=frame` brings back 0.5's frame-driven machine, as a safety net.
+
+### One line of rhythm
+
+```js
+function setup() {
+  startDrums("bd*4, [~ sd]*2, hh*8", 110);   // kick on every beat, snare on 2 and 4, eight hats
+}
+```
+
+Any text that is not a pattern name is a line of rhythm. The line shows over the grid and the word that sounds lights up
+and fades. The writing, in short: words are drums (`bd` kick · `sd` snare · `hh` hat · `oh` open hat · `cp` clap · `rim` ·
+`lt` `mt` `ht` toms · `cr` crash · `rd` ride · `cb` cowbell), `~` is a rest, words share the bar evenly, `[ ]` shares one place,
+`*4` plays it four times there, `,` lays lines on top of each other, `<a b>` takes one a bar, `bd(3,8)` spreads 3 hits over 8
+steps; the full list is [@openav/pattern](../packages/pattern/README.md)'s, loaded from next to this file the first time a line
+is used. Drums with no lane on the grid (crash, ride, toms, open hat) get a row of their own and call `drumHit()`; hits off
+the 16 steps (a triplet) are drawn where they fall inside their step. A click on a cell hands the beat to the cells: the
+line becomes the grid it was playing in that bar (a card says what changed), and `startDrums("…")` again brings it back.
+A mistake shows a card, in the page's language, with the character it is at, why and how to fix it
+(`節奏字串第 4 個字有問題` · `"bd ⟦[⟧sd"` · `補上 ]`), and the machine plays `'four on floor'` meanwhile; `'x...x...'` alone
+(the grid's lane text) says to put it inside `{ kick: … }`.
+
+The way of writing one line of rhythm comes from TidalCycles / Strudel ([strudel.cc](https://strudel.cc)); OAV implements it
+independently from their public documentation.
 
 ## Timeline: bars and cues
 
@@ -298,14 +341,16 @@ message means the line did not load.
 | `record` | `on` · `nomic` (the microphone stays out of recordings) · `off` (no ⏺ / 📷, `startRecording()` does nothing) | `on` |
 | `recfps` / `reclimit` | frames a second (1–60) / seconds a take lasts at most | `30` / `300` |
 | `title` | a name in the recorded files: `oav-<title>-<date>-<time>.mp4` | none |
+| `drums` | `lookahead` (scheduled ahead on the audio clock) · `frame` (0.5's machine, moved by the frames: a safety net) | `lookahead` |
+| `drumlatency` | `auto` (the output latency the browser reports) · milliseconds (a Bluetooth speaker: try `200`) | `auto` |
 | `debug` | `1`: trace clicks and loading in the console | off |
 
 ## Size, versions
 
-`oav-p5.js` is about 146 KB (49 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
+`oav-p5.js` is about 161 KB (55 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
 its modules, ~130 KB transferred, from next to it), the microphone is read (`packages/audio`, ~7 KB), a phone is asked for (`packages/relay`, a QR encoder),
 an unknown controller is plugged in (`packages/midi/profiles`), sound is turned on (`packages/sound`, ~21 KB gzip, Tone.js ~230 KB
-from jsDelivr, and the piano's 2 MB of samples when the piano is picked), the drums are (`packages/drums`, ~6 KB gzip), or a take is
+from jsDelivr, and the piano's 2 MB of samples when the piano is picked), the drums are (`packages/drums`, ~18 KB gzip; `packages/pattern` the first time a line of rhythm is used), or a take is
 recorded (`packages/record/recorder.js` with its `mime.js` and `layout.js`, ~9 KB gzip). Because it loads the rest of OAV from next to itself,
 one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.jsdelivr.net/gh/frank890417/open-audiovisual@<tag>/p5/oav-p5.js` is frozen.
 
@@ -316,7 +361,20 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   the microphone; sound through the real `@openav/sound` with a stand-in Tone.js (the click, the pads, the pedal, a sampler's
   fallback first), the drum callbacks, `beat`, cues, and a microphone sketch moved to the drums; the hints (which ones, when,
   in which language, the file and line of a callback's error, a sketch's own `let note`), `micLevel` for a quiet voice and a shout,
-  a room that hums, `micSensitivity()`, a knob read under OPC, and `OAVp5.check()`.
+  a room that hums, `micSensitivity()`, a knob read under OPC, and `OAVp5.check()`; 0.6: `drumPhase` / `beatPhase`, a step told
+  quietly, the order of the callbacks on the real lookahead clock, `startDrums(arg)` sorting names, grids and lines of rhythm,
+  the mistake cards (zh / en), @openav/pattern missing. `tests/drums-clock.test.js` has the clock itself under a fake clock and a
+  fake AudioContext: 1000 bars with no drift (< 1 µs), the heartbeat alone (no frames), a tempo change mid-bar (nothing twice,
+  nothing missing), nothing heard before the click and no backlog after it, the order, a hidden tab, a stalled frame loop, the
+  lookahead growing, a pattern change heard at once, triplets and a crash, the phases, the output latency.
+- `p5/test/timing-probe.cjs` (same arguments; `OAV_OLD=<a 0.5.0 checkout>` adds it side by side; `BACKGROUND=1 CHROME=<Chrome
+  for Testing>` adds a headed hidden-tab run over the DevTools protocol): four on floor at 120 bpm, a `draw()` busy 30 ms a frame,
+  10 s of the kit's output through an AudioWorklet that notes each onset's sample frame; the spread of the intervals. Then 30 s
+  behind another tab: onsets heard, `drumBar` against the wall clock, the callbacks told while hidden and in the first 100 ms back.
+- `p5/test/rhythm-smoke.cjs` (same arguments; `DEMOS=<course demos/02-drums>` adds lesson 4's Demo 2): a line of rhythm on the
+  card, the word lit in `kickDetected()` / `snareDetected()` / `hatDetected()`, Chinese lanes and the bar number, contrast on
+  the card, `drumPhase`, a click handing over to the cells, triplets and a crash row, a mistake's card, `drums=frame`, an English
+  page. Until `packages/pattern` is merged it uses `p5/test/pattern-stub.js` (`STUB_PATTERN=0`: the package itself).
 - `PW=<playwright> P5_DIR=<p5 builds> BROWSER=chromium|webkit|firefox node p5/test/smoke.cjs`: p5 1.11.11 and 2.x ×
   the line, the line 1.5 s late, the custom-library route and OPC — the sketch runs, `midi` exists in `setup()`, keys,
   knobs and pads reach it, the 🎹 controller plays it, `requestMIDIAccess` gets the virtual port, a phone over a local
@@ -346,5 +404,6 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   a refused MP4, and which cards a take earns.
 
 Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` (OPC sliders on knobs), `p5/examples/mic/` (`micLevel`, `bass`, `beat`),
-`p5/examples/keys/` (`startSound('piano')`, particles from every key, the 🎹 open), `p5/examples/drums/` (`startDrums`, `kickDetected`, `cue`, `cueFired`)
+`p5/examples/keys/` (`startSound('piano')`, particles from every key, the 🎹 open), `p5/examples/drums/` (`startDrums`, `kickDetected`, `cue`, `cueFired`),
+`p5/examples/rhythm/` (one line of rhythm, `drumPhase` turning a hand once a bar, `beatPhase` breathing on every beat)
 and `p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`).

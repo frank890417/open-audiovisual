@@ -22,7 +22,10 @@
  * Sound, a drum machine and a timeline (nothing of them loads until the sketch calls one, or 🎹 → 🔊 / 🥁 is pressed):
  *   startSound('piano'), stopSound(), soundIsOn   every key, pad, the 🎹 on screen and a phone are heard (@openav/sound)
  *   startDrums('breakbeat', 120), stopDrums()     a 16-step × 4-lane machine on screen (@openav/drums); drumsAreOn
+ *   startDrums("bd*4, [~ sd]*2, hh*8")            or one line of rhythm (@openav/pattern; the line shows over the grid, the
+ *                                                 word that sounds lights up); a mistake shows a card and plays 'four on floor'
  *   drumStep 0..15, drumBar 1, 2, 3 …, drumBpm    where the machine is
+ *   drumPhase 0..1, beatPhase 0..1                how far through the bar / the beat, smoothly, as it is heard
  *   function drumHit(lane, velocity) {}           and each hit also calls kickDetected / snareDetected / hatDetected
  *   function barStarted(bar) {}                   function stepStarted(step, bar) {}   (beatDetected on kick and snare)
  *   cue(5, 'storm'), cue(1, 'calm', 8)            at bar 5 (every 8 bars) → function cueFired(name, bar) {}; cueName
@@ -72,12 +75,14 @@
  *   record    on | nomic (the microphone stays out of recordings) | off (no ⏺ / 📷; startRecording() does nothing)
  *   recfps    30 | 60     reclimit  300 (seconds: one take stops by itself there)     title  a name for the files
  *   relay / room   the phone relay (wss://remote.cheyuwu.com/relay) and room (one per browser)
+ *   drums     lookahead (hits handed to the audio clock ahead of time by a worker heartbeat) | frame (0.5's way: moved by
+ *             the frames, the safety net)      drumlatency  auto (the output latency the browser reports) | a number of ms
  *   telemetry off | on — @openav/midi's one anonymous page-load hit (packages/midi/README "Telemetry")
  */
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.5.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.6.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -102,6 +107,8 @@
     record: opt('record', 'on') === 'off' ? 'off' : opt('record', 'on') === 'nomic' ? 'nomic' : 'on',
     recfps: Math.max(1, Math.min(60, Math.round(+opt('recfps', 30)) || 30)),
     reclimit: Math.max(1, +opt('reclimit', 300) || 300), title: opt('title', ''),
+    drums: opt('drums', 'lookahead') === 'frame' ? 'frame' : 'lookahead',
+    drumlatency: opt('drumlatency', 'auto') === 'auto' || !isFinite(parseFloat(opt('drumlatency', 'auto'))) ? 'auto' : Math.max(0, Math.min(500, parseFloat(opt('drumlatency', 'auto')))) / 1000,
   };
   // OpenProcessing's console floats over the bottom of the sketch, so there the 🎹 and its panel live at the top
   var onOP = false;
@@ -691,6 +698,16 @@
     sndFallback: ['{name}載不到，改用{other}', '音色檔沒下載成功（網路？）。', '可以繼續彈；換個網路後按 🎹 → 🔊 再選一次。'],
     sndTone: ['聲音引擎（Tone.js）載不到', '連不上 {host}（網路、學校防火牆或擋廣告的外掛）。', '換個網路後按 🎹 → 🔊 再試；或用選項 tone= 指到別的 Tone.js。'],
     drumsClick: ['鼓機在打，但還沒有聲音', '瀏覽器要網頁被點過一下才讓它出聲；畫面上的反應照樣會動。', '點一下畫面任何地方。'],
+    rhythmBad: ['節奏字串第 {n} 個字有問題', '{line}\n{why}', '{fix}鼓機先打 four on floor。'],
+    rhythmGrid: ['這是一軌 16 格的寫法，要放進 { }', '"{text}" 用 x 和 . 寫的是一軌，startDrums 要知道是哪一軌。', "寫成 startDrums({ kick: '{text}' })；或用節奏字串，例如 \"bd*4, hh*8\"（休止用 ~）。鼓機先打 four on floor。"],
+    rhythmTakeover: ['格子接手了', '你點了格子，鼓機改照格子打：{lost}。', '要回到那一行字：重新執行草圖，或再呼叫 startDrums("{text}")。'],
+    rhythmWhy: { unclosed: '「{ch}」打開了沒有關上：[ 配 ]、< 配 >、( 配 )。', 'bad-euclid': '歐幾里得節奏要寫成 (幾下,幾格) 或 (幾下,幾格,轉幾格)：整數，下數不超過格數。',
+      'unknown-word': '不認得「{word}」：鼓的名字是 bd 大鼓、sd 小鼓、hh 鈸、oh 開鈸、cp 拍手、rim 鼓邊、lt／mt／ht 中鼓、cr 碎音鈸、rd 疊音鈸、cb 牛鈴；休止用 ~。',
+      empty: '這一行沒有任何鼓（空的，或全是休止）。', 'bad-number': '「{word}」這裡的數字不對：要是大於 0 的數。', dot: '「.」在節奏字串裡不是休止。', other: '{msg}' },
+    rhythmFix: { unclosed: '在這一組結束的地方補上 {close}，例如 "bd [sd sd]"。', 'bad-euclid': '例如 "bd(3,8)"：8 格裡平均打 3 下。', 'unknown-word': '把「{word}」改成上面其中一個。',
+      preset: "節奏名稱要一字不差：startDrums('{preset}')。", empty: '至少寫一個鼓，例如 "bd*4"。', 'bad-number': '例如 "hh*8"、"bd@3"、"hh?0.3"。',
+      dot: "休止用 ~ 或 -；一軌 16 格的 'x...' 要放進 { kick: 'x...' }。", other: '{hint}' },
+    rhythmLost: { offGrid: '{n} 下不在 16 格上的音移到最近的格子', dropped: '格子沒有{voices}這幾軌，先拿掉', varied: '每小節輪替的部分只留第 {bar} 小節', none: '節奏一樣，之後照格子改', sep: '；' },
     moduleFail: ['{name} 載不到', '連不上 {host}。', '檢查網路，重新整理再試。'],
     recStart: ['開始錄影（{len}）', '只錄畫布和作品的聲音（{audio}）；🎹、鼓機格子和這些提示不會進影片。{micNote}', '{stop}'],
     recSaved: ['錄好了：{name}', '{format} · {dur} · {size} · {wh} · {sound}', '{next}'],
@@ -730,6 +747,16 @@
     sndFallback: ['{name} did not load: playing {other}', 'Its sound files did not download (the network?).', 'Keep playing; on another network pick it again in 🎹 → 🔊.'],
     sndTone: ['The sound engine (Tone.js) did not load', 'No connection to {host} (network, a school firewall or an ad blocker).', 'On another network try 🎹 → 🔊 again, or point the tone= option at another copy of Tone.js.'],
     drumsClick: ['The drum machine plays, silently', 'Browsers let a page play audio only after a click; the visuals react anyway.', 'Click anywhere on the canvas.'],
+    rhythmBad: ['The rhythm has a problem at character {n}', '{line}\n{why}', "{fix}The machine plays 'four on floor' meanwhile."],
+    rhythmGrid: ['That is one lane of 16 steps: put it inside { }', '"{text}" (x and .) is one lane, and startDrums needs to know which.', "Write startDrums({ kick: '{text}' }); or a rhythm string such as \"bd*4, hh*8\" (~ is a rest). 'four on floor' plays meanwhile."],
+    rhythmTakeover: ['The cells took over', 'You clicked a cell, so the machine now plays the grid: {lost}.', 'To get the line back: run the sketch again, or call startDrums("{text}") again.'],
+    rhythmWhy: { unclosed: '"{ch}" is opened and never closed: [ with ], < with >, ( with ).', 'bad-euclid': 'A Euclidean rhythm is (hits,steps) or (hits,steps,rotation): whole numbers, no more hits than steps.',
+      'unknown-word': 'No drum called "{word}": bd kick, sd snare, hh hat, oh open hat, cp clap, rim, lt / mt / ht toms, cr crash, rd ride, cb cowbell; ~ is a rest.',
+      empty: 'There is no drum in this line (it is empty, or all rests).', 'bad-number': 'The number at "{word}" is not right: it has to be above 0.', dot: '"." is not a rest in a rhythm string.', other: '{msg}' },
+    rhythmFix: { unclosed: 'Close it with {close} where the group ends, e.g. "bd [sd sd]". ', 'bad-euclid': 'E.g. "bd(3,8)": 3 hits spread over 8 steps. ', 'unknown-word': 'Change "{word}" to one of these. ',
+      preset: "Rhythm names are spelled exactly: startDrums('{preset}'). ", empty: 'Write at least one drum, e.g. "bd*4". ', 'bad-number': 'E.g. "hh*8", "bd@3", "hh?0.3". ',
+      dot: "A rest is ~ or -; one lane of 16 steps, 'x...', goes inside { kick: 'x...' }. ", other: '{hint} ' },
+    rhythmLost: { offGrid: '{n} hit(s) off the 16 steps moved to the nearest one', dropped: 'the grid has no lane for {voices}, so they are out', varied: 'what changed from bar to bar keeps bar {bar} only', none: 'the same rhythm, now on the cells', sep: '; ' },
     moduleFail: ['{name} did not load', 'No connection to {host}.', 'Check the network and reload.'],
     recStart: ['Recording ({len})', "The canvas and the sketch's sound only ({audio}); the 🎹, the drum grid and these cards stay out of the video. {micNote}", '{stop}'],
     recSaved: ['Saved: {name}', '{format} · {dur} · {size} · {wh} · {sound}', '{next}'],
@@ -789,7 +816,7 @@
       'border:1px solid rgba(255,255,255,.18);border-left:4px solid ' + color + ';color:#e8e8ee;font:500 12.5px/1.45 system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.35)');
     card.className = 'oav-p5-hint'; card.setAttribute('role', 'status'); card.setAttribute('data-hint', h.id);
     card.appendChild(el('div', 'font-weight:700;color:#fff;margin-bottom:2px;word-break:break-word', h.what));
-    if (h.why) card.appendChild(el('div', 'color:#c9cbd4', h.why));
+    if (h.why) card.appendChild(el('div', 'color:#c9cbd4;white-space:pre-line', h.why));
     if (h.next) card.appendChild(el('div', 'color:' + color + ';margin-top:3px', '→ ' + h.next));
     if (h.actions) {
       var row = el('div', 'display:flex;flex-wrap:wrap;gap:6px;margin-top:7px');
@@ -981,10 +1008,19 @@
   // the microphone's hits do — kickDetected / snareDetected (snare and clap) / hatDetected, beatDetected on a kick or
   // snare — so a sketch written for the microphone moves to the machine unchanged, plus drumHit(lane, velocity) for all
   // four lanes. The machine is also the timeline: drumStep, drumBar, stepStarted(), barStarted(), and cue(bar, name).
-  var DRUM_CB = { kick: 'kickDetected', snare: 'snareDetected', clap: 'snareDetected', hat: 'hatDetected' };
+  //
+  // Since 0.6 the hits are handed to the kit ahead of time on its audio clock (@openav/drums' DrumTransport: a Web Worker
+  // heartbeat every 25 ms, 0.1 s ahead), so a sketch that draws slowly no longer drags the beat, and a hidden tab keeps
+  // playing. The callbacks still come in a frame: the one in which each hit is HEARD (its time plus the output latency the
+  // browser reports), right before p5's draw() where p5 lets us in, in the same order as before (cue → barStarted →
+  // stepStarted → the hits). While the tab is hidden nobody sees a frame: the clock keeps moving (drumStep, drumBar, cues,
+  // one barStarted per bar) but no hit or stepStarted is told, and nothing is told twice when the tab comes back.
+  // ?oav_drums=frame is 0.5's machine, moved by the frames (the safety net for a class).
+  var DRUM_CB = { kick: 'kickDetected', snare: 'snareDetected', clap: 'snareDetected', rim: 'snareDetected', hat: 'hatDetected', openhat: 'hatDetected', pedalhat: 'hatDetected' };
+  var DRUM_BEAT = { kick: 1, snare: 1, clap: 1, rim: 1 };   // what a microphone would call a beat: the kick and the snare family
   var drumSubs = { hit: [], step: [], bar: [], cue: [] };
   var drumBus = bus(), drumsMod = null, drumsModP = null, kit = null, kitStarted = false, machineP = null, drumsWanted = false;
-  var drumBeatAt = -1, drumLoop = false, drumCard = null, drumBtn = null;
+  var drumBeatAt = -1, drumLoop = false, drumCard = null, drumBtn = null, drumReq = 0, patternModP = null, rhythms = {}, preDraw = '';
   var cues = [];
   var drums = {
     state: 'off',                                   // off · loading · on · stopped (grid up, not playing) · error
@@ -997,7 +1033,14 @@
       drumSubs[name].push(fn);
       return function () { var i = drumSubs[name].indexOf(fn); if (i >= 0) drumSubs[name].splice(i, 1); };
     },
-    _step: function (i, n) { drumStepped(i, n); }, _hit: function (lane, v) { drumHitIn(lane, v); },   // for tests
+    /** drumPhase / beatPhase: 0..1 through the bar / the beat, as heard */
+    get phase() { return drumPhaseNow().bar; }, get beatPhase() { return drumPhaseNow().beat; },
+    /** { bar, step, phase, beatPhase, tokens: [{ start, end }] lit in the score line, mode: 'grid' | 'string', text } */
+    get now() { var m = drums.machine; return m && m.now ? m.now() : { bar: drums.bar, step: drums.step, phase: 0, beatPhase: 0, tokens: [], mode: 'grid', text: '' }; },
+    /** which clock moves the machine: { clock: 'lookahead' | 'frame', heartbeat: 'worker' | 'interval', lookahead, late, latency, … } */
+    get clock() { var m = drums.machine; var i = m && m.info ? m.info() : { clock: O.drums, heartbeat: 'none' }; i.preDraw = preDraw; return i; },
+    _step: function (i, n, ev) { drumStepped(i, n, ev); }, _hit: function (lane, v) { drumHitIn(lane, v); },   // for tests
+    _resolve: function (p) { return resolvePattern(p); },
   };
   midi.drums = drums;
   function drumEmit(kind, cb, args) {
@@ -1005,8 +1048,10 @@
     var list = drumSubs[kind].slice();
     for (var i = 0; i < list.length; i++) { try { list[i].apply(g, args); } catch (e) { report(cb, e); } }
   }
-  function drumStepped(i, n) {
-    var bar = Math.floor(n / 16) + 1;
+  // ev (from the machine): ev.quiet — heard while hidden, or long ago (a frame loop that stalled): the clock and the cues
+  // move, the per-step callback does not; ev.announce — the one bar start of a quiet stretch that is announced
+  function drumStepped(i, n, ev) {
+    var bar = Math.floor(n / 16) + 1, quiet = !!(ev && ev.quiet);
     drums.step = i; drums.bar = bar; drums.count = n;
     put('drumStep', i); put('drumBar', bar);
     for (var k = 0; k < cues.length; k++) {
@@ -1016,13 +1061,20 @@
         drumEmit('cue', 'cueFired', [c.name, bar]);
       }
     }
-    if (i === 0) drumEmit('bar', 'barStarted', [bar]);
-    drumEmit('step', 'stepStarted', [i, bar]);
+    if (i === 0 && (!quiet || ev.announce)) drumEmit('bar', 'barStarted', [bar]);
+    if (!quiet) drumEmit('step', 'stepStarted', [i, bar]);
   }
   function drumHitIn(lane, v) {
     drumEmit('hit', 'drumHit', [lane, v]);
     if (DRUM_CB[lane]) callSketch(DRUM_CB[lane], [v]);
-    if (lane !== 'hat' && drums.count !== drumBeatAt) { drumBeatAt = drums.count; micSeq++; callSketch('beatDetected', [v]); }   // one beat per step
+    if (DRUM_BEAT[lane] && drums.count !== drumBeatAt) { drumBeatAt = drums.count; micSeq++; callSketch('beatDetected', [v]); }   // one beat per step
+  }
+  var phaseAt = -1, phaseNow = { bar: 0, beat: 0 };
+  function drumPhaseNow() {
+    var m = drums.machine, t = clock();
+    if (!m || !m.phase) return phaseNow;
+    if (t - phaseAt > 1) { phaseAt = t; try { phaseNow = m.phase(); } catch (e) { /* */ } }   // read once a millisecond at most
+    return phaseNow;
   }
   /** cue(bar, name, every): at bar `bar` (1 = the first; 4.5 = halfway through bar 4) cueFired(name, bar) is called and
    *  cueName becomes name; with `every`, again every that many bars. Calling it again with the same values adds nothing. */
@@ -1054,6 +1106,27 @@
     if (kit && kitStarted) { kit.noteOn(note, v); return; }
     ensureKit().then(function (k) { kitEnable(); if (sndOn) k.noteOn(note, v); }, function () { /* */ });
   }
+  // the callbacks land right before the sketch's draw() of the frame they are heard in: p5's own hook for that
+  // (2.x: an addon's predraw; 1.x: registerMethod('pre')). Where p5 has neither, our own frame loop tells them.
+  function drumsDeliver() {
+    var m = drums.machine;
+    if (!m || !m.deliver || drums.state !== 'on') return;
+    try { m.deliver(); } catch (e) { report('drums', e); }
+  }
+  function hookPreDraw() {
+    if (preDraw) return;
+    var P = g.p5;
+    if (!P) return;
+    try {
+      if (typeof P.registerAddon === 'function' && P.lifecycleHooks && P.lifecycleHooks.predraw) {
+        P.registerAddon(function (p5, fn, lifecycles) { lifecycles.predraw = function () { drumsDeliver(); }; });
+        preDraw = 'p5 2.x predraw';
+      } else if (P.instance && typeof P.instance.registerMethod === 'function') {
+        P.instance.registerMethod('pre', function () { drumsDeliver(); });
+        preDraw = 'p5 1.x pre';
+      }
+    } catch (e) { dbg('no pre-draw hook', e); }
+  }
   function ensureMachine() {
     if (machineP) return machineP;
     if (!doc || !doc.body) return Promise.resolve(null);
@@ -1061,9 +1134,12 @@
     machineP = ensureKit().then(function (k) {
       buildDrumCard();
       var host = drumCard.firstChild;
-      var m = drumsMod.mountDrums(host, { signals: drumBus, engine: k, autoEnableEngine: false, onStep: drumStepped, bpm: drums.bpm, pattern: drums.pattern });
-      ['kick', 'snare', 'hat', 'clap'].forEach(function (lane) { drumBus.on('drum/' + lane, function (p) { drumHitIn(lane, p && p.level != null ? p.level : 0.8); }); });
+      var m = drumsMod.mountDrums(host, { signals: drumBus, engine: k, autoEnableEngine: false, onStep: drumStepped, bpm: drums.bpm,
+        pattern: typeof drums.pattern === 'string' && !drumsMod.PATTERNS[drums.pattern] ? 'four on floor' : drums.pattern,
+        clock: O.drums === 'frame' ? 'frame' : 'lookahead', lang: zh ? 'zh' : 'en', latency: O.drumlatency,
+        onHit: function (voice, v) { drumHitIn(voice, v); }, onTakeover: takeoverHint });
       drums.machine = m;
+      if (O.drums !== 'frame') hookPreDraw();
       return m;
     }).then(null, function (e) {
       machineP = null; setDrums('error');
@@ -1072,24 +1148,80 @@
     });
     return machineP;
   }
+  // ---- one line of rhythm: startDrums("bd*4, [~ sd]*2, hh*8"). The writing comes from TidalCycles / Strudel (strudel.cc);
+  // @openav/pattern is an independent implementation from their public documentation, loaded the first time a line is used.
+  var PRESETS = ['four on floor', 'breakbeat', 'half time', 'latin', 'sparse'];
+  function presetLike(text) {
+    var k = String(text).toLowerCase().replace(/[\s_-]+/g, '');
+    for (var i = 0; i < PRESETS.length; i++) if (PRESETS[i].replace(/\s+/g, '') === k || (k === 'fouronthefloor' && i === 0)) return PRESETS[i];
+    return null;
+  }
+  function loadPattern() {
+    if (!patternModP) patternModP = load('packages/pattern/index.js').then(null, function (e) { patternModP = null; throw e; });
+    return patternModP;
+  }
+  var CLOSE = { '[': ']', '<': '>', '(': ')', '{': '}' };
+  function rhythmHint(text, err) {
+    err = err || {};
+    var code = String(err.code || ''), idx = Math.max(0, Math.min(text.length, err.index | 0)), len = Math.max(0, err.length | 0);
+    var word = text.slice(idx, idx + Math.max(1, len)), ch = text.charAt(idx) || text.charAt(text.length - 1) || '';
+    var line = text.slice(0, idx) + '⟦' + text.slice(idx, idx + len) + '⟧' + text.slice(idx + len);
+    var key = ch === '.' && code !== 'bad-number' ? 'dot' : H.rhythmWhy[code] ? code : 'other';
+    if (code === 'unclosed' && !CLOSE[ch]) { for (var j = idx; j >= 0; j--) if (CLOSE[text.charAt(j)]) { ch = text.charAt(j); break; } }
+    var o = { n: idx + 1, ch: ch, word: word, close: CLOSE[ch] || ']', msg: err.message || code || '?', hint: err.hint || '', preset: presetLike(text) };
+    var fixKey = o.preset && (code === 'unknown-word' || key === 'other') ? 'preset' : H.rhythmFix[key] ? key : 'other';
+    hint('rhythm:' + text, 'rhythmBad', { n: o.n, line: '"' + line + '"', why: fill(H.rhythmWhy[key], o), fix: fill(H.rhythmFix[fixKey], o) }, 'warn');
+  }
+  function takeoverHint(info) {
+    var L = H.rhythmLost, parts = [];
+    if (info.offGrid) parts.push(fill(L.offGrid, { n: info.offGrid }));
+    if (info.dropped && info.dropped.length) parts.push(fill(L.dropped, { voices: info.dropped.map(function (v) { return drumsMod && drumsMod.drumName ? drumsMod.drumName(v, zh ? 'zh' : 'en') : v; }).join(zh ? '、' : ', ') }));
+    if (info.varied) parts.push(fill(L.varied, { bar: info.bar }));
+    hint('rhythmTakeover', null, { lost: parts.length ? parts.join(L.sep) : L.none, text: info.text }, 'info');
+  }
+  /** what startDrums(arg) plays: a promise of { pattern, text } (null: keep what plays). Names, grids, numbers, nothing:
+   *  as in 0.5. Any other text is a line of rhythm; a mistake in it says where on a card and plays 'four on floor'. */
+  function resolvePattern(p) {
+    if (p == null) return Promise.resolve(null);
+    if (typeof p !== 'string') return Promise.resolve({ pattern: p });
+    return ensureDrumsModule().then(function (m) {
+      if (m.PATTERNS[p]) return { pattern: p };
+      if (/^[\sxX.|01-]+$/.test(p) && /[xX.1]/.test(p) && p.replace(/[\s|]/g, '').length >= 4 && !/^[\s~-]+$/.test(p)) {
+        hint('rhythmGrid:' + p, 'rhythmGrid', { text: p }, 'warn');
+        return { pattern: 'four on floor' };
+      }
+      if (rhythms[p]) return rhythms[p];
+      return loadPattern().then(function (pm) {
+        var c = null;
+        try { c = pm.compile(p); } catch (e) { c = { ok: false, error: { code: 'other', index: 0, length: 0, message: String((e && e.message) || e) } }; }
+        if (!c || !c.ok || typeof c.eventsInBar !== 'function') { rhythmHint(p, c && c.error); return { pattern: 'four on floor' }; }
+        return (rhythms[p] = { pattern: c, text: p });
+      }, function () {
+        hint('modfail:pattern', 'moduleFail', { name: '@openav/pattern', host: hostOf(BASE) }, 'error');
+        return { pattern: 'four on floor' };
+      });
+    });
+  }
   function startDrums(pattern, bpm) {
     if (typeof pattern === 'number' && bpm == null) { bpm = pattern; pattern = null; }
     if (pattern != null) drums.pattern = pattern;
     if (bpm != null && +bpm > 0) drums.bpm = Math.max(30, Math.min(300, +bpm));
     drumsWanted = true;
+    var req = ++drumReq;
     return ensureMachine().then(function (m) {
       if (!m || !drumsWanted) return false;
-      if (pattern != null) {
-        if (typeof pattern === 'string' && !drumsMod.PATTERNS[pattern] && g.console) console.info('[oav-p5] no pattern "' + pattern + '": ' + Object.keys(drumsMod.PATTERNS).join(', ') + ', or your own { kick: \'x...x...x...x...\', snare, hat, clap }');
-        m.setPattern(pattern);
-      }
-      m.setBpm(drums.bpm);
-      showDrums(true);
-      if (!m.seq.playing) m.play(true);
-      whenAudio(kitEnable);
-      if (!audioAllowed()) setTimeout(function () { if (!audioOK && drums.state === 'on') hint('drumsClick', null, null, 'info'); }, 1200);
-      syncDrums(); runDrums();
-      return true;
+      return resolvePattern(pattern).then(function (r) {
+        if (!drumsWanted) return false;
+        if (req !== drumReq) return true;              // a later startDrums() is on its way: it decides what plays
+        if (r && !(r.text && m.seq.mode === 'string' && m.seq.text === r.text)) m.setPattern(r.pattern, r.text ? { text: r.text } : undefined);
+        m.setBpm(drums.bpm);
+        showDrums(true);
+        if (!m.seq.playing) m.play(true);
+        whenAudio(kitEnable);
+        if (!audioAllowed()) setTimeout(function () { if (!audioOK && drums.state === 'on') hint('drumsClick', null, null, 'info'); }, 1200);
+        syncDrums(); runDrums();
+        return true;
+      });
     });
   }
   function stopDrums() {
@@ -1122,6 +1254,19 @@
   FUNCS.startDrums = function (pattern, bpm) { return drums.start(pattern, bpm); };
   FUNCS.stopDrums = function () { return drums.stop(); };
   FUNCS.cue = function (bar, name, every) { drums.cue(bar, name, every); };
+  // drumPhase / beatPhase: readers, like the microphone's names, so each read is as fresh as the moment it is read (a value
+  // written once a frame would lag a frame behind the sound). A sketch's own drumPhase keeps it.
+  function readerName(name, read) {
+    if (name in g) return;
+    try {
+      Object.defineProperty(g, name, {
+        configurable: true, enumerable: false, get: read,
+        set: function (v) { Object.defineProperty(g, name, { value: v, writable: true, configurable: true, enumerable: true }); },
+      });
+    } catch (e) { /* a page that sealed its globals */ }
+  }
+  readerName('drumPhase', function () { return drumPhaseNow().bar; });
+  readerName('beatPhase', function () { return drumPhaseNow().beat; });
 
   // ---------------------------------------------------------------- recording: the canvas and what the sketch sounds like, one file
   // ⏺ in the 🎹 panel, or startRecording(): the p5 canvas (the canvas alone, so the 🎹, the drum grid and the cards never show
@@ -1835,14 +1980,26 @@
     states: { off: '關著', asking: '等你允許', on: '開著', denied: '被擋下', unavailable: '拿不到', waiting: '等你點一下', loading: '載入中', error: '出錯', stopped: '停著',
       connected: '已連上', 'no device': '沒偵測到裝置', ready: '好了', idle: '還沒開始' }, webMidiNo: '這個瀏覽器沒有 Web MIDI', last: '最後收到', bar: '第 {n} 小節',
     rec: '錄影', recMp4: '可以錄 MP4（IG 可以直接用）', recWebm: '只能錄 WebM（IG 不收：換新版 Chrome 或 Safari）', recNone: '這個瀏覽器不能錄', recOff: '關掉了（record=off）',
-    recMax: '最長 {m} 分鐘', recNoMic: '不收麥克風', recNow: '錄影中', recLast: '上一段' }
+    recMax: '最長 {m} 分鐘', recNoMic: '不收麥克風', recNow: '錄影中', recLast: '上一段',
+    clockFrame: '逐幀推進（drums=frame）', clockAhead: '提前排程（{beat} 心跳、提前 {ahead} 秒、輸出延遲 {lat} ms）', clockLate: '畫面太忙排晚了 {n} 下，提前量已拉到 0.3 秒', clockNoPre: '回呼由 OAV 自己的每幀叫（沒接上 p5 的 draw 前）' }
     : { title: '🩺 oav-p5 check-up', page: 'Page', frame: 'inside another page (iframe)', top: 'opened directly', browser: 'Browser', mic: 'Microphone', midi: 'MIDI',
     sound: 'Sound', drums: 'Drums', wiring: 'Wiring', own: "The sketch's own names", hints: 'Hints shown', none: 'none', copy: 'Copy text', copied: 'Copied', more: 'Full device check →',
     states: { off: 'off', asking: 'waiting for permission', on: 'on', denied: 'blocked', unavailable: 'unavailable', waiting: 'waiting for a click', loading: 'loading', error: 'failed', stopped: 'stopped',
       connected: 'connected', 'no device': 'no device found', ready: 'ready', idle: 'not started' }, webMidiNo: 'no Web MIDI in this browser', last: 'last', bar: 'bar {n}',
     rec: 'Recording', recMp4: 'MP4 (ready for Instagram)', recWebm: 'WebM only (not for Instagram: use a recent Chrome or Safari)', recNone: 'this browser cannot record', recOff: 'off (record=off)',
-    recMax: 'up to {m} min', recNoMic: 'microphone left out', recNow: 'recording', recLast: 'last take' };
+    recMax: 'up to {m} min', recNoMic: 'microphone left out', recNow: 'recording', recLast: 'last take',
+    clockFrame: 'moved by the frames (drums=frame)', clockAhead: 'scheduled ahead ({beat} heartbeat, {ahead} s ahead, output latency {lat} ms)', clockLate: '{n} hit(s) handed over late (a busy frame): 0.3 s ahead from then on', clockNoPre: "callbacks from OAV's own frame loop (no p5 pre-draw hook)" };
   function st(x) { return C.states[x] || x; }
+  // the drum clock, for the check-up: which heartbeat, how far ahead, the output latency the timing allows for, late hits
+  function clockText(c) {
+    if (!c || c.clock === 'frame') return C.clockFrame;
+    var t = fill(C.clockAhead, { beat: c.heartbeat === 'worker' ? 'Worker' : c.heartbeat === 'interval' ? 'setInterval' : c.heartbeat,
+      ahead: c.lookahead, lat: Math.round((c.latency || 0) * 1000) });
+    if (c.heartbeat === 'interval' && c.why) t += zh ? '（' + c.why + '）' : ' (' + c.why + ')';
+    if (c.extended) t += ' · ' + fill(C.clockLate, { n: c.late });
+    if (!c.preDraw) t += ' · ' + C.clockNoPre;
+    return t;
+  }
   function browserName() {
     var ua = (nav && nav.userAgent) || '', m = /(Edg|OPR|Firefox|Chrome|Version)\/(\d+)/.exec(ua);
     var name = m ? ({ Edg: 'Edge', OPR: 'Opera', Version: 'Safari' }[m[1]] || m[1]) + ' ' + m[2] : ua.slice(0, 40);
@@ -1861,7 +2018,7 @@
       microphone: { state: mic.state, error: mic.error, level: Math.round(mic.level * 100) / 100, db: Math.round(mic.db), floor: Math.round(mic.floor), sensitivity: mic.sensitivity },
       midi: { webMidi: !!realRequest, hardware: midi.hardware, devices: midi.devices.slice(), last: midi.last ? { type: midi.last.type, value: midi.last.note != null ? midi.last.note : midi.last.cc, source: midi.last.source } : null },
       sound: { state: snd.state, instrument: snd.instrument, status: snd.status.state, error: snd.error },
-      drums: { state: drums.state, bar: drums.bar, bpm: drums.bpm, pattern: typeof drums.pattern === 'string' ? drums.pattern : 'custom', cues: cues.length },
+      drums: { state: drums.state, bar: drums.bar, bpm: drums.bpm, pattern: typeof drums.pattern === 'string' ? drums.pattern : 'custom', cues: cues.length, clock: drums.machine ? drums.clock : null },
       wiring: wiringText(), own: own,
       hints: hintList.map(function (h) { return h.what; }),
     };
@@ -1876,7 +2033,7 @@
       C.midi + (zh ? '：' : ': ') + (realRequest ? st(midi.hardware === 'waiting' ? 'no device' : midi.hardware) + (midi.devices.length ? ' ' + midi.devices.join(', ') : '') : C.webMidiNo) +
         (r.midi.last ? ' · ' + C.last + ' ' + r.midi.last.type + ' ' + r.midi.last.value + ' ← ' + r.midi.last.source : ''),
       C.sound + (zh ? '：' : ': ') + st(snd.state) + (snd.instrument ? ' · ' + snd.instrument + '（' + st(r.sound.status) + '）' : '') + (snd.error ? ' · ' + snd.error : ''),
-      C.drums + (zh ? '：' : ': ') + st(drums.state) + (drums.state === 'on' ? ' · ' + fill(C.bar, { n: drums.bar }) + ' · ' + Math.round(drums.bpm) + ' bpm' : ''),
+      C.drums + (zh ? '：' : ': ') + st(drums.state) + (drums.state === 'on' ? ' · ' + fill(C.bar, { n: drums.bar }) + ' · ' + Math.round(drums.bpm) + ' bpm' : '') + (drums.machine ? ' · ' + clockText(drums.clock) : ''),
       C.rec + (zh ? '：' : ': ') + (O.record === 'off' ? C.recOff : (rf.mp4 ? C.recMp4 : rf.webm ? C.recWebm : C.recNone) +
         (rf.mp4 || rf.webm ? ' · ' + O.recfps + ' fps · ' + fill(C.recMax, { m: fmtMin(O.reclimit) }) + (O.record === 'nomic' ? ' · ' + C.recNoMic : '') : '') +
         (record.state === 'on' ? ' · ' + C.recNow + ' ' + mmss(record.seconds) : '') +
