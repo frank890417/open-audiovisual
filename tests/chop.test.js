@@ -30,16 +30,16 @@ test('approach: the time constant is the time to 63% of a change (the same as @o
   assert.equal(C.TD_LAG_RATIO, Math.LN10);
 });
 
-test('Lag: up = 0.1 reaches 63% after 0.1 s at 30, 60, 120 fps; down falls on its own time; the first value is taken as it is', () => {
+test('Lag: up = 0.1 reaches 90% after 0.1 s at 30, 60, 120 fps (TouchDesigner Lag CHOP seconds); down falls on its own time; the first value is taken as it is', () => {
   for (const fps of [30, 60, 120]) {
     const L = new C.Lag({ up: 0.1, down: 0.4 });
     const s = run(fps, 0.1, (t, dt) => L.step(t === 0 ? 0 : 1, dt));
-    close(s.at(-1).v, 0.6321, 0.0005, `${fps} fps`);
+    close(s.at(-1).v, 0.9, 0.0005, `${fps} fps`);
   }
   const L = new C.Lag({ up: 0.03, down: 0.4 });
   assert.equal(L.step(0.7, 0), 0.7, 'first value: no glide in from 0');
   L.step(0, 0.4);                                       // falling: the down time
-  close(L.value, 0.7 * Math.exp(-1), 1e-9, 'falls 63% of the way in 0.4 s');
+  close(L.value, 0.7 * 0.1, 1e-9, 'falls 90% of the way in 0.4 s');
   assert.equal(new C.Lag().step(true, 0), 1, 'a boolean is 0 / 1');
   const k = new C.Lag(); k.step(0.5, 0);
   assert.ok(Number.isNaN(k.step(NaN, 0.1)) && k.value === 0.5, 'a non-number passes through and leaves the memory alone');
@@ -54,7 +54,8 @@ test('Lag: 30 fps and 144 fps draw the same curve (a knob moved in steps: equal;
   let worst = 0;
   for (let t = 0; t <= 2 + 1e-9; t += 1 / 6) worst = Math.max(worst, Math.abs(at(s30, t) - at(s144, t)));
   assert.ok(worst < 1e-9, `steps: worst ${worst}`);
-  const c = new C.Lag({ up: 0.1, down: 0.1 }), d = new C.Lag({ up: 0.1, down: 0.1 });
+  // TouchDesigner seconds: 0.1 × ln 10 is a time constant of 0.1 s, the speed this sine check was written for
+  const c = new C.Lag({ up: 0.1 * Math.LN10, down: 0.1 * Math.LN10 }), d = new C.Lag({ up: 0.1 * Math.LN10, down: 0.1 * Math.LN10 });
   const sine = (t) => 0.5 + 0.5 * Math.sin(2 * Math.PI * t);
   const q30 = run(30, 3, (t, dt) => c.step(sine(t), dt)), q144 = run(144, 3, (t, dt) => d.step(sine(t), dt));
   worst = 0;
@@ -205,8 +206,9 @@ test('lag(): returns its input until @openav/chop arrives, then rises in `up` an
   };
   const a = curve(30), b = curve(144);
   for (const s of [a, b]) {                             // times both frame rates have a frame at
-    close(at(s, 0.5 + 1 / 6), 1 - Math.exp(-(1 / 6) / 0.1), 1e-6, 'up 0.1: rising from the step at 0.5');
-    close(at(s, 1.5 + 1 / 3), (1 - Math.exp(-10)) * Math.exp(-(1 / 3) / 0.4), 1e-6, 'down 0.4: falling from the step at 1.5');
+    // TouchDesigner seconds: the time constant is seconds ÷ ln 10
+    close(at(s, 0.5 + 1 / 6), 1 - Math.exp(-(1 / 6) / (0.1 / Math.LN10)), 1e-6, 'up 0.1: rising from the step at 0.5');
+    close(at(s, 1.5 + 1 / 3), (1 - Math.exp(-10 * Math.LN10)) * Math.exp(-(1 / 3) / (0.4 / Math.LN10)), 1e-6, 'down 0.4: falling from the step at 1.5');
   }
   let worst = 0; for (let t = 0; t <= 2; t += 1 / 6) worst = Math.max(worst, Math.abs(at(a, t) - at(b, t)));
   assert.ok(worst < 0.01, `30 vs 144 fps: ${worst}`);
@@ -217,9 +219,9 @@ test('immediate mode: the Nth unnamed call is the Nth slot every frame, each kin
   const draw = () => [p.w.lag(1, 0.1), p.w.spring(5), p.w.lag(0, 0.1), p.w.lag(10, 0.1, 0.1, 'named')];
   p.frame(60, () => [p.w.lag(0, 0.1), p.w.spring(0), p.w.lag(1, 0.1), p.w.lag(0, 0.1, 0.1, 'named')]);   // seeds: 0, 0, 1, 0
   const r = p.frame(10, draw);                          // 0.1 s later
-  close(r[0], 1 - Math.exp(-1), 1e-9, 'first lag rose from its own 0');
-  close(r[2], Math.exp(-1), 1e-9, 'second lag fell from its own 1');
-  close(r[3], 10 * (1 - Math.exp(-1)), 1e-9, 'the named one');
+  close(r[0], 0.9, 1e-9, 'first lag rose from its own 0 (90% in its 0.1 s)');
+  close(r[2], 0.1, 1e-9, 'second lag fell from its own 1');
+  close(r[3], 10 * 0.9, 1e-9, 'the named one');
   assert.ok(r[1] > 0 && r[1] < 5, 'spring is not counted among the lags');
   const slots = p.w.OAVp5.chop.slots();
   assert.deepEqual([...slots.map((s) => `${s.kind} ${s.mode} ${s.key}`)], ['lag order #1', 'lag order #2', 'lag name named', 'spring order #1']);

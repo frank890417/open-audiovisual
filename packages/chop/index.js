@@ -20,9 +20,10 @@
 //   new Slope().step(value, dt)                        Slope CHOP: change per second
 //   new Count().step(on)                               Count CHOP: how many times it turned on
 //
-// The one-pole time constant: `seconds` is the time to cover 63% of a change (1 − 1/e), the definition
-// @openav/mapping's `smooth` has always used. TouchDesigner's Lag CHOP quotes its lag as roughly the time to follow
-// 90% of a change, which is 2.3 time constants: a lag of 0.1 here moves like a Lag CHOP set to about 0.23.
+// Two kinds of seconds. `approach(…, seconds)` takes a one-pole time constant (63% of a change, 1 − 1/e), the definition
+// @openav/mapping's `smooth` has always used. `Lag` takes TouchDesigner's Lag CHOP seconds: roughly the time to follow
+// 90% of a change (docs.derivative.ca/Lag_CHOP), which is ln 10 ≈ 2.3 time constants, so lag(x, 0.1) here moves like a
+// Lag CHOP set to 0.1 (2026-10-15, so the numbers a student learns in p5 carry over to TouchDesigner).
 
 /** seconds a lag reaches 90% in, per second of time constant (ln 10): what a TouchDesigner Lag value corresponds to */
 export const TD_LAG_RATIO = Math.LN10;
@@ -41,8 +42,8 @@ export function approach(current, target, seconds, dt) {
 }
 
 /**
- * Lag CHOP: follows its input with one time constant while the input is above the output (`up`) and another while
- * it is below (`down`). up 0.03 / down 0.4 is a VU meter: it opens at once and closes slowly. The first input is taken
+ * Lag CHOP: follows its input with one lag while the input is above the output (`up`) and another while it is below
+ * (`down`), in TouchDesigner's seconds: about 90% of a change is followed after that long. up 0.03 / down 0.4 is a VU meter: it opens at once and closes slowly. The first input is taken
  * as it is (nothing glides in from zero). A boolean counts as 0 / 1: lag(mouseIsPressed) is a soft switch.
  */
 export class Lag {
@@ -55,7 +56,7 @@ export class Lag {
     const x = num(input);
     if (!finite(x)) return x;
     if (this.value === null) return (this.value = x);
-    this.value = approach(this.value, x, x > this.value ? up : down, dt);
+    this.value = approach(this.value, x, (x > this.value ? up : down) / TD_LAG_RATIO, dt);
     return this.value;
   }
   reset(value = null) { this.value = finite(value) ? value : null; return this; }

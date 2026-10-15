@@ -46,8 +46,8 @@ function frame(dt, t) {
 
 ## The time constant, and TouchDesigner's
 
-`seconds` in `approach` and `Lag` is a time constant: after `seconds` the output has covered 63% (1 − 1/e) of a
-change, after 2.3 × `seconds` 90%, after 4.6 × 99%. `@openav/mapping`'s `smooth` has always meant this, and both now
-step with the same function. TouchDesigner's Lag CHOP documents its lag as roughly the time the output takes to
-follow 90% of a change, which is 2.3 time constants: a lag of 0.1 here moves like a Lag CHOP set to about 0.23
-(`TD_LAG_RATIO`). Trigger lengths (attack, decay) are lengths in both: the envelope is at 0 after `decay` seconds.
+`seconds` in `approach` is a one-pole time constant: after `seconds` the output has covered 63% (1 − 1/e) of a change,
+after 2.3 × `seconds` 90%, after 4.6 × 99%. `@openav/mapping`'s `smooth` has always meant this, and both step with the
+same function. `Lag` (and oav-p5's `lag()`) takes TouchDesigner's Lag CHOP seconds instead: roughly the time the output
+takes to follow 90% of a change ([Lag CHOP](https://docs.derivative.ca/Lag_CHOP)), i.e. a time constant of seconds ÷
+`TD_LAG_RATIO` (ln 10), so a lag of 0.1 here moves like a Lag CHOP set to 0.1. Trigger lengths (attack, decay) are lengths in both: the envelope is at 0 after `decay` seconds.

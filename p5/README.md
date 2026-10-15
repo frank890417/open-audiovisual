@@ -261,9 +261,10 @@ rotate(spring(knob1, 100, 6) * TWO_PI);                                // flick 
 | a CHOP's viewer | `scope(value, 'label')` | a small plot in the corner of the page (below) |
 | | `drawTrail(values, x, y, w, h)` | the same plot on the canvas, in the work and in a recording |
 
-**Seconds, here and in TouchDesigner.** A lag here is a time constant: after `up` seconds the value has covered 63% of a
-jump (the `smooth` of `@openav/mapping` means the same). TouchDesigner's Lag CHOP quotes its lag as about the time to
-follow 90%, 2.3 times longer: `lag(x, 0.1)` moves like a Lag CHOP at about 0.23. Attack and decay are lengths in both.
+**Seconds, the same as in TouchDesigner.** A lag's seconds mean what a Lag CHOP's do: about the time the value takes to
+follow 90% of a jump, so `lag(x, 0.1)` here moves like a Lag CHOP set to 0.1 ([Lag CHOP](https://docs.derivative.ca/Lag_CHOP)).
+Underneath it is a one-pole lag with a time constant of seconds ÷ 2.3 (ln 10); `@openav/mapping`'s `smooth` keeps its
+own 63% time constant. Attack and decay are lengths in both.
 
 **Nothing to declare.** The first `lag()` in `draw()` keeps the first lag's memory, the second the second, every frame;
 `spring()`, `speed()`, `trail()` … are counted each on their own. Put one inside an `if`, or in a loop whose length
@@ -503,7 +504,7 @@ one URL pins one tree: `openaudiovisual.com/p5/oav-p5.js` is the latest; `cdn.js
   strudel.cc, oav-p5 served from this checkout: `.midi('OAV Virtual MIDI')` → `notePressed` (ms against Strudel's timestamps),
   `midikeys` → `.midi` with no loop, Strudel's clock → the drum machine and `drumPhase` (ms), the stop, the compact panel and 🩺,
   two tabs in one room (ms), the docs' three recipes as written (prebake, knob1 heard, micLevel, Hydra on Strudel's clock).
-- `node --test tests/chop.test.js` (part of `npm test`): `@openav/chop` under a fake clock — a lag of 0.1 at 63% after 0.1 s,
+- `node --test tests/chop.test.js` (part of `npm test`): `@openav/chop` under a fake clock — a lag of 0.1 at 90% after 0.1 s (TouchDesigner seconds),
   30 fps against 144 fps (a knob moved in steps: equal; a 1 Hz sine: within 3%), the envelope's attack, decay and retrigger,
   springs (bounce, critical, a 10 s step), the trail's fixed length; then 0.7's `lag()` family in `oav-p5.js`: passing through
   until the module arrives, the Nth call is the Nth slot, a name is its own, outside `draw()`, a call inside an `if` (the card,
@@ -560,8 +561,6 @@ Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` 
 `p5/examples/keys/` (`startSound('piano')`, particles from every key, the 🎹 open), `p5/examples/drums/` (`startDrums`, `kickDetected`, `cue`, `cueFired`),
 `p5/examples/rhythm/` (one line of rhythm, `drumPhase` turning a hand once a bar, `beatPhase` breathing on every beat),
 `p5/examples/rhythm-visual/` (`drawRhythm` in its three styles and the line drawn on the canvas, `rhythmChanged`, R records 8 s),
-`p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`)
-and `p5/examples/with-strudel/` (the picture side of Strudel in another tab: `link`, `notePressed`, `drumPhase` on Strudel's clock).
-`p5/examples/rhythm/` (one line of rhythm, `drumPhase` turning a hand once a bar, `beatPhase` breathing on every beat)
-`p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`)
+`p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`),
+`p5/examples/with-strudel/` (the picture side of Strudel in another tab: `link`, `notePressed`, `drumPhase` on Strudel's clock)
 and `p5/examples/lag/` (the microphone raw and lagged side by side, `env('kick')`, `spring(knob1)`, `scope()`, `drawTrail()`).

@@ -9,7 +9,7 @@
 // looped — a clean rise and a clean fall. Per p5 version it checks: none of the new names is a p5 / p5.sound name; an old
 // sketch (examples/particles) loads no packages/chop and shows no scope; lag(micLevel, 0.03, 0.4) is exactly the one-pole lag
 // of the micLevel it was given at the frames' own times (replayed here with packages/chop), rises in a few frames and falls
-// 63% in about 0.4 s; lag() in setup() returns its input and the slots live in draw() only; env('kick') with startDrums()
+// 90% in about 0.4 s (TouchDesigner's Lag seconds); lag() in setup() returns its input and the slots live in draw() only; env('kick') with startDrums()
 // jumps to 1 on each kick of four on the floor and falls to 0 between them, without opening the microphone; a call inside an
 // if switches to matching by line and keeps every other call's memory; scope() draws in the corner across from the 🎹 and a
 // recorded frame (startRecording) has no scope in it but does have drawTrail()'s line; p5/examples/lag runs (screenshot).
@@ -149,7 +149,7 @@ window.__gum = 0; { const g = navigator.mediaDevices && navigator.mediaDevices.g
       let worst = 0, y = null;
       if (chop) for (let i = Math.max(1, first); i < f.length; i++) {
         if (y === null) { y = f[i][2]; continue; }
-        y = chop.approach(y, f[i][1], f[i][1] > y ? 0.03 : 0.4, (f[i][0] - f[i - 1][0]) / 1000);
+        y = chop.approach(y, f[i][1], (f[i][1] > y ? 0.03 : 0.4) / chop.TD_LAG_RATIO, (f[i][0] - f[i - 1][0]) / 1000);
         worst = Math.max(worst, Math.abs(y - f[i][2]));
       }
       row(chop && f.length > 100 && worst < 0.02, `${tag}: lag() is the one-pole lag of what it was given, at real frame times (worst ${worst.toFixed(4)} over ${f.length} frames)`);
@@ -167,7 +167,7 @@ window.__gum = 0; { const g = navigator.mediaDevices && navigator.mediaDevices.g
         }
       }
       row(rise && rise.at100ms > 0.9 * rise.raw, `${tag}: the tone starts: lag is up within 0.1 s (0.03 s up)`, JSON.stringify(rise));
-      row(fall && fall.ratio > 0.3 && fall.ratio < 0.45, `${tag}: the tone stops: 0.4 s later lag has fallen to ~37% of where it was (0.4 s down)`, JSON.stringify(fall));
+      row(fall && fall.ratio > 0.04 && fall.ratio < 0.18, `${tag}: the tone stops: 0.4 s later lag has fallen to ~10% of where it was (0.4 s down, TouchDesigner's seconds)`, JSON.stringify(fall));
       if (v === VERSIONS[0]) { await p.screenshot({ path: path.join(SHOTS, 'chop-lag-setup-card.png') }); }
       row(errs.length === 0, `${tag}: …no page errors`, errs.join(' | ').slice(0, 300));
       await ctx.close();
