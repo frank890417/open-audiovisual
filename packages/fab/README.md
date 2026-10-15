@@ -18,9 +18,9 @@ await fab.save(part, 'step', { name: 'bracket' });  // saver, or a browser downl
 
 ## check(x, opts) → report
 
-`{ units, triangles, bbox, volume, watertight, openEdges, nonManifoldEdges, inconsistentEdges, overhang:{angle,area,ratio}, minWall:{value,samples}|null, grams:{PETG,PLA}, warnings[] }`
+`{ units, triangles, bbox, volume, watertight, openEdges, nonManifoldEdges, inconsistentEdges, overhang:{angle,area,ratio}, minWall:{value,min,median,samples}|null, grams:{PETG,PLA}, warnings[] }`
 
-Duplicate vertices are merged first (tolerance 1e-6 × bbox diagonal); without that every un-indexed mesh reads as open. `opts`: `angle` 45, `minWall` 1.2, `bed` [320,320,325], `wallSamples` 2000, `overhangWarn` 0.15. Faces lying on the lowest 0.2 mm do not count as overhang. Warnings are one Chinese sentence each.
+Duplicate vertices are merged first (tolerance 1e-6 × bbox diagonal); without that every un-indexed mesh reads as open. `opts`: `angle` 45, `minWall` 1.2, `bed` [320,320,325], `wallSamples` 2000, `overhangWarn` 0.15. Faces lying on the lowest 0.2 mm do not count as overhang. `minWall.value` is the 5th percentile of the sampled thicknesses (rays into the part that end on a face looking back along the ray, within 60°); `min` is the single thinnest sample — a hole drilled at an angle through a slanted wall leaves a knife edge there, which gets its own milder note instead of the "cannot print" warning. Warnings are one Chinese sentence each.
 
 ## export(x, fmt, opts) → { bytes, mime, ext, report }
 

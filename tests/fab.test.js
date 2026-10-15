@@ -59,6 +59,38 @@ test('overhang: inverted pyramid ≈ analytic ratio, cube flat on the bed = 0', 
   assert.equal(checkMesh(soup(cube(20))).overhang.ratio, 0);
 });
 
+// A ray shot inward next to a hole grazes the hole's side wall a fraction of a mm away; that is not the wall thickness.
+// Three triangles: A (x=0, outward −X, the sample), B (a face the ray meets at x=0.3 almost edge-on), C (x=2, outward +X,
+// the real opposite wall). The old raycast took the first hit and read 0.3 (2026-10-15: 0.2 mm on fab-shade with holes).
+test('thinnest wall counts only the opposite wall, not a face the ray grazes (old version goes red: 0.3)', async () => {
+  const { minWallOf } = await import('../packages/fab/checks.js');
+  const tx = [0.98, -0.17, 0], c0 = [0.3, 1 / 3, 1 / 3];
+  const at = (a, b) => [c0[0] + tx[0] * a, c0[1] + tx[1] * a, c0[2] + b];
+  const V = [[0, 0, 0], [0, 0, 1], [0, 1, 0], at(-1, -1), at(2, -1), at(0, 2), [2, -5, -5], [2, 5, -5], [2, 0, 5]];
+  const mesh = { vertices: Float64Array.from(V.flat()), triangles: Uint32Array.from([0, 1, 2, 3, 4, 5, 6, 7, 8]), units: 'mm' };
+  const r = minWallOf(mesh, { samples: 10 });
+  near(r.value, 2, 1e-6);
+});
+
+// A shade with 36 holes drilled radially through slanted (lobed, twisted) walls: min 0.08 mm at the hole rims, p05 1.57,
+// median 1.76 for a 1.8 mm wall (2026-10-15). The minimum is a knife edge, not "the wall": minWall.value is the 5th
+// percentile, minWall.min is listed separately with its own, milder warning. Old version (value = min) goes red.
+test('thinnest wall reports the 5th percentile; a lone knife edge gets its own note, not "cannot print"', async () => {
+  const { checkMesh } = await import('../packages/fab/checks.js');
+  const V = [], T = [];
+  const pair = (x, d) => {   // A at z=0 facing −Z, B at z=d facing +Z, 1 mm triangles, 10 mm apart in x
+    const b = V.length / 3;
+    V.push(x, 0, 0, x, 1, 0, x + 1, 0, 0, x, 0, d, x + 1, 0, d, x, 1, d);
+    T.push(b, b + 1, b + 2, b + 3, b + 4, b + 5);
+  };
+  for (let i = 0; i < 40; i++) pair(i * 10, 2);
+  pair(400, 0.1);
+  const r = checkMesh({ vertices: Float64Array.from(V), triangles: Uint32Array.from(T), units: 'mm' }, { wallSamples: 1000 });
+  near(r.minWall.value, 2, 1e-6); near(r.minWall.min, 0.1, 1e-6); near(r.minWall.median, 2, 1e-6);
+  assert.ok(r.warnings.some((w) => w.includes('刀口')), 'knife-edge note');
+  assert.ok(!r.warnings.some((w) => w.startsWith('最薄壁')), 'no "cannot print" warning for a lone knife edge');
+});
+
 test('thinnest wall: a 20×20×2 plate reads 2 mm (±5%), and a 1 mm one triggers the warning', () => {
   const r = checkMesh(cube(20, 20, 2));
   assert.ok(r.minWall && Math.abs(r.minWall.value - 2) <= 0.1, JSON.stringify(r.minWall));

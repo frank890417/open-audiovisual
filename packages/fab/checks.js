@@ -149,7 +149,11 @@ function buildBvh(v, t) {
 }
 
 // nearest hit distance along (o, d) with tMin < t < tMax, ignoring triangle `skip`; Infinity when none
-function rayNearest(bvh, v, t, ox, oy, oz, dx, dy, dz, tMin, tMax, skip) {
+// facing: only count a face whose outward normal (× facing: 1, or -1 for an inside-out mesh) points along the ray within
+// 60° — the wall opposite. A face the ray only grazes (a hole's side wall next to the sample, a perpendicular rib) is not
+// the thickness there: counting it read 0.2 mm on a 1.8 mm shade with 4 mm holes (2026-10-15, lab fab-shade).
+const FACING_MIN = 0.5;   // cos 60°
+function rayNearest(bvh, v, t, ox, oy, oz, dx, dy, dz, tMin, tMax, skip, facing = 0) {
   const { nodes, order } = bvh;
   const ix = 1 / dx, iy = 1 / dy, iz = 1 / dz;
   const stack = [0];
@@ -183,7 +187,13 @@ function rayNearest(bvh, v, t, ox, oy, oz, dx, dy, dz, tMin, tMax, skip) {
       const w = (dx * qx + dy * qy + dz * qz) * inv;
       if (w < 0 || u + w > 1) continue;
       const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
-      if (hit > tMin && hit < best) best = hit;
+      if (!(hit > tMin && hit < best)) continue;
+      if (facing) {
+        const nx = e1y * e2z - e1z * e2y, ny = e1z * e2x - e1x * e2z, nz = e1x * e2y - e1y * e2x;
+        const nl = Math.hypot(nx, ny, nz), dl = Math.hypot(dx, dy, dz);
+        if (!nl || (facing * (nx * dx + ny * dy + nz * dz)) / (nl * dl) < FACING_MIN) continue;
+      }
+      best = hit;
     }
   }
   return best;
@@ -197,6 +207,7 @@ export function minWallOf(mesh, { samples = 2000, flip = false } = {}) {
   const step = nt > samples ? nt / samples : 1;
   const eps = 1e-6 * diag;
   let best = Infinity, shot = 0;
+  const all = [];
   for (let s = 0; s < Math.min(nt, samples); s++) {
     const f = Math.floor(s * step);
     const a = t[f * 3] * 3, b = t[f * 3 + 1] * 3, c = t[f * 3 + 2] * 3;
@@ -209,10 +220,15 @@ export function minWallOf(mesh, { samples = 2000, flip = false } = {}) {
     nx = (sg * nx) / len; ny = (sg * ny) / len; nz = (sg * nz) / len;
     const ox = (v[a] + v[b] + v[c]) / 3, oy = (v[a + 1] + v[b + 1] + v[c + 1]) / 3, oz = (v[a + 2] + v[b + 2] + v[c + 2]) / 3;
     shot++;
-    const d = rayNearest(bvh, v, t, ox, oy, oz, nx || 1e-300, ny || 1e-300, nz || 1e-300, eps, best, f);
-    if (d < best) best = d;
+    const d = rayNearest(bvh, v, t, ox, oy, oz, nx || 1e-300, ny || 1e-300, nz || 1e-300, eps, Infinity, f, flip ? -1 : 1);
+    if (Number.isFinite(d)) { all.push(d); if (d < best) best = d; }
   }
-  return Number.isFinite(best) ? { value: best, samples: shot } : null;
+  if (!all.length) return null;
+  all.sort((a, b) => a - b);
+  const pct = (q) => all[Math.min(all.length - 1, Math.floor(q * (all.length - 1)))];
+  // value＝第 5 百分位：大部分的壁有多薄。最小值另列（min）——斜著穿過斜壁的孔、銳角邊會留下刀口，越靠近越薄、趨近 0，
+  // 用最小值當「最薄壁」就永遠在報刀口（2026-10-15 打孔燈罩：min 0.08、p05 1.57、中位數 1.76，壁厚設定 1.8）。
+  return { value: pct(0.05), min: best, median: pct(0.5), samples: shot };
 }
 
 const r3 = (x) => Math.round(x * 1000) / 1000;
@@ -232,6 +248,7 @@ export function checkMesh(input, opts = {}) {
   if (!edges.watertight) warnings.push(`網格不水密（開放邊 ${edges.openEdges} 條、非流形邊 ${edges.nonManifoldEdges} 條、方向不一致 ${edges.inconsistentEdges} 條），切片軟體可能補不好。`);
   if (overhang.ratio > o.overhangWarn) warnings.push(`懸空面積約 ${Math.round(overhang.ratio * 100)}%（超過 ${o.angle}° 的向下面），多半要加支撐。`);
   if (minWall && minWall.value < o.minWall) warnings.push(`最薄壁約 ${r3(minWall.value)} mm，低於 ${o.minWall} mm，可能印不出來。`);
+  else if (minWall && minWall.min < o.minWall / 2) warnings.push(`有刀口或尖邊：最薄點約 ${r3(minWall.min)} mm（多半在孔邊或銳角），切片預覽時看一下那裡。`);
   const bed = o.bed;
   if (bbox.size.some((s, i) => s > bed[i])) warnings.push(`尺寸 ${bbox.size.map((s) => r3(s)).join('×')} mm 超出列印床 ${bed.join('×')} mm。`);
   return {
