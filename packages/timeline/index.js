@@ -20,6 +20,7 @@
 //   through it ('ease' etc. as above; a bare number holds the whole segment). Compiled at construction against the ROOT cut
 //   of the score (or the scenes without one), so a cut with other lengths — or a derived one — reads the same (segment, p)
 //   the same way. Absolute-second arrays and lanes mix freely in one automation.
+//   tl.exportAutomation({ as: 'seconds' | 'segments' }) / tl.importAutomation(json) · lanePos(t) / laneTime(id, p): seconds ↔ (segment, p)
 // scenes:     [{ id, t, title?, note?, act?, acts?, hold?, cues? }, …]  t may be negative (pre-show standby)
 //
 // Since the score (@openav/score): pass `score` and the scenes, the total and the start come
@@ -48,12 +49,34 @@ export const HOLD_EPS = 1e-6;
 // score.rootSegments 或 timeline.lanePlan() 的樣子。這些函式不認得 Timeline，工具也能單獨用。
 // ───────────────────────────────────────────────────────────────────────────────────────────
 
+/** automation 檔案的 format 欄位。 */
+export const AUTOMATION_FORMAT = 'openav-automation';
+const LANE_EPS = 1e-9;
+
 /** 物件＝ lane（每段一組點）；陣列＝絕對秒的關鍵點。 */
 export const isLane = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
 
 const bounds = (s) => [s.start, s.end ?? s.start + s.dur];
 const secOf = (s, p) => { const [a, b] = bounds(s); return p === 0 ? a : p === 1 ? b : a + p * (b - a); };   // p=0／1 落在段界上，不留浮點誤差
 const show = (x) => (typeof x === 'string' ? JSON.stringify(x) : String(x));
+
+/** 秒 → 屬於哪一段、走了多少：{ id, index, p }。段界屬於從那裡開始的那段，演出的最後一秒是最後一段的 p=1；演出之外是 null。 */
+export function lanePos(plan, t) {
+  const n = plan.length;
+  if (!n || !Number.isFinite(t)) return null;
+  if (t < bounds(plan[0])[0] - LANE_EPS || t > bounds(plan[n - 1])[1] + LANE_EPS) return null;
+  for (let i = 0; i < n; i++) {
+    const [a, b] = bounds(plan[i]);
+    if (t < b - LANE_EPS || i === n - 1) return { id: plan[i].id, index: i, p: b - a > 0 ? Math.min(1, Math.max(0, (t - a) / (b - a))) : 0 };
+  }
+  return null;
+}
+
+/** lanePos 的反函數：第 id 段走到 p（預設 0）是第幾秒；沒有這個 id 就 NaN。 */
+export function laneTime(plan, id, p = 0) {
+  const s = plan.find((x) => x.id === id);
+  return s && Number.isFinite(p) ? secOf(s, p) : NaN;
+}
 
 /**
  * lane → 絕對秒的關鍵點 [[t, v, curve?], …]（已照時間排好）。
@@ -90,6 +113,57 @@ export function compileLane(plan, lane, { key = '?', known = null } = {}) {
   }
   rows.sort((x, y) => x.t - y.t || x.si - y.si || x.order - y.order);   // 同一秒：先上一段的 p=1，再下一段的 p=0，後者是跳變後的值
   return rows.map((r) => r.kf);
+}
+
+/**
+ * compileLane 的反函數：絕對秒的關鍵點 → lane。每個關鍵點落進它所在的那一段；
+ * 恰在段界上的：單獨一點歸下一段的 p=0，同一秒有兩點以上就是跳變，前面的歸上一段的 p=1、最後一點歸下一段的 p=0
+ * （所以 compileLane 編出來的 lane 拆回去一模一樣）。演出範圍之外的關鍵點寫不成 (段落, p)，丟 RangeError。
+ * p 四捨五入到 `precision` 位小數（預設 9：一小時的段落誤差不到 2 µs）；null＝不捨入。
+ */
+export function decompileLane(plan, keyframes, { key = '?', precision = 9 } = {}) {
+  if (!plan.length) throw new Error(`[timeline] automation "${key}" cannot be written per segment: there are no segments (pass a score or scenes)`);
+  if (new Set(plan.map((s) => s.id)).size !== plan.length) throw new Error(`[timeline] automation "${key}" cannot be written per segment: two segments share an id`);
+  const rows = keyframes.map((k, i) => ({ t: k[0], v: k[1], c: k[2], i })).sort((x, y) => x.t - y.t || x.i - y.i);
+  const n = plan.length, B = plan.map(bounds), lo = B[0][0], hi = B[n - 1][1];
+  const q = precision === null ? null : 10 ** precision;
+  const lane = {};
+  const put = (si, p, r) => (lane[plan[si].id] || (lane[plan[si].id] = [])).push(r.c === undefined || r.c === null ? [p, r.v] : [p, r.v, r.c]);
+  for (let g = 0; g < rows.length;) {
+    let e = g + 1;
+    while (e < rows.length && rows[e].t - rows[g].t <= LANE_EPS) e++;
+    const group = rows.slice(g, e), t = group[0].t;
+    g = e;
+    if (t < lo - LANE_EPS || t > hi + LANE_EPS) {
+      throw new RangeError(`[timeline] automation "${key}": the keyframe at ${t} s is outside the show (${lo} … ${hi} s), so it has no (segment, p); export as seconds instead`);
+    }
+    let si = 0;
+    while (si < n - 1 && t >= B[si][1] - LANE_EPS) si++;
+    const [a, b] = B[si];
+    const atEnd = si === n - 1 && t >= b - LANE_EPS;
+    const atStart = !atEnd && Math.abs(t - a) <= LANE_EPS;
+    if (atEnd) group.forEach((r) => put(si, 1, r));
+    else if (atStart) {
+      group.forEach((r, k) => (k < group.length - 1 && si > 0 ? put(si - 1, 1, r) : put(si, 0, r)));
+    } else {
+      const raw = (t - a) / (b - a), p = q === null ? raw : Math.round(raw * q) / q;
+      group.forEach((r) => put(si, Math.min(1, Math.max(0, p)), r));
+    }
+  }
+  return lane;
+}
+
+/** [[t, v, curve?], …] → 檢查（有限數字）、複製、照時間排好。壞的丟錯，指出是哪個鍵的第幾點。 */
+function cleanKeyframes(key, kf, { json = false } = {}) {
+  if (!Array.isArray(kf)) throw new Error(`[timeline] automation "${key}": expected keyframes [[t, value, curve?], …] or a lane { segmentId: [[p, value], …] } (got ${show(kf)})`);
+  const out = kf.map((k, i) => {
+    if (!Array.isArray(k) || k.length < 2) throw new Error(`[timeline] automation "${key}"[${i}]: a keyframe is [t, value, curve?]`);
+    if (!Number.isFinite(k[0])) throw new Error(`[timeline] automation "${key}"[${i}]: t must be a finite number (got ${show(k[0])})`);
+    if (!Number.isFinite(k[1])) throw new Error(`[timeline] automation "${key}"[${i}]: the value must be a finite number (got ${show(k[1])})`);
+    if (json && typeof k[2] === 'function') throw new Error(`[timeline] exportAutomation(): "${key}"[${i}] has a curve function, which JSON cannot hold; name the curve ('ease', 'in', …) to export it`);
+    return k[2] === undefined || k[2] === null ? [k[0], k[1]] : [k[0], k[1], k[2]];
+  });
+  return out.map((k, i) => ({ k, i })).sort((x, y) => x.k[0] - y.k[0] || x.i - y.i).map((x) => x.k);
 }
 
 export class Timeline {
@@ -153,7 +227,7 @@ export class Timeline {
     return s;
   }
 
-  // ── lanes：以段落為單位的自動化 ─────────────────────────────────────
+  // ── lanes：以段落為單位的自動化，和 automation 的匯出／匯入 ─────────────────────────────────────
   // 這一節的「秒」都是 automation 的秒（root cut 的秒），也就是 timeline.automation 裡 t 的意思；
   // 衍生 cut 的 show 秒要先 score.baseTime(T)，或直接用 score.locate(T) / score.timeAt(id, p)。
 
@@ -178,6 +252,70 @@ export class Timeline {
     const plan = this._plan(), known = this._known(), out = {};
     for (const [key, v] of Object.entries(src)) out[key] = isLane(v) ? this._laneKeyframes(key, v, plan, known) : v;
     return out;
+  }
+
+  /** automation 的某一秒落在哪一段、走了多少：{ id, index, p }；演出之外是 null。 */
+  lanePos(t) { return lanePos(this._plan(), t); }
+  /** lanePos 的反函數：第 id 段走到 p（預設 0）是 automation 的第幾秒；沒有這個 id 是 NaN。 */
+  laneTime(id, p = 0) { return laneTime(this._plan(), id, p); }
+  /** 把 automation（絕對秒）寫成 lane：{ key: { 段落 id: [[p, 值, 曲線?], …] } }。keys 預設全部有關鍵點的鍵。 */
+  lanes(keys = Object.keys(this.automation), { precision } = {}) {
+    const plan = this._plan(), out = {};
+    for (const key of keys) {
+      if (!Array.isArray(this.automation[key])) continue;
+      out[key] = decompileLane(plan, cleanKeyframes(key, this.automation[key]), { key, precision });
+    }
+    return out;
+  }
+
+  /**
+   * 匯出 automation 成可以 JSON.stringify 的物件（一份拷貝，改它不會動到時間軸）：
+   *   { format: 'openav-automation', version: 1, cut, as, automation }
+   * as 'seconds'（預設）：每個鍵是 root cut 秒數的關鍵點；as 'segments'：每個鍵是 lane，換了 cut 長度也成立。
+   * `cut` 是 root cut 的 id（沒有總譜是 null）。curve 是函式的關鍵點寫不進 JSON，會丟錯；沒有關鍵點的鍵不寫。
+   * @param {{ keys?: string[], as?: 'seconds'|'segments', precision?: number|null }} [opts]
+   */
+  exportAutomation({ keys = Object.keys(this.automation), as = 'seconds', precision } = {}) {
+    if (as !== 'seconds' && as !== 'segments') throw new TypeError(`[timeline] exportAutomation(): as must be 'seconds' or 'segments' (got ${show(as)})`);
+    const plan = as === 'segments' ? this._plan() : null, automation = {};
+    for (const key of keys) {
+      if (!Array.isArray(this.automation[key])) continue;
+      const kf = cleanKeyframes(key, this.automation[key], { json: true });
+      automation[key] = plan ? decompileLane(plan, kf, { key, precision }) : kf;
+    }
+    return { format: AUTOMATION_FORMAT, version: 1, cut: this.score ? this.score.base : null, as, automation };
+  }
+
+  /**
+   * 匯入 exportAutomation() 的結果（物件或 JSON 字串），或一張光溜溜的 { key: 關鍵點｜lane }。回傳匯入的鍵。
+   * 只換檔案裡有的鍵（keys 可再挑）；replace: true 連檔案沒提到的鍵也清掉。全有或全無：任何一個鍵壞了，所有鍵都維持原樣。
+   * 絕對秒的檔案是對著某個 root cut 寫的，cut 和這條時間軸的 root cut 不同就丟錯（ignoreCut: true 蓋過）；lane 不受影響。
+   * @param {object|string} doc
+   * @param {{ keys?: string[], replace?: boolean, ignoreCut?: boolean }} [opts]
+   */
+  importAutomation(doc, { keys = null, replace = false, ignoreCut = false } = {}) {
+    let d = doc;
+    if (typeof d === 'string') { try { d = JSON.parse(d); } catch (e) { throw new Error(`[timeline] importAutomation(): not valid JSON (${e.message})`); } }
+    if (!isLane(d)) throw new TypeError('[timeline] importAutomation(): expected an object or a JSON string');
+    let map = d, cut = null;
+    if (typeof d.format === 'string') {
+      if (d.format !== AUTOMATION_FORMAT) throw new Error(`[timeline] importAutomation(): format ${show(d.format)} is not "${AUTOMATION_FORMAT}"`);
+      if (!((d.version ?? 1) <= 1)) throw new Error(`[timeline] importAutomation(): version ${d.version} is newer than this timeline reads (1)`);
+      if (!isLane(d.automation)) throw new Error('[timeline] importAutomation(): the file has no "automation" object');
+      map = d.automation; cut = d.cut ?? null;
+    }
+    const plan = this._plan(), known = this._known(), next = {};
+    for (const [key, v] of Object.entries(map)) {
+      if (keys && !keys.includes(key)) continue;
+      if (isLane(v)) { next[key] = this._laneKeyframes(key, v, plan, known); continue; }
+      if (cut !== null && this.score && cut !== this.score.base && !ignoreCut) {
+        throw new Error(`[timeline] importAutomation(): "${key}" is in seconds written against cut "${cut}", but this timeline's root cut is "${this.score.base}" (export as 'segments' to share it across cuts, or pass ignoreCut: true)`);
+      }
+      next[key] = cleanKeyframes(key, v);
+    }
+    if (replace) for (const k of Object.keys(this.automation)) if (!(k in next)) delete this.automation[k];
+    Object.assign(this.automation, next);
+    return Object.keys(next);
   }
 
   sceneIndexAt(t = this.t) { let i = 0; for (let k = 0; k < this.scenes.length; k++) if (t >= this.scenes[k].t) i = k; return i; }
