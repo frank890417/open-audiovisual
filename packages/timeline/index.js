@@ -456,10 +456,10 @@ export class Timeline {
   //   · 計數（drift()）：慢了多少（behind）、Loop 夾 dt 吃掉多少（lost）、停頓幾次、最長一次多久、追回多少
   //   · 'warn'（預設）：只計數，慢過 warnAt 秒通知一次（onDrift，沒人接就 console.warn）；不動 t
   //   · 'catch-up'：欠的追回來。追的方式是把差額加進這一幀的步長，所以 cue、hold、loop 都照常（hold 會把節目停住）；
-  //     欠超過 jump 秒就直接 seek 過去（不放 cue，onSeek 聽到 'seek'）。epoch 在未來就站著等到那一刻（預約開演）；
-  //     epoch 在過去（重開機晚到）就追到現在該在的位置
+  //     欠超過 jump 秒就直接 seek 過去（不放 cue，onSeek 聽到 'seek'）。超前則把這一幀慢下來等牆鐘（最多停住，不倒退）。
+  //     epoch 在未來就站著等到那一刻（預約開演）；epoch 在過去（重開機晚到）就追到現在該在的位置
   // 暫停、hold、節目結束都是「刻意不走」，不算漂移：停下來的那一刻欠的帳一筆勾銷（forgiven），恢復後以停住的位置重新計。
-  // 超前（behind 為負）只回報，從不往回拉。rate 變了照節目秒算（牆鐘 × rate）。
+  // 'warn' 超前（behind 為負）只回報；'catch-up' 會把超前的部分等掉（held）。rate 變了照節目秒算（牆鐘 × rate）。
 
   /**
    * 開始對牆鐘記帳。重呼叫會重來（計數歸零）。
@@ -493,7 +493,7 @@ export class Timeline {
 
   /**
    * 目前的漂移與計數，沒有錨定是 null。秒數都是節目秒：
-   *   behind 比牆鐘慢多少（負的＝超前）· lost Loop 夾 dt（或任何停頓）吃掉的 · repaid 追回的 · forgiven 因暫停／hold 一筆勾銷的
+   *   behind 比牆鐘慢多少（負的＝超前）· lost Loop 夾 dt（或任何停頓）吃掉的 · repaid 追回的 · held 'catch-up' 為了等牆鐘而慢下來的 · forgiven 因暫停／hold 一筆勾銷的
    *   stalls 停頓幾次 · worst 最長一次牆鐘間隔（牆鐘秒）· frames 記帳的幀數 · jumps seek 補上的次數
    *   started／waiting／startsIn 是否已開演、是否在等預約的 epoch、還有幾秒 · epoch · mode · expected／shown 牆鐘應走／節目實走
    *   text 一行人看得懂的摘要，可以直接印在導演台或後台
@@ -505,7 +505,7 @@ export class Timeline {
     const d = {
       mode: a.mode, epoch: a.epoch, started: a.started, waiting: a.waiting,
       startsIn: a.waiting ? Math.max(0, (a.epoch - a.now()) / 1000) : 0,
-      behind, lost: a.lost, repaid: a.repaid, forgiven: a.forgiven, stalls: a.stalls, worst: a.worst, frames: a.frames, jumps: a.jumps,
+      behind, lost: a.lost, repaid: a.repaid, held: a.held, forgiven: a.forgiven, stalls: a.stalls, worst: a.worst, frames: a.frames, jumps: a.jumps,
       expected: a.expected, shown: a.shown, text: '',
     };
     d.text = driftText(d);
@@ -533,6 +533,8 @@ export class Timeline {
       if (behind > a.tolerance) {
         if (behind > a.jump) { this._syncJump(behind); a.jumps++; a.repaid += behind; a.shown += behind; jumped = true; }
         else { extra = behind; a.repaid += extra; }
+      } else if (behind < -a.tolerance && step0 > 0) {   // 超前（例如卡頓後 Loop 的心跳又補了一個 0.1 s 的幀）：這一幀慢下來等牆鐘，最多停住，不倒退
+        extra = -Math.min(step0, -behind); a.held -= extra;
       }
     }
     const alive = this._advance(step0 + extra);
@@ -685,7 +687,7 @@ export class Timeline {
 
 /** anchor() 的計數，歸零用。epoch：毫秒或 null（下一個播放的幀才學）。 */
 function freshAnchor(epoch) {
-  return { epoch, mark: null, started: false, waiting: false, expected: 0, shown: 0, lost: 0, repaid: 0, forgiven: 0, stalls: 0, worst: 0, frames: 0, jumps: 0, warned: false };
+  return { epoch, mark: null, started: false, waiting: false, expected: 0, shown: 0, lost: 0, repaid: 0, held: 0, forgiven: 0, stalls: 0, worst: 0, frames: 0, jumps: 0, warned: false };
 }
 
 function driftText(d) {
@@ -693,6 +695,7 @@ function driftText(d) {
   const b = d.behind, parts = [Math.abs(b) < 0.005 ? 'on the wall clock' : b > 0 ? `${b.toFixed(2)} s behind the wall clock` : `${(-b).toFixed(2)} s ahead of the wall clock`];
   if (d.stalls) parts.push(`${d.stalls} stall${d.stalls === 1 ? '' : 's'} cost${d.stalls === 1 ? 's' : ''} ${d.lost.toFixed(2)} s (worst gap ${d.worst.toFixed(2)} s)`);
   if (d.repaid >= 0.005) parts.push(`caught up ${d.repaid.toFixed(2)} s`);
+  if (d.held >= 0.005) parts.push(`held back ${d.held.toFixed(2)} s`);
   if (d.jumps) parts.push(`${d.jumps} jump${d.jumps === 1 ? '' : 's'}`);
   return parts.join(' · ');
 }

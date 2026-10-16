@@ -80,13 +80,42 @@ test('drift().text reads as a sentence: how far behind, what the clamp cost, how
   assert.match(t.drift().text, /worst gap 0\.35 s/);
 });
 
-test('drift: being ahead is reported, never "corrected" backwards', () => {
+test('drift: in "warn" mode being ahead of the wall clock is reported (a negative "behind") and left alone', () => {
   const clk = clock(), t = mk();
-  t.anchor(undefined, { now: clk, mode: 'catch-up' });
+  t.anchor(undefined, { now: clk, onDrift() {} });
   t.play(); run(t, clk, 20, 0.1, 0.05);
   near(t.t, 2.0, 1e-9);
   assert.ok(t.drift().behind < 0);
   assert.match(t.drift().text, /ahead/);
+});
+
+test('catch-up: being ahead is held back too — the show waits for the wall clock, never runs backwards (a Loop heartbeat frame after a stall is the real case)', () => {
+  const clk = clock(), t = mk({ scenes: [{ id: 'a', t: 0, cues: [{ name: 'c', t: 0.5 }] }] }), seen = [];
+  t.onCue((c) => seen.push(c.name));
+  t.anchor(undefined, { now: clk, mode: 'catch-up' });
+  t.play(); run(t, clk, 1, 0.1);
+  let prev = t.t;
+  for (let i = 0; i < 19; i++) { run(t, clk, 1, 0.1, 0.04); assert.ok(t.t >= prev, 'time never goes back'); prev = t.t; }
+  near(t.t, 0.1 + 19 * 0.04, 1e-9);                                    // 節目時間跟著牆鐘走，不是跟著 dt
+  const d = t.drift();
+  near(d.behind, 0, 1e-9); near(d.held, 19 * 0.06, 1e-9);
+  assert.match(d.text, /held back 1\.14 s/);
+  assert.deepEqual(seen, ['c'], 'a cue is still fired once when the slowed playback gets there');
+  // 超前不到公差就不理：節目照 dt 走
+  const c2 = clock(), u = mk(); u.anchor(undefined, { now: c2, mode: 'catch-up', tolerance: 0.2 });
+  u.play(); run(u, c2, 1, 0.1); run(u, c2, 3, 0.1, 0.05);          // 超前 0.05、0.10、0.15 s，都在公差內
+  near(u.t, 0.4, 1e-9); assert.equal(u.drift().held, 0);
+});
+
+test('catch-up: a stall repaid by one frame and the Loop heartbeat\'s extra clamped frame right after it cancel out (what a real page does)', () => {
+  const clk = clock(), t = mk();
+  t.anchor(undefined, { now: clk, mode: 'catch-up' });
+  t.play(); run(t, clk, 30, 1 / 60);
+  clk.tick(0.72); t.advance(0.02);                                    // rAF 的時間戳是影格開始的時刻：dt 很小，牆鐘卻走了 0.72 s
+  t.advance(0.1);                                                     // 同一刻心跳又補一幀，Loop 夾成 0.1 s，牆鐘幾乎沒走
+  const d = t.drift();
+  near(d.behind, 0, 1e-9); assert.ok(d.repaid > 0.69 && d.held > 0.09, JSON.stringify(d));
+  near(t.t, 30 / 60 + 0.72, 1e-9);
 });
 
 test('drift: a changed rate counts in show seconds (rate 2 and a 0.5 s gap owes 1 s per 0.2 s frame)', () => {
@@ -350,7 +379,7 @@ test('fuzz: "catch-up" never leaves the show behind the wall clock by more than 
       assert.ok(Number.isFinite(t.t) && t.t >= 0 && t.t <= 40, `seed ${seed} step ${i}: t = ${t.t}`);
       for (const k of Object.keys(prev)) { assert.ok(d[k] >= prev[k] - 1e-9 || d.frames === 0, `seed ${seed} step ${i}: ${k} went down`); }
       prev = d.frames === 0 ? { lost: 0, repaid: 0, forgiven: 0, stalls: 0 } : { lost: d.lost, repaid: d.repaid, forgiven: d.forgiven, stalls: d.stalls };
-      if (t.playing && d.started) assert.ok(d.behind <= 0.05 + 1e-6, `seed ${seed} step ${i}: still ${d.behind} s behind while playing`);
+      if (t.playing && d.started) assert.ok(Math.abs(d.behind) <= 0.05 + 1e-6, `seed ${seed} step ${i}: still ${d.behind} s off the wall clock while playing`);
       if (!t.playing) assert.ok(Math.abs(d.behind) < 1e-9, `seed ${seed} step ${i}: a stopped show owes nothing (${d.behind})`);
     });
   }

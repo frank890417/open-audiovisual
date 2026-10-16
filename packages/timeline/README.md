@@ -78,9 +78,9 @@ const base = timeline.state();
   `anchor` option: `true`, an epoch, or `{ epoch, …opts }`) · `unanchor()` · `drift()` · `onDrift(cb)`. The frame loop clamps `dt` to 0.1 s, so a stalled
   page leaves the show behind the wall clock; once anchored, every playing frame compares the wall clock (`epoch` = the moment of show time 0 in ms, a
   `Date` or an ISO string; omitted = the first playing frame) with how far the show moved. `'warn'` counts and calls `onDrift` (or `console.warn`) when it is
-  `warnAt` seconds behind; `'catch-up'` adds the difference to the step (cues, holds and loops behave as in normal playback), seeks when more than
+  `warnAt` seconds behind; `'catch-up'` adds the difference to the step (cues, holds and loops behave as in normal playback), holds back when it runs ahead (`held`: it waits, never goes backwards), seeks when more than
   `jump` is owed, stands still until a future `epoch` (`wait`), and puts a late start where the show now is. Pause, hold and the end are standing still
-  on purpose: the debt is forgiven. `drift()` → `null` or `{ behind, lost, repaid, forgiven, stalls, worst, frames, jumps, started, waiting, startsIn, epoch, mode, text }`.
+  on purpose: the debt is forgiven. `drift()` → `null` or `{ behind, lost, repaid, held, forgiven, stalls, worst, frames, jumps, started, waiting, startsIn, epoch, mode, text }`.
   Without `anchor()` the timeline never reads a clock
 - `loop` (option, and a property you can change any time): `false` · `true` (the whole show, from 0 to `total`) ·
   `'scene'` (the scene the playhead is in) · a scene id · `{ from, to }` (seconds, or scene ids: a `from` id is that scene's

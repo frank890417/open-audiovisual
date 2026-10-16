@@ -1744,7 +1744,7 @@ and the first playing frame is time 0: there is nothing to be late for, only the
 <div class="table-wrap"><table>
 <thead><tr><th>option</th><th>default</th><th>meaning</th></tr></thead>
 <tbody>
-<tr><td><code>mode</code></td><td><code>'warn'</code></td><td><code>'warn'</code> counts and tells, and never moves <code>t</code>. <code>'catch-up'</code> gives back what was lost</td></tr>
+<tr><td><code>mode</code></td><td><code>'warn'</code></td><td><code>'warn'</code> counts and tells, and never moves <code>t</code>. <code>'catch-up'</code> gives back what was lost, and waits when it runs ahead</td></tr>
 <tr><td><code>warnAt</code></td><td>1</td><td>seconds behind at which <code>onDrift</code> hears <code>'behind'</code> (and <code>console.warn</code> if nobody listens); it hears <code>'recovered'</code> below half of it</td></tr>
 <tr><td><code>tolerance</code></td><td>0.05</td><td><code>'catch-up'</code>: owing less than this is not repaid</td></tr>
 <tr><td><code>jump</code></td><td>10</td><td><code>'catch-up'</code>: owing more than this is closed by one seek (no cues fire, the way a seek never fires them), not by racing on</td></tr>
@@ -1757,10 +1757,12 @@ and the first playing frame is time 0: there is nothing to be late for, only the
 <p>What <code>'catch-up'</code> does: the difference is added to that frame's step, so cues, holds and loops behave as in normal playback
 (a hold still stops the show). An <code>epoch</code> in the past is a late start: a machine restarted at 20:07 for a show that began at 20:00
 lands seven minutes in. A pause, a hold and the end of the show are the show standing still on purpose, so they are not drift:
-whatever was owed at that moment is forgiven (<code>forgiven</code>) and counting resumes from where the show stands. Running ahead is
-reported (a negative <code>behind</code>) and never pulled back. <code>reset()</code> starts the counting over; an <code>epoch</code> still in the future survives it.</p>
+whatever was owed at that moment is forgiven (<code>forgiven</code>) and counting resumes from where the show stands. Running ahead
+of the wall clock (a negative <code>behind</code>) is only reported in <code>'warn'</code>; <code>'catch-up'</code> holds the show back for it (<code>held</code>): it waits for the
+clock and never runs backwards, which also cancels the extra 0.1 s frame the loop's heartbeat adds right after a stall.
+<code>reset()</code> starts the counting over; an <code>epoch</code> still in the future survives it.</p>
 <p><code>drift()</code> answers <code>null</code> when there is no anchor, otherwise <code>behind</code> (seconds slower than the wall clock; negative = ahead),
-<code>lost</code> (what the clamp, or any stall, cost), <code>repaid</code>, <code>forgiven</code>, <code>stalls</code>, <code>worst</code> (the longest wall-clock gap between two
+<code>lost</code> (what the clamp, or any stall, cost), <code>repaid</code>, <code>held</code>, <code>forgiven</code>, <code>stalls</code>, <code>worst</code> (the longest wall-clock gap between two
 frames), <code>frames</code>, <code>jumps</code>, <code>started</code>, <code>waiting</code>, <code>startsIn</code>, <code>epoch</code>, <code>mode</code>, and <code>text</code>, one line for the desk or the monitor.
 If you drive the timeline from a manual or test loop, give <code>anchor()</code> the same fake clock as <code>now</code>, otherwise it measures real time.</p>
 <h3 id="show-control-the-console">The console<a class="anchor" href="#show-control-the-console" aria-label="Link to this section">#</a></h3>

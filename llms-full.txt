@@ -394,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 820 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 822 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -2176,7 +2176,7 @@ and the first playing frame is time 0: there is nothing to be late for, only the
 
 | option | default | meaning |
 |---|---|---|
-| `mode` | `'warn'` | `'warn'` counts and tells, and never moves `t`. `'catch-up'` gives back what was lost |
+| `mode` | `'warn'` | `'warn'` counts and tells, and never moves `t`. `'catch-up'` gives back what was lost, and waits when it runs ahead |
 | `warnAt` | 1 | seconds behind at which `onDrift` hears `'behind'` (and `console.warn` if nobody listens); it hears `'recovered'` below half of it |
 | `tolerance` | 0.05 | `'catch-up'`: owing less than this is not repaid |
 | `jump` | 10 | `'catch-up'`: owing more than this is closed by one seek (no cues fire, the way a seek never fires them), not by racing on |
@@ -2188,11 +2188,13 @@ and the first playing frame is time 0: there is nothing to be late for, only the
 What `'catch-up'` does: the difference is added to that frame's step, so cues, holds and loops behave as in normal playback
 (a hold still stops the show). An `epoch` in the past is a late start: a machine restarted at 20:07 for a show that began at 20:00
 lands seven minutes in. A pause, a hold and the end of the show are the show standing still on purpose, so they are not drift:
-whatever was owed at that moment is forgiven (`forgiven`) and counting resumes from where the show stands. Running ahead is
-reported (a negative `behind`) and never pulled back. `reset()` starts the counting over; an `epoch` still in the future survives it.
+whatever was owed at that moment is forgiven (`forgiven`) and counting resumes from where the show stands. Running ahead
+of the wall clock (a negative `behind`) is only reported in `'warn'`; `'catch-up'` holds the show back for it (`held`): it waits for the
+clock and never runs backwards, which also cancels the extra 0.1 s frame the loop's heartbeat adds right after a stall.
+`reset()` starts the counting over; an `epoch` still in the future survives it.
 
 `drift()` answers `null` when there is no anchor, otherwise `behind` (seconds slower than the wall clock; negative = ahead),
-`lost` (what the clamp, or any stall, cost), `repaid`, `forgiven`, `stalls`, `worst` (the longest wall-clock gap between two
+`lost` (what the clamp, or any stall, cost), `repaid`, `held`, `forgiven`, `stalls`, `worst` (the longest wall-clock gap between two
 frames), `frames`, `jumps`, `started`, `waiting`, `startsIn`, `epoch`, `mode`, and `text`, one line for the desk or the monitor.
 If you drive the timeline from a manual or test loop, give `anchor()` the same fake clock as `now`, otherwise it measures real time.
 

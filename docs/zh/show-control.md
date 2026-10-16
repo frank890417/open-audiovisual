@@ -197,7 +197,7 @@ createShow({ world, timeline: { total: 120, anchor: { mode: 'catch-up', jump: 5 
 
 | 選項 | 預設 | 意義 |
 |---|---|---|
-| `mode` | `'warn'` | `'warn'` 只計數和通知，絕不動 `t`。`'catch-up'` 把漏掉的追回來 |
+| `mode` | `'warn'` | `'warn'` 只計數和通知，絕不動 `t`。`'catch-up'` 把漏掉的追回來，超前時則等牆鐘 |
 | `warnAt` | 1 | 慢了幾秒時 `onDrift` 收到 `'behind'`（沒人聽就 `console.warn`）；降到一半以下收到 `'recovered'` |
 | `tolerance` | 0.05 | `'catch-up'`：欠得比這少就不補 |
 | `jump` | 10 | `'catch-up'`：欠超過這麼多秒，用一次 seek 補上（cue 不會觸發，跟 seek 從不觸發 cue 一樣），不邊播邊追 |
@@ -206,9 +206,9 @@ createShow({ world, timeline: { total: 120, anchor: { mode: 'catch-up', jump: 5 
 | `now` | `Date.now` | 時鐘，單位毫秒；測試或手動迴圈用的假時鐘，傳同一個進來 |
 | `onDrift` | 無 | `'behind'`、`'recovered'`、`'jump'` 時呼叫 `cb({ kind, …drift() })`；`timeline.onDrift(cb)` 可以再加 |
 
-`'catch-up'` 做的事：把差額加進那一個影格的步長，所以 cue、hold 和 loop 都跟正常播放一樣（hold 照樣會把演出停住）。過去的 `epoch` 就是晚到的開演：為了 20:00 開演的節目，在 20:07 重開機的那台機器，會直接落在第七分鐘。暫停、hold 和演出結束，都是演出刻意停下來，不算漂移：停下來那一刻欠的帳一筆勾銷（`forgiven`），從演出停住的位置重新計。超前只回報（`behind` 為負），從不往回拉。`reset()` 讓計數重來；還在未來的 `epoch` 會留著。
+`'catch-up'` 做的事：把差額加進那一個影格的步長，所以 cue、hold 和 loop 都跟正常播放一樣（hold 照樣會把演出停住）。過去的 `epoch` 就是晚到的開演：為了 20:00 開演的節目，在 20:07 重開機的那台機器，會直接落在第七分鐘。暫停、hold 和演出結束，都是演出刻意停下來，不算漂移：停下來那一刻欠的帳一筆勾銷（`forgiven`），從演出停住的位置重新計。超前於牆鐘（`behind` 為負）時，`'warn'` 只回報；`'catch-up'` 會把演出慢下來等牆鐘（`held`）：只會等，不會倒退，這也抵銷了卡頓之後 Loop 的心跳多補的那個 0.1 秒影格。`reset()` 讓計數重來；還在未來的 `epoch` 會留著。
 
-`drift()` 沒有錨定時回傳 `null`，否則回傳 `behind`（比牆鐘慢幾秒，負數 = 超前）、`lost`（Loop 夾 dt 或任何停頓吃掉的）、`repaid`、`forgiven`、`stalls`、`worst`（兩個影格之間最長的牆鐘間隔）、`frames`、`jumps`、`started`、`waiting`、`startsIn`、`epoch`、`mode`，以及 `text`：給導演台或後台看的一行摘要。如果你是用手動或測試用的迴圈在推時間軸，記得把同一個假時鐘當成 `now` 傳給 `anchor()`，不然它量的是真實時間。
+`drift()` 沒有錨定時回傳 `null`，否則回傳 `behind`（比牆鐘慢幾秒，負數 = 超前）、`lost`（Loop 夾 dt 或任何停頓吃掉的）、`repaid`、`held`、`forgiven`、`stalls`、`worst`（兩個影格之間最長的牆鐘間隔）、`frames`、`jumps`、`started`、`waiting`、`startsIn`、`epoch`、`mode`，以及 `text`：給導演台或後台看的一行摘要。如果你是用手動或測試用的迴圈在推時間軸，記得把同一個假時鐘當成 `now` 傳給 `anchor()`，不然它量的是真實時間。
 
 ## 控台
 
