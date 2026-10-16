@@ -18,7 +18,7 @@
 //     dt,       // seconds since the previous frame
 //     dur,      // the segment's length in seconds
 //     T,        // show time in seconds
-//     segment,  // the segment (id, title, start, end, dur, cues, acts, hold, linger, index)
+//     segment,  // the segment (id, title, start, end, dur, cues, acts, hold, linger, index, meta)
 //     api,      // the api object (so param() and cue(), which are not handed it, can reach the show)
 //     cue(name),// where a cue of THIS segment sits, as a progress p to compare with ctx.p ('peak' or 'dusk.peak'); NaN if unknown
 //     cueT(name),// the same cue in show seconds

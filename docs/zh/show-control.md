@@ -78,7 +78,7 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 - 帶 `hold: true` 的場景，播放到它的結尾就停住，直到被放行（Space、→）：見 [Hold](score.md#hold)
 - `loop: true` 播到 `total` 就繞回開頭繼續播；`loop: 'scene'` 重複播放頭所在的場景，直到你往下走：見[曲線、loop、cue、錄製](#curves-loop-cues-recording)
 - `reset()` 回到 `start`（預設 0，所以 −30 的開演前待命場景要用 scrubber 才到得了。傳 `start: -30`（或 `start: 'first'`，意思是「第一個場景」），按 R 才會回到那裡）
-- 帶 `score` 時，場景、總長和起點都從[總譜](score.md)來，這時自動化曲線讀的是 `score.baseTime(t)`，用 `scale: 0.5` 衍生出來的版本會把曲線一起拉伸
+- 帶 `score` 時，場景、總長和起點都從[總譜](score.md)來，這時自動化曲線讀的是 `score.baseTime(t)`，用 `scale: 0.5` 衍生出來的版本會把曲線一起拉伸。曲線也可以改成以段落為單位來寫，這樣換一個長度不同的 cut 也不會失準：見 [Lane](#lanes-curves-written-per-segment)
 
 | 成員 | 作用 |
 |---|---|
@@ -96,6 +96,9 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 | `loop`、`onLoop(cb)`、`loopRange()`、`loops` | 讓整段、場景或一段範圍繞回去重播 |
 | `record(key, source)`、`stopRecording()`、`onRecord(cb)`、`mergeTake(key, take)` | 把一個數值來源錄進一條 lane |
 | `onSeek(cb)` | 播放頭被手動移動時呼叫 `cb(t, kind)`（`'seek'`、`'jump'`、`'reset'`），播放中不會呼叫 |
+| `lanePos(t)`, `laneTime(id, p)`, `lanePlan()`, `lanes()` | automation 的秒 ↔（段落 id，段內進度 `p`）、段落表，以及把整份 automation 改寫成以段落為單位 |
+| `exportAutomation(opts)`, `importAutomation(doc, opts)` | 把 automation 匯出成純 JSON（用秒或以段落為單位），以及匯入回來 |
+| `anchor(epoch, opts)`, `unanchor()`, `drift()`, `onDrift(cb)` | 讀牆鐘：計算演出比牆鐘慢了多少、警告、追回來、準時開演 |
 | `layer` | `(key, value, t) => value`：在覆寫之前改寫參數值（導演的 `param()` 就接在這裡） |
 | `t`, `playing`, `holding`, `rate`, `total`, `start`, `scenes`, `automation`, `score` | 可讀也可寫的狀態 |
 
@@ -132,6 +135,80 @@ show.timeline.onSceneChange((i, scene) => {
   show.midi?.cc(20, i, 16);                                  // tell the lighting desk
 });
 ```
+
+### Lane：以段落為單位寫曲線
+
+有[總譜](score.md)時，演出是一串長度會改變的段落，而用絕對秒數寫的曲線，只要其中一段變長就失準了。改成把曲線寫在段落上。某個 key 的 automation 可以是一個物件：key 是段落 id，值是關鍵影格 `[p, value, curve?]`，`p` 是這一段走了多少，0 到 1。
+
+```js
+const show = await createShow({
+  world,
+  score: { cuts, cut: 'full' },
+  timeline: { automation: {
+    haze: { dawn: [[0, 0.1], [1, 0.4, 'ease']],                  // dawn: 0.1 → 0.4, slow-fast-slow
+            noon: [[0, 0.4], [0.6, 0.9], [1, 0.5, 'out']],
+            dusk: 0.5 },                                           // a number holds the whole segment
+    speed: [[0, 0.3], [30, 1.2], [120, 0.4]],                      // absolute seconds still work, in the same object
+  } },
+});
+```
+
+一個點 `[p, v, curve]` 就是關鍵影格 `[段首 + p × 段長, v, curve]`，沒有別的規則：時間軸在建立時就把每條 lane 編譯好，`timeline.automation` 裡放的是一般的絕對秒數影格，所以 `valueAt`、錄製、`mergeTake` 和控台的行為都跟以前一樣。
+
+- **任何 cut。** lane 是對著總譜的*基準 cut*（衍生 cut 的來源）編譯的。長度不同的 cut 會用自己的長度讀同一條 lane，所以 `(dawn, 0.5)` 在每個 cut 裡都是 dawn 走到一半；衍生 cut（`from` + `scale`）會像絕對秒數影格一樣被拉伸。差別在結構、不只在長度的兩個 cut，也可以共用同一條 lane。
+- **接縫。** 一段的最後一點和下一段的第一點之間，數值像任何兩個影格之間一樣滑過去（用抵達那一點的曲線）。要無縫，就在 `p: 1` 和下一段的 `p: 0` 寫同一個值。同一個時刻有兩個不同的值，就是跳變。
+- **這個 cut 沒有的段落。** 總譜裡別的 cut 有、這個 cut 沒有的 id 會被略過，所以一條 lane 可以同時服務少一段的 cut。任何 cut 都沒有的 id（多半是打錯字）會丟錯，訊息寫明 key 和 id；`p` 超出 0…1 或順序倒退也會丟錯，寫明 key、段落和第幾個點。
+- **沒有總譜時**，場景就是段落：一個場景持續到下一個場景開始。
+
+### 存取 automation
+
+`record()` 把一段 take 寫進記憶體裡的 `timeline.automation`。要留下來，就匯出成純 JSON，之後再匯入這條時間軸或另一條：
+
+```js
+const doc = timeline.exportAutomation({ as: 'segments' });           // lanes per segment: still right on another cut
+localStorage.setItem('automation', JSON.stringify(doc));
+// later:
+timeline.importAutomation(localStorage.getItem('automation'));        // a string or the object
+```
+
+```json
+{ "format": "openav-automation", "version": 1, "cut": "full", "as": "segments",
+  "automation": { "haze": { "dawn": [[0, 0.1], [1, 0.4, "ease"]], "noon": [[0, 0.4], [1, 0.5]] } } }
+```
+
+`exportAutomation({ keys, as, precision })` 回傳一份拷貝。`as: 'seconds'`（預設）把每個 key 寫成基準 cut 秒數的影格；`as: 'segments'` 把每個 key 寫成 lane，`p` 四捨五入到 `precision` 位小數（預設 9，`null` 則保留所有位數）。兩者互為反函數：lane 編譯回來是同一條曲線。落在演出之外的影格沒有所屬的段落，只能匯出成秒數；曲線是函式的影格根本寫不進 JSON：兩種情況都會丟錯，訊息寫明是哪個 key。`cut` 是基準 cut 的 id。
+
+`importAutomation(doc, { keys, replace, ignoreCut })` 吃這份檔案，或一張光溜溜的 `{ key: 影格 | lane }`。檔案裡有的 key 會被換掉（`keys` 可以再縮小範圍；`replace: true` 連檔案沒提到的 key 也一併清掉）。它是全有或全無：有任何一個 key 壞了，就什麼都不會變。秒數屬於它被寫下時的 cut，所以 `cut` 和這條時間軸的基準 cut 不同的檔案會被拒絕（`ignoreCut: true` 可以蓋過）；lane 不綁 cut。
+
+底層的換算是公開的。`lanePos(t)` 回答某一秒的 `{ id, index, p }`（演出之外是 `null`；段界屬於從那裡開始的那一段），`laneTime(id, p)` 回答那一秒，`lanePlan()` 是段落表，`lanes()` 是以段落為單位寫的整份 automation。它們用的是 *automation 的秒*，也就是 `timeline.automation` 裡和 `onRecord` 的 `from`/`to` 用的那種。要換算播放頭本身的演出秒，用總譜：`score.locate(T)` 和 `score.timeAt(id, p)`（[Score](score.md#the-score)）。純函式 `compileLane`、`decompileLane`、`lanePos`、`laneTime` 也有匯出，給手上有段落表 `[{ id, start, end }]`（`score.rootSegments`）、沒有時間軸的工具用。
+
+### 牆鐘：anchor 與 drift
+
+影格迴圈把 `dt` 夾在 0.1 秒（[架構](architecture.md#the-frame-loop)）。頁面卡了半秒，演出只走 0.1 秒，就比牆鐘慢了 0.4 秒。短的演出沒人會發現；一整晚的裝置，卻沒有人在場看它到底漏了多少。`anchor()` 讓時間軸在每個播放中的影格讀牆鐘（`Date.now`，毫秒），比較牆鐘走了多久、演出走了多少。不呼叫就什麼都不會發生：沒有錨定的時間軸從來不讀鐘。
+
+```js
+timeline.anchor();                                                       // count only (mode 'warn')
+timeline.anchor(Date.parse('2026-10-24T20:00:00+08:00'), { mode: 'catch-up' });   // start at 20:00 sharp, and stay on the clock
+timeline.drift().text;   // "0.42 s behind the wall clock · 7 stalls cost 1.30 s (worst gap 0.52 s) · caught up 0.88 s"
+createShow({ world, timeline: { total: 120, anchor: { mode: 'catch-up', jump: 5 } } });   // the same, from the options
+```
+
+`anchor(epoch?, opts)`：`epoch` 是演出時間 0 對應的牆鐘時刻，可以是毫秒、`Date` 或 ISO 字串。不給的話，第一個播放的影格就是時間 0：沒有什麼可以遲到，只計算那之後的停頓。
+
+| 選項 | 預設 | 意義 |
+|---|---|---|
+| `mode` | `'warn'` | `'warn'` 只計數和通知，絕不動 `t`。`'catch-up'` 把漏掉的追回來，超前時則等牆鐘 |
+| `warnAt` | 1 | 慢了幾秒時 `onDrift` 收到 `'behind'`（沒人聽就 `console.warn`）；降到一半以下收到 `'recovered'` |
+| `tolerance` | 0.05 | `'catch-up'`：欠得比這少就不補 |
+| `jump` | 10 | `'catch-up'`：欠超過這麼多秒，用一次 seek 補上（cue 不會觸發，跟 seek 從不觸發 cue 一樣），不邊播邊追 |
+| `wait` | true | `'catch-up'`：`epoch` 在未來時，演出站著不動（播放中但不前進）等到那一刻 |
+| `stall` | 0.02 | 牆鐘時間比 `dt` 長超過這麼多秒的影格算一次停頓（只影響計數） |
+| `now` | `Date.now` | 時鐘，單位毫秒；測試或手動迴圈用的假時鐘，傳同一個進來 |
+| `onDrift` | 無 | `'behind'`、`'recovered'`、`'jump'` 時呼叫 `cb({ kind, …drift() })`；`timeline.onDrift(cb)` 可以再加 |
+
+`'catch-up'` 做的事：把差額加進那一個影格的步長，所以 cue、hold 和 loop 都跟正常播放一樣（hold 照樣會把演出停住）。過去的 `epoch` 就是晚到的開演：為了 20:00 開演的節目，在 20:07 重開機的那台機器，會直接落在第七分鐘。暫停、hold 和演出結束，都是演出刻意停下來，不算漂移：停下來那一刻欠的帳一筆勾銷（`forgiven`），從演出停住的位置重新計。超前於牆鐘（`behind` 為負）時，`'warn'` 只回報；`'catch-up'` 會把演出慢下來等牆鐘（`held`）：只會等，不會倒退，這也抵銷了卡頓之後 Loop 的心跳多補的那個 0.1 秒影格。`reset()` 讓計數重來；還在未來的 `epoch` 會留著。
+
+`drift()` 沒有錨定時回傳 `null`，否則回傳 `behind`（比牆鐘慢幾秒，負數 = 超前）、`lost`（Loop 夾 dt 或任何停頓吃掉的）、`repaid`、`held`、`forgiven`、`stalls`、`worst`（兩個影格之間最長的牆鐘間隔）、`frames`、`jumps`、`started`、`waiting`、`startsIn`、`epoch`、`mode`，以及 `text`：給導演台或後台看的一行摘要。如果你是用手動或測試用的迴圈在推時間軸，記得把同一個假時鐘當成 `now` 傳給 `anchor()`，不然它量的是真實時間。
 
 ## 控台
 

@@ -43,8 +43,11 @@ A cut is one version of the show. It has an `id`, an optional `title`, and eithe
 | `linger` | seconds the segment's module keeps running after the segment ends (a decay, a tail). Default 0 |
 | `hold` | playback stops at the end of this segment and waits for the operator ([Hold](#hold)) |
 | `module` | the name of the module that performs it, when that is not the segment's own id |
+| `meta` | anything else the work hangs on a segment (a layer, a palette, an event window): an object the score does not read and hands back as `segment.meta`. Other fields the score does not know are kept in `meta` too; an explicit `meta` entry wins |
 
 A derived cut scales `dur`, `linger` and `{ s }` cues, so a cue stays in the same place in the music. The ratio cues did not need to move.
+
+`meta` is plain data to the score: it is copied one level deep when the cut is built (changing your source object afterwards changes nothing), a derived cut shares its base cut's `meta`, and a module reads it as `ctx.segment.meta`. Treat it as read-only. `segment.meta` is always an object, `{}` when there is none; a `meta` that is not an object is a `ScoreError`.
 
 A cut is checked when the score is built. Duplicate ids, a `dur` of 0 or below, a `from` that is not a cut, a `scale` of 0 or below, a cut derived from itself, a cue outside its segment, `acts` that are not strings: each throws a `ScoreError` that names the cut, the segment and the reason, and lists every problem at once. Nothing half-valid can reach the stage.
 
@@ -63,17 +66,19 @@ const score = new Score({ cuts, cut: 'full' });      // cut defaults to the firs
 | `cueTime('dusk')` | a moment in show seconds: `'dusk'` is the segment's start, `'dusk.end'` its end, `'dusk.glow'` a cue. `NaN` for anything unknown |
 | `cuesBetween(T0, T1)` | the cues a playhead passed from `T0` to `T1`: those with `T0 < time ≤ T1`, in time order. Nothing when `T1 ≤ T0` |
 | `cues()` | every cue of the cut in time order, each with its number `n` |
-| `scenes()` | the segments as a `scenes` array for the [timeline](show-control.md#timeline) (with `acts`, `hold` and `cues`) |
+| `scenes()` | the segments as a `scenes` array for the [timeline](show-control.md#timeline) (with `acts`, `hold`, `cues` and `meta`) |
 | `validate()` | throws a `ScoreError` when anything is wrong; returns `true` otherwise (the constructor already calls it) |
 | `cut`, `title`, `segments`, `startT` | the active cut, and where `reset` goes |
 | `cuts` | every cut as `{ id, title, total, from, scale, base }`, for a version picker |
 | `scale`, `base`, `baseTime(T)` | the cut's total scale against the cut it was derived from, that cut's id, and `T` expressed on it |
+| `locate(T)`, `timeAt(id, p)` | show time ↔ the segment and how far through it: `locate(45)` is `{ id: 'noon', index: 2, p: 0.5, t: 15 }` (`t` is seconds into the segment; outside the show `p` is below 0 or above 1), and `timeAt('noon', 0.5)` is its inverse in this cut's seconds (`NaN` for an id this cut lacks) |
+| `rootSegments`, `allSegmentIds()` | the segments of the cut this one was derived from, in that cut's seconds (the ones automation is written against), and the ids of every cut |
 
 ### Automation on a derived cut
 
 Automation curves are written once, against the cut they were derived from, and a derived cut stretches them. `timeline.valueAt(key, t)` reads the curve at `score.baseTime(t)`, which is `t / scale`. On the short cut above, `t = 20` reads the curve at 40. A cut that is not derived has scale 1 and nothing changes.
 
-If two cuts differ in structure and not just in length, do not share automation between them. Drive the params from the segment modules instead ([`param()`](#segment-modules)), where `ctx.p` already scales for free.
+If two cuts differ in structure and not just in length, do not share automation written in absolute seconds between them. Write it per segment instead: `automation: { haze: { dusk: [[0, 0.2], [1, 0.9, 'ease']] } }` (`p` is the progress through the segment). The timeline compiles it against each root cut's own segment lengths, a cut that lacks a segment skips it, and a derived cut stretches it as above ([Lanes](show-control.md#lanes-curves-written-per-segment)). Or drive the params from the segment modules ([`param()`](#segment-modules)), where `ctx.p` already scales for free.
 
 ## Cues
 
@@ -120,7 +125,7 @@ const dusk = {
 | `dt` | seconds since the previous frame |
 | `dur` | the segment's length in seconds |
 | `T` | show time in seconds |
-| `segment` | the segment: `id`, `title`, `start`, `end`, `dur`, `cues`, `acts`, `hold`, `linger`, `index` |
+| `segment` | the segment: `id`, `title`, `start`, `end`, `dur`, `cues`, `acts`, `hold`, `linger`, `index`, `meta` |
 | `cue(name)`, `cueT(name)` | where a cue sits, as a progress and in show seconds (`NaN` when unknown) |
 | `phase` | `'active'`, `'linger'`, or `'failed'` (only inside `exit()` after a crash) |
 | `holding`, `held` | waiting at a hold, and for how many seconds |

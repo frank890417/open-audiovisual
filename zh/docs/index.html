@@ -1227,7 +1227,7 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <li>帶 <code>hold: true</code> 的場景，播放到它的結尾就停住，直到被放行（Space、→）：見 <a href="#score-hold">Hold</a></li>
 <li><code>loop: true</code> 播到 <code>total</code> 就繞回開頭繼續播；<code>loop: 'scene'</code> 重複播放頭所在的場景，直到你往下走：見<a href="#show-control-curves-loop-cues-recording">曲線、loop、cue、錄製</a></li>
 <li><code>reset()</code> 回到 <code>start</code>（預設 0，所以 −30 的開演前待命場景要用 scrubber 才到得了。傳 <code>start: -30</code>（或 <code>start: 'first'</code>，意思是「第一個場景」），按 R 才會回到那裡）</li>
-<li>帶 <code>score</code> 時，場景、總長和起點都從<a href="#score">總譜</a>來，這時自動化曲線讀的是 <code>score.baseTime(t)</code>，用 <code>scale: 0.5</code> 衍生出來的版本會把曲線一起拉伸</li>
+<li>帶 <code>score</code> 時，場景、總長和起點都從<a href="#score">總譜</a>來，這時自動化曲線讀的是 <code>score.baseTime(t)</code>，用 <code>scale: 0.5</code> 衍生出來的版本會把曲線一起拉伸。曲線也可以改成以段落為單位來寫，這樣換一個長度不同的 cut 也不會失準：見 <a href="#show-control-lanes-curves-written-per-segment">Lane</a></li>
 </ul>
 <div class="table-wrap"><table>
 <thead><tr><th>成員</th><th>作用</th></tr></thead>
@@ -1246,6 +1246,9 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <tr><td><code>loop</code>、<code>onLoop(cb)</code>、<code>loopRange()</code>、<code>loops</code></td><td>讓整段、場景或一段範圍繞回去重播</td></tr>
 <tr><td><code>record(key, source)</code>、<code>stopRecording()</code>、<code>onRecord(cb)</code>、<code>mergeTake(key, take)</code></td><td>把一個數值來源錄進一條 lane</td></tr>
 <tr><td><code>onSeek(cb)</code></td><td>播放頭被手動移動時呼叫 <code>cb(t, kind)</code>（<code>'seek'</code>、<code>'jump'</code>、<code>'reset'</code>），播放中不會呼叫</td></tr>
+<tr><td><code>lanePos(t)</code>, <code>laneTime(id, p)</code>, <code>lanePlan()</code>, <code>lanes()</code></td><td>automation 的秒 ↔（段落 id，段內進度 <code>p</code>）、段落表，以及把整份 automation 改寫成以段落為單位</td></tr>
+<tr><td><code>exportAutomation(opts)</code>, <code>importAutomation(doc, opts)</code></td><td>把 automation 匯出成純 JSON（用秒或以段落為單位），以及匯入回來</td></tr>
+<tr><td><code>anchor(epoch, opts)</code>, <code>unanchor()</code>, <code>drift()</code>, <code>onDrift(cb)</code></td><td>讀牆鐘：計算演出比牆鐘慢了多少、警告、追回來、準時開演</td></tr>
 <tr><td><code>layer</code></td><td><code>(key, value, t) =&gt; value</code>：在覆寫之前改寫參數值（導演的 <code>param()</code> 就接在這裡）</td></tr>
 <tr><td><code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>scenes</code>, <code>automation</code>, <code>score</code></td><td>可讀也可寫的狀態</td></tr>
 </tbody>
@@ -1265,6 +1268,58 @@ timeline.onRecord(({ key }) =&gt; params.clearOverride(key));      <span class="
   <span class="tk">if</span> (scene.id === <span class="ts">'storm'</span>) show.stage.activate(<span class="ts">'storm'</span>);   <span class="tc">// switch worlds</span>
   show.midi?.cc(20, i, 16);                                  <span class="tc">// tell the lighting desk</span>
 });</code></pre></div>
+<h4 id="show-control-lanes-curves-written-per-segment">Lane：以段落為單位寫曲線<a class="anchor" href="#show-control-lanes-curves-written-per-segment" aria-label="這一節的連結">#</a></h4>
+<p>有<a href="#score">總譜</a>時，演出是一串長度會改變的段落，而用絕對秒數寫的曲線，只要其中一段變長就失準了。改成把曲線寫在段落上。某個 key 的 automation 可以是一個物件：key 是段落 id，值是關鍵影格 <code>[p, value, curve?]</code>，<code>p</code> 是這一段走了多少，0 到 1。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world,
+  score: { cuts, cut: <span class="ts">'full'</span> },
+  timeline: { automation: {
+    haze: { dawn: [[0, 0.1], [1, 0.4, <span class="ts">'ease'</span>]],                  <span class="tc">// dawn: 0.1 → 0.4, slow-fast-slow</span>
+            noon: [[0, 0.4], [0.6, 0.9], [1, 0.5, <span class="ts">'out'</span>]],
+            dusk: 0.5 },                                           <span class="tc">// a number holds the whole segment</span>
+    speed: [[0, 0.3], [30, 1.2], [120, 0.4]],                      <span class="tc">// absolute seconds still work, in the same object</span>
+  } },
+});</code></pre></div>
+<p>一個點 <code>[p, v, curve]</code> 就是關鍵影格 <code>[段首 + p × 段長, v, curve]</code>，沒有別的規則：時間軸在建立時就把每條 lane 編譯好，<code>timeline.automation</code> 裡放的是一般的絕對秒數影格，所以 <code>valueAt</code>、錄製、<code>mergeTake</code> 和控台的行為都跟以前一樣。</p>
+<ul>
+<li><strong>任何 cut。</strong> lane 是對著總譜的<em>基準 cut</em>（衍生 cut 的來源）編譯的。長度不同的 cut 會用自己的長度讀同一條 lane，所以 <code>(dawn, 0.5)</code> 在每個 cut 裡都是 dawn 走到一半；衍生 cut（<code>from</code> + <code>scale</code>）會像絕對秒數影格一樣被拉伸。差別在結構、不只在長度的兩個 cut，也可以共用同一條 lane。</li>
+<li><strong>接縫。</strong> 一段的最後一點和下一段的第一點之間，數值像任何兩個影格之間一樣滑過去（用抵達那一點的曲線）。要無縫，就在 <code>p: 1</code> 和下一段的 <code>p: 0</code> 寫同一個值。同一個時刻有兩個不同的值，就是跳變。</li>
+<li><strong>這個 cut 沒有的段落。</strong> 總譜裡別的 cut 有、這個 cut 沒有的 id 會被略過，所以一條 lane 可以同時服務少一段的 cut。任何 cut 都沒有的 id（多半是打錯字）會丟錯，訊息寫明 key 和 id；<code>p</code> 超出 0…1 或順序倒退也會丟錯，寫明 key、段落和第幾個點。</li>
+<li><strong>沒有總譜時</strong>，場景就是段落：一個場景持續到下一個場景開始。</li>
+</ul>
+<h4 id="show-control-saving-and-loading-automation">存取 automation<a class="anchor" href="#show-control-saving-and-loading-automation" aria-label="這一節的連結">#</a></h4>
+<p><code>record()</code> 把一段 take 寫進記憶體裡的 <code>timeline.automation</code>。要留下來，就匯出成純 JSON，之後再匯入這條時間軸或另一條：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> doc = timeline.exportAutomation({ as: <span class="ts">'segments'</span> });           <span class="tc">// lanes per segment: still right on another cut</span>
+localStorage.setItem(<span class="ts">'automation'</span>, JSON.stringify(doc));
+<span class="tc">// later:</span>
+timeline.importAutomation(localStorage.getItem(<span class="ts">'automation'</span>));        <span class="tc">// a string or the object</span></code></pre></div>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-json">{ <span class="ts">"format"</span>: <span class="ts">"openav-automation"</span>, <span class="ts">"version"</span>: 1, <span class="ts">"cut"</span>: <span class="ts">"full"</span>, <span class="ts">"as"</span>: <span class="ts">"segments"</span>,
+  <span class="ts">"automation"</span>: { <span class="ts">"haze"</span>: { <span class="ts">"dawn"</span>: [[0, 0.1], [1, 0.4, <span class="ts">"ease"</span>]], <span class="ts">"noon"</span>: [[0, 0.4], [1, 0.5]] } } }</code></pre></div>
+<p><code>exportAutomation({ keys, as, precision })</code> 回傳一份拷貝。<code>as: 'seconds'</code>（預設）把每個 key 寫成基準 cut 秒數的影格；<code>as: 'segments'</code> 把每個 key 寫成 lane，<code>p</code> 四捨五入到 <code>precision</code> 位小數（預設 9，<code>null</code> 則保留所有位數）。兩者互為反函數：lane 編譯回來是同一條曲線。落在演出之外的影格沒有所屬的段落，只能匯出成秒數；曲線是函式的影格根本寫不進 JSON：兩種情況都會丟錯，訊息寫明是哪個 key。<code>cut</code> 是基準 cut 的 id。</p>
+<p><code>importAutomation(doc, { keys, replace, ignoreCut })</code> 吃這份檔案，或一張光溜溜的 <code>{ key: 影格 | lane }</code>。檔案裡有的 key 會被換掉（<code>keys</code> 可以再縮小範圍；<code>replace: true</code> 連檔案沒提到的 key 也一併清掉）。它是全有或全無：有任何一個 key 壞了，就什麼都不會變。秒數屬於它被寫下時的 cut，所以 <code>cut</code> 和這條時間軸的基準 cut 不同的檔案會被拒絕（<code>ignoreCut: true</code> 可以蓋過）；lane 不綁 cut。</p>
+<p>底層的換算是公開的。<code>lanePos(t)</code> 回答某一秒的 <code>{ id, index, p }</code>（演出之外是 <code>null</code>；段界屬於從那裡開始的那一段），<code>laneTime(id, p)</code> 回答那一秒，<code>lanePlan()</code> 是段落表，<code>lanes()</code> 是以段落為單位寫的整份 automation。它們用的是 <em>automation 的秒</em>，也就是 <code>timeline.automation</code> 裡和 <code>onRecord</code> 的 <code>from</code>/<code>to</code> 用的那種。要換算播放頭本身的演出秒，用總譜：<code>score.locate(T)</code> 和 <code>score.timeAt(id, p)</code>（<a href="#score-the-score">Score</a>）。純函式 <code>compileLane</code>、<code>decompileLane</code>、<code>lanePos</code>、<code>laneTime</code> 也有匯出，給手上有段落表 <code>[{ id, start, end }]</code>（<code>score.rootSegments</code>）、沒有時間軸的工具用。</p>
+<h4 id="show-control-wall-clock-anchor-and-drift">牆鐘：anchor 與 drift<a class="anchor" href="#show-control-wall-clock-anchor-and-drift" aria-label="這一節的連結">#</a></h4>
+<p>影格迴圈把 <code>dt</code> 夾在 0.1 秒（<a href="#architecture-the-frame-loop">架構</a>）。頁面卡了半秒，演出只走 0.1 秒，就比牆鐘慢了 0.4 秒。短的演出沒人會發現；一整晚的裝置，卻沒有人在場看它到底漏了多少。<code>anchor()</code> 讓時間軸在每個播放中的影格讀牆鐘（<code>Date.now</code>，毫秒），比較牆鐘走了多久、演出走了多少。不呼叫就什麼都不會發生：沒有錨定的時間軸從來不讀鐘。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">timeline.anchor();                                                       <span class="tc">// count only (mode 'warn')</span>
+timeline.anchor(Date.parse(<span class="ts">'2026-10-24T20:00:00+08:00'</span>), { mode: <span class="ts">'catch-up'</span> });   <span class="tc">// start at 20:00 sharp, and stay on the clock</span>
+timeline.drift().text;   <span class="tc">// "0.42 s behind the wall clock · 7 stalls cost 1.30 s (worst gap 0.52 s) · caught up 0.88 s"</span>
+createShow({ world, timeline: { total: 120, anchor: { mode: <span class="ts">'catch-up'</span>, jump: 5 } } });   <span class="tc">// the same, from the options</span></code></pre></div>
+<p><code>anchor(epoch?, opts)</code>：<code>epoch</code> 是演出時間 0 對應的牆鐘時刻，可以是毫秒、<code>Date</code> 或 ISO 字串。不給的話，第一個播放的影格就是時間 0：沒有什麼可以遲到，只計算那之後的停頓。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>選項</th><th>預設</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>mode</code></td><td><code>'warn'</code></td><td><code>'warn'</code> 只計數和通知，絕不動 <code>t</code>。<code>'catch-up'</code> 把漏掉的追回來，超前時則等牆鐘</td></tr>
+<tr><td><code>warnAt</code></td><td>1</td><td>慢了幾秒時 <code>onDrift</code> 收到 <code>'behind'</code>（沒人聽就 <code>console.warn</code>）；降到一半以下收到 <code>'recovered'</code></td></tr>
+<tr><td><code>tolerance</code></td><td>0.05</td><td><code>'catch-up'</code>：欠得比這少就不補</td></tr>
+<tr><td><code>jump</code></td><td>10</td><td><code>'catch-up'</code>：欠超過這麼多秒，用一次 seek 補上（cue 不會觸發，跟 seek 從不觸發 cue 一樣），不邊播邊追</td></tr>
+<tr><td><code>wait</code></td><td>true</td><td><code>'catch-up'</code>：<code>epoch</code> 在未來時，演出站著不動（播放中但不前進）等到那一刻</td></tr>
+<tr><td><code>stall</code></td><td>0.02</td><td>牆鐘時間比 <code>dt</code> 長超過這麼多秒的影格算一次停頓（只影響計數）</td></tr>
+<tr><td><code>now</code></td><td><code>Date.now</code></td><td>時鐘，單位毫秒；測試或手動迴圈用的假時鐘，傳同一個進來</td></tr>
+<tr><td><code>onDrift</code></td><td>無</td><td><code>'behind'</code>、<code>'recovered'</code>、<code>'jump'</code> 時呼叫 <code>cb({ kind, …drift() })</code>；<code>timeline.onDrift(cb)</code> 可以再加</td></tr>
+</tbody>
+</table></div>
+<p><code>'catch-up'</code> 做的事：把差額加進那一個影格的步長，所以 cue、hold 和 loop 都跟正常播放一樣（hold 照樣會把演出停住）。過去的 <code>epoch</code> 就是晚到的開演：為了 20:00 開演的節目，在 20:07 重開機的那台機器，會直接落在第七分鐘。暫停、hold 和演出結束，都是演出刻意停下來，不算漂移：停下來那一刻欠的帳一筆勾銷（<code>forgiven</code>），從演出停住的位置重新計。超前於牆鐘（<code>behind</code> 為負）時，<code>'warn'</code> 只回報；<code>'catch-up'</code> 會把演出慢下來等牆鐘（<code>held</code>）：只會等，不會倒退，這也抵銷了卡頓之後 Loop 的心跳多補的那個 0.1 秒影格。<code>reset()</code> 讓計數重來；還在未來的 <code>epoch</code> 會留著。</p>
+<p><code>drift()</code> 沒有錨定時回傳 <code>null</code>，否則回傳 <code>behind</code>（比牆鐘慢幾秒，負數 = 超前）、<code>lost</code>（Loop 夾 dt 或任何停頓吃掉的）、<code>repaid</code>、<code>held</code>、<code>forgiven</code>、<code>stalls</code>、<code>worst</code>（兩個影格之間最長的牆鐘間隔）、<code>frames</code>、<code>jumps</code>、<code>started</code>、<code>waiting</code>、<code>startsIn</code>、<code>epoch</code>、<code>mode</code>，以及 <code>text</code>：給導演台或後台看的一行摘要。如果你是用手動或測試用的迴圈在推時間軸，記得把同一個假時鐘當成 <code>now</code> 傳給 <code>anchor()</code>，不然它量的是真實時間。</p>
 <h3 id="show-control-the-console">控台<a class="anchor" href="#show-control-the-console" aria-label="這一節的連結">#</a></h3>
 <p><code>mountConsole(el, app, { layers, signals })</code>（<code>@openav/console</code>）會做出導演控台，<code>createShow()</code> 把它掛在側邊面板。<code>app</code> 就是 <code>createShow()</code> 回傳的 <code>show.app</code>（<code>timeline</code>、<code>params</code>、<code>mapper</code>、<code>signals</code>、<code>stage</code>、<code>midi</code>、<code>sound</code>、<code>audio</code>、<code>hands</code>、<code>pose</code>…），缺了哪個部分，對應的區塊就不顯示。傳入 <code>{ layers: false }</code> 或 <code>{ signals: false }</code>，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。</p>
 <p>鍵盤：<strong>Space</strong> 播放／暫停（停在 hold 時：放行）· <strong>→/←</strong> 下一個／上一個場景（停在 hold 時，<strong>→</strong> 放行）· <strong>R</strong> 重設 · <strong>T</strong> 演出模式 · <strong>F</strong> 全螢幕 · <strong>Esc</strong> 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，<em>字母鍵</em>歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。</p>
@@ -1493,9 +1548,11 @@ loop.start();</code></pre></div>
 <tr><td><code>linger</code></td><td>段落結束後，它的模組再繼續跑幾秒（餘韻、衰減的尾巴），預設 0</td></tr>
 <tr><td><code>hold</code></td><td>播放到這一段的段尾就停住，等操作者放行（<a href="#score-hold">Hold</a>）</td></tr>
 <tr><td><code>module</code></td><td>負責演出它的模組名稱，不是段落自己的 id 時才需要</td></tr>
+<tr><td><code>meta</code></td><td>作品想掛在段落上的任何其他資料（層、色盤、事件窗口）：總譜不讀的一個物件，以 <code>segment.meta</code> 原樣交還。總譜不認得的其他欄位也會一併放進 <code>meta</code>；明寫的 <code>meta</code> 同名項目優先</td></tr>
 </tbody>
 </table></div>
 <p>衍生 cut 會縮放 <code>dur</code>、<code>linger</code> 和 <code>{ s }</code> 形式的 cue，所以 cue 在音樂裡的位置不變。比例形式的 cue 本來就不需要動。</p>
+<p><code>meta</code> 對總譜來說就是純資料：建立 cut 時複製一層（之後再改你的來源物件，不會有任何影響），衍生 cut 和它的來源 cut 共用同一份 <code>meta</code>，模組用 <code>ctx.segment.meta</code> 讀。請當成唯讀。<code>segment.meta</code> 永遠是物件，沒有就是 <code>{}</code>；<code>meta</code> 不是物件會是 <code>ScoreError</code>。</p>
 <p>cut 在建立總譜時就會檢查。id 重複、<code>dur</code> 等於或小於 0、<code>from</code> 指到不存在的 cut、<code>scale</code> 等於或小於 0、cut 衍生自己、cue 落在段落外面、<code>acts</code> 不是字串，每一種都會丟出 <code>ScoreError</code>，訊息裡寫明是哪個 cut、哪一段、為什麼，而且一次把所有問題列出來。有問題的總譜上不了台。</p>
 <h3 id="score-the-score">總譜 Score<a class="anchor" href="#score-the-score" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Score } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
@@ -1509,16 +1566,18 @@ loop.start();</code></pre></div>
 <tr><td><code>cueTime('dusk')</code></td><td>以演出秒表示的某個時刻：<code>'dusk'</code> 是段落開頭，<code>'dusk.end'</code> 是段落結尾，<code>'dusk.glow'</code> 是 cue。不認得的名字回 <code>NaN</code></td></tr>
 <tr><td><code>cuesBetween(T0, T1)</code></td><td>播放頭從 <code>T0</code> 走到 <code>T1</code> 之間經過的 cue：時間落在 <code>T0 &lt; time ≤ T1</code> 的，依時間排序。<code>T1 ≤ T0</code> 時什麼也沒有</td></tr>
 <tr><td><code>cues()</code></td><td>整個 cut 的所有 cue，依時間排序，每個帶著編號 <code>n</code></td></tr>
-<tr><td><code>scenes()</code></td><td>把段落變成給<a href="#show-control-timeline">時間軸</a>用的 <code>scenes</code> 陣列（含 <code>acts</code>、<code>hold</code>、<code>cues</code>）</td></tr>
+<tr><td><code>scenes()</code></td><td>把段落變成給<a href="#show-control-timeline">時間軸</a>用的 <code>scenes</code> 陣列（含 <code>acts</code>、<code>hold</code>、<code>cues</code>、<code>meta</code>）</td></tr>
 <tr><td><code>validate()</code></td><td>有任何問題就丟 <code>ScoreError</code>，沒問題回 <code>true</code>（建構時已經呼叫過）</td></tr>
 <tr><td><code>cut</code>、<code>title</code>、<code>segments</code>、<code>startT</code></td><td>目前的 cut，以及 <code>reset</code> 要回到哪裡</td></tr>
 <tr><td><code>cuts</code></td><td>每個 cut 的 <code>{ id, title, total, from, scale, base }</code>，做版本選單用</td></tr>
 <tr><td><code>scale</code>、<code>base</code>、<code>baseTime(T)</code></td><td>這個 cut 相對於它最終衍生來源的總倍率、那個來源的 id，以及用來源 cut 表示的 <code>T</code></td></tr>
+<tr><td><code>locate(T)</code>、<code>timeAt(id, p)</code></td><td>演出時間 ↔ 所在的段落和走了多少：<code>locate(45)</code> 是 <code>{ id: 'noon', index: 2, p: 0.5, t: 15 }</code>（<code>t</code> 是段內第幾秒；演出之外 <code>p</code> 會小於 0 或大於 1），<code>timeAt('noon', 0.5)</code> 是它的反函數，用這個 cut 的秒數（這個 cut 沒有的 id 回 <code>NaN</code>）</td></tr>
+<tr><td><code>rootSegments</code>、<code>allSegmentIds()</code></td><td>這個 cut 衍生來源那個 cut 的段落，用那個 cut 的秒數（automation 就是對著它寫的），以及所有 cut 的 id</td></tr>
 </tbody>
 </table></div>
 <h4 id="score-automation-on-a-derived-cut">衍生 cut 上的自動化曲線<a class="anchor" href="#score-automation-on-a-derived-cut" aria-label="這一節的連結">#</a></h4>
 <p>自動化曲線只要對著它衍生來源的那個 cut 寫一次，衍生 cut 會把它一起拉伸。<code>timeline.valueAt(key, t)</code> 讀的是 <code>score.baseTime(t)</code> 處的曲線值，也就是 <code>t / scale</code>。在上面的短版裡，<code>t = 20</code> 讀的是曲線 40 秒處。沒有被衍生的 cut 倍率是 1，什麼都不會變。</p>
-<p>如果兩個 cut 的差別在結構而不只是長度，就不要讓它們共用自動化曲線。改用段落模組的 <a href="#score-segment-modules"><code>param()</code></a> 去驅動參數，那裡的 <code>ctx.p</code> 自己就會跟著縮放。</p>
+<p>如果兩個 cut 的差別在結構而不只是長度，就不要讓它們共用用絕對秒數寫的自動化曲線。改成以段落為單位來寫：<code>automation: { haze: { dusk: [[0, 0.2], [1, 0.9, 'ease']] } }</code>（<code>p</code> 是這一段走了多少）。時間軸會對每個基準 cut 自己的段落長度編譯它，缺了某一段的 cut 會略過那一段，衍生 cut 則照上面的方式把它拉伸（<a href="#show-control-lanes-curves-written-per-segment">Lane</a>）。或是改用段落模組的 <a href="#score-segment-modules"><code>param()</code></a> 去驅動參數，那裡的 <code>ctx.p</code> 自己就會跟著縮放。</p>
 <h3 id="score-cues">cue<a class="anchor" href="#score-cues" aria-label="這一節的連結">#</a></h3>
 <p>cue 是一個有名字的時刻：在 <code>noon</code> 段裡寫 <code>cues: { peak: 0.5 }</code>，就有了 <code>noon.peak</code>，位置在這一段的一半。有三個地方看得到它：</p>
 <ul>
@@ -1556,7 +1615,7 @@ loop.start();</code></pre></div>
 <tr><td><code>dt</code></td><td>距離上一個影格幾秒</td></tr>
 <tr><td><code>dur</code></td><td>這一段的長度，單位秒</td></tr>
 <tr><td><code>T</code></td><td>演出時間，單位秒</td></tr>
-<tr><td><code>segment</code></td><td>這一段：<code>id</code>、<code>title</code>、<code>start</code>、<code>end</code>、<code>dur</code>、<code>cues</code>、<code>acts</code>、<code>hold</code>、<code>linger</code>、<code>index</code></td></tr>
+<tr><td><code>segment</code></td><td>這一段：<code>id</code>、<code>title</code>、<code>start</code>、<code>end</code>、<code>dur</code>、<code>cues</code>、<code>acts</code>、<code>hold</code>、<code>linger</code>、<code>index</code>、<code>meta</code></td></tr>
 <tr><td><code>cue(name)</code>、<code>cueT(name)</code></td><td>cue 的位置，分別以進度和演出秒表示（不認得的名字回 <code>NaN</code>）</td></tr>
 <tr><td><code>phase</code></td><td><code>'active'</code>、<code>'linger'</code>，或 <code>'failed'</code>（只出現在崩潰後的 <code>exit()</code> 裡）</td></tr>
 <tr><td><code>holding</code>、<code>held</code></td><td>是否正停在 hold，以及已經等了幾秒</td></tr>
@@ -2855,17 +2914,18 @@ comp.start();
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })</code> · <code>play()</code>（放行 hold）、<code>pause()</code>、<code>toggle()</code>、<code>seek(t)</code>、<code>jumpScene(d)</code>、<code>next()</code>（放行 hold，否則往後一段）、<code>prev()</code>、<code>release()</code>、<code>reset()</code>（回到 <code>start</code>，預設 0）· <code>advance(dt)</code> · <code>state(t)</code>、<code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>、<code>currentScene(t)</code>、<code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>、<code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · 關鍵影格 <code>[t, value, curve?]</code>（<code>'linear'</code>、<code>'ease'</code>、<code>'in'</code>、<code>'out'</code>、<code>'step'</code>）· <code>loop</code>（<code>true</code>、<code>'scene'</code>、場景 id、<code>{ from, to }</code>）、<code>onLoop(cb)</code> · <code>cues()</code>、<code>onCue(cb(cue, { cause }))</code>、<code>fireCue(cue)</code> · <code>record(key, source)</code>、<code>stopRecording()</code>、<code>onRecord(cb)</code>、<code>mergeTake(key, take, opts)</code> · <code>t</code>、<code>playing</code>、<code>holding</code>、<code>rate</code>、<code>total</code>、<code>start</code>、<code>score</code></td></tr>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })</code> · <code>play()</code>（放行 hold）、<code>pause()</code>、<code>toggle()</code>、<code>seek(t)</code>、<code>jumpScene(d)</code>、<code>next()</code>（放行 hold，否則往後一段）、<code>prev()</code>、<code>release()</code>、<code>reset()</code>（回到 <code>start</code>，預設 0）· <code>advance(dt)</code> · <code>state(t)</code>、<code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>、<code>currentScene(t)</code>、<code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>、<code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · 關鍵影格 <code>[t, value, curve?]</code>（<code>'linear'</code>、<code>'ease'</code>、<code>'in'</code>、<code>'out'</code>、<code>'step'</code>）· <code>loop</code>（<code>true</code>、<code>'scene'</code>、場景 id、<code>{ from, to }</code>）、<code>onLoop(cb)</code> · <code>cues()</code>、<code>onCue(cb(cue, { cause }))</code>、<code>fireCue(cue)</code> · <code>record(key, source)</code>、<code>stopRecording()</code>、<code>onRecord(cb)</code>、<code>mergeTake(key, take, opts)</code> · 以段落為單位的自動化 <code>{ key: { 段落id: [[p, value, curve?], …] } }</code>、<code>lanePos(t)</code>、<code>laneTime(id, p)</code>、<code>lanePlan()</code>、<code>lanes()</code> · <code>exportAutomation({ keys, as, precision })</code>、<code>importAutomation(doc, { keys, replace, ignoreCut })</code> · <code>anchor(epoch, opts)</code>、<code>unanchor()</code>、<code>drift()</code>、<code>onDrift(cb)</code> · <code>t</code>、<code>playing</code>、<code>holding</code>、<code>rate</code>、<code>total</code>、<code>start</code>、<code>score</code></td></tr>
+<tr><td><code>compileLane</code>、<code>decompileLane</code>、<code>lanePos</code>、<code>laneTime</code>、<code>isLane</code>、<code>AUTOMATION_FORMAT</code></td><td>段落 lane 的換算，寫成對段落表 <code>[{ id, start, end }]</code>（<code>score.rootSegments</code>）操作的純函式，給沒有時間軸的工具用</td></tr>
 </tbody>
 </table></div>
-<p>關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 <code>cues</code> 在播放經過時觸發，seek 不會觸發。<code>record()</code> 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。<code>CURVES</code> 也有匯出。</p>
+<p>關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 <code>cues</code> 在播放經過時觸發，seek 不會觸發。<code>record()</code> 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。<code>CURVES</code> 也有匯出。曲線可以改成以段落為單位來寫、存成 JSON 再讀回來，時間軸也能盯著牆鐘：見 <a href="#show-control-lanes-curves-written-per-segment">Lane</a>、<a href="#show-control-saving-and-loading-automation">存取 automation</a>、<a href="#show-control-wall-clock-anchor-and-drift">牆鐘</a>。</p>
 <p>見<a href="#show-control-timeline">演出控制</a>。</p>
 <h3 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="這一節的連結">#</a></h3>
 <p>主軸 · 總譜與導演：把演出寫成段落長度，再由模組去演出每一段。純邏輯，不碰 DOM。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>Score</code></td><td><code>new Score({ cuts, cut })</code> · <code>table()</code> · <code>total</code> · <code>segmentAt(T)</code>、<code>indexAt(T)</code> · <code>cueTime('seg.name')</code> · <code>cuesBetween(T0, T1)</code> · <code>cues()</code> · <code>scenes()</code> · <code>validate()</code> · <code>cuts</code>、<code>cut</code>、<code>segments</code>、<code>startT</code>、<code>scale</code>、<code>baseTime(T)</code></td></tr>
+<tr><td><code>Score</code></td><td><code>new Score({ cuts, cut })</code> · <code>table()</code> · <code>total</code> · <code>segmentAt(T)</code>、<code>indexAt(T)</code> · <code>locate(T)</code>、<code>timeAt(id, p)</code> · <code>cueTime('seg.name')</code> · <code>cuesBetween(T0, T1)</code> · <code>cues()</code> · <code>scenes()</code> · <code>validate()</code> · <code>cuts</code>、<code>cut</code>、<code>segments</code>（每段帶著自己的 <code>meta</code>）、<code>startT</code>、<code>scale</code>、<code>baseTime(T)</code>、<code>rootSegments</code>、<code>allSegmentIds()</code></td></tr>
 <tr><td><code>ScoreError</code></td><td>總譜不合法時丟出，<code>problems</code> 列出每一個原因</td></tr>
 <tr><td><code>Director</code></td><td><code>new Director({ score, modules, api, onStatus, onCue, maxStep })</code> · <code>update(T, dt, { holding, playing })</code> · <code>param(key, value, T)</code> · <code>seek(T)</code> · <code>reset()</code> · <code>status()</code> · <code>register(module)</code></td></tr>
 </tbody>

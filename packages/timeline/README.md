@@ -25,6 +25,19 @@ show.timeline.onCue((cue) => show.params.firePulse(cue.name));   // fired when P
 show.timeline.record('hue', () => show.params.isOverridden('hue') ? show.params.overrides.hue : null);
 ```
 
+With a [score](../score), curves can be written per segment (`p` = progress through it, 0…1), so they hold on a cut with
+other lengths. The automation can be saved as JSON and read back, and the timeline can keep an eye on the wall clock:
+
+```js
+const show = await createShow({ world, score: { cuts }, timeline: {
+  automation: { haze: { dawn: [[0, 0.1], [1, 0.4, 'ease']], noon: 0.6 } },   // per segment; absolute seconds still work next to it
+  anchor: { mode: 'catch-up' },                                              // read the wall clock; give back what the frame loop's dt clamp loses
+} });
+const file = JSON.stringify(show.timeline.exportAutomation({ as: 'segments' }));   // after a take: save it…
+show.timeline.importAutomation(file);                                              // …and load it, on this cut or another
+show.timeline.drift().text;   // "0.42 s behind the wall clock · 7 stalls cost 1.30 s (worst gap 0.52 s) · caught up 0.88 s"
+```
+
 ```js
 import { Timeline } from '@openav/timeline';
 const timeline = new Timeline({ params, automation, scenes, total: 60 });
@@ -37,7 +50,7 @@ const base = timeline.state();
 ## Exports
 
 `Timeline`
-- `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })` · `params` is a `Params`
+- `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })` · `params` is a `Params`
   or a schema array (`createShow()` defaults `total` to 120). With a `score` (`@openav/score`) the scenes, total and
   start come from it, and automation is read at `score.baseTime(t)` so a derived cut stretches it.
   `start`: where `reset()` goes: a number, or `'first'` (the first scene); default 0
@@ -45,6 +58,30 @@ const base = timeline.state();
   **ends** at that keyframe arrives there: `'linear'` (default, and what a keyframe without a third item has always
   done), `'ease'` (smoothstep), `'in'` (starts slow), `'out'` (starts fast), `'step'` (holds the old value until the keyframe,
   then jumps), or a function `f ∈ [0,1] → [0,1]`. An unknown name is linear. The first keyframe's curve is unused
+- **lanes**: a key's automation may be an object `{ segmentId: [[p, value, curve?], …] }` instead of an array (a number holds the whole
+  segment, `null` skips it). A point `[p, v, curve]` is the keyframe `[segment.start + p × segment.dur, v, curve]`, compiled when the
+  timeline is built against the **root cut** of the score (without a score, the scenes: a scene lasts until the next begins), so a cut
+  with other lengths, or a derived one, reads the same `(segment, p)`. A segment id that another cut has but this one lacks is skipped;
+  an id no cut has, a `p` outside 0…1 or out of order throws, naming the key, segment and point. Lanes and absolute arrays mix by key;
+  `timeline.automation` always holds the compiled absolute keyframes (the very object you passed when nothing is a lane)
+- `lanePos(t)` → `{ id, index, p }` or `null` (outside the show; a boundary belongs to the segment that starts there) · `laneTime(id, p = 0)` →
+  seconds (`NaN` for an unknown id) · `lanePlan()` → `[{ id, start, end, dur }]` · `lanes(keys?, { precision })` → the automation written per
+  segment. Seconds here are **automation seconds** (the root cut's, as in `timeline.automation` and `onRecord`'s `from`/`to`); for the
+  playhead's show seconds use `score.locate(T)` / `score.timeAt(id, p)`
+- `exportAutomation({ keys, as = 'seconds' | 'segments', precision = 9 })` → `{ format: 'openav-automation', version: 1, cut, as, automation }`, a
+  JSON-safe copy (`cut` = the root cut's id). A keyframe outside the show cannot be written per segment, and a curve that is a function cannot
+  be written to JSON: both throw, naming the key · `importAutomation(doc | jsonString | { key: keyframes | lane }, { keys, replace = false, ignoreCut = false })`
+  → the keys imported. Replaces the keys the file has (`replace` clears the rest); all-or-nothing; seconds from another root cut are refused
+- exported helpers: `compileLane(plan, lane, { key, known })` · `decompileLane(plan, keyframes, { key, precision })` · `lanePos(plan, t)` · `laneTime(plan, id, p)` ·
+  `isLane(x)` · `AUTOMATION_FORMAT`; `plan` is a segment table `[{ id, start, end | dur }]` such as `score.rootSegments`
+- `anchor(epoch?, { mode = 'warn' | 'catch-up', tolerance = 0.05, warnAt = 1, jump = 10, wait = true, stall = 0.02, now = Date.now, onDrift })` (also the
+  `anchor` option: `true`, an epoch, or `{ epoch, …opts }`) · `unanchor()` · `drift()` · `onDrift(cb)`. The frame loop clamps `dt` to 0.1 s, so a stalled
+  page leaves the show behind the wall clock; once anchored, every playing frame compares the wall clock (`epoch` = the moment of show time 0 in ms, a
+  `Date` or an ISO string; omitted = the first playing frame) with how far the show moved. `'warn'` counts and calls `onDrift` (or `console.warn`) when it is
+  `warnAt` seconds behind; `'catch-up'` adds the difference to the step (cues, holds and loops behave as in normal playback), holds back when it runs ahead (`held`: it waits, never goes backwards), seeks when more than
+  `jump` is owed, stands still until a future `epoch` (`wait`), and puts a late start where the show now is. Pause, hold and the end are standing still
+  on purpose: the debt is forgiven. `drift()` → `null` or `{ behind, lost, repaid, held, forgiven, stalls, worst, frames, jumps, started, waiting, startsIn, epoch, mode, text }`.
+  Without `anchor()` the timeline never reads a clock
 - `loop` (option, and a property you can change any time): `false` · `true` (the whole show, from 0 to `total`) ·
   `'scene'` (the scene the playhead is in) · a scene id · `{ from, to }` (seconds, or scene ids: a `from` id is that scene's
   start, a `to` id its end). The playhead wraps when it reaches the end (the overshoot carries over, a huge `dt` wraps by
@@ -75,7 +112,7 @@ const base = timeline.state();
 - `CURVES` (export): `{ linear, ease, in, out, step }`, the functions behind the names
 - `play()` (releases a hold) · `pause()` · `toggle()` → playing · `seek(t)` · `jumpScene(d)` · `next()` (releases a hold, else
   a scene on) · `prev()` · `release()` · `reset()` (to `start`, default 0)
-- `advance(dt)` → still playing (stops at `total`) · `state(t = this.t)` · `valueAt(key, t = this.t)`
+- `advance(dt)` → still playing (stops at `total`; with `anchor()` it also reads the wall clock) · `state(t = this.t)` · `valueAt(key, t = this.t)`
 - `sceneIndexAt(t)` · `currentScene(t)` · `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))` ·
   `onSeek(cb(t, kind))` · `layer(key, value, t)` (rewrite a param before overrides: the director's `param()`)
 - `t`, `playing`, `holding`, `rate` (default 1), `total`, `start`, `loop`, `loops`

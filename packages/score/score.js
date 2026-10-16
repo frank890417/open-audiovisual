@@ -15,7 +15,7 @@
 //   score.scenes();              // the same table shaped for @openav/timeline
 //
 // A cut:
-//   { id, title?, start?, segments: [ { id, title?, note?, dur, cues?, acts?, linger?, hold?, module? } ] }
+//   { id, title?, start?, segments: [ { id, title?, note?, dur, cues?, acts?, linger?, hold?, module?, meta? } ] }
 //   { id, title?, from: '<cut id>', scale: <number > 0> }          derived: every length × scale
 // cues: { name: ratio | { s: seconds } }   ratio is a fraction of the segment (0 ≤ r < 1); { s } is
 //   seconds into the segment. A derived cut scales both, so a cue stays at the same place in the music.
@@ -23,6 +23,9 @@
 // linger: seconds the segment's module keeps running after the segment ends (a decay, a tail).
 // hold:   playback stops at the END of this segment and waits until the operator releases it
 //         (Space, →). See docs/score.md → "Hold" for exactly what happens.
+// meta:   whatever else the work wants to hang on a segment (a layer, a palette, an event window…).
+//         Score does not read it: `segment.meta` hands it back (also in scenes() and the director's
+//         ctx.segment). Unknown top-level fields of a segment are kept there too; an explicit `meta` entry wins.
 //
 // Pure logic: no DOM, no timers. Everything here runs in Node, which is how it is tested.
 
@@ -37,6 +40,9 @@ export class ScoreError extends Error {
 
 const isNum = (x) => typeof x === 'number' && Number.isFinite(x);
 const isId = (x) => typeof x === 'string' && x.length > 0 && !x.includes('.');
+const isPlainObject = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
+/** Score 自己讀的段落欄位：其餘的欄位不是 Score 的事，原樣放進 segment.meta。 */
+const SEGMENT_FIELDS = new Set(['id', 'title', 'note', 'dur', 'linger', 'hold', 'acts', 'cues', 'module', 'meta']);
 
 /** Accept `cuts` as an array of cuts, or an object keyed by cut id. */
 function listCuts(cuts) {
@@ -139,6 +145,7 @@ export class Score {
       const linger = s.linger === undefined ? 0 : s.linger;
       if (!isNum(linger) || linger < 0) P.push(`${where}: linger must be a number ≥ 0 (got ${JSON.stringify(s.linger)})`);
       if (s.acts !== undefined && !(Array.isArray(s.acts) && s.acts.every((a) => typeof a === 'string'))) P.push(`${where}: acts must be an array of strings`);
+      if (s.meta !== undefined && !isPlainObject(s.meta)) P.push(`${where}: meta must be an object (got ${JSON.stringify(s.meta)})`);
       const cues = {};
       for (const [name, c] of Object.entries(s.cues || {})) {
         const cw = `${where}: cue "${name}"`;
@@ -152,9 +159,13 @@ export class Score {
           cues[name] = { p: c.s / dur, s: c.s };
         } else P.push(`${cw}: use a ratio (0.5) or { s: seconds } (got ${JSON.stringify(c)})`);
       }
+      // meta：未知欄位先放，明寫的 meta 後放（同名者勝）。自己複製一層，之後改來源物件不會牽動總譜
+      const meta = {};
+      for (const k of Object.keys(s)) if (!SEGMENT_FIELDS.has(k)) meta[k] = s[k];
+      if (isPlainObject(s.meta)) Object.assign(meta, s.meta);
       segments.push({
         id: s.id, title: s.title ?? s.id, note: s.note ?? '', dur: s.dur, linger, hold: !!s.hold,
-        acts: s.acts ? [...s.acts] : [], cues, module: s.module ?? null,
+        acts: s.acts ? [...s.acts] : [], cues, module: s.module ?? null, meta,
       });
     });
     if (d.start !== undefined && !segments.some((s) => s.id === d.start)) P.push(`${tag}: start "${d.start}" is not one of its segments`);
@@ -238,11 +249,42 @@ export class Score {
    */
   baseTime(T) { return this.scale === 1 ? T : T / this.scale; }
 
+  /**
+   * The segments of the root cut (the cut this one was finally derived from; this cut's own segments when it is not
+   * derived), in the ROOT cut's seconds. Automation is written against this cut, so a lane like
+   * `{ dusk: [[0, 0.2], [1, 0.9]] }` is turned into seconds with these starts and lengths.
+   */
+  get rootSegments() { return this._compiled.get(this.base).segments; }
+
+  /** Every segment id of every cut. A name that is in none of them is a typo; one only another cut has is just absent here. */
+  allSegmentIds() {
+    const ids = new Set();
+    for (const c of this._compiled.values()) for (const s of c.segments) ids.add(s.id);
+    return ids;
+  }
+
+  /**
+   * Where show time T is, as the segment that owns it and how far through it: { id, index, p, t } (t = seconds into the
+   * segment). Outside the show it answers the first or the last segment with p below 0 or above 1, so `timeAt` is its
+   * exact inverse for every T.
+   */
+  locate(T) {
+    const s = this.segments[this.indexAt(T)];
+    const t = T - s.start;
+    return { id: s.id, index: s.index, p: t / s.dur, t };
+  }
+
+  /** The inverse of `locate`: show seconds (this cut's) of progress `p` (default 0 = the start) through segment `id`. NaN for an id this cut does not have. */
+  timeAt(id, p = 0) {
+    const s = this._byId.get(id);
+    return s ? s.start + p * s.dur : NaN;
+  }
+
   /** The segments as a @openav/timeline `scenes` array. */
   scenes() {
     return this.segments.map((s) => ({
       id: s.id, t: s.start, title: s.title, note: s.note, dur: s.dur, end: s.end,
-      acts: s.acts, hold: s.hold, linger: s.linger,
+      acts: s.acts, hold: s.hold, linger: s.linger, meta: s.meta,
       cues: Object.entries(s.cues).map(([name, c]) => ({ name, t: c.T, p: c.p })).sort((a, b) => a.t - b.t),
     }));
   }

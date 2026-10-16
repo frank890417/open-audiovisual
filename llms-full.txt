@@ -394,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 747 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 822 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -2012,7 +2012,7 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 - a scene with `hold: true` stops playback at its end until it is released (Space, →): see [Hold](score.md#hold)
 - `loop: true` wraps the show at `total` and plays on; `loop: 'scene'` repeats the scene the playhead is in until you move on: see [Curves, loop, cues, recording](#curves-loop-cues-recording)
 - `reset()` goes to `start` (default 0, so a pre-show standby scene at −30 is reached with the scrubber; pass `start: -30`, or `start: 'first'` for "the first scene", to make R return to it)
-- with `score` the scenes, total and start come from a [score](score.md); then automation is read at `score.baseTime(t)`, so a cut derived with `scale: 0.5` stretches it
+- with `score` the scenes, total and start come from a [score](score.md); then automation is read at `score.baseTime(t)`, so a cut derived with `scale: 0.5` stretches it. Curves can also be written per segment, so they survive a cut with other lengths: see [Lanes](#lanes-curves-written-per-segment)
 
 | member | what it does |
 |---|---|
@@ -2030,6 +2030,9 @@ timeline.onSceneChange((i, scene) => { /* fire cues: sound, lights, OSC */ });
 | `loop`, `onLoop(cb)`, `loopRange()`, `loops` | wrap the show, a scene or a range |
 | `record(key, source)`, `stopRecording()`, `onRecord(cb)`, `mergeTake(key, take)` | write a value source into a lane |
 | `onSeek(cb)` | `cb(t, kind)` when the playhead is moved by hand (`'seek'`, `'jump'`, `'reset'`), never while playing |
+| `lanePos(t)`, `laneTime(id, p)`, `lanePlan()`, `lanes()` | automation seconds ↔ (segment id, progress `p`), the segment table, and the automation written per segment |
+| `exportAutomation(opts)`, `importAutomation(doc, opts)` | the automation as plain JSON, in seconds or per segment, and back |
+| `anchor(epoch, opts)`, `unanchor()`, `drift()`, `onDrift(cb)` | read the wall clock: count how far behind it the show runs, warn, catch up, start on schedule |
 | `layer` | `(key, value, t) => value`: rewrite a param before overrides (the director's `param()` plugs in here) |
 | `t`, `playing`, `holding`, `rate`, `total`, `start`, `scenes`, `automation`, `score` | state you can read (and set) |
 
@@ -2081,6 +2084,119 @@ show.timeline.onSceneChange((i, scene) => {
   show.midi?.cc(20, i, 16);                                  // tell the lighting desk
 });
 ```
+
+### Lanes: curves written per segment
+
+With a [score](score.md) the show is a list of segments whose lengths change, and a curve written in absolute seconds
+goes stale the moment one of them grows. Write the curve on the segment instead. The automation of a key may be an
+object: its keys are segment ids, its values are keyframes `[p, value, curve?]` with `p` the progress through the
+segment, 0 to 1.
+
+```js
+const show = await createShow({
+  world,
+  score: { cuts, cut: 'full' },
+  timeline: { automation: {
+    haze: { dawn: [[0, 0.1], [1, 0.4, 'ease']],                  // dawn: 0.1 → 0.4, slow-fast-slow
+            noon: [[0, 0.4], [0.6, 0.9], [1, 0.5, 'out']],
+            dusk: 0.5 },                                           // a number holds the whole segment
+    speed: [[0, 0.3], [30, 1.2], [120, 0.4]],                      // absolute seconds still work, in the same object
+  } },
+});
+```
+
+A point `[p, v, curve]` is exactly the keyframe `[segment.start + p × segment.dur, v, curve]`, nothing more: the
+timeline compiles every lane when it is built, and `timeline.automation` holds ordinary absolute keyframes, so
+`valueAt`, recording, `mergeTake` and the console behave as before.
+
+- **Any cut.** The lane is compiled against the *root cut* of the score (the cut a derived cut came from). A cut with
+  other lengths reads the same lane with its own lengths, so `(dawn, 0.5)` is half way through dawn in every cut, and
+  a derived cut (`from` + `scale`) is stretched like absolute keyframes. Two cuts that differ in structure, not only in
+  length, can share one lane.
+- **Seams.** Between the last point of a segment and the first point of the next, the value glides like between any two
+  keyframes (the arriving point's curve applies). For a seamless seam write the same value at `p: 1` and at the next
+  segment's `p: 0`. Two points at the same instant with different values are a jump.
+- **Segments a cut lacks.** An id that another cut of the score has but this one does not is skipped, so one lane serves
+  a cut with a segment fewer. An id that no cut has (a typo) throws, naming the key and the id; so does a `p` outside
+  0…1 or out of order, naming the key, the segment and the point.
+- **Without a score** the scenes are the segments: a scene lasts until the next one starts.
+
+### Saving and loading automation
+
+`record()` writes a take into `timeline.automation`, in memory. To keep it, export it as plain JSON and import it later,
+into this timeline or another:
+
+```js
+const doc = timeline.exportAutomation({ as: 'segments' });           // lanes per segment: still right on another cut
+localStorage.setItem('automation', JSON.stringify(doc));
+// later:
+timeline.importAutomation(localStorage.getItem('automation'));        // a string or the object
+```
+
+```json
+{ "format": "openav-automation", "version": 1, "cut": "full", "as": "segments",
+  "automation": { "haze": { "dawn": [[0, 0.1], [1, 0.4, "ease"]], "noon": [[0, 0.4], [1, 0.5]] } } }
+```
+
+`exportAutomation({ keys, as, precision })` returns a copy. `as: 'seconds'` (the default) writes each key as the keyframes
+in the root cut's seconds; `as: 'segments'` writes each key as a lane, with `p` rounded to `precision` decimals (9; `null` keeps
+every digit). The two are inverses: the lanes compile back to the same curve. A keyframe outside the show has no segment,
+so it can only be exported as seconds, and a curve that is a function cannot be written to JSON at all: both throw, naming
+the key. `cut` is the id of the root cut.
+
+`importAutomation(doc, { keys, replace, ignoreCut })` takes the file, or a bare `{ key: keyframes | lane }` map. It replaces
+the keys the file has (`keys` narrows them; `replace: true` also clears the ones it does not mention). It is all-or-nothing: if
+one key is bad, nothing changes. Seconds belong to the cut they were written against, so a file whose `cut` is not this
+timeline's root cut is refused (`ignoreCut: true` overrides); lanes are not tied to a cut.
+
+The conversion behind it is public. `lanePos(t)` answers `{ id, index, p }` for a second (`null` outside the show; a boundary
+belongs to the segment that starts there), `laneTime(id, p)` answers the second, `lanePlan()` is the segment table, and `lanes()`
+is the whole automation written per segment. They work in *automation seconds*, the ones in `timeline.automation` and in
+`onRecord`'s `from`/`to`. For the playhead's own show seconds use the score: `score.locate(T)` and `score.timeAt(id, p)`
+([Score](score.md#the-score)). The pure functions `compileLane`, `decompileLane`, `lanePos` and `laneTime` are exported too, for
+tools that have a segment table `[{ id, start, end }]` (`score.rootSegments`) and no timeline.
+
+### Wall clock: anchor and drift
+
+The frame loop clamps `dt` to 0.1 s ([Architecture](architecture.md#the-frame-loop)). When the page stalls for half a second,
+the show moves 0.1 s and falls 0.4 s behind the wall clock. On a short show nobody notices; on a night-long installation
+nobody is there to see how much it has lost. `anchor()` makes the timeline read the wall clock (`Date.now`, in milliseconds) on
+every frame it plays and compare how long the clock ran with how far the show moved. Nothing happens unless you call it: an
+unanchored timeline never reads a clock.
+
+```js
+timeline.anchor();                                                       // count only (mode 'warn')
+timeline.anchor(Date.parse('2026-10-24T20:00:00+08:00'), { mode: 'catch-up' });   // start at 20:00 sharp, and stay on the clock
+timeline.drift().text;   // "0.42 s behind the wall clock · 7 stalls cost 1.30 s (worst gap 0.52 s) · caught up 0.88 s"
+createShow({ world, timeline: { total: 120, anchor: { mode: 'catch-up', jump: 5 } } });   // the same, from the options
+```
+
+`anchor(epoch?, opts)`: `epoch` is the wall-clock moment of show time 0, as milliseconds, a `Date` or an ISO string. Leave it out
+and the first playing frame is time 0: there is nothing to be late for, only the stalls from then on count.
+
+| option | default | meaning |
+|---|---|---|
+| `mode` | `'warn'` | `'warn'` counts and tells, and never moves `t`. `'catch-up'` gives back what was lost, and waits when it runs ahead |
+| `warnAt` | 1 | seconds behind at which `onDrift` hears `'behind'` (and `console.warn` if nobody listens); it hears `'recovered'` below half of it |
+| `tolerance` | 0.05 | `'catch-up'`: owing less than this is not repaid |
+| `jump` | 10 | `'catch-up'`: owing more than this is closed by one seek (no cues fire, the way a seek never fires them), not by racing on |
+| `wait` | true | `'catch-up'`: an `epoch` in the future keeps the show standing still, playing but not moving, until then |
+| `stall` | 0.02 | a frame whose wall time exceeds `dt` by more than this counts as a stall (counting only) |
+| `now` | `Date.now` | the clock, in milliseconds; pass the same fake clock you give a test or a manual loop |
+| `onDrift` | none | `cb({ kind, …drift() })` for `'behind'`, `'recovered'` and `'jump'`; `timeline.onDrift(cb)` adds more |
+
+What `'catch-up'` does: the difference is added to that frame's step, so cues, holds and loops behave as in normal playback
+(a hold still stops the show). An `epoch` in the past is a late start: a machine restarted at 20:07 for a show that began at 20:00
+lands seven minutes in. A pause, a hold and the end of the show are the show standing still on purpose, so they are not drift:
+whatever was owed at that moment is forgiven (`forgiven`) and counting resumes from where the show stands. Running ahead
+of the wall clock (a negative `behind`) is only reported in `'warn'`; `'catch-up'` holds the show back for it (`held`): it waits for the
+clock and never runs backwards, which also cancels the extra 0.1 s frame the loop's heartbeat adds right after a stall.
+`reset()` starts the counting over; an `epoch` still in the future survives it.
+
+`drift()` answers `null` when there is no anchor, otherwise `behind` (seconds slower than the wall clock; negative = ahead),
+`lost` (what the clamp, or any stall, cost), `repaid`, `held`, `forgiven`, `stalls`, `worst` (the longest wall-clock gap between two
+frames), `frames`, `jumps`, `started`, `waiting`, `startsIn`, `epoch`, `mode`, and `text`, one line for the desk or the monitor.
+If you drive the timeline from a manual or test loop, give `anchor()` the same fake clock as `now`, otherwise it measures real time.
 
 ## The console
 
@@ -2459,8 +2575,11 @@ A cut is one version of the show. It has an `id`, an optional `title`, and eithe
 | `linger` | seconds the segment's module keeps running after the segment ends (a decay, a tail). Default 0 |
 | `hold` | playback stops at the end of this segment and waits for the operator ([Hold](#hold)) |
 | `module` | the name of the module that performs it, when that is not the segment's own id |
+| `meta` | anything else the work hangs on a segment (a layer, a palette, an event window): an object the score does not read and hands back as `segment.meta`. Other fields the score does not know are kept in `meta` too; an explicit `meta` entry wins |
 
 A derived cut scales `dur`, `linger` and `{ s }` cues, so a cue stays in the same place in the music. The ratio cues did not need to move.
+
+`meta` is plain data to the score: it is copied one level deep when the cut is built (changing your source object afterwards changes nothing), a derived cut shares its base cut's `meta`, and a module reads it as `ctx.segment.meta`. Treat it as read-only. `segment.meta` is always an object, `{}` when there is none; a `meta` that is not an object is a `ScoreError`.
 
 A cut is checked when the score is built. Duplicate ids, a `dur` of 0 or below, a `from` that is not a cut, a `scale` of 0 or below, a cut derived from itself, a cue outside its segment, `acts` that are not strings: each throws a `ScoreError` that names the cut, the segment and the reason, and lists every problem at once. Nothing half-valid can reach the stage.
 
@@ -2479,17 +2598,19 @@ const score = new Score({ cuts, cut: 'full' });      // cut defaults to the firs
 | `cueTime('dusk')` | a moment in show seconds: `'dusk'` is the segment's start, `'dusk.end'` its end, `'dusk.glow'` a cue. `NaN` for anything unknown |
 | `cuesBetween(T0, T1)` | the cues a playhead passed from `T0` to `T1`: those with `T0 < time ≤ T1`, in time order. Nothing when `T1 ≤ T0` |
 | `cues()` | every cue of the cut in time order, each with its number `n` |
-| `scenes()` | the segments as a `scenes` array for the [timeline](show-control.md#timeline) (with `acts`, `hold` and `cues`) |
+| `scenes()` | the segments as a `scenes` array for the [timeline](show-control.md#timeline) (with `acts`, `hold`, `cues` and `meta`) |
 | `validate()` | throws a `ScoreError` when anything is wrong; returns `true` otherwise (the constructor already calls it) |
 | `cut`, `title`, `segments`, `startT` | the active cut, and where `reset` goes |
 | `cuts` | every cut as `{ id, title, total, from, scale, base }`, for a version picker |
 | `scale`, `base`, `baseTime(T)` | the cut's total scale against the cut it was derived from, that cut's id, and `T` expressed on it |
+| `locate(T)`, `timeAt(id, p)` | show time ↔ the segment and how far through it: `locate(45)` is `{ id: 'noon', index: 2, p: 0.5, t: 15 }` (`t` is seconds into the segment; outside the show `p` is below 0 or above 1), and `timeAt('noon', 0.5)` is its inverse in this cut's seconds (`NaN` for an id this cut lacks) |
+| `rootSegments`, `allSegmentIds()` | the segments of the cut this one was derived from, in that cut's seconds (the ones automation is written against), and the ids of every cut |
 
 ### Automation on a derived cut
 
 Automation curves are written once, against the cut they were derived from, and a derived cut stretches them. `timeline.valueAt(key, t)` reads the curve at `score.baseTime(t)`, which is `t / scale`. On the short cut above, `t = 20` reads the curve at 40. A cut that is not derived has scale 1 and nothing changes.
 
-If two cuts differ in structure and not just in length, do not share automation between them. Drive the params from the segment modules instead ([`param()`](#segment-modules)), where `ctx.p` already scales for free.
+If two cuts differ in structure and not just in length, do not share automation written in absolute seconds between them. Write it per segment instead: `automation: { haze: { dusk: [[0, 0.2], [1, 0.9, 'ease']] } }` (`p` is the progress through the segment). The timeline compiles it against each root cut's own segment lengths, a cut that lacks a segment skips it, and a derived cut stretches it as above ([Lanes](show-control.md#lanes-curves-written-per-segment)). Or drive the params from the segment modules ([`param()`](#segment-modules)), where `ctx.p` already scales for free.
 
 ## Cues
 
@@ -2536,7 +2657,7 @@ const dusk = {
 | `dt` | seconds since the previous frame |
 | `dur` | the segment's length in seconds |
 | `T` | show time in seconds |
-| `segment` | the segment: `id`, `title`, `start`, `end`, `dur`, `cues`, `acts`, `hold`, `linger`, `index` |
+| `segment` | the segment: `id`, `title`, `start`, `end`, `dur`, `cues`, `acts`, `hold`, `linger`, `index`, `meta` |
 | `cue(name)`, `cueT(name)` | where a cue sits, as a progress and in show seconds (`NaN` when unknown) |
 | `phase` | `'active'`, `'linger'`, or `'failed'` (only inside `exit()` after a crash) |
 | `holding`, `held` | waiting at a hold, and for how many seconds |
@@ -4372,9 +4493,10 @@ Spine · automation, scenes and transport; pure logic.
 
 | export | signature |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · keyframes `[t, value, curve?]` (`'linear'` · `'ease'` · `'in'` · `'out'` · `'step'`) · `loop` (`true`, `'scene'`, a scene id, `{ from, to }`), `onLoop(cb)` · `cues()`, `onCue(cb(cue, { cause }))`, `fireCue(cue)` · `record(key, source)`, `stopRecording()`, `onRecord(cb)`, `mergeTake(key, take, opts)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · keyframes `[t, value, curve?]` (`'linear'` · `'ease'` · `'in'` · `'out'` · `'step'`) · `loop` (`true`, `'scene'`, a scene id, `{ from, to }`), `onLoop(cb)` · `cues()`, `onCue(cb(cue, { cause }))`, `fireCue(cue)` · `record(key, source)`, `stopRecording()`, `onRecord(cb)`, `mergeTake(key, take, opts)` · per-segment automation `{ key: { segmentId: [[p, value, curve?], …] } }`, `lanePos(t)`, `laneTime(id, p)`, `lanePlan()`, `lanes()` · `exportAutomation({ keys, as, precision })`, `importAutomation(doc, { keys, replace, ignoreCut })` · `anchor(epoch, opts)`, `unanchor()`, `drift()`, `onDrift(cb)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
+| `compileLane`, `decompileLane`, `lanePos`, `laneTime`, `isLane`, `AUTOMATION_FORMAT` | the segment-lane conversions as pure functions over a segment table `[{ id, start, end }]` (`score.rootSegments`), for tools that have no timeline |
 
-A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's `cues` fire when playback passes them, never on a seek. `record()` writes a value source (a knob override) into a lane while the timeline plays. `CURVES` is exported too.
+A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's `cues` fire when playback passes them, never on a seek. `record()` writes a value source (a knob override) into a lane while the timeline plays. `CURVES` is exported too. Curves can be written per segment, saved as JSON and read back, and the timeline can watch the wall clock: [Lanes](show-control.md#lanes-curves-written-per-segment), [Saving and loading automation](show-control.md#saving-and-loading-automation), [Wall clock](show-control.md#wall-clock-anchor-and-drift).
 
 See [Show control](show-control.md#timeline).
 
@@ -4384,7 +4506,7 @@ Spine · the score and the director: a show written as segment lengths, and the 
 
 | export | signature |
 |---|---|
-| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`, `indexAt(T)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`, `cut`, `segments`, `startT`, `scale`, `baseTime(T)` |
+| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`, `indexAt(T)` · `locate(T)`, `timeAt(id, p)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`, `cut`, `segments` (each with its `meta`), `startT`, `scale`, `baseTime(T)`, `rootSegments`, `allSegmentIds()` |
 | `ScoreError` | thrown by an invalid score; `problems` lists every reason |
 | `Director` | `new Director({ score, modules, api, onStatus, onCue, maxStep })` · `update(T, dt, { holding, playing })` · `param(key, value, T)` · `seek(T)` · `reset()` · `status()` · `register(module)` |
 
