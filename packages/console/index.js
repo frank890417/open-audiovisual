@@ -8,7 +8,7 @@
 // Zero dependencies, dark theme, keyboard-first:
 //   Space play/pause (at a HOLD: release it) · ←/→ previous / next scene (→ at a HOLD: release it)
 //   R reset (to the start; brings back switched-off segment modules) · T performance mode · F fullscreen
-//   M the on-screen MIDI controller (app.midiPanel) · Esc stops the knob-mapping wizard, or leaves keyboard-piano capture
+//   M the on-screen MIDI controller (app.midiPanel) · C the Curves panel · Esc stops the knob-mapping wizard, or leaves keyboard-piano capture
 // While the on-screen piano captures the computer keyboard (the 'keyboard' box in the piano bar)
 // the LETTERS belong to the piano — R/T/F/M are dead keys, because T and F are piano keys too. Space, the
 // arrows and Esc always work, so you can play and run the show from one keyboard.
@@ -28,6 +28,7 @@ import { buildInputPanel } from './src/input-panel.js?v=72212d8';
 import { buildMappingPanel } from './src/mapping-panel.js?v=72212d8';
 import { buildPerformanceMode } from './src/perf-mode.js?v=72212d8';
 import { buildDirectorPanel } from './src/director-panel.js?v=72212d8';
+import { buildCurvesPanel } from './src/curves-panel.js?v=72212d8';
 import { resolveKeys, handleKey } from './src/keys.js?v=72212d8';
 
 export { DEFAULT_KEYS, KEY_ACTIONS, resolveKeys, keyLabel } from './src/keys.js?v=72212d8';
@@ -57,6 +58,8 @@ export function mountConsole(root, app, opts) {
   const keyMap = resolveKeys(opts.keys);                               // a typo in { keys } throws here, before anything is mounted
   const transport = buildTransport(root, app, keyMap);
   const directorPanel = app.score && app.director ? buildDirectorPanel(root, app, keyMap) : null;
+  // the automation of every param across the whole show; collapsed until opened (header or the `curves` key), silent while collapsed
+  const curves = opts.curves === false ? null : buildCurvesPanel(root, app, keyMap, typeof opts.curves === 'object' ? opts.curves : {});
   const layers = opts.layers === false ? null : buildLayersPanel(root, app);
   const inputPanel = buildInputPanel(root, app);
   const mappingPanel = buildMappingPanel(root, app, opts);
@@ -82,6 +85,7 @@ export function mountConsole(root, app, opts) {
     perf: () => perf.toggle(),
     fullscreen: () => document.documentElement.requestFullscreen?.(),
     midi: () => app.midiPanel?.toggle(),
+    curves: curves ? () => curves.toggle() : undefined,                                  // no panel, no handler: C is not swallowed
   };
   // the guards (text fields, a held key, ⌘ combos, the piano owning the letters) live in keys.js, where they are tested
   const onKey = (e) => { handleKey(e, keyMap, actions, { captured: () => !!app.keys?.piano?.captureEnabled }); };
@@ -92,6 +96,7 @@ export function mountConsole(root, app, opts) {
     render(state) {
       transport.render();
       directorPanel?.render();
+      curves?.render(state);
       layers?.render();
       inputPanel.render();
       mappingPanel.render();
@@ -102,9 +107,11 @@ export function mountConsole(root, app, opts) {
     },
     perf,
     director: directorPanel,
+    /** The Curves panel: `toggle()`, `open`, `info()`; null with { curves: false } (or no timeline). */
+    curves,
     wizard: mappingPanel.wizard,
     /** The shortcuts in force: action → [{ spec, label, … }] (hints print `keys.play[0].label`, or keyLabel(keys, 'play')). */
     keys: keyMap,
-    dispose() { window.removeEventListener('keydown', onKey); root.innerHTML = ''; },
+    dispose() { window.removeEventListener('keydown', onKey); curves?.dispose(); root.innerHTML = ''; },
   };
 }

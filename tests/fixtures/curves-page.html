@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- A bare page for tests/console-curves-browser.test.js: createShow() with a score of four segments and a few automated params,
+     so the desk's curve view has something to draw. The test calls window.__start(options) to change the show per case.
+     Nothing here is a framework example. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>curves fixture</title>
+<script type="module">
+import { createShow } from '../../packages/show/index.js';
+
+const world = {
+  name: 'probe',
+  params: [
+    { key: 'haze', label: 'Haze', min: 0, max: 1, def: 0.1 },
+    { key: 'glow', label: 'Glow', min: 0, max: 1, def: 0.2 },
+    { key: 'mode', label: 'Mode', min: 0, max: 3, def: 0, step: 1 },
+    { key: 'plain', label: 'Plain', min: 0, max: 1, def: 0.5 },          // never automated: the curve view must leave it alone
+    { key: 'flare', label: 'Flare!', pulse: true },
+  ],
+  init() {},
+  update() {},
+  render() {},
+  dispose() {},
+};
+
+const cuts = [{
+  id: 'full', title: 'A day',
+  segments: [{ id: 'standby', dur: 6, hold: true }, { id: 'dawn', dur: 24 }, { id: 'noon', dur: 30 }, { id: 'night', dur: 40 }],
+}];
+export const AUTOMATION = {
+  haze: { standby: 0.1, dawn: [[0, 0.1], [1, 0.3]], noon: [[0, 0.3], [1, 0.55, 'ease']], night: [[0, 0.34], [0.45, 0.2], [1, 0.1]] },
+  glow: [[0, 0.2], [50, 0.9], [100, 0.2]],
+  mode: [[0, 0], [30, 2, 'step'], [60, 1]],
+};
+
+window.__start = (opts = {}) => createShow({
+  world, telemetry: false, profile: false,
+  score: { cuts, cut: 'full', modules: cuts[0].segments.map((s) => ({ id: s.id })) },
+  timeline: { automation: structuredClone(AUTOMATION) },
+  ...opts,
+  modules: { keys: {}, ...(opts.modules || {}) },
+});
+</script>
+</head>
+<body></body>
+</html>

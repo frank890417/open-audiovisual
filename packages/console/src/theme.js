@@ -80,7 +80,29 @@ export const css = `
 .oav-chip:hover { color: #cfd6e4; }
 .oav-chip.learn { border-color: #ffd166; color: #ffd166; animation: oavPulse 1s infinite; }
 .oav-chip.bound { border-color: #2e6df6; color: #7ea6ff; }
+.oav-chip:disabled { opacity: .35; cursor: default; }
+.oav-chip:disabled:hover { color: #8892a8; }
 @keyframes oavPulse { 50% { opacity: .4; } }
+.oav-curves .cv-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; color: #8892a8; font-size: 11px; }
+.oav-curves .cv-sum { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.oav-curves .cv-bar .oav-chip { flex: none; }
+.oav-curves .cv-scroll { position: relative; max-height: 264px; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+  background: #0b0e15; border-radius: 6px; user-select: none; -webkit-user-select: none; }
+.oav-curves .cv-ruler { position: sticky; top: 0; z-index: 2; height: 22px; background: #0b0e15; border-bottom: 1px solid #141a29;
+  cursor: crosshair; touch-action: pan-y; }
+.oav-curves .cv-ruler[hidden] { display: none; }
+.oav-curves .cv-row { height: 58px; border-bottom: 1px solid #141a29; }
+.oav-curves .cv-row.ovr { background: rgba(255,176,46,.07); }
+.oav-curves .cv-head { height: 18px; display: flex; align-items: center; gap: 6px; padding: 2px 6px 0; }
+.oav-curves .cv-head b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: #9aa5bd; }
+.oav-curves .cv-head b::before { content: '■'; color: var(--c, #7ea6ff); margin-right: 6px; }
+.oav-curves .cv-row.ovr .cv-head b { color: #ffd166; }
+.oav-curves .cv-head .val { color: #fff; font-variant-numeric: tabular-nums; }
+.oav-curves .cv-row.ovr .cv-head .val { color: #ffb02e; }
+.oav-curves .cv-head .oav-chip { border-color: #ffb02e; color: #ffb02e; padding: 0 7px; line-height: 14px; }
+.oav-curves .cv-head .oav-chip[hidden] { display: none; }
+.oav-curves .cv-plot { position: relative; height: 36px; cursor: crosshair; touch-action: pan-y; }
+.oav-curves canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
 .oav-sig { display: grid; grid-template-columns: 150px 1fr 56px; gap: 6px; align-items: center;
   padding: 1px 0; }
 .oav-sig .bar { height: 8px; background: #131826; border-radius: 4px; overflow: hidden; }
