@@ -319,9 +319,10 @@ L4 輸出（實體分支）· 做得出來嗎？對任何網格出可製造性�
 
 | 匯出 | 簽章 |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })` · `play()`（放行 hold）、`pause()`、`toggle()`、`seek(t)`、`jumpScene(d)`、`next()`（放行 hold，否則往後一段）、`prev()`、`release()`、`reset()`（回到 `start`，預設 0）· `advance(dt)` · `state(t)`、`valueAt(key, t)` · `sceneIndexAt(t)`、`currentScene(t)`、`sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`、`onSeek(cb(t, kind))` · `layer(key, value, t)` · 關鍵影格 `[t, value, curve?]`（`'linear'`、`'ease'`、`'in'`、`'out'`、`'step'`）· `loop`（`true`、`'scene'`、場景 id、`{ from, to }`）、`onLoop(cb)` · `cues()`、`onCue(cb(cue, { cause }))`、`fireCue(cue)` · `record(key, source)`、`stopRecording()`、`onRecord(cb)`、`mergeTake(key, take, opts)` · `t`、`playing`、`holding`、`rate`、`total`、`start`、`score` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })` · `play()`（放行 hold）、`pause()`、`toggle()`、`seek(t)`、`jumpScene(d)`、`next()`（放行 hold，否則往後一段）、`prev()`、`release()`、`reset()`（回到 `start`，預設 0）· `advance(dt)` · `state(t)`、`valueAt(key, t)` · `sceneIndexAt(t)`、`currentScene(t)`、`sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`、`onSeek(cb(t, kind))` · `layer(key, value, t)` · 關鍵影格 `[t, value, curve?]`（`'linear'`、`'ease'`、`'in'`、`'out'`、`'step'`）· `loop`（`true`、`'scene'`、場景 id、`{ from, to }`）、`onLoop(cb)` · `cues()`、`onCue(cb(cue, { cause }))`、`fireCue(cue)` · `record(key, source)`、`stopRecording()`、`onRecord(cb)`、`mergeTake(key, take, opts)` · 以段落為單位的自動化 `{ key: { 段落id: [[p, value, curve?], …] } }`、`lanePos(t)`、`laneTime(id, p)`、`lanePlan()`、`lanes()` · `exportAutomation({ keys, as, precision })`、`importAutomation(doc, { keys, replace, ignoreCut })` · `anchor(epoch, opts)`、`unanchor()`、`drift()`、`onDrift(cb)` · `t`、`playing`、`holding`、`rate`、`total`、`start`、`score` |
+| `compileLane`、`decompileLane`、`lanePos`、`laneTime`、`isLane`、`AUTOMATION_FORMAT` | 段落 lane 的換算，寫成對段落表 `[{ id, start, end }]`（`score.rootSegments`）操作的純函式，給沒有時間軸的工具用 |
 
-關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 `cues` 在播放經過時觸發，seek 不會觸發。`record()` 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。`CURVES` 也有匯出。
+關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 `cues` 在播放經過時觸發，seek 不會觸發。`record()` 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。`CURVES` 也有匯出。曲線可以改成以段落為單位來寫、存成 JSON 再讀回來，時間軸也能盯著牆鐘：見 [Lane](show-control.md#lanes-curves-written-per-segment)、[存取 automation](show-control.md#saving-and-loading-automation)、[牆鐘](show-control.md#wall-clock-anchor-and-drift)。
 
 見[演出控制](show-control.md#timeline)。
 
@@ -331,7 +332,7 @@ L4 輸出（實體分支）· 做得出來嗎？對任何網格出可製造性�
 
 | 匯出 | 簽章 |
 |---|---|
-| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`、`indexAt(T)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`、`cut`、`segments`、`startT`、`scale`、`baseTime(T)` |
+| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`、`indexAt(T)` · `locate(T)`、`timeAt(id, p)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`、`cut`、`segments`（每段帶著自己的 `meta`）、`startT`、`scale`、`baseTime(T)`、`rootSegments`、`allSegmentIds()` |
 | `ScoreError` | 總譜不合法時丟出，`problems` 列出每一個原因 |
 | `Director` | `new Director({ score, modules, api, onStatus, onCue, maxStep })` · `update(T, dt, { holding, playing })` · `param(key, value, T)` · `seek(T)` · `reset()` · `status()` · `register(module)` |
 

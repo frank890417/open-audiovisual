@@ -43,8 +43,11 @@ const cuts = [
 | `linger` | 段落結束後，它的模組再繼續跑幾秒（餘韻、衰減的尾巴），預設 0 |
 | `hold` | 播放到這一段的段尾就停住，等操作者放行（[Hold](#hold)） |
 | `module` | 負責演出它的模組名稱，不是段落自己的 id 時才需要 |
+| `meta` | 作品想掛在段落上的任何其他資料（層、色盤、事件窗口）：總譜不讀的一個物件，以 `segment.meta` 原樣交還。總譜不認得的其他欄位也會一併放進 `meta`；明寫的 `meta` 同名項目優先 |
 
 衍生 cut 會縮放 `dur`、`linger` 和 `{ s }` 形式的 cue，所以 cue 在音樂裡的位置不變。比例形式的 cue 本來就不需要動。
+
+`meta` 對總譜來說就是純資料：建立 cut 時複製一層（之後再改你的來源物件，不會有任何影響），衍生 cut 和它的來源 cut 共用同一份 `meta`，模組用 `ctx.segment.meta` 讀。請當成唯讀。`segment.meta` 永遠是物件，沒有就是 `{}`；`meta` 不是物件會是 `ScoreError`。
 
 cut 在建立總譜時就會檢查。id 重複、`dur` 等於或小於 0、`from` 指到不存在的 cut、`scale` 等於或小於 0、cut 衍生自己、cue 落在段落外面、`acts` 不是字串，每一種都會丟出 `ScoreError`，訊息裡寫明是哪個 cut、哪一段、為什麼，而且一次把所有問題列出來。有問題的總譜上不了台。
 
@@ -63,17 +66,19 @@ const score = new Score({ cuts, cut: 'full' });      // cut defaults to the firs
 | `cueTime('dusk')` | 以演出秒表示的某個時刻：`'dusk'` 是段落開頭，`'dusk.end'` 是段落結尾，`'dusk.glow'` 是 cue。不認得的名字回 `NaN` |
 | `cuesBetween(T0, T1)` | 播放頭從 `T0` 走到 `T1` 之間經過的 cue：時間落在 `T0 < time ≤ T1` 的，依時間排序。`T1 ≤ T0` 時什麼也沒有 |
 | `cues()` | 整個 cut 的所有 cue，依時間排序，每個帶著編號 `n` |
-| `scenes()` | 把段落變成給[時間軸](show-control.md#timeline)用的 `scenes` 陣列（含 `acts`、`hold`、`cues`） |
+| `scenes()` | 把段落變成給[時間軸](show-control.md#timeline)用的 `scenes` 陣列（含 `acts`、`hold`、`cues`、`meta`） |
 | `validate()` | 有任何問題就丟 `ScoreError`，沒問題回 `true`（建構時已經呼叫過） |
 | `cut`、`title`、`segments`、`startT` | 目前的 cut，以及 `reset` 要回到哪裡 |
 | `cuts` | 每個 cut 的 `{ id, title, total, from, scale, base }`，做版本選單用 |
 | `scale`、`base`、`baseTime(T)` | 這個 cut 相對於它最終衍生來源的總倍率、那個來源的 id，以及用來源 cut 表示的 `T` |
+| `locate(T)`、`timeAt(id, p)` | 演出時間 ↔ 所在的段落和走了多少：`locate(45)` 是 `{ id: 'noon', index: 2, p: 0.5, t: 15 }`（`t` 是段內第幾秒；演出之外 `p` 會小於 0 或大於 1），`timeAt('noon', 0.5)` 是它的反函數，用這個 cut 的秒數（這個 cut 沒有的 id 回 `NaN`） |
+| `rootSegments`、`allSegmentIds()` | 這個 cut 衍生來源那個 cut 的段落，用那個 cut 的秒數（automation 就是對著它寫的），以及所有 cut 的 id |
 
 ### 衍生 cut 上的自動化曲線
 
 自動化曲線只要對著它衍生來源的那個 cut 寫一次，衍生 cut 會把它一起拉伸。`timeline.valueAt(key, t)` 讀的是 `score.baseTime(t)` 處的曲線值，也就是 `t / scale`。在上面的短版裡，`t = 20` 讀的是曲線 40 秒處。沒有被衍生的 cut 倍率是 1，什麼都不會變。
 
-如果兩個 cut 的差別在結構而不只是長度，就不要讓它們共用自動化曲線。改用段落模組的 [`param()`](#segment-modules) 去驅動參數，那裡的 `ctx.p` 自己就會跟著縮放。
+如果兩個 cut 的差別在結構而不只是長度，就不要讓它們共用用絕對秒數寫的自動化曲線。改成以段落為單位來寫：`automation: { haze: { dusk: [[0, 0.2], [1, 0.9, 'ease']] } }`（`p` 是這一段走了多少）。時間軸會對每個基準 cut 自己的段落長度編譯它，缺了某一段的 cut 會略過那一段，衍生 cut 則照上面的方式把它拉伸（[Lane](show-control.md#lanes-curves-written-per-segment)）。或是改用段落模組的 [`param()`](#segment-modules) 去驅動參數，那裡的 `ctx.p` 自己就會跟著縮放。
 
 ## cue
 
@@ -120,7 +125,7 @@ const dusk = {
 | `dt` | 距離上一個影格幾秒 |
 | `dur` | 這一段的長度，單位秒 |
 | `T` | 演出時間，單位秒 |
-| `segment` | 這一段：`id`、`title`、`start`、`end`、`dur`、`cues`、`acts`、`hold`、`linger`、`index` |
+| `segment` | 這一段：`id`、`title`、`start`、`end`、`dur`、`cues`、`acts`、`hold`、`linger`、`index`、`meta` |
 | `cue(name)`、`cueT(name)` | cue 的位置，分別以進度和演出秒表示（不認得的名字回 `NaN`） |
 | `phase` | `'active'`、`'linger'`，或 `'failed'`（只出現在崩潰後的 `exit()` 裡） |
 | `holding`、`held` | 是否正停在 hold，以及已經等了幾秒 |

@@ -1618,7 +1618,7 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <li>a scene with <code>hold: true</code> stops playback at its end until it is released (Space, →): see <a href="#score-hold">Hold</a></li>
 <li><code>loop: true</code> wraps the show at <code>total</code> and plays on; <code>loop: 'scene'</code> repeats the scene the playhead is in until you move on: see <a href="#show-control-curves-loop-cues-recording">Curves, loop, cues, recording</a></li>
 <li><code>reset()</code> goes to <code>start</code> (default 0, so a pre-show standby scene at −30 is reached with the scrubber; pass <code>start: -30</code>, or <code>start: 'first'</code> for "the first scene", to make R return to it)</li>
-<li>with <code>score</code> the scenes, total and start come from a <a href="#score">score</a>; then automation is read at <code>score.baseTime(t)</code>, so a cut derived with <code>scale: 0.5</code> stretches it</li>
+<li>with <code>score</code> the scenes, total and start come from a <a href="#score">score</a>; then automation is read at <code>score.baseTime(t)</code>, so a cut derived with <code>scale: 0.5</code> stretches it. Curves can also be written per segment, so they survive a cut with other lengths: see <a href="#show-control-lanes-curves-written-per-segment">Lanes</a></li>
 </ul>
 <div class="table-wrap"><table>
 <thead><tr><th>member</th><th>what it does</th></tr></thead>
@@ -1637,6 +1637,9 @@ timeline.onSceneChange((i, scene) =&gt; { <span class="tc">/* fire cues: sound, 
 <tr><td><code>loop</code>, <code>onLoop(cb)</code>, <code>loopRange()</code>, <code>loops</code></td><td>wrap the show, a scene or a range</td></tr>
 <tr><td><code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take)</code></td><td>write a value source into a lane</td></tr>
 <tr><td><code>onSeek(cb)</code></td><td><code>cb(t, kind)</code> when the playhead is moved by hand (<code>'seek'</code>, <code>'jump'</code>, <code>'reset'</code>), never while playing</td></tr>
+<tr><td><code>lanePos(t)</code>, <code>laneTime(id, p)</code>, <code>lanePlan()</code>, <code>lanes()</code></td><td>automation seconds ↔ (segment id, progress <code>p</code>), the segment table, and the automation written per segment</td></tr>
+<tr><td><code>exportAutomation(opts)</code>, <code>importAutomation(doc, opts)</code></td><td>the automation as plain JSON, in seconds or per segment, and back</td></tr>
+<tr><td><code>anchor(epoch, opts)</code>, <code>unanchor()</code>, <code>drift()</code>, <code>onDrift(cb)</code></td><td>read the wall clock: count how far behind it the show runs, warn, catch up, start on schedule</td></tr>
 <tr><td><code>layer</code></td><td><code>(key, value, t) =&gt; value</code>: rewrite a param before overrides (the director's <code>param()</code> plugs in here)</td></tr>
 <tr><td><code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>scenes</code>, <code>automation</code>, <code>score</code></td><td>state you can read (and set)</td></tr>
 </tbody>
@@ -1671,6 +1674,95 @@ cut's time, like the ones you declared.</p>
   <span class="tk">if</span> (scene.id === <span class="ts">'storm'</span>) show.stage.activate(<span class="ts">'storm'</span>);   <span class="tc">// switch worlds</span>
   show.midi?.cc(20, i, 16);                                  <span class="tc">// tell the lighting desk</span>
 });</code></pre></div>
+<h4 id="show-control-lanes-curves-written-per-segment">Lanes: curves written per segment<a class="anchor" href="#show-control-lanes-curves-written-per-segment" aria-label="Link to this section">#</a></h4>
+<p>With a <a href="#score">score</a> the show is a list of segments whose lengths change, and a curve written in absolute seconds
+goes stale the moment one of them grows. Write the curve on the segment instead. The automation of a key may be an
+object: its keys are segment ids, its values are keyframes <code>[p, value, curve?]</code> with <code>p</code> the progress through the
+segment, 0 to 1.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world,
+  score: { cuts, cut: <span class="ts">'full'</span> },
+  timeline: { automation: {
+    haze: { dawn: [[0, 0.1], [1, 0.4, <span class="ts">'ease'</span>]],                  <span class="tc">// dawn: 0.1 → 0.4, slow-fast-slow</span>
+            noon: [[0, 0.4], [0.6, 0.9], [1, 0.5, <span class="ts">'out'</span>]],
+            dusk: 0.5 },                                           <span class="tc">// a number holds the whole segment</span>
+    speed: [[0, 0.3], [30, 1.2], [120, 0.4]],                      <span class="tc">// absolute seconds still work, in the same object</span>
+  } },
+});</code></pre></div>
+<p>A point <code>[p, v, curve]</code> is exactly the keyframe <code>[segment.start + p × segment.dur, v, curve]</code>, nothing more: the
+timeline compiles every lane when it is built, and <code>timeline.automation</code> holds ordinary absolute keyframes, so
+<code>valueAt</code>, recording, <code>mergeTake</code> and the console behave as before.</p>
+<ul>
+<li><strong>Any cut.</strong> The lane is compiled against the <em>root cut</em> of the score (the cut a derived cut came from). A cut with
+other lengths reads the same lane with its own lengths, so <code>(dawn, 0.5)</code> is half way through dawn in every cut, and
+a derived cut (<code>from</code> + <code>scale</code>) is stretched like absolute keyframes. Two cuts that differ in structure, not only in
+length, can share one lane.</li>
+<li><strong>Seams.</strong> Between the last point of a segment and the first point of the next, the value glides like between any two
+keyframes (the arriving point's curve applies). For a seamless seam write the same value at <code>p: 1</code> and at the next
+segment's <code>p: 0</code>. Two points at the same instant with different values are a jump.</li>
+<li><strong>Segments a cut lacks.</strong> An id that another cut of the score has but this one does not is skipped, so one lane serves
+a cut with a segment fewer. An id that no cut has (a typo) throws, naming the key and the id; so does a <code>p</code> outside
+0…1 or out of order, naming the key, the segment and the point.</li>
+<li><strong>Without a score</strong> the scenes are the segments: a scene lasts until the next one starts.</li>
+</ul>
+<h4 id="show-control-saving-and-loading-automation">Saving and loading automation<a class="anchor" href="#show-control-saving-and-loading-automation" aria-label="Link to this section">#</a></h4>
+<p><code>record()</code> writes a take into <code>timeline.automation</code>, in memory. To keep it, export it as plain JSON and import it later,
+into this timeline or another:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> doc = timeline.exportAutomation({ as: <span class="ts">'segments'</span> });           <span class="tc">// lanes per segment: still right on another cut</span>
+localStorage.setItem(<span class="ts">'automation'</span>, JSON.stringify(doc));
+<span class="tc">// later:</span>
+timeline.importAutomation(localStorage.getItem(<span class="ts">'automation'</span>));        <span class="tc">// a string or the object</span></code></pre></div>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{ <span class="ts">"format"</span>: <span class="ts">"openav-automation"</span>, <span class="ts">"version"</span>: 1, <span class="ts">"cut"</span>: <span class="ts">"full"</span>, <span class="ts">"as"</span>: <span class="ts">"segments"</span>,
+  <span class="ts">"automation"</span>: { <span class="ts">"haze"</span>: { <span class="ts">"dawn"</span>: [[0, 0.1], [1, 0.4, <span class="ts">"ease"</span>]], <span class="ts">"noon"</span>: [[0, 0.4], [1, 0.5]] } } }</code></pre></div>
+<p><code>exportAutomation({ keys, as, precision })</code> returns a copy. <code>as: 'seconds'</code> (the default) writes each key as the keyframes
+in the root cut's seconds; <code>as: 'segments'</code> writes each key as a lane, with <code>p</code> rounded to <code>precision</code> decimals (9; <code>null</code> keeps
+every digit). The two are inverses: the lanes compile back to the same curve. A keyframe outside the show has no segment,
+so it can only be exported as seconds, and a curve that is a function cannot be written to JSON at all: both throw, naming
+the key. <code>cut</code> is the id of the root cut.</p>
+<p><code>importAutomation(doc, { keys, replace, ignoreCut })</code> takes the file, or a bare <code>{ key: keyframes | lane }</code> map. It replaces
+the keys the file has (<code>keys</code> narrows them; <code>replace: true</code> also clears the ones it does not mention). It is all-or-nothing: if
+one key is bad, nothing changes. Seconds belong to the cut they were written against, so a file whose <code>cut</code> is not this
+timeline's root cut is refused (<code>ignoreCut: true</code> overrides); lanes are not tied to a cut.</p>
+<p>The conversion behind it is public. <code>lanePos(t)</code> answers <code>{ id, index, p }</code> for a second (<code>null</code> outside the show; a boundary
+belongs to the segment that starts there), <code>laneTime(id, p)</code> answers the second, <code>lanePlan()</code> is the segment table, and <code>lanes()</code>
+is the whole automation written per segment. They work in <em>automation seconds</em>, the ones in <code>timeline.automation</code> and in
+<code>onRecord</code>'s <code>from</code>/<code>to</code>. For the playhead's own show seconds use the score: <code>score.locate(T)</code> and <code>score.timeAt(id, p)</code>
+(<a href="#score-the-score">Score</a>). The pure functions <code>compileLane</code>, <code>decompileLane</code>, <code>lanePos</code> and <code>laneTime</code> are exported too, for
+tools that have a segment table <code>[{ id, start, end }]</code> (<code>score.rootSegments</code>) and no timeline.</p>
+<h4 id="show-control-wall-clock-anchor-and-drift">Wall clock: anchor and drift<a class="anchor" href="#show-control-wall-clock-anchor-and-drift" aria-label="Link to this section">#</a></h4>
+<p>The frame loop clamps <code>dt</code> to 0.1 s (<a href="#architecture-the-frame-loop">Architecture</a>). When the page stalls for half a second,
+the show moves 0.1 s and falls 0.4 s behind the wall clock. On a short show nobody notices; on a night-long installation
+nobody is there to see how much it has lost. <code>anchor()</code> makes the timeline read the wall clock (<code>Date.now</code>, in milliseconds) on
+every frame it plays and compare how long the clock ran with how far the show moved. Nothing happens unless you call it: an
+unanchored timeline never reads a clock.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">timeline.anchor();                                                       <span class="tc">// count only (mode 'warn')</span>
+timeline.anchor(Date.parse(<span class="ts">'2026-10-24T20:00:00+08:00'</span>), { mode: <span class="ts">'catch-up'</span> });   <span class="tc">// start at 20:00 sharp, and stay on the clock</span>
+timeline.drift().text;   <span class="tc">// "0.42 s behind the wall clock · 7 stalls cost 1.30 s (worst gap 0.52 s) · caught up 0.88 s"</span>
+createShow({ world, timeline: { total: 120, anchor: { mode: <span class="ts">'catch-up'</span>, jump: 5 } } });   <span class="tc">// the same, from the options</span></code></pre></div>
+<p><code>anchor(epoch?, opts)</code>: <code>epoch</code> is the wall-clock moment of show time 0, as milliseconds, a <code>Date</code> or an ISO string. Leave it out
+and the first playing frame is time 0: there is nothing to be late for, only the stalls from then on count.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>option</th><th>default</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>mode</code></td><td><code>'warn'</code></td><td><code>'warn'</code> counts and tells, and never moves <code>t</code>. <code>'catch-up'</code> gives back what was lost</td></tr>
+<tr><td><code>warnAt</code></td><td>1</td><td>seconds behind at which <code>onDrift</code> hears <code>'behind'</code> (and <code>console.warn</code> if nobody listens); it hears <code>'recovered'</code> below half of it</td></tr>
+<tr><td><code>tolerance</code></td><td>0.05</td><td><code>'catch-up'</code>: owing less than this is not repaid</td></tr>
+<tr><td><code>jump</code></td><td>10</td><td><code>'catch-up'</code>: owing more than this is closed by one seek (no cues fire, the way a seek never fires them), not by racing on</td></tr>
+<tr><td><code>wait</code></td><td>true</td><td><code>'catch-up'</code>: an <code>epoch</code> in the future keeps the show standing still, playing but not moving, until then</td></tr>
+<tr><td><code>stall</code></td><td>0.02</td><td>a frame whose wall time exceeds <code>dt</code> by more than this counts as a stall (counting only)</td></tr>
+<tr><td><code>now</code></td><td><code>Date.now</code></td><td>the clock, in milliseconds; pass the same fake clock you give a test or a manual loop</td></tr>
+<tr><td><code>onDrift</code></td><td>none</td><td><code>cb({ kind, …drift() })</code> for <code>'behind'</code>, <code>'recovered'</code> and <code>'jump'</code>; <code>timeline.onDrift(cb)</code> adds more</td></tr>
+</tbody>
+</table></div>
+<p>What <code>'catch-up'</code> does: the difference is added to that frame's step, so cues, holds and loops behave as in normal playback
+(a hold still stops the show). An <code>epoch</code> in the past is a late start: a machine restarted at 20:07 for a show that began at 20:00
+lands seven minutes in. A pause, a hold and the end of the show are the show standing still on purpose, so they are not drift:
+whatever was owed at that moment is forgiven (<code>forgiven</code>) and counting resumes from where the show stands. Running ahead is
+reported (a negative <code>behind</code>) and never pulled back. <code>reset()</code> starts the counting over; an <code>epoch</code> still in the future survives it.</p>
+<p><code>drift()</code> answers <code>null</code> when there is no anchor, otherwise <code>behind</code> (seconds slower than the wall clock; negative = ahead),
+<code>lost</code> (what the clamp, or any stall, cost), <code>repaid</code>, <code>forgiven</code>, <code>stalls</code>, <code>worst</code> (the longest wall-clock gap between two
+frames), <code>frames</code>, <code>jumps</code>, <code>started</code>, <code>waiting</code>, <code>startsIn</code>, <code>epoch</code>, <code>mode</code>, and <code>text</code>, one line for the desk or the monitor.
+If you drive the timeline from a manual or test loop, give <code>anchor()</code> the same fake clock as <code>now</code>, otherwise it measures real time.</p>
 <h3 id="show-control-the-console">The console<a class="anchor" href="#show-control-the-console" aria-label="Link to this section">#</a></h3>
 <p><code>mountConsole(el, app, { layers, signals })</code> (<code>@openav/console</code>) builds the
 director's desk; <code>createShow()</code> mounts it in the side panel. <code>app</code> is the object
@@ -1965,9 +2057,11 @@ loop.start();</code></pre></div>
 <tr><td><code>linger</code></td><td>seconds the segment's module keeps running after the segment ends (a decay, a tail). Default 0</td></tr>
 <tr><td><code>hold</code></td><td>playback stops at the end of this segment and waits for the operator (<a href="#score-hold">Hold</a>)</td></tr>
 <tr><td><code>module</code></td><td>the name of the module that performs it, when that is not the segment's own id</td></tr>
+<tr><td><code>meta</code></td><td>anything else the work hangs on a segment (a layer, a palette, an event window): an object the score does not read and hands back as <code>segment.meta</code>. Other fields the score does not know are kept in <code>meta</code> too; an explicit <code>meta</code> entry wins</td></tr>
 </tbody>
 </table></div>
 <p>A derived cut scales <code>dur</code>, <code>linger</code> and <code>{ s }</code> cues, so a cue stays in the same place in the music. The ratio cues did not need to move.</p>
+<p><code>meta</code> is plain data to the score: it is copied one level deep when the cut is built (changing your source object afterwards changes nothing), a derived cut shares its base cut's <code>meta</code>, and a module reads it as <code>ctx.segment.meta</code>. Treat it as read-only. <code>segment.meta</code> is always an object, <code>{}</code> when there is none; a <code>meta</code> that is not an object is a <code>ScoreError</code>.</p>
 <p>A cut is checked when the score is built. Duplicate ids, a <code>dur</code> of 0 or below, a <code>from</code> that is not a cut, a <code>scale</code> of 0 or below, a cut derived from itself, a cue outside its segment, <code>acts</code> that are not strings: each throws a <code>ScoreError</code> that names the cut, the segment and the reason, and lists every problem at once. Nothing half-valid can reach the stage.</p>
 <h3 id="score-the-score">The Score<a class="anchor" href="#score-the-score" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Score } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
@@ -1981,16 +2075,18 @@ loop.start();</code></pre></div>
 <tr><td><code>cueTime('dusk')</code></td><td>a moment in show seconds: <code>'dusk'</code> is the segment's start, <code>'dusk.end'</code> its end, <code>'dusk.glow'</code> a cue. <code>NaN</code> for anything unknown</td></tr>
 <tr><td><code>cuesBetween(T0, T1)</code></td><td>the cues a playhead passed from <code>T0</code> to <code>T1</code>: those with <code>T0 &lt; time ≤ T1</code>, in time order. Nothing when <code>T1 ≤ T0</code></td></tr>
 <tr><td><code>cues()</code></td><td>every cue of the cut in time order, each with its number <code>n</code></td></tr>
-<tr><td><code>scenes()</code></td><td>the segments as a <code>scenes</code> array for the <a href="#show-control-timeline">timeline</a> (with <code>acts</code>, <code>hold</code> and <code>cues</code>)</td></tr>
+<tr><td><code>scenes()</code></td><td>the segments as a <code>scenes</code> array for the <a href="#show-control-timeline">timeline</a> (with <code>acts</code>, <code>hold</code>, <code>cues</code> and <code>meta</code>)</td></tr>
 <tr><td><code>validate()</code></td><td>throws a <code>ScoreError</code> when anything is wrong; returns <code>true</code> otherwise (the constructor already calls it)</td></tr>
 <tr><td><code>cut</code>, <code>title</code>, <code>segments</code>, <code>startT</code></td><td>the active cut, and where <code>reset</code> goes</td></tr>
 <tr><td><code>cuts</code></td><td>every cut as <code>{ id, title, total, from, scale, base }</code>, for a version picker</td></tr>
 <tr><td><code>scale</code>, <code>base</code>, <code>baseTime(T)</code></td><td>the cut's total scale against the cut it was derived from, that cut's id, and <code>T</code> expressed on it</td></tr>
+<tr><td><code>locate(T)</code>, <code>timeAt(id, p)</code></td><td>show time ↔ the segment and how far through it: <code>locate(45)</code> is <code>{ id: 'noon', index: 2, p: 0.5, t: 15 }</code> (<code>t</code> is seconds into the segment; outside the show <code>p</code> is below 0 or above 1), and <code>timeAt('noon', 0.5)</code> is its inverse in this cut's seconds (<code>NaN</code> for an id this cut lacks)</td></tr>
+<tr><td><code>rootSegments</code>, <code>allSegmentIds()</code></td><td>the segments of the cut this one was derived from, in that cut's seconds (the ones automation is written against), and the ids of every cut</td></tr>
 </tbody>
 </table></div>
 <h4 id="score-automation-on-a-derived-cut">Automation on a derived cut<a class="anchor" href="#score-automation-on-a-derived-cut" aria-label="Link to this section">#</a></h4>
 <p>Automation curves are written once, against the cut they were derived from, and a derived cut stretches them. <code>timeline.valueAt(key, t)</code> reads the curve at <code>score.baseTime(t)</code>, which is <code>t / scale</code>. On the short cut above, <code>t = 20</code> reads the curve at 40. A cut that is not derived has scale 1 and nothing changes.</p>
-<p>If two cuts differ in structure and not just in length, do not share automation between them. Drive the params from the segment modules instead (<a href="#score-segment-modules"><code>param()</code></a>), where <code>ctx.p</code> already scales for free.</p>
+<p>If two cuts differ in structure and not just in length, do not share automation written in absolute seconds between them. Write it per segment instead: <code>automation: { haze: { dusk: [[0, 0.2], [1, 0.9, 'ease']] } }</code> (<code>p</code> is the progress through the segment). The timeline compiles it against each root cut's own segment lengths, a cut that lacks a segment skips it, and a derived cut stretches it as above (<a href="#show-control-lanes-curves-written-per-segment">Lanes</a>). Or drive the params from the segment modules (<a href="#score-segment-modules"><code>param()</code></a>), where <code>ctx.p</code> already scales for free.</p>
 <h3 id="score-cues">Cues<a class="anchor" href="#score-cues" aria-label="Link to this section">#</a></h3>
 <p>A cue is a named moment: <code>cues: { peak: 0.5 }</code> in segment <code>noon</code> makes <code>noon.peak</code>, half way through. Three places see it:</p>
 <ul>
@@ -2028,7 +2124,7 @@ loop.start();</code></pre></div>
 <tr><td><code>dt</code></td><td>seconds since the previous frame</td></tr>
 <tr><td><code>dur</code></td><td>the segment's length in seconds</td></tr>
 <tr><td><code>T</code></td><td>show time in seconds</td></tr>
-<tr><td><code>segment</code></td><td>the segment: <code>id</code>, <code>title</code>, <code>start</code>, <code>end</code>, <code>dur</code>, <code>cues</code>, <code>acts</code>, <code>hold</code>, <code>linger</code>, <code>index</code></td></tr>
+<tr><td><code>segment</code></td><td>the segment: <code>id</code>, <code>title</code>, <code>start</code>, <code>end</code>, <code>dur</code>, <code>cues</code>, <code>acts</code>, <code>hold</code>, <code>linger</code>, <code>index</code>, <code>meta</code></td></tr>
 <tr><td><code>cue(name)</code>, <code>cueT(name)</code></td><td>where a cue sits, as a progress and in show seconds (<code>NaN</code> when unknown)</td></tr>
 <tr><td><code>phase</code></td><td><code>'active'</code>, <code>'linger'</code>, or <code>'failed'</code> (only inside <code>exit()</code> after a crash)</td></tr>
 <tr><td><code>holding</code>, <code>held</code></td><td>waiting at a hold, and for how many seconds</td></tr>
@@ -3612,17 +3708,18 @@ Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/exam
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · keyframes <code>[t, value, curve?]</code> (<code>'linear'</code> · <code>'ease'</code> · <code>'in'</code> · <code>'out'</code> · <code>'step'</code>) · <code>loop</code> (<code>true</code>, <code>'scene'</code>, a scene id, <code>{ from, to }</code>), <code>onLoop(cb)</code> · <code>cues()</code>, <code>onCue(cb(cue, { cause }))</code>, <code>fireCue(cue)</code> · <code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take, opts)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · keyframes <code>[t, value, curve?]</code> (<code>'linear'</code> · <code>'ease'</code> · <code>'in'</code> · <code>'out'</code> · <code>'step'</code>) · <code>loop</code> (<code>true</code>, <code>'scene'</code>, a scene id, <code>{ from, to }</code>), <code>onLoop(cb)</code> · <code>cues()</code>, <code>onCue(cb(cue, { cause }))</code>, <code>fireCue(cue)</code> · <code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take, opts)</code> · per-segment automation <code>{ key: { segmentId: [[p, value, curve?], …] } }</code>, <code>lanePos(t)</code>, <code>laneTime(id, p)</code>, <code>lanePlan()</code>, <code>lanes()</code> · <code>exportAutomation({ keys, as, precision })</code>, <code>importAutomation(doc, { keys, replace, ignoreCut })</code> · <code>anchor(epoch, opts)</code>, <code>unanchor()</code>, <code>drift()</code>, <code>onDrift(cb)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
+<tr><td><code>compileLane</code>, <code>decompileLane</code>, <code>lanePos</code>, <code>laneTime</code>, <code>isLane</code>, <code>AUTOMATION_FORMAT</code></td><td>the segment-lane conversions as pure functions over a segment table <code>[{ id, start, end }]</code> (<code>score.rootSegments</code>), for tools that have no timeline</td></tr>
 </tbody>
 </table></div>
-<p>A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's <code>cues</code> fire when playback passes them, never on a seek. <code>record()</code> writes a value source (a knob override) into a lane while the timeline plays. <code>CURVES</code> is exported too.</p>
+<p>A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's <code>cues</code> fire when playback passes them, never on a seek. <code>record()</code> writes a value source (a knob override) into a lane while the timeline plays. <code>CURVES</code> is exported too. Curves can be written per segment, saved as JSON and read back, and the timeline can watch the wall clock: <a href="#show-control-lanes-curves-written-per-segment">Lanes</a>, <a href="#show-control-saving-and-loading-automation">Saving and loading automation</a>, <a href="#show-control-wall-clock-anchor-and-drift">Wall clock</a>.</p>
 <p>See <a href="#show-control-timeline">Show control</a>.</p>
 <h3 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="Link to this section">#</a></h3>
 <p>Spine · the score and the director: a show written as segment lengths, and the modules that perform the segments. Pure logic, no DOM.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>Score</code></td><td><code>new Score({ cuts, cut })</code> · <code>table()</code> · <code>total</code> · <code>segmentAt(T)</code>, <code>indexAt(T)</code> · <code>cueTime('seg.name')</code> · <code>cuesBetween(T0, T1)</code> · <code>cues()</code> · <code>scenes()</code> · <code>validate()</code> · <code>cuts</code>, <code>cut</code>, <code>segments</code>, <code>startT</code>, <code>scale</code>, <code>baseTime(T)</code></td></tr>
+<tr><td><code>Score</code></td><td><code>new Score({ cuts, cut })</code> · <code>table()</code> · <code>total</code> · <code>segmentAt(T)</code>, <code>indexAt(T)</code> · <code>locate(T)</code>, <code>timeAt(id, p)</code> · <code>cueTime('seg.name')</code> · <code>cuesBetween(T0, T1)</code> · <code>cues()</code> · <code>scenes()</code> · <code>validate()</code> · <code>cuts</code>, <code>cut</code>, <code>segments</code> (each with its <code>meta</code>), <code>startT</code>, <code>scale</code>, <code>baseTime(T)</code>, <code>rootSegments</code>, <code>allSegmentIds()</code></td></tr>
 <tr><td><code>ScoreError</code></td><td>thrown by an invalid score; <code>problems</code> lists every reason</td></tr>
 <tr><td><code>Director</code></td><td><code>new Director({ score, modules, api, onStatus, onCue, maxStep })</code> · <code>update(T, dt, { holding, playing })</code> · <code>param(key, value, T)</code> · <code>seek(T)</code> · <code>reset()</code> · <code>status()</code> · <code>register(module)</code></td></tr>
 </tbody>
