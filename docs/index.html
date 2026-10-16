@@ -175,6 +175,7 @@
             <li><a href="#show-control-the-console">The console</a></li>
             <li><a href="#show-control-performance-mode">Performance mode</a></li>
             <li><a href="#show-control-backstage-monitor">Backstage monitor</a></li>
+            <li><a href="#show-control-several-pages-one-show">Several pages, one show</a></li>
             <li><a href="#show-control-osc-output">OSC output</a></li>
             <li><a href="#show-control-midi-output-and-panic">MIDI output and panic</a></li>
             <li><a href="#show-control-sound">Sound</a></li>
@@ -301,6 +302,7 @@
             <li><a href="#packages-openav-pattern">@openav/pattern</a></li>
             <li><a href="#packages-openav-console">@openav/console</a></li>
             <li><a href="#packages-openav-monitor">@openav/monitor</a></li>
+            <li><a href="#packages-openav-sync">@openav/sync</a></li>
             <li><a href="#packages-openav-relay">@openav/relay</a></li>
             <li><a href="#packages-openav-surface">@openav/surface</a></li>
             <li><a href="#packages-openav-remote">@openav/remote</a></li>
@@ -370,7 +372,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">19 chapters · 194 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
+      <p class="docs-stats">19 chapters · 196 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -722,6 +724,7 @@ runs each frame (<code>packages/show/index.js</code>):</p>
   audio?.update();                               <span class="tc">//    microphone analysis → audio/* signals</span>
   onFrame?.(dt, show);                           <span class="tc">//    your assembly-level hook</span>
   timeline.advance(dt);                          <span class="tc">// 1. time moves</span>
+  sync?.frame();                                 <span class="tc">//    several pages: the leader says where it is, a follower asks again if unanswered</span>
   director?.update(timeline.t, dt, { holding, playing }); <span class="tc">//    with a score: segment modules enter / update / exit</span>
   mapper.update(dt);                             <span class="tc">// 2. smoothed routes settle</span>
   <span class="tk">const</span> state = stage.frame(dt, timeline.state()); <span class="tc">// 3. params resolve → world updates &amp; renders</span>
@@ -841,6 +844,9 @@ and total from the score, and the director plugs into it as a param layer:</p>
                                     └─ param() ── timeline.layer ──────────────────────→ Timeline</code></pre></div>
 <p>The score only decides <em>when</em>. What happens still reaches the world as params.
 Full reference: <a href="#score">Score &amp; Director</a>.</p>
+<p>A timeline can also follow another's clock instead of walking by itself, which is how several pages perform one show: the leader
+runs, the followers chase its <code>T</code> over a BroadcastChannel or the room relay, and every param still resolves as a function of that <code>T</code>
+(<a href="#show-control-several-pages-one-show">Several pages, one show</a>).</p>
 <h3 id="architecture-spine-monitor">Spine · Monitor<a class="anchor" href="#architecture-spine-monitor" aria-label="Link to this section">#</a></h3>
 <p>The performance page streams JSON snapshots (throttled, ~15 Hz) over WebSocket
 to a dependency-free relay (<code>server.js</code>, hand-rolled RFC 6455). Any phone or
@@ -1660,6 +1666,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>loop</code></td><td><code>'auto'</code></td><td>who drives the frames: <code>'auto'</code> (the page's <code>requestAnimationFrame</code>), <code>'manual'</code> (you call <code>show.loop.step(dt)</code>) or <code>{ clock, raf, maxDt, heartbeat }</code>, the options of <code>new Loop()</code> (<a href="#show-control-driving-the-frames-yourself">below</a>)</td></tr>
 <tr><td><code>monitor</code></td><td><code>true</code></td><td>the <a href="#show-control-backstage-monitor">backstage feed</a>: <code>false</code> = none (no socket is opened), <code>{ url, hz }</code> = another relay address or rate</td></tr>
 <tr><td><code>console</code></td><td><code>null</code></td><td>the options of <a href="#show-control-the-console">the console</a>, <code>mountConsole</code>'s: <code>{ keys, layers, signals, learnOrder }</code>; <code>keys</code> moves the keyboard shortcuts</td></tr>
+<tr><td><code>sync</code></td><td><code>null</code></td><td>several pages, one show: <code>{ role: 'leader' | 'follower', channel, url, input, extra, state, follow }</code>. One page leads, the others follow its clock, and a follower takes no input of its own (<a href="#show-control-several-pages-one-show">below</a>)</td></tr>
 </tbody>
 </table></div>
 <p>Without <code>mount</code>, the page body becomes a two-column grid: the stage, and a
@@ -1679,7 +1686,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>sound</code></td><td><code>true</code>; an instrument id (<code>'piano'</code>); <code>{ instrument, remember, picker, engine, baseUrl }</code></td><td>instruments in the page with a picker, Tone.js (<a href="#show-control-sound">Sound</a>)</td></tr>
 </tbody>
 </table></div>
-<p>It returns <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, monitor, console, app, loop }</code>; parts you did not ask for are <code>null</code>. The same object is
+<p>It returns <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, sync, monitor, console, app, loop }</code>; parts you did not ask for are <code>null</code>. The same object is
 <code>window.openav</code>, for the devtools console. The frame order is in
 <a href="#architecture-the-frame-loop">Architecture</a>.</p>
 <h4 id="show-control-driving-the-frames-yourself">Driving the frames yourself<a class="anchor" href="#show-control-driving-the-frames-yourself" aria-label="Link to this section">#</a></h4>
@@ -1871,6 +1878,27 @@ clock and never runs backwards, which also cancels the extra 0.1 s frame the loo
 <code>lost</code> (what the clamp, or any stall, cost), <code>repaid</code>, <code>held</code>, <code>forgiven</code>, <code>stalls</code>, <code>worst</code> (the longest wall-clock gap between two
 frames), <code>frames</code>, <code>jumps</code>, <code>started</code>, <code>waiting</code>, <code>startsIn</code>, <code>epoch</code>, <code>mode</code>, and <code>text</code>, one line for the desk or the monitor.
 If you drive the timeline from a manual or test loop, give <code>anchor()</code> the same fake clock as <code>now</code>, otherwise it measures real time.</p>
+<h4 id="show-control-following-another-clock-follow">Following another clock: follow<a class="anchor" href="#show-control-following-another-clock-follow" aria-label="Link to this section">#</a></h4>
+<p>A timeline can chase another timeline's clock instead of walking by itself. That is the timeline's half of <a href="#show-control-several-pages-one-show">several pages performing one show</a>: the leader runs, the followers follow. The source can be anything that answers "where is the leader?": the <code>@openav/sync</code> follower, a recording, a test's fake leader. Nothing happens unless you call <code>follow()</code>: a timeline that never follows runs exactly as it did before.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">timeline.follow(follower, { jump: 0.5, lostAfter: 4 });   <span class="tc">// follower: anything with latest() (or a function () =&gt; frame)</span>
+timeline.followStatus().text;   <span class="tc">// "0.012 s behind the leader · worst 0.140 s · 1 jump"</span>
+timeline.unfollow();            <span class="tc">// the timeline walks by itself again, on the rate it had before follow()</span></code></pre></div>
+<p><code>follow(source, opts)</code>. The source answers with the leader's last frame, <code>{ T, playing, holding, rate, at }</code>: <code>T</code> is the leader's time when it sent the frame, <code>at</code> is when the frame arrived here, in milliseconds on the same clock as <code>now</code> (leave it out and the frame counts as arriving this instant). It answers <code>null</code> before it has heard anyone. Every frame the follower works out where the leader is <em>now</em>: <code>T</code>, plus the time since <code>at</code> times <code>rate</code> (nothing is added while the leader is paused or holding), plus <code>latency</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>option</th><th>default</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>nudge</code></td><td>0.05</td><td>while it catches up, <code>rate</code> is the leader's rate times 1 ± this: a follower 0.3 s behind closes the gap in about six seconds, and nobody sees a jump</td></tr>
+<tr><td><code>deadband</code></td><td>1/60</td><td>a difference under one frame is left alone. Past it the nudge starts, and it stops at half of it, so it does not flutter on the edge</td></tr>
+<tr><td><code>jump</code></td><td>0.5</td><td>a difference over this many seconds is one <code>seek(T, 'seek')</code>: <code>onSeek</code> hears it and no cue fires</td></tr>
+<tr><td><code>lostAfter</code></td><td>4</td><td>seconds without a frame before the leader counts as gone; <code>Infinity</code> waits for ever</td></tr>
+<tr><td><code>latency</code></td><td>0</td><td>seconds a frame spends on the way, a number or a function. Set it for pages on different machines (for example half the round trip)</td></tr>
+<tr><td><code>now</code></td><td><code>source.now</code>, else <code>performance.now</code></td><td>the clock, in milliseconds; the one the source stamps <code>at</code> with</td></tr>
+<tr><td><code>onFollow</code></td><td>none</td><td><code>cb({ kind, …followStatus() })</code> for <code>'found'</code>, <code>'lost'</code> and <code>'jump'</code>; <code>timeline.onFollow(cb)</code> adds more</td></tr>
+</tbody>
+</table></div>
+<p>What the follower copies from the leader: its <strong>rate</strong>, its <strong>pause</strong> (the follower stops on the leader's exact <code>T</code>) and its <strong>hold</strong>. When the leader parks at the end of a <code>hold</code> scene, the follower walks up to the boundary and parks there by itself (its own cues and scene changes fire on the way). It lets go only when the leader's <code>T</code> is past the boundary, so a late frame from just before it cannot release a follower that arrived first. A looping show is followed across the wrap of the loop, by the shorter way round. The leader is the clock: while following, the follower's own <code>play()</code>, <code>pause()</code>, <code>seek()</code> and <code>rate</code> are overruled by the next frame, and <code>anchor()</code> stands aside until <code>unfollow()</code>.</p>
+<p>When no frame has come for <code>lostAfter</code> seconds the follower <strong>runs by itself</strong> on the last rate it was given, exactly like a timeline that does not follow (a paused follower stays paused). <code>followStatus().lost</code> turns true and <code>onFollow</code> hears <code>'lost'</code> (<code>console.warn</code> if nobody listens). When the leader is back, the follower picks it up again (<code>'found'</code>). Before it has heard anyone at all it waits (<code>state: 'waiting'</code>) and, after <code>lostAfter</code> seconds, runs on its own the same way.</p>
+<p><code>followStatus()</code> answers <code>null</code> when the timeline is not following, otherwise <code>state</code> (<code>'waiting'</code>, <code>'tracking'</code>, <code>'lost'</code>), <code>error</code> (the leader's <code>T</code> minus ours, in seconds; positive = we are behind), <code>worst</code> (the biggest <code>|error|</code> since it first caught up), <code>jumps</code> (seeks), <code>silence</code> (seconds since the last frame), <code>lost</code>, <code>lostCount</code>, <code>lostAfter</code>, <code>heard</code>, <code>frames</code>, <code>nudging</code> (-1, 0 or 1), <code>rate</code>, <code>leaderRate</code>, <code>leaderT</code>, <code>leaderPlaying</code>, <code>leaderHolding</code>, and <code>text</code>, one line for the desk or the monitor. The numbers are those of the last frame.</p>
 <h3 id="show-control-the-console">The console<a class="anchor" href="#show-control-the-console" aria-label="Link to this section">#</a></h3>
 <p><code>mountConsole(el, app, { layers, signals, keys })</code> (<code>@openav/console</code>) builds the
 director's desk; <code>createShow()</code> mounts it in the side panel. <code>app</code> is the object
@@ -1952,6 +1980,62 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop, extra: { buil
 so one bad number never costs the frame, and a provider that throws is skipped. <code>monitor()</code> and a function <code>extra</code>
 are asked every frame, <code>monitor.extra(fn)</code> only when a frame goes out (about 15 a second): keep anything
 expensive there. On a name two sources share, <code>extra</code> beats the world and a later <code>monitor.extra</code> beats an earlier one.</p>
+<h3 id="show-control-several-pages-one-show">Several pages, one show<a class="anchor" href="#show-control-several-pages-one-show" aria-label="Link to this section">#</a></h3>
+<p>A wall of three outputs, a stage and a lobby, a rehearsal laptop beside the show laptop: one show, several pages. One page is the <strong>leader</strong>: it runs the timeline, takes the input, and says every frame where it is. The others are <strong>followers</strong>: their timelines chase the leader's <code>T</code> (<a href="#show-control-following-another-clock-follow">follow</a>), so every page shows the same moment of the same show. Give every page the same code and a different <code>role</code>:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> role = location.hash === <span class="ts">'#follow'</span> ? <span class="ts">'follower'</span> : <span class="ts">'leader'</span>;
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world, score: { cuts, modules },
+  sync: { role, channel: <span class="ts">'hall'</span> },               <span class="tc">// pages of one browser on one machine: a BroadcastChannel, no network</span>
+  <span class="tc">// sync: { role, channel: 'hall', url: 'ws://leader.local:8080/relay' },   // pages on other machines: the room relay</span>
+});</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th><code>sync</code> key</th><th>default</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>role</code></td><td>required</td><td><code>'leader'</code> or <code>'follower'</code></td></tr>
+<tr><td><code>channel</code></td><td>required</td><td>the name of the BroadcastChannel and of the relay room: 1–32 letters, digits, <code>-</code> or <code>_</code>. Pages on the same channel are one show</td></tr>
+<tr><td><code>url</code></td><td>none</td><td>none: a <code>BroadcastChannel</code> (pages of one browser profile and one origin). <code>true</code>: this page's own <code>/relay</code> (<code>node serve.js</code> hosts it). <code>'ws://host:port/relay'</code>: the relay on that machine</td></tr>
+<tr><td><code>input</code></td><td>leader <code>true</code>, follower <code>false</code></td><td>whether this page takes input of its own. Without it the modules that make input are switched off: <code>keys</code> (the keyboard piano), <code>midi</code>, <code>drums</code>, <code>audio</code>, <code>hands</code>, <code>pose</code>, <code>leap</code>, <code>remote</code>. Everything else is yours</td></tr>
+<tr><td><code>follow</code></td><td><code>{}</code></td><td>follower: the options of <a href="#show-control-following-another-clock-follow"><code>timeline.follow()</code></a> (<code>jump</code>, <code>lostAfter</code>, <code>latency</code>, <code>nudge</code>, <code>onFollow</code>)</td></tr>
+<tr><td><code>extra</code>, <code>state</code></td><td>none</td><td>leader: data that travels with the clock (below)</td></tr>
+<tr><td><code>info</code>, <code>accept</code>, <code>onFrame</code>, <code>onState</code>, <code>onGap</code></td><td>none</td><td>follower: hooks and checks (below)</td></tr>
+<tr><td><code>hz</code></td><td>every frame</td><td>leader: at most this many frames a second; a change of state (play, pause, hold, rate, seek) is sent at once</td></tr>
+<tr><td><code>id</code>, <code>now</code></td><td>random, <code>performance.now</code></td><td>the peer id and the clock</td></tr>
+</tbody>
+</table></div>
+<p><strong>Transports.</strong> On one machine the pages talk through a <code>BroadcastChannel</code>: no network and nothing to run. The browser connects only pages of the same origin and profile, so open the leader and the followers from the same address. Across machines they join a room on the <a href="#phones-the-relay">room relay</a> as <code>role=leader</code> and <code>role=follower</code>; <code>node serve.js</code> on the leader's machine is enough (<code>url: 'ws://&lt;that machine&gt;:8080/relay'</code>). A page served over https needs a <code>wss://</code> address (the browser blocks <code>ws://</code> there). The relay has no authentication: use a closed network and a channel name nobody will guess (<a href="#phones-security">Security</a>). Both transports carry the same JSON, so a work does not change when the wire does.</p>
+<p><strong>Messages.</strong> The same on both transports; <code>seq</code> counts the leader's frames.</p>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">{ v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }      leader → followers, every frame
+{ v:1, kind:'hello', id, role:'follower', info?, reason? }                    follower → leader: "I am here, where are we?"
+{ v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower</code></pre></div>
+<p>A follower says <code>hello</code> when it comes up, and again every second until it has a <code>state</code>, after a gap in <code>seq</code>, after a silence and whenever its socket reconnects. The leader answers with a <code>state</code>, so a page that joins in the middle, or reloads, is on the show's present at its first frame. <code>cut</code> is the score's cut id: a follower on another cut than the leader (another length, so <code>T</code> means something else) refuses its frames, and the monitor says <code>refused: cut …</code>.</p>
+<p><strong>Carrying the work's data.</strong> Whatever has to travel with the clock (an override the operator set, a note, a skipped intro) goes in <code>extra</code>. The framework delivers it once each and in order, and never reads it.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">sync: {
+  role: <span class="ts">'leader'</span>, channel: <span class="ts">'hall'</span>,
+  extra: () =&gt; ({ build: BUILD, events: takeNewEvents() }),   <span class="tc">// asked once per frame sent; return undefined for "nothing"</span>
+  state: (hello) =&gt; ({ build: BUILD, tape: wholeTape }),       <span class="tc">// asked when a follower says hello: all a late joiner needs</span>
+}
+sync: {
+  role: <span class="ts">'follower'</span>, channel: <span class="ts">'hall'</span>,
+  onFrame: (msg) =&gt; appendEvents(msg.extra.events),            <span class="tc">// every frame, in order, each one once</span>
+  onState: (msg) =&gt; loadTape(msg.extra.tape),                  <span class="tc">// on joining, and again after anything went missing</span>
+  accept: (msg) =&gt; msg.extra?.build === BUILD || <span class="ts">'build differs'</span>,   <span class="tc">// false or a string refuses this leader</span>
+  info: { build: BUILD },                                      <span class="tc">// arrives with every hello</span>
+}</code></pre></div>
+<p>A frame that goes missing (a socket dropped for a moment) shows as a gap in <code>seq</code>: the follower tells <code>onGap</code>, asks for the state again, and the state replaces whatever was lost. The relay drops messages over 256 KB by default; a <code>state</code> that carries a whole tape needs <code>attachRelay(server, { maxMessageChars, maxBytes })</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>what happens</th><th>what the follower does</th></tr></thead>
+<tbody>
+<tr><td>it reloads, or joins late</td><td><code>hello</code>, then <code>state</code>: on its first frame it is on the leader's <code>T</code></td></tr>
+<tr><td>a frame is lost, or the socket drops and returns</td><td>the gap in <code>seq</code> is reported and the state asked for again</td></tr>
+<tr><td>the leader goes quiet</td><td>after <code>lostAfter</code> seconds (4) it runs by itself on the last rate; <code>followStatus().lost</code> and <code>sync/lost</code> in the monitor turn red</td></tr>
+<tr><td>the leader returns, or another page is promoted by hand</td><td>a leader quiet for 1.5 s can be replaced by another one; the follower switches and resyncs</td></tr>
+<tr><td>two leaders at once</td><td>it sticks to the first it heard; the other is counted as <code>ignored</code></td></tr>
+<tr><td>the leader is on another cut</td><td>refused, and nothing moves</td></tr>
+<tr><td>the follower drifts</td><td>it cannot pile up: every frame is measured against the leader's <code>T</code>, not the follower's own clock</td></tr>
+</tbody>
+</table></div>
+<p><strong>What this does not do.</strong> Frames carry the leader's <code>T</code>, not a wall-clock time, and <code>latency</code> is yours to set: across machines a follower trails by about one trip unless told. There is no election: promoting a follower means loading it with <code>role: 'leader'</code> once the old leader is gone. The pages share <em>time</em>. A world that integrates <code>dt</code> (a feedback trail, a particle system) will not look the same on two pages at equal <code>T</code> unless what must match is written as a function of <code>T</code>. Backstage, a synced page adds <code>sync/…</code> numbers (role, error, silence, lost, jumps) to the monitor's Work panel.</p>
+<p>Without <code>createShow</code>: <code>createSync({ role, channel, url, timeline })</code> from <code>@openav/sync</code> builds the same thing; call <code>sync.frame()</code> after <code>timeline.advance(dt)</code> every frame (<a href="#packages-openav-sync"><code>@openav/sync</code></a>).</p>
 <h3 id="show-control-osc-output">OSC output<a class="anchor" href="#show-control-osc-output" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-bash"><span class="tk">node</span> packages/osc/bridges/osc-bridge.js 7456 192.168.1.50 3456
 <span class="tc">#                       http port ↑    target host ↑   udp port ↑</span></code></pre></div>
@@ -3295,7 +3379,7 @@ in the widget's color, <code>navigator.vibrate</code> where it exists.</p>
 zooming), <code>keepAwake()</code> (Wake Lock), <code>toggleFullscreen()</code>, <code>canFullscreen()</code>,
 <code>haptic(ms)</code>.</p>
 <h3 id="phones-the-relay">The relay<a class="anchor" href="#phones-the-relay" aria-label="Link to this section">#</a></h3>
-<p>Clients connect to <code>ws://&lt;host&gt;/relay?role=controller|runner|monitor&amp;room=&lt;name&gt;&amp;id=&lt;device&gt;</code>.
+<p>Clients connect to <code>ws://&lt;host&gt;/relay?role=controller|runner|monitor|leader|follower&amp;room=&lt;name&gt;&amp;id=&lt;device&gt;</code>.
 A room is a name; peers in different rooms never hear each other.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>from</th><th>to</th><th>what</th></tr></thead>
@@ -3304,14 +3388,20 @@ A room is a name; peers in different rooms never hear each other.</p>
 <tr><td>runner (the show)</td><td>monitor</td><td><code>signal</code> and <code>batch</code></td></tr>
 <tr><td>runner</td><td>controllers + monitors</td><td><code>feedback</code> (meters, fader echo), <code>config</code> (the surface layout; replayed to phones that join later)</td></tr>
 <tr><td>monitor</td><td>nobody</td><td></td></tr>
+<tr><td>leader (a show page)</td><td>followers</td><td><code>sync</code> (frames, and the state it answers a follower with)</td></tr>
+<tr><td>follower (a show page)</td><td>leaders</td><td><code>sync</code> (hello)</td></tr>
 </tbody>
 </table></div>
 <p>Messages are JSON: <code>{"type":"signal","name":"phone/ab12/tilt/x","value":0.3,"t":…,"pulse"?:true}</code>,
 <code>{"type":"batch","items":[…]}</code>, <code>ping</code>/<code>pong</code>, <code>status</code> (peer counts),
-<code>feedback</code>, <code>config</code>. Clients ignore types they do not know. When the runner
+<code>feedback</code>, <code>config</code>, <code>sync</code>. Clients ignore types they do not know. When the runner
 leaves, the room forgets its config. Messages over 256 KB are ignored, frames
 over 1 MB close the connection, and a phone that stops answering pings (screen
-locked, Wi-Fi gone) is dropped within about 40 s.</p>
+locked, Wi-Fi gone) is dropped within about 40 s. <code>attachRelay(server, { maxMessageChars, maxBytes })</code>
+raises both limits.</p>
+<p>Show pages use the same rooms to perform one show together: the leader's <code>sync</code> messages
+(<code>{"type":"sync","v":1,"kind":"frame",…}</code>; <code>"to":"&lt;id&gt;"</code> addresses one peer) reach the room's followers
+and a follower's reach its leaders, and nobody else hears them (<a href="#show-control-several-pages-one-show">Several pages, one show</a>).</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { RelayClient, bindSignals } <span class="tk">from</span> <span class="ts">'@openav/relay'</span>;
 
 <span class="tk">const</span> show = <span class="tk">new</span> RelayClient({ role: <span class="ts">'runner'</span>, room: <span class="ts">'main'</span> }).connect();
@@ -3561,7 +3651,7 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">15</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
-<p>Twenty-seven packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+<p>Twenty-eight packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
 npm yet.</p>
@@ -3572,7 +3662,7 @@ npm yet.</p>
 <tr><td>L2 mapping</td><td><code>mapping</code> · <code>chop</code></td></tr>
 <tr><td>L3 world</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
 <tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>out</code> · <code>record</code> · <code>fab</code> (and MIDI out in <code>midi</code>)</td></tr>
-<tr><td>spines</td><td><code>timeline</code> · <code>score</code> · <code>pattern</code> · <code>console</code> · <code>monitor</code></td></tr>
+<tr><td>spines</td><td><code>timeline</code> · <code>score</code> · <code>pattern</code> · <code>console</code> · <code>monitor</code> · <code>sync</code></td></tr>
 <tr><td>phones</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
 <tr><td>glue</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
@@ -3600,7 +3690,7 @@ signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0
 <h3 id="packages-openav-show">@openav/show<a class="anchor" href="#packages-openav-show" aria-label="Link to this section">#</a></h3>
 <p>Glue · <code>createShow(options)</code>: one call that assembles a whole show around a
 world and returns every part. Options, modules and the return value are in
-<a href="#show-control-createshow">Show control</a>; <code>loop</code>, <code>monitor</code> and <code>console</code> (the desk's <code>keys</code>) choose who drives the frames, where the backstage feed goes and which keys run the desk.</p>
+<a href="#show-control-createshow">Show control</a>; <code>loop</code>, <code>monitor</code> and <code>console</code> (the desk's <code>keys</code>) choose who drives the frames, where the backstage feed goes and which keys run the desk; <code>sync</code> makes the page one of several that perform the same show (leader or follower, <a href="#packages-openav-sync"><code>@openav/sync</code></a>).</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { keys: { base: 48 }, sound: <span class="tk">true</span> } });</code></pre></div>
 <h3 id="packages-openav-midi">@openav/midi<a class="anchor" href="#packages-openav-midi" aria-label="Link to this section">#</a></h3>
@@ -3862,11 +3952,11 @@ Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/exam
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · keyframes <code>[t, value, curve?]</code> (<code>'linear'</code> · <code>'ease'</code> · <code>'in'</code> · <code>'out'</code> · <code>'step'</code>) · <code>loop</code> (<code>true</code>, <code>'scene'</code>, a scene id, <code>{ from, to }</code>), <code>onLoop(cb)</code> · <code>cues()</code>, <code>onCue(cb(cue, { cause }))</code>, <code>fireCue(cue)</code> · <code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take, opts)</code> · per-segment automation <code>{ key: { segmentId: [[p, value, curve?], …] } }</code>, <code>lanePos(t)</code>, <code>laneTime(id, p)</code>, <code>lanePlan()</code>, <code>lanes()</code> · <code>exportAutomation({ keys, as, precision })</code>, <code>importAutomation(doc, { keys, replace, ignoreCut })</code> · <code>anchor(epoch, opts)</code>, <code>unanchor()</code>, <code>drift()</code>, <code>onDrift(cb)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · keyframes <code>[t, value, curve?]</code> (<code>'linear'</code> · <code>'ease'</code> · <code>'in'</code> · <code>'out'</code> · <code>'step'</code>) · <code>loop</code> (<code>true</code>, <code>'scene'</code>, a scene id, <code>{ from, to }</code>), <code>onLoop(cb)</code> · <code>cues()</code>, <code>onCue(cb(cue, { cause }))</code>, <code>fireCue(cue)</code> · <code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take, opts)</code> · per-segment automation <code>{ key: { segmentId: [[p, value, curve?], …] } }</code>, <code>lanePos(t)</code>, <code>laneTime(id, p)</code>, <code>lanePlan()</code>, <code>lanes()</code> · <code>exportAutomation({ keys, as, precision })</code>, <code>importAutomation(doc, { keys, replace, ignoreCut })</code> · <code>anchor(epoch, opts)</code>, <code>unanchor()</code>, <code>drift()</code>, <code>onDrift(cb)</code> · <code>follow(source, opts)</code>, <code>unfollow()</code>, <code>following</code>, <code>followStatus()</code>, <code>onFollow(cb)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
 <tr><td><code>compileLane</code>, <code>decompileLane</code>, <code>lanePos</code>, <code>laneTime</code>, <code>isLane</code>, <code>AUTOMATION_FORMAT</code></td><td>the segment-lane conversions as pure functions over a segment table <code>[{ id, start, end }]</code> (<code>score.rootSegments</code>), for tools that have no timeline</td></tr>
 </tbody>
 </table></div>
-<p>A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's <code>cues</code> fire when playback passes them, never on a seek. <code>record()</code> writes a value source (a knob override) into a lane while the timeline plays. <code>CURVES</code> is exported too. Curves can be written per segment, saved as JSON and read back, and the timeline can watch the wall clock: <a href="#show-control-lanes-curves-written-per-segment">Lanes</a>, <a href="#show-control-saving-and-loading-automation">Saving and loading automation</a>, <a href="#show-control-wall-clock-anchor-and-drift">Wall clock</a>.</p>
+<p>A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's <code>cues</code> fire when playback passes them, never on a seek. <code>record()</code> writes a value source (a knob override) into a lane while the timeline plays. <code>CURVES</code> is exported too. Curves can be written per segment, saved as JSON and read back, and the timeline can watch the wall clock: <a href="#show-control-lanes-curves-written-per-segment">Lanes</a>, <a href="#show-control-saving-and-loading-automation">Saving and loading automation</a>, <a href="#show-control-wall-clock-anchor-and-drift">Wall clock</a>, or follow another timeline's clock: <a href="#show-control-following-another-clock-follow">Following another clock</a>.</p>
 <p>See <a href="#show-control-timeline">Show control</a>.</p>
 <h3 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="Link to this section">#</a></h3>
 <p>Spine · the score and the director: a show written as segment lengths, and the modules that perform the segments. Pure logic, no DOM.</p>
@@ -3926,14 +4016,27 @@ meters, performance mode.</p>
 </tbody>
 </table></div>
 <p>See <a href="#show-control-backstage-monitor">Show control</a>.</p>
+<h3 id="packages-openav-sync">@openav/sync<a class="anchor" href="#packages-openav-sync" aria-label="Link to this section">#</a></h3>
+<p>Spine · several pages, one show: the wire between a leader and its followers, over a BroadcastChannel or the room relay. A follower's timeline chases the leader with <a href="#show-control-following-another-clock-follow"><code>timeline.follow()</code></a>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>createSync</code></td><td><code>createSync({ role, channel, url, timeline, score, follow, extra, state, hz, info, accept, onFrame, onState, onGap, id, now, transport })</code> → a <code>SyncLeader</code> or a <code>SyncFollower</code>; a follower's timeline is made to follow it. Call <code>sync.frame()</code> after <code>timeline.advance(dt)</code> every frame; <code>sync.close()</code> lets go</td></tr>
+<tr><td><code>SyncLeader</code></td><td><code>new SyncLeader({ timeline, transport, id, cut, extra, state, hz, now, onHello })</code> · <code>frame()</code> · <code>sendState(to?)</code> · <code>status()</code> · <code>monitor()</code> · <code>close()</code></td></tr>
+<tr><td><code>SyncFollower</code></td><td><code>new SyncFollower({ transport, id, now, timeline, info, accept, onFrame, onState, onGap, resync = true, helloEvery = 1000, takeoverAfter = 1500, resyncAfter = 1000 })</code> · <code>latest()</code> (a <code>timeline.follow()</code> source) · <code>hello(reason)</code> · <code>frame()</code> · <code>status()</code> · <code>monitor()</code> · <code>close()</code></td></tr>
+<tr><td>transports</td><td><code>BroadcastTransport({ channel })</code> · <code>RelayTransport({ url, room, role, id })</code> · <code>createTransport({ role, channel, url, id })</code>: each is <code>{ send(msg), onMessage(cb), onOpen(cb), open, close() }</code> and carries JSON</td></tr>
+<tr><td><code>SYNC_VERSION</code></td><td><code>1</code>, the <code>v</code> of every message</td></tr>
+</tbody>
+</table></div>
+<p>Messages are <code>frame</code> (leader to followers, every frame), <code>hello</code> (follower to leader) and <code>state</code> (leader to one follower); work-specific data rides in <code>extra</code>. See <a href="#show-control-several-pages-one-show">Show control</a>.</p>
 <h3 id="packages-openav-relay">@openav/relay<a class="anchor" href="#packages-openav-relay" aria-label="Link to this section">#</a></h3>
 <p>Phones · room-scoped WebSocket relay (server) and its browser client.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>RelayClient</code></td><td><code>new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig })</code> · <code>connect()</code> · <code>close()</code> · <code>set(name, value)</code> · <code>send(name, value, pulse, extra)</code> · <code>feedback(name, value)</code> · <code>config(key, data)</code> · <code>status</code>, <code>latency</code>, <code>peers</code></td></tr>
+<tr><td><code>RelayClient</code></td><td><code>new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig, onSync })</code> · <code>connect()</code> · <code>close()</code> · <code>set(name, value)</code> · <code>send(name, value, pulse, extra)</code> · <code>feedback(name, value)</code> · <code>config(key, data)</code> · <code>sync(msg)</code> · <code>status</code>, <code>latency</code>, <code>peers</code>; <code>role</code> is <code>controller</code>, <code>runner</code>, <code>monitor</code>, <code>leader</code> or <code>follower</code></td></tr>
 <tr><td>signals helpers</td><td><code>bindSignals(client, signals, { alias = 'any' })</code> · <code>fileSignal(signals, name, value, { pulse })</code> · <code>signalMeta(name, { pulse })</code> · <code>aliasOf(name)</code> · <code>normalizeValue(name, value)</code> · <code>deviceId()</code></td></tr>
-<tr><td><code>@openav/relay/server</code></td><td><code>attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000 })</code> → <code>{ hub, close() }</code>; standalone <code>node packages/relay/server.js [port=7458]</code></td></tr>
+<tr><td><code>@openav/relay/server</code></td><td><code>attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000, maxMessageChars = 262144, maxBytes = 1048576 })</code> → <code>{ hub, close() }</code>; standalone <code>node packages/relay/server.js [port=7458]</code></td></tr>
 <tr><td><code>MidiLink</code> (<code>link.js</code>)</td><td><code>new MidiLink({ url, room, delay = 0, onMessages(list, from), onStatus })</code> · <code>connect()</code> · <code>send(bytes, whenMs)</code> · <code>info()</code> → <code>{ state, peers, rtt, trip, diff, lead, late, sent, received }</code> · <code>close()</code>; <code>LinkTiming</code>: MIDI between pages in one room, played when it sounds at the sender (<a href="#strudel">With Strudel</a>)</td></tr>
 </tbody>
 </table></div>
@@ -4370,7 +4473,10 @@ the performer; archive the gesture, not just the video.</li>
 <li><strong>NDI gateway</strong>: headless-browser → NDI bridge so browser output enters
 professional video pipelines (research: WebRTC→NDI converters already exist).</li>
 <li><strong>Distributed performance</strong>: multi-browser signal sync over WebRTC data
-channels — several machines, one signal space, geographically split ensembles.</li>
+channels — several machines, one signal space, geographically split ensembles.
+The clock half shipped: several pages perform one show, the followers chasing a leader's
+timeline over a BroadcastChannel or the room relay (<code>@openav/sync</code>). Signals still stay on
+the page that took them.</li>
 <li><strong>Agent performers</strong>: LLM-driven agents subscribing to signals and writing
 params — improvising alongside humans (lineage: The Last Input's autonomous
 city agents).</li>
