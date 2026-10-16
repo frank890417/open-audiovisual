@@ -12,6 +12,9 @@
 //   show.feedback('surface/main/level', 0.4);     // runner → phones (meters, fader echo)
 //   show.config('surface', layoutJson);           // runner → phones, replayed to late joiners
 //
+//   new RelayClient({ role: 'leader', … }).sync({ v: 1, kind: 'frame', … })   // one show on several pages (packages/sync):
+//   new RelayClient({ role: 'follower', onSync: (m) => … })                   // the leader's frames reach the followers
+//
 // Why continuous values are re-sent once a second: a phone that joins after the
 // show page opened (or a show page reloaded mid-performance) would otherwise sit
 // on stale defaults until someone happens to wiggle each control. The 1 Hz
@@ -34,7 +37,7 @@ export function deviceId(key = 'lab.deviceId') {
 export class RelayClient {
   /**
    * @param {object} o
-   * @param {'controller'|'runner'|'monitor'} [o.role]
+   * @param {'controller'|'runner'|'monitor'|'leader'|'follower'} [o.role]
    * @param {string} [o.room]            room name (default 'default'; the lab relay ignores it)
    * @param {string} [o.id]              device id
    * @param {string} [o.url]             full ws url; default same-origin /relay (or ?relay=ws://… on the page)
@@ -43,13 +46,14 @@ export class RelayClient {
    * @param {(name:string, value:any, msg:object)=>void} [o.onSignal]    runner/monitor: incoming signals
    * @param {(name:string, value:any)=>void} [o.onFeedback]              controller: runner → phone values
    * @param {(key:string, data:any)=>void} [o.onConfig]                  controller: runner's standing config
+   * @param {(msg:object)=>void} [o.onSync]                              leader / follower: the other side's `sync` message
    */
-  constructor({ role = 'controller', room = 'default', id = deviceId(), url = null, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig } = {}) {
-    Object.assign(this, { role, room, id, batchHz, resendMs, onStatus, onSignal, onFeedback, onConfig });
+  constructor({ role = 'controller', room = 'default', id = deviceId(), url = null, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig, onSync } = {}) {
+    Object.assign(this, { role, room, id, batchHz, resendMs, onStatus, onSignal, onFeedback, onConfig, onSync });
     this.url = url;
     this.status = 'connecting';
     this.latency = null;
-    this.peers = { controllers: 0, runners: 0, monitors: 0 };
+    this.peers = { controllers: 0, runners: 0, monitors: 0, leaders: 0, followers: 0 };
     this.sent = 0;
     this._values = new Map(); this._dirty = new Set(); this._fb = new Map(); this._fbDirty = new Set();
     this._ws = null; this._retry = 0; this._timers = []; this._closed = false;
@@ -100,11 +104,12 @@ export class RelayClient {
     switch (m.type) {
       case 'pong': this.latency = Date.now() - m.t; this._emit(); break;
       case 'status': case 'hello':
-        this.peers = { controllers: m.controllers, runners: m.runners, monitors: m.monitors }; this._emit(); break;
+        this.peers = { controllers: m.controllers, runners: m.runners, monitors: m.monitors, leaders: m.leaders ?? 0, followers: m.followers ?? 0 }; this._emit(); break;
       case 'signal': this.onSignal?.(m.name, m.value, m); break;
       case 'batch': for (const it of m.items || []) this.onSignal?.(it.name, it.value, it); break;
       case 'feedback': this.onFeedback?.(m.name, m.value); break;
       case 'config': this.onConfig?.(m.key, m.data); break;
+      case 'sync': this.onSync?.(m); break;
     }
   }
 
@@ -118,6 +123,10 @@ export class RelayClient {
   feedback(name, value) { if (this._fb.get(name) !== value) { this._fb.set(name, value); this._fbDirty.add(name); } }
   /** Runner → controllers: standing config (e.g. 'surface' layout). Stored by the server for late joiners. */
   config(key, data) { this._raw({ type: 'config', key, data }); }
+  /** Leader → followers, follower → leaders: one `sync` message ({ v, kind, … }, plain JSON; `to: '<id>'` for one peer).
+   *  Not queued: a message that finds the socket closed is gone (the next frame is a few milliseconds behind it, and a follower
+   *  that missed one asks for the state again: packages/sync). */
+  sync(msg) { this._raw({ type: 'sync', ...msg }); }
 
   _flush(all) {
     if (!this.open) return;
