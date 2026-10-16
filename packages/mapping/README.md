@@ -25,7 +25,7 @@ A knob that nudges the timeline instead of replacing it, and hands the param bac
 
 ```js
 mapper.base = () => timeline.state();        // the timeline's value now (createShow: show.mapper.base = () => show.timeline.state())
-mapper.addRoute({ source: 'midi/cc/74', target: 'reality', mode: 'trim', outMin: -0.3, outMax: 0.3, smooth: 0.1 });   // timeline + offset
+mapper.addRoute({ source: 'midi/cc/74', target: 'hue', mode: 'trim', outMin: -30, outMax: 30, smooth: 0.1 });   // timeline + offset, ±30°
 mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'pickup', release: 4, smooth: 0.15 });                // meets the value first; gives it back after 4 s
 ```
 

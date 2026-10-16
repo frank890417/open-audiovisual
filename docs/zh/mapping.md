@@ -115,11 +115,11 @@ show.mapper.base = () => show.timeline.state();
 
 ### trim：在時間軸上微調
 
-時間軸已經把整晚畫好的作品，不該因為旋鈕轉到 0.9 就把曲線整條丟掉。`trim` 路由的 `outMin`/`outMax` 是*偏移量*的範圍，參數等於 `時間軸的值 + 偏移`，再夾在參數的範圍內。沒寫的話，旋鈕往兩邊各走參數範圍的一半（旋鈕在中間 = 不動）：
+時間軸已經把整場演出畫好的作品，不該因為旋鈕轉到 0.9 就把曲線整條丟掉。`trim` 路由的 `outMin`/`outMax` 是*偏移量*的範圍，參數等於 `時間軸的值 + 偏移`，再夾在參數的範圍內。沒寫的話，旋鈕往兩邊各走參數範圍的一半（旋鈕在中間 = 不動）：
 
 ```js
-// ±0.3 around whatever the timeline says, smoothed
-show.mapper.addRoute({ source: 'midi/cc/74', target: 'reality', mode: 'trim', outMin: -0.3, outMax: 0.3, smooth: 0.1 });
+// ±30° around whatever the timeline says, smoothed
+show.mapper.addRoute({ source: 'midi/cc/74', target: 'hue', mode: 'trim', outMin: -30, outMax: 30, smooth: 0.1 });
 ```
 
 - 偏移騎在時間軸上：曲線動，參數每個影格都跟著動。

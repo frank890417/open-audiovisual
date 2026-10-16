@@ -174,7 +174,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
 
 ```js
 // 1. from the world: snapshotOf asks the active world, so a createShow() show needs no wiring
-const world = { name: 'night', params: [/* … */], update() { /* … */ },
+const world = { name: 'lanterns', params: [/* … */], update() { /* … */ },
   monitor() { return { 'sim/tick': sim.tick, 'sim/drift': { v: sim.drift, min: 0, max: 0.5, warn: sim.drift > 0.2 } }; } };
 
 // 2. from a hand-assembled show: on the feed (asked only when a frame is sent) …

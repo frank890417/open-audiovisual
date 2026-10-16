@@ -156,14 +156,14 @@ it is asked every frame while a trim holds a param, and at each reading of a tri
 
 ### Trim: nudge the timeline
 
-For a work whose timeline already draws the night, turning a knob to 0.9 should not throw
+For a work whose timeline already draws the whole show, turning a knob to 0.9 should not throw
 the curve away. A `trim` route's `outMin`/`outMax` are an *offset* range, and the param is
 `timeline value + offset`, clamped to the param's range. Without them the knob spans half the param's
 range each way (knob in the middle = no change):
 
 ```js
-// ±0.3 around whatever the timeline says, smoothed
-show.mapper.addRoute({ source: 'midi/cc/74', target: 'reality', mode: 'trim', outMin: -0.3, outMax: 0.3, smooth: 0.1 });
+// ±30° around whatever the timeline says, smoothed
+show.mapper.addRoute({ source: 'midi/cc/74', target: 'hue', mode: 'trim', outMin: -30, outMax: 30, smooth: 0.1 });
 ```
 
 - The offset rides on the timeline: when the curve moves, the param moves with it, every frame.
