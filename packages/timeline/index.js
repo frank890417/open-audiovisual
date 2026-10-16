@@ -21,6 +21,8 @@
 //   of the score (or the scenes without one), so a cut with other lengths — or a derived one — reads the same (segment, p)
 //   the same way. Absolute-second arrays and lanes mix freely in one automation.
 //   tl.exportAutomation({ as: 'seconds' | 'segments' }) / tl.importAutomation(json) · lanePos(t) / laneTime(id, p): seconds ↔ (segment, p)
+// tl.anchor(epoch?, { mode: 'warn' | 'catch-up', … })   read the wall clock: count what the frame loop's dt clamp costs
+//   (tl.drift()), warn, or give it back; an epoch in the future is a scheduled start. Nothing happens unless you call it.
 // scenes:     [{ id, t, title?, note?, act?, acts?, hold?, cues? }, …]  t may be negative (pre-show standby)
 //
 // Since the score (@openav/score): pass `score` and the scenes, the total and the start come
@@ -166,8 +168,16 @@ function cleanKeyframes(key, kf, { json = false } = {}) {
   return out.map((k, i) => ({ k, i })).sort((x, y) => x.k[0] - y.k[0] || x.i - y.i).map((x) => x.k);
 }
 
+/** anchor() 的 epoch：毫秒數、Date 或 ISO 字串；沒給（null／undefined）＝以第一個播放的幀為零點。 */
+function epochMs(e) {
+  if (e === undefined || e === null) return null;
+  const ms = e instanceof Date ? e.getTime() : typeof e === 'number' ? e : typeof e === 'string' ? Date.parse(e) : NaN;
+  if (!Number.isFinite(ms)) throw new TypeError(`[timeline] anchor(): epoch must be milliseconds, a Date, an ISO date string, or empty (got ${show(e)})`);
+  return ms;
+}
+
 export class Timeline {
-  constructor({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null }) {
+  constructor({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null }) {
     this.params = params;           // Params instance or plain schema array
     this.schema = Array.isArray(params) ? params : params.schema;
     this.automation = automation;   // 全是絕對秒的陣列時就是你傳進來的那個物件；有 lane 的鍵會在下面編成陣列（新物件）
@@ -193,7 +203,14 @@ export class Timeline {
     this._cueIncl = true;           // the first advance after construct / reset() also fires a cue sitting exactly on the start
     this._loopCbs = [];
     this._recCbs = [];
+    this._used = 0;                 // 最近一次 _advance() 真正走掉的秒數（hold 停住時會比要求的少）
+    this._anchor = null;            // anchor() 的狀態；null＝沒有錨定，advance() 一個位元都沒變
+    this._driftCbs = [];
     if (automation && Object.values(automation).some(isLane)) this.automation = this._compileAutomation(automation);
+    if (anchor) {
+      const cfg = anchor !== true && !(anchor instanceof Date) && typeof anchor === 'object' ? anchor : null;   // true｜毫秒｜Date｜ISO 字串｜{ epoch, mode, … }
+      this.anchor(cfg ? cfg.epoch : anchor === true ? undefined : anchor, cfg || {});
+    }
   }
 
   _autoTime(t) { return this.score ? this.score.baseTime(t) : t; }
@@ -333,8 +350,8 @@ export class Timeline {
   _moved(kind) { for (const cb of this._seekCbs) { try { cb(this.t, kind); } catch (e) { console.error('[timeline] onSeek handler:', e); } } }
 
   /** Play. Parked at a hold? Then this lets the show go on to the next scene. */
-  play() { if (this.holding) { this.release(); return; } this.playing = true; }
-  pause() { this.playing = false; this._closeTakes('pause'); }
+  play() { if (this.holding) { this.release(); return; } if (this._anchor && !this.playing) this._anchorStop(); this.playing = true; }
+  pause() { this.playing = false; this._closeTakes('pause'); if (this._anchor) this._anchorStop(); }
   toggle() { if (this.playing) this.pause(); else this.play(); return this.playing; }
 
   /** Move the playhead to t (clamped). Leaving a hold this way releases it. */
@@ -358,6 +375,7 @@ export class Timeline {
     const h = this._holdAt, parked = this.t;
     this.holding = false; this._holdAt = null;
     this.t = h.time;
+    if (this._anchor && !this.playing) this._anchorStop();
     this.playing = true;
     this._checkScene('release');
     this._cuesIn(parked, h.time, false, true);   // a cue sitting on the boundary belongs to the scene that starts now
@@ -368,6 +386,7 @@ export class Timeline {
     this.t = this.start; this.playing = false; this.holding = false; this._holdAt = null; this._lastScene = -1;
     this.loops = 0; this._cueIncl = true;
     this._closeTakes('reset');
+    if (this._anchor) this._anchorReset();
     this._moved('reset');
   }
 
@@ -381,10 +400,16 @@ export class Timeline {
     return null;
   }
 
-  /** Call per frame with clamped dt. Returns whether still playing. */
+  /** Call per frame with clamped dt. Returns whether still playing. With anchor() it also reads the wall clock (see there). */
   advance(dt) {
-    if (!this.playing) return false;
-    const from = this.t, step = dt * this.rate, next = from + step;
+    if (!this.playing) { if (this._anchor) this._anchorStop(); return false; }
+    if (!this._anchor) return this._advance(dt * this.rate);     // 沒有錨定：走原本的路，不讀任何鐘
+    return this._advanceAnchored(dt);
+  }
+
+  // 走 step 個節目秒（已乘過 rate）。cue、hold、loop、場景切換都在這裡；錨定追平時 step 會比 dt × rate 大
+  _advance(step) {
+    const from = this.t, next = from + step;
     const L = step > 0 ? this.loopRange(from) : null;
     const wrap = !!L && from <= L.b && next >= L.b;
     const hold = this._holdBetween(from, next);
@@ -393,6 +418,7 @@ export class Timeline {
       const park = hold.time - HOLD_EPS;
       this.t = park;
       this.playing = false; this.holding = true; this._holdAt = hold;
+      this._used = park - from;
       this._checkScene();
       this._cuesIn(from, park, incl, true);
       this._sample(); this._closeTakes('hold');
@@ -400,6 +426,7 @@ export class Timeline {
     }
     if (wrap) {
       const span = L.b - L.a, over = (next - L.b) % span;
+      this._used = step;
       this.t = L.b;                                  // the lap ends here: its cues and its take belong to this lap
       this._cuesIn(from, L.b, incl, L.b >= this.total - 1e-9);
       this._sample(); this._closeTakes('loop');
@@ -415,11 +442,144 @@ export class Timeline {
     this.t = next;
     const ended = this.t >= this.total;
     if (ended) { this.t = this.total; this.playing = false; }
+    this._used = this.t - from;
     this._checkScene();
     this._cuesIn(from, this.t, incl, true);
     this._sample();
     if (ended) this._closeTakes('end');
     return this.playing;
+  }
+
+  // ── 牆鐘錨定 ───────────────────────────────────────────────────────────────────────────────
+  // Loop 把每一幀的 dt 夾在 0.1 s（瀏覽器卡 0.5 s，節目只走 0.1 s），所以長場的節目時間會慢於牆鐘，而且沒人看得到慢了多少。
+  // anchor() 讓時間軸自己讀牆鐘（Date.now，或你給的 `now`，單位毫秒），每個播放中的幀比較「牆鐘走了多久」和「節目走了多少」：
+  //   · 計數（drift()）：慢了多少（behind）、Loop 夾 dt 吃掉多少（lost）、停頓幾次、最長一次多久、追回多少
+  //   · 'warn'（預設）：只計數，慢過 warnAt 秒通知一次（onDrift，沒人接就 console.warn）；不動 t
+  //   · 'catch-up'：欠的追回來。追的方式是把差額加進這一幀的步長，所以 cue、hold、loop 都照常（hold 會把節目停住）；
+  //     欠超過 jump 秒就直接 seek 過去（不放 cue，onSeek 聽到 'seek'）。epoch 在未來就站著等到那一刻（預約開演）；
+  //     epoch 在過去（重開機晚到）就追到現在該在的位置
+  // 暫停、hold、節目結束都是「刻意不走」，不算漂移：停下來的那一刻欠的帳一筆勾銷（forgiven），恢復後以停住的位置重新計。
+  // 超前（behind 為負）只回報，從不往回拉。rate 變了照節目秒算（牆鐘 × rate）。
+
+  /**
+   * 開始對牆鐘記帳。重呼叫會重來（計數歸零）。
+   * @param {number|Date|string} [epoch]  節目時間 0 對應的牆鐘時刻（毫秒、Date 或 ISO 字串）。不給＝以第一個播放的幀為零點（只量、不對時）
+   * @param {object} [opts]
+   * @param {'warn'|'catch-up'} [opts.mode='warn']
+   * @param {number} [opts.tolerance=0.05]  catch-up：欠不到這麼多秒就不追
+   * @param {number} [opts.warnAt=1]        欠超過這麼多秒通知一次；降到一半以下再通知「恢復」
+   * @param {number} [opts.jump=10]         catch-up：欠超過這麼多秒用 seek 一次補上，不是邊播邊追
+   * @param {boolean} [opts.wait=true]      catch-up：epoch 在未來就等到那一刻再開始
+   * @param {number} [opts.stall=0.02]      牆鐘比 dt 長超過這麼多秒的幀才算一次「停頓」（只影響計數）
+   * @param {()=>number} [opts.now]         牆鐘（毫秒）；預設 Date.now。測試或接了假時鐘的 Loop 就傳同一個
+   * @param {(e:object)=>void} [opts.onDrift]  e = { kind: 'behind' | 'recovered' | 'jump', …drift() }
+   * @returns {this}
+   */
+  anchor(epoch, opts = {}) {
+    const ms = epochMs(epoch);
+    const { mode = 'warn', tolerance = 0.05, warnAt = 1, jump = 10, wait = true, stall = 0.02, now = () => Date.now(), onDrift = null } = opts;
+    if (mode !== 'warn' && mode !== 'catch-up') throw new TypeError(`[timeline] anchor(): mode must be 'warn' or 'catch-up' (got ${show(mode)})`);
+    if (typeof now !== 'function') throw new TypeError('[timeline] anchor(): now must be a function returning milliseconds');
+    for (const [k, v] of Object.entries({ tolerance, warnAt, jump, stall })) {
+      if (!(typeof v === 'number' && v >= 0)) throw new TypeError(`[timeline] anchor(): ${k} must be a number of seconds ≥ 0 (got ${show(v)})`);
+    }
+    this._anchor = { mode, tolerance, warnAt, jump, wait: !!wait, stall, now, onDrift, epoch0: ms, ...freshAnchor(ms) };
+    return this;
+  }
+  /** 不再對牆鐘記帳；計數丟掉，onDrift(cb) 註冊的 callback 留著。 */
+  unanchor() { this._anchor = null; return this; }
+  /** cb(e) 於 'behind'（欠超過 warnAt）、'recovered'（降到一半以下）、'jump'（catch-up 用 seek 補上）。有人接就不再 console.warn。 */
+  onDrift(cb) { this._driftCbs.push(cb); }
+
+  /**
+   * 目前的漂移與計數，沒有錨定是 null。秒數都是節目秒：
+   *   behind 比牆鐘慢多少（負的＝超前）· lost Loop 夾 dt（或任何停頓）吃掉的 · repaid 追回的 · forgiven 因暫停／hold 一筆勾銷的
+   *   stalls 停頓幾次 · worst 最長一次牆鐘間隔（牆鐘秒）· frames 記帳的幀數 · jumps seek 補上的次數
+   *   started／waiting／startsIn 是否已開演、是否在等預約的 epoch、還有幾秒 · epoch · mode · expected／shown 牆鐘應走／節目實走
+   *   text 一行人看得懂的摘要，可以直接印在導演台或後台
+   */
+  drift() {
+    const a = this._anchor;
+    if (!a) return null;
+    const behind = a.started ? a.expected - a.shown : 0;
+    const d = {
+      mode: a.mode, epoch: a.epoch, started: a.started, waiting: a.waiting,
+      startsIn: a.waiting ? Math.max(0, (a.epoch - a.now()) / 1000) : 0,
+      behind, lost: a.lost, repaid: a.repaid, forgiven: a.forgiven, stalls: a.stalls, worst: a.worst, frames: a.frames, jumps: a.jumps,
+      expected: a.expected, shown: a.shown, text: '',
+    };
+    d.text = driftText(d);
+    return d;
+  }
+
+  _advanceAnchored(dt) {
+    const a = this._anchor, W = a.now(), first = a.mark === null;
+    let gap;                                            // 這一幀牆鐘走了幾秒
+    if (first) {                                        // 第一個播放的幀，或停住（暫停／hold）之後恢復
+      if (a.epoch === null) { a.epoch = W; gap = dt; }
+      else if (!a.started && W < a.epoch) {             // 預約的開演時刻還沒到
+        if (a.mode === 'catch-up' && a.wait) { a.waiting = true; return true; }
+        gap = dt;
+      } else gap = a.started ? dt : (W - a.epoch) / 1000;
+      a.started = true; a.waiting = false;
+    } else gap = Math.max(0, (W - a.mark) / 1000);
+    const rate = this.rate, step0 = dt * rate;
+    a.frames++;
+    a.expected += gap * rate;
+    if (!first && gap - dt > a.stall) { a.stalls++; a.lost += (gap - dt) * rate; if (gap > a.worst) a.worst = gap; }
+    let extra = 0, jumped = false;
+    if (a.mode === 'catch-up') {
+      const behind = a.expected - (a.shown + step0);
+      if (behind > a.tolerance) {
+        if (behind > a.jump) { this._syncJump(behind); a.jumps++; a.repaid += behind; a.shown += behind; jumped = true; }
+        else { extra = behind; a.repaid += extra; }
+      }
+    }
+    const alive = this._advance(step0 + extra);
+    a.shown += this._used;
+    if (this.playing) { a.mark = W; this._driftCheck(a); } else this._anchorStop();   // hold／結束：欠的帳一筆勾銷
+    if (jumped) this._driftEmit('jump');
+    return alive;
+  }
+
+  // 節目刻意停下來（pause、hold、結束）：欠的帳不再追，恢復後從停住的位置重新計
+  _anchorStop() {
+    const a = this._anchor;
+    a.mark = null;
+    if (!a.started) return;
+    const owed = a.expected - a.shown;
+    if (owed > 0) a.forgiven += owed;
+    a.expected = a.shown;
+    this._driftCheck(a);
+  }
+  // reset：計數歸零。相對的錨（沒給 epoch）下次播放重新學零點；預約在未來的 epoch 還在，過去的就不留（R 是「從頭來」）
+  _anchorReset() {
+    const a = this._anchor, keep = a.epoch0 !== null && a.epoch0 > a.now();
+    Object.assign(a, freshAnchor(keep ? a.epoch0 : null));
+  }
+  // 往前跳 by 個節目秒：seek（不放 cue、不被 hold 擋），循環的節目跳到它該在的那一圈
+  _syncJump(by) {
+    let T = this.t + by;
+    const L = this.loopRange(this.t);
+    if (L && T > L.b && this.t >= L.a - 1e-9 && this.t <= L.b + 1e-9) {
+      const len = L.b - L.a, laps = Math.floor((T - L.a) / len);
+      T -= laps * len; this.loops += laps;
+    }
+    this.seek(T, 'seek');
+  }
+  _driftCheck(a) {
+    const behind = a.expected - a.shown;
+    if (!a.warned && behind > a.warnAt) { a.warned = true; this._driftEmit('behind'); }
+    else if (a.warned && behind < a.warnAt / 2) { a.warned = false; this._driftEmit('recovered'); }
+  }
+  _driftEmit(kind) {
+    const a = this._anchor, e = { kind, ...this.drift() };
+    let heard = false;
+    for (const cb of [...(a.onDrift ? [a.onDrift] : []), ...this._driftCbs]) {
+      heard = true;
+      try { cb(e); } catch (err) { console.error('[timeline] onDrift handler:', err); }
+    }
+    if (!heard && kind === 'behind') console.warn(`[timeline] ${e.text}`);
   }
 
   // ── loop ───────────────────────────────────────────────────────────────────────────────────
@@ -521,6 +681,20 @@ export class Timeline {
     this.automation[key] = [...kept, ...written].sort((x, y) => x[0] - y[0]);
     return { from, to, count: written.length };
   }
+}
+
+/** anchor() 的計數，歸零用。epoch：毫秒或 null（下一個播放的幀才學）。 */
+function freshAnchor(epoch) {
+  return { epoch, mark: null, started: false, waiting: false, expected: 0, shown: 0, lost: 0, repaid: 0, forgiven: 0, stalls: 0, worst: 0, frames: 0, jumps: 0, warned: false };
+}
+
+function driftText(d) {
+  if (d.waiting) return `starts in ${d.startsIn.toFixed(1)} s`;
+  const b = d.behind, parts = [Math.abs(b) < 0.005 ? 'on the wall clock' : b > 0 ? `${b.toFixed(2)} s behind the wall clock` : `${(-b).toFixed(2)} s ahead of the wall clock`];
+  if (d.stalls) parts.push(`${d.stalls} stall${d.stalls === 1 ? '' : 's'} cost${d.stalls === 1 ? 's' : ''} ${d.lost.toFixed(2)} s (worst gap ${d.worst.toFixed(2)} s)`);
+  if (d.repaid >= 0.005) parts.push(`caught up ${d.repaid.toFixed(2)} s`);
+  if (d.jumps) parts.push(`${d.jumps} jump${d.jumps === 1 ? '' : 's'}`);
+  return parts.join(' · ');
 }
 
 /** One armed lane — made by Timeline.record(). */
