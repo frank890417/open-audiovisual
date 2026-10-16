@@ -1081,9 +1081,9 @@ show.mapper.addRoute({ source: <span class="ts">'hand/right/pinch/index'</span>,
 show.mapper.base = () =&gt; show.timeline.state();</code></pre></div>
 <p><code>timeline.state()</code> 是<em>還沒套用覆寫</em>的值，而且總譜的段落模組已經套用過了，也就是沒有人碰它時參數會有的值。沒有 <code>base</code> 的話，映射器用參數的 <code>def</code>：對沒有任何自動化的參數是對的，對時間軸畫著曲線的參數就不對。<code>base</code> 丟出錯誤或回傳別的東西，就當作沒有，絕不會擋住演出。它要輕：trim 握著參數的每個影格都會問一次，trim 或 pickup 的旋鈕每次讀數也會再問。</p>
 <h4 id="mapping-trim-nudge-the-timeline">trim：在時間軸上微調<a class="anchor" href="#mapping-trim-nudge-the-timeline" aria-label="這一節的連結">#</a></h4>
-<p>時間軸已經把整晚畫好的作品，不該因為旋鈕轉到 0.9 就把曲線整條丟掉。<code>trim</code> 路由的 <code>outMin</code>/<code>outMax</code> 是<em>偏移量</em>的範圍，參數等於 <code>時間軸的值 + 偏移</code>，再夾在參數的範圍內。沒寫的話，旋鈕往兩邊各走參數範圍的一半（旋鈕在中間 = 不動）：</p>
-<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// ±0.3 around whatever the timeline says, smoothed</span>
-show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'reality'</span>, mode: <span class="ts">'trim'</span>, outMin: -0.3, outMax: 0.3, smooth: 0.1 });</code></pre></div>
+<p>時間軸已經把整場演出畫好的作品，不該因為旋鈕轉到 0.9 就把曲線整條丟掉。<code>trim</code> 路由的 <code>outMin</code>/<code>outMax</code> 是<em>偏移量</em>的範圍，參數等於 <code>時間軸的值 + 偏移</code>，再夾在參數的範圍內。沒寫的話，旋鈕往兩邊各走參數範圍的一半（旋鈕在中間 = 不動）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// ±30° around whatever the timeline says, smoothed</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'hue'</span>, mode: <span class="ts">'trim'</span>, outMin: -30, outMax: 30, smooth: 0.1 });</code></pre></div>
 <ul>
 <li>偏移騎在時間軸上：曲線動，參數每個影格都跟著動。</li>
 <li><code>smooth</code> 平滑的是偏移量（從 0 開始，不會跳）。</li>
@@ -1332,7 +1332,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 <h4 id="show-control-the-work-s-own-numbers">作品自己的數字<a class="anchor" href="#show-control-the-work-s-own-numbers" aria-label="這一節的連結">#</a></h4>
 <p>作品可以把自己的健康數字送上後台頁面：模擬跑到第幾個 tick、跟牆上時鐘差了多少、攔到幾次 NaN。這些數字以 <code>snapshot.extra</code> 送過去，顯示在一個 <strong>Work</strong> 面板裡；什麼都沒送時，面板是隱藏的。不送的演出，送出的快照跟以前完全一樣。</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// 1. from the world: snapshotOf asks the active world, so a createShow() show needs no wiring</span>
-<span class="tk">const</span> world = { name: <span class="ts">'night'</span>, params: [<span class="tc">/* … */</span>], update() { <span class="tc">/* … */</span> },
+<span class="tk">const</span> world = { name: <span class="ts">'lanterns'</span>, params: [<span class="tc">/* … */</span>], update() { <span class="tc">/* … */</span> },
   monitor() { <span class="tk">return</span> { <span class="ts">'sim/tick'</span>: sim.tick, <span class="ts">'sim/drift'</span>: { v: sim.drift, min: 0, max: 0.5, warn: sim.drift &gt; 0.2 } }; } };
 
 <span class="tc">// 2. from a hand-assembled show: on the feed (asked only when a frame is sent) …</span>

@@ -1440,12 +1440,12 @@ param's <code>def</code>: right for a param nothing automates, wrong for one the
 that throws or answers something else is treated as absent; it never stops the show. Keep it cheap:
 it is asked every frame while a trim holds a param, and at each reading of a trim or pickup knob.</p>
 <h4 id="mapping-trim-nudge-the-timeline">Trim: nudge the timeline<a class="anchor" href="#mapping-trim-nudge-the-timeline" aria-label="Link to this section">#</a></h4>
-<p>For a work whose timeline already draws the night, turning a knob to 0.9 should not throw
+<p>For a work whose timeline already draws the whole show, turning a knob to 0.9 should not throw
 the curve away. A <code>trim</code> route's <code>outMin</code>/<code>outMax</code> are an <em>offset</em> range, and the param is
 <code>timeline value + offset</code>, clamped to the param's range. Without them the knob spans half the param's
 range each way (knob in the middle = no change):</p>
-<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// ±0.3 around whatever the timeline says, smoothed</span>
-show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'reality'</span>, mode: <span class="ts">'trim'</span>, outMin: -0.3, outMax: 0.3, smooth: 0.1 });</code></pre></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// ±30° around whatever the timeline says, smoothed</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'hue'</span>, mode: <span class="ts">'trim'</span>, outMin: -30, outMax: 30, smooth: 0.1 });</code></pre></div>
 <ul>
 <li>The offset rides on the timeline: when the curve moves, the param moves with it, every frame.</li>
 <li><code>smooth</code> smooths the offset (it starts from 0, never from a jump).</li>
@@ -1794,7 +1794,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</c
 drifted from the wall clock, how many NaNs it has caught. They travel as <code>snapshot.extra</code> and appear in a
 <strong>Work</strong> panel that stays hidden while nothing is sent. A show that sends nothing sends the same snapshot as before.</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// 1. from the world: snapshotOf asks the active world, so a createShow() show needs no wiring</span>
-<span class="tk">const</span> world = { name: <span class="ts">'night'</span>, params: [<span class="tc">/* … */</span>], update() { <span class="tc">/* … */</span> },
+<span class="tk">const</span> world = { name: <span class="ts">'lanterns'</span>, params: [<span class="tc">/* … */</span>], update() { <span class="tc">/* … */</span> },
   monitor() { <span class="tk">return</span> { <span class="ts">'sim/tick'</span>: sim.tick, <span class="ts">'sim/drift'</span>: { v: sim.drift, min: 0, max: 0.5, warn: sim.drift &gt; 0.2 } }; } };
 
 <span class="tc">// 2. from a hand-assembled show: on the feed (asked only when a frame is sent) …</span>
