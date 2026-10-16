@@ -27,8 +27,13 @@
 //     monitor: false,                      // no backstage feed (or { url: 'wss://…', hz }: another relay address)
 //     console: { keys: { reset: 'F6', perf: 'F7', fullscreen: 'F8', midi: 'F9' } },   // move the desk's R T F M off the piano's letters
 //
+// Several pages, one show (packages/sync): one page leads, the others follow its clock; a follower takes no input of its own.
+//     sync: { role: 'leader' | 'follower', channel: 'hall' },            // same browser, same machine: a BroadcastChannel
+//     sync: { role: 'follower', channel: 'hall', url: 'ws://leader.local:8080/relay' },   // another machine: the room relay (url: true = this page's /relay)
+//     // extra: () => data that travels with the clock · state: (hello) => data for a page that joins late · follow: { jump, lostAfter, … }
+//
 // createShow returns { signals, params, stage, timeline, mapper, midi, keys,
-// sound, audio, hands, pose, leap, remote, score, director, loop, monitor, console } — every part reachable, nothing
+// sound, audio, hands, pose, leap, remote, score, director, sync, loop, monitor, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools (with a score: window.openav.show.goto('dusk'), .table(), …).
 
 import { Signals, Params, Loop } from '../core/index.js?v=72212d8';
@@ -45,7 +50,7 @@ import { mountConsole, resolveKeys, keyLabel } from '../console/index.js?v=72212
 import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=72212d8';
 import { track } from '../midi/telemetry.js?v=72212d8';
 import { SHELL_CSS } from './layout.js?v=72212d8';
-import { loopOptions, monitorOptions } from './options.js?v=72212d8';
+import { loopOptions, monitorOptions, syncOptions, syncModules } from './options.js?v=72212d8';
 
 export async function createShow({
   world = null,
@@ -64,11 +69,14 @@ export async function createShow({
   loop: loopCfg = 'auto',  // 'auto' (requestAnimationFrame) · 'manual' (you call show.loop.step(dt)) · { clock, raf, maxDt, heartbeat } for new Loop() — packages/core
   monitor: monitorCfg = true,   // the backstage feed: true (this machine, :7457) · false (none) · { url, hz } — packages/monitor
   console: consoleOpts = null,  // options of the desk, mountConsole's: { keys: { reset: 'F6', … } | false, layers, signals, learnOrder } — packages/console
+  sync: syncCfg = null,    // several pages, one show: { role: 'leader' | 'follower', channel, url?, input?, extra?, state?, follow? } — packages/sync
 } = {}) {
   // options that are data are checked first: a typo must stop the show before it touches the page
   const loopOpts = loopOptions(loopCfg);
   const monitorOpts = monitorOptions(monitorCfg);
   const keyMap = resolveKeys(consoleOpts?.keys);
+  const syncOpts = syncOptions(syncCfg);
+  if (syncOpts) modules = syncModules(modules, syncOpts);      // a follower plays nothing of its own: no keyboard piano, MIDI, microphone, camera, phones
   track('oav_show_start', { oav_kind: 'show' }, { enabled: telemetry !== false });
   // ---------- DOM shell (fix the layout once, every show is fixed) ----------
   if (!document.getElementById('openav-shell-css')) {
@@ -146,6 +154,13 @@ export async function createShow({
     // must still arrive — otherwise code updates lose to yesterday's localStorage
     const have = new Set(mapper.routes.map(r => r.source + '→' + r.target));
     for (const r of routes) if (!have.has(r.source + '→' + r.target)) mapper.addRoute(r);
+  }
+  // several pages, one show: the leader broadcasts its clock every frame, a follower's timeline chases it (loaded only when declared)
+  let sync = null;
+  if (syncOpts) {
+    const { createSync } = await import('../sync/index.js?v=72212d8');
+    const { role, channel, url, input, ...rest } = syncOpts;
+    sync = createSync({ role, channel, url, timeline, score, ...rest });
   }
   setInterval(() => mapper.save(), 3000);
   // ?map=<url>: an explicit wiring beats the remembered one. Async and failure-proof: the show starts
@@ -248,8 +263,9 @@ export async function createShow({
   const consoleUI = mountConsole(desk, app, consoleOpts);
   const monitor = monitorOpts ? new MonitorFeed(monitorOpts) : null;     // monitor: false → no feed, and no socket
   monitor?.connect();
+  if (sync && monitor) monitor.extra(() => sync.monitor());     // the backstage sees the sync: error, silence, a red LOST
 
-  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, monitor, console: consoleUI, app, loop: null };
+  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, sync, monitor, console: consoleUI, app, loop: null };
   if (score) show.show = scoreControls(timeline, score, director);
   const loop = app.loop = new Loop((dt) => {
     keys?.update(dt);
@@ -257,6 +273,7 @@ export async function createShow({
     audio?.update();
     onFrame?.(dt, show);
     timeline.advance(dt);
+    sync?.frame();                                                                       // 1a. leader: say where we are · follower: hello again if nobody answered
     director?.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });   // 1b. the segment modules perform the segment
     mapper.update(dt);
     const state = stage.frame(dt, timeline.state());

@@ -37,6 +37,7 @@ const show = await createShow({
 | `loop` | `'auto'` | 誰來給影格：`'auto'`（頁面的 `requestAnimationFrame`）、`'manual'`（你自己呼叫 `show.loop.step(dt)`），或 `{ clock, raf, maxDt, heartbeat }`，也就是 `new Loop()` 的選項（[見下](#driving-the-frames-yourself)） |
 | `monitor` | `true` | [後台推送](#backstage-monitor)：`false` = 不推送（頁面不會開任何 socket），`{ url, hz }` = 換一個中繼位址或頻率 |
 | `console` | `null` | [控台](#the-console)的選項，也就是 `mountConsole` 的：`{ keys, layers, signals, learnOrder }`；`keys` 用來挪動鍵盤快捷鍵 |
+| `sync` | `null` | 好幾個頁面演同一場：`{ role: 'leader' \| 'follower', channel, url, input, extra, state, follow }`。一個頁面當主控端，其餘的追它的時鐘，從屬端自己不收任何輸入（[見下](#several-pages-one-show)） |
 
 沒有 `mount` 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。
 
@@ -53,7 +54,7 @@ const show = await createShow({
 | `remote` | `true` 或 `{ room, auto, surface, feedbackHz, url }` | 手機和 iPad 當控制器（[手機](remote.md#the-show-side)） |
 | `sound` | `true`、樂器 id（`'piano'`）或 `{ instrument, remember, picker, engine, baseUrl }` | 頁面裡的樂器和選單，用 Tone.js（[聲音](#sound)） |
 
-它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, monitor, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
+它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, sync, monitor, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
 
 ### 自己驅動影格
 
@@ -237,6 +238,34 @@ createShow({ world, timeline: { total: 120, anchor: { mode: 'catch-up', jump: 5 
 
 `drift()` 沒有錨定時回傳 `null`，否則回傳 `behind`（比牆鐘慢幾秒，負數 = 超前）、`lost`（Loop 夾 dt 或任何停頓吃掉的）、`repaid`、`held`、`forgiven`、`stalls`、`worst`（兩個影格之間最長的牆鐘間隔）、`frames`、`jumps`、`started`、`waiting`、`startsIn`、`epoch`、`mode`，以及 `text`：給導演台或後台看的一行摘要。如果你是用手動或測試用的迴圈在推時間軸，記得把同一個假時鐘當成 `now` 傳給 `anchor()`，不然它量的是真實時間。
 
+### 追另一條時鐘：follow
+
+時間軸可以不自己往前走，改去追另一條時間軸的時鐘。這是[好幾個頁面演同一場](#several-pages-one-show)裡時間軸的那一半：主控端（leader）在跑，從屬端（follower）跟著。來源可以是任何能回答「主控端現在在哪」的東西：`@openav/sync` 的從屬端、一段錄下來的紀錄、測試用的假主控端。不呼叫 `follow()` 就什麼都不會發生：從來不追的時間軸，行為跟以前一模一樣。
+
+```js
+timeline.follow(follower, { jump: 0.5, lostAfter: 4 });   // follower: anything with latest() (or a function () => frame)
+timeline.followStatus().text;   // "0.012 s behind the leader · worst 0.140 s · 1 jump"
+timeline.unfollow();            // the timeline walks by itself again, on the rate it had before follow()
+```
+
+`follow(source, opts)`。來源回答主控端的最後一則 frame，`{ T, playing, holding, rate, at }`：`T` 是主控端送出這則 frame 那一刻的時間，`at` 是這則 frame 到達這裡的時刻（毫秒，和 `now` 同一個鐘；不給就當作此刻剛到）。還沒聽到任何人時回答 `null`。從屬端每一幀都算出主控端「現在」在哪：`T`，加上從 `at` 到現在的時間乘 `rate`（主控端暫停或停在 hold 時不外插），再加 `latency`。
+
+| 選項 | 預設 | 意義 |
+|---|---|---|
+| `nudge` | 0.05 | 追趕的時候，`rate` 是主控端的 rate 乘 1 ± 這個數：落後 0.3 秒的從屬端大約六秒追上，沒有人看得到跳動 |
+| `deadband` | 1/60 | 差不到一幀就不管。超過才開始推 rate，追到剩一半才放手，所以不會在邊緣上抖 |
+| `jump` | 0.5 | 差超過這麼多秒，就一次 `seek(T, 'seek')`：`onSeek` 聽得到，cue 不會觸發 |
+| `lostAfter` | 4 | 這麼多秒沒收到 frame，就當主控端不見了；`Infinity` 是永遠等 |
+| `latency` | 0 | frame 在路上花的秒數，數字或函式。不同機器的頁面要自己設（例如來回時間的一半） |
+| `now` | `source.now`，否則 `performance.now` | 時鐘，毫秒；來源蓋 `at` 用的那一個 |
+| `onFollow` | 無 | `cb({ kind, …followStatus() })`，`kind` 是 `'found'`、`'lost'`、`'jump'`；`timeline.onFollow(cb)` 可以再加 |
+
+從屬端從主控端複製的有：**rate**、**暫停**（從屬端停在主控端正確的 `T` 上）和 **hold**。主控端停在 `hold` 場景結尾時，從屬端自己走到邊界、自己停下來（路上它自己的 cue 和場景切換照常觸發）；要等主控端的 `T` 過了邊界才放手，所以邊界前一刻的舊 frame 放不掉先到的從屬端。循環的演出會跟著繞過圈尾，走比較近的那個方向。主控端才是時鐘：追的時候，從屬端自己的 `play()`、`pause()`、`seek()` 和 `rate` 都會被下一幀蓋掉，`anchor()` 也讓到一邊，直到 `unfollow()`。
+
+超過 `lostAfter` 秒沒有 frame 進來，從屬端就**自己往前走**，用它最後拿到的 rate，跟不追的時間軸一模一樣（暫停中的從屬端就維持暫停）。`followStatus().lost` 變成 true，`onFollow` 聽到 `'lost'`（沒人接就 `console.warn`）。主控端回來，從屬端就接回去（`'found'`）。一個人都還沒聽到的時候它會等（`state: 'waiting'`），過了 `lostAfter` 秒也照樣自己走。
+
+`followStatus()` 在時間軸沒有在追時回傳 `null`，否則回傳 `state`（`'waiting'`、`'tracking'`、`'lost'`）、`error`（主控端的 `T` 減我們的，秒；正數 = 我們落後）、`worst`（第一次追上之後最大的 `|error|`）、`jumps`（seek 的次數）、`silence`（距離上一則 frame 幾秒）、`lost`、`lostCount`、`lostAfter`、`heard`、`frames`、`nudging`（-1、0 或 1）、`rate`、`leaderRate`、`leaderT`、`leaderPlaying`、`leaderHolding`，以及 `text`：給導演台或後台看的一行摘要。數字是最後一幀的。
+
 ## 控台
 
 `mountConsole(el, app, { layers, signals, keys })`（`@openav/console`）會做出導演控台，`createShow()` 把它掛在側邊面板。`app` 就是 `createShow()` 回傳的 `show.app`（`timeline`、`params`、`mapper`、`signals`、`stage`、`midi`、`sound`、`audio`、`hands`、`pose`…），缺了哪個部分，對應的區塊就不顯示。傳入 `{ layers: false }` 或 `{ signals: false }`，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。
@@ -322,6 +351,76 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop, extra: { buil
 ```
 
 一個值可以是數字、字串（最長 80 字）、布林或 `null`。寫成 `{ v, min, max, warn }` 的話，有 `min` 和 `max` 就會畫量條，`warn: true` 會讓那一列變紅。名稱最長 48 字，一份快照最多 64 個欄位。JSON 帶不走的東西（`NaN`、BigInt、函式、巢狀物件）會被丟掉或變成 `null`，所以一個壞數字不會讓整幀送不出去；丟出錯誤的提供者會被略過。`monitor()` 和函式形式的 `extra` 每個影格都會被問一次，`monitor.extra(fn)` 只在真的送出一幀時才問（大約每秒 15 次），比較耗時的量測請放在那裡。同一個名稱有兩個來源時，`extra` 蓋過世界，後掛的 `monitor.extra` 蓋過先掛的。
+
+## 好幾個頁面，一場演出
+
+三顆輸出拼成的一面牆、舞台加大廳、排練的筆電放在演出筆電旁邊：一場演出，好幾個頁面。其中一個頁面是**主控端**（leader）：它跑時間軸、收輸入，每一幀說出自己在哪。其餘是**從屬端**（follower）：它們的時間軸追主控端的 `T`（[follow](#following-another-clock-follow)），所以每個頁面顯示的都是同一場演出的同一個瞬間。每個頁面用同一份程式碼，只有 `role` 不同：
+
+```js
+const role = location.hash === '#follow' ? 'follower' : 'leader';
+const show = await createShow({
+  world, score: { cuts, modules },
+  sync: { role, channel: 'hall' },               // pages of one browser on one machine: a BroadcastChannel, no network
+  // sync: { role, channel: 'hall', url: 'ws://leader.local:8080/relay' },   // pages on other machines: the room relay
+});
+```
+
+| `sync` 的 key | 預設 | 意義 |
+|---|---|---|
+| `role` | 必填 | `'leader'` 或 `'follower'` |
+| `channel` | 必填 | BroadcastChannel 的名稱，也是 relay 的房間名：1–32 個字母、數字、`-` 或 `_`。同一個 channel 的頁面就是同一場演出 |
+| `url` | 無 | 不給：用 `BroadcastChannel`（同一個瀏覽器設定檔、同一個來源的頁面）。`true`：本頁自己的 `/relay`（`node serve.js` 會架）。`'ws://host:port/relay'`：那台機器上的 relay |
+| `input` | 主控端 `true`、從屬端 `false` | 這個頁面要不要有自己的輸入。沒有的話，會產生輸入的模組都關掉：`keys`（鍵盤鋼琴）、`midi`、`drums`、`audio`、`hands`、`pose`、`leap`、`remote`。其他的由你決定 |
+| `follow` | `{}` | 從屬端：[`timeline.follow()`](#following-another-clock-follow) 的選項（`jump`、`lostAfter`、`latency`、`nudge`、`onFollow`） |
+| `extra`、`state` | 無 | 主控端：跟著時鐘一起走的資料（見下） |
+| `info`、`accept`、`onFrame`、`onState`、`onGap` | 無 | 從屬端：掛鉤與檢查（見下） |
+| `hz` | 每幀 | 主控端：每秒最多送幾幀；狀態改變（播放、暫停、hold、rate、seek）的那一幀會馬上送 |
+| `id`、`now` | 隨機、`performance.now` | 對等端的 id 與時鐘 |
+
+**傳輸。** 同一台機器上，頁面之間走 `BroadcastChannel`：不用網路，也不用另外跑任何東西。瀏覽器只會連通同一個來源、同一個設定檔的頁面，所以主控端和從屬端要從同一個網址打開。跨機器的話，它們用 `role=leader` 和 `role=follower` 加入[房間中繼](remote.md#the-relay)的房間；主控端那台機器跑 `node serve.js` 就夠了（`url: 'ws://<那台機器>:8080/relay'`）。用 https 提供的頁面要用 `wss://` 位址（瀏覽器擋掉那裡的 `ws://`）。中繼沒有身分驗證：請用封閉的網路，以及沒人猜得到的 channel 名（[安全性](remote.md#security)）。兩種傳輸送的是同一份 JSON，所以換傳輸時作品不用改。
+
+**訊息。** 兩種傳輸都一樣；`seq` 是主控端送出的 frame 的編號。
+
+```text
+{ v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }      leader → followers, every frame
+{ v:1, kind:'hello', id, role:'follower', info?, reason? }                    follower → leader: "I am here, where are we?"
+{ v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower
+```
+
+從屬端一上線就說 `hello`，之後每秒再說一次，直到拿到 `state`；`seq` 出現缺口、沉默一段時間之後、以及連線重連時也會再說。主控端回一則 `state`，所以中途加入或重新載入的頁面，第一幀就落在演出的現在。`cut` 是總譜的版本 id：從屬端的版本和主控端不同（長度不同，`T` 的意思就不同）時，會拒收它的 frame，後台會顯示 `refused: cut …`。
+
+**帶作品自己的資料。** 凡是要跟著時鐘一起走的東西（操作員設的覆寫值、一個音符、被跳過的開場）都放在 `extra`。框架把它送到、每則一次、依序，從來不讀它。
+
+```js
+sync: {
+  role: 'leader', channel: 'hall',
+  extra: () => ({ build: BUILD, events: takeNewEvents() }),   // asked once per frame sent; return undefined for "nothing"
+  state: (hello) => ({ build: BUILD, tape: wholeTape }),       // asked when a follower says hello: all a late joiner needs
+}
+sync: {
+  role: 'follower', channel: 'hall',
+  onFrame: (msg) => appendEvents(msg.extra.events),            // every frame, in order, each one once
+  onState: (msg) => loadTape(msg.extra.tape),                  // on joining, and again after anything went missing
+  accept: (msg) => msg.extra?.build === BUILD || 'build differs',   // false or a string refuses this leader
+  info: { build: BUILD },                                      // arrives with every hello
+}
+```
+
+一則 frame 不見了（連線斷了一下），在 `seq` 上就是一個缺口：從屬端通知 `onGap`、再要一次 state，由 state 補上漏掉的東西。中繼預設會丟掉超過 256 KB 的訊息；帶著整捲磁帶的 `state` 需要 `attachRelay(server, { maxMessageChars, maxBytes })`。
+
+| 發生什麼事 | 從屬端怎麼做 |
+|---|---|
+| 它重新載入，或中途加入 | `hello`，然後收到 `state`：第一幀就落在主控端的 `T` |
+| 掉了一則 frame，或連線斷掉又回來 | 回報 `seq` 的缺口，再要一次 state |
+| 主控端安靜了 | 過了 `lostAfter` 秒（4）就自己用最後的 rate 往前走；`followStatus().lost` 和 monitor 裡的 `sync/lost` 變紅 |
+| 主控端回來，或手動把另一個頁面升成主控端 | 安靜了 1.5 秒的主控端可以被另一個取代；從屬端換過去並重新同步 |
+| 同時有兩個主控端 | 它守著先聽到的那個；另一個算進 `ignored` |
+| 主控端用的是別的版本（cut） | 拒收，什麼都不動 |
+| 從屬端漂移 | 不會累積：每一幀都對主控端的 `T` 量，不是對從屬端自己的時鐘 |
+
+**這一套沒做的事。** frame 帶的是主控端的 `T`，不是牆上時鐘的時刻，而且 `latency` 要你自己設：跨機器時，從屬端大約會落後一趟路程的時間，除非你告訴它。沒有選舉：要升一個從屬端，就是在舊主控端不見之後，用 `role: 'leader'` 載入它。頁面之間共用的是*時間*。會積分 `dt` 的世界（殘影、粒子系統）在 `T` 相同的兩個頁面上不會長得一樣，除非要一致的東西都寫成 `T` 的函式。在後台，有同步的頁面會在 monitor 的 Work 面板多出 `sync/…` 這幾個數字（role、error、silence、lost、jumps）。
+
+不用 `createShow` 的話：`@openav/sync` 的 `createSync({ role, channel, url, timeline })` 組出同樣的東西；每個影格在 `timeline.advance(dt)` 之後呼叫 `sync.frame()`（[`@openav/sync`](packages.md#openav-sync)）。
 
 ## OSC 輸出
 

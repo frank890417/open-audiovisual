@@ -174,6 +174,7 @@ export default {
       pattern: '一行字寫節奏：TidalCycles／Strudel 式的 mini-notation 解析成每一小節的鼓點（歐幾里得節奏、每小節輪替、有種子的隨機）',
       console: '導演控台與演出模式',
       monitor: '網路裡任何裝置都能看的後台畫面',
+      sync: '好幾個頁面演同一場：主控端跑時間軸，從屬端追它的時鐘，走 BroadcastChannel 或房間中繼',
       relay: '零相依的房間中繼，讓手機和 iPad 連進來',
       surface: '類似 TouchOSC 的控制元件，以及 autoSurface(params)',
       remote: '手機與 iPad 端的 app：感測器、琴鍵、控制面板',

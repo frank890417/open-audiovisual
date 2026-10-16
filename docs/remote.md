@@ -238,7 +238,7 @@ zooming), `keepAwake()` (Wake Lock), `toggleFullscreen()`, `canFullscreen()`,
 
 ## The relay
 
-Clients connect to `ws://<host>/relay?role=controller|runner|monitor&room=<name>&id=<device>`.
+Clients connect to `ws://<host>/relay?role=controller|runner|monitor|leader|follower&room=<name>&id=<device>`.
 A room is a name; peers in different rooms never hear each other.
 
 | from | to | what |
@@ -247,13 +247,20 @@ A room is a name; peers in different rooms never hear each other.
 | runner (the show) | monitor | `signal` and `batch` |
 | runner | controllers + monitors | `feedback` (meters, fader echo), `config` (the surface layout; replayed to phones that join later) |
 | monitor | nobody | |
+| leader (a show page) | followers | `sync` (frames, and the state it answers a follower with) |
+| follower (a show page) | leaders | `sync` (hello) |
 
 Messages are JSON: `{"type":"signal","name":"phone/ab12/tilt/x","value":0.3,"t":…,"pulse"?:true}`,
 `{"type":"batch","items":[…]}`, `ping`/`pong`, `status` (peer counts),
-`feedback`, `config`. Clients ignore types they do not know. When the runner
+`feedback`, `config`, `sync`. Clients ignore types they do not know. When the runner
 leaves, the room forgets its config. Messages over 256 KB are ignored, frames
 over 1 MB close the connection, and a phone that stops answering pings (screen
-locked, Wi-Fi gone) is dropped within about 40 s.
+locked, Wi-Fi gone) is dropped within about 40 s. `attachRelay(server, { maxMessageChars, maxBytes })`
+raises both limits.
+
+Show pages use the same rooms to perform one show together: the leader's `sync` messages
+(`{"type":"sync","v":1,"kind":"frame",…}`; `"to":"<id>"` addresses one peer) reach the room's followers
+and a follower's reach its leaders, and nobody else hears them ([Several pages, one show](show-control.md#several-pages-one-show)).
 
 ```js
 import { RelayClient, bindSignals } from '@openav/relay';

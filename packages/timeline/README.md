@@ -82,6 +82,16 @@ const base = timeline.state();
   `jump` is owed, stands still until a future `epoch` (`wait`), and puts a late start where the show now is. Pause, hold and the end are standing still
   on purpose: the debt is forgiven. `drift()` → `null` or `{ behind, lost, repaid, held, forgiven, stalls, worst, frames, jumps, started, waiting, startsIn, epoch, mode, text }`.
   Without `anchor()` the timeline never reads a clock
+- `follow(source, { nudge = 0.05, deadband = 1/60, jump = 0.5, lostAfter = 4, latency = 0, now, onFollow })` · `unfollow()` · `following` · `followStatus()` ·
+  `onFollow(cb)`: chase another timeline's clock instead of walking by yourself (several pages, one show: [`@openav/sync`](../sync)).
+  `source` is a function or `{ latest() }` answering the leader's last frame `{ T, playing, holding, rate, at }` (`at` = when it arrived, in ms of `now`), or `null`.
+  Every frame the follower computes where the leader is now (`T` + time since `at` × `rate` + `latency`); a difference under `deadband` is left alone, over it `rate`
+  becomes the leader's × (1 ± `nudge`) until the gap is half a deadband, over `jump` seconds it is one `seek` (cause `'seek'`, no cue). Pause, rate and `hold` are copied
+  (the follower walks up to the hold boundary and parks itself; only the leader's `T` past it lets go). No frame for `lostAfter` seconds: it runs by itself on the last
+  rate, exactly like a timeline that does not follow, and `followStatus().lost` is true. `followStatus()` → `null` or `{ state: 'waiting' | 'tracking' | 'lost', error, worst, jumps,
+  silence, lost, lostCount, heard, frames, nudging, rate, leaderRate, leaderT, leaderPlaying, leaderHolding, text }`; `onFollow(cb({ kind: 'found' | 'lost' | 'jump', …status }))`.
+  `unfollow()` gives back the `rate` from before `follow()`. While following, local `play`/`pause`/`seek`/`rate` are overruled by the next frame and `anchor()` stands aside.
+  Without `follow()` the timeline reads no clock and runs exactly as before
 - `loop` (option, and a property you can change any time): `false` · `true` (the whole show, from 0 to `total`) ·
   `'scene'` (the scene the playhead is in) · a scene id · `{ from, to }` (seconds, or scene ids: a `from` id is that scene's
   start, a `to` id its end). The playhead wraps when it reaches the end (the overshoot carries over, a huge `dt` wraps by

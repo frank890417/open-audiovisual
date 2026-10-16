@@ -174,6 +174,7 @@ export default {
       pattern: 'Rhythm in one line: TidalCycles/Strudel-style mini-notation read into the hits of each bar (Euclidean rhythms, one-per-bar alternation, seeded chance)',
       console: 'The director\'s desk and performance mode',
       monitor: 'Backstage view for any device on the network',
+      sync: 'Several pages, one show: a leader runs the timeline and the followers chase its clock, over a BroadcastChannel or the room relay',
       relay: 'Zero-dependency room relay for phones and iPads',
       surface: 'TouchOSC-style widgets and autoSurface(params)',
       remote: 'The phone and iPad app: sensors, keyboard, control surface',
