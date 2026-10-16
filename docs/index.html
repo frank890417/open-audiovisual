@@ -158,6 +158,7 @@
             <li><a href="#mapping-pulse-targets">Pulse targets</a></li>
             <li><a href="#mapping-many-to-many">Many-to-many</a></li>
             <li><a href="#mapping-overrides-and-the-timeline">Overrides and the timeline</a></li>
+            <li><a href="#mapping-trim-pickup-and-release">Trim, pickup and release</a></li>
             <li><a href="#mapping-learn">Learn</a></li>
             <li><a href="#mapping-muting-and-removing">Muting and removing</a></li>
             <li><a href="#mapping-saved-profiles">Saved profiles</a></li>
@@ -369,7 +370,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">19 chapters · 193 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
+      <p class="docs-stats">19 chapters · 194 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -645,7 +646,9 @@ world declares its params; each one is a line of schema:</p>
 <p>An override is <em>sticky</em>. Once a hand or a route has touched <code>bloom</code>, the
 timeline stops moving it until the override is cleared (✕ in the console, or
 <code>params.clearOverride('bloom')</code>). That matches the stage: when a human grabs a
-control, the score yields.</p>
+control, the score yields. A route can choose otherwise: <code>mode: 'trim'</code> adds the knob to
+the timeline's value, and <code>release</code> hands the param back when the knob stands still
+(<a href="#mapping-trim-pickup-and-release">Mapping</a>).</p>
 <p>The full field list is in <a href="#writing-a-world-params">Writing a world</a>.</p>
 <h3 id="concepts-routes-and-mapping">Routes and mapping<a class="anchor" href="#concepts-routes-and-mapping" aria-label="Link to this section">#</a></h3>
 <p>A <strong>route</strong> connects one signal to one param. Routes are plain data:</p>
@@ -742,7 +745,9 @@ the backstage feed must not stop because someone switched windows.</p>
   ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals</code></pre></div>
 <p>An override is <em>sticky</em>: once a knob touched <code>bloom</code>, the timeline no longer moves
 it until the override is cleared (✕ in the console). This matches performance
-reality — when a human grabs a control, the score yields.</p>
+reality — when a human grabs a control, the score yields. A route can choose otherwise:
+<code>mode: 'trim'</code> adds the knob to the timeline's value instead of replacing it, and <code>release</code>
+hands the param back when the knob stands still (<a href="#mapping-trim-pickup-and-release">Mapping</a>).</p>
 <h3 id="architecture-l1-input-signals">L1 · Input — Signals<a class="anchor" href="#architecture-l1-input-signals" aria-label="Link to this section">#</a></h3>
 <p><strong>Contract</strong>: input packages publish <em>named, normalized signals</em> into a
 <code>Signals</code> registry, and do nothing else. They never touch params or worlds.</p>
@@ -835,8 +840,9 @@ Full reference: <a href="#score">Score &amp; Director</a>.</p>
 <p>The performance page streams JSON snapshots (throttled, ~15 Hz) over WebSocket
 to a dependency-free relay (<code>server.js</code>, hand-rolled RFC 6455). Any phone or
 laptop on the LAN opens the backstage page and sees: clock, scene, world, FPS,
-overrides, every signal and param, and a "stage feed lost" alarm. The monitor
-is a first-class citizen because a show without a backstage is a rehearsal.</p>
+overrides, every signal and param, and a "stage feed lost" alarm. The work can add
+its own health numbers to the feed (<a href="#show-control-the-work-s-own-numbers">Backstage monitor</a>).
+The monitor is a first-class citizen because a show without a backstage is a rehearsal.</p>
 <h3 id="architecture-around-the-spines-console-and-phones">Around the spines: console and phones<a class="anchor" href="#architecture-around-the-spines-console-and-phones" aria-label="Link to this section">#</a></h3>
 <ul>
 <li><strong>Console</strong> (<code>@openav/console</code>): the director's desk in the side panel, laid
@@ -1320,6 +1326,8 @@ fills in the rest:</p>
 <tr><td><code>curve</code></td><td><code>'linear'</code></td><td><code>linear</code>, <code>exp</code>, <code>log</code> or <code>smooth</code></td></tr>
 <tr><td><code>invert</code></td><td><code>false</code></td><td>flip the normalized value (1 − x) before the curve</td></tr>
 <tr><td><code>smooth</code></td><td><code>0</code></td><td>glide time in seconds (0 = instant)</td></tr>
+<tr><td><code>mode</code></td><td>(absent = <code>'override'</code>)</td><td><code>'override'</code> replaces the timeline's value, <code>'trim'</code> adds to it, <code>'pickup'</code> takes over only once the knob has met the value: <a href="#mapping-trim-pickup-and-release">Trim, pickup and release</a></td></tr>
+<tr><td><code>release</code></td><td>(absent = never)</td><td>seconds the signal must stand still before the route lets go and the timeline plays again</td></tr>
 <tr><td><code>enabled</code></td><td>(absent = on)</td><td><code>false</code> mutes the route</td></tr>
 <tr><td><code>id</code></td><td>assigned</td><td>a number, used to remove the route</td></tr>
 </tbody>
@@ -1338,7 +1346,8 @@ steps, in order:</p>
 <li><strong>Scale</strong>: <code>out = outMin + (outMax − outMin) · x</code>.</li>
 <li><strong>Write</strong>: with <code>smooth: 0</code>, the param is overridden with <code>out</code> (and clamped
 and snapped to its <code>step</code>). With <code>smooth &gt; 0</code>, <code>out</code> becomes a target that
-<code>mapper.update(dt)</code> glides toward every frame.</li>
+<code>mapper.update(dt)</code> glides toward every frame. A <code>trim</code> route writes the timeline's
+value plus <code>out</code>; a <code>pickup</code> route writes nothing until the knob has met the param.</li>
 </ol>
 <h3 id="mapping-curves">Curves<a class="anchor" href="#mapping-curves" aria-label="Link to this section">#</a></h3>
 <div class="table-wrap"><table>
@@ -1374,7 +1383,9 @@ is added</em>. If the param does not exist yet, they default to 0..1. In
 covered about 63% of the distance to the new value (a one-pole filter,
 <code>k = 1 − e^(−dt/smooth)</code> per frame). 0.05–0.15 hides the steps of a MIDI knob or
 a 30 Hz phone stream; 0.2–0.5 makes a hand feel heavy. The glide starts from the
-param's current value, so the first movement never jumps.</p>
+param's current value (a value set by hand, else what the timeline says right now, see
+<a href="#mapping-telling-the-mapper-where-the-timeline-is"><code>base</code></a>), so the first movement never jumps,
+and it stops writing once it has arrived.</p>
 <h3 id="mapping-pulse-targets">Pulse targets<a class="anchor" href="#mapping-pulse-targets" aria-label="Link to this section">#</a></h3>
 <p>When the target is a <code>pulse</code> param, the route fires it instead of writing a
 value:</p>
@@ -1396,10 +1407,75 @@ the last one to write wins. <em>Learn</em> adds a route; it never replaces one.<
 as a mapped signal moves, the timeline stops driving that param. Clearing the
 override (✕ next to the param, or <code>show.params.clearOverride(key)</code>) hands it back
 to the timeline until the signal moves again.</p>
-<p>A <em>smoothed</em> route keeps writing its last target every frame once its signal has
-arrived, so its param stays overridden even after ✕ and even when the route is
-muted. Remove the route (✕ in <strong>L2 · Mapping</strong>) to give the param back to the
-timeline for good.</p>
+<p>A <em>smoothed</em> route writes only while it is gliding. Once it has arrived it stops, so ✕
+(or a slider you drag) takes the param back and it stays back until the knob moves
+again; ✕ in the middle of a glide stops the glide. The mapper notices when
+something else has written the param since its own last write, and stands down.
+Muting a route stops it writing; the param keeps the value it had (a muted <code>trim</code> gives
+its offset back).</p>
+<p>A replacing route throws the timeline's curve away for as long as it holds the param. For a
+knob that should <em>nudge</em> the timeline, or <em>hand it back</em> when you let go, read on.</p>
+<h3 id="mapping-trim-pickup-and-release">Trim, pickup and release<a class="anchor" href="#mapping-trim-pickup-and-release" aria-label="Link to this section">#</a></h3>
+<p>Three route fields change who wins when a knob meets a timeline. All three are off unless
+you write them: a route without <code>mode</code> and <code>release</code> is the replacing route described above.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>field</th><th>what the knob does</th></tr></thead>
+<tbody>
+<tr><td><code>mode: 'override'</code></td><td>the default: the knob's value <em>replaces</em> the timeline's, until ✕</td></tr>
+<tr><td><code>mode: 'trim'</code></td><td>the knob's value is an <em>offset</em> added to the timeline's value, which keeps moving underneath</td></tr>
+<tr><td><code>mode: 'pickup'</code></td><td>like <code>override</code>, but the knob only takes over once it has <em>met</em> the param's current value</td></tr>
+<tr><td><code>release: 4</code></td><td>with any mode: when the knob has stood still for 4 seconds, let go and let the timeline play</td></tr>
+</tbody>
+</table></div>
+<p><code>mode</code> and <code>release</code> do not apply to pulse targets.</p>
+<h4 id="mapping-telling-the-mapper-where-the-timeline-is">Telling the mapper where the timeline is<a class="anchor" href="#mapping-telling-the-mapper-where-the-timeline-is" aria-label="Link to this section">#</a></h4>
+<p><code>trim</code>, <code>pickup</code> and the start of a smooth glide all need the timeline's value for the param
+<em>right now</em>. The mapper takes it from <code>base</code>, a function that answers <code>{ key: value }</code>:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, base: () =&gt; timeline.state() });
+<span class="tc">// a show made with createShow(): hand it the timeline once</span>
+show.mapper.base = () =&gt; show.timeline.state();</code></pre></div>
+<p><code>timeline.state()</code> is the value <em>before</em> overrides, with a score's segment modules already applied,
+which is what the param would be if nobody touched it. Without <code>base</code> the mapper uses the
+param's <code>def</code>: right for a param nothing automates, wrong for one the timeline draws. A <code>base</code>
+that throws or answers something else is treated as absent; it never stops the show. Keep it cheap:
+it is asked every frame while a trim holds a param, and at each reading of a trim or pickup knob.</p>
+<h4 id="mapping-trim-nudge-the-timeline">Trim: nudge the timeline<a class="anchor" href="#mapping-trim-nudge-the-timeline" aria-label="Link to this section">#</a></h4>
+<p>For a work whose timeline already draws the night, turning a knob to 0.9 should not throw
+the curve away. A <code>trim</code> route's <code>outMin</code>/<code>outMax</code> are an <em>offset</em> range, and the param is
+<code>timeline value + offset</code>, clamped to the param's range. Without them the knob spans half the param's
+range each way (knob in the middle = no change):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// ±0.3 around whatever the timeline says, smoothed</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'reality'</span>, mode: <span class="ts">'trim'</span>, outMin: -0.3, outMax: 0.3, smooth: 0.1 });</code></pre></div>
+<ul>
+<li>The offset rides on the timeline: when the curve moves, the param moves with it, every frame.</li>
+<li><code>smooth</code> smooths the offset (it starts from 0, never from a jump).</li>
+<li>Two trim routes on one param add up, so a coarse and a fine knob work together. A <code>trim</code> on a param
+that also has a replacing route sits on top of the replacing route's value.</li>
+<li>While a trim holds a param, the param is overridden: the console shows it with a ✕, and a
+<code>timeline.record</code> source that reads the override gets the sum, what the audience saw. ✕ clears the offset;
+the knob's next move brings it back. Removing or muting the route gives the param back at once.</li>
+</ul>
+<h4 id="mapping-pickup-take-over-only-when-you-arrive">Pickup: take over only when you arrive<a class="anchor" href="#mapping-pickup-take-over-only-when-you-arrive" aria-label="Link to this section">#</a></h4>
+<p>A knob and a parameter rarely start in the same place. With <code>mode: 'pickup'</code> the route writes
+nothing until the knob's value has <em>met</em> the param's current value: within 2% of the route's
+output range, or crossed over it between two readings. From then on it behaves like a replacing
+route, gliding from where the param was (no jump). The comparison uses the value the param
+has right now, so it works while the timeline moves. A <code>release</code> or ✕ puts the route back to
+"not met yet".</p>
+<h4 id="mapping-release-give-it-back">Release: give it back<a class="anchor" href="#mapping-release-give-it-back" aria-label="Link to this section">#</a></h4>
+<p><code>release: 4</code> means: when the signal has not moved for 4 seconds, the route lets go. Movement is a change of
+more than 0.1% of the input window, measured from where it last counted as moved, so a slow drift counts and a source that keeps sending the
+same value does not. Then:</p>
+<ul>
+<li>with <code>smooth: 0</code> the param goes back to the timeline at once;</li>
+<li>with <code>smooth &gt; 0</code> it fades into the timeline over about three times <code>smooth</code> seconds, then the override
+is cleared (a <code>trim</code> fades its offset to zero);</li>
+<li>the route waits until the source <em>moves</em> again before it takes anything: a source that keeps repeating
+the same value does not take the param back;</li>
+<li>it only clears what it wrote itself. If a slider took the param over in the meantime, that stays.</li>
+</ul>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// a main knob: meets the value first, glides, and gives the param back 4 s after the hand leaves</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/71'</span>, target: <span class="ts">'bloom'</span>, mode: <span class="ts">'pickup'</span>, release: 4, smooth: 0.15 });</code></pre></div>
 <h3 id="mapping-learn">Learn<a class="anchor" href="#mapping-learn" aria-label="Link to this section">#</a></h3>
 <p>Click <em>learn</em> next to a param in <strong>L3 · Params</strong> (or call
 <code>mapper.learn('bloom')</code>), then move something. The mapper binds the first signal
@@ -1481,6 +1557,9 @@ arrives (<code>midi/…</code>, <code>surface/…</code>, <code>phone/…</code>
 own range (the <code>in</code> window, curve, smoothing and invert come along);</li>
 <li><code>version</code> newer than this build reads is refused with a message. A bare array from
 <code>mapper.toJSON()</code> (the old way) still imports, as version 0.</li>
+<li><code>mode</code> (<code>"trim"</code> or <code>"pickup"</code>) and <code>release</code> (seconds) are optional route keys in version 1, written only when
+a route uses them. A build from before they existed ignores them and reads the route as a replacing route.
+For a <code>trim</code> route, <code>range.out</code> is the offset range.</li>
 <li>Files over 256 KB or with over 500 routes are refused.</li>
 </ul>
 <h4 id="mapping-load-on-open-map">Load on open: <code>?map=</code><a class="anchor" href="#mapping-load-on-open-map" aria-label="Link to this section">#</a></h4>
@@ -1521,13 +1600,14 @@ writes routes from an on-screen controller's controls
 <h3 id="mapping-mapper-api">Mapper API<a class="anchor" href="#mapping-mapper-api" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
 
-<span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, profile: <span class="ts">'default'</span>, onChange, onLearn });
+<span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, profile: <span class="ts">'default'</span>, onChange, onLearn, base });
 mapper.addRoute(route)        <span class="tc">// → the stored route (defaults filled in, id assigned)</span>
 mapper.removeRoute(id)
 mapper.routesFor(<span class="ts">'bloom'</span>)     <span class="tc">// → routes targeting a param</span>
 mapper.routes                 <span class="tc">// the live array</span>
 mapper.learn(<span class="ts">'bloom'</span>)         <span class="tc">// arm / cancel learn; mapper.learnTarget is the armed key</span>
-mapper.update(dt)             <span class="tc">// every frame: advances smoothed routes</span>
+mapper.base = () =&gt; timeline.state()   <span class="tc">// the timeline's value now (trim, pickup, smooth start); optional</span>
+mapper.update(dt)             <span class="tc">// every frame: glides smoothed routes, keeps trims on the timeline, applies release</span>
 mapper.toJSON(); mapper.fromJSON(array)
 mapper.exportMap(); mapper.importMap(text|object, { mode })   <span class="tc">// the portable file, see above</span>
 mapper.clear()                <span class="tc">// remove every route (and forget them)</span>
@@ -1709,6 +1789,24 @@ expected.</p>
 monitor.connect();
 <span class="tc">// every frame:</span>
 monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</code></pre></div>
+<h4 id="show-control-the-work-s-own-numbers">The work's own numbers<a class="anchor" href="#show-control-the-work-s-own-numbers" aria-label="Link to this section">#</a></h4>
+<p>A work can put its own health numbers on the backstage page: the tick its simulation is on, how far it has
+drifted from the wall clock, how many NaNs it has caught. They travel as <code>snapshot.extra</code> and appear in a
+<strong>Work</strong> panel that stays hidden while nothing is sent. A show that sends nothing sends the same snapshot as before.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// 1. from the world: snapshotOf asks the active world, so a createShow() show needs no wiring</span>
+<span class="tk">const</span> world = { name: <span class="ts">'night'</span>, params: [<span class="tc">/* … */</span>], update() { <span class="tc">/* … */</span> },
+  monitor() { <span class="tk">return</span> { <span class="ts">'sim/tick'</span>: sim.tick, <span class="ts">'sim/drift'</span>: { v: sim.drift, min: 0, max: 0.5, warn: sim.drift &gt; 0.2 } }; } };
+
+<span class="tc">// 2. from a hand-assembled show: on the feed (asked only when a frame is sent) …</span>
+<span class="tk">const</span> off = monitor.extra(() =&gt; ({ <span class="ts">'sim/nan'</span>: nanCount }));          <span class="tc">// off() takes it away again</span>
+<span class="tc">// … or in the snapshot itself (an object, or a function answering one)</span>
+monitor.frame(snapshotOf({ timeline, params, signals, stage, loop, extra: { build: <span class="ts">'rehearsal-2'</span> } }, state));</code></pre></div>
+<p>A value is a number, a string (80 characters at most), a boolean or <code>null</code>. <code>{ v, min, max, warn }</code> draws a meter
+(with <code>min</code> and <code>max</code>) and turns the row red (<code>warn: true</code>). A name is 48 characters at most and a snapshot carries
+64 fields at most. What JSON cannot carry (<code>NaN</code>, a BigInt, a function, a nested object) is dropped or becomes <code>null</code>,
+so one bad number never costs the frame, and a provider that throws is skipped. <code>monitor()</code> and a function <code>extra</code>
+are asked every frame, <code>monitor.extra(fn)</code> only when a frame goes out (about 15 a second): keep anything
+expensive there. On a name two sources share, <code>extra</code> beats the world and a later <code>monitor.extra</code> beats an earlier one.</p>
 <h3 id="show-control-osc-output">OSC output<a class="anchor" href="#show-control-osc-output" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-bash"><span class="tk">node</span> packages/osc/bridges/osc-bridge.js 7456 192.168.1.50 3456
 <span class="tc">#                       http port ↑    target host ↑   udp port ↑</span></code></pre></div>
@@ -3470,14 +3568,17 @@ saved profiles.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>Mapper</code></td><td><code>new Mapper({ signals, params, profile = 'default', onChange, onLearn })</code> · <code>addRoute(route)</code> · <code>removeRoute(id)</code> · <code>routesFor(target)</code> · <code>learn(target)</code> · <code>update(dt)</code> · <code>toJSON()</code> · <code>fromJSON(routes)</code> · <code>save()</code> · <code>load()</code> · <code>dispose()</code> · <code>routes</code>, <code>learnTarget</code></td></tr>
+<tr><td><code>Mapper</code></td><td><code>new Mapper({ signals, params, profile = 'default', onChange, onLearn, base })</code> · <code>addRoute(route)</code> · <code>removeRoute(id)</code> · <code>routesFor(target)</code> · <code>learn(target)</code> · <code>update(dt)</code> · <code>toJSON()</code> · <code>fromJSON(routes)</code> · <code>save()</code> · <code>load()</code> · <code>dispose()</code> · <code>routes</code>, <code>learnTarget</code></td></tr>
 <tr><td><code>LearnWizard</code></td><td><code>new LearnWizard({ mapper, keys, onChange })</code> · <code>start()</code> · <code>skip()</code> · <code>back()</code> · <code>stop()</code> · <code>sync()</code> · <code>active</code>, <code>current</code>, <code>index</code>, <code>total</code>, <code>done</code>, <code>added</code>: "map the knobs in order", see <a href="#score-map-the-knobs-in-order">Score &amp; Director</a></td></tr>
 </tbody>
 </table></div>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
 <span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params });
 mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'bloom'</span>, curve: <span class="ts">'exp'</span>, smooth: 0.1 });
-<span class="tc">// every frame: mapper.update(dt);</span></code></pre></div>
+<span class="tc">// every frame: mapper.update(dt);</span>
+<span class="tc">// a knob that nudges the timeline instead of replacing it, and gives the param back when you let go:</span>
+<span class="tc">// mapper.base = () =&gt; timeline.state();</span>
+<span class="tc">// mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'trim', outMin: -0.3, outMax: 0.3, release: 4 });</span></code></pre></div>
 <p>Full reference: <a href="#mapping">Mapping</a>.</p>
 <h3 id="packages-openav-chop">@openav/chop<a class="anchor" href="#packages-openav-chop" aria-label="Link to this section">#</a></h3>
 <p>L2 mapping · values over time, the way TouchDesigner's CHOPs shape them: Lag, Trigger (<code>envelope</code>), Speed, Spring, Trail, Slope, Count. Pure logic, no clock of its own: every step is told the seconds that went by and is solved exactly over them, so 30 fps and 144 fps draw the same curve. What the parameters mean follows Derivative's TouchDesigner documentation; the code is OAV's own. In a p5 sketch, oav-p5 gives these one call each: <a href="#p5-values-over-time-lag-env-speed-spring-trail">p5 one line</a>.</p>
@@ -3667,8 +3768,9 @@ meters, performance mode.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>MonitorFeed</code></td><td><code>new MonitorFeed({ url = 'ws://&lt;page host&gt;:7457', hz = 15 })</code> · <code>connect()</code> · <code>frame(snapshot)</code> · <code>connected</code>, <code>onStatus</code></td></tr>
-<tr><td><code>snapshotOf</code></td><td><code>snapshotOf({ timeline, params, signals, stage, loop }, state)</code> → a JSON snapshot</td></tr>
+<tr><td><code>MonitorFeed</code></td><td><code>new MonitorFeed({ url = 'ws://&lt;page host&gt;:7457', hz = 15, extra })</code> · <code>connect()</code> · <code>frame(snapshot)</code> · <code>extra(fn)</code> → <code>off()</code> · <code>connected</code>, <code>onStatus</code></td></tr>
+<tr><td><code>snapshotOf</code></td><td><code>snapshotOf({ timeline, params, signals, stage, loop, extra? }, state)</code> → a JSON snapshot; the work's own numbers (<code>extra</code>, the active world's <code>monitor()</code>) land under <code>extra</code></td></tr>
+<tr><td><code>cleanExtra</code></td><td><code>cleanExtra(x)</code> → the work's numbers made safe for JSON (a number, string, boolean, null or <code>{ v, min, max, warn }</code> per field), or <code>null</code> when there are none</td></tr>
 <tr><td>server</td><td><code>node packages/monitor/server.js [port=7457]</code>: backstage page at <code>/</code>, <code>/health</code></td></tr>
 </tbody>
 </table></div>
