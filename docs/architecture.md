@@ -37,6 +37,12 @@ never makes a world explode. When the browser freezes `requestAnimationFrame`
 loop ticking, about every 66 ms (~15 frames per second): the timeline, mapped signals and
 the backstage feed must not stop because someone switched windows.
 
+Who supplies the frames is a choice, and the page's own is only the default.
+`new Loop(fn, { clock, raf })` takes the time and the frame requests from you (a
+test's fake timer, a recorder's frame pump), and `new Loop(fn, { manual: true })`
+schedules nothing: each `loop.step(dt)` is one frame. `createShow({ loop: 'manual' })`
+does that for the whole show ([Driving the frames yourself](show-control.md#driving-the-frames-yourself)).
+
 Param resolution order (the heart of the design):
 
 ```text

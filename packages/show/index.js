@@ -22,7 +22,8 @@
 // (Layers → L1 Input → L2 Mapping → L3 Params → L4 Output → Signals), and
 // artwork credits render automatically (artist demos stay strictly attributed).
 //
-// The backstage feed is an option too:
+// Who drives the frames and the backstage feed are options too:
+//     loop: 'manual',                      // no requestAnimationFrame: you call show.loop.step(dt) (record frame by frame, test, run headless)
 //     monitor: false,                      // no backstage feed (or { url: 'wss://…', hz }: another relay address)
 //
 // createShow returns { signals, params, stage, timeline, mapper, midi, keys,
@@ -43,7 +44,7 @@ import { mountConsole } from '../console/index.js?v=72212d8';
 import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=72212d8';
 import { track } from '../midi/telemetry.js?v=72212d8';
 import { SHELL_CSS } from './layout.js?v=72212d8';
-import { monitorOptions } from './options.js?v=72212d8';
+import { loopOptions, monitorOptions } from './options.js?v=72212d8';
 
 export async function createShow({
   world = null,
@@ -59,9 +60,11 @@ export async function createShow({
   mount = null,            // { stage, side } elements/selectors; omitted = generated layout
   telemetry = true,        // one anonymous oav_show_start hit per page (packages/midi/telemetry.js); false = none
   score: scoreCfg = null,  // { cuts, cut, modules, api, onStatus, onCue, maxStep, midi } — the show's structure (packages/score); ?cut=<id> picks the version
+  loop: loopCfg = 'auto',  // 'auto' (requestAnimationFrame) · 'manual' (you call show.loop.step(dt)) · { clock, raf, maxDt, heartbeat } for new Loop() — packages/core
   monitor: monitorCfg = true,   // the backstage feed: true (this machine, :7457) · false (none) · { url, hz } — packages/monitor
 } = {}) {
   // options that are data are checked first: a typo must stop the show before it touches the page
+  const loopOpts = loopOptions(loopCfg);
   const monitorOpts = monitorOptions(monitorCfg);
   track('oav_show_start', { oav_kind: 'show' }, { enabled: telemetry !== false });
   // ---------- DOM shell (fix the layout once, every show is fixed) ----------
@@ -257,7 +260,7 @@ export async function createShow({
     remote?.frame(dt, state);
     consoleUI.render(state);
     monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
-  });
+  }, loopOpts);
   show.loop = loop;
   loop.start();
   window.openav = show;

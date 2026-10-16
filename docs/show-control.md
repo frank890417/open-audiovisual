@@ -37,6 +37,7 @@ const show = await createShow({
 | `mount` | generated | `{ stage, side }` elements or selectors to render into, instead of a full-page layout |
 | `telemetry` | `true` | one anonymous `oav_show_start` hit per page (see the controllers chapter, Telemetry); `false` sends nothing |
 | `score` | `null` | `{ cuts, cut, modules, api, midi, … }`: the show's structure as segment lengths, performed by segment modules; `?cut=<id>` in the URL picks the version ([Score & Director](score.md#use-it-with-createshow)) |
+| `loop` | `'auto'` | who drives the frames: `'auto'` (the page's `requestAnimationFrame`), `'manual'` (you call `show.loop.step(dt)`) or `{ clock, raf, maxDt, heartbeat }`, the options of `new Loop()` ([below](#driving-the-frames-yourself)) |
 | `monitor` | `true` | the [backstage feed](#backstage-monitor): `false` = none (no socket is opened), `{ url, hz }` = another relay address or rate |
 
 Without `mount`, the page body becomes a two-column grid: the stage, and a
@@ -60,6 +61,30 @@ midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, directo
 monitor, console, app, loop }`; parts you did not ask for are `null`. The same object is
 `window.openav`, for the devtools console. The frame order is in
 [Architecture](architecture.md#the-frame-loop).
+
+### Driving the frames yourself
+
+By default a show runs on the page's `requestAnimationFrame` (with a Web Worker heartbeat for a hidden tab). `loop` changes who supplies the frames, so a show can be recorded one exact frame at a time, tested as a whole, or run for a night with no window in front of it, without replacing the page's global `requestAnimationFrame` or `performance.now`.
+
+```js
+// 'manual': nothing runs until you say so. Thirty show seconds, the same thirty every time.
+const show = await createShow({ world, loop: 'manual', monitor: false });
+show.timeline.play();
+for (let i = 0; i < 60 * 30; i++) show.loop.step(1 / 60);
+
+// your own clock and frame pump (a test, a recorder): the show runs on whatever these say
+const frames = [];
+let now = 0;
+const driven = await createShow({ world, loop: { clock: () => now, raf: (cb) => frames.push(cb) } });
+now += 1000 / 60;
+frames.splice(0).forEach((cb) => cb(now));              // one frame
+```
+
+- `'auto'` (or leave `loop` out) is the behaviour a show always had.
+- `'manual'` schedules nothing. `show.loop.step(dt)` runs one whole frame (the [frame order](architecture.md#the-frame-loop)) of `dt` seconds. `dt` is not clamped to 0.1 s (you chose it), `0` redraws in place, and a negative or non-number `dt` runs nothing and returns `false`. The time `onFrame` and `show.loop.fps` see is virtual, the sum of the `dt` stepped, so two runs with the same steps are the same run. Nothing is drawn until the first step, and the timeline moves only while it is playing (`show.timeline.play()`).
+- `{ clock, raf }` keep the loop automatic but take its time from you. `clock()` returns milliseconds; `raf(cb)` asks for one callback on the next frame, and `cb(now)` may be handed the timestamp (without one, `clock()` is read). The Worker heartbeat is off, because a real timer must not step a fake clock; `heartbeat: true` turns it back on. `maxDt` still clamps these frames.
+
+Only the frame loop is yours. `Date.now`, `setTimeout`, the mapper's auto-save, Web MIDI and the audio engine keep real time, and the backstage feed throttles itself by the wall clock, so a recording pairs `loop: 'manual'` with `monitor: false`. A show you assemble by hand does the same with `new Loop(fn, { manual: true })` ([`@openav/core`](packages.md#openav-core)).
 
 ## Timeline
 

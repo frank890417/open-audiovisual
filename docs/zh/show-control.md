@@ -34,6 +34,7 @@ const show = await createShow({
 | `mount` | 自動產生 | 要渲染進去的 `{ stage, side }` 元素或選擇器，取代整頁版面 |
 | `telemetry` | `true` | 每次載入頁面送一筆匿名的 `oav_show_start`（見控制器章的〈使用統計〉），`false` 就不送 |
 | `score` | `null` | `{ cuts, cut, modules, api, midi, … }`：把演出的結構寫成段落長度，由段落模組去演出。網址上的 `?cut=<id>` 決定用哪個版本（[總譜與導演](score.md#use-it-with-createshow)） |
+| `loop` | `'auto'` | 誰來給影格：`'auto'`（頁面的 `requestAnimationFrame`）、`'manual'`（你自己呼叫 `show.loop.step(dt)`），或 `{ clock, raf, maxDt, heartbeat }`，也就是 `new Loop()` 的選項（[見下](#driving-the-frames-yourself)） |
 | `monitor` | `true` | [後台推送](#backstage-monitor)：`false` = 不推送（頁面不會開任何 socket），`{ url, hz }` = 換一個中繼位址或頻率 |
 
 沒有 `mount` 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。
@@ -52,6 +53,30 @@ const show = await createShow({
 | `sound` | `true`、樂器 id（`'piano'`）或 `{ instrument, remember, picker, engine, baseUrl }` | 頁面裡的樂器和選單，用 Tone.js（[聲音](#sound)） |
 
 它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, monitor, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
+
+### 自己驅動影格
+
+預設情況下，演出跑在頁面的 `requestAnimationFrame` 上（分頁被藏起來時，由 Web Worker 心跳接手）。`loop` 讓你改由別人給影格：這樣就能一格一格精確錄影、把整場演出當一個單元測試、或讓它在沒有視窗的機器上跑一整晚，而不必換掉頁面的全域 `requestAnimationFrame` 或 `performance.now`。
+
+```js
+// 'manual': nothing runs until you say so. Thirty show seconds, the same thirty every time.
+const show = await createShow({ world, loop: 'manual', monitor: false });
+show.timeline.play();
+for (let i = 0; i < 60 * 30; i++) show.loop.step(1 / 60);
+
+// your own clock and frame pump (a test, a recorder): the show runs on whatever these say
+const frames = [];
+let now = 0;
+const driven = await createShow({ world, loop: { clock: () => now, raf: (cb) => frames.push(cb) } });
+now += 1000 / 60;
+frames.splice(0).forEach((cb) => cb(now));              // one frame
+```
+
+- `'auto'`（或不寫 `loop`）就是演出一直以來的行為。
+- `'manual'` 什麼都不排程。`show.loop.step(dt)` 會跑一個完整的影格（[執行順序](architecture.md#the-frame-loop)），長度 `dt` 秒。`dt` 不會被夾到 0.1 秒（那是你自己決定的），`0` 是原地重畫一次，負數或不是數字的 `dt` 什麼都不跑、回傳 `false`。`onFrame` 和 `show.loop.fps` 看到的時間是虛擬的：已經 step 過的 `dt` 的總和，所以步數相同的兩次執行就是同一次執行。第一次 step 之前不會畫任何東西，時間軸也只有在播放中才會前進（`show.timeline.play()`）。
+- `{ clock, raf }` 維持自動迴圈，但時間由你供應。`clock()` 回傳毫秒，`raf(cb)` 要求下一格呼叫一次 `cb`，`cb(now)` 可以帶時間戳記（沒帶就讀 `clock()`）。Worker 心跳會關掉，因為真實的計時器不該去推一個假時鐘；`heartbeat: true` 可以重新打開。`maxDt` 對這些影格照樣有效。
+
+交出去的只有影格迴圈。`Date.now`、`setTimeout`、映射器的自動存檔、Web MIDI 和音訊引擎照樣用真實時間，後台推送也是用牆上時鐘自己節流，所以錄影時要把 `loop: 'manual'` 和 `monitor: false` 一起用。自己組裝的演出用 `new Loop(fn, { manual: true })` 做同一件事（[`@openav/core`](packages.md#openav-core)）。
 
 ## 時間軸
 

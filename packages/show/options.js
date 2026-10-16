@@ -2,6 +2,20 @@
 // in node: tests/show-options.test.js.
 
 /**
+ * `loop`: who drives the frames.
+ *   undefined | 'auto'   the page's requestAnimationFrame (and the hidden-tab Worker): what a show always did
+ *   'manual'             nothing runs by itself: call show.loop.step(dt) once per frame (a recorder, a test, a headless night)
+ *   { clock, raf, maxDt, heartbeat, manual }   the options of `new Loop(fn, …)` as they are, e.g. a fake clock and raf
+ * @returns {object} the options for `new Loop(frame, …)`
+ */
+export function loopOptions(loop) {
+  if (loop == null || loop === 'auto') return {};
+  if (loop === 'manual') return { manual: true };
+  if (typeof loop === 'object' && !Array.isArray(loop)) return { ...loop };
+  throw new Error(`createShow: loop must be 'auto', 'manual' or { clock, raf, maxDt, manual, heartbeat }, got ${JSON.stringify(loop)}`);
+}
+
+/**
  * `monitor`: the backstage feed (@openav/monitor).
  *   undefined | true     the default feed: this machine's relay on port 7457 (none on an https page)
  *   false                no feed: the page never opens a socket to a relay

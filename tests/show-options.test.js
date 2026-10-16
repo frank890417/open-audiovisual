@@ -1,11 +1,39 @@
-// @openav/show — the createShow option that is plain data: `monitor` (the backstage feed).
-// Turning it into what the MonitorFeed constructor takes is pure, so it is tested here; tests/show-browser.test.js
+// @openav/show — the createShow options that are plain data: `loop` (who drives the frames) and `monitor` (the backstage feed).
+// Turning them into what the Loop / MonitorFeed constructors take is pure, so it is tested here; tests/show-browser.test.js
 // runs createShow itself in a real page (when Playwright is around) and example 01 / 13 are the smoke test.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { monitorOptions } from '../packages/show/options.js';
+import { loopOptions, monitorOptions } from '../packages/show/options.js';
+import { Loop } from '../packages/core/index.js';
 import { MonitorFeed } from '../packages/monitor/index.js';
+
+test('createShow loop: nothing, null or "auto" is the page\'s own requestAnimationFrame loop, as before', () => {
+  for (const v of [undefined, null, 'auto']) assert.deepEqual(loopOptions(v), {}, String(v));
+  assert.equal(new Loop(() => {}, loopOptions('auto')).manual, false);
+});
+
+test('createShow loop: "manual" means nothing runs until you call show.loop.step(dt)', () => {
+  assert.deepEqual(loopOptions('manual'), { manual: true });
+  const frames = [];
+  const loop = new Loop((dt) => frames.push(dt), loopOptions('manual'));
+  loop.start();
+  assert.equal(frames.length, 0, 'start() alone runs no frame');
+  loop.step(1 / 60);
+  assert.deepEqual(frames, [1 / 60]);
+});
+
+test('createShow loop: an object goes to the Loop as it is — a fake clock and raf for a test or a frame pump, maxDt', () => {
+  const clock = () => 0, raf = () => 1;
+  const o = loopOptions({ clock, raf, maxDt: 0.2 });
+  assert.equal(o.clock, clock); assert.equal(o.raf, raf); assert.equal(o.maxDt, 0.2);
+  const given = { manual: true };
+  assert.notEqual(loopOptions(given), given, 'a copy: the show does not write into your object');
+});
+
+test('createShow loop: anything else is an error that says what is allowed', () => {
+  for (const v of ['manul', 'fast', 60, true, ['manual']]) assert.throws(() => loopOptions(v), /loop.*'auto'.*'manual'/s, JSON.stringify(v));
+});
 
 test('createShow monitor: default (nothing, true) is the feed it always was — MonitorFeed picks the address itself', () => {
   assert.deepEqual(monitorOptions(undefined), {});
@@ -51,7 +79,8 @@ test('createShow monitor: no feed → no WebSocket (the feed is the only thing t
   } finally { if (Native) globalThis.WebSocket = Native; else delete globalThis.WebSocket; }
 });
 
-test('createShow: the source wires the monitor option to monitorOptions', () => {
+test('createShow: the source wires the loop and monitor options to these functions', () => {
   const src = fs.readFileSync(new URL('../packages/show/index.js', import.meta.url), 'utf8');
+  assert.match(src, /new Loop\([\s\S]*loopOptions\(/, 'the Loop is built from the loop option');
   assert.match(src, /monitorOptions\(monitorCfg\)/, 'the monitor option goes through monitorOptions');
 });
