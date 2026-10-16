@@ -13,6 +13,7 @@ const loop = new Loop((dt) => {
   audio?.update();                               //    microphone analysis → audio/* signals
   onFrame?.(dt, show);                           //    your assembly-level hook
   timeline.advance(dt);                          // 1. time moves
+  sync?.frame();                                 //    several pages: the leader says where it is, a follower asks again if unanswered
   director?.update(timeline.t, dt, { holding, playing }); //    with a score: segment modules enter / update / exit
   mapper.update(dt);                             // 2. smoothed routes settle
   const state = stage.frame(dt, timeline.state()); // 3. params resolve → world updates & renders
@@ -107,6 +108,8 @@ cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ─
 ```
 
 總譜只決定*什麼時候*。實際發生的事，仍然是以參數的形式傳進世界。完整說明見[總譜與導演](score.md)。
+
+時間軸也可以不自己往前走，改去追另一條時間軸的時鐘，好幾個頁面就是這樣演同一場：主控端在跑，從屬端透過 BroadcastChannel 或房間中繼追它的 `T`，每個參數仍然是那個 `T` 的函式解出來的（[好幾個頁面，一場演出](show-control.md#several-pages-one-show)）。
 
 ## 主軸 · 後台監看
 

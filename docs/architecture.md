@@ -16,6 +16,7 @@ const loop = new Loop((dt) => {
   audio?.update();                               //    microphone analysis → audio/* signals
   onFrame?.(dt, show);                           //    your assembly-level hook
   timeline.advance(dt);                          // 1. time moves
+  sync?.frame();                                 //    several pages: the leader says where it is, a follower asks again if unanswered
   director?.update(timeline.t, dt, { holding, playing }); //    with a score: segment modules enter / update / exit
   mapper.update(dt);                             // 2. smoothed routes settle
   const state = stage.frame(dt, timeline.state()); // 3. params resolve → world updates & renders
@@ -165,6 +166,10 @@ cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ─
 
 The score only decides *when*. What happens still reaches the world as params.
 Full reference: [Score & Director](score.md).
+
+A timeline can also follow another's clock instead of walking by itself, which is how several pages perform one show: the leader
+runs, the followers chase its `T` over a BroadcastChannel or the room relay, and every param still resolves as a function of that `T`
+([Several pages, one show](show-control.md#several-pages-one-show)).
 
 ## Spine · Monitor
 

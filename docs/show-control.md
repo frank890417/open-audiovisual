@@ -40,6 +40,7 @@ const show = await createShow({
 | `loop` | `'auto'` | who drives the frames: `'auto'` (the page's `requestAnimationFrame`), `'manual'` (you call `show.loop.step(dt)`) or `{ clock, raf, maxDt, heartbeat }`, the options of `new Loop()` ([below](#driving-the-frames-yourself)) |
 | `monitor` | `true` | the [backstage feed](#backstage-monitor): `false` = none (no socket is opened), `{ url, hz }` = another relay address or rate |
 | `console` | `null` | the options of [the console](#the-console), `mountConsole`'s: `{ keys, layers, signals, learnOrder }`; `keys` moves the keyboard shortcuts |
+| `sync` | `null` | several pages, one show: `{ role: 'leader' \| 'follower', channel, url, input, extra, state, follow }`. One page leads, the others follow its clock, and a follower takes no input of its own ([below](#several-pages-one-show)) |
 
 Without `mount`, the page body becomes a two-column grid: the stage, and a
 340 px side panel with the piano and the console.
@@ -59,7 +60,7 @@ Without `mount`, the page body becomes a two-column grid: the stage, and a
 
 It returns `{ signals, params, stage, timeline, mapper, midi, controllers,
 midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director,
-monitor, console, app, loop }`; parts you did not ask for are `null`. The same object is
+sync, monitor, console, app, loop }`; parts you did not ask for are `null`. The same object is
 `window.openav`, for the devtools console. The frame order is in
 [Architecture](architecture.md#the-frame-loop).
 
@@ -299,6 +300,34 @@ clock and never runs backwards, which also cancels the extra 0.1 s frame the loo
 frames), `frames`, `jumps`, `started`, `waiting`, `startsIn`, `epoch`, `mode`, and `text`, one line for the desk or the monitor.
 If you drive the timeline from a manual or test loop, give `anchor()` the same fake clock as `now`, otherwise it measures real time.
 
+### Following another clock: follow
+
+A timeline can chase another timeline's clock instead of walking by itself. That is the timeline's half of [several pages performing one show](#several-pages-one-show): the leader runs, the followers follow. The source can be anything that answers "where is the leader?": the `@openav/sync` follower, a recording, a test's fake leader. Nothing happens unless you call `follow()`: a timeline that never follows runs exactly as it did before.
+
+```js
+timeline.follow(follower, { jump: 0.5, lostAfter: 4 });   // follower: anything with latest() (or a function () => frame)
+timeline.followStatus().text;   // "0.012 s behind the leader · worst 0.140 s · 1 jump"
+timeline.unfollow();            // the timeline walks by itself again, on the rate it had before follow()
+```
+
+`follow(source, opts)`. The source answers with the leader's last frame, `{ T, playing, holding, rate, at }`: `T` is the leader's time when it sent the frame, `at` is when the frame arrived here, in milliseconds on the same clock as `now` (leave it out and the frame counts as arriving this instant). It answers `null` before it has heard anyone. Every frame the follower works out where the leader is *now*: `T`, plus the time since `at` times `rate` (nothing is added while the leader is paused or holding), plus `latency`.
+
+| option | default | meaning |
+|---|---|---|
+| `nudge` | 0.05 | while it catches up, `rate` is the leader's rate times 1 ± this: a follower 0.3 s behind closes the gap in about six seconds, and nobody sees a jump |
+| `deadband` | 1/60 | a difference under one frame is left alone. Past it the nudge starts, and it stops at half of it, so it does not flutter on the edge |
+| `jump` | 0.5 | a difference over this many seconds is one `seek(T, 'seek')`: `onSeek` hears it and no cue fires |
+| `lostAfter` | 4 | seconds without a frame before the leader counts as gone; `Infinity` waits for ever |
+| `latency` | 0 | seconds a frame spends on the way, a number or a function. Set it for pages on different machines (for example half the round trip) |
+| `now` | `source.now`, else `performance.now` | the clock, in milliseconds; the one the source stamps `at` with |
+| `onFollow` | none | `cb({ kind, …followStatus() })` for `'found'`, `'lost'` and `'jump'`; `timeline.onFollow(cb)` adds more |
+
+What the follower copies from the leader: its **rate**, its **pause** (the follower stops on the leader's exact `T`) and its **hold**. When the leader parks at the end of a `hold` scene, the follower walks up to the boundary and parks there by itself (its own cues and scene changes fire on the way). It lets go only when the leader's `T` is past the boundary, so a late frame from just before it cannot release a follower that arrived first. A looping show is followed across the wrap of the loop, by the shorter way round. The leader is the clock: while following, the follower's own `play()`, `pause()`, `seek()` and `rate` are overruled by the next frame, and `anchor()` stands aside until `unfollow()`.
+
+When no frame has come for `lostAfter` seconds the follower **runs by itself** on the last rate it was given, exactly like a timeline that does not follow (a paused follower stays paused). `followStatus().lost` turns true and `onFollow` hears `'lost'` (`console.warn` if nobody listens). When the leader is back, the follower picks it up again (`'found'`). Before it has heard anyone at all it waits (`state: 'waiting'`) and, after `lostAfter` seconds, runs on its own the same way.
+
+`followStatus()` answers `null` when the timeline is not following, otherwise `state` (`'waiting'`, `'tracking'`, `'lost'`), `error` (the leader's `T` minus ours, in seconds; positive = we are behind), `worst` (the biggest `|error|` since it first caught up), `jumps` (seeks), `silence` (seconds since the last frame), `lost`, `lostCount`, `lostAfter`, `heard`, `frames`, `nudging` (-1, 0 or 1), `rate`, `leaderRate`, `leaderT`, `leaderPlaying`, `leaderHolding`, and `text`, one line for the desk or the monitor. The numbers are those of the last frame.
+
 ## The console
 
 `mountConsole(el, app, { layers, signals, keys })` (`@openav/console`) builds the
@@ -411,6 +440,76 @@ A value is a number, a string (80 characters at most), a boolean or `null`. `{ v
 so one bad number never costs the frame, and a provider that throws is skipped. `monitor()` and a function `extra`
 are asked every frame, `monitor.extra(fn)` only when a frame goes out (about 15 a second): keep anything
 expensive there. On a name two sources share, `extra` beats the world and a later `monitor.extra` beats an earlier one.
+
+## Several pages, one show
+
+A wall of three outputs, a stage and a lobby, a rehearsal laptop beside the show laptop: one show, several pages. One page is the **leader**: it runs the timeline, takes the input, and says every frame where it is. The others are **followers**: their timelines chase the leader's `T` ([follow](#following-another-clock-follow)), so every page shows the same moment of the same show. Give every page the same code and a different `role`:
+
+```js
+const role = location.hash === '#follow' ? 'follower' : 'leader';
+const show = await createShow({
+  world, score: { cuts, modules },
+  sync: { role, channel: 'hall' },               // pages of one browser on one machine: a BroadcastChannel, no network
+  // sync: { role, channel: 'hall', url: 'ws://leader.local:8080/relay' },   // pages on other machines: the room relay
+});
+```
+
+| `sync` key | default | meaning |
+|---|---|---|
+| `role` | required | `'leader'` or `'follower'` |
+| `channel` | required | the name of the BroadcastChannel and of the relay room: 1–32 letters, digits, `-` or `_`. Pages on the same channel are one show |
+| `url` | none | none: a `BroadcastChannel` (pages of one browser profile and one origin). `true`: this page's own `/relay` (`node serve.js` hosts it). `'ws://host:port/relay'`: the relay on that machine |
+| `input` | leader `true`, follower `false` | whether this page takes input of its own. Without it the modules that make input are switched off: `keys` (the keyboard piano), `midi`, `drums`, `audio`, `hands`, `pose`, `leap`, `remote`. Everything else is yours |
+| `follow` | `{}` | follower: the options of [`timeline.follow()`](#following-another-clock-follow) (`jump`, `lostAfter`, `latency`, `nudge`, `onFollow`) |
+| `extra`, `state` | none | leader: data that travels with the clock (below) |
+| `info`, `accept`, `onFrame`, `onState`, `onGap` | none | follower: hooks and checks (below) |
+| `hz` | every frame | leader: at most this many frames a second; a change of state (play, pause, hold, rate, seek) is sent at once |
+| `id`, `now` | random, `performance.now` | the peer id and the clock |
+
+**Transports.** On one machine the pages talk through a `BroadcastChannel`: no network and nothing to run. The browser connects only pages of the same origin and profile, so open the leader and the followers from the same address. Across machines they join a room on the [room relay](remote.md#the-relay) as `role=leader` and `role=follower`; `node serve.js` on the leader's machine is enough (`url: 'ws://<that machine>:8080/relay'`). A page served over https needs a `wss://` address (the browser blocks `ws://` there). The relay has no authentication: use a closed network and a channel name nobody will guess ([Security](remote.md#security)). Both transports carry the same JSON, so a work does not change when the wire does.
+
+**Messages.** The same on both transports; `seq` counts the leader's frames.
+
+```text
+{ v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }      leader → followers, every frame
+{ v:1, kind:'hello', id, role:'follower', info?, reason? }                    follower → leader: "I am here, where are we?"
+{ v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower
+```
+
+A follower says `hello` when it comes up, and again every second until it has a `state`, after a gap in `seq`, after a silence and whenever its socket reconnects. The leader answers with a `state`, so a page that joins in the middle, or reloads, is on the show's present at its first frame. `cut` is the score's cut id: a follower on another cut than the leader (another length, so `T` means something else) refuses its frames, and the monitor says `refused: cut …`.
+
+**Carrying the work's data.** Whatever has to travel with the clock (an override the operator set, a note, a skipped intro) goes in `extra`. The framework delivers it once each and in order, and never reads it.
+
+```js
+sync: {
+  role: 'leader', channel: 'hall',
+  extra: () => ({ build: BUILD, events: takeNewEvents() }),   // asked once per frame sent; return undefined for "nothing"
+  state: (hello) => ({ build: BUILD, tape: wholeTape }),       // asked when a follower says hello: all a late joiner needs
+}
+sync: {
+  role: 'follower', channel: 'hall',
+  onFrame: (msg) => appendEvents(msg.extra.events),            // every frame, in order, each one once
+  onState: (msg) => loadTape(msg.extra.tape),                  // on joining, and again after anything went missing
+  accept: (msg) => msg.extra?.build === BUILD || 'build differs',   // false or a string refuses this leader
+  info: { build: BUILD },                                      // arrives with every hello
+}
+```
+
+A frame that goes missing (a socket dropped for a moment) shows as a gap in `seq`: the follower tells `onGap`, asks for the state again, and the state replaces whatever was lost. The relay drops messages over 256 KB by default; a `state` that carries a whole tape needs `attachRelay(server, { maxMessageChars, maxBytes })`.
+
+| what happens | what the follower does |
+|---|---|
+| it reloads, or joins late | `hello`, then `state`: on its first frame it is on the leader's `T` |
+| a frame is lost, or the socket drops and returns | the gap in `seq` is reported and the state asked for again |
+| the leader goes quiet | after `lostAfter` seconds (4) it runs by itself on the last rate; `followStatus().lost` and `sync/lost` in the monitor turn red |
+| the leader returns, or another page is promoted by hand | a leader quiet for 1.5 s can be replaced by another one; the follower switches and resyncs |
+| two leaders at once | it sticks to the first it heard; the other is counted as `ignored` |
+| the leader is on another cut | refused, and nothing moves |
+| the follower drifts | it cannot pile up: every frame is measured against the leader's `T`, not the follower's own clock |
+
+**What this does not do.** Frames carry the leader's `T`, not a wall-clock time, and `latency` is yours to set: across machines a follower trails by about one trip unless told. There is no election: promoting a follower means loading it with `role: 'leader'` once the old leader is gone. The pages share *time*. A world that integrates `dt` (a feedback trail, a particle system) will not look the same on two pages at equal `T` unless what must match is written as a function of `T`. Backstage, a synced page adds `sync/…` numbers (role, error, silence, lost, jumps) to the monitor's Work panel.
+
+Without `createShow`: `createSync({ role, channel, url, timeline })` from `@openav/sync` builds the same thing; call `sync.frame()` after `timeline.advance(dt)` every frame ([`@openav/sync`](packages.md#openav-sync)).
 
 ## OSC output
 
