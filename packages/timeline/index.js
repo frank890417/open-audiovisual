@@ -23,6 +23,9 @@
 //   tl.exportAutomation({ as: 'seconds' | 'segments' }) / tl.importAutomation(json) · lanePos(t) / laneTime(id, p): seconds ↔ (segment, p)
 // tl.anchor(epoch?, { mode: 'warn' | 'catch-up', … })   read the wall clock: count what the frame loop's dt clamp costs
 //   (tl.drift()), warn, or give it back; an epoch in the future is a scheduled start. Nothing happens unless you call it.
+// tl.follow(source, opts)   follow another timeline's clock (several pages, one show): chase its T with a small rate change, seek
+//   when far off, copy its pause / hold, run on by yourself when it goes silent (tl.followStatus()). tl.unfollow() gives it back.
+//   Nothing happens unless you call it. The transport between the pages is @openav/sync; this file knows only the shape of a frame.
 // scenes:     [{ id, t, title?, note?, act?, acts?, hold?, cues? }, …]  t may be negative (pre-show standby)
 //
 // Since the score (@openav/score): pass `score` and the scenes, the total and the start come
@@ -206,6 +209,8 @@ export class Timeline {
     this._used = 0;                 // 最近一次 _advance() 真正走掉的秒數（hold 停住時會比要求的少）
     this._anchor = null;            // anchor() 的狀態；null＝沒有錨定，advance() 一個位元都沒變
     this._driftCbs = [];
+    this._follow = null;            // follow() 的狀態；null＝沒有在追別人的時鐘，advance() 一個位元都沒變
+    this._followCbs = [];
     if (automation && Object.values(automation).some(isLane)) this.automation = this._compileAutomation(automation);
     if (anchor) {
       const cfg = anchor !== true && !(anchor instanceof Date) && typeof anchor === 'object' ? anchor : null;   // true｜毫秒｜Date｜ISO 字串｜{ epoch, mode, … }
@@ -400,8 +405,14 @@ export class Timeline {
     return null;
   }
 
-  /** Call per frame with clamped dt. Returns whether still playing. With anchor() it also reads the wall clock (see there). */
+  /** Call per frame with clamped dt. Returns whether still playing. With anchor() it also reads the wall clock (see there);
+   *  with follow() it follows the leader's clock instead (see there). */
   advance(dt) {
+    if (this._follow) return this._advanceFollowing(dt);
+    return this._advanceOwn(dt);
+  }
+
+  _advanceOwn(dt) {
     if (!this.playing) { if (this._anchor) this._anchorStop(); return false; }
     if (!this._anchor) return this._advance(dt * this.rate);     // 沒有錨定：走原本的路，不讀任何鐘
     return this._advanceAnchored(dt);
@@ -584,6 +595,174 @@ export class Timeline {
     if (!heard && kind === 'behind') console.warn(`[timeline] ${e.text}`);
   }
 
+  // ── 外部時鐘：follow ───────────────────────────────────────────────────────────────────────
+  // 好幾個頁面演同一場：一個是主控端（leader），其餘的時間軸不自己往前走，而是追主控端的 T。
+  // 主控端每幀把 { T, playing, holding, rate } 送過來（@openav/sync 負責傳輸與順序；這裡只認這個形狀），從屬端每幀做三件事：
+  //   · 算出主控端「現在」在哪：最後一則 frame 的 T，加上它到了之後又過的時間 × rate（暫停、hold 就不外插）
+  //   · 差不到一幀（deadband）不管；超過就把 rate 推到 ±nudge（預設 5%），收斂到半幀內才放手；超過 jump（預設 0.5 s）才 seek 過去
+  //   · 照主控端的狀態暫停、續播、停在 hold：自己走到 hold 的邊界停下來（cue、場景切換照常），主控端放掉了才放掉
+  // 主控端失聯超過 lostAfter 秒（預設 4）：照它最後的 rate 自己往前走（和沒有 follow 的時間軸一模一樣），回報裡標 lost；它回來就接回去。
+  // 「現在」是 source 給的 `at`（frame 到達時的時鐘，毫秒）對 `now()`；在這之間不讀任何其他的鐘。
+  // 追的時候本地的 play/pause/seek/rate 會被下一幀蓋掉（主控端才是時鐘）；anchor() 暫時不作用（unfollow 後接回）。
+
+  /**
+   * 開始追另一個時間軸的時鐘。重呼叫會換 source、計數歸零。
+   * @param {(()=>object|null)|{latest:()=>object|null, now?:()=>number}} source  回傳最後一則主控端 frame 的函式或物件：
+   *   { T, playing, holding, rate, at } — T 是主控端送出那一刻的 T，at 是它到達這裡的時鐘（毫秒，和 now() 同一個鐘；不給＝此刻）。還沒收過就回 null
+   * @param {object} [opts]
+   * @param {number} [opts.nudge=0.05]      追的時候 rate 最多偏離主控端的比例
+   * @param {number} [opts.deadband=1/60]   差不到這麼多秒（一幀）不管；開始追之後收斂到它的一半才放手
+   * @param {number} [opts.jump=0.5]        差超過這麼多秒就 seek 過去（cue 不放，onSeek 聽到 'seek'）
+   * @param {number} [opts.lostAfter=4]     主控端這麼多秒沒聲音就算失聯，自己往前走（Infinity＝永遠等）
+   * @param {number|(()=>number)} [opts.latency=0]  frame 在路上花的秒數，加進主控端「現在」的估計（跨機器用；同一台機器是 0）
+   * @param {()=>number} [opts.now]         時鐘（毫秒）；預設 source.now，再來是 performance.now。要和 source 的 `at` 同一個鐘
+   * @param {(e:object)=>void} [opts.onFollow]  e = { kind: 'found' | 'lost' | 'jump', …followStatus() }
+   * @returns {this}
+   */
+  follow(source, opts = {}) {
+    const read = typeof source === 'function' ? source : source && typeof source.latest === 'function' ? () => source.latest() : null;
+    if (!read) throw new TypeError(`[timeline] follow(): source must be a function returning the leader's last frame, or an object with latest() (got ${show(source)})`);
+    const o = opts || {};
+    const pick = (k, d) => (o[k] === undefined || o[k] === null ? d : o[k]);
+    const nudge = pick('nudge', 0.05), deadband = pick('deadband', 1 / 60), jump = pick('jump', 0.5), lostAfter = pick('lostAfter', 4), latency = pick('latency', 0);
+    const now = pick('now', typeof source.now === 'function' ? () => source.now() : () => (typeof performance !== 'undefined' ? performance.now() : Date.now()));
+    if (!(typeof nudge === 'number' && nudge >= 0 && nudge < 1)) throw new TypeError(`[timeline] follow(): nudge must be a number from 0 up to 1 (got ${show(nudge)})`);
+    for (const [k, v] of Object.entries({ deadband, jump, lostAfter })) {
+      if (!(typeof v === 'number' && v >= 0)) throw new TypeError(`[timeline] follow(): ${k} must be a number of seconds ≥ 0 (got ${show(v)})`);
+    }
+    if (!(typeof latency === 'function' || (typeof latency === 'number' && Number.isFinite(latency)))) throw new TypeError(`[timeline] follow(): latency must be a number of seconds or a function returning one (got ${show(latency)})`);
+    if (typeof now !== 'function') throw new TypeError('[timeline] follow(): now must be a function returning milliseconds');
+    if (typeof o.onFollow === 'function') this._followCbs.push(o.onFollow);
+    else if (o.onFollow !== undefined && o.onFollow !== null) throw new TypeError('[timeline] follow(): onFollow must be a function');
+    if (this._anchor) this._anchorStop();                       // 追的時候牆鐘錨定不作用；停掉它的計時，unfollow 之後才不會把這段當成漂移
+    const restore = this._follow ? this._follow.restore : this.rate;    // unfollow() 還原到 follow() 之前的 rate（再呼叫 follow 不會把追的途中的 rate 當成原本的）
+    this._follow = {
+      read, now, nudge, deadband, jump, lostAfter, latency, settle: 1e-4, restore,
+      since: now(), nominal: restore, dir: 0,
+      state: 'waiting', heard: false, lost: false, lostCount: 0, aligned: false, srcWarned: false,
+      frames: 0, jumps: 0, worst: 0, error: null, silence: 0,
+      leaderT: null, leaderRate: restore, leaderPlaying: false, leaderHolding: false,
+    };
+    return this;
+  }
+  /** 不再追：rate 還原成 follow() 之前的，時間軸又是一條自己走的時間軸（plain、anchor 都照舊）。onFollow(cb) 註冊的 callback 留著。 */
+  unfollow() {
+    const f = this._follow;
+    if (!f) return this;
+    this._follow = null;
+    this.rate = f.restore;
+    if (this._anchor) this._anchorStop();
+    return this;
+  }
+  get following() { return this._follow !== null; }
+  /** cb(e) 於 'found'（第一次聽到主控端，或失聯後它回來了）、'lost'（失聯，自己往前走了；沒人接就 console.warn）、'jump'（差太多，seek 過去了）。e 帶 followStatus() 的全部欄位。 */
+  onFollow(cb) { this._followCbs.push(cb); }
+
+  /**
+   * 目前追的情形，沒有在追是 null。秒數都是節目秒，數字是最後一幀的：
+   *   state 'waiting'（還沒聽到主控端，站著不動）· 'tracking'（在追）· 'lost'（失聯，自己走）
+   *   error 主控端的 T 減我們的（正＝我們落後；追之前量的）· worst 追上之後最大的 |error| · jumps seek 過去幾次
+   *   silence 多久沒收到主控端 · lost／lostCount／lostAfter · heard 聽過沒有 · frames 幾幀 · nudging −1／0／1（正在調 rate 的方向）
+   *   rate 我們現在的 · leaderRate／leaderT（它此刻的位置）／leaderPlaying／leaderHolding
+   *   text 一行人看得懂的摘要，可以直接印在導演台或後台
+   */
+  followStatus() {
+    const f = this._follow;
+    if (!f) return null;
+    const d = {
+      state: f.state, heard: f.heard, lost: f.lost, lostCount: f.lostCount, lostAfter: f.lostAfter,
+      error: f.error, worst: f.worst, jumps: f.jumps, silence: f.silence, frames: f.frames, nudging: f.dir,
+      rate: this.rate, leaderRate: f.leaderRate, leaderT: f.leaderT, leaderPlaying: f.leaderPlaying, leaderHolding: f.leaderHolding, text: '',
+    };
+    d.text = followText(d);
+    return d;
+  }
+  _followEmit(kind, extra) {
+    const e = { kind, ...this.followStatus(), ...extra };
+    let heard = false;
+    for (const cb of this._followCbs) {
+      heard = true;
+      try { cb(e); } catch (err) { console.error('[timeline] onFollow handler:', err); }
+    }
+    if (!heard && kind === 'lost') console.warn(`[timeline] ${e.text}`);
+  }
+
+  // 追著主控端的一幀。回傳是否還在播（和 advance 一樣）
+  _advanceFollowing(dt) {
+    const f = this._follow, W = f.now();
+    let fr = null;
+    try { fr = f.read(); } catch (err) { if (!f.srcWarned) { f.srcWarned = true; console.error('[timeline] follow source:', err); } }
+    if (!fr || typeof fr !== 'object' || !Number.isFinite(fr.T)) fr = null;     // 壞的 frame 等於沒有 frame（算進沉默）
+    f.frames++;
+    const age = fr ? Math.max(0, (Number.isFinite(fr.at) ? W - fr.at : 0) / 1000) : 0;
+    f.silence = fr ? age : Math.max(0, (W - f.since) / 1000);
+    let found = false;
+    if (fr && !f.heard) { f.heard = true; found = true; }
+    // ── 失聯：和沒有 follow 的時間軸一模一樣地自己走，用主控端最後的 rate ──
+    if (f.silence > f.lostAfter) {
+      if (!f.lost) { f.lost = true; f.lostCount++; f.aligned = false; f.state = 'lost'; f.error = null; this._followEmit('lost'); }
+      this.rate = f.nominal; f.dir = 0;
+      return this._advanceOwn(dt);
+    }
+    if (f.lost) { f.lost = false; found = true; }
+    if (!fr) { f.state = 'waiting'; return this.playing; }          // 還沒聽到任何人：站著等（失聯之前不自己走）
+    f.state = 'tracking';
+    if (found) { f.aligned = false; this._followEmit('found'); }
+
+    const R = Number.isFinite(fr.rate) ? fr.rate : 1;
+    const holdL = !!fr.holding, moving = !!fr.playing && !holdL;
+    f.nominal = f.leaderRate = R; f.leaderPlaying = !!fr.playing; f.leaderHolding = holdL;
+    let lat = typeof f.latency === 'function' ? f.latency() : f.latency;
+    if (!Number.isFinite(lat)) lat = 0;
+    // 主控端「現在」在哪：它的 T，加上之後又走的（暫停、hold 不外插）；循環的節目外插過了圈尾就繞回來
+    const lo = this.scenes.length ? Math.min(0, this.scenes[0].t) : 0;
+    const range = this.loopRange(this.t);
+    let target = fr.T + (moving ? (age + lat) * R : 0);
+    if (range && moving && fr.T >= range.a - 1e-9 && fr.T <= range.b + 1e-9 && target > range.b) target = range.a + ((target - range.a) % (range.b - range.a));
+    target = Math.min(this.total, Math.max(lo, target));
+    // 差：目標減上這一幀走完的位置（正＝我們落後）。循環的節目兩邊各在圈的一側時，取繞過圈尾比較近的那個方向
+    const within = (x) => !!range && x >= range.a - 1e-9 && x <= range.b + 1e-9;
+    const gap = (from) => {
+      const e = target - from;
+      if (!range || !within(this.t) || !within(target)) return e;
+      const span = range.b - range.a;
+      return ((((e + span / 2) % span) + span) % span) - span / 2;
+    };
+    const e1 = gap(this.t + (((moving || holdL) && !this.holding) ? dt * R : 0));
+    f.error = e1; f.leaderT = target;
+    if (f.aligned) f.worst = Math.max(f.worst, Math.abs(e1));
+    const jumped = Math.abs(e1) > f.jump;
+    if (jumped) { this.seek(target, 'seek'); f.jumps++; f.dir = 0; }
+    f.aligned = true;
+
+    // ── 暫停、續播、hold 跟著主控端 ──
+    this.rate = R;
+    if (holdL) {
+      this.playing = !this.holding;                // 自己走到邊界，由 _advance 停在 hold；已經停住就維持
+    } else if (this.holding) {
+      // 主控端放掉 hold 的時候 T 是正好等於邊界（release() 設的），在那之前它只可能停在邊界前面（HOLD_EPS）或還在路上，所以不留容差：
+      // 差一個浮點誤差的舊 frame 不能把比主控端早到的從屬端放走
+      if (fr.T >= this._holdAt.time) { this.release(); if (!fr.playing) this.pause(); }
+    } else if (fr.playing) {
+      if (!this.playing) this.play();
+    } else if (this.playing) this.pause();
+
+    if (jumped) { this._followEmit('jump', { by: e1 }); return this.playing; }    // 已經在主控端「現在」的位置，這一幀不再多走
+    if (!this.playing || this.holding) {
+      f.dir = 0;
+      if (!fr.playing && !holdL && !this.holding && Math.abs(target - this.t) > f.settle) this.seek(target, 'seek');   // 主控端停了：停在同一個 T
+      return false;
+    }
+    // ── 追：差超過一幀就把 rate 推到 ±nudge，收斂到半幀內才放手（不在邊緣上抖）──
+    const e2 = gap(this.t + dt * R);
+    let dir = f.dir;
+    if (dir !== 0 && (Math.sign(e2) !== dir || Math.abs(e2) < f.deadband / 2)) dir = 0;
+    if (dir === 0 && Math.abs(e2) > f.deadband) dir = Math.sign(e2);
+    f.dir = dir;
+    this.rate = R + dir * Math.abs(R) * f.nudge;
+    return this._advance(dt * this.rate);
+  }
+
   // ── loop ───────────────────────────────────────────────────────────────────────────────────
   /** The range being looped right now, { a, b } in seconds, or null. `loop` is true (the show, from 0 to total),
    *  'scene' (the scene the playhead is in), a scene id, or { from, to } (seconds or scene ids: a `from` id is that scene's
@@ -697,6 +876,17 @@ function driftText(d) {
   if (d.repaid >= 0.005) parts.push(`caught up ${d.repaid.toFixed(2)} s`);
   if (d.held >= 0.005) parts.push(`held back ${d.held.toFixed(2)} s`);
   if (d.jumps) parts.push(`${d.jumps} jump${d.jumps === 1 ? '' : 's'}`);
+  return parts.join(' · ');
+}
+
+function followText(d) {
+  if (d.state === 'waiting') return `waiting for the leader (${d.silence.toFixed(1)} s)`;
+  if (d.state === 'lost') return `leader silent for ${d.silence.toFixed(1)} s: running on its own at rate ${+d.rate.toFixed(3)}${d.lostCount > 1 ? ` (lost ${d.lostCount} times)` : ''}`;
+  const e = d.error ?? 0, parts = [Math.abs(e) < 0.005 ? 'with the leader' : `${Math.abs(e).toFixed(3)} s ${e > 0 ? 'behind' : 'ahead of'} the leader`];
+  if (d.nudging) parts.push(d.nudging > 0 ? 'catching up' : 'easing back');
+  if (d.worst >= 0.005) parts.push(`worst ${d.worst.toFixed(3)} s`);
+  if (d.jumps) parts.push(`${d.jumps} jump${d.jumps === 1 ? '' : 's'}`);
+  if (d.lostCount) parts.push(`lost ${d.lostCount} time${d.lostCount === 1 ? '' : 's'}`);
   return parts.join(' · ');
 }
 
