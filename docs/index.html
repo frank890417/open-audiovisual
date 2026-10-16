@@ -725,7 +725,7 @@ runs each frame (<code>packages/show/index.js</code>):</p>
   sound?.update(state);                          <span class="tc">// 4. sound/* params reach the synth</span>
   remote?.frame(dt, state);                      <span class="tc">//    param values echo back to phones</span>
   consoleUI.render(state);                       <span class="tc">// 5. the desk reflects reality</span>
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it</span>
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it (not with monitor: false)</span>
 });</code></pre></div>
 <p>Signals arrive <em>between</em> frames, whenever a device or a socket fires. An
 unsmoothed route writes its param immediately; a smoothed route sets a target
@@ -1573,6 +1573,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>mount</code></td><td>generated</td><td><code>{ stage, side }</code> elements or selectors to render into, instead of a full-page layout</td></tr>
 <tr><td><code>telemetry</code></td><td><code>true</code></td><td>one anonymous <code>oav_show_start</code> hit per page (see the controllers chapter, Telemetry); <code>false</code> sends nothing</td></tr>
 <tr><td><code>score</code></td><td><code>null</code></td><td><code>{ cuts, cut, modules, api, midi, … }</code>: the show's structure as segment lengths, performed by segment modules; <code>?cut=&lt;id&gt;</code> in the URL picks the version (<a href="#score-use-it-with-createshow">Score &amp; Director</a>)</td></tr>
+<tr><td><code>monitor</code></td><td><code>true</code></td><td>the <a href="#show-control-backstage-monitor">backstage feed</a>: <code>false</code> = none (no socket is opened), <code>{ url, hz }</code> = another relay address or rate</td></tr>
 </tbody>
 </table></div>
 <p>Without <code>mount</code>, the page body becomes a two-column grid: the stage, and a
@@ -1592,7 +1593,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>sound</code></td><td><code>true</code>; an instrument id (<code>'piano'</code>); <code>{ instrument, remember, picker, engine, baseUrl }</code></td><td>instruments in the page with a picker, Tone.js (<a href="#show-control-sound">Sound</a>)</td></tr>
 </tbody>
 </table></div>
-<p>It returns <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, console, app, loop }</code>; parts you did not ask for are <code>null</code>. The same object is
+<p>It returns <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, monitor, console, app, loop }</code>; parts you did not ask for are <code>null</code>. The same object is
 <code>window.openav</code>, for the devtools console. The frame order is in
 <a href="#architecture-the-frame-loop">Architecture</a>.</p>
 <h3 id="show-control-timeline">Timeline<a class="anchor" href="#show-control-timeline" aria-label="Link to this section">#</a></h3>
@@ -1703,6 +1704,10 @@ reconnect by themselves. <code>GET /health</code> answers <code>{ ok, clients }<
 <p>When no monitor is running, the show page keeps retrying with a growing delay
 (about 5 s, growing to 30 s); the browser logs each refused connection. That message is
 expected.</p>
+<p>A machine that does not need a backstage, or a relay somewhere else, is an option of <code>createShow()</code>:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({ world, monitor: <span class="tk">false</span> });                                  <span class="tc">// no backstage feed, no socket</span>
+<span class="tk">await</span> createShow({ world, monitor: { url: <span class="ts">'wss://stage.example.com/monitor'</span>, hz: 10 } });   <span class="tc">// another relay</span></code></pre></div>
+<p><code>monitor: false</code> builds no feed (<code>show.monitor</code> is <code>null</code>) and the page never opens a socket. <code>{ url, hz }</code> goes to <code>MonitorFeed</code>: a <code>ws://</code> or <code>wss://</code> address (<code>null</code> makes a feed that never connects) and the snapshots per second (default 15). Behind TLS the relay needs a <code>wss://</code> address, and the relay itself still listens where you started it (<code>node packages/monitor/server.js 7460</code>).</p>
 <p>For a hand-assembled show:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { MonitorFeed, snapshotOf } <span class="tk">from</span> <span class="ts">'@openav/monitor'</span>;
 <span class="tk">const</span> monitor = <span class="tk">new</span> MonitorFeed({ url: <span class="ts">'ws://192.168.1.20:7457'</span>, hz: 15 });   <span class="tc">// both optional</span>
@@ -3353,7 +3358,7 @@ signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0
 <h3 id="packages-openav-show">@openav/show<a class="anchor" href="#packages-openav-show" aria-label="Link to this section">#</a></h3>
 <p>Glue · <code>createShow(options)</code>: one call that assembles a whole show around a
 world and returns every part. Options, modules and the return value are in
-<a href="#show-control-createshow">Show control</a>.</p>
+<a href="#show-control-createshow">Show control</a>; <code>monitor</code> sends the backstage feed to another relay, or switches it off.</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { keys: { base: 48 }, sound: <span class="tk">true</span> } });</code></pre></div>
 <h3 id="packages-openav-midi">@openav/midi<a class="anchor" href="#packages-openav-midi" aria-label="Link to this section">#</a></h3>
@@ -3881,7 +3886,8 @@ the monitor:</p>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-bash"><span class="tk">npm</span> run monitor          <span class="tc"># node packages/monitor/server.js</span></code></pre></div>
 <p>Pages served over https (openaudiovisual.com, an https tunnel) don't try at all: the
 browser blocks <code>ws://</code> there, and a published site has no relay beside it. A show that
-runs a monitor behind TLS passes the address itself, <code>new MonitorFeed({ url: 'wss://…' })</code>.</p>
+runs a monitor behind TLS passes the address itself: <code>createShow({ monitor: { url: 'wss://…' } })</code>, or <code>new MonitorFeed({ url: 'wss://…' })</code> in a hand-assembled show.
+A machine that should not look for a monitor at all (a performance PC with no backstage) says <code>createShow({ monitor: false })</code>: no feed is built and the page opens no socket, so nothing is logged.</p>
 <h3 id="troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome asks about the local network, or about apps on this device<a class="anchor" href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" aria-label="Link to this section">#</a></h3>
 <p>Chrome's Local Network Access check puts a permission prompt in front of a <strong>public</strong> https page that tries to reach your own machine or network; a page served from your machine is not covered (<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome blog</a>). What it gates, by Chrome version (checked 2026-10-15):</p>
 <ul>
@@ -4054,9 +4060,10 @@ point the script tags, the import map or the module options (<code>toneEngine({ 
 <h3 id="troubleshooting-the-port-is-already-in-use">The port is already in use<a class="anchor" href="#troubleshooting-the-port-is-already-in-use" aria-label="Link to this section">#</a></h3>
 <p><code>node serve.js 8081</code> serves on another port, and the OSC bridge takes one too:
 <code>node packages/osc/bridges/osc-bridge.js 7470</code> (then <code>new OscOut('http://127.0.0.1:7470')</code>).
-The backstage monitor is the exception: a <code>createShow()</code> page always streams to
-port 7457 on its own host, so free that port. Only a hand-assembled show can
-point elsewhere, with <code>new MonitorFeed({ url: 'ws://host:7460' })</code> and
+The backstage monitor is the exception: a <code>createShow()</code> page streams to
+port 7457 on its own host unless you say otherwise, so free that port, or point the
+show elsewhere with <code>createShow({ monitor: { url: 'ws://host:7460' } })</code> (in a
+hand-assembled show: <code>new MonitorFeed({ url: 'ws://host:7460' })</code>) and start the relay with
 <code>node packages/monitor/server.js 7460</code>.</p>
 </section>
 

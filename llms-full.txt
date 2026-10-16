@@ -394,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 747 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 755 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -926,7 +926,7 @@ const loop = new Loop((dt) => {
   sound?.update(state);                          // 4. sound/* params reach the synth
   remote?.frame(dt, state);                      //    param values echo back to phones
   consoleUI.render(state);                       // 5. the desk reflects reality
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); // 6. backstage hears about it
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); // 6. backstage hears about it (not with monitor: false)
 });
 ```
 
@@ -1963,6 +1963,7 @@ const show = await createShow({
 | `mount` | generated | `{ stage, side }` elements or selectors to render into, instead of a full-page layout |
 | `telemetry` | `true` | one anonymous `oav_show_start` hit per page (see the controllers chapter, Telemetry); `false` sends nothing |
 | `score` | `null` | `{ cuts, cut, modules, api, midi, … }`: the show's structure as segment lengths, performed by segment modules; `?cut=<id>` in the URL picks the version ([Score & Director](score.md#use-it-with-createshow)) |
+| `monitor` | `true` | the [backstage feed](#backstage-monitor): `false` = none (no socket is opened), `{ url, hz }` = another relay address or rate |
 
 Without `mount`, the page body becomes a two-column grid: the stage, and a
 340 px side panel with the piano and the console.
@@ -1982,7 +1983,7 @@ Without `mount`, the page body becomes a two-column grid: the stage, and a
 
 It returns `{ signals, params, stage, timeline, mapper, midi, controllers,
 midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director,
-console, app, loop }`; parts you did not ask for are `null`. The same object is
+monitor, console, app, loop }`; parts you did not ask for are `null`. The same object is
 `window.openav`, for the devtools console. The frame order is in
 [Architecture](architecture.md#the-frame-loop).
 
@@ -2126,6 +2127,15 @@ reconnect by themselves. `GET /health` answers `{ ok, clients }`.
 When no monitor is running, the show page keeps retrying with a growing delay
 (about 5 s, growing to 30 s); the browser logs each refused connection. That message is
 expected.
+
+A machine that does not need a backstage, or a relay somewhere else, is an option of `createShow()`:
+
+```js
+await createShow({ world, monitor: false });                                  // no backstage feed, no socket
+await createShow({ world, monitor: { url: 'wss://stage.example.com/monitor', hz: 10 } });   // another relay
+```
+
+`monitor: false` builds no feed (`show.monitor` is `null`) and the page never opens a socket. `{ url, hz }` goes to `MonitorFeed`: a `ws://` or `wss://` address (`null` makes a feed that never connects) and the snapshots per second (default 15). Behind TLS the relay needs a `wss://` address, and the relay itself still listens where you started it (`node packages/monitor/server.js 7460`).
 
 For a hand-assembled show:
 
@@ -4064,7 +4074,7 @@ signals.set('breath/pressure', 0.4);
 
 Glue · `createShow(options)`: one call that assembles a whole show around a
 world and returns every part. Options, modules and the return value are in
-[Show control](show-control.md#createshow).
+[Show control](show-control.md#createshow); `monitor` sends the backstage feed to another relay, or switches it off.
 
 ```js
 import { createShow } from '@openav/show';
@@ -4693,7 +4703,8 @@ npm run monitor          # node packages/monitor/server.js
 
 Pages served over https (openaudiovisual.com, an https tunnel) don't try at all: the
 browser blocks `ws://` there, and a published site has no relay beside it. A show that
-runs a monitor behind TLS passes the address itself, `new MonitorFeed({ url: 'wss://…' })`.
+runs a monitor behind TLS passes the address itself: `createShow({ monitor: { url: 'wss://…' } })`, or `new MonitorFeed({ url: 'wss://…' })` in a hand-assembled show.
+A machine that should not look for a monitor at all (a performance PC with no backstage) says `createShow({ monitor: false })`: no feed is built and the page opens no socket, so nothing is logged.
 
 ## Chrome asks about the local network, or about apps on this device
 
@@ -4912,9 +4923,10 @@ point the script tags, the import map or the module options (`toneEngine({ cdn }
 
 `node serve.js 8081` serves on another port, and the OSC bridge takes one too:
 `node packages/osc/bridges/osc-bridge.js 7470` (then `new OscOut('http://127.0.0.1:7470')`).
-The backstage monitor is the exception: a `createShow()` page always streams to
-port 7457 on its own host, so free that port. Only a hand-assembled show can
-point elsewhere, with `new MonitorFeed({ url: 'ws://host:7460' })` and
+The backstage monitor is the exception: a `createShow()` page streams to
+port 7457 on its own host unless you say otherwise, so free that port, or point the
+show elsewhere with `createShow({ monitor: { url: 'ws://host:7460' } })` (in a
+hand-assembled show: `new MonitorFeed({ url: 'ws://host:7460' })`) and start the relay with
 `node packages/monitor/server.js 7460`.
 
 ---

@@ -35,7 +35,7 @@ signals.set('breath/pressure', 0.4);
 
 ## @openav/show
 
-膠水 · `createShow(options)`：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見[演出控制](show-control.md#createshow)。
+膠水 · `createShow(options)`：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見[演出控制](show-control.md#createshow)；`monitor` 決定後台推送送去哪裡，或是關掉它。
 
 ```js
 import { createShow } from '@openav/show';

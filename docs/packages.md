@@ -43,7 +43,7 @@ signals.set('breath/pressure', 0.4);
 
 Glue · `createShow(options)`: one call that assembles a whole show around a
 world and returns every part. Options, modules and the return value are in
-[Show control](show-control.md#createshow).
+[Show control](show-control.md#createshow); `monitor` sends the backstage feed to another relay, or switches it off.
 
 ```js
 import { createShow } from '@openav/show';

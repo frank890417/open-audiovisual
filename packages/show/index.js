@@ -22,8 +22,11 @@
 // (Layers → L1 Input → L2 Mapping → L3 Params → L4 Output → Signals), and
 // artwork credits render automatically (artist demos stay strictly attributed).
 //
+// The backstage feed is an option too:
+//     monitor: false,                      // no backstage feed (or { url: 'wss://…', hz }: another relay address)
+//
 // createShow returns { signals, params, stage, timeline, mapper, midi, keys,
-// sound, audio, hands, pose, leap, remote, score, director, loop, console } — every part reachable, nothing
+// sound, audio, hands, pose, leap, remote, score, director, loop, monitor, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools (with a score: window.openav.show.goto('dusk'), .table(), …).
 
 import { Signals, Params, Loop } from '../core/index.js?v=72212d8';
@@ -40,6 +43,7 @@ import { mountConsole } from '../console/index.js?v=72212d8';
 import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=72212d8';
 import { track } from '../midi/telemetry.js?v=72212d8';
 import { SHELL_CSS } from './layout.js?v=72212d8';
+import { monitorOptions } from './options.js?v=72212d8';
 
 export async function createShow({
   world = null,
@@ -55,7 +59,10 @@ export async function createShow({
   mount = null,            // { stage, side } elements/selectors; omitted = generated layout
   telemetry = true,        // one anonymous oav_show_start hit per page (packages/midi/telemetry.js); false = none
   score: scoreCfg = null,  // { cuts, cut, modules, api, onStatus, onCue, maxStep, midi } — the show's structure (packages/score); ?cut=<id> picks the version
+  monitor: monitorCfg = true,   // the backstage feed: true (this machine, :7457) · false (none) · { url, hz } — packages/monitor
 } = {}) {
+  // options that are data are checked first: a typo must stop the show before it touches the page
+  const monitorOpts = monitorOptions(monitorCfg);
   track('oav_show_start', { oav_kind: 'show' }, { enabled: telemetry !== false });
   // ---------- DOM shell (fix the layout once, every show is fixed) ----------
   if (!document.getElementById('openav-shell-css')) {
@@ -232,10 +239,10 @@ export async function createShow({
   // ---------- desk + backstage ----------
   const app = { timeline, params, mapper, signals, midi, controllers, sound, stage, keys, drums, audio, hands, pose, leap, chord, remote, artwork, score, director };
   const consoleUI = mountConsole(desk, app);
-  const monitor = new MonitorFeed({});
-  monitor.connect();
+  const monitor = monitorOpts ? new MonitorFeed(monitorOpts) : null;     // monitor: false → no feed, and no socket
+  monitor?.connect();
 
-  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, console: consoleUI, app, loop: null };
+  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, monitor, console: consoleUI, app, loop: null };
   if (score) show.show = scoreControls(timeline, score, director);
   const loop = app.loop = new Loop((dt) => {
     keys?.update(dt);
@@ -249,7 +256,7 @@ export async function createShow({
     sound?.update(state);
     remote?.frame(dt, state);
     consoleUI.render(state);
-    monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
+    monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
   });
   show.loop = loop;
   loop.start();

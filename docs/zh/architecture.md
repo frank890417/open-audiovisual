@@ -19,7 +19,7 @@ const loop = new Loop((dt) => {
   sound?.update(state);                          // 4. sound/* params reach the synth
   remote?.frame(dt, state);                      //    param values echo back to phones
   consoleUI.render(state);                       // 5. the desk reflects reality
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); // 6. backstage hears about it
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); // 6. backstage hears about it (not with monitor: false)
 });
 ```
 

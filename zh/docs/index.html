@@ -610,7 +610,7 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
   sound?.update(state);                          <span class="tc">// 4. sound/* params reach the synth</span>
   remote?.frame(dt, state);                      <span class="tc">//    param values echo back to phones</span>
   consoleUI.render(state);                       <span class="tc">// 5. the desk reflects reality</span>
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it</span>
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it (not with monitor: false)</span>
 });</code></pre></div>
 <p>訊號在兩格<em>之間</em>進來，裝置或 socket 什麼時候觸發，就什麼時候到。沒有平滑的路由會立刻寫入參數，有平滑的路由則是設一個目標值，由 <code>mapper.update(dt)</code> 慢慢滑過去。<code>createShow()</code> 不包含 OSC 輸出，要用的話，在 <code>onFrame</code> 裡呼叫 flush 送出（見<a href="#show-control-osc-output">演出控制</a>）。</p>
 <p><code>dt</code> 以秒為單位，上限夾在 0.1（<code>new Loop(fn, { maxDt })</code>），所以就算卡頓，世界也不會爆掉。瀏覽器凍結 <code>requestAnimationFrame</code> 的時候（例如投影視窗被切到背景），一個 Web Worker 心跳會讓迴圈繼續跑，大約每 66 ms 一次（約每秒 15 格）。有人切了視窗，時間軸、映射中的訊號和後台資料流也不能停。</p>
@@ -1185,6 +1185,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>mount</code></td><td>自動產生</td><td>要渲染進去的 <code>{ stage, side }</code> 元素或選擇器，取代整頁版面</td></tr>
 <tr><td><code>telemetry</code></td><td><code>true</code></td><td>每次載入頁面送一筆匿名的 <code>oav_show_start</code>（見控制器章的〈使用統計〉），<code>false</code> 就不送</td></tr>
 <tr><td><code>score</code></td><td><code>null</code></td><td><code>{ cuts, cut, modules, api, midi, … }</code>：把演出的結構寫成段落長度，由段落模組去演出。網址上的 <code>?cut=&lt;id&gt;</code> 決定用哪個版本（<a href="#score-use-it-with-createshow">總譜與導演</a>）</td></tr>
+<tr><td><code>monitor</code></td><td><code>true</code></td><td><a href="#show-control-backstage-monitor">後台推送</a>：<code>false</code> = 不推送（頁面不會開任何 socket），<code>{ url, hz }</code> = 換一個中繼位址或頻率</td></tr>
 </tbody>
 </table></div>
 <p>沒有 <code>mount</code> 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。</p>
@@ -1203,7 +1204,7 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>sound</code></td><td><code>true</code>、樂器 id（<code>'piano'</code>）或 <code>{ instrument, remember, picker, engine, baseUrl }</code></td><td>頁面裡的樂器和選單，用 Tone.js（<a href="#show-control-sound">聲音</a>）</td></tr>
 </tbody>
 </table></div>
-<p>它回傳 <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, console, app, loop }</code>，你沒要的部分是 <code>null</code>。同一個物件也掛在 <code>window.openav</code>，方便在 devtools 主控台裡查看。每個影格的執行順序寫在<a href="#architecture-the-frame-loop">架構</a>。</p>
+<p>它回傳 <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, monitor, console, app, loop }</code>，你沒要的部分是 <code>null</code>。同一個物件也掛在 <code>window.openav</code>，方便在 devtools 主控台裡查看。每個影格的執行順序寫在<a href="#architecture-the-frame-loop">架構</a>。</p>
 <h3 id="show-control-timeline">時間軸<a class="anchor" href="#show-control-timeline" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> timeline = <span class="tk">new</span> Timeline({
   params,
@@ -1277,6 +1278,10 @@ timeline.onRecord(({ key }) =&gt; params.clearOverride(key));      <span class="
 <span class="tc"># stage manager's phone/laptop: http://&lt;performance-machine-ip&gt;:7457/</span></code></pre></div>
 <p>每個用 <code>createShow()</code> 做的演出頁面，大約每秒 15 次把快照串流到 <code>ws://&lt;the page's host&gt;:7457</code>，所以監看伺服器要跑在提供演出頁面的那台電腦上。後台即時顯示時鐘、場景、世界、FPS、覆寫、所有訊號和參數。舞台 4 秒沒有傳來資料，就會跳出紅色的「stage feed lost」（舞台連線中斷）橫幅，這時候就輪到舞台監督出手。不用設定，沒有相依套件，兩端都會自己重新連線。<code>GET /health</code> 回應 <code>{ ok, clients }</code>。</p>
 <p>監看伺服器沒在跑時，演出頁面會一直重試，間隔從大約 5 秒拉長到 30 秒。瀏覽器會記下每一次被拒絕的連線，這些訊息是預期中的。</p>
+<p>不需要後台的機器，或是中繼架在別處，都是 <code>createShow()</code> 的選項：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({ world, monitor: <span class="tk">false</span> });                                  <span class="tc">// no backstage feed, no socket</span>
+<span class="tk">await</span> createShow({ world, monitor: { url: <span class="ts">'wss://stage.example.com/monitor'</span>, hz: 10 } });   <span class="tc">// another relay</span></code></pre></div>
+<p><code>monitor: false</code> 不會建立推送（<code>show.monitor</code> 是 <code>null</code>），頁面也不會開任何 socket。<code>{ url, hz }</code> 交給 <code>MonitorFeed</code>：一個 <code>ws://</code> 或 <code>wss://</code> 位址（<code>null</code> 會做出一個永遠不連線的推送），以及每秒送幾次快照（預設 15）。架在 TLS 後面的中繼要用 <code>wss://</code> 位址，中繼本身仍然聽在你啟動它的埠（<code>node packages/monitor/server.js 7460</code>）。</p>
 <p>如果演出是你手動組起來的：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { MonitorFeed, snapshotOf } <span class="tk">from</span> <span class="ts">'@openav/monitor'</span>;
 <span class="tk">const</span> monitor = <span class="tk">new</span> MonitorFeed({ url: <span class="ts">'ws://192.168.1.20:7457'</span>, hz: 15 });   <span class="tc">// both optional</span>
@@ -2620,7 +2625,7 @@ signals.define(<span class="ts">'breath/pressure'</span>, { min: 0, max: 1 });
 signals.on(<span class="ts">'breath/pressure'</span>, (v) =&gt; console.log(v));
 signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0.4);</code></pre></div>
 <h3 id="packages-openav-show">@openav/show<a class="anchor" href="#packages-openav-show" aria-label="這一節的連結">#</a></h3>
-<p>膠水 · <code>createShow(options)</code>：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見<a href="#show-control-createshow">演出控制</a>。</p>
+<p>膠水 · <code>createShow(options)</code>：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見<a href="#show-control-createshow">演出控制</a>；<code>monitor</code> 決定後台推送送去哪裡，或是關掉它。</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { keys: { base: 48 }, sound: <span class="tk">true</span> } });</code></pre></div>
 <h3 id="packages-openav-midi">@openav/midi<a class="anchor" href="#packages-openav-midi" aria-label="這一節的連結">#</a></h3>
@@ -3070,7 +3075,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <h3 id="troubleshooting-the-console-shows-a-ws-7457-error">瀏覽器主控台出現 ws://…:7457 錯誤<a class="anchor" href="#troubleshooting-the-console-shows-a-ws-7457-error" aria-label="這一節的連結">#</a></h3>
 <p>每個用 <code>createShow()</code> 做的演出，都會試著把資料串流到 <code>ws://&lt;the page's host&gt;:7457</code> 的後台監看。監看伺服器沒在跑時，瀏覽器會記下被拒絕的連線。這是預期中的，也無害：頁面會重試，間隔從大約 5 秒拉長到 30 秒，不會一直洗版。想讓它消失，就把監看伺服器跑起來：</p>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">npm</span> run monitor          <span class="tc"># node packages/monitor/server.js</span></code></pre></div>
-<p>用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 <code>ws://</code>，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：<code>new MonitorFeed({ url: 'wss://…' })</code>。</p>
+<p>用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 <code>ws://</code>，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：<code>createShow({ monitor: { url: 'wss://…' } })</code>，自己組裝的演出則是 <code>new MonitorFeed({ url: 'wss://…' })</code>。完全不該去找監看伺服器的機器（沒有後台的演出電腦）就寫 <code>createShow({ monitor: false })</code>：不會建立推送、頁面也不開任何 socket，所以什麼都不會記。</p>
 <h3 id="troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome 跳出「區域網路」或「這台裝置上的應用程式」的詢問<a class="anchor" href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" aria-label="這一節的連結">#</a></h3>
 <p>Chrome 的 Local Network Access（區域網路存取）檢查，會在<strong>公開的</strong> https 頁面要連你自己的電腦或網路時，先跳出權限詢問；從你自己這台機器提供的頁面不在範圍內（<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome 部落格</a>）。依 Chrome 版本，它管的範圍是（查證於 2026-10-15）：</p>
 <ul>
@@ -3159,7 +3164,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <h3 id="troubleshooting-an-example-from-a-cdn-works-online-but-not-offline">用到 CDN 的範例，連網時能跑，離線就不行<a class="anchor" href="#troubleshooting-an-example-from-a-cdn-works-online-but-not-offline" aria-label="這一節的連結">#</a></h3>
 <p>p5（範例 05、06）、Tone.js（聲音）、MediaPipe（手、身體）和 WebToe app（範例 04）都從網路載入。到離線的場地演出，先把它們下載下來，再把 script 標籤、import map 或模組選項（<code>toneEngine({ cdn })</code>、<code>webtoeWorld({ app })</code>）指到本機的副本。</p>
 <h3 id="troubleshooting-the-port-is-already-in-use">連接埠已經被佔用<a class="anchor" href="#troubleshooting-the-port-is-already-in-use" aria-label="這一節的連結">#</a></h3>
-<p><code>node serve.js 8081</code> 會改用另一個埠，OSC 橋接也接受埠號參數：<code>node packages/osc/bridges/osc-bridge.js 7470</code>（再用 <code>new OscOut('http://127.0.0.1:7470')</code>）。後台監看是例外：用 <code>createShow()</code> 做的頁面，永遠串流到自己主機的 7457 埠，所以要把這個埠空出來。只有自己組裝的演出可以改指別的位置：<code>new MonitorFeed({ url: 'ws://host:7460' })</code> 搭配 <code>node packages/monitor/server.js 7460</code>。</p>
+<p><code>node serve.js 8081</code> 會改用另一個埠，OSC 橋接也接受埠號參數：<code>node packages/osc/bridges/osc-bridge.js 7470</code>（再用 <code>new OscOut('http://127.0.0.1:7470')</code>）。後台監看是例外：用 <code>createShow()</code> 做的頁面，除非你另外指定，否則會串流到自己主機的 7457 埠，所以要把這個埠空出來，或用 <code>createShow({ monitor: { url: 'ws://host:7460' } })</code> 指到別處（自己組裝的演出則是 <code>new MonitorFeed({ url: 'ws://host:7460' })</code>），再用 <code>node packages/monitor/server.js 7460</code> 啟動中繼。</p>
 </section>
 
 <section class="chapter" data-chapter="roadmap" aria-labelledby="roadmap">

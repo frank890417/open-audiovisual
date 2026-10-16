@@ -37,6 +37,7 @@ const show = await createShow({
 | `mount` | generated | `{ stage, side }` elements or selectors to render into, instead of a full-page layout |
 | `telemetry` | `true` | one anonymous `oav_show_start` hit per page (see the controllers chapter, Telemetry); `false` sends nothing |
 | `score` | `null` | `{ cuts, cut, modules, api, midi, … }`: the show's structure as segment lengths, performed by segment modules; `?cut=<id>` in the URL picks the version ([Score & Director](score.md#use-it-with-createshow)) |
+| `monitor` | `true` | the [backstage feed](#backstage-monitor): `false` = none (no socket is opened), `{ url, hz }` = another relay address or rate |
 
 Without `mount`, the page body becomes a two-column grid: the stage, and a
 340 px side panel with the piano and the console.
@@ -56,7 +57,7 @@ Without `mount`, the page body becomes a two-column grid: the stage, and a
 
 It returns `{ signals, params, stage, timeline, mapper, midi, controllers,
 midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director,
-console, app, loop }`; parts you did not ask for are `null`. The same object is
+monitor, console, app, loop }`; parts you did not ask for are `null`. The same object is
 `window.openav`, for the devtools console. The frame order is in
 [Architecture](architecture.md#the-frame-loop).
 
@@ -200,6 +201,15 @@ reconnect by themselves. `GET /health` answers `{ ok, clients }`.
 When no monitor is running, the show page keeps retrying with a growing delay
 (about 5 s, growing to 30 s); the browser logs each refused connection. That message is
 expected.
+
+A machine that does not need a backstage, or a relay somewhere else, is an option of `createShow()`:
+
+```js
+await createShow({ world, monitor: false });                                  // no backstage feed, no socket
+await createShow({ world, monitor: { url: 'wss://stage.example.com/monitor', hz: 10 } });   // another relay
+```
+
+`monitor: false` builds no feed (`show.monitor` is `null`) and the page never opens a socket. `{ url, hz }` goes to `MonitorFeed`: a `ws://` or `wss://` address (`null` makes a feed that never connects) and the snapshots per second (default 15). Behind TLS the relay needs a `wss://` address, and the relay itself still listens where you started it (`node packages/monitor/server.js 7460`).
 
 For a hand-assembled show:
 

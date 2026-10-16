@@ -34,6 +34,7 @@ const show = await createShow({
 | `mount` | 自動產生 | 要渲染進去的 `{ stage, side }` 元素或選擇器，取代整頁版面 |
 | `telemetry` | `true` | 每次載入頁面送一筆匿名的 `oav_show_start`（見控制器章的〈使用統計〉），`false` 就不送 |
 | `score` | `null` | `{ cuts, cut, modules, api, midi, … }`：把演出的結構寫成段落長度，由段落模組去演出。網址上的 `?cut=<id>` 決定用哪個版本（[總譜與導演](score.md#use-it-with-createshow)） |
+| `monitor` | `true` | [後台推送](#backstage-monitor)：`false` = 不推送（頁面不會開任何 socket），`{ url, hz }` = 換一個中繼位址或頻率 |
 
 沒有 `mount` 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。
 
@@ -50,7 +51,7 @@ const show = await createShow({
 | `remote` | `true` 或 `{ room, auto, surface, feedbackHz, url }` | 手機和 iPad 當控制器（[手機](remote.md#the-show-side)） |
 | `sound` | `true`、樂器 id（`'piano'`）或 `{ instrument, remember, picker, engine, baseUrl }` | 頁面裡的樂器和選單，用 Tone.js（[聲音](#sound)） |
 
-它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
+它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, monitor, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
 
 ## 時間軸
 
@@ -157,6 +158,15 @@ node packages/monitor/server.js       # on the performance machine (npm run moni
 每個用 `createShow()` 做的演出頁面，大約每秒 15 次把快照串流到 `ws://<the page's host>:7457`，所以監看伺服器要跑在提供演出頁面的那台電腦上。後台即時顯示時鐘、場景、世界、FPS、覆寫、所有訊號和參數。舞台 4 秒沒有傳來資料，就會跳出紅色的「stage feed lost」（舞台連線中斷）橫幅，這時候就輪到舞台監督出手。不用設定，沒有相依套件，兩端都會自己重新連線。`GET /health` 回應 `{ ok, clients }`。
 
 監看伺服器沒在跑時，演出頁面會一直重試，間隔從大約 5 秒拉長到 30 秒。瀏覽器會記下每一次被拒絕的連線，這些訊息是預期中的。
+
+不需要後台的機器，或是中繼架在別處，都是 `createShow()` 的選項：
+
+```js
+await createShow({ world, monitor: false });                                  // no backstage feed, no socket
+await createShow({ world, monitor: { url: 'wss://stage.example.com/monitor', hz: 10 } });   // another relay
+```
+
+`monitor: false` 不會建立推送（`show.monitor` 是 `null`），頁面也不會開任何 socket。`{ url, hz }` 交給 `MonitorFeed`：一個 `ws://` 或 `wss://` 位址（`null` 會做出一個永遠不連線的推送），以及每秒送幾次快照（預設 15）。架在 TLS 後面的中繼要用 `wss://` 位址，中繼本身仍然聽在你啟動它的埠（`node packages/monitor/server.js 7460`）。
 
 如果演出是你手動組起來的：
 
