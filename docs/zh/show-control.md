@@ -180,7 +180,7 @@ const show = await createShow({
 });
 ```
 
-一個點 `[p, v, curve]` 就是關鍵影格 `[段首 + p × 段長, v, curve]`，沒有別的規則：時間軸在建立時就把每條 lane 編譯好，`timeline.automation` 裡放的是一般的絕對秒數影格，所以 `valueAt`、錄製、`mergeTake` 和控台的行為都跟以前一樣。
+一個點 `[p, v, curve]` 就是關鍵影格 `[段首 + p × 段長, v, curve]`，沒有別的規則：時間軸在建立時就把每條 lane 編譯好，`timeline.automation` 裡放的是一般的絕對秒數影格，所以 `valueAt`、錄製、`mergeTake` 和控台的行為都跟以前一樣。控台的[曲線面板](#the-curves-panel)會把 lane 畫在整場演出上，後面標著段落 id。
 
 - **任何 cut。** lane 是對著總譜的*基準 cut*（衍生 cut 的來源）編譯的。長度不同的 cut 會用自己的長度讀同一條 lane，所以 `(dawn, 0.5)` 在每個 cut 裡都是 dawn 走到一半；衍生 cut（`from` + `scale`）會像絕對秒數影格一樣被拉伸。差別在結構、不只在長度的兩個 cut，也可以共用同一條 lane。
 - **接縫。** 一段的最後一點和下一段的第一點之間，數值像任何兩個影格之間一樣滑過去（用抵達那一點的曲線）。要無縫，就在 `p: 1` 和下一段的 `p: 0` 寫同一個值。同一個時刻有兩個不同的值，就是跳變。
@@ -241,7 +241,7 @@ createShow({ world, timeline: { total: 120, anchor: { mode: 'catch-up', jump: 5 
 
 `mountConsole(el, app, { layers, signals, keys })`（`@openav/console`）會做出導演控台，`createShow()` 把它掛在側邊面板。`app` 就是 `createShow()` 回傳的 `show.app`（`timeline`、`params`、`mapper`、`signals`、`stage`、`midi`、`sound`、`audio`、`hands`、`pose`…），缺了哪個部分，對應的區塊就不顯示。傳入 `{ layers: false }` 或 `{ signals: false }`，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。
 
-鍵盤：**Space** 播放／暫停（停在 hold 時：放行）· **→/←** 下一個／上一個場景（停在 hold 時，**→** 放行）· **R** 重設 · **T** 演出模式 · **F** 全螢幕 · **M** 螢幕 MIDI 控制器（`midi.controllers`）· **Esc** 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，*字母鍵*歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F、M 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。
+鍵盤：**Space** 播放／暫停（停在 hold 時：放行）· **→/←** 下一個／上一個場景（停在 hold 時，**→** 放行）· **R** 重設 · **T** 演出模式 · **F** 全螢幕 · **M** 螢幕 MIDI 控制器（`midi.controllers`）· **C** [曲線面板](#the-curves-panel) · **Esc** 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，*字母鍵*歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F、M 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。
 
 ### 挪動快捷鍵
 
@@ -265,12 +265,34 @@ await createShow({
 | `fullscreen` | `F` | 全螢幕 |
 | `midi` | `M` | 螢幕 MIDI 控制器面板 |
 | `cancel` | `Escape` | 結束對應精靈，或離開鍵盤鋼琴的捕捉 |
+| `curves` | `C` | 打開／收起[曲線面板](#the-curves-panel)（沒有任何參數有 automation 的時候沒有作用） |
 
 鍵寫成字串。`'r'` 是字元（大小寫都算）；`'KeyR'` 是實體按鍵，不管鍵盤配置在那個位置打出什麼字（注音配置會打出 ㄐ）；`'F6'`、`'Backquote'`、`'ArrowUp'`、`'Space'` 是 `KeyboardEvent.code` 或按鍵名稱，大小寫不拘。`'Shift+T'`、`'Ctrl+K'`、`'Alt+…'`、`'Meta+…'` 可以加修飾鍵：寫法裡沒有 `Ctrl`、`Alt`、`Meta` 的時候，這三個鍵不能被按著（⌘R 和 Ctrl+F 仍然歸瀏覽器），單純的字母則不管 Shift。鋼琴捕捉鍵盤的時候，字母鍵（a–z 和 `;`）不管你把動作放在哪裡都不作用；`F6`、`Backquote` 這類鍵則照常有效。動作名稱不認得，或鍵的寫法不對，會在掛載任何東西之前丟出錯誤。控台上的提示（播放鈕的說明文字、HOLD 橫幅、提詞機）會印出你選的鍵，`show.console.keys` 也存著這份設定。自己呼叫 `mountConsole` 的時候，若傳入 `app.midiPanel`，`midi` 鍵就會切換它。
 
 有總譜的時候，控台還多了導演台面板、scrubber 上的 cue 刻度，以及顯示操作者 acts 的提詞機（[總譜與導演](score.md#the-desk)）。L2 Mapping 面板有 **🎛 map knobs in order**，這個精靈會依序替每個參數啟動 learn（[細節](score.md#map-the-knobs-in-order)）。
 
-覆寫的規則：一碰滑桿（或有映射的控制項），那個參數就脫離時間軸，直到你按 ✕ 清掉覆寫。標籤變黃 = 已覆寫。
+覆寫的規則：一碰滑桿（或有映射的控制項），那個參數就脫離時間軸，直到你按 ✕ 清掉覆寫。標籤變黃 = 已覆寫。[曲線面板](#the-curves-panel)會把同一個覆寫畫在那個參數的曲線上，並用 ↩ 清掉它。
+
+### 曲線面板
+
+**曲線面板（Curves）**讓你一眼看到時間軸接下來要對每個參數做什麼，而且是整場演出。它是控台上的一個面板，一開始是收起來的：點它的標題，或按 **C**，就會打開。每個有 automation 的參數有一條曲線，橫軸是時間（和 scrubber 同一條軸，0 秒之前的待命段也算在內），縱軸是參數的範圍。在曲線或刻度列上按下或拖曳，就能移動播放頭，和 scrubber 一樣。沒有任何參數有 automation 的演出，就沒有這個面板。
+
+- **段落。** 刻度列標出各個段落（總譜的段落，或單純時間軸的場景），曲線後面有它們的邊界；金色虛線是 `hold` 等待的位置。窄到放不下名字的段落，名字留給滑過時的提示。衍生的 cut 會用它自己的長度畫出同樣的曲線，按段落寫的 lane 也會落在它那個段落的位置上。
+- **播放頭。** 一條白色的直線，曲線上有一個圈，標出演出現在的位置。標題列上的數字是這一個影格演出實際使用的值。
+- **覆寫。** 被滑桿、有映射的旋鈕或手機接管的參數會標成琥珀色：一個圓點在它被帶去的值上，一條虛線橫過整場，標題列上有 **↩**，按下去就把參數還給它的曲線（和 Params 面板的 ✕ 一樣）。**↩ all** 會把畫面上每一條曲線都還回去。沒有曲線的參數，它的覆寫不在這個畫面裡，也不會被動到。
+- **錄音。** [`timeline.record`](#curves-loop-cues-recording) 正在寫進某條 lane 的 take，會在播放的時候用紅色畫出來，take 結束後曲線會重畫。
+- **成本。** 收起來的時候它什麼都不做：不量測、不繪製，連 canvas 都還沒建立。打開之後，每一條曲線只畫一次，只有 automation、cut 或寬度改變時（匯入、一個 take、改了一個關鍵影格）才會再畫；每個影格只重畫播放頭和覆寫。捲出 264 px 清單之外的列既不畫也不清，所以五十個有 automation 的參數，要畫的量大約和六個一樣。
+
+它只讀時間軸和參數，所以任何演出都不用作品多說一個字就能用。
+
+```js
+const show = await createShow({
+  world,
+  console: { keys: { curves: 'F4' } },       // moves like any key; false switches it off, and the header still opens the panel
+  // console: { curves: false }               leaves the panel out · { curves: { open: true } } starts it open
+});
+show.console.curves.toggle();                // .open · .info() → { keys, bands, axis, stats }
+```
 
 ## 演出模式
 

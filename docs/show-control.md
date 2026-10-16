@@ -208,7 +208,8 @@ const show = await createShow({
 
 A point `[p, v, curve]` is exactly the keyframe `[segment.start + p × segment.dur, v, curve]`, nothing more: the
 timeline compiles every lane when it is built, and `timeline.automation` holds ordinary absolute keyframes, so
-`valueAt`, recording, `mergeTake` and the console behave as before.
+`valueAt`, recording, `mergeTake` and the console behave as before. The desk's [Curves panel](#the-curves-panel) draws
+the lanes across the whole show with the segment ids behind them.
 
 - **Any cut.** The lane is compiled against the *root cut* of the score (the cut a derived cut came from). A cut with
   other lengths reads the same lane with its own lengths, so `(dawn, 0.5)` is half way through dawn in every cut, and
@@ -311,7 +312,7 @@ overview, L1 Input, L2 Mapping, L3 Params (sliders with override and learn
 chips), L4 sound, live signal meters and a MIDI log.
 
 Keyboard: **Space** play/pause (at a hold: release) · **→/←** next / previous scene (→ at a hold: release) · **R** reset · **T** performance
-mode · **F** fullscreen · **M** the on-screen MIDI controller (`midi.controllers`) · **Esc** leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the *letters* belong to the piano (T and F are piano keys), so R, T, F and M do nothing until you untick it or press Esc; Space and the arrows always work.
+mode · **F** fullscreen · **M** the on-screen MIDI controller (`midi.controllers`) · **C** the [Curves panel](#the-curves-panel) · **Esc** leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the *letters* belong to the piano (T and F are piano keys), so R, T, F and M do nothing until you untick it or press Esc; Space and the arrows always work.
 
 ### Moving the shortcuts
 
@@ -335,13 +336,50 @@ await createShow({
 | `fullscreen` | `F` | fullscreen |
 | `midi` | `M` | the on-screen MIDI controller panel |
 | `cancel` | `Escape` | stop the mapping wizard, or leave keyboard-piano capture |
+| `curves` | `C` | open / close the [Curves panel](#the-curves-panel) (nothing happens while no param is automated) |
 
 A key is a string. `'r'` is the character (either case); `'KeyR'` is the physical key whatever the keyboard layout types there (a Zhuyin layout types ㄐ); `'F6'`, `'Backquote'`, `'ArrowUp'`, `'Space'` are `KeyboardEvent.code` or key names, case does not matter. `'Shift+T'`, `'Ctrl+K'`, `'Alt+…'`, `'Meta+…'` add modifiers: without `Ctrl`, `Alt` or `Meta` in the spec those must not be held (⌘R and Ctrl+F stay the browser's), and a plain letter ignores Shift. Letters (a–z, `;`) stay dead while the piano captures the keyboard, wherever you put them; `F6`, `Backquote` and the like work through it. An unknown action name or a malformed key throws before anything is mounted. The hints on the desk (the play button's tooltip, the HOLD banner, the prompter) print the keys you chose; `desk.keys` (`show.console.keys`) holds them. With `mountConsole` by hand, the `midi` key toggles `app.midiPanel` when you pass one.
 
 With a score the desk also has the Director panel, cue ticks on the scrubber and a prompter with the operator's acts ([Score & Director](score.md#the-desk)). The L2 Mapping panel has **🎛 map knobs in order**, a wizard that arms learn for each param in turn ([details](score.md#map-the-knobs-in-order)).
 
 Override semantics: touch a slider (or a mapped control) and that param leaves
-the timeline's hands until you clear it (✕). Yellow label = overridden.
+the timeline's hands until you clear it (✕). Yellow label = overridden. The [Curves panel](#the-curves-panel)
+shows the same override on the param's curve and clears it with ↩.
+
+### The curves panel
+
+**Curves** shows what the timeline will do to every param, for the whole show at once. It is a panel on the desk,
+collapsed at first: its header opens it, and so does **C**. There is one curve for each param that has automation, time
+across (the same axis as the scrubber, a standby before 0 included) and the param's range up. Press or drag on a curve or
+on the ruler to move the playhead, as on the scrubber. A show with nothing automated has no panel.
+
+- **Segments.** The ruler names the segments (the score's, or the scenes of a plain timeline) and the curves have their
+  boundaries behind them; a dashed gold line is where a `hold` waits. A band too narrow for its name keeps it for the
+  hover tip. A derived cut shows the same curves over its own length, and a lane written per segment sits where its
+  segment is.
+- **The playhead.** A white column, and a ring on the curve where the show is now. The number in the head is the value
+  the show is using this frame.
+- **Overrides.** A param that a slider, a mapped knob or a phone has taken over is marked amber: a dot where it was taken
+  to, a dashed line across the show, and **↩** in its head, which gives the param back to its curve (the same as ✕ on the
+  Params panel). **↩ all** gives back every curve in the view. An override on a param with no curve is not in the view and
+  stays as it is.
+- **Recording.** The take that [`timeline.record`](#curves-loop-cues-recording) is writing into a lane is drawn in red
+  while it plays, and the curve is redrawn when the take closes.
+- **Cost.** Closed, it does nothing: it measures nothing, draws nothing and has not made a canvas. Open, each curve is
+  drawn once, and again only when the automation, the cut or the width changes (an import, a take, an edited keyframe);
+  every frame only the playhead and the overrides are redrawn. Rows scrolled out of the 264 px list are neither drawn nor
+  cleared, so the drawing for fifty automated params is the drawing for about six.
+
+It reads the timeline and the params and nothing else, so it works for any show without the work saying anything.
+
+```js
+const show = await createShow({
+  world,
+  console: { keys: { curves: 'F4' } },       // moves like any key; false switches it off, and the header still opens the panel
+  // console: { curves: false }               leaves the panel out · { curves: { open: true } } starts it open
+});
+show.console.curves.toggle();                // .open · .info() → { keys, bands, axis, stats }
+```
 
 ## Performance mode
 

@@ -378,8 +378,9 @@ p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
 
 | 匯出 | 簽章 |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys })` → `{ render(state), perf, director, wizard, keys, dispose() }`。`app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
-| 鍵盤 | `keys`：`{ play, next, prev, reset, perf, fullscreen, midi, cancel }` → 一個鍵或一串鍵（`'F6'`、`'KeyR'`、`'Shift+T'`），`false` = 關掉；`keys: false` = 不要任何快捷鍵 · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`：[挪動快捷鍵](show-control.md#moving-the-shortcuts) |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys, curves })` → `{ render(state), perf, director, curves, wizard, keys, dispose() }`。`app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| 曲線面板 | `curves`：`false` 不要這個面板，`{ open: true }` 一開始就打開；`desk.curves` → `{ toggle(force?), open, info() }`（`curves: false` 時是 `null`）。整場演出每個有 automation 的參數一條曲線、播放頭、覆寫與 ↩ 和 ↩ all、點一下就跳過去：[曲線面板](show-control.md#the-curves-panel) |
+| 鍵盤 | `keys`：`{ play, next, prev, reset, perf, fullscreen, midi, cancel, curves }` → 一個鍵或一串鍵（`'F6'`、`'KeyR'`、`'Shift+T'`），`false` = 關掉；`keys: false` = 不要任何快捷鍵 · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`：[挪動快捷鍵](show-control.md#moving-the-shortcuts) |
 
 見[演出控制](show-control.md#the-console)。
 

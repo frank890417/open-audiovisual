@@ -411,8 +411,9 @@ meters, performance mode.
 
 | export | signature |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys })` → `{ render(state), perf, director, wizard, keys, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
-| keyboard | `keys`: `{ play, next, prev, reset, perf, fullscreen, midi, cancel }` → a key or a list (`'F6'`, `'KeyR'`, `'Shift+T'`), `false` = off; `keys: false` = no shortcuts · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`: [Moving the shortcuts](show-control.md#moving-the-shortcuts) |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys, curves })` → `{ render(state), perf, director, curves, wizard, keys, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| Curves panel | `curves`: `false` leaves it out, `{ open: true }` starts it open; `desk.curves` → `{ toggle(force?), open, info() }` (`null` with `curves: false`). One curve per automated param across the whole show, the playhead, overrides with ↩ and ↩ all, click to seek: [The curves panel](show-control.md#the-curves-panel) |
+| keyboard | `keys`: `{ play, next, prev, reset, perf, fullscreen, midi, cancel, curves }` → a key or a list (`'F6'`, `'KeyR'`, `'Shift+T'`), `false` = off; `keys: false` = no shortcuts · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`: [Moving the shortcuts](show-control.md#moving-the-shortcuts) |
 
 See [Show control](show-control.md#the-console).
 

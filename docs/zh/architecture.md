@@ -114,5 +114,5 @@ cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ─
 
 ## 主軸周邊：控台與手機
 
-- **控台**（`@openav/console`）：側邊面板裡的導演控台，依層排列（Layers → L1 → L2 → L3 → L4 → Signals），另外還有演出模式。它讀的就是迴圈正在跑的那批物件，自己不保存任何狀態。
+- **控台**（`@openav/console`）：側邊面板裡的導演控台，依層排列（Layers → L1 → L2 → L3 → L4 → Signals），另外還有演出模式，以及把整場 automation 畫成曲線的曲線面板。它讀的就是迴圈正在跑的那批物件，自己不保存任何狀態。
 - **手機**（`@openav/relay`、`@openav/surface`、`@openav/remote`）：手機和 iPad 透過 WebSocket 中繼加入一個房間，發布 `phone/*` 和 `surface/*` 訊號。對映射器來說，它們只是多一個輸入。見[手機、中繼與控制面板](remote.md)。
