@@ -31,6 +31,17 @@ Knob 1 means knob 1 on the controller that played: MiniLab 3 (CC 74) and LPD8 (C
 OAV profiles (nanoKONTROL2, Launch Control, APC mini, …) load when one is plugged in, and on a controller OAV does
 not know, the first knob you turn becomes `knob1`. A sketch's own `note`, `velocity` or `knob1` is never written over.
 
+## Note names (0.8)
+
+Wherever a note number goes, a name goes too: `noteIsDown('C4')` is `noteIsDown(60)`, `midi.play('C#4', 0.8)` sends
+note 61, `midi.isDown('Eb3')` asks the key. Three small converters: `noteNumber('C4')` → `60`, `noteName(61)` → `'C#4'`
+(`{ flats: true }` → `'Db4'`, `{ octave: false }` → `'C#'`), `noteFreq('A4')` → `440` Hz (`noteFreq(69)` too; for a sketch that
+makes its own sound; not `midiToFreq`, which is p5.sound's).
+A name is A–G in either case, an optional `#` or `b` (`♯`, `♭`), and the octave: `C4`, `c#4`, `Db3`, `C-1` … `G9`.
+**C4 = 60** (scientific pitch notation); some software (Ableton, Yamaha) calls 60 "C3". Strudel's spelling (`c4 e4 g4`) works.
+A name that is not one stops with a card: letter A–G + optional # or b + octave, like C4, F#3, Bb2. Numbers behave as
+before (`& 127`), and `notePressed(note, velocity)` still hands you a number. Example: `examples/note-names/`.
+
 ## With OP Configurator (OPC)
 
 [OPC](https://github.com/msawired/OPC) names a variable and its range; this file wires the controller to it, in order.
@@ -392,7 +403,7 @@ icon owns the top-right.
 
 `midi.note[60]`, `midi.cc[74]` (0..1), `midi.bend` (−1..1), `midi.held`, `midi.last` (`{ type, note | cc, value,
 channel, source, control }`); `noteOn(note, velocity, channel)`, `noteOff`, `controlChange(cc, value, channel)`,
-`pitchBend`, `midiMessage(bytes, source)`; `midi.on(event, fn)` → `off()`; `midi.play(60, 0.8)`; `midi.wiring()`.
+`pitchBend`, `midiMessage(bytes, source)`; `midi.on(event, fn)` → `off()`; `midi.play(60, 0.8)` (or `midi.play('C4', 0.8)`), `midi.isDown('C4')`; `midi.wiring()`.
 A sketch with its own Web MIDI code (`navigator.requestMIDIAccess`, WebMidi.js) also hears the screen and the phone
 as one more input, **OAV Virtual MIDI**, after the real ports.
 

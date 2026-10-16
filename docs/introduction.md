@@ -9,7 +9,7 @@ It handles the part every show rebuilds from scratch: MIDI plumbing, turning
 inputs into parameters, a timeline with scenes, a director's console, a
 performance mode for the performer, and a backstage page for the stage manager.
 You write the *world*, the piece itself. The pitch, a live instrument and the
-twenty-three example works are on the [homepage](https://openaudiovisual.com/).
+twenty-four example works are on the [homepage](https://openaudiovisual.com/).
 
 ## Who it is for
 

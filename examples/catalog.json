@@ -1013,6 +1013,94 @@
           }
         }
       ],
+      "next": "24-p5-note-names"
+    },
+    {
+      "id": "24-p5-note-names",
+      "num": "24",
+      "dir": "examples/24-p5-note-names/",
+      "route": "inputs",
+      "title": {
+        "en": "p5 note names",
+        "zh": "p5 音名"
+      },
+      "teaches": {
+        "en": "noteIsDown('C4') works like noteIsDown(60): write note names (C4, c#4, Db3) wherever a note number goes; noteNumber(), noteName() and noteFreq() convert.",
+        "zh": "noteIsDown('C4') 跟 noteIsDown(60) 一樣：收音符號碼的地方都能直接寫音名（C4、c#4、Db3）。noteNumber()、noteName()、noteFreq() 幫你換算。"
+      },
+      "summary": {
+        "en": "<code>noteIsDown('C4')</code> works like <code>noteIsDown(60)</code>: write note names (C4, c#4, Db3) wherever a note number goes; <code>noteNumber()</code>, <code>noteName()</code> and <code>noteFreq()</code> convert.",
+        "zh": "<code>noteIsDown('C4')</code> 跟 <code>noteIsDown(60)</code> 一樣：收音符號碼的地方都能直接寫音名（C4、c#4、Db3）。<code>noteNumber()</code>、<code>noteName()</code>、<code>noteFreq()</code> 幫你換算。"
+      },
+      "plays": {
+        "en": "MIDI keyboard · on-screen controller · phone",
+        "zh": "MIDI 鍵盤 · 螢幕上的控制器 · 手機"
+      },
+      "needs": [
+        "midi"
+      ],
+      "standIn": [
+        "controller",
+        "phone"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/note-names/sketch.js",
+      "thumb": "assets/home/works/24.webp",
+      "alt": {
+        "en": "A yellow circle, square and triangle lit on black, labelled C4 = 60, E4 = 64 and G4 = 67, with G4 and 392.0 Hz written under them.",
+        "zh": "黑底上亮著黃色的圓、方、三角，分別標著 C4 = 60、E4 = 64、G4 = 67，下面寫著 G4 和 392.0 Hz。"
+      },
+      "docs": [
+        {
+          "id": "p5-note-names",
+          "en": "Note names",
+          "zh": "音名"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Play C4, E4 and G4 on a keyboard (or the on-screen one under 🎹): each shape lights up while its key is down.",
+          "Hold all three at once, a C major chord: the shapes spin.",
+          "Play any other key: the line under the shapes says its name and its frequency in Hz."
+        ],
+        "zh": [
+          "在鍵盤（或 🎹 打開的螢幕鍵盤）上彈 C4、E4、G4：按著的時候，對應的圖形會亮起來。",
+          "三個一起按住（C 大調和弦）：三個圖形一起轉。",
+          "彈任何別的鍵：圖形下面那一行會寫出它的音名和赫茲。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 19,
+          "to": 19,
+          "match": "const chord = NOTES.every((n) => noteIsDown(n));",
+          "note": {
+            "en": "noteIsDown() takes a name as well as a number: 'C4' is 60.",
+            "zh": "noteIsDown() 數字和音名都收：'C4' 就是 60。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 32,
+          "to": 32,
+          "match": "text(name + ' = ' + noteNumber(name),",
+          "note": {
+            "en": "noteNumber('C4') gives 60.",
+            "zh": "noteNumber('C4') 回傳 60。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 37,
+          "to": 37,
+          "match": "text(last == null",
+          "note": {
+            "en": "notePressed still hands you a number; noteName() writes it back as a name and noteFreq() gives Hz.",
+            "zh": "notePressed 拿到的還是號碼；noteName() 把它寫回音名，noteFreq() 算出赫茲。"
+          }
+        }
+      ],
       "next": "04-webtoe-stage"
     },
     {

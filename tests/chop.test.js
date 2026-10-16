@@ -173,7 +173,7 @@ async function ready(p) { p.frame(60, () => p.w.lag(0)); await settle(); assert.
 
 test('0.7.0: the names are there and are no p5 / p5.sound names; a sketch that calls none of them loads nothing', async () => {
   const p = page();
-  assert.equal(p.w.OAVp5.version, '0.7.0');
+  assert.equal(p.w.OAVp5.version, '0.8.0');
   for (const n of NAMES) assert.equal(typeof p.w[n], 'function', n);
   // checked against p5 1.11.11, 2.0.5, 2.3.4 and p5.sound 1.x / 0.4.1 in a browser by p5/test/chop-smoke.cjs; these by hand
   const p5ish = ['lerp', 'map', 'constrain', 'noise', 'random', 'frameRate', 'deltaTime', 'Env', 'Envelope', 'Amplitude', 'FFT', 'getAudioContext', 'userStartAudio', 'loadSound'];
@@ -196,7 +196,7 @@ test('lag(): returns its input until @openav/chop arrives, then rises in `up` an
   assert.equal(p.frame(60, () => p.w.lag(0.7, 0.1, 0.4)), 0.7, 'not loaded yet: as it is');
   assert.equal(p.w.OAVp5.chop.state, 'loading');
   await settle();
-  assert.ok(p.loaded[0].endsWith('packages/chop/index.js?v=p5-0.7.0'), p.loaded[0]);
+  assert.ok(p.loaded[0].endsWith('packages/chop/index.js?v=p5-0.8.0'), p.loaded[0]);
   const curve = (fps) => {
     const q = page(); q.w.OAVp5.chop.module = p.w.OAVp5.chop.module;   // the same module, no wait
     const input = (t) => (t <= 0.5 + 1e-9 ? 0 : t <= 1.5 + 1e-9 ? 1 : 0);

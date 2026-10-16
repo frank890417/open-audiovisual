@@ -33,10 +33,10 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/home/home.css?v=b10fa0c">
+<link rel="stylesheet" href="../assets/home/home.css">
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/#article","url":"https://openaudiovisual.com/docs/","name":"Documentation · open-audiovisual","description":"The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"The open-audiovisual handbook","version":"0.1.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Introduction","Quick start","Core concepts","Architecture","Writing a world","Inputs","Mapping","Show control","Score & Director","MIDI controllers & embedding","p5.js in one line","With Strudel","Phones, relay & surfaces","Signals reference","Package reference","For AI agents","Lab integration (the \"lab\" field)","Troubleshooting","Roadmap"],"breadcrumb":{"@id":"https://openaudiovisual.com/docs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"}]}]}</script>
-<link rel="stylesheet" href="../assets/docs/docs.css?v=b10fa0c">
+<link rel="stylesheet" href="../assets/docs/docs.css?v=9838ca1f">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page">
@@ -215,6 +215,7 @@
           <a href="#p5"><span class="n">11</span><span class="t">p5.js in one line</span></a>
           <ol class="toc-secs">
             <li><a href="#p5-read-it-like-the-mouse">Read it like the mouse</a></li>
+            <li><a href="#p5-note-names">Note names</a></li>
             <li><a href="#p5-with-op-configurator">With OP Configurator</a></li>
             <li><a href="#p5-the-microphone">The microphone</a></li>
             <li><a href="#p5-sound-what-is-played-is-heard">Sound: what is played is heard</a></li>
@@ -368,7 +369,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">19 chapters · 192 sections · <a href="../changelog/">oav-p5 0.7 · framework 0.1</a></p>
+      <p class="docs-stats">19 chapters · 193 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -383,7 +384,7 @@ page.</p>
 inputs into parameters, a timeline with scenes, a director's console, a
 performance mode for the performer, and a backstage page for the stage manager.
 You write the <em>world</em>, the piece itself. The pitch, a live instrument and the
-twenty-three example works are on the <a href="../">homepage</a>.</p>
+twenty-four example works are on the <a href="../">homepage</a>.</p>
 <h3 id="introduction-who-it-is-for">Who it is for<a class="anchor" href="#introduction-who-it-is-for" aria-label="Link to this section">#</a></h3>
 <ul>
 <li><strong>Performers</strong> play the examples with a MIDI keyboard, a microphone, a camera,
@@ -1724,7 +1725,7 @@ osc.flush();                       <span class="tc">// once per frame (batches, 
 anything else is sent as a string. Only the latest message per address survives
 a frame. If the bridge disappears, <code>OscOut</code> reports it through <code>onStatus(ok, info)</code> and stops trying after 30 failed flushes.</p>
 <p><code>createShow()</code> does not create an <code>OscOut</code>. Add one yourself (and add
-<code>"@openav/osc": "../../packages/osc/index.js?v=b10fa0c"</code> to the page's import map):</p>
+<code>"@openav/osc": "../../packages/osc/index.js"</code> to the page's import map):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> osc = <span class="tk">new</span> OscOut();
 <span class="tk">await</span> osc.enable();
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, onFrame: () =&gt; osc.flush() });
@@ -2301,6 +2302,29 @@ A sketch that carries this line, playable right now: <a href="../examples/15-p5-
 each knob sends (MiniLab 3's knob 1 is CC 74, LPD8's is CC 70). On a controller OAV has no profile for, the first
 knob you turn becomes <code>knob1</code>, the next <code>knob2</code>. A sketch that already has its own <code>note</code>, <code>velocity</code> or <code>knob1</code>
 keeps it.</p>
+<h3 id="p5-note-names">Note names<a class="anchor" href="#p5-note-names" aria-label="Link to this section">#</a></h3>
+<p>Wherever a note number goes, a note name goes too (0.8):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">function</span> draw() {
+  <span class="tk">if</span> (noteIsDown(<span class="ts">'C4'</span>)) circle(width / 2, height / 2, 100);   <span class="tc">// the same as noteIsDown(60)</span>
+}
+
+<span class="tk">function</span> mousePressed() {
+  midi.play(<span class="ts">'C#4'</span>, 0.8);                    <span class="tc">// sends note 61, as a key would</span>
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>write</th><th>you get</th></tr></thead>
+<tbody>
+<tr><td><code>noteNumber('C4')</code></td><td><code>60</code>; a number comes back as it is, held to 0..127</td></tr>
+<tr><td><code>noteName(61)</code></td><td><code>'C#4'</code>; <code>noteName(61, { flats: true })</code> is <code>'Db4'</code>, <code>noteName(61, { octave: false })</code> is <code>'C#'</code></td></tr>
+<tr><td><code>noteFreq('A4')</code>, <code>noteFreq(69)</code></td><td><code>440</code> (Hz), for a sketch that makes its own sound; <code>noteFreq(69.5)</code> is a quarter tone up</td></tr>
+<tr><td><code>noteIsDown('C4')</code>, <code>midi.isDown('C4')</code>, <code>midi.play('C#4', 0.8)</code></td><td>the same as with <code>60</code>, <code>61</code></td></tr>
+</tbody>
+</table></div>
+<p>A name is a letter A to G (either case), an optional <code>#</code> or <code>b</code> (<code>♯</code> and <code>♭</code> too), and the octave number: <code>C4</code>, <code>c#4</code>,
+<code>Db3</code>, <code>F♯2</code>, <code>C-1</code> (0) up to <code>G9</code> (127). <strong>C4 is 60</strong>, the scientific pitch notation the course modules use; some software
+(Ableton, Yamaha) calls 60 "C3", so a name copied from there is one octave off. These are also the names Strudel writes
+(<code>c4 e4 g4</code>, <code>#</code> for sharp, <code>b</code> for flat). Anything else, such as <code>H4</code> or <code>C-2</code>, stops with a one-line card saying how to write it.
+<code>notePressed(note, velocity)</code> still hands you the number: <code>noteName(note)</code> writes it back as a name.</p>
 <h3 id="p5-with-op-configurator">With OP Configurator<a class="anchor" href="#p5-with-op-configurator" aria-label="Link to this section">#</a></h3>
 <p><a href="https://github.com/msawired/OPC" rel="noopener">OP Configurator 3000</a> (OPC, built into OpenProcessing) names a variable and its
 range. With this line on the page the controller is wired to those variables in order, with no mapping step:</p>
@@ -3309,7 +3333,7 @@ npm yet.</p>
 <p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
 <code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
 in a browser, for example
-<code>"@openav/remote/host": "../../packages/remote/host.js?v=b10fa0c"</code>.</p>
+<code>"@openav/remote/host": "../../packages/remote/host.js"</code>.</p>
 <h3 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h3>
 <p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
 <div class="table-wrap"><table>
@@ -3781,7 +3805,7 @@ openav.mapper.routes                                    <span class="tc">// the 
 <h3 id="agents-a-prompt-to-paste">A prompt to paste<a class="anchor" href="#agents-a-prompt-to-paste" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/24-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/25-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 
@@ -4136,7 +4160,7 @@ behind a small engine contract, and <code>audio.input()</code> accepts its nodes
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../assets/docs/docs.js?v=b10fa0c"></script>
+<script type="module" src="../assets/docs/docs.js?v=547d21f9"></script>
 <!--/email_off-->
 </body>
 </html>

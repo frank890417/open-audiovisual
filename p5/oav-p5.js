@@ -9,6 +9,10 @@
  *   fader1 … fader8     0..1, its faders                                              fader(n)
  *   pad1 … pad16        velocity 0..1 while the pad is held, 0 when released          pad(n)
  *   note, velocity      the last key (MIDI number) and how hard (0..1)                noteIsPressed, noteIsDown(60)
+ *   (0.8) note names, wherever a note number goes: noteIsDown('C4'), midi.play('C#4', 0.8), midi.isDown('Eb3')
+ *   noteNumber('C4') → 60 · noteName(61) → 'C#4' (noteName(61, { flats: true }) → 'Db4', { octave: false } → 'C#') ·
+ *   noteFreq('A4') → 440 (Hz; noteFreq(69) too). C4 = 60, scientific pitch notation, as the course modules say; some
+ *   software (Ableton, Yamaha) calls 60 "C3". notePressed(note, velocity) still gets the number.
  *   function notePressed(note, velocity) {}   function noteReleased(note) {}
  *   function knobMoved(n, value) {}           function faderMoved(n, value) {}
  *   function padPressed(n, velocity) {}       function padReleased(n) {}
@@ -102,7 +106,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.7.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.8.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -191,6 +195,51 @@
   T.linkClosed = zh ? '斷線，重連中' : 'disconnected, retrying';
   T.clockChip = zh ? '⏱ 外部時鐘 {bpm} BPM' : '⏱ external clock {bpm} BPM';
 
+  // ---------------------------------------------------------------- note names (0.8)
+  // C4 = MIDI 60 (scientific pitch notation: A4 = 69 = 440 Hz; C-1 = 0, G9 = 127). Some software (Ableton Live, Yamaha)
+  // calls 60 "C3": the number is the same, only the octave label differs, so a name from there is one octave off.
+  // Written like Strudel's note("a3 c#4 e4"): a letter (any case), # for sharp or b for flat, then the octave.
+  // Checked against the public page https://strudel.cc/learn/notes/ only (its example a3 c#4 e4 a4 = 57 61 64 69; "flats
+  // with b and sharps with #"); Strudel's own source was not read. This parser is written from the MIDI standard.
+  // Also accepted: ♯ and ♭, doubles (C##4, Ebb3), a number as a string ('60'), spaces around. A name that lands outside 0..127
+  // (C-2, G#9) is a mistake, as is anything else that is not a note.
+  var NOTE_PC = { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 };
+  var NOTE_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  var NOTE_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+  function badNote(v) {
+    var shown; try { shown = typeof v === 'string' ? '"' + v + '"' : String(v); } catch (e) { shown = '?'; }
+    hint('noteBad:' + shown, 'noteBad', { v: shown }, 'error');   // the card beside the 🎹; the throw is the console's and p5's
+    var t = H.noteBad;
+    throw new Error('[oav-p5] ' + fill(t[0], { v: shown }) + (zh ? '。' : '. ') + fill(t[2], {}));
+  }
+  /** a note name or a number → the MIDI number 0..127 (a number is rounded and held to 0..127); anything else throws */
+  function noteNumber(v) {
+    if (typeof v === 'number') { if (v !== v || v === Infinity || v === -Infinity) badNote(v); return Math.max(0, Math.min(127, Math.round(v))); }
+    if (typeof v !== 'string') badNote(v);
+    var str = v.replace(/^\s+|\s+$/g, '');
+    if (/^\d+(\.\d+)?$/.test(str)) return Math.max(0, Math.min(127, Math.round(+str)));
+    var m = /^([a-gA-G])([#♯]*|[b♭]*)(-?\d+)$/.exec(str);
+    if (!m) badNote(v);
+    var acc = 0, a = m[2];
+    for (var i = 0; i < a.length; i++) acc += (a[i] === '#' || a[i] === '♯') ? 1 : -1;
+    var n = (parseInt(m[3], 10) + 1) * 12 + NOTE_PC[m[1].toLowerCase()] + acc;
+    if (n < 0 || n > 127) badNote(v);
+    return n;
+  }
+  /** a note number (or name) → 'C#4'; { flats: true } → 'Db4'; { octave: false } → 'C#' */
+  function noteName(v, o) {
+    var n = noteNumber(v), flats = !!(o && o.flats), oct = !(o && o.octave === false);
+    return (flats ? NOTE_FLAT : NOTE_SHARP)[n % 12] + (oct ? Math.floor(n / 12) - 1 : '');
+  }
+  /** a note name or number → Hz (A4 = 69 = 440); a number may be fractional (69.5 is a quarter tone up) and is not held to 0..127 */
+  function noteFreq(v) {
+    var n = typeof v === 'number' ? v : noteNumber(v);
+    if (n !== n || n === Infinity || n === -Infinity) badNote(v);
+    return 440 * Math.pow(2, (n - 69) / 12);
+  }
+  // what the note-taking functions do with their argument: a name is parsed; anything else is exactly what 0.7 did (& 127)
+  function noteArg(n) { return typeof n === 'string' ? noteNumber(n) : n & 127; }
+
   // ---------------------------------------------------------------- state the sketch reads
   function zeros(n) { var a = new Array(n); for (var i = 0; i < n; i++) a[i] = 0; return a; }
   var EVENTS = ['notePressed', 'noteReleased', 'knobMoved', 'faderMoved', 'padPressed', 'padReleased',
@@ -207,8 +256,10 @@
       subs[k].push(fn);
       return function () { var i = subs[k].indexOf(fn); if (i >= 0) subs[k].splice(i, 1); };
     },
-    /** play as if a controller did: midi.play(60, 0.8) … midi.play(60, 0) releases; source 'screen' */
-    play: function (note, velocity) { var v = Math.max(0, Math.min(127, Math.round((velocity == null ? 1 : velocity) * 127))); input([v > 0 ? 0x90 : 0x80, note & 127, v], 'screen'); },
+    /** play as if a controller did: midi.play(60, 0.8) … midi.play(60, 0) releases; source 'screen'. A name works too: midi.play('C#4', 0.8) */
+    play: function (note, velocity) { var v = Math.max(0, Math.min(127, Math.round((velocity == null ? 1 : velocity) * 127))); input([v > 0 ? 0x90 : 0x80, noteArg(note), v], 'screen'); },
+    /** is this key down? a number or a name: midi.isDown('C4') (the same as noteIsDown) */
+    isDown: function (n) { return midi.note[noteArg(n)] > 0; },
     /** feed raw bytes from anywhere (a WebSocket, a test): one message [status, d1, d2]; device = a profile id */
     input: function (bytes, source, device) { input(bytes, source || 'screen', device ? 'id:' + device : null); },
     connectHardware: function () { return connectHardware(); },
@@ -284,7 +335,8 @@
     knob: function (n) { n = n | 0; if (!READ['knob' + n]) sketchRead('knob', n); return CTL.knob[n] || 0; },
     fader: function (n) { n = n | 0; if (!READ['fader' + n]) sketchRead('fader', n); return CTL.fader[n] || 0; },
     pad: function (n) { n = n | 0; if (!READ['pad' + n]) sketchRead('pad', n); return CTL.pad[n] || 0; },
-    noteIsDown: function (n) { return midi.note[n & 127] > 0; },
+    noteIsDown: function (n) { return midi.note[noteArg(n)] > 0; },
+    noteNumber: noteNumber, noteName: noteName, noteFreq: noteFreq,
   };
 
   // ---------------------------------------------------------------- which control is which (per device)
@@ -976,6 +1028,7 @@
     micAsking: ['瀏覽器在問你要不要給麥克風', '按「允許」之前，micLevel 都是 0。', '看網址列下面跳出的小視窗，按「允許」。'],
     midiNone: ['這個瀏覽器沒有 Web MIDI', 'Safari 和 iPad 接不到實體 MIDI 鍵盤。', '按 🎹 用螢幕上的鍵盤，或 📱 用手機彈；要接實體鍵盤請改用 Chrome 或 Edge。'],
     midiDenied: ['MIDI 權限被擋下了', '實體鍵盤、控制器的訊號進不來。', '點網址列左邊的鎖頭 → MIDI 裝置選「允許」→ 重新整理；或先按 🎹 用螢幕上的鍵盤。'],
+    noteBad: ['看不懂這個音名：{v}', '音名用 A–G，加上可選的 # 或 b，再加八度數字（C4 是中央 C，MIDI 60），要落在 C-1 到 G9。', '音名用 A–G＋可選的 # 或 b＋八度數字，像 C4、F#3、Bb2；或直接寫號碼 0–127。'],
     cbError: ['你的 {name}() 出錯了：{msg}', '{where}草圖還在跑，只是這一下沒做完。', '去看{line}；console 裡有完整的錯誤。'],
     strudelNames: ['這頁已經有 {names}（Strudel 的）', 'oav-p5 不動它們：Strudel 的 note()、velocity() 照常能用。旋鈕、麥克風照樣讀 knob1、micLevel。', '控制器和麥克風的這幾個值改讀：{alts}。'],
     ownName: ['你的草圖自己有一個 {name}', '（let、var 或 function 宣告了同名的東西）所以 oav-p5 不寫它：草圖讀到的是你自己的 {name}。', '要讀控制器的值：改用 {alt}，或把你自己的變數改個名字。'],
@@ -1032,6 +1085,7 @@
     micAsking: ['The browser is asking for the microphone', 'Until you allow it, micLevel is 0.', 'Look for the small box under the address bar and press Allow.'],
     midiNone: ['No Web MIDI in this browser', 'Safari and iPad cannot reach a MIDI keyboard.', 'Press 🎹 for the keyboard on screen, or 📱 to play from a phone; for a real keyboard use Chrome or Edge.'],
     midiDenied: ['MIDI permission is blocked', 'Keyboards and controllers cannot reach the page.', 'Click the lock left of the address → MIDI devices: Allow → reload; or press 🎹 for the keyboard on screen.'],
+    noteBad: ['Not a note name: {v}', 'A note name is a letter A–G, an optional # or b, and an octave number (C4 is middle C, MIDI 60), from C-1 to G9.', 'Write a letter A–G + an optional # or b + an octave number, like C4, F#3, Bb2; or a number 0–127.'],
     cbError: ['Your {name}() threw an error: {msg}', '{where}The sketch keeps running; only this call did not finish.', 'Look at {line}; the console has the whole error.'],
     strudelNames: ["This page already has {names} (Strudel's)", "oav-p5 leaves them alone: Strudel's note() and velocity() work as before. Knobs and the microphone still read as knob1, micLevel.", 'For these values of the controller and the microphone, read: {alts}.'],
     ownName: ['Your sketch has its own {name}', '(a let, var or function of that name), so oav-p5 leaves it alone: the sketch reads its own {name}.', 'For the controller, read {alt} instead, or rename your variable.'],

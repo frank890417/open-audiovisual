@@ -123,7 +123,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-<!--gen:w-examples-->Twenty-three<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
+<!--gen:w-examples-->Twenty-four<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
 
 <!--gen:examples-grid-->
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
@@ -158,7 +158,7 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 </tr>
 <tr>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/23-p5-with-strudel/"><img src="assets/home/works/23.webp" width="260" alt="Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom."></a><br><b>23 · p5 with Strudel</b><br>Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase.<br><a href="https://openaudiovisual.com/examples/23-p5-with-strudel/">play</a> · <a href="examples/23-p5-with-strudel/">source</a></td>
-<td></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/24-p5-note-names/"><img src="assets/home/works/24.webp" width="260" alt="A yellow circle, square and triangle lit on black, labelled C4 = 60, E4 = 64 and G4 = 67, with G4 and 392.0 Hz written under them."></a><br><b>24 · p5 note names</b><br>noteIsDown('C4') works like noteIsDown(60): write note names (C4, c#4, Db3) wherever a note number goes; noteNumber(), noteName() and noteFreq() convert.<br><a href="https://openaudiovisual.com/examples/24-p5-note-names/">play</a> · <a href="examples/24-p5-note-names/">source</a></td>
 <td></td>
 </tr>
 </table>
@@ -270,7 +270,7 @@ function notePressed(note, velocity) {     // like keyPressed(): any key, or a p
 
 No `setup()` call, p5 1.x and 2.x. On OpenProcessing it also wires to OP Configurator sliders in order.
 
-The same line does more, each one a call or a name in the p5 style (oav-p5 <!--gen:p5-version-->0.7.0<!--/gen:p5-version-->, [changelog](https://openaudiovisual.com/changelog/)):
+The same line does more, each one a call or a name in the p5 style (oav-p5 <!--gen:p5-version-->0.8.0<!--/gen:p5-version-->, [changelog](https://openaudiovisual.com/changelog/)):
 
 | write | and | play it |
 |---|---|---|
@@ -416,14 +416,14 @@ The controller element, `createController()`, the iframe embed and `createShow()
 ## 🗺 Status & roadmap
 
 Framework version `0.1.0` (nothing is on npm yet); oav-p5, the one line for p5.js, is versioned on its own:
-<!--gen:p5-version-->0.7.0<!--/gen:p5-version--> ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
+<!--gen:p5-version-->0.8.0<!--/gen:p5-version--> ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
 L4 video/audio split, timeline, **Score &amp; Director**, console, backstage monitor, phones as controllers,
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **<!--gen:n-devices-->21<!--/gen:n-devices-->-device MIDI controller library**,
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-27 packages · 23 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 735 tests
+27 packages · 24 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 745 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

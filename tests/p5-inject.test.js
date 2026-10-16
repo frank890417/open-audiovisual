@@ -435,7 +435,7 @@ function fakeDrums(log) {
 
 test('0.4.0: a sketch that calls none of it gets the names, and nothing loads or changes', () => {
   const { w, loaded, click } = kitPage();
-  assert.equal(w.OAVp5.version, '0.7.0');
+  assert.equal(w.OAVp5.version, '0.8.0');
   for (const n of ['startSound', 'stopSound', 'startDrums', 'stopDrums', 'cue']) assert.equal(typeof w[n], 'function', n);
   assert.deepEqual([w.soundIsOn, w.drumsAreOn, w.drumStep, w.drumBar, w.drumBpm, w.cueName], [false, false, 0, 0, 112, '']);
   w.midi.play(60, 0.8); w.midi.play(60, 0); w.midi.input([0x99, 36, 100]); click();
@@ -735,7 +735,7 @@ test('OAVp5.check(): microphone, MIDI, sound, drums, wiring and the hints, as on
   const w = page({ OPC: fakeOPC(), navigator: { language: 'zh-TW', userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/141.0 Safari/537.36' } });
   void w.knob1; w.midi.play(60, 1);
   const r = w.OAVp5.check({ show: false });
-  assert.equal(r.version, '0.7.0');
+  assert.equal(r.version, '0.8.0');
   assert.equal(r.browser, 'Chrome 141 · macOS');
   assert.equal(r.midi.webMidi, false);
   assert.equal(r.microphone.state, 'off');
@@ -804,7 +804,7 @@ test('0.5.0: startRecording / stopRecording / recordingIsOn are there; a sketch 
   const { FakeMR, made } = fakeRecorder();
   const { w, loaded, click } = kitPage({ MediaRecorder: FakeMR, AudioContext: FakeAC });
   FakeAC.made.length = 0;
-  assert.equal(w.OAVp5.version, '0.7.0');
+  assert.equal(w.OAVp5.version, '0.8.0');
   assert.equal(typeof w.startRecording, 'function');
   assert.equal(typeof w.stopRecording, 'function');
   assert.equal(w.recordingIsOn, false);

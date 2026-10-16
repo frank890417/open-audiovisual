@@ -5,10 +5,10 @@
 > Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文)
 > Handbook: https://openaudiovisual.com/docs/ · MIDI controller library: https://openaudiovisual.com/controllers/ · WebToe, the sister engine: https://openaudiovisual.com/webtoe/
 > Examples: https://openaudiovisual.com/examples/
-> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.7.0)
+> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.0)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 27 packages, 23 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
+> Today: 27 packages, 24 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -148,7 +148,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-Twenty-three works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
+Twenty-four works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
 
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
 
@@ -161,7 +161,7 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 [Streaks of green, purple and red particle dots bursting over black, above an on-screen MiniLab 3 controller with its keys and sound buttons.](https://openaudiovisual.com/examples/16-p5-sound/) 16 · p5 keys with sound startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles. [play](https://openaudiovisual.com/examples/16-p5-sound/) · [source](examples/16-p5-sound/) | [A large pink circle with a thin grey ring around it on dark blue.](https://openaudiovisual.com/examples/17-p5-microphone/) 17 · p5 microphone micLevel, bass and beat read the microphone the way p5 reads mouseX: a circle that grows when you speak, and no p5.sound. [play](https://openaudiovisual.com/examples/17-p5-microphone/) · [source](examples/17-p5-microphone/) | [A small green circle (micLevel) and a larger yellow one (lagged) over two traces: the green drops at once, the yellow falls slowly. A small scope sits in the corner.](https://openaudiovisual.com/examples/22-p5-lag/) 22 · p5 lag: smooth a jumpy value lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page. [play](https://openaudiovisual.com/examples/22-p5-lag/) · [source](examples/22-p5-lag/)
 [A spiral of pink and blue dots above an on-screen MIDI keyboard controller.](https://openaudiovisual.com/examples/09-midi-controllers/) 09 · MIDI controllers On-screen controllers that move with the real ones you plug in. [play](https://openaudiovisual.com/examples/09-midi-controllers/) · [source](examples/09-midi-controllers/) | [Slender branching plants in a night garden, with green leaves and small blue, red and pink flowers.](https://openaudiovisual.com/examples/02-chord-garden/) 02 · Chord garden Triads bloom, clusters decay. The world listens to chords, never to keys. [play](https://openaudiovisual.com/examples/02-chord-garden/) · [source](examples/02-chord-garden/) | [A sphere packed with colourful cylinders seen end-on, like umbrellas.](https://openaudiovisual.com/examples/06-cylinder-earth/) 06 · Cylinder earth A 2020 voice-controlled WebGL sketch; mic bands or the built-in drum machine play it. [play](https://openaudiovisual.com/examples/06-cylinder-earth/) · [source](examples/06-cylinder-earth/)
 [A blue and white mandala of fine layered lines.](https://openaudiovisual.com/examples/03-pose-field/) 03 · Hand instrument Fingers as an instrument: pinch, fists, four pattern families. [play](https://openaudiovisual.com/examples/03-pose-field/) · [source](examples/03-pose-field/) | [A violet hand skeleton above green and blue ink strokes that fall like rain on black.](https://openaudiovisual.com/examples/12-leap-hands/) 12 · Leap hands A Leap Motion as an instrument; the mouse is a simulated hand when you have none. [play](https://openaudiovisual.com/examples/12-leap-hands/) · [source](examples/12-leap-hands/) | [Blue and yellow streaks exploding outward from the lower centre.](https://openaudiovisual.com/examples/08-remote-surface/) 08 · Remote surface The phone is the instrument panel; the surface grows from the world's params. [play](https://openaudiovisual.com/examples/08-remote-surface/) · [source](examples/08-remote-surface/)
-[Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom.](https://openaudiovisual.com/examples/23-p5-with-strudel/) 23 · p5 with Strudel Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase. [play](https://openaudiovisual.com/examples/23-p5-with-strudel/) · [source](examples/23-p5-with-strudel/)
+[Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom.](https://openaudiovisual.com/examples/23-p5-with-strudel/) 23 · p5 with Strudel Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase. [play](https://openaudiovisual.com/examples/23-p5-with-strudel/) · [source](examples/23-p5-with-strudel/) | [A yellow circle, square and triangle lit on black, labelled C4 = 60, E4 = 64 and G4 = 67, with G4 and 392.0 Hz written under them.](https://openaudiovisual.com/examples/24-p5-note-names/) 24 · p5 note names noteIsDown('C4') works like noteIsDown(60): write note names (C4, c#4, Db3) wherever a note number goes; noteNumber(), noteName() and noteFreq() convert. [play](https://openaudiovisual.com/examples/24-p5-note-names/) · [source](examples/24-p5-note-names/)
 
 **③ Bring another picture engine**: Bring your own: a node patch, a 2023 p5 sketch, a 2021 particle system.
 
@@ -245,7 +245,7 @@ function notePressed(note, velocity) {     // like keyPressed(): any key, or a p
 
 No `setup()` call, p5 1.x and 2.x. On OpenProcessing it also wires to OP Configurator sliders in order.
 
-The same line does more, each one a call or a name in the p5 style (oav-p5 0.7.0, [changelog](https://openaudiovisual.com/changelog/)):
+The same line does more, each one a call or a name in the p5 style (oav-p5 0.8.0, [changelog](https://openaudiovisual.com/changelog/)):
 
 | write | and | play it |
 |---|---|---|
@@ -387,13 +387,13 @@ The controller element, `createController()`, the iframe embed and `createShow()
 ## 🗺 Status & roadmap
 
 Framework version `0.1.0` (nothing is on npm yet); oav-p5, the one line for p5.js, is versioned on its own:
-0.7.0 ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
+0.8.0 ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
 L4 video/audio split, timeline, **Score &amp; Director**, console, backstage monitor, phones as controllers,
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 23 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 735 tests
+27 packages · 24 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 745 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -508,7 +508,7 @@ It handles the part every show rebuilds from scratch: MIDI plumbing, turning
 inputs into parameters, a timeline with scenes, a director's console, a
 performance mode for the performer, and a backstage page for the stage manager.
 You write the *world*, the piece itself. The pitch, a live instrument and the
-twenty-three example works are on the [homepage](https://openaudiovisual.com/).
+twenty-four example works are on the [homepage](https://openaudiovisual.com/).
 
 ## Who it is for
 
@@ -2857,6 +2857,33 @@ each knob sends (MiniLab 3's knob 1 is CC 74, LPD8's is CC 70). On a controller 
 knob you turn becomes `knob1`, the next `knob2`. A sketch that already has its own `note`, `velocity` or `knob1`
 keeps it.
 
+## Note names
+
+Wherever a note number goes, a note name goes too (0.8):
+
+```js
+function draw() {
+  if (noteIsDown('C4')) circle(width / 2, height / 2, 100);   // the same as noteIsDown(60)
+}
+
+function mousePressed() {
+  midi.play('C#4', 0.8);                    // sends note 61, as a key would
+}
+```
+
+| write | you get |
+|---|---|
+| `noteNumber('C4')` | `60`; a number comes back as it is, held to 0..127 |
+| `noteName(61)` | `'C#4'`; `noteName(61, { flats: true })` is `'Db4'`, `noteName(61, { octave: false })` is `'C#'` |
+| `noteFreq('A4')`, `noteFreq(69)` | `440` (Hz), for a sketch that makes its own sound; `noteFreq(69.5)` is a quarter tone up |
+| `noteIsDown('C4')`, `midi.isDown('C4')`, `midi.play('C#4', 0.8)` | the same as with `60`, `61` |
+
+A name is a letter A to G (either case), an optional `#` or `b` (`♯` and `♭` too), and the octave number: `C4`, `c#4`,
+`Db3`, `F♯2`, `C-1` (0) up to `G9` (127). **C4 is 60**, the scientific pitch notation the course modules use; some software
+(Ableton, Yamaha) calls 60 "C3", so a name copied from there is one octave off. These are also the names Strudel writes
+(`c4 e4 g4`, `#` for sharp, `b` for flat). Anything else, such as `H4` or `C-2`, stops with a one-line card saying how to write it.
+`notePressed(note, velocity)` still hands you the number: `noteName(note)` writes it back as a name.
+
 ## With OP Configurator
 
 [OP Configurator 3000](https://github.com/msawired/OPC) (OPC, built into OpenProcessing) names a variable and its
@@ -4575,7 +4602,7 @@ openav.mapper.routes                                    // the wiring
 ```text
 Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/24-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/25-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   <describe the performance, e.g. "a jellyfish world that blooms on consonant chords">
 

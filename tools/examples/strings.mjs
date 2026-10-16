@@ -95,7 +95,7 @@ export const STRINGS = {
     sketches: {
       particles: 'Particles', opc: 'OP Configurator', mic: 'Microphone', keys: 'Keys with sound',
       drums: 'Drums and bars', rhythm: 'One line of rhythm', 'rhythm-visual': 'Rhythm you can see', record: 'Record a video',
-      lag: 'Lag, envelopes and a scope', 'with-strudel': 'With Strudel',
+      lag: 'Lag, envelopes and a scope', 'with-strudel': 'With Strudel', 'note-names': 'Note names',
     },
     changelog: {
       title: 'Changelog · open-audiovisual',
@@ -136,7 +136,7 @@ export const STRINGS = {
     sketches: {
       particles: '粒子', opc: 'OP Configurator', mic: '麥克風', keys: '彈出聲音',
       drums: '鼓機與小節', rhythm: '一行節奏', 'rhythm-visual': '看得見的節奏', record: '錄成影片',
-      lag: 'Lag、包絡與示波器', 'with-strudel': '跟 Strudel 一起',
+      lag: 'Lag、包絡與示波器', 'with-strudel': '跟 Strudel 一起', 'note-names': '音名',
     },
     changelog: {
       title: '更新紀錄｜open-audiovisual',
