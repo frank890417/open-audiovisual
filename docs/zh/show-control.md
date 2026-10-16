@@ -36,6 +36,7 @@ const show = await createShow({
 | `score` | `null` | `{ cuts, cut, modules, api, midi, … }`：把演出的結構寫成段落長度，由段落模組去演出。網址上的 `?cut=<id>` 決定用哪個版本（[總譜與導演](score.md#use-it-with-createshow)） |
 | `loop` | `'auto'` | 誰來給影格：`'auto'`（頁面的 `requestAnimationFrame`）、`'manual'`（你自己呼叫 `show.loop.step(dt)`），或 `{ clock, raf, maxDt, heartbeat }`，也就是 `new Loop()` 的選項（[見下](#driving-the-frames-yourself)） |
 | `monitor` | `true` | [後台推送](#backstage-monitor)：`false` = 不推送（頁面不會開任何 socket），`{ url, hz }` = 換一個中繼位址或頻率 |
+| `console` | `null` | [控台](#the-console)的選項，也就是 `mountConsole` 的：`{ keys, layers, signals, learnOrder }`；`keys` 用來挪動鍵盤快捷鍵 |
 
 沒有 `mount` 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。
 
@@ -161,9 +162,34 @@ show.timeline.onSceneChange((i, scene) => {
 
 ## 控台
 
-`mountConsole(el, app, { layers, signals })`（`@openav/console`）會做出導演控台，`createShow()` 把它掛在側邊面板。`app` 就是 `createShow()` 回傳的 `show.app`（`timeline`、`params`、`mapper`、`signals`、`stage`、`midi`、`sound`、`audio`、`hands`、`pose`…），缺了哪個部分，對應的區塊就不顯示。傳入 `{ layers: false }` 或 `{ signals: false }`，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。
+`mountConsole(el, app, { layers, signals, keys })`（`@openav/console`）會做出導演控台，`createShow()` 把它掛在側邊面板。`app` 就是 `createShow()` 回傳的 `show.app`（`timeline`、`params`、`mapper`、`signals`、`stage`、`midi`、`sound`、`audio`、`hands`、`pose`…），缺了哪個部分，對應的區塊就不顯示。傳入 `{ layers: false }` 或 `{ signals: false }`，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。
 
-鍵盤：**Space** 播放／暫停（停在 hold 時：放行）· **→/←** 下一個／上一個場景（停在 hold 時，**→** 放行）· **R** 重設 · **T** 演出模式 · **F** 全螢幕 · **Esc** 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，*字母鍵*歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。
+鍵盤：**Space** 播放／暫停（停在 hold 時：放行）· **→/←** 下一個／上一個場景（停在 hold 時，**→** 放行）· **R** 重設 · **T** 演出模式 · **F** 全螢幕 · **M** 螢幕 MIDI 控制器（`midi.controllers`）· **Esc** 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，*字母鍵*歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F、M 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。
+
+### 挪動快捷鍵
+
+把電腦鍵盤當鋼琴彈的演出，會想把字母鍵要回來。`keys` 把每個動作對應到一個鍵（或一串鍵），疊在預設值上面；某個動作設 `false` 就關掉它，`keys: false` 則關掉所有快捷鍵。
+
+```js
+// the piano owns the letters: move the desk's R, T, F and M to keys it does not use
+await createShow({
+  world,
+  modules: { keys: { capture: true }, midi: { controllers: true } },
+  console: { keys: { reset: 'F6', perf: 'F7', fullscreen: 'F8', midi: 'F9' } },
+});
+```
+
+| 動作 | 預設 | 作用 |
+|---|---|---|
+| `play` | `Space` | 播放／暫停（停在 hold 時：放行） |
+| `next`、`prev` | `ArrowRight`、`ArrowLeft` | 下一個／上一個場景（停在 hold 時，`next` 放行） |
+| `reset` | `R` | 回到開頭，並讓被停用的段落模組恢復 |
+| `perf` | `T` | 演出模式 |
+| `fullscreen` | `F` | 全螢幕 |
+| `midi` | `M` | 螢幕 MIDI 控制器面板 |
+| `cancel` | `Escape` | 結束對應精靈，或離開鍵盤鋼琴的捕捉 |
+
+鍵寫成字串。`'r'` 是字元（大小寫都算）；`'KeyR'` 是實體按鍵，不管鍵盤配置在那個位置打出什麼字（注音配置會打出 ㄐ）；`'F6'`、`'Backquote'`、`'ArrowUp'`、`'Space'` 是 `KeyboardEvent.code` 或按鍵名稱，大小寫不拘。`'Shift+T'`、`'Ctrl+K'`、`'Alt+…'`、`'Meta+…'` 可以加修飾鍵：寫法裡沒有 `Ctrl`、`Alt`、`Meta` 的時候，這三個鍵不能被按著（⌘R 和 Ctrl+F 仍然歸瀏覽器），單純的字母則不管 Shift。鋼琴捕捉鍵盤的時候，字母鍵（a–z 和 `;`）不管你把動作放在哪裡都不作用；`F6`、`Backquote` 這類鍵則照常有效。動作名稱不認得，或鍵的寫法不對，會在掛載任何東西之前丟出錯誤。控台上的提示（播放鈕的說明文字、HOLD 橫幅、提詞機）會印出你選的鍵，`show.console.keys` 也存著這份設定。自己呼叫 `mountConsole` 的時候，若傳入 `app.midiPanel`，`midi` 鍵就會切換它。
 
 有總譜的時候，控台還多了導演台面板、scrubber 上的 cue 刻度，以及顯示操作者 acts 的提詞機（[總譜與導演](score.md#the-desk)）。L2 Mapping 面板有 **🎛 map knobs in order**，這個精靈會依序替每個參數啟動 learn（[細節](score.md#map-the-knobs-in-order)）。
 

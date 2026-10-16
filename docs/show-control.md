@@ -39,6 +39,7 @@ const show = await createShow({
 | `score` | `null` | `{ cuts, cut, modules, api, midi, … }`: the show's structure as segment lengths, performed by segment modules; `?cut=<id>` in the URL picks the version ([Score & Director](score.md#use-it-with-createshow)) |
 | `loop` | `'auto'` | who drives the frames: `'auto'` (the page's `requestAnimationFrame`), `'manual'` (you call `show.loop.step(dt)`) or `{ clock, raf, maxDt, heartbeat }`, the options of `new Loop()` ([below](#driving-the-frames-yourself)) |
 | `monitor` | `true` | the [backstage feed](#backstage-monitor): `false` = none (no socket is opened), `{ url, hz }` = another relay address or rate |
+| `console` | `null` | the options of [the console](#the-console), `mountConsole`'s: `{ keys, layers, signals, learnOrder }`; `keys` moves the keyboard shortcuts |
 
 Without `mount`, the page body becomes a two-column grid: the stage, and a
 340 px side panel with the piano and the console.
@@ -184,7 +185,7 @@ show.timeline.onSceneChange((i, scene) => {
 
 ## The console
 
-`mountConsole(el, app, { layers, signals })` (`@openav/console`) builds the
+`mountConsole(el, app, { layers, signals, keys })` (`@openav/console`) builds the
 director's desk; `createShow()` mounts it in the side panel. `app` is the object
 `createShow()` returns as `show.app` (`timeline`, `params`, `mapper`, `signals`,
 `stage`, `midi`, `sound`, `audio`, `hands`, `pose`, …); missing parts simply
@@ -194,7 +195,32 @@ overview, L1 Input, L2 Mapping, L3 Params (sliders with override and learn
 chips), L4 sound, live signal meters and a MIDI log.
 
 Keyboard: **Space** play/pause (at a hold: release) · **→/←** next / previous scene (→ at a hold: release) · **R** reset · **T** performance
-mode · **F** fullscreen · **Esc** leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the *letters* belong to the piano (T and F are piano keys), so R, T and F do nothing until you untick it or press Esc; Space and the arrows always work.
+mode · **F** fullscreen · **M** the on-screen MIDI controller (`midi.controllers`) · **Esc** leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the *letters* belong to the piano (T and F are piano keys), so R, T, F and M do nothing until you untick it or press Esc; Space and the arrows always work.
+
+### Moving the shortcuts
+
+A show that plays the computer keyboard as a piano wants its letters. `keys` maps each action to a key (or a list of keys), laid over the defaults; `false` switches one action off, and `keys: false` switches every shortcut off.
+
+```js
+// the piano owns the letters: move the desk's R, T, F and M to keys it does not use
+await createShow({
+  world,
+  modules: { keys: { capture: true }, midi: { controllers: true } },
+  console: { keys: { reset: 'F6', perf: 'F7', fullscreen: 'F8', midi: 'F9' } },
+});
+```
+
+| action | default | does |
+|---|---|---|
+| `play` | `Space` | play / pause (at a hold: release) |
+| `next`, `prev` | `ArrowRight`, `ArrowLeft` | next / previous scene (`next` at a hold: release) |
+| `reset` | `R` | back to the start; brings back switched-off segment modules |
+| `perf` | `T` | performance mode |
+| `fullscreen` | `F` | fullscreen |
+| `midi` | `M` | the on-screen MIDI controller panel |
+| `cancel` | `Escape` | stop the mapping wizard, or leave keyboard-piano capture |
+
+A key is a string. `'r'` is the character (either case); `'KeyR'` is the physical key whatever the keyboard layout types there (a Zhuyin layout types ㄐ); `'F6'`, `'Backquote'`, `'ArrowUp'`, `'Space'` are `KeyboardEvent.code` or key names, case does not matter. `'Shift+T'`, `'Ctrl+K'`, `'Alt+…'`, `'Meta+…'` add modifiers: without `Ctrl`, `Alt` or `Meta` in the spec those must not be held (⌘R and Ctrl+F stay the browser's), and a plain letter ignores Shift. Letters (a–z, `;`) stay dead while the piano captures the keyboard, wherever you put them; `F6`, `Backquote` and the like work through it. An unknown action name or a malformed key throws before anything is mounted. The hints on the desk (the play button's tooltip, the HOLD banner, the prompter) print the keys you chose; `desk.keys` (`show.console.keys`) holds them. With `mountConsole` by hand, the `midi` key toggles `app.midiPanel` when you pass one.
 
 With a score the desk also has the Director panel, cue ticks on the scrubber and a prompter with the operator's acts ([Score & Director](score.md#the-desk)). The L2 Mapping panel has **🎛 map knobs in order**, a wizard that arms learn for each param in turn ([details](score.md#map-the-knobs-in-order)).
 

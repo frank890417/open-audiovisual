@@ -8,12 +8,14 @@
 // Zero dependencies, dark theme, keyboard-first:
 //   Space play/pause (at a HOLD: release it) · ←/→ previous / next scene (→ at a HOLD: release it)
 //   R reset (to the start; brings back switched-off segment modules) · T performance mode · F fullscreen
-//   Esc stops the knob-mapping wizard, or leaves keyboard-piano capture
+//   M the on-screen MIDI controller (app.midiPanel) · Esc stops the knob-mapping wizard, or leaves keyboard-piano capture
 // While the on-screen piano captures the computer keyboard (the 'keyboard' box in the piano bar)
-// the LETTERS belong to the piano — R/T/F are dead keys, because T and F are piano keys too. Space, the
+// the LETTERS belong to the piano — R/T/F/M are dead keys, because T and F are piano keys too. Space, the
 // arrows and Esc always work, so you can play and run the show from one keyboard.
+// They are only the defaults: mountConsole(el, app, { keys: { reset: 'F6', perf: 'F7' } }) moves them off the letters
+// (src/keys.js has the key syntax), { keys: false } switches the shortcuts off.
 //
-// mountConsole(el, app) where app = { timeline, params, mapper, signals, stage, midi?, score?, director? }
+// mountConsole(el, app) where app = { timeline, params, mapper, signals, stage, midi?, midiPanel?, score?, director? }
 // With a score + director the desk gains the Director panel; scenes with cues/hold draw them on the scrubber.
 
 import { css } from './src/theme.js?v=72212d8';
@@ -26,6 +28,9 @@ import { buildInputPanel } from './src/input-panel.js?v=72212d8';
 import { buildMappingPanel } from './src/mapping-panel.js?v=72212d8';
 import { buildPerformanceMode } from './src/perf-mode.js?v=72212d8';
 import { buildDirectorPanel } from './src/director-panel.js?v=72212d8';
+import { resolveKeys, handleKey } from './src/keys.js?v=72212d8';
+
+export { DEFAULT_KEYS, KEY_ACTIONS, resolveKeys, keyLabel } from './src/keys.js?v=72212d8';
 
 // every .oav-panel header toggles its section — the universal collapsible
 // panel convention all examples follow
@@ -36,7 +41,8 @@ function wireCollapsible(root) {
   });
 }
 
-export function mountConsole(root, app, opts = {}) {
+export function mountConsole(root, app, opts) {
+  opts = opts || {};                                                  // createShow passes null when the show gave none
   if (!document.getElementById('openav-css')) {
     const style = document.createElement('style');
     style.id = 'openav-css';
@@ -48,15 +54,16 @@ export function mountConsole(root, app, opts = {}) {
   wireCollapsible(root);
   // layer-aligned side panel: overview → L1 → L2 → L3 → L4 → raw signals.
   // Every show gets the same structure — modules declared, never hand-wired.
-  const transport = buildTransport(root, app);
-  const directorPanel = app.score && app.director ? buildDirectorPanel(root, app) : null;
+  const keyMap = resolveKeys(opts.keys);                               // a typo in { keys } throws here, before anything is mounted
+  const transport = buildTransport(root, app, keyMap);
+  const directorPanel = app.score && app.director ? buildDirectorPanel(root, app, keyMap) : null;
   const layers = opts.layers === false ? null : buildLayersPanel(root, app);
   const inputPanel = buildInputPanel(root, app);
   const mappingPanel = buildMappingPanel(root, app, opts);
   const params = buildParamPanel(root, app);
   const soundPanel = app.sound ? buildSoundPanel(root, app) : null;
   const signalsPanel = opts.signals === false ? null : buildSignalPanel(root, app);
-  const perf = buildPerformanceMode(app);
+  const perf = buildPerformanceMode(app, keyMap);
 
   // keyboard
   const leaveCapture = () => {
@@ -65,24 +72,20 @@ export function mountConsole(root, app, opts = {}) {
     k.piano.captureEnabled = false; k.piano.releaseAll();
     if (k.captureBox) k.captureBox.checked = false;
   };
-  const onKey = (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    if (e.target.tagName === 'SELECT' && e.code !== 'Space') return;   // arrows and letters choose an option
-    if (e.metaKey || e.ctrlKey || e.altKey) return;                     // browser shortcuts (⌘R, ⌘F …) are not ours
-    // a clicked button keeps focus; Space must mean PLAY, not "click it again"
-    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT') e.target.blur();
-    if (e.repeat) return;                                               // a held key must not release a hold and pause again
-    const { timeline } = app;
-    if (e.code === 'Escape') { if (mappingPanel.wizard?.active) mappingPanel.wizard.stop(); else leaveCapture(); return; }
-    if (e.code === 'Space') { e.preventDefault(); timeline.toggle(); return; }        // at a HOLD, play = release
-    if (e.code === 'ArrowRight') { timeline.next ? timeline.next() : timeline.jumpScene(1); return; }
-    if (e.code === 'ArrowLeft') { timeline.prev ? timeline.prev() : timeline.jumpScene(-1); return; }
-    if (app.keys?.piano?.captureEnabled) return;                         // the piano owns the letters (T and F are piano keys)
-    if (e.key === 'r' || e.key === 'R') timeline.reset();
-    else if (e.key === 't' || e.key === 'T') perf.toggle();
-    else if (e.key === 'f' || e.key === 'F') document.documentElement.requestFullscreen?.();
+  const { timeline } = app;
+  const actions = {
+    play: () => timeline.toggle(),                                                      // at a HOLD, play = release
+    next: () => (timeline.next ? timeline.next() : timeline.jumpScene(1)),
+    prev: () => (timeline.prev ? timeline.prev() : timeline.jumpScene(-1)),
+    cancel: () => { if (mappingPanel.wizard?.active) mappingPanel.wizard.stop(); else leaveCapture(); },
+    reset: () => timeline.reset(),
+    perf: () => perf.toggle(),
+    fullscreen: () => document.documentElement.requestFullscreen?.(),
+    midi: () => app.midiPanel?.toggle(),
   };
-  window.addEventListener('keydown', onKey);
+  // the guards (text fields, a held key, ⌘ combos, the piano owning the letters) live in keys.js, where they are tested
+  const onKey = (e) => { handleKey(e, keyMap, actions, { captured: () => !!app.keys?.piano?.captureEnabled }); };
+  if (opts.keys !== false) window.addEventListener('keydown', onKey);
 
   return {
     /** Call once per frame after stage.frame(). */
@@ -100,6 +103,8 @@ export function mountConsole(root, app, opts = {}) {
     perf,
     director: directorPanel,
     wizard: mappingPanel.wizard,
+    /** The shortcuts in force: action → [{ spec, label, … }] (hints print `keys.play[0].label`, or keyLabel(keys, 'play')). */
+    keys: keyMap,
     dispose() { window.removeEventListener('keydown', onKey); root.innerHTML = ''; },
   };
 }

@@ -22,9 +22,10 @@
 // (Layers → L1 Input → L2 Mapping → L3 Params → L4 Output → Signals), and
 // artwork credits render automatically (artist demos stay strictly attributed).
 //
-// Who drives the frames and the backstage feed are options too:
+// Who drives the frames, the backstage feed and the desk's keys are options too:
 //     loop: 'manual',                      // no requestAnimationFrame: you call show.loop.step(dt) (record frame by frame, test, run headless)
 //     monitor: false,                      // no backstage feed (or { url: 'wss://…', hz }: another relay address)
+//     console: { keys: { reset: 'F6', perf: 'F7', fullscreen: 'F8', midi: 'F9' } },   // move the desk's R T F M off the piano's letters
 //
 // createShow returns { signals, params, stage, timeline, mapper, midi, keys,
 // sound, audio, hands, pose, leap, remote, score, director, loop, monitor, console } — every part reachable, nothing
@@ -40,7 +41,7 @@ import { PoseTracker, HandTracker } from '../pose/index.js?v=72212d8';
 import { Mapper, loadMapUrl } from '../mapping/index.js?v=72212d8';
 import { Timeline } from '../timeline/index.js?v=72212d8';
 import { Stage } from '../stage/index.js?v=72212d8';
-import { mountConsole } from '../console/index.js?v=72212d8';
+import { mountConsole, resolveKeys, keyLabel } from '../console/index.js?v=72212d8';
 import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=72212d8';
 import { track } from '../midi/telemetry.js?v=72212d8';
 import { SHELL_CSS } from './layout.js?v=72212d8';
@@ -62,10 +63,12 @@ export async function createShow({
   score: scoreCfg = null,  // { cuts, cut, modules, api, onStatus, onCue, maxStep, midi } — the show's structure (packages/score); ?cut=<id> picks the version
   loop: loopCfg = 'auto',  // 'auto' (requestAnimationFrame) · 'manual' (you call show.loop.step(dt)) · { clock, raf, maxDt, heartbeat } for new Loop() — packages/core
   monitor: monitorCfg = true,   // the backstage feed: true (this machine, :7457) · false (none) · { url, hz } — packages/monitor
+  console: consoleOpts = null,  // options of the desk, mountConsole's: { keys: { reset: 'F6', … } | false, layers, signals, learnOrder } — packages/console
 } = {}) {
   // options that are data are checked first: a typo must stop the show before it touches the page
   const loopOpts = loopOptions(loopCfg);
   const monitorOpts = monitorOptions(monitorCfg);
+  const keyMap = resolveKeys(consoleOpts?.keys);
   track('oav_show_start', { oav_kind: 'show' }, { enabled: telemetry !== false });
   // ---------- DOM shell (fix the layout once, every show is fixed) ----------
   if (!document.getElementById('openav-shell-css')) {
@@ -169,11 +172,10 @@ export async function createShow({
     controllers = new MidiControllers({ profiles: o.profiles || PROFILES, signals, midi, initial: new URLSearchParams(location.search).get('profile') || o.profile });
     midiPanel = mountMidiPanel(stageEl, controllers, { mode: 'dock', contained: true, open: o.open !== false, id: 'oav-midi' });
     const btn = document.createElement('button');
-    btn.textContent = '🎹 MIDI'; btn.title = 'on-screen MIDI controller (M)';
+    btn.textContent = '🎹 MIDI'; btn.title = 'on-screen MIDI controller' + (keyLabel(keyMap, 'midi') ? ` (${keyLabel(keyMap, 'midi')})` : '');
     btn.style.cssText = 'position:absolute;right:12px;top:12px;z-index:6;padding:6px 12px;border-radius:10px;border:1px solid #283044;background:rgba(10,12,17,.8);color:#cfd6e4;font:600 12px system-ui;cursor:pointer';
     btn.onclick = () => midiPanel.toggle();
     stageEl.appendChild(btn);
-    addEventListener('keydown', (e) => { if ((e.key === 'm' || e.key === 'M') && !e.metaKey && !e.ctrlKey && !keys?.piano?.captureEnabled && !/^(input|select|textarea)$/i.test(e.target?.tagName || '')) midiPanel.toggle(); });
   }
   const keys = modules.keys === false ? null
     : mountKeys(keysSlot, { signals, base: 48, octaves: 2, ...(typeof modules.keys === 'object' ? modules.keys : {}) });
@@ -240,8 +242,9 @@ export async function createShow({
   }
 
   // ---------- desk + backstage ----------
-  const app = { timeline, params, mapper, signals, midi, controllers, sound, stage, keys, drums, audio, hands, pose, leap, chord, remote, artwork, score, director };
-  const consoleUI = mountConsole(desk, app);
+  // midiPanel is in `app` so the desk's own key map can toggle it (the M key, or the one the show moved it to)
+  const app = { timeline, params, mapper, signals, midi, controllers, midiPanel, sound, stage, keys, drums, audio, hands, pose, leap, chord, remote, artwork, score, director };
+  const consoleUI = mountConsole(desk, app, consoleOpts);
   const monitor = monitorOpts ? new MonitorFeed(monitorOpts) : null;     // monitor: false → no feed, and no socket
   monitor?.connect();
 

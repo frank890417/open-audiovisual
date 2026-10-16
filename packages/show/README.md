@@ -41,6 +41,7 @@ const show = await createShow({
 | `onFrame`, `mount` | `null`, generated · `(dt, show)` each frame before the timeline advances; `{ stage, side }` elements or selectors |
 | `loop` | `'auto'` · who drives the frames: `'auto'` (`requestAnimationFrame`), `'manual'` (you call `show.loop.step(dt)`; nothing runs or draws before the first step) or `{ clock, raf, maxDt, heartbeat }` (the options of `new Loop()`, see `@openav/core`) |
 | `monitor` | `true` · the backstage feed (`@openav/monitor`): `false` builds none and opens no socket; `{ url, hz }` sets the relay address (`ws://…` / `wss://…`, `null` = never connect) and snapshots per second |
+| `console` | `null` · the desk's options, `mountConsole`'s: `{ keys, layers, signals, learnOrder }`; `keys: { reset: 'F6', perf: 'F7', fullscreen: 'F8', midi: 'F9' }` moves the shortcuts off the letters a keyboard-piano needs |
 
 **Layout.** Wide windows get the stage and a 340 px panel side by side. A phone or small tablet held
 upright (`max-width: 820px` and portrait) gets the stage on top (58% of the window height) and the panel

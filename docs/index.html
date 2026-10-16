@@ -1580,6 +1580,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>score</code></td><td><code>null</code></td><td><code>{ cuts, cut, modules, api, midi, … }</code>: the show's structure as segment lengths, performed by segment modules; <code>?cut=&lt;id&gt;</code> in the URL picks the version (<a href="#score-use-it-with-createshow">Score &amp; Director</a>)</td></tr>
 <tr><td><code>loop</code></td><td><code>'auto'</code></td><td>who drives the frames: <code>'auto'</code> (the page's <code>requestAnimationFrame</code>), <code>'manual'</code> (you call <code>show.loop.step(dt)</code>) or <code>{ clock, raf, maxDt, heartbeat }</code>, the options of <code>new Loop()</code> (<a href="#show-control-driving-the-frames-yourself">below</a>)</td></tr>
 <tr><td><code>monitor</code></td><td><code>true</code></td><td>the <a href="#show-control-backstage-monitor">backstage feed</a>: <code>false</code> = none (no socket is opened), <code>{ url, hz }</code> = another relay address or rate</td></tr>
+<tr><td><code>console</code></td><td><code>null</code></td><td>the options of <a href="#show-control-the-console">the console</a>, <code>mountConsole</code>'s: <code>{ keys, layers, signals, learnOrder }</code>; <code>keys</code> moves the keyboard shortcuts</td></tr>
 </tbody>
 </table></div>
 <p>Without <code>mount</code>, the page body becomes a two-column grid: the stage, and a
@@ -1698,7 +1699,7 @@ cut's time, like the ones you declared.</p>
   show.midi?.cc(20, i, 16);                                  <span class="tc">// tell the lighting desk</span>
 });</code></pre></div>
 <h3 id="show-control-the-console">The console<a class="anchor" href="#show-control-the-console" aria-label="Link to this section">#</a></h3>
-<p><code>mountConsole(el, app, { layers, signals })</code> (<code>@openav/console</code>) builds the
+<p><code>mountConsole(el, app, { layers, signals, keys })</code> (<code>@openav/console</code>) builds the
 director's desk; <code>createShow()</code> mounts it in the side panel. <code>app</code> is the object
 <code>createShow()</code> returns as <code>show.app</code> (<code>timeline</code>, <code>params</code>, <code>mapper</code>, <code>signals</code>,
 <code>stage</code>, <code>midi</code>, <code>sound</code>, <code>audio</code>, <code>hands</code>, <code>pose</code>, …); missing parts simply
@@ -1707,7 +1708,28 @@ those panels. It gives you transport + scrubber with scene blocks, the Layers
 overview, L1 Input, L2 Mapping, L3 Params (sliders with override and learn
 chips), L4 sound, live signal meters and a MIDI log.</p>
 <p>Keyboard: <strong>Space</strong> play/pause (at a hold: release) · <strong>→/←</strong> next / previous scene (→ at a hold: release) · <strong>R</strong> reset · <strong>T</strong> performance
-mode · <strong>F</strong> fullscreen · <strong>Esc</strong> leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the <em>letters</em> belong to the piano (T and F are piano keys), so R, T and F do nothing until you untick it or press Esc; Space and the arrows always work.</p>
+mode · <strong>F</strong> fullscreen · <strong>M</strong> the on-screen MIDI controller (<code>midi.controllers</code>) · <strong>Esc</strong> leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the <em>letters</em> belong to the piano (T and F are piano keys), so R, T, F and M do nothing until you untick it or press Esc; Space and the arrows always work.</p>
+<h4 id="show-control-moving-the-shortcuts">Moving the shortcuts<a class="anchor" href="#show-control-moving-the-shortcuts" aria-label="Link to this section">#</a></h4>
+<p>A show that plays the computer keyboard as a piano wants its letters. <code>keys</code> maps each action to a key (or a list of keys), laid over the defaults; <code>false</code> switches one action off, and <code>keys: false</code> switches every shortcut off.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// the piano owns the letters: move the desk's R, T, F and M to keys it does not use</span>
+<span class="tk">await</span> createShow({
+  world,
+  modules: { keys: { capture: <span class="tk">true</span> }, midi: { controllers: <span class="tk">true</span> } },
+  console: { keys: { reset: <span class="ts">'F6'</span>, perf: <span class="ts">'F7'</span>, fullscreen: <span class="ts">'F8'</span>, midi: <span class="ts">'F9'</span> } },
+});</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>action</th><th>default</th><th>does</th></tr></thead>
+<tbody>
+<tr><td><code>play</code></td><td><code>Space</code></td><td>play / pause (at a hold: release)</td></tr>
+<tr><td><code>next</code>, <code>prev</code></td><td><code>ArrowRight</code>, <code>ArrowLeft</code></td><td>next / previous scene (<code>next</code> at a hold: release)</td></tr>
+<tr><td><code>reset</code></td><td><code>R</code></td><td>back to the start; brings back switched-off segment modules</td></tr>
+<tr><td><code>perf</code></td><td><code>T</code></td><td>performance mode</td></tr>
+<tr><td><code>fullscreen</code></td><td><code>F</code></td><td>fullscreen</td></tr>
+<tr><td><code>midi</code></td><td><code>M</code></td><td>the on-screen MIDI controller panel</td></tr>
+<tr><td><code>cancel</code></td><td><code>Escape</code></td><td>stop the mapping wizard, or leave keyboard-piano capture</td></tr>
+</tbody>
+</table></div>
+<p>A key is a string. <code>'r'</code> is the character (either case); <code>'KeyR'</code> is the physical key whatever the keyboard layout types there (a Zhuyin layout types ㄐ); <code>'F6'</code>, <code>'Backquote'</code>, <code>'ArrowUp'</code>, <code>'Space'</code> are <code>KeyboardEvent.code</code> or key names, case does not matter. <code>'Shift+T'</code>, <code>'Ctrl+K'</code>, <code>'Alt+…'</code>, <code>'Meta+…'</code> add modifiers: without <code>Ctrl</code>, <code>Alt</code> or <code>Meta</code> in the spec those must not be held (⌘R and Ctrl+F stay the browser's), and a plain letter ignores Shift. Letters (a–z, <code>;</code>) stay dead while the piano captures the keyboard, wherever you put them; <code>F6</code>, <code>Backquote</code> and the like work through it. An unknown action name or a malformed key throws before anything is mounted. The hints on the desk (the play button's tooltip, the HOLD banner, the prompter) print the keys you chose; <code>desk.keys</code> (<code>show.console.keys</code>) holds them. With <code>mountConsole</code> by hand, the <code>midi</code> key toggles <code>app.midiPanel</code> when you pass one.</p>
 <p>With a score the desk also has the Director panel, cue ticks on the scrubber and a prompter with the operator's acts (<a href="#score-the-desk">Score &amp; Director</a>). The L2 Mapping panel has <strong>🎛 map knobs in order</strong>, a wizard that arms learn for each param in turn (<a href="#score-map-the-knobs-in-order">details</a>).</p>
 <p>Override semantics: touch a slider (or a mapped control) and that param leaves
 the timeline's hands until you clear it (✕). Yellow label = overridden.</p>
@@ -3383,7 +3405,7 @@ signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0
 <h3 id="packages-openav-show">@openav/show<a class="anchor" href="#packages-openav-show" aria-label="Link to this section">#</a></h3>
 <p>Glue · <code>createShow(options)</code>: one call that assembles a whole show around a
 world and returns every part. Options, modules and the return value are in
-<a href="#show-control-createshow">Show control</a>; <code>loop</code> chooses who drives the frames and <code>monitor</code> where the backstage feed goes (or switches it off).</p>
+<a href="#show-control-createshow">Show control</a>; <code>loop</code>, <code>monitor</code> and <code>console</code> (the desk's <code>keys</code>) choose who drives the frames, where the backstage feed goes and which keys run the desk.</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { keys: { base: 48 }, sound: <span class="tk">true</span> } });</code></pre></div>
 <h3 id="packages-openav-midi">@openav/midi<a class="anchor" href="#packages-openav-midi" aria-label="Link to this section">#</a></h3>
@@ -3688,7 +3710,8 @@ meters, performance mode.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder })</code> → <code>{ render(state), perf, director, wizard, dispose() }</code>; <code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder, keys })</code> → <code>{ render(state), perf, director, wizard, keys, dispose() }</code>; <code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td>keyboard</td><td><code>keys</code>: <code>{ play, next, prev, reset, perf, fullscreen, midi, cancel }</code> → a key or a list (<code>'F6'</code>, <code>'KeyR'</code>, <code>'Shift+T'</code>), <code>false</code> = off; <code>keys: false</code> = no shortcuts · <code>DEFAULT_KEYS</code> · <code>resolveKeys(keys)</code> · <code>keyLabel(keys, action)</code>: <a href="#show-control-moving-the-shortcuts">Moving the shortcuts</a></td></tr>
 </tbody>
 </table></div>
 <p>See <a href="#show-control-the-console">Show control</a>.</p>

@@ -79,8 +79,11 @@ test('createShow monitor: no feed → no WebSocket (the feed is the only thing t
   } finally { if (Native) globalThis.WebSocket = Native; else delete globalThis.WebSocket; }
 });
 
-test('createShow: the source wires the loop and monitor options to these functions', () => {
+test('createShow: the source wires loop, monitor and console options to these functions, and the M key to the console', () => {
   const src = fs.readFileSync(new URL('../packages/show/index.js', import.meta.url), 'utf8');
   assert.match(src, /new Loop\([\s\S]*loopOptions\(/, 'the Loop is built from the loop option');
   assert.match(src, /monitorOptions\(monitorCfg\)/, 'the monitor option goes through monitorOptions');
+  assert.match(src, /mountConsole\(desk, app, consoleOpts\)/, 'console options reach mountConsole');
+  assert.ok(!/addEventListener\('keydown'/.test(src), 'no second, hard-coded keydown listener in createShow: every shortcut lives in the console');
+  assert.match(src, /midiPanel/, 'the console can toggle the MIDI panel (app.midiPanel)');
 });

@@ -1,5 +1,5 @@
-// createShow in a real page: the `loop` and `monitor` options, end to end (the pure parts are in
-// show-options.test.js, loop.test.js). Needs Playwright with a Chromium; without it these skip.
+// createShow in a real page: the `loop`, `monitor` and `console.keys` options, end to end (the pure parts are in
+// show-options.test.js, loop.test.js and console-keys.test.js). Needs Playwright with a Chromium; without it these skip.
 //   OAV_PLAYWRIGHT=/path/to/playwright-core/index.mjs  (as in tests/check-page.test.js)   OAV_BROWSER_EXEC=/path/to/chrome (optional)
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -131,11 +131,84 @@ test('show: monitor — default tries the relay on this machine, false never ope
   });
 });
 
-test('show: a bad loop or monitor option throws before the page is touched', opts, async () => {
+test('show: console.keys — R T F off the letters: the old key does nothing, the new one works, also while the piano holds the keyboard', opts, async () => {
+  await withPage(async (page) => {
+    await page.evaluate(() => window.__start({ loop: 'manual', monitor: false, console: { keys: { perf: 'F7', reset: 'F6' } } }));
+    const perfOn = () => page.evaluate(() => window.openav.console.perf.active);
+    await page.keyboard.press('t');
+    assert.equal(await perfOn(), false, 'T is free');
+    await page.keyboard.press('F7');
+    assert.equal(await perfOn(), true, 'F7 opens performance mode');
+    await page.keyboard.press('F7');
+    assert.equal(await perfOn(), false);
+    await page.evaluate(() => { window.openav.keys.piano.captureEnabled = true; });
+    await page.keyboard.press('F7');
+    assert.equal(await perfOn(), true, 'F7 is not a piano key');
+    await page.keyboard.press('F7');
+    // reset
+    await page.evaluate(() => { window.openav.keys.piano.captureEnabled = false; window.openav.timeline.seek(10); });
+    await page.keyboard.press('r');
+    assert.equal(await page.evaluate(() => window.openav.timeline.t), 10, 'R no longer resets');
+    await page.keyboard.press('F6');
+    assert.equal(await page.evaluate(() => window.openav.timeline.t), 0, 'F6 resets');
+    assert.deepEqual(await page.evaluate(() => window.openav.console.keys.perf.map((b) => b.label)), ['F7']);
+  });
+});
+
+test('show: the default keys are unchanged (T prompter, Space plays, R resets)', opts, async () => {
+  await withPage(async (page) => {
+    await page.evaluate(() => window.__start({ loop: 'manual', monitor: false }));
+    await page.keyboard.press('t');
+    assert.equal(await page.evaluate(() => window.openav.console.perf.active), true);
+    await page.keyboard.press('t');
+    assert.equal(await page.evaluate(() => window.openav.console.perf.active), false);
+    await page.keyboard.press('Space');
+    assert.equal(await page.evaluate(() => window.openav.timeline.playing), true);
+    await page.keyboard.press('Space');
+    assert.equal(await page.evaluate(() => window.openav.timeline.playing), false);
+    await page.evaluate(() => window.openav.timeline.seek(10));
+    await page.keyboard.press('r');
+    assert.equal(await page.evaluate(() => window.openav.timeline.t), 0);
+  });
+});
+
+test('show: console { keys: false } switches every shortcut off', opts, async () => {
+  await withPage(async (page) => {
+    await page.evaluate(() => window.__start({ loop: 'manual', monitor: false, console: { keys: false } }));
+    for (const k of ['t', 'Space', 'r']) await page.keyboard.press(k);
+    assert.deepEqual(await page.evaluate(() => [window.openav.console.perf.active, window.openav.timeline.playing]), [false, false]);
+  });
+});
+
+test('show: the M key opens the on-screen MIDI panel through the console, and moves with { keys: { midi } }', opts, async () => {
+  const panel = { controllers: { profile: 'arturia-minilab3', open: false } };
+  const open = (page) => page.evaluate(() => window.openav.midiPanel.isOpen ?? window.openav.midiPanel.open);
+  const title = (page) => page.evaluate(() => [...document.querySelectorAll('button')].find((b) => /MIDI/.test(b.textContent)).title);
+  await withPage(async (page) => {                                           // the default: M
+    await page.evaluate((p) => window.__start({ loop: 'manual', monitor: false, modules: { midi: p } }), panel);
+    const before = await open(page);
+    await page.keyboard.press('m');
+    assert.notEqual(await open(page), before, 'M toggles the panel');
+    await page.keyboard.press('m');
+    assert.equal(await open(page), before);
+    assert.match(await title(page), /\(M\)$/);
+  });
+  await withPage(async (page) => {                                           // moved to F9
+    await page.evaluate((p) => window.__start({ loop: 'manual', monitor: false, modules: { midi: p }, console: { keys: { midi: 'F9' } } }), panel);
+    const before = await open(page);
+    await page.keyboard.press('m');
+    assert.equal(await open(page), before, 'M is free');
+    await page.keyboard.press('F9');
+    assert.notEqual(await open(page), before, 'F9 toggles the panel');
+    assert.match(await title(page), /\(F9\)$/);
+  });
+});
+
+test('show: a bad loop, monitor or console.keys option throws before the page is touched', opts, async () => {
   await withPage(async (page) => {
     const errs = await page.evaluate(async () => {
       const out = [];
-      for (const o of [{ loop: 'fast' }, { monitor: 'off' }]) {
+      for (const o of [{ loop: 'fast' }, { monitor: 'off' }, { console: { keys: { reet: 'x' } } }]) {
         const before = document.querySelectorAll('.oav-stage').length;
         try { await window.__start(o); out.push('no error'); } catch (e) { out.push(e.message + ' | stages added: ' + (document.querySelectorAll('.oav-stage').length - before)); }
       }
@@ -143,5 +216,6 @@ test('show: a bad loop or monitor option throws before the page is touched', opt
     });
     assert.match(errs[0], /loop.*stages added: 0/s);
     assert.match(errs[1], /monitor.*stages added: 0/s);
+    assert.match(errs[2], /reet.*stages added: 0/s);
   });
 });
