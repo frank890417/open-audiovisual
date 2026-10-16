@@ -6,6 +6,18 @@
 
 ## oav-p5
 
+### 0.8.0
+
+2026-10-16 · [9bdde95](https://github.com/frank890417/open-audiovisual/commit/9bdde95)
+
+- **收音符號碼的地方，音名也能用。** `noteIsDown('C4')` 就是 `noteIsDown(60)`，`midi.play('C#4', 0.8)` 送出音符 61，
+  新的 `midi.isDown('Eb3')` 用音名問一個鍵。`C4`、`c#4`、`Db3`、`F♯2`、`C-1`（0）到 `G9`（127）都行；C4 是 60
+  （有些軟體，像 Ableton 和 Yamaha，把 60 叫 C3）。Strudel 的小寫寫法（`c4 e4 g4`）也行。寫錯的音名會停下來，
+  跳出一張卡片告訴你怎麼寫。數字的行為跟以前完全一樣，`notePressed(note, velocity)` 拿到的仍然是號碼。[音名](p5.md#note-names)
+- **三個換算函式：** `noteNumber('C4')` 得到 `60`，`noteName(61)` 得到 `'C#4'`（`{ flats: true }` 是 `'Db4'`，
+  `{ octave: false }` 是 `'C#'`），`noteFreq('A4')` 得到 `440` 赫茲，給自己合成聲音的草圖用。
+- 現成草圖：`p5/examples/note-names/`（範例 24）。
+
 ### 0.7.0
 
 2026-10-15 · [89c05ac](https://github.com/frank890417/open-audiovisual/commit/89c05ac)

@@ -7,6 +7,19 @@ it. **The framework and the site** are listed by day. Every entry links its comm
 
 ## oav-p5
 
+### 0.8.0
+
+2026-10-16 · [9bdde95](https://github.com/frank890417/open-audiovisual/commit/9bdde95)
+
+- **Note names wherever a note number goes.** `noteIsDown('C4')` is `noteIsDown(60)`, `midi.play('C#4', 0.8)` sends note 61,
+  and the new `midi.isDown('Eb3')` asks a key by name. `C4`, `c#4`, `Db3`, `F♯2`, `C-1` (0) up to `G9` (127); C4 is 60
+  (some software, Ableton and Yamaha among them, calls 60 "C3"). Strudel's lower-case spelling (`c4 e4 g4`) works. A name
+  that is not one stops with a card saying how to write it. Numbers behave exactly as before, and `notePressed(note, velocity)`
+  still gets a number. [Note names](p5.md#note-names)
+- **Three converters:** `noteNumber('C4')` gives `60`, `noteName(61)` gives `'C#4'` (`{ flats: true }` for `'Db4'`,
+  `{ octave: false }` for `'C#'`), `noteFreq('A4')` gives `440` Hz for a sketch that makes its own sound.
+- Ready-made sketch: `p5/examples/note-names/` (example 24).
+
 ### 0.7.0
 
 2026-10-15 · [89c05ac](https://github.com/frank890417/open-audiovisual/commit/89c05ac)

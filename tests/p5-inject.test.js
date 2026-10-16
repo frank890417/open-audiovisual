@@ -455,7 +455,7 @@ test('sound: startSound() waits for the first click, then every note goes throug
   assert.equal(w.soundIsOn, false);
   w.midi.play(60, 0.8);
   assert.deepEqual(played, [], 'not heard before the click');
-  assert.ok(loaded.some((u) => /packages\/sound\/index\.js\?v=p5-0\.7\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
+  assert.ok(loaded.some((u) => /packages\/sound\/index\.js\?v=p5-0\.8\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
   click();
   assert.equal(await on, true);
   assert.equal(w.soundIsOn, true);
@@ -829,7 +829,7 @@ test('recording: startRecording(seconds) records the canvas with @openav/record\
     assert.equal(w.OAVp5.record.state, 'on');
     assert.equal(await w.startRecording({ canvas }), true, 'a second start while it runs: still the one take');
     assert.equal(made.length, 1);
-    assert.ok(loaded.some((u) => /packages\/record\/recorder\.js\?v=p5-0\.7\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
+    assert.ok(loaded.some((u) => /packages\/record\/recorder\.js\?v=p5-0\.8\.0$/.test(u)), 'loaded from next to this file, stamped with the version');
     assert.equal(made[0].opts.mimeType, 'video/mp4;codecs=avc1.640033,mp4a.40.2', 'MP4 (H.264 + AAC) first');
     assert.equal(made[0].opts.videoBitsPerSecond, 4e6, 'a small canvas still gets 4 Mb/s');
     assert.equal(made[0].stream.getVideoTracks().length, 1);
@@ -1074,7 +1074,7 @@ test('0.6.0: startDrums(arg) — names, grids, numbers as in 0.5; any other text
   assert.ok(!loaded.some((u) => /pattern/.test(u)), 'no names or grids load @openav/pattern');
   const a = await r('bd*4, hh*8');
   assert.equal(a.text, 'bd*4, hh*8'); assert.equal(typeof a.pattern.eventsInBar, 'function');
-  assert.ok(loaded.some((u) => /packages\/pattern\/index\.js\?v=p5-0\.7\.0$/.test(u)), 'loaded from next to this file, the first time a line is used');
+  assert.ok(loaded.some((u) => /packages\/pattern\/index\.js\?v=p5-0\.8\.0$/.test(u)), 'loaded from next to this file, the first time a line is used');
   await r('bd*4, hh*8');
   assert.deepEqual(seen, ['bd*4, hh*8'], 'the same line twice (a cue that comes back) is compiled once');
   assert.deepEqual([...w.OAVp5.hints].map((h) => h.id), [], 'no card for any of these');
