@@ -11,7 +11,7 @@
 //   · segment modules: enter / update / exit, `param()` bending a timeline param inside the segment, `linger`
 //   · a module that crashes: open ?break=dusk — the dusk module throws on purpose, the desk shows a warning,
 //     the show carries on, R brings the module back
-//   · automation written against the full cut (haze) stretches with the short cut
+//   · automation written per segment (haze: [p, value] points): compiled against the full cut, stretched by the short cut, kept in place if a segment grows
 //   · ?scoremidi: segment changes and cues also leave as MIDI notes on channel 15 (needs a MIDI output)
 //
 // Open the console: Space plays (at the HOLD, Space releases it) · ← → previous / next segment ·
@@ -147,8 +147,15 @@ await createShow({
     api: (show) => ({ sky: show.stage.active, params: show.params }),           // what the modules may touch
     midi: q.has('scoremidi') ? { channel: 15, segment: { note: 36, cc: 20 }, cue: { note: 84, cc: 21 } } : false,   // ?scoremidi: follow the show in Ableton etc.
   },
-  // automation is written once, against the full cut; on the short cut it stretches with it
-  timeline: { automation: { haze: [[0, 0.1], [60, 0.55], [100, 0.2], [120, 0.1]] } },
+  // automation is written per segment: [p, value, curve?] with p the progress through it (a number holds the whole segment).
+  // The timeline compiles it against the full cut; the short cut stretches it, and changing a `dur` above moves the curve with it
+  timeline: { automation: { haze: {
+    standby: 0.1,
+    dawn:  [[0, 0.1],  [1, 0.3]],
+    noon:  [[0, 0.3],  [1, 0.55, 'ease']],
+    dusk:  [[0, 0.55], [1, 0.34]],
+    night: [[0, 0.34], [0.45, 0.2], [1, 0.1]],
+  } } },
   modules: { keys: { base: 48 } },
   hint: 'Space plays; at the standby HOLD, Space releases it · ← → segments · T prompter · ?cut=short · ?break=dusk',
 });
