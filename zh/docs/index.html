@@ -158,6 +158,7 @@
             <li><a href="#mapping-pulse-targets">脈衝目標</a></li>
             <li><a href="#mapping-many-to-many">多對多</a></li>
             <li><a href="#mapping-overrides-and-the-timeline">覆寫與時間軸</a></li>
+            <li><a href="#mapping-trim-pickup-and-release">微調、接管與放手</a></li>
             <li><a href="#mapping-learn">Learn</a></li>
             <li><a href="#mapping-muting-and-removing">靜音與移除</a></li>
             <li><a href="#mapping-saved-profiles">儲存的設定檔</a></li>
@@ -369,7 +370,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">19 章 · 193 節 · <a href="../../zh/changelog/">oav-p5 0.8 · 框架 0.1</a></p>
+      <p class="docs-stats">19 章 · 194 節 · <a href="../../zh/changelog/">oav-p5 0.8 · 框架 0.1</a></p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -565,7 +566,7 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
 <p>每一格畫面，每個參數都會解析成一個數字：</p>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">timeline automation at time t      (the score; def if the param has no automation)
   ⬑ overridden by → the latest override   (a slider, a mapped knob, a phone fader)</code></pre></div>
-<p>覆寫會<em>黏住</em>（sticky）。一旦有手或路由碰過 <code>bloom</code>，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕，或呼叫 <code>params.clearOverride('bloom')</code>）。這跟舞台上一樣：人一伸手接管，樂譜就讓位。</p>
+<p>覆寫會<em>黏住</em>（sticky）。一旦有手或路由碰過 <code>bloom</code>，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕，或呼叫 <code>params.clearOverride('bloom')</code>）。這跟舞台上一樣：人一伸手接管，樂譜就讓位。路由可以選別的做法：<code>mode: 'trim'</code> 把旋鈕疊加在時間軸的值上，<code>release</code> 讓旋鈕靜止時把參數還回去（<a href="#mapping-trim-pickup-and-release">映射</a>）。</p>
 <p>完整的欄位列表在<a href="#writing-a-world-params">寫一個世界</a>。</p>
 <h3 id="concepts-routes-and-mapping">路由與映射<a class="anchor" href="#concepts-routes-and-mapping" aria-label="這一節的連結">#</a></h3>
 <p><strong>路由</strong>（route）把一個訊號接到一個參數。路由就是單純的資料：</p>
@@ -618,7 +619,7 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">timeline.state(t)          — automation curves per param
   ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
   ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals</code></pre></div>
-<p>覆寫會<em>黏住</em>：一旦有旋鈕碰過 <code>bloom</code>，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕）。這跟演出現場一樣：人一伸手接管，樂譜就讓位。</p>
+<p>覆寫會<em>黏住</em>：一旦有旋鈕碰過 <code>bloom</code>，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕）。這跟演出現場一樣：人一伸手接管，樂譜就讓位。路由可以選別的做法：<code>mode: 'trim'</code> 把旋鈕疊加在時間軸的值上、不取代它，<code>release</code> 讓旋鈕靜止時把參數還回去（<a href="#mapping-trim-pickup-and-release">映射</a>）。</p>
 <h3 id="architecture-l1-input-signals">L1 · 輸入：訊號（Signals）<a class="anchor" href="#architecture-l1-input-signals" aria-label="這一節的連結">#</a></h3>
 <p><strong>介面約定</strong>：輸入套件把<em>有名字、經過正規化的訊號</em>發布到 <code>Signals</code> 登錄表，除此之外什麼都不做。它們從不碰參數或世界。</p>
 <ul>
@@ -1004,6 +1005,8 @@ show.mapper.addRoute({ source: <span class="ts">'pointer/x'</span>, target: <spa
 <tr><td><code>curve</code></td><td><code>'linear'</code></td><td><code>linear</code>、<code>exp</code>、<code>log</code> 或 <code>smooth</code></td></tr>
 <tr><td><code>invert</code></td><td><code>false</code></td><td>在套用曲線之前，把正規化後的值翻過來（1 − x）</td></tr>
 <tr><td><code>smooth</code></td><td><code>0</code></td><td>滑到新值所需的時間，單位是秒（0 = 立即到位）</td></tr>
+<tr><td><code>mode</code></td><td>（沒寫 = <code>'override'</code>）</td><td><code>'override'</code> 取代時間軸的值，<code>'trim'</code> 疊加在它上面，<code>'pickup'</code> 要旋鈕先碰到參數的值才接管：見<a href="#mapping-trim-pickup-and-release">微調、接管與放手</a></td></tr>
+<tr><td><code>release</code></td><td>（沒寫 = 不放手）</td><td>訊號靜止這麼多秒之後，路由放手、時間軸接回去</td></tr>
 <tr><td><code>enabled</code></td><td>（沒寫 = 開啟）</td><td>設成 <code>false</code> 就把這條路由靜音</td></tr>
 <tr><td><code>id</code></td><td>自動指定</td><td>一個數字，移除路由時用</td></tr>
 </tbody>
@@ -1019,7 +1022,7 @@ show.mapper.addRoute({ source: <span class="ts">'hand/right/pinch/index'</span>,
 <li><strong>反轉</strong>：如果有 <code>invert</code>，<code>x = 1 − x</code>。</li>
 <li><strong>曲線</strong>：<code>x = curve(x)</code>。</li>
 <li><strong>縮放</strong>：<code>out = outMin + (outMax − outMin) · x</code>。</li>
-<li><strong>寫入</strong>：<code>smooth: 0</code> 時，直接用 <code>out</code> 覆寫參數（並限制在參數的範圍內、對齊它的 <code>step</code>）。<code>smooth &gt; 0</code> 時，<code>out</code> 變成一個目標值，<code>mapper.update(dt)</code> 每個影格把參數往它推近一點。</li>
+<li><strong>寫入</strong>：<code>smooth: 0</code> 時，直接用 <code>out</code> 覆寫參數（並限制在參數的範圍內、對齊它的 <code>step</code>）。<code>smooth &gt; 0</code> 時，<code>out</code> 變成一個目標值，<code>mapper.update(dt)</code> 每個影格把參數往它推近一點。<code>trim</code> 路由寫的是時間軸的值加上 <code>out</code>；<code>pickup</code> 路由在旋鈕碰到參數之前什麼都不寫。</li>
 </ol>
 <h3 id="mapping-curves">曲線<a class="anchor" href="#mapping-curves" aria-label="這一節的連結">#</a></h3>
 <div class="table-wrap"><table>
@@ -1044,7 +1047,7 @@ show.mapper.addRoute({ source: <span class="ts">'hand/right/pinch/index'</span>,
 <p><code>outMin</code>/<code>outMax</code> 的預設值，是<em>加入路由那一刻</em>目標參數的範圍。如果參數那時還不存在，預設就是 0..1。在 <code>createShow()</code> 裡，路由加入得比聲音引擎註冊 <code>sound/*</code> 參數還早，所以宣告接到 <code>sound/cutoff</code> 的路由時，要明確寫上 <code>outMin: 100, outMax: 8000</code>。</p>
 </aside>
 <h3 id="mapping-smoothing">平滑<a class="anchor" href="#mapping-smoothing" aria-label="這一節的連結">#</a></h3>
-<p><code>smooth</code> 是時間常數，單位是秒：過了 <code>smooth</code> 秒，參數大約走完到新值 63% 的距離（單極點濾波器，每個影格 <code>k = 1 − e^(−dt/smooth)</code>）。0.05–0.15 可以藏住 MIDI 旋鈕或 30 Hz 手機資料流的階梯感，0.2–0.5 會讓手的動作變得沉重。滑行從參數目前的值出發，所以第一下動作絕不會跳。</p>
+<p><code>smooth</code> 是時間常數，單位是秒：過了 <code>smooth</code> 秒，參數大約走完到新值 63% 的距離（單極點濾波器，每個影格 <code>k = 1 − e^(−dt/smooth)</code>）。0.05–0.15 可以藏住 MIDI 旋鈕或 30 Hz 手機資料流的階梯感，0.2–0.5 會讓手的動作變得沉重。滑行從參數目前的值出發（手動設的值，否則就是時間軸現在說的，見 <a href="#mapping-telling-the-mapper-where-the-timeline-is"><code>base</code></a>），所以第一下動作絕不會跳，而且滑到了就停筆。</p>
 <h3 id="mapping-pulse-targets">脈衝目標<a class="anchor" href="#mapping-pulse-targets" aria-label="這一節的連結">#</a></h3>
 <p>目標是 <code>pulse</code> 參數時，路由不寫數值，改成觸發它：</p>
 <ul>
@@ -1057,7 +1060,48 @@ show.mapper.addRoute({ source: <span class="ts">'hand/right/pinch/index'</span>,
 <p><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/design/patchbay.md" rel="noopener">跳線盤設計</a>規劃了每條路由的 <code>combine</code>（<code>last</code>、<code>max</code>、<code>add</code>、<code>avg</code>）和 <code>label</code> 欄位，目前還沒做。</p>
 <h3 id="mapping-overrides-and-the-timeline">覆寫與時間軸<a class="anchor" href="#mapping-overrides-and-the-timeline" aria-label="這一節的連結">#</a></h3>
 <p>路由用<strong>覆寫</strong>的方式寫入參數，而覆寫會黏住：映射過來的訊號一動，時間軸就不再推那個參數。清掉覆寫（按參數旁的 ✕，或 <code>show.params.clearOverride(key)</code>），參數就交還給時間軸，直到訊號再動一次。</p>
-<p><em>有平滑</em>的路由，只要訊號來過一次，之後每個影格都會繼續寫入最後的目標值，所以就算按了 ✕、就算路由已經靜音，參數還是維持覆寫。要把參數永遠交還給時間軸，就移除那條路由（<strong>L2 · Mapping</strong>（映射）面板裡的 ✕）。</p>
+<p><em>有平滑</em>的路由只在滑行的時候寫入。滑到了就停筆，所以按 ✕（或你拖動滑桿）就能把參數拿回來，而且在旋鈕再動之前它都會留在手上；滑到一半按 ✕，滑行就停下。映射器會發現參數在它上一次寫入之後被別人寫過，然後退讓。路由靜音之後就不再寫入，參數維持原本的值（靜音的 <code>trim</code> 會把偏移還回去）。</p>
+<p>取代式的路由握著參數的時候，時間軸的曲線就被丟在一邊。如果旋鈕只該<em>微調</em>時間軸，或是放開手就該<em>還給它</em>，請看下一節。</p>
+<h3 id="mapping-trim-pickup-and-release">微調、接管與放手<a class="anchor" href="#mapping-trim-pickup-and-release" aria-label="這一節的連結">#</a></h3>
+<p>有三個路由欄位決定旋鈕碰上時間軸時誰說了算。沒寫就全部不起作用：沒有 <code>mode</code> 也沒有 <code>release</code> 的路由，就是上面說的取代式路由。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>欄位</th><th>旋鈕做什麼</th></tr></thead>
+<tbody>
+<tr><td><code>mode: 'override'</code></td><td>預設：旋鈕的值<em>取代</em>時間軸的值，直到按 ✕</td></tr>
+<tr><td><code>mode: 'trim'</code></td><td>旋鈕的值是一個<em>偏移</em>，加在時間軸的值上，時間軸在底下照樣往前走</td></tr>
+<tr><td><code>mode: 'pickup'</code></td><td>跟 <code>override</code> 一樣，但旋鈕要先<em>碰到</em>參數現在的值，才接管</td></tr>
+<tr><td><code>release: 4</code></td><td>任何模式都能用：旋鈕靜止 4 秒就放手，讓時間軸接回去</td></tr>
+</tbody>
+</table></div>
+<p><code>mode</code> 和 <code>release</code> 對脈衝目標不起作用。</p>
+<h4 id="mapping-telling-the-mapper-where-the-timeline-is">告訴映射器時間軸在哪裡<a class="anchor" href="#mapping-telling-the-mapper-where-the-timeline-is" aria-label="這一節的連結">#</a></h4>
+<p><code>trim</code>、<code>pickup</code>，還有平滑滑行的起點，都需要知道參數<em>此刻</em>在時間軸上的值。映射器從 <code>base</code> 取得，它是一個回傳 <code>{ key: value }</code> 的函式：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, base: () =&gt; timeline.state() });
+<span class="tc">// a show made with createShow(): hand it the timeline once</span>
+show.mapper.base = () =&gt; show.timeline.state();</code></pre></div>
+<p><code>timeline.state()</code> 是<em>還沒套用覆寫</em>的值，而且總譜的段落模組已經套用過了，也就是沒有人碰它時參數會有的值。沒有 <code>base</code> 的話，映射器用參數的 <code>def</code>：對沒有任何自動化的參數是對的，對時間軸畫著曲線的參數就不對。<code>base</code> 丟出錯誤或回傳別的東西，就當作沒有，絕不會擋住演出。它要輕：trim 握著參數的每個影格都會問一次，trim 或 pickup 的旋鈕每次讀數也會再問。</p>
+<h4 id="mapping-trim-nudge-the-timeline">trim：在時間軸上微調<a class="anchor" href="#mapping-trim-nudge-the-timeline" aria-label="這一節的連結">#</a></h4>
+<p>時間軸已經把整場演出畫好的作品，不該因為旋鈕轉到 0.9 就把曲線整條丟掉。<code>trim</code> 路由的 <code>outMin</code>/<code>outMax</code> 是<em>偏移量</em>的範圍，參數等於 <code>時間軸的值 + 偏移</code>，再夾在參數的範圍內。沒寫的話，旋鈕往兩邊各走參數範圍的一半（旋鈕在中間 = 不動）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// ±30° around whatever the timeline says, smoothed</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'hue'</span>, mode: <span class="ts">'trim'</span>, outMin: -30, outMax: 30, smooth: 0.1 });</code></pre></div>
+<ul>
+<li>偏移騎在時間軸上：曲線動，參數每個影格都跟著動。</li>
+<li><code>smooth</code> 平滑的是偏移量（從 0 開始，不會跳）。</li>
+<li>同一個參數上的兩條 trim 路由會相加，所以粗調和細調兩顆旋鈕可以一起用。參數上若同時有取代式路由，<code>trim</code> 疊在取代式路由的值上面。</li>
+<li>trim 握著參數的時候，參數是被覆寫的狀態：控台會在它旁邊顯示 ✕，讀覆寫值的 <code>timeline.record</code> 來源拿到的是加總後、觀眾看到的值。✕ 清掉偏移，旋鈕下次再動它就回來。移除或靜音路由，參數馬上交還。</li>
+</ul>
+<h4 id="mapping-pickup-take-over-only-when-you-arrive">pickup：到了才接管<a class="anchor" href="#mapping-pickup-take-over-only-when-you-arrive" aria-label="這一節的連結">#</a></h4>
+<p>旋鈕和參數很少一開始就在同一個位置。用 <code>mode: 'pickup'</code> 時，旋鈕的值要先<em>碰到</em>參數現在的值，路由才開始寫入：離得不到路由輸出範圍的 2%，或是兩次讀數之間越過了它。之後它就像取代式路由，從參數原本的位置滑過去（不跳）。比較用的是參數此刻的值，所以時間軸在動的時候也成立。<code>release</code> 或 ✕ 會把路由放回「還沒碰到」。</p>
+<h4 id="mapping-release-give-it-back">release：還回去<a class="anchor" href="#mapping-release-give-it-back" aria-label="這一節的連結">#</a></h4>
+<p><code>release: 4</code> 的意思是：訊號 4 秒沒有動，路由就放手。「動」指的是變化超過輸入窗的 0.1%，從上次算動過的位置開始量，所以慢慢飄也算動，而一直重送同一個值的來源不算。放手時：</p>
+<ul>
+<li><code>smooth: 0</code>：參數當場回到時間軸；</li>
+<li><code>smooth &gt; 0</code>：用大約三倍 <code>smooth</code> 秒淡進時間軸，然後清掉覆寫（<code>trim</code> 是把偏移淡到 0）；</li>
+<li>放手之後，路由要等來源<em>再動</em>才會接管：一直重送同一個值的來源拿不回參數；</li>
+<li>它只清自己寫的。如果這段時間滑桿已經接手，就讓它留著。</li>
+</ul>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// a main knob: meets the value first, glides, and gives the param back 4 s after the hand leaves</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/71'</span>, target: <span class="ts">'bloom'</span>, mode: <span class="ts">'pickup'</span>, release: 4, smooth: 0.15 });</code></pre></div>
 <h3 id="mapping-learn">Learn<a class="anchor" href="#mapping-learn" aria-label="這一節的連結">#</a></h3>
 <p>在 <strong>L3 · Params</strong>（參數）面板裡，點參數旁的 <em>learn</em>（或呼叫 <code>mapper.learn('bloom')</code>），然後動一樣東西。映射器會綁定第一個符合下列條件的訊號：</p>
 <ul>
@@ -1112,6 +1156,7 @@ show.mapper.removeRoute(r.id);      <span class="tc">// remove</span></code></pr
 <li>這場演出裡沒有東西能產生的 <strong>signal</strong>（例如沒有 Leap Motion 模組卻有 <code>leap/palm/x</code>）：略過並列出來。要等第一則訊息才會出現的訊號（<code>midi/…</code>、<code>surface/…</code>、<code>phone/…</code>、<code>osc/…</code>、<code>key…</code>、<code>take/…</code>）會留下，算作「等待中」。</li>
 <li>檔案的 <code>world</code> 跟現在不同時，<code>range.out</code> 會丟掉，讓每個 param 用自己的範圍（<code>in</code> 窗、曲線、平滑、反相照樣帶過來）。</li>
 <li><code>version</code> 比這個版本讀得懂的新，會拒絕並說明。<code>mapper.toJSON()</code> 的純陣列（舊作法）仍然可以匯入，當作版本 0。</li>
+<li><code>mode</code>（<code>"trim"</code> 或 <code>"pickup"</code>）和 <code>release</code>（秒）是版本 1 裡選填的路由欄位，路由有用到才會寫出來。還沒有這兩個欄位的舊版會直接忽略，把那條路由當成取代式路由讀。<code>trim</code> 路由的 <code>range.out</code> 是偏移量的範圍。</li>
 <li>超過 256 KB 或超過 500 條路由的檔案會被拒絕。</li>
 </ul>
 <h4 id="mapping-load-on-open-map">開頁就載入：<code>?map=</code><a class="anchor" href="#mapping-load-on-open-map" aria-label="這一節的連結">#</a></h4>
@@ -1137,13 +1182,14 @@ parseMap(text);                                          <span class="tc">// val
 <h3 id="mapping-mapper-api">Mapper API<a class="anchor" href="#mapping-mapper-api" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
 
-<span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, profile: <span class="ts">'default'</span>, onChange, onLearn });
+<span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, profile: <span class="ts">'default'</span>, onChange, onLearn, base });
 mapper.addRoute(route)        <span class="tc">// → the stored route (defaults filled in, id assigned)</span>
 mapper.removeRoute(id)
 mapper.routesFor(<span class="ts">'bloom'</span>)     <span class="tc">// → routes targeting a param</span>
 mapper.routes                 <span class="tc">// the live array</span>
 mapper.learn(<span class="ts">'bloom'</span>)         <span class="tc">// arm / cancel learn; mapper.learnTarget is the armed key</span>
-mapper.update(dt)             <span class="tc">// every frame: advances smoothed routes</span>
+mapper.base = () =&gt; timeline.state()   <span class="tc">// the timeline's value now (trim, pickup, smooth start); optional</span>
+mapper.update(dt)             <span class="tc">// every frame: glides smoothed routes, keeps trims on the timeline, applies release</span>
 mapper.toJSON(); mapper.fromJSON(array)
 mapper.exportMap(); mapper.importMap(text|object, { mode })   <span class="tc">// the portable file, see above</span>
 mapper.clear()                <span class="tc">// remove every route (and forget them)</span>
@@ -1338,6 +1384,17 @@ createShow({ world, timeline: { total: 120, anchor: { mode: <span class="ts">'ca
 monitor.connect();
 <span class="tc">// every frame:</span>
 monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));</code></pre></div>
+<h4 id="show-control-the-work-s-own-numbers">作品自己的數字<a class="anchor" href="#show-control-the-work-s-own-numbers" aria-label="這一節的連結">#</a></h4>
+<p>作品可以把自己的健康數字送上後台頁面：模擬跑到第幾個 tick、跟牆上時鐘差了多少、攔到幾次 NaN。這些數字以 <code>snapshot.extra</code> 送過去，顯示在一個 <strong>Work</strong> 面板裡；什麼都沒送時，面板是隱藏的。不送的演出，送出的快照跟以前完全一樣。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// 1. from the world: snapshotOf asks the active world, so a createShow() show needs no wiring</span>
+<span class="tk">const</span> world = { name: <span class="ts">'lanterns'</span>, params: [<span class="tc">/* … */</span>], update() { <span class="tc">/* … */</span> },
+  monitor() { <span class="tk">return</span> { <span class="ts">'sim/tick'</span>: sim.tick, <span class="ts">'sim/drift'</span>: { v: sim.drift, min: 0, max: 0.5, warn: sim.drift &gt; 0.2 } }; } };
+
+<span class="tc">// 2. from a hand-assembled show: on the feed (asked only when a frame is sent) …</span>
+<span class="tk">const</span> off = monitor.extra(() =&gt; ({ <span class="ts">'sim/nan'</span>: nanCount }));          <span class="tc">// off() takes it away again</span>
+<span class="tc">// … or in the snapshot itself (an object, or a function answering one)</span>
+monitor.frame(snapshotOf({ timeline, params, signals, stage, loop, extra: { build: <span class="ts">'rehearsal-2'</span> } }, state));</code></pre></div>
+<p>一個值可以是數字、字串（最長 80 字）、布林或 <code>null</code>。寫成 <code>{ v, min, max, warn }</code> 的話，有 <code>min</code> 和 <code>max</code> 就會畫量條，<code>warn: true</code> 會讓那一列變紅。名稱最長 48 字，一份快照最多 64 個欄位。JSON 帶不走的東西（<code>NaN</code>、BigInt、函式、巢狀物件）會被丟掉或變成 <code>null</code>，所以一個壞數字不會讓整幀送不出去；丟出錯誤的提供者會被略過。<code>monitor()</code> 和函式形式的 <code>extra</code> 每個影格都會被問一次，<code>monitor.extra(fn)</code> 只在真的送出一幀時才問（大約每秒 15 次），比較耗時的量測請放在那裡。同一個名稱有兩個來源時，<code>extra</code> 蓋過世界，後掛的 <code>monitor.extra</code> 蓋過先掛的。</p>
 <h3 id="show-control-osc-output">OSC 輸出<a class="anchor" href="#show-control-osc-output" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">node</span> packages/osc/bridges/osc-bridge.js 7456 192.168.1.50 3456
 <span class="tc">#                       http port ↑    target host ↑   udp port ↑</span></code></pre></div>
@@ -2787,14 +2844,17 @@ leap.onFrame(() =&gt; leap.skeleton(ctx, w, h));          <span class="tc">// jo
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>Mapper</code></td><td><code>new Mapper({ signals, params, profile = 'default', onChange, onLearn })</code> · <code>addRoute(route)</code> · <code>removeRoute(id)</code> · <code>routesFor(target)</code> · <code>learn(target)</code> · <code>update(dt)</code> · <code>toJSON()</code> · <code>fromJSON(routes)</code> · <code>save()</code> · <code>load()</code> · <code>dispose()</code> · <code>routes</code>、<code>learnTarget</code></td></tr>
+<tr><td><code>Mapper</code></td><td><code>new Mapper({ signals, params, profile = 'default', onChange, onLearn, base })</code> · <code>addRoute(route)</code> · <code>removeRoute(id)</code> · <code>routesFor(target)</code> · <code>learn(target)</code> · <code>update(dt)</code> · <code>toJSON()</code> · <code>fromJSON(routes)</code> · <code>save()</code> · <code>load()</code> · <code>dispose()</code> · <code>routes</code>、<code>learnTarget</code></td></tr>
 <tr><td><code>LearnWizard</code></td><td><code>new LearnWizard({ mapper, keys, onChange })</code> · <code>start()</code> · <code>skip()</code> · <code>back()</code> · <code>stop()</code> · <code>sync()</code> · <code>active</code>、<code>current</code>、<code>index</code>、<code>total</code>、<code>done</code>、<code>added</code>：「依序對應旋鈕」，見<a href="#score-map-the-knobs-in-order">總譜與導演</a></td></tr>
 </tbody>
 </table></div>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
 <span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params });
 mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'bloom'</span>, curve: <span class="ts">'exp'</span>, smooth: 0.1 });
-<span class="tc">// every frame: mapper.update(dt);</span></code></pre></div>
+<span class="tc">// every frame: mapper.update(dt);</span>
+<span class="tc">// a knob that nudges the timeline instead of replacing it, and gives the param back when you let go:</span>
+<span class="tc">// mapper.base = () =&gt; timeline.state();</span>
+<span class="tc">// mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'trim', outMin: -0.3, outMax: 0.3, release: 4 });</span></code></pre></div>
 <p>完整說明：見<a href="#mapping">映射</a>。</p>
 <h3 id="packages-openav-chop">@openav/chop<a class="anchor" href="#packages-openav-chop" aria-label="這一節的連結">#</a></h3>
 <p>L2 映射 · 數值隨時間的變化，像 TouchDesigner 的 CHOP 那樣塑形：Lag、Trigger（這裡叫 <code>envelope</code>）、Speed、Spring、Trail、Slope、Count。純邏輯，沒有自己的時鐘：每一步都告訴它過了幾秒，並在那段時間裡精確求解，所以 30 fps 和 144 fps 畫出同一條曲線。參數意義參考 TouchDesigner 官方文件（Derivative），程式由 OAV 自行實作。在 p5 草圖裡，oav-p5 把它們做成一行一個：見 <a href="#p5-values-over-time-lag-env-speed-spring-trail">p5 一行注入</a>。</p>
@@ -2969,8 +3029,9 @@ p.eventsInBar(1);   <span class="tc">// kick 0 .25 .5 .75 · snare .25 .75 · ha
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>MonitorFeed</code></td><td><code>new MonitorFeed({ url = 'ws://&lt;page host&gt;:7457', hz = 15 })</code> · <code>connect()</code> · <code>frame(snapshot)</code> · <code>connected</code>、<code>onStatus</code></td></tr>
-<tr><td><code>snapshotOf</code></td><td><code>snapshotOf({ timeline, params, signals, stage, loop }, state)</code> → 一份 JSON 快照</td></tr>
+<tr><td><code>MonitorFeed</code></td><td><code>new MonitorFeed({ url = 'ws://&lt;page host&gt;:7457', hz = 15, extra })</code> · <code>connect()</code> · <code>frame(snapshot)</code> · <code>extra(fn)</code> → <code>off()</code> · <code>connected</code>、<code>onStatus</code></td></tr>
+<tr><td><code>snapshotOf</code></td><td><code>snapshotOf({ timeline, params, signals, stage, loop, extra? }, state)</code> → 一份 JSON 快照；作品自己的數字（<code>extra</code>、目前啟用的世界的 <code>monitor()</code>）放在快照的 <code>extra</code> 下</td></tr>
+<tr><td><code>cleanExtra</code></td><td><code>cleanExtra(x)</code> → 把作品的數字整理成 JSON 帶得走的樣子（每個欄位是數字、字串、布林、null 或 <code>{ v, min, max, warn }</code>），沒有任何欄位時回傳 <code>null</code></td></tr>
 <tr><td>伺服器</td><td><code>node packages/monitor/server.js [port=7457]</code>：後台頁面在 <code>/</code>，另有 <code>/health</code></td></tr>
 </tbody>
 </table></div>

@@ -187,7 +187,7 @@ saved profiles.
 
 | export | signature |
 |---|---|
-| `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`, `learnTarget` |
+| `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn, base })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`, `learnTarget` |
 | `LearnWizard` | `new LearnWizard({ mapper, keys, onChange })` · `start()` · `skip()` · `back()` · `stop()` · `sync()` · `active`, `current`, `index`, `total`, `done`, `added`: "map the knobs in order", see [Score & Director](score.md#map-the-knobs-in-order) |
 
 ```js
@@ -195,6 +195,9 @@ import { Mapper } from '@openav/mapping';
 const mapper = new Mapper({ signals, params });
 mapper.addRoute({ source: 'midi/cc/74', target: 'bloom', curve: 'exp', smooth: 0.1 });
 // every frame: mapper.update(dt);
+// a knob that nudges the timeline instead of replacing it, and gives the param back when you let go:
+// mapper.base = () => timeline.state();
+// mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'trim', outMin: -0.3, outMax: 0.3, release: 4 });
 ```
 
 Full reference: [Mapping](mapping.md).
@@ -418,8 +421,9 @@ Spine · the backstage page and the WebSocket relay that feeds it.
 
 | export | signature |
 |---|---|
-| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15 })` · `connect()` · `frame(snapshot)` · `connected`, `onStatus` |
-| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop }, state)` → a JSON snapshot |
+| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15, extra })` · `connect()` · `frame(snapshot)` · `extra(fn)` → `off()` · `connected`, `onStatus` |
+| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop, extra? }, state)` → a JSON snapshot; the work's own numbers (`extra`, the active world's `monitor()`) land under `extra` |
+| `cleanExtra` | `cleanExtra(x)` → the work's numbers made safe for JSON (a number, string, boolean, null or `{ v, min, max, warn }` per field), or `null` when there are none |
 | server | `node packages/monitor/server.js [port=7457]`: backstage page at `/`, `/health` |
 
 See [Show control](show-control.md#backstage-monitor).

@@ -47,7 +47,9 @@ timeline.state(t)          — automation curves per param
 
 An override is *sticky*: once a knob touched `bloom`, the timeline no longer moves
 it until the override is cleared (✕ in the console). This matches performance
-reality — when a human grabs a control, the score yields.
+reality — when a human grabs a control, the score yields. A route can choose otherwise:
+`mode: 'trim'` adds the knob to the timeline's value instead of replacing it, and `release`
+hands the param back when the knob stands still ([Mapping](mapping.md#trim-pickup-and-release)).
 
 ## L1 · Input — Signals
 
@@ -163,8 +165,9 @@ Full reference: [Score & Director](score.md).
 The performance page streams JSON snapshots (throttled, ~15 Hz) over WebSocket
 to a dependency-free relay (`server.js`, hand-rolled RFC 6455). Any phone or
 laptop on the LAN opens the backstage page and sees: clock, scene, world, FPS,
-overrides, every signal and param, and a "stage feed lost" alarm. The monitor
-is a first-class citizen because a show without a backstage is a rehearsal.
+overrides, every signal and param, and a "stage feed lost" alarm. The work can add
+its own health numbers to the feed ([Backstage monitor](show-control.md#the-works-own-numbers)).
+The monitor is a first-class citizen because a show without a backstage is a rehearsal.
 
 ## Around the spines: console and phones
 

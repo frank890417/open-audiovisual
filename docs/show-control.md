@@ -327,6 +327,30 @@ monitor.connect();
 monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
 ```
 
+### The work's own numbers
+
+A work can put its own health numbers on the backstage page: the tick its simulation is on, how far it has
+drifted from the wall clock, how many NaNs it has caught. They travel as `snapshot.extra` and appear in a
+**Work** panel that stays hidden while nothing is sent. A show that sends nothing sends the same snapshot as before.
+
+```js
+// 1. from the world: snapshotOf asks the active world, so a createShow() show needs no wiring
+const world = { name: 'lanterns', params: [/* … */], update() { /* … */ },
+  monitor() { return { 'sim/tick': sim.tick, 'sim/drift': { v: sim.drift, min: 0, max: 0.5, warn: sim.drift > 0.2 } }; } };
+
+// 2. from a hand-assembled show: on the feed (asked only when a frame is sent) …
+const off = monitor.extra(() => ({ 'sim/nan': nanCount }));          // off() takes it away again
+// … or in the snapshot itself (an object, or a function answering one)
+monitor.frame(snapshotOf({ timeline, params, signals, stage, loop, extra: { build: 'rehearsal-2' } }, state));
+```
+
+A value is a number, a string (80 characters at most), a boolean or `null`. `{ v, min, max, warn }` draws a meter
+(with `min` and `max`) and turns the row red (`warn: true`). A name is 48 characters at most and a snapshot carries
+64 fields at most. What JSON cannot carry (`NaN`, a BigInt, a function, a nested object) is dropped or becomes `null`,
+so one bad number never costs the frame, and a provider that throws is skipped. `monitor()` and a function `extra`
+are asked every frame, `monitor.extra(fn)` only when a frame goes out (about 15 a second): keep anything
+expensive there. On a name two sources share, `extra` beats the world and a later `monitor.extra` beats an earlier one.
+
 ## OSC output
 
 ```bash

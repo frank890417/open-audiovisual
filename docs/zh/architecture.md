@@ -35,7 +35,7 @@ timeline.state(t)          — automation curves per param
   ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals
 ```
 
-覆寫會*黏住*：一旦有旋鈕碰過 `bloom`，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕）。這跟演出現場一樣：人一伸手接管，樂譜就讓位。
+覆寫會*黏住*：一旦有旋鈕碰過 `bloom`，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕）。這跟演出現場一樣：人一伸手接管，樂譜就讓位。路由可以選別的做法：`mode: 'trim'` 把旋鈕疊加在時間軸的值上、不取代它，`release` 讓旋鈕靜止時把參數還回去（[映射](mapping.md#trim-pickup-and-release)）。
 
 ## L1 · 輸入：訊號（Signals）
 

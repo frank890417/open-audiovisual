@@ -170,7 +170,7 @@ L2 映射 · 從訊號接到參數的路由，含曲線、平滑、learn，以�
 
 | 匯出 | 簽章 |
 |---|---|
-| `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`、`learnTarget` |
+| `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn, base })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`、`learnTarget` |
 | `LearnWizard` | `new LearnWizard({ mapper, keys, onChange })` · `start()` · `skip()` · `back()` · `stop()` · `sync()` · `active`、`current`、`index`、`total`、`done`、`added`：「依序對應旋鈕」，見[總譜與導演](score.md#map-the-knobs-in-order) |
 
 ```js
@@ -178,6 +178,9 @@ import { Mapper } from '@openav/mapping';
 const mapper = new Mapper({ signals, params });
 mapper.addRoute({ source: 'midi/cc/74', target: 'bloom', curve: 'exp', smooth: 0.1 });
 // every frame: mapper.update(dt);
+// a knob that nudges the timeline instead of replacing it, and gives the param back when you let go:
+// mapper.base = () => timeline.state();
+// mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'trim', outMin: -0.3, outMax: 0.3, release: 4 });
 ```
 
 完整說明：見[映射](mapping.md)。
@@ -385,8 +388,9 @@ p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
 
 | 匯出 | 簽章 |
 |---|---|
-| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15 })` · `connect()` · `frame(snapshot)` · `connected`、`onStatus` |
-| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop }, state)` → 一份 JSON 快照 |
+| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15, extra })` · `connect()` · `frame(snapshot)` · `extra(fn)` → `off()` · `connected`、`onStatus` |
+| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop, extra? }, state)` → 一份 JSON 快照；作品自己的數字（`extra`、目前啟用的世界的 `monitor()`）放在快照的 `extra` 下 |
+| `cleanExtra` | `cleanExtra(x)` → 把作品的數字整理成 JSON 帶得走的樣子（每個欄位是數字、字串、布林、null 或 `{ v, min, max, warn }`），沒有任何欄位時回傳 `null` |
 | 伺服器 | `node packages/monitor/server.js [port=7457]`：後台頁面在 `/`，另有 `/health` |
 
 見[演出控制](show-control.md#backstage-monitor)。

@@ -15,6 +15,8 @@
 | `curve` | `'linear'` | `linear`、`exp`、`log` 或 `smooth` |
 | `invert` | `false` | 在套用曲線之前，把正規化後的值翻過來（1 − x） |
 | `smooth` | `0` | 滑到新值所需的時間，單位是秒（0 = 立即到位） |
+| `mode` | （沒寫 = `'override'`） | `'override'` 取代時間軸的值，`'trim'` 疊加在它上面，`'pickup'` 要旋鈕先碰到參數的值才接管：見[微調、接管與放手](#trim-pickup-and-release) |
+| `release` | （沒寫 = 不放手） | 訊號靜止這麼多秒之後，路由放手、時間軸接回去 |
 | `enabled` | （沒寫 = 開啟） | 設成 `false` 就把這條路由靜音 |
 | `id` | 自動指定 | 一個數字，移除路由時用 |
 
@@ -34,7 +36,7 @@ show.mapper.addRoute({ source: 'hand/right/pinch/index', target: 'tightness', cu
 2. **反轉**：如果有 `invert`，`x = 1 − x`。
 3. **曲線**：`x = curve(x)`。
 4. **縮放**：`out = outMin + (outMax − outMin) · x`。
-5. **寫入**：`smooth: 0` 時，直接用 `out` 覆寫參數（並限制在參數的範圍內、對齊它的 `step`）。`smooth > 0` 時，`out` 變成一個目標值，`mapper.update(dt)` 每個影格把參數往它推近一點。
+5. **寫入**：`smooth: 0` 時，直接用 `out` 覆寫參數（並限制在參數的範圍內、對齊它的 `step`）。`smooth > 0` 時，`out` 變成一個目標值，`mapper.update(dt)` 每個影格把參數往它推近一點。`trim` 路由寫的是時間軸的值加上 `out`；`pickup` 路由在旋鈕碰到參數之前什麼都不寫。
 
 ## 曲線
 
@@ -61,7 +63,7 @@ show.mapper.addRoute({ source: 'hand/right/pinch/index', target: 'tightness', cu
 
 ## 平滑
 
-`smooth` 是時間常數，單位是秒：過了 `smooth` 秒，參數大約走完到新值 63% 的距離（單極點濾波器，每個影格 `k = 1 − e^(−dt/smooth)`）。0.05–0.15 可以藏住 MIDI 旋鈕或 30 Hz 手機資料流的階梯感，0.2–0.5 會讓手的動作變得沉重。滑行從參數目前的值出發，所以第一下動作絕不會跳。
+`smooth` 是時間常數，單位是秒：過了 `smooth` 秒，參數大約走完到新值 63% 的距離（單極點濾波器，每個影格 `k = 1 − e^(−dt/smooth)`）。0.05–0.15 可以藏住 MIDI 旋鈕或 30 Hz 手機資料流的階梯感，0.2–0.5 會讓手的動作變得沉重。滑行從參數目前的值出發（手動設的值，否則就是時間軸現在說的，見 [`base`](#telling-the-mapper-where-the-timeline-is)），所以第一下動作絕不會跳，而且滑到了就停筆。
 
 ## 脈衝目標
 
@@ -82,7 +84,66 @@ show.mapper.addRoute({ source: 'hand/right/pinch/index', target: 'tightness', cu
 
 路由用**覆寫**的方式寫入參數，而覆寫會黏住：映射過來的訊號一動，時間軸就不再推那個參數。清掉覆寫（按參數旁的 ✕，或 `show.params.clearOverride(key)`），參數就交還給時間軸，直到訊號再動一次。
 
-*有平滑*的路由，只要訊號來過一次，之後每個影格都會繼續寫入最後的目標值，所以就算按了 ✕、就算路由已經靜音，參數還是維持覆寫。要把參數永遠交還給時間軸，就移除那條路由（**L2 · Mapping**（映射）面板裡的 ✕）。
+*有平滑*的路由只在滑行的時候寫入。滑到了就停筆，所以按 ✕（或你拖動滑桿）就能把參數拿回來，而且在旋鈕再動之前它都會留在手上；滑到一半按 ✕，滑行就停下。映射器會發現參數在它上一次寫入之後被別人寫過，然後退讓。路由靜音之後就不再寫入，參數維持原本的值（靜音的 `trim` 會把偏移還回去）。
+
+取代式的路由握著參數的時候，時間軸的曲線就被丟在一邊。如果旋鈕只該*微調*時間軸，或是放開手就該*還給它*，請看下一節。
+
+## 微調、接管與放手
+
+有三個路由欄位決定旋鈕碰上時間軸時誰說了算。沒寫就全部不起作用：沒有 `mode` 也沒有 `release` 的路由，就是上面說的取代式路由。
+
+| 欄位 | 旋鈕做什麼 |
+|---|---|
+| `mode: 'override'` | 預設：旋鈕的值*取代*時間軸的值，直到按 ✕ |
+| `mode: 'trim'` | 旋鈕的值是一個*偏移*，加在時間軸的值上，時間軸在底下照樣往前走 |
+| `mode: 'pickup'` | 跟 `override` 一樣，但旋鈕要先*碰到*參數現在的值，才接管 |
+| `release: 4` | 任何模式都能用：旋鈕靜止 4 秒就放手，讓時間軸接回去 |
+
+`mode` 和 `release` 對脈衝目標不起作用。
+
+### 告訴映射器時間軸在哪裡
+
+`trim`、`pickup`，還有平滑滑行的起點，都需要知道參數*此刻*在時間軸上的值。映射器從 `base` 取得，它是一個回傳 `{ key: value }` 的函式：
+
+```js
+const mapper = new Mapper({ signals, params, base: () => timeline.state() });
+// a show made with createShow(): hand it the timeline once
+show.mapper.base = () => show.timeline.state();
+```
+
+`timeline.state()` 是*還沒套用覆寫*的值，而且總譜的段落模組已經套用過了，也就是沒有人碰它時參數會有的值。沒有 `base` 的話，映射器用參數的 `def`：對沒有任何自動化的參數是對的，對時間軸畫著曲線的參數就不對。`base` 丟出錯誤或回傳別的東西，就當作沒有，絕不會擋住演出。它要輕：trim 握著參數的每個影格都會問一次，trim 或 pickup 的旋鈕每次讀數也會再問。
+
+### trim：在時間軸上微調
+
+時間軸已經把整場演出畫好的作品，不該因為旋鈕轉到 0.9 就把曲線整條丟掉。`trim` 路由的 `outMin`/`outMax` 是*偏移量*的範圍，參數等於 `時間軸的值 + 偏移`，再夾在參數的範圍內。沒寫的話，旋鈕往兩邊各走參數範圍的一半（旋鈕在中間 = 不動）：
+
+```js
+// ±30° around whatever the timeline says, smoothed
+show.mapper.addRoute({ source: 'midi/cc/74', target: 'hue', mode: 'trim', outMin: -30, outMax: 30, smooth: 0.1 });
+```
+
+- 偏移騎在時間軸上：曲線動，參數每個影格都跟著動。
+- `smooth` 平滑的是偏移量（從 0 開始，不會跳）。
+- 同一個參數上的兩條 trim 路由會相加，所以粗調和細調兩顆旋鈕可以一起用。參數上若同時有取代式路由，`trim` 疊在取代式路由的值上面。
+- trim 握著參數的時候，參數是被覆寫的狀態：控台會在它旁邊顯示 ✕，讀覆寫值的 `timeline.record` 來源拿到的是加總後、觀眾看到的值。✕ 清掉偏移，旋鈕下次再動它就回來。移除或靜音路由，參數馬上交還。
+
+### pickup：到了才接管
+
+旋鈕和參數很少一開始就在同一個位置。用 `mode: 'pickup'` 時，旋鈕的值要先*碰到*參數現在的值，路由才開始寫入：離得不到路由輸出範圍的 2%，或是兩次讀數之間越過了它。之後它就像取代式路由，從參數原本的位置滑過去（不跳）。比較用的是參數此刻的值，所以時間軸在動的時候也成立。`release` 或 ✕ 會把路由放回「還沒碰到」。
+
+### release：還回去
+
+`release: 4` 的意思是：訊號 4 秒沒有動，路由就放手。「動」指的是變化超過輸入窗的 0.1%，從上次算動過的位置開始量，所以慢慢飄也算動，而一直重送同一個值的來源不算。放手時：
+
+- `smooth: 0`：參數當場回到時間軸；
+- `smooth > 0`：用大約三倍 `smooth` 秒淡進時間軸，然後清掉覆寫（`trim` 是把偏移淡到 0）；
+- 放手之後，路由要等來源*再動*才會接管：一直重送同一個值的來源拿不回參數；
+- 它只清自己寫的。如果這段時間滑桿已經接手，就讓它留著。
+
+```js
+// a main knob: meets the value first, glides, and gives the param back 4 s after the hand leaves
+show.mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'pickup', release: 4, smooth: 0.15 });
+```
 
 ## Learn
 
@@ -159,6 +220,7 @@ localStorage.removeItem('openav.map.particles');   // 'particles' = the world's 
 - 這場演出裡沒有東西能產生的 **signal**（例如沒有 Leap Motion 模組卻有 `leap/palm/x`）：略過並列出來。要等第一則訊息才會出現的訊號（`midi/…`、`surface/…`、`phone/…`、`osc/…`、`key…`、`take/…`）會留下，算作「等待中」。
 - 檔案的 `world` 跟現在不同時，`range.out` 會丟掉，讓每個 param 用自己的範圍（`in` 窗、曲線、平滑、反相照樣帶過來）。
 - `version` 比這個版本讀得懂的新，會拒絕並說明。`mapper.toJSON()` 的純陣列（舊作法）仍然可以匯入，當作版本 0。
+- `mode`（`"trim"` 或 `"pickup"`）和 `release`（秒）是版本 1 裡選填的路由欄位，路由有用到才會寫出來。還沒有這兩個欄位的舊版會直接忽略，把那條路由當成取代式路由讀。`trim` 路由的 `range.out` 是偏移量的範圍。
 - 超過 256 KB 或超過 500 條路由的檔案會被拒絕。
 
 ### 開頁就載入：`?map=`
@@ -198,13 +260,14 @@ parseMap(text);                                          // validate without tou
 ```js
 import { Mapper } from '@openav/mapping';
 
-const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn });
+const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn, base });
 mapper.addRoute(route)        // → the stored route (defaults filled in, id assigned)
 mapper.removeRoute(id)
 mapper.routesFor('bloom')     // → routes targeting a param
 mapper.routes                 // the live array
 mapper.learn('bloom')         // arm / cancel learn; mapper.learnTarget is the armed key
-mapper.update(dt)             // every frame: advances smoothed routes
+mapper.base = () => timeline.state()   // the timeline's value now (trim, pickup, smooth start); optional
+mapper.update(dt)             // every frame: glides smoothed routes, keeps trims on the timeline, applies release
 mapper.toJSON(); mapper.fromJSON(array)
 mapper.exportMap(); mapper.importMap(text|object, { mode })   // the portable file, see above
 mapper.clear()                // remove every route (and forget them)

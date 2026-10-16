@@ -45,7 +45,7 @@ timeline automation at time t      (the score; def if the param has no automatio
   ⬑ overridden by → the latest override   (a slider, a mapped knob, a phone fader)
 ```
 
-覆寫會*黏住*（sticky）。一旦有手或路由碰過 `bloom`，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕，或呼叫 `params.clearOverride('bloom')`）。這跟舞台上一樣：人一伸手接管，樂譜就讓位。
+覆寫會*黏住*（sticky）。一旦有手或路由碰過 `bloom`，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕，或呼叫 `params.clearOverride('bloom')`）。這跟舞台上一樣：人一伸手接管，樂譜就讓位。路由可以選別的做法：`mode: 'trim'` 把旋鈕疊加在時間軸的值上，`release` 讓旋鈕靜止時把參數還回去（[映射](mapping.md#trim-pickup-and-release)）。
 
 完整的欄位列表在[寫一個世界](writing-a-world.md#params)。
 
