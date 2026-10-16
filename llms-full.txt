@@ -394,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 916 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 961 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -1084,8 +1084,9 @@ The monitor is a first-class citizen because a show without a backstage is a reh
 ## Around the spines: console and phones
 
 - **Console** (`@openav/console`): the director's desk in the side panel, laid
-  out by layer (Layers → L1 → L2 → L3 → L4 → Signals), plus performance mode.
-  It reads the same objects the loop runs; it owns nothing.
+  out by layer (Layers → L1 → L2 → L3 → L4 → Signals), plus performance mode and
+  a curve view of the whole show's automation. It reads the same objects the loop
+  runs; it owns nothing.
 - **Phones** (`@openav/relay`, `@openav/surface`, `@openav/remote`): phones and
   iPads join a room on a WebSocket relay and publish `phone/*` and `surface/*`
   signals. To the mapper they are one more input. See
@@ -2236,7 +2237,8 @@ const show = await createShow({
 
 A point `[p, v, curve]` is exactly the keyframe `[segment.start + p × segment.dur, v, curve]`, nothing more: the
 timeline compiles every lane when it is built, and `timeline.automation` holds ordinary absolute keyframes, so
-`valueAt`, recording, `mergeTake` and the console behave as before.
+`valueAt`, recording, `mergeTake` and the console behave as before. The desk's [Curves panel](#the-curves-panel) draws
+the lanes across the whole show with the segment ids behind them.
 
 - **Any cut.** The lane is compiled against the *root cut* of the score (the cut a derived cut came from). A cut with
   other lengths reads the same lane with its own lengths, so `(dawn, 0.5)` is half way through dawn in every cut, and
@@ -2339,7 +2341,7 @@ overview, L1 Input, L2 Mapping, L3 Params (sliders with override and learn
 chips), L4 sound, live signal meters and a MIDI log.
 
 Keyboard: **Space** play/pause (at a hold: release) · **→/←** next / previous scene (→ at a hold: release) · **R** reset · **T** performance
-mode · **F** fullscreen · **M** the on-screen MIDI controller (`midi.controllers`) · **Esc** leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the *letters* belong to the piano (T and F are piano keys), so R, T, F and M do nothing until you untick it or press Esc; Space and the arrows always work.
+mode · **F** fullscreen · **M** the on-screen MIDI controller (`midi.controllers`) · **C** the [Curves panel](#the-curves-panel) · **Esc** leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the *letters* belong to the piano (T and F are piano keys), so R, T, F and M do nothing until you untick it or press Esc; Space and the arrows always work.
 
 ### Moving the shortcuts
 
@@ -2363,13 +2365,50 @@ await createShow({
 | `fullscreen` | `F` | fullscreen |
 | `midi` | `M` | the on-screen MIDI controller panel |
 | `cancel` | `Escape` | stop the mapping wizard, or leave keyboard-piano capture |
+| `curves` | `C` | open / close the [Curves panel](#the-curves-panel) (nothing happens while no param is automated) |
 
 A key is a string. `'r'` is the character (either case); `'KeyR'` is the physical key whatever the keyboard layout types there (a Zhuyin layout types ㄐ); `'F6'`, `'Backquote'`, `'ArrowUp'`, `'Space'` are `KeyboardEvent.code` or key names, case does not matter. `'Shift+T'`, `'Ctrl+K'`, `'Alt+…'`, `'Meta+…'` add modifiers: without `Ctrl`, `Alt` or `Meta` in the spec those must not be held (⌘R and Ctrl+F stay the browser's), and a plain letter ignores Shift. Letters (a–z, `;`) stay dead while the piano captures the keyboard, wherever you put them; `F6`, `Backquote` and the like work through it. An unknown action name or a malformed key throws before anything is mounted. The hints on the desk (the play button's tooltip, the HOLD banner, the prompter) print the keys you chose; `desk.keys` (`show.console.keys`) holds them. With `mountConsole` by hand, the `midi` key toggles `app.midiPanel` when you pass one.
 
 With a score the desk also has the Director panel, cue ticks on the scrubber and a prompter with the operator's acts ([Score & Director](score.md#the-desk)). The L2 Mapping panel has **🎛 map knobs in order**, a wizard that arms learn for each param in turn ([details](score.md#map-the-knobs-in-order)).
 
 Override semantics: touch a slider (or a mapped control) and that param leaves
-the timeline's hands until you clear it (✕). Yellow label = overridden.
+the timeline's hands until you clear it (✕). Yellow label = overridden. The [Curves panel](#the-curves-panel)
+shows the same override on the param's curve and clears it with ↩.
+
+### The curves panel
+
+**Curves** shows what the timeline will do to every param, for the whole show at once. It is a panel on the desk,
+collapsed at first: its header opens it, and so does **C**. There is one curve for each param that has automation, time
+across (the same axis as the scrubber, a standby before 0 included) and the param's range up. Press or drag on a curve or
+on the ruler to move the playhead, as on the scrubber. A show with nothing automated has no panel.
+
+- **Segments.** The ruler names the segments (the score's, or the scenes of a plain timeline) and the curves have their
+  boundaries behind them; a dashed gold line is where a `hold` waits. A band too narrow for its name keeps it for the
+  hover tip. A derived cut shows the same curves over its own length, and a lane written per segment sits where its
+  segment is.
+- **The playhead.** A white column, and a ring on the curve where the show is now. The number in the head is the value
+  the show is using this frame.
+- **Overrides.** A param that a slider, a mapped knob or a phone has taken over is marked amber: a dot where it was taken
+  to, a dashed line across the show, and **↩** in its head, which gives the param back to its curve (the same as ✕ on the
+  Params panel). **↩ all** gives back every curve in the view. An override on a param with no curve is not in the view and
+  stays as it is.
+- **Recording.** The take that [`timeline.record`](#curves-loop-cues-recording) is writing into a lane is drawn in red
+  while it plays, and the curve is redrawn when the take closes.
+- **Cost.** Closed, it does nothing: it measures nothing, draws nothing and has not made a canvas. Open, each curve is
+  drawn once, and again only when the automation, the cut or the width changes (an import, a take, an edited keyframe);
+  every frame only the playhead and the overrides are redrawn. Rows scrolled out of the 264 px list are neither drawn nor
+  cleared, so the drawing for fifty automated params is the drawing for about six.
+
+It reads the timeline and the params and nothing else, so it works for any show without the work saying anything.
+
+```js
+const show = await createShow({
+  world,
+  console: { keys: { curves: 'F4' } },       // moves like any key; false switches it off, and the header still opens the panel
+  // console: { curves: false }               leaves the panel out · { curves: { open: true } } starts it open
+});
+show.console.curves.toggle();                // .open · .info() → { keys, bands, axis, stats }
+```
 
 ## Performance mode
 
@@ -2922,6 +2961,7 @@ With a score, the timeline's scenes, total and start come from it (anything you 
 With a score the console adds:
 
 - **Scrubber.** Segment blocks, a tick for every cue (click to jump) and a dashed end on a segment that holds.
+- **Curves panel** (**C**). The automation of every param across the whole show, with the segment ids and the holds behind it, the playhead on each curve, and ↩ where a knob has taken a param away from its curve: [The curves panel](show-control.md#the-curves-panel).
 - **Director panel.** A cut picker (choosing one reloads the page with `?cut=<id>`, so nothing is half-switched), the current segment with a progress bar and the time left, the HOLD banner, the next segment and the countdown, the operator's **acts**, this segment's cues (ticked as they pass), and the red warning for modules that were switched off.
 - **Prompter** (**T**). Fullscreen, large, high-contrast: the segment title, what you do (`acts`), seconds left, the next segment, a HOLD banner while the show waits, and a red line for switched-off modules. Click it or press **T** again to leave. It also works for plain timeline scenes that carry `acts`.
 
@@ -2935,9 +2975,10 @@ With a score the console adds:
 | R | back to the start; stopped; switched-off modules come back |
 | T | prompter |
 | F | fullscreen |
+| C | curves panel |
 | Esc | stop the knob-mapping wizard, or leave keyboard-piano capture |
 
-Typing in a field, a held key (auto-repeat) and any key with ⌘, Ctrl or Alt are ignored. **While the on-screen piano captures the keyboard** (the *keyboard* box ticked in the piano bar) the *letters* belong to the piano: R, T and F do nothing, because T and F are piano keys, and an accidental R must not rewind a show you are playing. Space, the arrows and Esc always work, so you can play and run the show from one keyboard. The MIDI-controller key **M** follows the same rule.
+Typing in a field, a held key (auto-repeat) and any key with ⌘, Ctrl or Alt are ignored. **While the on-screen piano captures the keyboard** (the *keyboard* box ticked in the piano bar) the *letters* belong to the piano: R, T, F and C do nothing, because T and F are piano keys, and an accidental R must not rewind a show you are playing. Space, the arrows and Esc always work, so you can play and run the show from one keyboard. The MIDI-controller key **M** follows the same rule.
 
 ### Map the knobs in order
 
@@ -4740,8 +4781,9 @@ meters, performance mode.
 
 | export | signature |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys })` → `{ render(state), perf, director, wizard, keys, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
-| keyboard | `keys`: `{ play, next, prev, reset, perf, fullscreen, midi, cancel }` → a key or a list (`'F6'`, `'KeyR'`, `'Shift+T'`), `false` = off; `keys: false` = no shortcuts · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`: [Moving the shortcuts](show-control.md#moving-the-shortcuts) |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys, curves })` → `{ render(state), perf, director, curves, wizard, keys, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| Curves panel | `curves`: `false` leaves it out, `{ open: true }` starts it open; `desk.curves` → `{ toggle(force?), open, info() }` (`null` with `curves: false`). One curve per automated param across the whole show, the playhead, overrides with ↩ and ↩ all, click to seek: [The curves panel](show-control.md#the-curves-panel) |
+| keyboard | `keys`: `{ play, next, prev, reset, perf, fullscreen, midi, cancel, curves }` → a key or a list (`'F6'`, `'KeyR'`, `'Shift+T'`), `false` = off; `keys: false` = no shortcuts · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`: [Moving the shortcuts](show-control.md#moving-the-shortcuts) |
 
 See [Show control](show-control.md#the-console).
 

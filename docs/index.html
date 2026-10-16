@@ -851,8 +851,9 @@ The monitor is a first-class citizen because a show without a backstage is a reh
 <h3 id="architecture-around-the-spines-console-and-phones">Around the spines: console and phones<a class="anchor" href="#architecture-around-the-spines-console-and-phones" aria-label="Link to this section">#</a></h3>
 <ul>
 <li><strong>Console</strong> (<code>@openav/console</code>): the director's desk in the side panel, laid
-out by layer (Layers → L1 → L2 → L3 → L4 → Signals), plus performance mode.
-It reads the same objects the loop runs; it owns nothing.</li>
+out by layer (Layers → L1 → L2 → L3 → L4 → Signals), plus performance mode and
+a curve view of the whole show's automation. It reads the same objects the loop
+runs; it owns nothing.</li>
 <li><strong>Phones</strong> (<code>@openav/relay</code>, <code>@openav/surface</code>, <code>@openav/remote</code>): phones and
 iPads join a room on a WebSocket relay and publish <code>phone/*</code> and <code>surface/*</code>
 signals. To the mapper they are one more input. See
@@ -1797,7 +1798,8 @@ segment, 0 to 1.</p>
 });</code></pre></div>
 <p>A point <code>[p, v, curve]</code> is exactly the keyframe <code>[segment.start + p × segment.dur, v, curve]</code>, nothing more: the
 timeline compiles every lane when it is built, and <code>timeline.automation</code> holds ordinary absolute keyframes, so
-<code>valueAt</code>, recording, <code>mergeTake</code> and the console behave as before.</p>
+<code>valueAt</code>, recording, <code>mergeTake</code> and the console behave as before. The desk's <a href="#show-control-the-curves-panel">Curves panel</a> draws
+the lanes across the whole show with the segment ids behind them.</p>
 <ul>
 <li><strong>Any cut.</strong> The lane is compiled against the <em>root cut</em> of the score (the cut a derived cut came from). A cut with
 other lengths reads the same lane with its own lengths, so <code>(dawn, 0.5)</code> is half way through dawn in every cut, and
@@ -1881,7 +1883,7 @@ those panels. It gives you transport + scrubber with scene blocks, the Layers
 overview, L1 Input, L2 Mapping, L3 Params (sliders with override and learn
 chips), L4 sound, live signal meters and a MIDI log.</p>
 <p>Keyboard: <strong>Space</strong> play/pause (at a hold: release) · <strong>→/←</strong> next / previous scene (→ at a hold: release) · <strong>R</strong> reset · <strong>T</strong> performance
-mode · <strong>F</strong> fullscreen · <strong>M</strong> the on-screen MIDI controller (<code>midi.controllers</code>) · <strong>Esc</strong> leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the <em>letters</em> belong to the piano (T and F are piano keys), so R, T, F and M do nothing until you untick it or press Esc; Space and the arrows always work.</p>
+mode · <strong>F</strong> fullscreen · <strong>M</strong> the on-screen MIDI controller (<code>midi.controllers</code>) · <strong>C</strong> the <a href="#show-control-the-curves-panel">Curves panel</a> · <strong>Esc</strong> leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the <em>letters</em> belong to the piano (T and F are piano keys), so R, T, F and M do nothing until you untick it or press Esc; Space and the arrows always work.</p>
 <h4 id="show-control-moving-the-shortcuts">Moving the shortcuts<a class="anchor" href="#show-control-moving-the-shortcuts" aria-label="Link to this section">#</a></h4>
 <p>A show that plays the computer keyboard as a piano wants its letters. <code>keys</code> maps each action to a key (or a list of keys), laid over the defaults; <code>false</code> switches one action off, and <code>keys: false</code> switches every shortcut off.</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// the piano owns the letters: move the desk's R, T, F and M to keys it does not use</span>
@@ -1900,12 +1902,44 @@ mode · <strong>F</strong> fullscreen · <strong>M</strong> the on-screen MIDI c
 <tr><td><code>fullscreen</code></td><td><code>F</code></td><td>fullscreen</td></tr>
 <tr><td><code>midi</code></td><td><code>M</code></td><td>the on-screen MIDI controller panel</td></tr>
 <tr><td><code>cancel</code></td><td><code>Escape</code></td><td>stop the mapping wizard, or leave keyboard-piano capture</td></tr>
+<tr><td><code>curves</code></td><td><code>C</code></td><td>open / close the <a href="#show-control-the-curves-panel">Curves panel</a> (nothing happens while no param is automated)</td></tr>
 </tbody>
 </table></div>
 <p>A key is a string. <code>'r'</code> is the character (either case); <code>'KeyR'</code> is the physical key whatever the keyboard layout types there (a Zhuyin layout types ㄐ); <code>'F6'</code>, <code>'Backquote'</code>, <code>'ArrowUp'</code>, <code>'Space'</code> are <code>KeyboardEvent.code</code> or key names, case does not matter. <code>'Shift+T'</code>, <code>'Ctrl+K'</code>, <code>'Alt+…'</code>, <code>'Meta+…'</code> add modifiers: without <code>Ctrl</code>, <code>Alt</code> or <code>Meta</code> in the spec those must not be held (⌘R and Ctrl+F stay the browser's), and a plain letter ignores Shift. Letters (a–z, <code>;</code>) stay dead while the piano captures the keyboard, wherever you put them; <code>F6</code>, <code>Backquote</code> and the like work through it. An unknown action name or a malformed key throws before anything is mounted. The hints on the desk (the play button's tooltip, the HOLD banner, the prompter) print the keys you chose; <code>desk.keys</code> (<code>show.console.keys</code>) holds them. With <code>mountConsole</code> by hand, the <code>midi</code> key toggles <code>app.midiPanel</code> when you pass one.</p>
 <p>With a score the desk also has the Director panel, cue ticks on the scrubber and a prompter with the operator's acts (<a href="#score-the-desk">Score &amp; Director</a>). The L2 Mapping panel has <strong>🎛 map knobs in order</strong>, a wizard that arms learn for each param in turn (<a href="#score-map-the-knobs-in-order">details</a>).</p>
 <p>Override semantics: touch a slider (or a mapped control) and that param leaves
-the timeline's hands until you clear it (✕). Yellow label = overridden.</p>
+the timeline's hands until you clear it (✕). Yellow label = overridden. The <a href="#show-control-the-curves-panel">Curves panel</a>
+shows the same override on the param's curve and clears it with ↩.</p>
+<h4 id="show-control-the-curves-panel">The curves panel<a class="anchor" href="#show-control-the-curves-panel" aria-label="Link to this section">#</a></h4>
+<p><strong>Curves</strong> shows what the timeline will do to every param, for the whole show at once. It is a panel on the desk,
+collapsed at first: its header opens it, and so does <strong>C</strong>. There is one curve for each param that has automation, time
+across (the same axis as the scrubber, a standby before 0 included) and the param's range up. Press or drag on a curve or
+on the ruler to move the playhead, as on the scrubber. A show with nothing automated has no panel.</p>
+<ul>
+<li><strong>Segments.</strong> The ruler names the segments (the score's, or the scenes of a plain timeline) and the curves have their
+boundaries behind them; a dashed gold line is where a <code>hold</code> waits. A band too narrow for its name keeps it for the
+hover tip. A derived cut shows the same curves over its own length, and a lane written per segment sits where its
+segment is.</li>
+<li><strong>The playhead.</strong> A white column, and a ring on the curve where the show is now. The number in the head is the value
+the show is using this frame.</li>
+<li><strong>Overrides.</strong> A param that a slider, a mapped knob or a phone has taken over is marked amber: a dot where it was taken
+to, a dashed line across the show, and <strong>↩</strong> in its head, which gives the param back to its curve (the same as ✕ on the
+Params panel). <strong>↩ all</strong> gives back every curve in the view. An override on a param with no curve is not in the view and
+stays as it is.</li>
+<li><strong>Recording.</strong> The take that <a href="#show-control-curves-loop-cues-recording"><code>timeline.record</code></a> is writing into a lane is drawn in red
+while it plays, and the curve is redrawn when the take closes.</li>
+<li><strong>Cost.</strong> Closed, it does nothing: it measures nothing, draws nothing and has not made a canvas. Open, each curve is
+drawn once, and again only when the automation, the cut or the width changes (an import, a take, an edited keyframe);
+every frame only the playhead and the overrides are redrawn. Rows scrolled out of the 264 px list are neither drawn nor
+cleared, so the drawing for fifty automated params is the drawing for about six.</li>
+</ul>
+<p>It reads the timeline and the params and nothing else, so it works for any show without the work saying anything.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world,
+  console: { keys: { curves: <span class="ts">'F4'</span> } },       <span class="tc">// moves like any key; false switches it off, and the header still opens the panel</span>
+  <span class="tc">// console: { curves: false }               leaves the panel out · { curves: { open: true } } starts it open</span>
+});
+show.console.curves.toggle();                <span class="tc">// .open · .info() → { keys, bands, axis, stats }</span></code></pre></div>
 <h3 id="show-control-performance-mode">Performance mode<a class="anchor" href="#show-control-performance-mode" aria-label="Link to this section">#</a></h3>
 <p><strong>T</strong> flips to a fullscreen teleprompter: current scene title + note in stage-
 readable type, what the operator does (the scene's <code>acts</code>), next scene preview, clock + scene countdown, a HOLD banner while the show waits, and a warning when a segment module was switched off. This is for the
@@ -2353,6 +2387,7 @@ timeline.onSeek((t, kind) =&gt; (kind === <span class="ts">'reset'</span> ? dire
 <p>With a score the console adds:</p>
 <ul>
 <li><strong>Scrubber.</strong> Segment blocks, a tick for every cue (click to jump) and a dashed end on a segment that holds.</li>
+<li><strong>Curves panel</strong> (<strong>C</strong>). The automation of every param across the whole show, with the segment ids and the holds behind it, the playhead on each curve, and ↩ where a knob has taken a param away from its curve: <a href="#show-control-the-curves-panel">The curves panel</a>.</li>
 <li><strong>Director panel.</strong> A cut picker (choosing one reloads the page with <code>?cut=&lt;id&gt;</code>, so nothing is half-switched), the current segment with a progress bar and the time left, the HOLD banner, the next segment and the countdown, the operator's <strong>acts</strong>, this segment's cues (ticked as they pass), and the red warning for modules that were switched off.</li>
 <li><strong>Prompter</strong> (<strong>T</strong>). Fullscreen, large, high-contrast: the segment title, what you do (<code>acts</code>), seconds left, the next segment, a HOLD banner while the show waits, and a red line for switched-off modules. Click it or press <strong>T</strong> again to leave. It also works for plain timeline scenes that carry <code>acts</code>.</li>
 </ul>
@@ -2366,10 +2401,11 @@ timeline.onSeek((t, kind) =&gt; (kind === <span class="ts">'reset'</span> ? dire
 <tr><td><kbd>R</kbd></td><td>back to the start; stopped; switched-off modules come back</td></tr>
 <tr><td><kbd>T</kbd></td><td>prompter</td></tr>
 <tr><td><kbd>F</kbd></td><td>fullscreen</td></tr>
+<tr><td><kbd>C</kbd></td><td>curves panel</td></tr>
 <tr><td><kbd>Esc</kbd></td><td>stop the knob-mapping wizard, or leave keyboard-piano capture</td></tr>
 </tbody>
 </table></div>
-<p>Typing in a field, a held key (auto-repeat) and any key with ⌘, Ctrl or Alt are ignored. <strong>While the on-screen piano captures the keyboard</strong> (the <em>keyboard</em> box ticked in the piano bar) the <em>letters</em> belong to the piano: R, T and F do nothing, because T and F are piano keys, and an accidental R must not rewind a show you are playing. Space, the arrows and Esc always work, so you can play and run the show from one keyboard. The MIDI-controller key <strong>M</strong> follows the same rule.</p>
+<p>Typing in a field, a held key (auto-repeat) and any key with ⌘, Ctrl or Alt are ignored. <strong>While the on-screen piano captures the keyboard</strong> (the <em>keyboard</em> box ticked in the piano bar) the <em>letters</em> belong to the piano: R, T, F and C do nothing, because T and F are piano keys, and an accidental R must not rewind a show you are playing. Space, the arrows and Esc always work, so you can play and run the show from one keyboard. The MIDI-controller key <strong>M</strong> follows the same rule.</p>
 <h4 id="score-map-the-knobs-in-order">Map the knobs in order<a class="anchor" href="#score-map-the-knobs-in-order" aria-label="Link to this section">#</a></h4>
 <p>The L2 Mapping panel has <strong>🎛 map knobs in order</strong>. It arms learn for the first param, you turn one knob, it is bound and the next param is armed; <em>skip</em>, <em>back</em> and <em>stop</em> (or Esc) steer it. Learn only ever <strong>adds</strong> routes (<code>Mapper.learn</code>), so running it again puts a second knob on a param and keeps the first. The order is the declared order of the params, skipping hidden ones; pass <code>mountConsole(el, app, { learnOrder: ['hue', 'size'] })</code> for your own. The logic is <code>LearnWizard</code> in <code>@openav/mapping</code>:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { LearnWizard } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
@@ -3909,8 +3945,9 @@ meters, performance mode.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder, keys })</code> → <code>{ render(state), perf, director, wizard, keys, dispose() }</code>; <code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
-<tr><td>keyboard</td><td><code>keys</code>: <code>{ play, next, prev, reset, perf, fullscreen, midi, cancel }</code> → a key or a list (<code>'F6'</code>, <code>'KeyR'</code>, <code>'Shift+T'</code>), <code>false</code> = off; <code>keys: false</code> = no shortcuts · <code>DEFAULT_KEYS</code> · <code>resolveKeys(keys)</code> · <code>keyLabel(keys, action)</code>: <a href="#show-control-moving-the-shortcuts">Moving the shortcuts</a></td></tr>
+<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder, keys, curves })</code> → <code>{ render(state), perf, director, curves, wizard, keys, dispose() }</code>; <code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td>Curves panel</td><td><code>curves</code>: <code>false</code> leaves it out, <code>{ open: true }</code> starts it open; <code>desk.curves</code> → <code>{ toggle(force?), open, info() }</code> (<code>null</code> with <code>curves: false</code>). One curve per automated param across the whole show, the playhead, overrides with ↩ and ↩ all, click to seek: <a href="#show-control-the-curves-panel">The curves panel</a></td></tr>
+<tr><td>keyboard</td><td><code>keys</code>: <code>{ play, next, prev, reset, perf, fullscreen, midi, cancel, curves }</code> → a key or a list (<code>'F6'</code>, <code>'KeyR'</code>, <code>'Shift+T'</code>), <code>false</code> = off; <code>keys: false</code> = no shortcuts · <code>DEFAULT_KEYS</code> · <code>resolveKeys(keys)</code> · <code>keyLabel(keys, action)</code>: <a href="#show-control-moving-the-shortcuts">Moving the shortcuts</a></td></tr>
 </tbody>
 </table></div>
 <p>See <a href="#show-control-the-console">Show control</a>.</p>
