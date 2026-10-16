@@ -16,6 +16,10 @@
 // automation: { paramKey: [[t, value, curve?], …] }  linear interp (step params hold)
 //   curve = the way the segment that ENDS at this keyframe gets there: 'linear' (default) · 'ease' · 'in' · 'out' · 'step'
 //   (or a function f ∈ [0,1] → [0,1]). A keyframe without a third item is exactly what it always was.
+// automation: { paramKey: { segmentId: [[p, value, curve?], …] } }   a LANE: the same keyframes written per segment, p = 0…1
+//   through it ('ease' etc. as above; a bare number holds the whole segment). Compiled at construction against the ROOT cut
+//   of the score (or the scenes without one), so a cut with other lengths — or a derived one — reads the same (segment, p)
+//   the same way. Absolute-second arrays and lanes mix freely in one automation.
 // scenes:     [{ id, t, title?, note?, act?, acts?, hold?, cues? }, …]  t may be negative (pre-show standby)
 //
 // Since the score (@openav/score): pass `score` and the scenes, the total and the start come
@@ -37,11 +41,62 @@ const curveFn = (kind) => (typeof kind === 'function' ? kind : CURVES[kind] || C
 /** A hold parks the playhead this far before the boundary, so it still belongs to the segment that is waiting. */
 export const HOLD_EPS = 1e-6;
 
+// ───────────────────────────────────────────────────────────────────────────────────────────
+// lanes：以段落為單位寫曲線。一個 lane ＝ { 段落 id: [[p, 值, 曲線?], …] }，p 是段內進度 0…1。
+// 一個點 [p, v, c] 就是絕對秒的關鍵點 [段首 + p × 段長, v, c]，沒有別的規則：段與段之間照一般關鍵點內插，
+// 兩點落在同一秒（上一段的 p=1、下一段的 p=0）就是跳變。段落表 plan ＝ [{ id, start, end? | dur? }]：
+// score.rootSegments 或 timeline.lanePlan() 的樣子。這些函式不認得 Timeline，工具也能單獨用。
+// ───────────────────────────────────────────────────────────────────────────────────────────
+
+/** 物件＝ lane（每段一組點）；陣列＝絕對秒的關鍵點。 */
+export const isLane = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
+
+const bounds = (s) => [s.start, s.end ?? s.start + s.dur];
+const secOf = (s, p) => { const [a, b] = bounds(s); return p === 0 ? a : p === 1 ? b : a + p * (b - a); };   // p=0／1 落在段界上，不留浮點誤差
+const show = (x) => (typeof x === 'string' ? JSON.stringify(x) : String(x));
+
+/**
+ * lane → 絕對秒的關鍵點 [[t, v, curve?], …]（已照時間排好）。
+ * 數字＝整段維持這個值；null／undefined＝這段不寫。`known` 是「任何一個 cut 有過的段落 id」：
+ * lane 寫到「這個 cut 沒有、別的 cut 有」的段就略過（結構不同的 cut 各自成立），誰都沒有的才丟錯（多半是打錯字）。
+ */
+export function compileLane(plan, lane, { key = '?', known = null } = {}) {
+  const at = (id, i) => `[timeline] automation "${key}", segment "${id}"${i === undefined ? '' : `, point [${i}]`}`;
+  const index = new Map();
+  plan.forEach((s, i) => { if (!index.has(s.id)) index.set(s.id, i); });
+  const rows = [];
+  for (const [id, raw] of Object.entries(lane)) {
+    if (raw === null || raw === undefined) continue;
+    const si = index.get(id);
+    if (si === undefined) {
+      if (known && known.has(id)) continue;
+      throw new Error(`[timeline] automation "${key}": there is no segment "${id}" (segments: ${plan.map((s) => s.id).join(', ') || 'none'})`);
+    }
+    if (typeof raw === 'number' && !Number.isFinite(raw)) throw new Error(`${at(id)}: the value must be a finite number (got ${show(raw)})`);
+    const pts = typeof raw === 'number' ? [[0, raw], [1, raw]] : raw;
+    if (!Array.isArray(pts)) throw new Error(`${at(id)}: expected a number or a list of [p, value, curve?] points (got ${show(raw)})`);
+    if (!pts.length) throw new Error(`${at(id)}: needs at least one point`);
+    let last = -Infinity;
+    pts.forEach((pt, i) => {
+      if (!Array.isArray(pt) || pt.length < 2) throw new Error(`${at(id, i)}: a point is [p, value, curve?]`);
+      const [p, v, c] = pt;
+      if (!(Number.isFinite(p) && p >= 0 && p <= 1)) throw new Error(`${at(id, i)}: p must be a number from 0 to 1 (got ${show(p)})`);
+      if (!Number.isFinite(v)) throw new Error(`${at(id, i)}: the value must be a finite number (got ${show(v)})`);
+      if (p < last) throw new Error(`${at(id, i)}: p must be in ascending order (${p} comes after ${last})`);
+      last = p;
+      const t = secOf(plan[si], p);
+      rows.push({ t, si, order: rows.length, kf: c === undefined || c === null ? [t, v] : [t, v, c] });
+    });
+  }
+  rows.sort((x, y) => x.t - y.t || x.si - y.si || x.order - y.order);   // 同一秒：先上一段的 p=1，再下一段的 p=0，後者是跳變後的值
+  return rows.map((r) => r.kf);
+}
+
 export class Timeline {
   constructor({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null }) {
     this.params = params;           // Params instance or plain schema array
     this.schema = Array.isArray(params) ? params : params.schema;
-    this.automation = automation;
+    this.automation = automation;   // 全是絕對秒的陣列時就是你傳進來的那個物件；有 lane 的鍵會在下面編成陣列（新物件）
     this.score = score;
     // with a score the structure comes from it, and automation (written once against the root cut) stretches with a derived cut
     this.scenes = score ? score.scenes() : scenes;
@@ -64,6 +119,7 @@ export class Timeline {
     this._cueIncl = true;           // the first advance after construct / reset() also fires a cue sitting exactly on the start
     this._loopCbs = [];
     this._recCbs = [];
+    if (automation && Object.values(automation).some(isLane)) this.automation = this._compileAutomation(automation);
   }
 
   _autoTime(t) { return this.score ? this.score.baseTime(t) : t; }
@@ -95,6 +151,33 @@ export class Timeline {
       s[p.key] = this.layer ? this.layer(p.key, v, t) : v;
     }
     return s;
+  }
+
+  // ── lanes：以段落為單位的自動化 ─────────────────────────────────────
+  // 這一節的「秒」都是 automation 的秒（root cut 的秒），也就是 timeline.automation 裡 t 的意思；
+  // 衍生 cut 的 show 秒要先 score.baseTime(T)，或直接用 score.locate(T) / score.timeAt(id, p)。
+
+  /** 段落表 [{ id, start, end, dur }]，automation 的秒：有總譜用它的 root cut，沒有就用 scenes（一個 scene 到下一個 scene 開始為止）。 */
+  _plan() {
+    const sc = this.score;
+    if (sc && Array.isArray(sc.rootSegments)) return sc.rootSegments;
+    return this.scenes.map((x, i) => {                         // 沒有 rootSegments 的 score（替身）：把 scenes 還原成 automation 的秒
+      const a = this._autoTime(x.t), b = Math.max(a, this._autoTime(this.sceneEnd(i)));
+      return { id: x.id, start: a, end: b, dur: b - a };
+    });
+  }
+  /** 每次都回新陣列，改它不會動到總譜。 */
+  lanePlan() { return this._plan().map(({ id, start, end, dur }) => ({ id, start, end, dur })); }
+  _known() { const sc = this.score; return sc && typeof sc.allSegmentIds === 'function' ? sc.allSegmentIds() : null; }
+
+  _laneKeyframes(key, lane, plan = this._plan(), known = this._known()) {
+    if (!plan.length) throw new Error(`[timeline] automation "${key}" is written per segment, but this timeline has no segments (pass a score, or scenes with ids)`);
+    return compileLane(plan, lane, { key, known });
+  }
+  _compileAutomation(src) {
+    const plan = this._plan(), known = this._known(), out = {};
+    for (const [key, v] of Object.entries(src)) out[key] = isLane(v) ? this._laneKeyframes(key, v, plan, known) : v;
+    return out;
   }
 
   sceneIndexAt(t = this.t) { let i = 0; for (let k = 0; k < this.scenes.length; k++) if (t >= this.scenes[k].t) i = k; return i; }
