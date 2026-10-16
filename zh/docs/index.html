@@ -611,10 +611,11 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
   sound?.update(state);                          <span class="tc">// 4. sound/* params reach the synth</span>
   remote?.frame(dt, state);                      <span class="tc">//    param values echo back to phones</span>
   consoleUI.render(state);                       <span class="tc">// 5. the desk reflects reality</span>
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it</span>
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it (not with monitor: false)</span>
 });</code></pre></div>
 <p>訊號在兩格<em>之間</em>進來，裝置或 socket 什麼時候觸發，就什麼時候到。沒有平滑的路由會立刻寫入參數，有平滑的路由則是設一個目標值，由 <code>mapper.update(dt)</code> 慢慢滑過去。<code>createShow()</code> 不包含 OSC 輸出，要用的話，在 <code>onFrame</code> 裡呼叫 flush 送出（見<a href="#show-control-osc-output">演出控制</a>）。</p>
 <p><code>dt</code> 以秒為單位，上限夾在 0.1（<code>new Loop(fn, { maxDt })</code>），所以就算卡頓，世界也不會爆掉。瀏覽器凍結 <code>requestAnimationFrame</code> 的時候（例如投影視窗被切到背景），一個 Web Worker 心跳會讓迴圈繼續跑，大約每 66 ms 一次（約每秒 15 格）。有人切了視窗，時間軸、映射中的訊號和後台資料流也不能停。</p>
+<p>誰來給影格是一個選擇，頁面自己的只是預設。<code>new Loop(fn, { clock, raf })</code> 讓時間和影格請求由你供應（測試用的假計時器、錄影工具的影格推進器），<code>new Loop(fn, { manual: true })</code> 則什麼都不排程：每次 <code>loop.step(dt)</code> 就是一個影格。<code>createShow({ loop: 'manual' })</code> 對整場演出做的就是這件事（<a href="#show-control-driving-the-frames-yourself">自己驅動影格</a>）。</p>
 <p>參數解析的順序（整個設計的核心）：</p>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">timeline.state(t)          — automation curves per param
   ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
@@ -1231,6 +1232,9 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>mount</code></td><td>自動產生</td><td>要渲染進去的 <code>{ stage, side }</code> 元素或選擇器，取代整頁版面</td></tr>
 <tr><td><code>telemetry</code></td><td><code>true</code></td><td>每次載入頁面送一筆匿名的 <code>oav_show_start</code>（見控制器章的〈使用統計〉），<code>false</code> 就不送</td></tr>
 <tr><td><code>score</code></td><td><code>null</code></td><td><code>{ cuts, cut, modules, api, midi, … }</code>：把演出的結構寫成段落長度，由段落模組去演出。網址上的 <code>?cut=&lt;id&gt;</code> 決定用哪個版本（<a href="#score-use-it-with-createshow">總譜與導演</a>）</td></tr>
+<tr><td><code>loop</code></td><td><code>'auto'</code></td><td>誰來給影格：<code>'auto'</code>（頁面的 <code>requestAnimationFrame</code>）、<code>'manual'</code>（你自己呼叫 <code>show.loop.step(dt)</code>），或 <code>{ clock, raf, maxDt, heartbeat }</code>，也就是 <code>new Loop()</code> 的選項（<a href="#show-control-driving-the-frames-yourself">見下</a>）</td></tr>
+<tr><td><code>monitor</code></td><td><code>true</code></td><td><a href="#show-control-backstage-monitor">後台推送</a>：<code>false</code> = 不推送（頁面不會開任何 socket），<code>{ url, hz }</code> = 換一個中繼位址或頻率</td></tr>
+<tr><td><code>console</code></td><td><code>null</code></td><td><a href="#show-control-the-console">控台</a>的選項，也就是 <code>mountConsole</code> 的：<code>{ keys, layers, signals, learnOrder }</code>；<code>keys</code> 用來挪動鍵盤快捷鍵</td></tr>
 </tbody>
 </table></div>
 <p>沒有 <code>mount</code> 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。</p>
@@ -1249,7 +1253,26 @@ mapper.dispose()              <span class="tc">// stop listening to signals</spa
 <tr><td><code>sound</code></td><td><code>true</code>、樂器 id（<code>'piano'</code>）或 <code>{ instrument, remember, picker, engine, baseUrl }</code></td><td>頁面裡的樂器和選單，用 Tone.js（<a href="#show-control-sound">聲音</a>）</td></tr>
 </tbody>
 </table></div>
-<p>它回傳 <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, console, app, loop }</code>，你沒要的部分是 <code>null</code>。同一個物件也掛在 <code>window.openav</code>，方便在 devtools 主控台裡查看。每個影格的執行順序寫在<a href="#architecture-the-frame-loop">架構</a>。</p>
+<p>它回傳 <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, monitor, console, app, loop }</code>，你沒要的部分是 <code>null</code>。同一個物件也掛在 <code>window.openav</code>，方便在 devtools 主控台裡查看。每個影格的執行順序寫在<a href="#architecture-the-frame-loop">架構</a>。</p>
+<h4 id="show-control-driving-the-frames-yourself">自己驅動影格<a class="anchor" href="#show-control-driving-the-frames-yourself" aria-label="這一節的連結">#</a></h4>
+<p>預設情況下，演出跑在頁面的 <code>requestAnimationFrame</code> 上（分頁被藏起來時，由 Web Worker 心跳接手）。<code>loop</code> 讓你改由別人給影格：這樣就能一格一格精確錄影、把整場演出當一個單元測試、或讓它在沒有視窗的機器上跑一整晚，而不必換掉頁面的全域 <code>requestAnimationFrame</code> 或 <code>performance.now</code>。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// 'manual': nothing runs until you say so. Thirty show seconds, the same thirty every time.</span>
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, loop: <span class="ts">'manual'</span>, monitor: <span class="tk">false</span> });
+show.timeline.play();
+<span class="tk">for</span> (<span class="tk">let</span> i = 0; i &lt; 60 * 30; i++) show.loop.step(1 / 60);
+
+<span class="tc">// your own clock and frame pump (a test, a recorder): the show runs on whatever these say</span>
+<span class="tk">const</span> frames = [];
+<span class="tk">let</span> now = 0;
+<span class="tk">const</span> driven = <span class="tk">await</span> createShow({ world, loop: { clock: () =&gt; now, raf: (cb) =&gt; frames.push(cb) } });
+now += 1000 / 60;
+frames.splice(0).forEach((cb) =&gt; cb(now));              <span class="tc">// one frame</span></code></pre></div>
+<ul>
+<li><code>'auto'</code>（或不寫 <code>loop</code>）就是演出一直以來的行為。</li>
+<li><code>'manual'</code> 什麼都不排程。<code>show.loop.step(dt)</code> 會跑一個完整的影格（<a href="#architecture-the-frame-loop">執行順序</a>），長度 <code>dt</code> 秒。<code>dt</code> 不會被夾到 0.1 秒（那是你自己決定的），<code>0</code> 是原地重畫一次，負數或不是數字的 <code>dt</code> 什麼都不跑、回傳 <code>false</code>。<code>onFrame</code> 和 <code>show.loop.fps</code> 看到的時間是虛擬的：已經 step 過的 <code>dt</code> 的總和，所以步數相同的兩次執行就是同一次執行。第一次 step 之前不會畫任何東西，時間軸也只有在播放中才會前進（<code>show.timeline.play()</code>）。</li>
+<li><code>{ clock, raf }</code> 維持自動迴圈，但時間由你供應。<code>clock()</code> 回傳毫秒，<code>raf(cb)</code> 要求下一格呼叫一次 <code>cb</code>，<code>cb(now)</code> 可以帶時間戳記（沒帶就讀 <code>clock()</code>）。Worker 心跳會關掉，因為真實的計時器不該去推一個假時鐘；<code>heartbeat: true</code> 可以重新打開。<code>maxDt</code> 對這些影格照樣有效。</li>
+</ul>
+<p>交出去的只有影格迴圈。<code>Date.now</code>、<code>setTimeout</code>、映射器的自動存檔、Web MIDI 和音訊引擎照樣用真實時間，後台推送也是用牆上時鐘自己節流，所以錄影時要把 <code>loop: 'manual'</code> 和 <code>monitor: false</code> 一起用。自己組裝的演出用 <code>new Loop(fn, { manual: true })</code> 做同一件事（<a href="#packages-openav-core"><code>@openav/core</code></a>）。</p>
 <h3 id="show-control-timeline">時間軸<a class="anchor" href="#show-control-timeline" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> timeline = <span class="tk">new</span> Timeline({
   params,
@@ -1367,8 +1390,29 @@ createShow({ world, timeline: { total: 120, anchor: { mode: <span class="ts">'ca
 <p><code>'catch-up'</code> 做的事：把差額加進那一個影格的步長，所以 cue、hold 和 loop 都跟正常播放一樣（hold 照樣會把演出停住）。過去的 <code>epoch</code> 就是晚到的開演：為了 20:00 開演的節目，在 20:07 重開機的那台機器，會直接落在第七分鐘。暫停、hold 和演出結束，都是演出刻意停下來，不算漂移：停下來那一刻欠的帳一筆勾銷（<code>forgiven</code>），從演出停住的位置重新計。超前於牆鐘（<code>behind</code> 為負）時，<code>'warn'</code> 只回報；<code>'catch-up'</code> 會把演出慢下來等牆鐘（<code>held</code>）：只會等，不會倒退，這也抵銷了卡頓之後 Loop 的心跳多補的那個 0.1 秒影格。<code>reset()</code> 讓計數重來；還在未來的 <code>epoch</code> 會留著。</p>
 <p><code>drift()</code> 沒有錨定時回傳 <code>null</code>，否則回傳 <code>behind</code>（比牆鐘慢幾秒，負數 = 超前）、<code>lost</code>（Loop 夾 dt 或任何停頓吃掉的）、<code>repaid</code>、<code>held</code>、<code>forgiven</code>、<code>stalls</code>、<code>worst</code>（兩個影格之間最長的牆鐘間隔）、<code>frames</code>、<code>jumps</code>、<code>started</code>、<code>waiting</code>、<code>startsIn</code>、<code>epoch</code>、<code>mode</code>，以及 <code>text</code>：給導演台或後台看的一行摘要。如果你是用手動或測試用的迴圈在推時間軸，記得把同一個假時鐘當成 <code>now</code> 傳給 <code>anchor()</code>，不然它量的是真實時間。</p>
 <h3 id="show-control-the-console">控台<a class="anchor" href="#show-control-the-console" aria-label="這一節的連結">#</a></h3>
-<p><code>mountConsole(el, app, { layers, signals })</code>（<code>@openav/console</code>）會做出導演控台，<code>createShow()</code> 把它掛在側邊面板。<code>app</code> 就是 <code>createShow()</code> 回傳的 <code>show.app</code>（<code>timeline</code>、<code>params</code>、<code>mapper</code>、<code>signals</code>、<code>stage</code>、<code>midi</code>、<code>sound</code>、<code>audio</code>、<code>hands</code>、<code>pose</code>…），缺了哪個部分，對應的區塊就不顯示。傳入 <code>{ layers: false }</code> 或 <code>{ signals: false }</code>，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。</p>
-<p>鍵盤：<strong>Space</strong> 播放／暫停（停在 hold 時：放行）· <strong>→/←</strong> 下一個／上一個場景（停在 hold 時，<strong>→</strong> 放行）· <strong>R</strong> 重設 · <strong>T</strong> 演出模式 · <strong>F</strong> 全螢幕 · <strong>Esc</strong> 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，<em>字母鍵</em>歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。</p>
+<p><code>mountConsole(el, app, { layers, signals, keys })</code>（<code>@openav/console</code>）會做出導演控台，<code>createShow()</code> 把它掛在側邊面板。<code>app</code> 就是 <code>createShow()</code> 回傳的 <code>show.app</code>（<code>timeline</code>、<code>params</code>、<code>mapper</code>、<code>signals</code>、<code>stage</code>、<code>midi</code>、<code>sound</code>、<code>audio</code>、<code>hands</code>、<code>pose</code>…），缺了哪個部分，對應的區塊就不顯示。傳入 <code>{ layers: false }</code> 或 <code>{ signals: false }</code>，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。</p>
+<p>鍵盤：<strong>Space</strong> 播放／暫停（停在 hold 時：放行）· <strong>→/←</strong> 下一個／上一個場景（停在 hold 時，<strong>→</strong> 放行）· <strong>R</strong> 重設 · <strong>T</strong> 演出模式 · <strong>F</strong> 全螢幕 · <strong>M</strong> 螢幕 MIDI 控制器（<code>midi.controllers</code>）· <strong>Esc</strong> 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，<em>字母鍵</em>歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F、M 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。</p>
+<h4 id="show-control-moving-the-shortcuts">挪動快捷鍵<a class="anchor" href="#show-control-moving-the-shortcuts" aria-label="這一節的連結">#</a></h4>
+<p>把電腦鍵盤當鋼琴彈的演出，會想把字母鍵要回來。<code>keys</code> 把每個動作對應到一個鍵（或一串鍵），疊在預設值上面；某個動作設 <code>false</code> 就關掉它，<code>keys: false</code> 則關掉所有快捷鍵。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// the piano owns the letters: move the desk's R, T, F and M to keys it does not use</span>
+<span class="tk">await</span> createShow({
+  world,
+  modules: { keys: { capture: <span class="tk">true</span> }, midi: { controllers: <span class="tk">true</span> } },
+  console: { keys: { reset: <span class="ts">'F6'</span>, perf: <span class="ts">'F7'</span>, fullscreen: <span class="ts">'F8'</span>, midi: <span class="ts">'F9'</span> } },
+});</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>動作</th><th>預設</th><th>作用</th></tr></thead>
+<tbody>
+<tr><td><code>play</code></td><td><code>Space</code></td><td>播放／暫停（停在 hold 時：放行）</td></tr>
+<tr><td><code>next</code>、<code>prev</code></td><td><code>ArrowRight</code>、<code>ArrowLeft</code></td><td>下一個／上一個場景（停在 hold 時，<code>next</code> 放行）</td></tr>
+<tr><td><code>reset</code></td><td><code>R</code></td><td>回到開頭，並讓被停用的段落模組恢復</td></tr>
+<tr><td><code>perf</code></td><td><code>T</code></td><td>演出模式</td></tr>
+<tr><td><code>fullscreen</code></td><td><code>F</code></td><td>全螢幕</td></tr>
+<tr><td><code>midi</code></td><td><code>M</code></td><td>螢幕 MIDI 控制器面板</td></tr>
+<tr><td><code>cancel</code></td><td><code>Escape</code></td><td>結束對應精靈，或離開鍵盤鋼琴的捕捉</td></tr>
+</tbody>
+</table></div>
+<p>鍵寫成字串。<code>'r'</code> 是字元（大小寫都算）；<code>'KeyR'</code> 是實體按鍵，不管鍵盤配置在那個位置打出什麼字（注音配置會打出 ㄐ）；<code>'F6'</code>、<code>'Backquote'</code>、<code>'ArrowUp'</code>、<code>'Space'</code> 是 <code>KeyboardEvent.code</code> 或按鍵名稱，大小寫不拘。<code>'Shift+T'</code>、<code>'Ctrl+K'</code>、<code>'Alt+…'</code>、<code>'Meta+…'</code> 可以加修飾鍵：寫法裡沒有 <code>Ctrl</code>、<code>Alt</code>、<code>Meta</code> 的時候，這三個鍵不能被按著（⌘R 和 Ctrl+F 仍然歸瀏覽器），單純的字母則不管 Shift。鋼琴捕捉鍵盤的時候，字母鍵（a–z 和 <code>;</code>）不管你把動作放在哪裡都不作用；<code>F6</code>、<code>Backquote</code> 這類鍵則照常有效。動作名稱不認得，或鍵的寫法不對，會在掛載任何東西之前丟出錯誤。控台上的提示（播放鈕的說明文字、HOLD 橫幅、提詞機）會印出你選的鍵，<code>show.console.keys</code> 也存著這份設定。自己呼叫 <code>mountConsole</code> 的時候，若傳入 <code>app.midiPanel</code>，<code>midi</code> 鍵就會切換它。</p>
 <p>有總譜的時候，控台還多了導演台面板、scrubber 上的 cue 刻度，以及顯示操作者 acts 的提詞機（<a href="#score-the-desk">總譜與導演</a>）。L2 Mapping 面板有 <strong>🎛 map knobs in order</strong>，這個精靈會依序替每個參數啟動 learn（<a href="#score-map-the-knobs-in-order">細節</a>）。</p>
 <p>覆寫的規則：一碰滑桿（或有映射的控制項），那個參數就脫離時間軸，直到你按 ✕ 清掉覆寫。標籤變黃 = 已覆寫。</p>
 <h3 id="show-control-performance-mode">演出模式<a class="anchor" href="#show-control-performance-mode" aria-label="這一節的連結">#</a></h3>
@@ -1378,6 +1422,10 @@ createShow({ world, timeline: { total: 120, anchor: { mode: <span class="ts">'ca
 <span class="tc"># stage manager's phone/laptop: http://&lt;performance-machine-ip&gt;:7457/</span></code></pre></div>
 <p>每個用 <code>createShow()</code> 做的演出頁面，大約每秒 15 次把快照串流到 <code>ws://&lt;the page's host&gt;:7457</code>，所以監看伺服器要跑在提供演出頁面的那台電腦上。後台即時顯示時鐘、場景、世界、FPS、覆寫、所有訊號和參數。舞台 4 秒沒有傳來資料，就會跳出紅色的「stage feed lost」（舞台連線中斷）橫幅，這時候就輪到舞台監督出手。不用設定，沒有相依套件，兩端都會自己重新連線。<code>GET /health</code> 回應 <code>{ ok, clients }</code>。</p>
 <p>監看伺服器沒在跑時，演出頁面會一直重試，間隔從大約 5 秒拉長到 30 秒。瀏覽器會記下每一次被拒絕的連線，這些訊息是預期中的。</p>
+<p>不需要後台的機器，或是中繼架在別處，都是 <code>createShow()</code> 的選項：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({ world, monitor: <span class="tk">false</span> });                                  <span class="tc">// no backstage feed, no socket</span>
+<span class="tk">await</span> createShow({ world, monitor: { url: <span class="ts">'wss://stage.example.com/monitor'</span>, hz: 10 } });   <span class="tc">// another relay</span></code></pre></div>
+<p><code>monitor: false</code> 不會建立推送（<code>show.monitor</code> 是 <code>null</code>），頁面也不會開任何 socket。<code>{ url, hz }</code> 交給 <code>MonitorFeed</code>：一個 <code>ws://</code> 或 <code>wss://</code> 位址（<code>null</code> 會做出一個永遠不連線的推送），以及每秒送幾次快照（預設 15）。架在 TLS 後面的中繼要用 <code>wss://</code> 位址，中繼本身仍然聽在你啟動它的埠（<code>node packages/monitor/server.js 7460</code>）。</p>
 <p>如果演出是你手動組起來的：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { MonitorFeed, snapshotOf } <span class="tk">from</span> <span class="ts">'@openav/monitor'</span>;
 <span class="tk">const</span> monitor = <span class="tk">new</span> MonitorFeed({ url: <span class="ts">'ws://192.168.1.20:7457'</span>, hz: 15 });   <span class="tc">// both optional</span>
@@ -2726,7 +2774,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tbody>
 <tr><td><code>Signals</code></td><td><code>new Signals()</code> · <code>define(name, { kind, min, max, unit, description, source })</code> · <code>set(name, value)</code> · <code>pulse(name, payload = 1)</code> · <code>get(name)</code> · <code>norm(name)</code> → 0..1 · <code>on(name, cb(value, name))</code> → 取消訂閱函式 · <code>onAny(cb(name, value, meta))</code> → 取消訂閱函式 · <code>list()</code> → <code>[{ name, value, at, kind, min, max, … }]</code></td></tr>
 <tr><td><code>Params</code></td><td><code>new Params(schema = [])</code> · <code>add(entries)</code> · <code>get(key)</code> · <code>clamp(key, v)</code> · <code>override(key, v)</code> · <code>clearOverride(key)</code> · <code>clearAllOverrides()</code> · <code>isOverridden(key)</code> · <code>firePulse(key)</code> · <code>onPulse(key, cb)</code> → 取消訂閱函式 · <code>resolve(base)</code> → 狀態 · <code>schema</code>、<code>overrides</code></td></tr>
-<tr><td><code>Loop</code></td><td><code>new Loop(onFrame(dt, now), { maxDt = 0.1 })</code> · <code>start()</code> · <code>stop()</code> · <code>fps</code></td></tr>
+<tr><td><code>Loop</code></td><td><code>new Loop(onFrame(dt, now), { maxDt = 0.1, clock, raf, manual = false, heartbeat })</code> · <code>start()</code> · <code>stop()</code> · <code>step(dt)</code> → <code>boolean</code>（跑一個長度 <code>dt</code> 秒的影格，不夾上限）· <code>fps</code>、<code>running</code>、<code>manual</code>。<code>clock()</code> → 毫秒（預設 <code>performance.now</code>），<code>raf(cb)</code> → 下一格（預設 <code>requestAnimationFrame</code>）；注入 <code>raf</code> 或 <code>manual</code> 會關掉分頁藏起來時的 Worker 心跳（<code>heartbeat: true</code> 可打開）。見<a href="#show-control-driving-the-frames-yourself">自己驅動影格</a></td></tr>
 <tr><td><code>Bus</code></td><td><code>new Bus()</code> · <code>on(event, cb)</code> → 取消訂閱函式 · <code>off(event, cb)</code> · <code>emit(event, payload)</code></td></tr>
 </tbody>
 </table></div>
@@ -2736,7 +2784,7 @@ signals.define(<span class="ts">'breath/pressure'</span>, { min: 0, max: 1 });
 signals.on(<span class="ts">'breath/pressure'</span>, (v) =&gt; console.log(v));
 signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0.4);</code></pre></div>
 <h3 id="packages-openav-show">@openav/show<a class="anchor" href="#packages-openav-show" aria-label="這一節的連結">#</a></h3>
-<p>膠水 · <code>createShow(options)</code>：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見<a href="#show-control-createshow">演出控制</a>。</p>
+<p>膠水 · <code>createShow(options)</code>：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見<a href="#show-control-createshow">演出控制</a>；<code>loop</code>、<code>monitor</code>、<code>console</code>（控台的 <code>keys</code>）決定誰來給影格、後台推送送去哪裡、哪些鍵操作控台。</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { keys: { base: 48 }, sound: <span class="tk">true</span> } });</code></pre></div>
 <h3 id="packages-openav-midi">@openav/midi<a class="anchor" href="#packages-openav-midi" aria-label="這一節的連結">#</a></h3>
@@ -3020,7 +3068,8 @@ p.eventsInBar(1);   <span class="tc">// kick 0 .25 .5 .75 · snare .25 .75 · ha
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder })</code> → <code>{ render(state), perf, director, wizard, dispose() }</code>。<code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder, keys })</code> → <code>{ render(state), perf, director, wizard, keys, dispose() }</code>。<code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td>鍵盤</td><td><code>keys</code>：<code>{ play, next, prev, reset, perf, fullscreen, midi, cancel }</code> → 一個鍵或一串鍵（<code>'F6'</code>、<code>'KeyR'</code>、<code>'Shift+T'</code>），<code>false</code> = 關掉；<code>keys: false</code> = 不要任何快捷鍵 · <code>DEFAULT_KEYS</code> · <code>resolveKeys(keys)</code> · <code>keyLabel(keys, action)</code>：<a href="#show-control-moving-the-shortcuts">挪動快捷鍵</a></td></tr>
 </tbody>
 </table></div>
 <p>見<a href="#show-control-the-console">演出控制</a>。</p>
@@ -3191,7 +3240,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <h3 id="troubleshooting-the-console-shows-a-ws-7457-error">瀏覽器主控台出現 ws://…:7457 錯誤<a class="anchor" href="#troubleshooting-the-console-shows-a-ws-7457-error" aria-label="這一節的連結">#</a></h3>
 <p>每個用 <code>createShow()</code> 做的演出，都會試著把資料串流到 <code>ws://&lt;the page's host&gt;:7457</code> 的後台監看。監看伺服器沒在跑時，瀏覽器會記下被拒絕的連線。這是預期中的，也無害：頁面會重試，間隔從大約 5 秒拉長到 30 秒，不會一直洗版。想讓它消失，就把監看伺服器跑起來：</p>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">npm</span> run monitor          <span class="tc"># node packages/monitor/server.js</span></code></pre></div>
-<p>用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 <code>ws://</code>，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：<code>new MonitorFeed({ url: 'wss://…' })</code>。</p>
+<p>用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 <code>ws://</code>，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：<code>createShow({ monitor: { url: 'wss://…' } })</code>，自己組裝的演出則是 <code>new MonitorFeed({ url: 'wss://…' })</code>。完全不該去找監看伺服器的機器（沒有後台的演出電腦）就寫 <code>createShow({ monitor: false })</code>：不會建立推送、頁面也不開任何 socket，所以什麼都不會記。</p>
 <h3 id="troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome 跳出「區域網路」或「這台裝置上的應用程式」的詢問<a class="anchor" href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" aria-label="這一節的連結">#</a></h3>
 <p>Chrome 的 Local Network Access（區域網路存取）檢查，會在<strong>公開的</strong> https 頁面要連你自己的電腦或網路時，先跳出權限詢問；從你自己這台機器提供的頁面不在範圍內（<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome 部落格</a>）。依 Chrome 版本，它管的範圍是（查證於 2026-10-15）：</p>
 <ul>
@@ -3280,7 +3329,7 @@ Done means: npm test passes, and the new example loads with zero console errors.
 <h3 id="troubleshooting-an-example-from-a-cdn-works-online-but-not-offline">用到 CDN 的範例，連網時能跑，離線就不行<a class="anchor" href="#troubleshooting-an-example-from-a-cdn-works-online-but-not-offline" aria-label="這一節的連結">#</a></h3>
 <p>p5（範例 05、06）、Tone.js（聲音）、MediaPipe（手、身體）和 WebToe app（範例 04）都從網路載入。到離線的場地演出，先把它們下載下來，再把 script 標籤、import map 或模組選項（<code>toneEngine({ cdn })</code>、<code>webtoeWorld({ app })</code>）指到本機的副本。</p>
 <h3 id="troubleshooting-the-port-is-already-in-use">連接埠已經被佔用<a class="anchor" href="#troubleshooting-the-port-is-already-in-use" aria-label="這一節的連結">#</a></h3>
-<p><code>node serve.js 8081</code> 會改用另一個埠，OSC 橋接也接受埠號參數：<code>node packages/osc/bridges/osc-bridge.js 7470</code>（再用 <code>new OscOut('http://127.0.0.1:7470')</code>）。後台監看是例外：用 <code>createShow()</code> 做的頁面，永遠串流到自己主機的 7457 埠，所以要把這個埠空出來。只有自己組裝的演出可以改指別的位置：<code>new MonitorFeed({ url: 'ws://host:7460' })</code> 搭配 <code>node packages/monitor/server.js 7460</code>。</p>
+<p><code>node serve.js 8081</code> 會改用另一個埠，OSC 橋接也接受埠號參數：<code>node packages/osc/bridges/osc-bridge.js 7470</code>（再用 <code>new OscOut('http://127.0.0.1:7470')</code>）。後台監看是例外：用 <code>createShow()</code> 做的頁面，除非你另外指定，否則會串流到自己主機的 7457 埠，所以要把這個埠空出來，或用 <code>createShow({ monitor: { url: 'ws://host:7460' } })</code> 指到別處（自己組裝的演出則是 <code>new MonitorFeed({ url: 'ws://host:7460' })</code>），再用 <code>node packages/monitor/server.js 7460</code> 啟動中繼。</p>
 </section>
 
 <section class="chapter" data-chapter="roadmap" aria-labelledby="roadmap">

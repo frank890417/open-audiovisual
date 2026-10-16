@@ -728,7 +728,7 @@ runs each frame (<code>packages/show/index.js</code>):</p>
   sound?.update(state);                          <span class="tc">// 4. sound/* params reach the synth</span>
   remote?.frame(dt, state);                      <span class="tc">//    param values echo back to phones</span>
   consoleUI.render(state);                       <span class="tc">// 5. the desk reflects reality</span>
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it</span>
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it (not with monitor: false)</span>
 });</code></pre></div>
 <p>Signals arrive <em>between</em> frames, whenever a device or a socket fires. An
 unsmoothed route writes its param immediately; a smoothed route sets a target
@@ -739,6 +739,11 @@ never makes a world explode. When the browser freezes <code>requestAnimationFram
 (the projection window went to the background), a Web Worker heartbeat keeps the
 loop ticking, about every 66 ms (~15 frames per second): the timeline, mapped signals and
 the backstage feed must not stop because someone switched windows.</p>
+<p>Who supplies the frames is a choice, and the page's own is only the default.
+<code>new Loop(fn, { clock, raf })</code> takes the time and the frame requests from you (a
+test's fake timer, a recorder's frame pump), and <code>new Loop(fn, { manual: true })</code>
+schedules nothing: each <code>loop.step(dt)</code> is one frame. <code>createShow({ loop: 'manual' })</code>
+does that for the whole show (<a href="#show-control-driving-the-frames-yourself">Driving the frames yourself</a>).</p>
 <p>Param resolution order (the heart of the design):</p>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">timeline.state(t)          — automation curves per param
   ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
@@ -1653,6 +1658,9 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>mount</code></td><td>generated</td><td><code>{ stage, side }</code> elements or selectors to render into, instead of a full-page layout</td></tr>
 <tr><td><code>telemetry</code></td><td><code>true</code></td><td>one anonymous <code>oav_show_start</code> hit per page (see the controllers chapter, Telemetry); <code>false</code> sends nothing</td></tr>
 <tr><td><code>score</code></td><td><code>null</code></td><td><code>{ cuts, cut, modules, api, midi, … }</code>: the show's structure as segment lengths, performed by segment modules; <code>?cut=&lt;id&gt;</code> in the URL picks the version (<a href="#score-use-it-with-createshow">Score &amp; Director</a>)</td></tr>
+<tr><td><code>loop</code></td><td><code>'auto'</code></td><td>who drives the frames: <code>'auto'</code> (the page's <code>requestAnimationFrame</code>), <code>'manual'</code> (you call <code>show.loop.step(dt)</code>) or <code>{ clock, raf, maxDt, heartbeat }</code>, the options of <code>new Loop()</code> (<a href="#show-control-driving-the-frames-yourself">below</a>)</td></tr>
+<tr><td><code>monitor</code></td><td><code>true</code></td><td>the <a href="#show-control-backstage-monitor">backstage feed</a>: <code>false</code> = none (no socket is opened), <code>{ url, hz }</code> = another relay address or rate</td></tr>
+<tr><td><code>console</code></td><td><code>null</code></td><td>the options of <a href="#show-control-the-console">the console</a>, <code>mountConsole</code>'s: <code>{ keys, layers, signals, learnOrder }</code>; <code>keys</code> moves the keyboard shortcuts</td></tr>
 </tbody>
 </table></div>
 <p>Without <code>mount</code>, the page body becomes a two-column grid: the stage, and a
@@ -1672,9 +1680,28 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>sound</code></td><td><code>true</code>; an instrument id (<code>'piano'</code>); <code>{ instrument, remember, picker, engine, baseUrl }</code></td><td>instruments in the page with a picker, Tone.js (<a href="#show-control-sound">Sound</a>)</td></tr>
 </tbody>
 </table></div>
-<p>It returns <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, console, app, loop }</code>; parts you did not ask for are <code>null</code>. The same object is
+<p>It returns <code>{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, monitor, console, app, loop }</code>; parts you did not ask for are <code>null</code>. The same object is
 <code>window.openav</code>, for the devtools console. The frame order is in
 <a href="#architecture-the-frame-loop">Architecture</a>.</p>
+<h4 id="show-control-driving-the-frames-yourself">Driving the frames yourself<a class="anchor" href="#show-control-driving-the-frames-yourself" aria-label="Link to this section">#</a></h4>
+<p>By default a show runs on the page's <code>requestAnimationFrame</code> (with a Web Worker heartbeat for a hidden tab). <code>loop</code> changes who supplies the frames, so a show can be recorded one exact frame at a time, tested as a whole, or run for a night with no window in front of it, without replacing the page's global <code>requestAnimationFrame</code> or <code>performance.now</code>.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// 'manual': nothing runs until you say so. Thirty show seconds, the same thirty every time.</span>
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, loop: <span class="ts">'manual'</span>, monitor: <span class="tk">false</span> });
+show.timeline.play();
+<span class="tk">for</span> (<span class="tk">let</span> i = 0; i &lt; 60 * 30; i++) show.loop.step(1 / 60);
+
+<span class="tc">// your own clock and frame pump (a test, a recorder): the show runs on whatever these say</span>
+<span class="tk">const</span> frames = [];
+<span class="tk">let</span> now = 0;
+<span class="tk">const</span> driven = <span class="tk">await</span> createShow({ world, loop: { clock: () =&gt; now, raf: (cb) =&gt; frames.push(cb) } });
+now += 1000 / 60;
+frames.splice(0).forEach((cb) =&gt; cb(now));              <span class="tc">// one frame</span></code></pre></div>
+<ul>
+<li><code>'auto'</code> (or leave <code>loop</code> out) is the behaviour a show always had.</li>
+<li><code>'manual'</code> schedules nothing. <code>show.loop.step(dt)</code> runs one whole frame (the <a href="#architecture-the-frame-loop">frame order</a>) of <code>dt</code> seconds. <code>dt</code> is not clamped to 0.1 s (you chose it), <code>0</code> redraws in place, and a negative or non-number <code>dt</code> runs nothing and returns <code>false</code>. The time <code>onFrame</code> and <code>show.loop.fps</code> see is virtual, the sum of the <code>dt</code> stepped, so two runs with the same steps are the same run. Nothing is drawn until the first step, and the timeline moves only while it is playing (<code>show.timeline.play()</code>).</li>
+<li><code>{ clock, raf }</code> keep the loop automatic but take its time from you. <code>clock()</code> returns milliseconds; <code>raf(cb)</code> asks for one callback on the next frame, and <code>cb(now)</code> may be handed the timestamp (without one, <code>clock()</code> is read). The Worker heartbeat is off, because a real timer must not step a fake clock; <code>heartbeat: true</code> turns it back on. <code>maxDt</code> still clamps these frames.</li>
+</ul>
+<p>Only the frame loop is yours. <code>Date.now</code>, <code>setTimeout</code>, the mapper's auto-save, Web MIDI and the audio engine keep real time, and the backstage feed throttles itself by the wall clock, so a recording pairs <code>loop: 'manual'</code> with <code>monitor: false</code>. A show you assemble by hand does the same with <code>new Loop(fn, { manual: true })</code> (<a href="#packages-openav-core"><code>@openav/core</code></a>).</p>
 <h3 id="show-control-timeline">Timeline<a class="anchor" href="#show-control-timeline" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> timeline = <span class="tk">new</span> Timeline({
   params,
@@ -1846,7 +1873,7 @@ clock and never runs backwards, which also cancels the extra 0.1 s frame the loo
 frames), <code>frames</code>, <code>jumps</code>, <code>started</code>, <code>waiting</code>, <code>startsIn</code>, <code>epoch</code>, <code>mode</code>, and <code>text</code>, one line for the desk or the monitor.
 If you drive the timeline from a manual or test loop, give <code>anchor()</code> the same fake clock as <code>now</code>, otherwise it measures real time.</p>
 <h3 id="show-control-the-console">The console<a class="anchor" href="#show-control-the-console" aria-label="Link to this section">#</a></h3>
-<p><code>mountConsole(el, app, { layers, signals })</code> (<code>@openav/console</code>) builds the
+<p><code>mountConsole(el, app, { layers, signals, keys })</code> (<code>@openav/console</code>) builds the
 director's desk; <code>createShow()</code> mounts it in the side panel. <code>app</code> is the object
 <code>createShow()</code> returns as <code>show.app</code> (<code>timeline</code>, <code>params</code>, <code>mapper</code>, <code>signals</code>,
 <code>stage</code>, <code>midi</code>, <code>sound</code>, <code>audio</code>, <code>hands</code>, <code>pose</code>, …); missing parts simply
@@ -1855,7 +1882,28 @@ those panels. It gives you transport + scrubber with scene blocks, the Layers
 overview, L1 Input, L2 Mapping, L3 Params (sliders with override and learn
 chips), L4 sound, live signal meters and a MIDI log.</p>
 <p>Keyboard: <strong>Space</strong> play/pause (at a hold: release) · <strong>→/←</strong> next / previous scene (→ at a hold: release) · <strong>R</strong> reset · <strong>T</strong> performance
-mode · <strong>F</strong> fullscreen · <strong>Esc</strong> leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the <em>letters</em> belong to the piano (T and F are piano keys), so R, T and F do nothing until you untick it or press Esc; Space and the arrows always work.</p>
+mode · <strong>F</strong> fullscreen · <strong>M</strong> the on-screen MIDI controller (<code>midi.controllers</code>) · <strong>Esc</strong> leave keyboard-piano capture or stop the mapping wizard. Keys typed into an input field, held keys and ⌘/Ctrl/Alt combinations are ignored. While the on-screen piano captures the keyboard the <em>letters</em> belong to the piano (T and F are piano keys), so R, T, F and M do nothing until you untick it or press Esc; Space and the arrows always work.</p>
+<h4 id="show-control-moving-the-shortcuts">Moving the shortcuts<a class="anchor" href="#show-control-moving-the-shortcuts" aria-label="Link to this section">#</a></h4>
+<p>A show that plays the computer keyboard as a piano wants its letters. <code>keys</code> maps each action to a key (or a list of keys), laid over the defaults; <code>false</code> switches one action off, and <code>keys: false</code> switches every shortcut off.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// the piano owns the letters: move the desk's R, T, F and M to keys it does not use</span>
+<span class="tk">await</span> createShow({
+  world,
+  modules: { keys: { capture: <span class="tk">true</span> }, midi: { controllers: <span class="tk">true</span> } },
+  console: { keys: { reset: <span class="ts">'F6'</span>, perf: <span class="ts">'F7'</span>, fullscreen: <span class="ts">'F8'</span>, midi: <span class="ts">'F9'</span> } },
+});</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>action</th><th>default</th><th>does</th></tr></thead>
+<tbody>
+<tr><td><code>play</code></td><td><code>Space</code></td><td>play / pause (at a hold: release)</td></tr>
+<tr><td><code>next</code>, <code>prev</code></td><td><code>ArrowRight</code>, <code>ArrowLeft</code></td><td>next / previous scene (<code>next</code> at a hold: release)</td></tr>
+<tr><td><code>reset</code></td><td><code>R</code></td><td>back to the start; brings back switched-off segment modules</td></tr>
+<tr><td><code>perf</code></td><td><code>T</code></td><td>performance mode</td></tr>
+<tr><td><code>fullscreen</code></td><td><code>F</code></td><td>fullscreen</td></tr>
+<tr><td><code>midi</code></td><td><code>M</code></td><td>the on-screen MIDI controller panel</td></tr>
+<tr><td><code>cancel</code></td><td><code>Escape</code></td><td>stop the mapping wizard, or leave keyboard-piano capture</td></tr>
+</tbody>
+</table></div>
+<p>A key is a string. <code>'r'</code> is the character (either case); <code>'KeyR'</code> is the physical key whatever the keyboard layout types there (a Zhuyin layout types ㄐ); <code>'F6'</code>, <code>'Backquote'</code>, <code>'ArrowUp'</code>, <code>'Space'</code> are <code>KeyboardEvent.code</code> or key names, case does not matter. <code>'Shift+T'</code>, <code>'Ctrl+K'</code>, <code>'Alt+…'</code>, <code>'Meta+…'</code> add modifiers: without <code>Ctrl</code>, <code>Alt</code> or <code>Meta</code> in the spec those must not be held (⌘R and Ctrl+F stay the browser's), and a plain letter ignores Shift. Letters (a–z, <code>;</code>) stay dead while the piano captures the keyboard, wherever you put them; <code>F6</code>, <code>Backquote</code> and the like work through it. An unknown action name or a malformed key throws before anything is mounted. The hints on the desk (the play button's tooltip, the HOLD banner, the prompter) print the keys you chose; <code>desk.keys</code> (<code>show.console.keys</code>) holds them. With <code>mountConsole</code> by hand, the <code>midi</code> key toggles <code>app.midiPanel</code> when you pass one.</p>
 <p>With a score the desk also has the Director panel, cue ticks on the scrubber and a prompter with the operator's acts (<a href="#score-the-desk">Score &amp; Director</a>). The L2 Mapping panel has <strong>🎛 map knobs in order</strong>, a wizard that arms learn for each param in turn (<a href="#score-map-the-knobs-in-order">details</a>).</p>
 <p>Override semantics: touch a slider (or a mapped control) and that param leaves
 the timeline's hands until you clear it (✕). Yellow label = overridden.</p>
@@ -1877,6 +1925,10 @@ reconnect by themselves. <code>GET /health</code> answers <code>{ ok, clients }<
 <p>When no monitor is running, the show page keeps retrying with a growing delay
 (about 5 s, growing to 30 s); the browser logs each refused connection. That message is
 expected.</p>
+<p>A machine that does not need a backstage, or a relay somewhere else, is an option of <code>createShow()</code>:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({ world, monitor: <span class="tk">false</span> });                                  <span class="tc">// no backstage feed, no socket</span>
+<span class="tk">await</span> createShow({ world, monitor: { url: <span class="ts">'wss://stage.example.com/monitor'</span>, hz: 10 } });   <span class="tc">// another relay</span></code></pre></div>
+<p><code>monitor: false</code> builds no feed (<code>show.monitor</code> is <code>null</code>) and the page never opens a socket. <code>{ url, hz }</code> goes to <code>MonitorFeed</code>: a <code>ws://</code> or <code>wss://</code> address (<code>null</code> makes a feed that never connects) and the snapshots per second (default 15). Behind TLS the relay needs a <code>wss://</code> address, and the relay itself still listens where you started it (<code>node packages/monitor/server.js 7460</code>).</p>
 <p>For a hand-assembled show:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { MonitorFeed, snapshotOf } <span class="tk">from</span> <span class="ts">'@openav/monitor'</span>;
 <span class="tk">const</span> monitor = <span class="tk">new</span> MonitorFeed({ url: <span class="ts">'ws://192.168.1.20:7457'</span>, hz: 15 });   <span class="tc">// both optional</span>
@@ -3537,7 +3589,7 @@ in a browser, for example
 <tbody>
 <tr><td><code>Signals</code></td><td><code>new Signals()</code> · <code>define(name, { kind, min, max, unit, description, source })</code> · <code>set(name, value)</code> · <code>pulse(name, payload = 1)</code> · <code>get(name)</code> · <code>norm(name)</code> → 0..1 · <code>on(name, cb(value, name))</code> → unsubscribe · <code>onAny(cb(name, value, meta))</code> → unsubscribe · <code>list()</code> → <code>[{ name, value, at, kind, min, max, … }]</code></td></tr>
 <tr><td><code>Params</code></td><td><code>new Params(schema = [])</code> · <code>add(entries)</code> · <code>get(key)</code> · <code>clamp(key, v)</code> · <code>override(key, v)</code> · <code>clearOverride(key)</code> · <code>clearAllOverrides()</code> · <code>isOverridden(key)</code> · <code>firePulse(key)</code> · <code>onPulse(key, cb)</code> → unsubscribe · <code>resolve(base)</code> → state · <code>schema</code>, <code>overrides</code></td></tr>
-<tr><td><code>Loop</code></td><td><code>new Loop(onFrame(dt, now), { maxDt = 0.1 })</code> · <code>start()</code> · <code>stop()</code> · <code>fps</code></td></tr>
+<tr><td><code>Loop</code></td><td><code>new Loop(onFrame(dt, now), { maxDt = 0.1, clock, raf, manual = false, heartbeat })</code> · <code>start()</code> · <code>stop()</code> · <code>step(dt)</code> → <code>boolean</code> (one frame of <code>dt</code> seconds, unclamped) · <code>fps</code>, <code>running</code>, <code>manual</code>. <code>clock()</code> → ms (default <code>performance.now</code>), <code>raf(cb)</code> → the next frame (default <code>requestAnimationFrame</code>); an injected <code>raf</code> or <code>manual</code> turns the hidden-tab Worker off (<code>heartbeat: true</code> turns it on). See <a href="#show-control-driving-the-frames-yourself">Driving the frames yourself</a></td></tr>
 <tr><td><code>Bus</code></td><td><code>new Bus()</code> · <code>on(event, cb)</code> → unsubscribe · <code>off(event, cb)</code> · <code>emit(event, payload)</code></td></tr>
 </tbody>
 </table></div>
@@ -3549,7 +3601,7 @@ signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0
 <h3 id="packages-openav-show">@openav/show<a class="anchor" href="#packages-openav-show" aria-label="Link to this section">#</a></h3>
 <p>Glue · <code>createShow(options)</code>: one call that assembles a whole show around a
 world and returns every part. Options, modules and the return value are in
-<a href="#show-control-createshow">Show control</a>.</p>
+<a href="#show-control-createshow">Show control</a>; <code>loop</code>, <code>monitor</code> and <code>console</code> (the desk's <code>keys</code>) choose who drives the frames, where the backstage feed goes and which keys run the desk.</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { keys: { base: 48 }, sound: <span class="tk">true</span> } });</code></pre></div>
 <h3 id="packages-openav-midi">@openav/midi<a class="anchor" href="#packages-openav-midi" aria-label="Link to this section">#</a></h3>
@@ -3858,7 +3910,8 @@ meters, performance mode.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>signature</th></tr></thead>
 <tbody>
-<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder })</code> → <code>{ render(state), perf, director, wizard, dispose() }</code>; <code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder, keys })</code> → <code>{ render(state), perf, director, wizard, keys, dispose() }</code>; <code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td>keyboard</td><td><code>keys</code>: <code>{ play, next, prev, reset, perf, fullscreen, midi, cancel }</code> → a key or a list (<code>'F6'</code>, <code>'KeyR'</code>, <code>'Shift+T'</code>), <code>false</code> = off; <code>keys: false</code> = no shortcuts · <code>DEFAULT_KEYS</code> · <code>resolveKeys(keys)</code> · <code>keyLabel(keys, action)</code>: <a href="#show-control-moving-the-shortcuts">Moving the shortcuts</a></td></tr>
 </tbody>
 </table></div>
 <p>See <a href="#show-control-the-console">Show control</a>.</p>
@@ -4082,7 +4135,8 @@ the monitor:</p>
 <div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-bash"><span class="tk">npm</span> run monitor          <span class="tc"># node packages/monitor/server.js</span></code></pre></div>
 <p>Pages served over https (openaudiovisual.com, an https tunnel) don't try at all: the
 browser blocks <code>ws://</code> there, and a published site has no relay beside it. A show that
-runs a monitor behind TLS passes the address itself, <code>new MonitorFeed({ url: 'wss://…' })</code>.</p>
+runs a monitor behind TLS passes the address itself: <code>createShow({ monitor: { url: 'wss://…' } })</code>, or <code>new MonitorFeed({ url: 'wss://…' })</code> in a hand-assembled show.
+A machine that should not look for a monitor at all (a performance PC with no backstage) says <code>createShow({ monitor: false })</code>: no feed is built and the page opens no socket, so nothing is logged.</p>
 <h3 id="troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome asks about the local network, or about apps on this device<a class="anchor" href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" aria-label="Link to this section">#</a></h3>
 <p>Chrome's Local Network Access check puts a permission prompt in front of a <strong>public</strong> https page that tries to reach your own machine or network; a page served from your machine is not covered (<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome blog</a>). What it gates, by Chrome version (checked 2026-10-15):</p>
 <ul>
@@ -4255,9 +4309,10 @@ point the script tags, the import map or the module options (<code>toneEngine({ 
 <h3 id="troubleshooting-the-port-is-already-in-use">The port is already in use<a class="anchor" href="#troubleshooting-the-port-is-already-in-use" aria-label="Link to this section">#</a></h3>
 <p><code>node serve.js 8081</code> serves on another port, and the OSC bridge takes one too:
 <code>node packages/osc/bridges/osc-bridge.js 7470</code> (then <code>new OscOut('http://127.0.0.1:7470')</code>).
-The backstage monitor is the exception: a <code>createShow()</code> page always streams to
-port 7457 on its own host, so free that port. Only a hand-assembled show can
-point elsewhere, with <code>new MonitorFeed({ url: 'ws://host:7460' })</code> and
+The backstage monitor is the exception: a <code>createShow()</code> page streams to
+port 7457 on its own host unless you say otherwise, so free that port, or point the
+show elsewhere with <code>createShow({ monitor: { url: 'ws://host:7460' } })</code> (in a
+hand-assembled show: <code>new MonitorFeed({ url: 'ws://host:7460' })</code>) and start the relay with
 <code>node packages/monitor/server.js 7460</code>.</p>
 </section>
 

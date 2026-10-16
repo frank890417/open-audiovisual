@@ -19,13 +19,15 @@ const loop = new Loop((dt) => {
   sound?.update(state);                          // 4. sound/* params reach the synth
   remote?.frame(dt, state);                      //    param values echo back to phones
   consoleUI.render(state);                       // 5. the desk reflects reality
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); // 6. backstage hears about it
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); // 6. backstage hears about it (not with monitor: false)
 });
 ```
 
 訊號在兩格*之間*進來，裝置或 socket 什麼時候觸發，就什麼時候到。沒有平滑的路由會立刻寫入參數，有平滑的路由則是設一個目標值，由 `mapper.update(dt)` 慢慢滑過去。`createShow()` 不包含 OSC 輸出，要用的話，在 `onFrame` 裡呼叫 flush 送出（見[演出控制](show-control.md#osc-output)）。
 
 `dt` 以秒為單位，上限夾在 0.1（`new Loop(fn, { maxDt })`），所以就算卡頓，世界也不會爆掉。瀏覽器凍結 `requestAnimationFrame` 的時候（例如投影視窗被切到背景），一個 Web Worker 心跳會讓迴圈繼續跑，大約每 66 ms 一次（約每秒 15 格）。有人切了視窗，時間軸、映射中的訊號和後台資料流也不能停。
+
+誰來給影格是一個選擇，頁面自己的只是預設。`new Loop(fn, { clock, raf })` 讓時間和影格請求由你供應（測試用的假計時器、錄影工具的影格推進器），`new Loop(fn, { manual: true })` 則什麼都不排程：每次 `loop.step(dt)` 就是一個影格。`createShow({ loop: 'manual' })` 對整場演出做的就是這件事（[自己驅動影格](show-control.md#driving-the-frames-yourself)）。
 
 參數解析的順序（整個設計的核心）：
 

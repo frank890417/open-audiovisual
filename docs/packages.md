@@ -28,7 +28,7 @@ Glue · the shared language: `Signals`, `Params`, `Loop`, `Bus`.
 |---|---|
 | `Signals` | `new Signals()` · `define(name, { kind, min, max, unit, description, source })` · `set(name, value)` · `pulse(name, payload = 1)` · `get(name)` · `norm(name)` → 0..1 · `on(name, cb(value, name))` → unsubscribe · `onAny(cb(name, value, meta))` → unsubscribe · `list()` → `[{ name, value, at, kind, min, max, … }]` |
 | `Params` | `new Params(schema = [])` · `add(entries)` · `get(key)` · `clamp(key, v)` · `override(key, v)` · `clearOverride(key)` · `clearAllOverrides()` · `isOverridden(key)` · `firePulse(key)` · `onPulse(key, cb)` → unsubscribe · `resolve(base)` → state · `schema`, `overrides` |
-| `Loop` | `new Loop(onFrame(dt, now), { maxDt = 0.1 })` · `start()` · `stop()` · `fps` |
+| `Loop` | `new Loop(onFrame(dt, now), { maxDt = 0.1, clock, raf, manual = false, heartbeat })` · `start()` · `stop()` · `step(dt)` → `boolean` (one frame of `dt` seconds, unclamped) · `fps`, `running`, `manual`. `clock()` → ms (default `performance.now`), `raf(cb)` → the next frame (default `requestAnimationFrame`); an injected `raf` or `manual` turns the hidden-tab Worker off (`heartbeat: true` turns it on). See [Driving the frames yourself](show-control.md#driving-the-frames-yourself) |
 | `Bus` | `new Bus()` · `on(event, cb)` → unsubscribe · `off(event, cb)` · `emit(event, payload)` |
 
 ```js
@@ -43,7 +43,7 @@ signals.set('breath/pressure', 0.4);
 
 Glue · `createShow(options)`: one call that assembles a whole show around a
 world and returns every part. Options, modules and the return value are in
-[Show control](show-control.md#createshow).
+[Show control](show-control.md#createshow); `loop`, `monitor` and `console` (the desk's `keys`) choose who drives the frames, where the backstage feed goes and which keys run the desk.
 
 ```js
 import { createShow } from '@openav/show';
@@ -411,7 +411,8 @@ meters, performance mode.
 
 | export | signature |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder })` → `{ render(state), perf, director, wizard, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys })` → `{ render(state), perf, director, wizard, keys, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| keyboard | `keys`: `{ play, next, prev, reset, perf, fullscreen, midi, cancel }` → a key or a list (`'F6'`, `'KeyR'`, `'Shift+T'`), `false` = off; `keys: false` = no shortcuts · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`: [Moving the shortcuts](show-control.md#moving-the-shortcuts) |
 
 See [Show control](show-control.md#the-console).
 

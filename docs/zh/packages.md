@@ -22,7 +22,7 @@
 |---|---|
 | `Signals` | `new Signals()` · `define(name, { kind, min, max, unit, description, source })` · `set(name, value)` · `pulse(name, payload = 1)` · `get(name)` · `norm(name)` → 0..1 · `on(name, cb(value, name))` → 取消訂閱函式 · `onAny(cb(name, value, meta))` → 取消訂閱函式 · `list()` → `[{ name, value, at, kind, min, max, … }]` |
 | `Params` | `new Params(schema = [])` · `add(entries)` · `get(key)` · `clamp(key, v)` · `override(key, v)` · `clearOverride(key)` · `clearAllOverrides()` · `isOverridden(key)` · `firePulse(key)` · `onPulse(key, cb)` → 取消訂閱函式 · `resolve(base)` → 狀態 · `schema`、`overrides` |
-| `Loop` | `new Loop(onFrame(dt, now), { maxDt = 0.1 })` · `start()` · `stop()` · `fps` |
+| `Loop` | `new Loop(onFrame(dt, now), { maxDt = 0.1, clock, raf, manual = false, heartbeat })` · `start()` · `stop()` · `step(dt)` → `boolean`（跑一個長度 `dt` 秒的影格，不夾上限）· `fps`、`running`、`manual`。`clock()` → 毫秒（預設 `performance.now`），`raf(cb)` → 下一格（預設 `requestAnimationFrame`）；注入 `raf` 或 `manual` 會關掉分頁藏起來時的 Worker 心跳（`heartbeat: true` 可打開）。見[自己驅動影格](show-control.md#driving-the-frames-yourself) |
 | `Bus` | `new Bus()` · `on(event, cb)` → 取消訂閱函式 · `off(event, cb)` · `emit(event, payload)` |
 
 ```js
@@ -35,7 +35,7 @@ signals.set('breath/pressure', 0.4);
 
 ## @openav/show
 
-膠水 · `createShow(options)`：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見[演出控制](show-control.md#createshow)。
+膠水 · `createShow(options)`：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見[演出控制](show-control.md#createshow)；`loop`、`monitor`、`console`（控台的 `keys`）決定誰來給影格、後台推送送去哪裡、哪些鍵操作控台。
 
 ```js
 import { createShow } from '@openav/show';
@@ -378,7 +378,8 @@ p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
 
 | 匯出 | 簽章 |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder })` → `{ render(state), perf, director, wizard, dispose() }`。`app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys })` → `{ render(state), perf, director, wizard, keys, dispose() }`。`app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| 鍵盤 | `keys`：`{ play, next, prev, reset, perf, fullscreen, midi, cancel }` → 一個鍵或一串鍵（`'F6'`、`'KeyR'`、`'Shift+T'`），`false` = 關掉；`keys: false` = 不要任何快捷鍵 · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`：[挪動快捷鍵](show-control.md#moving-the-shortcuts) |
 
 見[演出控制](show-control.md#the-console)。
 

@@ -34,6 +34,9 @@ const show = await createShow({
 | `mount` | 自動產生 | 要渲染進去的 `{ stage, side }` 元素或選擇器，取代整頁版面 |
 | `telemetry` | `true` | 每次載入頁面送一筆匿名的 `oav_show_start`（見控制器章的〈使用統計〉），`false` 就不送 |
 | `score` | `null` | `{ cuts, cut, modules, api, midi, … }`：把演出的結構寫成段落長度，由段落模組去演出。網址上的 `?cut=<id>` 決定用哪個版本（[總譜與導演](score.md#use-it-with-createshow)） |
+| `loop` | `'auto'` | 誰來給影格：`'auto'`（頁面的 `requestAnimationFrame`）、`'manual'`（你自己呼叫 `show.loop.step(dt)`），或 `{ clock, raf, maxDt, heartbeat }`，也就是 `new Loop()` 的選項（[見下](#driving-the-frames-yourself)） |
+| `monitor` | `true` | [後台推送](#backstage-monitor)：`false` = 不推送（頁面不會開任何 socket），`{ url, hz }` = 換一個中繼位址或頻率 |
+| `console` | `null` | [控台](#the-console)的選項，也就是 `mountConsole` 的：`{ keys, layers, signals, learnOrder }`；`keys` 用來挪動鍵盤快捷鍵 |
 
 沒有 `mount` 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。
 
@@ -50,7 +53,31 @@ const show = await createShow({
 | `remote` | `true` 或 `{ room, auto, surface, feedbackHz, url }` | 手機和 iPad 當控制器（[手機](remote.md#the-show-side)） |
 | `sound` | `true`、樂器 id（`'piano'`）或 `{ instrument, remember, picker, engine, baseUrl }` | 頁面裡的樂器和選單，用 Tone.js（[聲音](#sound)） |
 
-它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
+它回傳 `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, chord, remote, score, director, monitor, console, app, loop }`，你沒要的部分是 `null`。同一個物件也掛在 `window.openav`，方便在 devtools 主控台裡查看。每個影格的執行順序寫在[架構](architecture.md#the-frame-loop)。
+
+### 自己驅動影格
+
+預設情況下，演出跑在頁面的 `requestAnimationFrame` 上（分頁被藏起來時，由 Web Worker 心跳接手）。`loop` 讓你改由別人給影格：這樣就能一格一格精確錄影、把整場演出當一個單元測試、或讓它在沒有視窗的機器上跑一整晚，而不必換掉頁面的全域 `requestAnimationFrame` 或 `performance.now`。
+
+```js
+// 'manual': nothing runs until you say so. Thirty show seconds, the same thirty every time.
+const show = await createShow({ world, loop: 'manual', monitor: false });
+show.timeline.play();
+for (let i = 0; i < 60 * 30; i++) show.loop.step(1 / 60);
+
+// your own clock and frame pump (a test, a recorder): the show runs on whatever these say
+const frames = [];
+let now = 0;
+const driven = await createShow({ world, loop: { clock: () => now, raf: (cb) => frames.push(cb) } });
+now += 1000 / 60;
+frames.splice(0).forEach((cb) => cb(now));              // one frame
+```
+
+- `'auto'`（或不寫 `loop`）就是演出一直以來的行為。
+- `'manual'` 什麼都不排程。`show.loop.step(dt)` 會跑一個完整的影格（[執行順序](architecture.md#the-frame-loop)），長度 `dt` 秒。`dt` 不會被夾到 0.1 秒（那是你自己決定的），`0` 是原地重畫一次，負數或不是數字的 `dt` 什麼都不跑、回傳 `false`。`onFrame` 和 `show.loop.fps` 看到的時間是虛擬的：已經 step 過的 `dt` 的總和，所以步數相同的兩次執行就是同一次執行。第一次 step 之前不會畫任何東西，時間軸也只有在播放中才會前進（`show.timeline.play()`）。
+- `{ clock, raf }` 維持自動迴圈，但時間由你供應。`clock()` 回傳毫秒，`raf(cb)` 要求下一格呼叫一次 `cb`，`cb(now)` 可以帶時間戳記（沒帶就讀 `clock()`）。Worker 心跳會關掉，因為真實的計時器不該去推一個假時鐘；`heartbeat: true` 可以重新打開。`maxDt` 對這些影格照樣有效。
+
+交出去的只有影格迴圈。`Date.now`、`setTimeout`、映射器的自動存檔、Web MIDI 和音訊引擎照樣用真實時間，後台推送也是用牆上時鐘自己節流，所以錄影時要把 `loop: 'manual'` 和 `monitor: false` 一起用。自己組裝的演出用 `new Loop(fn, { manual: true })` 做同一件事（[`@openav/core`](packages.md#openav-core)）。
 
 ## 時間軸
 
@@ -212,9 +239,34 @@ createShow({ world, timeline: { total: 120, anchor: { mode: 'catch-up', jump: 5 
 
 ## 控台
 
-`mountConsole(el, app, { layers, signals })`（`@openav/console`）會做出導演控台，`createShow()` 把它掛在側邊面板。`app` 就是 `createShow()` 回傳的 `show.app`（`timeline`、`params`、`mapper`、`signals`、`stage`、`midi`、`sound`、`audio`、`hands`、`pose`…），缺了哪個部分，對應的區塊就不顯示。傳入 `{ layers: false }` 或 `{ signals: false }`，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。
+`mountConsole(el, app, { layers, signals, keys })`（`@openav/console`）會做出導演控台，`createShow()` 把它掛在側邊面板。`app` 就是 `createShow()` 回傳的 `show.app`（`timeline`、`params`、`mapper`、`signals`、`stage`、`midi`、`sound`、`audio`、`hands`、`pose`…），缺了哪個部分，對應的區塊就不顯示。傳入 `{ layers: false }` 或 `{ signals: false }`，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。
 
-鍵盤：**Space** 播放／暫停（停在 hold 時：放行）· **→/←** 下一個／上一個場景（停在 hold 時，**→** 放行）· **R** 重設 · **T** 演出模式 · **F** 全螢幕 · **Esc** 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，*字母鍵*歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。
+鍵盤：**Space** 播放／暫停（停在 hold 時：放行）· **→/←** 下一個／上一個場景（停在 hold 時，**→** 放行）· **R** 重設 · **T** 演出模式 · **F** 全螢幕 · **M** 螢幕 MIDI 控制器（`midi.controllers`）· **Esc** 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，*字母鍵*歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F、M 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。
+
+### 挪動快捷鍵
+
+把電腦鍵盤當鋼琴彈的演出，會想把字母鍵要回來。`keys` 把每個動作對應到一個鍵（或一串鍵），疊在預設值上面；某個動作設 `false` 就關掉它，`keys: false` 則關掉所有快捷鍵。
+
+```js
+// the piano owns the letters: move the desk's R, T, F and M to keys it does not use
+await createShow({
+  world,
+  modules: { keys: { capture: true }, midi: { controllers: true } },
+  console: { keys: { reset: 'F6', perf: 'F7', fullscreen: 'F8', midi: 'F9' } },
+});
+```
+
+| 動作 | 預設 | 作用 |
+|---|---|---|
+| `play` | `Space` | 播放／暫停（停在 hold 時：放行） |
+| `next`、`prev` | `ArrowRight`、`ArrowLeft` | 下一個／上一個場景（停在 hold 時，`next` 放行） |
+| `reset` | `R` | 回到開頭，並讓被停用的段落模組恢復 |
+| `perf` | `T` | 演出模式 |
+| `fullscreen` | `F` | 全螢幕 |
+| `midi` | `M` | 螢幕 MIDI 控制器面板 |
+| `cancel` | `Escape` | 結束對應精靈，或離開鍵盤鋼琴的捕捉 |
+
+鍵寫成字串。`'r'` 是字元（大小寫都算）；`'KeyR'` 是實體按鍵，不管鍵盤配置在那個位置打出什麼字（注音配置會打出 ㄐ）；`'F6'`、`'Backquote'`、`'ArrowUp'`、`'Space'` 是 `KeyboardEvent.code` 或按鍵名稱，大小寫不拘。`'Shift+T'`、`'Ctrl+K'`、`'Alt+…'`、`'Meta+…'` 可以加修飾鍵：寫法裡沒有 `Ctrl`、`Alt`、`Meta` 的時候，這三個鍵不能被按著（⌘R 和 Ctrl+F 仍然歸瀏覽器），單純的字母則不管 Shift。鋼琴捕捉鍵盤的時候，字母鍵（a–z 和 `;`）不管你把動作放在哪裡都不作用；`F6`、`Backquote` 這類鍵則照常有效。動作名稱不認得，或鍵的寫法不對，會在掛載任何東西之前丟出錯誤。控台上的提示（播放鈕的說明文字、HOLD 橫幅、提詞機）會印出你選的鍵，`show.console.keys` 也存著這份設定。自己呼叫 `mountConsole` 的時候，若傳入 `app.midiPanel`，`midi` 鍵就會切換它。
 
 有總譜的時候，控台還多了導演台面板、scrubber 上的 cue 刻度，以及顯示操作者 acts 的提詞機（[總譜與導演](score.md#the-desk)）。L2 Mapping 面板有 **🎛 map knobs in order**，這個精靈會依序替每個參數啟動 learn（[細節](score.md#map-the-knobs-in-order)）。
 
@@ -234,6 +286,15 @@ node packages/monitor/server.js       # on the performance machine (npm run moni
 每個用 `createShow()` 做的演出頁面，大約每秒 15 次把快照串流到 `ws://<the page's host>:7457`，所以監看伺服器要跑在提供演出頁面的那台電腦上。後台即時顯示時鐘、場景、世界、FPS、覆寫、所有訊號和參數。舞台 4 秒沒有傳來資料，就會跳出紅色的「stage feed lost」（舞台連線中斷）橫幅，這時候就輪到舞台監督出手。不用設定，沒有相依套件，兩端都會自己重新連線。`GET /health` 回應 `{ ok, clients }`。
 
 監看伺服器沒在跑時，演出頁面會一直重試，間隔從大約 5 秒拉長到 30 秒。瀏覽器會記下每一次被拒絕的連線，這些訊息是預期中的。
+
+不需要後台的機器，或是中繼架在別處，都是 `createShow()` 的選項：
+
+```js
+await createShow({ world, monitor: false });                                  // no backstage feed, no socket
+await createShow({ world, monitor: { url: 'wss://stage.example.com/monitor', hz: 10 } });   // another relay
+```
+
+`monitor: false` 不會建立推送（`show.monitor` 是 `null`），頁面也不會開任何 socket。`{ url, hz }` 交給 `MonitorFeed`：一個 `ws://` 或 `wss://` 位址（`null` 會做出一個永遠不連線的推送），以及每秒送幾次快照（預設 15）。架在 TLS 後面的中繼要用 `wss://` 位址，中繼本身仍然聽在你啟動它的埠（`node packages/monitor/server.js 7460`）。
 
 如果演出是你手動組起來的：
 
