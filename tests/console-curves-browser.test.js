@@ -6,7 +6,7 @@
 // "Does it draw / does it not draw" is measured, not trusted: a spy on CanvasRenderingContext2D counts every drawing call
 // made on a canvas inside .oav-curves, split into the cached curve layer (.cv-base) and the per-frame layer (.cv-over).
 // And "it drew the right thing" is read back from the pixels (the cursor is a white column, an override an amber dot).
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import http from 'node:http';
@@ -63,11 +63,22 @@ window.__amberDot = (el) => {
 };
 `;
 
-async function withPage(fn, { url = '/tests/fixtures/curves-page.html', ready = () => typeof window.__start === 'function', viewport } = {}) {
-  const { srv, base } = await serve();
-  const browser = await pw.chromium.launch({ executablePath: process.env.OAV_BROWSER_EXEC || undefined });
+// One server and one Chromium for the whole file (each case gets its own context, so nothing leaks between them): starting a
+// browser per case would cost more CPU than the cases themselves, and this file runs next to the timing tests of the suite.
+let shared = null;
+async function env() {
+  if (!shared) {
+    const { srv, base } = await serve();
+    shared = { srv, base, browser: await pw.chromium.launch({ executablePath: process.env.OAV_BROWSER_EXEC || undefined }) };
+  }
+  return shared;
+}
+after(async () => { if (shared) { await shared.browser.close(); shared.srv.close(); } });
+
+async function withPage(fn, { url = '/tests/fixtures/curves-page.html', ready = () => typeof window.__start === 'function' } = {}) {
+  const { base, browser } = await env();
+  const ctx = await browser.newContext();
   try {
-    const ctx = await browser.newContext(viewport ? { viewport } : {});
     await ctx.addInitScript(SPY);
     const page = await ctx.newPage();
     const errors = [];
@@ -77,7 +88,7 @@ async function withPage(fn, { url = '/tests/fixtures/curves-page.html', ready = 
     await page.waitForFunction(ready);
     await fn(page, errors, base);
     assert.deepEqual(errors, [], 'no console errors');
-  } finally { await browser.close(); srv.close(); }
+  } finally { await ctx.close(); }
 }
 const opts = { skip: SKIP, timeout: 90000 };
 
