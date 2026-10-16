@@ -411,7 +411,7 @@ as one more input, **OAV Virtual MIDI**, after the real ports.
 
 - **What a program plays into "OAV Virtual MIDI" is heard.** Strudel's `note("c3 e3 g3").midi('OAV Virtual MIDI')`, a
   WebMidi.js sketch's `output.send(bytes, timestamp)`: `notePressed()`, `knob1`, the pads, `startSound()`'s instrument, as from a
-  keyboard, at the timestamp it gave (Strudel sends 0.21–0.32 s ahead; measured on strudel.cc: within 5 ms, median 0.1 ms).
+  keyboard, at the timestamp it gave (Strudel sends 0.21–0.32 s ahead; measured on strudel.cc: 10 notes, none later than 4.5 ms, `p5/test/strudel-smoke.cjs`; `drumPhase` follows Strudel's clock to 0.1 ms).
   `midi.last.source` is `'virtual-out'`. What came in on the output never goes back out of the virtual input (Strudel's
   `midin` ↔ `.midi` would play each other forever); `output.clear()` drops what waits, a waiting note-off lands at once.
 - **An external clock is followed.** 0xF8 ×24 a beat, start / continue / stop, song position (`midicmd("clock*96, <start
@@ -480,7 +480,7 @@ message means the line did not load.
 
 ## Size, versions
 
-`oav-p5.js` is about 224 KB (76 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
+`oav-p5.js` is about 229 KB (79 KB gzip; its hints are in two languages) and loads nothing else until 🎹 is opened (then `packages/midi/element.js` and
 its modules, ~130 KB transferred, from next to it), the microphone is read (`packages/audio`, ~7 KB), a phone is asked for (`packages/relay`, a QR encoder),
 an unknown controller is plugged in (`packages/midi/profiles`), sound is turned on (`packages/sound`, ~21 KB gzip, Tone.js ~230 KB
 from jsDelivr, and the piano's 2 MB of samples when the piano is picked), the drums are (`packages/drums`, ~22 KB gzip, and `packages/pattern`, ~15 KB gzip, beside it), a take is
@@ -574,4 +574,7 @@ Examples: `p5/examples/particles/` (`knob1`, `notePressed`), `p5/examples/opc/` 
 `p5/examples/rhythm-visual/` (`drawRhythm` in its three styles and the line drawn on the canvas, `rhythmChanged`, R records 8 s),
 `p5/examples/record/` (drums and a synth, R records, P saves a still, `recordingSaved`),
 `p5/examples/with-strudel/` (the picture side of Strudel in another tab: `link`, `notePressed`, `drumPhase` on Strudel's clock)
-and `p5/examples/lag/` (the microphone raw and lagged side by side, `env('kick')`, `spring(knob1)`, `scope()`, `drawTrail()`).
+`p5/examples/lag/` (the microphone raw and lagged side by side, `scope()`, `drawTrail()`, `trail()`),
+`p5/examples/chop/` (a disc a bass drum opens: `env`, `spring`, `speed`, `count`, `slope`, `trigger`; `startDrums()` is the only input),
+`p5/examples/rhythm-lab/` (keys 1–4 `OAVp5.drums.edit`, Z `undo`, S `strudelUrl`, `rhythmChanged`, `drawRhythm`)
+and `p5/examples/note-names/` (`noteIsDown('C4')`, `noteNumber`, `noteName`, `noteFreq`).

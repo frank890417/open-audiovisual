@@ -2,7 +2,7 @@
 // (The browser half — p5 1.x/2.x, the 🎹 panel, the shim, a phone over a relay — is p5/test/smoke.cjs.)
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import vm from 'node:vm';
 
 const SRC = readFileSync(new URL('../p5/oav-p5.js', import.meta.url), 'utf8');
@@ -1256,4 +1256,10 @@ test('0.7.0: drawRhythm circle and spiral: sectors and a hand / bands along a sp
   const r0 = g.log.find((x) => x[0] === 'rect');
   assert.ok(r0[1] < 0 && r0[2] > 0, 'WEBGL, no box: a strip along the bottom, in centred coordinates');
   assert.equal(page().drawRhythm(0, 0, 10, 10), false, 'no p5 on the page: nothing drawn, no error');
+});
+
+test('oav-p5.js header: the number of profiles it names is the number in packages/midi/profiles', () => {
+  const head = SRC.slice(0, 8000);
+  const n = readdirSync(new URL('../packages/midi/profiles/', import.meta.url)).filter((f) => f.endsWith('.json')).length;
+  assert.match(head, new RegExp(`\\b${n} profiles\\b`), `the header says how many profiles there are: ${n}`);
 });

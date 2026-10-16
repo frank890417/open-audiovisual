@@ -189,14 +189,14 @@ L2 映射 · 數值隨時間的變化，像 TouchDesigner 的 CHOP 那樣塑形�
 | 匯出 | 簽章 |
 |---|---|
 | `approach` | `approach(current, target, seconds, dt)` → 一極點 lag 的一步；`seconds`＝跟上 63% 變化的時間（`@openav/mapping` 的 `smooth` 就是用它算） |
-| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → 輸出 · `reset(v?)`：上升用 `up`、下降用 `down`（Lag CHOP 的 Lag 1／Lag 2） |
+| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → 輸出 · `reset(v?)`：上升用 `up`、下降用 `down`（Lag CHOP 的 Lag 1／Lag 2），秒數是 TouchDesigner 的（大約跟上 90% 變化的時間） |
 | `envelope` | `envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)` → Trigger CHOP 在時間 `t` 的值（事件時間 `times`，秒，舊的在前）：直線上升（0 → peak），`decay` 秒後剛好回到 0；還沒落完又觸發，從當下的高度接著走 · `envelopeStage(elapsed, attack, decay, from, peak)` |
 | `Speed` | `new Speed()` · `step(rate, dt)` → 位置：每秒加 `rate` |
 | `Spring` | `new Spring({ stiffness = 100, damping = 6 })` · `step(target, dt)` → 位置（另有 `velocity`）：掛在彈簧上的質點被拉向輸入，精確解 · `springStep(x, v, target, k, c, dt)` → `[x, v]` |
 | `Trail` | `new Trail({ seconds = 2, rate = 60 })` · `step(value, dt)` → 最近 `seconds` 秒，每秒 60 個值再加上最新的一個，舊的在前，長度固定 |
 | `Slope` | `new Slope()` · `step(value, dt)` → 每秒變化量 |
 | `Count` | `new Count({ threshold = 0.5 })` · `step(on, limit = 0)` → 打開過幾次；給 limit 就在 0 … limit − 1 之間循環 · `wrapCount(total, limit)` |
-| `TD_LAG_RATIO`、`DEFAULTS` | `Math.LN10`：TouchDesigner 的 lag 指的是大約跟上 90% 的時間，等於 2.3 個時間常數（這裡的 0.1 ≈ Lag CHOP 的 0.23）；上面那些預設值 |
+| `TD_LAG_RATIO`、`DEFAULTS` | `Math.LN10`：這裡有兩種秒數。`Lag` 與 `lag()` 收的是 TouchDesigner Lag CHOP 的秒數（大約是跟上 90% 變化的時間），所以 `lag(x, 0.1)` 動起來就像 Lag CHOP 設 0.1；`Lag` 內部再除以 `TD_LAG_RATIO`（2.3）換成時間常數。`approach(…, seconds)` 收的就是時間常數本身（跟上 63%，`@openav/mapping` 的 `smooth` 一向是這個意思）；上面那些預設值 |
 
 ```js
 import { Lag, envelope } from '@openav/chop';
@@ -356,7 +356,7 @@ director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.p
 | `WORDS` | `bd` 大鼓 · `sd` 小鼓 · `hh` 鈸 · `oh` 開鈸 · `cp` 拍手 · `rim`／`rs` · `lt` `mt` `ht` 中鼓 · `cr` 碎音鈸 · `rd` 疊音鈸 · `cb` 牛鈴，也接受鼓組自己的名字 |
 | `euclid` | `euclid(pulses, steps, rotate = 0)` → 布林陣列（Toussaint 2005） |
 | `fromGrid` | `fromGrid(grid, { steps = 16, words, order })` → 照人會寫的樣子把格子寫成一行、打出來一模一樣：`bd*4`、`[~ sd]*2`、`bd(3,8,2)`，其他一拍一拍寫 `bd [~ ~ ~ bd] bd*2 ~`（0.7） |
-| `toGrid` | `toGrid(src, { bar = 1, steps = 16 })` → `{ grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`：一小節放上格子，以及格子放不下的東西（0.7） |
+| `toGrid` | `toGrid(srcOrCompiled, { bar = 1, steps = 16, seed = 0, bars = 16 })` → `{ ok, grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`：第 `bar` 小節放上格子，以及格子放不下的東西；`seed` 決定每個 `?`（跟 `eventsInBar` 一樣），`bars` 是往後看幾小節來判斷其他小節有沒有不同（`lost.varies`）（0.7） |
 | `fromStrudel` | `fromStrudel(code)` → `{ strudel, ok, src, bpm, ignored, unsupported }`：從 strudel.cc 複製來的 `s("…")`／`sound("…")`，`.fast`／`.slow` 併進那一行，`setcpm`／`setcps` 當速度（0.7） |
 | `toStrudel`、`strudelUrl` | `strudelUrl(src, { bpm, comment })` → `https://strudel.cc/#…`（寫成 `s("…")`、前面加 `setcpm(bpm/4)`，`#` 後面是 base64）；用新分頁開（0.7） |
 

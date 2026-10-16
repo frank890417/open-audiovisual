@@ -8,7 +8,7 @@ Pick the one that matches what you already have. They get bigger as you go down.
    MIDI controller, from a controller drawn on screen, or from a phone, by adding one line at the top. Read
    [p5.js in one line](p5.md), and play the sketch that carries it: [example 15](https://openaudiovisual.com/examples/15-p5-one-line/).
    The same line also plays sound, runs a drum machine you can write as one line of rhythm, listens to the microphone
-   and records a video; each has a ready-made sketch among the [examples](https://openaudiovisual.com/examples/) (16 to 23).
+   and records a video; each has a ready-made sketch among the [examples](https://openaudiovisual.com/examples/) (16 to 26).
 2. **One controller in a page.** `<oav-controller profile="akai-lpd8">` puts a controller you can play into any web
    page. Read [MIDI controllers & embedding](controllers.md), and pick yours in the
    [controller library](https://openaudiovisual.com/controllers/).

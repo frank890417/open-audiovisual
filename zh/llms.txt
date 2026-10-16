@@ -4,7 +4,7 @@
 
 輸入（MIDI、麥克風、和弦、身體與手部姿態、手機）發出有名字的訊號；映射層把訊號接到參數；演算的「世界」只讀參數，產生畫面與聲音；時間軸、導演控台與後台監看負責把演出跑起來。原生 ES module，零建置、零相依。從《The Last Input》（吳哲宇，2026；IRCAM 駐村 × C-LAB，臺北，49.4 聲道表演）抽出來。
 
-目前：27 個套件、24 個範例、27 份 MIDI 控制器設定檔（21 台真機與 6 種通用版型），版本 0.1.0，oav-p5 0.8.0（https://openaudiovisual.com/zh/changelog/）。
+目前：27 個套件、26 個範例、27 份 MIDI 控制器設定檔（21 台真機與 6 種通用版型），版本 0.1.0，oav-p5 0.8.0（https://openaudiovisual.com/zh/changelog/）。
 
 網站：https://openaudiovisual.com/（English）· https://openaudiovisual.com/zh/（繁體中文）
 原始碼：https://github.com/frank890417/open-audiovisual
@@ -17,7 +17,7 @@
 - [手冊](https://openaudiovisual.com/zh/docs/) ([English](https://openaudiovisual.com/docs/)): 完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。
 - [MIDI 控制器圖鑑](https://openaudiovisual.com/zh/controllers/) ([English](https://openaudiovisual.com/controllers/)): 每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。
 - [範例](https://openaudiovisual.com/zh/examples/) ([English](https://openaudiovisual.com/examples/)): 所有範例，附縮圖與需要什麼。
-- [p5.js 一行指令](https://openaudiovisual.com/zh/p5/) ([English](https://openaudiovisual.com/p5/)): 載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。同一行還有聲音（`startSound`）、能用一行字寫節奏的鼓機（`startDrums("bd*4, [~ sd]*2, hh*8")`）、麥克風（`micLevel`）、錄影（`startRecording`），以及像 TouchDesigner Lag CHOP 那樣變順的數值（`lag()`），也能和 Strudel 並排用。現成草圖在 `p5/examples/`，每一份都能在範例 16 到 24 直接玩。
+- [p5.js 一行指令](https://openaudiovisual.com/zh/p5/) ([English](https://openaudiovisual.com/p5/)): 載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。同一行還有聲音（`startSound`）、能用一行字寫節奏的鼓機（`startDrums("bd*4, [~ sd]*2, hh*8")`）、麥克風（`micLevel`）、錄影（`startRecording`），以及像 TouchDesigner Lag CHOP 那樣變順的數值（`lag()`），也能和 Strudel 並排用。現成草圖在 `p5/examples/`，每一份都能在範例 16 到 26 直接玩。
 - [WebToe](https://openaudiovisual.com/zh/webtoe/) ([English](https://openaudiovisual.com/webtoe/)): 姊妹專案，整套的引擎那一半：網頁原生、節點式的即時影像資料流引擎（TouchDesigner 式、WebGL2 + WebGPU、零執行期相依），能打開 TouchDesigner `.toe` 專案；`@openav/world-webtoe` 如何把 WebToe 網路當世界演奏。編輯器：https://webtoe.openaudiovisual.com/
 - [更新紀錄](https://openaudiovisual.com/zh/changelog/) ([English](https://openaudiovisual.com/changelog/)): 改了什麼，新的在上：oav-p5 依版本，框架與網站依日期，每一條附 commit。
 
@@ -34,7 +34,7 @@
 ## Start
 
 - 執行：`git clone https://github.com/frank890417/open-audiovisual.git && cd open-audiovisual && node serve.js` → http://localhost:8080（不用 npm install；Web MIDI 與鏡頭請用 Chrome／Edge）
-- 做一件新作品：把 `examples/01-hello-particles/` 複製成 `examples/25-<名稱>/`，在 `main.js` 寫 World，打開 `http://localhost:8080/examples/25-<名稱>/`。
+- 做一件新作品：把 `examples/01-hello-particles/` 複製成 `examples/27-<名稱>/`，在 `main.js` 寫 World，打開 `http://localhost:8080/examples/27-<名稱>/`。
 - 驗證：`npm test`（node --test）全過；範例載入時 console 沒有錯誤（沒開監看時，被拒絕的 `ws://localhost:7457` 連線是正常的）。
 
 ## Docs
@@ -101,6 +101,8 @@
 - [22-p5-lag](https://openaudiovisual.com/examples/22-p5-lag/): lag(micLevel, 0.03, 0.4) 把跳動的數值變順，跟 TouchDesigner 的 Lag CHOP 一樣，秒數也一樣。scope() 在網頁角落畫出兩條線。 （麥克風 · 鼓機（🥁））
 - [23-p5-with-strudel](https://openaudiovisual.com/examples/23-p5-with-strudel/): Strudel 在另一個分頁演奏，這份草圖畫畫面：Strudel 送到 OAV Virtual MIDI 的每個音都呼叫 notePressed()，它的時鐘推著 drumPhase 轉。 （另一個分頁的 Strudel · 螢幕上的控制器）
 - [24-p5-note-names](https://openaudiovisual.com/examples/24-p5-note-names/): noteIsDown('C4') 跟 noteIsDown(60) 一樣：收音符號碼的地方都能直接寫音名（C4、c#4、Db3）。noteNumber()、noteName()、noteFreq() 幫你換算。 （MIDI 鍵盤 · 螢幕上的控制器 · 手機）
+- [25-p5-chop](https://openaudiovisual.com/examples/25-p5-chop/): env('kick')、spring()、speed()、count('kick', 4) 像 TouchDesigner 的 Trigger、Spring、Speed、Count 那樣讓數值動起來：大鼓撐開圓盤、彈簧把它彈回來、指針一直轉、每 4 下大鼓換一個顏色。 （麥克風 · 鼓機（🥁））
+- [26-p5-rhythm-lab](https://openaudiovisual.com/examples/26-p5-rhythm-lab/): OAVp5.drums.edit('bd(3,8), …') 像打字一樣換節奏，OAVp5.drums.undo() 回上一行，OAVp5.drums.strudelUrl 把這一行帶去 Strudel；rhythmChanged() 告訴你現在是哪一行。 （按鍵 1–4、Z、S · 鼓機（🥁））
 
 範例 05–07 整合了吳哲宇的作品（2020–2023），版權所有；框架為 MIT 授權。
 

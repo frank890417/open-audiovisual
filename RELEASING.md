@@ -19,6 +19,7 @@ tools/release.sh "…" --no-push               # everything up to the push
 | 3 | commit (untracked files only inside the site's folders) | a stray file sits outside them |
 | 4 | the generators again, commit if anything moved | (sitemap `lastmod` comes from git, so it is right only after the commit that carries the sources) |
 | 5 | `node tools/stamp-version.mjs`, commit | |
+| 5b | the generators and the same stamp again, commit if anything moved (up to 3 rounds) | `lastmod` does not settle. The stamp commit touches the pages, so on a release that crosses midnight their date is now today (`tests/release.test.js` runs this script in a clone with the stamp commit a day later) |
 | 6 | every generator with `--check`, then the tests again | anything stale or red |
 | 7 | `git push origin HEAD:main` | |
 | 8 | wait for the `pages-build-deployment` run of that commit | the deploy fails or takes over 10 minutes |

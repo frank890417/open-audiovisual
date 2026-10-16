@@ -68,7 +68,7 @@ note("c3 [e3 g3] <a3 b3> c4").midi('OAV Virtual MIDI')
 
 Strudel hands each note over 0.21–0.32 s early with the moment it should sound; OAV waits for that moment and then
 calls `notePressed(note, velocity)` (in Strudel, with no sketch: `OAVp5.on('notePressed', fn)`), moves `knob1` for a CC,
-plays a pad. Measured: within 5 ms of Strudel's timestamps (median 0.1 ms). What arrives on the port is never handed
+plays a pad. Measured on strudel.cc: each note is heard within 5 ms of its timestamp (10 notes, at most 4.5 ms late; `p5/test/strudel-smoke.cjs`), and `drumPhase` follows Strudel's clock to 0.1 ms. What arrives on the port is never handed
 back to OAV's input, so `midikeys('OAV Virtual MIDI')` played into `.midi('OAV Virtual MIDI')` is one echo, not a loop.
 
 **Strudel's clock.** MIDI counts 24 clocks a beat, so a cycle of one 4-beat bar sends 96:

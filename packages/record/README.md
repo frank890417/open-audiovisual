@@ -8,6 +8,11 @@ construction: there is nothing to line up afterwards. Beside the video: the work
 own file, an event log of everything that was played, and **MIDI takes**: record what you play,
 play it back into the show, save it as `.mid`.
 
+**From a p5.js sketch** you do not build the pipeline: `startRecording()`, `stopRecording()` and `function recordingSaved(info) {}`
+record the canvas and what the sketch sounds like (`startRecording({ seconds, fps, mic, name, canvas, bitrate })` for the options).
+`oav-p5` uses this package's `recorder.js`, `mime.js` and `layout.js`, loaded the first time ⏺ is pressed or the sketch calls it.
+[Handbook: Recording](https://openaudiovisual.com/docs/#p5-recording-a-video-with-its-sound) · example [21](https://openaudiovisual.com/examples/21-p5-record/).
+
 ```js
 import { Compositor, AudioTap, Recorder, EventLog, openCamera, recommendedFps } from '@openav/record';
 

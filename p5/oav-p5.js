@@ -51,7 +51,7 @@
  * When something goes wrong (a blocked microphone, no Web MIDI, an error inside notePressed(), a sketch's own `let note`, a
  * knob that both OPC and the sketch read, sound waiting for a click) a small card beside the 🎹 says what, why and what to
  * press, in the page's language; 🩺 in the panel or OAVp5.check() is a check-up to screenshot.
- * Knob 1 is knob 1 on any controller OAV knows (MiniLab 3, LPD8, nanoKONTROL2, … 21 profiles); on one it doesn't,
+ * Knob 1 is knob 1 on any controller OAV knows (MiniLab 3, LPD8, nanoKONTROL2, … 27 profiles); on one it doesn't,
  * the first knob you turn becomes knob1, the next knob2.
  *
  * With OP Configurator (OpenProcessing's OPC library): `OPC.slider('radius', 10)` names a variable and its range;

@@ -7,7 +7,7 @@
 1. **在 p5.js 草圖裡加一行。** 任何一份 p5.js 草圖（OpenProcessing、p5 編輯器、你自己的網頁）在最前面加一行，就能用
    MIDI 控制器、螢幕上的控制器或手機來彈。讀 [p5.js 一行接上](p5.md)，再玩帶著這一行的草圖：
    [範例 15](https://openaudiovisual.com/examples/15-p5-one-line/)。同一行還能出聲音、開一台能用一行字寫節奏的鼓機、
-   聽麥克風、錄成影片，每一樣在[範例](https://openaudiovisual.com/zh/examples/)裡都有一份現成的草圖（16 到 23）。
+   聽麥克風、錄成影片，每一樣在[範例](https://openaudiovisual.com/zh/examples/)裡都有一份現成的草圖（16 到 26）。
 2. **在網頁裡放一台控制器。** `<oav-controller profile="akai-lpd8">` 把一台能彈的控制器放進任何網頁。讀
    [MIDI 控制器與嵌入](controllers.md)，到[控制器圖鑑](https://openaudiovisual.com/zh/controllers/)挑你的那一台。
 3. **一整場演出。** 一個世界加上一次 `createShow()` 呼叫，輸入、映射、時間軸、控台、聲音和後台就一起組好。從

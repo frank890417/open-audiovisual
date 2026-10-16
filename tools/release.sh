@@ -48,6 +48,7 @@ check_all() {
   done
 }
 run_tests() {
+  [[ -z "${RELEASE_SKIP_TESTS:-}" ]] || { echo "  (RELEASE_SKIP_TESTS: tests/release.test.js runs this script in a clone)"; return 0; }
   local rc=0
   node --test tests/*.test.js > "$LOG" 2>&1 || rc=$?
   grep -E '^# (tests|pass|fail)' "$LOG" || true
@@ -86,8 +87,21 @@ say "tests"; run_tests
 say "commit"; commit_if_changed "$MSG"
 say "generators again (lastmod after the commit)"; build_all
 commit_if_changed "sitemap and llms: lastmod after the release commit"
-say "stamp"; node tools/stamp-version.mjs > "$LOG" 2>&1 || { cat "$LOG"; exit 1; }; tail -1 "$LOG"
+say "stamp"; STAMP=$(git rev-parse --short HEAD)
+node tools/stamp-version.mjs > "$LOG" 2>&1 || { cat "$LOG"; exit 1; }; tail -1 "$LOG"
 commit_if_changed "stamp module URLs for the deploy: $MSG"
+# The stamp commit touches the example, docs and controller pages, so on a release that crosses midnight their lastmod
+# (the date of the last commit that touched them) is now today while sitemap.xml still says yesterday (0.8.0, 2026-10-16).
+# Generate again and stamp again with the SAME stamp (a new HEAD would re-stamp every page and never settle); the commit
+# that carries only the sitemap and llms touches no page source, so one round settles it, a second proves it.
+say "lastmod after the stamp commit"
+for round in 1 2 3; do
+  build_all
+  OAV_STAMP_VER=$STAMP node tools/stamp-version.mjs > "$LOG" 2>&1 || { cat "$LOG"; exit 1; }
+  if git diff --quiet && [[ -z "$(git ls-files --others --exclude-standard)" ]]; then echo "  settled (round $round)"; break; fi
+  [[ $round == 3 ]] && { echo "✗ lastmod did not settle in 3 rounds" >&2; git status --short | head >&2; exit 1; }
+  commit_if_changed "sitemap and llms: lastmod after the stamp commit"
+done
 say "check and tests on what will ship"; check_all; run_tests
 
 if [[ $PUSH == 0 ]]; then say "--no-push: stopped before the push"; git log --oneline "$START"..HEAD; exit 0; fi

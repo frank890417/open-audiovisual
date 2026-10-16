@@ -16,10 +16,10 @@ const unstamp = (s) => s.replace(/\?v=[\w.+-]+/g, '');
 const catalogMod = () => import('../tools/examples/catalog.mjs');
 const dirs = (rel) => fs.readdirSync(path.join(ROOT, rel), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort();
 
-test('catalog: 24 entries, one per examples/NN-* folder, with every field', async () => {
+test('catalog: 26 entries, one per examples/NN-* folder, with every field', async () => {
   const { EXAMPLES, ROUTES } = await catalogMod();
   const folders = dirs('examples').filter((d) => /^\d\d-/.test(d));
-  assert.equal(EXAMPLES.length, 24);
+  assert.equal(EXAMPLES.length, 26);
   assert.deepEqual(EXAMPLES.map((e) => e.id).sort(), folders, 'the catalog lists exactly the example folders');
   for (const e of EXAMPLES) {
     assert.ok(exists(`examples/${e.id}/index.html`), `${e.id}: folder`);
@@ -67,7 +67,7 @@ test('catalog: docs anchors exist in the handbook, with the heading text as labe
   }
 });
 
-test('catalog: "next" makes one chain through all 24, no loop, ending at the index', async () => {
+test('catalog: "next" makes one chain through all 26, no loop, ending at the index', async () => {
   const { EXAMPLES, chain, byId } = await catalogMod();
   const ids = chain();
   assert.equal(ids.length, EXAMPLES.length);
@@ -146,7 +146,7 @@ test('every example page: regions are current, description, canonical, guide rea
     assert.ok(EXAMPLES.find((e) => e.id === id).p5Line, `${id} carries the p5 line`);
 });
 
-test('p5 one-line examples (16–24): the page runs the very p5/examples sketch, last, with p5 from the CDN and nothing of the framework', async () => {
+test('p5 one-line examples (16–26): the page runs the very p5/examples sketch, last, with p5 from the CDN and nothing of the framework', async () => {
   const { EXAMPLES } = await catalogMod();
   const p5 = EXAMPLES.filter((e) => e.sketch);
   assert.ok(p5.length >= 8, 'the p5 sketches are in the catalog');
@@ -174,7 +174,7 @@ test('/p5/ and /zh/p5/: built pages, no Jekyll, one line + copy button + example
     assert.ok(html.includes('<!--email_off-->'));
   }
   const sha = crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT, 'p5/oav-p5.js'))).digest('hex');
-  assert.equal(sha, 'd5325b92a13aa3edd4e3d20068579d019d4f5d5993a30ff42a216769aa4cd814', 'p5/oav-p5.js changed: student sketches load it, so a change is a release on purpose (bump the version inside, run p5/test/*.cjs, then update this hash)');
+  assert.equal(sha, 'c961d92e487f541f18b4d0b9e4589751a41be86a751b474fd7227ce6cf38b7b8', 'p5/oav-p5.js changed: student sketches load it, so a change is a release on purpose (bump the version inside, run p5/test/*.cjs, then update this hash)');
 });
 
 test('README: generated blocks are current, every example, the controller list links every device page', async () => {

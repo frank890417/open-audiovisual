@@ -5,6 +5,10 @@ L4 output (audio branch) · instruments in the page, behind a small engine contr
 adds the engine's params to the show as `sound/*`, so the timeline, a knob or a
 hand can play the filter the way they play the visuals.
 
+**From a p5.js sketch** it is one call: `startSound('piano')` (after the one-line `oav-p5.js`), and every key, pad, the
+on-screen 🎹 and a phone are heard. `oav-p5` loads this package from next to itself, only when that call (or 🎹 → 🔊) is made.
+[Handbook: Sound](https://openaudiovisual.com/docs/#p5-sound-what-is-played-is-heard) · example [16](https://openaudiovisual.com/examples/16-p5-sound/).
+
 ```js
 // in a show: the console's L4 panel gets 🔊 enable sound and an instrument picker
 const show = await createShow({ world, modules: { sound: true } });       // the warm pad, as always

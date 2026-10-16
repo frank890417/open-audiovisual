@@ -206,14 +206,14 @@ L2 mapping · values over time, the way TouchDesigner's CHOPs shape them: Lag, T
 | export | signature |
 |---|---|
 | `approach` | `approach(current, target, seconds, dt)` → one step of a one-pole lag; `seconds` = time to 63% of a change (the `smooth` of `@openav/mapping`, which steps with it) |
-| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → output · `reset(v?)`: `up` while rising, `down` while falling (Lag CHOP's Lag 1 / Lag 2) |
+| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → output · `reset(v?)`: `up` while rising, `down` while falling (Lag CHOP's Lag 1 / Lag 2), in TouchDesigner's seconds (about 90% of a change) |
 | `envelope` | `envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)` → the Trigger CHOP's level at `t` for events at `times` (seconds, oldest first): a straight attack (0 → peak), then 0 after exactly `decay`; a retrigger starts where it is · `envelopeStage(elapsed, attack, decay, from, peak)` |
 | `Speed` | `new Speed()` · `step(rate, dt)` → position: `rate` per second |
 | `Spring` | `new Spring({ stiffness = 100, damping = 6 })` · `step(target, dt)` → position (`velocity` alongside): a mass on a spring pulled to the input, solved exactly · `springStep(x, v, target, k, c, dt)` → `[x, v]` |
 | `Trail` | `new Trail({ seconds = 2, rate = 60 })` · `step(value, dt)` → the last `seconds`, 60 values a second plus the newest, oldest first, fixed length |
 | `Slope` | `new Slope()` · `step(value, dt)` → change per second |
 | `Count` | `new Count({ threshold = 0.5 })` · `step(on, limit = 0)` → times it turned on, looped to 0 … limit − 1 with a limit · `wrapCount(total, limit)` |
-| `TD_LAG_RATIO`, `DEFAULTS` | `Math.LN10`: TouchDesigner quotes a lag as the time to ~90%, 2.3 time constants (a lag of 0.1 here ≈ a Lag CHOP at 0.23); the defaults above |
+| `TD_LAG_RATIO`, `DEFAULTS` | `Math.LN10`: two kinds of seconds. `Lag` and `lag()` take TouchDesigner's Lag CHOP seconds (about the time to follow 90% of a change), so `lag(x, 0.1)` moves like a Lag CHOP set to 0.1; underneath, `Lag` divides by `TD_LAG_RATIO` (2.3) to get its time constant. `approach(…, seconds)` takes that time constant itself (63% of a change, what `@openav/mapping`'s `smooth` always meant); the defaults above |
 
 ```js
 import { Lag, envelope } from '@openav/chop';
@@ -388,7 +388,7 @@ Spine · rhythm in one line: mini-notation, the way TidalCycles and Strudel writ
 | `WORDS` | `bd` kick · `sd` snare · `hh` hat · `oh` openhat · `cp` clap · `rim`/`rs` · `lt` `mt` `ht` toms · `cr` crash · `rd` ride · `cb` cowbell, and the kit's own names |
 | `euclid` | `euclid(pulses, steps, rotate = 0)` → booleans (Toussaint 2005) |
 | `fromGrid` | `fromGrid(grid, { steps = 16, words, order })` → a line that plays exactly the grid, written the way a person would: `bd*4`, `[~ sd]*2`, `bd(3,8,2)`, else beat by beat `bd [~ ~ ~ bd] bd*2 ~` (0.7) |
-| `toGrid` | `toGrid(src, { bar = 1, steps = 16 })` → `{ grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`: one bar on the steps and what they cannot hold (0.7) |
+| `toGrid` | `toGrid(srcOrCompiled, { bar = 1, steps = 16, seed = 0, bars = 16 })` → `{ ok, grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`: bar `bar` on the steps and what they cannot hold; `seed` decides each `?` (as in `eventsInBar`), `bars` is how many bars it looks through to tell whether the others differ (`lost.varies`) (0.7) |
 | `fromStrudel` | `fromStrudel(code)` → `{ strudel, ok, src, bpm, ignored, unsupported }`: `s("…")` / `sound("…")` copied from strudel.cc, `.fast` / `.slow` folded in, `setcpm` / `setcps` as `bpm` (0.7) |
 | `toStrudel`, `strudelUrl` | `strudelUrl(src, { bpm, comment })` → `https://strudel.cc/#…` (the line as `s("…")` with `setcpm(bpm/4)`, base64 in the `#`); open it in a new tab (0.7) |
 

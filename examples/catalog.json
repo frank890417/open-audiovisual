@@ -1101,6 +1101,180 @@
           }
         }
       ],
+      "next": "25-p5-chop"
+    },
+    {
+      "id": "25-p5-chop",
+      "num": "25",
+      "dir": "examples/25-p5-chop/",
+      "route": "inputs",
+      "title": {
+        "en": "p5 numbers that move",
+        "zh": "p5 會動的數值"
+      },
+      "teaches": {
+        "en": "env('kick'), spring(), speed() and count('kick', 4) shape a number the way TouchDesigner's Trigger, Spring, Speed and Count CHOPs do: a bass drum opens a disc, a spring bounces it back, a hand turns, every fourth kick changes the colour.",
+        "zh": "env('kick')、spring()、speed()、count('kick', 4) 像 TouchDesigner 的 Trigger、Spring、Speed、Count 那樣讓數值動起來：大鼓撐開圓盤、彈簧把它彈回來、指針一直轉、每 4 下大鼓換一個顏色。"
+      },
+      "summary": {
+        "en": "<code>env('kick')</code>, <code>spring()</code>, <code>speed()</code> and <code>count('kick', 4)</code> shape a number the way TouchDesigner's Trigger, Spring, Speed and Count CHOPs do: a bass drum opens a disc, a spring bounces it back, a hand turns, every fourth kick changes the colour.",
+        "zh": "<code>env('kick')</code>、<code>spring()</code>、<code>speed()</code>、<code>count('kick', 4)</code> 像 TouchDesigner 的 Trigger、Spring、Speed、Count 那樣讓數值動起來：大鼓撐開圓盤、彈簧把它彈回來、指針一直轉、每 4 下大鼓換一個顏色。"
+      },
+      "plays": {
+        "en": "microphone · drum machine (🥁)",
+        "zh": "麥克風 · 鼓機（🥁）"
+      },
+      "needs": [
+        "mic"
+      ],
+      "standIn": [
+        "drums"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/chop/sketch.js",
+      "thumb": "assets/home/works/25.webp",
+      "alt": {
+        "en": "A teal disc with a white hand and a thin ring around it, four dots under its centre and a small scope in the corner showing a bouncing line; env, spring and count values are written at the bottom.",
+        "zh": "一個青綠色的圓盤，中間有白色指針，外面一圈細圓環，圓心下面四顆點，角落的小示波器畫著彈跳的曲線；底下寫著 env、spring、count 現在的值。"
+      },
+      "docs": [
+        {
+          "id": "p5-values-over-time-lag-env-speed-spring-trail",
+          "en": "Values over time: lag, env, speed, spring, trail",
+          "zh": "數值隨時間：lag、env、speed、spring、trail"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Nothing to plug in: startDrums() plays its own kicks, and the disc opens on each one and bounces back (the scope in the corner draws the bounce).",
+          "Watch the four dots under the centre: count('kick', 4) walks 0 1 2 3, and every fourth kick the colour changes.",
+          "Press space or click the canvas: trigger('boom') is an event of your own, and env('boom') sends a ring out."
+        ],
+        "zh": [
+          "不用接任何東西：startDrums() 自己打大鼓，圓盤每一下撐開、再彈回來（角落的示波器畫出那個彈跳）。",
+          "看圓心下面四顆點：count('kick', 4) 數 0 1 2 3，每數滿 4 下大鼓就換一個顏色。",
+          "按空白鍵或點一下畫面：trigger('boom') 是你自己的事件，env('boom') 讓一圈往外推。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 24,
+          "to": 25,
+          "match": "const kick = env('kick', 0.01, 0.3);",
+          "note": {
+            "en": "env() is 1 right after each kick and 0 again 0.3 s later; spring() makes the radius follow it like a mass on a spring.",
+            "zh": "env() 在每下大鼓之後是 1，0.3 秒後回到 0；spring() 讓半徑像彈簧上的重物那樣追著它。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 26,
+          "to": 28,
+          "match": "const turn = speed(TWO_PI * 0.15);",
+          "note": {
+            "en": "speed() adds to the angle every second; count('kick', 4) walks 0 to 3, count('kick') is the total, so total ÷ 4 is the colour.",
+            "zh": "speed() 每秒替角度加一點；count('kick', 4) 數 0 到 3，count('kick') 是總數，總數除以 4 就是顏色。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 62,
+          "to": 63,
+          "match": "function keyPressed() { if (key === ' ') { trigger('boom'); return false; } }",
+          "note": {
+            "en": "trigger('boom') is an event of the sketch's own: env('boom') above is what hears it.",
+            "zh": "trigger('boom') 是草圖自己的事件，上面的 env('boom') 接它。"
+          }
+        }
+      ],
+      "next": "26-p5-rhythm-lab"
+    },
+    {
+      "id": "26-p5-rhythm-lab",
+      "num": "26",
+      "dir": "examples/26-p5-rhythm-lab/",
+      "route": "inputs",
+      "title": {
+        "en": "p5 rhythm lab",
+        "zh": "p5 節奏實驗台"
+      },
+      "teaches": {
+        "en": "OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now.",
+        "zh": "OAVp5.drums.edit('bd(3,8), …') 像打字一樣換節奏，OAVp5.drums.undo() 回上一行，OAVp5.drums.strudelUrl 把這一行帶去 Strudel；rhythmChanged() 告訴你現在是哪一行。"
+      },
+      "summary": {
+        "en": "<code>OAVp5.drums.edit('bd(3,8), …')</code> swaps the rhythm like typing it, <code>OAVp5.drums.undo()</code> goes back a line, <code>OAVp5.drums.strudelUrl</code> opens the line in Strudel; <code>rhythmChanged()</code> says what the line is now.",
+        "zh": "<code>OAVp5.drums.edit('bd(3,8), …')</code> 像打字一樣換節奏，<code>OAVp5.drums.undo()</code> 回上一行，<code>OAVp5.drums.strudelUrl</code> 把這一行帶去 Strudel；<code>rhythmChanged()</code> 告訴你現在是哪一行。"
+      },
+      "plays": {
+        "en": "keys 1–4, Z, S · drum machine (🥁)",
+        "zh": "按鍵 1–4、Z、S · 鼓機（🥁）"
+      },
+      "needs": [
+        "qwerty"
+      ],
+      "standIn": [
+        "drums"
+      ],
+      "p5Line": false,
+      "sketch": "p5/examples/rhythm-lab/sketch.js",
+      "thumb": "assets/home/works/26.webp",
+      "alt": {
+        "en": "A circle of sixteen steps with a white hand on the left; on the right the rhythm line bd ~ [~ bd] ~, ~ cp ~ cp, hh(5,8), 'changed by: type', and the three earlier lines; the keys 1 to 4, Z and S explained at the bottom.",
+        "zh": "左邊一圈 16 格、一根白色指針；右邊是節奏那一行 bd ~ [~ bd] ~, ~ cp ~ cp, hh(5,8)、「改自：type」和更早的三行；底下寫著按鍵 1 到 4、Z、S 的用法。"
+      },
+      "docs": [
+        {
+          "id": "p5-the-cells-and-the-line-edit-each-other",
+          "en": "The cells and the line edit each other",
+          "zh": "格子和那一行互相改"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Press 1, 2, 3 or 4: edit() swaps the whole line, the circle and the drum card change at once, and the line is listed under it.",
+          "Press Z: undo() goes back one line, as the ↶ on the drum card does. Click a cell or type in the card's line, and rhythmChanged() still tells this page.",
+          "Press S: strudelUrl opens the same rhythm at strudel.cc in a new tab."
+        ],
+        "zh": [
+          "按 1、2、3 或 4：edit() 換掉整行，圓圈和鼓機卡馬上跟著變，那一行列在旁邊。",
+          "按 Z：undo() 回到上一行，跟鼓機卡的 ↶ 一樣。點格子或在卡上的那一行打字，rhythmChanged() 一樣會告訴這個頁面。",
+          "按 S：strudelUrl 用新分頁在 strudel.cc 打開同一段節奏。"
+        ]
+      },
+      "read": [
+        {
+          "file": "sketch.js",
+          "from": 50,
+          "to": 51,
+          "match": "const r = OAVp5.drums.edit(RHYTHMS[n]);",
+          "note": {
+            "en": "edit() plays a line as if it were typed on the card and answers { ok, error }.",
+            "zh": "edit() 像在卡上打字一樣換一行，回答 { ok, error }。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 52,
+          "to": 53,
+          "match": "} else if (key === 'z' || key === 'Z') {",
+          "note": {
+            "en": "undo() goes back one line and says whether there was one.",
+            "zh": "undo() 回上一行，並告訴你有沒有上一行。"
+          }
+        },
+        {
+          "file": "sketch.js",
+          "from": 54,
+          "to": 56,
+          "match": "} else if (key === 's' || key === 'S') {",
+          "note": {
+            "en": "strudelUrl is the line as a strudel.cc link; window.open takes it to a new tab.",
+            "zh": "strudelUrl 是這一行在 strudel.cc 的連結，window.open 用新分頁打開。"
+          }
+        }
+      ],
       "next": "04-webtoe-stage"
     },
     {

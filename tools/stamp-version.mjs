@@ -24,7 +24,8 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
-const ver = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
+// OAV_STAMP_VER: stamp with this commit instead of HEAD (tools/release.sh re-stamps after the generators with the stamp it already chose)
+const ver = process.env.OAV_STAMP_VER || execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
 
 const stampUrl = (url) => url.replace(/(\?v=[^"'\s]*)?$/, `?v=${ver}`);
 const isLocal = (url) => /^\.{1,2}\//.test(url);

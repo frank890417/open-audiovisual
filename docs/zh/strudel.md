@@ -62,8 +62,8 @@ note("c3 [e3 g3] <a3 b3> c4").midi('OAV Virtual MIDI')
 ```
 
 Strudel 每個音都提早 0.21–0.32 秒交出來，附上它應該響的時刻；OAV 等到那一刻才呼叫 `notePressed(note, velocity)`（在
-Strudel 裡沒有草圖：用 `OAVp5.on('notePressed', fn)`），CC 推動 `knob1`，打擊墊照樣打。實測：和 Strudel 的時間戳差
-5 ms 以內（中位數 0.1 ms）。從這個埠進來的東西，絕不會再從 OAV 的輸入送回去，所以 `midikeys('OAV Virtual MIDI')` 接到
+Strudel 裡沒有草圖：用 `OAVp5.on('notePressed', fn)`），CC 推動 `knob1`，打擊墊照樣打。實測（strudel.cc）：每個音和 Strudel 的時間戳差
+5 ms 以內（10 個音，最晚 4.5 ms；`p5/test/strudel-smoke.cjs`），`drumPhase` 跟 Strudel 時鐘的差平均 0.1 ms。從這個埠進來的東西，絕不會再從 OAV 的輸入送回去，所以 `midikeys('OAV Virtual MIDI')` 接到
 `.midi('OAV Virtual MIDI')` 只會有一次回音，不會無限循環。
 
 **Strudel 的時鐘。** MIDI 一拍 24 個 clock，一個 cycle 是四拍一小節時就送 96 個：

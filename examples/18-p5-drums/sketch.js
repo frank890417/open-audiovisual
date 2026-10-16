@@ -2,7 +2,7 @@
 document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
 
 // 鼓機也是時間軸：16 格是一小節，外圈 16 顆點跟著它走。
-// 大鼓：花瓣鼓起來。小鼓：整朵轉半瓣。Hi-hat：外圈閃一下。拍手：整個畫面亮一下。每一小節：顏色往前走一點。
+// 大鼓：花瓣鼓起來。小鼓：整朵轉半瓣。Hi-hat：外圈閃一下。拍手：整個畫面亮一下。每一小節：顏色往前走一點；每一拍（4 格）：外圈的大點脹一下。
 // 第 1、5、9 小節換場景，每 12 小節繞一圈：cue() 宣告，cueFired() 接。
 // kickDetected() 這幾個是麥克風的同名函式：拿掉 startDrums()、開麥克風，這份草圖照樣會動。
 const SCENES = {
@@ -11,7 +11,7 @@ const SCENES = {
   storm: { petals: 14, hue: 25,  spin: -0.014 },
 };
 let look = SCENES.calm;
-let swell = 0, spin = 0, turn = 0, turnTo = 0, drift = 0, flash = 0;
+let swell = 0, spin = 0, turn = 0, turnTo = 0, drift = 0, flash = 0, ping = 0;
 let sparks = [];
 
 function setup() {
@@ -25,7 +25,7 @@ function setup() {
 
 function draw() {
   background(230, 40, 7 + flash * 25, 30);                       // 拍手：整個畫面亮一下
-  flash *= 0.85;
+  flash *= 0.85; ping *= 0.9;
   translate(width / 2, height / 2 + 50);
   const R = min(width, height) * 0.26;
   const shade = (look.hue + drift) % 360;          // 不叫 hue、tint：p5 都有
@@ -51,7 +51,7 @@ function draw() {
     const a = -HALF_PI + i * TWO_PI / 16;
     const now = drumsAreOn && i === drumStep;
     fill(now ? color(shade, 30, 100) : color(shade, 40, 45, 60));
-    circle(cos(a) * R * 1.45, sin(a) * R * 1.45, now ? 16 : i % 4 === 0 ? 9 : 5);
+    circle(cos(a) * R * 1.45, sin(a) * R * 1.45, now ? 16 : i % 4 === 0 ? 9 + ping * 7 : 5);
   }
 
   // Hi-hat 的火花
@@ -73,5 +73,6 @@ function hatDetected(level) { sparks.push({ a: random(TWO_PI), d: random(1.1, 1.
 function barStarted(bar) { drift += 9; }                        // 每一小節的第一格
 function cueFired(name, bar) { look = SCENES[name]; }           // cue() 宣告的那一小節
 function drumHit(lane, velocity) { if (lane === 'clap') flash = velocity; }   // 四軌都會叫它：kick、snare、hat、clap
+function stepStarted(step, bar) { if (step % 4 === 0) ping = 1; }   // 每一格（0–15）的開頭；每 4 格是一拍
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); }

@@ -13,7 +13,7 @@
 //   needs, standIn                 input tags (see strings.mjs TAGS): what the work is about / what stands in without hardware
 //   guide                          false → the page explains itself (15): only the head and the next link are generated
 //   p5Line                         true → the guide card carries the "take this input into your own p5 sketch: one line" row
-//   sketch                         a p5 one-line example (16–24): the p5/examples/<name>/sketch.js the page runs; build-examples
+//   sketch                         a p5 one-line example (16–26): the p5/examples/<name>/sketch.js the page runs; build-examples
 //                                  copies it to <dir>sketch.js, so the page, the handbook and the course run one file
 //   thumb, alt                     800×500 webp under assets/home/works/, and its alt text
 //   docs                           [{ id, en, zh }]: handbook anchors (/docs/#id), labels copied from the headings

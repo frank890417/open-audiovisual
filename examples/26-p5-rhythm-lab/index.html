@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- oav:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p5 rhythm lab · open-audiovisual example</title>
+<meta name="description" content="OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now. Plays with keys 1–4, Z, S · drum machine (🥁).">
+<link rel="canonical" href="https://openaudiovisual.com/examples/26-p5-rhythm-lab/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="p5 rhythm lab · open-audiovisual example">
+<meta property="og:description" content="OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now. Plays with keys 1–4, Z, S · drum machine (🥁).">
+<meta property="og:url" content="https://openaudiovisual.com/examples/26-p5-rhythm-lab/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="p5 rhythm lab · open-audiovisual example">
+<meta name="twitter:description" content="OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now. Plays with keys 1–4, Z, S · drum machine (🥁).">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/26-p5-rhythm-lab/#webpage","url":"https://openaudiovisual.com/examples/26-p5-rhythm-lab/","name":"p5 rhythm lab · open-audiovisual example","description":"OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now. Plays with keys 1–4, Z, S · drum machine (🥁).","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/26-p5-rhythm-lab/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/26-p5-rhythm-lab/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/04-webtoe-stage/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/26-p5-rhythm-lab/#code","name":"p5 rhythm lab (open-audiovisual example 26)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/26-p5-rhythm-lab","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/26-p5-rhythm-lab/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"p5 rhythm lab","item":"https://openaudiovisual.com/examples/26-p5-rhythm-lab/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css">
+<!-- /oav:head -->
+<style>
+  /* the sketch is the page: its canvas fills the window (createCanvas(windowWidth, windowHeight)) */
+  html, body { margin: 0; background: #111; overflow: hidden; }
+  canvas { display: block; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+</head>
+<body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 26 · <a href="../../examples/#route-inputs">Anything can be an instrument</a></span><span lang="zh-Hant">範例 26 · <a href="../../zh/examples/#route-inputs">什麼都能當樂器</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">p5 rhythm lab</span><span lang="zh-Hant">p5 節奏實驗台</span></h1>
+    <p class="g-teaches"><span lang="en">OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now.</span><span lang="zh-Hant">OAVp5.drums.edit('bd(3,8), …') 像打字一樣換節奏，OAVp5.drums.undo() 回上一行，OAVp5.drums.strudelUrl 把這一行帶去 Strudel；rhythmChanged() 告訴你現在是哪一行。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Press 1, 2, 3 or 4: edit() swaps the whole line, the circle and the drum card change at once, and the line is listed under it.</li><li>Press Z: undo() goes back one line, as the ↶ on the drum card does. Click a cell or type in the card's line, and rhythmChanged() still tells this page.</li><li>Press S: strudelUrl opens the same rhythm at strudel.cc in a new tab.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>按 1、2、3 或 4：edit() 換掉整行，圓圈和鼓機卡馬上跟著變，那一行列在旁邊。</li><li>按 Z：undo() 回到上一行，跟鼓機卡的 ↶ 一樣。點格子或在卡上的那一行打字，rhythmChanged() 一樣會告訴這個頁面。</li><li>按 S：strudelUrl 用新分頁在 strudel.cc 打開同一段節奏。</li></ol>
+    <p class="g-row"><span lang="en"><b>Needs:</b> QWERTY keys.</span><span lang="zh-Hant"><b>需要：</b>電腦鍵盤。</span>
+        <span lang="en">No hardware? Use Drum machine.</span><span lang="zh-Hant">沒有硬體？用鼓機。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/26-p5-rhythm-lab/sketch.js#L50-L51"><code>sketch.js:50–51</code></a> <span lang="en">edit() plays a line as if it were typed on the card and answers { ok, error }.</span><span lang="zh-Hant">edit() 像在卡上打字一樣換一行，回答 { ok, error }。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/26-p5-rhythm-lab/sketch.js#L52-L53"><code>sketch.js:52–53</code></a> <span lang="en">undo() goes back one line and says whether there was one.</span><span lang="zh-Hant">undo() 回上一行，並告訴你有沒有上一行。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/26-p5-rhythm-lab/sketch.js#L54-L56"><code>sketch.js:54–56</code></a> <span lang="en">strudelUrl is the line as a strudel.cc link; window.open takes it to a new tab.</span><span lang="zh-Hant">strudelUrl 是這一行在 strudel.cc 的連結，window.open 用新分頁打開。</span></li></ul>
+    
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#p5-the-cells-and-the-line-edit-each-other">The cells and the line edit each other</a></span><span lang="zh-Hant"><a href="../../zh/docs/#p5-the-cells-and-the-line-edit-each-other">格子和那一行互相改</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/04-webtoe-stage/">04 WebToe stage →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/04-webtoe-stage/">04 WebToe 舞台 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js"></script>
+<!-- /oav:guide -->
+<noscript>p5 note names: a p5.js sketch played through oav-p5, the one line for p5. noteIsDown('C4') works like noteIsDown(60): note names wherever a note number goes.</noscript>
+<!-- sketch.js is p5/examples/note-names/sketch.js, copied here by tools/build-examples.mjs (the same file the handbook and p5/examples/ open).
+     Its first lines load oav-p5.js from openaudiovisual.com, as in any sketch on OpenProcessing. -->
+<!-- last <script> on purpose: p5's friendly errors read the page's last script as the sketch -->
+<script src="./sketch.js?v=b6749b2"></script>
+</body>
+</html>

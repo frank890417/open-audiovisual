@@ -8,7 +8,7 @@
 > p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.0)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 27 packages, 24 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
+> Today: 27 packages, 26 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -148,7 +148,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-Twenty-four works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
+Twenty-six works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
 
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
 
@@ -161,7 +161,8 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 [Streaks of green, purple and red particle dots bursting over black, above an on-screen MiniLab 3 controller with its keys and sound buttons.](https://openaudiovisual.com/examples/16-p5-sound/) 16 · p5 keys with sound startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles. [play](https://openaudiovisual.com/examples/16-p5-sound/) · [source](examples/16-p5-sound/) | [A large pink circle with a thin grey ring around it on dark blue.](https://openaudiovisual.com/examples/17-p5-microphone/) 17 · p5 microphone micLevel, bass and beat read the microphone the way p5 reads mouseX: a circle that grows when you speak, and no p5.sound. [play](https://openaudiovisual.com/examples/17-p5-microphone/) · [source](examples/17-p5-microphone/) | [A small green circle (micLevel) and a larger yellow one (lagged) over two traces: the green drops at once, the yellow falls slowly. A small scope sits in the corner.](https://openaudiovisual.com/examples/22-p5-lag/) 22 · p5 lag: smooth a jumpy value lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page. [play](https://openaudiovisual.com/examples/22-p5-lag/) · [source](examples/22-p5-lag/)
 [A spiral of pink and blue dots above an on-screen MIDI keyboard controller.](https://openaudiovisual.com/examples/09-midi-controllers/) 09 · MIDI controllers On-screen controllers that move with the real ones you plug in. [play](https://openaudiovisual.com/examples/09-midi-controllers/) · [source](examples/09-midi-controllers/) | [Slender branching plants in a night garden, with green leaves and small blue, red and pink flowers.](https://openaudiovisual.com/examples/02-chord-garden/) 02 · Chord garden Triads bloom, clusters decay. The world listens to chords, never to keys. [play](https://openaudiovisual.com/examples/02-chord-garden/) · [source](examples/02-chord-garden/) | [A sphere packed with colourful cylinders seen end-on, like umbrellas.](https://openaudiovisual.com/examples/06-cylinder-earth/) 06 · Cylinder earth A 2020 voice-controlled WebGL sketch; mic bands or the built-in drum machine play it. [play](https://openaudiovisual.com/examples/06-cylinder-earth/) · [source](examples/06-cylinder-earth/)
 [A blue and white mandala of fine layered lines.](https://openaudiovisual.com/examples/03-pose-field/) 03 · Hand instrument Fingers as an instrument: pinch, fists, four pattern families. [play](https://openaudiovisual.com/examples/03-pose-field/) · [source](examples/03-pose-field/) | [A violet hand skeleton above green and blue ink strokes that fall like rain on black.](https://openaudiovisual.com/examples/12-leap-hands/) 12 · Leap hands A Leap Motion as an instrument; the mouse is a simulated hand when you have none. [play](https://openaudiovisual.com/examples/12-leap-hands/) · [source](examples/12-leap-hands/) | [Blue and yellow streaks exploding outward from the lower centre.](https://openaudiovisual.com/examples/08-remote-surface/) 08 · Remote surface The phone is the instrument panel; the surface grows from the world's params. [play](https://openaudiovisual.com/examples/08-remote-surface/) · [source](examples/08-remote-surface/)
-[Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom.](https://openaudiovisual.com/examples/23-p5-with-strudel/) 23 · p5 with Strudel Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase. [play](https://openaudiovisual.com/examples/23-p5-with-strudel/) · [source](examples/23-p5-with-strudel/) | [A yellow circle, square and triangle lit on black, labelled C4 = 60, E4 = 64 and G4 = 67, with G4 and 392.0 Hz written under them.](https://openaudiovisual.com/examples/24-p5-note-names/) 24 · p5 note names noteIsDown('C4') works like noteIsDown(60): write note names (C4, c#4, Db3) wherever a note number goes; noteNumber(), noteName() and noteFreq() convert. [play](https://openaudiovisual.com/examples/24-p5-note-names/) · [source](examples/24-p5-note-names/)
+[Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom.](https://openaudiovisual.com/examples/23-p5-with-strudel/) 23 · p5 with Strudel Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase. [play](https://openaudiovisual.com/examples/23-p5-with-strudel/) · [source](examples/23-p5-with-strudel/) | [A yellow circle, square and triangle lit on black, labelled C4 = 60, E4 = 64 and G4 = 67, with G4 and 392.0 Hz written under them.](https://openaudiovisual.com/examples/24-p5-note-names/) 24 · p5 note names noteIsDown('C4') works like noteIsDown(60): write note names (C4, c#4, Db3) wherever a note number goes; noteNumber(), noteName() and noteFreq() convert. [play](https://openaudiovisual.com/examples/24-p5-note-names/) · [source](examples/24-p5-note-names/) | [A teal disc with a white hand and a thin ring around it, four dots under its centre and a small scope in the corner showing a bouncing line; env, spring and count values are written at the bottom.](https://openaudiovisual.com/examples/25-p5-chop/) 25 · p5 numbers that move env('kick'), spring(), speed() and count('kick', 4) shape a number the way TouchDesigner's Trigger, Spring, Speed and Count CHOPs do: a bass drum opens a disc, a spring bounces it back, a hand turns, every fourth kick changes the colour. [play](https://openaudiovisual.com/examples/25-p5-chop/) · [source](examples/25-p5-chop/)
+[A circle of sixteen steps with a white hand on the left; on the right the rhythm line bd ~ [~ bd] ~, ~ cp ~ cp, hh(5,8), 'changed by: type', and the three earlier lines; the keys 1 to 4, Z and S explained at the bottom.](https://openaudiovisual.com/examples/26-p5-rhythm-lab/) 26 · p5 rhythm lab OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now. [play](https://openaudiovisual.com/examples/26-p5-rhythm-lab/) · [source](examples/26-p5-rhythm-lab/)
 
 **③ Bring another picture engine**: Bring your own: a node patch, a 2023 p5 sketch, a 2021 particle system.
 
@@ -393,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 24 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 745 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 747 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -508,7 +509,7 @@ It handles the part every show rebuilds from scratch: MIDI plumbing, turning
 inputs into parameters, a timeline with scenes, a director's console, a
 performance mode for the performer, and a backstage page for the stage manager.
 You write the *world*, the piece itself. The pitch, a live instrument and the
-twenty-four example works are on the [homepage](https://openaudiovisual.com/).
+twenty-six example works are on the [homepage](https://openaudiovisual.com/).
 
 ## Who it is for
 
@@ -580,7 +581,7 @@ Pick the one that matches what you already have. They get bigger as you go down.
    MIDI controller, from a controller drawn on screen, or from a phone, by adding one line at the top. Read
    [p5.js in one line](p5.md), and play the sketch that carries it: [example 15](https://openaudiovisual.com/examples/15-p5-one-line/).
    The same line also plays sound, runs a drum machine you can write as one line of rhythm, listens to the microphone
-   and records a video; each has a ready-made sketch among the [examples](https://openaudiovisual.com/examples/) (16 to 23).
+   and records a video; each has a ready-made sketch among the [examples](https://openaudiovisual.com/examples/) (16 to 26).
 2. **One controller in a page.** `<oav-controller profile="akai-lpd8">` puts a controller you can play into any web
    page. Read [MIDI controllers & embedding](controllers.md), and pick yours in the
    [controller library](https://openaudiovisual.com/controllers/).
@@ -3113,7 +3114,7 @@ function rhythmChanged(src, how) {   // how: 'code' · 'cell' · 'type' · 'undo
 }
 ```
 
-`OAVp5.drums.src` is the line that plays, `OAVp5.drums.edit("…")` plays a line as if typed, `OAVp5.drums.undo()` goes back.
+`OAVp5.drums.src` is the line that plays, `OAVp5.drums.edit("…")` plays a line as if typed, `OAVp5.drums.undo()` goes back. Keys that swap the rhythm, step back and open Strudel: `p5/examples/rhythm-lab/`.
 
 ### The rhythm on the canvas
 
@@ -3210,7 +3211,7 @@ the sketch's `stroke()` (white under `noStroke()`).
 
 The math is [@openav/chop](packages.md#openav-chop), loaded from next to this file the first time one of these is called;
 until it arrives (a few frames) each returns its input as it is. What each parameter means follows Derivative's
-TouchDesigner documentation; the code is OAV's own. Raw against lagged, side by side, with the scope: `p5/examples/lag/`.
+TouchDesigner documentation; the code is OAV's own. Raw against lagged, side by side, with the scope: `p5/examples/lag/`. `env`, `spring`, `speed`, `count` and `slope` driving a disc that a bass drum opens, with `startDrums()` as the only input: `p5/examples/chop/`.
 
 ## Recording: a video with its sound
 
@@ -3225,7 +3226,7 @@ function recordingSaved(info) {   // info.name, info.seconds, info.bytes, info.f
 
 | call / read / define | |
 |---|---|
-| `startRecording()`, `startRecording(seconds)` | record the canvas and the sketch's sound; with seconds it stops by itself; a take is 5 minutes at most |
+| `startRecording()`, `startRecording(seconds)`, `startRecording({ seconds, fps, mic, name, canvas, bitrate })` | record the canvas and the sketch's sound; with seconds it stops by itself; a take is 5 minutes at most. `canvas` is the canvas to record (a p5 canvas or `createGraphics()`; the default is the biggest p5 canvas on the page), `bitrate` is bits a second (the default follows the canvas size and frame rate, 4 to 80 Mb/s) |
 | `stopRecording()` | stop; the file downloads |
 | `recordingIsOn` | whether a take is running |
 | `recordingSaved(info)` | the file is saved: `name`, `seconds`, `bytes`, `format`, `width`, `height`, `audio`, `sources`, `warnings`, `blob`, `url` |
@@ -3253,7 +3254,7 @@ click on the dot stops it). **📷** saves the canvas as a PNG.
 - **Stills.** 📷 (or `OAVp5.record.shot()`) saves the canvas alone as `oav-<date>-<time>.png`, without the 🎹 or the cards;
   from code, p5's own `saveCanvas('name', 'png')` does the same.
 - **Options.** `record=nomic` (no microphone) or `record=off` (no ⏺ or 📷; `startRecording()` does nothing), `recfps=60`,
-  `reclimit=600` (seconds), `title=my-piece` (in the file name); for one take, `startRecording({ seconds, fps, mic: false, name })`.
+  `reclimit=600` (seconds), `title=my-piece` (in the file name); for one take, `startRecording({ seconds, fps, mic: false, name, canvas, bitrate })`.
 - The whole of it, ready to open: `p5/examples/record/`.
 
 ## Three inputs
@@ -3330,7 +3331,7 @@ hydra-synth 1.4.0, the library the editor runs (`p5/test/hydra-smoke.cjs`).
   embed code it gives you does not: add `allow="midi"` to that `<iframe>` if the embedded sketch should hear a hardware
   controller, and `allow="microphone"` if it should hear the microphone.
 - **Options, MIDI-level access and tests**: [`p5/README.md`](https://github.com/frank890417/open-audiovisual/tree/main/p5).
-  Examples: `p5/examples/particles/`, `p5/examples/opc/`, `p5/examples/mic/`, `p5/examples/keys/`, `p5/examples/drums/`, `p5/examples/rhythm/`, `p5/examples/rhythm-visual/` and `p5/examples/record/`.
+  Examples: `p5/examples/particles/`, `p5/examples/opc/`, `p5/examples/mic/`, `p5/examples/keys/`, `p5/examples/drums/`, `p5/examples/rhythm/`, `p5/examples/rhythm-visual/`, `p5/examples/rhythm-lab/`, `p5/examples/record/`, `p5/examples/lag/`, `p5/examples/chop/`, `p5/examples/with-strudel/` and `p5/examples/note-names/`.
 
 ---
 
@@ -3406,7 +3407,7 @@ note("c3 [e3 g3] <a3 b3> c4").midi('OAV Virtual MIDI')
 
 Strudel hands each note over 0.21–0.32 s early with the moment it should sound; OAV waits for that moment and then
 calls `notePressed(note, velocity)` (in Strudel, with no sketch: `OAVp5.on('notePressed', fn)`), moves `knob1` for a CC,
-plays a pad. Measured: within 5 ms of Strudel's timestamps (median 0.1 ms). What arrives on the port is never handed
+plays a pad. Measured on strudel.cc: each note is heard within 5 ms of its timestamp (10 notes, at most 4.5 ms late; `p5/test/strudel-smoke.cjs`), and `drumPhase` follows Strudel's clock to 0.1 ms. What arrives on the port is never handed
 back to OAV's input, so `midikeys('OAV Virtual MIDI')` played into `.midi('OAV Virtual MIDI')` is one echo, not a loop.
 
 **Strudel's clock.** MIDI counts 24 clocks a beat, so a cycle of one 4-beat bar sends 96:
@@ -4226,14 +4227,14 @@ L2 mapping · values over time, the way TouchDesigner's CHOPs shape them: Lag, T
 | export | signature |
 |---|---|
 | `approach` | `approach(current, target, seconds, dt)` → one step of a one-pole lag; `seconds` = time to 63% of a change (the `smooth` of `@openav/mapping`, which steps with it) |
-| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → output · `reset(v?)`: `up` while rising, `down` while falling (Lag CHOP's Lag 1 / Lag 2) |
+| `Lag` | `new Lag({ up = 0.1, down = up })` · `step(input, dt, up?, down?)` → output · `reset(v?)`: `up` while rising, `down` while falling (Lag CHOP's Lag 1 / Lag 2), in TouchDesigner's seconds (about 90% of a change) |
 | `envelope` | `envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)` → the Trigger CHOP's level at `t` for events at `times` (seconds, oldest first): a straight attack (0 → peak), then 0 after exactly `decay`; a retrigger starts where it is · `envelopeStage(elapsed, attack, decay, from, peak)` |
 | `Speed` | `new Speed()` · `step(rate, dt)` → position: `rate` per second |
 | `Spring` | `new Spring({ stiffness = 100, damping = 6 })` · `step(target, dt)` → position (`velocity` alongside): a mass on a spring pulled to the input, solved exactly · `springStep(x, v, target, k, c, dt)` → `[x, v]` |
 | `Trail` | `new Trail({ seconds = 2, rate = 60 })` · `step(value, dt)` → the last `seconds`, 60 values a second plus the newest, oldest first, fixed length |
 | `Slope` | `new Slope()` · `step(value, dt)` → change per second |
 | `Count` | `new Count({ threshold = 0.5 })` · `step(on, limit = 0)` → times it turned on, looped to 0 … limit − 1 with a limit · `wrapCount(total, limit)` |
-| `TD_LAG_RATIO`, `DEFAULTS` | `Math.LN10`: TouchDesigner quotes a lag as the time to ~90%, 2.3 time constants (a lag of 0.1 here ≈ a Lag CHOP at 0.23); the defaults above |
+| `TD_LAG_RATIO`, `DEFAULTS` | `Math.LN10`: two kinds of seconds. `Lag` and `lag()` take TouchDesigner's Lag CHOP seconds (about the time to follow 90% of a change), so `lag(x, 0.1)` moves like a Lag CHOP set to 0.1; underneath, `Lag` divides by `TD_LAG_RATIO` (2.3) to get its time constant. `approach(…, seconds)` takes that time constant itself (63% of a change, what `@openav/mapping`'s `smooth` always meant); the defaults above |
 
 ```js
 import { Lag, envelope } from '@openav/chop';
@@ -4408,7 +4409,7 @@ Spine · rhythm in one line: mini-notation, the way TidalCycles and Strudel writ
 | `WORDS` | `bd` kick · `sd` snare · `hh` hat · `oh` openhat · `cp` clap · `rim`/`rs` · `lt` `mt` `ht` toms · `cr` crash · `rd` ride · `cb` cowbell, and the kit's own names |
 | `euclid` | `euclid(pulses, steps, rotate = 0)` → booleans (Toussaint 2005) |
 | `fromGrid` | `fromGrid(grid, { steps = 16, words, order })` → a line that plays exactly the grid, written the way a person would: `bd*4`, `[~ sd]*2`, `bd(3,8,2)`, else beat by beat `bd [~ ~ ~ bd] bd*2 ~` (0.7) |
-| `toGrid` | `toGrid(src, { bar = 1, steps = 16 })` → `{ grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`: one bar on the steps and what they cannot hold (0.7) |
+| `toGrid` | `toGrid(srcOrCompiled, { bar = 1, steps = 16, seed = 0, bars = 16 })` → `{ ok, grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }`: bar `bar` on the steps and what they cannot hold; `seed` decides each `?` (as in `eventsInBar`), `bars` is how many bars it looks through to tell whether the others differ (`lost.varies`) (0.7) |
 | `fromStrudel` | `fromStrudel(code)` → `{ strudel, ok, src, bpm, ignored, unsupported }`: `s("…")` / `sound("…")` copied from strudel.cc, `.fast` / `.slow` folded in, `setcpm` / `setcps` as `bpm` (0.7) |
 | `toStrudel`, `strudelUrl` | `strudelUrl(src, { bpm, comment })` → `https://strudel.cc/#…` (the line as `s("…")` with `setcpm(bpm/4)`, base64 in the `#`); open it in a new tab (0.7) |
 
@@ -4602,7 +4603,7 @@ openav.mapper.routes                                    // the wiring
 ```text
 Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/25-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/27-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   <describe the performance, e.g. "a jellyfish world that blooms on consonant chords">
 
