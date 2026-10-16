@@ -420,8 +420,9 @@ Spine · the backstage page and the WebSocket relay that feeds it.
 
 | export | signature |
 |---|---|
-| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15 })` · `connect()` · `frame(snapshot)` · `connected`, `onStatus` |
-| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop }, state)` → a JSON snapshot |
+| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15, extra })` · `connect()` · `frame(snapshot)` · `extra(fn)` → `off()` · `connected`, `onStatus` |
+| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop, extra? }, state)` → a JSON snapshot; the work's own numbers (`extra`, the active world's `monitor()`) land under `extra` |
+| `cleanExtra` | `cleanExtra(x)` → the work's numbers made safe for JSON (a number, string, boolean, null or `{ v, min, max, warn }` per field), or `null` when there are none |
 | server | `node packages/monitor/server.js [port=7457]`: backstage page at `/`, `/health` |
 
 See [Show control](show-control.md#backstage-monitor).

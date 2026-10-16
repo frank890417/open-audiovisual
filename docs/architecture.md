@@ -165,8 +165,9 @@ Full reference: [Score & Director](score.md).
 The performance page streams JSON snapshots (throttled, ~15 Hz) over WebSocket
 to a dependency-free relay (`server.js`, hand-rolled RFC 6455). Any phone or
 laptop on the LAN opens the backstage page and sees: clock, scene, world, FPS,
-overrides, every signal and param, and a "stage feed lost" alarm. The monitor
-is a first-class citizen because a show without a backstage is a rehearsal.
+overrides, every signal and param, and a "stage feed lost" alarm. The work can add
+its own health numbers to the feed ([Backstage monitor](show-control.md#the-works-own-numbers)).
+The monitor is a first-class citizen because a show without a backstage is a rehearsal.
 
 ## Around the spines: console and phones
 

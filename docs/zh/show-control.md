@@ -168,6 +168,23 @@ monitor.connect();
 monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
 ```
 
+### 作品自己的數字
+
+作品可以把自己的健康數字送上後台頁面：模擬跑到第幾個 tick、跟牆上時鐘差了多少、攔到幾次 NaN。這些數字以 `snapshot.extra` 送過去，顯示在一個 **Work** 面板裡；什麼都沒送時，面板是隱藏的。不送的演出，送出的快照跟以前完全一樣。
+
+```js
+// 1. from the world: snapshotOf asks the active world, so a createShow() show needs no wiring
+const world = { name: 'night', params: [/* … */], update() { /* … */ },
+  monitor() { return { 'sim/tick': sim.tick, 'sim/drift': { v: sim.drift, min: 0, max: 0.5, warn: sim.drift > 0.2 } }; } };
+
+// 2. from a hand-assembled show: on the feed (asked only when a frame is sent) …
+const off = monitor.extra(() => ({ 'sim/nan': nanCount }));          // off() takes it away again
+// … or in the snapshot itself (an object, or a function answering one)
+monitor.frame(snapshotOf({ timeline, params, signals, stage, loop, extra: { build: 'rehearsal-2' } }, state));
+```
+
+一個值可以是數字、字串（最長 80 字）、布林或 `null`。寫成 `{ v, min, max, warn }` 的話，有 `min` 和 `max` 就會畫量條，`warn: true` 會讓那一列變紅。名稱最長 48 字，一份快照最多 64 個欄位。JSON 帶不走的東西（`NaN`、BigInt、函式、巢狀物件）會被丟掉或變成 `null`，所以一個壞數字不會讓整幀送不出去；丟出錯誤的提供者會被略過。`monitor()` 和函式形式的 `extra` 每個影格都會被問一次，`monitor.extra(fn)` 只在真的送出一幀時才問（大約每秒 15 次），比較耗時的量測請放在那裡。同一個名稱有兩個來源時，`extra` 蓋過世界，後掛的 `monitor.extra` 蓋過先掛的。
+
 ## OSC 輸出
 
 ```bash
