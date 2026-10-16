@@ -47,7 +47,9 @@ timeline.state(t)          — automation curves per param
 
 An override is *sticky*: once a knob touched `bloom`, the timeline no longer moves
 it until the override is cleared (✕ in the console). This matches performance
-reality — when a human grabs a control, the score yields.
+reality — when a human grabs a control, the score yields. A route can choose otherwise:
+`mode: 'trim'` adds the knob to the timeline's value instead of replacing it, and `release`
+hands the param back when the knob stands still ([Mapping](mapping.md#trim-pickup-and-release)).
 
 ## L1 · Input — Signals
 

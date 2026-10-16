@@ -18,6 +18,8 @@ fills in the rest:
 | `curve` | `'linear'` | `linear`, `exp`, `log` or `smooth` |
 | `invert` | `false` | flip the normalized value (1 − x) before the curve |
 | `smooth` | `0` | glide time in seconds (0 = instant) |
+| `mode` | (absent = `'override'`) | `'override'` replaces the timeline's value, `'trim'` adds to it, `'pickup'` takes over only once the knob has met the value: [Trim, pickup and release](#trim-pickup-and-release) |
+| `release` | (absent = never) | seconds the signal must stand still before the route lets go and the timeline plays again |
 | `enabled` | (absent = on) | `false` mutes the route |
 | `id` | assigned | a number, used to remove the route |
 
@@ -40,7 +42,8 @@ steps, in order:
 4. **Scale**: `out = outMin + (outMax − outMin) · x`.
 5. **Write**: with `smooth: 0`, the param is overridden with `out` (and clamped
    and snapped to its `step`). With `smooth > 0`, `out` becomes a target that
-   `mapper.update(dt)` glides toward every frame.
+   `mapper.update(dt)` glides toward every frame. A `trim` route writes the timeline's
+   value plus `out`; a `pickup` route writes nothing until the knob has met the param.
 
 ## Curves
 
@@ -78,7 +81,9 @@ where it lands. Typical uses:
 covered about 63% of the distance to the new value (a one-pole filter,
 `k = 1 − e^(−dt/smooth)` per frame). 0.05–0.15 hides the steps of a MIDI knob or
 a 30 Hz phone stream; 0.2–0.5 makes a hand feel heavy. The glide starts from the
-param's current value, so the first movement never jumps.
+param's current value (a value set by hand, else what the timeline says right now, see
+[`base`](#telling-the-mapper-where-the-timeline-is)), so the first movement never jumps,
+and it stops writing once it has arrived.
 
 ## Pulse targets
 
@@ -108,10 +113,93 @@ as a mapped signal moves, the timeline stops driving that param. Clearing the
 override (✕ next to the param, or `show.params.clearOverride(key)`) hands it back
 to the timeline until the signal moves again.
 
-A *smoothed* route keeps writing its last target every frame once its signal has
-arrived, so its param stays overridden even after ✕ and even when the route is
-muted. Remove the route (✕ in **L2 · Mapping**) to give the param back to the
-timeline for good.
+A *smoothed* route writes only while it is gliding. Once it has arrived it stops, so ✕
+(or a slider you drag) takes the param back and it stays back until the knob moves
+again; ✕ in the middle of a glide stops the glide. The mapper notices when
+something else has written the param since its own last write, and stands down.
+Muting a route stops it writing; the param keeps the value it had (a muted `trim` gives
+its offset back).
+
+A replacing route throws the timeline's curve away for as long as it holds the param. For a
+knob that should *nudge* the timeline, or *hand it back* when you let go, read on.
+
+## Trim, pickup and release
+
+Three route fields change who wins when a knob meets a timeline. All three are off unless
+you write them: a route without `mode` and `release` is the replacing route described above.
+
+| field | what the knob does |
+|---|---|
+| `mode: 'override'` | the default: the knob's value *replaces* the timeline's, until ✕ |
+| `mode: 'trim'` | the knob's value is an *offset* added to the timeline's value, which keeps moving underneath |
+| `mode: 'pickup'` | like `override`, but the knob only takes over once it has *met* the param's current value |
+| `release: 4` | with any mode: when the knob has stood still for 4 seconds, let go and let the timeline play |
+
+`mode` and `release` do not apply to pulse targets.
+
+### Telling the mapper where the timeline is
+
+`trim`, `pickup` and the start of a smooth glide all need the timeline's value for the param
+*right now*. The mapper takes it from `base`, a function that answers `{ key: value }`:
+
+```js
+const mapper = new Mapper({ signals, params, base: () => timeline.state() });
+// a show made with createShow(): hand it the timeline once
+show.mapper.base = () => show.timeline.state();
+```
+
+`timeline.state()` is the value *before* overrides, with a score's segment modules already applied,
+which is what the param would be if nobody touched it. Without `base` the mapper uses the
+param's `def`: right for a param nothing automates, wrong for one the timeline draws. A `base`
+that throws or answers something else is treated as absent; it never stops the show. Keep it cheap:
+it is asked every frame while a trim holds a param, and at each reading of a trim or pickup knob.
+
+### Trim: nudge the timeline
+
+For a work whose timeline already draws the night, turning a knob to 0.9 should not throw
+the curve away. A `trim` route's `outMin`/`outMax` are an *offset* range, and the param is
+`timeline value + offset`, clamped to the param's range. Without them the knob spans half the param's
+range each way (knob in the middle = no change):
+
+```js
+// ±0.3 around whatever the timeline says, smoothed
+show.mapper.addRoute({ source: 'midi/cc/74', target: 'reality', mode: 'trim', outMin: -0.3, outMax: 0.3, smooth: 0.1 });
+```
+
+- The offset rides on the timeline: when the curve moves, the param moves with it, every frame.
+- `smooth` smooths the offset (it starts from 0, never from a jump).
+- Two trim routes on one param add up, so a coarse and a fine knob work together. A `trim` on a param
+  that also has a replacing route sits on top of the replacing route's value.
+- While a trim holds a param, the param is overridden: the console shows it with a ✕, and a
+  `timeline.record` source that reads the override gets the sum, what the audience saw. ✕ clears the offset;
+  the knob's next move brings it back. Removing or muting the route gives the param back at once.
+
+### Pickup: take over only when you arrive
+
+A knob and a parameter rarely start in the same place. With `mode: 'pickup'` the route writes
+nothing until the knob's value has *met* the param's current value: within 2% of the route's
+output range, or crossed over it between two readings. From then on it behaves like a replacing
+route, gliding from where the param was (no jump). The comparison uses the value the param
+has right now, so it works while the timeline moves. A `release` or ✕ puts the route back to
+"not met yet".
+
+### Release: give it back
+
+`release: 4` means: when the signal has not moved for 4 seconds, the route lets go. Movement is a change of
+more than 0.1% of the input window, measured from where it last counted as moved, so a slow drift counts and a source that keeps sending the
+same value does not. Then:
+
+- with `smooth: 0` the param goes back to the timeline at once;
+- with `smooth > 0` it fades into the timeline over about three times `smooth` seconds, then the override
+  is cleared (a `trim` fades its offset to zero);
+- the route waits until the source *moves* again before it takes anything: a source that keeps repeating
+  the same value does not take the param back;
+- it only clears what it wrote itself. If a slider took the param over in the meantime, that stays.
+
+```js
+// a main knob: meets the value first, glides, and gives the param back 4 s after the hand leaves
+show.mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'pickup', release: 4, smooth: 0.15 });
+```
 
 ## Learn
 
@@ -215,6 +303,9 @@ Routes are named by `signal` and `param`, never by id, so a file travels between
   own range (the `in` window, curve, smoothing and invert come along);
 - `version` newer than this build reads is refused with a message. A bare array from
   `mapper.toJSON()` (the old way) still imports, as version 0.
+- `mode` (`"trim"` or `"pickup"`) and `release` (seconds) are optional route keys in version 1, written only when
+  a route uses them. A build from before they existed ignores them and reads the route as a replacing route.
+  For a `trim` route, `range.out` is the offset range.
 - Files over 256 KB or with over 500 routes are refused.
 
 ### Load on open: `?map=`
@@ -269,13 +360,14 @@ Several packages generate routes in this same shape:
 ```js
 import { Mapper } from '@openav/mapping';
 
-const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn });
+const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn, base });
 mapper.addRoute(route)        // → the stored route (defaults filled in, id assigned)
 mapper.removeRoute(id)
 mapper.routesFor('bloom')     // → routes targeting a param
 mapper.routes                 // the live array
 mapper.learn('bloom')         // arm / cancel learn; mapper.learnTarget is the armed key
-mapper.update(dt)             // every frame: advances smoothed routes
+mapper.base = () => timeline.state()   // the timeline's value now (trim, pickup, smooth start); optional
+mapper.update(dt)             // every frame: glides smoothed routes, keeps trims on the timeline, applies release
 mapper.toJSON(); mapper.fromJSON(array)
 mapper.exportMap(); mapper.importMap(text|object, { mode })   // the portable file, see above
 mapper.clear()                // remove every route (and forget them)
