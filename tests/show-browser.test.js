@@ -204,6 +204,20 @@ test('show: the M key opens the on-screen MIDI panel through the console, and mo
   });
 });
 
+test('show: the mapper reads the timeline as its base — a trim knob sits on the curve, not on the param default', opts, async () => {
+  await withPage(async (page) => {
+    const r = await page.evaluate(async () => {
+      const show = await window.__start({ loop: 'manual', monitor: false });
+      show.timeline.play();
+      for (let i = 0; i < 30; i++) show.loop.step(1 / 60);
+      const base = typeof show.mapper.base === 'function' ? show.mapper.base() : null;
+      return { hasBase: typeof show.mapper.base === 'function', base, state: show.timeline.state() };
+    });
+    assert.equal(r.hasBase, true, 'createShow wires mapper.base');
+    assert.deepEqual(r.base, r.state, 'mapper.base() is timeline.state() (no overrides)');
+  });
+});
+
 test('show: a bad loop, monitor or console.keys option throws before the page is touched', opts, async () => {
   await withPage(async (page) => {
     const errs = await page.evaluate(async () => {

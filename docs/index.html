@@ -1437,8 +1437,7 @@ you write them: a route without <code>mode</code> and <code>release</code> is th
 <p><code>trim</code>, <code>pickup</code> and the start of a smooth glide all need the timeline's value for the param
 <em>right now</em>. The mapper takes it from <code>base</code>, a function that answers <code>{ key: value }</code>:</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, base: () =&gt; timeline.state() });
-<span class="tc">// a show made with createShow(): hand it the timeline once</span>
-show.mapper.base = () =&gt; show.timeline.state();</code></pre></div>
+<span class="tc">// a show made with createShow() already does this for you</span></code></pre></div>
 <p><code>timeline.state()</code> is the value <em>before</em> overrides, with a score's segment modules already applied,
 which is what the param would be if nobody touched it. Without <code>base</code> the mapper uses the
 param's <code>def</code>: right for a param nothing automates, wrong for one the timeline draws. A <code>base</code>

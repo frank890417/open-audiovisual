@@ -394,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 915 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 916 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -1788,8 +1788,7 @@ you write them: a route without `mode` and `release` is the replacing route desc
 
 ```js
 const mapper = new Mapper({ signals, params, base: () => timeline.state() });
-// a show made with createShow(): hand it the timeline once
-show.mapper.base = () => show.timeline.state();
+// a show made with createShow() already does this for you
 ```
 
 `timeline.state()` is the value *before* overrides, with a score's segment modules already applied,

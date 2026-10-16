@@ -1078,8 +1078,7 @@ show.mapper.addRoute({ source: <span class="ts">'hand/right/pinch/index'</span>,
 <h4 id="mapping-telling-the-mapper-where-the-timeline-is">告訴映射器時間軸在哪裡<a class="anchor" href="#mapping-telling-the-mapper-where-the-timeline-is" aria-label="這一節的連結">#</a></h4>
 <p><code>trim</code>、<code>pickup</code>，還有平滑滑行的起點，都需要知道參數<em>此刻</em>在時間軸上的值。映射器從 <code>base</code> 取得，它是一個回傳 <code>{ key: value }</code> 的函式：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, base: () =&gt; timeline.state() });
-<span class="tc">// a show made with createShow(): hand it the timeline once</span>
-show.mapper.base = () =&gt; show.timeline.state();</code></pre></div>
+<span class="tc">// a show made with createShow() already does this for you</span></code></pre></div>
 <p><code>timeline.state()</code> 是<em>還沒套用覆寫</em>的值，而且總譜的段落模組已經套用過了，也就是沒有人碰它時參數會有的值。沒有 <code>base</code> 的話，映射器用參數的 <code>def</code>：對沒有任何自動化的參數是對的，對時間軸畫著曲線的參數就不對。<code>base</code> 丟出錯誤或回傳別的東西，就當作沒有，絕不會擋住演出。它要輕：trim 握著參數的每個影格都會問一次，trim 或 pickup 的旋鈕每次讀數也會再問。</p>
 <h4 id="mapping-trim-nudge-the-timeline">trim：在時間軸上微調<a class="anchor" href="#mapping-trim-nudge-the-timeline" aria-label="這一節的連結">#</a></h4>
 <p>時間軸已經把整場演出畫好的作品，不該因為旋鈕轉到 0.9 就把曲線整條丟掉。<code>trim</code> 路由的 <code>outMin</code>/<code>outMax</code> 是<em>偏移量</em>的範圍，參數等於 <code>時間軸的值 + 偏移</code>，再夾在參數的範圍內。沒寫的話，旋鈕往兩邊各走參數範圍的一半（旋鈕在中間 = 不動）：</p>

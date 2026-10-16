@@ -144,8 +144,7 @@ you write them: a route without `mode` and `release` is the replacing route desc
 
 ```js
 const mapper = new Mapper({ signals, params, base: () => timeline.state() });
-// a show made with createShow(): hand it the timeline once
-show.mapper.base = () => show.timeline.state();
+// a show made with createShow() already does this for you
 ```
 
 `timeline.state()` is the value *before* overrides, with a score's segment modules already applied,

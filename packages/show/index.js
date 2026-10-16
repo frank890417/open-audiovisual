@@ -136,7 +136,8 @@ export async function createShow({
     timeline.onSeek((t, kind) => (kind === 'reset' ? director.reset() : director.seek(t)));
     timeline.onSceneChange((i, scene, info) => scoreMidi?.segment({ index: i, id: scene?.id, cause: info?.cause }));
   }
-  const mapper = new Mapper({ signals, params, profile: profile || allWorlds[0]?.name || 'show' });
+  // base：時間軸「現在」的值（不含覆寫）。trim／pickup 疊在它上面、平滑從它起跳；沒接上時會退回參數的 def（G2）
+  const mapper = new Mapper({ signals, params, profile: profile || allWorlds[0]?.name || 'show', base: () => timeline.state() });
   const loaded = profile !== false && mapper.load();
   if (!loaded) {
     for (const r of routes) mapper.addRoute(r);

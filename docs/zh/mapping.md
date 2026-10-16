@@ -107,8 +107,7 @@ show.mapper.addRoute({ source: 'hand/right/pinch/index', target: 'tightness', cu
 
 ```js
 const mapper = new Mapper({ signals, params, base: () => timeline.state() });
-// a show made with createShow(): hand it the timeline once
-show.mapper.base = () => show.timeline.state();
+// a show made with createShow() already does this for you
 ```
 
 `timeline.state()` 是*還沒套用覆寫*的值，而且總譜的段落模組已經套用過了，也就是沒有人碰它時參數會有的值。沒有 `base` 的話，映射器用參數的 `def`：對沒有任何自動化的參數是對的，對時間軸畫著曲線的參數就不對。`base` 丟出錯誤或回傳別的東西，就當作沒有，絕不會擋住演出。它要輕：trim 握著參數的每個影格都會問一次，trim 或 pickup 的旋鈕每次讀數也會再問。
