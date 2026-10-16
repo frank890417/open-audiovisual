@@ -24,6 +24,9 @@
   .row .m i { display: block; height: 100%; background: #37c978; }
   .row .v { text-align: right; color: #fff; font-variant-numeric: tabular-nums; }
   .ovr { color: #ffd166; }
+  #work { grid-column: 1 / -1; }
+  .row.warn label, .row.warn .v { color: #ff6b6b; }
+  .row.warn .m i { background: #ff6b6b; }
   .dead { position: fixed; inset: 0; background: rgba(13,16,23,.88); display: none;
     align-items: center; justify-content: center; font-size: 20px; color: #ff6b6b; }
   .dead.on { display: flex; }
@@ -41,6 +44,7 @@
 <div class="cols">
   <div class="panel"><h3>Signals</h3><div id="signals"></div></div>
   <div class="panel"><h3>Params</h3><div id="params"></div></div>
+  <div class="panel" id="work" hidden><h3>Work</h3><div id="extra"></div></div>
 </div>
 <div class="dead" id="dead">stage feed lost — check the performance machine</div>
 
@@ -62,26 +66,48 @@ function connect() {
     $('bar').style.width = d.total ? (100 * Math.max(0, d.t) / d.total) + '%' : '0';
     renderRows($('signals'), (d.signals || []).map(s => ({ key: s.n, val: s.v, norm: (s.k === 'pulse' ? null : (typeof s.v === 'number' ? s.v : null)) })));
     renderRows($('params'), Object.entries(d.state || {}).map(([k, v]) => ({ key: k, val: v, norm: null, ovr: (d.overrides || []).includes(k) })));
+    const mine = extraItems(d.extra);                       // the work's own numbers; the panel appears only when there are some
+    $('work').hidden = !mine.length;
+    renderRows($('extra'), mine, true);
   };
   ws.onclose = () => setTimeout(connect, 2000);
 }
+// snapshot.extra → rows. A value is a primitive, or { v, min, max, warn }: min/max draw the meter, warn turns the row red.
+function extraItems(extra) {
+  if (!extra || typeof extra !== 'object' || Array.isArray(extra)) return [];
+  return Object.entries(extra).map(([key, e]) => {
+    const d = e !== null && typeof e === 'object' ? e : { v: e };
+    const norm = typeof d.v === 'number' && typeof d.min === 'number' && typeof d.max === 'number' && d.max > d.min
+      ? Math.min(1, Math.max(0, (d.v - d.min) / (d.max - d.min))) : null;
+    return { key, val: d.v, norm, warn: d.warn === true };
+  });
+}
+// a health number may be a count (1200) or something tiny (0.0042): whole numbers as they are, small ones keep two digits
+const fmtExtra = (v) => Number.isInteger(v) ? String(v) : (Math.abs(v) < 0.01 ? v.toPrecision(2) : v.toFixed(2));
 const rowCache = new Map();
-function renderRows(root, items) {
+function renderRows(root, items, precise) {
+  const seen = new Set();
   for (const it of items) {
     const id = root.id + '/' + it.key;
+    seen.add(id);
     let row = rowCache.get(id);
     if (!row) {
       row = document.createElement('div');
       row.className = 'row';
-      row.innerHTML = `<label>${it.key}</label><div class="m"><i></i></div><span class="v"></span>`;
+      row.innerHTML = '<label></label><div class="m"><i></i></div><span class="v"></span>';
+      row.firstChild.textContent = it.key;                  // names come off the wire (and from the work): text, never markup
       root.appendChild(row);
       rowCache.set(id, row);
     }
     row.querySelector('label').classList.toggle('ovr', !!it.ovr);
+    row.classList.toggle('warn', !!it.warn);
     const norm = (typeof it.norm === 'number') ? Math.min(1, Math.max(0, it.norm)) : null;
     row.querySelector('i').style.width = norm === null ? '0%' : (norm * 100) + '%';
-    row.querySelector('.v').textContent = typeof it.val === 'number' ? it.val.toFixed(2) : (it.val == null ? '·' : String(it.val).slice(0, 8));
+    const v = row.querySelector('.v');
+    v.textContent = typeof it.val === 'number' ? (precise ? fmtExtra(it.val) : it.val.toFixed(2)) : (it.val == null ? '·' : String(it.val).slice(0, 8));
+    v.title = typeof it.val === 'string' ? it.val : '';
   }
+  for (const [id, row] of rowCache) if (id.startsWith(root.id + '/') && !seen.has(id)) { row.remove(); rowCache.delete(id); }   // a field the work stopped sending
 }
 setInterval(() => $('dead').classList.toggle('on', lastMsgAt > 0 && Date.now() - lastMsgAt > 4000), 1000);
 connect();
