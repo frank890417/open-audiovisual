@@ -75,8 +75,11 @@ const row = (ok, name, extra) => { if (!ok) bad++; console.log(`${ok ? '✅' : '
   // no fake-ui flag: a microphone request is refused, as when a student presses Block
   const b = await PW.chromium.launch({ executablePath: exe && fs.existsSync(exe) ? exe : undefined, headless: true, args: ['--use-fake-device-for-media-stream'] });
   fs.mkdirSync(SHOTS, { recursive: true });
+  // Chrome 151 (headless) answers an un-allowed getUserMedia with NotSupportedError, not the NotAllowedError a person who clicks "Block" gets: say what "Block" looks like.
+  const REFUSE_MIC = () => { const md = navigator.mediaDevices; if (md) md.getUserMedia = () => Promise.reject(new DOMException('Permission denied', 'NotAllowedError')); };
   const open = async (v, kind, opts = {}) => {
     const ctx = await b.newContext({ viewport: { width: 1000, height: 700 }, locale: 'zh-TW' });
+    if (kind === 'mic') await ctx.addInitScript(REFUSE_MIC);   // this page's microphone is refused (see the check below)
     await ctx.routeWebSocket(/:7457|127\.0\.0\.1:1\//, (ws) => ws.close());
     const p = await ctx.newPage(); const errs = [], logs = [];
     p.on('pageerror', (e) => errs.push(e.message));

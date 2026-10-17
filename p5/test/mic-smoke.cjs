@@ -75,6 +75,8 @@ function setup(){createCanvas(300,200);} function draw(){ background(micLevel*25
   await new Promise((ok) => srv.listen(+(process.env.PORT || 0), '127.0.0.1', ok));
   const base = `http://127.0.0.1:${srv.address().port}`;
   const exe = process.env.CHROME;
+  // Chrome 151 (headless) answers an un-allowed getUserMedia with NotSupportedError, not the NotAllowedError a person who clicks "Block" gets: say what "Block" looks like.
+  const REFUSE_MIC = () => { const md = navigator.mediaDevices; if (md) md.getUserMedia = () => Promise.reject(new DOMException('Permission denied', 'NotAllowedError')); };
   const launch = (extra) => PW.chromium.launch({ executablePath: exe && fs.existsSync(exe) ? exe : undefined, headless: true, args: ['--use-fake-device-for-media-stream', ...extra] });
   const okBrowser = await launch(['--use-fake-ui-for-media-stream']);      // the fake microphone, "Allow" pressed for us
   const noBrowser = await launch([]);                                      // the same, but nobody allows: the prompt is dismissed
@@ -161,7 +163,7 @@ function setup(){createCanvas(300,200);} function draw(){ background(micLevel*25
 
     // 3. a refused microphone: reads stay 0, nothing throws, the 🎤 says why
     {
-      const errs = []; const ctx = await noBrowser.newContext({ viewport: { width: 700, height: 500 } }); await watch(ctx, errs, baseline);
+      const errs = []; const ctx = await noBrowser.newContext({ viewport: { width: 700, height: 500 } }); await ctx.addInitScript(REFUSE_MIC); await watch(ctx, errs, baseline);
       const p = await ctx.newPage(); await p.goto(`${base}/page?v=${v}&kind=denied`); await p.waitForTimeout(2000);
       const s = await p.evaluate(() => ({ state: OAVp5.mic.state, lvl: micLevel, bass, on: micIsOn, err: OAVp5.mic.error }));
       row(s.state === 'denied' && s.lvl === 0 && s.bass === 0 && s.on === false, `p5 ${v}: a refused microphone: state "denied", reads stay 0`, JSON.stringify(s));
