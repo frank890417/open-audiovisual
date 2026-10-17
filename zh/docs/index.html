@@ -677,7 +677,7 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
 <p>演出頁面透過 WebSocket，把 JSON 快照（有節流，約 15 Hz）串流到一個沒有相依套件的中繼（<code>server.js</code>，手寫的 RFC 6455 實作）。區域網路裡任何一支手機或一台筆電，打開後台頁面就能看到：時鐘、場景、世界、FPS、覆寫、每個訊號和參數，還有「舞台畫面斷線」警示。後台監看在框架裡跟其他層一樣重要：沒有後台的演出，只是一場彩排。</p>
 <h3 id="architecture-around-the-spines-console-and-phones">主軸周邊：控台與手機<a class="anchor" href="#architecture-around-the-spines-console-and-phones" aria-label="這一節的連結">#</a></h3>
 <ul>
-<li><strong>控台</strong>（<code>@openav/console</code>）：側邊面板裡的導演控台，依層排列（Layers → L1 → L2 → L3 → L4 → Signals），另外還有演出模式。它讀的就是迴圈正在跑的那批物件，自己不保存任何狀態。</li>
+<li><strong>控台</strong>（<code>@openav/console</code>）：側邊面板裡的導演控台，依層排列（Layers → L1 → L2 → L3 → L4 → Signals），另外還有演出模式，以及把整場 automation 畫成曲線的曲線面板。它讀的就是迴圈正在跑的那批物件，自己不保存任何狀態。</li>
 <li><strong>手機</strong>（<code>@openav/relay</code>、<code>@openav/surface</code>、<code>@openav/remote</code>）：手機和 iPad 透過 WebSocket 中繼加入一個房間，發布 <code>phone/*</code> 和 <code>surface/*</code> 訊號。對映射器來說，它們只是多一個輸入。見<a href="#phones">手機、中繼與控制面板</a>。</li>
 </ul>
 </section>
@@ -1353,7 +1353,7 @@ timeline.onRecord(({ key }) =&gt; params.clearOverride(key));      <span class="
     speed: [[0, 0.3], [30, 1.2], [120, 0.4]],                      <span class="tc">// absolute seconds still work, in the same object</span>
   } },
 });</code></pre></div>
-<p>一個點 <code>[p, v, curve]</code> 就是關鍵影格 <code>[段首 + p × 段長, v, curve]</code>，沒有別的規則：時間軸在建立時就把每條 lane 編譯好，<code>timeline.automation</code> 裡放的是一般的絕對秒數影格，所以 <code>valueAt</code>、錄製、<code>mergeTake</code> 和控台的行為都跟以前一樣。</p>
+<p>一個點 <code>[p, v, curve]</code> 就是關鍵影格 <code>[段首 + p × 段長, v, curve]</code>，沒有別的規則：時間軸在建立時就把每條 lane 編譯好，<code>timeline.automation</code> 裡放的是一般的絕對秒數影格，所以 <code>valueAt</code>、錄製、<code>mergeTake</code> 和控台的行為都跟以前一樣。控台的<a href="#show-control-the-curves-panel">曲線面板</a>會把 lane 畫在整場演出上，後面標著段落 id。</p>
 <ul>
 <li><strong>任何 cut。</strong> lane 是對著總譜的<em>基準 cut</em>（衍生 cut 的來源）編譯的。長度不同的 cut 會用自己的長度讀同一條 lane，所以 <code>(dawn, 0.5)</code> 在每個 cut 裡都是 dawn 走到一半；衍生 cut（<code>from</code> + <code>scale</code>）會像絕對秒數影格一樣被拉伸。差別在結構、不只在長度的兩個 cut，也可以共用同一條 lane。</li>
 <li><strong>接縫。</strong> 一段的最後一點和下一段的第一點之間，數值像任何兩個影格之間一樣滑過去（用抵達那一點的曲線）。要無縫，就在 <code>p: 1</code> 和下一段的 <code>p: 0</code> 寫同一個值。同一個時刻有兩個不同的值，就是跳變。</li>
@@ -1416,7 +1416,7 @@ timeline.unfollow();            <span class="tc">// the timeline walks by itself
 <p><code>followStatus()</code> 在時間軸沒有在追時回傳 <code>null</code>，否則回傳 <code>state</code>（<code>'waiting'</code>、<code>'tracking'</code>、<code>'lost'</code>）、<code>error</code>（主控端的 <code>T</code> 減我們的，秒；正數 = 我們落後）、<code>worst</code>（第一次追上之後最大的 <code>|error|</code>）、<code>jumps</code>（seek 的次數）、<code>silence</code>（距離上一則 frame 幾秒）、<code>lost</code>、<code>lostCount</code>、<code>lostAfter</code>、<code>heard</code>、<code>frames</code>、<code>nudging</code>（-1、0 或 1）、<code>rate</code>、<code>leaderRate</code>、<code>leaderT</code>、<code>leaderPlaying</code>、<code>leaderHolding</code>，以及 <code>text</code>：給導演台或後台看的一行摘要。數字是最後一幀的。</p>
 <h3 id="show-control-the-console">控台<a class="anchor" href="#show-control-the-console" aria-label="這一節的連結">#</a></h3>
 <p><code>mountConsole(el, app, { layers, signals, keys })</code>（<code>@openav/console</code>）會做出導演控台，<code>createShow()</code> 把它掛在側邊面板。<code>app</code> 就是 <code>createShow()</code> 回傳的 <code>show.app</code>（<code>timeline</code>、<code>params</code>、<code>mapper</code>、<code>signals</code>、<code>stage</code>、<code>midi</code>、<code>sound</code>、<code>audio</code>、<code>hands</code>、<code>pose</code>…），缺了哪個部分，對應的區塊就不顯示。傳入 <code>{ layers: false }</code> 或 <code>{ signals: false }</code>，可以拿掉那些面板。控台上有播放控制，以及一條標出場景區段、可以拖曳的時間列。各層的面板有 Layers（各層總覽）、L1 Input（輸入）、L2 Mapping（映射）、L3 Params（參數，滑桿附覆寫與 learn 小按鈕）、L4 sound（聲音）。另外還有即時訊號儀表和 MIDI 紀錄。</p>
-<p>鍵盤：<strong>Space</strong> 播放／暫停（停在 hold 時：放行）· <strong>→/←</strong> 下一個／上一個場景（停在 hold 時，<strong>→</strong> 放行）· <strong>R</strong> 重設 · <strong>T</strong> 演出模式 · <strong>F</strong> 全螢幕 · <strong>M</strong> 螢幕 MIDI 控制器（<code>midi.controllers</code>）· <strong>Esc</strong> 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，<em>字母鍵</em>歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F、M 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。</p>
+<p>鍵盤：<strong>Space</strong> 播放／暫停（停在 hold 時：放行）· <strong>→/←</strong> 下一個／上一個場景（停在 hold 時，<strong>→</strong> 放行）· <strong>R</strong> 重設 · <strong>T</strong> 演出模式 · <strong>F</strong> 全螢幕 · <strong>M</strong> 螢幕 MIDI 控制器（<code>midi.controllers</code>）· <strong>C</strong> <a href="#show-control-the-curves-panel">曲線面板</a> · <strong>Esc</strong> 離開鍵盤鋼琴的捕捉，或結束對應精靈。在輸入欄位裡打字、按住不放的連發，以及 ⌘/Ctrl/Alt 組合鍵，都不會觸發這些快捷鍵。螢幕鋼琴捕捉鍵盤的時候，<em>字母鍵</em>歸鋼琴（T 和 F 本來就是琴鍵），所以 R、T、F、M 沒作用，要取消勾選或按 Esc 才恢復。Space 和方向鍵永遠有效。</p>
 <h4 id="show-control-moving-the-shortcuts">挪動快捷鍵<a class="anchor" href="#show-control-moving-the-shortcuts" aria-label="這一節的連結">#</a></h4>
 <p>把電腦鍵盤當鋼琴彈的演出，會想把字母鍵要回來。<code>keys</code> 把每個動作對應到一個鍵（或一串鍵），疊在預設值上面；某個動作設 <code>false</code> 就關掉它，<code>keys: false</code> 則關掉所有快捷鍵。</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// the piano owns the letters: move the desk's R, T, F and M to keys it does not use</span>
@@ -1435,11 +1435,28 @@ timeline.unfollow();            <span class="tc">// the timeline walks by itself
 <tr><td><code>fullscreen</code></td><td><code>F</code></td><td>全螢幕</td></tr>
 <tr><td><code>midi</code></td><td><code>M</code></td><td>螢幕 MIDI 控制器面板</td></tr>
 <tr><td><code>cancel</code></td><td><code>Escape</code></td><td>結束對應精靈，或離開鍵盤鋼琴的捕捉</td></tr>
+<tr><td><code>curves</code></td><td><code>C</code></td><td>打開／收起<a href="#show-control-the-curves-panel">曲線面板</a>（沒有任何參數有 automation 的時候沒有作用）</td></tr>
 </tbody>
 </table></div>
 <p>鍵寫成字串。<code>'r'</code> 是字元（大小寫都算）；<code>'KeyR'</code> 是實體按鍵，不管鍵盤配置在那個位置打出什麼字（注音配置會打出 ㄐ）；<code>'F6'</code>、<code>'Backquote'</code>、<code>'ArrowUp'</code>、<code>'Space'</code> 是 <code>KeyboardEvent.code</code> 或按鍵名稱，大小寫不拘。<code>'Shift+T'</code>、<code>'Ctrl+K'</code>、<code>'Alt+…'</code>、<code>'Meta+…'</code> 可以加修飾鍵：寫法裡沒有 <code>Ctrl</code>、<code>Alt</code>、<code>Meta</code> 的時候，這三個鍵不能被按著（⌘R 和 Ctrl+F 仍然歸瀏覽器），單純的字母則不管 Shift。鋼琴捕捉鍵盤的時候，字母鍵（a–z 和 <code>;</code>）不管你把動作放在哪裡都不作用；<code>F6</code>、<code>Backquote</code> 這類鍵則照常有效。動作名稱不認得，或鍵的寫法不對，會在掛載任何東西之前丟出錯誤。控台上的提示（播放鈕的說明文字、HOLD 橫幅、提詞機）會印出你選的鍵，<code>show.console.keys</code> 也存著這份設定。自己呼叫 <code>mountConsole</code> 的時候，若傳入 <code>app.midiPanel</code>，<code>midi</code> 鍵就會切換它。</p>
 <p>有總譜的時候，控台還多了導演台面板、scrubber 上的 cue 刻度，以及顯示操作者 acts 的提詞機（<a href="#score-the-desk">總譜與導演</a>）。L2 Mapping 面板有 <strong>🎛 map knobs in order</strong>，這個精靈會依序替每個參數啟動 learn（<a href="#score-map-the-knobs-in-order">細節</a>）。</p>
-<p>覆寫的規則：一碰滑桿（或有映射的控制項），那個參數就脫離時間軸，直到你按 ✕ 清掉覆寫。標籤變黃 = 已覆寫。</p>
+<p>覆寫的規則：一碰滑桿（或有映射的控制項），那個參數就脫離時間軸，直到你按 ✕ 清掉覆寫。標籤變黃 = 已覆寫。<a href="#show-control-the-curves-panel">曲線面板</a>會把同一個覆寫畫在那個參數的曲線上，並用 ↩ 清掉它。</p>
+<h4 id="show-control-the-curves-panel">曲線面板<a class="anchor" href="#show-control-the-curves-panel" aria-label="這一節的連結">#</a></h4>
+<p><strong>曲線面板（Curves）</strong>讓你一眼看到時間軸接下來要對每個參數做什麼，而且是整場演出。它是控台上的一個面板，一開始是收起來的：點它的標題，或按 <strong>C</strong>，就會打開。每個有 automation 的參數有一條曲線，橫軸是時間（和 scrubber 同一條軸，0 秒之前的待命段也算在內），縱軸是參數的範圍。在曲線或刻度列上按下或拖曳，就能移動播放頭，和 scrubber 一樣。沒有任何參數有 automation 的演出，就沒有這個面板。</p>
+<ul>
+<li><strong>段落。</strong> 刻度列標出各個段落（總譜的段落，或單純時間軸的場景），曲線後面有它們的邊界；金色虛線是 <code>hold</code> 等待的位置。窄到放不下名字的段落，名字留給滑過時的提示。衍生的 cut 會用它自己的長度畫出同樣的曲線，按段落寫的 lane 也會落在它那個段落的位置上。</li>
+<li><strong>播放頭。</strong> 一條白色的直線，曲線上有一個圈，標出演出現在的位置。標題列上的數字是這一個影格演出實際使用的值。</li>
+<li><strong>覆寫。</strong> 被滑桿、有映射的旋鈕或手機接管的參數會標成琥珀色：一個圓點在它被帶去的值上，一條虛線橫過整場，標題列上有 <strong>↩</strong>，按下去就把參數還給它的曲線（和 Params 面板的 ✕ 一樣）。<strong>↩ all</strong> 會把畫面上每一條曲線都還回去。沒有曲線的參數，它的覆寫不在這個畫面裡，也不會被動到。</li>
+<li><strong>錄音。</strong> <a href="#show-control-curves-loop-cues-recording"><code>timeline.record</code></a> 正在寫進某條 lane 的 take，會在播放的時候用紅色畫出來，take 結束後曲線會重畫。</li>
+<li><strong>成本。</strong> 收起來的時候它什麼都不做：不量測、不繪製，連 canvas 都還沒建立。打開之後，每一條曲線只畫一次，只有 automation、cut 或寬度改變時（匯入、一個 take、改了一個關鍵影格）才會再畫；每個影格只重畫播放頭和覆寫。捲出 264 px 清單之外的列既不畫也不清，所以五十個有 automation 的參數，要畫的量大約和六個一樣。</li>
+</ul>
+<p>它只讀時間軸和參數，所以任何演出都不用作品多說一個字就能用。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world,
+  console: { keys: { curves: <span class="ts">'F4'</span> } },       <span class="tc">// moves like any key; false switches it off, and the header still opens the panel</span>
+  <span class="tc">// console: { curves: false }               leaves the panel out · { curves: { open: true } } starts it open</span>
+});
+show.console.curves.toggle();                <span class="tc">// .open · .info() → { keys, bands, axis, stats }</span></code></pre></div>
 <h3 id="show-control-performance-mode">演出模式<a class="anchor" href="#show-control-performance-mode" aria-label="這一節的連結">#</a></h3>
 <p>按 <strong>T</strong> 切到全螢幕的提詞畫面：目前場景的標題和備註，用站在舞台上也看得清楚的大字顯示，另外有操作者要做的事（場景的 <code>acts</code>）、下一個場景的預覽、時鐘和場景倒數、演出在等你時的 HOLD 橫幅，以及段落模組被停用時的警告。這是給<em>演奏者</em>看的。給觀眾看的，是你按 <strong>F</strong> 開成全螢幕的舞台。同一個頁面開兩個視窗，一個當控台，一個當舞台。</p>
 <h3 id="show-control-backstage-monitor">後台監看<a class="anchor" href="#show-control-backstage-monitor" aria-label="這一節的連結">#</a></h3>
@@ -1879,6 +1896,7 @@ timeline.onSeek((t, kind) =&gt; (kind === <span class="ts">'reset'</span> ? dire
 <p>有總譜的時候，控台會多出這些：</p>
 <ul>
 <li><strong>Scrubber。</strong> 段落區塊、每個 cue 一個刻度（點一下就跳過去），以及 hold 段落那條虛線的尾端。</li>
+<li><strong>曲線面板</strong>（<strong>C</strong>）。整場演出每個參數的 automation，後面標著段落 id 與 hold，播放頭落在每條曲線上，旋鈕把參數從曲線上帶開的地方有 ↩：<a href="#show-control-the-curves-panel">曲線面板</a>。</li>
 <li><strong>導演台面板。</strong> 版本選單（選別的版本會用 <code>?cut=&lt;id&gt;</code> 重新載入頁面，不會有切一半的狀態）、目前的段落（有進度條和剩餘時間）、HOLD 橫幅、下一段與倒數、操作者要做的事（<strong>acts</strong>）、這一段的 cue（經過就打勾），以及被停用的模組的紅色警告。</li>
 <li><strong>提詞機</strong>（<strong>T</strong>）。全螢幕、大字、高對比：段落標題、你要做什麼（<code>acts</code>）、剩幾秒、下一段、等待時的 HOLD 橫幅，以及被停用模組的紅字。點一下畫面或再按一次 <strong>T</strong> 離開。只要場景帶有 <code>acts</code>，一般的時間軸也能用。</li>
 </ul>
@@ -1892,10 +1910,11 @@ timeline.onSeek((t, kind) =&gt; (kind === <span class="ts">'reset'</span> ? dire
 <tr><td><kbd>R</kbd></td><td>回到起點、停止，被停用的模組回來</td></tr>
 <tr><td><kbd>T</kbd></td><td>提詞機</td></tr>
 <tr><td><kbd>F</kbd></td><td>全螢幕</td></tr>
+<tr><td><kbd>C</kbd></td><td>曲線面板</td></tr>
 <tr><td><kbd>Esc</kbd></td><td>結束旋鈕對應精靈，或離開鍵盤鋼琴的捕捉</td></tr>
 </tbody>
 </table></div>
-<p>在輸入欄位裡打字、按住不放的連發，以及帶著 ⌘、Ctrl 或 Alt 的按鍵，一律忽略。<strong>螢幕鋼琴捕捉鍵盤的時候</strong>（鋼琴列上的 <em>keyboard</em> 勾起來），<strong>字母鍵歸鋼琴</strong>：R、T、F 都沒作用，因為 T 和 F 本來就是琴鍵，而且你正在彈的時候，不小心按到 R 不該把整場演出倒帶。Space、方向鍵和 Esc 永遠有效，所以你可以用同一個鍵盤又彈又控場。MIDI 控制器的 <strong>M</strong> 鍵也照這條規則。</p>
+<p>在輸入欄位裡打字、按住不放的連發，以及帶著 ⌘、Ctrl 或 Alt 的按鍵，一律忽略。<strong>螢幕鋼琴捕捉鍵盤的時候</strong>（鋼琴列上的 <em>keyboard</em> 勾起來），<strong>字母鍵歸鋼琴</strong>：R、T、F、C 都沒作用，因為 T 和 F 本來就是琴鍵，而且你正在彈的時候，不小心按到 R 不該把整場演出倒帶。Space、方向鍵和 Esc 永遠有效，所以你可以用同一個鍵盤又彈又控場。MIDI 控制器的 <strong>M</strong> 鍵也照這條規則。</p>
 <h4 id="score-map-the-knobs-in-order">依序對應旋鈕<a class="anchor" href="#score-map-the-knobs-in-order" aria-label="這一節的連結">#</a></h4>
 <p>L2 Mapping 面板有一個 <strong>🎛 map knobs in order</strong>。它先替第一個參數啟動 learn，你轉一顆旋鈕就綁上，接著自動換下一個參數。<em>skip</em>、<em>back</em> 和 <em>stop</em>（或按 Esc）可以操控它。learn 永遠是「加入」路由（<code>Mapper.learn</code>），所以再跑一次是替參數多綁第二顆旋鈕，原本那顆還在。順序是參數宣告的順序，跳過隱藏的參數。想自己指定順序就用 <code>mountConsole(el, app, { learnOrder: ['hue', 'size'] })</code>。邏輯在 <code>@openav/mapping</code> 的 <code>LearnWizard</code>：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { LearnWizard } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
@@ -3153,8 +3172,9 @@ p.eventsInBar(1);   <span class="tc">// kick 0 .25 .5 .75 · snare .25 .75 · ha
 <div class="table-wrap"><table>
 <thead><tr><th>匯出</th><th>簽章</th></tr></thead>
 <tbody>
-<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder, keys })</code> → <code>{ render(state), perf, director, wizard, keys, dispose() }</code>。<code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
-<tr><td>鍵盤</td><td><code>keys</code>：<code>{ play, next, prev, reset, perf, fullscreen, midi, cancel }</code> → 一個鍵或一串鍵（<code>'F6'</code>、<code>'KeyR'</code>、<code>'Shift+T'</code>），<code>false</code> = 關掉；<code>keys: false</code> = 不要任何快捷鍵 · <code>DEFAULT_KEYS</code> · <code>resolveKeys(keys)</code> · <code>keyLabel(keys, action)</code>：<a href="#show-control-moving-the-shortcuts">挪動快捷鍵</a></td></tr>
+<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder, keys, curves })</code> → <code>{ render(state), perf, director, curves, wizard, keys, dispose() }</code>。<code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td>曲線面板</td><td><code>curves</code>：<code>false</code> 不要這個面板，<code>{ open: true }</code> 一開始就打開；<code>desk.curves</code> → <code>{ toggle(force?), open, info() }</code>（<code>curves: false</code> 時是 <code>null</code>）。整場演出每個有 automation 的參數一條曲線、播放頭、覆寫與 ↩ 和 ↩ all、點一下就跳過去：<a href="#show-control-the-curves-panel">曲線面板</a></td></tr>
+<tr><td>鍵盤</td><td><code>keys</code>：<code>{ play, next, prev, reset, perf, fullscreen, midi, cancel, curves }</code> → 一個鍵或一串鍵（<code>'F6'</code>、<code>'KeyR'</code>、<code>'Shift+T'</code>），<code>false</code> = 關掉；<code>keys: false</code> = 不要任何快捷鍵 · <code>DEFAULT_KEYS</code> · <code>resolveKeys(keys)</code> · <code>keyLabel(keys, action)</code>：<a href="#show-control-moving-the-shortcuts">挪動快捷鍵</a></td></tr>
 </tbody>
 </table></div>
 <p>見<a href="#show-control-the-console">演出控制</a>。</p>

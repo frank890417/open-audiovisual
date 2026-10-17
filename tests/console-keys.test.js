@@ -27,7 +27,7 @@ function rig(keys, { captured = false } = {}) {
 }
 
 test('keys: the defaults are the shortcuts the console always had', () => {
-  assert.deepEqual({ ...DEFAULT_KEYS }, { play: 'Space', next: 'ArrowRight', prev: 'ArrowLeft', reset: 'R', perf: 'T', fullscreen: 'F', midi: 'M', cancel: 'Escape' });
+  assert.deepEqual({ ...DEFAULT_KEYS }, { play: 'Space', next: 'ArrowRight', prev: 'ArrowLeft', reset: 'R', perf: 'T', fullscreen: 'F', midi: 'M', cancel: 'Escape', curves: 'C' });   // curves: the curve view (G6) came after the first eight
   assert.deepEqual(KEY_ACTIONS, Object.keys(DEFAULT_KEYS));
   assert.throws(() => { DEFAULT_KEYS.reset = 'x'; }, TypeError, 'frozen');
   const b = resolveKeys();
@@ -178,4 +178,42 @@ test('handleKey: an action with no handler, or one switched off, is simply not h
   assert.equal(handleKey(ev('f'), b, { fullscreen: () => calls.push('fs') }), false, 'switched off');
   assert.equal(handleKey(ev('r'), b, only), true);
   assert.deepEqual(calls, ['reset']);
+});
+
+// ───────────── curves（G6）：曲線視圖的開關，和其他面板開關一樣走動作表 ─────────────
+
+test('keys: curves — C opens the curve view by default; it moves with { keys }, takes a list, and can be switched off', () => {
+  assert.equal(DEFAULT_KEYS.curves, 'C');
+  assert.ok(KEY_ACTIONS.includes('curves'));
+  assert.equal(KEY_ACTIONS[KEY_ACTIONS.length - 1], 'curves', 'after the first eight, so none of their priorities moved');
+  const b = resolveKeys();
+  assert.equal(b.curves[0].key, 'c');
+  assert.equal(keyLabel(b, 'curves'), 'C');
+  const on = rig();
+  assert.equal(on.press(ev('c')), true); assert.equal(on.press(ev('C', { shiftKey: true })), true, 'either case');
+  assert.deepEqual(on.calls, ['curves', 'curves']);
+  const moved = rig({ curves: 'F4' });
+  assert.equal(moved.press(ev('c')), false, 'C is free');
+  assert.equal(moved.press(ev('F4')), true);
+  assert.deepEqual(moved.calls, ['curves']);
+  assert.equal(keyLabel(moved.b, 'curves'), 'F4');
+  const several = rig({ curves: ['F4', 'Shift+C'] });
+  assert.equal(several.press(ev('F4')), true); assert.equal(several.press(ev('C', { shiftKey: true })), true); assert.equal(several.press(ev('c')), false);
+  const off = rig({ curves: false });
+  assert.equal(off.press(ev('c')), false);
+  assert.deepEqual(off.b.curves, []);
+  assert.equal(keyLabel(off.b, 'curves'), '');
+  assert.deepEqual(resolveKeys(false).curves, []);
+  assert.deepEqual(resolveKeys({ curves: null }).curves, []);
+  assert.throws(() => resolveKeys({ curves: 5 }), /keys\.curves/);
+  assert.throws(() => resolveKeys({ curve: 'x' }), /curve.*curves/s, 'a typo names the real action');
+});
+
+test('keys: curves — C is a letter, so the piano keeps it while it captures the keyboard; an F-key still works through it', () => {
+  assert.equal(resolveKeys().curves[0].typing, true);
+  const { press, calls } = rig(undefined, { captured: true });
+  assert.equal(press(ev('c')), false);
+  const moved = rig({ curves: 'F4' }, { captured: true });
+  assert.equal(moved.press(ev('F4')), true);
+  assert.deepEqual([calls, moved.calls], [[], ['curves']]);
 });

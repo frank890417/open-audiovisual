@@ -10,6 +10,7 @@
 //   fullscreen F           fullscreen
 //   midi      M            the on-screen MIDI controller panel (createShow with modules.midi.controllers)
 //   cancel    Escape       stops the mapping wizard, or leaves keyboard-piano capture
+//   curves    C            opens / closes the Curves panel (the automation of every param across the whole show)
 //
 // Why movable: a show that plays the computer keyboard as a piano wants its letters. While the piano captures the
 // keyboard every letter key (a–z, ;) belongs to it, so R / T / F / M are dead then. Move the console to keys the piano
@@ -24,7 +25,7 @@
 
 /** The shortcuts the console has always had. */
 export const DEFAULT_KEYS = Object.freeze({
-  play: 'Space', next: 'ArrowRight', prev: 'ArrowLeft', reset: 'R', perf: 'T', fullscreen: 'F', midi: 'M', cancel: 'Escape',
+  play: 'Space', next: 'ArrowRight', prev: 'ArrowLeft', reset: 'R', perf: 'T', fullscreen: 'F', midi: 'M', cancel: 'Escape', curves: 'C',
 });
 export const KEY_ACTIONS = Object.keys(DEFAULT_KEYS);
 

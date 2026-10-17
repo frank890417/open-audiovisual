@@ -203,6 +203,7 @@ With a score, the timeline's scenes, total and start come from it (anything you 
 With a score the console adds:
 
 - **Scrubber.** Segment blocks, a tick for every cue (click to jump) and a dashed end on a segment that holds.
+- **Curves panel** (**C**). The automation of every param across the whole show, with the segment ids and the holds behind it, the playhead on each curve, and ↩ where a knob has taken a param away from its curve: [The curves panel](show-control.md#the-curves-panel).
 - **Director panel.** A cut picker (choosing one reloads the page with `?cut=<id>`, so nothing is half-switched), the current segment with a progress bar and the time left, the HOLD banner, the next segment and the countdown, the operator's **acts**, this segment's cues (ticked as they pass), and the red warning for modules that were switched off.
 - **Prompter** (**T**). Fullscreen, large, high-contrast: the segment title, what you do (`acts`), seconds left, the next segment, a HOLD banner while the show waits, and a red line for switched-off modules. Click it or press **T** again to leave. It also works for plain timeline scenes that carry `acts`.
 
@@ -216,9 +217,10 @@ With a score the console adds:
 | <kbd>R</kbd> | back to the start; stopped; switched-off modules come back |
 | <kbd>T</kbd> | prompter |
 | <kbd>F</kbd> | fullscreen |
+| <kbd>C</kbd> | curves panel |
 | <kbd>Esc</kbd> | stop the knob-mapping wizard, or leave keyboard-piano capture |
 
-Typing in a field, a held key (auto-repeat) and any key with ⌘, Ctrl or Alt are ignored. **While the on-screen piano captures the keyboard** (the *keyboard* box ticked in the piano bar) the *letters* belong to the piano: R, T and F do nothing, because T and F are piano keys, and an accidental R must not rewind a show you are playing. Space, the arrows and Esc always work, so you can play and run the show from one keyboard. The MIDI-controller key **M** follows the same rule.
+Typing in a field, a held key (auto-repeat) and any key with ⌘, Ctrl or Alt are ignored. **While the on-screen piano captures the keyboard** (the *keyboard* box ticked in the piano bar) the *letters* belong to the piano: R, T, F and C do nothing, because T and F are piano keys, and an accidental R must not rewind a show you are playing. Space, the arrows and Esc always work, so you can play and run the show from one keyboard. The MIDI-controller key **M** follows the same rule.
 
 ### Map the knobs in order
 

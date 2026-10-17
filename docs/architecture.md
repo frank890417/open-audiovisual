@@ -183,8 +183,9 @@ The monitor is a first-class citizen because a show without a backstage is a reh
 ## Around the spines: console and phones
 
 - **Console** (`@openav/console`): the director's desk in the side panel, laid
-  out by layer (Layers → L1 → L2 → L3 → L4 → Signals), plus performance mode.
-  It reads the same objects the loop runs; it owns nothing.
+  out by layer (Layers → L1 → L2 → L3 → L4 → Signals), plus performance mode and
+  a curve view of the whole show's automation. It reads the same objects the loop
+  runs; it owns nothing.
 - **Phones** (`@openav/relay`, `@openav/surface`, `@openav/remote`): phones and
   iPads join a room on a WebSocket relay and publish `phone/*` and `surface/*`
   signals. To the mapper they are one more input. See
