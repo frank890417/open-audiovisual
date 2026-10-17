@@ -21,14 +21,36 @@ export function lockViewport() {
   return () => { document.removeEventListener('gesturestart', stop); document.removeEventListener('gesturechange', stop); document.removeEventListener('touchmove', tm); st.remove(); };
 }
 
-/** Screen Wake Lock, re-acquired when the tab comes back (the OS drops it on hide). */
+/**
+ * Screen Wake Lock. Asks at load, again on the first tap, and again when the tab comes back (the OS drops the
+ * lock on hide). The tap matters on Safari (iPhone, iPad, Mac): WebKit refuses a request that is not inside a user
+ * gesture, so the load-time ask is refused there; the first successful one is remembered for the life of the page,
+ * and after that visibilitychange alone is enough. Chrome and Firefox take the load-time ask and ignore the rest.
+ * Lift events, not press events: on touch, pointerdown is not a gesture, pointerup / touchend / click are.
+ */
 export function keepAwake() {
-  let lock = null, want = true;
-  const get = async () => { try { if (want && navigator.wakeLock && document.visibilityState === 'visible') lock = await navigator.wakeLock.request('screen'); } catch {} };
+  let lock = null, want = true, asking = false;
+  const get = async () => {
+    if (!want || asking || (lock && !lock.released) || !navigator.wakeLock || document.visibilityState !== 'visible') return;
+    asking = true;
+    try {
+      const l = await navigator.wakeLock.request('screen');   // called synchronously above: still inside the gesture
+      if (!want) { try { l.release(); } catch {} return; }     // release() came while the request was in flight
+      lock = l;
+      l.addEventListener?.('release', () => { if (lock === l) lock = null; });
+    } catch {} finally { asking = false; }
+  };
   const vis = () => { if (document.visibilityState === 'visible') get(); };
+  const TAPS = ['pointerup', 'touchend', 'click', 'keydown'], opt = { capture: true, passive: true };
   document.addEventListener('visibilitychange', vis);
+  for (const t of TAPS) document.addEventListener(t, get, opt);
   get();
-  return { release() { want = false; document.removeEventListener('visibilitychange', vis); try { lock?.release(); } catch {} } };
+  return { release() {
+    want = false;
+    document.removeEventListener('visibilitychange', vis);
+    for (const t of TAPS) document.removeEventListener(t, get, opt);
+    try { lock?.release(); } catch {}
+  } };
 }
 
 /** True when the page can ask for fullscreen (not iPhone Safari). */
