@@ -303,6 +303,7 @@
             <li><a href="#packages-openav-relay">@openav/relay</a></li>
             <li><a href="#packages-openav-surface">@openav/surface</a></li>
             <li><a href="#packages-openav-remote">@openav/remote</a></li>
+            <li><a href="#packages-openav-tile">@openav/tile</a></li>
             <li><a href="#packages-openav-mcp">@openav/mcp</a></li>
           </ol>
         </li>
@@ -369,7 +370,7 @@
       <p class="eyebrow">Documentation</p>
       <h1>The open-audiovisual handbook</h1>
       <p class="docs-lede">Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.</p>
-      <p class="docs-stats">19 chapters · 193 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
+      <p class="docs-stats">19 chapters · 194 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -384,7 +385,7 @@ page.</p>
 inputs into parameters, a timeline with scenes, a director's console, a
 performance mode for the performer, and a backstage page for the stage manager.
 You write the <em>world</em>, the piece itself. The pitch, a live instrument and the
-twenty-six example works are on the <a href="../">homepage</a>.</p>
+twenty-seven example works are on the <a href="../">homepage</a>.</p>
 <h3 id="introduction-who-it-is-for">Who it is for<a class="anchor" href="#introduction-who-it-is-for" aria-label="Link to this section">#</a></h3>
 <ul>
 <li><strong>Performers</strong> play the examples with a MIDI keyboard, a microphone, a camera,
@@ -3314,7 +3315,7 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">15</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
-<p>Twenty-seven packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+<p>Twenty-eight packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
 npm yet.</p>
@@ -3326,7 +3327,7 @@ npm yet.</p>
 <tr><td>L3 world</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
 <tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>out</code> · <code>record</code> · <code>fab</code> (and MIDI out in <code>midi</code>)</td></tr>
 <tr><td>spines</td><td><code>timeline</code> · <code>score</code> · <code>pattern</code> · <code>console</code> · <code>monitor</code></td></tr>
-<tr><td>phones</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
+<tr><td>phones</td><td><code>relay</code> · <code>surface</code> · <code>remote</code> · <code>tile</code></td></tr>
 <tr><td>glue</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
@@ -3717,6 +3718,21 @@ routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
 </tbody>
 </table></div>
 <p>See <a href="#phones">Phones, relay &amp; surfaces</a>.</p>
+<h3 id="packages-openav-tile">@openav/tile<a class="anchor" href="#packages-openav-tile" aria-label="Link to this section">#</a></h3>
+<p>Phones · several screens lying on a table become one canvas: one photo of their markers places every screen, one shared clock and one seed keep them together. Guide: <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/tile/README.md" rel="noopener">packages/tile/README.md</a>; example 27.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>joinTile</code></td><td><code>joinTile({ room, url, id, signals, container, ui = true })</code> → tile · <code>view</code> · <code>time()</code> (shared seconds) · <code>now()</code> · <code>seed</code> · <code>size()</code> · <code>markers(on)</code> · <code>attach(signals)</code> · <code>syncTimeline(timeline, dt)</code> · <code>on('layout' | 'roster' | 'mode' | 'show' | 'view' | 'resize', cb)</code> · <code>status()</code> · <code>close()</code>; publishes <code>tile/markers</code>, <code>tile/synced</code>, <code>tile/layout</code> (pulse)</td></tr>
+<tr><td><code>tileWorld</code></td><td><code>tileWorld(world, tile)</code> → the world plus the param <code>tileMarkers</code> (0 show · 1 markers) and <code>io.tile</code> / <code>ctx.tile</code>; <code>TILE_PARAMS</code>, <code>TILE_ROUTES</code> (<code>tile/markers</code> → <code>tileMarkers</code>)</td></tr>
+<tr><td><code>tileView</code></td><td><code>tileView(layout, id)</code> → <code>{ ok, canvas, device, toCanvas, toDevice, scale, angle, bounds, polygon, point(x, y), fromDevice(x, y), matrix(pixelRatio), apply2d(ctx, pixelRatio), applyP5(sk), css(dpr), visible(x, y, r) }</code> or <code>{ ok: false, reason }</code> · <code>soloView(w, h)</code></td></tr>
+<tr><td><code>solveLayout</code></td><td><code>solveLayout({ devices: [{ id, w, h, index, markers: [{ device, photo }] }], photo, minMarkers = 4, reference, refine = true, rejectPx = 6 })</code> → <code>{ ok, layout, report, reason }</code>, never throws · <code>validateLayout(layout)</code> → <code>{ ok, errors }</code> · <code>homography(src, dst)</code> (normalized DLT) · <code>fitSimilarity(src, dst)</code></td></tr>
+<tr><td>markers</td><td><code>markerGrid(w, h, { short = 4, fill = 0.72 })</code> · <code>markerId(device, cell)</code> · <code>decodeMarkerId(id)</code> · <code>correspondences(found, roster, grid)</code> · <code>drawMarkers(ctx, { w, h, index, grid, label })</code> · <code>DICT_NAME</code> (<code>DICT_5X5_1000</code>), 50 markers a screen, 20 screens</td></tr>
+<tr><td>clock</td><td><code>new ClockSync({ now, window = 60000, keep = 40 })</code> · <code>add(t0, server, t1)</code> · <code>offset</code> · <code>rtt</code> · <code>now()</code> · <code>ready</code> · <code>estimateOffset(samples)</code> (the quickest round trip) · <code>TileLink</code> (a <code>RelayClient</code> that pings the relay and keeps the clock)</td></tr>
+<tr><td><code>@openav/tile/detect</code></td><td><code>loadOpenCV(url = OPENCV_URL)</code> (OpenCV.js 4.12.0 from jsDelivr, on the camera page only) · <code>detectMarkers(cv, image)</code> → <code>{ found: [{ id, corners }], ms, w, h }</code></td></tr>
+</tbody>
+</table></div>
+<p>The camera page is <code>packages/tile/?room=&lt;name&gt;</code> (<code>?demo=1</code>: a synthetic photo, no hardware). <code>layout.json</code>: <code>{ version: 1, reference, canvas: { w, h }, plane: { matrix3x3 }, devices: [{ id, w, h, kind: 'planar', similarity: { a, b, tx, ty }, matrix3x3, rms, pose: null }] }</code>; <code>pose</code> is kept for the 3D window model.</p>
 <h3 id="packages-openav-mcp">@openav/mcp<a class="anchor" href="#packages-openav-mcp" aria-label="Link to this section">#</a></h3>
 <p>Glue · a zero-dependency MCP server over stdio for coding agents:
 <code>node packages/mcp/server.js</code>. Tools and arguments are in
@@ -3805,7 +3821,7 @@ openav.mapper.routes                                    <span class="tc">// the 
 <h3 id="agents-a-prompt-to-paste">A prompt to paste<a class="anchor" href="#agents-a-prompt-to-paste" aria-label="Link to this section">#</a></h3>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/27-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/28-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 

@@ -303,6 +303,7 @@
             <li><a href="#packages-openav-relay">@openav/relay</a></li>
             <li><a href="#packages-openav-surface">@openav/surface</a></li>
             <li><a href="#packages-openav-remote">@openav/remote</a></li>
+            <li><a href="#packages-openav-tile">@openav/tile</a></li>
             <li><a href="#packages-openav-mcp">@openav/mcp</a></li>
           </ol>
         </li>
@@ -369,7 +370,7 @@
       <p class="eyebrow">文件</p>
       <h1>open-audiovisual 使用手冊</h1>
       <p class="docs-lede">跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。</p>
-      <p class="docs-stats">19 章 · 193 節 · <a href="../../zh/changelog/">oav-p5 0.8 · 框架 0.1</a></p>
+      <p class="docs-stats">19 章 · 194 節 · <a href="../../zh/changelog/">oav-p5 0.8 · 框架 0.1</a></p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -377,7 +378,7 @@
 <h2 id="introduction">簡介<a class="anchor" href="#introduction" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">01</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/introduction.md">docs/zh/introduction.md</a></span></p>
 <p>open-audiovisual（OAV）是一套在瀏覽器裡跑的 JavaScript 框架，給現場影音表演用。它只用原生的 ES module：不用建置、沒有相依套件、不用註冊帳號。把 repo clone 下來，跑一個檔案，打開一個網頁，就可以開始了。</p>
-<p>每一場演出都要從頭重做的那一塊，由它來處理：MIDI 的底層接線、把輸入變成參數、有場景的時間軸、導演控台、給演奏者的演出模式，以及給舞台監督的後台頁面。你只要寫<em>世界</em>，也就是作品本身。框架的介紹、一台即時在跑的樂器，還有二十六件範例作品，都在<a href="../../zh/">首頁</a>。</p>
+<p>每一場演出都要從頭重做的那一塊，由它來處理：MIDI 的底層接線、把輸入變成參數、有場景的時間軸、導演控台、給演奏者的演出模式，以及給舞台監督的後台頁面。你只要寫<em>世界</em>，也就是作品本身。框架的介紹、一台即時在跑的樂器，還有二十七件範例作品，都在<a href="../../zh/">首頁</a>。</p>
 <h3 id="introduction-who-it-is-for">給誰用<a class="anchor" href="#introduction-who-it-is-for" aria-label="這一節的連結">#</a></h3>
 <ul>
 <li><strong>演奏者</strong>用 MIDI 鍵盤、麥克風、鏡頭、手機或螢幕鋼琴來彈範例，從控台操作一場演出。</li>
@@ -2589,7 +2590,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">套件一覽<a class="anchor" href="#packages" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">15</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/packages.md">docs/zh/packages.md</a></span></p>
-<p>二十七個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
+<p>二十八個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>層</th><th>套件</th></tr></thead>
 <tbody>
@@ -2598,7 +2599,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <tr><td>L3 世界</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
 <tr><td>L4 輸出</td><td><code>sound</code> · <code>osc</code> · <code>out</code> · <code>record</code> · <code>fab</code>（MIDI 輸出在 <code>midi</code> 裡）</td></tr>
 <tr><td>主軸</td><td><code>timeline</code> · <code>score</code> · <code>pattern</code> · <code>console</code> · <code>monitor</code></td></tr>
-<tr><td>手機</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
+<tr><td>手機</td><td><code>relay</code> · <code>surface</code> · <code>remote</code> · <code>tile</code></td></tr>
 <tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
 </tbody>
 </table></div>
@@ -2959,6 +2960,21 @@ routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
 </tbody>
 </table></div>
 <p>見<a href="#phones">手機、中繼與控制面板</a>。</p>
+<h3 id="packages-openav-tile">@openav/tile<a class="anchor" href="#packages-openav-tile" aria-label="這一節的連結">#</a></h3>
+<p>手機 · 幾台平放在桌上的螢幕變成一張畫布：拍一張標記的照片定位每台螢幕，同一個時鐘、同一個種子讓它們一起演。說明：<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/tile/README.md" rel="noopener">packages/tile/README.md</a>；範例 27。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>joinTile</code></td><td><code>joinTile({ room, url, id, signals, container, ui = true })</code> → tile · <code>view</code> · <code>time()</code>（共同時間，秒）· <code>now()</code> · <code>seed</code> · <code>size()</code> · <code>markers(on)</code> · <code>attach(signals)</code> · <code>syncTimeline(timeline, dt)</code> · <code>on('layout' | 'roster' | 'mode' | 'show' | 'view' | 'resize', cb)</code> · <code>status()</code> · <code>close()</code>；發布 <code>tile/markers</code>、<code>tile/synced</code>、<code>tile/layout</code>（脈衝）</td></tr>
+<tr><td><code>tileWorld</code></td><td><code>tileWorld(world, tile)</code> → 原本的世界，加上參數 <code>tileMarkers</code>（0 演出 · 1 標記）與 <code>io.tile</code>／<code>ctx.tile</code>；<code>TILE_PARAMS</code>、<code>TILE_ROUTES</code>（<code>tile/markers</code> → <code>tileMarkers</code>）</td></tr>
+<tr><td><code>tileView</code></td><td><code>tileView(layout, id)</code> → <code>{ ok, canvas, device, toCanvas, toDevice, scale, angle, bounds, polygon, point(x, y), fromDevice(x, y), matrix(pixelRatio), apply2d(ctx, pixelRatio), applyP5(sk), css(dpr), visible(x, y, r) }</code>，或 <code>{ ok: false, reason }</code> · <code>soloView(w, h)</code></td></tr>
+<tr><td><code>solveLayout</code></td><td><code>solveLayout({ devices: [{ id, w, h, index, markers: [{ device, photo }] }], photo, minMarkers = 4, reference, refine = true, rejectPx = 6 })</code> → <code>{ ok, layout, report, reason }</code>，不丟例外 · <code>validateLayout(layout)</code> → <code>{ ok, errors }</code> · <code>homography(src, dst)</code>（正規化 DLT）· <code>fitSimilarity(src, dst)</code></td></tr>
+<tr><td>標記</td><td><code>markerGrid(w, h, { short = 4, fill = 0.72 })</code> · <code>markerId(device, cell)</code> · <code>decodeMarkerId(id)</code> · <code>correspondences(found, roster, grid)</code> · <code>drawMarkers(ctx, { w, h, index, grid, label })</code> · <code>DICT_NAME</code>（<code>DICT_5X5_1000</code>），每台 50 個標記，最多 20 台</td></tr>
+<tr><td>時鐘</td><td><code>new ClockSync({ now, window = 60000, keep = 40 })</code> · <code>add(t0, server, t1)</code> · <code>offset</code> · <code>rtt</code> · <code>now()</code> · <code>ready</code> · <code>estimateOffset(samples)</code>（取來回最快的那次）· <code>TileLink</code>（會 ping 中繼、維持時鐘的 <code>RelayClient</code>）</td></tr>
+<tr><td><code>@openav/tile/detect</code></td><td><code>loadOpenCV(url = OPENCV_URL)</code>（OpenCV.js 4.12.0，從 jsDelivr，只在拍照頁載入）· <code>detectMarkers(cv, image)</code> → <code>{ found: [{ id, corners }], ms, w, h }</code></td></tr>
+</tbody>
+</table></div>
+<p>拍照頁是 <code>packages/tile/?room=&lt;名字&gt;</code>（<code>?demo=1</code>：合成照片，不需要硬體）。<code>layout.json</code>：<code>{ version: 1, reference, canvas: { w, h }, plane: { matrix3x3 }, devices: [{ id, w, h, kind: 'planar', similarity: { a, b, tx, ty }, matrix3x3, rms, pose: null }] }</code>；<code>pose</code> 留給 3D 窗口模型。</p>
 <h3 id="packages-openav-mcp">@openav/mcp<a class="anchor" href="#packages-openav-mcp" aria-label="這一節的連結">#</a></h3>
 <p>膠水 · 給 AI 代理用的零相依 MCP 伺服器，走 stdio：<code>node packages/mcp/server.js</code>。工具和引數見<a href="#agents-the-mcp-server">給 AI 代理</a>。</p>
 </section>
@@ -3018,7 +3034,7 @@ openav.mapper.routes                                    <span class="tc">// the 
 <h3 id="agents-a-prompt-to-paste">一段可以直接貼上的提示詞<a class="anchor" href="#agents-a-prompt-to-paste" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/27-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/28-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 

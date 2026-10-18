@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty-seven packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-eight packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -12,7 +12,7 @@ npm yet.
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` |
-| phones | `relay` · `surface` · `remote` |
+| phones | `relay` · `surface` · `remote` · `tile` |
 | glue | `core` · `show` · `mcp` |
 
 Subpath entries (`@openav/remote/host`, `@openav/relay/server`,
@@ -472,6 +472,22 @@ Phones · the phone/iPad app and the show-side adapter.
 | `@openav/remote/qr` | `qrSvg(text, { ecc = 'M', margin = 2, scale })` → an `<svg>` string · `qrMatrix(text, { ecc })` → `{ version, size, mask, rows }` (byte mode, versions 1–10) |
 
 See [Phones, relay & surfaces](remote.md).
+
+## @openav/tile
+
+Phones · several screens lying on a table become one canvas: one photo of their markers places every screen, one shared clock and one seed keep them together. Guide: [packages/tile/README.md](../packages/tile/README.md); example 27.
+
+| export | signature |
+|---|---|
+| `joinTile` | `joinTile({ room, url, id, signals, container, ui = true })` → tile · `view` · `time()` (shared seconds) · `now()` · `seed` · `size()` · `markers(on)` · `attach(signals)` · `syncTimeline(timeline, dt)` · `on('layout' \| 'roster' \| 'mode' \| 'show' \| 'view' \| 'resize', cb)` · `status()` · `close()`; publishes `tile/markers`, `tile/synced`, `tile/layout` (pulse) |
+| `tileWorld` | `tileWorld(world, tile)` → the world plus the param `tileMarkers` (0 show · 1 markers) and `io.tile` / `ctx.tile`; `TILE_PARAMS`, `TILE_ROUTES` (`tile/markers` → `tileMarkers`) |
+| `tileView` | `tileView(layout, id)` → `{ ok, canvas, device, toCanvas, toDevice, scale, angle, bounds, polygon, point(x, y), fromDevice(x, y), matrix(pixelRatio), apply2d(ctx, pixelRatio), applyP5(sk), css(dpr), visible(x, y, r) }` or `{ ok: false, reason }` · `soloView(w, h)` |
+| `solveLayout` | `solveLayout({ devices: [{ id, w, h, index, markers: [{ device, photo }] }], photo, minMarkers = 4, reference, refine = true, rejectPx = 6 })` → `{ ok, layout, report, reason }`, never throws · `validateLayout(layout)` → `{ ok, errors }` · `homography(src, dst)` (normalized DLT) · `fitSimilarity(src, dst)` |
+| markers | `markerGrid(w, h, { short = 4, fill = 0.72 })` · `markerId(device, cell)` · `decodeMarkerId(id)` · `correspondences(found, roster, grid)` · `drawMarkers(ctx, { w, h, index, grid, label })` · `DICT_NAME` (`DICT_5X5_1000`), 50 markers a screen, 20 screens |
+| clock | `new ClockSync({ now, window = 60000, keep = 40 })` · `add(t0, server, t1)` · `offset` · `rtt` · `now()` · `ready` · `estimateOffset(samples)` (the quickest round trip) · `TileLink` (a `RelayClient` that pings the relay and keeps the clock) |
+| `@openav/tile/detect` | `loadOpenCV(url = OPENCV_URL)` (OpenCV.js 4.12.0 from jsDelivr, on the camera page only) · `detectMarkers(cv, image)` → `{ found: [{ id, corners }], ms, w, h }` |
+
+The camera page is `packages/tile/?room=<name>` (`?demo=1`: a synthetic photo, no hardware). `layout.json`: `{ version: 1, reference, canvas: { w, h }, plane: { matrix3x3 }, devices: [{ id, w, h, kind: 'planar', similarity: { a, b, tx, ty }, matrix3x3, rms, pose: null }] }`; `pose` is kept for the 3D window model.
 
 ## @openav/mcp
 

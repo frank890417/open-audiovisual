@@ -177,6 +177,7 @@ export default {
       relay: 'Zero-dependency room relay for phones and iPads',
       surface: 'TouchOSC-style widgets and autoSurface(params)',
       remote: 'The phone and iPad app: sensors, keyboard, control surface',
+      tile: 'Screens lying on a table become one canvas: one photo of their markers places them, one shared clock and seed keep them in step',
       core: 'Signals, Params and Loop: what every layer speaks',
       show: 'createShow(): one call assembles the whole shell',
       mcp: 'MCP server for coding agents: list, read, scaffold, check',

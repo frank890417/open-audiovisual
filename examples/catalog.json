@@ -2202,6 +2202,97 @@
           }
         }
       ],
+      "next": "27-tile-dot"
+    },
+    {
+      "id": "27-tile-dot",
+      "num": "27",
+      "dir": "examples/27-tile-dot/",
+      "route": "output",
+      "title": {
+        "en": "Tile dot",
+        "zh": "跨螢幕圓點"
+      },
+      "teaches": {
+        "en": "Several screens lying on a table become one canvas: one photo places them, one clock and one seed keep them together.",
+        "zh": "幾台平放在桌上的螢幕變成一張畫布：拍一張照片定位，同一個時鐘、同一個種子讓它們一起演。"
+      },
+      "summary": {
+        "en": "Phones, tablets and laptops lying on a table become one canvas. One photo of their markers places every screen, and a dot flows across all of them. Needs <code>node serve.js</code> on your network.",
+        "zh": "平放在桌上的手機、平板、筆電變成一張畫布。拍一張標記的照片就定位每台螢幕，一顆圓點流過所有螢幕。需要在你的網路裡跑 <code>node serve.js</code>。"
+      },
+      "plays": {
+        "en": "3 to 5 phones, tablets, laptops · one camera phone",
+        "zh": "3 到 5 台手機、平板、筆電 · 一支拍照的手機"
+      },
+      "needs": [
+        "phone"
+      ],
+      "standIn": [
+        "auto"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/27.webp",
+      "alt": {
+        "en": "Three screens of different sizes lying at angles on a dark table; one glowing dot and its sparks cross from one screen to the next, and faint grid lines run straight across the gaps.",
+        "zh": "三台大小不同的螢幕斜放在深色桌面上；一顆發光的圓點帶著火花從一台螢幕越到下一台，淡淡的格線筆直地穿過螢幕之間的空隙。"
+      },
+      "docs": [
+        {
+          "id": "packages-openav-tile",
+          "en": "@openav/tile",
+          "zh": "@openav/tile"
+        },
+        {
+          "id": "phones",
+          "en": "Phones, relay & surfaces",
+          "zh": "手機、中繼與控制面板"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Run node serve.js, open this page with ?room=desk on three screens, tap Join on each and lay them flat on the table.",
+          "On a phone open packages/tile/?room=desk, press Markers, then take one photo from above with every screen in it.",
+          "Watch the dot leave one screen and come out of the next one where it really is; move a screen and take the photo again."
+        ],
+        "zh": [
+          "跑 node serve.js，在三台螢幕上打開這一頁並加上 ?room=desk，各點一下 Tap to join，平放在桌上。",
+          "用一支手機打開 packages/tile/?room=desk，按「標記」，從上方拍一張把每台螢幕都拍進去的照片。",
+          "看圓點離開一台螢幕，從下一台它真正所在的位置出來；移動一台螢幕，再拍一次。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 28,
+          "to": 35,
+          "match": "function dotAt(t, seed, W, H) {",
+          "note": {
+            "en": "Every position is a function of the shared time and seed, never a sum of this screen's frames.",
+            "zh": "每個位置都是共同時間與種子的函式，從不累加這台螢幕自己的影格。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 65,
+          "to": 70,
+          "match": "const v = this.tile ? this.tile.view : soloView(canvas.width, canvas.height);",
+          "note": {
+            "en": "The view says which piece of the shared canvas this screen draws: one setTransform.",
+            "zh": "view 說這台螢幕畫共同畫布的哪一塊：一個 setTransform。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 121,
+          "to": 141,
+          "match": "const room = new URLSearchParams(location.search).get('room');",
+          "note": {
+            "en": "Join the room, wrap the world, route the camera page's Markers to a param, keep the timeline on the shared clock.",
+            "zh": "加入房間、包住世界、把拍照頁的「標記」接到參數、讓時間軸跟著共同時鐘。"
+          }
+        }
+      ],
       "next": null
     }
   ]

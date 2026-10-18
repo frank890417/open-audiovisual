@@ -1,6 +1,6 @@
 # 套件一覽
 
-二十七個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十八個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
@@ -9,7 +9,7 @@
 | L3 世界 | `stage` · `world-webtoe` |
 | L4 輸出 | `sound` · `osc` · `out` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` |
-| 手機 | `relay` · `surface` · `remote` |
+| 手機 | `relay` · `surface` · `remote` · `tile` |
 | 膠水 | `core` · `show` · `mcp` |
 
 子路徑入口（`@openav/remote/host`、`@openav/relay/server`、`@openav/surface/layout`、`@openav/surface/auto`）在瀏覽器裡要各自在 import map 加一行，例如 `"@openav/remote/host": "../../packages/remote/host.js"`。
@@ -439,6 +439,22 @@ routes.forEach((r) => mapper.addRoute(r));
 | `@openav/remote/qr` | `qrSvg(text, { ecc = 'M', margin = 2, scale })` → `<svg>` 字串 · `qrMatrix(text, { ecc })` → `{ version, size, mask, rows }`（byte 模式，版本 1–10） |
 
 見[手機、中繼與控制面板](remote.md)。
+
+## @openav/tile
+
+手機 · 幾台平放在桌上的螢幕變成一張畫布：拍一張標記的照片定位每台螢幕，同一個時鐘、同一個種子讓它們一起演。說明：[packages/tile/README.md](../../packages/tile/README.md)；範例 27。
+
+| 匯出 | 簽章 |
+|---|---|
+| `joinTile` | `joinTile({ room, url, id, signals, container, ui = true })` → tile · `view` · `time()`（共同時間，秒）· `now()` · `seed` · `size()` · `markers(on)` · `attach(signals)` · `syncTimeline(timeline, dt)` · `on('layout' \| 'roster' \| 'mode' \| 'show' \| 'view' \| 'resize', cb)` · `status()` · `close()`；發布 `tile/markers`、`tile/synced`、`tile/layout`（脈衝） |
+| `tileWorld` | `tileWorld(world, tile)` → 原本的世界，加上參數 `tileMarkers`（0 演出 · 1 標記）與 `io.tile`／`ctx.tile`；`TILE_PARAMS`、`TILE_ROUTES`（`tile/markers` → `tileMarkers`） |
+| `tileView` | `tileView(layout, id)` → `{ ok, canvas, device, toCanvas, toDevice, scale, angle, bounds, polygon, point(x, y), fromDevice(x, y), matrix(pixelRatio), apply2d(ctx, pixelRatio), applyP5(sk), css(dpr), visible(x, y, r) }`，或 `{ ok: false, reason }` · `soloView(w, h)` |
+| `solveLayout` | `solveLayout({ devices: [{ id, w, h, index, markers: [{ device, photo }] }], photo, minMarkers = 4, reference, refine = true, rejectPx = 6 })` → `{ ok, layout, report, reason }`，不丟例外 · `validateLayout(layout)` → `{ ok, errors }` · `homography(src, dst)`（正規化 DLT）· `fitSimilarity(src, dst)` |
+| 標記 | `markerGrid(w, h, { short = 4, fill = 0.72 })` · `markerId(device, cell)` · `decodeMarkerId(id)` · `correspondences(found, roster, grid)` · `drawMarkers(ctx, { w, h, index, grid, label })` · `DICT_NAME`（`DICT_5X5_1000`），每台 50 個標記，最多 20 台 |
+| 時鐘 | `new ClockSync({ now, window = 60000, keep = 40 })` · `add(t0, server, t1)` · `offset` · `rtt` · `now()` · `ready` · `estimateOffset(samples)`（取來回最快的那次）· `TileLink`（會 ping 中繼、維持時鐘的 `RelayClient`） |
+| `@openav/tile/detect` | `loadOpenCV(url = OPENCV_URL)`（OpenCV.js 4.12.0，從 jsDelivr，只在拍照頁載入）· `detectMarkers(cv, image)` → `{ found: [{ id, corners }], ms, w, h }` |
+
+拍照頁是 `packages/tile/?room=<名字>`（`?demo=1`：合成照片，不需要硬體）。`layout.json`：`{ version: 1, reference, canvas: { w, h }, plane: { matrix3x3 }, devices: [{ id, w, h, kind: 'planar', similarity: { a, b, tx, ty }, matrix3x3, rms, pose: null }] }`；`pose` 留給 3D 窗口模型。
 
 ## @openav/mcp
 

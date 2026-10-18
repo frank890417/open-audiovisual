@@ -91,7 +91,7 @@
         <p class="eyebrow facts"><a href="../zh/changelog/">oav-p5 0.8 · 框架 0.1</a> · MIT 授權 · 零建置 · 零相依</p>
       </div>
       <nav class="doors" aria-label="從哪裡開始">
-        <a class="door door-1" href="#works"><span class="door-who">我做表演</span><span class="door-what">看看它做得出什麼，直接玩二十六件作品</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-1" href="#works"><span class="door-who">我做表演</span><span class="door-what">看看它做得出什麼，直接玩二十七件作品</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-2" href="#start"><span class="door-who">我寫程式</span><span class="door-what">一分鐘跑起來，再寫自己的世界</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-3" href="../llms.txt"><span class="door-who">我是 AI 代理</span><span class="door-what">先讀 /llms.txt，再讀 AGENTS.md</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-4" href="../zh/p5/"><span class="door-who">我用 p5.js／OpenProcessing</span><span class="door-what">加一行，就有控制器、聲音、鼓機和錄影</span><span class="door-arrow" aria-hidden="true">→</span></a>
@@ -220,7 +220,7 @@
     
     <header class="sec-head">
       <p class="eyebrow">03 · 作品</p>
-      <h2 id="works-title">二十六件作品，現在就能打開</h2>
+      <h2 id="works-title">二十七件作品，現在就能打開</h2>
       <p class="sec-lede">每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。進到任何一個範例：空白鍵播放時間軸，T 是演出模式，F 是全螢幕。</p>
     </header>
     <ol class="works">
@@ -536,6 +536,18 @@
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/11-controller-video">原始碼 ↗</a></p>
         </div>
       </li>
+      <li class="work" id="work-27">
+        <div class="work-img"><img src="../assets/home/works/27.webp" width="800" height="500" loading="lazy" decoding="async" alt="三台大小不同的螢幕斜放在深色桌面上；一顆發光的圓點帶著火花從一台螢幕越到下一台，淡淡的格線筆直地穿過螢幕之間的空隙。"></div>
+        <div class="work-label">
+          <p class="work-n">27</p>
+          <h3><a class="work-link" href="../examples/27-tile-dot/">跨螢幕圓點</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> 3 到 5 台手機、平板、筆電 · 一支拍照的手機</p>
+          <p class="work-text">平放在桌上的手機、平板、筆電變成一張畫布。拍一張標記的照片就定位每台螢幕，一顆圓點流過所有螢幕。需要在你的網路裡跑 <code>node serve.js</code>。</p>
+          <p class="work-route"><span>⑤</span> 輸出與留存</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/27-tile-dot">原始碼 ↗</a></p>
+        </div>
+      </li>
     </ol>
     <p class="works-all"><a class="more" href="../zh/examples/">依路線瀏覽所有範例 →</a></p>
     <p class="works-note">05 到 07 是吳哲宇 2020 到 2023 年的作品，在這裡當作示範。框架採 MIT 授權，作品的著作權仍屬藝術家，保留一切權利。</p>
@@ -585,7 +597,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p>宣告作品能被什麼演奏（參數），對事件做反應，然後畫出來。交給 <code>createShow()</code>，其他部分一起到位：鋼琴、映射、時間軸、控台、聲音、後台。旁邊放一個帶 import map 的 <code>index.html</code>，照範例 01 的寫法。</p>
         
       <div class="term ">
-        <div class="term-bar"><span>examples/27-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">複製</button></div>
+        <div class="term-bar"><span>examples/28-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">複製</button></div>
         <pre id="code-world"><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
 
@@ -615,7 +627,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
       </div>
     </div>
 
-    <h3 class="pkgs-title">二十七個套件，依層分類</h3>
+    <h3 class="pkgs-title">二十八個套件，依層分類</h3>
     <p class="pkgs-lede">全部是原生 ES module。用 import map 引入需要的套件，或交給 <code>createShow()</code> 組裝。</p>
     <div class="pkgs">
       <div class="pkg-group pg-l1">
@@ -670,6 +682,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/relay"><code>@openav/relay</code></a><span>零相依的房間中繼，讓手機和 iPad 連進來</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/surface"><code>@openav/surface</code></a><span>類似 TouchOSC 的控制元件，以及 autoSurface(params)</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/remote"><code>@openav/remote</code></a><span>手機與 iPad 端的 app：感測器、琴鍵、控制面板</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/tile"><code>@openav/tile</code></a><span>平放在桌上的幾台螢幕變成一張畫布：拍一張標記照片定位，共同時鐘與種子讓它們同步</span></li>
         </ul>
       </div>
       <div class="pkg-group pg-sig">
@@ -810,7 +823,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <div class="term-bar"><span>prompt</span><button type="button" class="copy" data-copy="agent-prompt">複製</button></div>
           <pre id="agent-prompt"><code>Clone https://github.com/frank890417/open-audiovisual，先讀 AGENTS.md。
 執行 `node serve.js`，打開 http://localhost:8080/examples/01-hello-particles/，看最小的完整演出長什麼樣子。
-把 01-hello-particles 複製成 examples/27-&lt;名稱&gt;/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：
+把 01-hello-particles 複製成 examples/28-&lt;名稱&gt;/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：
 
   &lt;描述這場表演，例如「一個遇到和諧和弦就綻放的水母世界」&gt;
 

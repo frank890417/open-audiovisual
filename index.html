@@ -91,7 +91,7 @@
         <p class="eyebrow facts"><a href="./changelog/">oav-p5 0.8 · framework 0.1</a> · MIT · zero build · zero dependencies</p>
       </div>
       <nav class="doors" aria-label="Where to start">
-        <a class="door door-1" href="#works"><span class="door-who">I perform</span><span class="door-what">See what it makes and play the twenty-six works</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-1" href="#works"><span class="door-who">I perform</span><span class="door-what">See what it makes and play the twenty-seven works</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-2" href="#start"><span class="door-who">I write code</span><span class="door-what">Run it in a minute, then write a world</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-3" href="./llms.txt"><span class="door-who">I am an AI agent</span><span class="door-what">Read /llms.txt, then AGENTS.md</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-4" href="./p5/"><span class="door-who">I use p5.js / OpenProcessing</span><span class="door-what">One line: a controller, sound, drums, video</span><span class="door-arrow" aria-hidden="true">→</span></a>
@@ -220,7 +220,7 @@
     
     <header class="sec-head">
       <p class="eyebrow">03 · Works</p>
-      <h2 id="works-title">Twenty-six works you can open now</h2>
+      <h2 id="works-title">Twenty-seven works you can open now</h2>
       <p class="sec-lede">Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments. In any example: Space plays the timeline, T is performance mode, F is fullscreen.</p>
     </header>
     <ol class="works">
@@ -536,6 +536,18 @@
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/11-controller-video">Source ↗</a></p>
         </div>
       </li>
+      <li class="work" id="work-27">
+        <div class="work-img"><img src="./assets/home/works/27.webp" width="800" height="500" loading="lazy" decoding="async" alt="Three screens of different sizes lying at angles on a dark table; one glowing dot and its sparks cross from one screen to the next, and faint grid lines run straight across the gaps."></div>
+        <div class="work-label">
+          <p class="work-n">27</p>
+          <h3><a class="work-link" href="./examples/27-tile-dot/">Tile dot</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> 3 to 5 phones, tablets, laptops · one camera phone</p>
+          <p class="work-text">Phones, tablets and laptops lying on a table become one canvas. One photo of their markers places every screen, and a dot flows across all of them. Needs <code>node serve.js</code> on your network.</p>
+          <p class="work-route"><span>⑤</span> Take it out of the browser</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/27-tile-dot">Source ↗</a></p>
+        </div>
+      </li>
     </ol>
     <p class="works-all"><a class="more" href="./examples/">Explore all the examples by route →</a></p>
     <p class="works-note">Works 05 to 07 are artworks by Che-Yu Wu (2020 to 2023), used here as demos. The framework is MIT. The artworks remain © the artist, all rights reserved.</p>
@@ -585,7 +597,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p>Declare what the piece can be performed with (params), react to events, draw. Hand it to <code>createShow()</code> and the rest arrives with it: piano, mapping, timeline, console, sound, backstage. Put it next to an <code>index.html</code> with the import map, as in example 01.</p>
         
       <div class="term ">
-        <div class="term-bar"><span>examples/27-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">Copy</button></div>
+        <div class="term-bar"><span>examples/28-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">Copy</button></div>
         <pre id="code-world"><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
 
@@ -615,7 +627,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
       </div>
     </div>
 
-    <h3 class="pkgs-title">Twenty-seven packages, by layer</h3>
+    <h3 class="pkgs-title">Twenty-eight packages, by layer</h3>
     <p class="pkgs-lede">Plain ES modules. Import what you need through an import map, or let <code>createShow()</code> assemble them.</p>
     <div class="pkgs">
       <div class="pkg-group pg-l1">
@@ -670,6 +682,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/relay"><code>@openav/relay</code></a><span>Zero-dependency room relay for phones and iPads</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/surface"><code>@openav/surface</code></a><span>TouchOSC-style widgets and autoSurface(params)</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/remote"><code>@openav/remote</code></a><span>The phone and iPad app: sensors, keyboard, control surface</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/tile"><code>@openav/tile</code></a><span>Screens lying on a table become one canvas: one photo of their markers places them, one shared clock and seed keep them in step</span></li>
         </ul>
       </div>
       <div class="pkg-group pg-sig">
@@ -810,7 +823,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <div class="term-bar"><span>prompt</span><button type="button" class="copy" data-copy="agent-prompt">Copy</button></div>
           <pre id="agent-prompt"><code>Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/27-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/28-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 

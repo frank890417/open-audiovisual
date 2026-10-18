@@ -4,7 +4,7 @@
 
 Inputs (MIDI, microphone, chords, body and hand pose, phones) publish named signals; a mapping layer routes signals to parameters; an algorithmic "world" reads only parameters and renders image and sound; a timeline, a director's console and a backstage monitor run the show. Plain ES modules, no build, no dependencies. Extracted from The Last Input (Che-Yu Wu, 2026), a 49.4-channel performance at the IRCAM residency × C-LAB, Taipei.
 
-Today: 27 packages, 26 examples, 27 MIDI controller profiles (21 devices and 6 generic layouts), version 0.1.0; oav-p5 0.8.0 (https://openaudiovisual.com/changelog/).
+Today: 28 packages, 27 examples, 27 MIDI controller profiles (21 devices and 6 generic layouts), version 0.1.0; oav-p5 0.8.0 (https://openaudiovisual.com/changelog/).
 
 Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文, Traditional Chinese)
 Repository: https://github.com/frank890417/open-audiovisual
@@ -34,7 +34,7 @@ How to cite: cite the canonical URL of the page you read. Code is MIT; examples 
 ## Start
 
 - Run: `git clone https://github.com/frank890417/open-audiovisual.git && cd open-audiovisual && node serve.js` → http://localhost:8080 (no npm install; Chrome/Edge for Web MIDI and camera)
-- Make a new work: copy `examples/01-hello-particles/` to `examples/27-<name>/`, write the World in `main.js`, open `http://localhost:8080/examples/27-<name>/`.
+- Make a new work: copy `examples/01-hello-particles/` to `examples/28-<name>/`, write the World in `main.js`, open `http://localhost:8080/examples/28-<name>/`.
 - Verify: `npm test` (node --test) passes; the example loads with zero console errors (a refused `ws://localhost:7457` monitor connection is expected when no monitor runs).
 
 ## Docs
@@ -103,6 +103,7 @@ Each runs in the browser without hardware (on-screen piano, QWERTY keys, simulat
 - [24-p5-note-names](https://openaudiovisual.com/examples/24-p5-note-names/): noteIsDown('C4') works like noteIsDown(60): write note names (C4, c#4, Db3) wherever a note number goes; noteNumber(), noteName() and noteFreq() convert. (plays with MIDI keyboard · on-screen controller · phone)
 - [25-p5-chop](https://openaudiovisual.com/examples/25-p5-chop/): env('kick'), spring(), speed() and count('kick', 4) shape a number the way TouchDesigner's Trigger, Spring, Speed and Count CHOPs do: a bass drum opens a disc, a spring bounces it back, a hand turns, every fourth kick changes the colour. (plays with microphone · drum machine (🥁))
 - [26-p5-rhythm-lab](https://openaudiovisual.com/examples/26-p5-rhythm-lab/): OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now. (plays with keys 1–4, Z, S · drum machine (🥁))
+- [27-tile-dot](https://openaudiovisual.com/examples/27-tile-dot/): Phones, tablets and laptops lying on a table become one canvas. One photo of their markers places every screen, and a dot flows across all of them. Needs node serve.js on your network. (plays with 3 to 5 phones, tablets, laptops · one camera phone)
 
 Examples 05–07 integrate artworks © Che-Yu Wu (2020–2023), all rights reserved; the framework is MIT.
 
@@ -140,14 +141,14 @@ Examples 05–07 integrate artworks © Che-Yu Wu (2020–2023), all rights reser
 
 ## Packages
 
-27 packages under `packages/<name>/`, imported as `@openav/<name>` through an import map.
+28 packages under `packages/<name>/`, imported as `@openav/<name>` through an import map.
 
 - Input: `midi` (Web MIDI in and out, many devices, on-screen controller profiles) · `audio` (Microphone analysis: loudness, bands, brightness, onsets, drum hits) · `chord` (Chord detection for performance: consonance, triads, clusters) · `pose` (Body and 21-point hand tracking from the camera, on the device) · `keys` (On-screen piano, QWERTY playing and a simulated performer) · `drums` (Synth kit and step sequencer that publish analyzer-shaped signals) · `leap` (Leap Motion hands through a small local bridge, as 21-point hand signals)
 - Mapping: `mapping` (Signal to param routes: curves, smoothing, many-to-many, learn) · `chop` (Values over time, as TouchDesigner's CHOPs shape them: lag, envelope, speed, spring, trail, slope, count; the same curve at any frame rate)
 - World: `stage` (The world shell: lifecycle and params, no renderer opinion) · `world-webtoe` (Perform a WebToe node patch as a world)
 - Output: `sound` (Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own) · `osc` (OSC out of the browser through a small Node bridge to UDP) · `out` (Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values) · `record` (Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed) · `fab` (Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files)
 - Spines: `timeline` (Param automation, scenes and cues: the clock of the show) · `score` (The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails) · `pattern` (Rhythm in one line: TidalCycles/Strudel-style mini-notation read into the hits of each bar (Euclidean rhythms, one-per-bar alternation, seeded chance)) · `console` (The director's desk and performance mode) · `monitor` (Backstage view for any device on the network)
-- Phones and tablets: `relay` (Zero-dependency room relay for phones and iPads) · `surface` (TouchOSC-style widgets and autoSurface(params)) · `remote` (The phone and iPad app: sensors, keyboard, control surface)
+- Phones and tablets: `relay` (Zero-dependency room relay for phones and iPads) · `surface` (TouchOSC-style widgets and autoSurface(params)) · `remote` (The phone and iPad app: sensors, keyboard, control surface) · `tile` (Screens lying on a table become one canvas: one photo of their markers places them, one shared clock and seed keep them in step)
 - Glue and agents: `core` (Signals, Params and Loop: what every layer speaks) · `show` (createShow(): one call assembles the whole shell) · `mcp` (MCP server for coding agents: list, read, scaffold, check)
 
 ## Optional
