@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- oav:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tile dot · open-audiovisual example</title>
+<meta name="description" content="Several screens lying on a table become one canvas: one photo places them, one clock and one seed keep them together. Plays with 3 to 5 phones, tablets, laptops · one camera phone.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/27-tile-dot/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Tile dot · open-audiovisual example">
+<meta property="og:description" content="Several screens lying on a table become one canvas: one photo places them, one clock and one seed keep them together. Plays with 3 to 5 phones, tablets, laptops · one camera phone.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/27-tile-dot/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tile dot · open-audiovisual example">
+<meta name="twitter:description" content="Several screens lying on a table become one canvas: one photo places them, one clock and one seed keep them together. Plays with 3 to 5 phones, tablets, laptops · one camera phone.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/27-tile-dot/#webpage","url":"https://openaudiovisual.com/examples/27-tile-dot/","name":"Tile dot · open-audiovisual example","description":"Several screens lying on a table become one canvas: one photo places them, one clock and one seed keep them together. Plays with 3 to 5 phones, tablets, laptops · one camera phone.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/27-tile-dot/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/27-tile-dot/#breadcrumb"}},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/27-tile-dot/#code","name":"Tile dot (open-audiovisual example 27)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/27-tile-dot","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/27-tile-dot/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Tile dot","item":"https://openaudiovisual.com/examples/27-tile-dot/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css?v=72212d8">
+<!-- /oav:head -->
+<script type="importmap">
+{
+  "imports": {
+    "@openav/core": "../../packages/core/index.js?v=72212d8",
+    "@openav/midi": "../../packages/midi/index.js?v=72212d8",
+    "@openav/keys": "../../packages/keys/index.js?v=72212d8",
+    "@openav/chord": "../../packages/chord/index.js?v=72212d8",
+    "@openav/audio": "../../packages/audio/index.js?v=72212d8",
+    "@openav/pose": "../../packages/pose/index.js?v=72212d8",
+    "@openav/sound": "../../packages/sound/index.js?v=72212d8",
+    "@openav/mapping": "../../packages/mapping/index.js?v=72212d8",
+    "@openav/timeline": "../../packages/timeline/index.js?v=72212d8",
+    "@openav/stage": "../../packages/stage/index.js?v=72212d8",
+    "@openav/console": "../../packages/console/index.js?v=72212d8",
+    "@openav/monitor": "../../packages/monitor/index.js?v=72212d8",
+    "@openav/show": "../../packages/show/index.js?v=72212d8",
+    "@openav/surface": "../../packages/surface/index.js?v=72212d8",
+    "@openav/tile": "../../packages/tile/index.js"
+  }
+}
+</script>
+<style>
+  /* ?room=…: this screen is a tile. The stage is the whole screen; the console and the guide stay on the laptop that runs the show alone. */
+  body.tiled { display: block !important; }
+  body.tiled .oav-stage { position: fixed !important; inset: 0; }
+  body.tiled .oav-side, body.tiled .oav-guide, body.tiled .oav-hint { display: none !important; }
+</style>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+</head>
+<body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 27 · <a href="../../examples/#route-output">Take it out of the browser</a></span><span lang="zh-Hant">範例 27 · <a href="../../zh/examples/#route-output">輸出與留存</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Tile dot</span><span lang="zh-Hant">跨螢幕圓點</span></h1>
+    <p class="g-teaches"><span lang="en">Several screens lying on a table become one canvas: one photo places them, one clock and one seed keep them together.</span><span lang="zh-Hant">幾台平放在桌上的螢幕變成一張畫布：拍一張照片定位，同一個時鐘、同一個種子讓它們一起演。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Run node serve.js, open this page with ?room=desk on three screens, tap Join on each and lay them flat on the table.</li><li>On a phone open packages/tile/?room=desk, press Markers, then take one photo from above with every screen in it.</li><li>Watch the dot leave one screen and come out of the next one where it really is; move a screen and take the photo again.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>跑 node serve.js，在三台螢幕上打開這一頁並加上 ?room=desk，各點一下 Tap to join，平放在桌上。</li><li>用一支手機打開 packages/tile/?room=desk，按「標記」，從上方拍一張把每台螢幕都拍進去的照片。</li><li>看圓點離開一台螢幕，從下一台它真正所在的位置出來；移動一台螢幕，再拍一次。</li></ol>
+    <p class="g-row"><span lang="en"><b>Needs:</b> Phone or iPad.</span><span lang="zh-Hant"><b>需要：</b>手機或 iPad。</span>
+        <span lang="en">No hardware? Use Plays itself.</span><span lang="zh-Hant">沒有硬體？用它自己會播。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/27-tile-dot/main.js#L28-L35"><code>main.js:28–35</code></a> <span lang="en">Every position is a function of the shared time and seed, never a sum of this screen's frames.</span><span lang="zh-Hant">每個位置都是共同時間與種子的函式，從不累加這台螢幕自己的影格。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/27-tile-dot/main.js#L65-L70"><code>main.js:65–70</code></a> <span lang="en">The view says which piece of the shared canvas this screen draws: one setTransform.</span><span lang="zh-Hant">view 說這台螢幕畫共同畫布的哪一塊：一個 setTransform。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/27-tile-dot/main.js#L121-L141"><code>main.js:121–141</code></a> <span lang="en">Join the room, wrap the world, route the camera page's Markers to a param, keep the timeline on the shared clock.</span><span lang="zh-Hant">加入房間、包住世界、把拍照頁的「標記」接到參數、讓時間軸跟著共同時鐘。</span></li></ul>
+    
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#packages-openav-tile">@openav/tile</a></span><span lang="zh-Hant"><a href="../../zh/docs/#packages-openav-tile">@openav/tile</a></span> · <span lang="en"><a href="../../docs/#phones">Phones, relay &amp; surfaces</a></span><span lang="zh-Hant"><a href="../../zh/docs/#phones">手機、中繼與控制面板</a></span></p>
+    <p class="g-next"><span lang="en">That was the last one.</span><span lang="zh-Hant">這是最後一個範例。</span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js?v=72212d8"></script>
+<!-- /oav:guide -->
+<script type="module" src="./main.js"></script>
+</body>
+</html>

@@ -8,7 +8,7 @@
 > p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.0)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 27 packages, 26 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
+> Today: 28 packages, 27 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -148,7 +148,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-Twenty-six works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
+Twenty-seven works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
 
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
 
@@ -176,6 +176,7 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 **⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera.
 
 [A pink dot in the middle of glowing pink and yellow rings spreading out, below the drum card playing four on the floor.](https://openaudiovisual.com/examples/21-p5-record/) 21 · p5 record a video startRecording() saves the canvas and the sketch's own sound as one video, MP4 where the browser can write it; ⏺ and 📷 in the 🎹 panel need no code. [play](https://openaudiovisual.com/examples/21-p5-record/) · [source](examples/21-p5-record/) | [Overlapping pink, yellow and green rings spreading over a dark field, each one a struck note.](https://openaudiovisual.com/examples/10-record/) 10 · Record The work plus your hands plus its own sound, in one synced video. MIDI takes too. [play](https://openaudiovisual.com/examples/10-record/) · [source](examples/10-record/) | [Overlapping pink, purple and yellow rings beside an on-screen MiniLab 3 with the last note written under it.](https://openaudiovisual.com/examples/11-controller-video/) 11 · Controller video The performance video without a camera: the controller you play, drawn live. [play](https://openaudiovisual.com/examples/11-controller-video/) · [source](examples/11-controller-video/)
+[Three screens of different sizes lying at angles on a dark table; one glowing dot and its sparks cross from one screen to the next, and faint grid lines run straight across the gaps.](https://openaudiovisual.com/examples/27-tile-dot/) 27 · Tile dot Several screens lying on a table become one canvas: one photo places them, one clock and one seed keep them together. [play](https://openaudiovisual.com/examples/27-tile-dot/) · [source](examples/27-tile-dot/)
 
 All examples run without MIDI hardware: every stage ships an on-screen piano
 (`@openav/keys`: QWERTY capture, Z/X octave) and a **simulated performer** that
@@ -313,7 +314,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-Twenty-seven plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+Twenty-eight plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 | layer | package | role |
@@ -342,6 +343,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 | phones and tablets | [`@openav/relay`](packages/relay/) | Zero-dependency room relay for phones and iPads |
 |  | [`@openav/surface`](packages/surface/) | TouchOSC-style widgets and autoSurface(params) |
 |  | [`@openav/remote`](packages/remote/) | The phone and iPad app: sensors, keyboard, control surface |
+|  | [`@openav/tile`](packages/tile/) | Screens lying on a table become one canvas: one photo of their markers places them, one shared clock and seed keep them in step |
 | glue and agents | [`@openav/core`](packages/core/) | Signals, Params and Loop: what every layer speaks |
 |  | [`@openav/show`](packages/show/) | createShow(): one call assembles the whole shell |
 |  | [`@openav/mcp`](packages/mcp/) | MCP server for coding agents: list, read, scaffold, check |
@@ -394,7 +396,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 747 tests
+28 packages · 27 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 762 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -509,7 +511,7 @@ It handles the part every show rebuilds from scratch: MIDI plumbing, turning
 inputs into parameters, a timeline with scenes, a director's console, a
 performance mode for the performer, and a backstage page for the stage manager.
 You write the *world*, the piece itself. The pitch, a live instrument and the
-twenty-six example works are on the [homepage](https://openaudiovisual.com/).
+twenty-seven example works are on the [homepage](https://openaudiovisual.com/).
 
 ## Who it is for
 
@@ -4021,7 +4023,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Twenty-seven packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-eight packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -4033,7 +4035,7 @@ npm yet.
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` |
-| phones | `relay` · `surface` · `remote` |
+| phones | `relay` · `surface` · `remote` · `tile` |
 | glue | `core` · `show` · `mcp` |
 
 Subpath entries (`@openav/remote/host`, `@openav/relay/server`,
@@ -4494,6 +4496,22 @@ Phones · the phone/iPad app and the show-side adapter.
 
 See [Phones, relay & surfaces](remote.md).
 
+## @openav/tile
+
+Phones · several screens lying on a table become one canvas: one photo of their markers places every screen, one shared clock and one seed keep them together. Guide: [packages/tile/README.md](../packages/tile/README.md); example 27.
+
+| export | signature |
+|---|---|
+| `joinTile` | `joinTile({ room, url, id, signals, container, ui = true })` → tile · `view` · `time()` (shared seconds) · `now()` · `seed` · `size()` · `markers(on)` · `attach(signals)` · `syncTimeline(timeline, dt)` · `on('layout' \| 'roster' \| 'mode' \| 'show' \| 'view' \| 'resize', cb)` · `status()` · `close()`; publishes `tile/markers`, `tile/synced`, `tile/layout` (pulse) |
+| `tileWorld` | `tileWorld(world, tile)` → the world plus the param `tileMarkers` (0 show · 1 markers) and `io.tile` / `ctx.tile`; `TILE_PARAMS`, `TILE_ROUTES` (`tile/markers` → `tileMarkers`) |
+| `tileView` | `tileView(layout, id)` → `{ ok, canvas, device, toCanvas, toDevice, scale, angle, bounds, polygon, point(x, y), fromDevice(x, y), matrix(pixelRatio), apply2d(ctx, pixelRatio), applyP5(sk), css(dpr), visible(x, y, r) }` or `{ ok: false, reason }` · `soloView(w, h)` |
+| `solveLayout` | `solveLayout({ devices: [{ id, w, h, index, markers: [{ device, photo }] }], photo, minMarkers = 4, reference, refine = true, rejectPx = 6 })` → `{ ok, layout, report, reason }`, never throws · `validateLayout(layout)` → `{ ok, errors }` · `homography(src, dst)` (normalized DLT) · `fitSimilarity(src, dst)` |
+| markers | `markerGrid(w, h, { short = 4, fill = 0.72 })` · `markerId(device, cell)` · `decodeMarkerId(id)` · `correspondences(found, roster, grid)` · `drawMarkers(ctx, { w, h, index, grid, label })` · `DICT_NAME` (`DICT_5X5_1000`), 50 markers a screen, 20 screens |
+| clock | `new ClockSync({ now, window = 60000, keep = 40 })` · `add(t0, server, t1)` · `offset` · `rtt` · `now()` · `ready` · `estimateOffset(samples)` (the quickest round trip) · `TileLink` (a `RelayClient` that pings the relay and keeps the clock) |
+| `@openav/tile/detect` | `loadOpenCV(url = OPENCV_URL)` (OpenCV.js 4.12.0 from jsDelivr, on the camera page only) · `detectMarkers(cv, image)` → `{ found: [{ id, corners }], ms, w, h }` |
+
+The camera page is `packages/tile/?room=<name>` (`?demo=1`: a synthetic photo, no hardware). `layout.json`: `{ version: 1, reference, canvas: { w, h }, plane: { matrix3x3 }, devices: [{ id, w, h, kind: 'planar', similarity: { a, b, tx, ty }, matrix3x3, rms, pose: null }] }`; `pose` is kept for the 3D window model.
+
 ## @openav/mcp
 
 Glue · a zero-dependency MCP server over stdio for coding agents:
@@ -4603,7 +4621,7 @@ openav.mapper.routes                                    // the wiring
 ```text
 Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/27-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/28-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   <describe the performance, e.g. "a jellyfish world that blooms on consonant chords">
 
