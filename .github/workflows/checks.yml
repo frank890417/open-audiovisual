@@ -26,6 +26,7 @@ jobs:
     # the API reference page, and every example and every claim in it, in a real headless Chromium under p5 1.x and 2.x
     # (p5/test/reference-smoke.cjs; the gates that need no browser are tests/reference.test.js)
     runs-on: ubuntu-latest
+    timeout-minutes: 40            # ~1000 runs: 4 minutes on a laptop, a runner is slower
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -23,7 +23,7 @@ const OAV = process.env.OAV_ROOT || ROOT;
 const MIME = { '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.html': 'text/html', '.css': 'text/css', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.txt': 'text/plain', '.ico': 'image/x-icon' };
 const SHOTS = process.env.SHOTS || fs.mkdtempSync(path.join(os.tmpdir(), 'oav-search-'));
 const NOISE = [/ws:\/\/[^ ]*:7457/, /googletagmanager|google-analytics|cloudflareinsights/, /net::ERR_(BLOCKED|FAILED|INTERNET)/, /Failed to load resource/];
-const PAGES = (process.env.URLS ? process.env.URLS.split(',') : ['/', '/zh/', '/docs/', '/zh/docs/', '/docs/reference/', '/controllers/', '/examples/', '/p5/', '/changelog/']);
+const PAGES = (process.env.URLS ? process.env.URLS.split(',') : ['/', '/zh/', '/docs/', '/zh/docs/', '/docs/reference/', '/zh/docs/reference/', '/controllers/', '/examples/', '/p5/', '/changelog/']);
 const VIEWPORTS = [[1440, 900, 'desktop'], [390, 844, 'phone'], [360, 740, 'small phone']].filter((v) => !process.env.VPS || process.env.VPS.split(',').includes(v[2]));
 
 let bad = 0, rows = 0;
@@ -108,7 +108,7 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? 'âœ
           await page.evaluate(() => { document.activeElement && document.activeElement.blur && document.activeElement.blur(); });
           await page.keyboard.press('/');
           const slash = await page.evaluate(() => ({ dialog: !!document.querySelector('dialog.oav-search[open]'), ref: document.activeElement && document.activeElement.id }));
-          if (url === '/docs/reference/') { if (slash.dialog || slash.ref !== 'ref-q') problems.push('on the API reference "/" must focus its own search box'); }
+          if (/\/docs\/reference\/$/.test(url)) { if (slash.dialog || slash.ref !== 'ref-q') problems.push('on the API reference "/" must focus its own search box'); }
           else if (!slash.dialog) problems.push('"/" does not open the search');
           if (slash.dialog) { await page.keyboard.press('Escape'); await page.waitForFunction(() => !document.querySelector('dialog.oav-search[open]')); }
         }

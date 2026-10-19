@@ -110,3 +110,6 @@ html.refpage { --ref-search-h: 74px; scroll-padding-top: calc(var(--bar-h) + var
 .ref-page[data-searching] .toc-ch.is-current > a, .ref-page[data-searching] .toc a[aria-current] { color: var(--fg-2); }
 .ref-page[data-searching] .toc-ch.is-current > a .n { color: var(--fg-3); }
 .ref-page[data-searching] .docs-bar-where { visibility: hidden; }
+
+/* a long address or identifier in a sentence must wrap, not widen the page (SAMPLES_URL's summary did, on a 360 px phone) */
+.ref p, .ref li, .ref td, .ref dd, .ref figcaption { overflow-wrap: anywhere; }
