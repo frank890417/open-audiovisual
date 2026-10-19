@@ -441,8 +441,8 @@ function draw() {
       },
     ],
     needs: {
-      en: 'A sketch that defines `beatDetected()` and reads no microphone value starts the microphone on the first click or key. When the drum machine is on, the same function is called for its kicks and snares and the microphone is not opened for it. `OAVp5.mic.on(\'beat\', fn)` is the same thing without defining a global; it returns a function that stops listening.',
-      zh: '草圖只要定義了 `beatDetected()` 而沒有讀任何麥克風的值，第一次點擊或按鍵時就會啟動麥克風。鼓機開著的時候，鼓機的大鼓和小鼓也會呼叫同一個函式，而且不會為它去開麥克風。`OAVp5.mic.on(\'beat\', fn)` 是不必定義全域函式的同樣功能，它會回傳一個停止監聽的函式。',
+      en: 'A sketch that defines `beatDetected()` and reads no microphone value starts the microphone on the first click or key. When the drum machine is on, the same function is called for its kicks and snares and the microphone is not opened for it. `OAVp5.mic.on(\'beat\', fn)` hears the same beats without defining a global and returns a function that stops listening, but a listener alone never starts the microphone: read [`micLevel`](#micLevel) or call [`startMic()`](#startMic) as well.',
+      zh: '草圖只要定義了 `beatDetected()` 而沒有讀任何麥克風的值，第一次點擊或按鍵時就會啟動麥克風。鼓機開著的時候，鼓機的大鼓和小鼓也會呼叫同一個函式，而且不會為它去開麥克風。`OAVp5.mic.on(\'beat\', fn)` 聽到的是同樣的拍子，不用定義全域函式，也會回傳一個停止監聽的函式，但只有監聽並不會啟動麥克風：還要讀 [`micLevel`](#micLevel) 或呼叫 [`startMic()`](#startMic)。',
     },
     notes: [
       {

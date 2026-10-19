@@ -33,8 +33,8 @@ export default {
       },
     ],
     needs: {
-      en: 'Nothing to call. Reading a knob tells oav-p5 the sketch plays from MIDI, so it asks the browser for Web MIDI (Chrome, Edge, Firefox; Safari and iPad have none: use 🎹 or a phone there).',
-      zh: '不用呼叫任何東西。讀旋鈕就等於告訴 oav-p5 這份草圖要用 MIDI 玩，它會向瀏覽器要 Web MIDI（Chrome、Edge、Firefox 有。Safari 和 iPad 沒有，那裡改用 🎹 或手機）。',
+      en: 'Nothing to call. With the default `hardware=auto`, oav-p5 asks the browser for Web MIDI as soon as it loads, whatever the sketch reads (Chrome, Edge and Firefox have it; Safari and iPad do not: use 🎹 or a phone there). Reading a knob also tells oav-p5 the sketch plays from MIDI, so when Web MIDI is missing or refused a card beside the 🎹 says so; a sketch that uses none of this never sees that card. [`?oav_hardware=click`](#option-hardware) waits for the 🎹 panel instead.',
+      zh: '不用呼叫任何東西。預設的 `hardware=auto` 下，oav-p5 一載入就會向瀏覽器要 Web MIDI，不管草圖有沒有讀東西（Chrome、Edge、Firefox 有。Safari 和 iPad 沒有，那裡改用 🎹 或手機）。讀旋鈕還會讓 oav-p5 知道這份草圖要用 MIDI 玩，所以 Web MIDI 不存在或被拒絕的時候，🎹 旁邊會有一張卡片說明。完全沒用到這些的草圖不會看到那張卡片。[`?oav_hardware=click`](#option-hardware) 則是等你按 🎹 面板裡的按鈕才去要。',
     },
     notes: [
       {
@@ -98,8 +98,8 @@ function draw() {
       },
     ],
     needs: {
-      en: 'Nothing to call; reading a fader asks for Web MIDI, like a knob.',
-      zh: '不用呼叫任何東西。讀推桿就會像旋鈕一樣去要 Web MIDI。',
+      en: 'Nothing to call. Web MIDI is asked for at load, exactly as for a knob ([`knob1`](#knob1)); reading a fader also makes a missing or refused Web MIDI show as a card.',
+      zh: '不用呼叫任何東西。Web MIDI 在載入時就會去要，跟旋鈕一樣（見 [`knob1`](#knob1)）。讀推桿還會讓「Web MIDI 不存在或被拒絕」顯示成一張卡片。',
     },
     examples: [
       {
@@ -139,8 +139,8 @@ function draw() {
       },
     ],
     needs: {
-      en: 'Nothing to call; reading a pad asks for Web MIDI, like a knob.',
-      zh: '不用呼叫任何東西。讀墊子就會像旋鈕一樣去要 Web MIDI。',
+      en: 'Nothing to call. Web MIDI is asked for at load, exactly as for a knob ([`knob1`](#knob1)); reading a pad also makes a missing or refused Web MIDI show as a card.',
+      zh: '不用呼叫任何東西。Web MIDI 在載入時就會去要，跟旋鈕一樣（見 [`knob1`](#knob1)）。讀墊子還會讓「Web MIDI 不存在或被拒絕」顯示成一張卡片。',
     },
     examples: [
       {
@@ -266,8 +266,8 @@ function draw() {
       },
     ],
     needs: {
-      en: 'Unlike `knob1`, reading it does not by itself ask for Web MIDI: a sketch that defines `notePressed()` or reads a knob or pad does. 🎹 and a phone always work.',
-      zh: '跟 `knob1` 不一樣，單單讀它不會去要 Web MIDI：草圖有定義 `notePressed()`，或讀了旋鈕、墊子，才會去要。🎹 和手機隨時都能用。',
+      en: 'Nothing to call. Web MIDI is asked for at load (see [`knob1`](#knob1)). Unlike a knob, merely reading `note` does not tell oav-p5 the sketch plays from MIDI: defining [`notePressed()`](#notePressed) or reading a knob or pad does, which is what makes a missing or refused Web MIDI show as a card. 🎹 and a phone always work.',
+      zh: '不用呼叫任何東西。Web MIDI 在載入時就會去要（見 [`knob1`](#knob1)）。跟旋鈕不一樣，單單讀 `note` 並不會讓 oav-p5 知道草圖要用 MIDI 玩：定義 [`notePressed()`](#notePressed)，或讀旋鈕、墊子才會，也才會讓「Web MIDI 不存在或被拒絕」顯示成卡片。🎹 和手機隨時都能用。',
     },
     notes: [
       {
@@ -398,8 +398,8 @@ function draw() {
       },
     ],
     needs: {
-      en: 'Defining it is enough: oav-p5 sees the function and asks for Web MIDI. Keys from 🎹 and from a phone call it too.',
-      zh: '只要定義了它就夠了：oav-p5 看到這個函式，就會去要 Web MIDI。🎹 和手機上彈的鍵也會呼叫它。',
+      en: 'Defining it is enough: oav-p5 calls it from every source, and if Web MIDI is missing or refused it says so in a card beside the 🎹 (Web MIDI itself is asked for at load, see [`knob1`](#knob1)). Keys from 🎹 and from a phone call it too.',
+      zh: '只要定義了它就夠了：不管是哪一種來源，oav-p5 都會呼叫它。Web MIDI 不存在或被拒絕的時候，🎹 旁邊會有一張卡片說明（Web MIDI 本身在載入時就會去要，見 [`knob1`](#knob1)）。🎹 和手機上彈的鍵也會呼叫它。',
     },
     notes: [
       { en: 'An error inside it does not stop the music: the next key still plays, and the message shows in the console and on a card beside the 🎹, with the file and line.', zh: '裡面出錯不會讓音樂停掉：下一個鍵還是照樣處理，錯誤訊息會出現在 console，也會在 🎹 旁邊的卡片上顯示檔案與行號。' },
