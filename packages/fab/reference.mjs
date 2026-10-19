@@ -646,7 +646,7 @@ const solid = { faces: () => [], bbox: () => ({}), tessellate: () => ({ position
 const kernel = { smlib: async () => ({ toStep: () => 'ISO-10303-21;' }) };
 const out = await exportAs(solid, 'stp', {}, kernel);
 document.getElementById('app').textContent = out.ext + ' (' + out.mime + '): ' + new TextDecoder().decode(out.bytes);`,
-        caption: { en: 'Prints "step (model/step): ISO-10303-21;": the alias stp was understood and the bytes came from the kernel\'s toStep.', zh: '印出「step (model/step): ISO-10303-21;」：別名 stp 被認得了，位元組來自核心的 toStep。' },
+        caption: { en: 'Prints "step (model/step): ISO-10303-21;": the alias stp was understood and the bytes came from the kernel\'s toStep.', zh: '印出 `step (model/step): ISO-10303-21;`，表示別名 stp 被認得了，位元組來自核心的 toStep。' },
       },
     ],
     related: ['Fab', 'MIME', 'toStlBytes', 'toObjText', 'toGlbBytes', 'checkMesh', 'loadKernel'],

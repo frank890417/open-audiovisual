@@ -342,7 +342,7 @@ document.getElementById('app').innerHTML = ['good: ' + JSON.stringify(good), ...
     params: [
       { name: 'raw', type: 'Object', en: 'The layout JSON. `undefined` or an object without pages gives a layout with no pages.', zh: '版面 JSON。`undefined` 或沒有 pages 的物件，會得到沒有任何頁面的版面。' },
     ],
-    returns: { type: 'Object', en: '`{ version: 1, title, pages }` with every page and widget complete.', zh: '`{ version: 1, title, pages }`，每個頁面和元件都是完整的。' },
+    returns: { type: 'Object', en: '`{ version: 1, title, pages }` with every page and widget complete.', zh: '`{ version: 1, title, pages }`，每個頁面和元件的欄位都補齊了。' },
     description: [
       {
         en: 'A page without an `id` becomes `page1`, `page2` …; without a `title` it gets its id (or `Page 1`); without a `grid` it gets `{ cols: 8, rows: 6 }`. A widget without an `id` becomes its type and its position in the list, `fader1`; an id already used on the page gets `_` added until it is unique. Every other field is kept as it is. [`Surface`](#Surface) normalizes the layout it is given, and so do [`signalNames()`](#signalNames) and the show side of the remote.',

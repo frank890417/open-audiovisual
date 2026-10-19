@@ -382,7 +382,7 @@ function draw() {
     description: [
       {
         en: "Wrap a target that jumps: `circle(width / 2, height / 2, spring(mouseIsPressed ? 300 : 100, 100, 6))`. The size does not just glide to the new target (that is [`lag()`](#lag)): it swings past it, comes back and settles.",
-        zh: '包住一個會跳的目標：`circle(width / 2, height / 2, spring(mouseIsPressed ? 300 : 100, 100, 6))`。大小不是單純滑到新目標（那是 [`lag()`](#lag)），而是衝過頭、回來、再穩住。',
+        zh: '包住一個會跳的目標：`circle(width / 2, height / 2, spring(mouseIsPressed ? 300 : 100, 100, 6))`。大小會衝過頭、回來、再穩住，跟單純滑向新目標的 [`lag()`](#lag) 不一樣。',
       },
       {
         en: 'Stiffness and damping are the two knobs. A stiff, lightly damped spring rings like a ruler on a table. A soft, heavily damped one just eases. A big jump or a low frame rate does not break it: the motion is the same at any frame rate.',

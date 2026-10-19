@@ -492,7 +492,7 @@ function draw() {
     ],
     needs: {
       en: 'Call [`startSound()`](#startSound) first and wait until [`OAVp5.sound.state`](#OAVp5.sound.state) is no longer `\'loading\'`, or check for `null` before you use them.',
-      zh: '先呼叫 [`startSound()`](#startSound)，等 [`OAVp5.sound.state`](#OAVp5.sound.state) 不再是 `\'loading\'`，或是在使用之前先檢查是不是 `null`。',
+      zh: '先呼叫 [`startSound()`](#startSound)，等 [`OAVp5.sound.state`](#OAVp5.sound.state) 離開 `\'loading\'` 之後再用，也可以在使用之前先檢查它是不是 `null`。',
     },
     examples: [
       {

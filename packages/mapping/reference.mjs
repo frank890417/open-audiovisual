@@ -330,7 +330,7 @@ turn('knob/2'); console.log(wizard.done, wizard.added);`,
     description: [
       {
         en: '[`serializeMap()`](#serializeMap) writes this number and [`parseMap()`](#parseMap) accepts any version from 1 up to it. A newer file gets the message "this build of OAV reads up to version 1. Update OAV or re-export it." A file with no valid `version` is refused too. Only a bare array of routes counts as version 0.',
-        zh: '[`serializeMap()`](#serializeMap) 寫入這個數字，[`parseMap()`](#parseMap) 接受從 1 到它之間的任何版本。更新的檔案會得到訊息：「this build of OAV reads up to version 1. Update OAV or re-export it.」沒有合法 `version` 的檔案也會被拒絕。只有單純的路由陣列會被當成版本 0。',
+        zh: '[`serializeMap()`](#serializeMap) 寫入這個數字，[`parseMap()`](#parseMap) 接受從 1 到它之間的任何版本。更新的檔案會得到這句訊息：`this build of OAV reads up to version 1. Update OAV or re-export it.` 沒有合法 `version` 的檔案也會被拒絕。只有單純的路由陣列會被當成版本 0。',
       },
     ],
     related: ['MAP_FORMAT', 'MAP_MAX_BYTES', 'parseMap'],
@@ -437,7 +437,7 @@ console.log(JSON.stringify(file));`,
       },
       {
         en: 'What it accepts is cleaned: a route without a string `signal` and `param` is dropped (and counted in `dropped`), unknown keys disappear, numbers must be finite, an unknown `curve` becomes `\'linear\'`, `smooth` is held to 0..60 seconds, and only `invert: true` inverts. A route is on unless it says `enabled: false`.',
-        zh: '接受的內容都會被整理過：沒有字串 `signal` 和 `param` 的路由會被丟掉（並算進 `dropped`），不認得的欄位會消失，數字必須是有限的，不認得的 `curve` 變成 `\'linear\'`，`smooth` 限制在 0 到 60 秒，只有 `invert: true` 才會反轉。路由除非寫了 `enabled: false`，否則是開著的。',
+        zh: '接受的內容都會被整理過：沒有字串 `signal` 和 `param` 的路由會被丟掉（並算進 `dropped`），不認得的欄位會消失，數字必須有限，不認得的 `curve` 變成 `\'linear\'`，`smooth` 限制在 0 到 60 秒，只有 `invert: true` 才會反轉。路由除非寫了 `enabled: false`，否則是開著的。',
       },
     ],
     examples: [

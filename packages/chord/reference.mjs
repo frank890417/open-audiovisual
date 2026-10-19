@@ -28,7 +28,7 @@ export default {
     description: [
       {
         en: 'This is not a music-theory library. It is a **performance semantics** layer: raw notes in, one analysed event per gesture out, with features that are made to drive a work. A single note is a seed, a chord a colony, a consonant chord a flourish, a dissonant one decay; rename them for your own piece. In a show, `createShow({ modules: { chord: true } })` builds one (`{ chord: { window: 120 } }` tunes it) and connects it to `midi/note/on` and `midi/note/off`, so a MIDI keyboard, the on-screen piano and phones all feed it.',
-        zh: '這不是樂理函式庫，而是一層**演出語意**：原始的音進去，每個手勢出來一個分析過的事件，特徵都是為了驅動作品而設計的。單一個音是種子，和弦是一群生物，協和的和弦是繁盛，不協和的和弦是衰敗。你可以替自己的作品換掉這些名字。在演出裡，`createShow({ modules: { chord: true } })` 會建好一個（`{ chord: { window: 120 } }` 可以調整）並接上 `midi/note/on` 和 `midi/note/off`，所以 MIDI 鍵盤、螢幕上的鋼琴和手機都能餵它。',
+        zh: '它管的是**演出語意**，不是樂理：原始的音進去，每個手勢出來一個分析過的事件，特徵都是為了驅動作品而設計的。單一個音是種子，和弦是一群生物，協和的和弦是繁盛，不協和的和弦是衰敗。你可以替自己的作品換掉這些名字。在演出裡，`createShow({ modules: { chord: true } })` 會建好一個（`{ chord: { window: 120 } }` 可以調整）並接上 `midi/note/on` 和 `midi/note/off`，所以 MIDI 鍵盤、螢幕上的鋼琴和手機都能餵它。',
       },
       {
         en: 'Each closed gesture publishes `chord/consonance` (−1..1), `chord/count` (0..10), `chord/root` (the lowest note) and the pulse `chord/event`, whose payload is the whole analysis: `{ notes, count, root, vel, pcs, consonance, isConsonant, isDissonant, isTriad, thirdsFraction, dissonanceLevel, chordType }`. `chordType` is one of `single`, `major`, `minor`, `sus2`, `sus4`, `dim`, `aug`, `maj7`, `min7`, `dom7`, `halfdim7`, `maj9`, `min9`, `dom9`, `six`, `min6`, `cluster` (a very dissonant pile) or `chord` (anything else). Inversions resolve to the root-position name.',

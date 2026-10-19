@@ -17,7 +17,7 @@ export default {
       {
         name: 'app', type: 'Object',
         en: 'The objects the desk reads: `{ timeline, params, mapper, signals, stage }` are needed, and `midi`, `controllers`, `keys`, `sound`, `audio`, `hands`, `pose`, `leap`, `chord`, `remote`, `drums`, `loop`, `osc`, `score`, `director` are optional. A missing part hides its section. [`createShow()`](#createShow) passes `show.app`.',
-        zh: '控台要讀取的物件：`{ timeline, params, mapper, signals, stage }` 是必要的，`midi`、`controllers`、`keys`、`sound`、`audio`、`hands`、`pose`、`leap`、`chord`、`remote`、`drums`、`loop`、`osc`、`score`、`director` 是選填的。缺少的部分，它的區塊就會隱藏。[`createShow()`](#createShow) 傳的是 `show.app`。',
+        zh: '控台要讀取的物件：`{ timeline, params, mapper, signals, stage }` 一定要有，`midi`、`controllers`、`keys`、`sound`、`audio`、`hands`、`pose`、`leap`、`chord`、`remote`、`drums`、`loop`、`osc`、`score`、`director` 是選填的。缺少的部分，它的區塊就會隱藏。[`createShow()`](#createShow) 傳的是 `show.app`。',
       },
       {
         name: 'opts', type: 'Object', optional: true, default: '{}',
