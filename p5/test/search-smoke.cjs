@@ -5,6 +5,7 @@
 //   PW=<path to playwright(-core)> node p5/test/search-smoke.cjs
 //   SHOTS=<dir>            screenshots (default: a temp dir, printed at the end)
 //   URLS=/docs/,/zh/       only these pages;  VPS=desktop,phone  only these viewports
+//   BASE=https://openaudiovisual.com   check the live site instead of this checkout
 //   OAV_ROOT=<checkout>    run the same checks against another checkout
 //
 // Per page × viewport (1440×900, 390×844, 360×740):
@@ -37,7 +38,7 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
     r.setHeader('Content-Type', MIME[path.extname(f)] || 'application/octet-stream'); r.end(fs.readFileSync(f));
   });
   await new Promise((ok) => srv.listen(0, '127.0.0.1', ok));
-  const base = `http://127.0.0.1:${srv.address().port}`;
+  const base = process.env.BASE ? process.env.BASE.replace(/\/$/, '') : `http://127.0.0.1:${srv.address().port}`;   // BASE=https://openaudiovisual.com: the live site
   const browser = await PW.chromium.launch({ headless: true });
 
   for (const [w, h, vname] of VIEWPORTS) {
@@ -48,6 +49,8 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
       page.on('pageerror', (e) => problems.push('page error: ' + e.message));
       page.on('console', (m) => { if (m.type() === 'error' && !NOISE.some((re) => re.test(m.text()))) problems.push('console.error: ' + m.text().slice(0, 200)); });
       await page.route(/googletagmanager|cloudflareinsights/, (route) => route.abort());
+      // the index arrives late, as it does on a real network: what is typed in the meantime must not break, and must be searched when it lands
+      await page.route(/assets\/search\/index\.json/, async (route) => { await new Promise((r) => setTimeout(r, 700)); await route.continue(); });
       const zh = url.startsWith('/zh/');
       const label = `${url} · ${vname} ${w}×${h}`;
       try {

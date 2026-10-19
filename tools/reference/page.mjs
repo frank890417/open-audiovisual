@@ -133,6 +133,7 @@ export function renderReferencePage(t, home, { c, records, version, p5Version, a
   const L = c.locale;
   const byKey = new Map();
   for (const r of records) for (const k of r.covers) byKey.set(k, r);
+  for (const r of records) byKey.set(r.id, r);                         // `related` may name an anchor id (leap-startBridge) where a name is shared
   const cats = CATEGORIES.filter((cat) => records.some((r) => r.category === cat.id));
   const written = records.filter((r) => r.entry).length, waiting = records.length - written;
   const ld = [

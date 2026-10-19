@@ -311,7 +311,7 @@ export function checkModel({ items, authored, ledger, records }) {
   const ids = new Map();
   for (const r of records) for (const id of [r.id, ...r.aliasIds]) { if (ids.has(id)) problems.push({ code: 'G9', msg: `anchor "${id}" is used by ${ids.get(id)} and ${r.uid}` }); ids.set(id, r.uid); }
   const keys = new Set(); for (const r of records) for (const c of r.covers) keys.add(c);
-  const anchor = (key) => records.find((r) => r.covers.includes(key));
+  const anchor = (key) => records.find((r) => r.covers.includes(key)) || records.find((r) => r.id === key);   // a name, or an anchor id (leap-startBridge) when two packages share the name
   for (const r of records) {
     if (!r.entry) continue;
     for (const k of r.entry.related || []) if (!anchor(k)) problems.push({ code: 'G4', msg: `${r.file}: ${r.key}: related "${k}" is not a documented name` });

@@ -61,7 +61,7 @@ function refRecords() {
   const linked = new Map();                                  // target id → the set of entries that point at it
   const point = (from, to) => { if (to && to !== from) { if (!linked.has(to.id)) linked.set(to.id, new Set()); linked.get(to.id).add(from.id); } };
   for (const e of ds.entries) {
-    for (const k of e.related) point(e, ds.entries.find((x) => x.key === k || x.aliases.includes(k)));
+    for (const k of e.related) point(e, ds.entries.find((x) => x.key === k || x.aliases.includes(k)) || ds.entries.find((x) => x.id === k));
     const texts = [e.summary && e.summary.en, ...e.description.map((d) => d.en), e.needs && e.needs.en, ...e.notes.map((n) => n.en)].filter(Boolean).join(' ');
     for (const m of texts.matchAll(/\]\(#([^)\s]+)\)/g)) point(e, anchor.get(m[1]));
   }

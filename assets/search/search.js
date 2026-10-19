@@ -126,6 +126,7 @@ function highlight(parent, text, toks) {
 
 function render(q) {
   lastQ = q;
+  if (!recs) return;                                    // typed before the index arrived: open() renders once it has
   const toks = tokens(q);
   list.replaceChildren(); items = []; active = -1;
   if (!toks.length) { foot.textContent = ui ? ui.keys : ''; list.append(el('p', 'os-note', ui ? ui.hint : '')); return; }

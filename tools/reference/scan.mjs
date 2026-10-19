@@ -271,7 +271,26 @@ export function findDefinition(rel, name, seen = new Set()) {
 }
 
 /** Parameter text of a function or class constructor, as written. */
+/**
+ * The source with its comments taken out (strings and template literals are left alone, so a URL with // in it stays). A comment
+ * that holds an apostrophe or the word "constructor (" must not be mistaken for code when the parameters are looked for.
+ */
+export function stripComments(src) {
+  let out = '', i = 0, q = null;
+  while (i < src.length) {
+    const c = src[i], n = src[i + 1];
+    if (q) { out += c; if (c === '\\') { out += src[i + 1] || ''; i += 2; continue; } if (c === q) q = null; i++; continue; }
+    if (c === '"' || c === "'" || c === '`') { q = c; out += c; i++; continue; }
+    if (c === '\\') { out += c + (src[i + 1] || ''); i += 2; continue; }               // an escaped character, e.g. the \/ inside a regular expression
+    if (c === '/' && n === '/') { while (i < src.length && src[i] !== '\n') i++; continue; }
+    if (c === '/' && n === '*') { i += 2; while (i < src.length && !(src[i] === '*' && src[i + 1] === '/')) i++; i += 2; out += ' '; continue; }
+    out += c; i++;
+  }
+  return out;
+}
+
 function paramsOf(fnSrc, isClass) {
+  fnSrc = stripComments(fnSrc);
   let at;
   if (isClass) {
     const m = /\bconstructor\s*\(/.exec(fnSrc);
@@ -307,7 +326,7 @@ function classMembers(cls, defLine, srcLines) {
     if (i >= 0) {
       const decl = own[i];
       const open = decl.indexOf('(', decl.indexOf(name));
-      const rest = own.slice(i).join('\n');
+      const rest = stripComments(own.slice(i).join('\n'));
       const inner = balanced(rest, rest.indexOf('(', rest.indexOf(name)));
       sig = inner == null ? '' : oneLine(inner);
       doc = firstSentence(commentAbove(own, i + 1));
