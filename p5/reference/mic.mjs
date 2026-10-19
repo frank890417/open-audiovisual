@@ -25,12 +25,12 @@ export default {
       },
       {
         en: 'It follows the browser\'s animation frames rather than `draw()`, so a sketch running at `frameRate(10)` still reads the latest value, and the number stops changing while the tab is hidden (browsers pause animation frames there).',
-        zh: '它跟著瀏覽器的動畫畫面更新，不是跟著 `draw()`，所以用 `frameRate(10)` 跑的草圖讀到的還是最新的值；分頁被藏起來時數字會停住（瀏覽器在那時會暫停動畫畫面）。',
+        zh: '它跟著瀏覽器的動畫畫面更新，不是跟著 `draw()`，所以用 `frameRate(10)` 跑的草圖讀到的還是最新的值。分頁被藏起來時數字會停住（瀏覽器在那時會暫停動畫畫面）。',
       },
     ],
     needs: {
       en: 'Nothing to call. The first time a sketch reads `micLevel` (or [`bass`](#bass), `mid`, `treble`, [`beat`](#beat)), oav-p5 asks the browser for the microphone, and every value stays `0` until you allow it. The page needs `https` or `localhost`. If the browser kept audio quiet until a click, the first click or key starts it. [`?oav_mic=click`](#option-mic) makes only the 🎤 button and [`startMic()`](#startMic) turn it on; `?oav_mic=off` means nothing can.',
-      zh: '不用呼叫任何東西。草圖第一次讀 `micLevel`（或 [`bass`](#bass)、`mid`、`treble`、[`beat`](#beat)）的時候，oav-p5 就會向瀏覽器要麥克風，在你按下允許之前所有的值都是 `0`。網頁要在 `https` 或 `localhost` 底下。如果瀏覽器在你點一下之前不讓聲音出來，第一次點擊或按鍵就會把它啟動。[`?oav_mic=click`](#option-mic) 表示只有 🎤 按鈕和 [`startMic()`](#startMic) 能開；`?oav_mic=off` 表示什麼都開不了。',
+      zh: '不用呼叫任何東西。草圖第一次讀 `micLevel`（或 [`bass`](#bass)、`mid`、`treble`、[`beat`](#beat)）的時候，oav-p5 就會向瀏覽器要麥克風，在你按下允許之前所有的值都是 `0`。網頁要在 `https` 或 `localhost` 底下。如果瀏覽器在你點一下之前不讓聲音出來，第一次點擊或按鍵就會把它啟動。[`?oav_mic=click`](#option-mic) 表示只有 🎤 按鈕和 [`startMic()`](#startMic) 能開。`?oav_mic=off` 表示什麼都開不了。',
     },
     notes: [
       {
@@ -38,8 +38,8 @@ export default {
         zh: '🎹 面板裡的 🎤 按鈕可以手動開關麥克風，並顯示音量。瀏覽器擋下麥克風的時候，🎹 旁邊會跳出一張卡片說明原因和怎麼處理：點網址列左邊的鎖頭，把麥克風設成允許，再點一下畫布。',
       },
       {
-        en: 'On OpenProcessing\'s own page the sketch frame is meant to allow the microphone. An embed code copied from OpenProcessing does not: add `allow="microphone"` to that `<iframe>`.',
-        zh: 'OpenProcessing 自己的頁面上，草圖的框是設計成允許麥克風的。從 OpenProcessing 複製出來的嵌入碼就不允許：要在那個 `<iframe>` 加上 `allow="microphone"`。',
+        en: 'On openprocessing.org the sketch frame allows the microphone and MIDI (checked 2026-10-19: its `allow` list contains `microphone` and `midi`), and the first read of `micLevel` there asks for the microphone. An embed code copied from OpenProcessing does not carry that: add `allow="microphone"` to that `<iframe>`.',
+        zh: '在 openprocessing.org 上，草圖的框允許麥克風和 MIDI（2026-10-19 實際檢查過：它的 `allow` 清單有 `microphone` 和 `midi`），而且在那裡第一次讀 `micLevel` 就會去要麥克風。從 OpenProcessing 複製出來的嵌入碼沒有這個設定：要在那個 `<iframe>` 加上 `allow="microphone"`。',
       },
       {
         en: 'The raw numbers behind it are [`OAVp5.mic.rms`](#OAVp5.mic.rms) (0..1), `OAVp5.mic.db` and `OAVp5.mic.floor` (the room\'s own noise, in dBFS).',
@@ -48,8 +48,8 @@ export default {
     ],
     tbd: [
       {
-        en: 'Not yet tried on openprocessing.org itself: whether its sketch frame lets the microphone prompt appear.',
-        zh: '還沒有在 openprocessing.org 本站實測：它的草圖框是否會讓麥克風的詢問跳出來。',
+        en: 'On openprocessing.org the pasted sketch runs, loads oav-p5 and asks for the microphone, but the sound itself was not tried there: the browser used for the check blocks the microphone, so the allow-and-listen step is still unconfirmed on that site.',
+        zh: '貼進 openprocessing.org 的草圖會跑、會載入 oav-p5、也會去要麥克風，但那裡的聲音本身沒有試：檢查用的瀏覽器擋掉了麥克風，所以在那個網站上「按允許、然後聽到聲音」這一步還沒確認。',
       },
     ],
     examples: [
@@ -122,12 +122,12 @@ function draw() {
       },
       {
         en: 'Unlike `micLevel` they are not measured in decibels: each is the average strength of the frequencies in its band, scaled by [`micSensitivity()`](#micSensitivity) and held to 1. A band that is faint in your room can stay close to 0; raise the sensitivity rather than multiplying by a large number.',
-        zh: '跟 `micLevel` 不一樣，它們不是用分貝量的：每一個是該頻段所有頻率的平均強度，乘上 [`micSensitivity()`](#micSensitivity) 之後最多算到 1。如果某個頻段在你的房間裡很微弱，數字會一直貼近 0；這時調高靈敏度，比自己乘一個很大的數字好。',
+        zh: '跟 `micLevel` 不一樣，它們不是用分貝量的：每一個是該頻段所有頻率的平均強度，乘上 [`micSensitivity()`](#micSensitivity) 之後最多算到 1。如果某個頻段在你的房間裡很微弱，數字會一直貼近 0。這時調高靈敏度，比自己乘一個很大的數字好。',
       },
     ],
     needs: {
       en: 'Reading any of them asks for the microphone the first time, exactly like [`micLevel`](#micLevel); until you allow it they are `0`.',
-      zh: '第一次讀其中任何一個，就會跟 [`micLevel`](#micLevel) 一樣去要麥克風；在你允許之前都是 `0`。',
+      zh: '第一次讀其中任何一個，就會跟 [`micLevel`](#micLevel) 一樣去要麥克風。在你允許之前都是 `0`。',
     },
     notes: [
       {
@@ -138,7 +138,7 @@ function draw() {
     tbd: [
       {
         en: 'Typical values for speech and for music depend on the microphone and the room; no typical numbers are given here until they have been measured.',
-        zh: '說話和音樂的典型數值要看麥克風和房間；在量過之前，這裡不給典型數字。',
+        zh: '說話和音樂的典型數值要看麥克風和房間。在量過之前，這裡不給典型數字。',
       },
     ],
     examples: [
@@ -200,7 +200,7 @@ function draw() {
     description: [
       {
         en: 'It behaves like `mouseIsPressed` while a button is down, except the "press" lasts one frame: `if (beat) flash = 1;` is all it takes to react to the music. A beat is a jump in loudness over what the room has been doing, with at least 100 ms between two beats; two beats between two frames count as one.',
-        zh: '它的用法像按著滑鼠鍵時的 `mouseIsPressed`，只是「按下」只持續一個畫面：`if (beat) flash = 1;` 就能對音樂做出反應。一個拍子是音量比房間一直以來的聲音突然跳高，兩個拍子之間至少隔 100 毫秒；兩個畫面之間發生的兩個拍子只算一次。',
+        zh: '它的用法像按著滑鼠鍵時的 `mouseIsPressed`，只是「按下」只持續一個畫面：`if (beat) flash = 1;` 就能對音樂做出反應。一個拍子是音量比房間一直以來的聲音突然跳高，兩個拍子之間至少隔 100 毫秒。兩個畫面之間發生的兩個拍子只算一次。',
       },
       {
         en: 'When the drum machine is playing, `beat` is also true for a frame on every kick and snare, so a sketch written for the microphone moves over to the machine unchanged.',
@@ -259,7 +259,7 @@ function draw() {
     value: {
       type: 'Boolean',
       en: 'True once the browser has said yes and sound is coming in; false while the microphone is off, still asking, blocked or missing.',
-      zh: '瀏覽器答應了、聲音進來之後是 true；麥克風關著、還在詢問、被擋下或不存在的時候是 false。',
+      zh: '瀏覽器答應了、聲音進來之後是 true。麥克風關著、還在詢問、被擋下或不存在的時候是 false。',
     },
     description: [
       {
@@ -296,7 +296,7 @@ function draw() {
     returns: {
       type: 'Promise<Boolean>',
       en: 'Resolves to `true` once the microphone is on, `false` if it was blocked, is missing, or the `mic` option is `off`.',
-      zh: '麥克風開起來之後 resolve 成 `true`；被擋下、不存在、或載入選項 `mic` 是 `off` 的時候 resolve 成 `false`。',
+      zh: '麥克風開起來之後 resolve 成 `true`。被擋下、不存在、或載入選項 `mic` 是 `off` 的時候 resolve 成 `false`。',
     },
     description: [
       {
@@ -311,7 +311,7 @@ function draw() {
     notes: [
       {
         en: 'After [`stopMic()`](#stopMic), only `startMic()` (or 🎤) turns it back on; reading `micLevel` does not.',
-        zh: '呼叫過 [`stopMic()`](#stopMic) 之後，只有 `startMic()`（或 🎤）能再把它打開；讀 `micLevel` 不會。',
+        zh: '呼叫過 [`stopMic()`](#stopMic) 之後，只有 `startMic()`（或 🎤）能再把它打開。讀 `micLevel` 不會。',
       },
     ],
     examples: [
@@ -330,7 +330,7 @@ function draw() {
   fill(255);
   text(micIsOn ? 'level ' + nf(micLevel, 1, 2) : 'click to start the microphone', width / 2, height / 2);
 }`,
-        caption: { en: 'Nothing happens until you click; then the browser asks, and the number starts moving.', zh: '點下去之前什麼都不會發生；點了之後瀏覽器才詢問，數字就開始動。' },
+        caption: { en: 'Nothing happens until you click; then the browser asks, and the number starts moving.', zh: '點下去之前什麼都不會發生。點了之後瀏覽器才詢問，數字就開始動。' },
         needs: 'mic',
       },
     ],
@@ -375,7 +375,7 @@ function draw() {
   circle(width / 2, height / 2, 50 + micLevel * 300);
   text('press m to turn the microphone ' + (micIsOn ? 'off' : 'on'), width / 2, height - 24);
 }`,
-        caption: { en: 'Press m to switch the microphone on and off; the circle drops to its smallest size when it is off.', zh: '按 m 開關麥克風；關掉的時候圓縮到最小。' },
+        caption: { en: 'Press m to switch the microphone on and off; the circle drops to its smallest size when it is off.', zh: '按 m 開關麥克風。關掉的時候圓縮到最小。' },
         needs: 'mic',
       },
     ],
@@ -396,7 +396,7 @@ function draw() {
     description: [
       {
         en: 'The number multiplies what the microphone hears. On [`micLevel`](#micLevel), 2 adds 6 dB; on [`bass`](#bass), `mid` and `treble` it multiplies by 2 (they stay held to 1). Use it for a quiet microphone or a far-away voice: `micSensitivity(3)` in `setup()` adds about 9.5 dB.',
-        zh: '這個數字乘在麥克風聽到的東西上。對 [`micLevel`](#micLevel) 來說，2 等於加 6 dB；對 [`bass`](#bass)、`mid`、`treble` 是乘以 2（最多還是 1）。麥克風很小聲或人離得很遠的時候用它：在 `setup()` 寫 `micSensitivity(3)` 大約加 9.5 dB。',
+        zh: '這個數字乘在麥克風聽到的東西上。對 [`micLevel`](#micLevel) 來說，2 等於加 6 dB。對 [`bass`](#bass)、`mid`、`treble` 是乘以 2（最多還是 1）。麥克風很小聲或人離得很遠的時候用它：在 `setup()` 寫 `micSensitivity(3)` 大約加 9.5 dB。',
       },
     ],
     notes: [
@@ -417,7 +417,7 @@ function draw() {
   circle(width / 2, height / 2, 50 + micLevel * 300);
   text('sensitivity ' + micSensitivity(), 20, 30);   // no argument: just reads it
 }`,
-        caption: { en: 'The same loudness circle on a microphone that needed a boost; the number shows the sensitivity in effect.', zh: '同樣的音量圓，用在需要加強的麥克風上；數字顯示現在的靈敏度。' },
+        caption: { en: 'The same loudness circle on a microphone that needed a boost; the number shows the sensitivity in effect.', zh: '同樣的音量圓，用在需要加強的麥克風上。數字顯示現在的靈敏度。' },
         needs: 'mic',
       },
     ],
@@ -429,7 +429,7 @@ function draw() {
     group: 'mic',
     summary: {
       en: 'You define this function; oav-p5 calls it each time the microphone (or the drum machine) hears a beat.',
-      zh: '你來定義這個函式；麥克風（或鼓機）每聽到一個拍子，oav-p5 就呼叫它一次。',
+      zh: '你來定義這個函式。麥克風（或鼓機）每聽到一個拍子，oav-p5 就呼叫它一次。',
     },
     params: [
       { name: 'level', type: 'Number', en: 'How loud it was at that moment, 0..1 (the value of [`micLevel`](#micLevel)).', zh: '那一刻有多大聲，0..1（就是 [`micLevel`](#micLevel) 的值）。' },
@@ -479,7 +479,7 @@ function draw() {
     aliases: ['snareDetected', 'hatDetected'],
     summary: {
       en: 'You define these; oav-p5 calls them when the microphone (or the drum machine) hears a kick, a snare or a hat.',
-      zh: '你來定義這幾個函式；麥克風（或鼓機）聽到大鼓、小鼓或鈸的時候，oav-p5 會呼叫 `kickDetected(level)`、`snareDetected(level)`、`hatDetected(level)`。',
+      zh: '你來定義這幾個函式。麥克風（或鼓機）聽到大鼓、小鼓或鈸的時候，oav-p5 會呼叫 `kickDetected(level)`、`snareDetected(level)`、`hatDetected(level)`。',
     },
     params: [
       { name: 'level', type: 'Number', en: 'How strong the hit was, 0..1 (for the drum machine, its velocity).', zh: '這一下有多強，0..1（鼓機的話就是力道）。' },
@@ -496,7 +496,7 @@ function draw() {
     ],
     needs: {
       en: 'Defining one of them is not enough to open the microphone once the drum machine has started; reading [`micLevel`](#micLevel) (or calling [`startMic()`](#startMic)) is. Without the drum machine, a sketch that defines any of them and reads nothing starts the microphone on the first click or key.',
-      zh: '鼓機啟動之後，只定義其中一個函式並不會去開麥克風；要讀 [`micLevel`](#micLevel)（或呼叫 [`startMic()`](#startMic)）才會。沒有鼓機的時候，草圖只要定義了其中任何一個、又沒有讀任何值，第一次點擊或按鍵時會啟動麥克風。',
+      zh: '鼓機啟動之後，只定義其中一個函式並不會去開麥克風。要讀 [`micLevel`](#micLevel)（或呼叫 [`startMic()`](#startMic)）才會。沒有鼓機的時候，草圖只要定義了其中任何一個、又沒有讀任何值，第一次點擊或按鍵時會啟動麥克風。',
     },
     examples: [
       {

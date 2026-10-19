@@ -172,6 +172,7 @@ test('drill G4: a missing language, a Chinese sentence in the English field, a l
   assert.ok(bad({ summary: { en: '麥克風有多大聲', zh: '麥克風有多大聲' } }).some((p) => /summary\.en contains Chinese/.test(p.msg)));
   assert.ok(bad({ summary: { en: 'a copy', zh: 'a copy' } }).some((p) => /summary\.zh has no Chinese/.test(p.msg)));
   assert.ok(bad({ summary: { en: 'x'.repeat(200), zh: '短' } }).some((p) => /first sentence only/.test(p.msg)));
+  assert.ok(bad({ summary: { en: 'a', zh: '一；二' } }).some((p) => /uses "；"/.test(p.msg)), 'the site\'s Chinese has no full-width semicolon');
   assert.ok(bad({ examples: [] }).some((p) => /at least one example/.test(p.msg)));
   assert.ok(bad({ group: 'nowhere' }).some((p) => /not a category/.test(p.msg)));
   assert.ok(bad({ nonsense: 1 }).some((p) => /unknown field/.test(p.msg)));

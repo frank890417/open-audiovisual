@@ -196,12 +196,14 @@ export function checkEntry(item, a, ctx = {}) {
   else {
     if (hasCJK(e.summary.en)) bad('G4', 'summary.en contains Chinese characters');
     if (!hasCJK(e.summary.zh)) bad('G4', 'summary.zh has no Chinese characters (a copy of the English?)');
+    if (/[；]|——/.test(e.summary.zh)) bad('G4', 'summary.zh uses "；" or "——": the site\'s Chinese does not (write 。 or ，)');
     if (e.summary.en.length > 170) bad('G4', `summary.en is ${e.summary.en.length} characters: the first sentence only (≤ 170)`);
   }
   const checkPair = (v, where) => {
     if (!pair(v) || !v.en.trim() || !v.zh.trim()) { bad('G4', `${where} needs { en, zh }, both written`); return; }
     if (hasCJK(v.en)) bad('G4', `${where}.en contains Chinese characters`);
     if (!hasCJK(v.zh)) bad('G4', `${where}.zh has no Chinese characters`);
+    if (/[；]|——/.test(v.zh)) bad('G4', `${where}.zh uses "；" or "——": the site's Chinese does not (write 。 or ，)`);
   };
   const needsDescription = item.ns === P5 || item.kind === 'class' || item.kind === 'function' || item.kind === 'tool';
   if (!Array.isArray(e.description) || (needsDescription && !e.description.length)) bad('G4', 'description: at least one paragraph [{ en, zh }]');

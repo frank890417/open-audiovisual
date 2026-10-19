@@ -44,13 +44,13 @@ function draw() {
     summary: { en: 'Turns a MIDI number into a note name: `noteName(61)` is `\'C#4\'`.', zh: '把 MIDI 號碼轉成音名：`noteName(61)` 是 `\'C#4\'`。' },
     params: [
       { name: 'v', type: 'Number | String', en: 'A MIDI number (or a name, which is normalised).', zh: 'MIDI 號碼（給音名的話會被整理成標準寫法）。' },
-      { name: 'o', type: 'Object', optional: true, en: 'Options: `{ flats: true }` writes `\'Db4\'` instead of `\'C#4\'`; `{ octave: false }` drops the octave number (`\'C#\'`).', zh: '選項：`{ flats: true }` 寫成 `\'Db4\'` 而不是 `\'C#4\'`；`{ octave: false }` 不寫八度數字（`\'C#\'`）。' },
+      { name: 'o', type: 'Object', optional: true, en: 'Options: `{ flats: true }` writes `\'Db4\'` instead of `\'C#4\'`; `{ octave: false }` drops the octave number (`\'C#\'`).', zh: '選項：`{ flats: true }` 寫成 `\'Db4\'` 而不是 `\'C#4\'`。`{ octave: false }` 不寫八度數字（`\'C#\'`）。' },
     ],
     returns: { type: 'String', en: 'The name, sharps by default: `noteName(60)` is `\'C4\'`.', zh: '音名，預設用升記號：`noteName(60)` 是 `\'C4\'`。' },
     description: [
       {
         en: '[`notePressed(note, velocity)`](#notePressed) hands you the number; `noteName(note)` writes it back as a name for the screen or a lookup table. The same C4-is-60 convention as [`noteNumber()`](#noteNumber).',
-        zh: '[`notePressed(note, velocity)`](#notePressed) 給你的是號碼；`noteName(note)` 把它寫回音名，拿去顯示在畫面上或查表。跟 [`noteNumber()`](#noteNumber) 一樣，C4 就是 60。',
+        zh: '[`notePressed(note, velocity)`](#notePressed) 給你的是號碼。`noteName(note)` 把它寫回音名，拿去顯示在畫面上或查表。跟 [`noteNumber()`](#noteNumber) 一樣，C4 就是 60。',
       },
     ],
     examples: [
@@ -114,7 +114,7 @@ function draw() {
     summary: { en: 'Plays a key as if a controller did: `midi.play(60, 0.8)` presses middle C, `midi.play(60, 0)` lets it go.', zh: '像控制器那樣彈一個鍵：`midi.play(60, 0.8)` 按下中央 C，`midi.play(60, 0)` 放開。' },
     params: [
       { name: 'note', type: 'Number | String', en: 'The key: a MIDI number or a name (`\'C#4\'`).', zh: '哪個鍵：MIDI 號碼或音名（`\'C#4\'`）。' },
-      { name: 'velocity', type: 'Number', optional: true, default: '1', en: 'How hard, 0..1; 0 releases the key. Leave it out for full force.', zh: '多用力，0..1；0 表示放開。不給就是最大力道。' },
+      { name: 'velocity', type: 'Number', optional: true, default: '1', en: 'How hard, 0..1; 0 releases the key. Leave it out for full force.', zh: '多用力，0..1。0 表示放開。不給就是最大力道。' },
     ],
     description: [
       {

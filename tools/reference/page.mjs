@@ -77,7 +77,7 @@ function examplesHtml(r, e, L, t) {
     const tools = [];
     if (run === 'sketch') tools.push(`<button type="button" class="ref-run" hidden>${esc(t.ex.run)}</button>`);
     tools.push(`<button type="button" class="ref-copy" hidden title="${attr(run === 'sketch' ? t.ex.copyTitle : t.ex.copy)}">${esc(t.ex.copy)}</button>`);
-    if (run === 'sketch') tools.push(`<a class="ref-op" href="https://openprocessing.org/" target="_blank" rel="noopener">${esc(t.ex.open)}</a>`);
+    if (run === 'sketch') tools.push(`<a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">${esc(t.ex.open)}</a>`);
     const mic = ex.needs === 'mic' ? ` <span class="ref-tag">${esc(t.ex.needsMic)}</span>` : '';
     const note = run === 'static' || run === 'module' ? `<span class="ref-tag" title="${attr(t.ex.notRun)}">${esc(run === 'module' ? 'module' : 'static')}</span> ` : '';
     return `<figure class="ref-ex" data-run="${run}">

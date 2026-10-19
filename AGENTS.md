@@ -99,7 +99,8 @@ Examples go from the smallest that shows the point (about 8 lines), to a realist
 with `setup()` and `draw()` that runs when pasted into OpenProcessing, **without** the loader line (the page adds it when you copy
 or run), with a one-sentence caption saying what you will see. An example about a loading option starts with
 `window.OAV_P5 = { … };`: that line has to run before oav-p5 loads, so the page puts the loader line right after it. Code comments stay short and English, so both languages share one
-program. Write only what the code does; what you could not read out of it goes in `tbd`.
+program. Write only what the code does; what you could not read out of it goes in `tbd`. The Chinese is Traditional Chinese as written in
+Taiwan, with no full-width semicolon `；` and no dash `——` (the check fails on them: use `。` or `，`).
 
 ## Verifying changes
 

@@ -20,7 +20,7 @@ export default {
     value: {
       type: 'Number', range: '0..1',
       en: 'Changes when the knob moves, not once per frame; the sketch just reads the latest value. 0 until the knob has been turned.',
-      zh: '旋鈕轉動的時候才會改變，不是每個畫面一次；草圖只要讀最新的值。旋鈕還沒轉過之前是 0。',
+      zh: '旋鈕轉動的時候才會改變，不是每個畫面一次。草圖只要讀最新的值。旋鈕還沒轉過之前是 0。',
     },
     description: [
       {
@@ -34,7 +34,7 @@ export default {
     ],
     needs: {
       en: 'Nothing to call. Reading a knob tells oav-p5 the sketch plays from MIDI, so it asks the browser for Web MIDI (Chrome, Edge, Firefox; Safari and iPad have none: use 🎹 or a phone there).',
-      zh: '不用呼叫任何東西。讀旋鈕就等於告訴 oav-p5 這份草圖要用 MIDI 玩，它會向瀏覽器要 Web MIDI（Chrome、Edge、Firefox 有；Safari 和 iPad 沒有，那裡改用 🎹 或手機）。',
+      zh: '不用呼叫任何東西。讀旋鈕就等於告訴 oav-p5 這份草圖要用 MIDI 玩，它會向瀏覽器要 Web MIDI（Chrome、Edge、Firefox 有。Safari 和 iPad 沒有，那裡改用 🎹 或手機）。',
     },
     notes: [
       {
@@ -89,7 +89,7 @@ function draw() {
     value: {
       type: 'Number', range: '0..1',
       en: 'Changes when the fader moves; 0 until it has moved.',
-      zh: '推桿移動的時候才會改變；還沒推過之前是 0。',
+      zh: '推桿移動的時候才會改變。還沒推過之前是 0。',
     },
     description: [
       {
@@ -99,7 +99,7 @@ function draw() {
     ],
     needs: {
       en: 'Nothing to call; reading a fader asks for Web MIDI, like a knob.',
-      zh: '不用呼叫任何東西；讀推桿就會像旋鈕一樣去要 Web MIDI。',
+      zh: '不用呼叫任何東西。讀推桿就會像旋鈕一樣去要 Web MIDI。',
     },
     examples: [
       {
@@ -125,7 +125,7 @@ function draw() {
     aliases: ['pad2', 'pad3', 'pad4', 'pad5', 'pad6', 'pad7', 'pad8', 'pad9', 'pad10', 'pad11', 'pad12', 'pad13', 'pad14', 'pad15', 'pad16'],
     summary: {
       en: 'How hard a drum pad is pressed, from 0 to 1: `pad1` is the first pad, up to `pad16`; 0 when it is let go.',
-      zh: '打擊墊被按得多用力，從 0 到 1：`pad1` 是第一個墊子，一直到 `pad16`；放開就是 0。',
+      zh: '打擊墊被按得多用力，從 0 到 1：`pad1` 是第一個墊子，一直到 `pad16`。放開就是 0。',
     },
     value: {
       type: 'Number', range: '0..1',
@@ -140,7 +140,7 @@ function draw() {
     ],
     needs: {
       en: 'Nothing to call; reading a pad asks for Web MIDI, like a knob.',
-      zh: '不用呼叫任何東西；讀墊子就會像旋鈕一樣去要 Web MIDI。',
+      zh: '不用呼叫任何東西。讀墊子就會像旋鈕一樣去要 Web MIDI。',
     },
     examples: [
       {
@@ -168,7 +168,7 @@ function draw() {
     group: 'midi',
     summary: { en: 'Returns the position of knob number `n`, from 0 to 1: the same as `knob1` to `knob8`, for any `n`.', zh: '回傳第 `n` 顆旋鈕的位置，0 到 1：跟 `knob1` 到 `knob8` 一樣，但 `n` 可以是任何數字。' },
     params: [{ name: 'n', type: 'Number', en: 'Which knob, counting from 1 (as printed on the controller).', zh: '第幾顆旋鈕，從 1 開始算（照控制器上印的）。' }],
-    returns: { type: 'Number', en: 'The knob\'s position, 0..1; 0 until it has been turned.', zh: '旋鈕的位置，0..1；還沒轉過之前是 0。' },
+    returns: { type: 'Number', en: 'The knob\'s position, 0..1; 0 until it has been turned.', zh: '旋鈕的位置，0..1。還沒轉過之前是 0。' },
     description: [
       {
         en: 'Use it when the number of the knob is a variable: `for (let i = 1; i <= 16; i++) bar(i, knob(i));`. It also works in a sketch that has its own `knob1`, which oav-p5 then leaves alone.',
@@ -200,7 +200,7 @@ function draw() {
     group: 'midi',
     summary: { en: 'Returns the position of fader number `n`, from 0 to 1: the same as `fader1` to `fader8`, for any `n`.', zh: '回傳第 `n` 支推桿的位置，0 到 1：跟 `fader1` 到 `fader8` 一樣，但 `n` 可以是任何數字。' },
     params: [{ name: 'n', type: 'Number', en: 'Which fader, counting from 1.', zh: '第幾支推桿，從 1 開始算。' }],
-    returns: { type: 'Number', en: 'The fader\'s position, 0..1; 0 until it has moved.', zh: '推桿的位置，0..1；還沒推過之前是 0。' },
+    returns: { type: 'Number', en: 'The fader\'s position, 0..1; 0 until it has moved.', zh: '推桿的位置，0..1。還沒推過之前是 0。' },
     description: [
       { en: 'The function form of [`fader1`](#fader1), for when the fader\'s number is a variable.', zh: '[`fader1`](#fader1) 的函式版本，推桿的編號是變數的時候用。' },
     ],
@@ -257,7 +257,7 @@ function draw() {
     value: {
       type: 'Number', range: '0..127',
       en: 'Set when a key goes down and kept after it is released; 0 before any key has been pressed.',
-      zh: '鍵按下的時候設定，放開之後也保留；還沒有按過任何鍵之前是 0。',
+      zh: '鍵按下的時候設定，放開之後也保留。還沒有按過任何鍵之前是 0。',
     },
     description: [
       {
@@ -272,7 +272,7 @@ function draw() {
     notes: [
       {
         en: 'A sketch with its own `note` (a `let note`, a function) keeps it; read `midi.last.note` instead. oav-p5 says so in a card the first time.',
-        zh: '草圖如果自己有 `note`（`let note`、函式都算），就由草圖保留；改讀 `midi.last.note`。oav-p5 第一次會用卡片告訴你。',
+        zh: '草圖如果自己有 `note`（`let note`、函式都算），就由草圖保留。改讀 `midi.last.note`。oav-p5 第一次會用卡片告訴你。',
       },
     ],
     examples: [
@@ -302,12 +302,12 @@ function draw() {
     value: {
       type: 'Number', range: '0..1',
       en: 'Set together with [`note`](#note) when a key goes down; kept after release; 0 before any key.',
-      zh: '跟 [`note`](#note) 一起在鍵按下的時候設定；放開之後保留；還沒按過任何鍵之前是 0。',
+      zh: '跟 [`note`](#note) 一起在鍵按下的時候設定。放開之後保留。還沒按過任何鍵之前是 0。',
     },
     description: [
-      { en: 'MIDI sends velocity as 0 to 127; oav-p5 hands you it divided by 127, so 1 is the hardest hit the controller can send.', zh: 'MIDI 的力道是 0 到 127；oav-p5 給你的是除以 127 之後的值，所以 1 就是控制器能送出的最大力道。' },
+      { en: 'MIDI sends velocity as 0 to 127; oav-p5 hands you it divided by 127, so 1 is the hardest hit the controller can send.', zh: 'MIDI 的力道是 0 到 127。oav-p5 給你的是除以 127 之後的值，所以 1 就是控制器能送出的最大力道。' },
     ],
-    notes: [{ en: 'A sketch with its own `velocity` keeps it; read `midi.last.value`.', zh: '草圖自己有 `velocity` 的話就由草圖保留；改讀 `midi.last.value`。' }],
+    notes: [{ en: 'A sketch with its own `velocity` keeps it; read `midi.last.value`.', zh: '草圖自己有 `velocity` 的話就由草圖保留。改讀 `midi.last.value`。' }],
     examples: [
       {
         code: `function setup() {
@@ -386,7 +386,7 @@ function draw() {
 
   notePressed: {
     group: 'midi',
-    summary: { en: 'You define this function; oav-p5 calls it each time a key (or a pad) goes down.', zh: '你來定義這個函式；每當有一個鍵（或打擊墊）按下，oav-p5 就呼叫它。' },
+    summary: { en: 'You define this function; oav-p5 calls it each time a key (or a pad) goes down.', zh: '你來定義這個函式。每當有一個鍵（或打擊墊）按下，oav-p5 就呼叫它。' },
     params: [
       { name: 'note', type: 'Number', en: 'The MIDI number of the key (60 is middle C). [`noteName(note)`](#noteName) turns it into a name.', zh: '這個鍵的 MIDI 號碼（60 是中央 C）。[`noteName(note)`](#noteName) 可以把它轉成音名。' },
       { name: 'velocity', type: 'Number', en: 'How hard, 0..1.', zh: '多用力，0..1。' },
@@ -425,7 +425,7 @@ function notePressed(note, velocity) {
 
   noteReleased: {
     group: 'midi',
-    summary: { en: 'You define this function; oav-p5 calls it each time a key (or a pad) is let go.', zh: '你來定義這個函式；每當有一個鍵（或打擊墊）放開，oav-p5 就呼叫它。' },
+    summary: { en: 'You define this function; oav-p5 calls it each time a key (or a pad) is let go.', zh: '你來定義這個函式。每當有一個鍵（或打擊墊）放開，oav-p5 就呼叫它。' },
     params: [{ name: 'note', type: 'Number', en: 'The MIDI number of the key that was released.', zh: '被放開的那個鍵的 MIDI 號碼。' }],
     description: [
       {
@@ -458,7 +458,7 @@ function draw() {
 
   knobMoved: {
     group: 'midi',
-    summary: { en: 'You define this function; oav-p5 calls it whenever a knob moves.', zh: '你來定義這個函式；旋鈕一轉動，oav-p5 就呼叫它。' },
+    summary: { en: 'You define this function; oav-p5 calls it whenever a knob moves.', zh: '你來定義這個函式。旋鈕一轉動，oav-p5 就呼叫它。' },
     params: [
       { name: 'n', type: 'Number', en: 'Which knob (1 is the first, as printed on the controller).', zh: '哪一顆旋鈕（1 是第一顆，照控制器上印的）。' },
       { name: 'value', type: 'Number', en: 'Where it is now, 0..1.', zh: '現在的位置，0..1。' },
@@ -497,7 +497,7 @@ function draw() {
 
   faderMoved: {
     group: 'midi',
-    summary: { en: 'You define this function; oav-p5 calls it whenever a fader moves.', zh: '你來定義這個函式；推桿一移動，oav-p5 就呼叫它。' },
+    summary: { en: 'You define this function; oav-p5 calls it whenever a fader moves.', zh: '你來定義這個函式。推桿一移動，oav-p5 就呼叫它。' },
     params: [
       { name: 'n', type: 'Number', en: 'Which fader (1 is the first).', zh: '哪一支推桿（1 是第一支）。' },
       { name: 'value', type: 'Number', en: 'Where it is now, 0..1.', zh: '現在的位置，0..1。' },
@@ -531,7 +531,7 @@ function draw() {
 
   padPressed: {
     group: 'midi',
-    summary: { en: 'You define this function; oav-p5 calls it each time a drum pad is hit.', zh: '你來定義這個函式；每打一下打擊墊，oav-p5 就呼叫它一次。' },
+    summary: { en: 'You define this function; oav-p5 calls it each time a drum pad is hit.', zh: '你來定義這個函式。每打一下打擊墊，oav-p5 就呼叫它一次。' },
     params: [
       { name: 'n', type: 'Number', en: 'Which pad (1 is the first).', zh: '哪個墊子（1 是第一個）。' },
       { name: 'velocity', type: 'Number', en: 'How hard, 0..1.', zh: '多用力，0..1。' },
@@ -539,7 +539,7 @@ function draw() {
     description: [
       {
         en: '```js\nfunction padPressed(n, velocity) {\n  // pad n was hit\n}\n```\n\nWhen the sketch defines `padPressed()`, a pad calls it and **not** [`notePressed()`](#notePressed); without it, a pad calls `notePressed()` like any key.',
-        zh: '```js\nfunction padPressed(n, velocity) {\n  // 墊子 n 被打了一下\n}\n```\n\n草圖有定義 `padPressed()` 的話，打擊墊會呼叫它，而**不會**呼叫 [`notePressed()`](#notePressed)；沒有定義的話，打擊墊會像任何一個鍵一樣呼叫 `notePressed()`。',
+        zh: '```js\nfunction padPressed(n, velocity) {\n  // 墊子 n 被打了一下\n}\n```\n\n草圖有定義 `padPressed()` 的話，打擊墊會呼叫它，而**不會**呼叫 [`notePressed()`](#notePressed)。沒有定義的話，打擊墊會像任何一個鍵一樣呼叫 `notePressed()`。',
       },
     ],
     examples: [
@@ -570,7 +570,7 @@ function draw() {
 
   padReleased: {
     group: 'midi',
-    summary: { en: 'You define this function; oav-p5 calls it each time a drum pad is let go.', zh: '你來定義這個函式；每當打擊墊放開，oav-p5 就呼叫它。' },
+    summary: { en: 'You define this function; oav-p5 calls it each time a drum pad is let go.', zh: '你來定義這個函式。每當打擊墊放開，oav-p5 就呼叫它。' },
     params: [{ name: 'n', type: 'Number', en: 'Which pad (1 is the first).', zh: '哪個墊子（1 是第一個）。' }],
     description: [
       { en: 'The partner of [`padPressed()`](#padPressed): `function padReleased(n) { … }`. Without it, a pad calls [`noteReleased()`](#noteReleased).', zh: '[`padPressed()`](#padPressed) 的另一半：`function padReleased(n) { … }`。沒有定義的話，打擊墊會呼叫 [`noteReleased()`](#noteReleased)。' },
