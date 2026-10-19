@@ -197,6 +197,9 @@ test('drill G6: an example with a syntax error is red; a module example is parse
   assert.match(exampleSyntaxError({ code: "const s = 'a\nb';", run: 'sketch' }), /./, 'an unterminated string');
   assert.equal(exampleSyntaxError({ code: "import { A } from '@openav/audio';\nconst a = new A();\nawait a.enableMic();", run: 'module' }), null);
   assert.equal(exampleSyntaxError({ code: 'not : js', lang: 'html', run: 'static' }), null, 'only JavaScript is parsed');
+  assert.equal(exampleSyntaxError({ code: "import { startBridge } from '@openav/out/bridge';\nawait startBridge({ port: 6450 });", run: 'static' }), null, 'a static example may import');
+  assert.match(exampleSyntaxError({ code: "import { a } from 'x';\nawait a(", run: 'static' }), /./, 'and is still parsed');
+  assert.equal(exampleSyntaxError({ code: "import { a } from 'x';\nconst b = await a();", lang: 'mjs', run: 'static' }), null, 'mjs is a module');
   const item = has(model.items, 'micLevel');
   const base = model.authored.find((a) => a.key === 'micLevel');
   const broken = { ...base, entry: { ...base.entry, examples: [{ ...base.entry.examples[0], code: 'function draw() { circle(' }] } };

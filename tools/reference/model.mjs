@@ -173,10 +173,13 @@ const ALLOWED = new Set(['group', 'aliases', 'summary', 'description', 'value', 
 /** Syntax check of one example: a sketch is a classic script; a module has its imports taken off and sits in an async function. */
 export function exampleSyntaxError(ex) {
   const lang = ex.lang || 'js';
-  if (lang !== 'js') return null;
+  if (lang !== 'js' && lang !== 'mjs') return null;                   // only JavaScript is parsed
+  const run = ex.run || 'sketch';
   let code = ex.code;
+  // module code, `lang: 'mjs'`, and a static example that imports something (a Node server, a phone-only call) are parsed as a module
+  const asModule = run === 'module' || lang === 'mjs' || (run === 'static' && /^\s*import\s/m.test(code));
   try {
-    if ((ex.run || 'sketch') === 'module') {
+    if (asModule) {
       code = code.replace(/^\s*import\s[\s\S]*?\sfrom\s+['"][^'"]+['"];?[ \t]*$/gm, '').replace(/^\s*import\s+['"][^'"]+['"];?[ \t]*$/gm, '');
       new vm.Script('(async () => {\n' + code + '\n})', { filename: 'example.js' });
     } else new vm.Script(code, { filename: 'example.js' });
