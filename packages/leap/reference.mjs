@@ -5,44 +5,43 @@
 export default {
   LeapInput: {
     group: 'leap',
-    signature: 'new LeapInput({ signals, url, reconnect, fingers, box, thresholds, WebSocket })',
     summary: {
       en: 'Reads Leap Motion hands from the local bridge and publishes them as `leap/*` signals, plus the joints (`leap.hands`) for drawing the hand itself.',
       zh: '從本機的橋接程式讀取 Leap Motion 的手，發布成 `leap/*` 訊號，並在 `leap.hands` 提供關節資料，讓你把手本身畫出來。',
     },
     params: [
       {
-        name: 'signals', type: 'Signals', optional: true, default: 'null', viaArguments: true,
+        name: 'signals', type: 'Signals', optional: true, default: 'null',
         en: 'The [`Signals`](#Signals) registry to publish into. Without one the input still works (`hands`, `onFrame`) but publishes nothing.',
         zh: '要發布進去的 [`Signals`](#Signals) 登錄表。沒有的話，這個輸入仍然能用（`hands`、`onFrame`），只是不發布任何訊號。',
       },
       {
-        name: 'url', type: 'String', optional: true, default: 'ws://127.0.0.1:6437/v6.json', viaArguments: true,
+        name: 'url', type: 'String', optional: true, default: 'ws://127.0.0.1:6437/v6.json',
         en: 'The bridge address: the LeapJS protocol (the default, [`DEFAULT_URL`](#DEFAULT_URL)) or `…/raw` for the raw line format. Any service that still speaks the LeapJS v6 protocol works too.',
         zh: '橋接程式的位址：LeapJS 通訊協定（預設，[`DEFAULT_URL`](#DEFAULT_URL)），或 `…/raw` 的原始行格式。任何還在講 LeapJS v6 通訊協定的服務也行。',
       },
       {
-        name: 'reconnect', type: 'Boolean', optional: true, default: 'true', viaArguments: true,
+        name: 'reconnect', type: 'Boolean', optional: true, default: 'true',
         en: 'Whether to try again after the connection drops, waiting 0.5 s, then 1 s, 2 s … up to 5 s between tries.',
         zh: '連線中斷之後要不要重試：每次等待 0.5 秒、1 秒、2 秒……最長 5 秒。',
       },
       {
-        name: 'fingers', type: 'Boolean', optional: true, default: 'true', viaArguments: true,
+        name: 'fingers', type: 'Boolean', optional: true, default: 'true',
         en: 'Publish the fingertip signals (3 per finger, 30 across two hands). `false` leaves them out and keeps the signal list short.',
         zh: '要不要發布指尖訊號（每根手指 3 個，兩隻手共 30 個）。`false` 會省略它們，訊號清單比較短。',
       },
       {
-        name: 'box', type: 'Object', optional: true, default: 'INTERACTION_BOX', viaArguments: true,
+        name: 'box', type: 'Object', optional: true, default: 'INTERACTION_BOX',
         en: 'The interaction box `{ center, size }` in millimetres that positions are normalised against. The default is [`INTERACTION_BOX`](#INTERACTION_BOX).',
         zh: '位置據以正規化的互動範圍盒 `{ center, size }`，單位是公釐。預設是 [`INTERACTION_BOX`](#INTERACTION_BOX)。',
       },
       {
-        name: 'thresholds', type: 'Object', optional: true, default: 'THRESHOLDS', viaArguments: true,
+        name: 'thresholds', type: 'Object', optional: true, default: 'THRESHOLDS',
         en: 'Overrides for the gesture hysteresis, such as `{ pinch: { on: 0.9, off: 0.6 } }` (see [`THRESHOLDS`](#THRESHOLDS)). Keys you leave out keep their defaults.',
         zh: '手勢遲滯值的覆寫，例如 `{ pinch: { on: 0.9, off: 0.6 } }`（見 [`THRESHOLDS`](#THRESHOLDS)）。沒寫的鍵維持預設。',
       },
       {
-        name: 'WebSocket', type: 'Function', optional: true, default: 'globalThis.WebSocket', viaArguments: true,
+        name: 'WebSocket', type: 'Function', optional: true, default: 'globalThis.WebSocket',
         en: 'The WebSocket constructor to use. Pass your own to test without a network.',
         zh: '要用的 WebSocket 建構函式。傳你自己的，就能在沒有網路的情況下測試。',
       },

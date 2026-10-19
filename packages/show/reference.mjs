@@ -5,74 +5,73 @@
 export default {
   createShow: {
     group: 'core',
-    signature: 'await createShow({ world, worlds, timeline, routes, modules, artwork, hint, profile, map, onFrame, mount, telemetry, score })',
     summary: {
       en: 'Builds a whole show around a world in one call: signals, params, stage, timeline, mapper, the modules you switch on, the console, the backstage feed and the frame loop.',
       zh: '一個呼叫就替世界組好整場演出：訊號、參數、舞台、時間軸、映射、你開啟的模組、控台、後台資料和影格迴圈。',
     },
     params: [
       {
-        name: 'world', type: 'Object | null', optional: true, default: 'null', viaArguments: true,
+        name: 'world', type: 'Object | null', optional: true, default: 'null',
         en: 'The world to perform: `{ name, params, init, update, render, dispose }` (see [`Stage`](#Stage)). It is activated first, and `createShow` waits for its `init()`.',
         zh: '要表演的世界：`{ name, params, init, update, render, dispose }`（見 [`Stage`](#Stage)）。它會最先被啟用，`createShow` 會等它的 `init()` 完成。',
       },
       {
-        name: 'worlds', type: 'Array', optional: true, default: '[]', viaArguments: true,
+        name: 'worlds', type: 'Array', optional: true, default: '[]',
         en: 'More worlds to register, after `world`. All of their params are registered up front; switch with `show.stage.activate(name)`.',
         zh: '`world` 之外要登記的更多世界。它們的參數會全部先登記好。用 `show.stage.activate(name)` 切換。',
       },
       {
-        name: 'timeline', type: 'Object', optional: true, default: '{ total: 120 }', viaArguments: true,
+        name: 'timeline', type: 'Object', optional: true, default: '{ total: 120 }',
         en: 'The options of the [`Timeline`](#Timeline): `{ total, automation, scenes, start, loop, onCue }`. With a `score`, its scenes and total win.',
         zh: '[`Timeline`](#Timeline) 的選項：`{ total, automation, scenes, start, loop, onCue }`。有 `score` 的時候，以它的場景和總長為準。',
       },
       {
-        name: 'routes', type: 'Array', optional: true, default: '[]', viaArguments: true,
+        name: 'routes', type: 'Array', optional: true, default: '[]',
         en: 'Routes for the [`Mapper`](#Mapper). If a saved profile exists it is loaded, and any declared route whose `source → target` pair is missing from it is still added.',
         zh: '給 [`Mapper`](#Mapper) 的路由。如果有存起來的 profile 就會載入，其中沒有的 `source → target` 組合，仍然會把你宣告的路由補進去。',
       },
       {
-        name: 'modules', type: 'Object', optional: true, default: '{}', viaArguments: true,
+        name: 'modules', type: 'Object', optional: true, default: '{}',
         en: 'The inputs and outputs to switch on, by key (see the description): `midi`, `keys`, `drums`, `audio`, `chord`, `hands`, `pose`, `leap`, `remote`, `sound`.',
         zh: '要開啟的輸入與輸出，用鍵名指定（見說明）：`midi`、`keys`、`drums`、`audio`、`chord`、`hands`、`pose`、`leap`、`remote`、`sound`。',
       },
       {
-        name: 'artwork', type: 'Object | null', optional: true, default: 'null', viaArguments: true,
+        name: 'artwork', type: 'Object | null', optional: true, default: 'null',
         en: '`{ title, artist, year, note }`: a credit line at the bottom right of the stage and a `<meta name="artwork">` tag in the head.',
         zh: '`{ title, artist, year, note }`：舞台右下角的一行作品署名，以及 `<head>` 裡的 `<meta name="artwork">` 標籤。',
       },
       {
-        name: 'hint', type: 'String', optional: true, default: '\'\'', viaArguments: true,
+        name: 'hint', type: 'String', optional: true, default: '\'\'',
         en: 'A line of **HTML** at the bottom left of the stage, for example `\'play the piano · Space plays the timeline\'`. It is inserted as HTML, so never put untrusted text in it.',
         zh: '舞台左下角的一行 **HTML**，例如 `\'play the piano · Space plays the timeline\'`。它是當成 HTML 插入的，所以千萬別放來路不明的文字。',
       },
       {
-        name: 'profile', type: 'String | false | null', optional: true, default: 'null', viaArguments: true,
+        name: 'profile', type: 'String | false | null', optional: true, default: 'null',
         en: 'The name the mapper saves its routes under in `localStorage` (default: the first world\'s name, else `\'show\'`). `false` ignores the saved routes when the show starts, so the routes come from your code on every load.',
         zh: '映射在 `localStorage` 儲存路由時用的名字（預設是第一個世界的名字，再不然是 `\'show\'`）。`false` 會在演出開始時忽略存起來的路由，所以每次載入路由都來自你的程式。',
       },
       {
-        name: 'map', type: 'String | false | null', optional: true, default: 'null', viaArguments: true,
+        name: 'map', type: 'String | false | null', optional: true, default: 'null',
         en: 'A map file to load on start: a same-origin or https address (see [`loadMapUrl()`](#loadMapUrl)). Left out, `?map=<url>` in the page address is used; `false` ignores `?map=`.',
         zh: '開始時要載入的映射檔：同源或 https 的網址（見 [`loadMapUrl()`](#loadMapUrl)）。沒寫的話，使用頁面網址上的 `?map=<url>`。`false` 會忽略 `?map=`。',
       },
       {
-        name: 'onFrame', type: 'Function | null', optional: true, default: 'null', viaArguments: true,
+        name: 'onFrame', type: 'Function | null', optional: true, default: 'null',
         en: 'Called as `onFrame(dt, show)` every frame, after the on-screen performers and the microphone update and **before** the timeline advances. The place for assembly-level logic such as envelopes, or `osc.flush()`.',
         zh: '每個畫面以 `onFrame(dt, show)` 呼叫，在螢幕上的演奏者和麥克風更新之後、時間軸前進**之前**。適合放組裝層級的邏輯，例如包絡，或 `osc.flush()`。',
       },
       {
-        name: 'mount', type: 'Object | null', optional: true, default: 'null', viaArguments: true,
+        name: 'mount', type: 'Object | null', optional: true, default: 'null',
         en: '`{ stage, side }`: elements or selectors to render into instead of the generated full-page layout.',
         zh: '`{ stage, side }`：要渲染進去的元素或選擇器，取代自動產生的全頁面版面。',
       },
       {
-        name: 'telemetry', type: 'Boolean', optional: true, default: 'true', viaArguments: true,
+        name: 'telemetry', type: 'Boolean', optional: true, default: 'true',
         en: 'Allow one anonymous `oav_show_start` hit per page load. `false` sends nothing.',
         zh: '是否允許每次載入頁面送出一次匿名的 `oav_show_start`。`false` 什麼都不送。',
       },
       {
-        name: 'score', type: 'Object | null', optional: true, default: 'null', viaArguments: true,
+        name: 'score', type: 'Object | null', optional: true, default: 'null',
         en: '`{ cuts, cut, modules, api, onStatus, onCue, maxStep, midi }`: the show\'s structure as segment lengths, performed by segment modules (see [`Score`](#Score) and [`Director`](#Director)). `?cut=<id>` in the page address picks the version.',
         zh: '`{ cuts, cut, modules, api, onStatus, onCue, maxStep, midi }`：以段落長度寫成的演出結構，由段落模組表演（見 [`Score`](#Score) 和 [`Director`](#Director)）。頁面網址上的 `?cut=<id>` 可以選版本。',
       },

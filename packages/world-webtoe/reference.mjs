@@ -4,7 +4,6 @@
 export default {
   webtoeWorld: {
     group: 'core',
-    signature: 'webtoeWorld({ name, app, project, params, extra })',
     summary: {
       en: 'Turns a WebToe node patch into a world: the patch runs in an iframe and every changed param is posted into it.',
       zh: '把一份 WebToe 節點圖變成世界：節點圖在 iframe 裡執行，每個改變的參數都會被送進去。',
@@ -26,12 +25,12 @@ export default {
         zh: '`.webtoe.json` 節點圖檔案的網址。它會用 `?project=<網址>` 交給應用程式，由應用程式去抓，所以檔案所在的伺服器必須允許應用程式的來源（CORS）。請寫成絕對網址，例如 `new URL(\'./garden.webtoe.json\', location.href).href`。',
       },
       {
-        name: 'params', type: 'Array', optional: true, default: '[]', viaArguments: true,
+        name: 'params', type: 'Array', optional: true, default: '[]',
         en: 'The param schema of the world: `[{ key, min, max, def }, …]`. The keys are the names the patch reads with `ext(\'name\', fallback)`.',
         zh: '世界的參數 schema：`[{ key, min, max, def }, …]`。這些 key 就是節點圖用 `ext(\'name\', fallback)` 讀取的名稱。',
       },
       {
-        name: 'extra', type: 'Function | null', optional: true, default: 'null', viaArguments: true,
+        name: 'extra', type: 'Function | null', optional: true, default: 'null',
         en: '`extra(state, out)`, called every frame: add derived values to `out` (a copy of the state) that the patch can read too, such as `out.hueRad = state.hue * Math.PI / 180`.',
         zh: '`extra(state, out)`，每個畫面呼叫：把衍生的值加進 `out`（狀態的複本），節點圖也讀得到，例如 `out.hueRad = state.hue * Math.PI / 180`。',
       },
