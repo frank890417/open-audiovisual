@@ -87,9 +87,11 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const model = await loadModel();
   if (process.argv.includes('--missing')) {
     const list = stubs(model);
-    console.log(list.length ? list.join('\n\n') : '// every public name has an entry');
-    console.error(`${list.length} public name(s) without an entry`);
-    process.exit(0);
+    process.stdout.write((list.length ? list.join('\n\n') : '// every public name has an entry') + '\n', () => {   // exit only after the pipe has taken it all
+      console.error(`${list.length} public name(s) without an entry`);
+      process.exit(0);
+    });
+    await new Promise(() => {});
   }
   if (process.argv.includes('--init-ledger')) {
     if (fs.existsSync(path.join(ROOT, LEDGER_FILE)) && !process.argv.includes('--force')) { console.error(`${LEDGER_FILE} exists: the ledger may only shrink (--force to rewrite it from scratch)`); process.exit(1); }

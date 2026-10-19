@@ -109,7 +109,7 @@ export function entryHtml(r, L, t, byKey) {
     return `<article class="ref ref-stub" ${attrs}>${aliasAnchors}${head}${sigHtml}${alsoHtml}<p class="ref-nodoc">${esc(t.noDoc)}</p>${r.item.doc && L === 'en' ? `<p class="ref-srcdoc">${esc(r.item.doc)}</p>` : ''}${membersHtml(r, null, L, t)}${sourceHtml}</article>`;
   }
   const related = (e.related || []).map((k) => byKey.get(k)).filter(Boolean);
-  const relHtml = related.length ? `<div class="ref-sec ref-rel"><h4>${esc(t.sec.related)}</h4><ul>${related.map((x) => `<li><a href="#${attr(x.id)}"><code>${esc(x.name.replace(/^option:/, ''))}${x.kind === 'function' || x.kind === 'event' ? '()' : ''}</code></a> <span>${x.entry ? esc(x.entry.summary[L]) : ''}</span></li>`).join('')}</ul></div>` : '';
+  const relHtml = related.length ? `<div class="ref-sec ref-rel"><h4>${esc(t.sec.related)}</h4><ul>${related.map((x) => `<li><a href="#${attr(x.id)}"><code>${esc(x.name.replace(/^option:/, ''))}${x.kind === 'function' || x.kind === 'event' ? '()' : ''}</code></a> <span>${x.entry ? inline(x.entry.summary[L], link) : ''}</span></li>`).join('')}</ul></div>` : '';
   const needs = e.needs ? `<div class="callout callout-tip"><p class="callout-title">${esc(r.kind === 'function' || r.kind === 'class' ? t.sec.needsFn : t.sec.needs)}</p>${para(e.needs[L])}</div>` : '';
   const notes = (e.notes || []).length ? `<div class="ref-sec"><h4>${esc(t.sec.notes)}</h4><ul>${e.notes.map((n) => `<li>${inline(n[L], { resolveLink: (h) => h })}</li>`).join('')}</ul></div>` : '';
   const returns = e.returns ? `<div class="ref-sec"><h4>${esc(t.sec.returns)}</h4><p>${e.returns.type ? `<code>${esc(e.returns.type)}</code> ` : ''}${inline(e.returns[L], { resolveLink: (h) => h })}</p></div>` : '';

@@ -273,8 +273,9 @@ test('the page is registered (sitemap, stamp list, llms.txt) and its own files e
 test('llms-full.txt carries the reference: every documented name with its one-line summary', () => {
   const full = read('llms-full.txt');
   assert.ok(full.includes('<!-- source: docs/reference/reference.json -->'), 'the reference section is in');
+  const flat = (s) => s.replace(/\s+/g, ' ').trim();
   for (const r of model.records.filter((x) => x.entry)) {
-    assert.ok(full.includes(`\`${r.key.replace(/^option:/, '')}\``) && full.includes(r.entry.summary.en.replace(/`/g, '')) || full.includes(r.entry.summary.en), `llms-full.txt has ${r.key}`);
+    assert.ok(full.includes(`\`${r.key.replace(/^option:/, '')}\``) && full.includes(flat(r.entry.summary.en)), `llms-full.txt has ${r.key} and its summary`);
   }
 });
 

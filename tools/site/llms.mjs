@@ -323,7 +323,7 @@ export function referenceFull() {
   const raw = read('docs/reference/reference.json');
   if (raw === null) return '';
   const ds = JSON.parse(raw);
-  const clean = (t) => String(t || '').replace(/\s+/g, ' ').replace(/</g, '＜').trim();
+  const clean = (t) => String(t || '').replace(/\s+/g, ' ').trim();
   const byCat = new Map();
   for (const e of ds.entries) { if (!byCat.has(e.category)) byCat.set(e.category, []); byCat.get(e.category).push(e); }
   const out = [`\n\n---\n\n<!-- source: docs/reference/reference.json -->\n\n# API reference (generated)\n\n> ${ds.count} public names of oav-p5 ${ds.p5Version} and every package, read from the code and checked against it in CI. Page: ${SITE}docs/reference/ (search it, every name has an anchor: #micLevel). Data: ${SITE}docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: \`document.head.prepend(Object.assign(document.createElement('script'), { src: '${SITE}p5/oav-p5.js' }));\``];

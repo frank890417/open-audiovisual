@@ -60,6 +60,7 @@ export function parseParams(text) {
       for (let i = 0; i < part.length; i++) { if (part[i] === '{') depth++; if (part[i] === '}') { depth--; if (depth === 0) { end = i; break; } } }
       const inner = part.slice(1, end);
       for (const k of split(inner)) {
+        if (k.startsWith('...')) { out.push({ name: k.slice(3).trim(), optional: true, rest: true, group: 'options' }); continue; }
         const m = /^([\w$]+)\s*(?::\s*[\w$]+\s*)?(?:=\s*([\s\S]+))?$/.exec(k);
         if (m) out.push({ name: m[1], optional: m[2] !== undefined || true, default: m[2] !== undefined ? m[2].trim() : undefined, group: 'options' });
       }
