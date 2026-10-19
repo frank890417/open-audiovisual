@@ -8,7 +8,7 @@
 //   · ↑ ↓ to move, Enter to open, Esc to close; on a phone it is the whole screen's width
 // The matching is assets/search/core.js; the index is built by tools/build-search.mjs from the same sources as the pages.
 
-import { prepare, rank, tokens, snippet, weightBoost } from './core.js?v=f3ec262';
+import { prepare, rank, tokens, snippet } from './core.js?v=7994140';
 
 const here = new URL(import.meta.url);
 const root = new URL('../../', here);
@@ -126,11 +126,10 @@ function highlight(parent, text, toks) {
 
 function render(q) {
   lastQ = q;
-  if (!recs) return;                                    // typed before the index arrived: open() renders once it has
   const toks = tokens(q);
   list.replaceChildren(); items = []; active = -1;
   if (!toks.length) { foot.textContent = ui ? ui.keys : ''; list.append(el('p', 'os-note', ui ? ui.hint : '')); return; }
-  const boost = (r) => (r.l === lang ? 400 : 0) + weightBoost(r);   // the page's language first; then the entries other entries send you to
+  const boost = (r) => (r.l === lang ? 400 : 0) + 6 * Math.min(r.w || 0, 10);   // the page's language first; then the entries other entries send you to
   const ranked = rank(recs, q, { boost });
   // one result per page: the page's language wins; the other language shows only if its twin did not match
   const seen = new Set(), uniq = [];
