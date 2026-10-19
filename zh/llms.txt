@@ -15,6 +15,7 @@
 
 - [首頁](https://openaudiovisual.com/zh/) ([English](https://openaudiovisual.com/)): 能玩的樂器、運作方式、作品、快速開始、給 AI 代理。
 - [手冊](https://openaudiovisual.com/zh/docs/) ([English](https://openaudiovisual.com/docs/)): 完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。
+- [API 參考](https://openaudiovisual.com/zh/docs/reference/) ([English](https://openaudiovisual.com/docs/reference/)): API 參考：oav-p5 的每個變數、函式、事件與選項（`micLevel`、`knob1`、`startDrums()` …）和每個套件的每個匯出，能搜尋，每一條有說明、參數、能直接跑的範例與原始碼行號連結。每次建置都從程式碼產生，並在 CI 裡跟程式碼對過，所以不會列出不存在的名稱，也不會漏掉存在的。同一份資料的 JSON：https://openaudiovisual.com/docs/reference/reference.json。
 - [MIDI 控制器圖鑑](https://openaudiovisual.com/zh/controllers/) ([English](https://openaudiovisual.com/controllers/)): 每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。
 - [範例](https://openaudiovisual.com/zh/examples/) ([English](https://openaudiovisual.com/examples/)): 所有範例，附縮圖與需要什麼。
 - [p5.js 一行指令](https://openaudiovisual.com/zh/p5/) ([English](https://openaudiovisual.com/p5/)): 載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。同一行還有聲音（`startSound`）、能用一行字寫節奏的鼓機（`startDrums("bd*4, [~ sd]*2, hh*8")`）、麥克風（`micLevel`）、錄影（`startRecording`），以及像 TouchDesigner Lag CHOP 那樣變順的數值（`lag()`），也能和 Strudel 並排用。現成草圖在 `p5/examples/`，每一份都能在範例 16 到 26 直接玩。

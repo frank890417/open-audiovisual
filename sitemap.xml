@@ -29,6 +29,20 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/"/>
   </url>
   <url>
+    <loc>https://openaudiovisual.com/docs/reference/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/"/>
+  </url>
+  <url>
     <loc>https://openaudiovisual.com/controllers/</loc>
     <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/"/>

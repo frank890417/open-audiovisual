@@ -394,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 747 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 787 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -473,6 +473,56 @@ path below works without it.
    `score: { cuts, modules }` in `createShow()`: [docs/score.md](docs/score.md), example `13-score-director`. Signal names: [docs/signals.md](docs/signals.md).
 5. Verify: `node serve.js` → open `http://localhost:8080/examples/<nn>-<name>/` —
    QWERTY keys A–L are the no-hardware MIDI fallback (tick *keyboard* in the console first); Space plays the timeline.
+
+## Documenting a public name
+
+Every public name has an entry in the API reference, <https://openaudiovisual.com/docs/reference/>, and the build keeps it
+that way: a name without an entry, an entry for a name that no longer exists, an example that does not parse, and an example
+that does not run are all red. Public names are: every global, callback, `OAVp5.*` member and loader option of
+`p5/oav-p5.js`, every export in a package's `package.json` `"exports"`, and the tools of `packages/mcp`.
+
+**Two layers, one source of truth.**
+- What the *code* says is never typed: the name, its kind (variable, function, event, class, constant, option), the signature and
+  default values, a class's public members, the source file and line. `tools/reference/scan.mjs` reads them on every build.
+  Change a signature and the page changes with it; rename or remove a name and the build fails until you touch its entry.
+- What a *person* writes lives beside the code: `p5/reference/<area>.mjs` for oav-p5, `packages/<package>/reference.mjs` for a
+  package. Plain data, `export default { name: { … } }`, English and Chinese side by side. `p5/reference/mic.mjs` (`micLevel`)
+  is the model entry.
+
+**The loop when you add (or rename, or remove) a name:**
+
+```bash
+node tools/build-reference.mjs --missing      # a paste-ready stub for every name without an entry
+# write the entry (and delete the entry of a name you removed)
+node tools/build-reference.mjs                # regenerates docs/reference/, zh/docs/reference/ and reference.json
+node --test tests/reference.test.js           # the gates, with the message that says what to fix
+PW=<playwright> node p5/test/reference-smoke.cjs   # every example and claim in a real headless Chromium (CI runs it too)
+```
+
+Never edit `docs/reference/index.html`, `zh/docs/reference/index.html` or `docs/reference/reference.json` by hand: they are
+generated and `--check` (inside `tools/release.sh`) rejects a hand edit. `tools/reference/undocumented.json` is the ledger of
+names still waiting for an entry; it may only shrink (`node tools/build-reference.mjs --prune-ledger` drops the ones that have an
+entry now). Do not add to it: write the entry.
+
+**What an entry holds** (the checks are in `tools/reference/model.mjs`, `checkEntry`):
+
+| field | |
+|---|---|
+| `group` | a category id from `tools/reference/categories.mjs` |
+| `summary` `{ en, zh }` | one sentence that stands alone: it is the line in lists, search results and "related" cards |
+| `description` `[{ en, zh }]` | what it is, how to use it, its unit and range, when it updates, what to do first, what to watch out for |
+| `value` | variables: `{ type, range, en, zh }`; options: `{ type, options, default, en, zh }` |
+| `params` `[{ name, type, optional, default, en, zh }]` | must match the names the code declares, in order (a parameter read from `arguments` says `viaArguments: true`) |
+| `returns`, `needs`, `notes`, `related`, `keywords`, `tbd` | `needs` = what must happen before it has a value; `tbd` = what you could not confirm (the page shows "To be confirmed": never guess) |
+| `examples` `[{ code, caption: { en, zh }, run, needs }]` | at least one for an oav-p5 name |
+| `claims` `[{ before, expr, equals \| min, max, moves }]` | what the entry says about a value, checked in a running sketch |
+
+**Write it like p5.js does.** The first sentence defines the thing. Then how to use it, the unit and range, when the value
+changes, what must happen before it has a value (the microphone permission, a click), and the one thing that surprises people.
+Examples go from the smallest that shows the point (about 8 lines), to a realistic use, to the gotcha; each is a complete sketch
+with `setup()` and `draw()` that runs when pasted into OpenProcessing, **without** the loader line (the page adds it when you copy
+or run), with a one-sentence caption saying what you will see. Code comments stay short and English, so both languages share one
+program. Write only what the code does; what you could not read out of it goes in `tbd`.
 
 ## Verifying changes
 
@@ -4983,3 +5033,1054 @@ before it was generalized.)
 - a synthesis toolkit of our own (Tone.js is the neighbor: `@openav/sound` wraps it
   behind a small engine contract, and `audio.input()` accepts its nodes)
 - being a platform: your show is your repo, not an account on our server
+
+
+---
+
+<!-- source: docs/reference/reference.json -->
+
+# API reference (generated)
+
+> 517 public names of oav-p5 0.8.0 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+
+## midi
+
+- `barStarted` (event, oav-p5, no description yet): `function barStarted() {}`
+- `beatPhase` (variable, oav-p5, no description yet): `beatPhase`
+- `controlChange` (event, oav-p5, no description yet): `function controlChange() {}`
+- `count` (function, oav-p5, no description yet): `count()`
+- `cue` (function, oav-p5, no description yet): `cue()`
+- `cueFired` (event, oav-p5, no description yet): `function cueFired() {}`
+- `cueName` (variable, oav-p5, no description yet): `cueName`
+- `drawRhythm` (function, oav-p5, no description yet): `drawRhythm()`
+- `drawTrail` (function, oav-p5, no description yet): `drawTrail()`
+- `drumBar` (variable, oav-p5, no description yet): `drumBar`
+- `drumBpm` (variable, oav-p5, no description yet): `drumBpm`
+- `drumHit` (event, oav-p5, no description yet): `function drumHit() {}`
+- `drumPhase` (variable, oav-p5, no description yet): `drumPhase`
+- `drumsAreOn` (variable, oav-p5, no description yet): `drumsAreOn`
+- `drumStep` (variable, oav-p5, no description yet): `drumStep`
+- `env` (function, oav-p5, no description yet): `env()`
+- `fader` (function, oav-p5): `fader(n)` — Returns the position of fader number `n`, from 0 to 1: the same as `fader1` to `fader8`, for any `n`.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  for (let i = 1; i <= 4; i++) circle(i * 80, height - 40 - fader(i) * 200, 30);
+}
+```
+
+- `fader1`, `fader2`, `fader3`, `fader4`, `fader5`, `fader6`, `fader7`, `fader8` (variable, oav-p5): `fader1` — The position of a controller fader (slider), from 0 to 1: `fader1` is the first fader, up to `fader8`. (range 0..1; before it has a value: Nothing to call; reading a fader asks for Web MIDI, like a knob.)
+
+```js
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  rect(40, height - 40, fader1 * (width - 80), 24);   // fader 1 is a level bar
+}
+```
+
+- `faderMoved` (event, oav-p5): `function faderMoved(n, value) {}` — You define this function; oav-p5 calls it whenever a fader moves.
+
+```js
+let level = 0;
+
+function setup() {
+  createCanvas(400, 300);
+}
+
+function faderMoved(n, value) {
+  if (n === 1) level = value;   // fader 1 only
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  rect(40, height - 40, level * (width - 80), 24);
+}
+```
+
+- `knob` (function, oav-p5): `knob(n)` — Returns the position of knob number `n`, from 0 to 1: the same as `knob1` to `knob8`, for any `n`.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  for (let i = 1; i <= 8; i++) {
+    rect(i * 44 - 20, height - 20, 30, -10 - knob(i) * 250);   // one bar per knob
+  }
+}
+```
+
+- `knob1`, `knob2`, `knob3`, `knob4`, `knob5`, `knob6`, `knob7`, `knob8` (variable, oav-p5): `knob1` — The position of a controller knob, from 0 to 1: `knob1` is the first knob, `knob2` the second, up to `knob8`. (range 0..1; before it has a value: Nothing to call. Reading a knob tells oav-p5 the sketch plays from MIDI, so it asks the browser for Web MIDI (Chrome, Edge, Firefox; Safari and iPad have none: use 🎹 or a phone there).)
+
+```js
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(knob1 * 255);   // knob 1 sets the brightness
+}
+```
+
+- `knobMoved` (event, oav-p5): `function knobMoved(n, value) {}` — You define this function; oav-p5 calls it whenever a knob moves.
+
+```js
+let last = 'turn a knob';
+
+function setup() {
+  createCanvas(400, 300);
+  textAlign(CENTER, CENTER);
+  textSize(32);
+}
+
+function knobMoved(n, value) {
+  last = 'knob ' + n + ': ' + nf(value, 1, 2);
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  text(last, width / 2, height / 2);
+}
+```
+
+- `lag` (function, oav-p5, no description yet): `lag()`
+- `midi` (object, oav-p5, no description yet): `midi`
+- `midiMessage` (event, oav-p5, no description yet): `function midiMessage() {}`
+- `note` (variable, oav-p5): `note` — The MIDI number (0 to 127) of the last key pressed. (range 0..127; before it has a value: Unlike `knob1`, reading it does not by itself ask for Web MIDI: a sketch that defines `notePressed()` or reads a knob or pad does. 🎹 and a phone always work.)
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  textAlign(CENTER, CENTER);
+  textSize(64);
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  text(noteName(note), width / 2, height / 2);   // the last key, as a name
+}
+```
+
+- `noteIsDown` (function, oav-p5): `noteIsDown(n)` — True while the key `n` (a MIDI number or a name like `'C4'`) is held down.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(20);
+  fill(noteIsDown('C4') ? color(255, 211, 107) : 80);
+  circle(width / 2, height / 2, 140);   // lights up while middle C is held
+}
+```
+
+- `noteIsPressed` (variable, oav-p5): `noteIsPressed` — True while at least one key is held down.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(noteIsPressed ? 90 : 20);   // lighter while any key is down
+}
+```
+
+- `noteOff` (event, oav-p5, no description yet): `function noteOff() {}`
+- `noteOn` (event, oav-p5, no description yet): `function noteOn() {}`
+- `notePressed` (event, oav-p5): `function notePressed(note, velocity) {}` — You define this function; oav-p5 calls it each time a key (or a pad) goes down. (before it has a value: Defining it is enough: oav-p5 sees the function and asks for Web MIDI. Keys from 🎹 and from a phone call it too.)
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  background(20);
+  noStroke();
+}
+
+function notePressed(note, velocity) {
+  fill(random(255), random(255), random(255), 200);
+  circle(map(note, 36, 96, 20, width - 20), height / 2, 10 + velocity * 120);
+}
+```
+
+- `noteReleased` (event, oav-p5): `function noteReleased(note) {}` — You define this function; oav-p5 calls it each time a key (or a pad) is let go.
+
+```js
+let held = {};
+
+function setup() {
+  createCanvas(400, 300);
+}
+
+function notePressed(note) { held[note] = millis(); }
+function noteReleased(note) { delete held[note]; }
+
+function draw() {
+  background(20);
+  fill(255);
+  text(Object.keys(held).map((n) => noteName(+n)).join('  '), 20, 40);   // the keys down now
+}
+```
+
+- `oavMidi` (object, oav-p5, no description yet): `oavMidi`
+- `pad` (function, oav-p5): `pad(n)` — Returns how hard pad number `n` is pressed, 0 to 1: the same as `pad1` to `pad16`, for any `n`.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  for (let i = 1; i <= 8; i++) {
+    fill(255, 90, 31, 60 + pad(i) * 195);
+    square(20 + ((i - 1) % 4) * 92, 40 + floor((i - 1) / 4) * 110, 80);
+  }
+}
+```
+
+- `pad1`, `pad2`, `pad3`, `pad4`, `pad5`, `pad6`, `pad7`, `pad8`, `pad9`, `pad10`, `pad11`, `pad12`, `pad13`, `pad14`, `pad15`, `pad16` (variable, oav-p5): `pad1` — How hard a drum pad is pressed, from 0 to 1: `pad1` is the first pad, up to `pad16`; 0 when it is let go. (range 0..1; before it has a value: Nothing to call; reading a pad asks for Web MIDI, like a knob.)
+
+```js
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(20);
+  fill(255, 90, 31);
+  circle(width / 2, height / 2, 40 + pad1 * 260);   // swells while pad 1 is held
+}
+```
+
+- `padPressed` (event, oav-p5): `function padPressed(n, velocity) {}` — You define this function; oav-p5 calls it each time a drum pad is hit.
+
+```js
+let hits = [];
+
+function setup() {
+  createCanvas(400, 300);
+  noStroke();
+}
+
+function padPressed(n, velocity) {
+  hits.push({ x: 40 + ((n - 1) % 4) * 105, y: 70 + floor((n - 1) / 4) * 130, r: 20 + velocity * 60 });
+}
+
+function draw() {
+  background(20, 40);
+  fill(255, 90, 31);
+  for (const h of hits) { circle(h.x, h.y, h.r); h.r *= 0.95; }
+  hits = hits.filter((h) => h.r > 2);
+}
+```
+
+- `padReleased` (event, oav-p5): `function padReleased(n) {}` — You define this function; oav-p5 calls it each time a drum pad is let go.
+
+```js
+let down = {};
+
+function setup() {
+  createCanvas(400, 300);
+}
+
+function padPressed(n) { down[n] = true; }
+function padReleased(n) { down[n] = false; }
+
+function draw() {
+  background(20);
+  fill(255, 90, 31);
+  for (let i = 1; i <= 8; i++) if (down[i]) square(10 + (i - 1) * 48, 130, 40);   // lit while held
+}
+```
+
+- `pitchBend` (event, oav-p5, no description yet): `function pitchBend() {}`
+- `recordingIsOn` (variable, oav-p5, no description yet): `recordingIsOn`
+- `recordingSaved` (event, oav-p5, no description yet): `function recordingSaved() {}`
+- `rhythmChanged` (event, oav-p5, no description yet): `function rhythmChanged() {}`
+- `scope` (function, oav-p5, no description yet): `scope()`
+- `slope` (function, oav-p5, no description yet): `slope()`
+- `soundIsOn` (variable, oav-p5, no description yet): `soundIsOn`
+- `speed` (function, oav-p5, no description yet): `speed()`
+- `spring` (function, oav-p5, no description yet): `spring()`
+- `startDrums` (function, oav-p5, no description yet): `startDrums()`
+- `startRecording` (function, oav-p5, no description yet): `startRecording()`
+- `startSound` (function, oav-p5, no description yet): `startSound()`
+- `stepStarted` (event, oav-p5, no description yet): `function stepStarted() {}`
+- `stopDrums` (function, oav-p5, no description yet): `stopDrums()`
+- `stopRecording` (function, oav-p5, no description yet): `stopRecording()`
+- `stopSound` (function, oav-p5, no description yet): `stopSound()`
+- `trail` (function, oav-p5, no description yet): `trail()`
+- `trigger` (function, oav-p5, no description yet): `trigger()`
+- `velocity` (variable, oav-p5): `velocity` — How hard the last key was pressed, from 0 to 1. (range 0..1)
+
+```js
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(20);
+  fill(255, 90, 31);
+  circle(width / 2, height / 2, 20 + velocity * 300);   // a harder key makes a bigger circle
+}
+```
+
+- `OAVp5.play` (function, oav-p5): `OAVp5.play(note, [velocity])` — Plays a key as if a controller did: `midi.play(60, 0.8)` presses middle C, `midi.play(60, 0)` lets it go.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  textAlign(CENTER, CENTER);
+  textSize(32);
+}
+
+function mousePressed() { midi.play('C4', 0.8); }
+function mouseReleased() { midi.play('C4', 0); }
+
+function draw() {
+  background(noteIsDown('C4') ? 90 : 20);
+  fill(255);
+  text('hold the mouse: C4 is ' + (noteIsDown('C4') ? 'down' : 'up'), width / 2, height / 2);
+}
+```
+
+## notes
+
+- `noteFreq` (function, oav-p5): `noteFreq(v)` — Returns the frequency in Hz of a note: `noteFreq('A4')` is 440.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  textAlign(CENTER, CENTER);
+  textSize(36);
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  text('A4 = ' + noteFreq('A4') + ' Hz\nC4 = ' + noteFreq('C4').toFixed(2) + ' Hz', width / 2, height / 2);
+}
+```
+
+- `noteName` (function, oav-p5): `noteName(v, [o])` — Turns a MIDI number into a note name: `noteName(61)` is `'C#4'`.
+
+```js
+let shown = 'play a key';
+
+function setup() {
+  createCanvas(400, 300);
+  textAlign(CENTER, CENTER);
+  textSize(64);
+}
+
+function notePressed(note) {
+  shown = noteName(note) + '  ' + noteName(note, { flats: true });
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  text(shown, width / 2, height / 2);
+}
+```
+
+- `noteNumber` (function, oav-p5): `noteNumber(v)` — Turns a note name like `'C4'` into its MIDI number, 0 to 127.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  textAlign(CENTER, CENTER);
+  textSize(40);
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  text('C4 = ' + noteNumber('C4') + '\nA4 = ' + noteNumber('A4') + '\nF#2 = ' + noteNumber('F#2'), width / 2, height / 2);
+}
+```
+
+## mic
+
+- `bass`, `mid`, `treble` (variable, oav-p5): `bass` — How much of the microphone's sound is low (`bass`), middle (`mid`) or high (`treble`), each from 0 to 1. (range 0..1; before it has a value: Reading any of them asks for the microphone the first time, exactly like [`micLevel`](#micLevel); until you allow it they are `0`.)
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  colorMode(HSB, 360, 100, 100);
+}
+
+function draw() {
+  background(230, 40, 10);
+  fill(200 + bass * 160, 70, 100);   // low sounds push the colour toward magenta
+  circle(width / 2, height / 2, 80 + bass * 220);
+}
+```
+
+- `beat` (variable, oav-p5): `beat` — True for one frame each time the microphone (or the drum machine) hears a beat. (before it has a value: Reading `beat` asks for the microphone the first time, like [`micLevel`](#micLevel). If you would rather be called, define [`beatDetected()`](#beatDetected).)
+
+```js
+let flash = 0;
+
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  if (beat) flash = 1;        // true for exactly one frame per beat
+  background(20 + flash * 200);
+  flash *= 0.9;               // fade back down
+}
+```
+
+- `beatDetected` (event, oav-p5): `function beatDetected(level) {}` — You define this function; oav-p5 calls it each time the microphone (or the drum machine) hears a beat. (before it has a value: A sketch that defines `beatDetected()` and reads no microphone value starts the microphone on the first click or key. When the drum machine is on, the same function is called for its kicks and snares and the microphone is not opened for it. `OAVp5.mic.on('beat', fn)` is the same thing without defining a global; it returns a function that stops listening.)
+
+```js
+let flash = 0;
+
+function setup() {
+  createCanvas(400, 300);
+}
+
+function beatDetected(level) {
+  flash = 0.4 + level * 0.6;   // louder beat, brighter flash
+}
+
+function draw() {
+  background(20 + flash * 200);
+  flash *= 0.9;
+}
+```
+
+- `kickDetected`, `snareDetected`, `hatDetected` (event, oav-p5): `function kickDetected(level) {}` — You define these; oav-p5 calls them when the microphone (or the drum machine) hears a kick, a snare or a hat. (before it has a value: Defining one of them is not enough to open the microphone once the drum machine has started; reading [`micLevel`](#micLevel) (or calling [`startMic()`](#startMic)) is. Without the drum machine, a sketch that defines any of them and reads nothing starts the microphone on the first click or key.)
+
+```js
+let kick = 0, snare = 0;
+
+function setup() {
+  createCanvas(400, 300);
+  noStroke();
+}
+
+function kickDetected(level) { kick = level; }
+function snareDetected(level) { snare = level; }
+
+function draw() {
+  background(20);
+  fill(255, 90, 31);
+  circle(120, 150, 40 + kick * 160);
+  fill(120, 190, 255);
+  circle(280, 150, 40 + snare * 160);
+  kick *= 0.9;
+  snare *= 0.9;
+}
+```
+
+- `micIsOn` (variable, oav-p5): `micIsOn` — Whether the microphone is running right now.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(micIsOn ? 20 : 90);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  text(micIsOn ? 'listening' : 'allow the microphone', width / 2, height / 2);
+}
+```
+
+- `micLevel` (variable, oav-p5): `micLevel` — How loud the microphone hears things, from 0 (a quiet room) to 1 (shouting). (range 0..1; before it has a value: Nothing to call. The first time a sketch reads `micLevel` (or [`bass`](#bass), `mid`, `treble`, [`beat`](#beat)), oav-p5 asks the browser for the microphone, and every value stays `0` until you allow it. The page needs `https` or `localhost`. If the browser kept audio quiet until a click, the first click or key starts it. [`?oav_mic=click`](#option-mic) makes only the 🎤 button and [`startMic()`](#startMic) turn it on; `?oav_mic=off` means nothing can.)
+
+```js
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(20);
+  circle(width / 2, height / 2, 50 + micLevel * 300);
+}
+```
+
+- `micSensitivity` (function, oav-p5): `micSensitivity([v])` — Makes the microphone more or less sensitive: `micSensitivity(2)` is twice as sensitive, `micSensitivity()` says what it is now.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  micSensitivity(3);   // three times as sensitive
+}
+
+function draw() {
+  background(20);
+  circle(width / 2, height / 2, 50 + micLevel * 300);
+  text('sensitivity ' + micSensitivity(), 20, 30);   // no argument: just reads it
+}
+```
+
+- `startMic` (function, oav-p5): `startMic()` — Turns the microphone on and returns a promise that says whether it worked. (before it has a value: Browsers want a click before audio plays: call it from `mousePressed()` or a button handler if `setup()` is too early. It works whatever the `mic` option is, except `?oav_mic=off`, where nothing can start the microphone.)
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  textAlign(CENTER, CENTER);
+}
+
+function mousePressed() {
+  startMic().then((ok) => console.log(ok ? 'microphone on' : 'no microphone'));
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  text(micIsOn ? 'level ' + nf(micLevel, 1, 2) : 'click to start the microphone', width / 2, height / 2);
+}
+```
+
+- `stopMic` (function, oav-p5): `stopMic()` — Turns the microphone off and sets every microphone value back to 0.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  textAlign(CENTER, CENTER);
+}
+
+function keyPressed() {
+  if (key === 'm') { if (micIsOn) stopMic(); else startMic(); }
+}
+
+function draw() {
+  background(20);
+  fill(255);
+  circle(width / 2, height / 2, 50 + micLevel * 300);
+  text('press m to turn the microphone ' + (micIsOn ? 'off' : 'on'), width / 2, height - 24);
+}
+```
+
+- `AudioAnalyzer` (class, @openav/audio, no description yet): `new AudioAnalyzer({ signals = null, fftSize = 2048, smooth = 0.7 } = {})`
+
+## sound
+
+- `BUILTIN_INSTRUMENTS` (constant, @openav/sound, no description yet): `BUILTIN_INSTRUMENTS = array, 22 items`
+- `CATEGORIES` (constant, @openav/sound, no description yet): `CATEGORIES = array, 9 items`
+- `DEFAULT_INSTRUMENT` (constant, @openav/sound, no description yet): `DEFAULT_INSTRUMENT = "synth/pad"`
+- `getInstrument` (function, @openav/sound, no description yet): `getInstrument(id)`
+- `instrumentGroups` (function, @openav/sound, no description yet): `instrumentGroups(lang = 'en', list = listInstruments())`
+- `instrumentName` (function, @openav/sound, no description yet): `instrumentName(def, lang = 'en')`
+- `listInstruments` (function, @openav/sound, no description yet): `listInstruments({ category = null } = {})`
+- `modalInstrument` (function, @openav/sound, no description yet): `modalInstrument({ id, name, category = 'mallets', credit = null, params, defaults = { cutoff: 8000 }, partials, strike = null, damp = 0, pitchDecay = 0.6, transpose = 0, gain = 0, attack = 0.0015, tremolo = null, maxVoices = 40, set = null, })`
+- `mountSoundPicker` (function, @openav/sound, no description yet): `mountSoundPicker(container, sound, { lang = (globalThis.document?.documentElement?.lang || 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en', className = 'oav-sound-pick', label = null, enableOnPick = true, } = {})`
+- `onInstrumentsChange` (function, @openav/sound, no description yet): `onInstrumentsChange(cb)`
+- `registerInstrument` (function, @openav/sound, no description yet): `registerInstrument(def, { replace = false } = {})`
+- `registerSynthPreset` (function, @openav/sound, no description yet): `registerSynthPreset(preset, opts)`
+- `SALAMANDER_NOTES` (constant, @openav/sound, no description yet): `SALAMANDER_NOTES = array, 30 items`
+- `salamanderMap` (function, @openav/sound, no description yet): `salamanderMap(notes = SALAMANDER_NOTES)`
+- `SAMPLES_URL` (constant, @openav/sound, no description yet): `SAMPLES_URL = "https://openaudiovisual.com/packages/sound/samples/"`
+- `Sound` (class, @openav/sound, no description yet): `new Sound({ signals, params = null, engine, instrument = null, remember = true, picker = true })`
+- `SOUND_PARAMS` (constant, @openav/sound, no description yet): `SOUND_PARAMS = array, 3 items`
+- `soundOptions` (function, @openav/sound, no description yet): `soundOptions(value)`
+- `SYNTH_PRESETS` (constant, @openav/sound, no description yet): `SYNTH_PRESETS = array, 11 items`
+- `synthInstrument` (function, @openav/sound, no description yet): `synthInstrument(preset)`
+- `TONE_CDN` (constant, @openav/sound, no description yet): `TONE_CDN = "https://cdn.jsdelivr.net/npm/tone@15.0.4/+esm"`
+- `toneEngine` (function, @openav/sound, no description yet): `toneEngine({ cdn = TONE_CDN, instrument = DEFAULT_INSTRUMENT, baseUrl = SAMPLES_URL, instruments: perInstrument = {}, drumChannel = 10, } = {})`
+- `unregisterInstrument` (function, @openav/sound, no description yet): `unregisterInstrument(id)`
+- `validateInstrument` (function, @openav/sound, no description yet): `validateInstrument(def)`
+- `validateSynthPreset` (function, @openav/sound, no description yet): `validateSynthPreset(p)`
+
+## drums
+
+- `drumEngine` (function, @openav/drums, no description yet): `drumEngine({ samples = null } = {})`
+- `drumName` (function, @openav/drums, no description yet): `drumName(voice, lang = 'en')`
+- `DrumScheduler` (class, @openav/drums, no description yet): `new DrumScheduler({ bpm = 112, swing = 0, humanize = 0.35, lookahead = 0.1, pattern = 'four on floor', seed = 0, random = Math.random } = {})`
+- `DrumSequencer` (class, @openav/drums, no description yet): `new DrumSequencer({ onHit, onStep = null, bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' } = {})`
+- `DrumTransport` (class, @openav/drums, no description yet): `new DrumTransport({ scheduler = new DrumScheduler(), engine = null, onStep = null, onHit = null, onLate = null, autoEnable = false, now = perfNow, hidden = pageHidden, heartbeat = 'auto', tick = 0.025, latency = 'auto', stale = 0.25, startDelay = 0.05 } = {})`
+- `GM` (constant, @openav/drums, no description yet): `GM = object, 13 keys`
+- `laneSteps` (function, @openav/drums, no description yet): `laneSteps(v)`
+- `mountDrums` (function, @openav/drums, no description yet): `mountDrums(container, { signals, engine = null, autoEnableEngine = true, onStep = null, onHit = null, onTakeover = null, bpm = 112, pattern = 'four on floor', clock = 'frame', lang = 'en', heartbeat = 'auto', latency = 'auto', now, hidden, rhythm = null, onRhythm = null, onLossy = null, onEditError = null, copyText = null, strudelComment = '' } = {})`
+- `PATTERNS` (constant, @openav/drums, no description yet): `PATTERNS = object, 5 keys`
+- `voiceForNote` (function, @openav/drums, no description yet): `voiceForNote(note)`
+- `compile` (function, @openav/pattern, no description yet): `compile(src, { words = WORDS } = {})`
+- `euclid` (function, @openav/pattern, no description yet): `euclid(pulses, steps, rotate = 0)`
+- `fromGrid` (function, @openav/pattern, no description yet): `fromGrid(grid, { steps = 16, words = null, order = null } = {})`
+- `fromStrudel` (function, @openav/pattern, no description yet): `fromStrudel(code)`
+- `parse` (function, @openav/pattern, no description yet): `parse(src)`
+- `SHORT` (constant, @openav/pattern, no description yet): `SHORT = object, 13 keys`
+- `strudelUrl` (function, @openav/pattern, no description yet): `strudelUrl(src, opts = {})`
+- `toGrid` (function, @openav/pattern, no description yet): `toGrid(p, { bar = 1, steps = 16, seed = 0, bars = 16, words = WORDS } = {})`
+- `toStrudel` (function, @openav/pattern, no description yet): `toStrudel(src, { bpm = null, comment = '', words = WORDS } = {})`
+- `WORDS` (constant, @openav/pattern, no description yet): `WORDS = object, 26 keys`
+
+## timeline
+
+- `Director` (class, @openav/score, no description yet): `new Director({ score, modules = [], api = {}, onStatus = null, onCue = null, maxStep = 2 } = {})`
+- `Score` (class, @openav/score, no description yet): `new Score({ cuts, cut } = {})`
+- `ScoreError` (class, @openav/score, no description yet): `new ScoreError(problems)`
+- `CURVES` (constant, @openav/timeline, no description yet): `CURVES = object, 5 keys`
+- `HOLD_EPS` (constant, @openav/timeline, no description yet): `HOLD_EPS = 0.000001`
+- `Timeline` (class, @openav/timeline, no description yet): `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })`
+
+## chop
+
+- `approach` (function, @openav/chop, no description yet): `approach(current, target, seconds, dt)`
+- `Count` (class, @openav/chop, no description yet): `new Count({ threshold = 0.5 } = {})`
+- `DEFAULTS` (constant, @openav/chop, no description yet): `DEFAULTS = object, 5 keys`
+- `envelope` (function, @openav/chop, no description yet): `envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)`
+- `envelopeStage` (function, @openav/chop, no description yet): `envelopeStage(elapsed, attack, decay, from = 0, peak = 1)`
+- `Lag` (class, @openav/chop, no description yet): `new Lag({ up = 0.1, down = up, value = null } = {})`
+- `Slope` (class, @openav/chop, no description yet): `new Slope()`
+- `Speed` (class, @openav/chop, no description yet): `new Speed({ value = 0 } = {})`
+- `Spring` (class, @openav/chop, no description yet): `new Spring({ stiffness = 100, damping = 6, value = null } = {})`
+- `springStep` (function, @openav/chop, no description yet): `springStep(x, v, target, stiffness, damping, dt)`
+- `TD_LAG_RATIO` (constant, @openav/chop, no description yet): `TD_LAG_RATIO = 2.302585092994046`
+- `Trail` (class, @openav/chop, no description yet): `new Trail({ seconds = 2, rate = 60 } = {})`
+- `wrapCount` (function, @openav/chop, no description yet): `wrapCount(total, limit)`
+
+## record
+
+- `AUDIO_MIMES` (constant, @openav/record, no description yet): `AUDIO_MIMES = array, 5 items`
+- `AudioTap` (class, @openav/record, no description yet): `new AudioTap({ context = null, sources = [], captureDestination = false } = {})`
+- `cameraConstraints` (function, @openav/record, no description yet): `cameraConstraints({ deviceId = '', width = 1920, height = 1080, fps = 30, facingMode = '' } = {})`
+- `cleanValue` (function, @openav/record, no description yet): `cleanValue(v, depth = 0)`
+- `Compositor` (class, @openav/record, no description yet): `new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions = {}, getWorkCanvas = null, background = '#000', mirrorCam = true, maxFps = 60, onDraw = null, canvas = null } = {})`
+- `EventLog` (class, @openav/record, no description yet): `new EventLog({ now = defaultNow, filter = null, throttleMs = 0 } = {})`
+- `extFor` (function, @openav/record, no description yet): `extFor(mime)`
+- `framePoint` (function, @openav/record, no description yet): `framePoint(camRect, u, v)`
+- `fromMidiFile` (function, @openav/record, no description yet): `fromMidiFile(bytes, { name, families = 'both' } = {})`
+- `layoutRects` (function, @openav/record, no description yet): `layoutRects(layout, out, src = {}, opts = {})`
+- `LAYOUTS` (constant, @openav/record, no description yet): `LAYOUTS = array, 4 items`
+- `listCameras` (function, @openav/record, no description yet): `listCameras()`
+- `listMicrophones` (function, @openav/record, no description yet): `listMicrophones()`
+- `midiEventsOf` (function, @openav/record, no description yet): `midiEventsOf(take)`
+- `mixTracks` (function, @openav/record, no description yet): `mixTracks(tracks)`
+- `normalizeTake` (function, @openav/record, no description yet): `normalizeTake(input)`
+- `noteOf` (function, @openav/record, no description yet): `noteOf(ev)`
+- `noteOffFor` (function, @openav/record, no description yet): `noteOffFor(n)`
+- `openCamera` (function, @openav/record, no description yet): `openCamera(opts = {})`
+- `pickMime` (function, @openav/record, no description yet): `pickMime(isTypeSupported, { audioOnly = false, prefer = null, candidates = null } = {})`
+- `presetById` (function, @openav/record, no description yet): `presetById(id)`
+- `PRESETS` (constant, @openav/record, no description yet): `PRESETS = array, 11 items`
+- `quantizeTake` (function, @openav/record, no description yet): `quantizeTake(take, { bpm, grid = 4, strength = 1, offsetMs = 0 } = {})`
+- `recommendedBitrate` (function, @openav/record, no description yet): `recommendedBitrate(w, h, fps = recommendedFps(w, h))`
+- `recommendedFps` (function, @openav/record, no description yet): `recommendedFps(w, h)`
+- `Recorder` (class, @openav/record, no description yet): `new Recorder({ canvas = null, stream = null, fps = 60, audioTracks = [], audioOnly = false, videoBitsPerSecond, audioBitsPerSecond = 192000, mimeType, prefer = null } = {})`
+- `resolveSize` (function, @openav/record, no description yet): `resolveSize(size)`
+- `signalsOfMidi` (function, @openav/record, no description yet): `signalsOfMidi(ev, { families = 'both', device = null } = {})`
+- `TAKE_VERSION` (constant, @openav/record, no description yet): `TAKE_VERSION = 1`
+- `TakePlayer` (class, @openav/record, no description yet): `new TakePlayer({ signals = null, take = null, loop = true, speed = 1, yieldToLive = false, resumeAfter = 0, isLive = defaultIsLive, chase = true, clock, maxStepMs = 250, onEvent = null, onState = null, now = defaultNow } = {})`
+- `TakeRecorder` (class, @openav/record, no description yet): `new TakeRecorder({ signals, filter = /^midi\//, name = 'take', meta = {}, overdub = false, throttleMs = 0, now = defaultNow } = {})`
+- `takeStats` (function, @openav/record, no description yet): `takeStats(take)`
+- `toMidiFile` (function, @openav/record, no description yet): `toMidiFile(take, { ppq = 960, bpm } = {})`
+- `trimSilence` (function, @openav/record, no description yet): `trimSilence(take, { keep = 0 } = {})`
+- `validateTake` (function, @openav/record, no description yet): `validateTake(take)`
+- `VIDEO_MIMES` (constant, @openav/record, no description yet): `VIDEO_MIMES = array, 6 items`
+
+## options
+
+- `clock` (option, oav-p5, no description yet): `?oav_clock=…`
+- `compact` (option, oav-p5, no description yet): `?oav_compact=…`
+- `corner` (option, oav-p5, no description yet): `?oav_corner=…`
+- `debug` (option, oav-p5, no description yet): `?oav_debug=…`
+- `dock` (option, oav-p5, no description yet): `?oav_dock=…`
+- `drumlatency` (option, oav-p5, no description yet): `?oav_drumlatency=…`
+- `drums` (option, oav-p5, no description yet): `?oav_drums=…`
+- `hardware` (option, oav-p5, no description yet): `?oav_hardware=…`
+- `hints` (option, oav-p5, no description yet): `?oav_hints=…`
+- `link` (option, oav-p5, no description yet): `?oav_link=…`
+- `linkdelay` (option, oav-p5, no description yet): `?oav_linkdelay=…`
+- `mic` (option, oav-p5, no description yet): `?oav_mic=…`
+- `opc` (option, oav-p5, no description yet): `?oav_opc=…`
+- `panel` (option, oav-p5, no description yet): `?oav_panel=…`
+- `profile` (option, oav-p5, no description yet): `?oav_profile=…`
+- `recfps` (option, oav-p5, no description yet): `?oav_recfps=…`
+- `reclimit` (option, oav-p5, no description yet): `?oav_reclimit=…`
+- `record` (option, oav-p5, no description yet): `?oav_record=…`
+- `relay` (option, oav-p5, no description yet): `?oav_relay=…`
+- `remote` (option, oav-p5, no description yet): `?oav_remote=…`
+- `room` (option, oav-p5, no description yet): `?oav_room=…`
+- `scope` (option, oav-p5, no description yet): `?oav_scope=…`
+- `shim` (option, oav-p5, no description yet): `?oav_shim=…`
+- `sound` (option, oav-p5, no description yet): `?oav_sound=…`
+- `strudel` (option, oav-p5, no description yet): `?oav_strudel=…`
+- `telemetry` (option, oav-p5, no description yet): `?oav_telemetry=…`
+- `title` (option, oav-p5, no description yet): `?oav_title=…`
+- `tone` (option, oav-p5, no description yet): `?oav_tone=…`
+
+## oavp5
+
+- `OAVp5` (object, oav-p5, no description yet): `OAVp5`
+- `OAVp5.bend` (variable, oav-p5, no description yet): `OAVp5.bend`
+- `OAVp5.cc` (variable, oav-p5, no description yet): `OAVp5.cc`
+- `OAVp5.check` (function, oav-p5, no description yet): `OAVp5.check()`
+- `OAVp5.chop` (object, oav-p5, no description yet): `OAVp5.chop`
+- `OAVp5.chop.count` (function, oav-p5, no description yet): `OAVp5.chop.count()`
+- `OAVp5.chop.drawTrail` (function, oav-p5, no description yet): `OAVp5.chop.drawTrail()`
+- `OAVp5.chop.env` (function, oav-p5, no description yet): `OAVp5.chop.env()`
+- `OAVp5.chop.lag` (function, oav-p5, no description yet): `OAVp5.chop.lag()`
+- `OAVp5.chop.module` (variable, oav-p5, no description yet): `OAVp5.chop.module`
+- `OAVp5.chop.reset` (function, oav-p5, no description yet): `OAVp5.chop.reset()`
+- `OAVp5.chop.scope` (function, oav-p5, no description yet): `OAVp5.chop.scope()`
+- `OAVp5.chop.slope` (function, oav-p5, no description yet): `OAVp5.chop.slope()`
+- `OAVp5.chop.slots` (function, oav-p5, no description yet): `OAVp5.chop.slots()`
+- `OAVp5.chop.speed` (function, oav-p5, no description yet): `OAVp5.chop.speed()`
+- `OAVp5.chop.spring` (function, oav-p5, no description yet): `OAVp5.chop.spring()`
+- `OAVp5.chop.state` (variable, oav-p5, no description yet): `OAVp5.chop.state`
+- `OAVp5.chop.trail` (function, oav-p5, no description yet): `OAVp5.chop.trail()`
+- `OAVp5.chop.trigger` (function, oav-p5, no description yet): `OAVp5.chop.trigger()`
+- `OAVp5.clock` (object, oav-p5, no description yet): `OAVp5.clock`
+- `OAVp5.clock.bpm` (variable, oav-p5, no description yet): `OAVp5.clock.bpm`
+- `OAVp5.clock.info` (object, oav-p5, no description yet): `OAVp5.clock.info`
+- `OAVp5.clock.phase` (variable, oav-p5, no description yet): `OAVp5.clock.phase`
+- `OAVp5.connectHardware` (function, oav-p5, no description yet): `OAVp5.connectHardware()`
+- `OAVp5.devices` (variable, oav-p5, no description yet): `OAVp5.devices`
+- `OAVp5.drums` (object, oav-p5, no description yet): `OAVp5.drums`
+- `OAVp5.drums.bar` (variable, oav-p5, no description yet): `OAVp5.drums.bar`
+- `OAVp5.drums.beatPhase` (variable, oav-p5, no description yet): `OAVp5.drums.beatPhase`
+- `OAVp5.drums.bpm` (variable, oav-p5, no description yet): `OAVp5.drums.bpm`
+- `OAVp5.drums.clock` (object, oav-p5, no description yet): `OAVp5.drums.clock`
+- `OAVp5.drums.copyText` (variable, oav-p5, no description yet): `OAVp5.drums.copyText`
+- `OAVp5.drums.count` (variable, oav-p5, no description yet): `OAVp5.drums.count`
+- `OAVp5.drums.cue` (function, oav-p5, no description yet): `OAVp5.drums.cue()`
+- `OAVp5.drums.cues` (variable, oav-p5, no description yet): `OAVp5.drums.cues`
+- `OAVp5.drums.draw` (function, oav-p5, no description yet): `OAVp5.drums.draw()`
+- `OAVp5.drums.edit` (function, oav-p5, no description yet): `OAVp5.drums.edit()`
+- `OAVp5.drums.history` (variable, oav-p5, no description yet): `OAVp5.drums.history`
+- `OAVp5.drums.lastCue` (variable, oav-p5, no description yet): `OAVp5.drums.lastCue`
+- `OAVp5.drums.machine` (variable, oav-p5, no description yet): `OAVp5.drums.machine`
+- `OAVp5.drums.now` (object, oav-p5, no description yet): `OAVp5.drums.now`
+- `OAVp5.drums.on` (function, oav-p5, no description yet): `OAVp5.drums.on()`
+- `OAVp5.drums.pattern` (variable, oav-p5, no description yet): `OAVp5.drums.pattern`
+- `OAVp5.drums.phase` (variable, oav-p5, no description yet): `OAVp5.drums.phase`
+- `OAVp5.drums.src` (variable, oav-p5, no description yet): `OAVp5.drums.src`
+- `OAVp5.drums.start` (function, oav-p5, no description yet): `OAVp5.drums.start()`
+- `OAVp5.drums.state` (variable, oav-p5, no description yet): `OAVp5.drums.state`
+- `OAVp5.drums.step` (variable, oav-p5, no description yet): `OAVp5.drums.step`
+- `OAVp5.drums.stop` (function, oav-p5, no description yet): `OAVp5.drums.stop()`
+- `OAVp5.drums.strudelUrl` (variable, oav-p5, no description yet): `OAVp5.drums.strudelUrl`
+- `OAVp5.drums.undo` (function, oav-p5, no description yet): `OAVp5.drums.undo()`
+- `OAVp5.hardware` (variable, oav-p5, no description yet): `OAVp5.hardware`
+- `OAVp5.held` (variable, oav-p5, no description yet): `OAVp5.held`
+- `OAVp5.hints` (variable, oav-p5, no description yet): `OAVp5.hints`
+- `OAVp5.input` (function, oav-p5, no description yet): `OAVp5.input()`
+- `OAVp5.isDown` (function, oav-p5, no description yet): `OAVp5.isDown()`
+- `OAVp5.last` (variable, oav-p5, no description yet): `OAVp5.last`
+- `OAVp5.link` (object, oav-p5, no description yet): `OAVp5.link`
+- `OAVp5.link.info` (variable, oav-p5, no description yet): `OAVp5.link.info`
+- `OAVp5.mic` (object, oav-p5, no description yet): `OAVp5.mic`
+- `OAVp5.mic.analyzer` (variable, oav-p5, no description yet): `OAVp5.mic.analyzer`
+- `OAVp5.mic.bass` (variable, oav-p5, no description yet): `OAVp5.mic.bass`
+- `OAVp5.mic.db` (variable, oav-p5, no description yet): `OAVp5.mic.db`
+- `OAVp5.mic.error` (variable, oav-p5, no description yet): `OAVp5.mic.error`
+- `OAVp5.mic.floor` (variable, oav-p5, no description yet): `OAVp5.mic.floor`
+- `OAVp5.mic.gain` (variable, oav-p5, no description yet): `OAVp5.mic.gain`
+- `OAVp5.mic.level` (variable, oav-p5, no description yet): `OAVp5.mic.level`
+- `OAVp5.mic.mid` (variable, oav-p5, no description yet): `OAVp5.mic.mid`
+- `OAVp5.mic.on` (function, oav-p5, no description yet): `OAVp5.mic.on()`
+- `OAVp5.mic.rms` (variable, oav-p5, no description yet): `OAVp5.mic.rms`
+- `OAVp5.mic.sensitivity` (variable, oav-p5, no description yet): `OAVp5.mic.sensitivity`
+- `OAVp5.mic.start` (function, oav-p5, no description yet): `OAVp5.mic.start()`
+- `OAVp5.mic.state` (variable, oav-p5, no description yet): `OAVp5.mic.state`
+- `OAVp5.mic.stop` (function, oav-p5, no description yet): `OAVp5.mic.stop()`
+- `OAVp5.mic.treble` (variable, oav-p5, no description yet): `OAVp5.mic.treble`
+- `OAVp5.note` (variable, oav-p5, no description yet): `OAVp5.note`
+- `OAVp5.on` (function, oav-p5, no description yet): `OAVp5.on()`
+- `OAVp5.panel` (object, oav-p5, no description yet): `OAVp5.panel`
+- `OAVp5.panel.close` (function, oav-p5, no description yet): `OAVp5.panel.close()`
+- `OAVp5.panel.open` (function, oav-p5, no description yet): `OAVp5.panel.open()`
+- `OAVp5.panel.toggle` (function, oav-p5, no description yet): `OAVp5.panel.toggle()`
+- `OAVp5.phone` (function, oav-p5, no description yet): `OAVp5.phone()`
+- `OAVp5.record` (object, oav-p5, no description yet): `OAVp5.record`
+- `OAVp5.record.formats` (function, oav-p5, no description yet): `OAVp5.record.formats()`
+- `OAVp5.record.fps` (variable, oav-p5, no description yet): `OAVp5.record.fps`
+- `OAVp5.record.last` (variable, oav-p5, no description yet): `OAVp5.record.last`
+- `OAVp5.record.limit` (variable, oav-p5, no description yet): `OAVp5.record.limit`
+- `OAVp5.record.on` (function, oav-p5, no description yet): `OAVp5.record.on()`
+- `OAVp5.record.seconds` (variable, oav-p5, no description yet): `OAVp5.record.seconds`
+- `OAVp5.record.shot` (function, oav-p5, no description yet): `OAVp5.record.shot()`
+- `OAVp5.record.sources` (variable, oav-p5, no description yet): `OAVp5.record.sources`
+- `OAVp5.record.start` (function, oav-p5, no description yet): `OAVp5.record.start()`
+- `OAVp5.record.state` (variable, oav-p5, no description yet): `OAVp5.record.state`
+- `OAVp5.record.stop` (function, oav-p5, no description yet): `OAVp5.record.stop()`
+- `OAVp5.sound` (object, oav-p5, no description yet): `OAVp5.sound`
+- `OAVp5.sound.engine` (variable, oav-p5, no description yet): `OAVp5.sound.engine`
+- `OAVp5.sound.error` (variable, oav-p5, no description yet): `OAVp5.sound.error`
+- `OAVp5.sound.instrument` (variable, oav-p5, no description yet): `OAVp5.sound.instrument`
+- `OAVp5.sound.module` (variable, oav-p5, no description yet): `OAVp5.sound.module`
+- `OAVp5.sound.shell` (variable, oav-p5, no description yet): `OAVp5.sound.shell`
+- `OAVp5.sound.start` (function, oav-p5, no description yet): `OAVp5.sound.start()`
+- `OAVp5.sound.state` (variable, oav-p5, no description yet): `OAVp5.sound.state`
+- `OAVp5.sound.status` (object, oav-p5, no description yet): `OAVp5.sound.status`
+- `OAVp5.sound.stop` (function, oav-p5, no description yet): `OAVp5.sound.stop()`
+- `OAVp5.version` (variable, oav-p5, no description yet): `OAVp5.version`
+- `OAVp5.wiring` (function, oav-p5, no description yet): `OAVp5.wiring()`
+
+## midi-io
+
+- `BEND_CENTER` (constant, @openav/midi, no description yet): `BEND_CENTER = 8192`
+- `bendToUnit` (function, @openav/midi, no description yet): `bendToUnit(v)`
+- `CANVAS_THEME` (constant, @openav/midi, no description yet): `CANVAS_THEME = object, 16 keys`
+- `CONTROL_TYPES` (constant, @openav/midi, no description yet): `CONTROL_TYPES = array, 8 items`
+- `controlDetail` (function, @openav/midi, no description yet): `controlDetail(mc, id, st, info = {})`
+- `ControllerCanvas` (class, @openav/midi, no description yet): `new ControllerCanvas({ profile = 'arturia-minilab3', signals = null, controller = null, mapping = null, theme = {}, notes = 'auto', screen = true, padding = 0.05, now = defaultNow } = {})`
+- `controllerGeometry` (function, @openav/midi, no description yet): `controllerGeometry(profile, rect, { padding = 0.05, notes = 'auto' } = {})`
+- `ControllerHost` (class, @openav/midi, no description yet): `new ControllerHost(profile = 'arturia-minilab3', { profiles = PROFILES, signals = null, sink = null, channel = null, follow = false, midi = null, requestAccess = null, filterOut = 'IAC', storage = undefined, telemetry = true, embedKind = 'headless' } = {})`
+- `controllerRoutes` (function, @openav/midi, no description yet): `controllerRoutes(profile, bindings, { short = profile.short, ...extra } = {})`
+- `ControllerView` (class, @openav/midi, no description yet): `new ControllerView(container, controller, { mode = 'auto', minTouch = 38 } = {})`
+- `createController` (function, @openav/midi, no description yet): `createController(profile = 'arturia-minilab3', o = {})`
+- `createVirtualMIDIAccess` (function, @openav/midi, no description yet): `createVirtualMIDIAccess({ name = 'OAV Virtual MIDI', manufacturer = 'open-audiovisual', id = 'oav-virtual', sysex = false, onOutput = null, onClear = null } = {})`
+- `DEFAULT_PROFILE` (constant, @openav/midi, no description yet): `DEFAULT_PROFILE = "arturia-minilab3"`
+- `defineController` (function, @openav/midi, no description yet): `defineController(tag = 'oav-controller')`
+- `describe` (function, @openav/midi, no description yet): `describe(ev)`
+- `describeDetail` (function, @openav/midi, no description yet): `describeDetail(d)`
+- `describeMessage` (function, @openav/midi, no description yet): `describeMessage(m)`
+- `EchoGuard` (class, @openav/midi, no description yet): `new EchoGuard({ window = 40, max = 256 } = {})`
+- `EMBED_ATTRS` (constant, @openav/midi, no description yet): `EMBED_ATTRS = array, 11 items`
+- `EMBED_EVENTS` (constant, @openav/midi, no description yet): `EMBED_EVENTS = array, 9 items`
+- `EMBED_LAYOUTS` (constant, @openav/midi, no description yet): `EMBED_LAYOUTS = array, 3 items`
+- `embedChannel` (function, @openav/midi, no description yet): `embedChannel(v)`
+- `embedColor` (function, @openav/midi, no description yet): `embedColor(v)`
+- `embedFlag` (function, @openav/midi, no description yet): `embedFlag(v)`
+- `embedMode` (function, @openav/midi, no description yet): `embedMode(v, { bare = 'on' } = {})`
+- `encodeMessage` (function, @openav/midi, no description yet): `encodeMessage(ev)`
+- `eventOfSignal` (function, @openav/midi, no description yet): `eventOfSignal(name, value, { channel = 1 } = {})`
+- `fadeLevel` (function, @openav/midi, no description yet): `fadeLevel(now, at, ms)`
+- `findPort` (function, @openav/midi, no description yet): `findPort(ports, query)`
+- `findProfile` (function, @openav/midi, no description yet): `findProfile(ref, profiles)`
+- `followMidiSignals` (function, @openav/midi, no description yet): `followMidiSignals(signals, onEvent, { channel = 1, defer = (fn) => queueMicrotask(fn) } = {})`
+- `FRAME_COMMANDS` (constant, @openav/midi, no description yet): `FRAME_COMMANDS = array, 8 items`
+- `fromFrame` (function, @openav/midi, no description yet): `fromFrame(data)`
+- `fromParent` (function, @openav/midi, no description yet): `fromParent(data)`
+- `genericSignals` (function, @openav/midi, no description yet): `genericSignals(ev, { device = null, legacy = true, channel = true } = {})`
+- `groupsOf` (function, @openav/midi, no description yet): `groupsOf(p)`
+- `indexProfile` (function, @openav/midi, no description yet): `indexProfile(p)`
+- `isLive` (function, @openav/midi, no description yet): `isLive(p)`
+- `isProfileUrl` (function, @openav/midi, no description yet): `isProfileUrl(ref)`
+- `keyboardGeometry` (function, @openav/midi, no description yet): `keyboardGeometry(from, to, rect)`
+- `keyWindow` (function, @openav/midi, no description yet): `keyWindow(from, to, base, note)`
+- `linkControllers` (function, @openav/midi, no description yet): `linkControllers(relay, signals, controllers)`
+- `loadProfile` (function, @openav/midi, no description yet): `loadProfile(ref, o = {})`
+- `matchProfile` (function, @openav/midi, no description yet): `matchProfile(portName, profiles)`
+- `Midi` (class, @openav/midi, no description yet): `new Midi({ signals = null, filterOut = 'IAC', requestAccess = null, echoWindow = 40, prefer = [] } = {})`
+- `MidiController` (class, @openav/midi, no description yet): `new MidiController(profile, { signals = null, sink = null, short = null, onLed = null } = {})`
+- `MidiControllers` (class, @openav/midi, no description yet): `new MidiControllers({ profiles, signals = null, sink = null, midi = null, initial = null, storage = safeStorage() } = {})`
+- `midiNoteName` (function, @openav/midi, no description yet): `midiNoteName(n)`
+- `mountMidiPanel` (function, @openav/midi, no description yet): `mountMidiPanel(parent, mcs, { mode = 'full', open = true, id = null, onToggle = null, closeButton = mode === 'dock', profiles = null, contained = false } = {})`
+- `normalizeProfile` (function, @openav/midi, no description yet): `normalizeProfile(raw)`
+- `OavController` (class, @openav/midi, no description yet): `new OavController()`
+- `PANEL_CSS` (constant, @openav/midi, no description yet): `PANEL_CSS = "\n.mcp { position: absolute; inset: 0; display: flex; flex-direction: column; …"`
+- `parseEmbedOptions` (function, @openav/midi, no description yet): `parseEmbedOptions(src)`
+- `parseMessage` (function, @openav/midi, no description yet): `parseMessage(data)`
+- `pickOutput` (function, @openav/midi, no description yet): `pickOutput(outputs, { preferred = '', prefer = [] } = {})`
+- `pickPort` (function, @openav/midi, no description yet): `pickPort(ports, profile)`
+- `POST_SOURCE` (constant, @openav/midi, no description yet): `POST_SOURCE = "openav"`
+- `POST_VERSION` (constant, @openav/midi, no description yet): `POST_VERSION = 1`
+- `preferredAspect` (function, @openav/midi, no description yet): `preferredAspect(profile, width, { layout = 'auto', minTouch = 38 } = {})`
+- `profileById` (function, @openav/midi, no description yet): `profileById(id)`
+- `PROFILES` (constant, @openav/midi, no description yet): `PROFILES = array, 27 items`
+- `profileSignals` (function, @openav/midi, no description yet): `profileSignals(p)`
+- `publish` (function, @openav/midi, no description yet): `publish(signals, list)`
+- `RELATIVE_MODES` (constant, @openav/midi, no description yet): `RELATIVE_MODES = array, 4 items`
+- `relativeDelta` (function, @openav/midi, no description yet): `relativeDelta(value, mode = 'offset64')`
+- `relativeValue` (function, @openav/midi, no description yet): `relativeValue(delta, mode = 'offset64')`
+- `reselectOutput` (function, @openav/midi, no description yet): `reselectOutput({ current, outputs, preferred = '', prefer = [] })`
+- `RESERVED_IDS` (constant, @openav/midi, no description yet): `RESERVED_IDS = array, 7 items`
+- `resolveProfile` (function, @openav/midi, no description yet): `async resolveProfile(ref, { profiles = [], fetch = globalThis.fetch, base = undefined } = {})`
+- `restValue` (function, @openav/midi, no description yet): `restValue(c)`
+- `ScoreMidi` (class, @openav/midi, no description yet): `new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length = 0.15, scrub = false, enabled = true, timer = (fn, ms) => setTimeout(fn, ms) } = {})`
+- `setControl` (function, @openav/midi, no description yet): `setControl(mc, id, value, { note = null, source = 'ui' } = {})`
+- `toFrame` (function, @openav/midi, no description yet): `toFrame(type, args = {})`
+- `toParent` (function, @openav/midi, no description yet): `toParent(type, detail = null, { frame = null } = {})`
+- `touchText` (function, @openav/midi, no description yet): `touchText(c, st, note = null)`
+- `unitToBend` (function, @openav/midi, no description yet): `unitToBend(u)`
+- `validateProfile` (function, @openav/midi, no description yet): `validateProfile(p)`
+- `valuesOf` (function, @openav/midi, no description yet): `valuesOf(mc)`
+- `VIEW_CSS` (constant, @openav/midi, no description yet): `VIEW_CSS = "\n.mcv { position: relative; width: 100%; height: 100%; overflow: hidden; touc…"`
+- `virtualRequestMIDIAccess` (function, @openav/midi, no description yet): `virtualRequestMIDIAccess({ real = null, make, waitMs = 1200 })`
+- `withChannel` (function, @openav/midi, no description yet): `withChannel(profile, ch)`
+
+## keys
+
+- `KeysPiano` (class, @openav/keys, no description yet): `new KeysPiano(container, opts = {})`
+- `mountKeys` (function, @openav/keys, no description yet): `mountKeys(container, { signals, chord = null, base = 48, octaves = 2, sim = true, capture = true } = {})`
+- `PIANO_KEYMAP` (constant, @openav/keys, no description yet): `PIANO_KEYMAP = object, 17 keys`
+- `SimPlayer` (class, @openav/keys, no description yet): `new SimPlayer({ press, release, base = 60, scale = [0, 2, 4, 7, 9], density = 1 } = {})`
+
+## leap
+
+- `boneBasis` (function, @openav/leap, no description yet): `boneBasis(prev, next, palmNormal, left)`
+- `DEFAULT_PORT` (constant, @openav/leap, no description yet): `DEFAULT_PORT = 6437`
+- `DEFAULT_URL` (constant, @openav/leap, no description yet): `DEFAULT_URL = "ws://127.0.0.1:6437/v6.json"`
+- `deviceEvent` (function, @openav/leap, no description yet): `deviceEvent({ device = null, service = true } = {})`
+- `FINGERS` (constant, @openav/leap, no description yet): `FINGERS = array, 5 items`
+- `handAngles` (function, @openav/leap, no description yet): `handAngles(direction, normal)`
+- `handBones` (function, @openav/leap, no description yet): `handBones(hand)`
+- `HandGestures` (class, @openav/leap, no description yet): `new HandGestures(thresholds = THRESHOLDS)`
+- `handsOf` (function, @openav/leap, no description yet): `handsOf(msg)`
+- `Hysteresis` (class, @openav/leap, no description yet): `new Hysteresis(on, off)`
+- `INTERACTION_BOX` (constant, @openav/leap, no description yet): `INTERACTION_BOX = object, 2 keys`
+- `LeapInput` (class, @openav/leap, no description yet): `new LeapInput(default: globalThis.WebSocket — also Node 22's) */ constructor({ signals = null, url = DEFAULT_URL, reconnect = true, fingers = true, box = INTERACTION_BOX, thresholds = THRESHOLDS, WebSocket: WS = null } = {}) { this.signals = signals; this.url = url; this.reconnect = reconnect; this.fingers = fingers; this.box = box; this.WS = WS; this.status = 'idle'; // idle · connecting · bridge · no-service · no-device · tracking · simulated · closed this.frame = null; // latest message as it came (v6 frame, or raw on /raw) this.hands = []; // [hand] — see frame.js for the shape this.device = null; this.serviceVersion = null; this.fps = 0; this.frames = 0; this.gestures = new HandGestures(thresholds); this._present = { left: false, right: false }; this._count = -1; this._subs = { frame: new Set(), status: new Set() }; this._ws = null; this._retry = 500; this._timer = null; this._wanted = false; this._sim = null; this._held = null; this._conv = new V6Converter({ box }); if (signals) for (const [name, meta] of leapSignals({ fingers })) signals.define(name, meta); this._setStatus('idle'); } /** Open the bridge connection (reconnects with back-off until disconnect()). */ connect() { this._wanted = true; this._open(); return this; } disconnect() { this._wanted = false; clearTimeout(this._timer); const ws = this._ws; this._ws = null; if (ws) { try { ws.onclose = ws.onerror = ws.onmessage = null; ws.close(); } catch {} } this._setStatus('closed'); if (!this._sim) this._lose(); } get connected() { return !!this._ws && this._ws.readyState === 1; } /** The hand on one side, or null. */ hand(side) { return this.hands.find((h) => h.side === side) || null; } /** mm → 0..1 in this input's interaction box. */ normalize(p, clamp = true) { return normalizePoint(p, this.box, clamp); } onFrame(cb) { this._subs.frame.add(cb); return () => this._subs.frame.delete(cb); } onStatus(cb) { this._subs.status.add(cb); return () => this._subs.status.delete(cb); } /** * Feed one parsed message (what the socket would deliver): a v6 header, a v6 frame, a device * event, or a raw status / frame line. Public so tests, recordings and the simulator share the * exact path real frames take. */ ingest(msg) { if (!msg || typeof msg !== 'object') return; if (msg.version != null && msg.serviceVersion != null && !msg.hands) { // v6 header this.serviceVersion = msg.serviceVersion; this._setStatus('bridge'); return; } if (msg.event) { const st = msg.event.state || {}; if (msg.event.type === 'deviceEvent') { this.device = st.attached ? st.id : null; this._setStatus(st.service === false ? 'no-service' : st.streaming ? 'tracking' : 'no-device'); } return; } if (msg.t === 'status') { this.device = msg.device || null; this._setStatus(msg.service === false ? 'no-service' : msg.device ? 'tracking' : 'no-device'); return; } if (msg.t === 'info') { this.serviceVersion = msg.server || this.serviceVersion; return; } if (!Array.isArray(msg.hands)) return; this.frame = msg; this.frames++; this.fps = msg.currentFrameRate ?? msg.fps ?? this.fps; if (!this._sim && this.status !== 'tracking') this._setStatus('tracking'); this.hands = handsOf(msg); this._publish(this.hands); for (const cb of this._subs.frame) { try { cb(msg, this.hands); } catch (e) { console.error('[leap] onFrame:', e); } } } // ------------------------------------------------------------ simulator (no hardware) /** * Mouse / touch become hands, through the same path as the sensor. Opt-in. * move = right palm (x across, y up the screen) · wheel = depth · press = pinch · * right button or Alt+press = grab · hold Shift = drive the left hand · a second finger = left hand. * Returns stop(). */ simulate({ target = typeof window !== 'undefined' ? window : null, hz = 60 } = {}) { if (this._sim) return this._sim.stop; if (!target) throw new Error('LeapInput.simulate: no target to listen on'); const box = this.box; const mm = (u, i) => (u - 0.5) * box.size[i] + box.center[i]; const hand = () => ({ on: false, x: 0.5, y: 0.5, z: 0.5, pinch: 0, grab: 0, wantPinch: 0, wantGrab: 0 }); const S = { right: hand(), left: hand(), id: 0 }; const rect = () => (target.getBoundingClientRect ? target.getBoundingClientRect() : { left: 0, top: 0, width: innerWidth, height: innerHeight }); const place = (h, e) => { const r = rect(); h.x = (e.clientX - r.left) / (r.width || 1); h.y = 1 - (e.clientY - r.top) / (r.height || 1); }; const pick = (e) => (e.shiftKey || (e.pointerType === 'touch' && !e.isPrimary) ? S.left : S.right); const down = (e) => { const h = pick(e); h.on = true; place(h, e); if (e.button === 2 || e.altKey) h.wantGrab = 1; else h.wantPinch = 1; }; const move = (e) => { const h = pick(e); if (e.pointerType !== 'touch') h.on = true; place(h, e); }; const up = (e) => { const h = pick(e); h.wantPinch = 0; h.wantGrab = 0; if (e.pointerType === 'touch') h.on = false; }; const leave = (e) => { if (e.pointerType !== 'touch') S.right.on = S.left.on = false; }; const wheel = (e) => { const h = e.shiftKey ? S.left : S.right; h.z = Math.min(1, Math.max(0, h.z + Math.sign(e.deltaY) * 0.04)); }; const menu = (e) => e.preventDefault(); const ev = [['pointerdown', down], ['pointermove', move], ['pointerup', up], ['pointercancel', up], ['pointerleave', leave], ['wheel', wheel], ['contextmenu', menu]]; for (const [n, f] of ev) target.addEventListener(n, f, { passive: n !== 'contextmenu' }); const step = 1 / hz; const timer = setInterval(() => { const hands = []; for (const [side, h, id] of [['R', S.right, 1], ['L', S.left, 2]]) { h.pinch += Math.max(-step * 6, Math.min(step * 6, h.wantPinch - h.pinch)); // ~0.17 s to close, like a real pinch h.grab += Math.max(-step * 4, Math.min(step * 4, h.wantGrab - h.grab)); if (h.on) hands.push(mockHand({ id, side, palm: [mm(h.x, 0), mm(h.y, 1), mm(h.z, 2)], pinch: h.pinch, grab: h.grab })); } const raw = { t: 'f', id: ++S.id, fps: hz, hands }; this.ingest(/\/raw\b/.test(this.url) ? raw : this._conv.convert(raw)); }, 1000 / hz); const stop = () => { clearInterval(timer); for (const [n, f] of ev) target.removeEventListener(n, f); this._sim = null; this._lose(); this._setStatus(this._held || (this.connected ? 'bridge' : this._wanted ? 'connecting' : 'idle')); this._held = null; }; this._held = this.status; // what the bridge says keeps updating underneath (see _setStatus) this._sim = { stop }; this._setStatus('simulated'); return stop; } get simulating() { return !!this._sim; } /** Stop the simulator (the bridge's hands come back if it is connected). */ stopSimulation() { if (this._sim) this._sim.stop(); } // ------------------------------------------------------------ drawing /** * A point in mm → canvas pixels. view: * 'oblique' (default) the performer's eye: up the canvas = higher AND farther, so a flat hand * shows its fingers instead of a line * 'front' x across, y up (a palm-down hand is edge-on) * 'top' x across, z down the canvas toward the performer * Uses this input's interaction box (so drawings line up with the leap/* signals) unless `box` is given. */ project(p, w, h, { view = 'oblique', box = this.box } = {}) { const n = normalizePoint(p, box, false); if (view === 'top') return [n[0] * w, n[2] * h]; if (view === 'front') return [n[0] * w, (1 - n[1]) * h]; return [n[0] * w, (0.65 * (1 - n[1]) + 0.35 * n[2]) * h]; } /** Draw the hands onto a 2D context (see project() for views). Points outside the box still draw. */ skeleton(ctx, w, h, { view = 'oblique', box = this.box, colorLeft = 'rgba(55,201,120,0.95)', colorRight = 'rgba(255,209,102,0.95)', lineWidth = 2, hands = this.hands } = {}) { const P = (p) => this.project(p, w, h, { view, box }); for (const hand of hands) { const col = hand.side === 'left' ? colorLeft : colorRight; ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = lineWidth; for (const [a, b] of handBones(hand)) { if (!a || !b) continue; const [x1, y1] = P(a), [x2, y2] = P(b); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); } const [px, py] = P(hand.palm); ctx.globalAlpha = 0.25 + hand.grab * 0.5; ctx.beginPath(); ctx.arc(px, py, Math.max(3, lineWidth * 3), 0, 6.2832); ctx.fill(); ctx.globalAlpha = 1; for (const f of hand.fingers) { const tip = f[f.length - 1]; if (!tip) continue; const [x, y] = P(tip); ctx.beginPath(); ctx.arc(x, y, lineWidth * 1.6, 0, 6.2832); ctx.fill(); } if (hand.pinch > THRESHOLDS.pinch.off && hand.fingers[0]?.length && hand.fingers[1]?.length) { const [x, y] = P(hand.fingers[1][hand.fingers[1].length - 1]); ctx.globalAlpha = Math.min(1, hand.pinch); ctx.beginPath(); ctx.arc(x, y, lineWidth * 4, 0, 6.2832); ctx.stroke(); ctx.globalAlpha = 1; } } } /** A small status + skeleton panel (the console's L1 section uses it; so does the lab). */ mountPanel(el, opts) { return mountLeapPanel(el, this, opts); } // ------------------------------------------------------------ internals _open() { if (!this._wanted || this._ws) return; const WS = this.WS || globalThis.WebSocket; if (!WS) { this._setStatus('closed'); return; } let ws; try { ws = new WS(this.url); } catch (e) { this._schedule(); return; } this._ws = ws; this._setStatus('connecting'); ws.onopen = () => { this._retry = 500; // what LeapJS says on open; our bridge ignores it, an old Leap service streams only after it try { ws.send(JSON.stringify({ background: true })); ws.send(JSON.stringify({ focused: true })); } catch {} }; ws.onmessage = (m) => { let msg; try { msg = JSON.parse(typeof m.data === 'string' ? m.data : String(m.data)); } catch { return; } if (this._sim && Array.isArray(msg.hands)) return; // the simulator owns the hands while it runs this.ingest(msg); }; ws.onerror = () => {}; ws.onclose = () => { if (this._ws !== ws) return; this._ws = null; this._setStatus(this._wanted ? 'connecting' : 'closed'); if (!this._sim) this._lose(); this._schedule(); }; } _schedule() { if (!this._wanted || !this.reconnect) return; clearTimeout(this._timer); this._timer = setTimeout(() => this._open(), this._retry); this._retry = Math.min(5000, this._retry * 2); } _setStatus(s) { if (this._sim && s !== 'simulated') { this._held = s; return; } // restored when the simulator stops const changed = s !== this.status; this.status = s; const code = s === 'tracking' || s === 'simulated' ? 3 : s === 'no-device' ? 2 : s === 'bridge' || s === 'no-service' ? 1 : 0; if (this.signals && this.signals.get('leap/status') !== code) this.signals.set('leap/status', code); if (changed) for (const cb of this._subs.status) { try { cb(s, this); } catch (e) { console.error('[leap] onStatus:', e); } } } /** Every hand let go (connection lost, simulator stopped). */ _lose() { if (!this.hands.length && this._count === 0) return; this.hands = []; this._publish([]); } _publish(hands) { const s = this.signals; const events = this.gestures.update(hands); if (!s) return; if (hands.length !== this._count) { this._count = hands.length; s.set('leap/hands', hands.length); } const by = {}; for (const h of hands) if (!by[h.side]) by[h.side] = h; for (const side of SIDES) { const h = by[side], p = `leap/hand/${side}`; if (!h) { if (this._present[side]) { this._present[side] = false; s.set(`${p}/present`, 0); s.set(`${p}/pinch`, 0); s.set(`${p}/grab`, 0); s.set(`${p}/speed`, 0); } continue; } if (!this._present[side]) { this._present[side] = true; s.set(`${p}/present`, 1); } const n = normalizePoint(h.palm, this.box); s.set(`${p}/x`, n[0]); s.set(`${p}/y`, n[1]); s.set(`${p}/z`, n[2]); s.set(`${p}/pinch`, h.pinch); s.set(`${p}/grab`, h.grab); const a = handAngles(h.direction, h.normal); s.set(`${p}/roll`, a.roll); s.set(`${p}/pitch`, a.pitch); s.set(`${p}/yaw`, a.yaw); s.set(`${p}/speed`, Math.min(1, Math.hypot(h.velocity[0], h.velocity[1], h.velocity[2]) / SPEED_FULL)); if (this.fingers) { for (let d = 0; d ＜ 5; d++) { const f = h.fingers[d]; const tip = f && f[f.length - 1]; if (!tip) continue; const t = normalizePoint(tip, this.box); const q = `${p}/${FINGERS[d]}`; s.set(`${q}/x`, t[0]); s.set(`${q}/y`, t[1]); s.set(`${q}/z`, t[2]); } } } if (by.left && by.right) { const d = Math.hypot(by.left.palm[0] - by.right.palm[0], by.left.palm[1] - by.right.palm[1], by.left.palm[2] - by.right.palm[2]); s.set('leap/both/distance', Math.min(1, d / BOTH_FULL)); } for (const e of events) { if (e.side === 'both') { const [l, r] = e.hands || []; const mid = l && r ? normalizePoint([(l.palm[0] + r.palm[0]) / 2, (l.palm[1] + r.palm[1]) / 2, (l.palm[2] + r.palm[2]) / 2], this.box) : [0.5, 0.5, 0.5]; s.pulse(`leap/${e.type.replace('both-', 'both/')}`, { x: mid[0], y: mid[1], z: mid[2], distance: s.get('leap/both/distance') ?? 0 }); } else { const n = e.hand ? normalizePoint(e.hand.palm, this.box) : [s.get(`leap/hand/${e.side}/x`) ?? 0.5, s.get(`leap/hand/${e.side}/y`) ?? 0.5, s.get(`leap/hand/${e.side}/z`) ?? 0.5]; const strength = e.hand ? e.hand[e.type.startsWith('pinch') ? 'pinch' : 'grab'] : 0; s.pulse(`leap/hand/${e.side}/${e.type}`, { side: e.side, x: n[0], y: n[1], z: n[2], strength }); } } })`
+- `leapSignals` (function, @openav/leap, no description yet): `leapSignals({ fingers = true } = {})`
+- `mockFrame` (function, @openav/leap, no description yet): `mockFrame(t, id = Math.round(t * 60), { hands = 2 } = {})`
+- `mockHand` (function, @openav/leap, no description yet): `mockHand({ id = 1, side = 'R', palm = [0, 200, 0], pinch = 0, grab = 0, roll = 0, yaw = 0, pitch = 0, vel = [0, 0, 0], conf = 1, width = 85 } = {})`
+- `mountLeapPanel` (function, @openav/leap, no description yet): `mountLeapPanel(el, leap, { width = 300, simulate = true, simTarget } = {})`
+- `normalizePoint` (function, @openav/leap, no description yet): `normalizePoint(p, box = INTERACTION_BOX, clamp = true)`
+- `palmBasis` (function, @openav/leap, no description yet): `palmBasis(direction, normal, left)`
+- `PROTOCOL_VERSION` (constant, @openav/leap, no description yet): `PROTOCOL_VERSION = 6`
+- `protocolOfPath` (function, @openav/leap, no description yet): `protocolOfPath(pathname)`
+- `rawToV6` (function, @openav/leap, no description yet): `rawToV6(raw, tUs, opts)`
+- `RESERVED_PORTS` (constant, @openav/leap, no description yet): `RESERVED_PORTS = array, 1 items`
+- `startBridge` (function, @openav/leap, no description yet): `startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', mock = false, hz = 60, bin = null, log = () => {} } = {})`
+- `STATUS` (constant, @openav/leap, no description yet): `STATUS = object, 4 keys`
+- `THRESHOLDS` (constant, @openav/leap, no description yet): `THRESHOLDS = object, 3 keys`
+- `V6Converter` (class, @openav/leap, no description yet): `new V6Converter({ box = INTERACTION_BOX, smoothing = 0.5 } = {})`
+- `v6Header` (function, @openav/leap, no description yet): `v6Header(serviceVersion = 'unknown', version = PROTOCOL_VERSION)`
+
+## pose
+
+- `HandTracker` (class, @openav/pose, no description yet): `new HandTracker({ signals = null, mirror = true } = {})`
+- `PoseTracker` (class, @openav/pose, no description yet): `new PoseTracker({ signals = null, mirror = true } = {})`
+
+## chord
+
+- `ChordDetector` (class, @openav/chord, no description yet): `new ChordDetector({ window = 80, onChord = null, signals = null } = {})`
+
+## osc
+
+- `OscOut` (class, @openav/osc, no description yet): `new OscOut(url = 'http://127.0.0.1:7456')`
+- `DEFAULT_PORT` (constant, @openav/out, no description yet): `DEFAULT_PORT = 6450`
+- `DEFAULT_TIMEOUT_MS` (constant, @openav/out, no description yet): `DEFAULT_TIMEOUT_MS = 500`
+- `globToRegExp` (function, @openav/out, no description yet): `globToRegExp(glob)`
+- `loadConfig` (function, @openav/out, no description yet): `loadConfig(file)`
+- `OUT_DEFAULT_URL` (constant, @openav/out, no description yet): `OUT_DEFAULT_URL = "ws://127.0.0.1:6450/out"`
+- `OutClient` (class, @openav/out, no description yet): `new OutClient({ url = OUT_DEFAULT_URL, id = null, WebSocket: WS, schedule, maxBackoffMs = 5000, minBackoffMs = 250 } = {})`
+- `RESERVED_PORTS` (constant, @openav/out, no description yet): `RESERVED_PORTS = array, 1 items`
+- `startBridge` (function, @openav/out, no description yet): `startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = null, watchdog = true, log = () => {}, print = (s) => console.log(s) } = {})`
+
+## mapping
+
+- `LearnWizard` (class, @openav/mapping, no description yet): `new LearnWizard({ mapper, keys, onChange = null })`
+- `loadMapUrl` (function, @openav/mapping, no description yet): `async loadMapUrl(mapper, value, { base = (typeof location !== 'undefined' ? location.href : undefined), fetchImpl = (typeof fetch !== 'undefined' ? fetch : null), timeoutMs = 8000 } = {})`
+- `MAP_FORMAT` (constant, @openav/mapping, no description yet): `MAP_FORMAT = "openav.map"`
+- `MAP_MAX_BYTES` (constant, @openav/mapping, no description yet): `MAP_MAX_BYTES = 262144`
+- `MAP_VERSION` (constant, @openav/mapping, no description yet): `MAP_VERSION = 1`
+- `Mapper` (class, @openav/mapping, no description yet): `new Mapper({ signals, params, profile = 'default', onChange = null, onLearn = null })`
+- `parseMap` (function, @openav/mapping, no description yet): `parseMap(input)`
+- `parseMapUrl` (function, @openav/mapping, no description yet): `parseMapUrl(value, base)`
+- `serializeMap` (function, @openav/mapping, no description yet): `serializeMap(routes, { world = 'default', now = new Date() } = {})`
+
+## core
+
+- `Bus` (class, @openav/core, no description yet): `new Bus()`
+- `Loop` (class, @openav/core, no description yet): `new Loop(onFrame, { maxDt = 0.1 } = {})`
+- `Params` (class, @openav/core, no description yet): `new Params(schema = [])`
+- `Signals` (class, @openav/core, no description yet): `new Signals()`
+- `createShow` (function, @openav/show, no description yet): `async createShow()`
+- `isStacked` (function, @openav/show, no description yet): `isStacked(width, height)`
+- `SHELL_CSS` (constant, @openav/show, no description yet): `SHELL_CSS = "\n body { margin: 0; background: #000; height: 100vh; display: grid;\n grid…"`
+- `STACK_MAX_WIDTH` (constant, @openav/show, no description yet): `STACK_MAX_WIDTH = 820`
+- `STACK_QUERY` (constant, @openav/show, no description yet): `STACK_QUERY = "(max-width: 820px) and (orientation: portrait)"`
+- `STAGE_SHARE` (constant, @openav/show, no description yet): `STAGE_SHARE = 58`
+- `stageHeight` (function, @openav/show, no description yet): `stageHeight(height)`
+- `createCanvas` (function, @openav/stage, no description yet): `createCanvas(container, { alpha = false } = {})`
+- `Stage` (class, @openav/stage, no description yet): `new Stage({ container, params, signals, io = {} })`
+- `webtoeWorld` (function, @openav/world-webtoe, no description yet): `webtoeWorld({ name = 'webtoe', app = 'https://webtoe.openaudiovisual.com/', project = null, // URL of a .webtoe.json (CORS must allow the app origin) params = [], // openav param schema; keys are the ext() names in the patch extra = null, // (state, out) => void — derive additional ext values per frame } = {})`
+
+## remote
+
+- `aliasOf` (function, @openav/relay, no description yet): `aliasOf(name, alias = 'any')`
+- `attachRelay` (function, @openav/relay, no description yet): `attachRelay(server, { path = '/relay', log = () => {}, heartbeatMs = 20000 } = {})`
+- `bindSignals` (function, @openav/relay, no description yet): `bindSignals(client, signals, { alias = 'any', meta = signalMeta } = {})`
+- `deviceId` (function, @openav/relay, no description yet): `deviceId(key = 'lab.deviceId')`
+- `fileSignal` (function, @openav/relay, no description yet): `fileSignal(signals, name, value, { pulse = false, meta = signalMeta, source = '' } = {})`
+- `normalizeValue` (function, @openav/relay, no description yet): `normalizeValue(name, value)`
+- `RelayClient` (class, @openav/relay, no description yet): `new RelayClient({ role = 'controller', room = 'default', id = deviceId(), url = null, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig } = {})`
+- `signalMeta` (function, @openav/relay, no description yet): `signalMeta(name, { pulse = false } = {})`
+- `attachTouchPad` (function, @openav/remote, no description yet): `attachTouchPad(pad, io, { onMove, onEnd } = {})`
+- `localSensors` (function, @openav/remote, no description yet): `localSensors(signals, { prefix = 'phone/local/', alias = 'any', source = 'local', hooks = {} } = {})`
+- `mountJoinCard` (function, @openav/remote, no description yet): `mountJoinCard(parent, host)`
+- `mountRemote` (function, @openav/remote, no description yet): `mountRemote(root, opts = {})`
+- `mountRemoteHost` (function, @openav/remote, no description yet): `mountRemoteHost({ signals, params, mapper, world = null, room = 'default', auto = {}, surface = null, feedbackHz = 10, url = null, mode = null, controllers = null } = {})`
+- `PhoneSensors` (class, @openav/remote, no description yet): `new PhoneSensors(io, hooks = {})`
+- `autoArrange` (function, @openav/surface, no description yet): `autoArrange(items, cols, fixed = [])`
+- `autoSurface` (function, @openav/surface, no description yet): `autoSurface(params = [], { perPage = 8, style = 'auto', pairs = [], meters = [], smooth = 0.04, title = '' } = {})`
+- `canFullscreen` (function, @openav/surface, no description yet): `canFullscreen()`
+- `COLOR_NAMES` (constant, @openav/surface, no description yet): `COLOR_NAMES = array, 7 items`
+- `DEFAULT_SIZE` (constant, @openav/surface, no description yet): `DEFAULT_SIZE = object, 14 keys`
+- `feedbackFor` (function, @openav/surface, no description yet): `feedbackFor(state, bindings)`
+- `gridOrientation` (function, @openav/surface, no description yet): `gridOrientation(g)`
+- `haptic` (function, @openav/surface, no description yet): `haptic(ms, enabled = true)`
+- `injectTheme` (function, @openav/surface, no description yet): `injectTheme()`
+- `keepAwake` (function, @openav/surface, no description yet): `keepAwake()`
+- `lockViewport` (function, @openav/surface, no description yet): `lockViewport()`
+- `normalizeLayout` (function, @openav/surface, no description yet): `normalizeLayout(raw)`
+- `orientationOf` (function, @openav/surface, no description yet): `orientationOf(w, h)`
+- `planKeyboard` (function, @openav/surface, no description yet): `planKeyboard({ width, height, base = 48, minKeyPx = 38, maxWhites = 22, stackBelow = 2.2, forceRows = 0 })`
+- `resolvePage` (function, @openav/surface, no description yet): `resolvePage(page, orientation)`
+- `routesFromLayout` (function, @openav/surface, no description yet): `routesFromLayout(layout, params = [], { smooth = 0.04 } = {})`
+- `signalNames` (function, @openav/surface, no description yet): `signalNames(layout)`
+- `signalSink` (function, @openav/surface, no description yet): `signalSink(signals)`
+- `stretchRows` (function, @openav/surface, no description yet): `stretchRows(placements, cols)`
+- `Surface` (class, @openav/surface, no description yet): `new Surface(container, { layout, sink, haptics = true, tabs = true, orientation = null, onPage = null } = {})`
+- `THEME_VARS` (constant, @openav/surface, no description yet): `THEME_VARS = object, 15 keys`
+- `toggleFullscreen` (function, @openav/surface, no description yet): `toggleFullscreen()`
+- `validateLayout` (function, @openav/surface, no description yet): `validateLayout(layout)`
+- `WIDGET_CLASSES` (constant, @openav/surface, no description yet): `WIDGET_CLASSES = object, 14 keys`
+- `WIDGET_TYPES` (constant, @openav/surface, no description yet): `WIDGET_TYPES = array, 14 items`
+- `widgetTypeFor` (function, @openav/surface, no description yet): `widgetTypeFor(p, { continuousCount = 0, style = 'auto' } = {})`
+
+## backstage
+
+- `mountConsole` (function, @openav/console, no description yet): `mountConsole(root, app, opts = {})`
+- `defaultMonitorUrl` (function, @openav/monitor, no description yet): `defaultMonitorUrl(loc = globalThis.location)`
+- `MonitorFeed` (class, @openav/monitor, no description yet): `new MonitorFeed({ url = defaultMonitorUrl(), hz = 15 } = {})`
+- `snapshotOf` (function, @openav/monitor, no description yet): `snapshotOf({ timeline, params, signals, stage, loop }, state)`
+
+## fab
+
+- `candidateUrls` (function, @openav/fab, no description yet): `candidateUrls(kind, opts = {})`
+- `checkMesh` (function, @openav/fab, no description yet): `checkMesh(input, opts = {})`
+- `DEFAULT_URLS` (constant, @openav/fab, no description yet): `DEFAULT_URLS = object, 2 keys`
+- `exportAs` (function, @openav/fab, no description yet): `async exportAs(x, fmt, opts = {}, kernel = null)`
+- `Fab` (class, @openav/fab, no description yet): `new Fab(opts = {})`
+- `fromMeshLike` (function, @openav/fab, no description yet): `fromMeshLike(m, scale = 1)`
+- `fromStlBytes` (function, @openav/fab, no description yet): `fromStlBytes(bytes)`
+- `loadKernel` (function, @openav/fab, no description yet): `async loadKernel(kind, opts = {})`
+- `meshOf` (function, @openav/fab, no description yet): `meshOf(x, opts = {})`
+- `meshOfAsync` (function, @openav/fab, no description yet): `async meshOfAsync(x, opts = {})`
+- `MIME` (constant, @openav/fab, no description yet): `MIME = object, 5 keys`
+- `toGlbBytes` (function, @openav/fab, no description yet): `toGlbBytes(mesh)`
+- `toObjText` (function, @openav/fab, no description yet): `toObjText(mesh, name = 'fab')`
+- `toStlBytes` (function, @openav/fab, no description yet): `toStlBytes(mesh)`
+- `weldMesh` (function, @openav/fab, no description yet): `weldMesh(mesh, tolerance)`
+
+## mcp
+
+- `list_controllers` (tool, @openav/mcp, no description yet): `list_controllers`
+- `list_examples` (tool, @openav/mcp, no description yet): `list_examples`
+- `read_doc` (tool, @openav/mcp, no description yet): `read_doc`
+- `read_profile` (tool, @openav/mcp, no description yet): `read_profile`
+- `run_checks` (tool, @openav/mcp, no description yet): `run_checks`
+- `scaffold_profile` (tool, @openav/mcp, no description yet): `scaffold_profile`
+- `scaffold_world` (tool, @openav/mcp, no description yet): `scaffold_world`
+- `validate_profile` (tool, @openav/mcp, no description yet): `validate_profile`
