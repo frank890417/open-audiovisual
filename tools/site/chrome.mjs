@@ -62,6 +62,9 @@ export const GA_SNIPPET = `<script>if(/(^|\\.)openaudiovisual\\.com$/.test(locat
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 export const attr = (s) => esc(s).replace(/"/g, '&quot;');
 
+/** The magnifier in the top bar's search button. */
+export const SEARCH_ICON = `<svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg>`;
+
 export const LOGO = `<svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg>`;
 
 // ---------------------------------------------------------------------------- icons
@@ -123,7 +126,8 @@ const pkg = () => JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'u
  */
 export function sharedNodes() {
   return [
-    { '@type': 'WebSite', '@id': WEBSITE_ID, url: SITE, name: 'open-audiovisual', inLanguage: ['en', 'zh-Hant'], publisher: { '@id': PERSON_ID } },
+    { '@type': 'WebSite', '@id': WEBSITE_ID, url: SITE, name: 'open-audiovisual', inLanguage: ['en', 'zh-Hant'], publisher: { '@id': PERSON_ID },
+      potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: SITE + 'docs/reference/?q={search_term_string}' }, 'query-input': 'required name=search_term_string' } },
     { '@type': 'Person', '@id': PERSON_ID, name: 'Che-Yu Wu', alternateName: '吳哲宇', url: 'https://cheyuwu.com/',
       sameAs: ['https://github.com/frank890417', 'https://www.wikidata.org/wiki/Q138836579'] },
     {
@@ -228,6 +232,7 @@ export function headBasics(t, c, {
     `<link rel="manifest" href="${c.root}${ICON_FILES.manifest}">`,
     siteCss ? `<link rel="preload" href="${c.root}assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>` : '',
     siteCss ? `<link rel="stylesheet" href="${c.root}assets/home/home.css">` : '',
+    siteCss ? `<script type="module" src="${c.root}assets/search/search.js"></script>` : '',   // the nav's search (every page with a top bar)
     analytics ? GA_SNIPPET : '',
     ld === false ? '' : ldScript(jsonLdGraph(c, t, ld)),
   ];
@@ -256,6 +261,7 @@ export function topBar(t, c) {
     ${NAV.map((n) => `<a href="${href(n)}"${cur(n)}>${t.ui.nav[n[0]]}</a>`).join('\n    ')}
   </nav>
   <div class="top-end">
+    <a class="nav-search" href="${c.to('reference')}" data-search data-placeholder="${attr(t.ui.searchPlaceholder)}" data-loading="${attr(t.ui.searchLoading)}" aria-label="${attr(t.ui.searchLabel)}" aria-keyshortcuts="Control+K Meta+K /">${SEARCH_ICON}<span class="nav-search-label">${esc(t.ui.search)}</span></a>
     <div class="langs" role="group" aria-label="${attr(t.ui.langLabel)}">
       <a href="${c.lang.en}" hreflang="en" lang="en" data-lang="en"${c.locale === 'en' ? ' aria-current="page"' : ''}>EN</a><span aria-hidden="true">|</span><a href="${c.lang.zh}" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh"${c.locale === 'zh' ? ' aria-current="page"' : ''}>中文</a>
     </div>

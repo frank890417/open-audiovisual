@@ -122,7 +122,7 @@ html[lang^="zh"] .sec .card-name { letter-spacing: .01em; }
 .sec table.index td a { color: var(--fg-2); text-decoration-color: var(--line-2); }
 .sec table.index tr:target > * { background: rgba(255, 90, 31, .08); }
 .sec table.index td { white-space: normal; min-width: 14ch; }
-.table-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--line); background: var(--void); }
+.table-scroll { position: relative; max-width: 100%; overflow-x: auto; border: 1px solid var(--line); background: var(--void); }   /* position: relative keeps the sticky header cells inside it: without it the page scrolled sideways on a phone (556 px of 390) */
 .table-scroll:focus-visible { outline: 2px solid var(--sig); outline-offset: 2px; }
 .sec table { width: 100%; border-collapse: collapse; font: 12.5px/1.45 var(--mono); }
 .sec caption { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; font: 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }

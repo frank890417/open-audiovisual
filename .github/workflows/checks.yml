@@ -35,3 +35,7 @@ jobs:
       - run: node p5/test/reference-smoke.cjs
         env:
           PW: ${{ runner.temp }}/pw/node_modules/playwright
+      # the site search in the top bar: opens, finds micLevel (in Chinese too), and the bar is not crowded at 360 and 390 px
+      - run: node p5/test/search-smoke.cjs
+        env:
+          PW: ${{ runner.temp }}/pw/node_modules/playwright

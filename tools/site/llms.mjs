@@ -53,7 +53,7 @@ export const DOC_BLURB = {
   roadmap: ['signal recording and replay, npm publish, WebGPU worlds, NDI gateway, distributed performance, agent performers.', '訊號錄製與重播、npm 發佈、WebGPU 世界、NDI 閘道、分散式演出、代理演奏者。'],
 };
 
-const PAGE_BLURB = {
+export const PAGE_BLURB = {
   '': ['a playable instrument, how it works, the works, quick start, for AI agents.', '能玩的樂器、運作方式、作品、快速開始、給 AI 代理。'],
   'docs/': ['the complete documentation on one page: every chapter listed below, in one HTML file. Generated from the Markdown in `docs/`.', '完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。'],
   'docs/reference/': ['the API reference: every variable, function, event and option of oav-p5 (`micLevel`, `knob1`, `startDrums()` …) and every export of every package, searchable, each with a description, parameters, examples you can run and a link to the source line. Generated from the code on every build and checked against it in CI, so it cannot list a name that does not exist or miss one that does. The same data as JSON: https://openaudiovisual.com/docs/reference/reference.json.', 'API 參考：oav-p5 的每個變數、函式、事件與選項（`micLevel`、`knob1`、`startDrums()` …）和每個套件的每個匯出，能搜尋，每一條有說明、參數、能直接跑的範例與原始碼行號連結。每次建置都從程式碼產生，並在 CI 裡跟程式碼對過，所以不會列出不存在的名稱，也不會漏掉存在的。同一份資料的 JSON：https://openaudiovisual.com/docs/reference/reference.json。'],
@@ -63,7 +63,7 @@ const PAGE_BLURB = {
   'changelog/': ['what changed, newest first: oav-p5 version by version, the framework and the site by day, each with its commit.', '改了什麼，新的在上：oav-p5 依版本，框架與網站依日期，每一條附 commit。'],
   'webtoe/': ['the sister project and the engine half of the stack: a web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world. Editor: https://webtoe.openaudiovisual.com/', '姊妹專案，整套的引擎那一半：網頁原生、節點式的即時影像資料流引擎（TouchDesigner 式、WebGL2 + WebGPU、零執行期相依），能打開 TouchDesigner `.toe` 專案；`@openav/world-webtoe` 如何把 WebToe 網路當世界演奏。編輯器：https://webtoe.openaudiovisual.com/'],
 };
-const PAGE_TITLE = {
+export const PAGE_TITLE = {
   '': ['Homepage', '首頁'], 'docs/': ['Handbook', '手冊'], 'docs/reference/': ['API reference', 'API 參考'], 'controllers/': ['MIDI controller library', 'MIDI 控制器圖鑑'],
   'examples/': ['Examples', '範例'], 'p5/': ['p5.js in one line', 'p5.js 一行指令'], 'webtoe/': ['WebToe', 'WebToe'],
   'changelog/': ['Changelog', '更新紀錄'],

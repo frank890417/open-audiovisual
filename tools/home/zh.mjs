@@ -34,6 +34,10 @@ export default {
     open: '開啟',
     source: '原始碼',
     home: 'open-audiovisual 首頁',
+    search: '搜尋',
+    searchLabel: '搜尋整個網站',
+    searchPlaceholder: '搜尋 API 參考、手冊、範例…',
+    searchLoading: '正在載入索引…',
     // 兩個版本並列，網站上寫到版本的地方（首頁、/p5/、/docs/）都用這一句，連到 /zh/changelog/
     versions: `oav-p5 ${minor(facts.p5Version)} · 框架 ${minor(facts.version)}`,
   },

@@ -462,3 +462,22 @@ html[lang^="zh"] .wt-band h2 { letter-spacing: 0; line-height: 1.15; }
 .no-midi button { flex: none; padding: 8px 12px; border: 1px solid var(--fg-3); background: transparent; color: var(--fg); font: 500 12px/1 var(--mono); cursor: pointer; }
 .no-midi button:hover { border-color: var(--sig); }
 .no-midi a { color: var(--fg); text-decoration-color: var(--sig); white-space: nowrap; }
+
+/* the search button in the top bar (assets/search/search.js turns it into the site search; without JavaScript it is a link to the API reference) */
+.nav-search { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; font: 400 13px var(--mono); color: var(--fg-2); text-decoration: none;
+  border: 1px solid var(--line-2); background: transparent; cursor: pointer; white-space: nowrap; }
+.nav-search:hover { color: var(--fg); border-color: var(--fg-2); }
+.nav-search .search-icon { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.nav-search kbd { font: 500 11px/1.4 var(--mono); color: var(--fg-3); border: 1px solid var(--line-2); border-radius: 3px; padding: 0 5px; }
+@media (max-width: 1100px) { .nav-search kbd { display: none; } }
+@media (max-width: 760px) { .nav-search-label { display: none; } .nav-search { padding: 6px 8px; min-width: 32px; min-height: 32px; justify-content: center; box-sizing: border-box; } }
+
+/* narrow phones: the top bar has a fourth thing now (search), so GitHub becomes its mark (the word stays in the page for screen readers) */
+.langs a { white-space: nowrap; }
+@media (max-width: 400px) {
+  .top-end { gap: 10px; }
+  .gh { --gh-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E");
+    font-size: 0; line-height: 0; padding: 0; width: 32px; height: 32px; display: inline-grid; place-items: center; }
+  .gh::before { content: ''; width: 16px; height: 16px; background: currentColor; -webkit-mask: var(--gh-mark) center / contain no-repeat; mask: var(--gh-mark) center / contain no-repeat; }
+}
+@media (max-width: 350px) { .brand span { display: none; } }

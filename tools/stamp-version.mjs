@@ -64,7 +64,7 @@ walk(path.join(ROOT, 'assets'));                        // homepage modules (hom
 walk(path.join(ROOT, 'embed'));                         // the iframe controller (embed/controller/)
 // generated site pages (tools/build-*.mjs): stamp their stylesheet and module URLs too
 for (const p of ['controllers/index.html', 'zh/controllers/index.html', 'docs/index.html', 'zh/docs/index.html', 'docs/reference/index.html', 'zh/docs/reference/index.html', 'webtoe/index.html', 'zh/webtoe/index.html', 'check/index.html', 'zh/check/index.html',
-  'zh/examples/index.html', 'p5/index.html', 'zh/p5/index.html'])   // examples/index.html and every example page are under examples/ (walked above)
+  'zh/examples/index.html', 'p5/index.html', 'zh/p5/index.html', 'changelog/index.html', 'zh/changelog/index.html'])   // examples/index.html and every example page are under examples/ (walked above)
   if (fs.existsSync(path.join(ROOT, p))) files.push(path.join(ROOT, p));
 // one page per controller: controllers/<id>/index.html, zh/controllers/<id>/index.html
 for (const base of ['controllers', 'zh/controllers'])

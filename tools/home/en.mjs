@@ -34,6 +34,10 @@ export default {
     open: 'Open',
     source: 'Source',
     home: 'open-audiovisual home',
+    search: 'Search',
+    searchLabel: 'Search the whole site',
+    searchPlaceholder: 'Search the API reference, handbook, examples…',
+    searchLoading: 'Loading the index…',
     // the two versions, side by side wherever the site names one (homepage, /p5/, /docs/), linked to /changelog/
     versions: `oav-p5 ${minor(facts.p5Version)} · framework ${minor(facts.version)}`,
   },

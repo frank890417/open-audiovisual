@@ -97,6 +97,13 @@ addEventListener('keydown', (e) => {
   if (!id && first) requestAnimationFrame(() => $('h3[id]', first)?.scrollIntoView({ block: 'start' }));
 })();
 
+// a link to a card the search has hidden (the nav's search dialog, a pasted #anchor): drop the search so the card is there
+addEventListener('hashchange', () => {
+  const id = decodeURIComponent(location.hash.slice(1));
+  const card = id && document.getElementById(id) && document.getElementById(id).closest('.ref');
+  if (card && card.hidden && input) { input.value = ''; apply(''); document.getElementById(id).scrollIntoView({ block: 'start' }); }
+});
+
 // ───────── the loader line ─────────
 const LOADER = R.loader || '';
 $('.ref-loader-copy')?.addEventListener('click', async (e) => {
