@@ -266,7 +266,7 @@ test('serial sink on a device that is not there: state "down", no throw, values 
 const frameTimer = (fn) => setTimeout(fn, 5);
 
 test('OutClient: set() twice on a channel in one frame leaves once (the last); several channels leave as one batch', async () => {
-  const r = await rig(udpJson({}));
+  const r = await rig(udpJson({}, 5000));   // a long watchdog: no heartbeat (a third of it) lands in the 40 ms this test counts datagrams in
   const c = new OutClient({ url: `ws://127.0.0.1:${r.bridge.port}/out`, id: 'w', schedule: frameTimer });
   const states = []; c.onStatus((s) => states.push(s));
   c.connect();

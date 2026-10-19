@@ -55,10 +55,11 @@ export class OutClient {
       for (const [ch, v] of Object.entries(this.last)) this._pending.set(ch, v);   // after a reconnect the bridge has forgotten everything
       this._kick();
       clearInterval(this._beat);
-      this._beat = setInterval(() => this._heartbeat(), Math.max(50, Math.round(((this.bridge && this.bridge.timeoutMs) || 500) / 3)));
-      this._beat.unref?.();
+      this._armBeat();
     };
-    ws.onmessage = (e) => { try { const m = JSON.parse(e.data); if (m && m.type === 'status') this.bridge = m; } catch {} };
+    // the bridge says how long its watchdog waits when the socket opens: beat at a third of THAT, not of the 500 ms we guessed
+    // before it spoke (a bridge with timeoutMs 150 was sent safe values between two beats 167 ms apart)
+    ws.onmessage = (e) => { try { const m = JSON.parse(e.data); if (m && m.type === 'status') { this.bridge = m; if (this._ws === ws) this._armBeat(); } } catch {} };
     const lost = () => {
       if (this._ws !== ws) return;
       this._ws = null; clearInterval(this._beat);
@@ -104,6 +105,11 @@ export class OutClient {
     this._pending.clear();
     this.sent += items.length;
     this._raw(items.length === 1 ? { type: 'set', ch: items[0].ch, v: items[0].v } : { type: 'batch', items });
+  }
+  _armBeat() {
+    clearInterval(this._beat);
+    this._beat = setInterval(() => this._heartbeat(), Math.max(50, Math.round(((this.bridge && this.bridge.timeoutMs) || 500) / 3)));
+    this._beat.unref?.();
   }
   _heartbeat() {
     if (this._pending.size) return;
