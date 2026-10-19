@@ -65,7 +65,13 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? 'âœ
       if (!job) { r.writeHead(404); return r.end(); }
       r.setHeader('Content-Type', 'text/html; charset=utf-8');
       const p5 = `https://cdn.jsdelivr.net/npm/p5@${job.v}/lib/p5.min.js`;
-      if (job.kind === 'sketch') return r.end(`<!doctype html><meta charset="utf-8"><style>html,body{margin:0;background:#111}</style><script>window.OAV_P5={panel:'closed',relay:'ws://127.0.0.1:1/relay'}</script><script src="${p5}"></script><script src="/p5/oav-p5.js"></script><script>${job.code.replace(/<\/script/gi, '<\\/script')}</script>`);
+      if (job.kind === 'sketch') {
+        // an example about a loading option starts with `window.OAV_P5 = { â€¦ };`: it runs before oav-p5.js, the sketch after
+        const m = /^(window\.OAV_P5\s*=\s*\{[\s\S]*?\};)[ \t]*\n/.exec(job.code);
+        const opts = m ? m[1] : '', rest = m ? job.code.slice(m[0].length) : job.code;
+        const esc = (x) => x.replace(/<\/script/gi, '<\\/script');
+        return r.end(`<!doctype html><meta charset="utf-8"><style>html,body{margin:0;background:#111}</style><script>${esc(opts)}\nwindow.OAV_P5=Object.assign({panel:'closed',relay:'ws://127.0.0.1:1/relay'},window.OAV_P5||{})</script><script src="${p5}"></script><script src="/p5/oav-p5.js"></script><script>${esc(rest)}</script>`);
+      }
       return r.end(`<!doctype html><meta charset="utf-8"><style>html,body{margin:0;background:#111}</style><script type="importmap">${JSON.stringify({ imports: importMap() })}</script><div id="app"></div><canvas id="c" width="400" height="300"></canvas><script type="module">${job.code.replace(/<\/script/gi, '<\\/script')}</script>`);
     }
     if (p.endsWith('/')) p += 'index.html';

@@ -97,7 +97,8 @@ entry now). Do not add to it: write the entry.
 changes, what must happen before it has a value (the microphone permission, a click), and the one thing that surprises people.
 Examples go from the smallest that shows the point (about 8 lines), to a realistic use, to the gotcha; each is a complete sketch
 with `setup()` and `draw()` that runs when pasted into OpenProcessing, **without** the loader line (the page adds it when you copy
-or run), with a one-sentence caption saying what you will see. Code comments stay short and English, so both languages share one
+or run), with a one-sentence caption saying what you will see. An example about a loading option starts with
+`window.OAV_P5 = { … };`: that line has to run before oav-p5 loads, so the page puts the loader line right after it. Code comments stay short and English, so both languages share one
 program. Write only what the code does; what you could not read out of it goes in `tbd`.
 
 ## Verifying changes

@@ -116,7 +116,14 @@ for (const b of $$('.ref-loader-copy, .ref-run, .ref-copy')) { b.hidden = false;
 // ───────── examples ─────────
 const exOf = (btn) => btn.closest('.ref-ex');
 const codeOf = (fig) => $('pre', fig).innerText.replace(/\n$/, '');
-const withLoader = (fig, code) => (fig.dataset.run === 'sketch' ? LOADER + '\n\n' + code : code);
+// an example about a loading option starts with `window.OAV_P5 = { … };`: that line has to run BEFORE the loader line
+const OPT = /^(window\.OAV_P5\s*=\s*\{[\s\S]*?\};)[ \t]*\n/;
+const splitOptions = (code) => { const m = OPT.exec(code); return m ? { options: m[1], rest: code.slice(m[0].length).replace(/^\n+/, '') } : { options: '', rest: code }; };
+const withLoader = (fig, code) => {
+  if (fig.dataset.run !== 'sketch') return code;
+  const s = splitOptions(code);
+  return (s.options ? s.options + '\n' : '') + LOADER + '\n\n' + s.rest;
+};
 
 page.addEventListener('click', async (e) => {
   const copy = e.target.closest('.ref-copy');
@@ -139,9 +146,11 @@ function start(fig) {
   const live = $('.ref-live', fig), run = $('.ref-run', fig);
   const p5 = `https://cdn.jsdelivr.net/npm/p5@${pickedP5()}/lib/p5.min.js`;
   const oav = new URL(R.oav, location.href).href;
-  const code = codeOf(fig).replace(/<\/script/gi, '<\\/script');
+  const s = splitOptions(codeOf(fig));
+  const code = s.rest.replace(/<\/script/gi, '<\\/script');
+  const opts = s.options.replace(/<\/script/gi, '<\\/script');
   const doc = `<!doctype html><meta charset="utf-8"><style>html,body{margin:0;background:#111;overflow:hidden}</style>` +
-    `<script>window.OAV_P5={panel:'closed'}</script><script src="${p5}"></script><script src="${oav}"></script><script>${code}</script>`;
+    `<script>${opts || "window.OAV_P5={panel:'closed'}"}</script><script src="${p5}"></script><script src="${oav}"></script><script>${code}</script>`;
   const f = document.createElement('iframe');
   f.title = T.frameTitle || 'Live example';
   f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-modals');
