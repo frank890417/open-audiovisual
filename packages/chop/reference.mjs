@@ -2,6 +2,10 @@
 // Every number in here was run against packages/chop/index.js. The module examples run headless: they print into <div id="app">
 // or draw into <canvas id="c"> (400 x 300), so the result is visible on the smoke page and in any page that has the same two ids.
 
+// The claims read the real module through oav-p5's own `OAVp5.chop.module`. oav-p5 loads @openav/chop the first time lag() (or
+// another one of them) is called, so `before` calls it and then waits, at most five seconds, until the module is there.
+const READY = "(lag(0), new Promise((done) => { const t = setInterval(() => { if (OAVp5.chop.state === 'on') { clearInterval(t); done(); } }, 20); setTimeout(done, 5000); }))";
+
 export default {
   approach: {
     group: 'chop',
@@ -54,6 +58,7 @@ document.getElementById('app').textContent =
         caption: { en: 'Prints 0.632, 0.900 and 0.990: the three numbers worth remembering.', zh: '印出 0.632、0.900、0.990：值得記住的三個數字。' },
       },
     ],
+    claims: [{ before: READY, expr: 'OAVp5.chop.module.approach(0, 1, 1, 1)', min: 0.6321, max: 0.6322 }, { before: READY, expr: 'OAVp5.chop.module.approach(0, 1, 1, 2.302585092994046)', min: 0.8999, max: 0.9001 }],
     related: ['Lag', 'TD_LAG_RATIO', 'lag'],
     keywords: {
       en: ['lag', 'smooth', 'smoothing', 'ease', 'easing', 'time constant', 'one-pole', 'low-pass', 'follow', 'chase', 'exponential'],
@@ -64,8 +69,8 @@ document.getElementById('app').textContent =
   TD_LAG_RATIO: {
     group: 'chop',
     summary: {
-      en: 'ln 10 (about 2.303): how many time constants a lag needs to cover 90% of a jump, which is what TouchDesigner\'s Lag seconds mean.',
-      zh: 'ln 10（約 2.303）：一個 lag 走完 90% 要幾個時間常數，也就是 TouchDesigner 的 Lag 秒數的意思。',
+      en: '`Math.LN10`, about 2.303: how many time constants a lag needs to cover 90% of a jump, which is what TouchDesigner\'s Lag seconds mean.',
+      zh: '`Math.LN10`，約 2.303：一個 lag 走完 90% 要幾個時間常數，也就是 TouchDesigner 的 Lag 秒數的意思。',
     },
     value: {
       type: 'Number',
@@ -94,6 +99,7 @@ document.getElementById('app').textContent =
         caption: { en: 'Prints "tau = 0.217 s, after 0.5 s the value is 0.90": half a second of Lag CHOP seconds is 90% of the way.', zh: '印出「tau = 0.217 s, after 0.5 s the value is 0.90」：Lag CHOP 的 0.5 秒就是走完 90%。' },
       },
     ],
+    claims: [{ before: READY, expr: 'OAVp5.chop.module.TD_LAG_RATIO', equals: 2.302585092994046 }],
     related: ['approach', 'Lag', 'lag'],
     keywords: {
       en: ['ln 10', 'touchdesigner', 'lag chop', 'seconds', 'time constant', '90%', 'ratio', 'convert'],
@@ -146,8 +152,8 @@ document.getElementById('app').textContent =
         zh: '公開的欄位有 `up`、`down` 和 `value`（最後一次的輸出，第一次 `step` 之前是 `null`）。`up`、`down` 隨時可以改。',
       },
       {
-        en: 'The time constant underneath is `seconds / ` [`TD_LAG_RATIO`](#TD_LAG_RATIO), not `seconds`. If you want the plain 63% kind, call [`approach()`](#approach).',
-        zh: '底層的時間常數是 `seconds / ` [`TD_LAG_RATIO`](#TD_LAG_RATIO)，不是 `seconds`。想要單純 63% 那一種，直接呼叫 [`approach()`](#approach)。',
+        en: 'The time constant underneath is `seconds / TD_LAG_RATIO` (see [`TD_LAG_RATIO`](#TD_LAG_RATIO)), not `seconds`. If you want the plain 63% kind, call [`approach()`](#approach).',
+        zh: '底層的時間常數是 `seconds / TD_LAG_RATIO`（見 [`TD_LAG_RATIO`](#TD_LAG_RATIO)），不是 `seconds`。想要單純 63% 那一種，直接呼叫 [`approach()`](#approach)。',
       },
     ],
     examples: [
@@ -196,6 +202,7 @@ document.getElementById('app').textContent =
         caption: { en: 'Prints "NaN in: NaN, memory still 0.5, true in: 0.66": a non-number leaves the memory alone, and a boolean counts as 0 or 1.', zh: '印出「NaN in: NaN, memory still 0.5, true in: 0.66」：不是數字就不動記憶，布林值算成 0 或 1。' },
       },
     ],
+    claims: [{ before: READY, expr: '(() => { const l = new OAVp5.chop.module.Lag({ up: 1 }); l.step(0, 0); let v; for (let i = 0; i < 100; i++) v = l.step(1, 0.01); return v; })()', min: 0.8999, max: 0.9001 }],
     related: ['approach', 'TD_LAG_RATIO', 'lag', 'Spring', 'envelope'],
     keywords: {
       en: ['lag', 'smooth', 'smoothing', 'follow', 'vu meter', 'attack release', 'ease', 'low-pass', 'touchdesigner', 'lag chop', 'up down'],
@@ -324,6 +331,7 @@ document.getElementById('app').textContent =
         caption: { en: 'Prints "pile-up: 0.95   lone hit: 0.44": each new hit restarts from where the envelope is, so quick hits hold it high.', zh: '印出「pile-up: 0.95   lone hit: 0.44」：每一擊都從目前高度重新出發，所以密集的擊打會把它撐在高處。' },
       },
     ],
+    claims: [{ before: READY, expr: 'OAVp5.chop.module.envelope([1], 1.1)', min: 0.489, max: 0.491 }, { before: READY, expr: 'OAVp5.chop.module.envelope([1], 1.005)', min: 0.499, max: 0.501 }, { before: READY, expr: 'OAVp5.chop.module.envelope([1], 1.31)', equals: 0 }],
     related: ['envelopeStage', 'env', 'Lag', 'Count'],
     keywords: {
       en: ['envelope', 'trigger', 'trigger chop', 'attack', 'decay', 'kick', 'pulse', 'swell', 'adsr', 'on every beat'],
@@ -544,6 +552,7 @@ for (const [damping, color] of [[null, '#555'], [6, '#fa4'], [20, '#4af']]) {
         caption: { en: 'Two springs follow the same jump (grey): damping 6 (orange) overshoots and wobbles, damping 20 (blue) glides straight to the target.', zh: '兩個彈簧追同一個跳躍（灰）：damping 6（橘）衝過頭再晃幾下，damping 20（藍）直接滑到目標。' },
       },
     ],
+    claims: [{ before: READY, expr: '(() => { const s = new OAVp5.chop.module.Spring(); s.step(0, 0); let peak = 0; for (let i = 0; i < 180; i++) peak = Math.max(peak, s.step(1, 1 / 60)); return peak; })()', min: 1.37, max: 1.375 }],
     related: ['springStep', 'spring', 'Lag', 'approach'],
     keywords: {
       en: ['spring', 'spring chop', 'overshoot', 'bounce', 'wobble', 'elastic', 'damping', 'stiffness', 'physics', 'follow'],
@@ -632,6 +641,7 @@ requestAnimationFrame(frame);`,
         caption: { en: 'A scope of a sine wave that scrolls across the canvas: the newest value is at the right edge, with three seconds of history behind it (flat on the left until that much has passed).', zh: '一個正弦波的示波器，從畫布上捲過去：最新的值在右邊緣，後面是三秒的歷史（過滿三秒之前，左邊是平的）。' },
       },
     ],
+    claims: [{ before: READY, expr: 'new OAVp5.chop.module.Trail().step(0, 0).length', equals: 121 }],
     related: ['trail', 'drawTrail', 'scope', 'Slope'],
     keywords: {
       en: ['trail', 'trail chop', 'history', 'buffer', 'scope', 'oscilloscope', 'last seconds', 'ring buffer', 'plot'],

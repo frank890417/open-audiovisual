@@ -409,6 +409,12 @@ host.onStatus({ status: 'open', peers: { controllers: 2 } });   // pretend the r
     notes: [
       { en: 'The words on the app\'s tabs and header are in Chinese.', zh: 'app 的分頁和狀態列上的字是中文。' },
     ],
+    tbd: [
+      {
+        en: 'Not opened on a real phone for this entry: how the tabs behave is read from `packages/remote/app.js` and docs/remote.md.',
+        zh: '這一條沒有在真正的手機上打開過：分頁怎麼運作，是從 `packages/remote/app.js` 和 docs/remote.md 讀來的。',
+      },
+    ],
     examples: [
       {
         code: `import { mountRemote } from '@openav/remote';

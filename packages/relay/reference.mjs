@@ -58,6 +58,12 @@ export default {
         zh: '重連之後，演出端要再送一次 `config()`：用戶端不會記得它。`mountRemoteHost()` 會替你做這件事。',
       },
     ],
+    tbd: [
+      {
+        en: 'The reconnect delays (0.5 s, 1 s, 2 s, 4 s, then 5 s) are read from the code, not measured against a relay that goes down and comes back. The second example runs the client against a stand-in socket, not a real WebSocket server.',
+        zh: '重連的間隔（0.5 秒、1 秒、2 秒、4 秒，之後 5 秒）是從程式碼讀來的，沒有拿一個斷線又恢復的中繼去實測。第二個範例是拿替身 socket 跑用戶端，不是真正的 WebSocket 伺服器。',
+      },
+    ],
     examples: [
       {
         code: `import { RelayClient, bindSignals } from '@openav/relay';
@@ -130,8 +136,8 @@ setTimeout(() => {
   deviceId: {
     group: 'remote',
     summary: {
-      en: 'The short random id of this browser, kept in `localStorage`: the `<id>` in `phone/<id>/…`.',
-      zh: '這個瀏覽器的隨機短 id，存在 `localStorage` 裡：就是 `phone/<id>/…` 裡的 `<id>`。',
+      en: 'The short random id of this browser, kept in `localStorage`, that names this phone in its signals, as in `phone/ab12/tilt/x`.',
+      zh: '這個瀏覽器的隨機短 id，存在 `localStorage` 裡，用來在訊號名稱裡稱呼這支手機，例如 `phone/ab12/tilt/x`。',
     },
     params: [
       { name: 'key', type: 'String', en: 'The `localStorage` key. The default is the one the lab uses, so `/control` and `/remote` on one phone count as one device.', zh: '`localStorage` 的 key。預設是實驗室用的那一個，所以同一支手機上的 `/control` 和 `/remote` 算是同一個裝置。' },
