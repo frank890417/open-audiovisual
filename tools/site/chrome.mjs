@@ -34,6 +34,7 @@ export const PAGES = {
   home: '',
   controllers: 'controllers/',
   docs: 'docs/',
+  reference: 'docs/reference/',
   webtoe: 'webtoe/',
   examples: 'examples/',
   p5: 'p5/',

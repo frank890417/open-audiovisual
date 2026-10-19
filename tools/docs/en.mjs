@@ -17,6 +17,8 @@ export default {
   sourceNote: 'Written in Markdown in <code>docs/</code>; this page is generated from it.',
   llmsNote: 'For language models: <a href="{llms}">/llms.txt</a> · <a href="{llmsFull}">/llms-full.txt</a>',
 
+  reference: { label: 'API reference', text: 'Looking for one name? Every variable, function, event and option of oav-p5 and every package export, searchable, each with an example you can run.', toc: 'API reference ↗' },
+
   tocTitle: 'On this page',
   tocLabel: 'Documentation contents',
   tocButton: 'Contents',

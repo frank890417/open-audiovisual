@@ -56,6 +56,7 @@ export const DOC_BLURB = {
 const PAGE_BLURB = {
   '': ['a playable instrument, how it works, the works, quick start, for AI agents.', '能玩的樂器、運作方式、作品、快速開始、給 AI 代理。'],
   'docs/': ['the complete documentation on one page: every chapter listed below, in one HTML file. Generated from the Markdown in `docs/`.', '完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。'],
+  'docs/reference/': ['the API reference: every variable, function, event and option of oav-p5 (`micLevel`, `knob1`, `startDrums()` …) and every export of every package, searchable, each with a description, parameters, examples you can run and a link to the source line. Generated from the code on every build and checked against it in CI, so it cannot list a name that does not exist or miss one that does. The same data as JSON: https://openaudiovisual.com/docs/reference/reference.json.', 'API 參考：oav-p5 的每個變數、函式、事件與選項（`micLevel`、`knob1`、`startDrums()` …）和每個套件的每個匯出，能搜尋，每一條有說明、參數、能直接跑的範例與原始碼行號連結。每次建置都從程式碼產生，並在 CI 裡跟程式碼對過，所以不會列出不存在的名稱，也不會漏掉存在的。同一份資料的 JSON：https://openaudiovisual.com/docs/reference/reference.json。'],
   'controllers/': ['every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).', '每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。'],
   'examples/': ['every example, with a thumbnail and what it needs.', '所有範例，附縮圖與需要什麼。'],
   'p5/': ['load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone; the same line adds sound (`startSound`), a drum machine with one line of rhythm (`startDrums("bd*4, [~ sd]*2, hh*8")`), the microphone (`micLevel`), video recording (`startRecording`) and values smoothed like TouchDesigner\'s Lag CHOP (`lag()`); it also runs next to Strudel. Ready-made sketches in `p5/examples/`, each playable as an example (16 to 26).', '載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。同一行還有聲音（`startSound`）、能用一行字寫節奏的鼓機（`startDrums("bd*4, [~ sd]*2, hh*8")`）、麥克風（`micLevel`）、錄影（`startRecording`），以及像 TouchDesigner Lag CHOP 那樣變順的數值（`lag()`），也能和 Strudel 並排用。現成草圖在 `p5/examples/`，每一份都能在範例 16 到 26 直接玩。'],
@@ -63,7 +64,7 @@ const PAGE_BLURB = {
   'webtoe/': ['the sister project and the engine half of the stack: a web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world. Editor: https://webtoe.openaudiovisual.com/', '姊妹專案，整套的引擎那一半：網頁原生、節點式的即時影像資料流引擎（TouchDesigner 式、WebGL2 + WebGPU、零執行期相依），能打開 TouchDesigner `.toe` 專案；`@openav/world-webtoe` 如何把 WebToe 網路當世界演奏。編輯器：https://webtoe.openaudiovisual.com/'],
 };
 const PAGE_TITLE = {
-  '': ['Homepage', '首頁'], 'docs/': ['Handbook', '手冊'], 'controllers/': ['MIDI controller library', 'MIDI 控制器圖鑑'],
+  '': ['Homepage', '首頁'], 'docs/': ['Handbook', '手冊'], 'docs/reference/': ['API reference', 'API 參考'], 'controllers/': ['MIDI controller library', 'MIDI 控制器圖鑑'],
   'examples/': ['Examples', '範例'], 'p5/': ['p5.js in one line', 'p5.js 一行指令'], 'webtoe/': ['WebToe', 'WebToe'],
   'changelog/': ['Changelog', '更新紀錄'],
 };
@@ -115,7 +116,7 @@ function pagesSection(locale) {
   const reg = registry();
   const has = (p) => reg.some((e) => e.path === p);
   const lines = [];
-  for (const p of ['', 'docs/', 'controllers/', 'examples/', 'p5/', 'webtoe/', 'changelog/']) {
+  for (const p of ['', 'docs/', 'docs/reference/', 'controllers/', 'examples/', 'p5/', 'webtoe/', 'changelog/']) {
     if (!has(p)) continue;
     const e = reg.find((x) => x.path === p);
     const en = SITE + p, zh = SITE + 'zh/' + p, both = e.langs.includes('zh');
@@ -313,6 +314,35 @@ export function htmlToText(md) {
 }
 
 // ---------------------------------------------------------------------------- llms-full.txt
+/**
+ * The API reference as plain text, from docs/reference/reference.json (written by tools/build-reference.mjs, which runs before
+ * this file's generator): one line per entry (name, kind, package, signature, summary, what to do first), and the first example of
+ * each oav-p5 entry, so a model can answer "how do I read the microphone level" from this one file.
+ */
+export function referenceFull() {
+  const raw = read('docs/reference/reference.json');
+  if (raw === null) return '';
+  const ds = JSON.parse(raw);
+  const clean = (t) => String(t || '').replace(/\s+/g, ' ').replace(/</g, '＜').trim();
+  const byCat = new Map();
+  for (const e of ds.entries) { if (!byCat.has(e.category)) byCat.set(e.category, []); byCat.get(e.category).push(e); }
+  const out = [`\n\n---\n\n<!-- source: docs/reference/reference.json -->\n\n# API reference (generated)\n\n> ${ds.count} public names of oav-p5 ${ds.p5Version} and every package, read from the code and checked against it in CI. Page: ${SITE}docs/reference/ (search it, every name has an anchor: #micLevel). Data: ${SITE}docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: \`document.head.prepend(Object.assign(document.createElement('script'), { src: '${SITE}p5/oav-p5.js' }));\``];
+  for (const [cat, list] of byCat) {
+    out.push(`\n## ${cat}\n`);
+    for (const e of list) {
+      const names = [e.name, ...e.aliases].map((n) => `\`${n}\``).join(', ');
+      const head = `- ${names} (${e.kind}, ${e.package}${e.documented ? '' : ', no description yet'}): \`${clean(e.signature)}\`${e.summary ? ' — ' + clean(e.summary.en) : ''}`;
+      const extra = [];
+      if (e.value && e.value.range) extra.push(`range ${e.value.range}`);
+      if (e.needs) extra.push(`before it has a value: ${clean(e.needs.en)}`);
+      out.push(head + (extra.length ? ` (${extra.join('; ')})` : ''));
+      const ex = e.package === 'oav-p5' ? e.examples[0] : null;
+      if (ex) out.push('\n```js\n' + ex.code.replace(/\n+$/, '') + '\n```\n');
+    }
+  }
+  return out.join('\n').replace(/\n{3,}/g, '\n\n') + '\n';
+}
+
 /** README + AGENTS.md, then every docs chapter in the handbook's order, so llms-full.txt and /docs/ never disagree. */
 export const LLMS_SOURCES = ['README.md', 'AGENTS.md', ...CHAPTERS.map((c) => c.en)];
 
@@ -337,5 +367,5 @@ One page and one JSON profile each; the page lists every control with its exact 
 ${[...cat.devices, ...cat.generic].map((d) => `- ${fullName(d.p, 'en')}: ${d.total} controls · ${detailUrl(d.p.id, 'en')} · ${SITE}${PROFILE_DIR}/${d.file}`).join('\n')}
 `;
   return head + LLMS_SOURCES.filter((src) => read(src) !== null).map((src) =>
-    `\n\n---\n\n<!-- source: ${src} -->\n\n` + htmlToText(read(src)).trim()).join('') + '\n';
+    `\n\n---\n\n<!-- source: ${src} -->\n\n` + htmlToText(read(src)).trim()).join('') + '\n' + referenceFull();
 }

@@ -17,6 +17,8 @@ export default {
   sourceNote: '內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。',
   llmsNote: '給語言模型：<a href="{llms}">/llms.txt</a> · <a href="{llmsFull}">/llms-full.txt</a>',
 
+  reference: { label: 'API 參考', text: '只想查一個名稱？oav-p5 的每個變數、函式、事件與選項，和每個套件的匯出，都能搜尋，每一條附能直接跑的範例。', toc: 'API 參考 ↗' },
+
   tocTitle: '本頁目錄',
   tocLabel: '文件目錄',
   tocButton: '目錄',

@@ -36,6 +36,7 @@ export function renderDocsPage(t, home, { c, chapters, version, assets }) {
 
   const toc = `<nav class="toc" aria-label="${attr(t.tocLabel)}">
       <p class="toc-title">${esc(t.tocTitle)}</p>
+      <p class="toc-ref"><a href="${c.to('reference')}">${esc(t.reference.toc)}</a></p>
       <ol class="toc-chapters">
         ${chapters.map((ch, i) => `<li class="toc-ch" data-ch="${ch.id}">
           <a href="#${ch.id}"><span class="n">${pad2(i + 1)}</span><span class="t">${esc(ch.title)}</span></a>${ch.sections.length ? `
@@ -82,6 +83,7 @@ ${topBar(home, c)}
       <p class="eyebrow">${esc(t.eyebrow)}</p>
       <h1>${esc(t.title)}</h1>
       <p class="docs-lede">${esc(t.lede)}</p>
+      <p class="docs-ref"><a href="${c.to('reference')}"><strong>${esc(t.reference.label)} →</strong></a> ${esc(t.reference.text)}</p>
       <p class="docs-stats">${esc(fill(t.stats, { chapters: chapters.length, sections }))} · <a href="${c.to('changelog')}">${esc(home.ui.versions)}</a></p>
       <p class="docs-note">${t.sourceNote} <a href="${BLOB}${c.locale === 'zh' ? 'docs/zh/' : 'docs/'}">GitHub ↗</a> · ${fill(t.llmsNote, { llms: c.root + 'llms.txt', llmsFull: c.root + 'llms-full.txt' })}</p>
     </header>

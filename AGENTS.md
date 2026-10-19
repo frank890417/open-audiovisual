@@ -50,6 +50,56 @@ path below works without it.
 5. Verify: `node serve.js` → open `http://localhost:8080/examples/<nn>-<name>/` —
    QWERTY keys A–L are the no-hardware MIDI fallback (tick *keyboard* in the console first); Space plays the timeline.
 
+## Documenting a public name
+
+Every public name has an entry in the API reference, <https://openaudiovisual.com/docs/reference/>, and the build keeps it
+that way: a name without an entry, an entry for a name that no longer exists, an example that does not parse, and an example
+that does not run are all red. Public names are: every global, callback, `OAVp5.*` member and loader option of
+`p5/oav-p5.js`, every export in a package's `package.json` `"exports"`, and the tools of `packages/mcp`.
+
+**Two layers, one source of truth.**
+- What the *code* says is never typed: the name, its kind (variable, function, event, class, constant, option), the signature and
+  default values, a class's public members, the source file and line. `tools/reference/scan.mjs` reads them on every build.
+  Change a signature and the page changes with it; rename or remove a name and the build fails until you touch its entry.
+- What a *person* writes lives beside the code: `p5/reference/<area>.mjs` for oav-p5, `packages/<package>/reference.mjs` for a
+  package. Plain data, `export default { name: { … } }`, English and Chinese side by side. `p5/reference/mic.mjs` (`micLevel`)
+  is the model entry.
+
+**The loop when you add (or rename, or remove) a name:**
+
+```bash
+node tools/build-reference.mjs --missing      # a paste-ready stub for every name without an entry
+# write the entry (and delete the entry of a name you removed)
+node tools/build-reference.mjs                # regenerates docs/reference/, zh/docs/reference/ and reference.json
+node --test tests/reference.test.js           # the gates, with the message that says what to fix
+PW=<playwright> node p5/test/reference-smoke.cjs   # every example and claim in a real headless Chromium (CI runs it too)
+```
+
+Never edit `docs/reference/index.html`, `zh/docs/reference/index.html` or `docs/reference/reference.json` by hand: they are
+generated and `--check` (inside `tools/release.sh`) rejects a hand edit. `tools/reference/undocumented.json` is the ledger of
+names still waiting for an entry; it may only shrink (`node tools/build-reference.mjs --prune-ledger` drops the ones that have an
+entry now). Do not add to it: write the entry.
+
+**What an entry holds** (the checks are in `tools/reference/model.mjs`, `checkEntry`):
+
+| field | |
+|---|---|
+| `group` | a category id from `tools/reference/categories.mjs` |
+| `summary` `{ en, zh }` | one sentence that stands alone: it is the line in lists, search results and "related" cards |
+| `description` `[{ en, zh }]` | what it is, how to use it, its unit and range, when it updates, what to do first, what to watch out for |
+| `value` | variables: `{ type, range, en, zh }`; options: `{ type, options, default, en, zh }` |
+| `params` `[{ name, type, optional, default, en, zh }]` | must match the names the code declares, in order (a parameter read from `arguments` says `viaArguments: true`) |
+| `returns`, `needs`, `notes`, `related`, `keywords`, `tbd` | `needs` = what must happen before it has a value; `tbd` = what you could not confirm (the page shows "To be confirmed": never guess) |
+| `examples` `[{ code, caption: { en, zh }, run, needs }]` | at least one for an oav-p5 name |
+| `claims` `[{ before, expr, equals \| min, max, moves }]` | what the entry says about a value, checked in a running sketch |
+
+**Write it like p5.js does.** The first sentence defines the thing. Then how to use it, the unit and range, when the value
+changes, what must happen before it has a value (the microphone permission, a click), and the one thing that surprises people.
+Examples go from the smallest that shows the point (about 8 lines), to a realistic use, to the gotcha; each is a complete sketch
+with `setup()` and `draw()` that runs when pasted into OpenProcessing, **without** the loader line (the page adds it when you copy
+or run), with a one-sentence caption saying what you will see. Code comments stay short and English, so both languages share one
+program. Write only what the code does; what you could not read out of it goes in `tbd`.
+
 ## Verifying changes
 
 - `npm test` — pure-logic tests (chord analysis, timeline, mapping). Add cases

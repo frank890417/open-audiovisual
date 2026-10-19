@@ -158,3 +158,10 @@ kbd { font: 500 .78em var(--mono); color: var(--fg); background: var(--ink-2); b
   .callout { padding: 12px 14px 2px; }
 }
 @media (prefers-reduced-motion: reduce) { html.js .docs-side { transition: none; } }
+
+/* the way into the API reference (/docs/reference/): a line under the lede and a link on top of the contents */
+.docs-ref { max-width: 62ch; margin: 18px 0 14px; padding: 12px 16px; border: 1px solid var(--line-2); border-left: 3px solid var(--sig); background: var(--ink-2); color: var(--fg-2); font-size: 15px; }
+.docs-ref a { color: var(--fg); text-decoration-color: var(--sig); }
+.toc .toc-ref { margin: 0 0 14px; }
+.toc .toc-ref a { display: inline-block; font: 500 13px var(--mono); color: var(--fg); border: 1px solid var(--line-2); padding: 5px 10px; }
+.toc .toc-ref a:hover { border-color: var(--sig); }

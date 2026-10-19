@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }   # sitemap <lastmod> and the changelog read git history; a shallow clone made four tests red on every run
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - run: node --test tests/*.test.js
@@ -19,5 +20,18 @@ jobs:
       - run: npm install --prefix "$RUNNER_TEMP/pw" playwright@1.62.1
       - run: npx --prefix "$RUNNER_TEMP/pw" playwright install --with-deps chromium
       - run: node p5/test/examples-smoke.cjs
+        env:
+          PW: ${{ runner.temp }}/pw/node_modules/playwright
+  reference:
+    # the API reference page, and every example and every claim in it, in a real headless Chromium under p5 1.x and 2.x
+    # (p5/test/reference-smoke.cjs; the gates that need no browser are tests/reference.test.js)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: npm install --prefix "$RUNNER_TEMP/pw" playwright@1.62.1
+      - run: npx --prefix "$RUNNER_TEMP/pw" playwright install --with-deps chromium
+      - run: node p5/test/reference-smoke.cjs
         env:
           PW: ${{ runner.temp }}/pw/node_modules/playwright

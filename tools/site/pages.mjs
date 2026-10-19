@@ -37,6 +37,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 export const STATIC = [
   { id: 'home', path: '', langs: ['en', 'zh'], src: ['tools/home'] },
   { id: 'docs', path: 'docs/', langs: ['en', 'zh'], src: ['docs', 'tools/docs'] },
+  // the API reference (tools/build-reference.mjs): its sources are the code it reads and the words written beside it
+  { id: 'reference', path: 'docs/reference/', langs: ['en', 'zh'], src: ['tools/reference', 'assets/reference', 'assets/search', 'p5/oav-p5.js', 'p5/reference', 'packages'] },
   { derive: 'controllers' },
   { id: 'webtoe', path: 'webtoe/', langs: ['en', 'zh'], src: ['tools/webtoe'] },
   // the device check: tools/build-check.mjs, behaviour in assets/check/
