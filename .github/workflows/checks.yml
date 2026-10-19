@@ -8,3 +8,16 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - run: node --test tests/*.test.js
+  examples:
+    # every p5 example page in a real headless Chromium: console clean, the sketch runs and draws, it survives being played,
+    # and nothing it writes on its canvas hides under the 🎹 panel (p5/test/examples-smoke.cjs; the page 24 bug of 2026-10-19)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: npm install --prefix "$RUNNER_TEMP/pw" playwright@1.62.1
+      - run: npx --prefix "$RUNNER_TEMP/pw" playwright install --with-deps chromium
+      - run: node p5/test/examples-smoke.cjs
+        env:
+          PW: ${{ runner.temp }}/pw/node_modules/playwright

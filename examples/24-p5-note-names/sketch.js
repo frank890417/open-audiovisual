@@ -15,7 +15,9 @@ function setup() {
 
 function draw() {
   background(16, 18, 26);
-  const gap = min(width / 3, 260), cy = height * 0.42, size = gap * 0.55;
+  // 🎹 面板最多蓋住視窗的下半（max-height: 50vh）：要讀的東西全放在上半，名字和赫茲才看得到
+  const stage = height * 0.48;
+  const gap = min(width / 3, 260), size = min(gap * 0.55, stage * 0.3), cy = stage * 0.4;
   const chord = NOTES.every((n) => noteIsDown(n));   // 三個都按著
   const spin = chord ? frameCount * 0.04 : 0;
   noStroke(); textAlign(CENTER);
@@ -34,7 +36,7 @@ function draw() {
   // 最後按的那個鍵：notePressed 拿到的還是號碼，noteName() 把它翻回名字，noteFreq() 算出赫茲
   fill(235); textSize(22);
   const last = midi.last && midi.last.note != null ? midi.last.note : null;
-  text(last == null ? '彈 C4、E4、G4' : noteName(last) + '  ·  ' + noteFreq(last).toFixed(1) + ' Hz', width / 2, height * 0.82);
+  text(last == null ? '彈 C4、E4、G4' : noteName(last) + '  ·  ' + noteFreq(last).toFixed(1) + ' Hz', width / 2, stage * 0.92);
 }
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); }

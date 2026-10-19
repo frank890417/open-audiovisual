@@ -1072,8 +1072,8 @@
       "read": [
         {
           "file": "sketch.js",
-          "from": 19,
-          "to": 19,
+          "from": 21,
+          "to": 21,
           "match": "const chord = NOTES.every((n) => noteIsDown(n));",
           "note": {
             "en": "noteIsDown() takes a name as well as a number: 'C4' is 60.",
@@ -1082,8 +1082,8 @@
         },
         {
           "file": "sketch.js",
-          "from": 32,
-          "to": 32,
+          "from": 34,
+          "to": 34,
           "match": "text(name + ' = ' + noteNumber(name),",
           "note": {
             "en": "noteNumber('C4') gives 60.",
@@ -1092,8 +1092,8 @@
         },
         {
           "file": "sketch.js",
-          "from": 37,
-          "to": 37,
+          "from": 39,
+          "to": 39,
           "match": "text(last == null",
           "note": {
             "en": "notePressed still hands you a number; noteName() writes it back as a name and noteFreq() gives Hz.",
