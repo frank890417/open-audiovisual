@@ -31,7 +31,7 @@ const P5_VERSIONS = (process.env.P5_VERSIONS || '1.11.11,2.3.4').split(',');
 const CONCURRENCY = Math.max(1, +(process.env.CONCURRENCY || 5));
 const SHOTS = process.env.SHOTS || fs.mkdtempSync(path.join(os.tmpdir(), 'oav-ref-'));
 const ONLY = process.env.ONLY ? process.env.ONLY.split(',') : null;
-const NOISE = [/ws:\/\/[^ ]*:7457/, /WebSocket connection to 'ws:\/\/[^']*7457/, /googletagmanager|google-analytics|cloudflareinsights/, /net::ERR_(BLOCKED|FAILED|INTERNET)/, /Failed to load resource/];
+const NOISE = [/ERR_UNSAFE_PORT/, /ws:\/\/127\.0\.0\.1:1\/relay/, /ws:\/\/[^ ]*:7457/, /WebSocket connection to 'ws:\/\/[^']*7457/, /googletagmanager|google-analytics|cloudflareinsights/, /net::ERR_(BLOCKED|FAILED|INTERNET)/, /Failed to load resource/];
 const LOADER_SRC = 'https://openaudiovisual.com/p5/oav-p5.js';
 const data = JSON.parse(fs.readFileSync(path.join(OAV, 'docs/reference/reference.json'), 'utf8'));
 const entries = data.entries.filter((e) => !ONLY || ONLY.includes(e.key) || ONLY.includes(e.id));

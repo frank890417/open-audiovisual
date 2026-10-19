@@ -71,6 +71,7 @@ that does not run are all red. Public names are: every global, callback, `OAVp5.
 node tools/build-reference.mjs --missing      # a paste-ready stub for every name without an entry
 # write the entry (and delete the entry of a name you removed)
 node tools/build-reference.mjs                # regenerates docs/reference/, zh/docs/reference/ and reference.json
+                                               # (tools/release.sh --dry-run regenerates EVERYTHING that reads it: llms-full.txt, the search index, the handbook, and runs all tests)
 node --test tests/reference.test.js           # the gates, with the message that says what to fix
 PW=<playwright> node p5/test/reference-smoke.cjs   # every example and claim in a real headless Chromium (CI runs it too)
 ```

@@ -54,9 +54,18 @@ function refRecords() {
   if (raw === null) throw new Error('build-search: docs/reference/reference.json is missing: run node tools/build-reference.mjs first');
   const ds = JSON.parse(raw);
   const out = [];
-  // how often other entries point at this one in `related`: the entries people are sent to are the ones to show first among equals
-  const refs = new Map();
-  for (const e of ds.entries) for (const k of e.related) { const t = ds.entries.find((x) => x.key === k || x.aliases.includes(k)); if (t && t !== e) refs.set(t.id, (refs.get(t.id) || 0) + 1); }
+  // how many other entries point at this one, in `related` or with a [link](#anchor) in their text: the entries people are sent to
+  // are the ones to show first among equals (micLevel is linked from every microphone entry; an option nobody mentions is not)
+  const refs = new Map(), anchor = new Map();
+  for (const e of ds.entries) for (const a of [e.id, ...e.aliases.map((x) => (x.startsWith('option:') ? 'option-' + x.slice(7) : x))]) anchor.set(a, e);
+  const linked = new Map();                                  // target id → the set of entries that point at it
+  const point = (from, to) => { if (to && to !== from) { if (!linked.has(to.id)) linked.set(to.id, new Set()); linked.get(to.id).add(from.id); } };
+  for (const e of ds.entries) {
+    for (const k of e.related) point(e, ds.entries.find((x) => x.key === k || x.aliases.includes(k)));
+    const texts = [e.summary && e.summary.en, ...e.description.map((d) => d.en), e.needs && e.needs.en, ...e.notes.map((n) => n.en)].filter(Boolean).join(' ');
+    for (const m of texts.matchAll(/\]\(#([^)\s]+)\)/g)) point(e, anchor.get(m[1]));
+  }
+  for (const [id, set] of linked) refs.set(id, set.size);
   for (const e of ds.entries) {
     const shown = e.name.replace(/^option:/, '');
     const al = [e.key.replace(/^option:/, ''), ...e.aliases.map((a) => a.replace(/^option:/, ''))];
@@ -67,7 +76,7 @@ function refRecords() {
       out.push({
         i: `ref:${e.id}`, t: 'ref', l, n: shown + (e.kind === 'function' || e.kind === 'event' ? '()' : ''), u: `${pre(l)}docs/reference/#${e.id}`,
         s: `${e.package} · ${UI[l].kinds[e.kind] || e.kind}`, a: [...al, ...midi].join(' '), k: kw,
-        d: e.summary ? mdText(e.summary[l]) : '', x: cap(plain(e.documented ? text : e.signature), CAP.ref), w: Math.min(refs.get(e.id) || 0, 10),
+        d: e.summary ? mdText(e.summary[l]) : '', x: cap(plain(e.documented ? text : e.signature), CAP.ref), w: Math.min(refs.get(e.id) || 0, 40),
       });
     }
   }

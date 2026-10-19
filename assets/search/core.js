@@ -44,6 +44,9 @@ export function wordScore(rec, w) {
   return 0;
 }
 
+/** Extra points for a record other records point at (its `w`, a count capped at 40): the tie-break among equal matches. */
+export const weightBoost = (r) => 6 * Math.min((r && r.w) || 0, 40);
+
 /** Total points of a query against a prepared record; 0 if any word does not match. */
 export function score(rec, toks) {
   let total = 0;

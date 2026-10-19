@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { norm, words, tokens, prepare, rank, score, snippet } from '../assets/search/core.js';
+import { norm, words, tokens, prepare, rank, score, snippet, weightBoost } from '../assets/search/core.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
@@ -104,7 +104,7 @@ import { CHAPTERS } from '../tools/docs/chapters.mjs';
 const idx = JSON.parse(read(INDEX));
 const built = buildIndex();
 const prepared = idx.records.map((r) => prepare({ ...r, name: r.n, names: r.a, kw: r.k, title: r.s, summary: r.d, text: r.x }));
-const ask = (q, lang = 'en', n = 5) => rank(prepared, q, { limit: 40, boost: (r) => (r.l === lang ? 400 : 0) + 6 * Math.min(r.w || 0, 10) }).map((x) => x.rec).filter((r, i, a) => a.findIndex((y) => y.i === r.i) === i).slice(0, n);
+const ask = (q, lang = 'en', n = 5) => rank(prepared, q, { limit: 40, boost: (r) => (r.l === lang ? 400 : 0) + weightBoost(r) }).map((x) => x.rec).filter((r, i, a) => a.findIndex((y) => y.i === r.i) === i).slice(0, n);
 
 test('the index exists and is what the sources build (node tools/build-search.mjs)', () => {
   assert.equal(read(INDEX), indexText(built), 'assets/search/index.json is stale');
