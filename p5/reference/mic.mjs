@@ -493,6 +493,10 @@ function draw() {
         en: 'When the drum machine plays, each of its hits calls the same functions: kick for the kick, snare for a snare, clap or rim, hat for a closed, open or pedal hat. A sketch written for the microphone therefore works with [`startDrums()`](#startDrums) unchanged.',
         zh: '鼓機在播的時候，它的每一下也會呼叫同樣的函式：大鼓呼叫 kick，小鼓、拍手或 rim 呼叫 snare，閉合、開放或腳踏的鈸呼叫 hat。所以為麥克風寫的草圖，不用改就能搭配 [`startDrums()`](#startDrums)。',
       },
+      {
+        en: 'While the drum machine plays, only its hits call these functions (from oav-p5 0.8.1). A microphone that is on at the same time mostly hears the drums coming out of the speakers, so its hits would call the same function twice and hear a kick as a snare. [`micLevel`](#micLevel), [`bass`](#bass), `mid` and `treble` still follow the microphone; the microphone\'s hits come back when the drums stop.',
+        zh: '鼓機在打的時候，只有鼓機的每一下會呼叫這幾個函式（oav-p5 0.8.1 起）。這時候如果麥克風也開著，它聽到的多半是喇叭放出來的鼓聲，同一下會被叫兩次，大鼓也可能被聽成小鼓。[`micLevel`](#micLevel)、[`bass`](#bass)、`mid`、`treble` 照樣跟著麥克風。鼓機停下來，麥克風的打擊就會回來。',
+      },
     ],
     needs: {
       en: 'Defining one of them is not enough to open the microphone once the drum machine has started; reading [`micLevel`](#micLevel) (or calling [`startMic()`](#startMic)) is. Without the drum machine, a sketch that defines any of them and reads nothing starts the microphone on the first click or key.',

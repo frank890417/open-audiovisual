@@ -965,10 +965,15 @@
     mic.level = micLoudness(f.rms, now == null ? clock() : now);
     mic.bass = clamp01(f.low * k); mic.mid = clamp01(f.mid * k); mic.treble = clamp01(f.high * k);
     micTick++;
-    if (f.onset) { micSeq++; micCall('beat', mic.level); }
-    if (f.kick && f.kick.hit) micCall('kick', clamp01(f.kick.level * k));
-    if (f.snare && f.snare.hit) micCall('snare', clamp01(f.snare.level * k));
-    if (f.hat && f.hat.hit) micCall('hat', clamp01(f.hat.level * k));
+    // while the drum machine plays, the hits are its own: what the microphone hears then is mostly the drums coming out of
+    // the speakers, so the same snareDetected came twice, a kick heard as a snare (2026-10-20 哲宇：「snare detected 也會在
+    // 大鼓的時候觸發耶」). micLevel, bass, mid and treble still follow the microphone.
+    if (drums.state !== 'on') {
+      if (f.onset) { micSeq++; micCall('beat', mic.level); }
+      if (f.kick && f.kick.hit) micCall('kick', clamp01(f.kick.level * k));
+      if (f.snare && f.snare.hit) micCall('snare', clamp01(f.snare.level * k));
+      if (f.hat && f.hat.hit) micCall('hat', clamp01(f.hat.level * k));
+    }
     paintMic();
   }
   // `beat`: true in the first p5 frame after a beat, the same answer however often that frame reads it

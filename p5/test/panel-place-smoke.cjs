@@ -25,6 +25,9 @@ function draw() { background(20); fill(255); circle(width / 2, height / 2, 40 + 
 function mousePressed() { pressed++; }
 function mouseDragged() { dragged++; }
 window.__counts = () => ({ pressed, dragged });`;
+const HITS = `window.__hits = { kick: 0, snare: 0 };
+function kickDetected() { window.__hits.kick++; }
+function snareDetected() { window.__hits.snare++; }`;
 
 let fails = 0;
 const row = (ok, label, detail = '') => { if (!ok) fails++; console.log(`${ok ? '✅' : '❌'} ${label}${!ok && detail ? '\n     ' + detail : ''}`); };
@@ -37,7 +40,7 @@ const row = (ok, label, detail = '') => { if (!ok) fails++; console.log(`${ok ? 
       const opts = u.searchParams.get('opts') || '{}';
       return send('text/html', `<!doctype html><meta charset="utf-8"><style>body{margin:0;background:#111}</style>
 <script>window.OAV_P5 = Object.assign({ hardware: 'off', relay: 'ws://127.0.0.1:1/relay' }, ${opts});</script>
-<script src="/p5/p5-${u.searchParams.get('v')}.min.js"></script><script src="/oav/p5/oav-p5.js"></script><script>${SKETCH}</script>`);
+<script src="/p5/p5-${u.searchParams.get('v')}.min.js"></script><script src="/oav/p5/oav-p5.js"></script><script>${SKETCH}${u.searchParams.get('hits') ? '\n' + HITS : ''}</script>`);
     }
     if (u.pathname.startsWith('/p5/')) return send('text/javascript', fs.readFileSync(path.join(P5_DIR, path.basename(u.pathname))));
     if (u.pathname.startsWith('/oav/')) {
@@ -128,6 +131,24 @@ const row = (ok, label, detail = '') => { if (!ok) fails++; console.log(`${ok ? 
     row(tp.top === 0 && card.top >= tp.bottom - 1 && b2.top >= tp.bottom, `p5 ${v}: dock: 'top' → the panel at the top, the drum card and the 🎹 below it`, JSON.stringify({ tp, card, b2 }));
     row(e2.length === 0, `p5 ${v}: dock: 'top': no page errors`, e2.join(' | ').slice(0, 300));
     await c2.close();
+
+    // the microphone while the drums play: its hits are not the sketch's (the speakers' drums would come twice)
+    const c3 = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const p3 = await c3.newPage();
+    const e3 = []; p3.on('pageerror', (e) => e3.push(e.message));
+    await p3.goto(`${base}/page?v=${v}&hits=1&opts=${encodeURIComponent("{ mic: 'click' }")}`);
+    await p3.waitForSelector('#oav-p5-button', { timeout: 8000 });
+    const FRAME = "({ rms: 0.2, low: 0.5, mid: 0.4, high: 0.2, onset: true, kick: { hit: true, level: 0.8, env: 0.8 }, snare: { hit: true, level: 0.6, env: 0.6 }, hat: { hit: false, level: 0, env: 0 } })";
+    const alone = await p3.evaluate((F) => { const a = { ...window.__hits }; OAVp5.mic._frame(eval(F)); return { kick: window.__hits.kick - a.kick, snare: window.__hits.snare - a.snare }; }, FRAME);
+    await p3.evaluate(() => startDrums('bd*4', 120));
+    await p3.waitForFunction(() => drumsAreOn, null, { timeout: 8000 });
+    const withDrums = await p3.evaluate((F) => { const a = { ...window.__hits }; OAVp5.drums._hit('kick', 0.9); const b = { ...window.__hits }; OAVp5.mic._frame(eval(F));
+      return { drumKick: b.kick - a.kick, drumSnare: b.snare - a.snare, micKick: window.__hits.kick - b.kick, micSnare: window.__hits.snare - b.snare, bass: bass }; }, FRAME);
+    row(alone.kick === 1 && alone.snare === 1, `p5 ${v}: no drums: the microphone's kick and snare reach the sketch`, JSON.stringify(alone));
+    row(withDrums.drumKick === 1 && withDrums.drumSnare === 0 && withDrums.micKick === 0 && withDrums.micSnare === 0 && withDrums.bass > 0,
+      `p5 ${v}: drums on: a kick is one kickDetected and no snareDetected; the microphone's hits stay out, bass still moves`, JSON.stringify(withDrums));
+    row(e3.length === 0, `p5 ${v}: mic + drums: no page errors`, e3.join(' | ').slice(0, 300));
+    await c3.close();
   }
   await browser.close(); srv.close();
   console.log(`\n${fails ? '❌ ' + fails + ' failed' : '✅ all green'}; screenshots in ${SHOTS}`);

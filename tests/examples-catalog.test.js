@@ -174,7 +174,7 @@ test('/p5/ and /zh/p5/: built pages, no Jekyll, one line + copy button + example
     assert.ok(html.includes('<!--email_off-->'));
   }
   const sha = crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT, 'p5/oav-p5.js'))).digest('hex');
-  assert.equal(sha, '3492e2f666563ec869cd75a46658dd6396b0d3410d3f020746f4b8ae5661ea60', 'p5/oav-p5.js changed: student sketches load it, so a change is a release on purpose (bump the version inside, run p5/test/*.cjs, then update this hash)');
+  assert.equal(sha, '2a9e17eee89667b66f2ef128fab71928315ba9a386f028bff030ef70415915e2', 'p5/oav-p5.js changed: student sketches load it, so a change is a release on purpose (bump the version inside, run p5/test/*.cjs, then update this hash)');
 });
 
 test('README: generated blocks are current, every example, the controller list links every device page', async () => {
