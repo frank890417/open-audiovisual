@@ -252,8 +252,11 @@ for (const fig of sketches) {
 
 // run what is on screen; stop what scrolled away (each frame is a whole p5 sketch)
 const seen = new Set();
+// an example that starts the drum machine waits for ▶ Run: by itself it would play drums at whoever scrolls past (2026-10-20 哲宇：「滾動到特定位置不要自動執行鼓機好了，會很吵」)
+const LOUD = /\bstartDrums\s*\(/;
 function wake(fig) {
   if (!AUTO || fig.dataset.userStopped || isLive(fig) || !seen.has(fig)) return;
+  if (LOUD.test(codeOf(fig))) return;
   if (sketches.filter(isLive).length >= MAX_LIVE) return;
   start(fig, { quiet: true });
 }
