@@ -597,4 +597,39 @@ function draw() {
     related: ['padPressed', 'pad1', 'noteReleased'],
     keywords: { en: ['pad released', 'callback', 'event'], zh: ['打擊墊', '放開', '事件', '回呼'] },
   },
+
+  lastNoteTs: {
+    group: 'midi',
+    summary: {
+      en: 'When the last key went down, on the `millis()` clock: `millis() - lastNoteTs` is how many ms ago.',
+      zh: '上一個鍵是什麼時候按下的，用 `millis()` 的時鐘：`millis() - lastNoteTs` 就是幾毫秒前。',
+    },
+    value: {
+      type: 'Number',
+      en: 'Milliseconds on the same clock as `millis()`, set with [`note`](#note) and [`velocity`](#velocity); `-Infinity` before any key. Since oav-p5 0.8.2.',
+      zh: '毫秒，跟 `millis()` 同一個時鐘，跟 [`note`](#note)、[`velocity`](#velocity) 一起更新。還沒按過任何鍵之前是 `-Infinity`。oav-p5 0.8.2 起。',
+    },
+    description: [
+      { en: 'Any key counts: a MIDI keyboard, the 🎹 on screen, a phone. Releasing a key does not change it.', zh: '任何鍵都算：MIDI 鍵盤、畫面上的 🎹、手機。放開鍵不會改變它。' },
+    ],
+    examples: [
+      {
+        code: `function setup() {
+  createCanvas(400, 300);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  const ago = millis() - lastNoteTs;    // ms since a key went down
+  fill(255, 200 * exp(-ago / 400) + 30);
+  circle(200, 150, 60 + 160 * exp(-ago / 400));
+}`,
+        caption: { en: 'Each key you press (on 🎹 too) makes the circle bright and big, then it dims.', zh: '每按一個鍵（🎹 也可以），圓就變亮變大，然後慢慢暗下來。' },
+      },
+    ],
+    claims: [{ before: "midi.input([0x90, 60, 100], 'screen')", expr: 'lastNoteTs > -Infinity', equals: true }],
+    related: ['note', 'velocity', 'notePressed', 'lastKickTs'],
+    keywords: { en: ['last note', 'timestamp', 'time since', 'millis', 'key pressed'], zh: ['上一個音', '時間', '多久以前', '毫秒', '按鍵'] },
+  },
 };

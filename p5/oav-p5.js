@@ -106,7 +106,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.8.1';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.8.2';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -324,7 +324,12 @@
   var STRUDEL_ALT = { note: 'OAVp5.last.note', velocity: 'OAVp5.last.value', beat: "OAVp5.mic.on('beat', fn)", noteIsPressed: 'OAVp5.held.length > 0',
     bass: 'OAVp5.mic.bass', mid: 'OAVp5.mic.mid', treble: 'OAVp5.mic.treble', micLevel: 'OAVp5.mic.level' };
   var GLOBALS = { note: 0, velocity: 0, noteIsPressed: false, micIsOn: false,
-    soundIsOn: false, drumsAreOn: false, drumStep: 0, drumBar: 0, drumBpm: 112, cueName: '', recordingIsOn: false };
+    soundIsOn: false, drumsAreOn: false, drumStep: 0, drumBar: 0, drumBpm: 112, cueName: '', recordingIsOn: false,
+    // 0.8.2 (2026-10-20 哲宇：「我想要一些 last 系列 ts，e.g. lastKickTs、lastSnareTs」): when the last hit came, on p5's millis()
+    // clock, so `millis() - lastKickTs` is how many ms ago; -Infinity until the first one (millis() - it is Infinity)
+    lastBeatTs: -Infinity, lastKickTs: -Infinity, lastSnareTs: -Infinity, lastHatTs: -Infinity, lastNoteTs: -Infinity };
+  function hitTs() { try { if (typeof g.millis === 'function') { var t = g.millis(); if (typeof t === 'number' && t === t) return t; } } catch (e) { /* */ } return clock(); }
+  var TS_OF = { beat: 'lastBeatTs', kick: 'lastKickTs', snare: 'lastSnareTs', hat: 'lastHatTs' };
   // knob1 … knob8, fader1 … fader8, pad1 … pad16 are readers, like the microphone's names: reading one says the sketch
   // plays from that control (so its MIDI troubles are worth a hint, and an OPC slider on the same knob steps aside)
   var readers = {}, READ = {};
@@ -507,7 +512,7 @@
       if (on && i < 0) { midi.held.push(b1); midi.held.sort(function (a, b) { return a - b; }); } else if (!on && i >= 0) midi.held.splice(i, 1);
       midi.last = { type: on ? 'noteOn' : 'noteOff', note: b1, value: v, channel: ch, source: source, control: m ? m[0] + m[1] : null };
       put('noteIsPressed', midi.held.length > 0);
-      if (on) { put('note', b1); put('velocity', v); }
+      if (on) { put('note', b1); put('velocity', v); put('lastNoteTs', hitTs()); }
       if (m) { CTL.pad[m[1]] = v; put('pad' + m[1], v); }
       call('midiMessage', [bytes, source]);
       call(on ? 'noteOn' : 'noteOff', on ? [b1, v, ch] : [b1, ch]);
@@ -939,6 +944,8 @@
     })();
   }
   function micCall(kind, level) {
+    if (TS_OF[kind]) put(TS_OF[kind], hitTs());
+    if (hitSeq[kind] != null) hitSeq[kind]++;
     var name = micCbs[kind], fn = g[name];
     if (typeof fn === 'function') { try { fn.call(g, level); } catch (e) { report(name, e); } }
     var list = micSubs[kind].slice();
@@ -1000,6 +1007,30 @@
   micName('mid', function () { return mic.mid; });
   micName('treble', function () { return mic.treble; });
   micName('beat', beatNow);
+  // kickIsDetected · snareIsDetected · hatIsDetected (0.8.2, 2026-10-20 哲宇：「類似 mouseIsPressed 那種瞬間訊號……這樣直接
+  // lag 就可以做成持續變數拿來控制透明度」): true in the one p5 frame after a hit, the drum machine's (or the microphone's when
+  // no drums play), the same answer however often that frame reads it, like `beat`; lag(kickIsDetected, 0, 0.3) fades it out.
+  // Reading one does not ask for the microphone by itself: with no drums it counts as wanting the microphone's hits, the way
+  // defining kickDetected() does (the first click opens it).
+  var hitSeq = { kick: 0, snare: 0, hat: 0 }, hitSeen = { kick: 0, snare: 0, hat: 0 }, hitNow = { kick: false, snare: false, hat: false };
+  var hitAt = { kick: null, snare: null, hat: null }, hitRead = false;
+  function hitIs(kind) {
+    hitRead = true;
+    var at = typeof g.frameCount === 'number' ? g.frameCount : micTick;
+    if (at !== hitAt[kind]) { hitAt[kind] = at; hitNow[kind] = hitSeq[kind] !== hitSeen[kind]; hitSeen[kind] = hitSeq[kind]; }
+    return hitNow[kind];
+  }
+  function hitName(name, kind) {
+    if (name in g) { yielded.push(name); return; }
+    try {
+      Object.defineProperty(g, name, {
+        configurable: true, enumerable: false,
+        get: function () { return hitIs(kind); },
+        set: function (v) { Object.defineProperty(g, name, { value: v, writable: true, configurable: true, enumerable: true }); },
+      });
+    } catch (e) { /* */ }
+  }
+  hitName('kickIsDetected', 'kick'); hitName('snareIsDetected', 'snare'); hitName('hatIsDetected', 'hat');
   FUNCS.startMic = function () { return mic.start(); };
   /** micSensitivity(2): twice as sensitive (a quiet microphone, a far-away voice); micSensitivity() says what it is */
   FUNCS.micSensitivity = function (v) { if (v != null && +v > 0) mic.sensitivity = Math.max(0.05, Math.min(20, +v)); return mic.sensitivity; };
@@ -1010,7 +1041,7 @@
     if (O.mic === 'off' || micStopped) return;
     if (mic.state === 'on') { try { if (micAudio.ctx.state === 'suspended') micAudio.ctx.resume(); } catch (e) { /* */ } return; }
     // (a sketch that started the drum machine defines kickDetected() & co. for the drums: that alone does not open the microphone)
-    var wants = micRead || (O.mic === 'auto' && !drumsWanted && Object.keys(micCbs).some(function (kd) { return typeof g[micCbs[kd]] === 'function'; }));
+    var wants = micRead || (O.mic === 'auto' && !drumsWanted && (hitRead || Object.keys(micCbs).some(function (kd) { return typeof g[micCbs[kd]] === 'function'; })));
     if (wants && (mic.state === 'off' || (mic.state === 'denied' && micTries < 3))) startMic();
   }
   if (O.mic !== 'off' && g.addEventListener) ['pointerdown', 'keydown', 'touchend'].forEach(function (t) { g.addEventListener(t, micGesture, { capture: true, passive: true }); });
@@ -1448,7 +1479,11 @@
     if (i === 0 && (!quiet || ev.announce)) drumEmit('bar', 'barStarted', [bar]);
     if (!quiet) drumEmit('step', 'stepStarted', [i, bar]);
   }
+  var DRUM_TS = { kickDetected: 'lastKickTs', snareDetected: 'lastSnareTs', hatDetected: 'lastHatTs' }, DRUM_HIT = { kickDetected: 'kick', snareDetected: 'snare', hatDetected: 'hat' };
   function drumHitIn(lane, v) {
+    var ts = hitTs();
+    if (DRUM_CB[lane]) { put(DRUM_TS[DRUM_CB[lane]], ts); hitSeq[DRUM_HIT[DRUM_CB[lane]]]++; }
+    if (DRUM_BEAT[lane] && drums.count !== drumBeatAt) put('lastBeatTs', ts);
     drumEmit('hit', 'drumHit', [lane, v]);
     if (DRUM_CB[lane]) callSketch(DRUM_CB[lane], [v]);
     if (DRUM_BEAT[lane] && drums.count !== drumBeatAt) { drumBeatAt = drums.count; micSeq++; callSketch('beatDetected', [v]); }   // one beat per step
@@ -2957,6 +2992,7 @@
 
   /** lag(value, up, down, name): follows value, up seconds while it rises, down while it falls (down = up when left out) */
   FUNCS.lag = function (value, up, down) {
+    if (typeof value === 'boolean') value = +value;   // lag(kickIsDetected, 0, 0.3): true is 1
     var name = chopName(arguments, 3), u = Math.max(0, chopNum(up, 0.1)), d = Math.max(0, chopNum(down, u));
     var s = slotOf('lag', name, function (M) { return new M.Lag({ up: u, down: d }); });
     return s && s.s ? s.s.step(value, s.dt, u, d) : value;

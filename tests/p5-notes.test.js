@@ -15,7 +15,7 @@ function page(globals = {}) {
 
 test('0.8.0: the version, the three names, and none of them is a p5 / p5.sound name', () => {
   const w = page();
-  assert.equal(w.OAVp5.version, '0.8.1');
+  assert.equal(w.OAVp5.version, '0.8.2');
   for (const n of ['noteNumber', 'noteName', 'noteFreq']) assert.equal(typeof w[n], 'function', n);
   // checked against p5 1.11.11, p5 2.0.5 and p5.sound 1.11.11 (grep of the minified files: none has these names or midi.isDown)
   for (const n of ['midiToFreq', 'freqToMidi', 'noteToFreq']) assert.equal(w[n], undefined, `${n} is p5.sound's, not ours`);

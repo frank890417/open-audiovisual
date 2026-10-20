@@ -530,4 +530,91 @@ function draw() {
     related: ['beatDetected', 'beat', 'bass', 'startDrums'],
     keywords: { en: ['kick', 'snare', 'hat', 'drum', 'callback', 'event', 'percussion'], zh: ['大鼓', '小鼓', '鈸', '鼓', '事件', '回呼', '打擊', '麥克風'] },
   },
+
+  kickIsDetected: {
+    group: 'mic',
+    aliases: ['snareIsDetected', 'hatIsDetected'],
+    summary: {
+      en: 'True in the one frame after a kick (snare, hat) is heard, from the drum machine or the microphone, like `mouseIsPressed` for a hit.',
+      zh: '聽到一下大鼓（小鼓、鈸）之後的那一格是 true，鼓機或麥克風都算。就像打擊版的 `mouseIsPressed`。',
+    },
+    value: {
+      type: 'Boolean',
+      en: 'True for exactly one p5 frame per hit, however often that frame reads it; false otherwise. Since oav-p5 0.8.2.',
+      zh: '每一下只在一個 p5 畫面裡是 true，那一格讀幾次都一樣。其他時候是 false。oav-p5 0.8.2 起。',
+    },
+    description: [
+      {
+        en: 'The same hits that call [`kickDetected()`](#kickDetected), `snareDetected()` and `hatDetected()`, as a value you read in `draw()` instead of a function you write. Hand it to [`lag()`](#lag) and it becomes a number that jumps to 1 on the hit and fades: `lag(kickIsDetected, 0, 0.3)` is 1 on a kick and back near 0 about 0.3 s later, ready for an alpha or a size. `lag()` takes `true` as 1.',
+        zh: '跟呼叫 [`kickDetected()`](#kickDetected)、`snareDetected()`、`hatDetected()` 的是同一批打擊，只是改成在 `draw()` 裡讀的值，不用寫函式。交給 [`lag()`](#lag) 就變成一個數字：打到時跳到 1，然後慢慢退回去。`lag(kickIsDetected, 0, 0.3)` 在大鼓那一下是 1，大約 0.3 秒後回到 0 附近，可以直接拿來控制透明度或大小。`lag()` 把 `true` 當成 1。',
+      },
+      {
+        en: 'While the drum machine plays, only its hits count. Reading these does not ask for the microphone by itself: with no drums, it counts as wanting the microphone\'s hits, the way defining `kickDetected()` does, so the first click on the page opens it.',
+        zh: '鼓機在打的時候只算鼓機的。讀這幾個名字本身不會去要麥克風。沒有鼓機的時候，它就跟定義 `kickDetected()` 一樣，算是想要麥克風的打擊，所以第一次點畫面會開麥克風。',
+      },
+    ],
+    examples: [
+      {
+        code: `function setup() {
+  createCanvas(400, 300);
+  startDrums('bd*4, ~ sd ~ sd', 110);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  fill(255, 90, 31, 255 * lag(kickIsDetected, 0, 0.3));    // a kick lights it, then it fades
+  circle(130, 200, 140);
+  fill(120, 190, 255, 255 * lag(snareIsDetected, 0, 0.3));
+  circle(270, 200, 140);
+}`,
+        caption: { en: 'The orange circle flashes on every kick and fades out, the blue one on every snare.', zh: '橘色的圓每一下大鼓亮起來再淡掉，藍色的圓跟著小鼓。' },
+      },
+    ],
+    claims: [{ before: "OAVp5.drums._hit('kick', 0.9)", expr: 'kickIsDetected && !snareIsDetected', equals: true }],
+    related: ['kickDetected', 'beat', 'lastKickTs', 'lag'],
+    keywords: { en: ['kick', 'snare', 'hat', 'is detected', 'this frame', 'flash', 'trigger', 'boolean'], zh: ['大鼓', '小鼓', '鈸', '這一格', '閃一下', '觸發', '瞬間'] },
+  },
+
+  lastKickTs: {
+    group: 'mic',
+    aliases: ['lastSnareTs', 'lastHatTs', 'lastBeatTs'],
+    summary: {
+      en: 'When the last kick (snare, hat, beat) came, on the `millis()` clock: `millis() - lastKickTs` is how many ms ago.',
+      zh: '上一下大鼓（小鼓、鈸、拍子）是什麼時候來的，用 `millis()` 的時鐘：`millis() - lastKickTs` 就是幾毫秒前。',
+    },
+    value: {
+      type: 'Number',
+      en: 'Milliseconds on the same clock as `millis()`; `-Infinity` before the first hit, so `millis() - lastKickTs` is then `Infinity`. Since oav-p5 0.8.2.',
+      zh: '毫秒，跟 `millis()` 同一個時鐘。第一下之前是 `-Infinity`，所以那時 `millis() - lastKickTs` 是 `Infinity`。oav-p5 0.8.2 起。',
+    },
+    description: [
+      {
+        en: 'Set by every hit that calls [`kickDetected()`](#kickDetected), `snareDetected()`, `hatDetected()` or [`beatDetected()`](#beatDetected): the drum machine\'s, or the microphone\'s when no drums play. Use it for anything that depends on how long ago: `exp(-(millis() - lastKickTs) / 200)` is 1 on the kick and fades with a 0.2 s time constant.',
+        zh: '每一下會呼叫 [`kickDetected()`](#kickDetected)、`snareDetected()`、`hatDetected()` 或 [`beatDetected()`](#beatDetected) 的打擊都會更新它：鼓機的，或沒有鼓機時麥克風的。要算「多久以前」就用它，例如 `exp(-(millis() - lastKickTs) / 200)` 在大鼓那一下是 1，然後以 0.2 秒的時間常數淡掉。',
+      },
+    ],
+    examples: [
+      {
+        code: `function setup() {
+  createCanvas(400, 300);
+  startDrums('bd*4, hh*8', 100);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  const ago = millis() - lastKickTs;    // ms since the last kick
+  fill(255, 90, 31);
+  circle(200, 200, 40 + 160 * exp(-ago / 200));
+  fill(255);
+  text(isFinite(ago) ? round(ago) + ' ms since the kick' : 'no kick yet', 20, 290);
+}`,
+        caption: { en: 'The circle swells on each kick and shrinks back; the line says how many ms ago the kick was.', zh: '每一下大鼓圓就鼓起來再縮回去，下面那行字寫離上一下大鼓幾毫秒。' },
+      },
+    ],
+    claims: [{ before: "OAVp5.drums._hit('kick', 0.9)", expr: 'lastKickTs > -Infinity && lastSnareTs === -Infinity', equals: true }],
+    related: ['kickIsDetected', 'kickDetected', 'lastNoteTs'],
+    keywords: { en: ['last kick', 'timestamp', 'time since', 'millis', 'ago', 'last snare', 'last hat', 'last beat'], zh: ['上一下', '時間', '多久以前', '毫秒', '大鼓', '小鼓', '鈸', '拍子'] },
+  },
 };

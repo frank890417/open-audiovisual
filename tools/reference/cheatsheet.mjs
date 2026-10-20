@@ -41,6 +41,8 @@ const SECTIONS = [
       ['drumBar', 'drumBar', W('which bar, the first is 1', '第幾小節，從 1 開始')],
       ['drumPhase  beatPhase', 'drumPhase', W('0 → 1 smoothly, once a bar / once a beat', '一小節、一拍，平滑地從 0 走到 1')],
       ['drumBpm  drumsAreOn', 'drumBpm', W('the tempo / is it playing?', '速度／有沒有在打')],
+      ['kickIsDetected  snareIsDetected', 'kickIsDetected', W('true in the frame of a hit: lag(kickIsDetected, 0, 0.3) fades it', '打到的那一格是 true：lag(kickIsDetected, 0, 0.3) 讓它慢慢退')],
+      ['millis() - lastKickTs', 'lastKickTs', W('ms since the last kick (lastSnareTs, lastHatTs, lastBeatTs)', '離上一下大鼓幾毫秒（還有 lastSnareTs、lastHatTs、lastBeatTs）')],
     ],
     events: [
       ['drumHit(lane, velocity)', 'drumHit', W('every hit: which drum, how hard', '每打一下：哪一種鼓、多用力')],
@@ -76,6 +78,7 @@ const SECTIONS = [
     rows: [
       ['note', 'note', W('the last key, a MIDI number 0 to 127 (60 is C4)', '最後按的鍵，MIDI 號碼 0 到 127（60 是 C4）')],
       ['velocity', 'velocity', W('how hard, 0 to 1', '多用力，0 到 1')],
+      ['millis() - lastNoteTs', 'lastNoteTs', W('ms since a key went down', '離上一次按鍵幾毫秒')],
       ["noteIsDown(60)  noteIsDown('C4')", 'noteIsDown', W('is that key held down?', '那個鍵現在有沒有按著')],
       ['knob1 … knob8', 'knob1', W('a knob, 0 to 1: read it like mouseX', '旋鈕，0 到 1，像 mouseX 一樣直接讀')],
       ['fader1 …  pad1 …', 'fader1', W('faders 0 to 1, pads (how hard, 0 when let go)', '推桿 0 到 1、打擊墊（多用力，放開是 0）')],
