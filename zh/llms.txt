@@ -4,7 +4,7 @@
 
 輸入（MIDI、麥克風、和弦、身體與手部姿態、手機）發出有名字的訊號；映射層把訊號接到參數；演算的「世界」只讀參數，產生畫面與聲音；時間軸、導演控台與後台監看負責把演出跑起來。原生 ES module，零建置、零相依。從《The Last Input》（吳哲宇，2026；IRCAM 駐村 × C-LAB，臺北，49.4 聲道表演）抽出來。
 
-目前：27 個套件、26 個範例、27 份 MIDI 控制器設定檔（21 台真機與 6 種通用版型），版本 0.1.0，oav-p5 0.8.1（https://openaudiovisual.com/zh/changelog/）。
+目前：27 個套件、26 個範例、27 份 MIDI 控制器設定檔（21 台真機與 6 種通用版型），版本 0.1.0，oav-p5 0.8.2（https://openaudiovisual.com/zh/changelog/）。
 
 網站：https://openaudiovisual.com/（English）· https://openaudiovisual.com/zh/（繁體中文）
 原始碼：https://github.com/frank890417/open-audiovisual

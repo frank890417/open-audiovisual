@@ -5,7 +5,7 @@
 > Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文)
 > Handbook: https://openaudiovisual.com/docs/ · MIDI controller library: https://openaudiovisual.com/controllers/ · WebToe, the sister engine: https://openaudiovisual.com/webtoe/
 > Examples: https://openaudiovisual.com/examples/
-> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.1)
+> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.2)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
 > Today: 27 packages, 26 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
@@ -246,7 +246,7 @@ function notePressed(note, velocity) {     // like keyPressed(): any key, or a p
 
 No `setup()` call, p5 1.x and 2.x. On OpenProcessing it also wires to OP Configurator sliders in order.
 
-The same line does more, each one a call or a name in the p5 style (oav-p5 0.8.1, [changelog](https://openaudiovisual.com/changelog/)):
+The same line does more, each one a call or a name in the p5 style (oav-p5 0.8.2, [changelog](https://openaudiovisual.com/changelog/)):
 
 | write | and | play it |
 |---|---|---|
@@ -388,7 +388,7 @@ The controller element, `createController()`, the iframe embed and `createShow()
 ## 🗺 Status & roadmap
 
 Framework version `0.1.0` (nothing is on npm yet); oav-p5, the one line for p5.js, is versioned on its own:
-0.8.1 ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
+0.8.2 ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
 L4 video/audio split, timeline, **Score &amp; Director**, console, backstage monitor, phones as controllers,
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
@@ -5044,7 +5044,7 @@ before it was generalized.)
 
 # API reference (generated)
 
-> 484 public names of oav-p5 0.8.1 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 487 public names of oav-p5 0.8.2 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -5166,6 +5166,22 @@ function draw() {
   background(20);
   fill(255);
   text(last, width / 2, height / 2);
+}
+```
+
+- `lastNoteTs` (variable, oav-p5): `lastNoteTs` — When the last key went down, on the `millis()` clock: `millis() - lastNoteTs` is how many ms ago.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  const ago = millis() - lastNoteTs;    // ms since a key went down
+  fill(255, 200 * exp(-ago / 400) + 30);
+  circle(200, 150, 60 + 160 * exp(-ago / 400));
 }
 ```
 
@@ -5843,6 +5859,43 @@ function draw() {
   circle(280, 150, 40 + snare * 160);
   kick *= 0.9;
   snare *= 0.9;
+}
+```
+
+- `kickIsDetected`, `snareIsDetected`, `hatIsDetected` (variable, oav-p5): `kickIsDetected` — True in the one frame after a kick (snare, hat) is heard, from the drum machine or the microphone, like `mouseIsPressed` for a hit.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  startDrums('bd*4, ~ sd ~ sd', 110);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  fill(255, 90, 31, 255 * lag(kickIsDetected, 0, 0.3));    // a kick lights it, then it fades
+  circle(130, 200, 140);
+  fill(120, 190, 255, 255 * lag(snareIsDetected, 0, 0.3));
+  circle(270, 200, 140);
+}
+```
+
+- `lastKickTs`, `lastSnareTs`, `lastHatTs`, `lastBeatTs` (variable, oav-p5): `lastKickTs` — When the last kick (snare, hat, beat) came, on the `millis()` clock: `millis() - lastKickTs` is how many ms ago.
+
+```js
+function setup() {
+  createCanvas(400, 300);
+  startDrums('bd*4, hh*8', 100);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  const ago = millis() - lastKickTs;    // ms since the last kick
+  fill(255, 90, 31);
+  circle(200, 200, 40 + 160 * exp(-ago / 200));
+  fill(255);
+  text(isFinite(ago) ? round(ago) + ' ms since the kick' : 'no kick yet', 20, 290);
 }
 ```
 

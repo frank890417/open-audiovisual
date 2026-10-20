@@ -6,6 +6,16 @@
 
 ## oav-p5
 
+### 0.8.2
+
+2026-10-20 · [b0ebbd7](https://github.com/frank890417/open-audiovisual/commit/b0ebbd7)
+
+- **打擊也有像 `mouseIsPressed` 的值。** `kickIsDetected`、`snareIsDetected`、`hatIsDetected` 在大鼓、小鼓、鈸打到的那一格是
+  true（鼓機的，或沒有鼓機時麥克風的）。`lag()` 把 `true` 當成 1，所以 `lag(kickIsDetected, 0, 0.3)` 就是一個閃到 1 再慢慢退的數字，
+  可以拿來控制透明度或大小。[kickIsDetected](https://openaudiovisual.com/zh/docs/reference/#kickIsDetected)
+- **上一下是什麼時候。** `lastKickTs`、`lastSnareTs`、`lastHatTs`、`lastBeatTs`、`lastNoteTs` 用 `millis()` 的時鐘，
+  `millis() - lastKickTs` 就是幾毫秒前。第一下之前是 `-Infinity`。[lastKickTs](https://openaudiovisual.com/zh/docs/reference/#lastKickTs)
+
 ### 0.8.1
 
 2026-10-20 · [096914f](https://github.com/frank890417/open-audiovisual/commit/096914f)

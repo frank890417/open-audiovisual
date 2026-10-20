@@ -4,7 +4,7 @@
 
 Inputs (MIDI, microphone, chords, body and hand pose, phones) publish named signals; a mapping layer routes signals to parameters; an algorithmic "world" reads only parameters and renders image and sound; a timeline, a director's console and a backstage monitor run the show. Plain ES modules, no build, no dependencies. Extracted from The Last Input (Che-Yu Wu, 2026), a 49.4-channel performance at the IRCAM residency × C-LAB, Taipei.
 
-Today: 27 packages, 26 examples, 27 MIDI controller profiles (21 devices and 6 generic layouts), version 0.1.0; oav-p5 0.8.1 (https://openaudiovisual.com/changelog/).
+Today: 27 packages, 26 examples, 27 MIDI controller profiles (21 devices and 6 generic layouts), version 0.1.0; oav-p5 0.8.2 (https://openaudiovisual.com/changelog/).
 
 Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文, Traditional Chinese)
 Repository: https://github.com/frank890417/open-audiovisual

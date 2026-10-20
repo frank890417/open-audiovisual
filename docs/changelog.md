@@ -7,6 +7,16 @@ it. **The framework and the site** are listed by day. Every entry links its comm
 
 ## oav-p5
 
+### 0.8.2
+
+2026-10-20 · [b0ebbd7](https://github.com/frank890417/open-audiovisual/commit/b0ebbd7)
+
+- **A hit as a value, like `mouseIsPressed`.** `kickIsDetected`, `snareIsDetected` and `hatIsDetected` are true in the one
+  frame after a kick, a snare or a hat (the drum machine's, or the microphone's when no drums play). `lag()` takes `true` as 1,
+  so `lag(kickIsDetected, 0, 0.3)` is a number that flashes to 1 and fades: an alpha, a size. [kickIsDetected](https://openaudiovisual.com/docs/reference/#kickIsDetected)
+- **When the last one came.** `lastKickTs`, `lastSnareTs`, `lastHatTs`, `lastBeatTs` and `lastNoteTs` are on the `millis()`
+  clock, so `millis() - lastKickTs` is how many ms ago; `-Infinity` until the first. [lastKickTs](https://openaudiovisual.com/docs/reference/#lastKickTs)
+
 ### 0.8.1
 
 2026-10-20 · [096914f](https://github.com/frank890417/open-audiovisual/commit/096914f)
