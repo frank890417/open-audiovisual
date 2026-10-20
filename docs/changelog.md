@@ -7,6 +7,14 @@ it. **The framework and the site** are listed by day. Every entry links its comm
 
 ## oav-p5
 
+### 0.8.3
+
+2026-10-20 · [8a9be83](https://github.com/frank890417/open-audiovisual/commit/8a9be83)
+
+- **How many frames ago.** `lastKickFrameCount`, `lastSnareFrameCount`, `lastHatFrameCount`, `lastBeatFrameCount` and
+  `lastNoteFrameCount` are the `frameCount` of the frame that saw the hit: `frameCount - lastKickFrameCount` is 0 in the
+  frame where `kickIsDetected` is true, then 1, 2, 3 …, for a shape that lasts a fixed number of frames. [lastKickFrameCount](https://openaudiovisual.com/docs/reference/#lastKickFrameCount)
+
 ### 0.8.2
 
 2026-10-20 · [b0ebbd7](https://github.com/frank890417/open-audiovisual/commit/b0ebbd7)

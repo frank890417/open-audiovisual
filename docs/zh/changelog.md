@@ -6,6 +6,14 @@
 
 ## oav-p5
 
+### 0.8.3
+
+2026-10-20 · [8a9be83](https://github.com/frank890417/open-audiovisual/commit/8a9be83)
+
+- **幾格以前。** `lastKickFrameCount`、`lastSnareFrameCount`、`lastHatFrameCount`、`lastBeatFrameCount`、`lastNoteFrameCount`
+  是看到這一下的那一格的 `frameCount`。在 `kickIsDetected` 是 true 的那一格，`frameCount - lastKickFrameCount` 是 0，接著是 1、2、3……，
+  可以讓形狀在每一下之後固定留幾格。[lastKickFrameCount](https://openaudiovisual.com/zh/docs/reference/#lastKickFrameCount)
+
 ### 0.8.2
 
 2026-10-20 · [b0ebbd7](https://github.com/frank890417/open-audiovisual/commit/b0ebbd7)
