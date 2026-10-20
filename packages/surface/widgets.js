@@ -18,8 +18,8 @@
 //   text                    surface/<page>/<id>                   (string, as a pulse)
 //   label meter             — receive-only (feedback)
 
-import { KeysPiano } from '../keys/index.js?v=c772c1d';
-import { planKeyboard } from './kbplan.js?v=c772c1d';
+import { KeysPiano } from '../keys/index.js?v=a4419ca';
+import { planKeyboard } from './kbplan.js?v=a4419ca';
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const decimalsOf = (step) => { if (!step) return 2; const s = String(step); return s.includes('.') ? s.split('.')[1].length : 0; };
