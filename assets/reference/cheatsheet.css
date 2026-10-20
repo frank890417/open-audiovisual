@@ -2,8 +2,11 @@
    one landscape A4 on paper. Each box takes its colour from data-tone: shout = signal orange, hit = yellow, play = blue,
    smooth = green, keep = purple (the site's lane colours). */
 
-.cs-main { max-width: var(--maxw, 1440px); margin: 0 auto; padding: 28px var(--pad, 24px) 40px; }
-.cs-head { display: grid; gap: 10px; margin: 0 0 22px; }
+.cs-main { max-width: none; margin: 0; padding: 22px clamp(14px, 2vw, 32px) 36px; }
+.cs-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 28px; align-items: end; margin: 0 0 18px; }
+.cs-head .cs-lede, .cs-head .cs-links { grid-column: 2; }
+.cs-head .cs-brand { grid-row: 1 / span 2; }
+@media (max-width: 760px) { .cs-head { grid-template-columns: 1fr; } .cs-head .cs-lede, .cs-head .cs-links, .cs-head .cs-brand { grid-column: 1; grid-row: auto; } }
 .cs-brand { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 .cs-name { font: 600 clamp(40px, 6vw, 64px)/1 var(--mono); color: var(--sig); letter-spacing: -.02em; }
 .cs-tag { font: 500 14px/1.35 var(--mono); color: var(--ink); background: var(--sig); padding: 7px 12px; }
@@ -14,18 +17,29 @@
 .cs-print { font: 500 12px var(--mono); color: var(--fg); background: var(--ink-3); border: 1px solid var(--line-2); padding: 5px 10px; cursor: pointer; }
 .cs-print:hover { border-color: var(--fg-2); }
 
-.cs-grid { columns: 3 340px; column-gap: 18px; }
-.cs-box { --tone: var(--sig); break-inside: avoid; margin: 0 0 18px; padding: 14px 16px 12px; background: var(--ink-2); border: 1px solid var(--line); border-top: 3px solid var(--tone); }
+.cs-grid { columns: 300px; column-gap: 14px; }
+.cs-box { --tone: var(--sig); break-inside: avoid; margin: 0 0 14px; padding: 12px 14px 12px; background: var(--ink-2); border: 1px solid var(--line); border-top: 3px solid var(--tone); }
 .cs-box[data-tone="l1"] { --tone: var(--l1); }
 .cs-box[data-tone="l2"] { --tone: var(--l2); }
 .cs-box[data-tone="l3"] { --tone: var(--l3); }
 .cs-box[data-tone="l4"] { --tone: var(--l4); }
-.cs-box h2 { margin: 0 0 10px; font: 600 19px/1.25 var(--mono); color: var(--tone); letter-spacing: 0; }
-.cs-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.cs-box h2 { margin: 0 0 10px; font: 600 21px/1.2 var(--mono); color: var(--tone); letter-spacing: -0.01em; }
+.cs-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.cs-rows li + li { padding-top: 7px; border-top: 1px solid var(--line); }
 .cs-rows li { display: grid; gap: 1px; }
 .cs-rows a { text-decoration: none; color: inherit; }
 .cs-rows a:hover code, .cs-rows a:focus-visible code { text-decoration: underline; text-decoration-color: var(--tone); text-underline-offset: 3px; }
-.cs-rows code { font: 500 13.5px/1.45 var(--mono); color: var(--fg); background: none; padding: 0; overflow-wrap: anywhere; }
+.cs-rows code { font: 400 13.5px/1.45 var(--mono); color: var(--fg-2); background: none; padding: 0; overflow-wrap: anywhere; }
+.cs-rows code b { color: var(--fg); font-weight: 600; }
+.cs-rows code .cs-a { color: var(--fg-3); }
+.cs-rows code .cs-s, .cs-rows code .cs-num { color: var(--tone); }
+.cs-grid16 { display: block; margin: 4px 0 2px; max-width: 100%; height: auto; }
+.cs-grid16 .off { fill: var(--ink-3); }
+.cs-grid16 .beat { fill: var(--line-2); }
+.cs-grid16 .on-b { fill: var(--sig); }
+.cs-grid16 .on-s { fill: var(--l2); }
+.cs-grid16 .on-h { fill: var(--l3); }
+.cs-grid16 text { font: 400 8px var(--mono); fill: var(--fg-3); }
 .cs-rows code.cs-n { color: var(--tone); }
 .cs-w { font-size: 13.5px; line-height: 1.5; color: var(--fg-2); }
 .cs-sub { margin: 12px 0 6px; font: 400 12px var(--mono); color: var(--fg-3); text-transform: lowercase; }
@@ -57,6 +71,10 @@
 .cs-fig-keys .hit { fill: var(--tone); }
 .cs-fig-keys .k { fill: var(--ink); }
 .cs-fig-keys .kn { fill: var(--ink); font-size: 9px; }
+.cs-fig-meter .track { fill: var(--ink-3); } .cs-fig-meter .fill { fill: var(--tone); }
+.cs-fig-flash .tick, .cs-fig-env .tick { fill: var(--tone); } .cs-fig-flash .lagged, .cs-fig-env .lagged { fill: none; stroke: var(--tone); stroke-width: 2; }
+.cs-fig-phase .ring { fill: none; stroke: var(--line-2); stroke-width: 2; } .cs-fig-phase .arc { fill: none; stroke: var(--tone); stroke-width: 3; }
+.cs-fig-phase .b { fill: var(--fg-3); } .cs-fig-phase .dot { fill: var(--tone); }
 
 @media (max-width: 640px) {
   .cs-main { padding-top: 20px; }

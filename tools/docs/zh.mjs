@@ -17,6 +17,7 @@ export default {
   sourceNote: '內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。',
   llmsNote: '給語言模型：<a href="{llms}">/llms.txt</a> · <a href="{llmsFull}">/llms-full.txt</a>',
 
+  cheatsheet: { label: 'oav-p5 速查表', text: '用 oav-p5 的 p5 草圖會用到的名字放在一頁，附圖：喊、敲、彈、讓數字好用。可以印成一張 A4。', toc: '速查表 ↗' },
   reference: { label: 'API 參考', text: '只想查一個名稱？oav-p5 的每個變數、函式、事件與選項，和每個套件的匯出，都能搜尋，每一條附能直接跑的範例。', toc: 'API 參考 ↗' },
 
   tocTitle: '本頁目錄',

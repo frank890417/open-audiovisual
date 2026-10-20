@@ -29,7 +29,7 @@ const SECTIONS = [
       ['beatDetected(level)', 'beatDetected', W('a beat: the sound jumps', '有一拍：聲音突然跳起來')],
       ['kickDetected(level)', 'kickDetected', W('a kick in the low end (also snareDetected, hatDetected)', '低頻一下大鼓（還有 snareDetected、hatDetected）')],
     ],
-    figure: 'bands',
+    figure: ['meter', 'bands'],
   },
   {
     id: 'hit', tone: 'l3', title: W('hit: the drum machine', '敲：鼓機'),
@@ -50,10 +50,10 @@ const SECTIONS = [
       ['barStarted(bar)', 'barStarted', W('the first step of every bar', '每一小節的第一格')],
       ['stepStarted(step, bar)', 'stepStarted', W('every one of the 16 steps', '16 格的每一格')],
     ],
-    figure: 'steps',
+    figure: ['steps', 'flash'],
   },
   {
-    id: 'time', tone: 'l3', title: W('a timeline in bars', '時間軸：用小節排'),
+    id: 'time', tone: 'l3', title: W('a timeline in bars', '時間軸：用小節排'), figure: ['phase'],
     rows: [
       ["cue(5, 'bloom', 12)", 'cue', W('at bar 5, then every 12 bars, call cueFired', '第 5 小節叫一次，之後每 12 小節再叫')],
       ['cueFired(name, bar)', 'cueFired', W('you write it: change the scene here', '你寫的函式：在這裡換場景')],
@@ -64,14 +64,13 @@ const SECTIONS = [
   {
     id: 'rhythm', tone: 'l3', title: W('a rhythm in one line', '一行字寫節奏'), kind: 'notation',
     rows: [
-      ['bd  sd  hh', null, W('kick, snare, hi-hat', '大鼓、小鼓、鈸')],
-      ['bd sd bd sd', null, W('spaces share the bar out evenly', '空白把一小節平均分')],
-      ['hh*8', null, W('eight times', '打 8 下')],
-      ['~', null, W('a rest', '休息')],
-      ['[bd bd] sd', null, W('two squeezed into one place', '[ ] 把兩下擠進一格的位置')],
-      ['bd*4, ~ sd', null, W('a comma plays them at the same time', '逗號：同時打')],
-      ['bd(3,8)', null, W('3 hits spread over 8 steps', '8 格裡平均打 3 下')],
-      ['<bd sd>', null, W('one each bar, taking turns', '每小節輪流換一個')],
+      ['bd sd bd sd', null, W('spaces share the bar out evenly (bd kick, sd snare, hh hat)', '空白把一小節平均分（bd 大鼓、sd 小鼓、hh 鈸）'), { b: 'x.......x.......', s: '....x.......x...' }],
+      ['hh*8', null, W('eight times', '打 8 下'), { h: 'x.x.x.x.x.x.x.x.' }],
+      ['bd ~ bd ~', null, W('~ is a rest', '~ 是休息'), { b: 'x.......x.......' }],
+      ['[bd bd] sd', null, W('[ ] squeezes two into one place', '[ ] 把兩下擠進一個位置'), { b: 'x...x...........', s: '........x.......' }],
+      ['bd*4, ~ sd', null, W('a comma plays them at the same time', '逗號：同時打'), { b: 'x...x...x...x...', s: '........x.......' }],
+      ['bd(3,8)', null, W('3 hits spread over 8 steps', '8 格裡平均打 3 下'), { b: 'x.....x.....x...' }],
+      ['<bd sd>', null, W('one each bar, taking turns', '每小節輪流換一個'), { b: 'x...............', s: '................', b2: '................', s2: 'x...............' }],
     ],
   },
   {
@@ -91,7 +90,7 @@ const SECTIONS = [
       ['padPressed(n, velocity)', 'padPressed', W('a pad is hit', '打了一下打擊墊')],
     ],
     note: W('No keyboard? 🎹 on the page is one, 📱 turns your phone into one.', '沒有鍵盤？畫面上的 🎹 就是一台，📱 讓手機變成一台。'),
-    figure: 'keys',
+    figure: ['keys'],
   },
   {
     id: 'sound', tone: 'l2', title: W('sound and note names', '出聲與音名'),
@@ -116,7 +115,7 @@ const SECTIONS = [
       ["scope(value, 'name')", 'scope', W('a little scope in the corner, to look at a number', '角落的小示波器，看一個數字怎麼變')],
     ],
     note: W('Put them in draw(), not inside an if.', '寫在 draw() 裡，不要放進 if。'),
-    figure: 'lag',
+    figure: ['lag', 'env'],
   },
   {
     id: 'keep', tone: 'l4', title: W('record and check', '錄影與體檢'),
@@ -181,6 +180,49 @@ ${cells.join('')}<text class="t" x="8" y="10">bd</text><text class="now-t" x="${
 <path class="raw" d="M10 60 H30 V16 H170 V60 H310"/><polyline class="lagged" points="${pts.join(' ')}"/>
 <text class="t" x="34" y="12">${zh ? '上 0.03 秒' : 'up 0.03 s'}</text><text class="t" x="176" y="30">${zh ? '下 0.4 秒' : 'down 0.4 s'}</text></svg>`;
   }
+  if (id === 'meter') {
+    // micLevel: 0 a quiet room, about 0.45 talking, 1 shouting
+    const x = (v) => 10 + v * 300;
+    return `<svg viewBox="0 0 320 54" role="img" aria-label="${zh ? 'micLevel：安靜 0、說話約 0.45、大喊 1' : 'micLevel: 0 quiet, about 0.45 talking, 1 shouting'}">
+<rect class="track" x="10" y="14" width="300" height="12" rx="6"/><rect class="fill" x="10" y="14" width="${(x(0.45) - 10).toFixed(0)}" height="12" rx="6"/>
+${[[0, zh ? '安靜' : 'quiet'], [0.45, zh ? '說話' : 'talking'], [1, zh ? '大喊' : 'shout']].map(([v, l]) => `<line x1="${x(v)}" y1="28" x2="${x(v)}" y2="34"/><text class="t" x="${x(v)}" y="44" text-anchor="${v === 0 ? 'start' : v === 1 ? 'end' : 'middle'}">${v} ${l}</text>`).join('')}
+<text x="10" y="9">micLevel</text></svg>`;
+  }
+  if (id === 'flash') {
+    // kickIsDetected is true for one frame per kick; lag(kickIsDetected, 0, 0.3) jumps to 1 and fades
+    const hits = [20, 110, 200], ticks = [], pts = [];
+    for (let i = 0; i <= 300; i += 2) {
+      const since = Math.min(...hits.map((h) => (i >= h ? i - h : 1e9)));
+      pts.push(`${10 + i},${(66 - 40 * Math.exp(-since / 28)).toFixed(1)}`);
+    }
+    hits.forEach((h) => ticks.push(`<rect class="tick" x="${10 + h - 1.5}" y="6" width="3" height="12"/>`));
+    return `<svg viewBox="0 0 320 84" role="img" aria-label="${zh ? 'kickIsDetected 每一下只亮一格，lag 之後變成跳上去再慢慢退的曲線' : 'kickIsDetected is on for one frame per kick; after lag it jumps up and fades'}">
+<line x1="10" y1="18" x2="310" y2="18"/>${ticks.join('')}<text class="t" x="314" y="16" text-anchor="end">kickIsDetected</text>
+<polyline class="lagged" points="${pts.join(' ')}"/><line x1="10" y1="66" x2="310" y2="66"/><text class="t" x="314" y="80" text-anchor="end">lag(kickIsDetected, 0, 0.3)</text></svg>`;
+  }
+  if (id === 'phase') {
+    // drumPhase goes 0 → 1 around a bar; four beats on the circle
+    const cx = 160, cy = 40, r = 30, a = (t) => -Math.PI / 2 + t * 2 * Math.PI, p = 0.62;
+    const beats = [0, 1, 2, 3].map((b) => `<circle class="b" cx="${(cx + r * Math.cos(a(b / 4))).toFixed(1)}" cy="${(cy + r * Math.sin(a(b / 4))).toFixed(1)}" r="3"/><text class="t" x="${(cx + (r + 12) * Math.cos(a(b / 4))).toFixed(1)}" y="${(cy + (r + 12) * Math.sin(a(b / 4)) + 3).toFixed(1)}" text-anchor="middle">${b + 1}</text>`).join('');
+    const arc = `M ${cx} ${cy - r} A ${r} ${r} 0 1 1 ${(cx + r * Math.cos(a(p))).toFixed(1)} ${(cy + r * Math.sin(a(p))).toFixed(1)}`;
+    return `<svg viewBox="0 0 320 84" role="img" aria-label="${zh ? 'drumPhase 繞小節一圈從 0 到 1，圈上四個點是四拍' : 'drumPhase goes 0 to 1 around the bar; four dots are the beats'}">
+<circle class="ring" cx="${cx}" cy="${cy}" r="${r}"/><path class="arc" d="${arc}"/>${beats}
+<circle class="dot" cx="${(cx + r * Math.cos(a(p))).toFixed(1)}" cy="${(cy + r * Math.sin(a(p))).toFixed(1)}" r="5"/>
+<text x="10" y="20">drumPhase ${p}</text><text class="t" x="10" y="34">${zh ? '一小節＝一圈' : 'one bar = one turn'}</text><text class="t" x="310" y="20" text-anchor="end">drumBar ${zh ? '一圈加 1' : '+1 a turn'}</text></svg>`;
+  }
+  if (id === 'env') {
+    // env('kick', 0.01, 0.3): up at once, down over 0.3 s, again on the next kick
+    const pts = [];
+    for (let i = 0; i <= 300; i += 2) {
+      const t = i < 30 ? -1 : i < 160 ? i - 30 : i - 160;
+      const v = t < 0 ? 0 : Math.max(0, 1 - t / 90);
+      pts.push(`${10 + i},${(60 - v * 44).toFixed(1)}`);
+    }
+    return `<svg viewBox="0 0 320 76" role="img" aria-label="${zh ? 'env：每下大鼓跳到 1，再用收回秒數退回 0' : 'env: jumps to 1 on each kick, back to 0 over the decay'}">
+<line x1="10" y1="60" x2="310" y2="60"/><polyline class="lagged" points="${pts.join(' ')}"/>
+<rect class="tick" x="38.5" y="62" width="3" height="8"/><rect class="tick" x="168.5" y="62" width="3" height="8"/>
+<text class="t" x="44" y="12">env('kick', 0.01, 0.3)</text><text class="t" x="130" y="46">${zh ? '0.3 秒退回 0' : 'back to 0 in 0.3 s'}</text></svg>`;
+  }
   if (id === 'keys') {
     // one octave and a bit: C4 = 60
     const whites = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'];
@@ -197,10 +239,43 @@ ${cells.join('')}<text class="t" x="8" y="10">bd</text><text class="now-t" x="${
   return '';
 }
 
-function rowHtml([code, key, words], L, hrefOf, notation) {
-  const c = notation ? `<code class="cs-n">${esc(code)}</code>` : `<code>${highlight(code, 'js')}</code>`;
+/** a cheat-sheet line of code: names bold, what goes in the brackets dimmer, strings and numbers in the box's colour */
+function fmtArgs(a) {
+  return esc(a).replace(/(&#39;|')([^']*)(&#39;|')/g, '<span class="cs-s">\'$2\'</span>').replace(/(^|[\s,(])(-?\d+(?:\.\d+)?)(?=[\s,)]|$)/g, '$1<span class="cs-num">$2</span>');
+}
+function fmtCode(code) {
+  const re = /([A-Za-z_$][\w$.]*)(\(([^()]*)\))?/g;
+  let out = '', last = 0, m;
+  while ((m = re.exec(code))) {
+    out += esc(code.slice(last, m.index));
+    out += m[2] !== undefined ? `<b>${esc(m[1])}</b>(<span class="cs-a">${fmtArgs(m[3])}</span>)` : `<b>${esc(m[1])}</b>`;
+    last = re.lastIndex;
+  }
+  return out + esc(code.slice(last));
+}
+/** 16 cells per lane; a lane string has an x where the drum hits */
+function gridSvg(pat) {
+  const lanes = [['b', 'bd'], ['s', 'sd'], ['h', 'hh']].filter(([k]) => pat[k] != null || pat[k + '2'] != null);
+  const two = Object.keys(pat).some((k) => k.endsWith('2'));
+  const cell = 9, gap = 2, bar = 16 * (cell + gap), w = 22 + bar * (two ? 2 : 1) + (two ? 8 : 0), h = lanes.length * (cell + gap);
+  let out = '';
+  lanes.forEach(([k, name], li) => {
+    out += `<text class="t" x="0" y="${li * (cell + gap) + 8}">${name}</text>`;
+    [pat[k] || '', two ? (pat[k + '2'] || '') : null].forEach((str, bi) => {
+      if (str == null) return;
+      for (let i = 0; i < 16; i++) {
+        const x = 22 + bi * (bar + 8) + i * (cell + gap), y = li * (cell + gap);
+        out += `<rect class="${str[i] === 'x' ? 'on-' + k : i % 4 === 0 ? 'beat' : 'off'}" x="${x}" y="${y}" width="${cell}" height="${cell}" rx="1.5"/>`;
+      }
+    });
+  });
+  return `<svg class="cs-grid16" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true">${out}</svg>`;
+}
+
+function rowHtml([code, key, words, pat], L, hrefOf, notation) {
+  const c = notation ? `<code class="cs-n">${esc(code)}</code>` : `<code>${fmtCode(code)}</code>`;
   const name = key ? `<a href="${attr(hrefOf(key))}">${c}</a>` : c;
-  return `<li>${name}<span class="cs-w">${esc(words[L].replace('{version}', VERSION.now))}</span></li>`;
+  return `<li${pat ? ' class="cs-has-grid"' : ''}>${name}${pat ? gridSvg(pat) : ''}<span class="cs-w">${esc(words[L].replace('{version}', VERSION.now))}</span></li>`;
 }
 
 /**
@@ -223,7 +298,7 @@ export function renderCheatsheetPage(t, home, { c, records, p5Version, assets })
   const sections = SECTIONS.map((sec) => {
     const rows = sec.rows.map((r) => rowHtml(r, L, hrefOf, sec.kind === 'notation')).join('');
     const ev = sec.events ? `<p class="cs-sub">${esc(s.events)}</p><ul class="cs-rows">${sec.events.map((r) => rowHtml(r, L, hrefOf, false)).join('')}</ul>` : '';
-    const fig = sec.figure ? `<figure class="cs-fig cs-fig-${sec.figure}">${figureSvg(sec.figure, L)}</figure>` : '';
+    const fig = (sec.figure || []).map((f) => `<figure class="cs-fig cs-fig-${f}">${figureSvg(f, L)}</figure>`).join('');
     const note = sec.note ? `<p class="cs-note">${esc(sec.note[L])}</p>` : '';
     return `<section class="cs-box" data-tone="${sec.tone}" aria-labelledby="cs-${sec.id}">
 <h2 id="cs-${sec.id}">${esc(sec.title[L])}</h2>

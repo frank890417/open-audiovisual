@@ -160,6 +160,11 @@ kbd { font: 500 .78em var(--mono); color: var(--fg); background: var(--ink-2); b
 @media (prefers-reduced-motion: reduce) { html.js .docs-side { transition: none; } }
 
 /* the way into the API reference (/docs/reference/): a line under the lede and a link on top of the contents */
+.docs-quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 980px; margin: 20px 0 14px; }
+.docs-quick-card { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border: 1px solid var(--line-2); border-left: 3px solid var(--sig); background: var(--ink-2); color: var(--fg-2); font-size: 14.5px; line-height: 1.5; text-decoration: none; }
+.docs-quick-card strong { color: var(--fg); font-size: 17px; }
+.docs-quick-card.is-cheat { border-left-color: var(--l3); }
+.docs-quick-card:hover, .docs-quick-card:focus-visible { border-color: var(--fg-3); }
 .docs-ref { max-width: 62ch; margin: 18px 0 14px; padding: 12px 16px; border: 1px solid var(--line-2); border-left: 3px solid var(--sig); background: var(--ink-2); color: var(--fg-2); font-size: 15px; }
 .docs-ref a { color: var(--fg); text-decoration-color: var(--sig); }
 .toc .toc-ref { margin: 0 0 14px; }

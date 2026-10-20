@@ -17,6 +17,7 @@ export default {
   sourceNote: 'Written in Markdown in <code>docs/</code>; this page is generated from it.',
   llmsNote: 'For language models: <a href="{llms}">/llms.txt</a> · <a href="{llmsFull}">/llms-full.txt</a>',
 
+  cheatsheet: { label: 'oav-p5 cheat sheet', text: 'Every name a p5 sketch uses with oav-p5 on one page, with pictures: shout, hit, play, smooth. Prints on one A4.', toc: 'Cheat sheet ↗' },
   reference: { label: 'API reference', text: 'Looking for one name? Every variable, function, event and option of oav-p5 and every package export, searchable, each with an example you can run.', toc: 'API reference ↗' },
 
   tocTitle: 'On this page',
