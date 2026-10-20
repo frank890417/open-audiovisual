@@ -22,8 +22,8 @@ export class Stage {
   /**
    * @param {object} deps
    * @param {HTMLElement} deps.container
-   * @param {import('../core/src/params.js?v=2399f6b').Params} deps.params
-   * @param {import('../core/src/signals.js?v=2399f6b').Signals} deps.signals
+   * @param {import('../core/src/params.js?v=8cac247').Params} deps.params
+   * @param {import('../core/src/signals.js?v=8cac247').Signals} deps.signals
    * @param {object} [deps.io] extra io handles passed to update (midi, osc…)
    */
   constructor({ container, params, signals, io = {} }) {
