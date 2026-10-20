@@ -5,7 +5,7 @@
 > Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文)
 > Handbook: https://openaudiovisual.com/docs/ · MIDI controller library: https://openaudiovisual.com/controllers/ · WebToe, the sister engine: https://openaudiovisual.com/webtoe/
 > Examples: https://openaudiovisual.com/examples/
-> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.0)
+> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.1)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
 > Today: 27 packages, 26 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
@@ -246,7 +246,7 @@ function notePressed(note, velocity) {     // like keyPressed(): any key, or a p
 
 No `setup()` call, p5 1.x and 2.x. On OpenProcessing it also wires to OP Configurator sliders in order.
 
-The same line does more, each one a call or a name in the p5 style (oav-p5 0.8.0, [changelog](https://openaudiovisual.com/changelog/)):
+The same line does more, each one a call or a name in the p5 style (oav-p5 0.8.1, [changelog](https://openaudiovisual.com/changelog/)):
 
 | write | and | play it |
 |---|---|---|
@@ -388,7 +388,7 @@ The controller element, `createController()`, the iframe embed and `createShow()
 ## 🗺 Status & roadmap
 
 Framework version `0.1.0` (nothing is on npm yet); oav-p5, the one line for p5.js, is versioned on its own:
-0.8.0 ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
+0.8.1 ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
 L4 video/audio split, timeline, **Score &amp; Director**, console, backstage monitor, phones as controllers,
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
@@ -5044,7 +5044,7 @@ before it was generalized.)
 
 # API reference (generated)
 
-> 484 public names of oav-p5 0.8.0 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 484 public names of oav-p5 0.8.1 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -7654,7 +7654,7 @@ function draw() {
 }
 ```
 
-- `dock` (option, oav-p5): `?oav_dock=bottom | top` — Which edge of the window the 🎹 button, its cards and the panel sit on: `bottom` or `top`.
+- `dock` (option, oav-p5): `?oav_dock=bottom | top` — Which edge of the window the 🎹 button and its cards sit on, `bottom` or `top`; set it and the panel starts on that edge too.
 
 ```js
 window.OAV_P5 = { dock: 'top' };

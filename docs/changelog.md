@@ -7,6 +7,24 @@ it. **The framework and the site** are listed by day. Every entry links its comm
 
 ## oav-p5
 
+### 0.8.1
+
+2026-10-20 · [096914f](https://github.com/frank890417/open-audiovisual/commit/096914f)
+
+- **The 🎹 panel goes where you want it.** Two buttons on the panel: **Dock** cycles bottom → top → floating (drag a
+  floating panel by its bar), **Size** cycles small → medium → large. This browser remembers both. With no `dock` option
+  the panel now opens at the bottom, OpenProcessing included: at the top it covered the sketch. The 🎹 moves out of the
+  panel's way only when they share an edge. [dock](https://openaudiovisual.com/docs/reference/#option-dock)
+- **A reload brings back what you had on.** Cmd+Enter on OpenProcessing (or any reload of the same page) opens the panel
+  again if it was open, and restarts drums you started from its 🥁 on the line and tempo you ended on. A sketch that
+  starts its own drums keeps its own; close the panel or stop the drums and they stay off.
+- **With the drums playing, a kick is one kick.** The microphone's kick, snare, hat and beat no longer reach the sketch
+  while the drum machine plays: it mostly heard the drums out of the speakers, so `snareDetected` fired on kicks.
+  `micLevel` and the three bands still follow the microphone. [kickDetected](https://openaudiovisual.com/docs/reference/#kickDetected)
+- **OpenProcessing's console stays shut.** It opens over the sketch for every console line, so there oav-p5 no longer
+  prints what it says on its own (the wiring, a hint that is on a card, "sound on"). An error in your code, a call made
+  wrong and 🩺 still print; `debug` brings the rest back.
+
 ### 0.8.0
 
 2026-10-16 · [9bdde95](https://github.com/frank890417/open-audiovisual/commit/9bdde95)

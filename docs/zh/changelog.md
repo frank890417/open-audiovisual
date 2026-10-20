@@ -6,6 +6,20 @@
 
 ## oav-p5
 
+### 0.8.1
+
+2026-10-20 · [096914f](https://github.com/frank890417/open-audiovisual/commit/096914f)
+
+- **🎹 面板放你要的地方。** 面板上多兩個按鈕：「位置」依序切換下方、上方、浮動（浮動時拖曳上面那一列就能移動），「大小」
+  依序切換小、中、大。這個瀏覽器會記住。沒有設定 `dock` 時，面板改成一開始在下方，OpenProcessing 也一樣，之前放在上方會蓋住
+  草圖。只有面板和 🎹 在同一個邊時，🎹 才會讓開。[dock](https://openaudiovisual.com/zh/docs/reference/#option-dock)
+- **重整之後，剛剛開著的會回來。** 在 OpenProcessing 按 Cmd+Enter（或同一個頁面重新整理），面板原本開著就自動打開，
+  從面板 🥁 開的鼓機也會用你最後那一行節奏和速度再打起來。草圖自己用程式開的鼓機照草圖的。收起面板、關掉鼓機，重整後也保持關著。
+- **鼓機在打的時候，一下大鼓就是一下大鼓。** 鼓機播放時，麥克風聽到的大鼓、小鼓、鈸和拍子不再叫草圖的函式。之前它聽到的
+  多半是喇叭放出來的鼓聲，所以大鼓那一下也會叫 `snareDetected`。`micLevel` 和三個頻段照樣跟著麥克風。[kickDetected](https://openaudiovisual.com/zh/docs/reference/#kickDetected)
+- **OpenProcessing 的 console 不再自己跳出來。** OpenProcessing 只要 console 有一行字就會蓋在草圖上，所以在那裡 oav-p5
+  不再印它自己想說的話（接線、卡片上已經有的提示、聲音開了）。你的程式出錯、呼叫寫錯、🩺 體檢照樣會印，`debug` 可以全部找回來。
+
 ### 0.8.0
 
 2026-10-16 · [9bdde95](https://github.com/frank890417/open-audiovisual/commit/9bdde95)
