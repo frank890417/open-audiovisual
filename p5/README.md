@@ -154,8 +154,8 @@ step that sounds (a yellow column, 13:1 against the card). The kit is @openav/dr
 one (no samples); like sound it is heard from the first click, while the callbacks run from the start. A sketch that started
 the machine and defines `kickDetected()` no longer opens the microphone on the first click (one that reads `micLevel` still
 does, and then both call it). The grid sits at the top centre: on OpenProcessing between the 🎹 and OPC's icon, below the 🎹
-panel while that is open, clear of the console. – folds it, × stops the machine, and 🥁 in the 🎹 panel starts and stops it
-with no code. `OAVp5.drums` (`state`, `step`, `bar`, `bpm`, `pattern`, `cues`, `machine` = the `mountDrums` handle,
+panel while that is open, clear of the console. – folds it, × stops the machine, and 🥁 in the 🎹 panel opens and closes it
+with no code (🥁 opens it stopped: tick its play box to hear it; a sketch's `startDrums()` plays at once). `OAVp5.drums` (`state`, `step`, `bar`, `bpm`, `pattern`, `cues`, `machine` = the `mountDrums` handle,
 `on('hit' | 'step' | 'bar' | 'cue', fn)` → `off()`, `phase`, `beatPhase`, `now` = `{ bar, step, phase, beatPhase, tokens, mode,
 text }`, `clock` = which clock moves it).
 

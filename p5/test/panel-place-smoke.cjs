@@ -95,29 +95,37 @@ const row = (ok, label, detail = '') => { if (!ok) fails++; console.log(`${ok ? 
     row(big.cap === '60vh' && big.w > pn.w && small.cap === '32vh' && small.w < pn.w, `p5 ${v}: 大小 cycles medium → large → small`, JSON.stringify({ big, small }));
     await p.screenshot({ path: path.join(SHOTS, `panel-float-${v}.png`) });
 
-    // drums started from the panel's 🥁, on a line typed into the card, at another tempo
+    // 0.8.4: the panel's 🥁 brings the grid up stopped, its play box unticked; ticking it plays
     await p.click('#oav-p5-drums-button');
-    await p.waitForFunction(() => drumsAreOn && OAVp5.drums.src, null, { timeout: 8000 });
+    await p.waitForFunction(() => OAVp5.drums.state === 'stopped' && document.querySelector('#oav-p5-drums [data-play]'), null, { timeout: 8000 });
+    await p.waitForTimeout(300);
+    const quiet = await p.evaluate(() => ({ state: OAVp5.drums.state, on: drumsAreOn, box: document.querySelector('#oav-p5-drums [data-play]').checked }));
+    row(quiet.state === 'stopped' && !quiet.on && !quiet.box, `p5 ${v}: 🥁 opens the drum grid without playing (play box unticked)`, JSON.stringify(quiet));
+    await p.click('#oav-p5-drums [data-play]');
+    await p.waitForFunction(() => drumsAreOn, null, { timeout: 4000 }).catch(() => {});
+    const ticked = await p.evaluate(() => ({ state: OAVp5.drums.state, on: drumsAreOn }));
+    row(ticked.on, `p5 ${v}: …ticking its play box plays`, JSON.stringify(ticked));
     await p.evaluate(() => startDrums('bd*2, hh*8', 97));
     await p.waitForTimeout(400);
     const src0 = await p.evaluate(() => ({ src: OAVp5.drums.src, bpm: drumBpm }));
 
-    // Cmd+Enter on OpenProcessing reloads the sketch: the panel comes back open where it was, the drums come back playing
+    // Cmd+Enter on OpenProcessing reloads the sketch: the panel comes back open where it was, the drum grid comes back
+    // with the same line and tempo, stopped (0.8.4: nothing plays until the box is ticked)
     await p.reload(); await p.waitForSelector('#oav-p5-button', { timeout: 8000 });
     await p.waitForFunction(() => { const d = document.getElementById('oav-p5-panel'); return d && getComputedStyle(d).display !== 'none'; }, null, { timeout: 8000 }).catch(() => {});
-    await p.waitForFunction(() => drumsAreOn, null, { timeout: 8000 }).catch(() => {});
+    await p.waitForFunction(() => OAVp5.drums.state === 'stopped' && OAVp5.drums.src, null, { timeout: 8000 }).catch(() => {});
     await p.waitForTimeout(300);
     const again = await box(p, 'oav-p5-panel');
-    const src1 = await p.evaluate(() => ({ src: OAVp5.drums.src, bpm: drumBpm, on: drumsAreOn, card: !!document.getElementById('oav-p5-drums') }));
+    const src1 = await p.evaluate(() => { const b = document.querySelector('#oav-p5-drums [data-play]'); return { src: OAVp5.drums.src, bpm: drumBpm, on: drumsAreOn, state: OAVp5.drums.state, box: !!b && b.checked, card: !!document.getElementById('oav-p5-drums') }; });
     row(again && again.h > 0 && again.left === moved.left && again.top === moved.top && again.cap === '32vh', `p5 ${v}: after a reload the panel is open again, same place and size`, JSON.stringify({ moved, again }));
-    row(src1.on && src1.card && src1.src === src0.src && src1.bpm === src0.bpm, `p5 ${v}: …and the drums started from the panel play again, same line and tempo`, JSON.stringify({ src0, src1 }));
+    row(!src1.on && src1.state === 'stopped' && !src1.box && src1.card && src1.src === src0.src && src1.bpm === src0.bpm, `p5 ${v}: …and the drum grid opened from the panel is back, same line and tempo, not playing`, JSON.stringify({ src0, src1 }));
 
     // closing them is remembered too
     await p.click('#oav-p5-drums-button'); await p.waitForTimeout(200);
     await p.click('#oav-p5-panel button:has-text("' + (await p.evaluate(() => /^zh/i.test(navigator.language) ? '收起' : 'Hide')) + '")');
     await p.reload(); await p.waitForSelector('#oav-p5-button', { timeout: 8000 }); await p.waitForTimeout(1500);
-    const closed = await p.evaluate(() => { const d = document.getElementById('oav-p5-panel'); return { panel: !!d && getComputedStyle(d).display !== 'none', drums: drumsAreOn }; });
-    row(!closed.panel && !closed.drums, `p5 ${v}: a panel closed and drums stopped stay that way after a reload`, JSON.stringify(closed));
+    const closed = await p.evaluate(() => { const d = document.getElementById('oav-p5-panel'); return { panel: !!d && getComputedStyle(d).display !== 'none', drums: drumsAreOn, card: !!document.getElementById('oav-p5-drums') && getComputedStyle(document.getElementById('oav-p5-drums')).display !== 'none' }; });
+    row(!closed.panel && !closed.drums && !closed.card, `p5 ${v}: a panel closed and drums stopped stay that way after a reload`, JSON.stringify(closed));
     row(errs.length === 0, `p5 ${v}: no page errors`, errs.join(' | ').slice(0, 300));
     await ctx.close();
 

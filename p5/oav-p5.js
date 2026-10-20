@@ -106,7 +106,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.8.3';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.8.4';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -1674,7 +1674,9 @@
       });
     });
   }
-  function startDrums(pattern, bpm) {
+  // quiet: 🥁 and a reload bring the grid up stopped, its play box unticked (a class hears nothing until someone ticks it);
+  // the sketch's own startDrums() plays
+  function startDrums(pattern, bpm, quiet) {
     if (typeof pattern === 'number' && bpm == null) { bpm = pattern; pattern = null; }
     if (pattern != null) drums.pattern = pattern;
     var bpmGiven = bpm != null && +bpm > 0;
@@ -1690,7 +1692,7 @@
         if (r && r.bpm > 0 && !bpmGiven) drums.bpm = Math.max(30, Math.min(300, r.bpm));   // setcpm(110/4) in the copied code
         m.setBpm(drums.bpm);
         showDrums(true);
-        if (!m.seq.playing) m.play(true);
+        if (!quiet && !m.seq.playing) m.play(true);
         whenAudio(kitEnable);
         if (!audioAllowed()) setTimeout(function () { if (!audioOK && drums.state === 'on') hint('drumsClick', null, null, 'info'); }, 1200);
         syncDrums(); runDrums();
@@ -2476,7 +2478,7 @@
   }
   function restoreKept() {
     // after the sketch's setup(): drums it started itself win
-    setTimeout(function () { if (keep.drums && !drumsWanted && drums.state === 'off') startDrums(keep.drums.src || null, keep.drums.bpm || null); }, 800);
+    setTimeout(function () { if (keep.drums && !drumsWanted && drums.state === 'off') startDrums(keep.drums.src || null, keep.drums.bpm || null, true); }, 800);
   }
   if (typeof g.addEventListener === 'function') g.addEventListener('pagehide', keepDrums);
   function capNow() { return CAPS[place.side === 'float' ? 'float' : 'dock'][place.size]; }
@@ -2550,7 +2552,7 @@
     drumBtn = el('button', small); drumBtn.id = 'oav-p5-drums-button'; drumBtn.type = 'button';
     drumBtn.addEventListener('click', function () {
       if (drums.state === 'on' || drums.state === 'stopped' || drums.state === 'loading') { keep.drums = null; saveKeep(); stopDrums(); }
-      else { keep.drums = {}; saveKeep(); startDrums().then(keepDrums); }
+      else { keep.drums = {}; saveKeep(); startDrums(null, null, true).then(keepDrums); }
     });
     setDrums(drums.state);
     var ck = el('button', small, T.check); ck.id = 'oav-p5-check-button'; ck.type = 'button';
