@@ -106,7 +106,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.8.0';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.8.1';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -157,6 +157,11 @@
   O.linkdelay = Math.max(0, Math.min(2000, parseFloat(opt('linkdelay', 0)) || 0));   // ms of extra buffer on a linked page's notes
   var DEBUG = opt('debug', '') !== '' && opt('debug', '') !== '0';   // ?debug=1: say in the console what the 🎹 sees
   function dbg() { if (DEBUG && g.console) console.log.apply(console, ['[oav-p5 debug]'].concat([].slice.call(arguments))); }
+  // OpenProcessing opens its console over the sketch for every console line (2026-10-20 哲宇：「不要用 p5 的 print，這會一直
+  // 冒出來」). There, what oav-p5 says on its own (the wiring, a hint that is already on a card, "sound on") stays off the
+  // console; an error in your code, a call you made wrong, and 🩺 OAVp5.check() still print. debug brings everything back.
+  var QUIET = onOP && !DEBUG;
+  function sayInfo() { if (!QUIET && g.console) console.info.apply(console, arguments); }
   var profileChosen = opt('profile', null) != null;   // nobody chose ⇒ the panel follows the controller that is plugged in
   var zh = /^zh/i.test((g.navigator && g.navigator.language) || '');
   var T = zh
@@ -170,7 +175,9 @@
         sndHint: '點一下畫面（或按一個鍵）就聽得到：瀏覽器要網頁被點過才讓它出聲', drumsOn: '🥁 鼓機', drumsOff: '🥁 關鼓機', fold: '收起格子', closeDrums: '關掉鼓機', check: '🩺 體檢',
         recOn: '⏺ 錄影', recStop: '⏹ 停止 {t}', recStarting: '⏺ 準備中…', recSaving: '⏺ 存檔中…', recTitle: '錄下畫布和作品的聲音（MP4，IG 可以直接用；🎹 和提示不會進影片）',
         recDot: '錄影中：按這裡停止', shot: '📷 存圖', shotTitle: '把畫布存成一張 PNG（不含 🎹 和提示）', share: '分享', download: '下載',
-        fromOAV: '來自 OAV 鼓機（openaudiovisual.com）' }
+        fromOAV: '來自 OAV 鼓機（openaudiovisual.com）',
+        place: { bottom: '位置：下方', top: '位置：上方', float: '位置：浮動' }, placeTitle: '面板放在下方、上方，或浮動（浮動時拖曳這一列就能移動）；這個瀏覽器會記住',
+        size: '大小：', sizes: ['小', '中', '大'], sizeTitle: '面板的高度：小、中、大；這個瀏覽器會記住' }
     : { btn: 'MIDI: plug in a controller, play the one on screen, or use a phone', phone: '📱 Phone', close: 'Hide', hwOff: 'No MIDI device', knob: 'knob', fader: 'fader', pad: 'pad',
         hwNone: 'No Web MIDI in this browser (Safari): use the on-screen controller or a phone',
         hwDenied: 'MIDI permission is blocked: allow it again from the address bar', scan: 'Scan with a phone, open the MIDI tab and play this sketch', room: 'Room', wired: 'Wiring', opcMark: ' (OPC)', readOnly: '{read} (sketch)', readSlider: '{read} (sketch; {opc} by its slider)', loading: 'Loading the controller… (a few seconds the first time)',
@@ -181,7 +188,9 @@
         sndHint: 'click the page (or press a key) once to hear it: browsers let a page play audio only after a click', drumsOn: '🥁 Drums', drumsOff: '🥁 Stop drums', fold: 'Fold the grid', closeDrums: 'Stop the drum machine', check: '🩺 Check',
         recOn: '⏺ Record', recStop: '⏹ Stop {t}', recStarting: '⏺ Starting…', recSaving: '⏺ Saving…', recTitle: "Record the canvas and the sketch's sound (MP4, ready for Instagram; the 🎹 and the cards stay out)",
         recDot: 'Recording: click to stop', shot: '📷 Save image', shotTitle: 'Save the canvas as a PNG (without the 🎹 and the cards)', share: 'Share', download: 'Download',
-        fromOAV: 'from the OAV drum machine (openaudiovisual.com)' };
+        fromOAV: 'from the OAV drum machine (openaudiovisual.com)',
+        place: { bottom: 'Dock: bottom', top: 'Dock: top', float: 'Dock: floating' }, placeTitle: 'The panel at the bottom, at the top, or floating (drag this bar to move it); this browser remembers',
+        size: 'Size: ', sizes: ['S', 'M', 'L'], sizeTitle: "The panel's height: small, medium, large; this browser remembers" };
 
   if (onStrudel) {                                      // in Strudel there is no sketch: what reads a knob is "your code"
     T.readOnly = zh ? '{read}（你的程式）' : '{read} (your code)';
@@ -372,7 +381,7 @@
   function loadProfiles() {
     if (!profilesLoading) {
       profilesLoading = load('packages/midi/profiles/index.js').then(function (m) { profiles = m.PROFILES || []; tables = {}; return profiles; },
-        function (e) { if (g.console) console.info('[oav-p5] controller profiles did not load (' + (e && e.message) + '): unknown devices map knobs in the order you turn them'); profiles = []; return profiles; });
+        function (e) { sayInfo('[oav-p5] controller profiles did not load (' + (e && e.message) + '): unknown devices map knobs in the order you turn them'); profiles = []; return profiles; });
     }
     return profilesLoading;
   }
@@ -437,7 +446,7 @@
     var d = e && e.data;
     if (opMapsHardware || !d || d.messageType !== 'OPC_update' || clock() - lastHw > 250) return;
     opMapsHardware = true;
-    if (g.console) console.info('[oav-p5] ' + T.opMidi);
+    sayInfo('[oav-p5] ' + T.opMidi);
   });
   function opcDrive(t, kind, n, value, on, source) {
     if (source === 'hardware' && opMapsHardware) return;
@@ -583,7 +592,7 @@
       return true;
     }, function (e) {
       setHardware(e && (e.name === 'NotAllowedError' || e.name === 'SecurityError') ? 'denied' : 'unavailable');
-      if (g.console) console.info('[oav-p5] no hardware MIDI here (' + (e && e.name) + ') — the 🎹 on-screen controller and a phone still play the sketch');
+      sayInfo('[oav-p5] no hardware MIDI here (' + (e && e.name) + ') — the 🎹 on-screen controller and a phone still play the sketch');
       asking = null;
       return false;
     });
@@ -700,7 +709,7 @@
   function clockEvent(r, tSec) {
     if (!r || r === 'dupe' || r === 'spp') return;
     var m = drums.machine, seq = m && m.seq;
-    if (!clkSaid && clk.bpm) { clkSaid = true; if (g.console) console.info('[oav-p5] ' + (zh ? '收到外部 MIDI 時鐘（' : 'an external MIDI clock (') + Math.round(clk.bpm) + ' BPM' + (zh ? '）：鼓機和 drumPhase 跟著它（clock=off 不跟）' : '): the drums and drumPhase follow it (clock=off: they do not)')); }
+    if (!clkSaid && clk.bpm) { clkSaid = true; sayInfo('[oav-p5] ' + (zh ? '收到外部 MIDI 時鐘（' : 'an external MIDI clock (') + Math.round(clk.bpm) + ' BPM' + (zh ? '）：鼓機和 drumPhase 跟著它（clock=off 不跟）' : '): the drums and drumPhase follow it (clock=off: they do not)')); }
     runClock();
     if (r === 'start' || r === 'continue') {
       if (clkStopT) { clearTimeout(clkStopT); clkStopT = null; }
@@ -814,7 +823,7 @@
           }
         } });
       link.connect();
-      if (g.console) console.info('[oav-p5] link: ' + (zh ? '房間 ' : 'room ') + O.link + (zh ? '（同房間的 oav-p5 頁面互相聽得到虛擬埠送出的 MIDI）' : ' (oav-p5 pages in this room hear what each other\'s programs play)'));
+      sayInfo('[oav-p5] link: ' + (zh ? '房間 ' : 'room ') + O.link + (zh ? '（同房間的 oav-p5 頁面互相聽得到虛擬埠送出的 MIDI）' : ' (oav-p5 pages in this room hear what each other\'s programs play)'));
     }, function () { link = null; hint('modfail:link', 'moduleFail', { name: '@openav/relay link', host: hostOf(BASE) }, 'error'); });
   }
   function sig(b) { return (b[0] | 0) + ',' + (b[1] | 0) + ',' + (b[2] | 0); }
@@ -863,7 +872,7 @@
     mic.state = s; put('micIsOn', s === 'on'); paintMic();
     if (s !== 'asking') unhint('micAsking');
     if (s === 'on') ['micDenied', 'micSystem', 'micFrame', 'micMissing', 'micBusy'].forEach(unhint);
-    if (s === 'on' && g.console) console.info('[oav-p5] microphone on: ' + T.micHint + ' · beatDetected(level), kickDetected, snareDetected, hatDetected');
+    if (s === 'on') sayInfo('[oav-p5] microphone on: ' + T.micHint + ' · beatDetected(level), kickDetected, snareDetected, hatDetected');
   }
   function micNeeded(why) {                          // a sketch read a mic name
     if (O.mic !== 'auto' || micStopped || mic.state !== 'off') return;
@@ -900,7 +909,7 @@
     if (n === 'NotAllowedError' || n === 'SecurityError') hint(frameBlocks('microphone') ? 'micFrame' : /system/i.test(m) ? 'micSystem' : 'micDenied');
     else if (n === 'NotFoundError' || n === 'OverconstrainedError' || n === 'NotSupportedError') hint('micMissing');
     else if (n === 'NotReadableError' || n === 'AbortError') hint('micBusy');
-    else if (g.console) console.info('[oav-p5] ' + (zh ? '麥克風沒開成（' : 'no microphone (') + (n || m) + (zh ? '）' : ')'));
+    else sayInfo('[oav-p5] ' + (zh ? '麥克風沒開成（' : 'no microphone (') + (n || m) + (zh ? '）' : ')'));
   }
   /** this page is in an iframe whose permissions policy leaves `feature` out (an embed without allow="microphone") */
   function frameBlocks(feature) {
@@ -1146,7 +1155,7 @@
     if (x && x.actions && x.actions.length) h.actions = x.actions;
     if (x && x.ttl && HINTS_ON && doc) setTimeout(function () { if (hinted[id] === h) unhint(id); }, x.ttl);   // a card on screen only
     hinted[id] = h; hintList.push(h);
-    if (g.console) (h.kind === 'info' ? console.info : console.warn).call(console, '[oav-p5] ' + h.what + (zh ? '：' : ': ') + h.why + (h.next ? ' → ' + h.next : ''));
+    if (g.console && !QUIET) (h.kind === 'info' ? console.info : console.warn).call(console, '[oav-p5] ' + h.what + (zh ? '：' : ': ') + h.why + (h.next ? ' → ' + h.next : ''));
     if (HINTS_ON && doc) { if (doc.body) showHint(h); else hintQueue.push(h); }
     return h;
   }
@@ -1309,7 +1318,7 @@
   }
   function chooseInstrument(m, shell, id) {
     if (!m.getInstrument(id)) {
-      if (g.console) console.info('[oav-p5] no instrument "' + id + '": ' + m.listInstruments().map(function (d) { return d.id; }).join(', '));
+      sayInfo('[oav-p5] no instrument "' + id + '": ' + m.listInstruments().map(function (d) { return d.id; }).join(', '));
       return;
     }
     sndTarget = id;
@@ -1325,7 +1334,7 @@
       if (!sndWanted) return false;                                // stopSound() came first
       sndOn = true; setSound('on');
       if (sndTarget && shell.instrument !== sndTarget) shell.setInstrument(sndTarget);
-      if (g.console) console.info('[oav-p5] sound on (' + sndTarget + '): every key, pad, the 🎹 and a phone are heard');
+      sayInfo('[oav-p5] sound on (' + sndTarget + '): every key, pad, the 🎹 and a phone are heard');
       return true;
     }, function (e) {
       snd.error = (e && e.message) || String(e); setSound('error');
@@ -1571,6 +1580,7 @@
   // the line changed (startDrums, a click on a cell, a line typed, ↶, the menu): rhythmChanged(src, how) and drums.on('rhythm')
   function rhythmChangedIn(src, info) {
     var how = (info && info.how) || 'code';
+    if (keep.drums && src) { keep.drums.src = src; saveKeep(); }
     if (how !== 'code') unhint('rhythmTakeover');
     drumEmit('rhythm', 'rhythmChanged', [src, how]);
   }
@@ -1648,6 +1658,7 @@
     if (!m) return;
     if (drums.state !== 'off') setDrums(m.seq.playing ? 'on' : 'stopped');   // the grid's own checkbox counts too
     drums.bpm = m.seq.bpm; drums.pattern = m.seq.pattern; put('drumBpm', drums.bpm);
+    if (keep.drums && keep.drums.bpm !== drums.bpm && drums.bpm > 0) { keep.drums.bpm = drums.bpm; saveKeep(); }
   }
   function runDrums() {
     if (drumLoop) return;
@@ -2045,7 +2056,7 @@
       return Promise.resolve(false);
     }
     var sec = +o.seconds > 0 ? Math.min(+o.seconds, O.reclimit) : 0;
-    if (+o.seconds > O.reclimit && g.console) console.info('[oav-p5] startRecording(' + o.seconds + '): one take is ' + O.reclimit + ' s at most (the option reclimit)');
+    if (+o.seconds > O.reclimit) sayInfo('[oav-p5] startRecording(' + o.seconds + '): one take is ' + O.reclimit + ' s at most (the option reclimit)');
     var s = recS = { id: ++recSeq, canvas: canvas, seconds: sec, fps: +o.fps > 0 ? Math.min(60, +o.fps) : O.recfps, name: o.name,
       mic: o.mic != null ? !!o.mic : O.record !== 'nomic', taps: {}, on: {}, peak: 0, live: null, ticks: 0, rec: null, mix: recMixer() };
     record.seconds = 0;
@@ -2089,7 +2100,7 @@
         audio: live.length ? recLabel(live) : H.rec.none, micNote: live.indexOf('mic') >= 0 ? H.rec.micNote : '',
         stop: sec ? fill(H.rec.stopSecs, { n: sec }) : recPhone() ? H.rec.stopPhone : H.rec.stopBtn }, 'info', { ttl: 8000 });
       if (p5soundNew()) hint('recP5sound', null, null, 'info');
-      if (g.console) console.info('[oav-p5] recording ' + canvas.width + '×' + canvas.height + ' @' + s.fps + ' fps, ' + (r.mimeType || 'the browser\'s format') + ', ' + Math.round(bps / 1e5) / 10 + ' Mb/s; sound: ' + (live.join(', ') || 'none yet'));
+      sayInfo('[oav-p5] recording ' + canvas.width + '×' + canvas.height + ' @' + s.fps + ' fps, ' + (r.mimeType || 'the browser\'s format') + ', ' + Math.round(bps / 1e5) / 10 + ' Mb/s; sound: ' + (live.join(', ') || 'none yet'));
       recEmit('start', [{ width: canvas.width, height: canvas.height, fps: s.fps, type: r.mimeType, seconds: sec }]);
       return true;
     }).then(null, function (e) {
@@ -2183,7 +2194,7 @@
       f.frames = fm;
       info.warnings = recFindings(f);
       say(info.warnings);
-      if (g.console) console.info('[oav-p5] saved ' + info.name + ': ' + info.width + '×' + info.height + ', ' + info.seconds + ' s, ' + fmtBytes(info.bytes) + ', ' + (info.audio ? (info.heard ? 'with sound (' + info.sources.join(', ') + ')' : 'silent') : 'no audio track') + (info.warnings.length ? ' · ' + info.warnings.join(', ') : ''));
+      sayInfo('[oav-p5] saved ' + info.name + ': ' + info.width + '×' + info.height + ', ' + info.seconds + ' s, ' + fmtBytes(info.bytes) + ', ' + (info.audio ? (info.heard ? 'with sound (' + info.sources.join(', ') + ')' : 'silent') : 'no audio track') + (info.warnings.length ? ' · ' + info.warnings.join(', ') : ''));
       callSketch('recordingSaved', [info]);
       recEmit('saved', [info]);
       return info;
@@ -2287,21 +2298,27 @@
     doc.body.appendChild(btn);
     paintButton(); paintRec(); paintExt();
     flushHints();
-    if (O.panel === 'open') openPanel(true);
+    if (O.panel === 'open' || keep.open) openPanel(true);
+    restoreKept();
     // say once, in the console, what the controller is wired to (OPC variables are declared by now)
-    var hint = function () { setTimeout(function () { var s = wiringText(); if (s && g.console) console.info('[oav-p5] ' + s); }, 0); };
+    var hint = function () { setTimeout(function () { var s = wiringText(); if (s) sayInfo('[oav-p5] ' + s); }, 0); };
     if (doc.readyState === 'complete') hint(); else g.addEventListener('load', hint);
     if (DEBUG) setTimeout(function () { dbg('2 s after placing: the 🎹 in the page is ours:', doc.getElementById('oav-p5-button') === btn, '| base', BASE); }, 2000);
   }
   function lift() {
-    var h = panelOpen && dock ? dock.getBoundingClientRect().height + (O.compact ? 10 : 0) : 0;
+    // the 🎹 and its cards move out of the panel's way only when the panel sits on their edge (docked there, or the
+    // floating box still in its corner); a panel on the other edge, or dragged away, leaves them where they are
+    var pl = place || { side: O.dock, x: null };   // (lift can run before the panel's placement is read)
+    var fl = pl.side === 'float', open = panelOpen && dock, ph = open ? dock.getBoundingClientRect().height : 0;
+    var h = open && (fl ? pl.x == null : pl.side === O.dock) ? ph + (fl ? 10 : 0) : 0;
     if (btn) btn.style[O.dock] = (EDGE + h) + 'px';
     if (hintBox) hintBox.style[O.dock] = (O.panel === 'off' ? EDGE : EDGE + 42) + h + 'px';
-    if (drumCard) drumCard.style.top = O.dock === 'top' && h ? (10 + h) + 'px' : '';   // below a panel docked at the top (OpenProcessing)
+    if (drumCard) drumCard.style.top = open && pl.side === 'top' ? (10 + ph) + 'px' : '';   // below a panel docked at the top
   }
   function openPanel(want) {
     if (!doc || O.panel === 'off') return Promise.resolve(null);
     var on = want == null ? !panelOpen : !!want;
+    keep.open = on; saveKeep();
     if (!on) { panelOpen = false; if (dock) dock.style.display = 'none'; lift(); return Promise.resolve(null); }
     if (O.hardware === 'click' && midi.hardware === 'off') connectHardware();
     if (!loading) loading = buildDock();
@@ -2331,7 +2348,7 @@
       var hide = gr.style.display !== 'none'; gr.style.display = hide ? 'none' : ''; fold.textContent = hide ? '+' : '–';
     });
     var x = el('button', b, '×'); x.type = 'button'; x.title = T.closeDrums;
-    x.addEventListener('click', function () { stopDrums(); });
+    x.addEventListener('click', function () { if (keep.drums) { keep.drums = null; saveKeep(); } stopDrums(); });
     tools.appendChild(fold); tools.appendChild(x);
     drumCard.appendChild(tools);
     doc.body.appendChild(drumCard);
@@ -2372,17 +2389,96 @@
     }
   }
 
+  // ---- where the panel sits (2026-10-20 哲宇：「浮動面板可以預設在下方……但是可以切換嗎？因為它現在會遮擋畫面……
+  // 可以浮動拖曳，然後又可以切換大小」): docked full width at the bottom or the top, or a floating box dragged by its bar;
+  // and how tall it may grow (small, medium, large). The 🎹 and its cards keep the dock option. The panel starts where the
+  // viewer last put it (this browser remembers), else where the sketch's dock option says, else at the bottom; compact
+  // (Strudel) starts as the floating box in the corner.
+  var PLACE_KEY = 'oav-p5-panel-place', CAPS = { dock: [0.3, 0.5, 0.7], float: [0.32, 0.42, 0.6] }, WIDTHS = [560, 640, 820];   // a floating box narrower than 560 px is all buttons
+  var place = (function () {
+    var p = { side: O.compact ? 'float' : opt('dock', null) != null ? O.dock : 'bottom', size: 1, x: null, y: null }, s = null;
+    try { s = JSON.parse(g.localStorage.getItem(PLACE_KEY) || 'null'); } catch (e) { /* private window, or storage blocked */ }
+    if (s && typeof s === 'object') {
+      if (s.side === 'top' || s.side === 'bottom' || s.side === 'float') p.side = s.side;
+      if (s.size === 0 || s.size === 1 || s.size === 2) p.size = s.size;
+      if (typeof s.x === 'number' && typeof s.y === 'number' && isFinite(s.x) && isFinite(s.y)) { p.x = s.x; p.y = s.y; }
+    }
+    return p;
+  })();
+  var placeBtn = null, sizeBtn = null, placeBar = null, fitView = null;
+  // ---- what the viewer had on, kept across a reload of the same page (2026-10-20 哲宇：「command + Enter 重整作品之後每次都要
+  // 重按一下 oav 的按鈕，然後還要切換到鼓機開啟顯示，很繁瑣」): the panel open, and drums the viewer started from the panel,
+  // with the line of rhythm and the tempo they ended on. A sketch that starts its own drums keeps its own.
+  var KEEP_KEY = 'oav-p5-keep:' + (function () { try { return g.location.pathname; } catch (e) { return ''; } })();
+  var keep = (function () { try { var v = JSON.parse(g.localStorage.getItem(KEEP_KEY) || 'null'); return v && typeof v === 'object' ? v : {}; } catch (e) { return {}; } })();
+  var keptJson = JSON.stringify(keep);
+  function saveKeep() { var j = JSON.stringify(keep); if (j === keptJson) return; keptJson = j; try { g.localStorage.setItem(KEEP_KEY, j); } catch (e) { /* */ } }
+  function keepDrums() {
+    if (!keep.drums) return;
+    if (drums.state === 'off') { keep.drums = null; saveKeep(); return; }
+    var src = '';
+    try { src = drums.machine && drums.machine.src ? drums.machine.src() : ''; } catch (e) { /* */ }
+    if (src) keep.drums.src = src;
+    if (drums.bpm > 0) keep.drums.bpm = drums.bpm;
+    saveKeep();
+  }
+  function restoreKept() {
+    // after the sketch's setup(): drums it started itself win
+    setTimeout(function () { if (keep.drums && !drumsWanted && drums.state === 'off') startDrums(keep.drums.src || null, keep.drums.bpm || null); }, 800);
+  }
+  if (typeof g.addEventListener === 'function') g.addEventListener('pagehide', keepDrums);
+  function capNow() { return CAPS[place.side === 'float' ? 'float' : 'dock'][place.size]; }
+  function savePlace() { try { g.localStorage.setItem(PLACE_KEY, JSON.stringify(place)); } catch (e) { /* */ } }
+  function clampX(x) { return Math.round(Math.max(0, Math.min(g.innerWidth - 120, x))); }
+  function clampY(y) { return Math.round(Math.max(0, Math.min(g.innerHeight - 40, y))); }
+  function paintPlace() {
+    if (placeBtn) { placeBtn.textContent = T.place[place.side]; placeBtn.title = T.placeTitle; }
+    if (sizeBtn) { sizeBtn.textContent = T.size + T.sizes[place.size]; sizeBtn.title = T.sizeTitle; }
+    if (placeBar) { placeBar.style.cursor = place.side === 'float' ? 'move' : ''; placeBar.style.touchAction = place.side === 'float' ? 'none' : ''; }
+  }
+  function placeDock() {
+    if (!dock) return;
+    var st = dock.style, line = '1px solid rgba(255,255,255,.18)';
+    st.left = st.right = st.top = st.bottom = st.width = st.border = st.borderTop = st.borderBottom = st.borderRadius = '';
+    st.maxHeight = Math.round(capNow() * 100) + 'vh';
+    if (place.side === 'float') {
+      st.width = 'min(' + WIDTHS[place.size] + 'px,calc(100vw - 20px))'; st.border = line; st.borderRadius = '12px';
+      if (place.x != null) { st.left = clampX(place.x) + 'px'; st.top = clampY(place.y) + 'px'; } else { st[O.corner] = '10px'; st[O.dock] = EDGE + 'px'; }
+    } else {
+      st.left = '0'; st.right = '0'; st[place.side] = '0';
+      st[place.side === 'top' ? 'borderBottom' : 'borderTop'] = line;
+    }
+    paintPlace();
+    if (fitView) fitView();
+    lift();
+  }
+  function dragDock(bar) {
+    bar.addEventListener('pointerdown', function (e) {
+      if (place.side !== 'float' || (e.button != null && e.button !== 0) || (e.target.closest && e.target.closest('button,select,input,a,label'))) return;
+      var r = dock.getBoundingClientRect(), dx = e.clientX - r.left, dy = e.clientY - r.top, moved = false, id = e.pointerId;
+      try { bar.setPointerCapture(id); } catch (x) { /* */ }
+      var move = function (ev) {
+        moved = true; place.x = clampX(ev.clientX - dx); place.y = clampY(ev.clientY - dy);
+        dock.style.right = dock.style.bottom = ''; dock.style.left = place.x + 'px'; dock.style.top = place.y + 'px'; lift();
+      };
+      var up = function () {
+        bar.removeEventListener('pointermove', move); bar.removeEventListener('pointerup', up); bar.removeEventListener('pointercancel', up);
+        try { bar.releasePointerCapture(id); } catch (x) { /* */ }
+        if (moved) savePlace();
+      };
+      bar.addEventListener('pointermove', move); bar.addEventListener('pointerup', up); bar.addEventListener('pointercancel', up);
+      e.preventDefault();
+    });
+  }
+  if (typeof g.addEventListener === 'function') g.addEventListener('resize', function () { if (dock && place.side === 'float' && place.x != null) { dock.style.left = clampX(place.x) + 'px'; dock.style.top = clampY(place.y) + 'px'; } });
+
   function buildDock() {
-    // compact (Strudel): a box in the corner, a third of the height, so the code beside it stays in view
-    dock = el('div', (O.compact
-      ? 'position:fixed;' + O.corner + ':10px;' + O.dock + ':' + EDGE + 'px;width:min(560px,calc(100vw - 20px));z-index:' + (Z - 1) + ';max-height:34vh;overflow:auto;display:none;' +
-        'border:1px solid rgba(255,255,255,.18);border-radius:12px;'
-      : 'position:fixed;left:0;right:0;' + O.dock + ':0;z-index:' + (Z - 1) + ';max-height:50vh;overflow:auto;display:none;' +
-        'border-' + (O.dock === 'top' ? 'bottom' : 'top') + ':1px solid rgba(255,255,255,.18);') +
+    dock = el('div', 'position:fixed;z-index:' + (Z - 1) + ';overflow:auto;display:none;' +
       'background:rgba(14,14,18,.92);padding:6px 10px 10px;box-sizing:border-box;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)');
     dock.id = 'oav-p5-panel';
     fence(dock);
     var bar = el('div', 'display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin-bottom:4px;font:600 12px system-ui,sans-serif;color:#ddd' + (O.corner === 'left' ? ';flex-direction:row-reverse' : ''));
+    placeBar = bar; dragDock(bar);
     legend = el('div', 'flex:1 1 160px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9fd8ff;font-weight:500');
     var ph = el('button', 'padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;cursor:pointer;font:inherit', T.phone);
     ph.type = 'button'; ph.addEventListener('click', function () { openPhone(); });
@@ -2400,7 +2496,10 @@
     sndBtn.addEventListener('click', function () { if (snd.state === 'on' || snd.state === 'loading') stopSound(); else startSound(); });
     if (O.sound === 'off') sndBtn.style.display = 'none';
     drumBtn = el('button', small); drumBtn.id = 'oav-p5-drums-button'; drumBtn.type = 'button';
-    drumBtn.addEventListener('click', function () { if (drums.state === 'on' || drums.state === 'stopped' || drums.state === 'loading') stopDrums(); else startDrums(); });
+    drumBtn.addEventListener('click', function () {
+      if (drums.state === 'on' || drums.state === 'stopped' || drums.state === 'loading') { keep.drums = null; saveKeep(); stopDrums(); }
+      else { keep.drums = {}; saveKeep(); startDrums().then(keepDrums); }
+    });
     setDrums(drums.state);
     var ck = el('button', small, T.check); ck.id = 'oav-p5-check-button'; ck.type = 'button';
     ck.addEventListener('click', function () { check(); });
@@ -2413,8 +2512,13 @@
     extChip = el('div', 'flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9fd8ff;font-weight:600;display:none');
     extChip.id = 'oav-p5-ext';
     bar.appendChild(legend); bar.appendChild(extChip); paintExt(); bar.appendChild(micBtn); bar.appendChild(sndBtn); bar.appendChild(drumBtn); bar.appendChild(recBtn); bar.appendChild(shotBtn);
-    bar.appendChild(ph); bar.appendChild(ck); bar.appendChild(cl);
+    placeBtn = el('button', small); placeBtn.id = 'oav-p5-place'; placeBtn.type = 'button';
+    placeBtn.addEventListener('click', function () { place.side = { bottom: 'top', top: 'float', float: 'bottom' }[place.side]; savePlace(); placeDock(); });
+    sizeBtn = el('button', small); sizeBtn.id = 'oav-p5-size'; sizeBtn.type = 'button';
+    sizeBtn.addEventListener('click', function () { place.size = (place.size + 1) % 3; savePlace(); placeDock(); });
+    bar.appendChild(ph); bar.appendChild(ck); bar.appendChild(placeBtn); bar.appendChild(sizeBtn); bar.appendChild(cl);
     dock.appendChild(bar);
+    placeDock();
     sndRow = el('div', 'display:none;margin:0 0 6px'); sndRow.id = 'oav-p5-sound';
     dock.appendChild(sndRow);
     paintSound();
@@ -2443,8 +2547,8 @@
         var wide = g.innerWidth >= 600, layout = wide ? 'face' : 'auto';
         if (view.getAttribute('layout') !== layout) view.setAttribute('layout', layout);   // auto would re-grid a shrunk face into a tall stack
         if (!f || !f.w || !f.h || !wide) { view.style.width = ''; return; }
-        var room = g.innerHeight * (O.compact ? 0.34 : 0.5) - (O.compact ? 96 : 86);   // the dock's cap minus its bar and the element's picker row
-        view.style.width = Math.max(O.compact ? 240 : 320, Math.min(dock.clientWidth - 20, room * f.w / f.h)) + 'px';
+        var fl = place.side === 'float', room = g.innerHeight * capNow() - (fl ? 96 : 86);   // the panel's cap minus its bar and the element's picker row
+        view.style.width = Math.max(fl ? 240 : 320, Math.min(dock.clientWidth - 20, room * f.w / f.h)) + 'px';
         view.style.margin = '0 auto';
       };
       var follow = function () {                          // the device on screen decides what knob1 means for the screen
@@ -2454,6 +2558,7 @@
         fit();
       };
       view.addEventListener('ready', follow); view.addEventListener('profilechange', follow); g.addEventListener('resize', fit);
+      fitView = fit;
       if (wait.parentNode) wait.parentNode.removeChild(wait);
       dock.appendChild(view);
       if (typeof ResizeObserver === 'function') new ResizeObserver(lift).observe(dock);
@@ -2490,7 +2595,7 @@
           onSignal: function (name, value) { if (name === 'midi/virtual' && value && Array.isArray(value.data)) input(value.data, 'phone', value.device ? 'id:' + value.device : 'screen'); },
         });
         relay.connect();
-      }, function (e) { if (g.console) console.warn('[oav-p5] relay client did not load', e); });
+      }, function (e) { if (g.console && !QUIET) console.warn('[oav-p5] relay client did not load', e); });
     }
     if (!doc) return room;
     if (card) { card.style.display = card.style.display === 'none' ? 'flex' : 'none'; return room; }

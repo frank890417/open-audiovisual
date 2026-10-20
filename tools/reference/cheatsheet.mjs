@@ -11,6 +11,7 @@ import { highlight } from '../docs/markdown.mjs';
 import { LOADER, P5 } from './model.mjs';
 
 const W = (en, zh) => ({ en, zh });
+const VERSION = { now: '' };   // OAVp5.version's row says the version the page was built with (set in renderCheatsheetPage)
 
 /** [code shown, reference key, few words] — the key must be an oav-p5 name (or alias) in the reference. */
 const SECTIONS = [
@@ -119,7 +120,7 @@ const SECTIONS = [
       ['startRecording()  stopRecording()', 'startRecording', W('a video of the canvas with its sound (or 🎹 → ⏺)', '把畫布和聲音錄成影片（或 🎹 → ⏺）')],
       ['recordingIsOn', 'recordingIsOn', W('recording now?', '現在有沒有在錄')],
       ['recordingSaved(info)', 'recordingSaved', W('the file is saved', '影片存好了')],
-      ['OAVp5.version', 'OAVp5.version', W("'0.8.0': the line has loaded", "'0.8.0'：第一行有載到")],
+      ['OAVp5.version', 'OAVp5.version', W("'{version}': the line has loaded", "'{version}'：第一行有載到")],
       ['OAVp5.check()', 'OAVp5.check', W('🩺 a card that says what works: screenshot it when you ask for help', '🩺 一張體檢卡，問問題時截圖貼上')],
     ],
   },
@@ -195,7 +196,7 @@ ${cells.join('')}<text class="t" x="8" y="10">bd</text><text class="now-t" x="${
 function rowHtml([code, key, words], L, hrefOf, notation) {
   const c = notation ? `<code class="cs-n">${esc(code)}</code>` : `<code>${highlight(code, 'js')}</code>`;
   const name = key ? `<a href="${attr(hrefOf(key))}">${c}</a>` : c;
-  return `<li>${name}<span class="cs-w">${esc(words[L])}</span></li>`;
+  return `<li>${name}<span class="cs-w">${esc(words[L].replace('{version}', VERSION.now))}</span></li>`;
 }
 
 /**
@@ -205,6 +206,7 @@ function rowHtml([code, key, words], L, hrefOf, notation) {
  */
 export function renderCheatsheetPage(t, home, { c, records, p5Version, assets }) {
   const L = c.locale, s = t.cheat;
+  VERSION.now = p5Version;
   const byName = new Map();
   for (const r of records) if (r.ns === P5) for (const k of r.covers) if (!byName.has(k)) byName.set(k, r);
   const ref = c.root + (L === 'zh' ? 'zh/' : '') + 'docs/reference/';

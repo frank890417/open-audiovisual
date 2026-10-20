@@ -180,8 +180,8 @@ function draw() {
   'option:dock': {
     group: 'options',
     summary: {
-      en: 'Which edge of the window the 🎹 button, its cards and the panel sit on: `bottom` or `top`.',
-      zh: '🎹 按鈕、它的提示卡片和面板放在視窗的哪個邊：`bottom` 或 `top`。',
+      en: 'Which edge of the window the 🎹 button and its cards sit on, `bottom` or `top`; set it and the panel starts on that edge too.',
+      zh: '🎹 按鈕和它的提示卡片放在視窗的哪個邊：`bottom` 或 `top`。有設定的話，面板一開始也在這個邊。',
     },
     value: {
       type: 'String', options: 'bottom | top', default: 'bottom (top on OpenProcessing)',
@@ -192,6 +192,10 @@ function draw() {
       {
         en: "Moves the 🎹, its cards and the panel to the top or bottom edge. On openprocessing.org the default is `top`, because OpenProcessing's console floats over the bottom of the sketch. The drum machine's card sits below a panel docked at the top.",
         zh: '把 🎹、它的卡片和面板移到上緣或下緣。在 openprocessing.org 上預設是 `top`，因為 OpenProcessing 的 console 會浮在草圖的下方。鼓機的卡片會放在固定在上緣的面板下面。',
+      },
+      {
+        en: "The panel itself has two buttons for whoever is looking at it: **Dock** cycles bottom → top → floating (drag a floating panel by its bar), and **Size** cycles small → medium → large. This browser remembers the choice, and it wins over the option. When the sketch sets no `dock`, the panel starts at the bottom, also on openprocessing.org (from 2026-10-20: at the top it covered the sketch). The 🎹 moves out of the panel's way only when the two share an edge. Reloading the same page (Cmd+Enter on OpenProcessing) opens the panel again if it was open, and restarts drums started from its 🥁 on the same line and tempo.",
+        zh: '面板上有兩個按鈕給正在看的人用：「位置」依序切換下方、上方、浮動（浮動時拖曳面板上面那一列就能移動），「大小」依序切換小、中、大。這個瀏覽器會記住你的選擇，而且優先於這個選項。草圖沒有設定 `dock` 時，面板一開始在下方，openprocessing.org 上也一樣（2026-10-20 起，之前放在上方會蓋住草圖）。只有面板和 🎹 在同一個邊時，🎹 才會讓開。同一個頁面重新整理（OpenProcessing 按 Cmd+Enter）時，面板原本開著就會自動打開，從面板 🥁 開的鼓機也會用同一行節奏和速度再打起來。',
       },
     ],
     notes: [how('dock')],
