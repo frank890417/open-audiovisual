@@ -27,7 +27,10 @@ function mouseDragged() { dragged++; }
 window.__counts = () => ({ pressed, dragged });`;
 const HITS = `window.__hits = { kick: 0, snare: 0 };
 function kickDetected() { window.__hits.kick++; }
-function snareDetected() { window.__hits.snare++; }`;
+function snareDetected() { window.__hits.snare++; }
+window.__fc = [];
+const __draw = draw;
+draw = function () { if (kickIsDetected) window.__fc.push(frameCount - lastKickFrameCount); __draw(); };`;
 
 let fails = 0;
 const row = (ok, label, detail = '') => { if (!ok) fails++; console.log(`${ok ? '✅' : '❌'} ${label}${!ok && detail ? '\n     ' + detail : ''}`); };
@@ -147,6 +150,16 @@ const row = (ok, label, detail = '') => { if (!ok) fails++; console.log(`${ok ? 
     row(alone.kick === 1 && alone.snare === 1, `p5 ${v}: no drums: the microphone's kick and snare reach the sketch`, JSON.stringify(alone));
     row(withDrums.drumKick === 1 && withDrums.drumSnare === 0 && withDrums.micKick === 0 && withDrums.micSnare === 0 && withDrums.bass > 0,
       `p5 ${v}: drums on: a kick is one kickDetected and no snareDetected; the microphone's hits stay out, bass still moves`, JSON.stringify(withDrums));
+    // 0.8.3: frameCount - lastKickFrameCount is 0 in the frame where kickIsDetected is true (the drums', and the microphone's)
+    await p3.waitForTimeout(2200);
+    const fromDrums = await p3.evaluate(() => window.__fc.slice());
+    await p3.evaluate(() => stopDrums());
+    await p3.waitForTimeout(200);
+    await p3.evaluate((F) => { window.__fc.length = 0; OAVp5.mic._frame(eval(F)); }, FRAME);
+    await p3.waitForTimeout(300);
+    const fromMic = await p3.evaluate(() => ({ fc: window.__fc.slice(), ago: frameCount - lastKickFrameCount }));
+    row(fromDrums.length >= 2 && fromDrums.every((d) => d === 0), `p5 ${v}: drums: frameCount - lastKickFrameCount is 0 in every frame kickIsDetected is true`, JSON.stringify(fromDrums));
+    row(fromMic.fc.length === 1 && fromMic.fc[0] === 0 && fromMic.ago > 0, `p5 ${v}: microphone: the same 0 in that frame, counting up after`, JSON.stringify(fromMic));
     row(e3.length === 0, `p5 ${v}: mic + drums: no page errors`, e3.join(' | ').slice(0, 300));
     await c3.close();
   }

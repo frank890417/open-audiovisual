@@ -632,4 +632,39 @@ function draw() {
     related: ['note', 'velocity', 'notePressed', 'lastKickTs'],
     keywords: { en: ['last note', 'timestamp', 'time since', 'millis', 'key pressed'], zh: ['上一個音', '時間', '多久以前', '毫秒', '按鍵'] },
   },
+
+  lastNoteFrameCount: {
+    group: 'midi',
+    summary: {
+      en: 'The `frameCount` of the frame that saw the last key go down: `frameCount - lastNoteFrameCount` is how many frames ago.',
+      zh: '看到上一個鍵按下的那一格的 `frameCount`：`frameCount - lastNoteFrameCount` 就是幾格以前。',
+    },
+    value: {
+      type: 'Number',
+      en: 'A frame number, on the same count as `frameCount`, set with [`note`](#note); `-Infinity` before any key. Since oav-p5 0.8.3.',
+      zh: '畫面的編號，跟 `frameCount` 同一套數法，跟 [`note`](#note) 一起更新。還沒按過任何鍵之前是 `-Infinity`。oav-p5 0.8.3 起。',
+    },
+    description: [
+      { en: 'The frame-counting twin of [`lastNoteTs`](#lastNoteTs): 0 in the first frame after the key, then 1, 2, 3 …', zh: '[`lastNoteTs`](#lastNoteTs) 的「數格子」版本：按下之後的第一格是 0，接下來 1、2、3……' },
+    ],
+    examples: [
+      {
+        code: `function setup() {
+  createCanvas(400, 300);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  const f = frameCount - lastNoteFrameCount;    // frames since a key went down
+  fill(120, 190, 255);
+  circle(200, 150, max(0, 200 - f * 5));        // shrinks by 5 px a frame
+}`,
+        caption: { en: 'Each key you press (on 🎹 too) brings back a big circle that shrinks 5 px a frame.', zh: '每按一個鍵（🎹 也可以），大圓就回來，然後每一格縮 5 px。' },
+      },
+    ],
+    claims: [{ before: "midi.input([0x90, 60, 100], 'screen')", expr: 'lastNoteFrameCount > -Infinity', equals: true }],
+    related: ['lastNoteTs', 'note', 'notePressed', 'lastKickFrameCount'],
+    keywords: { en: ['last note', 'frameCount', 'frames since', 'key pressed'], zh: ['上一個音', '幾格以前', '畫面數', '按鍵'] },
+  },
 };

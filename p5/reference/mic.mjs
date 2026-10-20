@@ -617,4 +617,46 @@ function draw() {
     related: ['kickIsDetected', 'kickDetected', 'lastNoteTs'],
     keywords: { en: ['last kick', 'timestamp', 'time since', 'millis', 'ago', 'last snare', 'last hat', 'last beat'], zh: ['上一下', '時間', '多久以前', '毫秒', '大鼓', '小鼓', '鈸', '拍子'] },
   },
+
+  lastKickFrameCount: {
+    group: 'mic',
+    aliases: ['lastSnareFrameCount', 'lastHatFrameCount', 'lastBeatFrameCount'],
+    summary: {
+      en: 'The `frameCount` of the frame that saw the last kick (snare, hat, beat): `frameCount - lastKickFrameCount` is how many frames ago.',
+      zh: '看到上一下大鼓（小鼓、鈸、拍子）的那一格的 `frameCount`：`frameCount - lastKickFrameCount` 就是幾格以前。',
+    },
+    value: {
+      type: 'Number',
+      en: 'A frame number, on the same count as `frameCount`; `-Infinity` before the first hit. Since oav-p5 0.8.3.',
+      zh: '畫面的編號，跟 `frameCount` 同一套數法。第一下之前是 `-Infinity`。oav-p5 0.8.3 起。',
+    },
+    description: [
+      {
+        en: 'The frame-counting twin of [`lastKickTs`](#lastKickTs). `frameCount - lastKickFrameCount` is 0 in the frame where [`kickIsDetected`](#kickIsDetected) is true, then 1, 2, 3 …, so a shape can last a fixed number of frames after each hit. Use the `Ts` version when it should last a fixed time whatever the frame rate.',
+        zh: '[`lastKickTs`](#lastKickTs) 的「數格子」版本。在 [`kickIsDetected`](#kickIsDetected) 是 true 的那一格，`frameCount - lastKickFrameCount` 是 0，接下來是 1、2、3……，所以可以讓一個形狀在每一下之後固定留幾格。想要不管幀率都留固定秒數，就用 `Ts` 那一組。',
+      },
+    ],
+    examples: [
+      {
+        code: `function setup() {
+  createCanvas(400, 300);
+  startDrums('bd*4, ~ sd ~ sd', 110);
+  noStroke();
+}
+
+function draw() {
+  background(20);
+  const k = frameCount - lastKickFrameCount;    // frames since the kick
+  if (k < 10) {                                 // the ring stays for 10 frames after each kick
+    fill(255, 90, 31);
+    circle(200, 200, 60 + k * 16);
+  }
+}`,
+        caption: { en: 'After every kick a circle shows for ten frames, growing each frame.', zh: '每一下大鼓之後，圓會出現 10 格，每一格變大一點。' },
+      },
+    ],
+    claims: [{ before: "OAVp5.drums._hit('kick', 0.9)", expr: 'lastKickFrameCount > -Infinity && lastSnareFrameCount === -Infinity', equals: true }],
+    related: ['lastKickTs', 'kickIsDetected', 'lastNoteFrameCount'],
+    keywords: { en: ['last kick', 'frameCount', 'frames since', 'frames ago', 'last snare', 'last hat', 'last beat'], zh: ['上一下', '幾格以前', '畫面數', 'frameCount', '大鼓', '小鼓', '鈸', '拍子'] },
+  },
 };

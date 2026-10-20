@@ -43,6 +43,7 @@ const SECTIONS = [
       ['drumBpm  drumsAreOn', 'drumBpm', W('the tempo / is it playing?', '速度／有沒有在打')],
       ['kickIsDetected  snareIsDetected', 'kickIsDetected', W('true in the frame of a hit: lag(kickIsDetected, 0, 0.3) fades it', '打到的那一格是 true：lag(kickIsDetected, 0, 0.3) 讓它慢慢退')],
       ['millis() - lastKickTs', 'lastKickTs', W('ms since the last kick (lastSnareTs, lastHatTs, lastBeatTs)', '離上一下大鼓幾毫秒（還有 lastSnareTs、lastHatTs、lastBeatTs）')],
+      ['frameCount - lastKickFrameCount', 'lastKickFrameCount', W('frames since the last kick: 0 in its own frame', '離上一下大鼓幾格，打到的那一格是 0')],
     ],
     events: [
       ['drumHit(lane, velocity)', 'drumHit', W('every hit: which drum, how hard', '每打一下：哪一種鼓、多用力')],

@@ -106,7 +106,7 @@
 (function () {
   'use strict';
   var g = typeof window !== 'undefined' ? window : globalThis;
-  var OAV_P5_VERSION = '0.8.2';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
+  var OAV_P5_VERSION = '0.8.3';   // (not `VERSION`: p5's friendly errors flag any declaration that shares a p5 name)
   if (g.OAVp5 && g.OAVp5.version) return;            // the line and the library both loaded it: the first one wins
 
   // ---------------------------------------------------------------- options
@@ -327,9 +327,20 @@
     soundIsOn: false, drumsAreOn: false, drumStep: 0, drumBar: 0, drumBpm: 112, cueName: '', recordingIsOn: false,
     // 0.8.2 (2026-10-20 哲宇：「我想要一些 last 系列 ts，e.g. lastKickTs、lastSnareTs」): when the last hit came, on p5's millis()
     // clock, so `millis() - lastKickTs` is how many ms ago; -Infinity until the first one (millis() - it is Infinity)
-    lastBeatTs: -Infinity, lastKickTs: -Infinity, lastSnareTs: -Infinity, lastHatTs: -Infinity, lastNoteTs: -Infinity };
+    lastBeatTs: -Infinity, lastKickTs: -Infinity, lastSnareTs: -Infinity, lastHatTs: -Infinity, lastNoteTs: -Infinity,
+    // 0.8.3 (哲宇：「我想要也有 frameCount - lastKickFrameCount 的版本」): the frameCount of the frame that sees the hit, so
+    // `frameCount - lastKickFrameCount` is 0 in the frame where kickIsDetected is true, then 1, 2, …; -Infinity until the first
+    lastBeatFrameCount: -Infinity, lastKickFrameCount: -Infinity, lastSnareFrameCount: -Infinity, lastHatFrameCount: -Infinity, lastNoteFrameCount: -Infinity };
   function hitTs() { try { if (typeof g.millis === 'function') { var t = g.millis(); if (typeof t === 'number' && t === t) return t; } } catch (e) { /* */ } return clock(); }
   var TS_OF = { beat: 'lastBeatTs', kick: 'lastKickTs', snare: 'lastSnareTs', hat: 'lastHatTs' };
+  var FC_OF = { beat: 'lastBeatFrameCount', kick: 'lastKickFrameCount', snare: 'lastSnareFrameCount', hat: 'lastHatFrameCount' };
+  var delivering = false;   // true while the drums hand their hits over, in p5's pre-draw (the frame that draws them)
+  // the frame that will see a hit: this one when it comes in p5's pre-draw or draw(), else the next (p5 counts a frame up first)
+  function hitFrame() {
+    var p = typeof p5inst === 'function' ? p5inst() : null;
+    var fc = p && typeof p.frameCount === 'number' ? p.frameCount : typeof g.frameCount === 'number' ? g.frameCount : 0;
+    return delivering || (p && p._inUserDraw) ? fc : fc + 1;
+  }
   // knob1 … knob8, fader1 … fader8, pad1 … pad16 are readers, like the microphone's names: reading one says the sketch
   // plays from that control (so its MIDI troubles are worth a hint, and an OPC slider on the same knob steps aside)
   var readers = {}, READ = {};
@@ -512,7 +523,7 @@
       if (on && i < 0) { midi.held.push(b1); midi.held.sort(function (a, b) { return a - b; }); } else if (!on && i >= 0) midi.held.splice(i, 1);
       midi.last = { type: on ? 'noteOn' : 'noteOff', note: b1, value: v, channel: ch, source: source, control: m ? m[0] + m[1] : null };
       put('noteIsPressed', midi.held.length > 0);
-      if (on) { put('note', b1); put('velocity', v); put('lastNoteTs', hitTs()); }
+      if (on) { put('note', b1); put('velocity', v); put('lastNoteTs', hitTs()); put('lastNoteFrameCount', hitFrame()); }
       if (m) { CTL.pad[m[1]] = v; put('pad' + m[1], v); }
       call('midiMessage', [bytes, source]);
       call(on ? 'noteOn' : 'noteOff', on ? [b1, v, ch] : [b1, ch]);
@@ -944,7 +955,7 @@
     })();
   }
   function micCall(kind, level) {
-    if (TS_OF[kind]) put(TS_OF[kind], hitTs());
+    if (TS_OF[kind]) { put(TS_OF[kind], hitTs()); put(FC_OF[kind], hitFrame()); }
     if (hitSeq[kind] != null) hitSeq[kind]++;
     var name = micCbs[kind], fn = g[name];
     if (typeof fn === 'function') { try { fn.call(g, level); } catch (e) { report(name, e); } }
@@ -1481,9 +1492,9 @@
   }
   var DRUM_TS = { kickDetected: 'lastKickTs', snareDetected: 'lastSnareTs', hatDetected: 'lastHatTs' }, DRUM_HIT = { kickDetected: 'kick', snareDetected: 'snare', hatDetected: 'hat' };
   function drumHitIn(lane, v) {
-    var ts = hitTs();
-    if (DRUM_CB[lane]) { put(DRUM_TS[DRUM_CB[lane]], ts); hitSeq[DRUM_HIT[DRUM_CB[lane]]]++; }
-    if (DRUM_BEAT[lane] && drums.count !== drumBeatAt) put('lastBeatTs', ts);
+    var ts = hitTs(), fc = hitFrame();
+    if (DRUM_CB[lane]) { var kd = DRUM_HIT[DRUM_CB[lane]]; put(DRUM_TS[DRUM_CB[lane]], ts); put(FC_OF[kd], fc); hitSeq[kd]++; }
+    if (DRUM_BEAT[lane] && drums.count !== drumBeatAt) { put('lastBeatTs', ts); put('lastBeatFrameCount', fc); }
     drumEmit('hit', 'drumHit', [lane, v]);
     if (DRUM_CB[lane]) callSketch(DRUM_CB[lane], [v]);
     if (DRUM_BEAT[lane] && drums.count !== drumBeatAt) { drumBeatAt = drums.count; micSeq++; callSketch('beatDetected', [v]); }   // one beat per step
@@ -1534,7 +1545,8 @@
   function drumsDeliver() {
     var m = drums.machine;
     if (!m || !m.deliver || drums.state !== 'on') return;
-    try { m.deliver(); } catch (e) { report('drums', e); }
+    delivering = true;
+    try { m.deliver(); } catch (e) { report('drums', e); } finally { delivering = false; }
   }
   function hookPreDraw() {
     if (preDraw) return;
