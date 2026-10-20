@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// build-reference — the API reference: /docs/reference/ (en), /zh/docs/reference/ (繁中) and docs/reference/reference.json.
+// build-reference — the API reference: /docs/reference/ (en), /zh/docs/reference/ (繁中) and docs/reference/reference.json,
+// and the one-page cheat sheet built from the same entries: /docs/cheatsheet/ and /zh/docs/cheatsheet/ (tools/reference/cheatsheet.mjs).
 //
 //   node tools/build-reference.mjs            # write the three files (and sitemap.xml); exit 1 if a gate is red
 //   node tools/build-reference.mjs --check    # exit 1 if a committed file is stale or a gate is red
@@ -20,6 +21,7 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { loadModel, toDataset, LEDGER_FILE, P5 } from './reference/model.mjs';
 import { renderReferencePage } from './reference/page.mjs';
+import { renderCheatsheetPage } from './reference/cheatsheet.mjs';
 import { CATEGORIES } from './reference/categories.mjs';
 import { SITE, BLOB, pathCtx } from './site/chrome.mjs';
 import { shapeDiff } from './build-home.mjs';
@@ -34,6 +36,7 @@ const read = (rel) => { try { return fs.readFileSync(path.join(ROOT, rel), 'utf8
 const hash = (rel) => crypto.createHash('sha1').update(read(rel) || '').digest('hex').slice(0, 8);
 
 export const PAGES = { en: 'docs/reference/index.html', zh: 'zh/docs/reference/index.html' };
+export const CHEAT_PAGES = { en: 'docs/cheatsheet/index.html', zh: 'zh/docs/cheatsheet/index.html' };
 export const DATASET = 'docs/reference/reference.json';
 const STRINGS = { en, zh };
 const HOME = { en: homeEn, zh: homeZh };
@@ -51,11 +54,12 @@ export function buildFiles(model) {
   if (diff.length) throw new Error('reference string tables differ in shape:\n  ' + diff.join('\n  '));
   const pkg = JSON.parse(read('package.json'));
   const p5Version = /OAV_P5_VERSION = '([\d.]+)'/.exec(read('p5/oav-p5.js'))[1];
-  const assets = { css: hash('assets/reference/reference.css'), js: hash('assets/reference/reference.js'), docsCss: hash('assets/docs/docs.css'), docsJs: hash('assets/docs/docs.js') };
+  const assets = { css: hash('assets/reference/reference.css'), js: hash('assets/reference/reference.js'), docsCss: hash('assets/docs/docs.css'), docsJs: hash('assets/docs/docs.js'), cheatCss: hash('assets/reference/cheatsheet.css') };
   const files = {};
   for (const locale of ['en', 'zh']) {
     const c = pathCtx('docs/reference/', locale, { page: 'docs' });
     files[PAGES[locale]] = renderReferencePage(STRINGS[locale], HOME[locale], { c, records: model.records, version: pkg.version, p5Version, assets, guideHref: GUIDE_URL });
+    files[CHEAT_PAGES[locale]] = renderCheatsheetPage(STRINGS[locale], HOME[locale], { c: pathCtx('docs/cheatsheet/', locale, { page: 'docs' }), records: model.records, p5Version, assets });
   }
   files[DATASET] = datasetText(toDataset(model, { p5Version, version: pkg.version }));
   return files;

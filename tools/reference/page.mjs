@@ -75,12 +75,12 @@ function examplesHtml(r, e, L, t) {
     const run = ex.run || (r.ns === P5 ? 'sketch' : 'module');
     const lang = ex.lang || 'js';
     const tools = [];
-    if (run === 'sketch') tools.push(`<button type="button" class="ref-run" hidden>${esc(t.ex.run)}</button>`);
+    if (run === 'sketch') tools.push(`<button type="button" class="ref-run" hidden>${esc(t.ex.run)}</button>`, `<button type="button" class="ref-stop" hidden>${esc(t.ex.stop)}</button>`, `<button type="button" class="ref-reset" hidden>${esc(t.ex.reset)}</button>`);
     tools.push(`<button type="button" class="ref-copy" hidden title="${attr(run === 'sketch' ? t.ex.copyTitle : t.ex.copy)}">${esc(t.ex.copy)}</button>`);
     if (run === 'sketch') tools.push(`<a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">${esc(t.ex.open)}</a>`);
     const mic = ex.needs === 'mic' ? ` <span class="ref-tag">${esc(t.ex.needsMic)}</span>` : '';
     const note = run === 'static' || run === 'module' ? `<span class="ref-tag" title="${attr(t.ex.notRun)}">${esc(run === 'module' ? 'module' : 'static')}</span> ` : '';
-    return `<figure class="ref-ex" data-run="${run}">
+    return `<figure class="ref-ex" data-run="${run}"${ex.needs ? ` data-needs="${attr(ex.needs)}"` : ''}>
 <div class="term" data-lang="${lang}"><div class="term-bar"><span>${esc(lang)}</span><span class="ref-ex-tools">${tools.join('')}</span></div><pre><code class="language-${lang}">${highlight(ex.code.replace(/\n+$/, ''), lang)}</code></pre></div>
 <figcaption>${note}${inline(ex.caption[L], { resolveLink: (h) => h })}${mic}</figcaption>
 <div class="ref-live" hidden></div>
@@ -204,7 +204,7 @@ ${topBar(home, c)}
       <h1>${esc(t.title)}</h1>
       <p class="docs-lede">${esc(t.lede)}</p>
       <p class="docs-stats">${esc(stats)} · ${esc(fill(t.versions, { p5: p5Version, version }))}</p>
-      <p class="docs-note">${fill(t.dataset, { json: c.root + 'docs/reference/reference.json' })} · ${fill(t.guide, { href: guideHref })}</p>
+      <p class="docs-note"><a href="../cheatsheet/">${esc(t.cheatLink)} →</a> · ${fill(t.dataset, { json: c.root + 'docs/reference/reference.json' })} · ${fill(t.guide, { href: guideHref })}</p>
     </header>
 
     <div class="ref-search" role="search">
@@ -222,6 +222,7 @@ ${topBar(home, c)}
       <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>${esc(t.loaderCopy)}</button></div><pre><code class="language-js">${highlight(LOADER, 'js')}</code></pre></div>
       <p class="ref-loader-body">${esc(t.loaderBody)}</p>
       <label class="ref-p5v" hidden>${esc(t.p5Version)} <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> ${esc(t.ex.auto)}</label>
     </aside>
 
     <div id="ref-list" class="ref-list">

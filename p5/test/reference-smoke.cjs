@@ -143,6 +143,15 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
       // the live example
       await page.goto(`${base}${root}?q=micLevel`, { waitUntil: 'load' });
       await page.waitForTimeout(500);
+      // an example on screen runs by itself (quiet: the microphone waits for a click inside the frame)
+      await page.locator('.ref:not([hidden]) .ref-live').first().scrollIntoViewIfNeeded();
+      const quiet = await page.waitForFunction(() => {
+        const f = document.querySelector('.ref-ex.is-live[data-mode="quiet"] iframe');
+        const w = f && f.contentWindow;
+        return w && typeof w.frameCount === 'number' && w.frameCount > 15 && w.OAVp5 ? { mic: w.OAVp5.mic.state, button: !!f.contentDocument.getElementById('oav-ref-mic') } : false;
+      }, null, { timeout: 25000 }).then((h) => h.jsonValue()).catch(() => null);
+      if (!quiet) bad1.push('no example ran by itself when scrolled to');
+      else if (quiet.mic !== 'off' || !quiet.button) bad1.push(`a quiet micLevel preview asked for the microphone (${quiet.mic}) or has no 🎤 button`);
       const run = page.locator('.ref:not([hidden]) .ref-run').first();
       await run.scrollIntoViewIfNeeded();
       await run.click();
@@ -150,7 +159,7 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
       const frame = await fh.contentFrame();
       await frame.waitForFunction(() => typeof window.frameCount === 'number' && window.frameCount > 15, null, { timeout: 25000 });
       await page.screenshot({ path: path.join(SHOTS, `reference-${lang}-${label}-live.png`) });
-      say(!bad1.length && !problems.length, `page · ${lang} · ${label} (${w}×${h}): ${r.total} entries, ?q=, #anchor, "/", 麥克風, "mic level", no-match, ▶ Run`, [...bad1, ...problems].join('\n'));
+      say(!bad1.length && !problems.length, `page · ${lang} · ${label} (${w}×${h}): ${r.total} entries, ?q=, #anchor, "/", 麥克風, "mic level", no-match, runs by itself, ▶ Run`, [...bad1, ...problems].join('\n'));
     } catch (e) {
       say(false, `page · ${lang} · ${label}`, [...problems, 'did not run: ' + e.message.split('\n')[0]].join('\n'));
     }
