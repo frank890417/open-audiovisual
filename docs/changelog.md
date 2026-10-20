@@ -7,6 +7,13 @@ it. **The framework and the site** are listed by day. Every entry links its comm
 
 ## oav-p5
 
+### 0.8.4
+
+2026-10-20 · [e9ad495](https://github.com/frank890417/open-audiovisual/commit/e9ad495)
+
+- **🥁 opens the drums quiet.** 🥁 in the 🎹 panel, and the drums it brings back after a reload, show the grid with its play box
+  unticked: nothing sounds until someone ticks it. A sketch that calls `startDrums()` itself still plays at once. [startDrums](https://openaudiovisual.com/docs/reference/#startDrums)
+
 ### 0.8.3
 
 2026-10-20 · [8a9be83](https://github.com/frank890417/open-audiovisual/commit/8a9be83)

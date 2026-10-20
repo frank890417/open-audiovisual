@@ -6,6 +6,13 @@
 
 ## oav-p5
 
+### 0.8.4
+
+2026-10-20 · [e9ad495](https://github.com/frank890417/open-audiovisual/commit/e9ad495)
+
+- **🥁 打開的鼓機先不出聲。** 按 🎹 面板的 🥁，或重整後自動回來的鼓機，格子會出現但播放框沒勾，勾了才開始打。
+  草圖自己呼叫 `startDrums()` 的照樣直接播放。[startDrums](https://openaudiovisual.com/zh/docs/reference/#startDrums)
+
 ### 0.8.3
 
 2026-10-20 · [8a9be83](https://github.com/frank890417/open-audiovisual/commit/8a9be83)

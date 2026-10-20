@@ -5,7 +5,7 @@
 > Site: https://openaudiovisual.com/ (English) · https://openaudiovisual.com/zh/ (繁體中文)
 > Handbook: https://openaudiovisual.com/docs/ · MIDI controller library: https://openaudiovisual.com/controllers/ · WebToe, the sister engine: https://openaudiovisual.com/webtoe/
 > Examples: https://openaudiovisual.com/examples/
-> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.3)
+> p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.4)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
 > Today: 27 packages, 26 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
@@ -246,7 +246,7 @@ function notePressed(note, velocity) {     // like keyPressed(): any key, or a p
 
 No `setup()` call, p5 1.x and 2.x. On OpenProcessing it also wires to OP Configurator sliders in order.
 
-The same line does more, each one a call or a name in the p5 style (oav-p5 0.8.3, [changelog](https://openaudiovisual.com/changelog/)):
+The same line does more, each one a call or a name in the p5 style (oav-p5 0.8.4, [changelog](https://openaudiovisual.com/changelog/)):
 
 | write | and | play it |
 |---|---|---|
@@ -388,7 +388,7 @@ The controller element, `createController()`, the iframe embed and `createShow()
 ## 🗺 Status & roadmap
 
 Framework version `0.1.0` (nothing is on npm yet); oav-p5, the one line for p5.js, is versioned on its own:
-0.8.3 ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
+0.8.4 ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
 L4 video/audio split, timeline, **Score &amp; Director**, console, backstage monitor, phones as controllers,
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **21-device MIDI controller library**,
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
@@ -3085,8 +3085,8 @@ opens the microphone on the first click (a sketch that reads `micLevel` still as
 - **The card.** The lanes are named in the page's language (大鼓 小鼓 鈸 拍手 in a Chinese browser), the bar it is in shows
   beside the tempo, and the step that sounds is a yellow column (13:1 against the dark card, readable on a projector).
 - **Where the grid sits.** At the top centre: on OpenProcessing between the 🎹 and OPC's icon and clear of the console, and
-  below the 🎹 panel while that is open. – folds it, × stops the machine, and **🥁** in the 🎹 panel starts and stops it with
-  no code at all.
+  below the 🎹 panel while that is open. – folds it, × stops the machine, and **🥁** in the 🎹 panel opens and closes it with
+  no code at all. 🥁 brings the grid up stopped: tick its play box to hear it (a sketch's own `startDrums()` plays at once).
 - **The kit.** [`@openav/drums`](packages.md)' synthesized kit (no samples), heard from the first click like sound; the
   callbacks run from the start either way.
 
@@ -5044,7 +5044,7 @@ before it was generalized.)
 
 # API reference (generated)
 
-> 489 public names of oav-p5 0.8.3 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 489 public names of oav-p5 0.8.4 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
