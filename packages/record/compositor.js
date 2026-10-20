@@ -13,7 +13,7 @@
 // — @openav/midi's ControllerCanvas draws the controller being played, live, in
 // vector at the output size. setPanel(null) brings the camera back.
 
-import { layoutRects, resolveSize, LAYOUTS } from './layout.js?v=a4419ca';
+import { layoutRects, resolveSize, LAYOUTS } from './layout.js?v=b59edc6';
 
 const dims = (s) => {
   if (!s) return [0, 0];

@@ -13,7 +13,7 @@
 // The MIDI meter hooks midi.onSend — the single throat every outgoing byte
 // passes through — so this shows exactly what the DAW receives.
 
-import { MidiMeter } from './midi-meter.js?v=a4419ca';
+import { MidiMeter } from './midi-meter.js?v=b59edc6';
 
 export function buildLayersPanel(root, app) {
   const { signals, mapper, stage, midi } = app;   // osc/sound/loop are read per-frame (late-bound)
