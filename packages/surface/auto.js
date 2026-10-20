@@ -22,7 +22,7 @@
 //   everything else               → fader (≤ 6 continuous params) or knob (more)
 //   pairs: [['cx','cy']]          → one xy pad driving both
 
-import { DEFAULT_SIZE } from './layout.js?v=918db22';
+import { DEFAULT_SIZE } from './layout.js?v=cfa5659';
 
 const COLORS = ['cyan', 'amber', 'magenta', 'lime', 'violet', 'coral'];
 const safeId = (key) => String(key).replace(/[^\w-]/g, '_');

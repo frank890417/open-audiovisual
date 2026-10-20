@@ -26,7 +26,7 @@
 // Loops: what a page received is never sent on by the link (oav-p5 sends only what its own programs played into the
 // virtual output); every message has a sequence number, and one seen twice is dropped.
 
-import { RelayClient } from './index.js?v=918db22';
+import { RelayClient } from './index.js?v=cfa5659';
 
 export const LINK_SIGNAL = 'oav/link';
 const rnd = () => Math.random().toString(36).slice(2, 8);
