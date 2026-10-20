@@ -16,7 +16,7 @@
 export class LearnWizard {
   /**
    * @param {object} o
-   * @param {import('./index.js?v=b26b3a4').Mapper} o.mapper
+   * @param {import('./index.js?v=c772c1d').Mapper} o.mapper
    * @param {string[]|(()=>string[])} o.keys   the params to bind, in order (read when start() is called)
    * @param {(w: LearnWizard)=>void} [o.onChange]   anything the banner shows changed
    */

@@ -3,7 +3,7 @@
 // swaps the live faceplate in over the static one, and wires the copy buttons.
 // Nothing here asks for MIDI: the element's Connect button does, when the visitor presses it.
 
-import { PROFILES } from '../../packages/midi/element.js?v=b26b3a4';
+import { PROFILES } from '../../packages/midi/element.js?v=c772c1d';
 
 const T = JSON.parse(document.getElementById('ctl-i18n').textContent);
 if (!PROFILES.some((p) => p.id === T.profile)) console.warn('[controllers] unknown profile', T.profile);

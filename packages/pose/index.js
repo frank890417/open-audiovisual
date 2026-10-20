@@ -23,7 +23,7 @@ const MODEL_URL = 'https://storage.googleapis.com/mediapipe-models/pose_landmark
 export class PoseTracker {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js?v=b26b3a4').Signals} [opts.signals]
+   * @param {import('../core/src/signals.js?v=c772c1d').Signals} [opts.signals]
    * @param {boolean} [opts.mirror=true] mirror x (webcam-as-mirror; natural for performers)
    */
   constructor({ signals = null, mirror = true } = {}) {
