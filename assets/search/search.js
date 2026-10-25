@@ -8,7 +8,7 @@
 //   · ↑ ↓ to move, Enter to open, Esc to close; on a phone it is the whole screen's width
 // The matching is assets/search/core.js; the index is built by tools/build-search.mjs from the same sources as the pages.
 
-import { prepare, rank, tokens, snippet, weightBoost } from './core.js?v=025a7510';
+import { prepare, rank, tokens, snippet, weightBoost } from './core.js?v=dd4a4d59';
 
 const here = new URL(import.meta.url);
 const root = new URL('../../', here);
