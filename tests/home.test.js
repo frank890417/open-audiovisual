@@ -61,6 +61,7 @@ test('language metadata: lang, canonical, hreflang, JSON-LD', () => {
     assert.equal(page.url, p.url);
     assert.equal(sw.codeRepository, 'https://github.com/frank890417/open-audiovisual');
     assert.equal(page.about['@id'], sw['@id']);
+    for (const bad of ['offers', 'review', 'aggregateRating']) assert.ok(!(bad in sw), `${lang}: no invented ${bad}`);
   }
 });
 

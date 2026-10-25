@@ -46,7 +46,7 @@ exec ${real} "$@"
   const r = sh('bash', ['tools/release.sh', 'test release', '--no-push'], { env });
   assert.equal(r.status, 0, 'the release script ran to the end\n' + (r.stdout + r.stderr).slice(-1500));
   // what the last round of a real release runs: the sitemap's lastmod is the last commit of each page's sources
-  const t = sh('node', ['--test', 'tests/site.test.js'], { env: { ...clean, PATH: `${bin}:${process.env.PATH}` } });
+  const t = sh('node', ['--test', '--test-reporter=tap', 'tests/site.test.js'], { env: { ...clean, PATH: `${bin}:${process.env.PATH}` } });
   const bad = (t.stdout.match(/^not ok .*$/gm) || []).join('\n');
   assert.match(t.stdout, /^# tests \d+/m, 'site.test.js ran');
   assert.equal(t.status, 0, 'tests/site.test.js on what the release would push:\n' + bad + '\n' + (t.stdout.match(/error: .*$/gm) || []).slice(0, 3).join('\n'));

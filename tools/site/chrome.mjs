@@ -137,8 +137,8 @@ export function sharedNodes() {
       description: 'A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.',
       codeRepository: REPO, programmingLanguage: 'JavaScript', runtimePlatform: 'Web browser',
       applicationCategory: 'MultimediaApplication', operatingSystem: 'Any (Chromium for Web MIDI)',
+      // No offers: the page shows the license (MIT), not a price, and markup only says what the page shows.
       license: 'https://opensource.org/licenses/MIT', isAccessibleForFree: true,
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       version: pkg().version,
       keywords: ['audiovisual performance', 'creative coding', 'Web MIDI', 'generative art', 'live visuals', 'OSC', 'show control', 'MCP'],
       author: { '@id': PERSON_ID }, isPartOf: { '@id': WEBSITE_ID }, sameAs: [REPO],

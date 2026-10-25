@@ -50,7 +50,7 @@ check_all() {
 run_tests() {
   [[ -z "${RELEASE_SKIP_TESTS:-}" ]] || { echo "  (RELEASE_SKIP_TESTS: tests/release.test.js runs this script in a clone)"; return 0; }
   local rc=0
-  node --test tests/*.test.js > "$LOG" 2>&1 || rc=$?
+  node --test --test-reporter=tap tests/*.test.js > "$LOG" 2>&1 || rc=$?   # tap: the greps below read TAP; Node 26 prints spec by default even into a file
   grep -E '^# (tests|pass|fail)' "$LOG" || true
   [[ $rc == 0 ]] || { grep -E '^not ok' "$LOG" | head -20; echo "✗ tests failed" >&2; exit 1; }
 }
