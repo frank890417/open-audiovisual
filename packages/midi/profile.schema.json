@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openaudiovisual.com/packages/midi/profile.schema.json",
+  "title": "Open Audiovisual MIDI controller profile",
+  "description": "One MIDI controller as data: its faceplate, every control and the message it sends, LED feedback, SysEx, and how sure the file is of each number. validateProfile() in @openav/midi is stricter: it also checks that nothing collides and that every verified: true has its evidence.",
+  "type": "object",
+  "required": ["id", "short", "name", "kind", "face", "sections", "controls"],
+  "properties": {
+    "id": { "$ref": "#/$defs/id" },
+    "short": { "$ref": "#/$defs/id", "description": "signal namespace: midi/<short>/<control id>" },
+    "name": { "type": "string", "minLength": 1 },
+    "nameEn": { "type": "string" },
+    "maker": { "type": "string" },
+    "kind": { "enum": ["device", "generic"] },
+    "license": { "type": "string", "description": "SPDX id of this file when it differs from the repository's MIT, such as Apache-2.0 for data imported from QLC+" },
+    "channel": { "$ref": "#/$defs/channel" },
+    "notes": { "type": "string" },
+    "stack": { "type": "boolean" },
+    "match": {
+      "type": "object",
+      "properties": {
+        "ports": { "type": "array", "items": { "type": "string" } },
+        "prefer": { "type": "array", "items": { "type": "string" } },
+        "avoid": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "origin": {
+      "type": "object",
+      "description": "where the file came from: an artist's tool, or the repository and commit it was imported from",
+      "properties": {
+        "tool": { "type": "string" },
+        "file": { "type": "string" },
+        "repo": { "type": "string" },
+        "commit": { "type": "string" },
+        "license": { "type": "string" },
+        "author": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": { "title": { "type": "string", "minLength": 1 }, "url": { "type": "string" }, "note": { "type": "string" } }
+      }
+    },
+    "face": {
+      "type": "object",
+      "required": ["w", "h"],
+      "properties": {
+        "w": { "type": "number", "exclusiveMinimum": 0 },
+        "h": { "type": "number", "exclusiveMinimum": 0 },
+        "auto": { "type": "boolean", "description": "true: nobody drew this layout, it was generated from the list of controls" }
+      }
+    },
+    "sections": { "type": "array", "items": { "$ref": "#/$defs/section" } },
+    "portrait": { "type": "array", "items": { "$ref": "#/$defs/section" } },
+    "controls": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/control" } },
+    "palette": {
+      "type": "object",
+      "required": ["colors", "cite"],
+      "properties": {
+        "cite": { "$ref": "#/$defs/cite" },
+        "channels": {
+          "type": "array",
+          "items": { "type": "object", "required": ["ch", "name"], "properties": { "ch": { "$ref": "#/$defs/channel" }, "name": { "type": "string", "minLength": 1 } } }
+        },
+        "colors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["value", "rgb"],
+            "properties": { "value": { "$ref": "#/$defs/byte" }, "name": { "type": "string" }, "rgb": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" } }
+          }
+        }
+      }
+    },
+    "sysex": {
+      "type": "object",
+      "required": ["messages"],
+      "properties": {
+        "messages": { "type": "array", "items": { "$ref": "#/$defs/sysexMessage" } },
+        "connect": { "type": "array", "items": { "type": "string" }, "description": "what a host sends on connect once the user has switched SysEx on" }
+      }
+    },
+    "verifications": { "type": "array", "items": { "$ref": "#/$defs/verification" } }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "byte": { "type": "integer", "minimum": 0, "maximum": 127 },
+    "channel": { "type": "integer", "minimum": 1, "maximum": 16 },
+    "cite": {
+      "type": "object",
+      "required": ["source"],
+      "properties": { "source": { "type": "integer", "minimum": 0, "description": "index into sources" }, "where": { "type": "string", "description": "the page or section" } }
+    },
+    "section": {
+      "type": "object",
+      "required": ["id", "cols", "rows"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label": { "type": "string" },
+        "x": { "type": "number" }, "y": { "type": "number" }, "w": { "type": "number" }, "h": { "type": "number" },
+        "cols": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "rows": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "flow": { "enum": ["row", "column"] },
+        "controls": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "control": {
+      "type": "object",
+      "required": ["id", "type", "msg"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "type": { "enum": ["knob", "encoder", "fader", "pad", "button", "keys", "wheel", "strip"] },
+        "msg": { "enum": ["cc", "note", "pitchbend", "chanat", "program"] },
+        "ch": { "$ref": "#/$defs/channel" },
+        "cc": { "$ref": "#/$defs/byte" },
+        "from": { "$ref": "#/$defs/byte" },
+        "to": { "$ref": "#/$defs/byte" },
+        "label": { "type": "string" },
+        "relative": { "enum": ["offset64", "offset16", "twos", "signbit", false] },
+        "mode": { "enum": ["momentary", "toggle"] },
+        "aftertouch": { "enum": ["poly", "channel"] },
+        "verified": { "type": "boolean" },
+        "led": {
+          "type": "object",
+          "required": ["msg"],
+          "properties": {
+            "msg": { "enum": ["note", "cc"] },
+            "ch": { "$ref": "#/$defs/channel" },
+            "note": { "$ref": "#/$defs/byte" },
+            "cc": { "$ref": "#/$defs/byte" },
+            "on": { "$ref": "#/$defs/byte" },
+            "off": { "$ref": "#/$defs/byte" },
+            "index": { "$ref": "#/$defs/byte", "description": "this control's address in a led SysEx message" }
+          }
+        }
+      }
+    },
+    "sysexMessage": {
+      "type": "object",
+      "required": ["id", "purpose", "label", "bytes", "cite"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "purpose": { "enum": ["identity", "init", "mode", "template", "led", "display", "config", "transport"] },
+        "label": { "type": "string", "minLength": 1 },
+        "dir": { "enum": ["out", "in"] },
+        "bytes": { "type": "string", "pattern": "^F0( ([0-9A-Fa-f]{2}|\\{[a-zA-Z][a-zA-Z0-9_]*(\\.(msb|lsb))?\\}))* F7$" },
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "label": { "type": "string" },
+              "min": { "type": "integer", "minimum": 0 },
+              "max": { "type": "integer", "minimum": 0 },
+              "default": { "type": "integer", "minimum": 0 },
+              "values": { "type": "object", "additionalProperties": { "type": "string" } }
+            }
+          }
+        },
+        "undo": { "type": "string" },
+        "cite": { "$ref": "#/$defs/cite" },
+        "verified": { "type": "boolean" },
+        "note": { "type": "string" }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": ["date", "by", "method", "results"],
+      "properties": {
+        "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "by": { "type": "string", "minLength": 1 },
+        "method": { "enum": ["hardware", "virtual", "simulated"] },
+        "firmware": { "type": "string" },
+        "os": { "type": "string" },
+        "browser": { "type": "string" },
+        "port": { "type": "string" },
+        "tool": { "type": "string" },
+        "note": { "type": "string" },
+        "results": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              { "enum": ["match", "corrected", "mismatch", "absent"] },
+              {
+                "type": "object",
+                "required": ["result"],
+                "properties": {
+                  "result": { "enum": ["match", "corrected", "mismatch", "absent"] },
+                  "was": { "type": "object" },
+                  "got": { "type": "object" },
+                  "led": { "enum": ["match", "mismatch"] },
+                  "note": { "type": "string" }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -100,10 +100,17 @@ Turn it off: `<oav-controller telemetry="off">` · `createController(p, { teleme
 
 1. Copy the closest file in `packages/midi/profiles/`, or a generic layout.
 2. Write each control's type and message from the manual's MIDI implementation chart.
-3. Cite every source; mark anything unconfirmed `"verified": false` with a note.
+3. Cite every source; mark anything unconfirmed `"verified": false` with a note. `"verified": true` is
+   for a number checked on a real unit, and needs an entry in `verifications` that says who, when, on
+   which firmware, OS and browser (`validateProfile` refuses it otherwise).
 4. `validateProfile(profile)` lists every problem; `npm test` checks every shipped profile.
 5. Try it with `<oav-controller profile="./my-device.json">`, then register it in
    `profiles/index.js` and open a pull request.
 
 No manual: choose a generic layout, press Learn, move your controls in order, and keep
 `controller.exportMapping()` as the start of a profile.
+
+The format has room for what a device does beyond notes and CCs: `sysex` (mode switches, templates, LED colours, each message citing
+its source), `palette` (the LED colour table) and `verifications` (who checked what on real hardware). The field list is in the
+[package README](https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#profiles), and
+[`profile.schema.json`](https://openaudiovisual.com/packages/midi/profile.schema.json) is the same format as JSON Schema.

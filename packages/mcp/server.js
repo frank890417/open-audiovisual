@@ -80,7 +80,7 @@ const TOOLS = [
   },
   {
     name: 'read_profile',
-    description: 'Read one controller profile in full (the JSON as shipped) plus a human-readable MIDI map: per control its type, the exact message (CC / note / pitch bend, channel), the midi/<short>/<id> signal and whether the number is verified.',
+    description: 'Read one controller profile in full (the JSON as shipped) plus a human-readable MIDI map: per control its type, the exact message (CC / note / pitch bend, channel), the midi/<short>/<id> signal, whether the number is verified, and its evidence level (hardware: checked on a real unit; source: from a cited document; unconfirmed). The JSON also carries the device\'s SysEx messages (sysex), LED colours (palette) and hardware checks (verifications) when it has them.',
     inputSchema: { type: 'object', properties: { id: { type: 'string', description: 'profile id or short, e.g. "arturia-minilab3" or "minilab3"' } }, required: ['id'] },
   },
   {
@@ -210,6 +210,7 @@ async function readProfile({ id }) {
     control: c.id, type: c.type, message: humanMsg(c, c.ch ?? ch0),
     signal: c.type === 'keys' ? `midi/${p.short}/${c.id}/on · /off · n<note>` : `midi/${p.short}/${c.id}`,
     verified: c.verified !== false,
+    evidence: c.verified === true ? 'hardware' : c.verified === false ? 'unconfirmed' : 'source',
     ...(c.led ? { led: c.led.msg === 'note' ? `note ${c.led.note ?? c.note}` : `CC ${c.led.cc ?? c.cc}` } : {}),
     ...(typeof c.note === 'string' ? { note: c.note } : {}),
   }));

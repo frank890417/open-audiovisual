@@ -8,7 +8,8 @@
     "./element": "./element.js",
     "./element.js": "./element.js",
     "./embed": "./embed.js",
-    "./profiles/*": "./profiles/*"
+    "./profiles/*": "./profiles/*",
+    "./profile.schema.json": "./profile.schema.json"
   },
   "license": "MIT",
   "repository": {
@@ -20,6 +21,8 @@
     "module": "midi",
     "files": [
       "midi/parse.js",
+      "midi/sysex.js",
+      "midi/verify.js",
       "midi/profiles.js",
       "midi/controller.js",
       "midi/manager.js",

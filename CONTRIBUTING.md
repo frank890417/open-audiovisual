@@ -10,7 +10,7 @@ The most useful contribution is a controller that is not in the [library](https:
 
 1. Copy the closest file in `packages/midi/profiles/`, or a generic layout.
 2. Write each control's type and message from the manual's MIDI implementation chart.
-3. Cite every source. Mark anything you could not confirm `"verified": false` with a note.
+3. Cite every source. Mark anything you could not confirm `"verified": false` with a note. `"verified": true` means checked on a real unit, and needs an entry in `verifications` (who, when, firmware, OS, browser).
 4. `validateProfile(profile)` lists every problem; `npm test` checks every shipped profile.
 5. Try it with `<oav-controller profile="./my-device.json">`.
 6. Register it in `packages/midi/profiles/index.js`, run `node tools/build-controllers.mjs` (it writes the device's two pages and the sitemap), and open a pull request.

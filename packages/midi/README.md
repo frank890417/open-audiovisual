@@ -260,13 +260,87 @@ controls `note` is the MIDI note number; elsewhere it is a remark.
 `kind: "device"` must cite at least one source and is matched to ports by `match`;
 `kind: "generic"` layouts never auto-match and auto-learn whatever device you assign.
 
+`profile.schema.json` (next to this file) is the same format as JSON Schema, for software that reads these files without running
+this package. `validateProfile()` is stricter: it also checks that nothing collides and that every claim has its evidence.
+
+### How sure a profile is
+
+Every control sits at one of three levels (`evidenceOf(control)`), read off the control itself so old files keep their meaning:
+
+| `verified` | level | means |
+|---|---|---|
+| `true` | `hardware` | a person moved this control on a real unit and the message matched |
+| (no field) | `source` | the number comes from a cited source; nobody has checked it on a unit yet |
+| `false` | `unconfirmed` | our best reading; `note` says why |
+
+`verified: true` has to carry its evidence. `verifications` is a log, one entry per sitting, and `validateProfile()` refuses a
+`true` that no entry with `method: "hardware"` confirms:
+
+```json
+"verifications": [{
+  "date": "2026-11-12", "by": "A. Tester", "method": "hardware",
+  "firmware": "1.0.4", "os": "macOS 26.1", "browser": "Chrome 142", "port": "Minilab3 MIDI",
+  "results": {
+    "knob1": "match",
+    "pad3": { "result": "corrected", "was": { "msg": "note", "ch": 10, "note": 38 } },
+    "sysex:programmer-mode": "match"
+  }
+}]
+```
+
+`date`, `by` and `method` are required (`hardware`, `virtual`, `simulated`); a `hardware` entry also needs `firmware`, `os` and
+`browser` (write `"unknown"` when you cannot read one). A result is `match`, `corrected` (the file now says what the unit sent, and
+`was` keeps the old message), `mismatch` (left as it is) or `absent` (it sent nothing, or this unit does not have it); as an object
+it can also carry `led` (`match`, `mismatch`) and `note`. A `virtual` or `simulated` check shows that the tool works, not that the
+device does, so it never confirms anything. `verificationOf(profile, id)` reads the log for one control and
+`verificationSummary(profile)` counts it.
+
+### SysEx
+
+`sysex.messages` lists what a device accepts beyond notes and CCs: switching modes, picking a template, lighting a pad in any colour.
+
+```json
+"sysex": {
+  "messages": [
+    { "id": "programmer-mode", "purpose": "mode", "label": "Programmer mode", "undo": "live-mode",
+      "bytes": "F0 00 20 29 02 0D 0E 01 F7", "cite": { "source": 0, "where": "p. 7" }, "verified": false },
+    { "id": "led-rgb", "purpose": "led", "label": "Light one pad in any colour",
+      "bytes": "F0 00 20 29 02 0D 03 03 {led} {r} {g} {b} F7",
+      "args": [{ "name": "led", "min": 11, "max": 99 }, { "name": "r" }, { "name": "g" }, { "name": "b" }],
+      "cite": { "source": 0, "where": "p. 14" } }
+  ],
+  "connect": ["programmer-mode"]
+}
+```
+
+| Field | |
+|---|---|
+| `id`, `label` | a name for code, a sentence for people |
+| `purpose` | `identity` · `init` · `mode` · `template` · `led` · `display` · `config` · `transport` |
+| `bytes` | one hex byte or `{name}` per token, `F0` first and `F7` last; `{name.msb}` / `{name.lsb}` split a value into two 7-bit halves |
+| `args` | `{ name, min = 0, max = 127, default?, label?, values? }`; every `{name}` is declared, every declared name is used; `values` names the numbers (`{ "4": "Custom mode 1" }`) |
+| `cite` | required: `{ source, where? }`, an index into `sources` and the page |
+| `dir` | `out` (default) or `in`: something the device sends by itself |
+| `undo` | the message that brings the unit back |
+| `verified`, `note` | as on a control; a `true` needs a `sysex:<id>` result in `verifications` |
+
+`sysex.connect` names what a host sends on connect once the user has switched SysEx on; each message there needs a default for every
+argument. `led.index` on a control is its address in a `led` message (`{led}` above). `palette` is the table of LED colours:
+
+```json
+"palette": { "cite": { "source": 0 }, "channels": [{ "ch": 1, "name": "Static" }], "colors": [{ "value": 5, "name": "Red", "rgb": "#ff0000" }] }
+```
+
+`sysexMessage(profile, id)` finds a message and `sysexBytes(message, args)` builds its bytes, nothing here is sent.
+
 ### Model a new controller
 
 1. Copy the closest device, or a generic layout (`generic-8k8p`, `generic-8f`, `generic-16p`,
    `generic-keys25/49/61`).
 2. Write each control's message from the manual's MIDI implementation chart.
 3. Cite every source (`title`, `url`, what it confirmed). Mark anything unconfirmed
-   `"verified": false` with a note — learn mode rebinds it in one move.
+   `"verified": false` with a note — learn mode rebinds it in one move. Leave `"verified": true`
+   to a hardware check: it needs an entry in `verifications`.
 4. Validate: `validateProfile(profile)` returns every problem in words (`[]` = valid).
 5. Try it: `<oav-controller profile="./my-device.json">` loads a profile by URL.
 6. Add it to `profiles/index.js` and open a pull request; `npm test` validates every shipped
@@ -291,7 +365,7 @@ Turn it off: `<oav-controller telemetry="off">` · `createController(p, { teleme
 
 ## Files
 
-`parse.js` bytes ⇄ events ⇄ signal names · `profiles.js` validate / match · `controller.js`
+`parse.js` bytes ⇄ events ⇄ signal names · `sysex.js` SysEx as data (pure) · `verify.js` evidence and verification records (pure) · `profiles.js` validate / match · `controller.js`
 MidiController · `manager.js` MidiControllers · `view.js` ControllerView · `canvas.js`
 ControllerCanvas (for video) · `panel.js` docked panel · `embed.js` options, payloads, postMessage (pure, tested) · `element.js` `<oav-controller>`
 · `index.js` Midi engine + `createController` · `virtual-access.js` Web MIDI shim (its output heard, 0.7) · `clock.js` MidiClock ·

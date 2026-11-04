@@ -95,10 +95,12 @@ ctl.on('control', (e) => console.log(e.signal, e.value));
 
 1. 從 `packages/midi/profiles/` 複製最接近的檔案，或一個通用版面。
 2. 照說明書的 MIDI 實作表，寫下每個控制項的類型和訊息。
-3. 每一筆資料都寫上出處。還沒確認的，標上 `"verified": false`，再寫一句說明。
+3. 每一筆資料都寫上出處。還沒確認的，標上 `"verified": false`，再寫一句說明。`"verified": true` 只給在實機上確認過的數字，而且要在 `verifications` 留一筆紀錄，寫明誰、哪一天、什麼韌體、作業系統和瀏覽器（沒有的話 `validateProfile` 不會過）。
 4. `validateProfile(profile)` 會列出所有問題，`npm test` 會檢查每一個內建設定檔。
 5. 用 `<oav-controller profile="./my-device.json">` 試彈，再登記到 `profiles/index.js`，開一個
    pull request。
 
 沒有說明書的話：選一個通用版面，按「學習」，把控制項一個一個動過去，再把 `controller.exportMapping()`
 的結果存下來，當作設定檔的起點。
+
+這個格式也放得下音符和 CC 以外的東西：`sysex`（切模式、換模板、LED 顏色，每則訊息都附出處）、`palette`（LED 色票）、`verifications`（誰在實機上驗過什麼）。完整欄位在[套件 README](https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#profiles)，同一份格式的 JSON Schema 在 [`profile.schema.json`](https://openaudiovisual.com/packages/midi/profile.schema.json)。

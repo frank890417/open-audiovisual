@@ -930,8 +930,8 @@ console.log(profileById('no-such-box'));             // null`,
     returns: { type: 'string[]', en: 'The problems, in plain words. `[]` is valid.', zh: '用白話寫的問題清單。`[]` 表示合法。' },
     description: [
       {
-        en: 'It reports all problems at once, not just the first. It checks: `id` and `short` are lower-case `[a-z0-9_-]` and `short` is not a reserved family name (`cc`, `note`, `bend`, `ch`, `virtual`, `raw`, `clock`), `name` and `kind` exist, a `device` cites at least one source, `match` regexes compile, `face` has a size, every control has a unique non-reserved `id` (see [`RESERVED_IDS`](#RESERVED_IDS)), a known `type` and `msg`, numbers in range and no two controls listening to the same message, encoders name their `relative` mode, and the `sections` (and `portrait`, if given) show every control exactly once, inside the faceplate and within their grid.',
-        zh: '它會一次回報所有問題，不是只講第一個。檢查的項目有：`id` 和 `short` 是小寫的 `[a-z0-9_-]`，而且 `short` 不是保留的家族名稱（`cc`、`note`、`bend`、`ch`、`virtual`、`raw`、`clock`）。有 `name` 和 `kind`。`device` 至少註明一個來源。`match` 的正規表示式能編譯。`face` 有尺寸。每個控制項的 `id` 不重複也不是保留字（見 [`RESERVED_IDS`](#RESERVED_IDS)），有認得的 `type` 和 `msg`，數字在範圍內，且沒有兩個控制項聽同一則訊息。旋鈕要寫明 `relative` 模式。`sections`（和有給的話 `portrait`）要讓每個控制項剛好出現一次，位在面板內，並且塞得進它的格子。',
+        en: 'It reports all problems at once, not just the first. It checks: `id` and `short` are lower-case `[a-z0-9_-]` and `short` is not a reserved family name (`cc`, `note`, `bend`, `ch`, `virtual`, `raw`, `clock`), `name` and `kind` exist, a `device` cites at least one source, `match` regexes compile, `face` has a size, every control has a unique non-reserved `id` (see [`RESERVED_IDS`](#RESERVED_IDS)), a known `type` and `msg`, numbers in range and no two controls listening to the same message, encoders name their `relative` mode, and the `sections` (and `portrait`, if given) show every control exactly once, inside the faceplate and within their grid. It also checks the `palette`, the `sysex` block (each message well formed and citing a source) and the `verifications` log, and it refuses `verified: true` without a hardware entry there that confirms it.',
+        zh: '它會一次回報所有問題，不是只講第一個。檢查的項目有：`id` 和 `short` 是小寫的 `[a-z0-9_-]`，而且 `short` 不是保留的家族名稱（`cc`、`note`、`bend`、`ch`、`virtual`、`raw`、`clock`）。有 `name` 和 `kind`。`device` 至少註明一個來源。`match` 的正規表示式能編譯。`face` 有尺寸。每個控制項的 `id` 不重複也不是保留字（見 [`RESERVED_IDS`](#RESERVED_IDS)），有認得的 `type` 和 `msg`，數字在範圍內，且沒有兩個控制項聽同一則訊息。旋鈕要寫明 `relative` 模式。`sections`（和有給的話 `portrait`）要讓每個控制項剛好出現一次，位在面板內，並且塞得進它的格子。也會檢查 `palette`、`sysex`（每則訊息格式正確並註明出處）和 `verifications` 紀錄，沒有實機紀錄支持的 `verified: true` 會被拒絕。',
       },
       {
         en: 'This is the check behind `normalizeProfile()` (it throws with this list), `resolveProfile()` and the test that validates every shipped profile. Run it on your own file before you try it in a page.',
@@ -1214,6 +1214,368 @@ console.log(validateProfile(bad).filter((p) => p.includes('reserved')));`,
     ],
     related: ['validateProfile', 'CONTROL_TYPES'],
     keywords: { en: ['reserved names', 'forbidden id', 'signal suffix'], zh: ['保留字', '不能用的 id', '訊號後綴'] },
+  },
+
+  // ================================================================== how sure a profile is: evidence and verification records
+
+  evidenceOf: {
+    group: 'midi-io',
+    summary: {
+      en: 'Says how sure a profile is of one control: `\'hardware\'`, `\'source\'` or `\'unconfirmed\'`.',
+      zh: '說出設定檔對一個控制項有多確定：`\'hardware\'`、`\'source\'` 或 `\'unconfirmed\'`。',
+    },
+    params: [
+      { name: 'c', type: 'Object', en: 'One control of a profile.', zh: '設定檔裡的一個控制項。' },
+    ],
+    returns: { type: 'String', en: '`\'hardware\'` for `verified: true`, `\'unconfirmed\'` for `verified: false`, `\'source\'` when the field is absent.', zh: '`verified: true` 回傳 `\'hardware\'`，`verified: false` 回傳 `\'unconfirmed\'`，沒有這個欄位回傳 `\'source\'`。' },
+    description: [
+      {
+        en: 'A profile has three levels of certainty. `verified: true` means a person moved this control on a real unit and the message matched, and [`validateProfile()`](#validateProfile) refuses it without a hardware entry in `verifications`. No `verified` field means the number comes from a cited source and nobody has checked it on a unit yet. `verified: false` means it is our best reading, and a `note` says why.',
+        zh: '設定檔的確定程度分三級。`verified: true` 表示有人在實機上動過這個控制項，訊息也對得上，沒有 `verifications` 裡的實機紀錄，[`validateProfile()`](#validateProfile) 會拒絕它。沒有 `verified` 欄位，表示數字來自註明的出處，還沒有人在實機上確認。`verified: false` 表示這是我們最好的判讀，`note` 會寫原因。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { evidenceOf, profileById } from '@openav/midi';
+
+for (const c of profileById('lpd8').controls.slice(0, 3)) console.log(c.id, evidenceOf(c));`,
+        caption: { en: 'Prints the level of the first three controls of the LPD8.', zh: '印出 LPD8 前三個控制項的確定程度。' },
+      },
+    ],
+    related: ['verificationOf', 'verificationSummary', 'validateProfile'],
+    keywords: { en: ['verified', 'evidence', 'confidence', 'unverified'], zh: ['驗證', '已驗證', '未驗證', '確定程度'] },
+  },
+
+  verificationOf: {
+    group: 'midi-io',
+    summary: {
+      en: 'Returns the newest check of one control from a profile\'s `verifications` log, or `null` when nobody has checked it.',
+      zh: '從設定檔的 `verifications` 紀錄裡找出一個控制項最新的一次驗證，還沒有人驗過就回傳 `null`。',
+    },
+    params: [
+      { name: 'p', type: 'Object', en: 'A profile.', zh: '設定檔。' },
+      { name: 'id', type: 'String', en: 'A control id, or `sysex:<message id>` for a SysEx message.', zh: '控制項 id，SysEx 訊息則寫 `sysex:<訊息 id>`。' },
+    ],
+    returns: { type: 'Object | null', en: 'The sitting\'s `date`, `by`, `method`, `firmware`, `os`, `browser` and `port`, with this control\'s `result` (`match`, `corrected`, `mismatch` or `absent`) and, when there is one, `was` (the old message) and `led`.', zh: '那次驗證的 `date`、`by`、`method`、`firmware`、`os`、`browser`、`port`，加上這個控制項的 `result`（`match`、`corrected`、`mismatch`、`absent`），有的話還有 `was`（舊訊息）和 `led`。' },
+    description: [
+      {
+        en: 'A profile keeps one entry per sitting in `verifications`, and each entry lists a result for every control checked. This function reads that log from the point of view of one control. Of two checks on the same day the later entry wins.',
+        zh: '設定檔的 `verifications` 一次驗證一筆，每筆列出每個驗過的控制項的結果。這個函式從單一控制項的角度讀這份紀錄。同一天驗了兩次，以後面那筆為準。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { verificationOf } from '@openav/midi';
+
+const profile = { verifications: [{
+  date: '2026-11-12', by: 'A. Tester', method: 'hardware', firmware: '1.0.4', os: 'macOS 26.1', browser: 'Chrome 142',
+  results: { knob1: 'match' },
+}] };
+console.log(verificationOf(profile, 'knob1'));
+console.log(verificationOf(profile, 'knob2'));`,
+        caption: { en: 'Prints the sitting with `result: \'match\'` for `knob1`, then `null` for a control nobody checked.', zh: '`knob1` 印出那次驗證和 `result: \'match\'`，沒人驗過的控制項印出 `null`。' },
+      },
+    ],
+    related: ['evidenceOf', 'verificationSummary', 'VERIFY_RESULTS'],
+    keywords: { en: ['verification record', 'firmware', 'who checked', 'tested on hardware'], zh: ['驗證紀錄', '韌體版本', '誰驗的', '實機測試'] },
+  },
+
+  verificationSummary: {
+    group: 'midi-io',
+    summary: {
+      en: 'Counts a profile\'s controls at each level of certainty and names its newest check.',
+      zh: '數出設定檔各確定程度的控制項數量，並列出最新的一次驗證。',
+    },
+    params: [
+      { name: 'p', type: 'Object', en: 'A profile.', zh: '設定檔。' },
+    ],
+    returns: { type: 'Object', en: '`{ controls, hardware, source, unconfirmed, checks, latest }`. `latest` is `{ date, by, method, firmware }` or `null`.', zh: '`{ controls, hardware, source, unconfirmed, checks, latest }`。`latest` 是 `{ date, by, method, firmware }` 或 `null`。' },
+    description: [
+      {
+        en: 'Controls are counted as entries of `controls`, so a keyboard is one control however many keys it has. `checks` is the number of entries in `verifications`.',
+        zh: '這裡數的是 `controls` 裡的項目，所以一整排琴鍵算一個控制項。`checks` 是 `verifications` 的筆數。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { verificationSummary, profileById } from '@openav/midi';
+
+console.log(verificationSummary(profileById('lpd8')));`,
+        caption: { en: 'Prints how many of the LPD8\'s controls are checked on hardware, come from a source, or are unconfirmed.', zh: '印出 LPD8 有多少控制項是實機驗過、來自出處、還沒確認。' },
+      },
+    ],
+    related: ['evidenceOf', 'verificationOf'],
+    keywords: { en: ['verification summary', 'how many verified'], zh: ['驗證統計', '驗了多少'] },
+  },
+
+  VERIFY_METHODS: {
+    group: 'midi-io',
+    summary: {
+      en: 'The ways a check can be made: `hardware`, `virtual` and `simulated`. Only `hardware` can make a control `verified: true`.',
+      zh: '驗證的方式：`hardware`、`virtual`、`simulated`。只有 `hardware` 能讓控制項變成 `verified: true`。',
+    },
+    value: {
+      type: 'string[]', range: '[\'hardware\', \'virtual\', \'simulated\']',
+      en: 'A plain array. `method` in an entry of a profile\'s `verifications` must be one of these.',
+      zh: '一個普通陣列。設定檔 `verifications` 每一筆的 `method` 必須是其中之一。',
+    },
+    description: [
+      {
+        en: '`hardware` is a real unit. `virtual` is a virtual port such as the macOS IAC Driver or loopMIDI, and `simulated` is the page\'s own simulator. The last two show that the tool works, not that the device does, so they are logged but never confirm anything.',
+        zh: '`hardware` 是實機。`virtual` 是虛擬埠，例如 macOS 的 IAC Driver 或 loopMIDI，`simulated` 是頁面自己的模擬。後兩種只能說明工具會動，不能說明機器是這樣，所以會留下紀錄，但不算確認。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { VERIFY_METHODS } from '@openav/midi';
+
+console.log(VERIFY_METHODS);`,
+        caption: { en: 'Prints the three method names.', zh: '印出三種方式的名稱。' },
+      },
+    ],
+    related: ['VERIFY_RESULTS', 'validateProfile', 'verificationOf'],
+    keywords: { en: ['hardware check', 'virtual port', 'simulated'], zh: ['實機驗證', '虛擬埠', '模擬'] },
+  },
+
+  VERIFY_RESULTS: {
+    group: 'midi-io',
+    summary: {
+      en: 'What a check can find for one control: `match`, `corrected`, `mismatch` or `absent`.',
+      zh: '驗證一個控制項可能的結果：`match`、`corrected`、`mismatch`、`absent`。',
+    },
+    value: {
+      type: 'string[]', range: '[\'match\', \'corrected\', \'mismatch\', \'absent\']',
+      en: 'A plain array. A value of `results` in a `verifications` entry is one of these, or an object with one of these as `result`.',
+      zh: '一個普通陣列。`verifications` 裡 `results` 的值是其中之一，或是一個物件，`result` 是其中之一。',
+    },
+    description: [
+      {
+        en: '`match`: the unit sent what the file said. `corrected`: it sent something else and the file now says that, with the old message kept in `was`. `mismatch`: it sent something else and the file was left as it is. `absent`: the control sent nothing, or this unit does not have it. Only the first two can back `verified: true`.',
+        zh: '`match`：機器送的跟檔案寫的一樣。`corrected`：送的不一樣，檔案已改成實際的值，舊訊息留在 `was`。`mismatch`：送的不一樣，檔案沒有改。`absent`：這個控制項什麼都沒送，或這台機器沒有它。只有前兩種能支持 `verified: true`。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { VERIFY_RESULTS } from '@openav/midi';
+
+console.log(VERIFY_RESULTS);`,
+        caption: { en: 'Prints the four result names.', zh: '印出四種結果的名稱。' },
+      },
+    ],
+    related: ['VERIFY_METHODS', 'verificationOf'],
+    keywords: { en: ['match', 'corrected', 'mismatch'], zh: ['對上', '修正', '對不上'] },
+  },
+
+  // ================================================================== SysEx as data
+
+  parseHex: {
+    group: 'midi-io',
+    summary: {
+      en: 'Turns text such as `\'F0 7E 7F 06 01 F7\'` into an array of bytes.',
+      zh: '把 `\'F0 7E 7F 06 01 F7\'` 這樣的文字轉成位元組陣列。',
+    },
+    params: [
+      { name: 'text', type: 'String', en: 'Hex bytes separated by spaces or commas. `0x` in front and `h` behind are allowed, so a line pasted from a manual works.', zh: '用空白或逗號分開的十六進位位元組。前面有 `0x`、後面有 `h` 都可以，所以從說明書貼來的一行也能用。' },
+    ],
+    returns: { type: 'number[]', en: 'The bytes.', zh: '位元組陣列。' },
+    description: [
+      {
+        en: 'It throws on anything that is not a hex byte, so a typo stops here instead of reaching a device.',
+        zh: '遇到不是十六進位位元組的東西會丟出錯誤，打錯字會在這裡停下來，不會送到機器上。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { parseHex } from '@openav/midi';
+
+console.log(parseHex('F0h 7Eh 7Fh 06h 01h F7h'));`,
+        caption: { en: 'Prints `[240, 126, 127, 6, 1, 247]`.', zh: '印出 `[240, 126, 127, 6, 1, 247]`。' },
+      },
+    ],
+    related: ['formatHex', 'sysexBytes'],
+    keywords: { en: ['hex', 'bytes', 'sysex string'], zh: ['十六進位', '位元組'] },
+  },
+
+  formatHex: {
+    group: 'midi-io',
+    summary: {
+      en: 'Writes bytes as upper-case hex text, the way manuals print them.',
+      zh: '把位元組寫成大寫的十六進位文字，跟說明書印的一樣。',
+    },
+    params: [
+      { name: 'bytes', type: 'Array | Uint8Array', en: 'The bytes.', zh: '位元組。' },
+    ],
+    returns: { type: 'String', en: 'For example `\'F0 7E 7F 06 01 F7\'`. Nothing in, an empty string out.', zh: '例如 `\'F0 7E 7F 06 01 F7\'`。沒有輸入就回傳空字串。' },
+    description: [
+      {
+        en: 'The inverse of [`parseHex()`](#parseHex). Use it for logs and for showing someone the exact message before it is sent.',
+        zh: '是 [`parseHex()`](#parseHex) 的反向。用在紀錄檔，或在送出之前把訊息原樣給人看。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { formatHex, DEVICE_INQUIRY } from '@openav/midi';
+
+console.log(formatHex(DEVICE_INQUIRY));`,
+        caption: { en: 'Prints `F0 7E 7F 06 01 F7`.', zh: '印出 `F0 7E 7F 06 01 F7`。' },
+      },
+    ],
+    related: ['parseHex', 'sysexBytes'],
+    keywords: { en: ['hex', 'format bytes', 'log'], zh: ['十六進位', '格式化'] },
+  },
+
+  sysexBytes: {
+    group: 'midi-io',
+    summary: {
+      en: 'Builds the bytes of one SysEx message of a profile, with its arguments filled in.',
+      zh: '組出設定檔裡一則 SysEx 訊息的位元組，並填好參數。',
+    },
+    params: [
+      { name: 'message', type: 'Object', en: 'An entry of the profile\'s `sysex.messages`; [`sysexMessage()`](#sysexMessage) finds one by id.', zh: '設定檔 `sysex.messages` 裡的一筆，用 [`sysexMessage()`](#sysexMessage) 依 id 找。' },
+      { name: 'args', type: 'Object', optional: true, default: '{}', en: 'Argument name → value. A missing one takes its `default`.', zh: '參數名稱對應到值。沒給的用 `default`。' },
+    ],
+    returns: { type: 'number[]', en: 'The whole message, from `F0` to `F7`, ready for `output.send()`.', zh: '整則訊息，從 `F0` 到 `F7`，可以直接給 `output.send()`。' },
+    description: [
+      {
+        en: 'A message\'s `bytes` is text: one hex byte or `{name}` per token. `{name.msb}` and `{name.lsb}` split a bigger value into two 7-bit halves. The function throws when an argument is missing or outside its `min`..`max`, because a wrong byte in SysEx can leave a unit in a mode nobody can find the way out of.',
+        zh: '訊息的 `bytes` 是文字，每一格是一個十六進位位元組或 `{name}`。`{name.msb}` 和 `{name.lsb}` 把比較大的值拆成兩個 7 位元。參數缺少或超出 `min`..`max` 時會丟出錯誤，因為 SysEx 錯一個位元組，機器可能進到一個找不到路出來的模式。',
+      },
+      {
+        en: 'This only builds bytes; it sends nothing and asks the browser for nothing.',
+        zh: '它只組位元組，不會送出，也不會向瀏覽器要權限。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { sysexBytes, formatHex } from '@openav/midi';
+
+const select = { id: 'template', bytes: 'F0 00 20 29 02 11 77 {template} F7', args: [{ name: 'template', min: 0, max: 15, default: 8 }] };
+console.log(formatHex(sysexBytes(select)));
+console.log(formatHex(sysexBytes(select, { template: 0 })));`,
+        caption: { en: 'Prints the message with the default template 8, then with template 0.', zh: '先印出用預設模板 8 的訊息，再印出模板 0。' },
+      },
+    ],
+    related: ['sysexMessage', 'formatHex', 'parseDeviceInquiry'],
+    keywords: { en: ['sysex', 'system exclusive', 'programmer mode', 'template'], zh: ['系統專屬訊息', '程式模式', '模板'] },
+  },
+
+  sysexMessage: {
+    group: 'midi-io',
+    summary: {
+      en: 'Finds one SysEx message of a profile by its id.',
+      zh: '依 id 找出設定檔裡的一則 SysEx 訊息。',
+    },
+    params: [
+      { name: 'p', type: 'Object', en: 'A profile.', zh: '設定檔。' },
+      { name: 'id', type: 'String', en: 'The message id, such as `programmer-mode`.', zh: '訊息 id，例如 `programmer-mode`。' },
+    ],
+    returns: { type: 'Object | null', en: 'The entry of `sysex.messages`, or `null` when the profile has no such message.', zh: '`sysex.messages` 裡的那一筆，沒有這則訊息就回傳 `null`。' },
+    description: [
+      {
+        en: 'Each message says what it is for (`purpose`), what it does in words (`label`), which source its bytes came from (`cite`) and, when it changes the unit\'s state, which message undoes it (`undo`).',
+        zh: '每則訊息都寫了用途（`purpose`）、用文字說明它做什麼（`label`）、位元組的出處（`cite`），會改變機器狀態的訊息還寫了哪一則能還原（`undo`）。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { sysexMessage } from '@openav/midi';
+
+const p = { sysex: { messages: [{ id: 'hello', label: 'Say hello', bytes: 'F0 7D F7' }] } };
+console.log(sysexMessage(p, 'hello').label);
+console.log(sysexMessage(p, 'nope'));`,
+        caption: { en: 'Prints the label, then `null` for a message that is not there.', zh: '印出說明文字，找不到的訊息印出 `null`。' },
+      },
+    ],
+    related: ['sysexBytes', 'SYSEX_PURPOSES'],
+    keywords: { en: ['sysex lookup', 'find message'], zh: ['查 sysex', '找訊息'] },
+  },
+
+  SYSEX_PURPOSES: {
+    group: 'midi-io',
+    summary: {
+      en: 'What a SysEx message of a profile can be for: `identity`, `init`, `mode`, `template`, `led`, `display`, `config` or `transport`.',
+      zh: '設定檔裡 SysEx 訊息的用途：`identity`、`init`、`mode`、`template`、`led`、`display`、`config`、`transport`。',
+    },
+    value: {
+      type: 'string[]', range: '[\'identity\', \'init\', \'mode\', \'template\', \'led\', \'display\', \'config\', \'transport\']',
+      en: 'A plain array. `purpose` of an entry in `sysex.messages` must be one of these.',
+      zh: '一個普通陣列。`sysex.messages` 每一筆的 `purpose` 必須是其中之一。',
+    },
+    description: [
+      {
+        en: 'Software that reads the file can act on the purpose without knowing the device: offer every `mode` message as a switch, or use a `led` message to light a pad.',
+        zh: '讀這個檔案的軟體不用認識機器，看用途就能動作：把每則 `mode` 訊息做成開關，或用 `led` 訊息點亮打擊墊。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { SYSEX_PURPOSES } from '@openav/midi';
+
+console.log(SYSEX_PURPOSES);`,
+        caption: { en: 'Prints the purpose names.', zh: '印出用途名稱。' },
+      },
+    ],
+    related: ['sysexMessage', 'sysexBytes'],
+    keywords: { en: ['sysex purpose', 'mode', 'led'], zh: ['用途', '模式'] },
+  },
+
+  DEVICE_INQUIRY: {
+    group: 'midi-io',
+    summary: {
+      en: 'The Universal Device Inquiry message: `F0 7E 7F 06 01 F7`. Devices that implement it answer with their maker and firmware version.',
+      zh: '通用裝置查詢訊息：`F0 7E 7F 06 01 F7`。有實作的機器會回覆廠牌和韌體版本。',
+    },
+    value: {
+      type: 'number[]', range: '[240, 126, 127, 6, 1, 247]',
+      en: 'The bytes, ready to send. Sending it needs SysEx permission.',
+      zh: '位元組，可以直接送。送出需要 SysEx 權限。',
+    },
+    description: [
+      {
+        en: 'It is part of the MIDI 1.0 specification, not of any one device. Read the reply with [`parseDeviceInquiry()`](#parseDeviceInquiry).',
+        zh: '它屬於 MIDI 1.0 規格，不是哪一台機器專有。回覆用 [`parseDeviceInquiry()`](#parseDeviceInquiry) 讀。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { DEVICE_INQUIRY, formatHex } from '@openav/midi';
+
+console.log(formatHex(DEVICE_INQUIRY));`,
+        caption: { en: 'Prints the six bytes in hex.', zh: '用十六進位印出這六個位元組。' },
+      },
+    ],
+    related: ['parseDeviceInquiry', 'sysexBytes'],
+    keywords: { en: ['device inquiry', 'identity request', 'firmware version'], zh: ['裝置查詢', '韌體版本'] },
+  },
+
+  parseDeviceInquiry: {
+    group: 'midi-io',
+    summary: {
+      en: 'Reads a device\'s reply to the Universal Device Inquiry, or returns `null` for any other message.',
+      zh: '讀機器對通用裝置查詢的回覆，其他訊息回傳 `null`。',
+    },
+    params: [
+      { name: 'data', type: 'Array | Uint8Array', en: 'The bytes of one SysEx message.', zh: '一則 SysEx 訊息的位元組。' },
+    ],
+    returns: { type: 'Object | null', en: '`{ manufacturer, family, model, version, text }`: byte arrays, and `text`, the version bytes joined with dots.', zh: '`{ manufacturer, family, model, version, text }`：位元組陣列，`text` 是用點連起來的版本位元組。' },
+    description: [
+      {
+        en: 'A verification record stores the firmware it was checked on, and this reads it from the unit. How the version bytes map to the number printed in a manual differs by maker, so `version` keeps the raw bytes beside `text`.',
+        zh: '驗證紀錄要存當時的韌體版本，這個函式從機器讀出來。版本位元組怎麼對應到說明書上的數字，各家不一樣，所以 `version` 保留原始位元組，`text` 放在旁邊。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { parseDeviceInquiry, parseHex } from '@openav/midi';
+
+const reply = parseHex('F0 7E 00 06 02 00 20 29 13 01 00 00 00 04 03 01 F7');
+console.log(parseDeviceInquiry(reply));
+console.log(parseDeviceInquiry([0x90, 60, 100]));`,
+        caption: { en: 'Prints the maker, family, model and version of a reply laid out as in Novation\'s manual, then `null` for a note.', zh: '印出照 Novation 手冊排的回覆裡的廠牌、系列、型號和版本，音符訊息則印出 `null`。' },
+      },
+    ],
+    related: ['DEVICE_INQUIRY', 'verificationOf'],
+    keywords: { en: ['device inquiry reply', 'firmware', 'identity'], zh: ['韌體', '裝置識別'] },
   },
 
   loadProfile: {

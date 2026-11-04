@@ -8,6 +8,7 @@
 
 - [ ] Every control's message comes from a source, and each source is cited in `sources` (title, link, what it confirmed).
 - [ ] Anything not confirmed by a document or by the real unit is marked `"verified": false` with a note.
+- [ ] `"verified": true` only for what was checked on a real unit, with an entry in `verifications` (date, who, firmware, OS, browser).
 - [ ] `validateProfile(profile)` returns an empty list.
 - [ ] The profile is registered in `packages/midi/profiles/index.js`.
 - [ ] `node tools/build-controllers.mjs` was run, and its pages are in this PR.

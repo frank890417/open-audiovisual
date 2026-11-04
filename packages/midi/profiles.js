@@ -23,6 +23,8 @@
 //   wheel  strip        cc or pitchbend; spring returns to rest    0..1, or −1..1 when bipolar
 
 import { RELATIVE_MODES } from './parse.js?v=dd4a4d59';
+import { validateSysexBlock } from './sysex.js?v=dd4a4d59';
+import { validateVerifications } from './verify.js?v=dd4a4d59';
 
 export const CONTROL_TYPES = ['knob', 'encoder', 'fader', 'pad', 'button', 'keys', 'wheel', 'strip'];
 export const MSG_TYPES = ['cc', 'note', 'pitchbend', 'chanat', 'program'];
@@ -32,7 +34,25 @@ export const RESERVED_IDS = ['last', 'raw', 'delta', 'hit', 'on', 'off', 'pressu
 export const RESERVED_SHORTS = ['cc', 'note', 'bend', 'ch', 'virtual', 'raw', 'clock'];
 
 const ID_RE = /^[a-z0-9][a-z0-9_-]*$/;
+const RGB_RE = /^#[0-9a-fA-F]{6}$/;
 const isInt = (v, lo, hi) => Number.isInteger(v) && v >= lo && v <= hi;
+
+/** A device's LED colours: the value you send → what it looks like, and what each MIDI channel does to it (static, flash, pulse). */
+function validatePalette(p) {
+  const pal = p.palette, errs = [];
+  if (pal === undefined) return errs;
+  if (!pal || !Array.isArray(pal.colors) || !pal.colors.length) return ['palette.colors must be a non-empty array'];
+  if (!pal.cite || !isInt(pal.cite.source, 0, Math.max(0, (p.sources || []).length - 1)) || !(p.sources || []).length) errs.push('palette: cite.source must be an index into sources');
+  const seen = new Set();
+  for (const [i, c] of pal.colors.entries()) {
+    if (!c || !isInt(c.value, 0, 127)) errs.push(`palette.colors[${i}]: value must be 0..127`);
+    else if (seen.has(c.value)) errs.push(`palette.colors[${i}]: value ${c.value} appears twice`);
+    else seen.add(c.value);
+    if (!c || !RGB_RE.test(c.rgb || '')) errs.push(`palette.colors[${i}]: rgb must be #rrggbb`);
+  }
+  for (const [i, c] of (pal.channels || []).entries()) if (!c || !isInt(c.ch, 1, 16) || !c.name) errs.push(`palette.channels[${i}]: needs ch 1..16 and a name`);
+  return errs;
+}
 
 /** Every problem with a profile, as human-readable strings ([] = valid). */
 export function validateProfile(p) {
@@ -83,6 +103,7 @@ export function validateProfile(p) {
       if (!['note', 'cc'].includes(c.led.msg)) errs.push(`${at}: led.msg must be note or cc`);
       if (c.led.msg === 'note' && !isInt(c.led.note ?? c.note, 0, 127)) errs.push(`${at}: led note`);
       if (c.led.msg === 'cc' && !isInt(c.led.cc ?? c.cc, 0, 127)) errs.push(`${at}: led cc`);
+      if (c.led.index !== undefined && !isInt(c.led.index, 0, 127)) errs.push(`${at}: led.index must be 0..127`);
     }
   }
   // the faceplate (landscape) and the optional portrait arrangement must each show every control once
@@ -110,6 +131,9 @@ export function validateProfile(p) {
   };
   checkLayout(p.sections, 'sections', true);
   if (p.portrait) checkLayout(p.portrait, 'portrait', false);
+  if (p.face?.auto !== undefined && typeof p.face.auto !== 'boolean') errs.push('face.auto must be true or false');
+  if (p.license !== undefined && (typeof p.license !== 'string' || !p.license)) errs.push('license must be an SPDX id such as "Apache-2.0"');
+  errs.push(...validatePalette(p), ...validateSysexBlock(p), ...validateVerifications(p));
   return errs;
 }
 
