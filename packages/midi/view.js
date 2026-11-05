@@ -55,6 +55,13 @@ export const VIEW_CSS = `
 @keyframes mcv-arm { 50% { outline-color: #f5a524; } }
 .mcv-c.armed .mcv-hit { outline: 2px solid #f5a524 !important; animation: mcv-arm .8s infinite; }
 .mcv-c.learned .mcv-lbl { color: #f5a524; }
+.mcv-c[data-mark="now"] .mcv-hit { outline: 3px solid var(--oav-focus, #ff5a1f); outline-offset: 3px; animation: mcv-now 1.1s ease-in-out infinite; }
+@keyframes mcv-now { 50% { outline-offset: 7px; outline-color: rgba(255, 90, 31, .35); } }
+@media (prefers-reduced-motion: reduce) { .mcv-c[data-mark="now"] .mcv-hit { animation: none; } }
+.mcv-c[data-mark="ok"] .mcv-hit { outline: 2px solid #4ade80; outline-offset: 1px; }
+.mcv-c[data-mark="fixed"] .mcv-hit { outline: 2px solid #f5a524; outline-offset: 1px; }
+.mcv-c[data-mark="bad"] .mcv-hit { outline: 2px solid #f87171; outline-offset: 1px; }
+.mcv-c[data-mark="skip"] .mcv-hit { outline: 1px dashed rgba(255, 255, 255, .35); outline-offset: 1px; }
 .mcv-c:focus { outline: none; }
 .mcv-c:focus-visible .mcv-hit { outline: 2px solid var(--oav-focus, #ff5a1f); outline-offset: 2px; }
 
@@ -188,10 +195,23 @@ export class ControllerView {
     this.root = h('div', 'mcv');
     container.appendChild(this.root);
     this.els = new Map();
+    this._marks = new Map();
     this._ro = new ResizeObserver(() => this._fit());
     this._ro.observe(this.root);
     this.setController(controller);
   }
+
+  /**
+   * Point at one control, for a guided tour or a check: 'now' pulses, 'ok' green, 'fixed' amber, 'bad' red, 'skip' dashed.
+   * null clears it. Marks live on the elements, so a relayout repaints them from this map.
+   */
+  mark(id, kind = null) {
+    if (kind) this._marks.set(id, kind); else this._marks.delete(id);
+    const ui = this.els.get(id);
+    if (ui) { if (kind) ui.el.dataset.mark = kind; else delete ui.el.dataset.mark; }
+  }
+  /** Take every mark off. */
+  clearMarks() { for (const id of [...this._marks.keys()]) this.mark(id, null); }
 
   setController(c) {
     this._unsub?.();
@@ -376,6 +396,7 @@ export class ControllerView {
     }
     this._a11y(el, c);
     this.els.set(c.id, ui);
+    if (this._marks.has(c.id)) ui.el.dataset.mark = this._marks.get(c.id);
     return el;
   }
 

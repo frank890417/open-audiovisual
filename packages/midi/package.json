@@ -24,6 +24,7 @@
       "midi/sysex.js",
       "midi/verify.js",
       "midi/profiles.js",
+      "midi/verify-session.js",
       "midi/controller.js",
       "midi/manager.js",
       "midi/link.js",

@@ -206,3 +206,37 @@ test('profile.schema.json accepts every shipped profile and a full record, and r
   assert.ok(check(schema, { ...p, verifications: [hardware({ a: 'great' })] }, schema).length, 'bad result');
   assert.ok(check(schema, { ...p, verifications: [{ date: '2026-11-12' }] }, schema).length, 'incomplete record');
 });
+
+// ------------------------------------------------------------------ asking for SysEx
+const fakeAccess = (sysex) => {
+  const inp = { name: 'Unit', onmidimessage: null }, out = { name: 'Unit', sent: [], send(b) { if (b[0] === 0xf0 && !sysex) throw new Error('InvalidAccessError'); this.sent.push(b); } };
+  return { inputs: new Map([['i', inp]]), outputs: new Map([['o', out]]), sysexEnabled: sysex, onstatechange: null };
+};
+
+test('the engine never asks for SysEx by itself, and asks when told to', async () => {
+  const { Midi } = await import('../packages/midi/index.js');
+  const asked = [], accesses = [];
+  const midi = new Midi({ requestAccess: async (o) => { asked.push(o); const a = fakeAccess(!!o.sysex); accesses.push(a); return a; } });
+  await midi.enable();
+  assert.deepEqual(asked, [{ sysex: false }], 'enable() stays without SysEx');
+  assert.equal(midi.sysexEnabled, false);
+  assert.throws(() => midi.sendSysex(DEVICE_INQUIRY), /requestSysex\(\) first/);
+  const old = accesses[0].inputs.get('i');
+  assert.ok(old.onmidimessage);
+
+  assert.equal(await midi.requestSysex(), true);
+  assert.deepEqual(asked.at(-1), { sysex: true });
+  assert.equal(midi.sysexEnabled, true);
+  assert.equal(old.onmidimessage, null, 'the old input lets go, so nothing arrives twice');
+  assert.ok(accesses[1].inputs.get('i').onmidimessage);
+  assert.equal(midi.out, accesses[1].outputs.get('o'), 'the output is the same port, from the new access');
+  assert.equal(midi.sendSysex(DEVICE_INQUIRY), true);
+  assert.deepEqual(accesses[1].outputs.get('o').sent, [DEVICE_INQUIRY]);
+  assert.equal(await midi.requestSysex(), true); assert.equal(asked.length, 2, 'asked once');
+
+  const refused = new Midi({ requestAccess: async (o) => { if (o.sysex) throw new Error('denied'); return fakeAccess(false); } });
+  await refused.enable();
+  assert.equal(await refused.requestSysex(), false);
+  assert.equal(refused.sysexEnabled, false);
+  assert.ok(refused.out, 'a refusal leaves the plain connection as it was');
+});

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>用實機核對 MIDI 控制器資料 | open-audiovisual</title>
+<meta name="description" content="接上控制器，頁面亮到哪一格就動哪一個控制，比對機器送出的訊息和開放資料。可以下載修正後的 JSON，或送回專案。">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://openaudiovisual.com/zh/controllers/verify/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/verify/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/verify/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/verify/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="用實機核對 MIDI 控制器資料 | open-audiovisual">
+<meta property="og:description" content="接上控制器，頁面亮到哪一格就動哪一個控制，比對機器送出的訊息和開放資料。可以下載修正後的 JSON，或送回專案。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/controllers/verify/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="用實機核對 MIDI 控制器資料 | open-audiovisual">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="用實機核對 MIDI 控制器資料 | open-audiovisual">
+<meta name="twitter:description" content="接上控制器，頁面亮到哪一格就動哪一個控制，比對機器送出的訊息和開放資料。可以下載修正後的 JSON，或送回專案。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="用實機核對 MIDI 控制器資料 | open-audiovisual">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css">
+<script type="module" src="../../../assets/search/search.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/controllers/verify/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"控制器圖鑑","item":"https://openaudiovisual.com/zh/controllers/"},{"@type":"ListItem","position":3,"name":"用你的機器核對資料","item":"https://openaudiovisual.com/zh/controllers/verify/"}]},{"@type":"WebPage","@id":"https://openaudiovisual.com/zh/controllers/verify/#webpage","url":"https://openaudiovisual.com/zh/controllers/verify/","name":"用實機核對 MIDI 控制器資料 | open-audiovisual","description":"接上控制器，頁面亮到哪一格就動哪一個控制，比對機器送出的訊息和開放資料。可以下載修正後的 JSON，或送回專案。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"breadcrumb":{"@id":"https://openaudiovisual.com/zh/controllers/verify/#breadcrumb"}}]}</script>
+<link rel="stylesheet" href="../../../assets/controllers/controllers.css">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+</head>
+<body class="page-controllers page-verify">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/" aria-current="page">控制器</a>
+    <a href="../../../zh/docs/">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../controllers/verify/" hreflang="en" lang="en" data-lang="en">EN</a><span aria-hidden="true">|</span><a href="../../../zh/controllers/verify/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>這台裝置沒有 Web MIDI，接不了實體控制器，但可以直接用手指在螢幕上彈。要接你的控制器，請用電腦的 Chrome 或 Edge 開這一頁。 <a href="../../../zh/check/">檢查這台裝置</a></p>
+    <button type="button" aria-label="關掉這則提示">知道了</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
+
+  <section class="ch-hero" aria-labelledby="vf-title">
+    <nav class="crumbs" aria-label="麵包屑">
+      <ol>
+        <li><a href="../../../zh/">首頁</a></li>
+        <li><a href="../../../zh/controllers/">控制器圖鑑</a></li>
+        <li aria-current="page">用你的機器核對資料</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">驗證控制器</p>
+    <h1 id="vf-title">用你的機器核對資料</h1>
+    <div class="vf-lede">
+      <p>這個資料庫大多來自說明書。數字對不對，要有人在實機上動過那個控制才算數。只要一個人、一台機器，幾分鐘就夠。</p>
+      <ol class="vf-how">
+        <li>選型號，接上機器。</li>
+        <li>頁面一格一格亮起，亮到哪裡就動哪裡。</li>
+        <li>對上的打勾，對不上的會列出兩邊的值和修正方式。</li>
+        <li>下載更新過的 JSON，或開 issue、pull request 送回來。</li>
+      </ol>
+    </div>
+    <noscript><p class="noscript">這一頁要聽 MIDI，需要 JavaScript 和支援 Web MIDI 的瀏覽器（Chrome 或 Edge）。</p></noscript>
+  </section>
+
+  <section class="sec vf js-only" id="vf-setup" aria-labelledby="vf-setup-title">
+    <h2 id="vf-setup-title">開始</h2>
+    <form id="vf-form" class="vf-form">
+      <label class="vf-f"><span>型號</span>
+        <select id="vf-model" name="model">
+            <optgroup label="機器"><option value="akai-lpd8">AKAI LPD8 (mk2)</option><option value="akai-apc-mini-mk2">AKAI APC mini mk2</option><option value="akai-midimix">AKAI MIDImix</option><option value="akai-mpk-mini-mk3">AKAI MPK mini mk3</option><option value="akai-apc40-mk2">AKAI APC40 mkII</option><option value="arturia-minilab3">Arturia MiniLab 3</option><option value="arturia-keystep37">Arturia KeyStep 37</option><option value="arturia-beatstep">Arturia BeatStep</option><option value="behringer-x-touch-mini">Behringer X-TOUCH MINI</option><option value="djtechtools-midi-fighter-twister">DJ TechTools Midi Fighter Twister</option><option value="korg-nanokontrol2">Korg nanoKONTROL2</option><option value="korg-nanokey2">Korg nanoKEY2</option><option value="novation-launchpad-mini-mk3">Novation Launchpad Mini MK3</option><option value="novation-launch-control-xl-mk2">Novation Launch Control XL (MK2)</option><option value="novation-launch-control-xl-3">Novation Launch Control XL 3</option><option value="novation-launchkey-mini-mk3">Novation Launchkey Mini MK3</option><option value="novation-launchkey-25-mk4">Novation Launchkey 25 MK4</option><option value="novation-launchkey-37-mk4">Novation Launchkey 37 MK4</option><option value="novation-launchpad-pro-mk3">Novation Launchpad Pro MK3</option><option value="odd-ball">ODD Ball</option><option value="teenage-engineering-op-1-field">teenage engineering OP-1 field</option></optgroup>
+            <optgroup label="通用版面"><option value="generic-8k8p">通用 8 旋鈕 + 8 打擊墊</option><option value="generic-8f">通用 8 推桿</option><option value="generic-16p">通用 16 打擊墊</option><option value="generic-keys25">通用 25 鍵鍵盤</option><option value="generic-keys49">通用 49 鍵鍵盤</option><option value="generic-keys61">通用 61 鍵鍵盤</option></optgroup>
+        </select>
+      </label>
+      <label class="vf-f"><span>要驗哪些</span>
+        <select id="vf-scope" name="scope">
+          <option value="all">全部控制項</option>
+          <option value="unconfirmed">只驗檔案標成未確認的</option>
+        </select>
+      </label>
+      <div class="vf-f vf-port"><span>MIDI 輸入</span>
+        <div class="vf-row">
+          <button type="button" class="vf-btn" id="vf-connect">連接 MIDI</button>
+          <select id="vf-port" name="port" hidden aria-label="MIDI 輸入"></select>
+        </div>
+      </div>
+      <p class="vf-status" id="vf-status" role="status"></p>
+      <div class="vf-row">
+        <button type="submit" class="vf-btn vf-go" id="vf-start" disabled>開始驗證</button>
+        <button type="button" class="vf-btn vf-quiet" id="vf-sim">沒有機器，先試試看</button>
+      </div>
+      <p class="vf-note">這裡不會要求 SysEx 權限，也不會送任何東西給你的機器。模擬模式只是示範怎麼驗，結果不會把任何東西標成已驗證。</p>
+    </form>
+  </section>
+
+  <section class="sec vf" id="vf-run" aria-labelledby="vf-prompt" hidden>
+    <div class="vf-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="進度"><i id="vf-bar"></i></div>
+    <p class="vf-count" id="vf-count"></p>
+    <p class="vf-sim-tag" id="vf-sim-tag" hidden>模擬模式：點面板上亮起來的控制項。這次的結果不能把任何控制項標成已驗證。</p>
+    <h2 class="vf-prompt" id="vf-prompt" aria-live="polite"></h2>
+    <p class="vf-expect"><span>檔案寫的</span> <code id="vf-expected"></code></p>
+    <p class="vf-heard"><span>收到</span> <code id="vf-heard">–</code></p>
+
+    <div class="vf-diff" id="vf-diff" role="alert" hidden>
+      <p class="vf-diff-title" id="vf-diff-title"></p>
+      <table>
+        <tbody>
+          <tr><th scope="row">檔案寫的</th><td><code id="vf-was"></code></td></tr>
+          <tr><th scope="row">你的機器送出</th><td><code id="vf-got"></code></td></tr>
+        </tbody>
+      </table>
+      <div class="vf-row">
+        <button type="button" class="vf-btn vf-go" id="vf-accept">用機器送的值</button>
+        <button type="button" class="vf-btn" id="vf-retry">我動錯了</button>
+        <button type="button" class="vf-btn vf-quiet" id="vf-reject">保留檔案</button>
+      </div>
+    </div>
+
+    <div class="vf-row vf-actions" id="vf-actions">
+      <button type="button" class="vf-btn" id="vf-skip">跳過</button>
+      <button type="button" class="vf-btn" id="vf-absent">沒有訊息／我的機器沒有</button>
+      <button type="button" class="vf-btn vf-quiet" id="vf-back">上一步</button>
+      <button type="button" class="vf-btn vf-quiet" id="vf-finish">到這裡結束</button>
+      <button type="button" class="vf-btn vf-quiet" id="vf-wrong" hidden>模擬一則錯的訊息</button>
+    </div>
+    <div class="stage vf-stage"><oav-controller id="vf-ctl" layout="face"></oav-controller></div>
+  </section>
+
+  <section class="sec vf" id="vf-end" aria-labelledby="vf-end-title" hidden>
+    <h2 id="vf-end-title">結果</h2>
+    <dl class="vf-tally" id="vf-tally"></dl>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="找到的差異" id="vf-diffs-wrap" hidden>
+      <table><thead><tr><th scope="col">控制項</th><th scope="col">結果</th><th scope="col">檔案寫的</th><th scope="col">你的機器送出</th></tr></thead><tbody id="vf-diffs"></tbody></table>
+    </div>
+
+    <form id="vf-meta" class="vf-form">
+      <h3>誰驗的、用什麼驗的</h3>
+      <label class="vf-f"><span>你的名字或 GitHub 帳號</span><input id="vf-by" name="by" autocomplete="name" required></label>
+      <label class="vf-f"><span>韌體版本</span>
+        <input id="vf-firmware" name="firmware" autocomplete="off" placeholder="從機器看，或寫 unknown">
+      </label>
+      <div class="vf-row" id="vf-fw-row" hidden>
+        <button type="button" class="vf-btn vf-quiet" id="vf-read-fw">從機器讀取</button>
+        <span class="vf-note" id="vf-fw-status">瀏覽器會先詢問 SysEx 權限。</span>
+      </div>
+      <label class="vf-f"><span>作業系統</span><input id="vf-os" name="os" autocomplete="off"></label>
+      <label class="vf-f"><span>瀏覽器</span><input id="vf-browser" name="browser" autocomplete="off"></label>
+      <label class="vf-check" id="vf-attest-row"><input type="checkbox" id="vf-attest"> <span>這是我面前的實機，每個控制項都是我親手動的。</span></label>
+      <p class="vf-method" id="vf-method" role="status"></p>
+      <p class="vf-problems" id="vf-problems" role="alert" hidden></p>
+    </form>
+
+    <div class="vf-row vf-out">
+      <button type="button" class="vf-btn vf-go" id="vf-download">下載 JSON</button>
+      <button type="button" class="vf-btn" id="vf-copy">複製 JSON</button>
+      <a class="vf-btn" id="vf-issue" href="https://github.com/frank890417/open-audiovisual/issues/new" rel="noopener">開 issue ↗</a>
+      <a class="vf-btn" id="vf-pr" href="https://github.com/frank890417/open-audiovisual" rel="noopener">到 GitHub 開啟檔案 ↗</a>
+      <button type="button" class="vf-btn vf-quiet" id="vf-again">驗另一台</button>
+    </div>
+    <p class="vf-note">要開 pull request：複製 JSON，到 GitHub 開啟檔案，貼上蓋掉舊內容，按 Propose changes，GitHub 會幫你 fork。要開 issue：連結會填好報告，再把 JSON 附上或貼上。</p>
+  </section>
+
+  <section class="sec" id="vf-why" aria-labelledby="vf-why-title">
+    <h2 id="vf-why-title">標記是什麼意思</h2>
+    <dl class="vf-levels">
+      <div><dt>實機驗過</dt><dd>有人在實機上動過這個控制項，訊息也對得上。檔案會寫明誰、哪一天、什麼韌體、作業系統和瀏覽器。</dd></div>
+      <div><dt>來自出處</dt><dd>數字來自註明的說明書或工具，還沒有人在實機上確認。</dd></div>
+      <div><dt>未確認</dt><dd>這是我們最好的判讀，備註會寫原因。</dd></div>
+    </dl>
+    <p>用虛擬埠或模擬驗證，只能說明這一頁會動，不能說明機器是這樣，所以永遠不會把控制項標成已驗證。格式寫在<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#how-sure-a-profile-is">套件 README ↗</a>。</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="ctl-i18n">{"lang":"zh","repo":"https://github.com/frank890417/open-audiovisual","dir":"packages/midi/profiles","files":{"akai-lpd8":"akai-lpd8.json","akai-apc-mini-mk2":"akai-apc-mini-mk2.json","akai-midimix":"akai-midimix.json","akai-mpk-mini-mk3":"akai-mpk-mini-mk3.json","akai-apc40-mk2":"akai-apc40-mk2.json","arturia-minilab3":"arturia-minilab3.json","arturia-keystep37":"arturia-keystep37.json","arturia-beatstep":"arturia-beatstep.json","behringer-x-touch-mini":"behringer-x-touch-mini.json","djtechtools-midi-fighter-twister":"djtechtools-midi-fighter-twister.json","korg-nanokontrol2":"korg-nanokontrol2.json","korg-nanokey2":"korg-nanokey2.json","novation-launchpad-mini-mk3":"novation-launchpad-mini-mk3.json","novation-launch-control-xl-mk2":"novation-launch-control-xl-mk2.json","novation-launch-control-xl-3":"novation-launch-control-xl-3.json","novation-launchkey-mini-mk3":"novation-launchkey-mini-mk3.json","novation-launchkey-25-mk4":"novation-launchkey-25-mk4.json","novation-launchkey-37-mk4":"novation-launchkey-37-mk4.json","novation-launchpad-pro-mk3":"novation-launchpad-pro-mk3.json","odd-ball":"odd-ball.json","teenage-engineering-op-1-field":"teenage-engineering-op-1-field.json","generic-8k8p":"generic-8k8p.json","generic-8f":"generic-8f.json","generic-16p":"generic-16p.json","generic-keys25":"generic-keys25.json","generic-keys49":"generic-keys49.json","generic-keys61":"generic-keys61.json"},"tool":"openaudiovisual.com/controllers/verify/","detailBase":"../../../zh/controllers/","s":{"progress":"進度","count":"第 {n} 個，共 {total} 個 · 對上 {ok} · 已修正 {fixed} · 未確認 {bad}","simTag":"模擬模式：點面板上亮起來的控制項。這次的結果不能把任何控制項標成已驗證。","prompt":{"knob":"轉動 {name}","encoder":"把 {name} 往一邊轉幾格，再轉回來","fader":"推動 {name}","pad":"敲 {name}","button":"按 {name}","wheel":"扳動 {name}","strip":"滑過 {name}","keysLow":"按 {name} 最低的鍵","keysHigh":"按 {name} 最高的鍵"},"expected":"檔案寫的","heard":"收到","fileSays":"檔案寫的","unitSent":"你的機器送出","diffNew":"跟檔案寫的不一樣。","diffEncoding":"控制項對了，但它計算格數的方式不同。","diffOwner":"檔案裡這則訊息屬於 {owner}。你動到的是它嗎？","diffOwnerDone":"這則訊息是 {owner}，已經確認過了，應該是動錯了。","accept":"用機器送的值","acceptSwap":"不是，就是這個控制項：跟 {owner} 對調","retry":"我動錯了","reject":"保留檔案","skip":"跳過","absent":"沒有訊息／我的機器沒有","back":"上一步","finish":"到這裡結束","simWrong":"模擬一則錯的訊息"},"end":{"title":"結果","tableLabel":"找到的差異","cols":{"control":"控制項","result":"結果"},"tally":{"match":"對上","corrected":"已修正","mismatch":"保留原樣","absent":"沒有訊息","skipped":"跳過"},"metaTitle":"誰驗的、用什麼驗的","by":"你的名字或 GitHub 帳號","byShort":"名字","firmware":"韌體版本","firmwareHint":"從機器看，或寫 unknown","readFirmware":"從機器讀取","readFirmwareNote":"瀏覽器會先詢問 SysEx 權限。","os":"作業系統","browser":"瀏覽器","readDenied":"SysEx 沒有被允許，所以問不了機器，請自己填版本。","readNoOut":"這個連接埠沒有輸出可以問，請自己填版本。","readNoReply":"機器沒有回應，請自己填版本，或寫 unknown。","readDone":"機器回報 {version}。","attest":"這是我面前的實機，每個控制項都是我親手動的。","method":{"hardware":"會記成實機驗證。對上的控制項會標成已驗證。","virtual":"會記成虛擬埠驗證。數字和標記都不變。","simulated":"會記成模擬。數字和標記都不變。"},"missing":"還缺：{fields}。","download":"下載 JSON","copy":"複製 JSON","copied":"已複製","issue":"開 issue","pr":"到 GitHub 開啟檔案","again":"驗另一台","prSteps":"要開 pull request：複製 JSON，到 GitHub 開啟檔案，貼上蓋掉舊內容，按 Propose changes，GitHub 會幫你 fork。要開 issue：連結會填好報告，再把 JSON 附上或貼上。"},"setup":{"title":"開始","model":"型號","devices":"機器","generic":"通用版面","scope":"要驗哪些","scopeAll":"全部控制項","scopeUnconfirmed":"只驗檔案標成未確認的","port":"MIDI 輸入","connect":"連接 MIDI","connected":"MIDI 已連接","asking":"等瀏覽器允許 MIDI…","noMidi":"這個瀏覽器沒有 Web MIDI，或要求被拒絕了。Chrome 和 Edge 有支援，模擬模式在哪裡都能用。","noPorts":"找不到 MIDI 輸入。把控制器接上，這裡就會出現。","pickPort":"沒有看起來像這個型號的連接埠，請從清單選你的機器。","found":"找到 {port}。","nothing":"沒有要驗的項目：這個檔案沒有標成未確認的控制項。","start":"開始驗證","simulate":"沒有機器，先試試看","note":"這裡不會要求 SysEx 權限，也不會送任何東西給你的機器。模擬模式只是示範怎麼驗，結果不會把任何東西標成已驗證。"}}</script>
+<script type="module" src="../../../assets/controllers/verify.js"></script>
+<!--/email_off-->
+</body>
+</html>

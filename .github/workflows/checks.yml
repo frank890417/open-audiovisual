@@ -40,3 +40,7 @@ jobs:
       - run: node p5/test/search-smoke.cjs
         env:
           PW: ${{ runner.temp }}/pw/node_modules/playwright
+      # /controllers/verify/ driven like a person drives it: only a real unit with the box ticked can turn a control true
+      - run: node p5/test/verify-smoke.cjs
+        env:
+          PW: ${{ runner.temp }}/pw/node_modules/playwright

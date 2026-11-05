@@ -295,6 +295,9 @@ it can also carry `led` (`match`, `mismatch`) and `note`. A `virtual` or `simula
 device does, so it never confirms anything. `verificationOf(profile, id)` reads the log for one control and
 `verificationSummary(profile)` counts it.
 
+The [verification page](https://openaudiovisual.com/controllers/verify/) writes these entries: it lights one control at a time, compares what the unit
+sends with the file and hands back the updated JSON. Its logic is `VerifySession` and `applyVerification()`, with no DOM and no Web MIDI, so a script can drive it too.
+
 ### SysEx
 
 `sysex.messages` lists what a device accepts beyond notes and CCs: switching modes, picking a template, lighting a pad in any colour.
@@ -347,7 +350,7 @@ argument. `led.index` on a control is its address in a `led` message (`{led}` ab
    profile and checks MIDI out for every control.
 
 No manual? Pick a generic layout, press Learn, move your controls in order;
-`controller.exportMapping()` gives the result as JSON.
+`controller.exportMapping()` gives the result as JSON. Have the unit and a profile already? Check it on the [verification page](https://openaudiovisual.com/controllers/verify/).
 
 ## Telemetry
 
@@ -365,7 +368,7 @@ Turn it off: `<oav-controller telemetry="off">` · `createController(p, { teleme
 
 ## Files
 
-`parse.js` bytes ⇄ events ⇄ signal names · `sysex.js` SysEx as data (pure) · `verify.js` evidence and verification records (pure) · `profiles.js` validate / match · `controller.js`
+`parse.js` bytes ⇄ events ⇄ signal names · `sysex.js` SysEx as data (pure) · `verify.js` evidence and verification records (pure) · `verify-session.js` checking a unit against its file (pure) · `profiles.js` validate / match · `controller.js`
 MidiController · `manager.js` MidiControllers · `view.js` ControllerView · `canvas.js`
 ControllerCanvas (for video) · `panel.js` docked panel · `embed.js` options, payloads, postMessage (pure, tested) · `element.js` `<oav-controller>`
 · `index.js` Midi engine + `createController` · `virtual-access.js` Web MIDI shim (its output heard, 0.7) · `clock.js` MidiClock ·

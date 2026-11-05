@@ -61,6 +61,7 @@ const DERIVED = {
     const cat = catalog();
     return [
       { id: 'controllers', path: 'controllers/', langs: ['en', 'zh'], src: GALLERY_SRC, group: 'controllers' },
+      { id: 'controllers/verify', path: 'controllers/verify/', langs: ['en', 'zh'], src: ['tools/controllers/verify.mjs', 'assets/controllers/verify.js', 'packages/midi/verify-session.js'], group: 'controllers' },
       ...[...cat.devices, ...cat.generic].map((d) => ({ id: 'controllers/' + d.p.id, path: detailPath(d.p.id, 'en'), langs: ['en', 'zh'], src: [`${PROFILE_DIR}/${d.file}`], group: 'controllers' })),
     ];
   },

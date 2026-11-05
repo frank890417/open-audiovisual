@@ -13,6 +13,7 @@
 // feedback, a Web MIDI shim for old sketches, and a phone/iPad remote tab.
 //   profiles.js  validate / match / index           controller.js  MidiController
 //   parse.js     bytes ⇄ events ⇄ signal names       manager.js     MidiControllers (hardware ⇄ profiles)
+//   sysex.js     SysEx as data                       verify.js      how sure a profile is; verify-session.js checks it on a unit
 //   view.js      ControllerView (the faceplate)      panel.js       mountMidiPanel (header + port picker + view)
 //   canvas.js    ControllerCanvas (the faceplate drawn into a 2D canvas, for video: @openav/record's setPanel)
 //   virtual-access.js  Web MIDI shim                 remote-tab.js  the /remote MIDI tab
@@ -31,6 +32,7 @@ export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, 
 export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=dd4a4d59';
 export { parseHex, formatHex, sysexBytes, sysexMessage, parseDeviceInquiry, DEVICE_INQUIRY, SYSEX_PURPOSES } from './sysex.js?v=dd4a4d59';
 export { evidenceOf, verificationOf, verificationSummary, VERIFY_METHODS, VERIFY_RESULTS } from './verify.js?v=dd4a4d59';
+export { VerifySession, applyVerification, verificationReport } from './verify-session.js?v=dd4a4d59';
 export { pickOutput, reselectOutput, EchoGuard, isLive } from './ports.js?v=dd4a4d59';
 export { ScoreMidi } from './score-out.js?v=dd4a4d59';
 export { MidiController } from './controller.js?v=dd4a4d59';
@@ -108,6 +110,48 @@ export class Midi {
     if (preferredOut) this.preferredOut = preferredOut;
     this._refresh(true);
     this.access.onstatechange = () => this._refresh(false);
+    return true;
+  }
+
+  /** Has the browser allowed SysEx on this engine? */
+  get sysexEnabled() { return !!this.access?.sysexEnabled; }
+
+  /**
+   * Ask the browser for SysEx. Call it from something a person pressed, never on load: browsers show a permission
+   * prompt for it, and it reads as a request to reprogram a device. enable() never asks.
+   * The ports are replaced (a SysEx send through a port of the old access throws), so the output you were on is
+   * looked up again by name, and the old inputs are let go so nothing arrives twice.
+   * @returns {Promise<boolean>} true when SysEx is on
+   */
+  async requestSysex() {
+    if (this.sysexEnabled) return true;
+    const req = this.requestAccess || (typeof navigator !== 'undefined' && navigator.requestMIDIAccess ? (o) => navigator.requestMIDIAccess(o) : null);
+    if (!req) return false;
+    let access;
+    try { access = await req({ sysex: true }); } catch (e) { this.log('in', 'SysEx refused: ' + e.message); return false; }
+    for (const i of this.inputs) { try { i.onmidimessage = null; } catch { /* port gone */ } }
+    if (this.access) this.access.onstatechange = null;
+    const outName = this.out?.name;
+    this.access = access; this.enabled = true;
+    this.outputs = Array.from(access.outputs.values());
+    this.out = this.outputs.find((o) => o.name === outName) || null;
+    this._refresh(false);
+    access.onstatechange = () => this._refresh(false);
+    return this.sysexEnabled;
+  }
+
+  /**
+   * Send one SysEx message. `sysexBytes()` builds one from a profile.
+   * @param {number[]|Uint8Array} bytes   the whole message, F0 to F7
+   * @param {{output?:object}} [o]        which port (default: the current output)
+   * @returns {boolean} false with no port to send it to
+   * @throws when SysEx has not been allowed: nothing here asks for it behind your back
+   */
+  sendSysex(bytes, { output = this.out } = {}) {
+    if (!this.sysexEnabled) throw new Error('SysEx is off: call requestSysex() first, from something the user pressed');
+    if (!output) return false;
+    if (this.onSend) try { this.onSend(bytes); } catch (e) {}
+    output.send(Array.from(bytes));
     return true;
   }
 

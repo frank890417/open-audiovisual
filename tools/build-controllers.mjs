@@ -10,6 +10,7 @@
 //   tools/controllers/en.mjs     English strings          → /controllers/
 //   tools/controllers/zh.mjs     Traditional Chinese      → /zh/controllers/
 //   tools/controllers/detail.mjs one page per device: /controllers/<id>/ and /zh/controllers/<id>/
+//   tools/controllers/verify.mjs the page that checks a unit against its file: /controllers/verify/, /zh/controllers/verify/
 //   packages/midi/profiles/*.json (through profiles/index.js) — every device fact on the pages
 //   tools/home/en.mjs, zh.mjs    nav and footer strings (the shared site chrome)
 // So: a new profile registered in packages/midi/profiles/index.js → rerun this, nothing else (its two pages and sitemap entries appear).
@@ -20,6 +21,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderPage, catalog, PROFILE_DIR, detailPath, detailUrl } from './controllers/page.mjs';
 import { renderDetail } from './controllers/detail.mjs';
+import { renderVerify, VERIFY_PATH } from './controllers/verify.mjs';
 import { shapeDiff } from './build-home.mjs';
 import { registry, urlBlocks, sitemapXml, unstamp } from './site/pages.mjs';
 export { unstamp };
@@ -51,6 +53,8 @@ export function buildPages() {
     files[detailFile(d.p.id, 'en')] = renderDetail(en, homeEn, 'en', d, cat);
     files[detailFile(d.p.id, 'zh')] = renderDetail(zh, homeZh, 'zh', d, cat);
   }
+  files[VERIFY_PATH + 'index.html'] = renderVerify(en, homeEn, 'en', cat);
+  files['zh/' + VERIFY_PATH + 'index.html'] = renderVerify(zh, homeZh, 'zh', cat);
   files[SITEMAP] = sitemapXml();
   return files;
 }

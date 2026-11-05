@@ -17,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 import { SITE, REPO, BLOB, TREE, PERSON_ID, SOFTWARE_ID, pageCtx, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFooter, guardEmail, esc, attr } from '../site/chrome.mjs';
 import { PROFILES } from '../../packages/midi/profiles/index.js';
 import { normalizeProfile } from '../../packages/midi/profiles.js';
+import { verificationOf } from '../../packages/midi/verify.js';
 import { CONTROL_COLORS } from '../../packages/midi/view.js';
 import { snippets, hl } from '../../assets/controllers/snippets.js';
 
@@ -251,7 +252,7 @@ export function specParts(t, d, c, locale) {
             <td class="n">${esc(numText(t, x))}</td>
             <td><code>${esc(sigText(p, x))}</code></td>
             <td>${esc(ledText(t, x))}</td>
-            <td>${x.verified === false ? `<span class="tag-unv"${typeof x.note === 'string' ? ` title="${attr(x.note)}"` : ''}>${S.unverified}</span>` : S.yes}</td>
+            <td>${x.verified === false ? `<span class="tag-unv"${typeof x.note === 'string' ? ` title="${attr(x.note)}"` : ''}>${S.unverified}</span>` : x.verified === true ? `<span class="tag-hw">${S.hardware} ${esc(verificationOf(p, x.id)?.date || '')}</span>` : S.fromSource}</td>
           </tr>`).join('\n          ');
   // `note` is the MIDI note number on note controls and a remark (text) on the others
   const notes = p.controls.filter((x) => typeof x.note === 'string' && x.note);
@@ -656,6 +657,8 @@ ${topBar(home, c)}
         </div>
         <h3>${t.model.learnTitle}</h3>
         <p>${t.model.learnText}</p>
+        <h3>${t.model.verifyTitle}</h3>
+        <p>${fill(t.model.verifyText, { href: 'verify/' })}</p>
         <ul class="model-links">
           <li><a href="${REPO}">${t.model.links.repo} ↗</a></li>
           <li><a href="${BLOB}packages/midi/README.md">${t.model.links.readme} ↗</a></li>

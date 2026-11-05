@@ -394,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 802 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 830 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -2854,13 +2854,20 @@ Turn it off: `<oav-controller telemetry="off">` · `createController(p, { teleme
 
 1. Copy the closest file in `packages/midi/profiles/`, or a generic layout.
 2. Write each control's type and message from the manual's MIDI implementation chart.
-3. Cite every source; mark anything unconfirmed `"verified": false` with a note.
+3. Cite every source; mark anything unconfirmed `"verified": false` with a note. `"verified": true` is
+   for a number checked on a real unit, and needs an entry in `verifications` that says who, when, on
+   which firmware, OS and browser (`validateProfile` refuses it otherwise).
 4. `validateProfile(profile)` lists every problem; `npm test` checks every shipped profile.
 5. Try it with `<oav-controller profile="./my-device.json">`, then register it in
    `profiles/index.js` and open a pull request.
 
 No manual: choose a generic layout, press Learn, move your controls in order, and keep
 `controller.exportMapping()` as the start of a profile.
+
+The format has room for what a device does beyond notes and CCs: `sysex` (mode switches, templates, LED colours, each message citing
+its source), `palette` (the LED colour table) and `verifications` (who checked what on real hardware). The field list is in the
+[package README](https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#profiles), and
+[`profile.schema.json`](https://openaudiovisual.com/packages/midi/profile.schema.json) is the same format as JSON Schema.
 
 ---
 
@@ -4611,7 +4618,7 @@ JSON-RPC error with code −32000 and a message.
 | `scaffold_world` | `slug` (required, kebab-case), `donor` (default `01-hello-particles`) | `{ created, next_steps }`. Copies every file of `examples/<donor>/` into `examples/<next number>-<slug>/` |
 | `run_checks` | none | `{ pass, fail, ok }` from `node --test tests/*.test.js` (60 s timeout), or `{ ok: false, output }` with the failing lines |
 | `list_controllers` | none | `{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }`: every shipped MIDI profile, its control mix (`{ knob: 8, pad: 8, keys: 25 }`), how many controls are still flagged unverified, and its page `https://openaudiovisual.com/controllers/<id>/` |
-| `read_profile` | `id` (required): a profile id or its `short` | `{ id, url, unverified, profile, mapping }`: the profile JSON as shipped, and a readable MIDI map (control, type, `CC 74, ch 1`, signal `midi/<short>/<id>`, verified) |
+| `read_profile` | `id` (required): a profile id or its `short` | `{ id, url, unverified, profile, mapping }`: the profile JSON as shipped (with `sysex`, `palette` and `verifications` when it has them), and a readable MIDI map (control, type, `CC 74, ch 1`, `evidence`: `hardware`, `source` or `unconfirmed`, signal `midi/<short>/<id>`, verified) |
 | `validate_profile` | `profile` (required): an object or a JSON string | `{ ok, problems, conflicts }`: the problems `validateProfile` finds, plus clashes with shipped profiles (same `id`, same `short`, overlapping `match.ports`) |
 | `scaffold_profile` | `maker`, `model`, `controls` (all required): `[{ type, count, from? }]` | `{ profile, problems, unverified, next_steps }`: a skeleton that passes `validateProfile`, every number a placeholder with `"verified": false`, and the steps to source and register it. Nothing is written to disk |
 
@@ -5044,7 +5051,7 @@ before it was generalized.)
 
 # API reference (generated)
 
-> 489 public names of oav-p5 0.8.4 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 504 public names of oav-p5 0.8.4 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -8412,6 +8419,7 @@ function draw() {
 
 ## midi-io
 
+- `applyVerification` (function, @openav/midi): `applyVerification(raw, session, meta)` — Writes a finished run into a copy of the profile: the new log entry, and for a hardware run the `verified` marks and corrected numbers.
 - `BEND_CENTER` (constant, @openav/midi): `BEND_CENTER = 8192` — The resting value of a pitch-bend wheel: 8192, the middle of the 14-bit range 0..16383. (range 8192)
 - `bendToUnit` (function, @openav/midi): `bendToUnit(v)` — Turns a 14-bit pitch-bend value (0..16383) into −1..1, with the centre (8192) exactly 0.
 - `CONTROL_TYPES` (constant, @openav/midi): `CONTROL_TYPES = array, 8 items` — The kinds of control a profile may contain: `knob`, `encoder`, `fader`, `pad`, `button`, `keys`, `wheel`, `strip`. (range ['knob', 'encoder', 'fader', 'pad', 'button', 'keys', 'wheel', 'strip'])
@@ -8419,11 +8427,14 @@ function draw() {
 - `createVirtualMIDIAccess` (function, @openav/midi): `createVirtualMIDIAccess({ name = 'OAV Virtual MIDI', manufacturer = 'open-audiovisual', id = 'oav-virtual', sysex = false, onOutput = null, onClear = null } = {})` — Builds a Web MIDI `MIDIAccess` that always has one more input and output of its own, so a sketch written for a MIDI keyboard works with none plugged in.
 - `DEFAULT_PROFILE` (constant, @openav/midi): `DEFAULT_PROFILE = "arturia-minilab3"` — The profile id used when none is given: `'arturia-minilab3'`. (range 'arturia-minilab3')
 - `describe` (function, @openav/midi): `describe(ev)` — Returns a short readable line for a parsed MIDI event, for logs and learn screens: `CC ch1 #74=64`, `Bend ch1 0.50`.
+- `DEVICE_INQUIRY` (constant, @openav/midi): `DEVICE_INQUIRY = array, 6 items` — The Universal Device Inquiry message: `F0 7E 7F 06 01 F7`. Devices that implement it answer with their maker and firmware version. (range [240, 126, 127, 6, 1, 247])
 - `EchoGuard` (class, @openav/midi): `new EchoGuard({ window = 40, max = 256 } = {})` — Recognises our own MIDI messages coming back: remember what was sent, and an identical message arriving within a short window is an echo, not a performer.
 - `encodeMessage` (function, @openav/midi): `encodeMessage(ev)` — Turns an event object back into MIDI bytes, the inverse of `parseMessage()`: `{ type: 'cc', ch: 1, cc: 74, value: 64 }` becomes `[0xb0, 74, 64]`.
 - `eventOfSignal` (function, @openav/midi): `eventOfSignal(name, value, { channel = 1 } = {})` — The inverse of `genericSignals()`: turns one generic MIDI signal (`midi/ch/10/note/36`, `midi/cc/74`) back into the MIDI event it came from.
+- `evidenceOf` (function, @openav/midi): `evidenceOf(c)` — Says how sure a profile is of one control: `'hardware'`, `'source'` or `'unconfirmed'`.
 - `findPort` (function, @openav/midi): `findPort(ports, query)` — Finds a MIDI port by name: a `/regex/flags`, then the exact name, then a case-insensitive substring; `null` when nothing matches.
 - `findProfile` (function, @openav/midi): `findProfile(ref, profiles)` — Finds a profile in a list by id or short name, or returns `null`; no validation, no loading.
+- `formatHex` (function, @openav/midi): `formatHex(bytes)` — Writes bytes as upper-case hex text, the way manuals print them.
 - `genericSignals` (function, @openav/midi): `genericSignals(ev, { device = null, legacy = true, channel = true } = {})` — Lists the device-independent signals one MIDI event becomes: `midi/cc/74`, `midi/note/on`, `midi/bend`, and their per-channel twins such as `midi/ch/2/cc/74`.
 - `groupsOf` (function, @openav/midi): `groupsOf(p)` — Groups a profile's controls by their `group` (`knob`, `pad`, `fader` …), returning `{ group: [control ids] }`.
 - `indexProfile` (function, @openav/midi): `indexProfile(p)` — Builds the lookup from a MIDI message to the control it moves: `"cc:1:74"` maps to the knob listening for CC 74 on channel 1.
@@ -8436,6 +8447,8 @@ function draw() {
 - `MidiController` (class, @openav/midi): `new MidiController(profile, { signals = null, sink = null, short = null, onLed = null } = {})` — One MIDI controller (a profile) as a live model: MIDI bytes go in, control values and signals come out, and a hand on screen sends the bytes the device would.
 - `MidiControllers` (class, @openav/midi): `new MidiControllers({ profiles, signals = null, sink = null, midi = null, initial = null, storage = safeStorage() } = {})` — Ties hardware ports to controller profiles: plug in a MiniLab 3 and the on-screen one appears and moves with your hands; unplug it and it stays playable.
 - `normalizeProfile` (function, @openav/midi): `normalizeProfile(raw)` — Validates a profile and returns a filled-in copy with defaults for channel, labels, groups, encoder mode and portrait layout; the input is not changed.
+- `parseDeviceInquiry` (function, @openav/midi): `parseDeviceInquiry(data)` — Reads a device's reply to the Universal Device Inquiry, or returns `null` for any other message.
+- `parseHex` (function, @openav/midi): `parseHex(text)` — Turns text such as `'F0 7E 7F 06 01 F7'` into an array of bytes.
 - `parseMessage` (function, @openav/midi): `parseMessage(data)` — Turns the bytes of one MIDI message into an event object such as `{ type: 'noteon', ch: 1, note: 60, vel: 100 }`, or `null` for bytes it does not know.
 - `pickOutput` (function, @openav/midi): `pickOutput(outputs, { preferred = '', prefer = [] } = {})` — Chooses which MIDI output to send to from a list: the port you named, else the first match of a preference list, else the first live port.
 - `pickPort` (function, @openav/midi): `pickPort(ports, profile)` — Of several ports one device exposes ("Minilab3 MIDI", "Minilab3 DIN THRU", "Minilab3 MCU/HUI"), picks the one to listen to.
@@ -8450,8 +8463,17 @@ function draw() {
 - `RESERVED_IDS` (constant, @openav/midi): `RESERVED_IDS = array, 7 items` — Control ids a profile may not use, because they are signal suffixes: `last`, `raw`, `delta`, `hit`, `on`, `off`, `pressure`. (range ['last', 'raw', 'delta', 'hit', 'on', 'off', 'pressure'])
 - `resolveProfile` (function, @openav/midi): `async resolveProfile(ref, { profiles = [], fetch = globalThis.fetch, base = undefined } = {})` — Turns a profile object, an id or short name, or a URL to a profile JSON into a profile; an object or a file that is not valid is rejected with every problem listed.
 - `ScoreMidi` (class, @openav/midi): `new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length = 0.15, scrub = false, enabled = true, timer = (fn, ms) => setTimeout(fn, ms) } = {})` — Turns a show's segment changes and cues into MIDI notes and CCs on one channel, so a DAW or lighting desk can follow the show.
+- `SYSEX_PURPOSES` (constant, @openav/midi): `SYSEX_PURPOSES = array, 8 items` — What a SysEx message of a profile can be for: `identity`, `init`, `mode`, `template`, `led`, `display`, `config` or `transport`. (range ['identity', 'init', 'mode', 'template', 'led', 'display', 'config', 'transport'])
+- `sysexBytes` (function, @openav/midi): `sysexBytes(message, args = {})` — Builds the bytes of one SysEx message of a profile, with its arguments filled in.
+- `sysexMessage` (function, @openav/midi): `sysexMessage(p, id)` — Finds one SysEx message of a profile by its id.
 - `unitToBend` (function, @openav/midi): `unitToBend(u)` — Turns a −1..1 number into a 14-bit pitch-bend value (0..16383), the inverse of `bendToUnit()`.
 - `validateProfile` (function, @openav/midi): `validateProfile(p)` — Checks a controller profile and returns every problem as a sentence; an empty array means it is valid.
+- `verificationOf` (function, @openav/midi): `verificationOf(p, id)` — Returns the newest check of one control from a profile's `verifications` log, or `null` when nobody has checked it.
+- `verificationReport` (function, @openav/midi): `verificationReport(raw, session, meta, { max = 5500 } = {})` — Writes a run as Markdown for a GitHub issue: who, on what, the counts and every difference.
+- `verificationSummary` (function, @openav/midi): `verificationSummary(p)` — Counts a profile's controls at each level of certainty and names its newest check.
+- `VERIFY_METHODS` (constant, @openav/midi): `VERIFY_METHODS = array, 3 items` — The ways a check can be made: `hardware`, `virtual` and `simulated`. Only `hardware` can make a control `verified: true`. (range ['hardware', 'virtual', 'simulated'])
+- `VERIFY_RESULTS` (constant, @openav/midi): `VERIFY_RESULTS = array, 4 items` — What a check can find for one control: `match`, `corrected`, `mismatch` or `absent`. (range ['match', 'corrected', 'mismatch', 'absent'])
+- `VerifySession` (class, @openav/midi): `new VerifySession(profile, { only = 'all' } = {})` — Compares a real unit with its profile, one control at a time: feed it the bytes that arrive and it says what matched, what differs and what to ask next.
 - `virtualRequestMIDIAccess` (function, @openav/midi): `virtualRequestMIDIAccess({ real = null, make, waitMs = 1200 })` — Wraps `navigator.requestMIDIAccess` so every caller gets the virtual access: real ports join if they answer in time, and the virtual input stays without Web MIDI.
 - `withChannel` (function, @openav/midi): `withChannel(profile, ch)` — Returns a copy of a profile with every control moved to another MIDI channel, for a unit that is set to a channel other than the profile's.
 

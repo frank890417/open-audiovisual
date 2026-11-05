@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check a MIDI controller against its file | open-audiovisual</title>
+<meta name="description" content="Plug in a controller, move each control when the page lights it, and compare what your unit sends with the open data. Download the corrected JSON or send it to the project.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://openaudiovisual.com/controllers/verify/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/verify/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/verify/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/verify/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Check a MIDI controller against its file | open-audiovisual">
+<meta property="og:description" content="Plug in a controller, move each control when the page lights it, and compare what your unit sends with the open data. Download the corrected JSON or send it to the project.">
+<meta property="og:url" content="https://openaudiovisual.com/controllers/verify/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Check a MIDI controller against its file | open-audiovisual">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Check a MIDI controller against its file | open-audiovisual">
+<meta name="twitter:description" content="Plug in a controller, move each control when the page lights it, and compare what your unit sends with the open data. Download the corrected JSON or send it to the project.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="Check a MIDI controller against its file | open-audiovisual">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css">
+<script type="module" src="../../assets/search/search.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/controllers/verify/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Controllers","item":"https://openaudiovisual.com/controllers/"},{"@type":"ListItem","position":3,"name":"Check your unit against its file","item":"https://openaudiovisual.com/controllers/verify/"}]},{"@type":"WebPage","@id":"https://openaudiovisual.com/controllers/verify/#webpage","url":"https://openaudiovisual.com/controllers/verify/","name":"Check a MIDI controller against its file | open-audiovisual","description":"Plug in a controller, move each control when the page lights it, and compare what your unit sends with the open data. Download the corrected JSON or send it to the project.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"breadcrumb":{"@id":"https://openaudiovisual.com/controllers/verify/#breadcrumb"}}]}</script>
+<link rel="stylesheet" href="../../assets/controllers/controllers.css">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+</head>
+<body class="page-controllers page-verify">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/" aria-current="page">Controllers</a>
+    <a href="../../docs/">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../controllers/verify/" hreflang="en" lang="en" data-lang="en" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/controllers/verify/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>This device has no Web MIDI, so a hardware controller cannot connect here. You can still play on screen with your fingers. To plug in yours, open this page in Chrome or Edge on a computer. <a href="../../check/">Check this device</a></p>
+    <button type="button" aria-label="Close this note">Got it</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
+
+  <section class="ch-hero" aria-labelledby="vf-title">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../../">Home</a></li>
+        <li><a href="../../controllers/">Controllers</a></li>
+        <li aria-current="page">Check your unit against its file</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">Verify a controller</p>
+    <h1 id="vf-title">Check your unit against its file</h1>
+    <div class="vf-lede">
+      <p>Most of this library comes from manuals. Nobody can say a number is right until someone moves that control on a real unit, and that takes one person, one unit and a few minutes.</p>
+      <ol class="vf-how">
+        <li>Pick your model and connect it.</li>
+        <li>The page lights one control at a time. Move it.</li>
+        <li>What matches is ticked. What differs shows both values and a fix.</li>
+        <li>Download the updated JSON, or send it as an issue or a pull request.</li>
+      </ol>
+    </div>
+    <noscript><p class="noscript">This page listens to MIDI, so it needs JavaScript and a browser with Web MIDI (Chrome or Edge).</p></noscript>
+  </section>
+
+  <section class="sec vf js-only" id="vf-setup" aria-labelledby="vf-setup-title">
+    <h2 id="vf-setup-title">Start</h2>
+    <form id="vf-form" class="vf-form">
+      <label class="vf-f"><span>Model</span>
+        <select id="vf-model" name="model">
+            <optgroup label="Devices"><option value="akai-lpd8">AKAI LPD8 (mk2)</option><option value="akai-apc-mini-mk2">AKAI APC mini mk2</option><option value="akai-midimix">AKAI MIDImix</option><option value="akai-mpk-mini-mk3">AKAI MPK mini mk3</option><option value="akai-apc40-mk2">AKAI APC40 mkII</option><option value="arturia-minilab3">Arturia MiniLab 3</option><option value="arturia-keystep37">Arturia KeyStep 37</option><option value="arturia-beatstep">Arturia BeatStep</option><option value="behringer-x-touch-mini">Behringer X-TOUCH MINI</option><option value="djtechtools-midi-fighter-twister">DJ TechTools Midi Fighter Twister</option><option value="korg-nanokontrol2">Korg nanoKONTROL2</option><option value="korg-nanokey2">Korg nanoKEY2</option><option value="novation-launchpad-mini-mk3">Novation Launchpad Mini MK3</option><option value="novation-launch-control-xl-mk2">Novation Launch Control XL (MK2)</option><option value="novation-launch-control-xl-3">Novation Launch Control XL 3</option><option value="novation-launchkey-mini-mk3">Novation Launchkey Mini MK3</option><option value="novation-launchkey-25-mk4">Novation Launchkey 25 MK4</option><option value="novation-launchkey-37-mk4">Novation Launchkey 37 MK4</option><option value="novation-launchpad-pro-mk3">Novation Launchpad Pro MK3</option><option value="odd-ball">ODD Ball</option><option value="teenage-engineering-op-1-field">teenage engineering OP-1 field</option></optgroup>
+            <optgroup label="Generic layouts"><option value="generic-8k8p">Generic 8 knobs + 8 pads</option><option value="generic-8f">Generic 8 faders</option><option value="generic-16p">Generic 16 pads</option><option value="generic-keys25">Generic 25-key keyboard</option><option value="generic-keys49">Generic 49-key keyboard</option><option value="generic-keys61">Generic 61-key keyboard</option></optgroup>
+        </select>
+      </label>
+      <label class="vf-f"><span>What to check</span>
+        <select id="vf-scope" name="scope">
+          <option value="all">Every control</option>
+          <option value="unconfirmed">Only what the file marks unverified</option>
+        </select>
+      </label>
+      <div class="vf-f vf-port"><span>MIDI input</span>
+        <div class="vf-row">
+          <button type="button" class="vf-btn" id="vf-connect">Connect MIDI</button>
+          <select id="vf-port" name="port" hidden aria-label="MIDI input"></select>
+        </div>
+      </div>
+      <p class="vf-status" id="vf-status" role="status"></p>
+      <div class="vf-row">
+        <button type="submit" class="vf-btn vf-go" id="vf-start" disabled>Start checking</button>
+        <button type="button" class="vf-btn vf-quiet" id="vf-sim">Try it without hardware</button>
+      </div>
+      <p class="vf-note">Nothing here asks for SysEx, and nothing is sent to your device. The simulator shows how a check works; its results never mark anything as verified.</p>
+    </form>
+  </section>
+
+  <section class="sec vf" id="vf-run" aria-labelledby="vf-prompt" hidden>
+    <div class="vf-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progress"><i id="vf-bar"></i></div>
+    <p class="vf-count" id="vf-count"></p>
+    <p class="vf-sim-tag" id="vf-sim-tag" hidden>Simulator: click the lit control on the faceplate. Nothing from this run can mark a control as verified.</p>
+    <h2 class="vf-prompt" id="vf-prompt" aria-live="polite"></h2>
+    <p class="vf-expect"><span>The file says</span> <code id="vf-expected"></code></p>
+    <p class="vf-heard"><span>Heard</span> <code id="vf-heard">–</code></p>
+
+    <div class="vf-diff" id="vf-diff" role="alert" hidden>
+      <p class="vf-diff-title" id="vf-diff-title"></p>
+      <table>
+        <tbody>
+          <tr><th scope="row">The file says</th><td><code id="vf-was"></code></td></tr>
+          <tr><th scope="row">Your unit sent</th><td><code id="vf-got"></code></td></tr>
+        </tbody>
+      </table>
+      <div class="vf-row">
+        <button type="button" class="vf-btn vf-go" id="vf-accept">Use what my unit sent</button>
+        <button type="button" class="vf-btn" id="vf-retry">I moved the wrong control</button>
+        <button type="button" class="vf-btn vf-quiet" id="vf-reject">Keep the file as it is</button>
+      </div>
+    </div>
+
+    <div class="vf-row vf-actions" id="vf-actions">
+      <button type="button" class="vf-btn" id="vf-skip">Skip</button>
+      <button type="button" class="vf-btn" id="vf-absent">Sends nothing / not on my unit</button>
+      <button type="button" class="vf-btn vf-quiet" id="vf-back">Back</button>
+      <button type="button" class="vf-btn vf-quiet" id="vf-finish">Finish here</button>
+      <button type="button" class="vf-btn vf-quiet" id="vf-wrong" hidden>Simulate a wrong message</button>
+    </div>
+    <div class="stage vf-stage"><oav-controller id="vf-ctl" layout="face"></oav-controller></div>
+  </section>
+
+  <section class="sec vf" id="vf-end" aria-labelledby="vf-end-title" hidden>
+    <h2 id="vf-end-title">Result</h2>
+    <dl class="vf-tally" id="vf-tally"></dl>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Differences found" id="vf-diffs-wrap" hidden>
+      <table><thead><tr><th scope="col">Control</th><th scope="col">Result</th><th scope="col">The file says</th><th scope="col">Your unit sent</th></tr></thead><tbody id="vf-diffs"></tbody></table>
+    </div>
+
+    <form id="vf-meta" class="vf-form">
+      <h3>Who checked, on what</h3>
+      <label class="vf-f"><span>Your name or GitHub handle</span><input id="vf-by" name="by" autocomplete="name" required></label>
+      <label class="vf-f"><span>Firmware version</span>
+        <input id="vf-firmware" name="firmware" autocomplete="off" placeholder="from the unit, or write unknown">
+      </label>
+      <div class="vf-row" id="vf-fw-row" hidden>
+        <button type="button" class="vf-btn vf-quiet" id="vf-read-fw">Read it from the unit</button>
+        <span class="vf-note" id="vf-fw-status">The browser asks for SysEx permission first.</span>
+      </div>
+      <label class="vf-f"><span>Operating system</span><input id="vf-os" name="os" autocomplete="off"></label>
+      <label class="vf-f"><span>Browser</span><input id="vf-browser" name="browser" autocomplete="off"></label>
+      <label class="vf-check" id="vf-attest-row"><input type="checkbox" id="vf-attest"> <span>This is a real unit in front of me, and I moved each control by hand.</span></label>
+      <p class="vf-method" id="vf-method" role="status"></p>
+      <p class="vf-problems" id="vf-problems" role="alert" hidden></p>
+    </form>
+
+    <div class="vf-row vf-out">
+      <button type="button" class="vf-btn vf-go" id="vf-download">Download the JSON</button>
+      <button type="button" class="vf-btn" id="vf-copy">Copy the JSON</button>
+      <a class="vf-btn" id="vf-issue" href="https://github.com/frank890417/open-audiovisual/issues/new" rel="noopener">Open an issue ↗</a>
+      <a class="vf-btn" id="vf-pr" href="https://github.com/frank890417/open-audiovisual" rel="noopener">Open the file on GitHub ↗</a>
+      <button type="button" class="vf-btn vf-quiet" id="vf-again">Check another</button>
+    </div>
+    <p class="vf-note">For a pull request: copy the JSON, open the file on GitHub, paste it over the old text and press Propose changes. GitHub makes the fork for you. For an issue, the link fills in the report; attach the JSON or paste it there.</p>
+  </section>
+
+  <section class="sec" id="vf-why" aria-labelledby="vf-why-title">
+    <h2 id="vf-why-title">What the marks mean</h2>
+    <dl class="vf-levels">
+      <div><dt>Checked on hardware</dt><dd>A person moved this control on a real unit and the message matched. The file says who, when, and on which firmware, OS and browser.</dd></div>
+      <div><dt>From a source</dt><dd>The number comes from a cited manual or tool. Nobody has checked it on a unit yet.</dd></div>
+      <div><dt>Unverified</dt><dd>Our best reading. A note says why.</dd></div>
+    </dl>
+    <p>A check through a virtual port or the simulator shows that this page works, not that a device does, so it can never mark a control as verified. The format is in the <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#how-sure-a-profile-is">package README ↗</a>.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="ctl-i18n">{"lang":"en","repo":"https://github.com/frank890417/open-audiovisual","dir":"packages/midi/profiles","files":{"akai-lpd8":"akai-lpd8.json","akai-apc-mini-mk2":"akai-apc-mini-mk2.json","akai-midimix":"akai-midimix.json","akai-mpk-mini-mk3":"akai-mpk-mini-mk3.json","akai-apc40-mk2":"akai-apc40-mk2.json","arturia-minilab3":"arturia-minilab3.json","arturia-keystep37":"arturia-keystep37.json","arturia-beatstep":"arturia-beatstep.json","behringer-x-touch-mini":"behringer-x-touch-mini.json","djtechtools-midi-fighter-twister":"djtechtools-midi-fighter-twister.json","korg-nanokontrol2":"korg-nanokontrol2.json","korg-nanokey2":"korg-nanokey2.json","novation-launchpad-mini-mk3":"novation-launchpad-mini-mk3.json","novation-launch-control-xl-mk2":"novation-launch-control-xl-mk2.json","novation-launch-control-xl-3":"novation-launch-control-xl-3.json","novation-launchkey-mini-mk3":"novation-launchkey-mini-mk3.json","novation-launchkey-25-mk4":"novation-launchkey-25-mk4.json","novation-launchkey-37-mk4":"novation-launchkey-37-mk4.json","novation-launchpad-pro-mk3":"novation-launchpad-pro-mk3.json","odd-ball":"odd-ball.json","teenage-engineering-op-1-field":"teenage-engineering-op-1-field.json","generic-8k8p":"generic-8k8p.json","generic-8f":"generic-8f.json","generic-16p":"generic-16p.json","generic-keys25":"generic-keys25.json","generic-keys49":"generic-keys49.json","generic-keys61":"generic-keys61.json"},"tool":"openaudiovisual.com/controllers/verify/","detailBase":"../../controllers/","s":{"progress":"Progress","count":"Control {n} of {total} · {ok} match · {fixed} corrected · {bad} not confirmed","simTag":"Simulator: click the lit control on the faceplate. Nothing from this run can mark a control as verified.","prompt":{"knob":"Turn {name}","encoder":"Turn {name} a few clicks one way, then back","fader":"Move {name}","pad":"Hit {name}","button":"Press {name}","wheel":"Move {name}","strip":"Slide along {name}","keysLow":"Press the lowest key of {name}","keysHigh":"Press the highest key of {name}"},"expected":"The file says","heard":"Heard","fileSays":"The file says","unitSent":"Your unit sent","diffNew":"This is not what the file says.","diffEncoding":"The right control, but it counts its steps in a different way.","diffOwner":"The file gives this message to {owner}. Did you move that one?","diffOwnerDone":"That message is {owner}, already confirmed. Probably the wrong control.","accept":"Use what my unit sent","acceptSwap":"No, this is the right control: swap with {owner}","retry":"I moved the wrong control","reject":"Keep the file as it is","skip":"Skip","absent":"Sends nothing / not on my unit","back":"Back","finish":"Finish here","simWrong":"Simulate a wrong message"},"end":{"title":"Result","tableLabel":"Differences found","cols":{"control":"Control","result":"Result"},"tally":{"match":"match","corrected":"corrected","mismatch":"left as it is","absent":"sends nothing","skipped":"skipped"},"metaTitle":"Who checked, on what","by":"Your name or GitHub handle","byShort":"name","firmware":"Firmware version","firmwareHint":"from the unit, or write unknown","readFirmware":"Read it from the unit","readFirmwareNote":"The browser asks for SysEx permission first.","os":"Operating system","browser":"Browser","readDenied":"SysEx was not allowed, so the unit cannot be asked. Type the version instead.","readNoOut":"This port has no output to ask through. Type the version instead.","readNoReply":"The unit did not answer. Type the version, or write unknown.","readDone":"The unit says {version}.","attest":"This is a real unit in front of me, and I moved each control by hand.","method":{"hardware":"Logged as a hardware check. Controls that matched become verified.","virtual":"Logged as a virtual-port check. Numbers and marks stay as they are.","simulated":"Logged as a simulation. Numbers and marks stay as they are."},"missing":"Still needed: {fields}.","download":"Download the JSON","copy":"Copy the JSON","copied":"Copied","issue":"Open an issue","pr":"Open the file on GitHub","again":"Check another","prSteps":"For a pull request: copy the JSON, open the file on GitHub, paste it over the old text and press Propose changes. GitHub makes the fork for you. For an issue, the link fills in the report; attach the JSON or paste it there."},"setup":{"title":"Start","model":"Model","devices":"Devices","generic":"Generic layouts","scope":"What to check","scopeAll":"Every control","scopeUnconfirmed":"Only what the file marks unverified","port":"MIDI input","connect":"Connect MIDI","connected":"MIDI connected","asking":"Waiting for the browser to allow MIDI…","noMidi":"This browser has no Web MIDI, or the request was refused. Chrome and Edge have it; the simulator works anywhere.","noPorts":"No MIDI input found. Plug the controller in and it appears here.","pickPort":"No port looks like this model. Pick yours from the list.","found":"Found {port}.","nothing":"Nothing to check: this file marks no control as unverified.","start":"Start checking","simulate":"Try it without hardware","note":"Nothing here asks for SysEx, and nothing is sent to your device. The simulator shows how a check works; its results never mark anything as verified."}}</script>
+<script type="module" src="../../assets/controllers/verify.js"></script>
+<!--/email_off-->
+</body>
+</html>

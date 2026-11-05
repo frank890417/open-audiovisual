@@ -532,6 +532,9 @@ console.log(signals.get('midi/ch/1/cc/74'));`,
       onDevices: { en: 'Subscribe to device-list changes (plug, unplug, mute): `fn(devices)`. Returns a function that unsubscribes.', zh: '訂閱裝置清單的變化（插上、拔掉、靜音）：`fn(devices)`。回傳一個取消訂閱的函式。' },
       log: { en: 'Writes one line to the log by calling `onMessage({ dir, text })`. The engine uses `dir` `\'in\'` and `\'out\'`.', zh: '寫一行記錄，做法是呼叫 `onMessage({ dir, text })`。引擎用的 `dir` 是 `\'in\'` 和 `\'out\'`。' },
       enable: { en: 'Asks the browser for Web MIDI and wires the inputs. `preferredOut` is the output you want, by exact name and then by substring. Resolves `true`, or `false` when Web MIDI is missing or refused.', zh: '向瀏覽器要 Web MIDI 並接上輸入埠。`preferredOut` 是你想用的輸出埠，先比對完整名稱，再比對子字串。成功回傳 `true`，沒有 Web MIDI 或被拒絕則回傳 `false`。' },
+      sysexEnabled: { en: 'Whether the browser has allowed SysEx on this engine. `false` until [`requestSysex()`](#Midi) succeeds.', zh: '瀏覽器是否允許這個引擎用 SysEx。[`requestSysex()`](#Midi) 成功之前是 `false`。' },
+      requestSysex: { en: 'Asks the browser for SysEx and resolves to `true` when it is on. Call it from something a person pressed: browsers show a prompt, and [`enable()`](#Midi) never asks. The ports are replaced and the output you were on is found again by name.', zh: '向瀏覽器要 SysEx 權限，開好時回傳 `true`。要在使用者按下東西時才呼叫：瀏覽器會跳出權限視窗，[`enable()`](#Midi) 絕不會問。連接埠會換新，原本的輸出會用名稱重新找回。' },
+      sendSysex: { en: 'Sends one SysEx message, F0 to F7, to `output` (default: the current output). Returns `false` with no port, and throws when SysEx has not been allowed.', zh: '送出一則 SysEx 訊息（F0 到 F7）到 `output`（預設是目前的輸出）。沒有連接埠回傳 `false`，還沒允許 SysEx 時丟出錯誤。' },
       onOutput: { en: 'Subscribe to output changes (hot-plug, switch back, your own `selectOutput`): `fn({ text, reason, next, out })`. `reason` is `found`, `fallback`, `back`, `none` or `select`. Returns an unsubscribe function.', zh: '訂閱輸出埠的變化（熱插拔、換回來、你自己呼叫 `selectOutput`）：`fn({ text, reason, next, out })`。`reason` 是 `found`、`fallback`、`back`、`none` 或 `select`。回傳取消訂閱的函式。' },
       selectOutput: { en: 'Sends to the output with exactly this name from now on, and remembers it as YOUR choice: if it is unplugged and plugged in again, the output returns to it. Gives `false` when no output has that name.', zh: '從現在起送到「名稱完全相同」的輸出埠，並記成「你的選擇」：它被拔掉又插回來時，輸出會回到它。找不到那個名稱就回傳 `false`。' },
       outputFor: { en: 'The output port a device answers on (for LED feedback): the one with the same name as its input, or the first whose name matches a RegExp. `null` when there is none.', zh: '某台裝置接收回應用的輸出埠（做 LED 回饋）：名稱跟輸入埠相同的那個，或是名稱符合正規表示式的第一個。沒有就回傳 `null`。' },
@@ -1364,6 +1367,125 @@ console.log(VERIFY_RESULTS);`,
     ],
     related: ['VERIFY_METHODS', 'verificationOf'],
     keywords: { en: ['match', 'corrected', 'mismatch'], zh: ['對上', '修正', '對不上'] },
+  },
+
+  VerifySession: {
+    group: 'midi-io',
+    summary: {
+      en: 'Compares a real unit with its profile, one control at a time: feed it the bytes that arrive and it says what matched, what differs and what to ask next.',
+      zh: '一格一格比對實機和設定檔：把收到的位元組餵給它，它會說哪些對上、哪些不同，下一步要問什麼。',
+    },
+    params: [
+      { name: 'profile', type: 'Object', en: 'The raw profile JSON.', zh: '原始的設定檔 JSON。' },
+      { name: 'only', type: 'String', optional: true, default: "'all'", en: 'In the options object: `\'all\'`, or `\'unconfirmed\'` for only what the file marks `verified: false`.', zh: '放在選項物件裡：`\'all\'`，或 `\'unconfirmed\'` 只驗檔案標成 `verified: false` 的控制項。' },
+    ],
+    description: [
+      {
+        en: 'This is the logic behind the [verification page](https://openaudiovisual.com/controllers/verify/); it has no DOM and no Web MIDI, so you can drive it from anything. `current` is the step to do now: `{ id, key, control, expected, index, total }`. A keyboard takes two steps, its lowest and its highest key.',
+        zh: '這是[驗證頁面](https://openaudiovisual.com/zh/controllers/verify/)背後的邏輯，沒有 DOM 也沒有 Web MIDI，什麼環境都能用。`current` 是現在這一步：`{ id, key, control, expected, index, total }`。琴鍵分兩步，最低音和最高音。',
+      },
+      {
+        en: 'Call `feed(bytes)` for every message, and `settle()` when the hand has stopped (the page does it after a short quiet). Note-offs, clock, aftertouch and the tail of a sweep that already matched are ignored. A message that differs waits for a person: `accept()` uses what the unit sent, `reject()` keeps the file and logs the difference, `retry()` forgets it. A message the file gives to another control is flagged with `owner`, because the likeliest story is the wrong control.',
+        zh: '每則訊息都呼叫 `feed(bytes)`，手停下來時呼叫 `settle()`（頁面是在安靜一小段時間後呼叫）。note off、時鐘、觸後，以及已經對上之後那段轉動的尾巴都會被忽略。不同的訊息會等人決定：`accept()` 用機器送的，`reject()` 保留檔案並記下差異，`retry()` 當作沒發生。檔案裡屬於別的控制項的訊息會用 `owner` 標出來，因為最可能是動錯了。',
+      },
+    ],
+    members: {
+      current: { en: 'The step to do now, or `null` when the run is over.', zh: '現在這一步，跑完回傳 `null`。' },
+      feed: { en: 'A message arrived. Returns `{ kind }`: `ignored`, `hearing` or `differs` (with `got`, `owner`, `confirmed`).', zh: '收到一則訊息。回傳 `{ kind }`：`ignored`、`hearing` 或 `differs`（附 `got`、`owner`、`confirmed`）。' },
+      settle: { en: 'The hand has stopped: records a match and moves on. For an encoder it also reads the encoding, and opens a difference when it is not what the file says.', zh: '手停了：記下對上的結果並往下走。無段旋鈕還會判讀編碼，跟檔案不同就開出差異。' },
+      accept: { en: 'Uses what the unit sent. `false` when the message belongs to a control already confirmed, because two controls cannot share one.', zh: '採用機器送的值。訊息屬於已確認的控制項時回傳 `false`，因為兩個控制項不能共用一則訊息。' },
+      reject: { en: 'Keeps the file as it is and logs the difference.', zh: '保留檔案，記下差異。' },
+      retry: { en: 'Forgets this message and listens again.', zh: '當作沒收到，重新聽。' },
+      skip: { en: 'Leaves this control unchecked.', zh: '跳過這個控制項，不留紀錄。' },
+      absent: { en: 'This unit does not have it, or it sends nothing.', zh: '這台機器沒有它，或它什麼都沒送。' },
+      back: { en: 'One step back, forgetting what that step recorded.', zh: '退回一步，清掉那一步的紀錄。' },
+      setLed: { en: 'Records what the LED of a control did: `\'match\'` or `\'mismatch\'`.', zh: '記下控制項 LED 的結果：`\'match\'` 或 `\'mismatch\'`。' },
+      results: { en: 'Everything so far, in the form of `results` in a verification record.', zh: '目前為止的結果，格式就是驗證紀錄的 `results`。' },
+      counts: { en: '`{ done, total, match, corrected, mismatch, absent, skipped }`.', zh: '`{ done, total, match, corrected, mismatch, absent, skipped }`。' },
+      markOf: { en: 'The result of one control so far, or `null`.', zh: '一個控制項目前的結果，沒有就回傳 `null`。' },
+    },
+    examples: [
+      {
+        code: `import { VerifySession, profileById } from '@openav/midi';
+
+const s = new VerifySession(profileById('lpd8'));
+const step = s.current;
+console.log('move', step.id, 'expect', step.expected);
+s.feed([0xb9, 119, 10]);              // something else arrived
+console.log(s.state, s.got);
+s.retry();
+console.log(s.state);`,
+        caption: { en: 'Prints the first step, the difference when another message arrives, and `waiting` after `retry()`.', zh: '印出第一步、收到別的訊息時的差異，以及 `retry()` 之後的 `waiting`。' },
+      },
+    ],
+    related: ['applyVerification', 'verificationReport', 'verificationOf'],
+    keywords: { en: ['verify controller', 'check against hardware', 'compare messages'], zh: ['驗證控制器', '實機比對', '比對訊息'] },
+  },
+
+  applyVerification: {
+    group: 'midi-io',
+    summary: {
+      en: 'Writes a finished run into a copy of the profile: the new log entry, and for a hardware run the `verified` marks and corrected numbers.',
+      zh: '把跑完的驗證寫進設定檔的副本：新增一筆紀錄，實機驗證還會更新 `verified` 標記和修正過的數字。',
+    },
+    params: [
+      { name: 'raw', type: 'Object', en: 'The profile as shipped. It is not changed.', zh: '原本的設定檔，不會被改動。' },
+      { name: 'session', type: 'VerifySession', en: 'The run.', zh: '這次驗證。' },
+      { name: 'meta', type: 'Object', en: '`{ date, by, method, firmware, os, browser, port, tool, note }`. See [`VERIFY_METHODS`](#VERIFY_METHODS).', zh: '`{ date, by, method, firmware, os, browser, port, tool, note }`。方式見 [`VERIFY_METHODS`](#VERIFY_METHODS)。' },
+    ],
+    returns: { type: 'Object', en: '`{ profile, problems }`: the new profile, and what [`validateProfile()`](#validateProfile) says about it.', zh: '`{ profile, problems }`：新的設定檔，以及 [`validateProfile()`](#validateProfile) 對它的意見。' },
+    description: [
+      {
+        en: 'Only `method: \'hardware\'` changes anything but the log. A `virtual` or `simulated` run leaves numbers and marks alone and logs its corrections as `mismatch`, so nobody can turn a control true without a real unit.',
+        zh: '只有 `method: \'hardware\'` 會改動紀錄以外的東西。`virtual` 或 `simulated` 不動數字和標記，修正也只記成 `mismatch`，沒有實機就不可能把控制項變成 true。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { VerifySession, applyVerification, profileById } from '@openav/midi';
+
+const raw = profileById('lpd8');
+const s = new VerifySession(raw);
+s.absent();
+const { profile, problems } = applyVerification(raw, s, { date: '2026-11-05', by: 'Simulator', method: 'simulated' });
+console.log(problems, profile.verifications.at(-1).results);`,
+        caption: { en: 'Prints no problems, and the one result the simulated run logged.', zh: '印出沒有問題，以及這次模擬留下的一筆結果。' },
+      },
+    ],
+    related: ['VerifySession', 'verificationReport', 'validateProfile'],
+    keywords: { en: ['write verification', 'update profile'], zh: ['寫入驗證', '更新設定檔'] },
+  },
+
+  verificationReport: {
+    group: 'midi-io',
+    summary: {
+      en: 'Writes a run as Markdown for a GitHub issue: who, on what, the counts and every difference.',
+      zh: '把一次驗證寫成 GitHub issue 用的 Markdown：誰、用什麼驗的、統計和每一筆差異。',
+    },
+    params: [
+      { name: 'raw', type: 'Object', en: 'The profile as shipped.', zh: '原本的設定檔。' },
+      { name: 'session', type: 'VerifySession', en: 'The run.', zh: '這次驗證。' },
+      { name: 'meta', type: 'Object', en: 'The same details as [`applyVerification()`](#applyVerification).', zh: '跟 [`applyVerification()`](#applyVerification) 一樣的資料。' },
+      { name: 'max', type: 'Number', optional: true, default: '5500', en: 'In the options object: cut the text at this length, so it fits in a link.', zh: '放在選項物件裡：文字長度上限，才放得進網址。' },
+    ],
+    returns: { type: 'String', en: 'The Markdown.', zh: 'Markdown 文字。' },
+    description: [
+      {
+        en: 'It is always in English, because the issue is read by whoever maintains the file.',
+        zh: '內容固定是英文，因為 issue 是給維護這個檔案的人看的。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { VerifySession, verificationReport, profileById } from '@openav/midi';
+
+const raw = profileById('lpd8');
+console.log(verificationReport(raw, new VerifySession(raw), { date: '2026-11-05', by: 'A. Tester', method: 'virtual' }));`,
+        caption: { en: 'Prints the report of a run with nothing checked yet.', zh: '印出一份還沒驗任何東西的報告。' },
+      },
+    ],
+    related: ['VerifySession', 'applyVerification'],
+    keywords: { en: ['verification report', 'github issue'], zh: ['驗證報告', '回報'] },
   },
 
   // ================================================================== SysEx as data
@@ -2409,6 +2531,8 @@ console.log(ctl.profileId, ctl.profile.controls.every((c) => c.ch === 3));`,
       setController: { en: 'Switches the view to another [`MidiController`](#MidiController) and rebuilds it.', zh: '把畫面切換到另一個 [`MidiController`](#MidiController) 並重建。' },
       setLearning: { en: 'Turns learn mode on or off: dashed outlines on every control, an orange outline on the armed one, orange labels on those already learned.', zh: '開啟或關閉學習模式：每個控制項有虛線外框，準備中的有橘色外框，已學過的標籤是橘色。' },
       setMode: { en: '`\'auto\'` (choose from the box), `\'face\'` or `\'stack\'`. Anything else means `\'auto\'`.', zh: '`\'auto\'`（依盒子選）、`\'face\'` 或 `\'stack\'`。其他值視同 `\'auto\'`。' },
+      mark: { en: 'Points at one control, for a guided tour or a check: `\'now\'` pulses, `\'ok\'` is green, `\'fixed\'` amber, `\'bad\'` red, `\'skip\'` dashed. `null` clears it. A relayout keeps the marks.', zh: '指出一個控制項，用在導覽或驗證：`\'now\'` 會閃，`\'ok\'` 是綠色，`\'fixed\'` 是橘色，`\'bad\'` 是紅色，`\'skip\'` 是虛線。`null` 清掉。重新排版時標記會留著。' },
+      clearMarks: { en: 'Takes every mark off.', zh: '清掉所有標記。' },
       dispose: { en: 'Stops listening, disconnects the resize observer and removes the view from the page.', zh: '停止監聽、中斷尺寸觀察，並把畫面從頁面移除。' },
     },
     examples: [

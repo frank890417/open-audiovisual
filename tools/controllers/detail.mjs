@@ -11,6 +11,7 @@ import { SITE, REPO, BLOB, PERSON_ID, SOFTWARE_ID, pathCtx, headBasics, pageNode
 import { lastmodOf } from '../site/git.mjs';
 export { lastmodOf };
 import { snippets, hl } from '../../assets/controllers/snippets.js';
+import { verificationSummary } from '../../packages/midi/verify.js';
 import { ISSUE_NEW, CONTRIBUTING, noMidiStrip, catalog, faceSvg, specParts, nameOf, countsText, detailPath, detailUrl, fill, noteName, TYPE_ORDER, PROFILE_DIR } from './page.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -173,6 +174,7 @@ export function renderDetail(t, home, locale, d, cat) {
   const lede1 = device ? fill(D.ledeDevice, { name: esc(name), maker: esc(p.maker), counts }) : fill(D.ledeGeneric, { name: esc(name), counts });
   const lede2 = device ? `${fill(D.ledeData, { messages: list(t, msgKinds(t, d)), channels: chText, sources: srcText })} ${d.prov.unverified ? fill(D.unvSome, { n: d.prov.unverified }) : D.unvNone}` : '';
   const F = D.facts;
+  const checked = verificationSummary(p);
   const ports = ((p.match && p.match.ports) || []).map((r) => `<code>/${esc(r)}/i</code>`).join(' ');
   const facts = [
     [F.kind, device ? F.kindDevice : F.kindGeneric],
@@ -181,6 +183,7 @@ export function renderDetail(t, home, locale, d, cat) {
     [F.messages, esc(msgKinds(t, d).join(' · '))],
     [F.channels, chs.join(', ')],
     [F.led, d.prov.led ? F.ledYes : F.ledNo],
+    ...(device ? [[F.checked, checked.hardware ? fill(F.checkedSome, { n: checked.hardware, total: checked.controls, date: esc(checked.latest.date) }) : F.checkedNone]] : []),
     [F.signals, `<code>midi/${esc(p.short)}/…</code>`],
     [F.port, ports || F.portNone],
   ];
@@ -252,6 +255,7 @@ ${topBar(home, c)}
   <section class="sec" id="midi-map" aria-labelledby="midi-map-title">
     ${sec('midi-map', D.spec.eyebrow, fill(D.spec.title, { name: esc(name) }), D.spec.lede)}
     ${sp.table}
+    ${device ? `<p class="verify-cta">${D.verifyCta.text} <a href="${c.root}${locale === 'zh' ? 'zh/' : ''}controllers/verify/?profile=${id}">${fill(D.verifyCta.link, { name: esc(name) })} →</a></p>` : ''}
     <p class="led-line" data-led="${d.prov.led ? 'yes' : 'no'}">${d.prov.led ? fill(D.spec.ledYes, { n: d.p.controls.filter((x) => x.led).length }) : D.spec.ledNo}</p>
     ${sp.controlNotes ? `<h3>${D.spec.notesTitle}</h3>\n    ${sp.controlNotes}` : ''}
     <div class="spec-grid">
