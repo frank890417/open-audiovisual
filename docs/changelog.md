@@ -159,6 +159,14 @@ The first tagged version; it gathers 0.1 to 0.2.4 (from 2026-10-13).
 
 ## Framework and site
 
+### 2026-11-05
+
+- **Check a controller with your own hands.** [Verify](https://openaudiovisual.com/controllers/verify/) lights one control at a time, compares what your unit
+  sends with the file, and hands back the updated JSON with your name, date and firmware beside each result. Nothing but a real unit
+  can mark a control as verified: a profile refuses `verified: true` without a hardware entry in its new `verifications` log.
+- **Room in the format for more.** A profile can now carry `sysex` (mode switches, templates, LED colours, each message citing its source) and `palette`
+  (the LED colour table), and [`profile.schema.json`](https://openaudiovisual.com/packages/midi/profile.schema.json) describes the format for software that does not run this package.
+
 ### 2026-10-15
 
 - **MIDI controller library:** every controller has its own page with its full MIDI map, in English and Chinese.

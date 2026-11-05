@@ -138,6 +138,11 @@
 
 ## 框架與網站
 
+### 2026-11-05
+
+- **用自己的手驗控制器。** [驗證頁](https://openaudiovisual.com/zh/controllers/verify/)會一格一格亮起，比對機器送出的訊息和檔案，再交回更新過的 JSON，每筆結果都附上你的名字、日期和韌體。只有實機能把控制項標成已驗證：沒有 `verifications` 裡的實機紀錄，設定檔不接受 `verified: true`。
+- **格式放得下更多東西。** 設定檔現在可以寫 `sysex`（切模式、換模板、LED 顏色，每則訊息都附出處）和 `palette`（LED 色票）。[`profile.schema.json`](https://openaudiovisual.com/packages/midi/profile.schema.json) 用 JSON Schema 描述這個格式，沒有跑這個套件的軟體也讀得懂。
+
 ### 2026-10-15
 
 - **MIDI 控制器圖鑑：**每一台都有自己的頁，附完整的 MIDI 對照表，中英兩版。新增 Novation Launchkey 25、37 MK4、
