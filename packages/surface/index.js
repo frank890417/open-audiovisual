@@ -17,17 +17,17 @@
 // The surface never knows the work. A World's `params` can grow a whole panel
 // by themselves (autoSurface, auto.js) — which is AGENTS.md rule #1 paying off.
 
-import { injectTheme } from './theme.js?v=288eccc';
-import { WIDGET_CLASSES } from './widgets.js?v=288eccc';
-import { normalizeLayout, resolvePage, validateLayout, orientationOf } from './layout.js?v=288eccc';
-import { haptic } from './platform.js?v=288eccc';
+import { injectTheme } from './theme.js?v=060a5708';
+import { WIDGET_CLASSES } from './widgets.js?v=060a5708';
+import { normalizeLayout, resolvePage, validateLayout, orientationOf } from './layout.js?v=060a5708';
+import { haptic } from './platform.js?v=060a5708';
 
-export { autoSurface, feedbackFor, widgetTypeFor, routesFromLayout } from './auto.js?v=288eccc';
-export { normalizeLayout, resolvePage, validateLayout, autoArrange, signalNames, DEFAULT_SIZE, WIDGET_TYPES } from './layout.js?v=288eccc';
-export { planKeyboard } from './kbplan.js?v=288eccc';
-export { lockViewport, keepAwake, toggleFullscreen, canFullscreen, haptic } from './platform.js?v=288eccc';
-export { injectTheme, THEME_VARS, COLOR_NAMES } from './theme.js?v=288eccc';
-export { WIDGET_CLASSES } from './widgets.js?v=288eccc';
+export { autoSurface, feedbackFor, widgetTypeFor, routesFromLayout } from './auto.js?v=060a5708';
+export { normalizeLayout, resolvePage, validateLayout, autoArrange, signalNames, DEFAULT_SIZE, WIDGET_TYPES } from './layout.js?v=060a5708';
+export { planKeyboard } from './kbplan.js?v=060a5708';
+export { lockViewport, keepAwake, toggleFullscreen, canFullscreen, haptic } from './platform.js?v=060a5708';
+export { injectTheme, THEME_VARS, COLOR_NAMES } from './theme.js?v=060a5708';
+export { WIDGET_CLASSES } from './widgets.js?v=060a5708';
 
 /** A sink that writes straight into a local Signals registry — a surface
  *  on the same page as the show (no phone, no relay). */

@@ -14,8 +14,8 @@
 // sweep after the step moved on are all ignored; only the first new message of a step counts, and a message
 // the profile gives to another control is flagged as probably the wrong control rather than offered as a fix.
 
-import { parseMessage } from './parse.js?v=288eccc';
-import { normalizeProfile, indexProfile, eventKey, validateProfile } from './profiles.js?v=288eccc';
+import { parseMessage } from './parse.js?v=060a5708';
+import { normalizeProfile, indexProfile, eventKey, validateProfile } from './profiles.js?v=060a5708';
 
 /** Message types a person can answer with. The rest arrive around an answer, not as one. */
 const ANSWERS = new Set(['cc', 'noteon', 'pitchbend', 'chanat', 'program']);

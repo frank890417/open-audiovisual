@@ -16,16 +16,16 @@
 // mountConsole(el, app) where app = { timeline, params, mapper, signals, stage, midi?, score?, director? }
 // With a score + director the desk gains the Director panel; scenes with cues/hold draw them on the scrubber.
 
-import { css } from './src/theme.js?v=288eccc';
-import { buildTransport } from './src/transport.js?v=288eccc';
-import { buildParamPanel } from './src/params-panel.js?v=288eccc';
-import { buildSignalPanel } from './src/signals-panel.js?v=288eccc';
-import { buildSoundPanel } from './src/sound-panel.js?v=288eccc';
-import { buildLayersPanel } from './src/layers-panel.js?v=288eccc';
-import { buildInputPanel } from './src/input-panel.js?v=288eccc';
-import { buildMappingPanel } from './src/mapping-panel.js?v=288eccc';
-import { buildPerformanceMode } from './src/perf-mode.js?v=288eccc';
-import { buildDirectorPanel } from './src/director-panel.js?v=288eccc';
+import { css } from './src/theme.js?v=060a5708';
+import { buildTransport } from './src/transport.js?v=060a5708';
+import { buildParamPanel } from './src/params-panel.js?v=060a5708';
+import { buildSignalPanel } from './src/signals-panel.js?v=060a5708';
+import { buildSoundPanel } from './src/sound-panel.js?v=060a5708';
+import { buildLayersPanel } from './src/layers-panel.js?v=060a5708';
+import { buildInputPanel } from './src/input-panel.js?v=060a5708';
+import { buildMappingPanel } from './src/mapping-panel.js?v=060a5708';
+import { buildPerformanceMode } from './src/perf-mode.js?v=060a5708';
+import { buildDirectorPanel } from './src/director-panel.js?v=060a5708';
 
 // every .oav-panel header toggles its section — the universal collapsible
 // panel convention all examples follow
