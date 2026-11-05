@@ -6,6 +6,12 @@
 
 ## oav-p5
 
+### 0.8.5
+
+2026-11-06 · [a330b30](https://github.com/frank890417/open-audiovisual/commit/a330b30)
+
+- **從 QLC+ 匯入的控制器這裡也能用。** 插上 BCF2000 或 nanoPAD2，或把 `profile` 設成它們的 id，`knob1`、`fader1`、`pad1` 就會跟著那台機器，需要時才抓它的檔案。[profile](https://openaudiovisual.com/docs/reference/#option:profile)
+
 ### 0.8.4
 
 2026-10-20 · [e9ad495](https://github.com/frank890417/open-audiovisual/commit/e9ad495)
@@ -137,6 +143,11 @@
 - 現成草圖：`p5/examples/particles/`、`p5/examples/opc/`。
 
 ## 框架與網站
+
+### 2026-11-06
+
+- **插上匯入的控制器也認得。** 內建設定檔都沒認領時，函式庫會抓那一個檔案並顯示機器。埠名比對用完整的型號名稱，名字相近的不會被認錯。[資料庫](https://openaudiovisual.com/zh/controllers/#imported)
+- **驗證站能驗燈，也記得進度。** 控制項驗完後，會把碰得到的 LED 全部點亮，有沒亮的再一顆一顆確認；重新整理也接得回來。[驗證頁](https://openaudiovisual.com/zh/controllers/verify/)
 
 ### 2026-11-05
 

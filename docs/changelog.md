@@ -7,6 +7,12 @@ it. **The framework and the site** are listed by day. Every entry links its comm
 
 ## oav-p5
 
+### 0.8.5
+
+2026-11-06 · [a330b30](https://github.com/frank890417/open-audiovisual/commit/a330b30)
+
+- **The controllers imported from QLC+ work here too.** Plug in a BCF2000 or a nanoPAD2, or set `profile` to one of their ids, and `knob1`, `fader1` and `pad1` follow that device: its one file is fetched when it is needed. [profile](https://openaudiovisual.com/docs/reference/#option:profile)
+
 ### 0.8.4
 
 2026-10-20 · [e9ad495](https://github.com/frank890417/open-audiovisual/commit/e9ad495)
@@ -158,6 +164,11 @@ The first tagged version; it gathers 0.1 to 0.2.4 (from 2026-10-13).
 - Ready-made sketches: `p5/examples/particles/`, `p5/examples/opc/`.
 
 ## Framework and site
+
+### 2026-11-06
+
+- **Imported controllers are recognised when plugged in.** The library fetches that one file and shows the device, after the shipped profiles have had their say. Port patterns are whole model names, so a near name stays unmatched. [Library](https://openaudiovisual.com/controllers/#imported)
+- **The verification page checks the lights and keeps your place.** After the controls it lights every LED it can reach, then goes one at a time if something stayed dark, and a run comes back after a reload. [Verify](https://openaudiovisual.com/controllers/verify/)
 
 ### 2026-11-05
 

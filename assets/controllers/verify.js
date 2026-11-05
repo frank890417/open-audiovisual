@@ -271,6 +271,8 @@ function lightsPrompt() {
   const c = lights.all ? null : lights.queue[lights.at];
   $('vf-prompt').textContent = lights.all ? fill(G.promptAll, { n: lights.queue.length }) : fill(G.prompt, { name: c.label && c.label !== c.id ? c.label : c.id });
   $('vf-count').textContent = lights.all ? '' : fill(G.count, { n: lights.at + 1, total: lights.queue.length });
+  $('vf-expected').parentElement.hidden = lights.all;
+  $('vf-led-skip').hidden = lights.all;
   $('vf-expected').textContent = lights.all ? '' : c.led ? messageText({ msg: c.led.msg, ch: c.led.ch ?? c.ch, cc: c.led.cc ?? c.cc, note: c.led.note ?? c.note }) : 'SysEx';
   ctl.view?.clearMarks();
   for (const x of lights.all ? lights.queue : [c]) ctl.view?.mark(x.id, 'now');
@@ -278,7 +280,7 @@ function lightsPrompt() {
 function lightsDone() {
   for (const c of lights.queue) sendLed(c, false);
   lights = null;
-  $('vf-led-actions').hidden = true; $('vf-actions').hidden = false; $('vf-diff').hidden = true; $('vf-heard').parentElement.hidden = false;
+  $('vf-led-actions').hidden = true; $('vf-actions').hidden = false; $('vf-diff').hidden = true; $('vf-heard').parentElement.hidden = false; $('vf-expected').parentElement.hidden = false;
   save(); end();
 }
 function nextLight() {
@@ -313,7 +315,7 @@ $('vf-lights-sysex').addEventListener('click', async () => {
 });
 $('vf-led-yes').addEventListener('click', () => answerLight(true));
 $('vf-led-no').addEventListener('click', () => answerLight(false));
-$('vf-led-skip').addEventListener('click', () => { if (lights.all) return answerLight(false); sendLed(lights.queue[lights.at], false); nextLight(); });
+$('vf-led-skip').addEventListener('click', () => { sendLed(lights.queue[lights.at], false); nextLight(); });
 $('vf-led-stop').addEventListener('click', lightsDone);
 
 // the one place on this page that asks for SysEx, and only when pressed: the Universal Device Inquiry names the firmware
