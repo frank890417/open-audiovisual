@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated from https://openaudiovisual.com/controllers/pmj-9-faders-controller/. A starting point: remap it with the Learning Wizard in Mixxx. -->
+<!-- Controls with no job here: slider-9 slider-2 slider-6 slider-7 slider-8 -->
+<MixxxControllerPreset mixxxVersion="2.4+" schemaVersion="1">
+  <info>
+    <name>PMJ 9 Faders Controller (Open Audiovisual)</name>
+    <author>openaudiovisual.com</author>
+    <description>Generated from the open profile of this controller, not hand-made. 0 of 9 controls checked on a real unit.</description>
+    <forums>https://openaudiovisual.com/controllers/pmj-9-faders-controller/</forums>
+  </info>
+  <controller id="PMJ 9 Faders Controller">
+    <scriptfiles>
+      <file functionprefix="OAV_9faderscontroller" filename="pmj-9-faders-controller.scripts.js"/>
+    </scriptfiles>
+    <controls>
+      <control>
+        <group>[Channel1]</group>
+        <key>volume</key>
+        <status>0xB0</status>
+        <midino>0x01</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel2]</group>
+        <key>volume</key>
+        <status>0xB0</status>
+        <midino>0x02</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel3]</group>
+        <key>volume</key>
+        <status>0xB0</status>
+        <midino>0x03</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel4]</group>
+        <key>volume</key>
+        <status>0xB0</status>
+        <midino>0x04</midino>
+        <options><normal/></options>
+      </control>
+    </controls>
+    <outputs>
+    </outputs>
+  </controller>
+</MixxxControllerPreset>

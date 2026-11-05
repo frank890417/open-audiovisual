@@ -102,6 +102,10 @@ Some things only SysEx can do: put a Launchpad in Programmer mode, pick a Launch
 
 The browser shows a permission prompt for SysEx, so nothing in this project asks by itself: `<oav-controller sysex>` adds a button, and `controller.enableSysex()` is the call behind it (run it from a click). Once it is on, the device is set up every time it connects, and `setLedColor(id, { r, g, b })` and `sendSysex(id)` work. [Package README](https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex).
 
+## In other software
+
+Every device page has the same data as a QLC+ input profile (`.qxi`) and a Mixxx mapping (`.midi.xml` and a small `.js`), and `node tools/export-controller.mjs <id>` writes them from any profile. The Mixxx mapping is a starting point: remap it with Mixxx's Learning Wizard. The library also lists controllers imported from QLC+'s input profiles, with generated layouts and every control marked unverified.
+
 ## Add a controller
 
 1. Copy the closest file in `packages/midi/profiles/`, or a generic layout.

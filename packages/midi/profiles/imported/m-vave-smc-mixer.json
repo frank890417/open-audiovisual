@@ -1,0 +1,663 @@
+{
+ "id": "m-vave-smc-mixer",
+ "short": "smcmixer",
+ "name": "M-VAVE SMC-Mixer",
+ "maker": "M-VAVE",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "SMC[\\s-]*Mixer"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/M-VAVE-SMC-Mixer.qxi",
+  "license": "Apache-2.0",
+  "author": "Massimo Callegari",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile M-VAVE-SMC-Mixer.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/M-VAVE-SMC-Mixer.qxi",
+   "note": "community profile by Massimo Callegari; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 75.5,
+  "label": "M-VAVE SMC-Mixer",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 16,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "fader-1",
+    "fader-2",
+    "fader-3",
+    "fader-4",
+    "fader-5",
+    "fader-6",
+    "fader-7",
+    "fader-8"
+   ]
+  },
+  {
+   "id": "encoder",
+   "label": "Encoders",
+   "x": 2,
+   "y": 22,
+   "w": 96,
+   "h": 9,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "encoder-1"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 34,
+   "w": 96,
+   "h": 38.5,
+   "cols": 8,
+   "rows": 7,
+   "controls": [
+    "encoder-2",
+    "encoder-3",
+    "encoder-4",
+    "encoder-5",
+    "encoder-6",
+    "encoder-7",
+    "encoder-8",
+    "record-1",
+    "record-2",
+    "record-3",
+    "record-4",
+    "record-5",
+    "record-6",
+    "record-7",
+    "record-8",
+    "solo-1",
+    "solo-2",
+    "solo-3",
+    "solo-4",
+    "solo-5",
+    "solo-6",
+    "solo-7",
+    "solo-8",
+    "mute-1",
+    "mute-2",
+    "mute-3",
+    "mute-4",
+    "mute-5",
+    "mute-6",
+    "mute-7",
+    "mute-8",
+    "stop-1",
+    "stop-2",
+    "stop-3",
+    "stop-4",
+    "stop-5",
+    "stop-6",
+    "stop-7",
+    "stop-8",
+    "previous",
+    "next",
+    "rewind",
+    "forward",
+    "pause",
+    "play",
+    "record",
+    "up",
+    "down",
+    "left",
+    "right"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "encoder-1",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 16,
+   "relative": false,
+   "label": "Encoder 1",
+   "verified": false
+  },
+  {
+   "id": "encoder-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 17,
+   "label": "Encoder 2",
+   "verified": false
+  },
+  {
+   "id": "encoder-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 18,
+   "label": "Encoder 3",
+   "verified": false
+  },
+  {
+   "id": "encoder-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 19,
+   "label": "Encoder 4",
+   "verified": false
+  },
+  {
+   "id": "encoder-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 20,
+   "label": "Encoder 5",
+   "verified": false
+  },
+  {
+   "id": "encoder-6",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 21,
+   "label": "Encoder 6",
+   "verified": false
+  },
+  {
+   "id": "encoder-7",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 22,
+   "label": "Encoder 7",
+   "verified": false
+  },
+  {
+   "id": "encoder-8",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 23,
+   "label": "Encoder 8",
+   "verified": false
+  },
+  {
+   "id": "record-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 0,
+   "label": "Record 1",
+   "verified": false
+  },
+  {
+   "id": "record-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 1,
+   "label": "Record 2",
+   "verified": false
+  },
+  {
+   "id": "record-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 2,
+   "label": "Record 3",
+   "verified": false
+  },
+  {
+   "id": "record-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 3,
+   "label": "Record 4",
+   "verified": false
+  },
+  {
+   "id": "record-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 4,
+   "label": "Record 5",
+   "verified": false
+  },
+  {
+   "id": "record-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 5,
+   "label": "Record 6",
+   "verified": false
+  },
+  {
+   "id": "record-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 6,
+   "label": "Record 7",
+   "verified": false
+  },
+  {
+   "id": "record-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 7,
+   "label": "Record 8",
+   "verified": false
+  },
+  {
+   "id": "solo-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 8,
+   "label": "Solo 1",
+   "verified": false
+  },
+  {
+   "id": "solo-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 9,
+   "label": "Solo 2",
+   "verified": false
+  },
+  {
+   "id": "solo-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 10,
+   "label": "Solo 3",
+   "verified": false
+  },
+  {
+   "id": "solo-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 11,
+   "label": "Solo 4",
+   "verified": false
+  },
+  {
+   "id": "solo-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 12,
+   "label": "Solo 5",
+   "verified": false
+  },
+  {
+   "id": "solo-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 13,
+   "label": "Solo 6",
+   "verified": false
+  },
+  {
+   "id": "solo-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 14,
+   "label": "Solo 7",
+   "verified": false
+  },
+  {
+   "id": "solo-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 15,
+   "label": "Solo 8",
+   "verified": false
+  },
+  {
+   "id": "mute-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 16,
+   "label": "Mute 1",
+   "verified": false
+  },
+  {
+   "id": "mute-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 17,
+   "label": "Mute 2",
+   "verified": false
+  },
+  {
+   "id": "mute-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 18,
+   "label": "Mute 3",
+   "verified": false
+  },
+  {
+   "id": "mute-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 19,
+   "label": "Mute 4",
+   "verified": false
+  },
+  {
+   "id": "mute-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 20,
+   "label": "Mute 5",
+   "verified": false
+  },
+  {
+   "id": "mute-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 21,
+   "label": "Mute 6",
+   "verified": false
+  },
+  {
+   "id": "mute-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 22,
+   "label": "Mute 7",
+   "verified": false
+  },
+  {
+   "id": "mute-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 23,
+   "label": "Mute 8",
+   "verified": false
+  },
+  {
+   "id": "stop-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 24,
+   "label": "Stop 1",
+   "verified": false
+  },
+  {
+   "id": "stop-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 25,
+   "label": "Stop 2",
+   "verified": false
+  },
+  {
+   "id": "stop-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 26,
+   "label": "Stop 3",
+   "verified": false
+  },
+  {
+   "id": "stop-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 27,
+   "label": "Stop 4",
+   "verified": false
+  },
+  {
+   "id": "stop-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 28,
+   "label": "Stop 5",
+   "verified": false
+  },
+  {
+   "id": "stop-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 29,
+   "label": "Stop 6",
+   "verified": false
+  },
+  {
+   "id": "stop-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 30,
+   "label": "Stop 7",
+   "verified": false
+  },
+  {
+   "id": "stop-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 31,
+   "label": "Stop 8",
+   "verified": false
+  },
+  {
+   "id": "previous",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 46,
+   "label": "Previous",
+   "verified": false
+  },
+  {
+   "id": "next",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 47,
+   "label": "Next",
+   "verified": false
+  },
+  {
+   "id": "rewind",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 91,
+   "label": "Rewind",
+   "verified": false
+  },
+  {
+   "id": "forward",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 92,
+   "label": "Forward",
+   "verified": false
+  },
+  {
+   "id": "pause",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 93,
+   "label": "Pause",
+   "verified": false
+  },
+  {
+   "id": "play",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 94,
+   "label": "Play",
+   "verified": false
+  },
+  {
+   "id": "record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 95,
+   "label": "Record",
+   "verified": false
+  },
+  {
+   "id": "up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 96,
+   "label": "Up",
+   "verified": false
+  },
+  {
+   "id": "down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 97,
+   "label": "Down",
+   "verified": false
+  },
+  {
+   "id": "left",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 98,
+   "label": "Left",
+   "verified": false
+  },
+  {
+   "id": "right",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 99,
+   "label": "Right",
+   "verified": false
+  },
+  {
+   "id": "fader-1",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 1,
+   "label": "Fader 1",
+   "verified": false
+  },
+  {
+   "id": "fader-2",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 2,
+   "label": "Fader 2",
+   "verified": false
+  },
+  {
+   "id": "fader-3",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 3,
+   "label": "Fader 3",
+   "verified": false
+  },
+  {
+   "id": "fader-4",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 4,
+   "label": "Fader 4",
+   "verified": false
+  },
+  {
+   "id": "fader-5",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 5,
+   "label": "Fader 5",
+   "verified": false
+  },
+  {
+   "id": "fader-6",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 6,
+   "label": "Fader 6",
+   "verified": false
+  },
+  {
+   "id": "fader-7",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 7,
+   "label": "Fader 7",
+   "verified": false
+  },
+  {
+   "id": "fader-8",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 8,
+   "label": "Fader 8",
+   "verified": false
+  }
+ ]
+}

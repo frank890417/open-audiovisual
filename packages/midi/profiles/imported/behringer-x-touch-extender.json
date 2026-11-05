@@ -1,0 +1,728 @@
+{
+ "id": "behringer-x-touch-extender",
+ "short": "xtouchextender",
+ "name": "Behringer X-Touch Extender",
+ "maker": "Behringer",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "X[\\s-]*Touch[\\s-]*Extender"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Behringer-X-TouchExtender.qxi",
+  "license": "Apache-2.0",
+  "author": "Tim Cullingworth",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Behringer-X-TouchExtender.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Behringer-X-TouchExtender.qxi",
+   "note": "community profile by Tim Cullingworth; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 70,
+  "label": "Behringer X-Touch Extender",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 16,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "channel-1-slider",
+    "channel-2-slider",
+    "channel-3-slider",
+    "channel-4-slider",
+    "channel-5-slider",
+    "channel-6-slider",
+    "channel-7-slider",
+    "channel-8-slider"
+   ]
+  },
+  {
+   "id": "encoder",
+   "label": "Encoders",
+   "x": 2,
+   "y": 22,
+   "w": 96,
+   "h": 9,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "channel-1-encoder",
+    "channel-2-encoder",
+    "channel-3-encoder",
+    "channel-4-encoder",
+    "channel-5-encoder",
+    "channel-6-encoder",
+    "channel-7-encoder",
+    "channel-8-encoder"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 34,
+   "w": 96,
+   "h": 33,
+   "cols": 8,
+   "rows": 6,
+   "controls": [
+    "channel-1-encoder-push",
+    "channel-2-encoder-push",
+    "channel-3-encoder-push",
+    "channel-4-encoder-push",
+    "channel-5-encoder-push",
+    "channel-6-encoder-push",
+    "channel-7-encoder-push",
+    "channel-8-encoder-push",
+    "channel-1-record",
+    "channel-2-record",
+    "channel-3-record",
+    "channel-4-record",
+    "channel-5-record",
+    "channel-6-record",
+    "channel-7-record",
+    "channel-8-record",
+    "channel-1-solo",
+    "channel-2-solo",
+    "channel-3-solo",
+    "channel-4-solo",
+    "channel-5-solo",
+    "channel-6-solo",
+    "channel-7-solo",
+    "channel-8-solo",
+    "channel-1-mute",
+    "channel-2-mute",
+    "channel-3-mute",
+    "channel-4-mute",
+    "channel-5-mute",
+    "channel-6-mute",
+    "channel-7-mute",
+    "channel-8-mute",
+    "channel-1-select",
+    "channel-2-select",
+    "channel-3-select",
+    "channel-4-select",
+    "channel-5-select",
+    "channel-6-select",
+    "channel-7-select",
+    "channel-8-select",
+    "channel-1-slider-touch",
+    "channel-2-slider-touch",
+    "channel-3-slider-touch",
+    "channel-4-slider-touch",
+    "channel-5-slider-touch",
+    "channel-6-slider-touch",
+    "channel-7-slider-touch",
+    "channel-8-slider-touch"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "channel-1-slider",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 70,
+   "label": "Channel 1 slider",
+   "verified": false
+  },
+  {
+   "id": "channel-2-slider",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 71,
+   "label": "Channel 2 slider",
+   "verified": false
+  },
+  {
+   "id": "channel-3-slider",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 72,
+   "label": "Channel 3 slider",
+   "verified": false
+  },
+  {
+   "id": "channel-4-slider",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 73,
+   "label": "Channel 4 slider",
+   "verified": false
+  },
+  {
+   "id": "channel-5-slider",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 74,
+   "label": "Channel 5 slider",
+   "verified": false
+  },
+  {
+   "id": "channel-6-slider",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 75,
+   "label": "Channel 6 slider",
+   "verified": false
+  },
+  {
+   "id": "channel-7-slider",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 76,
+   "label": "Channel 7 slider",
+   "verified": false
+  },
+  {
+   "id": "channel-8-slider",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 77,
+   "label": "Channel 8 slider",
+   "verified": false
+  },
+  {
+   "id": "channel-1-encoder",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 80,
+   "relative": false,
+   "label": "Channel 1 encoder",
+   "verified": false
+  },
+  {
+   "id": "channel-2-encoder",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 81,
+   "relative": false,
+   "label": "Channel 2 encoder",
+   "verified": false
+  },
+  {
+   "id": "channel-3-encoder",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 82,
+   "relative": false,
+   "label": "Channel 3 encoder",
+   "verified": false
+  },
+  {
+   "id": "channel-4-encoder",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 83,
+   "relative": false,
+   "label": "Channel 4 encoder",
+   "verified": false
+  },
+  {
+   "id": "channel-5-encoder",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 84,
+   "relative": false,
+   "label": "Channel 5 encoder",
+   "verified": false
+  },
+  {
+   "id": "channel-6-encoder",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 85,
+   "relative": false,
+   "label": "Channel 6 encoder",
+   "verified": false
+  },
+  {
+   "id": "channel-7-encoder",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 86,
+   "relative": false,
+   "label": "Channel 7 encoder",
+   "verified": false
+  },
+  {
+   "id": "channel-8-encoder",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 87,
+   "relative": false,
+   "label": "Channel 8 encoder",
+   "verified": false
+  },
+  {
+   "id": "channel-1-encoder-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 0,
+   "label": "Channel 1 encoder push",
+   "verified": false
+  },
+  {
+   "id": "channel-2-encoder-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 1,
+   "label": "Channel 2 encoder push",
+   "verified": false
+  },
+  {
+   "id": "channel-3-encoder-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 2,
+   "label": "Channel 3 encoder push",
+   "verified": false
+  },
+  {
+   "id": "channel-4-encoder-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 3,
+   "label": "Channel 4 encoder push",
+   "verified": false
+  },
+  {
+   "id": "channel-5-encoder-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 4,
+   "label": "Channel 5 encoder push",
+   "verified": false
+  },
+  {
+   "id": "channel-6-encoder-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 5,
+   "label": "Channel 6 encoder push",
+   "verified": false
+  },
+  {
+   "id": "channel-7-encoder-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 6,
+   "label": "Channel 7 encoder push",
+   "verified": false
+  },
+  {
+   "id": "channel-8-encoder-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 7,
+   "label": "Channel 8 encoder push",
+   "verified": false
+  },
+  {
+   "id": "channel-1-record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 8,
+   "label": "Channel 1 record",
+   "verified": false
+  },
+  {
+   "id": "channel-2-record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 9,
+   "label": "Channel 2 record",
+   "verified": false
+  },
+  {
+   "id": "channel-3-record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 10,
+   "label": "Channel 3 record",
+   "verified": false
+  },
+  {
+   "id": "channel-4-record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 11,
+   "label": "Channel 4 record",
+   "verified": false
+  },
+  {
+   "id": "channel-5-record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 12,
+   "label": "Channel 5 record",
+   "verified": false
+  },
+  {
+   "id": "channel-6-record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 13,
+   "label": "Channel 6 record",
+   "verified": false
+  },
+  {
+   "id": "channel-7-record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 14,
+   "label": "Channel 7 record",
+   "verified": false
+  },
+  {
+   "id": "channel-8-record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 15,
+   "label": "Channel 8 record",
+   "verified": false
+  },
+  {
+   "id": "channel-1-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 16,
+   "label": "Channel 1 solo",
+   "verified": false
+  },
+  {
+   "id": "channel-2-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 17,
+   "label": "Channel 2 solo",
+   "verified": false
+  },
+  {
+   "id": "channel-3-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 18,
+   "label": "Channel 3 solo",
+   "verified": false
+  },
+  {
+   "id": "channel-4-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 19,
+   "label": "Channel 4 solo",
+   "verified": false
+  },
+  {
+   "id": "channel-5-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 20,
+   "label": "Channel 5 solo",
+   "verified": false
+  },
+  {
+   "id": "channel-6-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 21,
+   "label": "Channel 6 solo",
+   "verified": false
+  },
+  {
+   "id": "channel-7-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 22,
+   "label": "Channel 7 solo",
+   "verified": false
+  },
+  {
+   "id": "channel-8-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 23,
+   "label": "Channel 8 solo",
+   "verified": false
+  },
+  {
+   "id": "channel-1-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 24,
+   "label": "Channel 1 mute",
+   "verified": false
+  },
+  {
+   "id": "channel-2-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 25,
+   "label": "Channel 2 mute",
+   "verified": false
+  },
+  {
+   "id": "channel-3-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 26,
+   "label": "Channel 3 mute",
+   "verified": false
+  },
+  {
+   "id": "channel-4-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 27,
+   "label": "Channel 4 mute",
+   "verified": false
+  },
+  {
+   "id": "channel-5-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 28,
+   "label": "Channel 5 mute",
+   "verified": false
+  },
+  {
+   "id": "channel-6-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 29,
+   "label": "Channel 6 mute",
+   "verified": false
+  },
+  {
+   "id": "channel-7-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 30,
+   "label": "Channel 7 mute",
+   "verified": false
+  },
+  {
+   "id": "channel-8-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 31,
+   "label": "Channel 8 mute",
+   "verified": false
+  },
+  {
+   "id": "channel-1-select",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 32,
+   "label": "Channel 1 select",
+   "verified": false
+  },
+  {
+   "id": "channel-2-select",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 33,
+   "label": "Channel 2 select",
+   "verified": false
+  },
+  {
+   "id": "channel-3-select",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 34,
+   "label": "Channel 3 select",
+   "verified": false
+  },
+  {
+   "id": "channel-4-select",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 35,
+   "label": "Channel 4 select",
+   "verified": false
+  },
+  {
+   "id": "channel-5-select",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 36,
+   "label": "Channel 5 select",
+   "verified": false
+  },
+  {
+   "id": "channel-6-select",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 37,
+   "label": "Channel 6 select",
+   "verified": false
+  },
+  {
+   "id": "channel-7-select",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 38,
+   "label": "Channel 7 select",
+   "verified": false
+  },
+  {
+   "id": "channel-8-select",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 39,
+   "label": "Channel 8 select",
+   "verified": false
+  },
+  {
+   "id": "channel-1-slider-touch",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 110,
+   "label": "Channel 1 slider touch",
+   "verified": false
+  },
+  {
+   "id": "channel-2-slider-touch",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 111,
+   "label": "Channel 2 slider touch",
+   "verified": false
+  },
+  {
+   "id": "channel-3-slider-touch",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 112,
+   "label": "Channel 3 slider touch",
+   "verified": false
+  },
+  {
+   "id": "channel-4-slider-touch",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 113,
+   "label": "Channel 4 slider touch",
+   "verified": false
+  },
+  {
+   "id": "channel-5-slider-touch",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 114,
+   "label": "Channel 5 slider touch",
+   "verified": false
+  },
+  {
+   "id": "channel-6-slider-touch",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 115,
+   "label": "Channel 6 slider touch",
+   "verified": false
+  },
+  {
+   "id": "channel-7-slider-touch",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 116,
+   "label": "Channel 7 slider touch",
+   "verified": false
+  },
+  {
+   "id": "channel-8-slider-touch",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 117,
+   "label": "Channel 8 slider touch",
+   "verified": false
+  }
+ ]
+}

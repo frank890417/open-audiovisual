@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- Novation Launchpad Pro MK3: generated from https://openaudiovisual.com/controllers/novation-launchpad-pro-mk3/ -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>Novation</Manufacturer>
+ <Model>Launchpad Pro MK3</Model>
+ <Type>MIDI</Type>
+ <Channel Number="1">
+  <Name>Arm</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="2">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="3">
+  <Name>Solo</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="4">
+  <Name>Vol</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="5">
+  <Name>Pan</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="6">
+  <Name>Sends</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="7">
+  <Name>Device</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="8">
+  <Name>Stop</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="10">
+  <Name>○</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="19">
+  <Name>Print</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="20">
+  <Name>▷</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="29">
+  <Name>Micro</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="30">
+  <Name>Fixed</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="39">
+  <Name>Mutate</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="40">
+  <Name>Quant</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="49">
+  <Name>Prob</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="50">
+  <Name>Dup</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="59">
+  <Name>Vel</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="60">
+  <Name>Clear</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="69">
+  <Name>Pat Set</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="70">
+  <Name>▼</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="79">
+  <Name>Steps</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="80">
+  <Name>▲</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="89">
+  <Name>Pattern</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="90">
+  <Name>Shift</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="91">
+  <Name>◀</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="92">
+  <Name>▶</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="93">
+  <Name>Session</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="94">
+  <Name>Note</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="95">
+  <Name>Chord</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="96">
+  <Name>Custom</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="97">
+  <Name>Seq</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="98">
+  <Name>Projects</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="101">
+  <Name>sel1</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="102">
+  <Name>sel2</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="103">
+  <Name>sel3</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="104">
+  <Name>sel4</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="105">
+  <Name>sel5</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="106">
+  <Name>sel6</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="107">
+  <Name>sel7</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="108">
+  <Name>sel8</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="6"/>
+ </Channel>
+ <Channel Number="139">
+  <Name>pad1</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="140">
+  <Name>pad2</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="141">
+  <Name>pad3</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="142">
+  <Name>pad4</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="143">
+  <Name>pad5</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="144">
+  <Name>pad6</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="145">
+  <Name>pad7</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="146">
+  <Name>pad8</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="149">
+  <Name>pad9</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="150">
+  <Name>pad10</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="151">
+  <Name>pad11</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="152">
+  <Name>pad12</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="153">
+  <Name>pad13</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="154">
+  <Name>pad14</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="155">
+  <Name>pad15</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="156">
+  <Name>pad16</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="159">
+  <Name>pad17</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="160">
+  <Name>pad18</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="161">
+  <Name>pad19</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="162">
+  <Name>pad20</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="163">
+  <Name>pad21</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="164">
+  <Name>pad22</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="165">
+  <Name>pad23</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="166">
+  <Name>pad24</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="169">
+  <Name>pad25</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="170">
+  <Name>pad26</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="171">
+  <Name>pad27</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="172">
+  <Name>pad28</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="173">
+  <Name>pad29</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="174">
+  <Name>pad30</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="175">
+  <Name>pad31</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="176">
+  <Name>pad32</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="179">
+  <Name>pad33</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="180">
+  <Name>pad34</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="181">
+  <Name>pad35</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="182">
+  <Name>pad36</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="183">
+  <Name>pad37</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="184">
+  <Name>pad38</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="185">
+  <Name>pad39</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="186">
+  <Name>pad40</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="189">
+  <Name>pad41</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="190">
+  <Name>pad42</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="191">
+  <Name>pad43</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="192">
+  <Name>pad44</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="193">
+  <Name>pad45</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="194">
+  <Name>pad46</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="195">
+  <Name>pad47</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="196">
+  <Name>pad48</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="199">
+  <Name>pad49</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="200">
+  <Name>pad50</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="201">
+  <Name>pad51</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="202">
+  <Name>pad52</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="203">
+  <Name>pad53</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="204">
+  <Name>pad54</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="205">
+  <Name>pad55</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="206">
+  <Name>pad56</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="209">
+  <Name>pad57</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="210">
+  <Name>pad58</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="211">
+  <Name>pad59</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="212">
+  <Name>pad60</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="213">
+  <Name>pad61</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="214">
+  <Name>pad62</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="215">
+  <Name>pad63</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+ <Channel Number="216">
+  <Name>pad64</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="74"/>
+ </Channel>
+</InputProfile>

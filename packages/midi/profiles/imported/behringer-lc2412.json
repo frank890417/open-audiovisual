@@ -1,0 +1,620 @@
+{
+ "id": "behringer-lc2412",
+ "short": "lc2412",
+ "name": "Behringer LC2412",
+ "maker": "Behringer",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "LC2412"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Behringer-LC2412.qxi",
+  "license": "Apache-2.0",
+  "author": "Heikki Junnila",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Behringer-LC2412.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Behringer-LC2412.qxi",
+   "note": "community profile by Heikki Junnila; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 101.5,
+  "label": "Behringer LC2412",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 64,
+   "cols": 8,
+   "rows": 4,
+   "controls": [
+    "a-preset-fader-1",
+    "a-preset-fader-2",
+    "a-preset-fader-3",
+    "a-preset-fader-4",
+    "a-preset-fader-5",
+    "a-preset-fader-6",
+    "a-preset-fader-7",
+    "a-preset-fader-8",
+    "a-preset-fader-9",
+    "a-preset-fader-10",
+    "a-preset-fader-11",
+    "a-preset-fader-12",
+    "b-memory-fader-1",
+    "b-memory-fader-2",
+    "b-memory-fader-3",
+    "b-memory-fader-4",
+    "b-memory-fader-5",
+    "b-memory-fader-6",
+    "b-memory-fader-7",
+    "b-memory-fader-8",
+    "b-memory-fader-9",
+    "b-memory-fader-10",
+    "b-memory-fader-11",
+    "b-memory-fader-12",
+    "speed",
+    "x-fade",
+    "chaser",
+    "main",
+    "main-a",
+    "main-b"
+   ]
+  },
+  {
+   "id": "knob",
+   "label": "Knobs",
+   "x": 2,
+   "y": 70,
+   "w": 96,
+   "h": 9,
+   "cols": 3,
+   "rows": 1,
+   "controls": [
+    "bank",
+    "chaser-number",
+    "sound-run"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 82,
+   "w": 96,
+   "h": 16.5,
+   "cols": 8,
+   "rows": 3,
+   "controls": [
+    "key-step",
+    "key-flash-1",
+    "key-flash-2",
+    "key-flash-3",
+    "key-flash-4",
+    "key-flash-5",
+    "key-flash-6",
+    "key-flash-7",
+    "key-flash-8",
+    "key-flash-9",
+    "key-flash-10",
+    "key-flash-11",
+    "key-flash-12",
+    "key-channel-flash",
+    "key-solo",
+    "special-1",
+    "special-2",
+    "key-manual",
+    "insert",
+    "key-preset",
+    "key-memory"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "a-preset-fader-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 0,
+   "label": "A Preset Fader 1",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 1,
+   "label": "A Preset Fader 2",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 2,
+   "label": "A Preset Fader 3",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 3,
+   "label": "A Preset Fader 4",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 4,
+   "label": "A Preset Fader 5",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-6",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 5,
+   "label": "A Preset Fader 6",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-7",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 6,
+   "label": "A Preset Fader 7",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-8",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 7,
+   "label": "A Preset Fader 8",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-9",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 8,
+   "label": "A Preset Fader 9",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-10",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 9,
+   "label": "A Preset Fader 10",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-11",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 10,
+   "label": "A Preset Fader 11",
+   "verified": false
+  },
+  {
+   "id": "a-preset-fader-12",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 11,
+   "label": "A Preset Fader 12",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 12,
+   "label": "B Memory Fader 1",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 13,
+   "label": "B Memory Fader 2",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 14,
+   "label": "B Memory Fader 3",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 15,
+   "label": "B Memory Fader 4",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 16,
+   "label": "B Memory Fader 5",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-6",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 17,
+   "label": "B Memory Fader 6",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-7",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 18,
+   "label": "B Memory Fader 7",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-8",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 19,
+   "label": "B Memory Fader 8",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-9",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 20,
+   "label": "B Memory Fader 9",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-10",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 21,
+   "label": "B Memory Fader 10",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-11",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 22,
+   "label": "B Memory Fader 11",
+   "verified": false
+  },
+  {
+   "id": "b-memory-fader-12",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 23,
+   "label": "B Memory Fader 12",
+   "verified": false
+  },
+  {
+   "id": "speed",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 24,
+   "label": "Speed",
+   "verified": false
+  },
+  {
+   "id": "x-fade",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 25,
+   "label": "X-Fade",
+   "verified": false
+  },
+  {
+   "id": "chaser",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 26,
+   "label": "Chaser",
+   "verified": false
+  },
+  {
+   "id": "main",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 27,
+   "label": "Main",
+   "verified": false
+  },
+  {
+   "id": "main-a",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 28,
+   "label": "Main A",
+   "verified": false
+  },
+  {
+   "id": "main-b",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 29,
+   "label": "Main B",
+   "verified": false
+  },
+  {
+   "id": "key-step",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 30,
+   "label": "Key Step",
+   "verified": false
+  },
+  {
+   "id": "key-flash-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 31,
+   "label": "Key Flash 1",
+   "verified": false
+  },
+  {
+   "id": "key-flash-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 32,
+   "label": "Key Flash 2",
+   "verified": false
+  },
+  {
+   "id": "key-flash-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 33,
+   "label": "Key Flash 3",
+   "verified": false
+  },
+  {
+   "id": "key-flash-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 34,
+   "label": "Key Flash 4",
+   "verified": false
+  },
+  {
+   "id": "key-flash-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 35,
+   "label": "Key Flash 5",
+   "verified": false
+  },
+  {
+   "id": "key-flash-6",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 36,
+   "label": "Key Flash 6",
+   "verified": false
+  },
+  {
+   "id": "key-flash-7",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 37,
+   "label": "Key Flash 7",
+   "verified": false
+  },
+  {
+   "id": "key-flash-8",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 38,
+   "label": "Key Flash 8",
+   "verified": false
+  },
+  {
+   "id": "key-flash-9",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 39,
+   "label": "Key Flash 9",
+   "verified": false
+  },
+  {
+   "id": "key-flash-10",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 40,
+   "label": "Key Flash 10",
+   "verified": false
+  },
+  {
+   "id": "key-flash-11",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 41,
+   "label": "Key Flash 11",
+   "verified": false
+  },
+  {
+   "id": "key-flash-12",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 42,
+   "label": "Key Flash 12",
+   "verified": false
+  },
+  {
+   "id": "bank",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 43,
+   "label": "Bank",
+   "verified": false
+  },
+  {
+   "id": "chaser-number",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 44,
+   "label": "Chaser Number",
+   "verified": false
+  },
+  {
+   "id": "key-channel-flash",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 45,
+   "label": "Key Channel Flash",
+   "verified": false
+  },
+  {
+   "id": "key-solo",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 46,
+   "label": "Key Solo",
+   "verified": false
+  },
+  {
+   "id": "special-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 47,
+   "label": "Special 1",
+   "verified": false
+  },
+  {
+   "id": "special-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 48,
+   "label": "Special 2",
+   "verified": false
+  },
+  {
+   "id": "key-manual",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 49,
+   "label": "Key Manual",
+   "verified": false
+  },
+  {
+   "id": "sound-run",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 50,
+   "label": "Sound/Run",
+   "verified": false
+  },
+  {
+   "id": "insert",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 51,
+   "label": "Insert",
+   "verified": false
+  },
+  {
+   "id": "key-preset",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 52,
+   "label": "Key Preset",
+   "verified": false
+  },
+  {
+   "id": "key-memory",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 53,
+   "label": "Key Memory",
+   "verified": false
+  }
+ ]
+}

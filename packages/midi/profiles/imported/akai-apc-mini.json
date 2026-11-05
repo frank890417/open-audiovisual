@@ -1,0 +1,1015 @@
+{
+ "id": "akai-apc-mini",
+ "short": "apcmini",
+ "name": "AKAI Professional APC Mini",
+ "maker": "AKAI Professional",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "APC[\\s-]*Mini"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Akai-APCMini.qxi",
+  "license": "Apache-2.0",
+  "author": "Maikel Boerebach",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Akai-APCMini.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Akai-APCMini.qxi",
+   "note": "community profile by Maikel Boerebach; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "palette": {
+  "cite": {
+   "source": 0
+  },
+  "colors": [
+   {
+    "value": 0,
+    "name": "Off",
+    "rgb": "#000000"
+   },
+   {
+    "value": 1,
+    "name": "Green",
+    "rgb": "#00ff00"
+   },
+   {
+    "value": 2,
+    "name": "Green Blinking",
+    "rgb": "#00ff00"
+   },
+   {
+    "value": 3,
+    "name": "Red",
+    "rgb": "#ff0000"
+   },
+   {
+    "value": 4,
+    "name": "Red Blinking",
+    "rgb": "#ff0000"
+   },
+   {
+    "value": 5,
+    "name": "Yellow",
+    "rgb": "#ffff00"
+   },
+   {
+    "value": 6,
+    "name": "Yellow Blinking",
+    "rgb": "#ffff00"
+   },
+   {
+    "value": 127,
+    "name": "Green",
+    "rgb": "#00ff00"
+   }
+  ]
+ },
+ "face": {
+  "w": 100,
+  "h": 74,
+  "label": "AKAI Professional APC Mini",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 32,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "slider-1",
+    "slider-2",
+    "slider-3",
+    "slider-4",
+    "slider-5",
+    "slider-6",
+    "slider-7",
+    "slider-8",
+    "slider-9"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 38,
+   "w": 96,
+   "h": 33,
+   "cols": 16,
+   "rows": 6,
+   "controls": [
+    "button-1-8",
+    "button-2-8",
+    "button-3-8",
+    "button-4-8",
+    "button-5-8",
+    "button-6-8",
+    "button-7-8",
+    "button-8-8",
+    "button-1-7",
+    "button-2-7",
+    "button-3-7",
+    "button-4-7",
+    "button-5-7",
+    "button-6-7",
+    "button-7-7",
+    "button-8-7",
+    "button-1-6",
+    "button-2-6",
+    "button-3-6",
+    "button-4-6",
+    "button-5-6",
+    "button-6-6",
+    "button-7-6",
+    "button-8-6",
+    "button-1-5",
+    "button-2-5",
+    "button-3-5",
+    "button-4-5",
+    "button-5-5",
+    "button-6-5",
+    "button-7-5",
+    "button-8-5",
+    "button-1-4",
+    "button-2-4",
+    "button-3-4",
+    "button-4-4",
+    "button-5-4",
+    "button-6-4",
+    "button-7-4",
+    "button-8-4",
+    "button-1-3",
+    "button-2-3",
+    "button-3-3",
+    "button-4-3",
+    "button-5-3",
+    "button-6-3",
+    "button-7-3",
+    "button-8-3",
+    "button-1-2",
+    "button-2-2",
+    "button-3-2",
+    "button-4-2",
+    "button-5-2",
+    "button-6-2",
+    "button-7-2",
+    "button-8-2",
+    "button-1-1",
+    "button-2-1",
+    "button-3-1",
+    "button-4-1",
+    "button-5-1",
+    "button-6-1",
+    "button-7-1",
+    "button-8-1",
+    "up-button",
+    "down-button",
+    "left-button",
+    "right-button",
+    "volume-button",
+    "pan-button",
+    "send-button",
+    "device-button",
+    "clip-stop-button",
+    "solo-button",
+    "rec-arm-button",
+    "mute-button",
+    "select-button",
+    "button-216",
+    "button-217",
+    "stop-all-clips-button",
+    "shift-button"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "slider-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 48,
+   "label": "Slider 1",
+   "verified": false
+  },
+  {
+   "id": "slider-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 49,
+   "label": "Slider 2",
+   "verified": false
+  },
+  {
+   "id": "slider-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 50,
+   "label": "Slider 3",
+   "verified": false
+  },
+  {
+   "id": "slider-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 51,
+   "label": "Slider 4",
+   "verified": false
+  },
+  {
+   "id": "slider-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 52,
+   "label": "Slider 5",
+   "verified": false
+  },
+  {
+   "id": "slider-6",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 53,
+   "label": "Slider 6",
+   "verified": false
+  },
+  {
+   "id": "slider-7",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 54,
+   "label": "Slider 7",
+   "verified": false
+  },
+  {
+   "id": "slider-8",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 55,
+   "label": "Slider 8",
+   "verified": false
+  },
+  {
+   "id": "slider-9",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 56,
+   "label": "Slider 9",
+   "verified": false
+  },
+  {
+   "id": "button-1-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 0,
+   "label": "Button 1-8",
+   "verified": false
+  },
+  {
+   "id": "button-2-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 1,
+   "label": "Button 2-8",
+   "verified": false
+  },
+  {
+   "id": "button-3-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 2,
+   "label": "Button 3-8",
+   "verified": false
+  },
+  {
+   "id": "button-4-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 3,
+   "label": "Button 4-8",
+   "verified": false
+  },
+  {
+   "id": "button-5-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 4,
+   "label": "Button 5-8",
+   "verified": false
+  },
+  {
+   "id": "button-6-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 5,
+   "label": "Button 6-8",
+   "verified": false
+  },
+  {
+   "id": "button-7-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 6,
+   "label": "Button 7-8",
+   "verified": false
+  },
+  {
+   "id": "button-8-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 7,
+   "label": "Button 8-8",
+   "verified": false
+  },
+  {
+   "id": "button-1-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 8,
+   "label": "Button 1-7",
+   "verified": false
+  },
+  {
+   "id": "button-2-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 9,
+   "label": "Button 2-7",
+   "verified": false
+  },
+  {
+   "id": "button-3-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 10,
+   "label": "Button 3-7",
+   "verified": false
+  },
+  {
+   "id": "button-4-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 11,
+   "label": "Button 4-7",
+   "verified": false
+  },
+  {
+   "id": "button-5-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 12,
+   "label": "Button 5-7",
+   "verified": false
+  },
+  {
+   "id": "button-6-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 13,
+   "label": "Button 6-7",
+   "verified": false
+  },
+  {
+   "id": "button-7-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 14,
+   "label": "Button 7-7",
+   "verified": false
+  },
+  {
+   "id": "button-8-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 15,
+   "label": "Button 8-7",
+   "verified": false
+  },
+  {
+   "id": "button-1-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 16,
+   "label": "Button 1-6",
+   "verified": false
+  },
+  {
+   "id": "button-2-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 17,
+   "label": "Button 2-6",
+   "verified": false
+  },
+  {
+   "id": "button-3-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 18,
+   "label": "Button 3-6",
+   "verified": false
+  },
+  {
+   "id": "button-4-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 19,
+   "label": "Button 4-6",
+   "verified": false
+  },
+  {
+   "id": "button-5-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 20,
+   "label": "Button 5-6",
+   "verified": false
+  },
+  {
+   "id": "button-6-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 21,
+   "label": "Button 6-6",
+   "verified": false
+  },
+  {
+   "id": "button-7-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 22,
+   "label": "Button 7-6",
+   "verified": false
+  },
+  {
+   "id": "button-8-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 23,
+   "label": "Button 8-6",
+   "verified": false
+  },
+  {
+   "id": "button-1-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 24,
+   "label": "Button 1-5",
+   "verified": false
+  },
+  {
+   "id": "button-2-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 25,
+   "label": "Button 2-5",
+   "verified": false
+  },
+  {
+   "id": "button-3-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 26,
+   "label": "Button 3-5",
+   "verified": false
+  },
+  {
+   "id": "button-4-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 27,
+   "label": "Button 4-5",
+   "verified": false
+  },
+  {
+   "id": "button-5-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 28,
+   "label": "Button 5-5",
+   "verified": false
+  },
+  {
+   "id": "button-6-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 29,
+   "label": "Button 6-5",
+   "verified": false
+  },
+  {
+   "id": "button-7-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 30,
+   "label": "Button 7-5",
+   "verified": false
+  },
+  {
+   "id": "button-8-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 31,
+   "label": "Button 8-5",
+   "verified": false
+  },
+  {
+   "id": "button-1-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 32,
+   "label": "Button 1-4",
+   "verified": false
+  },
+  {
+   "id": "button-2-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 33,
+   "label": "Button 2-4",
+   "verified": false
+  },
+  {
+   "id": "button-3-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 34,
+   "label": "Button 3-4",
+   "verified": false
+  },
+  {
+   "id": "button-4-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 35,
+   "label": "Button 4-4",
+   "verified": false
+  },
+  {
+   "id": "button-5-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 36,
+   "label": "Button 5-4",
+   "verified": false
+  },
+  {
+   "id": "button-6-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 37,
+   "label": "Button 6-4",
+   "verified": false
+  },
+  {
+   "id": "button-7-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 38,
+   "label": "Button 7-4",
+   "verified": false
+  },
+  {
+   "id": "button-8-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 39,
+   "label": "Button 8-4",
+   "verified": false
+  },
+  {
+   "id": "button-1-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 40,
+   "label": "Button 1-3",
+   "verified": false
+  },
+  {
+   "id": "button-2-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 41,
+   "label": "Button 2-3",
+   "verified": false
+  },
+  {
+   "id": "button-3-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 42,
+   "label": "Button 3-3",
+   "verified": false
+  },
+  {
+   "id": "button-4-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 43,
+   "label": "Button 4-3",
+   "verified": false
+  },
+  {
+   "id": "button-5-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 44,
+   "label": "Button 5-3",
+   "verified": false
+  },
+  {
+   "id": "button-6-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 45,
+   "label": "Button 6-3",
+   "verified": false
+  },
+  {
+   "id": "button-7-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 46,
+   "label": "Button 7-3",
+   "verified": false
+  },
+  {
+   "id": "button-8-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 47,
+   "label": "Button 8-3",
+   "verified": false
+  },
+  {
+   "id": "button-1-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 48,
+   "label": "Button 1-2",
+   "verified": false
+  },
+  {
+   "id": "button-2-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 49,
+   "label": "Button 2-2",
+   "verified": false
+  },
+  {
+   "id": "button-3-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 50,
+   "label": "Button 3-2",
+   "verified": false
+  },
+  {
+   "id": "button-4-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 51,
+   "label": "Button 4-2",
+   "verified": false
+  },
+  {
+   "id": "button-5-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 52,
+   "label": "Button 5-2",
+   "verified": false
+  },
+  {
+   "id": "button-6-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 53,
+   "label": "Button 6-2",
+   "verified": false
+  },
+  {
+   "id": "button-7-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 54,
+   "label": "Button 7-2",
+   "verified": false
+  },
+  {
+   "id": "button-8-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 55,
+   "label": "Button 8-2",
+   "verified": false
+  },
+  {
+   "id": "button-1-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 56,
+   "label": "Button 1-1",
+   "verified": false
+  },
+  {
+   "id": "button-2-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 57,
+   "label": "Button 2-1",
+   "verified": false
+  },
+  {
+   "id": "button-3-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 58,
+   "label": "Button 3-1",
+   "verified": false
+  },
+  {
+   "id": "button-4-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 59,
+   "label": "Button 4-1",
+   "verified": false
+  },
+  {
+   "id": "button-5-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 60,
+   "label": "Button 5-1",
+   "verified": false
+  },
+  {
+   "id": "button-6-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 61,
+   "label": "Button 6-1",
+   "verified": false
+  },
+  {
+   "id": "button-7-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 62,
+   "label": "Button 7-1",
+   "verified": false
+  },
+  {
+   "id": "button-8-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 63,
+   "label": "Button 8-1",
+   "verified": false
+  },
+  {
+   "id": "up-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 64,
+   "label": "Up Button",
+   "verified": false
+  },
+  {
+   "id": "down-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 65,
+   "label": "Down Button",
+   "verified": false
+  },
+  {
+   "id": "left-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 66,
+   "label": "Left Button",
+   "verified": false
+  },
+  {
+   "id": "right-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 67,
+   "label": "Right Button",
+   "verified": false
+  },
+  {
+   "id": "volume-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 68,
+   "label": "Volume Button",
+   "verified": false
+  },
+  {
+   "id": "pan-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 69,
+   "label": "Pan Button",
+   "verified": false
+  },
+  {
+   "id": "send-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 70,
+   "label": "Send Button",
+   "verified": false
+  },
+  {
+   "id": "device-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 71,
+   "label": "Device Button",
+   "verified": false
+  },
+  {
+   "id": "clip-stop-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 82,
+   "label": "Clip stop Button",
+   "verified": false
+  },
+  {
+   "id": "solo-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 83,
+   "label": "Solo Button",
+   "verified": false
+  },
+  {
+   "id": "rec-arm-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 84,
+   "label": "Rec arm Button",
+   "verified": false
+  },
+  {
+   "id": "mute-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 85,
+   "label": "Mute Button",
+   "verified": false
+  },
+  {
+   "id": "select-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 86,
+   "label": "Select Button",
+   "verified": false
+  },
+  {
+   "id": "button-216",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 87,
+   "label": "Button 216",
+   "verified": false
+  },
+  {
+   "id": "button-217",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 88,
+   "label": "Button 217",
+   "verified": false
+  },
+  {
+   "id": "stop-all-clips-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 89,
+   "label": "Stop all clips Button",
+   "verified": false
+  },
+  {
+   "id": "shift-button",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 98,
+   "label": "Shift Button",
+   "verified": false
+  }
+ ]
+}

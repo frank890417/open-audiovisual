@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PMJ MidiKey MIDI 對照表與可彈奏面板｜open-audiovisual</title>
+<meta name="description" content="PMJ MidiKey 的 MIDI 對照表：48 顆按鈕。每個控制項的 CC／音符編號、頻道與出處都查好了。網頁上直接彈，一行嵌入，p5.js 也能用。">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://openaudiovisual.com/zh/controllers/pmj-midikey/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/pmj-midikey/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/pmj-midikey/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/pmj-midikey/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="PMJ MidiKey MIDI 對照表與可彈奏面板｜open-audiovisual">
+<meta property="og:description" content="PMJ MidiKey 的 MIDI 對照表：48 顆按鈕。每個控制項的 CC／音符編號、頻道與出處都查好了。網頁上直接彈，一行嵌入，p5.js 也能用。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/controllers/pmj-midikey/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：MIDI 控制器圖鑑">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PMJ MidiKey MIDI 對照表與可彈奏面板｜open-audiovisual">
+<meta name="twitter:description" content="PMJ MidiKey 的 MIDI 對照表：48 顆按鈕。每個控制項的 CC／音符編號、頻道與出處都查好了。網頁上直接彈，一行嵌入，p5.js 也能用。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：MIDI 控制器圖鑑">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css">
+<script type="module" src="../../../assets/search/search.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/controllers/pmj-midikey/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"控制器圖鑑","item":"https://openaudiovisual.com/zh/controllers/"},{"@type":"ListItem","position":3,"name":"PMJ MidiKey","item":"https://openaudiovisual.com/zh/controllers/pmj-midikey/"}]},{"@type":"WebPage","@id":"https://openaudiovisual.com/zh/controllers/pmj-midikey/#webpage","url":"https://openaudiovisual.com/zh/controllers/pmj-midikey/","name":"PMJ MidiKey MIDI 對照表與可彈奏面板｜open-audiovisual","description":"PMJ MidiKey 的 MIDI 對照表：48 顆按鈕。每個控制項的 CC／音符編號、頻道與出處都查好了。網頁上直接彈，一行嵌入，p5.js 也能用。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"breadcrumb":{"@id":"https://openaudiovisual.com/zh/controllers/pmj-midikey/#breadcrumb"},"about":{"@id":"https://openaudiovisual.com/zh/controllers/pmj-midikey/#product"},"mainEntity":{"@id":"https://openaudiovisual.com/zh/controllers/pmj-midikey/#dataset"}},{"@type":"Product","@id":"https://openaudiovisual.com/zh/controllers/pmj-midikey/#product","name":"PMJ MidiKey","model":"MidiKey","brand":{"@type":"Brand","name":"PMJ"},"category":"MIDI 控制器","description":"PMJ MidiKey 的 MIDI 對照表：48 顆按鈕。每個控制項的 CC／音符編號、頻道與出處都查好了。網頁上直接彈，一行嵌入，p5.js 也能用。"},{"@type":"Dataset","@id":"https://openaudiovisual.com/zh/controllers/pmj-midikey/#dataset","name":"PMJ MidiKey MIDI 對照表","description":"open-audiovisual 收錄的 PMJ MidiKey 機器可讀 MIDI 實作表：面板配置、每個控制項的 MIDI 訊息、LED 回饋、埠名稱比對與引用出處，JSON 格式（MIT 授權）。","url":"https://openaudiovisual.com/zh/controllers/pmj-midikey/","inLanguage":"zh-Hant-TW","license":"https://www.apache.org/licenses/LICENSE-2.0","isAccessibleForFree":true,"creator":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/zh/controllers/#dataset"},"about":{"@id":"https://openaudiovisual.com/zh/controllers/pmj-midikey/#product"},"keywords":["MIDI","MIDI controller","MIDI implementation chart","Web MIDI","PMJ MidiKey","PMJ"],"distribution":[{"@type":"DataDownload","name":"imported/pmj-midikey.json","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/imported/pmj-midikey.json"}],"citation":[{"@type":"CreativeWork","name":"QLC+ input profile PMJ-MidiKey.qxi (non-official)","url":"https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/PMJ-MidiKey.qxi"}]},{"@type":"Dataset","@id":"https://openaudiovisual.com/zh/controllers/#dataset","name":"open-audiovisual MIDI 控制器設定檔","url":"https://openaudiovisual.com/zh/controllers/","isPartOf":{"@id":"https://openaudiovisual.com/#software"}}]}</script>
+<link rel="alternate" type="application/json" href="../../../packages/midi/profiles/imported/pmj-midikey.json" title="PMJ MidiKey MIDI profile (JSON)">
+<link rel="stylesheet" href="../../../assets/controllers/controllers.css">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+</head>
+<body class="page-controllers page-controller">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/" aria-current="page">控制器</a>
+    <a href="../../../zh/docs/">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../controllers/pmj-midikey/" hreflang="en" lang="en" data-lang="en">EN</a><span aria-hidden="true">|</span><a href="../../../zh/controllers/pmj-midikey/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>這台裝置沒有 Web MIDI，接不了實體控制器，但可以直接用手指在螢幕上彈。要接你的控制器，請用電腦的 Chrome 或 Edge 開這一頁。 <a href="../../../zh/check/">檢查這台裝置</a></p>
+    <button type="button" aria-label="關掉這則提示">知道了</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
+
+  <!-- ═════ the instrument first, then the words ═════ -->
+  <section class="ch-hero" id="play" aria-labelledby="play-title">
+    <nav class="crumbs" aria-label="麵包屑">
+      <ol>
+        <li><a href="../../../zh/">首頁</a></li>
+        <li><a href="../../../zh/controllers/">控制器圖鑑</a></li>
+        <li aria-current="page">PMJ MidiKey</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">PMJ</p>
+    <h1 id="play-title">PMJ MidiKey</h1>
+    <div class="hero-cols">
+      <div class="lede d-lede">
+        <p>PMJ MidiKey 是 PMJ 的 MIDI 硬體控制器：48 顆按鈕。</p>
+        <p>它在 頻道 1 送出 音符，設定檔引用了 1 份出處。 其中 48 個控制項標了<em>未確認</em>：數字是照目前出處的最佳判讀，按「學習」一次就能重新對應。</p>
+        <ul class="badges"><li class="b-tool">作者的 QLC+ 工具</li><li class="b-comm">社群整理</li><li class="b-gen">版面自動產生</li><li class="b-unv">48 個未確認</li></ul>
+      </div>
+      <div class="hero-facts">
+        <dl class="d-facts">
+          <div><dt>類型</dt><dd>硬體裝置</dd></div>
+          <div><dt>廠牌</dt><dd>PMJ</dd></div>
+          <div><dt>控制項</dt><dd>48 個控制項</dd></div>
+          <div><dt>訊息種類</dt><dd>音符</dd></div>
+          <div><dt>MIDI 頻道</dt><dd>1</dd></div>
+          <div><dt>LED 回饋</dt><dd>不會送出</dd></div>
+          <div><dt>版面</dt><dd>自動產生</dd></div>
+          <div><dt>資料授權</dt><dd>Apache-2.0，來自 QLC+（<a href="https://github.com/frank890417/open-audiovisual/blob/main/NOTICE">NOTICE</a>）</dd></div>
+          <div><dt>實機驗證</dt><dd>還沒有人驗過</dd></div>
+          <div><dt>訊號</dt><dd><code>midi/midikey/…</code></dd></div>
+          <div><dt>埠名稱比對</dt><dd><code>/MidiKey/i</code></dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="stage">
+      <oav-controller id="d-ctl" profile="pmj-midikey" hardware="ask" readout><svg class="fp" viewBox="0 0 100 39" role="img" aria-label="PMJ MidiKey 的面板" focusable="false" preserveAspectRatio="xMidYMid meet"><rect class="fp-body" width="100" height="39" rx="1.37"/><text class="fp-fl" x="2" y="2.6">PMJ MIDIKEY</text><text class="fp-sl" x="2.3" y="4.2">BUTTONS</text><rect class="fp-btn" x="2" y="4.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="4.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="4.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="4.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="4.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="4.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="4.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="4.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="10.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="10.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="10.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="10.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="10.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="10.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="10.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="10.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="15.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="15.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="15.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="15.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="15.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="15.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="15.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="15.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="20.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="20.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="20.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="20.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="20.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="20.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="20.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="20.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="26.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="26.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="26.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="26.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="26.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="26.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="26.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="26.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="31.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="31.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="31.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="31.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="31.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="31.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="31.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="31.4" width="11.39" height="4.6" rx="0.69"/></svg></oav-controller>
+    </div>
+    <div class="stage-foot">
+      <p class="stage-meta"><b>在畫面上彈 PMJ MidiKey</b> <a href="../../../packages/midi/profiles/imported/pmj-midikey.json">原始 JSON ↗</a> <a href="../../../zh/controllers/">全部控制器</a></p>
+    </div>
+    <p class="auto-note">版面自動產生：QLC+ 沒有面板資料，這裡只是把控制項排出來，不是機器的樣子。</p>
+    <p class="hint js-only">拖曳旋鈕和推桿 · 點打擊墊和琴鍵 · 或接上真機按「接上」。除非你加了 MIDI 輸出，否則什麼都不會送出去。</p>
+    <noscript><p class="noscript">這是一台可以彈的控制器，打開 JavaScript 才能彈。完整的 MIDI 對照表在下面的表格裡。</p></noscript>
+  </section>
+
+  <!-- ═════ the full MIDI implementation ═════ -->
+  <section class="sec" id="midi-map" aria-labelledby="midi-map-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">MIDI 實作表</p>
+      <h2 id="midi-map-title">PMJ MidiKey 每個控制項送出什麼</h2>
+      <p class="sec-lede">直接從設定檔產生，跟畫面上彈的是同一張表。頻道是 1–16，編號是真正的 MIDI 編號。</p>
+    </header>
+    <div class="table-scroll" role="region" aria-label="PMJ MidiKey 的 MIDI 實作表" tabindex="0">
+        <table>
+          <caption>PMJ MidiKey 的 MIDI 實作表</caption>
+          <thead><tr><th scope="col">控制項</th><th scope="col">類型</th><th scope="col">訊息</th><th scope="col">頻道</th><th scope="col">編號</th><th scope="col">訊號</th><th scope="col">LED 回饋</th><th scope="col">依據</th></tr></thead>
+          <tbody>
+          <tr class="unv">
+            <th scope="row">Row 1 (top) Button 1 <code class="cid">row-1-top-button-1</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">1 · C#-1</td>
+            <td><code>midi/midikey/row-1-top-button-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 1 (top) Button 2 <code class="cid">row-1-top-button-2</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">2 · D-1</td>
+            <td><code>midi/midikey/row-1-top-button-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 1 (top) Button 3 <code class="cid">row-1-top-button-3</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">3 · D#-1</td>
+            <td><code>midi/midikey/row-1-top-button-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 1 (top) Button 4 <code class="cid">row-1-top-button-4</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">4 · E-1</td>
+            <td><code>midi/midikey/row-1-top-button-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 1 (top) Button 5 <code class="cid">row-1-top-button-5</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">5 · F-1</td>
+            <td><code>midi/midikey/row-1-top-button-5</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 1 (top) Button 6 <code class="cid">row-1-top-button-6</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">6 · F#-1</td>
+            <td><code>midi/midikey/row-1-top-button-6</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 2 Button 1 <code class="cid">row-2-button-1</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">7 · G-1</td>
+            <td><code>midi/midikey/row-2-button-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 2 Button 2 <code class="cid">row-2-button-2</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">8 · G#-1</td>
+            <td><code>midi/midikey/row-2-button-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 2 Button 3 <code class="cid">row-2-button-3</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">9 · A-1</td>
+            <td><code>midi/midikey/row-2-button-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 2 Button 4 <code class="cid">row-2-button-4</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">10 · A#-1</td>
+            <td><code>midi/midikey/row-2-button-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 2 Button 5 <code class="cid">row-2-button-5</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">11 · B-1</td>
+            <td><code>midi/midikey/row-2-button-5</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 2 Button 6 <code class="cid">row-2-button-6</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">12 · C0</td>
+            <td><code>midi/midikey/row-2-button-6</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 3 Button 1 <code class="cid">row-3-button-1</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">13 · C#0</td>
+            <td><code>midi/midikey/row-3-button-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 3 Button 2 <code class="cid">row-3-button-2</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">14 · D0</td>
+            <td><code>midi/midikey/row-3-button-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 3 Button 3 <code class="cid">row-3-button-3</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">15 · D#0</td>
+            <td><code>midi/midikey/row-3-button-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 3 Button 4 <code class="cid">row-3-button-4</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">16 · E0</td>
+            <td><code>midi/midikey/row-3-button-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 3 Button 5 <code class="cid">row-3-button-5</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">17 · F0</td>
+            <td><code>midi/midikey/row-3-button-5</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 3 Button 6 <code class="cid">row-3-button-6</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">18 · F#0</td>
+            <td><code>midi/midikey/row-3-button-6</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 4 Button 1 <code class="cid">row-4-button-1</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">19 · G0</td>
+            <td><code>midi/midikey/row-4-button-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 4 Button 2 <code class="cid">row-4-button-2</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">20 · G#0</td>
+            <td><code>midi/midikey/row-4-button-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 4 Button 3 <code class="cid">row-4-button-3</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">21 · A0</td>
+            <td><code>midi/midikey/row-4-button-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 4 Button 4 <code class="cid">row-4-button-4</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">22 · A#0</td>
+            <td><code>midi/midikey/row-4-button-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 4 Button 5 <code class="cid">row-4-button-5</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">23 · B0</td>
+            <td><code>midi/midikey/row-4-button-5</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 4 Button 6 <code class="cid">row-4-button-6</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">24 · C1</td>
+            <td><code>midi/midikey/row-4-button-6</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 5 Button 1 <code class="cid">row-5-button-1</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">25 · C#1</td>
+            <td><code>midi/midikey/row-5-button-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 5 Button 2 <code class="cid">row-5-button-2</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">26 · D1</td>
+            <td><code>midi/midikey/row-5-button-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 5 Button 3 <code class="cid">row-5-button-3</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">27 · D#1</td>
+            <td><code>midi/midikey/row-5-button-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 5 Button 4 <code class="cid">row-5-button-4</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">28 · E1</td>
+            <td><code>midi/midikey/row-5-button-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 5 Button 5 <code class="cid">row-5-button-5</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">29 · F1</td>
+            <td><code>midi/midikey/row-5-button-5</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 6 Button 1 <code class="cid">row-6-button-1</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">30 · F#1</td>
+            <td><code>midi/midikey/row-6-button-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 6 Button 2 <code class="cid">row-6-button-2</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">31 · G1</td>
+            <td><code>midi/midikey/row-6-button-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 6 Button 3 <code class="cid">row-6-button-3</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">32 · G#1</td>
+            <td><code>midi/midikey/row-6-button-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 6 Button 4 <code class="cid">row-6-button-4</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">33 · A1</td>
+            <td><code>midi/midikey/row-6-button-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 6 Button 5 <code class="cid">row-6-button-5</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">34 · A#1</td>
+            <td><code>midi/midikey/row-6-button-5</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 7 Button 1 <code class="cid">row-7-button-1</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">35 · B1</td>
+            <td><code>midi/midikey/row-7-button-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 7 Button 2 <code class="cid">row-7-button-2</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">36 · C2</td>
+            <td><code>midi/midikey/row-7-button-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 7 Button 3 <code class="cid">row-7-button-3</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">37 · C#2</td>
+            <td><code>midi/midikey/row-7-button-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 7 Button 4 <code class="cid">row-7-button-4</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">38 · D2</td>
+            <td><code>midi/midikey/row-7-button-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 7 Button 5 <code class="cid">row-7-button-5</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">39 · D#2</td>
+            <td><code>midi/midikey/row-7-button-5</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 8 Button 1 <code class="cid">row-8-button-1</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">40 · E2</td>
+            <td><code>midi/midikey/row-8-button-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 8 Button 2 <code class="cid">row-8-button-2</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">41 · F2</td>
+            <td><code>midi/midikey/row-8-button-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 8 Button 3 <code class="cid">row-8-button-3</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">42 · F#2</td>
+            <td><code>midi/midikey/row-8-button-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 8 Button 4 <code class="cid">row-8-button-4</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">43 · G2</td>
+            <td><code>midi/midikey/row-8-button-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 8 Button 5 <code class="cid">row-8-button-5</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">44 · G#2</td>
+            <td><code>midi/midikey/row-8-button-5</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 9 (bottom) Button 1 <code class="cid">row-9-bottom-button-1</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">45 · A2</td>
+            <td><code>midi/midikey/row-9-bottom-button-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 9 (bottom) Button 2 <code class="cid">row-9-bottom-button-2</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">46 · A#2</td>
+            <td><code>midi/midikey/row-9-bottom-button-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 9 (bottom) Button 3 Please/Enter <code class="cid">row-9-bottom-button-3-please-enter</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">47 · B2</td>
+            <td><code>midi/midikey/row-9-bottom-button-3-please-enter</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Row 9 (bottom) Button 4 <code class="cid">row-9-bottom-button-4</code></th>
+            <td>按鈕</td>
+            <td>音符 · 按住</td>
+            <td class="n">1</td>
+            <td class="n">48 · C3</td>
+            <td><code>midi/midikey/row-9-bottom-button-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">未確認</span></td>
+          </tr>
+          </tbody>
+        </table>
+        </div>
+    <p class="verify-cta">手上有這台機器？幾分鐘就能核對這份資料。 <a href="../../../zh/controllers/verify/?profile=pmj-midikey">用你的機器驗證 PMJ MidiKey →</a></p>
+    <p class="led-line" data-led="no">這一台還沒有寫 LED 回饋，OAV 不會讓它的燈亮，但每個控制項照樣可以彈、照樣送出各自的訊息。</p>
+    
+    <div class="spec-grid">
+      <div>
+        <h3>出處</h3>
+        <ul class="sources"><li><span class="src-kind">社群</span> <a href="https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/PMJ-MidiKey.qxi" rel="noopener">QLC+ input profile PMJ-MidiKey.qxi (non-official)</a><span class="src-note">community profile by Yestalgia; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project</span></li></ul>
+        <h3>這個設定檔從哪裡來</h3><p class="raw-note">Imported from QLC+ on 2026-11-04. <code>resources/inputprofiles/PMJ-MidiKey.qxi</code></p>
+      </div>
+      <div>
+        <h3>說明</h3><p class="raw-note">Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.</p>
+        <h3>認得的埠名稱</h3>
+        <dl class="ports"><div><dt>比對</dt><dd><code>/MidiKey/i</code></dd></div></dl>
+      </div>
+      <div>
+        <h3>訊號</h3>
+        <p>每個控制項都會發出 <code>midi/midikey/&lt;控制項&gt;</code>（0..1）和 <code>/raw</code>。打擊墊多一個 <code>/hit</code>，無段旋鈕多 <code>/delta</code>，琴鍵有 <code>/on</code>、<code>/off</code> 和 <code>n&lt;音高&gt;</code>。最後動到的那個控制項是 <code>midi/midikey/last</code>。</p>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- ═════ use it ═════ -->
+  <section class="sec" id="use" aria-labelledby="use-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">用起來</p>
+      <h2 id="use-title">把 PMJ MidiKey 用在你的作品裡</h2>
+    </header>
+    <ol class="snips">
+      <li class="snip"><h3>一行嵌入</h3><p>不用 import map，也不用建置。可以改 <code>layout</code>，加上 <code>hardware="ask"</code> 就有「接上」按鈕。</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-element">複製</button></div><pre id="snip-element"><code><span class="tt">&lt;script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;<span class="tt">&lt;/script</span>&gt;
+<span class="tt">&lt;oav-controller</span> profile=<span class="ts">"pmj-midikey"</span> readout&gt;<span class="tt">&lt;/oav-controller</span>&gt;</code></pre></div></li>
+      <li class="snip"><h3>或用 iframe</h3><p>給只能貼 iframe 的地方。每個事件都以 <code>postMessage</code> 傳回來。</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-iframe">複製</button></div><pre id="snip-iframe"><code><span class="tt">&lt;iframe</span> src=<span class="ts">"https://openaudiovisual.com/embed/controller/?profile=pmj-midikey&amp;readout"</span>
+        width=<span class="ts">"720"</span> height=<span class="ts">"303"</span> style=<span class="ts">"border:0;max-width:100%"</span> allow=<span class="ts">"midi"</span>
+        title=<span class="ts">"PMJ MidiKey"</span>&gt;<span class="tt">&lt;/iframe</span>&gt;
+<span class="tt">&lt;script</span>&gt;
+  <span class="tc">// every control the visitor plays arrives here</span>
+  addEventListener(<span class="ts">'message'</span>, (e) =&gt; {
+    <span class="tk">if</span> (e.data?.source !== <span class="ts">'openav'</span> || e.data.type !== <span class="ts">'control'</span>) <span class="tk">return</span>;
+    console.log(e.data.detail.signal, e.data.detail.value);
+  });
+<span class="tt">&lt;/script</span>&gt;</code></pre></div></li>
+      <li class="snip"><h3>送進 Ableton、TouchDesigner、Resolume</h3><p>你在畫面上彈的，會變成真正的 MIDI，從 macOS 的 IAC 匯流排或 Windows 的 loopMIDI 埠送出。步驟在<a href="../../../zh/controllers/#embed">圖鑑頁</a>。</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-daw">複製</button></div><pre id="snip-daw"><code><span class="tc">&lt;!-- what you play on this controller → the IAC bus (macOS) → Ableton, TouchDesigner, Resolume --&gt;</span>
+<span class="tt">&lt;script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;<span class="tt">&lt;/script</span>&gt;
+<span class="tt">&lt;oav-controller</span> profile=<span class="ts">"pmj-midikey"</span> midi-out=<span class="ts">"IAC"</span> readout&gt;<span class="tt">&lt;/oav-controller</span>&gt;
+<span class="tc">&lt;!-- Windows: midi-out="loopMIDI" · let the visitor pick a port: midi-out="ask" --&gt;</span></code></pre></div><p class="note">macOS：音訊 MIDI 設定 → MIDI 工作室 → IAC 驅動程式 → 勾「裝置在線上」。Windows 11：內建的 <a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/">Windows MIDI Services</a> 有 loopback（我們沒有實測）；舊版 Windows：安裝 loopMIDI、新增一個埠，用 <code>midi-out="loopMIDI"</code>。</p></li>
+    </ol>
+    
+  </section>
+
+  <!-- ═════ other software ═════ -->
+  <section class="sec" id="other-software" aria-labelledby="other-software-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">其他軟體</p>
+      <h2 id="other-software-title">在這個專案以外使用這台控制器</h2>
+      <p class="sec-lede">同一份資料，換成別的程式讀得懂的檔案。除非上面的表格有寫，這些檔案都還沒在這台機器上實測過。</p>
+    </header>
+    <div class="spec-grid">
+      <div>
+        <h3>QLC+</h3>
+        <p>輸入設定檔：每個控制項和 LED 值，給燈光控制用。複製到使用者資料夾（macOS <code>~/Library/Application Support/QLC+/InputProfiles</code>，Linux <code>~/.qlcplus/inputprofiles</code>，Windows <code>%USERPROFILE%\QLC+\InputProfiles</code>），重新開啟 QLC+。</p>
+        <div class="vf-row"><a class="vf-btn" href="../../../controllers/pmj-midikey/pmj-midikey.qxi" download="pmj-midikey.qxi">pmj-midikey.qxi</a></div>
+      </div>
+      <div>
+        <h3>Mixxx</h3>
+        <p>這是起點，不是完成的 mapping：唱盤、EQ、hot cue 依序分給各個控制項。把兩個檔案放進 Preferences → Controllers → Open User Mapping Folder 開啟的資料夾，再用 Learning Wizard 改成你要的。</p>
+        <div class="vf-row"><a class="vf-btn" href="../../../controllers/pmj-midikey/pmj-midikey.midi.xml" download="pmj-midikey.midi.xml">pmj-midikey.midi.xml</a><a class="vf-btn" href="../../../controllers/pmj-midikey/pmj-midikey.scripts.js" download="pmj-midikey.scripts.js">pmj-midikey.scripts.js</a></div>
+      </div>
+      <div>
+        <h3>資料本身</h3>
+        <p>上面的東西都來自這個檔案：面板、訊息、LED、SysEx，以及誰驗了什麼。<code>tools/export-controller.mjs</code> 可以從任何設定檔產生這些檔案。</p>
+        <div class="vf-row"><a class="vf-btn" href="../../../packages/midi/profiles/imported/pmj-midikey.json">imported/pmj-midikey.json</a></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═════ around it ═════ -->
+  <section class="sec" id="related" aria-labelledby="related-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">這台的周圍</p>
+      <h2 id="related-title">相關控制器</h2>
+    </header>
+    <ul class="rel" aria-label="相關控制器">
+      <li><a href="../pmj-circus/">PMJ Circus</a><span>PMJ · 20 顆無段旋鈕 · 10 支推桿 · 40 顆按鈕</span></li>
+      <li><a href="../pmj-9-faders-controller/">PMJ 9 Faders Controller</a><span>PMJ · 9 支推桿</span></li>
+      <li><a href="../novation-launchpad/">Novation Launchpad</a><span>Novation · 80 顆按鈕</span></li>
+      <li><a href="../showtec-showmaster-24/">ShowTec ShowMaster 24</a><span>ShowTec · 45 顆按鈕</span></li>
+      <li><a href="../akai-apc-mini/">AKAI Professional APC Mini</a><span>AKAI Professional · 9 支推桿 · 81 顆按鈕</span></li>
+      <li><a href="../adj-midicon-2/">American DJ MIDICON-2</a><span>American DJ · 21 支推桿 · 67 顆按鈕</span></li>
+    </ul>
+    <p class="cmp-link"><a href="../#cmp-pmj-midikey">把 PMJ MidiKey 跟其他台比較：琴鍵、打擊墊、旋鈕、推桿、LED 回饋 →</a></p>
+    <nav class="step" aria-label="相鄰的控制器">
+      <a rel="prev" href="../pmj-circus/"><small>← 上一台</small>PMJ Circus</a>
+      <a class="back" href="../../../zh/controllers/">回到全部控制器</a>
+      <a rel="next" href="../showtec-showmaster-24/"><small>下一台 →</small>ShowTec ShowMaster 24</a>
+    </nav>
+  </section>
+
+  <!-- ═════ not here? ═════ -->
+  <section class="sec" id="request" aria-labelledby="request-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">找不到</p>
+      <h2 id="request-title">沒有你那台？</h2>
+      <p class="sec-lede">開一張 issue，寫廠牌型號、手上有沒有這台、手冊的連結。也可以自己寫設定檔，它就是一個 JSON 檔。</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">許願一台控制器 ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md">怎麼自己加 ↗</a></li>
+    </ul>
+  </section>
+
+  <!-- ═════ wrong data? ═════ -->
+  <section class="sec" id="report" aria-labelledby="report-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">GitHub</p>
+      <h2 id="report-title">這台的資料有錯嗎？</h2>
+      <p class="sec-lede">這一頁的每個數字都來自一個 JSON 檔。如果跟你的機器或手冊對不上，告訴我們你查的是哪個韌體版本，我們就改檔案。</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?title=%E6%8E%A7%E5%88%B6%E5%99%A8%E8%B3%87%E6%96%99%EF%BC%9APMJ%20MidiKey%EF%BC%88pmj-midikey%EF%BC%89">到 GitHub 回報 ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/profiles/imported/pmj-midikey.json">GitHub 上的設定檔 ↗</a></li>
+      <li><a href="../../../packages/midi/profiles/imported/pmj-midikey.json">原始 JSON</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="ctl-i18n">{"lang":"zh","copy":"複製","copied":"已複製","profile":"pmj-midikey","imported":true,"sysex":null}</script>
+<script type="module" src="../../../assets/controllers/detail.js"></script>
+<!--/email_off-->
+</body>
+</html>

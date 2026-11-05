@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- Behringer X-TOUCH MINI: generated from https://openaudiovisual.com/controllers/behringer-x-touch-mini/. Set the MIDI channel of this input to Omni in QLC+. -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>Behringer</Manufacturer>
+ <Model>X-TOUCH MINI</Model>
+ <Type>MIDI</Type>
+ <Channel Number="40961">
+  <Name>1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="40962">
+  <Name>2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="40963">
+  <Name>3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="40964">
+  <Name>4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="40965">
+  <Name>5</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="40966">
+  <Name>6</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="40967">
+  <Name>7</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="40968">
+  <Name>8</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="40969">
+  <Name>Fader</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="41088">
+  <Name>Push</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41089">
+  <Name>Push</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41090">
+  <Name>Push</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41091">
+  <Name>Push</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41092">
+  <Name>Push</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41093">
+  <Name>Push</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41094">
+  <Name>Push</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41095">
+  <Name>Push</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41096">
+  <Name>1</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41097">
+  <Name>2</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41098">
+  <Name>3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41099">
+  <Name>4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41100">
+  <Name>5</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41101">
+  <Name>6</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41102">
+  <Name>7</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41103">
+  <Name>8</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41104">
+  <Name>9</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41105">
+  <Name>10</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41106">
+  <Name>11</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41107">
+  <Name>12</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41108">
+  <Name>13</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41109">
+  <Name>14</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41110">
+  <Name>15</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41111">
+  <Name>16</Name>
+  <Type>Button</Type>
+ </Channel>
+</InputProfile>

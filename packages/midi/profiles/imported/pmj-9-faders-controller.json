@@ -1,0 +1,146 @@
+{
+ "id": "pmj-9-faders-controller",
+ "short": "9faderscontroller",
+ "name": "PMJ 9 Faders Controller",
+ "maker": "PMJ",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "9[\\s-]*Faders[\\s-]*Controller"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/PMJ-9-Faders-Controller.qxi",
+  "license": "Apache-2.0",
+  "author": "Massimo Callegari",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile PMJ-9-Faders-Controller.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/PMJ-9-Faders-Controller.qxi",
+   "note": "community profile by Massimo Callegari; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 38,
+  "label": "PMJ 9 Faders Controller",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 32,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "slider-1",
+    "slider-3",
+    "slider-4",
+    "slider-5",
+    "slider-9",
+    "slider-2",
+    "slider-6",
+    "slider-7",
+    "slider-8"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "slider-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 1,
+   "label": "Slider 1",
+   "verified": false
+  },
+  {
+   "id": "slider-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 2,
+   "label": "Slider 3",
+   "verified": false
+  },
+  {
+   "id": "slider-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 3,
+   "label": "Slider 4",
+   "verified": false
+  },
+  {
+   "id": "slider-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 4,
+   "label": "Slider 5",
+   "verified": false
+  },
+  {
+   "id": "slider-9",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 5,
+   "label": "Slider 9",
+   "verified": false
+  },
+  {
+   "id": "slider-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 6,
+   "label": "Slider 2",
+   "verified": false
+  },
+  {
+   "id": "slider-6",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 7,
+   "label": "Slider 6",
+   "verified": false
+  },
+  {
+   "id": "slider-7",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 8,
+   "label": "Slider 7",
+   "verified": false
+  },
+  {
+   "id": "slider-8",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 9,
+   "label": "Slider 8",
+   "verified": false
+  }
+ ]
+}

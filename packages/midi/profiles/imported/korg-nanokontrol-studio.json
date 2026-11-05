@@ -1,0 +1,3147 @@
+{
+ "id": "korg-nanokontrol-studio",
+ "short": "nanokontrolstudio",
+ "name": "KORG nanoKONTROL Studio",
+ "maker": "KORG",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "nanoKONTROL[\\s-]*Studio"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/KORG-nanoKONTROLStudio.qxi",
+  "license": "Apache-2.0",
+  "author": "Hans-Jürgen Tappe",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile KORG-nanoKONTROLStudio.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/KORG-nanoKONTROLStudio.qxi",
+   "note": "community profile by Hans-Jürgen Tappe; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 226,
+  "label": "KORG nanoKONTROL Studio",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 80,
+   "cols": 8,
+   "rows": 5,
+   "controls": [
+    "slider-1-scene-1",
+    "slider-2-scene-1",
+    "slider-3-scene-1",
+    "slider-4-scene-1",
+    "slider-5-scene-1",
+    "slider-6-scene-1",
+    "slider-7-scene-1",
+    "slider-8-scene-1",
+    "slider-1-scene-2",
+    "slider-2-scene-2",
+    "slider-3-scene-2",
+    "slider-4-scene-2",
+    "slider-5-scene-2",
+    "slider-6-scene-2",
+    "slider-7-scene-2",
+    "slider-8-scene-2",
+    "slider-1-scene-3",
+    "slider-2-scene-3",
+    "slider-3-scene-3",
+    "slider-4-scene-3",
+    "slider-5-scene-3",
+    "slider-6-scene-3",
+    "slider-7-scene-3",
+    "slider-8-scene-3",
+    "slider-2-scene-4",
+    "slider-3-scene-4",
+    "slider-4-scene-4",
+    "slider-5-scene-4",
+    "slider-6-scene-4",
+    "slider-7-scene-4",
+    "slider-8-scene-4",
+    "slider-1-scene-5",
+    "slider-2-scene-5",
+    "slider-3-scene-5",
+    "slider-4-scene-5",
+    "slider-5-scene-5",
+    "slider-6-scene-5",
+    "slider-7-scene-5",
+    "slider-8-scene-5"
+   ]
+  },
+  {
+   "id": "knob",
+   "label": "Knobs",
+   "x": 2,
+   "y": 86,
+   "w": 96,
+   "h": 45,
+   "cols": 8,
+   "rows": 5,
+   "controls": [
+    "knob-1-scene-1",
+    "knob-2-scene-1",
+    "knob-3-scene-1",
+    "knob-4-scene-1",
+    "knob-5-scene-1",
+    "knob-6-scene-1",
+    "knob-7-scene-1",
+    "knob-8-scene-1",
+    "knob-1-scene-2",
+    "knob-2-scene-2",
+    "knob-3-scene-2",
+    "knob-4-scene-2",
+    "knob-5-scene-2",
+    "knob-6-scene-2",
+    "knob-7-scene-2",
+    "knob-8-scene-2",
+    "knob-1-scene-3",
+    "knob-2-scene-3",
+    "knob-3-scene-3",
+    "knob-4-scene-3",
+    "knob-5-scene-3",
+    "knob-6-scene-3",
+    "knob-7-scene-3",
+    "knob-8-scene-3",
+    "knob-1-scene-4",
+    "knob-2-scene-4",
+    "knob-3-scene-4",
+    "knob-4-scene-4",
+    "knob-5-scene-4",
+    "knob-6-scene-4",
+    "knob-7-scene-4",
+    "knob-8-scene-4",
+    "knob-1-scene-5",
+    "knob-2-scene-5",
+    "knob-3-scene-5",
+    "knob-4-scene-5",
+    "knob-5-scene-5",
+    "knob-6-scene-5",
+    "knob-7-scene-5",
+    "knob-8-scene-5"
+   ]
+  },
+  {
+   "id": "encoder",
+   "label": "Encoders",
+   "x": 2,
+   "y": 134,
+   "w": 96,
+   "h": 9,
+   "cols": 5,
+   "rows": 1,
+   "controls": [
+    "jogwheel-scene-1",
+    "jogwheel-scene-2",
+    "jogwheel-scene-3",
+    "jogwheel-scene-4",
+    "jogwheel-scene-5"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 146,
+   "w": 96,
+   "h": 77,
+   "cols": 16,
+   "rows": 14,
+   "controls": [
+    "mute-1-scene-1",
+    "mute-2-scene-1",
+    "mute-3-scene-1",
+    "mute-4-scene-1",
+    "mute-5-scene-1",
+    "mute-6-scene-1",
+    "mute-7-scene-1",
+    "mute-8-scene-1",
+    "solo-1-scene-1",
+    "solo-2-scene-1",
+    "solo-3-scene-1",
+    "solo-4-scene-1",
+    "solo-5-scene-1",
+    "solo-6-scene-1",
+    "solo-7-scene-1",
+    "solo-8-scene-1",
+    "rec-1-scene-1",
+    "rec-2-scene-1",
+    "rec-3-scene-1",
+    "rec-4-scene-1",
+    "rec-5-scene-1",
+    "rec-6-scene-1",
+    "rec-7-scene-1",
+    "rec-8-scene-1",
+    "select-1-scene-1",
+    "select-2-scene-1",
+    "select-3-scene-1",
+    "select-4-scene-1",
+    "select-5-scene-1",
+    "select-6-scene-1",
+    "select-7-scene-1",
+    "select-8-scene-1",
+    "cycle-scene-1",
+    "marker-set-scene-1",
+    "marker-left-scene-1",
+    "marker-right-scene-1",
+    "track-rew-scene-1",
+    "track-fwd-scene-1",
+    "track-left-scene-1",
+    "track-right-scene-1",
+    "back-scene-1",
+    "stop-scene-1",
+    "play-scene-1",
+    "rec-scene-1",
+    "mute-1-scene-2",
+    "mute-2-scene-2",
+    "mute-3-scene-2",
+    "mute-4-scene-2",
+    "mute-5-scene-2",
+    "mute-6-scene-2",
+    "mute-7-scene-2",
+    "mute-8-scene-2",
+    "solo-1-scene-2",
+    "solo-2-scene-2",
+    "solo-3-scene-2",
+    "solo-4-scene-2",
+    "solo-5-scene-2",
+    "solo-6-scene-2",
+    "solo-7-scene-2",
+    "solo-8-scene-2",
+    "rec-1-scene-2",
+    "rec-2-scene-2",
+    "rec-3-scene-2",
+    "rec-4-scene-2",
+    "rec-5-scene-2",
+    "rec-6-scene-2",
+    "rec-7-scene-2",
+    "rec-8-scene-2",
+    "select-1-scene-2",
+    "select-2-scene-2",
+    "select-3-scene-2",
+    "select-4-scene-2",
+    "select-5-scene-2",
+    "select-6-scene-2",
+    "select-7-scene-2",
+    "select-8-scene-2",
+    "cycle-scene-2",
+    "marker-set-scene-2",
+    "marker-left-scene-2",
+    "marker-right-scene-2",
+    "track-rew-scene-2",
+    "track-fwd-scene-2",
+    "track-left-scene-2",
+    "track-right-scene-2",
+    "back-scene-2",
+    "stop-scene-2",
+    "play-scene-2",
+    "rec-scene-2",
+    "mute-1-scene-3",
+    "mute-2-scene-3",
+    "mute-3-scene-3",
+    "mute-4-scene-3",
+    "mute-5-scene-3",
+    "mute-6-scene-3",
+    "mute-7-scene-3",
+    "mute-8-scene-3",
+    "solo-1-scene-3",
+    "solo-2-scene-3",
+    "solo-3-scene-3",
+    "solo-4-scene-3",
+    "solo-5-scene-3",
+    "solo-6-scene-3",
+    "solo-7-scene-3",
+    "solo-8-scene-3",
+    "rec-1-scene-3",
+    "rec-2-scene-3",
+    "rec-3-scene-3",
+    "rec-4-scene-3",
+    "rec-5-scene-3",
+    "rec-6-scene-3",
+    "rec-7-scene-3",
+    "rec-8-scene-3",
+    "select-1-scene-3",
+    "select-2-scene-3",
+    "select-3-scene-3",
+    "select-4-scene-3",
+    "select-5-scene-3",
+    "select-6-scene-3",
+    "select-7-scene-3",
+    "select-8-scene-3",
+    "cycle-scene-3",
+    "marker-set-scene-3",
+    "marker-left-scene-3",
+    "marker-right-scene-3",
+    "track-rew-scene-3",
+    "track-fwd-scene-3",
+    "track-left-scene-3",
+    "track-right-scene-3",
+    "back-scene-3",
+    "stop-scene-3",
+    "play-scene-3",
+    "rec-scene-3",
+    "slider-1-scene-4",
+    "mute-1-scene-4",
+    "mute-2-scene-4",
+    "mute-3-scene-1-2",
+    "mute-4-scene-4",
+    "mute-5-scene-4",
+    "mute-6-scene-4",
+    "mute-7-scene-4",
+    "mute-8-scene-4",
+    "solo-1-scene-4",
+    "solo-2-scene-4",
+    "solo-3-scene-4",
+    "solo-4-scene-4",
+    "solo-5-scene-4",
+    "solo-6-scene-4",
+    "solo-7-scene-4",
+    "solo-8-scene-4",
+    "rec-1-scene-4",
+    "rec-2-scene-4",
+    "rec-3-scene-4",
+    "rec-4-scene-4",
+    "rec-5-scene-4",
+    "rec-6-scene-4",
+    "rec-7-scene-4",
+    "rec-8-scene-4",
+    "select-1-scene-4",
+    "select-2-scene-4",
+    "select-3-scene-4",
+    "select-4-scene-4",
+    "select-5-scene-4",
+    "select-6-scene-4",
+    "select-7-scene-4",
+    "select-8-scene-4",
+    "cycle-scene-4",
+    "marker-set-scene-4",
+    "marker-left-scene-4",
+    "marker-right-scene-4",
+    "track-rew-scene-4",
+    "track-fwd-scene-4",
+    "track-left-scene-4",
+    "track-right-scene-4",
+    "back-scene-4",
+    "stop-scene-4",
+    "play-scene-4",
+    "rec-scene-4",
+    "mute-1-scene-1-2",
+    "mute-2-scene-5",
+    "mute-3-scene-5",
+    "mute-4-scene-5",
+    "mute-5-scene-5",
+    "mute-6-scene-5",
+    "mute-7-scene-5",
+    "mute-8-scene-5",
+    "solo-1-scene-5",
+    "solo-2-scene-5",
+    "solo-3-scene-5",
+    "solo-4-scene-5",
+    "solo-5-scene-5",
+    "solo-6-scene-5",
+    "solo-7-scene-5",
+    "solo-8-scene-5",
+    "rec-1-scene-5",
+    "rec-2-scene-5",
+    "rec-3-scene-5",
+    "rec-4-scene-5",
+    "rec-5-scene-5",
+    "rec-6-scene-5",
+    "rec-7-scene-5",
+    "rec-8-scene-5",
+    "select-1-scene-5",
+    "select-2-scene-5",
+    "select-3-scene-5",
+    "select-4-scene-5",
+    "select-5-scene-5",
+    "select-6-scene-5",
+    "select-7-scene-5",
+    "select-8-scene-5",
+    "cycle-scene-5",
+    "marker-set-scene-5",
+    "marker-left-scene-5",
+    "marker-right-scene-5",
+    "track-rew-scene-5",
+    "track-fwd-scene-5",
+    "track-left-scene-5",
+    "track-right-scene-5",
+    "back-scene-5",
+    "stop-scene-5",
+    "play-scene-5",
+    "rec-scene-5"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "slider-1-scene-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 2,
+   "label": "Slider 1 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "slider-2-scene-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 3,
+   "label": "Slider 2 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "slider-3-scene-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 4,
+   "label": "Slider 3 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "slider-4-scene-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 5,
+   "label": "Slider 4 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "slider-5-scene-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 6,
+   "label": "Slider 5 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "slider-6-scene-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 8,
+   "label": "Slider 6 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "slider-7-scene-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 9,
+   "label": "Slider 7 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "slider-8-scene-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 12,
+   "label": "Slider 8 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "knob-1-scene-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 13,
+   "label": "Knob 1 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "knob-2-scene-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 14,
+   "label": "Knob 2 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "knob-3-scene-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 15,
+   "label": "Knob 3 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "knob-4-scene-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 16,
+   "label": "Knob 4 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "knob-5-scene-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 17,
+   "label": "Knob 5 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "knob-6-scene-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 18,
+   "label": "Knob 6 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "knob-7-scene-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 19,
+   "label": "Knob 7 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "knob-8-scene-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 20,
+   "label": "Knob 8 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-1-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 21,
+   "label": "Mute 1 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-2-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 22,
+   "label": "Mute 2 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-3-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 23,
+   "label": "Mute 3 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-4-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 24,
+   "label": "Mute 4 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-5-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 25,
+   "label": "Mute 5 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-6-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 26,
+   "label": "Mute 6 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-7-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 27,
+   "label": "Mute 7 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-8-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 28,
+   "label": "Mute 8 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "solo-1-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 29,
+   "label": "Solo 1 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "solo-2-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 30,
+   "label": "Solo 2 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "solo-3-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 31,
+   "label": "Solo 3 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "solo-4-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 33,
+   "label": "Solo 4 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "solo-5-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 34,
+   "label": "Solo 5 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "solo-6-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 35,
+   "label": "Solo 6 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "solo-7-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 36,
+   "label": "Solo 7 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "solo-8-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 37,
+   "label": "Solo 8 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "rec-1-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 38,
+   "label": "Rec 1 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "rec-2-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 39,
+   "label": "Rec 2 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "rec-3-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 40,
+   "label": "Rec 3 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "rec-4-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 41,
+   "label": "Rec 4 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "rec-5-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 42,
+   "label": "Rec 5 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "rec-6-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 43,
+   "label": "Rec 6 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "rec-7-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 44,
+   "label": "Rec 7 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "rec-8-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 45,
+   "label": "Rec 8 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "select-1-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 46,
+   "label": "Select 1 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "select-2-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 47,
+   "label": "Select 2 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "select-3-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 48,
+   "label": "Select 3 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "select-4-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 49,
+   "label": "Select 4 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "select-5-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 50,
+   "label": "Select 5 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "select-6-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 51,
+   "label": "Select 6 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "select-7-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 52,
+   "label": "Select 7 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "select-8-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 53,
+   "label": "Select 8 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "cycle-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 54,
+   "label": "Cycle - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "marker-set-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 55,
+   "label": "Marker Set - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "marker-left-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 56,
+   "label": "Marker Left - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "marker-right-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 57,
+   "label": "Marker Right - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "track-rew-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 58,
+   "label": "Track Rew - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "track-fwd-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 59,
+   "label": "Track Fwd - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "track-left-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 60,
+   "label": "Track Left - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "track-right-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 61,
+   "label": "Track Right - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "back-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 62,
+   "label": "Back - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "stop-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 63,
+   "label": "Stop - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "play-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 80,
+   "label": "Play - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "rec-scene-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 81,
+   "label": "Rec - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "jogwheel-scene-1",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 86,
+   "relative": false,
+   "label": "Jogwheel - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "slider-1-scene-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 2,
+   "label": "Slider 1 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "slider-2-scene-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 3,
+   "label": "Slider 2 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "slider-3-scene-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 4,
+   "label": "Slider 3 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "slider-4-scene-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 5,
+   "label": "Slider 4 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "slider-5-scene-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 6,
+   "label": "Slider 5 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "slider-6-scene-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 8,
+   "label": "Slider 6 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "slider-7-scene-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 9,
+   "label": "Slider 7 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "slider-8-scene-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 12,
+   "label": "Slider 8 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "knob-1-scene-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 13,
+   "label": "Knob 1 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "knob-2-scene-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 14,
+   "label": "Knob 2 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "knob-3-scene-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 15,
+   "label": "Knob 3 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "knob-4-scene-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 16,
+   "label": "Knob 4 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "knob-5-scene-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 17,
+   "label": "Knob 5 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "knob-6-scene-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 18,
+   "label": "Knob 6 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "knob-7-scene-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 19,
+   "label": "Knob 7 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "knob-8-scene-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 20,
+   "label": "Knob 8 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "mute-1-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 21,
+   "label": "Mute 1 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "mute-2-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 22,
+   "label": "Mute 2 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "mute-3-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 23,
+   "label": "Mute 3 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "mute-4-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 24,
+   "label": "Mute 4 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "mute-5-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 25,
+   "label": "Mute 5 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "mute-6-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 26,
+   "label": "Mute 6 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "mute-7-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 27,
+   "label": "Mute 7 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "mute-8-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 28,
+   "label": "Mute 8 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "solo-1-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 29,
+   "label": "Solo 1 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "solo-2-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 30,
+   "label": "Solo 2 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "solo-3-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 31,
+   "label": "Solo 3 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "solo-4-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 33,
+   "label": "Solo 4 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "solo-5-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 34,
+   "label": "Solo 5 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "solo-6-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 35,
+   "label": "Solo 6 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "solo-7-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 36,
+   "label": "Solo 7 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "solo-8-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 37,
+   "label": "Solo 8 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "rec-1-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 38,
+   "label": "Rec 1 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "rec-2-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 39,
+   "label": "Rec 2 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "rec-3-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 40,
+   "label": "Rec 3 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "rec-4-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 41,
+   "label": "Rec 4 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "rec-5-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 42,
+   "label": "Rec 5 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "rec-6-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 43,
+   "label": "Rec 6 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "rec-7-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 44,
+   "label": "Rec 7 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "rec-8-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 45,
+   "label": "Rec 8 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "select-1-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 46,
+   "label": "Select 1 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "select-2-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 47,
+   "label": "Select 2 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "select-3-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 48,
+   "label": "Select 3 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "select-4-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 49,
+   "label": "Select 4 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "select-5-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 50,
+   "label": "Select 5 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "select-6-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 51,
+   "label": "Select 6 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "select-7-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 52,
+   "label": "Select 7 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "select-8-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 53,
+   "label": "Select 8 - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "cycle-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 54,
+   "label": "Cycle - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "marker-set-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 55,
+   "label": "Marker Set - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "marker-left-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 56,
+   "label": "Marker Left - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "marker-right-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 57,
+   "label": "Marker Right - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "track-rew-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 58,
+   "label": "Track Rew - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "track-fwd-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 59,
+   "label": "Track Fwd - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "track-left-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 60,
+   "label": "Track Left - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "track-right-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 61,
+   "label": "Track Right - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "back-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 62,
+   "label": "Back - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "stop-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 63,
+   "label": "Stop - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "play-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 80,
+   "label": "Play - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "rec-scene-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 81,
+   "label": "Rec - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "jogwheel-scene-2",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 86,
+   "relative": false,
+   "label": "Jogwheel - Scene 2",
+   "verified": false
+  },
+  {
+   "id": "slider-1-scene-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 2,
+   "label": "Slider 1 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "slider-2-scene-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 3,
+   "label": "Slider 2 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "slider-3-scene-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 4,
+   "label": "Slider 3 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "slider-4-scene-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 5,
+   "label": "Slider 4 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "slider-5-scene-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 6,
+   "label": "Slider 5 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "slider-6-scene-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 8,
+   "label": "Slider 6 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "slider-7-scene-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 9,
+   "label": "Slider 7 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "slider-8-scene-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 12,
+   "label": "Slider 8 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "knob-1-scene-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 13,
+   "label": "Knob 1 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "knob-2-scene-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 14,
+   "label": "Knob 2 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "knob-3-scene-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 15,
+   "label": "Knob 3 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "knob-4-scene-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 16,
+   "label": "Knob 4 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "knob-5-scene-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 17,
+   "label": "Knob 5 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "knob-6-scene-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 18,
+   "label": "Knob 6 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "knob-7-scene-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 19,
+   "label": "Knob 7 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "knob-8-scene-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 20,
+   "label": "Knob 8 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "mute-1-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 21,
+   "label": "Mute 1 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "mute-2-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 22,
+   "label": "Mute 2 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "mute-3-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 23,
+   "label": "Mute 3 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "mute-4-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 24,
+   "label": "Mute 4 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "mute-5-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 25,
+   "label": "Mute 5 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "mute-6-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 26,
+   "label": "Mute 6 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "mute-7-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 27,
+   "label": "Mute 7 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "mute-8-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 28,
+   "label": "Mute 8 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "solo-1-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 29,
+   "label": "Solo 1 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "solo-2-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 30,
+   "label": "Solo 2 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "solo-3-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 31,
+   "label": "Solo 3 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "solo-4-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 33,
+   "label": "Solo 4 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "solo-5-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 34,
+   "label": "Solo 5 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "solo-6-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 35,
+   "label": "Solo 6 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "solo-7-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 36,
+   "label": "Solo 7 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "solo-8-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 37,
+   "label": "Solo 8 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "rec-1-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 38,
+   "label": "Rec 1 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "rec-2-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 39,
+   "label": "Rec 2 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "rec-3-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 40,
+   "label": "Rec 3 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "rec-4-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 41,
+   "label": "Rec 4 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "rec-5-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 42,
+   "label": "Rec 5 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "rec-6-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 43,
+   "label": "Rec 6 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "rec-7-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 44,
+   "label": "Rec 7 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "rec-8-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 45,
+   "label": "Rec 8 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "select-1-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 46,
+   "label": "Select 1 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "select-2-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 47,
+   "label": "Select 2 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "select-3-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 48,
+   "label": "Select 3 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "select-4-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 49,
+   "label": "Select 4 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "select-5-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 50,
+   "label": "Select 5 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "select-6-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 51,
+   "label": "Select 6 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "select-7-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 52,
+   "label": "Select 7 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "select-8-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 53,
+   "label": "Select 8 - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "cycle-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 54,
+   "label": "Cycle - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "marker-set-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 55,
+   "label": "Marker Set - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "marker-left-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 56,
+   "label": "Marker Left - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "marker-right-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 57,
+   "label": "Marker Right - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "track-rew-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 58,
+   "label": "Track Rew - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "track-fwd-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 59,
+   "label": "Track Fwd - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "track-left-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 60,
+   "label": "Track Left - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "track-right-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 61,
+   "label": "Track Right - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "back-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 62,
+   "label": "Back - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "stop-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 63,
+   "label": "Stop - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "play-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 80,
+   "label": "Play - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "rec-scene-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 81,
+   "label": "Rec - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "jogwheel-scene-3",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 86,
+   "relative": false,
+   "label": "Jogwheel - Scene 3",
+   "verified": false
+  },
+  {
+   "id": "slider-1-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 2,
+   "label": "Slider 1 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "slider-2-scene-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 3,
+   "label": "Slider 2 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "slider-3-scene-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 4,
+   "label": "Slider 3 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "slider-4-scene-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 5,
+   "label": "Slider 4 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "slider-5-scene-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 6,
+   "label": "Slider 5 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "slider-6-scene-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 8,
+   "label": "Slider 6 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "slider-7-scene-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 9,
+   "label": "Slider 7 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "slider-8-scene-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 12,
+   "label": "Slider 8 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "knob-1-scene-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 13,
+   "label": "Knob 1 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "knob-2-scene-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 14,
+   "label": "Knob 2 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "knob-3-scene-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 15,
+   "label": "Knob 3 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "knob-4-scene-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 16,
+   "label": "Knob 4 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "knob-5-scene-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 17,
+   "label": "Knob 5 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "knob-6-scene-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 18,
+   "label": "Knob 6 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "knob-7-scene-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 19,
+   "label": "Knob 7 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "knob-8-scene-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 20,
+   "label": "Knob 8 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "mute-1-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 21,
+   "label": "Mute 1 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "mute-2-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 22,
+   "label": "Mute 2 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "mute-3-scene-1-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 23,
+   "label": "Mute 3 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-4-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 24,
+   "label": "Mute 4 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "mute-5-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 25,
+   "label": "Mute 5 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "mute-6-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 26,
+   "label": "Mute 6 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "mute-7-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 27,
+   "label": "Mute 7 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "mute-8-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 28,
+   "label": "Mute 8 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "solo-1-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 29,
+   "label": "Solo 1 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "solo-2-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 30,
+   "label": "Solo 2 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "solo-3-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 31,
+   "label": "Solo 3 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "solo-4-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 33,
+   "label": "Solo 4 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "solo-5-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 34,
+   "label": "Solo 5 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "solo-6-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 35,
+   "label": "Solo 6 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "solo-7-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 36,
+   "label": "Solo 7 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "solo-8-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 37,
+   "label": "Solo 8 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "rec-1-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 38,
+   "label": "Rec 1 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "rec-2-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 39,
+   "label": "Rec 2 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "rec-3-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 40,
+   "label": "Rec 3 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "rec-4-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 41,
+   "label": "Rec 4 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "rec-5-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 42,
+   "label": "Rec 5 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "rec-6-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 43,
+   "label": "Rec 6 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "rec-7-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 44,
+   "label": "Rec 7 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "rec-8-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 45,
+   "label": "Rec 8 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "select-1-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 46,
+   "label": "Select 1 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "select-2-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 47,
+   "label": "Select 2 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "select-3-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 48,
+   "label": "Select 3 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "select-4-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 49,
+   "label": "Select 4 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "select-5-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 50,
+   "label": "Select 5 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "select-6-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 51,
+   "label": "Select 6 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "select-7-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 52,
+   "label": "Select 7 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "select-8-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 53,
+   "label": "Select 8 - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "cycle-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 54,
+   "label": "Cycle - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "marker-set-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 55,
+   "label": "Marker Set - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "marker-left-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 56,
+   "label": "Marker Left - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "marker-right-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 57,
+   "label": "Marker Right - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "track-rew-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 58,
+   "label": "Track Rew - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "track-fwd-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 59,
+   "label": "Track Fwd - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "track-left-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 60,
+   "label": "Track Left - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "track-right-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 61,
+   "label": "Track Right - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "back-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 62,
+   "label": "Back - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "stop-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 63,
+   "label": "Stop - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "play-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 80,
+   "label": "Play - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "rec-scene-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 81,
+   "label": "Rec - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "jogwheel-scene-4",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 86,
+   "relative": false,
+   "label": "Jogwheel - Scene 4",
+   "verified": false
+  },
+  {
+   "id": "slider-1-scene-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 2,
+   "label": "Slider 1 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "slider-2-scene-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 3,
+   "label": "Slider 2 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "slider-3-scene-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 4,
+   "label": "Slider 3 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "slider-4-scene-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 5,
+   "label": "Slider 4 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "slider-5-scene-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 6,
+   "label": "Slider 5 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "slider-6-scene-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 8,
+   "label": "Slider 6 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "slider-7-scene-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 9,
+   "label": "Slider 7 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "slider-8-scene-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 12,
+   "label": "Slider 8 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "knob-1-scene-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 13,
+   "label": "Knob 1 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "knob-2-scene-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 14,
+   "label": "Knob 2 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "knob-3-scene-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 15,
+   "label": "Knob 3 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "knob-4-scene-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 16,
+   "label": "Knob 4 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "knob-5-scene-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 17,
+   "label": "Knob 5 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "knob-6-scene-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 18,
+   "label": "Knob 6 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "knob-7-scene-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 19,
+   "label": "Knob 7 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "knob-8-scene-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 20,
+   "label": "Knob 8 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "mute-1-scene-1-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 21,
+   "label": "Mute 1 - Scene 1",
+   "verified": false
+  },
+  {
+   "id": "mute-2-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 22,
+   "label": "Mute 2 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "mute-3-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 23,
+   "label": "Mute 3 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "mute-4-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 24,
+   "label": "Mute 4 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "mute-5-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 25,
+   "label": "Mute 5 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "mute-6-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 26,
+   "label": "Mute 6 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "mute-7-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 27,
+   "label": "Mute 7 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "mute-8-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 28,
+   "label": "Mute 8 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "solo-1-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 29,
+   "label": "Solo 1 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "solo-2-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 30,
+   "label": "Solo 2 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "solo-3-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 31,
+   "label": "Solo 3 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "solo-4-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 33,
+   "label": "Solo 4 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "solo-5-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 34,
+   "label": "Solo 5 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "solo-6-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 35,
+   "label": "Solo 6 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "solo-7-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 36,
+   "label": "Solo 7 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "solo-8-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 37,
+   "label": "Solo 8 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "rec-1-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 38,
+   "label": "Rec 1 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "rec-2-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 39,
+   "label": "Rec 2 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "rec-3-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 40,
+   "label": "Rec 3 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "rec-4-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 41,
+   "label": "Rec 4 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "rec-5-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 42,
+   "label": "Rec 5 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "rec-6-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 43,
+   "label": "Rec 6 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "rec-7-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 44,
+   "label": "Rec 7 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "rec-8-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 45,
+   "label": "Rec 8 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "select-1-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 46,
+   "label": "Select 1 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "select-2-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 47,
+   "label": "Select 2 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "select-3-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 48,
+   "label": "Select 3 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "select-4-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 49,
+   "label": "Select 4 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "select-5-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 50,
+   "label": "Select 5 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "select-6-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 51,
+   "label": "Select 6 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "select-7-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 52,
+   "label": "Select 7 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "select-8-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 53,
+   "label": "Select 8 - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "cycle-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 54,
+   "label": "Cycle - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "marker-set-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 55,
+   "label": "Marker Set - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "marker-left-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 56,
+   "label": "Marker Left - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "marker-right-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 57,
+   "label": "Marker Right - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "track-rew-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 58,
+   "label": "Track Rew - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "track-fwd-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 59,
+   "label": "Track Fwd - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "track-left-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 60,
+   "label": "Track Left - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "track-right-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 61,
+   "label": "Track Right - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "back-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 62,
+   "label": "Back - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "stop-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 63,
+   "label": "Stop - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "play-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 80,
+   "label": "Play - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "rec-scene-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 81,
+   "label": "Rec - Scene 5",
+   "verified": false
+  },
+  {
+   "id": "jogwheel-scene-5",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 86,
+   "relative": false,
+   "label": "Jogwheel - Scene 5",
+   "verified": false
+  }
+ ]
+}

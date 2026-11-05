@@ -13,6 +13,7 @@ import { ldNode } from './_ld.js';
 import en from '../tools/controllers/en.mjs';
 import zh from '../tools/controllers/zh.mjs';
 import { PROFILES } from '../packages/midi/profiles/index.js';
+import { IMPORTED } from '../packages/midi/profiles/imported.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const URLS = { en: 'https://openaudiovisual.com/controllers/', zh: 'https://openaudiovisual.com/zh/controllers/' };
@@ -75,7 +76,7 @@ test('language metadata: lang, canonical, hreflang trio, JSON-LD', () => {
       assert.match(s, new RegExp(`<link rel="alternate" hreflang="${hl}" href="${url}">`), `${lang} hreflang ${hl}`);
     const ds = ldNode(s, 'Dataset'), list = ldNode(s, 'ItemList');
     assert.equal(ds['@type'], 'Dataset'); assert.equal(ds.distribution.length, PROFILES.length);
-    assert.equal(list['@type'], 'ItemList'); assert.equal(list.numberOfItems, PROFILES.length);
+    assert.equal(list['@type'], 'ItemList'); assert.equal(list.numberOfItems, PROFILES.length + IMPORTED.length);
   }
 });
 

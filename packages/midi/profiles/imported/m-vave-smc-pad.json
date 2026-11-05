@@ -1,0 +1,530 @@
+{
+ "id": "m-vave-smc-pad",
+ "short": "smcpad",
+ "name": "M-VAVE SMC-PAD",
+ "maker": "M-VAVE",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "SMC[\\s-]*PAD"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/M-VAVE-SMC-PAD.qxi",
+  "license": "Apache-2.0",
+  "author": "Cristian Deluxe",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile M-VAVE-SMC-PAD.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/M-VAVE-SMC-PAD.qxi",
+   "note": "community profile by Cristian Deluxe; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 62.5,
+  "label": "M-VAVE SMC-PAD",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "knob",
+   "label": "Knobs",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 9,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "knob-1",
+    "knob-2",
+    "knob-3",
+    "knob-4",
+    "knob-5",
+    "knob-6",
+    "knob-7",
+    "knob-8"
+   ]
+  },
+  {
+   "id": "pad",
+   "label": "Pads",
+   "x": 2,
+   "y": 15,
+   "w": 96,
+   "h": 36,
+   "cols": 8,
+   "rows": 4,
+   "controls": [
+    "pad-1",
+    "pad-2",
+    "pad-3",
+    "pad-4",
+    "pad-5",
+    "pad-6",
+    "pad-7",
+    "pad-8",
+    "pad-9",
+    "pad-10",
+    "pad-11",
+    "pad-12",
+    "pad-13",
+    "pad-14",
+    "pad-15",
+    "pad-16",
+    "pad-1-bank-b",
+    "pad-2-bank-b",
+    "pad-3-bank-b",
+    "pad-4-bank-b",
+    "pad-5-bank-b",
+    "pad-6-bank-b",
+    "pad-7-bank-b",
+    "pad-8-bank-b",
+    "pad-9-bank-b",
+    "pad-10-bank-b",
+    "pad-11-bank-b",
+    "pad-12-bank-b",
+    "pad-13-bank-b",
+    "pad-14-bank-b",
+    "pad-15-bank-b",
+    "pad-16-bank-b"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 54,
+   "w": 96,
+   "h": 5.5,
+   "cols": 5,
+   "rows": 1,
+   "controls": [
+    "left",
+    "right",
+    "play",
+    "stop",
+    "record"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "left",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 25,
+   "label": "Left (<)",
+   "verified": false
+  },
+  {
+   "id": "right",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 26,
+   "label": "Right (>)",
+   "verified": false
+  },
+  {
+   "id": "play",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 27,
+   "label": "Play",
+   "verified": false
+  },
+  {
+   "id": "stop",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 28,
+   "label": "Stop",
+   "verified": false
+  },
+  {
+   "id": "record",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 29,
+   "label": "Record",
+   "verified": false
+  },
+  {
+   "id": "knob-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 30,
+   "label": "Knob 1",
+   "verified": false
+  },
+  {
+   "id": "knob-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 31,
+   "label": "Knob 2",
+   "verified": false
+  },
+  {
+   "id": "knob-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 32,
+   "label": "Knob 3",
+   "verified": false
+  },
+  {
+   "id": "knob-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 33,
+   "label": "Knob 4",
+   "verified": false
+  },
+  {
+   "id": "knob-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 34,
+   "label": "Knob 5",
+   "verified": false
+  },
+  {
+   "id": "knob-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 35,
+   "label": "Knob 6",
+   "verified": false
+  },
+  {
+   "id": "knob-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 36,
+   "label": "Knob 7",
+   "verified": false
+  },
+  {
+   "id": "knob-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 37,
+   "label": "Knob 8",
+   "verified": false
+  },
+  {
+   "id": "pad-1",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 36,
+   "label": "Pad 1",
+   "verified": false
+  },
+  {
+   "id": "pad-2",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 37,
+   "label": "Pad 2",
+   "verified": false
+  },
+  {
+   "id": "pad-3",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 38,
+   "label": "Pad 3",
+   "verified": false
+  },
+  {
+   "id": "pad-4",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 39,
+   "label": "Pad 4",
+   "verified": false
+  },
+  {
+   "id": "pad-5",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 40,
+   "label": "Pad 5",
+   "verified": false
+  },
+  {
+   "id": "pad-6",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 41,
+   "label": "Pad 6",
+   "verified": false
+  },
+  {
+   "id": "pad-7",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 42,
+   "label": "Pad 7",
+   "verified": false
+  },
+  {
+   "id": "pad-8",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 43,
+   "label": "Pad 8",
+   "verified": false
+  },
+  {
+   "id": "pad-9",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 44,
+   "label": "Pad 9",
+   "verified": false
+  },
+  {
+   "id": "pad-10",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 45,
+   "label": "Pad 10",
+   "verified": false
+  },
+  {
+   "id": "pad-11",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 46,
+   "label": "Pad 11",
+   "verified": false
+  },
+  {
+   "id": "pad-12",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 47,
+   "label": "Pad 12",
+   "verified": false
+  },
+  {
+   "id": "pad-13",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 48,
+   "label": "Pad 13",
+   "verified": false
+  },
+  {
+   "id": "pad-14",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 49,
+   "label": "Pad 14",
+   "verified": false
+  },
+  {
+   "id": "pad-15",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 50,
+   "label": "Pad 15",
+   "verified": false
+  },
+  {
+   "id": "pad-16",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 51,
+   "label": "Pad 16",
+   "verified": false
+  },
+  {
+   "id": "pad-1-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 52,
+   "label": "Pad 1 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-2-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 53,
+   "label": "Pad 2 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-3-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 54,
+   "label": "Pad 3 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-4-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 55,
+   "label": "Pad 4 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-5-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 56,
+   "label": "Pad 5 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-6-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 57,
+   "label": "Pad 6 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-7-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 58,
+   "label": "Pad 7 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-8-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 59,
+   "label": "Pad 8 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-9-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 60,
+   "label": "Pad 9 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-10-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 61,
+   "label": "Pad 10 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-11-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 62,
+   "label": "Pad 11 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-12-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 63,
+   "label": "Pad 12 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-13-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 64,
+   "label": "Pad 13 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-14-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 65,
+   "label": "Pad 14 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-15-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 66,
+   "label": "Pad 15 (bank B)",
+   "verified": false
+  },
+  {
+   "id": "pad-16-bank-b",
+   "type": "pad",
+   "msg": "note",
+   "ch": 10,
+   "note": 67,
+   "label": "Pad 16 (bank B)",
+   "verified": false
+  }
+ ]
+}

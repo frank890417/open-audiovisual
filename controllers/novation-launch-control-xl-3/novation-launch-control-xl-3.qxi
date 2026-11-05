@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- Novation Launch Control XL 3: generated from https://openaudiovisual.com/controllers/novation-launch-control-xl-3/. Set the MIDI channel of this input to Omni in QLC+. -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>Novation</Manufacturer>
+ <Model>Launch Control XL 3</Model>
+ <Type>MIDI</Type>
+ <Channel Number="61445">
+  <Name>1</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="61446">
+  <Name>2</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="61447">
+  <Name>3</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="61448">
+  <Name>4</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="61449">
+  <Name>5</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="61450">
+  <Name>6</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="61451">
+  <Name>7</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="61452">
+  <Name>8</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="61453">
+  <Name>1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61454">
+  <Name>2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61455">
+  <Name>3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61456">
+  <Name>4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61457">
+  <Name>5</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61458">
+  <Name>6</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61459">
+  <Name>7</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61460">
+  <Name>8</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61461">
+  <Name>9</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61462">
+  <Name>10</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61463">
+  <Name>11</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61464">
+  <Name>12</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61465">
+  <Name>13</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61466">
+  <Name>14</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61467">
+  <Name>15</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61468">
+  <Name>16</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61469">
+  <Name>17</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61470">
+  <Name>18</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61471">
+  <Name>19</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61472">
+  <Name>20</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61473">
+  <Name>21</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61474">
+  <Name>22</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61475">
+  <Name>23</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61476">
+  <Name>24</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61477">
+  <Name>1</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61478">
+  <Name>2</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61479">
+  <Name>3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61480">
+  <Name>4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61481">
+  <Name>5</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61482">
+  <Name>6</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61483">
+  <Name>7</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61484">
+  <Name>8</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61485">
+  <Name>9</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61486">
+  <Name>10</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61487">
+  <Name>11</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61488">
+  <Name>12</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61489">
+  <Name>13</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61490">
+  <Name>14</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61491">
+  <Name>15</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61492">
+  <Name>16</Name>
+  <Type>Button</Type>
+ </Channel>
+</InputProfile>

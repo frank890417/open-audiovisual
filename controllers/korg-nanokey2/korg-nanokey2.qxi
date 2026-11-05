@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- Korg nanoKEY2: generated from https://openaudiovisual.com/controllers/korg-nanokey2/ -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>KORG</Manufacturer>
+ <Model>nanoKEY2</Model>
+ <Type>MIDI</Type>
+ <Channel Number="1">
+  <Name>MOD</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="64">
+  <Name>SUSTAIN</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="176">
+  <Name>Keys C3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="177">
+  <Name>Keys C#3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="178">
+  <Name>Keys D3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="179">
+  <Name>Keys D#3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="180">
+  <Name>Keys E3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="181">
+  <Name>Keys F3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="182">
+  <Name>Keys F#3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="183">
+  <Name>Keys G3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="184">
+  <Name>Keys G#3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="185">
+  <Name>Keys A3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="186">
+  <Name>Keys A#3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="187">
+  <Name>Keys B3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="188">
+  <Name>Keys C4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="189">
+  <Name>Keys C#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="190">
+  <Name>Keys D4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="191">
+  <Name>Keys D#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="192">
+  <Name>Keys E4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="193">
+  <Name>Keys F4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="194">
+  <Name>Keys F#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="195">
+  <Name>Keys G4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="196">
+  <Name>Keys G#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="197">
+  <Name>Keys A4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="198">
+  <Name>Keys A#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="199">
+  <Name>Keys B4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="200">
+  <Name>Keys C5</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="513">
+  <Name>Pitch −/+</Name>
+  <Type>Slider</Type>
+ </Channel>
+</InputProfile>

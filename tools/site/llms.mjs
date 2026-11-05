@@ -150,7 +150,7 @@ function examplesSection(locale) {
 
 function controllersSection(locale) {
   const cat = catalog();
-  return [...cat.devices, ...cat.generic].map((d) => {
+  return cat.pages.map((d) => {
     const name = fullName(d.p, locale);
     const n = d.total;
     return `- [${name}](${detailUrl(d.p.id, locale)}): ${locale === 'zh' ? `${n} 個控制項的 MIDI 對照表` : `${n} controls, every MIDI message`}; profile ${SITE}${PROFILE_DIR}/${d.file}`;
@@ -364,7 +364,7 @@ export function llmsFull() {
 
 One page and one JSON profile each; the page lists every control with its exact MIDI message.
 
-${[...cat.devices, ...cat.generic].map((d) => `- ${fullName(d.p, 'en')}: ${d.total} controls · ${detailUrl(d.p.id, 'en')} · ${SITE}${PROFILE_DIR}/${d.file}`).join('\n')}
+${cat.pages.map((d) => `- ${fullName(d.p, 'en')}: ${d.total} controls · ${detailUrl(d.p.id, 'en')} · ${SITE}${PROFILE_DIR}/${d.file}`).join('\n')}
 `;
   return head + LLMS_SOURCES.filter((src) => read(src) !== null).map((src) =>
     `\n\n---\n\n<!-- source: ${src} -->\n\n` + htmlToText(read(src)).trim()).join('') + '\n' + referenceFull();

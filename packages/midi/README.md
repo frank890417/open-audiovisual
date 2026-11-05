@@ -367,6 +367,14 @@ button.onclick = async () => {
 No manual? Pick a generic layout, press Learn, move your controls in order;
 `controller.exportMapping()` gives the result as JSON. Have the unit and a profile already? Check it on the [verification page](https://openaudiovisual.com/controllers/verify/).
 
+### Other software
+
+`@openav/midi/export` turns a profile into files other programs read. `toQxi(profile)` writes a QLC+ input profile: every control and LED value, with channel numbers the way QLC+ counts them. `toMixxx(profile)` writes a Mixxx mapping (`{ xml, js, xmlName, jsName }`): a starting point that gives each control a job, not a finished mapping. Its script sends `sysex.connect` when Mixxx opens the device. `tools/export-controller.mjs` is the command line, and each device page has the files.
+
+### Imported controllers
+
+`profiles/imported/` holds controllers converted from QLC+'s input profiles by `tools/import-qlc.mjs`. They are not in `PROFILES`, so a page that shows one controller does not fetch them all; `<oav-controller profile="behringer-bcf2000">` and `loadProfile()` fetch the one asked for, and `IMPORTED` lists them. QLC+ has no faceplate data, so `face.auto` marks a generated layout; every control is `verified: false`; each file says `"license": "Apache-2.0"` and names its source and commit (see `NOTICE`).
+
 ## Telemetry
 
 So the project can see where its controllers and shows end up, the packages send **one anonymous hit per page load** to Google Analytics 4 (the openaudiovisual.com property, `G-1YG2JHK2WT`):

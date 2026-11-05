@@ -35,6 +35,34 @@ One page and one JSON profile each; the page lists every control with its exact 
 - Novation Launchpad Pro MK3: 105 controls · https://openaudiovisual.com/controllers/novation-launchpad-pro-mk3/ · https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-pro-mk3.json
 - ODD Ball: 10 controls · https://openaudiovisual.com/controllers/odd-ball/ · https://openaudiovisual.com/packages/midi/profiles/odd-ball.json
 - teenage engineering OP-1 field: 61 controls · https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/ · https://openaudiovisual.com/packages/midi/profiles/teenage-engineering-op-1-field.json
+- AKAI Professional APC Mini: 90 controls · https://openaudiovisual.com/controllers/akai-apc-mini/ · https://openaudiovisual.com/packages/midi/profiles/imported/akai-apc-mini.json
+- AKAI Professional APC20: 97 controls · https://openaudiovisual.com/controllers/akai-apc20/ · https://openaudiovisual.com/packages/midi/profiles/imported/akai-apc20.json
+- AKAI Professional APC40: 137 controls · https://openaudiovisual.com/controllers/akai-apc40/ · https://openaudiovisual.com/packages/midi/profiles/imported/akai-apc40.json
+- American DJ MIDICON-2: 88 controls · https://openaudiovisual.com/controllers/adj-midicon-2/ · https://openaudiovisual.com/packages/midi/profiles/imported/adj-midicon-2.json
+- Behringer BCF2000 in Mackie Control Mode: 107 controls · https://openaudiovisual.com/controllers/behringer-bcf2000-in-mackie-control-mode/ · https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcf2000-in-mackie-control-mode.json
+- Behringer BCF2000: 94 controls · https://openaudiovisual.com/controllers/behringer-bcf2000/ · https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcf2000.json
+- Behringer BCR2000: 108 controls · https://openaudiovisual.com/controllers/behringer-bcr2000/ · https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcr2000.json
+- Behringer LC2412: 54 controls · https://openaudiovisual.com/controllers/behringer-lc2412/ · https://openaudiovisual.com/packages/midi/profiles/imported/behringer-lc2412.json
+- Behringer X-Touch Compact: 178 controls · https://openaudiovisual.com/controllers/behringer-x-touch-compact/ · https://openaudiovisual.com/packages/midi/profiles/imported/behringer-x-touch-compact.json
+- Behringer X-Touch Extender: 64 controls · https://openaudiovisual.com/controllers/behringer-x-touch-extender/ · https://openaudiovisual.com/packages/midi/profiles/imported/behringer-x-touch-extender.json
+- Elation MIDIcon: 98 controls · https://openaudiovisual.com/controllers/elation-midicon/ · https://openaudiovisual.com/packages/midi/profiles/imported/elation-midicon.json
+- KORG nanoKONTROL Studio: 305 controls · https://openaudiovisual.com/controllers/korg-nanokontrol-studio/ · https://openaudiovisual.com/packages/midi/profiles/imported/korg-nanokontrol-studio.json
+- KORG nanoKONTROL: 116 controls · https://openaudiovisual.com/controllers/korg-nanokontrol/ · https://openaudiovisual.com/packages/midi/profiles/imported/korg-nanokontrol.json
+- KORG nanoPAD: 50 controls · https://openaudiovisual.com/controllers/korg-nanopad/ · https://openaudiovisual.com/packages/midi/profiles/imported/korg-nanopad.json
+- KORG NanoPAD2: 51 controls · https://openaudiovisual.com/controllers/korg-nanopad2/ · https://openaudiovisual.com/packages/midi/profiles/imported/korg-nanopad2.json
+- M-VAVE SMC-Mixer: 59 controls · https://openaudiovisual.com/controllers/m-vave-smc-mixer/ · https://openaudiovisual.com/packages/midi/profiles/imported/m-vave-smc-mixer.json
+- M-VAVE SMC-PAD: 45 controls · https://openaudiovisual.com/controllers/m-vave-smc-pad/ · https://openaudiovisual.com/packages/midi/profiles/imported/m-vave-smc-pad.json
+- Novation Launch Control: 56 controls · https://openaudiovisual.com/controllers/novation-launch-control/ · https://openaudiovisual.com/packages/midi/profiles/imported/novation-launch-control.json
+- Novation Launchpad MK2: 80 controls · https://openaudiovisual.com/controllers/novation-launchpad-mk2/ · https://openaudiovisual.com/packages/midi/profiles/imported/novation-launchpad-mk2.json
+- Novation Launchpad Pro: 96 controls · https://openaudiovisual.com/controllers/novation-launchpad-pro/ · https://openaudiovisual.com/packages/midi/profiles/imported/novation-launchpad-pro.json
+- Novation Launchpad: 80 controls · https://openaudiovisual.com/controllers/novation-launchpad/ · https://openaudiovisual.com/packages/midi/profiles/imported/novation-launchpad.json
+- PMJ 9 Faders Controller: 9 controls · https://openaudiovisual.com/controllers/pmj-9-faders-controller/ · https://openaudiovisual.com/packages/midi/profiles/imported/pmj-9-faders-controller.json
+- PMJ Circus: 70 controls · https://openaudiovisual.com/controllers/pmj-circus/ · https://openaudiovisual.com/packages/midi/profiles/imported/pmj-circus.json
+- PMJ MidiKey: 48 controls · https://openaudiovisual.com/controllers/pmj-midikey/ · https://openaudiovisual.com/packages/midi/profiles/imported/pmj-midikey.json
+- ShowTec ShowMaster 24: 45 controls · https://openaudiovisual.com/controllers/showtec-showmaster-24/ · https://openaudiovisual.com/packages/midi/profiles/imported/showtec-showmaster-24.json
+- Worlde Easypad.12: 21 controls · https://openaudiovisual.com/controllers/worlde-easypad-12/ · https://openaudiovisual.com/packages/midi/profiles/imported/worlde-easypad-12.json
+- Worlde Orca PAD16: 22 controls · https://openaudiovisual.com/controllers/worlde-orca-pad16/ · https://openaudiovisual.com/packages/midi/profiles/imported/worlde-orca-pad16.json
+- Zoom R16: 50 controls · https://openaudiovisual.com/controllers/zoom-r16/ · https://openaudiovisual.com/packages/midi/profiles/imported/zoom-r16.json
 - Generic 8 knobs + 8 pads: 16 controls · https://openaudiovisual.com/controllers/generic-8k8p/ · https://openaudiovisual.com/packages/midi/profiles/generic-8k8p.json
 - Generic 8 faders: 8 controls · https://openaudiovisual.com/controllers/generic-8f/ · https://openaudiovisual.com/packages/midi/profiles/generic-8f.json
 - Generic 16 pads: 16 controls · https://openaudiovisual.com/controllers/generic-16p/ · https://openaudiovisual.com/packages/midi/profiles/generic-16p.json
@@ -394,7 +422,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 839 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 858 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -2856,6 +2884,10 @@ Some things only SysEx can do: put a Launchpad in Programmer mode, pick a Launch
 
 The browser shows a permission prompt for SysEx, so nothing in this project asks by itself: `<oav-controller sysex>` adds a button, and `controller.enableSysex()` is the call behind it (run it from a click). Once it is on, the device is set up every time it connects, and `setLedColor(id, { r, g, b })` and `sendSysex(id)` work. [Package README](https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex).
 
+## In other software
+
+Every device page has the same data as a QLC+ input profile (`.qxi`) and a Mixxx mapping (`.midi.xml` and a small `.js`), and `node tools/export-controller.mjs <id>` writes them from any profile. The Mixxx mapping is a starting point: remap it with Mixxx's Learning Wizard. The library also lists controllers imported from QLC+'s input profiles, with generated layouts and every control marked unverified.
+
 ## Add a controller
 
 1. Copy the closest file in `packages/midi/profiles/`, or a generic layout.
@@ -4623,7 +4655,7 @@ JSON-RPC error with code −32000 and a message.
 | `read_doc` | `doc` (required): `architecture`, `writing-a-world`, `signals`, `show-control`, `roadmap`, `agents`, `readme` | the Markdown text. `agents` is AGENTS.md, `readme` the README; the others are `docs/<name>.md` |
 | `scaffold_world` | `slug` (required, kebab-case), `donor` (default `01-hello-particles`) | `{ created, next_steps }`. Copies every file of `examples/<donor>/` into `examples/<next number>-<slug>/` |
 | `run_checks` | none | `{ pass, fail, ok }` from `node --test tests/*.test.js` (60 s timeout), or `{ ok: false, output }` with the failing lines |
-| `list_controllers` | none | `{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }`: every shipped MIDI profile, its control mix (`{ knob: 8, pad: 8, keys: 25 }`), how many controls are still flagged unverified, and its page `https://openaudiovisual.com/controllers/<id>/` |
+| `list_controllers` | none | `{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }], imported: […] }`: every shipped MIDI profile, its control mix (`{ knob: 8, pad: 8, keys: 25 }`), how many controls are still flagged unverified, and its page `https://openaudiovisual.com/controllers/<id>/` |
 | `read_profile` | `id` (required): a profile id or its `short` | `{ id, url, unverified, profile, mapping }`: the profile JSON as shipped (with `sysex`, `palette` and `verifications` when it has them), and a readable MIDI map (control, type, `CC 74, ch 1`, `evidence`: `hardware`, `source` or `unconfirmed`, signal `midi/<short>/<id>`, verified) |
 | `validate_profile` | `profile` (required): an object or a JSON string | `{ ok, problems, conflicts }`: the problems `validateProfile` finds, plus clashes with shipped profiles (same `id`, same `short`, overlapping `match.ports`) |
 | `scaffold_profile` | `maker`, `model`, `controls` (all required): `[{ type, count, from? }]` | `{ profile, problems, unverified, next_steps }`: a skeleton that passes `validateProfile`, every number a placeholder with `"verified": false`, and the steps to source and register it. Nothing is written to disk |
@@ -5057,7 +5089,7 @@ before it was generalized.)
 
 # API reference (generated)
 
-> 505 public names of oav-p5 0.8.4 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 510 public names of oav-p5 0.8.4 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -8443,6 +8475,7 @@ function draw() {
 - `formatHex` (function, @openav/midi): `formatHex(bytes)` — Writes bytes as upper-case hex text, the way manuals print them.
 - `genericSignals` (function, @openav/midi): `genericSignals(ev, { device = null, legacy = true, channel = true } = {})` — Lists the device-independent signals one MIDI event becomes: `midi/cc/74`, `midi/note/on`, `midi/bend`, and their per-channel twins such as `midi/ch/2/cc/74`.
 - `groupsOf` (function, @openav/midi): `groupsOf(p)` — Groups a profile's controls by their `group` (`knob`, `pad`, `fader` …), returning `{ group: [control ids] }`.
+- `IMPORTED` (constant, @openav/midi): `IMPORTED = array, 28 items` — The controllers imported from QLC+: id, short name, name and maker. Their JSON is fetched one at a time, by [`loadProfile()`](#loadProfile). (range [{ id, short, name, maker }, …])
 - `indexProfile` (function, @openav/midi): `indexProfile(p)` — Builds the lookup from a MIDI message to the control it moves: `"cc:1:74"` maps to the knob listening for CC 74 on channel 1.
 - `isLive` (function, @openav/midi): `isLive(p)` — Says whether a MIDI port can still be sent to: it exists and its `state` is not `'disconnected'`.
 - `isProfileUrl` (function, @openav/midi): `isProfileUrl(ref)` — Tells a URL to a profile file apart from a profile id: `true` for `./pads.json`, `https://…`, `/p/x`, `false` for `'akai-lpd8'`.
@@ -8453,6 +8486,7 @@ function draw() {
 - `Midi` (class, @openav/midi): `new Midi({ signals = null, filterOut = 'IAC', requestAccess = null, echoWindow = 40, prefer = [] } = {})` — The Web MIDI engine: asks the browser for access, listens to every input, publishes what arrives as signals, and sends to one output port. (before it has a value: Call `await midi.enable()` first. Browsers with Web MIDI (Chrome, Edge, Firefox) ask the visitor for permission at that moment, so call it from a click when you can. Safari and iPad have no Web MIDI: `enable()` gives `false`.)
 - `MidiController` (class, @openav/midi): `new MidiController(profile, { signals = null, sink = null, short = null, onLed = null } = {})` — One MIDI controller (a profile) as a live model: MIDI bytes go in, control values and signals come out, and a hand on screen sends the bytes the device would.
 - `MidiControllers` (class, @openav/midi): `new MidiControllers({ profiles, signals = null, sink = null, midi = null, initial = null, storage = safeStorage() } = {})` — Ties hardware ports to controller profiles: plug in a MiniLab 3 and the on-screen one appears and moves with your hands; unplug it and it stays playable.
+- `mixxxBindings` (function, @openav/midi): `mixxxBindings(profile)` — Says what each control does in the generated Mixxx mapping.
 - `normalizeProfile` (function, @openav/midi): `normalizeProfile(raw)` — Validates a profile and returns a filled-in copy with defaults for channel, labels, groups, encoder mode and portrait layout; the input is not changed.
 - `parseDeviceInquiry` (function, @openav/midi): `parseDeviceInquiry(data)` — Reads a device's reply to the Universal Device Inquiry, or returns `null` for any other message.
 - `parseHex` (function, @openav/midi): `parseHex(text)` — Turns text such as `'F0 7E 7F 06 01 F7'` into an array of bytes.
@@ -8463,6 +8497,7 @@ function draw() {
 - `PROFILES` (constant, @openav/midi): `PROFILES = array, 27 items` — Every controller profile that ships with the package, as an array of plain JSON objects: real devices first, then the generic layouts.
 - `profileSignals` (function, @openav/midi): `profileSignals(p)` — Lists every signal name a profile can publish under its own namespace (`midi/lpd8/…` for the LPD8), for docs, tests and mapping screens.
 - `publish` (function, @openav/midi): `publish(signals, list)` — Publishes a list of `{ name, value, pulse?, min?, max? }` into a `Signals` registry, declaring each signal the first time it is seen.
+- `qlcChannel` (function, @openav/midi): `qlcChannel({ msg, ch = 1, cc, note, value = 0 }, { omni = true } = {})` — Says which channel number QLC+ gives one MIDI message.
 - `RELATIVE_MODES` (constant, @openav/midi): `RELATIVE_MODES = array, 4 items` — The four ways an endless encoder can write a turn as a CC value: `offset64`, `offset16`, `twos` and `signbit`. (range ['offset64', 'offset16', 'twos', 'signbit'])
 - `relativeDelta` (function, @openav/midi): `relativeDelta(value, mode = 'offset64')` — Turns the CC value an endless encoder sends into signed steps: with `offset64`, 65 is +1, 63 is −1 and 64 is no move.
 - `relativeValue` (function, @openav/midi): `relativeValue(delta, mode = 'offset64')` — The inverse of `relativeDelta()`: the CC value that says "turned by this many steps" in a given encoder encoding.
@@ -8473,6 +8508,8 @@ function draw() {
 - `SYSEX_PURPOSES` (constant, @openav/midi): `SYSEX_PURPOSES = array, 8 items` — What a SysEx message of a profile can be for: `identity`, `init`, `mode`, `template`, `led`, `display`, `config` or `transport`. (range ['identity', 'init', 'mode', 'template', 'led', 'display', 'config', 'transport'])
 - `sysexBytes` (function, @openav/midi): `sysexBytes(message, args = {})` — Builds the bytes of one SysEx message of a profile, with its arguments filled in.
 - `sysexMessage` (function, @openav/midi): `sysexMessage(p, id)` — Finds one SysEx message of a profile by its id.
+- `toMixxx` (function, @openav/midi): `toMixxx(profile)` — Writes a profile as a Mixxx mapping: an XML file and a small script, a starting point to remap in Mixxx.
+- `toQxi` (function, @openav/midi): `toQxi(profile, { version = '1' } = {})` — Writes a profile as a QLC+ input profile (`.qxi`): every control and LED value, numbered the way QLC+ numbers them.
 - `unitToBend` (function, @openav/midi): `unitToBend(u)` — Turns a −1..1 number into a 14-bit pitch-bend value (0..16383), the inverse of `bendToUnit()`.
 - `validateProfile` (function, @openav/midi): `validateProfile(p)` — Checks a controller profile and returns every problem as a sentence; an empty array means it is valid.
 - `verificationOf` (function, @openav/midi): `verificationOf(p, id)` — Returns the newest check of one control from a profile's `verifications` log, or `null` when nobody has checked it.

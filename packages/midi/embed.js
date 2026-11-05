@@ -15,6 +15,7 @@
 // port, or bytes you ingest()). The profile's own words are kept: `id`, `type`,
 // `signal` are what the rest of open-audiovisual calls the same control.
 
+import { importedUrl } from './profiles/imported.js?v=dd4a4d59';
 import { encodeMessage, relativeDelta } from './parse.js?v=dd4a4d59';
 import { validateProfile } from './profiles.js?v=dd4a4d59';
 
@@ -113,13 +114,15 @@ export async function resolveProfile(ref, { profiles = [], fetch = globalThis.fe
   if (ref && typeof ref === 'object') return checked(ref, 'profile object');
   const s = String(ref || '').trim();
   if (!s) throw new Error('no MIDI profile given');
+  let target = s;
   if (!isProfileUrl(s)) {
     const p = findProfile(s, profiles);
-    if (!p) throw new Error(`unknown MIDI profile "${s}" (known: ${profiles.map((x) => x.id).join(', ')})`);
-    return p;
+    if (p) return p;
+    target = importedUrl(s);   // a controller imported from QLC+: not in PROFILES, so a page only fetches the one it shows
+    if (!target) throw new Error(`unknown MIDI profile "${s}" (known: ${profiles.map((x) => x.id).join(', ')})`);
   }
   if (typeof fetch !== 'function') throw new Error('cannot load a profile URL here (no fetch)');
-  const url = base ? new URL(s, base).href : s;
+  const url = base ? new URL(target, base).href : target;
   const res = await fetch(url);
   if (!res || !res.ok) throw new Error(`could not load MIDI profile ${url} (${res ? res.status : 'no response'})`);
   return checked(await res.json(), url);

@@ -39,11 +39,20 @@ const num = (v) => String(+v.toFixed(2));
 /** id → file name in packages/midi/profiles/ (read from disk, so a renamed file cannot break a link). */
 export function profileFiles() {
   const map = {};
-  for (const f of fs.readdirSync(path.join(ROOT, PROFILE_DIR))) {
-    if (!f.endsWith('.json')) continue;
-    try { const j = JSON.parse(fs.readFileSync(path.join(ROOT, PROFILE_DIR, f), 'utf8')); if (j && j.id) map[j.id] = f; } catch { /* not a profile */ }
+  for (const dir of ['', 'imported/']) {
+    if (!fs.existsSync(path.join(ROOT, PROFILE_DIR, dir))) continue;
+    for (const f of fs.readdirSync(path.join(ROOT, PROFILE_DIR, dir))) {
+      if (!f.endsWith('.json')) continue;
+      try { const j = JSON.parse(fs.readFileSync(path.join(ROOT, PROFILE_DIR, dir, f), 'utf8')); if (j && j.id) map[j.id] = dir + f; } catch { /* not a profile */ }
+    }
   }
   return map;
+}
+
+/** The controllers imported from QLC+ (packages/midi/profiles/imported/): each has its own page, none is in PROFILES. */
+export function importedProfiles() {
+  const dir = path.join(ROOT, PROFILE_DIR, 'imported');
+  return fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.json')).sort().map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))) : [];
 }
 
 export const physical = (c) => (c.type === 'keys' ? c.to - c.from + 1 : 1);
@@ -70,6 +79,7 @@ export function describeProfile(raw, i, files) {
     unverified: p.controls.filter((c) => c.verified === false).reduce((a, c) => a + physical(c), 0),
     led: p.controls.some((c) => c.led),
     sysex: (p.sysex?.messages || []).length,
+    imported: !!p.face.auto,
   };
   const has = TYPE_ORDER.filter((t) => counts.has(t));
   if (prov.led) has.push('led');
@@ -90,7 +100,9 @@ export function catalog() {
     sources: seen.size,
     unverified: devices.reduce((a, d) => a + d.prov.unverified, 0),
   };
-  return { all, devices, generic, stats, byId: new Map(all.map((x) => [x.p.id, x])) };
+  const imported = importedProfiles().map((raw, i) => describeProfile(raw, all.length + i, files)).sort((a, b) => String(a.p.maker).localeCompare(String(b.p.maker), 'en') || a.i - b.i);
+  // `pages`: everything with a page of its own; `all`, `devices`, `generic`: what ships in PROFILES
+  return { all, devices, generic, imported, pages: [...devices, ...imported, ...generic], stats, byId: new Map([...all, ...imported].map((x) => [x.p.id, x])) };
 }
 
 export const nameOf = (p, locale) => (locale === 'zh' ? p.name : p.nameEn || p.name);
@@ -302,6 +314,19 @@ function card(t, d, c, locale) {
 }
 
 
+/** Imported controllers: a plain list. Each has a page, but no hand-drawn faceplate worth a card, and nothing here should load them all. */
+function importedBlock(t, cat, locale) {
+  if (!cat.imported.length) return '';
+  const C = t.catalog, makers = [...new Set(cat.imported.map((d) => d.p.maker))];
+  return `<div class="cat-group" id="imported">
+    <h3 class="cat-h">${C.imported} <span>${cat.imported.length}</span></h3>
+    <p class="cat-note">${C.importedNote}</p>
+    <dl class="imp-list">
+      ${makers.map((m) => `<div><dt>${esc(m)}</dt><dd>${cat.imported.filter((d) => d.p.maker === m).map((d) => `<a href="${d.p.id}/">${esc(nameOf(d.p, locale).replace(new RegExp('^' + m.replace(/[.*+?^\${}()|[\]\\]/g, '\\$&') + '\\s+', 'i'), ''))}</a>`).join(' · ')}</dd></div>`).join('\n      ')}
+    </dl>
+    </div>`;
+}
+
 // ------------------------------------------------------------------ how to choose: the comparison table, LED, wishes, the no-Web-MIDI strip
 /** What a visitor can ask the table for. Counted from the profile, never written by hand. */
 export const PICKS = ['keys', 'pad', 'fader', 'knob', 'led'];
@@ -467,8 +492,8 @@ export function renderPage(t, home, locale) {
       distribution: cat.all.map((d) => ({ '@type': 'DataDownload', name: d.p.nameEn || d.p.name, encodingFormat: 'application/json', contentUrl: SITE + `${PROFILE_DIR}/${d.file}` })),
     },
     {
-      '@type': 'ItemList', '@id': c.self + '#list', name: t.meta.ldList, numberOfItems: cat.all.length,
-      itemListElement: [...cat.devices, ...cat.generic].map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.p.nameEn || d.p.name, url: detailUrl(d.p.id, locale) })),
+      '@type': 'ItemList', '@id': c.self + '#list', name: t.meta.ldList, numberOfItems: cat.pages.length,
+      itemListElement: cat.pages.map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.p.nameEn || d.p.name, url: detailUrl(d.p.id, locale) })),
     },
   ];
 
@@ -556,6 +581,7 @@ ${topBar(home, c)}
       ${cat.generic.map((d) => card(t, d, c, locale)).join('\n      ')}
     </ul>
     </div>
+    ${importedBlock(t, cat, locale)}
     ${requestBlock(t)}
   </section>
 

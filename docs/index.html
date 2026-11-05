@@ -213,6 +213,7 @@
             <li><a href="#controllers-play-your-daw-with-it">Play your DAW with it</a></li>
             <li><a href="#controllers-telemetry">Telemetry</a></li>
             <li><a href="#controllers-sysex-modes-templates-led-colours">SysEx: modes, templates, LED colours</a></li>
+            <li><a href="#controllers-in-other-software">In other software</a></li>
             <li><a href="#controllers-add-a-controller">Add a controller</a></li>
           </ol>
         </li>
@@ -378,7 +379,7 @@
         <a class="docs-quick-card is-cheat" href="../docs/cheatsheet/"><strong>oav-p5 cheat sheet →</strong><span>Every name a p5 sketch uses with oav-p5 on one page, with pictures: shout, hit, play, smooth. Prints on one A4.</span></a>
         <a class="docs-quick-card" href="../docs/reference/"><strong>API reference →</strong><span>Looking for one name? Every variable, function, event and option of oav-p5 and every package export, searchable, each with an example you can run.</span></a>
       </div>
-      <p class="docs-stats">19 chapters · 194 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
+      <p class="docs-stats">19 chapters · 195 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -2261,6 +2262,8 @@ output, so nothing loops.</p>
 <h3 id="controllers-sysex-modes-templates-led-colours">SysEx: modes, templates, LED colours<a class="anchor" href="#controllers-sysex-modes-templates-led-colours" aria-label="Link to this section">#</a></h3>
 <p>Some things only SysEx can do: put a Launchpad in Programmer mode, pick a Launch Control XL template, light a pad in any RGB colour. Profiles that have these list them in <code>sysex</code>, each message with its source, and the device's page shows them.</p>
 <p>The browser shows a permission prompt for SysEx, so nothing in this project asks by itself: <code>&lt;oav-controller sysex&gt;</code> adds a button, and <code>controller.enableSysex()</code> is the call behind it (run it from a click). Once it is on, the device is set up every time it connects, and <code>setLedColor(id, { r, g, b })</code> and <code>sendSysex(id)</code> work. <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex" rel="noopener">Package README</a>.</p>
+<h3 id="controllers-in-other-software">In other software<a class="anchor" href="#controllers-in-other-software" aria-label="Link to this section">#</a></h3>
+<p>Every device page has the same data as a QLC+ input profile (<code>.qxi</code>) and a Mixxx mapping (<code>.midi.xml</code> and a small <code>.js</code>), and <code>node tools/export-controller.mjs &lt;id&gt;</code> writes them from any profile. The Mixxx mapping is a starting point: remap it with Mixxx's Learning Wizard. The library also lists controllers imported from QLC+'s input profiles, with generated layouts and every control marked unverified.</p>
 <h3 id="controllers-add-a-controller">Add a controller<a class="anchor" href="#controllers-add-a-controller" aria-label="Link to this section">#</a></h3>
 <ol>
 <li>Copy the closest file in <code>packages/midi/profiles/</code>, or a generic layout.</li>
@@ -3786,7 +3789,7 @@ JSON-RPC error with code −32000 and a message.</p>
 <tr><td><code>read_doc</code></td><td><code>doc</code> (required): <code>architecture</code>, <code>writing-a-world</code>, <code>signals</code>, <code>show-control</code>, <code>roadmap</code>, <code>agents</code>, <code>readme</code></td><td>the Markdown text. <code>agents</code> is AGENTS.md, <code>readme</code> the README; the others are <code>docs/&lt;name&gt;.md</code></td></tr>
 <tr><td><code>scaffold_world</code></td><td><code>slug</code> (required, kebab-case), <code>donor</code> (default <code>01-hello-particles</code>)</td><td><code>{ created, next_steps }</code>. Copies every file of <code>examples/&lt;donor&gt;/</code> into <code>examples/&lt;next number&gt;-&lt;slug&gt;/</code></td></tr>
 <tr><td><code>run_checks</code></td><td>none</td><td><code>{ pass, fail, ok }</code> from <code>node --test tests/*.test.js</code> (60 s timeout), or <code>{ ok: false, output }</code> with the failing lines</td></tr>
-<tr><td><code>list_controllers</code></td><td>none</td><td><code>{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }] }</code>: every shipped MIDI profile, its control mix (<code>{ knob: 8, pad: 8, keys: 25 }</code>), how many controls are still flagged unverified, and its page <code>https://openaudiovisual.com/controllers/&lt;id&gt;/</code></td></tr>
+<tr><td><code>list_controllers</code></td><td>none</td><td><code>{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }], imported: […] }</code>: every shipped MIDI profile, its control mix (<code>{ knob: 8, pad: 8, keys: 25 }</code>), how many controls are still flagged unverified, and its page <code>https://openaudiovisual.com/controllers/&lt;id&gt;/</code></td></tr>
 <tr><td><code>read_profile</code></td><td><code>id</code> (required): a profile id or its <code>short</code></td><td><code>{ id, url, unverified, profile, mapping }</code>: the profile JSON as shipped (with <code>sysex</code>, <code>palette</code> and <code>verifications</code> when it has them), and a readable MIDI map (control, type, <code>CC 74, ch 1</code>, <code>evidence</code>: <code>hardware</code>, <code>source</code> or <code>unconfirmed</code>, signal <code>midi/&lt;short&gt;/&lt;id&gt;</code>, verified)</td></tr>
 <tr><td><code>validate_profile</code></td><td><code>profile</code> (required): an object or a JSON string</td><td><code>{ ok, problems, conflicts }</code>: the problems <code>validateProfile</code> finds, plus clashes with shipped profiles (same <code>id</code>, same <code>short</code>, overlapping <code>match.ports</code>)</td></tr>
 <tr><td><code>scaffold_profile</code></td><td><code>maker</code>, <code>model</code>, <code>controls</code> (all required): <code>[{ type, count, from? }]</code></td><td><code>{ profile, problems, unverified, next_steps }</code>: a skeleton that passes <code>validateProfile</code>, every number a placeholder with <code>"verified": false</code>, and the steps to source and register it. Nothing is written to disk</td></tr>

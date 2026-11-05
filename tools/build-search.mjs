@@ -115,7 +115,7 @@ function exampleRecords() {
 function controllerRecords() {
   const cat = catalog();
   const out = [];
-  for (const d of [...cat.devices, ...cat.generic]) for (const l of LANGS) {
+  for (const d of cat.pages) for (const l of LANGS) {
     out.push({ i: `ctl:${d.p.id}`, t: 'ctl', l, n: fullName(d.p, l), u: detailPath(d.p.id, l), s: d.p.maker || '', a: `${d.p.id} ${d.p.short || ''}`, k: `${d.p.maker || ''} ${d.p.kind || ''}`, d: '', x: '' });
   }
   return out;

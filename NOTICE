@@ -1,0 +1,24 @@
+Open Audiovisual
+Copyright (c) Che-Yu Wu (吳哲宇). The project is under the MIT License: see LICENSE.
+
+This repository also contains data from another project, under its own licence.
+
+QLC+ input profiles
+  Project:   Q Light Controller Plus, https://github.com/mcallegari/qlcplus
+  Folder:    resources/inputprofiles
+  Commit:    6ed78ed0a697aaa48b1428271e004b22327e5be3
+  Copyright: Massimo Callegari, Heikki Junnila and the QLC+ contributors named in each file
+  Licence:   Apache License 2.0: see LICENSES/Apache-2.0.txt
+
+  Where it is:
+    packages/midi/profiles/imported/   converted to this project's JSON. Each file says "license": "Apache-2.0" and names
+                                       its .qxi and commit in "origin" and "sources".
+    packages/midi/profiles/*.json      the three files whose "sources" list a QLC+ input profile took colour tables and LED
+                                       values from it (Akai APC40 mkII, Akai APC mini mk2, Novation Launchpad Mini MK3).
+    tests/fixtures/qlc/                three .qxi files, unchanged, as test data.
+    controllers/<id>/                  files generated from the imported profiles carry the same licence.
+
+  Changes made: read from XML into JSON, numbers decoded into MIDI messages, a generated layout added,
+  every control marked "verified": false. Nothing has been checked on hardware by this project.
+
+Nothing in this repository comes from Mixxx mappings (GPL) or from midi.guide (CC-BY-SA).

@@ -163,6 +163,21 @@ const playAll = async (page, { wrong = false } = {}) => page.evaluate(async ({ w
     row(!page.errors.length, 'device page: no console errors', page.errors.join(' | '));
     await page.context().close();
   }
+  { // an imported controller: not in PROFILES, fetched when asked for
+    const page = await open('/controllers/behringer-bcf2000/');
+    await page.waitForFunction(() => document.getElementById('d-ctl').core);
+    row(await page.evaluate(() => document.getElementById('d-ctl').controller.profile.face.auto === true), 'imported: the device page plays it');
+    row((await page.textContent('body')).includes('generated automatically'), 'imported: the page says the layout is generated');
+    await page.screenshot({ path: path.join(SHOTS, 'imported.png') });
+    row(!page.errors.length, 'imported: no console errors', page.errors.join(' | '));
+    await page.context().close();
+    const v = await open('/controllers/verify/?profile=behringer-bcf2000');
+    await v.click('#vf-sim'); await v.waitForFunction(() => document.getElementById('vf-prompt').textContent);
+    await v.evaluate(() => document.getElementById('vf-ctl').ready);
+    row((await v.evaluate(() => window.oavVerify.session.steps.length)) === 94, 'imported: the verification page walks all of it');
+    row(!v.errors.length, 'imported: verification page, no console errors', v.errors.join(' | '));
+    await v.context().close();
+  }
   { // a phone
     const page = await open('/zh/controllers/verify/?profile=novation-launchpad-mini-mk3', { width: 390 });
     await page.click('#vf-sim'); await page.waitForTimeout(600);

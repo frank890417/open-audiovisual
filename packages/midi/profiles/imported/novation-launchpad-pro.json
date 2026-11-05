@@ -1,0 +1,1028 @@
+{
+ "id": "novation-launchpad-pro",
+ "short": "launchpadpro",
+ "name": "Novation Launchpad Pro",
+ "maker": "Novation",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "Launchpad[\\s-]*Pro"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Novation-LaunchpadPro.qxi",
+  "license": "Apache-2.0",
+  "author": "Nate Doyon",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Novation-LaunchpadPro.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Novation-LaunchpadPro.qxi",
+   "note": "community profile by Nate Doyon; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 159,
+  "label": "Novation Launchpad Pro",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 128,
+   "cols": 8,
+   "rows": 8,
+   "controls": [
+    "pad-1-1",
+    "pad-1-2",
+    "pad-1-3",
+    "pad-1-4",
+    "pad-1-5",
+    "pad-1-6",
+    "pad-1-7",
+    "pad-1-8",
+    "pad-2-1",
+    "pad-2-2",
+    "pad-2-3",
+    "pad-2-4",
+    "pad-2-5",
+    "pad-2-6",
+    "pad-2-7",
+    "pad-2-8",
+    "pad-3-1",
+    "pad-3-2",
+    "pad-3-3",
+    "pad-3-4",
+    "pad-3-5",
+    "pad-3-6",
+    "pad-3-7",
+    "pad-3-8",
+    "pad-4-1",
+    "pad-4-2",
+    "pad-4-3",
+    "pad-4-4",
+    "pad-4-5",
+    "pad-4-6",
+    "pad-4-7",
+    "pad-4-8",
+    "pad-5-1",
+    "pad-5-2",
+    "pad-5-3",
+    "pad-5-4",
+    "pad-5-5",
+    "pad-5-6",
+    "pad-5-7",
+    "pad-5-8",
+    "pad-6-1",
+    "pad-6-2",
+    "pad-6-3",
+    "pad-6-4",
+    "pad-6-5",
+    "pad-6-6",
+    "pad-6-7",
+    "pad-6-8",
+    "pad-7-1",
+    "pad-7-2",
+    "pad-7-3",
+    "pad-7-4",
+    "pad-7-5",
+    "pad-7-6",
+    "pad-7-7",
+    "pad-7-8",
+    "pad-8-1",
+    "pad-8-2",
+    "pad-8-3",
+    "pad-8-4",
+    "pad-8-5",
+    "pad-8-6",
+    "pad-8-7",
+    "pad-8-8"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 134,
+   "w": 96,
+   "h": 22,
+   "cols": 8,
+   "rows": 4,
+   "controls": [
+    "record-arm",
+    "track-select",
+    "mute",
+    "solo",
+    "volume",
+    "pan",
+    "sends",
+    "stop-clip",
+    "record",
+    "row-1-arrow",
+    "double",
+    "row-2-arrow",
+    "duplicate",
+    "row-3-arrow",
+    "quantise",
+    "row-4-arrow",
+    "delete",
+    "row-5-arrow",
+    "undo",
+    "row-6-arrow",
+    "click",
+    "row-7-arrow",
+    "shift",
+    "row-8-arrow",
+    "up-arrow",
+    "down-arrow",
+    "left-arrow",
+    "right-arrow",
+    "session",
+    "note",
+    "device",
+    "user"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "record-arm",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 1,
+   "label": "Record Arm",
+   "verified": false
+  },
+  {
+   "id": "track-select",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 2,
+   "label": "Track Select",
+   "verified": false
+  },
+  {
+   "id": "mute",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 3,
+   "label": "Mute",
+   "verified": false
+  },
+  {
+   "id": "solo",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 4,
+   "label": "Solo",
+   "verified": false
+  },
+  {
+   "id": "volume",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 5,
+   "label": "Volume",
+   "verified": false
+  },
+  {
+   "id": "pan",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 6,
+   "label": "Pan",
+   "verified": false
+  },
+  {
+   "id": "sends",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 7,
+   "label": "Sends",
+   "verified": false
+  },
+  {
+   "id": "stop-clip",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 8,
+   "label": "Stop Clip",
+   "verified": false
+  },
+  {
+   "id": "record",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 10,
+   "label": "Record",
+   "verified": false
+  },
+  {
+   "id": "row-1-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 19,
+   "label": "Row 1 Arrow",
+   "verified": false
+  },
+  {
+   "id": "double",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 20,
+   "label": "Double",
+   "verified": false
+  },
+  {
+   "id": "row-2-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 29,
+   "label": "Row 2 Arrow",
+   "verified": false
+  },
+  {
+   "id": "duplicate",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 30,
+   "label": "Duplicate",
+   "verified": false
+  },
+  {
+   "id": "row-3-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 39,
+   "label": "Row 3 Arrow",
+   "verified": false
+  },
+  {
+   "id": "quantise",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 40,
+   "label": "Quantise",
+   "verified": false
+  },
+  {
+   "id": "row-4-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 49,
+   "label": "Row 4 Arrow",
+   "verified": false
+  },
+  {
+   "id": "delete",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 50,
+   "label": "Delete",
+   "verified": false
+  },
+  {
+   "id": "row-5-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 59,
+   "label": "Row 5 Arrow",
+   "verified": false
+  },
+  {
+   "id": "undo",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 60,
+   "label": "Undo",
+   "verified": false
+  },
+  {
+   "id": "row-6-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 69,
+   "label": "Row 6 Arrow",
+   "verified": false
+  },
+  {
+   "id": "click",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 70,
+   "label": "Click",
+   "verified": false
+  },
+  {
+   "id": "row-7-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 79,
+   "label": "Row 7 Arrow",
+   "verified": false
+  },
+  {
+   "id": "shift",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 80,
+   "label": "Shift",
+   "verified": false
+  },
+  {
+   "id": "row-8-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 89,
+   "label": "Row 8 Arrow",
+   "verified": false
+  },
+  {
+   "id": "up-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 91,
+   "label": "Up Arrow",
+   "verified": false
+  },
+  {
+   "id": "down-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 92,
+   "label": "Down Arrow",
+   "verified": false
+  },
+  {
+   "id": "left-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 93,
+   "label": "Left Arrow",
+   "verified": false
+  },
+  {
+   "id": "right-arrow",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 94,
+   "label": "Right Arrow",
+   "verified": false
+  },
+  {
+   "id": "session",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 95,
+   "label": "Session",
+   "verified": false
+  },
+  {
+   "id": "note",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 96,
+   "label": "Note",
+   "verified": false
+  },
+  {
+   "id": "device",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 97,
+   "label": "Device",
+   "verified": false
+  },
+  {
+   "id": "user",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 98,
+   "label": "User",
+   "verified": false
+  },
+  {
+   "id": "pad-1-1",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 11,
+   "label": "Pad 1-1",
+   "verified": false
+  },
+  {
+   "id": "pad-1-2",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 12,
+   "label": "Pad 1-2",
+   "verified": false
+  },
+  {
+   "id": "pad-1-3",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 13,
+   "label": "Pad 1-3",
+   "verified": false
+  },
+  {
+   "id": "pad-1-4",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 14,
+   "label": "Pad 1-4",
+   "verified": false
+  },
+  {
+   "id": "pad-1-5",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 15,
+   "label": "Pad 1-5",
+   "verified": false
+  },
+  {
+   "id": "pad-1-6",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 16,
+   "label": "Pad 1-6",
+   "verified": false
+  },
+  {
+   "id": "pad-1-7",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 17,
+   "label": "Pad 1-7",
+   "verified": false
+  },
+  {
+   "id": "pad-1-8",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 18,
+   "label": "Pad 1-8",
+   "verified": false
+  },
+  {
+   "id": "pad-2-1",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 21,
+   "label": "Pad 2-1",
+   "verified": false
+  },
+  {
+   "id": "pad-2-2",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 22,
+   "label": "Pad 2-2",
+   "verified": false
+  },
+  {
+   "id": "pad-2-3",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 23,
+   "label": "Pad 2-3",
+   "verified": false
+  },
+  {
+   "id": "pad-2-4",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 24,
+   "label": "Pad 2-4",
+   "verified": false
+  },
+  {
+   "id": "pad-2-5",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 25,
+   "label": "Pad 2-5",
+   "verified": false
+  },
+  {
+   "id": "pad-2-6",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 26,
+   "label": "Pad 2-6",
+   "verified": false
+  },
+  {
+   "id": "pad-2-7",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 27,
+   "label": "Pad 2-7",
+   "verified": false
+  },
+  {
+   "id": "pad-2-8",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 28,
+   "label": "Pad 2-8",
+   "verified": false
+  },
+  {
+   "id": "pad-3-1",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 31,
+   "label": "Pad 3-1",
+   "verified": false
+  },
+  {
+   "id": "pad-3-2",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 32,
+   "label": "Pad 3-2",
+   "verified": false
+  },
+  {
+   "id": "pad-3-3",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 33,
+   "label": "Pad 3-3",
+   "verified": false
+  },
+  {
+   "id": "pad-3-4",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 34,
+   "label": "Pad 3-4",
+   "verified": false
+  },
+  {
+   "id": "pad-3-5",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 35,
+   "label": "Pad 3-5",
+   "verified": false
+  },
+  {
+   "id": "pad-3-6",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 36,
+   "label": "Pad 3-6",
+   "verified": false
+  },
+  {
+   "id": "pad-3-7",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 37,
+   "label": "Pad 3-7",
+   "verified": false
+  },
+  {
+   "id": "pad-3-8",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 38,
+   "label": "Pad 3-8",
+   "verified": false
+  },
+  {
+   "id": "pad-4-1",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 41,
+   "label": "Pad 4-1",
+   "verified": false
+  },
+  {
+   "id": "pad-4-2",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 42,
+   "label": "Pad 4-2",
+   "verified": false
+  },
+  {
+   "id": "pad-4-3",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 43,
+   "label": "Pad 4-3",
+   "verified": false
+  },
+  {
+   "id": "pad-4-4",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 44,
+   "label": "Pad 4-4",
+   "verified": false
+  },
+  {
+   "id": "pad-4-5",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 45,
+   "label": "Pad 4-5",
+   "verified": false
+  },
+  {
+   "id": "pad-4-6",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 46,
+   "label": "Pad 4-6",
+   "verified": false
+  },
+  {
+   "id": "pad-4-7",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 47,
+   "label": "Pad 4-7",
+   "verified": false
+  },
+  {
+   "id": "pad-4-8",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 48,
+   "label": "Pad 4-8",
+   "verified": false
+  },
+  {
+   "id": "pad-5-1",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 51,
+   "label": "Pad 5-1",
+   "verified": false
+  },
+  {
+   "id": "pad-5-2",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 52,
+   "label": "Pad 5-2",
+   "verified": false
+  },
+  {
+   "id": "pad-5-3",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 53,
+   "label": "Pad 5-3",
+   "verified": false
+  },
+  {
+   "id": "pad-5-4",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 54,
+   "label": "Pad 5-4",
+   "verified": false
+  },
+  {
+   "id": "pad-5-5",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 55,
+   "label": "Pad 5-5",
+   "verified": false
+  },
+  {
+   "id": "pad-5-6",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 56,
+   "label": "Pad 5-6",
+   "verified": false
+  },
+  {
+   "id": "pad-5-7",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 57,
+   "label": "Pad 5-7",
+   "verified": false
+  },
+  {
+   "id": "pad-5-8",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 58,
+   "label": "Pad 5-8",
+   "verified": false
+  },
+  {
+   "id": "pad-6-1",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 61,
+   "label": "Pad 6-1",
+   "verified": false
+  },
+  {
+   "id": "pad-6-2",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 62,
+   "label": "Pad 6-2",
+   "verified": false
+  },
+  {
+   "id": "pad-6-3",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 63,
+   "label": "Pad 6-3",
+   "verified": false
+  },
+  {
+   "id": "pad-6-4",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 64,
+   "label": "Pad 6-4",
+   "verified": false
+  },
+  {
+   "id": "pad-6-5",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 65,
+   "label": "Pad 6-5",
+   "verified": false
+  },
+  {
+   "id": "pad-6-6",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 66,
+   "label": "Pad 6-6",
+   "verified": false
+  },
+  {
+   "id": "pad-6-7",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 67,
+   "label": "Pad 6-7",
+   "verified": false
+  },
+  {
+   "id": "pad-6-8",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 68,
+   "label": "Pad 6-8",
+   "verified": false
+  },
+  {
+   "id": "pad-7-1",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 71,
+   "label": "Pad 7-1",
+   "verified": false
+  },
+  {
+   "id": "pad-7-2",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 72,
+   "label": "Pad 7-2",
+   "verified": false
+  },
+  {
+   "id": "pad-7-3",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 73,
+   "label": "Pad 7-3",
+   "verified": false
+  },
+  {
+   "id": "pad-7-4",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 74,
+   "label": "Pad 7-4",
+   "verified": false
+  },
+  {
+   "id": "pad-7-5",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 75,
+   "label": "Pad 7-5",
+   "verified": false
+  },
+  {
+   "id": "pad-7-6",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 76,
+   "label": "Pad 7-6",
+   "verified": false
+  },
+  {
+   "id": "pad-7-7",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 77,
+   "label": "Pad 7-7",
+   "verified": false
+  },
+  {
+   "id": "pad-7-8",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 78,
+   "label": "Pad 7-8",
+   "verified": false
+  },
+  {
+   "id": "pad-8-1",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 81,
+   "label": "Pad 8-1",
+   "verified": false
+  },
+  {
+   "id": "pad-8-2",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 82,
+   "label": "Pad 8-2",
+   "verified": false
+  },
+  {
+   "id": "pad-8-3",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 83,
+   "label": "Pad 8-3",
+   "verified": false
+  },
+  {
+   "id": "pad-8-4",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 84,
+   "label": "Pad 8-4",
+   "verified": false
+  },
+  {
+   "id": "pad-8-5",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 85,
+   "label": "Pad 8-5",
+   "verified": false
+  },
+  {
+   "id": "pad-8-6",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 86,
+   "label": "Pad 8-6",
+   "verified": false
+  },
+  {
+   "id": "pad-8-7",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 87,
+   "label": "Pad 8-7",
+   "verified": false
+  },
+  {
+   "id": "pad-8-8",
+   "type": "fader",
+   "msg": "note",
+   "ch": 1,
+   "note": 88,
+   "label": "Pad 8-8",
+   "verified": false
+  }
+ ]
+}

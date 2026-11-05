@@ -41,6 +41,7 @@ export { MidiControllers, controllerRoutes } from './manager.js?v=dd4a4d59';
 export { linkControllers } from './link.js?v=dd4a4d59';
 export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=dd4a4d59';
 export { PROFILES, profileById } from './profiles/index.js?v=dd4a4d59';
+export { IMPORTED } from './profiles/imported.js?v=dd4a4d59';
 export { ControllerView, VIEW_CSS } from './view.js?v=dd4a4d59';
 export { mountMidiPanel, PANEL_CSS } from './panel.js?v=dd4a4d59';
 export { ControllerCanvas, CANVAS_THEME, controllerGeometry, keyboardGeometry, keyWindow, followMidiSignals, touchText, midiNoteName, fadeLevel } from './canvas.js?v=dd4a4d59';

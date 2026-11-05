@@ -1,0 +1,1450 @@
+{
+ "id": "akai-apc40",
+ "short": "apc40",
+ "name": "AKAI Professional APC40",
+ "maker": "AKAI Professional",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "APC40"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Akai-APC40.qxi",
+  "license": "Apache-2.0",
+  "author": "Dan",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Akai-APC40.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Akai-APC40.qxi",
+   "note": "community profile by Dan; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 109.5,
+  "label": "AKAI Professional APC40",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 32,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "track-1-volume",
+    "master-volume",
+    "crossfader",
+    "track-2-volume",
+    "track-3-volume",
+    "track-4-volume",
+    "track-5-volume",
+    "track-6-volume",
+    "track-7-volume",
+    "track-8-volume"
+   ]
+  },
+  {
+   "id": "knob",
+   "label": "Knobs",
+   "x": 2,
+   "y": 38,
+   "w": 96,
+   "h": 27,
+   "cols": 8,
+   "rows": 3,
+   "controls": [
+    "device-control-1",
+    "device-control-2",
+    "device-control-3",
+    "device-control-4",
+    "device-control-5",
+    "device-control-6",
+    "device-control-7",
+    "device-control-8",
+    "cue-level",
+    "track-control-1",
+    "track-control-2",
+    "track-control-3",
+    "track-control-4",
+    "track-control-5",
+    "track-control-6",
+    "track-control-7",
+    "track-control-8"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 68,
+   "w": 96,
+   "h": 38.5,
+   "cols": 16,
+   "rows": 7,
+   "controls": [
+    "record-arm-1",
+    "solo-cue-1",
+    "activator-1",
+    "track-selection-1",
+    "clip-stop-1",
+    "clip-launch-1-1",
+    "clip-launch-1-2",
+    "clip-launch-1-3",
+    "clip-launch-1-4",
+    "clip-launch-1-5",
+    "clip-track",
+    "device-on-off",
+    "left-arrow",
+    "right-arrow",
+    "detail-view",
+    "rec-quantization",
+    "midi-overdub",
+    "metronome",
+    "track-selection-master",
+    "stop-all-clips",
+    "scene-launch-1",
+    "scene-launch-2",
+    "scene-launch-3",
+    "scene-launch-4",
+    "scene-launch-5",
+    "pan",
+    "send-a",
+    "send-b",
+    "send-c",
+    "play",
+    "stop",
+    "rec",
+    "up",
+    "down",
+    "right",
+    "left",
+    "shift",
+    "tap-tempo",
+    "nudge",
+    "nudge-2",
+    "record-arm-2",
+    "solo-cue-2",
+    "activator-2",
+    "track-selection-2",
+    "clip-stop-2",
+    "clip-launch-2-1",
+    "clip-launch-2-2",
+    "clip-launch-2-3",
+    "clip-launch-2-4",
+    "clip-launch-2-5",
+    "record-arm-3",
+    "solo-cue-3",
+    "activator-3",
+    "track-selection-3",
+    "clip-stop-3",
+    "clip-launch-3-1",
+    "clip-launch-3-2",
+    "clip-launch-3-3",
+    "clip-launch-3-4",
+    "clip-launch-3-5",
+    "record-arm-4",
+    "solo-cue-4",
+    "activator-4",
+    "track-selection-4",
+    "clip-stop-4",
+    "clip-launch-4-1",
+    "clip-launch-4-2",
+    "clip-launch-4-3",
+    "clip-launch-4-4",
+    "clip-launch-4-5",
+    "record-arm-5",
+    "solo-cue-5",
+    "activator-5",
+    "track-selection-5",
+    "clip-stop-5",
+    "clip-launch-5-1",
+    "clip-launch-5-2",
+    "clip-launch-5-3",
+    "clip-launch-5-4",
+    "clip-launch-5-5",
+    "record-arm-6",
+    "solo-cue-6",
+    "activator-6",
+    "track-selection-6",
+    "clip-stop-6",
+    "clip-launch-6-1",
+    "clip-launch-6-2",
+    "clip-launch-6-3",
+    "clip-launch-6-4",
+    "clip-launch-6-5",
+    "record-arm-7",
+    "solo-cue-7",
+    "activator-7",
+    "track-selection-7",
+    "clip-stop-7",
+    "clip-launch-7-1",
+    "clip-launch-7-2",
+    "clip-launch-7-3",
+    "clip-launch-7-4",
+    "clip-launch-7-5",
+    "record-arm-8",
+    "solo-cue-8",
+    "activator-8",
+    "track-selection-8",
+    "clip-stop-8",
+    "clip-launch-8-1",
+    "clip-launch-8-2",
+    "clip-launch-8-3",
+    "clip-launch-8-4",
+    "clip-launch-8-5"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "track-1-volume",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 7,
+   "label": "Track 1 Volume",
+   "verified": false
+  },
+  {
+   "id": "master-volume",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 14,
+   "label": "Master Volume",
+   "verified": false
+  },
+  {
+   "id": "crossfader",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 15,
+   "label": "Crossfader",
+   "verified": false
+  },
+  {
+   "id": "device-control-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 16,
+   "label": "Device Control 1",
+   "verified": false
+  },
+  {
+   "id": "device-control-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 17,
+   "label": "Device Control 2",
+   "verified": false
+  },
+  {
+   "id": "device-control-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 18,
+   "label": "Device Control 3",
+   "verified": false
+  },
+  {
+   "id": "device-control-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 19,
+   "label": "Device Control 4",
+   "verified": false
+  },
+  {
+   "id": "device-control-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 20,
+   "label": "Device Control 5",
+   "verified": false
+  },
+  {
+   "id": "device-control-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 21,
+   "label": "Device Control 6",
+   "verified": false
+  },
+  {
+   "id": "device-control-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 22,
+   "label": "Device Control 7",
+   "verified": false
+  },
+  {
+   "id": "device-control-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 23,
+   "label": "Device Control 8",
+   "verified": false
+  },
+  {
+   "id": "cue-level",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 47,
+   "label": "Cue Level",
+   "verified": false
+  },
+  {
+   "id": "track-control-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 48,
+   "label": "Track Control 1",
+   "verified": false
+  },
+  {
+   "id": "track-control-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 49,
+   "label": "Track Control 2",
+   "verified": false
+  },
+  {
+   "id": "track-control-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 50,
+   "label": "Track Control 3",
+   "verified": false
+  },
+  {
+   "id": "track-control-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 51,
+   "label": "Track Control 4",
+   "verified": false
+  },
+  {
+   "id": "track-control-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 52,
+   "label": "Track Control 5",
+   "verified": false
+  },
+  {
+   "id": "track-control-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 53,
+   "label": "Track Control 6",
+   "verified": false
+  },
+  {
+   "id": "track-control-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 54,
+   "label": "Track Control 7",
+   "verified": false
+  },
+  {
+   "id": "track-control-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 55,
+   "label": "Track Control 8",
+   "verified": false
+  },
+  {
+   "id": "record-arm-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 48,
+   "label": "Record Arm 1",
+   "verified": false
+  },
+  {
+   "id": "solo-cue-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 49,
+   "label": "Solo/Cue 1",
+   "verified": false
+  },
+  {
+   "id": "activator-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 50,
+   "label": "Activator 1",
+   "verified": false
+  },
+  {
+   "id": "track-selection-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 51,
+   "label": "Track Selection 1",
+   "verified": false
+  },
+  {
+   "id": "clip-stop-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 52,
+   "label": "Clip Stop 1",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-1-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 53,
+   "label": "Clip Launch 1 - 1",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-1-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 54,
+   "label": "Clip Launch 1 - 2",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-1-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 55,
+   "label": "Clip Launch 1 - 3",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-1-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 56,
+   "label": "Clip Launch 1 - 4",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-1-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 57,
+   "label": "Clip Launch 1 - 5",
+   "verified": false
+  },
+  {
+   "id": "clip-track",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 58,
+   "label": "Clip/Track",
+   "verified": false
+  },
+  {
+   "id": "device-on-off",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 59,
+   "label": "Device On/Off",
+   "verified": false
+  },
+  {
+   "id": "left-arrow",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 60,
+   "label": "Left Arrow",
+   "verified": false
+  },
+  {
+   "id": "right-arrow",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 61,
+   "label": "Right Arrow",
+   "verified": false
+  },
+  {
+   "id": "detail-view",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 62,
+   "label": "Detail View",
+   "verified": false
+  },
+  {
+   "id": "rec-quantization",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 63,
+   "label": "Rec Quantization",
+   "verified": false
+  },
+  {
+   "id": "midi-overdub",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 64,
+   "label": "MIDI Overdub",
+   "verified": false
+  },
+  {
+   "id": "metronome",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 65,
+   "label": "Metronome",
+   "verified": false
+  },
+  {
+   "id": "track-selection-master",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 80,
+   "label": "Track Selection Master",
+   "verified": false
+  },
+  {
+   "id": "stop-all-clips",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 81,
+   "label": "Stop All Clips",
+   "verified": false
+  },
+  {
+   "id": "scene-launch-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 82,
+   "label": "Scene Launch 1",
+   "verified": false
+  },
+  {
+   "id": "scene-launch-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 83,
+   "label": "Scene Launch 2",
+   "verified": false
+  },
+  {
+   "id": "scene-launch-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 84,
+   "label": "Scene Launch 3",
+   "verified": false
+  },
+  {
+   "id": "scene-launch-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 85,
+   "label": "Scene Launch 4",
+   "verified": false
+  },
+  {
+   "id": "scene-launch-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 86,
+   "label": "Scene Launch 5",
+   "verified": false
+  },
+  {
+   "id": "pan",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 87,
+   "label": "Pan",
+   "verified": false
+  },
+  {
+   "id": "send-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 88,
+   "label": "Send A",
+   "verified": false
+  },
+  {
+   "id": "send-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 89,
+   "label": "Send B",
+   "verified": false
+  },
+  {
+   "id": "send-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 90,
+   "label": "Send C",
+   "verified": false
+  },
+  {
+   "id": "play",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 91,
+   "label": "Play",
+   "verified": false
+  },
+  {
+   "id": "stop",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 92,
+   "label": "Stop",
+   "verified": false
+  },
+  {
+   "id": "rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 93,
+   "label": "Rec",
+   "verified": false
+  },
+  {
+   "id": "up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 94,
+   "label": "Up",
+   "verified": false
+  },
+  {
+   "id": "down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 95,
+   "label": "Down",
+   "verified": false
+  },
+  {
+   "id": "right",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 96,
+   "label": "Right",
+   "verified": false
+  },
+  {
+   "id": "left",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 97,
+   "label": "Left",
+   "verified": false
+  },
+  {
+   "id": "shift",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 98,
+   "label": "Shift",
+   "verified": false
+  },
+  {
+   "id": "tap-tempo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 99,
+   "label": "Tap Tempo",
+   "verified": false
+  },
+  {
+   "id": "nudge",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 100,
+   "label": "Nudge +",
+   "verified": false
+  },
+  {
+   "id": "nudge-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 101,
+   "label": "Nudge -",
+   "verified": false
+  },
+  {
+   "id": "track-2-volume",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 2,
+   "cc": 7,
+   "label": "Track 2 Volume",
+   "verified": false
+  },
+  {
+   "id": "record-arm-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 48,
+   "label": "Record Arm 2",
+   "verified": false
+  },
+  {
+   "id": "solo-cue-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 49,
+   "label": "Solo/Cue 2",
+   "verified": false
+  },
+  {
+   "id": "activator-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 50,
+   "label": "Activator 2",
+   "verified": false
+  },
+  {
+   "id": "track-selection-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 51,
+   "label": "Track Selection 2",
+   "verified": false
+  },
+  {
+   "id": "clip-stop-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 52,
+   "label": "Clip Stop 2",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-2-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 53,
+   "label": "Clip Launch 2 - 1",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-2-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 54,
+   "label": "Clip Launch 2 - 2",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-2-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 55,
+   "label": "Clip Launch 2 - 3",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-2-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 56,
+   "label": "Clip Launch 2 - 4",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-2-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 2,
+   "note": 57,
+   "label": "Clip Launch 2 - 5",
+   "verified": false
+  },
+  {
+   "id": "track-3-volume",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 3,
+   "cc": 7,
+   "label": "Track 3 Volume",
+   "verified": false
+  },
+  {
+   "id": "record-arm-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 48,
+   "label": "Record Arm 3",
+   "verified": false
+  },
+  {
+   "id": "solo-cue-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 49,
+   "label": "Solo/Cue 3",
+   "verified": false
+  },
+  {
+   "id": "activator-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 50,
+   "label": "Activator 3",
+   "verified": false
+  },
+  {
+   "id": "track-selection-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 51,
+   "label": "Track Selection 3",
+   "verified": false
+  },
+  {
+   "id": "clip-stop-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 52,
+   "label": "Clip Stop 3",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-3-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 53,
+   "label": "Clip Launch 3 - 1",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-3-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 54,
+   "label": "Clip Launch 3 - 2",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-3-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 55,
+   "label": "Clip Launch 3 - 3",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-3-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 56,
+   "label": "Clip Launch 3 - 4",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-3-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 3,
+   "note": 57,
+   "label": "Clip Launch 3 - 5",
+   "verified": false
+  },
+  {
+   "id": "track-4-volume",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 4,
+   "cc": 7,
+   "label": "Track 4 Volume",
+   "verified": false
+  },
+  {
+   "id": "record-arm-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 48,
+   "label": "Record Arm 4",
+   "verified": false
+  },
+  {
+   "id": "solo-cue-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 49,
+   "label": "Solo/Cue 4",
+   "verified": false
+  },
+  {
+   "id": "activator-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 50,
+   "label": "Activator 4",
+   "verified": false
+  },
+  {
+   "id": "track-selection-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 51,
+   "label": "Track Selection 4",
+   "verified": false
+  },
+  {
+   "id": "clip-stop-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 52,
+   "label": "Clip Stop 4",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-4-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 53,
+   "label": "Clip Launch 4 - 1",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-4-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 54,
+   "label": "Clip Launch 4 - 2",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-4-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 55,
+   "label": "Clip Launch 4 - 3",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-4-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 56,
+   "label": "Clip Launch 4 - 4",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-4-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 4,
+   "note": 57,
+   "label": "Clip Launch 4 - 5",
+   "verified": false
+  },
+  {
+   "id": "track-5-volume",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 5,
+   "cc": 7,
+   "label": "Track 5 Volume",
+   "verified": false
+  },
+  {
+   "id": "record-arm-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 48,
+   "label": "Record Arm 5",
+   "verified": false
+  },
+  {
+   "id": "solo-cue-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 49,
+   "label": "Solo/Cue 5",
+   "verified": false
+  },
+  {
+   "id": "activator-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 50,
+   "label": "Activator 5",
+   "verified": false
+  },
+  {
+   "id": "track-selection-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 51,
+   "label": "Track Selection 5",
+   "verified": false
+  },
+  {
+   "id": "clip-stop-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 52,
+   "label": "Clip Stop 5",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-5-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 53,
+   "label": "Clip Launch 5 - 1",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-5-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 54,
+   "label": "Clip Launch 5 - 2",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-5-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 55,
+   "label": "Clip Launch 5 - 3",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-5-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 56,
+   "label": "Clip Launch 5 - 4",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-5-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 5,
+   "note": 57,
+   "label": "Clip Launch 5 - 5",
+   "verified": false
+  },
+  {
+   "id": "track-6-volume",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 6,
+   "cc": 7,
+   "label": "Track 6 Volume",
+   "verified": false
+  },
+  {
+   "id": "record-arm-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 48,
+   "label": "Record Arm 6",
+   "verified": false
+  },
+  {
+   "id": "solo-cue-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 49,
+   "label": "Solo/Cue 6",
+   "verified": false
+  },
+  {
+   "id": "activator-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 50,
+   "label": "Activator 6",
+   "verified": false
+  },
+  {
+   "id": "track-selection-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 51,
+   "label": "Track Selection 6",
+   "verified": false
+  },
+  {
+   "id": "clip-stop-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 52,
+   "label": "Clip Stop 6",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-6-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 53,
+   "label": "Clip Launch 6 - 1",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-6-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 54,
+   "label": "Clip Launch 6 - 2",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-6-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 55,
+   "label": "Clip Launch 6 - 3",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-6-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 56,
+   "label": "Clip Launch 6 - 4",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-6-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 6,
+   "note": 57,
+   "label": "Clip Launch 6 - 5",
+   "verified": false
+  },
+  {
+   "id": "track-7-volume",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 7,
+   "cc": 7,
+   "label": "Track 7 Volume",
+   "verified": false
+  },
+  {
+   "id": "record-arm-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 48,
+   "label": "Record Arm 7",
+   "verified": false
+  },
+  {
+   "id": "solo-cue-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 49,
+   "label": "Solo/Cue 7",
+   "verified": false
+  },
+  {
+   "id": "activator-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 50,
+   "label": "Activator 7",
+   "verified": false
+  },
+  {
+   "id": "track-selection-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 51,
+   "label": "Track Selection 7",
+   "verified": false
+  },
+  {
+   "id": "clip-stop-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 52,
+   "label": "Clip Stop 7",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-7-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 53,
+   "label": "Clip Launch 7 - 1",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-7-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 54,
+   "label": "Clip Launch 7 - 2",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-7-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 55,
+   "label": "Clip Launch 7 - 3",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-7-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 56,
+   "label": "Clip Launch 7 - 4",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-7-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 7,
+   "note": 57,
+   "label": "Clip Launch 7 - 5",
+   "verified": false
+  },
+  {
+   "id": "track-8-volume",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 8,
+   "cc": 7,
+   "label": "Track 8 Volume",
+   "verified": false
+  },
+  {
+   "id": "record-arm-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 48,
+   "label": "Record Arm 8",
+   "verified": false
+  },
+  {
+   "id": "solo-cue-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 49,
+   "label": "Solo/Cue 8",
+   "verified": false
+  },
+  {
+   "id": "activator-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 50,
+   "label": "Activator 8",
+   "verified": false
+  },
+  {
+   "id": "track-selection-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 51,
+   "label": "Track Selection 8",
+   "verified": false
+  },
+  {
+   "id": "clip-stop-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 52,
+   "label": "Clip Stop 8",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-8-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 53,
+   "label": "Clip Launch 8 - 1",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-8-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 54,
+   "label": "Clip Launch 8 - 2",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-8-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 55,
+   "label": "Clip Launch 8 - 3",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-8-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 56,
+   "label": "Clip Launch 8 - 4",
+   "verified": false
+  },
+  {
+   "id": "clip-launch-8-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 8,
+   "note": 57,
+   "label": "Clip Launch 8 - 5",
+   "verified": false
+  }
+ ]
+}

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- DJ TechTools Midi Fighter Twister: generated from https://openaudiovisual.com/controllers/djtechtools-midi-fighter-twister/. Set the MIDI channel of this input to Omni in QLC+. -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>DJ TechTools</Manufacturer>
+ <Model>Midi Fighter Twister</Model>
+ <Type>MIDI</Type>
+ <Channel Number="0">
+  <Name>1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="1">
+  <Name>2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="2">
+  <Name>3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="3">
+  <Name>4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="4">
+  <Name>5</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="5">
+  <Name>6</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="6">
+  <Name>7</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="7">
+  <Name>8</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="8">
+  <Name>9</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="9">
+  <Name>10</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="10">
+  <Name>11</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="11">
+  <Name>12</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="12">
+  <Name>13</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="13">
+  <Name>14</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="14">
+  <Name>15</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="15">
+  <Name>16</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="4096">
+  <Name>push1</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4097">
+  <Name>push2</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4098">
+  <Name>push3</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4099">
+  <Name>push4</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4100">
+  <Name>push5</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4101">
+  <Name>push6</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4102">
+  <Name>push7</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4103">
+  <Name>push8</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4104">
+  <Name>push9</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4105">
+  <Name>push10</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4106">
+  <Name>push11</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4107">
+  <Name>push12</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4108">
+  <Name>push13</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4109">
+  <Name>push14</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4110">
+  <Name>push15</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="4111">
+  <Name>push16</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="12296">
+  <Name>L1</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="12297">
+  <Name>◀</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="12298">
+  <Name>L3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="12299">
+  <Name>R1</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="12300">
+  <Name>▶</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="12301">
+  <Name>R3</Name>
+  <Type>Button</Type>
+ </Channel>
+</InputProfile>

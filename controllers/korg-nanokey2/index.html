@@ -111,6 +111,7 @@
     <div class="stage-foot">
       <p class="stage-meta"><b>Play Korg nanoKEY2 on screen</b> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=korg-nanokey2">Full screen ↗</a> <a href="../../packages/midi/profiles/korg-nanokey2.json">Raw JSON ↗</a> <a href="../../controllers/">All controllers</a></p>
     </div>
+    
     <p class="hint js-only">Drag knobs and faders · tap pads and keys · or plug the real one in and press Connect. Nothing is sent anywhere unless you add a MIDI out.</p>
     <noscript><p class="noscript">This is a live, playable controller: turn on JavaScript to play it. The complete MIDI map is in the table below.</p></noscript>
   </section>
@@ -245,6 +246,34 @@
     </div>
   </section>
 
+  <!-- ═════ other software ═════ -->
+  <section class="sec" id="other-software" aria-labelledby="other-software-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Other software</p>
+      <h2 id="other-software-title">Use this controller outside this project</h2>
+      <p class="sec-lede">The same data, as files other programs read. Nobody has tested these on this exact unit unless the table above says so.</p>
+    </header>
+    <div class="spec-grid">
+      <div>
+        <h3>QLC+</h3>
+        <p>An input profile: every control and LED value, for lighting. Copy it to your user folder (macOS <code>~/Library/Application Support/QLC+/InputProfiles</code>, Linux <code>~/.qlcplus/inputprofiles</code>, Windows <code>%USERPROFILE%\QLC+\InputProfiles</code>) and restart QLC+.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/korg-nanokey2/korg-nanokey2.qxi" download="korg-nanokey2.qxi">korg-nanokey2.qxi</a></div>
+      </div>
+      <div>
+        <h3>Mixxx</h3>
+        <p>A starting point, not a finished mapping: decks, EQ and hot cues go to the controls in order. Put both files in the folder that Preferences → Controllers → Open User Mapping Folder opens, then remap what you like with the Learning Wizard.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/korg-nanokey2/korg-nanokey2.midi.xml" download="korg-nanokey2.midi.xml">korg-nanokey2.midi.xml</a><a class="vf-btn" href="../../controllers/korg-nanokey2/korg-nanokey2.scripts.js" download="korg-nanokey2.scripts.js">korg-nanokey2.scripts.js</a></div>
+      </div>
+      <div>
+        <h3>The data itself</h3>
+        <p>Everything above comes from this file: faceplate, messages, LEDs, SysEx and who checked what. <code>tools/export-controller.mjs</code> writes these files from any profile.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../packages/midi/profiles/korg-nanokey2.json">korg-nanokey2.json</a></div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- ═════ around it ═════ -->
   <section class="sec" id="related" aria-labelledby="related-title">
     
@@ -253,12 +282,12 @@
       <h2 id="related-title">Related controllers</h2>
     </header>
     <ul class="rel" aria-label="Related controllers">
+      <li><a href="../korg-nanopad/">KORG nanoPAD</a><span>KORG · 2 faders · 48 buttons</span></li>
+      <li><a href="../korg-nanopad2/">KORG NanoPAD2</a><span>KORG · 3 faders · 48 buttons</span></li>
+      <li><a href="../korg-nanokontrol/">KORG nanoKONTROL</a><span>KORG · 28 knobs · 28 faders · 60 buttons</span></li>
       <li><a href="../korg-nanokontrol2/">Korg nanoKONTROL2</a><span>KORG · 8 knobs · 8 faders · 35 buttons</span></li>
+      <li><a href="../korg-nanokontrol-studio/">KORG nanoKONTROL Studio</a><span>KORG · 40 knobs · 5 encoders · 39 faders · 221 buttons</span></li>
       <li><a href="../arturia-keystep37/">Arturia KeyStep 37</a><span>Arturia · 37 keys · 4 knobs · 1 button · 2 touch strips</span></li>
-      <li><a href="../teenage-engineering-op-1-field/">teenage engineering OP-1 field</a><span>teenage engineering · 24 keys · 4 encoders · 33 buttons</span></li>
-      <li><a href="../generic-keys25/">Generic 25-key keyboard</a><span>Generic layout · 25 keys · 1 button · 2 wheels</span></li>
-      <li><a href="../generic-keys49/">Generic 49-key keyboard</a><span>Generic layout · 49 keys · 1 button · 2 wheels</span></li>
-      <li><a href="../generic-keys61/">Generic 61-key keyboard</a><span>Generic layout · 61 keys · 1 button · 2 wheels</span></li>
     </ul>
     <p class="cmp-link"><a href="../#cmp-korg-nanokey2">Compare Korg nanoKEY2 with the rest, by keys, pads, knobs, faders and LED feedback →</a></p>
     <nav class="step" aria-label="Neighbouring controllers">
@@ -324,7 +353,7 @@
   </div>
 </footer>
 
-<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"korg-nanokey2","sysex":null}</script>
+<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"korg-nanokey2","imported":false,"sysex":null}</script>
 <script type="module" src="../../assets/controllers/detail.js"></script>
 <!--/email_off-->
 </body>

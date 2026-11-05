@@ -111,6 +111,7 @@
     <div class="stage-foot">
       <p class="stage-meta"><b>Play DJ TechTools Midi Fighter Twister on screen</b> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=djtechtools-midi-fighter-twister">Full screen ↗</a> <a href="../../packages/midi/profiles/djtechtools-midi-fighter-twister.json">Raw JSON ↗</a> <a href="../../controllers/">All controllers</a></p>
     </div>
+    
     <p class="hint js-only">Drag knobs and faders · tap pads and keys · or plug the real one in and press Connect. Nothing is sent anywhere unless you add a MIDI out.</p>
     <noscript><p class="noscript">This is a live, playable controller: turn on JavaScript to play it. The complete MIDI map is in the table below.</p></noscript>
   </section>
@@ -574,6 +575,34 @@
     </div>
   </section>
 
+  <!-- ═════ other software ═════ -->
+  <section class="sec" id="other-software" aria-labelledby="other-software-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Other software</p>
+      <h2 id="other-software-title">Use this controller outside this project</h2>
+      <p class="sec-lede">The same data, as files other programs read. Nobody has tested these on this exact unit unless the table above says so.</p>
+    </header>
+    <div class="spec-grid">
+      <div>
+        <h3>QLC+</h3>
+        <p>An input profile: every control and LED value, for lighting. Copy it to your user folder (macOS <code>~/Library/Application Support/QLC+/InputProfiles</code>, Linux <code>~/.qlcplus/inputprofiles</code>, Windows <code>%USERPROFILE%\QLC+\InputProfiles</code>) and restart QLC+. Then set the MIDI channel of this input to Omni.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/djtechtools-midi-fighter-twister/djtechtools-midi-fighter-twister.qxi" download="djtechtools-midi-fighter-twister.qxi">djtechtools-midi-fighter-twister.qxi</a></div>
+      </div>
+      <div>
+        <h3>Mixxx</h3>
+        <p>A starting point, not a finished mapping: decks, EQ and hot cues go to the controls in order. Put both files in the folder that Preferences → Controllers → Open User Mapping Folder opens, then remap what you like with the Learning Wizard.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/djtechtools-midi-fighter-twister/djtechtools-midi-fighter-twister.midi.xml" download="djtechtools-midi-fighter-twister.midi.xml">djtechtools-midi-fighter-twister.midi.xml</a><a class="vf-btn" href="../../controllers/djtechtools-midi-fighter-twister/djtechtools-midi-fighter-twister.scripts.js" download="djtechtools-midi-fighter-twister.scripts.js">djtechtools-midi-fighter-twister.scripts.js</a></div>
+      </div>
+      <div>
+        <h3>The data itself</h3>
+        <p>Everything above comes from this file: faceplate, messages, LEDs, SysEx and who checked what. <code>tools/export-controller.mjs</code> writes these files from any profile.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../packages/midi/profiles/djtechtools-midi-fighter-twister.json">djtechtools-midi-fighter-twister.json</a></div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- ═════ around it ═════ -->
   <section class="sec" id="related" aria-labelledby="related-title">
     
@@ -653,7 +682,7 @@
   </div>
 </footer>
 
-<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"djtechtools-midi-fighter-twister","sysex":null}</script>
+<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"djtechtools-midi-fighter-twister","imported":false,"sysex":null}</script>
 <script type="module" src="../../assets/controllers/detail.js"></script>
 <!--/email_off-->
 </body>

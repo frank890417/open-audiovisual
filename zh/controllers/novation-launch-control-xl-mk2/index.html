@@ -111,6 +111,7 @@
     <div class="stage-foot">
       <p class="stage-meta"><b>在畫面上彈 Novation Launch Control XL (MK2)</b> <a href="../../../examples/09-midi-controllers/?view=controller&amp;profile=novation-launch-control-xl-mk2">全螢幕 ↗</a> <a href="../../../packages/midi/profiles/novation-launch-control-xl-mk2.json">原始 JSON ↗</a> <a href="../../../zh/controllers/">全部控制器</a></p>
     </div>
+    
     <p class="hint js-only">拖曳旋鈕和推桿 · 點打擊墊和琴鍵 · 或接上真機按「接上」。除非你加了 MIDI 輸出，否則什麼都不會送出去。</p>
     <noscript><p class="noscript">這是一台可以彈的控制器，打開 JavaScript 才能彈。完整的 MIDI 對照表在下面的表格裡。</p></noscript>
   </section>
@@ -838,6 +839,34 @@
     </div>
   </section>
 
+  <!-- ═════ other software ═════ -->
+  <section class="sec" id="other-software" aria-labelledby="other-software-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">其他軟體</p>
+      <h2 id="other-software-title">在這個專案以外使用這台控制器</h2>
+      <p class="sec-lede">同一份資料，換成別的程式讀得懂的檔案。除非上面的表格有寫，這些檔案都還沒在這台機器上實測過。</p>
+    </header>
+    <div class="spec-grid">
+      <div>
+        <h3>QLC+</h3>
+        <p>輸入設定檔：每個控制項和 LED 值，給燈光控制用。複製到使用者資料夾（macOS <code>~/Library/Application Support/QLC+/InputProfiles</code>，Linux <code>~/.qlcplus/inputprofiles</code>，Windows <code>%USERPROFILE%\QLC+\InputProfiles</code>），重新開啟 QLC+。 接著把這個輸入的 MIDI 頻道設成 Omni。</p>
+        <div class="vf-row"><a class="vf-btn" href="../../../controllers/novation-launch-control-xl-mk2/novation-launch-control-xl-mk2.qxi" download="novation-launch-control-xl-mk2.qxi">novation-launch-control-xl-mk2.qxi</a></div>
+      </div>
+      <div>
+        <h3>Mixxx</h3>
+        <p>這是起點，不是完成的 mapping：唱盤、EQ、hot cue 依序分給各個控制項。把兩個檔案放進 Preferences → Controllers → Open User Mapping Folder 開啟的資料夾，再用 Learning Wizard 改成你要的。</p>
+        <div class="vf-row"><a class="vf-btn" href="../../../controllers/novation-launch-control-xl-mk2/novation-launch-control-xl-mk2.midi.xml" download="novation-launch-control-xl-mk2.midi.xml">novation-launch-control-xl-mk2.midi.xml</a><a class="vf-btn" href="../../../controllers/novation-launch-control-xl-mk2/novation-launch-control-xl-mk2.scripts.js" download="novation-launch-control-xl-mk2.scripts.js">novation-launch-control-xl-mk2.scripts.js</a></div>
+      </div>
+      <div>
+        <h3>資料本身</h3>
+        <p>上面的東西都來自這個檔案：面板、訊息、LED、SysEx，以及誰驗了什麼。<code>tools/export-controller.mjs</code> 可以從任何設定檔產生這些檔案。</p>
+        <div class="vf-row"><a class="vf-btn" href="../../../packages/midi/profiles/novation-launch-control-xl-mk2.json">novation-launch-control-xl-mk2.json</a></div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- ═════ around it ═════ -->
   <section class="sec" id="related" aria-labelledby="related-title">
     
@@ -846,12 +875,12 @@
       <h2 id="related-title">相關控制器</h2>
     </header>
     <ul class="rel" aria-label="相關控制器">
+      <li><a href="../novation-launch-control/">Novation Launch Control</a><span>Novation · 32 顆旋鈕 · 24 顆按鈕</span></li>
+      <li><a href="../novation-launchpad-pro/">Novation Launchpad Pro</a><span>Novation · 64 支推桿 · 32 顆按鈕</span></li>
       <li><a href="../novation-launchpad-mini-mk3/">Novation Launchpad Mini MK3</a><span>Novation · 64 個打擊墊 · 16 顆按鈕</span></li>
       <li><a href="../novation-launch-control-xl-3/">Novation Launch Control XL 3</a><span>Novation · 24 顆無段旋鈕 · 8 支推桿 · 16 顆按鈕</span></li>
       <li><a href="../novation-launchpad-pro-mk3/">Novation Launchpad Pro MK3</a><span>Novation · 64 個打擊墊 · 41 顆按鈕</span></li>
       <li><a href="../novation-launchkey-25-mk4/">Novation Launchkey 25 MK4</a><span>Novation · 16 個打擊墊 · 25 個琴鍵 · 8 顆旋鈕 · 1 顆按鈕 · 2 個滾輪</span></li>
-      <li><a href="../novation-launchkey-37-mk4/">Novation Launchkey 37 MK4</a><span>Novation · 16 個打擊墊 · 37 個琴鍵 · 8 顆旋鈕 · 1 顆按鈕 · 2 個滾輪</span></li>
-      <li><a href="../novation-launchkey-mini-mk3/">Novation Launchkey Mini MK3</a><span>Novation · 16 個打擊墊 · 25 個琴鍵 · 8 顆旋鈕 · 2 條觸控條</span></li>
     </ul>
     <p class="cmp-link"><a href="../#cmp-novation-launch-control-xl-mk2">把 Novation Launch Control XL (MK2) 跟其他台比較：琴鍵、打擊墊、旋鈕、推桿、LED 回饋 →</a></p>
     <nav class="step" aria-label="相鄰的控制器">
@@ -917,7 +946,7 @@
   </div>
 </footer>
 
-<script type="application/json" id="ctl-i18n">{"lang":"zh","copy":"複製","copied":"已複製","profile":"novation-launch-control-xl-mk2","sysex":{"asking":"等瀏覽器回應…","denied":"SysEx 沒有被允許，或這個瀏覽器沒有 Web MIDI。","ready":"SysEx 已開啟，機器也設定好了。","noDevice":"SysEx 已開啟，但沒有連接機器。","sent":"已送出 {id}。","painted":"已送給 {n} 顆 LED。"}}</script>
+<script type="application/json" id="ctl-i18n">{"lang":"zh","copy":"複製","copied":"已複製","profile":"novation-launch-control-xl-mk2","imported":false,"sysex":{"asking":"等瀏覽器回應…","denied":"SysEx 沒有被允許，或這個瀏覽器沒有 Web MIDI。","ready":"SysEx 已開啟，機器也設定好了。","noDevice":"SysEx 已開啟，但沒有連接機器。","sent":"已送出 {id}。","painted":"已送給 {n} 顆 LED。"}}</script>
 <script type="module" src="../../../assets/controllers/detail.js"></script>
 <!--/email_off-->
 </body>

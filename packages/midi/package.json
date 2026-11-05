@@ -8,6 +8,7 @@
     "./element": "./element.js",
     "./element.js": "./element.js",
     "./embed": "./embed.js",
+    "./export": "./export.js",
     "./profiles/*": "./profiles/*",
     "./profile.schema.json": "./profile.schema.json"
   },
@@ -30,6 +31,7 @@
       "midi/link.js",
       "midi/virtual-access.js",
       "midi/profiles/index.js",
+      "midi/profiles/imported.js",
       "midi/view.js",
       "midi/canvas.js",
       "midi/panel.js",

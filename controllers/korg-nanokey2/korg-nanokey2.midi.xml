@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated from https://openaudiovisual.com/controllers/korg-nanokey2/. A starting point: remap it with the Learning Wizard in Mixxx. -->
+<!-- Controls with no job here: bend keys -->
+<MixxxControllerPreset mixxxVersion="2.4+" schemaVersion="1">
+  <info>
+    <name>Korg nanoKEY2 (Open Audiovisual)</name>
+    <author>openaudiovisual.com</author>
+    <description>Generated from the open profile of this controller, not hand-made. 0 of 4 controls checked on a real unit.</description>
+    <forums>https://openaudiovisual.com/controllers/korg-nanokey2/</forums>
+  </info>
+  <controller id="Korg nanoKEY2">
+    <scriptfiles>
+      <file functionprefix="OAV_nanokey2" filename="korg-nanokey2.scripts.js"/>
+    </scriptfiles>
+    <controls>
+      <control>
+        <group>[Channel1]</group>
+        <key>play</key>
+        <status>0xB0</status>
+        <midino>0x01</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel1]</group>
+        <key>cue_default</key>
+        <status>0xB0</status>
+        <midino>0x40</midino>
+        <options><normal/></options>
+      </control>
+    </controls>
+    <outputs>
+    </outputs>
+  </controller>
+</MixxxControllerPreset>

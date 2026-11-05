@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- ODD Ball: generated from https://openaudiovisual.com/controllers/odd-ball/ -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>ODD</Manufacturer>
+ <Model>Ball</Model>
+ <Type>MIDI</Type>
+ <Channel Number="0">
+  <Name>Move</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="1">
+  <Name>Spin</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="2">
+  <Name>Free fall</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="3">
+  <Name>Rot X</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="4">
+  <Name>Rot Y</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="5">
+  <Name>Rot Z</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="6">
+  <Name>Energy</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="188">
+  <Name>Tap / Bounce</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="189">
+  <Name>Shake</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="190">
+  <Name>Twist</Name>
+  <Type>Button</Type>
+ </Channel>
+</InputProfile>

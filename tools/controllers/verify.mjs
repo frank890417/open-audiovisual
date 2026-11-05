@@ -22,9 +22,9 @@ export function renderVerify(t, home, locale, cat) {
       pageNode(c, home, { name: V.meta.title, description: V.meta.description, image: OG_IMAGE, breadcrumb: { '@id': c.self + '#breadcrumb' } }),
     ],
   });
-  const groups = [[V.setup.devices, cat.devices], [V.setup.generic, cat.generic]];
+  const groups = [[V.setup.devices, cat.devices], [V.setup.imported, cat.imported], [V.setup.generic, cat.generic]].filter(([, list]) => list.length);
   const options = groups.map(([label, list]) => `<optgroup label="${attr(label)}">${list.map((d) => `<option value="${d.p.id}">${esc(fullName(d.p, locale))}</option>`).join('')}</optgroup>`).join('\n            ');
-  const files = Object.fromEntries([...cat.devices, ...cat.generic].map((d) => [d.p.id, d.file]));
+  const files = Object.fromEntries(cat.pages.map((d) => [d.p.id, d.file]));
   const runtime = { lang: locale, repo: REPO, dir: PROFILE_DIR, files, tool: 'openaudiovisual.com/controllers/verify/', detailBase: c.to('controllers'), s: V.run, end: V.end, setup: V.setup };
 
   return guardEmail(`<!DOCTYPE html>

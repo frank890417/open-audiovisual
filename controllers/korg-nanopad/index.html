@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KORG nanoPAD MIDI map &amp; playable controller — open-audiovisual</title>
+<meta name="description" content="KORG nanoPAD MIDI map: 2 faders and 48 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://openaudiovisual.com/controllers/korg-nanopad/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/controllers/korg-nanopad/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/controllers/korg-nanopad/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/controllers/korg-nanopad/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="KORG nanoPAD MIDI map &amp; playable controller — open-audiovisual">
+<meta property="og:description" content="KORG nanoPAD MIDI map: 2 faders and 48 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.">
+<meta property="og:url" content="https://openaudiovisual.com/controllers/korg-nanopad/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: MIDI controllers, modeled">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KORG nanoPAD MIDI map &amp; playable controller — open-audiovisual">
+<meta name="twitter:description" content="KORG nanoPAD MIDI map: 2 faders and 48 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: MIDI controllers, modeled">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css">
+<script type="module" src="../../assets/search/search.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.1.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/controllers/korg-nanopad/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Controllers","item":"https://openaudiovisual.com/controllers/"},{"@type":"ListItem","position":3,"name":"KORG nanoPAD","item":"https://openaudiovisual.com/controllers/korg-nanopad/"}]},{"@type":"WebPage","@id":"https://openaudiovisual.com/controllers/korg-nanopad/#webpage","url":"https://openaudiovisual.com/controllers/korg-nanopad/","name":"KORG nanoPAD MIDI map & playable controller — open-audiovisual","description":"KORG nanoPAD MIDI map: 2 faders and 48 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"breadcrumb":{"@id":"https://openaudiovisual.com/controllers/korg-nanopad/#breadcrumb"},"about":{"@id":"https://openaudiovisual.com/controllers/korg-nanopad/#product"},"mainEntity":{"@id":"https://openaudiovisual.com/controllers/korg-nanopad/#dataset"}},{"@type":"Product","@id":"https://openaudiovisual.com/controllers/korg-nanopad/#product","name":"KORG nanoPAD","model":"nanoPAD","brand":{"@type":"Brand","name":"KORG"},"category":"MIDI controller","description":"KORG nanoPAD MIDI map: 2 faders and 48 buttons. Exact CC and note numbers, channels and sources. Play it on screen, embed it, use it in p5.js."},{"@type":"Dataset","@id":"https://openaudiovisual.com/controllers/korg-nanopad/#dataset","name":"KORG nanoPAD MIDI map","description":"Machine-readable MIDI implementation of KORG nanoPAD for open-audiovisual: faceplate, every control's MIDI message, LED feedback, port-name matching and cited sources, as JSON (MIT).","url":"https://openaudiovisual.com/controllers/korg-nanopad/","inLanguage":"en","license":"https://www.apache.org/licenses/LICENSE-2.0","isAccessibleForFree":true,"creator":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/controllers/#dataset"},"about":{"@id":"https://openaudiovisual.com/controllers/korg-nanopad/#product"},"keywords":["MIDI","MIDI controller","MIDI implementation chart","Web MIDI","KORG nanoPAD","KORG"],"distribution":[{"@type":"DataDownload","name":"imported/korg-nanopad.json","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/midi/profiles/imported/korg-nanopad.json"}],"citation":[{"@type":"CreativeWork","name":"QLC+ input profile KORG-nanoPAD.qxi (non-official)","url":"https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/KORG-nanoPAD.qxi"}]},{"@type":"Dataset","@id":"https://openaudiovisual.com/controllers/#dataset","name":"open-audiovisual MIDI controller profiles","url":"https://openaudiovisual.com/controllers/","isPartOf":{"@id":"https://openaudiovisual.com/#software"}}]}</script>
+<link rel="alternate" type="application/json" href="../../packages/midi/profiles/imported/korg-nanopad.json" title="KORG nanoPAD MIDI profile (JSON)">
+<link rel="stylesheet" href="../../assets/controllers/controllers.css">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+</head>
+<body class="page-controllers page-controller">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/" aria-current="page">Controllers</a>
+    <a href="../../docs/">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../controllers/korg-nanopad/" hreflang="en" lang="en" data-lang="en" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/controllers/korg-nanopad/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+  <aside class="no-midi" id="no-midi" role="note" hidden>
+    <p>This device has no Web MIDI, so a hardware controller cannot connect here. You can still play on screen with your fingers. To plug in yours, open this page in Chrome or Edge on a computer. <a href="../../check/">Check this device</a></p>
+    <button type="button" aria-label="Close this note">Got it</button>
+  </aside>
+  <script>(function(){var b=document.getElementById('no-midi');if(!b||navigator.requestMIDIAccess)return;try{if(localStorage.getItem('oav-no-midi')==='1')return}catch(e){}b.hidden=false;var x=b.querySelector('button');if(x)x.onclick=function(){b.hidden=true;try{localStorage.setItem('oav-no-midi','1')}catch(e){}}})()</script>
+
+  <!-- ═════ the instrument first, then the words ═════ -->
+  <section class="ch-hero" id="play" aria-labelledby="play-title">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../../">Home</a></li>
+        <li><a href="../../controllers/">Controllers</a></li>
+        <li aria-current="page">KORG nanoPAD</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">KORG</p>
+    <h1 id="play-title">KORG nanoPAD</h1>
+    <div class="hero-cols">
+      <div class="lede d-lede">
+        <p>KORG nanoPAD is a MIDI hardware controller by KORG: 2 faders and 48 buttons.</p>
+        <p>It sends CC and Note on channel 1. The profile cites 1 source. 50 of its controls are marked <em>unverified</em>: the number is our best reading, and Learn rebinds it in one move.</p>
+        <ul class="badges"><li class="b-tool">Artist's QLC+ tool</li><li class="b-comm">Community notes</li><li class="b-gen">Layout generated automatically</li><li class="b-unv">50 unverified</li></ul>
+      </div>
+      <div class="hero-facts">
+        <dl class="d-facts">
+          <div><dt>Kind</dt><dd>hardware device</dd></div>
+          <div><dt>Maker</dt><dd>KORG</dd></div>
+          <div><dt>Controls</dt><dd>50 controls</dd></div>
+          <div><dt>Messages</dt><dd>CC · Note</dd></div>
+          <div><dt>MIDI channels</dt><dd>1</dd></div>
+          <div><dt>LED feedback</dt><dd>none sent</dd></div>
+          <div><dt>Layout</dt><dd>generated automatically</dd></div>
+          <div><dt>Data licence</dt><dd>Apache-2.0, from QLC+ (<a href="https://github.com/frank890417/open-audiovisual/blob/main/NOTICE">NOTICE</a>)</dd></div>
+          <div><dt>Checked on hardware</dt><dd>not yet</dd></div>
+          <div><dt>Signals</dt><dd><code>midi/nanopad/…</code></dd></div>
+          <div><dt>Port name matches</dt><dd><code>/nanoPAD/i</code></dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="stage">
+      <oav-controller id="d-ctl" profile="korg-nanopad" hardware="ask" readout><svg class="fp" viewBox="0 0 100 58" role="img" aria-label="Faceplate of KORG nanoPAD" focusable="false" preserveAspectRatio="xMidYMid meet"><rect class="fp-body" width="100" height="58" rx="2.03"/><text class="fp-fl" x="2" y="2.6">KORG NANOPAD</text><text class="fp-sl" x="2.3" y="4.2">FADERS</text><rect class="fp-slot" x="25.43" y="5.5" width="0.8" height="11.2" rx="0.4"/><rect class="fp-fcap" x="23.52" y="15.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="25.82" y="18.7">PAD Y Axis</text><rect class="fp-slot" x="73.77" y="5.5" width="0.8" height="11.2" rx="0.4"/><rect class="fp-fcap" x="71.88" y="15.4" width="4.6" height="1.6" rx="0.3"/><text class="fp-cl" x="74.17" y="18.7">PAD X Axis</text><text class="fp-sl" x="2.3" y="23.2">BUTTONS</text><rect class="fp-btn" x="2" y="23.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="23.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="23.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="23.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="23.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="23.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="23.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="23.9" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="29.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="29.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="29.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="29.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="29.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="29.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="29.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="29.2" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="34.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="34.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="34.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="34.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="34.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="34.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="34.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="34.5" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="39.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="39.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="39.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="39.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="39.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="39.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="39.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="39.8" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="45.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="45.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="45.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="45.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="45.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="45.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="45.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="45.1" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="2" y="50.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="14.09" y="50.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="26.17" y="50.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="38.26" y="50.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="50.35" y="50.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="62.44" y="50.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="74.52" y="50.4" width="11.39" height="4.6" rx="0.69"/><rect class="fp-btn" x="86.61" y="50.4" width="11.39" height="4.6" rx="0.69"/></svg></oav-controller>
+    </div>
+    <div class="stage-foot">
+      <p class="stage-meta"><b>Play KORG nanoPAD on screen</b> <a href="../../packages/midi/profiles/imported/korg-nanopad.json">Raw JSON ↗</a> <a href="../../controllers/">All controllers</a></p>
+    </div>
+    <p class="auto-note">Layout generated automatically: QLC+ has no faceplate data, so this is a list of the controls, not a picture of the device.</p>
+    <p class="hint js-only">Drag knobs and faders · tap pads and keys · or plug the real one in and press Connect. Nothing is sent anywhere unless you add a MIDI out.</p>
+    <noscript><p class="noscript">This is a live, playable controller: turn on JavaScript to play it. The complete MIDI map is in the table below.</p></noscript>
+  </section>
+
+  <!-- ═════ the full MIDI implementation ═════ -->
+  <section class="sec" id="midi-map" aria-labelledby="midi-map-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">MIDI implementation</p>
+      <h2 id="midi-map-title">Every control of KORG nanoPAD and the message it sends</h2>
+      <p class="sec-lede">Generated from the profile file, so it is the same table the on-screen controller plays. Channels are 1–16; numbers are real MIDI numbers.</p>
+    </header>
+    <div class="table-scroll" role="region" aria-label="MIDI implementation of KORG nanoPAD" tabindex="0">
+        <table>
+          <caption>MIDI implementation of KORG nanoPAD</caption>
+          <thead><tr><th scope="col">Control</th><th scope="col">Type</th><th scope="col">Message</th><th scope="col">Ch</th><th scope="col">Number</th><th scope="col">Signal</th><th scope="col">LED feedback</th><th scope="col">Evidence</th></tr></thead>
+          <tbody>
+          <tr class="unv">
+            <th scope="row">PAD Y Axis <code class="cid">pad-y-axis</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">1</td>
+            <td><code>midi/nanopad/pad-y-axis</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">PAD X Axis <code class="cid">pad-x-axis</code></th>
+            <td>fader</td>
+            <td>CC</td>
+            <td class="n">1</td>
+            <td class="n">2</td>
+            <td><code>midi/nanopad/pad-x-axis</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 7 - Scene 1 <code class="cid">button-7-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">36 · C2</td>
+            <td><code>midi/nanopad/button-7-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 8 - Scene 1 <code class="cid">button-8-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">38 · D2</td>
+            <td><code>midi/nanopad/button-8-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 1 - Scene 1 <code class="cid">button-1-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">39 · D#2</td>
+            <td><code>midi/nanopad/button-1-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 9 - Scene 1 <code class="cid">button-9-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">40 · E2</td>
+            <td><code>midi/nanopad/button-9-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 10 - Scene 1 <code class="cid">button-10-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">42 · F#2</td>
+            <td><code>midi/nanopad/button-10-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 4 - Scene 1 <code class="cid">button-4-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">43 · G2</td>
+            <td><code>midi/nanopad/button-4-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 11 - Scene 1 <code class="cid">button-11-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">44 · G#2</td>
+            <td><code>midi/nanopad/button-11-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 3 - Scene 1 <code class="cid">button-3-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">45 · A2</td>
+            <td><code>midi/nanopad/button-3-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 12 - Scene 1 <code class="cid">button-12-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">46 · A#2</td>
+            <td><code>midi/nanopad/button-12-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 2 - Scene 1 <code class="cid">button-2-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">48 · C3</td>
+            <td><code>midi/nanopad/button-2-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 6 - Scene 1 <code class="cid">button-6-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">49 · C#3</td>
+            <td><code>midi/nanopad/button-6-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 5 - Scene 1 <code class="cid">button-5-scene-1</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">51 · D#3</td>
+            <td><code>midi/nanopad/button-5-scene-1</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 1 - Scene 2 <code class="cid">button-1-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">60 · C4</td>
+            <td><code>midi/nanopad/button-1-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 2 - Scene 2 <code class="cid">button-2-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">61 · C#4</td>
+            <td><code>midi/nanopad/button-2-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 3 - Scene 2 <code class="cid">button-3-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">62 · D4</td>
+            <td><code>midi/nanopad/button-3-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 4 - Scene 2 <code class="cid">button-4-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">63 · D#4</td>
+            <td><code>midi/nanopad/button-4-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 5 - Scene 2 <code class="cid">button-5-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">64 · E4</td>
+            <td><code>midi/nanopad/button-5-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 6 - Scene 2 <code class="cid">button-6-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">65 · F4</td>
+            <td><code>midi/nanopad/button-6-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 7 - Scene 2 <code class="cid">button-7-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">66 · F#4</td>
+            <td><code>midi/nanopad/button-7-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 8 - Scene 2 <code class="cid">button-8-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">67 · G4</td>
+            <td><code>midi/nanopad/button-8-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 9 - Scene 2 <code class="cid">button-9-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">68 · G#4</td>
+            <td><code>midi/nanopad/button-9-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 10 - Scene 2 <code class="cid">button-10-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">69 · A4</td>
+            <td><code>midi/nanopad/button-10-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 11 - Scene 2 <code class="cid">button-11-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">70 · A#4</td>
+            <td><code>midi/nanopad/button-11-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 12 - Scene 2 <code class="cid">button-12-scene-2</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">71 · B4</td>
+            <td><code>midi/nanopad/button-12-scene-2</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 1 - Scene 3 <code class="cid">button-1-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">72 · C5</td>
+            <td><code>midi/nanopad/button-1-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 2 - Scene 3 <code class="cid">button-2-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">73 · C#5</td>
+            <td><code>midi/nanopad/button-2-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 3 - Scene 3 <code class="cid">button-3-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">74 · D5</td>
+            <td><code>midi/nanopad/button-3-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 4 - Scene 3 <code class="cid">button-4-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">75 · D#5</td>
+            <td><code>midi/nanopad/button-4-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 5 - Scene 3 <code class="cid">button-5-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">76 · E5</td>
+            <td><code>midi/nanopad/button-5-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 6 - Scene 3 <code class="cid">button-6-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">77 · F5</td>
+            <td><code>midi/nanopad/button-6-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 7 - Scene 3 <code class="cid">button-7-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">78 · F#5</td>
+            <td><code>midi/nanopad/button-7-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 8 - Scene 3 <code class="cid">button-8-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">79 · G5</td>
+            <td><code>midi/nanopad/button-8-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 9 - Scene 3 <code class="cid">button-9-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">80 · G#5</td>
+            <td><code>midi/nanopad/button-9-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 10 - Scene 3 <code class="cid">button-10-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">81 · A5</td>
+            <td><code>midi/nanopad/button-10-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 11 - Scene 3 <code class="cid">button-11-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">82 · A#5</td>
+            <td><code>midi/nanopad/button-11-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 12 - Scene 3 <code class="cid">button-12-scene-3</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">83 · B5</td>
+            <td><code>midi/nanopad/button-12-scene-3</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 1 - Scene 4 <code class="cid">button-1-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">84 · C6</td>
+            <td><code>midi/nanopad/button-1-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 2 - Scene 4 <code class="cid">button-2-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">85 · C#6</td>
+            <td><code>midi/nanopad/button-2-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 3 - Scene 4 <code class="cid">button-3-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">86 · D6</td>
+            <td><code>midi/nanopad/button-3-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 4 - Scene 4 <code class="cid">button-4-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">87 · D#6</td>
+            <td><code>midi/nanopad/button-4-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 5 - Scene 4 <code class="cid">button-5-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">88 · E6</td>
+            <td><code>midi/nanopad/button-5-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 6 - Scene 4 <code class="cid">button-6-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">89 · F6</td>
+            <td><code>midi/nanopad/button-6-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 7 - Scene 4 <code class="cid">button-7-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">90 · F#6</td>
+            <td><code>midi/nanopad/button-7-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 8 - Scene 4 <code class="cid">button-8-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">91 · G6</td>
+            <td><code>midi/nanopad/button-8-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 9 - Scene 4 <code class="cid">button-9-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">92 · G#6</td>
+            <td><code>midi/nanopad/button-9-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 10 - Scene 4 <code class="cid">button-10-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">93 · A6</td>
+            <td><code>midi/nanopad/button-10-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 11 - Scene 4 <code class="cid">button-11-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">94 · A#6</td>
+            <td><code>midi/nanopad/button-11-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          <tr class="unv">
+            <th scope="row">Button 12 - Scene 4 <code class="cid">button-12-scene-4</code></th>
+            <td>button</td>
+            <td>Note · momentary</td>
+            <td class="n">1</td>
+            <td class="n">95 · B6</td>
+            <td><code>midi/nanopad/button-12-scene-4</code></td>
+            <td>—</td>
+            <td><span class="tag-unv">unverified</span></td>
+          </tr>
+          </tbody>
+        </table>
+        </div>
+    <p class="verify-cta">Have this unit? It takes a few minutes to check this data. <a href="../../controllers/verify/?profile=korg-nanopad">Verify KORG nanoPAD with your unit →</a></p>
+    <p class="led-line" data-led="no">LED feedback is not modeled for this one yet, so OAV does not light its LEDs. Every control still plays and sends its message.</p>
+    
+    <div class="spec-grid">
+      <div>
+        <h3>Sources</h3>
+        <ul class="sources"><li><span class="src-kind">community</span> <a href="https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/KORG-nanoPAD.qxi" rel="noopener">QLC+ input profile KORG-nanoPAD.qxi (non-official)</a><span class="src-note">community profile by Alessandro Grechi; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project</span></li></ul>
+        <h3>Where this profile comes from</h3><p class="raw-note">Imported from QLC+ on 2026-11-04. <code>resources/inputprofiles/KORG-nanoPAD.qxi</code></p>
+      </div>
+      <div>
+        <h3>Notes</h3><p class="raw-note">Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.</p>
+        <h3>Port names it recognises</h3>
+        <dl class="ports"><div><dt>matches</dt><dd><code>/nanoPAD/i</code></dd></div></dl>
+      </div>
+      <div>
+        <h3>Signals</h3>
+        <p>Every control publishes <code>midi/nanopad/&lt;control&gt;</code> (0..1), plus <code>/raw</code>; pads add <code>/hit</code>, encoders <code>/delta</code>, keys <code>/on</code> <code>/off</code> and <code>n&lt;note&gt;</code>; the last control touched is <code>midi/nanopad/last</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- ═════ use it ═════ -->
+  <section class="sec" id="use" aria-labelledby="use-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Use it</p>
+      <h2 id="use-title">Use KORG nanoPAD in your own work</h2>
+    </header>
+    <ol class="snips">
+      <li class="snip"><h3>Embed it with one line</h3><p>No import map, no build step. Change <code>layout</code>, add <code>hardware="ask"</code> for a Connect button.</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-element">Copy</button></div><pre id="snip-element"><code><span class="tt">&lt;script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;<span class="tt">&lt;/script</span>&gt;
+<span class="tt">&lt;oav-controller</span> profile=<span class="ts">"korg-nanopad"</span> readout&gt;<span class="tt">&lt;/oav-controller</span>&gt;</code></pre></div></li>
+      <li class="snip"><h3>Or as an iframe</h3><p>For places that only take an iframe. Every event arrives as a <code>postMessage</code>.</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-iframe">Copy</button></div><pre id="snip-iframe"><code><span class="tt">&lt;iframe</span> src=<span class="ts">"https://openaudiovisual.com/embed/controller/?profile=korg-nanopad&amp;readout"</span>
+        width=<span class="ts">"720"</span> height=<span class="ts">"440"</span> style=<span class="ts">"border:0;max-width:100%"</span> allow=<span class="ts">"midi"</span>
+        title=<span class="ts">"KORG nanoPAD"</span>&gt;<span class="tt">&lt;/iframe</span>&gt;
+<span class="tt">&lt;script</span>&gt;
+  <span class="tc">// every control the visitor plays arrives here</span>
+  addEventListener(<span class="ts">'message'</span>, (e) =&gt; {
+    <span class="tk">if</span> (e.data?.source !== <span class="ts">'openav'</span> || e.data.type !== <span class="ts">'control'</span>) <span class="tk">return</span>;
+    console.log(e.data.detail.signal, e.data.detail.value);
+  });
+<span class="tt">&lt;/script</span>&gt;</code></pre></div></li>
+      <li class="snip"><h3>Send it to Ableton, TouchDesigner or Resolume</h3><p>What you play on screen leaves as real MIDI on the IAC bus (macOS) or a loopMIDI port (Windows). The steps are on the <a href="../../controllers/#embed">catalog page</a>.</p><div class="term"><div class="term-bar"><span>html</span><button type="button" class="copy" data-copy="snip-daw">Copy</button></div><pre id="snip-daw"><code><span class="tc">&lt;!-- what you play on this controller → the IAC bus (macOS) → Ableton, TouchDesigner, Resolume --&gt;</span>
+<span class="tt">&lt;script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;<span class="tt">&lt;/script</span>&gt;
+<span class="tt">&lt;oav-controller</span> profile=<span class="ts">"korg-nanopad"</span> midi-out=<span class="ts">"IAC"</span> readout&gt;<span class="tt">&lt;/oav-controller</span>&gt;
+<span class="tc">&lt;!-- Windows: midi-out="loopMIDI" · let the visitor pick a port: midi-out="ask" --&gt;</span></code></pre></div><p class="note">macOS: Audio MIDI Setup → MIDI Studio → IAC Driver → “Device is online”. Windows 11: the built-in <a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/">Windows MIDI Services</a> have a loopback (not tested by us); older Windows: install loopMIDI, add a port and use <code>midi-out="loopMIDI"</code>.</p></li>
+    </ol>
+    
+  </section>
+
+  <!-- ═════ other software ═════ -->
+  <section class="sec" id="other-software" aria-labelledby="other-software-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Other software</p>
+      <h2 id="other-software-title">Use this controller outside this project</h2>
+      <p class="sec-lede">The same data, as files other programs read. Nobody has tested these on this exact unit unless the table above says so.</p>
+    </header>
+    <div class="spec-grid">
+      <div>
+        <h3>QLC+</h3>
+        <p>An input profile: every control and LED value, for lighting. Copy it to your user folder (macOS <code>~/Library/Application Support/QLC+/InputProfiles</code>, Linux <code>~/.qlcplus/inputprofiles</code>, Windows <code>%USERPROFILE%\QLC+\InputProfiles</code>) and restart QLC+.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/korg-nanopad/korg-nanopad.qxi" download="korg-nanopad.qxi">korg-nanopad.qxi</a></div>
+      </div>
+      <div>
+        <h3>Mixxx</h3>
+        <p>A starting point, not a finished mapping: decks, EQ and hot cues go to the controls in order. Put both files in the folder that Preferences → Controllers → Open User Mapping Folder opens, then remap what you like with the Learning Wizard.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/korg-nanopad/korg-nanopad.midi.xml" download="korg-nanopad.midi.xml">korg-nanopad.midi.xml</a><a class="vf-btn" href="../../controllers/korg-nanopad/korg-nanopad.scripts.js" download="korg-nanopad.scripts.js">korg-nanopad.scripts.js</a></div>
+      </div>
+      <div>
+        <h3>The data itself</h3>
+        <p>Everything above comes from this file: faceplate, messages, LEDs, SysEx and who checked what. <code>tools/export-controller.mjs</code> writes these files from any profile.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../packages/midi/profiles/imported/korg-nanopad.json">imported/korg-nanopad.json</a></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═════ around it ═════ -->
+  <section class="sec" id="related" aria-labelledby="related-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Around this controller</p>
+      <h2 id="related-title">Related controllers</h2>
+    </header>
+    <ul class="rel" aria-label="Related controllers">
+      <li><a href="../korg-nanopad2/">KORG NanoPAD2</a><span>KORG · 3 faders · 48 buttons</span></li>
+      <li><a href="../korg-nanokontrol/">KORG nanoKONTROL</a><span>KORG · 28 knobs · 28 faders · 60 buttons</span></li>
+      <li><a href="../korg-nanokontrol2/">Korg nanoKONTROL2</a><span>KORG · 8 knobs · 8 faders · 35 buttons</span></li>
+      <li><a href="../korg-nanokontrol-studio/">KORG nanoKONTROL Studio</a><span>KORG · 40 knobs · 5 encoders · 39 faders · 221 buttons</span></li>
+      <li><a href="../korg-nanokey2/">Korg nanoKEY2</a><span>KORG · 25 keys · 2 buttons · 1 touch strip</span></li>
+      <li><a href="../akai-apc-mini/">AKAI Professional APC Mini</a><span>AKAI Professional · 9 faders · 81 buttons</span></li>
+    </ul>
+    <p class="cmp-link"><a href="../#cmp-korg-nanopad">Compare KORG nanoPAD with the rest, by keys, pads, knobs, faders and LED feedback →</a></p>
+    <nav class="step" aria-label="Neighbouring controllers">
+      <a rel="prev" href="../korg-nanokontrol/"><small>← Previous</small>KORG nanoKONTROL</a>
+      <a class="back" href="../../controllers/">Back to all controllers</a>
+      <a rel="next" href="../korg-nanopad2/"><small>Next →</small>KORG NanoPAD2</a>
+    </nav>
+  </section>
+
+  <!-- ═════ not here? ═════ -->
+  <section class="sec" id="request" aria-labelledby="request-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Missing</p>
+      <h2 id="request-title">Is your controller not here?</h2>
+      <p class="sec-lede">Open an issue with the brand and model, whether you have the unit and a link to the manual. Or write the profile yourself: it is one JSON file.</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?template=controller-request.yml">Ask for a controller ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/CONTRIBUTING.md">How to add one ↗</a></li>
+    </ul>
+  </section>
+
+  <!-- ═════ wrong data? ═════ -->
+  <section class="sec" id="report" aria-labelledby="report-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">GitHub</p>
+      <h2 id="report-title">Is something in this data wrong?</h2>
+      <p class="sec-lede">Every number on this page comes from one JSON file. If it disagrees with your unit or the manual, tell us which firmware you checked and we fix the file.</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?title=Controller%20data%3A%20KORG%20nanoPAD%20(korg-nanopad)">Report it on GitHub ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/profiles/imported/korg-nanopad.json">The profile file on GitHub ↗</a></li>
+      <li><a href="../../packages/midi/profiles/imported/korg-nanopad.json">Raw JSON</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"korg-nanopad","imported":true,"sysex":null}</script>
+<script type="module" src="../../assets/controllers/detail.js"></script>
+<!--/email_off-->
+</body>
+</html>

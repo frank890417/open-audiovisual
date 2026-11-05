@@ -166,6 +166,8 @@ The first tagged version; it gathers 0.1 to 0.2.4 (from 2026-10-13).
   can mark a control as verified: a profile refuses `verified: true` without a hardware entry in its new `verifications` log.
 - **SysEx, when you ask for it.** Seven controllers now list their mode switches, templates and LED messages as data, each with the page of the manual it comes from, and
   a device's page shows them with a Send button. `<oav-controller sysex>` adds a button that switches SysEx on, sets the unit up on every connect, and makes `setLedColor()` work. Nothing asks for the permission by itself. [Launchpad Pro MK3](https://openaudiovisual.com/controllers/novation-launchpad-pro-mk3/#sysex)
+- **The same controller, in other software.** Each device page has a QLC+ input profile and a Mixxx mapping to download, and `tools/export-controller.mjs` writes them from any profile. [Launchpad Pro MK3](https://openaudiovisual.com/controllers/novation-launchpad-pro-mk3/#other-software)
+- **28 more controllers, from QLC+.** Its input profiles (Apache-2.0) are converted with their source and commit in each file, with generated layouts and every control marked unverified until someone checks one. [Library](https://openaudiovisual.com/controllers/#imported)
 - **Room in the format for more.** A profile can now carry `sysex` (mode switches, templates, LED colours, each message citing its source) and `palette`
   (the LED colour table), and [`profile.schema.json`](https://openaudiovisual.com/packages/midi/profile.schema.json) describes the format for software that does not run this package.
 

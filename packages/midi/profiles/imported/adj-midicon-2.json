@@ -1,0 +1,948 @@
+{
+ "id": "adj-midicon-2",
+ "short": "midicon2",
+ "name": "American DJ MIDICON-2",
+ "maker": "American DJ",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "MIDICON[\\s-]*2"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/ADJ-MIDICON-2.qxi",
+  "license": "Apache-2.0",
+  "author": "David Thomas",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile ADJ-MIDICON-2.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/ADJ-MIDICON-2.qxi",
+   "note": "community profile by David Thomas; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 84.5,
+  "label": "American DJ MIDICON-2",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 48,
+   "cols": 8,
+   "rows": 3,
+   "controls": [
+    "fader-1",
+    "fader-2",
+    "fader-3",
+    "fader-4",
+    "fader-5",
+    "fader-6",
+    "fader-7",
+    "fader-8",
+    "master",
+    "wheel-1",
+    "wheel-2",
+    "wheel-3",
+    "wheel-4",
+    "playback-wheel-1",
+    "playback-wheel-2",
+    "playback-wheel-3",
+    "playback-wheel-4",
+    "playback-wheel-5",
+    "playback-wheel-6",
+    "playback-wheel-7",
+    "playback-wheel-8"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 54,
+   "w": 96,
+   "h": 27.5,
+   "cols": 16,
+   "rows": 5,
+   "controls": [
+    "playback-next",
+    "playback-previous",
+    "matrix-next",
+    "matrix-previous",
+    "matrix-button-01",
+    "matrix-button-02",
+    "matrix-button-03",
+    "matrix-button-04",
+    "matrix-button-05",
+    "matrix-button-06",
+    "matrix-button-07",
+    "matrix-button-08",
+    "matrix-button-09",
+    "matrix-button-10",
+    "matrix-button-11",
+    "matrix-button-12",
+    "matrix-button-13",
+    "matrix-button-14",
+    "matrix-button-15",
+    "matrix-button-16",
+    "matrix-button-17",
+    "matrix-button-18",
+    "matrix-button-19",
+    "matrix-button-20",
+    "matrix-button-21",
+    "matrix-button-22",
+    "matrix-button-23",
+    "matrix-button-24",
+    "matrix-button-25",
+    "matrix-button-26",
+    "matrix-button-27",
+    "matrix-button-28",
+    "matrix-button-29",
+    "matrix-button-30",
+    "matrix-button-31",
+    "matrix-button-32",
+    "shortcut-a",
+    "shortcut-b",
+    "shortcut-c",
+    "shortcut-d",
+    "shortcut-e",
+    "shortcut-f",
+    "shortcut-g",
+    "shortcut-h",
+    "playback-1-up",
+    "playback-2-up",
+    "playback-3-up",
+    "playback-4-up",
+    "playback-5-up",
+    "playback-6-up",
+    "playback-7-up",
+    "playback-8-up",
+    "playback-1-down",
+    "playback-2-down",
+    "playback-3-down",
+    "playback-4-down",
+    "playback-5-down",
+    "playback-6-down",
+    "playback-7-down",
+    "playback-8-down",
+    "shortcut-s1",
+    "shortcut-s2",
+    "shortcut-s3",
+    "shortcut-s4",
+    "shortcut-s5",
+    "shortcut-s6",
+    "blackout"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "fader-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 1,
+   "label": "Fader 1",
+   "verified": false
+  },
+  {
+   "id": "fader-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 2,
+   "label": "Fader 2",
+   "verified": false
+  },
+  {
+   "id": "fader-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 3,
+   "label": "Fader 3",
+   "verified": false
+  },
+  {
+   "id": "fader-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 4,
+   "label": "Fader 4",
+   "verified": false
+  },
+  {
+   "id": "fader-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 5,
+   "label": "Fader 5",
+   "verified": false
+  },
+  {
+   "id": "fader-6",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 6,
+   "label": "Fader 6",
+   "verified": false
+  },
+  {
+   "id": "fader-7",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 7,
+   "label": "Fader 7",
+   "verified": false
+  },
+  {
+   "id": "fader-8",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 8,
+   "label": "Fader 8",
+   "verified": false
+  },
+  {
+   "id": "master",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 9,
+   "label": "MASTER",
+   "verified": false
+  },
+  {
+   "id": "playback-next",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 57,
+   "label": "PLAYBACK Next",
+   "verified": false
+  },
+  {
+   "id": "playback-previous",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 58,
+   "label": "PLAYBACK Previous",
+   "verified": false
+  },
+  {
+   "id": "matrix-next",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 65,
+   "label": "MATRIX Next",
+   "verified": false
+  },
+  {
+   "id": "matrix-previous",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 66,
+   "label": "MATRIX Previous",
+   "verified": false
+  },
+  {
+   "id": "wheel-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 78,
+   "label": "Wheel 1",
+   "verified": false
+  },
+  {
+   "id": "wheel-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 80,
+   "label": "Wheel 2",
+   "verified": false
+  },
+  {
+   "id": "wheel-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 82,
+   "label": "Wheel 3",
+   "verified": false
+  },
+  {
+   "id": "wheel-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 84,
+   "label": "Wheel 4",
+   "verified": false
+  },
+  {
+   "id": "playback-wheel-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 86,
+   "label": "PLAYBACK Wheel 1",
+   "verified": false
+  },
+  {
+   "id": "playback-wheel-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 88,
+   "label": "PLAYBACK Wheel 2",
+   "verified": false
+  },
+  {
+   "id": "playback-wheel-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 90,
+   "label": "PLAYBACK Wheel 3",
+   "verified": false
+  },
+  {
+   "id": "playback-wheel-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 92,
+   "label": "PLAYBACK Wheel 4",
+   "verified": false
+  },
+  {
+   "id": "playback-wheel-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 94,
+   "label": "PLAYBACK Wheel 5",
+   "verified": false
+  },
+  {
+   "id": "playback-wheel-6",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 96,
+   "label": "PLAYBACK Wheel 6",
+   "verified": false
+  },
+  {
+   "id": "playback-wheel-7",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 98,
+   "label": "PLAYBACK Wheel 7",
+   "verified": false
+  },
+  {
+   "id": "playback-wheel-8",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 100,
+   "label": "PLAYBACK Wheel 8",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-01",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 1,
+   "label": "MATRIX BUTTON 01",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-02",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 2,
+   "label": "MATRIX BUTTON 02",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-03",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 3,
+   "label": "MATRIX BUTTON 03",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-04",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 4,
+   "label": "MATRIX BUTTON 04",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-05",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 5,
+   "label": "MATRIX BUTTON 05",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-06",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 6,
+   "label": "MATRIX BUTTON 06",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-07",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 7,
+   "label": "MATRIX BUTTON 07",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-08",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 8,
+   "label": "MATRIX BUTTON 08",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-09",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 9,
+   "label": "MATRIX BUTTON 09",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-10",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 10,
+   "label": "MATRIX BUTTON 10",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-11",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 11,
+   "label": "MATRIX BUTTON 11",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-12",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 12,
+   "label": "MATRIX BUTTON 12",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-13",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 13,
+   "label": "MATRIX BUTTON 13",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-14",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 14,
+   "label": "MATRIX BUTTON 14",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-15",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 15,
+   "label": "MATRIX BUTTON 15",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-16",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 16,
+   "label": "MATRIX BUTTON 16",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-17",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 17,
+   "label": "MATRIX BUTTON 17",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-18",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 18,
+   "label": "MATRIX BUTTON 18",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-19",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 19,
+   "label": "MATRIX BUTTON 19",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-20",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 20,
+   "label": "MATRIX BUTTON 20",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-21",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 21,
+   "label": "MATRIX BUTTON 21",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-22",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 22,
+   "label": "MATRIX BUTTON 22",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-23",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 23,
+   "label": "MATRIX BUTTON 23",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-24",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 24,
+   "label": "MATRIX BUTTON 24",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-25",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 25,
+   "label": "MATRIX BUTTON 25",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-26",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 26,
+   "label": "MATRIX BUTTON 26",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-27",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 27,
+   "label": "MATRIX BUTTON 27",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-28",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 28,
+   "label": "MATRIX BUTTON 28",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-29",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 29,
+   "label": "MATRIX BUTTON 29",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-30",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 30,
+   "label": "MATRIX BUTTON 30",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-31",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 31,
+   "label": "MATRIX BUTTON 31",
+   "verified": false
+  },
+  {
+   "id": "matrix-button-32",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 32,
+   "label": "MATRIX BUTTON 32",
+   "verified": false
+  },
+  {
+   "id": "shortcut-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 33,
+   "label": "SHORTCUT A",
+   "verified": false
+  },
+  {
+   "id": "shortcut-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 34,
+   "label": "SHORTCUT B",
+   "verified": false
+  },
+  {
+   "id": "shortcut-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 35,
+   "label": "SHORTCUT C",
+   "verified": false
+  },
+  {
+   "id": "shortcut-d",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 36,
+   "label": "SHORTCUT D",
+   "verified": false
+  },
+  {
+   "id": "shortcut-e",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 37,
+   "label": "SHORTCUT E",
+   "verified": false
+  },
+  {
+   "id": "shortcut-f",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 38,
+   "label": "SHORTCUT F",
+   "verified": false
+  },
+  {
+   "id": "shortcut-g",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 39,
+   "label": "SHORTCUT G",
+   "verified": false
+  },
+  {
+   "id": "shortcut-h",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 40,
+   "label": "SHORTCUT H",
+   "verified": false
+  },
+  {
+   "id": "playback-1-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 41,
+   "label": "Playback 1 UP",
+   "verified": false
+  },
+  {
+   "id": "playback-2-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 42,
+   "label": "Playback 2 UP",
+   "verified": false
+  },
+  {
+   "id": "playback-3-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 43,
+   "label": "Playback 3 UP",
+   "verified": false
+  },
+  {
+   "id": "playback-4-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 44,
+   "label": "Playback 4 UP",
+   "verified": false
+  },
+  {
+   "id": "playback-5-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 45,
+   "label": "Playback 5 UP",
+   "verified": false
+  },
+  {
+   "id": "playback-6-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 46,
+   "label": "Playback 6 UP",
+   "verified": false
+  },
+  {
+   "id": "playback-7-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 47,
+   "label": "Playback 7 UP",
+   "verified": false
+  },
+  {
+   "id": "playback-8-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 48,
+   "label": "Playback 8 UP",
+   "verified": false
+  },
+  {
+   "id": "playback-1-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 49,
+   "label": "Playback 1 DOWN",
+   "verified": false
+  },
+  {
+   "id": "playback-2-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 50,
+   "label": "Playback 2 DOWN",
+   "verified": false
+  },
+  {
+   "id": "playback-3-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 51,
+   "label": "Playback 3 DOWN",
+   "verified": false
+  },
+  {
+   "id": "playback-4-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 52,
+   "label": "Playback 4 DOWN",
+   "verified": false
+  },
+  {
+   "id": "playback-5-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 53,
+   "label": "Playback 5 DOWN",
+   "verified": false
+  },
+  {
+   "id": "playback-6-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 54,
+   "label": "Playback 6 DOWN",
+   "verified": false
+  },
+  {
+   "id": "playback-7-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 55,
+   "label": "Playback 7 DOWN",
+   "verified": false
+  },
+  {
+   "id": "playback-8-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 56,
+   "label": "Playback 8 DOWN",
+   "verified": false
+  },
+  {
+   "id": "shortcut-s1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 59,
+   "label": "SHORTCUT S1",
+   "verified": false
+  },
+  {
+   "id": "shortcut-s2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 60,
+   "label": "SHORTCUT S2",
+   "verified": false
+  },
+  {
+   "id": "shortcut-s3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 61,
+   "label": "SHORTCUT S3",
+   "verified": false
+  },
+  {
+   "id": "shortcut-s4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 62,
+   "label": "SHORTCUT S4",
+   "verified": false
+  },
+  {
+   "id": "shortcut-s5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 63,
+   "label": "SHORTCUT S5",
+   "verified": false
+  },
+  {
+   "id": "shortcut-s6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 64,
+   "label": "SHORTCUT S6",
+   "verified": false
+  },
+  {
+   "id": "blackout",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 67,
+   "label": "BLACKOUT",
+   "verified": false
+  }
+ ]
+}

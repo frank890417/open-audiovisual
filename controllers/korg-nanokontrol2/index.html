@@ -111,6 +111,7 @@
     <div class="stage-foot">
       <p class="stage-meta"><b>Play Korg nanoKONTROL2 on screen</b> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=korg-nanokontrol2">Full screen ↗</a> <a href="../../packages/midi/profiles/korg-nanokontrol2.json">Raw JSON ↗</a> <a href="../../controllers/">All controllers</a></p>
     </div>
+    
     <p class="hint js-only">Drag knobs and faders · tap pads and keys · or plug the real one in and press Connect. Nothing is sent anywhere unless you add a MIDI out.</p>
     <noscript><p class="noscript">This is a live, playable controller: turn on JavaScript to play it. The complete MIDI map is in the table below.</p></noscript>
   </section>
@@ -726,6 +727,34 @@
     </div>
   </section>
 
+  <!-- ═════ other software ═════ -->
+  <section class="sec" id="other-software" aria-labelledby="other-software-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Other software</p>
+      <h2 id="other-software-title">Use this controller outside this project</h2>
+      <p class="sec-lede">The same data, as files other programs read. Nobody has tested these on this exact unit unless the table above says so.</p>
+    </header>
+    <div class="spec-grid">
+      <div>
+        <h3>QLC+</h3>
+        <p>An input profile: every control and LED value, for lighting. Copy it to your user folder (macOS <code>~/Library/Application Support/QLC+/InputProfiles</code>, Linux <code>~/.qlcplus/inputprofiles</code>, Windows <code>%USERPROFILE%\QLC+\InputProfiles</code>) and restart QLC+.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/korg-nanokontrol2/korg-nanokontrol2.qxi" download="korg-nanokontrol2.qxi">korg-nanokontrol2.qxi</a></div>
+      </div>
+      <div>
+        <h3>Mixxx</h3>
+        <p>A starting point, not a finished mapping: decks, EQ and hot cues go to the controls in order. Put both files in the folder that Preferences → Controllers → Open User Mapping Folder opens, then remap what you like with the Learning Wizard.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/korg-nanokontrol2/korg-nanokontrol2.midi.xml" download="korg-nanokontrol2.midi.xml">korg-nanokontrol2.midi.xml</a><a class="vf-btn" href="../../controllers/korg-nanokontrol2/korg-nanokontrol2.scripts.js" download="korg-nanokontrol2.scripts.js">korg-nanokontrol2.scripts.js</a></div>
+      </div>
+      <div>
+        <h3>The data itself</h3>
+        <p>Everything above comes from this file: faceplate, messages, LEDs, SysEx and who checked what. <code>tools/export-controller.mjs</code> writes these files from any profile.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../packages/midi/profiles/korg-nanokontrol2.json">korg-nanokontrol2.json</a></div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- ═════ around it ═════ -->
   <section class="sec" id="related" aria-labelledby="related-title">
     
@@ -734,12 +763,12 @@
       <h2 id="related-title">Related controllers</h2>
     </header>
     <ul class="rel" aria-label="Related controllers">
+      <li><a href="../korg-nanokontrol/">KORG nanoKONTROL</a><span>KORG · 28 knobs · 28 faders · 60 buttons</span></li>
+      <li><a href="../korg-nanokontrol-studio/">KORG nanoKONTROL Studio</a><span>KORG · 40 knobs · 5 encoders · 39 faders · 221 buttons</span></li>
+      <li><a href="../korg-nanopad/">KORG nanoPAD</a><span>KORG · 2 faders · 48 buttons</span></li>
+      <li><a href="../korg-nanopad2/">KORG NanoPAD2</a><span>KORG · 3 faders · 48 buttons</span></li>
       <li><a href="../korg-nanokey2/">Korg nanoKEY2</a><span>KORG · 25 keys · 2 buttons · 1 touch strip</span></li>
       <li><a href="../akai-midimix/">AKAI MIDImix</a><span>AKAI Professional · 24 knobs · 9 faders · 19 buttons</span></li>
-      <li><a href="../novation-launch-control-xl-mk2/">Novation Launch Control XL (MK2)</a><span>Novation · 24 knobs · 8 faders · 24 buttons</span></li>
-      <li><a href="../akai-apc40-mk2/">AKAI APC40 mkII</a><span>AKAI Professional · 40 pads · 16 knobs · 2 encoders · 10 faders · 71 buttons</span></li>
-      <li><a href="../akai-apc-mini-mk2/">AKAI APC mini mk2</a><span>AKAI Professional · 64 pads · 9 faders · 17 buttons</span></li>
-      <li><a href="../behringer-x-touch-mini/">Behringer X-TOUCH MINI</a><span>Behringer · 8 encoders · 1 fader · 24 buttons</span></li>
     </ul>
     <p class="cmp-link"><a href="../#cmp-korg-nanokontrol2">Compare Korg nanoKONTROL2 with the rest, by keys, pads, knobs, faders and LED feedback →</a></p>
     <nav class="step" aria-label="Neighbouring controllers">
@@ -805,7 +834,7 @@
   </div>
 </footer>
 
-<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"korg-nanokontrol2","sysex":null}</script>
+<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"korg-nanokontrol2","imported":false,"sysex":null}</script>
 <script type="module" src="../../assets/controllers/detail.js"></script>
 <!--/email_off-->
 </body>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- OP-1 field: generated from https://openaudiovisual.com/controllers/teenage-engineering-op-1-field/ -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>teenage engineering</Manufacturer>
+ <Model>OP-1 field</Model>
+ <Type>MIDI</Type>
+ <Channel Number="1">
+  <Name>enc1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="2">
+  <Name>enc2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="3">
+  <Name>enc3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="4">
+  <Name>enc4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="5">
+  <Name>?</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="6">
+  <Name>♩</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="7">
+  <Name>∿∿</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="8">
+  <Name>◉</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="9">
+  <Name>ꝏ</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="10">
+  <Name>ılı</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="11">
+  <Name>1</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="12">
+  <Name>2</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="13">
+  <Name>3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="14">
+  <Name>4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="15">
+  <Name>⤒</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="16">
+  <Name>⤓</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="17">
+  <Name>✂</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="21">
+  <Name>4 ꝏ</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="22">
+  <Name>5 я</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="23">
+  <Name>6 ⋯</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="24">
+  <Name>7 m1</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="25">
+  <Name>8 m2</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="26">
+  <Name>⋰</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="38">
+  <Name>●</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="39">
+  <Name>▶</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="40">
+  <Name>■</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="41">
+  <Name>←</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="42">
+  <Name>→</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="48">
+  <Name>↗</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="49">
+  <Name>com</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="50">
+  <Name>1 in</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="51">
+  <Name>2 out</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="52">
+  <Name>3 ↺</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="66">
+  <Name>push1</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="67">
+  <Name>push2</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="68">
+  <Name>push3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="69">
+  <Name>push4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="181">
+  <Name>Keys F3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="182">
+  <Name>Keys F#3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="183">
+  <Name>Keys G3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="184">
+  <Name>Keys G#3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="185">
+  <Name>Keys A3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="186">
+  <Name>Keys A#3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="187">
+  <Name>Keys B3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="188">
+  <Name>Keys C4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="189">
+  <Name>Keys C#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="190">
+  <Name>Keys D4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="191">
+  <Name>Keys D#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="192">
+  <Name>Keys E4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="193">
+  <Name>Keys F4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="194">
+  <Name>Keys F#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="195">
+  <Name>Keys G4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="196">
+  <Name>Keys G#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="197">
+  <Name>Keys A4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="198">
+  <Name>Keys A#4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="199">
+  <Name>Keys B4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="200">
+  <Name>Keys C5</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="201">
+  <Name>Keys C#5</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="202">
+  <Name>Keys D5</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="203">
+  <Name>Keys D#5</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="204">
+  <Name>Keys E5</Name>
+  <Type>Button</Type>
+ </Channel>
+</InputProfile>

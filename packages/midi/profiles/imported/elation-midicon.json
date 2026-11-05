@@ -1,0 +1,1048 @@
+{
+ "id": "elation-midicon",
+ "short": "midicon",
+ "name": "Elation MIDIcon",
+ "maker": "Elation",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "MIDIcon"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Elation-MIDIcon.qxi",
+  "license": "Apache-2.0",
+  "author": "Jano Svitok",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Elation-MIDIcon.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Elation-MIDIcon.qxi",
+   "note": "community profile by Jano Svitok; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 74,
+  "label": "Elation MIDIcon",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 32,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "playback-fader-1",
+    "playback-fader-2",
+    "playbackfader-3",
+    "playback-fader-4",
+    "playback-fader-5",
+    "playback-fader-6",
+    "playback-fader-7",
+    "playback-fader-8",
+    "grand-master-fader"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 38,
+   "w": 96,
+   "h": 33,
+   "cols": 16,
+   "rows": 6,
+   "controls": [
+    "playback-page-down",
+    "touchpad-1",
+    "touchpad-2",
+    "touchpad-3",
+    "touchpad-4",
+    "touchpad-5",
+    "touchpad-6",
+    "touchpad-7",
+    "touchpad-8",
+    "touchpad-9",
+    "touchpad-10",
+    "touchpad-11",
+    "touchpad-12",
+    "wheel-1-up",
+    "wheel-1-down",
+    "wheel-1-push",
+    "wheel-2-up",
+    "wheel-2-down",
+    "wheel-2-push",
+    "wheel-3-up",
+    "wheel-3-down",
+    "wheel-3-push",
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5",
+    "s6",
+    "s7",
+    "playback-1-button-a",
+    "playback-1-button-b",
+    "playback-1-button-c",
+    "playback-2-button-a",
+    "playback-2-button-b",
+    "playback-2-button-c",
+    "playback-3-button-a",
+    "playback-3-button-b",
+    "playback-3-button-c",
+    "playback-4-button-a",
+    "playback-4-button-b",
+    "playback-4-button-c",
+    "playback-5-button-a",
+    "playback-5-button-b",
+    "playback-5-button-c",
+    "playback-6-button-a",
+    "playback-6-button-b",
+    "playback-6-button-c",
+    "playback-7-button-a",
+    "playback-7-button-b",
+    "playback-7-button-c",
+    "playback-8-button-a",
+    "playback-8-button-b",
+    "playback-8-button-c",
+    "memory-1",
+    "memory-2",
+    "memory-3",
+    "memory-4",
+    "memory-5",
+    "memory-6",
+    "memory-7",
+    "memory-8",
+    "memory-9",
+    "memory-10",
+    "memory-11",
+    "memory-12",
+    "memory-13",
+    "memory-14",
+    "memory-15",
+    "memory-16",
+    "memory-17",
+    "memory-18",
+    "memory-19",
+    "memory-20",
+    "memory-21",
+    "memory-22",
+    "memory-23",
+    "memory-24",
+    "memory-25",
+    "memory-26",
+    "memory-27",
+    "memory-28",
+    "memory-29",
+    "memory-30",
+    "memory-31",
+    "memory-32",
+    "playback-page-up",
+    "memory-page-up",
+    "memory-page-down",
+    "blackout"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "playback-fader-1",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 0,
+   "label": "Playback Fader 1",
+   "verified": false
+  },
+  {
+   "id": "playback-fader-2",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 1,
+   "label": "Playback Fader 2",
+   "verified": false
+  },
+  {
+   "id": "playbackfader-3",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 2,
+   "label": "PlaybackFader 3",
+   "verified": false
+  },
+  {
+   "id": "playback-fader-4",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 3,
+   "label": "Playback Fader 4",
+   "verified": false
+  },
+  {
+   "id": "playback-fader-5",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 4,
+   "label": "Playback Fader 5",
+   "verified": false
+  },
+  {
+   "id": "playback-fader-6",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 5,
+   "label": "Playback Fader 6",
+   "verified": false
+  },
+  {
+   "id": "playback-fader-7",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 6,
+   "label": "Playback Fader 7",
+   "verified": false
+  },
+  {
+   "id": "playback-fader-8",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 7,
+   "label": "Playback Fader 8",
+   "verified": false
+  },
+  {
+   "id": "grand-master-fader",
+   "type": "fader",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 8,
+   "label": "Grand Master Fader",
+   "verified": false
+  },
+  {
+   "id": "playback-page-down",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 85,
+   "label": "Playback Page Down",
+   "verified": false
+  },
+  {
+   "id": "touchpad-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 0,
+   "label": "Touchpad 1",
+   "verified": false
+  },
+  {
+   "id": "touchpad-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 1,
+   "label": "Touchpad 2",
+   "verified": false
+  },
+  {
+   "id": "touchpad-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 2,
+   "label": "Touchpad 3",
+   "verified": false
+  },
+  {
+   "id": "touchpad-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 3,
+   "label": "Touchpad 4",
+   "verified": false
+  },
+  {
+   "id": "touchpad-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 4,
+   "label": "Touchpad 5",
+   "verified": false
+  },
+  {
+   "id": "touchpad-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 5,
+   "label": "Touchpad 6",
+   "verified": false
+  },
+  {
+   "id": "touchpad-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 6,
+   "label": "Touchpad 7",
+   "verified": false
+  },
+  {
+   "id": "touchpad-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 7,
+   "label": "Touchpad 8",
+   "verified": false
+  },
+  {
+   "id": "touchpad-9",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 8,
+   "label": "Touchpad 9",
+   "verified": false
+  },
+  {
+   "id": "touchpad-10",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 9,
+   "label": "Touchpad 10",
+   "verified": false
+  },
+  {
+   "id": "touchpad-11",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 10,
+   "label": "Touchpad 11",
+   "verified": false
+  },
+  {
+   "id": "touchpad-12",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 11,
+   "label": "Touchpad 12",
+   "verified": false
+  },
+  {
+   "id": "wheel-1-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 12,
+   "label": "Wheel 1 Up",
+   "verified": false
+  },
+  {
+   "id": "wheel-1-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 13,
+   "label": "Wheel 1 Down",
+   "verified": false
+  },
+  {
+   "id": "wheel-1-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 14,
+   "label": "Wheel 1 Push",
+   "verified": false
+  },
+  {
+   "id": "wheel-2-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 15,
+   "label": "Wheel 2 Up",
+   "verified": false
+  },
+  {
+   "id": "wheel-2-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 16,
+   "label": "Wheel 2 Down",
+   "verified": false
+  },
+  {
+   "id": "wheel-2-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 17,
+   "label": "Wheel 2 Push",
+   "verified": false
+  },
+  {
+   "id": "wheel-3-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 18,
+   "label": "Wheel 3 Up",
+   "verified": false
+  },
+  {
+   "id": "wheel-3-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 19,
+   "label": "Wheel 3 Down",
+   "verified": false
+  },
+  {
+   "id": "wheel-3-push",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 20,
+   "label": "Wheel 3 Push",
+   "verified": false
+  },
+  {
+   "id": "s1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 21,
+   "label": "S1",
+   "verified": false
+  },
+  {
+   "id": "s2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 22,
+   "label": "S2",
+   "verified": false
+  },
+  {
+   "id": "s3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 23,
+   "label": "S3",
+   "verified": false
+  },
+  {
+   "id": "s4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 24,
+   "label": "S4",
+   "verified": false
+  },
+  {
+   "id": "s5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 25,
+   "label": "S5",
+   "verified": false
+  },
+  {
+   "id": "s6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 26,
+   "label": "S6",
+   "verified": false
+  },
+  {
+   "id": "s7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 27,
+   "label": "S7",
+   "verified": false
+  },
+  {
+   "id": "playback-1-button-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 28,
+   "label": "Playback 1 Button A",
+   "verified": false
+  },
+  {
+   "id": "playback-1-button-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 29,
+   "label": "Playback 1 Button B",
+   "verified": false
+  },
+  {
+   "id": "playback-1-button-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 30,
+   "label": "Playback 1 Button C",
+   "verified": false
+  },
+  {
+   "id": "playback-2-button-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 31,
+   "label": "Playback 2 Button A",
+   "verified": false
+  },
+  {
+   "id": "playback-2-button-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 32,
+   "label": "Playback 2 Button B",
+   "verified": false
+  },
+  {
+   "id": "playback-2-button-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 33,
+   "label": "Playback 2 Button C",
+   "verified": false
+  },
+  {
+   "id": "playback-3-button-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 34,
+   "label": "Playback 3 Button A",
+   "verified": false
+  },
+  {
+   "id": "playback-3-button-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 35,
+   "label": "Playback 3 Button B",
+   "verified": false
+  },
+  {
+   "id": "playback-3-button-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 36,
+   "label": "Playback 3 Button C",
+   "verified": false
+  },
+  {
+   "id": "playback-4-button-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 37,
+   "label": "Playback 4 Button A",
+   "verified": false
+  },
+  {
+   "id": "playback-4-button-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 38,
+   "label": "Playback 4 Button B",
+   "verified": false
+  },
+  {
+   "id": "playback-4-button-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 39,
+   "label": "Playback 4 Button C",
+   "verified": false
+  },
+  {
+   "id": "playback-5-button-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 40,
+   "label": "Playback 5 Button A",
+   "verified": false
+  },
+  {
+   "id": "playback-5-button-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 41,
+   "label": "Playback 5 Button B",
+   "verified": false
+  },
+  {
+   "id": "playback-5-button-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 42,
+   "label": "Playback 5 Button C",
+   "verified": false
+  },
+  {
+   "id": "playback-6-button-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 43,
+   "label": "Playback 6 Button A",
+   "verified": false
+  },
+  {
+   "id": "playback-6-button-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 44,
+   "label": "Playback 6 Button B",
+   "verified": false
+  },
+  {
+   "id": "playback-6-button-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 45,
+   "label": "Playback 6 Button C",
+   "verified": false
+  },
+  {
+   "id": "playback-7-button-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 46,
+   "label": "Playback 7 Button A",
+   "verified": false
+  },
+  {
+   "id": "playback-7-button-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 47,
+   "label": "Playback 7 Button B",
+   "verified": false
+  },
+  {
+   "id": "playback-7-button-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 48,
+   "label": "Playback 7 Button C",
+   "verified": false
+  },
+  {
+   "id": "playback-8-button-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 49,
+   "label": "Playback 8 Button A",
+   "verified": false
+  },
+  {
+   "id": "playback-8-button-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 50,
+   "label": "Playback 8 Button B",
+   "verified": false
+  },
+  {
+   "id": "playback-8-button-c",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 51,
+   "label": "Playback 8 Button C",
+   "verified": false
+  },
+  {
+   "id": "memory-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 52,
+   "label": "Memory 1",
+   "verified": false
+  },
+  {
+   "id": "memory-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 53,
+   "label": "Memory 2",
+   "verified": false
+  },
+  {
+   "id": "memory-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 54,
+   "label": "Memory 3",
+   "verified": false
+  },
+  {
+   "id": "memory-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 55,
+   "label": "Memory 4",
+   "verified": false
+  },
+  {
+   "id": "memory-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 56,
+   "label": "Memory 5",
+   "verified": false
+  },
+  {
+   "id": "memory-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 57,
+   "label": "Memory 6",
+   "verified": false
+  },
+  {
+   "id": "memory-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 58,
+   "label": "Memory 7",
+   "verified": false
+  },
+  {
+   "id": "memory-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 59,
+   "label": "Memory 8",
+   "verified": false
+  },
+  {
+   "id": "memory-9",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 60,
+   "label": "Memory 9",
+   "verified": false
+  },
+  {
+   "id": "memory-10",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 61,
+   "label": "Memory 10",
+   "verified": false
+  },
+  {
+   "id": "memory-11",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 62,
+   "label": "Memory 11",
+   "verified": false
+  },
+  {
+   "id": "memory-12",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 63,
+   "label": "Memory 12",
+   "verified": false
+  },
+  {
+   "id": "memory-13",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 64,
+   "label": "Memory 13",
+   "verified": false
+  },
+  {
+   "id": "memory-14",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 65,
+   "label": "Memory 14",
+   "verified": false
+  },
+  {
+   "id": "memory-15",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 66,
+   "label": "Memory 15",
+   "verified": false
+  },
+  {
+   "id": "memory-16",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 67,
+   "label": "Memory 16",
+   "verified": false
+  },
+  {
+   "id": "memory-17",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 68,
+   "label": "Memory 17",
+   "verified": false
+  },
+  {
+   "id": "memory-18",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 69,
+   "label": "Memory 18",
+   "verified": false
+  },
+  {
+   "id": "memory-19",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 70,
+   "label": "Memory 19",
+   "verified": false
+  },
+  {
+   "id": "memory-20",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 71,
+   "label": "Memory 20",
+   "verified": false
+  },
+  {
+   "id": "memory-21",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 72,
+   "label": "Memory 21",
+   "verified": false
+  },
+  {
+   "id": "memory-22",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 73,
+   "label": "Memory 22",
+   "verified": false
+  },
+  {
+   "id": "memory-23",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 74,
+   "label": "Memory 23",
+   "verified": false
+  },
+  {
+   "id": "memory-24",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 75,
+   "label": "Memory 24",
+   "verified": false
+  },
+  {
+   "id": "memory-25",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 76,
+   "label": "Memory 25",
+   "verified": false
+  },
+  {
+   "id": "memory-26",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 77,
+   "label": "Memory 26",
+   "verified": false
+  },
+  {
+   "id": "memory-27",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 78,
+   "label": "Memory 27",
+   "verified": false
+  },
+  {
+   "id": "memory-28",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 79,
+   "label": "Memory 28",
+   "verified": false
+  },
+  {
+   "id": "memory-29",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 80,
+   "label": "Memory 29",
+   "verified": false
+  },
+  {
+   "id": "memory-30",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 81,
+   "label": "Memory 30",
+   "verified": false
+  },
+  {
+   "id": "memory-31",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 82,
+   "label": "Memory 31",
+   "verified": false
+  },
+  {
+   "id": "memory-32",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 83,
+   "label": "Memory 32",
+   "verified": false
+  },
+  {
+   "id": "playback-page-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 84,
+   "label": "Playback Page Up",
+   "verified": false
+  },
+  {
+   "id": "memory-page-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 86,
+   "label": "Memory Page Up",
+   "verified": false
+  },
+  {
+   "id": "memory-page-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 87,
+   "label": "Memory Page Down",
+   "verified": false
+  },
+  {
+   "id": "blackout",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 88,
+   "label": "Blackout",
+   "verified": false
+  }
+ ]
+}

@@ -142,6 +142,8 @@
 
 - **用自己的手驗控制器。** [驗證頁](https://openaudiovisual.com/zh/controllers/verify/)會一格一格亮起，比對機器送出的訊息和檔案，再交回更新過的 JSON，每筆結果都附上你的名字、日期和韌體。只有實機能把控制項標成已驗證：沒有 `verifications` 裡的實機紀錄，設定檔不接受 `verified: true`。
 - **SysEx，等你開口才動。** 七台控制器把切模式、換模板、LED 訊息寫成資料，每則都附說明書頁碼，機器頁面列得出來，也有送出按鈕。`<oav-controller sysex>` 會加一顆開啟 SysEx 的按鈕，開了之後機器每次連上都會設定好，`setLedColor()` 也能用。權限絕不自己跳出來。[Launchpad Pro MK3](https://openaudiovisual.com/zh/controllers/novation-launchpad-pro-mk3/#sysex)
+- **同一台控制器，用在別的軟體。** 每台機器的頁面都能下載 QLC+ 輸入設定檔和 Mixxx mapping，`tools/export-controller.mjs` 也能從任何設定檔產生。[Launchpad Pro MK3](https://openaudiovisual.com/zh/controllers/novation-launchpad-pro-mk3/#other-software)
+- **多 28 台控制器，來自 QLC+。** 轉換它的輸入設定檔（Apache-2.0），每個檔案都寫明出處和 commit，版面自動產生，每個控制項都標成未確認，等人來驗。[資料庫](https://openaudiovisual.com/zh/controllers/#imported)
 - **格式放得下更多東西。** 設定檔現在可以寫 `sysex`（切模式、換模板、LED 顏色，每則訊息都附出處）和 `palette`（LED 色票）。[`profile.schema.json`](https://openaudiovisual.com/packages/midi/profile.schema.json) 用 JSON Schema 描述這個格式，沒有跑這個套件的軟體也讀得懂。
 
 ### 2026-10-15

@@ -226,6 +226,8 @@ sends with the file, and hands back the updated JSON with your name, date and fi
 can mark a control as verified: a profile refuses <code>verified: true</code> without a hardware entry in its new <code>verifications</code> log.</li>
 <li><strong>SysEx, when you ask for it.</strong> Seven controllers now list their mode switches, templates and LED messages as data, each with the page of the manual it comes from, and
 a device's page shows them with a Send button. <code>&lt;oav-controller sysex&gt;</code> adds a button that switches SysEx on, sets the unit up on every connect, and makes <code>setLedColor()</code> work. Nothing asks for the permission by itself. <a href="../controllers/novation-launchpad-pro-mk3/#sysex">Launchpad Pro MK3</a></li>
+<li><strong>The same controller, in other software.</strong> Each device page has a QLC+ input profile and a Mixxx mapping to download, and <code>tools/export-controller.mjs</code> writes them from any profile. <a href="../controllers/novation-launchpad-pro-mk3/#other-software">Launchpad Pro MK3</a></li>
+<li><strong>28 more controllers, from QLC+.</strong> Its input profiles (Apache-2.0) are converted with their source and commit in each file, with generated layouts and every control marked unverified until someone checks one. <a href="../controllers/#imported">Library</a></li>
 <li><strong>Room in the format for more.</strong> A profile can now carry <code>sysex</code> (mode switches, templates, LED colours, each message citing its source) and <code>palette</code>
 (the LED colour table), and <a href="../packages/midi/profile.schema.json"><code>profile.schema.json</code></a> describes the format for software that does not run this package.</li>
 </ul>

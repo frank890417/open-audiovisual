@@ -22,6 +22,7 @@ import { fileURLToPath } from 'node:url';
 import { renderPage, catalog, PROFILE_DIR, detailPath, detailUrl } from './controllers/page.mjs';
 import { renderDetail } from './controllers/detail.mjs';
 import { renderVerify, VERIFY_PATH } from './controllers/verify.mjs';
+import { toQxi, toMixxx } from '../packages/midi/export.js';
 import { shapeDiff } from './build-home.mjs';
 import { registry, urlBlocks, sitemapXml, unstamp } from './site/pages.mjs';
 export { unstamp };
@@ -49,9 +50,16 @@ export function buildPages() {
     [PAGES.en]: renderPage(en, homeEn, 'en'),
     [PAGES.zh]: renderPage(zh, homeZh, 'zh'),
   };
-  for (const d of [...cat.devices, ...cat.generic]) {
+  for (const d of cat.pages) {
     files[detailFile(d.p.id, 'en')] = renderDetail(en, homeEn, 'en', d, cat);
     files[detailFile(d.p.id, 'zh')] = renderDetail(zh, homeZh, 'zh', d, cat);
+  }
+  // the same device for other software: one set of files beside the English page, both languages link to it
+  for (const d of [...cat.devices, ...cat.imported]) {
+    const dir = detailPath(d.p.id, 'en'), m = toMixxx(d.raw);
+    files[`${dir}${d.p.id}.qxi`] = toQxi(d.raw);
+    files[dir + m.xmlName] = m.xml;
+    files[dir + m.jsName] = m.js;
   }
   files[VERIFY_PATH + 'index.html'] = renderVerify(en, homeEn, 'en', cat);
   files['zh/' + VERIFY_PATH + 'index.html'] = renderVerify(zh, homeZh, 'zh', cat);

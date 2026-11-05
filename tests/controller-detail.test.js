@@ -8,6 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { PROFILES } from '../packages/midi/profiles/index.js';
+import { IMPORTED } from '../packages/midi/profiles/imported.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://openaudiovisual.com/';
@@ -89,7 +90,7 @@ test('the core content is in the HTML, not made by JS: h1, the MIDI table with a
 });
 
 test('breadcrumb, related controllers, previous / next, back to the catalog, report links', () => {
-  const ids = new Set(PROFILES.map((p) => p.id));
+  const ids = new Set([...PROFILES, ...IMPORTED].map((p) => p.id));
   for (const { id, lang, s } of pages) {
     assert.match(s, /<nav class="crumbs"[^>]*>[\s\S]*?<li aria-current="page">/);
     assert.match(s, /href="(\.\.\/)+(zh\/)?controllers\/"/, 'back to the catalog');

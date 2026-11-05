@@ -363,6 +363,7 @@ html[lang^="zh"] .page-controller .ch-hero h1 { font-size: clamp(30px, 4vw, 64px
 /* ───────────── a device's SysEx table ───────────── */
 table.sx th small, table.sx td small { display: block; margin-top: 4px; color: var(--fg-3); font-weight: 400; font-size: 12.5px; line-height: 1.45; }
 table.sx { min-width: 860px; }
+table.sx th, table.sx td { white-space: normal; }
 table.sx th:first-child { width: 30%; }
 .sx-bytes { display: block; overflow-wrap: anywhere; line-height: 1.5; }
 .sx-try { margin-top: 14px; display: grid; gap: 10px; }
@@ -370,3 +371,9 @@ table.sx th:first-child { width: 30%; }
 .sx-color input { width: 42px; height: 42px; padding: 2px; border: 1px solid var(--line-2); background: var(--ink-2); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
+
+/* ───────────── imported controllers ───────────── */
+.imp-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px clamp(16px, 3vw, 40px); margin: 14px 0 0; }
+.imp-list dt { font: 500 12px/1.3 var(--mono); color: var(--fg-3); }
+.imp-list dd { margin: 4px 0 0; }
+.auto-note { margin: 10px 0 0; padding: 8px 12px; border-left: 2px solid var(--sig); color: var(--fg-2); font-size: 14.5px; }

@@ -1,0 +1,572 @@
+{
+ "id": "zoom-r16",
+ "short": "r16",
+ "name": "Zoom R16",
+ "maker": "Zoom",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "R16"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Zoom-R16.qxi",
+  "license": "Apache-2.0",
+  "author": "Benedict Stein",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Zoom-R16.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Zoom-R16.qxi",
+   "note": "community profile by Benedict Stein; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 80.5,
+  "label": "Zoom R16",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "fader",
+   "label": "Faders",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 32,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "fader-1",
+    "fader-2",
+    "fader-3",
+    "fader-4",
+    "fader-5",
+    "fader-6",
+    "fader-7",
+    "fader-8",
+    "fader-master"
+   ]
+  },
+  {
+   "id": "encoder",
+   "label": "Encoders",
+   "x": 2,
+   "y": 38,
+   "w": 96,
+   "h": 9,
+   "cols": 1,
+   "rows": 1,
+   "controls": [
+    "spinwheel"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 50,
+   "w": 96,
+   "h": 27.5,
+   "cols": 8,
+   "rows": 5,
+   "controls": [
+    "01-rec",
+    "02-rec",
+    "03-rec",
+    "04-rec",
+    "05-rec",
+    "06-rec",
+    "07-rec",
+    "08-rec",
+    "01-solo",
+    "02-solo",
+    "03-solo",
+    "04-solo",
+    "05-solo",
+    "06-solo",
+    "07-solo",
+    "08-solo",
+    "01-mute",
+    "02-mute",
+    "03-mute",
+    "04-mute",
+    "05-mute",
+    "06-mute",
+    "07-mute",
+    "08-mute",
+    "1-8tr",
+    "9-16tr",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "recording-rew",
+    "recording-ff",
+    "recording-stop",
+    "recording-play",
+    "recording-rec",
+    "arrow-up",
+    "arrow-down",
+    "arrow-left",
+    "arrow-right"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "spinwheel",
+   "type": "encoder",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 60,
+   "relative": false,
+   "label": "Spinwheel",
+   "verified": false
+  },
+  {
+   "id": "01-rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 0,
+   "label": "01-Rec",
+   "verified": false
+  },
+  {
+   "id": "02-rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 1,
+   "label": "02-Rec",
+   "verified": false
+  },
+  {
+   "id": "03-rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 2,
+   "label": "03-Rec",
+   "verified": false
+  },
+  {
+   "id": "04-rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 3,
+   "label": "04-Rec",
+   "verified": false
+  },
+  {
+   "id": "05-rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 4,
+   "label": "05-Rec",
+   "verified": false
+  },
+  {
+   "id": "06-rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 5,
+   "label": "06-Rec",
+   "verified": false
+  },
+  {
+   "id": "07-rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 6,
+   "label": "07-Rec",
+   "verified": false
+  },
+  {
+   "id": "08-rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 7,
+   "label": "08-Rec",
+   "verified": false
+  },
+  {
+   "id": "01-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 8,
+   "label": "01-Solo",
+   "verified": false
+  },
+  {
+   "id": "02-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 9,
+   "label": "02-Solo",
+   "verified": false
+  },
+  {
+   "id": "03-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 10,
+   "label": "03-Solo",
+   "verified": false
+  },
+  {
+   "id": "04-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 11,
+   "label": "04-Solo",
+   "verified": false
+  },
+  {
+   "id": "05-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 12,
+   "label": "05-Solo",
+   "verified": false
+  },
+  {
+   "id": "06-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 13,
+   "label": "06-Solo",
+   "verified": false
+  },
+  {
+   "id": "07-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 14,
+   "label": "07-Solo",
+   "verified": false
+  },
+  {
+   "id": "08-solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 15,
+   "label": "08-Solo",
+   "verified": false
+  },
+  {
+   "id": "01-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 16,
+   "label": "01-Mute",
+   "verified": false
+  },
+  {
+   "id": "02-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 17,
+   "label": "02-Mute",
+   "verified": false
+  },
+  {
+   "id": "03-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 18,
+   "label": "03-Mute",
+   "verified": false
+  },
+  {
+   "id": "04-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 19,
+   "label": "04-Mute",
+   "verified": false
+  },
+  {
+   "id": "05-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 20,
+   "label": "05-Mute",
+   "verified": false
+  },
+  {
+   "id": "06-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 21,
+   "label": "06-Mute",
+   "verified": false
+  },
+  {
+   "id": "07-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 22,
+   "label": "07-Mute",
+   "verified": false
+  },
+  {
+   "id": "08-mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 23,
+   "label": "08-Mute",
+   "verified": false
+  },
+  {
+   "id": "1-8tr",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 46,
+   "label": "1-8Tr",
+   "verified": false
+  },
+  {
+   "id": "9-16tr",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 47,
+   "label": "9-16Tr",
+   "verified": false
+  },
+  {
+   "id": "f1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 54,
+   "label": "F1",
+   "verified": false
+  },
+  {
+   "id": "f2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 55,
+   "label": "F2",
+   "verified": false
+  },
+  {
+   "id": "f3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 56,
+   "label": "F3",
+   "verified": false
+  },
+  {
+   "id": "f4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 57,
+   "label": "F4",
+   "verified": false
+  },
+  {
+   "id": "f5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 58,
+   "label": "F5",
+   "verified": false
+  },
+  {
+   "id": "recording-rew",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 91,
+   "label": "Recording-Rew",
+   "verified": false
+  },
+  {
+   "id": "recording-ff",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 92,
+   "label": "Recording-FF",
+   "verified": false
+  },
+  {
+   "id": "recording-stop",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 93,
+   "label": "Recording-Stop",
+   "verified": false
+  },
+  {
+   "id": "recording-play",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 94,
+   "label": "Recording-Play",
+   "verified": false
+  },
+  {
+   "id": "recording-rec",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 95,
+   "label": "Recording-Rec",
+   "verified": false
+  },
+  {
+   "id": "arrow-up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 96,
+   "label": "Arrow-Up",
+   "verified": false
+  },
+  {
+   "id": "arrow-down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 97,
+   "label": "Arrow-Down",
+   "verified": false
+  },
+  {
+   "id": "arrow-left",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 98,
+   "label": "Arrow-Left",
+   "verified": false
+  },
+  {
+   "id": "arrow-right",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 99,
+   "label": "Arrow-Right",
+   "verified": false
+  },
+  {
+   "id": "fader-1",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 1,
+   "label": "Fader 1",
+   "verified": false
+  },
+  {
+   "id": "fader-2",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 2,
+   "label": "Fader 2",
+   "verified": false
+  },
+  {
+   "id": "fader-3",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 3,
+   "label": "Fader 3",
+   "verified": false
+  },
+  {
+   "id": "fader-4",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 4,
+   "label": "Fader 4",
+   "verified": false
+  },
+  {
+   "id": "fader-5",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 5,
+   "label": "Fader 5",
+   "verified": false
+  },
+  {
+   "id": "fader-6",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 6,
+   "label": "Fader 6",
+   "verified": false
+  },
+  {
+   "id": "fader-7",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 7,
+   "label": "Fader 7",
+   "verified": false
+  },
+  {
+   "id": "fader-8",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 8,
+   "label": "Fader 8",
+   "verified": false
+  },
+  {
+   "id": "fader-master",
+   "type": "fader",
+   "msg": "pitchbend",
+   "ch": 9,
+   "label": "Fader - Master",
+   "verified": false
+  }
+ ]
+}

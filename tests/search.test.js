@@ -119,7 +119,7 @@ test('the index covers every source, in both languages: the reference, the handb
   for (const l of ['en', 'zh']) {
     assert.equal(n('ref', l), ref, `${l}: one record per reference entry`);
     assert.equal(n('ex', l), EXAMPLES.length, `${l}: one per example`);
-    assert.equal(n('ctl', l), cat.devices.length + cat.generic.length, `${l}: one per controller`);
+    assert.equal(n('ctl', l), cat.pages.length, `${l}: one per controller`);
     assert.ok(n('doc', l) >= CHAPTERS.length * 3, `${l}: the chapters and their sections (${n('doc', l)})`);
     assert.ok(n('page', l) >= 6, `${l}: the site's pages`);
   }

@@ -6,7 +6,7 @@
 import { PROFILES } from '../../packages/midi/element.js?v=dd4a4d59';
 
 const T = JSON.parse(document.getElementById('ctl-i18n').textContent);
-if (!PROFILES.some((p) => p.id === T.profile)) console.warn('[controllers] unknown profile', T.profile);
+if (!T.imported && !PROFILES.some((p) => p.id === T.profile)) console.warn('[controllers] unknown profile', T.profile);
 
 // SysEx: nothing is asked for until the button is pressed, and nothing is sent until a Send is
 const sxOn = document.getElementById('sx-on');

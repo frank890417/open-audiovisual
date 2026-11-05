@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated from https://openaudiovisual.com/controllers/showtec-showmaster-24/. A starting point: remap it with the Learning Wizard in Mixxx. -->
+<!-- Controls with no job here: channel-1 channel-2 channel-3 channel-4 channel-5 channel-6 channel-7 channel-8 channel-9 channel-10 channel-11 channel-12 channel-13 channel-14 channel-15 channel-16 channel-17 channel-18 channel-19 channel-20 channel-21 channel-22 channel-23 channel-24 full-on dark hold audio chns-scenes a-double-preset-b 1-24-single step blackout -->
+<MixxxControllerPreset mixxxVersion="2.4+" schemaVersion="1">
+  <info>
+    <name>ShowTec ShowMaster 24 (Open Audiovisual)</name>
+    <author>openaudiovisual.com</author>
+    <description>Generated from the open profile of this controller, not hand-made. 0 of 45 controls checked on a real unit.</description>
+    <forums>https://openaudiovisual.com/controllers/showtec-showmaster-24/</forums>
+  </info>
+  <controller id="ShowTec ShowMaster 24">
+    <scriptfiles>
+      <file functionprefix="OAV_showmaster24" filename="showtec-showmaster-24.scripts.js"/>
+    </scriptfiles>
+    <controls>
+      <control>
+        <group>[Channel1]</group>
+        <key>play</key>
+        <status>0xB0</status>
+        <midino>0x16</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel1]</group>
+        <key>cue_default</key>
+        <status>0xB0</status>
+        <midino>0x17</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel1]</group>
+        <key>beatsync</key>
+        <status>0xB0</status>
+        <midino>0x18</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel1]</group>
+        <key>pfl</key>
+        <status>0xB0</status>
+        <midino>0x19</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel1]</group>
+        <key>beatloop_4_toggle</key>
+        <status>0xB0</status>
+        <midino>0x1A</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel1]</group>
+        <key>keylock</key>
+        <status>0xB0</status>
+        <midino>0x1B</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel2]</group>
+        <key>play</key>
+        <status>0xB0</status>
+        <midino>0x1C</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel2]</group>
+        <key>cue_default</key>
+        <status>0xB0</status>
+        <midino>0x1D</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel2]</group>
+        <key>beatsync</key>
+        <status>0xB0</status>
+        <midino>0x1E</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel2]</group>
+        <key>pfl</key>
+        <status>0xB0</status>
+        <midino>0x1F</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel2]</group>
+        <key>beatloop_4_toggle</key>
+        <status>0xB0</status>
+        <midino>0x20</midino>
+        <options><normal/></options>
+      </control>
+      <control>
+        <group>[Channel2]</group>
+        <key>keylock</key>
+        <status>0xB0</status>
+        <midino>0x21</midino>
+        <options><normal/></options>
+      </control>
+    </controls>
+    <outputs>
+    </outputs>
+  </controller>
+</MixxxControllerPreset>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- Novation Launch Control XL (MK2): generated from https://openaudiovisual.com/controllers/novation-launch-control-xl-mk2/. Set the MIDI channel of this input to Omni in QLC+. -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>Novation</Manufacturer>
+ <Model>Launch Control XL (MK2)</Model>
+ <Type>MIDI</Type>
+ <Channel Number="32781">
+  <Name>A1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32782">
+  <Name>A2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32783">
+  <Name>A3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32784">
+  <Name>A4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32785">
+  <Name>A5</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32786">
+  <Name>A6</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32787">
+  <Name>A7</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32788">
+  <Name>A8</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32797">
+  <Name>B1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32798">
+  <Name>B2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32799">
+  <Name>B3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32800">
+  <Name>B4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32801">
+  <Name>B5</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32802">
+  <Name>B6</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32803">
+  <Name>B7</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32804">
+  <Name>B8</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32817">
+  <Name>P1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32818">
+  <Name>P2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32819">
+  <Name>P3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32820">
+  <Name>P4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32821">
+  <Name>P5</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32822">
+  <Name>P6</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32823">
+  <Name>P7</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32824">
+  <Name>P8</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="32845">
+  <Name>1</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="32846">
+  <Name>2</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="32847">
+  <Name>3</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="32848">
+  <Name>4</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="32849">
+  <Name>5</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="32850">
+  <Name>6</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="32851">
+  <Name>7</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="32852">
+  <Name>8</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="32872">
+  <Name>▲</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="32873">
+  <Name>▼</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="32874">
+  <Name>◀</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="32875">
+  <Name>▶</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="32937">
+  <Name>1</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="58" UpperValue="124"/>
+ </Channel>
+ <Channel Number="32938">
+  <Name>2</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="58" UpperValue="124"/>
+ </Channel>
+ <Channel Number="32939">
+  <Name>3</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="58" UpperValue="124"/>
+ </Channel>
+ <Channel Number="32940">
+  <Name>4</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="58" UpperValue="124"/>
+ </Channel>
+ <Channel Number="32953">
+  <Name>5</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="58" UpperValue="124"/>
+ </Channel>
+ <Channel Number="32954">
+  <Name>6</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="58" UpperValue="124"/>
+ </Channel>
+ <Channel Number="32955">
+  <Name>7</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="58" UpperValue="124"/>
+ </Channel>
+ <Channel Number="32956">
+  <Name>8</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="58" UpperValue="124"/>
+ </Channel>
+ <Channel Number="32969">
+  <Name>1</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="56" UpperValue="120"/>
+ </Channel>
+ <Channel Number="32970">
+  <Name>2</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="56" UpperValue="120"/>
+ </Channel>
+ <Channel Number="32971">
+  <Name>3</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="56" UpperValue="120"/>
+ </Channel>
+ <Channel Number="32972">
+  <Name>4</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="56" UpperValue="120"/>
+ </Channel>
+ <Channel Number="32985">
+  <Name>5</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="56" UpperValue="120"/>
+ </Channel>
+ <Channel Number="32986">
+  <Name>6</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="56" UpperValue="120"/>
+ </Channel>
+ <Channel Number="32987">
+  <Name>7</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="56" UpperValue="120"/>
+ </Channel>
+ <Channel Number="32988">
+  <Name>8</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="56" UpperValue="120"/>
+ </Channel>
+ <Channel Number="33001">
+  <Name>Device</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="33002">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="33003">
+  <Name>Solo</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="33004">
+  <Name>Rec Arm</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+</InputProfile>

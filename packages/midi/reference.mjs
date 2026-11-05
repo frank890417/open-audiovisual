@@ -1643,6 +1643,157 @@ console.log(formatHex(ledSysex(p, p.controls[0], { r: 255, g: 0, b: 0 })));`,
     keywords: { en: ['rgb led', 'pad colour', 'light a pad'], zh: ['RGB LED', '打擊墊顏色', '點亮'] },
   },
 
+  IMPORTED: {
+    group: 'midi-io',
+    summary: {
+      en: 'The controllers imported from QLC+: id, short name, name and maker. Their JSON is fetched one at a time, by [`loadProfile()`](#loadProfile).',
+      zh: '從 QLC+ 匯入的控制器清單：id、短名稱、名稱、廠牌。它們的 JSON 由 [`loadProfile()`](#loadProfile) 一次抓一台。',
+    },
+    value: {
+      type: 'Object[]', range: '[{ id, short, name, maker }, …]',
+      en: 'A plain array, written by `tools/import-qlc.mjs`. These controllers are not in [`PROFILES`](#PROFILES), so a page that shows one does not fetch them all.',
+      zh: '一個普通陣列，由 `tools/import-qlc.mjs` 產生。這些控制器不在 [`PROFILES`](#PROFILES) 裡，顯示一台的頁面不會全部抓下來。',
+    },
+    description: [
+      {
+        en: 'Their data is Apache-2.0, from QLC+ (see `NOTICE`), their layouts are generated (`face.auto`), and every control is `verified: false`. `<oav-controller profile="behringer-bcf2000">` works with these ids.',
+        zh: '這些資料是 Apache-2.0，來自 QLC+（見 `NOTICE`），版面是自動產生的（`face.auto`），每個控制項都是 `verified: false`。`<oav-controller profile="behringer-bcf2000">` 可以用這些 id。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { IMPORTED } from '@openav/midi';
+
+console.log(IMPORTED.length, IMPORTED[0]);`,
+        caption: { en: 'Prints how many there are, and the first one.', zh: '印出有幾台，以及第一台。' },
+      },
+    ],
+    related: ['loadProfile', 'PROFILES', 'toQxi'],
+    keywords: { en: ['qlc+', 'imported controllers', 'input profiles'], zh: ['QLC+', '匯入', '輸入設定檔'] },
+  },
+
+  toQxi: {
+    group: 'midi-io',
+    summary: {
+      en: 'Writes a profile as a QLC+ input profile (`.qxi`): every control and LED value, numbered the way QLC+ numbers them.',
+      zh: '把設定檔寫成 QLC+ 輸入設定檔（`.qxi`）：每個控制項和 LED 值，用 QLC+ 的編號方式。',
+    },
+    params: [
+      { name: 'profile', type: 'Object', en: 'A profile.', zh: '設定檔。' },
+      { name: 'version', type: 'String', optional: true, default: "'1'", en: 'In the options object: what goes in `<Version>`.', zh: '放在選項物件裡：`<Version>` 的內容。' },
+    ],
+    returns: { type: 'String', en: 'The file.', zh: '檔案內容。' },
+    description: [
+      {
+        en: 'A device whose controls sit on channel 1 gets plain numbers. Anything else is numbered for an input with its MIDI channel set to Omni, the way QLC+\'s own APC40 file does, and the file says so in a comment. Keys become one Button per note. An LED on another note or CC cannot be written, because a `.qxi` lights a control through its own number.',
+        zh: '控制項都在頻道 1 的機器用一般編號。其他情況的編號適用於 MIDI 頻道設成 Omni 的輸入，跟 QLC+ 自己的 APC40 檔案一樣，檔案開頭的註解會說明。琴鍵會變成每個音一個 Button。LED 在別的音或 CC 上時寫不進去，因為 `.qxi` 是用控制項自己的編號點燈。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { toQxi } from '@openav/midi/export';
+import { profileById } from '@openav/midi';
+
+console.log(toQxi(profileById('lpd8')).slice(0, 400));`,
+        caption: { en: 'Prints the start of the file for the LPD8.', zh: '印出 LPD8 檔案的開頭。' },
+      },
+    ],
+    related: ['toMixxx', 'qlcChannel', 'IMPORTED'],
+    keywords: { en: ['qlc+', 'qxi', 'input profile', 'export', 'lighting'], zh: ['QLC+', '匯出', '輸入設定檔', '燈光'] },
+  },
+
+  qlcChannel: {
+    group: 'midi-io',
+    summary: {
+      en: 'Says which channel number QLC+ gives one MIDI message.',
+      zh: '算出 QLC+ 給一則 MIDI 訊息的通道編號。',
+    },
+    params: [
+      { name: 'msg', type: 'String', en: 'In the message object, whose fields are a control\'s: `cc`, `note`, `pitchbend`, `chanat` or `program`.', zh: '放在訊息物件裡，欄位就是控制項的那些：`cc`、`note`、`pitchbend`、`chanat`、`program`。' },
+      { name: 'ch', type: 'Number', optional: true, default: '1', en: 'The MIDI channel, 1..16.', zh: 'MIDI 頻道，1..16。' },
+      { name: 'cc', type: 'Number', optional: true, en: 'The controller number, for `cc`.', zh: '控制器編號，`cc` 用。' },
+      { name: 'note', type: 'Number', optional: true, en: 'The note number, for `note`.', zh: '音符編號，`note` 用。' },
+      { name: 'value', type: 'Number', optional: true, default: '0', en: 'The program, for `program`.', zh: '音色編號，`program` 用。' },
+      { name: 'omni', type: 'Boolean', optional: true, default: 'true', en: 'In the options object: keep the MIDI channel in the number, for an input set to Omni.', zh: '放在選項物件裡：把 MIDI 頻道留在編號裡，給設成 Omni 的輸入用。' },
+    ],
+    returns: { type: 'Number', en: 'CC 0–127, notes 128–255, program change 384–511, channel aftertouch 512, pitch wheel 513, with the channel above bit 12.', zh: 'CC 0–127、音符 128–255、program change 384–511、頻道觸後 512、音高輪 513，頻道放在第 12 位元以上。' },
+    description: [
+      {
+        en: 'These numbers come from `midiprotocol.h` in QLC+. CC 7 on channel 2 is 4103.',
+        zh: '這些編號來自 QLC+ 的 `midiprotocol.h`。頻道 2 的 CC 7 是 4103。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { qlcChannel } from '@openav/midi/export';
+
+console.log(qlcChannel({ msg: 'cc', ch: 2, cc: 7 }));`,
+        caption: { en: 'Prints 4103.', zh: '印出 4103。' },
+      },
+    ],
+    related: ['toQxi'],
+    keywords: { en: ['qlc+ channel number', 'omni'], zh: ['QLC+ 編號', 'Omni'] },
+  },
+
+  toMixxx: {
+    group: 'midi-io',
+    summary: {
+      en: 'Writes a profile as a Mixxx mapping: an XML file and a small script, a starting point to remap in Mixxx.',
+      zh: '把設定檔寫成 Mixxx mapping：一個 XML 檔和一支小腳本，是拿到 Mixxx 裡再調整的起點。',
+    },
+    params: [
+      { name: 'profile', type: 'Object', en: 'A profile.', zh: '設定檔。' },
+    ],
+    returns: { type: 'Object', en: '`{ xml, js, xmlName, jsName }`: the two files and their names.', zh: '`{ xml, js, xmlName, jsName }`：兩個檔案和它們的檔名。' },
+    description: [
+      {
+        en: 'A mapping binds controls to decks, which a profile knows nothing about, so [`mixxxBindings()`](#mixxxBindings) hands out jobs in order: faders to deck volumes, knobs to EQ, pads to hot cues, buttons to play, cue and sync. Relative encoders go through the script, which also sends `sysex.connect` when Mixxx opens the device and each message\'s `undo` when it closes it.',
+        zh: 'mapping 是把控制項綁到唱盤，這是設定檔不知道的事，所以 [`mixxxBindings()`](#mixxxBindings) 依序分配工作：推桿給唱盤音量，旋鈕給 EQ，打擊墊給 hot cue，按鈕給 play、cue、sync。相對式旋鈕走腳本，腳本也會在 Mixxx 開啟機器時送 `sysex.connect`，關閉時送每則訊息的 `undo`。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { toMixxx } from '@openav/midi/export';
+import { profileById } from '@openav/midi';
+
+const m = toMixxx(profileById('lpd8'));
+console.log(m.xmlName, m.jsName, m.xml.length);`,
+        caption: { en: 'Prints the two file names and the size of the XML.', zh: '印出兩個檔名和 XML 的大小。' },
+      },
+    ],
+    related: ['mixxxBindings', 'toQxi'],
+    keywords: { en: ['mixxx', 'midi.xml', 'dj', 'export', 'mapping'], zh: ['Mixxx', '匯出', 'DJ'] },
+  },
+
+  mixxxBindings: {
+    group: 'midi-io',
+    summary: {
+      en: 'Says what each control does in the generated Mixxx mapping.',
+      zh: '列出產生的 Mixxx mapping 裡每個控制項做什麼。',
+    },
+    params: [
+      { name: 'profile', type: 'Object', en: 'A profile.', zh: '設定檔。' },
+    ],
+    returns: { type: 'Object[]', en: '`[{ control, group, key, led? }]`. Controls with no job are left out, and so are keys and pitch bend.', zh: '`[{ control, group, key, led? }]`。沒有分到工作的控制項不列，琴鍵和 pitch bend 也不列。' },
+    description: [
+      {
+        en: 'A word on a button decides first: `play`, `cue`, `sync` and `loop` go where they say. The rest take the next job in line.',
+        zh: '按鈕上的字優先：`play`、`cue`、`sync`、`loop` 就照字面。其他的依序分配。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { mixxxBindings } from '@openav/midi/export';
+import { profileById } from '@openav/midi';
+
+for (const b of mixxxBindings(profileById('lpd8')).slice(0, 3)) console.log(b.control.id, b.group, b.key);`,
+        caption: { en: 'Prints what the first three controls of the LPD8 do.', zh: '印出 LPD8 前三個控制項的工作。' },
+      },
+    ],
+    related: ['toMixxx'],
+    keywords: { en: ['mixxx bindings', 'deck'], zh: ['Mixxx', '唱盤'] },
+  },
+
   SYSEX_PURPOSES: {
     group: 'midi-io',
     summary: {

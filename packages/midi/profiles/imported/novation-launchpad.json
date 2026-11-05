@@ -1,0 +1,978 @@
+{
+ "id": "novation-launchpad",
+ "short": "launchpad",
+ "name": "Novation Launchpad",
+ "maker": "Novation",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "Launchpad"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Novation-Launchpad.qxi",
+  "license": "Apache-2.0",
+  "author": "Maikel Boerebach+Jan Fries",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Novation-Launchpad.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Novation-Launchpad.qxi",
+   "note": "community profile by Maikel Boerebach+Jan Fries; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "palette": {
+  "cite": {
+   "source": 0
+  },
+  "colors": [
+   {
+    "value": 9,
+    "name": "Flash Red Low",
+    "rgb": "#550000"
+   },
+   {
+    "value": 10,
+    "name": "Flash Red Medium",
+    "rgb": "#aa0000"
+   },
+   {
+    "value": 11,
+    "name": "Flash Red Full",
+    "rgb": "#ff0000"
+   },
+   {
+    "value": 12,
+    "name": "Off",
+    "rgb": "#000000"
+   },
+   {
+    "value": 13,
+    "name": "Red Low",
+    "rgb": "#550000"
+   },
+   {
+    "value": 14,
+    "name": "Red Medium",
+    "rgb": "#aa0000"
+   },
+   {
+    "value": 15,
+    "name": "Red Full",
+    "rgb": "#ff0000"
+   },
+   {
+    "value": 24,
+    "name": "Flash Green Low",
+    "rgb": "#005500"
+   },
+   {
+    "value": 25,
+    "name": "Flash Amber Low",
+    "rgb": "#906000"
+   },
+   {
+    "value": 28,
+    "name": "Green Low",
+    "rgb": "#005500"
+   },
+   {
+    "value": 29,
+    "name": "Amber Low",
+    "rgb": "#906000"
+   },
+   {
+    "value": 40,
+    "name": "Flash Green Medium",
+    "rgb": "#00aa00"
+   },
+   {
+    "value": 41,
+    "name": "Flash Yellow Medium",
+    "rgb": "#aaaa00"
+   },
+   {
+    "value": 42,
+    "name": "Flash Amber Medium",
+    "rgb": "#cc8800"
+   },
+   {
+    "value": 44,
+    "name": "Green Medium",
+    "rgb": "#00aa00"
+   },
+   {
+    "value": 45,
+    "name": "Yellow Medium",
+    "rgb": "#aaaa00"
+   },
+   {
+    "value": 46,
+    "name": "Amber Medium",
+    "rgb": "#cc8800"
+   },
+   {
+    "value": 56,
+    "name": "Flash Green Full",
+    "rgb": "#00ff00"
+   },
+   {
+    "value": 58,
+    "name": "Flash Yellow Full",
+    "rgb": "#ffff00"
+   },
+   {
+    "value": 59,
+    "name": "Flash Amber Full",
+    "rgb": "#ffaa00"
+   },
+   {
+    "value": 60,
+    "name": "Green Full",
+    "rgb": "#00ff00"
+   },
+   {
+    "value": 62,
+    "name": "Yellow Full",
+    "rgb": "#ffff00"
+   },
+   {
+    "value": 63,
+    "name": "Amber Full",
+    "rgb": "#ffaa00"
+   }
+  ]
+ },
+ "face": {
+  "w": 100,
+  "h": 33.5,
+  "label": "Novation Launchpad",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 27.5,
+   "cols": 16,
+   "rows": 5,
+   "controls": [
+    "up-button",
+    "down-button",
+    "left-button",
+    "right-button",
+    "session-button",
+    "user-1-button",
+    "user-2-button",
+    "mixer-button",
+    "button-1-1",
+    "button-2-1",
+    "button-3-1",
+    "button-4-1",
+    "button-5-1",
+    "button-6-1",
+    "button-7-1",
+    "button-8-1",
+    "button-9-1",
+    "button-1-2",
+    "button-2-2",
+    "button-3-2",
+    "button-4-2",
+    "button-5-2",
+    "button-6-2",
+    "button-7-2",
+    "button-8-2",
+    "button-9-2",
+    "button-1-3",
+    "button-2-3",
+    "button-3-3",
+    "button-4-3",
+    "button-5-3",
+    "button-6-3",
+    "button-7-3",
+    "button-8-3",
+    "button-9-3",
+    "button-1-4",
+    "button-2-4",
+    "button-3-4",
+    "button-4-4",
+    "button-5-4",
+    "button-6-4",
+    "button-7-4",
+    "button-8-4",
+    "button-9-4",
+    "button-1-5",
+    "button-2-5",
+    "button-3-5",
+    "button-4-5",
+    "button-5-5",
+    "button-6-5",
+    "button-7-5",
+    "button-8-5",
+    "button-9-5",
+    "button-1-6",
+    "button-2-6",
+    "button-3-6",
+    "button-4-6",
+    "button-5-6",
+    "button-6-6",
+    "button-7-6",
+    "button-8-6",
+    "button-9-6",
+    "button-1-7",
+    "button-2-7",
+    "button-3-7",
+    "button-4-7",
+    "button-5-7",
+    "button-6-7",
+    "button-7-7",
+    "button-8-7",
+    "button-9-7",
+    "button-1-8",
+    "button-2-8",
+    "button-3-8",
+    "button-4-8",
+    "button-5-8",
+    "button-6-8",
+    "button-7-8",
+    "button-8-8",
+    "button-9-8"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "up-button",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 104,
+   "label": "Up Button",
+   "verified": false
+  },
+  {
+   "id": "down-button",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 105,
+   "label": "Down Button",
+   "verified": false
+  },
+  {
+   "id": "left-button",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 106,
+   "label": "Left Button",
+   "verified": false
+  },
+  {
+   "id": "right-button",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 107,
+   "label": "Right Button",
+   "verified": false
+  },
+  {
+   "id": "session-button",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 108,
+   "label": "Session Button",
+   "verified": false
+  },
+  {
+   "id": "user-1-button",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 109,
+   "label": "User 1 Button",
+   "verified": false
+  },
+  {
+   "id": "user-2-button",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 110,
+   "label": "User 2 Button",
+   "verified": false
+  },
+  {
+   "id": "mixer-button",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 111,
+   "label": "Mixer Button",
+   "verified": false
+  },
+  {
+   "id": "button-1-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 0,
+   "label": "Button 1-1",
+   "verified": false
+  },
+  {
+   "id": "button-2-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 1,
+   "label": "Button 2-1",
+   "verified": false
+  },
+  {
+   "id": "button-3-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 2,
+   "label": "Button 3-1",
+   "verified": false
+  },
+  {
+   "id": "button-4-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 3,
+   "label": "Button 4-1",
+   "verified": false
+  },
+  {
+   "id": "button-5-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 4,
+   "label": "Button 5-1",
+   "verified": false
+  },
+  {
+   "id": "button-6-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 5,
+   "label": "Button 6-1",
+   "verified": false
+  },
+  {
+   "id": "button-7-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 6,
+   "label": "Button 7-1",
+   "verified": false
+  },
+  {
+   "id": "button-8-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 7,
+   "label": "Button 8-1",
+   "verified": false
+  },
+  {
+   "id": "button-9-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 8,
+   "label": "Button 9-1",
+   "verified": false
+  },
+  {
+   "id": "button-1-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 16,
+   "label": "Button 1-2",
+   "verified": false
+  },
+  {
+   "id": "button-2-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 17,
+   "label": "Button 2-2",
+   "verified": false
+  },
+  {
+   "id": "button-3-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 18,
+   "label": "Button 3-2",
+   "verified": false
+  },
+  {
+   "id": "button-4-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 19,
+   "label": "Button 4-2",
+   "verified": false
+  },
+  {
+   "id": "button-5-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 20,
+   "label": "Button 5-2",
+   "verified": false
+  },
+  {
+   "id": "button-6-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 21,
+   "label": "Button 6-2",
+   "verified": false
+  },
+  {
+   "id": "button-7-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 22,
+   "label": "Button 7-2",
+   "verified": false
+  },
+  {
+   "id": "button-8-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 23,
+   "label": "Button 8-2",
+   "verified": false
+  },
+  {
+   "id": "button-9-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 24,
+   "label": "Button 9-2",
+   "verified": false
+  },
+  {
+   "id": "button-1-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 32,
+   "label": "Button 1-3",
+   "verified": false
+  },
+  {
+   "id": "button-2-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 33,
+   "label": "Button 2-3",
+   "verified": false
+  },
+  {
+   "id": "button-3-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 34,
+   "label": "Button 3-3",
+   "verified": false
+  },
+  {
+   "id": "button-4-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 35,
+   "label": "Button 4-3",
+   "verified": false
+  },
+  {
+   "id": "button-5-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 36,
+   "label": "Button 5-3",
+   "verified": false
+  },
+  {
+   "id": "button-6-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 37,
+   "label": "Button 6-3",
+   "verified": false
+  },
+  {
+   "id": "button-7-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 38,
+   "label": "Button 7-3",
+   "verified": false
+  },
+  {
+   "id": "button-8-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 39,
+   "label": "Button 8-3",
+   "verified": false
+  },
+  {
+   "id": "button-9-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 40,
+   "label": "Button 9-3",
+   "verified": false
+  },
+  {
+   "id": "button-1-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 48,
+   "label": "Button 1-4",
+   "verified": false
+  },
+  {
+   "id": "button-2-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 49,
+   "label": "Button 2-4",
+   "verified": false
+  },
+  {
+   "id": "button-3-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 50,
+   "label": "Button 3-4",
+   "verified": false
+  },
+  {
+   "id": "button-4-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 51,
+   "label": "Button 4-4",
+   "verified": false
+  },
+  {
+   "id": "button-5-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 52,
+   "label": "Button 5-4",
+   "verified": false
+  },
+  {
+   "id": "button-6-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 53,
+   "label": "Button 6-4",
+   "verified": false
+  },
+  {
+   "id": "button-7-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 54,
+   "label": "Button 7-4",
+   "verified": false
+  },
+  {
+   "id": "button-8-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 55,
+   "label": "Button 8-4",
+   "verified": false
+  },
+  {
+   "id": "button-9-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 56,
+   "label": "Button 9-4",
+   "verified": false
+  },
+  {
+   "id": "button-1-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 64,
+   "label": "Button 1-5",
+   "verified": false
+  },
+  {
+   "id": "button-2-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 65,
+   "label": "Button 2-5",
+   "verified": false
+  },
+  {
+   "id": "button-3-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 66,
+   "label": "Button 3-5",
+   "verified": false
+  },
+  {
+   "id": "button-4-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 67,
+   "label": "Button 4-5",
+   "verified": false
+  },
+  {
+   "id": "button-5-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 68,
+   "label": "Button 5-5",
+   "verified": false
+  },
+  {
+   "id": "button-6-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 69,
+   "label": "Button 6-5",
+   "verified": false
+  },
+  {
+   "id": "button-7-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 70,
+   "label": "Button 7-5",
+   "verified": false
+  },
+  {
+   "id": "button-8-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 71,
+   "label": "Button 8-5",
+   "verified": false
+  },
+  {
+   "id": "button-9-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 72,
+   "label": "Button 9-5",
+   "verified": false
+  },
+  {
+   "id": "button-1-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 80,
+   "label": "Button 1-6",
+   "verified": false
+  },
+  {
+   "id": "button-2-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 81,
+   "label": "Button 2-6",
+   "verified": false
+  },
+  {
+   "id": "button-3-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 82,
+   "label": "Button 3-6",
+   "verified": false
+  },
+  {
+   "id": "button-4-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 83,
+   "label": "Button 4-6",
+   "verified": false
+  },
+  {
+   "id": "button-5-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 84,
+   "label": "Button 5-6",
+   "verified": false
+  },
+  {
+   "id": "button-6-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 85,
+   "label": "Button 6-6",
+   "verified": false
+  },
+  {
+   "id": "button-7-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 86,
+   "label": "Button 7-6",
+   "verified": false
+  },
+  {
+   "id": "button-8-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 87,
+   "label": "Button 8-6",
+   "verified": false
+  },
+  {
+   "id": "button-9-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 88,
+   "label": "Button 9-6",
+   "verified": false
+  },
+  {
+   "id": "button-1-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 96,
+   "label": "Button 1-7",
+   "verified": false
+  },
+  {
+   "id": "button-2-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 97,
+   "label": "Button 2-7",
+   "verified": false
+  },
+  {
+   "id": "button-3-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 98,
+   "label": "Button 3-7",
+   "verified": false
+  },
+  {
+   "id": "button-4-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 99,
+   "label": "Button 4-7",
+   "verified": false
+  },
+  {
+   "id": "button-5-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 100,
+   "label": "Button 5-7",
+   "verified": false
+  },
+  {
+   "id": "button-6-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 101,
+   "label": "Button 6-7",
+   "verified": false
+  },
+  {
+   "id": "button-7-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 102,
+   "label": "Button 7-7",
+   "verified": false
+  },
+  {
+   "id": "button-8-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 103,
+   "label": "Button 8-7",
+   "verified": false
+  },
+  {
+   "id": "button-9-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 104,
+   "label": "Button 9-7",
+   "verified": false
+  },
+  {
+   "id": "button-1-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 112,
+   "label": "Button 1-8",
+   "verified": false
+  },
+  {
+   "id": "button-2-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 113,
+   "label": "Button 2-8",
+   "verified": false
+  },
+  {
+   "id": "button-3-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 114,
+   "label": "Button 3-8",
+   "verified": false
+  },
+  {
+   "id": "button-4-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 115,
+   "label": "Button 4-8",
+   "verified": false
+  },
+  {
+   "id": "button-5-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 116,
+   "label": "Button 5-8",
+   "verified": false
+  },
+  {
+   "id": "button-6-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 117,
+   "label": "Button 6-8",
+   "verified": false
+  },
+  {
+   "id": "button-7-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 118,
+   "label": "Button 7-8",
+   "verified": false
+  },
+  {
+   "id": "button-8-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 119,
+   "label": "Button 8-8",
+   "verified": false
+  },
+  {
+   "id": "button-9-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 120,
+   "label": "Button 9-8",
+   "verified": false
+  }
+ ]
+}

@@ -1,0 +1,1148 @@
+{
+ "id": "behringer-bcr2000",
+ "short": "bcr2000",
+ "name": "Behringer BCR2000",
+ "maker": "Behringer",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "BCR2000"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Behringer-BCR2000.qxi",
+  "license": "Apache-2.0",
+  "author": "Michael Trojacher (xarumanx@gmail.com)",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Behringer-BCR2000.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Behringer-BCR2000.qxi",
+   "note": "community profile by Michael Trojacher (xarumanx@gmail.com); Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "face": {
+  "w": 100,
+  "h": 110.5,
+  "label": "Behringer BCR2000",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "knob",
+   "label": "Knobs",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 63,
+   "cols": 8,
+   "rows": 7,
+   "controls": [
+    "top-group-1-knob-1",
+    "top-group-1-knob-2",
+    "top-group-1-knob-3",
+    "top-group-1-knob-4",
+    "top-group-1-knob-5",
+    "top-group-1-knob-6",
+    "top-group-1-knob-7",
+    "top-group-1-knob-8",
+    "top-group-2-knob-1",
+    "top-group-2-knob-2",
+    "top-group-2-knob-3",
+    "top-group-2-knob-4",
+    "top-group-2-knob-5",
+    "top-group-2-knob-6",
+    "top-group-2-knob-7",
+    "top-group-2-knob-8",
+    "top-group-3-knob-1",
+    "top-group-3-knob-2",
+    "top-group-3-knob-3",
+    "top-group-3-knob-4",
+    "top-group-3-knob-5",
+    "top-group-3-knob-6",
+    "top-group-3-knob-7",
+    "top-group-3-knob-8",
+    "top-group-4-knob-1",
+    "top-group-4-knob-2",
+    "top-group-4-knob-3",
+    "top-group-4-knob-4",
+    "top-group-4-knob-5",
+    "top-group-4-knob-6",
+    "top-group-4-knob-7",
+    "top-group-4-knob-8",
+    "knob-1-1",
+    "knob-1-2",
+    "knob-1-3",
+    "knob-1-4",
+    "knob-1-5",
+    "knob-1-6",
+    "knob-1-7",
+    "knob-1-8",
+    "knob-2-1",
+    "knob-2-2",
+    "knob-2-3",
+    "knob-2-4",
+    "knob-2-5",
+    "knob-2-6",
+    "knob-2-7",
+    "knob-2-8",
+    "knob-3-1",
+    "knob-3-2",
+    "knob-3-3",
+    "knob-3-4",
+    "knob-3-5",
+    "knob-3-6",
+    "knob-3-7",
+    "knob-3-8"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 69,
+   "w": 96,
+   "h": 38.5,
+   "cols": 8,
+   "rows": 7,
+   "controls": [
+    "top-group-1-knob-1-push",
+    "top-group-1-knob-2-push",
+    "top-group-1-knob-3-push",
+    "top-group-1-knob-4-push",
+    "top-group-1-knob-5-push",
+    "top-group-1-knob-6-push",
+    "top-group-1-knob-7-push",
+    "top-group-1-knob-8-push",
+    "top-group-2-knob-1-push",
+    "top-group-2-knob-2-push",
+    "top-group-2-knob-3-push",
+    "top-group-2-knob-4-push",
+    "top-group-2-knob-5-push",
+    "top-group-2-knob-6-push",
+    "top-group-2-knob-7-push",
+    "top-group-2-knob-8-push",
+    "top-group-3-knob-1-push",
+    "top-group-3-knob-2-push",
+    "top-group-3-knob-3-push",
+    "top-group-3-knob-4-push",
+    "top-group-3-knob-5-push",
+    "top-group-3-knob-6-push",
+    "top-group-3-knob-7-push",
+    "top-group-3-knob-8-push",
+    "top-group-4-knob-1-push",
+    "top-group-4-knob-2-push",
+    "top-group-4-knob-3-push",
+    "top-group-4-knob-4-push",
+    "top-group-4-knob-5-push",
+    "top-group-4-knob-6-push",
+    "top-group-4-knob-7-push",
+    "top-group-4-knob-8-push",
+    "button-top-1",
+    "button-top-2",
+    "button-top-3",
+    "button-top-4",
+    "button-top-5",
+    "button-top-6",
+    "button-top-7",
+    "button-top-8",
+    "button-bottom-1",
+    "button-bottom-2",
+    "button-bottom-3",
+    "button-bottom-4",
+    "button-bottom-5",
+    "button-bottom-6",
+    "button-bottom-7",
+    "button-bottom-8",
+    "button-right-1",
+    "button-right-2",
+    "button-right-3",
+    "button-right-4"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "top-group-1-knob-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 1,
+   "label": "Top Group 1 - Knob 1",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 2,
+   "label": "Top Group 1 - Knob 2",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 3,
+   "label": "Top Group 1 - Knob 3",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 4,
+   "label": "Top Group 1 - Knob 4",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 5,
+   "label": "Top Group 1 - Knob 5",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 6,
+   "label": "Top Group 1 - Knob 6",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 7,
+   "label": "Top Group 1 - Knob 7",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 8,
+   "label": "Top Group 1 - Knob 8",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 9,
+   "label": "Top Group 2 - Knob 1",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 10,
+   "label": "Top Group 2 - Knob 2",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 11,
+   "label": "Top Group 2 - Knob 3",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 12,
+   "label": "Top Group 2 - Knob 4",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 13,
+   "label": "Top Group 2 - Knob 5",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 14,
+   "label": "Top Group 2 - Knob 6",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 15,
+   "label": "Top Group 2 - Knob 7",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 16,
+   "label": "Top Group 2 - Knob 8",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 17,
+   "label": "Top Group 3 - Knob 1",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 18,
+   "label": "Top Group 3 - Knob 2",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 19,
+   "label": "Top Group 3 - Knob 3",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 20,
+   "label": "Top Group 3 - Knob 4",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 21,
+   "label": "Top Group 3 - Knob 5",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 22,
+   "label": "Top Group 3 - Knob 6",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 23,
+   "label": "Top Group 3 - Knob 7",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 24,
+   "label": "Top Group 3 - Knob 8",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 25,
+   "label": "Top Group 4 - Knob 1",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 26,
+   "label": "Top Group 4 - Knob 2",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 27,
+   "label": "Top Group 4 - Knob 3",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 28,
+   "label": "Top Group 4 - Knob 4",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 29,
+   "label": "Top Group 4 - Knob 5",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 30,
+   "label": "Top Group 4 - Knob 6",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 31,
+   "label": "Top Group 4 - Knob 7",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 32,
+   "label": "Top Group 4 - Knob 8",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-1-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 33,
+   "label": "Top Group 1 - Knob 1 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-2-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 34,
+   "label": "Top Group 1 - Knob 2 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-3-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 35,
+   "label": "Top Group 1 - Knob 3 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-4-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 36,
+   "label": "Top Group 1 - Knob 4 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-5-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 37,
+   "label": "Top Group 1 - Knob 5 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-6-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 38,
+   "label": "Top Group 1 - Knob 6 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-7-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 39,
+   "label": "Top Group 1 - Knob 7 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-1-knob-8-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 40,
+   "label": "Top Group 1 - Knob 8 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-1-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 41,
+   "label": "Top Group 2 - Knob 1 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-2-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 42,
+   "label": "Top Group 2 - Knob 2 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-3-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 43,
+   "label": "Top Group 2 - Knob 3 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-4-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 44,
+   "label": "Top Group 2 - Knob 4 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-5-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 45,
+   "label": "Top Group 2 - Knob 5 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-6-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 46,
+   "label": "Top Group 2 - Knob 6 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-7-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 47,
+   "label": "Top Group 2 - Knob 7 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-2-knob-8-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 48,
+   "label": "Top Group 2 - Knob 8 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-1-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 49,
+   "label": "Top Group 3 - Knob 1 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-2-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 50,
+   "label": "Top Group 3 - Knob 2 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-3-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 51,
+   "label": "Top Group 3 - Knob 3 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-4-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 52,
+   "label": "Top Group 3 - Knob 4 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-5-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 53,
+   "label": "Top Group 3 - Knob 5 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-6-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 54,
+   "label": "Top Group 3 - Knob 6 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-7-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 55,
+   "label": "Top Group 3 - Knob 7 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-3-knob-8-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 56,
+   "label": "Top Group 3 - Knob 8 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-1-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 57,
+   "label": "Top Group 4 - Knob 1 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-2-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 58,
+   "label": "Top Group 4 - Knob 2 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-3-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 59,
+   "label": "Top Group 4 - Knob 3 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-4-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 60,
+   "label": "Top Group 4 - Knob 4 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-5-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 61,
+   "label": "Top Group 4 - Knob 5 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-6-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 62,
+   "label": "Top Group 4 - Knob 6 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-7-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 63,
+   "label": "Top Group 4 - Knob 7 Push",
+   "verified": false
+  },
+  {
+   "id": "top-group-4-knob-8-push",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 64,
+   "label": "Top Group 4 - Knob 8 Push",
+   "verified": false
+  },
+  {
+   "id": "button-top-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 65,
+   "label": "Button Top 1",
+   "verified": false
+  },
+  {
+   "id": "button-top-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 66,
+   "label": "Button Top 2",
+   "verified": false
+  },
+  {
+   "id": "button-top-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 67,
+   "label": "Button Top 3",
+   "verified": false
+  },
+  {
+   "id": "button-top-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 68,
+   "label": "Button Top 4",
+   "verified": false
+  },
+  {
+   "id": "button-top-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 69,
+   "label": "Button Top 5",
+   "verified": false
+  },
+  {
+   "id": "button-top-6",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 70,
+   "label": "Button Top 6",
+   "verified": false
+  },
+  {
+   "id": "button-top-7",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 71,
+   "label": "Button Top 7",
+   "verified": false
+  },
+  {
+   "id": "button-top-8",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 72,
+   "label": "Button Top 8",
+   "verified": false
+  },
+  {
+   "id": "button-bottom-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 73,
+   "label": "Button Bottom 1",
+   "verified": false
+  },
+  {
+   "id": "button-bottom-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 74,
+   "label": "Button Bottom 2",
+   "verified": false
+  },
+  {
+   "id": "button-bottom-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 75,
+   "label": "Button Bottom 3",
+   "verified": false
+  },
+  {
+   "id": "button-bottom-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 76,
+   "label": "Button Bottom 4",
+   "verified": false
+  },
+  {
+   "id": "button-bottom-5",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 77,
+   "label": "Button Bottom 5",
+   "verified": false
+  },
+  {
+   "id": "button-bottom-6",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 78,
+   "label": "Button Bottom 6",
+   "verified": false
+  },
+  {
+   "id": "button-bottom-7",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 79,
+   "label": "Button Bottom 7",
+   "verified": false
+  },
+  {
+   "id": "button-bottom-8",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 80,
+   "label": "Button Bottom 8",
+   "verified": false
+  },
+  {
+   "id": "knob-1-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 81,
+   "label": "Knob 1-1",
+   "verified": false
+  },
+  {
+   "id": "knob-1-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 82,
+   "label": "Knob 1-2",
+   "verified": false
+  },
+  {
+   "id": "knob-1-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 83,
+   "label": "Knob 1-3",
+   "verified": false
+  },
+  {
+   "id": "knob-1-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 84,
+   "label": "Knob 1-4",
+   "verified": false
+  },
+  {
+   "id": "knob-1-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 85,
+   "label": "Knob 1-5",
+   "verified": false
+  },
+  {
+   "id": "knob-1-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 86,
+   "label": "Knob 1-6",
+   "verified": false
+  },
+  {
+   "id": "knob-1-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 87,
+   "label": "Knob 1-7",
+   "verified": false
+  },
+  {
+   "id": "knob-1-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 88,
+   "label": "Knob 1-8",
+   "verified": false
+  },
+  {
+   "id": "knob-2-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 89,
+   "label": "Knob 2-1",
+   "verified": false
+  },
+  {
+   "id": "knob-2-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 90,
+   "label": "Knob 2-2",
+   "verified": false
+  },
+  {
+   "id": "knob-2-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 91,
+   "label": "Knob 2-3",
+   "verified": false
+  },
+  {
+   "id": "knob-2-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 92,
+   "label": "Knob 2-4",
+   "verified": false
+  },
+  {
+   "id": "knob-2-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 93,
+   "label": "Knob 2-5",
+   "verified": false
+  },
+  {
+   "id": "knob-2-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 94,
+   "label": "Knob 2-6",
+   "verified": false
+  },
+  {
+   "id": "knob-2-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 95,
+   "label": "Knob 2-7",
+   "verified": false
+  },
+  {
+   "id": "knob-2-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 96,
+   "label": "Knob 2-8",
+   "verified": false
+  },
+  {
+   "id": "knob-3-1",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 97,
+   "label": "Knob 3-1",
+   "verified": false
+  },
+  {
+   "id": "knob-3-2",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 98,
+   "label": "Knob 3-2",
+   "verified": false
+  },
+  {
+   "id": "knob-3-3",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 99,
+   "label": "Knob 3-3",
+   "verified": false
+  },
+  {
+   "id": "knob-3-4",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 100,
+   "label": "Knob 3-4",
+   "verified": false
+  },
+  {
+   "id": "knob-3-5",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 101,
+   "label": "Knob 3-5",
+   "verified": false
+  },
+  {
+   "id": "knob-3-6",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 102,
+   "label": "Knob 3-6",
+   "verified": false
+  },
+  {
+   "id": "knob-3-7",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 103,
+   "label": "Knob 3-7",
+   "verified": false
+  },
+  {
+   "id": "knob-3-8",
+   "type": "knob",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 104,
+   "label": "Knob 3-8",
+   "verified": false
+  },
+  {
+   "id": "button-right-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 105,
+   "label": "Button Right 1",
+   "verified": false
+  },
+  {
+   "id": "button-right-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 106,
+   "label": "Button Right 2",
+   "verified": false
+  },
+  {
+   "id": "button-right-3",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 107,
+   "label": "Button Right 3",
+   "verified": false
+  },
+  {
+   "id": "button-right-4",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 108,
+   "label": "Button Right 4",
+   "verified": false
+  }
+ ]
+}

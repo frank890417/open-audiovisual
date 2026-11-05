@@ -62,7 +62,7 @@ export function descriptionOf(t, d, locale) {
 
 // ------------------------------------------------------------------ related controllers
 export function related(cat, d, n = 6) {
-  const all = [...cat.devices, ...cat.generic];
+  const all = cat.pages;
   return all.filter((x) => x !== d).map((x) => {
     const shared = x.has.filter((h) => d.has.includes(h)).length, union = new Set([...x.has, ...d.has]).size;
     return { x, score: (d.p.maker && x.p.maker === d.p.maker ? 10 : 0) + (6 * shared) / union + (x.p.kind === d.p.kind ? 0.5 : 0) };
@@ -129,7 +129,7 @@ function jsonLd(t, home, c, d, locale, { title, description, file }) {
     thing,
     {
       '@type': 'Dataset', '@id': self + '#dataset', name: fill(D.ld.dataset, { name }), description: fill(D.ld.datasetDesc, { name }), url: self, inLanguage: home.ldLanguage,
-      license: 'https://opensource.org/licenses/MIT', isAccessibleForFree: true,
+      license: p.license === 'Apache-2.0' ? 'https://www.apache.org/licenses/LICENSE-2.0' : 'https://opensource.org/licenses/MIT', isAccessibleForFree: true,
       creator: { '@id': PERSON_ID },
       isPartOf: { '@id': galleryUrl + '#dataset' },
       about: { '@id': self + '#product' },
@@ -186,6 +186,35 @@ export function sysexSection(t, d, sec) {
 `;
 }
 
+// ------------------------------------------------------------------ the same device for other software
+export function exportSection(t, c, d, sec) {
+  const X = t.detail.exports, id = d.p.id, base = `${c.root}controllers/${id}/`;
+  const omni = (() => { const ch = new Set(d.p.controls.map((x) => x.ch)); return ch.size > 1 || !ch.has(1); })();
+  const file = (f, label) => `<a class="vf-btn" href="${base}${f}" download="${f}">${label}</a>`;
+  return `<!-- ═════ other software ═════ -->
+  <section class="sec" id="other-software" aria-labelledby="other-software-title">
+    ${sec('other-software', X.eyebrow, X.title, X.lede)}
+    <div class="spec-grid">
+      <div>
+        <h3>QLC+</h3>
+        <p>${X.qlc}${omni ? ` ${X.qlcOmni}` : ''}</p>
+        <div class="vf-row">${file(`${id}.qxi`, `${id}.qxi`)}</div>
+      </div>
+      <div>
+        <h3>Mixxx</h3>
+        <p>${X.mixxx}</p>
+        <div class="vf-row">${file(`${id}.midi.xml`, `${id}.midi.xml`)}${file(`${id}.scripts.js`, `${id}.scripts.js`)}</div>
+      </div>
+      <div>
+        <h3>${X.jsonTitle}</h3>
+        <p>${X.json}</p>
+        <div class="vf-row"><a class="vf-btn" href="${c.root}${PROFILE_DIR}/${d.file}">${d.file}</a></div>
+      </div>
+    </div>
+  </section>
+`;
+}
+
 // ------------------------------------------------------------------ the page
 export function renderDetail(t, home, locale, d, cat) {
   const D = t.detail, p = d.p, id = p.id, c = detailCtx(id, locale);
@@ -194,7 +223,7 @@ export function renderDetail(t, home, locale, d, cat) {
   const description = descriptionOf(t, d, locale);
   const file = d.file, jsonRel = `${PROFILE_DIR}/${file}`;
   const ld = jsonLd(t, home, c, d, locale, { title, description, file });
-  const all = [...cat.devices, ...cat.generic], at = all.indexOf(d);
+  const all = cat.pages, at = all.indexOf(d);
   const prev = all[(at - 1 + all.length) % all.length], next = all[(at + 1) % all.length];
   const rel = related(cat, d);
   const sp = specParts(t, d, c, locale);
@@ -227,6 +256,7 @@ export function renderDetail(t, home, locale, d, cat) {
     [F.messages, esc(msgKinds(t, d).join(' · '))],
     [F.channels, chs.join(', ')],
     [F.led, d.prov.led ? F.ledYes : F.ledNo],
+    ...(d.prov.imported ? [[F.layout, F.layoutAuto], [F.license, fill(F.licenseQlc, { notice: `${BLOB}NOTICE` })]] : []),
     ...(device ? [[F.checked, checked.hardware ? fill(F.checkedSome, { n: checked.hardware, total: checked.controls, date: esc(checked.latest.date) }) : F.checkedNone]] : []),
     [F.signals, `<code>midi/${esc(p.short)}/…</code>`],
     [F.port, ports || F.portNone],
@@ -239,6 +269,7 @@ export function renderDetail(t, home, locale, d, cat) {
   if (d.prov.generic) badgeLi.push(`<li class="b-gen">${B.generic}</li>`);
   if (d.prov.led) badgeLi.push(`<li class="b-led">${B.led}</li>`);
   if (d.prov.sysex) badgeLi.push(`<li class="b-led"><a href="#sysex">SysEx</a></li>`);
+  if (d.prov.imported) badgeLi.push(`<li class="b-gen">${B.auto}</li>`);
   if (d.prov.unverified) badgeLi.push(`<li class="b-unv">${fill(B.unverified, { n: d.prov.unverified })}</li>`);
 
   // snippets
@@ -246,7 +277,7 @@ export function renderDetail(t, home, locale, d, cat) {
   const sn = snippets(base, p), snOut = snippets({ ...base, midiOut: 'IAC' }, p);
   const inject = `document.head.prepend(Object.assign(document.createElement('script'), { src: '${P5_SRC}?profile=${id}' }));`;
   const issueUrl = `${REPO}/issues/new?title=${encodeURIComponent(fill(D.report.issueTitle, { name, id }))}`;
-  const runtime = { lang: locale, copy: home.ui.copy, copied: home.ui.copied, profile: id, sysex: p.sysex ? D.sysex.status : null };
+  const runtime = { lang: locale, copy: home.ui.copy, copied: home.ui.copied, profile: id, imported: d.prov.imported, sysex: p.sysex ? D.sysex.status : null };
 
   const head = headBasics(home, c, { title, description, ogDescription: description, ogImage: OG_IMAGE, ogImageAlt: D.ld.image, robots: 'index, follow, max-image-preview:large, max-snippet:-1', ld });
   return guardEmail(`<!DOCTYPE html>
@@ -290,8 +321,9 @@ ${topBar(home, c)}
       <oav-controller id="d-ctl" profile="${id}" hardware="ask" readout>${faceSvg(p, fill(t.catalog.faceLabel, { name }))}</oav-controller>
     </div>
     <div class="stage-foot">
-      <p class="stage-meta"><b>${fill(D.play.title, { name: esc(name) })}</b> <a href="${c.root}examples/09-midi-controllers/?view=controller&amp;profile=${id}">${D.play.full} ↗</a> <a href="${c.root}${jsonRel}">${D.report.raw} ↗</a> <a href="${c.to('controllers')}">${D.play.back}</a></p>
+      <p class="stage-meta"><b>${fill(D.play.title, { name: esc(name) })}</b> ${d.prov.imported ? '' : `<a href="${c.root}examples/09-midi-controllers/?view=controller&amp;profile=${id}">${D.play.full} ↗</a> `}<a href="${c.root}${jsonRel}">${D.report.raw} ↗</a> <a href="${c.to('controllers')}">${D.play.back}</a></p>
     </div>
+    ${d.prov.imported ? `<p class="auto-note">${D.play.autoNote}</p>` : ''}
     <p class="hint js-only">${D.play.hint}</p>
     <noscript><p class="noscript">${D.play.noscript}</p></noscript>
   </section>
@@ -331,7 +363,7 @@ ${topBar(home, c)}
       <li class="snip"><h3>${D.use.iframeTitle}</h3><p>${D.use.iframeText}</p>${term('html', 'snip-iframe', sn.iframe)}</li>
       <li class="snip"><h3>${D.use.outTitle}</h3><p>${fill(D.use.outText, { href: c.to('controllers', '#embed') })}</p>${term('html', 'snip-daw', snOut.daw)}<p class="note">${D.use.outSteps}</p></li>
     </ol>
-    <div class="p5-block" id="p5">
+    ${d.prov.imported ? '' : `<div class="p5-block" id="p5">
       <h3>${D.use.p5Title}</h3>
       <p>${fill(device ? D.use.p5Text : D.use.p5TextGeneric, { id, name: esc(name) })}</p>
       ${term('javascript', 'snip-p5', inject)}
@@ -340,8 +372,10 @@ ${topBar(home, c)}
       ${d.p.controls.some((x) => !['knob', 'fader', 'pad', 'keys'].includes(x.type)) ? `<p class="note">${D.use.p5Other}</p>` : ''}
       ${device ? '' : `<p class="note">${D.use.p5Generic}</p>`}
       <p><a class="more" href="${c.to('docs', '')}#p5">${D.use.p5Docs} →</a></p>
-    </div>
+    </div>`}
   </section>
+
+  ${device ? exportSection(t, c, d, sec) : ''}
 
   <!-- ═════ around it ═════ -->
   <section class="sec" id="related" aria-labelledby="related-title">

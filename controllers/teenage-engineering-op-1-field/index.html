@@ -111,6 +111,7 @@
     <div class="stage-foot">
       <p class="stage-meta"><b>Play teenage engineering OP-1 field on screen</b> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=teenage-engineering-op-1-field">Full screen ↗</a> <a href="../../packages/midi/profiles/teenage-engineering-op-1-field.json">Raw JSON ↗</a> <a href="../../controllers/">All controllers</a></p>
     </div>
+    
     <p class="hint js-only">Drag knobs and faders · tap pads and keys · or plug the real one in and press Connect. Nothing is sent anywhere unless you add a MIDI out.</p>
     <noscript><p class="noscript">This is a live, playable controller: turn on JavaScript to play it. The complete MIDI map is in the table below.</p></noscript>
   </section>
@@ -585,6 +586,34 @@
     </div>
   </section>
 
+  <!-- ═════ other software ═════ -->
+  <section class="sec" id="other-software" aria-labelledby="other-software-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Other software</p>
+      <h2 id="other-software-title">Use this controller outside this project</h2>
+      <p class="sec-lede">The same data, as files other programs read. Nobody has tested these on this exact unit unless the table above says so.</p>
+    </header>
+    <div class="spec-grid">
+      <div>
+        <h3>QLC+</h3>
+        <p>An input profile: every control and LED value, for lighting. Copy it to your user folder (macOS <code>~/Library/Application Support/QLC+/InputProfiles</code>, Linux <code>~/.qlcplus/inputprofiles</code>, Windows <code>%USERPROFILE%\QLC+\InputProfiles</code>) and restart QLC+.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/teenage-engineering-op-1-field/teenage-engineering-op-1-field.qxi" download="teenage-engineering-op-1-field.qxi">teenage-engineering-op-1-field.qxi</a></div>
+      </div>
+      <div>
+        <h3>Mixxx</h3>
+        <p>A starting point, not a finished mapping: decks, EQ and hot cues go to the controls in order. Put both files in the folder that Preferences → Controllers → Open User Mapping Folder opens, then remap what you like with the Learning Wizard.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/teenage-engineering-op-1-field/teenage-engineering-op-1-field.midi.xml" download="teenage-engineering-op-1-field.midi.xml">teenage-engineering-op-1-field.midi.xml</a><a class="vf-btn" href="../../controllers/teenage-engineering-op-1-field/teenage-engineering-op-1-field.scripts.js" download="teenage-engineering-op-1-field.scripts.js">teenage-engineering-op-1-field.scripts.js</a></div>
+      </div>
+      <div>
+        <h3>The data itself</h3>
+        <p>Everything above comes from this file: faceplate, messages, LEDs, SysEx and who checked what. <code>tools/export-controller.mjs</code> writes these files from any profile.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../packages/midi/profiles/teenage-engineering-op-1-field.json">teenage-engineering-op-1-field.json</a></div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- ═════ around it ═════ -->
   <section class="sec" id="related" aria-labelledby="related-title">
     
@@ -597,14 +626,14 @@
       <li><a href="../djtechtools-midi-fighter-twister/">DJ TechTools Midi Fighter Twister</a><span>DJ TechTools · 16 encoders · 22 buttons</span></li>
       <li><a href="../korg-nanokey2/">Korg nanoKEY2</a><span>KORG · 25 keys · 2 buttons · 1 touch strip</span></li>
       <li><a href="../novation-launch-control-xl-3/">Novation Launch Control XL 3</a><span>Novation · 24 encoders · 8 faders · 16 buttons</span></li>
-      <li><a href="../generic-keys25/">Generic 25-key keyboard</a><span>Generic layout · 25 keys · 1 button · 2 wheels</span></li>
-      <li><a href="../generic-keys49/">Generic 49-key keyboard</a><span>Generic layout · 49 keys · 1 button · 2 wheels</span></li>
+      <li><a href="../behringer-x-touch-compact/">Behringer X-Touch Compact</a><span>Behringer · 32 encoders · 18 faders · 128 buttons</span></li>
+      <li><a href="../behringer-x-touch-extender/">Behringer X-Touch Extender</a><span>Behringer · 8 encoders · 8 faders · 48 buttons</span></li>
     </ul>
     <p class="cmp-link"><a href="../#cmp-teenage-engineering-op-1-field">Compare teenage engineering OP-1 field with the rest, by keys, pads, knobs, faders and LED feedback →</a></p>
     <nav class="step" aria-label="Neighbouring controllers">
       <a rel="prev" href="../odd-ball/"><small>← Previous</small>ODD Ball</a>
       <a class="back" href="../../controllers/">Back to all controllers</a>
-      <a rel="next" href="../generic-8k8p/"><small>Next →</small>Generic 8 knobs + 8 pads</a>
+      <a rel="next" href="../akai-apc-mini/"><small>Next →</small>AKAI Professional APC Mini</a>
     </nav>
   </section>
 
@@ -664,7 +693,7 @@
   </div>
 </footer>
 
-<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"teenage-engineering-op-1-field","sysex":null}</script>
+<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"teenage-engineering-op-1-field","imported":false,"sysex":null}</script>
 <script type="module" src="../../assets/controllers/detail.js"></script>
 <!--/email_off-->
 </body>

@@ -111,6 +111,7 @@
     <div class="stage-foot">
       <p class="stage-meta"><b>Play AKAI MPK mini mk3 on screen</b> <a href="../../examples/09-midi-controllers/?view=controller&amp;profile=akai-mpk-mini-mk3">Full screen ↗</a> <a href="../../packages/midi/profiles/akai-mpk-mini-mk3.json">Raw JSON ↗</a> <a href="../../controllers/">All controllers</a></p>
     </div>
+    
     <p class="hint js-only">Drag knobs and faders · tap pads and keys · or plug the real one in and press Connect. Nothing is sent anywhere unless you add a MIDI out.</p>
     <noscript><p class="noscript">This is a live, playable controller: turn on JavaScript to play it. The complete MIDI map is in the table below.</p></noscript>
   </section>
@@ -416,6 +417,34 @@
     </div>
   </section>
 
+  <!-- ═════ other software ═════ -->
+  <section class="sec" id="other-software" aria-labelledby="other-software-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Other software</p>
+      <h2 id="other-software-title">Use this controller outside this project</h2>
+      <p class="sec-lede">The same data, as files other programs read. Nobody has tested these on this exact unit unless the table above says so.</p>
+    </header>
+    <div class="spec-grid">
+      <div>
+        <h3>QLC+</h3>
+        <p>An input profile: every control and LED value, for lighting. Copy it to your user folder (macOS <code>~/Library/Application Support/QLC+/InputProfiles</code>, Linux <code>~/.qlcplus/inputprofiles</code>, Windows <code>%USERPROFILE%\QLC+\InputProfiles</code>) and restart QLC+. Then set the MIDI channel of this input to Omni.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/akai-mpk-mini-mk3/akai-mpk-mini-mk3.qxi" download="akai-mpk-mini-mk3.qxi">akai-mpk-mini-mk3.qxi</a></div>
+      </div>
+      <div>
+        <h3>Mixxx</h3>
+        <p>A starting point, not a finished mapping: decks, EQ and hot cues go to the controls in order. Put both files in the folder that Preferences → Controllers → Open User Mapping Folder opens, then remap what you like with the Learning Wizard.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../controllers/akai-mpk-mini-mk3/akai-mpk-mini-mk3.midi.xml" download="akai-mpk-mini-mk3.midi.xml">akai-mpk-mini-mk3.midi.xml</a><a class="vf-btn" href="../../controllers/akai-mpk-mini-mk3/akai-mpk-mini-mk3.scripts.js" download="akai-mpk-mini-mk3.scripts.js">akai-mpk-mini-mk3.scripts.js</a></div>
+      </div>
+      <div>
+        <h3>The data itself</h3>
+        <p>Everything above comes from this file: faceplate, messages, LEDs, SysEx and who checked what. <code>tools/export-controller.mjs</code> writes these files from any profile.</p>
+        <div class="vf-row"><a class="vf-btn" href="../../packages/midi/profiles/akai-mpk-mini-mk3.json">akai-mpk-mini-mk3.json</a></div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- ═════ around it ═════ -->
   <section class="sec" id="related" aria-labelledby="related-title">
     
@@ -426,10 +455,10 @@
     <ul class="rel" aria-label="Related controllers">
       <li><a href="../akai-lpd8/">AKAI LPD8 (mk2)</a><span>AKAI Professional · 8 pads · 8 knobs</span></li>
       <li><a href="../akai-apc40-mk2/">AKAI APC40 mkII</a><span>AKAI Professional · 40 pads · 16 knobs · 2 encoders · 10 faders · 71 buttons</span></li>
+      <li><a href="../akai-apc20/">AKAI Professional APC20</a><span>AKAI Professional · 1 knob · 9 faders · 87 buttons</span></li>
+      <li><a href="../akai-apc40/">AKAI Professional APC40</a><span>AKAI Professional · 17 knobs · 10 faders · 110 buttons</span></li>
       <li><a href="../akai-apc-mini-mk2/">AKAI APC mini mk2</a><span>AKAI Professional · 64 pads · 9 faders · 17 buttons</span></li>
       <li><a href="../akai-midimix/">AKAI MIDImix</a><span>AKAI Professional · 24 knobs · 9 faders · 19 buttons</span></li>
-      <li><a href="../novation-launchkey-25-mk4/">Novation Launchkey 25 MK4</a><span>Novation · 16 pads · 25 keys · 8 knobs · 1 button · 2 wheels</span></li>
-      <li><a href="../novation-launchkey-37-mk4/">Novation Launchkey 37 MK4</a><span>Novation · 16 pads · 37 keys · 8 knobs · 1 button · 2 wheels</span></li>
     </ul>
     <p class="cmp-link"><a href="../#cmp-akai-mpk-mini-mk3">Compare AKAI MPK mini mk3 with the rest, by keys, pads, knobs, faders and LED feedback →</a></p>
     <nav class="step" aria-label="Neighbouring controllers">
@@ -495,7 +524,7 @@
   </div>
 </footer>
 
-<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"akai-mpk-mini-mk3","sysex":null}</script>
+<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"akai-mpk-mini-mk3","imported":false,"sysex":null}</script>
 <script type="module" src="../../assets/controllers/detail.js"></script>
 <!--/email_off-->
 </body>

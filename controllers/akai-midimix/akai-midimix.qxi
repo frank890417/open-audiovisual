@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- AKAI MIDImix: generated from https://openaudiovisual.com/controllers/akai-midimix/ -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>AKAI Professional</Manufacturer>
+ <Model>MIDImix</Model>
+ <Type>MIDI</Type>
+ <Channel Number="16">
+  <Name>1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="17">
+  <Name>9</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="18">
+  <Name>17</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="19">
+  <Name>1</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="20">
+  <Name>2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="21">
+  <Name>10</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="22">
+  <Name>18</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="23">
+  <Name>2</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="24">
+  <Name>3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="25">
+  <Name>11</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="26">
+  <Name>19</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="27">
+  <Name>3</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="28">
+  <Name>4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="29">
+  <Name>12</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="30">
+  <Name>20</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="31">
+  <Name>4</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="46">
+  <Name>5</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="47">
+  <Name>13</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="48">
+  <Name>21</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="49">
+  <Name>5</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="50">
+  <Name>6</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="51">
+  <Name>14</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="52">
+  <Name>22</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="53">
+  <Name>6</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="54">
+  <Name>7</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="55">
+  <Name>15</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="56">
+  <Name>23</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="57">
+  <Name>7</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="58">
+  <Name>8</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="59">
+  <Name>16</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="60">
+  <Name>24</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="61">
+  <Name>8</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="62">
+  <Name>Master</Name>
+  <Type>Slider</Type>
+ </Channel>
+ <Channel Number="129">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="131">
+  <Name>Rec</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="132">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="134">
+  <Name>Rec</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="135">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="137">
+  <Name>Rec</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="138">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="140">
+  <Name>Rec</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="141">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="143">
+  <Name>Rec</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="144">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="146">
+  <Name>Rec</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="147">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="149">
+  <Name>Rec</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="150">
+  <Name>Mute</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="152">
+  <Name>Rec</Name>
+  <Type>Button</Type>
+  <Feedback LowerValue="0" UpperValue="255"/>
+ </Channel>
+ <Channel Number="153">
+  <Name>Bank ◀</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="154">
+  <Name>Bank ▶</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="155">
+  <Name>Solo</Name>
+  <Type>Button</Type>
+ </Channel>
+</InputProfile>

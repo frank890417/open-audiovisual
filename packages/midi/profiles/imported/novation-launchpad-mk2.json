@@ -1,0 +1,1529 @@
+{
+ "id": "novation-launchpad-mk2",
+ "short": "launchpadmk2",
+ "name": "Novation Launchpad MK2",
+ "maker": "Novation",
+ "kind": "device",
+ "license": "Apache-2.0",
+ "channel": 1,
+ "match": {
+  "ports": [
+   "Launchpad[\\s-]*MK2"
+  ],
+  "prefer": [],
+  "avoid": []
+ },
+ "origin": {
+  "tool": "QLC+",
+  "repo": "https://github.com/mcallegari/qlcplus",
+  "commit": "6ed78ed0a697aaa48b1428271e004b22327e5be3",
+  "file": "resources/inputprofiles/Novation-LaunchpadMK2.qxi",
+  "license": "Apache-2.0",
+  "author": "Tim Cullingworth + Massimo Callegari",
+  "note": "Imported from QLC+ on 2026-11-04."
+ },
+ "sources": [
+  {
+   "title": "QLC+ input profile Novation-LaunchpadMK2.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Novation-LaunchpadMK2.qxi",
+   "note": "community profile by Tim Cullingworth + Massimo Callegari; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
+  }
+ ],
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "palette": {
+  "cite": {
+   "source": 0
+  },
+  "channels": [
+   {
+    "ch": 1,
+    "name": "Steady On"
+   },
+   {
+    "ch": 2,
+    "name": "Flashing"
+   },
+   {
+    "ch": 3,
+    "name": "Pulsing"
+   }
+  ],
+  "colors": [
+   {
+    "value": 0,
+    "name": "Black",
+    "rgb": "#000000"
+   },
+   {
+    "value": 1,
+    "name": "Low gray",
+    "rgb": "#494949"
+   },
+   {
+    "value": 2,
+    "name": "Mid gray",
+    "rgb": "#b6b6b6"
+   },
+   {
+    "value": 3,
+    "name": "White",
+    "rgb": "#ffffff"
+   },
+   {
+    "value": 4,
+    "name": "Light red",
+    "rgb": "#ff3333"
+   },
+   {
+    "value": 5,
+    "name": "Red",
+    "rgb": "#ff0000"
+   },
+   {
+    "value": 6,
+    "name": "Dark red",
+    "rgb": "#6e0000"
+   },
+   {
+    "value": 7,
+    "name": "Dark red2",
+    "rgb": "#560000"
+   },
+   {
+    "value": 8,
+    "name": "Light orange",
+    "rgb": "#ffc266"
+   },
+   {
+    "value": 9,
+    "name": "Orange",
+    "rgb": "#ff9900"
+   },
+   {
+    "value": 10,
+    "name": "Dark orange",
+    "rgb": "#9a5c00"
+   },
+   {
+    "value": 11,
+    "name": "Dark orange2",
+    "rgb": "#563300"
+   },
+   {
+    "value": 12,
+    "name": "Light yellow",
+    "rgb": "#ffff99"
+   },
+   {
+    "value": 13,
+    "name": "Yellow",
+    "rgb": "#ffff00"
+   },
+   {
+    "value": 14,
+    "name": "Dark yellow",
+    "rgb": "#9a9a00"
+   },
+   {
+    "value": 15,
+    "name": "Dark yellow2",
+    "rgb": "#565600"
+   },
+   {
+    "value": 16,
+    "name": "Light lime",
+    "rgb": "#80fd2a"
+   },
+   {
+    "value": 17,
+    "name": "Lime",
+    "rgb": "#40fd00"
+   },
+   {
+    "value": 18,
+    "name": "Dark lime",
+    "rgb": "#165800"
+   },
+   {
+    "value": 19,
+    "name": "Dark lime2",
+    "rgb": "#155b00"
+   },
+   {
+    "value": 20,
+    "name": "Light lime2",
+    "rgb": "#34fd2b"
+   },
+   {
+    "value": 21,
+    "name": "Lime2",
+    "rgb": "#34fd2b"
+   },
+   {
+    "value": 22,
+    "name": "Dark lime3",
+    "rgb": "#228b22"
+   },
+   {
+    "value": 23,
+    "name": "Dark lime4",
+    "rgb": "#003400"
+   },
+   {
+    "value": 24,
+    "name": "Light green",
+    "rgb": "#35f400"
+   },
+   {
+    "value": 25,
+    "name": "Green",
+    "rgb": "#00ff00"
+   },
+   {
+    "value": 26,
+    "name": "Dark green",
+    "rgb": "#006e00"
+   },
+   {
+    "value": 27,
+    "name": "Dark green2",
+    "rgb": "#005600"
+   },
+   {
+    "value": 28,
+    "name": "Light green2",
+    "rgb": "#99ff99"
+   },
+   {
+    "value": 29,
+    "name": "Green2",
+    "rgb": "#00ff00"
+   },
+   {
+    "value": 30,
+    "name": "Dark green2",
+    "rgb": "#009a00"
+   },
+   {
+    "value": 31,
+    "name": "Dark green2",
+    "rgb": "#005600"
+   },
+   {
+    "value": 32,
+    "name": "Light aqua",
+    "rgb": "#2ffcb0"
+   },
+   {
+    "value": 33,
+    "name": "Aqua",
+    "rgb": "#00fc91"
+   },
+   {
+    "value": 34,
+    "name": "Dark aqua",
+    "rgb": "#00c477"
+   },
+   {
+    "value": 35,
+    "name": "Dark aqua2",
+    "rgb": "#005d4a"
+   },
+   {
+    "value": 36,
+    "name": "Light blue",
+    "rgb": "#60bfff"
+   },
+   {
+    "value": 37,
+    "name": "Blue",
+    "rgb": "#00a7ff"
+   },
+   {
+    "value": 38,
+    "name": "Dark blue",
+    "rgb": "#003f84"
+   },
+   {
+    "value": 39,
+    "name": "Dark blue2",
+    "rgb": "#002739"
+   },
+   {
+    "value": 40,
+    "name": "Light blue2",
+    "rgb": "#4186ff"
+   },
+   {
+    "value": 41,
+    "name": "Blue2",
+    "rgb": "#0050ff"
+   },
+   {
+    "value": 42,
+    "name": "Dark blue3",
+    "rgb": "#0038b0"
+   },
+   {
+    "value": 43,
+    "name": "Dark blue4",
+    "rgb": "#002983"
+   },
+   {
+    "value": 44,
+    "name": "Light blue3",
+    "rgb": "#4647ff"
+   },
+   {
+    "value": 45,
+    "name": "Blue3",
+    "rgb": "#0000ff"
+   },
+   {
+    "value": 46,
+    "name": "Dark blue5",
+    "rgb": "#000064"
+   },
+   {
+    "value": 47,
+    "name": "Dark blue6",
+    "rgb": "#00003c"
+   },
+   {
+    "value": 48,
+    "name": "Light blue4",
+    "rgb": "#8347ff"
+   },
+   {
+    "value": 49,
+    "name": "Blue4",
+    "rgb": "#5000ff"
+   },
+   {
+    "value": 50,
+    "name": "Dark blue7",
+    "rgb": "#3600b3"
+   },
+   {
+    "value": 51,
+    "name": "Dark blue8",
+    "rgb": "#280082"
+   },
+   {
+    "value": 52,
+    "name": "Light pink",
+    "rgb": "#ff49ff"
+   },
+   {
+    "value": 53,
+    "name": "Pink",
+    "rgb": "#ff00ff"
+   },
+   {
+    "value": 54,
+    "name": "Dark pink",
+    "rgb": "#9e009e"
+   },
+   {
+    "value": 55,
+    "name": "Dark pink2",
+    "rgb": "#760076"
+   },
+   {
+    "value": 56,
+    "name": "Light red2",
+    "rgb": "#ff4d84"
+   },
+   {
+    "value": 57,
+    "name": "Red2",
+    "rgb": "#ff0752"
+   },
+   {
+    "value": 58,
+    "name": "Dark red3",
+    "rgb": "#aa0537"
+   },
+   {
+    "value": 59,
+    "name": "Dark red4",
+    "rgb": "#7e032a"
+   },
+   {
+    "value": 60,
+    "name": "Light red3",
+    "rgb": "#ff1900"
+   },
+   {
+    "value": 61,
+    "name": "Brown",
+    "rgb": "#9b3500"
+   },
+   {
+    "value": 62,
+    "name": "Gold",
+    "rgb": "#7a5100"
+   },
+   {
+    "value": 63,
+    "name": "Moss",
+    "rgb": "#3e6400"
+   },
+   {
+    "value": 64,
+    "name": "Green3",
+    "rgb": "#004600"
+   },
+   {
+    "value": 65,
+    "name": "Green4",
+    "rgb": "#005432"
+   },
+   {
+    "value": 66,
+    "name": "Blue5",
+    "rgb": "#00537e"
+   },
+   {
+    "value": 67,
+    "name": "Blue6",
+    "rgb": "#0000ff"
+   },
+   {
+    "value": 68,
+    "name": "Blue7",
+    "rgb": "#00444d"
+   },
+   {
+    "value": 69,
+    "name": "Blue8",
+    "rgb": "#1b00d2"
+   },
+   {
+    "value": 70,
+    "name": "Mid white",
+    "rgb": "#b6b6b6"
+   },
+   {
+    "value": 71,
+    "name": "Low white",
+    "rgb": "#494949"
+   },
+   {
+    "value": 72,
+    "name": "Red3",
+    "rgb": "#ff0a00"
+   },
+   {
+    "value": 73,
+    "name": "Lime3",
+    "rgb": "#bafd00"
+   },
+   {
+    "value": 74,
+    "name": "Lime4",
+    "rgb": "#aaed00"
+   },
+   {
+    "value": 75,
+    "name": "Green5",
+    "rgb": "#56fd00"
+   },
+   {
+    "value": 76,
+    "name": "Green6",
+    "rgb": "#008800"
+   },
+   {
+    "value": 77,
+    "name": "Green7",
+    "rgb": "#00fc7a"
+   },
+   {
+    "value": 78,
+    "name": "Light blue5",
+    "rgb": "#00a7ff"
+   },
+   {
+    "value": 79,
+    "name": "Blue9",
+    "rgb": "#001bfe"
+   },
+   {
+    "value": 80,
+    "name": "Blue10",
+    "rgb": "#3500ff"
+   },
+   {
+    "value": 81,
+    "name": "Purple",
+    "rgb": "#7700ff"
+   },
+   {
+    "value": 82,
+    "name": "Mauve",
+    "rgb": "#b4177e"
+   },
+   {
+    "value": 83,
+    "name": "Brown2",
+    "rgb": "#412000"
+   },
+   {
+    "value": 84,
+    "name": "Orange2",
+    "rgb": "#ff4a00"
+   },
+   {
+    "value": 85,
+    "name": "Green8",
+    "rgb": "#83e100"
+   },
+   {
+    "value": 86,
+    "name": "Green9",
+    "rgb": "#65fd00"
+   },
+   {
+    "value": 87,
+    "name": "Green10",
+    "rgb": "#00fd00"
+   },
+   {
+    "value": 88,
+    "name": "Green11",
+    "rgb": "#00fd00"
+   },
+   {
+    "value": 89,
+    "name": "Green12",
+    "rgb": "#45fd61"
+   },
+   {
+    "value": 90,
+    "name": "Aqua2",
+    "rgb": "#00fcca"
+   },
+   {
+    "value": 91,
+    "name": "Light blue6",
+    "rgb": "#5086ff"
+   },
+   {
+    "value": 92,
+    "name": "Blue11",
+    "rgb": "#274dc9"
+   },
+   {
+    "value": 93,
+    "name": "Blue12",
+    "rgb": "#827aed"
+   },
+   {
+    "value": 94,
+    "name": "Purple2",
+    "rgb": "#d30cff"
+   },
+   {
+    "value": 95,
+    "name": "Red4",
+    "rgb": "#ff065a"
+   },
+   {
+    "value": 96,
+    "name": "Orange3",
+    "rgb": "#ff7d00"
+   },
+   {
+    "value": 97,
+    "name": "Gold2",
+    "rgb": "#b9b100"
+   },
+   {
+    "value": 98,
+    "name": "Green13",
+    "rgb": "#8afd00"
+   },
+   {
+    "value": 99,
+    "name": "Brown3",
+    "rgb": "#825d00"
+   },
+   {
+    "value": 100,
+    "name": "Dark brown",
+    "rgb": "#392800"
+   },
+   {
+    "value": 101,
+    "name": "Dark green3",
+    "rgb": "#0d4c05"
+   },
+   {
+    "value": 102,
+    "name": "Dark green4",
+    "rgb": "#005037"
+   },
+   {
+    "value": 103,
+    "name": "Mid white2",
+    "rgb": "#929292"
+   },
+   {
+    "value": 104,
+    "name": "Light blue7",
+    "rgb": "#a4a1ff"
+   },
+   {
+    "value": 105,
+    "name": "Brown4",
+    "rgb": "#6a3c17"
+   },
+   {
+    "value": 106,
+    "name": "Dark red5",
+    "rgb": "#ac0400"
+   },
+   {
+    "value": 107,
+    "name": "Red5",
+    "rgb": "#e15135"
+   },
+   {
+    "value": 108,
+    "name": "Red6",
+    "rgb": "#dc6900"
+   },
+   {
+    "value": 109,
+    "name": "Yellow2",
+    "rgb": "#ffe100"
+   },
+   {
+    "value": 110,
+    "name": "Lime5",
+    "rgb": "#99e100"
+   },
+   {
+    "value": 111,
+    "name": "Green14",
+    "rgb": "#5fb500"
+   },
+   {
+    "value": 112,
+    "name": "Mid white3",
+    "rgb": "#dbdbdb"
+   },
+   {
+    "value": 113,
+    "name": "Yellow3",
+    "rgb": "#dcfd54"
+   },
+   {
+    "value": 114,
+    "name": "Light aqua2",
+    "rgb": "#76fcb8"
+   },
+   {
+    "value": 115,
+    "name": "Light blue8",
+    "rgb": "#9697ff"
+   },
+   {
+    "value": 116,
+    "name": "Blue13",
+    "rgb": "#8b61ff"
+   },
+   {
+    "value": 117,
+    "name": "Low white2",
+    "rgb": "#6d6d6d"
+   },
+   {
+    "value": 118,
+    "name": "Mid white3",
+    "rgb": "#b6b6b6"
+   },
+   {
+    "value": 119,
+    "name": "Light blue9",
+    "rgb": "#defcfc"
+   },
+   {
+    "value": 120,
+    "name": "Red7",
+    "rgb": "#a40400"
+   },
+   {
+    "value": 121,
+    "name": "Dark red6",
+    "rgb": "#6e0000"
+   },
+   {
+    "value": 122,
+    "name": "Green15",
+    "rgb": "#00d100"
+   },
+   {
+    "value": 123,
+    "name": "Dark green5",
+    "rgb": "#004000"
+   },
+   {
+    "value": 124,
+    "name": "Dark yellow",
+    "rgb": "#b9b100"
+   },
+   {
+    "value": 125,
+    "name": "Dark yellow2",
+    "rgb": "#696000"
+   },
+   {
+    "value": 126,
+    "name": "Gold2",
+    "rgb": "#ffad33"
+   },
+   {
+    "value": 127,
+    "name": "Orange3",
+    "rgb": "#9a5c00"
+   }
+  ]
+ },
+ "face": {
+  "w": 100,
+  "h": 92,
+  "label": "Novation Launchpad MK2",
+  "auto": true
+ },
+ "sections": [
+  {
+   "id": "pad",
+   "label": "Pads",
+   "x": 2,
+   "y": 3,
+   "w": 96,
+   "h": 72,
+   "cols": 8,
+   "rows": 8,
+   "controls": [
+    "pad-8-1",
+    "pad-8-2",
+    "pad-8-3",
+    "pad-8-4",
+    "pad-8-5",
+    "pad-8-6",
+    "pad-8-7",
+    "pad-8-8",
+    "pad-7-1",
+    "pad-7-2",
+    "pad-7-3",
+    "pad-7-4",
+    "pad-7-5",
+    "pad-7-6",
+    "pad-7-7",
+    "pad-7-8",
+    "pad-6-1",
+    "pad-6-2",
+    "pad-6-3",
+    "pad-6-4",
+    "pad-6-5",
+    "pad-6-6",
+    "pad-6-7",
+    "pad-6-8",
+    "pad-5-1",
+    "pad-5-2",
+    "pad-5-3",
+    "pad-5-4",
+    "pad-5-5",
+    "pad-5-6",
+    "pad-5-7",
+    "pad-5-8",
+    "pad-4-1",
+    "pad-4-2",
+    "pad-4-3",
+    "pad-4-4",
+    "pad-4-5",
+    "pad-4-6",
+    "pad-4-7",
+    "pad-4-8",
+    "pad-3-1",
+    "pad-3-2",
+    "pad-3-3",
+    "pad-3-4",
+    "pad-3-5",
+    "pad-3-6",
+    "pad-3-7",
+    "pad-3-8",
+    "pad-2-1",
+    "pad-2-2",
+    "pad-2-3",
+    "pad-2-4",
+    "pad-2-5",
+    "pad-2-6",
+    "pad-2-7",
+    "pad-2-8",
+    "pad-1-1",
+    "pad-1-2",
+    "pad-1-3",
+    "pad-1-4",
+    "pad-1-5",
+    "pad-1-6",
+    "pad-1-7",
+    "pad-1-8"
+   ]
+  },
+  {
+   "id": "button",
+   "label": "Buttons",
+   "x": 2,
+   "y": 78,
+   "w": 96,
+   "h": 11,
+   "cols": 8,
+   "rows": 2,
+   "controls": [
+    "up",
+    "down",
+    "left",
+    "right",
+    "session",
+    "user-1",
+    "user-2",
+    "mixer",
+    "record-arm",
+    "solo",
+    "mute",
+    "stop",
+    "send-b",
+    "send-a",
+    "pan",
+    "volume"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "up",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 104,
+   "label": "Up",
+   "verified": false
+  },
+  {
+   "id": "down",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 105,
+   "label": "Down",
+   "verified": false
+  },
+  {
+   "id": "left",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 106,
+   "label": "Left",
+   "verified": false
+  },
+  {
+   "id": "right",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 107,
+   "label": "Right",
+   "verified": false
+  },
+  {
+   "id": "session",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 108,
+   "label": "Session",
+   "verified": false
+  },
+  {
+   "id": "user-1",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 109,
+   "label": "User 1",
+   "verified": false
+  },
+  {
+   "id": "user-2",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 110,
+   "label": "User 2",
+   "verified": false
+  },
+  {
+   "id": "mixer",
+   "type": "button",
+   "msg": "cc",
+   "ch": 1,
+   "cc": 111,
+   "label": "Mixer",
+   "verified": false
+  },
+  {
+   "id": "pad-8-1",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 11,
+   "label": "Pad 8-1",
+   "verified": false
+  },
+  {
+   "id": "pad-8-2",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 12,
+   "label": "Pad 8-2",
+   "verified": false
+  },
+  {
+   "id": "pad-8-3",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 13,
+   "label": "Pad 8-3",
+   "verified": false
+  },
+  {
+   "id": "pad-8-4",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 14,
+   "label": "Pad 8-4",
+   "verified": false
+  },
+  {
+   "id": "pad-8-5",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 15,
+   "label": "Pad 8-5",
+   "verified": false
+  },
+  {
+   "id": "pad-8-6",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 16,
+   "label": "Pad 8-6",
+   "verified": false
+  },
+  {
+   "id": "pad-8-7",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 17,
+   "label": "Pad 8-7",
+   "verified": false
+  },
+  {
+   "id": "pad-8-8",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 18,
+   "label": "Pad 8-8",
+   "verified": false
+  },
+  {
+   "id": "record-arm",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 19,
+   "label": "Record Arm",
+   "verified": false
+  },
+  {
+   "id": "pad-7-1",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 21,
+   "label": "Pad 7-1",
+   "verified": false
+  },
+  {
+   "id": "pad-7-2",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 22,
+   "label": "Pad 7-2",
+   "verified": false
+  },
+  {
+   "id": "pad-7-3",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 23,
+   "label": "Pad 7-3",
+   "verified": false
+  },
+  {
+   "id": "pad-7-4",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 24,
+   "label": "Pad 7-4",
+   "verified": false
+  },
+  {
+   "id": "pad-7-5",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 25,
+   "label": "Pad 7-5",
+   "verified": false
+  },
+  {
+   "id": "pad-7-6",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 26,
+   "label": "Pad 7-6",
+   "verified": false
+  },
+  {
+   "id": "pad-7-7",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 27,
+   "label": "Pad 7-7",
+   "verified": false
+  },
+  {
+   "id": "pad-7-8",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 28,
+   "label": "Pad 7-8",
+   "verified": false
+  },
+  {
+   "id": "solo",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 29,
+   "label": "Solo",
+   "verified": false
+  },
+  {
+   "id": "pad-6-1",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 31,
+   "label": "Pad 6-1",
+   "verified": false
+  },
+  {
+   "id": "pad-6-2",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 32,
+   "label": "Pad 6-2",
+   "verified": false
+  },
+  {
+   "id": "pad-6-3",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 33,
+   "label": "Pad 6-3",
+   "verified": false
+  },
+  {
+   "id": "pad-6-4",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 34,
+   "label": "Pad 6-4",
+   "verified": false
+  },
+  {
+   "id": "pad-6-5",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 35,
+   "label": "Pad 6-5",
+   "verified": false
+  },
+  {
+   "id": "pad-6-6",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 36,
+   "label": "Pad 6-6",
+   "verified": false
+  },
+  {
+   "id": "pad-6-7",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 37,
+   "label": "Pad 6-7",
+   "verified": false
+  },
+  {
+   "id": "pad-6-8",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 38,
+   "label": "Pad 6-8",
+   "verified": false
+  },
+  {
+   "id": "mute",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 39,
+   "label": "Mute",
+   "verified": false
+  },
+  {
+   "id": "pad-5-1",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 41,
+   "label": "Pad 5-1",
+   "verified": false
+  },
+  {
+   "id": "pad-5-2",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 42,
+   "label": "Pad 5-2",
+   "verified": false
+  },
+  {
+   "id": "pad-5-3",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 43,
+   "label": "Pad 5-3",
+   "verified": false
+  },
+  {
+   "id": "pad-5-4",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 44,
+   "label": "Pad 5-4",
+   "verified": false
+  },
+  {
+   "id": "pad-5-5",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 45,
+   "label": "Pad 5-5",
+   "verified": false
+  },
+  {
+   "id": "pad-5-6",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 46,
+   "label": "Pad 5-6",
+   "verified": false
+  },
+  {
+   "id": "pad-5-7",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 47,
+   "label": "Pad 5-7",
+   "verified": false
+  },
+  {
+   "id": "pad-5-8",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 48,
+   "label": "Pad 5-8",
+   "verified": false
+  },
+  {
+   "id": "stop",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 49,
+   "label": "Stop",
+   "verified": false
+  },
+  {
+   "id": "pad-4-1",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 51,
+   "label": "Pad 4-1",
+   "verified": false
+  },
+  {
+   "id": "pad-4-2",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 52,
+   "label": "Pad 4-2",
+   "verified": false
+  },
+  {
+   "id": "pad-4-3",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 53,
+   "label": "Pad 4-3",
+   "verified": false
+  },
+  {
+   "id": "pad-4-4",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 54,
+   "label": "Pad 4-4",
+   "verified": false
+  },
+  {
+   "id": "pad-4-5",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 55,
+   "label": "Pad 4-5",
+   "verified": false
+  },
+  {
+   "id": "pad-4-6",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 56,
+   "label": "Pad 4-6",
+   "verified": false
+  },
+  {
+   "id": "pad-4-7",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 57,
+   "label": "Pad 4-7",
+   "verified": false
+  },
+  {
+   "id": "pad-4-8",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 58,
+   "label": "Pad 4-8",
+   "verified": false
+  },
+  {
+   "id": "send-b",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 59,
+   "label": "Send B",
+   "verified": false
+  },
+  {
+   "id": "pad-3-1",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 61,
+   "label": "Pad 3-1",
+   "verified": false
+  },
+  {
+   "id": "pad-3-2",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 62,
+   "label": "Pad 3-2",
+   "verified": false
+  },
+  {
+   "id": "pad-3-3",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 63,
+   "label": "Pad 3-3",
+   "verified": false
+  },
+  {
+   "id": "pad-3-4",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 64,
+   "label": "Pad 3-4",
+   "verified": false
+  },
+  {
+   "id": "pad-3-5",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 65,
+   "label": "Pad 3-5",
+   "verified": false
+  },
+  {
+   "id": "pad-3-6",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 66,
+   "label": "Pad 3-6",
+   "verified": false
+  },
+  {
+   "id": "pad-3-7",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 67,
+   "label": "Pad 3-7",
+   "verified": false
+  },
+  {
+   "id": "pad-3-8",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 68,
+   "label": "Pad 3-8",
+   "verified": false
+  },
+  {
+   "id": "send-a",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 69,
+   "label": "Send A",
+   "verified": false
+  },
+  {
+   "id": "pad-2-1",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 71,
+   "label": "Pad 2-1",
+   "verified": false
+  },
+  {
+   "id": "pad-2-2",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 72,
+   "label": "Pad 2-2",
+   "verified": false
+  },
+  {
+   "id": "pad-2-3",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 73,
+   "label": "Pad 2-3",
+   "verified": false
+  },
+  {
+   "id": "pad-2-4",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 74,
+   "label": "Pad 2-4",
+   "verified": false
+  },
+  {
+   "id": "pad-2-5",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 75,
+   "label": "Pad 2-5",
+   "verified": false
+  },
+  {
+   "id": "pad-2-6",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 76,
+   "label": "Pad 2-6",
+   "verified": false
+  },
+  {
+   "id": "pad-2-7",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 77,
+   "label": "Pad 2-7",
+   "verified": false
+  },
+  {
+   "id": "pad-2-8",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 78,
+   "label": "Pad 2-8",
+   "verified": false
+  },
+  {
+   "id": "pan",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 79,
+   "label": "Pan",
+   "verified": false
+  },
+  {
+   "id": "pad-1-1",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 81,
+   "label": "Pad 1-1",
+   "verified": false
+  },
+  {
+   "id": "pad-1-2",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 82,
+   "label": "Pad 1-2",
+   "verified": false
+  },
+  {
+   "id": "pad-1-3",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 83,
+   "label": "Pad 1-3",
+   "verified": false
+  },
+  {
+   "id": "pad-1-4",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 84,
+   "label": "Pad 1-4",
+   "verified": false
+  },
+  {
+   "id": "pad-1-5",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 85,
+   "label": "Pad 1-5",
+   "verified": false
+  },
+  {
+   "id": "pad-1-6",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 86,
+   "label": "Pad 1-6",
+   "verified": false
+  },
+  {
+   "id": "pad-1-7",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 87,
+   "label": "Pad 1-7",
+   "verified": false
+  },
+  {
+   "id": "pad-1-8",
+   "type": "pad",
+   "msg": "note",
+   "ch": 1,
+   "note": 88,
+   "label": "Pad 1-8",
+   "verified": false
+  },
+  {
+   "id": "volume",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 89,
+   "label": "Volume",
+   "verified": false
+  }
+ ]
+}

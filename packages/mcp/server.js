@@ -75,7 +75,7 @@ const TOOLS = [
   },
   {
     name: 'list_controllers',
-    description: 'List every MIDI controller profile shipped in packages/midi/profiles: id, name, maker, kind (device | generic), control mix (e.g. {knob: 8, pad: 8, keys: 25}), how many controls are still unverified, and the detail page URL.',
+    description: 'List every MIDI controller profile shipped in packages/midi/profiles: id, name, maker, kind (device | generic), control mix (e.g. {knob: 8, pad: 8, keys: 25}), how many controls are still unverified, and the detail page URL. `imported` lists the same for the controllers imported from QLC+ (Apache-2.0, generated layouts, every control unverified).',
     inputSchema: { type: 'object', properties: {} },
   },
   {
@@ -172,8 +172,10 @@ const SITE = 'https://openaudiovisual.com';
 let _prof; // lazy: the profile JSON imports need Node 22; the other tools must work without them
 async function profiles() {
   if (!_prof) {
-    const [idx, lib] = await Promise.all([import('../midi/profiles/index.js'), import('../midi/profiles.js')]);
-    _prof = { list: idx.PROFILES, byId: idx.profileById, validateProfile: lib.validateProfile, RESERVED_SHORTS: lib.RESERVED_SHORTS };
+    const [idx, lib, imp] = await Promise.all([import('../midi/profiles/index.js'), import('../midi/profiles.js'), import('../midi/profiles/imported.js')]);
+    // imported ones are files, not in PROFILES: a page should not fetch them all, but here they cost nothing
+    const imported = imp.IMPORTED.map((x) => JSON.parse(fs.readFileSync(new URL(`../midi/profiles/imported/${x.id}.json`, import.meta.url), 'utf8')));
+    _prof = { list: idx.PROFILES, imported, byId: (id) => idx.profileById(id) || imported.find((p) => p.id === id || p.short === id) || null, validateProfile: lib.validateProfile, RESERVED_SHORTS: lib.RESERVED_SHORTS };
   }
   return _prof;
 }
@@ -183,12 +185,13 @@ const unverifiedOf = (p) => p.controls.filter((c) => c.verified === false).reduc
 const pageUrl = (id) => `${SITE}/controllers/${id}/`;
 
 async function listControllers() {
-  const { list } = await profiles();
-  const controllers = list.map((p) => ({
+  const { list, imported } = await profiles();
+  const row = (p) => ({
     id: p.id, short: p.short, name: p.name, maker: p.maker || null, kind: p.kind,
     controls: mix(p), unverified: unverifiedOf(p), url: pageUrl(p.id),
-  }));
-  return { count: controllers.length, controllers };
+  });
+  const controllers = list.map(row);
+  return { count: controllers.length, controllers, imported: imported.map(row) };
 }
 
 function humanMsg(c, ch) {

@@ -5,7 +5,7 @@
 
 import '../../packages/midi/element.js?v=dd4a4d59';
 import { PROFILES } from '../../packages/midi/profiles/index.js?v=dd4a4d59';
-import { Midi, matchProfile, pickPort, DEVICE_INQUIRY, parseDeviceInquiry } from '../../packages/midi/index.js?v=dd4a4d59';
+import { Midi, matchProfile, pickPort, loadProfile, DEVICE_INQUIRY, parseDeviceInquiry } from '../../packages/midi/index.js?v=dd4a4d59';
 import { VerifySession, applyVerification, verificationReport, messageText, portMethod } from '../../packages/midi/verify-session.js?v=dd4a4d59';
 
 const T = JSON.parse(document.getElementById('ctl-i18n').textContent);
@@ -20,12 +20,19 @@ const ctl = $('vf-ctl');
 
 // ------------------------------------------------------------------ setup
 const params = new URLSearchParams(location.search);
-if (byId.has(params.get('profile'))) $('vf-model').value = params.get('profile');
+if (T.files[params.get('profile')]) $('vf-model').value = params.get('profile');
 
 function status(text, bad = false) { $('vf-status').textContent = text; if (bad) $('vf-status').setAttribute('data-bad', ''); else $('vf-status').removeAttribute('data-bad'); }
 
-function fillPorts() {
-  const sel = $('vf-port'), list = midi.devices(), p = byId.get($('vf-model').value);
+/** The chosen profile. An imported one is fetched the first time it is picked. */
+async function chosen() {
+  const id = $('vf-model').value;
+  if (!byId.has(id)) byId.set(id, await loadProfile(id));
+  return byId.get(id);
+}
+
+async function fillPorts() {
+  const sel = $('vf-port'), list = midi.devices(), p = await chosen();
   sel.replaceChildren(...list.map((d) => Object.assign(document.createElement('option'), { value: d.name, textContent: d.name })));
   sel.hidden = !list.length;
   $('vf-start').disabled = !list.length;
@@ -46,9 +53,9 @@ $('vf-connect').addEventListener('click', async () => {
 $('vf-model').addEventListener('change', () => { if (midi) fillPorts(); });
 
 // ------------------------------------------------------------------ the run
-function begin({ sim }) {
+async function begin({ sim }) {
   simulated = sim;
-  raw = byId.get($('vf-model').value);
+  raw = await chosen();
   session = new VerifySession(raw, { only: $('vf-scope').value });
   if (!session.steps.length) { session = null; return status(U.nothing, true); }
   portName = sim ? '' : $('vf-port').value;
@@ -209,7 +216,7 @@ $('vf-read-fw').addEventListener('click', async () => {
 const json = () => JSON.stringify(result.profile, null, 1) + '\n';
 $('vf-download').addEventListener('click', () => {
   if (!result) return;
-  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([json()], { type: 'application/json' })), download: T.files[raw.id] });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([json()], { type: 'application/json' })), download: T.files[raw.id].split('/').pop() });
   a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 });
 $('vf-copy').addEventListener('click', async () => {

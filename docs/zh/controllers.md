@@ -97,6 +97,10 @@ ctl.on('control', (e) => console.log(e.signal, e.value));
 
 瀏覽器會為 SysEx 跳權限視窗，所以這個專案絕不自己要權限：`<oav-controller sysex>` 會加一顆按鈕，背後是 `controller.enableSysex()`（要在使用者按下時呼叫）。開啟之後，機器每次連上都會設定好，`setLedColor(id, { r, g, b })` 和 `sendSysex(id)` 也能用。[套件 README](https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex)。
 
+## 在其他軟體使用
+
+每台機器的頁面都有同一份資料的 QLC+ 輸入設定檔（`.qxi`）和 Mixxx mapping（`.midi.xml` 加一支小 `.js`），`node tools/export-controller.mjs <id>` 也能從任何設定檔產生。Mixxx 的檔案只是起點，請用 Mixxx 的 Learning Wizard 改成你要的。資料庫也列出從 QLC+ 輸入設定檔匯入的控制器，版面是自動產生的，每個控制項都標成未確認。
+
 ## 加入一台控制器
 
 1. 從 `packages/midi/profiles/` 複製最接近的檔案，或一個通用版面。

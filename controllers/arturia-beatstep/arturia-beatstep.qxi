@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- Arturia BeatStep: generated from https://openaudiovisual.com/controllers/arturia-beatstep/ -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>Arturia</Manufacturer>
+ <Model>BeatStep</Model>
+ <Type>MIDI</Type>
+ <Channel Number="7">
+  <Name>1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="16">
+  <Name>12</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="17">
+  <Name>13</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="18">
+  <Name>10</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="19">
+  <Name>11</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="71">
+  <Name>3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="72">
+  <Name>16</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="73">
+  <Name>7</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="74">
+  <Name>2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="75">
+  <Name>8</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="76">
+  <Name>4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="77">
+  <Name>5</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="79">
+  <Name>15</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="91">
+  <Name>14</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="93">
+  <Name>6</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="114">
+  <Name>9</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="164">
+  <Name>9</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="165">
+  <Name>10</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="166">
+  <Name>11</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="167">
+  <Name>12</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="168">
+  <Name>13</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="169">
+  <Name>14</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="170">
+  <Name>15</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="171">
+  <Name>16</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="172">
+  <Name>1</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="173">
+  <Name>2</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="174">
+  <Name>3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="175">
+  <Name>4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="176">
+  <Name>5</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="177">
+  <Name>6</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="178">
+  <Name>7</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="179">
+  <Name>8</Name>
+  <Type>Button</Type>
+ </Channel>
+</InputProfile>

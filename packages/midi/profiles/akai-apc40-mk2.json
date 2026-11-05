@@ -32,6 +32,12 @@
    "title": "APC40 mk2 clip grid, Lightjams forum (non-official)",
    "url": "https://groups.google.com/g/lightjams/c/Ahr56C-g0fQ",
    "note": "community. A user reports the clip launch grid and the scene launch buttons arriving on MIDI channel 1 (the grid as 40 contiguous notes); it says nothing about which row is which"
+  },
+  {
+   "title": "QLC+ input profile Akai-APC40-mkII.qxi (non-official)",
+   "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/Akai-APC40-mkII.qxi",
+   "note": "community profile by Ovis and David Himes; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
+   "license": "Apache-2.0"
   }
  ],
  "notes": "Models Generic mode (Mode 0), the one the unit starts in; Ableton Live software switches it to Ableton Live mode (the mode-ableton message below), and then the controls change channels and the device knobs stop being banked. Channels: the protocol writes 0–15, this file 1–16. Track-strip buttons (clip stop, solo, record arm, activator, A|B) and the track faders are one channel per track, 1 to 8. In Generic mode the device knobs and device buttons are banked by the track selector: they send on channel 1 with track 1 selected, 2 with track 2 … 9 with Master, and pressing a track selector re-sends the eight device knob values on that channel. The track selectors themselves send no note in Generic mode (the manual calls them radio buttons that only choose the bank), so they are drawn, not mapped; this file shows the track-1 bank. The manual's Generic-mode section calls activator, solo, record arm, pan, sends, user and the device / bank arrows 'toggle' buttons; its inbound section reports every button as note-on when pressed and note-off when released, which is what is modelled. The 40 clip pads are flagged: the manual numbers them Clip Launch 1–40 = notes 0–39 but gives no figure of which pad is which; Akai's other grids and the Ableton Remote Script count from the bottom-left, left to right, upward, and that is how they are placed (note 0 bottom-left, note 39 top-right); learn rebinds. The master fader, crossfader, cue, tempo, footswitch and track knobs list no channel in the manual: channel 1 (Lightjams reports the grid and scene buttons on channel 1 as well). The ring LEDs around the 16 knobs are written with the knob's own CC (the value) and a ring-type CC (0x18–0x1F device, 0x38–0x3F track: 0 off, 1 single, 2 volume, 3 pan) and are not modelled as LEDs. The manual also lists a 'STOP' note (0x5C) that the faceplate has no button for. LED feedback: clip pads light #00A9FF (palette 37) and scene launch buttons green (21) with the primary-colour lighting type (channel 1); single-colour buttons take velocity 1 for on. The crossfader is horizontal on the unit and drawn upright here.",
@@ -2599,5 +2605,718 @@
    "color": "white",
    "shape": "round"
   }
- ]
+ ],
+ "palette": {
+  "cite": {
+   "source": 4
+  },
+  "channels": [
+   {
+    "ch": 1,
+    "name": "On 10% brightness"
+   },
+   {
+    "ch": 2,
+    "name": "On 25% brightness"
+   },
+   {
+    "ch": 3,
+    "name": "On 50% brightness"
+   },
+   {
+    "ch": 4,
+    "name": "On 65% brightness"
+   },
+   {
+    "ch": 5,
+    "name": "On 75% brightness"
+   },
+   {
+    "ch": 6,
+    "name": "On 90% brightness"
+   },
+   {
+    "ch": 7,
+    "name": "On 100% brightness"
+   },
+   {
+    "ch": 8,
+    "name": "Pulsing 1/16"
+   },
+   {
+    "ch": 9,
+    "name": "Pulsing 1/8"
+   },
+   {
+    "ch": 10,
+    "name": "Pulsing 1/4"
+   },
+   {
+    "ch": 11,
+    "name": "Pulsing 1/2"
+   },
+   {
+    "ch": 12,
+    "name": "Blinking 1/24"
+   },
+   {
+    "ch": 13,
+    "name": "Blinking 1/16"
+   },
+   {
+    "ch": 14,
+    "name": "Blinking 1/8"
+   },
+   {
+    "ch": 15,
+    "name": "Blinking 1/4"
+   },
+   {
+    "ch": 16,
+    "name": "Blinking 1/2"
+   }
+  ],
+  "colors": [
+   {
+    "value": 0,
+    "name": "Off",
+    "rgb": "#000000"
+   },
+   {
+    "value": 1,
+    "name": "Dark Gray",
+    "rgb": "#1e1e1e"
+   },
+   {
+    "value": 2,
+    "name": "Light Gray",
+    "rgb": "#7f7f7f"
+   },
+   {
+    "value": 3,
+    "name": "White",
+    "rgb": "#ffffff"
+   },
+   {
+    "value": 4,
+    "name": "Light red",
+    "rgb": "#ff4c4c"
+   },
+   {
+    "value": 5,
+    "name": "Red",
+    "rgb": "#ff0000"
+   },
+   {
+    "value": 6,
+    "name": "Medium red",
+    "rgb": "#590000"
+   },
+   {
+    "value": 7,
+    "name": "Dark red",
+    "rgb": "#190000"
+   },
+   {
+    "value": 8,
+    "name": "Peach",
+    "rgb": "#ffbd6c"
+   },
+   {
+    "value": 9,
+    "name": "Orange",
+    "rgb": "#ff5400"
+   },
+   {
+    "value": 10,
+    "name": "Medium orange",
+    "rgb": "#591d00"
+   },
+   {
+    "value": 11,
+    "name": "Dark orange",
+    "rgb": "#271b00"
+   },
+   {
+    "value": 12,
+    "name": "Yellow",
+    "rgb": "#ffff4c"
+   },
+   {
+    "value": 13,
+    "name": "Yellow 2",
+    "rgb": "#ffff00"
+   },
+   {
+    "value": 14,
+    "name": "Medium yellow",
+    "rgb": "#595900"
+   },
+   {
+    "value": 15,
+    "name": "Dark yellow",
+    "rgb": "#191900"
+   },
+   {
+    "value": 16,
+    "name": "Light green 2",
+    "rgb": "#88ff4c"
+   },
+   {
+    "value": 17,
+    "name": "Green 2",
+    "rgb": "#54ff00"
+   },
+   {
+    "value": 18,
+    "name": "Medium green 2",
+    "rgb": "#1d5900"
+   },
+   {
+    "value": 19,
+    "name": "Dark green 2",
+    "rgb": "#142b00"
+   },
+   {
+    "value": 20,
+    "name": "Light green",
+    "rgb": "#4cff4c"
+   },
+   {
+    "value": 21,
+    "name": "Green",
+    "rgb": "#00ff00"
+   },
+   {
+    "value": 22,
+    "name": "Medium green",
+    "rgb": "#005900"
+   },
+   {
+    "value": 23,
+    "name": "Dark green",
+    "rgb": "#001900"
+   },
+   {
+    "value": 24,
+    "name": "Light green 3",
+    "rgb": "#4cff5e"
+   },
+   {
+    "value": 25,
+    "name": "Green 3",
+    "rgb": "#00ff19"
+   },
+   {
+    "value": 26,
+    "name": "Medium green 3",
+    "rgb": "#00590d"
+   },
+   {
+    "value": 27,
+    "name": "Dark green 3",
+    "rgb": "#001902"
+   },
+   {
+    "value": 28,
+    "name": "Light green 4",
+    "rgb": "#4cff88"
+   },
+   {
+    "value": 29,
+    "name": "Green 4",
+    "rgb": "#00ff55"
+   },
+   {
+    "value": 30,
+    "name": "Medium green 4",
+    "rgb": "#00591d"
+   },
+   {
+    "value": 31,
+    "name": "Dark green 4",
+    "rgb": "#001f12"
+   },
+   {
+    "value": 32,
+    "name": "Light green 5",
+    "rgb": "#4cffb7"
+   },
+   {
+    "value": 33,
+    "name": "Green 5",
+    "rgb": "#00ff99"
+   },
+   {
+    "value": 34,
+    "name": "Medium green 5",
+    "rgb": "#005935"
+   },
+   {
+    "value": 35,
+    "name": "Dark green 5",
+    "rgb": "#001912"
+   },
+   {
+    "value": 36,
+    "name": "Light blue 1",
+    "rgb": "#4cc3ff"
+   },
+   {
+    "value": 37,
+    "name": "Blue 1",
+    "rgb": "#00a9ff"
+   },
+   {
+    "value": 38,
+    "name": "Medium blue 1",
+    "rgb": "#004152"
+   },
+   {
+    "value": 39,
+    "name": "Dark blue 1",
+    "rgb": "#001019"
+   },
+   {
+    "value": 40,
+    "name": "Light blue 2",
+    "rgb": "#4c88ff"
+   },
+   {
+    "value": 41,
+    "name": "Blue 2",
+    "rgb": "#0055ff"
+   },
+   {
+    "value": 42,
+    "name": "Medium blue 2",
+    "rgb": "#001d59"
+   },
+   {
+    "value": 43,
+    "name": "Dark blue 2",
+    "rgb": "#000819"
+   },
+   {
+    "value": 44,
+    "name": "Light blue 3",
+    "rgb": "#4c4cff"
+   },
+   {
+    "value": 45,
+    "name": "Blue 3",
+    "rgb": "#0000ff"
+   },
+   {
+    "value": 46,
+    "name": "Medium blue 3",
+    "rgb": "#000059"
+   },
+   {
+    "value": 47,
+    "name": "Dark blue 3",
+    "rgb": "#000019"
+   },
+   {
+    "value": 48,
+    "name": "Light blue 4",
+    "rgb": "#874cff"
+   },
+   {
+    "value": 49,
+    "name": "Blue 4",
+    "rgb": "#5400ff"
+   },
+   {
+    "value": 50,
+    "name": "Medium blue 4",
+    "rgb": "#190064"
+   },
+   {
+    "value": 51,
+    "name": "Dark blue 4",
+    "rgb": "#0f0030"
+   },
+   {
+    "value": 52,
+    "name": "Light magenta 1",
+    "rgb": "#ff4cff"
+   },
+   {
+    "value": 53,
+    "name": "Magenta 1",
+    "rgb": "#ff00ff"
+   },
+   {
+    "value": 54,
+    "name": "Medium magenta 1",
+    "rgb": "#590059"
+   },
+   {
+    "value": 55,
+    "name": "Dark magenta 1",
+    "rgb": "#190019"
+   },
+   {
+    "value": 56,
+    "name": "Light pink",
+    "rgb": "#ff4c87"
+   },
+   {
+    "value": 57,
+    "name": "Red 2",
+    "rgb": "#ff0054"
+   },
+   {
+    "value": 58,
+    "name": "Medium red 2",
+    "rgb": "#59001d"
+   },
+   {
+    "value": 59,
+    "name": "Dark red 2",
+    "rgb": "#220013"
+   },
+   {
+    "value": 60,
+    "name": "Light red 3",
+    "rgb": "#ff1500"
+   },
+   {
+    "value": 61,
+    "name": "Brown 1",
+    "rgb": "#993500"
+   },
+   {
+    "value": 62,
+    "name": "Brown 2",
+    "rgb": "#795100"
+   },
+   {
+    "value": 63,
+    "name": "Green 6",
+    "rgb": "#436400"
+   },
+   {
+    "value": 64,
+    "name": "Medium green 6",
+    "rgb": "#033900"
+   },
+   {
+    "value": 65,
+    "name": "Green 7",
+    "rgb": "#005735"
+   },
+   {
+    "value": 66,
+    "name": "Blue 5",
+    "rgb": "#00547f"
+   },
+   {
+    "value": 67,
+    "name": "Blue 6",
+    "rgb": "#0000ff"
+   },
+   {
+    "value": 68,
+    "name": "Medium blue 6",
+    "rgb": "#00454f"
+   },
+   {
+    "value": 69,
+    "name": "Blue 7",
+    "rgb": "#2500cc"
+   },
+   {
+    "value": 70,
+    "name": "White 50%",
+    "rgb": "#7f7f7f"
+   },
+   {
+    "value": 71,
+    "name": "White 10%",
+    "rgb": "#202020"
+   },
+   {
+    "value": 72,
+    "name": "Red",
+    "rgb": "#ff0000"
+   },
+   {
+    "value": 73,
+    "name": "Lime",
+    "rgb": "#bdff2d"
+   },
+   {
+    "value": 74,
+    "name": "Medium lime",
+    "rgb": "#afed06"
+   },
+   {
+    "value": 75,
+    "name": "Green 8",
+    "rgb": "#64ff09"
+   },
+   {
+    "value": 76,
+    "name": "Medium green 8",
+    "rgb": "#108b00"
+   },
+   {
+    "value": 77,
+    "name": "Light green 9",
+    "rgb": "#00ff87"
+   },
+   {
+    "value": 78,
+    "name": "Light blue 8",
+    "rgb": "#00a9ff"
+   },
+   {
+    "value": 79,
+    "name": "Blue 8",
+    "rgb": "#002aff"
+   },
+   {
+    "value": 80,
+    "name": "Blue 9",
+    "rgb": "#3f00ff"
+   },
+   {
+    "value": 81,
+    "name": "Purple",
+    "rgb": "#7a00ff"
+   },
+   {
+    "value": 82,
+    "name": "Red 3",
+    "rgb": "#b21a7d"
+   },
+   {
+    "value": 83,
+    "name": "Dark red 3",
+    "rgb": "#402100"
+   },
+   {
+    "value": 84,
+    "name": "Orange",
+    "rgb": "#ff4a00"
+   },
+   {
+    "value": 85,
+    "name": "Lime 2",
+    "rgb": "#88e106"
+   },
+   {
+    "value": 86,
+    "name": "Green 9",
+    "rgb": "#72ff15"
+   },
+   {
+    "value": 87,
+    "name": "Green",
+    "rgb": "#00ff00"
+   },
+   {
+    "value": 88,
+    "name": "Green 10",
+    "rgb": "#3bff26"
+   },
+   {
+    "value": 89,
+    "name": "Light green 10",
+    "rgb": "#59ff71"
+   },
+   {
+    "value": 90,
+    "name": "Cyan 2",
+    "rgb": "#38ffcc"
+   },
+   {
+    "value": 91,
+    "name": "Light blue 10",
+    "rgb": "#5b8aff"
+   },
+   {
+    "value": 92,
+    "name": "Blue 10",
+    "rgb": "#3151c6"
+   },
+   {
+    "value": 93,
+    "name": "Light blue 11",
+    "rgb": "#877fe9"
+   },
+   {
+    "value": 94,
+    "name": "Magenta 2",
+    "rgb": "#d31dff"
+   },
+   {
+    "value": 95,
+    "name": "Red 4",
+    "rgb": "#ff005d"
+   },
+   {
+    "value": 96,
+    "name": "Orange 2",
+    "rgb": "#ff7f00"
+   },
+   {
+    "value": 97,
+    "name": "Dark yellow",
+    "rgb": "#b9b000"
+   },
+   {
+    "value": 98,
+    "name": "Lime 3",
+    "rgb": "#90ff00"
+   },
+   {
+    "value": 99,
+    "name": "Brown",
+    "rgb": "#835d07"
+   },
+   {
+    "value": 100,
+    "name": "Dark brown",
+    "rgb": "#392b00"
+   },
+   {
+    "value": 101,
+    "name": "Dark green 11",
+    "rgb": "#144c10"
+   },
+   {
+    "value": 102,
+    "name": "Dark green 12",
+    "rgb": "#0d5038"
+   },
+   {
+    "value": 103,
+    "name": "Dark blue 11",
+    "rgb": "#15152a"
+   },
+   {
+    "value": 104,
+    "name": "Dark blue 12",
+    "rgb": "#16205a"
+   },
+   {
+    "value": 105,
+    "name": "Dark orange",
+    "rgb": "#693c1c"
+   },
+   {
+    "value": 106,
+    "name": "Red 5",
+    "rgb": "#a8000a"
+   },
+   {
+    "value": 107,
+    "name": "Light red 5",
+    "rgb": "#de513d"
+   },
+   {
+    "value": 108,
+    "name": "Orange 3",
+    "rgb": "#d86a1c"
+   },
+   {
+    "value": 109,
+    "name": "Light yellow 2",
+    "rgb": "#ffe126"
+   },
+   {
+    "value": 110,
+    "name": "Lime 4",
+    "rgb": "#9ee12f"
+   },
+   {
+    "value": 111,
+    "name": "Green 11",
+    "rgb": "#67b50f"
+   },
+   {
+    "value": 112,
+    "name": "Dark blue 13",
+    "rgb": "#1e1e30"
+   },
+   {
+    "value": 113,
+    "name": "Light yellow 3",
+    "rgb": "#dcff6b"
+   },
+   {
+    "value": 114,
+    "name": "Light green 13",
+    "rgb": "#80ffbd"
+   },
+   {
+    "value": 115,
+    "name": "Light blue 13",
+    "rgb": "#9a99ff"
+   },
+   {
+    "value": 116,
+    "name": "Blue 13",
+    "rgb": "#8e66ff"
+   },
+   {
+    "value": 117,
+    "name": "White 25%",
+    "rgb": "#404040"
+   },
+   {
+    "value": 118,
+    "name": "White 40%",
+    "rgb": "#757575"
+   },
+   {
+    "value": 119,
+    "name": "Cold white",
+    "rgb": "#e0ffff"
+   },
+   {
+    "value": 120,
+    "name": "Red 6",
+    "rgb": "#a00000"
+   },
+   {
+    "value": 121,
+    "name": "Dark red 6",
+    "rgb": "#350000"
+   },
+   {
+    "value": 122,
+    "name": "Green 14",
+    "rgb": "#1ad000"
+   },
+   {
+    "value": 123,
+    "name": "Dark green 14",
+    "rgb": "#074200"
+   },
+   {
+    "value": 124,
+    "name": "Yellow 4",
+    "rgb": "#b9b000"
+   },
+   {
+    "value": 125,
+    "name": "Dark orange 2",
+    "rgb": "#3f3100"
+   },
+   {
+    "value": 126,
+    "name": "Orange 4",
+    "rgb": "#b35f00"
+   },
+   {
+    "value": 127,
+    "name": "Dark red 7",
+    "rgb": "#4b1502"
+   }
+  ]
+ }
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<!-- AKAI LPD8 (mk2): generated from https://openaudiovisual.com/controllers/akai-lpd8/. Set the MIDI channel of this input to Omni in QLC+. -->
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Open Audiovisual</Name>
+  <Version>1</Version>
+  <Author>openaudiovisual.com</Author>
+ </Creator>
+ <Manufacturer>AKAI Professional</Manufacturer>
+ <Model>LPD8 (mk2)</Model>
+ <Type>MIDI</Type>
+ <Channel Number="70">
+  <Name>K1</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="71">
+  <Name>K2</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="72">
+  <Name>K3</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="73">
+  <Name>K4</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="74">
+  <Name>K5</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="75">
+  <Name>K6</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="76">
+  <Name>K7</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="77">
+  <Name>K8</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="37028">
+  <Name>Pad 1</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="37029">
+  <Name>Pad 2</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="37030">
+  <Name>Pad 3</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="37031">
+  <Name>Pad 4</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="37032">
+  <Name>Pad 5</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="37033">
+  <Name>Pad 6</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="37034">
+  <Name>Pad 7</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="37035">
+  <Name>Pad 8</Name>
+  <Type>Button</Type>
+ </Channel>
+</InputProfile>
