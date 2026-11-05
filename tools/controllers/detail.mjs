@@ -269,7 +269,7 @@ export function renderDetail(t, home, locale, d, cat) {
   if (d.prov.generic) badgeLi.push(`<li class="b-gen">${B.generic}</li>`);
   if (d.prov.led) badgeLi.push(`<li class="b-led">${B.led}</li>`);
   if (d.prov.sysex) badgeLi.push(`<li class="b-led"><a href="#sysex">SysEx</a></li>`);
-  if (d.prov.imported) badgeLi.push(`<li class="b-gen">${B.auto}</li>`);
+  if (d.prov.imported) badgeLi.push(`<li class="b-comm">${B.fromQlc}</li>`, `<li class="b-gen">${B.auto}</li>`);
   if (d.prov.unverified) badgeLi.push(`<li class="b-unv">${fill(B.unverified, { n: d.prov.unverified })}</li>`);
 
   // snippets

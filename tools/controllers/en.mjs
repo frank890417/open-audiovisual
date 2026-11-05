@@ -57,7 +57,7 @@ export default {
     filterLabel: 'Show controllers with',
     filters: { all: 'All', pad: 'Pads', keys: 'Keys', knob: 'Knobs', fader: 'Faders', encoder: 'Encoders', led: 'LED feedback' },
     shown: '{n} shown',
-    badges: { maker: 'Manufacturer docs', community: 'Community notes', tool: 'Artist\'s {tool} tool', generic: 'Generic layout', unverified: '{n} unverified', led: 'LED feedback', auto: 'Layout generated automatically' },
+    badges: { maker: 'Manufacturer docs', community: 'Community notes', tool: 'Artist\'s {tool} tool', generic: 'Generic layout', unverified: '{n} unverified', led: 'LED feedback', auto: 'Layout generated automatically', fromQlc: 'From QLC+' },
     links: { play: 'Play', full: 'Full screen', json: 'JSON', embed: 'Embed', spec: 'MIDI map' },
     faceLabel: 'Faceplate of {name}',
     tapToPlay: 'Tap Play to try it on the big one above.',

@@ -103,6 +103,12 @@ or run), with a one-sentence caption saying what you will see. An example about 
 program. Write only what the code does; what you could not read out of it goes in `tbd`. The Chinese is Traditional Chinese as written in
 Taiwan, with no full-width semicolon `；` and no dash `——` (the check fails on them: use `。` or `，`).
 
+## Controller data
+
+A profile in `packages/midi/profiles/` carries more than messages: `sysex`, `palette` and a `verifications` log. Never write `"verified": true` without a hardware
+entry in that log: only a person with the unit can make one, on <https://openaudiovisual.com/controllers/verify/>. `tools/export-controller.mjs` writes QLC+ and Mixxx files from a
+profile. `profiles/imported/` is converted from QLC+ (Apache-2.0: see `NOTICE`) by `tools/import-qlc.mjs`; data from Mixxx (GPL) and midi.guide (CC-BY-SA) does not come in.
+
 ## Verifying changes
 
 - `npm test` — pure-logic tests (chord analysis, timeline, mapping). Add cases

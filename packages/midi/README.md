@@ -391,7 +391,7 @@ Turn it off: `<oav-controller telemetry="off">` · `createController(p, { teleme
 
 ## Files
 
-`parse.js` bytes ⇄ events ⇄ signal names · `sysex.js` SysEx as data (pure) · `verify.js` evidence and verification records (pure) · `verify-session.js` checking a unit against its file (pure) · `profiles.js` validate / match · `controller.js`
+`parse.js` bytes ⇄ events ⇄ signal names · `sysex.js` SysEx as data (pure) · `verify.js` evidence and verification records (pure) · `verify-session.js` checking a unit against its file (pure) · `export.js` a profile as QLC+ and Mixxx files (pure, `@openav/midi/export`) · `profiles.js` validate / match · `controller.js`
 MidiController · `manager.js` MidiControllers · `view.js` ControllerView · `canvas.js`
 ControllerCanvas (for video) · `panel.js` docked panel · `embed.js` options, payloads, postMessage (pure, tested) · `element.js` `<oav-controller>`
 · `index.js` Midi engine + `createController` · `virtual-access.js` Web MIDI shim (its output heard, 0.7) · `clock.js` MidiClock ·

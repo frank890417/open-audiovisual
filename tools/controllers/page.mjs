@@ -74,7 +74,7 @@ export function describeProfile(raw, i, files) {
   const prov = {
     maker: p.kind === 'device' && sources.some((s) => sourceKind(s, p) === 'maker'),
     community: sources.some((s) => sourceKind(s, p) === 'community'),
-    tool: p.origin && p.origin.tool ? p.origin.tool : sources.some(isTool) ? 'TouchDesigner' : null,
+    tool: p.face.auto ? null : p.origin && p.origin.tool ? p.origin.tool : sources.some(isTool) ? 'TouchDesigner' : null,   // an imported file's origin is a project, not the artist's own tool
     generic: p.kind === 'generic',
     unverified: p.controls.filter((c) => c.verified === false).reduce((a, c) => a + physical(c), 0),
     led: p.controls.some((c) => c.led),

@@ -56,7 +56,7 @@ export default {
     filterLabel: '篩選：有這些控制的',
     filters: { all: '全部', pad: '打擊墊', keys: '琴鍵', knob: '旋鈕', fader: '推桿', encoder: '無段旋鈕', led: 'LED 回饋' },
     shown: '顯示 {n} 台',
-    badges: { maker: '原廠文件', community: '社群整理', tool: '作者的 {tool} 工具', generic: '通用版面', auto: '版面自動產生', unverified: '{n} 個未確認', led: 'LED 回饋' },
+    badges: { maker: '原廠文件', community: '社群整理', tool: '作者的 {tool} 工具', generic: '通用版面', auto: '版面自動產生', fromQlc: '來自 QLC+', unverified: '{n} 個未確認', led: 'LED 回饋' },
     links: { play: '彈奏', full: '全螢幕', json: 'JSON', embed: '嵌入', spec: 'MIDI 對照' },
     faceLabel: '{name} 的面板',
     tapToPlay: '按「彈奏」，換到上面的大面板去彈。',

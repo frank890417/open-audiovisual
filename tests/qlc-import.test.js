@@ -119,6 +119,7 @@ test('they export like any other, and every one has its pages', () => {
       const page = read(`${base}controllers/${p.id}/index.html`);
       assert.match(page, lang === 'en' ? /generated automatically/ : /自動產生/, `${lang} ${p.id}: the page says the layout is generated`);
       assert.match(page, /Apache-2\.0/, `${lang} ${p.id}: and whose data it is`);
+      assert.doesNotMatch(page, /Artist's QLC|作者的 QLC/, `${lang} ${p.id}: QLC+ is not the artist's tool`);
       assert.ok(page.includes(`controllers/verify/?profile=${p.id}`), `${lang} ${p.id}: and how to check it`);
       assert.ok(!page.includes('id="p5"'), `${lang} ${p.id}: oav-p5 does not know these ids yet`);
     }
