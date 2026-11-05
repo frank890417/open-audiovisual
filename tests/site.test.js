@@ -186,7 +186,7 @@ test('register: every registered page exists, every indexable page on disk is re
     assert.ok(exists(f) && fs.statSync(path.join(ROOT, f)).size > 0, `${e.id} (${lang}): ${f} exists and is not empty`);
   }
   // every index.html that is a public page (not a demo, embed, package, tool): registered, or says noindex
-  const skip = new Set(['assets', 'packages', 'embed', 'p5', 'tests', 'tools', 'node_modules', '.git', '.wrangler', 'docs/design']);
+  const skip = new Set(['assets', 'packages', 'embed', 'p5', 'tests', 'tools', 'node_modules', '.git', '.wrangler', '.claude', 'docs/design']);   // .claude/worktrees holds whole other checkouts
   const pages = [];
   const walk = (rel) => {
     for (const e of fs.readdirSync(path.join(ROOT, rel), { withFileTypes: true })) {
