@@ -11,7 +11,7 @@ it. **The framework and the site** are listed by day. Every entry links its comm
 
 2026-11-06 · [a330b30](https://github.com/frank890417/open-audiovisual/commit/a330b30)
 
-- **The controllers imported from QLC+ work here too.** Plug in a BCF2000 or a nanoPAD2, or set `profile` to one of their ids, and `knob1`, `fader1` and `pad1` follow that device: its one file is fetched when it is needed. [profile](https://openaudiovisual.com/docs/reference/#option:profile)
+- **The controllers imported from QLC+ work here too.** Plug in a BCF2000 or a nanoPAD2, or set `profile` to one of their ids, and `knob1`, `fader1` and `pad1` follow that device: its one file is fetched when it is needed. [profile](https://openaudiovisual.com/docs/reference/#option-profile)
 
 ### 0.8.4
 

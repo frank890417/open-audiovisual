@@ -10,7 +10,7 @@
 
 2026-11-06 · [a330b30](https://github.com/frank890417/open-audiovisual/commit/a330b30)
 
-- **從 QLC+ 匯入的控制器這裡也能用。** 插上 BCF2000 或 nanoPAD2，或把 `profile` 設成它們的 id，`knob1`、`fader1`、`pad1` 就會跟著那台機器，需要時才抓它的檔案。[profile](https://openaudiovisual.com/docs/reference/#option:profile)
+- **從 QLC+ 匯入的控制器這裡也能用。** 插上 BCF2000 或 nanoPAD2，或把 `profile` 設成它們的 id，`knob1`、`fader1`、`pad1` 就會跟著那台機器，需要時才抓它的檔案。[profile](https://openaudiovisual.com/docs/reference/#option-profile)
 
 ### 0.8.4
 
