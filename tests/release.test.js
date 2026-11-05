@@ -24,6 +24,8 @@ test('release.sh across midnight: the sitemap lastmod settles after the stamp co
   execFileSync('git', ['clone', '-q', '--local', '--no-hardlinks', ROOT, work]);
   const git = (...a) => execFileSync('git', a, { cwd: work, encoding: 'utf8' }).trim();
   git('config', 'user.email', 'test@example.com'); git('config', 'user.name', 'test');
+  // a CI build of a branch has no local main to clone, so the clone would have no origin/main and the script would stop at its first check
+  git('update-ref', 'refs/remotes/origin/main', 'HEAD');
   // the script under test (and the stamp tool it calls) from this working tree
   fs.copyFileSync(process.env.RELEASE_SH || path.join(ROOT, 'tools/release.sh'), path.join(work, 'tools/release.sh'));
   fs.copyFileSync(path.join(ROOT, 'tools/stamp-version.mjs'), path.join(work, 'tools/stamp-version.mjs'));
