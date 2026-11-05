@@ -14,18 +14,18 @@
 //      the timeline and other controllers, and meters show the work breathing
 // Wire it into a show with `createShow({ modules: { remote: true } })`.
 
-import { RelayClient, bindSignals } from '../relay/index.js?v=dd4a4d59';
-import { autoSurface, feedbackFor, normalizeLayout, routesFromLayout } from '../surface/index.js?v=dd4a4d59';
-import { linkControllers } from '../midi/link.js?v=dd4a4d59';
-import { relayUrlFor, phoneUrl, PUBLIC_RELAY } from './relay-pick.js?v=dd4a4d59';
-import { qrSvg } from './qr.js?v=dd4a4d59';
-import { STACK_QUERY } from '../show/layout.js?v=dd4a4d59';
+import { RelayClient, bindSignals } from '../relay/index.js?v=288eccc';
+import { autoSurface, feedbackFor, normalizeLayout, routesFromLayout } from '../surface/index.js?v=288eccc';
+import { linkControllers } from '../midi/link.js?v=288eccc';
+import { relayUrlFor, phoneUrl, PUBLIC_RELAY } from './relay-pick.js?v=288eccc';
+import { qrSvg } from './qr.js?v=288eccc';
+import { STACK_QUERY } from '../show/layout.js?v=288eccc';
 
 /**
  * @param {object} o
- * @param {import('../core/src/signals.js?v=dd4a4d59').Signals} o.signals
- * @param {import('../core/src/params.js?v=dd4a4d59').Params} o.params
- * @param {import('../mapping/index.js?v=dd4a4d59').Mapper} o.mapper
+ * @param {import('../core/src/signals.js?v=288eccc').Signals} o.signals
+ * @param {import('../core/src/params.js?v=288eccc').Params} o.params
+ * @param {import('../mapping/index.js?v=288eccc').Mapper} o.mapper
  * @param {{name?:string, params?:object[], surface?:object}} [o.world]
  * @param {string} [o.room='default']
  * @param {object} [o.auto]     autoSurface options (pairs, meters, style, perPage…)
@@ -34,7 +34,7 @@ import { STACK_QUERY } from '../show/layout.js?v=dd4a4d59';
  * @param {string} [o.url]      relay to use instead of this page's own /relay: 'wss://host/relay' (role, room and id are appended). createShow
  *        fills it from pickRelay(): the public relay on a static host, ?relay=… when given, null on `node serve.js`
  * @param {'local'|'public'|'custom'} [o.mode]  what pickRelay() decided; the join card words its status by it
- * @param {import('../midi/manager.js?v=dd4a4d59').MidiControllers} [o.controllers]  on-screen MIDI controllers: the phone's
+ * @param {import('../midi/manager.js?v=288eccc').MidiControllers} [o.controllers]  on-screen MIDI controllers: the phone's
  *        MIDI tab shows the same device (config "midi"), mirrors this machine's hardware (feedback), and its
  *        plays are mirrored on this screen
  */
