@@ -136,7 +136,7 @@
 - [AKAI Professional APC20](https://openaudiovisual.com/zh/controllers/akai-apc20/): 97 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/akai-apc20.json
 - [AKAI Professional APC40](https://openaudiovisual.com/zh/controllers/akai-apc40/): 137 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/akai-apc40.json
 - [American DJ MIDICON-2](https://openaudiovisual.com/zh/controllers/adj-midicon-2/): 88 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/adj-midicon-2.json
-- [Behringer BCF2000 in Mackie Control Mode](https://openaudiovisual.com/zh/controllers/behringer-bcf2000-in-mackie-control-mode/): 107 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcf2000-in-mackie-control-mode.json
+- [Behringer BCF2000 (Mackie mode)](https://openaudiovisual.com/zh/controllers/behringer-bcf2000-mackie-mode/): 107 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcf2000-mackie-mode.json
 - [Behringer BCF2000](https://openaudiovisual.com/zh/controllers/behringer-bcf2000/): 94 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcf2000.json
 - [Behringer BCR2000](https://openaudiovisual.com/zh/controllers/behringer-bcr2000/): 108 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcr2000.json
 - [Behringer LC2412](https://openaudiovisual.com/zh/controllers/behringer-lc2412/): 54 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-lc2412.json
