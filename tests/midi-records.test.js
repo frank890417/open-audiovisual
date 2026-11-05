@@ -150,7 +150,7 @@ test('the Device Inquiry reply is read, anything else is not', () => {
   assert.deepEqual(r.version, [0, 4, 3, 1]);
   assert.equal(r.text, '0.4.3.1');
   const a = parseDeviceInquiry(parseHex('F0 7E 00 06 02 47 29 00 19 00 01 02 03 04 F7'));         // one-byte maker: AKAI's layout
-  assert.deepEqual(a.manufacturer, [0x47]);
+  assert.deepEqual(a.manufacturer, [0x47]); assert.deepEqual(a.version, [0, 1, 2, 3]); assert.deepEqual(a.model, [0x29]);
   assert.equal(parseDeviceInquiry([0x90, 60, 100]), null);
   assert.equal(parseDeviceInquiry(DEVICE_INQUIRY), null);
 });
@@ -168,8 +168,8 @@ test('a palette is checked, and the file-level fields too', () => {
   const p = base(); p.face.auto = 'yes'; p.license = '';
   assert.match(errsOf(p), /face\.auto must be true or false/);
   assert.match(errsOf(p), /license must be an SPDX id/);
-  const q = base(); q.controls[0].led = { msg: 'note', note: 1, index: 200 };
-  assert.match(errsOf(q), /led\.index must be 0\.\.127/);
+  const q = base(); q.controls[0].ledIndex = 200;
+  assert.match(errsOf(q), /ledIndex must be 0\.\.127/);
 });
 
 // ------------------------------------------------------------------ the JSON Schema
@@ -239,4 +239,105 @@ test('the engine never asks for SysEx by itself, and asks when told to', async (
   assert.equal(await refused.requestSysex(), false);
   assert.equal(refused.sysexEnabled, false);
   assert.ok(refused.out, 'a refusal leaves the plain connection as it was');
+});
+
+// ------------------------------------------------------------------ the SysEx in the shipped profiles
+const hexOf = (id, msg, args) => formatHex(sysexBytes(sysexMessage(profileById(id), msg), args));
+
+test('the bytes match what the manuals print', () => {
+  // Launchpad Mini MK3, Programmer's Reference Manual pp. 7, 14
+  assert.equal(hexOf('novation-launchpad-mini-mk3', 'programmer-mode'), 'F0 00 20 29 02 0D 0E 01 F7');
+  assert.equal(hexOf('novation-launchpad-mini-mk3', 'live-mode'), 'F0 00 20 29 02 0D 0E 00 F7');
+  assert.equal(hexOf('novation-launchpad-mini-mk3', 'select-layout'), 'F0 00 20 29 02 0D 00 04 F7');
+  assert.equal(hexOf('novation-launchpad-mini-mk3', 'led-static', { led: 11, color: 13 }), 'F0 00 20 29 02 0D 03 00 0B 0D F7');
+  assert.equal(hexOf('novation-launchpad-mini-mk3', 'led-flash', { led: 12, colorB: 21, colorA: 23 }).replace(/^F0 00 20 29 02 0D 03 /, ''), '01 0C 15 17 F7');
+  // Launchpad Pro MK3, Programmer's reference p. 18 and p. 7
+  assert.equal(hexOf('novation-launchpad-pro-mk3', 'programmer-mode'), 'F0 00 20 29 02 0E 0E 01 F7');
+  assert.equal(hexOf('novation-launchpad-pro-mk3', 'select-layout'), 'F0 00 20 29 02 0E 00 11 00 00 F7');
+  // Launch Control XL, Programmer's Reference Guide pp. 7–8: template 8 is Factory 1
+  assert.equal(hexOf('novation-launch-control-xl-mk2', 'select-template'), 'F0 00 20 29 02 11 77 08 F7');
+  assert.equal(hexOf('novation-launch-control-xl-mk2', 'led-set', { led: 47, color: 60 }), 'F0 00 20 29 02 11 78 08 2F 3C F7');
+  // APC40 mkII, Communications Protocol p. 12
+  assert.equal(hexOf('akai-apc40-mk2', 'mode-ableton'), 'F0 47 7F 29 60 00 04 41 01 00 00 F7');
+  assert.equal(hexOf('akai-apc40-mk2', 'mode-generic'), 'F0 47 7F 29 60 00 04 40 01 00 00 F7');
+  // APC mini mk2, Communication Protocol p. 9: 8-bit colours as MSB and LSB
+  assert.equal(hexOf('akai-apc-mini-mk2', 'led-rgb', { led: 0, r: 255, g: 128, b: 0 }), 'F0 47 7F 4F 24 00 08 00 00 01 7F 01 00 00 00 F7');
+  // BeatStep, manual p. 37: MMC
+  assert.equal(hexOf('arturia-beatstep', 'mmc-stop'), 'F0 7F 7F 06 01 F7');
+});
+
+test('the six profiles with SysEx in their notes now hold it as data, each message citing a real source', () => {
+  for (const id of ['akai-apc40-mk2', 'arturia-beatstep', 'arturia-minilab3', 'novation-launch-control-xl-mk2', 'novation-launchpad-pro-mk3', 'novation-launchpad-mini-mk3', 'akai-apc-mini-mk2']) {
+    const p = profileById(id);
+    assert.ok(p.sysex?.messages.length >= 3, id);
+    for (const m of p.sysex.messages) assert.ok(p.sources[m.cite.source], `${id} ${m.id}`);
+    assert.ok(!/F0 00 20/.test(p.notes), `${id}: no bytes left in the notes`);
+  }
+  // Arturia publishes none of its own: everything from a decompiled script stays unconfirmed, and says so
+  for (const id of ['arturia-minilab3', 'arturia-beatstep']) {
+    const p = profileById(id);
+    for (const m of p.sysex.messages) if (/non-official/.test(p.sources[m.cite.source].title) && m.purpose !== 'identity') assert.equal(m.verified, false, `${id} ${m.id}`);
+  }
+  // nothing sets a unit up by surprise: Arturia's undocumented messages are not in `connect`
+  assert.equal(profileById('arturia-minilab3').sysex.connect, undefined);
+  assert.equal(profileById('arturia-beatstep').sysex.connect, undefined);
+});
+
+test('LED addresses follow the manuals, and a colour reaches the right scale', async () => {
+  const { ledSysex } = await import('../packages/midi/sysex.js');
+  const lp = profileById('novation-launchpad-mini-mk3');
+  const at = (p, id) => p.controls.find((c) => c.id === id);
+  // Drum Rack note 36 is the bottom-left pad, Programmer number 11
+  assert.equal(lp.controls.find((c) => c.note === 36).ledIndex, 11);
+  assert.equal(at(lp, 'top1').ledIndex, 91); assert.equal(at(lp, 'side8').ledIndex, 19);
+  assert.equal(formatHex(ledSysex(lp, lp.controls.find((c) => c.note === 36), { r: 255, g: 0, b: 0 })), 'F0 00 20 29 02 0D 03 03 0B 7F 00 00 F7');
+  const lcxl = profileById('novation-launch-control-xl-mk2');
+  assert.equal(at(lcxl, 'up').ledIndex, 44); assert.equal(lcxl.controls.filter((c) => c.ledIndex !== undefined).length, 48);
+  assert.equal(new Set(lcxl.controls.map((c) => c.ledIndex).filter((x) => x !== undefined)).size, 48, 'each LED once');
+  assert.equal(formatHex(ledSysex(lcxl, at(lcxl, 'up'), { color: 60 })), 'F0 00 20 29 02 11 78 08 2C 3C F7');
+  const apc = profileById('akai-apc-mini-mk2');
+  assert.equal(ledSysex(apc, apc.controls.find((c) => c.ledIndex === undefined), { r: 1, g: 2, b: 3 }), null);
+  assert.equal(ledSysex(lcxl, at(lcxl, 'up'), { r: 1, g: 2, b: 3 }), null, 'an amber and green LED has no RGB message');
+});
+
+test('a host sends nothing and asks nothing until enableSysex, then sets the device up on every connect', async () => {
+  const { createController } = await import('../packages/midi/index.js');
+  const asked = [], accesses = [];
+  const port = 'LPProMK3 MIDI';
+  const fake = async (o) => {
+    asked.push(o);
+    const sysex = !!o.sysex, inp = { name: port, onmidimessage: null };
+    const out = { name: port, sent: [], send(b) { if (b[0] === 0xf0 && !sysex) throw new Error('InvalidAccessError'); this.sent.push(b); } };
+    const a = { inputs: new Map([['i', inp]]), outputs: new Map([['o', out]]), sysexEnabled: sysex, onstatechange: null };
+    accesses.push(a); return a;
+  };
+  const c = createController('novation-launchpad-pro-mk3', { requestAccess: fake, telemetry: false, storage: null });
+  await c.connectHardware();
+  assert.deepEqual(asked, [{ sysex: false }], 'connecting asks for plain MIDI');
+  assert.equal(c.status.hardware, 'connected');
+  assert.equal(c.sendSysex('programmer-mode'), false, 'SysEx is off');
+  assert.equal(c.setLedColor('pad1', { r: 255, g: 0, b: 0 }), false);
+  const plain = accesses[0].outputs.get('o').sent.filter((b) => b[0] === 0xf0);
+  assert.deepEqual(plain, [], 'not a byte of SysEx so far');
+
+  assert.equal(await c.enableSysex(), true);
+  assert.equal(c.status.sysex, 'on');
+  const sx = () => accesses[1].outputs.get('o').sent.filter((b) => b[0] === 0xf0).map(formatHex);
+  assert.deepEqual(sx(), ['F0 00 20 29 02 0E 0E 01 F7'], 'the device is put in the mode the file models');
+  assert.equal(c.setLedColor('pad1', { r: 255, g: 0, b: 0 }), true);
+  assert.equal(sx().at(-1), 'F0 00 20 29 02 0E 03 03 0B 7F 00 00 F7');
+  assert.equal(c.sendSysex('live-mode'), true);
+  assert.equal(sx().at(-1), 'F0 00 20 29 02 0E 0E 00 F7');
+  c.dispose();
+});
+
+test('a refused prompt leaves everything as it was', async () => {
+  const { createController } = await import('../packages/midi/index.js');
+  const fake = async (o) => { if (o.sysex) throw new Error('denied'); return fakeAccess(false); };
+  const c = createController('novation-launchpad-pro-mk3', { requestAccess: fake, telemetry: false, storage: null });
+  assert.equal(await c.enableSysex(), false);
+  assert.equal(c.status.sysex, 'denied');
+  assert.equal(c.sendSysex('programmer-mode'), false);
+  assert.throws(() => c.sendSysex('nope'), /no SysEx message/);
+  c.dispose();
 });

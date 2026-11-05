@@ -34,7 +34,107 @@
    "note": "community. A user reports the clip launch grid and the scene launch buttons arriving on MIDI channel 1 (the grid as 40 contiguous notes); it says nothing about which row is which"
   }
  ],
- "notes": "Models Generic mode (Mode 0), the one the unit starts in; Ableton Live software switches it to Ableton Live mode with a SysEx the element does not send, and then the controls change channels and the device knobs stop being banked. Channels: the protocol writes 0–15, this file 1–16. Track-strip buttons (clip stop, solo, record arm, activator, A|B) and the track faders are one channel per track, 1 to 8. In Generic mode the device knobs and device buttons are banked by the track selector: they send on channel 1 with track 1 selected, 2 with track 2 … 9 with Master, and pressing a track selector re-sends the eight device knob values on that channel. The track selectors themselves send no note in Generic mode (the manual calls them radio buttons that only choose the bank), so they are drawn, not mapped; this file shows the track-1 bank. The manual's Generic-mode section calls activator, solo, record arm, pan, sends, user and the device / bank arrows 'toggle' buttons; its inbound section reports every button as note-on when pressed and note-off when released, which is what is modelled. The 40 clip pads are flagged: the manual numbers them Clip Launch 1–40 = notes 0–39 but gives no figure of which pad is which; Akai's other grids and the Ableton Remote Script count from the bottom-left, left to right, upward, and that is how they are placed (note 0 bottom-left, note 39 top-right); learn rebinds. The master fader, crossfader, cue, tempo, footswitch and track knobs list no channel in the manual: channel 1 (Lightjams reports the grid and scene buttons on channel 1 as well). The ring LEDs around the 16 knobs are written with the knob's own CC (the value) and a ring-type CC (0x18–0x1F device, 0x38–0x3F track: 0 off, 1 single, 2 volume, 3 pan) and are not modelled as LEDs. The manual also lists a 'STOP' note (0x5C) that the faceplate has no button for. LED feedback: clip pads light #00A9FF (palette 37) and scene launch buttons green (21) with the primary-colour lighting type (channel 1); single-colour buttons take velocity 1 for on. The crossfader is horizontal on the unit and drawn upright here.",
+ "notes": "Models Generic mode (Mode 0), the one the unit starts in; Ableton Live software switches it to Ableton Live mode (the mode-ableton message below), and then the controls change channels and the device knobs stop being banked. Channels: the protocol writes 0–15, this file 1–16. Track-strip buttons (clip stop, solo, record arm, activator, A|B) and the track faders are one channel per track, 1 to 8. In Generic mode the device knobs and device buttons are banked by the track selector: they send on channel 1 with track 1 selected, 2 with track 2 … 9 with Master, and pressing a track selector re-sends the eight device knob values on that channel. The track selectors themselves send no note in Generic mode (the manual calls them radio buttons that only choose the bank), so they are drawn, not mapped; this file shows the track-1 bank. The manual's Generic-mode section calls activator, solo, record arm, pan, sends, user and the device / bank arrows 'toggle' buttons; its inbound section reports every button as note-on when pressed and note-off when released, which is what is modelled. The 40 clip pads are flagged: the manual numbers them Clip Launch 1–40 = notes 0–39 but gives no figure of which pad is which; Akai's other grids and the Ableton Remote Script count from the bottom-left, left to right, upward, and that is how they are placed (note 0 bottom-left, note 39 top-right); learn rebinds. The master fader, crossfader, cue, tempo, footswitch and track knobs list no channel in the manual: channel 1 (Lightjams reports the grid and scene buttons on channel 1 as well). The ring LEDs around the 16 knobs are written with the knob's own CC (the value) and a ring-type CC (0x18–0x1F device, 0x38–0x3F track: 0 off, 1 single, 2 volume, 3 pan) and are not modelled as LEDs. The manual also lists a 'STOP' note (0x5C) that the faceplate has no button for. LED feedback: clip pads light #00A9FF (palette 37) and scene launch buttons green (21) with the primary-colour lighting type (channel 1); single-colour buttons take velocity 1 for on. The crossfader is horizontal on the unit and drawn upright here.",
+ "sysex": {
+  "messages": [
+   {
+    "id": "device-inquiry",
+    "purpose": "identity",
+    "label": "Ask the unit who it is and which firmware it runs",
+    "bytes": "F0 7E 7F 06 01 F7",
+    "cite": {
+     "source": 0,
+     "where": "pp. 4–5"
+    }
+   },
+   {
+    "id": "mode-generic",
+    "purpose": "mode",
+    "label": "Generic mode, the one this file models and the one the unit starts in",
+    "bytes": "F0 47 7F 29 60 00 04 40 {major} {minor} {bugfix} F7",
+    "args": [
+     {
+      "name": "major",
+      "default": 1,
+      "label": "version of the application saying hello"
+     },
+     {
+      "name": "minor",
+      "default": 0,
+      "label": "version of the application saying hello"
+     },
+     {
+      "name": "bugfix",
+      "default": 0,
+      "label": "version of the application saying hello"
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "pp. 10–12"
+    }
+   },
+   {
+    "id": "mode-ableton",
+    "purpose": "mode",
+    "label": "Ableton Live mode: all buttons momentary, LEDs and rings handled by the host",
+    "bytes": "F0 47 7F 29 60 00 04 41 {major} {minor} {bugfix} F7",
+    "args": [
+     {
+      "name": "major",
+      "default": 1,
+      "label": "version of the application saying hello"
+     },
+     {
+      "name": "minor",
+      "default": 0,
+      "label": "version of the application saying hello"
+     },
+     {
+      "name": "bugfix",
+      "default": 0,
+      "label": "version of the application saying hello"
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "pp. 10–12"
+    },
+    "undo": "mode-generic"
+   },
+   {
+    "id": "mode-alternate",
+    "purpose": "mode",
+    "label": "Alternate Ableton Live mode: all LEDs controlled by the host",
+    "bytes": "F0 47 7F 29 60 00 04 42 {major} {minor} {bugfix} F7",
+    "args": [
+     {
+      "name": "major",
+      "default": 1,
+      "label": "version of the application saying hello"
+     },
+     {
+      "name": "minor",
+      "default": 0,
+      "label": "version of the application saying hello"
+     },
+     {
+      "name": "bugfix",
+      "default": 0,
+      "label": "version of the application saying hello"
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "pp. 10–12"
+    },
+    "undo": "mode-generic"
+   }
+  ],
+  "connect": [
+   "mode-generic"
+  ]
+ },
  "face": {
   "w": 100,
   "h": 59.6,

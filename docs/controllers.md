@@ -96,6 +96,12 @@ So the project can see where its controllers and shows end up, the packages send
 
 Turn it off: `<oav-controller telemetry="off">` · `createController(p, { telemetry: false })` · `createShow({ telemetry: false })` · the iframe's `?telemetry=0` · or `globalThis.OPENAV_TELEMETRY = false` before anything loads. Source: `packages/midi/telemetry.js`.
 
+## SysEx: modes, templates, LED colours
+
+Some things only SysEx can do: put a Launchpad in Programmer mode, pick a Launch Control XL template, light a pad in any RGB colour. Profiles that have these list them in `sysex`, each message with its source, and the device's page shows them.
+
+The browser shows a permission prompt for SysEx, so nothing in this project asks by itself: `<oav-controller sysex>` adds a button, and `controller.enableSysex()` is the call behind it (run it from a click). Once it is on, the device is set up every time it connects, and `setLedColor(id, { r, g, b })` and `sendSysex(id)` work. [Package README](https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex).
+
 ## Add a controller
 
 1. Copy the closest file in `packages/midi/profiles/`, or a generic layout.

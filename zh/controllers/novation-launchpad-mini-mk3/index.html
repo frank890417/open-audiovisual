@@ -88,7 +88,7 @@
       <div class="lede d-lede">
         <p>Novation Launchpad Mini MK3 是 Novation 的 MIDI 硬體控制器：64 個打擊墊、16 顆按鈕。</p>
         <p>它在 頻道 1 送出 音符、CC，設定檔引用了 3 份出處。 其中 8 個控制項標了<em>未確認</em>：數字是照目前出處的最佳判讀，按「學習」一次就能重新對應。</p>
-        <ul class="badges"><li class="b-maker">原廠文件</li><li class="b-tool">作者的 TouchDesigner 工具</li><li class="b-led">LED 回饋</li><li class="b-unv">8 個未確認</li></ul>
+        <ul class="badges"><li class="b-maker">原廠文件</li><li class="b-tool">作者的 TouchDesigner 工具</li><li class="b-led">LED 回饋</li><li class="b-led"><a href="#sysex">SysEx</a></li><li class="b-unv">8 個未確認</li></ul>
       </div>
       <div class="hero-facts">
         <dl class="d-facts">
@@ -941,7 +941,7 @@
         <h3>這個設定檔從哪裡來</h3><p class="raw-note">Che-Yu Wu's TouchDesigner tool: MIDI In ch1 notes 36–99 in four groups of 16 (select1–4) = the four 4×4 drum racks; positions xy −4..−1 / 1..4 (skipping 0) or balanced −3.5..3.5; a stepped colour ramp gives each rack one colour (yellow, salmon red, lavender, green); idle pads drawn at ~16 % alpha, hit pads full colour with bloom; 'last event' (index + active) as the action output. TouchDesigner's MIDI In CHOP names channels 1-based (ch1ctrl75 = CC 74, ch10n37 = note 36); the numbers here are real MIDI numbers. <code>LaunchPadMini_251209.tox</code></p>
       </div>
       <div>
-        <h3>說明</h3><p class="raw-note">Use the device in Custom mode 1 (Drums). Entering Programmer mode needs SysEx (F0 00 20 29 02 0D 0E 01 F7), which stays off by default — Programmer-mode notes 11–88 are a different layout. What the right-column buttons send in Custom mode is undocumented (marked unverified; 學習 rebinds). LED colours are palette indices: the rack colours mirror the TD tool's ramp.</p>
+        <h3>說明</h3><p class="raw-note">Use the device in Custom mode 1 (Drums). Programmer mode (the programmer-mode message below) is a different layout: notes 11–88. What the right-column buttons send in Custom mode is undocumented (marked unverified; 學習 rebinds). LED colours are palette indices: the rack colours mirror the TD tool's ramp.</p>
         <h3>認得的埠名稱</h3>
         <dl class="ports"><div><dt>比對</dt><dd><code>/lpminimk3/i</code> <code>/launchpad\s*mini/i</code></dd></div><div><dt>優先</dt><dd><code>/midi/i</code></dd></div><div><dt>避開</dt><dd><code>/daw/i</code></dd></div></dl>
       </div>
@@ -951,6 +951,117 @@
       </div>
     </div>
   </section>
+
+  <!-- ═════ what it accepts beyond notes and CCs ═════ -->
+  <section class="sec" id="sysex" aria-labelledby="sysex-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">SysEx</p>
+      <h2 id="sysex-title">Novation Launchpad Mini MK3 除了音符和 CC 還收什麼</h2>
+      <p class="sec-lede">System Exclusive 訊息：切模式、換模板、把打擊墊點成任何顏色。每則都寫了位元組的出處。除非驗證紀錄有寫，這些訊息都還沒有人為這份檔案在實機上跑過。</p>
+    </header>
+    <div class="table-scroll" role="region" aria-label="Novation Launchpad Mini MK3 除了音符和 CC 還收什麼" tabindex="0">
+      <table class="sx">
+        <thead><tr><th scope="col">訊息</th><th scope="col">用途</th><th scope="col">位元組</th><th scope="col">出處</th><th scope="col" class="js-only"><span class="sr-only">送出</span></th></tr></thead>
+        <tbody>
+        <tr>
+          <th scope="row">Ask the unit who it is and which firmware it runs</th>
+          <td>識別</td>
+          <td><code class="sx-bytes">F0 7E 7F 06 01 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 6</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="device-inquiry" disabled>送出</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Select a layout; the default is Custom mode 1, the one this file models</th>
+          <td>模式</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 00 {layout} F7</code><small><code>{layout}</code> 0–127 (預設 4): 0 Session (DAW mode only), 4 Custom mode 1 (Drum Rack), 5 Custom mode 2 (Keys), 6 Custom mode 3 (Lighting), 13 DAW Faders (DAW mode only), 127 Programmer mode</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 7</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="select-layout" disabled>送出</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Enter Programmer mode (notes 11–88, a different layout from this file)</th>
+          <td>模式</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 0E 01 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 7</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="programmer-mode" disabled>送出</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Leave Programmer mode</th>
+          <td>模式</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 0E 00 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 7</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="live-mode" disabled>送出</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Enter DAW mode (Session and DAW Faders)</th>
+          <td>模式</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 10 01 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 15</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="daw-mode" disabled>送出</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Leave DAW mode and clear its state</th>
+          <td>模式</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 10 00 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 15</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="standalone-mode" disabled>送出</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Light one LED with a palette colour</th>
+          <td>LED</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 03 00 {led} {color} F7</code><small><code>{led}</code> 11–99<br><code>{color}</code> 0–127</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 14</td>
+          <td class="js-only"></td>
+        </tr>
+        <tr>
+          <th scope="row">Flash one LED between two palette colours</th>
+          <td>LED</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 03 01 {led} {colorB} {colorA} F7</code><small><code>{led}</code> 11–99<br><code>{colorB}</code> 0–127<br><code>{colorA}</code> 0–127</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 14</td>
+          <td class="js-only"></td>
+        </tr>
+        <tr>
+          <th scope="row">Pulse one LED with a palette colour</th>
+          <td>LED</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 03 02 {led} {pulse} F7</code><small><code>{led}</code> 11–99<br><code>{pulse}</code> 0–127</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 14</td>
+          <td class="js-only"></td>
+        </tr>
+        <tr>
+          <th scope="row">Light one LED in any colour<small>Works in Lighting Custom Modes and Programmer mode; the LED address is always the Programmer-mode number.</small></th>
+          <td>LED</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 03 03 {led} {r} {g} {b} F7</code><small><code>{led}</code> 11–99<br><code>{r}</code> 0–127<br><code>{g}</code> 0–127<br><code>{b}</code> 0–127</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 14</td>
+          <td class="js-only"></td>
+        </tr>
+        <tr>
+          <th scope="row">Set the LED brightness</th>
+          <td>設定</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 08 {level} F7</code><small><code>{level}</code> 0–127 (預設 127)</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 22</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="brightness" disabled>送出</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Turn every LED off (0) or back on (1)</th>
+          <td>設定</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0D 09 {on} F7</code><small><code>{on}</code> 0–1 (預設 1)</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20Mini%20-%20Programmers%20Reference%20Manual.pdf" rel="noopener">Launchpad Mini [MK3] Programmer's Reference Manual (Novation)</a> · p. 21</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="led-sleep" disabled>送出</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">開啟 SysEx 後，每次機器連上都會送出：<code>select-layout</code>。這會讓機器回到這份檔案描述的模式。</p>
+    <div class="sx-try js-only">
+      <p class="note">SysEx 會改變機器的行為，所以瀏覽器會先詢問，你沒有按就不會送出任何東西。開始前先在上面連接機器。</p>
+      <div class="vf-row">
+        <button type="button" class="vf-btn vf-go" id="sx-on">開啟 SysEx</button>
+        <label class="sx-color"><span>顏色</span> <input type="color" id="sx-color" value="#ff5a1f" disabled></label><button type="button" class="vf-btn" id="sx-paint" disabled>點亮所有打擊墊</button>
+        <span class="vf-note" id="sx-status" role="status"></span>
+      </div>
+    </div>
+  </section>
+
 
   <!-- ═════ use it ═════ -->
   <section class="sec" id="use" aria-labelledby="use-title">
@@ -1097,7 +1208,7 @@
   </div>
 </footer>
 
-<script type="application/json" id="ctl-i18n">{"lang":"zh","copy":"複製","copied":"已複製","profile":"novation-launchpad-mini-mk3"}</script>
+<script type="application/json" id="ctl-i18n">{"lang":"zh","copy":"複製","copied":"已複製","profile":"novation-launchpad-mini-mk3","sysex":{"asking":"等瀏覽器回應…","denied":"SysEx 沒有被允許，或這個瀏覽器沒有 Web MIDI。","ready":"SysEx 已開啟，機器也設定好了。","noDevice":"SysEx 已開啟，但沒有連接機器。","sent":"已送出 {id}。","painted":"已送給 {n} 顆 LED。"}}</script>
 <script type="module" src="../../../assets/controllers/detail.js"></script>
 <!--/email_off-->
 </body>

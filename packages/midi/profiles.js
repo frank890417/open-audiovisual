@@ -103,8 +103,8 @@ export function validateProfile(p) {
       if (!['note', 'cc'].includes(c.led.msg)) errs.push(`${at}: led.msg must be note or cc`);
       if (c.led.msg === 'note' && !isInt(c.led.note ?? c.note, 0, 127)) errs.push(`${at}: led note`);
       if (c.led.msg === 'cc' && !isInt(c.led.cc ?? c.cc, 0, 127)) errs.push(`${at}: led cc`);
-      if (c.led.index !== undefined && !isInt(c.led.index, 0, 127)) errs.push(`${at}: led.index must be 0..127`);
     }
+    if (c.ledIndex !== undefined && !isInt(c.ledIndex, 0, 127)) errs.push(`${at}: ledIndex must be 0..127`);
   }
   // the faceplate (landscape) and the optional portrait arrangement must each show every control once
   const checkLayout = (list, where, face) => {

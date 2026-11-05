@@ -88,7 +88,7 @@
       <div class="lede d-lede">
         <p>Novation Launchpad Pro MK3 is a MIDI hardware controller by Novation: 64 pads and 41 buttons.</p>
         <p>It sends Note and CC on channel 1. The profile cites 2 sources. No control is flagged unverified.</p>
-        <ul class="badges"><li class="b-maker">Manufacturer docs</li><li class="b-led">LED feedback</li></ul>
+        <ul class="badges"><li class="b-maker">Manufacturer docs</li><li class="b-led">LED feedback</li><li class="b-led"><a href="#sysex">SysEx</a></li></ul>
       </div>
       <div class="hero-facts">
         <dl class="d-facts">
@@ -1191,7 +1191,7 @@
         
       </div>
       <div>
-        <h3>Notes</h3><p class="raw-note">Models Programmer mode, the one layout in which every pad and button has a documented message. Live mode (what the unit boots into) is different: Note, Chord, Custom and Session modes each send their own notes. Enter Programmer mode from the unit (hold Setup, press the orange Scene Launch button, release Setup) or with the SysEx F0 00 20 29 02 0E 0E 01 F7 (stays off by default: the element sends no SysEx). Use the first port, "LPProMK3 MIDI" (macOS), not DIN or DAW. The manual gives a channel only for lighting (ch 1 static, 2 flashing, 3 pulsing); channel 1 for what the pads and buttons send is an assumption (the worked examples are all channel 1), not a line of the manual: unconfirmed. Pads send velocity; their pressure (off, polyphonic or channel aftertouch) is a unit setting and is not modelled. The labels on the buttons are what the Live-mode faceplate prints; in Programmer mode they are only positions. CC 99 lights the logo and the Setup button sends nothing: both are drawn only. LED feedback: pads light turquoise (palette 37) while played, buttons white (palette 3).</p>
+        <h3>Notes</h3><p class="raw-note">Models Programmer mode, the one layout in which every pad and button has a documented message. Live mode (what the unit boots into) is different: Note, Chord, Custom and Session modes each send their own notes. Enter Programmer mode from the unit (hold Setup, press the orange Scene Launch button, release Setup) or with the programmer-mode message below. Use the first port, "LPProMK3 MIDI" (macOS), not DIN or DAW. The manual gives a channel only for lighting (ch 1 static, 2 flashing, 3 pulsing); channel 1 for what the pads and buttons send is an assumption (the worked examples are all channel 1), not a line of the manual: unconfirmed. Pads send velocity; their pressure (off, polyphonic or channel aftertouch) is a unit setting and is not modelled. The labels on the buttons are what the Live-mode faceplate prints; in Programmer mode they are only positions. CC 99 lights the logo and the Setup button sends nothing: both are drawn only. LED feedback: pads light turquoise (palette 37) while played, buttons white (palette 3).</p>
         <h3>Port names it recognises</h3>
         <dl class="ports"><div><dt>matches</dt><dd><code>/lppromk3/i</code> <code>/launchpad\s*pro\s*(\[?mk\s*3\]?|3\b)/i</code></dd></div><div><dt>prefers</dt><dd><code>/midi/i</code></dd></div><div><dt>avoids</dt><dd><code>/daw/i</code> <code>/\bdin\b/i</code> <code>/midiin[23]/i</code> <code>/midiout[23]/i</code></dd></div></dl>
       </div>
@@ -1201,6 +1201,103 @@
       </div>
     </div>
   </section>
+
+  <!-- ═════ what it accepts beyond notes and CCs ═════ -->
+  <section class="sec" id="sysex" aria-labelledby="sysex-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">SysEx</p>
+      <h2 id="sysex-title">What Novation Launchpad Pro MK3 accepts beyond notes and CCs</h2>
+      <p class="sec-lede">System Exclusive messages: switching modes, picking a template, lighting a pad in any colour. Each one says where its bytes come from, and nobody has run these on a unit for this file yet unless a check says so.</p>
+    </header>
+    <div class="table-scroll" role="region" aria-label="What Novation Launchpad Pro MK3 accepts beyond notes and CCs" tabindex="0">
+      <table class="sx">
+        <thead><tr><th scope="col">Message</th><th scope="col">For</th><th scope="col">Bytes</th><th scope="col">Source</th><th scope="col" class="js-only"><span class="sr-only">Send</span></th></tr></thead>
+        <tbody>
+        <tr>
+          <th scope="row">Ask the unit who it is and which firmware it runs</th>
+          <td>identity</td>
+          <td><code class="sx-bytes">F0 7E 7F 06 01 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 6</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="device-inquiry" disabled>Send</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Enter Programmer mode, the one this file models</th>
+          <td>mode</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0E 0E 01 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 18</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="programmer-mode" disabled>Send</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Leave Programmer mode</th>
+          <td>mode</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0E 0E 00 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 18</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="live-mode" disabled>Send</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Select a layout and page</th>
+          <td>mode</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0E 00 {layout} {page} 00 F7</code><small><code>{layout}</code> 0–19 (default 17): 0 Session (DAW mode only), 1 Fader, 2 Chord, 3 Custom Mode, 4 Note / Drum, 17 Programmer Mode, 18 Settings Menu<br><code>{page}</code> 0–7 (default 0)</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 7</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="select-layout" disabled>Send</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Enter DAW mode (Session and DAW Faders)</th>
+          <td>mode</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0E 10 01 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 14</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="daw-mode" disabled>Send</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Leave DAW mode</th>
+          <td>mode</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0E 10 00 F7</code></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 14</td>
+          <td class="js-only"><button type="button" class="vf-btn sx-send" data-sysex="standalone-mode" disabled>Send</button></td>
+        </tr>
+        <tr>
+          <th scope="row">Light one LED with a palette colour</th>
+          <td>LED</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0E 03 00 {led} {color} F7</code><small><code>{led}</code> 1–108<br><code>{color}</code> 0–127</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 12</td>
+          <td class="js-only"></td>
+        </tr>
+        <tr>
+          <th scope="row">Flash one LED between two palette colours</th>
+          <td>LED</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0E 03 01 {led} {colorB} {colorA} F7</code><small><code>{led}</code> 1–108<br><code>{colorB}</code> 0–127<br><code>{colorA}</code> 0–127</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 12</td>
+          <td class="js-only"></td>
+        </tr>
+        <tr>
+          <th scope="row">Pulse one LED with a palette colour</th>
+          <td>LED</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0E 03 02 {led} {pulse} F7</code><small><code>{led}</code> 1–108<br><code>{pulse}</code> 0–127</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 12</td>
+          <td class="js-only"></td>
+        </tr>
+        <tr>
+          <th scope="row">Light one LED in any colour<small>Programmer mode only; the LED address is the Programmer-mode number.</small></th>
+          <td>LED</td>
+          <td><code class="sx-bytes">F0 00 20 29 02 0E 03 03 {led} {r} {g} {b} F7</code><small><code>{led}</code> 1–108<br><code>{r}</code> 0–127<br><code>{g}</code> 0–127<br><code>{b}</code> 0–127</small></td>
+          <td><a href="https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/LPP3_prog_ref_guide_200415.pdf" rel="noopener">Launchpad Pro [MK3] Programmer's reference manual (Novation)</a> · p. 13</td>
+          <td class="js-only"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">With SysEx on, this is sent every time the device connects: <code>programmer-mode</code>. It puts the unit in the mode this file describes.</p>
+    <div class="sx-try js-only">
+      <p class="note">SysEx can change how a unit behaves, so your browser asks first, and nothing here is sent until you press it. Connect the device above before you start.</p>
+      <div class="vf-row">
+        <button type="button" class="vf-btn vf-go" id="sx-on">Switch SysEx on</button>
+        <label class="sx-color"><span>Colour</span> <input type="color" id="sx-color" value="#ff5a1f" disabled></label><button type="button" class="vf-btn" id="sx-paint" disabled>Light every pad</button>
+        <span class="vf-note" id="sx-status" role="status"></span>
+      </div>
+    </div>
+  </section>
+
 
   <!-- ═════ use it ═════ -->
   <section class="sec" id="use" aria-labelledby="use-title">
@@ -1347,7 +1444,7 @@
   </div>
 </footer>
 
-<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"novation-launchpad-pro-mk3"}</script>
+<script type="application/json" id="ctl-i18n">{"lang":"en","copy":"Copy","copied":"Copied","profile":"novation-launchpad-pro-mk3","sysex":{"asking":"Waiting for the browser…","denied":"SysEx was not allowed, or this browser has no Web MIDI.","ready":"SysEx is on and the device is set up.","noDevice":"SysEx is on, but no device is connected.","sent":"Sent {id}.","painted":"Sent to {n} LEDs."}}</script>
 <script type="module" src="../../assets/controllers/detail.js"></script>
 <!--/email_off-->
 </body>

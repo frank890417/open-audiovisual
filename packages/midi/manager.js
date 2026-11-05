@@ -131,6 +131,8 @@ export class MidiControllers {
     c.ingest(data, { source: 'hw' });
   }
 
+  /** The output port of the device driving this profile: where LEDs and SysEx go. null with no device. */
+  outputFor(profileId) { return this._outputFor(profileId); }
   _outputFor(profileId) {
     const p = this.byId.get(profileId), midi = this.midi;
     if (!midi?.outputs?.length) return null;

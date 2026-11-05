@@ -212,6 +212,7 @@
             <li><a href="#controllers-in-an-iframe">In an iframe</a></li>
             <li><a href="#controllers-play-your-daw-with-it">Play your DAW with it</a></li>
             <li><a href="#controllers-telemetry">Telemetry</a></li>
+            <li><a href="#controllers-sysex-modes-templates-led-colours">SysEx: modes, templates, LED colours</a></li>
             <li><a href="#controllers-add-a-controller">Add a controller</a></li>
           </ol>
         </li>
@@ -377,7 +378,7 @@
         <a class="docs-quick-card is-cheat" href="../docs/cheatsheet/"><strong>oav-p5 cheat sheet →</strong><span>Every name a p5 sketch uses with oav-p5 on one page, with pictures: shout, hit, play, smooth. Prints on one A4.</span></a>
         <a class="docs-quick-card" href="../docs/reference/"><strong>API reference →</strong><span>Looking for one name? Every variable, function, event and option of oav-p5 and every package export, searchable, each with an example you can run.</span></a>
       </div>
-      <p class="docs-stats">19 chapters · 193 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
+      <p class="docs-stats">19 chapters · 194 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.1</a></p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -2257,6 +2258,9 @@ output, so nothing loops.</p>
 </table></div>
 <p><code>oav_host</code> is the <strong>origin</strong> of the page it runs on (for the iframe, the page that holds it), never the path, query or title. Nothing anyone plays is sent, no cookies are set, and the client id is random for every page load, so visitors can't be followed. No gtag.js is loaded: a page with its own Google Analytics keeps its dataLayer untouched. Nothing is sent from localhost, LAN addresses, <code>file://</code> or openaudiovisual.com itself, or when the browser sends Do Not Track / Global Privacy Control.</p>
 <p>Turn it off: <code>&lt;oav-controller telemetry="off"&gt;</code> · <code>createController(p, { telemetry: false })</code> · <code>createShow({ telemetry: false })</code> · the iframe's <code>?telemetry=0</code> · or <code>globalThis.OPENAV_TELEMETRY = false</code> before anything loads. Source: <code>packages/midi/telemetry.js</code>.</p>
+<h3 id="controllers-sysex-modes-templates-led-colours">SysEx: modes, templates, LED colours<a class="anchor" href="#controllers-sysex-modes-templates-led-colours" aria-label="Link to this section">#</a></h3>
+<p>Some things only SysEx can do: put a Launchpad in Programmer mode, pick a Launch Control XL template, light a pad in any RGB colour. Profiles that have these list them in <code>sysex</code>, each message with its source, and the device's page shows them.</p>
+<p>The browser shows a permission prompt for SysEx, so nothing in this project asks by itself: <code>&lt;oav-controller sysex&gt;</code> adds a button, and <code>controller.enableSysex()</code> is the call behind it (run it from a click). Once it is on, the device is set up every time it connects, and <code>setLedColor(id, { r, g, b })</code> and <code>sendSysex(id)</code> work. <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex" rel="noopener">Package README</a>.</p>
 <h3 id="controllers-add-a-controller">Add a controller<a class="anchor" href="#controllers-add-a-controller" aria-label="Link to this section">#</a></h3>
 <ol>
 <li>Copy the closest file in <code>packages/midi/profiles/</code>, or a generic layout.</li>

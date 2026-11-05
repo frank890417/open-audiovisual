@@ -91,6 +91,12 @@ ctl.on('control', (e) => console.log(e.signal, e.value));
 
 關掉的方法：`<oav-controller telemetry="off">`、`createController(p, { telemetry: false })`、`createShow({ telemetry: false })`、iframe 加 `?telemetry=0`，或在載入前設 `globalThis.OPENAV_TELEMETRY = false`。程式在 `packages/midi/telemetry.js`。
 
+## SysEx：模式、模板、LED 顏色
+
+有些事只有 SysEx 做得到：把 Launchpad 切到程式模式、選 Launch Control XL 的模板、把打擊墊點成任何 RGB 顏色。有這些功能的設定檔會列在 `sysex`，每則訊息都附出處，機器的頁面看得到。
+
+瀏覽器會為 SysEx 跳權限視窗，所以這個專案絕不自己要權限：`<oav-controller sysex>` 會加一顆按鈕，背後是 `controller.enableSysex()`（要在使用者按下時呼叫）。開啟之後，機器每次連上都會設定好，`setLedColor(id, { r, g, b })` 和 `sendSysex(id)` 也能用。[套件 README](https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex)。
+
 ## 加入一台控制器
 
 1. 從 `packages/midi/profiles/` 複製最接近的檔案，或一個通用版面。

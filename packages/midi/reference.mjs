@@ -1612,6 +1612,37 @@ console.log(sysexMessage(p, 'nope'));`,
     keywords: { en: ['sysex lookup', 'find message'], zh: ['查 sysex', '找訊息'] },
   },
 
+  ledSysex: {
+    group: 'midi-io',
+    summary: {
+      en: 'Builds the bytes that light one control in a colour, from the profile\'s `led` messages and the control\'s `ledIndex`.',
+      zh: '用設定檔的 `led` 訊息和控制項的 `ledIndex`，組出把一個控制項點成某個顏色的位元組。',
+    },
+    params: [
+      { name: 'p', type: 'Object', en: 'A profile.', zh: '設定檔。' },
+      { name: 'control', type: 'Object', en: 'One of its controls.', zh: '它的一個控制項。' },
+      { name: 'color', type: 'Object', en: '`{ r, g, b }`, each 0..255, or `{ color }`, a palette value.', zh: '`{ r, g, b }`，每個 0..255，或 `{ color }`，色票值。' },
+    ],
+    returns: { type: 'number[] | null', en: 'The bytes, or `null` when the control has no `ledIndex` or the profile has no such message.', zh: '位元組，控制項沒有 `ledIndex` 或設定檔沒有這種訊息時回傳 `null`。' },
+    description: [
+      {
+        en: 'Colours are scaled to what the message takes: Novation\'s run 0..127 and AKAI\'s 0..255, and you always pass 0..255. This only builds bytes. To send them, see `setLedColor()` on [`createController()`](#createController).',
+        zh: '顏色會換算成訊息要的範圍：Novation 是 0..127，AKAI 是 0..255，你一律傳 0..255。這個函式只組位元組，要送出請看 [`createController()`](#createController) 的 `setLedColor()`。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { ledSysex, formatHex, profileById } from '@openav/midi';
+
+const p = profileById('lppro3');
+console.log(formatHex(ledSysex(p, p.controls[0], { r: 255, g: 0, b: 0 })));`,
+        caption: { en: 'Prints the message that lights the first pad of a Launchpad Pro MK3 red.', zh: '印出把 Launchpad Pro MK3 第一個打擊墊點成紅色的訊息。' },
+      },
+    ],
+    related: ['sysexBytes', 'sysexMessage', 'createController'],
+    keywords: { en: ['rgb led', 'pad colour', 'light a pad'], zh: ['RGB LED', '打擊墊顏色', '點亮'] },
+  },
+
   SYSEX_PURPOSES: {
     group: 'midi-io',
     summary: {
@@ -1982,6 +2013,9 @@ console.log(findPort(ports, '/[/'));             // null: a broken regex finds n
       groups: { en: 'The current values grouped like the TouchDesigner tool\'s out CHOPs: `{ knob: [v1, v2 …], pad: […] }`. Keys controls are left out. (Unlike [`groupsOf()`](#groupsOf), which lists ids.)', zh: '依 TouchDesigner 工具的輸出 CHOP 分組的目前數值：`{ knob: [v1, v2 …], pad: […] }`，琴鍵控制項不在其中。（不同於回傳 id 的 [`groupsOf()`](#groupsOf)。）' },
       onChange: { en: 'Subscribe to changes: `fn(id, state, info)` with `info` `{ source, ev, note, bytes }`. When the mapping or learn state changes instead, it is called as `fn(null, null, { meta: true })`. Returns an unsubscribe function.', zh: '訂閱變化：`fn(id, state, info)`，`info` 是 `{ source, ev, note, bytes }`。對應或學習狀態改變時，改以 `fn(null, null, { meta: true })` 呼叫。回傳取消訂閱的函式。' },
       onMessage: { en: 'Subscribe to every message that passes through, once, after the state has moved: `fn({ bytes, ev, source, ids })`, where `ids` are the controls it moved (none for a message the profile does not know). An embed forwards `source: \'ui\'` messages to a MIDI output here. Returns an unsubscribe function.', zh: '訂閱每一則經過的訊息，狀態更新之後只通知一次：`fn({ bytes, ev, source, ids })`，`ids` 是它推動的控制項（設定檔不認得的訊息則為空）。嵌入元件在這裡把 `source: \'ui\'` 的訊息轉送到 MIDI 輸出。回傳取消訂閱的函式。' },
+      setupBytes: { en: 'The messages of the profile\'s `sysex.connect`, as bytes.', zh: '設定檔 `sysex.connect` 的訊息，以位元組回傳。' },
+      sysexBytes: { en: 'One SysEx message of the profile, as bytes. Throws for an id it does not have.', zh: '設定檔的一則 SysEx 訊息，以位元組回傳。沒有這個 id 會丟出錯誤。' },
+      ledColorBytes: { en: 'The bytes that light one control, or `null`; see [`ledSysex()`](#ledSysex).', zh: '點亮一個控制項的位元組，或 `null`，見 [`ledSysex()`](#ledSysex)。' },
       ingest: { en: 'Feeds MIDI bytes in. `source` is `\'hw\'` (default), `\'ui\'` or `\'mirror\'`. Returns the parsed event, or `null`. Clock, sysex and system messages are returned without touching any control.', zh: '把 MIDI 位元組餵進來。`source` 是 `\'hw\'`（預設）、`\'ui\'` 或 `\'mirror\'`。回傳解析後的事件或 `null`。時鐘、sysex 和系統訊息會直接回傳，不會動到任何控制項。' },
       setValue: { en: 'Moves an absolute control (knob, fader, wheel, strip, absolute encoder) to `v`: 0..1, or −1..1 for a bipolar one. Returns the bytes it sent, or `null` when the value did not change. For a relative encoder it turns by the matching steps.', zh: '把絕對值控制項（旋鈕、推桿、彎音輪、觸控條、絕對值編碼器）移到 `v`：0..1，雙向的是 −1..1。回傳送出的位元組，數值沒變則回傳 `null`。相對編碼器則會轉出對應的步數。' },
       turn: { en: 'Turns an endless encoder by signed `steps`, sent in the encoding its profile names. Returns the last bytes sent.', zh: '讓無限旋鈕轉動有正負號的 `steps` 步，用它設定檔指定的編碼送出。回傳最後送出的位元組。' },
@@ -2077,6 +2111,7 @@ console.log(again.get('k3').raw);                     // 10`,
       },
     ],
     members: {
+      outputFor: { en: 'The output port of the device driving a profile: where LEDs and SysEx go. `null` with no device.', zh: '驅動某個設定檔的機器的輸出埠，LED 和 SysEx 都送到這裡。沒有機器時回傳 `null`。' },
       attach: { en: 'Starts following a hardware [`Midi`](#Midi) (now, or later: an embed connects only when asked). Switching to another engine detaches the first. Returns the manager.', zh: '開始跟隨某個硬體 [`Midi`](#Midi)（現在，或之後：嵌入元件只在被要求時才連）。換成另一個引擎時，會先中斷前一個。回傳管理器本身。' },
       detach: { en: 'Stops following the hardware. The on-screen controllers stay and are still playable.', zh: '停止跟隨硬體。螢幕上的控制器還在，仍然可以玩。' },
       register: { en: 'Adds (or replaces) a profile at runtime, for example one loaded from a URL or one moved to another channel with [`withChannel()`](#withChannel).', zh: '在執行中新增（或取代）一份設定檔，例如從網址載入的，或用 [`withChannel()`](#withChannel) 改了頻道的。' },
@@ -2453,6 +2488,10 @@ console.log(signals.get('midi/minilab3/knob1'));`,
       zh: '只有 `connectHardware()`、`setOutput()`、`requestMidi()` 會向瀏覽器要 MIDI。Chrome、Edge、Firefox 會跳出權限詢問，所以可以的話請在點擊裡呼叫。沒有 Web MIDI（Safari、iPad）時，控制器仍然能彈、能觸發事件，`status` 會顯示 `unavailable`。',
     },
     members: {
+      enableSysex: { en: 'Switches SysEx on for this device and sets it up (the profile\'s `sysex.connect`), now and on every connect. Call it from something a person pressed: the browser shows a prompt. Resolves to `true` when it is on.', zh: '為這台機器開啟 SysEx 並設定它（設定檔的 `sysex.connect`），現在和之後每次連上都會做。要在使用者按下時呼叫，瀏覽器會跳權限視窗。開好時回傳 `true`。' },
+      setupDevice: { en: 'Sends the profile\'s `sysex.connect` messages to the device. Returns how many went out.', zh: '把設定檔的 `sysex.connect` 訊息送給機器，回傳送出幾則。' },
+      sendSysex: { en: 'Sends one SysEx message of the profile by id. Returns `false` when SysEx is off or no device is there.', zh: '依 id 送出設定檔的一則 SysEx 訊息。SysEx 沒開或沒有機器時回傳 `false`。' },
+      setLedColor: { en: 'Lights one control in any colour (`{ r, g, b }` 0..255) or a palette value (`{ color }`). Returns whether it was sent.', zh: '把控制項點成任何顏色（`{ r, g, b }` 0..255）或色票值（`{ color }`），回傳是否送出。' },
       controller: { en: 'The live model ([`MidiController`](#MidiController)) of the device on screen.', zh: '螢幕上那台機器的活模型（[`MidiController`](#MidiController)）。' },
       profile: { en: 'Its normalized profile: controls, faceplate, sources.', zh: '它整理過的設定檔：控制項、面板、資料來源。' },
       on: { en: 'Subscribes to `control`, `noteon`, `noteoff`, `connect`, `disconnect`, `status`, `profilechange` or `\'*\'`. `fn(detail)` (for `\'*\'`, `fn(name, detail)`). Returns an unsubscribe function.', zh: '訂閱 `control`、`noteon`、`noteoff`、`connect`、`disconnect`、`status`、`profilechange` 或 `\'*\'`。`fn(detail)`（`\'*\'` 則是 `fn(name, detail)`）。回傳取消訂閱的函式。' },
@@ -3092,6 +3131,9 @@ for (const now of [100, 200, 300, 400, 500]) console.log(now, fadeLevel(now, 100
       },
     ],
     members: {
+      enableSysex: { en: 'Switches SysEx on, connecting to the hardware first if needed. Call it from a click. Resolves to `true` when it is on.', zh: '開啟 SysEx，需要的話先連上機器。要在點擊時呼叫，開好時回傳 `true`。' },
+      sendSysex: { en: 'Sends one SysEx message of the profile by id. Returns whether it was sent.', zh: '依 id 送出設定檔的一則 SysEx 訊息，回傳是否送出。' },
+      setLedColor: { en: 'Lights one control in any colour (`{ r, g, b }` 0..255) or a palette value (`{ color }`).', zh: '把控制項點成任何顏色（`{ r, g, b }` 0..255）或色票值（`{ color }`）。' },
       connectedCallback: { en: 'Standard custom-element callback: when the element joins the page it builds its controller (in a microtask).', zh: '自訂元素的標準回呼：元素加進頁面時，會建立它的控制器（在 microtask 裡）。' },
       disconnectedCallback: { en: 'Standard custom-element callback: when the element leaves the page it disposes its controller and releases held notes.', zh: '自訂元素的標準回呼：元素離開頁面時，會銷毀它的控制器並放開按著的音。' },
       attributeChangedCallback: { en: 'Standard custom-element callback. Changing `profile`, `layout`, `hardware`, `midi-out`, `follow`, `readout` or `theme` updates the live element. Changing `channel` or `lang` rebuilds it.', zh: '自訂元素的標準回呼。改變 `profile`、`layout`、`hardware`、`midi-out`、`follow`、`readout` 或 `theme`，會直接更新正在跑的元素。改變 `channel` 或 `lang` 則會重建。' },

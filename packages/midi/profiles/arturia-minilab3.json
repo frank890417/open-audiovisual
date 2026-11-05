@@ -38,9 +38,86 @@
    "title": "Spectrasonics — Setting up the MiniLab mk3 (non-official)",
    "url": "https://support.spectrasonics.net/manual/Omnisphere3HW/3/en/topic/setting-up-the-minilab-mk3",
    "note": "knob and fader CC defaults; agree with the TD recording"
+  },
+  {
+   "title": "Ableton Live 12 MIDI Remote Script MiniLab_3 (decompiled; non-official)",
+   "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/MiniLab_3/midi.py",
+   "note": "SysEx header F0 00 20 6B 7F 42; LED header 02 02 16; connection message 02 00 40 6A 21 and 20 to disconnect; pad LED addresses 52–59 (bank A), 68–75 (bank B). Arturia publishes none of this."
   }
  ],
- "notes": "Pad pressure type is not documented: poly aftertouch is followed automatically if the unit sends it. Pad RGB LEDs are SysEx-only (not sent; sysex stays off).",
+ "notes": "Pad pressure type is not documented: poly aftertouch is followed automatically if the unit sends it. Pad RGB LEDs are SysEx-only (the led-rgb message below; nothing is sent until you switch SysEx on).",
+ "sysex": {
+  "messages": [
+   {
+    "id": "device-inquiry",
+    "purpose": "identity",
+    "label": "Ask the unit who it is and which firmware it runs",
+    "bytes": "F0 7E 7F 06 01 F7",
+    "cite": {
+     "source": 3,
+     "where": "midi.py"
+    },
+    "note": "The script expects 00 20 6B 02 00 04 in the reply."
+   },
+   {
+    "id": "daw-connect",
+    "purpose": "mode",
+    "label": "Tell the unit a DAW is connected (it then shows the DAW program)",
+    "bytes": "F0 00 20 6B 7F 42 02 00 40 6A 21 F7",
+    "undo": "daw-disconnect",
+    "cite": {
+     "source": 3,
+     "where": "midi.py"
+    },
+    "verified": false,
+    "note": "Not in any Arturia document."
+   },
+   {
+    "id": "daw-disconnect",
+    "purpose": "mode",
+    "label": "Tell the unit the DAW has gone",
+    "bytes": "F0 00 20 6B 7F 42 02 00 40 6A 20 F7",
+    "cite": {
+     "source": 3,
+     "where": "midi.py"
+    },
+    "verified": false,
+    "note": "Not in any Arturia document."
+   },
+   {
+    "id": "led-rgb",
+    "purpose": "led",
+    "label": "Light one pad in any colour",
+    "bytes": "F0 00 20 6B 7F 42 02 02 16 {led} {r} {g} {b} F7",
+    "args": [
+     {
+      "name": "led",
+      "label": "LED address",
+      "min": 52,
+      "max": 91
+     },
+     {
+      "name": "r",
+      "max": 127
+     },
+     {
+      "name": "g",
+      "max": 127
+     },
+     {
+      "name": "b",
+      "max": 127
+     }
+    ],
+    "cite": {
+     "source": 3,
+     "where": "midi.py"
+    },
+    "verified": false,
+    "note": "Read from the script, which sends it in its DAW program; whether it holds in the Arturia programs is unknown."
+   }
+  ]
+ },
  "face": {
   "w": 100,
   "h": 62,
@@ -379,7 +456,8 @@
    "ch": 10,
    "note": 36,
    "group": "pad",
-   "color": "magenta"
+   "color": "magenta",
+   "ledIndex": 52
   },
   {
    "id": "pad2",
@@ -389,7 +467,8 @@
    "ch": 10,
    "note": 37,
    "group": "pad",
-   "color": "magenta"
+   "color": "magenta",
+   "ledIndex": 53
   },
   {
    "id": "pad3",
@@ -399,7 +478,8 @@
    "ch": 10,
    "note": 38,
    "group": "pad",
-   "color": "magenta"
+   "color": "magenta",
+   "ledIndex": 54
   },
   {
    "id": "pad4",
@@ -409,7 +489,8 @@
    "ch": 10,
    "note": 39,
    "group": "pad",
-   "color": "magenta"
+   "color": "magenta",
+   "ledIndex": 55
   },
   {
    "id": "pad5",
@@ -419,7 +500,8 @@
    "ch": 10,
    "note": 40,
    "group": "pad",
-   "color": "magenta"
+   "color": "magenta",
+   "ledIndex": 56
   },
   {
    "id": "pad6",
@@ -429,7 +511,8 @@
    "ch": 10,
    "note": 41,
    "group": "pad",
-   "color": "magenta"
+   "color": "magenta",
+   "ledIndex": 57
   },
   {
    "id": "pad7",
@@ -439,7 +522,8 @@
    "ch": 10,
    "note": 42,
    "group": "pad",
-   "color": "magenta"
+   "color": "magenta",
+   "ledIndex": 58
   },
   {
    "id": "pad8",
@@ -449,7 +533,8 @@
    "ch": 10,
    "note": 43,
    "group": "pad",
-   "color": "magenta"
+   "color": "magenta",
+   "ledIndex": 59
   },
   {
    "id": "keys",

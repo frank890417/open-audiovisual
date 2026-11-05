@@ -69,6 +69,7 @@ export function describeProfile(raw, i, files) {
     generic: p.kind === 'generic',
     unverified: p.controls.filter((c) => c.verified === false).reduce((a, c) => a + physical(c), 0),
     led: p.controls.some((c) => c.led),
+    sysex: (p.sysex?.messages || []).length,
   };
   const has = TYPE_ORDER.filter((t) => counts.has(t));
   if (prov.led) has.push('led');
@@ -286,6 +287,7 @@ function card(t, d, c, locale) {
   if (d.prov.community) badges.push(`<li class="b-comm">${B.community}</li>`);
   if (d.prov.generic) badges.push(`<li class="b-gen">${B.generic}</li>`);
   if (d.prov.led) badges.push(`<li class="b-led">${B.led}</li>`);
+  if (d.prov.sysex) badges.push(`<li class="b-led">SysEx</li>`);
   if (d.prov.unverified) badges.push(`<li class="b-unv">${fill(B.unverified, { n: d.prov.unverified })}</li>`);
   return `<li class="card" id="card-${p.id}" data-profile="${p.id}" data-has="${d.has.join(' ')}">
         <div class="card-face" data-face="${p.id}"><a class="card-face-link" href="${p.id}/" tabindex="-1" aria-hidden="true">${faceSvg(p, fill(t.catalog.faceLabel, { name }))}</a></div>

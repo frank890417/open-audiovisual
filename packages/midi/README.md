@@ -328,13 +328,28 @@ sends with the file and hands back the updated JSON. Its logic is `VerifySession
 | `verified`, `note` | as on a control; a `true` needs a `sysex:<id>` result in `verifications` |
 
 `sysex.connect` names what a host sends on connect once the user has switched SysEx on; each message there needs a default for every
-argument. `led.index` on a control is its address in a `led` message (`{led}` above). `palette` is the table of LED colours:
+argument. `ledIndex` on a control is its address in a `led` message (`{led}` above). `palette` is the table of LED colours:
 
 ```json
 "palette": { "cite": { "source": 0 }, "channels": [{ "ch": 1, "name": "Static" }], "colors": [{ "value": 5, "name": "Red", "rgb": "#ff0000" }] }
 ```
 
-`sysexMessage(profile, id)` finds a message and `sysexBytes(message, args)` builds its bytes, nothing here is sent.
+`sysexMessage(profile, id)` finds a message and `sysexBytes(message, args)` builds its bytes; nothing there is sent.
+
+Sending takes a permission the browser asks for, so nothing asks by itself. `enable()` never does; `midi.requestSysex()` does, from something a person pressed:
+
+```js
+const c = createController('novation-launchpad-pro-mk3');
+await c.connectHardware();
+button.onclick = async () => {
+  if (await c.enableSysex()) {                    // the prompt; then the device is set up (sysex.connect), now and on every reconnect
+    c.setLedColor('pad1', { r: 255, g: 90, b: 31 }); // any colour, 0..255
+    c.sendSysex('live-mode');                     // any message of the profile, by id
+  }
+};
+```
+
+`<oav-controller sysex>` puts that button in the element's bar. `el.enableSysex()`, `el.sendSysex(id, args)` and `el.setLedColor(id, color)` are the same calls. A device's page lists its messages and has the buttons.
 
 ### Model a new controller
 

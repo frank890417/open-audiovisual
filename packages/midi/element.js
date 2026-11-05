@@ -38,12 +38,14 @@ const UI = {
     waiting: 'Plug in {name}', connected: '{port}', unavailable: 'No Web MIDI in this browser', denied: 'MIDI permission blocked',
     outAsk: 'MIDI out…', outLabel: 'MIDI output', outOff: 'MIDI out: off', outTo: '→ {port}', outMissing: 'No output "{q}"',
     learn: 'Learn', learnHint: 'Learn: tap a control, then move the one on your hardware.', error: 'Could not load this controller',
+    sysex: 'Set up device (SysEx)', sysexOn: 'SysEx on', sysexAsking: 'Asking for SysEx…', sysexDenied: 'SysEx blocked',
   },
   zh: {
     device: '裝置', devices: '裝置', generic: '通用版面', connect: '連接 MIDI', asking: '正在請求 MIDI…',
     waiting: '接上 {name} 就會動', connected: '{port}', unavailable: '這個瀏覽器沒有 Web MIDI', denied: 'MIDI 權限被擋下',
     outAsk: 'MIDI 輸出…', outLabel: 'MIDI 輸出', outOff: 'MIDI 輸出：關', outTo: '→ {port}', outMissing: '找不到輸出「{q}」',
     learn: '學習', learnHint: '學習：點畫面上的一個控制項，再動硬體上對應的那一個。', error: '無法載入這台控制器',
+    sysex: '設定機器（SysEx）', sysexOn: 'SysEx 已開', sysexAsking: '正在請求 SysEx…', sysexDenied: 'SysEx 被擋下',
   },
 };
 const fill = (s, o) => s.replace(/\{(\w+)\}/g, (m, k) => (o[k] ?? ''));
@@ -76,7 +78,7 @@ const CSS = `
 `;
 
 const Base = typeof HTMLElement !== 'undefined' ? HTMLElement : class {};
-const BOOLS = { learn: 'learn', picker: 'picker', readout: 'readout', follow: 'follow' };
+const BOOLS = { learn: 'learn', picker: 'picker', readout: 'readout', follow: 'follow', sysex: 'sysex' };
 const STRS = { profile: 'profile', layout: 'layout', theme: 'theme', hardware: 'hardware', midiOut: 'midi-out' };
 
 export class OavController extends Base {
@@ -242,6 +244,11 @@ export class OavController extends Base {
       }
       const chip = el('span', 'chip out'); chip.append(el('i'), el('span')); bar.appendChild(chip);
     }
+    if (o.sysex && core.profile.sysex) {   // a button, never automatic: the browser's prompt should answer something a person pressed
+      const b = el('button', 'sysex', t.sysex); b.type = 'button';
+      b.addEventListener('click', () => this.enableSysex());
+      bar.appendChild(b);
+    }
     if (o.learn) {
       const b = el('button', 'learn', t.learn); b.type = 'button'; b.setAttribute('aria-pressed', String(core.learning));
       b.addEventListener('click', () => this.toggleLearn());
@@ -269,6 +276,7 @@ export class OavController extends Base {
       hw.classList.toggle('on', s.hardware === 'connected'); hw.classList.toggle('bad', s.hardware === 'unavailable' || s.hardware === 'denied');
       const b = this._bar.querySelector('.connect'); if (b) b.hidden = s.hardware !== 'off' && s.hardware !== 'denied';
     }
+    const x = this._bar.querySelector('.sysex'); if (x) { x.textContent = { on: t.sysexOn, asking: t.sysexAsking, denied: t.sysexDenied }[s.sysex] || t.sysex; x.disabled = s.sysex === 'on' || s.sysex === 'asking'; }
     const out = this._bar.querySelector('.chip.out');
     if (out) {
       const q = this._o.midiOut.port || '';
@@ -299,6 +307,16 @@ export class OavController extends Base {
   on(name, fn) { const h = (e) => fn(e.detail, e); this.addEventListener(name, h); return () => this.removeEventListener(name, h); }
   connectHardware() { return this._core ? this._core.connectHardware(this._o.hardware.port) : Promise.resolve(false); }
   disconnectHardware() { this._core?.disconnectHardware(); }
+  /** Switch SysEx on (connecting first if needed). Call it from a click: the browser shows a prompt. → on? */
+  async enableSysex() {
+    const core = this._core; if (!core) return false;
+    if (core.status.hardware === 'off') await core.connectHardware(this._o.hardware.port);
+    return core.enableSysex();
+  }
+  /** One SysEx message of the profile, to the device. → sent? */
+  sendSysex(id, args) { return this._core ? this._core.sendSysex(id, args) : false; }
+  /** Light one control in any colour ({ r, g, b } 0..255) or a palette value ({ color }). → sent? */
+  setLedColor(id, color) { return this._core ? this._core.setLedColor(id, color) : false; }
   setOutput(query) { return this._core ? this._core.setOutput(query) : Promise.resolve(null); }
   toggleLearn(on) {
     const core = this._core; if (!core) return false;

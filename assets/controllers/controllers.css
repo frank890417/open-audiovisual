@@ -359,3 +359,14 @@ html[lang^="zh"] .page-controller .ch-hero h1 { font-size: clamp(30px, 4vw, 64px
 .verify-cta { margin: 14px 0 0; padding: 10px 12px; border-left: 2px solid var(--sig); color: var(--fg-2); }
 .tag-hw { color: var(--l1); white-space: nowrap; }
 @media (max-width: 760px) { .vf-lede, .vf-levels { grid-template-columns: minmax(0, 1fr); } }
+
+/* ───────────── a device's SysEx table ───────────── */
+table.sx th small, table.sx td small { display: block; margin-top: 4px; color: var(--fg-3); font-weight: 400; font-size: 12.5px; line-height: 1.45; }
+table.sx { min-width: 860px; }
+table.sx th:first-child { width: 30%; }
+.sx-bytes { display: block; overflow-wrap: anywhere; line-height: 1.5; }
+.sx-try { margin-top: 14px; display: grid; gap: 10px; }
+.sx-color { display: inline-flex; align-items: center; gap: 8px; font: 12.5px var(--mono); color: var(--fg-3); }
+.sx-color input { width: 42px; height: 42px; padding: 2px; border: 1px solid var(--line-2); background: var(--ink-2); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+

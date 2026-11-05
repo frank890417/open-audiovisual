@@ -125,6 +125,28 @@ export function sysexBytes(message, args = {}) {
 }
 
 /**
+ * The bytes that light one control in a colour, from the profile's `led` messages and the control's `ledIndex`; null when it has neither.
+ * Colours come in as 0..255 and are scaled to what the message takes (Novation 0..127, AKAI 0..255).
+ * @param {object} p   a profile
+ * @param {object} control   one of its controls
+ * @param {{r:number,g:number,b:number}|{color:number}} color   any RGB, or a palette value
+ * @returns {number[]|null}
+ */
+export function ledSysex(p, control, color) {
+  if (control?.ledIndex === undefined) return null;
+  const leds = (p?.sysex?.messages || []).filter((m) => m.purpose === 'led' && m.dir !== 'in');
+  const takes = (m, ...names) => names.every((n) => (m.args || []).some((a) => a.name === n));
+  if (color && 'r' in color) {
+    const m = leds.find((x) => takes(x, 'led', 'r', 'g', 'b'));
+    if (!m) return null;
+    const scale = (name) => { const top = m.args.find((a) => a.name === name).max ?? 127; return Math.round((Math.max(0, Math.min(255, color[name])) / 255) * top); };
+    return sysexBytes(m, { led: control.ledIndex, r: scale('r'), g: scale('g'), b: scale('b') });
+  }
+  const m = leds.find((x) => takes(x, 'led', 'color'));
+  return m ? sysexBytes(m, { led: control.ledIndex, color: color?.color }) : null;
+}
+
+/**
  * The reply to the Universal Device Inquiry (send `DEVICE_INQUIRY`), or null for anything else.
  * Every firmware version a verification record stores can come from here, so nobody has to dig through a menu.
  * @returns {{manufacturer:number[], family:number[], model:number[], version:number[], text:string}|null}
@@ -133,8 +155,10 @@ export function parseDeviceInquiry(data) {
   const b = Array.from(data || []);
   if (b.length < 15 || b[0] !== 0xf0 || b[1] !== 0x7e || b[3] !== 0x06 || b[4] !== 0x02 || b[b.length - 1] !== 0xf7) return null;
   const idLen = b[5] === 0 ? 3 : 1, at = 5 + idLen;
-  const version = b.slice(at + 4, -1);
-  return { manufacturer: b.slice(5, at), family: b.slice(at, at + 2), model: b.slice(at + 2, at + 4), version, text: version.join('.') };
+  // AKAI's protocols put a length (00 19) after a one-byte model where the specification has family and model: the version moves by one
+  const akai = b[5] === 0x47 && b[7] === 0 && b[8] === 0x19, from = akai ? 9 : at + 4;
+  const version = b.slice(from, from + 4);
+  return { manufacturer: b.slice(5, at), family: akai ? [b[6]] : b.slice(at, at + 2), model: akai ? [b[6]] : b.slice(at + 2, at + 4), version, text: version.join('.') };
 }
 
 /** Universal Device Inquiry, to all devices: any MIDI 1.0 device that implements it answers with its maker and firmware. */

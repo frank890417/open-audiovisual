@@ -32,7 +32,193 @@
    "note": "official. §3 Hardware Overview (what is printed on each button: the top row ◀ ▶ Session Note Chord Custom Sequencer Projects, the left column ▲ ▼ Clear Duplicate Quantise Fixed Length Play Record, the right column Patterns … Print to Clip, the Ableton track controls Record Arm … Stop Clip); §10.4 pressure mode off / polyphonic / channel; §10.7 Programmer mode: hold Setup, press the orange Scene Launch button, release Setup; the unit always powers on into Live mode"
   }
  ],
- "notes": "Models Programmer mode, the one layout in which every pad and button has a documented message. Live mode (what the unit boots into) is different: Note, Chord, Custom and Session modes each send their own notes. Enter Programmer mode from the unit (hold Setup, press the orange Scene Launch button, release Setup) or with the SysEx F0 00 20 29 02 0E 0E 01 F7 (stays off by default: the element sends no SysEx). Use the first port, \"LPProMK3 MIDI\" (macOS), not DIN or DAW. The manual gives a channel only for lighting (ch 1 static, 2 flashing, 3 pulsing); channel 1 for what the pads and buttons send is an assumption (the worked examples are all channel 1), not a line of the manual: unconfirmed. Pads send velocity; their pressure (off, polyphonic or channel aftertouch) is a unit setting and is not modelled. The labels on the buttons are what the Live-mode faceplate prints; in Programmer mode they are only positions. CC 99 lights the logo and the Setup button sends nothing: both are drawn only. LED feedback: pads light turquoise (palette 37) while played, buttons white (palette 3).",
+ "notes": "Models Programmer mode, the one layout in which every pad and button has a documented message. Live mode (what the unit boots into) is different: Note, Chord, Custom and Session modes each send their own notes. Enter Programmer mode from the unit (hold Setup, press the orange Scene Launch button, release Setup) or with the programmer-mode message below. Use the first port, \"LPProMK3 MIDI\" (macOS), not DIN or DAW. The manual gives a channel only for lighting (ch 1 static, 2 flashing, 3 pulsing); channel 1 for what the pads and buttons send is an assumption (the worked examples are all channel 1), not a line of the manual: unconfirmed. Pads send velocity; their pressure (off, polyphonic or channel aftertouch) is a unit setting and is not modelled. The labels on the buttons are what the Live-mode faceplate prints; in Programmer mode they are only positions. CC 99 lights the logo and the Setup button sends nothing: both are drawn only. LED feedback: pads light turquoise (palette 37) while played, buttons white (palette 3).",
+ "sysex": {
+  "messages": [
+   {
+    "id": "device-inquiry",
+    "purpose": "identity",
+    "label": "Ask the unit who it is and which firmware it runs",
+    "bytes": "F0 7E 7F 06 01 F7",
+    "cite": {
+     "source": 0,
+     "where": "p. 6"
+    }
+   },
+   {
+    "id": "programmer-mode",
+    "purpose": "mode",
+    "label": "Enter Programmer mode, the one this file models",
+    "bytes": "F0 00 20 29 02 0E 0E 01 F7",
+    "undo": "live-mode",
+    "cite": {
+     "source": 0,
+     "where": "p. 18"
+    }
+   },
+   {
+    "id": "live-mode",
+    "purpose": "mode",
+    "label": "Leave Programmer mode",
+    "bytes": "F0 00 20 29 02 0E 0E 00 F7",
+    "cite": {
+     "source": 0,
+     "where": "p. 18"
+    }
+   },
+   {
+    "id": "select-layout",
+    "purpose": "mode",
+    "label": "Select a layout and page",
+    "bytes": "F0 00 20 29 02 0E 00 {layout} {page} 00 F7",
+    "args": [
+     {
+      "name": "layout",
+      "max": 19,
+      "default": 17,
+      "values": {
+       "0": "Session (DAW mode only)",
+       "1": "Fader",
+       "2": "Chord",
+       "3": "Custom Mode",
+       "4": "Note / Drum",
+       "17": "Programmer Mode",
+       "18": "Settings Menu"
+      }
+     },
+     {
+      "name": "page",
+      "max": 7,
+      "default": 0
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 7"
+    }
+   },
+   {
+    "id": "daw-mode",
+    "purpose": "mode",
+    "label": "Enter DAW mode (Session and DAW Faders)",
+    "bytes": "F0 00 20 29 02 0E 10 01 F7",
+    "undo": "standalone-mode",
+    "cite": {
+     "source": 0,
+     "where": "p. 14"
+    }
+   },
+   {
+    "id": "standalone-mode",
+    "purpose": "mode",
+    "label": "Leave DAW mode",
+    "bytes": "F0 00 20 29 02 0E 10 00 F7",
+    "cite": {
+     "source": 0,
+     "where": "p. 14"
+    }
+   },
+   {
+    "id": "led-static",
+    "purpose": "led",
+    "label": "Light one LED with a palette colour",
+    "bytes": "F0 00 20 29 02 0E 03 00 {led} {color} F7",
+    "args": [
+     {
+      "name": "led",
+      "min": 1,
+      "max": 108
+     },
+     {
+      "name": "color",
+      "label": "palette entry"
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 12"
+    }
+   },
+   {
+    "id": "led-flash",
+    "purpose": "led",
+    "label": "Flash one LED between two palette colours",
+    "bytes": "F0 00 20 29 02 0E 03 01 {led} {colorB} {colorA} F7",
+    "args": [
+     {
+      "name": "led",
+      "min": 1,
+      "max": 108
+     },
+     {
+      "name": "colorB"
+     },
+     {
+      "name": "colorA"
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 12"
+    }
+   },
+   {
+    "id": "led-pulse",
+    "purpose": "led",
+    "label": "Pulse one LED with a palette colour",
+    "bytes": "F0 00 20 29 02 0E 03 02 {led} {pulse} F7",
+    "args": [
+     {
+      "name": "led",
+      "min": 1,
+      "max": 108
+     },
+     {
+      "name": "pulse",
+      "label": "palette entry"
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 12"
+    }
+   },
+   {
+    "id": "led-rgb",
+    "purpose": "led",
+    "label": "Light one LED in any colour",
+    "bytes": "F0 00 20 29 02 0E 03 03 {led} {r} {g} {b} F7",
+    "args": [
+     {
+      "name": "led",
+      "label": "LED address",
+      "min": 1,
+      "max": 108
+     },
+     {
+      "name": "r",
+      "max": 127
+     },
+     {
+      "name": "g",
+      "max": 127
+     },
+     {
+      "name": "b",
+      "max": 127
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 13"
+    },
+    "note": "Programmer mode only; the LED address is the Programmer-mode number."
+   }
+  ],
+  "connect": [
+   "programmer-mode"
+  ]
+ },
  "face": {
   "w": 100,
   "h": 98,
@@ -417,7 +603,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 11
   },
   {
    "id": "pad2",
@@ -431,7 +618,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 12
   },
   {
    "id": "pad3",
@@ -445,7 +633,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 13
   },
   {
    "id": "pad4",
@@ -459,7 +648,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 14
   },
   {
    "id": "pad5",
@@ -473,7 +663,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 15
   },
   {
    "id": "pad6",
@@ -487,7 +678,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 16
   },
   {
    "id": "pad7",
@@ -501,7 +693,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 17
   },
   {
    "id": "pad8",
@@ -515,7 +708,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 18
   },
   {
    "id": "pad9",
@@ -529,7 +723,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 21
   },
   {
    "id": "pad10",
@@ -543,7 +738,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 22
   },
   {
    "id": "pad11",
@@ -557,7 +753,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 23
   },
   {
    "id": "pad12",
@@ -571,7 +768,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 24
   },
   {
    "id": "pad13",
@@ -585,7 +783,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 25
   },
   {
    "id": "pad14",
@@ -599,7 +798,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 26
   },
   {
    "id": "pad15",
@@ -613,7 +813,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 27
   },
   {
    "id": "pad16",
@@ -627,7 +828,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 28
   },
   {
    "id": "pad17",
@@ -641,7 +843,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 31
   },
   {
    "id": "pad18",
@@ -655,7 +858,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 32
   },
   {
    "id": "pad19",
@@ -669,7 +873,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 33
   },
   {
    "id": "pad20",
@@ -683,7 +888,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 34
   },
   {
    "id": "pad21",
@@ -697,7 +903,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 35
   },
   {
    "id": "pad22",
@@ -711,7 +918,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 36
   },
   {
    "id": "pad23",
@@ -725,7 +933,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 37
   },
   {
    "id": "pad24",
@@ -739,7 +948,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 38
   },
   {
    "id": "pad25",
@@ -753,7 +963,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 41
   },
   {
    "id": "pad26",
@@ -767,7 +978,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 42
   },
   {
    "id": "pad27",
@@ -781,7 +993,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 43
   },
   {
    "id": "pad28",
@@ -795,7 +1008,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 44
   },
   {
    "id": "pad29",
@@ -809,7 +1023,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 45
   },
   {
    "id": "pad30",
@@ -823,7 +1038,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 46
   },
   {
    "id": "pad31",
@@ -837,7 +1053,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 47
   },
   {
    "id": "pad32",
@@ -851,7 +1068,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 48
   },
   {
    "id": "pad33",
@@ -865,7 +1083,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 51
   },
   {
    "id": "pad34",
@@ -879,7 +1098,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 52
   },
   {
    "id": "pad35",
@@ -893,7 +1113,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 53
   },
   {
    "id": "pad36",
@@ -907,7 +1128,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 54
   },
   {
    "id": "pad37",
@@ -921,7 +1143,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 55
   },
   {
    "id": "pad38",
@@ -935,7 +1158,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 56
   },
   {
    "id": "pad39",
@@ -949,7 +1173,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 57
   },
   {
    "id": "pad40",
@@ -963,7 +1188,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 58
   },
   {
    "id": "pad41",
@@ -977,7 +1203,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 61
   },
   {
    "id": "pad42",
@@ -991,7 +1218,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 62
   },
   {
    "id": "pad43",
@@ -1005,7 +1233,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 63
   },
   {
    "id": "pad44",
@@ -1019,7 +1248,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 64
   },
   {
    "id": "pad45",
@@ -1033,7 +1263,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 65
   },
   {
    "id": "pad46",
@@ -1047,7 +1278,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 66
   },
   {
    "id": "pad47",
@@ -1061,7 +1293,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 67
   },
   {
    "id": "pad48",
@@ -1075,7 +1308,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 68
   },
   {
    "id": "pad49",
@@ -1089,7 +1323,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 71
   },
   {
    "id": "pad50",
@@ -1103,7 +1338,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 72
   },
   {
    "id": "pad51",
@@ -1117,7 +1353,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 73
   },
   {
    "id": "pad52",
@@ -1131,7 +1368,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 74
   },
   {
    "id": "pad53",
@@ -1145,7 +1383,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 75
   },
   {
    "id": "pad54",
@@ -1159,7 +1398,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 76
   },
   {
    "id": "pad55",
@@ -1173,7 +1413,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 77
   },
   {
    "id": "pad56",
@@ -1187,7 +1428,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 78
   },
   {
    "id": "pad57",
@@ -1201,7 +1443,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 81
   },
   {
    "id": "pad58",
@@ -1215,7 +1458,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 82
   },
   {
    "id": "pad59",
@@ -1229,7 +1473,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 83
   },
   {
    "id": "pad60",
@@ -1243,7 +1488,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 84
   },
   {
    "id": "pad61",
@@ -1257,7 +1503,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 85
   },
   {
    "id": "pad62",
@@ -1271,7 +1518,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 86
   },
   {
    "id": "pad63",
@@ -1285,7 +1533,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 87
   },
   {
    "id": "pad64",
@@ -1299,7 +1548,8 @@
     "msg": "note",
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 88
   },
   {
    "id": "shift",
@@ -1313,7 +1563,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 90
   },
   {
    "id": "prev",
@@ -1327,7 +1578,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 91
   },
   {
    "id": "next",
@@ -1341,7 +1593,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 92
   },
   {
    "id": "session",
@@ -1355,7 +1608,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 93
   },
   {
    "id": "notemode",
@@ -1369,7 +1623,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 94
   },
   {
    "id": "chord",
@@ -1383,7 +1638,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 95
   },
   {
    "id": "custom",
@@ -1397,7 +1653,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 96
   },
   {
    "id": "seq",
@@ -1411,7 +1668,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 97
   },
   {
    "id": "projects",
@@ -1425,7 +1683,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 98
   },
   {
    "id": "up",
@@ -1439,7 +1698,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 80
   },
   {
    "id": "down",
@@ -1453,7 +1713,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 70
   },
   {
    "id": "clear",
@@ -1467,7 +1728,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 60
   },
   {
    "id": "dup",
@@ -1481,7 +1743,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 50
   },
   {
    "id": "quant",
@@ -1495,7 +1758,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 40
   },
   {
    "id": "fixed",
@@ -1509,7 +1773,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 30
   },
   {
    "id": "play",
@@ -1523,7 +1788,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 20
   },
   {
    "id": "rec",
@@ -1537,7 +1803,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 10
   },
   {
    "id": "patterns",
@@ -1551,7 +1818,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 89
   },
   {
    "id": "steps",
@@ -1565,7 +1833,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 79
   },
   {
    "id": "patset",
@@ -1579,7 +1848,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 69
   },
   {
    "id": "velocity",
@@ -1593,7 +1863,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 59
   },
   {
    "id": "prob",
@@ -1607,7 +1878,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 49
   },
   {
    "id": "mutation",
@@ -1621,7 +1893,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 39
   },
   {
    "id": "micro",
@@ -1635,7 +1908,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 29
   },
   {
    "id": "print",
@@ -1649,7 +1923,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 19
   },
   {
    "id": "sel1",
@@ -1663,7 +1938,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 101
   },
   {
    "id": "sel2",
@@ -1677,7 +1953,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 102
   },
   {
    "id": "sel3",
@@ -1691,7 +1968,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 103
   },
   {
    "id": "sel4",
@@ -1705,7 +1983,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 104
   },
   {
    "id": "sel5",
@@ -1719,7 +1998,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 105
   },
   {
    "id": "sel6",
@@ -1733,7 +2013,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 106
   },
   {
    "id": "sel7",
@@ -1747,7 +2028,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 107
   },
   {
    "id": "sel8",
@@ -1761,7 +2043,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 108
   },
   {
    "id": "arm",
@@ -1775,7 +2058,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 1
   },
   {
    "id": "mute",
@@ -1789,7 +2073,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 2
   },
   {
    "id": "solo",
@@ -1803,7 +2088,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 3
   },
   {
    "id": "vol",
@@ -1817,7 +2103,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 4
   },
   {
    "id": "pan",
@@ -1831,7 +2118,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 5
   },
   {
    "id": "sends",
@@ -1845,7 +2133,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 6
   },
   {
    "id": "device",
@@ -1859,7 +2148,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 7
   },
   {
    "id": "stop",
@@ -1873,7 +2163,8 @@
     "msg": "cc",
     "on": 3,
     "off": 0
-   }
+   },
+   "ledIndex": 8
   }
  ]
 }

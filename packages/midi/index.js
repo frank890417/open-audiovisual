@@ -27,10 +27,11 @@ import { ControllerView } from './view.js?v=dd4a4d59';
 import { PROFILES } from './profiles/index.js?v=dd4a4d59';
 import { track } from './telemetry.js?v=dd4a4d59';
 import { reselectOutput, inputFilter, EchoGuard } from './ports.js?v=dd4a4d59';
+import { sysexMessage } from './sysex.js?v=dd4a4d59';
 import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=dd4a4d59';
 export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, eventOfSignal, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=dd4a4d59';
 export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=dd4a4d59';
-export { parseHex, formatHex, sysexBytes, sysexMessage, parseDeviceInquiry, DEVICE_INQUIRY, SYSEX_PURPOSES } from './sysex.js?v=dd4a4d59';
+export { parseHex, formatHex, sysexBytes, sysexMessage, ledSysex, parseDeviceInquiry, DEVICE_INQUIRY, SYSEX_PURPOSES } from './sysex.js?v=dd4a4d59';
 export { evidenceOf, verificationOf, verificationSummary, VERIFY_METHODS, VERIFY_RESULTS } from './verify.js?v=dd4a4d59';
 export { VerifySession, applyVerification, verificationReport } from './verify-session.js?v=dd4a4d59';
 export { pickOutput, reselectOutput, EchoGuard, isLive } from './ports.js?v=dd4a4d59';
@@ -335,7 +336,8 @@ export class ControllerHost {
     this.output = null;          // the output port what you play is sent to
     this.view = null;
     this.learning = false;
-    this.status = { hardware: 'off', input: null, output: null, outputState: 'off' };
+    this.status = { hardware: 'off', input: null, output: null, outputState: 'off', sysex: 'off' };
+    this.sysex = false;          // on only after enableSysex(): a browser prompt nobody asked for is the wrong first impression
     this._opt = { midi, requestAccess, filterOut };
     this._subs = new Map();
     this._hwOn = false; this._hwName = null; this._hwProfile = null; this._outQuery = null; this._keep = false;
@@ -487,11 +489,47 @@ export class ControllerHost {
       if (this._hwName) this._emit('disconnect', { port: this._hwName, profile: this._hwProfile });
       if (name) {
         this._emit('connect', { port: name, profile: this.profileId });
+        if (this.sysex) this.setupDevice();
         track('oav_hardware_connect', { oav_kind: this._tele.kind, oav_profile: this.profileId }, { enabled: this._tele.enabled });
       }
     }
     this._hwName = name; this._hwProfile = this.profileId;
     if (this._hwOn && this.midi) this._status({ hardware: name ? 'connected' : 'waiting', input: name });
+  }
+
+  // ---------------------------------------------------------------- SysEx
+  /**
+   * Switch SysEx on for this device. Call it from something a person pressed: the browser shows a permission prompt.
+   * From then on the device is set up (the profile's `sysex.connect`) now and every time it connects.
+   * @returns {Promise<boolean>} true when SysEx is on
+   */
+  async enableSysex() {
+    this._status({ sysex: 'asking' });
+    const midi = await this._engine();
+    if (!midi || !(await midi.requestSysex())) { this._status({ sysex: 'denied' }); return false; }
+    this.sysex = true;
+    this._status({ sysex: 'on' });
+    this.setupDevice();
+    return true;
+  }
+  /** Send the profile's `sysex.connect` messages to the device. → how many went out */
+  setupDevice() {
+    let n = 0;
+    for (const b of this.controller.setupBytes()) if (this._toDevice(b)) n++;
+    return n;
+  }
+  /** One SysEx message of the profile, to the device on screen. → sent? (false: SysEx off, or no device) */
+  sendSysex(id, args = {}) {
+    const m = sysexMessage(this.profile, id);
+    if (m?.dir === 'in') throw new Error(`"${id}" is something the device sends, it cannot be sent to it`);
+    return this._toDevice(this.controller.sysexBytes(id, args));
+  }
+  /** Light one control in any colour ({ r, g, b } 0..255) or a palette value ({ color }). → sent? */
+  setLedColor(id, color) { const b = this.controller.ledColorBytes(id, color); return b ? this._toDevice(b) : false; }
+  _toDevice(bytes) {
+    const out = this.sysex ? this.controllers.outputFor(this.profileId) : null;
+    if (!out) return false;
+    try { return this.midi.sendSysex(bytes, { output: out }); } catch (e) { console.warn('[oav controller] SysEx', e); return false; }
   }
 
   // ---------------------------------------------------------------- MIDI out

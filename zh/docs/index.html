@@ -212,6 +212,7 @@
             <li><a href="#controllers-in-an-iframe">用 iframe</a></li>
             <li><a href="#controllers-play-your-daw-with-it">用它彈你的 DAW</a></li>
             <li><a href="#controllers-telemetry">使用統計</a></li>
+            <li><a href="#controllers-sysex-modes-templates-led-colours">SysEx：模式、模板、LED 顏色</a></li>
             <li><a href="#controllers-add-a-controller">加入一台控制器</a></li>
           </ol>
         </li>
@@ -377,7 +378,7 @@
         <a class="docs-quick-card is-cheat" href="../../zh/docs/cheatsheet/"><strong>oav-p5 速查表 →</strong><span>用 oav-p5 的 p5 草圖會用到的名字放在一頁，附圖：喊、敲、彈、讓數字好用。可以印成一張 A4。</span></a>
         <a class="docs-quick-card" href="../../zh/docs/reference/"><strong>API 參考 →</strong><span>只想查一個名稱？oav-p5 的每個變數、函式、事件與選項，和每個套件的匯出，都能搜尋，每一條附能直接跑的範例。</span></a>
       </div>
-      <p class="docs-stats">19 章 · 193 節 · <a href="../../zh/changelog/">oav-p5 0.8 · 框架 0.1</a></p>
+      <p class="docs-stats">19 章 · 194 節 · <a href="../../zh/changelog/">oav-p5 0.8 · 框架 0.1</a></p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -1778,6 +1779,9 @@ Resolume：到 Preferences → MIDI。</li>
 </table></div>
 <p><code>oav_host</code> 只有網頁的<strong>網域</strong>（iframe 的話是放它的那個網頁），不會送路徑、查詢字串或標題。彈了什麼不會送出，也不寫 cookie，每次載入頁面的識別碼都是隨機的，沒辦法拿來追蹤同一個訪客。套件不會載入 gtag.js，網頁自己裝的 Google Analytics 不受影響。在 localhost、區域網路、<code>file://</code>、openaudiovisual.com 本站，或瀏覽器開了「不要追蹤」（Do Not Track、Global Privacy Control）時，什麼都不送。</p>
 <p>關掉的方法：<code>&lt;oav-controller telemetry="off"&gt;</code>、<code>createController(p, { telemetry: false })</code>、<code>createShow({ telemetry: false })</code>、iframe 加 <code>?telemetry=0</code>，或在載入前設 <code>globalThis.OPENAV_TELEMETRY = false</code>。程式在 <code>packages/midi/telemetry.js</code>。</p>
+<h3 id="controllers-sysex-modes-templates-led-colours">SysEx：模式、模板、LED 顏色<a class="anchor" href="#controllers-sysex-modes-templates-led-colours" aria-label="這一節的連結">#</a></h3>
+<p>有些事只有 SysEx 做得到：把 Launchpad 切到程式模式、選 Launch Control XL 的模板、把打擊墊點成任何 RGB 顏色。有這些功能的設定檔會列在 <code>sysex</code>，每則訊息都附出處，機器的頁面看得到。</p>
+<p>瀏覽器會為 SysEx 跳權限視窗，所以這個專案絕不自己要權限：<code>&lt;oav-controller sysex&gt;</code> 會加一顆按鈕，背後是 <code>controller.enableSysex()</code>（要在使用者按下時呼叫）。開啟之後，機器每次連上都會設定好，<code>setLedColor(id, { r, g, b })</code> 和 <code>sendSysex(id)</code> 也能用。<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex" rel="noopener">套件 README</a>。</p>
 <h3 id="controllers-add-a-controller">加入一台控制器<a class="anchor" href="#controllers-add-a-controller" aria-label="這一節的連結">#</a></h3>
 <ol>
 <li>從 <code>packages/midi/profiles/</code> 複製最接近的檔案，或一個通用版面。</li>

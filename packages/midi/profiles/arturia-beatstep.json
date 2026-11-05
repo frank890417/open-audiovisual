@@ -29,9 +29,93 @@
    "title": "DrivenByMoss BeatstepControllerDefinition.java (Bitwig; non-official)",
    "url": "https://github.com/git-moss/DrivenByMoss/blob/master/src/main/java/de/mossgrabers/controller/arturia/beatstep/BeatstepControllerDefinition.java",
    "note": "port name \"Arturia BeatStep\""
+  },
+  {
+   "title": "Ableton Live 12 MIDI Remote Script _Arturia/ArturiaControlSurface (decompiled; non-official)",
+   "url": "https://github.com/gluon/AbletonLive12_MIDIRemoteScripts/blob/main/_Arturia/ArturiaControlSurface.py",
+   "note": "setup messages F0 00 20 6B 7F 42 02 00 <property> <control> <value> F7; properties 1 mode, 2 channel, 3 identifier, 4 minimum, 5 maximum, 6 mode option, 16 colour. BeatStep.py gives the control addresses: encoders 32–47, pads 112–127, play 88, stop 89. Arturia publishes none of this."
   }
  ],
- "notes": "CNTRL mode (red pads) with the factory preset, Global channel 1. The big Level/Rate encoder is not modelled: the manual's default table does not list it (it \"controls the master level by default\"); if it also sends CC 7 it will move encoder 1 on screen. STOP / PLAY send MMC SysEx and are not modelled (SysEx stays off). SEQ mode plays the step sequencer on the sequencer channel instead — not modelled. The encoders are endless but send absolute values in the default preset. Pad pressure: poly aftertouch is followed automatically if the unit sends it. The original BeatStep only — the BeatStep Pro is a different device and is not matched.",
+ "notes": "CNTRL mode (red pads) with the factory preset, Global channel 1. The big Level/Rate encoder is not modelled: the manual's default table does not list it (it \"controls the master level by default\"); if it also sends CC 7 it will move encoder 1 on screen. STOP / PLAY send MMC (the mmc-stop and mmc-play messages below) and are not modelled as controls. SEQ mode plays the step sequencer on the sequencer channel instead — not modelled. The encoders are endless but send absolute values in the default preset. Pad pressure: poly aftertouch is followed automatically if the unit sends it. The original BeatStep only — the BeatStep Pro is a different device and is not matched.",
+ "sysex": {
+  "messages": [
+   {
+    "id": "mmc-stop",
+    "purpose": "transport",
+    "dir": "in",
+    "label": "The STOP button: MIDI Machine Control Stop",
+    "bytes": "F0 7F 7F 06 01 F7",
+    "cite": {
+     "source": 0,
+     "where": "p. 37"
+    }
+   },
+   {
+    "id": "mmc-play",
+    "purpose": "transport",
+    "dir": "in",
+    "label": "The PLAY button: MIDI Machine Control Play",
+    "bytes": "F0 7F 7F 06 02 F7",
+    "cite": {
+     "source": 0,
+     "where": "p. 37"
+    }
+   },
+   {
+    "id": "write-parameter",
+    "purpose": "config",
+    "label": "Change one setting of one control in the working memory",
+    "bytes": "F0 00 20 6B 7F 42 02 00 {property} {control} {value} F7",
+    "args": [
+     {
+      "name": "property",
+      "values": {
+       "1": "mode",
+       "2": "channel",
+       "3": "identifier (CC or note)",
+       "4": "minimum",
+       "5": "maximum",
+       "6": "mode option",
+       "16": "colour"
+      }
+     },
+     {
+      "name": "control",
+      "label": "encoders 32–47, pads 112–127, play 88, stop 89"
+     },
+     {
+      "name": "value"
+     }
+    ],
+    "cite": {
+     "source": 3
+    },
+    "verified": false,
+    "note": "This is how Ableton Live re-programs the unit. It changes what the controls send, so this file stops describing the unit until it is power-cycled."
+   },
+   {
+    "id": "led-set",
+    "purpose": "led",
+    "label": "Set the colour of one pad",
+    "bytes": "F0 00 20 6B 7F 42 02 00 10 {led} {color} F7",
+    "args": [
+     {
+      "name": "led",
+      "min": 112,
+      "max": 127
+     },
+     {
+      "name": "color"
+     }
+    ],
+    "cite": {
+     "source": 3
+    },
+    "verified": false,
+    "note": "Colour values are not in the script; property 16 is named colour there."
+   }
+  ]
+ },
  "face": {
   "w": 100,
   "h": 39.5,
@@ -368,7 +452,8 @@
    "msg": "note",
    "note": 44,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 112
   },
   {
    "id": "pad2",
@@ -377,7 +462,8 @@
    "msg": "note",
    "note": 45,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 113
   },
   {
    "id": "pad3",
@@ -386,7 +472,8 @@
    "msg": "note",
    "note": 46,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 114
   },
   {
    "id": "pad4",
@@ -395,7 +482,8 @@
    "msg": "note",
    "note": 47,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 115
   },
   {
    "id": "pad5",
@@ -404,7 +492,8 @@
    "msg": "note",
    "note": 48,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 116
   },
   {
    "id": "pad6",
@@ -413,7 +502,8 @@
    "msg": "note",
    "note": 49,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 117
   },
   {
    "id": "pad7",
@@ -422,7 +512,8 @@
    "msg": "note",
    "note": 50,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 118
   },
   {
    "id": "pad8",
@@ -431,7 +522,8 @@
    "msg": "note",
    "note": 51,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 119
   },
   {
    "id": "pad9",
@@ -440,7 +532,8 @@
    "msg": "note",
    "note": 36,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 120
   },
   {
    "id": "pad10",
@@ -449,7 +542,8 @@
    "msg": "note",
    "note": 37,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 121
   },
   {
    "id": "pad11",
@@ -458,7 +552,8 @@
    "msg": "note",
    "note": 38,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 122
   },
   {
    "id": "pad12",
@@ -467,7 +562,8 @@
    "msg": "note",
    "note": 39,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 123
   },
   {
    "id": "pad13",
@@ -476,7 +572,8 @@
    "msg": "note",
    "note": 40,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 124
   },
   {
    "id": "pad14",
@@ -485,7 +582,8 @@
    "msg": "note",
    "note": 41,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 125
   },
   {
    "id": "pad15",
@@ -494,7 +592,8 @@
    "msg": "note",
    "note": 42,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 126
   },
   {
    "id": "pad16",
@@ -503,7 +602,8 @@
    "msg": "note",
    "note": 43,
    "group": "pad",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 127
   }
  ]
 }

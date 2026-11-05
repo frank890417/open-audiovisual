@@ -39,7 +39,127 @@
    "note": "channel 9: knobs CC 13–20 / 29–36 / 49–56, faders 77–84, focus notes 41–44 57–60, control notes 73–76 89–92, left/right CC 106/107"
   }
  ],
- "notes": "Factory template 1 (MIDI channel 9) — the template Ableton Live selects; select it by holding Factory and pressing bottom-row button 1. The other factory templates send the same numbers on channels 10–16 (copy the profile and change \"channel\"). User templates are editable in Novation Components and are not modelled. The User / Factory buttons switch templates inside the unit (SysEx F0 00 20 29 02 11 77 <template> F7) and send no control message. LED feedback: track focus amber-low idle / yellow when held, track control green-low / green, mode and arrow buttons 127 = on — the unit acts on it only while factory template 1 is selected. The LEDs under the knobs (notes 13–15, 29–31 … 125–127 on channel 9) are not driven. MK1 and MK2 share this protocol (Novation publishes one reference for both).",
+ "notes": "Factory template 1 (MIDI channel 9) — the template Ableton Live selects; select it by holding Factory and pressing bottom-row button 1. The other factory templates send the same numbers on channels 10–16 (copy the profile and change \"channel\"). User templates are editable in Novation Components and are not modelled. The User / Factory buttons switch templates inside the unit (the template-changed message below) and send no control message. LED feedback: track focus amber-low idle / yellow when held, track control green-low / green, mode and arrow buttons 127 = on — the unit acts on it only while factory template 1 is selected. The LEDs under the knobs (notes 13–15, 29–31 … 125–127 on channel 9) are not driven. MK1 and MK2 share this protocol (Novation publishes one reference for both).",
+ "sysex": {
+  "messages": [
+   {
+    "id": "select-template",
+    "purpose": "template",
+    "label": "Change the current template; the default is Factory 1, the one this file models",
+    "bytes": "F0 00 20 29 02 11 77 {template} F7",
+    "args": [
+     {
+      "name": "template",
+      "max": 15,
+      "default": 8,
+      "label": "template",
+      "values": {
+       "0": "User 1",
+       "7": "User 8",
+       "8": "Factory 1",
+       "15": "Factory 8"
+      }
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 8"
+    }
+   },
+   {
+    "id": "template-changed",
+    "purpose": "template",
+    "dir": "in",
+    "label": "The unit says the template changed",
+    "bytes": "F0 00 20 29 02 11 77 {template} F7",
+    "args": [
+     {
+      "name": "template",
+      "max": 15,
+      "label": "template",
+      "values": {
+       "0": "User 1",
+       "7": "User 8",
+       "8": "Factory 1",
+       "15": "Factory 8"
+      }
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 8"
+    }
+   },
+   {
+    "id": "led-set",
+    "purpose": "led",
+    "label": "Set one LED of any template, in the background",
+    "bytes": "F0 00 20 29 02 11 78 {template} {led} {color} F7",
+    "args": [
+     {
+      "name": "template",
+      "max": 15,
+      "default": 8,
+      "label": "template",
+      "values": {
+       "0": "User 1",
+       "7": "User 8",
+       "8": "Factory 1",
+       "15": "Factory 8"
+      }
+     },
+     {
+      "name": "led",
+      "max": 47,
+      "label": "LED index"
+     },
+     {
+      "name": "color",
+      "label": "velocity byte: red and green brightness"
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 7"
+    }
+   },
+   {
+    "id": "toggle-set",
+    "purpose": "config",
+    "label": "Set the state of a button in Toggle mode",
+    "bytes": "F0 00 20 29 02 11 7B {template} {index} {value} F7",
+    "args": [
+     {
+      "name": "template",
+      "max": 15,
+      "default": 8,
+      "label": "template",
+      "values": {
+       "0": "User 1",
+       "7": "User 8",
+       "8": "Factory 1",
+       "15": "Factory 8"
+      }
+     },
+     {
+      "name": "index",
+      "max": 23
+     },
+     {
+      "name": "value",
+      "label": "0 off, 127 on"
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 7"
+    }
+   }
+  ],
+  "connect": [
+   "select-template"
+  ]
+ },
  "face": {
   "w": 100,
   "h": 100,
@@ -323,7 +443,8 @@
    "msg": "cc",
    "cc": 13,
    "group": "sendA",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 0
   },
   {
    "id": "a2",
@@ -332,7 +453,8 @@
    "msg": "cc",
    "cc": 14,
    "group": "sendA",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 1
   },
   {
    "id": "a3",
@@ -341,7 +463,8 @@
    "msg": "cc",
    "cc": 15,
    "group": "sendA",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 2
   },
   {
    "id": "a4",
@@ -350,7 +473,8 @@
    "msg": "cc",
    "cc": 16,
    "group": "sendA",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 3
   },
   {
    "id": "a5",
@@ -359,7 +483,8 @@
    "msg": "cc",
    "cc": 17,
    "group": "sendA",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 4
   },
   {
    "id": "a6",
@@ -368,7 +493,8 @@
    "msg": "cc",
    "cc": 18,
    "group": "sendA",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 5
   },
   {
    "id": "a7",
@@ -377,7 +503,8 @@
    "msg": "cc",
    "cc": 19,
    "group": "sendA",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 6
   },
   {
    "id": "a8",
@@ -386,7 +513,8 @@
    "msg": "cc",
    "cc": 20,
    "group": "sendA",
-   "color": "coral"
+   "color": "coral",
+   "ledIndex": 7
   },
   {
    "id": "b1",
@@ -395,7 +523,8 @@
    "msg": "cc",
    "cc": 29,
    "group": "sendB",
-   "color": "amber"
+   "color": "amber",
+   "ledIndex": 8
   },
   {
    "id": "b2",
@@ -404,7 +533,8 @@
    "msg": "cc",
    "cc": 30,
    "group": "sendB",
-   "color": "amber"
+   "color": "amber",
+   "ledIndex": 9
   },
   {
    "id": "b3",
@@ -413,7 +543,8 @@
    "msg": "cc",
    "cc": 31,
    "group": "sendB",
-   "color": "amber"
+   "color": "amber",
+   "ledIndex": 10
   },
   {
    "id": "b4",
@@ -422,7 +553,8 @@
    "msg": "cc",
    "cc": 32,
    "group": "sendB",
-   "color": "amber"
+   "color": "amber",
+   "ledIndex": 11
   },
   {
    "id": "b5",
@@ -431,7 +563,8 @@
    "msg": "cc",
    "cc": 33,
    "group": "sendB",
-   "color": "amber"
+   "color": "amber",
+   "ledIndex": 12
   },
   {
    "id": "b6",
@@ -440,7 +573,8 @@
    "msg": "cc",
    "cc": 34,
    "group": "sendB",
-   "color": "amber"
+   "color": "amber",
+   "ledIndex": 13
   },
   {
    "id": "b7",
@@ -449,7 +583,8 @@
    "msg": "cc",
    "cc": 35,
    "group": "sendB",
-   "color": "amber"
+   "color": "amber",
+   "ledIndex": 14
   },
   {
    "id": "b8",
@@ -458,7 +593,8 @@
    "msg": "cc",
    "cc": 36,
    "group": "sendB",
-   "color": "amber"
+   "color": "amber",
+   "ledIndex": 15
   },
   {
    "id": "p1",
@@ -467,7 +603,8 @@
    "msg": "cc",
    "cc": 49,
    "group": "pan",
-   "color": "lime"
+   "color": "lime",
+   "ledIndex": 16
   },
   {
    "id": "p2",
@@ -476,7 +613,8 @@
    "msg": "cc",
    "cc": 50,
    "group": "pan",
-   "color": "lime"
+   "color": "lime",
+   "ledIndex": 17
   },
   {
    "id": "p3",
@@ -485,7 +623,8 @@
    "msg": "cc",
    "cc": 51,
    "group": "pan",
-   "color": "lime"
+   "color": "lime",
+   "ledIndex": 18
   },
   {
    "id": "p4",
@@ -494,7 +633,8 @@
    "msg": "cc",
    "cc": 52,
    "group": "pan",
-   "color": "lime"
+   "color": "lime",
+   "ledIndex": 19
   },
   {
    "id": "p5",
@@ -503,7 +643,8 @@
    "msg": "cc",
    "cc": 53,
    "group": "pan",
-   "color": "lime"
+   "color": "lime",
+   "ledIndex": 20
   },
   {
    "id": "p6",
@@ -512,7 +653,8 @@
    "msg": "cc",
    "cc": 54,
    "group": "pan",
-   "color": "lime"
+   "color": "lime",
+   "ledIndex": 21
   },
   {
    "id": "p7",
@@ -521,7 +663,8 @@
    "msg": "cc",
    "cc": 55,
    "group": "pan",
-   "color": "lime"
+   "color": "lime",
+   "ledIndex": 22
   },
   {
    "id": "p8",
@@ -530,7 +673,8 @@
    "msg": "cc",
    "cc": 56,
    "group": "pan",
-   "color": "lime"
+   "color": "lime",
+   "ledIndex": 23
   },
   {
    "id": "f1",
@@ -616,7 +760,8 @@
     "msg": "note",
     "on": 62,
     "off": 29
-   }
+   },
+   "ledIndex": 24
   },
   {
    "id": "focus2",
@@ -630,7 +775,8 @@
     "msg": "note",
     "on": 62,
     "off": 29
-   }
+   },
+   "ledIndex": 25
   },
   {
    "id": "focus3",
@@ -644,7 +790,8 @@
     "msg": "note",
     "on": 62,
     "off": 29
-   }
+   },
+   "ledIndex": 26
   },
   {
    "id": "focus4",
@@ -658,7 +805,8 @@
     "msg": "note",
     "on": 62,
     "off": 29
-   }
+   },
+   "ledIndex": 27
   },
   {
    "id": "focus5",
@@ -672,7 +820,8 @@
     "msg": "note",
     "on": 62,
     "off": 29
-   }
+   },
+   "ledIndex": 28
   },
   {
    "id": "focus6",
@@ -686,7 +835,8 @@
     "msg": "note",
     "on": 62,
     "off": 29
-   }
+   },
+   "ledIndex": 29
   },
   {
    "id": "focus7",
@@ -700,7 +850,8 @@
     "msg": "note",
     "on": 62,
     "off": 29
-   }
+   },
+   "ledIndex": 30
   },
   {
    "id": "focus8",
@@ -714,7 +865,8 @@
     "msg": "note",
     "on": 62,
     "off": 29
-   }
+   },
+   "ledIndex": 31
   },
   {
    "id": "ctrl1",
@@ -728,7 +880,8 @@
     "msg": "note",
     "on": 60,
     "off": 28
-   }
+   },
+   "ledIndex": 32
   },
   {
    "id": "ctrl2",
@@ -742,7 +895,8 @@
     "msg": "note",
     "on": 60,
     "off": 28
-   }
+   },
+   "ledIndex": 33
   },
   {
    "id": "ctrl3",
@@ -756,7 +910,8 @@
     "msg": "note",
     "on": 60,
     "off": 28
-   }
+   },
+   "ledIndex": 34
   },
   {
    "id": "ctrl4",
@@ -770,7 +925,8 @@
     "msg": "note",
     "on": 60,
     "off": 28
-   }
+   },
+   "ledIndex": 35
   },
   {
    "id": "ctrl5",
@@ -784,7 +940,8 @@
     "msg": "note",
     "on": 60,
     "off": 28
-   }
+   },
+   "ledIndex": 36
   },
   {
    "id": "ctrl6",
@@ -798,7 +955,8 @@
     "msg": "note",
     "on": 60,
     "off": 28
-   }
+   },
+   "ledIndex": 37
   },
   {
    "id": "ctrl7",
@@ -812,7 +970,8 @@
     "msg": "note",
     "on": 60,
     "off": 28
-   }
+   },
+   "ledIndex": 38
   },
   {
    "id": "ctrl8",
@@ -826,7 +985,8 @@
     "msg": "note",
     "on": 60,
     "off": 28
-   }
+   },
+   "ledIndex": 39
   },
   {
    "id": "device",
@@ -840,7 +1000,8 @@
     "msg": "note",
     "on": 127,
     "off": 0
-   }
+   },
+   "ledIndex": 40
   },
   {
    "id": "mute",
@@ -854,7 +1015,8 @@
     "msg": "note",
     "on": 127,
     "off": 0
-   }
+   },
+   "ledIndex": 41
   },
   {
    "id": "solo",
@@ -868,7 +1030,8 @@
     "msg": "note",
     "on": 127,
     "off": 0
-   }
+   },
+   "ledIndex": 42
   },
   {
    "id": "arm",
@@ -882,7 +1045,8 @@
     "msg": "note",
     "on": 127,
     "off": 0
-   }
+   },
+   "ledIndex": 43
   },
   {
    "id": "up",
@@ -896,7 +1060,8 @@
     "msg": "cc",
     "on": 127,
     "off": 0
-   }
+   },
+   "ledIndex": 44
   },
   {
    "id": "down",
@@ -910,7 +1075,8 @@
     "msg": "cc",
     "on": 127,
     "off": 0
-   }
+   },
+   "ledIndex": 45
   },
   {
    "id": "left",
@@ -924,7 +1090,8 @@
     "msg": "cc",
     "on": 127,
     "off": 0
-   }
+   },
+   "ledIndex": 46
   },
   {
    "id": "right",
@@ -938,7 +1105,8 @@
     "msg": "cc",
     "on": 127,
     "off": 0
-   }
+   },
+   "ledIndex": 47
   }
  ]
 }

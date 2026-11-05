@@ -125,6 +125,7 @@
         "mode": { "enum": ["momentary", "toggle"] },
         "aftertouch": { "enum": ["poly", "channel"] },
         "verified": { "type": "boolean" },
+        "ledIndex": { "$ref": "#/$defs/byte", "description": "this control's address in a led SysEx message" },
         "led": {
           "type": "object",
           "required": ["msg"],
@@ -134,8 +135,7 @@
             "note": { "$ref": "#/$defs/byte" },
             "cc": { "$ref": "#/$defs/byte" },
             "on": { "$ref": "#/$defs/byte" },
-            "off": { "$ref": "#/$defs/byte" },
-            "index": { "$ref": "#/$defs/byte", "description": "this control's address in a led SysEx message" }
+            "off": { "$ref": "#/$defs/byte" }
           }
         }
       }

@@ -10,6 +10,7 @@
 //   - a run through a port that reads as a device, with the box ticked, makes matched controls verified and writes the record
 //   - the same run without the box, through a port named like a virtual one, or in the simulator, changes no number and no mark
 //   - a difference shows both values, and the JSON the page offers passes validateProfile
+//   - on a device page, SysEx waits for a click; then the unit is set up and Send and the colour button work
 const fs = require('fs'), path = require('path'), http = require('http'), os = require('os');
 const PW = require(process.env.PW || 'playwright');
 const ROOT = path.resolve(__dirname, '../..');
@@ -70,7 +71,8 @@ const playAll = async (page, { wrong = false } = {}) => page.evaluate(async ({ w
     const page = await ctx.newPage(); page.errors = [];
     page.on('pageerror', (e) => page.errors.push(String(e)));
     page.on('console', (m) => { if (m.type() === 'error' && !NOISE.some((r) => r.test(m.text()))) page.errors.push(m.text()); });
-    await page.goto(base + url); await page.waitForFunction(() => window.oavVerify);
+    await page.goto(base + url);
+    if (url.includes('/verify/')) await page.waitForFunction(() => window.oavVerify);
     return page;
   };
   const run = async (page, { wrong = false, attest = false, firmware = '1.0.4' } = {}) => {
@@ -138,6 +140,27 @@ const playAll = async (page, { wrong = false } = {}) => page.evaluate(async ({ w
     const r = await page.evaluate(() => window.oavVerify.result);
     row(r.profile.verifications[0].method === 'simulated' && !r.profile.controls.some((c) => c.verified === true), 'simulator: logged as simulated, nothing verified');
     row(await page.isHidden('#vf-attest-row'), 'simulator: no box to tick');
+    await page.context().close();
+  }
+  { // a device page: SysEx waits for a click, then the unit is set up and the buttons work
+    const hex = (b) => b.map((x) => x.toString(16).padStart(2, '0')).join(' ').toUpperCase();
+    const page = await open('/controllers/novation-launchpad-pro-mk3/', { port: 'LPProMK3 MIDI' });
+    await page.waitForFunction(() => document.getElementById('d-ctl').core);
+    row((await page.evaluate(() => window.__midi.asked.length)) === 0, 'device page: nothing asks for MIDI on load');
+    row(await page.isDisabled('.sx-send'), 'device page: Send waits for SysEx');
+    await page.click('#sx-on');
+    await page.waitForFunction(() => !document.querySelector('.sx-send').disabled);
+    const asked = await page.evaluate(() => window.__midi.asked.map((o) => !!o.sysex));
+    row(asked.join() === 'false,true', 'device page: plain MIDI, then SysEx, in that order', asked.join());
+    let sent = await page.evaluate(() => window.__midi.sent);
+    row(sent.some((b) => hex(b) === 'F0 00 20 29 02 0E 0E 01 F7'), 'device page: the unit is put in Programmer mode');
+    await page.click('.sx-send[data-sysex="live-mode"]');
+    await page.click('#sx-paint');
+    sent = await page.evaluate(() => window.__midi.sent);
+    row(sent.some((b) => hex(b) === 'F0 00 20 29 02 0E 0E 00 F7'), 'device page: Send sends the message');
+    row(sent.filter((b) => hex(b).startsWith('F0 00 20 29 02 0E 03 03')).length >= 64, 'device page: the colour reaches every pad');
+    await page.locator('#sysex').screenshot({ path: path.join(SHOTS, 'sysex.png') });
+    row(!page.errors.length, 'device page: no console errors', page.errors.join(' | '));
     await page.context().close();
   }
   { // a phone

@@ -180,6 +180,7 @@ true（鼓機的，或沒有鼓機時麥克風的）。<code>lag()</code> 把 <c
 <h4 id="changelog-2026-11-05">2026-11-05<a class="anchor" href="#changelog-2026-11-05" aria-label="#">#</a></h4>
 <ul>
 <li><strong>用自己的手驗控制器。</strong> <a href="../../zh/controllers/verify/">驗證頁</a>會一格一格亮起，比對機器送出的訊息和檔案，再交回更新過的 JSON，每筆結果都附上你的名字、日期和韌體。只有實機能把控制項標成已驗證：沒有 <code>verifications</code> 裡的實機紀錄，設定檔不接受 <code>verified: true</code>。</li>
+<li><strong>SysEx，等你開口才動。</strong> 七台控制器把切模式、換模板、LED 訊息寫成資料，每則都附說明書頁碼，機器頁面列得出來，也有送出按鈕。<code>&lt;oav-controller sysex&gt;</code> 會加一顆開啟 SysEx 的按鈕，開了之後機器每次連上都會設定好，<code>setLedColor()</code> 也能用。權限絕不自己跳出來。<a href="../../zh/controllers/novation-launchpad-pro-mk3/#sysex">Launchpad Pro MK3</a></li>
 <li><strong>格式放得下更多東西。</strong> 設定檔現在可以寫 <code>sysex</code>（切模式、換模板、LED 顏色，每則訊息都附出處）和 <code>palette</code>（LED 色票）。<a href="../../packages/midi/profile.schema.json"><code>profile.schema.json</code></a> 用 JSON Schema 描述這個格式，沒有跑這個套件的軟體也讀得懂。</li>
 </ul>
 <h4 id="changelog-2026-10-15">2026-10-15<a class="anchor" href="#changelog-2026-10-15" aria-label="#">#</a></h4>

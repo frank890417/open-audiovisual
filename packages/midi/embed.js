@@ -19,7 +19,7 @@ import { encodeMessage, relativeDelta } from './parse.js?v=dd4a4d59';
 import { validateProfile } from './profiles.js?v=dd4a4d59';
 
 /** Attributes <oav-controller> reads (also the query params of /embed/controller/). */
-export const EMBED_ATTRS = ['profile', 'layout', 'hardware', 'midi-out', 'channel', 'learn', 'picker', 'readout', 'follow', 'theme', 'telemetry'];
+export const EMBED_ATTRS = ['profile', 'layout', 'hardware', 'midi-out', 'channel', 'learn', 'picker', 'readout', 'follow', 'sysex', 'theme', 'telemetry'];
 /** DOM events <oav-controller> dispatches (bubbling, composed). */
 export const EMBED_EVENTS = ['ready', 'control', 'noteon', 'noteoff', 'connect', 'disconnect', 'status', 'profilechange', 'error'];
 export const EMBED_LAYOUTS = ['auto', 'face', 'stack'];
@@ -66,7 +66,7 @@ export function embedColor(v) {
  * Read the options of one embed from wherever they live.
  * @param {Element|URLSearchParams|object|((name:string)=>string|null)} src
  * @returns {{profile:string, layout:'auto'|'face'|'stack', hardware:{mode:string,port:string|null}, midiOut:{mode:string,port:string|null},
- *            channel:number|null, learn:boolean, picker:boolean, readout:boolean, follow:boolean, theme:'dark'|'light',
+ *            channel:number|null, learn:boolean, picker:boolean, readout:boolean, follow:boolean, sysex:boolean, theme:'dark'|'light',
  *            bg:string|null, frame:string|null, origin:string|null, lang:string|null}}
  */
 export function parseEmbedOptions(src) {
@@ -85,6 +85,7 @@ export function parseEmbedOptions(src) {
     midiOut: embedMode(any('midi-out', 'midiout', 'midiOut'), { bare: 'ask' }),
     channel: embedChannel(any('channel')),
     learn: embedFlag(any('learn')),
+    sysex: embedFlag(any('sysex')),
     picker: embedFlag(any('picker')),
     readout: embedFlag(any('readout')),
     follow: embedFlag(any('follow')),

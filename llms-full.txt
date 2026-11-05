@@ -394,7 +394,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 834 tests
+27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 839 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -2850,6 +2850,12 @@ So the project can see where its controllers and shows end up, the packages send
 
 Turn it off: `<oav-controller telemetry="off">` · `createController(p, { telemetry: false })` · `createShow({ telemetry: false })` · the iframe's `?telemetry=0` · or `globalThis.OPENAV_TELEMETRY = false` before anything loads. Source: `packages/midi/telemetry.js`.
 
+## SysEx: modes, templates, LED colours
+
+Some things only SysEx can do: put a Launchpad in Programmer mode, pick a Launch Control XL template, light a pad in any RGB colour. Profiles that have these list them in `sysex`, each message with its source, and the device's page shows them.
+
+The browser shows a permission prompt for SysEx, so nothing in this project asks by itself: `<oav-controller sysex>` adds a button, and `controller.enableSysex()` is the call behind it (run it from a click). Once it is on, the device is set up every time it connects, and `setLedColor(id, { r, g, b })` and `sendSysex(id)` work. [Package README](https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex).
+
 ## Add a controller
 
 1. Copy the closest file in `packages/midi/profiles/`, or a generic layout.
@@ -5051,7 +5057,7 @@ before it was generalized.)
 
 # API reference (generated)
 
-> 504 public names of oav-p5 0.8.4 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 505 public names of oav-p5 0.8.4 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -8440,6 +8446,7 @@ function draw() {
 - `indexProfile` (function, @openav/midi): `indexProfile(p)` — Builds the lookup from a MIDI message to the control it moves: `"cc:1:74"` maps to the knob listening for CC 74 on channel 1.
 - `isLive` (function, @openav/midi): `isLive(p)` — Says whether a MIDI port can still be sent to: it exists and its `state` is not `'disconnected'`.
 - `isProfileUrl` (function, @openav/midi): `isProfileUrl(ref)` — Tells a URL to a profile file apart from a profile id: `true` for `./pads.json`, `https://…`, `/p/x`, `false` for `'akai-lpd8'`.
+- `ledSysex` (function, @openav/midi): `ledSysex(p, control, color)` — Builds the bytes that light one control in a colour, from the profile's `led` messages and the control's `ledIndex`.
 - `linkControllers` (function, @openav/midi): `linkControllers(relay, signals, controllers)` — Links the on-screen controllers to phones over the room relay: tells phones which device is on screen, echoes this machine's moves to them, and mirrors theirs here.
 - `loadProfile` (function, @openav/midi): `loadProfile(ref, o = {})` — Loads a controller profile by id, short name or URL (a JSON file anywhere CORS allows), checking any file or object you give it; returns a promise.
 - `matchProfile` (function, @openav/midi): `matchProfile(portName, profiles)` — Finds the device profile that owns a MIDI port name, such as `'Minilab3 MIDI'`, by testing each profile's `match` patterns.
@@ -8489,7 +8496,7 @@ function draw() {
 - `defineController` (function, @openav/midi): `defineController(tag = 'oav-controller')` — Registers the controller element under another tag name (importing `@openav/midi/element` already registers it as `oav-controller`).
 - `describeDetail` (function, @openav/midi): `describeDetail(d)` — Writes the readout line for a `control` event payload: `midi/minilab3/knob1 = 0.42 ← CC 74 = 53 · ch 1`.
 - `describeMessage` (function, @openav/midi): `describeMessage(m)` — Writes one parsed MIDI message the way a person reads it: `CC 70 = 53`, `Note 36 · vel 90`, `Bend 12288`.
-- `EMBED_ATTRS` (constant, @openav/midi): `EMBED_ATTRS = array, 11 items` — The attributes the `oav-controller` element reads, which are also the query parameters of the iframe page: `profile`, `layout`, `hardware`, `midi-out` and more. (range ['profile', 'layout', 'hardware', 'midi-out', 'channel', 'learn', 'picker', 'readout', 'follow', 'theme', 'telemetry'])
+- `EMBED_ATTRS` (constant, @openav/midi): `EMBED_ATTRS = array, 12 items` — The attributes the `oav-controller` element reads, which are also the query parameters of the iframe page: `profile`, `layout`, `hardware`, `midi-out` and more. (range ['profile', 'layout', 'hardware', 'midi-out', 'channel', 'learn', 'picker', 'readout', 'follow', 'theme', 'telemetry'])
 - `EMBED_EVENTS` (constant, @openav/midi): `EMBED_EVENTS = array, 9 items` — The nine events the `oav-controller` element dispatches and the iframe posts to its page, from `ready` and `control` to `profilechange` and `error`. (range ['ready', 'control', 'noteon', 'noteoff', 'connect', 'disconnect', 'status', 'profilechange', 'error'])
 - `EMBED_LAYOUTS` (constant, @openav/midi): `EMBED_LAYOUTS = array, 3 items` — The three layouts a controller can have: `auto`, `face` (the device as it looks) and `stack` (re-gridded for a tall box). (range ['auto', 'face', 'stack'])
 - `embedChannel` (function, @openav/midi): `embedChannel(v)` — Reads the `channel` attribute: a whole number from 1 to 16, or `null` for anything else.

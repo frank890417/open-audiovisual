@@ -142,6 +142,50 @@ function jsonLd(t, home, c, d, locale, { title, description, file }) {
   ];
 }
 
+// ------------------------------------------------------------------ SysEx: the data is HTML, the buttons need a browser and a device
+const canSend = (m) => m.dir !== 'in' && (m.args || []).every((a) => a.default !== undefined);
+/** What a message can change, in words beside the bytes: its arguments and their named values. */
+function argsText(t, m) {
+  return (m.args || []).map((a) => `<code>{${esc(a.name)}}</code> ${a.min ?? 0}–${a.max ?? 127}${a.default !== undefined ? ` (${t.detail.sysex.dflt} ${a.default})` : ''}${a.values ? `: ${Object.entries(a.values).map(([k, v]) => `${k} ${esc(v)}`).join(', ')}` : ''}`).join('<br>');
+}
+export function sysexSection(t, d, sec) {
+  const p = d.p, X = t.detail.sysex, list = p.sysex?.messages;
+  if (!list?.length) return '';
+  const rgb = list.some((m) => m.purpose === 'led' && (m.args || []).some((a) => a.name === 'r')) && p.controls.some((c) => c.ledIndex !== undefined);
+  const row = (m) => {
+    const s = p.sources[m.cite.source], where = m.cite.where ? ` · ${esc(m.cite.where)}` : '';
+    return `<tr${m.verified === false ? ' class="unv"' : ''}>
+          <th scope="row">${esc(m.label)}${m.verified === false ? ` <span class="tag-unv">${t.specs.unverified}</span>` : ''}${m.note ? `<small>${esc(m.note)}</small>` : ''}</th>
+          <td>${esc(X.purposes[m.purpose] || m.purpose)}${m.dir === 'in' ? ` ${X.fromDevice}` : ''}</td>
+          <td><code class="sx-bytes">${esc(m.bytes)}</code>${m.args?.length ? `<small>${argsText(t, m)}</small>` : ''}</td>
+          <td>${s.url ? `<a href="${attr(s.url)}" rel="noopener">${esc(s.title)}</a>` : esc(s.title)}${where}</td>
+          <td class="js-only">${canSend(m) ? `<button type="button" class="vf-btn sx-send" data-sysex="${attr(m.id)}" disabled>${X.send}</button>` : ''}</td>
+        </tr>`;
+  };
+  return `<!-- ═════ what it accepts beyond notes and CCs ═════ -->
+  <section class="sec" id="sysex" aria-labelledby="sysex-title">
+    ${sec('sysex', 'SysEx', fill(X.title, { name: esc(fullName(p, t.lang)) }), X.lede)}
+    <div class="table-scroll" role="region" aria-label="${attr(X.title.replace('{name}', p.name))}" tabindex="0">
+      <table class="sx">
+        <thead><tr><th scope="col">${X.cols.what}</th><th scope="col">${X.cols.purpose}</th><th scope="col">${X.cols.bytes}</th><th scope="col">${X.cols.source}</th><th scope="col" class="js-only"><span class="sr-only">${X.send}</span></th></tr></thead>
+        <tbody>
+        ${list.map(row).join('\n        ')}
+        </tbody>
+      </table>
+    </div>
+    ${p.sysex.connect?.length ? `<p class="note">${fill(X.connect, { list: p.sysex.connect.map((id) => `<code>${esc(id)}</code>`).join(' ') })}</p>` : ''}
+    <div class="sx-try js-only">
+      <p class="note">${X.warn}</p>
+      <div class="vf-row">
+        <button type="button" class="vf-btn vf-go" id="sx-on">${X.on}</button>
+        ${rgb ? `<label class="sx-color"><span>${X.color}</span> <input type="color" id="sx-color" value="#ff5a1f" disabled></label><button type="button" class="vf-btn" id="sx-paint" disabled>${X.paint}</button>` : ''}
+        <span class="vf-note" id="sx-status" role="status"></span>
+      </div>
+    </div>
+  </section>
+`;
+}
+
 // ------------------------------------------------------------------ the page
 export function renderDetail(t, home, locale, d, cat) {
   const D = t.detail, p = d.p, id = p.id, c = detailCtx(id, locale);
@@ -194,6 +238,7 @@ export function renderDetail(t, home, locale, d, cat) {
   if (d.prov.community) badgeLi.push(`<li class="b-comm">${B.community}</li>`);
   if (d.prov.generic) badgeLi.push(`<li class="b-gen">${B.generic}</li>`);
   if (d.prov.led) badgeLi.push(`<li class="b-led">${B.led}</li>`);
+  if (d.prov.sysex) badgeLi.push(`<li class="b-led"><a href="#sysex">SysEx</a></li>`);
   if (d.prov.unverified) badgeLi.push(`<li class="b-unv">${fill(B.unverified, { n: d.prov.unverified })}</li>`);
 
   // snippets
@@ -201,7 +246,7 @@ export function renderDetail(t, home, locale, d, cat) {
   const sn = snippets(base, p), snOut = snippets({ ...base, midiOut: 'IAC' }, p);
   const inject = `document.head.prepend(Object.assign(document.createElement('script'), { src: '${P5_SRC}?profile=${id}' }));`;
   const issueUrl = `${REPO}/issues/new?title=${encodeURIComponent(fill(D.report.issueTitle, { name, id }))}`;
-  const runtime = { lang: locale, copy: home.ui.copy, copied: home.ui.copied, profile: id };
+  const runtime = { lang: locale, copy: home.ui.copy, copied: home.ui.copied, profile: id, sysex: p.sysex ? D.sysex.status : null };
 
   const head = headBasics(home, c, { title, description, ogDescription: description, ogImage: OG_IMAGE, ogImageAlt: D.ld.image, robots: 'index, follow, max-image-preview:large, max-snippet:-1', ld });
   return guardEmail(`<!DOCTYPE html>
@@ -275,6 +320,8 @@ ${topBar(home, c)}
       </div>
     </div>
   </section>
+
+  ${sysexSection(t, d, sec)}
 
   <!-- ═════ use it ═════ -->
   <section class="sec" id="use" aria-labelledby="use-title">

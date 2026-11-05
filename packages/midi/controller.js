@@ -29,6 +29,7 @@
 
 import { parseMessage, encodeMessage, genericSignals, relativeDelta, relativeValue, bendToUnit, unitToBend, describe } from './parse.js?v=dd4a4d59';
 import { normalizeProfile, indexProfile, eventKey } from './profiles.js?v=dd4a4d59';
+import { sysexBytes, sysexMessage, ledSysex } from './sysex.js?v=dd4a4d59';
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 let instances = 0;
@@ -269,6 +270,18 @@ export class MidiController {
   _led(c, st, note) { if (c.led && this.onLed) { const b = this.ledBytes(c, st, note); if (b) this.onLed(b); } }
   /** Every LED at its current state — send once when the hardware connects (idle colours). */
   ledSnapshot() { return this.profile.controls.filter((c) => c.led && c.type !== 'keys').map((c) => this.ledBytes(c)).filter(Boolean); }
+
+  // ------------------------------------------------------------------ SysEx (bytes only: sending, and the permission it needs, are the host's)
+  /** The messages of `sysex.connect`, as bytes: what this device is sent on connect once someone has switched SysEx on. */
+  setupBytes() { return (this.profile.sysex?.connect || []).map((id) => sysexBytes(sysexMessage(this.profile, id))); }
+  /** One message of the profile, as bytes. Throws for an id the profile does not have. */
+  sysexBytes(id, args = {}) {
+    const m = sysexMessage(this.profile, id);
+    if (!m) throw new Error(`profile ${this.profile.id} has no SysEx message "${id}"`);
+    return sysexBytes(m, args);
+  }
+  /** The bytes that light one control in any colour ({ r, g, b } 0..255) or a palette value ({ color }); null when it cannot. */
+  ledColorBytes(id, color) { return ledSysex(this.profile, this.control(id), color); }
 
   // ------------------------------------------------------------------ learn
   /** Arm learn for one control: the next hardware message of a compatible kind is bound to it. */

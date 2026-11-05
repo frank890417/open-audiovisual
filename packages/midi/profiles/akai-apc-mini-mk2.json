@@ -45,6 +45,80 @@
   }
  ],
  "notes": "Session (clip-launch) layout, the one the unit boots into: the 8×8 grid sends notes 0–63 on channel 1, bottom-left = 0. Drum mode (Shift + scene 6: notes 64–127 on channel 10) and Note mode (Shift + scene 7: notes on the second USB port) are not modelled — 學習 can rebind. Shift (note 122) is a plain button the host reads; the printed Shift legends are host functions. The unit has two USB ports: the first (…Control on Linux, plain \"APC mini mk2\" on Windows) carries everything here; the second carries Note mode only. LED feedback: grid pads lit at 100 % brightness (channel 7) with palette 37 (#00A9FF) while held; track buttons (red) and scene buttons (green) are single-colour, velocity 1 = on.",
+ "sysex": {
+  "messages": [
+   {
+    "id": "device-inquiry",
+    "purpose": "identity",
+    "label": "Ask the unit who it is and which firmware it runs",
+    "bytes": "F0 7E 00 06 01 F7",
+    "cite": {
+     "source": 0,
+     "where": "pp. 10–12"
+    }
+   },
+   {
+    "id": "introduction",
+    "purpose": "init",
+    "label": "Say hello before any other device-specific message",
+    "bytes": "F0 47 7F 4F 60 00 04 00 {major} {minor} {bugfix} F7",
+    "args": [
+     {
+      "name": "major",
+      "default": 1,
+      "label": "version of the application saying hello"
+     },
+     {
+      "name": "minor",
+      "default": 0,
+      "label": "version of the application saying hello"
+     },
+     {
+      "name": "bugfix",
+      "default": 0,
+      "label": "version of the application saying hello"
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 13"
+    }
+   },
+   {
+    "id": "led-rgb",
+    "purpose": "led",
+    "label": "Light one pad in any colour",
+    "bytes": "F0 47 7F 4F 24 00 08 {led} {led} {r.msb} {r.lsb} {g.msb} {g.lsb} {b.msb} {b.lsb} F7",
+    "args": [
+     {
+      "name": "led",
+      "label": "LED address",
+      "max": 63
+     },
+     {
+      "name": "r",
+      "max": 255
+     },
+     {
+      "name": "g",
+      "max": 255
+     },
+     {
+      "name": "b",
+      "max": 255
+     }
+    ],
+    "cite": {
+     "source": 0,
+     "where": "p. 9"
+    },
+    "note": "The manual allows a range of pads per message; here start and end are the same pad."
+   }
+  ],
+  "connect": [
+   "introduction"
+  ]
+ },
  "face": {
   "w": 100,
   "h": 87.5,
@@ -341,7 +415,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 0
   },
   {
    "id": "pad2",
@@ -356,7 +431,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 1
   },
   {
    "id": "pad3",
@@ -371,7 +447,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 2
   },
   {
    "id": "pad4",
@@ -386,7 +463,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 3
   },
   {
    "id": "pad5",
@@ -401,7 +479,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 4
   },
   {
    "id": "pad6",
@@ -416,7 +495,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 5
   },
   {
    "id": "pad7",
@@ -431,7 +511,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 6
   },
   {
    "id": "pad8",
@@ -446,7 +527,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 7
   },
   {
    "id": "pad9",
@@ -461,7 +543,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 8
   },
   {
    "id": "pad10",
@@ -476,7 +559,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 9
   },
   {
    "id": "pad11",
@@ -491,7 +575,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 10
   },
   {
    "id": "pad12",
@@ -506,7 +591,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 11
   },
   {
    "id": "pad13",
@@ -521,7 +607,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 12
   },
   {
    "id": "pad14",
@@ -536,7 +623,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 13
   },
   {
    "id": "pad15",
@@ -551,7 +639,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 14
   },
   {
    "id": "pad16",
@@ -566,7 +655,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 15
   },
   {
    "id": "pad17",
@@ -581,7 +671,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 16
   },
   {
    "id": "pad18",
@@ -596,7 +687,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 17
   },
   {
    "id": "pad19",
@@ -611,7 +703,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 18
   },
   {
    "id": "pad20",
@@ -626,7 +719,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 19
   },
   {
    "id": "pad21",
@@ -641,7 +735,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 20
   },
   {
    "id": "pad22",
@@ -656,7 +751,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 21
   },
   {
    "id": "pad23",
@@ -671,7 +767,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 22
   },
   {
    "id": "pad24",
@@ -686,7 +783,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 23
   },
   {
    "id": "pad25",
@@ -701,7 +799,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 24
   },
   {
    "id": "pad26",
@@ -716,7 +815,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 25
   },
   {
    "id": "pad27",
@@ -731,7 +831,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 26
   },
   {
    "id": "pad28",
@@ -746,7 +847,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 27
   },
   {
    "id": "pad29",
@@ -761,7 +863,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 28
   },
   {
    "id": "pad30",
@@ -776,7 +879,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 29
   },
   {
    "id": "pad31",
@@ -791,7 +895,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 30
   },
   {
    "id": "pad32",
@@ -806,7 +911,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 31
   },
   {
    "id": "pad33",
@@ -821,7 +927,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 32
   },
   {
    "id": "pad34",
@@ -836,7 +943,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 33
   },
   {
    "id": "pad35",
@@ -851,7 +959,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 34
   },
   {
    "id": "pad36",
@@ -866,7 +975,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 35
   },
   {
    "id": "pad37",
@@ -881,7 +991,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 36
   },
   {
    "id": "pad38",
@@ -896,7 +1007,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 37
   },
   {
    "id": "pad39",
@@ -911,7 +1023,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 38
   },
   {
    "id": "pad40",
@@ -926,7 +1039,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 39
   },
   {
    "id": "pad41",
@@ -941,7 +1055,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 40
   },
   {
    "id": "pad42",
@@ -956,7 +1071,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 41
   },
   {
    "id": "pad43",
@@ -971,7 +1087,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 42
   },
   {
    "id": "pad44",
@@ -986,7 +1103,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 43
   },
   {
    "id": "pad45",
@@ -1001,7 +1119,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 44
   },
   {
    "id": "pad46",
@@ -1016,7 +1135,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 45
   },
   {
    "id": "pad47",
@@ -1031,7 +1151,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 46
   },
   {
    "id": "pad48",
@@ -1046,7 +1167,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 47
   },
   {
    "id": "pad49",
@@ -1061,7 +1183,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 48
   },
   {
    "id": "pad50",
@@ -1076,7 +1199,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 49
   },
   {
    "id": "pad51",
@@ -1091,7 +1215,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 50
   },
   {
    "id": "pad52",
@@ -1106,7 +1231,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 51
   },
   {
    "id": "pad53",
@@ -1121,7 +1247,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 52
   },
   {
    "id": "pad54",
@@ -1136,7 +1263,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 53
   },
   {
    "id": "pad55",
@@ -1151,7 +1279,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 54
   },
   {
    "id": "pad56",
@@ -1166,7 +1295,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 55
   },
   {
    "id": "pad57",
@@ -1181,7 +1311,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 56
   },
   {
    "id": "pad58",
@@ -1196,7 +1327,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 57
   },
   {
    "id": "pad59",
@@ -1211,7 +1343,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 58
   },
   {
    "id": "pad60",
@@ -1226,7 +1359,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 59
   },
   {
    "id": "pad61",
@@ -1241,7 +1375,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 60
   },
   {
    "id": "pad62",
@@ -1256,7 +1391,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 61
   },
   {
    "id": "pad63",
@@ -1271,7 +1407,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 62
   },
   {
    "id": "pad64",
@@ -1286,7 +1423,8 @@
     "ch": 7,
     "on": 37,
     "off": 0
-   }
+   },
+   "ledIndex": 63
   },
   {
    "id": "track1",
