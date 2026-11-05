@@ -14,8 +14,9 @@
 // sweep after the step moved on are all ignored; only the first new message of a step counts, and a message
 // the profile gives to another control is flagged as probably the wrong control rather than offered as a fix.
 
-import { parseMessage } from './parse.js?v=060a5708';
+import { parseMessage, encodeMessage } from './parse.js?v=060a5708';
 import { normalizeProfile, indexProfile, eventKey, validateProfile } from './profiles.js?v=060a5708';
+import { ledSysex } from './sysex.js?v=060a5708';
 
 /** Message types a person can answer with. The rest arrive around an answer, not as one. */
 const ANSWERS = new Set(['cc', 'noteon', 'pitchbend', 'chanat', 'program']);
@@ -42,6 +43,25 @@ export function messageText(m) {
 
 const eventMessage = (ev) => (ev.type === 'cc' ? { msg: 'cc', ch: ev.ch, cc: ev.cc } : ev.type === 'noteon' ? { msg: 'note', ch: ev.ch, note: ev.note } : { msg: ev.type, ch: ev.ch });
 const stepKey = (s) => (s.key ? `${s.id}#${s.key}` : s.id);
+
+/** The bytes that turn one control's LED on or off for a check: the note or CC its `led` says, at its on or off value. null with no `led`. */
+export function ledTestBytes(c, on) {
+  const L = c.led; if (!L) return null;
+  const value = on ? (L.on ?? 127) : (L.off ?? 0), ch = L.ch ?? c.ch;
+  return L.msg === 'cc' ? encodeMessage({ type: 'cc', ch, cc: L.cc ?? c.cc, value }) : encodeMessage({ type: 'noteon', ch, note: L.note ?? c.note, vel: value });
+}
+
+/**
+ * The same for an LED only SysEx can reach (`ledIndex`, no `led`): white or off, in whichever `led` message the profile has.
+ * Answers { bytes, message } so a confirmed light can vouch for that message too.
+ */
+export function ledTestSysex(p, c, on) {
+  const led = (p.sysex?.messages || []).filter((m) => m.purpose === 'led' && m.dir !== 'in');
+  const has = (m, n) => (m.args || []).some((a) => a.name === n);
+  const rgb = led.find((m) => has(m, 'r')), flat = led.find((m) => has(m, 'color'));
+  const bytes = ledSysex(p, c, rgb ? (on ? { r: 255, g: 255, b: 255 } : { r: 0, g: 0, b: 0 }) : { color: on ? 127 : 0 });
+  return bytes ? { bytes, message: (rgb || flat).id } : null;
+}
 
 /**
  * What a run of CC values says about an encoder: one of RELATIVE_MODES, false for absolute, null when it cannot tell.
@@ -79,6 +99,7 @@ export class VerifySession {
     this.raw = profile;
     this.p = JSON.parse(JSON.stringify(normalizeProfile(profile)));
     this._reindex();
+    this.only = only;
     this.steps = this._steps(only);
     this.at = 0;
     this.state = this.steps.length ? 'waiting' : 'done';   // waiting → hearing → (next) | differs → (decision)
@@ -213,6 +234,43 @@ export class VerifySession {
 
   /** What the LED of one control did when it was sent: 'match' or 'mismatch'. */
   setLed(id, led) { (this.leds ||= new Map()).set(id, led); }
+  /** A SysEx message tried on this unit: 'match' when it did what its label says. */
+  setSysex(id, result) { (this.sysex ||= new Map()).set(id, result); }
+  /** Controls whose LED can be checked: confirmed in this run, with an LED the profile says how to reach. */
+  ledTargets({ sysex = false } = {}) {
+    const ok = (c) => ['match', 'corrected'].includes(this.markOf(c.id));
+    return this.p.controls.filter((c) => c.type !== 'keys' && ok(c) && (c.led || (sysex && c.ledIndex !== undefined)));
+  }
+
+  /** The run as plain JSON, to survive a reload. Only what changed is kept: the rest is the profile. */
+  snapshot() {
+    const base = normalizeProfile(this.raw).controls, changed = {};
+    for (const c of this.p.controls) {
+      const now = messageOf(c), was = messageOf(base.find((x) => x.id === c.id));
+      if (JSON.stringify(now) !== JSON.stringify(was)) changed[c.id] = now;
+    }
+    return { v: 1, id: this.p.id, only: this.only, at: this.at, steps: this.steps.length, marks: [...this.marks], leds: [...(this.leds || [])], sysex: [...(this.sysex || [])], changed };
+  }
+
+  /** A run back from a snapshot, or null when it no longer fits the file (the profile changed underneath it). */
+  static restore(profile, snap) {
+    if (snap?.v !== 1 || snap.id !== profile.id) return null;
+    const s = new VerifySession(profile, { only: snap.only });
+    const keys = new Set(s.steps.map(stepKey));
+    if (snap.steps !== s.steps.length || !(snap.at >= 0 && snap.at <= s.steps.length) || !snap.marks.every(([k]) => keys.has(k))) return null;
+    for (const [id, m] of Object.entries(snap.changed || {})) {
+      const c = s.p.controls.find((x) => x.id === id);
+      if (!c) return null;
+      for (const k of ['cc', 'note']) delete c[k];
+      Object.assign(c, m);
+    }
+    s._reindex();
+    s.at = snap.at; s.marks = new Map(snap.marks);
+    if (snap.leds?.length) s.leds = new Map(snap.leds);
+    if (snap.sysex?.length) s.sysex = new Map(snap.sysex);
+    s.state = s.at < s.steps.length ? 'waiting' : 'done';
+    return s;
+  }
 
   /** Per control, in `results` form: keys merge their two steps, unchecked controls are left out. */
   results() {
@@ -225,6 +283,7 @@ export class VerifySession {
       const extra = { ...(m.was ? { was: m.was } : {}), ...(m.got ? { got: m.got } : {}), ...(led ? { led } : {}) };
       out[c.id] = Object.keys(extra).length ? { result: worst, ...extra } : worst;
     }
+    for (const [id, r] of this.sysex || []) out[`sysex:${id}`] = r;
     return out;
   }
 
@@ -255,6 +314,12 @@ export function applyVerification(raw, session, meta) {
   const p = JSON.parse(JSON.stringify(raw)), hardware = meta.method === 'hardware';
   const results = session.results(), log = {};
   for (const [id, r] of Object.entries(results)) {
+    if (id.startsWith('sysex:')) {
+      log[id] = r;
+      const m = p.sysex.messages.find((x) => x.id === id.slice(6));
+      if (hardware && r === 'match') m.verified = true; else if (hardware && m.verified === true) m.verified = false;
+      continue;
+    }
     const c = p.controls.find((x) => x.id === id), res = typeof r === 'string' ? r : r.result;
     if (!hardware) { log[id] = res === 'corrected' ? { result: 'mismatch', got: r.got } : r; continue; }
     log[id] = r;

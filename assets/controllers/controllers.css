@@ -377,3 +377,8 @@ table.sx th:first-child { width: 30%; }
 .imp-list dt { font: 500 12px/1.3 var(--mono); color: var(--fg-3); }
 .imp-list dd { margin: 4px 0 0; }
 .auto-note { margin: 10px 0 0; padding: 8px 12px; border-left: 2px solid var(--sig); color: var(--fg-2); font-size: 14.5px; }
+.vf-resume { display: grid; gap: 10px; padding: 12px 14px; border: 1px solid var(--sig); background: var(--ink-2); }
+.vf-resume[hidden], .vf-lights[hidden] { display: none; }
+.vf-resume p { margin: 0; }
+.vf-lights { margin: 20px 0 0; display: grid; gap: 8px; max-width: 640px; }
+.vf-lights h3, .vf-lights p { margin: 0; }

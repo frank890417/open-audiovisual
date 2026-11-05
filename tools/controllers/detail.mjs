@@ -363,7 +363,7 @@ ${topBar(home, c)}
       <li class="snip"><h3>${D.use.iframeTitle}</h3><p>${D.use.iframeText}</p>${term('html', 'snip-iframe', sn.iframe)}</li>
       <li class="snip"><h3>${D.use.outTitle}</h3><p>${fill(D.use.outText, { href: c.to('controllers', '#embed') })}</p>${term('html', 'snip-daw', snOut.daw)}<p class="note">${D.use.outSteps}</p></li>
     </ol>
-    ${d.prov.imported ? '' : `<div class="p5-block" id="p5">
+    <div class="p5-block" id="p5">
       <h3>${D.use.p5Title}</h3>
       <p>${fill(device ? D.use.p5Text : D.use.p5TextGeneric, { id, name: esc(name) })}</p>
       ${term('javascript', 'snip-p5', inject)}
@@ -372,7 +372,7 @@ ${topBar(home, c)}
       ${d.p.controls.some((x) => !['knob', 'fader', 'pad', 'keys'].includes(x.type)) ? `<p class="note">${D.use.p5Other}</p>` : ''}
       ${device ? '' : `<p class="note">${D.use.p5Generic}</p>`}
       <p><a class="more" href="${c.to('docs', '')}#p5">${D.use.p5Docs} →</a></p>
-    </div>`}
+    </div>
   </section>
 
   ${device ? exportSection(t, c, d, sec) : ''}

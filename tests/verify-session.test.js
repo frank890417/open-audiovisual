@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateProfile } from '../packages/midi/profiles.js';
 import { profileById, PROFILES } from '../packages/midi/profiles/index.js';
-import { VerifySession, applyVerification, verificationReport, inferRelative, messageOf, messageText, portMethod } from '../packages/midi/verify-session.js';
+import { VerifySession, applyVerification, verificationReport, inferRelative, messageOf, messageText, portMethod, ledTestBytes, ledTestSysex } from '../packages/midi/verify-session.js';
 
 const META = { date: '2026-11-12', by: 'A. Tester', method: 'hardware', firmware: '1.0.4', os: 'macOS 26.1', browser: 'Chrome 142', port: 'LPD8 mk2', tool: 'openaudiovisual.com/controllers/verify/' };
 const noteOn = (ch, n, v = 100) => [0x90 | (ch - 1), n, v];
@@ -204,4 +204,102 @@ test('text: a message reads the way a chart prints it, and the report lists ever
   assert.match(r, /akai-lpd8/); assert.match(r, /Firmware: 1\.0\.4/); assert.match(r, /CC 119 · ch 16/); assert.match(r, /corrected 1/);
   assert.ok(verificationReport(raw, s, META, { max: 100 }).length < 200, 'stays short enough for a link');
   assert.deepEqual(validateProfile(raw), []);
+});
+
+// ------------------------------------------------------------------ picking a run up again
+const jsonTrip = (x) => JSON.parse(JSON.stringify(x));
+
+test('a run survives being written down: position, results, corrections and lights', () => {
+  const raw = profile(), s = new VerifySession(raw), a = s.current.id;
+  s.feed(cc(16, 119, 10)); s.accept();                 // a correction
+  s.feed(bytesOf(s.current.control)); s.settle();      // a match
+  s.skip(); s.absent();
+  s.setLed(a, 'match');
+  const t = VerifySession.restore(raw, jsonTrip(s.snapshot()));
+  assert.equal(t.at, s.at); assert.equal(t.state, 'waiting'); assert.equal(t.current.id, s.current.id);
+  assert.deepEqual(t.results(), s.results());
+  assert.deepEqual(t.counts(), s.counts());
+  assert.deepEqual(messageOf(t.p.controls.find((c) => c.id === a)), messageOf(s.p.controls.find((c) => c.id === a)), 'the correction came back');
+  assert.ok(t.index.get('cc:16:119'), 'and the message lookup knows it');
+  // it goes on from there, to the same file
+  while (t.current) t.skip();
+  const out = applyVerification(raw, t, META);
+  assert.deepEqual(out.problems, []);
+  assert.equal(out.profile.controls.find((c) => c.id === a).cc, 119);
+  assert.equal(out.profile.verifications[0].results[a].led, 'match');
+});
+
+test('a finished run restores as finished, and an "only unconfirmed" run keeps its scope', () => {
+  const raw = profile(), s = new VerifySession(raw); playAll(s);
+  const t = VerifySession.restore(raw, jsonTrip(s.snapshot()));
+  assert.equal(t.state, 'done'); assert.equal(t.current, null); assert.equal(t.counts().match, s.steps.length);
+  const u = new VerifySession(raw, { only: 'unconfirmed' }); u.skip();
+  assert.equal(VerifySession.restore(raw, jsonTrip(u.snapshot())).only, 'unconfirmed');
+});
+
+test('a snapshot that no longer fits the file is refused, not half-applied', () => {
+  const raw = profile(), snap = jsonTrip(new VerifySession(raw).snapshot());
+  assert.equal(VerifySession.restore(profile('korg-nanokontrol2'), snap), null, 'another device');
+  assert.equal(VerifySession.restore(raw, { ...snap, v: 2 }), null);
+  assert.equal(VerifySession.restore(raw, null), null);
+  assert.equal(VerifySession.restore(raw, { ...snap, steps: snap.steps + 1 }), null, 'controls were added since');
+  assert.equal(VerifySession.restore(raw, { ...snap, at: 999 }), null);
+  assert.equal(VerifySession.restore(raw, { ...snap, marks: [['gone', { result: 'match' }]] }), null);
+  assert.equal(VerifySession.restore(raw, { ...snap, changed: { gone: { msg: 'cc', ch: 1, cc: 1 } } }), null);
+});
+
+// ------------------------------------------------------------------ the lights
+test('the LED of a control is lit with what its file says, and turned off again', () => {
+  const pad = { ch: 1, msg: 'note', note: 11, led: { msg: 'note', on: 5, off: 0 } };
+  assert.deepEqual(ledTestBytes(pad, true), [0x90, 11, 5]);
+  assert.deepEqual(ledTestBytes(pad, false), [0x90, 11, 0]);
+  assert.deepEqual(ledTestBytes({ ch: 1, msg: 'cc', cc: 91, led: { msg: 'cc', ch: 3 } }, true), [0xb2, 91, 127], 'a CC LED, on another channel, default on value');
+  assert.equal(ledTestBytes({ ch: 1, msg: 'cc', cc: 1 }, true), null);
+});
+
+test('only what the run confirmed is offered, and SysEx LEDs only when asked for', () => {
+  const raw = profile('akai-apc-mini-mk2'), s = new VerifySession(raw);
+  assert.deepEqual(s.ledTargets(), [], 'nothing confirmed yet');
+  s.feed(bytesOf(s.current.control)); s.settle();
+  assert.equal(s.ledTargets().length, 1);
+  const ml = profile('arturia-minilab3'), m = new VerifySession(ml);
+  while (m.current?.control.ledIndex === undefined) m.skip();
+  m.feed(bytesOf(m.current.control)); m.settle();
+  assert.deepEqual(m.ledTargets(), [], 'its pads have no plain LED message');
+  assert.equal(m.ledTargets({ sysex: true }).length, 1);
+});
+
+test('a SysEx LED is built from the message the file has, and a confirmed light vouches for that message', () => {
+  const ml = profile('arturia-minilab3'), pad = ml.controls.find((c) => c.ledIndex !== undefined);
+  const on = ledTestSysex(ml, pad, true);
+  assert.equal(on.message, 'led-rgb');
+  assert.deepEqual(on.bytes.slice(-5), [52, 127, 127, 127, 0xf7]);
+  assert.deepEqual(ledTestSysex(ml, pad, false).bytes.slice(-4), [0, 0, 0, 0xf7]);
+  const lcxl = profile('novation-launch-control-xl-mk2'), up = lcxl.controls.find((c) => c.id === 'up');
+  assert.equal(ledTestSysex(lcxl, up, true).message, 'led-set', 'no RGB message: the flat one');
+  assert.equal(ledTestSysex(profile('akai-lpd8'), { ledIndex: 1 }, true), null);
+  const s = new VerifySession(ml);
+  while (s.current?.control.id !== pad.id) s.skip();
+  s.feed(bytesOf(s.current.control)); s.settle();
+  s.setLed(pad.id, 'match'); s.setSysex('led-rgb', 'match');
+  while (s.current) s.skip();
+  const out = applyVerification(ml, s, META);
+  assert.deepEqual(out.problems, []);
+  assert.equal(out.profile.sysex.messages.find((m) => m.id === 'led-rgb').verified, true);
+  assert.equal(out.profile.verifications[0].results['sysex:led-rgb'], 'match');
+  assert.equal(out.profile.verifications[0].results[pad.id].led, 'match');
+  // the same run without hardware vouches for nothing
+  const v = applyVerification(ml, s, { date: '2026-11-06', by: 'CI', method: 'virtual' });
+  assert.deepEqual(v.problems, []);
+  assert.equal(v.profile.sysex.messages.find((m) => m.id === 'led-rgb').verified, false);
+});
+
+test('a dark LED is logged and takes nothing from the control: the input was still right', () => {
+  const raw = profile('akai-apc-mini-mk2'), s = new VerifySession(raw), id = s.current.id;
+  s.feed(bytesOf(s.current.control)); s.settle();
+  s.setLed(id, 'mismatch');
+  const { profile: out, problems } = applyVerification(raw, s, META);
+  assert.deepEqual(problems, []);
+  assert.equal(out.controls.find((c) => c.id === id).verified, true);
+  assert.equal(out.verifications[0].results[id].led, 'mismatch');
 });

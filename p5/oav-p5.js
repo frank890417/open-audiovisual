@@ -394,28 +394,53 @@
     mini('akai-lpd8', 'lpd8', 'lpd\\s*8', [70, 71, 72, 73, 74, 75, 76, 77], [], PADS),
   ];
   var profiles = null, profilesLoading = null;      // every OAV profile, loaded the first time a device needs one
+  // controllers imported from QLC+: a list that says how to recognise each one, and its file, fetched only for the one in use
+  var importedList = [], importedUrl = null, importedFull = [], importedAsked = {};
   function loadProfiles() {
     if (!profilesLoading) {
-      profilesLoading = load('packages/midi/profiles/index.js').then(function (m) { profiles = m.PROFILES || []; tables = {}; return profiles; },
+      profilesLoading = load('packages/midi/profiles/index.js').then(function (m) {
+        profiles = m.PROFILES || []; tables = {};
+        return load('packages/midi/profiles/imported.js').then(function (i) { importedList = i.IMPORTED || []; importedUrl = i.importedUrl || null; }, function () { /* the shipped ones are enough */ }).then(function () { return profiles; });
+      },
         function (e) { sayInfo('[oav-p5] controller profiles did not load (' + (e && e.message) + '): unknown devices map knobs in the order you turn them'); profiles = []; return profiles; });
     }
     return profilesLoading;
   }
+  function matches(p, ref) { return p.kind === 'device' && p.match && (p.match.ports || []).some(function (r) { return new RegExp(r, 'i').test(ref); }); }
   function findProfile(ref) {      // ref: an id / short name, or a port name to match
-    var all = BUILTIN.concat(profiles || []);
+    var all = BUILTIN.concat(profiles || [], importedFull);
     for (var i = 0; i < all.length; i++) if (all[i].id === ref || all[i].short === ref) return all[i];
-    for (i = 0; i < all.length; i++) {
-      var p = all[i];
-      if (p.kind === 'device' && p.match && (p.match.ports || []).some(function (r) { return new RegExp(r, 'i').test(ref); })) return p;
-    }
+    for (i = 0; i < all.length; i++) if (matches(all[i], ref)) return all[i];
     return null;
+  }
+  /** A row of the imported list for this id or port, when its file is not here yet (the shipped profiles have had their say). */
+  function importedRow(ref) {
+    if (findProfile(ref)) return null;
+    for (var i = 0; i < importedList.length; i++) { var r = importedList[i]; if (r.id === ref || r.short === ref || matches(r, ref)) return r; }
+    return null;
+  }
+  function fetchImported(row) {
+    if (importedAsked[row.id] || !importedUrl) return;
+    importedAsked[row.id] = true;
+    Promise.resolve().then(function () { return midi._fetch(importedUrl(row.id)); }).then(function (r) { return r.json(); }).then(function (p) {
+      importedFull.push(p); tables = {}; screenProfile = null;
+      (midi.devices || []).forEach(followPort);
+    }, function (e) { sayInfo('[oav-p5] ' + row.name + ' did not load (' + (e && e.message) + '): knobs map in the order you turn them'); delete importedAsked[row.id]; });
+  }
+  /** The panel shows what is plugged in, unless the sketch chose a controller. */
+  function followPort(name) {
+    var p = findProfile(name);
+    if (p && !profileChosen) { O.profile = p.id; screenProfile = null; delete tables.screen; if (view) view.setAttribute('profile', p.id); }
   }
   var tables = {}, screenProfile = null;
   function tableFor(dev) {          // dev: 'hw:<port>' · 'screen' · 'id:<profile>' · null (= the on-screen profile)
     dev = dev || 'screen';
     if (tables[dev]) return tables[dev];
-    var p = dev === 'screen' ? (screenProfile || findProfile(O.profile)) : findProfile(dev.replace(/^(hw|id):/, ''));
+    var ref = dev === 'screen' ? O.profile : dev.replace(/^(hw|id):/, '');
+    var p = dev === 'screen' ? (screenProfile || findProfile(ref)) : findProfile(ref);
     if (!p && profiles === null) { loadProfiles(); return null; }   // not known yet: fetch every profile; this one message goes by without a knob number
+    var row = p ? null : importedRow(ref);
+    if (row) { fetchImported(row); return null; }                   // the same while its one file arrives
     var t = p ? tableOf(p) : { id: null, cc: {}, note: {}, count: { knob: 0, fader: 0, pad: 0 }, learn: true };
     tables[dev] = t;
     return t;
@@ -581,7 +606,11 @@
       names.push(name);
       if (wired && wired.has(inp)) return;
       if (wired) wired.add(inp);
-      if (!findProfile(name)) loadProfiles().then(function () { delete tables['hw:' + name]; });   // nanoKONTROL2 & co.
+      if (!findProfile(name)) loadProfiles().then(function () {   // nanoKONTROL2 & co.
+        delete tables['hw:' + name];
+        var row = importedRow(name);
+        if (row) fetchImported(row); else followPort(name);
+      });
       // A listener, plus onmidimessage only while nobody else has set one: the sketch's own Web MIDI code (WebMidi.js
       // sets onmidimessage) may hold the same port object, and a browser that opens a port only for onmidimessage still
       // delivers. The same event reaching both is counted once.
@@ -592,8 +621,7 @@
         if (!inp.onmidimessage) inp.onmidimessage = onPort;
         if (inp.open) inp.open().catch(function () {});
       } catch (e) { /* */ }
-      var p = findProfile(name);
-      if (p && !profileChosen) { O.profile = p.id; screenProfile = null; delete tables.screen; if (view) view.setAttribute('profile', p.id); }
+      followPort(name);
     });
     midi.devices = names;
     setHardware(names.length ? 'connected' : 'waiting');
@@ -1264,6 +1292,7 @@
   // ---------------------------------------------------------------- the rest of OAV, loaded the first time it is needed
   // from next to this file (one URL pins one tree); tests swap midi._import for their own loader
   midi._import = function (url) { return import(url); };
+  midi._fetch = function (url) { return fetch(url); };
   function load(rel) { return Promise.resolve().then(function () { return midi._import(BASE + rel + '?v=p5-' + OAV_P5_VERSION); }); }
   /** a tiny signal bus in @openav/core's shape (on / define / pulse / set): what @openav/sound and @openav/drums talk to */
   function bus() {

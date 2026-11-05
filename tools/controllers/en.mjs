@@ -317,6 +317,8 @@ export default {
       noMidi: 'This browser has no Web MIDI, or the request was refused. Chrome and Edge have it; the simulator works anywhere.',
       noPorts: 'No MIDI input found. Plug the controller in and it appears here.', pickPort: 'No port looks like this model. Pick yours from the list.', found: 'Found {port}.',
       nothing: 'Nothing to check: this file marks no control as unverified.',
+      resume: 'You have a run to finish: {name}, {n} of {total} done.', resumeGo: 'Continue', resumeDrop: 'Start over',
+      resumeStale: 'This controller\'s file has changed since then, so that run cannot continue. Start a new one.', resumeNoPort: 'Plug in {port}, then press Continue.',
       start: 'Start checking', simulate: 'Try it without hardware',
       note: 'Nothing here asks for SysEx, and nothing is sent to your device. The simulator shows how a check works; its results never mark anything as verified.',
     },
@@ -341,6 +343,12 @@ export default {
       missing: 'Still needed: {fields}.',
       download: 'Download the JSON', copy: 'Copy the JSON', copied: 'Copied', issue: 'Open an issue', pr: 'Open the file on GitHub', again: 'Check another',
       prSteps: 'For a pull request: copy the JSON, open the file on GitHub, paste it over the old text and press Propose changes. GitHub makes the fork for you. For an issue, the link fills in the report; attach the JSON or paste it there.',
+    },
+    lights: {
+      title: 'Check the lights', text: '{n} confirmed controls have an LED this file can reach. The page lights them; you say what you see.',
+      start: 'Check the lights', sysex: 'Add {n} more with SysEx (the browser asks first)',
+      promptAll: 'All {n} lights on?', prompt: 'Did {name} light up?', count: 'Light {n} of {total}',
+      yes: 'Yes', no: 'No', skip: 'Skip', stop: 'Stop here',
     },
     why: {
       title: 'What the marks mean',

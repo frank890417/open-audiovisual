@@ -32,13 +32,16 @@ test('every device page and the gallery lead to it, in their own language', () =
   for (const f of ['controllers/index.html', 'zh/controllers/index.html']) assert.ok(read(f).includes('href="verify/"'), f);
 });
 
-test('the page asks for nothing on load: SysEx only inside the Read button, MIDI only inside Connect', () => {
+test('the page asks for nothing on load: MIDI behind Connect or Continue, SysEx behind the two buttons that say so', () => {
   const js = read('assets/controllers/verify.js');
   assert.ok(!/requestMIDIAccess/.test(js), 'it goes through the Midi engine');
-  const at = (needle) => js.indexOf(needle);
-  assert.ok(at("$('vf-connect').addEventListener") < at('midi.enable()'), 'enable() sits inside the Connect handler');
-  assert.ok(at("$('vf-read-fw').addEventListener") < at('midi.requestSysex()'), 'requestSysex() sits inside the Read handler');
-  assert.equal(js.match(/requestSysex/g).length, 1, 'and nowhere else');
+  const handler = (id) => { const i = js.indexOf(`$('${id}').addEventListener('click'`); assert.ok(i >= 0, id); return js.slice(i, js.indexOf('\n});', i)); };
+  assert.equal(js.match(/\.requestSysex\(/g).length, 2, 'two places ask for SysEx');
+  assert.match(handler('vf-read-fw'), /requestSysex/); assert.match(handler('vf-lights-sysex'), /requestSysex/);
+  // connect() is the only caller of enable(), and only a button reaches it
+  assert.equal(js.match(/\.enable\(\)/g).length, 1);
+  assert.deepEqual(js.match(/\bconnect\(\)|, connect\)/g).sort(), [', connect)', 'connect()', 'connect()'].sort(), 'the definition, Connect, and resume');
+  assert.match(js, /\$\('vf-resume-go'\)\.addEventListener\('click', \(\) => resume\(run\)\)/, 'resume runs from Continue, not on load');
 });
 
 test('a device page says how far hardware checks have got, and the table keeps the three levels apart', () => {

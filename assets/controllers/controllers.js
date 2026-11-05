@@ -54,7 +54,8 @@ function showHero(id, { scroll = false } = {}) {
 }
 
 for (const a of chips) a.addEventListener('click', (e) => { e.preventDefault(); showHero(a.dataset.profile); });
-hero.addEventListener('profilechange', (e) => paintHero(e.detail.profile));   // follow: a plugged-in device takes the stage
+// follow: a plugged-in device takes the stage, even one imported from QLC+ that this page has no chip for
+hero.addEventListener('profilechange', (e) => { if (!byId.has(e.detail.profile) && hero.profileData) byId.set(e.detail.profile, hero.profileData); paintHero(e.detail.profile); });
 
 // the readout: at most one write per frame, however fast a knob turns
 let pending = null;

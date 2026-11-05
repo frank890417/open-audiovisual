@@ -1263,3 +1263,65 @@ test('oav-p5.js header: the number of profiles it names is the number in package
   const n = readdirSync(new URL('../packages/midi/profiles/', import.meta.url)).filter((f) => f.endsWith('.json')).length;
   assert.match(head, new RegExp(`\\b${n} profiles\\b`), `the header says how many profiles there are: ${n}`);
 });
+
+// controllers imported from QLC+: not in PROFILES, so the list says how to know one and its file comes when it is needed
+const bcf = JSON.parse(readFileSync(new URL('../packages/midi/profiles/imported/behringer-bcf2000.json', import.meta.url), 'utf8'));
+const importedModules = (rows) => ({
+  'profiles/index.js': () => ({ PROFILES: [] }),
+  'profiles/imported.js': () => ({ IMPORTED: rows, importedUrl: (id) => `https://x/${id}.json` }),
+});
+const bcfRow = { id: bcf.id, short: bcf.short, name: bcf.name, kind: 'device', match: bcf.match };
+const firstKnob = bcf.controls.find((c) => c.type === 'knob');
+
+test('oav-p5 knows a port of an imported controller: its one file is fetched and knob1 means its first knob', async () => {
+  const { w } = kitPage({}, importedModules([bcfRow]));
+  const asked = [];
+  w.OAVp5._fetch = async (url) => { asked.push(url); return { json: async () => bcf }; };
+  const dev = 'BCF2000', msg = [0xb0 | (firstKnob.ch - 1), firstKnob.cc, 100];
+  w.midi.input(msg, 'hardware', dev); await settle();   // not known yet: fetches the list
+  w.midi.input(msg, 'hardware', dev); await settle();   // the file
+  assert.deepEqual(asked, ['https://x/behringer-bcf2000.json']);
+  w.midi.input(msg, 'hardware', dev);
+  assert.ok(Math.abs(w.knob1 - 100 / 127) < 1e-9, 'knob1 follows the first knob of the file, not the first one turned');
+  w.midi.input(msg, 'hardware', dev); await settle();
+  assert.equal(asked.length, 1, 'once');
+});
+
+test('oav-p5 takes an imported id as its profile option, and a file that does not arrive falls back to learning', async () => {
+  const { w } = kitPage({ OAV_P5: { profile: 'behringer-bcf2000' } }, importedModules([bcfRow]));
+  const asked = [];
+  w.OAVp5._fetch = async (url) => { asked.push(url); return { json: async () => bcf }; };
+  const msg = [0xb0 | (firstKnob.ch - 1), firstKnob.cc, 100];
+  w.midi.input(msg, 'screen'); await settle();
+  w.midi.input(msg, 'screen'); await settle();
+  assert.deepEqual(asked, ['https://x/behringer-bcf2000.json']);
+  w.midi.input(msg, 'screen');
+  assert.ok(w.knob1 > 0.7, 'the screen follows the file');
+  // nothing to fetch: an unknown port still maps knobs in the order they are turned
+  const k = kitPage({}, importedModules([bcfRow]));
+  k.w.OAVp5._fetch = async () => { throw new Error('offline'); };
+  const dev = 'Unknown Box';
+  k.w.midi.input([0xb0, 20, 64], 'hardware', dev); await settle();
+  k.w.midi.input([0xb0, 20, 64], 'hardware', dev); await settle();
+  k.w.midi.input([0xb0, 20, 64], 'hardware', dev);
+  assert.ok(k.w.knob1 > 0.4, 'learned in order');
+});
+
+test('oav-p5 follows an imported controller that is plugged in, and a sketch that chose one keeps it', async () => {
+  const port = { name: 'BCF2000', state: 'connected', addEventListener() {}, open: () => Promise.resolve() };
+  const access = { inputs: new Map([['i', port]]), addEventListener() {} };
+  const run = async (options) => {
+    const { w } = kitPage({ navigator: { requestMIDIAccess: () => Promise.resolve(access) }, OAV_P5: options }, importedModules([bcfRow]));
+    const asked = [];
+    w.OAVp5._fetch = async (url) => { asked.push(url); return { json: async () => bcf }; };
+    await w.midi.connectHardware(); await settle();
+    const msg = [0xb0 | (firstKnob.ch - 1), firstKnob.cc, 100];
+    w.midi.input(msg, 'screen');
+    return { w, asked };
+  };
+  const follow = await run({});
+  assert.deepEqual(follow.asked, ['https://x/behringer-bcf2000.json']);
+  assert.ok(follow.w.knob1 > 0.7, 'the panel became the device that was plugged in');
+  const chosen = await run({ profile: 'akai-lpd8' });
+  assert.equal(chosen.w.knob1, 0, 'the sketch said which one it wants');
+});

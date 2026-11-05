@@ -8,7 +8,7 @@
  "channel": 1,
  "match": {
   "ports": [
-   "Easypad\\.12"
+   "^(worlde\\s+)?easy\\s*pad(\\s+(midi|port))*(\\s+\\d+)?$"
   ],
   "prefer": [],
   "avoid": []
@@ -30,7 +30,7 @@
    "license": "Apache-2.0"
   }
  ],
- "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device.",
+ "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. The port-name pattern was written from the model name, not read from a unit.",
  "face": {
   "w": 100,
   "h": 51.5,

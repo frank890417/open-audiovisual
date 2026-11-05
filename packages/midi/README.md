@@ -296,7 +296,7 @@ device does, so it never confirms anything. `verificationOf(profile, id)` reads 
 `verificationSummary(profile)` counts it.
 
 The [verification page](https://openaudiovisual.com/controllers/verify/) writes these entries: it lights one control at a time, compares what the unit
-sends with the file and hands back the updated JSON. Its logic is `VerifySession` and `applyVerification()`, with no DOM and no Web MIDI, so a script can drive it too.
+sends with the file and hands back the updated JSON. After that it can light each LED and ask whether it came on, and a run is kept in the browser until it is finished. Its logic is `VerifySession` and `applyVerification()`, with no DOM and no Web MIDI, so a script can drive it too.
 
 ### SysEx
 
@@ -373,7 +373,7 @@ No manual? Pick a generic layout, press Learn, move your controls in order;
 
 ### Imported controllers
 
-`profiles/imported/` holds controllers converted from QLC+'s input profiles by `tools/import-qlc.mjs`. They are not in `PROFILES`, so a page that shows one controller does not fetch them all; `<oav-controller profile="behringer-bcf2000">` and `loadProfile()` fetch the one asked for, and `IMPORTED` lists them. QLC+ has no faceplate data, so `face.auto` marks a generated layout; every control is `verified: false`; each file says `"license": "Apache-2.0"` and names its source and commit (see `NOTICE`).
+`profiles/imported/` holds controllers converted from QLC+'s input profiles by `tools/import-qlc.mjs`. They are not in `PROFILES`, so a page that shows one controller does not fetch them all; `<oav-controller profile="behringer-bcf2000">`, `loadProfile()` and oav-p5's `?profile=` fetch the one asked for, and `IMPORTED` lists them with their port patterns. Plug one in and `MidiControllers` fetches that one file and shows it. Shipped profiles go first, so a port they match or refuse stays theirs; the patterns are whole names written by hand, and a model with no port name to go by (DIN only, or a second mode of one unit) is never picked. `new MidiControllers({ imported: [] })` turns this off. QLC+ has no faceplate data, so `face.auto` marks a generated layout; every control is `verified: false`; each file says `"license": "Apache-2.0"` and names its source and commit (see `NOTICE`).
 
 ## Telemetry
 

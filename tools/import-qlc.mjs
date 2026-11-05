@@ -55,10 +55,11 @@ function main([repo, ...flags]) {
   if (!dry) {
     fs.mkdirSync(OUT, { recursive: true });
     for (const { p } of fresh) write(path.join(OUT, `${p.id}.json`), p);
-    const rows = fresh.map(({ p }) => `  { id: ${JSON.stringify(p.id)}, short: ${JSON.stringify(p.short)}, name: ${JSON.stringify(p.name)}, maker: ${JSON.stringify(p.maker)} },`).join('\n');
+    const rows = fresh.map(({ p }) => `  { id: ${JSON.stringify(p.id)}, short: ${JSON.stringify(p.short)}, name: ${JSON.stringify(p.name)}, maker: ${JSON.stringify(p.maker)}, kind: 'device', match: { ports: ${JSON.stringify(p.match.ports)} } },`).join('\n');
     fs.writeFileSync(path.join(DIR, 'imported.js'), `// @openav/midi · profiles/imported — controllers imported from QLC+ (tools/import-qlc.mjs writes this list).
 // Their JSON files stay out of PROFILES so a page that embeds one controller does not fetch them all;
-// resolveProfile() fetches the one it is asked for. The data is Apache-2.0: see NOTICE at the root of the repository.
+// resolveProfile() fetches the one it is asked for. Each row carries its match patterns, so matchProfile() can tell which file a port wants
+// before any of them is loaded. The data is Apache-2.0: see NOTICE at the root of the repository.
 
 export const IMPORTED = [
 ${rows}

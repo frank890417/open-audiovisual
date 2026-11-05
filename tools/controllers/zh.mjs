@@ -316,6 +316,8 @@ export default {
       noMidi: '這個瀏覽器沒有 Web MIDI，或要求被拒絕了。Chrome 和 Edge 有支援，模擬模式在哪裡都能用。',
       noPorts: '找不到 MIDI 輸入。把控制器接上，這裡就會出現。', pickPort: '沒有看起來像這個型號的連接埠，請從清單選你的機器。', found: '找到 {port}。',
       nothing: '沒有要驗的項目：這個檔案沒有標成未確認的控制項。',
+      resume: '你有一次驗證還沒做完：{name}，已完成 {n}／{total}。', resumeGo: '繼續', resumeDrop: '重新開始',
+      resumeStale: '這台控制器的檔案已經改過，上次的進度接不上了，請重新開始。', resumeNoPort: '請接上 {port}，再按繼續。',
       start: '開始驗證', simulate: '沒有機器，先試試看',
       note: '這裡不會要求 SysEx 權限，也不會送任何東西給你的機器。模擬模式只是示範怎麼驗，結果不會把任何東西標成已驗證。',
     },
@@ -340,6 +342,12 @@ export default {
       missing: '還缺：{fields}。',
       download: '下載 JSON', copy: '複製 JSON', copied: '已複製', issue: '開 issue', pr: '到 GitHub 開啟檔案', again: '驗另一台',
       prSteps: '要開 pull request：複製 JSON，到 GitHub 開啟檔案，貼上蓋掉舊內容，按 Propose changes，GitHub 會幫你 fork。要開 issue：連結會填好報告，再把 JSON 附上或貼上。',
+    },
+    lights: {
+      title: '驗燈', text: '有 {n} 個確認過的控制項，LED 是這份檔案碰得到的。頁面點亮，你回報看到什麼。',
+      start: '開始驗燈', sysex: '用 SysEx 多驗 {n} 顆（瀏覽器會先詢問）',
+      promptAll: '{n} 顆燈都亮了嗎？', prompt: '{name} 有亮嗎？', count: '第 {n} 顆，共 {total} 顆',
+      yes: '有', no: '沒有', skip: '跳過', stop: '到這裡結束',
     },
     why: {
       title: '標記是什麼意思',

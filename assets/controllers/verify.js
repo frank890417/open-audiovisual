@@ -1,15 +1,16 @@
 // /controllers/verify/ — joins the page to VerifySession. Everything that decides anything is in
 // packages/midi/verify-session.js; this file only moves bytes in and writes text out.
-// Nothing asks for MIDI until the Connect button is pressed, and only the Read button asks for SysEx.
+// Nothing asks for MIDI until the Connect button is pressed, and SysEx only when a button that says so is pressed.
+// The run is saved in this browser after every step, so a reload or a closed tab loses nothing.
 // window.oavVerify is there for devtools and scripted checks, like window.openav in the examples.
 
 import '../../packages/midi/element.js?v=dd4a4d59';
 import { PROFILES } from '../../packages/midi/profiles/index.js?v=060a5708';
 import { Midi, matchProfile, pickPort, loadProfile, DEVICE_INQUIRY, parseDeviceInquiry } from '../../packages/midi/index.js?v=060a5708';
-import { VerifySession, applyVerification, verificationReport, messageText, portMethod } from '../../packages/midi/verify-session.js?v=060a5708';
+import { VerifySession, applyVerification, verificationReport, messageText, portMethod, ledTestBytes, ledTestSysex } from '../../packages/midi/verify-session.js?v=060a5708';
 
 const T = JSON.parse(document.getElementById('ctl-i18n').textContent);
-const S = T.s, E = T.end, U = T.setup;
+const S = T.s, E = T.end, U = T.setup, G = T.lights;
 const $ = (id) => document.getElementById(id);
 const fill = (s, o) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in o ? o[k] : m));
 const byId = new Map(PROFILES.map((p) => [p.id, p]));
@@ -42,24 +43,28 @@ async function fillPorts() {
   status(best ? fill(U.found, { port: best.name }) : U.pickPort);
 }
 
-$('vf-connect').addEventListener('click', async () => {
+async function connect() {
+  if (midi) return true;
   status(U.asking);
-  midi = new Midi({ filterOut: null, echoWindow: 0 });   // every port: a virtual one is how this page is tried without a device
-  if (!(await midi.enable())) { midi = null; return status(U.noMidi, true); }
+  const m = new Midi({ filterOut: null, echoWindow: 0 });   // every port: a virtual one is how this page is tried without a device
+  if (!(await m.enable())) { status(U.noMidi, true); return false; }
+  midi = m;
   midi.onDevices(() => { if (!session) fillPorts(); });
   $('vf-connect').textContent = U.connected;
-  fillPorts();
-});
+  await fillPorts();
+  return true;
+}
+$('vf-connect').addEventListener('click', connect);
 $('vf-model').addEventListener('change', () => { if (midi) fillPorts(); });
 
 // ------------------------------------------------------------------ the run
-async function begin({ sim }) {
+async function begin({ sim, resumed = null }) {
   simulated = sim;
   raw = await chosen();
-  session = new VerifySession(raw, { only: $('vf-scope').value });
+  session = resumed || new VerifySession(raw, { only: $('vf-scope').value });
   if (!session.steps.length) { session = null; return status(U.nothing, true); }
   portName = sim ? '' : $('vf-port').value;
-  $('vf-setup').hidden = true; $('vf-end').hidden = true; $('vf-run').hidden = false;
+  $('vf-setup').hidden = true; $('vf-end').hidden = true; $('vf-run').hidden = false; $('vf-resume').hidden = true;
   $('vf-sim-tag').hidden = !sim; $('vf-wrong').hidden = !sim;
   ctl.setAttribute('profile', raw.id);
   ctl.ready.then(() => {
@@ -91,6 +96,7 @@ function paintMarks() {
 }
 
 function paint() {
+  save();
   paintMarks();
   const st = session.current, c = session.counts();
   const pct = c.total ? Math.round((c.done / c.total) * 100) : 100;
@@ -143,6 +149,45 @@ act('vf-back', () => session.back());
 $('vf-finish').addEventListener('click', () => end());
 $('vf-wrong').addEventListener('click', () => hear([0xbf, 119, 10]));   // a message no shipped control claims: what a real difference looks like
 
+// ------------------------------------------------------------------ keeping the run
+// One run per browser, in localStorage: a convenience, so the page works the same without it (a private window). Only
+// this visitor's own progress is kept here; nothing leaves the browser until they download or send it.
+const KEY = 'oav.verify.run';
+const FIELDS = ['vf-by', 'vf-firmware', 'vf-os', 'vf-browser'];
+let storageOk = true;
+function save() {
+  if (!session) return;
+  try {
+    const fields = Object.fromEntries(FIELDS.map((id) => [id, $(id).value]));
+    localStorage.setItem(KEY, JSON.stringify({ snap: session.snapshot(), simulated, port: portName, fields, name: raw.name }));
+  } catch { storageOk = false; }
+}
+function saved() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { storageOk = false; return null; } }
+function forget() { try { localStorage.removeItem(KEY); } catch { /* nothing to forget */ } }
+
+async function resume(run) {
+  $('vf-model').value = run.snap.id; $('vf-scope').value = run.snap.only;
+  const profile = await chosen();
+  const again = VerifySession.restore(profile, run.snap);
+  if (!again) { forget(); $('vf-resume').hidden = true; return status(U.resumeStale, true); }
+  for (const id of FIELDS) if (run.fields?.[id]) $(id).value = run.fields[id];
+  if (!run.simulated) {
+    if (!(await connect())) return;
+    if (!midi.devices().some((d) => d.name === run.port)) return status(fill(U.resumeNoPort, { port: run.port }), true);
+    $('vf-port').value = run.port;
+  }
+  begin({ sim: !!run.simulated, resumed: again });
+}
+{
+  const run = saved();
+  if (run?.snap && T.files[run.snap.id]) {
+    $('vf-resume-text').textContent = fill(U.resume, { name: run.name, n: run.snap.at, total: run.snap.steps });
+    $('vf-resume').hidden = false;
+    $('vf-resume-go').addEventListener('click', () => resume(run));
+    $('vf-resume-drop').addEventListener('click', () => { forget(); $('vf-resume').hidden = true; });
+  }
+}
+
 // ------------------------------------------------------------------ the end
 const today = () => { const d = new Date(), z = (n) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; };
 function guessEnv() {
@@ -174,6 +219,7 @@ function end() {
   }));
   $('vf-attest-row').hidden = simulated;
   $('vf-fw-row').hidden = simulated || !midi;
+  paintLights();
   refresh();
   $('vf-end').scrollIntoView({ block: 'start' });
 }
@@ -195,7 +241,80 @@ function refresh() {
   $('vf-issue').href = `${T.repo}/issues/new?title=${encodeURIComponent(`Verified: ${raw.name} (${raw.id})`)}&body=${encodeURIComponent(verificationReport(raw, session, m))}`;
   $('vf-pr').href = `${T.repo}/edit/main/${T.dir}/${T.files[raw.id]}`;
 }
-for (const id of ['vf-by', 'vf-firmware', 'vf-os', 'vf-browser', 'vf-attest']) $(id).addEventListener('input', refresh);
+for (const id of ['vf-by', 'vf-firmware', 'vf-os', 'vf-browser', 'vf-attest']) $(id).addEventListener('input', () => { refresh(); save(); });
+
+// ------------------------------------------------------------------ the lights
+// A second pass over what the run confirmed. Everything first: on a grid, one look answers 64 questions. Only if something stayed
+// dark does it go through them one at a time. Plain note and CC LEDs need nothing; the ones only SysEx reaches wait for their button.
+let lights = null;   // { queue, at, all }
+const outPort = () => (midi ? midi.outputFor(portName) || pickPort(midi.outputs, raw) : null);
+const sysexOn = () => !!midi?.sysexEnabled;
+const targets = () => session.ledTargets({ sysex: sysexOn() });
+const sysexOnly = () => session.ledTargets({ sysex: true }).filter((c) => !c.led);
+
+function sendLed(c, on) {
+  const out = outPort(); if (!out) return;
+  try {
+    if (c.led) out.send(ledTestBytes(c, on));
+    else { const x = ledTestSysex(session.p, c, on); if (x) midi.sendSysex(x.bytes, { output: out }); }
+  } catch (e) { console.warn('[verify] LED', e); }
+}
+function paintLights() {
+  const n = targets().length, extra = sysexOn() ? 0 : sysexOnly().length, can = !simulated && !!outPort();
+  $('vf-lights-row').hidden = !can || !(n + extra);
+  $('vf-lights-text').textContent = fill(G.text, { n });
+  $('vf-lights').disabled = !n;
+  $('vf-lights-sysex').hidden = !extra;
+  $('vf-lights-sysex').textContent = fill(G.sysex, { n: extra });
+}
+function lightsPrompt() {
+  const c = lights.all ? null : lights.queue[lights.at];
+  $('vf-prompt').textContent = lights.all ? fill(G.promptAll, { n: lights.queue.length }) : fill(G.prompt, { name: c.label && c.label !== c.id ? c.label : c.id });
+  $('vf-count').textContent = lights.all ? '' : fill(G.count, { n: lights.at + 1, total: lights.queue.length });
+  $('vf-expected').textContent = lights.all ? '' : c.led ? messageText({ msg: c.led.msg, ch: c.led.ch ?? c.ch, cc: c.led.cc ?? c.cc, note: c.led.note ?? c.note }) : 'SysEx';
+  ctl.view?.clearMarks();
+  for (const x of lights.all ? lights.queue : [c]) ctl.view?.mark(x.id, 'now');
+}
+function lightsDone() {
+  for (const c of lights.queue) sendLed(c, false);
+  lights = null;
+  $('vf-led-actions').hidden = true; $('vf-actions').hidden = false; $('vf-diff').hidden = true; $('vf-heard').parentElement.hidden = false;
+  save(); end();
+}
+function nextLight() {
+  lights.at++;
+  if (lights.at >= lights.queue.length) return lightsDone();
+  sendLed(lights.queue[lights.at], true); lightsPrompt();
+}
+function answerLight(ok) {
+  if (lights.all) {
+    if (ok) { for (const c of lights.queue) mark(c, 'match'); return lightsDone(); }
+    for (const c of lights.queue) sendLed(c, false);   // something stayed dark: find out which
+    lights.all = false; lights.at = 0;
+    sendLed(lights.queue[0], true); return lightsPrompt();
+  }
+  const c = lights.queue[lights.at];
+  mark(c, ok ? 'match' : 'mismatch');
+  sendLed(c, false); save(); nextLight();
+}
+function mark(c, result) {
+  session.setLed(c.id, result);
+  if (!c.led) { const x = ledTestSysex(session.p, c, true); if (x && (result === 'match' || !session.sysex?.has(x.message))) session.setSysex(x.message, result); }
+}
+$('vf-lights').addEventListener('click', () => {
+  lights = { queue: targets(), at: 0, all: true };
+  $('vf-end').hidden = true; $('vf-run').hidden = false; $('vf-actions').hidden = true; $('vf-diff').hidden = true; $('vf-led-actions').hidden = false; $('vf-heard').parentElement.hidden = true;
+  for (const c of lights.queue) sendLed(c, true);
+  lightsPrompt();
+  $('vf-run').scrollIntoView({ block: 'start' });
+});
+$('vf-lights-sysex').addEventListener('click', async () => {
+  if (await midi.requestSysex()) paintLights(); else { $('vf-lights-sysex').hidden = true; $('vf-lights-text').textContent = E.readDenied; }
+});
+$('vf-led-yes').addEventListener('click', () => answerLight(true));
+$('vf-led-no').addEventListener('click', () => answerLight(false));
+$('vf-led-skip').addEventListener('click', () => { if (lights.all) return answerLight(false); sendLed(lights.queue[lights.at], false); nextLight(); });
+$('vf-led-stop').addEventListener('click', lightsDone);
 
 // the one place on this page that asks for SysEx, and only when pressed: the Universal Device Inquiry names the firmware
 $('vf-read-fw').addEventListener('click', async () => {
@@ -224,12 +343,13 @@ $('vf-copy').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(json()); $('vf-copy').textContent = E.copied; setTimeout(() => { $('vf-copy').textContent = E.copy; }, 1400); } catch { /* the Download button still works */ }
 });
 $('vf-again').addEventListener('click', () => {
+  forget();
   session = null; unlisten?.(); unlisten = null; offUi?.(); offUi = null;
   $('vf-end').hidden = true; $('vf-setup').hidden = false;
   if (midi) fillPorts();
   $('vf-setup').scrollIntoView({ block: 'start' });
 });
 
-addEventListener('beforeunload', (e) => { if (session && session.marks.size) e.preventDefault(); });   // a long run is not worth losing to a stray ⌘R
+addEventListener('beforeunload', (e) => { if (!storageOk && session?.marks.size) e.preventDefault(); });   // with nowhere to save it, a long run is not worth losing to a stray ⌘R
 
 window.oavVerify = { get session() { return session; }, feed: hear, settle, get result() { return result; }, refresh };

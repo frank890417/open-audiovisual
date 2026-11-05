@@ -11,6 +11,8 @@
 //   - the same run without the box, through a port named like a virtual one, or in the simulator, changes no number and no mark
 //   - a difference shows both values, and the JSON the page offers passes validateProfile
 //   - on a device page, SysEx waits for a click; then the unit is set up and Send and the colour button work
+//   - the lights pass records each answer, and a reload brings a run back without asking for anything until Continue
+//   - an imported controller that is plugged in takes the stage, and a near name does not
 const fs = require('fs'), path = require('path'), http = require('http'), os = require('os');
 const PW = require(process.env.PW || 'playwright');
 const ROOT = path.resolve(__dirname, '../..');
@@ -177,6 +179,69 @@ const playAll = async (page, { wrong = false } = {}) => page.evaluate(async ({ w
     row((await v.evaluate(() => window.oavVerify.session.steps.length)) === 94, 'imported: the verification page walks all of it');
     row(!v.errors.length, 'imported: verification page, no console errors', v.errors.join(' | '));
     await v.context().close();
+  }
+  { // the lights: everything at once, then one at a time when something stayed dark
+    const page = await open('/controllers/verify/?profile=akai-apc-mini-mk2', { port: 'APC mini mk2 Control' });
+    await run(page, { attest: true });
+    const n = await page.evaluate(() => window.oavVerify.session.ledTargets().length);
+    row(n > 0 && await page.isVisible('#vf-lights'), 'lights: offered after the run', `${n} LEDs`);
+    await page.evaluate(() => { window.__midi.sent.length = 0; });
+    await page.click('#vf-lights');
+    row((await page.evaluate(() => window.__midi.sent.length)) === n, 'lights: all on at once');
+    await page.screenshot({ path: path.join(SHOTS, 'lights.png') });
+    await page.click('#vf-led-no');                                        // something stayed dark
+    row((await page.textContent('#vf-prompt')).includes('light up'), 'lights: then one at a time');
+    await page.click('#vf-led-yes'); await page.click('#vf-led-no'); await page.click('#vf-led-skip'); await page.click('#vf-led-stop');
+    await page.waitForSelector('#vf-end:not([hidden])');
+    const r = await page.evaluate(() => window.oavVerify.result);
+    const leds = Object.values(r.profile.verifications[0].results).map((x) => x.led).filter(Boolean);
+    row(leds.join() === 'match,mismatch', 'lights: each answer is in the record', leds.join());
+    row(r.problems.length === 0 && r.profile.controls.every((c) => c.verified === true), 'lights: a dark LED takes nothing from the input check');
+    const last = await page.evaluate(() => window.__midi.sent.slice(-1)[0]);
+    row(last[2] === 0, 'lights: everything is turned off at the end', String(last));
+    await page.click('#vf-lights'); await page.click('#vf-led-yes');
+    const all = await page.evaluate(() => window.oavVerify.result.profile.verifications[0].results);
+    row(Object.values(all).filter((x) => x.led === 'match').length === n, 'lights: one yes answers them all');
+    row(!page.errors.length, 'lights: no console errors', page.errors.join(' | '));
+    await page.context().close();
+  }
+  { // a reload: the run is still there, corrections included, and nothing is asked for until Continue
+    const page = await open('/controllers/verify/?profile=akai-lpd8');
+    await page.click('#vf-connect'); await page.waitForSelector('#vf-start:not([disabled])');
+    await page.click('#vf-start'); await page.waitForFunction(() => document.getElementById('vf-prompt').textContent);
+    await page.evaluate(() => document.getElementById('vf-ctl').ready);
+    await page.evaluate(() => { window.__midi.play([0xbf, 119, 10]); document.getElementById('vf-accept').click(); const s = window.oavVerify.session; window.__midi.play([0x90 | (s.current.expected.ch - 1), s.current.expected.note, 100]); window.oavVerify.settle(); });
+    const before = await page.evaluate(() => window.oavVerify.session.counts());
+    await page.reload(); await page.waitForFunction(() => window.oavVerify);
+    row(await page.isVisible('#vf-resume'), 'reload: the page offers the run back');
+    row((await page.evaluate(() => window.__midi.asked.length)) === 0, 'reload: nothing asks for MIDI until Continue');
+    await page.screenshot({ path: path.join(SHOTS, 'resume.png') });
+    await page.click('#vf-resume-go');
+    await page.waitForFunction(() => window.oavVerify.session);
+    const after = await page.evaluate(() => window.oavVerify.session.counts());
+    row(after.done === before.done && after.corrected === 1 && after.match === 1, 'reload: position and results are back', JSON.stringify(after));
+    row((await page.evaluate(() => window.__midi.asked.length)) === 1, 'reload: Continue reconnects');
+    await page.evaluate(() => { const s = window.oavVerify.session; window.__midi.play([0x90 | (s.current.expected.ch - 1), s.current.expected.note, 100]); window.oavVerify.settle(); });
+    row((await page.evaluate(() => window.oavVerify.session.counts().match)) === 2, 'reload: the port answers again');
+    await page.click('#vf-finish'); await page.click('#vf-again');
+    await page.reload(); await page.waitForFunction(() => window.oavVerify);
+    row(await page.isHidden('#vf-resume'), 'reload: Check another clears it');
+    row(!page.errors.length, 'reload: no console errors', page.errors.join(' | '));
+    await page.context().close();
+  }
+  { // plug in a controller nobody told the page about
+    const page = await open('/controllers/', { port: 'BCF2000' });
+    await page.waitForFunction(() => document.getElementById('hero-ctl').core);
+    await page.click('#hero-connect');
+    await page.waitForFunction(() => document.getElementById('hero-ctl').core.profileId === 'behringer-bcf2000', null, { timeout: 8000 });
+    row((await page.textContent('#hm-name')).includes('BCF2000'), 'plugged in: an imported model takes the stage on the gallery', await page.textContent('#hm-name'));
+    row(!page.errors.length, 'plugged in: no console errors', page.errors.join(' | '));
+    await page.context().close();
+    const other = await open('/controllers/', { port: 'Launchpad X LPX MIDI' });
+    await other.waitForFunction(() => document.getElementById('hero-ctl').core);
+    await other.click('#hero-connect'); await other.waitForTimeout(500);
+    row((await other.evaluate(() => document.getElementById('hero-ctl').core.profileId)) === 'arturia-minilab3', 'plugged in: a model that is not in the library stays unmatched');
+    await other.context().close();
   }
   { // a phone
     const page = await open('/zh/controllers/verify/?profile=novation-launchpad-mini-mk3', { width: 390 });

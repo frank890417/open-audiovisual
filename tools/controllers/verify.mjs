@@ -25,7 +25,7 @@ export function renderVerify(t, home, locale, cat) {
   const groups = [[V.setup.devices, cat.devices], [V.setup.imported, cat.imported], [V.setup.generic, cat.generic]].filter(([, list]) => list.length);
   const options = groups.map(([label, list]) => `<optgroup label="${attr(label)}">${list.map((d) => `<option value="${d.p.id}">${esc(fullName(d.p, locale))}</option>`).join('')}</optgroup>`).join('\n            ');
   const files = Object.fromEntries(cat.pages.map((d) => [d.p.id, d.file]));
-  const runtime = { lang: locale, repo: REPO, dir: PROFILE_DIR, files, tool: 'openaudiovisual.com/controllers/verify/', detailBase: c.to('controllers'), s: V.run, end: V.end, setup: V.setup };
+  const runtime = { lang: locale, repo: REPO, dir: PROFILE_DIR, files, tool: 'openaudiovisual.com/controllers/verify/', detailBase: c.to('controllers'), s: V.run, end: V.end, setup: V.setup, lights: V.lights };
 
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
@@ -80,6 +80,13 @@ ${topBar(home, c)}
         </div>
       </div>
       <p class="vf-status" id="vf-status" role="status"></p>
+      <div class="vf-resume" id="vf-resume" hidden>
+        <p id="vf-resume-text"></p>
+        <div class="vf-row">
+          <button type="button" class="vf-btn vf-go" id="vf-resume-go">${V.setup.resumeGo}</button>
+          <button type="button" class="vf-btn vf-quiet" id="vf-resume-drop">${V.setup.resumeDrop}</button>
+        </div>
+      </div>
       <div class="vf-row">
         <button type="submit" class="vf-btn vf-go" id="vf-start" disabled>${V.setup.start}</button>
         <button type="button" class="vf-btn vf-quiet" id="vf-sim">${V.setup.simulate}</button>
@@ -118,6 +125,12 @@ ${topBar(home, c)}
       <button type="button" class="vf-btn vf-quiet" id="vf-finish">${V.run.finish}</button>
       <button type="button" class="vf-btn vf-quiet" id="vf-wrong" hidden>${V.run.simWrong}</button>
     </div>
+    <div class="vf-row vf-actions" id="vf-led-actions" hidden>
+      <button type="button" class="vf-btn vf-go" id="vf-led-yes">${V.lights.yes}</button>
+      <button type="button" class="vf-btn" id="vf-led-no">${V.lights.no}</button>
+      <button type="button" class="vf-btn vf-quiet" id="vf-led-skip">${V.lights.skip}</button>
+      <button type="button" class="vf-btn vf-quiet" id="vf-led-stop">${V.lights.stop}</button>
+    </div>
     <div class="stage vf-stage"><oav-controller id="vf-ctl" layout="face"></oav-controller></div>
   </section>
 
@@ -126,6 +139,15 @@ ${topBar(home, c)}
     <dl class="vf-tally" id="vf-tally"></dl>
     <div class="table-scroll" tabindex="0" role="region" aria-label="${attr(V.end.tableLabel)}" id="vf-diffs-wrap" hidden>
       <table><thead><tr><th scope="col">${V.end.cols.control}</th><th scope="col">${V.end.cols.result}</th><th scope="col">${V.run.fileSays}</th><th scope="col">${V.run.unitSent}</th></tr></thead><tbody id="vf-diffs"></tbody></table>
+    </div>
+
+    <div class="vf-lights" id="vf-lights-row" hidden>
+      <h3>${V.lights.title}</h3>
+      <p id="vf-lights-text"></p>
+      <div class="vf-row">
+        <button type="button" class="vf-btn" id="vf-lights">${V.lights.start}</button>
+        <button type="button" class="vf-btn vf-quiet" id="vf-lights-sysex" hidden>${V.lights.sysex}</button>
+      </div>
     </div>
 
     <form id="vf-meta" class="vf-form">

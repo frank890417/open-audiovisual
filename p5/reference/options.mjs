@@ -700,8 +700,8 @@ function draw() {
     },
     value: {
       type: 'String', options: 'a profile id', default: 'arturia-minilab3',
-      en: 'Any id that @openav/midi has a profile for: `arturia-minilab3`, `akai-lpd8`, `korg-nanokontrol2`, `generic-keys49` and the rest. When you set nothing, the panel follows the controller that is plugged in.',
-      zh: '@openav/midi 有設定檔的任何 id：`arturia-minilab3`、`akai-lpd8`、`korg-nanokontrol2`、`generic-keys49` 等等。你不設的話，面板跟著插上去的那一台控制器。',
+      en: 'Any id that @openav/midi has a profile for: `arturia-minilab3`, `akai-lpd8`, `korg-nanokontrol2`, `generic-keys49` and the rest, and the controllers imported from QLC+ such as `behringer-bcf2000`, whose file is fetched when it is needed. When you set nothing, the panel follows the controller that is plugged in.',
+      zh: '@openav/midi 有設定檔的任何 id：`arturia-minilab3`、`akai-lpd8`、`korg-nanokontrol2`、`generic-keys49` 等等，也包括從 QLC+ 匯入的控制器，例如 `behringer-bcf2000`，需要時才抓它的檔案。你不設的話，面板跟著插上去的那一台控制器。',
     },
     description: [
       {

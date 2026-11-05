@@ -26,6 +26,35 @@ const MAKERS = { Akai: 'AKAI Professional', Korg: 'KORG', 'ADJ': 'American DJ' }
 /** A model name too long for a page title. */
 const MODELS = { 'BCF2000 in Mackie Control Mode': 'BCF2000 (Mackie mode)' };
 
+// Port names, by hand. A .qxi has none, and a wrong guess picks the wrong faceplate for someone's device, so each pattern is the whole name of
+// that one model with the endings operating systems add, never a piece of it: "Launchpad" must not catch "Launchpad X", "nanoPAD" not "nanoPAD2".
+// Models on DIN only, or sharing a port with another mode of themselves, get none: they are assigned by hand.
+const END = '(\\s+(midi|port))*(\\s+\\d+)?$';
+const PORTS = {
+  'ADJ-MIDICON-2.qxi': ['^midicon-2' + END],
+  'Akai-APC20.qxi': ['^(akai\\s+)?apc\\s*20' + END],
+  'Akai-APC40.qxi': ['^(akai\\s+)?apc\\s*40' + END],
+  'Akai-APCMini.qxi': ['^(akai\\s+)?apc\\s*mini' + END],
+  'Behringer-BCF2000.qxi': ['^bcf\\s*2000' + END],
+  'Behringer-BCR2000.qxi': ['^bcr\\s*2000' + END],
+  'Behringer-X-Touch-Compact.qxi': ['^x-?touch\\s*compact' + END],
+  'Behringer-X-TouchExtender.qxi': ['^x-?touch[\\s-]*ext(ender)?' + END],
+  'Elation-MIDIcon.qxi': ['^midicon' + END],
+  'KORG-nanoKONTROL.qxi': ['^nanokontrol(\\s+slider/knob)?' + END],
+  'KORG-nanoKONTROLStudio.qxi': ['^nanokontrol\\s*studio(\\s+ctrl)?' + END],
+  'KORG-nanoPAD.qxi': ['^nanopad(\\s+pad)?' + END],
+  'KORG-nanoPAD2.qxi': ['^nanopad2(\\s+pad)?' + END],
+  'M-VAVE-SMC-Mixer.qxi': ['^smc[\\s-]*mixer' + END],
+  'M-VAVE-SMC-PAD.qxi': ['^smc[\\s-]*pad' + END],
+  'Novation-LaunchControl.qxi': ['^launch\\s*control' + END],
+  'Novation-Launchpad.qxi': ['^launchpad' + END],
+  'Novation-LaunchpadMK2.qxi': ['^launchpad\\s*mk2' + END],
+  'Novation-LaunchpadPro.qxi': ['^launchpad\\s*pro(\\s+standalone\\s+port)?(\\s+\\d+)?$'],
+  'Worlde-Easypad.12.qxi': ['^(worlde\\s+)?easy\\s*pad' + END],
+  'Worlde-OrcaPAD16.qxi': ['^(worlde\\s+)?orca\\s*pad\\s*16' + END],
+  'Zoom-R16.qxi': ['^zoom\\s*r16(_r24)?' + END],
+};
+
 const sourceOf = (file, q, commit) => ({
   title: `QLC+ input profile ${file} (non-official)`,
   url: `${QLC_REPO}/blob/${commit}/resources/inputprofiles/${file}`,
@@ -92,10 +121,10 @@ export function profileFromQxi(xml, { file, commit, date }) {
   const source = sourceOf(file, q, commit), palette = paletteOf(q, 0);
   return {
     id, short, name: `${maker} ${model}`, maker, kind: 'device', license: 'Apache-2.0', channel: 1,
-    match: { ports: [model.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/[\s-]+/g, '[\\s-]*')], prefer: [], avoid: [] },
+    match: { ports: PORTS[file] || [], prefer: [], avoid: [] },
     origin: { tool: 'QLC+', repo: QLC_REPO, commit, file: `resources/inputprofiles/${file}`, license: 'Apache-2.0', author: q.creator.author, note: `Imported from QLC+ on ${date}.` },
     sources: [source],
-    notes: `Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device.${noChannel ? ' QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.' : ''}`,
+    notes: `Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. ${PORTS[file] ? 'The port-name pattern was written from the model name, not read from a unit.' : 'There is no port name to go by, so it is never picked automatically: assign it by hand.'}${noChannel ? ' QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.' : ''}`,
     ...(palette ? { palette } : {}),
     face, sections, controls,
   };

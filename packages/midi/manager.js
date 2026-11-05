@@ -13,6 +13,7 @@
 
 import { MidiController } from './controller.js?v=060a5708';
 import { matchProfile, pickPort } from './profiles.js?v=060a5708';
+import { IMPORTED, importedUrl } from './profiles/imported.js?v=060a5708';
 
 export class MidiControllers {
   /**
@@ -23,9 +24,13 @@ export class MidiControllers {
    * @param {import('./index.js?v=060a5708').Midi} [o.midi]   hardware engine (enabled or about to be)
    * @param {string} [o.initial]               profile id shown before any hardware
    * @param {Storage} [o.storage]              learned mappings & manual port assignments persist here
+   * @param {object[]} [o.imported]            rows to recognise ports by when no profile claims them ([] = none); see _fetchImported
+   * @param {(id:string)=>Promise<object>} [o.loadImported]   how such a profile arrives (default: fetch its JSON)
    */
-  constructor({ profiles, signals = null, sink = null, midi = null, initial = null, storage = safeStorage() } = {}) {
+  constructor({ profiles, signals = null, sink = null, midi = null, initial = null, storage = safeStorage(), imported = IMPORTED, loadImported = fetchImported } = {}) {
     this.profiles = profiles;
+    this.imported = imported; this.loadImported = loadImported;
+    this._fetching = new Set();     // imported ids on their way
     this.signals = signals; this.sink = sink; this.midi = midi; this.storage = storage;
     this.byId = new Map(profiles.map((p) => [p.id, p]));
     this.controllers = new Map();   // profile id → MidiController
@@ -114,6 +119,7 @@ export class MidiControllers {
       if (manual[d.name] && this.byId.has(manual[d.name])) { this.ports.set(d.slug, { profileId: manual[d.name], name: d.name, auto: false }); continue; }
       const m = matchProfile(d.name, this.profiles);
       if (m) (byProfile.get(m.profile.id) || byProfile.set(m.profile.id, []).get(m.profile.id)).push(d);
+      else this._fetchImported(d.name, manual[d.name]);
     }
     for (const [pid, list] of byProfile) {
       const best = pickPort(list, this.byId.get(pid)) || list[0];
@@ -122,6 +128,20 @@ export class MidiControllers {
     for (const slug of [...this.ports.keys()]) if (!seen.has(slug)) this.ports.delete(slug);
     if (first) { this.select(first); this._sendSnapshot(first); }   // plug a device in → it appears on screen
     this._emit({ type: 'ports' });
+  }
+
+  /**
+   * A port no profile claims may be a controller imported from QLC+. Those files stay on the server until one is needed, so this fetches
+   * that one and matches again. It runs last on purpose: whatever the shipped profiles match or refuse (a DAW port they `avoid`) stands.
+   */
+  _fetchImported(portName, chosen) {
+    const id = chosen && this.imported.some((x) => x.id === chosen) ? chosen : matchProfile(portName, this.imported)?.profile.id;
+    if (!id || this.byId.has(id) || this._fetching.has(id)) return;
+    this._fetching.add(id);
+    this.loadImported(id)
+      .then((p) => { this.register(p); if (this.midi) this._devices(this.midi.devices()); })
+      .catch((e) => console.warn(`[midi controllers] could not load ${id}:`, e?.message || e))
+      .finally(() => this._fetching.delete(id));
   }
 
   _hw(data, port) {
@@ -166,6 +186,12 @@ export function controllerRoutes(profile, bindings, { short = profile.short, ...
     const source = c.type === 'pad' && r.on === 'hit' ? `midi/${short}/${id}/hit` : `midi/${short}/${id}`;
     return { source, ...(c.bipolar ? { inMin: -1, inMax: 1 } : {}), ...extra, ...r, target: r.target };
   });
+}
+
+async function fetchImported(id) {
+  const res = await fetch(importedUrl(id));
+  if (!res.ok) throw new Error(`${res.status}`);
+  return res.json();
 }
 
 function safeStorage() { try { return typeof localStorage !== 'undefined' ? localStorage : null; } catch { return null; } }
