@@ -26,7 +26,7 @@
 // and loadMapUrl() fetches one for `?map=<url>`. docs/mapping.md#save-load-and-share.
 
 // the one-pole lag a smoothed route steps with: the same function oav-p5's lag() uses (packages/chop)
-import { approach } from '../chop/index.js?v=2adcbf3d';
+import { approach } from '../chop/index.js?v=a5bef502';
 
 const CURVES = {
   linear: (x) => x,
@@ -165,8 +165,8 @@ let _nextId = 1;
 export class Mapper {
   /**
    * @param {object} deps
-   * @param {import('../core/src/signals.js?v=2adcbf3d').Signals} deps.signals
-   * @param {import('../core/src/params.js?v=2adcbf3d').Params} deps.params
+   * @param {import('../core/src/signals.js?v=a5bef502').Signals} deps.signals
+   * @param {import('../core/src/params.js?v=a5bef502').Params} deps.params
    * @param {string} [deps.profile='default'] localStorage namespace
    * @param {() => void} [deps.onChange] routes changed (UI refresh)
    * @param {(route: object, sig: string) => void} [deps.onLearn]
@@ -474,4 +474,4 @@ export class Mapper {
   dispose() { this._unsub?.(); }
 }
 
-export { LearnWizard } from './wizard.js?v=2adcbf3d';
+export { LearnWizard } from './wizard.js?v=a5bef502';
