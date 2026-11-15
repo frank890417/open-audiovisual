@@ -16,7 +16,7 @@ export default {
     title: 'open-audiovisual · a framework for audiovisual performance',
     description: 'Zero-build JavaScript framework: MIDI controllers, mics, hands and phones become signals that drive p5.js, WebGL or WebToe worlds in the browser. MIT.',
     definition: 'open-audiovisual is a zero-build JavaScript framework that turns MIDI controllers, microphones, hand tracking and phones into signals for browser-based audiovisual performance: p5.js, WebGL or WebToe worlds, MIT licensed.',
-    ogDescription: 'Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. open-audiovisual gives you a show.',
+    ogDescription: 'Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. open-audiovisual gives you a show, and the layer under it that nobody has to build again.',
     ld: 'A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: inputs (MIDI, audio, chords, body pose, phones) publish named signals, a mapping layer routes them to parameters, and algorithmic worlds render and sound them, with a timeline, a director\'s console and a backstage monitor.',
   },
 
@@ -44,7 +44,7 @@ export default {
 
   hero: {
     eyebrow: 'MIT · zero build · zero dependencies',
-    sub: 'A web-native framework for audiovisual performance.',
+    sub: 'A web-native framework for audiovisual performance, open for anyone to build on.',
     lede: 'Keys, knobs, voices, hands and phones become named <em>signals</em>. A <em>mapping</em> turns signals into <em>parameters</em>. Your <em>world</em> reads the parameters and turns them into image and sound, in a browser tab, on a projector, on stage.',
     doorsLabel: 'Where to start',
     doors: [
@@ -316,7 +316,7 @@ export default {
     title: 'Extracted from a show',
     p1: 'The core of open-audiovisual comes from <a href="https://cheyuwu.com/exhibition/the-last-input"><cite>The Last Input</cite></a> (Che-Yu Wu, 2026), a 49.4-channel spatial sound performance at the IRCAM residency × C-LAB in Taipei, where a pianist feeds a living digital world. Its timeline, chord semantics, many-to-many MIDI learn and OSC batching drove a real 14-scene show before they were generalized here. The rule since then: the framework only grows features a real show asked for.',
     p2: 'The mapping layer descends from <a href="http://libmapper.github.io/">libmapper</a>\'s research on signal namespaces. The sister project <a href="https://github.com/frank890417/WebToe">WebToe</a> is a node-based dataflow engine that imports TouchDesigner projects. WebToe is the engine, open-audiovisual is the show.',
-    quote: 'Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. <strong>open-audiovisual gives you a show.</strong>',
+    quote: 'Hydra gives you improvisation. cables gives you a platform. Tone gives you sound. <strong>open-audiovisual gives you a show, and the layer under it that nobody has to build again.</strong>',
     quoteCite: 'README',
     nextTitle: 'Next, from the roadmap',
     next: [

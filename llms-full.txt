@@ -77,7 +77,7 @@ One page and one JSON profile each; the page lists every control with its exact 
 
 [open-audiovisual: a web-native framework for audiovisual performance. signals → mapping → params → world. MIDI, audio, chords, hands, phones.](https://openaudiovisual.com)
 
-**A web-native framework for audiovisual performance.**
+**A web-native framework for audiovisual performance, open for anyone to build on.**
 
 MIDI, microphones, chords, hands and phones become named signals; a mapping turns them into parameters; your world draws and sounds them.
 
@@ -93,7 +93,7 @@ Web MIDI
 [**Website**](https://openaudiovisual.com) · [**Docs**](https://openaudiovisual.com/docs/) · [**繁體中文**](https://openaudiovisual.com/zh/docs/) · [**Controllers**](https://openaudiovisual.com/controllers/) · [**Examples**](#-examples) · [**p5.js in one line**](#-p5js-in-one-line)
 
 > Hydra gives you improvisation. cables gives you a platform. Tone gives you sound.
-> **open-audiovisual gives you a *show*.**
+> **open-audiovisual gives you a *show*, and the layer under it that nobody has to build again.**
 
 Everything TouchDesigner-class tools do on a desktop, the browser can now do with a URL:
 WebGL/WebGPU rendering, Web MIDI, realtime audio analysis, on-device pose tracking.

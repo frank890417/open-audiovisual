@@ -42,6 +42,22 @@ The script prints the commits of the release and the revert command:
 git revert <first>..<last> && tools/release.sh "revert …"
 ```
 
+## A version of the framework
+
+The framework's version is one number in three places (`package.json`, `packages/core/src/signature.js`, `packages/midi/telemetry.js`;
+`tests/signature.test.js` keeps them equal). A page outside the repository pins it in an address
+(`https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js`), and that address is a git tag.
+When a release changes the number, tag the commit the script pushed, after the script has finished:
+
+```bash
+git tag -a v0.9.1 <last commit of the release> -m "open-audiovisual 0.9.1" && git push origin v0.9.1
+curl -sI https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.1/packages/openav.js | grep -i x-jsd-version   # 0.9.1
+```
+
+A tag is never moved or deleted: someone's show is pinned to it. A fix is a new patch version. A release that does not
+change the number (site pages, wording, oav-p5) gets no tag. Then update the address in `assets/starter/show.html`,
+`packages/openav.js` (its comment) and `docs/getting-started.md` (en and zh) in the next release.
+
 ## Not in the script (need a person)
 
 - Cloudflare settings (AI crawler policy, Email Obfuscation, Always Use HTTPS, cache rules): dashboard or the `cf` CLI, by a person or with their go-ahead.

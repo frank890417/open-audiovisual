@@ -16,7 +16,7 @@ export default {
     title: 'open-audiovisual｜網頁原生的影音表演框架',
     description: '零建置的 JavaScript 框架：MIDI 控制器、麥克風、手勢和手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界。MIT 授權。',
     definition: 'open-audiovisual 是零建置的 JavaScript 框架：把 MIDI 控制器、麥克風、手勢與手機變成訊號，驅動瀏覽器裡的 p5.js、WebGL 或 WebToe 世界，用於現場影音表演。MIT 授權。',
-    ogDescription: 'Hydra 給你即興，cables 給你平台，Tone 給你聲音。open-audiovisual 給你一場演出。',
+    ogDescription: 'Hydra 給你即興，cables 給你平台，Tone 給你聲音。open-audiovisual 給你一場演出，以及演出底下那一層不用再重做的東西。',
     ld: '網頁原生、零建置、零相依的 JavaScript 影音表演框架：MIDI、音訊、和弦、肢體姿態與手機等輸入發出有名字的訊號，映射層把訊號接到參數，演算的世界依參數產生畫面與聲音，另有時間軸、導演控台與後台監看。',
   },
 
@@ -44,7 +44,7 @@ export default {
 
   hero: {
     eyebrow: 'MIT 授權 · 零建置 · 零相依',
-    sub: '網頁原生的影音表演框架。',
+    sub: '網頁原生的影音表演框架，開源，給所有人當地基。',
     lede: '琴鍵、旋鈕、人聲、手勢、手機，都會變成有名字的<em>訊號</em>（signal）。<em>映射</em>（mapping）把訊號接到<em>參數</em>（param），你的<em>世界</em>（world）讀這些參數，變成畫面和聲音。在瀏覽器分頁、投影機、舞台上都一樣。',
     doorsLabel: '從哪裡開始',
     doors: [
@@ -315,7 +315,7 @@ export default {
     title: '從一場演出裡抽出來',
     p1: 'open-audiovisual 的核心來自<a href="https://cheyuwu.com/zh/exhibition/the-last-input">《The Last Input 終局之前》</a>（吳哲宇，2026），IRCAM 聲鬥陣 × C-LAB 在台北的 49.4 聲道空間聲響演出，演奏者用鋼琴餵養一個活著的數位世界。時間軸、和弦語意、多對多的 MIDI learn、OSC 批次傳送，都先撐過一整場十四個場景的演出，才整理成這裡的通用框架。從那之後的規則：框架只長真實演出要求過的功能。',
     p2: '映射層的想法，承接 <a href="http://libmapper.github.io/">libmapper</a> 對訊號命名空間的研究。姊妹專案 <a href="https://github.com/frank890417/WebToe">WebToe</a> 是節點式的資料流引擎，可以匯入 TouchDesigner 專案。WebToe 負責引擎，open-audiovisual 負責演出。',
-    quote: 'Hydra 給你即興，cables 給你平台，Tone 給你聲音。<strong>open-audiovisual 給你一場演出。</strong>',
+    quote: 'Hydra 給你即興，cables 給你平台，Tone 給你聲音。<strong>open-audiovisual 給你一場演出，以及演出底下那一層不用再重做的東西。</strong>',
     quoteCite: 'README',
     nextTitle: '接下來，摘自路線圖',
     next: [

@@ -2,7 +2,7 @@
 
 <a href="https://openaudiovisual.com"><img src="assets/home/og.png" width="720" alt="open-audiovisual: a web-native framework for audiovisual performance. signals → mapping → params → world. MIDI, audio, chords, hands, phones."></a>
 
-**A web-native framework for audiovisual performance.**<br>
+**A web-native framework for audiovisual performance, open for anyone to build on.**<br>
 MIDI, microphones, chords, hands and phones become named signals; a mapping turns them into parameters; your world draws and sounds them.
 
 <a href="https://github.com/frank890417/open-audiovisual/actions/workflows/checks.yml"><img src="https://img.shields.io/github/actions/workflow/status/frank890417/open-audiovisual/checks.yml?branch=main&amp;label=tests&amp;style=flat-square&labelColor=0e0e10" alt="tests"></a>
@@ -19,7 +19,7 @@ MIDI, microphones, chords, hands and phones become named signals; a mapping turn
 </div>
 
 > Hydra gives you improvisation. cables gives you a platform. Tone gives you sound.
-> **open-audiovisual gives you a *show*.**
+> **open-audiovisual gives you a *show*, and the layer under it that nobody has to build again.**
 
 Everything TouchDesigner-class tools do on a desktop, the browser can now do with a URL:
 WebGL/WebGPU rendering, Web MIDI, realtime audio analysis, on-device pose tracking.
