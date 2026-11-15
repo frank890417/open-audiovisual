@@ -10,7 +10,7 @@ node packages/relay/server.js     # or standalone on :7458
 RELAY_HOST=127.0.0.1 node packages/relay/server.js 8903   # bind to localhost behind a reverse proxy (TLS, rate limits)
 ```
 
-Roles in a room (`?role=controller|runner|monitor&room=<name>&id=<device>`):
+Roles in a room (`?role=controller|runner|monitor|leader|follower&room=<name>&id=<device>`):
 
 | from | to | what |
 |---|---|---|
@@ -18,9 +18,14 @@ Roles in a room (`?role=controller|runner|monitor&room=<name>&id=<device>`):
 | runner (the show) | monitor | `signal` / `batch` |
 | runner | controllers + monitors | `feedback` (meters, fader echo), `config` (the surface layout; replayed to late joiners) |
 | monitor | nobody | |
+| leader (a show page) | followers | `sync`: frames, and the `state` it answers a follower with (`"to":"<id>"` = that peer only) |
+| follower (a show page) | leaders | `sync`: `hello` |
 
 Wire format = the cheyuwu-lab relay's (`{"type":"signal","name","value","t","pulse"?}`, `batch`,
-`ping`/`pong`, `status`) plus `feedback` and `config`; clients ignore types they do not know.
+`ping`/`pong`, `status`) plus `feedback`, `config` and `sync`; clients ignore types they do not know.
+The hub does not read a `sync` message past its `to`; what a frame means is [`@openav/sync`](../sync)'s business.
+Messages over 256 KB are dropped and frames over 1 MiB close the connection, unless `attachRelay(server, { maxMessageChars, maxBytes })` says otherwise
+(a `state` that carries a whole tape needs it).
 
 ```js
 import { RelayClient, bindSignals } from '@openav/relay';
@@ -30,6 +35,13 @@ const phone = new RelayClient({ role: 'controller', room: 'main' }).connect();
 phone.set('phone/me/tilt/x', 0.3);        // continuous: 30 Hz batch + 1 Hz refresh
 phone.send('midi/note/on', { note: 60 }, true);   // pulse: immediate, never coalesced
 ```
+
+```js
+const leader = new RelayClient({ role: 'leader', room: 'hall' }).connect();
+leader.sync({ v: 1, kind: 'frame', seq: 1, T: 12.5 });                  // → every follower in 'hall'
+const follower = new RelayClient({ role: 'follower', room: 'hall', onSync: (m) => … }).connect();
+```
+(`@openav/sync` wraps this: `RelayTransport`, `createSync`, `createShow({ sync: { url } })`.)
 
 ## `link.js`: MIDI between pages in one room
 

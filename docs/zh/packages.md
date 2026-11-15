@@ -1,6 +1,6 @@
 # 套件一覽
 
-二十七個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十八個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
@@ -8,7 +8,7 @@
 | L2 映射 | `mapping` · `chop` |
 | L3 世界 | `stage` · `world-webtoe` |
 | L4 輸出 | `sound` · `osc` · `out` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
-| 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` |
+| 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | 手機 | `relay` · `surface` · `remote` |
 | 膠水 | `core` · `show` · `mcp` |
 
@@ -22,7 +22,7 @@
 |---|---|
 | `Signals` | `new Signals()` · `define(name, { kind, min, max, unit, description, source })` · `set(name, value)` · `pulse(name, payload = 1)` · `get(name)` · `norm(name)` → 0..1 · `on(name, cb(value, name))` → 取消訂閱函式 · `onAny(cb(name, value, meta))` → 取消訂閱函式 · `list()` → `[{ name, value, at, kind, min, max, … }]` |
 | `Params` | `new Params(schema = [])` · `add(entries)` · `get(key)` · `clamp(key, v)` · `override(key, v)` · `clearOverride(key)` · `clearAllOverrides()` · `isOverridden(key)` · `firePulse(key)` · `onPulse(key, cb)` → 取消訂閱函式 · `resolve(base)` → 狀態 · `schema`、`overrides` |
-| `Loop` | `new Loop(onFrame(dt, now), { maxDt = 0.1 })` · `start()` · `stop()` · `fps` |
+| `Loop` | `new Loop(onFrame(dt, now), { maxDt = 0.1, clock, raf, manual = false, heartbeat })` · `start()` · `stop()` · `step(dt)` → `boolean`（跑一個長度 `dt` 秒的影格，不夾上限）· `fps`、`running`、`manual`。`clock()` → 毫秒（預設 `performance.now`），`raf(cb)` → 下一格（預設 `requestAnimationFrame`）；注入 `raf` 或 `manual` 會關掉分頁藏起來時的 Worker 心跳（`heartbeat: true` 可打開）。見[自己驅動影格](show-control.md#driving-the-frames-yourself) |
 | `Bus` | `new Bus()` · `on(event, cb)` → 取消訂閱函式 · `off(event, cb)` · `emit(event, payload)` |
 
 ```js
@@ -35,7 +35,7 @@ signals.set('breath/pressure', 0.4);
 
 ## @openav/show
 
-膠水 · `createShow(options)`：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見[演出控制](show-control.md#createshow)。
+膠水 · `createShow(options)`：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見[演出控制](show-control.md#createshow)；`loop`、`monitor`、`console`（控台的 `keys`）決定誰來給影格、後台推送送去哪裡、哪些鍵操作控台。`sync` 讓這個頁面成為好幾個演同一場的頁面之一（主控端或從屬端，見 [`@openav/sync`](#openav-sync)）。
 
 ```js
 import { createShow } from '@openav/show';
@@ -170,7 +170,7 @@ L2 映射 · 從訊號接到參數的路由，含曲線、平滑、learn，以�
 
 | 匯出 | 簽章 |
 |---|---|
-| `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`、`learnTarget` |
+| `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn, base })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`、`learnTarget` |
 | `LearnWizard` | `new LearnWizard({ mapper, keys, onChange })` · `start()` · `skip()` · `back()` · `stop()` · `sync()` · `active`、`current`、`index`、`total`、`done`、`added`：「依序對應旋鈕」，見[總譜與導演](score.md#map-the-knobs-in-order) |
 
 ```js
@@ -178,6 +178,9 @@ import { Mapper } from '@openav/mapping';
 const mapper = new Mapper({ signals, params });
 mapper.addRoute({ source: 'midi/cc/74', target: 'bloom', curve: 'exp', smooth: 0.1 });
 // every frame: mapper.update(dt);
+// a knob that nudges the timeline instead of replacing it, and gives the param back when you let go:
+// mapper.base = () => timeline.state();
+// mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'trim', outMin: -0.3, outMax: 0.3, release: 4 });
 ```
 
 完整說明：見[映射](mapping.md)。
@@ -319,9 +322,10 @@ L4 輸出（實體分支）· 做得出來嗎？對任何網格出可製造性�
 
 | 匯出 | 簽章 |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })` · `play()`（放行 hold）、`pause()`、`toggle()`、`seek(t)`、`jumpScene(d)`、`next()`（放行 hold，否則往後一段）、`prev()`、`release()`、`reset()`（回到 `start`，預設 0）· `advance(dt)` · `state(t)`、`valueAt(key, t)` · `sceneIndexAt(t)`、`currentScene(t)`、`sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`、`onSeek(cb(t, kind))` · `layer(key, value, t)` · 關鍵影格 `[t, value, curve?]`（`'linear'`、`'ease'`、`'in'`、`'out'`、`'step'`）· `loop`（`true`、`'scene'`、場景 id、`{ from, to }`）、`onLoop(cb)` · `cues()`、`onCue(cb(cue, { cause }))`、`fireCue(cue)` · `record(key, source)`、`stopRecording()`、`onRecord(cb)`、`mergeTake(key, take, opts)` · `t`、`playing`、`holding`、`rate`、`total`、`start`、`score` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })` · `play()`（放行 hold）、`pause()`、`toggle()`、`seek(t)`、`jumpScene(d)`、`next()`（放行 hold，否則往後一段）、`prev()`、`release()`、`reset()`（回到 `start`，預設 0）· `advance(dt)` · `state(t)`、`valueAt(key, t)` · `sceneIndexAt(t)`、`currentScene(t)`、`sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`、`onSeek(cb(t, kind))` · `layer(key, value, t)` · 關鍵影格 `[t, value, curve?]`（`'linear'`、`'ease'`、`'in'`、`'out'`、`'step'`）· `loop`（`true`、`'scene'`、場景 id、`{ from, to }`）、`onLoop(cb)` · `cues()`、`onCue(cb(cue, { cause }))`、`fireCue(cue)` · `record(key, source)`、`stopRecording()`、`onRecord(cb)`、`mergeTake(key, take, opts)` · 以段落為單位的自動化 `{ key: { 段落id: [[p, value, curve?], …] } }`、`lanePos(t)`、`laneTime(id, p)`、`lanePlan()`、`lanes()` · `exportAutomation({ keys, as, precision })`、`importAutomation(doc, { keys, replace, ignoreCut })` · `anchor(epoch, opts)`、`unanchor()`、`drift()`、`onDrift(cb)` · `follow(source, opts)`、`unfollow()`、`following`、`followStatus()`、`onFollow(cb)` · `t`、`playing`、`holding`、`rate`、`total`、`start`、`score` |
+| `compileLane`、`decompileLane`、`lanePos`、`laneTime`、`isLane`、`AUTOMATION_FORMAT` | 段落 lane 的換算，寫成對段落表 `[{ id, start, end }]`（`score.rootSegments`）操作的純函式，給沒有時間軸的工具用 |
 
-關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 `cues` 在播放經過時觸發，seek 不會觸發。`record()` 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。`CURVES` 也有匯出。
+關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 `cues` 在播放經過時觸發，seek 不會觸發。`record()` 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。`CURVES` 也有匯出。曲線可以改成以段落為單位來寫、存成 JSON 再讀回來，時間軸也能盯著牆鐘：見 [Lane](show-control.md#lanes-curves-written-per-segment)、[存取 automation](show-control.md#saving-and-loading-automation)、[牆鐘](show-control.md#wall-clock-anchor-and-drift)，也能去追另一條時間軸的時鐘：見[追另一條時鐘](show-control.md#following-another-clock-follow)。
 
 見[演出控制](show-control.md#timeline)。
 
@@ -331,7 +335,7 @@ L4 輸出（實體分支）· 做得出來嗎？對任何網格出可製造性�
 
 | 匯出 | 簽章 |
 |---|---|
-| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`、`indexAt(T)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`、`cut`、`segments`、`startT`、`scale`、`baseTime(T)` |
+| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`、`indexAt(T)` · `locate(T)`、`timeAt(id, p)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`、`cut`、`segments`（每段帶著自己的 `meta`）、`startT`、`scale`、`baseTime(T)`、`rootSegments`、`allSegmentIds()` |
 | `ScoreError` | 總譜不合法時丟出，`problems` 列出每一個原因 |
 | `Director` | `new Director({ score, modules, api, onStatus, onCue, maxStep })` · `update(T, dt, { holding, playing })` · `param(key, value, T)` · `seek(T)` · `reset()` · `status()` · `register(module)` |
 
@@ -374,7 +378,9 @@ p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
 
 | 匯出 | 簽章 |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder })` → `{ render(state), perf, director, wizard, dispose() }`。`app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys, curves })` → `{ render(state), perf, director, curves, wizard, keys, dispose() }`。`app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| 曲線面板 | `curves`：`false` 不要這個面板，`{ open: true }` 一開始就打開；`desk.curves` → `{ toggle(force?), open, info() }`（`curves: false` 時是 `null`）。整場演出每個有 automation 的參數一條曲線、播放頭、覆寫與 ↩ 和 ↩ all、點一下就跳過去：[曲線面板](show-control.md#the-curves-panel) |
+| 鍵盤 | `keys`：`{ play, next, prev, reset, perf, fullscreen, midi, cancel, curves }` → 一個鍵或一串鍵（`'F6'`、`'KeyR'`、`'Shift+T'`），`false` = 關掉；`keys: false` = 不要任何快捷鍵 · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`：[挪動快捷鍵](show-control.md#moving-the-shortcuts) |
 
 見[演出控制](show-control.md#the-console)。
 
@@ -384,11 +390,26 @@ p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
 
 | 匯出 | 簽章 |
 |---|---|
-| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15 })` · `connect()` · `frame(snapshot)` · `connected`、`onStatus` |
-| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop }, state)` → 一份 JSON 快照 |
+| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15, extra })` · `connect()` · `frame(snapshot)` · `extra(fn)` → `off()` · `connected`、`onStatus` |
+| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop, extra? }, state)` → 一份 JSON 快照；作品自己的數字（`extra`、目前啟用的世界的 `monitor()`）放在快照的 `extra` 下 |
+| `cleanExtra` | `cleanExtra(x)` → 把作品的數字整理成 JSON 帶得走的樣子（每個欄位是數字、字串、布林、null 或 `{ v, min, max, warn }`），沒有任何欄位時回傳 `null` |
 | 伺服器 | `node packages/monitor/server.js [port=7457]`：後台頁面在 `/`，另有 `/health` |
 
 見[演出控制](show-control.md#backstage-monitor)。
+
+## @openav/sync
+
+主軸 · 好幾個頁面，一場演出：主控端和它的從屬端之間的那條線，走 BroadcastChannel 或房間中繼。從屬端的時間軸用 [`timeline.follow()`](show-control.md#following-another-clock-follow) 去追主控端。
+
+| 匯出 | 簽章 |
+|---|---|
+| `createSync` | `createSync({ role, channel, url, timeline, score, follow, extra, state, hz, info, accept, onFrame, onState, onGap, id, now, transport })` → `SyncLeader` 或 `SyncFollower`；從屬端的時間軸會被接上去追它。每個影格在 `timeline.advance(dt)` 之後呼叫 `sync.frame()`；`sync.close()` 放手 |
+| `SyncLeader` | `new SyncLeader({ timeline, transport, id, cut, extra, state, hz, now, onHello })` · `frame()` · `sendState(to?)` · `status()` · `monitor()` · `close()` |
+| `SyncFollower` | `new SyncFollower({ transport, id, now, timeline, info, accept, onFrame, onState, onGap, resync = true, helloEvery = 1000, takeoverAfter = 1500, resyncAfter = 1000 })` · `latest()`（`timeline.follow()` 的來源）· `hello(reason)` · `frame()` · `status()` · `monitor()` · `close()` |
+| 傳輸 | `BroadcastTransport({ channel })` · `RelayTransport({ url, room, role, id })` · `createTransport({ role, channel, url, id })`：每一個都是 `{ send(msg), onMessage(cb), onOpen(cb), open, close() }`，送的是 JSON |
+| `SYNC_VERSION` | `1`，每則訊息的 `v` |
+
+訊息有 `frame`（主控端送給從屬端，每一幀）、`hello`（從屬端送給主控端）和 `state`（主控端送給某一個從屬端）；作品自己的資料放在 `extra`。見[演出控制](show-control.md#several-pages-one-show)。
 
 ## @openav/relay
 
@@ -396,9 +417,9 @@ p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
 
 | 匯出 | 簽章 |
 |---|---|
-| `RelayClient` | `new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig })` · `connect()` · `close()` · `set(name, value)` · `send(name, value, pulse, extra)` · `feedback(name, value)` · `config(key, data)` · `status`、`latency`、`peers` |
+| `RelayClient` | `new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig, onSync })` · `connect()` · `close()` · `set(name, value)` · `send(name, value, pulse, extra)` · `feedback(name, value)` · `config(key, data)` · `sync(msg)` · `status`、`latency`、`peers`；`role` 是 `controller`、`runner`、`monitor`、`leader` 或 `follower` |
 | 訊號輔助函式 | `bindSignals(client, signals, { alias = 'any' })` · `fileSignal(signals, name, value, { pulse })` · `signalMeta(name, { pulse })` · `aliasOf(name)` · `normalizeValue(name, value)` · `deviceId()` |
-| `@openav/relay/server` | `attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000 })` → `{ hub, close() }`。單獨執行用 `node packages/relay/server.js [port=7458]` |
+| `@openav/relay/server` | `attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000, maxMessageChars = 262144, maxBytes = 1048576 })` → `{ hub, close() }`。單獨執行用 `node packages/relay/server.js [port=7458]` |
 | `MidiLink`（`link.js`） | `new MidiLink({ url, room, delay = 0, onMessages(list, from), onStatus })` · `connect()` · `send(bytes, whenMs)` · `info()` → `{ state, peers, rtt, trip, diff, lead, late, sent, received }` · `close()`；`LinkTiming`：同一個房間的頁面之間傳 MIDI，在送出那頁響的那一刻演奏（[和 Strudel 一起用](strudel.md)） |
 
 見[手機、中繼與控制面板](remote.md#the-relay)。

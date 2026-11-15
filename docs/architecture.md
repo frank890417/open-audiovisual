@@ -16,13 +16,14 @@ const loop = new Loop((dt) => {
   audio?.update();                               //    microphone analysis → audio/* signals
   onFrame?.(dt, show);                           //    your assembly-level hook
   timeline.advance(dt);                          // 1. time moves
+  sync?.frame();                                 //    several pages: the leader says where it is, a follower asks again if unanswered
   director?.update(timeline.t, dt, { holding, playing }); //    with a score: segment modules enter / update / exit
   mapper.update(dt);                             // 2. smoothed routes settle
   const state = stage.frame(dt, timeline.state()); // 3. params resolve → world updates & renders
   sound?.update(state);                          // 4. sound/* params reach the synth
   remote?.frame(dt, state);                      //    param values echo back to phones
   consoleUI.render(state);                       // 5. the desk reflects reality
-  monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); // 6. backstage hears about it
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); // 6. backstage hears about it (not with monitor: false)
 });
 ```
 
@@ -37,6 +38,12 @@ never makes a world explode. When the browser freezes `requestAnimationFrame`
 loop ticking, about every 66 ms (~15 frames per second): the timeline, mapped signals and
 the backstage feed must not stop because someone switched windows.
 
+Who supplies the frames is a choice, and the page's own is only the default.
+`new Loop(fn, { clock, raf })` takes the time and the frame requests from you (a
+test's fake timer, a recorder's frame pump), and `new Loop(fn, { manual: true })`
+schedules nothing: each `loop.step(dt)` is one frame. `createShow({ loop: 'manual' })`
+does that for the whole show ([Driving the frames yourself](show-control.md#driving-the-frames-yourself)).
+
 Param resolution order (the heart of the design):
 
 ```text
@@ -47,7 +54,9 @@ timeline.state(t)          — automation curves per param
 
 An override is *sticky*: once a knob touched `bloom`, the timeline no longer moves
 it until the override is cleared (✕ in the console). This matches performance
-reality — when a human grabs a control, the score yields.
+reality — when a human grabs a control, the score yields. A route can choose otherwise:
+`mode: 'trim'` adds the knob to the timeline's value instead of replacing it, and `release`
+hands the param back when the knob stands still ([Mapping](mapping.md#trim-pickup-and-release)).
 
 ## L1 · Input — Signals
 
@@ -158,19 +167,25 @@ cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ─
 The score only decides *when*. What happens still reaches the world as params.
 Full reference: [Score & Director](score.md).
 
+A timeline can also follow another's clock instead of walking by itself, which is how several pages perform one show: the leader
+runs, the followers chase its `T` over a BroadcastChannel or the room relay, and every param still resolves as a function of that `T`
+([Several pages, one show](show-control.md#several-pages-one-show)).
+
 ## Spine · Monitor
 
 The performance page streams JSON snapshots (throttled, ~15 Hz) over WebSocket
 to a dependency-free relay (`server.js`, hand-rolled RFC 6455). Any phone or
 laptop on the LAN opens the backstage page and sees: clock, scene, world, FPS,
-overrides, every signal and param, and a "stage feed lost" alarm. The monitor
-is a first-class citizen because a show without a backstage is a rehearsal.
+overrides, every signal and param, and a "stage feed lost" alarm. The work can add
+its own health numbers to the feed ([Backstage monitor](show-control.md#the-works-own-numbers)).
+The monitor is a first-class citizen because a show without a backstage is a rehearsal.
 
 ## Around the spines: console and phones
 
 - **Console** (`@openav/console`): the director's desk in the side panel, laid
-  out by layer (Layers → L1 → L2 → L3 → L4 → Signals), plus performance mode.
-  It reads the same objects the loop runs; it owns nothing.
+  out by layer (Layers → L1 → L2 → L3 → L4 → Signals), plus performance mode and
+  a curve view of the whole show's automation. It reads the same objects the loop
+  runs; it owns nothing.
 - **Phones** (`@openav/relay`, `@openav/surface`, `@openav/remote`): phones and
   iPads join a room on a WebSocket relay and publish `phone/*` and `surface/*`
   signals. To the mapper they are one more input. See

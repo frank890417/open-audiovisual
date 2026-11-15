@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty-seven packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-eight packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -11,7 +11,7 @@ npm yet.
 | L2 mapping | `mapping` · `chop` |
 | L3 world | `stage` · `world-webtoe` |
 | L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
-| spines | `timeline` · `score` · `pattern` · `console` · `monitor` |
+| spines | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
 
@@ -28,7 +28,7 @@ Glue · the shared language: `Signals`, `Params`, `Loop`, `Bus`.
 |---|---|
 | `Signals` | `new Signals()` · `define(name, { kind, min, max, unit, description, source })` · `set(name, value)` · `pulse(name, payload = 1)` · `get(name)` · `norm(name)` → 0..1 · `on(name, cb(value, name))` → unsubscribe · `onAny(cb(name, value, meta))` → unsubscribe · `list()` → `[{ name, value, at, kind, min, max, … }]` |
 | `Params` | `new Params(schema = [])` · `add(entries)` · `get(key)` · `clamp(key, v)` · `override(key, v)` · `clearOverride(key)` · `clearAllOverrides()` · `isOverridden(key)` · `firePulse(key)` · `onPulse(key, cb)` → unsubscribe · `resolve(base)` → state · `schema`, `overrides` |
-| `Loop` | `new Loop(onFrame(dt, now), { maxDt = 0.1 })` · `start()` · `stop()` · `fps` |
+| `Loop` | `new Loop(onFrame(dt, now), { maxDt = 0.1, clock, raf, manual = false, heartbeat })` · `start()` · `stop()` · `step(dt)` → `boolean` (one frame of `dt` seconds, unclamped) · `fps`, `running`, `manual`. `clock()` → ms (default `performance.now`), `raf(cb)` → the next frame (default `requestAnimationFrame`); an injected `raf` or `manual` turns the hidden-tab Worker off (`heartbeat: true` turns it on). See [Driving the frames yourself](show-control.md#driving-the-frames-yourself) |
 | `Bus` | `new Bus()` · `on(event, cb)` → unsubscribe · `off(event, cb)` · `emit(event, payload)` |
 
 ```js
@@ -43,7 +43,7 @@ signals.set('breath/pressure', 0.4);
 
 Glue · `createShow(options)`: one call that assembles a whole show around a
 world and returns every part. Options, modules and the return value are in
-[Show control](show-control.md#createshow).
+[Show control](show-control.md#createshow); `loop`, `monitor` and `console` (the desk's `keys`) choose who drives the frames, where the backstage feed goes and which keys run the desk; `sync` makes the page one of several that perform the same show (leader or follower, [`@openav/sync`](#openav-sync)).
 
 ```js
 import { createShow } from '@openav/show';
@@ -187,7 +187,7 @@ saved profiles.
 
 | export | signature |
 |---|---|
-| `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`, `learnTarget` |
+| `Mapper` | `new Mapper({ signals, params, profile = 'default', onChange, onLearn, base })` · `addRoute(route)` · `removeRoute(id)` · `routesFor(target)` · `learn(target)` · `update(dt)` · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` · `dispose()` · `routes`, `learnTarget` |
 | `LearnWizard` | `new LearnWizard({ mapper, keys, onChange })` · `start()` · `skip()` · `back()` · `stop()` · `sync()` · `active`, `current`, `index`, `total`, `done`, `added`: "map the knobs in order", see [Score & Director](score.md#map-the-knobs-in-order) |
 
 ```js
@@ -195,6 +195,9 @@ import { Mapper } from '@openav/mapping';
 const mapper = new Mapper({ signals, params });
 mapper.addRoute({ source: 'midi/cc/74', target: 'bloom', curve: 'exp', smooth: 0.1 });
 // every frame: mapper.update(dt);
+// a knob that nudges the timeline instead of replacing it, and gives the param back when you let go:
+// mapper.base = () => timeline.state();
+// mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'trim', outMin: -0.3, outMax: 0.3, release: 4 });
 ```
 
 Full reference: [Mapping](mapping.md).
@@ -351,9 +354,10 @@ Spine · automation, scenes and transport; pure logic.
 
 | export | signature |
 |---|---|
-| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · keyframes `[t, value, curve?]` (`'linear'` · `'ease'` · `'in'` · `'out'` · `'step'`) · `loop` (`true`, `'scene'`, a scene id, `{ from, to }`), `onLoop(cb)` · `cues()`, `onCue(cb(cue, { cause }))`, `fireCue(cue)` · `record(key, source)`, `stopRecording()`, `onRecord(cb)`, `mergeTake(key, take, opts)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
+| `Timeline` | `new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })` · `play()` (releases a hold), `pause()`, `toggle()`, `seek(t)`, `jumpScene(d)`, `next()` (releases a hold, else a scene on), `prev()`, `release()`, `reset()` (to `start`, default 0) · `advance(dt)` · `state(t)`, `valueAt(key, t)` · `sceneIndexAt(t)`, `currentScene(t)`, `sceneEnd(i)` · `onSceneChange(cb(i, scene, { cause }))`, `onSeek(cb(t, kind))` · `layer(key, value, t)` · keyframes `[t, value, curve?]` (`'linear'` · `'ease'` · `'in'` · `'out'` · `'step'`) · `loop` (`true`, `'scene'`, a scene id, `{ from, to }`), `onLoop(cb)` · `cues()`, `onCue(cb(cue, { cause }))`, `fireCue(cue)` · `record(key, source)`, `stopRecording()`, `onRecord(cb)`, `mergeTake(key, take, opts)` · per-segment automation `{ key: { segmentId: [[p, value, curve?], …] } }`, `lanePos(t)`, `laneTime(id, p)`, `lanePlan()`, `lanes()` · `exportAutomation({ keys, as, precision })`, `importAutomation(doc, { keys, replace, ignoreCut })` · `anchor(epoch, opts)`, `unanchor()`, `drift()`, `onDrift(cb)` · `follow(source, opts)`, `unfollow()`, `following`, `followStatus()`, `onFollow(cb)` · `t`, `playing`, `holding`, `rate`, `total`, `start`, `score` |
+| `compileLane`, `decompileLane`, `lanePos`, `laneTime`, `isLane`, `AUTOMATION_FORMAT` | the segment-lane conversions as pure functions over a segment table `[{ id, start, end }]` (`score.rootSegments`), for tools that have no timeline |
 
-A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's `cues` fire when playback passes them, never on a seek. `record()` writes a value source (a knob override) into a lane while the timeline plays. `CURVES` is exported too.
+A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's `cues` fire when playback passes them, never on a seek. `record()` writes a value source (a knob override) into a lane while the timeline plays. `CURVES` is exported too. Curves can be written per segment, saved as JSON and read back, and the timeline can watch the wall clock: [Lanes](show-control.md#lanes-curves-written-per-segment), [Saving and loading automation](show-control.md#saving-and-loading-automation), [Wall clock](show-control.md#wall-clock-anchor-and-drift), or follow another timeline's clock: [Following another clock](show-control.md#following-another-clock-follow).
 
 See [Show control](show-control.md#timeline).
 
@@ -363,7 +367,7 @@ Spine · the score and the director: a show written as segment lengths, and the 
 
 | export | signature |
 |---|---|
-| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`, `indexAt(T)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`, `cut`, `segments`, `startT`, `scale`, `baseTime(T)` |
+| `Score` | `new Score({ cuts, cut })` · `table()` · `total` · `segmentAt(T)`, `indexAt(T)` · `locate(T)`, `timeAt(id, p)` · `cueTime('seg.name')` · `cuesBetween(T0, T1)` · `cues()` · `scenes()` · `validate()` · `cuts`, `cut`, `segments` (each with its `meta`), `startT`, `scale`, `baseTime(T)`, `rootSegments`, `allSegmentIds()` |
 | `ScoreError` | thrown by an invalid score; `problems` lists every reason |
 | `Director` | `new Director({ score, modules, api, onStatus, onCue, maxStep })` · `update(T, dt, { holding, playing })` · `param(key, value, T)` · `seek(T)` · `reset()` · `status()` · `register(module)` |
 
@@ -407,7 +411,9 @@ meters, performance mode.
 
 | export | signature |
 |---|---|
-| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder })` → `{ render(state), perf, director, wizard, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| `mountConsole` | `mountConsole(el, app, { layers, signals, learnOrder, keys, curves })` → `{ render(state), perf, director, curves, wizard, keys, dispose() }`; `app` = `{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }` |
+| Curves panel | `curves`: `false` leaves it out, `{ open: true }` starts it open; `desk.curves` → `{ toggle(force?), open, info() }` (`null` with `curves: false`). One curve per automated param across the whole show, the playhead, overrides with ↩ and ↩ all, click to seek: [The curves panel](show-control.md#the-curves-panel) |
+| keyboard | `keys`: `{ play, next, prev, reset, perf, fullscreen, midi, cancel, curves }` → a key or a list (`'F6'`, `'KeyR'`, `'Shift+T'`), `false` = off; `keys: false` = no shortcuts · `DEFAULT_KEYS` · `resolveKeys(keys)` · `keyLabel(keys, action)`: [Moving the shortcuts](show-control.md#moving-the-shortcuts) |
 
 See [Show control](show-control.md#the-console).
 
@@ -417,11 +423,26 @@ Spine · the backstage page and the WebSocket relay that feeds it.
 
 | export | signature |
 |---|---|
-| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15 })` · `connect()` · `frame(snapshot)` · `connected`, `onStatus` |
-| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop }, state)` → a JSON snapshot |
+| `MonitorFeed` | `new MonitorFeed({ url = 'ws://<page host>:7457', hz = 15, extra })` · `connect()` · `frame(snapshot)` · `extra(fn)` → `off()` · `connected`, `onStatus` |
+| `snapshotOf` | `snapshotOf({ timeline, params, signals, stage, loop, extra? }, state)` → a JSON snapshot; the work's own numbers (`extra`, the active world's `monitor()`) land under `extra` |
+| `cleanExtra` | `cleanExtra(x)` → the work's numbers made safe for JSON (a number, string, boolean, null or `{ v, min, max, warn }` per field), or `null` when there are none |
 | server | `node packages/monitor/server.js [port=7457]`: backstage page at `/`, `/health` |
 
 See [Show control](show-control.md#backstage-monitor).
+
+## @openav/sync
+
+Spine · several pages, one show: the wire between a leader and its followers, over a BroadcastChannel or the room relay. A follower's timeline chases the leader with [`timeline.follow()`](show-control.md#following-another-clock-follow).
+
+| export | signature |
+|---|---|
+| `createSync` | `createSync({ role, channel, url, timeline, score, follow, extra, state, hz, info, accept, onFrame, onState, onGap, id, now, transport })` → a `SyncLeader` or a `SyncFollower`; a follower's timeline is made to follow it. Call `sync.frame()` after `timeline.advance(dt)` every frame; `sync.close()` lets go |
+| `SyncLeader` | `new SyncLeader({ timeline, transport, id, cut, extra, state, hz, now, onHello })` · `frame()` · `sendState(to?)` · `status()` · `monitor()` · `close()` |
+| `SyncFollower` | `new SyncFollower({ transport, id, now, timeline, info, accept, onFrame, onState, onGap, resync = true, helloEvery = 1000, takeoverAfter = 1500, resyncAfter = 1000 })` · `latest()` (a `timeline.follow()` source) · `hello(reason)` · `frame()` · `status()` · `monitor()` · `close()` |
+| transports | `BroadcastTransport({ channel })` · `RelayTransport({ url, room, role, id })` · `createTransport({ role, channel, url, id })`: each is `{ send(msg), onMessage(cb), onOpen(cb), open, close() }` and carries JSON |
+| `SYNC_VERSION` | `1`, the `v` of every message |
+
+Messages are `frame` (leader to followers, every frame), `hello` (follower to leader) and `state` (leader to one follower); work-specific data rides in `extra`. See [Show control](show-control.md#several-pages-one-show).
 
 ## @openav/relay
 
@@ -429,9 +450,9 @@ Phones · room-scoped WebSocket relay (server) and its browser client.
 
 | export | signature |
 |---|---|
-| `RelayClient` | `new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig })` · `connect()` · `close()` · `set(name, value)` · `send(name, value, pulse, extra)` · `feedback(name, value)` · `config(key, data)` · `status`, `latency`, `peers` |
+| `RelayClient` | `new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig, onSync })` · `connect()` · `close()` · `set(name, value)` · `send(name, value, pulse, extra)` · `feedback(name, value)` · `config(key, data)` · `sync(msg)` · `status`, `latency`, `peers`; `role` is `controller`, `runner`, `monitor`, `leader` or `follower` |
 | signals helpers | `bindSignals(client, signals, { alias = 'any' })` · `fileSignal(signals, name, value, { pulse })` · `signalMeta(name, { pulse })` · `aliasOf(name)` · `normalizeValue(name, value)` · `deviceId()` |
-| `@openav/relay/server` | `attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000 })` → `{ hub, close() }`; standalone `node packages/relay/server.js [port=7458]` |
+| `@openav/relay/server` | `attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000, maxMessageChars = 262144, maxBytes = 1048576 })` → `{ hub, close() }`; standalone `node packages/relay/server.js [port=7458]` |
 | `MidiLink` (`link.js`) | `new MidiLink({ url, room, delay = 0, onMessages(list, from), onStatus })` · `connect()` · `send(bytes, whenMs)` · `info()` → `{ state, peers, rtt, trip, diff, lead, late, sent, received }` · `close()`; `LinkTiming`: MIDI between pages in one room, played when it sounds at the sender ([With Strudel](strudel.md)) |
 
 See [Phones, relay & surfaces](remote.md#the-relay).

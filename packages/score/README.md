@@ -33,11 +33,19 @@ from the score, the console draws the director panel and the prompter, `?cut=sho
 - `new Score({ cuts, cut })` · `cuts`: an array of cuts (or an object keyed by id); `cut` defaults to the first.
   Throws a `ScoreError` listing every problem: duplicate ids, `dur ≤ 0`, `from` that is not a cut, `scale ≤ 0`,
   a cut derived from itself, a cue outside its segment, bad `acts`.
-- cut: `{ id, title?, start?, segments: [{ id, title?, note?, dur, cues?, acts?, linger?, hold?, module? }] }`
+- cut: `{ id, title?, start?, segments: [{ id, title?, note?, dur, cues?, acts?, linger?, hold?, module?, meta? }] }`
   or derived `{ id, title?, from, scale }`. `cues`: `{ name: ratio (0 ≤ r < 1) | { s: seconds } }`.
+- `meta`: whatever else the work hangs on a segment (a layer, a palette, an event window). The score does not read it and hands it back
+  as `segment.meta` (always an object, `{}` when there is none), also in `scenes()` and the director's `ctx.segment`. Unknown top-level
+  fields of a segment are kept in `meta` too; an explicit `meta` entry wins. Copied one level deep, shared by derived cuts, read-only;
+  a `meta` that is not an object is a `ScoreError`
 - `table()` · `total` · `segmentAt(T)` · `indexAt(T)` · `cueTime('seg' | 'seg.end' | 'seg.cue')` (NaN if unknown) ·
   `cuesBetween(T0, T1)` (T0 < time ≤ T1) · `cues()` · `scenes()` (for `@openav/timeline`) · `validate()`
 - `cut`, `title`, `segments`, `startT`, `cuts` (for a picker), `scale`, `base`, `baseTime(T)`
+- `locate(T)` → `{ id, index, p, t }`: the segment that owns show time `T`, how far through it (`p`) and seconds into it (`t`); before the show `p < 0`,
+  after it `p > 1` · `timeAt(id, p = 0)` → show seconds of progress `p` through segment `id` (NaN if this cut lacks it); the exact inverse of `locate`
+- `rootSegments` (the segments of the cut this one was derived from, in that cut's seconds: what `@openav/timeline` compiles per-segment automation against) ·
+  `allSegmentIds()` (a `Set` of every id in every cut, to tell a typo from a segment only another cut has)
 
 `ScoreError`: `problems` lists each reason.
 

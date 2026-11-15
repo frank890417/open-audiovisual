@@ -50,6 +50,9 @@ before it was generalized.)
   professional video pipelines (research: WebRTC→NDI converters already exist).
 - **Distributed performance**: multi-browser signal sync over WebRTC data
   channels — several machines, one signal space, geographically split ensembles.
+  The clock half shipped: several pages perform one show, the followers chasing a leader's
+  timeline over a BroadcastChannel or the room relay (`@openav/sync`). Signals still stay on
+  the page that took them.
 - **Agent performers**: LLM-driven agents subscribing to signals and writing
   params — improvising alongside humans (lineage: The Last Input's autonomous
   city agents).

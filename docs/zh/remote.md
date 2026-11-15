@@ -171,7 +171,7 @@ feedbackFor(state, bindings);                // [{ name, value }] to echo back t
 
 ## 中繼
 
-用戶端連到 `ws://<host>/relay?role=controller|runner|monitor&room=<name>&id=<device>`。房間就是一個名字，不同房間的連線彼此聽不到。
+用戶端連到 `ws://<host>/relay?role=controller|runner|monitor|leader|follower&room=<name>&id=<device>`。房間就是一個名字，不同房間的連線彼此聽不到。
 
 | 發送端 | 接收端 | 內容 |
 |---|---|---|
@@ -179,8 +179,13 @@ feedbackFor(state, bindings);                // [{ name, value }] to echo back t
 | runner（演出） | monitor | `signal` 和 `batch` |
 | runner | controllers + monitors | `feedback`（儀表、推桿回送）、`config`（控制面板版面，之後加入的手機也會補收到一份） |
 | monitor | 不送給任何人 | |
+| leader（演出頁面） | followers | `sync`（frame，以及回給從屬端的 state） |
+| follower（演出頁面） | leaders | `sync`（hello） |
 
-訊息是 JSON：`{"type":"signal","name":"phone/ab12/tilt/x","value":0.3,"t":…,"pulse"?:true}`、`{"type":"batch","items":[…]}`、`ping`/`pong`、`status`（各角色的連線數）、`feedback`、`config`。用戶端遇到不認得的類型就略過。runner 離開時，房間會清掉它的 config。超過 256 KB 的訊息直接略過，超過 1 MB 的 frame 會讓連線直接關閉。不再回應 ping 的手機（螢幕鎖定、Wi-Fi 斷了），大約 40 秒內會被移除。
+訊息是 JSON：`{"type":"signal","name":"phone/ab12/tilt/x","value":0.3,"t":…,"pulse"?:true}`、`{"type":"batch","items":[…]}`、`ping`/`pong`、`status`（各角色的連線數）、`feedback`、`config`、`sync`。用戶端遇到不認得的類型就略過。runner 離開時，房間會清掉它的 config。超過 256 KB 的訊息直接略過，超過 1 MB 的 frame 會讓連線直接關閉。不再回應 ping 的手機（螢幕鎖定、Wi-Fi 斷了），大約 40 秒內會被移除。
+`attachRelay(server, { maxMessageChars, maxBytes })` 可以把這兩個上限調高。
+
+演出頁面也用同樣的房間一起演同一場：主控端的 `sync` 訊息（`{"type":"sync","v":1,"kind":"frame",…}`；`"to":"<id>"` 指定單一對象）送給房間裡的從屬端，從屬端的訊息送給主控端，其他人都聽不到（[好幾個頁面，一場演出](show-control.md#several-pages-one-show)）。
 
 ```js
 import { RelayClient, bindSignals } from '@openav/relay';

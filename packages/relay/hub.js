@@ -10,6 +10,8 @@
 //   runner     → monitor + controller  ONLY for `feedback` / `config`
 //                                       (meters, fader echo, the surface layout)
 //   monitor    → nobody
+//   leader     → followers            `sync` (frames, state replies: one show on several pages — packages/sync)
+//   follower   → leaders              `sync` (hello)
 //
 // Wire format is the lab-dev relay's, unchanged, so a client written for one
 // works against the other:
@@ -21,8 +23,11 @@
 //   {"type":"feedback","name":"surface/main/level","value":0.4}   runner → controllers
 //   {"type":"config","key":"surface","data":{…}}                  runner → controllers, and
 //                                                                  replayed to late joiners
+//   {"type":"sync","v":1,"kind":"frame","seq":…,"T":…,…}            leader → followers, follower → leaders;
+//                                                                  with "to":"<id>" only that peer. The hub does not read
+//                                                                  past "to": what a frame means is packages/sync's business.
 
-export const ROLES = ['controller', 'runner', 'monitor'];
+export const ROLES = ['controller', 'runner', 'monitor', 'leader', 'follower'];
 const ROOM_RE = /^[\w-]{1,32}$/;
 export const DEFAULT_ROOM = 'default';
 
@@ -42,7 +47,7 @@ export class RoomHub {
   }
 
   counts(room) {
-    const c = { controllers: 0, runners: 0, monitors: 0 };
+    const c = { controllers: 0, runners: 0, monitors: 0, leaders: 0, followers: 0 };
     const r = this.rooms.get(room);
     if (r) for (const p of r.peers) c[p.role + 's']++;
     return c;
@@ -98,15 +103,22 @@ export class RoomHub {
           this._fan(peer, raw, ['controller', 'monitor']);
         }
         break;
+      case 'sync':
+        // several pages, one show: the leader's frames reach the room's followers, a follower's hello reaches its leaders.
+        // `to` narrows it to one peer id (a state reply to a late joiner). Nobody else can speak here.
+        if (peer.role === 'leader') this._fan(peer, raw, ['follower'], m.to);
+        else if (peer.role === 'follower') this._fan(peer, raw, ['leader'], m.to);
+        break;
       default: return null;
     }
     return m;
   }
 
-  _fan(from, raw, roles) {
+  _fan(from, raw, roles, to) {
     const r = this.rooms.get(from.room);
     if (!r) return;
-    for (const p of r.peers) if (p !== from && roles.includes(p.role)) this._tellRaw(p, raw);
+    const only = typeof to === 'string' && to ? to : null;
+    for (const p of r.peers) if (p !== from && roles.includes(p.role) && (only === null || p.id === only)) this._tellRaw(p, raw);
   }
   _status(room) {
     const r = this.rooms.get(room); if (!r) return;

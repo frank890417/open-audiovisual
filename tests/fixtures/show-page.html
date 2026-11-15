@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- A bare page for tests/show-browser.test.js: createShow() with a world that only counts its frames. The test calls
+     window.__start(options) so each case can pass its own loop / monitor / console options. Nothing here is a framework example. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>show fixture</title>
+<script type="module">
+import { createShow } from '../../packages/show/index.js';
+
+const world = {
+  name: 'probe',
+  params: [{ key: 'x', label: 'X', min: 0, max: 1, def: 0.5 }],
+  init() { window.__frames = 0; },
+  update(dt, s) { window.__frames++; window.__lastDt = dt; window.__x = s.x; },
+  render() {},
+  dispose() {},
+};
+
+/** A fake clock and requestAnimationFrame: a frame happens only when advance(ms) is called. */
+window.__fakes = () => {
+  let now = 0; const q = [];
+  return { clock: () => now, raf: (cb) => { q.push(cb); return q.length; }, advance(ms) { now += ms; for (const cb of q.splice(0)) cb(now); }, get pending() { return q.length; } };
+};
+
+window.__start = (opts = {}) => createShow({
+  world, telemetry: false, profile: false,
+  timeline: { total: 60, automation: { x: [[0, 0], [60, 1]] } },
+  ...opts,
+  modules: { keys: {}, ...(opts.modules || {}) },
+});
+</script>
+</head>
+<body></body>
+</html>

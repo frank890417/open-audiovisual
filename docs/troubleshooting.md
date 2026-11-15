@@ -16,7 +16,8 @@ npm run monitor          # node packages/monitor/server.js
 
 Pages served over https (openaudiovisual.com, an https tunnel) don't try at all: the
 browser blocks `ws://` there, and a published site has no relay beside it. A show that
-runs a monitor behind TLS passes the address itself, `new MonitorFeed({ url: 'wss://…' })`.
+runs a monitor behind TLS passes the address itself: `createShow({ monitor: { url: 'wss://…' } })`, or `new MonitorFeed({ url: 'wss://…' })` in a hand-assembled show.
+A machine that should not look for a monitor at all (a performance PC with no backstage) says `createShow({ monitor: false })`: no feed is built and the page opens no socket, so nothing is logged.
 
 ## Chrome asks about the local network, or about apps on this device
 
@@ -235,7 +236,8 @@ point the script tags, the import map or the module options (`toneEngine({ cdn }
 
 `node serve.js 8081` serves on another port, and the OSC bridge takes one too:
 `node packages/osc/bridges/osc-bridge.js 7470` (then `new OscOut('http://127.0.0.1:7470')`).
-The backstage monitor is the exception: a `createShow()` page always streams to
-port 7457 on its own host, so free that port. Only a hand-assembled show can
-point elsewhere, with `new MonitorFeed({ url: 'ws://host:7460' })` and
+The backstage monitor is the exception: a `createShow()` page streams to
+port 7457 on its own host unless you say otherwise, so free that port, or point the
+show elsewhere with `createShow({ monitor: { url: 'ws://host:7460' } })` (in a
+hand-assembled show: `new MonitorFeed({ url: 'ws://host:7460' })`) and start the relay with
 `node packages/monitor/server.js 7460`.

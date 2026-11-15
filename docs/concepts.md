@@ -59,7 +59,9 @@ timeline automation at time t      (the score; def if the param has no automatio
 An override is *sticky*. Once a hand or a route has touched `bloom`, the
 timeline stops moving it until the override is cleared (✕ in the console, or
 `params.clearOverride('bloom')`). That matches the stage: when a human grabs a
-control, the score yields.
+control, the score yields. A route can choose otherwise: `mode: 'trim'` adds the knob to
+the timeline's value, and `release` hands the param back when the knob stands still
+([Mapping](mapping.md#trim-pickup-and-release)).
 
 The full field list is in [Writing a world](writing-a-world.md#params).
 

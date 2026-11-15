@@ -8,7 +8,7 @@
 //                                                     `node serve.js` is the whole
 //                                                     show-night setup)
 //
-// Clients connect to  ws://host:port/relay?role=controller|runner|monitor&room=<name>&id=<device>
+// Clients connect to  ws://host:port/relay?role=controller|runner|monitor|leader|follower&room=<name>&id=<device>
 // Wire format and routing rules: see hub.js.
 
 import http from 'node:http';
@@ -16,9 +16,11 @@ import { pathToFileURL } from 'node:url';
 import { RoomHub } from './hub.js';
 import { FrameParser, OP, encodeFrame, handshakeResponse } from './frames.js';
 
-/** Attach the relay to an http.Server. Returns { hub, close() }. */
-export function attachRelay(server, { path = '/relay', log = () => {}, heartbeatMs = 20000 } = {}) {
-  const hub = new RoomHub();
+/** Attach the relay to an http.Server. Returns { hub, close() }.
+ *  maxMessageChars (hub, 262144) and maxBytes (frame parser, 1 MiB) cap one message: a leader that sends a whole tape to a late
+ *  joiner as its `state` (packages/sync) raises both. Phones on a LAN keep the small defaults. */
+export function attachRelay(server, { path = '/relay', log = () => {}, heartbeatMs = 20000, maxMessageChars, maxBytes } = {}) {
+  const hub = new RoomHub({ maxMessageChars });
   const sockets = new Set();
 
   server.on('upgrade', (req, socket) => {
@@ -29,7 +31,7 @@ export function attachRelay(server, { path = '/relay', log = () => {}, heartbeat
     socket.setNoDelay(true);                 // a fader move is 30 bytes; never wait to coalesce it
     sockets.add(socket);
 
-    const parser = new FrameParser();
+    const parser = new FrameParser({ maxBytes });
     let alive = true;
     const peer = hub.join({
       room: url.searchParams.get('room'), role: url.searchParams.get('role'), id: url.searchParams.get('id') || '',

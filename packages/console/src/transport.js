@@ -6,8 +6,10 @@ const fmt = (t) => {
   return (neg ? '-' : '') + Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
 };
 
-export function buildTransport(root, app) {
+export function buildTransport(root, app, keys = {}) {
   const { timeline } = app;
+  const playKey = keys.play?.[0]?.label;                    // the key the show moved play/pause to (none when switched off)
+  const hint = playKey ? ` (${playKey})` : '';
   const bar = document.createElement('div');
   bar.className = 'oav-row';
   bar.innerHTML = `
@@ -85,7 +87,7 @@ export function buildTransport(root, app) {
       playBtn.textContent = timeline.playing ? '⏸' : '▶';
       playBtn.classList.toggle('active', timeline.playing);
       playBtn.classList.toggle('holding', holding);
-      playBtn.title = holding ? 'holding — release to the next segment (Space)' : 'play / pause (Space)';
+      playBtn.title = (holding ? 'holding — release to the next segment' : 'play / pause') + hint;
       head.style.left = toX(timeline.t) + '%';
       const i = timeline.sceneIndexAt();
       const sc = timeline.scenes[i];

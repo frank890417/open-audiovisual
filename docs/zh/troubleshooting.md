@@ -10,7 +10,8 @@
 npm run monitor          # node packages/monitor/server.js
 ```
 
-用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 `ws://`，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：`new MonitorFeed({ url: 'wss://…' })`。
+用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 `ws://`，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：`createShow({ monitor: { url: 'wss://…' } })`，自己組裝的演出則是 `new MonitorFeed({ url: 'wss://…' })`。
+完全不該去找監看伺服器的機器（沒有後台的演出電腦）就寫 `createShow({ monitor: false })`：不會建立推送、頁面也不開任何 socket，所以什麼都不會記。
 
 ## Chrome 跳出「區域網路」或「這台裝置上的應用程式」的詢問
 
@@ -145,4 +146,4 @@ p5（範例 05、06）、Tone.js（聲音）、MediaPipe（手、身體）和 We
 
 ## 連接埠已經被佔用
 
-`node serve.js 8081` 會改用另一個埠，OSC 橋接也接受埠號參數：`node packages/osc/bridges/osc-bridge.js 7470`（再用 `new OscOut('http://127.0.0.1:7470')`）。後台監看是例外：用 `createShow()` 做的頁面，永遠串流到自己主機的 7457 埠，所以要把這個埠空出來。只有自己組裝的演出可以改指別的位置：`new MonitorFeed({ url: 'ws://host:7460' })` 搭配 `node packages/monitor/server.js 7460`。
+`node serve.js 8081` 會改用另一個埠，OSC 橋接也接受埠號參數：`node packages/osc/bridges/osc-bridge.js 7470`（再用 `new OscOut('http://127.0.0.1:7470')`）。後台監看是例外：用 `createShow()` 做的頁面，除非你另外指定，否則會串流到自己主機的 7457 埠，所以要把這個埠空出來，或用 `createShow({ monitor: { url: 'ws://host:7460' } })` 指到別處（自己組裝的演出則是 `new MonitorFeed({ url: 'ws://host:7460' })`），再用 `node packages/monitor/server.js 7460` 啟動中繼。

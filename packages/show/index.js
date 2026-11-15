@@ -22,24 +22,35 @@
 // (Layers → L1 Input → L2 Mapping → L3 Params → L4 Output → Signals), and
 // artwork credits render automatically (artist demos stay strictly attributed).
 //
+// Who drives the frames, the backstage feed and the desk's keys are options too:
+//     loop: 'manual',                      // no requestAnimationFrame: you call show.loop.step(dt) (record frame by frame, test, run headless)
+//     monitor: false,                      // no backstage feed (or { url: 'wss://…', hz }: another relay address)
+//     console: { keys: { reset: 'F6', perf: 'F7', fullscreen: 'F8', midi: 'F9' } },   // move the desk's R T F M off the piano's letters
+//
+// Several pages, one show (packages/sync): one page leads, the others follow its clock; a follower takes no input of its own.
+//     sync: { role: 'leader' | 'follower', channel: 'hall' },            // same browser, same machine: a BroadcastChannel
+//     sync: { role: 'follower', channel: 'hall', url: 'ws://leader.local:8080/relay' },   // another machine: the room relay (url: true = this page's /relay)
+//     // extra: () => data that travels with the clock · state: (hello) => data for a page that joins late · follow: { jump, lostAfter, … }
+//
 // createShow returns { signals, params, stage, timeline, mapper, midi, keys,
-// sound, audio, hands, pose, leap, remote, score, director, loop, console } — every part reachable, nothing
+// sound, audio, hands, pose, leap, remote, score, director, sync, loop, monitor, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools (with a score: window.openav.show.goto('dusk'), .table(), …).
 
-import { Signals, Params, Loop } from '../core/index.js?v=2adcbf3d';
-import { Midi } from '../midi/index.js?v=2adcbf3d';
-import { mountKeys } from '../keys/index.js?v=2adcbf3d';
-import { AudioAnalyzer } from '../audio/index.js?v=2adcbf3d';
-import { ChordDetector } from '../chord/index.js?v=2adcbf3d';
-import { mountDrums } from '../drums/index.js?v=2adcbf3d';
-import { PoseTracker, HandTracker } from '../pose/index.js?v=2adcbf3d';
-import { Mapper, loadMapUrl } from '../mapping/index.js?v=2adcbf3d';
-import { Timeline } from '../timeline/index.js?v=2adcbf3d';
-import { Stage } from '../stage/index.js?v=2adcbf3d';
-import { mountConsole } from '../console/index.js?v=2adcbf3d';
-import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=2adcbf3d';
-import { track } from '../midi/telemetry.js?v=2adcbf3d';
-import { SHELL_CSS } from './layout.js?v=2adcbf3d';
+import { Signals, Params, Loop } from '../core/index.js?v=72212d8';
+import { Midi } from '../midi/index.js?v=72212d8';
+import { mountKeys } from '../keys/index.js?v=72212d8';
+import { AudioAnalyzer } from '../audio/index.js?v=72212d8';
+import { ChordDetector } from '../chord/index.js?v=72212d8';
+import { mountDrums } from '../drums/index.js?v=72212d8';
+import { PoseTracker, HandTracker } from '../pose/index.js?v=72212d8';
+import { Mapper, loadMapUrl } from '../mapping/index.js?v=72212d8';
+import { Timeline } from '../timeline/index.js?v=72212d8';
+import { Stage } from '../stage/index.js?v=72212d8';
+import { mountConsole, resolveKeys, keyLabel } from '../console/index.js?v=72212d8';
+import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=72212d8';
+import { track } from '../midi/telemetry.js?v=72212d8';
+import { SHELL_CSS } from './layout.js?v=72212d8';
+import { loopOptions, monitorOptions, syncOptions, syncModules } from './options.js?v=72212d8';
 
 export async function createShow({
   world = null,
@@ -55,7 +66,17 @@ export async function createShow({
   mount = null,            // { stage, side } elements/selectors; omitted = generated layout
   telemetry = true,        // one anonymous oav_show_start hit per page (packages/midi/telemetry.js); false = none
   score: scoreCfg = null,  // { cuts, cut, modules, api, onStatus, onCue, maxStep, midi } — the show's structure (packages/score); ?cut=<id> picks the version
+  loop: loopCfg = 'auto',  // 'auto' (requestAnimationFrame) · 'manual' (you call show.loop.step(dt)) · { clock, raf, maxDt, heartbeat } for new Loop() — packages/core
+  monitor: monitorCfg = true,   // the backstage feed: true (this machine, :7457) · false (none) · { url, hz } — packages/monitor
+  console: consoleOpts = null,  // options of the desk, mountConsole's: { keys: { reset: 'F6', … } | false, layers, signals, learnOrder } — packages/console
+  sync: syncCfg = null,    // several pages, one show: { role: 'leader' | 'follower', channel, url?, input?, extra?, state?, follow? } — packages/sync
 } = {}) {
+  // options that are data are checked first: a typo must stop the show before it touches the page
+  const loopOpts = loopOptions(loopCfg);
+  const monitorOpts = monitorOptions(monitorCfg);
+  const keyMap = resolveKeys(consoleOpts?.keys);
+  const syncOpts = syncOptions(syncCfg);
+  if (syncOpts) modules = syncModules(modules, syncOpts);      // a follower plays nothing of its own: no keyboard piano, MIDI, microphone, camera, phones
   track('oav_show_start', { oav_kind: 'show' }, { enabled: telemetry !== false });
   // ---------- DOM shell (fix the layout once, every show is fixed) ----------
   if (!document.getElementById('openav-shell-css')) {
@@ -123,7 +144,8 @@ export async function createShow({
     timeline.onSeek((t, kind) => (kind === 'reset' ? director.reset() : director.seek(t)));
     timeline.onSceneChange((i, scene, info) => scoreMidi?.segment({ index: i, id: scene?.id, cause: info?.cause }));
   }
-  const mapper = new Mapper({ signals, params, profile: profile || allWorlds[0]?.name || 'show' });
+  // base：時間軸「現在」的值（不含覆寫）。trim／pickup 疊在它上面、平滑從它起跳；沒接上時會退回參數的 def（G2）
+  const mapper = new Mapper({ signals, params, profile: profile || allWorlds[0]?.name || 'show', base: () => timeline.state() });
   const loaded = profile !== false && mapper.load();
   if (!loaded) {
     for (const r of routes) mapper.addRoute(r);
@@ -132,6 +154,13 @@ export async function createShow({
     // must still arrive — otherwise code updates lose to yesterday's localStorage
     const have = new Set(mapper.routes.map(r => r.source + '→' + r.target));
     for (const r of routes) if (!have.has(r.source + '→' + r.target)) mapper.addRoute(r);
+  }
+  // several pages, one show: the leader broadcasts its clock every frame, a follower's timeline chases it (loaded only when declared)
+  let sync = null;
+  if (syncOpts) {
+    const { createSync } = await import('../sync/index.js?v=72212d8');
+    const { role, channel, url, input, ...rest } = syncOpts;
+    sync = createSync({ role, channel, url, timeline, score, ...rest });
   }
   setInterval(() => mapper.save(), 3000);
   // ?map=<url>: an explicit wiring beats the remembered one. Async and failure-proof: the show starts
@@ -159,11 +188,10 @@ export async function createShow({
     controllers = new MidiControllers({ profiles: o.profiles || PROFILES, signals, midi, initial: new URLSearchParams(location.search).get('profile') || o.profile });
     midiPanel = mountMidiPanel(stageEl, controllers, { mode: 'dock', contained: true, open: o.open !== false, id: 'oav-midi' });
     const btn = document.createElement('button');
-    btn.textContent = '🎹 MIDI'; btn.title = 'on-screen MIDI controller (M)';
+    btn.textContent = '🎹 MIDI'; btn.title = 'on-screen MIDI controller' + (keyLabel(keyMap, 'midi') ? ` (${keyLabel(keyMap, 'midi')})` : '');
     btn.style.cssText = 'position:absolute;right:12px;top:12px;z-index:6;padding:6px 12px;border-radius:10px;border:1px solid #283044;background:rgba(10,12,17,.8);color:#cfd6e4;font:600 12px system-ui;cursor:pointer';
     btn.onclick = () => midiPanel.toggle();
     stageEl.appendChild(btn);
-    addEventListener('keydown', (e) => { if ((e.key === 'm' || e.key === 'M') && !e.metaKey && !e.ctrlKey && !keys?.piano?.captureEnabled && !/^(input|select|textarea)$/i.test(e.target?.tagName || '')) midiPanel.toggle(); });
   }
   const keys = modules.keys === false ? null
     : mountKeys(keysSlot, { signals, base: 48, octaves: 2, ...(typeof modules.keys === 'object' ? modules.keys : {}) });
@@ -230,12 +258,14 @@ export async function createShow({
   }
 
   // ---------- desk + backstage ----------
-  const app = { timeline, params, mapper, signals, midi, controllers, sound, stage, keys, drums, audio, hands, pose, leap, chord, remote, artwork, score, director };
-  const consoleUI = mountConsole(desk, app);
-  const monitor = new MonitorFeed({});
-  monitor.connect();
+  // midiPanel is in `app` so the desk's own key map can toggle it (the M key, or the one the show moved it to)
+  const app = { timeline, params, mapper, signals, midi, controllers, midiPanel, sound, stage, keys, drums, audio, hands, pose, leap, chord, remote, artwork, score, director };
+  const consoleUI = mountConsole(desk, app, consoleOpts);
+  const monitor = monitorOpts ? new MonitorFeed(monitorOpts) : null;     // monitor: false → no feed, and no socket
+  monitor?.connect();
+  if (sync && monitor) monitor.extra(() => sync.monitor());     // the backstage sees the sync: error, silence, a red LOST
 
-  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, console: consoleUI, app, loop: null };
+  const show = { signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, sync, monitor, console: consoleUI, app, loop: null };
   if (score) show.show = scoreControls(timeline, score, director);
   const loop = app.loop = new Loop((dt) => {
     keys?.update(dt);
@@ -243,14 +273,15 @@ export async function createShow({
     audio?.update();
     onFrame?.(dt, show);
     timeline.advance(dt);
+    sync?.frame();                                                                       // 1a. leader: say where we are · follower: hello again if nobody answered
     director?.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });   // 1b. the segment modules perform the segment
     mapper.update(dt);
     const state = stage.frame(dt, timeline.state());
     sound?.update(state);
     remote?.frame(dt, state);
     consoleUI.render(state);
-    monitor.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
-  });
+    monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
+  }, loopOpts);
   show.loop = loop;
   loop.start();
   window.openav = show;

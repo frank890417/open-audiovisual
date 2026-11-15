@@ -1,7 +1,7 @@
 // Director panel — the score's desk. Only mounted when the show has a score.
 //   · which cut is playing (a picker: choosing another reloads the page with ?cut=<id>)
 //   · the current segment: title, how far through it, seconds left
-//   · HOLD: the show is waiting for you (Space or → to continue)
+//   · HOLD: the show is waiting for you (Space or → to continue; the keys are the console's, see keys.js)
 //   · the next segment and the countdown to it
 //   · ACTS: what the operator does in this segment
 //   · this segment's cues, ticked as they pass
@@ -9,21 +9,24 @@
 // The scrubber above it (transport) draws the segment blocks and the cue ticks.
 const fmt = (t) => { t = Math.max(0, t); return Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0'); };
 
-export function buildDirectorPanel(root, app) {
+export function buildDirectorPanel(root, app, keys = {}) {
   const { director, score, timeline } = app;
+  const label = (a) => keys[a]?.[0]?.label || '';          // the key the show moved it to (or '' when switched off)
+  const goKeys = [label('play'), label('next')].filter(Boolean).join(' or ');
   const panel = document.createElement('div');
   panel.className = 'oav-panel oav-director';
   panel.innerHTML = `<h3>Director · score</h3>
     <div class="dir-cut"><span>cut</span><select></select></div>
     <div class="dir-now"><b></b><span></span></div>
     <div class="dir-bar"><i></i></div>
-    <div class="dir-hold" hidden>HOLD · waiting for you. Space or → continues</div>
+    <div class="dir-hold" hidden></div>
     <div class="dir-next"><b></b><span></span></div>
     <div class="dir-acts"><h4>You do</h4><ul></ul></div>
     <div class="dir-cuesbox"><h4>Cues</h4><div class="dir-cues"></div></div>
     <div class="dir-warn" hidden></div>`;
   root.appendChild(panel);
   const q = (s) => panel.querySelector(s);
+  q('.dir-hold').textContent = `HOLD · waiting for you.${goKeys ? ` ${goKeys} continues` : ''}`;
   const sel = q('.dir-cut select');
   const titleEl = q('.dir-now b'), clkEl = q('.dir-now span'), barEl = q('.dir-bar i'), holdEl = q('.dir-hold');
   const nextB = q('.dir-next b'), nextS = q('.dir-next span'), actsBox = q('.dir-acts'), actsEl = q('.dir-acts ul');
@@ -74,7 +77,7 @@ export function buildDirectorPanel(root, app) {
       warnEl.hidden = !bad;
       if (bad) {
         const lines = [];
-        if (st.failed.length) lines.push(`⚠ switched off: ${st.failed.join(', ')} — the show goes on. R resets.`);
+        if (st.failed.length) lines.push(`⚠ switched off: ${st.failed.join(', ')} — the show goes on.${label('reset') ? ` ${label('reset')} resets.` : ''}`);
         for (const id of st.failed) lines.push(`${id}: ${st.errors[id]}`);
         if (st.missing.length) lines.push(`no module registered for: ${st.missing.join(', ')}`);
         const text = lines.join('\n');

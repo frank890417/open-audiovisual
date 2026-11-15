@@ -275,7 +275,7 @@ function notePressed(note, velocity) {     // like keyPressed(): any key, or a p
 
 No `setup()` call, p5 1.x and 2.x. On OpenProcessing it also wires to OP Configurator sliders in order.
 
-The same line does more, each one a call or a name in the p5 style (oav-p5 <!--gen:p5-version-->0.8.5<!--/gen:p5-version-->, [changelog](https://openaudiovisual.com/changelog/)):
+The same line does more, each one a call or a name in the p5 style (oav-p5 <!--gen:p5-version-->0.8.0<!--/gen:p5-version-->, [changelog](https://openaudiovisual.com/changelog/)):
 
 | write | and | play it |
 |---|---|---|
@@ -342,7 +342,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-<!--gen:w-packages-->Twenty-seven<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+<!--gen:w-packages-->Twenty-eight<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 <!--gen:packages-table-->
@@ -369,6 +369,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 |  | [`@openav/pattern`](packages/pattern/) | Rhythm in one line: TidalCycles/Strudel-style mini-notation read into the hits of each bar (Euclidean rhythms, one-per-bar alternation, seeded chance) |
 |  | [`@openav/console`](packages/console/) | The director's desk and performance mode |
 |  | [`@openav/monitor`](packages/monitor/) | Backstage view for any device on the network |
+|  | [`@openav/sync`](packages/sync/) | Several pages, one show: a leader runs the timeline and the followers chase its clock, over a BroadcastChannel or the room relay |
 | phones and tablets | [`@openav/relay`](packages/relay/) | Zero-dependency room relay for phones and iPads |
 |  | [`@openav/surface`](packages/surface/) | TouchOSC-style widgets and autoSurface(params) |
 |  | [`@openav/remote`](packages/remote/) | The phone and iPad app: sensors, keyboard, control surface |
@@ -421,14 +422,14 @@ The controller element, `createController()`, the iframe embed and `createShow()
 ## 🗺 Status & roadmap
 
 Framework version `0.1.0` (nothing is on npm yet); oav-p5, the one line for p5.js, is versioned on its own:
-<!--gen:p5-version-->0.8.5<!--/gen:p5-version--> ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
+<!--gen:p5-version-->0.8.0<!--/gen:p5-version--> ([changelog](https://openaudiovisual.com/changelog/)). The chassis is complete and in use: the four layers with the
 L4 video/audio split, timeline, **Score &amp; Director**, console, backstage monitor, phones as controllers,
 **performance video** recording and MIDI takes, **Leap Motion** hands, a **<!--gen:n-devices-->21<!--/gen:n-devices-->-device MIDI controller library**,
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-27 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 874 tests
+28 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1049 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):
