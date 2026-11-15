@@ -18,20 +18,20 @@
 // mountConsole(el, app) where app = { timeline, params, mapper, signals, stage, midi?, midiPanel?, score?, director? }
 // With a score + director the desk gains the Director panel; scenes with cues/hold draw them on the scrubber.
 
-import { css } from './src/theme.js?v=a5bef502';
-import { buildTransport } from './src/transport.js?v=a5bef502';
-import { buildParamPanel } from './src/params-panel.js?v=a5bef502';
-import { buildSignalPanel } from './src/signals-panel.js?v=a5bef502';
-import { buildSoundPanel } from './src/sound-panel.js?v=a5bef502';
-import { buildLayersPanel } from './src/layers-panel.js?v=a5bef502';
-import { buildInputPanel } from './src/input-panel.js?v=a5bef502';
-import { buildMappingPanel } from './src/mapping-panel.js?v=a5bef502';
-import { buildPerformanceMode } from './src/perf-mode.js?v=a5bef502';
-import { buildDirectorPanel } from './src/director-panel.js?v=a5bef502';
-import { buildCurvesPanel } from './src/curves-panel.js?v=a5bef502';
-import { resolveKeys, handleKey } from './src/keys.js?v=a5bef502';
+import { css } from './src/theme.js?v=4369f537';
+import { buildTransport } from './src/transport.js?v=4369f537';
+import { buildParamPanel } from './src/params-panel.js?v=4369f537';
+import { buildSignalPanel } from './src/signals-panel.js?v=4369f537';
+import { buildSoundPanel } from './src/sound-panel.js?v=4369f537';
+import { buildLayersPanel } from './src/layers-panel.js?v=4369f537';
+import { buildInputPanel } from './src/input-panel.js?v=4369f537';
+import { buildMappingPanel } from './src/mapping-panel.js?v=4369f537';
+import { buildPerformanceMode } from './src/perf-mode.js?v=4369f537';
+import { buildDirectorPanel } from './src/director-panel.js?v=4369f537';
+import { buildCurvesPanel } from './src/curves-panel.js?v=4369f537';
+import { resolveKeys, handleKey } from './src/keys.js?v=4369f537';
 
-export { DEFAULT_KEYS, KEY_ACTIONS, resolveKeys, keyLabel } from './src/keys.js?v=a5bef502';
+export { DEFAULT_KEYS, KEY_ACTIONS, resolveKeys, keyLabel } from './src/keys.js?v=4369f537';
 
 // every .oav-panel header toggles its section — the universal collapsible
 // panel convention all examples follow
