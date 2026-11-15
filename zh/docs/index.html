@@ -455,7 +455,7 @@ MIDI 控制器、螢幕上的控制器或手機來彈。讀 <a href="#p5">p5.js 
 <p>打開 <code>http://localhost:8080/examples/01-hello-particles/</code>。每個範例都不需要硬體就能跑。</p>
 <h3 id="quick-start-one-file-no-clone">一個檔，不用 clone<a class="anchor" href="#quick-start-one-file-no-clone" aria-label="這一節的連結">#</a></h3>
 <p>做自己的演出不需要這個 repo。把 <a href="../../assets/starter/show.html"><code>show.html</code></a> 存下來（打開後另存網頁，或複製原始碼），用任何靜態伺服器開它所在的資料夾，再打開它：</p>
-<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash">python3 -m http.server 8080      <span class="tc"># 或任何靜態伺服器、任何靜態網站空間</span></code></pre></div>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash">python3 -m http.server 8080      <span class="tc"># or any static server, or any static host</span></code></pre></div>
 <p>這個檔是一頁加一個 <code>import</code>：你要改的世界，和一次 <code>createShow()</code> 呼叫。其他東西都從一個網址進來：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow, createCanvas } <span class="tk">from</span> <span class="ts">'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js'</span>;</code></pre></div>
 <p>需要的東西都從這一個網址匯入。用了第二個網址，同一頁裡就有兩份框架。靜態頁面帶不來的只有兩樣：手機遙控會用公開的
