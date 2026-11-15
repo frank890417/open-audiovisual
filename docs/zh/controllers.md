@@ -91,6 +91,10 @@ ctl.on('control', (e) => console.log(e.signal, e.value));
 
 關掉的方法：`<oav-controller telemetry="off">`、`createController(p, { telemetry: false })`、`createShow({ telemetry: false })`、iframe 加 `?telemetry=0`，或在載入前設 `globalThis.OPENAV_TELEMETRY = false`。程式在 `packages/midi/telemetry.js`。
 
+p5.js 的那一行（`oav-p5`）預設什麼都不送，草圖自己設 `telemetry: 'on'` 才會送。
+
+**簽名不是一筆紀錄。** `createShow()` 還會在頁面的 head 裡放一個 `<meta name="generator" content="open-audiovisual 0.9.0">`，WordPress 和 Hugo 留的也是這種標籤。它不發出任何請求，檢視原始碼的人、公開網頁的搜尋與普查可以從它讀出哪些頁面跑在 open-audiovisual 上，就這樣而已。`createShow({ signature: false })` 就不放。原始碼：`packages/core/src/signature.js`。想被列出名字的作品，自己到[用它做的](https://openaudiovisual.com/zh/made-with/)加上來。
+
 ## SysEx：模式、模板、LED 顏色
 
 有些事只有 SysEx 做得到：把 Launchpad 切到程式模式、選 Launch Control XL 的模板、把打擊墊點成任何 RGB 顏色。有這些功能的設定檔會列在 `sysex`，每則訊息都附出處，機器的頁面看得到。

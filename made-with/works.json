@@ -1,0 +1,44 @@
+{
+  "format": "open-audiovisual/made-with@1",
+  "about": "Works, tools and classes that run on open-audiovisual. One entry per work; add yours with a pull request to this file or with the issue form (CONTRIBUTING.md, 'Tell us what you made'). Every entry is here because the person who made the work asked for it.",
+  "works": [
+    {
+      "id": "the-last-input",
+      "title": "The Last Input",
+      "by": "Che-Yu Wu",
+      "byUrl": "https://cheyuwu.com",
+      "year": 2026,
+      "url": "https://cheyuwu.com/work/the-last-input/",
+      "kind": "performance",
+      "uses": [
+        "timeline",
+        "chord",
+        "mapping",
+        "osc"
+      ],
+      "en": "A 14-scene performance made during a C-LAB Taiwan Sound Lab / IRCAM residency and played on a 49.4-channel speaker dome. The core of open-audiovisual was taken out of this show: its timeline, chord semantics, MIDI learn and OSC batching ran here first.",
+      "zh": "C-LAB 臺灣聲響實驗室與 IRCAM 駐村期間做的十四個場景的演出，在 49.4 聲道的球型音場裡演。open-audiovisual 的核心是從這場演出抽出來的，時間軸、和弦語意、MIDI learn 和 OSC 批次傳送都是先在這裡跑過。",
+      "added": "2026-11-15"
+    },
+    {
+      "id": "cheyuwu-lab",
+      "title": "cheyuwu-lab",
+      "by": "Che-Yu Wu",
+      "byUrl": "https://cheyuwu.com",
+      "year": 2026,
+      "url": "https://lab.cheyuwu.com",
+      "kind": "tool",
+      "uses": [
+        "midi",
+        "sound",
+        "drums",
+        "record",
+        "remote",
+        "leap"
+      ],
+      "en": "A studio of generative sketches where every sketch can be played from a controller, a phone or a hand. Its controllers, instruments, drum machine and recorder are open-audiovisual packages, rebuilt from the framework every night.",
+      "zh": "一間放生成作品的實驗室，每件作品都能用控制器、手機或手來彈。裡面的控制器、樂器、鼓機和錄影都是 open-audiovisual 的套件，每天晚上從框架重新產生一次。",
+      "added": "2026-11-15"
+    }
+  ]
+}

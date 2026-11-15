@@ -40,6 +40,7 @@ export const PAGES = {
   examples: 'examples/',
   p5: 'p5/',
   check: 'check/',
+  made: 'made-with/',
   changelog: 'changelog/',
 };
 
@@ -287,6 +288,7 @@ export function siteFooter(t, c) {
       <a href="${c.to('docs')}">${t.ui.nav.docs}</a>
       <a href="${c.to('p5')}">${t.footer.p5}</a>
       <a href="${c.to('webtoe')}">${t.ui.nav.webtoe}</a>
+      <a href="${c.to('made')}">${t.footer.made}</a>
       <a href="${c.to('changelog')}">${t.footer.changelog}</a>
     </nav>
     <nav aria-label="${attr(t.footer.machine)}">

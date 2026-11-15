@@ -75,15 +75,35 @@ export default {
         en: 'Time `T` expressed on the cut this one was derived from (`T / scale`). Equal to `T` when the cut is not derived. This is how automation written once against the full cut stretches with a short one.',
         zh: '把時間 `T` 換算成這個 cut 衍生來源的那個 cut 上的時間（`T / scale`）。不是衍生的 cut 就等於 `T`。只對完整版寫一次的自動化曲線，就是靠這個跟著短版一起拉伸。',
       },
+      rootSegments: {
+        en: 'The segments of the root cut (the cut this one was finally derived from, or this cut\'s own segments when it is not derived), in the root cut\'s seconds (a getter). Automation is written against this cut, so this is what a [`Timeline`](#Timeline) turns a lane into seconds with.',
+        zh: 'root cut（這個 cut 最終衍生自的那個 cut，不是衍生的話就是它自己）的段落，單位是 root cut 的秒數（getter）。自動化曲線是對著這個 cut 寫的，所以 [`Timeline`](#Timeline) 就是拿它把 lane 換算成秒數。',
+      },
+      allSegmentIds: {
+        en: 'A `Set` of every segment id of every cut. A name that is in none of them is a typo; one that only another cut has is simply absent here.',
+        zh: '所有 cut 的所有段落 id，是一個 `Set`。哪個 cut 都沒有的名字就是打錯字，只有別的 cut 才有的，只是這裡沒有而已。',
+      },
+      locate: {
+        en: 'Where show time `T` is: `{ id, index, p, t }`, the segment that owns it, how far through it (`p`) and the seconds into it (`t`). Outside the show it answers the first or the last segment with `p` below 0 or above 1.',
+        zh: '演出時間 `T` 在哪裡：`{ id, index, p, t }`，也就是它屬於哪個段落、走了多少（`p`）、進到段落裡第幾秒（`t`）。在演出之外，它回答第一段或最後一段，`p` 小於 0 或大於 1。',
+      },
+      timeAt: {
+        en: 'The inverse of `locate`: the show seconds (this cut\'s) of progress `p` (default 0, the start) through segment `id`. `NaN` for an id this cut does not have.',
+        zh: '`locate` 的反函數：第 `id` 段走到進度 `p`（預設 0，也就是段首）是這個 cut 的演出第幾秒。這個 cut 沒有的 id 回傳 `NaN`。',
+      },
       scenes: {
-        en: 'The segments as a `scenes` array for a [`Timeline`](#Timeline), with `acts`, `hold` and `cues` (cue times in show seconds).',
-        zh: '把段落轉成給 [`Timeline`](#Timeline) 用的 `scenes` 陣列，帶著 `acts`、`hold` 和 `cues`（cue 的時間是演出秒數）。',
+        en: 'The segments as a `scenes` array for a [`Timeline`](#Timeline), with `acts`, `hold`, `linger`, `meta` and `cues` (cue times in show seconds).',
+        zh: '把段落轉成給 [`Timeline`](#Timeline) 用的 `scenes` 陣列，帶著 `acts`、`hold`、`linger`、`meta` 和 `cues`（cue 的時間是演出秒數）。',
       },
     },
     notes: [
       {
-        en: 'Plain fields: `cut` (the id being performed), `title`, `segments` (each with `start`, `end`, `dur`, `index`, `cues` …), `total` (the length of the show), `startT` (where `reset` goes), `scale` and `base`.',
-        zh: '普通欄位：`cut`（正在表演的 id）、`title`、`segments`（每一段都有 `start`、`end`、`dur`、`index`、`cues` ……）、`total`（演出總長）、`startT`（`reset` 回到哪裡）、`scale` 和 `base`。',
+        en: 'Plain fields: `cut` (the id being performed), `title`, `segments` (each with `start`, `end`, `dur`, `index`, `cues`, `meta` …), `total` (the length of the show), `startT` (where `reset` goes), `scale` and `base`.',
+        zh: '普通欄位：`cut`（正在表演的 id）、`title`、`segments`（每一段都有 `start`、`end`、`dur`、`index`、`cues`、`meta` ……）、`total`（演出總長）、`startT`（`reset` 回到哪裡）、`scale` 和 `base`。',
+      },
+      {
+        en: 'A segment may carry `meta`: whatever else the work hangs on it (a layer, a palette, an event window). The score does not read it and hands it back as `segment.meta`, always an object (`{}` when there is none), also in `scenes()` and in the director\'s `ctx.segment`. A top-level field of a segment that the score does not know is kept in `meta` too, and an explicit `meta` entry of the same name wins. A `meta` that is not an object is a [`ScoreError`](#ScoreError).',
+        zh: '段落可以帶 `meta`：作品想掛在段落上的其他東西（圖層、色盤、事件的時間窗）。總譜不讀它，原樣用 `segment.meta` 交還，而且一定是物件（沒有就是 `{}`），在 `scenes()` 和導演的 `ctx.segment` 裡也拿得到。段落最上層有總譜不認得的欄位，也會被收進 `meta`，明寫在 `meta` 裡的同名項目優先。`meta` 不是物件的話，會是一個 [`ScoreError`](#ScoreError)。',
       },
       {
         en: 'Segment and cue ids must not contain a dot: the dot is how `cueTime(\'dusk.glow\')` separates a segment from its cue. A cue cannot be called `end`.',

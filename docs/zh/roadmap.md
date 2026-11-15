@@ -19,6 +19,25 @@
 - [x] 一行節奏：TidalCycles／Strudel 式的 mini-notation（`@openav/pattern`）
 - [x] 像 TouchDesigner 的 CHOP 那樣處理隨時間變的數值：lag、包絡、速度、彈簧、trail（`@openav/chop`）
 - [x] 和 Strudel 並排：程式送進 OAV Virtual MIDI 的音、外部 MIDI 時鐘、`link=房間名` 跨分頁也跨電腦（[和 Strudel 一起用](strudel.md)）
+- [x] 整場的 automation 在控台上攤成曲線、以總譜的段落為單位寫曲線、automation 存成 JSON 再讀回來、時間軸錨定在牆上的時鐘（[演出控制](show-control.md)）
+- [x] 會在時間軸上微調、或等你轉到位才接手的對應，用完把參數還回去（`@openav/mapping`）
+- [x] 好幾個頁面演同一場：一個主控和它的從屬端，同一個瀏覽器或跨機器（`@openav/sync`）
+- [x] 整個框架有版本號，和一個永遠不變的網址。一個檔就是一場演出，不用 clone（[固定一個版本](getting-started.md#pin-a-version)）
+- [x] [用它做的](https://openaudiovisual.com/zh/made-with/)：跑在它上面的作品，每一筆都是作者自己加的
+
+## 讓這一層不用再有人重做
+
+目標是：在網頁上做一場演出，從這裡開始，就像架網站從一台別人已經在顧的伺服器開始。一層東西要做到這樣，得讓人不用問就能蓋在上面。需要的東西，和每一項現在的位置：
+
+| 項目 | 現在有的 | 接下來 |
+|---|---|---|
+| 可以依賴的版本 | 0.9.0、固定的網址、更新紀錄 | 1.0：世界的約定、訊號名稱和設定檔格式，沒有換主版本就不再變 |
+| 不用 repo 的入口 | 一個檔加一個 `import` | 控制器頁面和手機遙控也有一樣的入口 |
+| 別人讀得懂的格式 | 附 JSON Schema 的控制器設定檔、匯出成 QLC+ 與 Mixxx、對應檔、總譜 | 每種格式有自己的版本號。設定檔格式成為其他工具也採用的格式 |
+| 信得過的控制器 | 55 份設定檔，每個數字都有出處，還有一頁能用手驗實機 | 第一批在實機上驗過的設定檔，更多來自手上有那台的人 |
+| 現場的食譜 | OSC 送到 TouchDesigner、燈光與空間音訊 | 畫面送進 TouchDesigner、OBS 和投影機。場地清單（展示用的 iPad、沒有網路） |
+| 證明 | 它出身的那幾場演出 | [用它做的](https://openaudiovisual.com/zh/made-with/)上有別人的作品 |
+| 發問的地方 | issue、要一台控制器的表單、登記作品的表單 | 幾天內有回音 |
 
 ## v1.x — 演出長大
 
@@ -32,12 +51,12 @@
   - [ ] cut 裡的 `clocks` 表，只有哪一場演出需要引擎跑在兩條不同的時間線上才做（見[總譜與導演](score.md#clocks-why-there-are-none)）
   - [ ] 導演台上的總譜編輯器：拖一段的長度，看每個 cue 跟著移動
 - **訊號錄製與重播**：*MIDI 錄音已經上線*（`@openav/record`：`TakeRecorder`、`TakePlayer`，`.mid` 可進可出；`EventLog` 已經能在錄影時記下任何訊號）。接下來：把完整的訊號流（手、身體、聲音分析）重播給任何一個世界。演奏者不在也能排練。存下來的不只影片，還有手勢。
-- **把 `@openav/*` 發布到 npm**，文件頁面本身也能用這套框架來演奏。
+- **把 `@openav/*` 發布到 npm**，等 1.0 說清楚哪些東西不再變（在那之前：[固定一個版本](getting-started.md#pin-a-version)），文件頁面本身也能用這套框架來演奏。
 - **WebGPU 世界轉接**，等 WebGPU compute 成熟，給粒子與群體代理類的世界用。
 
 ## v2.x — 舞台變寬
 
-- **NDI 閘道**：headless 瀏覽器 → NDI 橋接，讓瀏覽器的畫面進入專業影像流程（研究：WebRTC→NDI 轉換器已經有人做了）。
+- **畫面進入影像流程**：先用現成的工具寫成食譜（OBS 的 Browser Source 加 NDI 輸出、TouchDesigner 的 Web Render TOP）。那些做不到、而且有演出需要的時候，才做自己的閘道（headless 瀏覽器 → NDI）。
 - **分散式演出**：透過 WebRTC data channel 同步多個瀏覽器的訊號：好幾台電腦、一個訊號空間、分處各地的合奏團。時鐘的那一半已經做好了：好幾個頁面演同一場，從屬端透過 BroadcastChannel 或房間中繼追著主控端的時間軸（`@openav/sync`）。訊號則仍然留在收到它的那個頁面。
 - **AI 代理演奏者**：由 LLM 驅動的代理訂閱訊號、寫入參數，在人旁邊一起即興（來歷：《The Last Input 終局之前》裡自主行動的城市代理）。
 

@@ -34,6 +34,42 @@ node serve.js            # → http://localhost:8080
 
 打開 `http://localhost:8080/examples/01-hello-particles/`。每個範例都不需要硬體就能跑。
 
+## 一個檔，不用 clone
+
+做自己的演出不需要這個 repo。把 [`show.html`](https://openaudiovisual.com/assets/starter/show.html) 存下來（打開後另存網頁，
+或複製原始碼），用任何靜態伺服器開它所在的資料夾，再打開它：
+
+```bash
+python3 -m http.server 8080      # or any static server, or any static host
+```
+
+這個檔是一頁加一個 `import`：你要改的世界，和一次 `createShow()` 呼叫。其他東西都從一個網址進來：
+
+```js
+import { createShow, createCanvas } from 'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js';
+```
+
+需要的東西都從這一個網址匯入。用了第二個網址，同一頁裡就有兩份框架。靜態頁面帶不來的只有兩樣：手機遙控會用公開的
+relay（除非你跑 `serve.js`），後台監看要從 clone 下來的 repo 跑 `node packages/monitor/server.js`。
+
+作品上線之後，[把它加到「用它做的」](https://openaudiovisual.com/zh/made-with/)。
+
+## 固定一個版本
+
+網址裡的 `@v0.9.0` 是整個框架的一個版本。這個網址永遠不會變，所以你排練的那一場就是你演出的那一場。要換新的，自己改
+那個數字，再排練一次。
+
+| 網址 | 拿到什麼 |
+|---|---|
+| `https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js` | 就是 0.9.0，永遠是 |
+| `https://openaudiovisual.com/packages/openav.js` | 最新的，每次發佈後幾分鐘內 |
+| `https://openaudiovisual.com/p5/oav-p5.js` | p5.js 的那一行：最新的（[它自己的版本](changelog.md)） |
+
+1.0 之前，新的次版本（0.9 到 0.10）可能改名或拿掉東西，[更新紀錄](changelog.md)會在那一條的第一行寫出來。修訂版本
+（0.9.0 到 0.9.1）只修問題。我們最用力不去弄壞的是：世界的約定（`name`、`params`、`init`、`update`、`render`、
+`dispose`）、[訊號](signals.md)裡的訊號名稱、控制器設定檔的格式，以及 oav-p5 給草圖的那些名字。`window.openav.version`
+會告訴你一場正在跑的演出是哪一版。
+
 ## 用哪個瀏覽器
 
 不確定你這台裝置能做什麼？打開[裝置體檢](https://openaudiovisual.com/zh/check/)。它會看你的瀏覽器、Web MIDI、麥克風、鏡頭和繪圖能力，每一項都告訴你怎麼辦。按了按鈕才會開始，也不會把任何東西送出裝置。

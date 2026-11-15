@@ -165,6 +165,19 @@ The first tagged version; it gathers 0.1 to 0.2.4 (from 2026-10-13).
 
 ## Framework and site
 
+### 2026-11-15
+
+- **The framework has a version, and an address that stays put: 0.9.0.** A page of your own imports one file, `packages/openav.js`, from an address with the version in it, and that address never changes. No clone, no build. [Pin a version](https://openaudiovisual.com/docs/#quick-start-pin-a-version)
+- **A show in one file.** Save `show.html`, serve the folder, open it: a World, a timeline, the console and the piano, from one `import`. [One file, no clone](https://openaudiovisual.com/docs/#quick-start-one-file-no-clone)
+- **Made with.** A page of the works, tools and classes that run on open-audiovisual, each added by the person who made it, with a badge and a form to add yours. [Made with](https://openaudiovisual.com/made-with/)
+- **A page says what it runs on, and sends nothing to say it.** `createShow()` leaves `<meta name="generator" content="open-audiovisual 0.9.0">` in the page and `window.openav.version` on the show; `signature: false` leaves the tag out. [Telemetry](https://openaudiovisual.com/docs/#controllers-telemetry)
+- **The curves panel.** `C` on the desk opens the whole show's automation as curves: the segments along the top, a cursor at now, the values you have overridden by hand and a way back for each. Click to seek. [The curves panel](https://openaudiovisual.com/docs/#show-control-the-curves-panel)
+- **Several pages, one show.** One page leads and the others follow its clock, in one browser or across machines over the relay: `createShow({ sync: { role: 'leader', channel: 'hall' } })`. New package `@openav/sync`. [Several pages, one show](https://openaudiovisual.com/docs/#show-control-several-pages-one-show)
+- **Curves written per segment.** Automation can be written against a segment of the score (`p` from 0 to 1 inside it), so a shorter cut moves every curve with it; automation saves and loads as JSON; a timeline can be anchored to the wall clock and reports its drift. [Lanes](https://openaudiovisual.com/docs/#show-control-lanes-curves-written-per-segment)
+- **A knob that nudges, and one that waits.** A route can `trim` the timeline's value instead of replacing it, or `pickup` only once the knob reaches the value on screen, and `release` hands the param back. [Trim, pickup and release](https://openaudiovisual.com/docs/#mapping-trim-pickup-and-release)
+- **Frames you drive yourself, keys you choose.** `createShow({ loop: 'manual' })` steps the show frame by frame (recording, tests, headless); `console: { keys }` moves the desk's letters off the piano's; `monitor: false` or `{ url }` chooses the backstage feed, which can now carry the work's own numbers.
+- **`keepAwake()` on an iPad.** It asks for the wake lock again on the first tap, because Safari only grants it after a touch. Not yet checked on a real iPad.
+
 ### 2026-11-06
 
 - **Imported controllers are recognised when plugged in.** The library fetches that one file and shows the device, after the shipped profiles have had their say. Port patterns are whole model names, so a near name stays unmatched. [Library](https://openaudiovisual.com/controllers/#imported)

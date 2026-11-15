@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="188" height="28" viewBox="0 0 188 28" role="img" aria-label="Built with open-audiovisual">
+  <title>Built with open-audiovisual</title>
+  <rect width="188" height="28" fill="#0e0e10"/>
+  <rect x=".5" y=".5" width="187" height="27" fill="none" stroke="#3a3a40"/>
+  <rect width="4" height="28" fill="#ff5a1f"/>
+  <text x="14" y="18" fill="#9a9aa2" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11">built with</text>
+  <text x="84" y="18" fill="#f2f2f0" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" font-weight="700">open-audiovisual</text>
+</svg>

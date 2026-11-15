@@ -256,13 +256,33 @@ console.log(params.isOverridden('typo'));               // false`,
     params: [
       {
         name: 'onFrame', type: 'Function',
-        en: 'Called as `onFrame(dt, now)`: `dt` is the seconds since the previous frame (never more than `maxDt`), `now` the time in milliseconds. An error thrown inside is caught and logged as `[loop]`; the clock keeps going.',
-        zh: '以 `onFrame(dt, now)` 呼叫：`dt` 是距離上一個畫面的秒數（不會超過 `maxDt`），`now` 是以毫秒計的時間。裡面丟出的錯誤會被接住、記成 `[loop]`，時鐘繼續跑。',
+        en: 'Called as `onFrame(dt, now)`: `dt` is the seconds since the previous frame (never more than `maxDt` on an automatic frame), `now` the time in milliseconds on the same clock as `clock` (in a manual loop: the loop\'s own time, which starts at 0). An error thrown inside is caught and logged as `[loop]`; the clock keeps going.',
+        zh: '以 `onFrame(dt, now)` 呼叫：`dt` 是距離上一個畫面的秒數（自動的畫面不會超過 `maxDt`），`now` 是以毫秒計的時間，跟 `clock` 是同一個鐘（手動迴圈則是迴圈自己的時間，從 0 開始）。裡面丟出的錯誤會被接住、記成 `[loop]`，時鐘繼續跑。',
       },
       {
         name: 'maxDt', type: 'Number', optional: true, default: '0.1',
-        en: 'The longest `dt` you will ever be handed, in seconds. A stall (a long garbage collection, a dragged window) is cut to this, so a world never has to cope with a one-second jump.',
-        zh: '你拿到的 `dt` 最大值，單位是秒。卡頓（長時間的記憶體回收、被拖動的視窗）會被截成這個值，世界不用處理一秒鐘的跳動。',
+        en: 'In the options object, like the ones below. The longest `dt` an automatic frame hands you, in seconds. A stall (a long garbage collection, a dragged window) is cut to this, so a world never has to cope with a one-second jump. `step(dt)` is not clamped.',
+        zh: '放在選項物件裡，下面幾個也是。自動的畫面交給你的 `dt` 最大值，單位是秒。卡頓（長時間的記憶體回收、被拖動的視窗）會被截成這個值，世界不用處理一秒鐘的跳動。`step(dt)` 不受這個限制。',
+      },
+      {
+        name: 'clock', type: 'Function', optional: true, default: 'performance.now',
+        en: 'Your own clock: a function that returns milliseconds and never goes backwards. A test passes a fake one.',
+        zh: '你自己的時鐘：一個回傳毫秒、而且不會倒退的函式。測試可以傳一個假的。',
+      },
+      {
+        name: 'raf', type: 'Function', optional: true, default: 'requestAnimationFrame',
+        en: 'Your own scheduler: `raf(cb)` arranges for `cb` to be called once, for the next frame. `cb` may be given a timestamp in milliseconds; when it is not, `clock()` is read.',
+        zh: '你自己的排程器：`raf(cb)` 安排在下一個畫面呼叫一次 `cb`。`cb` 可以收到一個毫秒的時間戳，沒給的話就讀 `clock()`。',
+      },
+      {
+        name: 'manual', type: 'Boolean', optional: true, default: 'false',
+        en: '`true` schedules nothing at all: every frame comes from your own call to `loop.step(dt)`.',
+        zh: '`true` 表示完全不排程：每個畫面都來自你自己呼叫的 `loop.step(dt)`。',
+      },
+      {
+        name: 'heartbeat', type: 'Boolean', optional: true,
+        en: 'The hidden-tab Worker. By default it is on with the page\'s own `requestAnimationFrame` and off with an injected `raf` or with `manual`, because a real timer must not step a fake clock. `true` turns it back on.',
+        zh: '分頁被藏起來時用的 Worker。預設是：用頁面自己的 `requestAnimationFrame` 就開著，給了自己的 `raf` 或 `manual` 就關掉，因為真的計時器不該去推一個假時鐘。`true` 可以把它再打開。',
       },
     ],
     description: [
@@ -278,15 +298,23 @@ console.log(params.isOverridden('typo'));               // false`,
         en: '`loop.fps` is the frame rate, rounded, refreshed about every half second (the very first value comes from the first frame alone); it is 0 before the first frame. `loop.running` says whether it is going.',
         zh: '`loop.fps` 是四捨五入後的影格率，大約每半秒更新一次（第一個值只由第一個畫面算出來），在第一個畫面之前是 0。`loop.running` 告訴你它有沒有在跑。',
       },
+      {
+        en: 'Who supplies the time is a choice. `new Loop(fn)` uses the page: `requestAnimationFrame`, `performance.now` and the hidden-tab Worker. `new Loop(fn, { clock, raf })` runs on your sources, such as a test\'s fake timer or a recorder\'s frame pump. `new Loop(fn, { manual: true })` schedules nothing: you call `loop.step(dt)` and each call is one frame. That is how a show is recorded frame by frame, unit-tested, or run headless, without replacing the global `requestAnimationFrame`. In a show, `createShow({ loop: \'manual\' })` or `{ loop: { clock, raf } }` passes these on.',
+        zh: '時間由誰提供是可以選的。`new Loop(fn)` 用的是頁面的：`requestAnimationFrame`、`performance.now`，加上分頁被藏起來時的 Worker。`new Loop(fn, { clock, raf })` 用你給的來源跑，例如測試的假計時器，或錄影程式的逐格推進。`new Loop(fn, { manual: true })` 什麼都不排程：由你呼叫 `loop.step(dt)`，每呼叫一次就是一個畫面。逐格錄下一場演出、寫單元測試、或無頭執行，就是這樣做的，不必換掉全域的 `requestAnimationFrame`。在演出裡，`createShow({ loop: \'manual\' })` 或 `{ loop: { clock, raf } }` 會把這些選項傳下來。',
+      },
     ],
     needs: {
-      en: 'Call `start()`: nothing ticks until you do. It needs a browser (`requestAnimationFrame`, `performance`); in Node there is no clock to run it.',
-      zh: '要呼叫 `start()`，在那之前什麼都不會跳。它需要瀏覽器（`requestAnimationFrame`、`performance`），在 Node 裡沒有時鐘可以讓它跑。',
+      en: 'Call `start()`: nothing ticks until you do. By default it needs a browser (`requestAnimationFrame`, `performance`). Where there is no `requestAnimationFrame`, `start()` throws unless you passed `{ raf }` or `{ manual: true }`; `step(dt)` works anywhere.',
+      zh: '要呼叫 `start()`，在那之前什麼都不會跳。預設它需要瀏覽器（`requestAnimationFrame`、`performance`）。環境裡沒有 `requestAnimationFrame` 的時候，除非你傳了 `{ raf }` 或 `{ manual: true }`，否則 `start()` 會丟出錯誤。`step(dt)` 在哪裡都能用。',
     },
     members: {
+      step: {
+        en: '`step(dt)`: run one frame of `dt` seconds now, on any loop, started or not. It is not clamped to `maxDt`, and `dt = 0` is a frame too (a redraw in place). The `now` handed to `onFrame` moves on by `dt` from where the loop\'s time stood (0 for a loop that has not run). Returns `false`, running nothing, when `dt` is not a finite number of 0 or more. On an automatic loop it adds a frame, and the loop\'s time jumps with it.',
+        zh: '`step(dt)`：現在就跑一個 `dt` 秒的畫面，任何迴圈都能用，不管有沒有啟動。它不受 `maxDt` 限制，`dt = 0` 也算一個畫面（原地重畫）。交給 `onFrame` 的 `now` 會從迴圈目前的時間往前走 `dt`（沒跑過的迴圈從 0 開始）。`dt` 不是大於等於 0 的有限數字的時候，什麼都不跑，回傳 `false`。在自動迴圈上，它會多加一個畫面，迴圈的時間也跟著跳。',
+      },
       start: {
-        en: 'Start the clock. Calling it while it already runs does nothing.',
-        zh: '啟動時鐘。在它已經在跑的時候呼叫，什麼都不會發生。',
+        en: 'Start the clock. Calling it while it already runs does nothing. On a manual loop it only sets `running`.',
+        zh: '啟動時鐘。在它已經在跑的時候呼叫，什麼都不會發生。在手動迴圈上，它只會把 `running` 設成 true。',
       },
       stop: {
         en: 'Stop the clock and shut the hidden-tab worker down. `start()` begins again.',
@@ -325,11 +353,20 @@ const loop = new Loop((dt) => {
 loop.start();`,
         caption: { en: 'A square crosses the canvas at 120 pixels a second, the same speed at any frame rate because it moves by `dt`.', zh: '一個方塊以每秒 120 像素的速度橫過畫布，它是按 `dt` 移動的，所以不管畫面更新率多少，速度都一樣。' },
       },
+      {
+        code: `import { Loop } from '@openav/core';
+
+const loop = new Loop((dt, now) => console.log(dt, now), { manual: true });   // nothing is scheduled
+loop.step(0.5);                  // one frame of half a second
+loop.step(0.25);
+console.log(loop.step(-1));      // not a frame`,
+        caption: { en: 'A loop you drive yourself: the console prints `0.5 500`, `0.25 750`, then `false`. Each `step(dt)` is one frame, and `now` is the loop\'s own time in milliseconds.', zh: '一個由你自己推的迴圈：主控台印出 `0.5 500`、`0.25 750`，接著是 `false`。每次 `step(dt)` 就是一個畫面，`now` 是迴圈自己的時間，單位是毫秒。' },
+      },
     ],
     related: ['createShow', 'Timeline', 'Signals', 'Params'],
     keywords: {
-      en: ['loop', 'frame', 'clock', 'requestAnimationFrame', 'raf', 'dt', 'delta time', 'fps', 'tick', 'hidden tab', 'animation'],
-      zh: ['迴圈', '畫面', '時鐘', '影格', '更新率', 'fps', '動畫', '分頁', '背景', '時間差'],
+      en: ['loop', 'frame', 'clock', 'requestAnimationFrame', 'raf', 'dt', 'delta time', 'fps', 'tick', 'hidden tab', 'animation', 'manual', 'step', 'headless', 'fake clock', 'record frame by frame'],
+      zh: ['迴圈', '畫面', '時鐘', '影格', '更新率', 'fps', '動畫', '分頁', '背景', '時間差', '手動', '逐格', '無頭', '假時鐘'],
     },
   },
 
@@ -380,5 +417,79 @@ bus.emit('hit', 0.9);   // nothing: nobody is listening`,
       en: ['bus', 'event emitter', 'events', 'on', 'emit', 'off', 'publish', 'subscribe', 'pubsub', 'listener'],
       zh: ['事件', '發射器', '匯流排', '訂閱', '發布', '監聽', '回呼'],
     },
+  },
+  VERSION: {
+    group: 'core',
+    summary: {
+      en: 'The version of the framework as a string, the same number as the tag in a pinned address.',
+      zh: '框架的版本，是一個字串，跟固定版本網址裡的 tag 是同一個數字。',
+    },
+    description: [
+      {
+        en: 'One version covers every package: `package.json`, this constant and the address `…/open-audiovisual@v0.9.0/packages/openav.js` carry the same number. A show started with `createShow()` also has it as `window.openav.version`, so you can ask a running page which framework it is on.',
+        zh: '一個版本涵蓋所有套件：`package.json`、這個常數和網址 `…/open-audiovisual@v0.9.0/packages/openav.js` 帶的是同一個數字。用 `createShow()` 開演的頁面上也有 `window.openav.version`，所以可以問一個正在跑的頁面它用的是哪一版。',
+      },
+      {
+        en: 'oav-p5, the one line for p5.js, counts its own versions: `OAVp5.version`.',
+        zh: 'p5.js 的那一行 oav-p5 有自己的版本號：`OAVp5.version`。',
+      },
+    ],
+    value: { type: 'String', en: 'Three numbers with dots, for example `0.9.0`.', zh: '用點隔開的三個數字，例如 `0.9.0`。' },
+    examples: [
+      {
+        code: `import { VERSION } from '@openav/core';
+
+console.log('open-audiovisual', VERSION);   // open-audiovisual 0.9.0`,
+        caption: { en: 'The console prints the framework version.', zh: '主控台印出框架的版本。' },
+      },
+    ],
+    related: ['sign', 'createShow'],
+    keywords: { en: ['version', 'semver', 'pin', 'tag', 'release'], zh: ['版本', '版號', '固定版本'] },
+  },
+  sign: {
+    group: 'core',
+    summary: {
+      en: 'Marks a page as made with open-audiovisual by adding one `<meta name="generator">` tag, without sending anything.',
+      zh: '在頁面加一個 `<meta name="generator">` 標籤，標明它是用 open-audiovisual 做的，不送出任何東西。',
+    },
+    description: [
+      {
+        en: 'It adds `<meta name="generator" content="open-audiovisual 0.9.0">` to the document\'s head, the tag WordPress and Hugo leave. No request is made, no cookie is set and there is no id: the tag is for a person who views the source, and for searches and censuses of the public web. `createShow()` calls it for you, and `createShow({ signature: false })` does not.',
+        zh: '它在文件的 head 裡加上 `<meta name="generator" content="open-audiovisual 0.9.0">`，WordPress 和 Hugo 留的也是這種標籤。不發出請求、不寫 cookie、沒有任何識別碼。這個標籤是給檢視原始碼的人看的，也讓公開網頁的搜尋與普查認得出來。`createShow()` 會替你呼叫，`createShow({ signature: false })` 就不會。',
+      },
+      {
+        en: 'Calling it again changes nothing: there is one tag per product. A generator tag another tool left stays where it is. Where there is no document (Node, a worker) it returns `null`.',
+        zh: '再呼叫一次不會有變化：一個產品只有一個標籤。別的工具留下的 generator 標籤會留在原地。沒有文件的地方（Node、worker）會回傳 `null`。',
+      },
+    ],
+    params: [
+      {
+        name: 'doc', type: 'Document', optional: true, default: 'globalThis.document',
+        en: 'The document to mark.',
+        zh: '要標記的文件。',
+      },
+      {
+        name: 'product', type: 'String', optional: true, default: "'open-audiovisual'",
+        en: 'Read from the second argument, an object: `sign(document, { product, version })`. Another product of the project, for a tag of its own beside the framework\'s.',
+        zh: '從第二個引數（一個物件）讀：`sign(document, { product, version })`。這個專案的另一個產品，會在框架的標籤旁邊多一個自己的標籤。',
+      },
+      {
+        name: 'version', type: 'String', optional: true, default: 'VERSION',
+        en: 'In the same object: the version that goes after the product\'s name.',
+        zh: '同一個物件裡：接在產品名稱後面的版本。',
+      },
+    ],
+    returns: { type: 'HTMLMetaElement | null', en: 'The tag, new or already there. `null` without a document.', zh: '那個標籤，新加的或原本就有的。沒有文件時是 `null`。' },
+    examples: [
+      {
+        code: `import { sign } from '@openav/core';
+
+const meta = sign();                 // a page that does not use createShow()
+console.log(meta.content);           // open-audiovisual 0.9.0`,
+        caption: { en: 'The page\'s head gains one generator tag, and the console prints its content.', zh: '頁面的 head 多了一個 generator 標籤，主控台印出它的內容。' },
+      },
+    ],
+    related: ['VERSION', 'createShow'],
+    keywords: { en: ['generator', 'meta', 'signature', 'made with', 'built with', 'telemetry'], zh: ['簽名', '標籤', '用它做的', '使用統計'] },
   },
 };

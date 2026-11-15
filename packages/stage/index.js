@@ -52,10 +52,11 @@ export class Stage {
   /** Switch active world (disposes the previous one). */
   async activate(name) {
     if (this.activeName === name) return;
-    if (this.active?.dispose) { try { this.active.dispose(); } catch (e) { console.error('[stage] dispose:', e); } }
-    this.layer.innerHTML = '';
+    // look the name up before touching anything: a typo in a cue must not black out the world that is playing
     const world = this.worlds.get(name);
     if (!world) throw new Error(`[stage] unknown world: ${name}`);
+    if (this.active?.dispose) { try { this.active.dispose(); } catch (e) { console.error('[stage] dispose:', e); } }
+    this.layer.innerHTML = '';
     this.active = world;
     this.activeName = name;
     await world.init?.({ container: this.layer, signals: this.signals, params: this.params });

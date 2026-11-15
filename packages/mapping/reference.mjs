@@ -34,19 +34,28 @@ export default {
         en: 'Called as `onLearn(route, signalName)` when learn mode binds a signal.',
         zh: 'learn 模式綁定了一個訊號的時候，以 `onLearn(route, signalName)` 呼叫。',
       },
+      {
+        name: 'base', type: 'Function | null', optional: true, default: 'null',
+        en: 'A function that returns what the timeline says right now, `{ key: value }`, usually `() => timeline.state()`. `trim` routes add to it, `pickup` routes compare with it, and a glide starts from it. Without it the param\'s `def` stands in for the timeline\'s value. It is a plain property: set `mapper.base` later if you like. `createShow()` passes it for you.',
+        zh: '一個回傳時間軸「此刻」的值 `{ key: value }` 的函式，通常是 `() => timeline.state()`。`trim` 路由疊在它上面，`pickup` 路由跟它比較，滑行也從它起跳。沒給的話，就拿參數的 `def` 當成時間軸的值。它是個普通屬性，之後再設定 `mapper.base` 也可以。`createShow()` 會替你傳。',
+      },
     ],
     description: [
       {
-        en: 'The mapper is the only component that connects signals to params, and everything it knows is a list of **routes**, plain objects. `mapper.addRoute({ source: \'midi/cc/74\', target: \'bloom\' })` makes the param `bloom` follow the signal `midi/cc/74`. One signal may drive several params, one param may listen to several signals (the last writer wins), and learn adds routes, it never replaces them. In a show, [`createShow()`](#createShow) builds one, loads the saved routes (or adds the ones you declared in `routes`) and returns it as `show.mapper`.',
+        en: 'The mapper is the only component that connects signals to params, and everything it knows is a list of **routes**, plain objects. `mapper.addRoute({ source: \'midi/cc/74\', target: \'bloom\' })` makes the param `bloom` follow the signal `midi/cc/74`. One signal may drive several params, one param may listen to several signals (the route that wrote last wins), and learn adds routes, it never replaces them. In a show, [`createShow()`](#createShow) builds one, loads the saved routes (or adds the ones you declared in `routes`) and returns it as `show.mapper`.',
         zh: '映射是唯一把訊號接到參數的元件，它知道的一切就是一份**路由**清單，每條路由是個普通物件。`mapper.addRoute({ source: \'midi/cc/74\', target: \'bloom\' })` 讓參數 `bloom` 跟著訊號 `midi/cc/74` 走。一個訊號可以驅動好幾個參數，一個參數也可以聽好幾個訊號（最後寫入的算數），learn 只會新增路由，不會取代。在演出裡，[`createShow()`](#createShow) 會建好一個，載入存起來的路由（或加入你在 `routes` 宣告的），用 `show.mapper` 回傳。',
       },
       {
-        en: 'A route needs only `source` and `target`; `addRoute()` fills in the rest and returns the stored route:\n\n```text\nsource, target      the signal name and the param key (required)\ninMin, inMax        0, 1   the part of the signal that counts; outside it is clamped\noutMin, outMax      the param\'s min and max AT THE MOMENT THE ROUTE IS ADDED (0 and 1 if the param does not exist yet)\ncurve               \'linear\' | \'exp\' (x squared) | \'log\' (square root) | \'smooth\' (smoothstep); an unknown name is linear\ninvert              false   flip the value (1 - x) before the curve\nsmooth              0       glide time in seconds; 0 = instant\nenabled             absent = on; false mutes the route\nid                  assigned; used by removeRoute()\n```',
-        zh: '一條路由只需要 `source` 和 `target`，其餘由 `addRoute()` 補上，並回傳存下來的路由：\n\n```text\nsource, target      the signal name and the param key (required)\ninMin, inMax        0, 1   the part of the signal that counts; outside it is clamped\noutMin, outMax      the param\'s min and max AT THE MOMENT THE ROUTE IS ADDED (0 and 1 if the param does not exist yet)\ncurve               \'linear\' | \'exp\' (x squared) | \'log\' (square root) | \'smooth\' (smoothstep); an unknown name is linear\ninvert              false   flip the value (1 - x) before the curve\nsmooth              0       glide time in seconds; 0 = instant\nenabled             absent = on; false mutes the route\nid                  assigned; used by removeRoute()\n```',
+        en: 'A route needs only `source` and `target`; `addRoute()` fills in the rest and returns the stored route:\n\n```text\nsource, target      the signal name and the param key (required)\ninMin, inMax        0, 1   the part of the signal that counts; outside it is clamped\noutMin, outMax      the param\'s min and max AT THE MOMENT THE ROUTE IS ADDED (0 and 1 if the param does not exist yet); for a trim route: minus and plus half the param\'s range\ncurve               \'linear\' | \'exp\' (x squared) | \'log\' (square root) | \'smooth\' (smoothstep); an unknown name is linear\ninvert              false   flip the value (1 - x) before the curve\nsmooth              0       glide time in seconds; 0 = instant\nmode                absent = \'override\'; \'trim\' adds to the timeline; \'pickup\' takes over only once the knob meets the value\nrelease             absent or 0 = never; seconds of stillness after which the route lets go\nenabled             absent = on; false mutes the route\nid                  assigned; used by removeRoute()\n```',
+        zh: '一條路由只需要 `source` 和 `target`，其餘由 `addRoute()` 補上，並回傳存下來的路由：\n\n```text\nsource, target      the signal name and the param key (required)\ninMin, inMax        0, 1   the part of the signal that counts; outside it is clamped\noutMin, outMax      the param\'s min and max AT THE MOMENT THE ROUTE IS ADDED (0 and 1 if the param does not exist yet); for a trim route: minus and plus half the param\'s range\ncurve               \'linear\' | \'exp\' (x squared) | \'log\' (square root) | \'smooth\' (smoothstep); an unknown name is linear\ninvert              false   flip the value (1 - x) before the curve\nsmooth              0       glide time in seconds; 0 = instant\nmode                absent = \'override\'; \'trim\' adds to the timeline; \'pickup\' takes over only once the knob meets the value\nrelease             absent or 0 = never; seconds of stillness after which the route lets go\nenabled             absent = on; false mutes the route\nid                  assigned; used by removeRoute()\n```',
       },
       {
         en: 'When a signal arrives, each enabled route with that `source` does five things in order: take the **window** (`(value - inMin) / (inMax - inMin)`, clamped to 0..1), **invert** if asked, apply the **curve**, **scale** into `outMin`..`outMax`, and **write**. With `smooth: 0` the param is overridden at once. With `smooth > 0` the result becomes a target that `update(dt)` glides toward: after `smooth` seconds the param has covered about 63% of the way. If the target param is a pulse param, the route fires it instead: on every event of a pulse signal, or when a continuous source rises past 0.5.',
         zh: '訊號到來的時候，每一條啟用中、`source` 相符的路由會依序做五件事：取**輸入窗**（`(value - inMin) / (inMax - inMin)`，限制在 0..1）、需要的話**反轉**、套用**曲線**、**縮放**到 `outMin`..`outMax`、然後**寫入**。`smooth: 0` 時參數立刻被覆寫。`smooth > 0` 時，結果變成一個目標值，由 `update(dt)` 慢慢滑過去：經過 `smooth` 秒，參數走完大約 63% 的距離。如果目標是脈衝參數，路由改成觸發它：脈衝訊號每來一次就觸發，連續訊號則是往上越過 0.5 的那一刻觸發。',
+      },
+      {
+        en: 'Three optional route fields decide who wins when a knob meets the timeline. `mode: \'trim\'`: the route\'s output is an *offset* added to the timeline\'s value, so the timeline keeps moving underneath and the knob only adjusts it; two trim routes on one param add up. `mode: \'pickup\'`: like the default, but the route writes nothing until the knob has *met* the param\'s present value (within 2% of the route\'s output range, or crossing it between two readings), so the param does not jump. `release: 4`, in any mode: once the signal has been still for 4 seconds the route lets go and the timeline takes the param back (at once with `smooth: 0`, else fading over about three times `smooth`; a trim fades its offset to 0), and it takes over again only when the signal really moves. `mode` and `release` do nothing for a pulse param.',
+        zh: '有三個選填的路由欄位，決定旋鈕碰上時間軸的時候誰說了算。`mode: \'trim\'`：路由的輸出是一個*偏移量*，加在時間軸的值上面，所以時間軸在底下照樣往前走，旋鈕只是微調，同一個參數上的兩條 trim 路由會相加。`mode: \'pickup\'`：跟預設一樣，但旋鈕要先*碰到*參數現在的值（離得不到路由輸出範圍的 2%，或兩次讀數之間越過了它），路由才開始寫入，所以參數不會跳。`release: 4`，任何模式都能用：訊號靜止 4 秒之後路由就放手，時間軸把參數接回去（`smooth: 0` 是當場放手，否則用大約三倍 `smooth` 的時間淡回去，trim 是把偏移淡到 0），之後要訊號真的動了才會再接管。`mode` 和 `release` 對脈衝參數不起作用。',
       },
       {
         en: '**Learn** is generalised MIDI-learn: `mapper.learn(\'bloom\')`, then move something. The first signal that moves by at least 5% of its declared range (a knob, a hand, a phone tilt), or the first pulse that fires (a key, a pad), becomes the source of a new route with the default settings. Calling `learn(\'bloom\')` again cancels it. Because any pulse binds at once, stop the drum machine before you learn.',
@@ -54,17 +63,17 @@ export default {
       },
     ],
     needs: {
-      en: 'Create the signals and the params first, then the mapper. A smoothed route (`smooth > 0`) writes its param only inside `update(dt)`, so call `mapper.update(dt)` every frame (`createShow()` does).',
-      zh: '先建好訊號和參數，再建映射。平滑的路由（`smooth > 0`）只會在 `update(dt)` 裡寫入參數，所以每個畫面都要呼叫 `mapper.update(dt)`（`createShow()` 會做）。',
+      en: 'Create the signals and the params first, then the mapper. A smoothed route (`smooth > 0`) writes its param only inside `update(dt)`, a trim route follows the timeline there, and `release` is counted there, so call `mapper.update(dt)` every frame (`createShow()` does). `trim` and `pickup` need `base` to know the timeline\'s value.',
+      zh: '先建好訊號和參數，再建映射。平滑的路由（`smooth > 0`）只會在 `update(dt)` 裡寫入參數，trim 路由在那裡跟著時間軸走，`release` 也是在那裡計時，所以每個畫面都要呼叫 `mapper.update(dt)`（`createShow()` 會做）。`trim` 和 `pickup` 需要 `base` 才知道時間軸的值。',
     },
     members: {
       addRoute: {
-        en: 'Add a route and return it, with the defaults filled in and an `id` assigned. `outMin` and `outMax` default to the param\'s range as it is right now.',
-        zh: '加入一條路由並回傳，預設值補齊、`id` 也指定好了。`outMin` 和 `outMax` 預設是參數「此刻」的範圍。',
+        en: 'Add a route and return it, with the defaults filled in and an `id` assigned. `outMin` and `outMax` default to the param\'s range as it is right now; for a `trim` route they default to minus and plus half of that range (a knob in the middle changes nothing).',
+        zh: '加入一條路由並回傳，預設值補齊、`id` 也指定好了。`outMin` 和 `outMax` 預設是參數「此刻」的範圍。`trim` 路由的預設則是那個範圍的正負一半（旋鈕在中間等於不動）。',
       },
       removeRoute: {
-        en: 'Remove the route with this `id`.',
-        zh: '移除這個 `id` 的路由。',
+        en: 'Remove the route with this `id`. A trim route that was holding its param takes its offset away at once.',
+        zh: '移除這個 `id` 的路由。還握著參數的 trim 路由，會馬上把它的偏移收掉。',
       },
       routesFor: {
         en: 'The routes that write this param.',
@@ -75,12 +84,12 @@ export default {
         zh: '切換某個參數的 learn 模式：下一個移動的訊號（或下一個脈衝）會成為指向它的新路由。`mapper.learnTarget` 是目前備好的 key，沒有就是 `null`。',
       },
       update: {
-        en: 'Call every frame with the seconds that passed: it advances the smoothed routes toward their targets.',
-        zh: '每個畫面呼叫一次，傳入經過的秒數：讓平滑的路由往它們的目標靠近一點。',
+        en: 'Call every frame with the seconds that passed: it advances the smoothed routes toward their targets, keeps trim routes riding the timeline, and lets go of routes whose `release` time has passed.',
+        zh: '每個畫面呼叫一次，傳入經過的秒數：讓平滑的路由往它們的目標靠近一點，讓 trim 路由跟著時間軸走，並讓過了 `release` 時間的路由放手。',
       },
       toJSON: {
-        en: 'The routes as a plain array (without the internal `_last` and `_target`), ready for `JSON.stringify`.',
-        zh: '把路由變成單純的陣列（不含內部用的 `_last` 和 `_target`），可以直接 `JSON.stringify`。',
+        en: 'The routes as a plain array (without the internal fields, whose names start with `_`), ready for `JSON.stringify`.',
+        zh: '把路由變成單純的陣列（不含名字以 `_` 開頭的內部欄位），可以直接 `JSON.stringify`。',
       },
       fromJSON: {
         en: 'Replace all routes with this array (the shape `toJSON()` returns). Defaults are not filled in; use `importMap()` for a file.',
@@ -117,12 +126,12 @@ export default {
     },
     notes: [
       {
-        en: 'A route writes its param as an **override**, and overrides are sticky: as soon as a mapped signal moves, the timeline stops driving that param until `params.clearOverride(key)`.',
-        zh: '路由把參數寫成**覆寫值**，而覆寫是黏住的：映射的訊號一動，時間軸就不再驅動那個參數，直到你呼叫 `params.clearOverride(key)`。',
+        en: 'A route writes its param as an **override**, and without `release` an override is sticky: as soon as a mapped signal moves, the timeline stops driving that param until `params.clearOverride(key)` (the ✕ in the console). A trim route overrides too: what it writes is the timeline\'s value plus the offset.',
+        zh: '路由把參數寫成**覆寫值**，沒有 `release` 的話覆寫是黏住的：映射的訊號一動，時間軸就不再驅動那個參數，直到你呼叫 `params.clearOverride(key)`（控台上的 ✕）。trim 路由也是覆寫：它寫進去的是時間軸的值加上偏移。',
       },
       {
-        en: 'A smoothed route keeps writing its last target every frame once its signal has arrived, so its param stays overridden even after `clearOverride` and even when the route is muted with `enabled = false`. Remove the route to give the param back to the timeline.',
-        zh: '平滑的路由只要訊號來過一次，之後每個畫面都會繼續寫入它最後的目標值，所以就算 `clearOverride`、甚至用 `enabled = false` 靜音，參數仍然是被覆寫的。要把參數還給時間軸，請移除那條路由。',
+        en: 'A smoothed route writes only while it glides and stops once it has arrived. So after `clearOverride`, or after you drag the slider, the param stays yours: the mapper sees that somebody else wrote the override it had written, and every route on that param lets go until its signal arrives again. A muted route (`enabled = false`) writes nothing and the param keeps the value it had; a muted trim gives its offset back.',
+        zh: '平滑的路由只在滑行的時候寫入，滑到了就停筆。所以 `clearOverride` 之後，或你拖動滑桿之後，參數就留在你手上：映射會發現它寫的覆寫被別人改過，這個參數上的每條路由都放手，直到訊號再來。靜音的路由（`enabled = false`）什麼都不寫，參數維持原本的值。靜音的 trim 會把偏移還回去。',
       },
       {
         en: 'With `createShow()`, routes are added before the sound engine registers its `sound/*` params, so a route to `sound/cutoff` needs an explicit `outMin: 100, outMax: 8000`.',
@@ -195,11 +204,32 @@ const report = rig('garden').mapper.importMap(file);  // on another machine or i
 console.log(file.format, file.version, report.ok, report.added, report.skipped);`,
         caption: { en: 'A wiring travels as a file: the console prints `openav.map 1 true 1 []`.', zh: '一份接線可以變成檔案帶著走：主控台印出 `openav.map 1 true 1 []`。' },
       },
+      {
+        code: `import { Signals, Params } from '@openav/core';
+import { Timeline } from '@openav/timeline';
+import { Mapper } from '@openav/mapping';
+
+const signals = new Signals();
+const params = new Params([{ key: 'hue', min: 0, max: 360, def: 0 }]);
+const timeline = new Timeline({ params, total: 60, automation: { hue: [[0, 100], [60, 220]] } });   // 2 more every second
+const mapper = new Mapper({ signals, params, base: () => timeline.state() });
+const hue = () => params.resolve(timeline.state()).hue;
+
+// trim: the knob adds up to 30 either way to the timeline's value, and lets go after 2 s of stillness
+mapper.addRoute({ source: 'midi/cc/74', target: 'hue', mode: 'trim', outMin: -30, outMax: 30, release: 2 });
+timeline.play();
+signals.set('midi/cc/74', 1);                                   // the knob fully right: +30
+for (let i = 0; i < 2; i++) { timeline.advance(0.5); mapper.update(0.5); }
+console.log(timeline.t, hue());                                 // the timeline says 102, the knob adds 30
+for (let i = 0; i < 4; i++) { timeline.advance(0.5); mapper.update(0.5); }
+console.log(timeline.t, hue(), Object.keys(params.overrides).length);`,
+        caption: { en: 'The knob rides on the curve instead of replacing it: the console prints `1 132` (102 from the timeline plus 30), then `3 106 0`: the knob was still for 2 seconds, the route let go, and the param is the timeline\'s again with no override left.', zh: '旋鈕是疊在曲線上面，不是取代它：主控台印出 `1 132`（時間軸的 102 加上 30），接著是 `3 106 0`：旋鈕靜止了 2 秒，路由放手，參數又回到時間軸手上，沒有留下任何覆寫。' },
+      },
     ],
-    related: ['Signals', 'Params', 'LearnWizard', 'parseMap', 'serializeMap', 'loadMapUrl', 'createShow', 'approach'],
+    related: ['Signals', 'Params', 'Timeline', 'LearnWizard', 'parseMap', 'serializeMap', 'loadMapUrl', 'createShow', 'approach'],
     keywords: {
-      en: ['mapper', 'mapping', 'route', 'routes', 'learn', 'midi learn', 'curve', 'smooth', 'invert', 'window', 'inMin', 'outMin', 'source target', 'bind', 'connect signal to param'],
-      zh: ['映射', '路由', '接線', '綁定', '曲線', '平滑', '反轉', '輸入窗', '學習', '訊號接參數', '覆寫'],
+      en: ['mapper', 'mapping', 'route', 'routes', 'learn', 'midi learn', 'curve', 'smooth', 'invert', 'window', 'inMin', 'outMin', 'source target', 'bind', 'connect signal to param', 'trim', 'pickup', 'soft takeover', 'release', 'relative', 'offset'],
+      zh: ['映射', '路由', '接線', '綁定', '曲線', '平滑', '反轉', '輸入窗', '學習', '訊號接參數', '覆寫', 'trim', 'pickup', '微調', '接管', '放手', '偏移'],
     },
   },
 

@@ -24,7 +24,7 @@
 // google-analytics.com simply drops the hit.
 
 export const MEASUREMENT_ID = 'G-1YG2JHK2WT';
-export const VERSION = '0.1.0';
+export const VERSION = '0.9.0';   // the framework's version: package.json and packages/core/src/signature.js carry the same (tests/signature.test.js)
 const ENDPOINT = 'https://www.google-analytics.com/g/collect';
 const OWN_SITE = /(^|\.)openaudiovisual\.com$/i;
 

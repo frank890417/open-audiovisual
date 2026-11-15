@@ -11,3 +11,4 @@ export { Bus } from './src/bus.js?v=2adcbf3d';
 export { Signals } from './src/signals.js?v=2adcbf3d';
 export { Params } from './src/params.js?v=2adcbf3d';
 export { Loop } from './src/loop.js?v=2adcbf3d';
+export { VERSION, sign } from './src/signature.js';

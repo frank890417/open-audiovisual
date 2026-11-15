@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My show · open-audiovisual starter</title>
+<meta name="robots" content="noindex">
+<style>html, body { margin: 0; height: 100%; background: #0b0b0c; color: #eee; }</style>
+</head>
+<body>
+<!--
+  A whole show in one file. Save it, serve the folder (python3 -m http.server, or any static host), open it in
+  Chrome or Edge. Nothing to clone, nothing to install, nothing to build.
+
+  The one address below is open-audiovisual 0.9.0. It will not change: change the number when YOU decide to.
+  Handbook: https://openaudiovisual.com/docs/   ·   Add your work: https://openaudiovisual.com/made-with/
+-->
+<script type="module">
+import { createShow, createCanvas } from 'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js';
+
+// The World is the only part you write. Params are what the piece is performed WITH: every one gets a
+// slider, can be mapped to a knob, and can be moved by the timeline.
+const world = {
+  name: 'rings',
+  params: [
+    { key: 'hue',    label: 'Hue',    min: 0,    max: 360, def: 24 },
+    { key: 'spread', label: 'Spread', min: 20,   max: 400, def: 160 },
+    { key: 'fade',   label: 'Fade',   min: 0.02, max: 0.4, def: 0.08 },
+    { key: 'flash',  label: 'Flash!', pulse: true },
+  ],
+  init({ container, signals, params }) {
+    this.view = createCanvas(container);
+    this.rings = [];
+    this.off = [
+      // an event: every note you play is a ring (the on-screen piano, QWERTY keys, or a real controller)
+      signals.on('midi/note/on', ({ note, vel }) => this.rings.push({ a: (note % 12) / 12, r: 0, v: vel, life: 1 })),
+      params.onPulse('flash', () => { for (let i = 0; i < 12; i++) this.rings.push({ a: i / 12, r: 0, v: 1, life: 1 }); }),
+    ];
+  },
+  update(dt, s) {
+    this.s = s;                                    // s: every param's value this frame, wherever it came from
+    for (const g of this.rings) { g.r += s.spread * dt; g.life -= dt * 0.5; }
+    this.rings = this.rings.filter((g) => g.life > 0);
+  },
+  render() {
+    const { ctx } = this.view, { w, h } = this.view.fit(), s = this.s || {};
+    ctx.fillStyle = `rgba(11, 11, 12, ${s.fade ?? 0.08})`;
+    ctx.fillRect(0, 0, w, h);
+    for (const g of this.rings) {
+      const x = w / 2 + Math.cos(g.a * Math.PI * 2) * w * 0.22, y = h / 2 + Math.sin(g.a * Math.PI * 2) * h * 0.22;
+      ctx.strokeStyle = `hsla(${(s.hue + g.a * 120) % 360}, 90%, 60%, ${g.life})`;
+      ctx.lineWidth = 1 + g.v * 5;
+      ctx.beginPath(); ctx.arc(x, y, g.r, 0, Math.PI * 2); ctx.stroke();
+    }
+  },
+  dispose() { this.off.forEach((u) => u()); this.view.dispose(); },
+};
+
+await createShow({
+  world,
+  timeline: {
+    total: 60,
+    automation: { hue: [[0, 24], [30, 200], [60, 320]], spread: [[0, 160], [45, 360], [60, 80]] },
+    scenes: [
+      { id: 'open',  t: 0,  title: 'Open',  note: 'single notes' },
+      { id: 'wide',  t: 30, title: 'Wide',  note: 'chords, let them ring' },
+      { id: 'close', t: 50, title: 'Close', note: 'one last Flash!' },
+    ],
+  },
+  modules: { keys: { base: 48 }, sound: true },
+  hint: 'play the piano (tick "keyboard" for QWERTY) · Space plays the timeline · T performance mode',
+});
+</script>
+</body>
+</html>

@@ -10,7 +10,7 @@ export default {
       zh: '房間中繼的瀏覽器端：把訊號送給同一個房間裡的其他頁面，也接收它們的訊號，身分可以是手機（controller）、演出本身（runner）或後台監看（monitor）。',
     },
     params: [
-      { name: 'role', type: "'controller' | 'runner' | 'monitor'", en: 'Who this page is. A controller (a phone) sends signals to the runner and the monitors. A runner (the show) hears the controllers, and can send feedback and config back. A monitor only listens. The server treats any other word as `controller`.', zh: '這個頁面的身分。控制端（controller，也就是手機）把訊號送給演出端和監看端。演出端（runner，也就是演出本身）聽得到控制端，也能把 feedback 和 config 送回去。監看端（monitor）只聽不說。伺服器遇到其他字一律當成 `controller`。' },
+      { name: 'role', type: "'controller' | 'runner' | 'monitor' | 'leader' | 'follower'", en: 'Who this page is. A controller (a phone) sends signals to the runner and the monitors. A runner (the show) hears the controllers, and can send feedback and config back. A monitor only listens. A leader and a follower exchange `sync` messages only (several pages, one show: [`createSync()`](#createSync)). The server treats any other word as `controller`.', zh: '這個頁面的身分。控制端（controller，也就是手機）把訊號送給演出端和監看端。演出端（runner，也就是演出本身）聽得到控制端，也能把 feedback 和 config 送回去。監看端（monitor）只聽不說。主控端（leader）和從屬端（follower）之間只交換 `sync` 訊息（好幾個頁面演同一場：[`createSync()`](#createSync)）。伺服器遇到其他字一律當成 `controller`。' },
       { name: 'room', type: 'String', en: 'The room name. Pages in different rooms never hear each other. 1 to 32 characters of `A–Z a–z 0–9 _ -`; the server turns anything else into `default`.', zh: '房間名稱。不同房間的頁面彼此聽不到。1 到 32 個字元，只能用 `A–Z a–z 0–9 _ -`，其他的伺服器會換成 `default`。' },
       { name: 'id', type: 'String', en: 'This device\'s id, the `<id>` in `phone/<id>/…`. The default is [`deviceId()`](#deviceId), which is kept in `localStorage`. The server keeps its first 64 characters.', zh: '這個裝置的 id，也就是 `phone/<id>/…` 裡的 `<id>`。預設是 [`deviceId()`](#deviceId)，存在 `localStorage` 裡。伺服器只留前 64 個字元。' },
       { name: 'url', type: 'String', en: 'The full WebSocket address, with the query already on it: `wss://host/relay?role=controller&room=main&id=ab12`. Nothing is added to it. Leave it out and the client uses `?relay=ws://…` from the page\'s address, or else the page\'s own `/relay` (`wss:` on an https page), and adds `role`, `room` and `id` itself.', zh: '完整的 WebSocket 位址，查詢字串要自己帶好：`wss://host/relay?role=controller&room=main&id=ab12`。它不會再補任何東西。不給的話，用頁面網址裡的 `?relay=ws://…`，再沒有就用頁面自己的 `/relay`（https 頁面用 `wss:`），並自動補上 `role`、`room`、`id`。' },
@@ -20,6 +20,7 @@ export default {
       { name: 'onSignal', type: 'Function', optional: true, en: '`(name, value, msg) => {}`, for every signal that arrives (a runner or monitor hears the controllers; a monitor also hears the runner). A `batch` calls it once per item. `msg.pulse` is true for a pulse. [`bindSignals()`](#bindSignals) fills this in for you.', zh: '`(name, value, msg) => {}`，每收到一個訊號就呼叫（演出端和監看端聽得到控制端，監看端也聽得到演出端）。一則 `batch` 會每個項目各呼叫一次。脈衝訊號的 `msg.pulse` 是 true。[`bindSignals()`](#bindSignals) 會替你填這一項。' },
       { name: 'onFeedback', type: 'Function', optional: true, en: '`(name, value) => {}`, on a controller: a value the runner sent with `feedback()`, to show in a meter or to move a fader.', zh: '`(name, value) => {}`，在控制端：演出端用 `feedback()` 送來的數值，拿去顯示在音量表或移動推桿。' },
       { name: 'onConfig', type: 'Function', optional: true, en: '`(key, data) => {}`, on a controller: a standing config the runner sent with `config()`, such as the surface layout. A phone that joins late gets the stored ones right away.', zh: '`(key, data) => {}`，在控制端：演出端用 `config()` 送來的常駐設定，例如控制面板的版面。晚進來的手機會立刻收到已儲存的那些。' },
+      { name: 'onSync', type: 'Function', optional: true, en: '`(msg) => {}`, on a leader or a follower: a `sync` message from the other side (a follower hears the leaders, a leader hears the followers). `msg` is the whole message, with `type: \'sync\'` still on it.', zh: '`(msg) => {}`，在主控端或從屬端：對面送來的一則 `sync` 訊息（從屬端聽得到主控端，主控端聽得到從屬端）。`msg` 是整則訊息，上面還帶著 `type: \'sync\'`。' },
     ],
     description: [
       {
@@ -31,13 +32,13 @@ export default {
         zh: '連續的數值刻意做得很省：`set()` 只是把值存起來（跟上一次一樣就什麼都不做），之後每 `1 / batchHz` 秒，有變動的值打包成一則 `batch` 送出，每 `resendMs` 毫秒，全部的值再送一遍。事件則相反：`send()` 馬上送出，不打包也不重送，因為一個 note-on 收到兩次就是錯。',
       },
       {
-        en: 'It looks after the connection itself. When the socket closes it reconnects after 0.5 s, then 1 s, 2 s, 4 s and every 5 s, until you call `close()`. A ping goes out every 2 s and the answer becomes `latency` in milliseconds. `status` is `\'connecting\'`, `\'open\'` or `\'closed\'`, and `peers` is how many `controllers`, `runners` and `monitors` the room has.',
-        zh: '連線它自己照顧。socket 關掉之後，它會在 0.5 秒、1 秒、2 秒、4 秒，之後每 5 秒重連一次，直到你呼叫 `close()`。每 2 秒送一個 ping，回應的時間差就是 `latency`（毫秒）。`status` 是 `\'connecting\'`、`\'open\'` 或 `\'closed\'`，`peers` 是房間裡有幾個 `controllers`、`runners`、`monitors`。',
+        en: 'It looks after the connection itself. When the socket closes it reconnects after 0.5 s, then 1 s, 2 s, 4 s and every 5 s, until you call `close()`. A ping goes out every 2 s and the answer becomes `latency` in milliseconds. `status` is `\'connecting\'`, `\'open\'` or `\'closed\'`, and `peers` is how many `controllers`, `runners`, `monitors`, `leaders` and `followers` the room has.',
+        zh: '連線它自己照顧。socket 關掉之後，它會在 0.5 秒、1 秒、2 秒、4 秒，之後每 5 秒重連一次，直到你呼叫 `close()`。每 2 秒送一個 ping，回應的時間差就是 `latency`（毫秒）。`status` 是 `\'connecting\'`、`\'open\'` 或 `\'closed\'`，`peers` 是房間裡有幾個 `controllers`、`runners`、`monitors`、`leaders`、`followers`。',
       },
     ],
     needs: {
-      en: 'A relay server for it to reach, such as `node serve.js` (it hosts one at `/relay`) or `node packages/relay/server.js`. Until the socket is open, `set()` keeps the latest values and sends them when it opens, but `send()`, `feedback()` and `config()` messages are dropped, not queued.',
-      zh: '要有一台中繼伺服器可以連，例如 `node serve.js`（它在 `/relay` 架了一個）或 `node packages/relay/server.js`。socket 還沒打開之前，`set()` 會記住最新的值，打開時送出，但 `send()`、`feedback()`、`config()` 的訊息會直接丟掉，不會排隊。',
+      en: 'A relay server for it to reach, such as `node serve.js` (it hosts one at `/relay`) or `node packages/relay/server.js`. Until the socket is open, `set()` keeps the latest values and sends them when it opens, but `send()`, `config()` and `sync()` messages are dropped, not queued.',
+      zh: '要有一台中繼伺服器可以連，例如 `node serve.js`（它在 `/relay` 架了一個）或 `node packages/relay/server.js`。socket 還沒打開之前，`set()` 會記住最新的值，打開時送出，但 `send()`、`config()`、`sync()` 的訊息會直接丟掉，不會排隊。',
     },
     members: {
       open: { en: 'True while the socket is open (a getter). `send()` and `config()` do nothing when it is false.', zh: 'socket 開著的時候是 true（getter）。它是 false 的時候，`send()` 和 `config()` 什麼都不做。' },
@@ -47,6 +48,7 @@ export default {
       set: { en: '`set(name, value)`: a value that changes continuously. Only the latest value per name is kept; it goes out with the next flush and again every `resendMs`.', zh: '`set(name, value)`：連續變化的數值。每個名字只留最新的值，隨下一次送出一起出去，之後每 `resendMs` 再送一次。' },
       feedback: { en: '`feedback(name, value)`: runner only. A value for the controllers to display or to echo, flushed like `set()` and re-sent every `resendMs`. Nothing happens on a controller or a monitor.', zh: '`feedback(name, value)`：只有演出端有用。給控制端顯示或回應的數值，送出的方式跟 `set()` 一樣，每 `resendMs` 再送一次。在控制端或監看端上什麼都不會發生。' },
       config: { en: '`config(key, data)`: runner only. Send a standing config at once, for example `config(\'surface\', { layout })`. The relay keeps it per key for controllers that join later, and forgets it when the runner leaves.', zh: '`config(key, data)`：只有演出端有用。馬上送出一份常駐設定，例如 `config(\'surface\', { layout })`。中繼會依 key 留著，給之後才加入的控制端，演出端離開時就忘掉。' },
+      sync: { en: '`sync(msg)`: leader or follower only. Send one `sync` message (plain JSON such as `{ v, kind, … }`) at once: a leader\'s goes to the room\'s followers, a follower\'s to its leaders, and `to: \'<id>\'` narrows it to one peer. Not queued: a message that finds the socket closed is gone. This is what [`RelayTransport`](#RelayTransport) sends through.', zh: '`sync(msg)`：只有主控端和從屬端有用。馬上送出一則 `sync` 訊息（單純的 JSON，例如 `{ v, kind, … }`）：主控端的送給房間裡的從屬端，從屬端的送給主控端，加上 `to: \'<id>\'` 就只送給那一端。不會排隊：送出時 socket 沒開，訊息就不見了。[`RelayTransport`](#RelayTransport) 就是透過它送訊息的。' },
     },
     notes: [
       {
@@ -126,7 +128,7 @@ setTimeout(() => {
         caption: { en: 'Prints the config and the feedback the phone got back from the show, then the phone\'s tilt as the show hears it (under its alias `phone/any/tilt/x`). Same calls as against a real relay.', zh: '印出手機從演出端收到的 config 和 feedback，再印出演出端聽到的手機傾斜（在別名 `phone/any/tilt/x` 底下）。呼叫的方式跟連真正的中繼完全一樣。' },
       },
     ],
-    related: ['bindSignals', 'attachRelay', 'deviceId', 'mountRemoteHost', 'mountRemote', 'Signals'],
+    related: ['bindSignals', 'attachRelay', 'deviceId', 'mountRemoteHost', 'mountRemote', 'Signals', 'RelayTransport', 'createSync'],
     keywords: {
       en: ['relay', 'websocket', 'room', 'phone', 'controller', 'runner', 'monitor', 'client', 'connect', 'send signal', 'feedback', 'config', 'reconnect', 'latency'],
       zh: ['中繼', 'websocket', '房間', '手機', '控制端', '演出端', '監看端', '連線', '傳送訊號', '回饋', '設定', '重連', '延遲'],
@@ -409,16 +411,18 @@ document.getElementById('app').textContent = seen.join(', ') + ' | ' + signals.g
       { name: 'path', type: 'String', optional: true, en: 'The URL path clients connect to. Any other path is refused.', zh: '用戶端要連的網址路徑。其他路徑一律拒絕。' },
       { name: 'log', type: 'Function', optional: true, en: '`(line) => {}`, called with a line such as `+ controller ab12 @main` when a client joins and `- controller ab12 @main` when it leaves. The default says nothing.', zh: '`(line) => {}`，用戶端加入時以 `+ controller ab12 @main` 這樣的一行呼叫，離開時是 `- controller ab12 @main`。預設什麼都不說。' },
       { name: 'heartbeatMs', type: 'Number', optional: true, en: 'How often to ping every client, in milliseconds. A client that has not answered by the next ping is dropped, so a dead phone goes within one to two periods.', zh: '多久對每個用戶端 ping 一次，單位毫秒。到下一次 ping 還沒回應的用戶端會被移除，所以斷線的手機會在一到兩個週期內消失。' },
+      { name: 'maxMessageChars', type: 'Number', optional: true, default: '262144', en: 'The longest message the hub will route, in characters. A longer one is ignored. Raise it (with `maxBytes`) when a sync leader sends a large `state` to late joiners.', zh: 'hub 願意轉送的最長訊息，以字元計。更長的會被忽略。同步的主控端要送很大的 `state` 給中途加入的頁面時，把它（連同 `maxBytes`）調大。' },
+      { name: 'maxBytes', type: 'Number', optional: true, default: '1048576', en: 'The largest WebSocket frame or assembled message the parser accepts, in bytes (1 MiB). A larger one closes that connection.', zh: '解析器願意收的最大 WebSocket frame（或組合後的訊息），以位元組計（1 MiB）。更大的會讓那條連線關閉。' },
     ],
-    returns: { type: '{ hub, close }', en: '`hub` is the `RoomHub` (`hub.rooms` is a `Map` of the rooms; `hub.counts(room)` gives `{ controllers, runners, monitors }`). `close()` drops every connected client; it does not close your server.', zh: '`hub` 是 `RoomHub`（`hub.rooms` 是房間的 `Map`，`hub.counts(room)` 回傳 `{ controllers, runners, monitors }`）。`close()` 把所有連線中的用戶端斷開，不會關掉你的伺服器。' },
+    returns: { type: '{ hub, close }', en: '`hub` is the `RoomHub` (`hub.rooms` is a `Map` of the rooms; `hub.counts(room)` gives `{ controllers, runners, monitors, leaders, followers }`). `close()` drops every connected client; it does not close your server.', zh: '`hub` 是 `RoomHub`（`hub.rooms` 是房間的 `Map`，`hub.counts(room)` 回傳 `{ controllers, runners, monitors, leaders, followers }`）。`close()` 把所有連線中的用戶端斷開，不會關掉你的伺服器。' },
     description: [
       {
-        en: 'This is the server half, in Node, with no dependencies (the WebSocket codec is in the package). `node serve.js` already does it for you at `/relay`. To use it in your own server: `attachRelay(server)` before or after `server.listen()`. Clients connect to `ws://host/relay?role=controller|runner|monitor&room=<name>&id=<device>`: a bad role becomes `controller`, a bad room name becomes `default`, and the id is cut to 64 characters.',
-        zh: '這是伺服器那一半，跑在 Node 裡，沒有任何相依套件（WebSocket 編解碼器就在套件裡）。`node serve.js` 已經在 `/relay` 替你做好了。要用在你自己的伺服器上：在 `server.listen()` 之前或之後呼叫 `attachRelay(server)` 都行。用戶端連到 `ws://host/relay?role=controller|runner|monitor&room=<name>&id=<device>`：身分不合格會變成 `controller`，房間名不合格會變成 `default`，id 會被截成 64 個字元。',
+        en: 'This is the server half, in Node, with no dependencies (the WebSocket codec is in the package). `node serve.js` already does it for you at `/relay`. To use it in your own server: `attachRelay(server)` before or after `server.listen()`. Clients connect to `ws://host/relay?role=controller|runner|monitor|leader|follower&room=<name>&id=<device>`: a bad role becomes `controller`, a bad room name becomes `default`, and the id is cut to 64 characters.',
+        zh: '這是伺服器那一半，跑在 Node 裡，沒有任何相依套件（WebSocket 編解碼器就在套件裡）。`node serve.js` 已經在 `/relay` 替你做好了。要用在你自己的伺服器上：在 `server.listen()` 之前或之後呼叫 `attachRelay(server)` 都行。用戶端連到 `ws://host/relay?role=controller|runner|monitor|leader|follower&room=<name>&id=<device>`：身分不合格會變成 `controller`，房間名不合格會變成 `default`，id 會被截成 64 個字元。',
       },
       {
-        en: 'Who may talk to whom: a controller\'s `signal` and `batch` go to the runner and the monitors; a runner\'s go to the monitors only; a runner\'s `feedback` and `config` go to the controllers and monitors; a monitor says nothing. A `config` is kept per key and replayed to controllers that join later, and the room forgets it when its runner leaves. Rooms never hear each other. A message over 256 KB is ignored and a frame over 1 MB closes the connection.',
-        zh: '誰能對誰說話：控制端的 `signal` 和 `batch` 送給演出端和監看端。演出端的只送給監看端。演出端的 `feedback` 和 `config` 送給控制端和監看端。監看端什麼都不能說。`config` 依 key 留著，重播給之後才加入的控制端，演出端離開時房間就忘掉它。房間之間互相聽不到。超過 256 KB 的訊息會被忽略，超過 1 MB 的 frame 會讓連線關閉。',
+        en: 'Who may talk to whom: a controller\'s `signal` and `batch` go to the runner and the monitors; a runner\'s go to the monitors only; a runner\'s `feedback` and `config` go to the controllers and monitors; a monitor says nothing. A leader\'s `sync` goes to the room\'s followers and a follower\'s to its leaders (with `to: \'<id>\'`, to that one peer only); nobody else may send one, and the hub does not read what is inside. A `config` is kept per key and replayed to controllers that join later, and the room forgets it when its runner leaves. Rooms never hear each other. By default a message over 262144 characters is ignored and a frame over 1 MiB closes the connection (`maxMessageChars`, `maxBytes`).',
+        zh: '誰能對誰說話：控制端的 `signal` 和 `batch` 送給演出端和監看端。演出端的只送給監看端。演出端的 `feedback` 和 `config` 送給控制端和監看端。監看端什麼都不能說。主控端的 `sync` 送給房間裡的從屬端，從屬端的送給主控端（帶著 `to: \'<id>\'` 就只送給那一端），其他身分都不能送，hub 也不讀裡面的內容。`config` 依 key 留著，重播給之後才加入的控制端，演出端離開時房間就忘掉它。房間之間互相聽不到。預設超過 262144 個字元的訊息會被忽略，超過 1 MiB 的 frame 會讓連線關閉（`maxMessageChars`、`maxBytes`）。',
       },
       {
         en: 'There is no authentication: anyone who can reach the server and knows a room name can join as a controller. Use a closed network, or a room name nobody will guess.',
@@ -438,13 +442,13 @@ const server = http.createServer((req, res) => { res.writeHead(404); res.end(); 
 const relay = attachRelay(server, { log: (line) => console.log('[relay]', line) });
 server.listen(7458, () => console.log('relay at ws://localhost:7458/relay'));
 
-// later: relay.hub.counts('main') → { controllers: 1, runners: 1, monitors: 0 }`,
+// later: relay.hub.counts('main') → { controllers: 1, runners: 1, monitors: 0, leaders: 0, followers: 0 }`,
         caption: { en: 'A relay on port 7458 in about five lines. Open a show page with `?relay=ws://localhost:7458/relay` and the terminal logs a line such as `[relay] + runner show-k3x9 @default` when it connects.', zh: '五行左右就有一個跑在 7458 埠的中繼。打開演出頁面時加上 `?relay=ws://localhost:7458/relay`，頁面連上去的時候，終端機會印出像 `[relay] + runner show-k3x9 @default` 這樣的一行。' },
         run: 'static',
         why: 'It is a Node program that opens a TCP port and needs a real WebSocket client. A web page cannot start a server.',
       },
     ],
-    related: ['RelayClient', 'bindSignals', 'mountRemoteHost'],
+    related: ['RelayClient', 'bindSignals', 'mountRemoteHost', 'RelayTransport', 'createSync'],
     keywords: {
       en: ['relay server', 'websocket server', 'http server', 'rooms', 'node', 'attach', 'serve.js', 'heartbeat', 'hub'],
       zh: ['中繼伺服器', 'websocket 伺服器', 'http 伺服器', '房間', 'node', '掛上', 'serve.js', '心跳', 'hub'],

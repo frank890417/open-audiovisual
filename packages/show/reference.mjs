@@ -22,8 +22,8 @@ export default {
       },
       {
         name: 'timeline', type: 'Object', optional: true, default: '{ total: 120 }',
-        en: 'The options of the [`Timeline`](#Timeline): `{ total, automation, scenes, start, loop, onCue }`. With a `score`, its scenes and total win.',
-        zh: '[`Timeline`](#Timeline) 的選項：`{ total, automation, scenes, start, loop, onCue }`。有 `score` 的時候，以它的場景和總長為準。',
+        en: 'The options of the [`Timeline`](#Timeline): `{ total, automation, scenes, start, loop, onCue, anchor }`. With a `score`, its scenes and total win.',
+        zh: '[`Timeline`](#Timeline) 的選項：`{ total, automation, scenes, start, loop, onCue, anchor }`。有 `score` 的時候，以它的場景和總長為準。',
       },
       {
         name: 'routes', type: 'Array', optional: true, default: '[]',
@@ -71,15 +71,40 @@ export default {
         zh: '是否允許每次載入頁面送出一次匿名的 `oav_show_start`。`false` 什麼都不送。',
       },
       {
+        name: 'signature', type: 'Boolean', optional: true, default: 'true',
+        en: 'Leave `<meta name="generator" content="open-audiovisual <version>">` in the page\'s head (see [`sign`](#sign)). It sends nothing. `false` leaves the page untouched.',
+        zh: '在頁面的 head 裡留下 `<meta name="generator" content="open-audiovisual <版本>">`（見 [`sign`](#sign)）。不會送出任何東西。`false` 就不動頁面。',
+      },
+      {
         name: 'score', type: 'Object | null', optional: true, default: 'null',
         en: '`{ cuts, cut, modules, api, onStatus, onCue, maxStep, midi }`: the show\'s structure as segment lengths, performed by segment modules (see [`Score`](#Score) and [`Director`](#Director)). `?cut=<id>` in the page address picks the version.',
         zh: '`{ cuts, cut, modules, api, onStatus, onCue, maxStep, midi }`：以段落長度寫成的演出結構，由段落模組表演（見 [`Score`](#Score) 和 [`Director`](#Director)）。頁面網址上的 `?cut=<id>` 可以選版本。',
       },
+      {
+        name: 'loop', type: 'String | Object', optional: true, default: '\'auto\'',
+        en: 'Who drives the frames. `\'auto\'`: the page\'s `requestAnimationFrame` and the hidden-tab Worker. `\'manual\'`: nothing runs by itself, you call `show.loop.step(dt)` once per frame (to record frame by frame, to test, to run headless). An object is handed to [`Loop`](#Loop) as it is: `{ clock, raf, maxDt, manual, heartbeat }`. Anything else throws.',
+        zh: '畫面由誰來推。`\'auto\'`：頁面的 `requestAnimationFrame`，加上分頁被藏起來時的 Worker。`\'manual\'`：什麼都不會自己跑，由你每個畫面呼叫一次 `show.loop.step(dt)`（逐格錄影、測試、無頭執行）。給物件的話，會原樣交給 [`Loop`](#Loop)：`{ clock, raf, maxDt, manual, heartbeat }`。其他值會丟出錯誤。',
+      },
+      {
+        name: 'monitor', type: 'Boolean | Object', optional: true, default: 'true',
+        en: 'The backstage feed ([`MonitorFeed`](#MonitorFeed)). `true`: the default feed, to this machine\'s relay on port 7457 (none on an https page). `false`: no feed, the page never opens a socket to a relay, and `show.monitor` is `null`. `{ url, hz }`: another relay address (`ws://…`, `wss://…`, or `null` for a feed that never connects) and how many snapshots go out per second.',
+        zh: '後台資料（[`MonitorFeed`](#MonitorFeed)）。`true`：預設的資料流，送到這台機器 7457 埠的中繼站（https 頁面上沒有）。`false`：不送，頁面完全不會開 socket 去連中繼站，`show.monitor` 是 `null`。`{ url, hz }`：另一個中繼站位址（`ws://…`、`wss://…`，或 `null` 表示永遠不連線），以及每秒送出幾個快照。',
+      },
+      {
+        name: 'console', type: 'Object | null', optional: true, default: 'null',
+        en: 'The options of the desk, handed to [`mountConsole()`](#mountConsole): `{ keys, curves, layers, signals, learnOrder }`. `{ keys: { reset: \'F6\', perf: \'F7\' } }` moves the desk\'s shortcuts off the letters a keyboard piano needs; a typo in `keys` throws before anything is mounted.',
+        zh: '控台的選項，會交給 [`mountConsole()`](#mountConsole)：`{ keys, curves, layers, signals, learnOrder }`。`{ keys: { reset: \'F6\', perf: \'F7\' } }` 把控台的快速鍵從鍵盤鋼琴要用的字母鍵上挪開。`keys` 裡打錯字，會在任何東西掛上去之前就丟出錯誤。',
+      },
+      {
+        name: 'sync', type: 'Object | null', optional: true, default: 'null',
+        en: 'Several pages, one show ([`createSync()`](#createSync)): `{ role: \'leader\' | \'follower\', channel, url, input, follow, … }`. The leader runs the show and a follower\'s timeline chases its clock. `url`: nothing for pages of one browser, a `ws://` relay address for other machines, `true` for this page\'s own `/relay`. `input` says whether this page takes input of its own: by default the leader does and a follower does not, so on a follower the modules `midi`, `keys`, `drums`, `audio`, `hands`, `pose`, `leap` and `remote` are switched off. The other keys are those of [`SyncLeader`](#SyncLeader) and [`SyncFollower`](#SyncFollower); an unknown key throws.',
+        zh: '好幾個頁面演同一場（[`createSync()`](#createSync)）：`{ role: \'leader\' | \'follower\', channel, url, input, follow, … }`。主控端跑演出，從屬端的時間軸追它的時鐘。`url`：同一個瀏覽器的頁面不用給，別台機器給 `ws://` 中繼位址，`true` 是這個頁面自己的 `/relay`。`input` 決定這個頁面要不要有自己的輸入：預設主控端有、從屬端沒有，所以在從屬端上，`midi`、`keys`、`drums`、`audio`、`hands`、`pose`、`leap` 和 `remote` 這些模組會被關掉。其餘的鍵就是 [`SyncLeader`](#SyncLeader) 和 [`SyncFollower`](#SyncFollower) 的選項，不認得的鍵會丟出錯誤。',
+      },
     ],
     returns: {
       type: 'Promise<Object>',
-      en: 'The show: `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, console, app, loop }`. A part you did not ask for is `null`. With a `score` there is also `show.show`, the rehearsal controls. The same object is `window.openav`.',
-      zh: '演出物件：`{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, console, app, loop }`。沒有要求的部分是 `null`。有 `score` 的時候還有 `show.show`，也就是排練用的控制。同一個物件也是 `window.openav`。',
+      en: 'The show: `{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, sync, monitor, console, app, loop }`. A part you did not ask for is `null`. With a `score` there is also `show.show`, the rehearsal controls. The same object is `window.openav`.',
+      zh: '演出物件：`{ signals, params, stage, timeline, mapper, midi, controllers, midiPanel, keys, drums, sound, audio, hands, pose, leap, chord, remote, score, director, scoreMidi, sync, monitor, console, app, loop }`。沒有要求的部分是 `null`。有 `score` 的時候還有 `show.show`，也就是排練用的控制。同一個物件也是 `window.openav`。',
     },
     description: [
       {
@@ -91,8 +116,8 @@ export default {
         zh: '`modules` 的鍵：`midi`（預設開啟，`false` 關掉，`{ controllers: true }` 或 `{ controllers: { profile, profiles, open } }` 會在舞台上停靠一個螢幕上的 MIDI 控制器）、`keys`（螢幕鋼琴、電腦鍵盤和模擬演奏者：預設開啟，`false` 關掉，`{ base, octaves, sim, capture }` 可調整）、`drums`（`true` 或 `{ engine, autoEnableEngine }`）、`audio`（任何真值：麥克風分析器，從 🎤 按鈕啟動）、`chord`（`true` 或 `{ window }`：接上每個被彈奏的音的 [`ChordDetector`](#ChordDetector)）、`hands`（`true`：[`HandTracker`](#HandTracker)）、`pose`（`true`：[`PoseTracker`](#PoseTracker)）、`leap`（`true` 或 `{ url, simulate, fingers, box }`：[`LeapInput`](#LeapInput)，網址上的 `?leap=sim` 或 `?leap=ws://…` 可以覆寫）、`remote`（`true` 或 `{ room, … }`：把手機當控制器）和 `sound`（`true`、像 `\'piano\'` 這樣的樂器 id，或 `{ instrument, remember, picker, engine }`：頁面內的樂器，宣告了才會載入）。需要下載東西的部分都是延遲載入，所以沒宣告的演出不會付出任何代價。',
       },
       {
-        en: 'The page shell is fixed once so every show is the same. Without `mount`, the page body becomes a two-column grid: the stage, and a 340 px side panel holding the piano and the console (an upright phone gets the stage on top and the panel below: see [`isStacked()`](#isStacked)). Every frame, in this order:\n\n```text\nkeys, drums, audio update   on-screen performers and the microphone\nonFrame(dt, show)           your hook\ntimeline.advance(dt)        time moves\ndirector.update(...)        with a score: segment modules enter, update, exit\nmapper.update(dt)           smoothed routes settle\nstage.frame(dt, state)      params resolve, world updates and renders\nsound, remote               sound params reach the synth, values echo to phones\nconsole.render(state)       the desk reflects reality\nmonitor.frame(snapshot)     the backstage hears about it\n```',
-        zh: '頁面外殼只固定一次，所以每場演出都一樣。沒有 `mount` 的話，頁面的 body 會變成兩欄的格線：舞台，以及放著鋼琴和控台的 340 像素側邊面板（直立的手機則是舞台在上、面板在下：見 [`isStacked()`](#isStacked)）。每個畫面依這個順序做事：\n\n```text\nkeys, drums, audio update   on-screen performers and the microphone\nonFrame(dt, show)           your hook\ntimeline.advance(dt)        time moves\ndirector.update(...)        with a score: segment modules enter, update, exit\nmapper.update(dt)           smoothed routes settle\nstage.frame(dt, state)      params resolve, world updates and renders\nsound, remote               sound params reach the synth, values echo to phones\nconsole.render(state)       the desk reflects reality\nmonitor.frame(snapshot)     the backstage hears about it\n```',
+        en: 'The page shell is fixed once so every show is the same. Without `mount`, the page body becomes a two-column grid: the stage, and a 340 px side panel holding the piano and the console (an upright phone gets the stage on top and the panel below: see [`isStacked()`](#isStacked)). Every frame, in this order:\n\n```text\nkeys, drums, audio update   on-screen performers and the microphone\nonFrame(dt, show)           your hook\ntimeline.advance(dt)        time moves\nsync.frame()                with sync: the leader says where it is\ndirector.update(...)        with a score: segment modules enter, update, exit\nmapper.update(dt)           smoothed routes settle\nstage.frame(dt, state)      params resolve, world updates and renders\nsound, remote               sound params reach the synth, values echo to phones\nconsole.render(state)       the desk reflects reality\nmonitor.frame(snapshot)     the backstage hears about it\n```',
+        zh: '頁面外殼只固定一次，所以每場演出都一樣。沒有 `mount` 的話，頁面的 body 會變成兩欄的格線：舞台，以及放著鋼琴和控台的 340 像素側邊面板（直立的手機則是舞台在上、面板在下：見 [`isStacked()`](#isStacked)）。每個畫面依這個順序做事：\n\n```text\nkeys, drums, audio update   on-screen performers and the microphone\nonFrame(dt, show)           your hook\ntimeline.advance(dt)        time moves\nsync.frame()                with sync: the leader says where it is\ndirector.update(...)        with a score: segment modules enter, update, exit\nmapper.update(dt)           smoothed routes settle\nstage.frame(dt, state)      params resolve, world updates and renders\nsound, remote               sound params reach the synth, values echo to phones\nconsole.render(state)       the desk reflects reality\nmonitor.frame(snapshot)     the backstage hears about it\n```',
       },
     ],
     needs: {
@@ -103,6 +128,10 @@ export default {
       {
         en: 'The mapper saves its routes under the profile name every 3 seconds, so a learned or edited route survives a reload and **wins over a changed declaration in your code** (the same `source → target` pair keeps its saved curve and smoothing). `profile: false` makes the routes come from code on every load, but the mapper still saves under the world\'s name from then on. To start clean, `localStorage.removeItem(\'openav.map.<world name>\')`.',
         zh: '映射每 3 秒把路由存在 profile 名稱底下，所以學來的或改過的路由，重新載入之後還在，而且**會贏過你在程式裡改過的宣告**（同一個 `source → target` 組合會保留存起來的曲線和平滑）。`profile: false` 讓路由每次載入都來自程式，但映射之後仍然會用世界的名字存檔。要從頭開始，執行 `localStorage.removeItem(\'openav.map.<世界名稱>\')`。',
+      },
+      {
+        en: 'The mapper is given `base: () => timeline.state()`, so `trim` and `pickup` routes know what the timeline says right now. With `sync` and a backstage feed, the sync numbers (`sync/…`) are added to the feed through `monitor.extra()`.',
+        zh: '映射拿到的是 `base: () => timeline.state()`，所以 `trim` 和 `pickup` 路由知道時間軸此刻的值。有 `sync` 又有後台資料的時候，同步的數字（`sync/…`）會透過 `monitor.extra()` 加進資料流。',
       },
       {
         en: 'Routes are added before the sound engine registers its `sound/*` params, so a declared route to `sound/cutoff` needs an explicit `outMin: 100, outMax: 8000`.',

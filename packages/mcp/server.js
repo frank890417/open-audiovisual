@@ -135,7 +135,8 @@ function listExamples() {
 }
 
 function scaffoldWorld({ slug, donor = '01-hello-particles' }) {
-  if (!/^[a-z0-9-]+$/.test(slug)) throw new Error('slug must be kebab-case');
+  // typeof first: the pattern alone lets a missing slug through as the text "undefined" (→ examples/NN-undefined)
+  if (typeof slug !== 'string' || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) throw new Error('slug must be a kebab-case string, e.g. "jellyfish-bloom"');
   const src = path.join(ROOT, 'examples', donor);
   if (!fs.existsSync(src)) throw new Error(`unknown donor: ${donor}`);
   const nums = fs.readdirSync(path.join(ROOT, 'examples')).map(d => parseInt(d, 10)).filter(Number.isFinite);
@@ -155,16 +156,28 @@ function scaffoldWorld({ slug, donor = '01-hello-particles' }) {
   };
 }
 
-function runChecks() {
+// The whole log of the suite is a few MB; Node's default buffer for a child is 1 MB, and going over it throws
+// (ENOBUFS) — which used to read as "the tests fail" on every run. 64 MB is room for the suite to grow tenfold.
+const CHECKS_MAX_BUFFER = 64 * 1024 * 1024;
+/** @param run the child-process runner (execFileSync's signature); a test passes its own so the suite is not started */
+function runChecks(run = execFileSync) {
+  const count = (out, word) => { const m = new RegExp(`^# ${word} (\\d+)`, 'm').exec(out); return m ? Number(m[1]) : null; };
+  const lines = (out) => out.split('\n').filter(l => /not ok|# (pass|fail)/.test(l)).join('\n');
+  let out;
   try {
     const files = fs.readdirSync(path.join(ROOT, 'tests')).filter(f => f.endsWith('.test.js')).map(f => 'tests/' + f);
-    const out = execFileSync('node', ['--test', ...files], { cwd: ROOT, encoding: 'utf8', timeout: 60000 });
-    const pass = /# pass (\d+)/.exec(out)?.[1], fail = /# fail (\d+)/.exec(out)?.[1];
-    return { pass: Number(pass), fail: Number(fail), ok: fail === '0' };
+    out = String(run('node', ['--test', ...files], { cwd: ROOT, encoding: 'utf8', timeout: 60000, maxBuffer: CHECKS_MAX_BUFFER }));
   } catch (e) {
-    const out = (e.stdout || '') + (e.stderr || '');
-    return { ok: false, output: out.split('\n').filter(l => /not ok|# (pass|fail)/.test(l)).join('\n') };
+    out = String(e.stdout || '') + String(e.stderr || '');
+    const pass = count(out, 'pass'), fail = count(out, 'fail');
+    // node --test ran to the end and exited non-zero: tests failed, and the log says which
+    if (typeof e.status === 'number' && fail !== null) return { pass, fail, ok: false, output: lines(out) };
+    // anything else is the run itself breaking (buffer, timeout, no node): say that, an agent must not go hunting for a failing test
+    return { ok: false, error: `the test run did not finish: ${e.code || e.signal || ''} ${e.message || e}`.replace(/\s+/g, ' ').trim(), output: lines(out) };
   }
+  const pass = count(out, 'pass'), fail = count(out, 'fail');
+  if (pass === null || fail === null) return { ok: false, error: 'no "# pass" / "# fail" summary in the test output', output: lines(out) };
+  return { pass, fail, ok: fail === 0 };
 }
 
 // ---- controller profiles ----
@@ -324,8 +337,16 @@ async function scaffoldProfile({ maker, model, controls }) {
 const respond = (id, result) => process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id, result }) + '\n');
 const fail = (id, message) => process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id, error: { code: -32000, message } }) + '\n');
 
+// Started as a program (`node packages/mcp/server.js`, what .mcp.json does) it listens on stdin. Imported by a
+// test it only hands out the tool functions: a test must be able to call one without a server reading its stdin.
+// When in doubt (no script path, a path that cannot be resolved) it is the server.
+const isMain = (() => {
+  try { return fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url)); } catch (e) { return true; }
+})();
+export { scaffoldWorld, runChecks };
+
 let buf = '';
-process.stdin.on('data', (chunk) => {
+if (isMain) process.stdin.on('data', (chunk) => {
   buf += chunk;
   let nl;
   while ((nl = buf.indexOf('\n')) >= 0) {

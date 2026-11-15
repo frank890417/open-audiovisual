@@ -96,6 +96,10 @@ So the project can see where its controllers and shows end up, the packages send
 
 Turn it off: `<oav-controller telemetry="off">` · `createController(p, { telemetry: false })` · `createShow({ telemetry: false })` · the iframe's `?telemetry=0` · or `globalThis.OPENAV_TELEMETRY = false` before anything loads. Source: `packages/midi/telemetry.js`.
 
+The one line for p5.js (`oav-p5`) sends nothing unless a sketch sets `telemetry: 'on'`.
+
+**The signature is not a hit.** `createShow()` also puts `<meta name="generator" content="open-audiovisual 0.9.0">` in the page's head, the tag WordPress and Hugo leave. It makes no request: a person who views the source, a search of the public web or a web census can read which pages run on open-audiovisual, and that is all. `createShow({ signature: false })` leaves it out. Source: `packages/core/src/signature.js`. Works that want to be listed by name add themselves to [Made with](https://openaudiovisual.com/made-with/).
+
 ## SysEx: modes, templates, LED colours
 
 Some things only SysEx can do: put a Launchpad in Programmer mode, pick a Launch Control XL template, light a pad in any RGB colour. Profiles that have these list them in `sysex`, each message with its source, and the device's page shows them.

@@ -335,6 +335,7 @@ export default {
     examples: '範例',
     p5: 'p5.js 一行接上',
     changelog: '更新紀錄',
+    made: '用它做的',
     license: 'MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。',
     artworks: '範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。',
     machine: '給機器讀的',

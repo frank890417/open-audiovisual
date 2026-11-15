@@ -336,6 +336,7 @@ export default {
     examples: 'Examples',
     p5: 'p5.js in one line',
     changelog: 'Changelog',
+    made: 'Made with',
     license: 'MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.',
     artworks: 'Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.',
     machine: 'For machines',

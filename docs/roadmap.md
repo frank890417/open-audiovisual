@@ -23,6 +23,28 @@ before it was generalized.)
 - [x] values over time as TouchDesigner's CHOPs shape them: lag, envelope, speed, spring, trail (`@openav/chop`)
 - [x] next to Strudel: what a program plays into OAV Virtual MIDI, an external MIDI clock, and `link=<room>` across
   tabs and computers ([With Strudel](strudel.md))
+- [x] the whole show's automation as curves on the desk, curves written per segment of the score, automation saved and
+  loaded as JSON, a timeline anchored to the wall clock ([Show control](show-control.md))
+- [x] a route that trims the timeline or waits for pickup, and gives the param back (`@openav/mapping`)
+- [x] several pages, one show: a leader and its followers, in one browser or across machines (`@openav/sync`)
+- [x] a version for the whole framework and an address that never changes; a show in one file, with no clone
+  ([Pin a version](getting-started.md#pin-a-version))
+- [x] [Made with](https://openaudiovisual.com/made-with/): the works that run on it, each added by the person who made it
+
+## So that nobody rebuilds this layer
+
+The aim is that a performance on the web starts from here the way a website starts from a server someone else
+already runs. A layer earns that when people can build on it without asking. What that takes, and where each part stands:
+
+| part | there now | next |
+|---|---|---|
+| a version to depend on | 0.9.0, a pinned address, a changelog | 1.0: the World contract, the signal names and the profile format stop changing without a major version |
+| a way in without the repository | one file and one `import` | the same for a controller page and a phone remote |
+| formats others can read | controller profiles with a JSON Schema, exports to QLC+ and Mixxx, map files, the score | each format with its own version number; the profile format as something other tools adopt |
+| controllers you can trust | 55 profiles, every number with its source, a page that checks a unit by hand | the first profiles checked on hardware; more from the people who own them |
+| recipes for the room | OSC to TouchDesigner, lights and spatial audio | the picture into TouchDesigner, OBS and a projector; a venue checklist (a kiosk iPad, no network) |
+| proof | the shows it came from | works by other people on [Made with](https://openaudiovisual.com/made-with/) |
+| a place to ask | issues, a form to ask for a controller, a form to add a work | answers within days |
 
 ## v1.x — the show grows
 
@@ -41,13 +63,15 @@ before it was generalized.)
   `TakePlayer`, `.mid` in and out; `EventLog` already records any signal beside a video). Next:
   replay the full signal stream (hands, body, audio analysis) into any world. Rehearse without
   the performer; archive the gesture, not just the video.
-- **npm publish** of `@openav/*`, and docs pages that are themselves performable with the framework.
+- **npm publish** of `@openav/*`, once 1.0 says what stays put (until then: [pin a version](getting-started.md#pin-a-version)),
+  and docs pages that are themselves performable with the framework.
 - **WebGPU world adapter** as WebGPU compute matures for particle/agent worlds.
 
 ## v2.x — the stage widens
 
-- **NDI gateway**: headless-browser → NDI bridge so browser output enters
-  professional video pipelines (research: WebRTC→NDI converters already exist).
+- **The picture into video pipelines**: first as recipes with tools that exist (OBS Browser Source with NDI out,
+  TouchDesigner's Web Render TOP). A gateway of our own (headless browser → NDI) only if a show needs what
+  those cannot do.
 - **Distributed performance**: multi-browser signal sync over WebRTC data
   channels — several machines, one signal space, geographically split ensembles.
   The clock half shipped: several pages perform one show, the followers chasing a leader's

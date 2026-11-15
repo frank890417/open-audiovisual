@@ -1,0 +1,33 @@
+/* open-audiovisual — /made-with/. Loaded after assets/home/home.css: same tokens, top bar and footer. No script. */
+
+.mw-hero { max-width: var(--maxw); margin: 0 auto; padding: clamp(22px, 3.2vw, 44px) var(--pad) 0; }
+.mw-hero > .eyebrow { color: var(--sig); }
+.mw-hero h1 { margin: 10px 0 0 -.04em; font: 800 clamp(38px, 5.4vw, 88px)/.95 var(--sans); font-stretch: 112%; letter-spacing: -.045em; }
+html[lang^="zh"] .mw-hero h1 { margin-left: 0; letter-spacing: 0; line-height: 1.12; font-size: clamp(34px, 5vw, 80px); }
+.mw-hero .lede { margin: clamp(14px, 1.6vw, 22px) 0 0; max-width: 64ch; color: var(--fg-2); font-size: clamp(16.5px, 1.32vw, 19.5px); }
+.mw-count { margin: 18px 0 0; font: 500 13px/1.4 var(--mono); letter-spacing: .04em; color: var(--fg-3); }
+
+.mw-body { max-width: var(--maxw); margin: 0 auto; padding: clamp(22px, 3vw, 40px) var(--pad) clamp(40px, 6vw, 90px); }
+.mw-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.mw { min-width: 0; padding: 18px 18px 16px; border: 1px solid var(--line); border-left: 3px solid var(--sig); background: var(--ink-2); }
+.mw-kind { margin: 0; font: 500 11.5px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.mw h2 { margin: 8px 0 0; font: 700 clamp(20px, 1.9vw, 26px)/1.2 var(--sans); overflow-wrap: anywhere; }
+.mw h2 a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.mw h2 a:hover { border-color: var(--sig); }
+.mw-by { margin: 6px 0 0; color: var(--fg-2); font-size: 14.5px; }
+.mw-by a { color: var(--fg-2); }
+.mw-text { margin: 12px 0 0; color: var(--fg); font-size: 15px; line-height: 1.6; }
+.mw-uses { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+.mw-uses li { padding: 3px 7px; border: 1px solid var(--line-2); color: var(--fg-2); font: 500 11.5px/1.2 var(--mono); }
+
+.mw-sec { margin-top: clamp(34px, 4.4vw, 64px); padding-top: 22px; border-top: 1px solid var(--line); max-width: 78ch; }
+.mw-sec h2 { margin: 0; font: 700 clamp(22px, 2.2vw, 30px)/1.2 var(--sans); }
+.mw-sec p, .mw-sec li { color: var(--fg-2); font-size: 15.5px; line-height: 1.65; }
+.mw-sec p { margin: 12px 0 0; }
+.mw-sec ol, .mw-sec ul { margin: 12px 0 0; padding-left: 1.3em; }
+.mw-sec a { color: var(--fg); }
+.mw-sec code { font: 13px/1.5 var(--mono); color: var(--fg); }
+.mw-code { display: block; margin: 12px 0 0; padding: 12px 14px; background: var(--void); border: 1px solid var(--line-2); color: var(--fg); font: 12.5px/1.6 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.mw-badge { display: block; margin: 14px 0 0; }
+
+@media (max-width: 760px) { .mw-list { grid-template-columns: minmax(0, 1fr); } }

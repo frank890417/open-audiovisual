@@ -79,7 +79,9 @@ export class RelayClient {
       );
     }
     let ws;
-    try { ws = this._ws = new WebSocket(this._wsUrl()); } catch { return this._again(); }
+    // new WebSocket can throw (a ws:// address on an https page, a bad ?relay=): to the page that is one more lost
+    // connection — same status, same retry, and still the client back, because the next line is usually .set(…)
+    try { ws = this._ws = new WebSocket(this._wsUrl()); } catch { this.status = 'closed'; this.latency = null; this._emit(); this._again(); return this; }
     ws.onopen = () => { this.status = 'open'; this._retry = 0; this._emit(); this._raw({ type: 'ping', t: Date.now() }); this._flush(true); };
     ws.onmessage = (ev) => this._onMessage(ev.data);
     ws.onclose = () => { this.status = 'closed'; this.latency = null; this._emit(); this._again(); };
@@ -90,11 +92,13 @@ export class RelayClient {
   _again() {
     if (this._closed) return;
     // 0.5 s → 5 s: a phone walking out of wifi range should be back within a beat of returning
-    setTimeout(() => this.connect(), Math.min(5000, 500 * 2 ** this._retry++));
+    clearTimeout(this._retryTimer);
+    this._retryTimer = setTimeout(() => this.connect(), Math.min(5000, 500 * 2 ** this._retry++));
   }
 
   close() {
     this._closed = true;
+    clearTimeout(this._retryTimer);   // a retry already queued would call connect(), which reopens a client the page just closed
     this._timers.forEach(clearInterval); this._timers = [];
     try { this._ws?.close(); } catch {}
   }

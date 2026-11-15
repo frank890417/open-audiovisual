@@ -63,5 +63,5 @@ export const PACKAGE_CATEGORY = {
   audio: 'mic', chop: 'chop', chord: 'chord', console: 'backstage', core: 'core', drums: 'drums', fab: 'fab', keys: 'keys', leap: 'leap',
   mapping: 'mapping', mcp: 'mcp', midi: 'midi-io', monitor: 'backstage', osc: 'osc', out: 'osc', pattern: 'drums', pose: 'pose', record: 'record',
   relay: 'remote', remote: 'remote', score: 'timeline', show: 'core', sound: 'sound', stage: 'core', surface: 'remote', timeline: 'timeline',
-  'world-webtoe': 'core',
+  'world-webtoe': 'core', sync: 'core',
 };

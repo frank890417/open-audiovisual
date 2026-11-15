@@ -45,6 +45,8 @@ export const STATIC = [
   { id: 'webtoe', path: 'webtoe/', langs: ['en', 'zh'], src: ['tools/webtoe'] },
   // the device check: tools/build-check.mjs, behaviour in assets/check/
   { id: 'check', path: 'check/', langs: ['en', 'zh'], src: ['tools/check', 'assets/check'] },
+  // works that run on the framework (tools/build-made-with.mjs): the list is made-with/works.json
+  { id: 'made', path: 'made-with/', langs: ['en', 'zh'], src: ['made-with/works.json', 'tools/made-with', 'assets/made-with'] },
   // the examples index (tools/build-examples.mjs reads examples/catalog.json), then one page per example (derived)
   { id: 'examples', path: 'examples/', langs: ['en', 'zh'], src: ['examples/catalog.json', 'tools/examples', 'assets/examples/pages.css'] },
   { derive: 'examples' },

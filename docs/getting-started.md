@@ -41,6 +41,45 @@ npm scripts:
 Open `http://localhost:8080/examples/01-hello-particles/`. Every example runs
 without hardware.
 
+## One file, no clone
+
+A show of your own does not need this repository. Save [`show.html`](https://openaudiovisual.com/assets/starter/show.html)
+(open it, then save the page, or copy its source), serve the folder it is in, and open it:
+
+```bash
+python3 -m http.server 8080      # or any static server, or any static host
+```
+
+The file is one page with one `import`: the World you edit, and a `createShow()` call. Everything else arrives from one
+address:
+
+```js
+import { createShow, createCanvas } from 'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js';
+```
+
+Import what you need from that one address. A second address is a second copy of the framework in the same page.
+The phone relay and the backstage monitor are the two things a static page does not bring: the phone uses the public
+relay unless you run `serve.js`, and the monitor is `node packages/monitor/server.js` from a clone.
+
+When the work is up, [add it to Made with](https://openaudiovisual.com/made-with/).
+
+## Pin a version
+
+`@v0.9.0` in the address is a version of the whole framework. That address never changes, so the show you rehearsed is
+the show you play. To move to a newer one, change the number yourself and rehearse again.
+
+| address | what you get |
+|---|---|
+| `https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js` | exactly 0.9.0, for good |
+| `https://openaudiovisual.com/packages/openav.js` | the newest, a few minutes after each release |
+| `https://openaudiovisual.com/p5/oav-p5.js` | the one line for p5.js: the newest ([its own versions](changelog.md)) |
+
+Until 1.0, a new minor version (0.9 to 0.10) may rename or remove something, and the [changelog](changelog.md) says
+so in the entry's first line; a patch version (0.9.0 to 0.9.1) only fixes. What we work hardest not to break: the
+World contract (`name`, `params`, `init`, `update`, `render`, `dispose`), the signal names in [Signals](signals.md),
+the controller profile format, and the names oav-p5 gives a sketch. `window.openav.version` says which version a
+running show is.
+
 ## Which browser
 
 Not sure what your device can do? Open the [device check](https://openaudiovisual.com/check/). It looks at your browser, Web MIDI, microphone, camera and graphics, and says what to do about each. Nothing runs until you press a button, and nothing leaves your device.

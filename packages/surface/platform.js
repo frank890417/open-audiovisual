@@ -3,11 +3,19 @@
 // browsers that lack it (iPhone Safari has no fullscreen API or vibrate; that
 // is fine — the surface is built to work without them).
 
+const LOCKS = Symbol('openav.viewport-locks');
+
 /** Make the page behave like an instrument panel, not a web page. */
 export function lockViewport() {
   if (typeof document === 'undefined') return () => {};
   let m = document.querySelector('meta[name=viewport]');
+  // What the page had before any lock is kept on the tag, with a count of the locks held: two panels on one page
+  // can leave in either order, and only the last one out gives the page its zoom back (or takes the tag away).
+  const held = m && m[LOCKS];
+  const made = !m;
   if (!m) { m = document.createElement('meta'); m.name = 'viewport'; document.head.appendChild(m); }
+  const state = held || (m[LOCKS] = { n: 0, made, content: made ? null : m.content });
+  state.n++;
   m.content = 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover';
   const st = document.createElement('style');
   st.textContent = 'html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-text-size-adjust:100%}';
@@ -18,7 +26,15 @@ export function lockViewport() {
   document.addEventListener('gesturechange', stop);
   const tm = (e) => { if (!(e.target instanceof Element) || !e.target.closest('input,textarea')) e.preventDefault(); };
   document.addEventListener('touchmove', tm, { passive: false });
-  return () => { document.removeEventListener('gesturestart', stop); document.removeEventListener('gesturechange', stop); document.removeEventListener('touchmove', tm); st.remove(); };
+  let undone = false;
+  return () => {
+    if (undone) return;
+    undone = true;
+    document.removeEventListener('gesturestart', stop); document.removeEventListener('gesturechange', stop); document.removeEventListener('touchmove', tm); st.remove();
+    if (--state.n > 0) return;
+    delete m[LOCKS];
+    if (state.made) m.remove(); else m.content = state.content;
+  };
 }
 
 /**

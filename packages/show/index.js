@@ -36,7 +36,7 @@
 // sound, audio, hands, pose, leap, remote, score, director, sync, loop, monitor, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools (with a score: window.openav.show.goto('dusk'), .table(), …).
 
-import { Signals, Params, Loop } from '../core/index.js?v=72212d8';
+import { Signals, Params, Loop, VERSION, sign } from '../core/index.js?v=72212d8';
 import { Midi } from '../midi/index.js?v=72212d8';
 import { mountKeys } from '../keys/index.js?v=72212d8';
 import { AudioAnalyzer } from '../audio/index.js?v=72212d8';
@@ -65,6 +65,7 @@ export async function createShow({
   onFrame = null,          // (dt, show) per-frame hook — assembly-layer logic (envelopes…)
   mount = null,            // { stage, side } elements/selectors; omitted = generated layout
   telemetry = true,        // one anonymous oav_show_start hit per page (packages/midi/telemetry.js); false = none
+  signature = true,        // <meta name="generator" content="open-audiovisual <version>"> in the page's head; sends nothing; false = no tag (packages/core)
   score: scoreCfg = null,  // { cuts, cut, modules, api, onStatus, onCue, maxStep, midi } — the show's structure (packages/score); ?cut=<id> picks the version
   loop: loopCfg = 'auto',  // 'auto' (requestAnimationFrame) · 'manual' (you call show.loop.step(dt)) · { clock, raf, maxDt, heartbeat } for new Loop() — packages/core
   monitor: monitorCfg = true,   // the backstage feed: true (this machine, :7457) · false (none) · { url, hz } — packages/monitor
@@ -78,6 +79,7 @@ export async function createShow({
   const syncOpts = syncOptions(syncCfg);
   if (syncOpts) modules = syncModules(modules, syncOpts);      // a follower plays nothing of its own: no keyboard piano, MIDI, microphone, camera, phones
   track('oav_show_start', { oav_kind: 'show' }, { enabled: telemetry !== false });
+  if (signature !== false) sign();
   // ---------- DOM shell (fix the layout once, every show is fixed) ----------
   if (!document.getElementById('openav-shell-css')) {
     const st = document.createElement('style');
@@ -162,7 +164,9 @@ export async function createShow({
     const { role, channel, url, input, ...rest } = syncOpts;
     sync = createSync({ role, channel, url, timeline, score, ...rest });
   }
-  setInterval(() => mapper.save(), 3000);
+  // profile: false = this show keeps no memory of its mapping: no 3 s save, and the mapper's own saves (learn, import, clear) go nowhere
+  if (profile === false) mapper.save = () => {};
+  else setInterval(() => mapper.save(), 3000);
   // ?map=<url>: an explicit wiring beats the remembered one. Async and failure-proof: the show starts
   // regardless, and a bad address or file is reported in the L2 · Mapping panel.
   if (map !== false && typeof location !== 'undefined') {
@@ -284,6 +288,7 @@ export async function createShow({
   }, loopOpts);
   show.loop = loop;
   loop.start();
+  show.version = VERSION;      // window.openav.version: which open-audiovisual this page runs
   window.openav = show;
   return show;
 }

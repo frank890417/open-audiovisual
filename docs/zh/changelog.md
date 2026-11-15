@@ -144,6 +144,19 @@
 
 ## 框架與網站
 
+### 2026-11-15
+
+- **框架有版本號了，也有一個不會變的網址：0.9.0。** 你自己的頁面從一個帶版本號的網址匯入一個檔 `packages/openav.js`，這個網址永遠不變。不用 clone，不用建置。[固定一個版本](https://openaudiovisual.com/zh/docs/#quick-start-pin-a-version)
+- **一個檔就是一場演出。** 把 `show.html` 存下來、用靜態伺服器開、打開它：一個世界、一條時間軸、控台和鋼琴，全部來自一個 `import`。[一個檔，不用 clone](https://openaudiovisual.com/zh/docs/#quick-start-one-file-no-clone)
+- **用它做的。** 一頁列出跑在 open-audiovisual 上的作品、工具與課程，每一筆都是作者自己加的，附徽章和登記表單。[用它做的](https://openaudiovisual.com/zh/made-with/)
+- **頁面會說出自己用了什麼，而且不送出任何東西。** `createShow()` 在頁面裡留下 `<meta name="generator" content="open-audiovisual 0.9.0">`，演出上有 `window.openav.version`。`signature: false` 就不放標籤。[使用統計](https://openaudiovisual.com/zh/docs/#controllers-telemetry)
+- **曲線面板。** 在控台按 `C`，整場的 automation 攤開成曲線：上面是段落，游標在現在，手動蓋過的值看得到，每一個都能還原。點一下就跳過去。[曲線面板](https://openaudiovisual.com/zh/docs/#show-control-the-curves-panel)
+- **好幾個頁面演同一場。** 一頁當主控，其他頁跟它的時鐘走，同一個瀏覽器或透過 relay 跨機器都行：`createShow({ sync: { role: 'leader', channel: 'hall' } })`。新套件 `@openav/sync`。[好幾個頁面演同一場](https://openaudiovisual.com/zh/docs/#show-control-several-pages-one-show)
+- **以段落為單位寫曲線。** automation 可以對著總譜的一個段落寫（`p` 在段落裡從 0 到 1），剪短的版本會帶著每條曲線一起動。automation 能存成 JSON 再讀回來。時間軸能錨定在牆上的時鐘，並回報漂移了多少。[Lane](https://openaudiovisual.com/zh/docs/#show-control-lanes-curves-written-per-segment)
+- **會微調的旋鈕，和會等你的旋鈕。** 一條對應可以用 `trim` 在時間軸的值上加減而不是取代，或用 `pickup` 等旋鈕轉到畫面上的值才接手，`release` 把參數還回去。[trim、pickup 與 release](https://openaudiovisual.com/zh/docs/#mapping-trim-pickup-and-release)
+- **自己推進的影格，自己選的按鍵。** `createShow({ loop: 'manual' })` 一格一格推進演出（錄影、測試、無畫面執行）。`console: { keys }` 把控台的字母鍵從鋼琴的鍵上挪開。`monitor: false` 或 `{ url }` 決定後台的資料送去哪，現在後台也收得到作品自己的數字。
+- **iPad 上的 `keepAwake()`。** 第一次點擊時會再要一次螢幕常亮，因為 Safari 只在觸碰之後才給。還沒在真的 iPad 上驗過。
+
 ### 2026-11-06
 
 - **插上匯入的控制器也認得。** 內建設定檔都沒認領時，函式庫會抓那一個檔案並顯示機器。埠名比對用完整的型號名稱，名字相近的不會被認錯。[資料庫](https://openaudiovisual.com/zh/controllers/#imported)

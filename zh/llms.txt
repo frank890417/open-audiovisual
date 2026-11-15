@@ -4,7 +4,7 @@
 
 輸入（MIDI、麥克風、和弦、身體與手部姿態、手機）發出有名字的訊號；映射層把訊號接到參數；演算的「世界」只讀參數，產生畫面與聲音；時間軸、導演控台與後台監看負責把演出跑起來。原生 ES module，零建置、零相依。從《The Last Input》（吳哲宇，2026；IRCAM 駐村 × C-LAB，臺北，49.4 聲道表演）抽出來。
 
-目前：28 個套件、26 個範例、27 份 MIDI 控制器設定檔（21 台真機與 6 種通用版型），版本 0.1.0，oav-p5 0.8.0（https://openaudiovisual.com/zh/changelog/）。
+目前：28 個套件、26 個範例、27 份 MIDI 控制器設定檔（21 台真機與 6 種通用版型），版本 0.9.0，oav-p5 0.8.5（https://openaudiovisual.com/zh/changelog/）。
 
 網站：https://openaudiovisual.com/（English）· https://openaudiovisual.com/zh/（繁體中文）
 原始碼：https://github.com/frank890417/open-audiovisual
@@ -15,6 +15,7 @@
 
 - [首頁](https://openaudiovisual.com/zh/) ([English](https://openaudiovisual.com/)): 能玩的樂器、運作方式、作品、快速開始、給 AI 代理。
 - [手冊](https://openaudiovisual.com/zh/docs/) ([English](https://openaudiovisual.com/docs/)): 完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。
+- [API 參考](https://openaudiovisual.com/zh/docs/reference/) ([English](https://openaudiovisual.com/docs/reference/)): API 參考：oav-p5 的每個變數、函式、事件與選項（`micLevel`、`knob1`、`startDrums()` …）和每個套件的每個匯出，能搜尋，每一條有說明、參數、能直接跑的範例與原始碼行號連結。每次建置都從程式碼產生，並在 CI 裡跟程式碼對過，所以不會列出不存在的名稱，也不會漏掉存在的。同一份資料的 JSON：https://openaudiovisual.com/docs/reference/reference.json。
 - [MIDI 控制器圖鑑](https://openaudiovisual.com/zh/controllers/) ([English](https://openaudiovisual.com/controllers/)): 每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。
 - [範例](https://openaudiovisual.com/zh/examples/) ([English](https://openaudiovisual.com/examples/)): 所有範例，附縮圖與需要什麼。
 - [p5.js 一行指令](https://openaudiovisual.com/zh/p5/) ([English](https://openaudiovisual.com/p5/)): 載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。同一行還有聲音（`startSound`）、能用一行字寫節奏的鼓機（`startDrums("bd*4, [~ sd]*2, hh*8")`）、麥克風（`micLevel`）、錄影（`startRecording`），以及像 TouchDesigner Lag CHOP 那樣變順的數值（`lag()`），也能和 Strudel 並排用。現成草圖在 `p5/examples/`，每一份都能在範例 16 到 26 直接玩。
@@ -131,6 +132,34 @@
 - [Novation Launchpad Pro MK3](https://openaudiovisual.com/zh/controllers/novation-launchpad-pro-mk3/): 105 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/novation-launchpad-pro-mk3.json
 - [ODD Ball](https://openaudiovisual.com/zh/controllers/odd-ball/): 10 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/odd-ball.json
 - [teenage engineering OP-1 field](https://openaudiovisual.com/zh/controllers/teenage-engineering-op-1-field/): 61 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/teenage-engineering-op-1-field.json
+- [AKAI Professional APC Mini](https://openaudiovisual.com/zh/controllers/akai-apc-mini/): 90 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/akai-apc-mini.json
+- [AKAI Professional APC20](https://openaudiovisual.com/zh/controllers/akai-apc20/): 97 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/akai-apc20.json
+- [AKAI Professional APC40](https://openaudiovisual.com/zh/controllers/akai-apc40/): 137 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/akai-apc40.json
+- [American DJ MIDICON-2](https://openaudiovisual.com/zh/controllers/adj-midicon-2/): 88 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/adj-midicon-2.json
+- [Behringer BCF2000 (Mackie mode)](https://openaudiovisual.com/zh/controllers/behringer-bcf2000-mackie-mode/): 107 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcf2000-mackie-mode.json
+- [Behringer BCF2000](https://openaudiovisual.com/zh/controllers/behringer-bcf2000/): 94 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcf2000.json
+- [Behringer BCR2000](https://openaudiovisual.com/zh/controllers/behringer-bcr2000/): 108 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-bcr2000.json
+- [Behringer LC2412](https://openaudiovisual.com/zh/controllers/behringer-lc2412/): 54 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-lc2412.json
+- [Behringer X-Touch Compact](https://openaudiovisual.com/zh/controllers/behringer-x-touch-compact/): 178 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-x-touch-compact.json
+- [Behringer X-Touch Extender](https://openaudiovisual.com/zh/controllers/behringer-x-touch-extender/): 64 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/behringer-x-touch-extender.json
+- [Elation MIDIcon](https://openaudiovisual.com/zh/controllers/elation-midicon/): 98 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/elation-midicon.json
+- [KORG nanoKONTROL Studio](https://openaudiovisual.com/zh/controllers/korg-nanokontrol-studio/): 305 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/korg-nanokontrol-studio.json
+- [KORG nanoKONTROL](https://openaudiovisual.com/zh/controllers/korg-nanokontrol/): 116 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/korg-nanokontrol.json
+- [KORG nanoPAD](https://openaudiovisual.com/zh/controllers/korg-nanopad/): 50 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/korg-nanopad.json
+- [KORG NanoPAD2](https://openaudiovisual.com/zh/controllers/korg-nanopad2/): 51 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/korg-nanopad2.json
+- [M-VAVE SMC-Mixer](https://openaudiovisual.com/zh/controllers/m-vave-smc-mixer/): 59 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/m-vave-smc-mixer.json
+- [M-VAVE SMC-PAD](https://openaudiovisual.com/zh/controllers/m-vave-smc-pad/): 45 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/m-vave-smc-pad.json
+- [Novation Launch Control](https://openaudiovisual.com/zh/controllers/novation-launch-control/): 56 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/novation-launch-control.json
+- [Novation Launchpad MK2](https://openaudiovisual.com/zh/controllers/novation-launchpad-mk2/): 80 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/novation-launchpad-mk2.json
+- [Novation Launchpad Pro](https://openaudiovisual.com/zh/controllers/novation-launchpad-pro/): 96 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/novation-launchpad-pro.json
+- [Novation Launchpad](https://openaudiovisual.com/zh/controllers/novation-launchpad/): 80 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/novation-launchpad.json
+- [PMJ 9 Faders Controller](https://openaudiovisual.com/zh/controllers/pmj-9-faders-controller/): 9 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/pmj-9-faders-controller.json
+- [PMJ Circus](https://openaudiovisual.com/zh/controllers/pmj-circus/): 70 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/pmj-circus.json
+- [PMJ MidiKey](https://openaudiovisual.com/zh/controllers/pmj-midikey/): 48 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/pmj-midikey.json
+- [ShowTec ShowMaster 24](https://openaudiovisual.com/zh/controllers/showtec-showmaster-24/): 45 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/showtec-showmaster-24.json
+- [Worlde Easypad.12](https://openaudiovisual.com/zh/controllers/worlde-easypad-12/): 21 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/worlde-easypad-12.json
+- [Worlde Orca PAD16](https://openaudiovisual.com/zh/controllers/worlde-orca-pad16/): 22 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/worlde-orca-pad16.json
+- [Zoom R16](https://openaudiovisual.com/zh/controllers/zoom-r16/): 50 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/imported/zoom-r16.json
 - [通用 8 旋鈕 + 8 打擊墊](https://openaudiovisual.com/zh/controllers/generic-8k8p/): 16 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-8k8p.json
 - [通用 8 推桿](https://openaudiovisual.com/zh/controllers/generic-8f/): 8 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-8f.json
 - [通用 16 打擊墊](https://openaudiovisual.com/zh/controllers/generic-16p/): 16 個控制項的 MIDI 對照表; profile https://openaudiovisual.com/packages/midi/profiles/generic-16p.json

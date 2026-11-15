@@ -1,0 +1,61 @@
+name: I made this with open-audiovisual
+description: Add a work, a tool or a class to the "Made with" page.
+title: "Made with: "
+labels: ["made-with"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The [Made with](https://openaudiovisual.com/made-with/) page lists works that run on open-audiovisual. An entry is a link and a few words: we host nothing, and the work stays yours. A sketch on OpenProcessing with the one line in it counts. You can also edit [`made-with/works.json`](https://github.com/frank890417/open-audiovisual/blob/main/made-with/works.json) yourself and open a pull request.
+  - type: input
+    id: title
+    attributes:
+      label: Title of the work
+    validations:
+      required: true
+  - type: input
+    id: by
+    attributes:
+      label: Your name, as you want it shown
+      description: And a link for it, if you want one (a site, a profile).
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Link to the work
+      description: Where people can see it or read about it. https:// only.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is it?
+      options:
+        - Performance
+        - Installation
+        - Sketch
+        - Tool
+        - Class or workshop
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: about
+    attributes:
+      label: One or two sentences about it
+      description: What it is, and what open-audiovisual does in it. English, 中文, or both.
+    validations:
+      required: true
+  - type: input
+    id: uses
+    attributes:
+      label: Which parts did you use?
+      description: For example "oav-p5", "midi, timeline, score". Leave empty if you are not sure.
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Yours to list
+      options:
+        - label: This is my work, or I have the maker's go-ahead to list it.
+          required: true

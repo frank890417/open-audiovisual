@@ -100,11 +100,16 @@ export function autoArrange(items, cols, fixed = []) {
   fixed.forEach(mark);
   let rows = fixed.reduce((m, p) => Math.max(m, p.y + p.h), 0);
   const placements = [...fixed];
+  // A size the scan below cannot satisfy (no w, 0, NaN, a grid with no columns) would scan forever, so every item
+  // gets one first: its own if it is a whole number ≥ 1, else its type's, else one cell — never wider than the grid.
+  const n = Math.max(1, Math.floor(cols) || 1);
+  const span = (v, d) => (Number.isFinite(v) && Math.round(v) >= 1 ? Math.round(v) : (d ?? 1));
   for (const it of items) {
-    const w = Math.min(cols, it.w), h = it.h;
+    const d = DEFAULT_SIZE[it.type];
+    const w = Math.min(n, span(it.w, d?.w)), h = span(it.h, d?.h);
     let done = false;
     for (let y = 0; !done; y++) {
-      for (let x = 0; x + w <= cols; x++) {
+      for (let x = 0; x + w <= n; x++) {
         if (free(x, y, w, h)) { const p = { id: it.id, x, y, w, h }; mark(p); placements.push(p); rows = Math.max(rows, y + h); done = true; break; }
       }
     }
