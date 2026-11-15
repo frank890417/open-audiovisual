@@ -12,6 +12,12 @@
 //   pinned-version downloads         jsDelivr's public stats for the GitHub repository (the tags a page can pin)
 //   works on /made-with/             made-with/works.json, and how many are not by the author of the framework
 //   controllers checked on hardware  profiles with a hardware entry in their verifications log
+//   loads of the entry files         Cloudflare's analytics for the zone: how many times /p5/oav-p5.js and
+//                                    /packages/openav.js were requested in the last 7 whole days (UTC). Only with
+//                                    CLOUDFLARE_API_TOKEN set to a READ-ONLY token (Zone: Read, Analytics: Read):
+//                                      CLOUDFLARE_API_TOKEN=$(security find-generic-password -s <name> -w) node tools/usage-ledger.mjs
+//                                    Counts only: the free plan gives no referrer, and keeps about 30 days, so a row
+//                                    not written down is gone.
 // It sends nothing but these read requests, and it needs no key of its own. Not part of the build or the tests.
 
 import fs from 'node:fs';
@@ -53,9 +59,45 @@ export function countVerified(profiles) {
   return profiles.filter((p) => (p.verifications || []).some((v) => v && (v.method === 'hardware' || v.hardware === true))).length;
 }
 
+export const ENTRY_FILES = { oavP5: '/p5/oav-p5.js', openav: '/packages/openav.js' };
+
+/** The GraphQL request for one week of requests to the entry files: one aliased count per file. Pure: tested. */
+export function loadsQuery(zoneTag, from, to, files = ENTRY_FILES) {
+  const part = ([k, p]) => `${k}: httpRequestsAdaptiveGroups(limit: 1, filter: { datetime_geq: $a, datetime_lt: $b, clientRequestPath: ${JSON.stringify(p)}, requestSource: "eyeball" }) { count }`;
+  return {
+    query: `query($z: String!, $a: Time!, $b: Time!) { viewer { zones(filter: { zoneTag: $z }) { ${Object.entries(files).map(part).join(' ')} } } }`,
+    variables: { z: zoneTag, a: from, b: to },
+  };
+}
+
+/** The counts out of the answer: { oavP5: 420, openav: 3 }; a file nobody asked for is 0. Pure: tested. */
+export function readLoads(answer, files = ENTRY_FILES) {
+  const zone = answer?.data?.viewer?.zones?.[0];
+  if (!zone) return null;
+  return Object.fromEntries(Object.keys(files).map((k) => [k, zone[k]?.[0]?.count ?? 0]));
+}
+
+async function cloudflareLoads() {
+  const token = process.env.CLOUDFLARE_API_TOKEN;
+  if (!token) { notes.push('cloudflare: CLOUDFLARE_API_TOKEN not set, loads skipped'); return null; }
+  const call = async (url, body) => {
+    const r = await fetch(url, { method: body ? 'POST' : 'GET', headers: { authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    return r.json();
+  };
+  try {
+    const zone = (await call('https://api.cloudflare.com/client/v4/zones?name=openaudiovisual.com'))?.result?.[0]?.id;
+    if (!zone) throw new Error('zone not found (does the token read this zone?)');
+    const to = new Date(); to.setUTCHours(0, 0, 0, 0);
+    const from = new Date(to.getTime() - 7 * 864e5);
+    const answer = await call('https://api.cloudflare.com/client/v4/graphql', loadsQuery(zone, from.toISOString(), to.toISOString()));
+    if (answer.errors?.length) throw new Error(answer.errors[0].message);
+    return { from: from.toISOString().slice(0, 10), to: to.toISOString().slice(0, 10), ...readLoads(answer) };
+  } catch (e) { notes.push('cloudflare: ' + e.message); return null; }
+}
+
 export function toMarkdown(row, header = false) {
   const cols = [['date', row.date], ['stars', row.github.stars], ['forks', row.github.forks], ['views 14d', row.github.views14d], ['clones 14d', row.github.clones14d],
-    ['external repos', row.code.total], ['jsDelivr month', row.jsdelivr.month], ['works', row.madeWith.works], ['by others', row.madeWith.byOthers], ['verified', row.controllers.verified]];
+    ['external repos', row.code.total], ['jsDelivr month', row.jsdelivr.month], ['oav-p5.js 7d', row.loads?.oavP5], ['openav.js 7d', row.loads?.openav], ['works', row.madeWith.works], ['by others', row.madeWith.byOthers], ['verified', row.controllers.verified]];
   const line = '| ' + cols.map(([, v]) => v ?? '–').join(' | ') + ' |';
   return header ? `| ${cols.map(([k]) => k).join(' | ')} |\n|${cols.map(() => '---').join('|')}|\n${line}` : line;
 }
@@ -67,6 +109,7 @@ async function collect() {
   const refs = gh(['api', `repos/${REPO}/traffic/popular/referrers`]);
   const hits = [];
   for (const q of SEARCHES) hits.push(...(gh(['search', 'code', q, '--limit', '50', '--json', 'repository']) || []));
+  const loads = await cloudflareLoads();
   const jd = await getJson(`https://data.jsdelivr.com/v1/stats/packages/gh/${REPO}?period=month`);
   const works = JSON.parse(fs.readFileSync(path.join(ROOT, 'made-with/works.json'), 'utf8'));
   const dir = path.join(ROOT, 'packages/midi/profiles');
@@ -81,6 +124,7 @@ async function collect() {
     },
     code: externalRepos(hits),
     jsdelivr: { month: jd?.hits?.total ?? null, rank: jd?.hits?.rank ?? null },
+    loads,
     madeWith: countWorks(works),
     controllers: { profiles: profiles.length, verified: countVerified(profiles) },
     notes,
