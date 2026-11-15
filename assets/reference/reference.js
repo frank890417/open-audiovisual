@@ -9,7 +9,7 @@
 //   · copy: an oav-p5 example is copied WITH the line that loads oav-p5, so it runs as pasted into OpenProcessing
 // The categories drawer, scroll-spy and copy-link on anchors come from assets/docs/docs.js (same frame).
 
-import { prepare, rank, tokens } from '../search/core.js?v=4369f537';
+import { prepare, rank, tokens } from '../search/core.js?v=8e56e1c4';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
