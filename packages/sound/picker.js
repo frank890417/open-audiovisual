@@ -8,7 +8,7 @@
 //
 //   const picker = mountSoundPicker(el, sound, { lang: 'zh' });   // className for your own styling
 
-import { getInstrument, instrumentGroups, instrumentName, onInstrumentsChange } from './registry.js?v=8e56e1c4';
+import { getInstrument, instrumentGroups, instrumentName, onInstrumentsChange } from './registry.js?v=2c77357d';
 
 const TEXT = {
   en: { label: 'instrument', loading: 'loading {name}… {pct}%', failed: 'could not load {name}', fallback: 'could not load {name}; playing {other} instead' },
