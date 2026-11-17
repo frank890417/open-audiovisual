@@ -8,6 +8,8 @@
 //   CONCURRENCY=6                   pages at a time
 //   SHOTS=<dir>                     screenshots of the page checks
 //   OAV_ROOT=<another checkout>     run the same checks against it
+//   SHARD=2/3                       only every third run, starting at the second (CI runs 1/3, 2/3, 3/3 side by side);
+//                                   the page checks belong to shard 1. Unset: everything, as before
 //
 // It reads docs/reference/reference.json (the dataset tools/build-reference.mjs writes from the code and the words beside it) and:
 //
@@ -31,6 +33,13 @@ const P5_VERSIONS = (process.env.P5_VERSIONS || '1.11.11,2.3.4').split(',');
 const CONCURRENCY = Math.max(1, +(process.env.CONCURRENCY || 5));
 const SHOTS = process.env.SHOTS || fs.mkdtempSync(path.join(os.tmpdir(), 'oav-ref-'));
 const ONLY = process.env.ONLY ? process.env.ONLY.split(',') : null;
+// a shard that is misspelled must not quietly run nothing: anything but k/n with 1 ≤ k ≤ n stops here
+const SHARD = (() => {
+  if (!process.env.SHARD) return { k: 1, n: 1 };
+  const m = /^(\d+)\/(\d+)$/.exec(process.env.SHARD.trim());
+  if (!m || +m[1] < 1 || +m[1] > +m[2]) { console.error(`SHARD=${process.env.SHARD}: expected k/n with 1 ≤ k ≤ n`); process.exit(1); }
+  return { k: +m[1], n: +m[2] };
+})();
 const NOISE = [/ERR_UNSAFE_PORT/, /ws:\/\/127\.0\.0\.1:1\/relay/, /ws:\/\/[^ ]*:7457/, /WebSocket connection to 'ws:\/\/[^']*7457/, /googletagmanager|google-analytics|cloudflareinsights/, /net::ERR_(BLOCKED|FAILED|INTERNET)/, /Failed to load resource/];
 const LOADER_SRC = 'https://openaudiovisual.com/p5/oav-p5.js';
 const data = JSON.parse(fs.readFileSync(path.join(OAV, 'docs/reference/reference.json'), 'utf8'));
@@ -101,7 +110,7 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
   }
 
   // ───────────────────────── 1. the page
-  for (const [w, h, label, lang] of [[1440, 900, 'desktop', 'en'], [390, 844, 'mobile', 'en'], [1440, 900, 'desktop', 'zh']]) {
+  if (SHARD.k === 1) for (const [w, h, label, lang] of [[1440, 900, 'desktop', 'en'], [390, 844, 'mobile', 'en'], [1440, 900, 'desktop', 'zh']]) {
     const { ctx, page, problems } = await newPage({ width: w, height: h });
     const root = lang === 'zh' ? '/zh/docs/reference/' : '/docs/reference/';
     try {
@@ -177,7 +186,10 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
   }
   const claimsOf = (e) => (e.claims || []).map((c, i) => ({ type: 'claim', e, c, i }));
   for (const e of entries) for (const w of claimsOf(e)) for (const v of P5_VERSIONS.slice(0, 1)) work.push({ ...w, v });
-  console.log(`\n${work.length} runs (${entries.length} entries, p5 ${P5_VERSIONS.join(' & ')}), ${CONCURRENCY} at a time`);
+  // round-robin, not halves: the five-second microphone claims sit at the end of the list and are shared out evenly
+  const all = work.length;
+  if (SHARD.n > 1) work.splice(0, work.length, ...work.filter((_, i) => i % SHARD.n === SHARD.k - 1));
+  console.log(`\n${work.length} runs (${entries.length} entries, p5 ${P5_VERSIONS.join(' & ')}), ${CONCURRENCY} at a time${SHARD.n > 1 ? ` · shard ${SHARD.k}/${SHARD.n} of ${all} runs` : ''}`);
 
   let n = 0;
   async function one(wk) {
@@ -232,5 +244,6 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
 
   await browser.close(); srv.close();
   console.log(`\n${rows - bad}/${rows} rows green; screenshots in ${SHOTS}`);
-  process.exit(bad ? 1 : 0);
+  // a shard that ran nothing is a mistake in the split, not a pass
+  process.exit(bad || (SHARD.n > 1 && !rows) ? 1 : 0);
 })();

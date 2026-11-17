@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // search-smoke.cjs — the site search in a real (headless) Chromium: the button in the top bar, the dialog, the results, at desktop
-// and phone widths. Not part of `npm test` (needs a browser): CI runs it in the `reference` job, and you run it before a release.
+// and phone widths. Not part of `npm test` (needs a browser): CI runs it as the `search` job, and you run it before a release.
 //
 //   PW=<path to playwright(-core)> node p5/test/search-smoke.cjs
 //   SHOTS=<dir>            screenshots (default: a temp dir, printed at the end)

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // verify-smoke.cjs — /controllers/verify/ in a real (headless) Chromium, driven the way a person drives it.
-// Not part of `npm test` (needs a browser): CI runs it in the `reference` job.
+// Not part of `npm test` (needs a browser): CI runs it as the `verify` job.
 //
 //   PW=<path to playwright(-core)> node p5/test/verify-smoke.cjs
 //   SHOTS=<dir>      keep screenshots
