@@ -1,6 +1,6 @@
 // TriMesh → STL / OBJ / minimal GLB bytes, and the format router (step / dxf / glb of smlibwasm Parts go through the kernel).
-import { weldMesh, checkMesh } from './checks.js?v=2c77357d';
-import { meshOfAsync, isKernelShape } from './mesh.js?v=2c77357d';
+import { weldMesh, checkMesh } from './checks.js?v=eade73f6';
+import { meshOfAsync, isKernelShape } from './mesh.js?v=eade73f6';
 
 export const MIME = { stl: 'model/stl', obj: 'model/obj', step: 'model/step', dxf: 'image/vnd.dxf', glb: 'model/gltf-binary' };
 const ALIAS = { stp: 'step', gltf: 'glb' };

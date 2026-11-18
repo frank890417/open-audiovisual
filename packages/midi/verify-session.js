@@ -14,9 +14,9 @@
 // sweep after the step moved on are all ignored; only the first new message of a step counts, and a message
 // the profile gives to another control is flagged as probably the wrong control rather than offered as a fix.
 
-import { parseMessage, encodeMessage } from './parse.js?v=2c77357d';
-import { normalizeProfile, indexProfile, eventKey, validateProfile } from './profiles.js?v=2c77357d';
-import { ledSysex } from './sysex.js?v=2c77357d';
+import { parseMessage, encodeMessage } from './parse.js?v=eade73f6';
+import { normalizeProfile, indexProfile, eventKey, validateProfile } from './profiles.js?v=eade73f6';
+import { ledSysex } from './sysex.js?v=eade73f6';
 
 /** Message types a person can answer with. The rest arrive around an answer, not as one. */
 const ANSWERS = new Set(['cc', 'noteon', 'pitchbend', 'chanat', 'program']);
