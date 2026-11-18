@@ -279,6 +279,38 @@ function rowHtml([code, key, words, pat], L, hrefOf, notation) {
 }
 
 /**
+ * The boxes of the sheet (everything but its "start" box), for this page and for /p5/, which shows the same sheet near its top.
+ * @param {object} o  { L: 'en' | 'zh', hrefOf: (key) => url, events: the "you write these" label, p5Version, level: heading level of a box title }
+ */
+export function cheatsheetBoxes({ L, hrefOf, events, p5Version, level = 2 }) {
+  VERSION.now = p5Version;
+  return SECTIONS.map((sec) => {
+    const rows = sec.rows.map((r) => rowHtml(r, L, hrefOf, sec.kind === 'notation')).join('');
+    const ev = sec.events ? `<p class="cs-sub">${esc(events)}</p><ul class="cs-rows">${sec.events.map((r) => rowHtml(r, L, hrefOf, false)).join('')}</ul>` : '';
+    const fig = (sec.figure || []).map((f) => `<figure class="cs-fig cs-fig-${f}">${figureSvg(f, L)}</figure>`).join('');
+    const note = sec.note ? `<p class="cs-note">${esc(sec.note[L])}</p>` : '';
+    return `<section class="cs-box" data-tone="${sec.tone}" aria-labelledby="cs-${sec.id}">
+<h${level} id="cs-${sec.id}">${esc(sec.title[L])}</h${level}>
+<ul class="cs-rows">${rows}</ul>${ev}${fig}${note}
+</section>`;
+  }).join('\n');
+}
+
+/**
+ * key → link into the API reference, from the names an oav-p5 record covers ([[id, [key, …aliases]], …]).
+ * A key that is not an oav-p5 name, or has no entry yet, throws: the sheet cannot drift from the code.
+ */
+export function cheatsheetHrefs(pairs, refBase) {
+  const byName = new Map();
+  for (const [id, covers] of pairs) for (const k of covers) if (!byName.has(k)) byName.set(k, id);
+  return (key) => {
+    const id = byName.get(key);
+    if (!id) throw new Error(`cheat sheet: "${key}" is not an oav-p5 name with a reference entry (tools/reference/cheatsheet.mjs)`);
+    return refBase + '#' + id;
+  };
+}
+
+/**
  * @param {object} t      strings (tools/reference/en.mjs | zh.mjs): t.cheat
  * @param {object} home   homepage strings (top bar, footer, html lang)
  * @param {object} o      { c: pathCtx, records, p5Version, assets: { css, docsCss } }
@@ -295,16 +327,7 @@ export function renderCheatsheetPage(t, home, { c, records, p5Version, assets })
     if (!r.entry) throw new Error(`cheat sheet: "${key}" has no reference entry yet`);
     return ref + '#' + r.id;
   };
-  const sections = SECTIONS.map((sec) => {
-    const rows = sec.rows.map((r) => rowHtml(r, L, hrefOf, sec.kind === 'notation')).join('');
-    const ev = sec.events ? `<p class="cs-sub">${esc(s.events)}</p><ul class="cs-rows">${sec.events.map((r) => rowHtml(r, L, hrefOf, false)).join('')}</ul>` : '';
-    const fig = (sec.figure || []).map((f) => `<figure class="cs-fig cs-fig-${f}">${figureSvg(f, L)}</figure>`).join('');
-    const note = sec.note ? `<p class="cs-note">${esc(sec.note[L])}</p>` : '';
-    return `<section class="cs-box" data-tone="${sec.tone}" aria-labelledby="cs-${sec.id}">
-<h2 id="cs-${sec.id}">${esc(sec.title[L])}</h2>
-<ul class="cs-rows">${rows}</ul>${ev}${fig}${note}
-</section>`;
-  }).join('\n');
+  const sections = cheatsheetBoxes({ L, hrefOf, events: s.events, p5Version });
 
   const ld = [
     pageNode(c, home, {

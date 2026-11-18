@@ -76,6 +76,20 @@
 .cs-fig-phase .ring { fill: none; stroke: var(--line-2); stroke-width: 2; } .cs-fig-phase .arc { fill: none; stroke: var(--tone); stroke-width: 3; }
 .cs-fig-phase .b { fill: var(--fg-3); } .cs-fig-phase .dot { fill: var(--tone); }
 
+/* the same sheet inside /p5/ (tools/examples/page.mjs, under "Cheat sheet"): the chapter's prose rules (list indents, li and
+   p margins, h4 spacing) would loosen it, so they are undone here; on a wide screen it takes more width than the prose column,
+   so three columns fit and it reads at a glance, as the page of its own does. */
+.p5-cheat { margin: 18px 0 44px; }
+.p5-cheat .cs-box h4 { margin: 0 0 10px; font: 600 21px/1.2 var(--mono); color: var(--tone); letter-spacing: -0.01em; }
+.p5-cheat ul.cs-rows { padding-left: 0; margin: 0; max-width: none; }
+.p5-cheat .cs-rows li { margin: 0; }
+.p5-cheat p { max-width: none; }
+.p5-cheat .cs-sub { margin: 12px 0 6px; }
+.p5-cheat .cs-note { margin: 10px 0 0; }
+@media (min-width: 1100px) {
+  .p5-cheat { width: min(1280px, calc(100vw - 64px)); position: relative; left: 50%; transform: translateX(-50%); }
+}
+
 @media (max-width: 640px) {
   .cs-main { padding-top: 20px; }
   .cs-grid { columns: 1; }

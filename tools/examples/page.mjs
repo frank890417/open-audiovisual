@@ -21,6 +21,9 @@ import { CHAPTERS } from '../docs/chapters.mjs';
 import { renderMarkdown } from '../docs/markdown.mjs';
 import homeEn from '../home/en.mjs';
 import homeZh from '../home/zh.mjs';
+import { cheatsheetBoxes, cheatsheetHrefs } from '../reference/cheatsheet.mjs';
+import refEn from '../reference/en.mjs';
+import refZh from '../reference/zh.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const HOME = { en: homeEn, zh: homeZh };
@@ -276,7 +279,7 @@ function renderSource(rel, c, { idPrefix, resolveLink, twin = null }) {
 const enTwin = (rel, c, o) => renderSource(rel, { ...c, locale: 'en' }, o).headings.filter((h) => h.mdLevel > 1);
 
 /** The page around one rendered source. `header` is the inside of <header class="docs-head">. */
-function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, chapter, header, html }) {
+function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, chapter, header, html, css = [] }) {
   const runtime = { copy: t.ui.copy, copied: t.ui.copied, linkCopied: '', tocButton: '', tocClose: '' };
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
@@ -284,7 +287,7 @@ function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, 
 ${headBasics(t, c, { title, description, ogType: 'article', markdownHref, ld })}
 <link rel="stylesheet" href="${c.root}assets/docs/docs.css">
 <link rel="stylesheet" href="${c.root}assets/examples/pages.css">
-<script>document.documentElement.classList.add('js')</script>
+${css.map((h) => `<link rel="stylesheet" href="${c.root}${h}">\n`).join('')}<script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page ${bodyClass}">
 ${topBar(t, c)}
@@ -328,7 +331,8 @@ export function renderP5(locale) {
   const t = HOME[locale], S = STRINGS[locale], c = pageCtx('p5', locale);
   const opts = { idPrefix: 'p5', resolveLink: p5Resolver(c) };
   const twin = locale === 'zh' ? enTwin(P5_SOURCE.en, c, opts) : null;
-  const { heading, html } = renderSource(P5_SOURCE[locale], c, { ...opts, twin });
+  const rendered = renderSource(P5_SOURCE[locale], c, { ...opts, twin });
+  const heading = rendered.heading, html = withCheatsheet(rendered.html, c, locale);
   const { title, description } = S.p5;
   const swNode = {
     '@type': 'SoftwareSourceCode', '@id': c.self + '#code', name: 'oav-p5', url: SITE + 'p5/oav-p5.js', codeRepository: REPO,
@@ -355,7 +359,25 @@ export function renderP5(locale) {
     <p class="docs-note p5-sketches">${esc(S.p5.sketches)} ${sketches}</p>`;
   return markdownFrame(t, c, {
     title, description, markdownHref: `${c.root}${P5_SOURCE[locale]}`, ld, bodyClass: 'p5-page', chapter: 'p5', header, html,
+    css: ['assets/reference/cheatsheet.css'],
   });
+}
+
+/**
+ * The cheat sheet's boxes under the chapter's "Cheat sheet" section (docs/p5.md says what it is and links to the page that
+ * prints; the boxes themselves are the same ones /docs/cheatsheet/ draws, from tools/reference/cheatsheet.mjs). The links come
+ * from docs/reference/reference.json, which tools/build-reference.mjs writes; a name the sheet uses without an entry throws.
+ */
+function withCheatsheet(html, c, locale) {
+  const at = /<h3 id="p5-cheat-sheet"[^>]*>[\s\S]*?(?=<h3 )/.exec(html);
+  if (!at) throw new Error('/p5/: docs/p5.md needs a "## Cheat sheet" section (and docs/zh/p5.md its twin) for the cheat sheet to sit under');
+  const ds = JSON.parse(readSrc('docs/reference/reference.json'));
+  const pairs = ds.entries.filter((e) => e.package === 'oav-p5').map((e) => [e.id, [e.key, ...e.aliases]]);
+  const ref = c.root + (locale === 'zh' ? 'zh/' : '') + 'docs/reference/';
+  const t = locale === 'zh' ? refZh : refEn;
+  const boxes = cheatsheetBoxes({ L: locale, hrefOf: cheatsheetHrefs(pairs, ref), events: t.cheat.events, p5Version: getFacts().p5Version, level: 4 });
+  const end = at.index + at[0].length;
+  return `${html.slice(0, end)}<div class="cs-grid p5-cheat">\n${boxes}\n</div>\n${html.slice(end)}`;
 }
 
 // ---------------------------------------------------------------------------- /changelog/
