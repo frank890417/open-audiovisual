@@ -22,9 +22,9 @@
 //   keys                note range from..to                        /on /off pulses, n<note> while held
 //   wheel  strip        cc or pitchbend; spring returns to rest    0..1, or −1..1 when bipolar
 
-import { RELATIVE_MODES } from './parse.js?v=eade73f6';
-import { validateSysexBlock } from './sysex.js?v=eade73f6';
-import { validateVerifications } from './verify.js?v=eade73f6';
+import { RELATIVE_MODES } from './parse.js?v=1f11cf5e';
+import { validateSysexBlock } from './sysex.js?v=1f11cf5e';
+import { validateVerifications } from './verify.js?v=1f11cf5e';
 
 export const CONTROL_TYPES = ['knob', 'encoder', 'fader', 'pad', 'button', 'keys', 'wheel', 'strip'];
 export const MSG_TYPES = ['cc', 'note', 'pitchbend', 'chanat', 'program'];
