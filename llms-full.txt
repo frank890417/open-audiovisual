@@ -3423,8 +3423,15 @@ controller drawn on screen, or from a phone, by adding one line at the top:
 document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));
 ```
 
-On OpenProcessing you can instead paste the URL into Sketch → Libraries → **+** (custom library). Both work in p5 1.x
-and 2.x global mode, and nothing has to be called in `setup()`.
+On OpenProcessing you can instead paste the URL into Sketch → Libraries → **+** (custom library). In the p5.js Web Editor
+or on your own page you can also add it the way other p5 libraries are added, as a script tag in `index.html` after p5's
+and before `sketch.js`:
+
+```html
+<script src="https://openaudiovisual.com/p5/oav-p5.js"></script>
+```
+
+All of these work in p5 1.x and 2.x global mode, and nothing has to be called in `setup()`.
 A sketch that carries this line, playable right now: [example 15](https://openaudiovisual.com/examples/15-p5-one-line/).
 
 ## Read it like the mouse

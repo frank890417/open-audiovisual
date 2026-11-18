@@ -5,7 +5,9 @@ document.head.prepend(Object.assign(document.createElement('script'), { src: 'ht
 ```
 
 Put it as the first line of a p5.js sketch (OpenProcessing, the p5 editor, any page), or paste the URL into
-OpenProcessing → Sketch → Libraries → **+** (custom library). p5 1.x and 2.x, global mode; nothing to call in `setup()`.
+OpenProcessing → Sketch → Libraries → **+** (custom library). In the p5.js Web Editor or your own page it can also go in
+`index.html` like any p5 library, after p5's script tag and before `sketch.js`:
+`<script src="https://openaudiovisual.com/p5/oav-p5.js"></script>`. p5 1.x and 2.x, global mode; nothing to call in `setup()`.
 
 Then read the controller the way p5 reads the mouse:
 
