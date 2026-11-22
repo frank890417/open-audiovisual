@@ -19,6 +19,7 @@
 - [MIDI 控制器圖鑑](https://openaudiovisual.com/zh/controllers/) ([English](https://openaudiovisual.com/controllers/)): 每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。
 - [範例](https://openaudiovisual.com/zh/examples/) ([English](https://openaudiovisual.com/examples/)): 所有範例，附縮圖與需要什麼。
 - [p5.js 一行指令](https://openaudiovisual.com/zh/p5/) ([English](https://openaudiovisual.com/p5/)): 載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。同一行還有聲音（`startSound`）、能用一行字寫節奏的鼓機（`startDrums("bd*4, [~ sd]*2, hh*8")`）、麥克風（`micLevel`）、錄影（`startRecording`），以及像 TouchDesigner Lag CHOP 那樣變順的數值（`lag()`），也能和 Strudel 並排用。現成草圖在 `p5/examples/`，每一份都能在範例 16 到 26 直接玩。
+- [用 open-audiovisual 做的](https://openaudiovisual.com/zh/made-with/) ([English](https://openaudiovisual.com/made-with/)): 用 open-audiovisual 做的演出、裝置、工具與課程，每一筆都是作者自己加上來的。怎麼加上你的、徽章，以及一個頁面怎麼在不送出任何東西的情況下說出自己用了什麼。
 - [WebToe](https://openaudiovisual.com/zh/webtoe/) ([English](https://openaudiovisual.com/webtoe/)): 姊妹專案，整套的引擎那一半：網頁原生、節點式的即時影像資料流引擎（TouchDesigner 式、WebGL2 + WebGPU、零執行期相依），能打開 TouchDesigner `.toe` 專案；`@openav/world-webtoe` 如何把 WebToe 網路當世界演奏。編輯器：https://webtoe.openaudiovisual.com/
 - [更新紀錄](https://openaudiovisual.com/zh/changelog/) ([English](https://openaudiovisual.com/changelog/)): 改了什麼，新的在上：oav-p5 依版本，框架與網站依日期，每一條附 commit。
 

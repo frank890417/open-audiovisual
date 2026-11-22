@@ -24,6 +24,8 @@ import { catalog, nameOf, detailUrl, PROFILE_DIR } from '../controllers/page.mjs
 import { fullName } from '../controllers/detail.mjs';
 import homeEn from '../home/en.mjs';
 import homeZh from '../home/zh.mjs';
+import madeEn from '../made-with/en.mjs';
+import madeZh from '../made-with/zh.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const read = (rel) => { try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return null; } };
@@ -60,12 +62,15 @@ export const PAGE_BLURB = {
   'controllers/': ['every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).', '每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。'],
   'examples/': ['every example, with a thumbnail and what it needs.', '所有範例，附縮圖與需要什麼。'],
   'p5/': ['load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone; the same line adds sound (`startSound`), a drum machine with one line of rhythm (`startDrums("bd*4, [~ sd]*2, hh*8")`), the microphone (`micLevel`), video recording (`startRecording`) and values smoothed like TouchDesigner\'s Lag CHOP (`lag()`); it also runs next to Strudel. Ready-made sketches in `p5/examples/`, each playable as an example (16 to 26).', '載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。同一行還有聲音（`startSound`）、能用一行字寫節奏的鼓機（`startDrums("bd*4, [~ sd]*2, hh*8")`）、麥克風（`micLevel`）、錄影（`startRecording`），以及像 TouchDesigner Lag CHOP 那樣變順的數值（`lag()`），也能和 Strudel 並排用。現成草圖在 `p5/examples/`，每一份都能在範例 16 到 26 直接玩。'],
+  // the page's own meta description, read from its strings so the two cannot drift apart
+  'made-with/': [madeEn.meta.description, madeZh.meta.description],
   'changelog/': ['what changed, newest first: oav-p5 version by version, the framework and the site by day, each with its commit.', '改了什麼，新的在上：oav-p5 依版本，框架與網站依日期，每一條附 commit。'],
   'webtoe/': ['the sister project and the engine half of the stack: a web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world. Editor: https://webtoe.openaudiovisual.com/', '姊妹專案，整套的引擎那一半：網頁原生、節點式的即時影像資料流引擎（TouchDesigner 式、WebGL2 + WebGPU、零執行期相依），能打開 TouchDesigner `.toe` 專案；`@openav/world-webtoe` 如何把 WebToe 網路當世界演奏。編輯器：https://webtoe.openaudiovisual.com/'],
 };
 export const PAGE_TITLE = {
   '': ['Homepage', '首頁'], 'docs/': ['Handbook', '手冊'], 'docs/reference/': ['API reference', 'API 參考'], 'controllers/': ['MIDI controller library', 'MIDI 控制器圖鑑'],
   'examples/': ['Examples', '範例'], 'p5/': ['p5.js in one line', 'p5.js 一行指令'], 'webtoe/': ['WebToe', 'WebToe'],
+  'made-with/': [madeEn.meta.title.split(' · ')[0], madeZh.meta.title.split('｜')[0]],
   'changelog/': ['Changelog', '更新紀錄'],
 };
 
@@ -116,7 +121,7 @@ function pagesSection(locale) {
   const reg = registry();
   const has = (p) => reg.some((e) => e.path === p);
   const lines = [];
-  for (const p of ['', 'docs/', 'docs/reference/', 'controllers/', 'examples/', 'p5/', 'webtoe/', 'changelog/']) {
+  for (const p of ['', 'docs/', 'docs/reference/', 'controllers/', 'examples/', 'p5/', 'made-with/', 'webtoe/', 'changelog/']) {
     if (!has(p)) continue;
     const e = reg.find((x) => x.path === p);
     const en = SITE + p, zh = SITE + 'zh/' + p, both = e.langs.includes('zh');

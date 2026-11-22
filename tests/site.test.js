@@ -101,6 +101,7 @@ test('llms.txt (en, zh): generated, complete, no GitHub raw links', async () => 
       assert.ok(s.includes(`${SITE}docs/${lang === 'zh' ? 'zh/' : ''}${path.posix.basename(ch.en)}`), `${file}: chapter ${ch.id}`);
     }
     assert.ok(s.includes(`${SITE}p5/`) && s.includes(`docs/${lang === 'zh' ? 'zh/' : ''}p5.md`), `${file}: the p5 one-liner`);
+    assert.ok(s.includes(`${SITE}${lang === 'zh' ? 'zh/' : ''}made-with/`), `${file}: the made-with page (in sitemap since 0.9.0, missing from llms.txt until 2026-11-22)`);
     assert.ok(s.includes('13-score-director') && s.includes('15-p5-one-line'), `${file}: examples 13 and 15`);
     assert.ok(s.includes(`examples/${f.nextExampleNumber}-`), `${file}: the next example number`);
     assert.ok(s.includes('packages/mcp/server.js') && s.includes('Che-Yu Wu') && s.includes('https://github.com/frank890417/open-audiovisual'), `${file}: MCP, author, repository`);
