@@ -21,37 +21,37 @@
 //   createController() below: one controller, its events, hardware and MIDI out — the headless embed
 // Docs: packages/midi/README.md.                                         load it with its own <script>)
 
-import { parseMessage, genericSignals, publish, describe } from './parse.js?v=1f11cf5e';
-import { MidiControllers } from './manager.js?v=1f11cf5e';
-import { ControllerView } from './view.js?v=1f11cf5e';
-import { PROFILES } from './profiles/index.js?v=1f11cf5e';
-import { track } from './telemetry.js?v=1f11cf5e';
-import { reselectOutput, inputFilter, EchoGuard } from './ports.js?v=1f11cf5e';
-import { sysexMessage } from './sysex.js?v=1f11cf5e';
-import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=1f11cf5e';
-export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, eventOfSignal, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=1f11cf5e';
-export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=1f11cf5e';
-export { parseHex, formatHex, sysexBytes, sysexMessage, ledSysex, parseDeviceInquiry, DEVICE_INQUIRY, SYSEX_PURPOSES } from './sysex.js?v=1f11cf5e';
-export { evidenceOf, verificationOf, verificationSummary, VERIFY_METHODS, VERIFY_RESULTS } from './verify.js?v=1f11cf5e';
-export { VerifySession, applyVerification, verificationReport } from './verify-session.js?v=1f11cf5e';
-export { pickOutput, reselectOutput, EchoGuard, isLive } from './ports.js?v=1f11cf5e';
-export { ScoreMidi } from './score-out.js?v=1f11cf5e';
-export { MidiController } from './controller.js?v=1f11cf5e';
-export { MidiControllers, controllerRoutes } from './manager.js?v=1f11cf5e';
-export { linkControllers } from './link.js?v=1f11cf5e';
-export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=1f11cf5e';
-export { PROFILES, profileById } from './profiles/index.js?v=1f11cf5e';
-export { IMPORTED } from './profiles/imported.js?v=1f11cf5e';
-export { ControllerView, VIEW_CSS } from './view.js?v=1f11cf5e';
-export { mountMidiPanel, PANEL_CSS } from './panel.js?v=1f11cf5e';
-export { ControllerCanvas, CANVAS_THEME, controllerGeometry, keyboardGeometry, keyWindow, followMidiSignals, touchText, midiNoteName, fadeLevel } from './canvas.js?v=1f11cf5e';
+import { parseMessage, genericSignals, publish, describe } from './parse.js?v=dcdb1a44';
+import { MidiControllers } from './manager.js?v=dcdb1a44';
+import { ControllerView } from './view.js?v=dcdb1a44';
+import { PROFILES } from './profiles/index.js?v=dcdb1a44';
+import { track } from './telemetry.js?v=dcdb1a44';
+import { reselectOutput, inputFilter, EchoGuard } from './ports.js?v=dcdb1a44';
+import { sysexMessage } from './sysex.js?v=dcdb1a44';
+import { resolveProfile, findProfile, withChannel, findPort, controlDetail, setControl, valuesOf, restValue } from './embed.js?v=dcdb1a44';
+export { parseMessage, encodeMessage, relativeDelta, relativeValue, bendToUnit, unitToBend, genericSignals, eventOfSignal, publish, describe, RELATIVE_MODES, BEND_CENTER } from './parse.js?v=dcdb1a44';
+export { validateProfile, normalizeProfile, matchProfile, pickPort, profileSignals, groupsOf, indexProfile, CONTROL_TYPES, RESERVED_IDS } from './profiles.js?v=dcdb1a44';
+export { parseHex, formatHex, sysexBytes, sysexMessage, ledSysex, parseDeviceInquiry, DEVICE_INQUIRY, SYSEX_PURPOSES } from './sysex.js?v=dcdb1a44';
+export { evidenceOf, verificationOf, verificationSummary, VERIFY_METHODS, VERIFY_RESULTS } from './verify.js?v=dcdb1a44';
+export { VerifySession, applyVerification, verificationReport } from './verify-session.js?v=dcdb1a44';
+export { pickOutput, reselectOutput, EchoGuard, isLive } from './ports.js?v=dcdb1a44';
+export { ScoreMidi } from './score-out.js?v=dcdb1a44';
+export { MidiController } from './controller.js?v=dcdb1a44';
+export { MidiControllers, controllerRoutes } from './manager.js?v=dcdb1a44';
+export { linkControllers } from './link.js?v=dcdb1a44';
+export { createVirtualMIDIAccess, virtualRequestMIDIAccess } from './virtual-access.js?v=dcdb1a44';
+export { PROFILES, profileById } from './profiles/index.js?v=dcdb1a44';
+export { IMPORTED } from './profiles/imported.js?v=dcdb1a44';
+export { ControllerView, VIEW_CSS } from './view.js?v=dcdb1a44';
+export { mountMidiPanel, PANEL_CSS } from './panel.js?v=dcdb1a44';
+export { ControllerCanvas, CANVAS_THEME, controllerGeometry, keyboardGeometry, keyWindow, followMidiSignals, touchText, midiNoteName, fadeLevel } from './canvas.js?v=dcdb1a44';
 export { parseEmbedOptions, resolveProfile, controlDetail, describeDetail, describeMessage, setControl, valuesOf, findPort, preferredAspect,
-  toParent, fromParent, toFrame, fromFrame, EMBED_ATTRS, EMBED_EVENTS, FRAME_COMMANDS, POST_SOURCE } from './embed.js?v=1f11cf5e';
+  toParent, fromParent, toFrame, fromFrame, EMBED_ATTRS, EMBED_EVENTS, FRAME_COMMANDS, POST_SOURCE } from './embed.js?v=dcdb1a44';
 
 export class Midi {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js?v=1f11cf5e').Signals} [opts.signals] publish inputs here
+   * @param {import('../core/src/signals.js?v=dcdb1a44').Signals} [opts.signals] publish inputs here
    * @param {string|RegExp} [opts.filterOut] regex (source) of input NAMES never to listen to, so what we send into a virtual bus
    *        does not come back as input (default: IAC, the macOS bus you send into Ableton / TouchDesigner)
    * @param {number} [opts.echoWindow=40] ms: an input message identical to one we just SENT is our own echo and is dropped
@@ -314,7 +314,7 @@ export function loadProfile(ref, o = {}) { return resolveProfile(ref, { profiles
  * @param {string|object} profile        id ('akai-lpd8'), short ('lpd8') or a profile object (loadProfile() for URLs)
  * @param {object} [o]
  * @param {object[]} [o.profiles]        the profiles a picker / `follow` may switch to (default: every shipped one)
- * @param {import('../core/src/signals.js?v=1f11cf5e').Signals} [o.signals]   also publish midi/<short>/… into a show
+ * @param {import('../core/src/signals.js?v=dcdb1a44').Signals} [o.signals]   also publish midi/<short>/… into a show
  * @param {number} [o.channel]           move every control to this MIDI channel (your unit is set to another one)
  * @param {boolean} [o.follow]           plug a different known device in → show that one
  * @param {Midi} [o.midi]                use this engine (a show's) instead of the page-shared one

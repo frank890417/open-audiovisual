@@ -11,17 +11,17 @@
 // MiniLab and a real MiniLab are the SAME object: whichever hand moves it, the
 // work receives the same midi/minilab3/… signals.
 
-import { MidiController } from './controller.js?v=1f11cf5e';
-import { matchProfile, pickPort } from './profiles.js?v=1f11cf5e';
-import { IMPORTED, importedUrl } from './profiles/imported.js?v=1f11cf5e';
+import { MidiController } from './controller.js?v=dcdb1a44';
+import { matchProfile, pickPort } from './profiles.js?v=dcdb1a44';
+import { IMPORTED, importedUrl } from './profiles/imported.js?v=dcdb1a44';
 
 export class MidiControllers {
   /**
    * @param {object} o
    * @param {object[]} o.profiles             profile JSON list (packages/midi/profiles)
-   * @param {import('../core/src/signals.js?v=1f11cf5e').Signals} [o.signals]
+   * @param {import('../core/src/signals.js?v=dcdb1a44').Signals} [o.signals]
    * @param {(name:string, value:any, info:object)=>void} [o.sink]   publish here instead (a phone → relay)
-   * @param {import('./index.js?v=1f11cf5e').Midi} [o.midi]   hardware engine (enabled or about to be)
+   * @param {import('./index.js?v=dcdb1a44').Midi} [o.midi]   hardware engine (enabled or about to be)
    * @param {string} [o.initial]               profile id shown before any hardware
    * @param {Storage} [o.storage]              learned mappings & manual port assignments persist here
    * @param {object[]} [o.imported]            rows to recognise ports by when no profile claims them ([] = none); see _fetchImported

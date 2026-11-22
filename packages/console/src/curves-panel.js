@@ -18,7 +18,7 @@
 import {
   hasCurves, curveParams, curveAxis, axisTime, curveBands, sampleCurve, levelOf, plotY, keyframeMarks, takePoints, curveCursor,
   curveSignature, overriddenKeys, clearOverrides, visibleRows, fmtValue, fmtClock,
-} from './curves.js?v=1f11cf5e';
+} from './curves.js?v=dcdb1a44';
 
 const HEAD_H = 18, PLOT_H = 36, ROW_H = HEAD_H + PLOT_H + 4;   // a row: label, value and ↩ above; the plot below; 4 px between
 const RULER_H = 22;

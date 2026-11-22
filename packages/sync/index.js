@@ -17,7 +17,7 @@
 //   { v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? } leader → that follower (late joiners, resyncs)
 // `seq` counts the leader's frames: a follower drops what is old or twice, sees a gap, and asks for the state again.
 
-import { RelayClient } from '../relay/index.js?v=1f11cf5e';
+import { RelayClient } from '../relay/index.js?v=dcdb1a44';
 
 export const SYNC_VERSION = 1;
 const CHANNEL_RE = /^[\w-]{1,32}$/;                        // the relay's room names are the same shape (hub.js cleanRoom)
