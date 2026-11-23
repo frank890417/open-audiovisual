@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty-eight packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-nine packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -347,6 +347,15 @@ L4 output (physical branch) · can it be made? A manufacturability report for an
 |---|---|
 | `Fab` | `new Fab({ urls: { smlib, manifold }, scale, importer, download, context })` · `check(x, opts)` → report · `export(x, fmt, opts)` → `Promise<{ bytes, mime, ext, report }>` (`stl` `obj` `glb` `step` `dxf`) · `save(x, fmt, { name, params, note })` through `saver(bytes, info)` or a browser download · `smlib()` · `manifold()` · `meshOf(x)` |
 | pure functions | `checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })` · `weldMesh(mesh)` · `meshOf(x, { scale })` (TriMesh, smlibwasm Part, three.js Mesh/Object3D, Y up becomes Z up) · `toStlBytes` · `toObjText` · `toGlbBytes` |
+
+## @openav/hw
+
+L4 output (physical branch) · what goes inside. `fab` checks the shell, `hw` checks the electronics. A spec lists the parts and the wires (`{ board, parts: { id: { part, have } }, wires: [['mcu.4', 'acc.SDA'], …] }`), and `hw` finds the nets and reports, one Chinese sentence per problem: a 3.3 V signal into a 5 V LED strip, a voltage above what a pin takes, a supply out of range or only there on the charger, ESP8266 boot pins, one pin wired to two jobs, I²C address clashes, current beyond a regulator, battery hours. The parts library takes every number from a datasheet; what could not be confirmed is `null` (待查) and the check says it cannot tell.
+
+| export | signature |
+|---|---|
+| `Hw` | `check(spec)` → `{ ok, issues: [{ level, code, text, at }], warnings, notes, nets, power: { rails, battery }, i2c }` · `diagram(spec)` → SVG string · `bom(spec)` → `{ have, buy, unknown }` (no prices, no shop links) · `parts` · `part(key)` · `resolvePin(spec, ref)` · `nets(spec)` |
+| `HW_PARTS` | the library: Feather HUZZAH ESP8266, Arduino Leonardo and UNO R3, RC522, HC-SR501, 10 kΩ pot, LIS3DH, MPU-6050 (GY-521), WS2812B, SK6812, NeoPixel rings 12 and 16, 1-cell LiPo (JST-PH), TP4056 and Micro-Lipo USB-C chargers, Qi receiver |
 
 ## @openav/timeline
 

@@ -306,6 +306,7 @@
             <li><a href="#packages-openav-out">@openav/out</a></li>
             <li><a href="#packages-openav-record">@openav/record</a></li>
             <li><a href="#packages-openav-fab">@openav/fab</a></li>
+            <li><a href="#packages-openav-hw">@openav/hw</a></li>
             <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
             <li><a href="#packages-openav-score">@openav/score</a></li>
             <li><a href="#packages-openav-pattern">@openav/pattern</a></li>
@@ -386,7 +387,7 @@
         <a class="docs-quick-card is-cheat" href="../../zh/docs/cheatsheet/"><strong>oav-p5 速查表 →</strong><span>用 oav-p5 的 p5 草圖會用到的名字放在一頁，附圖：喊、敲、彈、讓數字好用。可以印成一張 A4。</span></a>
         <a class="docs-quick-card" href="../../zh/docs/reference/"><strong>API 參考 →</strong><span>只想查一個名稱？oav-p5 的每個變數、函式、事件與選項，和每個套件的匯出，都能搜尋，每一條附能直接跑的範例。</span></a>
       </div>
-      <p class="docs-stats">19 章 · 202 節 · <a href="../../zh/changelog/">oav-p5 0.8 · 框架 0.9</a></p>
+      <p class="docs-stats">19 章 · 203 節 · <a href="../../zh/changelog/">oav-p5 0.8 · 框架 0.9</a></p>
       <p class="docs-note">內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。 <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/">GitHub ↗</a> · 給語言模型：<a href="../../llms.txt">/llms.txt</a> · <a href="../../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -2904,7 +2905,7 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">套件一覽<a class="anchor" href="#packages" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">15</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/packages.md">docs/zh/packages.md</a></span></p>
-<p>二十八個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
+<p>二十九個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>層</th><th>套件</th></tr></thead>
 <tbody>
@@ -3166,6 +3167,15 @@ comp.start();
 <tbody>
 <tr><td><code>Fab</code></td><td><code>new Fab({ urls: { smlib, manifold }, scale, importer, download, context })</code> · <code>check(x, opts)</code> → 報告 · <code>export(x, fmt, opts)</code> → <code>Promise&lt;{ bytes, mime, ext, report }&gt;</code>（<code>stl</code> <code>obj</code> <code>glb</code> <code>step</code> <code>dxf</code>）· <code>save(x, fmt, { name, params, note })</code> 交給 <code>saver(bytes, info)</code>，沒有就瀏覽器下載 · <code>smlib()</code> · <code>manifold()</code> · <code>meshOf(x)</code></td></tr>
 <tr><td>純函式</td><td><code>checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })</code> · <code>weldMesh(mesh)</code> · <code>meshOf(x, { scale })</code>（TriMesh、smlibwasm Part、three.js Mesh／Object3D，Y 朝上轉 Z 朝上）· <code>toStlBytes</code> · <code>toObjText</code> · <code>toGlbBytes</code></td></tr>
+</tbody>
+</table></div>
+<h3 id="packages-openav-hw">@openav/hw<a class="anchor" href="#packages-openav-hw" aria-label="這一節的連結">#</a></h3>
+<p>L4 輸出（實體分支）· 裡面的電子。<code>fab</code> 管外殼，<code>hw</code> 管電子。規格寫零件和接線（<code>{ board, parts: { id: { part, have } }, wires: [['mcu.4', 'acc.SDA'], …] }</code>），<code>hw</code> 找出網路並回報，每個問題一句中文：3.3 V 訊號推 5 V 燈條、超過腳位能吃的電壓、供電超出範圍或只有在充電座上才有電、ESP8266 開機腳、一支腳接了兩種用途、I²C 位址撞號、電流超過穩壓器、電池時數。零件庫的數字都取自規格書，無法確認的是 <code>null</code>（待查），檢查會說判斷不了。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Hw</code></td><td><code>check(spec)</code> → <code>{ ok, issues: [{ level, code, text, at }], warnings, notes, nets, power: { rails, battery }, i2c }</code> · <code>diagram(spec)</code> → SVG 字串 · <code>bom(spec)</code> → <code>{ have, buy, unknown }</code>（不寫價格、不放購買連結）· <code>parts</code> · <code>part(key)</code> · <code>resolvePin(spec, ref)</code> · <code>nets(spec)</code></td></tr>
+<tr><td><code>HW_PARTS</code></td><td>零件庫：Feather HUZZAH ESP8266、Arduino Leonardo 與 UNO R3、RC522、HC-SR501、10 kΩ 電位器、LIS3DH、MPU-6050（GY-521）、WS2812B、SK6812、NeoPixel 12／16 顆燈環、單顆 LiPo（JST-PH）、TP4056 與 Micro-Lipo Type-C 充電板、Qi 接收模組</td></tr>
 </tbody>
 </table></div>
 <h3 id="packages-openav-timeline">@openav/timeline<a class="anchor" href="#packages-openav-timeline" aria-label="這一節的連結">#</a></h3>

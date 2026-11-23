@@ -306,6 +306,7 @@
             <li><a href="#packages-openav-out">@openav/out</a></li>
             <li><a href="#packages-openav-record">@openav/record</a></li>
             <li><a href="#packages-openav-fab">@openav/fab</a></li>
+            <li><a href="#packages-openav-hw">@openav/hw</a></li>
             <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
             <li><a href="#packages-openav-score">@openav/score</a></li>
             <li><a href="#packages-openav-pattern">@openav/pattern</a></li>
@@ -386,7 +387,7 @@
         <a class="docs-quick-card is-cheat" href="../docs/cheatsheet/"><strong>oav-p5 cheat sheet →</strong><span>Every name a p5 sketch uses with oav-p5 on one page, with pictures: shout, hit, play, smooth. Prints on one A4.</span></a>
         <a class="docs-quick-card" href="../docs/reference/"><strong>API reference →</strong><span>Looking for one name? Every variable, function, event and option of oav-p5 and every package export, searchable, each with an example you can run.</span></a>
       </div>
-      <p class="docs-stats">19 chapters · 202 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.9</a></p>
+      <p class="docs-stats">19 chapters · 203 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.9</a></p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -3749,7 +3750,7 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">15</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
-<p>Twenty-eight packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+<p>Twenty-nine packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
 npm yet.</p>
@@ -4043,6 +4044,15 @@ Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/exam
 <tbody>
 <tr><td><code>Fab</code></td><td><code>new Fab({ urls: { smlib, manifold }, scale, importer, download, context })</code> · <code>check(x, opts)</code> → report · <code>export(x, fmt, opts)</code> → <code>Promise&lt;{ bytes, mime, ext, report }&gt;</code> (<code>stl</code> <code>obj</code> <code>glb</code> <code>step</code> <code>dxf</code>) · <code>save(x, fmt, { name, params, note })</code> through <code>saver(bytes, info)</code> or a browser download · <code>smlib()</code> · <code>manifold()</code> · <code>meshOf(x)</code></td></tr>
 <tr><td>pure functions</td><td><code>checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })</code> · <code>weldMesh(mesh)</code> · <code>meshOf(x, { scale })</code> (TriMesh, smlibwasm Part, three.js Mesh/Object3D, Y up becomes Z up) · <code>toStlBytes</code> · <code>toObjText</code> · <code>toGlbBytes</code></td></tr>
+</tbody>
+</table></div>
+<h3 id="packages-openav-hw">@openav/hw<a class="anchor" href="#packages-openav-hw" aria-label="Link to this section">#</a></h3>
+<p>L4 output (physical branch) · what goes inside. <code>fab</code> checks the shell, <code>hw</code> checks the electronics. A spec lists the parts and the wires (<code>{ board, parts: { id: { part, have } }, wires: [['mcu.4', 'acc.SDA'], …] }</code>), and <code>hw</code> finds the nets and reports, one Chinese sentence per problem: a 3.3 V signal into a 5 V LED strip, a voltage above what a pin takes, a supply out of range or only there on the charger, ESP8266 boot pins, one pin wired to two jobs, I²C address clashes, current beyond a regulator, battery hours. The parts library takes every number from a datasheet; what could not be confirmed is <code>null</code> (待查) and the check says it cannot tell.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Hw</code></td><td><code>check(spec)</code> → <code>{ ok, issues: [{ level, code, text, at }], warnings, notes, nets, power: { rails, battery }, i2c }</code> · <code>diagram(spec)</code> → SVG string · <code>bom(spec)</code> → <code>{ have, buy, unknown }</code> (no prices, no shop links) · <code>parts</code> · <code>part(key)</code> · <code>resolvePin(spec, ref)</code> · <code>nets(spec)</code></td></tr>
+<tr><td><code>HW_PARTS</code></td><td>the library: Feather HUZZAH ESP8266, Arduino Leonardo and UNO R3, RC522, HC-SR501, 10 kΩ pot, LIS3DH, MPU-6050 (GY-521), WS2812B, SK6812, NeoPixel rings 12 and 16, 1-cell LiPo (JST-PH), TP4056 and Micro-Lipo USB-C chargers, Qi receiver</td></tr>
 </tbody>
 </table></div>
 <h3 id="packages-openav-timeline">@openav/timeline<a class="anchor" href="#packages-openav-timeline" aria-label="Link to this section">#</a></h3>
