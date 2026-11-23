@@ -173,6 +173,7 @@ export default {
       record: 'Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed',
       out: 'Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values',
       fab: 'Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files',
+      hw: 'What goes inside: parts with their datasheet numbers, a wiring check (logic levels, boot pins, I²C addresses, current, battery hours), a wiring diagram and a parts list',
       timeline: 'Param automation, scenes and cues: the clock of the show',
       score: 'The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails',
       pattern: 'Rhythm in one line: TidalCycles/Strudel-style mini-notation read into the hits of each bar (Euclidean rhythms, one-per-bar alternation, seeded chance)',

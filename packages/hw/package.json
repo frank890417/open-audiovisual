@@ -1,0 +1,33 @@
+{
+  "name": "@openav/hw",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/hw"
+  },
+  "lab": {
+    "module": "hw",
+    "files": [
+      "hw/parts.js",
+      "hw/check.js",
+      "hw/diagram.js",
+      "hw/bom.js",
+      "hw/index.js"
+    ],
+    "exports": [
+      "Hw",
+      "HW_PARTS"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.hw = Hw: check(spec) electronics report (logic levels, ESP8266 boot pins, a pin used twice, I²C address clashes, current against the board and the battery, battery hours, Chinese warnings), diagram(spec) wiring SVG, bom(spec) parts list (have / buy), parts (datasheet-sourced library), load() fetches the work's hardware.json; draws no UI.",
+    "remoteTab": null,
+    "since": "2026-11"
+  }
+}

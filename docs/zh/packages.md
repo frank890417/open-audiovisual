@@ -1,6 +1,6 @@
 # 套件一覽
 
-二十八個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+二十九個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
@@ -315,6 +315,15 @@ L4 輸出（實體分支）· 做得出來嗎？對任何網格出可製造性�
 |---|---|
 | `Fab` | `new Fab({ urls: { smlib, manifold }, scale, importer, download, context })` · `check(x, opts)` → 報告 · `export(x, fmt, opts)` → `Promise<{ bytes, mime, ext, report }>`（`stl` `obj` `glb` `step` `dxf`）· `save(x, fmt, { name, params, note })` 交給 `saver(bytes, info)`，沒有就瀏覽器下載 · `smlib()` · `manifold()` · `meshOf(x)` |
 | 純函式 | `checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })` · `weldMesh(mesh)` · `meshOf(x, { scale })`（TriMesh、smlibwasm Part、three.js Mesh／Object3D，Y 朝上轉 Z 朝上）· `toStlBytes` · `toObjText` · `toGlbBytes` |
+
+## @openav/hw
+
+L4 輸出（實體分支）· 裡面的電子。`fab` 管外殼，`hw` 管電子。規格寫零件和接線（`{ board, parts: { id: { part, have } }, wires: [['mcu.4', 'acc.SDA'], …] }`），`hw` 找出網路並回報，每個問題一句中文：3.3 V 訊號推 5 V 燈條、超過腳位能吃的電壓、供電超出範圍或只有在充電座上才有電、ESP8266 開機腳、一支腳接了兩種用途、I²C 位址撞號、電流超過穩壓器、電池時數。零件庫的數字都取自規格書，無法確認的是 `null`（待查），檢查會說判斷不了。
+
+| 匯出 | 簽章 |
+|---|---|
+| `Hw` | `check(spec)` → `{ ok, issues: [{ level, code, text, at }], warnings, notes, nets, power: { rails, battery }, i2c }` · `diagram(spec)` → SVG 字串 · `bom(spec)` → `{ have, buy, unknown }`（不寫價格、不放購買連結）· `parts` · `part(key)` · `resolvePin(spec, ref)` · `nets(spec)` |
+| `HW_PARTS` | 零件庫：Feather HUZZAH ESP8266、Arduino Leonardo 與 UNO R3、RC522、HC-SR501、10 kΩ 電位器、LIS3DH、MPU-6050（GY-521）、WS2812B、SK6812、NeoPixel 12／16 顆燈環、單顆 LiPo（JST-PH）、TP4056 與 Micro-Lipo Type-C 充電板、Qi 接收模組 |
 
 ## @openav/timeline
 

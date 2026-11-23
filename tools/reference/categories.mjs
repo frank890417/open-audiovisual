@@ -52,6 +52,8 @@ export const CATEGORIES = [
     hint: { en: 'The director\'s console and the backstage monitor feed.', zh: '導演控台與後台監看的資料流。' } },
   { id: 'fab', en: 'Digital fabrication (@openav/fab)', zh: '數位製造（@openav/fab）',
     hint: { en: 'Meshes, STL / GLB / OBJ export, checks.', zh: '網格、STL／GLB／OBJ 輸出、檢查。' } },
+  { id: 'hw', en: 'Hardware design (@openav/hw)', zh: '硬體設計（@openav/hw）',
+    hint: { en: 'Parts, wiring checks, wiring diagrams, parts lists.', zh: '零件、接線檢查、接線圖、零件清單。' } },
   { id: 'mcp', en: 'MCP tools for agents', zh: '給代理的 MCP 工具',
     hint: { en: 'The tools of packages/mcp/server.js.', zh: 'packages/mcp/server.js 提供的工具。' } },
 ];
@@ -60,7 +62,7 @@ export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);
 
 /** Where a name without an entry sits on the page while it waits for one (the ledger): by package. */
 export const PACKAGE_CATEGORY = {
-  audio: 'mic', chop: 'chop', chord: 'chord', console: 'backstage', core: 'core', drums: 'drums', fab: 'fab', keys: 'keys', leap: 'leap',
+  audio: 'mic', chop: 'chop', chord: 'chord', console: 'backstage', core: 'core', drums: 'drums', fab: 'fab', hw: 'hw', keys: 'keys', leap: 'leap',
   mapping: 'mapping', mcp: 'mcp', midi: 'midi-io', monitor: 'backstage', osc: 'osc', out: 'osc', pattern: 'drums', pose: 'pose', record: 'record',
   relay: 'remote', remote: 'remote', score: 'timeline', show: 'core', sound: 'sound', stage: 'core', surface: 'remote', timeline: 'timeline',
   'world-webtoe': 'core', sync: 'core',

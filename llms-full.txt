@@ -8,7 +8,7 @@
 > p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.5)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 28 packages, 26 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
+> Today: 29 packages, 26 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -341,7 +341,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-Twenty-eight plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+Twenty-nine plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 | layer | package | role |
@@ -362,6 +362,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 |  | [`@openav/out`](packages/out/) | Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values |
 |  | [`@openav/record`](packages/record/) | Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed |
 |  | [`@openav/fab`](packages/fab/) | Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files |
+|  | [`@openav/hw`](packages/hw/) | What goes inside: parts with their datasheet numbers, a wiring check (logic levels, boot pins, I²C addresses, current, battery hours), a wiring diagram and a parts list |
 | spines | [`@openav/timeline`](packages/timeline/) | Param automation, scenes and cues: the clock of the show |
 |  | [`@openav/score`](packages/score/) | The show as segment lengths: cuts, cues, holds, and a director that keeps it running when a module fails |
 |  | [`@openav/pattern`](packages/pattern/) | Rhythm in one line: TidalCycles/Strudel-style mini-notation read into the hits of each bar (Euclidean rhythms, one-per-bar alternation, seeded chance) |
@@ -423,7 +424,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-28 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1213 tests
+29 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1226 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -4643,7 +4644,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Twenty-eight packages live in `packages/<name>/`. Each is plain ES modules with no
+Twenty-nine packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -4990,6 +4991,15 @@ L4 output (physical branch) · can it be made? A manufacturability report for an
 |---|---|
 | `Fab` | `new Fab({ urls: { smlib, manifold }, scale, importer, download, context })` · `check(x, opts)` → report · `export(x, fmt, opts)` → `Promise<{ bytes, mime, ext, report }>` (`stl` `obj` `glb` `step` `dxf`) · `save(x, fmt, { name, params, note })` through `saver(bytes, info)` or a browser download · `smlib()` · `manifold()` · `meshOf(x)` |
 | pure functions | `checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })` · `weldMesh(mesh)` · `meshOf(x, { scale })` (TriMesh, smlibwasm Part, three.js Mesh/Object3D, Y up becomes Z up) · `toStlBytes` · `toObjText` · `toGlbBytes` |
+
+## @openav/hw
+
+L4 output (physical branch) · what goes inside. `fab` checks the shell, `hw` checks the electronics. A spec lists the parts and the wires (`{ board, parts: { id: { part, have } }, wires: [['mcu.4', 'acc.SDA'], …] }`), and `hw` finds the nets and reports, one Chinese sentence per problem: a 3.3 V signal into a 5 V LED strip, a voltage above what a pin takes, a supply out of range or only there on the charger, ESP8266 boot pins, one pin wired to two jobs, I²C address clashes, current beyond a regulator, battery hours. The parts library takes every number from a datasheet; what could not be confirmed is `null` (待查) and the check says it cannot tell.
+
+| export | signature |
+|---|---|
+| `Hw` | `check(spec)` → `{ ok, issues: [{ level, code, text, at }], warnings, notes, nets, power: { rails, battery }, i2c }` · `diagram(spec)` → SVG string · `bom(spec)` → `{ have, buy, unknown }` (no prices, no shop links) · `parts` · `part(key)` · `resolvePin(spec, ref)` · `nets(spec)` |
+| `HW_PARTS` | the library: Feather HUZZAH ESP8266, Arduino Leonardo and UNO R3, RC522, HC-SR501, 10 kΩ pot, LIS3DH, MPU-6050 (GY-521), WS2812B, SK6812, NeoPixel rings 12 and 16, 1-cell LiPo (JST-PH), TP4056 and Micro-Lipo USB-C chargers, Qi receiver |
 
 ## @openav/timeline
 
@@ -5666,7 +5676,7 @@ already runs. A layer earns that when people can build on it without asking. Wha
 
 # API reference (generated)
 
-> 530 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 532 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -9314,6 +9324,11 @@ function draw() {
 - `toObjText` (function, @openav/fab): `toObjText(mesh, name = 'fab')` — Writes a triangle mesh as OBJ text: welded vertices (`v x y z`), then faces (`f a b c`), one object, in millimetres.
 - `toStlBytes` (function, @openav/fab): `toStlBytes(mesh)` — Writes a triangle mesh as a binary STL file: 84 + 50 bytes per face, with a normal worked out for every face.
 - `weldMesh` (function, @openav/fab): `weldMesh(mesh, tolerance)` — Merges vertices that sit closer together than a tolerance and drops the faces that collapse; returns a new mesh with shared vertices.
+
+## hw
+
+- `Hw` (constant, @openav/hw): `Hw = object, 7 keys` — Checks how the electronics of a physical work are wired (logic levels, boot pins, I²C addresses, current, battery hours) and draws the wiring diagram and the parts list.
+- `HW_PARTS` (constant, @openav/hw): `HW_PARTS = object, 16 keys` — The parts library of @openav/hw: boards, sensors, LEDs and power parts, with pins, voltages, currents, I²C addresses and sizes taken from their datasheets.
 
 ## mcp
 
