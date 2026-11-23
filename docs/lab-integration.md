@@ -16,7 +16,10 @@ classic-script bundle of each OAV package it wants. Instead of a hard-coded list
 | `remoteTab` | optional `{id, label, icon, entry}`: adds a tab to the phone `/remote` app |
 | `since` | version or month |
 
-Rules: relative imports only, no runtime dependencies, no build step in OAV itself. The generator is
+Rules: relative imports only, no runtime dependencies, no build step in OAV itself, and **no `import.meta` in `files` or
+`wire`**: the lab runs them as one classic script, where it is a SyntaxError that takes the whole module down (the nightly
+sync stopped on it 2026-11-21…23). A file that needs its own address stays out of `files` and is `import()`ed on demand,
+failing soft in the lab (`midi/profiles/imported-list.js` → `importedUrlOf`). `tests/lab-declarations.test.js` checks it. The generator is
 idempotent and has a `--check` mode (exit 3 = OAV has something new to regenerate).
 
 ## Single source of truth: controllers and inputs live here

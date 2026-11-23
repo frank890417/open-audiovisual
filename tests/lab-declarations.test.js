@@ -49,6 +49,18 @@ test('every lab declaration is complete and buildable', () => {
   }
 });
 
+// The lab runs these files as one classic <script>: `import.meta` there is a SyntaxError that takes the whole module down
+// (2026-11-21…23: the nightly sync stopped on midi/profiles/imported.js). A file that needs its own address stays out of
+// lab.files and is import()ed on demand (see midi/profiles/imported-list.js → importedUrlOf).
+const code = (src) => src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`\\])\/\/.*$/gm, '$1');
+test('lab files and wires never say import.meta (they run as a classic script)', () => {
+  for (const d of decls) {
+    if (d.kind === 'declare') continue;
+    const files = [...d.files.map((f) => path.join(PK, f)), ...(d.wire ? [path.join(PK, d.dir, d.wire)] : [])];
+    for (const f of files) assert.doesNotMatch(code(fs.readFileSync(f, 'utf8')), /\bimport\s*\.\s*meta\b/, `${d.pkg} → ${d.module}: ${path.relative(PK, f)} uses import.meta`);
+  }
+});
+
 test('remote tabs: the app\'s built-in default list equals the declarations', async () => {
   const declared = decls.filter((d) => d.remoteTab).map((d) => d.remoteTab);
   assert.deepEqual(DEFAULT_PLUGIN_TABS, declared);

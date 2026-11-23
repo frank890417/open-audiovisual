@@ -4298,7 +4298,10 @@ classic-script bundle of each OAV package it wants. Instead of a hard-coded list
 <tr><td><code>since</code></td><td>version or month</td></tr>
 </tbody>
 </table></div>
-<p>Rules: relative imports only, no runtime dependencies, no build step in OAV itself. The generator is
+<p>Rules: relative imports only, no runtime dependencies, no build step in OAV itself, and <strong>no <code>import.meta</code> in <code>files</code> or
+<code>wire</code></strong>: the lab runs them as one classic script, where it is a SyntaxError that takes the whole module down (the nightly
+sync stopped on it 2026-11-21…23). A file that needs its own address stays out of <code>files</code> and is <code>import()</code>ed on demand,
+failing soft in the lab (<code>midi/profiles/imported-list.js</code> → <code>importedUrlOf</code>). <code>tests/lab-declarations.test.js</code> checks it. The generator is
 idempotent and has a <code>--check</code> mode (exit 3 = OAV has something new to regenerate).</p>
 <h3 id="lab-integration-single-source-of-truth-controllers-and-inputs-live-here">Single source of truth: controllers and inputs live here<a class="anchor" href="#lab-integration-single-source-of-truth-controllers-and-inputs-live-here" aria-label="Link to this section">#</a></h3>
 <p>Decided 2026-10-03: every controller and input module the lab uses is written <strong>in OAV</strong> and reaches the lab only by
