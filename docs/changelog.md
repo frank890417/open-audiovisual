@@ -165,6 +165,12 @@ The first tagged version; it gathers 0.1 to 0.2.4 (from 2026-10-13).
 
 ## Framework and site
 
+### 2026-11-24
+
+- **Hands, read the way a performer plays them.** `HandTracker` now names seven gestures per hand (fist, open, point, thumb up, thumb down, victory, I love you) and turns a pinch into an event: `hand/<side>/pinch-start` and `pinch-end`, only with the other three fingers out, so a fist is not a pinch. Each hand also gives its index fingertip, thumb to every fingertip, how open it is and its angle, and both hands their distance, midpoint and tilt. Every state starts once and ends once (two thresholds and an 80 ms hold). The numbers are the TouchDesigner `hand_features` module's, tuned on real hands. [Body and hands](https://openaudiovisual.com/docs/#inputs-body-and-hands)
+- **See what the camera sees.** `hands.overlay(ctx, w, h, { video: true })` draws the camera picture, the skeleton, the pinch line and its value, the angle, the gesture and the distance between the hands. `hands.feed(result)` plays recorded or made-up hands through the same signals. Example 27, Hand gestures, shows all of it, with two simulated hands until the camera is on.
+- **MediaPipe 1.2.3.** Hands and body load MediaPipe Tasks Vision 1.2.3 instead of 0.10.14: on the same frames it gave the same landmarks, gestures and body, in about the same time. `hand/<side>/pinch/index`, `pinch/middle` and `spread` keep their old values.
+
 ### 2026-11-15
 
 - **The framework has a version, and an address that stays put: 0.9.0.** A page of your own imports one file, `packages/openav.js`, from an address with the version in it, and that address never changes. No clone, no build. [Pin a version](https://openaudiovisual.com/docs/#quick-start-pin-a-version)

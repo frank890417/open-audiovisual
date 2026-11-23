@@ -16,10 +16,10 @@ const unstamp = (s) => s.replace(/\?v=[\w.+-]+/g, '');
 const catalogMod = () => import('../tools/examples/catalog.mjs');
 const dirs = (rel) => fs.readdirSync(path.join(ROOT, rel), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort();
 
-test('catalog: 26 entries, one per examples/NN-* folder, with every field', async () => {
+test('catalog: 27 entries, one per examples/NN-* folder, with every field', async () => {
   const { EXAMPLES, ROUTES } = await catalogMod();
   const folders = dirs('examples').filter((d) => /^\d\d-/.test(d));
-  assert.equal(EXAMPLES.length, 26);
+  assert.equal(EXAMPLES.length, 27);
   assert.deepEqual(EXAMPLES.map((e) => e.id).sort(), folders, 'the catalog lists exactly the example folders');
   for (const e of EXAMPLES) {
     assert.ok(exists(`examples/${e.id}/index.html`), `${e.id}: folder`);
@@ -67,7 +67,7 @@ test('catalog: docs anchors exist in the handbook, with the heading text as labe
   }
 });
 
-test('catalog: "next" makes one chain through all 26, no loop, ending at the index', async () => {
+test('catalog: "next" makes one chain through all 27, no loop, ending at the index', async () => {
   const { EXAMPLES, chain, byId } = await catalogMod();
   const ids = chain();
   assert.equal(ids.length, EXAMPLES.length);

@@ -101,18 +101,34 @@ Mirrored by default (webcam-as-mirror). y flipped: **1 = raised**.
 
 ## @openav/pose — HandTracker (21-landmark fine control)
 
-Per-hand pinch distances = four precise continuous controllers across two hands.
-Normalized by palm size, so distance to the camera doesn't change your pinch.
+Two hands from the camera, each with a gesture, a pinch you can trigger, and measures you can play.
+Distances are divided by the size of the hand and taken with x × the frame's aspect ratio, so neither
+the distance to the camera nor turning the hand sideways changes them. `<side>` is `left` or `right`.
 
 | signal | kind | range | meaning |
 |---|---|---|---|
-| `hand/left/present` `right/…` | continuous | 0/1 | hand visible |
-| `hand/left/x` `/y` | continuous | 0..1 | palm position (y: 1 = raised) |
-| `hand/left/pinch/index` | continuous | 0..1 | thumb-tip ↔ index-tip (0 = touching) |
-| `hand/left/pinch/middle` | continuous | 0..1 | thumb-tip ↔ middle-tip |
-| `hand/left/spread` | continuous | 0..1 | index-tip ↔ pinky-tip spread |
+| `hand/<side>/present` | continuous | 0/1 | hand visible |
+| `hand/<side>/x` `/y` | continuous | 0..1 | palm position (y: 1 = raised) |
+| `hand/<side>/pinch/index` `/pinch/middle` | continuous | 0..1 | thumb-tip ↔ index or middle tip ÷ 2.2 hand sizes (0 = touching; an open hand reads about 0.5) |
+| `hand/<side>/spread` | continuous | 0..1 | index-tip ↔ pinky-tip, same scale |
+| `hand/<side>/tip/x` `/y` | continuous | 0..1 | index fingertip (y: 1 = top) |
+| `hand/<side>/thumb/index` `/middle` `/ring` `/pinky` | continuous | 0..1 | thumb-tip ↔ each fingertip, calibrated: 0 = touching, 1 = wide open |
+| `hand/<side>/openness` | continuous | 0..1 | 0 = fist, 1 = all fingers out |
+| `hand/<side>/angle` | continuous | 0..1 | wrist → base of the middle finger: 0.5 = fingers up, 0.75 = pointing right, 0.25 = left |
+| `hand/<side>/speed` | continuous | 0..1 | palm speed, 1 = 3 frame heights per second |
+| `hand/<side>/pinched` | continuous | 0/1 | thumb on index with the other three fingers out |
+| `hand/<side>/pinch-start` `/pinch-end` | pulse | `{side, x, y, distance}` | thumb ↔ index below 0.35 hand sizes starts, above 0.56 ends |
+| `hand/<side>/gesture` | continuous | 0..7 | the gesture held: 0 none, 1 fist, 2 open, 3 point, 4 thumb-up, 5 thumb-down, 6 victory, 7 iloveyou |
+| `hand/<side>/gesture/<name>` | continuous | 0/1 | `fist` `open` `point` `thumb-up` `thumb-down` `victory` `iloveyou`: score above 0.5 starts, below 0.35 ends |
+| `hand/<side>/gesture/<name>-start` | pulse | `{side, x, y, gesture, score}` | that gesture begins |
+| `hand/both/present` | continuous | 0/1 | both hands visible |
+| `hand/both/distance` | continuous | 0..1 | palm centre ↔ palm centre (0.2 frame heights = 0, 1.0 = 1) |
+| `hand/both/x` `/y` | continuous | 0..1 | midpoint between the palms |
+| `hand/both/angle` | continuous | 0..1 | the line from the left palm to the right: 0.5 = level, above 0.5 = right hand higher |
 
-(`hand/right/*` mirrors the set. Both trackers expose `skeleton(ctx, w, h)` overlays.)
+A new state counts after it has lasted 80 ms, and a lost hand ends its pinch and gesture at once.
+The thresholds are `HandTracker`'s `thresholds` option (in a show, `modules: { hands: { thresholds } }`). Both trackers expose `skeleton(ctx, w, h)`;
+`hands.overlay(ctx, w, h)` also draws the pinch line, the angle, the gesture and the distance between the hands.
 
 ## @openav/leap
 

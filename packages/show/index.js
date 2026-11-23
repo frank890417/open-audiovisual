@@ -215,7 +215,8 @@ export async function createShow({
     signals.on('midi/note/on', ({ note, vel }) => chord.noteOn(note, vel ?? 0.8));
     signals.on('midi/note/off', ({ note }) => chord.noteOff(note));
   }
-  const hands = modules.hands ? new HandTracker({ signals }) : null;
+  // modules.hands: true · { thresholds, gestures, mirror } — the thresholds are retuned per room, so a show passes them here
+  const hands = modules.hands ? new HandTracker({ ...(typeof modules.hands === 'object' ? modules.hands : {}), signals }) : null;
   const pose = modules.pose ? new PoseTracker({ signals }) : null;
   // Leap Motion through the machine's leap-bridge (packages/leap/bridge). Loaded only when declared.
   // modules.leap: true · { url, simulate, fingers, box } — simulate: mouse/touch over the stage become hands

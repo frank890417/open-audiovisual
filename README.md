@@ -123,7 +123,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-<!--gen:w-examples-->Twenty-six<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
+<!--gen:w-examples-->Twenty-seven<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
 
 <!--gen:examples-grid-->
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
@@ -153,17 +153,17 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 </tr>
 <tr>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/03-pose-field/"><img src="assets/home/works/03.webp" width="260" alt="A blue and white mandala of fine layered lines."></a><br><b>03 · Hand instrument</b><br>Fingers as an instrument: pinch, fists, four pattern families.<br><a href="https://openaudiovisual.com/examples/03-pose-field/">play</a> · <a href="examples/03-pose-field/">source</a></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/27-hand-gestures/"><img src="assets/home/works/27.webp" width="260" alt="Two hand skeletons on black, green and yellow, labelled OPEN 0.66 and THUMB UP 0.72, with the pinch value on each and a dashed line between the palms reading hands 0.42; confetti falls above them."></a><br><b>27 · Hand gestures</b><br>What a camera can tell about two hands: gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands, drawn on the hands.<br><a href="https://openaudiovisual.com/examples/27-hand-gestures/">play</a> · <a href="examples/27-hand-gestures/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/12-leap-hands/"><img src="assets/home/works/12.webp" width="260" alt="A violet hand skeleton above green and blue ink strokes that fall like rain on black."></a><br><b>12 · Leap hands</b><br>A Leap Motion as an instrument; the mouse is a simulated hand when you have none.<br><a href="https://openaudiovisual.com/examples/12-leap-hands/">play</a> · <a href="examples/12-leap-hands/">source</a></td>
-<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/08-remote-surface/"><img src="assets/home/works/08.webp" width="260" alt="Blue and yellow streaks exploding outward from the lower centre."></a><br><b>08 · Remote surface</b><br>The phone is the instrument panel; the surface grows from the world's params.<br><a href="https://openaudiovisual.com/examples/08-remote-surface/">play</a> · <a href="examples/08-remote-surface/">source</a></td>
 </tr>
 <tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/08-remote-surface/"><img src="assets/home/works/08.webp" width="260" alt="Blue and yellow streaks exploding outward from the lower centre."></a><br><b>08 · Remote surface</b><br>The phone is the instrument panel; the surface grows from the world's params.<br><a href="https://openaudiovisual.com/examples/08-remote-surface/">play</a> · <a href="examples/08-remote-surface/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/23-p5-with-strudel/"><img src="assets/home/works/23.webp" width="260" alt="Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom."></a><br><b>23 · p5 with Strudel</b><br>Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase.<br><a href="https://openaudiovisual.com/examples/23-p5-with-strudel/">play</a> · <a href="examples/23-p5-with-strudel/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/24-p5-note-names/"><img src="assets/home/works/24.webp" width="260" alt="A yellow circle, square and triangle lit on black, labelled C4 = 60, E4 = 64 and G4 = 67, with G4 and 392.0 Hz written under them."></a><br><b>24 · p5 note names</b><br>noteIsDown('C4') works like noteIsDown(60): write note names (C4, c#4, Db3) wherever a note number goes; noteNumber(), noteName() and noteFreq() convert.<br><a href="https://openaudiovisual.com/examples/24-p5-note-names/">play</a> · <a href="examples/24-p5-note-names/">source</a></td>
-<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/25-p5-chop/"><img src="assets/home/works/25.webp" width="260" alt="A teal disc with a white hand and a thin ring around it, four dots under its centre and a small scope in the corner showing a bouncing line; env, spring and count values are written at the bottom."></a><br><b>25 · p5 numbers that move</b><br>env('kick'), spring(), speed() and count('kick', 4) shape a number the way TouchDesigner's Trigger, Spring, Speed and Count CHOPs do: a bass drum opens a disc, a spring bounces it back, a hand turns, every fourth kick changes the colour.<br><a href="https://openaudiovisual.com/examples/25-p5-chop/">play</a> · <a href="examples/25-p5-chop/">source</a></td>
 </tr>
 <tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/25-p5-chop/"><img src="assets/home/works/25.webp" width="260" alt="A teal disc with a white hand and a thin ring around it, four dots under its centre and a small scope in the corner showing a bouncing line; env, spring and count values are written at the bottom."></a><br><b>25 · p5 numbers that move</b><br>env('kick'), spring(), speed() and count('kick', 4) shape a number the way TouchDesigner's Trigger, Spring, Speed and Count CHOPs do: a bass drum opens a disc, a spring bounces it back, a hand turns, every fourth kick changes the colour.<br><a href="https://openaudiovisual.com/examples/25-p5-chop/">play</a> · <a href="examples/25-p5-chop/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/26-p5-rhythm-lab/"><img src="assets/home/works/26.webp" width="260" alt="A circle of sixteen steps with a white hand on the left; on the right the rhythm line bd ~ [~ bd] ~, ~ cp ~ cp, hh(5,8), 'changed by: type', and the three earlier lines; the keys 1 to 4, Z and S explained at the bottom."></a><br><b>26 · p5 rhythm lab</b><br>OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now.<br><a href="https://openaudiovisual.com/examples/26-p5-rhythm-lab/">play</a> · <a href="examples/26-p5-rhythm-lab/">source</a></td>
-<td></td>
 <td></td>
 </tr>
 </table>
@@ -430,7 +430,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-29 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1226 tests
+29 packages · 27 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1237 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

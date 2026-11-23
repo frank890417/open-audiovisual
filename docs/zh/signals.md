@@ -89,17 +89,30 @@
 
 ## @openav/pose — HandTracker（21 個關鍵點的精細控制）
 
-每隻手有兩個捏合距離，兩隻手加起來就是四個精準的連續控制器。數值依手掌大小正規化，所以手離鏡頭遠或近，捏合的值都不變。
+用鏡頭讀兩隻手，每隻手有一個手勢、一個可以觸發的「捏一下」，還有一組可以演奏的量。距離都除以手的大小，而且 x 乘上畫面的長寬比，所以手離鏡頭遠近、手轉向側面，數值都不變。`<side>` 是 `left` 或 `right`。
 
 | 訊號 | 種類 | 範圍 | 意義 |
 |---|---|---|---|
-| `hand/left/present` `right/…` | 連續 | 0/1 | 看得到這隻手 |
-| `hand/left/x` `/y` | 連續 | 0..1 | 手掌位置（y：1 = 舉高） |
-| `hand/left/pinch/index` | 連續 | 0..1 | 拇指指尖 ↔ 食指指尖（0 = 碰在一起） |
-| `hand/left/pinch/middle` | 連續 | 0..1 | 拇指指尖 ↔ 中指指尖 |
-| `hand/left/spread` | 連續 | 0..1 | 食指指尖 ↔ 小指指尖張開的距離 |
+| `hand/<side>/present` | 連續 | 0/1 | 看得到這隻手 |
+| `hand/<side>/x` `/y` | 連續 | 0..1 | 手掌位置（y：1 = 舉高） |
+| `hand/<side>/pinch/index` `/pinch/middle` | 連續 | 0..1 | 拇指指尖 ↔ 食指或中指指尖，除以 2.2 個手的大小（0 = 碰在一起，張開的手大約 0.5） |
+| `hand/<side>/spread` | 連續 | 0..1 | 食指指尖 ↔ 小指指尖，同樣的比例 |
+| `hand/<side>/tip/x` `/y` | 連續 | 0..1 | 食指指尖（y：1 = 畫面上方） |
+| `hand/<side>/thumb/index` `/middle` `/ring` `/pinky` | 連續 | 0..1 | 拇指指尖 ↔ 各指尖，校正過：0 = 碰在一起，1 = 張到最開 |
+| `hand/<side>/openness` | 連續 | 0..1 | 0 = 握拳，1 = 手指全部張開 |
+| `hand/<side>/angle` | 連續 | 0..1 | 手腕 → 中指根部：0.5 = 手指朝上，0.75 = 指向右邊，0.25 = 指向左邊 |
+| `hand/<side>/speed` | 連續 | 0..1 | 手掌速度，1 = 每秒 3 個畫面高 |
+| `hand/<side>/pinched` | 連續 | 0/1 | 拇指碰食指，而且其他三指張開 |
+| `hand/<side>/pinch-start` `/pinch-end` | 脈衝 | `{side, x, y, distance}` | 拇指 ↔ 食指小於 0.35 個手的大小開始，大於 0.56 結束 |
+| `hand/<side>/gesture` | 連續 | 0..7 | 現在的手勢：0 沒有、1 握拳、2 張開、3 指上、4 讚、5 倒讚、6 YA、7 I love you |
+| `hand/<side>/gesture/<name>` | 連續 | 0/1 | `fist` `open` `point` `thumb-up` `thumb-down` `victory` `iloveyou`：分數超過 0.5 開始，低於 0.35 結束 |
+| `hand/<side>/gesture/<name>-start` | 脈衝 | `{side, x, y, gesture, score}` | 這個手勢開始了 |
+| `hand/both/present` | 連續 | 0/1 | 兩隻手都看得到 |
+| `hand/both/distance` | 連續 | 0..1 | 兩個手掌中心的距離（0.2 個畫面高 = 0，1.0 = 1） |
+| `hand/both/x` `/y` | 連續 | 0..1 | 兩個手掌的中點 |
+| `hand/both/angle` | 連續 | 0..1 | 從左手掌到右手掌的連線：0.5 = 水平，大於 0.5 = 右手比較高 |
 
-（`hand/right/*` 是同樣的一組。兩種追蹤器都提供 `skeleton(ctx, w, h)` 骨架疊圖。）
+新的狀態要維持 80 毫秒才算數，手不見了，它的捏合和手勢馬上結束。門檻是 `HandTracker` 的 `thresholds` 選項（在演出裡是 `modules: { hands: { thresholds } }`）。兩種追蹤器都提供 `skeleton(ctx, w, h)`，`hands.overlay(ctx, w, h)` 還會畫出捏合的線、手的角度、手勢，以及兩手之間的距離。
 
 ## @openav/leap
 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- oav:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hand gestures · open-audiovisual example</title>
+<meta name="description" content="What a camera can tell about two hands: gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands, drawn on the hands. Plays with camera (hands) · simulated hands · on-screen piano.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/27-hand-gestures/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Hand gestures · open-audiovisual example">
+<meta property="og:description" content="What a camera can tell about two hands: gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands, drawn on the hands. Plays with camera (hands) · simulated hands · on-screen piano.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/27-hand-gestures/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hand gestures · open-audiovisual example">
+<meta name="twitter:description" content="What a camera can tell about two hands: gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands, drawn on the hands. Plays with camera (hands) · simulated hands · on-screen piano.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.9.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/27-hand-gestures/#webpage","url":"https://openaudiovisual.com/examples/27-hand-gestures/","name":"Hand gestures · open-audiovisual example","description":"What a camera can tell about two hands: gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands, drawn on the hands. Plays with camera (hands) · simulated hands · on-screen piano.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/27-hand-gestures/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/27-hand-gestures/#breadcrumb"},"significantLink":"https://openaudiovisual.com/examples/12-leap-hands/"},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/27-hand-gestures/#code","name":"Hand gestures (open-audiovisual example 27)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/27-hand-gestures","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/27-hand-gestures/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Hand gestures","item":"https://openaudiovisual.com/examples/27-hand-gestures/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css?v=dcdb1a44">
+<!-- /oav:head -->
+<script type="importmap">
+{
+  "imports": {
+    "@openav/core": "../../packages/core/index.js?v=dcdb1a44",
+    "@openav/midi": "../../packages/midi/index.js?v=dcdb1a44",
+    "@openav/keys": "../../packages/keys/index.js?v=dcdb1a44",
+    "@openav/chord": "../../packages/chord/index.js?v=dcdb1a44",
+    "@openav/audio": "../../packages/audio/index.js?v=dcdb1a44",
+    "@openav/pose": "../../packages/pose/index.js?v=dcdb1a44",
+    "@openav/sound": "../../packages/sound/index.js?v=dcdb1a44",
+    "@openav/mapping": "../../packages/mapping/index.js?v=dcdb1a44",
+    "@openav/timeline": "../../packages/timeline/index.js?v=dcdb1a44",
+    "@openav/stage": "../../packages/stage/index.js?v=dcdb1a44",
+    "@openav/console": "../../packages/console/index.js?v=dcdb1a44",
+    "@openav/monitor": "../../packages/monitor/index.js?v=dcdb1a44",
+    "@openav/show": "../../packages/show/index.js?v=dcdb1a44",
+    "@openav/world-webtoe": "../../packages/world-webtoe/index.js?v=dcdb1a44"
+  }
+}
+</script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+</head>
+<body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 27 · <a href="../../examples/#route-inputs">Anything can be an instrument</a></span><span lang="zh-Hant">範例 27 · <a href="../../zh/examples/#route-inputs">什麼都能當樂器</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Hand gestures</span><span lang="zh-Hant">手勢</span></h1>
+    <p class="g-teaches"><span lang="en">What a camera can tell about two hands: gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands, drawn on the hands.</span><span lang="zh-Hant">鏡頭能從兩隻手讀出什麼：手勢、捏一下、手張開多少、手的角度、兩手的距離，數字直接畫在手上。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Before the camera: two simulated hands open, pinch, make a fist, a victory sign and a thumb up. Watch the numbers on each hand and the signals in the console.</li><li>Turn on 🖐 hands and allow the camera. Open and close your right hand: the flower at your fingertip follows. Pinch thumb and index with the other fingers out: sparks.</li><li>Make a victory sign with the right hand to turn the colours, a thumb up for confetti, a left fist to let the sparks fall. Move both hands apart and together: the ring.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>鏡頭打開之前：兩隻模擬的手會張開、捏、握拳、比 YA、比讚。看每隻手上的數字，和控台裡的訊號。</li><li>打開 🖐 hands 並允許鏡頭。右手張開、握起：指尖的花跟著開合。拇指捏食指、其他三指張開：噴出火花。</li><li>右手比 YA 換顏色，比讚撒彩紙，左手握拳讓火花落下。兩手拉開、靠近：中間的圓圈跟著變大變小。</li></ol>
+    <p class="g-row"><span lang="en"><b>Needs:</b> Camera (hands).</span><span lang="zh-Hant"><b>需要：</b>鏡頭（手）。</span>
+        <span lang="en">No hardware? Use Simulated performer · On-screen piano.</span><span lang="zh-Hant">沒有硬體？用模擬演奏者、螢幕鋼琴。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/27-hand-gestures/main.js#L113-L127"><code>main.js:113–127</code></a> <span lang="en">Continuous measures and pulses alike reach the world through routes: a pinch or a gesture is a pulse param.</span><span lang="zh-Hant">連續的量和脈衝一樣經過路由送進世界：捏一下、一個手勢，就是一個脈衝參數。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/27-hand-gestures/main.js#L73"><code>main.js:73</code></a> <span lang="en">overlay() draws the camera picture, the skeleton and every number on the hands: the one place the world reads the input directly.</span><span lang="zh-Hant">overlay() 畫出鏡頭畫面、骨架和手上的每個數字：這是世界唯一直接讀輸入的地方。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/27-hand-gestures/main.js#L167-L168"><code>main.js:167–168</code></a> <span lang="en">feed() takes hands from anywhere (here, made-up ones) through the same features and signals as the camera's.</span><span lang="zh-Hant">feed() 讓任何來源的手（這裡是編出來的）走跟鏡頭一樣的計算和訊號。</span></li></ul>
+    
+    <p class="g-row"><b><span lang="en">In the docs</span><span lang="zh-Hant">文件裡</span>:</b> <span lang="en"><a href="../../docs/#inputs-body-and-hands">Body and hands</a></span><span lang="zh-Hant"><a href="../../zh/docs/#inputs-body-and-hands">身體與手</a></span></p>
+    <p class="g-next"><span lang="en"><b>Next:</b> <a href="../../examples/12-leap-hands/">12 Leap hands →</a></span><span lang="zh-Hant"><b>下一個：</b><a href="../../examples/12-leap-hands/">12 Leap 雙手 →</a></span>
+    <span lang="en"><a href="../../examples/">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js?v=dcdb1a44"></script>
+<!-- /oav:guide -->
+<script type="module" src="./main.js?v=dcdb1a44"></script>
+</body>
+</html>

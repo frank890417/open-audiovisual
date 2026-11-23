@@ -395,7 +395,7 @@
 <h2 id="introduction">簡介<a class="anchor" href="#introduction" aria-label="這一節的連結">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">01</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/introduction.md">docs/zh/introduction.md</a></span></p>
 <p>open-audiovisual（OAV）是一套在瀏覽器裡跑的 JavaScript 框架，給現場影音表演用。它只用原生的 ES module：不用建置、沒有相依套件、不用註冊帳號。把 repo clone 下來，跑一個檔案，打開一個網頁，就可以開始了。</p>
-<p>每一場演出都要從頭重做的那一塊，由它來處理：MIDI 的底層接線、把輸入變成參數、有場景的時間軸、導演控台、給演奏者的演出模式，以及給舞台監督的後台頁面。你只要寫<em>世界</em>，也就是作品本身。框架的介紹、一台即時在跑的樂器，還有二十六件範例作品，都在<a href="../../zh/">首頁</a>。</p>
+<p>每一場演出都要從頭重做的那一塊，由它來處理：MIDI 的底層接線、把輸入變成參數、有場景的時間軸、導演控台、給演奏者的演出模式，以及給舞台監督的後台頁面。你只要寫<em>世界</em>，也就是作品本身。框架的介紹、一台即時在跑的樂器，還有二十七件範例作品，都在<a href="../../zh/">首頁</a>。</p>
 <h3 id="introduction-who-it-is-for">給誰用<a class="anchor" href="#introduction-who-it-is-for" aria-label="這一節的連結">#</a></h3>
 <ul>
 <li><strong>演奏者</strong>用 MIDI 鍵盤、麥克風、鏡頭、手機或螢幕鋼琴來彈範例，從控台操作一場演出。</li>
@@ -1002,12 +1002,17 @@ midi.setListening(<span class="ts">'nanokontrol2'</span>, <span class="tk">false
 </table></div>
 <p>它是替演出設計的語意層，原本是為一件作品做的：協和讓花園開花，音堆讓花園凋零（範例 02）。完整的樂理分析不在它的範圍內。<code>detector.analyze(notes, vels)</code> 是純函式，你也可以自己呼叫。</p>
 <h3 id="inputs-body-and-hands">身體與手<a class="anchor" href="#inputs-body-and-hands" aria-label="這一節的連結">#</a></h3>
-<p><code>modules: { pose: true }</code> 加上一個 <code>PoseTracker</code>（一個身體），<code>modules: { hands: true }</code> 加上一個 <code>HandTracker</code>（兩隻手，每隻 21 個點）。按下 🕺 body 或 🖐 hands，鏡頭才會開始。兩者都用 MediaPipe Tasks Vision（0.10.14），第一次啟用時從 jsDelivr 載入，模型從 Google 的儲存空間下載。推論在你的電腦上跑，影像不會離開這台機器。畫面預設左右鏡像（<code>mirror: true</code>），你舉右手，畫面右邊的手跟著動。y 軸是反過來的，1 代表<em>舉高</em>。</p>
+<p><code>modules: { pose: true }</code> 加上一個 <code>PoseTracker</code>（一個身體），<code>modules: { hands: true }</code> 加上一個 <code>HandTracker</code>（兩隻手，每隻 21 個點，各有一個手勢）。按下 🕺 body 或 🖐 hands，鏡頭才會開始。兩者都用 MediaPipe Tasks Vision（1.2.3），第一次啟用時從 jsDelivr 載入，模型從 Google 的儲存空間下載。推論在你的電腦上跑，影像不會離開這台機器。畫面預設左右鏡像（<code>mirror: true</code>），你舉右手，畫面右邊的手跟著動。y 軸是反過來的，1 代表<em>舉高</em>。</p>
 <ul>
 <li><strong>身體</strong>：<code>pose/present</code>、<code>pose/hand/left/x|y</code>、<code>pose/hand/right/x|y</code>（手腕）、<code>pose/hand/left/v</code>、<code>pose/hand/right/v</code>（手腕速度）、<code>pose/hands/spread</code>、<code>pose/height</code>（鼻子高度：蹲下 ↔ 站起）、<code>pose/lean</code>（−1..1）。</li>
-<li><strong>手</strong>：每一側各有 <code>hand/&lt;side&gt;/present</code>、<code>hand/&lt;side&gt;/x|y</code>（手掌）、<code>hand/&lt;side&gt;/pinch/index</code> 和 <code>hand/&lt;side&gt;/pinch/middle</code>（拇指尖到手指尖）、<code>hand/&lt;side&gt;/spread</code>（食指尖到小指尖）。距離都除以手掌大小，所以手往鏡頭靠近，捏合的值不會變。捏緊時數值接近 0：如果希望越捏越大，在路由上設 <code>invert: true</code>（範例 03）。</li>
+<li><strong>手</strong>，每一側：<code>hand/&lt;side&gt;/present</code>、<code>hand/&lt;side&gt;/x|y</code>（手掌）、<code>hand/&lt;side&gt;/tip/x|y</code>（食指指尖）、<code>hand/&lt;side&gt;/thumb/index|middle|ring|pinky</code>（拇指指尖到各指尖，0 = 碰在一起，1 = 張到最開）、<code>hand/&lt;side&gt;/openness</code>（0 = 握拳，1 = 手指全開）、<code>hand/&lt;side&gt;/angle</code>（0.5 = 手指朝上，0.75 = 指向右邊）、<code>hand/&lt;side&gt;/speed</code>。最早的幾個量 <code>hand/&lt;side&gt;/pinch/index|middle</code> 和 <code>hand/&lt;side&gt;/spread</code> 維持原樣（張開的手在它們上面大約是 0.5，範例 03 用的就是它們）。</li>
+<li><strong>捏一下，當成事件</strong>：<code>hand/&lt;side&gt;/pinch-start</code> 和 <code>pinch-end</code>（脈衝，帶著指尖的 x、y），以及 <code>hand/&lt;side&gt;/pinched</code>（0/1）。拇指和食指要靠到 0.35 個手的大小以內，<em>而且其他三指張開</em>，所以握拳不會被當成捏。超過 0.56 就放開。</li>
+<li><strong>手勢</strong>：MediaPipe 的七種，<code>hand/&lt;side&gt;/gesture/fist|open|point|thumb-up|thumb-down|victory|iloveyou</code>（0/1，各有一個 <code>…-start</code> 脈衝），還有 <code>hand/&lt;side&gt;/gesture</code>（0 沒有，1 到 7 照上面的順序）。分數超過 0.5 開始，低於 0.35 結束。</li>
+<li><strong>兩隻手</strong>：<code>hand/both/present</code>、<code>hand/both/distance</code>（手掌到手掌）、<code>hand/both/x|y</code>（中點）、<code>hand/both/angle</code>（0.5 = 水平）。</li>
 </ul>
-<p>兩種追蹤器都能把骨架畫在 2D context 上：<code>tracker.skeleton(ctx, w, h)</code>。</p>
+<p>距離都除以手的大小，而且 x 乘上畫面的長寬比，所以手往鏡頭靠近、手轉向側面，捏合的值都不會變。捏緊時數值接近 0：如果希望越捏越大，在路由上設 <code>invert: true</code>（範例 03）。脈衝可以經過路由觸發一個脈衝參數，<code>{ source: 'hand/right/gesture/victory-start', target: 'turn' }</code>，所以一個手勢可以像打擊墊一樣切場景（範例 27）。</p>
+<p>這些門檻是在桌前用一個人的手調出來的，用的是同一套算法的 TouchDesigner 模組。在那裡 MediaPipe 的手勢分數只到 0.5 到 0.82，所以手勢從 0.5 開始算，而不是很多示範用的 0.7 到 0.8。換了鏡頭、距離或場地，就打開範例 27 看數字，再重新調：<code>createShow({ modules: { hands: { thresholds: { gestureOn: 0.6, pinchOn: 0.3 } } } })</code>，或在演出中直接改 <code>show.hands.thresholds.gestureOn = 0.6</code>（馬上生效）。<code>hands.features</code> 裡有沒換算過的值（<code>thumbRaw</code>、<code>opennessRaw</code>、手勢的分數）可以拿來調。<code>gestures: false</code> 只跑手部關鍵點，不分手勢。</p>
+<p>兩種追蹤器都能把骨架畫在 2D context 上：<code>tracker.skeleton(ctx, w, h)</code>。<code>hands.overlay(ctx, w, h, { video: true })</code> 把手部追蹤器量到的東西畫出來，調門檻或給觀眾看都可以：鏡頭畫面、骨架、拇指到食指的線和數值（捏住時變綠）、手的角度、手勢和分數，還有兩個手掌之間的線和距離。<code>hands.feed(result)</code> 讓任何來源的手（錄下來的關鍵點、別的偵測器、範例 27 編出來的那雙手）走同一套計算和訊號。</p>
 <h3 id="inputs-leap-motion">Leap Motion<a class="anchor" href="#inputs-leap-motion" aria-label="這一節的連結">#</a></h3>
 <p><code>modules: { leap: true }</code> 加上一個 <code>LeapInput</code>。瀏覽器讀不到感測器，所以每台電腦跑一支小橋接程式：<code>node packages/leap/bridge/leap-bridge.mjs</code>（要先裝 Ultraleap Hand Tracking；加 <code>--mock</code> 不接感測器也有兩隻會動的假手；macOS 上 <code>bash packages/leap/bridge/install.sh</code> 讓它開機就在跑）。它只在本機迴路上提供 <code>ws://127.0.0.1:6437</code>。控台的 <strong>L1 · Input</strong> 面板會說哪一段沒接上（橋接、追蹤服務、裝置），並畫出看到的手；面板上的 <em>simulate</em> 按鈕把滑鼠變成手。</p>
 <p>訊號：每一側各有 <code>leap/hand/&lt;side&gt;/present</code>、<code>x|y|z</code>（手掌在互動空間裡的位置，0..1，y 往上、z 朝向你）、<code>pinch</code>、<code>grab</code>、<code>roll|pitch|yaw</code>（弧度）、<code>speed</code>，指尖 <code>leap/hand/&lt;side&gt;/&lt;finger&gt;/x|y|z</code>；另有 <code>leap/hands</code>、<code>leap/both/distance</code>、<code>leap/status</code>；脈衝 <code>pinch-start|pinch-end</code>、<code>grab-start|grab-end</code>（每一側）與 <code>leap/both/pinch-start|pinch-end</code>，都有遲滯（捏超過 0.86 才開始、低於 0.5 才結束）。要畫手的關節，讀 <code>leap.hands</code>。同一支橋接在 <code>/v6.json</code> 回應舊的 <code>leap.js</code> 作品，在 <code>/raw</code> 送原始的手部資料（見範例 12 與套件 README）。</p>
@@ -2811,18 +2816,31 @@ button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await
 </tbody>
 </table></div>
 <h3 id="signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker（21 個關鍵點的精細控制）<a class="anchor" href="#signals-openav-pose-handtracker-21-landmark-fine-control" aria-label="這一節的連結">#</a></h3>
-<p>每隻手有兩個捏合距離，兩隻手加起來就是四個精準的連續控制器。數值依手掌大小正規化，所以手離鏡頭遠或近，捏合的值都不變。</p>
+<p>用鏡頭讀兩隻手，每隻手有一個手勢、一個可以觸發的「捏一下」，還有一組可以演奏的量。距離都除以手的大小，而且 x 乘上畫面的長寬比，所以手離鏡頭遠近、手轉向側面，數值都不變。<code>&lt;side&gt;</code> 是 <code>left</code> 或 <code>right</code>。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
 <tbody>
-<tr><td><code>hand/left/present</code> <code>right/…</code></td><td>連續</td><td>0/1</td><td>看得到這隻手</td></tr>
-<tr><td><code>hand/left/x</code> <code>/y</code></td><td>連續</td><td>0..1</td><td>手掌位置（y：1 = 舉高）</td></tr>
-<tr><td><code>hand/left/pinch/index</code></td><td>連續</td><td>0..1</td><td>拇指指尖 ↔ 食指指尖（0 = 碰在一起）</td></tr>
-<tr><td><code>hand/left/pinch/middle</code></td><td>連續</td><td>0..1</td><td>拇指指尖 ↔ 中指指尖</td></tr>
-<tr><td><code>hand/left/spread</code></td><td>連續</td><td>0..1</td><td>食指指尖 ↔ 小指指尖張開的距離</td></tr>
+<tr><td><code>hand/&lt;side&gt;/present</code></td><td>連續</td><td>0/1</td><td>看得到這隻手</td></tr>
+<tr><td><code>hand/&lt;side&gt;/x</code> <code>/y</code></td><td>連續</td><td>0..1</td><td>手掌位置（y：1 = 舉高）</td></tr>
+<tr><td><code>hand/&lt;side&gt;/pinch/index</code> <code>/pinch/middle</code></td><td>連續</td><td>0..1</td><td>拇指指尖 ↔ 食指或中指指尖，除以 2.2 個手的大小（0 = 碰在一起，張開的手大約 0.5）</td></tr>
+<tr><td><code>hand/&lt;side&gt;/spread</code></td><td>連續</td><td>0..1</td><td>食指指尖 ↔ 小指指尖，同樣的比例</td></tr>
+<tr><td><code>hand/&lt;side&gt;/tip/x</code> <code>/y</code></td><td>連續</td><td>0..1</td><td>食指指尖（y：1 = 畫面上方）</td></tr>
+<tr><td><code>hand/&lt;side&gt;/thumb/index</code> <code>/middle</code> <code>/ring</code> <code>/pinky</code></td><td>連續</td><td>0..1</td><td>拇指指尖 ↔ 各指尖，校正過：0 = 碰在一起，1 = 張到最開</td></tr>
+<tr><td><code>hand/&lt;side&gt;/openness</code></td><td>連續</td><td>0..1</td><td>0 = 握拳，1 = 手指全部張開</td></tr>
+<tr><td><code>hand/&lt;side&gt;/angle</code></td><td>連續</td><td>0..1</td><td>手腕 → 中指根部：0.5 = 手指朝上，0.75 = 指向右邊，0.25 = 指向左邊</td></tr>
+<tr><td><code>hand/&lt;side&gt;/speed</code></td><td>連續</td><td>0..1</td><td>手掌速度，1 = 每秒 3 個畫面高</td></tr>
+<tr><td><code>hand/&lt;side&gt;/pinched</code></td><td>連續</td><td>0/1</td><td>拇指碰食指，而且其他三指張開</td></tr>
+<tr><td><code>hand/&lt;side&gt;/pinch-start</code> <code>/pinch-end</code></td><td>脈衝</td><td><code>{side, x, y, distance}</code></td><td>拇指 ↔ 食指小於 0.35 個手的大小開始，大於 0.56 結束</td></tr>
+<tr><td><code>hand/&lt;side&gt;/gesture</code></td><td>連續</td><td>0..7</td><td>現在的手勢：0 沒有、1 握拳、2 張開、3 指上、4 讚、5 倒讚、6 YA、7 I love you</td></tr>
+<tr><td><code>hand/&lt;side&gt;/gesture/&lt;name&gt;</code></td><td>連續</td><td>0/1</td><td><code>fist</code> <code>open</code> <code>point</code> <code>thumb-up</code> <code>thumb-down</code> <code>victory</code> <code>iloveyou</code>：分數超過 0.5 開始，低於 0.35 結束</td></tr>
+<tr><td><code>hand/&lt;side&gt;/gesture/&lt;name&gt;-start</code></td><td>脈衝</td><td><code>{side, x, y, gesture, score}</code></td><td>這個手勢開始了</td></tr>
+<tr><td><code>hand/both/present</code></td><td>連續</td><td>0/1</td><td>兩隻手都看得到</td></tr>
+<tr><td><code>hand/both/distance</code></td><td>連續</td><td>0..1</td><td>兩個手掌中心的距離（0.2 個畫面高 = 0，1.0 = 1）</td></tr>
+<tr><td><code>hand/both/x</code> <code>/y</code></td><td>連續</td><td>0..1</td><td>兩個手掌的中點</td></tr>
+<tr><td><code>hand/both/angle</code></td><td>連續</td><td>0..1</td><td>從左手掌到右手掌的連線：0.5 = 水平，大於 0.5 = 右手比較高</td></tr>
 </tbody>
 </table></div>
-<p>（<code>hand/right/*</code> 是同樣的一組。兩種追蹤器都提供 <code>skeleton(ctx, w, h)</code> 骨架疊圖。）</p>
+<p>新的狀態要維持 80 毫秒才算數，手不見了，它的捏合和手勢馬上結束。門檻是 <code>HandTracker</code> 的 <code>thresholds</code> 選項（在演出裡是 <code>modules: { hands: { thresholds } }</code>）。兩種追蹤器都提供 <code>skeleton(ctx, w, h)</code>，<code>hands.overlay(ctx, w, h)</code> 還會畫出捏合的線、手的角度、手勢，以及兩手之間的距離。</p>
 <h3 id="signals-openav-leap">@openav/leap<a class="anchor" href="#signals-openav-leap" aria-label="這一節的連結">#</a></h3>
 <p>透過這台電腦的橋接程式讀 Leap Motion／Ultraleap。位置是手掌或指尖在互動空間裡的位置，正規化並夾在 0..1（x 往右、y 往上、z 朝向演出者）。<code>&lt;side&gt;</code> 是 <code>left</code> 或 <code>right</code>，<code>&lt;finger&gt;</code> 是 <code>thumb index middle ring pinky</code> 其中之一。</p>
 <div class="table-wrap"><table>
@@ -3363,7 +3381,7 @@ openav.mapper.routes                                    <span class="tc">// the 
 <h3 id="agents-a-prompt-to-paste">一段可以直接貼上的提示詞<a class="anchor" href="#agents-a-prompt-to-paste" aria-label="這一節的連結">#</a></h3>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/27-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/28-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 

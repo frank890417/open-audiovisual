@@ -184,8 +184,8 @@ yourself.
 ## Body and hands
 
 `modules: { pose: true }` adds a `PoseTracker` (one body), `modules: { hands: true }`
-a `HandTracker` (two hands, 21 points each). The camera starts when you click
-🕺 body or 🖐 hands. Both use MediaPipe Tasks Vision (0.10.14), loaded from
+a `HandTracker` (two hands, 21 points each, and a gesture for each). The camera starts when you click
+🕺 body or 🖐 hands. Both use MediaPipe Tasks Vision (1.2.3), loaded from
 jsDelivr with its model from Google's storage the first time you enable it; the
 inference runs on your machine and no video leaves it. The view is mirrored by
 default (`mirror: true`), like a mirror on stage, and y is flipped so 1 means
@@ -195,14 +195,41 @@ default (`mirror: true`), like a mirror on stage, and y is flipped so 1 means
   (wrists), `pose/hand/left/v`, `pose/hand/right/v` (wrist speed),
   `pose/hands/spread`, `pose/height` (nose height: crouch ↔ stand),
   `pose/lean` (−1..1).
-- **Hands**: per side, `hand/<side>/present`, `hand/<side>/x|y` (palm),
-  `hand/<side>/pinch/index` and `hand/<side>/pinch/middle` (thumb tip to finger
-  tip), `hand/<side>/spread` (index tip to pinky tip). Distances are divided by
-  palm size, so moving toward the camera does not change a pinch. A closed pinch
-  reads near 0: use `invert: true` on the route when closing should raise the
-  value (example 03).
+- **Hands**, per side: `hand/<side>/present`, `hand/<side>/x|y` (palm),
+  `hand/<side>/tip/x|y` (index fingertip), `hand/<side>/thumb/index|middle|ring|pinky`
+  (thumb tip to each fingertip, 0 = touching, 1 = wide open), `hand/<side>/openness`
+  (0 = fist, 1 = all fingers out), `hand/<side>/angle` (0.5 = fingers up, 0.75 = pointing right),
+  `hand/<side>/speed`. The first measures, `hand/<side>/pinch/index|middle` and
+  `hand/<side>/spread`, stay as they were (an open hand reads about 0.5 on them; example 03 plays them).
+- **A pinch, as an event**: `hand/<side>/pinch-start` and `pinch-end` (pulses, with the fingertip's
+  x and y), and `hand/<side>/pinched` (0/1). Thumb and index must come closer than 0.35 hand sizes
+  *with the other three fingers out*, so a fist is not a pinch; it ends above 0.56.
+- **Gestures**: MediaPipe's seven, `hand/<side>/gesture/fist|open|point|thumb-up|thumb-down|victory|iloveyou`
+  (0/1, and a `…-start` pulse each), and `hand/<side>/gesture` (0 none, 1–7 in that order). A gesture
+  starts when its score goes above 0.5 and ends below 0.35.
+- **Both hands**: `hand/both/present`, `hand/both/distance` (palm to palm), `hand/both/x|y`
+  (the midpoint), `hand/both/angle` (0.5 = level).
+
+Every distance is divided by the size of the hand and measured with x × the frame's aspect ratio,
+so moving toward the camera or turning the hand sideways does not change a pinch. A closed pinch
+reads near 0: use `invert: true` on the route when closing should raise the value (example 03).
+A pulse plays a pulse param through a route, `{ source: 'hand/right/gesture/victory-start', target: 'turn' }`,
+so a gesture can cue a scene the way a pad does (example 27).
+
+The thresholds were tuned on one performer's hands at a desk, with a TouchDesigner module that uses
+the same maths. MediaPipe's gesture scores reached only 0.5–0.82 there, which is why a gesture starts
+at 0.5 and not at the 0.7–0.8 many demos use. Another camera, another distance, another room: open
+example 27, watch the numbers and retune: `createShow({ modules: { hands: { thresholds: { gestureOn: 0.6, pinchOn: 0.3 } } } })`,
+or `show.hands.thresholds.gestureOn = 0.6` while it runs (it takes effect at once).
+`hands.features` has the unmapped values (`thumbRaw`, `opennessRaw`, the gesture's score) to tune with.
+`gestures: false` runs the hand landmarker alone, without gestures.
 
 Both trackers draw their skeleton on a 2D context: `tracker.skeleton(ctx, w, h)`.
+`hands.overlay(ctx, w, h, { video: true })` draws what the hand tracker measures, for tuning or for an
+audience: the camera picture, the skeleton, the thumb-to-index line with its value (green while
+pinched), the angle, the gesture and its score, and the line between the palms with its distance.
+`hands.feed(result)` sends hands from anywhere (recorded landmarks, another detector, the made-up
+pair in example 27) through the same measures and signals.
 
 ## Leap Motion
 

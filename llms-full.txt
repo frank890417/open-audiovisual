@@ -8,7 +8,7 @@
 > p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.5)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 29 packages, 26 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
+> Today: 29 packages, 27 examples, 27 MIDI controller profiles (21 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -176,7 +176,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-Twenty-six works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
+Twenty-seven works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
 
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
 
@@ -188,9 +188,9 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 
 [Streaks of green, purple and red particle dots bursting over black, above an on-screen MiniLab 3 controller with its keys and sound buttons.](https://openaudiovisual.com/examples/16-p5-sound/) 16 · p5 keys with sound startSound('piano') in setup(): every key from a MIDI keyboard, the 🎹 on screen or a phone is heard, and bursts into particles. [play](https://openaudiovisual.com/examples/16-p5-sound/) · [source](examples/16-p5-sound/) | [A large pink circle with a thin grey ring around it on dark blue.](https://openaudiovisual.com/examples/17-p5-microphone/) 17 · p5 microphone micLevel, bass and beat read the microphone the way p5 reads mouseX: a circle that grows when you speak, and no p5.sound. [play](https://openaudiovisual.com/examples/17-p5-microphone/) · [source](examples/17-p5-microphone/) | [A small green circle (micLevel) and a larger yellow one (lagged) over two traces: the green drops at once, the yellow falls slowly. A small scope sits in the corner.](https://openaudiovisual.com/examples/22-p5-lag/) 22 · p5 lag: smooth a jumpy value lag(micLevel, 0.03, 0.4) smooths a jumpy value the way TouchDesigner's Lag CHOP does, in the same seconds; scope() plots both in a corner of the page. [play](https://openaudiovisual.com/examples/22-p5-lag/) · [source](examples/22-p5-lag/)
 [A spiral of pink and blue dots above an on-screen MIDI keyboard controller.](https://openaudiovisual.com/examples/09-midi-controllers/) 09 · MIDI controllers On-screen controllers that move with the real ones you plug in. [play](https://openaudiovisual.com/examples/09-midi-controllers/) · [source](examples/09-midi-controllers/) | [Slender branching plants in a night garden, with green leaves and small blue, red and pink flowers.](https://openaudiovisual.com/examples/02-chord-garden/) 02 · Chord garden Triads bloom, clusters decay. The world listens to chords, never to keys. [play](https://openaudiovisual.com/examples/02-chord-garden/) · [source](examples/02-chord-garden/) | [A sphere packed with colourful cylinders seen end-on, like umbrellas.](https://openaudiovisual.com/examples/06-cylinder-earth/) 06 · Cylinder earth A 2020 voice-controlled WebGL sketch; mic bands or the built-in drum machine play it. [play](https://openaudiovisual.com/examples/06-cylinder-earth/) · [source](examples/06-cylinder-earth/)
-[A blue and white mandala of fine layered lines.](https://openaudiovisual.com/examples/03-pose-field/) 03 · Hand instrument Fingers as an instrument: pinch, fists, four pattern families. [play](https://openaudiovisual.com/examples/03-pose-field/) · [source](examples/03-pose-field/) | [A violet hand skeleton above green and blue ink strokes that fall like rain on black.](https://openaudiovisual.com/examples/12-leap-hands/) 12 · Leap hands A Leap Motion as an instrument; the mouse is a simulated hand when you have none. [play](https://openaudiovisual.com/examples/12-leap-hands/) · [source](examples/12-leap-hands/) | [Blue and yellow streaks exploding outward from the lower centre.](https://openaudiovisual.com/examples/08-remote-surface/) 08 · Remote surface The phone is the instrument panel; the surface grows from the world's params. [play](https://openaudiovisual.com/examples/08-remote-surface/) · [source](examples/08-remote-surface/)
-[Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom.](https://openaudiovisual.com/examples/23-p5-with-strudel/) 23 · p5 with Strudel Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase. [play](https://openaudiovisual.com/examples/23-p5-with-strudel/) · [source](examples/23-p5-with-strudel/) | [A yellow circle, square and triangle lit on black, labelled C4 = 60, E4 = 64 and G4 = 67, with G4 and 392.0 Hz written under them.](https://openaudiovisual.com/examples/24-p5-note-names/) 24 · p5 note names noteIsDown('C4') works like noteIsDown(60): write note names (C4, c#4, Db3) wherever a note number goes; noteNumber(), noteName() and noteFreq() convert. [play](https://openaudiovisual.com/examples/24-p5-note-names/) · [source](examples/24-p5-note-names/) | [A teal disc with a white hand and a thin ring around it, four dots under its centre and a small scope in the corner showing a bouncing line; env, spring and count values are written at the bottom.](https://openaudiovisual.com/examples/25-p5-chop/) 25 · p5 numbers that move env('kick'), spring(), speed() and count('kick', 4) shape a number the way TouchDesigner's Trigger, Spring, Speed and Count CHOPs do: a bass drum opens a disc, a spring bounces it back, a hand turns, every fourth kick changes the colour. [play](https://openaudiovisual.com/examples/25-p5-chop/) · [source](examples/25-p5-chop/)
-[A circle of sixteen steps with a white hand on the left; on the right the rhythm line bd ~ [~ bd] ~, ~ cp ~ cp, hh(5,8), 'changed by: type', and the three earlier lines; the keys 1 to 4, Z and S explained at the bottom.](https://openaudiovisual.com/examples/26-p5-rhythm-lab/) 26 · p5 rhythm lab OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now. [play](https://openaudiovisual.com/examples/26-p5-rhythm-lab/) · [source](examples/26-p5-rhythm-lab/)
+[A blue and white mandala of fine layered lines.](https://openaudiovisual.com/examples/03-pose-field/) 03 · Hand instrument Fingers as an instrument: pinch, fists, four pattern families. [play](https://openaudiovisual.com/examples/03-pose-field/) · [source](examples/03-pose-field/) | [Two hand skeletons on black, green and yellow, labelled OPEN 0.66 and THUMB UP 0.72, with the pinch value on each and a dashed line between the palms reading hands 0.42; confetti falls above them.](https://openaudiovisual.com/examples/27-hand-gestures/) 27 · Hand gestures What a camera can tell about two hands: gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands, drawn on the hands. [play](https://openaudiovisual.com/examples/27-hand-gestures/) · [source](examples/27-hand-gestures/) | [A violet hand skeleton above green and blue ink strokes that fall like rain on black.](https://openaudiovisual.com/examples/12-leap-hands/) 12 · Leap hands A Leap Motion as an instrument; the mouse is a simulated hand when you have none. [play](https://openaudiovisual.com/examples/12-leap-hands/) · [source](examples/12-leap-hands/)
+[Blue and yellow streaks exploding outward from the lower centre.](https://openaudiovisual.com/examples/08-remote-surface/) 08 · Remote surface The phone is the instrument panel; the surface grows from the world's params. [play](https://openaudiovisual.com/examples/08-remote-surface/) · [source](examples/08-remote-surface/) | [Soft coloured circles rising across the lower half, a yellow hand pointing up inside a thin ring, and the room oav-strudel-demo written at the bottom.](https://openaudiovisual.com/examples/23-p5-with-strudel/) 23 · p5 with Strudel Strudel plays in another tab and this sketch draws: every note Strudel sends to OAV Virtual MIDI calls notePressed(), and its clock turns drumPhase. [play](https://openaudiovisual.com/examples/23-p5-with-strudel/) · [source](examples/23-p5-with-strudel/) | [A yellow circle, square and triangle lit on black, labelled C4 = 60, E4 = 64 and G4 = 67, with G4 and 392.0 Hz written under them.](https://openaudiovisual.com/examples/24-p5-note-names/) 24 · p5 note names noteIsDown('C4') works like noteIsDown(60): write note names (C4, c#4, Db3) wherever a note number goes; noteNumber(), noteName() and noteFreq() convert. [play](https://openaudiovisual.com/examples/24-p5-note-names/) · [source](examples/24-p5-note-names/)
+[A teal disc with a white hand and a thin ring around it, four dots under its centre and a small scope in the corner showing a bouncing line; env, spring and count values are written at the bottom.](https://openaudiovisual.com/examples/25-p5-chop/) 25 · p5 numbers that move env('kick'), spring(), speed() and count('kick', 4) shape a number the way TouchDesigner's Trigger, Spring, Speed and Count CHOPs do: a bass drum opens a disc, a spring bounces it back, a hand turns, every fourth kick changes the colour. [play](https://openaudiovisual.com/examples/25-p5-chop/) · [source](examples/25-p5-chop/) | [A circle of sixteen steps with a white hand on the left; on the right the rhythm line bd ~ [~ bd] ~, ~ cp ~ cp, hh(5,8), 'changed by: type', and the three earlier lines; the keys 1 to 4, Z and S explained at the bottom.](https://openaudiovisual.com/examples/26-p5-rhythm-lab/) 26 · p5 rhythm lab OAVp5.drums.edit('bd(3,8), …') swaps the rhythm like typing it, OAVp5.drums.undo() goes back a line, OAVp5.drums.strudelUrl opens the line in Strudel; rhythmChanged() says what the line is now. [play](https://openaudiovisual.com/examples/26-p5-rhythm-lab/) · [source](examples/26-p5-rhythm-lab/)
 
 **③ Bring another picture engine**: Bring your own: a node patch, a 2023 p5 sketch, a 2021 particle system.
 
@@ -424,7 +424,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-29 packages · 26 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1226 tests
+29 packages · 27 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1237 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -598,7 +598,7 @@ It handles the part every show rebuilds from scratch: MIDI plumbing, turning
 inputs into parameters, a timeline with scenes, a director's console, a
 performance mode for the performer, and a backstage page for the stage manager.
 You write the *world*, the piece itself. The pitch, a live instrument and the
-twenty-six example works are on the [homepage](https://openaudiovisual.com/).
+twenty-seven example works are on the [homepage](https://openaudiovisual.com/).
 
 ## Who it is for
 
@@ -1699,8 +1699,8 @@ yourself.
 ## Body and hands
 
 `modules: { pose: true }` adds a `PoseTracker` (one body), `modules: { hands: true }`
-a `HandTracker` (two hands, 21 points each). The camera starts when you click
-🕺 body or 🖐 hands. Both use MediaPipe Tasks Vision (0.10.14), loaded from
+a `HandTracker` (two hands, 21 points each, and a gesture for each). The camera starts when you click
+🕺 body or 🖐 hands. Both use MediaPipe Tasks Vision (1.2.3), loaded from
 jsDelivr with its model from Google's storage the first time you enable it; the
 inference runs on your machine and no video leaves it. The view is mirrored by
 default (`mirror: true`), like a mirror on stage, and y is flipped so 1 means
@@ -1710,14 +1710,41 @@ default (`mirror: true`), like a mirror on stage, and y is flipped so 1 means
   (wrists), `pose/hand/left/v`, `pose/hand/right/v` (wrist speed),
   `pose/hands/spread`, `pose/height` (nose height: crouch ↔ stand),
   `pose/lean` (−1..1).
-- **Hands**: per side, `hand/<side>/present`, `hand/<side>/x|y` (palm),
-  `hand/<side>/pinch/index` and `hand/<side>/pinch/middle` (thumb tip to finger
-  tip), `hand/<side>/spread` (index tip to pinky tip). Distances are divided by
-  palm size, so moving toward the camera does not change a pinch. A closed pinch
-  reads near 0: use `invert: true` on the route when closing should raise the
-  value (example 03).
+- **Hands**, per side: `hand/<side>/present`, `hand/<side>/x|y` (palm),
+  `hand/<side>/tip/x|y` (index fingertip), `hand/<side>/thumb/index|middle|ring|pinky`
+  (thumb tip to each fingertip, 0 = touching, 1 = wide open), `hand/<side>/openness`
+  (0 = fist, 1 = all fingers out), `hand/<side>/angle` (0.5 = fingers up, 0.75 = pointing right),
+  `hand/<side>/speed`. The first measures, `hand/<side>/pinch/index|middle` and
+  `hand/<side>/spread`, stay as they were (an open hand reads about 0.5 on them; example 03 plays them).
+- **A pinch, as an event**: `hand/<side>/pinch-start` and `pinch-end` (pulses, with the fingertip's
+  x and y), and `hand/<side>/pinched` (0/1). Thumb and index must come closer than 0.35 hand sizes
+  *with the other three fingers out*, so a fist is not a pinch; it ends above 0.56.
+- **Gestures**: MediaPipe's seven, `hand/<side>/gesture/fist|open|point|thumb-up|thumb-down|victory|iloveyou`
+  (0/1, and a `…-start` pulse each), and `hand/<side>/gesture` (0 none, 1–7 in that order). A gesture
+  starts when its score goes above 0.5 and ends below 0.35.
+- **Both hands**: `hand/both/present`, `hand/both/distance` (palm to palm), `hand/both/x|y`
+  (the midpoint), `hand/both/angle` (0.5 = level).
+
+Every distance is divided by the size of the hand and measured with x × the frame's aspect ratio,
+so moving toward the camera or turning the hand sideways does not change a pinch. A closed pinch
+reads near 0: use `invert: true` on the route when closing should raise the value (example 03).
+A pulse plays a pulse param through a route, `{ source: 'hand/right/gesture/victory-start', target: 'turn' }`,
+so a gesture can cue a scene the way a pad does (example 27).
+
+The thresholds were tuned on one performer's hands at a desk, with a TouchDesigner module that uses
+the same maths. MediaPipe's gesture scores reached only 0.5–0.82 there, which is why a gesture starts
+at 0.5 and not at the 0.7–0.8 many demos use. Another camera, another distance, another room: open
+example 27, watch the numbers and retune: `createShow({ modules: { hands: { thresholds: { gestureOn: 0.6, pinchOn: 0.3 } } } })`,
+or `show.hands.thresholds.gestureOn = 0.6` while it runs (it takes effect at once).
+`hands.features` has the unmapped values (`thumbRaw`, `opennessRaw`, the gesture's score) to tune with.
+`gestures: false` runs the hand landmarker alone, without gestures.
 
 Both trackers draw their skeleton on a 2D context: `tracker.skeleton(ctx, w, h)`.
+`hands.overlay(ctx, w, h, { video: true })` draws what the hand tracker measures, for tuning or for an
+audience: the camera picture, the skeleton, the thumb-to-index line with its value (green while
+pinched), the angle, the gesture and its score, and the line between the palms with its distance.
+`hands.feed(result)` sends hands from anywhere (recorded landmarks, another detector, the made-up
+pair in example 27) through the same measures and signals.
 
 ## Leap Motion
 
@@ -4533,18 +4560,34 @@ Mirrored by default (webcam-as-mirror). y flipped: **1 = raised**.
 
 ## @openav/pose — HandTracker (21-landmark fine control)
 
-Per-hand pinch distances = four precise continuous controllers across two hands.
-Normalized by palm size, so distance to the camera doesn't change your pinch.
+Two hands from the camera, each with a gesture, a pinch you can trigger, and measures you can play.
+Distances are divided by the size of the hand and taken with x × the frame's aspect ratio, so neither
+the distance to the camera nor turning the hand sideways changes them. `<side>` is `left` or `right`.
 
 | signal | kind | range | meaning |
 |---|---|---|---|
-| `hand/left/present` `right/…` | continuous | 0/1 | hand visible |
-| `hand/left/x` `/y` | continuous | 0..1 | palm position (y: 1 = raised) |
-| `hand/left/pinch/index` | continuous | 0..1 | thumb-tip ↔ index-tip (0 = touching) |
-| `hand/left/pinch/middle` | continuous | 0..1 | thumb-tip ↔ middle-tip |
-| `hand/left/spread` | continuous | 0..1 | index-tip ↔ pinky-tip spread |
+| `hand/<side>/present` | continuous | 0/1 | hand visible |
+| `hand/<side>/x` `/y` | continuous | 0..1 | palm position (y: 1 = raised) |
+| `hand/<side>/pinch/index` `/pinch/middle` | continuous | 0..1 | thumb-tip ↔ index or middle tip ÷ 2.2 hand sizes (0 = touching; an open hand reads about 0.5) |
+| `hand/<side>/spread` | continuous | 0..1 | index-tip ↔ pinky-tip, same scale |
+| `hand/<side>/tip/x` `/y` | continuous | 0..1 | index fingertip (y: 1 = top) |
+| `hand/<side>/thumb/index` `/middle` `/ring` `/pinky` | continuous | 0..1 | thumb-tip ↔ each fingertip, calibrated: 0 = touching, 1 = wide open |
+| `hand/<side>/openness` | continuous | 0..1 | 0 = fist, 1 = all fingers out |
+| `hand/<side>/angle` | continuous | 0..1 | wrist → base of the middle finger: 0.5 = fingers up, 0.75 = pointing right, 0.25 = left |
+| `hand/<side>/speed` | continuous | 0..1 | palm speed, 1 = 3 frame heights per second |
+| `hand/<side>/pinched` | continuous | 0/1 | thumb on index with the other three fingers out |
+| `hand/<side>/pinch-start` `/pinch-end` | pulse | `{side, x, y, distance}` | thumb ↔ index below 0.35 hand sizes starts, above 0.56 ends |
+| `hand/<side>/gesture` | continuous | 0..7 | the gesture held: 0 none, 1 fist, 2 open, 3 point, 4 thumb-up, 5 thumb-down, 6 victory, 7 iloveyou |
+| `hand/<side>/gesture/<name>` | continuous | 0/1 | `fist` `open` `point` `thumb-up` `thumb-down` `victory` `iloveyou`: score above 0.5 starts, below 0.35 ends |
+| `hand/<side>/gesture/<name>-start` | pulse | `{side, x, y, gesture, score}` | that gesture begins |
+| `hand/both/present` | continuous | 0/1 | both hands visible |
+| `hand/both/distance` | continuous | 0..1 | palm centre ↔ palm centre (0.2 frame heights = 0, 1.0 = 1) |
+| `hand/both/x` `/y` | continuous | 0..1 | midpoint between the palms |
+| `hand/both/angle` | continuous | 0..1 | the line from the left palm to the right: 0.5 = level, above 0.5 = right hand higher |
 
-(`hand/right/*` mirrors the set. Both trackers expose `skeleton(ctx, w, h)` overlays.)
+A new state counts after it has lasted 80 ms, and a lost hand ends its pinch and gesture at once.
+The thresholds are `HandTracker`'s `thresholds` option (in a show, `modules: { hands: { thresholds } }`). Both trackers expose `skeleton(ctx, w, h)`;
+`hands.overlay(ctx, w, h)` also draws the pinch line, the angle, the gesture and the distance between the hands.
 
 ## @openav/leap
 
@@ -5256,7 +5299,7 @@ openav.mapper.routes                                    // the wiring
 ```text
 Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/27-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/28-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   <describe the performance, e.g. "a jellyfish world that blooms on consonant chords">
 
@@ -9195,7 +9238,7 @@ function draw() {
 
 ## pose
 
-- `HandTracker` (class, @openav/pose): `new HandTracker({ signals = null, mirror = true } = {})` — Tracks up to two hands from the camera with 21 landmarks each and publishes palm position and thumb-to-finger pinch distances as `hand/*` signals. (before it has a value: Call `await hands.enable()`: it loads the MediaPipe library from jsDelivr and the hand model from Google's model storage (so it needs the network), asks for the camera (`https` or `localhost`, and the user must allow it) and starts the loop. Until then the signals sit at their starting values.)
+- `HandTracker` (class, @openav/pose): `new HandTracker({ signals = null, mirror = true, gestures = true, thresholds = {} } = {})` — Tracks up to two hands from the camera and publishes positions, pinches, openness, angle, seven gestures and the distance between the hands as `hand/*` signals. (before it has a value: Call `await hands.enable()`: it loads the MediaPipe library from jsDelivr and the gesture model (or the hand model with `gestures: false`) from Google's model storage (so it needs the network), asks for the camera (`https` or `localhost`, and the user must allow it) and starts the loop. Until then the signals sit at their starting values. `feed()` works without any of that.)
 - `PoseTracker` (class, @openav/pose): `new PoseTracker({ signals = null, mirror = true } = {})` — Tracks one body from the camera and publishes wrist positions, wrist speed, hand spread, height and lean as `pose/*` signals. (before it has a value: Call `await pose.enable()`: it loads the MediaPipe library from jsDelivr and the model from Google's model storage (so it needs the network), asks the browser for the camera (the page needs `https` or `localhost`, and the user must allow it), and starts the loop. Until then every signal sits at its starting value.)
 
 ## chord

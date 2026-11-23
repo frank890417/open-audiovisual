@@ -16,28 +16,28 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/docs/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/docs/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/docs/reference/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/docs/reference/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/"/>
@@ -898,14 +898,14 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/examples/</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/examples/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/examples/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/examples/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/examples/</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/examples/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/examples/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/examples/"/>
@@ -920,7 +920,7 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/examples/03-pose-field/</loc>
-    <lastmod>2026-11-22</lastmod>
+    <lastmod>2026-11-24</lastmod>
   </url>
   <url>
     <loc>https://openaudiovisual.com/examples/04-webtoe-stage/</loc>
@@ -1015,6 +1015,10 @@
     <lastmod>2026-11-22</lastmod>
   </url>
   <url>
+    <loc>https://openaudiovisual.com/examples/27-hand-gestures/</loc>
+    <lastmod>2026-11-24</lastmod>
+  </url>
+  <url>
     <loc>https://openaudiovisual.com/p5/</loc>
     <lastmod>2026-11-19</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/p5/"/>
@@ -1030,14 +1034,14 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/changelog/</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/changelog/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/changelog/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/changelog/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/changelog/</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/changelog/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/changelog/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/changelog/"/>

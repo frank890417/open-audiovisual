@@ -93,7 +93,7 @@
         <p class="eyebrow facts"><a href="../zh/changelog/">oav-p5 0.8 · 框架 0.9</a> · MIT 授權 · 零建置 · 零相依</p>
       </div>
       <nav class="doors" aria-label="從哪裡開始">
-        <a class="door door-1" href="#works"><span class="door-who">我做表演</span><span class="door-what">看看它做得出什麼，直接玩二十六件作品</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-1" href="#works"><span class="door-who">我做表演</span><span class="door-what">看看它做得出什麼，直接玩二十七件作品</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-2" href="#start"><span class="door-who">我寫程式</span><span class="door-what">一分鐘跑起來，再寫自己的世界</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-3" href="../llms.txt"><span class="door-who">我是 AI 代理</span><span class="door-what">先讀 /llms.txt，再讀 AGENTS.md</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-4" href="../zh/p5/"><span class="door-who">我用 p5.js／OpenProcessing</span><span class="door-what">加一行，就有控制器、聲音、鼓機和錄影</span><span class="door-arrow" aria-hidden="true">→</span></a>
@@ -222,7 +222,7 @@
     
     <header class="sec-head">
       <p class="eyebrow">03 · 作品</p>
-      <h2 id="works-title">二十六件作品，現在就能打開</h2>
+      <h2 id="works-title">二十七件作品，現在就能打開</h2>
       <p class="sec-lede">每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。進到任何一個範例：空白鍵播放時間軸，T 是演出模式，F 是全螢幕。</p>
     </header>
     <ol class="works">
@@ -332,6 +332,18 @@
           <p class="work-text">手指就是樂器：一組捏合控制鬆緊，另一組長出手臂，兩手握拳就綻放。四種圖案輪流切換：曼陀羅、利薩如、萬花尺、蛛網。</p>
           <p class="work-route"><span>②</span> 什麼都能當樂器</p>
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/03-pose-field">原始碼 ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-27">
+        <div class="work-img"><img src="../assets/home/works/27.webp" width="800" height="500" loading="lazy" decoding="async" alt="黑底上一綠一黃兩副手的骨架，標著 OPEN 0.66 和 THUMB UP 0.72，每隻手上有捏合的數值，兩個手掌之間一條虛線寫著 hands 0.42，上方落著彩紙。"></div>
+        <div class="work-label">
+          <p class="work-n">27</p>
+          <h3><a class="work-link" href="../examples/27-hand-gestures/">手勢</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> 鏡頭（手）· 模擬的手 · 螢幕鋼琴</p>
+          <p class="work-text">鏡頭能從兩隻手讀出什麼：七種手勢、捏一下、手張開多少、手的角度、兩手的距離。數字直接畫在手上，鏡頭打開之前有兩隻模擬的手在演。</p>
+          <p class="work-route"><span>②</span> 什麼都能當樂器</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/27-hand-gestures">原始碼 ↗</a></p>
         </div>
       </li>
       <li class="work" id="work-12">
@@ -587,7 +599,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p>宣告作品能被什麼演奏（參數），對事件做反應，然後畫出來。交給 <code>createShow()</code>，其他部分一起到位：鋼琴、映射、時間軸、控台、聲音、後台。旁邊放一個帶 import map 的 <code>index.html</code>，照範例 01 的寫法。</p>
         
       <div class="term ">
-        <div class="term-bar"><span>examples/27-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">複製</button></div>
+        <div class="term-bar"><span>examples/28-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">複製</button></div>
         <pre id="code-world"><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
 
@@ -814,7 +826,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <div class="term-bar"><span>prompt</span><button type="button" class="copy" data-copy="agent-prompt">複製</button></div>
           <pre id="agent-prompt"><code>Clone https://github.com/frank890417/open-audiovisual，先讀 AGENTS.md。
 執行 `node serve.js`，打開 http://localhost:8080/examples/01-hello-particles/，看最小的完整演出長什麼樣子。
-把 01-hello-particles 複製成 examples/27-&lt;名稱&gt;/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：
+把 01-hello-particles 複製成 examples/28-&lt;名稱&gt;/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：
 
   &lt;描述這場表演，例如「一個遇到和諧和弦就綻放的水母世界」&gt;
 

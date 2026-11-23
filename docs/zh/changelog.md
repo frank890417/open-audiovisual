@@ -144,6 +144,12 @@
 
 ## 框架與網站
 
+### 2026-11-24
+
+- **用演出者的方式讀手。** `HandTracker` 現在會替每隻手判斷七種手勢（握拳、張開、指上、讚、倒讚、YA、I love you），也把捏一下變成事件：`hand/<side>/pinch-start` 和 `pinch-end`，而且其他三指要張開才算，握拳不會被當成捏。每隻手還有食指指尖、拇指到每根指尖的距離、張開程度和角度，兩隻手有距離、中點和傾斜。每個狀態只開始一次、結束一次（兩個門檻加上 80 毫秒的維持）。數字來自 TouchDesigner 的 `hand_features` 模組，用真人的手調過。[身體與手](https://openaudiovisual.com/zh/docs/#inputs-body-and-hands)
+- **看見鏡頭看見的。** `hands.overlay(ctx, w, h, { video: true })` 畫出鏡頭畫面、骨架、捏合的線和數值、手的角度、手勢，以及兩手之間的距離。`hands.feed(result)` 讓錄下來或編出來的手走同一套訊號。範例 27〈手勢〉把這些全部示範一遍，鏡頭打開之前有兩隻模擬的手在演。
+- **MediaPipe 1.2.3。** 手和身體改載 MediaPipe Tasks Vision 1.2.3（原本是 0.10.14）：同樣的畫面，關節點、手勢和身體都一樣，花的時間也差不多。`hand/<side>/pinch/index`、`pinch/middle` 和 `spread` 維持原本的值。
+
 ### 2026-11-15
 
 - **框架有版本號了，也有一個不會變的網址：0.9.0。** 你自己的頁面從一個帶版本號的網址匯入一個檔 `packages/openav.js`，這個網址永遠不變。不用 clone，不用建置。[固定一個版本](https://openaudiovisual.com/zh/docs/#quick-start-pin-a-version)

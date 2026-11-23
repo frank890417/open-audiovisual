@@ -113,12 +113,19 @@ await audio.enableMic();            // or audio.enableElement(videoEl), or someN
 
 ## 身體與手
 
-`modules: { pose: true }` 加上一個 `PoseTracker`（一個身體），`modules: { hands: true }` 加上一個 `HandTracker`（兩隻手，每隻 21 個點）。按下 🕺 body 或 🖐 hands，鏡頭才會開始。兩者都用 MediaPipe Tasks Vision（0.10.14），第一次啟用時從 jsDelivr 載入，模型從 Google 的儲存空間下載。推論在你的電腦上跑，影像不會離開這台機器。畫面預設左右鏡像（`mirror: true`），你舉右手，畫面右邊的手跟著動。y 軸是反過來的，1 代表*舉高*。
+`modules: { pose: true }` 加上一個 `PoseTracker`（一個身體），`modules: { hands: true }` 加上一個 `HandTracker`（兩隻手，每隻 21 個點，各有一個手勢）。按下 🕺 body 或 🖐 hands，鏡頭才會開始。兩者都用 MediaPipe Tasks Vision（1.2.3），第一次啟用時從 jsDelivr 載入，模型從 Google 的儲存空間下載。推論在你的電腦上跑，影像不會離開這台機器。畫面預設左右鏡像（`mirror: true`），你舉右手，畫面右邊的手跟著動。y 軸是反過來的，1 代表*舉高*。
 
 - **身體**：`pose/present`、`pose/hand/left/x|y`、`pose/hand/right/x|y`（手腕）、`pose/hand/left/v`、`pose/hand/right/v`（手腕速度）、`pose/hands/spread`、`pose/height`（鼻子高度：蹲下 ↔ 站起）、`pose/lean`（−1..1）。
-- **手**：每一側各有 `hand/<side>/present`、`hand/<side>/x|y`（手掌）、`hand/<side>/pinch/index` 和 `hand/<side>/pinch/middle`（拇指尖到手指尖）、`hand/<side>/spread`（食指尖到小指尖）。距離都除以手掌大小，所以手往鏡頭靠近，捏合的值不會變。捏緊時數值接近 0：如果希望越捏越大，在路由上設 `invert: true`（範例 03）。
+- **手**，每一側：`hand/<side>/present`、`hand/<side>/x|y`（手掌）、`hand/<side>/tip/x|y`（食指指尖）、`hand/<side>/thumb/index|middle|ring|pinky`（拇指指尖到各指尖，0 = 碰在一起，1 = 張到最開）、`hand/<side>/openness`（0 = 握拳，1 = 手指全開）、`hand/<side>/angle`（0.5 = 手指朝上，0.75 = 指向右邊）、`hand/<side>/speed`。最早的幾個量 `hand/<side>/pinch/index|middle` 和 `hand/<side>/spread` 維持原樣（張開的手在它們上面大約是 0.5，範例 03 用的就是它們）。
+- **捏一下，當成事件**：`hand/<side>/pinch-start` 和 `pinch-end`（脈衝，帶著指尖的 x、y），以及 `hand/<side>/pinched`（0/1）。拇指和食指要靠到 0.35 個手的大小以內，*而且其他三指張開*，所以握拳不會被當成捏。超過 0.56 就放開。
+- **手勢**：MediaPipe 的七種，`hand/<side>/gesture/fist|open|point|thumb-up|thumb-down|victory|iloveyou`（0/1，各有一個 `…-start` 脈衝），還有 `hand/<side>/gesture`（0 沒有，1 到 7 照上面的順序）。分數超過 0.5 開始，低於 0.35 結束。
+- **兩隻手**：`hand/both/present`、`hand/both/distance`（手掌到手掌）、`hand/both/x|y`（中點）、`hand/both/angle`（0.5 = 水平）。
 
-兩種追蹤器都能把骨架畫在 2D context 上：`tracker.skeleton(ctx, w, h)`。
+距離都除以手的大小，而且 x 乘上畫面的長寬比，所以手往鏡頭靠近、手轉向側面，捏合的值都不會變。捏緊時數值接近 0：如果希望越捏越大，在路由上設 `invert: true`（範例 03）。脈衝可以經過路由觸發一個脈衝參數，`{ source: 'hand/right/gesture/victory-start', target: 'turn' }`，所以一個手勢可以像打擊墊一樣切場景（範例 27）。
+
+這些門檻是在桌前用一個人的手調出來的，用的是同一套算法的 TouchDesigner 模組。在那裡 MediaPipe 的手勢分數只到 0.5 到 0.82，所以手勢從 0.5 開始算，而不是很多示範用的 0.7 到 0.8。換了鏡頭、距離或場地，就打開範例 27 看數字，再重新調：`createShow({ modules: { hands: { thresholds: { gestureOn: 0.6, pinchOn: 0.3 } } } })`，或在演出中直接改 `show.hands.thresholds.gestureOn = 0.6`（馬上生效）。`hands.features` 裡有沒換算過的值（`thumbRaw`、`opennessRaw`、手勢的分數）可以拿來調。`gestures: false` 只跑手部關鍵點，不分手勢。
+
+兩種追蹤器都能把骨架畫在 2D context 上：`tracker.skeleton(ctx, w, h)`。`hands.overlay(ctx, w, h, { video: true })` 把手部追蹤器量到的東西畫出來，調門檻或給觀眾看都可以：鏡頭畫面、骨架、拇指到食指的線和數值（捏住時變綠）、手的角度、手勢和分數，還有兩個手掌之間的線和距離。`hands.feed(result)` 讓任何來源的手（錄下來的關鍵點、別的偵測器、範例 27 編出來的那雙手）走同一套計算和訊號。
 
 ## Leap Motion
 

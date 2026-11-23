@@ -93,7 +93,7 @@
         <p class="eyebrow facts"><a href="./changelog/">oav-p5 0.8 · framework 0.9</a> · MIT · zero build · zero dependencies</p>
       </div>
       <nav class="doors" aria-label="Where to start">
-        <a class="door door-1" href="#works"><span class="door-who">I perform</span><span class="door-what">See what it makes and play the twenty-six works</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-1" href="#works"><span class="door-who">I perform</span><span class="door-what">See what it makes and play the twenty-seven works</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-2" href="#start"><span class="door-who">I write code</span><span class="door-what">Run it in a minute, then write a world</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-3" href="./llms.txt"><span class="door-who">I am an AI agent</span><span class="door-what">Read /llms.txt, then AGENTS.md</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-4" href="./p5/"><span class="door-who">I use p5.js / OpenProcessing</span><span class="door-what">One line: a controller, sound, drums, video</span><span class="door-arrow" aria-hidden="true">→</span></a>
@@ -222,7 +222,7 @@
     
     <header class="sec-head">
       <p class="eyebrow">03 · Works</p>
-      <h2 id="works-title">Twenty-six works you can open now</h2>
+      <h2 id="works-title">Twenty-seven works you can open now</h2>
       <p class="sec-lede">Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments. In any example: Space plays the timeline, T is performance mode, F is fullscreen.</p>
     </header>
     <ol class="works">
@@ -332,6 +332,18 @@
           <p class="work-text">Fingers as an instrument: one pinch sets tightness, another grows arms, both fists bloom. Four pattern families: mandala, lissajous, spirograph, web.</p>
           <p class="work-route"><span>②</span> Anything can be an instrument</p>
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/03-pose-field">Source ↗</a></p>
+        </div>
+      </li>
+      <li class="work" id="work-27">
+        <div class="work-img"><img src="./assets/home/works/27.webp" width="800" height="500" loading="lazy" decoding="async" alt="Two hand skeletons on black, green and yellow, labelled OPEN 0.66 and THUMB UP 0.72, with the pinch value on each and a dashed line between the palms reading hands 0.42; confetti falls above them."></div>
+        <div class="work-label">
+          <p class="work-n">27</p>
+          <h3><a class="work-link" href="./examples/27-hand-gestures/">Hand gestures</a></h3>
+          
+          <p class="work-in"><span>Plays with</span> camera (hands) · simulated hands · on-screen piano</p>
+          <p class="work-text">What a camera can tell about two hands: seven gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands. The numbers are drawn on the hands, and two simulated hands play until the camera is on.</p>
+          <p class="work-route"><span>②</span> Anything can be an instrument</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/27-hand-gestures">Source ↗</a></p>
         </div>
       </li>
       <li class="work" id="work-12">
@@ -587,7 +599,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p>Declare what the piece can be performed with (params), react to events, draw. Hand it to <code>createShow()</code> and the rest arrives with it: piano, mapping, timeline, console, sound, backstage. Put it next to an <code>index.html</code> with the import map, as in example 01.</p>
         
       <div class="term ">
-        <div class="term-bar"><span>examples/27-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">Copy</button></div>
+        <div class="term-bar"><span>examples/28-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">Copy</button></div>
         <pre id="code-world"><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
 
@@ -814,7 +826,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <div class="term-bar"><span>prompt</span><button type="button" class="copy" data-copy="agent-prompt">Copy</button></div>
           <pre id="agent-prompt"><code>Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/27-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/28-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
 

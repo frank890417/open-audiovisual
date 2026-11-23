@@ -769,6 +769,93 @@
           }
         }
       ],
+      "next": "27-hand-gestures"
+    },
+    {
+      "id": "27-hand-gestures",
+      "num": "27",
+      "dir": "examples/27-hand-gestures/",
+      "route": "inputs",
+      "title": {
+        "en": "Hand gestures",
+        "zh": "手勢"
+      },
+      "teaches": {
+        "en": "What a camera can tell about two hands: gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands, drawn on the hands.",
+        "zh": "鏡頭能從兩隻手讀出什麼：手勢、捏一下、手張開多少、手的角度、兩手的距離，數字直接畫在手上。"
+      },
+      "summary": {
+        "en": "What a camera can tell about two hands: seven gestures, a pinch as an event, how open a hand is, its angle, the distance between the hands. The numbers are drawn on the hands, and two simulated hands play until the camera is on.",
+        "zh": "鏡頭能從兩隻手讀出什麼：七種手勢、捏一下、手張開多少、手的角度、兩手的距離。數字直接畫在手上，鏡頭打開之前有兩隻模擬的手在演。"
+      },
+      "plays": {
+        "en": "camera (hands) · simulated hands · on-screen piano",
+        "zh": "鏡頭（手）· 模擬的手 · 螢幕鋼琴"
+      },
+      "needs": [
+        "camera"
+      ],
+      "standIn": [
+        "sim",
+        "piano"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/27.webp",
+      "alt": {
+        "en": "Two hand skeletons on black, green and yellow, labelled OPEN 0.66 and THUMB UP 0.72, with the pinch value on each and a dashed line between the palms reading hands 0.42; confetti falls above them.",
+        "zh": "黑底上一綠一黃兩副手的骨架，標著 OPEN 0.66 和 THUMB UP 0.72，每隻手上有捏合的數值，兩個手掌之間一條虛線寫著 hands 0.42，上方落著彩紙。"
+      },
+      "docs": [
+        {
+          "id": "inputs-body-and-hands",
+          "en": "Body and hands",
+          "zh": "身體與手"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Before the camera: two simulated hands open, pinch, make a fist, a victory sign and a thumb up. Watch the numbers on each hand and the signals in the console.",
+          "Turn on 🖐 hands and allow the camera. Open and close your right hand: the flower at your fingertip follows. Pinch thumb and index with the other fingers out: sparks.",
+          "Make a victory sign with the right hand to turn the colours, a thumb up for confetti, a left fist to let the sparks fall. Move both hands apart and together: the ring."
+        ],
+        "zh": [
+          "鏡頭打開之前：兩隻模擬的手會張開、捏、握拳、比 YA、比讚。看每隻手上的數字，和控台裡的訊號。",
+          "打開 🖐 hands 並允許鏡頭。右手張開、握起：指尖的花跟著開合。拇指捏食指、其他三指張開：噴出火花。",
+          "右手比 YA 換顏色，比讚撒彩紙，左手握拳讓火花落下。兩手拉開、靠近：中間的圓圈跟著變大變小。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 113,
+          "to": 127,
+          "match": "routes: [",
+          "note": {
+            "en": "Continuous measures and pulses alike reach the world through routes: a pinch or a gesture is a pulse param.",
+            "zh": "連續的量和脈衝一樣經過路由送進世界：捏一下、一個手勢，就是一個脈衝參數。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 73,
+          "to": 73,
+          "match": "hands?.overlay(ctx, w, h,",
+          "note": {
+            "en": "overlay() draws the camera picture, the skeleton and every number on the hands: the one place the world reads the input directly.",
+            "zh": "overlay() 畫出鏡頭畫面、骨架和手上的每個數字：這是世界唯一直接讀輸入的地方。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 167,
+          "to": 168,
+          "match": "show.hands.feed({",
+          "note": {
+            "en": "feed() takes hands from anywhere (here, made-up ones) through the same features and signals as the camera's.",
+            "zh": "feed() 讓任何來源的手（這裡是編出來的）走跟鏡頭一樣的計算和訊號。"
+          }
+        }
+      ],
       "next": "12-leap-hands"
     },
     {
