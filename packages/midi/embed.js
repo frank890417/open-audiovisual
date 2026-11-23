@@ -15,7 +15,7 @@
 // port, or bytes you ingest()). The profile's own words are kept: `id`, `type`,
 // `signal` are what the rest of open-audiovisual calls the same control.
 
-import { importedUrl } from './profiles/imported.js?v=dcdb1a44';
+import { importedUrlOf } from './profiles/imported-list.js?v=dcdb1a44';
 import { encodeMessage, relativeDelta } from './parse.js?v=dcdb1a44';
 import { validateProfile } from './profiles.js?v=dcdb1a44';
 
@@ -118,7 +118,7 @@ export async function resolveProfile(ref, { profiles = [], fetch = globalThis.fe
   if (!isProfileUrl(s)) {
     const p = findProfile(s, profiles);
     if (p) return p;
-    target = importedUrl(s);   // a controller imported from QLC+: not in PROFILES, so a page only fetches the one it shows
+    target = await importedUrlOf(s);   // a controller imported from QLC+: not in PROFILES, so a page only fetches the one it shows
     if (!target) throw new Error(`unknown MIDI profile "${s}" (known: ${profiles.map((x) => x.id).join(', ')})`);
   }
   if (typeof fetch !== 'function') throw new Error('cannot load a profile URL here (no fetch)');

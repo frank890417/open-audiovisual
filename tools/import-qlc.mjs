@@ -56,18 +56,41 @@ function main([repo, ...flags]) {
     fs.mkdirSync(OUT, { recursive: true });
     for (const { p } of fresh) write(path.join(OUT, `${p.id}.json`), p);
     const rows = fresh.map(({ p }) => `  { id: ${JSON.stringify(p.id)}, short: ${JSON.stringify(p.short)}, name: ${JSON.stringify(p.name)}, maker: ${JSON.stringify(p.maker)}, kind: 'device', match: { ports: ${JSON.stringify(p.match.ports)} } },`).join('\n');
-    fs.writeFileSync(path.join(DIR, 'imported.js'), `// @openav/midi · profiles/imported — controllers imported from QLC+ (tools/import-qlc.mjs writes this list).
+    // two files: the list (bundled into the lab's classic script, so no import.meta) and the ES-module-only address of the JSON files
+    fs.writeFileSync(path.join(DIR, 'imported-list.js'), `// @openav/midi · profiles/imported-list — controllers imported from QLC+ (tools/import-qlc.mjs writes this list).
 // Their JSON files stay out of PROFILES so a page that embeds one controller does not fetch them all;
 // resolveProfile() fetches the one it is asked for. Each row carries its match patterns, so matchProfile() can tell which file a port wants
 // before any of them is loaded. The data is Apache-2.0: see NOTICE at the root of the repository.
+// The files' address is in imported.js, which reads its own location (import.meta) and so is ES-module only; this list never says
+// import.meta, because the lab bundles it into a classic script where that does not parse (docs/lab-integration.md).
 
 export const IMPORTED = [
 ${rows}
 ];
 
+/** The row for an id or short name, or null. */
+export function importedRow(ref) {
+  return IMPORTED.find((p) => p.id === ref || p.short === ref) || null;
+}
+
+/** importedUrl() for code that may run as a classic script: imported.js is imported on first use. Where that file is not next to
+ *  this one (the lab's bundle) the import fails and the answer is null, so only the shipped profiles are offered. */
+export async function importedUrlOf(ref) {
+  if (!importedRow(ref)) return null;
+  try { return (await import('./imported.js')).importedUrl(ref); } catch { return null; }
+}
+`);
+    fs.writeFileSync(path.join(DIR, 'imported.js'), `// @openav/midi · profiles/imported — where the files of the controllers imported from QLC+ live (tools/import-qlc.mjs writes this file).
+// The list is imported-list.js. This file reads its own address (import.meta.url), so it is ES-module only: the lab bundles the list
+// and leaves this file out. The data is Apache-2.0: see NOTICE at the root of the repository.
+
+import { IMPORTED, importedRow } from './imported-list.js';
+
+export { IMPORTED };
+
 /** Where an imported profile's JSON lives, or null for an id or short name that is not one of them. */
 export function importedUrl(ref) {
-  const hit = IMPORTED.find((p) => p.id === ref || p.short === ref);
+  const hit = importedRow(ref);
   return hit ? new URL(\`./imported/\${hit.id}.json\`, import.meta.url).href : null;
 }
 `);

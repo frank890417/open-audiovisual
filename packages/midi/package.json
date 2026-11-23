@@ -27,7 +27,7 @@
       "midi/profiles.js",
       "midi/verify-session.js",
       "midi/controller.js",
-      "midi/profiles/imported.js",
+      "midi/profiles/imported-list.js",
       "midi/manager.js",
       "midi/link.js",
       "midi/virtual-access.js",

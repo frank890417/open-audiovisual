@@ -13,7 +13,7 @@
 
 import { MidiController } from './controller.js?v=dcdb1a44';
 import { matchProfile, pickPort } from './profiles.js?v=dcdb1a44';
-import { IMPORTED, importedUrl } from './profiles/imported.js?v=dcdb1a44';
+import { IMPORTED, importedUrlOf } from './profiles/imported-list.js?v=dcdb1a44';
 
 export class MidiControllers {
   /**
@@ -189,7 +189,9 @@ export function controllerRoutes(profile, bindings, { short = profile.short, ...
 }
 
 async function fetchImported(id) {
-  const res = await fetch(importedUrl(id));
+  const url = await importedUrlOf(id);
+  if (!url) throw new Error('its file is not served next to this copy');
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`${res.status}`);
   return res.json();
 }
