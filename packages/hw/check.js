@@ -307,7 +307,7 @@ export function check(spec, { parts = PARTS } = {}) {
     if (!net) return out;
     for (const ref of net.pins) {
       const p = pins.get(ref);
-      if (p.part.kind === 'board' && p.def.kind === 'power-out' && p.def.from && !p.def.when) out.push({ id: p.id, ...loadOf({}, p.part), how: '板子本身（Wi-Fi 傳送時最高）' });
+      if (p.part.kind === 'board' && p.def.kind === 'power-out' && p.def.from && !p.def.when) out.push({ id: p.id, ...loadOf({}, p.part), how: '板子本身（平均；最大取規格書 Wi-Fi 傳送的典型值）' });
     }
     // regulators fed by this net (a board's 3V from BAT/USB, a breakout's 3Vo from VIN)
     if (board && board.def) {
@@ -317,7 +317,7 @@ export function check(spec, { parts = PARTS } = {}) {
         const outNet = netOf.get(outRef);
         if (def.from.some((f) => net.pins.includes(`${board.id}.${f}`))) {
           if (outNet) out.push(...railLoad(outNet.id, seen));
-          else out.push({ id: board.id, ...loadOf({}, board.def), how: '板子本身（Wi-Fi 傳送時最高）' });
+          else out.push({ id: board.id, ...loadOf({}, board.def), how: '板子本身（平均；最大取規格書 Wi-Fi 傳送的典型值）' });
         }
       }
     }
@@ -335,7 +335,7 @@ export function check(spec, { parts = PARTS } = {}) {
     if (outs.length && !limited.length && loads.length) say('unknown', 'limit-tbd', `${outs.map((p) => p.ref).join('、')} 可以供多少電流待查，看不出 ${loads.map((l) => l.id).join('、')} 加起來夠不夠。`, outs.map((p) => p.ref));
     for (const sp of limited) {
       const limit = sp.def.limitMa, rec = sp.def.recMa ?? null;
-      if (max != null && max > limit) say(sp.def.when ? 'warn' : 'error', 'over-current', `${sp.ref} 最多 ${limit} mA，接在上面的 ${loads.map((l) => l.id).join('、')} 最大可能用到約 ${max} mA：${sp.def.when === 'charger' ? '放在充電座上全亮時供不起，會邊充邊掉電或充不進去。' : '會過熱或電壓掉下來，板子可能一直重開。'}降低亮度上限、減少燈數，或另外供電。`, [sp.ref, ...loads.map((l) => l.id)]);
+      if (max != null && max > limit) say(sp.def.when ? 'warn' : 'error', 'over-current', `${sp.ref} 最多 ${limit} mA，接在上面的 ${loads.map((l) => l.id).join('、')} 照已知的最大值加起來約 ${max} mA：${sp.def.when === 'charger' ? '放在充電座上全亮時供不起，會邊充邊掉電或充不進去。' : '會過熱或電壓掉下來，板子可能一直重開。'}降低亮度上限、減少燈數，或另外供電。`, [sp.ref, ...loads.map((l) => l.id)]);
       else if (rec != null && typ != null && typ > rec) say('warn', 'over-current-rec', `${sp.ref} 建議持續低於 ${rec} mA，平常約用 ${typ} mA。`, [sp.ref]);
     }
     if (limited.length && hasNull(loads, 'max')) say('unknown', 'load-tbd', `${loads.filter((l) => l.max == null).map((l) => nameOf(l.id)).join('、')} 的最大電流待查：${limited.map((p) => p.ref).join('、')} 的負載只算了已知的部分。`, limited.map((p) => p.ref));
@@ -357,10 +357,14 @@ export function check(spec, { parts = PARTS } = {}) {
       const max = sum(loads, 'max');
       const hours = { typ: typ ? r1(mAh / typ) : null, max: max ? r1(mAh / max) : null };
       battery = { id: bid, mAh, v: bnet.v, typMa: typ, maxMa: max, hours, loads, avgFrom: spec.use && spec.use.avgMa != null ? 'spec.use.avgMa' : 'parts' };
-      if (typ == null) say('unknown', 'battery-tbd', `電池 ${mAh} mAh：有零件的電流待查，算不出撐多久。`, [bid]);
-      else say('note', 'battery-hours', `電池 ${mAh} mAh，平均約 ${typ} mA → 大約 ${hours.typ} 小時${max ? `；全部開到最大（約 ${max} mA）約 ${hours.max} 小時` : ''}。沒算穩壓器損耗和電池老化，實際會短一些。${loads.length ? `（${loads.map((l) => `${l.id} ${l.typ ?? '?'} mA`).join('、')}）` : ''}`, [bid]);
       const offCharger = nets.filter((n) => n.kind === 'power' && n.conditional && (loadNets.get(n.id) || []).length);
-      if (offCharger.length) say('note', 'battery-dark', `${offCharger.map((n) => (loadNets.get(n.id) || []).map((l) => l.id).join('、')).join('、')} 不吃電池：接在只有充電時才有電的 ${offCharger.map((n) => n.label).join('、')}。`, [bid]);
+      const dark = offCharger.flatMap((n) => (loadNets.get(n.id) || []).map((l) => l.id));
+      battery.excludes = dark;
+      const unless = dark.length ? `（不含 ${dark.join('、')}：接在只有充電時才有電的 ${offCharger.map((n) => n.label).join('、')}，拿起來就不亮）` : '';
+      if (typ == null) say('unknown', 'battery-tbd', `電池 ${mAh} mAh：有零件的電流待查，算不出撐多久。`, [bid]);
+      else say('note', 'battery-hours', `電池 ${mAh} mAh，平均約 ${typ} mA → 大約 ${hours.typ} 小時${max ? `；照已知的最大值（約 ${max} mA）約 ${hours.max} 小時` : ''}${unless}。沒算穩壓器損耗和電池老化，實際會短一些。${loads.length ? `（${loads.map((l) => `${l.id} ${l.typ ?? '?'} mA`).join('、')}）` : ''}`, [bid]);
+      if (max && (bpart.battery || {}).maxMa == null) say('unknown', 'battery-max-tbd', `${nameOf(bid)} 最大放電電流待查（產品頁沒寫），這個接法最大約 ${max} mA，供不供得起要看你買的那顆電池。`, [bid]);
+      if (dark.length) say('note', 'battery-dark', `${dark.join('、')} 不吃電池：接在只有充電時才有電的 ${offCharger.map((n) => n.label).join('、')}，上面的電池時數是它不亮的情況。`, [bid]);
     }
     say('note', 'jst-polarity', bpart.bomNote || '電池接頭的極性先用電表確認。', [bid]);
     // charging

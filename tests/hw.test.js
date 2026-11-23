@@ -74,6 +74,8 @@ test('the box: 3.3 V data into a ring powered at 5 V is caught, and so is the ra
   assert.equal(r.power.battery.mAh, 1200);
   assert.equal(r.power.battery.typMa, 80);
   assert.equal(r.power.battery.hours.typ, 15);
+  assert.deepEqual(r.power.battery.excludes, ['ring'], 'the hours are with the ring dark');
+  assert.match(issue(r, 'battery-hours').text, /不含 ring/);
   assert.equal(r.i2c.length, 1);
   assert.deepEqual(r.i2c[0].devices.map((d) => d.addr), ['0x18']);
   assert.ok(r.warnings.length >= 3 && r.warnings.every((w) => typeof w === 'string'));
@@ -88,6 +90,9 @@ test('ring on the battery instead: 3.3 V data is fine (with a margin note), the 
   assert.equal(issue(r, 'undervolt-battery').level, 'warn');
   assert.ok(!issue(r, 'conditional-rail'));
   assert.ok(r.power.battery.typMa > 300, 'the ring now drains the battery');
+  assert.deepEqual(r.power.battery.excludes, []);
+  assert.equal(r.power.battery.hours.typ, 3.8);
+  assert.equal(issue(r, 'battery-max-tbd').level, 'unknown');
 });
 
 test('boot pins: GPIO15 and GPIO0 warn, the serial pins warn', () => {

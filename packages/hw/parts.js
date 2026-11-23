@@ -83,7 +83,7 @@ export const PARTS = {
     sources: [S.featherPinouts, S.featherPower, S.feather2821, S.featherPcb, S.esp8266, S.espFaq, S.espBoot, S.mcp73831],
     supply: null,   // fed through USB (5 V) or a LiPo on BAT, regulated to 3V
     logic: { v: 3.3, vohMin: 2.64, vih: [{ frac: 0.75 }], vinMax: 3.6, fiveVoltSafe: false },
-    current: { typ: 80, max: 170 },   // ESP8266EX average 80 mA; 802.11b TX 170 mA typical (Table 5-3, a typical value, not a peak spec)
+    current: { typ: 80, max: 170 },   // ESP8266EX average 80 mA; 802.11b TX 170 mA typical (Table 5-3, a typical value, not a peak spec): the highest number the datasheet gives
     charger: { part: 'MCP73831', mA: 100 },
     pins: {
       '3V': { kind: 'power-out', label: '3V', v: 3.3, limitMa: 500, recMa: 250, from: ['USB', 'BAT'], note: '穩壓器尖峰 500 mA，建議持續低於 250 mA（Adafruit）' },
@@ -120,6 +120,7 @@ export const PARTS = {
       '充電電流：Adafruit 寫 100 mA；rev G 線路圖的設定電阻推算約 213 mA。',
       'GPIO2 藍色 LED 的極性。',
       '整塊板子深度睡眠時的電流（晶片本身 20 µA，穩壓器、CP2104、充電 IC 另計）。',
+      '尖峰電流：規格書只給 Wi-Fi 傳送時的典型值 170 mA（這裡拿它當最大值）；Espressif FAQ 建議電源能給 500 mA 以上。',
     ],
   },
   'arduino-leonardo': {
@@ -172,9 +173,9 @@ export const PARTS = {
       SDA: { kind: 'spi-cs', label: 'SDA/SS', aliases: ['SS', 'NSS', 'CS'] }, SCK: { kind: 'spi-sck', label: 'SCK' },
       MOSI: { kind: 'spi-mosi', label: 'MOSI' }, MISO: { kind: 'spi-miso', label: 'MISO' }, IRQ: { kind: 'data-out', label: 'IRQ' },
     },
-    size: null, connector: '2.54 mm 排針（8 pin）',
+    size: null, connector: null,
     notes: ['只能 3.3 V 供電；輸入腳上限約 VDD + 0.5 V，接 5 V 板子的 SPI 要降壓（Joy-IT 手冊）。', '天線驅動電流：晶片 60 mA typ、100 mA max（3 V）。'],
-    tbd: ['模組整體耗電與尺寸（常見寫 40 × 60 mm，未見原廠資料）。', '各家模組腳位順序不同，照板上印字接。'],
+    tbd: ['模組整體耗電與尺寸（常見寫 40 × 60 mm，未見原廠資料）。', '排針規格與腳位順序（各家不同，照板上印字接）。'],
   },
   'pir-hc-sr501': {
     name: 'HC-SR501 PIR motion sensor', zh: 'HC-SR501 人體紅外線感測', kind: 'sensor',
@@ -183,9 +184,9 @@ export const PARTS = {
     logic: { v: 3.3, vohMin: null, vih: null, vinMax: null, fiveVoltSafe: null },
     current: { typ: 0.05, max: null },
     pins: { VCC: { kind: 'power-in', label: 'VCC' }, OUT: { kind: 'data-out', label: 'OUT' }, GND },
-    size: { w: 32, h: 24, d: null }, connector: '3 pin 排針',
+    size: { w: 32, h: 24, d: null }, connector: null,
     notes: ['輸出高電位 3.3 V。通電後約一分鐘在暖機，這段時間會亂觸發 0–3 次。', '延遲 5–300 秒、靈敏度 3–7 m 用板上兩顆旋鈕調；跳線 H＝可重複觸發。'],
-    tbd: ['供電下限：同一份規格書寫 4.5 V 也寫 5 V。', '耗電：同一份規格書寫 <50 µA 也寫 65 mA。', '排針的腳位順序。'],
+    tbd: ['供電下限：同一份規格書寫 4.5 V 也寫 5 V。', '耗電：同一份規格書寫 <50 µA 也寫 65 mA。', '排針規格與腳位順序。'],
   },
   'pot-10k': {
     name: 'Rotary potentiometer 10 kΩ linear (Adafruit 562)', zh: '旋轉電位器 10 kΩ', kind: 'input',
@@ -216,7 +217,7 @@ export const PARTS = {
     name: 'MPU-6050 on a GY-521 module', zh: 'MPU-6050 六軸（GY-521 模組）', kind: 'sensor',
     sources: [S.mpu6050, S.mpuPlayground],
     supply: { min: null, max: null, nominal: 5 },
-    logic: { v: 3.3, vohMin: null, vih: [{ frac: 0.7 }], vinMax: null, fiveVoltSafe: null },
+    logic: { v: null, vohMin: null, vih: [{ frac: 0.7 }], vinMax: null, fiveVoltSafe: null },   // VLOGIC = the module's regulated rail: 待查
     current: { typ: 3.9, max: null },   // gyro + accel + DMP
     pins: {
       VCC: { kind: 'power-in', label: 'VCC' }, GND, SCL: { kind: 'i2c-scl', label: 'SCL' }, SDA: { kind: 'i2c-sda', label: 'SDA' },
@@ -225,7 +226,7 @@ export const PARTS = {
     i2c: { addr: ['0x68', '0x69'], default: '0x68', select: 'AD0 接地＝0x68，接高＝0x69（MPU-6050 規格書）' },
     size: null, connector: '8 pin 排針',
     notes: ['晶片 VDD 2.375–3.46 V；GY-521 板上有穩壓器，Arduino Playground 建議 VCC 給 5 V。', 'I²C 上拉電阻在模組上（各批 10K 或 2.2K）。'],
-    tbd: ['GY-521 的穩壓器型號、VCC 範圍、尺寸、腳位（沒有原廠文件）。', '模組上的 I²C 上拉接到哪個電壓。'],
+    tbd: ['GY-521 的穩壓器型號、VCC 範圍、尺寸、腳位（沒有原廠文件）。', '模組上的 I²C 上拉與邏輯電壓（VLOGIC）接到哪個電壓。'],
   },
   // ------------------------------------------------------------------ lights
   ws2812b: {
@@ -299,7 +300,7 @@ export const PARTS = {
     },
     size: null, connector: 'USB-C',
     notes: ['充到 4.2 V；充電電流由 PROG 電阻決定：原廠 TP4056 是 1.2K＝1 A、2.4K＝500 mA。', 'DW01 保護：過放 2.4 V、過充 4.3 V（典型值）。'],
-    bomNote: '常見模組的 PROG 電阻多半設 1 A，超過小電池建議的充電電流（Adafruit 500 mAh 電池寫 500 mA 以下）：買來先看電阻值。仿製晶片 1K 就是 1 A、輸入上限只有 6.5 V。',
+    bomNote: '各家模組的 PROG 電阻值不同（待查），買來先看：原廠 TP4056 是 1.2K＝1 A，仿製晶片 1K 就是 1 A、輸入上限只有 6.5 V；Adafruit 500 mAh 電池寫充電 500 mA 以下。',
     tbd: ['模組腳位名稱與尺寸（沒有原廠）。', '各家模組的 PROG 電阻值。', 'FS8205A 規格。'],
   },
   'microlipo-usbc': {
