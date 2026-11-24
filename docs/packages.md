@@ -297,7 +297,7 @@ safe value (or leaves a `"hold"` channel where it is) when the page goes quiet o
 
 | export | signature |
 |---|---|
-| `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`, `last`, `bridge` — one value per channel per frame, reconnects with backoff, heartbeat |
+| `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`, `last`, `bridge`, `beatMs` — one value per channel per frame, reconnects with backoff, heartbeat |
 | bridge | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sinks `ddp` `serial` `osc` `udp-json` `log`, and for DMX on `dmx/<universe>/<address>`: `artnet` (unicast `host`), `sacn` (multicast or `host`, `priority`, `source`), `enttec` (`path`, `universe`), 40 Hz + a keep-alive each second, a flash guard per channel (`"flashGuard": false` \| `{ maxFlashHz, exempt }`) |
 | lab | `meta.params[i].out: "light/1/r"` binds a param (0..1 by min–max, `outRaw` for the raw value); `?out=sim` · `?out=0` · `?out=ws://…` |
 

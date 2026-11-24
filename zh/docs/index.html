@@ -3307,7 +3307,7 @@ button.onclick = () =&gt; sound.enable();
 <div class="table-wrap"><table>
 <thead><tr><th>export</th><th>簽名</th></tr></thead>
 <tbody>
-<tr><td><code>OutClient</code></td><td><code>new OutClient({ url, id, schedule })</code> · <code>connect()</code> · <code>simulate()</code> · <code>close()</code> · <code>set(ch, v)</code> · <code>batch({ ch: v })</code> · <code>onStatus(fn)</code> · <code>status</code>、<code>last</code>、<code>bridge</code>：同一通道每個 frame 只送一個值，斷線以退避重連，有心跳</td></tr>
+<tr><td><code>OutClient</code></td><td><code>new OutClient({ url, id, schedule })</code> · <code>connect()</code> · <code>simulate()</code> · <code>close()</code> · <code>set(ch, v)</code> · <code>batch({ ch: v })</code> · <code>onStatus(fn)</code> · <code>status</code>、<code>last</code>、<code>bridge</code>、<code>beatMs</code>：同一通道每個 frame 只送一個值，斷線以退避重連，有心跳</td></tr>
 <tr><td>橋接</td><td><code>node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]</code> · sink：<code>ddp</code> <code>serial</code> <code>osc</code> <code>udp-json</code> <code>log</code>，DMX 用 <code>dmx/&lt;universe&gt;/&lt;address&gt;</code>：<code>artnet</code>（單播 <code>host</code>）、<code>sacn</code>（多播或 <code>host</code>、<code>priority</code>、<code>source</code>）、<code>enttec</code>（<code>path</code>、<code>universe</code>），每秒 40 格，沒變時每秒補送一次，每個通道一道頻閃保護（<code>"flashGuard": false</code> | <code>{ maxFlashHz, exempt }</code>）</td></tr>
 <tr><td>實驗室</td><td><code>meta.params[i].out: "light/1/r"</code> 綁定參數（照 min–max 正規化到 0..1，<code>outRaw</code> 送原值）；<code>?out=sim</code> · <code>?out=0</code> · <code>?out=ws://…</code></td></tr>
 </tbody>

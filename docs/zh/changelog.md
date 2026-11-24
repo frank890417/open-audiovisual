@@ -154,6 +154,7 @@
 - **還沒有用真的硬體測過。** 到現在還沒有任何一台真燈、Art-Net 節點、sACN 接收端或 Enttec 介面收過這些東西。位元組照公開的格式寫，測試在這台機器上把每個封包都解回來。
 - **第一筆來自專案外的實機驗證：M-VAVE SMC-Mixer。** jcguevarap 拿一台（韌體 V012）走完驗證頁，回報在 [#7](https://github.com/frank890417/open-audiovisual/issues/7)。每支推桿、每顆通道按鈕、播放控制鍵和方向鍵送出的，都是 QLC+ 設定檔寫的訊息，而無段旋鈕是相對式，用正負號位元計數（往一邊轉是 1，另一邊是 65）。原本的檔案把旋鈕 1 寫成絕對值，旋鈕 2–8 寫成按鈕。現在八顆都是相對式的無段旋鈕，59 個控制項裡有 52 個標成已在實機確認，那次驗證記在檔案的 `verifications`。旋鈕 2–8 要等下一次驗證轉過才算確認。這個檔案從 `profiles/imported/` 搬到 `profiles/`，之後再從 QLC+ 匯入也不會把修正蓋掉。[M-VAVE SMC-Mixer](https://openaudiovisual.com/zh/controllers/m-vave-smc-mixer/)
 - **網站的產生器在 Windows 上會跑了。** 在那裡，`node tools/build-home.mjs`、`node tools/build-docs.mjs` 和 `tools/export-controller.mjs` 什麼都沒寫就以 0 結束：它們判斷「是不是被直接執行」時，拿檔案網址去比 Windows 的路徑。現在 `tools/` 裡每個指令都問同一個函式，`tools/site/is-main.mjs` 的 `isMain()`，資料夾名稱有空格、或是透過符號連結的 checkout 也認得。回報在 [#8](https://github.com/frank890417/open-audiovisual/issues/8)。測試是在 macOS 上讀 Windows 格式的路徑，還沒有人在真的 Windows 上跑過。
+- **輸出橋接程式的測試不再看機器忙不忙。** `tests/out.test.js` 至少擋過四次發布：橋接程式、頁面和測試共用一個事件迴圈，只要停頓比看門狗的 `timeoutMs` 長，看門狗就會在已經送出的心跳被讀到之前先看一次。`startBridge()` 現在收一個 `now` 時鐘，回傳的結果多了 `tick()`，也就是看門狗看一次，所以測試自己推進橋接程式的時間（另留一個測試用真的時鐘和計時器），`OutClient` 也用 `beatMs` 說出它多久送一次心跳。讓測試的行程隨機凍結 0.3 到 1.5 秒，舊的檔案 10 次全紅，新的一次都沒紅。[startBridge](https://openaudiovisual.com/zh/docs/reference/#out-startBridge)
 
 ### 2026-11-24
 

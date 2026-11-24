@@ -273,7 +273,7 @@ L4 輸出 · 把網頁作品的參數經一支本機橋接（`node packages/out/
 
 | export | 簽名 |
 |---|---|
-| `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`、`last`、`bridge`：同一通道每個 frame 只送一個值，斷線以退避重連，有心跳 |
+| `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`、`last`、`bridge`、`beatMs`：同一通道每個 frame 只送一個值，斷線以退避重連，有心跳 |
 | 橋接 | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sink：`ddp` `serial` `osc` `udp-json` `log`，DMX 用 `dmx/<universe>/<address>`：`artnet`（單播 `host`）、`sacn`（多播或 `host`、`priority`、`source`）、`enttec`（`path`、`universe`），每秒 40 格，沒變時每秒補送一次，每個通道一道頻閃保護（`"flashGuard": false` \| `{ maxFlashHz, exempt }`） |
 | 實驗室 | `meta.params[i].out: "light/1/r"` 綁定參數（照 min–max 正規化到 0..1，`outRaw` 送原值）；`?out=sim` · `?out=0` · `?out=ws://…` |
 

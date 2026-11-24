@@ -84,8 +84,8 @@ export default {
     },
     notes: [
       {
-        en: 'Fields to read: `status` (`\'closed\'`, `\'connecting\'`, `\'open\'`, `\'sim\'`), `last` (`{ channel: last value given to set() }`, also in simulate mode), `sent` (values actually put on the wire: less than the number of `set()` calls because of coalescing) and `bridge` (the bridge\'s last status message).',
-        zh: '可以讀的欄位：`status`（`\'closed\'`、`\'connecting\'`、`\'open\'`、`\'sim\'`）、`last`（`{ 頻道: 最後給 set() 的值 }`，模擬模式下也有）、`sent`（真正送上線路的值：因為合併，會比 `set()` 呼叫次數少），以及 `bridge`（橋接程式最近的狀態訊息）。',
+        en: 'Fields to read: `status` (`\'closed\'`, `\'connecting\'`, `\'open\'`, `\'sim\'`), `last` (`{ channel: last value given to set() }`, also in simulate mode), `sent` (values actually put on the wire: less than the number of `set()` calls because of coalescing), `bridge` (the bridge\'s last status message) and `beatMs` (how often the held values are re-sent while the socket is open: a third of the bridge\'s `timeoutMs` once its status has arrived, a third of 500 before).',
+        zh: '可以讀的欄位：`status`（`\'closed\'`、`\'connecting\'`、`\'open\'`、`\'sim\'`）、`last`（`{ 頻道: 最後給 set() 的值 }`，模擬模式下也有）、`sent`（真正送上線路的值：因為合併，會比 `set()` 呼叫次數少），`bridge`（橋接程式最近的狀態訊息），以及 `beatMs`（socket 開著時多久重送一次保持的值：收到橋接程式的狀態之後是它 `timeoutMs` 的三分之一，之前是 500 的三分之一）。',
       },
       {
         en: 'On the wire a single value is `{ "type": "set", "ch", "v" }` and several are `{ "type": "batch", "items": [{ "ch", "v" }, …] }`, after a `{ "type": "hello", "id" }`.',
@@ -191,11 +191,12 @@ console.log(out.status, out.last);                   // sim { 'light/0/r': 0.25 
       { name: 'watchdog', type: 'Boolean', optional: true, default: 'true', en: '`false` switches the watchdog off: no safe values are ever sent (the tests use it to prove the watchdog is what does the work).', zh: '`false` 會關掉看門狗：永遠不送安全值（測試用它來證明做事的是看門狗）。' },
       { name: 'log', type: 'Function', optional: true, default: '() => {}', en: 'Called with a line of text for diagnostics: clients coming and going, safe values sent.', zh: '以一行文字呼叫，給診斷用：用戶端進出、送出了安全值。' },
       { name: 'print', type: 'Function', optional: true, default: '(s) => console.log(s)', en: 'What the `log` sink prints each value with (`"channel value"`). The default is stdout.', zh: '`log` 輸出用來印每個值的函式（`"channel value"`）。預設是標準輸出。' },
+      { name: 'now', type: 'Function', optional: true, default: 'Date.now', en: 'The clock the watchdog and `/health` read, in milliseconds. A test passes a clock it moves by hand and calls `tick()` on the result, so whether a channel has been quiet for `timeoutMs` never depends on how busy the machine is.', zh: '看門狗和 `/health` 讀的時鐘，單位是毫秒。測試可以傳一個自己手動推進的時鐘，再呼叫結果上的 `tick()`，這樣一個頻道有沒有安靜超過 `timeoutMs`，就不會取決於機器有多忙。' },
     ],
     returns: {
       type: 'Promise<Object>',
-      en: 'Resolves once listening, with `{ port, state, health(), close() }`: the real port, the counters (`received`, `rejected`, `unrouted`, `safeSent` …), a function returning the `/health` object, and a function that puts every known channel on its safe value, stops the server and returns a Promise.',
-      zh: '開始監聽之後才完成，結果是 `{ port, state, health(), close() }`：實際的連接埠、計數器（`received`、`rejected`、`unrouted`、`safeSent` ……）、回傳 `/health` 物件的函式，以及會讓每個已知頻道回到安全值、停掉伺服器並回傳 Promise 的函式。',
+      en: 'Resolves once listening, with `{ port, state, health(), tick(), close() }`: the real port, the counters (`received`, `rejected`, `unrouted`, `safeSent` …), a function returning the `/health` object, one look of the watchdog (what its timer runs: each channel quiet for longer than `timeoutMs` gets its safe value, and it returns how many did), and a function that puts every known channel on its safe value, stops the server and returns a Promise.',
+      zh: '開始監聽之後才完成，結果是 `{ port, state, health(), tick(), close() }`：實際的連接埠、計數器（`received`、`rejected`、`unrouted`、`safeSent` ……）、回傳 `/health` 物件的函式、看門狗看一次（就是它的計時器在跑的那個：安靜超過 `timeoutMs` 的頻道各得到一次安全值，回傳這次送了幾個），以及會讓每個已知頻道回到安全值、停掉伺服器並回傳 Promise 的函式。',
     },
     description: [
       {

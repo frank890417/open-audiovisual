@@ -427,7 +427,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-30 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1328 tests
+30 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1329 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -5164,7 +5164,7 @@ safe value (or leaves a `"hold"` channel where it is) when the page goes quiet o
 
 | export | signature |
 |---|---|
-| `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`, `last`, `bridge` — one value per channel per frame, reconnects with backoff, heartbeat |
+| `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`, `last`, `bridge`, `beatMs` — one value per channel per frame, reconnects with backoff, heartbeat |
 | bridge | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sinks `ddp` `serial` `osc` `udp-json` `log`, and for DMX on `dmx/<universe>/<address>`: `artnet` (unicast `host`), `sacn` (multicast or `host`, `priority`, `source`), `enttec` (`path`, `universe`), 40 Hz + a keep-alive each second, a flash guard per channel (`"flashGuard": false` \| `{ maxFlashHz, exempt }`) |
 | lab | `meta.params[i].out: "light/1/r"` binds a param (0..1 by min–max, `outRaw` for the raw value); `?out=sim` · `?out=0` · `?out=ws://…` |
 
@@ -9463,7 +9463,7 @@ function draw() {
 - `OUT_DEFAULT_URL` (constant, @openav/out): `OUT_DEFAULT_URL = "ws://127.0.0.1:6450/out"` — The address `OutClient` connects to by default: `ws://127.0.0.1:6450/out`, the out-bridge on this machine.
 - `OutClient` (class, @openav/out): `new OutClient({ url = OUT_DEFAULT_URL, id = null, WebSocket: WS, schedule, maxBackoffMs = 5000, minBackoffMs = 250 } = {})` — The page side of the out-bridge: `set(channel, value)` sends a number to a named hardware channel, at most once per frame, and keeps the connection alive. (before it has a value: Call `connect()` (the bridge must be running: `node packages/out/bridge/out-bridge.mjs --config out.json`), or `simulate()` for no hardware at all. `set()` before the socket is open is not lost: it waits in `last` and goes out on open.)
 - `RESERVED_PORTS` (constant, @openav/out): `RESERVED_PORTS = array, 1 items` — The ports the out-bridge refuses to use: `[7457]`, which belongs to The Last Input and the backstage monitor.
-- `startBridge` (function, @openav/out): `startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = null, watchdog = true, log = () => {}, print = (s) => console.log(s) } = {})` — Starts the out-bridge: a loopback WebSocket server that routes channel values from the page to hardware sinks, with a watchdog that falls back to safe values (Node only). (before it has a value: Node 22 or later. The sinks need what they talk to: a WLED device for `ddp`, the device file for `serial` and `enttec`, a listener for `osc`, an Art-Net node or an sACN receiver on the network for `artnet` and `sacn`.)
+- `startBridge` (function, @openav/out): `startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = null, watchdog = true, log = () => {}, print = (s) => console.log(s), now = Date.now } = {})` — Starts the out-bridge: a loopback WebSocket server that routes channel values from the page to hardware sinks, with a watchdog that falls back to safe values (Node only). (before it has a value: Node 22 or later. The sinks need what they talk to: a WLED device for `ddp`, the device file for `serial` and `enttec`, a listener for `osc`, an Art-Net node or an sACN receiver on the network for `artnet` and `sacn`.)
 
 ## dmx
 

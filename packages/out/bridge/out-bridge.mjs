@@ -54,8 +54,10 @@ export function loadConfig(file) {
  * @param {boolean} [o.watchdog=true]   false = never send safe values (tests prove the watchdog by turning it off)
  * @param {(s:string)=>void} [o.log]    diagnostics
  * @param {(s:string)=>void} [o.print]  what the "log" sink prints (default stdout)
+ * @param {() => number} [o.now=Date.now]  the clock the watchdog and /health read, in ms. A test passes one it moves by hand and calls
+ *                                       tick(), so whether a value counts as quiet never depends on how busy the machine is.
  */
-export function startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = null, watchdog = true, log = () => {}, print = (s) => console.log(s) } = {}) {
+export function startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = null, watchdog = true, log = () => {}, print = (s) => console.log(s), now = Date.now } = {}) {
   if (RESERVED_PORTS.includes(Number(port))) throw new Error(`port ${port} 是 The Last Input 的，輸出橋接用 ${DEFAULT_PORT}`);
   if (!LOOPBACK.has(host)) throw new Error(`輸出橋接只綁 loopback（收到 ${host}）`);
   const cfg = config || { channels: [{ match: '*', sink: 'log' }] };
@@ -79,7 +81,7 @@ export function startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = 
   const routeOf = (ch) => routes.find((r) => r.re.test(ch)) || null;
   const safeOf = (ch) => { const s = safeRules.find((r) => r.re.test(ch)); return s ? s.v : null; };
 
-  const started = Date.now();
+  const started = now();
   const clients = new Set();
   const chans = new Map();          // ch → { v, at, route, safe, safeSent }
   const state = { received: 0, rejected: 0, unrouted: 0, lastAt: 0, safeSent: 0 };
@@ -92,7 +94,7 @@ export function startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = 
       chans.set(ch, c);
     }
     if (!c.route) { state.unrouted++; return true; }
-    c.v = v; c.at = Date.now(); c.safeSent = false;
+    c.v = v; c.at = now(); c.safeSent = false;
     state.received++; state.lastAt = c.at;
     try { c.route.sink.send(ch, v); } catch (e) { log(`[out] ${c.route.label}: ${e.message}`); }
     return true;
@@ -109,20 +111,24 @@ export function startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = 
     for (const [ch, c] of chans) sendSafe(ch, c, why);
     flushAll();
   }
-  const wd = watchdog ? setInterval(() => {
-    const now = Date.now();
-    let any = false;
-    for (const [ch, c] of chans) if (c.at && now - c.at > timeoutMs && !c.safeSent && c.safe != null) { sendSafe(ch, c, `${timeoutMs} ms 沒收到值`); any = true; }
-    if (any) flushAll();
-  }, Math.max(10, Math.min(100, timeoutMs / 4))) : null;
+  /** One look of the watchdog, as its timer runs it: each channel quiet for longer than timeoutMs gets its safe value, once. How many did. */
+  function tick() {
+    if (!watchdog) return 0;
+    const t = now();
+    let n = 0;
+    for (const [ch, c] of chans) if (c.at && t - c.at > timeoutMs && !c.safeSent && c.safe != null) { sendSafe(ch, c, `${timeoutMs} ms 沒收到值`); n++; }
+    if (n) flushAll();
+    return n;
+  }
+  const wd = watchdog ? setInterval(tick, Math.max(10, Math.min(100, timeoutMs / 4))) : null;
 
   // ---------------------------------------------------------------- messages
   function statusMsg() {
     return { type: 'status', ok: true, bridge: 'open-audiovisual out-bridge', version: VERSION, timeoutMs, watchdog,
       sinks: Object.fromEntries(routes.map((r) => [r.label, r.sink.status()])), channels: chans.size, clients: clients.size };
   }
-  const health = () => ({ ...statusMsg(), type: undefined, port: actualPort, lastReceivedAgoMs: state.lastAt ? Date.now() - state.lastAt : null,
-    received: state.received, rejected: state.rejected, unrouted: state.unrouted, safeSent: state.safeSent, uptimeS: Math.round((Date.now() - started) / 1000) });
+  const health = () => ({ ...statusMsg(), type: undefined, port: actualPort, lastReceivedAgoMs: state.lastAt ? now() - state.lastAt : null,
+    received: state.received, rejected: state.rejected, unrouted: state.unrouted, safeSent: state.safeSent, uptimeS: Math.round((now() - started) / 1000) });
   function send(c, obj) {
     if (c.socket.destroyed || c.socket.writableLength > 1 << 20) return;
     try { c.socket.write(encodeFrame(JSON.stringify(obj))); } catch {}
@@ -214,7 +220,7 @@ export function startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = 
     server.listen(port, host, () => {
       actualPort = server.address().port;
       resolve({
-        port: actualPort, state, health,
+        port: actualPort, state, health, tick,
         close() {
           clearInterval(wd);
           if (watchdog) allSafe('橋接關閉');       // a clean stop leaves the hardware safe

@@ -32,6 +32,7 @@ export class OutClient {
     this.last = {};                 // channel → last value given to set() (also in sim mode)
     this.bridge = null;             // the bridge's last {type:'status'} message
     this.sent = 0;                  // values actually put on the wire (coalescing makes this < set() calls)
+    this.beatMs = null;             // how often the held values are re-sent while open: a third of the bridge's timeoutMs once it has said
     this._pending = new Map();
     this._listeners = new Set();
     this._ws = null; this._wanted = false; this._backoff = this._min; this._retry = null; this._flushing = false; this._beat = null;
@@ -108,7 +109,8 @@ export class OutClient {
   }
   _armBeat() {
     clearInterval(this._beat);
-    this._beat = setInterval(() => this._heartbeat(), Math.max(50, Math.round(((this.bridge && this.bridge.timeoutMs) || 500) / 3)));
+    this.beatMs = Math.max(50, Math.round(((this.bridge && this.bridge.timeoutMs) || 500) / 3));
+    this._beat = setInterval(() => this._heartbeat(), this.beatMs);
     this._beat.unref?.();
   }
   _heartbeat() {
