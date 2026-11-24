@@ -13,9 +13,10 @@
 //   GET /health               sinks, channel count, clients, time since the last value
 //
 // Channels are routed by the config's "channels" (first matching glob wins) to a sink: log, udp-json,
-// osc, ddp (WLED), serial. Watchdog: a channel that gets no value for "timeoutMs" is sent its "safe"
-// value once (only channels with a safe value); when the last client disconnects, every known channel
-// with a safe value gets it at once; so does a clean shutdown. Port 7457 belongs to The Last Input.
+// osc, ddp (WLED), serial, and for DMX (dmx/<universe>/<address>) artnet, sacn, enttec. Watchdog: a channel
+// that gets no value for "timeoutMs" is sent its "safe" value once (only channels with a safe value); when
+// the last client disconnects, every known channel with a safe value gets it at once; so does a clean
+// shutdown. A safe value of "hold" means none (the channel stays put). Port 7457 belongs to The Last Input.
 
 import http from 'node:http';
 import fs from 'node:fs';
@@ -69,9 +70,11 @@ export function startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = 
     if (!r.match || !mod) throw new Error(`channels[${i}]：sink 要是 ${Object.keys(SINKS).join(' / ')}（收到 ${r.sink}），也要有 match`);
     return { re: globToRegExp(r.match), match: r.match, sink: mod.create(r, ctx), label: `${i}:${r.sink}` };
   });
+  // "hold" = no safe value for these channels: they stay where the page left them (first matching glob wins, so
+  // { "dmx/1/49": "hold", "dmx/*": 0 } darkens a rig and leaves one moving head's pan where it was)
   const safeRules = Object.entries(cfg.safe || {}).map(([g, v]) => {
-    if (!Number.isFinite(v)) throw new Error(`safe["${g}"] 要是數字`);
-    return { re: globToRegExp(g), v };
+    if (v !== 'hold' && !Number.isFinite(v)) throw new Error(`safe["${g}"] 要是數字，或 "hold"（斷線時停在最後的值）`);
+    return { re: globToRegExp(g), v: v === 'hold' ? null : v };
   });
   const routeOf = (ch) => routes.find((r) => r.re.test(ch)) || null;
   const safeOf = (ch) => { const s = safeRules.find((r) => r.re.test(ch)); return s ? s.v : null; };
@@ -133,7 +136,7 @@ export function startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = 
       put(m.ch, m.v);
     } else if (m.type === 'batch') {
       if (!Array.isArray(m.items)) return send(c, { type: 'error', msg: 'batch 要有 items 陣列' });
-      for (const it of m.items.slice(0, 1024)) {
+      for (const it of m.items.slice(0, MAX_CHANNELS)) {     // a heartbeat carries every held value: room for all of them (two DMX universes are 1024)
         const [ch, v] = Array.isArray(it) ? it : [it && it.ch, it && it.v];
         if (okValue(ch, v)) put(ch, v); else state.rejected++;
       }

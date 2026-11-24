@@ -425,7 +425,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-30 packages · 27 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1273 tests
+30 packages · 27 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1304 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -5743,7 +5743,7 @@ already runs. A layer earns that when people can build on it without asking. Wha
 
 # API reference (generated)
 
-> 548 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 551 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -9279,7 +9279,7 @@ function draw() {
 - `OUT_DEFAULT_URL` (constant, @openav/out): `OUT_DEFAULT_URL = "ws://127.0.0.1:6450/out"` — The address `OutClient` connects to by default: `ws://127.0.0.1:6450/out`, the out-bridge on this machine.
 - `OutClient` (class, @openav/out): `new OutClient({ url = OUT_DEFAULT_URL, id = null, WebSocket: WS, schedule, maxBackoffMs = 5000, minBackoffMs = 250 } = {})` — The page side of the out-bridge: `set(channel, value)` sends a number to a named hardware channel, at most once per frame, and keeps the connection alive. (before it has a value: Call `connect()` (the bridge must be running: `node packages/out/bridge/out-bridge.mjs --config out.json`), or `simulate()` for no hardware at all. `set()` before the socket is open is not lost: it waits in `last` and goes out on open.)
 - `RESERVED_PORTS` (constant, @openav/out): `RESERVED_PORTS = array, 1 items` — The ports the out-bridge refuses to use: `[7457]`, which belongs to The Last Input and the backstage monitor.
-- `startBridge` (function, @openav/out): `startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = null, watchdog = true, log = () => {}, print = (s) => console.log(s) } = {})` — Starts the out-bridge: a loopback WebSocket server that routes channel values from the page to hardware sinks, with a watchdog that falls back to safe values (Node only). (before it has a value: Node 22 or later. The sinks need what they talk to: a WLED device for `ddp`, the device file for `serial`, a listener for `osc`.)
+- `startBridge` (function, @openav/out): `startBridge({ port = DEFAULT_PORT, host = '127.0.0.1', config = null, watchdog = true, log = () => {}, print = (s) => console.log(s) } = {})` — Starts the out-bridge: a loopback WebSocket server that routes channel values from the page to hardware sinks, with a watchdog that falls back to safe values (Node only). (before it has a value: Node 22 or later. The sinks need what they talk to: a WLED device for `ddp`, the device file for `serial` and `enttec`, a listener for `osc`, an Art-Net node or an sACN receiver on the network for `artnet` and `sacn`.)
 
 ## dmx
 
@@ -9287,12 +9287,15 @@ function draw() {
 - `decodeEnttecDmx` (function, @openav/dmx): `decodeEnttecDmx(bytes)` — Reads an Enttec DMX USB Pro "send DMX" frame (label 6) back into its start code and channels, or returns null for another label or a broken frame.
 - `decodeSacn` (function, @openav/dmx): `decodeSacn(bytes)` — Reads an E1.31 data packet back into its universe, priority, sequence, source name, CID and slot values, or returns null for anything else.
 - `DmxEngine` (class, @openav/dmx): `new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 } = {})` — Renders every light of a patch at any moment, as a pure function of time: base scenes, cues with fades, chases on beats, effects, live values, master and blackout.
-- `encodeArtDmx` (function, @openav/dmx): `encodeArtDmx(data, { universe = 0, sequence = 0, physical = 0 } = {})` — One Art-Net ArtDmx packet (opcode 0x5000, protocol 14) for up to 512 channels, ready to send by UDP to port 6454.
+- `dmxParams` (function, @openav/dmx): `dmxParams(engine, { prefix = 'dmx', groups, effects, chases, group = 'lights' } = {})` — Turns a DmxEngine's control points into params (master, blackout, group dimmer, hue, saturation, effect rate and depth, chase run) for MIDI, the timeline and the mic.
+- `dmxTransport` (function, @openav/dmx): `dmxTransport(kind = 'sim', options = {})` — Where rendered DMX goes each frame: 'sim' (memory only), 'bridge' (an OutClient to the out-bridge: Art-Net, sACN, Enttec) or 'serial' (Web Serial to an Enttec Pro). (before it has a value: Nothing for `sim`. `bridge`: the out-bridge running with a `dmx/*` rule (`node packages/out/bridge/out-bridge.mjs --config out.json`). `serial`: Chrome or Edge, a click, and the interface plugged in.)
+- `encodeArtDmx` (function, @openav/dmx): `encodeArtDmx(data, { universe = 1, sequence = 0, physical = 0 } = {})` — One Art-Net ArtDmx packet (opcode 0x5000, protocol 14) for up to 512 channels, ready to send by UDP to port 6454.
 - `encodeEnttecDmx` (function, @openav/dmx): `encodeEnttecDmx(data)` — The serial frame that makes an Enttec DMX USB Pro (and interfaces that copy its protocol) send one universe: 0x7E, label 6, length, start code and channels, 0xE7.
 - `encodeSacn` (function, @openav/dmx): `encodeSacn(data, { universe = 1, cid, source = 'open-audiovisual', priority = 100, sequence = 0, preview = false, terminated = false } = {})` — One sACN (E1.31) data packet for 1–512 slots: root, framing and DMP layers with their lengths, priority, sequence and universe, ready for UDP port 5568.
 - `fixtureById` (function, @openav/dmx): `fixtureById(id)` — A shipped generic fixture profile by its id, or null.
 - `FIXTURES` (constant, @openav/dmx): `FIXTURES = array, 7 items` — The generic fixture profiles that ship: dimmer, RGB, RGBW (4 and 6 channels), RGBA, RGBAW+UV, a one-colour strobe and a moving head (8 and 16 channels).
 - `loadFixture` (function, @openav/dmx): `loadFixture(profile)` — Checks a fixture profile and lays it out for patching: each mode gets its footprint and, slot by slot, the channel it carries. Throws when the profile is not valid.
+- `mountDmxMonitor` (function, @openav/dmx): `mountDmxMonitor(el, { patch, transport = null, universe, title = 'DMX' } = {})` — Puts a DMX monitor on the page: a swatch per fixture (its colour times its dimmer, a moving head's pan and tilt as a mark) and a universe's 512 channels as a grid. (before it has a value: A page (it builds DOM) and the patch. It shows zeros until the first `update()`.)
 - `Patch` (class, @openav/dmx): `new Patch({ profiles = [] } = {})` — Places fixtures on universes and addresses, with groups and per-fixture limits, and turns properties (dimmer, color, pan, tilt, strobe, zoom) into each light's bytes.
 - `rgbToChannels` (function, @openav/dmx): `rgbToChannels(rgb, colors)` — Splits one RGB colour into the colour channels a fixture really has (RGB, RGBW, RGBA, RGBAW+UV, CMY), white and amber taken out first.
 - `sacnAddress` (function, @openav/dmx): `sacnAddress(universe)` — The multicast group a receiver joins for one sACN universe: 239.255.<universe high byte>.<universe low byte>.

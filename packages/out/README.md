@@ -1,8 +1,8 @@
 # @openav/out
 
 L4 output · web-page parameters → physical hardware through one local bridge: WLED light strips (DDP),
-serial motor boards, OSC. A **watchdog** puts every channel back on a safe value when the page stops
-talking, so a frozen tab never leaves a motor running.
+serial motor boards, OSC, and DMX lighting (Art-Net, sACN, an Enttec DMX USB Pro). A **watchdog** puts
+every channel back on a safe value when the page stops talking, so a frozen tab never leaves a motor running.
 
 ```
 page (lab.out / OutClient)
@@ -10,6 +10,9 @@ page (lab.out / OutClient)
   → bridge/out-bridge.mjs      Node, zero deps, loopback only; routes each channel by glob
        ├─ ddp       WLED, UDP 4048: light/<i>/r|g|b → an RGB buffer, ≤ 60 packets a second
        ├─ serial    /dev/cu.*: "motor/1 0.5\n" lines; device missing → status "down", retried every 2 s
+       ├─ artnet    DMX, UDP 6454: dmx/<universe>/<address> → ArtDmx, unicast to the node, 40 Hz + 1 s keep-alive
+       ├─ sacn      DMX, UDP 5568: the same channels → E1.31, multicast 239.255.x.y (or unicast), priority, one CID
+       ├─ enttec    DMX, /dev/cu.*: one universe → Enttec DMX USB Pro frames; device missing → "down", retried
        ├─ osc       UDP: "/" + channel, one float32
        ├─ udp-json  UDP: {"ch","v"} (tests, debugging)
        └─ log       stdout
@@ -39,20 +42,55 @@ never overwritten by a re-install) and `uninstall.sh [--purge]` to take it away.
   { "match": "light/*", "sink": "ddp",  "host": "192.168.1.50", "port": 4048, "pixels": 60, "map": "rgb-index" },
   { "match": "motor/*", "sink": "serial", "path": "/dev/cu.usbmodem1101", "baud": 115200, "format": "line" },
   { "match": "osc/*",   "sink": "osc",  "host": "127.0.0.1", "port": 9000 },
+  { "match": "dmx/*",   "sink": "artnet", "host": "2.0.0.10" },
   { "match": "*",       "sink": "log" }
-], "safe": { "light/*": 0, "motor/*": 0.5 }, "timeoutMs": 500 }
+], "safe": { "light/*": 0, "motor/*": 0.5, "dmx/1/49": "hold", "dmx/1/51": "hold", "dmx/*": 0 }, "timeoutMs": 500 }
 ```
 
 - `channels`: the first rule whose `match` (a glob, `*` = anything) fits the channel name takes it. A channel no rule fits is counted and dropped.
 - Channel names: `a-z A-Z 0-9 _ - . /`, up to 128 characters; values are finite numbers.
 - `ddp`: `light/<i>/r|g|b`, values 0..1, pixel index from 0 (`"base": 1` to count from 1). `pixels` up to 10000, split into packets of 1440 bytes. WLED also falls back to its own effect ~2.5 s after the last packet.
 - `serial`: `format` is `line` (`ch value\n`) or `json`. The baud rate is set with `stty -f <dev> <baud> raw -echo` before the port opens. A slow board gets the latest value per channel, never a queue.
-- `safe`: channel glob → value. `timeoutMs` (default 500, at least 20).
+- `safe`: channel glob → value, or `"hold"` (no safe value: the channel stays where the page left it). The first glob
+  that fits wins, so `{ "dmx/1/49": "hold", "dmx/*": 0 }` darkens a rig and leaves one moving head's pan alone.
+  `timeoutMs` (default 500, at least 20).
 - `allowOrigins` (optional): browser origins allowed to connect, e.g. `["https://lab.cheyuwu.com"]`. Without it any page on this machine can connect, as with the Leap bridge — set it when the bridge drives anything that moves.
+
+## DMX: artnet, sacn, enttec
+
+The page sends one channel per DMX address: `dmx/<universe>/<address>`, address 1..512 as a patch sheet counts, value
+0..1 → byte 0..255 (rounded, clamped). `@openav/dmx`'s `dmxTransport('bridge', { client })` does it for you, sending
+only the channels that changed. Each DMX sink keeps one 512-byte buffer per universe and sends a universe's frame on a
+fixed 40 Hz tick while its values change (never sooner than 23 ms after the last one: DMX carries about 44 frames a
+second), and once a second while nothing changes, because an Art-Net node or sACN receiver that hears nothing for about
+2.5 s decides the source is gone. A universe that was never sent a value sends nothing.
+
+**Which universe is which.** `dmx/1/…` is "universe 1" as people say it, and it goes out as Art-Net **Port-Address 1**
+(Net 0, Sub-Net 0, Universe 1) and as **sACN universe 1**. `dmx/N/…` is Port-Address N (up to 32767) and sACN universe
+N (up to 63999). Port-Address 0 is valid but deprecated by Art-Net 4; a node still set to it is reached with `dmx/0/…`
+(sACN has no universe 0, so its sink ignores those). A desk that calls its first universe "1" but sends it as
+Port-Address 0 (some do) is one off from this: set the node to 1, or patch the page on universe 0.
+
+| sink | options |
+|---|---|
+| `artnet` | `host` (the node's IP, or a list of them; required), `port` 6454, `broadcast` (`true` to broadcast instead, see below). Sequence 1..255 per universe, 512 channels a packet. |
+| `sacn` | `host` (unicast; omitted = each universe's multicast group 239.255.<hi>.<lo>), `port` 5568, `priority` 0–200 (100), `source` (the name a console shows, `"open-audiovisual"`), `interface` (the IPv4 address of the network card multicast leaves from). One CID per bridge run. A clean stop sends three "stream terminated" packets per universe after the safe values. |
+| `enttec` | `path` (`/dev/cu.usbserial-…`; required), `universe` (the one universe it carries, 1), `baud` (57600; the Pro talks USB, the baud is only for the tty), `retryMs` (2000). A missing device is state `down`, retried; a slow port skips frames and never writes half of one. The widget keeps repeating the last frame on its own. |
+
+**Why Art-Net is unicast by default.** Art-Net 4 says ArtDmx goes to the nodes that subscribe to a universe and is
+never broadcast: 40 broadcast packets a second per universe reach every device on the network, flood slow nodes and
+Wi-Fi, and stop being yours alone on a shared network. `"broadcast": true` (with `host` a broadcast address such as
+`2.255.255.255`, or `255.255.255.255` when omitted) is there for an old node that only listens to broadcast, on a
+network that carries nothing else.
+
+Not here: RDM, ArtPoll discovery, ArtSync, an Enttec Open DMX (no processor: the computer would time the DMX break).
+None of the three sinks has been tried with a real node, receiver or interface yet: the tests decode every packet with
+`@openav/dmx`'s own decoders on loopback, and the Enttec sink writes to a stand-in port.
 
 ## The watchdog
 
-- A channel with a `safe` value that gets no value for `timeoutMs` receives it, once; a new value re-arms it.
+- A channel with a `safe` value that gets no value for `timeoutMs` receives it, once; a new value re-arms it. A `"hold"`
+  channel has no safe value: it keeps the last one (what a show often wants for moving heads' position).
 - When the last client disconnects, every channel the bridge has seen that has a `safe` value gets it at once.
 - A clean stop (SIGTERM / SIGINT) does the same before the sockets close.
 - The browser client re-sends held values every `timeoutMs / 3`, so a still slider is not mistaken for a dead page. A page that freezes stops the heartbeat, and the hardware goes safe.
@@ -84,4 +122,5 @@ out.set('light/0/r', 1);
 ```
 
 Tests: `node --test tests/out.test.js` (UDP receiver + the bridge on port 0; OSC and DDP bytes; the watchdog and the
-same test with the watchdog switched off).
+same test with the watchdog switched off) and `node --test tests/dmx-out.test.js` (the DMX scheduler on a test clock,
+Art-Net and sACN decoded on loopback, safe and held values, three universes through one page, Enttec on a fake port).

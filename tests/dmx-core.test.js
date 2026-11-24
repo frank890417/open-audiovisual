@@ -19,7 +19,8 @@ const bytesAt = (U, u, from, n) => [...U.bytes(u).slice(from - 1, from - 1 + n)]
 // ---------------------------------------------------------------------------- the package itself
 test('package: the public surface is small and every file runs in a browser as well as in Node', () => {
   assert.deepEqual(Object.keys(DMX).sort(), ['DmxEngine', 'FIXTURES', 'Patch', 'Universe', 'Universes', 'decodeArtDmx', 'decodeEnttecDmx', 'decodeSacn',
-    'encodeArtDmx', 'encodeEnttecDmx', 'encodeSacn', 'fixtureById', 'loadFixture', 'rgbToChannels', 'sacnAddress', 'validateFixture']);
+    'dmxParams', 'dmxTransport', 'encodeArtDmx', 'encodeEnttecDmx', 'encodeSacn', 'fixtureById', 'loadFixture', 'mountDmxMonitor', 'rgbToChannels',
+    'sacnAddress', 'validateFixture']);
   const files = [];
   const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (/\.js$/.test(e.name)) files.push(p); } };   // reference.mjs is documentation, read by Node
   walk(PKG);
