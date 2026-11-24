@@ -109,6 +109,8 @@ export default {
     },
   },
   cheatLink: 'One-page cheat sheet',
+  // the next-step block at the end of the page (and of the cheat sheet): the examples whose code uses each group's names
+  next: { title: 'Examples that use these names' },
   untilWritten: 'waiting for a description',
   sourceLine: '{file}, line {line}',
 };

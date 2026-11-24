@@ -160,6 +160,18 @@ export function exampleHead(e) {
 }
 
 const href = (c, p) => c.root + p;
+/** A link on from an example page, counted by assets/track.js as oav_next_step (to: example | examples | docs). */
+const step = (url, to, html) => `<a href="${url}" data-oav-event="next_step" data-oav-to="${to}">${html}</a>`;
+/** The handbook chapters an example uses (catalog `docs`), in one language. */
+const docLinks = (c, e, lang) => e.docs.map((d) => step(`${href(c, lang === 'zh' ? 'zh/docs/' : 'docs/')}#${d.id}`, 'docs', esc(d[lang]))).join(lang === 'zh' ? '、' : ' · ');
+/** "Next on this route: 16 p5 keys with sound →", or at the end of a route, the first example of the next one. */
+function nextLine(c, G, e, next, lang) {
+  const i = lang === 'zh' ? 1 : 0, colon = lang === 'zh' ? '：' : ':';
+  const link = step(href(c, next.dir), 'example', `${next.num} ${esc(next.title[lang])} →`);
+  return next.route === e.route
+    ? `<b>${G[lang].nextSame}${colon}</b>${lang === 'zh' ? '' : ' '}${link}`
+    : `<b>${G[lang].nextRoute}${colon}</b>${lang === 'zh' ? '' : ' '}${esc(ROUTE_NAMES[next.route][i])}${lang === 'zh' ? '，' : ', '}${link}`;
+}
 
 /** The guide card: static, bilingual (the page's own language switch, data-ui, picks one), no JavaScript needed to read it. */
 export function exampleGuide(e) {
@@ -172,19 +184,20 @@ export function exampleGuide(e) {
     : `<p class="g-row">${bi(`<b>${G.en.noneNeeded}</b> ${e.standIn.map((x) => esc(tag(x, 'en'))).join(' · ')}.`, `<b>${G.zh.noneNeeded}</b>${e.standIn.map((x) => esc(tag(x, 'zh'))).join('、')}。`)}</p>`;
   const tries = ['en', 'zh'].map((l) => `<ol class="g-try" lang="${l === 'zh' ? ZH : 'en'}">${e.tryThree[l].map((x) => `<li>${esc(x)}</li>`).join('')}</ol>`).join('\n        ');
   const reads = `<ul class="g-read">${e.read.map((r) => `<li><a href="${lineUrl(e, r)}"><code>${esc(r.file)}:${r.from}${r.to > r.from ? '–' + r.to : ''}</code></a> ${bi(esc(r.note.en), esc(r.note.zh))}</li>`).join('')}</ul>`;
+  // the next step: the chapters this example uses (catalog `docs`), then the next example on its route
   const docs = e.docs.length
-    ? `<p class="g-row"><b>${bi(G.en.docs, G.zh.docs)}:</b> ${e.docs.map((d) => `${bi(`<a href="${href(c, 'docs/')}#${d.id}">${esc(d.en)}</a>`, `<a href="${href(c, 'zh/docs/')}#${d.id}">${esc(d.zh)}</a>`)}`).join(' · ')}</p>`
+    ? `<p class="g-row">${bi(`<b>${G.en.docs}:</b> ${docLinks(c, e, 'en')}`, `<b>${G.zh.docs}：</b>${docLinks(c, e, 'zh')}`)}</p>`
     : '';
   const p5 = e.p5Line
-    ? `<p class="g-row g-p5">${bi(`<b>${esc(G.en.p5)}</b>`, `<b>${esc(G.zh.p5)}</b>`)} ${bi(`<a href="${href(c, 'examples/15-p5-one-line/')}">${G.en.p5Example}</a> · <a href="${href(c, 'docs/')}#p5">${G.en.p5Docs}</a>`, `<a href="${href(c, 'examples/15-p5-one-line/')}">${G.zh.p5Example}</a> · <a href="${href(c, 'zh/docs/')}#p5">${G.zh.p5Docs}</a>`)}</p>`
+    ? `<p class="g-row g-p5">${bi(`<b>${esc(G.en.p5)}</b>`, `<b>${esc(G.zh.p5)}</b>`)} ${bi(`${step(href(c, 'examples/15-p5-one-line/'), 'example', G.en.p5Example)} · ${step(`${href(c, 'docs/')}#p5`, 'docs', G.en.p5Docs)}`, `${step(href(c, 'examples/15-p5-one-line/'), 'example', G.zh.p5Example)} · ${step(`${href(c, 'zh/docs/')}#p5`, 'docs', G.zh.p5Docs)}`)}</p>`
     : '';
   const credit = e.credit
     ? `<p class="g-credit">${bi(`${G.en.copyright}: ${e.credit.en}. ${esc(e.credit.rights.en)}`, `${G.zh.copyright}：${e.credit.zh}。${esc(e.credit.rights.zh)}`)}</p>`
     : '';
   const nextRow = `<p class="g-next">${next
-    ? bi(`<b>${G.en.next}:</b> <a href="${href(c, next.dir)}">${next.num} ${esc(next.title.en)} →</a>`, `<b>${G.zh.next}：</b><a href="${href(c, next.dir)}">${next.num} ${esc(next.title.zh)} →</a>`)
+    ? bi(nextLine(c, G, e, next, 'en'), nextLine(c, G, e, next, 'zh'))
     : bi(esc(G.en.last), esc(G.zh.last))}
-    ${bi(`<a href="${href(c, 'examples/')}">${G.en.all}</a>`, `<a href="${href(c, 'zh/examples/')}">${G.zh.all}</a>`)}</p>`;
+    ${bi(step(href(c, 'examples/'), 'examples', G.en.all), step(href(c, 'zh/examples/'), 'examples', G.zh.all))}</p>`;
   return `<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
   <div class="g-bar">
     <p class="g-eyebrow">${bi(`${G.en.example} ${e.num} · <a href="${href(c, 'examples/')}#route-${e.route}">${esc(route[0])}</a>`, `${G.zh.example} ${e.num} · <a href="${href(c, 'zh/examples/')}#route-${e.route}">${esc(route[1])}</a>`)}</p>
@@ -201,6 +214,7 @@ export function exampleGuide(e) {
     ${needsRow}
     <h2>${bi(G.en.read, G.zh.read)}</h2>
     ${reads}
+    <h2>${bi(G.en.step, G.zh.step)}</h2>
     ${p5}
     ${docs}
     ${nextRow}
@@ -210,14 +224,14 @@ export function exampleGuide(e) {
 <script src="${href(c, 'assets/examples/guide.js')}"></script>`;
 }
 
-/** Example 15 has its own explanation: only the way on. */
+/** Example 15 has its own explanation: only the way on, its chapter and the next example on its route. */
 export function exampleNext(e) {
   const c = exCtx(e), G = { en: STRINGS.en.guide, zh: STRINGS.zh.guide }, next = nextOf(e);
-  return `<nav class="oav-next" aria-label="${attr(G.en.next)}" style="max-width:920px;margin:0 auto;padding:8px 20px 0">
-  <p class="links">${next
-    ? bi(`${G.en.next}: <a href="${href(c, next.dir)}">${next.num} ${esc(next.title.en)} →</a>`, `${G.zh.next}：<a href="${href(c, next.dir)}">${next.num} ${esc(next.title.zh)} →</a>`)
+  return `<nav class="oav-next" aria-label="${attr(G.en.step)}" style="max-width:920px;margin:0 auto;padding:8px 20px 0">
+  ${e.docs.length ? `<p class="links">${bi(`${G.en.docs}: ${docLinks(c, e, 'en')}`, `${G.zh.docs}：${docLinks(c, e, 'zh')}`)}</p>\n  ` : ''}<p class="links">${next
+    ? bi(nextLine(c, G, e, next, 'en'), nextLine(c, G, e, next, 'zh'))
     : ''}
-  ${bi(`<a href="${href(c, 'examples/')}">${G.en.all}</a>`, `<a href="${href(c, 'zh/examples/')}">${G.zh.all}</a>`)}</p>
+  ${bi(step(href(c, 'examples/'), 'examples', G.en.all), step(href(c, 'zh/examples/'), 'examples', G.zh.all))}</p>
 </nav>`;
 }
 

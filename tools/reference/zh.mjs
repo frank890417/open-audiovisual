@@ -109,6 +109,8 @@ export default {
       description: '一頁看完 p5.js 草圖會用到的 oav-p5 名字：麥克風、鼓機、MIDI 鍵盤與旋鈕、lag 與 env、錄影。每個名字都連到 API 參考，可以印成一張 A4。',
     },
   },
+  // 頁面（和小抄）最後的「下一步」區塊：程式裡用到每一組名稱的範例
+  next: { title: '用到這些名稱的範例' },
   cheatLink: '一頁速查表',
   untilWritten: '等著寫說明',
   sourceLine: '{file} 第 {line} 行',

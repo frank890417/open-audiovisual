@@ -100,7 +100,7 @@
   @page { size: A4 landscape; margin: 8mm; }
   :root { --ink: #fff; --ink-2: #fff; --ink-3: #f2f2f2; --line: #ccc; --line-2: #999; --fg: #111; --fg-2: #333; --fg-3: #666; }
   body { background: #fff !important; color: #111; }
-  .site-top, .site-foot, header.top, footer, .cs-links, .cs-foot, .skip { display: none !important; }
+  .site-top, .site-foot, header.top, footer, .cs-links, .cs-foot, .skip, .next-step { display: none !important; }   /* the next step is for the screen: the sheet stays one A4 */
   .cs-main { max-width: none; padding: 0; }
   .cs-head { margin-bottom: 8px; gap: 4px; }
   .cs-name { font-size: 30px; }

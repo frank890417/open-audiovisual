@@ -9,6 +9,8 @@ import { SITE, BLOB, SOFTWARE_ID, esc, attr, headBasics, pageNode, breadcrumbNod
 import { inline, highlight } from '../docs/markdown.mjs';
 import { CATEGORIES } from './categories.mjs';
 import { LOADER, P5, parseParams, signatureOf } from './model.mjs';
+import { examplesUsing } from '../examples/uses.mjs';
+import { usesBlock } from '../site/next-step.mjs';
 
 const fill = (s, vars) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 export const P5_VERSIONS = ['1.11.11', '2.3.4'];
@@ -177,6 +179,14 @@ ${body}
 
   const stats = fill(t.stats, { names: records.length, written }) + (waiting ? fill(t.statsWaiting, { waiting }) : '');
 
+  // the next step: for each category, the examples whose code uses its oav-p5 names or imports its packages (tools/examples/uses.mjs)
+  const groups = cats.map((cat) => {
+    const rs = records.filter((r) => r.category === cat.id);
+    const names = rs.filter((r) => r.ns === P5).flatMap((r) => r.covers);
+    const packages = [...new Set(rs.filter((r) => r.ns !== P5).map((r) => String(r.pkg).replace(/^@openav\//, '')))];
+    return { label: cat[L], examples: examplesUsing({ names, packages }) };
+  });
+
   return guardEmail(`<!DOCTYPE html>
 <html lang="${home.htmlLang}">
 <head>
@@ -229,6 +239,8 @@ ${topBar(home, c)}
 ${sections}
     </div>
     <p class="ref-none" hidden></p>
+
+    ${usesBlock({ c, locale: L, home, title: t.next.title, groups })}
 
     <p class="docs-end"><a href="#top">↑ ${esc(t.backToTop)}</a></p>
   </main>

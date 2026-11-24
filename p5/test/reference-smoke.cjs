@@ -22,6 +22,10 @@
 //      <canvas id="c"> to draw into; no page error, no console error
 //   4. every CLAIM an entry makes about a value ({ before, expr, equals | min, max, moves }): the expression is read in a running sketch
 //      and must say what the entry says. `moves` = the value takes more than one value in a few seconds (a microphone that is listening)
+//   5. the NEXT STEP of the device pages: the p5 sketch /controllers/<id>/ hands over (window.OAV_P5 = { profile: '<id>', panel: 'open' },
+//      the loader line, a sketch: option:profile's form with that device's id) runs, OAVp5.options.profile is that id and the open
+//      🎹 panel shows that device's profile (an imported one is fetched for it). For a pad
+//      controller, a keyboard, a fader box, a generic layout and an imported profile (NEXT_IDS=a,b to choose others; with ONLY, only when NEXT_IDS is set)
 //
 // Exit code 1 when any row fails; each row says which entry, which example, which p5.
 const fs = require('fs'), path = require('path'), http = require('http'), os = require('os');
@@ -42,6 +46,7 @@ const SHARD = (() => {
 })();
 const NOISE = [/ERR_UNSAFE_PORT/, /ws:\/\/127\.0\.0\.1:1\/relay/, /ws:\/\/[^ ]*:7457/, /WebSocket connection to 'ws:\/\/[^']*7457/, /googletagmanager|google-analytics|cloudflareinsights/, /net::ERR_(BLOCKED|FAILED|INTERNET)/, /Failed to load resource/];
 const LOADER_SRC = 'https://openaudiovisual.com/p5/oav-p5.js';
+const LOADER_LINE = `document.head.prepend(Object.assign(document.createElement('script'), { src: '${LOADER_SRC}' }));`;   // tools/reference/model.mjs LOADER
 const data = JSON.parse(fs.readFileSync(path.join(OAV, 'docs/reference/reference.json'), 'utf8'));
 const entries = data.entries.filter((e) => !ONLY || ONLY.includes(e.key) || ONLY.includes(e.id));
 
@@ -186,6 +191,15 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
   }
   const claimsOf = (e) => (e.claims || []).map((c, i) => ({ type: 'claim', e, c, i }));
   for (const e of entries) for (const w of claimsOf(e)) for (const v of P5_VERSIONS.slice(0, 1)) work.push({ ...w, v });
+  // 5. the device pages' next step, read from the built page as a visitor copies it
+  const NEXT_IDS = (process.env.NEXT_IDS || 'akai-lpd8,korg-nanokey2,korg-nanokontrol2,generic-keys49,behringer-bcf2000').split(',').filter(Boolean);
+  const unhtml = (x) => x.replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+  if (!ONLY || process.env.NEXT_IDS) for (const id of NEXT_IDS) {
+    const f = path.join(OAV, 'controllers', id, 'index.html');
+    const m = fs.existsSync(f) && /<pre id="snip-next-p5"><code>([\s\S]*?)<\/code><\/pre>/.exec(fs.readFileSync(f, 'utf8'));
+    const code = m ? unhtml(m[1]) : '';
+    work.push({ type: 'example', e: { key: `controllers/${id}/ next step` }, ex: { run: 'sketch', code }, i: 0, v: P5_VERSIONS[0], next: { id, found: !!m } });
+  }
   // round-robin, not halves: the five-second microphone claims sit at the end of the list and are shared out evenly
   const all = work.length;
   if (SHARD.n > 1) work.splice(0, work.length, ...work.filter((_, i) => i % SHARD.n === SHARD.k - 1));
@@ -200,7 +214,15 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
       : `${wk.e.key} · claim ${wk.i + 1}: ${wk.c.before ? wk.c.before + ' ⇒ ' : ''}${wk.c.expr}`;
     try {
       if (wk.type === 'example') {
-        jobs.set(id, { kind: wk.ex.run, code: wk.ex.code, v: wk.v });
+        let code = wk.ex.code;
+        if (wk.next) {
+          // the page's copy carries the loader line; this runner loads oav-p5 the way that line does, so it comes off here
+          if (!wk.next.found) throw new Error(`controllers/${wk.next.id}/: no <pre id="snip-next-p5">`);
+          if (!code.includes(LOADER_LINE)) throw new Error('the next-step sketch has no loader line');
+          if (!code.startsWith(`window.OAV_P5 = { profile: '${wk.next.id}'`)) throw new Error('the next-step sketch does not start with window.OAV_P5 = { profile: … }');
+          code = code.replace(LOADER_LINE + '\n', '');
+        }
+        jobs.set(id, { kind: wk.ex.run, code, v: wk.v });
         await page.goto(`${base}/__run/${id}`, { waitUntil: 'load', timeout: 30000 });
         if (wk.ex.run === 'sketch') {
           // a sketch with no draw() never advances frameCount (p5 does not loop): it has run when its canvas is there
@@ -210,6 +232,13 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
           const r = await page.evaluate(() => ({ canvas: !!document.querySelector('canvas'), cards: ((window.OAVp5 && window.OAVp5.hints) || []).filter((x) => x.kind === 'error').map((x) => x.id + ': ' + x.what) }));
           if (!r.canvas) problems.push('no <canvas>');
           r.cards.forEach((c) => problems.push('oav-p5 error card: ' + c));
+          if (wk.next) {
+            const prof = await page.evaluate(() => window.OAVp5 && window.OAVp5.options.profile);
+            if (prof !== wk.next.id) problems.push(`OAVp5.options.profile is ${JSON.stringify(prof)}, the page sets ${wk.next.id}`);
+            // and the device itself arrived: the 🎹 panel (open) shows that profile's data, an imported one fetched on demand
+            const shown = await page.waitForFunction((pid) => { const v = document.querySelector('oav-controller'); return v && v.profileData && v.profileData.id === pid ? v.profileData.controls.length : false; }, wk.next.id, { timeout: 15000 }).then((h) => h.jsonValue()).catch(() => 0);
+            if (!shown) problems.push(`the 🎹 panel never showed ${wk.next.id}`);
+          }
         } else {
           await page.waitForTimeout(1200);
         }

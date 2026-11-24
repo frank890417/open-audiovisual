@@ -279,6 +279,11 @@ export default {
       p5Sketch: 'p5.js 草稿',
       p5Docs: 'p5.js 完整說明',
     },
+    next: {
+      title: '在 p5.js 裡用 {name}',
+      lede: '貼進 p5.js 草稿，OpenProcessing 或你自己的網頁都可以。第一行打開 🎹 面板，螢幕上就是 {name}，第二行載入 oav-p5。',
+      example: '範例 {num}：{title}',
+    },
     more: { eyebrow: '這台的周圍', title: '相關控制器', prev: '上一台', next: '下一台', back: '回到全部控制器', relatedLabel: '相關控制器', stepLabel: '相鄰的控制器', compare: '把 {name} 跟其他台比較：琴鍵、打擊墊、旋鈕、推桿、LED 回饋' },
     sysex: {
       title: '{name} 除了音符和 CC 還收什麼',

@@ -12,6 +12,9 @@ import { lastmodOf } from '../site/git.mjs';
 export { lastmodOf };
 import { snippets, hl } from '../../assets/controllers/snippets.js';
 import { verificationSummary } from '../../packages/midi/verify.js';
+import { LOADER } from '../reference/model.mjs';
+import { byId as exampleById, L as pick } from '../examples/catalog.mjs';
+import { nextLink } from '../site/next-step.mjs';
 import { ISSUE_NEW, CONTRIBUTING, noMidiStrip, catalog, faceSvg, specParts, nameOf, countsText, detailPath, detailUrl, fill, noteName, TYPE_ORDER, PROFILE_DIR } from './page.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -112,6 +115,26 @@ function p5Table(t, d, names) {
         </tbody>
       </table>
       </div>`;
+}
+
+// ------------------------------------------------------------------ the next step: this controller in p5.js
+/**
+ * The sketch the next-step block hands over: the form the reference documents for oav-p5's `profile` option
+ * (`window.OAV_P5 = { profile, panel: 'open' }` above the loader line, as the reference's Copy button pastes it), with
+ * this device's id, then setup() and the page's own p5 sketch. p5/test/reference-smoke.cjs runs it for a shipped device,
+ * a keyboard, a fader box, a generic layout and an imported profile.
+ */
+export function p5NextSketch(d, names = p5Names(d)) {
+  return `window.OAV_P5 = { profile: '${d.p.id}', panel: 'open' };\n${LOADER}\n\nfunction setup() {\n  createCanvas(400, 300);\n}\n\n${p5Sketch(d, names)}`;
+}
+
+/** The example a device page points to next, by what the device has most of. A rule on the profile, not a list per device. */
+export const NEXT_EXAMPLE = { keys: '16-p5-sound', pads: '18-p5-drums', controls: '09-midi-controllers' };
+export function nextExampleOf(d) {
+  const n = (k) => d.counts.get(k) || 0;
+  if (n('keys')) return exampleById.get(NEXT_EXAMPLE.keys);                                  // a keybed: play it with sound
+  if (n('pad') && n('pad') >= n('knob') + n('fader')) return exampleById.get(NEXT_EXAMPLE.pads);   // mostly pads: drums
+  return exampleById.get(NEXT_EXAMPLE.controls);                                             // knobs, faders, the rest
 }
 
 // ------------------------------------------------------------------ JSON-LD
@@ -229,9 +252,11 @@ export function renderDetail(t, home, locale, d, cat) {
   const rel = related(cat, d);
   const sp = specParts(t, d, c, locale);
   const names = p5Names(d);
+  const nextEx = nextExampleOf(d);
 
-  const copyBtn = (cid) => `<button type="button" class="copy" data-copy="${cid}">${home.ui.copy}</button>`;
-  const term = (label, cid, code) => `<div class="term"><div class="term-bar"><span>${label}</span>${copyBtn(cid)}</div><pre id="${cid}"><code>${hl(code)}</code></pre></div>`;
+  // copy: data-oav-copy says what assets/track.js counts it as (a block without one is classified from its code)
+  const copyBtn = (cid, kind) => `<button type="button" class="copy" data-copy="${cid}"${kind ? ` data-oav-copy="${kind}"` : ''}>${home.ui.copy}</button>`;
+  const term = (label, cid, code, kind) => `<div class="term"><div class="term-bar"><span>${label}</span>${copyBtn(cid, kind)}</div><pre id="${cid}"><code>${hl(code)}</code></pre></div>`;
   const sec = (sid, eyebrow, ttl, lede = '') => `
     <header class="sec-head">
       <p class="eyebrow">${eyebrow}</p>
@@ -409,6 +434,13 @@ ${topBar(home, c)}
       <li><a href="${BLOB}${jsonRel}">${D.report.file} ↗</a></li>
       <li><a href="${c.root}${jsonRel}">${D.report.raw}</a></li>
     </ul>
+  </section>
+
+  <!-- ═════ next step: this controller in a p5.js sketch ═════ -->
+  <section class="sec next-step" id="next-step" aria-labelledby="next-step-title">
+    ${sec('next-step', home.next.label, fill(D.next.title, { name: esc(name) }), fill(D.next.lede, { name: esc(name) }))}
+    ${term(D.use.p5Sketch, 'snip-next-p5', p5NextSketch(d, names), 'loader')}
+    <p class="next-links">${nextLink(c.to('p5'), 'p5', `${home.footer.p5} →`)} ${nextLink(`${c.root}${nextEx.dir}`, 'example', `${esc(fill(D.next.example, { num: nextEx.num, title: pick(nextEx.title, locale) }))} →`)}</p>
   </section>
 
 </main>

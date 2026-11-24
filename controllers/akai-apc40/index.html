@@ -1682,6 +1682,28 @@
     </ul>
   </section>
 
+  <!-- ═════ next step: this controller in a p5.js sketch ═════ -->
+  <section class="sec next-step" id="next-step" aria-labelledby="next-step-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Next step</p>
+      <h2 id="next-step-title">Use AKAI Professional APC40 in p5.js</h2>
+      <p class="sec-lede">Paste it into a p5.js sketch, on OpenProcessing or your own page. The first line opens the 🎹 panel with AKAI Professional APC40 on screen, the second loads oav-p5.</p>
+    </header>
+    <div class="term"><div class="term-bar"><span>p5.js sketch</span><button type="button" class="copy" data-copy="snip-next-p5" data-oav-copy="loader">Copy</button></div><pre id="snip-next-p5"><code>window.OAV_P5 = { profile: <span class="ts">'akai-apc40'</span>, panel: <span class="ts">'open'</span> };
+document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> draw() {
+  background(knob1 * 255);   <span class="tc">// Device Control 1 · CC 16</span>
+  circle(width / 2, height / 2, 50 + knob2 * 300);   <span class="tc">// Device Control 2 · CC 17</span>
+}</code></pre></div>
+    <p class="next-links"><a class="more" href="../../p5/" data-oav-event="next_step" data-oav-to="p5">p5.js in one line →</a> <a class="more" href="../../examples/09-midi-controllers/" data-oav-event="next_step" data-oav-to="example">Example 09: MIDI controllers →</a></p>
+  </section>
+
 </main>
 
 <footer class="foot">

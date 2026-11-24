@@ -14,6 +14,7 @@ import ctlEn from '../controllers/en.mjs';
 import ctlZh from '../controllers/zh.mjs';
 import { routeGroups, L as pick } from '../examples/catalog.mjs';
 import { ROUTE_NAMES, routeMark } from '../examples/strings.mjs';
+import { madeWithLine } from '../site/next-step.mjs';
 export { SITE, REPO };
 
 export const LOCALES = {
@@ -135,6 +136,12 @@ function hl(code) {
     i = re.lastIndex;
   }
   return out + esc(code.slice(i));
+}
+
+/** The course link at the end of the page: nothing at all until both its label and its url are filled in. */
+export function courseLine(course) {
+  if (!course || !String(course.label || '').trim() || !String(course.url || '').trim()) return '';
+  return `\n    <p class="next-course"><a class="more" href="${attr(course.url)}" rel="noopener" data-oav-link="course">${esc(course.label)} ↗</a></p>`;
 }
 
 // ---------- the page ----------
@@ -418,6 +425,12 @@ ${topBar(t, pageCtx('home', locale))}
     </ol>
     <p><a class="more" href="${BLOB}docs/roadmap.md">${t.lineage.roadmapLink} →</a></p>
   </section>
+
+  <!-- ═════ next step: what people made with it (and a course, once home.next.course is filled in) ═════ -->
+  <nav class="next-step next-home" aria-label="${attr(t.next.label)}">
+    <p class="eyebrow">${t.next.label}</p>
+    ${madeWithLine(c, t)}${courseLine(t.next.course)}
+  </nav>
 
 </main>
 

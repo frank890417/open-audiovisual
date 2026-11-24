@@ -3,6 +3,7 @@
 // 字串可以含 inline HTML。程式碼、訊號名稱與網址放在 page.mjs，兩種語言共用。
 
 import { getFacts, zhWords, minor } from '../site/facts.mjs';
+import made from '../made-with/zh.mjs';
 const facts = getFacts();
 
 export default {
@@ -329,6 +330,14 @@ export default {
       '訂閱訊號、和人一起演奏的 AI 演奏者',
     ],
     roadmapLink: '完整路線圖',
+  },
+
+  // 頁面主要內容最後的「下一步」區塊（tools/site/next-step.mjs），全站共用
+  next: {
+    label: '下一步',
+    made: made.meta.ogDescription,   // /made-with/ 頁面本來就用來介紹自己的那一句
+    // 首頁最後的課程連結。空著就什麼都不顯示：由站長自己填 label 和 url，en.mjs 也要填（tests/home.test.js 會確認空著時不留痕跡）。
+    course: { label: '', url: '' },
   },
 
   footer: {

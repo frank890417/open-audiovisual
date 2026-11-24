@@ -280,6 +280,11 @@ export default {
       p5Sketch: 'p5.js sketch',
       p5Docs: 'The whole p5.js page',
     },
+    next: {
+      title: 'Use {name} in p5.js',
+      lede: 'Paste it into a p5.js sketch, on OpenProcessing or your own page. The first line opens the 🎹 panel with {name} on screen, the second loads oav-p5.',
+      example: 'Example {num}: {title}',
+    },
     more: { eyebrow: 'Around this controller', title: 'Related controllers', prev: 'Previous', next: 'Next', back: 'Back to all controllers', relatedLabel: 'Related controllers', stepLabel: 'Neighbouring controllers', compare: 'Compare {name} with the rest, by keys, pads, knobs, faders and LED feedback' },
     sysex: {
       title: 'What {name} accepts beyond notes and CCs',

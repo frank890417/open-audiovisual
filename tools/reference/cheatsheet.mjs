@@ -9,6 +9,8 @@
 import { SITE, SOFTWARE_ID, esc, attr, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFooter, guardEmail } from '../site/chrome.mjs';
 import { highlight } from '../docs/markdown.mjs';
 import { LOADER, P5 } from './model.mjs';
+import { examplesUsing } from '../examples/uses.mjs';
+import { usesBlock } from '../site/next-step.mjs';
 
 const W = (en, zh) => ({ en, zh });
 const VERSION = { now: '' };   // OAVp5.version's row says the version the page was built with (set in renderCheatsheetPage)
@@ -328,6 +330,11 @@ export function renderCheatsheetPage(t, home, { c, records, p5Version, assets })
     return ref + '#' + r.id;
   };
   const sections = cheatsheetBoxes({ L, hrefOf, events: s.events, p5Version });
+  // the next step: for each box, the examples whose sketch uses its names (tools/examples/uses.mjs); not printed
+  const groups = SECTIONS.map((sec) => {
+    const keys = [...sec.rows, ...(sec.events || [])].map((r) => r[1]).filter(Boolean);
+    return { label: sec.title[L], examples: examplesUsing({ names: keys.flatMap((k) => byName.get(k).covers) }) };
+  });
 
   const ld = [
     pageNode(c, home, {
@@ -366,6 +373,8 @@ ${topBar(home, c)}
 ${sections}
   </div>
   <p class="cs-foot">${esc(s.foot)}</p>
+
+  ${usesBlock({ c, locale: L, home, title: t.next.title, groups })}
 </main>
 
 ${siteFooter(home, c)}

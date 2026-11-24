@@ -3,6 +3,7 @@
 // Strings may contain inline HTML (authored, trusted). Code, signal names and URLs live in page.mjs.
 
 import { getFacts, enWords, cap, minor } from '../site/facts.mjs';
+import made from '../made-with/en.mjs';
 const facts = getFacts();
 
 export default {
@@ -330,6 +331,15 @@ export default {
       'Agents that subscribe to signals and play alongside people',
     ],
     roadmapLink: 'Full roadmap',
+  },
+
+  // the "next step" blocks at the end of a page's main content (tools/site/next-step.mjs), on every page of the site
+  next: {
+    label: 'Next step',
+    made: made.meta.ogDescription,   // the sentence /made-with/ already says about itself
+    // A course link at the end of the homepage. Empty, nothing is rendered: the owner fills in the label and the url,
+    // here and in zh.mjs (tests/home.test.js holds that an empty slot leaves no trace).
+    course: { label: '', url: '' },
   },
 
   footer: {

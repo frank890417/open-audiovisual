@@ -481,3 +481,28 @@ html[lang^="zh"] .wt-band h2 { letter-spacing: 0; line-height: 1.15; }
   .gh::before { content: ''; width: 16px; height: 16px; background: currentColor; -webkit-mask: var(--gh-mark) center / contain no-repeat; mask: var(--gh-mark) center / contain no-repeat; }
 }
 @media (max-width: 350px) { .brand span { display: none; } }
+
+/* ---------- next step: a few links on, at the end of a page's main content (tools/site/next-step.mjs) ---------- */
+nav.next-step { margin: clamp(56px, 7vw, 96px) 0 0; padding-top: 16px; border-top: 1px solid var(--line); min-width: 0; }
+nav.next-step.next-home { max-width: var(--maxw); margin: clamp(80px, 10vw, 140px) auto 0; padding: 0 var(--pad); border-top: 0; }
+nav.next-step.next-home > * { border-top: 1px solid var(--line); padding-top: 16px; }
+nav.next-step.next-home > * + * { border-top: 0; padding-top: 0; }
+.next-step .eyebrow { color: var(--sig); }
+nav.next-step h2 { margin: 8px 0 14px; font: 700 clamp(20px, 1.7vw, 25px)/1.2 var(--sans); font-stretch: 108%; letter-spacing: -.01em; color: var(--fg); }
+.next-groups { margin: 0 0 6px; }
+.next-groups > div { display: grid; grid-template-columns: minmax(0, 16em) minmax(0, 1fr); gap: 4px 20px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.next-groups dt { color: var(--fg-2); font-size: 14.5px; line-height: 1.4; }
+.next-groups dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; min-width: 0; }
+.next-groups a { font: 500 13.5px/1.4 var(--mono); color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.next-groups a:hover, .next-groups a:focus-visible { color: var(--sig); border-bottom-color: var(--sig); }
+.next-n { color: var(--fg-3); }
+.next-made, .next-course { margin: 14px 0 0; color: var(--fg-2); font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.next-made span { margin-left: 10px; }
+.next-links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 18px 0 0; }
+/* the controller page's next step is a section like the others, a size down */
+.sec.next-step .sec-head h2 { font-size: clamp(28px, 3.6vw, 52px); }
+.sec.next-step .term { margin-top: clamp(20px, 2.4vw, 32px); }
+@media (max-width: 640px) {
+  .next-groups > div { grid-template-columns: minmax(0, 1fr); }
+  .next-made span { display: block; margin: 4px 0 0; }
+}

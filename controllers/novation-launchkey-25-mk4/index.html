@@ -597,6 +597,36 @@
     </ul>
   </section>
 
+  <!-- ═════ next step: this controller in a p5.js sketch ═════ -->
+  <section class="sec next-step" id="next-step" aria-labelledby="next-step-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Next step</p>
+      <h2 id="next-step-title">Use Novation Launchkey 25 MK4 in p5.js</h2>
+      <p class="sec-lede">Paste it into a p5.js sketch, on OpenProcessing or your own page. The first line opens the 🎹 panel with Novation Launchkey 25 MK4 on screen, the second loads oav-p5.</p>
+    </header>
+    <div class="term"><div class="term-bar"><span>p5.js sketch</span><button type="button" class="copy" data-copy="snip-next-p5" data-oav-copy="loader">Copy</button></div><pre id="snip-next-p5"><code>window.OAV_P5 = { profile: <span class="ts">'novation-launchkey-25-mk4'</span>, panel: <span class="ts">'open'</span> };
+document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> draw() {
+  background(knob1 * 255);   <span class="tc">// 1 · CC 21</span>
+  circle(width / 2, height / 2, 50 + knob2 * 300);   <span class="tc">// 2 · CC 22</span>
+}
+
+<span class="tk">function</span> padPressed(n, velocity) {      <span class="tc">// n = 1…16, as in the table</span>
+  circle(random(width), random(height), velocity * 100);
+}
+
+<span class="tk">function</span> notePressed(note, velocity) {   <span class="tc">// a key goes down</span>
+  circle(random(width), random(height), velocity * 100);
+}</code></pre></div>
+    <p class="next-links"><a class="more" href="../../p5/" data-oav-event="next_step" data-oav-to="p5">p5.js in one line →</a> <a class="more" href="../../examples/16-p5-sound/" data-oav-event="next_step" data-oav-to="example">Example 16: p5 keys with sound →</a></p>
+  </section>
+
 </main>
 
 <footer class="foot">

@@ -829,6 +829,28 @@
     </ul>
   </section>
 
+  <!-- ═════ next step: this controller in a p5.js sketch ═════ -->
+  <section class="sec next-step" id="next-step" aria-labelledby="next-step-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">下一步</p>
+      <h2 id="next-step-title">在 p5.js 裡用 AKAI MIDImix</h2>
+      <p class="sec-lede">貼進 p5.js 草稿，OpenProcessing 或你自己的網頁都可以。第一行打開 🎹 面板，螢幕上就是 AKAI MIDImix，第二行載入 oav-p5。</p>
+    </header>
+    <div class="term"><div class="term-bar"><span>p5.js 草稿</span><button type="button" class="copy" data-copy="snip-next-p5" data-oav-copy="loader">複製</button></div><pre id="snip-next-p5"><code>window.OAV_P5 = { profile: <span class="ts">'akai-midimix'</span>, panel: <span class="ts">'open'</span> };
+document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> draw() {
+  background(knob1 * 255);   <span class="tc">// 1 · CC 16</span>
+  circle(width / 2, height / 2, 50 + knob2 * 300);   <span class="tc">// 2 · CC 20</span>
+}</code></pre></div>
+    <p class="next-links"><a class="more" href="../../../zh/p5/" data-oav-event="next_step" data-oav-to="p5">p5.js 一行接上 →</a> <a class="more" href="../../../examples/09-midi-controllers/" data-oav-event="next_step" data-oav-to="example">範例 09：MIDI 控制器 →</a></p>
+  </section>
+
 </main>
 
 <footer class="foot">
