@@ -269,24 +269,25 @@ L4 輸出 · 透過一個小小的 Node 橋接程式，把 OSC 從瀏覽器送�
 
 ## @openav/out
 
-L4 輸出 · 把網頁作品的參數經一支本機橋接（`node packages/out/bridge/out-bridge.mjs --config out.json`，`ws://127.0.0.1:6450/out`）送到實體硬體：WLED 燈條（DDP）、序列埠馬達板、OSC。頁面安靜下來或最後一個連線離開時，看門狗會把每個通道退回設定好的安全值。
+L4 輸出 · 把網頁作品的參數經一支本機橋接（`node packages/out/bridge/out-bridge.mjs --config out.json`，`ws://127.0.0.1:6450/out`）送到實體硬體：WLED 燈條（DDP）、序列埠馬達板、OSC，以及 DMX 燈光（Art-Net、sACN、Enttec DMX USB Pro）。頁面安靜下來或最後一個連線離開時，看門狗會把每個通道退回設定好的安全值（設成 `"hold"` 的通道停在原處）。
 
 | export | 簽名 |
 |---|---|
 | `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`、`last`、`bridge`：同一通道每個 frame 只送一個值，斷線以退避重連，有心跳 |
-| 橋接 | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sink：`ddp` `serial` `osc` `udp-json` `log` |
+| 橋接 | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sink：`ddp` `serial` `osc` `udp-json` `log`，DMX 用 `dmx/<universe>/<address>`：`artnet`（單播 `host`）、`sacn`（多播或 `host`、`priority`、`source`）、`enttec`（`path`、`universe`），每秒 40 格，沒變時每秒補送一次 |
 | 實驗室 | `meta.params[i].out: "light/1/r"` 綁定參數（照 min–max 正規化到 0..1，`outRaw` 送原值）；`?out=sim` · `?out=0` · `?out=ws://…` |
 
 設定檔與看門狗規則見套件的 README。
 
 ## @openav/dmx
 
-L4 輸出（燈光）· 從網頁打 DMX，全部是純邏輯：燈具 profile（`open-audiovisual/fixture@1`）、把屬性（dimmer、color、pan、tilt、strobe、zoom，0..1）換成每台燈位元組的 patch，以及依時間算出每台燈任何時刻樣子的引擎：基礎 scene → 有淡入淡出的 cue → 跟著拍子的 chase → effect → 即時值 → 每台燈的上下限 → 總控 → blackout。安全機制預設開著：每一個造成亮度或顏色閃爍的 effect 或 chase，以及 profile 有寫 Hz 的每一個 strobe 通道，各自被限制在每秒最多 3 次（各算各的，同一台燈上疊兩個就可能超過）。沒寫 Hz 的 strobe 通道停在 open。`render(t, { beat })` 要連 `bpm` 一起給，因為上限要靠拍速計算。`control` 通道（重置、燈泡開關、內建程式）只有 `control()` 能寫。blackout 時 pan、tilt 停在原處。Art-Net、sACN 和 Enttec DMX USB Pro 的位元組由純函式編碼，送出去（輸出橋接程式、Web Serial）還不在這個套件裡。還沒有用任何一台真的燈、節點或介面試過。
+L4 輸出（燈光）· 從網頁打 DMX，全部是純邏輯：燈具 profile（`open-audiovisual/fixture@1`）、把屬性（dimmer、color、pan、tilt、strobe、zoom，0..1）換成每台燈位元組的 patch，以及依時間算出每台燈任何時刻樣子的引擎：基礎 scene → 有淡入淡出的 cue → 跟著拍子的 chase → effect → 即時值 → 每台燈的上下限 → 總控 → blackout。安全機制預設開著：每一個造成亮度或顏色閃爍的 effect 或 chase，以及 profile 有寫 Hz 的每一個 strobe 通道，各自被限制在每秒最多 3 次（各算各的，同一台燈上疊兩個就可能超過）。沒寫 Hz 的 strobe 通道停在 open。`render(t, { beat })` 要連 `bpm` 一起給，因為上限要靠拍速計算。`control` 通道（重置、燈泡開關、內建程式）只有 `control()` 能寫。blackout 時 pan、tilt 停在原處。Art-Net、sACN 和 Enttec DMX USB Pro 的位元組由純函式編碼，`dmxTransport()` 每一格把有變的部分送出去（留在記憶體、經輸出橋接程式，或用 Web Serial），`dmxParams()` 把引擎的控制點變成參數，`mountDmxMonitor()` 把燈畫在頁面上。還沒有用任何一台真的燈、節點或介面試過。完整說明在 [DMX 燈光](dmx.md) 那一章。
 
 | 匯出 | 簽章 |
 |---|---|
 | `Patch` | `new Patch({ profiles })` · `add({ id, profile, mode, universe = 1, address, name, groups, limits })`（超過 512、模式不存在會丟錯誤）· `check()` → 重疊的位址 · `ids(target)` · `render(states, { master, blackout, maxFlashHz = 3, controls })` → `Universes` · `resolve(id, props)` · `toJSON()` · `Patch.fromJSON(json, { profiles })` |
 | `DmxEngine` | `new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 })` · `scene(name, { target: props })` · `base(...names)` · `cue(name, { scene, fadeIn, fadeOut, curve })` · `go(name, at)` · `release(at, fade)` · `chase(name, { steps, every, unit: 'beat' \| 'second', fade, start })` · `effect(name, { target, property, wave: sine \| saw \| square \| chase \| flicker \| rainbow, rate, unit, depth, phase, spread, width, seed })` · `run(name, on)` · `remove(name)` · `set(target, props)` · `clear(target, keys)` · `control(id, key, byte)` · `master`、`blackout`、`maxFlashHz` · `render(t, { beat, bpm })` → `Universes` · `state(t)` → `{ fixtures, capped }` |
+| 即時 | `dmxTransport('sim' \| 'bridge' \| 'serial', { client \| universe })` · `send(universes)` → 改變的通道數 · `bytes(id)` · `status` · `connect()`（serial，要在點擊裡呼叫）· `close()` · `dmxParams(engine, { groups, effects, chases })` → `{ params, apply(state, t) }` · `mountDmxMonitor(el, { patch, transport })` → `{ update(universes), dispose() }` · 引擎的 `tune(name, { rate, depth }, at)` · `submaster(target, level)` · `describe()` |
 | `Universe` · `Universes` | `new Universe(id)` · `get(address)` · `set(address, value)` · `write(address, values)` · `fill(v)` · `copy()` · `data`（Uint8Array，512）· `Universes`：`get(id)` · `bytes(id)` · `ids()` · `entries()` |
 | 燈具 | `FIXTURES`（通用：調光器、RGB、RGBW 4／6 通道、RGBA、RGBAW+UV 6／8 通道、單色頻閃燈、搖頭燈 8／16 通道，全部 `"verified": false`）· `fixtureById(id)` · `validateFixture(profile)` → 問題清單 · `loadFixture(profile)` · `rgbToChannels([r, g, b], colors)` · schema 在 `@openav/dmx/fixtures/fixture.schema.json` |
 | 協定 | `encodeArtDmx(data, { universe, sequence, physical })`／`decodeArtDmx(bytes)`（ArtDmx，UDP 6454）· `encodeSacn(data, { universe, cid, source, priority, sequence })`／`decodeSacn(bytes)` · `sacnAddress(universe)`（E1.31，UDP 5568）· `encodeEnttecDmx(data)`／`decodeEnttecDmx(bytes)`（DMX USB Pro，label 6） |

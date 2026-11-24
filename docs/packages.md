@@ -292,12 +292,13 @@ See [Show control](show-control.md#osc-output).
 
 L4 output · page parameters to physical hardware through one local bridge
 (`node packages/out/bridge/out-bridge.mjs --config out.json`, `ws://127.0.0.1:6450/out`): WLED light strips (DDP),
-serial motor boards, OSC. A watchdog sends every channel its configured safe value when the page goes quiet or the last client leaves.
+serial motor boards, OSC, and DMX lighting (Art-Net, sACN, an Enttec DMX USB Pro). A watchdog sends every channel its configured
+safe value (or leaves a `"hold"` channel where it is) when the page goes quiet or the last client leaves.
 
 | export | signature |
 |---|---|
 | `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`, `last`, `bridge` — one value per channel per frame, reconnects with backoff, heartbeat |
-| bridge | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sinks `ddp` `serial` `osc` `udp-json` `log` |
+| bridge | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sinks `ddp` `serial` `osc` `udp-json` `log`, and for DMX on `dmx/<universe>/<address>`: `artnet` (unicast `host`), `sacn` (multicast or `host`, `priority`, `source`), `enttec` (`path`, `universe`), 40 Hz + a keep-alive each second |
 | lab | `meta.params[i].out: "light/1/r"` binds a param (0..1 by min–max, `outRaw` for the raw value); `?out=sim` · `?out=0` · `?out=ws://…` |
 
 See the package README for the config file and the watchdog rules.
@@ -311,13 +312,15 @@ grand master → blackout. Safety is on by default: each effect or chase that ma
 channel whose profile gives Hz, is held to 3 flashes a second (each on its own: two on one light can add up); a strobe channel
 with no Hz stays open; `render(t, { beat })` needs `bpm` with it, since the cap reads the tempo; `control` channels (reset, lamp, built-in
 programs) are written only by `control()`; blackout leaves pan and tilt where they are. The bytes of Art-Net, sACN and the Enttec
-DMX USB Pro come out of pure encoders; sending them (the out-bridge, Web Serial) is not in this package yet. Nothing has been
-tried on a real fixture, node or interface.
+DMX USB Pro come out of pure encoders; `dmxTransport()` sends what changed each frame (to memory, through the out-bridge, or by
+Web Serial), `dmxParams()` makes the engine's control points params, and `mountDmxMonitor()` shows the rig on the page.
+Nothing has been tried on a real fixture, node or interface. The chapter is [DMX lighting](dmx.md).
 
 | export | signature |
 |---|---|
 | `Patch` | `new Patch({ profiles })` · `add({ id, profile, mode, universe = 1, address, name, groups, limits })` (throws past 512, unknown mode) · `check()` → overlaps · `ids(target)` · `render(states, { master, blackout, maxFlashHz = 3, controls })` → `Universes` · `resolve(id, props)` · `toJSON()` · `Patch.fromJSON(json, { profiles })` |
 | `DmxEngine` | `new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 })` · `scene(name, { target: props })` · `base(...names)` · `cue(name, { scene, fadeIn, fadeOut, curve })` · `go(name, at)` · `release(at, fade)` · `chase(name, { steps, every, unit: 'beat' \| 'second', fade, start })` · `effect(name, { target, property, wave: sine \| saw \| square \| chase \| flicker \| rainbow, rate, unit, depth, phase, spread, width, seed })` · `run(name, on)` · `remove(name)` · `set(target, props)` · `clear(target, keys)` · `control(id, key, byte)` · `master`, `blackout`, `maxFlashHz` · `render(t, { beat, bpm })` → `Universes` · `state(t)` → `{ fixtures, capped }` |
+| live | `dmxTransport('sim' \| 'bridge' \| 'serial', { client \| universe })` · `send(universes)` → channels changed · `bytes(id)` · `status` · `connect()` (serial, from a click) · `close()` · `dmxParams(engine, { groups, effects, chases })` → `{ params, apply(state, t) }` · `mountDmxMonitor(el, { patch, transport })` → `{ update(universes), dispose() }` · engine `tune(name, { rate, depth }, at)` · `submaster(target, level)` · `describe()` |
 | `Universe` · `Universes` | `new Universe(id)` · `get(address)` · `set(address, value)` · `write(address, values)` · `fill(v)` · `copy()` · `data` (Uint8Array, 512) · `Universes`: `get(id)` · `bytes(id)` · `ids()` · `entries()` |
 | fixtures | `FIXTURES` (generic: dimmer, RGB, RGBW 4/6 ch, RGBA, RGBAW+UV 6/8 ch, one-colour strobe, moving head 8/16 ch, all `"verified": false`) · `fixtureById(id)` · `validateFixture(profile)` → problems · `loadFixture(profile)` · `rgbToChannels([r, g, b], colors)` · schema `@openav/dmx/fixtures/fixture.schema.json` |
 | protocols | `encodeArtDmx(data, { universe, sequence, physical })` / `decodeArtDmx(bytes)` (ArtDmx, UDP 6454) · `encodeSacn(data, { universe, cid, source, priority, sequence })` / `decodeSacn(bytes)` · `sacnAddress(universe)` (E1.31, UDP 5568) · `encodeEnttecDmx(data)` / `decodeEnttecDmx(bytes)` (DMX USB Pro, label 6) |

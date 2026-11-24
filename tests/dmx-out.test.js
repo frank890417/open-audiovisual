@@ -5,6 +5,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import dgram from 'node:dgram';
+import fsModule from 'node:fs';   // the install.sh check reads files
 import { startBridge } from '../packages/out/bridge/out-bridge.mjs';
 import { DmxFrames, parseDmxChannel, toByte } from '../packages/out/bridge/sinks/dmx-frames.js';
 import * as enttec from '../packages/out/bridge/sinks/enttec.js';
@@ -201,19 +202,21 @@ test('artnet: no host is refused (unicast is the rule), broadcast only when aske
   assert.throws(() => startBridge({ port: 0, config: { channels: [{ match: '*', sink: 'log' }], safe: { 'dmx/*': 'off' } } }), /hold/);
 });
 
-test('three universes through one page: the heartbeat keeps all 1536 channels alive past the watchdog (no batch is cut short)', async () => {
-  const r = await artnetRig({ timeoutMs: 150 });
+test('three universes through one page: one batch of 1536 values is taken whole (a heartbeat carries every held value)', async () => {
+  // OutClient re-sends every held value as ONE batch each timeoutMs / 3; the bridge used to read only the first 1024 items,
+  // so past two full universes the rest were never refreshed and the watchdog took them for a dead page. No timing here:
+  // one batch, then count what the bridge took and what reached the wire.
+  const r = await artnetRig({ timeoutMs: 60000 });
   try {
-    const c = new OutClient({ url: `ws://127.0.0.1:${r.bridge.port}/out`, schedule: (fn) => setTimeout(fn, 5) });
-    c.connect();
-    await until(() => c.status === 'open' && c.bridge, 1000, 'open');
-    for (const u of [1, 2, 3]) for (let a = 1; a <= 512; a++) c.set(`dmx/${u}/${a}`, 1);
-    await until(() => [1, 2, 3].every((u) => of(r.rx.got, u).some((p) => p.data.every((x) => x === 255))), 1500, 'three full universes');
-    await sleep(600);                                                  // four watchdog periods
-    assert.equal(r.bridge.state.safeSent, 0, 'no channel was taken for a dead page');
-    assert.ok([1, 2, 3].every((u) => of(r.rx.got, u).at(-1).data.every((x) => x === 255)));
-    c.close();
-    await until(() => r.bridge.state.safeSent === 1536, 1000, 'all safe once the page is gone');
+    const ws = await open(r.bridge);
+    const items = [];
+    for (const u of [1, 2, 3]) for (let a = 1; a <= 512; a++) items.push({ ch: `dmx/${u}/${a}`, v: 1 });
+    ws.send(JSON.stringify({ type: 'batch', items }));
+    await until(() => r.bridge.state.received === 1536, 2000, 'all 1536 values taken');
+    await until(() => [1, 2, 3].every((u) => of(r.rx.got, u).some((p) => p.data.every((x) => x === 255))), 2000, 'three full universes on the wire');
+    assert.equal(r.bridge.state.rejected, 0);
+    ws.close();
+    await until(() => r.bridge.state.safeSent === 1536, 2000, 'all safe once the page is gone');
   } finally { await r.close(); }
 });
 
@@ -255,6 +258,25 @@ test('sacn: without a host each universe goes to its multicast group 239.255.<hi
   assert.throws(() => startBridge({ port: 0, config: { channels: [{ match: 'dmx/*', sink: 'sacn', host: '127.0.0.1', priority: 201 }] } }), /priority/);
 });
 
+// ───────────── the installed bridge ─────────────
+
+test('install.sh copies every file the bridge imports from outside packages/out (and its package.json, so Node reads it as ESM)', () => {
+  const fs = fsModule;
+  const sinks = fs.readdirSync(new URL('../packages/out/bridge/sinks/', import.meta.url)).filter((f) => f.endsWith('.js'));
+  const install = fs.readFileSync(new URL('../packages/out/bridge/install.sh', import.meta.url), 'utf8');
+  const outside = new Set();
+  for (const f of sinks) {
+    const src = fs.readFileSync(new URL(`../packages/out/bridge/sinks/${f}`, import.meta.url), 'utf8');
+    for (const m of src.matchAll(/from\s+'\.\.\/\.\.\/\.\.\/([\w-]+)\/([\w/-]+)\/[\w.-]+\.js(?:\?[^']*)?'/g)) outside.add(`${m[1]}/${m[2]}`);
+  }
+  assert.ok(outside.has('dmx/protocol'), 'the DMX sinks import the encoders of @openav/dmx');
+  for (const dir of outside) {
+    const pkg = dir.split('/')[0];
+    assert.ok(install.includes(`"$PKGS"/${dir}/*.js`), `install.sh copies packages/${dir}/*.js`);
+    assert.ok(install.includes(`"$PKGS/${pkg}/package.json"`), `install.sh copies packages/${pkg}/package.json`);
+  }
+});
+
 // ───────────── enttec on a fake serial port ─────────────
 
 /** A serial port that records whole writes; `hold` keeps each write pending until release() (a slow port). */
@@ -277,7 +299,9 @@ test('enttec: one universe as "send DMX" frames (label 6, start code 0, 512 chan
   const P = fakePort();
   const s = enttec.create({ path: '/dev/cu.fake', universe: 2 }, ctx, { openPort: P.open });
   try {
-    await until(() => s.status().state === 'up' && P.writes.length, 1000, 'open + first frame');
+    await until(() => s.status().state === 'up', 1000, 'open');
+    await sleep(60);
+    assert.equal(P.writes.length, 0, 'nothing is written before the page has sent anything (no dark frame at start)');
     s.send('dmx/2/1', 1); s.send('dmx/2/512', 0.5); s.send('dmx/1/1', 1);
     await until(() => P.writes.some((w) => decodeEnttecDmx(w)?.data[0] === 255), 1000, 'a frame with channel 1');
     const f = decodeEnttecDmx(P.writes.at(-1));
@@ -290,6 +314,8 @@ test('enttec: a slow port gets whole frames only, the newest next (never a queue
   const P = fakePort({ hold: true });
   const s = enttec.create({ path: '/dev/cu.fake' }, ctx, { openPort: P.open });
   try {
+    await until(() => s.status().state === 'up', 1000, 'open');
+    s.send('dmx/1/1', 0.05);
     await until(() => P.writes.length === 1, 1000, 'first frame (held by the port)');
     for (let i = 1; i <= 10; i++) { s.send('dmx/1/1', i / 10); await sleep(30); }
     assert.equal(P.writes.length, 1, 'nothing else written while the port is busy');

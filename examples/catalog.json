@@ -2289,6 +2289,108 @@
           }
         }
       ],
+      "next": "28-dmx-lights"
+    },
+    {
+      "id": "28-dmx-lights",
+      "num": "28",
+      "dir": "examples/28-dmx-lights/",
+      "route": "output",
+      "title": {
+        "en": "DMX lights",
+        "zh": "DMX 燈光"
+      },
+      "teaches": {
+        "en": "One world draws a stage and drives a lighting rig from the same params; a monitor shows what the lights get, no hardware needed.",
+        "zh": "同一個世界畫出舞台，也用同一組參數推一套燈。監看器顯示燈收到什麼，不需要任何硬體。"
+      },
+      "summary": {
+        "en": "Eight RGBW pars and two moving heads (<code>@openav/dmx</code>) driven by the same params as the picture: sound, chords and any MIDI controller move them through the mapping layer, a channel monitor stands in for the rig, and <code>?out=bridge</code> sends Art-Net or sACN.",
+        "zh": "八台 RGBW par 和兩台搖頭燈（<code>@openav/dmx</code>）跟畫面用同一組參數：聲音、和弦和任何 MIDI 控制器經過映射層推動它們，通道監看器代替真的燈，<code>?out=bridge</code> 就送出 Art-Net 或 sACN。"
+      },
+      "plays": {
+        "en": "on-screen piano · QWERTY · drum machine · microphone · MIDI controller",
+        "zh": "螢幕鋼琴 · 電腦鍵盤 · 鼓機 · 麥克風 · MIDI 控制器"
+      },
+      "needs": [],
+      "standIn": [
+        "piano",
+        "qwerty",
+        "drums",
+        "controller"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/28.webp",
+      "alt": {
+        "en": "Coloured beams fall from a truss onto a dark floor, two thin white beams cross them, and a DMX monitor below shows ten fixture swatches and a grid of channel values.",
+        "zh": "彩色光束從燈架落到暗色地板上，兩道細白光束斜斜穿過，下方的 DMX 監看器有十個燈具色塊和一格格的通道數值。"
+      },
+      "docs": [
+        {
+          "id": "dmx",
+          "en": "DMX lighting",
+          "zh": "DMX 燈光"
+        },
+        {
+          "id": "dmx-watch-it-without-hardware",
+          "en": "Watch it without hardware",
+          "zh": "沒有硬體時怎麼看"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Tick “keyboard” and play chords on A to L: consonant ones turn the pars warm, dissonant ones cold, and more notes bring in the rainbow.",
+          "Start the drum machine and the kick lifts the pars; press Space and the four cues play by themselves: Warm, Sweep, Rainbow, Walk.",
+          "Point at a cell of the monitor to read its address and value, then press Blackout: every dimmer goes to 0 and the heads stay where they point."
+        ],
+        "zh": [
+          "勾選 keyboard，用 A 到 L 彈和弦：和諧的讓 par 變暖，不和諧的變冷，音越多彩虹越明顯。",
+          "打開鼓機，大鼓會把 par 推亮。按空白鍵，四個 cue 自己播：Warm、Sweep、Rainbow、Walk。",
+          "滑鼠指著監看器的一格，讀它的位址和數值，再按 Blackout：每個 dimmer 歸零，搖頭燈停在原本指的方向。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 22,
+          "to": 25,
+          "match": "const patch = new Patch();",
+          "note": {
+            "en": "The rig: eight RGBW pars and two moving heads, patched on universe 1.",
+            "zh": "燈：八台 RGBW par 和兩台搖頭燈，patch 在 universe 1。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 37,
+          "to": 41,
+          "match": "const rig = dmxParams(engine, {",
+          "note": {
+            "en": "The engine's control points become params, so anything that drives a param drives the lights.",
+            "zh": "引擎的控制點變成參數，所以任何能推參數的東西都能推燈。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 67,
+          "to": 72,
+          "match": "update(dt, state) {",
+          "note": {
+            "en": "Each frame: params in, every light rendered, only the changed channels out, the monitor updated.",
+            "zh": "每一格：參數進來，算出每台燈，只送出有變的通道，再更新監看器。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 123,
+          "to": 140,
+          "match": "const routes = [",
+          "note": {
+            "en": "Sound, chords and any MIDI controller reach the lights through the mapping layer.",
+            "zh": "聲音、和弦和任何 MIDI 控制器，都經過映射層推到燈。"
+          }
+        }
+      ],
       "next": null
     }
   ]

@@ -33,6 +33,7 @@ const DOCS = {
   signals: 'docs/signals.md',
   'show-control': 'docs/show-control.md',
   score: 'docs/score.md',
+  dmx: 'docs/dmx.md',
   roadmap: 'docs/roadmap.md',
   agents: 'AGENTS.md',
   readme: 'README.md',

@@ -36,11 +36,13 @@ NODE="$(command -v node || true)"
 NODE="$(cd "$(dirname "$NODE")" && pwd -P)/$(basename "$NODE")"   # absolute: launchd has no shell PATH
 
 # 1. copy (only what the bridge imports; keep the package layout so relative imports resolve)
-mkdir -p "$DEST/packages/out/bridge/sinks" "$DEST/packages/relay" "$LOGDIR" "$HOME/Library/LaunchAgents"
+mkdir -p "$DEST/packages/out/bridge/sinks" "$DEST/packages/relay" "$DEST/packages/dmx/protocol" "$LOGDIR" "$HOME/Library/LaunchAgents"
 cp "$HERE/out-bridge.mjs" "$DEST/packages/out/bridge/"
 cp "$HERE"/sinks/*.js "$DEST/packages/out/bridge/sinks/"
 cp "$PKGS/out/package.json" "$DEST/packages/out/"
 cp "$PKGS/relay/frames.js" "$PKGS/relay/package.json" "$DEST/packages/relay/"
+cp "$PKGS"/dmx/protocol/*.js "$DEST/packages/dmx/protocol/"            # the artnet, sacn and enttec sinks encode with these
+cp "$PKGS/dmx/package.json" "$DEST/packages/dmx/"
 REV="$(git -C "$PKGS" rev-parse --short HEAD 2>/dev/null || echo unknown)"
 printf '{\n  "from": "%s",\n  "commit": "%s",\n  "installed": "%s"\n}\n' "$PKGS" "$REV" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$DEST/INSTALLED.json"
 
@@ -48,7 +50,7 @@ printf '{\n  "from": "%s",\n  "commit": "%s",\n  "installed": "%s"\n}\n' "$PKGS"
 if [ -n "$SRC_CONFIG" ]; then cp "$SRC_CONFIG" "$CONFIG"
 elif [ ! -f "$CONFIG" ]; then
   printf '{\n  "channels": [ { "match": "*", "sink": "log" } ],\n  "safe": {},\n  "timeoutMs": 500\n}\n' > "$CONFIG"
-  echo "ℹ wrote a log-only starter config: $CONFIG  (see $HERE/out.example.json for WLED / serial / OSC)"
+  echo "ℹ wrote a log-only starter config: $CONFIG  (see $HERE/out.example.json for WLED / serial / OSC / DMX)"
 fi
 "$NODE" -e 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"))' "$CONFIG" || { echo "✗ $CONFIG is not valid JSON" >&2; exit 1; }
 

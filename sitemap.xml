@@ -898,14 +898,14 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/examples/</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/examples/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/examples/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/examples/"/>
   </url>
   <url>
     <loc>https://openaudiovisual.com/zh/examples/</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/examples/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/examples/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/examples/"/>
@@ -952,7 +952,7 @@
   </url>
   <url>
     <loc>https://openaudiovisual.com/examples/11-controller-video/</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
   </url>
   <url>
     <loc>https://openaudiovisual.com/examples/12-leap-hands/</loc>
@@ -1017,6 +1017,10 @@
   <url>
     <loc>https://openaudiovisual.com/examples/27-hand-gestures/</loc>
     <lastmod>2026-11-24</lastmod>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/examples/28-dmx-lights/</loc>
+    <lastmod>2026-11-25</lastmod>
   </url>
   <url>
     <loc>https://openaudiovisual.com/p5/</loc>

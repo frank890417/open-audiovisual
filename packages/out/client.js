@@ -112,8 +112,10 @@ export class OutClient {
     this._beat.unref?.();
   }
   _heartbeat() {
-    if (this._pending.size) return;
-    const items = Object.entries(this.last).map(([ch, v]) => ({ ch, v }));
+    // every held value the next flush will not carry. (It used to wait for an empty queue, but a channel that moves every
+    // frame keeps the queue full between frames, so the still ones starved: a DMX rig whose dimmer breathes had its colour
+    // channels put on their safe value by the bridge after timeoutMs, a page alive and well.)
+    const items = Object.entries(this.last).filter(([ch]) => !this._pending.has(ch)).map(([ch, v]) => ({ ch, v }));
     if (items.length) this._raw({ type: 'batch', items });
   }
   _raw(obj) { try { if (this._ws && this._ws.readyState === 1) this._ws.send(JSON.stringify(obj)); } catch {} }
