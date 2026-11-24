@@ -109,6 +109,11 @@ A profile in `packages/midi/profiles/` carries more than messages: `sysex`, `pal
 entry in that log: only a person with the unit can make one, on <https://openaudiovisual.com/controllers/verify/>. `tools/export-controller.mjs` writes QLC+ and Mixxx files from a
 profile. `profiles/imported/` is converted from QLC+ (Apache-2.0: see `NOTICE`) by `tools/import-qlc.mjs`; data from Mixxx (GPL) and midi.guide (CC-BY-SA) does not come in.
 
+The device collection (`packages/devices`, [docs/devices.md](docs/devices.md)) reads its records off those profiles, the DMX fixtures and
+the `hw` parts: change the source file and run `node tools/build-devices.mjs`, never edit `catalog.js`. A device with no deeper format is a
+record in `packages/devices/records/`: every fact cites the manufacturer page it was read from (URL and day), what could not be read goes in
+`tbd`, and the same hardware-log rule holds for `verified`.
+
 ## Verifying changes
 
 - `npm test` — pure-logic tests (chord analysis, timeline, mapping). Add cases

@@ -32,7 +32,7 @@ export const PACKAGE_GROUPS = [
   { layer: 'l4', pkgs: ['sound', 'osc', 'out', 'dmx', 'record', 'fab', 'hw'] },
   { layer: 'sp', pkgs: ['timeline', 'score', 'pattern', 'console', 'monitor', 'sync'] },
   { layer: 'sp', pkgs: ['relay', 'surface', 'remote'] },
-  { layer: 'sig', pkgs: ['core', 'show', 'mcp'] },
+  { layer: 'sig', pkgs: ['core', 'show', 'devices', 'mcp'] },
 ];
 
 // chapters of the /docs/ handbook (ids = tools/docs/chapters.mjs)

@@ -187,6 +187,7 @@ export default {
       remote: '手機與 iPad 端的 app：感測器、琴鍵、控制面板',
       core: 'Signals、Params、Loop：每一層共用的語言',
       show: 'createShow()：一次呼叫組好整個外殼',
+      devices: '演出設備大集合：每一份控制器 profile、DMX 燈具和零件，加上鏡頭、音訊介面、感測器、LED 與 DMX 介面，可以搜尋，每一台交給驅動它的套件',
       mcp: '給程式代理用的 MCP 伺服器：列出、閱讀、建立、檢查',
     },
     docsTitle: '文件',

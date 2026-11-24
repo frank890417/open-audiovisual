@@ -1,0 +1,69 @@
+{
+  "format": "open-audiovisual/device@1",
+  "id": "ultraleap-leap-motion-controller-2",
+  "kind": "sensor",
+  "manufacturer": "Ultraleap",
+  "name": "Ultraleap Leap Motion Controller 2",
+  "aliases": ["Leap Motion Controller 2", "Leap Motion", "Leap Motion Controller", "LMC2", "Leap", "hand tracking", "手部追蹤"],
+  "connections": ["usb"],
+  "protocols": ["leapc"],
+  "data": {
+    "facts": [
+      { "key": "fieldOfView", "value": "160° × 160°", "source": 0 },
+      { "key": "trackingDepth", "value": "10 cm (4\") to 110 cm (43\")", "source": 0 },
+      { "key": "usb", "value": "USB 3.0 via a USB type C connector", "source": 0 },
+      { "key": "os", "value": ["Windows", "macOS", "Android XR2"], "source": 0 }
+    ]
+  },
+  "setup": [
+    {
+      "en": "Install Ultraleap Hand Tracking (Gemini 5.x) and plug the sensor in; \"/Applications/Ultraleap Hand Tracking.app/Contents/bin/leapctl\" devices should list it with Tracking: true.",
+      "zh": "安裝 Ultraleap Hand Tracking（Gemini 5.x），插上感測器。執行 \"/Applications/Ultraleap Hand Tracking.app/Contents/bin/leapctl\" devices 應該會列出它，並顯示 Tracking: true。",
+      "source": 1
+    },
+    {
+      "en": "Install the Xcode command line tools (clang): the bridge compiles its small C reader on first start.",
+      "zh": "安裝 Xcode 命令列工具（clang）：橋接程式第一次啟動時會編譯它的 C 讀取程式。",
+      "source": 1
+    },
+    {
+      "en": "Run the bridge, node packages/leap/bridge/leap-bridge.mjs, and check http://127.0.0.1:6437/health; install.sh keeps it running at login.",
+      "zh": "執行橋接程式 node packages/leap/bridge/leap-bridge.mjs，再看 http://127.0.0.1:6437/health。install.sh 會讓它在登入時自動執行。",
+      "source": 1
+    }
+  ],
+  "problems": [
+    {
+      "en": "A page on a public https site that reaches the bridge on this machine meets Chrome's local network prompt; blocked, it fails with net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS. Allow it, or open the page from localhost.",
+      "zh": "公開 https 網站上的網頁連到這台電腦的橋接程式時，Chrome 會跳出區域網路的詢問。被封鎖時會出現 net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS。請允許，或改從 localhost 開網頁。",
+      "source": 2
+    }
+  ],
+  "use": [
+    {
+      "package": "@openav/leap",
+      "entry": "LeapInput",
+      "call": "new LeapInput({ signals }).connect()",
+      "en": "Through the local bridge, both hands become leap/hand/<side>/… signals (palm position, pinch, grab, angles, fingertips), and leap.hands has the joints for drawing.",
+      "zh": "經過本機的橋接程式，兩隻手變成 leap/hand/<side>/… 訊號（手掌位置、捏合、抓握、角度、指尖），leap.hands 有畫手用的關節。"
+    }
+  ],
+  "sources": [
+    { "title": "Ultraleap: products (Leap Motion Controller 2)", "url": "https://www.ultraleap.com/products", "read": "2026-11-25" },
+    { "title": "open-audiovisual: packages/leap README (setup on macOS, the bridge)", "url": "https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md", "read": "2026-11-25" },
+    { "title": "open-audiovisual handbook: Troubleshooting, Chrome asks about the local network, or about apps on this device", "url": "https://openaudiovisual.com/docs/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device", "read": "2026-11-25" }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": [],
+  "tbd": [
+    {
+      "en": "This is the Controller 2, the sensor @openav/leap's gesture thresholds were tuned on. The first Leap Motion Controller is another unit with other numbers, not described here.",
+      "zh": "這是 Controller 2，@openav/leap 的手勢門檻就是在它上面調的。第一代 Leap Motion Controller 是另一台，數字不同，這裡沒有描述。"
+    },
+    {
+      "en": "Frame rate, power, size and the preferred tracking range were not on a manufacturer page that could be read.",
+      "zh": "畫面更新率、耗電、尺寸和建議的追蹤距離，沒有在讀得到的原廠頁面上找到。"
+    }
+  ]
+}

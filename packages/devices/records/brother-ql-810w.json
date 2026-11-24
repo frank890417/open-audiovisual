@@ -1,0 +1,109 @@
+{
+  "format": "open-audiovisual/device@1",
+  "id": "brother-ql-810w",
+  "kind": "printer",
+  "manufacturer": "Brother",
+  "name": "Brother QL-810W",
+  "aliases": [
+    "QL-810W",
+    "QL810W",
+    "label printer",
+    "標籤機"
+  ],
+  "connections": [
+    "usb",
+    "wifi"
+  ],
+  "protocols": [
+    "raster",
+    "esc-p",
+    "p-touch-template",
+    "airprint"
+  ],
+  "data": {
+    "facts": [
+      {
+        "key": "interfaces",
+        "value": "Wireless 802.11 b/g/n, Wi-Fi Direct, Hi-Speed USB 2.0",
+        "source": 0
+      },
+      {
+        "key": "resolution",
+        "value": "300 × 300 dpi",
+        "source": 0
+      },
+      {
+        "key": "speed",
+        "value": "up to 110 labels per minute",
+        "note": "Standard address labels, text only, at 300 × 300 dpi.",
+        "source": 0
+      },
+      {
+        "key": "maxLabelWidth",
+        "value": 62,
+        "unit": "mm",
+        "source": 0
+      },
+      {
+        "key": "maxLabelLength",
+        "value": "3 feet",
+        "source": 0
+      },
+      {
+        "key": "labels",
+        "value": "die-cut and continuous",
+        "source": 0
+      },
+      {
+        "key": "twoColour",
+        "value": "black and red on DK-2251 tape",
+        "source": 0
+      },
+      {
+        "key": "printerEmulation",
+        "value": "Raster",
+        "source": 0
+      },
+      {
+        "key": "operationModes",
+        "value": "PC connected; stand alone (ESC/P or P-touch Template)",
+        "source": 0
+      },
+      {
+        "key": "mobile",
+        "value": "AirPrint; Brother iPrint&Label for Apple and Android devices",
+        "source": 0
+      },
+      {
+        "key": "sdk",
+        "value": "SDKs for Windows, iOS and Android",
+        "source": 0
+      }
+    ]
+  },
+  "setup": [],
+  "problems": [],
+  "use": null,
+  "sources": [
+    {
+      "title": "Brother USA: QL-810W (product page and specifications)",
+      "url": "https://www.brother-usa.com/products/ql810w",
+      "read": "2026-11-25"
+    }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": [],
+  "notes": [
+    {
+      "en": "OAV has no code that talks to this printer, so use is null. Brother lists SDKs for Windows, iOS and Android.",
+      "zh": "OAV 沒有任何程式碼跟這台印表機溝通，所以 use 是 null。Brother 列出的 SDK 是 Windows、iOS 和 Android。"
+    }
+  ],
+  "tbd": [
+    {
+      "en": "Its command reference (the raster commands it takes) is not on the product page and was not read.",
+      "zh": "它的指令手冊（吃哪些點陣指令）不在產品頁上，還沒有讀。"
+    }
+  ]
+}

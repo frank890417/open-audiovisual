@@ -1,6 +1,6 @@
 # Package reference
 
-Thirty packages live in `packages/<name>/`. Each is plain ES modules with no
+Thirty-one packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -13,7 +13,7 @@ npm yet.
 | L4 output | `sound` · `osc` · `out` · `dmx` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | phones | `relay` · `surface` · `remote` |
-| glue | `core` · `show` · `mcp` |
+| glue | `core` · `show` · `devices` · `mcp` |
 
 Subpath entries (`@openav/remote/host`, `@openav/relay/server`,
 `@openav/surface/layout`, `@openav/surface/auto`) need their own import-map line
@@ -530,6 +530,20 @@ Phones · the phone/iPad app and the show-side adapter.
 | `@openav/remote/qr` | `qrSvg(text, { ecc = 'M', margin = 2, scale })` → an `<svg>` string · `qrMatrix(text, { ecc })` → `{ version, size, mask, rows }` (byte mode, versions 1–10) |
 
 See [Phones, relay & surfaces](remote.md).
+
+## @openav/devices
+
+Glue · one collection of show devices: every MIDI controller profile (hand-written and imported), every DMX fixture, every part
+of the electronics library, and hand-written records for cameras, audio interfaces, sensors, LED and DMX interfaces and printers,
+under one outer record (`open-audiovisual/device@1`, `@openav/devices/device.schema.json`) with a source for every fact. Nothing is
+copied: each profile, fixture and part stays in its own file and its record is read off it (`node tools/build-devices.mjs` writes the
+list, `catalog.js`), so listing loads no profile. The chapter is [Devices](devices.md).
+
+| export | signature |
+|---|---|
+| `devices` | `devices({ kind, q, connection })` → frozen rows `{ id, kind, manufacturer, name, aliases, connections, protocols, verified, from, file }`; `q` matches every word in the name, aliases, maker or id |
+| `device` | `await device(id, options)` → `{ id, kind, name, record }` and, by kind: midi-controller `profile` · `routes(bindings, options)` · `addTo(controllers)`; dmx-fixture `profile` · `patch(patch, { id, universe, address, mode })`; part `part`; camera, audio-interface `constraints(deviceId)` · `find()` · `open()` (the only call that asks for a permission) |
+| `deviceKinds` | `midi-controller` · `dmx-fixture` · `dmx-interface` · `led-controller` · `sensor` · `camera` · `audio-interface` · `projector` · `display` · `printer` · `part` |
 
 ## @openav/mcp
 

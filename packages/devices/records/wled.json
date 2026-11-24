@@ -1,0 +1,85 @@
+{
+  "format": "open-audiovisual/device@1",
+  "id": "wled",
+  "kind": "led-controller",
+  "manufacturer": "WLED project",
+  "name": "WLED",
+  "aliases": ["WLED firmware", "ESP32 LED controller", "ESP8266 LED controller", "LED strip controller", "燈條控制器"],
+  "connections": ["wifi"],
+  "protocols": ["ddp", "e1.31", "art-net", "tpm2.net", "udp-realtime", "http", "json-api", "mqtt"],
+  "data": {
+    "facts": [
+      { "key": "type", "value": "firmware: a webserver on an ESP32 (or ESP8266) that drives LED strips", "source": 0 },
+      { "key": "ledOutputs", "value": "up to 3 outputs per ESP8266, up to 10 per ESP32", "source": 0 },
+      { "key": "wifi", "value": "Access Point and station mode, with an automatic failsafe AP", "source": 0 },
+      { "key": "realtimeProtocols", "value": ["E1.31", "Art-Net", "DDP", "TPM2.net", "UDP realtime"], "source": 0 },
+      { "key": "controlApis", "value": ["JSON API", "HTTP request API", "MQTT"], "source": 0 },
+      { "key": "ddpPort", "value": 4048, "unit": "UDP port", "note": "WLED listens for DDP packets on port 4048 and does not read the optional timecodes in the header.", "source": 1 },
+      { "key": "ledsPerUniverse", "value": 170, "note": "510 DMX channels per universe (E1.31, Art-Net).", "source": 2 },
+      { "key": "maxUniverses", "value": 9, "note": "Up to 9 adjacent universes; no more than 3 universes (510 LEDs) for a smooth 25 ms (40 fps) frame rate.", "source": 2 },
+      { "key": "dmxModes", "value": ["Disabled", "Single RGB", "Single DRGB", "Effect", "Effect + White", "Effect Segment", "Effect Segment + White", "Multiple RGB", "Multiple RGBW", "Dimmer + Multi RGB", "Dimmer + Multi RGBW", "Preset"], "note": "Multiple RGB is the default: 3 channels per LED.", "source": 2 },
+      { "key": "senderPriority", "value": "E1.31 priority is set in the UI; higher-priority senders override lower ones with a 3 s timeout; senders of the same priority are not merged (no HTP).", "source": 2 }
+    ]
+  },
+  "setup": [
+    {
+      "en": "For DDP, give the out-bridge a ddp route to the WLED's address: { \"match\": \"light/*\", \"sink\": \"ddp\", \"host\": \"192.168.1.50\", \"port\": 4048, \"pixels\": 60 }; light/<i>/r|g|b, 0..1, is pixel i from 0.",
+      "zh": "用 DDP 時，在輸出橋接程式設一條指向 WLED 位址的 ddp 路由：{ \"match\": \"light/*\", \"sink\": \"ddp\", \"host\": \"192.168.1.50\", \"port\": 4048, \"pixels\": 60 }。light/<i>/r|g|b 是 0..1，i 是從 0 起算的燈珠。",
+      "source": 3
+    },
+    {
+      "en": "For Art-Net or E1.31 instead, switch WLED to that mode in its Sync settings and reboot it once, then send through the out-bridge's artnet or sacn sink.",
+      "zh": "要改用 Art-Net 或 E1.31，在 WLED 的 Sync 設定切到那個模式，重開一次，再經輸出橋接程式的 artnet 或 sacn sink 送出。",
+      "source": 2
+    }
+  ],
+  "problems": [
+    {
+      "en": "WLED goes back to its own effect about 2.5 s after the last DDP packet, on top of the bridge's watchdog: a page that stops sending loses the strip.",
+      "zh": "最後一個 DDP 封包之後約 2.5 秒，WLED 會回到自己的效果，這是在橋接程式的看門狗之外的另一道保險：網頁停止送出，燈條就不再聽它的。",
+      "source": 3
+    },
+    {
+      "en": "Two senders at the same E1.31 priority are not merged: one page and a lighting desk on one strip fight.",
+      "zh": "同一個 E1.31 優先權的兩個來源不會合併：一個網頁和一台燈控台送同一條燈條會互搶。",
+      "source": 2
+    }
+  ],
+  "use": [
+    {
+      "package": "@openav/out",
+      "entry": "OutClient",
+      "sink": "ddp",
+      "call": "new OutClient({ url: 'ws://127.0.0.1:6450/out' }).connect().set('light/0/r', 1)",
+      "en": "Page values go to the out-bridge, whose ddp sink packs light/<i>/r|g|b into DDP for the strip, at most 60 times a second, with a watchdog.",
+      "zh": "網頁的值送到輸出橋接程式，它的 ddp sink 把 light/<i>/r|g|b 打包成 DDP 送給燈條，每秒最多 60 次，附看門狗。"
+    },
+    {
+      "package": "@openav/dmx",
+      "entry": "dmxTransport",
+      "sink": "artnet",
+      "call": "dmxTransport('bridge', { patch, client })",
+      "en": "Patched as RGB fixtures, the strip takes the DMX engine's looks through the out-bridge's artnet (or sacn) sink, with the flash cap.",
+      "zh": "把燈條 patch 成 RGB 燈具，它就經輸出橋接程式的 artnet（或 sacn）sink 接收 DMX 引擎的燈光，附閃爍上限。"
+    }
+  ],
+  "sources": [
+    { "title": "WLED Knowledge Base (kno.wled.ge): home", "url": "https://kno.wled.ge/", "read": "2026-11-25" },
+    { "title": "WLED Knowledge Base: DDP", "url": "https://kno.wled.ge/interfaces/ddp/", "read": "2026-11-25" },
+    { "title": "WLED Knowledge Base: E1.31 (DMX) / Art-Net", "url": "https://kno.wled.ge/interfaces/e1.31-dmx/", "read": "2026-11-25" },
+    { "title": "open-audiovisual: packages/out README (the ddp sink, its config, WLED's fallback)", "url": "https://github.com/frank890417/open-audiovisual/blob/main/packages/out/README.md", "read": "2026-11-25" }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": [],
+  "tbd": [
+    {
+      "en": "Ethernet: the knowledge base has a page on Ethernet (LAN) boards that was not read, so only Wi-Fi is listed.",
+      "zh": "乙太網路：知識庫有一頁講乙太網路（LAN）的板子，還沒讀，所以這裡只列 Wi-Fi。"
+    },
+    {
+      "en": "The 2.5 s fallback is what the out-bridge's notes say; the DDP page that was read does not give a number.",
+      "zh": "2.5 秒回到自己的效果是輸出橋接程式的說明寫的，讀過的 DDP 那一頁沒有給數字。"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "format": "open-audiovisual/device@1",
+  "id": "enttec-dmx-usb-pro",
+  "kind": "dmx-interface",
+  "manufacturer": "ENTTEC",
+  "name": "ENTTEC DMX USB Pro",
+  "aliases": ["DMX USB Pro", "Enttec Pro", "USB to DMX", "70304", "DMX 介面"],
+  "connections": ["usb", "dmx-xlr5"],
+  "protocols": ["dmx512", "rdm", "enttec-usb-pro"],
+  "data": {
+    "facts": [
+      { "key": "sku", "value": "70304", "source": 0 },
+      { "key": "universes", "value": "1 universe (512 channels) out", "source": 0 },
+      { "key": "refreshRate", "value": "configurable from 1 to 40 fps", "unit": "fps", "source": 0 },
+      { "key": "connectors", "value": "1 × DMX output (female XLR5), 1 × DMX input (male XLR5), 1 × USB 2.0 Type-B", "source": 0 },
+      { "key": "mode", "value": "DMX input or DMX output mode", "source": 0 },
+      { "key": "power", "value": "5 V DC via USB, 300 mA, 1.5 W", "source": 0 },
+      { "key": "isolation", "value": "1500 V full isolation for both data and power lines", "source": 0 },
+      { "key": "protocols", "value": "USITT DMX512-A, ANSI E1.20 RDM (if supported by your third-party software)", "source": 0 },
+      { "key": "os", "value": "Windows, Mac and Linux (Raspberry Pi too)", "source": 0 },
+      { "key": "drivers", "value": "FTDI drivers (Windows D2XX)", "source": 0 },
+      { "key": "api", "value": "API for DMX USB PRO (PDF)", "note": "https://cdn.enttec.com/pdf/assets/70304/70304_DMX_USB_PRO_API.pdf, linked from the product page; not read here.", "source": 0 }
+    ]
+  },
+  "setup": [
+    {
+      "en": "From a page with no bridge: dmxTransport('serial', { patch, universe: 1 }) and a Connect button that calls connect(); the browser asks which port only from a click. Chrome or Edge on a computer, on https or localhost.",
+      "zh": "不經橋接程式、直接從網頁：dmxTransport('serial', { patch, universe: 1 })，加一個呼叫 connect() 的 Connect 按鈕，瀏覽器只會在點擊時問要用哪個連接埠。電腦上的 Chrome 或 Edge，https 或 localhost。",
+      "source": 1
+    },
+    {
+      "en": "Through the out-bridge instead: an enttec route with the serial device's path, { \"match\": \"dmx/1/*\", \"sink\": \"enttec\", \"path\": \"/dev/cu.usbserial-…\", \"universe\": 1 }. A missing device is a status, retried every 2 s.",
+      "zh": "改經輸出橋接程式：一條帶序列裝置路徑的 enttec 路由，{ \"match\": \"dmx/1/*\", \"sink\": \"enttec\", \"path\": \"/dev/cu.usbserial-…\", \"universe\": 1 }。裝置不在時是一個狀態，每 2 秒重試。",
+      "source": 1
+    }
+  ],
+  "problems": [
+    {
+      "en": "On Web Serial there is no watchdog: the Pro keeps repeating the last frame, so send a blackout before close().",
+      "zh": "用 Web Serial 時沒有看門狗：Pro 會一直重送最後一格，所以 close() 之前先送 blackout。",
+      "source": 1
+    },
+    {
+      "en": "OAV writes the Pro's \"send DMX\" frames but no RDM; and an Enttec Open DMX or a bare FTDI cable is not this device and does not work with it.",
+      "zh": "OAV 寫的是 Pro 的「送出 DMX」訊框，沒有 RDM。Enttec Open DMX 或單純的 FTDI 線不是這台，不能這樣用。",
+      "source": 1
+    }
+  ],
+  "use": [
+    {
+      "package": "@openav/dmx",
+      "entry": "dmxTransport",
+      "call": "const out = dmxTransport('serial', { patch, universe: 1 }); button.onclick = () => out.connect()",
+      "en": "The page writes whole Enttec frames by Web Serial, at most one every 25 ms while anything changes and once a second otherwise, through the flash guard.",
+      "zh": "網頁經 Web Serial 寫入完整的 Enttec 訊框，有變化時最快每 25 毫秒一格，沒變化時每秒一格，都先經過頻閃保護。"
+    },
+    {
+      "package": "@openav/out",
+      "entry": "OutClient",
+      "sink": "enttec",
+      "call": "dmxTransport('bridge', { patch, client: new OutClient({ url: 'ws://127.0.0.1:6450/out' }).connect() })",
+      "en": "The out-bridge's enttec sink carries one universe to the Pro on a serial device, with the watchdog's safe values when the page goes away.",
+      "zh": "輸出橋接程式的 enttec sink 把一個 universe 送到序列裝置上的 Pro，網頁離開時由看門狗送安全值。"
+    }
+  ],
+  "sources": [
+    { "title": "ENTTEC: DMX USB Pro (70304), product page and specifications", "url": "https://www.enttec.com/product/dmx-usb-interfaces/dmx-usb-pro-professional-1u-usb-to-dmx512-converter/", "read": "2026-11-25" },
+    { "title": "open-audiovisual handbook: DMX lighting (Web Serial and the enttec sink, safety, not here)", "url": "https://openaudiovisual.com/docs/#dmx", "read": "2026-11-25" }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": [],
+  "tbd": [
+    {
+      "en": "No real DMX USB Pro has received OAV's frames yet: the bytes follow the published API and the tests decode them on a stand-in port.",
+      "zh": "還沒有一台真的 DMX USB Pro 收過 OAV 的訊框：位元組照公開的 API 寫，測試在替身連接埠上解碼。"
+    }
+  ]
+}

@@ -56,6 +56,8 @@ export const CATEGORIES = [
     hint: { en: 'Meshes, STL / GLB / OBJ export, checks.', zh: '網格、STL／GLB／OBJ 輸出、檢查。' } },
   { id: 'hw', en: 'Hardware design (@openav/hw)', zh: '硬體設計（@openav/hw）',
     hint: { en: 'Parts, wiring checks, wiring diagrams, parts lists.', zh: '零件、接線檢查、接線圖、零件清單。' } },
+  { id: 'devices', en: 'Devices (@openav/devices)', zh: '設備（@openav/devices）',
+    hint: { en: 'One collection of controllers, lights, cameras, audio interfaces and parts, and one call that hands each to its package.', zh: '控制器、燈、鏡頭、音訊介面和零件收成一份清單，一個呼叫把每台交給驅動它的套件。' } },
   { id: 'mcp', en: 'MCP tools for agents', zh: '給代理的 MCP 工具',
     hint: { en: 'The tools of packages/mcp/server.js.', zh: 'packages/mcp/server.js 提供的工具。' } },
 ];
@@ -64,7 +66,7 @@ export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);
 
 /** Where a name without an entry sits on the page while it waits for one (the ledger): by package. */
 export const PACKAGE_CATEGORY = {
-  audio: 'mic', chop: 'chop', chord: 'chord', console: 'backstage', core: 'core', dmx: 'dmx', drums: 'drums', fab: 'fab', hw: 'hw', keys: 'keys', leap: 'leap',
+  audio: 'mic', chop: 'chop', chord: 'chord', console: 'backstage', core: 'core', devices: 'devices', dmx: 'dmx', drums: 'drums', fab: 'fab', hw: 'hw', keys: 'keys', leap: 'leap',
   mapping: 'mapping', mcp: 'mcp', midi: 'midi-io', monitor: 'backstage', osc: 'osc', out: 'osc', pattern: 'drums', pose: 'pose', record: 'record',
   relay: 'remote', remote: 'remote', score: 'timeline', show: 'core', sound: 'sound', stage: 'core', surface: 'remote', timeline: 'timeline',
   'world-webtoe': 'core', sync: 'core',

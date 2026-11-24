@@ -187,6 +187,7 @@ export default {
       remote: 'The phone and iPad app: sensors, keyboard, control surface',
       core: 'Signals, Params and Loop: what every layer speaks',
       show: 'createShow(): one call assembles the whole shell',
+      devices: 'One collection of show devices: every controller profile, DMX fixture and part, plus cameras, audio interfaces, sensors and LED and DMX interfaces, searchable, each handed to the package that drives it',
       mcp: 'MCP server for coding agents: list, read, scaffold, check',
     },
     docsTitle: 'Documentation',

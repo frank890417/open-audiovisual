@@ -1,0 +1,102 @@
+{
+  "format": "open-audiovisual/device@1",
+  "id": "yamaha-ag06",
+  "kind": "audio-interface",
+  "manufacturer": "Yamaha",
+  "name": "Yamaha AG06",
+  "aliases": ["AG06", "AG-06", "AG06 mixer", "AG06 mixing console"],
+  "connections": ["usb", "audio-xlr", "audio-jack"],
+  "protocols": ["usb-audio-class-2"],
+  "data": {
+    "facts": [
+      { "key": "usbAudio", "value": "2 in / 2 out", "source": 0 },
+      { "key": "usbAudioClass", "value": "USB Audio Class 2.0 compliant", "source": 0 },
+      { "key": "usbFormat", "value": "USB Audio Class 2.0 / Yamaha Steinberg USB Driver", "source": 0 },
+      { "key": "driverNote", "value": "The Yamaha Steinberg USB Driver might be required for computer input/output.", "source": 1 },
+      { "key": "bitDepth", "value": 24, "unit": "bit", "source": 0 },
+      { "key": "sampleRates", "value": [44100, 48000, 88200, 96000, 176400, 192000], "unit": "Hz", "source": 0 },
+      { "key": "usbConnector", "value": "USB Standard-B (the [USB 2.0] terminal)", "source": 0 },
+      { "key": "inputChannels", "value": "Mono (MIC/LINE): 2 including HEADSET MIC; Stereo (LINE): 2; USB IN: 1; AUX IN: 1", "source": 0 },
+      { "key": "micLineInputs", "value": "combo jacks (XLR balanced, phone)", "source": 0 },
+      { "key": "outputChannels", "value": "STEREO OUT: 1; MONITOR OUT: 1; PHONES: 2 including HEADSET PHONES", "source": 0 },
+      { "key": "phantomPower", "value": 48, "unit": "V", "source": 0 },
+      { "key": "powerRequirements", "value": "DC 5 V, 500 mA", "source": 0 },
+      { "key": "powerConsumption", "value": "max. 2.5 W", "source": 0 },
+      { "key": "toPcSwitch", "value": ["DRY CH 1-2", "INPUT MIX", "LOOPBACK"], "note": "What the mixer sends to the computer: channels 1 and 2 dry, the stereo mix without the computer's own sound, or the mix with the computer's sound.", "source": 1 }
+    ]
+  },
+  "media": {
+    "input": "audioinput",
+    "labels": ["\\bag0?6\\b", "\\bag-06\\b"],
+    "constraints": { "echoCancellation": false, "noiseSuppression": false, "autoGainControl": false, "channelCount": { "ideal": 2 } },
+    "sources": [0, 2]
+  },
+  "setup": [
+    {
+      "en": "Turn the mixer to standby before connecting the cables to its [USB 2.0] and [5V DC] terminals, and wake the computer from sleep first.",
+      "zh": "接上 [USB 2.0] 和 [5V DC] 端子的線之前，先把混音器切到待機，電腦也先從睡眠醒來。",
+      "source": 1
+    },
+    {
+      "en": "A tablet that cannot power the mixer needs a USB power adapter or a USB battery on the [5V DC] terminal (micro B).",
+      "zh": "平板供不了混音器的電時，要在 [5V DC] 端子（micro B）接 USB 電源供應器或行動電源。",
+      "source": 1
+    },
+    {
+      "en": "For a page that listens to the microphone, set [TO PC] to INPUT MIX or DRY CH 1-2.",
+      "zh": "要讓網頁聽麥克風時，把 [TO PC] 切到 INPUT MIX 或 DRY CH 1-2。",
+      "source": 1
+    },
+    {
+      "en": "The page must be on https or localhost and start the microphone from a click; on macOS the browser needs microphone access in System Settings → Privacy & Security.",
+      "zh": "網頁要在 https 或 localhost 上，並且由一次點擊啟動麥克風。在 macOS 上，瀏覽器要在「系統設定 → 隱私權與安全性」裡有麥克風權限。",
+      "source": 3
+    }
+  ],
+  "problems": [
+    {
+      "en": "With [TO PC] at LOOPBACK, what the computer plays is mixed into what it receives, so a page that makes sound and listens hears itself; the manual warns that this can loop into feedback.",
+      "zh": "[TO PC] 在 LOOPBACK 時，電腦播出的聲音會混進它收到的聲音，所以一邊發聲一邊聽的網頁會聽到自己。說明書提醒這可能形成迴路而產生回授。",
+      "source": 1
+    }
+  ],
+  "use": [
+    {
+      "package": "@openav/devices",
+      "entry": "device",
+      "call": "const stream = await (await device('yamaha-ag06')).open()",
+      "en": "Finds the AG06 among the audio inputs by its label and opens it with the browser's voice processing off, only when called.",
+      "zh": "依名稱在音訊輸入裡找到 AG06，關掉瀏覽器的語音處理後打開它，呼叫了才會做。"
+    },
+    {
+      "package": "@openav/audio",
+      "entry": "AudioAnalyzer",
+      "call": "const a = new AudioAnalyzer({ signals }); a.input().context.createMediaStreamSource(stream).connect(a.input())",
+      "en": "The opened stream feeds the analyzer through input(), so audio/rms, the bands and the drum hits follow the AG06 rather than the default microphone.",
+      "zh": "打開的串流經 input() 接進分析器，audio/rms、三個頻段和鼓的偵測就跟著 AG06，而不是預設的麥克風。"
+    }
+  ],
+  "sources": [
+    { "title": "Yamaha AG06 Technical Specifications (ag06_en_ts_b0, published 01/2022)", "url": "https://data.yamaha.com/files/download/other_assets/3/333133/ag06_en_ts_b0.pdf", "read": "2026-11-25" },
+    { "title": "Yamaha AG06 Owner's Manual (ag06_en_om_a0)", "url": "https://data.yamaha.com/files/download/other_assets/4/333124/ag06_en_om_a0.pdf", "read": "2026-11-25" },
+    { "title": "open-audiovisual: @openav/audio, AudioAnalyzer.enableMic() (the constraints it asks a microphone for)", "url": "https://github.com/frank890417/open-audiovisual/blob/main/packages/audio/index.js", "read": "2026-11-25" },
+    { "title": "open-audiovisual handbook: Troubleshooting, the camera or microphone does not start", "url": "https://openaudiovisual.com/docs/#troubleshooting-the-camera-or-microphone-does-not-start", "read": "2026-11-25" }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": [],
+  "tbd": [
+    {
+      "en": "These are the facts of the first AG06, read from its own documents. The AG06MK2 is another unit, not described here: which of the two this record will be checked on is not confirmed.",
+      "zh": "這些是第一代 AG06 的資料，讀自它自己的文件。AG06MK2 是另一台，這裡沒有描述。這筆紀錄之後會在哪一台上驗證，還沒有確認。"
+    },
+    {
+      "en": "The label patterns were written from the model name, not read from a unit: which label Chrome shows for it on macOS and Windows is not checked.",
+      "zh": "標籤比對式是照型號寫的，不是從實機讀來的。Chrome 在 macOS 與 Windows 上把它叫做什麼，還沒有確認。"
+    },
+    {
+      "en": "Whether a browser gets both USB input channels with channelCount 2 is not checked.",
+      "zh": "瀏覽器設 channelCount 2 時能不能拿到兩個 USB 輸入聲道，還沒有確認。"
+    }
+  ]
+}

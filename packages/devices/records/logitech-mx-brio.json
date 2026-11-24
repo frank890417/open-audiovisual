@@ -1,0 +1,92 @@
+{
+  "format": "open-audiovisual/device@1",
+  "id": "logitech-mx-brio",
+  "kind": "camera",
+  "manufacturer": "Logitech",
+  "name": "Logitech MX Brio",
+  "aliases": ["MX Brio", "MX BRIO", "MX Brio 4K", "VU0066", "webcam", "網路攝影機"],
+  "connections": ["usb"],
+  "protocols": ["uvc"],
+  "data": {
+    "facts": [
+      { "key": "maxFrameRate", "value": "60 fps at 1080p, 30 fps at 4K", "note": "The spec page: Frame Rate (max) 60FPS 1080p / 30FPS 4K.", "source": 0 },
+      { "key": "resolution", "value": "UHD 4K at 30 fps or 1080p at 60 fps", "source": 1 },
+      { "key": "sensor", "value": "Sony Starvis, model IMX415, size 1/2.8\"", "source": 0 },
+      { "key": "pixelSize", "value": 1.45, "unit": "µm", "source": 0 },
+      { "key": "fieldOfView", "value": 90, "unit": "°", "note": "The spec page writes Field of View (FOV): 90.", "source": 0 },
+      { "key": "microphones", "value": 2, "note": "Dual beamforming mics, noise reducing.", "source": 0 },
+      { "key": "connection", "value": "Wired, USB-C to USB-C cable, 1.5 m", "source": 0 },
+      { "key": "hostPort", "value": "a USB-C port supporting the USB 3.0 standard", "source": 0 },
+      { "key": "uvc", "value": "Basic webcam support using the USB Video Class (UVC) standard", "source": 0 },
+      { "key": "os", "value": ["Windows 10 or later", "macOS 10.15 or later", "ChromeOS (UVC)", "Linux (UVC)"], "source": 0 },
+      { "key": "software", "value": "Logi Options+ / G HUB; Right Sight only with Logi Tune", "source": 0 },
+      { "key": "modelNumber", "value": "VU0066", "source": 0 }
+    ]
+  },
+  "media": {
+    "input": "videoinput",
+    "labels": ["mx\\s*brio"],
+    "constraints": { "width": 1920, "height": 1080, "fps": 60 },
+    "sources": [0, 2]
+  },
+  "setup": [
+    {
+      "en": "Plug it into a USB-C port that supports USB 3.0. It works as a basic UVC webcam; Logitech's software (Logi Options+, G HUB) adds its settings.",
+      "zh": "接到支援 USB 3.0 的 USB-C 埠。它以 UVC 標準當一般網路攝影機用，羅技的軟體（Logi Options+、G HUB）再加上它的設定。",
+      "source": 0
+    },
+    {
+      "en": "The page must be on https or localhost and start the camera from a click; on macOS the browser needs camera access in System Settings → Privacy & Security.",
+      "zh": "網頁要在 https 或 localhost 上，並且由一次點擊啟動鏡頭。在 macOS 上，瀏覽器要在「系統設定 → 隱私權與安全性」裡有相機權限。",
+      "source": 3
+    }
+  ],
+  "problems": [
+    {
+      "en": "Browsers hide camera labels until the page has had camera permission once, so before that the MX Brio cannot be told apart from another camera by name; open() asks first, then looks again.",
+      "zh": "頁面拿到一次相機權限之前，瀏覽器不給鏡頭的名稱，所以在那之前無法用名字分辨 MX Brio 和別的鏡頭。open() 會先要權限，再找一次。",
+      "source": 2
+    }
+  ],
+  "use": [
+    {
+      "package": "@openav/devices",
+      "entry": "device",
+      "call": "const stream = await (await device('logitech-mx-brio')).open()",
+      "en": "Finds the MX Brio among the cameras by its label and opens it at 1920×1080, 60 fps as ideal values, only when called.",
+      "zh": "依名稱在鏡頭裡找到 MX Brio，以 1920×1080、60 fps 為理想值打開它，呼叫了才會做。"
+    },
+    {
+      "package": "@openav/record",
+      "entry": "Compositor",
+      "call": "await comp.setCamera(stream)",
+      "en": "The performance video puts this camera under the work.",
+      "zh": "演出影片把這顆鏡頭放在作品下方。"
+    }
+  ],
+  "sources": [
+    { "title": "Logitech Support: Specification, MX BRIO", "url": "https://support.logi.com/hc/en-ca/articles/18849231040023-Specification-MX-BRIO", "read": "2026-11-25" },
+    { "title": "Logitech: MX Brio UHD 4K Webcam (product page)", "url": "https://www.logitech.com/en-us/shop/p/mx-brio-4k-webcam", "read": "2026-11-25" },
+    { "title": "open-audiovisual: @openav/record, camera.js (ideal, never exact, sizes; labels hidden until permission)", "url": "https://github.com/frank890417/open-audiovisual/blob/main/packages/record/camera.js", "read": "2026-11-25" },
+    { "title": "open-audiovisual handbook: Troubleshooting, the camera or microphone does not start", "url": "https://openaudiovisual.com/docs/#troubleshooting-the-camera-or-microphone-does-not-start", "read": "2026-11-25" }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": [],
+  "notes": [
+    {
+      "en": "@openav/pose's PoseTracker and HandTracker open the default camera themselves: choosing this camera for them is not possible yet.",
+      "zh": "@openav/pose 的 PoseTracker 與 HandTracker 會自己打開預設的鏡頭，目前還不能替它們指定這顆。"
+    }
+  ],
+  "tbd": [
+    {
+      "en": "The label pattern was written from the model name, not read from a unit: which label Chrome shows for it is not checked.",
+      "zh": "標籤比對式是照型號寫的，不是從實機讀來的。Chrome 把它叫做什麼，還沒有確認。"
+    },
+    {
+      "en": "Whether a browser gets 60 fps at 1920×1080 from it is not checked. The constraints are ideal values, so it opens at what it can.",
+      "zh": "瀏覽器能不能從它拿到 1920×1080、60 fps，還沒有確認。限制條件是理想值，所以它會以做得到的設定打開。"
+    }
+  ]
+}

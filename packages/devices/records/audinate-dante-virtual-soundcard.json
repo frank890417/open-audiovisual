@@ -1,0 +1,69 @@
+{
+  "format": "open-audiovisual/device@1",
+  "id": "audinate-dante-virtual-soundcard",
+  "kind": "audio-interface",
+  "manufacturer": "Audinate",
+  "name": "Audinate Dante Virtual Soundcard",
+  "aliases": ["Dante Virtual Soundcard", "DVS", "Dante", "software audio interface", "虛擬音效卡"],
+  "connections": ["ethernet"],
+  "protocols": ["dante"],
+  "data": {
+    "facts": [
+      { "key": "type", "value": "software, used as an audio I/O device in any application", "source": 0 },
+      { "key": "channelsStandard", "value": "up to 64 × 64", "note": "DVS Standard", "source": 0 },
+      { "key": "channelsPro", "value": "up to 128 × 128 at 96 kHz", "note": "DVS Pro", "source": 0 },
+      { "key": "maxAudio", "value": "uncompressed, up to 192 kHz / 32-bit", "source": 0 },
+      { "key": "driverModel", "value": "ASIO or WDM on Windows, Core Audio on macOS", "source": 0 },
+      { "key": "network", "value": "audio over the computer's wired network connection", "source": 0 },
+      { "key": "editions", "value": "DVS Standard and DVS Pro, a free 30-day trial of each", "source": 0 }
+    ]
+  },
+  "media": {
+    "input": "audioinput",
+    "labels": ["dante"],
+    "constraints": { "echoCancellation": false, "noiseSuppression": false, "autoGainControl": false },
+    "sources": [1]
+  },
+  "setup": [
+    {
+      "en": "The page must be on https or localhost and start the microphone from a click; on macOS the browser needs microphone access in System Settings → Privacy & Security.",
+      "zh": "網頁要在 https 或 localhost 上，並且由一次點擊啟動麥克風。在 macOS 上，瀏覽器要在「系統設定 → 隱私權與安全性」裡有麥克風權限。",
+      "source": 2
+    }
+  ],
+  "problems": [],
+  "use": [
+    {
+      "package": "@openav/devices",
+      "entry": "device",
+      "call": "const stream = await (await device('audinate-dante-virtual-soundcard')).open()",
+      "en": "Finds the Dante Virtual Soundcard among the audio inputs by its label and opens it with the browser's voice processing off, only when called.",
+      "zh": "依名稱在音訊輸入裡找到 Dante Virtual Soundcard，關掉瀏覽器的語音處理後打開它，呼叫了才會做。"
+    },
+    {
+      "package": "@openav/audio",
+      "entry": "AudioAnalyzer",
+      "call": "const a = new AudioAnalyzer({ signals }); a.input().context.createMediaStreamSource(stream).connect(a.input())",
+      "en": "The opened stream feeds the analyzer through input(), so a room's Dante network can drive audio/rms, the bands and the drum hits.",
+      "zh": "打開的串流經 input() 接進分析器，現場的 Dante 網路就能推動 audio/rms、三個頻段和鼓的偵測。"
+    }
+  ],
+  "sources": [
+    { "title": "Audinate: Dante Virtual Soundcard (product page)", "url": "https://www.getdante.com/products/software-essentials/dante-virtual-soundcard/", "read": "2026-11-25" },
+    { "title": "open-audiovisual: @openav/audio, AudioAnalyzer.enableMic() (the constraints it asks a microphone for)", "url": "https://github.com/frank890417/open-audiovisual/blob/main/packages/audio/index.js", "read": "2026-11-25" },
+    { "title": "open-audiovisual handbook: Troubleshooting, the camera or microphone does not start", "url": "https://openaudiovisual.com/docs/#troubleshooting-the-camera-or-microphone-does-not-start", "read": "2026-11-25" }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": [],
+  "tbd": [
+    {
+      "en": "Whether Chrome lists the Dante Virtual Soundcard as an audio input, under which label, and how many of its channels a page receives, is not checked.",
+      "zh": "Chrome 會不會把 Dante Virtual Soundcard 列成音訊輸入、名稱是什麼、網頁能拿到它的幾個聲道，都還沒有確認。"
+    },
+    {
+      "en": "Latency settings, sample-rate and network requirements beyond what the product page says are not read: see Audinate's user guide.",
+      "zh": "延遲設定、取樣率與網路需求，除了產品頁寫的以外都還沒讀，請看 Audinate 的使用手冊。"
+    }
+  ]
+}

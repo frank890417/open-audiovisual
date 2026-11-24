@@ -348,7 +348,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-<!--gen:w-packages-->Thirty<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+<!--gen:w-packages-->Thirty-one<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 <!--gen:packages-table-->
@@ -383,6 +383,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 |  | [`@openav/remote`](packages/remote/) | The phone and iPad app: sensors, keyboard, control surface |
 | glue and agents | [`@openav/core`](packages/core/) | Signals, Params and Loop: what every layer speaks |
 |  | [`@openav/show`](packages/show/) | createShow(): one call assembles the whole shell |
+|  | [`@openav/devices`](packages/devices/) | One collection of show devices: every controller profile, DMX fixture and part, plus cameras, audio interfaces, sensors and LED and DMX interfaces, searchable, each handed to the package that drives it |
 |  | [`@openav/mcp`](packages/mcp/) | MCP server for coding agents: list, read, scaffold, check |
 <!--/gen:packages-table-->
 
@@ -437,7 +438,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-30 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1342 tests
+31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1354 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

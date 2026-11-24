@@ -34,6 +34,7 @@ const DOCS = {
   'show-control': 'docs/show-control.md',
   score: 'docs/score.md',
   dmx: 'docs/dmx.md',
+  devices: 'docs/devices.md',
   roadmap: 'docs/roadmap.md',
   agents: 'AGENTS.md',
   readme: 'README.md',

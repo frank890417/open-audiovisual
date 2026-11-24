@@ -1,6 +1,6 @@
 # 套件一覽
 
-三十個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+三十一個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
@@ -10,7 +10,7 @@
 | L4 輸出 | `sound` · `osc` · `out` · `dmx` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | 手機 | `relay` · `surface` · `remote` |
-| 膠水 | `core` · `show` · `mcp` |
+| 膠水 | `core` · `show` · `devices` · `mcp` |
 
 子路徑入口（`@openav/remote/host`、`@openav/relay/server`、`@openav/surface/layout`、`@openav/surface/auto`）在瀏覽器裡要各自在 import map 加一行，例如 `"@openav/remote/host": "../../packages/remote/host.js"`。
 
@@ -484,6 +484,16 @@ routes.forEach((r) => mapper.addRoute(r));
 | `@openav/remote/qr` | `qrSvg(text, { ecc = 'M', margin = 2, scale })` → `<svg>` 字串 · `qrMatrix(text, { ecc })` → `{ version, size, mask, rows }`（byte 模式，版本 1–10） |
 
 見[手機、中繼與控制面板](remote.md)。
+
+## @openav/devices
+
+膠水 · 演出設備大集合：每一份 MIDI 控制器 profile（手寫的和轉入的）、每一台 DMX 燈具、電子零件庫的每一個零件，以及鏡頭、音訊介面、感測器、LED 與 DMX 介面、印表機的手寫紀錄，收在同一種外層紀錄裡（`open-audiovisual/device@1`，`@openav/devices/device.schema.json`），每一筆事實都有出處。沒有任何東西是複製的：每份 profile、燈具和零件都留在自己的檔案裡，紀錄從那裡讀出來（`node tools/build-devices.mjs` 寫出清單 `catalog.js`），所以列清單不會載入任何 profile。完整說明在[設備](devices.md)那一章。
+
+| 匯出 | 用法 |
+|---|---|
+| `devices` | `devices({ kind, q, connection })` → 凍結的列 `{ id, kind, manufacturer, name, aliases, connections, protocols, verified, from, file }`。`q` 的每個字要出現在名稱、別名、製造商或 id 裡 |
+| `device` | `await device(id, options)` → `{ id, kind, name, record }`，再依種類：midi-controller 有 `profile` · `routes(bindings, options)` · `addTo(controllers)`。dmx-fixture 有 `profile` · `patch(patch, { id, universe, address, mode })`。part 有 `part`。camera、audio-interface 有 `constraints(deviceId)` · `find()` · `open()`（唯一會要權限的呼叫） |
+| `deviceKinds` | `midi-controller` · `dmx-fixture` · `dmx-interface` · `led-controller` · `sensor` · `camera` · `audio-interface` · `projector` · `display` · `printer` · `part` |
 
 ## @openav/mcp
 
