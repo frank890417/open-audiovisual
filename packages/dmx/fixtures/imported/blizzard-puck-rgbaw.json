@@ -1,0 +1,398 @@
+{
+ "format": "open-audiovisual/fixture@1",
+ "id": "blizzard-puck-rgbaw",
+ "manufacturer": "Blizzard",
+ "name": "Puck RGBAW",
+ "kind": "par",
+ "modes": [
+  {
+   "id": "12ch",
+   "name": "12-channel",
+   "channels": [
+    "dimmerSimple",
+    "strobe",
+    "red",
+    "green",
+    "blue",
+    "amber",
+    "white",
+    "colorSnap",
+    "colorSnapSpeed",
+    "colorFade",
+    "colorFadeSpeed",
+    "soundControl"
+   ]
+  },
+  {
+   "id": "5ch",
+   "name": "5-channel",
+   "channels": [
+    "red",
+    "green",
+    "blue",
+    "amber",
+    "white"
+   ]
+  },
+  {
+   "id": "3ch",
+   "name": "3-channel",
+   "channels": [
+    "dimmerExtended",
+    "strobe",
+    "colorMacros"
+   ]
+  }
+ ],
+ "channels": {
+  "dimmerSimple": {
+   "type": "intensity",
+   "name": "Dimmer Simple"
+  },
+  "dimmerExtended": {
+   "type": "intensity",
+   "name": "Dimmer Extended",
+   "ranges": [
+    {
+     "from": 0,
+     "to": 15,
+     "is": "intensity"
+    },
+    {
+     "from": 16,
+     "to": 255,
+     "is": "intensity"
+    }
+   ]
+  },
+  "strobe": {
+   "type": "strobe",
+   "name": "Strobe",
+   "ranges": [
+    {
+     "from": 0,
+     "to": 15,
+     "is": "open"
+    },
+    {
+     "from": 16,
+     "to": 255,
+     "is": "strobe",
+     "label": "Strobe"
+    }
+   ]
+  },
+  "red": {
+   "type": "color",
+   "name": "Red",
+   "color": "red"
+  },
+  "green": {
+   "type": "color",
+   "name": "Green",
+   "color": "green"
+  },
+  "blue": {
+   "type": "color",
+   "name": "Blue",
+   "color": "blue"
+  },
+  "amber": {
+   "type": "color",
+   "name": "Amber",
+   "color": "amber"
+  },
+  "white": {
+   "type": "color",
+   "name": "White",
+   "color": "white"
+  },
+  "colorSnap": {
+   "type": "control",
+   "name": "Color Snap",
+   "ranges": [
+    {
+     "from": 0,
+     "to": 15,
+     "is": "none"
+    },
+    {
+     "from": 16,
+     "to": 255,
+     "is": "effect",
+     "label": "Color Snap on"
+    }
+   ]
+  },
+  "colorSnapSpeed": {
+   "type": "speed",
+   "name": "Color Snap Speed"
+  },
+  "colorFade": {
+   "type": "control",
+   "name": "Color Fade",
+   "ranges": [
+    {
+     "from": 0,
+     "to": 15,
+     "is": "none"
+    },
+    {
+     "from": 16,
+     "to": 255,
+     "is": "effect",
+     "label": "Color Fade on"
+    }
+   ]
+  },
+  "colorFadeSpeed": {
+   "type": "speed",
+   "name": "Color Fade Speed"
+  },
+  "soundControl": {
+   "type": "control",
+   "name": "Sound Control",
+   "ranges": [
+    {
+     "from": 0,
+     "to": 127,
+     "is": "none"
+    },
+    {
+     "from": 128,
+     "to": 255,
+     "is": "effect",
+     "label": "Sound Control"
+    }
+   ]
+  },
+  "colorMacros": {
+   "type": "control",
+   "name": "Color Macros",
+   "ranges": [
+    {
+     "from": 0,
+     "to": 0,
+     "is": "none"
+    },
+    {
+     "from": 1,
+     "to": 4,
+     "is": "colorPreset",
+     "label": "R"
+    },
+    {
+     "from": 5,
+     "to": 8,
+     "is": "colorPreset",
+     "label": "G"
+    },
+    {
+     "from": 9,
+     "to": 12,
+     "is": "colorPreset",
+     "label": "B"
+    },
+    {
+     "from": 13,
+     "to": 16,
+     "is": "colorPreset",
+     "label": "A"
+    },
+    {
+     "from": 17,
+     "to": 20,
+     "is": "colorPreset",
+     "label": "W"
+    },
+    {
+     "from": 21,
+     "to": 24,
+     "is": "colorPreset",
+     "label": "RG"
+    },
+    {
+     "from": 25,
+     "to": 28,
+     "is": "colorPreset",
+     "label": "RB"
+    },
+    {
+     "from": 29,
+     "to": 31,
+     "is": "colorPreset",
+     "label": "RA"
+    },
+    {
+     "from": 32,
+     "to": 35,
+     "is": "colorPreset",
+     "label": "RW"
+    },
+    {
+     "from": 36,
+     "to": 39,
+     "is": "colorPreset",
+     "label": "GB"
+    },
+    {
+     "from": 40,
+     "to": 43,
+     "is": "colorPreset",
+     "label": "GA"
+    },
+    {
+     "from": 44,
+     "to": 47,
+     "is": "colorPreset",
+     "label": "GW"
+    },
+    {
+     "from": 48,
+     "to": 51,
+     "is": "colorPreset",
+     "label": "BA"
+    },
+    {
+     "from": 52,
+     "to": 55,
+     "is": "colorPreset",
+     "label": "BW"
+    },
+    {
+     "from": 56,
+     "to": 59,
+     "is": "colorPreset",
+     "label": "AW"
+    },
+    {
+     "from": 60,
+     "to": 62,
+     "is": "colorPreset",
+     "label": "BAW"
+    },
+    {
+     "from": 63,
+     "to": 66,
+     "is": "colorPreset",
+     "label": "GAW"
+    },
+    {
+     "from": 67,
+     "to": 70,
+     "is": "colorPreset",
+     "label": "GBW"
+    },
+    {
+     "from": 71,
+     "to": 74,
+     "is": "colorPreset",
+     "label": "GBA"
+    },
+    {
+     "from": 75,
+     "to": 78,
+     "is": "colorPreset",
+     "label": "RAW"
+    },
+    {
+     "from": 79,
+     "to": 82,
+     "is": "colorPreset",
+     "label": "RBW"
+    },
+    {
+     "from": 83,
+     "to": 86,
+     "is": "colorPreset",
+     "label": "RBA"
+    },
+    {
+     "from": 87,
+     "to": 90,
+     "is": "colorPreset",
+     "label": "RGW"
+    },
+    {
+     "from": 91,
+     "to": 93,
+     "is": "colorPreset",
+     "label": "RGA"
+    },
+    {
+     "from": 94,
+     "to": 97,
+     "is": "colorPreset",
+     "label": "RGB"
+    },
+    {
+     "from": 98,
+     "to": 101,
+     "is": "colorPreset",
+     "label": "RGBA"
+    },
+    {
+     "from": 102,
+     "to": 105,
+     "is": "colorPreset",
+     "label": "RGBW"
+    },
+    {
+     "from": 106,
+     "to": 109,
+     "is": "colorPreset",
+     "label": "RGAW"
+    },
+    {
+     "from": 110,
+     "to": 113,
+     "is": "colorPreset",
+     "label": "RBAW"
+    },
+    {
+     "from": 114,
+     "to": 117,
+     "is": "colorPreset",
+     "label": "GBAW"
+    },
+    {
+     "from": 118,
+     "to": 120,
+     "is": "colorPreset",
+     "label": "RGBAW"
+    },
+    {
+     "from": 121,
+     "to": 255,
+     "is": "effect"
+    }
+   ]
+  }
+ },
+ "license": "MIT",
+ "origin": {
+  "tool": "Open Fixture Library",
+  "repo": "https://github.com/OpenLightingProject/open-fixture-library",
+  "commit": "849343f6eb7ab64f8d7d93209320bb25a1f5e11d",
+  "file": "fixtures/blizzard/puck-rgbaw.json",
+  "license": "MIT",
+  "author": "smokris",
+  "note": "Imported from the Open Fixture Library on 2026-11-24 (the OFL file was last modified on 2018-08-06)."
+ },
+ "sources": [
+  {
+   "title": "Open Fixture Library fixtures/blizzard/puck-rgbaw.json",
+   "url": "https://github.com/OpenLightingProject/open-fixture-library/blob/849343f6eb7ab64f8d7d93209320bb25a1f5e11d/fixtures/blizzard/puck-rgbaw.json",
+   "note": "by smokris; MIT; channel jobs and ranges read from OFL's capabilities, not checked by this project",
+   "license": "MIT"
+  },
+  {
+   "title": "Blizzard Puck RGBAW: manual",
+   "url": "https://cdn.shopify.com/s/files/1/1741/5055/files/puck-rgbaw-couch-potato-series_manual_rev_c.pdf",
+   "note": "linked from the OFL file; not read by this project"
+  }
+ ],
+ "notes": "Imported from the Open Fixture Library. Nobody has checked it on a light for this project.",
+ "verified": false,
+ "verifications": []
+}

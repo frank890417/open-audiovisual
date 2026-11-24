@@ -1,0 +1,114 @@
+{
+ "format": "open-audiovisual/fixture@1",
+ "id": "stairville-revueled-120-cob-rgbww",
+ "manufacturer": "Stairville",
+ "name": "RevueLED 120 COB RGBWW",
+ "kind": "par",
+ "modes": [
+  {
+   "id": "7ch",
+   "name": "7-channel",
+   "channels": [
+    "red",
+    "green",
+    "blue",
+    "warmWhite",
+    "dimmer",
+    "strobe",
+    "autoPrograms"
+   ]
+  }
+ ],
+ "channels": {
+  "red": {
+   "type": "color",
+   "name": "Red",
+   "color": "red"
+  },
+  "green": {
+   "type": "color",
+   "name": "Green",
+   "color": "green"
+  },
+  "blue": {
+   "type": "color",
+   "name": "Blue",
+   "color": "blue"
+  },
+  "warmWhite": {
+   "type": "color",
+   "name": "Warm White",
+   "color": "warmWhite"
+  },
+  "dimmer": {
+   "type": "intensity",
+   "name": "Dimmer"
+  },
+  "strobe": {
+   "type": "strobe",
+   "name": "Strobe",
+   "ranges": [
+    {
+     "from": 0,
+     "to": 9,
+     "is": "open",
+     "label": "Open"
+    },
+    {
+     "from": 10,
+     "to": 255,
+     "is": "strobe",
+     "label": "Strobe"
+    }
+   ]
+  },
+  "autoPrograms": {
+   "type": "control",
+   "name": "Auto Programs",
+   "ranges": [
+    {
+     "from": 0,
+     "to": 9,
+     "is": "none"
+    },
+    {
+     "from": 10,
+     "to": 255,
+     "is": "effect",
+     "label": "Built-in automatic show programs"
+    }
+   ]
+  }
+ },
+ "license": "MIT",
+ "origin": {
+  "tool": "Open Fixture Library",
+  "repo": "https://github.com/OpenLightingProject/open-fixture-library",
+  "commit": "849343f6eb7ab64f8d7d93209320bb25a1f5e11d",
+  "file": "fixtures/stairville/revueled-120-cob-rgbww.json",
+  "license": "MIT",
+  "author": "RAZAKANIRINA, pade, Luke Nelson",
+  "note": "Imported from the Open Fixture Library on 2026-11-24 (the OFL file was last modified on 2025-08-29)."
+ },
+ "sources": [
+  {
+   "title": "Open Fixture Library fixtures/stairville/revueled-120-cob-rgbww.json",
+   "url": "https://github.com/OpenLightingProject/open-fixture-library/blob/849343f6eb7ab64f8d7d93209320bb25a1f5e11d/fixtures/stairville/revueled-120-cob-rgbww.json",
+   "note": "by RAZAKANIRINA, pade, Luke Nelson; MIT; channel jobs and ranges read from OFL's capabilities, not checked by this project",
+   "license": "MIT"
+  },
+  {
+   "title": "Stairville RevueLED 120 COB RGBWW: manual",
+   "url": "https://images.static-thomann.de/pics/atg/atgdata/document/manual/414200_c_414200_r2_en_online.pdf",
+   "note": "linked from the OFL file; not read by this project"
+  },
+  {
+   "title": "Stairville RevueLED 120 COB RGBWW: product page",
+   "url": "https://www.thomann.de/intl/stairville_revueled_120_cob_rgb_ww_dmx.htm",
+   "note": "linked from the OFL file; not read by this project"
+  }
+ ],
+ "notes": "Imported from the Open Fixture Library. Nobody has checked it on a light for this project. OFL asks for help: Auto Programs: What programs are available and at which DMX values?",
+ "verified": false,
+ "verifications": []
+}

@@ -428,7 +428,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1355 tests
+31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1359 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -5366,8 +5366,11 @@ Nothing has been tried on a real fixture, node or interface. The chapter is [DMX
 | fixtures | `FIXTURES` (generic: dimmer, RGB, RGBW 4/6 ch, RGBA, RGBAW+UV 6/8 ch, one-colour strobe, moving head 8/16 ch, all `"verified": false`) · `fixtureById(id)` · `validateFixture(profile)` → problems · `loadFixture(profile)` · `rgbToChannels([r, g, b], colors)` · schema `@openav/dmx/fixtures/fixture.schema.json` |
 | protocols | `encodeArtDmx(data, { universe, sequence, physical })` / `decodeArtDmx(bytes)` (ArtDmx, UDP 6454) · `encodeSacn(data, { universe, cid, source, priority, sequence })` / `decodeSacn(bytes)` · `sacnAddress(universe)` (E1.31, UDP 5568) · `encodeEnttecDmx(data)` / `decodeEnttecDmx(bytes)` (DMX USB Pro, label 6) |
 
-`node tools/import-ofl.mjs <OFL checkout> fixtures/<maker>/<fixture>.json` converts a fixture from the Open Fixture Library (MIT)
-into this format, one by name. Art-Net™ Designed by and Copyright Artistic Licence.
+`node tools/import-ofl.mjs <OFL checkout> --list tools/ofl/batch-1.json` converts fixtures from the Open Fixture Library (MIT)
+into this format (or name them: `… fixtures/<maker>/<fixture>.json`), and refuses one the engine would get wrong on a real light.
+Forty-two are in `fixtures/imported/`, all `"verified": false`; they stay out of `FIXTURES`, and
+`loadImportedFixture(id)` from `@openav/dmx/fixtures/imported.js` (or `device(id)` of `@openav/devices`) imports the one you ask for.
+Art-Net™ Designed by and Copyright Artistic Licence.
 
 ## @openav/record
 

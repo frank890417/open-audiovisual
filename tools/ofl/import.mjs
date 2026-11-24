@@ -17,6 +17,9 @@
 //     engine keeps the channel open under the flash cap.
 //   • 16-bit (one fine channel) is kept. A mode that needs a 24-bit channel (fine^2) is left out and listed in `skipped`.
 //   • Matrix, template and switching channels are refused with an error, not guessed: a wrong guess is a wrong address.
+//     (OFL writes a switch on a capability, `switchChannels`, and names the switched alias in the mode: both are refused.)
+//   • A wheel slot keeps the name OFL's wheel gives it ("Red", "Open", "Gobo 3"); a slot between two is "Red / Green".
+//   • The manual and product page the OFL file links to are kept as sources, marked as not read by this project.
 
 import { FORMAT } from '../../packages/dmx/fixture.js';
 
@@ -72,8 +75,18 @@ function typeOf(caps, name) {
   return 'generic';
 }
 
+/** What a wheel slot is called: its name in OFL's wheel, else its type and number; a fractional slot sits between two. */
+function slotName(wheel, n) {
+  const slots = (wheel && wheel.slots) || [];
+  const one = (i) => { const x = slots[i - 1]; return x ? x.name || (x.type === 'Open' ? 'Open' : `${x.type || 'Slot'} ${i}`) : null; };
+  if (typeof n !== 'number') return null;
+  if (Number.isInteger(n)) return one(n);
+  const a = one(Math.floor(n)), b = one(Math.ceil(n));
+  return a && b ? `${a} / ${b}` : a || b;
+}
+
 /** One OFL capability's range, in 8-bit values, saying what it does. */
-function rangeOf(c, bits, onStrobe) {
+function rangeOf(c, bits, onStrobe, wheels = {}, channelName = '') {
   const shift = bits - 8;
   const [a, b] = c.dmxRange || [0, 2 ** bits - 1];
   let is;
@@ -85,7 +98,9 @@ function rangeOf(c, bits, onStrobe) {
     const lo = hzOf(c.speedStart ?? c.speed), hi = hzOf(c.speedEnd ?? c.speed);
     if (lo !== null && hi !== null) r.hz = [Math.min(lo, hi), Math.max(lo, hi)];
   }
-  const label = c.effectName || c.comment || (c.type === 'ShutterStrobe' ? c.shutterEffect : null);
+  const wheel = /^Wheel/.test(c.type) ? wheels[c.wheel || channelName] || wheels[String(channelName).replace(/\s+(Rotation|Shake)$/i, '')] : null;
+  const slot = c.type === 'WheelSlot' || c.type === 'WheelShake' ? (c.slotNumber !== undefined ? slotName(wheel, c.slotNumber) : c.slotNumberStart !== undefined ? [slotName(wheel, c.slotNumberStart), slotName(wheel, c.slotNumberEnd)].filter(Boolean).join(' → ') : null) : null;
+  const label = c.effectName || c.comment || slot || (c.type === 'ShutterStrobe' ? c.shutterEffect : null);
   if (label) r.label = String(label);
   return r;
 }
@@ -117,7 +132,10 @@ export function fixtureFromOfl(ofl, { file, commit, manufacturer, date } = {}) {
   const [, man, key] = m;
   if (ofl.matrix || ofl.templateChannels) throw new Error(`${file}: matrix and template channels are not supported`);
   const avail = ofl.availableChannels || {};
-  for (const [n, ch] of Object.entries(avail)) if (ch.switchChannels) throw new Error(`${file}: "${n}" switches channels, which is not supported`);
+  for (const [n, ch] of Object.entries(avail)) {
+    const caps = ch.capabilities || (ch.capability ? [ch.capability] : []);
+    if (ch.switchChannels || caps.some((c) => c && c.switchChannels)) throw new Error(`${file}: "${n}" switches channels, which is not supported`);
+  }
 
   // every name a mode can use → { kind: 'coarse' | 'fine' | 'fine2', of }
   const names = new Map();
@@ -161,7 +179,7 @@ export function fixtureFromOfl(ofl, { file, commit, manufacturer, date } = {}) {
       const a = degOf(caps[0].angleStart), b = degOf(caps[0].angleEnd);
       if (a !== null && b !== null && a !== b) c.degrees = Math.abs(b - a);
     }
-    if (caps.length > 1 || type === 'strobe') c.ranges = caps.map((x) => rangeOf(x, bits, type === 'strobe'));
+    if (caps.length > 1 || type === 'strobe') c.ranges = caps.map((x) => rangeOf(x, bits, type === 'strobe', ofl.wheels || {}, n));
     for (const x of caps) if (x.helpWanted) notes.push(`${n}: ${x.helpWanted}`);
     if (ch.helpWanted) notes.push(`${n}: ${ch.helpWanted}`);
     channels[k] = c;
@@ -187,6 +205,12 @@ export function fixtureFromOfl(ofl, { file, commit, manufacturer, date } = {}) {
   });
 
   const authors = (ofl.meta && ofl.meta.authors) || [];
+  const modified = ofl.meta && ofl.meta.lastModifyDate;
+  const links = ofl.links || {};
+  const linked = [
+    ...(links.manual || []).map((url) => ({ title: `${manufacturer || man} ${ofl.name}: manual`, url, note: 'linked from the OFL file; not read by this project' })),
+    ...(links.productPage || []).map((url) => ({ title: `${manufacturer || man} ${ofl.name}: product page`, url, note: 'linked from the OFL file; not read by this project' })),
+  ];
   const kind = ((ofl.categories || []).map((c) => KIND[c]).find(Boolean)) || 'other';
   const fixture = {
     format: FORMAT,
@@ -200,14 +224,14 @@ export function fixtureFromOfl(ofl, { file, commit, manufacturer, date } = {}) {
     origin: {
       tool: 'Open Fixture Library', repo: OFL_REPO, commit, file, license: 'MIT',
       ...(authors.length ? { author: authors.join(', ') } : {}),
-      note: `Imported from the Open Fixture Library${date ? ` on ${date}` : ''}.`,
+      note: `Imported from the Open Fixture Library${date ? ` on ${date}` : ''}${modified ? ` (the OFL file was last modified on ${modified})` : ''}.`,
     },
     sources: [{
       title: `Open Fixture Library ${file}`,
       url: `${OFL_REPO}/blob/${commit}/${file}`,
       note: `${authors.length ? `by ${authors.join(', ')}; ` : ''}MIT; channel jobs and ranges read from OFL's capabilities, not checked by this project`,
       license: 'MIT',
-    }],
+    }, ...linked],
     notes: [
       'Imported from the Open Fixture Library. Nobody has checked it on a light for this project.',
       ...(skipped.length ? [`Left out: ${skipped.join('; ')}.`] : []),

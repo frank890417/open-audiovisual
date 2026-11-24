@@ -3468,7 +3468,7 @@ button.onclick = () =&gt; sound.enable();
 <tr><td>協定</td><td><code>encodeArtDmx(data, { universe, sequence, physical })</code>／<code>decodeArtDmx(bytes)</code>（ArtDmx，UDP 6454）· <code>encodeSacn(data, { universe, cid, source, priority, sequence })</code>／<code>decodeSacn(bytes)</code> · <code>sacnAddress(universe)</code>（E1.31，UDP 5568）· <code>encodeEnttecDmx(data)</code>／<code>decodeEnttecDmx(bytes)</code>（DMX USB Pro，label 6）</td></tr>
 </tbody>
 </table></div>
-<p><code>node tools/import-ofl.mjs &lt;OFL 的 checkout&gt; fixtures/&lt;廠牌&gt;/&lt;燈具&gt;.json</code> 把 Open Fixture Library（MIT）的一台燈轉成這個格式，一次指定一台。Art-Net™ Designed by and Copyright Artistic Licence.</p>
+<p><code>node tools/import-ofl.mjs &lt;OFL 的 checkout&gt; --list tools/ofl/batch-1.json</code> 把 Open Fixture Library（MIT）的燈具轉成這個格式（也可以直接指定：<code>… fixtures/&lt;廠牌&gt;/&lt;燈具&gt;.json</code>），引擎在真燈上會弄錯的燈具會被擋下來。<code>fixtures/imported/</code> 裡有四十二台，全部是 <code>"verified": false</code>。它們不在 <code>FIXTURES</code> 裡，用 <code>@openav/dmx/fixtures/imported.js</code> 的 <code>loadImportedFixture(id)</code>（或 <code>@openav/devices</code> 的 <code>device(id)</code>）載入要的那一台。Art-Net™ Designed by and Copyright Artistic Licence.</p>
 <h3 id="packages-openav-record">@openav/record<a class="anchor" href="#packages-openav-record" aria-label="這一節的連結">#</a></h3>
 <p>L4 輸出（影像分支）· 演出影片：作品和演奏者的鏡頭合成進一張尺寸精確的畫布（直式 1080×1920、4:5、2.7K、4K、橫式、方形），跟作品自己的聲音一起交給同一個 <code>MediaRecorder</code> 錄，所以畫面和聲音從結構上就是同步的；另外還有單獨的聲音檔、事件紀錄，以及 MIDI 錄音（錄下你彈的，再播回演出裡，<code>.mid</code> 可進可出）。</p>
 <div class="table-wrap"><table>

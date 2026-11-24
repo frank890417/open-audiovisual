@@ -4371,8 +4371,11 @@ Nothing has been tried on a real fixture, node or interface. The chapter is <a h
 <tr><td>protocols</td><td><code>encodeArtDmx(data, { universe, sequence, physical })</code> / <code>decodeArtDmx(bytes)</code> (ArtDmx, UDP 6454) · <code>encodeSacn(data, { universe, cid, source, priority, sequence })</code> / <code>decodeSacn(bytes)</code> · <code>sacnAddress(universe)</code> (E1.31, UDP 5568) · <code>encodeEnttecDmx(data)</code> / <code>decodeEnttecDmx(bytes)</code> (DMX USB Pro, label 6)</td></tr>
 </tbody>
 </table></div>
-<p><code>node tools/import-ofl.mjs &lt;OFL checkout&gt; fixtures/&lt;maker&gt;/&lt;fixture&gt;.json</code> converts a fixture from the Open Fixture Library (MIT)
-into this format, one by name. Art-Net™ Designed by and Copyright Artistic Licence.</p>
+<p><code>node tools/import-ofl.mjs &lt;OFL checkout&gt; --list tools/ofl/batch-1.json</code> converts fixtures from the Open Fixture Library (MIT)
+into this format (or name them: <code>… fixtures/&lt;maker&gt;/&lt;fixture&gt;.json</code>), and refuses one the engine would get wrong on a real light.
+Forty-two are in <code>fixtures/imported/</code>, all <code>"verified": false</code>; they stay out of <code>FIXTURES</code>, and
+<code>loadImportedFixture(id)</code> from <code>@openav/dmx/fixtures/imported.js</code> (or <code>device(id)</code> of <code>@openav/devices</code>) imports the one you ask for.
+Art-Net™ Designed by and Copyright Artistic Licence.</p>
 <h3 id="packages-openav-record">@openav/record<a class="anchor" href="#packages-openav-record" aria-label="Link to this section">#</a></h3>
 <p>L4 output (video branch) · the performance video: the work and the performer's
 camera composited into one canvas of an exact size (vertical 1080×1920, 4:5,

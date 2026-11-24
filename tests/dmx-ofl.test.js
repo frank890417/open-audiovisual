@@ -104,3 +104,125 @@ test('licences: the notice names OFL and its commit; the samples are OFL\'s file
   assert.equal(blob('chauvet-dj/slimpar-t12-bt.json'), '6cddb0f63317804523e0b85a9cbfc33b4b751773');
   assert.equal(blob('eurolite/led-ml-56-rgbw.json'), 'f1dec5c505ceb4377268aeeab7eaf8f4d694d79e');
 });
+
+// ------------------------------------------------------------------ what the converter learned for the first batch
+test('OFL: a switch written on a capability is refused; a wheel slot keeps its name; the linked manual is a source', () => {
+  const base = read('generic/pan-tilt.json');
+  const at = { file: 'fixtures/generic/pan-tilt.json', commit: COMMIT };
+  const sw = { ...base, availableChannels: { ...base.availableChannels, Pan: { capabilities: [{ dmxRange: [0, 127], type: 'Pan', angleStart: '0deg', angleEnd: '540deg', switchChannels: { 'Speed / Strobe': 'Speed' } }, { dmxRange: [128, 255], type: 'Pan', angleStart: '0deg', angleEnd: '540deg', switchChannels: { 'Speed / Strobe': 'Strobe' } }] } } };
+  assert.throws(() => fixtureFromOfl(sw, at), /"Pan" switches channels/);
+  const wheel = {
+    ...base,
+    wheels: { 'Color Wheel': { slots: [{ type: 'Open' }, { type: 'Color', name: 'Red' }, { type: 'Gobo' }] } },
+    availableChannels: { ...base.availableChannels, 'Color Wheel': { capabilities: [{ dmxRange: [0, 63], type: 'WheelSlot', slotNumber: 1 }, { dmxRange: [64, 95], type: 'WheelSlot', slotNumber: 1.5 }, { dmxRange: [96, 159], type: 'WheelSlot', slotNumber: 2 }, { dmxRange: [160, 255], type: 'WheelSlot', slotNumber: 3 }] } },
+    modes: [{ name: '3ch', channels: ['Pan', 'Tilt', 'Color Wheel'] }],
+    links: { manual: ['https://example.org/manual.pdf'], productPage: ['https://example.org/p'] },
+    meta: { ...base.meta, lastModifyDate: '2024-01-16' },
+  };
+  const { fixture: f } = fixtureFromOfl(wheel, { ...at, manufacturer: 'Generic', date: '2026-11-24' });
+  assert.equal(f.channels.colorWheel.type, 'colorWheel');
+  assert.deepEqual(f.channels.colorWheel.ranges.map((r) => r.label), ['Open', 'Open / Red', 'Red', 'Gobo 3']);
+  assert.deepEqual(f.sources.slice(1).map((s) => [s.url, s.note]), [['https://example.org/manual.pdf', 'linked from the OFL file; not read by this project'], ['https://example.org/p', 'linked from the OFL file; not read by this project']]);
+  assert.match(f.origin.note, /last modified on 2024-01-16/);
+});
+
+test('OFL gates: what a fixture must pass before it is imported', async () => {
+  const { importProblems, oflProblems, profileProblems } = await import('../tools/ofl/gates.mjs');
+  const eurolite = read('eurolite/led-ml-56-rgbw.json');
+  const { fixture } = convert('eurolite/led-ml-56-rgbw.json', 'Eurolite');
+  assert.deepEqual(importProblems(eurolite, fixture), [], 'a sample OFL ships passes');
+  assert.match(oflProblems({ ...eurolite, links: {} }).join(), /manual/);
+  const inverted = { ...eurolite, availableChannels: { ...eurolite.availableChannels, Dimmer: { capability: { type: 'Intensity', brightnessStart: '100%', brightnessEnd: '0%' } } } };
+  assert.match(oflProblems(inverted).join(), /inverted: "Dimmer"/);
+  // a UV channel that OFL calls "Dimmer": the dimmer property cannot reach it
+  const uv = { ...fixture, channels: { dimmer: { type: 'color', color: 'uv' } }, modes: [{ id: '1ch', channels: ['dimmer'] }] };
+  assert.match(profileProblems(uv).join(), /key: in mode 1ch, "dimmer" is a color channel/);
+  // a shutter that rests closed: the light stays dark while a page shows it lit
+  const shut = { ...fixture, channels: { ...fixture.channels, function: { type: 'strobe', ranges: [{ from: 0, to: 7, is: 'closed' }, { from: 8, to: 15, is: 'open' }, { from: 16, to: 255, is: 'strobe' }] } } };
+  assert.match(profileProblems(shut).join(), /closed: in mode 6ch, "function" rests at 0/);
+  const presets = { ...fixture, channels: { macro: { type: 'generic' }, ...fixture.channels }, modes: [{ id: '1ch', channels: ['macro'] }] };
+  assert.match(profileProblems(presets).join(), /dark: mode 1ch has no intensity/);
+});
+
+// ------------------------------------------------------------------ the batch that is committed
+const IMPORTED = path.join(ROOT, 'packages/dmx/fixtures/imported');
+const importedFiles = () => (fs.existsSync(IMPORTED) ? fs.readdirSync(IMPORTED).filter((f) => f.endsWith('.json')).sort() : []);
+
+/** The part of JSON Schema fixture.schema.json uses ($ref, oneOf, not, const, enum, pattern, min/max, propertyNames, additionalProperties). */
+function schemaErrors(schema, v, root, at = '$', out = []) {
+  if (schema.$ref) return schemaErrors(schema.$ref.split('/').slice(1).reduce((s, k) => s[k], root), v, root, at, out);
+  const is = { object: () => v !== null && typeof v === 'object' && !Array.isArray(v), array: () => Array.isArray(v), string: () => typeof v === 'string',
+    number: () => typeof v === 'number', integer: () => Number.isInteger(v), boolean: () => typeof v === 'boolean' };
+  if (schema.oneOf) { const ok = schema.oneOf.filter((s) => !schemaErrors(s, v, root, at).length).length; if (ok !== 1) out.push(`${at}: matches ${ok} of oneOf`); }
+  if (schema.not && !schemaErrors(schema.not, v, root, at).length) out.push(`${at}: matches "not"`);
+  if (schema.type && !is[schema.type]()) { out.push(`${at}: not ${schema.type}`); return out; }
+  if ('const' in schema && v !== schema.const) out.push(`${at}: is not ${schema.const}`);
+  if (schema.enum && !schema.enum.includes(v)) out.push(`${at}: ${JSON.stringify(v)} not in enum`);
+  if (typeof v === 'string' && schema.pattern && !new RegExp(schema.pattern).test(v)) out.push(`${at}: ${v} does not match ${schema.pattern}`);
+  if (typeof v === 'string' && schema.minLength && v.length < schema.minLength) out.push(`${at}: too short`);
+  if (typeof v === 'number') {
+    if (schema.minimum !== undefined && v < schema.minimum) out.push(`${at}: below minimum`);
+    if (schema.maximum !== undefined && v > schema.maximum) out.push(`${at}: above maximum`);
+    if (schema.exclusiveMinimum !== undefined && v <= schema.exclusiveMinimum) out.push(`${at}: not above ${schema.exclusiveMinimum}`);
+  }
+  if (Array.isArray(v)) {
+    if (schema.minItems && v.length < schema.minItems) out.push(`${at}: too few items`);
+    if (schema.maxItems !== undefined && v.length > schema.maxItems) out.push(`${at}: too many items`);
+    if (schema.items) v.forEach((x, i) => schemaErrors(schema.items, x, root, `${at}[${i}]`, out));
+  }
+  if (is.object()) {
+    for (const k of schema.required || []) if (!(k in v)) out.push(`${at}: missing ${k}`);
+    if (schema.minProperties && Object.keys(v).length < schema.minProperties) out.push(`${at}: too few properties`);
+    for (const [k, x] of Object.entries(v)) {
+      if (schema.propertyNames) schemaErrors(schema.propertyNames, k, root, `${at}{${k}}`, out);
+      if (schema.properties && k in schema.properties) schemaErrors(schema.properties[k], x, root, `${at}.${k}`, out);
+      else if (schema.additionalProperties === false) out.push(`${at}: unknown property ${k}`);
+      else if (typeof schema.additionalProperties === 'object') schemaErrors(schema.additionalProperties, x, root, `${at}.${k}`, out);
+    }
+  }
+  return out;
+}
+
+test('the imported batch: every file is valid against fixture.schema.json and validateFixture, MIT, unverified, from the pinned OFL commit, and passes the gates', async () => {
+  const schema = JSON.parse(fs.readFileSync(path.join(ROOT, 'packages/dmx/fixtures/fixture.schema.json'), 'utf8'));
+  const { profileProblems } = await import('../tools/ofl/gates.mjs');
+  const batch = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/ofl/batch-1.json'), 'utf8'));
+  const files = importedFiles();
+  assert.ok(files.length >= 35, `${files.length} imported fixtures`);
+  assert.equal(batch.commit, COMMIT, 'the batch was chosen at the commit NOTICE names');
+  const fromBatch = new Set(batch.fixtures);
+  for (const f of files) {
+    const fx = JSON.parse(fs.readFileSync(path.join(IMPORTED, f), 'utf8'));
+    assert.equal(`${fx.id}.json`, f, `${f}: the file is named by its id`);
+    assert.deepEqual(schemaErrors(schema, fx, schema), [], `${f}: fixture.schema.json`);
+    assert.deepEqual(validateFixture(fx), [], `${f}: validateFixture`);
+    assert.equal(fx.license, 'MIT'); assert.equal(fx.verified, false); assert.deepEqual(fx.verifications, []);
+    assert.equal(fx.origin.commit, COMMIT, `${f}: the pinned commit`); assert.equal(fx.origin.repo, OFL_REPO); assert.equal(fx.origin.license, 'MIT');
+    assert.ok(fromBatch.has(fx.origin.file), `${f}: ${fx.origin.file} is in tools/ofl/batch-1.json`);
+    assert.equal(fx.sources[0].url, `${OFL_REPO}/blob/${COMMIT}/${fx.origin.file}`);
+    assert.ok(fx.sources.some((s) => /: manual$/.test(s.title) && /^https?:\/\//.test(s.url)), `${f}: the manual OFL links`);
+    assert.deepEqual(profileProblems(fx), [], `${f}: gates`);
+  }
+  assert.equal(files.length, batch.fixtures.length, 'one file per fixture of the batch');
+});
+
+test('the imported batch is listed lazily: imported-list.js is what the importer writes, and loading one fixture loads one file', async () => {
+  const { listFiles, importedOnDisk, LIST_FILE, URL_FILE } = await import('../tools/import-ofl.mjs');
+  const want = listFiles(importedOnDisk());
+  const unstampText = (s) => s.replace(/\?v=[\w.+-]+/g, '');
+  for (const rel of [LIST_FILE, URL_FILE]) assert.equal(unstampText(fs.readFileSync(path.join(ROOT, rel), 'utf8')), want[rel], `${rel} is what tools/import-ofl.mjs writes`);
+  const { IMPORTED_FIXTURES, importedFixturePath, loadImportedFixture } = await import('../packages/dmx/fixtures/imported.js');
+  assert.deepEqual(IMPORTED_FIXTURES.map((r) => r.id), importedFiles().map((f) => f.replace(/\.json$/, '')));
+  assert.ok(!/\.json['"]/.test(fs.readFileSync(path.join(ROOT, LIST_FILE), 'utf8').replace(/\/\/.*$/gm, '')), 'the list imports no JSON');
+  const id = IMPORTED_FIXTURES[0].id;
+  assert.equal(importedFixturePath(id), `fixtures/imported/${id}.json`);
+  assert.ok(fs.existsSync(path.join(ROOT, 'packages/dmx', importedFixturePath(id))));
+  assert.equal(importedFixturePath('generic-rgbw'), null);
+  const fx = await loadImportedFixture(id);
+  assert.equal(fx.id, id);
+  const p = new Patch({ profiles: [fx] });
+  assert.equal(p.add({ id: 'one', profile: id, address: 1 }).footprint, IMPORTED_FIXTURES[0].modes[0].footprint, 'the row\'s footprint is the file\'s');
+  await assert.rejects(loadImportedFixture('nope'), /no imported fixture "nope"/);
+  const { FIXTURES } = await import('../packages/dmx/fixtures/index.js');
+  assert.ok(FIXTURES.every((f) => f.id.startsWith('generic-')), 'FIXTURES stays the shipped generic ones');
+});

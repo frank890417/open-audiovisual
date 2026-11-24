@@ -292,7 +292,7 @@ L4 輸出（燈光）· 從網頁打 DMX，全部是純邏輯：燈具 profile�
 | 燈具 | `FIXTURES`（通用：調光器、RGB、RGBW 4／6 通道、RGBA、RGBAW+UV 6／8 通道、單色頻閃燈、搖頭燈 8／16 通道，全部 `"verified": false`）· `fixtureById(id)` · `validateFixture(profile)` → 問題清單 · `loadFixture(profile)` · `rgbToChannels([r, g, b], colors)` · schema 在 `@openav/dmx/fixtures/fixture.schema.json` |
 | 協定 | `encodeArtDmx(data, { universe, sequence, physical })`／`decodeArtDmx(bytes)`（ArtDmx，UDP 6454）· `encodeSacn(data, { universe, cid, source, priority, sequence })`／`decodeSacn(bytes)` · `sacnAddress(universe)`（E1.31，UDP 5568）· `encodeEnttecDmx(data)`／`decodeEnttecDmx(bytes)`（DMX USB Pro，label 6） |
 
-`node tools/import-ofl.mjs <OFL 的 checkout> fixtures/<廠牌>/<燈具>.json` 把 Open Fixture Library（MIT）的一台燈轉成這個格式，一次指定一台。Art-Net™ Designed by and Copyright Artistic Licence.
+`node tools/import-ofl.mjs <OFL 的 checkout> --list tools/ofl/batch-1.json` 把 Open Fixture Library（MIT）的燈具轉成這個格式（也可以直接指定：`… fixtures/<廠牌>/<燈具>.json`），引擎在真燈上會弄錯的燈具會被擋下來。`fixtures/imported/` 裡有四十二台，全部是 `"verified": false`。它們不在 `FIXTURES` 裡，用 `@openav/dmx/fixtures/imported.js` 的 `loadImportedFixture(id)`（或 `@openav/devices` 的 `device(id)`）載入要的那一台。Art-Net™ Designed by and Copyright Artistic Licence.
 
 ## @openav/record
 

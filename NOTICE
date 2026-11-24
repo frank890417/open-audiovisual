@@ -36,10 +36,18 @@ Open Fixture Library fixture definitions
 
   Where it is:
     tests/fixtures/ofl/                three fixture files, unchanged, as test data.
-    packages/dmx/fixtures/imported/    files converted by tools/import-ofl.mjs (none committed yet). Each says "license": "MIT"
-                                       and names its OFL file and commit in "origin" and "sources".
+    packages/dmx/fixtures/imported/    42 fixtures converted by tools/import-ofl.mjs from the files tools/ofl/batch-1.json names,
+                                       at the commit above. Each says "license": "MIT" and names its OFL file, commit and authors
+                                       in "origin" and "sources" (with the manual and product page the OFL file links to).
+    packages/dmx/fixtures/imported-list.js
+                                       the id, manufacturer, name, kind and modes of each imported fixture, read off its file.
+    packages/devices/catalog.js        the rows of the imported fixtures (id, name, manufacturer, modes) are read off them.
+    fixtures/<id>/, zh/fixtures/<id>/  the page of each imported fixture: its channel tables are generated from the converted
+                                       file and carry the same licence, with a link to the fixture's page on the Open Fixture
+                                       Library.
 
   Changes made: read into this project's fixture format (open-audiovisual/fixture@1), modes that need 24-bit channels left
-  out, every file marked "verified": false. Nothing has been checked on hardware by this project.
+  out, wheel slots named after OFL's wheels, every file marked "verified": false. Nothing has been checked on hardware by
+  this project.
 
 Nothing in this repository comes from Mixxx mappings (GPL) or from midi.guide (CC-BY-SA).
