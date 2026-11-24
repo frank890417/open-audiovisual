@@ -203,21 +203,25 @@ console.log(out.status, out.last);                   // sim { 'light/0/r': 0.25 
         zh: '`node packages/out/bridge/out-bridge.mjs --config out.json` 執行的就是它（另有 `--port`、`--no-watchdog`、`--quiet`，以及環境變數 `OUT_BRIDGE_PORT`）。它提供 `ws://127.0.0.1:6450/out`，聽得懂 `{ type: \'hello\', id }`、`{ type: \'set\', ch, v }`、`{ type: \'batch\', items }` 和 `{ type: \'status\' }`，並以 `{ type: \'status\', … }` 回應。`GET /health` 回報輸出、頻道數、用戶端和距離上一個值的時間。頻道名稱是 `a-z A-Z 0-9 _ - . /`，最長 128 個字元，值必須是有限數，最多容納 4096 個頻道。',
       },
       {
-        en: 'The config routes channels: `channels` is a list of `{ match, sink, … }` and the **first** rule whose `match` glob fits the channel name takes it (`*` means anything, slashes included); a channel no rule fits is counted and dropped. The sinks are `log` (stdout), `udp-json` (UDP, `{"ch","v"}`), `osc` (UDP, address `"/" + channel`, one float32), `ddp` (WLED over UDP 4048: `light/<i>/r|g|b`, 0..1, pixel index from 0, up to 10000 pixels) and `serial` (a device path, `ch value` lines or JSON, latest value only). `safe` maps a channel glob to its safe value, `timeoutMs` (default 500, at least 20) is the watchdog time, and `allowOrigins` lists the page origins that may connect (without it any page on this machine can).',
-        zh: '設定檔負責把頻道導向各處：`channels` 是 `{ match, sink, … }` 的清單，**第一條** `match` 萬用字元符合頻道名稱的規則就接手它（`*` 代表任何東西，包含斜線）。沒有規則符合的頻道會被計數然後丟掉。輸出（sink）有 `log`（標準輸出）、`udp-json`（UDP，`{"ch","v"}`）、`osc`（UDP，位址是 `"/" + 頻道`，一個 float32）、`ddp`（用 UDP 4048 控制 WLED：`light/<i>/r|g|b`，0..1，像素索引從 0 開始，最多 10000 個像素）和 `serial`（裝置路徑，`ch value` 的行或 JSON，只送最新的值）。`safe` 把頻道萬用字元對應到它的安全值，`timeoutMs`（預設 500，至少 20）是看門狗的時間，`allowOrigins` 列出允許連線的頁面來源（沒寫的話，這台機器上的任何頁面都能連）。',
+        en: 'The config routes channels: `channels` is a list of `{ match, sink, … }` and the **first** rule whose `match` glob fits the channel name takes it (`*` means anything, slashes included); a channel no rule fits is counted and dropped. The sinks are `log` (stdout), `udp-json` (UDP, `{"ch","v"}`), `osc` (UDP, address `"/" + channel`, one float32), `ddp` (WLED over UDP 4048: `light/<i>/r|g|b`, 0..1, pixel index from 0, up to 10000 pixels) and `serial` (a device path, `ch value` lines or JSON, latest value only), and for DMX `artnet`, `sacn` and `enttec` (below). `safe` maps a channel glob to its safe value, or to `"hold"` for none (the first glob that fits wins), `timeoutMs` (default 500, at least 20) is the watchdog time, and `allowOrigins` lists the page origins that may connect (without it any page on this machine can).',
+        zh: '設定檔負責把頻道導向各處：`channels` 是 `{ match, sink, … }` 的清單，**第一條** `match` 萬用字元符合頻道名稱的規則就接手它（`*` 代表任何東西，包含斜線）。沒有規則符合的頻道會被計數然後丟掉。輸出（sink）有 `log`（標準輸出）、`udp-json`（UDP，`{"ch","v"}`）、`osc`（UDP，位址是 `"/" + 頻道`，一個 float32）、`ddp`（用 UDP 4048 控制 WLED：`light/<i>/r|g|b`，0..1，像素索引從 0 開始，最多 10000 個像素）和 `serial`（裝置路徑，`ch value` 的行或 JSON，只送最新的值）。DMX 另有 `artnet`、`sacn` 和 `enttec`（見下一段）。`safe` 把頻道萬用字元對應到它的安全值，或對應到 `"hold"` 表示沒有安全值（第一個符合的萬用字元優先），`timeoutMs`（預設 500，至少 20）是看門狗的時間，`allowOrigins` 列出允許連線的頁面來源（沒寫的話，這台機器上的任何頁面都能連）。',
+      },
+      {
+        en: 'Three sinks carry DMX lighting, on channels named `dmx/<universe>/<address>` (address 1–512, value 0..1 to a byte 0–255): `artnet` (ArtDmx over UDP 6454, unicast to `host`, the node; `"broadcast": true` only on purpose, since Art-Net 4 says ArtDmx is not broadcast), `sacn` (E1.31 over UDP 5568, to each universe\'s multicast group 239.255.<hi>.<lo> or unicast to `host`, with `priority`, `source` and one CID per bridge run) and `enttec` (one `universe` as Enttec DMX USB Pro frames on a serial `path`). Each keeps a 512-byte buffer per universe and sends at a fixed 40 Hz while it changes and once a second while it does not. `dmx/1/…` leaves as Art-Net Port-Address 1 and sACN universe 1. [`dmxTransport(\'bridge\')`](#dmxTransport) sends these channels from a page.',
+        zh: '有三個輸出負責 DMX 燈光，頻道名稱是 `dmx/<universe>/<address>`（位址 1–512，值 0..1 換成 0–255 的位元組）：`artnet`（ArtDmx，UDP 6454，單播給 `host` 也就是節點，`"broadcast": true` 要刻意才開，因為 Art-Net 4 規定 ArtDmx 不廣播）、`sacn`（E1.31，UDP 5568，送到每個 universe 的多播群組 239.255.<hi>.<lo>，或單播給 `host`，可設 `priority`、`source`，橋接程式每次執行用同一個 CID），以及 `enttec`（把一個 `universe` 用 Enttec DMX USB Pro 的資料框寫到序列埠 `path`）。每個都替每個 universe 留一個 512 位元組的緩衝區，有變化時固定每秒 40 格，沒變時每秒補送一次。`dmx/1/…` 送出去是 Art-Net 的 Port-Address 1，也是 sACN 的 universe 1。頁面這一側用 [`dmxTransport(\'bridge\')`](#dmxTransport) 送這些頻道。',
       },
       {
         en: 'The **watchdog**: a channel that has a safe value and gets no new value for `timeoutMs` is sent its safe value once (a new value re-arms it). When the last client disconnects, every channel the bridge has seen that has a safe value gets it at once, and so does a clean shutdown. It does not cover channels the bridge has never heard of, nor a bridge killed with SIGKILL.',
         zh: '**看門狗**：有安全值的頻道，如果 `timeoutMs` 內沒有收到新的值，就會被送出一次安全值（新的值進來會重新啟動它）。最後一個用戶端斷線的時候，橋接程式見過的每個有安全值的頻道會立刻得到它的安全值，正常關閉時也一樣。它不涵蓋橋接程式從沒聽過的頻道，也不涵蓋被 SIGKILL 殺掉的橋接程式。',
       },
       {
-        en: 'It throws at once for port 7457 (it belongs to The Last Input and the monitor), for a `host` that is not loopback, and for a bad config (no `channels`, an unknown sink, a `safe` value that is not a number, a `timeoutMs` under 20). A port already in use rejects the returned promise.',
-        zh: '連接埠是 7457（那是 The Last Input 和後台監看用的）、`host` 不是 loopback、設定有問題（沒有 `channels`、不認得的 sink、`safe` 的值不是數字、`timeoutMs` 小於 20），它都會立刻丟出錯誤。連接埠已被占用，回傳的 promise 會被拒絕。',
+        en: 'It throws at once for port 7457 (it belongs to The Last Input and the monitor), for a `host` that is not loopback, and for a bad config (no `channels`, an unknown sink, a `safe` value that is neither a number nor `"hold"`, a `timeoutMs` under 20, an `artnet` rule with no `host` and no `broadcast`). A port already in use rejects the returned promise.',
+        zh: '連接埠是 7457（那是 The Last Input 和後台監看用的）、`host` 不是 loopback、設定有問題（沒有 `channels`、不認得的 sink、`safe` 的值既不是數字也不是 `"hold"`、`timeoutMs` 小於 20、`artnet` 規則沒有 `host` 也沒有 `broadcast`），它都會立刻丟出錯誤。連接埠已被占用，回傳的 promise 會被拒絕。',
       },
     ],
     needs: {
-      en: 'Node 22 or later. The sinks need what they talk to: a WLED device for `ddp`, the device file for `serial`, a listener for `osc`.',
-      zh: 'Node 22 以上。各個輸出需要它要連的對象：`ddp` 要有 WLED 裝置，`serial` 要有裝置檔，`osc` 要有人在聽。',
+      en: 'Node 22 or later. The sinks need what they talk to: a WLED device for `ddp`, the device file for `serial` and `enttec`, a listener for `osc`, an Art-Net node or an sACN receiver on the network for `artnet` and `sacn`.',
+      zh: 'Node 22 以上。各個輸出需要它要連的對象：`ddp` 要有 WLED 裝置，`serial` 和 `enttec` 要有裝置檔，`osc` 要有人在聽，`artnet` 和 `sacn` 要網路上有 Art-Net 節點或 sACN 接收端。',
     },
     notes: [
       {
@@ -227,8 +231,8 @@ console.log(out.status, out.last);                   // sim { 'light/0/r': 0.25 
     ],
     tbd: [
       {
-        en: 'The `ddp` (WLED) and `serial` sinks were not tried here with real hardware; what the description says about them comes from the package README and the code. The `log` sink and the watchdog were run.',
-        zh: '`ddp`（WLED）和 `serial` 輸出沒有用真正的硬體試過。說明裡講到它們的部分來自套件的 README 和程式碼。`log` 輸出和看門狗是實際跑過的。',
+        en: 'The `ddp` (WLED), `serial`, `artnet`, `sacn` and `enttec` sinks were not tried here with real hardware; what the description says about them comes from the package README and the code. The `log` sink and the watchdog were run, and the Art-Net and sACN packets were decoded by a receiver on this machine.',
+        zh: '`ddp`（WLED）、`serial`、`artnet`、`sacn` 和 `enttec` 輸出都沒有用真正的硬體試過。說明裡講到它們的部分來自套件的 README 和程式碼。`log` 輸出和看門狗是實際跑過的，Art-Net 和 sACN 的封包也由這台機器上的接收端解讀過。',
       },
     ],
     examples: [
@@ -252,8 +256,8 @@ setTimeout(() => bridge.close(), 600);`,
     ],
     related: ['OutClient', 'loadConfig', 'globToRegExp', 'DEFAULT_TIMEOUT_MS'],
     keywords: {
-      en: ['out bridge', 'bridge', 'wled', 'ddp', 'serial', 'osc sink', 'watchdog', 'safe value', 'hardware', 'config', 'channels', 'node server'],
-      zh: ['輸出橋接', '橋接程式', 'wled', 'ddp', '序列埠', 'osc', '看門狗', '安全值', '硬體', '設定檔', '頻道', 'node 伺服器'],
+      en: ['out bridge', 'bridge', 'wled', 'ddp', 'serial', 'osc sink', 'watchdog', 'safe value', 'hold', 'hardware', 'config', 'channels', 'node server', 'dmx', 'art-net', 'sacn', 'e1.31', 'enttec'],
+      zh: ['輸出橋接', '橋接程式', 'wled', 'ddp', '序列埠', 'osc', '看門狗', '安全值', '硬體', '設定檔', '頻道', 'node 伺服器', 'dmx', '燈光'],
     },
   },
 

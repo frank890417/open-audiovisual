@@ -7,7 +7,8 @@
 // The layers, bottom to top (each one sees what the layers below made):
 //   1 base scenes   the look that is just on                    4 effects     waves over a group (sine, saw, square, rainbow, chase, flicker)
 //   2 cues          go to a scene, with fade in/out and a curve   5 overrides   live values (a fader, the microphone)
-//   3 chases        scenes in turn, every n seconds or beats      6 patch       per-fixture limits → grand master → blackout → bytes
+//   3 chases        scenes in turn, every n seconds or beats      6 submasters  a fader over a group: scales its dimmer
+//                                                                 7 patch       per-fixture limits → grand master → blackout → bytes
 //
 // Safety (docs/evolve/2026-11-24-dmx-system.md §5): intensity and colour that an effect or a chase makes flash stay at or under
 // maxFlashHz (3 by default, the common photosensitive-epilepsy line), each effect and each chase on its own (two on one light can
@@ -64,6 +65,20 @@ function waveAt(wave, x, width, seed, i) {
   }
 }
 
+/**
+ * The rate an effect really runs at under the flash cap: a rate in seconds is clamped to the cap, one in beats is halved
+ * until it fits (so it stays on the beat). Position effects (pan, tilt, zoom) do not flash and keep their rate.
+ */
+function effectiveRate(fx, bpm, cap) {
+  const toHz = (r) => (fx.unit === 'beat' ? (r * bpm) / 60 : r);
+  let rate = fx.rate;
+  if (FLASHY.has(fx.property) && Number.isFinite(cap) && toHz(rate) > cap) {
+    if (fx.unit === 'beat') while (toHz(rate) > cap + 1e-9) rate /= 2;
+    else rate = cap;
+  }
+  return { rate, hz: toHz(fx.rate), to: toHz(rate) };
+}
+
 /** The step length that keeps a chase at or under maxFlashHz: on/off takes two steps, so a step lasts at least 1 / (2 · cap). */
 function chaseEvery(every, stepSeconds, cap) {
   if (!Number.isFinite(cap)) return every;
@@ -85,6 +100,7 @@ export class DmxEngine {
   #running = new Map();
   #overrides = new Map();
   #controls = new Map();
+  #submasters = new Map();
 
   constructor(patch, { maxFlashHz = 3, bpm = 120 } = {}) {
     if (!patch || typeof patch.render !== 'function' || typeof patch.ids !== 'function') throw new TypeError('DmxEngine needs a Patch');
@@ -162,7 +178,7 @@ export class DmxEngine {
     this.#need(this.#scenes, scene, 'scene');
     if (!(isNum(fadeIn) && fadeIn >= 0 && isNum(fadeOut) && fadeOut >= 0)) throw new RangeError(`cue ${name}: fadeIn and fadeOut are seconds ≥ 0`);
     if (!CURVES[curve]) throw new RangeError(`cue ${name}: curve is one of ${Object.keys(CURVES).join(', ')}`);
-    this.#cues.set(name, { scene, fadeIn, fadeOut, curve: CURVES[curve] });
+    this.#cues.set(name, { scene, fadeIn, fadeOut, curve: CURVES[curve], curveName: curve });
     return this;
   }
 
@@ -202,7 +218,7 @@ export class DmxEngine {
     if (!(isNum(fade) && fade >= 0 && fade <= 1)) throw new RangeError(`chase ${name}: fade is 0..1 of a step`);
     if (!isNum(start)) throw new TypeError(`chase ${name}: start is a number`);
     if (!CURVES[curve]) throw new RangeError(`chase ${name}: curve is one of ${Object.keys(CURVES).join(', ')}`);
-    this.#chases.set(name, { steps: [...steps], every, unit, fade, start, curve: CURVES[curve] });
+    this.#chases.set(name, { steps: [...steps], every, unit, fade, start, curve: CURVES[curve], curveName: curve });
     if (!this.#running.has(name)) this.#running.set(name, true);
     return this;
   }
@@ -228,6 +244,66 @@ export class DmxEngine {
     this.#effects.set(name, { target, property, wave, rate, unit, depth: clamp01(depth), phase, spread: spread ?? (wave === 'chase' ? 1 : 0), width, seed });
     if (!this.#running.has(name)) this.#running.set(name, true);
     return this;
+  }
+
+  /**
+   * Change a running effect's rate or depth from time `at` on (seconds, on the clock render() is given) without a jump:
+   * the wave goes on from where it is at `at`, only faster or slower. Redefining it with effect() would restart its phase,
+   * and a knob turned slowly on a wave that is 100 s along would sweep it through many cycles in a moment: a flicker
+   * faster than any cap. `beat` (and `bpm`) when render() is given a beat position, as render() takes them.
+   */
+  tune(name, { rate, depth } = {}, at, { beat, bpm } = {}) {
+    const fx = this.#effects.get(name);
+    if (!fx) throw new Error(`no effect "${name}"${this.#chases.has(name) ? ' (that is a chase: run() starts and stops it)' : ''}`);
+    if (rate !== undefined) {
+      if (!(isNum(rate) && rate >= 0)) throw new RangeError(`tune ${name}: rate is ≥ 0`);
+      if (!isNum(at)) throw new TypeError(`tune(${name}, { rate }, at): at is the time (seconds) the new rate takes over, so the wave can go on from where it is`);
+      if (beat !== undefined && !isNum(beat)) throw new TypeError('beat is a number (a beat position)');
+      const B = bpm === undefined ? this.bpm : bpm;
+      if (!(B > 0)) throw new RangeError('bpm is a number above 0');
+      const cap = checkCap(this.maxFlashHz);
+      const u = fx.unit === 'beat' ? (beat === undefined ? (at * B) / 60 : beat) : at;
+      const x = u * effectiveRate(fx, B, cap).rate + fx.phase;     // where the wave is at `at`
+      fx.rate = rate;
+      fx.phase = x - u * effectiveRate(fx, B, cap).rate;           // …and the same place with the new rate
+    }
+    if (depth !== undefined) {
+      if (!isNum(depth)) throw new TypeError(`tune ${name}: depth is a number 0..1`);
+      fx.depth = clamp01(depth);
+    }
+    return this;
+  }
+
+  /**
+   * A fader over a group (a submaster): after every layer, the dimmer of each fixture in `target` is multiplied by `level`
+   * (0..1), so the cues, chases and effects under it keep running, only brighter or dimmer. Two submasters over one fixture
+   * multiply. `null` takes it away.
+   */
+  submaster(target, level) {
+    const key = JSON.stringify(target);
+    if (level === null) { this.#submasters.delete(key); return this; }
+    this.#targets(target, 'submaster');
+    if (!isNum(level)) throw new TypeError(`submaster(${key}, level): level is a number 0..1 (or null)`);
+    this.#submasters.set(key, { target, level: clamp01(level) });
+    return this;
+  }
+
+  /**
+   * What this engine holds, as plain data (copies): the names of its scenes and cues, the base, every chase and effect with
+   * its settings and whether it runs, the submasters, master, blackout, maxFlashHz and bpm. For a panel, a test, a log.
+   */
+  describe() {
+    const chases = {}, effects = {};
+    for (const [n, c] of this.#chases) chases[n] = { steps: [...c.steps], every: c.every, unit: c.unit, fade: c.fade, start: c.start, curve: c.curveName, running: !!this.#running.get(n) };
+    for (const [n, f] of this.#effects) {
+      const { target, property, wave, rate, unit, depth, phase, spread, width, seed } = f;
+      effects[n] = { target: Array.isArray(target) ? [...target] : target, property, wave, rate, unit, depth, phase, spread, width, seed, running: !!this.#running.get(n) };
+    }
+    return {
+      scenes: [...this.#scenes.keys()], cues: [...this.#cues.keys()], base: [...this.#base], chases, effects,
+      submasters: [...this.#submasters.values()].map((s) => ({ target: Array.isArray(s.target) ? [...s.target] : s.target, level: s.level })),
+      master: this.master, blackout: !!this.blackout, maxFlashHz: this.maxFlashHz, bpm: this.bpm,
+    };
   }
 
   /** Take a chase or an effect away. */
@@ -350,13 +426,8 @@ export class DmxEngine {
       const ids = P.ids(fx.target).filter((id) => S.has(id));
       const n = ids.length;
       if (!n) continue;
-      const toHz = (r) => (fx.unit === 'beat' ? (r * B) / 60 : r);
-      let rate = fx.rate;
-      if (FLASHY.has(fx.property) && Number.isFinite(cap) && toHz(rate) > cap) {
-        if (fx.unit === 'beat') while (toHz(rate) > cap + 1e-9) rate /= 2;   // halving keeps it on the beat
-        else rate = cap;
-        capped.push({ kind: 'effect', name, hz: toHz(fx.rate), to: toHz(rate) });
-      }
+      const { rate, hz, to } = effectiveRate(fx, B, cap);                  // halving a rate in beats keeps it on the beat
+      if (rate !== fx.rate) capped.push({ kind: 'effect', name, hz, to });
       const x0 = (fx.unit === 'beat' ? beatPos : t) * rate;
       const width = fx.width ?? (fx.wave === 'chase' ? 1 / n : 0.5);
       ids.forEach((id, i) => {
@@ -376,6 +447,14 @@ export class DmxEngine {
 
     // 5 live overrides
     for (const [id, props] of this.#overrides) if (S.has(id)) Object.assign(S.get(id), props);
+
+    // 6 submasters: scale the dimmer of what every layer made (levels over one fixture multiply)
+    for (const { target, level } of this.#submasters.values()) for (const id of P.ids(target)) {
+      const own = S.get(id);
+      if (!own) continue;
+      const d = own.dimmer === undefined ? defaultOf(P.get(id), 'dimmer') : own.dimmer;
+      own.dimmer = clamp01(d) * level;
+    }
     return { S, capped, beat: beatPos };
   }
 

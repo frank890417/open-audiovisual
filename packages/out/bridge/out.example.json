@@ -3,8 +3,11 @@
     { "match": "light/*", "sink": "ddp",    "host": "192.168.1.50", "port": 4048, "pixels": 60, "map": "rgb-index" },
     { "match": "motor/*", "sink": "serial", "path": "/dev/cu.usbmodem1101", "baud": 115200, "format": "line" },
     { "match": "osc/*",   "sink": "osc",    "host": "127.0.0.1", "port": 9000 },
+    { "match": "dmx/1/*", "sink": "artnet", "host": "2.0.0.10" },
+    { "match": "dmx/2/*", "sink": "sacn",   "priority": 100, "source": "open-audiovisual" },
+    { "match": "dmx/3/*", "sink": "enttec", "path": "/dev/cu.usbserial-EN000000", "universe": 3 },
     { "match": "*",       "sink": "log" }
   ],
-  "safe": { "light/*": 0, "motor/*": 0.5 },
+  "safe": { "light/*": 0, "motor/*": 0.5, "dmx/1/49": "hold", "dmx/1/51": "hold", "dmx/*": 0 },
   "timeoutMs": 500
 }

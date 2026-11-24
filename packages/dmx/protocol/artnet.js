@@ -2,6 +2,8 @@
 // Spec: "Art-Net 4 Specification" (Artistic Licence, Protocol Release V1.4, Document Revision 1.4dp 23/10/2025),
 // section "ArtDmx" → "ArtDmx packet definition" (p. 63), and "Port-Address" (p. 8). Art-Net™ Designed by and Copyright Artistic Licence.
 // UDP port 6454 (0x1936). Unicast to the nodes that subscribe to the universe: the spec allows no broadcast of ArtDmx.
+// Universe numbering: "universe 1" as a person says it is Port-Address 1 on the wire (Net 0, Sub-Net 0, Universe 1), the
+// same number sACN uses for its universe 1, and the default here. Port-Address 0 is valid but deprecated by Art-Net 4.
 
 export const ARTNET_PORT = 6454;
 const ID = [0x41, 0x72, 0x74, 0x2d, 0x4e, 0x65, 0x74, 0x00];   // 'A' 'r' 't' '-' 'N' 'e' 't' 0x00
@@ -18,7 +20,7 @@ function checkInt(v, lo, hi, what) {
  * @param {ArrayLike<number>} data  channel values 0..255 (channel 1 first); an odd count gets one 0 added, as the length must be even
  * @returns {Uint8Array}
  */
-export function encodeArtDmx(data, { universe = 0, sequence = 0, physical = 0 } = {}) {
+export function encodeArtDmx(data, { universe = 1, sequence = 0, physical = 0 } = {}) {
   const n = data.length;
   if (n > 512) throw new RangeError(`ArtDmx carries at most 512 channels (got ${n})`);
   checkInt(universe, 0, 0x7fff, 'Art-Net Port-Address');          // 15 bits: Net (7) · Sub-Net (4) · Universe (4)

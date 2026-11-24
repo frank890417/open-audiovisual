@@ -1,7 +1,7 @@
 {
   "name": "@openav/out",
   "version": "0.1.0",
-  "description": "Web-page parameters to physical hardware through one local bridge: WLED (DDP), serial motor boards, OSC — with a watchdog that falls back to safe values.",
+  "description": "Web-page parameters to physical hardware through one local bridge: WLED (DDP), serial motor boards, OSC, DMX (Art-Net, sACN, Enttec DMX USB Pro) — with a watchdog that falls back to safe values.",
   "type": "module",
   "main": "client.js",
   "exports": {

@@ -20,7 +20,7 @@ export default {
       zh: '一個 DMX universe：512 個 0–255 的值，存在 Uint8Array 裡，用位址 1–512 讀寫，跟燈具和 patch 表的算法一樣。',
     },
     params: [
-      { name: 'id', type: 'Number', optional: true, default: '1', en: 'The universe number, 0–63999 (Art-Net counts from 0, sACN from 1).', zh: 'universe 的編號，0–63999（Art-Net 從 0 算，sACN 從 1 算）。' },
+      { name: 'id', type: 'Number', optional: true, default: '1', en: 'The universe number, 0–63999: the one you patch on and send to. Universe 1 goes out as Art-Net Port-Address 1 and as sACN universe 1 (sACN has no 0; Art-Net\'s 0 is deprecated).', zh: 'universe 的編號，0–63999，就是你 patch 和送出時用的那個號碼。universe 1 送出去是 Art-Net 的 Port-Address 1，也是 sACN 的 universe 1（sACN 沒有 0，Art-Net 的 0 規格不建議再用）。' },
     ],
     description: [
       {
@@ -298,8 +298,8 @@ document.getElementById('app').innerHTML = [
         zh: '`render(t, { beat, bpm })` 回傳 `t` 秒時每個 universe 的位元組，`state(t)` 回傳同一個時刻、每台燈的屬性，再加上 `capped`，也就是這一刻被閃爍上限放慢的 effect 和 chase。同一個 `t` 永遠得到同樣的位元組：不讀時鐘、不抽亂數（閃爍有種子）、不會一格一格累加。所以沒有燈也能測一個畫面，錄影可以逐格算，往回拉也看得到當時的樣子。`beat` 是拍子位置（來自 `@openav/drums` 或 MIDI clock），沒給的話拍子就是 `t · bpm / 60`。給 `beat` 的時候也要給 `bpm`：閃爍上限要靠拍速把「每拍幾次」換成「每秒幾次」，所以只給 `render(t, { beat })` 會丟出錯誤。',
       },
       {
-        en: 'The layers, bottom to top: `base(...scenes)`, the look that is just on; cues, `cue(name, { scene, fadeIn, fadeOut, curve })` and `go(name, at)`, where the times belong to the cue you go to, as on a lighting desk (it rises over its fadeIn while what was on falls over its fadeOut, and a shorter fadeOut makes a dip); `chase(name, { steps, every, unit, fade, start })`, scenes in turn every n beats or seconds; `effect(name, { target, property, wave, rate, unit, depth, phase, spread, width, seed })` with waves sine, saw, square, chase, flicker and rainbow, each fixture of the target behind the one before by `spread`; then `set(target, props)`, live values from a fader or the microphone; then the patch\'s limits, `engine.master`, `engine.blackout`. A target is a fixture id, a group, `\'*\'` or a list.',
-        zh: '由下往上的圖層：`base(...scenes)`，一直開著的基本畫面，cue，用 `cue(name, { scene, fadeIn, fadeOut, curve })` 定義、`go(name, at)` 觸發，時間算在你要去的那個 cue 上，跟燈光控台一樣（它照自己的 fadeIn 亮起，原本的照它的 fadeOut 暗下，fadeOut 比較短就會先暗一下），`chase(name, { steps, every, unit, fade, start })`，每隔幾拍或幾秒輪到下一個 scene，`effect(name, { target, property, wave, rate, unit, depth, phase, spread, width, seed })`，波形有 sine、saw、square、chase、flicker、rainbow，目標裡每台燈依 `spread` 比前一台晚一點，接著 `set(target, props)`，推桿或麥克風的即時值，最後是 patch 的上下限、`engine.master`、`engine.blackout`。目標可以是燈的 id、群組、`\'*\'` 或清單。',
+        en: 'The layers, bottom to top: `base(...scenes)`, the look that is just on; cues, `cue(name, { scene, fadeIn, fadeOut, curve })` and `go(name, at)`, where the times belong to the cue you go to, as on a lighting desk (it rises over its fadeIn while what was on falls over its fadeOut, and a shorter fadeOut makes a dip); `chase(name, { steps, every, unit, fade, start })`, scenes in turn every n beats or seconds; `effect(name, { target, property, wave, rate, unit, depth, phase, spread, width, seed })` with waves sine, saw, square, chase, flicker and rainbow, each fixture of the target behind the one before by `spread`; then `set(target, props)`, live values from a fader or the microphone; then `submaster(target, level)`, a fader over a group that scales its dimmer; then the patch\'s limits, `engine.master`, `engine.blackout`. A target is a fixture id, a group, `\'*\'` or a list. [`dmxParams()`](#dmxParams) turns these control points into params.',
+        zh: '由下往上的圖層：`base(...scenes)`，一直開著的基本畫面，cue，用 `cue(name, { scene, fadeIn, fadeOut, curve })` 定義、`go(name, at)` 觸發，時間算在你要去的那個 cue 上，跟燈光控台一樣（它照自己的 fadeIn 亮起，原本的照它的 fadeOut 暗下，fadeOut 比較短就會先暗一下），`chase(name, { steps, every, unit, fade, start })`，每隔幾拍或幾秒輪到下一個 scene，`effect(name, { target, property, wave, rate, unit, depth, phase, spread, width, seed })`，波形有 sine、saw、square、chase、flicker、rainbow，目標裡每台燈依 `spread` 比前一台晚一點，接著 `set(target, props)`，推桿或麥克風的即時值，再來是 `submaster(target, level)`，一支管一個群組的推桿，把它的 dimmer 等比例調暗，最後是 patch 的上下限、`engine.master`、`engine.blackout`。目標可以是燈的 id、群組、`\'*\'` 或清單。[`dmxParams()`](#dmxParams) 把這些控制點變成參數。',
       },
       {
         en: 'Safety, on by default. Each effect on dimmer or colour, and each chase that changes anything but position, is held on its own to at most `maxFlashHz` flashes a second: a rate in seconds is clamped, one in beats is halved until it fits so it stays on the beat, a chase\'s step is doubled. A random flicker draws at most that many new values a second. A strobe channel follows the same cap (see [`Patch`](#Patch)). An effect on dimmer only takes light away from the look under it, never brighter. A `control` channel (reset, lamp, built-in programs) cannot be named in a scene or `set()`: only `control(id, key, byte)` writes it, and neither master nor blackout touches it. Blackout leaves pan, tilt and zoom where they are.',
@@ -322,11 +322,14 @@ document.getElementById('app').innerHTML = [
       state: { en: '`state(t, { beat, bpm })`: `{ t, beat, fixtures: { id: props }, capped: [{ kind, name, hz, to }] }`.', zh: '`state(t, { beat, bpm })`：`{ t, beat, fixtures: { id: props }, capped: [{ kind, name, hz, to }] }`。' },
       render: { en: '`render(t, { beat, bpm })`: the bytes of every universe at `t`, as [`Universes`](#Universes).', zh: '`render(t, { beat, bpm })`：`t` 時每個 universe 的位元組，以 [`Universes`](#Universes) 回傳。' },
       patch: { en: 'The patch this engine renders.', zh: '這個引擎在算的 patch。' },
+      tune: { en: '`tune(name, { rate, depth }, at, { beat, bpm })`: change a running effect\'s rate or depth from `at` seconds on, without a jump: the wave goes on from where it is, only faster or slower (defining the effect again would restart its phase, and a knob turned on a wave 100 s along would flicker through many cycles at once). `at` is needed for a rate.', zh: '`tune(name, { rate, depth }, at, { beat, bpm })`：從 `at` 秒起改變正在跑的 effect 的速度或深度，不會跳：波形從它現在的位置接著走，只是變快或變慢（重新定義 effect 會讓相位重來，在已經跑了 100 秒的波形上轉旋鈕，會一下子閃過好幾個週期）。改速度一定要給 `at`。' },
+      submaster: { en: '`submaster(target, level)`: a fader over a group: after every layer the dimmer of its fixtures is multiplied by `level` (0..1), so what runs under it keeps running. Two over one fixture multiply; `null` removes it.', zh: '`submaster(target, level)`：管一個群組的推桿：所有圖層算完之後，把群組裡每台燈的 dimmer 乘上 `level`（0..1），底下在跑的東西照樣跑。同一台燈有兩支就相乘，給 `null` 就拿掉。' },
+      describe: { en: '`describe()`: what the engine holds, as copies: `{ scenes, cues, base, chases: { name: { steps, every, unit, fade, start, curve, running } }, effects: { name: { target, property, wave, rate, unit, depth, phase, spread, width, seed, running } }, submasters, master, blackout, maxFlashHz, bpm }`.', zh: '`describe()`：引擎裡有什麼，以複本回傳：`{ scenes, cues, base, chases: { name: { steps, every, unit, fade, start, curve, running } }, effects: { name: { target, property, wave, rate, unit, depth, phase, spread, width, seed, running } }, submasters, master, blackout, maxFlashHz, bpm }`。' },
     },
     notes: [
       {
-        en: 'The cap is held per effect and per chase, each on its own, not summed over a light: two capped effects on one fixture, or a chase and an effect, can add up to more flashes than either. Keep one flashing layer per light, or lower `maxFlashHz`. Live values from `set()` are passed through as they come: a microphone driving a dimmer is the performer\'s direct control and is not slowed.',
-        zh: '上限是每個 effect、每個 chase 各自算的，不會把同一台燈上的加總起來：同一台燈上有兩個受限的 effect，或一個 chase 加一個 effect，閃的次數可能比任何一個都多。每台燈只放一層會閃的東西，或調低 `maxFlashHz`。`set()` 的即時值照原樣送出：用麥克風推 dimmer 是演出者直接在控制，不會被放慢。',
+        en: 'The cap is held per effect and per chase, each on its own, not summed over a light: two capped effects on one fixture, or a chase and an effect, can add up to more flashes than either. Keep one flashing layer per light, or lower `maxFlashHz`. Live values from `set()` and `submaster()` are passed through as they come: a microphone driving a dimmer is the performer\'s direct control and is not slowed, so smooth such a route and keep what drives it at or under three flashes a second.',
+        zh: '上限是每個 effect、每個 chase 各自算的，不會把同一台燈上的加總起來：同一台燈上有兩個受限的 effect，或一個 chase 加一個 effect，閃的次數可能比任何一個都多。每台燈只放一層會閃的東西，或調低 `maxFlashHz`。`set()` 和 `submaster()` 的即時值照原樣送出：用麥克風推 dimmer 是演出者直接在控制，不會被放慢，所以這種路線要加平滑，推動它的東西也要維持在每秒閃三次以內。',
       },
     ],
     tbd: [UNTESTED],
@@ -388,15 +391,15 @@ document.getElementById('app').innerHTML = [
     },
     params: [
       { name: 'data', type: 'ArrayLike<Number>', en: 'Channel values 0–255, channel 1 first. An odd count gets one 0 added, as the length must be even.', zh: '通道值 0–255，從第 1 通道開始。個數是奇數時補一個 0，因為長度必須是偶數。' },
-      { name: 'universe', type: 'Number', optional: true, default: '0', en: 'The 15-bit Port-Address, 0–32767: Net (7 bits), Sub-Net (4) and Universe (4) in one number. The spec deprecates 0.', zh: '15 位元的 Port-Address，0–32767：Net（7 位元）、Sub-Net（4）、Universe（4）合成一個數字。規格不建議用 0。' },
+      { name: 'universe', type: 'Number', optional: true, default: '1', en: 'The 15-bit Port-Address, 0–32767: Net (7 bits), Sub-Net (4) and Universe (4) in one number. "Universe 1" as people say it is Port-Address 1 (Net 0, Sub-Net 0, Universe 1), the default; 0 still works but the spec deprecates it.', zh: '15 位元的 Port-Address，0–32767：Net（7 位元）、Sub-Net（4）、Universe（4）合成一個數字。大家口中的「universe 1」就是 Port-Address 1（Net 0、Sub-Net 0、Universe 1），也是預設值。0 還能用，但規格不建議。' },
       { name: 'sequence', type: 'Number', optional: true, default: '0', en: '0 turns sequencing off; a sender counts 1–255 so a node can put packets back in order.', zh: '0 代表不用序號。送出端從 1 數到 255，節點才能把封包排回正確順序。' },
       { name: 'physical', type: 'Number', optional: true, default: '0', en: 'The input port the data came from (for merging at the node).', zh: '資料來自哪個輸入埠（給節點合併用）。' },
     ],
     returns: { type: 'Uint8Array', en: '18 header bytes and the data.', zh: '18 個表頭位元組加上資料。' },
     description: [
       {
-        en: 'Field by field from "Art-Net 4 Specification", ArtDmx packet definition: `Art-Net\\0`, the opcode low byte first, protocol version 0 and 14, sequence, physical, SubUni (low byte of the Port-Address), Net (top 7 bits), the length high byte first, the data. A browser cannot send UDP: the out-bridge sends it (phase 2).',
-        zh: '照《Art-Net 4 Specification》的 ArtDmx packet definition 一欄一欄寫：`Art-Net\\0`、opcode（低位元組在前）、協定版本 0 和 14、序號、physical、SubUni（Port-Address 的低位元組）、Net（最高 7 位元）、長度（高位元組在前）、資料。瀏覽器不能送 UDP，要交給輸出橋接程式送（第二階段）。',
+        en: 'Field by field from "Art-Net 4 Specification", ArtDmx packet definition: `Art-Net\\0`, the opcode low byte first, protocol version 0 and 14, sequence, physical, SubUni (low byte of the Port-Address), Net (top 7 bits), the length high byte first, the data. A browser cannot send UDP: the out-bridge\'s `artnet` sink sends it ([`startBridge()`](#out-startBridge)).',
+        zh: '照《Art-Net 4 Specification》的 ArtDmx packet definition 一欄一欄寫：`Art-Net\\0`、opcode（低位元組在前）、協定版本 0 和 14、序號、physical、SubUni（Port-Address 的低位元組）、Net（最高 7 位元）、長度（高位元組在前）、資料。瀏覽器不能送 UDP，要交給輸出橋接程式的 `artnet` 輸出送（[`startBridge()`](#out-startBridge)）。',
       },
       {
         en: 'The spec asks for ArtDmx to be unicast to the nodes that subscribe to the universe, never broadcast. Art-Net™ Designed by and Copyright Artistic Licence.',
@@ -564,8 +567,8 @@ document.getElementById('app').innerHTML = [1, 2, 256, 4660].map((u) => u + ' �
     returns: { type: 'Uint8Array', en: 'The frame: 5 bytes before the channels, 1 after.', zh: '整個資料框：通道前面 5 個位元組，後面 1 個。' },
     description: [
       {
-        en: 'From ENTTEC\'s "DMX USB Pro – API", message 8, "Output Only Send DMX Packet Request (Label=6)": the data is the start code followed by the channels, 25 to 513 bytes, and its size also sets how many channels the widget sends, so send the same count every time. The length is written low byte first. In Chrome and Edge, Web Serial can write this frame to the interface directly, with no bridge (phase 2).',
-        zh: '依照 ENTTEC《DMX USB Pro – API》第 8 則訊息「Output Only Send DMX Packet Request (Label=6)」：資料是起始碼加上通道，25 到 513 個位元組，它的長度也決定介面送出幾個通道，所以每次都送一樣多。長度是低位元組在前。在 Chrome 和 Edge 裡，Web Serial 可以直接把這個資料框寫進介面，不用橋接程式（第二階段）。',
+        en: 'From ENTTEC\'s "DMX USB Pro – API", message 8, "Output Only Send DMX Packet Request (Label=6)": the data is the start code followed by the channels, 25 to 513 bytes, and its size also sets how many channels the widget sends, so send the same count every time. The length is written low byte first. In Chrome and Edge, Web Serial can write this frame to the interface directly, with no bridge ([`dmxTransport(\'serial\')`](#dmxTransport)); the out-bridge\'s `enttec` sink writes it from Node.',
+        zh: '依照 ENTTEC《DMX USB Pro – API》第 8 則訊息「Output Only Send DMX Packet Request (Label=6)」：資料是起始碼加上通道，25 到 513 個位元組，它的長度也決定介面送出幾個通道，所以每次都送一樣多。長度是低位元組在前。在 Chrome 和 Edge 裡，Web Serial 可以直接把這個資料框寫進介面，不用橋接程式（[`dmxTransport(\'serial\')`](#dmxTransport)），輸出橋接程式的 `enttec` 輸出則是從 Node 寫。',
       },
     ],
     tbd: [UNTESTED],
@@ -638,6 +641,251 @@ document.getElementById('app').innerHTML = FIXTURES.map((f) => f.id + ': ' + f.m
     ],
     related: ['fixtureById', 'validateFixture', 'Patch'],
     keywords: { en: ['fixture library', 'generic', 'par', 'moving head', 'strobe', 'dimmer'], zh: ['燈具', '搖頭燈', '頻閃', '調光'] },
+  },
+
+  dmxTransport: {
+    group: 'dmx',
+    summary: {
+      en: 'Where rendered DMX goes each frame: \'sim\' (memory only), \'bridge\' (an OutClient to the out-bridge: Art-Net, sACN, Enttec) or \'serial\' (Web Serial to an Enttec Pro).',
+      zh: '每一格算好的 DMX 要送去哪裡：\'sim\'（只留在記憶體）、\'bridge\'（經 OutClient 交給輸出橋接程式，再出 Art-Net、sACN 或 Enttec），或 \'serial\'（用 Web Serial 直送 Enttec Pro）。',
+    },
+    params: [
+      { name: 'kind', type: 'String', optional: true, default: "'sim'", en: '`\'sim\'`, `\'bridge\'` or `\'serial\'`.', zh: '`\'sim\'`、`\'bridge\'` 或 `\'serial\'`。' },
+      { name: 'options', type: 'Object', optional: true, default: '{}', en: 'bridge: `{ client }`, an [`OutClient`](#OutClient) (or `lab.out`), connected or simulating. serial: `{ universe = 1, baudRate = 57600, filters, serial }` (`filters` as `navigator.serial.requestPort()` takes them; `serial` to hand in another `navigator.serial`).', zh: 'bridge：`{ client }`，一個 [`OutClient`](#OutClient)（或 `lab.out`），連線中或模擬中都可以。serial：`{ universe = 1, baudRate = 57600, filters, serial }`（`filters` 的寫法跟 `navigator.serial.requestPort()` 一樣，`serial` 可以換成別的 `navigator.serial`）。' },
+    ],
+    returns: { type: 'Object', en: 'A transport: `send(universes)` (how many channels changed and left), `bytes(id)` (what it last delivered), `universes`, `status` and `onStatus(fn)`, `kind`, `sent`, `frames`, `close()`. A sim one also has `changed`; a serial one `connect()`, `supported` and `error`.', zh: '一個傳送端：`send(universes)`（回傳有幾個通道改變並送出）、`bytes(id)`（它最後送出的內容）、`universes`、`status` 和 `onStatus(fn)`、`kind`、`sent`、`frames`、`close()`。sim 另外有 `changed`，serial 另外有 `connect()`、`supported` 和 `error`。' },
+    description: [
+      {
+        en: 'Call `send(engine.render(t))` every frame. Each transport keeps a copy of what it delivered and sends only the difference. `sim` records it: `changed` lists the channels of the last send, `bytes(1)` is universe 1. `bridge` calls `client.set(\'dmx/<universe>/<address>\', byte / 255)` once per changed channel, and the bridge\'s `artnet`, `sacn` or `enttec` sink turns them back into bytes, 40 frames a second while they change and once a second while they do not. A universe is the number you patched on: `dmx/1/…` leaves as Art-Net Port-Address 1 and as sACN universe 1.',
+        zh: '每一格呼叫 `send(engine.render(t))`。每種傳送端都會留一份它送出過的內容，只送有變的部分。`sim` 把它記下來：`changed` 列出上一次送出改變的通道，`bytes(1)` 就是 universe 1。`bridge` 對每個有變的通道呼叫一次 `client.set(\'dmx/<universe>/<address>\', byte / 255)`，橋接程式的 `artnet`、`sacn` 或 `enttec` 輸出再把它們換回位元組，有變化時每秒 40 格，沒變時每秒補送一次。universe 就是你 patch 時用的號碼：`dmx/1/…` 送出去是 Art-Net 的 Port-Address 1，也是 sACN 的 universe 1。',
+      },
+      {
+        en: '`serial` writes Enttec DMX USB Pro frames (label 6, all 512 channels of one universe) straight from the page, with no bridge: at most one every 25 ms, only when something changed (and once a second otherwise), and when a frame is still on its way the newest one goes next. `connect()` asks the browser which port, so it must be called from a click, and nothing calls it for you. Without Web Serial (Chrome or Edge on a computer, on https or localhost) the status is `\'unsupported\'` and `connect()` rejects with the reason.',
+        zh: '`serial` 直接從頁面寫出 Enttec DMX USB Pro 的資料框（label 6，一個 universe 的全部 512 個通道），不用橋接程式：最多每 25 毫秒一格，只有內容改變時才送（沒變就每秒補送一次），前一格還在送的時候，接下來送的是最新的那一格。`connect()` 會請瀏覽器問你要用哪個連接埠，所以必須在點擊裡呼叫，也不會有人替你呼叫。瀏覽器沒有 Web Serial（要電腦上的 Chrome 或 Edge，網址是 https 或 localhost）時，狀態是 `\'unsupported\'`，`connect()` 會帶著原因失敗。',
+      },
+      {
+        en: 'When the page goes away the two differ. Through the bridge, a page that stops talking gets its channels put on the bridge\'s `safe` values (a channel set to `"hold"` stays put). An Enttec Pro on Web Serial keeps repeating the last frame on its own: to leave the rig dark, set `engine.blackout = true`, `send()` once more, then `close()`, which lets the newest frame leave before it lets go of the port. An Enttec Open DMX or a bare FTDI cable (the computer has to time the DMX break itself) is not supported.',
+        zh: '頁面離開時兩者不一樣。走橋接程式時，頁面一停止說話，它的通道就會被放到橋接程式設定的 `safe` 值（設成 `"hold"` 的通道停在原處）。用 Web Serial 接的 Enttec Pro 會自己一直重送最後一格：要讓燈暗下來，先設 `engine.blackout = true`，再 `send()` 一次，然後 `close()`，它會等最新的那一格送出去，才放開連接埠。Enttec Open DMX 或沒有處理器的 FTDI 線（電腦得自己掌握 DMX break 的時序）不支援。',
+      },
+    ],
+    needs: {
+      en: 'Nothing for `sim`. `bridge`: the out-bridge running with a `dmx/*` rule (`node packages/out/bridge/out-bridge.mjs --config out.json`). `serial`: Chrome or Edge, a click, and the interface plugged in.',
+      zh: '`sim` 什麼都不用。`bridge`：輸出橋接程式要開著，並且有一條 `dmx/*` 的規則（`node packages/out/bridge/out-bridge.mjs --config out.json`）。`serial`：Chrome 或 Edge、一次點擊，以及插好的介面。',
+    },
+    tbd: [
+      {
+        en: 'Not tried with a real Enttec DMX USB Pro or a real Art-Net or sACN receiver: the frames follow the published layouts, and the tests send them through the bridge to a loopback receiver and to a stand-in serial port. Whether the Pro cares about the baud rate over Web Serial (57600 here; its USB chip should ignore it) is not confirmed.',
+        zh: '還沒有用真的 Enttec DMX USB Pro，或真的 Art-Net、sACN 接收端試過：資料框照公開的格式寫，測試裡經過橋接程式送到本機的接收端，以及一個代替的序列埠。Web Serial 的鮑率對 Pro 有沒有影響（這裡用 57600，它的 USB 晶片應該不理會）還沒確認。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { Patch, DmxEngine, dmxTransport } from '@openav/dmx';
+
+const patch = new Patch();
+patch.add({ id: 'par1', profile: 'generic-rgbw', mode: '6ch', address: 1 });
+const engine = new DmxEngine(patch);
+engine.set('par1', { dimmer: 1, color: [1, 0.5, 0] });
+const out = dmxTransport('sim');
+const first = out.send(engine.render(0));
+const again = out.send(engine.render(0));
+engine.master = 0.5;
+const half = out.send(engine.render(0));
+document.getElementById('app').innerHTML = [
+  'first frame: ' + first + ' channels changed',
+  'the same frame again: ' + again,
+  'master at half: ' + half + ' ' + JSON.stringify(out.changed),
+  'universe 1, addresses 1–6: ' + Array.from(out.bytes(1).slice(0, 6)).join(' '),
+].join('<br>');`,
+        caption: { en: 'Prints 3 channels for the first frame (dimmer, red, green), 0 for the same frame again, then 1 when the master halves (address 1 to 128), then 128 255 128 0 0 0.', zh: '印出第一格改了 3 個通道（dimmer、紅、綠），同一格再送一次是 0，總控減半時只有 1 個（位址 1 變成 128），最後是 128 255 128 0 0 0。' },
+      },
+      {
+        code: `import { Patch, DmxEngine, dmxTransport } from '@openav/dmx';
+import { OutClient } from '@openav/out';
+
+const patch = new Patch();
+patch.add({ id: 'par1', profile: 'generic-rgbw', mode: '6ch', address: 1 });
+const engine = new DmxEngine(patch);
+engine.scene('blue', { par1: { dimmer: 1, color: [0.2, 0.4, 1] } }).base('blue');
+engine.effect('breathe', { target: 'par1', wave: 'sine', rate: 0.5 });
+const client = new OutClient({ id: 'my-lights' }).connect();      // ws://127.0.0.1:6450/out
+const out = dmxTransport('bridge', { client });
+function frame(ms) {
+  out.send(engine.render(ms / 1000));                             // only the channels that changed leave
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);`,
+        caption: { en: 'With the out-bridge running and a `dmx/*` rule to an Art-Net node, par 1 breathes in blue; close the tab and the bridge puts its channels on their safe values.', zh: '輸出橋接程式開著、有一條 `dmx/*` 規則接到 Art-Net 節點時，par 1 用藍色呼吸。關掉分頁，橋接程式就把它的通道放回安全值。' },
+        run: 'static',
+        why: 'It needs the out-bridge running on 127.0.0.1:6450 (a Node program) and a lighting node to receive what it sends.',
+      },
+      {
+        code: `import { Patch, DmxEngine, dmxTransport } from '@openav/dmx';
+
+const patch = new Patch();
+patch.add({ id: 'par1', profile: 'generic-rgbw', mode: '6ch', address: 1 });
+const engine = new DmxEngine(patch);
+engine.scene('amber', { par1: { dimmer: 1, color: [1, 0.5, 0] } }).base('amber');
+const out = dmxTransport('serial', { universe: 1 });
+const button = document.createElement('button');
+button.textContent = out.supported ? 'Connect an Enttec DMX USB Pro' : 'No Web Serial in this browser';
+button.disabled = !out.supported;
+button.onclick = () => out.connect().catch((e) => { button.textContent = e.message; });   // the browser asks which port
+document.getElementById('app').append(button);
+function frame(ms) { out.send(engine.render(ms / 1000)); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);`,
+        caption: { en: 'A button: click it, pick the interface in the browser\'s list, and par 1 on its DMX line turns amber. In a browser without Web Serial the button says so.', zh: '一個按鈕：按下去，在瀏覽器的清單裡選介面，接在它 DMX 線上的 par 1 就亮成琥珀色。瀏覽器沒有 Web Serial 時，按鈕會直接說。' },
+        run: 'static',
+        why: 'Web Serial needs a person\'s click and a real interface; the browser that runs these examples is never given serial permission.',
+      },
+    ],
+    related: ['DmxEngine', 'mountDmxMonitor', 'OutClient', 'out-startBridge', 'encodeEnttecDmx'],
+    keywords: { en: ['transport', 'send', 'Art-Net', 'sACN', 'Enttec', 'DMX USB Pro', 'Web Serial', 'out-bridge', 'simulate'], zh: ['傳送', '輸出', '序列埠', '模擬', '橋接'] },
+  },
+
+  dmxParams: {
+    group: 'dmx',
+    summary: {
+      en: 'Turns a DmxEngine\'s control points into params (master, blackout, group dimmer, hue, saturation, effect rate and depth, chase run) for MIDI, the timeline and the mic.',
+      zh: '把 DmxEngine 的控制點變成參數（總控、blackout、每個群組的 dimmer、色相、飽和度、每個 effect 的速度與深度、每個 chase 的開關），再把參數的值交給引擎。',
+    },
+    params: [
+      { name: 'engine', type: 'DmxEngine', en: 'The [`DmxEngine`](#DmxEngine). Define its effects and chases first: the defaults are read from it.', zh: '那個 [`DmxEngine`](#DmxEngine)。先定義好 effect 和 chase：預設值是從它讀的。' },
+      { name: 'prefix', type: 'String', optional: true, default: "'dmx'", en: 'The first part of every key (letters, digits, `-`, `_`).', zh: '每個鍵名的開頭（英文字母、數字、`-`、`_`）。' },
+      { name: 'groups', type: 'String[] | Object', optional: true, en: 'Group (or fixture) names, or `{ group: { hue, saturation, dimmer } }` with the values to start from.', zh: '群組（或燈）的名稱，或 `{ group: { hue, saturation, dimmer } }`，順便給起始值。' },
+      { name: 'effects', type: 'String[] | Object', optional: true, en: 'Effect names, or `{ effect: { max } }`: the highest rate its param reaches (4 by default, or twice the rate).', zh: 'effect 的名稱，或 `{ effect: { max } }`：它的速度參數最高到多少（預設 4，或目前速度的兩倍）。' },
+      { name: 'chases', type: 'String[]', optional: true, en: 'Chase names.', zh: 'chase 的名稱。' },
+      { name: 'group', type: 'String', optional: true, default: "'lights'", en: 'The params\' `group`: the console and the phone surface group them by it.', zh: '參數的 `group`：控台和手機控制面板依它分組。' },
+    ],
+    returns: { type: 'Object', en: '`{ params, apply(state, t, { beat, bpm }), scene, keys }`: the declarations for a world\'s `params`, the function its `update()` calls, the name of the colour scene it keeps, and every key by what it drives.', zh: '`{ params, apply(state, t, { beat, bpm }), scene, keys }`：放進 world 的 `params` 的宣告、它的 `update()` 要呼叫的函式、它管理的顏色 scene 的名稱，以及每個鍵各自推的是什麼。' },
+    description: [
+      {
+        en: 'The framework\'s first rule: continuous control goes through params. The engine never reads a signal; this gives it params, so whatever drives a param drives the lights: a fader in the console, a MIDI knob through the mapper (`{ source: \'midi/cc/7\', target: \'dmx/master\' }`), the timeline\'s automation, the microphone (`audio/rms` to `dmx/pars/dimmer`), a phone. Spread `params` into a world\'s own and call `apply(state, t)` in its `update()`: it hands over only what changed.',
+        zh: '框架的第一條規則：連續的控制走參數。引擎自己從來不讀訊號，這支函式替它開出參數，所以任何能推參數的東西都能推燈：控台的推桿、經過 mapping 的 MIDI 旋鈕（`{ source: \'midi/cc/7\', target: \'dmx/master\' }`）、時間軸的自動化、麥克風（`audio/rms` 接到 `dmx/pars/dimmer`）、手機。把 `params` 展開放進 world 自己的參數裡，在它的 `update()` 呼叫 `apply(state, t)`：它只交出有變的部分。',
+      },
+      {
+        en: 'The keys: `dmx/master` (`engine.master`); `dmx/blackout` (a step param, 0 or 1); `dmx/<group>/dimmer`, a submaster ([`engine.submaster()`](#DmxEngine)) that scales what every layer made, so cues, chases and effects keep running under it; `dmx/<group>/hue` and `/saturation`, the group\'s colour, kept in a base scene of its own (`rig.scene`) under cues, chases and effects, so a rainbow effect mixes over it; `dmx/<effect>/rate` and `/depth`, through `engine.tune()`, so a knob that changes the speed never makes the wave jump; `dmx/<chase>/run`. A group gets hue and saturation only when its fixtures have colour channels.',
+        zh: '鍵名：`dmx/master`（`engine.master`）。`dmx/blackout`（階梯參數，0 或 1）。`dmx/<group>/dimmer`，一支群組推桿（[`engine.submaster()`](#DmxEngine)），把每一層算出的結果等比例調暗，所以底下的 cue、chase、effect 照樣在跑。`dmx/<group>/hue` 和 `/saturation`，群組的顏色，放在它自己的一個基礎 scene（`rig.scene`）裡，墊在 cue、chase、effect 底下，所以 rainbow effect 會混在它上面。`dmx/<effect>/rate` 和 `/depth`，經過 `engine.tune()`，所以轉旋鈕改速度，波形不會跳。`dmx/<chase>/run`。群組裡的燈有顏色通道，才會有色相和飽和度。',
+      },
+      {
+        en: 'The defaults are what the engine says when you call it: the master, each effect\'s rate and depth, whether a chase runs. Declaring them changes nothing until something moves one, except a group\'s colour, which starts at the `hue` and `saturation` you pass (a warm amber by default). An unknown effect, chase or group throws. `t` is the time you render with: a new rate takes over from there.',
+        zh: '預設值是呼叫當下引擎的狀態：總控、每個 effect 的速度和深度、chase 有沒有在跑。宣告這些參數不會改變任何東西，直到有人動了其中一個，只有群組的顏色例外，它從你給的 `hue` 和 `saturation` 開始（預設是溫暖的琥珀色）。不存在的 effect、chase 或群組會丟出錯誤。`t` 是你算燈用的時間：新的速度從那一刻接手。',
+      },
+    ],
+    notes: [
+      {
+        en: 'The flash cap (3 Hz by default) holds effects, chases and strobe channels. A value that reaches a param from the microphone or a kick drum is a live value and goes through as it comes: give its route a `smooth` (0.1 s or more), keep what drives it at or under three flashes a second, or let the sound step something the cap does hold.',
+        zh: '閃爍上限（預設 3 Hz）管的是 effect、chase 和 strobe 通道。從麥克風或大鼓經參數進來的值是即時值，照原樣送出：替它的路線加上 `smooth`（0.1 秒以上），讓推動它的東西維持在每秒閃三次以內，或讓聲音去推一個受上限管的東西。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { Patch, DmxEngine, dmxParams } from '@openav/dmx';
+
+const patch = new Patch();
+patch.add({ id: 'par1', profile: 'generic-rgbw', mode: '6ch', address: 1, groups: ['pars'] });
+patch.add({ id: 'par2', profile: 'generic-rgbw', mode: '6ch', address: 7, groups: ['pars'] });
+const engine = new DmxEngine(patch);
+engine.scene('on', { pars: { dimmer: 1 } }).base('on');
+engine.effect('breathe', { target: 'pars', wave: 'sine', rate: 0.25, depth: 0.5 });
+const rig = dmxParams(engine, { groups: { pars: { hue: 0.6, saturation: 1 } }, effects: ['breathe'] });
+const state = Object.fromEntries(rig.params.map((p) => [p.key, p.def]));   // what a world's update() is given
+const bytes = () => Array.from(engine.render(2).bytes(1).slice(0, 6)).join(' ');
+rig.apply(state, 2);
+const lines = ['keys: ' + rig.params.map((p) => p.key).join(', '), 'defaults: ' + bytes()];
+rig.apply({ ...state, 'dmx/pars/dimmer': 0.5, 'dmx/pars/hue': 0 }, 2);
+lines.push('pars dimmer 0.5, hue 0: ' + bytes());
+document.getElementById('app').innerHTML = lines.join('<br>');`,
+        caption: { en: 'Prints the seven keys, par 1\'s bytes with the defaults (255 0 102 255 0 0: full, in blue), then the same moment at half the group dimmer and in red (128 255 0 0 0 0).', zh: '印出七個鍵名、預設值下 par 1 的位元組（255 0 102 255 0 0：全亮、藍色），然後是同一刻群組 dimmer 減半、改成紅色的結果（128 255 0 0 0 0）。' },
+      },
+      {
+        code: `import { createShow } from '@openav/show';
+import { Patch, DmxEngine, dmxParams, dmxTransport } from '@openav/dmx';
+
+const patch = new Patch();
+for (let i = 0; i < 8; i++) patch.add({ id: 'par' + (i + 1), profile: 'generic-rgbw', mode: '6ch', address: 1 + i * 6, groups: ['pars'] });
+const engine = new DmxEngine(patch);
+engine.scene('on', { pars: { dimmer: 1 } }).base('on');
+const rig = dmxParams(engine, { groups: ['pars'] });
+const out = dmxTransport('sim');
+let t = 0;
+const lights = {
+  name: 'lights',
+  params: rig.params,
+  update(dt, state) { t += dt; rig.apply(state, t); out.send(engine.render(t)); },
+  render() {},
+};
+await createShow({
+  world: lights,
+  routes: [
+    { source: 'audio/rms', target: 'dmx/pars/dimmer', inMax: 0.3, outMin: 0.2, smooth: 0.25 },   // the room's loudness
+    { source: 'midi/cc/7', target: 'dmx/master' },                                               // any controller's volume fader
+  ],
+  modules: { audio: 'mic', keys: false },
+});`,
+        caption: { en: 'A whole show: the console lists the light params, the pars swell with the room\'s loudness, a controller\'s volume fader is the master, and learn in the mapping panel binds any other knob.', zh: '一整場演出：控台列出燈光參數，八台 par 跟著房間的音量起伏，控制器的音量推桿就是總控，在 mapping 面板按 learn 可以把任何旋鈕接上去。' },
+        run: 'static',
+        why: 'It builds a whole show page (console, mapping, timeline) and asks for the microphone; example 28 is this, running.',
+      },
+    ],
+    related: ['DmxEngine', 'dmxTransport', 'mountDmxMonitor', 'Mapper'],
+    keywords: { en: ['params', 'mapping', 'submaster', 'group fader', 'master', 'blackout', 'hue', 'rate', 'MIDI', 'microphone', 'timeline'], zh: ['參數', '映射', '群組推桿', '總控', '全暗', '色相', '速度', '麥克風', '時間軸'] },
+  },
+
+  mountDmxMonitor: {
+    group: 'dmx',
+    summary: {
+      en: 'Puts a DMX monitor on the page: a swatch per fixture (its colour times its dimmer, a moving head\'s pan and tilt as a mark) and a universe\'s 512 channels as a grid.',
+      zh: '在頁面上放一個 DMX 監看器：每台 patch 好的燈一個色塊（顏色乘上亮度，搖頭燈的 pan、tilt 畫成一個記號），以及一個 universe 的 512 個通道表。',
+    },
+    params: [
+      { name: 'el', type: 'HTMLElement', en: 'Where it goes (it appends itself). Lay it out as you like.', zh: '要放在哪裡（它會把自己加進去）。版面由你安排。' },
+      { name: 'patch', type: 'Patch', en: 'The [`Patch`](#Patch): the fixtures to draw and to name the channels after.', zh: '那個 [`Patch`](#Patch)：要畫的燈，以及通道要用誰的名字標示。' },
+      { name: 'transport', type: 'Object', optional: true, default: 'null', en: 'A [`dmxTransport()`](#dmxTransport) result: its kind and status show in the header, and a serial one gets a Connect button.', zh: '一個 [`dmxTransport()`](#dmxTransport) 的結果：它的種類和狀態顯示在標題列，serial 的會多一個 Connect 按鈕。' },
+      { name: 'universe', type: 'Number', optional: true, en: 'The universe the grid starts on (the patch\'s first by default).', zh: '通道表一開始顯示哪個 universe（預設是 patch 裡的第一個）。' },
+      { name: 'title', type: 'String', optional: true, default: "'DMX'", en: 'The name in the header.', zh: '標題列上的名字。' },
+    ],
+    returns: { type: 'Object', en: '`{ el, update(universes), select(universe), dispose() }`: `update(engine.render(t))` every frame (it redraws only when a byte changed); `select()` shows another universe; `dispose()` takes it off the page.', zh: '`{ el, update(universes), select(universe), dispose() }`：每一格呼叫 `update(engine.render(t))`（只有位元組變了才重畫），`select()` 換到另一個 universe，`dispose()` 把它從頁面上拿掉。' },
+    description: [
+      {
+        en: 'It reads everything back from the bytes, the way a fixture would. A swatch is what its colour channels mix to (red, green, blue, white, amber, UV and the rest; colour flags as their complement) times its dimmer channel; a fixture with no dimmer channel shows its colour bytes as they are. A profile that is one channel off shows the wrong colour here too, so this is how to check a patch with no light in the room. Hover a swatch for its address and values.',
+        zh: '它所有東西都從位元組讀回來，跟燈具讀的方式一樣。色塊是它的顏色通道混出來的顏色（紅、綠、藍、白、琥珀、UV 等等，CMY 顏色片就用補色）乘上調光通道，沒有調光通道的燈直接顯示顏色位元組。profile 差一個通道，這裡的顏色也會跟著錯，所以房間裡沒有燈的時候，就靠它檢查 patch。滑鼠停在色塊上，會看到它的位址和數值。',
+      },
+      {
+        en: 'The grid is 32 by 16 cells, address 1 at the top left. Each cell\'s bar is its value (the number is printed when it is not 0), tinted with the colour it drives or its fixture\'s colour, and a yellow edge marks where each fixture starts. Point at a cell to read `universe/address = value` and which fixture and channel it is. With several universes, tabs pick one.',
+        zh: '通道表是 32 乘 16 格，位址 1 在左上角。每格的長條是它的值（不是 0 時會印出數字），顏色是它推的那種光或它所屬燈具的顏色，每台燈的第一個通道左邊有一條黃線。滑鼠指著一格，就會讀到 `universe/位址 = 值`，以及它是哪台燈的哪個通道。有好幾個 universe 時，用分頁切換。',
+      },
+      {
+        en: 'Pass the `transport` and the header shows its kind and status (`sim · no hardware`, `out-bridge · open`); a serial transport gets a Connect button, the click Web Serial needs. Dark console theme, no dependencies; its styles are added to the page once, as `#oav-dmx-css`. A moving head\'s mark is a top view: its angle is pan across the head\'s whole range, its length is tilt.',
+        zh: '傳入 `transport`，標題列就會顯示它的種類和狀態（`sim · no hardware`、`out-bridge · open`），serial 的傳送端會有一個 Connect 按鈕，就是 Web Serial 需要的那次點擊。深色控台風格、沒有任何相依套件，樣式只會加進頁面一次，叫 `#oav-dmx-css`。搖頭燈的記號是從上往下看：角度是 pan（對應燈的整個轉動範圍），長度是 tilt。',
+      },
+    ],
+    needs: {
+      en: 'A page (it builds DOM) and the patch. It shows zeros until the first `update()`.',
+      zh: '一個頁面（它會建立 DOM）和 patch。第一次 `update()` 之前，全部顯示 0。',
+    },
+    examples: [
+      {
+        code: `import { Patch, DmxEngine, mountDmxMonitor } from '@openav/dmx';
+
+const patch = new Patch();
+for (let i = 0; i < 6; i++) patch.add({ id: 'par' + (i + 1), profile: 'generic-rgbw', mode: '6ch', address: 1 + i * 6, groups: ['pars'] });
+patch.add({ id: 'head', profile: 'generic-moving-head', mode: '16ch', address: 37 });
+const engine = new DmxEngine(patch);
+engine.scene('on', { pars: { dimmer: 1 }, head: { dimmer: 1, color: [0.3, 0.5, 1], tilt: 0.6 } }).base('on');
+engine.effect('rainbow', { target: 'pars', property: 'color', wave: 'rainbow', rate: 0.2, spread: 1 });
+engine.effect('sweep', { target: 'head', property: 'pan', rate: 0.1, depth: 0.8 });
+const monitor = mountDmxMonitor(document.getElementById('app'), { patch });
+function frame(ms) {
+  monitor.update(engine.render(ms / 1000));
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);`,
+        caption: { en: 'Six swatches walk through the rainbow, the moving head\'s mark swings from side to side, and the grid\'s first 52 channels move with them.', zh: '六個色塊依序走過彩虹，搖頭燈的記號左右擺動，通道表前 52 格跟著一起動。' },
+      },
+    ],
+    related: ['Patch', 'DmxEngine', 'dmxTransport'],
+    keywords: { en: ['monitor', 'visualiser', 'channel grid', 'fixture view', 'swatch', 'no hardware', 'simulate'], zh: ['監看', '通道表', '燈具視圖', '色塊', '沒有硬體', '模擬'] },
   },
 
   fixtureById: {
