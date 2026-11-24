@@ -1,0 +1,154 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "lis3dh-breakout",
+ "part": {
+  "name": "Adafruit LIS3DH triple-axis accelerometer breakout (2809)",
+  "zh": "LIS3DH 三軸加速度計（Adafruit）",
+  "kind": "sensor",
+  "sources": [
+   {
+    "title": "ST LIS3DH datasheet (Table 5, 6, 12; 6.1.1)",
+    "url": "https://www.st.com/resource/en/datasheet/lis3dh.pdf"
+   },
+   {
+    "title": "Adafruit: LIS3DH breakout, Pinouts",
+    "url": "https://learn.adafruit.com/adafruit-lis3dh-triple-axis-accelerometer-breakout/pinouts"
+   },
+   {
+    "title": "Adafruit product 2809 (LIS3DH breakout)",
+    "url": "https://www.adafruit.com/product/2809"
+   }
+  ],
+  "supply": {
+   "min": 3,
+   "max": 5,
+   "nominal": 3.3
+  },
+  "logic": {
+   "v": 3.3,
+   "vohMin": null,
+   "vih": null,
+   "vinMax": 5,
+   "fiveVoltSafe": true
+  },
+  "current": {
+   "typ": 0.011,
+   "max": 0.185
+  },
+  "pins": {
+   "VIN": {
+    "kind": "power-in",
+    "label": "VIN",
+    "aliases": [
+     "VCC"
+    ]
+   },
+   "3Vo": {
+    "kind": "power-out",
+    "label": "3Vo",
+    "v": 3.3,
+    "limitMa": 100,
+    "from": [
+     "VIN"
+    ]
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND"
+   },
+   "SCL": {
+    "kind": "i2c-scl",
+    "label": "SCL"
+   },
+   "SDA": {
+    "kind": "i2c-sda",
+    "label": "SDA"
+   },
+   "SDO": {
+    "kind": "data-out",
+    "label": "SDO",
+    "note": "接 3.3 V 改位址成 0x19"
+   },
+   "CS": {
+    "kind": "spi-cs",
+    "label": "CS"
+   },
+   "INT": {
+    "kind": "data-out",
+    "label": "INT"
+   }
+  },
+  "i2c": {
+   "addr": [
+    "0x18",
+    "0x19"
+   ],
+   "default": "0x18",
+   "select": "SDO 空接或接地＝0x18，接 3.3 V＝0x19（Adafruit）"
+  },
+  "size": {
+   "w": 25.4,
+   "h": 17.8,
+   "d": null
+  },
+  "connector": "STEMMA QT ×2＋2.54 mm 排針",
+  "notes": [
+   "板上有穩壓器與電平轉換，VIN 3–5 V，輸入腳 3–5 V 都安全（Adafruit）。",
+   "裸晶片的 SDO 內部上拉，預設是 0x19；Adafruit 板子空接是 0x18。"
+  ],
+  "tbd": [
+   "板上穩壓器與電平轉換的靜態電流（電流只算了晶片）。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "lis3dh-breakout",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "Adafruit LIS3DH triple-axis accelerometer breakout (2809)",
+  "aliases": [
+   "LIS3DH 三軸加速度計（Adafruit）",
+   "sensor"
+  ],
+  "connections": [],
+  "protocols": [
+   "i2c",
+   "spi"
+  ],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "lis3dh-breakout",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'lis3dh-breakout' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "ST LIS3DH datasheet (Table 5, 6, 12; 6.1.1)",
+    "url": "https://www.st.com/resource/en/datasheet/lis3dh.pdf"
+   },
+   {
+    "title": "Adafruit: LIS3DH breakout, Pinouts",
+    "url": "https://learn.adafruit.com/adafruit-lis3dh-triple-axis-accelerometer-breakout/pinouts"
+   },
+   {
+    "title": "Adafruit product 2809 (LIS3DH breakout)",
+    "url": "https://www.adafruit.com/product/2809"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

@@ -1,0 +1,108 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "pir-hc-sr501",
+ "part": {
+  "name": "HC-SR501 PIR motion sensor",
+  "zh": "HC-SR501 人體紅外線感測",
+  "kind": "sensor",
+  "sources": [
+   {
+    "title": "HC-SR501 datasheet (MPJA 31227sc; vendor sheet, no maker datasheet exists)",
+    "url": "https://courses.ece.cornell.edu/ece5990/ECE5725_Spring2020_Projects/May_15_Demo/Smart%20Lock/W_pp445_yl656/datasheet/31227sc.pdf"
+   },
+   {
+    "title": "Adafruit: PIR motion sensor",
+    "url": "https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/overview"
+   }
+  ],
+  "supply": {
+   "min": 4.5,
+   "max": 20,
+   "nominal": 5
+  },
+  "logic": {
+   "v": 3.3,
+   "vohMin": null,
+   "vih": null,
+   "vinMax": null,
+   "fiveVoltSafe": null
+  },
+  "current": {
+   "typ": 0.05,
+   "max": null
+  },
+  "pins": {
+   "VCC": {
+    "kind": "power-in",
+    "label": "VCC"
+   },
+   "OUT": {
+    "kind": "data-out",
+    "label": "OUT"
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND"
+   }
+  },
+  "size": {
+   "w": 32,
+   "h": 24,
+   "d": null
+  },
+  "connector": null,
+  "notes": [
+   "輸出高電位 3.3 V。通電後約一分鐘在暖機，這段時間會亂觸發 0–3 次。",
+   "延遲 5–300 秒、靈敏度 3–7 m 用板上兩顆旋鈕調；跳線 H＝可重複觸發。"
+  ],
+  "tbd": [
+   "供電下限：同一份規格書寫 4.5 V 也寫 5 V。",
+   "耗電：同一份規格書寫 <50 µA 也寫 65 mA。",
+   "排針規格與腳位順序。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "pir-hc-sr501",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "HC-SR501 PIR motion sensor",
+  "aliases": [
+   "HC-SR501 人體紅外線感測",
+   "sensor"
+  ],
+  "connections": [],
+  "protocols": [],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "pir-hc-sr501",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'pir-hc-sr501' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "HC-SR501 datasheet (MPJA 31227sc; vendor sheet, no maker datasheet exists)",
+    "url": "https://courses.ece.cornell.edu/ece5990/ECE5725_Spring2020_Projects/May_15_Demo/Smart%20Lock/W_pp445_yl656/datasheet/31227sc.pdf"
+   },
+   {
+    "title": "Adafruit: PIR motion sensor",
+    "url": "https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/overview"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultraleap Leap Motion Controller 2: specs, setup and code — open-audiovisual</title>
+<meta name="description" content="Ultraleap Leap Motion Controller 2: sensor over USB. Specs with sources, setup, known problems. Code that reaches it from a page.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/devices/ultraleap-leap-motion-controller-2/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Ultraleap Leap Motion Controller 2: specs, setup and code — open-audiovisual">
+<meta property="og:description" content="Ultraleap Leap Motion Controller 2: sensor over USB. Specs with sources, setup, known problems. Code that reaches it from a page.">
+<meta property="og:url" content="https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ultraleap Leap Motion Controller 2: specs, setup and code — open-audiovisual">
+<meta name="twitter:description" content="Ultraleap Leap Motion Controller 2: sensor over USB. Specs with sources, setup, known problems. Code that reaches it from a page.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css">
+<script type="module" src="../../assets/search/search.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="device" data-oav-id="ultraleap-leap-motion-controller-2">
+<script defer src="../../assets/track.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Devices","item":"https://openaudiovisual.com/devices/"},{"@type":"ListItem","position":3,"name":"Ultraleap Leap Motion Controller 2","item":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/"}]},{"@type":"WebPage","@id":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/#webpage","url":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/","name":"Ultraleap Leap Motion Controller 2: specs, setup and code — open-audiovisual","description":"Ultraleap Leap Motion Controller 2: sensor over USB. Specs with sources, setup, known problems. Code that reaches it from a page.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"breadcrumb":{"@id":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/#breadcrumb"},"about":{"@id":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/#product"},"mainEntity":{"@id":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/#dataset"}},{"@type":"Product","@id":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/#product","name":"Ultraleap Leap Motion Controller 2","brand":{"@type":"Brand","name":"Ultraleap"},"category":"sensor","description":"Ultraleap Leap Motion Controller 2: sensor over USB. Specs with sources, setup, known problems. Code that reaches it from a page."},{"@type":"Dataset","@id":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/#dataset","name":"Ultraleap Leap Motion Controller 2: device record","description":"Ultraleap Leap Motion Controller 2: sensor over USB. Specs with sources, setup, known problems. Code that reaches it from a page.","url":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/","inLanguage":"en","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"creator":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/devices/#dataset"},"about":{"@id":"https://openaudiovisual.com/devices/ultraleap-leap-motion-controller-2/#product"},"keywords":["Ultraleap Leap Motion Controller 2","sensor","Ultraleap"],"distribution":[{"@type":"DataDownload","name":"ultraleap-leap-motion-controller-2.json","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/packages/devices/records/ultraleap-leap-motion-controller-2.json"}],"citation":[{"@type":"CreativeWork","name":"Ultraleap: products (Leap Motion Controller 2)","url":"https://www.ultraleap.com/products"},{"@type":"CreativeWork","name":"open-audiovisual: packages/leap README (setup on macOS, the bridge)","url":"https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md"},{"@type":"CreativeWork","name":"open-audiovisual handbook: Troubleshooting, Chrome asks about the local network, or about apps on this device","url":"https://openaudiovisual.com/docs/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device"}]},{"@type":"Dataset","@id":"https://openaudiovisual.com/devices/#dataset","name":"open-audiovisual device collection","url":"https://openaudiovisual.com/devices/","isPartOf":{"@id":"https://openaudiovisual.com/#software"}}]}</script>
+<link rel="alternate" type="application/json" href="../../packages/devices/records/ultraleap-leap-motion-controller-2.json" title="Ultraleap Leap Motion Controller 2 (JSON)">
+<link rel="stylesheet" href="../../assets/controllers/controllers.css">
+<link rel="stylesheet" href="../../assets/devices/devices.css">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+</head>
+<body class="page-controllers page-controller page-device">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../devices/ultraleap-leap-motion-controller-2/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/devices/ultraleap-leap-motion-controller-2/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="ch-hero" id="about" aria-labelledby="about-title">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../../">Home</a></li>
+        <li><a href="../../devices/#kind-sensor">Devices</a></li>
+        <li aria-current="page">Ultraleap Leap Motion Controller 2</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">sensor</p>
+    <h1 id="about-title">Ultraleap Leap Motion Controller 2</h1>
+    <div class="hero-cols">
+      <div class="lede d-lede">
+        <p>Ultraleap Leap Motion Controller 2 is a sensor over USB. What OAV knows about it, each fact with the page it was read from, how to set it up, what goes wrong, and the code that reaches it.</p>
+        <p class="dev-al">Also called: Leap Motion Controller 2 · Leap Motion · Leap Motion Controller · LMC2 · Leap · hand tracking · 手部追蹤</p>
+        <ul class="badges"><li class="b-gen">hand-written record</li><li class="b-unv">not checked on a unit yet</li></ul>
+      </div>
+      <div class="hero-facts">
+        <dl class="d-facts">
+          <div><dt>Kind</dt><dd>sensor</dd></div>
+          <div><dt>Manufacturer</dt><dd>Ultraleap</dd></div>
+          <div><dt>Connections</dt><dd>USB</dd></div>
+          <div><dt>Licence</dt><dd>MIT</dd></div>
+          <div><dt>Verified</dt><dd>not checked on a unit yet</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <section class="sec" id="facts" aria-labelledby="facts-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Facts</p>
+      <h2 id="facts-title">What Ultraleap Leap Motion Controller 2 is</h2>
+      <p class="sec-lede">Each value is read from the page in its row. What could not be read is under “To be confirmed”, not guessed.</p>
+    </header>
+    <div class="table-scroll" role="region" aria-label="What Ultraleap Leap Motion Controller 2 is" tabindex="0">
+      <table class="facts-table">
+        <thead><tr><th scope="col">Fact</th><th scope="col">Value</th><th scope="col">Source</th></tr></thead>
+        <tbody>
+        <tr><th scope="row">Field of view</th><td>160° × 160°</td><td><a href="https://www.ultraleap.com/products" rel="noopener" data-oav-link="vendor">Ultraleap: products (Leap Motion Controller 2)</a></td></tr>
+        <tr><th scope="row">Tracking depth</th><td>10 cm (4") to 110 cm (43")</td><td><a href="https://www.ultraleap.com/products" rel="noopener" data-oav-link="vendor">Ultraleap: products (Leap Motion Controller 2)</a></td></tr>
+        <tr><th scope="row">USB</th><td>USB 3.0 via a USB type C connector</td><td><a href="https://www.ultraleap.com/products" rel="noopener" data-oav-link="vendor">Ultraleap: products (Leap Motion Controller 2)</a></td></tr>
+        <tr><th scope="row">Systems</th><td>Windows, macOS, Android XR2</td><td><a href="https://www.ultraleap.com/products" rel="noopener" data-oav-link="vendor">Ultraleap: products (Leap Motion Controller 2)</a></td></tr>
+        </tbody>
+      </table>
+      </div>
+  </section>
+
+  <section class="sec" id="connect" aria-labelledby="connect-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Connect</p>
+      <h2 id="connect-title">How it plugs in and what it speaks</h2>
+    </header>
+    <div class="spec-grid">
+      <div><h3>Connections</h3><p>USB</p></div>
+      <div><h3>Protocols</h3><p>not in the record</p></div>
+      
+    </div>
+  </section>
+
+  <section class="sec" id="setup" aria-labelledby="setup-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Setup</p>
+      <h2 id="setup-title">Set it up</h2>
+    </header>
+    <ol class="steps"><li>Install Ultraleap Hand Tracking (Gemini 5.x) and plug the sensor in; "/Applications/Ultraleap Hand Tracking.app/Contents/bin/leapctl" devices should list it with Tracking: true. <span class="src-note"><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">open-audiovisual: packages/leap README (setup on macOS, the bridge)</a></span></li><li>Install the Xcode command line tools (clang): the bridge compiles its small C reader on first start. <span class="src-note"><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">open-audiovisual: packages/leap README (setup on macOS, the bridge)</a></span></li><li>Run the bridge, node packages/leap/bridge/leap-bridge.mjs, and check http://127.0.0.1:6437/health; install.sh keeps it running at login. <span class="src-note"><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">open-audiovisual: packages/leap README (setup on macOS, the bridge)</a></span></li></ol>
+    <h3>Known problems</h3>
+    <ul class="cnotes"><li>A page on a public https site that reaches the bridge on this machine meets Chrome's local network prompt; blocked, it fails with net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS. Allow it, or open the page from localhost. <span class="src-note"><a href="https://openaudiovisual.com/docs/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" rel="noopener">open-audiovisual handbook: Troubleshooting, Chrome asks about the local network, or about apps on this device</a></span></li></ul>
+  </section>
+
+  <section class="sec" id="use" aria-labelledby="use-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Use it</p>
+      <h2 id="use-title">Ultraleap Leap Motion Controller 2 in your code</h2>
+      <p class="sec-lede">Paste it into a <code>&lt;script type="module"&gt;</code> on any page: it loads the packages from this site. It asks for nothing until you press the button it adds.</p>
+    </header>
+    <div class="term"><div class="term-bar"><span>javascript</span><button type="button" class="copy" data-copy="snip-device" data-oav-copy="code">Copy</button></div><pre id="snip-device"><code><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'https://openaudiovisual.com/packages/devices/index.js'</span>;
+<span class="tk">import</span> { Signals } <span class="tk">from</span> <span class="ts">'https://openaudiovisual.com/packages/core/index.js'</span>;
+<span class="tk">import</span> { LeapInput } <span class="tk">from</span> <span class="ts">'https://openaudiovisual.com/packages/leap/index.js'</span>;
+
+<span class="tk">const</span> leap = <span class="tk">await</span> device(<span class="ts">'ultraleap-leap-motion-controller-2'</span>);   <span class="tc">// Ultraleap Leap Motion Controller 2</span>
+console.log(leap.record.use.map((u) =&gt; u.package).join(<span class="ts">' '</span>));
+<span class="tc">// → @openav/leap</span>
+<span class="tk">const</span> signals = <span class="tk">new</span> Signals();
+<span class="tk">const</span> button = document.body.appendChild(Object.assign(document.createElement(<span class="ts">'button'</span>), { textContent: <span class="ts">"Connect the Leap bridge"</span> }));
+button.onclick = () =&gt; <span class="tk">new</span> LeapInput({ signals }).connect();   <span class="tc">// the bridge on this computer: see Setup</span></code></pre></div>
+    <h3>What reaches it</h3>
+    <ul class="uses"><li><p><code>@openav/leap</code> · <code>LeapInput</code></p><pre><code>new LeapInput({ signals }).connect()</code></pre><p>Through the local bridge, both hands become leap/hand/&lt;side&gt;/… signals (palm position, pinch, grab, angles, fingertips), and leap.hands has the joints for drawing.</p></li></ul>
+  </section>
+
+  <section class="sec" id="files" aria-labelledby="files-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Files</p>
+      <h2 id="files-title">Take it with you</h2>
+    </header>
+    <div class="spec-grid"><div><p>The record (JSON, open-audiovisual/device@1): the facts with their sources, the setup steps, the problems and the code that reaches it. Other tools can read it with the JSON Schema.</p><div class="vf-row"><a class="vf-btn" href="../../packages/devices/records/ultraleap-leap-motion-controller-2.json" download="ultraleap-leap-motion-controller-2.json" data-oav-event="export_download" data-oav-format="json" data-oav-id="ultraleap-leap-motion-controller-2">ultraleap-leap-motion-controller-2.json</a></div></div></div>
+    <ul class="model-links">
+      <li><a href="../../packages/devices/device.schema.json">The record format (JSON Schema)</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/devices/records/ultraleap-leap-motion-controller-2.json">The file on GitHub ↗</a></li>
+    </ul>
+  </section>
+
+  <section class="sec" id="status" aria-labelledby="status-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Status</p>
+      <h2 id="status-title">How sure this page is</h2>
+    </header>
+    <p>Not checked on a unit yet: every value is as its source says. Only a person with the unit can change that.</p>
+    
+    <h3>To be confirmed</h3><ul class="cnotes tbd"><li>This is the Controller 2, the sensor @openav/leap's gesture thresholds were tuned on. The first Leap Motion Controller is another unit with other numbers, not described here.</li><li>Frame rate, power, size and the preferred tracking range were not on a manufacturer page that could be read.</li></ul>
+    <h3>Sources</h3>
+    <ul class="sources"><li><a href="https://www.ultraleap.com/products" rel="noopener" data-oav-link="vendor">Ultraleap: products (Leap Motion Controller 2)</a> <span class="src-note">read 2026-11-25</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">open-audiovisual: packages/leap README (setup on macOS, the bridge)</a> <span class="src-note">read 2026-11-25</span></li><li><a href="https://openaudiovisual.com/docs/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" rel="noopener">open-audiovisual handbook: Troubleshooting, Chrome asks about the local network, or about apps on this device</a> <span class="src-note">read 2026-11-25</span></li></ul>
+  </section>
+
+  <section class="sec" id="related" aria-labelledby="related-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Related</p>
+      <h2 id="related-title">More devices</h2>
+    </header>
+    <ul class="rel" aria-label="Related devices">
+      <li><a href="../enttec-dmx-usb-pro/">ENTTEC DMX USB Pro</a><span>DMX interface</span></li>
+      <li><a href="../wled/">WLED</a><span>LED controller</span></li>
+      <li><a href="../logitech-mx-brio/">Logitech MX Brio</a><span>camera</span></li>
+      <li><a href="../audinate-dante-virtual-soundcard/">Audinate Dante Virtual Soundcard</a><span>audio interface</span></li>
+      <li><a href="../yamaha-ag06/">Yamaha AG06</a><span>audio interface</span></li>
+      <li><a href="../feather-huzzah-esp8266/">Adafruit Feather HUZZAH with ESP8266 (2821)</a><span>board</span></li>
+    </ul>
+    <p class="cmp-link"><a href="../../devices/#kind-sensor">All devices →</a></p>
+  </section>
+
+  <section class="sec" id="report" aria-labelledby="report-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">GitHub</p>
+      <h2 id="report-title">Wrong data?</h2>
+      <p class="sec-lede">Every value on this page comes from one file in the repository. Open an issue that says which value and where you read the right one, or change the file in a pull request.</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?title=Wrong%20data%3A%20Ultraleap%20Leap%20Motion%20Controller%202%20(ultraleap-leap-motion-controller-2)">Report wrong data ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/devices/records/ultraleap-leap-motion-controller-2.json">The file on GitHub ↗</a></li>
+    </ul>
+  </section>
+
+  <section class="sec next-step" id="next-step" aria-labelledby="next-step-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Next step</p>
+      <h2 id="next-step-title">Where it goes next</h2>
+      <p class="sec-lede">The handbook chapter on the collection, and the package that drives Ultraleap Leap Motion Controller 2.</p>
+    </header>
+    <p class="next-links"><a class="more" href="../../docs/#devices" data-oav-event="next_step" data-oav-to="docs">The Devices chapter →</a> <a class="more" href="../../docs/#packages-openav-leap" data-oav-event="next_step" data-oav-to="docs">Handbook: @openav/leap →</a></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="dev-data">{"device":"ultraleap-leap-motion-controller-2","input":null,"copy":"Copy","copied":"Copied","live":{"eyebrow":"Try it","title":"Is your {name} here?","lede":"Nothing happens until you press a button. “Look for it” asks the browser for the list of {inputs} and finds this one by its name; “Open it” asks for permission once and opens it with the settings above, the same calls as the code below.","inputs":{"camera":"cameras","audio":"audio inputs"},"find":"Look for it","open":"Open it","stop":"Stop","found":"Found: {label}","notFound":"Not found. {n} {inputs} listed{names}.","hidden":"The browser hides the names until the page has had the permission once: press “Open it”.","opened":"Open: {label}","settings":"Settings the browser gave","level":"Level","noApi":"This browser gives a page no access to {inputs} here (it needs https or localhost).","error":"Did not open: {msg}"},"frame":null}</script>
+<script type="module" src="../../assets/devices/device.js"></script>
+<!--/email_off-->
+</body>
+</html>

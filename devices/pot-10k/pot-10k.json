@@ -1,0 +1,102 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "pot-10k",
+ "part": {
+  "name": "Rotary potentiometer 10 kΩ linear (Adafruit 562)",
+  "zh": "旋轉電位器 10 kΩ",
+  "kind": "input",
+  "sources": [
+   {
+    "title": "Adafruit product 562 (10K linear potentiometer)",
+    "url": "https://www.adafruit.com/product/562"
+   },
+   {
+    "title": "Bourns PTV09 datasheet",
+    "url": "https://www.bourns.com/docs/Product-Datasheets/ptv09.pdf"
+   }
+  ],
+  "supply": null,
+  "logic": null,
+  "resistance": 10000,
+  "pins": {
+   "1": {
+    "kind": "power-in",
+    "label": "1",
+    "aliases": [
+     "A",
+     "LOW",
+     "GND"
+    ]
+   },
+   "2": {
+    "kind": "analog-out",
+    "label": "2（中間）",
+    "aliases": [
+     "W",
+     "WIPER"
+    ]
+   },
+   "3": {
+    "kind": "power-in",
+    "label": "3",
+    "aliases": [
+     "B",
+     "HIGH",
+     "VCC"
+    ]
+   }
+  },
+  "size": null,
+  "connector": "3 pin，腳距 0.2\"",
+  "notes": [
+   "分壓器：中間腳的電壓不會超過兩端所接的電壓。"
+  ],
+  "tbd": [
+   "額定功率（Bourns PTV09 是 0.05 W，Adafruit 562 沒寫）。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "pot-10k",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "Rotary potentiometer 10 kΩ linear (Adafruit 562)",
+  "aliases": [
+   "旋轉電位器 10 kΩ",
+   "input"
+  ],
+  "connections": [],
+  "protocols": [],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "pot-10k",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'pot-10k' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "Adafruit product 562 (10K linear potentiometer)",
+    "url": "https://www.adafruit.com/product/562"
+   },
+   {
+    "title": "Bourns PTV09 datasheet",
+    "url": "https://www.bourns.com/docs/Product-Datasheets/ptv09.pdf"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

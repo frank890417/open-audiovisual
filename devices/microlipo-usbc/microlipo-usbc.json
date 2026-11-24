@@ -1,0 +1,102 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "microlipo-usbc",
+ "part": {
+  "name": "Adafruit Micro-Lipo charger USB-C (4410, MCP73831)",
+  "zh": "Adafruit Micro-Lipo Type-C 充電板",
+  "kind": "power",
+  "sources": [
+   {
+    "title": "Adafruit product 4410 (Micro-Lipo charger, USB-C)",
+    "url": "https://www.adafruit.com/product/4410"
+   },
+   {
+    "title": "Microchip MCP73831/2 datasheet DS20001984H",
+    "url": "https://ww1.microchip.com/downloads/en/DeviceDoc/MCP73831-Family-Data-Sheet-DS20001984H.pdf"
+   }
+  ],
+  "supply": {
+   "min": null,
+   "max": null,
+   "nominal": 5
+  },
+  "charger": {
+   "part": "MCP73831",
+   "mA": 100
+  },
+  "current": {
+   "typ": 0,
+   "max": 0
+  },
+  "pins": {
+   "5V": {
+    "kind": "power-in",
+    "label": "5V"
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND"
+   },
+   "BAT": {
+    "kind": "power-node",
+    "label": "BAT"
+   }
+  },
+  "size": {
+   "w": 24,
+   "h": 19,
+   "d": 7.2
+  },
+  "connector": "USB-C；JST-PH 電池座",
+  "notes": [
+   "預設 100 mA，焊上跳線改 500 mA（Adafruit）。沒有電池保護電路，靠電池自己的保護。"
+  ],
+  "tbd": [
+   "5 V 輸入的範圍。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "microlipo-usbc",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "Adafruit Micro-Lipo charger USB-C (4410, MCP73831)",
+  "aliases": [
+   "Adafruit Micro-Lipo Type-C 充電板",
+   "power"
+  ],
+  "connections": [],
+  "protocols": [],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "microlipo-usbc",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'microlipo-usbc' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "Adafruit product 4410 (Micro-Lipo charger, USB-C)",
+    "url": "https://www.adafruit.com/product/4410"
+   },
+   {
+    "title": "Microchip MCP73831/2 datasheet DS20001984H",
+    "url": "https://ww1.microchip.com/downloads/en/DeviceDoc/MCP73831-Family-Data-Sheet-DS20001984H.pdf"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

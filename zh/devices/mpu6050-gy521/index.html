@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MPU-6050 on a GY-521 module：腳位、電壓與電流｜open-audiovisual</title>
+<meta name="description" content="MPU-6050 on a GY-521 module：感測器。腳位、供電與邏輯電壓、電流，每個數字都附規格書。附檢查接線的程式碼。">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://openaudiovisual.com/zh/devices/mpu6050-gy521/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/devices/mpu6050-gy521/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/devices/mpu6050-gy521/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/devices/mpu6050-gy521/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="MPU-6050 on a GY-521 module：腳位、電壓與電流｜open-audiovisual">
+<meta property="og:description" content="MPU-6050 on a GY-521 module：感測器。腳位、供電與邏輯電壓、電流，每個數字都附規格書。附檢查接線的程式碼。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/devices/mpu6050-gy521/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MPU-6050 on a GY-521 module：腳位、電壓與電流｜open-audiovisual">
+<meta name="twitter:description" content="MPU-6050 on a GY-521 module：感測器。腳位、供電與邏輯電壓、電流，每個數字都附規格書。附檢查接線的程式碼。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css">
+<script type="module" src="../../../assets/search/search.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="device" data-oav-id="mpu6050-gy521">
+<script defer src="../../../assets/track.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"設備","item":"https://openaudiovisual.com/zh/devices/"},{"@type":"ListItem","position":3,"name":"MPU-6050 on a GY-521 module","item":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/"}]},{"@type":"WebPage","@id":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/#webpage","url":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/","name":"MPU-6050 on a GY-521 module：腳位、電壓與電流｜open-audiovisual","description":"MPU-6050 on a GY-521 module：感測器。腳位、供電與邏輯電壓、電流，每個數字都附規格書。附檢查接線的程式碼。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"breadcrumb":{"@id":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/#breadcrumb"},"about":{"@id":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/#product"},"mainEntity":{"@id":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/#dataset"}},{"@type":"Thing","@id":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/#product","name":"MPU-6050 on a GY-521 module","description":"感測器"},{"@type":"Dataset","@id":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/#dataset","name":"MPU-6050 on a GY-521 module: pins and ratings","description":"MPU-6050 on a GY-521 module：感測器。腳位、供電與邏輯電壓、電流，每個數字都附規格書。附檢查接線的程式碼。","url":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/","inLanguage":"zh-Hant-TW","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"creator":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/zh/devices/#dataset"},"about":{"@id":"https://openaudiovisual.com/zh/devices/mpu6050-gy521/#product"},"keywords":["MPU-6050 on a GY-521 module","感測器","I²C"],"distribution":[{"@type":"DataDownload","name":"mpu6050-gy521.json","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/devices/mpu6050-gy521/mpu6050-gy521.json"}],"citation":[{"@type":"CreativeWork","name":"TDK InvenSense MPU-6000/6050 product specification PS-MPU-6000A rev 3.1","url":"https://cdn.sparkfun.com/datasheets/Components/General%20IC/PS-MPU-6000A.pdf"},{"@type":"CreativeWork","name":"Arduino Playground: MPU-6050 (GY-521)","url":"https://playground.arduino.cc/Main/MPU-6050/"}]},{"@type":"Dataset","@id":"https://openaudiovisual.com/zh/devices/#dataset","name":"open-audiovisual 演出設備集合","url":"https://openaudiovisual.com/zh/devices/","isPartOf":{"@id":"https://openaudiovisual.com/#software"}}]}</script>
+<link rel="alternate" type="application/json" href="../../../devices/mpu6050-gy521/mpu6050-gy521.json" title="MPU-6050 on a GY-521 module (JSON)">
+<link rel="stylesheet" href="../../../assets/controllers/controllers.css">
+<link rel="stylesheet" href="../../../assets/devices/devices.css">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+</head>
+<body class="page-controllers page-controller page-device">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../devices/mpu6050-gy521/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/devices/mpu6050-gy521/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="ch-hero" id="about" aria-labelledby="about-title">
+    <nav class="crumbs" aria-label="麵包屑">
+      <ol>
+        <li><a href="../../../zh/">首頁</a></li>
+        <li><a href="../../../zh/devices/#kind-part">設備</a></li>
+        <li aria-current="page">MPU-6050 on a GY-521 module</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">感測器</p>
+    <h1 id="about-title">MPU-6050 on a GY-521 module</h1>
+    <div class="hero-cols">
+      <div class="lede d-lede">
+        <p>MPU-6050 on a GY-521 module（感測器），來自 <code>@openav/hw</code> 的電子零件庫：它的腳位、吃進與送出的電壓、電流，每個數字都來自它的規格書。<code>Hw.check()</code> 檢查接線時讀的就是這一筆。</p>
+        <p class="dev-al">也叫: MPU-6050 六軸（GY-521 模組） · sensor</p>
+        <ul class="badges"><li class="b-gen">電子零件庫</li><li class="b-unv">還沒有在實機上確認</li></ul>
+      </div>
+      <div class="hero-facts">
+        <dl class="d-facts">
+          <div><dt>種類</dt><dd>感測器</dd></div>
+          <div><dt>協定</dt><dd>I²C</dd></div>
+          <div><dt>授權</dt><dd>MIT</dd></div>
+          <div><dt>驗證</dt><dd>還沒有在實機上確認</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <section class="sec" id="facts" aria-labelledby="facts-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">事實</p>
+      <h2 id="facts-title">MPU-6050 on a GY-521 module 是什麼</h2>
+      <p class="sec-lede">每個值都讀自同一列的那一頁。讀不到的寫在「待確認」，不用猜的。</p>
+    </header>
+    <dl class="d-facts part-facts">
+      <div><dt>供電</dt><dd>待查–待查 V（標稱 5 V）</dd></div>
+      <div><dt>邏輯電壓</dt><dd>待查 V（高電位至少 待查 V）</dd></div>
+      <div><dt>耐 5 V</dt><dd>待查</dd></div>
+      <div><dt>電流</dt><dd>典型 3.9 mA，最大 待查 mA</dd></div>
+      <div><dt>I²C 位址</dt><dd>0x68, 0x69</dd></div>
+      <div><dt>接頭</dt><dd><span lang="zh-Hant">8 pin 排針</span></dd></div>
+    </dl>
+  </section>
+
+  <section class="sec" id="pins" aria-labelledby="pins-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">腳位</p>
+      <h2 id="pins-title">MPU-6050 on a GY-521 module 的每一支腳</h2>
+    </header>
+    <div class="table-scroll" role="region" aria-label="MPU-6050 on a GY-521 module 的每一支腳" tabindex="0">
+      <table class="pins-table">
+        <thead><tr><th scope="col">腳位</th><th scope="col">種類</th><th scope="col">標示</th><th scope="col">電壓</th><th scope="col">電流</th><th scope="col">也叫</th><th scope="col">說明</th></tr></thead>
+        <tbody>
+        <tr><th scope="row"><code>VCC</code></th><td>電源輸入</td><td>VCC</td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>GND</code></th><td>接地</td><td>GND</td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>SCL</code></th><td>I²C SCL</td><td>SCL</td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>SDA</code></th><td>I²C SDA</td><td>SDA</td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>XDA</code></th><td>I/O</td><td>XDA</td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>XCL</code></th><td>I/O</td><td>XCL</td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>AD0</code></th><td>資料輸入</td><td>AD0</td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>INT</code></th><td>資料輸出</td><td>INT</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      </div>
+    <h3>說明</h3><p class="note">零件庫的說明照原文列出。</p><ul class="cnotes" lang="zh-Hant"><li>晶片 VDD 2.375–3.46 V；GY-521 板上有穩壓器，Arduino Playground 建議 VCC 給 5 V。</li><li>I²C 上拉電阻在模組上（各批 10K 或 2.2K）。</li></ul>
+    
+    <p class="next-links"><a class="more" href="../../../zh/docs/#packages-openav-hw">@openav/hw 怎麼檢查接線 →</a> <a class="more" href="../../../zh/docs/#devices-a-part">手冊「設備」裡的零件 →</a></p>
+  </section>
+
+  <section class="sec" id="use" aria-labelledby="use-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">用在程式裡</p>
+      <h2 id="use-title">把 MPU-6050 on a GY-521 module 寫進你的程式</h2>
+      <p class="sec-lede">貼進任何網頁的 <code>&lt;script type="module"&gt;</code>：它從這個網站載入 <code>@openav/devices</code>，印出 <code>Hw.check()</code> 讀的那一筆零件資料。</p>
+    </header>
+    <div class="term"><div class="term-bar"><span>javascript</span><button type="button" class="copy" data-copy="snip-device" data-oav-copy="code">複製</button></div><pre id="snip-device"><code><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'https://openaudiovisual.com/packages/devices/index.js'</span>;
+
+<span class="tk">const</span> part = <span class="tk">await</span> device(<span class="ts">'mpu6050-gy521'</span>);   <span class="tc">// MPU-6050 on a GY-521 module</span>
+console.log(JSON.stringify(part.part.supply), Object.keys(part.part.pins).join(<span class="ts">' '</span>));
+<span class="tc">// → {"min":null,"max":null,"nominal":5} VCC GND SCL SDA XDA XCL AD0 INT</span></code></pre></div>
+    <h3>接到它的程式</h3>
+    <ul class="uses"><li><p><code>@openav/hw</code> · <code>Hw</code></p><pre><code>Hw.check({ board, parts: { x: { part: 'mpu6050-gy521' } }, wires })</code></pre><p>列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。</p></li></ul>
+  </section>
+
+  <section class="sec" id="files" aria-labelledby="files-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">檔案</p>
+      <h2 id="files-title">把它帶走</h2>
+    </header>
+    <div class="spec-grid"><div><p>零件的 JSON：零件庫的那一筆（腳位、供電、邏輯電壓、電流、說明）和它的紀錄，跟 <code>Hw.check()</code>、<code>device()</code> 讀到的一樣。</p><div class="vf-row"><a class="vf-btn" href="../../../devices/mpu6050-gy521/mpu6050-gy521.json" download="mpu6050-gy521.json" data-oav-event="export_download" data-oav-format="json" data-oav-id="mpu6050-gy521">mpu6050-gy521.json</a></div></div></div>
+    <ul class="model-links">
+      <li><a href="../../../packages/devices/device.schema.json">紀錄格式（JSON Schema）</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/hw/parts.js">GitHub 上的檔案 ↗</a></li>
+    </ul>
+  </section>
+
+  <section class="sec" id="status" aria-labelledby="status-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">狀態</p>
+      <h2 id="status-title">這一頁有多確定</h2>
+    </header>
+    <p>還沒有在實機上確認：每個值都照出處寫。只有手上有這台的人能改變這一點。</p>
+    
+    <h3>待確認</h3><ul class="cnotes tbd"><li lang="zh-Hant">GY-521 的穩壓器型號、VCC 範圍、尺寸、腳位（沒有原廠文件）。</li><li lang="zh-Hant">模組上的 I²C 上拉與邏輯電壓（VLOGIC）接到哪個電壓。</li></ul>
+    <h3>出處</h3>
+    <ul class="sources"><li><a href="https://cdn.sparkfun.com/datasheets/Components/General%20IC/PS-MPU-6000A.pdf" rel="noopener" data-oav-link="vendor">TDK InvenSense MPU-6000/6050 product specification PS-MPU-6000A rev 3.1</a></li><li><a href="https://playground.arduino.cc/Main/MPU-6050/" rel="noopener" data-oav-link="vendor">Arduino Playground: MPU-6050 (GY-521)</a></li></ul>
+  </section>
+
+  <section class="sec" id="related" aria-labelledby="related-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">相關</p>
+      <h2 id="related-title">其他設備</h2>
+    </header>
+    <ul class="rel" aria-label="相關設備">
+      <li><a href="../lis3dh-breakout/">Adafruit LIS3DH triple-axis accelerometer breakout (2809)</a><span>感測器</span></li>
+      <li><a href="../pir-hc-sr501/">HC-SR501 PIR motion sensor</a><span>感測器</span></li>
+      <li><a href="../feather-huzzah-esp8266/">Adafruit Feather HUZZAH with ESP8266 (2821)</a><span>開發板</span></li>
+      <li><a href="../microlipo-usbc/">Adafruit Micro-Lipo charger USB-C (4410, MCP73831)</a><span>電源</span></li>
+      <li><a href="../neopixel-ring-12/">Adafruit NeoPixel Ring 12 (1643)</a><span>LED</span></li>
+      <li><a href="../neopixel-ring-16/">Adafruit NeoPixel Ring 16 (1463)</a><span>LED</span></li>
+    </ul>
+    <p class="cmp-link"><a href="../../../zh/devices/#kind-part">全部設備 →</a></p>
+  </section>
+
+  <section class="sec" id="report" aria-labelledby="report-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">GitHub</p>
+      <h2 id="report-title">資料有錯？</h2>
+      <p class="sec-lede">這一頁的每個值都來自 repository 裡的一個檔案。開一張 issue，寫哪一個值、你在哪裡讀到正確的值，或直接用 pull request 改那個檔案。</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?title=%E8%B3%87%E6%96%99%E9%8C%AF%E8%AA%A4%EF%BC%9AMPU-6050%20on%20a%20GY-521%20module%EF%BC%88mpu6050-gy521%EF%BC%89">回報資料錯誤 ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/hw/parts.js">GitHub 上的檔案 ↗</a></li>
+    </ul>
+  </section>
+
+  <section class="sec next-step" id="next-step" aria-labelledby="next-step-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">下一步</p>
+      <h2 id="next-step-title">接下來</h2>
+      <p class="sec-lede">手冊裡講這個集合的一章，以及驅動 MPU-6050 on a GY-521 module 的套件。</p>
+    </header>
+    <p class="next-links"><a class="more" href="../../../zh/docs/#devices" data-oav-event="next_step" data-oav-to="docs">手冊：設備 →</a> <a class="more" href="../../../zh/docs/#packages-openav-hw" data-oav-event="next_step" data-oav-to="docs">手冊：@openav/hw →</a></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="dev-data">{"device":"mpu6050-gy521","input":null,"copy":"複製","copied":"已複製","live":{"eyebrow":"試試看","title":"你的 {name} 在嗎？","lede":"按下按鈕之前什麼都不會發生。「找找看」向瀏覽器要{inputs}清單，依名稱找到這一台。「打開」只問一次權限，用上面的設定打開它，跟下面的程式碼是同一組呼叫。","inputs":{"camera":"鏡頭","audio":"音訊輸入"},"find":"找找看","open":"打開","stop":"停止","found":"找到了：{label}","notFound":"沒找到。列出 {n} 個{inputs}{names}。","hidden":"網頁拿到一次權限之前，瀏覽器會把名稱藏起來：請按「打開」。","opened":"已打開：{label}","settings":"瀏覽器給的設定","level":"音量","noApi":"這個瀏覽器在這裡不讓網頁使用{inputs}（需要 https 或 localhost）。","error":"沒有打開：{msg}"},"frame":null}</script>
+<script type="module" src="../../../assets/devices/device.js"></script>
+<!--/email_off-->
+</body>
+</html>

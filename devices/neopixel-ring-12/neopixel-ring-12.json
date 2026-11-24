@@ -1,0 +1,171 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "neopixel-ring-12",
+ "part": {
+  "name": "Adafruit NeoPixel Ring 12 (1643)",
+  "zh": "NeoPixel 12 顆燈環",
+  "kind": "light",
+  "leds": 12,
+  "sources": [
+   {
+    "title": "Adafruit product 1643 (NeoPixel Ring 12)",
+    "url": "https://www.adafruit.com/product/1643"
+   },
+   {
+    "title": "Adafruit NeoPixel Überguide: powering NeoPixels",
+    "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/powering-neopixels"
+   },
+   {
+    "title": "Adafruit NeoPixel Überguide: best practices",
+    "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/best-practices"
+   },
+   {
+    "title": "Worldsemi WS2812B datasheet (2013)",
+    "url": "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf"
+   },
+   {
+    "title": "Opsco SK6812RGBW datasheet rev01",
+    "url": "https://cdn-shop.adafruit.com/product-files/2757/p2757_SK6812RGBW_REV01.pdf"
+   }
+  ],
+  "supply": {
+   "min": 3.7,
+   "max": 5.3,
+   "nominal": 5
+  },
+  "logic": {
+   "v": null,
+   "vohMin": null,
+   "vih": [
+    {
+     "frac": 0.7,
+     "rev": "WS2812B 2013"
+    },
+    {
+     "v": 2.7,
+     "atVdd": 5,
+     "rev": "WS2812B V5"
+    },
+    {
+     "v": 3.4,
+     "atVdd": 5,
+     "rev": "SK6812"
+    }
+   ],
+   "vinMax": {
+    "aboveVdd": 0.5
+   },
+   "fiveVoltSafe": true
+  },
+  "perLed": {
+   "typ": 20,
+   "max": 60
+  },
+  "pins": {
+   "VDD": {
+    "kind": "power-in",
+    "label": "VDD",
+    "aliases": [
+     "5V",
+     "VCC",
+     "+"
+    ]
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND",
+    "aliases": [
+     "VSS",
+     "-"
+    ]
+   },
+   "DIN": {
+    "kind": "data-in",
+    "label": "DIN",
+    "aliases": [
+     "DI",
+     "IN"
+    ]
+   },
+   "DOUT": {
+    "kind": "data-out",
+    "label": "DOUT",
+    "aliases": [
+     "DO",
+     "OUT"
+    ]
+   }
+  },
+  "size": {
+   "w": 36.8,
+   "h": 36.8,
+   "d": 6.7,
+   "inner": 23.3
+  },
+  "connector": "焊墊：5V、GND、DIN、DOUT",
+  "notes": [
+   "出貨可能是 WS2812B 或 SK6812，電壓門檻取兩者比較嚴的。外徑 36.8 mm、內徑 23.3 mm。",
+   "資料線靠近第一顆燈那端串一顆 300–500 Ω 電阻，電源正負之間並一顆 500–1000 µF（6.3 V 以上）電容（Adafruit NeoPixel Überguide）。",
+   "用 LiPo 直接以 3.7 V 供電時，3.3 V 的資料訊號可以用；用 5 V 供電、3.3 V 板子推時，要加電平轉換（74AHCT125 或 74HCT245）（Adafruit NeoPixel Überguide）。"
+  ],
+  "tbd": [
+   "整環最大電流（產品頁只寫每顆約 18 mA 定電流驅動；這裡用 Überguide 每顆 60 mA 全白估）。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "neopixel-ring-12",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "Adafruit NeoPixel Ring 12 (1643)",
+  "aliases": [
+   "NeoPixel 12 顆燈環",
+   "light"
+  ],
+  "connections": [],
+  "protocols": [],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "neopixel-ring-12",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'neopixel-ring-12' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "Adafruit product 1643 (NeoPixel Ring 12)",
+    "url": "https://www.adafruit.com/product/1643"
+   },
+   {
+    "title": "Adafruit NeoPixel Überguide: powering NeoPixels",
+    "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/powering-neopixels"
+   },
+   {
+    "title": "Adafruit NeoPixel Überguide: best practices",
+    "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/best-practices"
+   },
+   {
+    "title": "Worldsemi WS2812B datasheet (2013)",
+    "url": "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf"
+   },
+   {
+    "title": "Opsco SK6812RGBW datasheet rev01",
+    "url": "https://cdn-shop.adafruit.com/product-files/2757/p2757_SK6812RGBW_REV01.pdf"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

@@ -27,6 +27,7 @@ import { SITE } from './chrome.mjs';
 import { getFacts } from './facts.mjs';
 import { lastmodOf } from './git.mjs';
 import { catalog, PROFILE_DIR, detailPath, detailUrl } from '../controllers/page.mjs';
+import { registerEntries } from '../devices/sources.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -42,6 +43,9 @@ export const STATIC = [
   // the oav-p5 cheat sheet (tools/build-reference.mjs, tools/reference/cheatsheet.mjs): one page, every name links into the reference
   { id: 'cheatsheet', path: 'docs/cheatsheet/', langs: ['en', 'zh'], src: ['tools/reference/cheatsheet.mjs', 'tools/reference/en.mjs', 'tools/reference/zh.mjs', 'assets/reference/cheatsheet.css'] },
   { derive: 'controllers' },
+  // the device collection (tools/build-devices.mjs): the hub /devices/, one page per DMX fixture /fixtures/<id>/, one per
+  // record or part that qualifies /devices/<id>/ (tools/devices/sources.mjs says which); the controllers keep their own pages
+  { derive: 'devices' },
   { id: 'webtoe', path: 'webtoe/', langs: ['en', 'zh'], src: ['tools/webtoe'] },
   // the device check: tools/build-check.mjs, behaviour in assets/check/
   { id: 'check', path: 'check/', langs: ['en', 'zh'], src: ['tools/check', 'assets/check'] },
@@ -66,6 +70,9 @@ const DERIVED = {
       { id: 'controllers/verify', path: 'controllers/verify/', langs: ['en', 'zh'], src: ['tools/controllers/verify.mjs', 'assets/controllers/verify.js', 'packages/midi/verify-session.js'], group: 'controllers' },
       ...cat.pages.map((d) => ({ id: 'controllers/' + d.p.id, path: detailPath(d.p.id, 'en'), langs: ['en', 'zh'], src: [`${PROFILE_DIR}/${d.file}`], group: 'controllers' })),
     ];
+  },
+  devices() {
+    return registerEntries();
   },
   examples() {
     return getFacts().examples.map((e) => ({ id: 'examples/' + e.id, path: `examples/${e.id}/`, langs: ['en'], src: [`examples/${e.id}`], group: 'examples' }));

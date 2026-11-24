@@ -1,0 +1,18 @@
+{
+ "channels": [
+  {
+   "match": "dmx/1/*",
+   "sink": "enttec",
+   "path": "/dev/cu.usbserial-EN000000",
+   "universe": 1
+  },
+  {
+   "match": "*",
+   "sink": "log"
+  }
+ ],
+ "safe": {
+  "dmx/*": 0
+ },
+ "timeoutMs": 500
+}

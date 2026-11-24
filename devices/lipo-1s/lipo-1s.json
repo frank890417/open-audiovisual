@@ -1,0 +1,133 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "lipo-1s",
+ "part": {
+  "name": "LiPo 3.7 V single cell, JST-PH (Adafruit 258 / 1578)",
+  "zh": "3.7 V 鋰聚合物電池（JST-PH）",
+  "kind": "power",
+  "mAh": 1200,
+  "sources": [
+   {
+    "title": "Adafruit product 258 (LiPo 3.7 V 1200 mAh)",
+    "url": "https://www.adafruit.com/product/258"
+   },
+   {
+    "title": "Adafruit product 1578 (LiPo 3.7 V 500 mAh)",
+    "url": "https://www.adafruit.com/product/1578"
+   },
+   {
+    "title": "Adafruit: Li-ion and LiPoly batteries, voltages",
+    "url": "https://learn.adafruit.com/li-ion-and-lipoly-batteries/voltages"
+   }
+  ],
+  "supply": null,
+  "battery": {
+   "full": 4.2,
+   "nominal": 3.7,
+   "empty": 3.4,
+   "cutoff": 3,
+   "chargeMaxMa": 500
+  },
+  "current": {
+   "typ": 0,
+   "max": 0
+  },
+  "pins": {
+   "+": {
+    "kind": "bat",
+    "label": "+（紅）",
+    "aliases": [
+     "BAT",
+     "VBAT",
+     "RED"
+    ]
+   },
+   "-": {
+    "kind": "gnd",
+    "label": "−（黑）",
+    "aliases": [
+     "BLACK"
+    ]
+   }
+  },
+  "size": {
+   "w": 34,
+   "h": 62,
+   "d": 5
+  },
+  "connector": "JST-PH 2 pin",
+  "variants": {
+   "500": {
+    "size": {
+     "w": 29,
+     "h": 36,
+     "d": 4.75
+    },
+    "g": 10.5
+   },
+   "1200": {
+    "size": {
+     "w": 34,
+     "h": 62,
+     "d": 5
+    },
+    "g": 23
+   }
+  },
+  "notes": [
+   "4.2 V 充滿、3.7 V 標稱；3.4 V 就算沒電，3.0 V 保護電路斷開（Adafruit）。內建過充、過放、短路保護，沒有溫度感測。"
+  ],
+  "bomNote": "JST-PH 線序各家不統一：Adafruit 說別家的極性可能相反，會燒壞電池。接上板子前用電表確認紅線是 +。",
+  "tbd": [
+   "最大放電電流（產品頁沒寫）。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "lipo-1s",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "LiPo 3.7 V single cell, JST-PH (Adafruit 258 / 1578)",
+  "aliases": [
+   "3.7 V 鋰聚合物電池（JST-PH）",
+   "power"
+  ],
+  "connections": [],
+  "protocols": [],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "lipo-1s",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'lipo-1s' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "Adafruit product 258 (LiPo 3.7 V 1200 mAh)",
+    "url": "https://www.adafruit.com/product/258"
+   },
+   {
+    "title": "Adafruit product 1578 (LiPo 3.7 V 500 mAh)",
+    "url": "https://www.adafruit.com/product/1578"
+   },
+   {
+    "title": "Adafruit: Li-ion and LiPoly batteries, voltages",
+    "url": "https://learn.adafruit.com/li-ion-and-lipoly-batteries/voltages"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

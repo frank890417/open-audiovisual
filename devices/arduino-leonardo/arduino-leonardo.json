@@ -1,0 +1,254 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "arduino-leonardo",
+ "part": {
+  "name": "Arduino Leonardo (A000057)",
+  "zh": "Arduino Leonardo",
+  "kind": "board",
+  "sources": [
+   {
+    "title": "Arduino Leonardo tech specs (docs-content)",
+    "url": "https://github.com/arduino/docs-content/blob/main/content/hardware/hero/boards/leonardo/tech-specs.yml"
+   },
+   {
+    "title": "Arduino Leonardo full pinout A000057",
+    "url": "https://docs.arduino.cc/resources/pinouts/A000057-full-pinout.pdf"
+   },
+   {
+    "title": "Microchip ATmega16U4/32U4 datasheet (29.1, Table 29-1)",
+    "url": "https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7766-8-bit-AVR-ATmega16U4-32U4_Datasheet.pdf"
+   }
+  ],
+  "supply": {
+   "min": 7,
+   "max": 12,
+   "nominal": 5
+  },
+  "logic": {
+   "v": 5,
+   "vohMin": 4.2,
+   "vih": [
+    {
+     "v": 1.9,
+     "atVdd": 5
+    }
+   ],
+   "vinMax": 5.5,
+   "fiveVoltSafe": true
+  },
+  "current": {
+   "typ": null,
+   "max": null
+  },
+  "pins": {
+   "5V": {
+    "kind": "power-out",
+    "label": "5V",
+    "v": 5,
+    "limitMa": null
+   },
+   "3V3": {
+    "kind": "power-out",
+    "label": "3V3",
+    "v": 3.3,
+    "limitMa": 50
+   },
+   "VIN": {
+    "kind": "power-in",
+    "label": "VIN"
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND"
+   },
+   "D2": {
+    "kind": "io",
+    "label": "D2",
+    "aliases": [
+     "2",
+     "SDA"
+    ],
+    "i2c": "sda"
+   },
+   "D3": {
+    "kind": "io",
+    "label": "D3",
+    "aliases": [
+     "3",
+     "SCL"
+    ],
+    "i2c": "scl"
+   },
+   "D4": {
+    "kind": "io",
+    "label": "D4",
+    "aliases": [
+     "4"
+    ]
+   },
+   "D5": {
+    "kind": "io",
+    "label": "D5",
+    "aliases": [
+     "5"
+    ]
+   },
+   "D6": {
+    "kind": "io",
+    "label": "D6",
+    "aliases": [
+     "6"
+    ]
+   },
+   "D7": {
+    "kind": "io",
+    "label": "D7",
+    "aliases": [
+     "7"
+    ]
+   },
+   "D8": {
+    "kind": "io",
+    "label": "D8",
+    "aliases": [
+     "8"
+    ]
+   },
+   "D9": {
+    "kind": "io",
+    "label": "D9",
+    "aliases": [
+     "9"
+    ]
+   },
+   "D10": {
+    "kind": "io",
+    "label": "D10",
+    "aliases": [
+     "10"
+    ]
+   },
+   "D11": {
+    "kind": "io",
+    "label": "D11",
+    "aliases": [
+     "11"
+    ]
+   },
+   "D12": {
+    "kind": "io",
+    "label": "D12",
+    "aliases": [
+     "12"
+    ]
+   },
+   "D13": {
+    "kind": "io",
+    "label": "D13",
+    "aliases": [
+     "13"
+    ]
+   },
+   "A0": {
+    "kind": "analog-in",
+    "label": "A0",
+    "vmax": 5
+   },
+   "A1": {
+    "kind": "analog-in",
+    "label": "A1",
+    "vmax": 5
+   },
+   "A2": {
+    "kind": "analog-in",
+    "label": "A2",
+    "vmax": 5
+   },
+   "A3": {
+    "kind": "analog-in",
+    "label": "A3",
+    "vmax": 5
+   },
+   "A4": {
+    "kind": "analog-in",
+    "label": "A4",
+    "vmax": 5
+   },
+   "A5": {
+    "kind": "analog-in",
+    "label": "A5",
+    "vmax": 5
+   }
+  },
+  "i2c": {
+   "master": true,
+   "sda": "D2",
+   "scl": "D3"
+  },
+  "size": {
+   "w": 68.6,
+   "h": 53.3,
+   "d": null
+  },
+  "connector": "micro USB；DC 插座",
+  "notes": [
+   "ATmega32U4 輸入高電位門檻約 1.9 V（5 V 供電時），3.3 V 訊號讀得到。",
+   "每支腳電流：規格表寫 10 mA、腳位圖寫 20 mA，晶片絕對上限 40 mA。"
+  ],
+  "tbd": [
+   "5V 腳可以拉多少電流。",
+   "整塊板子的耗電。",
+   "VIN 範圍：規格表 7–12 V，腳位圖 6–20 V。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "arduino-leonardo",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "Arduino Leonardo (A000057)",
+  "aliases": [
+   "Arduino Leonardo",
+   "board"
+  ],
+  "connections": [],
+  "protocols": [
+   "i2c"
+  ],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "arduino-leonardo",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'arduino-leonardo' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "Arduino Leonardo tech specs (docs-content)",
+    "url": "https://github.com/arduino/docs-content/blob/main/content/hardware/hero/boards/leonardo/tech-specs.yml"
+   },
+   {
+    "title": "Arduino Leonardo full pinout A000057",
+    "url": "https://docs.arduino.cc/resources/pinouts/A000057-full-pinout.pdf"
+   },
+   {
+    "title": "Microchip ATmega16U4/32U4 datasheet (29.1, Table 29-1)",
+    "url": "https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7766-8-bit-AVR-ATmega16U4-32U4_Datasheet.pdf"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

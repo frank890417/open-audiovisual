@@ -1,0 +1,312 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "feather-huzzah-esp8266",
+ "part": {
+  "name": "Adafruit Feather HUZZAH with ESP8266 (2821)",
+  "zh": "Feather HUZZAH ESP8266",
+  "kind": "board",
+  "sources": [
+   {
+    "title": "Adafruit: Feather HUZZAH ESP8266, Pinouts",
+    "url": "https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/pinouts"
+   },
+   {
+    "title": "Adafruit: Feather HUZZAH ESP8266, Power Management",
+    "url": "https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/power-management"
+   },
+   {
+    "title": "Adafruit product 2821 (Feather HUZZAH with ESP8266)",
+    "url": "https://www.adafruit.com/product/2821"
+   },
+   {
+    "title": "Adafruit Feather HUZZAH ESP8266 PCB files (schematics, rev E and G)",
+    "url": "https://github.com/adafruit/Adafruit-Feather-ESP8266-HUZZAH-PCB"
+   },
+   {
+    "title": "Espressif ESP8266EX Datasheet v7.1 (Table 5-1, Table 5-3)",
+    "url": "https://documentation.espressif.com/0a-esp8266ex_datasheet_en.pdf"
+   },
+   {
+    "title": "Espressif ESP-FAQ: hardware design",
+    "url": "https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html"
+   },
+   {
+    "title": "Espressif esptool: ESP8266 boot mode selection",
+    "url": "https://docs.espressif.com/projects/esptool/en/latest/esp8266/advanced-topics/boot-mode-selection.html"
+   },
+   {
+    "title": "Microchip MCP73831/2 datasheet DS20001984H",
+    "url": "https://ww1.microchip.com/downloads/en/DeviceDoc/MCP73831-Family-Data-Sheet-DS20001984H.pdf"
+   }
+  ],
+  "supply": null,
+  "logic": {
+   "v": 3.3,
+   "vohMin": 2.64,
+   "vih": [
+    {
+     "frac": 0.75
+    }
+   ],
+   "vinMax": 3.6,
+   "fiveVoltSafe": false
+  },
+  "current": {
+   "typ": 80,
+   "max": 170
+  },
+  "charger": {
+   "part": "MCP73831",
+   "mA": 100
+  },
+  "pins": {
+   "0": {
+    "kind": "io",
+    "label": "#0",
+    "gpio": 0,
+    "aliases": [
+     "GPIO0"
+    ],
+    "boot": "gpio0"
+   },
+   "2": {
+    "kind": "io",
+    "label": "#2",
+    "gpio": 2,
+    "aliases": [
+     "GPIO2"
+    ],
+    "boot": "gpio2"
+   },
+   "4": {
+    "kind": "io",
+    "label": "#4 SDA",
+    "gpio": 4,
+    "aliases": [
+     "GPIO4",
+     "SDA"
+    ],
+    "i2c": "sda"
+   },
+   "5": {
+    "kind": "io",
+    "label": "#5 SCL",
+    "gpio": 5,
+    "aliases": [
+     "GPIO5",
+     "SCL"
+    ],
+    "i2c": "scl"
+   },
+   "12": {
+    "kind": "io",
+    "label": "#12 MISO",
+    "gpio": 12,
+    "aliases": [
+     "GPIO12",
+     "MISO"
+    ]
+   },
+   "13": {
+    "kind": "io",
+    "label": "#13 MOSI",
+    "gpio": 13,
+    "aliases": [
+     "GPIO13",
+     "MOSI"
+    ]
+   },
+   "14": {
+    "kind": "io",
+    "label": "#14 SCK",
+    "gpio": 14,
+    "aliases": [
+     "GPIO14",
+     "SCK"
+    ]
+   },
+   "15": {
+    "kind": "io",
+    "label": "#15",
+    "gpio": 15,
+    "aliases": [
+     "GPIO15"
+    ],
+    "boot": "gpio15"
+   },
+   "16": {
+    "kind": "io",
+    "label": "#16",
+    "gpio": 16,
+    "aliases": [
+     "GPIO16"
+    ],
+    "note": "接到 RST 才能從深度睡眠醒來"
+   },
+   "3V": {
+    "kind": "power-out",
+    "label": "3V",
+    "v": 3.3,
+    "limitMa": 500,
+    "recMa": 250,
+    "from": [
+     "USB",
+     "BAT"
+    ],
+    "note": "穩壓器尖峰 500 mA，建議持續低於 250 mA（Adafruit）"
+   },
+   "USB": {
+    "kind": "power-out",
+    "label": "USB",
+    "v": 5,
+    "when": "usb",
+    "note": "插 micro USB 時才有 5 V；也可以從這裡送 5 V 進板子"
+   },
+   "BAT": {
+    "kind": "power-node",
+    "label": "BAT",
+    "note": "JST-PH 電池座的正極；板上 MCP73831 從 USB 對它充電"
+   },
+   "EN": {
+    "kind": "io",
+    "label": "EN",
+    "note": "3.3 V 穩壓器致能（上拉），接地關掉 3V"
+   },
+   "RST": {
+    "kind": "reset",
+    "label": "RST"
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND"
+   },
+   "A0": {
+    "kind": "analog-in",
+    "label": "A0",
+    "vmax": 1,
+    "aliases": [
+     "ADC"
+    ],
+    "note": "最大約 1.0 V，板上沒有分壓"
+   },
+   "TX": {
+    "kind": "io",
+    "label": "TX",
+    "gpio": 1,
+    "aliases": [
+     "1",
+     "GPIO1"
+    ],
+    "boot": "tx"
+   },
+   "RX": {
+    "kind": "io",
+    "label": "RX",
+    "gpio": 3,
+    "aliases": [
+     "3",
+     "GPIO3"
+    ],
+    "boot": "rx"
+   }
+  },
+  "boot": {
+   "gpio0": "開機時被拉低就會進燒錄模式；板上紅色 LED 接在這支腳（低電位亮）。",
+   "gpio2": "開機時必須是高電位（板上 10K 上拉）。進燒錄模式時 ROM 會把 GPIO2 設成輸出並送出 UART 訊號（esptool 文件），燒錄或重開機那一下接在這裡的東西會收到雜訊；ESP 模組上的藍色 LED 也在這支腳。",
+   "gpio15": "開機時必須是低電位（板上 4.7K 下拉）；接的東西不能在開機時把它拉高，否則不會執行程式。",
+   "tx": "TX 是 USB 序列埠的線，開機時 ROM 會從這裡印出開機訊息（74880 baud）；開機時不能被拉低。",
+   "rx": "RX 是 USB 序列埠的線，接了別的東西可能燒錄失敗。"
+  },
+  "i2c": {
+   "master": true,
+   "sda": "4",
+   "scl": "5"
+  },
+  "size": {
+   "w": 51,
+   "h": 23,
+   "d": 8
+  },
+  "connector": "micro USB；JST-PH 2 pin 電池座",
+  "notes": [
+   "GPIO 全部 3.3 V，不耐 5 V（Espressif FAQ：「ESP8266 is not 5 V tolerant」，GPIO 上限 3.6 V）。"
+  ],
+  "tbd": [
+   "Adafruit 說 RX 有電平轉換、可接 5 V，但三版線路圖都只看到 1K 串聯電阻：當成只能 3.3 V。",
+   "充電電流：Adafruit 寫 100 mA；rev G 線路圖的設定電阻推算約 213 mA。",
+   "GPIO2 藍色 LED 的極性。",
+   "整塊板子深度睡眠時的電流（晶片本身 20 µA，穩壓器、CP2104、充電 IC 另計）。",
+   "尖峰電流：規格書只給 Wi-Fi 傳送時的典型值 170 mA（這裡拿它當最大值）；Espressif FAQ 建議電源能給 500 mA 以上。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "feather-huzzah-esp8266",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "Adafruit Feather HUZZAH with ESP8266 (2821)",
+  "aliases": [
+   "Feather HUZZAH ESP8266",
+   "board"
+  ],
+  "connections": [],
+  "protocols": [
+   "i2c"
+  ],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "feather-huzzah-esp8266",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'feather-huzzah-esp8266' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "Adafruit: Feather HUZZAH ESP8266, Pinouts",
+    "url": "https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/pinouts"
+   },
+   {
+    "title": "Adafruit: Feather HUZZAH ESP8266, Power Management",
+    "url": "https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/power-management"
+   },
+   {
+    "title": "Adafruit product 2821 (Feather HUZZAH with ESP8266)",
+    "url": "https://www.adafruit.com/product/2821"
+   },
+   {
+    "title": "Adafruit Feather HUZZAH ESP8266 PCB files (schematics, rev E and G)",
+    "url": "https://github.com/adafruit/Adafruit-Feather-ESP8266-HUZZAH-PCB"
+   },
+   {
+    "title": "Espressif ESP8266EX Datasheet v7.1 (Table 5-1, Table 5-3)",
+    "url": "https://documentation.espressif.com/0a-esp8266ex_datasheet_en.pdf"
+   },
+   {
+    "title": "Espressif ESP-FAQ: hardware design",
+    "url": "https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html"
+   },
+   {
+    "title": "Espressif esptool: ESP8266 boot mode selection",
+    "url": "https://docs.espressif.com/projects/esptool/en/latest/esp8266/advanced-topics/boot-mode-selection.html"
+   },
+   {
+    "title": "Microchip MCP73831/2 datasheet DS20001984H",
+    "url": "https://ww1.microchip.com/downloads/en/DeviceDoc/MCP73831-Family-Data-Sheet-DS20001984H.pdf"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

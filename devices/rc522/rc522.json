@@ -1,0 +1,140 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "rc522",
+ "part": {
+  "name": "RC522 RFID module (NXP MFRC522)",
+  "zh": "RC522 RFID 讀卡模組",
+  "kind": "module",
+  "sources": [
+   {
+    "title": "NXP MFRC522 datasheet (Table 150, 153)",
+    "url": "https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf"
+   },
+   {
+    "title": "Joy-IT SBC-RFID-RC522 manual (2024-04-23)",
+    "url": "https://www.joy-it.net/files/files/Produkte/SBC-RFID-RC522/SBC-RFID-RC522_Manual_2024-04-23.pdf"
+   }
+  ],
+  "supply": {
+   "min": 2.5,
+   "max": 3.6,
+   "nominal": 3.3
+  },
+  "logic": {
+   "v": 3.3,
+   "vohMin": null,
+   "vih": [
+    {
+     "frac": 0.7
+    }
+   ],
+   "vinMax": {
+    "aboveVdd": 0.5
+   },
+   "fiveVoltSafe": false
+  },
+  "current": {
+   "typ": null,
+   "max": null
+  },
+  "pins": {
+   "3.3V": {
+    "kind": "power-in",
+    "label": "3.3V",
+    "aliases": [
+     "VCC",
+     "3V3"
+    ]
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND"
+   },
+   "RST": {
+    "kind": "data-in",
+    "label": "RST"
+   },
+   "SDA": {
+    "kind": "spi-cs",
+    "label": "SDA/SS",
+    "aliases": [
+     "SS",
+     "NSS",
+     "CS"
+    ]
+   },
+   "SCK": {
+    "kind": "spi-sck",
+    "label": "SCK"
+   },
+   "MOSI": {
+    "kind": "spi-mosi",
+    "label": "MOSI"
+   },
+   "MISO": {
+    "kind": "spi-miso",
+    "label": "MISO"
+   },
+   "IRQ": {
+    "kind": "data-out",
+    "label": "IRQ"
+   }
+  },
+  "size": null,
+  "connector": null,
+  "notes": [
+   "只能 3.3 V 供電；輸入腳上限約 VDD + 0.5 V，接 5 V 板子的 SPI 要降壓（Joy-IT 手冊）。",
+   "天線驅動電流：晶片 60 mA typ、100 mA max（3 V）。"
+  ],
+  "tbd": [
+   "模組整體耗電與尺寸（常見寫 40 × 60 mm，未見原廠資料）。",
+   "排針規格與腳位順序（各家不同，照板上印字接）。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "rc522",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "RC522 RFID module (NXP MFRC522)",
+  "aliases": [
+   "RC522 RFID 讀卡模組",
+   "module"
+  ],
+  "connections": [],
+  "protocols": [
+   "spi"
+  ],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "rc522",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'rc522' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "NXP MFRC522 datasheet (Table 150, 153)",
+    "url": "https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf"
+   },
+   {
+    "title": "Joy-IT SBC-RFID-RC522 manual (2024-04-23)",
+    "url": "https://www.joy-it.net/files/files/Produkte/SBC-RFID-RC522/SBC-RFID-RC522_Manual_2024-04-23.pdf"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

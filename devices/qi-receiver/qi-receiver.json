@@ -1,0 +1,96 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "qi-receiver",
+ "part": {
+  "name": "Adafruit Universal Qi wireless receiver (1901)",
+  "zh": "Qi 無線充電接收模組",
+  "kind": "power",
+  "sources": [
+   {
+    "title": "Adafruit product 1901 (Universal Qi wireless receiver)",
+    "url": "https://www.adafruit.com/product/1901"
+   }
+  ],
+  "supply": null,
+  "current": {
+   "typ": 0,
+   "max": 0
+  },
+  "pins": {
+   "V+": {
+    "kind": "power-out",
+    "label": "V+",
+    "v": [
+     4.8,
+     5.2
+    ],
+    "limitMa": 500,
+    "when": "charger",
+    "aliases": [
+     "5V",
+     "VOUT",
+     "+"
+    ]
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND",
+    "aliases": [
+     "-"
+    ]
+   }
+  },
+  "size": {
+   "w": 40,
+   "h": 29,
+   "d": null
+  },
+  "connector": "焊線",
+  "notes": [
+   "輸出 4.8–5.2 V、500 mA（不是 1 A）。線圈 40 × 29 mm，要朝外貼著充電座。只吃 Qi 發射器。"
+  ],
+  "tbd": [
+   "模組厚度。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "qi-receiver",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "Adafruit Universal Qi wireless receiver (1901)",
+  "aliases": [
+   "Qi 無線充電接收模組",
+   "power"
+  ],
+  "connections": [],
+  "protocols": [],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "qi-receiver",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'qi-receiver' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "Adafruit product 1901 (Universal Qi wireless receiver)",
+    "url": "https://www.adafruit.com/product/1901"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

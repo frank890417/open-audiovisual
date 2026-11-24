@@ -1,0 +1,153 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "sk6812",
+ "part": {
+  "name": "SK6812 addressable LEDs (RGB / RGBW)",
+  "zh": "SK6812 燈條／燈珠",
+  "kind": "light",
+  "leds": 1,
+  "sources": [
+   {
+    "title": "Opsco SK6812RGBW datasheet rev01",
+    "url": "https://cdn-shop.adafruit.com/product-files/2757/p2757_SK6812RGBW_REV01.pdf"
+   },
+   {
+    "title": "SK6812 (RGB) datasheet",
+    "url": "https://cdn-shop.adafruit.com/product-files/1138/SK6812+LED+datasheet+.pdf"
+   },
+   {
+    "title": "Adafruit NeoPixel Überguide: powering NeoPixels",
+    "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/powering-neopixels"
+   },
+   {
+    "title": "Adafruit NeoPixel Überguide: best practices",
+    "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/best-practices"
+   }
+  ],
+  "supply": {
+   "min": 3.5,
+   "max": 5.5,
+   "nominal": 5
+  },
+  "logic": {
+   "v": null,
+   "vohMin": null,
+   "vih": [
+    {
+     "v": 3.4,
+     "atVdd": 5,
+     "rev": "SK6812"
+    }
+   ],
+   "vinMax": null,
+   "fiveVoltSafe": true
+  },
+  "perLed": {
+   "typ": null,
+   "max": null
+  },
+  "pins": {
+   "VDD": {
+    "kind": "power-in",
+    "label": "VDD",
+    "aliases": [
+     "5V",
+     "VCC",
+     "+"
+    ]
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND",
+    "aliases": [
+     "VSS",
+     "-"
+    ]
+   },
+   "DIN": {
+    "kind": "data-in",
+    "label": "DIN",
+    "aliases": [
+     "DI",
+     "IN"
+    ]
+   },
+   "DOUT": {
+    "kind": "data-out",
+    "label": "DOUT",
+    "aliases": [
+     "DO",
+     "OUT"
+    ]
+   }
+  },
+  "size": {
+   "w": 5,
+   "h": 5.5,
+   "d": 1.6
+  },
+  "connector": "燈條三線（5V、GND、DIN）",
+  "notes": [
+   "VDD 5 V 時輸入高電位要 3.4 V（規格書）；其他電壓這裡等比例推算。",
+   "RGBW 每顆 32 bit（RGB 是 24 bit），程式要選對型號。",
+   "資料線靠近第一顆燈那端串一顆 300–500 Ω 電阻，電源正負之間並一顆 500–1000 µF（6.3 V 以上）電容（Adafruit NeoPixel Überguide）。",
+   "用 LiPo 直接以 3.7 V 供電時，3.3 V 的資料訊號可以用；用 5 V 供電、3.3 V 板子推時，要加電平轉換（74AHCT125 或 74HCT245）（Adafruit NeoPixel Überguide）。"
+  ],
+  "tbd": [
+   "每顆燈的電流（兩份規格書都沒寫）。",
+   "RGB 版的供電範圍。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "sk6812",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "SK6812 addressable LEDs (RGB / RGBW)",
+  "aliases": [
+   "SK6812 燈條／燈珠",
+   "light"
+  ],
+  "connections": [],
+  "protocols": [],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "sk6812",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'sk6812' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "Opsco SK6812RGBW datasheet rev01",
+    "url": "https://cdn-shop.adafruit.com/product-files/2757/p2757_SK6812RGBW_REV01.pdf"
+   },
+   {
+    "title": "SK6812 (RGB) datasheet",
+    "url": "https://cdn-shop.adafruit.com/product-files/1138/SK6812+LED+datasheet+.pdf"
+   },
+   {
+    "title": "Adafruit NeoPixel Überguide: powering NeoPixels",
+    "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/powering-neopixels"
+   },
+   {
+    "title": "Adafruit NeoPixel Überguide: best practices",
+    "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/best-practices"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

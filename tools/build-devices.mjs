@@ -1,67 +1,49 @@
 #!/usr/bin/env node
-// build-devices — the list @openav/devices answers devices() from: packages/devices/catalog.js.
+// build-devices — the device collection: the list @openav/devices answers devices() from, and its pages on the site.
 //
-//   node tools/build-devices.mjs          # write packages/devices/catalog.js
-//   node tools/build-devices.mjs --check  # exit 1 if it is stale (a profile, fixture, part or record added, removed or changed)
+//   node tools/build-devices.mjs          # write packages/devices/catalog.js, /devices/, /fixtures/<id>/, /devices/<id>/ (en + zh), sitemap.xml
+//   node tools/build-devices.mjs --check  # exit 1 if any of them is stale (a profile, fixture, part or record added, removed or changed)
 //
-// It reads every file that describes a device, where it lives, and writes one row per device: every MIDI profile
-// (packages/midi/profiles/*.json and profiles/imported/*.json), every DMX fixture (packages/dmx/fixtures/*.json and fixtures/imported/,
-// where tools/import-ofl.mjs writes), every part of
-// packages/hw/parts.js, and every hand-written record (packages/devices/records/*.json). The rows are read off those files by
-// the functions device() uses on the one file it loads (packages/devices/derive.js), so the list carries no fact of its own
-// and a browser lists the collection without loading 56 profiles. A record that does not validate, a file whose name is not
-// its id, or one id used twice stops the build.
+// It reads every file that describes a device, where it lives (tools/devices/sources.mjs): every MIDI profile
+// (packages/midi/profiles/*.json and profiles/imported/*.json), every DMX fixture (packages/dmx/fixtures/*.json and
+// fixtures/imported/, where tools/import-ofl.mjs writes), every part of packages/hw/parts.js, and every hand-written record
+// (packages/devices/records/*.json). The rows are read off those files by the functions device() uses on the one file it
+// loads (packages/devices/derive.js), so the list carries no fact of its own and a browser lists the collection without
+// loading the profiles. A record that does not validate, a file whose name is not its id, or one id used twice stops the build.
+//
+// The pages (templates in tools/devices/, strings in tools/devices/en.mjs and zh.mjs, behaviour in assets/devices/):
+//   /devices/               the hub: every device, grouped by kind; a controller links to its /controllers/<id>/ page
+//   /fixtures/<id>/         one per DMX fixture: every mode's channel table, a virtual fixture, the code, the file
+//   /devices/<id>/          one per record or part that offers at least two of: something to try, code, a file (sources.mjs, PAGE_MIN)
+// and next to an English /devices/<id>/ page the files it hands over (a part's JSON, an out-bridge config).
+// Run tools/stamp-version.mjs afterwards, as before every deploy; --check ignores ?v= stamps and <lastmod>.
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import { isMain } from './site/is-main.mjs';
+import { collectionRows, collection, ownPages, HUB_PATH, sourcesOnDisk } from './devices/sources.mjs';
+import { shapeDiff } from './build-home.mjs';
+import { sitemapXml, unstamp } from './site/pages.mjs';
+import { catalog as controllerCatalog } from './controllers/page.mjs';
+import { renderHub } from './devices/hub.mjs';
+import { renderFixture } from './devices/fixture.mjs';
+import { renderDevice, deviceFiles } from './devices/device.mjs';
+import en from './devices/en.mjs';
+import zh from './devices/zh.mjs';
+import homeEn from './home/en.mjs';
+import homeZh from './home/zh.mjs';
 
+export { sourcesOnDisk };
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const PKGS = path.join(ROOT, 'packages');
 export const CATALOG_FILE = 'packages/devices/catalog.js';
 const read = (rel) => { try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return null; } };
-const jsonFiles = (rel) => (fs.existsSync(path.join(PKGS, rel)) ? fs.readdirSync(path.join(PKGS, rel)).filter((f) => f.endsWith('.json') && !f.endsWith('.schema.json')).sort() : []);
-const unstamp = (s) => String(s).replace(/\?v=[\w.+-]+/g, '');
-
-/** Every device source on disk: [{ from, file (inside packages/), id }] — what the "nothing left out" test reads too. */
-export function sourcesOnDisk() {
-  const out = [];
-  for (const f of jsonFiles('midi/profiles')) out.push({ from: 'midi-profile', file: `midi/profiles/${f}`, id: f.replace(/\.json$/, '') });
-  for (const f of jsonFiles('midi/profiles/imported')) out.push({ from: 'midi-profile', file: `midi/profiles/imported/${f}`, id: f.replace(/\.json$/, '') });
-  for (const f of jsonFiles('dmx/fixtures')) out.push({ from: 'dmx-fixture', file: `dmx/fixtures/${f}`, id: f.replace(/\.json$/, '') });
-  for (const f of jsonFiles('dmx/fixtures/imported')) out.push({ from: 'dmx-fixture', file: `dmx/fixtures/imported/${f}`, id: f.replace(/\.json$/, '') });   // tools/import-ofl.mjs writes here
-  for (const f of jsonFiles('devices/records')) out.push({ from: 'device-record', file: `devices/records/${f}`, id: f.replace(/\.json$/, '') });
-  return out;
-}
+const T = { en, zh }, HOME = { en: homeEn, zh: homeZh };
+const lp = (lang) => (lang === 'zh' ? 'zh/' : '');
 
 /** The rows, in collection order: kind, then name. Throws on anything that would make the list lie. */
 export async function buildCatalog() {
-  const imp = (rel) => import(pathToFileURL(path.join(PKGS, rel)).href);
-  const { KINDS, validateDevice, indexRow } = await imp('devices/record.js');
-  const { fromMidiProfile, fromFixture, fromPart } = await imp('devices/derive.js');
-  const { PARTS } = await imp('hw/parts.js');
-  const rows = [];
-  const problems = [];
-  const add = (record, from, file) => {
-    const errs = validateDevice(record);
-    if (errs.length) problems.push(...errs.map((e) => `${file}: ${e}`));
-    rows.push(indexRow(record, from, file));
-  };
-  for (const s of sourcesOnDisk()) {
-    const data = JSON.parse(fs.readFileSync(path.join(PKGS, s.file), 'utf8'));
-    if (data.id !== s.id) problems.push(`${s.file}: its id is "${data.id}", the file name says "${s.id}"`);
-    if (s.from === 'midi-profile') add(fromMidiProfile(data, { file: s.file }), s.from, s.file);
-    else if (s.from === 'dmx-fixture') add(fromFixture(data, { file: s.file }), s.from, s.file);
-    else add(data, s.from, s.file);
-  }
-  for (const [id, part] of Object.entries(PARTS)) add(fromPart(id, part, { file: 'hw/parts.js' }), 'hw-part', 'hw/parts.js');
-  const seen = new Map();
-  for (const r of rows) { if (seen.has(r.id)) problems.push(`id "${r.id}" is used by ${seen.get(r.id)} and ${r.file}`); seen.set(r.id, r.file); }
-  if (problems.length) throw new Error('device collection:\n  ' + problems.join('\n  '));
-  const order = new Map(KINDS.map((k, i) => [k, i]));
-  rows.sort((a, b) => order.get(a.kind) - order.get(b.kind) || a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }) || a.id.localeCompare(b.id));
-  return rows;
+  return collectionRows();
 }
 
 /** catalog.js: one row per line, so a change to one device is a change to one line in git. */
@@ -79,16 +61,69 @@ ${rows.map((r) => '  ' + JSON.stringify(r)).join(',\n')},
 `;
 }
 
+/** Where a page of this generator is written, in one language. */
+export const pageFile = (p, lang) => `${lp(lang)}${p}index.html`;
+
+/** Every file this generator writes: { path: text }. */
+export async function buildFiles() {
+  const diff = shapeDiff(en, zh);
+  if (diff.length) throw new Error('devices string tables differ in shape:\n  ' + diff.join('\n  '));
+  const files = { [CATALOG_FILE]: catalogText(await buildCatalog()) };
+  const list = collection();
+  const ctl = controllerCatalog().byId;
+  const own = ownPages(list);
+  const fixtures = own.filter((d) => d.row.kind === 'dmx-fixture');
+  const pages = own.filter((d) => d.row.kind !== 'dmx-fixture');
+  for (const lang of ['en', 'zh']) {
+    files[pageFile(HUB_PATH, lang)] = renderHub(T[lang], HOME[lang], lang, list, ctl);
+    for (const d of fixtures) files[pageFile(d.page, lang)] = renderFixture(T[lang], HOME[lang], lang, d, { fixtures });
+    for (const d of pages) files[pageFile(d.page, lang)] = await renderDevice(T[lang], HOME[lang], lang, d, { pages });
+  }
+  for (const d of pages) for (const [name, text] of Object.entries(deviceFiles(d))) files[`${d.page}${name}`] = text;
+  files['sitemap.xml'] = sitemapXml();
+  return files;
+}
+
+/** Page folders on disk that no device asks for any more (fixtures/<x>/, devices/<x>/, both languages). */
+export function orphanPages(files) {
+  const out = [];
+  for (const base of ['fixtures', 'zh/fixtures', 'devices', 'zh/devices']) {
+    const dir = path.join(ROOT, base);
+    if (!fs.existsSync(dir)) continue;
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const rel = `${base}/${e.name}/index.html`;
+      if (e.isDirectory() && fs.existsSync(path.join(ROOT, rel)) && !(rel in files)) out.push(rel);
+    }
+  }
+  return out;
+}
+
+/** Which committed files differ from what the generator writes now (and which pages nothing asks for any more). */
+export function staleFiles(files) {
+  const stale = [];
+  for (const [rel, out] of Object.entries(files)) {
+    const cur = read(rel);
+    if (cur === null || unstamp(cur) !== unstamp(out)) stale.push(rel);
+  }
+  for (const rel of orphanPages(files)) stale.push(rel + '  (no device asks for it any more: delete it)');
+  return stale;
+}
+
 if (isMain(import.meta.url)) {
-  const check = process.argv.includes('--check');
-  let out;
-  try { out = catalogText(await buildCatalog()); } catch (e) { console.error('✗ ' + e.message); process.exit(1); }
-  if (check) {
-    const cur = read(CATALOG_FILE);
-    if (cur === null || unstamp(cur) !== unstamp(out)) { console.error(`stale (run node tools/build-devices.mjs):\n  ${CATALOG_FILE}`); process.exit(1); }
-    console.log('✅ device collection up to date (packages/devices/catalog.js)');
+  let files;
+  try { files = await buildFiles(); } catch (e) { console.error('✗ ' + (e.stack || e.message)); process.exit(1); }
+  if (process.argv.includes('--check')) {
+    const stale = staleFiles(files);
+    if (stale.length) { console.error('stale (run node tools/build-devices.mjs):\n  ' + stale.join('\n  ')); process.exit(1); }
+    console.log(`✅ device collection up to date (${CATALOG_FILE}, ${Object.keys(files).length - 2} pages and files, sitemap)`);
   } else {
-    fs.writeFileSync(path.join(ROOT, CATALOG_FILE), out);
-    console.log('wrote', CATALOG_FILE, `(${out.length} bytes)`);
+    let bytes = 0;
+    for (const [rel, out] of Object.entries(files)) {
+      fs.mkdirSync(path.dirname(path.join(ROOT, rel)), { recursive: true });
+      fs.writeFileSync(path.join(ROOT, rel), out);
+      bytes += out.length;
+    }
+    for (const rel of orphanPages(files)) console.warn('orphan (no device asks for it any more):', rel);
+    console.log(`wrote ${Object.keys(files).length} files (${CATALOG_FILE}, the hub, ${Object.keys(files).filter((f) => /^(zh\/)?(fixtures|devices)\/[^/]+\/index\.html$/.test(f)).length} device pages, sitemap.xml), ${bytes} bytes`);
   }
 }

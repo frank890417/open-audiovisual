@@ -1,0 +1,122 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "tp4056-usbc",
+ "part": {
+  "name": "TP4056 USB-C LiPo charger module (with DW01A protection)",
+  "zh": "TP4056 Type-C 鋰電池充電板",
+  "kind": "power",
+  "sources": [
+   {
+    "title": "NanJing Top Power TP4056 datasheet",
+    "url": "https://www.mikrocontroller.net/attachment/273612/TP4056.pdf"
+   },
+   {
+    "title": "TP4056 datasheet (2020, other vendor)",
+    "url": "https://evelta.com/content/datasheets/464-TP4056.pdf"
+   },
+   {
+    "title": "DW01 battery protection datasheet",
+    "url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/7158/5272_DW01.pdf"
+   }
+  ],
+  "supply": {
+   "min": 4,
+   "max": 8,
+   "nominal": 5
+  },
+  "charger": {
+   "part": "TP4056",
+   "mA": null
+  },
+  "current": {
+   "typ": 0,
+   "max": 0
+  },
+  "pins": {
+   "IN+": {
+    "kind": "power-in",
+    "label": "IN+"
+   },
+   "IN-": {
+    "kind": "gnd",
+    "label": "IN−"
+   },
+   "B+": {
+    "kind": "power-node",
+    "label": "B+"
+   },
+   "B-": {
+    "kind": "gnd",
+    "label": "B−"
+   },
+   "OUT+": {
+    "kind": "power-node",
+    "label": "OUT+"
+   },
+   "OUT-": {
+    "kind": "gnd",
+    "label": "OUT−"
+   }
+  },
+  "size": null,
+  "connector": "USB-C",
+  "notes": [
+   "充到 4.2 V；充電電流由 PROG 電阻決定：原廠 TP4056 是 1.2K＝1 A、2.4K＝500 mA。",
+   "DW01 保護：過放 2.4 V、過充 4.3 V（典型值）。"
+  ],
+  "bomNote": "各家模組的 PROG 電阻值不同（待查），買來先看：原廠 TP4056 是 1.2K＝1 A，仿製晶片 1K 就是 1 A、輸入上限只有 6.5 V；Adafruit 500 mAh 電池寫充電 500 mA 以下。",
+  "tbd": [
+   "模組腳位名稱與尺寸（沒有原廠）。",
+   "各家模組的 PROG 電阻值。",
+   "FS8205A 規格。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "tp4056-usbc",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "TP4056 USB-C LiPo charger module (with DW01A protection)",
+  "aliases": [
+   "TP4056 Type-C 鋰電池充電板",
+   "power"
+  ],
+  "connections": [],
+  "protocols": [],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "tp4056-usbc",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'tp4056-usbc' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "NanJing Top Power TP4056 datasheet",
+    "url": "https://www.mikrocontroller.net/attachment/273612/TP4056.pdf"
+   },
+   {
+    "title": "TP4056 datasheet (2020, other vendor)",
+    "url": "https://evelta.com/content/datasheets/464-TP4056.pdf"
+   },
+   {
+    "title": "DW01 battery protection datasheet",
+    "url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/7158/5272_DW01.pdf"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

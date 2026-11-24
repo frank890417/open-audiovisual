@@ -1,0 +1,137 @@
+{
+ "format": "open-audiovisual/hw-part@1",
+ "id": "mpu6050-gy521",
+ "part": {
+  "name": "MPU-6050 on a GY-521 module",
+  "zh": "MPU-6050 六軸（GY-521 模組）",
+  "kind": "sensor",
+  "sources": [
+   {
+    "title": "TDK InvenSense MPU-6000/6050 product specification PS-MPU-6000A rev 3.1",
+    "url": "https://cdn.sparkfun.com/datasheets/Components/General%20IC/PS-MPU-6000A.pdf"
+   },
+   {
+    "title": "Arduino Playground: MPU-6050 (GY-521)",
+    "url": "https://playground.arduino.cc/Main/MPU-6050/"
+   }
+  ],
+  "supply": {
+   "min": null,
+   "max": null,
+   "nominal": 5
+  },
+  "logic": {
+   "v": null,
+   "vohMin": null,
+   "vih": [
+    {
+     "frac": 0.7
+    }
+   ],
+   "vinMax": null,
+   "fiveVoltSafe": null
+  },
+  "current": {
+   "typ": 3.9,
+   "max": null
+  },
+  "pins": {
+   "VCC": {
+    "kind": "power-in",
+    "label": "VCC"
+   },
+   "GND": {
+    "kind": "gnd",
+    "label": "GND"
+   },
+   "SCL": {
+    "kind": "i2c-scl",
+    "label": "SCL"
+   },
+   "SDA": {
+    "kind": "i2c-sda",
+    "label": "SDA"
+   },
+   "XDA": {
+    "kind": "io",
+    "label": "XDA"
+   },
+   "XCL": {
+    "kind": "io",
+    "label": "XCL"
+   },
+   "AD0": {
+    "kind": "data-in",
+    "label": "AD0"
+   },
+   "INT": {
+    "kind": "data-out",
+    "label": "INT"
+   }
+  },
+  "i2c": {
+   "addr": [
+    "0x68",
+    "0x69"
+   ],
+   "default": "0x68",
+   "select": "AD0 接地＝0x68，接高＝0x69（MPU-6050 規格書）"
+  },
+  "size": null,
+  "connector": "8 pin 排針",
+  "notes": [
+   "晶片 VDD 2.375–3.46 V；GY-521 板上有穩壓器，Arduino Playground 建議 VCC 給 5 V。",
+   "I²C 上拉電阻在模組上（各批 10K 或 2.2K）。"
+  ],
+  "tbd": [
+   "GY-521 的穩壓器型號、VCC 範圍、尺寸、腳位（沒有原廠文件）。",
+   "模組上的 I²C 上拉與邏輯電壓（VLOGIC）接到哪個電壓。"
+  ]
+ },
+ "record": {
+  "format": "open-audiovisual/device@1",
+  "id": "mpu6050-gy521",
+  "kind": "part",
+  "manufacturer": null,
+  "name": "MPU-6050 on a GY-521 module",
+  "aliases": [
+   "MPU-6050 六軸（GY-521 模組）",
+   "sensor"
+  ],
+  "connections": [],
+  "protocols": [
+   "i2c"
+  ],
+  "data": {
+   "ref": {
+    "type": "hw-part",
+    "id": "mpu6050-gy521",
+    "file": "hw/parts.js"
+   }
+  },
+  "setup": [],
+  "problems": [],
+  "use": [
+   {
+    "package": "@openav/hw",
+    "entry": "Hw",
+    "call": "Hw.check({ board, parts: { x: { part: 'mpu6050-gy521' } }, wires })",
+    "en": "Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.",
+    "zh": "列在規格的零件裡，就跟其他接線一起檢查：電壓、腳位、電流。"
+   }
+  ],
+  "sources": [
+   {
+    "title": "TDK InvenSense MPU-6000/6050 product specification PS-MPU-6000A rev 3.1",
+    "url": "https://cdn.sparkfun.com/datasheets/Components/General%20IC/PS-MPU-6000A.pdf"
+   },
+   {
+    "title": "Arduino Playground: MPU-6050 (GY-521)",
+    "url": "https://playground.arduino.cc/Main/MPU-6050/"
+   }
+  ],
+  "license": "MIT",
+  "verified": false,
+  "verifications": []
+ }
+}

@@ -1,0 +1,80 @@
+/* /devices/, /fixtures/<id>/, /devices/<id>/ — on top of assets/home/home.css and assets/controllers/controllers.css.
+   The dark console theme; stage-readable contrast first. Nothing here moves faster than a person would: the virtual fixture's
+   swatch never flashes (it says the strobe rate in words). */
+
+/* ---------------------------------------------------------------- the hub */
+.dev-filter { display: grid; gap: 10px; margin: 0 0 28px; }
+.dev-search input { width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--line-2); background: var(--void); color: var(--fg); font: 500 15px var(--mono); }
+.dev-search input:focus-visible { outline: 2px solid var(--sig); outline-offset: 2px; }
+.dev-maker { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font: 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); }
+.dev-maker select, .vfx-field select, .vfx-field input { max-width: 100%; padding: 7px 8px; border: 1px solid var(--line-2); background: var(--void); color: var(--fg); font: 500 13px var(--mono); }
+.dev-none { color: var(--l3); font: 13px var(--mono); }
+.dev-group { margin: 0 0 40px; }
+.dev-group[hidden] { display: none; }
+.dev-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 0 24px; }
+.dev { display: grid; gap: 2px; padding: 10px 0; border-bottom: 1px solid var(--line); min-width: 0; }
+.dev[hidden] { display: none; }
+.dev-name { font-weight: 600; overflow-wrap: anywhere; }
+a.dev-name { text-decoration: none; }
+a.dev-name:hover { color: var(--sig); }
+.dev-meta, .dev-al { font: 12px/1.5 var(--mono); color: var(--fg-3); overflow-wrap: anywhere; }
+.dev-al { color: var(--fg-2); }
+.dev-nopage { font: 12px/1.5 var(--mono); color: var(--l3); }
+
+/* ---------------------------------------------------------------- the virtual fixture */
+.vfx { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(16px, 3vw, 40px); align-items: start; }
+.vfx > .note { grid-column: 1 / -1; }
+.vfx-controls { display: grid; gap: 12px; min-width: 0; }
+.vfx-field { display: grid; gap: 4px; font: 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); }
+.vfx-sliders { display: grid; gap: 8px; min-width: 0; }
+.vfx-sliders h4 { margin: 10px 0 0; font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.vfx-slider { display: grid; grid-template-columns: minmax(5.5em, 9em) minmax(0, 1fr) 3.2em; align-items: center; gap: 10px; font: 13px var(--mono); color: var(--fg-2); min-width: 0; }
+.vfx-slider span { overflow-wrap: anywhere; }
+.vfx-slider input { width: 100%; min-width: 0; accent-color: var(--sig); }
+.vfx-slider output { text-align: right; color: var(--fg); font-variant-numeric: tabular-nums; }
+.vfx-out { min-width: 0; }
+.vfx-k { margin: 0 0 6px; font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.vfx-look { display: flex; gap: 16px; align-items: center; margin: 0 0 8px; }
+.vfx-swatch { width: clamp(96px, 22vw, 160px); aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--line-2); background: #000; box-shadow: 0 0 40px 0 var(--glow, transparent); transition: background-color .12s linear, box-shadow .12s linear; }
+.vfx-swatch[data-state="strobe"] { background-image: repeating-linear-gradient(45deg, transparent 0 10px, rgba(0, 0, 0, .55) 10px 20px); }
+.vfx-aim { width: 96px; height: 96px; fill: none; stroke: var(--line-2); }
+.vfx-aim .dot { fill: var(--sig); stroke: none; }
+.vfx-state { margin: 0 0 16px; font: 13px var(--mono); color: var(--fg-2); min-height: 1.5em; }
+.vfx-bytes td.n, .vfx-bytes td.b { text-align: right; font-variant-numeric: tabular-nums; }
+.vfx-bytes td.b { color: var(--fg); font-weight: 600; }
+.vfx-bytes tr[data-changed] td.b { color: var(--sig); }
+.vfx-print { display: flex; flex-wrap: wrap; gap: 6px 14px; padding-left: 1.4em; font: 13px var(--mono); }
+.vfx-print li { min-width: 7em; }
+.mode-table { margin: 0 0 32px; }
+.mode-table h3 span { color: var(--fg-3); font: 500 13px var(--mono); margin-left: 8px; }
+.ch-table td:last-child { min-width: 16em; }
+.credit { max-width: 72ch; }
+
+/* ---------------------------------------------------------------- device pages */
+.facts-table th[scope="row"] { white-space: nowrap; }
+.facts-table td small { display: block; color: var(--fg-3); }
+.uses { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.uses li { border-left: 2px solid var(--line-2); padding-left: 14px; min-width: 0; }
+.uses pre { margin: 6px 0; padding: 10px 12px; overflow-x: auto; background: var(--void); border: 1px solid var(--line); font-size: 12.5px; }
+.steps { padding-left: 1.4em; display: grid; gap: 8px; max-width: 80ch; }
+.steps .src-note, .cnotes .src-note { display: block; font: 12px var(--mono); color: var(--fg-3); }
+.tbd li { color: var(--l3); }
+.part-facts { max-width: 760px; }
+.live .vf-row { flex-wrap: wrap; }
+.live-video { display: block; width: min(100%, 640px); aspect-ratio: 16 / 9; margin: 12px 0; background: #000; border: 1px solid var(--line); }
+.live-meter { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
+.live-meter meter { width: min(100%, 320px); height: 14px; }
+.live-settings { margin-top: 12px; max-width: 640px; }
+.frame-bytes { margin: 0 0 8px; padding: 12px 14px; overflow-x: auto; background: var(--void); border: 1px solid var(--line); font-size: 12.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.frame .vfx-sliders { max-width: 520px; margin-bottom: 12px; }
+
+@media (max-width: 860px) {
+  .vfx { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .vfx-slider { grid-template-columns: minmax(4.5em, 7em) minmax(0, 1fr) 2.8em; gap: 8px; }
+  .facts-table th[scope="row"] { white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vfx-swatch { transition: none; }
+}

@@ -1,0 +1,20 @@
+{
+ "channels": [
+  {
+   "match": "light/*",
+   "sink": "ddp",
+   "host": "192.168.1.50",
+   "port": 4048,
+   "pixels": 60,
+   "map": "rgb-index"
+  },
+  {
+   "match": "*",
+   "sink": "log"
+  }
+ ],
+ "safe": {
+  "light/*": 0
+ },
+ "timeoutMs": 500
+}

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arduino Leonardo (A000057): pinout, voltage and current — open-audiovisual</title>
+<meta name="description" content="Arduino Leonardo (A000057): board. Pins, supply and logic voltages, current, each from its datasheet. Code to check a wiring.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://openaudiovisual.com/devices/arduino-leonardo/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/devices/arduino-leonardo/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/devices/arduino-leonardo/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/devices/arduino-leonardo/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Arduino Leonardo (A000057): pinout, voltage and current — open-audiovisual">
+<meta property="og:description" content="Arduino Leonardo (A000057): board. Pins, supply and logic voltages, current, each from its datasheet. Code to check a wiring.">
+<meta property="og:url" content="https://openaudiovisual.com/devices/arduino-leonardo/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Arduino Leonardo (A000057): pinout, voltage and current — open-audiovisual">
+<meta name="twitter:description" content="Arduino Leonardo (A000057): board. Pins, supply and logic voltages, current, each from its datasheet. Code to check a wiring.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css">
+<script type="module" src="../../assets/search/search.js"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="device" data-oav-id="arduino-leonardo">
+<script defer src="../../assets/track.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/devices/arduino-leonardo/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Devices","item":"https://openaudiovisual.com/devices/"},{"@type":"ListItem","position":3,"name":"Arduino Leonardo (A000057)","item":"https://openaudiovisual.com/devices/arduino-leonardo/"}]},{"@type":"WebPage","@id":"https://openaudiovisual.com/devices/arduino-leonardo/#webpage","url":"https://openaudiovisual.com/devices/arduino-leonardo/","name":"Arduino Leonardo (A000057): pinout, voltage and current — open-audiovisual","description":"Arduino Leonardo (A000057): board. Pins, supply and logic voltages, current, each from its datasheet. Code to check a wiring.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"breadcrumb":{"@id":"https://openaudiovisual.com/devices/arduino-leonardo/#breadcrumb"},"about":{"@id":"https://openaudiovisual.com/devices/arduino-leonardo/#product"},"mainEntity":{"@id":"https://openaudiovisual.com/devices/arduino-leonardo/#dataset"}},{"@type":"Thing","@id":"https://openaudiovisual.com/devices/arduino-leonardo/#product","name":"Arduino Leonardo (A000057)","description":"board"},{"@type":"Dataset","@id":"https://openaudiovisual.com/devices/arduino-leonardo/#dataset","name":"Arduino Leonardo (A000057): pins and ratings","description":"Arduino Leonardo (A000057): board. Pins, supply and logic voltages, current, each from its datasheet. Code to check a wiring.","url":"https://openaudiovisual.com/devices/arduino-leonardo/","inLanguage":"en","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"creator":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/devices/#dataset"},"about":{"@id":"https://openaudiovisual.com/devices/arduino-leonardo/#product"},"keywords":["Arduino Leonardo (A000057)","board","I²C"],"distribution":[{"@type":"DataDownload","name":"arduino-leonardo.json","encodingFormat":"application/json","contentUrl":"https://openaudiovisual.com/devices/arduino-leonardo/arduino-leonardo.json"}],"citation":[{"@type":"CreativeWork","name":"Arduino Leonardo tech specs (docs-content)","url":"https://github.com/arduino/docs-content/blob/main/content/hardware/hero/boards/leonardo/tech-specs.yml"},{"@type":"CreativeWork","name":"Arduino Leonardo full pinout A000057","url":"https://docs.arduino.cc/resources/pinouts/A000057-full-pinout.pdf"},{"@type":"CreativeWork","name":"Microchip ATmega16U4/32U4 datasheet (29.1, Table 29-1)","url":"https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7766-8-bit-AVR-ATmega16U4-32U4_Datasheet.pdf"}]},{"@type":"Dataset","@id":"https://openaudiovisual.com/devices/#dataset","name":"open-audiovisual device collection","url":"https://openaudiovisual.com/devices/","isPartOf":{"@id":"https://openaudiovisual.com/#software"}}]}</script>
+<link rel="alternate" type="application/json" href="../../devices/arduino-leonardo/arduino-leonardo.json" title="Arduino Leonardo (A000057) (JSON)">
+<link rel="stylesheet" href="../../assets/controllers/controllers.css">
+<link rel="stylesheet" href="../../assets/devices/devices.css">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+</head>
+<body class="page-controllers page-controller page-device">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../devices/arduino-leonardo/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/devices/arduino-leonardo/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="ch-hero" id="about" aria-labelledby="about-title">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../../">Home</a></li>
+        <li><a href="../../devices/#kind-part">Devices</a></li>
+        <li aria-current="page">Arduino Leonardo (A000057)</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">board</p>
+    <h1 id="about-title">Arduino Leonardo (A000057)</h1>
+    <div class="hero-cols">
+      <div class="lede d-lede">
+        <p>Arduino Leonardo (A000057) (board) from the electronics library of <code>@openav/hw</code>: its pins, the voltages it takes and gives, its current, each number from its datasheet. <code>Hw.check()</code> reads the same entry when it checks a wiring.</p>
+        <p class="dev-al">Also called: Arduino Leonardo · board</p>
+        <ul class="badges"><li class="b-gen">electronics library</li><li class="b-unv">not checked on a unit yet</li></ul>
+      </div>
+      <div class="hero-facts">
+        <dl class="d-facts">
+          <div><dt>Kind</dt><dd>board</dd></div>
+          <div><dt>Protocols</dt><dd>I²C</dd></div>
+          <div><dt>Licence</dt><dd>MIT</dd></div>
+          <div><dt>Verified</dt><dd>not checked on a unit yet</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <section class="sec" id="facts" aria-labelledby="facts-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Facts</p>
+      <h2 id="facts-title">What Arduino Leonardo (A000057) is</h2>
+      <p class="sec-lede">Each value is read from the page in its row. What could not be read is under “To be confirmed”, not guessed.</p>
+    </header>
+    <dl class="d-facts part-facts">
+      <div><dt>Supply</dt><dd>7–12 V (nominal 5 V)</dd></div>
+      <div><dt>Logic level</dt><dd>5 V (high at least 4.2 V)</dd></div>
+      <div><dt>5 V tolerant</dt><dd>yes</dd></div>
+      <div><dt>Current</dt><dd>typical to be confirmed (待查) mA, max to be confirmed (待查) mA</dd></div>
+      <div><dt>Size</dt><dd>68.6 × 53.3 × to be confirmed (待查) mm</dd></div>
+      <div><dt>Connector</dt><dd><span lang="zh-Hant">micro USB；DC 插座</span></dd></div>
+    </dl>
+  </section>
+
+  <section class="sec" id="pins" aria-labelledby="pins-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Pins</p>
+      <h2 id="pins-title">Every pin of Arduino Leonardo (A000057)</h2>
+    </header>
+    <div class="table-scroll" role="region" aria-label="Every pin of Arduino Leonardo (A000057)" tabindex="0">
+      <table class="pins-table">
+        <thead><tr><th scope="col">Pin</th><th scope="col">Kind</th><th scope="col">Label</th><th scope="col">Volts</th><th scope="col">Current</th><th scope="col">Also called</th><th scope="col">Note</th></tr></thead>
+        <tbody>
+        <tr><th scope="row"><code>5V</code></th><td>power out</td><td>5V</td><td>5 V</td><td>to be confirmed (待查)</td><td></td><td></td></tr>
+        <tr><th scope="row"><code>3V3</code></th><td>power out</td><td>3V3</td><td>3.3 V</td><td>≤ 50 mA</td><td></td><td></td></tr>
+        <tr><th scope="row"><code>VIN</code></th><td>power in</td><td>VIN</td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>GND</code></th><td>ground</td><td>GND</td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>D2</code></th><td>I/O</td><td>D2</td><td></td><td></td><td>2, SDA</td><td></td></tr>
+        <tr><th scope="row"><code>D3</code></th><td>I/O</td><td>D3</td><td></td><td></td><td>3, SCL</td><td></td></tr>
+        <tr><th scope="row"><code>D4</code></th><td>I/O</td><td>D4</td><td></td><td></td><td>4</td><td></td></tr>
+        <tr><th scope="row"><code>D5</code></th><td>I/O</td><td>D5</td><td></td><td></td><td>5</td><td></td></tr>
+        <tr><th scope="row"><code>D6</code></th><td>I/O</td><td>D6</td><td></td><td></td><td>6</td><td></td></tr>
+        <tr><th scope="row"><code>D7</code></th><td>I/O</td><td>D7</td><td></td><td></td><td>7</td><td></td></tr>
+        <tr><th scope="row"><code>D8</code></th><td>I/O</td><td>D8</td><td></td><td></td><td>8</td><td></td></tr>
+        <tr><th scope="row"><code>D9</code></th><td>I/O</td><td>D9</td><td></td><td></td><td>9</td><td></td></tr>
+        <tr><th scope="row"><code>D10</code></th><td>I/O</td><td>D10</td><td></td><td></td><td>10</td><td></td></tr>
+        <tr><th scope="row"><code>D11</code></th><td>I/O</td><td>D11</td><td></td><td></td><td>11</td><td></td></tr>
+        <tr><th scope="row"><code>D12</code></th><td>I/O</td><td>D12</td><td></td><td></td><td>12</td><td></td></tr>
+        <tr><th scope="row"><code>D13</code></th><td>I/O</td><td>D13</td><td></td><td></td><td>13</td><td></td></tr>
+        <tr><th scope="row"><code>A0</code></th><td>analog in</td><td>A0</td><td>≤ 5 V</td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>A1</code></th><td>analog in</td><td>A1</td><td>≤ 5 V</td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>A2</code></th><td>analog in</td><td>A2</td><td>≤ 5 V</td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>A3</code></th><td>analog in</td><td>A3</td><td>≤ 5 V</td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>A4</code></th><td>analog in</td><td>A4</td><td>≤ 5 V</td><td></td><td></td><td></td></tr>
+        <tr><th scope="row"><code>A5</code></th><td>analog in</td><td>A5</td><td>≤ 5 V</td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      </div>
+    <h3>Notes</h3><p class="note">The library writes its notes in Chinese; they are shown as written.</p><ul class="cnotes" lang="zh-Hant"><li>ATmega32U4 輸入高電位門檻約 1.9 V（5 V 供電時），3.3 V 訊號讀得到。</li><li>每支腳電流：規格表寫 10 mA、腳位圖寫 20 mA，晶片絕對上限 40 mA。</li></ul>
+    
+    <p class="next-links"><a class="more" href="../../docs/#packages-openav-hw">How @openav/hw checks a wiring →</a> <a class="more" href="../../docs/#devices-a-part">A part in the Devices chapter →</a></p>
+  </section>
+
+  <section class="sec" id="use" aria-labelledby="use-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Use it</p>
+      <h2 id="use-title">Arduino Leonardo (A000057) in your code</h2>
+      <p class="sec-lede">Paste it into a <code>&lt;script type="module"&gt;</code> on any page: it loads <code>@openav/devices</code> from this site and prints the library entry <code>Hw.check()</code> reads.</p>
+    </header>
+    <div class="term"><div class="term-bar"><span>javascript</span><button type="button" class="copy" data-copy="snip-device" data-oav-copy="code">Copy</button></div><pre id="snip-device"><code><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'https://openaudiovisual.com/packages/devices/index.js'</span>;
+
+<span class="tk">const</span> part = <span class="tk">await</span> device(<span class="ts">'arduino-leonardo'</span>);   <span class="tc">// Arduino Leonardo (A000057)</span>
+console.log(JSON.stringify(part.part.supply), Object.keys(part.part.pins).join(<span class="ts">' '</span>));
+<span class="tc">// → {"min":7,"max":12,"nominal":5} 5V 3V3 VIN GND D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 D12 D13 A0 A1 A2 A3 A4 A5</span></code></pre></div>
+    <h3>What reaches it</h3>
+    <ul class="uses"><li><p><code>@openav/hw</code> · <code>Hw</code></p><pre><code>Hw.check({ board, parts: { x: { part: 'arduino-leonardo' } }, wires })</code></pre><p>Listed in a spec's parts, it is checked with the rest of the wiring: voltages, pins, current.</p></li></ul>
+  </section>
+
+  <section class="sec" id="files" aria-labelledby="files-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Files</p>
+      <h2 id="files-title">Take it with you</h2>
+    </header>
+    <div class="spec-grid"><div><p>The part as JSON: the library entry (pins, supply, logic levels, current, notes) and its record, as <code>Hw.check()</code> and <code>device()</code> read them.</p><div class="vf-row"><a class="vf-btn" href="../../devices/arduino-leonardo/arduino-leonardo.json" download="arduino-leonardo.json" data-oav-event="export_download" data-oav-format="json" data-oav-id="arduino-leonardo">arduino-leonardo.json</a></div></div></div>
+    <ul class="model-links">
+      <li><a href="../../packages/devices/device.schema.json">The record format (JSON Schema)</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/hw/parts.js">The file on GitHub ↗</a></li>
+    </ul>
+  </section>
+
+  <section class="sec" id="status" aria-labelledby="status-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Status</p>
+      <h2 id="status-title">How sure this page is</h2>
+    </header>
+    <p>Not checked on a unit yet: every value is as its source says. Only a person with the unit can change that.</p>
+    
+    <h3>To be confirmed</h3><ul class="cnotes tbd"><li lang="zh-Hant">5V 腳可以拉多少電流。</li><li lang="zh-Hant">整塊板子的耗電。</li><li lang="zh-Hant">VIN 範圍：規格表 7–12 V，腳位圖 6–20 V。</li></ul>
+    <h3>Sources</h3>
+    <ul class="sources"><li><a href="https://github.com/arduino/docs-content/blob/main/content/hardware/hero/boards/leonardo/tech-specs.yml" rel="noopener" data-oav-link="vendor">Arduino Leonardo tech specs (docs-content)</a></li><li><a href="https://docs.arduino.cc/resources/pinouts/A000057-full-pinout.pdf" rel="noopener" data-oav-link="vendor">Arduino Leonardo full pinout A000057</a></li><li><a href="https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7766-8-bit-AVR-ATmega16U4-32U4_Datasheet.pdf" rel="noopener" data-oav-link="vendor">Microchip ATmega16U4/32U4 datasheet (29.1, Table 29-1)</a></li></ul>
+  </section>
+
+  <section class="sec" id="related" aria-labelledby="related-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Related</p>
+      <h2 id="related-title">More devices</h2>
+    </header>
+    <ul class="rel" aria-label="Related devices">
+      <li><a href="../feather-huzzah-esp8266/">Adafruit Feather HUZZAH with ESP8266 (2821)</a><span>board</span></li>
+      <li><a href="../arduino-uno-r3/">Arduino UNO R3 (A000066)</a><span>board</span></li>
+      <li><a href="../lis3dh-breakout/">Adafruit LIS3DH triple-axis accelerometer breakout (2809)</a><span>sensor</span></li>
+      <li><a href="../microlipo-usbc/">Adafruit Micro-Lipo charger USB-C (4410, MCP73831)</a><span>power</span></li>
+      <li><a href="../neopixel-ring-12/">Adafruit NeoPixel Ring 12 (1643)</a><span>LEDs</span></li>
+      <li><a href="../neopixel-ring-16/">Adafruit NeoPixel Ring 16 (1463)</a><span>LEDs</span></li>
+    </ul>
+    <p class="cmp-link"><a href="../../devices/#kind-part">All devices →</a></p>
+  </section>
+
+  <section class="sec" id="report" aria-labelledby="report-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">GitHub</p>
+      <h2 id="report-title">Wrong data?</h2>
+      <p class="sec-lede">Every value on this page comes from one file in the repository. Open an issue that says which value and where you read the right one, or change the file in a pull request.</p>
+    </header>
+    <ul class="model-links">
+      <li><a href="https://github.com/frank890417/open-audiovisual/issues/new?title=Wrong%20data%3A%20Arduino%20Leonardo%20(A000057)%20(arduino-leonardo)">Report wrong data ↗</a></li>
+      <li><a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/hw/parts.js">The file on GitHub ↗</a></li>
+    </ul>
+  </section>
+
+  <section class="sec next-step" id="next-step" aria-labelledby="next-step-title">
+    
+    <header class="sec-head">
+      <p class="eyebrow">Next step</p>
+      <h2 id="next-step-title">Where it goes next</h2>
+      <p class="sec-lede">The handbook chapter on the collection, and the package that drives Arduino Leonardo (A000057).</p>
+    </header>
+    <p class="next-links"><a class="more" href="../../docs/#devices" data-oav-event="next_step" data-oav-to="docs">The Devices chapter →</a> <a class="more" href="../../docs/#packages-openav-hw" data-oav-event="next_step" data-oav-to="docs">Handbook: @openav/hw →</a></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="dev-data">{"device":"arduino-leonardo","input":null,"copy":"Copy","copied":"Copied","live":{"eyebrow":"Try it","title":"Is your {name} here?","lede":"Nothing happens until you press a button. “Look for it” asks the browser for the list of {inputs} and finds this one by its name; “Open it” asks for permission once and opens it with the settings above, the same calls as the code below.","inputs":{"camera":"cameras","audio":"audio inputs"},"find":"Look for it","open":"Open it","stop":"Stop","found":"Found: {label}","notFound":"Not found. {n} {inputs} listed{names}.","hidden":"The browser hides the names until the page has had the permission once: press “Open it”.","opened":"Open: {label}","settings":"Settings the browser gave","level":"Level","noApi":"This browser gives a page no access to {inputs} here (it needs https or localhost).","error":"Did not open: {msg}"},"frame":null}</script>
+<script type="module" src="../../assets/devices/device.js"></script>
+<!--/email_off-->
+</body>
+</html>

@@ -11,7 +11,7 @@
 //   oav_copy             kind (loader | code | import_map | other), page_type
 //   oav_outbound         kind (github | vendor | work | course | openprocessing | other), host, page_type
 //   oav_controller_play  controller, page_type        once per page view: the first move on an on-screen controller
-//   oav_export_download  format (qlc | mixxx | json), controller, page_type
+//   oav_export_download  format (qlc | mixxx | json), controller (the id of the controller, fixture or device), page_type
 //   oav_example_start    example                       once per page view: the first click or key inside an example
 //   oav_next_step        from (the page_type), to (p5 | example | docs | reference | …)
 //   oav_search           page_type                     once per page view: the first input in a search box, never its text
@@ -25,7 +25,7 @@
   'use strict';
 
   var PAGE_TYPES = ['home', 'controller', 'controllers_index', 'verify', 'example', 'examples_index', 'docs', 'reference',
-    'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found'];
+    'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found', 'devices_index', 'fixture', 'device'];
   /** event (without the oav_ prefix) → the params it may carry, in order */
   var SPEC = {
     copy: ['kind', 'page_type'],

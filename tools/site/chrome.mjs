@@ -33,6 +33,7 @@ export const TREE = REPO + '/tree/main/';
 export const PAGES = {
   home: '',
   controllers: 'controllers/',
+  devices: 'devices/',
   docs: 'docs/',
   reference: 'docs/reference/',
   cheatsheet: 'docs/cheatsheet/',
@@ -64,7 +65,7 @@ export const GA_SNIPPET = `<script>if(/(^|\\.)openaudiovisual\\.com$/.test(locat
 /** What kind of page this is, as assets/track.js reports it (`page_type`). headBasics() writes it into every page; the
  *  same list is in track.js (tests/track.test.js compares them). */
 export const PAGE_TYPES = ['home', 'controller', 'controllers_index', 'verify', 'example', 'examples_index', 'docs', 'reference',
-  'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found'];
+  'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found', 'devices_index', 'fixture', 'device'];
 /** The site's own events (assets/track.js): loaded with defer, it does nothing unless the GA snippet above defined gtag. */
 export const TRACK_SRC = 'assets/track.js';
 

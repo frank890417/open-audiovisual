@@ -24,6 +24,9 @@ function generatedPages() {
   const rels = ['index.html', 'zh/index.html', 'docs/index.html', 'zh/docs/index.html', 'controllers/index.html', 'zh/controllers/index.html', 'webtoe/index.html', 'zh/webtoe/index.html',
     'p5/index.html', 'zh/p5/index.html', 'changelog/index.html', 'zh/changelog/index.html'];
   for (const base of ['controllers', 'zh/controllers']) for (const d of dirs(base)) if (exists(`${base}/${d}/index.html`)) rels.push(`${base}/${d}/index.html`);
+  // the device collection (tools/build-devices.mjs): the hub, every fixture page, every device page
+  rels.push('devices/index.html', 'zh/devices/index.html');
+  for (const base of ['fixtures', 'zh/fixtures', 'devices', 'zh/devices']) if (exists(base)) for (const d of dirs(base)) if (exists(`${base}/${d}/index.html`)) rels.push(`${base}/${d}/index.html`);
   return rels.map((rel) => ({ rel, html: read(rel) }));
 }
 const pagesCache = generatedPages();
@@ -228,7 +231,7 @@ test('sitemap.xml is one file: every generator writes the same bytes', async () 
   const { sitemapXml } = await import('../tools/site/pages.mjs');
   const { buildPages } = await import('../tools/build-controllers.mjs');
   assert.equal(buildPages()['sitemap.xml'], sitemapXml());
-  for (const f of ['build-home.mjs', 'build-docs.mjs', 'build-webtoe.mjs', 'build-controllers.mjs']) assert.ok(/sitemapXml\(\)/.test(read(`tools/${f}`)), `${f} writes sitemap.xml through sitemapXml()`);
+  for (const f of ['build-home.mjs', 'build-docs.mjs', 'build-webtoe.mjs', 'build-controllers.mjs', 'build-devices.mjs']) assert.ok(/sitemapXml\(\)/.test(read(`tools/${f}`)), `${f} writes sitemap.xml through sitemapXml()`);
 });
 
 // ---------------------------------------------------------------------------- the shared <head>
