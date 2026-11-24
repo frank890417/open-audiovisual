@@ -172,6 +172,7 @@ export default {
       osc: '透過一支小小的 Node 橋接，把 OSC 從瀏覽器送到 UDP',
       record: '演出影片：作品疊在鏡頭畫面上、連同作品自己的聲音錄成一個檔；MIDI 演奏可錄下再重播',
       out: '把網頁作品的參數經一支本機橋接送到 WLED 燈條、序列埠馬達板和 OSC，斷線時看門狗退回安全值',
+      dmx: 'DMX 燈光：燈具 profile、patch，scene、cue、chase、effect 依時間算出每台燈的值，閃爍每秒最多 3 次，輸出 Art-Net、sACN 與 Enttec USB 的封包',
       fab: '做得出來嗎？對任何網格做 3D 列印檢查（水密、懸空、最薄壁、重量），匯出 STL、OBJ、GLB、STEP',
       hw: '裡面的電子：附規格書數字的零件庫、接線檢查（邏輯電壓、開機腳、I²C 位址、電流、電池時數）、接線圖和零件清單',
       timeline: '參數自動化、場景與 cue：整場演出的時鐘',

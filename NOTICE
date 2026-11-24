@@ -1,7 +1,7 @@
 Open Audiovisual
 Copyright (c) Che-Yu Wu (吳哲宇). The project is under the MIT License: see LICENSE.
 
-This repository also contains data from another project, under its own licence.
+This repository also contains data from other projects, each under its own licence.
 
 QLC+ input profiles
   Project:   Q Light Controller Plus, https://github.com/mcallegari/qlcplus
@@ -20,5 +20,20 @@ QLC+ input profiles
 
   Changes made: read from XML into JSON, numbers decoded into MIDI messages, a generated layout added,
   every control marked "verified": false. Nothing has been checked on hardware by this project.
+
+Open Fixture Library fixture definitions
+  Project:   Open Fixture Library, https://github.com/OpenLightingProject/open-fixture-library
+  Folder:    fixtures
+  Commit:    849343f6eb7ab64f8d7d93209320bb25a1f5e11d
+  Copyright: Florian Edelmann, Felix Edelmann and the Open Fixture Library contributors named in each file
+  Licence:   MIT License: see LICENSES/MIT-open-fixture-library.txt
+
+  Where it is:
+    tests/fixtures/ofl/                three fixture files, unchanged, as test data.
+    packages/dmx/fixtures/imported/    files converted by tools/import-ofl.mjs (none committed yet). Each says "license": "MIT"
+                                       and names its OFL file and commit in "origin" and "sources".
+
+  Changes made: read into this project's fixture format (open-audiovisual/fixture@1), modes that need 24-bit channels left
+  out, every file marked "verified": false. Nothing has been checked on hardware by this project.
 
 Nothing in this repository comes from Mixxx mappings (GPL) or from midi.guide (CC-BY-SA).

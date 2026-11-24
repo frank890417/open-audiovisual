@@ -1,0 +1,41 @@
+{
+ "format": "open-audiovisual/fixture@1",
+ "id": "generic-rgb",
+ "manufacturer": "Generic",
+ "name": "RGB par",
+ "kind": "par",
+ "modes": [
+  {
+   "id": "3ch",
+   "name": "3 channel",
+   "channels": [
+    "red",
+    "green",
+    "blue"
+   ]
+  }
+ ],
+ "channels": {
+  "red": {
+   "type": "color",
+   "color": "red"
+  },
+  "green": {
+   "type": "color",
+   "color": "green"
+  },
+  "blue": {
+   "type": "color",
+   "color": "blue"
+  }
+ },
+ "sources": [
+  {
+   "title": "open-audiovisual generic layout",
+   "note": "No single fixture behind it: a common channel order, written by hand. Read the manual of your light and, where its order or ranges differ, copy this file and change it before patching a real fixture."
+  }
+ ],
+ "license": "MIT",
+ "verified": false,
+ "verifications": []
+}

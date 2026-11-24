@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openaudiovisual.com/packages/dmx/fixtures/fixture.schema.json",
+  "title": "Open Audiovisual DMX fixture profile",
+  "description": "One DMX fixture as data: its channels, the order each mode sends them in, and how sure the file is. validateFixture() in @openav/dmx is stricter: it also checks that every mode names real channels, that a fine channel comes with its coarse one, that ranges go up without overlapping, and that verified: true has a hardware verification.",
+  "type": "object",
+  "required": ["format", "id", "manufacturer", "name", "kind", "modes", "channels"],
+  "properties": {
+    "format": { "const": "open-audiovisual/fixture@1" },
+    "id": { "$ref": "#/$defs/id" },
+    "manufacturer": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "kind": { "enum": ["dimmer", "par", "bar", "strobe", "moving-head", "scanner", "effect", "other"] },
+    "notes": { "type": "string" },
+    "modes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "channels"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "name": { "type": "string" },
+          "channels": { "type": "array", "minItems": 1, "maxItems": 512, "items": { "$ref": "#/$defs/key" }, "description": "channel keys in the order the fixture reads them, from its start address" }
+        }
+      }
+    },
+    "channels": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/key" },
+      "additionalProperties": { "oneOf": [{ "$ref": "#/$defs/channel" }, { "$ref": "#/$defs/fine" }] }
+    },
+    "license": { "type": "string", "description": "SPDX id of this file, such as MIT" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": { "title": { "type": "string", "minLength": 1 }, "url": { "type": "string" }, "note": { "type": "string" }, "license": { "type": "string" } }
+      }
+    },
+    "origin": {
+      "type": "object",
+      "description": "where an imported file came from: the project, its file and commit",
+      "properties": {
+        "tool": { "type": "string" }, "repo": { "type": "string" }, "commit": { "type": "string" }, "file": { "type": "string" },
+        "license": { "type": "string" }, "author": { "type": "string" }, "note": { "type": "string" }
+      }
+    },
+    "verified": { "type": "boolean", "description": "true only with a verification made on the fixture itself (method hardware)" },
+    "verifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "by", "method"],
+        "properties": {
+          "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "by": { "type": "string", "minLength": 1 },
+          "method": { "enum": ["hardware", "virtual", "simulated"] },
+          "mode": { "type": "string" },
+          "firmware": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "key": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$" },
+    "byte": { "type": "integer", "minimum": 0, "maximum": 255 },
+    "channel": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["intensity", "color", "pan", "tilt", "strobe", "zoom", "focus", "gobo", "colorWheel", "speed", "control", "generic"], "description": "control = reset, lamp on/off and the like: written only by an explicit call" },
+        "color": { "enum": ["red", "green", "blue", "white", "warmWhite", "coldWhite", "amber", "uv", "cyan", "magenta", "yellow", "lime", "indigo"], "description": "the emitter of a color channel" },
+        "name": { "type": "string" },
+        "default": { "$ref": "#/$defs/byte" },
+        "degrees": { "type": "number", "exclusiveMinimum": 0, "description": "pan or tilt: how far the full range turns" },
+        "ranges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["from", "to", "is"],
+            "properties": {
+              "from": { "$ref": "#/$defs/byte" },
+              "to": { "$ref": "#/$defs/byte" },
+              "is": { "type": "string", "minLength": 1, "description": "what the range does: open, closed, strobe, effect, …" },
+              "hz": { "type": "array", "items": { "type": "number", "minimum": 0 }, "minItems": 2, "maxItems": 2, "description": "a strobe range: [slowest, fastest] flash rate in Hz, from the fixture's manual" },
+              "label": { "type": "string" }
+            }
+          }
+        }
+      },
+      "not": { "required": ["fineOf"] }
+    },
+    "fine": {
+      "type": "object",
+      "required": ["fineOf"],
+      "properties": {
+        "fineOf": { "$ref": "#/$defs/key", "description": "this channel is the low byte of that one (16-bit)" },
+        "name": { "type": "string" },
+        "default": { "$ref": "#/$defs/byte" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -304,6 +304,7 @@
             <li><a href="#packages-openav-sound">@openav/sound</a></li>
             <li><a href="#packages-openav-osc">@openav/osc</a></li>
             <li><a href="#packages-openav-out">@openav/out</a></li>
+            <li><a href="#packages-openav-dmx">@openav/dmx</a></li>
             <li><a href="#packages-openav-record">@openav/record</a></li>
             <li><a href="#packages-openav-fab">@openav/fab</a></li>
             <li><a href="#packages-openav-hw">@openav/hw</a></li>
@@ -387,7 +388,7 @@
         <a class="docs-quick-card is-cheat" href="../docs/cheatsheet/"><strong>oav-p5 cheat sheet →</strong><span>Every name a p5 sketch uses with oav-p5 on one page, with pictures: shout, hit, play, smooth. Prints on one A4.</span></a>
         <a class="docs-quick-card" href="../docs/reference/"><strong>API reference →</strong><span>Looking for one name? Every variable, function, event and option of oav-p5 and every package export, searchable, each with an example you can run.</span></a>
       </div>
-      <p class="docs-stats">19 chapters · 203 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.9</a></p>
+      <p class="docs-stats">19 chapters · 204 sections · <a href="../changelog/">oav-p5 0.8 · framework 0.9</a></p>
       <p class="docs-note">Written in Markdown in <code>docs/</code>; this page is generated from it. <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/">GitHub ↗</a> · For language models: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a></p>
     </header>
 
@@ -3791,7 +3792,7 @@ work; then just <code>signals.set(name, v)</code>. Anything that changes can per
 <section class="chapter" data-chapter="packages" aria-labelledby="packages">
 <h2 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
 <p class="chapter-meta"><span class="chapter-n">15</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
-<p>Twenty-nine packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+<p>Thirty packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
 dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
 map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
 npm yet.</p>
@@ -3801,7 +3802,7 @@ npm yet.</p>
 <tr><td>L1 input</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>leap</code> · <code>keys</code> · <code>drums</code></td></tr>
 <tr><td>L2 mapping</td><td><code>mapping</code> · <code>chop</code></td></tr>
 <tr><td>L3 world</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
-<tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>out</code> · <code>record</code> · <code>fab</code> (and MIDI out in <code>midi</code>)</td></tr>
+<tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>out</code> · <code>dmx</code> · <code>record</code> · <code>fab</code> (and MIDI out in <code>midi</code>)</td></tr>
 <tr><td>spines</td><td><code>timeline</code> · <code>score</code> · <code>pattern</code> · <code>console</code> · <code>monitor</code> · <code>sync</code></td></tr>
 <tr><td>phones</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
 <tr><td>glue</td><td><code>core</code> · <code>show</code> · <code>mcp</code></td></tr>
@@ -4046,6 +4047,28 @@ serial motor boards, OSC. A watchdog sends every channel its configured safe val
 </tbody>
 </table></div>
 <p>See the package README for the config file and the watchdog rules.</p>
+<h3 id="packages-openav-dmx">@openav/dmx<a class="anchor" href="#packages-openav-dmx" aria-label="Link to this section">#</a></h3>
+<p>L4 output (lighting) · DMX from a page, as pure logic: fixture profiles (<code>open-audiovisual/fixture@1</code>), a patch that turns
+properties (dimmer, color, pan, tilt, strobe, zoom, 0..1) into each light's bytes, and an engine that renders every light at
+any moment as a function of time: base scenes → cues with fades → chases on beats → effects → live values → per-fixture limits →
+grand master → blackout. Safety is on by default: each effect or chase that makes intensity or colour flash, and every strobe
+channel whose profile gives Hz, is held to 3 flashes a second (each on its own: two on one light can add up); a strobe channel
+with no Hz stays open; <code>render(t, { beat })</code> needs <code>bpm</code> with it, since the cap reads the tempo; <code>control</code> channels (reset, lamp, built-in
+programs) are written only by <code>control()</code>; blackout leaves pan and tilt where they are. The bytes of Art-Net, sACN and the Enttec
+DMX USB Pro come out of pure encoders; sending them (the out-bridge, Web Serial) is not in this package yet. Nothing has been
+tried on a real fixture, node or interface.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Patch</code></td><td><code>new Patch({ profiles })</code> · <code>add({ id, profile, mode, universe = 1, address, name, groups, limits })</code> (throws past 512, unknown mode) · <code>check()</code> → overlaps · <code>ids(target)</code> · <code>render(states, { master, blackout, maxFlashHz = 3, controls })</code> → <code>Universes</code> · <code>resolve(id, props)</code> · <code>toJSON()</code> · <code>Patch.fromJSON(json, { profiles })</code></td></tr>
+<tr><td><code>DmxEngine</code></td><td><code>new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 })</code> · <code>scene(name, { target: props })</code> · <code>base(...names)</code> · <code>cue(name, { scene, fadeIn, fadeOut, curve })</code> · <code>go(name, at)</code> · <code>release(at, fade)</code> · <code>chase(name, { steps, every, unit: 'beat' | 'second', fade, start })</code> · <code>effect(name, { target, property, wave: sine | saw | square | chase | flicker | rainbow, rate, unit, depth, phase, spread, width, seed })</code> · <code>run(name, on)</code> · <code>remove(name)</code> · <code>set(target, props)</code> · <code>clear(target, keys)</code> · <code>control(id, key, byte)</code> · <code>master</code>, <code>blackout</code>, <code>maxFlashHz</code> · <code>render(t, { beat, bpm })</code> → <code>Universes</code> · <code>state(t)</code> → <code>{ fixtures, capped }</code></td></tr>
+<tr><td><code>Universe</code> · <code>Universes</code></td><td><code>new Universe(id)</code> · <code>get(address)</code> · <code>set(address, value)</code> · <code>write(address, values)</code> · <code>fill(v)</code> · <code>copy()</code> · <code>data</code> (Uint8Array, 512) · <code>Universes</code>: <code>get(id)</code> · <code>bytes(id)</code> · <code>ids()</code> · <code>entries()</code></td></tr>
+<tr><td>fixtures</td><td><code>FIXTURES</code> (generic: dimmer, RGB, RGBW 4/6 ch, RGBA, RGBAW+UV 6/8 ch, one-colour strobe, moving head 8/16 ch, all <code>"verified": false</code>) · <code>fixtureById(id)</code> · <code>validateFixture(profile)</code> → problems · <code>loadFixture(profile)</code> · <code>rgbToChannels([r, g, b], colors)</code> · schema <code>@openav/dmx/fixtures/fixture.schema.json</code></td></tr>
+<tr><td>protocols</td><td><code>encodeArtDmx(data, { universe, sequence, physical })</code> / <code>decodeArtDmx(bytes)</code> (ArtDmx, UDP 6454) · <code>encodeSacn(data, { universe, cid, source, priority, sequence })</code> / <code>decodeSacn(bytes)</code> · <code>sacnAddress(universe)</code> (E1.31, UDP 5568) · <code>encodeEnttecDmx(data)</code> / <code>decodeEnttecDmx(bytes)</code> (DMX USB Pro, label 6)</td></tr>
+</tbody>
+</table></div>
+<p><code>node tools/import-ofl.mjs &lt;OFL checkout&gt; fixtures/&lt;maker&gt;/&lt;fixture&gt;.json</code> converts a fixture from the Open Fixture Library (MIT)
+into this format, one by name. Art-Net™ Designed by and Copyright Artistic Licence.</p>
 <h3 id="packages-openav-record">@openav/record<a class="anchor" href="#packages-openav-record" aria-label="Link to this section">#</a></h3>
 <p>L4 output (video branch) · the performance video: the work and the performer's
 camera composited into one canvas of an exact size (vertical 1080×1920, 4:5,
