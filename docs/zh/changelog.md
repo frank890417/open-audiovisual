@@ -144,6 +144,15 @@
 
 ## 框架與網站
 
+### 2026-11-25
+
+- **從網頁打 DMX 燈光：0.10.0。** 新套件 `@openav/dmx`：燈具 profile（`open-audiovisual/fixture@1`，八個通用燈具和一份 schema，另外有 `tools/import-ofl.mjs`，把 Open Fixture Library 的燈具轉過來）、把 dimmer、顏色、pan、tilt 換成每台燈位元組的 patch，以及依時間算出每台燈任何時刻樣子的引擎：scene、有淡入淡出的 cue、跟著拍子的 chase、effect、即時值、submaster、總控和 blackout。它寫出 Art-Net、sACN（E1.31）和 Enttec DMX USB Pro 的位元組。`dmxTransport()` 把它們留在記憶體、交給輸出橋接程式，或用 Web Serial 送出，`dmxParams()` 讓 MIDI、時間軸和麥克風像推任何參數一樣推燈，`mountDmxMonitor()` 沒有硬體也看得到整套燈。手冊為它多了一章：離開電腦的三種方式、哪個 universe 是哪個、燈具與 patch、各種畫面、用聲音和控制器推燈、安全，以及用 TouchDesigner 確認。[DMX 燈光](https://openaudiovisual.com/zh/docs/#dmx)
+- **沒有一台燈每秒閃超過 3 次。** 上限以每台燈來算，分兩層。引擎把會讓同一台燈閃的 effect 和 chase 放慢，直到它們在那台燈上加起來是 3 Hz（`state(t).slowed` 會說是哪幾台）。每個 `dmxTransport()` 再讓每一格經過頻閃保護，管住每台燈實際發出的光，即時值也算在內：180 bpm 十六分音符的大鼓推 dimmer，每秒 12 次，送出去是 3 次。blackout 從不會被擋。要關掉保護必須寫 `{ flashGuard: false }`，監看器那時會一直顯示 FLASH GUARD OFF。[安全](https://openaudiovisual.com/zh/docs/#dmx-safety)
+- **輸出橋接程式多了三個 DMX 輸出。** `artnet`（預設單播給節點，照 Art-Net 4 的規定）、`sacn`（多播或單播、優先權，正常關閉時送出 stream terminated）和 `enttec`（接在序列埠上的 Enttec DMX USB Pro）：值在變時每秒 40 格，沒變時每秒補送一次，頁面離開時送安全值（`"hold"` 讓搖頭燈停在原本指的地方）。三個都讓每個通道每秒最多閃 3 次，預設開著。在路線上寫 `"flashGuard": false`，或用 `exempt` 列出搖頭燈的 pan 和 tilt，不然以通道為單位的保護會讓它們一格一格跳。
+- **範例 28〈DMX 燈光〉。** 一個 world 畫出舞台，同時用同一組參數推 8 台 par 和 2 台搖頭燈，監看器放在下面。預設是模擬的燈，要送到橋接程式或 Enttec 才另外指定。[DMX 燈光](https://openaudiovisual.com/examples/28-dmx-lights/)
+- **`@openav/out` 修好的地方。** 有值在排隊時，頁面的心跳會被跳過，所以一直在變的燈半秒後就被放回安全值。橋接程式一批只讀前 1024 個值（現在是 4096）。`install.sh` 沒有複製 DMX 的編碼器，所以裝好的橋接程式只要有 DMX 路線就起不來。
+- **還沒有用真的硬體測過。** 到現在還沒有任何一台真燈、Art-Net 節點、sACN 接收端或 Enttec 介面收過這些東西。位元組照公開的格式寫，測試在這台機器上把每個封包都解回來。
+
 ### 2026-11-24
 
 - **用演出者的方式讀手。** `HandTracker` 現在會替每隻手判斷七種手勢（握拳、張開、指上、讚、倒讚、YA、I love you），也把捏一下變成事件：`hand/<side>/pinch-start` 和 `pinch-end`，而且其他三指要張開才算，握拳不會被當成捏。每隻手還有食指指尖、拇指到每根指尖的距離、張開程度和角度，兩隻手有距離、中點和傾斜。每個狀態只開始一次、結束一次（兩個門檻加上 80 毫秒的維持）。數字來自 TouchDesigner 的 `hand_features` 模組，用真人的手調過。[身體與手](https://openaudiovisual.com/zh/docs/#inputs-body-and-hands)
