@@ -153,3 +153,36 @@ API 都是新增的，沒有不相容變更。`@openav/out` 只加 sink，既有
 - [ ] 橋接器開著，本機 UDP 接收器收到正確的 Art-Net 與 sACN 封包。
 - [ ] 關掉頁面，接收端 500 ms 內看到安全值。
 - [ ] 回報裡寫清楚哪些未用真燈實測。
+
+## 實作紀錄
+
+### 2026-11-25 02:1x 兩段都做完，在分支上，還沒進 main
+
+| commit | 內容 |
+|---|---|
+| `fd0ea7c1` | 核心：`@openav/dmx`（universe、燈具 profile 與 schema、patch、顏色換算、引擎、Art-Net／sACN／Enttec 編解碼、8 個通用燈具、OFL 轉換器） |
+| `f1ade536` | 接出去：橋接器的 `artnet`、`sacn`、`enttec` 三個 sink，`dmxTransport`（sim／橋接器／Web Serial）、`dmxParams`、`mountDmxMonitor` |
+| `7b4cb00e` | 範例 28（8 顆 par＋2 顆搖頭燈，畫面與燈吃同一組參數）、手冊一章（中英）、`lab.dmx` |
+
+驗收（親驗的標「親」）：
+- 測試 1,516 條、1,470 過、0 失敗、46 略過；`tools/release.sh --dry-run` 過。DMX 與 out 相關 96 條我重跑過（親）。
+- 封包位元組：Art-Net 表頭與 opcode、sACN 638 位元組與長度欄位、Enttec 框，抽查與規格相符（親）。
+- 範例 28 的截圖看過：舞台、燈具色塊、512 格通道表、六條對應都在（親）。零 console 錯誤、沒有授予 MIDI 與序列埠權限，是實作的分身用無頭 Chromium 跑的。
+- 橋接器送 Art-Net 到本機接收器約每秒 39 包，關掉分頁後 5 毫秒內收到安全值（分身實測）。
+
+跟設計不一樣的地方：
+- Art-Net **預設單播**到設定的 `host`。Art-Net 4 不允許廣播 DMX 封包，第 2 節原本寫「廣播或單播」，以這裡為準；要廣播得在設定裡明確打開。
+- 「universe 1」在 Art-Net 是 Port-Address 1、在 sACN 是 universe 1，全系統一致。
+- 斷線時要停在原樣的通道，在 `safe` 裡寫 `"hold"`（先符合的規則贏），不是另一個 `onLoss` 設定。搖頭燈的位置可以停住、其他全暗。
+- 兩台燈位址重疊只列在 `check()` 裡，不擋（兩顆一樣的 par 共用位址是常見做法）。
+- 頻閃上限每個 effect、每個 chase **各自**算。兩個疊在同一台燈上，加起來可能超過每秒 3 次。即時值（麥克風、鼓）不受上限管，範例裡那幾條對應有加平滑。
+- 通用燈具的 strobe 通道沒有寫 Hz，在上限開著的時候一律保持不閃。
+
+順手修掉的三個既有問題（都在 `@openav/out`，有測試）：
+- 瀏覽器端的心跳在有值排隊時會跳過，一直在變的燈 500 毫秒後被看門狗打回安全值。
+- 橋接器一批只讀前 1,024 個值，超過兩個滿的 universe 後面的會被看門狗重設。現在讀到 4,096。
+- `install.sh` 沒有複製 DMX 編碼器，裝好的橋接器會起不來。
+
+**未實測**：任何真的 Art-Net 節點、sACN 接收端、Enttec DMX USB Pro、Web Serial 埠、任何一台燈；真實網路上的多播；TouchDesigner DMX In CHOP 對收（TD 沒連上）；Linux 的序列埠路徑。E1.31 的位元組排列是對照兩套開源實作確認的，官方規格書抓不到。
+
+還沒做：changelog 沒有條目；`sinks/serial.js` 只支援 macOS；沒有從 patch 自動產生 `safe` 表的工具；1440 寬時導覽卡會蓋到監看器左邊。
