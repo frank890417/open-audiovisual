@@ -54,7 +54,7 @@ export function renderPage(t, home, locale) {
   return guardEmail(`<!DOCTYPE html>
 <html lang="${home.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld, pageType: 'check' })}
 <link rel="stylesheet" href="${root}assets/check/check.css">
 </head>
 <body class="page-check">
@@ -74,7 +74,7 @@ ${topBar(home, c)}
 
     <div class="chk-foot">
       <p class="chk-summary" id="chk-summary" aria-live="polite"></p>
-      <p class="chk-act"><button type="button" id="btn-copy" class="chk-btn">${t.actions.copy}</button> <span class="chk-note" id="copy-note">${t.actions.copyHint}</span></p>
+      <p class="chk-act"><button type="button" id="btn-copy" class="chk-btn" data-oav-copy="other">${t.actions.copy}</button> <span class="chk-note" id="copy-note">${t.actions.copyHint}</span></p>
       <textarea id="chk-out" class="chk-out" readonly rows="9" hidden aria-label="${attr(t.actions.copy)}"></textarea>
       <p class="chk-links"><a href="${docs('troubleshooting')}">${t.allDocs}</a> · <a href="${c.to('controllers')}">${t.links.controllers}</a> · <a href="${c.to('docs')}">${t.links.docs}</a></p>
     </div>

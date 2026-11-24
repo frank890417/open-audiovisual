@@ -54,7 +54,7 @@ export function renderNotFound() {
   return guardEmail(`<!DOCTYPE html>
 <html lang="en">
 <head>
-${headBasics(en, c, { title: 'Page not found · 找不到頁面 · open-audiovisual', description: 'This page does not exist. Home, documentation, MIDI controllers and examples of open-audiovisual are one click away. 找不到這一頁。', noindex: true, ld: false })}
+${headBasics(en, c, { title: 'Page not found · 找不到頁面 · open-audiovisual', description: 'This page does not exist. Home, documentation, MIDI controllers and examples of open-audiovisual are one click away. 找不到這一頁。', noindex: true, ld: false, pageType: 'not_found' })}
 </head>
 <body>
 ${topBar(en, c)}

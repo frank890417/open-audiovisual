@@ -90,7 +90,7 @@ export function renderIndex(locale) {
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-${headBasics(t, c, { title, description, ld })}
+${headBasics(t, c, { title, description, ld, pageType: 'examples_index' })}
 <link rel="stylesheet" href="${c.root}assets/examples/pages.css">
 </head>
 <body class="examples-page">
@@ -154,7 +154,7 @@ export function exampleHead(e) {
     breadcrumbNode(c, [[STRINGS.en.crumbs.home, SITE], [STRINGS.en.crumbs.examples, SITE + 'examples/'], [e.title.en, c.self]]),
   ];
   return [
-    headBasics(t, c, { title, description, ld, siteCss: false, analytics: false }),
+    headBasics(t, c, { title, description, ld, siteCss: false, analytics: false, pageType: 'example', pageId: e.id }),
     e.guide === false ? '' : `<link rel="stylesheet" href="${c.root}assets/examples/guide.css">`,
   ].filter(Boolean).join('\n');
 }
@@ -189,7 +189,7 @@ export function exampleGuide(e) {
   <div class="g-bar">
     <p class="g-eyebrow">${bi(`${G.en.example} ${e.num} · <a href="${href(c, 'examples/')}#route-${e.route}">${esc(route[0])}</a>`, `${G.zh.example} ${e.num} · <a href="${href(c, 'zh/examples/')}#route-${e.route}">${esc(route[1])}</a>`)}</p>
     <span class="g-tools" hidden>
-      <button type="button" class="g-lang" data-set="en" aria-pressed="true">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false">中文</button>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true" data-oav-event="lang_switch">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false" data-oav-event="lang_switch">中文</button>
       <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="${attr(G.en.hide)}" data-show="${attr(G.en.show)}" data-hide-zh="${attr(G.zh.hide)}" data-show-zh="${attr(G.zh.show)}">${G.en.hide}</button>
     </span>
   </div>
@@ -279,12 +279,12 @@ function renderSource(rel, c, { idPrefix, resolveLink, twin = null }) {
 const enTwin = (rel, c, o) => renderSource(rel, { ...c, locale: 'en' }, o).headings.filter((h) => h.mdLevel > 1);
 
 /** The page around one rendered source. `header` is the inside of <header class="docs-head">. */
-function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, chapter, header, html, css = [] }) {
+function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, chapter, header, html, css = [], pageType }) {
   const runtime = { copy: t.ui.copy, copied: t.ui.copied, linkCopied: '', tocButton: '', tocClose: '' };
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-${headBasics(t, c, { title, description, ogType: 'article', markdownHref, ld })}
+${headBasics(t, c, { title, description, ogType: 'article', markdownHref, ld, pageType })}
 <link rel="stylesheet" href="${c.root}assets/docs/docs.css">
 <link rel="stylesheet" href="${c.root}assets/examples/pages.css">
 ${css.map((h) => `<link rel="stylesheet" href="${c.root}${h}">\n`).join('')}<script>document.documentElement.classList.add('js')</script>
@@ -358,7 +358,7 @@ export function renderP5(locale) {
     <p class="docs-note">${esc(S.p5.tryNote)}</p>
     <p class="docs-note p5-sketches">${esc(S.p5.sketches)} ${sketches}</p>`;
   return markdownFrame(t, c, {
-    title, description, markdownHref: `${c.root}${P5_SOURCE[locale]}`, ld, bodyClass: 'p5-page', chapter: 'p5', header, html,
+    title, description, markdownHref: `${c.root}${P5_SOURCE[locale]}`, ld, bodyClass: 'p5-page', chapter: 'p5', header, html, pageType: 'p5',
     css: ['assets/reference/cheatsheet.css'],
   });
 }
@@ -424,6 +424,6 @@ export function renderChangelog(locale) {
     <p class="docs-stats">${esc(t.ui.versions)}</p>
     <p class="docs-note">${S.changelog.source} <a href="${BLOB}${CHANGELOG_SOURCE[locale]}">GitHub ↗</a></p>`;
   return markdownFrame(t, c, {
-    title, description, markdownHref: `${c.root}${CHANGELOG_SOURCE[locale]}`, ld, bodyClass: 'changelog-page', chapter: 'changelog', header, html,
+    title, description, markdownHref: `${c.root}${CHANGELOG_SOURCE[locale]}`, ld, bodyClass: 'changelog-page', chapter: 'changelog', header, html, pageType: 'changelog',
   });
 }

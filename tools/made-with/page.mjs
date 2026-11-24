@@ -59,7 +59,7 @@ export function renderPage(t, home, locale, data, { version }) {
   const card = (w) => `
       <li class="mw" id="${attr(w.id)}">
         <p class="mw-kind">${esc(t.kinds[w.kind])}${w.year ? ' · ' + w.year : ''}</p>
-        <h2><a href="${attr(w.url)}" rel="noopener">${esc(w.title)}</a></h2>
+        <h2><a href="${attr(w.url)}" rel="noopener" data-oav-link="work">${esc(w.title)}</a></h2>
         <p class="mw-by">${esc(t.by)} ${w.byUrl ? `<a href="${attr(w.byUrl)}" rel="noopener">${esc(w.by)}</a>` : esc(w.by)}</p>
         <p class="mw-text">${esc(w[locale])}</p>${w.uses?.length ? `
         <ul class="mw-uses" aria-label="${attr(t.usesLabel)}">${w.uses.map((u) => `<li>@openav/${esc(u)}</li>`).join('')}</ul>` : ''}
@@ -70,7 +70,7 @@ export function renderPage(t, home, locale, data, { version }) {
   return guardEmail(`<!DOCTYPE html>
 <html lang="${home.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld, pageType: 'made_with' })}
 <link rel="stylesheet" href="${c.root}assets/made-with/made.css">
 </head>
 <body class="page-made">

@@ -190,7 +190,8 @@ export function sysexSection(t, d, sec) {
 export function exportSection(t, c, d, sec) {
   const X = t.detail.exports, id = d.p.id, base = `${c.root}controllers/${id}/`;
   const omni = (() => { const ch = new Set(d.p.controls.map((x) => x.ch)); return ch.size > 1 || !ch.has(1); })();
-  const file = (f, label) => `<a class="vf-btn" href="${base}${f}" download="${f}">${label}</a>`;
+  // data-oav-*: assets/track.js counts a download as oav_export_download (format, controller)
+  const file = (f, label, format) => `<a class="vf-btn" href="${base}${f}" download="${f}" data-oav-event="export_download" data-oav-format="${format}" data-oav-id="${id}">${label}</a>`;
   return `<!-- ═════ other software ═════ -->
   <section class="sec" id="other-software" aria-labelledby="other-software-title">
     ${sec('other-software', X.eyebrow, X.title, X.lede)}
@@ -198,17 +199,17 @@ export function exportSection(t, c, d, sec) {
       <div>
         <h3>QLC+</h3>
         <p>${X.qlc}${omni ? ` ${X.qlcOmni}` : ''}</p>
-        <div class="vf-row">${file(`${id}.qxi`, `${id}.qxi`)}</div>
+        <div class="vf-row">${file(`${id}.qxi`, `${id}.qxi`, 'qlc')}</div>
       </div>
       <div>
         <h3>Mixxx</h3>
         <p>${X.mixxx}</p>
-        <div class="vf-row">${file(`${id}.midi.xml`, `${id}.midi.xml`)}${file(`${id}.scripts.js`, `${id}.scripts.js`)}</div>
+        <div class="vf-row">${file(`${id}.midi.xml`, `${id}.midi.xml`, 'mixxx')}${file(`${id}.scripts.js`, `${id}.scripts.js`, 'mixxx')}</div>
       </div>
       <div>
         <h3>${X.jsonTitle}</h3>
         <p>${X.json}</p>
-        <div class="vf-row"><a class="vf-btn" href="${c.root}${PROFILE_DIR}/${d.file}">${d.file}</a></div>
+        <div class="vf-row"><a class="vf-btn" href="${c.root}${PROFILE_DIR}/${d.file}" data-oav-event="export_download" data-oav-format="json" data-oav-id="${id}">${d.file}</a></div>
       </div>
     </div>
   </section>
@@ -279,7 +280,7 @@ export function renderDetail(t, home, locale, d, cat) {
   const issueUrl = `${REPO}/issues/new?title=${encodeURIComponent(fill(D.report.issueTitle, { name, id }))}`;
   const runtime = { lang: locale, copy: home.ui.copy, copied: home.ui.copied, profile: id, imported: d.prov.imported, sysex: p.sysex ? D.sysex.status : null };
 
-  const head = headBasics(home, c, { title, description, ogDescription: description, ogImage: OG_IMAGE, ogImageAlt: D.ld.image, robots: 'index, follow, max-image-preview:large, max-snippet:-1', ld });
+  const head = headBasics(home, c, { title, description, ogDescription: description, ogImage: OG_IMAGE, ogImageAlt: D.ld.image, robots: 'index, follow, max-image-preview:large, max-snippet:-1', ld, pageType: 'controller', pageId: id });
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
@@ -318,7 +319,7 @@ ${topBar(home, c)}
     </div>
 
     <div class="stage">
-      <oav-controller id="d-ctl" profile="${id}" hardware="ask" readout>${faceSvg(p, fill(t.catalog.faceLabel, { name }))}</oav-controller>
+      <oav-controller id="d-ctl" profile="${id}" hardware="ask" readout data-oav-event="controller_play">${faceSvg(p, fill(t.catalog.faceLabel, { name }))}</oav-controller>
     </div>
     <div class="stage-foot">
       <p class="stage-meta"><b>${fill(D.play.title, { name: esc(name) })}</b> ${d.prov.imported ? '' : `<a href="${c.root}examples/09-midi-controllers/?view=controller&amp;profile=${id}">${D.play.full} ↗</a> `}<a href="${c.root}${jsonRel}">${D.report.raw} ↗</a> <a href="${c.to('controllers')}">${D.play.back}</a></p>

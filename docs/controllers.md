@@ -100,6 +100,25 @@ The one line for p5.js (`oav-p5`) sends nothing unless a sketch sets `telemetry:
 
 **The signature is not a hit.** `createShow()` also puts `<meta name="generator" content="open-audiovisual 0.9.0">` in the page's head, the tag WordPress and Hugo leave. It makes no request: a person who views the source, a search of the public web or a web census can read which pages run on open-audiovisual, and that is all. `createShow({ signature: false })` leaves it out. Source: `packages/core/src/signature.js`. Works that want to be listed by name add themselves to [Made with](https://openaudiovisual.com/made-with/).
 
+### The site's own pages
+
+openaudiovisual.com runs Google Analytics 4 on its own pages (the same property). Besides the page views Google Analytics counts by itself, `assets/track.js` counts eight things people do there, each as its own event:
+
+| event | when | params |
+|---|---|---|
+| `oav_copy` | a Copy button, or ⌘C / Ctrl+C inside a code block | `kind` (loader · code · import_map · other), `page_type` |
+| `oav_outbound` | a link to another site | `kind` (github · vendor · work · course · openprocessing · other), `host`, `page_type` |
+| `oav_controller_play` | the first move on a page's on-screen controller, once per page view | `controller`, `page_type` |
+| `oav_export_download` | a QLC+, Mixxx or JSON file from a device page | `format` (qlc · mixxx · json), `controller`, `page_type` |
+| `oav_example_start` | the first click or key inside an example, once per page view | `example` |
+| `oav_next_step` | a link in a page's next-step block | `from` (the page type), `to` (p5 · example · docs · reference · …) |
+| `oav_search` | the first letter typed in a search box, once per page view | `page_type` |
+| `oav_lang_switch` | EN or 中文 | `page_type`, `to` (en · zh) |
+
+`page_type` says what kind of page it is: home, controller, controllers_index, verify, example, examples_index, docs, reference, cheatsheet, p5, made_with, changelog, webtoe, check or not_found. Each param is a short word or an id, never what was copied or typed into a search box, and never a link's path or query: `host` is the other site's name only. As with every page view, Google Analytics itself also records the page's address and sets its own cookie. The script runs only where the site's analytics runs, on openaudiovisual.com: not on localhost and not in a copy of the repository. Source: `assets/track.js`.
+
+None of this is in the framework. `p5/oav-p5.js`, `packages/` and `embed/` do not load the script and send nothing new, so a page someone else builds with open-audiovisual sends only what the first table lists. `tests/track.test.js` checks both.
+
 ## SysEx: modes, templates, LED colours
 
 Some things only SysEx can do: put a Launchpad in Programmer mode, pick a Launch Control XL template, light a pad in any RGB colour. Profiles that have these list them in `sysex`, each message with its source, and the device's page shows them.

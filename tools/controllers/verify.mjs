@@ -16,7 +16,7 @@ export function renderVerify(t, home, locale, cat) {
   const V = t.verify, c = verifyCtx(locale);
   const head = headBasics(home, c, {
     title: V.meta.title, description: V.meta.description, ogDescription: V.meta.description, ogImage: OG_IMAGE, ogImageAlt: V.meta.title,
-    robots: 'index, follow, max-image-preview:large, max-snippet:-1',
+    robots: 'index, follow, max-image-preview:large, max-snippet:-1', pageType: 'verify',
     ld: [
       breadcrumbNode(c, [[t.detail.crumbs.home, homeUrl(c)], [t.detail.crumbs.controllers, SITE + (locale === 'zh' ? 'zh/' : '') + 'controllers/'], [V.h1, c.self]]),
       pageNode(c, home, { name: V.meta.title, description: V.meta.description, image: OG_IMAGE, breadcrumb: { '@id': c.self + '#breadcrumb' } }),
@@ -169,7 +169,7 @@ ${topBar(home, c)}
 
     <div class="vf-row vf-out">
       <button type="button" class="vf-btn vf-go" id="vf-download">${V.end.download}</button>
-      <button type="button" class="vf-btn" id="vf-copy">${V.end.copy}</button>
+      <button type="button" class="vf-btn" id="vf-copy" data-oav-copy="other">${V.end.copy}</button>
       <a class="vf-btn" id="vf-issue" href="${REPO}/issues/new" rel="noopener">${V.end.issue} ↗</a>
       <a class="vf-btn" id="vf-pr" href="${REPO}" rel="noopener">${V.end.pr} ↗</a>
       <button type="button" class="vf-btn vf-quiet" id="vf-again">${V.end.again}</button>

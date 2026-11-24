@@ -180,7 +180,7 @@ ${body}
   return guardEmail(`<!DOCTYPE html>
 <html lang="${home.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ogType: 'article', ld })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ogType: 'article', ld, pageType: 'reference' })}
 <link rel="stylesheet" href="${c.root}assets/docs/docs.css?v=${assets.docsCss}">
 <link rel="stylesheet" href="${c.root}assets/reference/reference.css?v=${assets.css}">
 <script>document.documentElement.classList.add('js', 'refpage')</script>

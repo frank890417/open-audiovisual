@@ -1,5 +1,5 @@
 // /made-with/ and /zh/made-with/: the works that run on the framework. One data file (made-with/works.json), one
-// template, no script. The page is how the project learns who uses it without taking anything from anyone:
+// template, no script of its own. The page is how the project learns who uses it without taking anything from anyone:
 // people add themselves.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -35,7 +35,8 @@ test('made-with: every work in the data file is a card on both pages, with its l
       assert.ok(s.includes(`id="${w.id}"`), `${f}: ${w.id}`);
       assert.ok(s.includes(`href="${w.url}"`), `${f}: ${w.url}`);
     }
-    assert.doesNotMatch(s, /<script(?![^>]*application\/ld\+json)[^>]*src=(?![^>]*(googletagmanager|search))/, `${f}: no script of its own`);
+    // the site's search and its own analytics (assets/track.js, docs/controllers.md "The site's own pages") ride on every page; nothing else
+    assert.doesNotMatch(s, /<script(?![^>]*application\/ld\+json)[^>]*src=(?![^>]*(googletagmanager|search|assets\/track\.js))/, `${f}: no script of its own`);
   }
 });
 

@@ -119,7 +119,7 @@ export function renderPage(t, home, locale) {
   return guardEmail(`<!DOCTYPE html>
 <html lang="${home.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld, pageType: 'webtoe' })}
 <link rel="stylesheet" href="${root}assets/webtoe/webtoe.css">
 </head>
 <body class="page-webtoe">

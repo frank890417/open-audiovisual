@@ -95,6 +95,25 @@ p5.js 的那一行（`oav-p5`）預設什麼都不送，草圖自己設 `telemet
 
 **簽名不是一筆紀錄。** `createShow()` 還會在頁面的 head 裡放一個 `<meta name="generator" content="open-audiovisual 0.9.0">`，WordPress 和 Hugo 留的也是這種標籤。它不發出任何請求，檢視原始碼的人、公開網頁的搜尋與普查可以從它讀出哪些頁面跑在 open-audiovisual 上，就這樣而已。`createShow({ signature: false })` 就不放。原始碼：`packages/core/src/signature.js`。想被列出名字的作品，自己到[用它做的](https://openaudiovisual.com/zh/made-with/)加上來。
 
+### 網站自己的頁面
+
+openaudiovisual.com 自己的頁面裝了 Google Analytics 4（同一個資源）。除了 Google Analytics 本身會算的瀏覽次數，`assets/track.js` 另外記下訪客在頁面上做的八件事，每件都是一個獨立的事件：
+
+| 事件 | 什麼時候 | 內容 |
+|---|---|---|
+| `oav_copy` | 按下「複製」，或在程式碼區塊裡按 ⌘C、Ctrl+C | `kind`（loader、code、import_map、other）、`page_type` |
+| `oav_outbound` | 點了連到別的網站的連結 | `kind`（github、vendor、work、course、openprocessing、other）、`host`、`page_type` |
+| `oav_controller_play` | 第一次動頁面上的螢幕控制器，每次瀏覽只記一次 | `controller`、`page_type` |
+| `oav_export_download` | 從設備頁下載 QLC+、Mixxx 或 JSON 檔 | `format`（qlc、mixxx、json）、`controller`、`page_type` |
+| `oav_example_start` | 在範例裡第一次點擊或按鍵，每次瀏覽只記一次 | `example` |
+| `oav_next_step` | 點了頁面「下一步」區塊裡的連結 | `from`（頁面類型）、`to`（p5、example、docs、reference 等） |
+| `oav_search` | 在搜尋框打下第一個字，每次瀏覽只記一次 | `page_type` |
+| `oav_lang_switch` | 按 EN 或中文 | `page_type`、`to`（en、zh） |
+
+`page_type` 是頁面的類型：home、controller、controllers_index、verify、example、examples_index、docs、reference、cheatsheet、p5、made_with、changelog、webtoe、check 或 not_found。每個內容都只是一個短字或 id，不會有複製了什麼、在搜尋框打了什麼，也不會有連結的路徑或查詢字串：`host` 只有對方網站的名稱。跟每一次瀏覽一樣，Google Analytics 本身也會記下頁面的網址，並寫入它自己的 cookie。這支程式只在網站的分析程式有跑的地方跑，也就是 openaudiovisual.com，localhost 和複製出去的 repository 都不會。原始碼：`assets/track.js`。
+
+這些都不在框架裡。`p5/oav-p5.js`、`packages/`、`embed/` 不會載入這支程式，也不會多送任何東西，所以別人用 open-audiovisual 做的網頁，送出的仍然只有第一張表列的內容。`tests/track.test.js` 兩件事都會檢查。
+
 ## SysEx：模式、模板、LED 顏色
 
 有些事只有 SysEx 做得到：把 Launchpad 切到程式模式、選 Launch Control XL 的模板、把打擊墊點成任何 RGB 顏色。有這些功能的設定檔會列在 `sysex`，每則訊息都附出處，機器的頁面看得到。

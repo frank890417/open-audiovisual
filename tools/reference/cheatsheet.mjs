@@ -340,7 +340,7 @@ export function renderCheatsheetPage(t, home, { c, records, p5Version, assets })
   return guardEmail(`<!DOCTYPE html>
 <html lang="${home.htmlLang}">
 <head>
-${headBasics(home, c, { title: s.meta.title, description: s.meta.description, ogType: 'article', ld })}
+${headBasics(home, c, { title: s.meta.title, description: s.meta.description, ogType: 'article', ld, pageType: 'cheatsheet' })}
 <link rel="stylesheet" href="${c.root}assets/docs/docs.css?v=${assets.docsCss}">
 <link rel="stylesheet" href="${c.root}assets/reference/cheatsheet.css?v=${assets.cheatCss}">
 </head>

@@ -425,7 +425,7 @@ descends from [libmapper](http://libmapper.github.io/)'s signal-namespace resear
 
 ## 🛰 Telemetry
 
-The controller element, `createController()`, the iframe embed and `createShow()` send one anonymous usage hit per page load (kind, controller profile, the page's origin, version; no cookies, nothing anyone plays). Nothing is sent from localhost, LAN addresses or `file://`. Off with `telemetry="off"` / `{ telemetry: false }` / `?telemetry=0` / `globalThis.OPENAV_TELEMETRY = false`. Details: [packages/midi/README.md](packages/midi/README.md#telemetry).
+The controller element, `createController()`, the iframe embed and `createShow()` send one anonymous usage hit per page load (kind, controller profile, the page's origin, version; no cookies, nothing anyone plays). Nothing is sent from localhost, LAN addresses or `file://`. Off with `telemetry="off"` / `{ telemetry: false }` / `?telemetry=0` / `globalThis.OPENAV_TELEMETRY = false`. Details: [packages/midi/README.md](packages/midi/README.md#telemetry). The site's own pages on openaudiovisual.com count eight things visitors do there with Google Analytics (a copy, a link off the site, the first move on an on-screen controller, an export download, the first touch of an example, a next-step link, a search, the language switch). That script, `assets/track.js`, is the site's alone: the framework files load nothing new. [The list](docs/controllers.md#the-sites-own-pages).
 
 ## 🗺 Status & roadmap
 
@@ -437,7 +437,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-30 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1329 tests
+30 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1336 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

@@ -61,6 +61,13 @@ export const NAV = [
 export const GA_ID = 'G-1YG2JHK2WT';
 export const GA_SNIPPET = `<script>if(/(^|\\.)openaudiovisual\\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${GA_ID}');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${GA_ID}';document.head.appendChild(s)}</script>`;
 
+/** What kind of page this is, as assets/track.js reports it (`page_type`). headBasics() writes it into every page; the
+ *  same list is in track.js (tests/track.test.js compares them). */
+export const PAGE_TYPES = ['home', 'controller', 'controllers_index', 'verify', 'example', 'examples_index', 'docs', 'reference',
+  'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found'];
+/** The site's own events (assets/track.js): loaded with defer, it does nothing unless the GA snippet above defined gtag. */
+export const TRACK_SRC = 'assets/track.js';
+
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 export const attr = (s) => esc(s).replace(/"/g, '&quot;');
 
@@ -191,11 +198,16 @@ const OG_LOCALE = { en: 'en_US', zh: 'zh_TW' };
  *   ld                                  the page's JSON-LD nodes, added to the shared graph; false → no JSON-LD at all
  *   siteCss                             false → no site font preload / home.css (a page with its own styles, like an example)
  *   analytics                           false → no Google Analytics snippet (a page that already carries its own, like an example)
+ *   pageType, pageId                    one of PAGE_TYPES (required), and the page's own id (a controller, an example) for
+ *                                       assets/track.js: <meta name="oav-page-type" content="…" data-oav-id="…">
+ *   track                               false → no assets/track.js (it is loaded whether or not the page carries its own GA snippet)
  */
 export function headBasics(t, c, {
   title, description, ogDescription = description, ogImage = SITE + 'assets/home/og.png', ogImageAlt = t.seo.ogImageAlt,
   ogType = 'website', noindex = false, robots = '', markdownHref = '', ld = [], siteCss = true, analytics = true,
+  pageType, pageId = '', track = true,
 }) {
+  if (!PAGE_TYPES.includes(pageType)) throw new Error(`headBasics: pageType must be one of ${PAGE_TYPES.join(', ')} (got ${JSON.stringify(pageType)})`);
   const canonical = !noindex && c.self;
   const twin = canonical && c.both;
   const lines = [
@@ -236,6 +248,8 @@ export function headBasics(t, c, {
     siteCss ? `<link rel="stylesheet" href="${c.root}assets/home/home.css">` : '',
     siteCss ? `<script type="module" src="${c.root}assets/search/search.js"></script>` : '',   // the nav's search (every page with a top bar)
     analytics ? GA_SNIPPET : '',
+    `<meta name="oav-page-type" content="${pageType}"${pageId ? ` data-oav-id="${attr(pageId)}"` : ''}>`,
+    track ? `<script defer src="${c.root}${TRACK_SRC}"></script>` : '',
     ld === false ? '' : ldScript(jsonLdGraph(c, t, ld)),
   ];
   return lines.filter(Boolean).join('\n');
@@ -265,7 +279,7 @@ export function topBar(t, c) {
   <div class="top-end">
     <a class="nav-search" href="${c.to('reference')}" data-search data-placeholder="${attr(t.ui.searchPlaceholder)}" data-loading="${attr(t.ui.searchLoading)}" aria-label="${attr(t.ui.searchLabel)}" aria-keyshortcuts="Control+K Meta+K /">${SEARCH_ICON}<span class="nav-search-label">${esc(t.ui.search)}</span></a>
     <div class="langs" role="group" aria-label="${attr(t.ui.langLabel)}">
-      <a href="${c.lang.en}" hreflang="en" lang="en" data-lang="en"${c.locale === 'en' ? ' aria-current="page"' : ''}>EN</a><span aria-hidden="true">|</span><a href="${c.lang.zh}" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh"${c.locale === 'zh' ? ' aria-current="page"' : ''}>中文</a>
+      <a href="${c.lang.en}" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch"${c.locale === 'en' ? ' aria-current="page"' : ''}>EN</a><span aria-hidden="true">|</span><a href="${c.lang.zh}" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch"${c.locale === 'zh' ? ' aria-current="page"' : ''}>中文</a>
     </div>
     <a class="gh" href="${REPO}">GitHub</a>
   </div>

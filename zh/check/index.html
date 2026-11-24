@@ -36,6 +36,8 @@
 <link rel="stylesheet" href="../../assets/home/home.css?v=6b091ec6">
 <script type="module" src="../../assets/search/search.js?v=6b091ec6"></script>
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="check">
+<script defer src="../../assets/track.js?v=6b091ec6"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/zh/check/#webpage","url":"https://openaudiovisual.com/zh/check/","name":"裝置體檢 · 這台裝置能用 open-audiovisual 的哪些部分","description":"一頁檢查這個瀏覽器的 Web MIDI、麥克風、鏡頭、繪圖能力和本機 OSC 橋接，每一項都告訴你怎麼辦。按了按鈕才會開始。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"breadcrumb":{"@id":"https://openaudiovisual.com/zh/check/#breadcrumb"},"mentions":{"@id":"https://openaudiovisual.com/#software"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/check/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"裝置體檢","item":"https://openaudiovisual.com/zh/check/"}]}]}</script>
 <link rel="stylesheet" href="../../assets/check/check.css?v=6b091ec6">
 </head>
@@ -57,7 +59,7 @@
   <div class="top-end">
     <a class="nav-search" href="../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
     <div class="langs" role="group" aria-label="語言">
-      <a href="../../check/" hreflang="en" lang="en" data-lang="en">EN</a><span aria-hidden="true">|</span><a href="../../zh/check/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" aria-current="page">中文</a>
+      <a href="../../check/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../zh/check/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
     </div>
     <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
   </div>
@@ -149,7 +151,7 @@
 
     <div class="chk-foot">
       <p class="chk-summary" id="chk-summary" aria-live="polite"></p>
-      <p class="chk-act"><button type="button" id="btn-copy" class="chk-btn">複製結果</button> <span class="chk-note" id="copy-note">純文字，貼到聊天室或 issue 用。你貼出去之前，它都只在你的裝置上。</span></p>
+      <p class="chk-act"><button type="button" id="btn-copy" class="chk-btn" data-oav-copy="other">複製結果</button> <span class="chk-note" id="copy-note">純文字，貼到聊天室或 issue 用。你貼出去之前，它都只在你的裝置上。</span></p>
       <textarea id="chk-out" class="chk-out" readonly rows="9" hidden aria-label="複製結果"></textarea>
       <p class="chk-links"><a href="../../zh/docs/#troubleshooting">全部疑難排解</a> · <a href="../../zh/controllers/">控制器圖鑑</a> · <a href="../../zh/docs/">文件</a></p>
     </div>

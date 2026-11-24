@@ -269,7 +269,8 @@ export function specParts(t, d, c, locale) {
           </tr>`).join('\n          ');
   // `note` is the MIDI note number on note controls and a remark (text) on the others
   const notes = p.controls.filter((x) => typeof x.note === 'string' && x.note);
-  const src = (s) => `<li><span class="src-kind">${S.sourceKinds[sourceKind(s, p)]}</span> ${s.url ? `<a href="${attr(s.url)}" rel="noopener">${esc(s.title)}</a>` : esc(s.title)}${s.note ? `<span class="src-note">${esc(s.note)}</span>` : ''}</li>`;
+  // a manufacturer's own document: assets/track.js counts the click as oav_outbound kind vendor
+  const src = (s) => `<li><span class="src-kind">${S.sourceKinds[sourceKind(s, p)]}</span> ${s.url ? `<a href="${attr(s.url)}" rel="noopener"${sourceKind(s, p) === 'maker' ? ' data-oav-link="vendor"' : ''}>${esc(s.title)}</a>` : esc(s.title)}${s.note ? `<span class="src-note">${esc(s.note)}</span>` : ''}</li>`;
   const m = p.match || {};
   return {
     table: `<div class="table-scroll" role="region" aria-label="${attr(fill(S.caption, { name }))}" tabindex="0">
@@ -509,7 +510,7 @@ export function renderPage(t, home, locale) {
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld, pageType: 'controllers_index' })}
 <link rel="stylesheet" href="${c.root}assets/controllers/controllers.css">
 <noscript><style>.js-only { display: none !important; }</style></noscript>
 <script>${legacyRedirect(cat)}</script>
@@ -550,7 +551,7 @@ ${topBar(home, c)}
     <p class="hw-status js-only" id="hw-status" role="status"></p>
 
     <div class="stage">
-      <oav-controller id="hero-ctl" profile="${heroD.p.id}" follow>${faceSvg(heroD.p, fill(t.catalog.faceLabel, { name: nameOf(heroD.p, locale) }))}</oav-controller>
+      <oav-controller id="hero-ctl" profile="${heroD.p.id}" follow data-oav-event="controller_play">${faceSvg(heroD.p, fill(t.catalog.faceLabel, { name: nameOf(heroD.p, locale) }))}</oav-controller>
     </div>
     <div class="stage-foot">
       <p class="readout js-only"><span class="ro-k">${t.hero.readoutLabel}</span><code id="hero-readout">${t.hero.readoutIdle}</code></p>
@@ -619,7 +620,7 @@ ${topBar(home, c)}
       </form>
       <div class="b-preview">
         <p class="b-label">${E.preview}</p>
-        <div class="b-stage"><oav-controller id="b-ctl" profile="${buildD.p.id}" readout>${faceSvg(buildD.p, fill(t.catalog.faceLabel, { name: nameOf(buildD.p, locale) }))}</oav-controller></div>
+        <div class="b-stage"><oav-controller id="b-ctl" profile="${buildD.p.id}" readout data-oav-event="controller_play">${faceSvg(buildD.p, fill(t.catalog.faceLabel, { name: nameOf(buildD.p, locale) }))}</oav-controller></div>
         <p class="b-label">${E.events}</p>
         <pre class="b-event" id="b-event"><code>${E.eventsIdle}</code></pre>
       </div>
