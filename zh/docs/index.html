@@ -2299,7 +2299,7 @@ devices({ q: <span class="ts">'minilab'</span> });                       <span c
 <thead><tr><th>種類</th><th>紀錄從哪裡讀</th><th><code>device()</code> 給你什麼</th></tr></thead>
 <tbody>
 <tr><td><code>midi-controller</code></td><td><code>packages/midi/profiles/</code> 裡的每一份 profile，手寫的和從 QLC+ 轉入的</td><td><code>profile</code>、<code>routes()</code>、<code>addTo(controllers)</code></td></tr>
-<tr><td><code>dmx-fixture</code></td><td><code>packages/dmx/fixtures/</code> 裡的每一台燈具</td><td><code>profile</code>、<code>patch(patch, { address })</code></td></tr>
+<tr><td><code>dmx-fixture</code></td><td><code>packages/dmx/fixtures/</code> 裡的每一台燈具（還有 <code>tools/import-ofl.mjs</code> 寫入的 <code>fixtures/imported/</code>）</td><td><code>profile</code>、<code>patch(patch, { address })</code></td></tr>
 <tr><td><code>part</code></td><td>電子零件庫 <code>packages/hw/parts.js</code> 的每一個零件</td><td><code>part</code></td></tr>
 <tr><td><code>camera</code>、<code>audio-interface</code></td><td><code>packages/devices/records/</code> 裡的一份手寫紀錄</td><td><code>constraints()</code>、<code>find()</code>、<code>open()</code></td></tr>
 <tr><td><code>sensor</code>、<code>led-controller</code>、<code>dmx-interface</code>、<code>printer</code>、<code>projector</code>、<code>display</code></td><td>一份手寫紀錄</td><td>紀錄本身，它的 <code>use</code> 寫著哪個套件接得到它</td></tr>
@@ -2315,7 +2315,7 @@ devices({ q: <span class="ts">'minilab'</span> });                       <span c
 <tbody>
 <tr><td><code>id</code>、<code>kind</code>、<code>manufacturer</code>、<code>name</code></td><td>它是誰。讀它的那個檔案沒寫製造商時（零件庫、通用版面），<code>manufacturer</code> 是 <code>null</code></td></tr>
 <tr><td><code>aliases</code></td><td>大家搜尋時會打的字：短名、中文名、型號</td></tr>
-<tr><td><code>connections</code>、<code>protocols</code></td><td>怎麼接（<code>usb</code>、<code>din-midi</code>、<code>ethernet</code>、<code>wifi</code>、<code>dmx-xlr5</code>……）和說什麼協定（<code>midi</code>、<code>dmx512</code>、<code>art-net</code>……）</td></tr>
+<tr><td><code>connections</code>、<code>protocols</code></td><td>怎麼接（<code>usb</code>、<code>din-midi</code>、<code>ethernet</code>、<code>wifi</code>、<code>dmx-xlr5</code>……）和說什麼協定（<code>midi</code>、<code>dmx512</code>、<code>art-net</code>……）。profile、燈具和零件都沒寫怎麼接，所以它們的 <code>connections</code> 是空的，目前 <code>devices({ connection })</code> 只找得到手寫紀錄</td></tr>
 <tr><td><code>data</code></td><td><code>ref</code>：更深一層的紀錄（<code>{ type: 'midi-profile', id, file }</code>），以及／或 <code>facts</code>：<code>[{ key, value, unit, note, source }]</code>，每一筆都引用一個來源</td></tr>
 <tr><td><code>media</code></td><td>只有鏡頭和音訊介面有：在瀏覽器的裝置裡找到它的名稱比對式、建議的限制條件，以及它們從哪裡來</td></tr>
 <tr><td><code>setup</code>、<code>problems</code></td><td>設定步驟和已知問題，<code>{ en, zh, source }</code></td></tr>
@@ -2327,9 +2327,9 @@ devices({ q: <span class="ts">'minilab'</span> });                       <span c
 </table></div>
 <p>只有在真機上檢查過，<code>verified</code> 才是 true，沒有一筆 <code>method</code> 是 <code>hardware</code> 的驗證紀錄，紀錄會拒絕 <code>verified: true</code>。MIDI 控制器要每一個控制項都檢查過才算：M-VAVE SMC-Mixer 的紀錄裡有一次真機檢查，59 個控制項確認了 52 個，所以不算。</p>
 <h3 id="devices-device-kind-by-kind">device()，一種一種看<a class="anchor" href="#devices-device-kind-by-kind" aria-label="這一節的連結">#</a></h3>
-<p>每段程式碼都能在範例的 import map 下執行，沒有一段會要權限。</p>
+<p>每段程式碼都以 module 執行，網頁的 import map 用範例那一份，再加一行 <code>"@openav/devices": "../../packages/devices/index.js?v=4d1326b1"</code>。只有鏡頭那段的按鈕會要權限，而且要按下去才會。</p>
 <h4 id="devices-a-midi-controller">MIDI 控制器<a class="anchor" href="#devices-a-midi-controller" aria-label="這一節的連結">#</a></h4>
-<p><code>routes()</code> 就是 <code>@openav/midi</code> 的 <code>controllerRoutes</code>：從控制器有名字的訊號連到你的參數的路由。<code>addTo()</code> 把 profile 放進一個 <code>MidiControllers</code>，回傳它即時的控制器：插上實機，就會依連接埠名稱認出它。</p>
+<p><code>routes()</code> 就是 <code>@openav/midi</code> 的 <code>controllerRoutes</code>：從控制器有名字的訊號連到你的參數的路由。<code>addTo()</code> 把 profile 放進一個 <code>MidiControllers</code>，回傳它即時的控制器。管理器拿到硬體引擎時（<code>controllers.attach(midi)</code>），以及每次裝置有變化時，都會依連接埠名稱認出實機，所以請先呼叫 <code>addTo()</code>：不然已經插著的實機要等下一次有裝置插拔才會被認出。</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
 <span class="tk">import</span> { MidiControllers } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
 <span class="tk">import</span> { Signals } <span class="tk">from</span> <span class="ts">'@openav/core'</span>;
@@ -2363,9 +2363,10 @@ console.log(ring.part.leds, ring.part.supply);   <span class="tc">// the @openav
 
 <span class="tk">const</span> cam = <span class="tk">await</span> device(<span class="ts">'logitech-mx-brio'</span>);
 console.log(cam.constraints());       <span class="tc">// { video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60 } }, audio: false }</span>
+<span class="tk">const</span> video = document.body.appendChild(Object.assign(document.createElement(<span class="ts">'video'</span>), { autoplay: <span class="tk">true</span>, muted: <span class="tk">true</span> }));
+<span class="tk">const</span> button = document.body.appendChild(Object.assign(document.createElement(<span class="ts">'button'</span>), { textContent: <span class="ts">'Camera'</span> }));
 button.onclick = <span class="tk">async</span> () =&gt; {
-  <span class="tk">const</span> stream = <span class="tk">await</span> cam.open();    <span class="tc">// asks once; finds the MX Brio by name; opens it by its id</span>
-  video.srcObject = stream;
+  video.srcObject = <span class="tk">await</span> cam.open();   <span class="tc">// asks once; finds the MX Brio by name; opens it by its id</span>
 };</code></pre></div>
 <p>頁面拿到一次權限之前，瀏覽器不給名稱，所以那之前 <code>find()</code> 回傳 <code>null</code>。這時 <code>open()</code> 會先要權限、再找一次，如果瀏覽器先開的是別的鏡頭，就關掉它改開這一台。名稱看得到卻沒有符合的，它會丟出錯誤並列出找到的名稱，不要任何權限。音訊介面打開時關掉回音消除、降噪和自動增益，跟 <code>@openav/audio</code> 要麥克風時一樣。要送進分析器，用 <code>analyzer.input().context.createMediaStreamSource(stream).connect(analyzer.input())</code>。<code>@openav/pose</code> 會自己打開預設的鏡頭，所以找到的鏡頭目前還送不進姿態追蹤。</p>
 <h4 id="devices-everything-else">其他種類<a class="anchor" href="#devices-everything-else" aria-label="這一節的連結">#</a></h4>

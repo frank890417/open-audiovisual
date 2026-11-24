@@ -20,6 +20,8 @@ QLC+ input profiles
                                        (issue #7). It says "license": "Apache-2.0" and keeps its "origin" and "sources".
     tests/fixtures/qlc/                three .qxi files, unchanged, as test data.
     controllers/<id>/                  files generated from the imported profiles carry the same licence.
+    packages/devices/catalog.js        the rows of the imported profiles (id, name, maker, short name) are read off them
+                                       and carry the same licence.
 
   Changes made: read from XML into JSON, numbers decoded into MIDI messages, a generated layout added,
   every control marked "verified": false. Nothing in imported/ has been checked on hardware. The M-VAVE SMC-Mixer was

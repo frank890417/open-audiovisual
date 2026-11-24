@@ -5,7 +5,8 @@
 //   node tools/build-devices.mjs --check  # exit 1 if it is stale (a profile, fixture, part or record added, removed or changed)
 //
 // It reads every file that describes a device, where it lives, and writes one row per device: every MIDI profile
-// (packages/midi/profiles/*.json and profiles/imported/*.json), every DMX fixture (packages/dmx/fixtures/*.json), every part of
+// (packages/midi/profiles/*.json and profiles/imported/*.json), every DMX fixture (packages/dmx/fixtures/*.json and fixtures/imported/,
+// where tools/import-ofl.mjs writes), every part of
 // packages/hw/parts.js, and every hand-written record (packages/devices/records/*.json). The rows are read off those files by
 // the functions device() uses on the one file it loads (packages/devices/derive.js), so the list carries no fact of its own
 // and a browser lists the collection without loading 56 profiles. A record that does not validate, a file whose name is not
@@ -20,7 +21,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PKGS = path.join(ROOT, 'packages');
 export const CATALOG_FILE = 'packages/devices/catalog.js';
 const read = (rel) => { try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return null; } };
-const jsonFiles = (rel) => fs.readdirSync(path.join(PKGS, rel)).filter((f) => f.endsWith('.json') && !f.endsWith('.schema.json')).sort();
+const jsonFiles = (rel) => (fs.existsSync(path.join(PKGS, rel)) ? fs.readdirSync(path.join(PKGS, rel)).filter((f) => f.endsWith('.json') && !f.endsWith('.schema.json')).sort() : []);
 const unstamp = (s) => String(s).replace(/\?v=[\w.+-]+/g, '');
 
 /** Every device source on disk: [{ from, file (inside packages/), id }] — what the "nothing left out" test reads too. */
@@ -29,6 +30,7 @@ export function sourcesOnDisk() {
   for (const f of jsonFiles('midi/profiles')) out.push({ from: 'midi-profile', file: `midi/profiles/${f}`, id: f.replace(/\.json$/, '') });
   for (const f of jsonFiles('midi/profiles/imported')) out.push({ from: 'midi-profile', file: `midi/profiles/imported/${f}`, id: f.replace(/\.json$/, '') });
   for (const f of jsonFiles('dmx/fixtures')) out.push({ from: 'dmx-fixture', file: `dmx/fixtures/${f}`, id: f.replace(/\.json$/, '') });
+  for (const f of jsonFiles('dmx/fixtures/imported')) out.push({ from: 'dmx-fixture', file: `dmx/fixtures/imported/${f}`, id: f.replace(/\.json$/, '') });   // tools/import-ofl.mjs writes here
   for (const f of jsonFiles('devices/records')) out.push({ from: 'device-record', file: `devices/records/${f}`, id: f.replace(/\.json$/, '') });
   return out;
 }

@@ -6,7 +6,7 @@
   "name": "Ultraleap Leap Motion Controller 2",
   "aliases": ["Leap Motion Controller 2", "Leap Motion", "Leap Motion Controller", "LMC2", "Leap", "hand tracking", "手部追蹤"],
   "connections": ["usb"],
-  "protocols": ["leapc"],
+  "protocols": [],
   "data": {
     "facts": [
       { "key": "fieldOfView", "value": "160° × 160°", "source": 0 },

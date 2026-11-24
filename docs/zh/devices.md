@@ -17,7 +17,7 @@ const cam = await device('logitech-mx-brio');    // a camera found by its name, 
 | 種類 | 紀錄從哪裡讀 | `device()` 給你什麼 |
 |---|---|---|
 | `midi-controller` | `packages/midi/profiles/` 裡的每一份 profile，手寫的和從 QLC+ 轉入的 | `profile`、`routes()`、`addTo(controllers)` |
-| `dmx-fixture` | `packages/dmx/fixtures/` 裡的每一台燈具 | `profile`、`patch(patch, { address })` |
+| `dmx-fixture` | `packages/dmx/fixtures/` 裡的每一台燈具（還有 `tools/import-ofl.mjs` 寫入的 `fixtures/imported/`） | `profile`、`patch(patch, { address })` |
 | `part` | 電子零件庫 `packages/hw/parts.js` 的每一個零件 | `part` |
 | `camera`、`audio-interface` | `packages/devices/records/` 裡的一份手寫紀錄 | `constraints()`、`find()`、`open()` |
 | `sensor`、`led-controller`、`dmx-interface`、`printer`、`projector`、`display` | 一份手寫紀錄 | 紀錄本身，它的 `use` 寫著哪個套件接得到它 |
@@ -36,7 +36,7 @@ const cam = await device('logitech-mx-brio');    // a camera found by its name, 
 |---|---|
 | `id`、`kind`、`manufacturer`、`name` | 它是誰。讀它的那個檔案沒寫製造商時（零件庫、通用版面），`manufacturer` 是 `null` |
 | `aliases` | 大家搜尋時會打的字：短名、中文名、型號 |
-| `connections`、`protocols` | 怎麼接（`usb`、`din-midi`、`ethernet`、`wifi`、`dmx-xlr5`……）和說什麼協定（`midi`、`dmx512`、`art-net`……） |
+| `connections`、`protocols` | 怎麼接（`usb`、`din-midi`、`ethernet`、`wifi`、`dmx-xlr5`……）和說什麼協定（`midi`、`dmx512`、`art-net`……）。profile、燈具和零件都沒寫怎麼接，所以它們的 `connections` 是空的，目前 `devices({ connection })` 只找得到手寫紀錄 |
 | `data` | `ref`：更深一層的紀錄（`{ type: 'midi-profile', id, file }`），以及／或 `facts`：`[{ key, value, unit, note, source }]`，每一筆都引用一個來源 |
 | `media` | 只有鏡頭和音訊介面有：在瀏覽器的裝置裡找到它的名稱比對式、建議的限制條件，以及它們從哪裡來 |
 | `setup`、`problems` | 設定步驟和已知問題，`{ en, zh, source }` |
@@ -49,11 +49,11 @@ const cam = await device('logitech-mx-brio');    // a camera found by its name, 
 
 ## device()，一種一種看
 
-每段程式碼都能在範例的 import map 下執行，沒有一段會要權限。
+每段程式碼都以 module 執行，網頁的 import map 用範例那一份，再加一行 `"@openav/devices": "../../packages/devices/index.js"`。只有鏡頭那段的按鈕會要權限，而且要按下去才會。
 
 ### MIDI 控制器
 
-`routes()` 就是 `@openav/midi` 的 `controllerRoutes`：從控制器有名字的訊號連到你的參數的路由。`addTo()` 把 profile 放進一個 `MidiControllers`，回傳它即時的控制器：插上實機，就會依連接埠名稱認出它。
+`routes()` 就是 `@openav/midi` 的 `controllerRoutes`：從控制器有名字的訊號連到你的參數的路由。`addTo()` 把 profile 放進一個 `MidiControllers`，回傳它即時的控制器。管理器拿到硬體引擎時（`controllers.attach(midi)`），以及每次裝置有變化時，都會依連接埠名稱認出實機，所以請先呼叫 `addTo()`：不然已經插著的實機要等下一次有裝置插拔才會被認出。
 
 ```js
 import { device } from '@openav/devices';
@@ -106,9 +106,10 @@ import { device } from '@openav/devices';
 
 const cam = await device('logitech-mx-brio');
 console.log(cam.constraints());       // { video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60 } }, audio: false }
+const video = document.body.appendChild(Object.assign(document.createElement('video'), { autoplay: true, muted: true }));
+const button = document.body.appendChild(Object.assign(document.createElement('button'), { textContent: 'Camera' }));
 button.onclick = async () => {
-  const stream = await cam.open();    // asks once; finds the MX Brio by name; opens it by its id
-  video.srcObject = stream;
+  video.srcObject = await cam.open();   // asks once; finds the MX Brio by name; opens it by its id
 };
 ```
 

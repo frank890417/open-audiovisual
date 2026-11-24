@@ -16,7 +16,7 @@ const cam = await device('logitech-mx-brio');    // a camera found by its name, 
 | kind | where the record is read from | what `device()` gives |
 |---|---|---|
 | `midi-controller` | every profile in `packages/midi/profiles/`, hand-written and imported from QLC+ | `profile`, `routes()`, `addTo(controllers)` |
-| `dmx-fixture` | every fixture in `packages/dmx/fixtures/` | `profile`, `patch(patch, { address })` |
+| `dmx-fixture` | every fixture in `packages/dmx/fixtures/` (and `fixtures/imported/`, where `tools/import-ofl.mjs` writes) | `profile`, `patch(patch, { address })` |
 | `part` | every part of the electronics library, `packages/hw/parts.js` | `part` |
 | `camera`, `audio-interface` | a hand-written record in `packages/devices/records/` | `constraints()`, `find()`, `open()` |
 | `sensor`, `led-controller`, `dmx-interface`, `printer`, `projector`, `display` | a hand-written record | the record, whose `use` says which package reaches it |
@@ -35,7 +35,7 @@ Every device has the same outer record, `open-audiovisual/device@1`, described b
 |---|---|
 | `id`, `kind`, `manufacturer`, `name` | who it is. `manufacturer` is `null` when the file it is read from names no maker (the parts library, the generic layouts) |
 | `aliases` | what people type when they search for it: a short name, the Chinese name, a model number |
-| `connections`, `protocols` | how it plugs in (`usb`, `din-midi`, `ethernet`, `wifi`, `dmx-xlr5`, …) and what it speaks (`midi`, `dmx512`, `art-net`, …) |
+| `connections`, `protocols` | how it plugs in (`usb`, `din-midi`, `ethernet`, `wifi`, `dmx-xlr5`, …) and what it speaks (`midi`, `dmx512`, `art-net`, …). A profile, a fixture or a part says nothing about how it plugs in, so its `connections` is empty and `devices({ connection })` finds hand-written records only, for now |
 | `data` | `ref`: the deeper record (`{ type: 'midi-profile', id, file }`), and/or `facts`: `[{ key, value, unit, note, source }]`, each citing a source |
 | `media` | a camera or an audio interface only: the label patterns that find it among the browser's devices, the recommended constraints, and where they come from |
 | `setup`, `problems` | steps and known problems, `{ en, zh, source }` |
@@ -48,11 +48,11 @@ Every device has the same outer record, `open-audiovisual/device@1`, described b
 
 ## device(), kind by kind
 
-Each snippet runs in a page with the import map of the examples; none of them asks for a permission.
+Each snippet runs as a module in a page whose import map is the examples' one plus `"@openav/devices": "../../packages/devices/index.js"`. Only the camera's button asks for a permission, and only when it is clicked.
 
 ### A MIDI controller
 
-`routes()` is `@openav/midi`'s `controllerRoutes`: mapper routes from the controller's named signals to your params. `addTo()` puts the profile into a `MidiControllers` and returns its live controller: plug the unit in and it is recognised by its port name.
+`routes()` is `@openav/midi`'s `controllerRoutes`: mapper routes from the controller's named signals to your params. `addTo()` puts the profile into a `MidiControllers` and returns its live controller. The unit is recognised by its port name when the manager gets its hardware engine (`controllers.attach(midi)`) and at each device change, so call `addTo()` first: a unit already plugged in is otherwise matched the next time a device comes or goes.
 
 ```js
 import { device } from '@openav/devices';
@@ -102,9 +102,10 @@ import { device } from '@openav/devices';
 
 const cam = await device('logitech-mx-brio');
 console.log(cam.constraints());       // { video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60 } }, audio: false }
+const video = document.body.appendChild(Object.assign(document.createElement('video'), { autoplay: true, muted: true }));
+const button = document.body.appendChild(Object.assign(document.createElement('button'), { textContent: 'Camera' }));
 button.onclick = async () => {
-  const stream = await cam.open();    // asks once; finds the MX Brio by name; opens it by its id
-  video.srcObject = stream;
+  video.srcObject = await cam.open();   // asks once; finds the MX Brio by name; opens it by its id
 };
 ```
 

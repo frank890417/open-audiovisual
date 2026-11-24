@@ -2912,7 +2912,7 @@ devices({ q: <span class="ts">'minilab'</span> });                       <span c
 <thead><tr><th>kind</th><th>where the record is read from</th><th>what <code>device()</code> gives</th></tr></thead>
 <tbody>
 <tr><td><code>midi-controller</code></td><td>every profile in <code>packages/midi/profiles/</code>, hand-written and imported from QLC+</td><td><code>profile</code>, <code>routes()</code>, <code>addTo(controllers)</code></td></tr>
-<tr><td><code>dmx-fixture</code></td><td>every fixture in <code>packages/dmx/fixtures/</code></td><td><code>profile</code>, <code>patch(patch, { address })</code></td></tr>
+<tr><td><code>dmx-fixture</code></td><td>every fixture in <code>packages/dmx/fixtures/</code> (and <code>fixtures/imported/</code>, where <code>tools/import-ofl.mjs</code> writes)</td><td><code>profile</code>, <code>patch(patch, { address })</code></td></tr>
 <tr><td><code>part</code></td><td>every part of the electronics library, <code>packages/hw/parts.js</code></td><td><code>part</code></td></tr>
 <tr><td><code>camera</code>, <code>audio-interface</code></td><td>a hand-written record in <code>packages/devices/records/</code></td><td><code>constraints()</code>, <code>find()</code>, <code>open()</code></td></tr>
 <tr><td><code>sensor</code>, <code>led-controller</code>, <code>dmx-interface</code>, <code>printer</code>, <code>projector</code>, <code>display</code></td><td>a hand-written record</td><td>the record, whose <code>use</code> says which package reaches it</td></tr>
@@ -2928,7 +2928,7 @@ devices({ q: <span class="ts">'minilab'</span> });                       <span c
 <tbody>
 <tr><td><code>id</code>, <code>kind</code>, <code>manufacturer</code>, <code>name</code></td><td>who it is. <code>manufacturer</code> is <code>null</code> when the file it is read from names no maker (the parts library, the generic layouts)</td></tr>
 <tr><td><code>aliases</code></td><td>what people type when they search for it: a short name, the Chinese name, a model number</td></tr>
-<tr><td><code>connections</code>, <code>protocols</code></td><td>how it plugs in (<code>usb</code>, <code>din-midi</code>, <code>ethernet</code>, <code>wifi</code>, <code>dmx-xlr5</code>, …) and what it speaks (<code>midi</code>, <code>dmx512</code>, <code>art-net</code>, …)</td></tr>
+<tr><td><code>connections</code>, <code>protocols</code></td><td>how it plugs in (<code>usb</code>, <code>din-midi</code>, <code>ethernet</code>, <code>wifi</code>, <code>dmx-xlr5</code>, …) and what it speaks (<code>midi</code>, <code>dmx512</code>, <code>art-net</code>, …). A profile, a fixture or a part says nothing about how it plugs in, so its <code>connections</code> is empty and <code>devices({ connection })</code> finds hand-written records only, for now</td></tr>
 <tr><td><code>data</code></td><td><code>ref</code>: the deeper record (<code>{ type: 'midi-profile', id, file }</code>), and/or <code>facts</code>: <code>[{ key, value, unit, note, source }]</code>, each citing a source</td></tr>
 <tr><td><code>media</code></td><td>a camera or an audio interface only: the label patterns that find it among the browser's devices, the recommended constraints, and where they come from</td></tr>
 <tr><td><code>setup</code>, <code>problems</code></td><td>steps and known problems, <code>{ en, zh, source }</code></td></tr>
@@ -2940,9 +2940,9 @@ devices({ q: <span class="ts">'minilab'</span> });                       <span c
 </table></div>
 <p><code>verified</code> is true only when the device was checked on a real unit, and a record refuses <code>verified: true</code> without a verification whose <code>method</code> is <code>hardware</code>. A MIDI controller counts as verified only when every one of its controls was: the M-VAVE SMC-Mixer has a hardware check in its log, with 52 of 59 controls confirmed, and is not.</p>
 <h3 id="devices-device-kind-by-kind">device(), kind by kind<a class="anchor" href="#devices-device-kind-by-kind" aria-label="Link to this section">#</a></h3>
-<p>Each snippet runs in a page with the import map of the examples; none of them asks for a permission.</p>
+<p>Each snippet runs as a module in a page whose import map is the examples' one plus <code>"@openav/devices": "../../packages/devices/index.js?v=4d1326b1"</code>. Only the camera's button asks for a permission, and only when it is clicked.</p>
 <h4 id="devices-a-midi-controller">A MIDI controller<a class="anchor" href="#devices-a-midi-controller" aria-label="Link to this section">#</a></h4>
-<p><code>routes()</code> is <code>@openav/midi</code>'s <code>controllerRoutes</code>: mapper routes from the controller's named signals to your params. <code>addTo()</code> puts the profile into a <code>MidiControllers</code> and returns its live controller: plug the unit in and it is recognised by its port name.</p>
+<p><code>routes()</code> is <code>@openav/midi</code>'s <code>controllerRoutes</code>: mapper routes from the controller's named signals to your params. <code>addTo()</code> puts the profile into a <code>MidiControllers</code> and returns its live controller. The unit is recognised by its port name when the manager gets its hardware engine (<code>controllers.attach(midi)</code>) and at each device change, so call <code>addTo()</code> first: a unit already plugged in is otherwise matched the next time a device comes or goes.</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
 <span class="tk">import</span> { MidiControllers } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
 <span class="tk">import</span> { Signals } <span class="tk">from</span> <span class="ts">'@openav/core'</span>;
@@ -2976,9 +2976,10 @@ console.log(ring.part.leds, ring.part.supply);   <span class="tc">// the @openav
 
 <span class="tk">const</span> cam = <span class="tk">await</span> device(<span class="ts">'logitech-mx-brio'</span>);
 console.log(cam.constraints());       <span class="tc">// { video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60 } }, audio: false }</span>
+<span class="tk">const</span> video = document.body.appendChild(Object.assign(document.createElement(<span class="ts">'video'</span>), { autoplay: <span class="tk">true</span>, muted: <span class="tk">true</span> }));
+<span class="tk">const</span> button = document.body.appendChild(Object.assign(document.createElement(<span class="ts">'button'</span>), { textContent: <span class="ts">'Camera'</span> }));
 button.onclick = <span class="tk">async</span> () =&gt; {
-  <span class="tk">const</span> stream = <span class="tk">await</span> cam.open();    <span class="tc">// asks once; finds the MX Brio by name; opens it by its id</span>
-  video.srcObject = stream;
+  video.srcObject = <span class="tk">await</span> cam.open();   <span class="tc">// asks once; finds the MX Brio by name; opens it by its id</span>
 };</code></pre></div>
 <p>Browsers hide the labels until the page has had the permission once, so before that <code>find()</code> returns <code>null</code>; <code>open()</code> then asks, looks again, and if the browser opened another camera first, closes it and opens this one. With the labels visible and no match, it throws with the names it found and asks for nothing. An audio interface opens with echo cancellation, noise suppression and auto gain off, as <code>@openav/audio</code> asks a microphone; feed it to an analyzer with <code>analyzer.input().context.createMediaStreamSource(stream).connect(analyzer.input())</code>. <code>@openav/pose</code> opens the default camera itself, so a found camera does not reach the pose trackers yet.</p>
 <h4 id="devices-everything-else">Everything else<a class="anchor" href="#devices-everything-else" aria-label="Link to this section">#</a></h4>

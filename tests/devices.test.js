@@ -19,7 +19,7 @@ import { PARTS } from '../packages/hw/parts.js';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PKGS = path.join(ROOT, 'packages');
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(PKGS, rel), 'utf8'));
-const jsonIn = (rel) => fs.readdirSync(path.join(PKGS, rel)).filter((f) => f.endsWith('.json') && !f.endsWith('.schema.json')).sort();
+const jsonIn = (rel) => (fs.existsSync(path.join(PKGS, rel)) ? fs.readdirSync(path.join(PKGS, rel)).filter((f) => f.endsWith('.json') && !f.endsWith('.schema.json')).sort() : []);
 const unstamp = (s) => String(s).replace(/\?v=[\w.+-]+/g, '');
 const RECORDS = jsonIn('devices/records').map((f) => readJson(`devices/records/${f}`));
 
@@ -29,6 +29,7 @@ function allRecords() {
   for (const f of jsonIn('midi/profiles')) out.push(fromMidiProfile(readJson(`midi/profiles/${f}`), { file: `midi/profiles/${f}` }));
   for (const f of jsonIn('midi/profiles/imported')) out.push(fromMidiProfile(readJson(`midi/profiles/imported/${f}`), { file: `midi/profiles/imported/${f}` }));
   for (const f of jsonIn('dmx/fixtures')) out.push(fromFixture(readJson(`dmx/fixtures/${f}`), { file: `dmx/fixtures/${f}` }));
+  for (const f of jsonIn('dmx/fixtures/imported')) out.push(fromFixture(readJson(`dmx/fixtures/imported/${f}`), { file: `dmx/fixtures/imported/${f}` }));
   for (const [id, p] of Object.entries(PARTS)) out.push(fromPart(id, p));
   return [...out, ...RECORDS];
 }
@@ -121,6 +122,7 @@ test('nothing left out: every profile, imported profile, fixture, part and recor
     ...jsonIn('midi/profiles').map((f) => ['midi-profile', readJson(`midi/profiles/${f}`).id, `midi/profiles/${f}`]),
     ...jsonIn('midi/profiles/imported').map((f) => ['midi-profile', readJson(`midi/profiles/imported/${f}`).id, `midi/profiles/imported/${f}`]),
     ...jsonIn('dmx/fixtures').map((f) => ['dmx-fixture', readJson(`dmx/fixtures/${f}`).id, `dmx/fixtures/${f}`]),
+    ...jsonIn('dmx/fixtures/imported').map((f) => ['dmx-fixture', readJson(`dmx/fixtures/imported/${f}`).id, `dmx/fixtures/imported/${f}`]),   // tools/import-ofl.mjs
     ...Object.keys(PARTS).map((id) => ['hw-part', id, 'hw/parts.js']),
     ...jsonIn('devices/records').map((f) => ['device-record', readJson(`devices/records/${f}`).id, `devices/records/${f}`]),
   ];
@@ -138,7 +140,7 @@ test('nothing left out: every profile, imported profile, fixture, part and recor
   // the counts by kind: MIDI = hand-written + imported profiles
   const count = (k) => rows.filter((r) => r.kind === k).length;
   assert.equal(count('midi-controller'), jsonIn('midi/profiles').length + jsonIn('midi/profiles/imported').length);
-  assert.equal(count('dmx-fixture'), jsonIn('dmx/fixtures').length);
+  assert.equal(count('dmx-fixture'), jsonIn('dmx/fixtures').length + jsonIn('dmx/fixtures/imported').length);
   assert.equal(count('part'), Object.keys(PARTS).length);
 });
 
@@ -211,6 +213,29 @@ test('device(): a MIDI controller is its profile, mapper routes and a MidiContro
   p.controls.forEach((x) => { x.verified = true; });
   assert.equal(fromMidiProfile(p, { file: 'x.json' }).verified, true, 'every control checked on a unit: verified');
   await assert.rejects(device('minilab3'), /unknown device "minilab3" \(did you mean arturia-minilab3/, 'a short name is not an id');
+});
+
+test('device(): addTo() and a unit already plugged in: matched when the hardware engine arrives, or at its next device change', async () => {
+  const { MidiControllers } = await import('../packages/midi/manager.js');
+  const mini = await device('arturia-minilab3');
+  const nk = await device('korg-nanokontrol2');
+  /** A stand-in for @openav/midi's Midi with these input ports present and enabled. */
+  const engine = (names) => {
+    const subs = new Set();
+    const m = { enabled: true, outputs: [], names, listen: () => () => {}, onDevices: (fn) => { subs.add(fn); return () => subs.delete(fn); },
+      devices: () => m.names.map((name, i) => ({ slug: `p${i}`, name, listening: true })), change(n) { m.names = n; for (const fn of subs) fn(m.devices()); } };
+    return m;
+  };
+  const before = new MidiControllers({ profiles: [nk.profile], storage: null, imported: [] });
+  mini.addTo(before);
+  before.attach(engine(['Minilab3 MIDI']));
+  assert.equal(before.hardwareFor('arturia-minilab3'), 'Minilab3 MIDI', 'added before the engine: matched when it arrives');
+  const hw = engine(['Minilab3 MIDI']);
+  const after = new MidiControllers({ profiles: [nk.profile], storage: null, imported: [], midi: hw });
+  mini.addTo(after);
+  assert.equal(after.hardwareFor('arturia-minilab3'), null, 'added after: register() does not look at the ports again');
+  hw.change(['Minilab3 MIDI', 'nanoKONTROL2 SLIDER/KNOB']);
+  assert.equal(after.hardwareFor('arturia-minilab3'), 'Minilab3 MIDI', '…until the next device change');
 });
 
 test('device(): a DMX fixture patches itself into a Patch', async () => {
