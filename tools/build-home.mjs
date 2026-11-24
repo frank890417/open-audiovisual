@@ -24,6 +24,7 @@ import { renderNotFound } from './site/notfound.mjs';
 import { webManifest } from './site/manifest.mjs';
 import en from './home/en.mjs';
 import zh from './home/zh.mjs';
+import { isMain } from './site/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
@@ -64,7 +65,7 @@ export function buildAll() {
   };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   const files = buildAll();
   const stale = [];
   for (const [rel, out] of Object.entries(files)) {

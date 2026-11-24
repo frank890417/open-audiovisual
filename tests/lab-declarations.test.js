@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { DEFAULT_PLUGIN_TABS } from '../packages/remote/app.js';
 
 const PK = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'packages');
@@ -66,7 +66,7 @@ test('remote tabs: the app\'s built-in default list equals the declarations', as
   assert.deepEqual(DEFAULT_PLUGIN_TABS, declared);
   for (const t of declared) {
     assert.ok(fs.existsSync(path.join(PK, t.entry)), t.entry);
-    const mod = await import(path.join(PK, t.entry));
+    const mod = await import(pathToFileURL(path.join(PK, t.entry)).href);   // a file URL: on Windows import() refuses a C: path (#8)
     assert.equal(typeof mod.mount, 'function', `${t.entry} exports mount(el, ctx)`);
   }
 });

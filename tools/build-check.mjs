@@ -18,6 +18,7 @@ import en from './check/en.mjs';
 import zh from './check/zh.mjs';
 import homeEn from './home/en.mjs';
 import homeZh from './home/zh.mjs';
+import { isMain } from './site/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -45,7 +46,7 @@ export function stalePages(files = buildPages()) {
   return stale;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   const files = { ...buildPages(), 'sitemap.xml': sitemapXml() };
   if (process.argv.includes('--check')) {
     const stale = stalePages(files);

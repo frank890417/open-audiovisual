@@ -30,6 +30,7 @@ import en from './reference/en.mjs';
 import zh from './reference/zh.mjs';
 import homeEn from './home/en.mjs';
 import homeZh from './home/zh.mjs';
+import { isMain } from './site/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => { try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return null; } };
@@ -86,7 +87,7 @@ function printProblems(problems) {
   console.error(`\n${problems.length} problem(s) in the reference (the gates are in tests/reference.test.js; how to write an entry: AGENTS.md "Documenting a public name")`);
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   const check = process.argv.includes('--check');
   const model = await loadModel();
   if (process.argv.includes('--missing')) {

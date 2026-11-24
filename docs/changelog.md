@@ -173,6 +173,7 @@ The first tagged version; it gathers 0.1 to 0.2.4 (from 2026-10-13).
 - **Example 28, DMX lights.** One world draws a stage and drives 8 pars and 2 moving heads from the same params, with the monitor under it, on a simulated rig unless you ask for the bridge or an Enttec. [DMX lights](https://openaudiovisual.com/examples/28-dmx-lights/)
 - **Fixed in `@openav/out`.** The page's heartbeat was skipped while values were queued, so a light that kept changing was put back on its safe value after half a second. The bridge read only the first 1024 items of a batch (now 4096). `install.sh` did not copy the DMX encoders, so an installed bridge with a DMX route did not start.
 - **Not tested on real hardware.** No real fixture, Art-Net node, sACN receiver or Enttec interface has received any of this yet. The bytes follow the published layouts, and the tests decode every packet on this machine.
+- **The site's generators run on Windows.** There `node tools/build-home.mjs`, `node tools/build-docs.mjs` and `tools/export-controller.mjs` exited 0 having written nothing: their "was I run directly" check compared a file URL with a Windows path. Every command in `tools/` now asks one function, `isMain()` in `tools/site/is-main.mjs`, which also copes with a space in a folder's name and a symlinked checkout. Reported in [#8](https://github.com/frank890417/open-audiovisual/issues/8). The tests read Windows paths on macOS: nobody has run it on a Windows machine yet.
 
 ### 2026-11-24
 

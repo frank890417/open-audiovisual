@@ -28,6 +28,7 @@ import { registry } from './site/pages.mjs';
 import { PAGE_TITLE, PAGE_BLURB } from './site/llms.mjs';
 import { sitemapXml } from './site/pages.mjs';
 import { UI } from './search/strings.mjs';
+import { isMain } from './site/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => { try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return null; } };
@@ -145,7 +146,7 @@ export function indexText(idx) {
   return `{"schema":${idx.schema},"count":${idx.count},"ui":${JSON.stringify(idx.ui)},"records":[\n${idx.records.map((r) => JSON.stringify(r)).join(',\n')}\n]}\n`;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   const files = { [INDEX]: indexText(buildIndex()), 'sitemap.xml': sitemapXml() };
   if (process.argv.includes('--check')) {
     const stale = Object.entries(files).filter(([rel, out]) => read(rel) === null || (rel === 'sitemap.xml' ? read(rel).replace(/<lastmod>[^<]*<\/lastmod>\s*/g, '') !== out.replace(/<lastmod>[^<]*<\/lastmod>\s*/g, '') : read(rel) !== out)).map(([rel]) => rel);

@@ -24,6 +24,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { isMain } from './site/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPO = 'frank890417/open-audiovisual';
@@ -131,7 +132,7 @@ async function collect() {
   };
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   const row = await collect();
   const i = process.argv.indexOf('--append');
   if (i > 0 && process.argv[i + 1]) fs.appendFileSync(process.argv[i + 1], JSON.stringify(row) + '\n');

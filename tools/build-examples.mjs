@@ -32,6 +32,7 @@ import { STRINGS } from './examples/strings.mjs';
 import { shapeDiff } from './build-home.mjs';
 import { sitemapXml, unstamp } from './site/pages.mjs';
 import { getFacts, applyBlocks, applyReadmeBlock, enWords, zhWords, cap } from './site/facts.mjs';
+import { isMain } from './site/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => { try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return null; } };
@@ -104,7 +105,7 @@ export function buildAll() {
   return files;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   const check = process.argv.includes('--check');
   const files = buildAll();
   const stale = [];

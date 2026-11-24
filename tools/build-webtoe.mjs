@@ -21,6 +21,7 @@ import en from './webtoe/en.mjs';
 import zh from './webtoe/zh.mjs';
 import homeEn from './home/en.mjs';
 import homeZh from './home/zh.mjs';
+import { isMain } from './site/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -48,7 +49,7 @@ export function stalePages(files = buildPages()) {
   return stale;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   const files = { ...buildPages(), 'sitemap.xml': sitemapXml() };   // sitemap.xml: the one file every build-*.mjs writes
   if (process.argv.includes('--check')) {
     const stale = stalePages(files);

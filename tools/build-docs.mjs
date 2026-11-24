@@ -30,6 +30,7 @@ import en from './docs/en.mjs';
 import zh from './docs/zh.mjs';
 import homeEn from './home/en.mjs';
 import homeZh from './home/zh.mjs';
+import { isMain } from './site/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const STRINGS = { en, zh };
@@ -176,7 +177,7 @@ export function buildDocs() {
 /** { 'docs/index.html': html, 'zh/docs/index.html': html } */
 export function buildPages() { return buildDocs().pages; }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   const check = process.argv.includes('--check');
   const { pages: docPages, warnings } = buildDocs();
   const pages = { ...docPages, 'sitemap.xml': sitemapXml() };   // sitemap.xml: the one file every build-*.mjs writes

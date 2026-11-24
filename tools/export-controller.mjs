@@ -14,6 +14,7 @@ import path from 'node:path';
 import { PROFILES, profileById } from '../packages/midi/profiles/index.js';
 import { validateProfile } from '../packages/midi/profiles.js';
 import { toQxi, toMixxx } from '../packages/midi/export.js';
+import { isMain } from './site/is-main.mjs';
 
 /** The files of one profile: { name: text }. */
 export function exportFiles(profile, to = 'all') {
@@ -40,4 +41,4 @@ function main(argv) {
   return 0;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) process.exit(main(process.argv.slice(2)));
+if (isMain(import.meta.url)) process.exit(main(process.argv.slice(2)));

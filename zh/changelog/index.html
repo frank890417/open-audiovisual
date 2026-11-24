@@ -190,6 +190,7 @@ true（鼓機的，或沒有鼓機時麥克風的）。<code>lag()</code> 把 <c
 <li><strong>範例 28〈DMX 燈光〉。</strong> 一個 world 畫出舞台，同時用同一組參數推 8 台 par 和 2 台搖頭燈，監看器放在下面。預設是模擬的燈，要送到橋接程式或 Enttec 才另外指定。<a href="../../examples/28-dmx-lights/">DMX 燈光</a></li>
 <li><strong><code>@openav/out</code> 修好的地方。</strong> 有值在排隊時，頁面的心跳會被跳過，所以一直在變的燈半秒後就被放回安全值。橋接程式一批只讀前 1024 個值（現在是 4096）。<code>install.sh</code> 沒有複製 DMX 的編碼器，所以裝好的橋接程式只要有 DMX 路線就起不來。</li>
 <li><strong>還沒有用真的硬體測過。</strong> 到現在還沒有任何一台真燈、Art-Net 節點、sACN 接收端或 Enttec 介面收過這些東西。位元組照公開的格式寫，測試在這台機器上把每個封包都解回來。</li>
+<li><strong>網站的產生器在 Windows 上會跑了。</strong> 在那裡，<code>node tools/build-home.mjs</code>、<code>node tools/build-docs.mjs</code> 和 <code>tools/export-controller.mjs</code> 什麼都沒寫就以 0 結束：它們判斷「是不是被直接執行」時，拿檔案網址去比 Windows 的路徑。現在 <code>tools/</code> 裡每個指令都問同一個函式，<code>tools/site/is-main.mjs</code> 的 <code>isMain()</code>，資料夾名稱有空格、或是透過符號連結的 checkout 也認得。回報在 <a href="https://github.com/frank890417/open-audiovisual/issues/8" rel="noopener">#8</a>。測試是在 macOS 上讀 Windows 格式的路徑，還沒有人在真的 Windows 上跑過。</li>
 </ul>
 <h4 id="changelog-2026-11-24">2026-11-24<a class="anchor" href="#changelog-2026-11-24" aria-label="#">#</a></h4>
 <ul>

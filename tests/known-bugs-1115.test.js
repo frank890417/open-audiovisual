@@ -14,7 +14,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -117,7 +117,7 @@ test('3 · scaffold_world: a missing, empty or non-string slug is refused before
 test('4 · autoArrange: an item without a usable size (no w, w ≤ 0, NaN, wider than the grid) is given one and the packing ends', () => {
   // in a child with a deadline: before the fix this loop never ended, and a hung test tells nobody anything
   const code = `
-    import { autoArrange, DEFAULT_SIZE } from ${JSON.stringify(path.join(ROOT, 'packages/surface/layout.js'))};
+    import { autoArrange, DEFAULT_SIZE } from ${JSON.stringify(pathToFileURL(path.join(ROOT, 'packages/surface/layout.js')).href)};   // a file URL: on Windows import() refuses a C: path (#8)
     const out = {
       bare: autoArrange([{ id: 'a' }, { id: 'b' }], 4),
       typed: autoArrange([{ id: 'f', type: 'fader' }, { id: 'k', type: 'keyboard' }], 4),

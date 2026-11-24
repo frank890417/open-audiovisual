@@ -14,7 +14,7 @@
 //   stderr: a summary for people
 
 import { execFileSync } from 'node:child_process';
-import { pathToFileURL } from 'node:url';
+import { isMain } from './site/is-main.mjs';
 
 export const HOST = 'openaudiovisual.com';
 const MAX = 10000; // IndexNow's limit for one request
@@ -64,4 +64,4 @@ function main(argv) {
   process.stdout.write(key ? JSON.stringify(requestBody(urls, key)) + '\n' : urls.join('\n') + '\n');
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) main(process.argv.slice(2));
+if (isMain(import.meta.url)) main(process.argv.slice(2));
