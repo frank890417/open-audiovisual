@@ -12,7 +12,7 @@
 import dgram from 'node:dgram';
 import crypto from 'node:crypto';
 import { encodeSacn, sacnAddress, SACN_PORT } from '../../../dmx/protocol/sacn.js?v=e62939c4';
-import { DmxFrames, udpSender } from './dmx-frames.js?v=e62939c4';
+import { DmxFrames, udpSender, flashGuardOf } from './dmx-frames.js?v=e62939c4';
 
 /** This process's CID: the same for every sacn route and every universe while the bridge runs, new on the next run. */
 export const CID = Uint8Array.from(Buffer.from(crypto.randomUUID().replace(/-/g, ''), 'hex'));
@@ -23,6 +23,7 @@ export const targetOf = (universe, host = null) => host || sacnAddress(universe)
 export function create(cfg, ctx) {
   const host = typeof cfg.host === 'string' && cfg.host ? cfg.host : null;
   const port = Number(cfg.port || SACN_PORT);
+  const flashGuard = flashGuardOf(cfg, 'sacn');   // on unless the route says "flashGuard": false (dmx-frames.js says what it holds); checked before any socket opens
   if (!(Number.isInteger(port) && port > 0 && port < 65536)) throw new Error(`sacn port 要是 1–65535（收到 ${cfg.port}）`);
   const priority = cfg.priority === undefined ? 100 : Number(cfg.priority);
   if (!(Number.isInteger(priority) && priority >= 0 && priority <= 200)) throw new Error(`sacn priority 要是 0–200 的整數（收到 ${cfg.priority}，預設 100）`);
@@ -35,6 +36,7 @@ export function create(cfg, ctx) {
   const packet = (u, data, sequence, terminated = false) => encodeSacn(data, { universe: u, cid: CID, source, priority, sequence, terminated });
   const seq = new Map();
   const frames = new DmxFrames({
+    flashGuard,
     accept: (u) => u >= 1 && u <= 63999,
     onError,
     emit: (u, data, n) => { seq.set(u, n & 0xff); udp.send(packet(u, data, n & 0xff), port, target(u)); },

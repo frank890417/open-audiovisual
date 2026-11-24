@@ -10,9 +10,16 @@
 //   3 chases        scenes in turn, every n seconds or beats      6 submasters  a fader over a group: scales its dimmer
 //                                                                 7 patch       per-fixture limits → grand master → blackout → bytes
 //
-// Safety (docs/evolve/2026-11-24-dmx-system.md §5): intensity and colour that an effect or a chase makes flash stay at or under
-// maxFlashHz (3 by default, the common photosensitive-epilepsy line), each effect and each chase on its own (two on one light can
-// add up); every strobe channel is held to the same cap where its profile gives Hz, and kept open where it does not. A control channel (reset, lamp) is written by control() and nothing else.
+// Safety (docs/evolve/2026-11-24-dmx-system.md §5): the flash cap, maxFlashHz (3 by default, the common photosensitive-epilepsy
+// line), is held PER FIXTURE. First each effect and each chase on its own: a faster one is slowed to the cap (the floor, as
+// before). Then each fixture: the rates of the sources that flash it (effects on its dimmer or colour, chases that change it
+// with anything but position) are added up, and when the sum is over the cap those sources are slowed ON THAT FIXTURE until it
+// is not: a rate in seconds by the same factor, one in beats halved so it stays on the beat, a chase's step doubled.
+// state(t).slowed and describe().slowed say which fixtures and by how much. This is the part that can be computed, so it
+// stays a pure function of time. Live values (set(), submaster(), params driven by a microphone) are not slowed here: the
+// transport's flash guard (flash-guard.js) holds what each fixture really emits, whatever made it.
+// Every strobe channel is held to the cap where its profile gives Hz, and kept open where it does not. A control channel
+// (reset, lamp) is written by control() and nothing else.
 // Blackout darkens intensity and colour and leaves position (pan, tilt), zoom and control channels where they are.
 
 import { PROPS, defaultOf, checkCap } from './patch.js?v=e62939c4';
@@ -85,6 +92,28 @@ function chaseEvery(every, stepSeconds, cap) {
   let k = 1;
   while (stepSeconds * k < 1 / (2 * cap) - 1e-9) k *= 2;   // doubling keeps a beat-synced chase on the beat
   return every * k;
+}
+
+/** Flashes a second a chase makes with this step length: on and off take two steps. */
+const chaseHz = (ch, every, bpm) => 1 / (2 * (ch.unit === 'beat' ? (every * 60) / bpm : every));
+
+/**
+ * How much each source is slowed on each fixture so the fixture stays at or under the cap. `list` holds the sources that
+ * flash one fixture: { unit, hz (at the tempo it renders with, after its own cap), nom (the same at the engine's own bpm) }.
+ * Each gets a share of the cap in proportion to its rate at the engine's own tempo (so a tempo that wobbles from a MIDI clock
+ * never moves a rate in seconds, which would jump its wave), then a rate in seconds takes its share and one in beats is halved
+ * until it fits it. Returns the factors (1 = not slowed), or null when the sum is within the cap.
+ */
+function share(list, cap) {
+  const sum = list.reduce((a, s) => a + s.hz, 0);
+  if (!(sum > cap + 1e-9)) return null;
+  const k = cap / list.reduce((a, s) => a + s.nom, 0);
+  return list.map((s) => {
+    if (s.unit !== 'beat') return Math.min(1, k);
+    let f = 1;
+    while (s.hz * f > s.nom * k + 1e-9) f /= 2;
+    return f;
+  });
 }
 
 /** Scenes, cues, chases, effects and live values for a patch, rendered for any moment. */
@@ -218,8 +247,9 @@ export class DmxEngine {
     if (!(isNum(fade) && fade >= 0 && fade <= 1)) throw new RangeError(`chase ${name}: fade is 0..1 of a step`);
     if (!isNum(start)) throw new TypeError(`chase ${name}: start is a number`);
     if (!CURVES[curve]) throw new RangeError(`chase ${name}: curve is one of ${Object.keys(CURVES).join(', ')}`);
-    this.#chases.set(name, { steps: [...steps], every, unit, fade, start, curve: CURVES[curve], curveName: curve });
+    this.#chases.set(name, { steps: [...steps], every, unit, fade, start, curve: CURVES[curve], curveName: curve, local: new Map() });
     if (!this.#running.has(name)) this.#running.set(name, true);
+    this.#tidy();
     return this;
   }
 
@@ -241,8 +271,10 @@ export class DmxEngine {
     for (const [k, v] of Object.entries({ depth, phase, seed })) if (!isNum(v)) throw new TypeError(`effect ${name}: ${k} is a number`);
     if (spread !== undefined && !isNum(spread)) throw new TypeError(`effect ${name}: spread is a number`);
     if (width !== undefined && !(isNum(width) && width > 0 && width <= 1)) throw new RangeError(`effect ${name}: width is 0..1 of a cycle`);
-    this.#effects.set(name, { target, property, wave, rate, unit, depth: clamp01(depth), phase, spread: spread ?? (wave === 'chase' ? 1 : 0), width, seed });
+    // `local`: a phase of its own on a fixture where the per-fixture cap runs it slower (tune() keeps that wave going, too)
+    this.#effects.set(name, { target, property, wave, rate, unit, depth: clamp01(depth), phase, spread: spread ?? (wave === 'chase' ? 1 : 0), width, seed, local: new Map() });
     if (!this.#running.has(name)) this.#running.set(name, true);
+    this.#tidy();
     return this;
   }
 
@@ -263,9 +295,13 @@ export class DmxEngine {
       if (!(B > 0)) throw new RangeError('bpm is a number above 0');
       const cap = checkCap(this.maxFlashHz);
       const u = fx.unit === 'beat' ? (beat === undefined ? (at * B) / 60 : beat) : at;
+      const before = this.#where(at, beat, B);                     // every wave and chase on every fixture, before
       const x = u * effectiveRate(fx, B, cap).rate + fx.phase;     // where the wave is at `at`
       fx.rate = rate;
       fx.phase = x - u * effectiveRate(fx, B, cap).rate;           // …and the same place with the new rate
+      // a new rate changes the sum on the fixtures it shares, so the per-fixture cap can run another wave or chase there at a
+      // new speed too: each of those goes on from where it is as well (else a knob turned on one would jump the other at every step)
+      this.#anchor(before, at, beat, B);
     }
     if (depth !== undefined) {
       if (!isNum(depth)) throw new TypeError(`tune ${name}: depth is a number 0..1`);
@@ -290,7 +326,8 @@ export class DmxEngine {
 
   /**
    * What this engine holds, as plain data (copies): the names of its scenes and cues, the base, every chase and effect with
-   * its settings and whether it runs, the submasters, master, blackout, maxFlashHz and bpm. For a panel, a test, a log.
+   * its settings and whether it runs, the submasters, master, blackout, maxFlashHz and bpm, and `slowed`: the fixtures the
+   * per-fixture flash cap slows at the engine's own bpm (as state(t).slowed). For a panel, a test, a log.
    */
   describe() {
     const chases = {}, effects = {};
@@ -303,6 +340,7 @@ export class DmxEngine {
       scenes: [...this.#scenes.keys()], cues: [...this.#cues.keys()], base: [...this.#base], chases, effects,
       submasters: [...this.#submasters.values()].map((s) => ({ target: Array.isArray(s.target) ? [...s.target] : s.target, level: s.level })),
       master: this.master, blackout: !!this.blackout, maxFlashHz: this.maxFlashHz, bpm: this.bpm,
+      slowed: this.#budget(this.bpm).slowed,
     };
   }
 
@@ -311,6 +349,7 @@ export class DmxEngine {
     this.#chases.delete(name);
     this.#effects.delete(name);
     this.#running.delete(name);
+    this.#tidy();
     return this;
   }
 
@@ -318,6 +357,7 @@ export class DmxEngine {
   run(name, on = true) {
     if (!this.#chases.has(name) && !this.#effects.has(name)) throw new Error(`no chase or effect "${name}"`);
     this.#running.set(name, !!on);
+    this.#tidy();
     return this;
   }
 
@@ -352,6 +392,114 @@ export class DmxEngine {
     return this;
   }
 
+  /** The fixtures a chase changes with anything but position (pan, tilt, zoom): the ones it can flash. */
+  #lit(ch) {
+    const ids = new Set();
+    for (const step of ch.steps) for (const [id, props] of this.#sceneMap(step)) if (Object.keys(props).some((k) => !MOVES.has(k))) ids.add(id);
+    return ids;
+  }
+
+  /**
+   * The flash cap at tempo B, per source and per fixture. Depends on what is defined and running and on the tempo, never on
+   * the time, so describe() can report it and the same t still gives the same bytes.
+   * → { effects: name → { rate, hz, to }, chases: name → { every, stepSeconds }, factor: "kind\0name" → (id → 0..1), slowed }
+   */
+  #budget(B) {
+    const cap = this.maxFlashHz, P = this.#patch, N = this.bpm;
+    const per = new Map();                              // fixture id → the sources that flash it
+    const add = (id, src) => (per.get(id) || per.set(id, []).get(id)).push(src);
+    const effects = new Map(), chases = new Map();
+    for (const [name, fx] of this.#effects) {
+      const own = effectiveRate(fx, B, cap);            // the floor: this effect on its own, at or under the cap
+      effects.set(name, own);
+      if (!this.#running.get(name) || !FLASHY.has(fx.property)) continue;
+      const nom = effectiveRate(fx, N, cap).to;
+      for (const id of P.ids(fx.target)) {
+        const rec = P.get(id);
+        if (!rec || (fx.property === 'color' && !rec.layout.colors.length)) continue;   // a rainbow on a light with no colour does nothing to it
+        add(id, { kind: 'effect', name, unit: fx.unit, hz: own.to, nom });
+      }
+    }
+    for (const [name, ch] of this.#chases) {
+      const stepSeconds = ch.unit === 'beat' ? (ch.every * 60) / B : ch.every;
+      const lit = this.#lit(ch);
+      // a chase that only moves heads does not flash; anything else is held to the cap on its own first (the floor)
+      const every = lit.size ? chaseEvery(ch.every, stepSeconds, cap) : ch.every;
+      chases.set(name, { every, stepSeconds });
+      if (!this.#running.get(name) || !lit.size) continue;
+      const nom = chaseHz(ch, chaseEvery(ch.every, ch.unit === 'beat' ? (ch.every * 60) / N : ch.every, cap), N);
+      for (const id of lit) add(id, { kind: 'chase', name, unit: ch.unit, hz: chaseHz(ch, every, B), nom });
+    }
+    const factor = new Map(), slowed = [];
+    for (const [id, list] of per) {
+      const f = share(list, cap);
+      if (!f) continue;
+      const sources = list.map((src, i) => {
+        const key = `${src.kind}\0${src.name}`;
+        (factor.get(key) || factor.set(key, new Map()).get(key)).set(id, f[i]);
+        return { kind: src.kind, name: src.name, hz: src.hz, to: src.hz * f[i] };
+      });
+      slowed.push({ id, hz: list.reduce((a, x) => a + x.hz, 0), to: sources.reduce((a, x) => a + x.to, 0), sources });
+    }
+    return { effects, chases, factor, slowed };
+  }
+
+  /** Where every wave and chase is on every fixture at time `at` (and at what speed), for tune() to carry on from. */
+  #where(at, beat, B) {
+    const plan = this.#budget(B), beatPos = beat === undefined ? (at * B) / 60 : beat;
+    const fx = new Map(), ch = new Map();
+    for (const [name, e] of this.#effects) {
+      const u = e.unit === 'beat' ? beatPos : at, { rate } = plan.effects.get(name), fac = plan.factor.get(`effect\0${name}`);
+      const m = new Map();
+      for (const id of this.#patch.ids(e.target)) { const r = rate * (fac?.get(id) ?? 1); m.set(id, { r, x: u * r + (e.local.get(id) ?? e.phase) }); }
+      fx.set(name, m);
+    }
+    for (const [name, c] of this.#chases) {
+      const u = c.unit === 'beat' ? beatPos : at, { every } = plan.chases.get(name), fac = plan.factor.get(`chase\0${name}`);
+      const m = new Map();
+      for (const id of fac?.keys() || []) { const ev = every / fac.get(id); m.set(id, { ev, pos: (u - (c.local.get(id) ?? c.start)) / ev }); }
+      for (const id of c.local.keys()) if (!m.has(id)) m.set(id, { ev: every, pos: (u - c.local.get(id)) / every });
+      ch.set(name, m);
+    }
+    return { fx, ch, plan };
+  }
+
+  /** After a change at `at`: every wave and chase whose speed changed on a fixture goes on from where it was there. */
+  #anchor(before, at, beat, B) {
+    const plan = this.#budget(B), beatPos = beat === undefined ? (at * B) / 60 : beat;
+    for (const [name, e] of this.#effects) {
+      const u = e.unit === 'beat' ? beatPos : at, { rate } = plan.effects.get(name), fac = plan.factor.get(`effect\0${name}`);
+      for (const [id, was] of before.fx.get(name) || []) {
+        const r = rate * (fac?.get(id) ?? 1);
+        if (r === was.r && !e.local.has(id)) continue;   // same speed, shared phase: nothing to carry
+        const p = was.x - u * r;
+        if (p === e.phase) e.local.delete(id); else e.local.set(id, p);
+      }
+    }
+    for (const [name, c] of this.#chases) {
+      const u = c.unit === 'beat' ? beatPos : at, { every } = plan.chases.get(name), fac = plan.factor.get(`chase\0${name}`);
+      const was = before.ch.get(name) || new Map();
+      const ids = new Set([...(fac?.keys() || []), ...was.keys()]);
+      for (const id of ids) {
+        const ev = every / (fac?.get(id) ?? 1);
+        const w = was.get(id) || { ev: before.plan.chases.get(name)?.every ?? every, pos: (u - c.start) / (before.plan.chases.get(name)?.every ?? every) };
+        if (ev === w.ev && !c.local.has(id)) continue;
+        const start = u - w.pos * ev;
+        if (start === c.start) c.local.delete(id); else c.local.set(id, start);
+      }
+    }
+  }
+
+  /**
+   * After a change that has no time (run, effect, chase, remove): a fixture that is no longer slowed by a wave or a chase
+   * rejoins its shared phase (one jump, as the change itself makes), so a row does not stay out of step for good.
+   */
+  #tidy() {
+    const plan = this.#budget(this.bpm);
+    for (const [name, e] of this.#effects) { const fac = plan.factor.get(`effect\0${name}`); for (const id of [...e.local.keys()]) if (!fac?.has(id)) e.local.delete(id); }
+    for (const [name, c] of this.#chases) { const fac = plan.factor.get(`chase\0${name}`); for (const id of [...c.local.keys()]) if (!fac?.has(id)) c.local.delete(id); }
+  }
+
   #compose(t, { beat, bpm } = {}) {
     if (!isNum(t)) throw new TypeError('render(t): t is a time in seconds');
     // the cap turns a rate per beat into flashes per second with the tempo, so a beat position must come with the tempo it runs at
@@ -361,7 +509,7 @@ export class DmxEngine {
     if (!(B > 0)) throw new RangeError('bpm is a number above 0');
     checkCap(this.maxFlashHz);
     const beatPos = beat === undefined ? (t * B) / 60 : beat;
-    const P = this.#patch, recs = P.fixtures, cap = this.maxFlashHz;
+    const P = this.#patch, recs = P.fixtures, plan = this.#budget(B);
     const S = new Map(recs.map((r) => [r.id, {}]));
     const capped = [];
     const below = (rec, k) => { const v = S.get(rec.id)[k]; return v === undefined ? defaultOf(rec, k) : v; };
@@ -397,21 +545,19 @@ export class DmxEngine {
       }
     }
 
-    // 3 chases
+    // 3 chases: each fixture at its own step when the per-fixture cap slows the chase there
     for (const [name, ch] of this.#chases) {
       if (!this.#running.get(name)) continue;
-      const stepSeconds = ch.unit === 'beat' ? (ch.every * 60) / B : ch.every;
-      // a chase that only moves heads (pan, tilt, zoom) does not flash; anything else is held to the cap
-      const flashy = ch.steps.some((s) => (this.#scenes.get(s) || []).some(([, props]) => Object.keys(props).some((k) => !MOVES.has(k))));
-      const every = flashy ? chaseEvery(ch.every, stepSeconds, cap) : ch.every;
+      const { every, stepSeconds } = plan.chases.get(name);
       if (every !== ch.every) capped.push({ kind: 'chase', name, hz: 1 / (2 * stepSeconds), to: 1 / (2 * stepSeconds * (every / ch.every)) });
-      const pos = ((ch.unit === 'beat' ? beatPos : t) - ch.start) / every;
-      if (pos < 0) continue;
-      const n = ch.steps.length, i = Math.floor(pos) % n, f = pos - Math.floor(pos);
-      const cur = this.#sceneMap(ch.steps[i]), nxt = this.#sceneMap(ch.steps[(i + 1) % n]);
-      const w = ch.fade > 0 && f > 1 - ch.fade ? ch.curve((f - (1 - ch.fade)) / ch.fade) : 0;
+      const u = ch.unit === 'beat' ? beatPos : t, fac = plan.factor.get(`chase\0${name}`), n = ch.steps.length;
+      const maps = new Map(), step = (i) => maps.get(i) || maps.set(i, this.#sceneMap(ch.steps[i])).get(i);
       for (const rec of recs) {
-        const a = cur.get(rec.id) || {}, b = nxt.get(rec.id) || {}, own = S.get(rec.id);
+        const pos = (u - (ch.local.get(rec.id) ?? ch.start)) / (every / (fac?.get(rec.id) ?? 1));
+        if (pos < 0) continue;
+        const i = Math.floor(pos) % n, f = pos - Math.floor(pos);
+        const w = ch.fade > 0 && f > 1 - ch.fade ? ch.curve((f - (1 - ch.fade)) / ch.fade) : 0;
+        const a = step(i).get(rec.id) || {}, b = step((i + 1) % n).get(rec.id) || {}, own = S.get(rec.id);
         const keys = new Set([...Object.keys(a), ...(w > 0 ? Object.keys(b) : [])]);
         for (const k of keys) {
           const va = a[k] !== undefined ? a[k] : below(rec, k), vb = b[k] !== undefined ? b[k] : below(rec, k);
@@ -426,13 +572,14 @@ export class DmxEngine {
       const ids = P.ids(fx.target).filter((id) => S.has(id));
       const n = ids.length;
       if (!n) continue;
-      const { rate, hz, to } = effectiveRate(fx, B, cap);                  // halving a rate in beats keeps it on the beat
+      const { rate, hz, to } = plan.effects.get(name);                    // halving a rate in beats keeps it on the beat
       if (rate !== fx.rate) capped.push({ kind: 'effect', name, hz, to });
-      const x0 = (fx.unit === 'beat' ? beatPos : t) * rate;
+      const u = fx.unit === 'beat' ? beatPos : t, fac = plan.factor.get(`effect\0${name}`);
       const width = fx.width ?? (fx.wave === 'chase' ? 1 / n : 0.5);
       ids.forEach((id, i) => {
         const rec = P.get(id), own = S.get(id);
-        const x = x0 + fx.phase - (fx.spread * i) / n;      // each fixture a little behind the one before: a chase walks 1 → 2 → 3
+        // each fixture a little behind the one before (a chase walks 1 → 2 → 3); slower, from a phase of its own, where its sum is over the cap
+        const x = u * rate * (fac?.get(id) ?? 1) + (fx.local.get(id) ?? fx.phase) - (fx.spread * i) / n;
         if (fx.property === 'color') {
           if (!rec.layout.colors.length) return;
           own.color = lerp(below(rec, 'color'), hue(frac(x)), fx.depth);
@@ -455,7 +602,7 @@ export class DmxEngine {
       const d = own.dimmer === undefined ? defaultOf(P.get(id), 'dimmer') : own.dimmer;
       own.dimmer = clamp01(d) * level;
     }
-    return { S, capped, beat: beatPos };
+    return { S, capped, slowed: plan.slowed, beat: beatPos };
   }
 
   #opts() {
@@ -464,14 +611,15 @@ export class DmxEngine {
 
   /**
    * What every fixture gets at time t, as properties after every layer, its limits, the master and blackout:
-   * { t, beat, fixtures: { id: { dimmer, color, pan, … } }, capped: [{ kind, name, hz, to }] }. `capped` lists the effects
-   * and chases the flash cap slowed down at this moment.
+   * { t, beat, fixtures: { id: { dimmer, color, pan, … } }, capped: [{ kind, name, hz, to }], slowed: [{ id, hz, to, sources }] }.
+   * `capped` lists the effects and chases the cap slowed on their own; `slowed` the fixtures where the flashing sources
+   * still added up past it, each with its sum before and after (Hz) and every source there: { kind, name, hz, to }.
    */
   state(t, { beat, bpm } = {}) {
-    const { S, capped, beat: b } = this.#compose(t, { beat, bpm });
+    const { S, capped, slowed, beat: b } = this.#compose(t, { beat, bpm });
     const fixtures = {};
     for (const [id, props] of S) fixtures[id] = this.#patch.resolve(id, props, this.#opts());
-    return { t, beat: b, fixtures, capped };
+    return { t, beat: b, fixtures, capped, slowed };
   }
 
   /** The bytes of every universe at time t (seconds). `beat` (a beat position) or `bpm` drive beat-synced chases and effects. */

@@ -1,7 +1,7 @@
 {
   "name": "@openav/dmx",
   "version": "0.1.0",
-  "description": "DMX lighting from a web page: fixture profiles, a patch, a deterministic engine (scenes, cues, chases, effects, safety caps), Art-Net, sACN and Enttec DMX USB Pro bytes, transports (memory, the out-bridge, Web Serial), params and an on-page monitor. No dependencies.",
+  "description": "DMX lighting from a web page: fixture profiles, a patch, a deterministic engine (scenes, cues, chases, effects, a flash cap per fixture), Art-Net, sACN and Enttec DMX USB Pro bytes, transports (memory, the out-bridge, Web Serial) with a flash guard on every light, params and an on-page monitor. No dependencies.",
   "type": "module",
   "main": "index.js",
   "exports": {
@@ -26,6 +26,7 @@
       "dmx/protocol/artnet.js",
       "dmx/protocol/sacn.js",
       "dmx/protocol/enttec.js",
+      "dmx/flash-guard.js",
       "dmx/transport.js",
       "dmx/monitor.js",
       "dmx/params.js",
@@ -42,6 +43,7 @@
       "loadFixture",
       "rgbToChannels",
       "dmxTransport",
+      "FlashGuard",
       "dmxParams",
       "mountDmxMonitor",
       "encodeArtDmx",

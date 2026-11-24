@@ -361,7 +361,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 | L4 output | [`@openav/sound`](packages/sound/) | Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own |
 |  | [`@openav/osc`](packages/osc/) | OSC out of the browser through a small Node bridge to UDP |
 |  | [`@openav/out`](packages/out/) | Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values |
-|  | [`@openav/dmx`](packages/dmx/) | DMX lighting: fixture profiles, a patch, scenes, cues, chases and effects rendered as a function of time, a 3 Hz flash cap, and Art-Net, sACN and Enttec USB bytes |
+|  | [`@openav/dmx`](packages/dmx/) | DMX lighting: fixture profiles, a patch, scenes, cues, chases and effects rendered as a function of time, a 3 Hz flash cap per fixture, and Art-Net, sACN and Enttec USB bytes |
 |  | [`@openav/record`](packages/record/) | Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed |
 |  | [`@openav/fab`](packages/fab/) | Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files |
 |  | [`@openav/hw`](packages/hw/) | What goes inside: parts with their datasheet numbers, a wiring check (logic levels, boot pins, I²C addresses, current, battery hours), a wiring diagram and a parts list |
@@ -426,7 +426,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-30 packages · 28 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1306 tests
+30 packages · 28 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1321 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -3397,15 +3397,15 @@ const universes = engine.render(t);      // every light at t seconds
 import { dmxTransport } from '@openav/dmx';
 import { OutClient } from '@openav/out';
 
-const out = dmxTransport('sim');                                                  // memory only: out.bytes(1)
-// const out = dmxTransport('bridge', { client: new OutClient({ id: 'my-show' }).connect() });   // the out-bridge
-// const out = dmxTransport('serial', { universe: 1 });  button.onclick = () => out.connect();  // an Enttec Pro
+const out = dmxTransport('sim', { patch });                                       // memory only: out.bytes(1)
+// const out = dmxTransport('bridge', { patch, client: new OutClient({ id: 'my-show' }).connect() });   // the out-bridge
+// const out = dmxTransport('serial', { patch, universe: 1 });  button.onclick = () => out.connect();  // an Enttec Pro
 out.send(engine.render(t));
 ```
 
-The bridge transport calls `client.set('dmx/<universe>/<address>', byte / 255)` once per changed channel. The serial one writes a whole Enttec frame (all 512 channels) when anything in its universe changed, at most one every 25 ms, and once a second otherwise.
+Every transport puts the frame through the flash guard before anything leaves (see [Safety](#safety)); `{ patch }` lets it read each fixture's light. The bridge transport calls `client.set('dmx/<universe>/<address>', byte / 255)` once per changed channel. The serial one writes a whole Enttec frame (all 512 channels) when anything in its universe changed, at most one every 25 ms, and once a second otherwise.
 
-In a [lab](lab-integration.md) work, `"modules": ["out", "dmx"]` gives `lab.dmx`: a patch from `meta.dmx.patch`, its engine, the transport (`?dmx=bridge` goes through `lab.out`, `?dmx=serial` to an Enttec Pro), `lab.dmx.frame(t)` to render and send, `lab.dmx.monitor(el)` and `lab.dmx.params(options)`.
+In a [lab](lab-integration.md) work, `"modules": ["out", "dmx"]` gives `lab.dmx`: a patch from `meta.dmx.patch`, its engine, the transport with the flash guard on (`?dmx=bridge` goes through `lab.out`, `?dmx=serial` to an Enttec Pro), `lab.dmx.frame(t)` to render and send, `lab.dmx.monitor(el)` and `lab.dmx.params(options)`.
 
 ## Driving the lights from sound and from a controller
 
@@ -3434,7 +3434,7 @@ Now the mapper connects anything to them, in `routes` or with learn in the L2 ·
 
 ```js
 routes: [
-  { source: 'audio/rms', target: 'dmx/pars/dimmer', inMax: 0.25, outMin: 0.25, smooth: 0.25 },   // the room's loudness
+  { source: 'audio/rms', target: 'dmx/pars/dimmer', inMax: 0.25, outMin: 0.25, smooth: 0.25 },   // the room's loudness (smoothed for the look)
   { source: 'drum/kick/env', target: 'dmx/pars/dimmer', outMin: 0.3, smooth: 0.12 },             // the drum machine, when there is no mic
   { source: 'chord/consonance', target: 'dmx/pars/hue', inMin: -1, inMax: 1, outMin: 0.62, outMax: 0.06, smooth: 0.4 },
   { source: 'midi/cc/7', target: 'dmx/master' },                                                   // any controller's volume fader
@@ -3447,15 +3447,23 @@ The timeline automates the same keys (`automation: { 'dmx/pars/hue': [[0, 0.07],
 
 - **Blackout.** `engine.blackout = true` (or the `dmx/blackout` param, or the Blackout button in example 28) takes every dimmer to 0 at once (and the colour of a fixture that has no dimmer channel, since its dimmer is in its colour), and leaves pan, tilt, zoom and control channels where they are, so a moving head does not swing when the room goes dark.
 - **Limits.** Each placed fixture can have `limits` (`{ dimmer: [0, 0.8], tilt: [0.1, 0.9] }`), applied after every layer, before the grand master.
-- **The flash cap.** Flashing faster than about three times a second can bring on a seizure in people with photosensitive epilepsy, so effects and chases are held at or under `maxFlashHz`, 3 by default. It is counted **per effect and per chase**, each on its own: a rate in seconds is clamped to the cap, a rate in beats is halved until it fits (so it stays on the beat), a chase's step is doubled, a random flicker draws no more new values than that. Effects on position (pan, tilt, zoom) do not flash and are not slowed. Every strobe channel whose profile gives its Hz is held to the same cap, and one whose profile does not stays on its open value. `engine.state(t).capped` lists what the cap slowed. Two capped layers on one light (two effects, or a chase and an effect) can add up to more flashes than either: keep one flashing layer per light, or lower the cap. Raise it (or set `Infinity`) only on purpose.
-- **Live values are not capped.** A fader, the microphone or a kick drum driving a dimmer is the performer's direct control and passes as it comes. Give such a route a `smooth` of 0.1 s or more, keep what drives it at or under three flashes a second, or let the sound step a chase, which the cap does hold.
+- **Flashing, per fixture.** Flashing faster than about three times a second can bring on a seizure in people with photosensitive epilepsy. What matters is the light one fixture really gives, so the cap, `maxFlashHz` (3 by default), is held per fixture, in two layers.
+  1. **In the engine.** Each effect and each chase is first held to the cap on its own: a rate in seconds is clamped, a rate in beats is halved until it fits (so it stays on the beat), a chase's step is doubled, a random flicker draws no more new values than that. Then, for each fixture, the rates of everything that flashes it (effects on its dimmer or colour, chases that change it with anything but position) are added up. When the sum is over the cap, those sources are slowed on that fixture until it is not: a rate in seconds by the same factor, a rate in beats halved, a chase's step doubled. Two 3 Hz effects on one par run at 1.5 Hz each there, and on the pars that carry only one of them they keep their speed. `engine.state(t).slowed` (and `describe().slowed`) lists the fixtures slowed, with their sum before and after and each source. This layer is still a pure function of time: the same `t` gives the same bytes, so a recording renders frame by frame as before. `tune()` keeps every wave on a shared fixture going from where it is when a knob changes one of them.
+  2. **At the output.** Every `dmxTransport()` (sim, bridge and serial) puts the frame through a flash guard before it leaves. It reads each fixture's brightness from the bytes (its intensity times its brightest colour channel) and counts a flash the way WCAG 2.3.1 does: a pair of opposing changes of 10% of full scale or more, measured from the last turning point. No fixture may brighten by that much more than 3 times in any second: when the next rise would be one too many, the light stays at the level it last had, steady, until the second has room. Falls always pass, so blackout and a cue to dark land on the next frame, and the guard never sends more light than was asked. It holds only the intensity bytes (the colour bytes, scaled together, on a fixture with no dimmer channel); pan, tilt, zoom, gobo, strobe and control channels, and every fixture it is not holding, leave exactly as they came. This layer catches what the engine cannot see: live values (a fader, the microphone, `drum/kick/env` on a dimmer at 180 bpm sixteenths is 12 flashes a second), two engines on one rig, and a combination of waves that lands more edges in one second than their rates add up to. It keeps a memory, so it lives in the transport, outside the engine, and counts wall-clock seconds, never the time a timeline is scrubbed to.
+  - Give the transport the patch: `dmxTransport('sim', { patch })`. Without it the guard holds each DMX channel on its own, which is coarser (see the bridge below), and its status says `unit: 'channel'`.
+  - `out.flashGuard` is `{ on, unit, maxFlashHz, held }`: the fixtures held back in the last frame. The monitor rings them in amber.
+  - Switching it off takes `dmxTransport(kind, { flashGuard: false })`, in so many words. The monitor then shows a red **FLASH GUARD OFF** for as long as it is off. Raising the engine's `maxFlashHz` does not raise the guard's: that is `{ maxFlashHz }` on the transport.
+  - The out-bridge's three DMX sinks carry the same guard, on by default, so another program sending DMX through the bridge is held too. A bridge knows no patch, so there the unit is one DMX channel, which is coarser: it also holds channels that flash nothing. The case that matters is a 16-bit pan or tilt: during a smooth move its fine byte runs a fast sawtooth, and holding it makes the beam step by up to one coarse step (example 28's sweep through it: under 2° on a 540° head). List those channels in the route's `"flashGuard": { "exempt": ["dmx/1/49-52"] }`, or switch the bridge's guard off with `"flashGuard": false` when the page's guard is the one you rely on. See the [out package README](https://github.com/frank890417/open-audiovisual/blob/main/packages/out/README.md#the-flash-guard).
+  - A strobe channel follows its own rule: one whose profile gives its Hz is held to the cap, one whose profile does not stays on its open value.
+  - Raise the cap (or set `Infinity`) only on purpose.
+- **What neither layer catches.** Many fixtures flashing together: the guard counts each light on its own, so twenty pars each at 3 Hz but out of step are a room flashing far faster, and the total flashing area in the audience's view is yours to judge. The picture on a projector, a screen or LED wall: the guard sees DMX only (example 28 draws its stage from the guarded bytes, but a world's own canvas is not guarded). A colour that alternates at the same brightness (saturated red against blue, WCAG's "red flash"): brightness here is intensity times the brightest channel, which does not move. Fast pan and tilt are not a flash and are not held.
 - **Control channels.** A `control` channel (reset, lamp on and off, built-in programs) cannot be set by a scene, an effect, a param or a route: only `engine.control(id, key, byte)` writes it.
 - **The watchdog.** Through the bridge, a page that stops talking (a closed tab, a frozen page) gets each channel put on its `safe` value after `timeoutMs` (500 ms by default), and at once when the last page disconnects or the bridge stops cleanly. The first glob that fits wins, and `"hold"` means no safe value: `{ "dmx/1/49": "hold", "dmx/*": 0 }` darkens the rig and leaves one head's pan alone. On Web Serial there is no watchdog: the Pro keeps repeating the last frame, so send a blackout before `close()`.
 
 ## Watch it without hardware
 
-- `dmxTransport('sim')` keeps the bytes in memory; `out.bytes(1)` is universe 1, `out.changed` the channels of the last send.
-- `mountDmxMonitor(el, { patch, transport })` draws the rig on the page: one swatch per fixture (its colour times its dimmer, a moving head's pan and tilt as a small mark) and the 512 channels of a universe as a grid, each cell its value as a bar, tinted by what it drives. Point at a cell to read its address, value, fixture and channel. Everything is read back from the bytes, so a profile one channel off shows the wrong colour here too.
+- `dmxTransport('sim', { patch })` keeps the bytes in memory, after the flash guard; `out.bytes(1)` is universe 1, `out.changed` the channels of the last send.
+- `mountDmxMonitor(el, { patch, transport, engine })` draws the rig on the page: one swatch per fixture (its colour times its dimmer, a moving head's pan and tilt as a small mark) and the 512 channels of a universe as a grid, each cell its value as a bar, tinted by what it drives. Point at a cell to read its address, value, fixture and channel. Everything is read back from the bytes, so a profile one channel off shows the wrong colour here too. `monitor.update()` with no argument shows what the transport delivered, after the flash guard; the header says what the guard is doing, held fixtures get an amber ring, and with the engine the fixtures its per-fixture cap slows are marked "slow".
 - [Example 28](https://openaudiovisual.com/examples/28-dmx-lights/) draws a stage with the same lights and the monitor under it, on the `sim` transport by default: `?out=bridge` sends to the out-bridge, `?out=serial` adds a Connect button for an Enttec Pro.
 - `tests/dmx-out.test.js` runs the bridge on this machine and decodes every Art-Net and sACN packet it sends with the package's own decoders.
 
@@ -3472,7 +3480,7 @@ This check has not been run for this project yet, and the CHOP's parameter names
 
 ## Not yet tested on real hardware
 
-What was checked: the byte layouts against the specifications, every packet decoded on this machine (universe, bytes, at most 44 packets a second, the keep-alive, safe values when the page goes away), the Enttec sink and the Web Serial transport against stand-in ports, the engine's caps and fades in `npm test`, and example 28 in a headless browser with no permission for serial or MIDI. What was not: a real Art-Net node, an sACN receiver or console, an Enttec DMX USB Pro, any real fixture's channels, and TouchDesigner as a receiver. If you have any of them, try it and tell us what you saw.
+What was checked: the byte layouts against the specifications, every packet decoded on this machine (universe, bytes, at most 44 packets a second, the keep-alive, safe values when the page goes away), the Enttec sink and the Web Serial transport against stand-in ports, the engine's caps and fades and both flash layers in `npm test` (flashes counted at 40 frames a second on injected clocks, by a counter written apart from the guard), and example 28 in a headless browser with no permission for serial or MIDI. The flash guard has not been watched on a real light: what a fixture does with a held intensity byte (its own dimmer curve, its fade time) is not known here. What was not: a real Art-Net node, an sACN receiver or console, an Enttec DMX USB Pro, any real fixture's channels, and TouchDesigner as a receiver. If you have any of them, try it and tell us what you saw.
 
 ---
 
@@ -5156,7 +5164,7 @@ safe value (or leaves a `"hold"` channel where it is) when the page goes quiet o
 | export | signature |
 |---|---|
 | `OutClient` | `new OutClient({ url, id, schedule })` · `connect()` · `simulate()` · `close()` · `set(ch, v)` · `batch({ ch: v })` · `onStatus(fn)` · `status`, `last`, `bridge` — one value per channel per frame, reconnects with backoff, heartbeat |
-| bridge | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sinks `ddp` `serial` `osc` `udp-json` `log`, and for DMX on `dmx/<universe>/<address>`: `artnet` (unicast `host`), `sacn` (multicast or `host`, `priority`, `source`), `enttec` (`path`, `universe`), 40 Hz + a keep-alive each second |
+| bridge | `node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]` · sinks `ddp` `serial` `osc` `udp-json` `log`, and for DMX on `dmx/<universe>/<address>`: `artnet` (unicast `host`), `sacn` (multicast or `host`, `priority`, `source`), `enttec` (`path`, `universe`), 40 Hz + a keep-alive each second, a flash guard per channel (`"flashGuard": false` \| `{ maxFlashHz, exempt }`) |
 | lab | `meta.params[i].out: "light/1/r"` binds a param (0..1 by min–max, `outRaw` for the raw value); `?out=sim` · `?out=0` · `?out=ws://…` |
 
 See the package README for the config file and the watchdog rules.
@@ -5166,9 +5174,11 @@ See the package README for the config file and the watchdog rules.
 L4 output (lighting) · DMX from a page, as pure logic: fixture profiles (`open-audiovisual/fixture@1`), a patch that turns
 properties (dimmer, color, pan, tilt, strobe, zoom, 0..1) into each light's bytes, and an engine that renders every light at
 any moment as a function of time: base scenes → cues with fades → chases on beats → effects → live values → per-fixture limits →
-grand master → blackout. Safety is on by default: each effect or chase that makes intensity or colour flash, and every strobe
-channel whose profile gives Hz, is held to 3 flashes a second (each on its own: two on one light can add up); a strobe channel
-with no Hz stays open; `render(t, { beat })` needs `bpm` with it, since the cap reads the tempo; `control` channels (reset, lamp, built-in
+grand master → blackout. Safety is on by default, and the flash cap (3 a second) is held per fixture, twice: the engine slows
+the effects and chases that flash one fixture until their rates there add up to at most the cap (`state(t).slowed`), and every
+`dmxTransport()` puts each frame through a flash guard that holds what a fixture really emits, live values included (rises are
+rationed, falls always pass; `{ flashGuard: false }` to switch it off, and the monitor then says so). A strobe channel whose
+profile gives Hz is held to the cap, one with no Hz stays open; `render(t, { beat })` needs `bpm` with it, since the cap reads the tempo; `control` channels (reset, lamp, built-in
 programs) are written only by `control()`; blackout leaves pan and tilt where they are. The bytes of Art-Net, sACN and the Enttec
 DMX USB Pro come out of pure encoders; `dmxTransport()` sends what changed each frame (to memory, through the out-bridge, or by
 Web Serial), `dmxParams()` makes the engine's control points params, and `mountDmxMonitor()` shows the rig on the page.
@@ -5177,8 +5187,8 @@ Nothing has been tried on a real fixture, node or interface. The chapter is [DMX
 | export | signature |
 |---|---|
 | `Patch` | `new Patch({ profiles })` · `add({ id, profile, mode, universe = 1, address, name, groups, limits })` (throws past 512, unknown mode) · `check()` → overlaps · `ids(target)` · `render(states, { master, blackout, maxFlashHz = 3, controls })` → `Universes` · `resolve(id, props)` · `toJSON()` · `Patch.fromJSON(json, { profiles })` |
-| `DmxEngine` | `new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 })` · `scene(name, { target: props })` · `base(...names)` · `cue(name, { scene, fadeIn, fadeOut, curve })` · `go(name, at)` · `release(at, fade)` · `chase(name, { steps, every, unit: 'beat' \| 'second', fade, start })` · `effect(name, { target, property, wave: sine \| saw \| square \| chase \| flicker \| rainbow, rate, unit, depth, phase, spread, width, seed })` · `run(name, on)` · `remove(name)` · `set(target, props)` · `clear(target, keys)` · `control(id, key, byte)` · `master`, `blackout`, `maxFlashHz` · `render(t, { beat, bpm })` → `Universes` · `state(t)` → `{ fixtures, capped }` |
-| live | `dmxTransport('sim' \| 'bridge' \| 'serial', { client \| universe })` · `send(universes)` → channels changed · `bytes(id)` · `status` · `connect()` (serial, from a click) · `close()` · `dmxParams(engine, { groups, effects, chases })` → `{ params, apply(state, t) }` · `mountDmxMonitor(el, { patch, transport })` → `{ update(universes), dispose() }` · engine `tune(name, { rate, depth }, at)` · `submaster(target, level)` · `describe()` |
+| `DmxEngine` | `new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 })` · `scene(name, { target: props })` · `base(...names)` · `cue(name, { scene, fadeIn, fadeOut, curve })` · `go(name, at)` · `release(at, fade)` · `chase(name, { steps, every, unit: 'beat' \| 'second', fade, start })` · `effect(name, { target, property, wave: sine \| saw \| square \| chase \| flicker \| rainbow, rate, unit, depth, phase, spread, width, seed })` · `run(name, on)` · `remove(name)` · `set(target, props)` · `clear(target, keys)` · `control(id, key, byte)` · `master`, `blackout`, `maxFlashHz` · `render(t, { beat, bpm })` → `Universes` · `state(t)` → `{ fixtures, capped, slowed }` |
+| live | `dmxTransport('sim' \| 'bridge' \| 'serial', { patch, flashGuard = true, maxFlashHz = 3, now, client \| universe })` · `send(universes)` → channels changed · `bytes(id)` · `status` · `flashGuard` → `{ on, unit, maxFlashHz, held }` · `connect()` (serial, from a click) · `close()` · `new FlashGuard(patch, { maxFlashHz })` · `apply(universes, t)` · `held` · `dmxParams(engine, { groups, effects, chases })` → `{ params, apply(state, t) }` · `mountDmxMonitor(el, { patch, transport, engine })` → `{ update(universes?), look(id), dispose() }` · engine `tune(name, { rate, depth }, at)` · `submaster(target, level)` · `describe()` |
 | `Universe` · `Universes` | `new Universe(id)` · `get(address)` · `set(address, value)` · `write(address, values)` · `fill(v)` · `copy()` · `data` (Uint8Array, 512) · `Universes`: `get(id)` · `bytes(id)` · `ids()` · `entries()` |
 | fixtures | `FIXTURES` (generic: dimmer, RGB, RGBW 4/6 ch, RGBA, RGBAW+UV 6/8 ch, one-colour strobe, moving head 8/16 ch, all `"verified": false`) · `fixtureById(id)` · `validateFixture(profile)` → problems · `loadFixture(profile)` · `rgbToChannels([r, g, b], colors)` · schema `@openav/dmx/fixtures/fixture.schema.json` |
 | protocols | `encodeArtDmx(data, { universe, sequence, physical })` / `decodeArtDmx(bytes)` (ArtDmx, UDP 6454) · `encodeSacn(data, { universe, cid, source, priority, sequence })` / `decodeSacn(bytes)` · `sacnAddress(universe)` (E1.31, UDP 5568) · `encodeEnttecDmx(data)` / `decodeEnttecDmx(bytes)` (DMX USB Pro, label 6) |
@@ -5916,7 +5926,7 @@ already runs. A layer earns that when people can build on it without asking. Wha
 
 # API reference (generated)
 
-> 551 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 552 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -9461,14 +9471,15 @@ function draw() {
 - `decodeSacn` (function, @openav/dmx): `decodeSacn(bytes)` — Reads an E1.31 data packet back into its universe, priority, sequence, source name, CID and slot values, or returns null for anything else.
 - `DmxEngine` (class, @openav/dmx): `new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 } = {})` — Renders every light of a patch at any moment, as a pure function of time: base scenes, cues with fades, chases on beats, effects, live values, master and blackout.
 - `dmxParams` (function, @openav/dmx): `dmxParams(engine, { prefix = 'dmx', groups, effects, chases, group = 'lights' } = {})` — Turns a DmxEngine's control points into params (master, blackout, group dimmer, hue, saturation, effect rate and depth, chase run) for MIDI, the timeline and the mic.
-- `dmxTransport` (function, @openav/dmx): `dmxTransport(kind = 'sim', options = {})` — Where rendered DMX goes each frame: 'sim' (memory only), 'bridge' (an OutClient to the out-bridge: Art-Net, sACN, Enttec) or 'serial' (Web Serial to an Enttec Pro). (before it has a value: Nothing for `sim`. `bridge`: the out-bridge running with a `dmx/*` rule (`node packages/out/bridge/out-bridge.mjs --config out.json`). `serial`: Chrome or Edge, a click, and the interface plugged in.)
+- `dmxTransport` (function, @openav/dmx): `dmxTransport(kind = 'sim', options = {})` — Where rendered DMX goes each frame, through a flash guard (3 flashes a second per fixture): 'sim' (memory), 'bridge' (the out-bridge) or 'serial' (an Enttec Pro). (before it has a value: Nothing for `sim`. `bridge`: the out-bridge running with a `dmx/*` rule (`node packages/out/bridge/out-bridge.mjs --config out.json`). `serial`: Chrome or Edge, a click, and the interface plugged in.)
 - `encodeArtDmx` (function, @openav/dmx): `encodeArtDmx(data, { universe = 1, sequence = 0, physical = 0 } = {})` — One Art-Net ArtDmx packet (opcode 0x5000, protocol 14) for up to 512 channels, ready to send by UDP to port 6454.
 - `encodeEnttecDmx` (function, @openav/dmx): `encodeEnttecDmx(data)` — The serial frame that makes an Enttec DMX USB Pro (and interfaces that copy its protocol) send one universe: 0x7E, label 6, length, start code and channels, 0xE7.
 - `encodeSacn` (function, @openav/dmx): `encodeSacn(data, { universe = 1, cid, source = 'open-audiovisual', priority = 100, sequence = 0, preview = false, terminated = false } = {})` — One sACN (E1.31) data packet for 1–512 slots: root, framing and DMP layers with their lengths, priority, sequence and universe, ready for UDP port 5568.
 - `fixtureById` (function, @openav/dmx): `fixtureById(id)` — A shipped generic fixture profile by its id, or null.
 - `FIXTURES` (constant, @openav/dmx): `FIXTURES = array, 7 items` — The generic fixture profiles that ship: dimmer, RGB, RGBW (4 and 6 channels), RGBA, RGBAW+UV, a one-colour strobe and a moving head (8 and 16 channels).
+- `FlashGuard` (class, @openav/dmx): `new FlashGuard(patch, { maxFlashHz = 3 } = {})` — Holds each fixture of a patch to at most maxFlashHz flashes in any second, frame by frame, from the bytes it would emit: the guard every dmxTransport() applies.
 - `loadFixture` (function, @openav/dmx): `loadFixture(profile)` — Checks a fixture profile and lays it out for patching: each mode gets its footprint and, slot by slot, the channel it carries. Throws when the profile is not valid.
-- `mountDmxMonitor` (function, @openav/dmx): `mountDmxMonitor(el, { patch, transport = null, universe, title = 'DMX' } = {})` — Puts a DMX monitor on the page: a swatch per fixture (its colour times its dimmer, a moving head's pan and tilt as a mark) and a universe's 512 channels as a grid. (before it has a value: A page (it builds DOM) and the patch. It shows zeros until the first `update()`.)
+- `mountDmxMonitor` (function, @openav/dmx): `mountDmxMonitor(el, { patch, transport = null, engine = null, universe, title = 'DMX' } = {})` — Puts a DMX monitor on the page: a swatch per fixture (its colour times its dimmer, a moving head's pan and tilt as a mark) and a universe's 512 channels as a grid. (before it has a value: A page (it builds DOM) and the patch. It shows zeros until the first `update()`.)
 - `Patch` (class, @openav/dmx): `new Patch({ profiles = [] } = {})` — Places fixtures on universes and addresses, with groups and per-fixture limits, and turns properties (dimmer, color, pan, tilt, strobe, zoom) into each light's bytes.
 - `rgbToChannels` (function, @openav/dmx): `rgbToChannels(rgb, colors)` — Splits one RGB colour into the colour channels a fixture really has (RGB, RGBW, RGBA, RGBAW+UV, CMY), white and amber taken out first.
 - `sacnAddress` (function, @openav/dmx): `sacnAddress(universe)` — The multicast group a receiver joins for one sACN universe: 239.255.<universe high byte>.<universe low byte>.

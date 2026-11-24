@@ -18,7 +18,7 @@ const bytesAt = (U, u, from, n) => [...U.bytes(u).slice(from - 1, from - 1 + n)]
 
 // ---------------------------------------------------------------------------- the package itself
 test('package: the public surface is small and every file runs in a browser as well as in Node', () => {
-  assert.deepEqual(Object.keys(DMX).sort(), ['DmxEngine', 'FIXTURES', 'Patch', 'Universe', 'Universes', 'decodeArtDmx', 'decodeEnttecDmx', 'decodeSacn',
+  assert.deepEqual(Object.keys(DMX).sort(), ['DmxEngine', 'FIXTURES', 'FlashGuard', 'Patch', 'Universe', 'Universes', 'decodeArtDmx', 'decodeEnttecDmx', 'decodeSacn',
     'dmxParams', 'dmxTransport', 'encodeArtDmx', 'encodeEnttecDmx', 'encodeSacn', 'fixtureById', 'loadFixture', 'mountDmxMonitor', 'rgbToChannels',
     'sacnAddress', 'validateFixture']);
   const files = [];
@@ -31,7 +31,9 @@ test('package: the public surface is small and every file runs in a browser as w
     assert.doesNotMatch(src, /from\s+['"]node:|import\(\s*['"]node:|\brequire\(/, `${at}: no Node imports`);
     assert.doesNotMatch(src, /\bBuffer\b|\bprocess\.|\bimport\s*\.\s*meta\b/, `${at}: no Buffer, process or import.meta`);
     assert.doesNotMatch(src, /assert\s*\{\s*type/, `${at}: JSON import attributes are written "with", never "assert"`);
-    assert.doesNotMatch(src, /Math\.random|Date\.now|performance\.now/, `${at}: nothing random, no clock (the engine is a function of time)`);
+    assert.doesNotMatch(src, /Math\.random/, `${at}: nothing random (the engine is a function of time)`);
+    // one clock, in the transport: the flash guard counts real seconds; everything else is a function of the time it is given
+    if (at !== 'packages/dmx/transport.js') assert.doesNotMatch(src, /Date\.now|performance\.now/, `${at}: no clock (the engine is a function of time; only transport.js reads wall time, for the flash guard)`);
   }
   const pj = JSON.parse(fs.readFileSync(path.join(PKG, 'package.json'), 'utf8'));
   assert.equal(pj.name, '@openav/dmx'); assert.equal(pj.version, '0.1.0'); assert.equal(pj.license, 'MIT');

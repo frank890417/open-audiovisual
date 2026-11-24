@@ -2352,8 +2352,8 @@
       "read": [
         {
           "file": "main.js",
-          "from": 22,
-          "to": 25,
+          "from": 26,
+          "to": 29,
           "match": "const patch = new Patch();",
           "note": {
             "en": "The rig: eight RGBW pars and two moving heads, patched on universe 1.",
@@ -2362,8 +2362,8 @@
         },
         {
           "file": "main.js",
-          "from": 37,
-          "to": 41,
+          "from": 41,
+          "to": 45,
           "match": "const rig = dmxParams(engine, {",
           "note": {
             "en": "The engine's control points become params, so anything that drives a param drives the lights.",
@@ -2372,18 +2372,18 @@
         },
         {
           "file": "main.js",
-          "from": 67,
-          "to": 72,
+          "from": 71,
+          "to": 75,
           "match": "update(dt, state) {",
           "note": {
-            "en": "Each frame: params in, every light rendered, only the changed channels out, the monitor updated.",
-            "zh": "每一格：參數進來，算出每台燈，只送出有變的通道，再更新監看器。"
+            "en": "Each frame: params in, every light rendered, through the flash guard (no light flashes more than 3 times a second), only the changed channels out, the monitor updated with what left.",
+            "zh": "每一格：參數進來，算出每台燈，經過頻閃保護（每台燈每秒最多閃 3 次），只送出有變的通道，再用實際送出的內容更新監看器。"
           }
         },
         {
           "file": "main.js",
-          "from": 123,
-          "to": 140,
+          "from": 128,
+          "to": 145,
           "match": "const routes = [",
           "note": {
             "en": "Sound, chords and any MIDI controller reach the lights through the mapping layer.",

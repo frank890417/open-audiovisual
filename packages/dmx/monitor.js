@@ -3,7 +3,12 @@
 // of a universe as a grid (each cell its value as a bar, the number when it is not 0, tinted by the fixture it belongs to).
 //
 //   const mon = mountDmxMonitor(el, { patch, transport });   // transport: optional, its status shows (a serial one gets a Connect button)
-//   mon.update(engine.render(t));                            // every frame (a Universes, or { id: bytes })
+//   out.send(engine.render(t)); mon.update();                // every frame: what the transport delivered, after its flash guard
+//   mon.update(engine.render(t));                            // or any universes you hand it (a Universes, or { id: bytes })
+//
+// With a transport it also shows its flash guard: which fixtures it is holding back right now (an amber ring), and, for as
+// long as the transport was made with { flashGuard: false }, a red FLASH GUARD OFF that does not go away. With the engine
+// ({ engine }) the fixtures the engine's per-fixture cap slows get a small "slow" mark.
 //
 // Everything is read back from the BYTES, the way a fixture would read them: a profile that is one channel off shows the
 // wrong colour here too. No dependencies; the dark console theme. fixtureLook() is the pure part (tests run it in Node).
@@ -82,6 +87,12 @@ const CSS = `
   box-shadow: 0 0 2px #000; transform-origin: 50% 0; }
 .oav-dmx-fx em { position: absolute; right: 4px; top: 2px; font-style: normal; font-size: 9px; color: #fff; text-shadow: 0 0 3px #000; }
 .oav-dmx canvas { display: block; width: 100%; border-radius: 6px; background: #0b0e15; cursor: crosshair; }
+.oav-dmx-guard { color: #9aa5bd; }
+.oav-dmx-guard[data-state="holding"] { color: #ffb02e; }
+.oav-dmx-guard[data-state="off"] { color: #fff; background: #d7263d; border-radius: 6px; padding: 1px 8px; font-weight: 700; letter-spacing: .06em; }
+.oav-dmx[data-guard="off"] { box-shadow: inset 0 0 0 2px #d7263d; }
+.oav-dmx-fx[data-held] { outline: 2px solid #ffb02e; outline-offset: -2px; }
+.oav-dmx-fx b { position: absolute; left: 4px; top: 2px; font-size: 9px; font-weight: 700; color: #ffd166; text-shadow: 0 0 3px #000; }
 `;
 
 /**
@@ -89,12 +100,13 @@ const CSS = `
  * @param {HTMLElement} el
  * @param {object} o
  * @param {import('./patch.js?v=e62939c4').Patch} o.patch   the fixtures to draw and to name the channels after
- * @param {object} [o.transport]  a dmxTransport() result: its kind and status show; a serial one gets a Connect button
+ * @param {object} [o.transport]  a dmxTransport() result: its kind, status and flash guard show; a serial one gets a Connect button
+ * @param {object} [o.engine]     the DmxEngine: the fixtures its per-fixture flash cap slows are marked
  * @param {number} [o.universe]   the universe the grid starts on (the patch's first by default)
  * @param {string} [o.title='DMX']
- * @returns {{ el: HTMLElement, update(universes: object): void, select(universe: number): void, dispose(): void }}
+ * @returns {{ el: HTMLElement, update(universes?: object): void, select(universe: number): void, look(id: string): object|null, dispose(): void }}
  */
-export function mountDmxMonitor(el, { patch, transport = null, universe, title = 'DMX' } = {}) {
+export function mountDmxMonitor(el, { patch, transport = null, engine = null, universe, title = 'DMX' } = {}) {
   if (!el || typeof el.appendChild !== 'function') throw new TypeError('mountDmxMonitor(el, { patch }): el is an element');
   if (!patch || typeof patch.ids !== 'function') throw new TypeError('mountDmxMonitor(el, { patch }): a Patch');
   const doc = el.ownerDocument;
@@ -107,8 +119,11 @@ export function mountDmxMonitor(el, { patch, transport = null, universe, title =
   const name = h('b', '', title);
   const tabs = h('div', 'oav-dmx-tabs');
   const status = h('span', 'oav-dmx-status');
+  const guardEl = h('span', 'oav-dmx-guard');
+  guardEl.setAttribute('role', 'status');
+  guardEl.hidden = true;
   const read = h('span', 'oav-dmx-read', 'point at a channel');
-  head.append(name, tabs, status);
+  head.append(name, tabs, status, guardEl);
   let connect = null;
   if (transport && transport.kind === 'serial') {
     connect = h('button', 'oav-dmx-connect', 'Connect Enttec Pro');
@@ -130,6 +145,8 @@ export function mountDmxMonitor(el, { patch, transport = null, universe, title =
   let data = new Map();                 // universe → bytes last shown
   let known = [];
   let dirty = true, hover = -1, lastW = 0;
+  let held = new Set(), slowed = new Map(), marks = '', frame = 0;
+  const heldUntil = new Map();          // id → the update a held mark lasts until: a light held every other frame must not make the ring blink
 
   // ---- universe tabs (only when there is more than one)
   const drawTabs = () => {
@@ -155,7 +172,8 @@ export function mountDmxMonitor(el, { patch, transport = null, universe, title =
         let mark = null;
         if (r.layout.pan || r.layout.tilt) { mark = h('i'); card.append(mark); }
         if (r.universe !== current) card.append(h('em', '', `U${r.universe}`));
-        cards.set(r.id, { card, mark, last: '' });
+        const slow = h('b', '', 'slow'); slow.hidden = true; card.append(slow);
+        cards.set(r.id, { card, mark, slow, last: '' });
         return card;
       }));
     }
@@ -163,13 +181,18 @@ export function mountDmxMonitor(el, { patch, transport = null, universe, title =
       const c = cards.get(r.id);
       const look = fixtureLook(r, data.get(r.universe) || new Uint8Array(SLOTS));
       const bg = cssColor(look.color);
-      const key = bg + look.pan + look.tilt;
+      const isHeld = held.has(r.id), slow = slowed.get(r.id);
+      const key = bg + look.pan + look.tilt + isHeld + (slow ? slow.to : '');
       if (key === c.last) continue;
       c.last = key;
       c.card.style.background = bg;
       c.card.style.borderColor = Math.max(...look.color) > 0.02 ? 'rgba(255,255,255,.35)' : '#2a3348';
+      c.card.toggleAttribute('data-held', isHeld);
+      c.slow.hidden = !slow;
       c.card.title = `${r.id} · ${r.profile.id} ${r.mode.id} · universe ${r.universe}, address ${r.address}–${r.address + r.footprint - 1} · dimmer ${Math.round(look.dimmer * 100)}%`
-        + (look.pan !== null ? ` · pan ${look.pan.toFixed(2)}` : '') + (look.tilt !== null ? ` · tilt ${look.tilt.toFixed(2)}` : '');
+        + (look.pan !== null ? ` · pan ${look.pan.toFixed(2)}` : '') + (look.tilt !== null ? ` · tilt ${look.tilt.toFixed(2)}` : '')
+        + (isHeld ? ' · held back by the flash guard (it flashed 3 times in the last second)' : '')
+        + (slow ? ` · slowed by the flash cap: ${slow.hz.toFixed(2)} → ${slow.to.toFixed(2)} Hz (${slow.sources.map((x) => x.name).join(', ')})` : '');
       if (c.mark) {
         // top view: the angle is pan (a full turn across its range), the length is tilt
         c.mark.style.transform = `rotate(${((look.pan ?? 0.5) - 0.5) * 360 + 180}deg)`;
@@ -250,13 +273,42 @@ export function mountDmxMonitor(el, { patch, transport = null, universe, title =
     if (connect) connect.hidden = s === 'open' || s === 'connecting' || s === 'unsupported';
   };
 
+  // the flash guard of the transport, every frame: held fixtures, and OFF for as long as it is off
+  const drawGuard = () => {
+    const g = transport && transport.flashGuard;
+    let now = new Set(), next = new Map();
+    if (!g) { guardEl.hidden = true; root.removeAttribute('data-guard'); }
+    else if (!g.on) {
+      guardEl.hidden = false; guardEl.dataset.state = 'off'; root.dataset.guard = 'off';
+      guardEl.textContent = 'FLASH GUARD OFF';
+      guardEl.title = 'This transport was made with { flashGuard: false }: nothing holds a light to 3 flashes a second. Flashing faster can bring on a seizure in people with photosensitive epilepsy.';
+    } else {
+      guardEl.hidden = false; root.dataset.guard = 'on';
+      for (const id of g.held || []) heldUntil.set(id, frame + 24);       // about 0.6 s at 40 frames a second
+      for (const [id, until] of heldUntil) if (until <= frame) heldUntil.delete(id);
+      const list = [...heldUntil.keys()];
+      if (g.unit === 'fixture') now = new Set(list);
+      guardEl.dataset.state = list.length ? 'holding' : 'on';
+      guardEl.textContent = list.length ? `flash guard · holding ${list.slice(0, 4).join(', ')}${list.length > 4 ? ` +${list.length - 4}` : ''}` : `flash guard · ${g.maxFlashHz} Hz per ${g.unit}`;
+      guardEl.title = g.unit === 'fixture'
+        ? `No fixture may flash more than ${g.maxFlashHz} times in any second: a light that would is held where it is until the second has room.`
+        : `No channel may flash more than ${g.maxFlashHz} times in any second. Per channel, because the transport has no patch: give it { patch } to guard each fixture's light.`;
+    }
+    if (engine && typeof engine.describe === 'function') for (const x of engine.describe().slowed || []) next.set(x.id, x);
+    const m = [...now].join() + '|' + [...next].map(([id, x]) => id + x.to).join();
+    if (m !== marks) { marks = m; held = now; slowed = next; dirty = true; for (const c of cards.values()) c.last = ''; }
+  };
+  const delivered = () => (transport && typeof transport.bytes === 'function' ? (transport.universes || []).map((u) => [u, transport.bytes(u)]) : []);
+
   function select(u) { current = u; dirty = true; cards.clear(); drawTabs(); readout(); }
   function update(universes) {
-    for (const [id, bytes] of listOf(universes)) {
+    frame++;
+    for (const [id, bytes] of universes === undefined ? delivered() : listOf(universes)) {
       const prev = data.get(id);
       if (!prev || prev.length !== bytes.length || prev.some((b, i) => b !== bytes[i])) { data.set(id, Uint8Array.from(bytes)); dirty = true; }
     }
     drawStatus();
+    drawGuard();
     drawTabs();
     const w = canvas.clientWidth || el.clientWidth;
     if (!dirty && w === lastW) return;
@@ -265,6 +317,8 @@ export function mountDmxMonitor(el, { patch, transport = null, universe, title =
     drawGrid();
   }
   const un = transport && typeof transport.onStatus === 'function' ? transport.onStatus(drawStatus) : null;
-  drawStatus(); drawTabs(); drawFixtures(); drawGrid();
-  return { el: root, update, select, dispose() { un?.(); root.remove(); } };
+  drawStatus(); drawGuard(); drawTabs(); drawFixtures(); drawGrid();
+  /** What one fixture shows in the bytes the monitor last got (fixtureLook): { color, mixed, dimmer, pan, tilt, strobe }, or null. */
+  const look = (id) => { const r = patch.get(id); return r ? fixtureLook(r, data.get(r.universe) || new Uint8Array(SLOTS)) : null; };
+  return { el: root, update, select, look, dispose() { un?.(); root.remove(); } };
 }

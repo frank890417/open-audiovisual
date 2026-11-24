@@ -5,6 +5,10 @@
 // the mapper (sound, chords, any MIDI controller) and the timeline all drive the lights the way they drive any
 // world (rule 1: the engine never reads a signal). The monitor under the stage shows what the lights are getting.
 //
+// Safety does not depend on anything in this file: the engine slows flashing sources that add up past 3 Hz on one fixture,
+// and the transport's flash guard holds every fixture to 3 flashes in any second, whatever drives it (the kick below at
+// 180 bpm included). The stage is drawn from what the transport sent, so it shows the guarded light too.
+//
 //   no query        sim: nothing leaves the page, the monitor is the rig
 //   ?out=bridge     → the out-bridge on this machine (ws://127.0.0.1:6450/out): Art-Net, sACN or an Enttec, per its config
 //   ?out=ws://…     → another bridge
@@ -42,9 +46,9 @@ const rig = dmxParams(engine, {
 
 // ---------- where the bytes go ----------
 const q = new URLSearchParams(location.search).get('out') || 'sim';
-const out = q === 'serial' ? dmxTransport('serial', { universe: 1 })
-  : q === 'bridge' || /^wss?:\/\//.test(q) ? dmxTransport('bridge', { client: new OutClient({ id: '28-dmx-lights', url: q === 'bridge' ? undefined : q }).connect() })
-  : dmxTransport('sim');
+const out = q === 'serial' ? dmxTransport('serial', { patch, universe: 1 })
+  : q === 'bridge' || /^wss?:\/\//.test(q) ? dmxTransport('bridge', { patch, client: new OutClient({ id: '28-dmx-lights', url: q === 'bridge' ? undefined : q }).connect() })
+  : dmxTransport('sim', { patch });        // { patch }: the flash guard reads each fixture's light
 
 const lights = {
   name: 'dmx-lights',
@@ -55,7 +59,7 @@ const lights = {
     this.dock = document.createElement('div');
     this.dock.style.cssText = 'position:absolute;left:0;right:0;bottom:0;z-index:3';
     container.appendChild(this.dock);
-    this.monitor = mountDmxMonitor(this.dock, { patch, transport: out, title: 'DMX · 8 pars, 2 heads' });
+    this.monitor = mountDmxMonitor(this.dock, { patch, transport: out, engine, title: 'DMX · 8 pars, 2 heads' });
     // the one button a lighting desk always has within reach
     const b = document.createElement('button');
     b.type = 'button'; b.textContent = 'Blackout';
@@ -67,10 +71,11 @@ const lights = {
   update(dt, state) {
     this.t += dt;
     rig.apply(state, this.t);                // the params → the engine (only what changed)
-    const U = engine.render(this.t);         // every light, now
-    out.send(U);                             // only the channels that changed leave
-    this.monitor.update(U);
-    this.look = engine.state(this.t).fixtures;
+    out.send(engine.render(this.t));         // every light, now: through the flash guard, only the channels that changed leave
+    this.monitor.update();                   // what left
+    // the stage shows what the lights were sent (colour and dimmer from the bytes, after the guard); zoom from the engine
+    const st = engine.state(this.t).fixtures;
+    this.look = Object.fromEntries(patch.fixtures.map((r) => { const l = this.monitor.look(r.id); return [r.id, { color: l.mixed, dimmer: l.dimmer, pan: l.pan, tilt: l.tilt, zoom: st[r.id].zoom }]; }));
     this.haze = state.haze;
     const dark = state[rig.keys.blackout] >= 0.5;
     this.button.setAttribute('aria-pressed', String(dark));
@@ -121,7 +126,8 @@ const lights = {
 
 // ---------- what drives what: the mapping layer (rule 1), all of it editable in L2 · Mapping ----------
 const routes = [
-  // sound: the room's loudness, or the drum machine's kick when there is no microphone, swells the pars (smoothed: no flicker)
+  // sound: the room's loudness, or the drum machine's kick when there is no microphone, swells the pars. The smoothing is for
+  // the look (a swell, not a stab); safety is the flash guard's job, which holds the pars to 3 flashes a second either way
   { source: 'audio/rms', target: 'dmx/pars/dimmer', inMax: 0.25, outMin: 0.25, curve: 'smooth', smooth: 0.25 },
   { source: 'drum/kick/env', target: 'dmx/pars/dimmer', outMin: 0.3, smooth: 0.12, release: 2 },
   // the piano and the QWERTY keys: what you play colours the pars (consonant warm, dissonant cold); more notes, more rainbow

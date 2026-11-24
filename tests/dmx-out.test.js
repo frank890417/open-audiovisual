@@ -267,14 +267,19 @@ test('install.sh copies every file the bridge imports from outside packages/out 
   const outside = new Set();
   for (const f of sinks) {
     const src = fs.readFileSync(new URL(`../packages/out/bridge/sinks/${f}`, import.meta.url), 'utf8');
-    for (const m of src.matchAll(/from\s+'\.\.\/\.\.\/\.\.\/([\w-]+)\/([\w/-]+)\/[\w.-]+\.js(?:\?[^']*)?'/g)) outside.add(`${m[1]}/${m[2]}`);
+    // every file outside packages/out, at any depth (packages/dmx/flash-guard.js as well as packages/dmx/protocol/artnet.js)
+    for (const m of src.matchAll(/from\s+'\.\.\/\.\.\/\.\.\/([\w/.-]+\.js)(?:\?[^']*)?'/g)) outside.add(m[1]);
   }
-  assert.ok(outside.has('dmx/protocol'), 'the DMX sinks import the encoders of @openav/dmx');
-  for (const dir of outside) {
-    const pkg = dir.split('/')[0];
-    assert.ok(install.includes(`"$PKGS"/${dir}/*.js`), `install.sh copies packages/${dir}/*.js`);
+  assert.ok(outside.has('dmx/protocol/artnet.js'), 'the DMX sinks import the encoders of @openav/dmx');
+  assert.ok(outside.has('dmx/flash-guard.js'), 'and its flash guard');
+  for (const file of outside) {
+    const pkg = file.split('/')[0], dir = file.split('/').slice(0, -1).join('/');
+    assert.ok(install.includes(`"$PKGS"/${dir}/*.js`) || install.includes(`"$PKGS/${file}"`), `install.sh copies packages/${file}`);
     assert.ok(install.includes(`"$PKGS/${pkg}/package.json"`), `install.sh copies packages/${pkg}/package.json`);
   }
+  // and what it copies imports nothing it does not copy: flash-guard.js stands alone
+  const guard = fs.readFileSync(new URL('../packages/dmx/flash-guard.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(guard, /^\s*import\s/m, 'packages/dmx/flash-guard.js has no imports (the installed bridge has only it and protocol/)');
 });
 
 // ───────────── enttec on a fake serial port ─────────────

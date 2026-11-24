@@ -86,15 +86,15 @@ const universes = engine.render(t);      // every light at t seconds
 import { dmxTransport } from '@openav/dmx';
 import { OutClient } from '@openav/out';
 
-const out = dmxTransport('sim');                                                  // memory only: out.bytes(1)
-// const out = dmxTransport('bridge', { client: new OutClient({ id: 'my-show' }).connect() });   // the out-bridge
-// const out = dmxTransport('serial', { universe: 1 });  button.onclick = () => out.connect();  // an Enttec Pro
+const out = dmxTransport('sim', { patch });                                       // memory only: out.bytes(1)
+// const out = dmxTransport('bridge', { patch, client: new OutClient({ id: 'my-show' }).connect() });   // the out-bridge
+// const out = dmxTransport('serial', { patch, universe: 1 });  button.onclick = () => out.connect();  // an Enttec Pro
 out.send(engine.render(t));
 ```
 
-bridge 傳送端對每個有變的通道呼叫一次 `client.set('dmx/<universe>/<address>', byte / 255)`。serial 傳送端在它的 universe 有任何變化時寫出一整個 Enttec 資料框（全部 512 個通道），最多每 25 毫秒一格，沒變時每秒一次。
+每一種傳送端在送出任何東西之前，都先讓這一格經過頻閃保護（見[安全](#safety)），給它 `{ patch }`，它才讀得到每台燈實際的亮度。bridge 傳送端對每個有變的通道呼叫一次 `client.set('dmx/<universe>/<address>', byte / 255)`。serial 傳送端在它的 universe 有任何變化時寫出一整個 Enttec 資料框（全部 512 個通道），最多每 25 毫秒一格，沒變時每秒一次。
 
-在[實驗室](lab-integration.md)的作品裡，`"modules": ["out", "dmx"]` 會給你 `lab.dmx`：從 `meta.dmx.patch` 建好的 patch、它的引擎、傳送端（`?dmx=bridge` 經過 `lab.out`，`?dmx=serial` 送到 Enttec Pro）、算燈並送出的 `lab.dmx.frame(t)`、`lab.dmx.monitor(el)` 和 `lab.dmx.params(options)`。
+在[實驗室](lab-integration.md)的作品裡，`"modules": ["out", "dmx"]` 會給你 `lab.dmx`：從 `meta.dmx.patch` 建好的 patch、它的引擎、開著頻閃保護的傳送端（`?dmx=bridge` 經過 `lab.out`，`?dmx=serial` 送到 Enttec Pro）、算燈並送出的 `lab.dmx.frame(t)`、`lab.dmx.monitor(el)` 和 `lab.dmx.params(options)`。
 
 ## 用聲音和控制器推燈
 
@@ -123,7 +123,7 @@ const lights = {
 
 ```js
 routes: [
-  { source: 'audio/rms', target: 'dmx/pars/dimmer', inMax: 0.25, outMin: 0.25, smooth: 0.25 },   // the room's loudness
+  { source: 'audio/rms', target: 'dmx/pars/dimmer', inMax: 0.25, outMin: 0.25, smooth: 0.25 },   // the room's loudness (smoothed for the look)
   { source: 'drum/kick/env', target: 'dmx/pars/dimmer', outMin: 0.3, smooth: 0.12 },             // the drum machine, when there is no mic
   { source: 'chord/consonance', target: 'dmx/pars/hue', inMin: -1, inMax: 1, outMin: 0.62, outMax: 0.06, smooth: 0.4 },
   { source: 'midi/cc/7', target: 'dmx/master' },                                                   // any controller's volume fader
@@ -136,15 +136,23 @@ routes: [
 
 - **Blackout。** `engine.blackout = true`（或 `dmx/blackout` 參數，或範例 28 的 Blackout 按鈕）讓每一個 dimmer 立刻歸零（沒有調光通道的燈，連顏色也歸零，因為它的亮度就在顏色裡），pan、tilt、zoom 和 control 通道停在原處，所以全暗的時候搖頭燈不會突然轉。
 - **上下限。** 每台放好的燈可以設 `limits`（`{ dimmer: [0, 0.8], tilt: [0.1, 0.9] }`），在所有圖層之後、總控之前套用。
-- **閃爍上限。** 每秒閃超過大約三次，可能讓光敏性癲癇的人發作，所以 effect 和 chase 被限制在 `maxFlashHz` 以下，預設是 3。它是**每個 effect、每個 chase 各自**算的：以秒為單位的速度直接夾到上限，以拍為單位的速度一次減半直到符合（這樣還是踩在拍子上），chase 把每一步的長度加倍，隨機閃爍每秒換新值的次數也不超過上限。作用在位置（pan、tilt、zoom）上的 effect 不會閃，不會被放慢。profile 寫了 Hz 的每一個 strobe 通道遵守同一個上限，沒寫的就停在 open 的值。`engine.state(t).capped` 列出被上限放慢的東西。同一台燈上有兩層受限的東西（兩個 effect，或一個 chase 加一個 effect），閃的次數可能比任何一層都多：每台燈只放一層會閃的東西，或調低上限。只有確定要的時候才調高（或設成 `Infinity`）。
-- **即時值不受上限管。** 推桿、麥克風或大鼓推 dimmer，是演出者直接在控制，照原樣送出。替這種路線加上 0.1 秒以上的 `smooth`，讓推動它的東西維持在每秒閃三次以內，或讓聲音去推一個 chase 的步伐，chase 是受上限管的。
+- **閃爍，以每台燈來算。** 每秒閃超過大約三次，可能讓光敏性癲癇的人發作。會傷到人的是一台燈實際發出來的光，所以上限 `maxFlashHz`（預設 3）是以「每台燈」來算的，分兩層。
+  1. **引擎裡。** 先把每個 effect、每個 chase 各自限制在上限以內：以秒為單位的速度直接夾住，以拍為單位的速度一次減半直到符合（這樣還是踩在拍子上），chase 把每一步的長度加倍，隨機閃爍每秒換新值的次數也不超過上限。接著對每一台燈，把所有會讓它閃的東西（作用在它的 dimmer 或顏色上的 effect，以及用位置以外的東西改變它的 chase）的頻率加起來。總和超過上限，就只在這台燈上把這些來源放慢，直到不超過為止：以秒為單位的照同一個比例放慢，以拍為單位的對半降，chase 的每一步加倍。兩個 3 Hz 的 effect 疊在同一台 par 上，在那台燈上各跑 1.5 Hz，只帶著其中一個的 par 保持原速。`engine.state(t).slowed`（以及 `describe().slowed`）列出被放慢的燈、放慢前後的總和，以及每一個來源。這一層仍然只取決於時間：同一個 `t` 得到同樣的位元組，錄影一樣可以逐格算。旋鈕用 `tune()` 改其中一個波形的速度時，同一台燈上的其他波形也從原本的位置接著走，不會跳。
+  2. **輸出前。** 每一個 `dmxTransport()`（sim、bridge、serial）在送出之前都讓這一格經過頻閃保護。它從位元組讀出每台燈的亮度（調光乘上最亮的顏色通道），照 WCAG 2.3.1 的方式算一次閃：亮度往相反方向變化兩次，每次至少滿刻度的 10%，從上一個轉折點量起。任何一秒內，一台燈變亮這麼多的次數不能超過 3 次：下一次變亮會超過的時候，燈穩穩停在上一次送出的亮度，等這一秒有空位了再跟上。變暗永遠直接通過，所以 blackout 和暗下來的 cue 下一格就到，保護也不會送出比要求更亮的光。它只壓調光通道的位元組（沒有調光通道的燈，就把顏色位元組一起等比例調低），pan、tilt、zoom、gobo、strobe、control 通道，以及沒被壓住的每一台燈，都原封不動送出。這一層擋得住引擎看不到的東西：即時值（推桿、麥克風、在 180 bpm 十六分音符下推 dimmer 的 `drum/kick/env`，是每秒 12 次）、兩個引擎推同一套燈，以及幾個波形疊起來，在某一秒裡的轉折比它們的頻率加起來還多。它有記憶，所以放在傳送端、引擎外面，數的是真實時間的秒數，不是時間軸被拉到的時間。
+  - 把 patch 交給傳送端：`dmxTransport('sim', { patch })`。沒有 patch 的話，保護只能一個 DMX 通道一個通道地看，比較粗（見下面的橋接程式），狀態會寫 `unit: 'channel'`。
+  - `out.flashGuard` 是 `{ on, unit, maxFlashHz, held }`：`held` 是上一格被壓住的燈。監看器會用琥珀色的框把它們圈起來。
+  - 要關掉保護，必須明確寫 `dmxTransport(kind, { flashGuard: false })`。關掉的這段時間，監看器會一直顯示紅色的 **FLASH GUARD OFF**。調高引擎的 `maxFlashHz` 不會跟著調高保護的上限，那要在傳送端寫 `{ maxFlashHz }`。
+  - 輸出橋接程式的三個 DMX 輸出也有同一道保護，預設開著，所以別的程式經由橋接程式送 DMX 時一樣受保護。橋接程式不知道 patch，所以在那裡的單位是一個 DMX 通道，比較粗：它也會壓住根本不會閃的通道。最要緊的是 16 位元的 pan 或 tilt：平順移動的時候，它的細調位元組會跑出很快的鋸齒波，被壓住時光束會跳最多一個粗調的格子（範例 28 的掃動經過它：540° 的搖頭燈上不到 2°）。把這些通道寫進那條路線的 `"flashGuard": { "exempt": ["dmx/1/49-52"] }`，或在你依靠頁面這一道保護的時候，用 `"flashGuard": false` 關掉橋接程式的。見 [out 套件的 README](https://github.com/frank890417/open-audiovisual/blob/main/packages/out/README.md#the-flash-guard)。
+  - strobe 通道照它自己的規則：profile 寫了 Hz 的遵守上限，沒寫的停在 open 的值。
+  - 只有確定要的時候才調高上限（或設成 `Infinity`）。
+- **兩層都擋不到的。** 很多台燈一起閃：保護一台一台地算，二十台 par 各自每秒閃 3 次、但彼此錯開，整個場地看起來就閃得快很多，觀眾視野裡閃爍的總面積要由你判斷。投影、螢幕或 LED 牆上的畫面：保護只看得到 DMX（範例 28 的舞台是用保護過的位元組畫的，但 world 自己的畫布不受保護）。亮度不變、只有顏色來回換（飽和的紅和藍交替，也就是 WCAG 說的「紅色閃爍」）：這裡的亮度是調光乘上最亮的通道，不會動。pan、tilt 快速移動不算閃，也不會被壓住。
 - **control 通道。** `control` 通道（重置、燈泡開關、內建程式）不能被 scene、effect、參數或路線碰到，只有 `engine.control(id, key, byte)` 能寫。
 - **看門狗。** 走橋接程式時，頁面一停止說話（關掉分頁、頁面凍結），每個通道在 `timeoutMs`（預設 500 毫秒）之後被放到它的 `safe` 值，最後一個頁面斷線或橋接程式正常關閉時則是立刻。第一個符合的萬用字元優先，`"hold"` 表示沒有安全值：`{ "dmx/1/49": "hold", "dmx/*": 0 }` 讓整套燈暗下來，但一台搖頭燈的 pan 停在原處。Web Serial 沒有看門狗：Pro 會一直重送最後一格，所以 `close()` 之前先送一次 blackout。
 
 ## 沒有硬體時怎麼看
 
-- `dmxTransport('sim')` 把位元組留在記憶體裡，`out.bytes(1)` 就是 universe 1，`out.changed` 是上一次送出改變的通道。
-- `mountDmxMonitor(el, { patch, transport })` 把燈畫在頁面上：每台燈一個色塊（顏色乘上亮度，搖頭燈的 pan 和 tilt 畫成一個小記號），再加上一個 universe 的 512 個通道表，每格用長條表示它的值，顏色是它推的那種光。滑鼠指著一格，就讀得到位址、值、燈具和通道。所有東西都從位元組讀回來，所以 profile 差一個通道，這裡的顏色也會跟著錯。
+- `dmxTransport('sim', { patch })` 把經過頻閃保護的位元組留在記憶體裡，`out.bytes(1)` 就是 universe 1，`out.changed` 是上一次送出改變的通道。
+- `mountDmxMonitor(el, { patch, transport, engine })` 把燈畫在頁面上：每台燈一個色塊（顏色乘上亮度，搖頭燈的 pan 和 tilt 畫成一個小記號），再加上一個 universe 的 512 個通道表，每格用長條表示它的值，顏色是它推的那種光。滑鼠指著一格，就讀得到位址、值、燈具和通道。所有東西都從位元組讀回來，所以 profile 差一個通道，這裡的顏色也會跟著錯。`monitor.update()` 不帶參數時，顯示的是傳送端經過頻閃保護之後實際送出的內容。標題列會說保護正在做什麼，被壓住的燈有琥珀色的框，給了引擎的話，被每台燈上限放慢的燈會標上「slow」。
 - [範例 28](https://openaudiovisual.com/examples/28-dmx-lights/) 用同一套燈畫出一個舞台，下面放著監看器，預設用 `sim` 傳送端：`?out=bridge` 送到輸出橋接程式，`?out=serial` 多一個給 Enttec Pro 的 Connect 按鈕。
 - `tests/dmx-out.test.js` 在這台機器上跑橋接程式，用套件自己的解碼器把它送出的每個 Art-Net 和 sACN 封包解回來。
 
@@ -161,4 +169,4 @@ TouchDesigner 的 **DMX In CHOP** 是另一個跟這份程式碼完全無關的�
 
 ## 還沒有用真的硬體測過
 
-確認過的：位元組的格式對照規格、每個封包都在這台機器上解回來（universe、位元組、每秒最多 44 個封包、補送的封包、頁面離開時的安全值）、Enttec 輸出和 Web Serial 傳送端用代替的連接埠測過、引擎的上限和淡入淡出在 `npm test` 裡、範例 28 在沒有序列埠和 MIDI 權限的無頭瀏覽器裡跑過。沒確認的：真的 Art-Net 節點、sACN 接收端或燈光控台、Enttec DMX USB Pro、任何一台真燈的通道，以及用 TouchDesigner 當接收端。如果你手上有其中任何一樣，試試看，告訴我們你看到了什麼。
+確認過的：位元組的格式對照規格、每個封包都在這台機器上解回來（universe、位元組、每秒最多 44 個封包、補送的封包、頁面離開時的安全值）、Enttec 輸出和 Web Serial 傳送端用代替的連接埠測過、引擎的上限、淡入淡出和兩層頻閃保護在 `npm test` 裡（以每秒 40 格、注入的時鐘算閃爍次數，計數器跟保護本身分開寫）、範例 28 在沒有序列埠和 MIDI 權限的無頭瀏覽器裡跑過。頻閃保護還沒有在真的燈上看過：燈具拿到被壓住的調光位元組會怎麼反應（它自己的調光曲線、淡入淡出時間），這裡還不知道。沒確認的：真的 Art-Net 節點、sACN 接收端或燈光控台、Enttec DMX USB Pro、任何一台真燈的通道，以及用 TouchDesigner 當接收端。如果你手上有其中任何一樣，試試看，告訴我們你看到了什麼。

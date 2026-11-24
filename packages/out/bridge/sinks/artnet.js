@@ -11,7 +11,7 @@
 // is there for an old node that only listens to broadcast, on a network that carries nothing else.
 import dgram from 'node:dgram';
 import { encodeArtDmx, ARTNET_PORT } from '../../../dmx/protocol/artnet.js?v=e62939c4';
-import { DmxFrames, udpSender } from './dmx-frames.js?v=e62939c4';
+import { DmxFrames, udpSender, flashGuardOf } from './dmx-frames.js?v=e62939c4';
 
 export const MAX_PORT_ADDRESS = 0x7fff;
 
@@ -20,12 +20,14 @@ export function create(cfg, ctx) {
   const hosts = [].concat(cfg.host ?? (broadcast ? '255.255.255.255' : [])).filter((h) => typeof h === 'string' && h);
   if (!hosts.length) throw new Error('artnet sink 要設 host（節點的 IP，Art-Net 4 規定 ArtDmx 用單播），或明確寫 "broadcast": true');
   const port = Number(cfg.port || ARTNET_PORT);
+  const flashGuard = flashGuardOf(cfg, 'artnet');   // on unless the route says "flashGuard": false (dmx-frames.js says what it holds); checked before any socket opens
   if (!(Number.isInteger(port) && port > 0 && port < 65536)) throw new Error(`artnet port 要是 1–65535（收到 ${cfg.port}）`);
   let lastError = null;
   const onError = (e) => { lastError = e.message; ctx.log(`[artnet] ${e.message}`); };
   const udp = udpSender(dgram, { onError, setup: (s) => { if (broadcast) s.setBroadcast(true); } });
   if (broadcast) ctx.log(`[artnet] broadcasting ArtDmx to ${hosts.join(', ')}: Art-Net 4 asks for unicast to the nodes`);
   const frames = new DmxFrames({
+    flashGuard,
     accept: (u) => u <= MAX_PORT_ADDRESS,
     onError,
     emit: (u, data, n) => {

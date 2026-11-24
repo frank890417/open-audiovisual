@@ -42,6 +42,7 @@ cp "$HERE"/sinks/*.js "$DEST/packages/out/bridge/sinks/"
 cp "$PKGS/out/package.json" "$DEST/packages/out/"
 cp "$PKGS/relay/frames.js" "$PKGS/relay/package.json" "$DEST/packages/relay/"
 cp "$PKGS"/dmx/protocol/*.js "$DEST/packages/dmx/protocol/"            # the artnet, sacn and enttec sinks encode with these
+cp "$PKGS/dmx/flash-guard.js" "$DEST/packages/dmx/"                      # …and hold every channel to 3 flashes a second with this
 cp "$PKGS/dmx/package.json" "$DEST/packages/dmx/"
 REV="$(git -C "$PKGS" rev-parse --short HEAD 2>/dev/null || echo unknown)"
 printf '{\n  "from": "%s",\n  "commit": "%s",\n  "installed": "%s"\n}\n' "$PKGS" "$REV" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$DEST/INSTALLED.json"

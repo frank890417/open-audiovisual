@@ -7,6 +7,12 @@
 //   button.onclick = () => out.connect();                     //   (the browser asks which port: only from a click)
 //   out.send(engine.render(t));                               // every frame: only what changed leaves
 //
+// Every transport puts the frame through a flash guard first (flash-guard.js): no light may flash more than maxFlashHz (3)
+// times in any second, whatever made it flash. Give it the patch ({ patch }) and it reads each fixture's light; without one
+// it can only hold each channel on its own, which is coarser. Turning it off takes { flashGuard: false }, and the monitor
+// then says so for as long as it is off. The guard counts real seconds (`now`, wall time by default), never the time a
+// timeline is scrubbed to.
+//
 // Every transport keeps a copy of what it last delivered per universe and sends only the difference: for the bridge, one
 // `dmx/<universe>/<address>` value (byte / 255) per changed channel; for the Enttec, a frame when anything in its universe
 // changed (its frame always carries all 512) and once a second otherwise, at most 40 frames a second.
@@ -14,24 +20,47 @@
 // do reliably), RDM, Art-Net discovery.
 
 import { encodeEnttecDmx } from './protocol/enttec.js?v=e62939c4';
+import { FlashGuard, ChannelFlashGuard, universeList } from './flash-guard.js?v=e62939c4';
 
 const SLOTS = 512;
 const FRAME_MS = 25;            // 40 Hz at most to a serial widget
 const KEEPALIVE_MS = 1000;
 
-/** The universes to send: a Universes (what render() returns), a Map, or { id: bytes }. → [[id, Uint8Array(512)]] */
-function listOf(universes) {
-  if (!universes) return [];
-  if (typeof universes.ids === 'function' && typeof universes.bytes === 'function') return universes.ids().map((id) => [id, universes.bytes(id)]);
-  const entries = universes instanceof Map ? [...universes] : Object.entries(universes);
-  return entries.map(([id, b]) => [Number(id), b && b.data ? b.data : b]);
+// wall time in milliseconds: the one clock in this package, and only for the guard (the engine stays a function of time)
+const wallClock = () => (typeof performance !== 'undefined' && typeof performance.now === 'function' ? performance.now() : Date.now());
+
+/**
+ * The guard a transport applies: per fixture with a patch, per channel without one, none only when asked for in so many words.
+ * → { list(universes): [[id, bytes]] after the guard, status(): what it is doing }
+ */
+function guardOf({ patch, flashGuard = true, maxFlashHz = 3, now = wallClock } = {}) {
+  if (flashGuard !== true && flashGuard !== false) throw new TypeError(`dmxTransport: flashGuard is true (the default) or false, to switch the flash guard off on purpose (got ${JSON.stringify(flashGuard)})`);
+  if (typeof now !== 'function') throw new TypeError('dmxTransport: now is a function that returns milliseconds');
+  if (patch !== undefined && patch !== null && !(typeof patch.ids === 'function' && 'fixtures' in patch)) throw new TypeError('dmxTransport: patch is the Patch the universes were rendered from');
+  if (!flashGuard) return { list: universeList, status: () => ({ on: false, unit: null, maxFlashHz: null, held: [] }) };
+  const g = patch ? new FlashGuard(patch, { maxFlashHz }) : new ChannelFlashGuard({ maxFlashHz });
+  let at = null;
+  return {
+    list(universes) {
+      at = now() / 1000;
+      const list = universeList(universes);
+      return patch ? g.apply(list, at) : list.map(([id, bytes]) => [id, g.apply(id, bytes, at)]);
+    },
+    status: () => (patch ? g.status(at ?? undefined) : g.status()),
+  };
 }
 
-function base(kind) {
+function base(kind, options) {
   const last = new Map();             // universe → the bytes delivered last
   const listeners = new Set();
+  const guard = guardOf(options);
   const t = {
     kind, status: 'closed', sent: 0, frames: 0,
+    /**
+     * What the flash guard is doing: { on, unit: 'fixture' | 'channel' | null, maxFlashHz, held: [fixture ids, or
+     * "universe/address" per channel] }. `on: false` only when the transport was made with { flashGuard: false }.
+     */
+    get flashGuard() { return guard.status(); },
     /** What this transport last delivered for a universe (512 bytes, zeros before anything). */
     bytes(id = 1) { const b = last.get(id); return b ? b.slice() : new Uint8Array(SLOTS); },
     /** The universes it has delivered, lowest first. */
@@ -52,18 +81,18 @@ function base(kind) {
     }
     return n;
   };
-  return { t, setStatus, diff, last };
+  return { t, setStatus, diff, last, guard };
 }
 
-function simTransport() {
-  const { t, setStatus, diff } = base('sim');
+function simTransport(options) {
+  const { t, setStatus, diff, guard } = base('sim', options);
   setStatus('sim');
   /** The channels the last send() changed: [{ universe, address, value }]. */
   t.changed = [];
   t.send = (universes) => {
     const changed = [];
     let n = 0;
-    for (const [id, bytes] of listOf(universes)) n += diff(id, bytes, (universe, address, value) => changed.push({ universe, address, value }));
+    for (const [id, bytes] of guard.list(universes)) n += diff(id, bytes, (universe, address, value) => changed.push({ universe, address, value }));
     t.changed = changed;
     t.sent += n; if (n) t.frames++;
     return n;
@@ -72,16 +101,17 @@ function simTransport() {
   return t;
 }
 
-function bridgeTransport({ client } = {}) {
+function bridgeTransport(options = {}) {
+  const { client } = options;
   if (!client || typeof client.set !== 'function') throw new TypeError("dmxTransport('bridge', { client }): client is an OutClient (or lab.out), connected or simulating");
-  const { t, setStatus, diff } = base('bridge');
+  const { t, setStatus, diff, guard } = base('bridge', options);
   const follow = () => setStatus(client.status || 'open');
   follow();
   const un = typeof client.onStatus === 'function' ? client.onStatus(follow) : null;
   t.client = client;
   t.send = (universes) => {
     let n = 0;
-    for (const [id, bytes] of listOf(universes)) n += diff(id, bytes, (u, a, b) => client.set(`dmx/${u}/${a}`, b / 255));
+    for (const [id, bytes] of guard.list(universes)) n += diff(id, bytes, (u, a, b) => client.set(`dmx/${u}/${a}`, b / 255));
     t.sent += n; if (n) t.frames++;
     return n;
   };
@@ -89,10 +119,11 @@ function bridgeTransport({ client } = {}) {
   return t;
 }
 
-function serialTransport({ universe = 1, serial, baudRate = 57600, filters } = {}) {
+function serialTransport(options = {}) {
+  const { universe = 1, serial, baudRate = 57600, filters } = options;
   if (!Number.isInteger(universe) || universe < 0 || universe > 63999) throw new RangeError(`dmxTransport('serial', { universe }): an integer 0–63999 (got ${universe})`);
   const api = serial !== undefined ? serial : (typeof navigator !== 'undefined' ? navigator.serial : undefined);
-  const { t, setStatus, diff } = base('serial');
+  const { t, setStatus, diff, guard } = base('serial', options);
   let port = null, writer = null, writing = false, cooling = false, pending = false, cool = null, alive = null, inflight = Promise.resolve();
   const stopTimers = () => { clearTimeout(cool); clearTimeout(alive); cool = alive = null; cooling = false; };
   t.universe = universe;
@@ -142,7 +173,7 @@ function serialTransport({ universe = 1, serial, baudRate = 57600, filters } = {
   };
   t.send = (universes) => {
     let n = 0;
-    for (const [id, bytes] of listOf(universes)) if (id === universe) n += diff(id, bytes);
+    for (const [id, bytes] of guard.list(universes)) if (id === universe) n += diff(id, bytes);
     if (n) pending = true;
     t.sent += n;
     flush(false);
@@ -168,9 +199,9 @@ const KINDS = { sim: simTransport, bridge: bridgeTransport, serial: serialTransp
 
 /**
  * Where the rendered universes go. `kind` is 'sim' (memory only), 'bridge' (through an OutClient to the out-bridge) or
- * 'serial' (Web Serial to an Enttec DMX USB Pro).
+ * 'serial' (Web Serial to an Enttec DMX USB Pro). Every kind holds every light to `maxFlashHz` flashes in any second.
  * @param {'sim'|'bridge'|'serial'} kind
- * @param {object} [options]  bridge: { client } · serial: { universe = 1, baudRate, filters, serial }
+ * @param {object} [options]  all: { patch, flashGuard = true, maxFlashHz = 3, now } · bridge: { client } · serial: { universe = 1, baudRate, filters, serial }
  */
 export function dmxTransport(kind = 'sim', options = {}) {
   const make = KINDS[kind];

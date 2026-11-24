@@ -289,7 +289,7 @@ document.getElementById('app').innerHTML = [
     },
     params: [
       { name: 'patch', type: 'Patch', en: 'The [`Patch`](#Patch) to render. Fixtures added to it later are rendered too.', zh: '要算的 [`Patch`](#Patch)。之後才加進去的燈也會算到。' },
-      { name: 'maxFlashHz', type: 'Number', optional: true, default: '3', en: 'The fastest flashing an effect, a chase or a strobe channel may make, in Hz. 3 is the common photosensitive-epilepsy line. Raise it (or set `Infinity`) only on purpose. Also a property: `engine.maxFlashHz`.', zh: 'effect、chase 或 strobe 通道最快可以閃多快，單位 Hz。3 是光敏性癲癇常用的安全線。只有確定要的時候才調高（或設成 `Infinity`）。也是屬性：`engine.maxFlashHz`。' },
+      { name: 'maxFlashHz', type: 'Number', optional: true, default: '3', en: 'The most flashes a second one fixture may get from the effects and chases on it together (and a strobe channel on its own), in Hz. 3 is the common photosensitive-epilepsy line. Raise it (or set `Infinity`) only on purpose. Also a property: `engine.maxFlashHz`. The transport\'s flash guard has a cap of its own.', zh: '一台燈從它身上所有 effect 和 chase 加起來（以及 strobe 通道自己）每秒最多可以閃幾次，單位 Hz。3 是光敏性癲癇常用的安全線。只有確定要的時候才調高（或設成 `Infinity`）。也是屬性：`engine.maxFlashHz`。傳送端的頻閃保護有它自己的上限。' },
       { name: 'bpm', type: 'Number', optional: true, default: '120', en: 'The tempo for beat-synced chases and effects when `render()` is not given one. Also a property: `engine.bpm`.', zh: '`render()` 沒有給拍速時，跟拍子走的 chase 和 effect 用這個拍速。也是屬性：`engine.bpm`。' },
     ],
     description: [
@@ -302,8 +302,8 @@ document.getElementById('app').innerHTML = [
         zh: '由下往上的圖層：`base(...scenes)`，一直開著的基本畫面，cue，用 `cue(name, { scene, fadeIn, fadeOut, curve })` 定義、`go(name, at)` 觸發，時間算在你要去的那個 cue 上，跟燈光控台一樣（它照自己的 fadeIn 亮起，原本的照它的 fadeOut 暗下，fadeOut 比較短就會先暗一下），`chase(name, { steps, every, unit, fade, start })`，每隔幾拍或幾秒輪到下一個 scene，`effect(name, { target, property, wave, rate, unit, depth, phase, spread, width, seed })`，波形有 sine、saw、square、chase、flicker、rainbow，目標裡每台燈依 `spread` 比前一台晚一點，接著 `set(target, props)`，推桿或麥克風的即時值，再來是 `submaster(target, level)`，一支管一個群組的推桿，把它的 dimmer 等比例調暗，最後是 patch 的上下限、`engine.master`、`engine.blackout`。目標可以是燈的 id、群組、`\'*\'` 或清單。[`dmxParams()`](#dmxParams) 把這些控制點變成參數。',
       },
       {
-        en: 'Safety, on by default. Each effect on dimmer or colour, and each chase that changes anything but position, is held on its own to at most `maxFlashHz` flashes a second: a rate in seconds is clamped, one in beats is halved until it fits so it stays on the beat, a chase\'s step is doubled. A random flicker draws at most that many new values a second. A strobe channel follows the same cap (see [`Patch`](#Patch)). An effect on dimmer only takes light away from the look under it, never brighter. A `control` channel (reset, lamp, built-in programs) cannot be named in a scene or `set()`: only `control(id, key, byte)` writes it, and neither master nor blackout touches it. Blackout leaves pan, tilt and zoom where they are.',
-        zh: '安全機制預設就開著。每一個作用在 dimmer 或顏色上的 effect，以及每一個改變位置以外任何東西的 chase，各自被限制在每秒最多閃 `maxFlashHz` 次：以秒為單位的速度直接夾住，以拍為單位的速度一次減半直到符合，這樣還是踩在拍子上，chase 則把每一步的長度加倍。隨機閃爍每秒最多換那麼多次值。strobe 通道遵守同一個上限（見 [`Patch`](#Patch)）。作用在 dimmer 上的 effect 只會讓燈比底下的畫面暗，不會更亮。`control` 通道（重置、燈泡開關、內建程式）不能寫在 scene 或 `set()` 裡，只有 `control(id, key, byte)` 能寫，總控和 blackout 都不會動到它。blackout 時 pan、tilt、zoom 停在原處。',
+        en: 'Safety, on by default, and counted per fixture: what matters is the light one fixture gives. First each effect on dimmer or colour, and each chase that changes anything but position, is held on its own to at most `maxFlashHz` flashes a second: a rate in seconds is clamped, one in beats is halved until it fits so it stays on the beat, a chase\'s step is doubled, a random flicker draws at most that many new values a second. Then, per fixture, the rates of everything that flashes it are added up; when the sum is over the cap, those sources are slowed on that fixture only (a rate in seconds by the same factor, one in beats halved, a chase\'s step doubled), and `state(t).slowed` says which fixture, from what sum to what, and every source there. It is still a pure function of time. Live values (`set()`, `submaster()`, params a microphone drives) are not slowed here: the flash guard in every [`dmxTransport()`](#dmxTransport) holds what each fixture really emits. A strobe channel follows the cap where its profile gives Hz (see [`Patch`](#Patch)). An effect on dimmer only takes light away from the look under it, never brighter. A `control` channel (reset, lamp, built-in programs) cannot be named in a scene or `set()`: only `control(id, key, byte)` writes it, and neither master nor blackout touches it. Blackout leaves pan, tilt and zoom where they are.',
+        zh: '安全機制預設就開著，而且以每台燈來算：要緊的是一台燈實際發出來的光。首先，每一個作用在 dimmer 或顏色上的 effect，以及每一個改變位置以外任何東西的 chase，各自被限制在每秒最多閃 `maxFlashHz` 次：以秒為單位的速度直接夾住，以拍為單位的速度一次減半直到符合，這樣還是踩在拍子上，chase 則把每一步的長度加倍，隨機閃爍每秒最多換那麼多次值。接著對每一台燈，把會讓它閃的東西的頻率加起來，總和超過上限，就只在這台燈上把這些來源放慢（以秒為單位的照同一個比例，以拍為單位的對半降，chase 的每一步加倍），`state(t).slowed` 會說是哪台燈、總和從多少降到多少，以及那台燈上的每個來源。結果仍然只取決於時間。即時值（`set()`、`submaster()`、麥克風推的參數）在這裡不會被放慢：每個 [`dmxTransport()`](#dmxTransport) 裡的頻閃保護管住每台燈實際發出的光。profile 寫了 Hz 的 strobe 通道也遵守上限（見 [`Patch`](#Patch)）。作用在 dimmer 上的 effect 只會讓燈比底下的畫面暗，不會更亮。`control` 通道（重置、燈泡開關、內建程式）不能寫在 scene 或 `set()` 裡，只有 `control(id, key, byte)` 能寫，總控和 blackout 都不會動到它。blackout 時 pan、tilt、zoom 停在原處。',
       },
     ],
     members: {
@@ -319,17 +319,17 @@ document.getElementById('app').innerHTML = [
       set: { en: '`set(target, props)`: live values on top of everything, merged per fixture; the latest set wins.', zh: '`set(target, props)`：疊在最上面的即時值，每台燈各自合併，最後設的優先。' },
       clear: { en: '`clear(target, keys)`: drop live values: all, a target\'s, or some properties of a target.', zh: '`clear(target, keys)`：清掉即時值：全部、某個目標的，或某個目標的部分屬性。' },
       control: { en: '`control(id, key, byte)`: write a control channel; `null` lets it go back to its default.', zh: '`control(id, key, byte)`：寫入 control 通道，給 `null` 就回到預設值。' },
-      state: { en: '`state(t, { beat, bpm })`: `{ t, beat, fixtures: { id: props }, capped: [{ kind, name, hz, to }] }`.', zh: '`state(t, { beat, bpm })`：`{ t, beat, fixtures: { id: props }, capped: [{ kind, name, hz, to }] }`。' },
+      state: { en: '`state(t, { beat, bpm })`: `{ t, beat, fixtures: { id: props }, capped: [{ kind, name, hz, to }], slowed: [{ id, hz, to, sources: [{ kind, name, hz, to }] }] }`. `capped`: the effects and chases slowed on their own; `slowed`: the fixtures where what flashes them still added up past the cap, with the sum before and after.', zh: '`state(t, { beat, bpm })`：`{ t, beat, fixtures: { id: props }, capped: [{ kind, name, hz, to }], slowed: [{ id, hz, to, sources: [{ kind, name, hz, to }] }] }`。`capped` 是各自被放慢的 effect 和 chase，`slowed` 是那些閃它的東西加起來還是超過上限的燈，附上放慢前後的總和。' },
       render: { en: '`render(t, { beat, bpm })`: the bytes of every universe at `t`, as [`Universes`](#Universes).', zh: '`render(t, { beat, bpm })`：`t` 時每個 universe 的位元組，以 [`Universes`](#Universes) 回傳。' },
       patch: { en: 'The patch this engine renders.', zh: '這個引擎在算的 patch。' },
-      tune: { en: '`tune(name, { rate, depth }, at, { beat, bpm })`: change a running effect\'s rate or depth from `at` seconds on, without a jump: the wave goes on from where it is, only faster or slower (defining the effect again would restart its phase, and a knob turned on a wave 100 s along would flicker through many cycles at once). `at` is needed for a rate.', zh: '`tune(name, { rate, depth }, at, { beat, bpm })`：從 `at` 秒起改變正在跑的 effect 的速度或深度，不會跳：波形從它現在的位置接著走，只是變快或變慢（重新定義 effect 會讓相位重來，在已經跑了 100 秒的波形上轉旋鈕，會一下子閃過好幾個週期）。改速度一定要給 `at`。' },
+      tune: { en: '`tune(name, { rate, depth }, at, { beat, bpm })`: change a running effect\'s rate or depth from `at` seconds on, without a jump: the wave goes on from where it is, only faster or slower (defining the effect again would restart its phase, and a knob turned on a wave 100 s along would flicker through many cycles at once). So do the other waves and chases that share a fixture with it, when the per-fixture cap changes their speed there. `at` is needed for a rate.', zh: '`tune(name, { rate, depth }, at, { beat, bpm })`：從 `at` 秒起改變正在跑的 effect 的速度或深度，不會跳：波形從它現在的位置接著走，只是變快或變慢（重新定義 effect 會讓相位重來，在已經跑了 100 秒的波形上轉旋鈕，會一下子閃過好幾個週期）。跟它共用一台燈的其他波形和 chase，如果每台燈的上限因此改了它們在那台燈上的速度，也一樣接著走。改速度一定要給 `at`。' },
       submaster: { en: '`submaster(target, level)`: a fader over a group: after every layer the dimmer of its fixtures is multiplied by `level` (0..1), so what runs under it keeps running. Two over one fixture multiply; `null` removes it.', zh: '`submaster(target, level)`：管一個群組的推桿：所有圖層算完之後，把群組裡每台燈的 dimmer 乘上 `level`（0..1），底下在跑的東西照樣跑。同一台燈有兩支就相乘，給 `null` 就拿掉。' },
-      describe: { en: '`describe()`: what the engine holds, as copies: `{ scenes, cues, base, chases: { name: { steps, every, unit, fade, start, curve, running } }, effects: { name: { target, property, wave, rate, unit, depth, phase, spread, width, seed, running } }, submasters, master, blackout, maxFlashHz, bpm }`.', zh: '`describe()`：引擎裡有什麼，以複本回傳：`{ scenes, cues, base, chases: { name: { steps, every, unit, fade, start, curve, running } }, effects: { name: { target, property, wave, rate, unit, depth, phase, spread, width, seed, running } }, submasters, master, blackout, maxFlashHz, bpm }`。' },
+      describe: { en: '`describe()`: what the engine holds, as copies: `{ scenes, cues, base, chases: { name: { steps, every, unit, fade, start, curve, running } }, effects: { name: { target, property, wave, rate, unit, depth, phase, spread, width, seed, running } }, submasters, master, blackout, maxFlashHz, bpm, slowed }` (`slowed` as in `state()`, at the engine\'s own bpm).', zh: '`describe()`：引擎裡有什麼，以複本回傳：`{ scenes, cues, base, chases: { name: { steps, every, unit, fade, start, curve, running } }, effects: { name: { target, property, wave, rate, unit, depth, phase, spread, width, seed, running } }, submasters, master, blackout, maxFlashHz, bpm, slowed }`（`slowed` 跟 `state()` 的一樣，用引擎自己的 bpm 算）。' },
     },
     notes: [
       {
-        en: 'The cap is held per effect and per chase, each on its own, not summed over a light: two capped effects on one fixture, or a chase and an effect, can add up to more flashes than either. Keep one flashing layer per light, or lower `maxFlashHz`. Live values from `set()` and `submaster()` are passed through as they come: a microphone driving a dimmer is the performer\'s direct control and is not slowed, so smooth such a route and keep what drives it at or under three flashes a second.',
-        zh: '上限是每個 effect、每個 chase 各自算的，不會把同一台燈上的加總起來：同一台燈上有兩個受限的 effect，或一個 chase 加一個 effect，閃的次數可能比任何一個都多。每台燈只放一層會閃的東西，或調低 `maxFlashHz`。`set()` 和 `submaster()` 的即時值照原樣送出：用麥克風推 dimmer 是演出者直接在控制，不會被放慢，所以這種路線要加平滑，推動它的東西也要維持在每秒閃三次以內。',
+        en: 'The per-fixture cap works on rates, so what it promises is the average: two waves on one light that add up to 3 Hz could still bunch their edges into one particular second. The flash guard in the transport counts the flashes in every second and holds that too, so send through [`dmxTransport()`](#dmxTransport). A fixture slowed by the cap runs its share of a row\'s wave at its own speed, out of step with the row, until what slowed it stops. An effect at depth 0 still counts while it runs: stop it with `run(name, false)` to give its share back.',
+        zh: '每台燈的上限是用頻率算的，所以它保證的是平均：同一台燈上加起來 3 Hz 的兩個波形，還是可能把轉折擠在某一秒裡。傳送端的頻閃保護會數每一秒裡的閃爍次數，這種也擋得住，所以要經過 [`dmxTransport()`](#dmxTransport) 送出。被上限放慢的燈，會用自己的速度跑一排燈的波形，跟那一排錯開，直到讓它變慢的東西停下來。深度 0 的 effect 只要在跑就還是算數：用 `run(name, false)` 停掉它，才會把它那一份還回來。',
       },
     ],
     tbd: [UNTESTED],
@@ -643,17 +643,85 @@ document.getElementById('app').innerHTML = FIXTURES.map((f) => f.id + ': ' + f.m
     keywords: { en: ['fixture library', 'generic', 'par', 'moving head', 'strobe', 'dimmer'], zh: ['燈具', '搖頭燈', '頻閃', '調光'] },
   },
 
+  FlashGuard: {
+    group: 'dmx',
+    summary: {
+      en: 'Holds each fixture of a patch to at most maxFlashHz flashes in any second, frame by frame, from the bytes it would emit: the guard every dmxTransport() applies.',
+      zh: '一格一格地看每台燈實際要發出的光，讓 patch 裡的每台燈在任何一秒內最多閃 maxFlashHz 次：每個 dmxTransport() 用的就是這道保護。',
+    },
+    params: [
+      { name: 'patch', type: 'Patch', en: 'The [`Patch`](#Patch) whose fixtures to read and hold. Fixtures added later are guarded too.', zh: '要讀、要管的那個 [`Patch`](#Patch)。之後才加進去的燈也會被管。' },
+      { name: 'maxFlashHz', type: 'Number', optional: true, default: '3', en: 'Flashes a fixture may make in any second. A number that is not whole allows its whole part (2.5: 2 in any second); under 1, one in every 1 / maxFlashHz seconds; `Infinity`, no limit.', zh: '一台燈在任何一秒內最多可以閃幾次。不是整數的話取整數部分（2.5：任何一秒 2 次），小於 1 就是每 1 / maxFlashHz 秒一次，`Infinity` 就是不限制。' },
+    ],
+    description: [
+      {
+        en: '`apply(universes, t)` takes what [`render()`](#DmxEngine) returns (or a Map, `{ id: bytes }`, `[[id, bytes]]`) and the time in seconds, and returns `[[universe, bytes]]` to send. Call it once per frame, in time order, on a clock that runs at real speed (wall time, never a timeline that can be scrubbed). It keeps a memory of when each light last turned and rose, which is why it is not inside the engine: the engine stays a pure function of time.',
+        zh: '`apply(universes, t)` 接收 [`render()`](#DmxEngine) 的結果（或 Map、`{ id: bytes }`、`[[id, bytes]]`）和以秒為單位的時間，回傳要送出的 `[[universe, bytes]]`。每一格呼叫一次，照時間順序，用照真實速度走的時鐘（真實時間，不能是會被拉來拉去的時間軸）。它記得每台燈上一次在哪裡轉折、什麼時候變亮，所以它不在引擎裡面：引擎要保持只取決於時間。',
+      },
+      {
+        en: 'A fixture\'s brightness is its intensity (the average of its intensity channels, 1 with none) times its brightest colour channel (1 with none; CMY flags as the light that passes them), read the way the fixture reads the bytes, 16 bits where the mode has the fine byte. A flash is a pair of opposing changes of 10% of full scale or more (WCAG 2.3.1), measured from the last turning point, so a slow wave counts once it has moved that far. Only rises are rationed: the fixture whose next rise would be one too many stays at the level it last had, steady, until the second has room. Falls always pass, so a blackout is never held back and nothing is ever sent brighter than asked.',
+        zh: '一台燈的亮度是它的調光（調光通道的平均，沒有調光通道就是 1）乘上最亮的顏色通道（沒有顏色通道就是 1，CMY 顏色片就看透過來的光），讀法跟燈具讀位元組一樣，模式有細調位元組的就用 16 位元。一次閃是亮度往相反方向變化兩次，每次至少滿刻度的 10%（WCAG 2.3.1），從上一個轉折點量起，所以慢慢變的波形移動到這麼多時也算。只有變亮有限額：下一次變亮會超過的燈穩穩停在上一次送出的亮度，等這一秒有空位。變暗永遠直接通過，所以 blackout 從不會被擋，送出的光也從不會比要求的亮。',
+      },
+      {
+        en: 'What it changes: only a held fixture, and only its intensity bytes (coarse and fine), scaled down; a fixture with no intensity channel has its colour bytes scaled together, so the hue stays. Pan, tilt, zoom, gobo, strobe and control channels, channels no fixture owns, and every fixture not held come back as the very same arrays. `held` lists the fixtures held in the last `apply()`; `status(t)` is `{ on, unit: \'fixture\', maxFlashHz, held, rises }`; `reset()` forgets every light.',
+        zh: '它會改的：只有被壓住的燈，而且只有它的調光位元組（粗調和細調）等比例調低，沒有調光通道的燈就把顏色位元組一起調低，色相不變。pan、tilt、zoom、gobo、strobe、control 通道、不屬於任何燈的通道，以及沒被壓住的每台燈，回傳的都是原本那個陣列。`held` 列出上一次 `apply()` 壓住的燈，`status(t)` 是 `{ on, unit: \'fixture\', maxFlashHz, held, rises }`，`reset()` 忘掉每台燈的紀錄。',
+      },
+    ],
+    members: {
+      apply: { en: '`apply(universes, t)`: the bytes to send at `t` seconds, as `[[universe, bytes]]`.', zh: '`apply(universes, t)`：`t` 秒時要送出的位元組，以 `[[universe, bytes]]` 回傳。' },
+      held: { en: 'The fixture ids held back in the last `apply()`.', zh: '上一次 `apply()` 壓住的燈的 id。' },
+      status: { en: '`status(t)`: `{ on: true, unit: \'fixture\', maxFlashHz, held, rises: { id: rises in the second up to t } }`.', zh: '`status(t)`：`{ on: true, unit: \'fixture\', maxFlashHz, held, rises: { id: 到 t 為止這一秒內變亮的次數 } }`。' },
+      reset: { en: '`reset()`: forget every light\'s history.', zh: '`reset()`：忘掉每台燈的紀錄。' },
+      maxFlashHz: { en: 'The cap it was made with.', zh: '建立時給的上限。' },
+    },
+    notes: [
+      {
+        en: 'Neither this guard nor the engine\'s cap sees many fixtures flashing together (it counts each light on its own: twenty pars at 3 Hz out of step are a room flashing much faster), a picture on a projector or screen, or a colour that alternates at the same brightness (saturated red against blue). Fast pan and tilt are not a flash and are not held.',
+        zh: '這道保護和引擎的上限都看不到很多台燈一起閃（它一台一台地算，二十台 par 各自 3 Hz、彼此錯開，整個場地就閃得快很多）、投影或螢幕上的畫面，以及亮度不變、只有顏色來回換（飽和的紅和藍交替）。pan、tilt 快速移動不算閃，也不會被壓住。',
+      },
+    ],
+    tbd: [
+      {
+        en: 'Not yet watched on a real light: how a fixture answers a held intensity byte (its own dimmer curve, its fade time) is not known here.',
+        zh: '還沒有在真的燈上看過：燈具拿到被壓住的調光位元組會怎麼反應（它自己的調光曲線、淡入淡出時間），這裡還不知道。',
+      },
+    ],
+    examples: [
+      {
+        code: `import { Patch, DmxEngine, FlashGuard } from '@openav/dmx';
+
+const patch = new Patch();
+patch.add({ id: 'par1', profile: 'generic-rgbw', mode: '6ch', address: 1 });
+patch.add({ id: 'head', profile: 'generic-moving-head', mode: '16ch', address: 7 });
+const engine = new DmxEngine(patch);
+const guard = new FlashGuard(patch);
+const rows = [];
+for (let f = 0; f < 12; f++) {
+  const t = f / 40, on = f % 2 === 0;                            // a 20 Hz flicker on both, the head also turning
+  engine.set('par1', { dimmer: on ? 1 : 0, color: [1, 0.4, 0] });
+  engine.set('head', { dimmer: on ? 1 : 0, color: [0, 0, 1], pan: f / 12 });
+  const [[, bytes]] = guard.apply(engine.render(t), t);
+  rows.push(t.toFixed(3) + ' s: par1 dimmer ' + bytes[0] + ', head pan ' + bytes[6] + ', head dimmer ' + bytes[11] + (guard.held.length ? '  held: ' + guard.held.join(', ') : ''));
+}
+document.getElementById('app').innerHTML = rows.join('<br>');`,
+        caption: { en: 'Twelve frames of a 20 Hz flicker: both lights go full on and off three times, then stay dark (listed as held on each frame that asked for light), while the head\'s pan byte climbs every frame as it was asked to.', zh: '一個 20 Hz 閃爍的十二格：兩台燈全亮又全暗三次，之後一直暗著（每一格要求亮的時候都被列為壓住），搖頭燈的 pan 位元組照要求每一格往上爬。' },
+      },
+    ],
+    related: ['dmxTransport', 'DmxEngine', 'mountDmxMonitor', 'Patch'],
+    keywords: { en: ['flash', 'strobe', 'epilepsy', 'photosensitive', 'WCAG', 'safety', 'seizure', 'limit'], zh: ['頻閃', '閃爍', '癲癇', '光敏', '安全', '上限'] },
+  },
+
   dmxTransport: {
     group: 'dmx',
     summary: {
-      en: 'Where rendered DMX goes each frame: \'sim\' (memory only), \'bridge\' (an OutClient to the out-bridge: Art-Net, sACN, Enttec) or \'serial\' (Web Serial to an Enttec Pro).',
-      zh: '每一格算好的 DMX 要送去哪裡：\'sim\'（只留在記憶體）、\'bridge\'（經 OutClient 交給輸出橋接程式，再出 Art-Net、sACN 或 Enttec），或 \'serial\'（用 Web Serial 直送 Enttec Pro）。',
+      en: 'Where rendered DMX goes each frame, through a flash guard (3 flashes a second per fixture): \'sim\' (memory), \'bridge\' (the out-bridge) or \'serial\' (an Enttec Pro).',
+      zh: '每一格算好的 DMX 要送去哪裡：\'sim\'（只留在記憶體）、\'bridge\'（經 OutClient 交給輸出橋接程式，再出 Art-Net、sACN 或 Enttec），或 \'serial\'（用 Web Serial 直送 Enttec Pro），途中經過頻閃保護，每台燈每秒最多閃 3 次。',
     },
     params: [
       { name: 'kind', type: 'String', optional: true, default: "'sim'", en: '`\'sim\'`, `\'bridge\'` or `\'serial\'`.', zh: '`\'sim\'`、`\'bridge\'` 或 `\'serial\'`。' },
-      { name: 'options', type: 'Object', optional: true, default: '{}', en: 'bridge: `{ client }`, an [`OutClient`](#OutClient) (or `lab.out`), connected or simulating. serial: `{ universe = 1, baudRate = 57600, filters, serial }` (`filters` as `navigator.serial.requestPort()` takes them; `serial` to hand in another `navigator.serial`).', zh: 'bridge：`{ client }`，一個 [`OutClient`](#OutClient)（或 `lab.out`），連線中或模擬中都可以。serial：`{ universe = 1, baudRate = 57600, filters, serial }`（`filters` 的寫法跟 `navigator.serial.requestPort()` 一樣，`serial` 可以換成別的 `navigator.serial`）。' },
+      { name: 'options', type: 'Object', optional: true, default: '{}', en: 'Every kind: `{ patch, flashGuard = true, maxFlashHz = 3, now }`. `patch`: the [`Patch`](#Patch) the universes come from, so the guard reads each fixture\'s light (without it, each channel on its own). `flashGuard: false` switches the guard off, and nothing else does. `maxFlashHz`: the guard\'s cap. `now`: a function returning milliseconds, the guard\'s clock (wall time by default; tests hand in their own). bridge, also: `{ client }`, an [`OutClient`](#OutClient) (or `lab.out`), connected or simulating. serial, also: `{ universe = 1, baudRate = 57600, filters, serial }` (`filters` as `navigator.serial.requestPort()` takes them; `serial` to hand in another `navigator.serial`).', zh: '每一種都可以給：`{ patch, flashGuard = true, maxFlashHz = 3, now }`。`patch` 是這些 universe 從哪個 [`Patch`](#Patch) 算出來的，保護才讀得到每台燈的光（沒給的話，一個通道一個通道地看）。`flashGuard: false` 會關掉保護，除此之外沒有別的方法。`maxFlashHz` 是保護的上限。`now` 是回傳毫秒的函式，也就是保護用的時鐘（預設是真實時間，測試會給自己的）。bridge 另外要：`{ client }`，一個 [`OutClient`](#OutClient)（或 `lab.out`），連線中或模擬中都可以。serial 另外可以給：`{ universe = 1, baudRate = 57600, filters, serial }`（`filters` 的寫法跟 `navigator.serial.requestPort()` 一樣，`serial` 可以換成別的 `navigator.serial`）。' },
     ],
-    returns: { type: 'Object', en: 'A transport: `send(universes)` (how many channels changed and left), `bytes(id)` (what it last delivered), `universes`, `status` and `onStatus(fn)`, `kind`, `sent`, `frames`, `close()`. A sim one also has `changed`; a serial one `connect()`, `supported` and `error`.', zh: '一個傳送端：`send(universes)`（回傳有幾個通道改變並送出）、`bytes(id)`（它最後送出的內容）、`universes`、`status` 和 `onStatus(fn)`、`kind`、`sent`、`frames`、`close()`。sim 另外有 `changed`，serial 另外有 `connect()`、`supported` 和 `error`。' },
+    returns: { type: 'Object', en: 'A transport: `send(universes)` (how many channels changed and left), `bytes(id)` (what it last delivered, after the guard), `universes`, `status` and `onStatus(fn)`, `flashGuard` (`{ on, unit: \'fixture\' | \'channel\' | null, maxFlashHz, held }`, `held` being what the guard held back in the last frame), `kind`, `sent`, `frames`, `close()`. A sim one also has `changed`; a serial one `connect()`, `supported` and `error`.', zh: '一個傳送端：`send(universes)`（回傳有幾個通道改變並送出）、`bytes(id)`（它最後送出的內容，經過保護之後的）、`universes`、`status` 和 `onStatus(fn)`、`flashGuard`（`{ on, unit: \'fixture\' | \'channel\' | null, maxFlashHz, held }`，`held` 是上一格被保護壓住的東西）、`kind`、`sent`、`frames`、`close()`。sim 另外有 `changed`，serial 另外有 `connect()`、`supported` 和 `error`。' },
     description: [
       {
         en: 'Call `send(engine.render(t))` every frame. Each transport keeps a copy of what it delivered and sends only the difference. `sim` records it: `changed` lists the channels of the last send, `bytes(1)` is universe 1. `bridge` calls `client.set(\'dmx/<universe>/<address>\', byte / 255)` once per changed channel, and the bridge\'s `artnet`, `sacn` or `enttec` sink turns them back into bytes, 40 frames a second while they change and once a second while they do not. A universe is the number you patched on: `dmx/1/…` leaves as Art-Net Port-Address 1 and as sACN universe 1.',
@@ -662,6 +730,10 @@ document.getElementById('app').innerHTML = FIXTURES.map((f) => f.id + ': ' + f.m
       {
         en: '`serial` writes Enttec DMX USB Pro frames (label 6, all 512 channels of one universe) straight from the page, with no bridge: at most one every 25 ms, only when something changed (and once a second otherwise), and when a frame is still on its way the newest one goes next. `connect()` asks the browser which port, so it must be called from a click, and nothing calls it for you. Without Web Serial (Chrome or Edge on a computer, on https or localhost) the status is `\'unsupported\'` and `connect()` rejects with the reason.',
         zh: '`serial` 直接從頁面寫出 Enttec DMX USB Pro 的資料框（label 6，一個 universe 的全部 512 個通道），不用橋接程式：最多每 25 毫秒一格，只有內容改變時才送（沒變就每秒補送一次），前一格還在送的時候，接下來送的是最新的那一格。`connect()` 會請瀏覽器問你要用哪個連接埠，所以必須在點擊裡呼叫，也不會有人替你呼叫。瀏覽器沒有 Web Serial（要電腦上的 Chrome 或 Edge，網址是 https 或 localhost）時，狀態是 `\'unsupported\'`，`connect()` 會帶著原因失敗。',
+      },
+      {
+        en: 'Every frame goes through a flash guard first, on every kind (a [`FlashGuard`](#FlashGuard) when you give `{ patch }`). It reads each fixture\'s brightness from the bytes (intensity times its brightest colour channel) and counts a flash as WCAG 2.3.1 does, a pair of opposing changes of 10% of full scale or more. No fixture may brighten that much more than `maxFlashHz` times in any second: the next rise waits, the light staying where it was, until the second has room. Falls always pass, so blackout lands at once. Only a held fixture\'s intensity changes; pan, tilt and every other channel, and every fixture not held, leave exactly as they came. This catches what the engine cannot: a microphone or a kick drum on a dimmer, two engines, any live value. Without `patch` it can only hold each channel on its own (`flashGuard.unit` is `\'channel\'`), which also holds the fine byte of a moving head\'s pan during a smooth move. With `{ flashGuard: false }` there is no guard, and [`mountDmxMonitor()`](#mountDmxMonitor) shows FLASH GUARD OFF for as long as it is off.',
+        zh: '每一格都先經過頻閃保護，每一種傳送端都一樣（給了 `{ patch }` 就是一個 [`FlashGuard`](#FlashGuard)）。它從位元組讀出每台燈的亮度（調光乘上最亮的顏色通道），照 WCAG 2.3.1 的方式算一次閃：亮度往相反方向變化兩次，每次至少滿刻度的 10%。任何一秒內，一台燈變亮這麼多的次數不能超過 `maxFlashHz` 次：下一次變亮要等，燈停在原處，直到這一秒有空位。變暗永遠直接通過，所以 blackout 立刻就到。只有被壓住的燈的調光會變，pan、tilt 和其他每一個通道，以及沒被壓住的每台燈，都原封不動送出。引擎擋不到的它都擋得住：麥克風或大鼓推 dimmer、兩個引擎、任何即時值。沒有 `patch` 時，它只能一個通道一個通道地看（`flashGuard.unit` 是 `\'channel\'`），平順移動中的搖頭燈 pan 細調位元組也會被壓住。給 `{ flashGuard: false }` 就沒有保護，關掉的這段時間 [`mountDmxMonitor()`](#mountDmxMonitor) 會一直顯示 FLASH GUARD OFF。',
       },
       {
         en: 'When the page goes away the two differ. Through the bridge, a page that stops talking gets its channels put on the bridge\'s `safe` values (a channel set to `"hold"` stays put). An Enttec Pro on Web Serial keeps repeating the last frame on its own: to leave the rig dark, set `engine.blackout = true`, `send()` once more, then `close()`, which lets the newest frame leave before it lets go of the port. An Enttec Open DMX or a bare FTDI cable (the computer has to time the DMX break itself) is not supported.',
@@ -686,7 +758,7 @@ const patch = new Patch();
 patch.add({ id: 'par1', profile: 'generic-rgbw', mode: '6ch', address: 1 });
 const engine = new DmxEngine(patch);
 engine.set('par1', { dimmer: 1, color: [1, 0.5, 0] });
-const out = dmxTransport('sim');
+const out = dmxTransport('sim', { patch });
 const first = out.send(engine.render(0));
 const again = out.send(engine.render(0));
 engine.master = 0.5;
@@ -701,6 +773,28 @@ document.getElementById('app').innerHTML = [
       },
       {
         code: `import { Patch, DmxEngine, dmxTransport } from '@openav/dmx';
+
+const patch = new Patch();
+patch.add({ id: 'par1', profile: 'generic-rgbw', mode: '6ch', address: 1 });
+const engine = new DmxEngine(patch);
+let ms = 0;
+const out = dmxTransport('sim', { patch, now: () => ms });       // a clock of our own: one second of frames at once
+let asked = 0, sent = 0, was = 0, wasAsked = 0;
+for (let f = 0; f < 40; f++) {
+  ms = f * 25;                                                    // 40 frames a second
+  const on = Math.floor(f / 2) % 2 === 0;                         // a 10 Hz square, as a live value
+  engine.set('par1', { dimmer: on ? 1 : 0, color: [1, 1, 1] });
+  out.send(engine.render(ms / 1000));
+  const d = out.bytes(1)[0];
+  if (on && !wasAsked) asked++;
+  if (d > 127 && was <= 127) sent++;
+  was = d; wasAsked = on;
+}
+document.getElementById('app').innerHTML = 'asked for ' + asked + ' flashes in one second, sent ' + sent + ' · guard: ' + JSON.stringify(out.flashGuard);`,
+        caption: { en: 'Prints asked for 10 flashes in one second, sent 3, and the guard\'s status: on, per fixture, 3 Hz, nothing held in the last frame (it was a dark one), 3 rises of par1 in the last second.', zh: '印出這一秒要求閃 10 次、送出 3 次，以及保護的狀態：開著、以每台燈算、3 Hz，上一格沒有東西被壓住（那一格是暗的），par1 在最後一秒內變亮 3 次。' },
+      },
+      {
+        code: `import { Patch, DmxEngine, dmxTransport } from '@openav/dmx';
 import { OutClient } from '@openav/out';
 
 const patch = new Patch();
@@ -709,7 +803,7 @@ const engine = new DmxEngine(patch);
 engine.scene('blue', { par1: { dimmer: 1, color: [0.2, 0.4, 1] } }).base('blue');
 engine.effect('breathe', { target: 'par1', wave: 'sine', rate: 0.5 });
 const client = new OutClient({ id: 'my-lights' }).connect();      // ws://127.0.0.1:6450/out
-const out = dmxTransport('bridge', { client });
+const out = dmxTransport('bridge', { patch, client });
 function frame(ms) {
   out.send(engine.render(ms / 1000));                             // only the channels that changed leave
   requestAnimationFrame(frame);
@@ -726,7 +820,7 @@ const patch = new Patch();
 patch.add({ id: 'par1', profile: 'generic-rgbw', mode: '6ch', address: 1 });
 const engine = new DmxEngine(patch);
 engine.scene('amber', { par1: { dimmer: 1, color: [1, 0.5, 0] } }).base('amber');
-const out = dmxTransport('serial', { universe: 1 });
+const out = dmxTransport('serial', { patch, universe: 1 });
 const button = document.createElement('button');
 button.textContent = out.supported ? 'Connect an Enttec DMX USB Pro' : 'No Web Serial in this browser';
 button.disabled = !out.supported;
@@ -739,8 +833,8 @@ requestAnimationFrame(frame);`,
         why: 'Web Serial needs a person\'s click and a real interface; the browser that runs these examples is never given serial permission.',
       },
     ],
-    related: ['DmxEngine', 'mountDmxMonitor', 'OutClient', 'out-startBridge', 'encodeEnttecDmx'],
-    keywords: { en: ['transport', 'send', 'Art-Net', 'sACN', 'Enttec', 'DMX USB Pro', 'Web Serial', 'out-bridge', 'simulate'], zh: ['傳送', '輸出', '序列埠', '模擬', '橋接'] },
+    related: ['DmxEngine', 'FlashGuard', 'mountDmxMonitor', 'OutClient', 'out-startBridge', 'encodeEnttecDmx'],
+    keywords: { en: ['transport', 'send', 'Art-Net', 'sACN', 'Enttec', 'DMX USB Pro', 'Web Serial', 'out-bridge', 'simulate', 'flash guard', 'epilepsy', 'photosensitive'], zh: ['傳送', '輸出', '序列埠', '模擬', '橋接', '頻閃保護', '癲癇'] },
   },
 
   dmxParams: {
@@ -841,11 +935,12 @@ await createShow({
     params: [
       { name: 'el', type: 'HTMLElement', en: 'Where it goes (it appends itself). Lay it out as you like.', zh: '要放在哪裡（它會把自己加進去）。版面由你安排。' },
       { name: 'patch', type: 'Patch', en: 'The [`Patch`](#Patch): the fixtures to draw and to name the channels after.', zh: '那個 [`Patch`](#Patch)：要畫的燈，以及通道要用誰的名字標示。' },
-      { name: 'transport', type: 'Object', optional: true, default: 'null', en: 'A [`dmxTransport()`](#dmxTransport) result: its kind and status show in the header, and a serial one gets a Connect button.', zh: '一個 [`dmxTransport()`](#dmxTransport) 的結果：它的種類和狀態顯示在標題列，serial 的會多一個 Connect 按鈕。' },
+      { name: 'transport', type: 'Object', optional: true, default: 'null', en: 'A [`dmxTransport()`](#dmxTransport) result: its kind, status and flash guard show in the header, a serial one gets a Connect button, and `update()` with no argument shows what it delivered.', zh: '一個 [`dmxTransport()`](#dmxTransport) 的結果：它的種類、狀態和頻閃保護顯示在標題列，serial 的會多一個 Connect 按鈕，`update()` 不帶參數時顯示它實際送出的內容。' },
+      { name: 'engine', type: 'DmxEngine', optional: true, default: 'null', en: 'The [`DmxEngine`](#DmxEngine): the fixtures its per-fixture flash cap slows get a "slow" mark (hover for by how much).', zh: '那個 [`DmxEngine`](#DmxEngine)：被它每台燈的閃爍上限放慢的燈，會標上「slow」（滑鼠停上去看放慢了多少）。' },
       { name: 'universe', type: 'Number', optional: true, en: 'The universe the grid starts on (the patch\'s first by default).', zh: '通道表一開始顯示哪個 universe（預設是 patch 裡的第一個）。' },
       { name: 'title', type: 'String', optional: true, default: "'DMX'", en: 'The name in the header.', zh: '標題列上的名字。' },
     ],
-    returns: { type: 'Object', en: '`{ el, update(universes), select(universe), dispose() }`: `update(engine.render(t))` every frame (it redraws only when a byte changed); `select()` shows another universe; `dispose()` takes it off the page.', zh: '`{ el, update(universes), select(universe), dispose() }`：每一格呼叫 `update(engine.render(t))`（只有位元組變了才重畫），`select()` 換到另一個 universe，`dispose()` 把它從頁面上拿掉。' },
+    returns: { type: 'Object', en: '`{ el, update(universes), select(universe), look(id), dispose() }`: `update()` every frame, with no argument for what the transport delivered or with `engine.render(t)` (it redraws only when a byte or a mark changed); `select()` shows another universe; `look(id)` is what one fixture shows in the bytes it last got (`{ color, mixed, dimmer, pan, tilt, strobe }`); `dispose()` takes it off the page.', zh: '`{ el, update(universes), select(universe), look(id), dispose() }`：每一格呼叫 `update()`，不帶參數就顯示傳送端實際送出的內容，或帶 `engine.render(t)`（只有位元組或標記變了才重畫），`select()` 換到另一個 universe，`look(id)` 是一台燈在它最後拿到的位元組裡的樣子（`{ color, mixed, dimmer, pan, tilt, strobe }`），`dispose()` 把它從頁面上拿掉。' },
     description: [
       {
         en: 'It reads everything back from the bytes, the way a fixture would. A swatch is what its colour channels mix to (red, green, blue, white, amber, UV and the rest; colour flags as their complement) times its dimmer channel; a fixture with no dimmer channel shows its colour bytes as they are. A profile that is one channel off shows the wrong colour here too, so this is how to check a patch with no light in the room. Hover a swatch for its address and values.',
@@ -856,8 +951,8 @@ await createShow({
         zh: '通道表是 32 乘 16 格，位址 1 在左上角。每格的長條是它的值（不是 0 時會印出數字），顏色是它推的那種光或它所屬燈具的顏色，每台燈的第一個通道左邊有一條黃線。滑鼠指著一格，就會讀到 `universe/位址 = 值`，以及它是哪台燈的哪個通道。有好幾個 universe 時，用分頁切換。',
       },
       {
-        en: 'Pass the `transport` and the header shows its kind and status (`sim · no hardware`, `out-bridge · open`); a serial transport gets a Connect button, the click Web Serial needs. Dark console theme, no dependencies; its styles are added to the page once, as `#oav-dmx-css`. A moving head\'s mark is a top view: its angle is pan across the head\'s whole range, its length is tilt.',
-        zh: '傳入 `transport`，標題列就會顯示它的種類和狀態（`sim · no hardware`、`out-bridge · open`），serial 的傳送端會有一個 Connect 按鈕，就是 Web Serial 需要的那次點擊。深色控台風格、沒有任何相依套件，樣式只會加進頁面一次，叫 `#oav-dmx-css`。搖頭燈的記號是從上往下看：角度是 pan（對應燈的整個轉動範圍），長度是 tilt。',
+        en: 'Pass the `transport` and the header shows its kind and status (`sim · no hardware`, `out-bridge · open`) and what its flash guard is doing (`flash guard · 3 Hz per fixture`, or `holding par3`, with an amber ring on each fixture held back). A transport made with `{ flashGuard: false }` gets a red FLASH GUARD OFF and a red edge around the whole monitor, for as long as it lives. A serial transport gets a Connect button, the click Web Serial needs. Dark console theme, no dependencies; its styles are added to the page once, as `#oav-dmx-css`. A moving head\'s mark is a top view: its angle is pan across the head\'s whole range, its length is tilt.',
+        zh: '傳入 `transport`，標題列就會顯示它的種類和狀態（`sim · no hardware`、`out-bridge · open`），以及它的頻閃保護在做什麼（`flash guard · 3 Hz per fixture`，或 `holding par3`，被壓住的每台燈外面有一圈琥珀色的框）。用 `{ flashGuard: false }` 建立的傳送端，會有紅色的 FLASH GUARD OFF，整個監看器外框也變紅，只要它還在就一直顯示。serial 的傳送端會有一個 Connect 按鈕，就是 Web Serial 需要的那次點擊。深色控台風格、沒有任何相依套件，樣式只會加進頁面一次，叫 `#oav-dmx-css`。搖頭燈的記號是從上往下看：角度是 pan（對應燈的整個轉動範圍），長度是 tilt。',
       },
     ],
     needs: {
@@ -884,7 +979,7 @@ requestAnimationFrame(frame);`,
         caption: { en: 'Six swatches walk through the rainbow, the moving head\'s mark swings from side to side, and the grid\'s first 52 channels move with them.', zh: '六個色塊依序走過彩虹，搖頭燈的記號左右擺動，通道表前 52 格跟著一起動。' },
       },
     ],
-    related: ['Patch', 'DmxEngine', 'dmxTransport'],
+    related: ['Patch', 'DmxEngine', 'dmxTransport', 'FlashGuard'],
     keywords: { en: ['monitor', 'visualiser', 'channel grid', 'fixture view', 'swatch', 'no hardware', 'simulate'], zh: ['監看', '通道表', '燈具視圖', '色塊', '沒有硬體', '模擬'] },
   },
 

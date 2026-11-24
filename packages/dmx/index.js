@@ -8,7 +8,9 @@
 //   engine.render(t).bytes(1)                → the 512 bytes of universe 1
 //   encodeArtDmx(bytes, { universe: 1 })     → one UDP payload for port 6454
 // and, to give it to people:
-//   dmxTransport('sim' | 'bridge' | 'serial')   where the bytes go each frame (memory, the out-bridge, Web Serial)
+//   dmxTransport('sim' | 'bridge' | 'serial', { patch })   where the bytes go each frame (memory, the out-bridge, Web Serial),
+//                                                 through the flash guard: no light flashes more than 3 times in any second
+//   new FlashGuard(patch)                           that guard on its own, for a path of your own
 //   mountDmxMonitor(el, { patch })                  the channels and the fixtures on the page, no light needed
 //   dmxParams(engine, { groups, effects, chases })  the engine's control points as params (MIDI, the timeline, the mic drive them)
 export { Universe, Universes } from './universe.js?v=e62939c4';
@@ -20,6 +22,7 @@ export { encodeArtDmx, decodeArtDmx } from './protocol/artnet.js?v=e62939c4';
 export { encodeSacn, decodeSacn, sacnAddress } from './protocol/sacn.js?v=e62939c4';
 export { encodeEnttecDmx, decodeEnttecDmx } from './protocol/enttec.js?v=e62939c4';
 export { FIXTURES, fixtureById } from './fixtures/index.js?v=e62939c4';
+export { FlashGuard } from './flash-guard.js?v=e62939c4';
 export { dmxTransport } from './transport.js?v=e62939c4';
 export { mountDmxMonitor } from './monitor.js?v=e62939c4';
 export { dmxParams } from './params.js?v=e62939c4';

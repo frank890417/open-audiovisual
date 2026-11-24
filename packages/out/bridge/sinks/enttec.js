@@ -13,7 +13,7 @@
 import fs from 'node:fs';
 import { execFile } from 'node:child_process';
 import { encodeEnttecDmx } from '../../../dmx/protocol/enttec.js?v=e62939c4';
-import { DmxFrames } from './dmx-frames.js?v=e62939c4';
+import { DmxFrames, flashGuardOf } from './dmx-frames.js?v=e62939c4';
 
 export const RETRY_MS = 2000;
 
@@ -55,6 +55,7 @@ export function create(cfg, ctx, { openPort = openSerialPort } = {}) {
   const universe = cfg.universe === undefined ? 1 : Number(cfg.universe);
   if (!(Number.isInteger(universe) && universe >= 0 && universe <= 63999)) throw new Error(`enttec universe 要是 0–63999 的整數（收到 ${cfg.universe}）`);
   const baud = Number(cfg.baud || 57600), retryMs = Number(cfg.retryMs || RETRY_MS);
+  const flashGuard = flashGuardOf(cfg, 'enttec');   // on unless the route says "flashGuard": false (dmx-frames.js says what it holds); checked before any socket opens
   let state = 'down', port = null, closed = false, retry = null, writing = false, pending = null, error = null, written = 0, dropped = 0;
 
   const down = (why) => {
@@ -71,7 +72,7 @@ export function create(cfg, ctx, { openPort = openSerialPort } = {}) {
       port = p; state = 'up'; error = null; ctx.log(`[enttec] ${path} up (universe ${universe})`);
       // what the page last said, at once; nothing at all before the page has said anything (no dark frame that would also
       // send every moving head to pan 0 at each start or replug)
-      if (frames.universes.includes(universe)) write(encodeEnttecDmx(frames.bytes(universe)));
+      if (frames.universes.includes(universe)) write(encodeEnttecDmx(frames.sent(universe)));
     });
   }
   const finish = () => { const p = port; port = null; state = 'down'; if (p) try { p.close(); } catch {} };
@@ -88,6 +89,7 @@ export function create(cfg, ctx, { openPort = openSerialPort } = {}) {
     });
   }
   const frames = new DmxFrames({
+    flashGuard,
     accept: (u) => u === universe,
     onError: (e) => ctx.log(`[enttec] ${e.message}`),
     emit: (u, data) => write(encodeEnttecDmx(data)),
