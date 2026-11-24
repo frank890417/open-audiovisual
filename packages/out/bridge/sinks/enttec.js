@@ -12,8 +12,8 @@
 // is not supported.
 import fs from 'node:fs';
 import { execFile } from 'node:child_process';
-import { encodeEnttecDmx } from '../../../dmx/protocol/enttec.js?v=e62939c4';
-import { DmxFrames, flashGuardOf } from './dmx-frames.js?v=e62939c4';
+import { encodeEnttecDmx } from '../../../dmx/protocol/enttec.js?v=6c223527';
+import { DmxFrames, flashGuardOf } from './dmx-frames.js?v=6c223527';
 
 export const RETRY_MS = 2000;
 

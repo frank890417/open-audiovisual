@@ -14,7 +14,7 @@ import { Mapper } from '@openav/mapping';
 import { Stage } from '@openav/stage';
 import { KeysPiano, SimPlayer } from '@openav/keys';
 import { ChordDetector } from '@openav/chord';
-import { harmonograph } from './harmonograph.js?v=e62939c4';
+import { harmonograph } from './harmonograph.js?v=6c223527';
 
 const T = (() => { try { return JSON.parse(document.getElementById('oav-i18n').textContent); } catch (e) { return {}; } })();
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;

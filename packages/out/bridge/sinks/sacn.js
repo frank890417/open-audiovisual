@@ -11,8 +11,8 @@
 // drop this source at once instead of waiting out their 2.5 s loss timer.
 import dgram from 'node:dgram';
 import crypto from 'node:crypto';
-import { encodeSacn, sacnAddress, SACN_PORT } from '../../../dmx/protocol/sacn.js?v=e62939c4';
-import { DmxFrames, udpSender, flashGuardOf } from './dmx-frames.js?v=e62939c4';
+import { encodeSacn, sacnAddress, SACN_PORT } from '../../../dmx/protocol/sacn.js?v=6c223527';
+import { DmxFrames, udpSender, flashGuardOf } from './dmx-frames.js?v=6c223527';
 
 /** This process's CID: the same for every sacn route and every universe while the bridge runs, new on the next run. */
 export const CID = Uint8Array.from(Buffer.from(crypto.randomUUID().replace(/-/g, ''), 'hex'));

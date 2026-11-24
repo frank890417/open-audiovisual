@@ -15,9 +15,9 @@
 // port, or bytes you ingest()). The profile's own words are kept: `id`, `type`,
 // `signal` are what the rest of open-audiovisual calls the same control.
 
-import { importedUrlOf } from './profiles/imported-list.js?v=e62939c4';
-import { encodeMessage, relativeDelta } from './parse.js?v=e62939c4';
-import { validateProfile } from './profiles.js?v=e62939c4';
+import { importedUrlOf } from './profiles/imported-list.js?v=6c223527';
+import { encodeMessage, relativeDelta } from './parse.js?v=6c223527';
+import { validateProfile } from './profiles.js?v=6c223527';
 
 /** Attributes <oav-controller> reads (also the query params of /embed/controller/). */
 export const EMBED_ATTRS = ['profile', 'layout', 'hardware', 'midi-out', 'channel', 'learn', 'picker', 'readout', 'follow', 'sysex', 'theme', 'telemetry'];

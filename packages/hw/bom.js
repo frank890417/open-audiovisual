@@ -1,8 +1,8 @@
 // @openav/hw · bom — the parts list of a spec, split into what is already on the shelf (`have: true`) and what to buy.
 // No prices and no shop links: what a part costs and where to get it is a person's call, not this file's.
 
-import { partOf } from './check.js?v=e62939c4';
-import { PARTS } from './parts.js?v=e62939c4';
+import { partOf } from './check.js?v=6c223527';
+import { PARTS } from './parts.js?v=6c223527';
 
 /**
  * bom(spec, { parts }) → { have: [row], buy: [row], unknown: [row], count }
