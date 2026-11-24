@@ -99,7 +99,7 @@ const CSS = `
  * Put a DMX monitor in `el`: fixture swatches and the 512-channel grid of one universe (tabs when there are several).
  * @param {HTMLElement} el
  * @param {object} o
- * @param {import('./patch.js?v=6c223527').Patch} o.patch   the fixtures to draw and to name the channels after
+ * @param {import('./patch.js?v=6b091ec6').Patch} o.patch   the fixtures to draw and to name the channels after
  * @param {object} [o.transport]  a dmxTransport() result: its kind, status and flash guard show; a serial one gets a Connect button
  * @param {object} [o.engine]     the DmxEngine: the fixtures its per-fixture flash cap slows are marked
  * @param {number} [o.universe]   the universe the grid starts on (the patch's first by default)
