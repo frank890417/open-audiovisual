@@ -12,35 +12,43 @@
  <Type>MIDI</Type>
  <Channel Number="16">
   <Name>Encoder 1</Name>
-  <Type>Knob</Type>
+  <Type>Encoder</Type>
+  <Movement Sensitivity="1"/>
  </Channel>
  <Channel Number="17">
   <Name>Encoder 2</Name>
-  <Type>Button</Type>
+  <Type>Encoder</Type>
+  <Movement Sensitivity="1"/>
  </Channel>
  <Channel Number="18">
   <Name>Encoder 3</Name>
-  <Type>Button</Type>
+  <Type>Encoder</Type>
+  <Movement Sensitivity="1"/>
  </Channel>
  <Channel Number="19">
   <Name>Encoder 4</Name>
-  <Type>Button</Type>
+  <Type>Encoder</Type>
+  <Movement Sensitivity="1"/>
  </Channel>
  <Channel Number="20">
   <Name>Encoder 5</Name>
-  <Type>Button</Type>
+  <Type>Encoder</Type>
+  <Movement Sensitivity="1"/>
  </Channel>
  <Channel Number="21">
   <Name>Encoder 6</Name>
-  <Type>Button</Type>
+  <Type>Encoder</Type>
+  <Movement Sensitivity="1"/>
  </Channel>
  <Channel Number="22">
   <Name>Encoder 7</Name>
-  <Type>Button</Type>
+  <Type>Encoder</Type>
+  <Movement Sensitivity="1"/>
  </Channel>
  <Channel Number="23">
   <Name>Encoder 8</Name>
-  <Type>Button</Type>
+  <Type>Encoder</Type>
+  <Movement Sensitivity="1"/>
  </Channel>
  <Channel Number="128">
   <Name>Record 1</Name>

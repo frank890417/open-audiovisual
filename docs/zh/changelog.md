@@ -152,6 +152,7 @@
 - **範例 28〈DMX 燈光〉。** 一個 world 畫出舞台，同時用同一組參數推 8 台 par 和 2 台搖頭燈，監看器放在下面。預設是模擬的燈，要送到橋接程式或 Enttec 才另外指定。[DMX 燈光](https://openaudiovisual.com/examples/28-dmx-lights/)
 - **`@openav/out` 修好的地方。** 有值在排隊時，頁面的心跳會被跳過，所以一直在變的燈半秒後就被放回安全值。橋接程式一批只讀前 1024 個值（現在是 4096）。`install.sh` 沒有複製 DMX 的編碼器，所以裝好的橋接程式只要有 DMX 路線就起不來。
 - **還沒有用真的硬體測過。** 到現在還沒有任何一台真燈、Art-Net 節點、sACN 接收端或 Enttec 介面收過這些東西。位元組照公開的格式寫，測試在這台機器上把每個封包都解回來。
+- **第一筆來自專案外的實機驗證：M-VAVE SMC-Mixer。** jcguevarap 拿一台（韌體 V012）走完驗證頁，回報在 [#7](https://github.com/frank890417/open-audiovisual/issues/7)。每支推桿、每顆通道按鈕、播放控制鍵和方向鍵送出的，都是 QLC+ 設定檔寫的訊息，而無段旋鈕是相對式，用正負號位元計數（往一邊轉是 1，另一邊是 65）。原本的檔案把旋鈕 1 寫成絕對值，旋鈕 2–8 寫成按鈕。現在八顆都是相對式的無段旋鈕，59 個控制項裡有 52 個標成已在實機確認，那次驗證記在檔案的 `verifications`。旋鈕 2–8 要等下一次驗證轉過才算確認。這個檔案從 `profiles/imported/` 搬到 `profiles/`，之後再從 QLC+ 匯入也不會把修正蓋掉。[M-VAVE SMC-Mixer](https://openaudiovisual.com/zh/controllers/m-vave-smc-mixer/)
 - **網站的產生器在 Windows 上會跑了。** 在那裡，`node tools/build-home.mjs`、`node tools/build-docs.mjs` 和 `tools/export-controller.mjs` 什麼都沒寫就以 0 結束：它們判斷「是不是被直接執行」時，拿檔案網址去比 Windows 的路徑。現在 `tools/` 裡每個指令都問同一個函式，`tools/site/is-main.mjs` 的 `isMain()`，資料夾名稱有空格、或是透過符號連結的 checkout 也認得。回報在 [#8](https://github.com/frank890417/open-audiovisual/issues/8)。測試是在 macOS 上讀 Windows 格式的路徑，還沒有人在真的 Windows 上跑過。
 
 ### 2026-11-24

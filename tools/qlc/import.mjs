@@ -20,6 +20,8 @@ export const SKIP = {
 export const EXISTING = {
   'Akai-APC40-mkII.qxi': 'akai-apc40-mk2', 'Akai-APCMini-mk2.qxi': 'akai-apc-mini-mk2', 'KORG-nanoKONTROL2.qxi': 'korg-nanokontrol2',
   'Novation-LaunchControlXL.qxi': 'novation-launch-control-xl-mk2', 'Novation-LaunchPadMiniMK3.qxi': 'novation-launchpad-mini-mk3',
+  // imported, then corrected and checked on a unit (issue #7): it lives in profiles/ now, so a new import cannot undo that
+  'M-VAVE-SMC-Mixer.qxi': 'm-vave-smc-mixer',
 };
 /** The spelling this project already uses for a maker. */
 const MAKERS = { Akai: 'AKAI Professional', Korg: 'KORG', 'ADJ': 'American DJ' };

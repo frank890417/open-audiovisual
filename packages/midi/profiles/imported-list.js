@@ -21,7 +21,6 @@ export const IMPORTED = [
   { id: "korg-nanokontrol-studio", short: "nanokontrolstudio", name: "KORG nanoKONTROL Studio", maker: "KORG", kind: 'device', match: { ports: ["^nanokontrol\\s*studio(\\s+ctrl)?(\\s+(midi|port))*(\\s+\\d+)?$"] } },
   { id: "korg-nanopad", short: "nanopad", name: "KORG nanoPAD", maker: "KORG", kind: 'device', match: { ports: ["^nanopad(\\s+pad)?(\\s+(midi|port))*(\\s+\\d+)?$"] } },
   { id: "korg-nanopad2", short: "nanopad2", name: "KORG NanoPAD2", maker: "KORG", kind: 'device', match: { ports: ["^nanopad2(\\s+pad)?(\\s+(midi|port))*(\\s+\\d+)?$"] } },
-  { id: "m-vave-smc-mixer", short: "smcmixer", name: "M-VAVE SMC-Mixer", maker: "M-VAVE", kind: 'device', match: { ports: ["^smc[\\s-]*mixer(\\s+(midi|port))*(\\s+\\d+)?$"] } },
   { id: "m-vave-smc-pad", short: "smcpad", name: "M-VAVE SMC-PAD", maker: "M-VAVE", kind: 'device', match: { ports: ["^smc[\\s-]*pad(\\s+(midi|port))*(\\s+\\d+)?$"] } },
   { id: "novation-launch-control", short: "launchcontrol", name: "Novation Launch Control", maker: "Novation", kind: 'device', match: { ports: ["^launch\\s*control(\\s+(midi|port))*(\\s+\\d+)?$"] } },
   { id: "novation-launchpad", short: "launchpad", name: "Novation Launchpad", maker: "Novation", kind: 'device', match: { ports: ["^launchpad(\\s+(midi|port))*(\\s+\\d+)?$"] } },

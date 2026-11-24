@@ -49,5 +49,8 @@ test('a device page says how far hardware checks have got, and the table keeps t
   assert.match(lpd8, /Checked on hardware/);
   assert.match(lpd8, /not yet/);
   assert.match(lpd8, /from source|unverified/);
-  assert.ok(!PROFILES.some((p) => p.controls.some((c) => c.verified === true)), 'no shipped control claims a hardware check yet');
+  // the first check on a unit (issue #7): the page counts it, and every true mark has a hardware entry behind it
+  assert.deepEqual(PROFILES.filter((p) => p.controls.some((c) => c.verified === true)).map((p) => p.id), ['m-vave-smc-mixer'], 'only the SMC-Mixer has been checked on a unit so far');
+  assert.match(read('controllers/m-vave-smc-mixer/index.html'), /Checked on hardware<\/dt><dd>52 of 59 controls, last on 2026-11-24/);
+  assert.match(read('zh/controllers/m-vave-smc-mixer/index.html'), /實機驗證<\/dt><dd>52／59 個控制項，最近一次 2026-11-24/);
 });

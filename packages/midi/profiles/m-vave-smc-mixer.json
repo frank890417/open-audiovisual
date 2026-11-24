@@ -30,10 +30,10 @@
    "license": "Apache-2.0"
   }
  ],
- "notes": "Imported from QLC+. The messages are what its community profile lists; nobody has checked them on a unit for this project, so every control is unverified. QLC+ has no faceplate data, so the layout was generated from the list of controls and does not look like the device. The port-name pattern was written from the model name, not read from a unit. QLC+ numbers these controls without a MIDI channel, so channel 1 here is a placeholder: the unit may send on another.",
+ "notes": "Converted from the QLC+ community profile (Apache-2.0, see NOTICE). Checked on a unit (firmware V012, port \"SMC-Mixer\") by jcguevarap on 2026-11-24 with the verification page, issue #7: the faders (pitch bend on channels 1–8), the 32 strip buttons, the transport and the arrows (notes on channel 1) sent what QLC+ lists, and encoder 1 counts relative with a sign bit (1 one way, 65 the other), not absolute. QLC+ lists encoders 2–8 as buttons; the owner reports they turn like encoder 1, so they are encoders here, still unverified because that run skipped them. The owner also reports that the strip and transport buttons light up; this file has no LED until those messages are checked. QLC+ has no faceplate data, so the layout is generated from the list of controls and does not look like the device.",
  "face": {
   "w": 100,
-  "h": 75.5,
+  "h": 70,
   "label": "M-VAVE SMC-Mixer",
   "auto": true
  },
@@ -65,10 +65,17 @@
    "y": 22,
    "w": 96,
    "h": 9,
-   "cols": 1,
+   "cols": 8,
    "rows": 1,
    "controls": [
-    "encoder-1"
+    "encoder-1",
+    "encoder-2",
+    "encoder-3",
+    "encoder-4",
+    "encoder-5",
+    "encoder-6",
+    "encoder-7",
+    "encoder-8"
    ]
   },
   {
@@ -77,17 +84,10 @@
    "x": 2,
    "y": 34,
    "w": 96,
-   "h": 38.5,
+   "h": 33,
    "cols": 8,
-   "rows": 7,
+   "rows": 6,
    "controls": [
-    "encoder-2",
-    "encoder-3",
-    "encoder-4",
-    "encoder-5",
-    "encoder-6",
-    "encoder-7",
-    "encoder-8",
     "record-1",
     "record-2",
     "record-3",
@@ -141,72 +141,86 @@
    "msg": "cc",
    "ch": 1,
    "cc": 16,
-   "relative": false,
+   "relative": "signbit",
    "label": "Encoder 1",
-   "verified": false
+   "verified": true
   },
   {
    "id": "encoder-2",
-   "type": "button",
+   "type": "encoder",
    "msg": "cc",
    "ch": 1,
    "cc": 17,
+   "relative": "signbit",
    "label": "Encoder 2",
-   "verified": false
+   "verified": false,
+   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
   },
   {
    "id": "encoder-3",
-   "type": "button",
+   "type": "encoder",
    "msg": "cc",
    "ch": 1,
    "cc": 18,
+   "relative": "signbit",
    "label": "Encoder 3",
-   "verified": false
+   "verified": false,
+   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
   },
   {
    "id": "encoder-4",
-   "type": "button",
+   "type": "encoder",
    "msg": "cc",
    "ch": 1,
    "cc": 19,
+   "relative": "signbit",
    "label": "Encoder 4",
-   "verified": false
+   "verified": false,
+   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
   },
   {
    "id": "encoder-5",
-   "type": "button",
+   "type": "encoder",
    "msg": "cc",
    "ch": 1,
    "cc": 20,
+   "relative": "signbit",
    "label": "Encoder 5",
-   "verified": false
+   "verified": false,
+   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
   },
   {
    "id": "encoder-6",
-   "type": "button",
+   "type": "encoder",
    "msg": "cc",
    "ch": 1,
    "cc": 21,
+   "relative": "signbit",
    "label": "Encoder 6",
-   "verified": false
+   "verified": false,
+   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
   },
   {
    "id": "encoder-7",
-   "type": "button",
+   "type": "encoder",
    "msg": "cc",
    "ch": 1,
    "cc": 22,
+   "relative": "signbit",
    "label": "Encoder 7",
-   "verified": false
+   "verified": false,
+   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
   },
   {
    "id": "encoder-8",
-   "type": "button",
+   "type": "encoder",
    "msg": "cc",
    "ch": 1,
    "cc": 23,
+   "relative": "signbit",
    "label": "Encoder 8",
-   "verified": false
+   "verified": false,
+   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
   },
   {
    "id": "record-1",
@@ -215,7 +229,7 @@
    "ch": 1,
    "note": 0,
    "label": "Record 1",
-   "verified": false
+   "verified": true
   },
   {
    "id": "record-2",
@@ -224,7 +238,7 @@
    "ch": 1,
    "note": 1,
    "label": "Record 2",
-   "verified": false
+   "verified": true
   },
   {
    "id": "record-3",
@@ -233,7 +247,7 @@
    "ch": 1,
    "note": 2,
    "label": "Record 3",
-   "verified": false
+   "verified": true
   },
   {
    "id": "record-4",
@@ -242,7 +256,7 @@
    "ch": 1,
    "note": 3,
    "label": "Record 4",
-   "verified": false
+   "verified": true
   },
   {
    "id": "record-5",
@@ -251,7 +265,7 @@
    "ch": 1,
    "note": 4,
    "label": "Record 5",
-   "verified": false
+   "verified": true
   },
   {
    "id": "record-6",
@@ -260,7 +274,7 @@
    "ch": 1,
    "note": 5,
    "label": "Record 6",
-   "verified": false
+   "verified": true
   },
   {
    "id": "record-7",
@@ -269,7 +283,7 @@
    "ch": 1,
    "note": 6,
    "label": "Record 7",
-   "verified": false
+   "verified": true
   },
   {
    "id": "record-8",
@@ -278,7 +292,7 @@
    "ch": 1,
    "note": 7,
    "label": "Record 8",
-   "verified": false
+   "verified": true
   },
   {
    "id": "solo-1",
@@ -287,7 +301,7 @@
    "ch": 1,
    "note": 8,
    "label": "Solo 1",
-   "verified": false
+   "verified": true
   },
   {
    "id": "solo-2",
@@ -296,7 +310,7 @@
    "ch": 1,
    "note": 9,
    "label": "Solo 2",
-   "verified": false
+   "verified": true
   },
   {
    "id": "solo-3",
@@ -305,7 +319,7 @@
    "ch": 1,
    "note": 10,
    "label": "Solo 3",
-   "verified": false
+   "verified": true
   },
   {
    "id": "solo-4",
@@ -314,7 +328,7 @@
    "ch": 1,
    "note": 11,
    "label": "Solo 4",
-   "verified": false
+   "verified": true
   },
   {
    "id": "solo-5",
@@ -323,7 +337,7 @@
    "ch": 1,
    "note": 12,
    "label": "Solo 5",
-   "verified": false
+   "verified": true
   },
   {
    "id": "solo-6",
@@ -332,7 +346,7 @@
    "ch": 1,
    "note": 13,
    "label": "Solo 6",
-   "verified": false
+   "verified": true
   },
   {
    "id": "solo-7",
@@ -341,7 +355,7 @@
    "ch": 1,
    "note": 14,
    "label": "Solo 7",
-   "verified": false
+   "verified": true
   },
   {
    "id": "solo-8",
@@ -350,7 +364,7 @@
    "ch": 1,
    "note": 15,
    "label": "Solo 8",
-   "verified": false
+   "verified": true
   },
   {
    "id": "mute-1",
@@ -359,7 +373,7 @@
    "ch": 1,
    "note": 16,
    "label": "Mute 1",
-   "verified": false
+   "verified": true
   },
   {
    "id": "mute-2",
@@ -368,7 +382,7 @@
    "ch": 1,
    "note": 17,
    "label": "Mute 2",
-   "verified": false
+   "verified": true
   },
   {
    "id": "mute-3",
@@ -377,7 +391,7 @@
    "ch": 1,
    "note": 18,
    "label": "Mute 3",
-   "verified": false
+   "verified": true
   },
   {
    "id": "mute-4",
@@ -386,7 +400,7 @@
    "ch": 1,
    "note": 19,
    "label": "Mute 4",
-   "verified": false
+   "verified": true
   },
   {
    "id": "mute-5",
@@ -395,7 +409,7 @@
    "ch": 1,
    "note": 20,
    "label": "Mute 5",
-   "verified": false
+   "verified": true
   },
   {
    "id": "mute-6",
@@ -404,7 +418,7 @@
    "ch": 1,
    "note": 21,
    "label": "Mute 6",
-   "verified": false
+   "verified": true
   },
   {
    "id": "mute-7",
@@ -413,7 +427,7 @@
    "ch": 1,
    "note": 22,
    "label": "Mute 7",
-   "verified": false
+   "verified": true
   },
   {
    "id": "mute-8",
@@ -422,7 +436,7 @@
    "ch": 1,
    "note": 23,
    "label": "Mute 8",
-   "verified": false
+   "verified": true
   },
   {
    "id": "stop-1",
@@ -431,7 +445,7 @@
    "ch": 1,
    "note": 24,
    "label": "Stop 1",
-   "verified": false
+   "verified": true
   },
   {
    "id": "stop-2",
@@ -440,7 +454,7 @@
    "ch": 1,
    "note": 25,
    "label": "Stop 2",
-   "verified": false
+   "verified": true
   },
   {
    "id": "stop-3",
@@ -449,7 +463,7 @@
    "ch": 1,
    "note": 26,
    "label": "Stop 3",
-   "verified": false
+   "verified": true
   },
   {
    "id": "stop-4",
@@ -458,7 +472,7 @@
    "ch": 1,
    "note": 27,
    "label": "Stop 4",
-   "verified": false
+   "verified": true
   },
   {
    "id": "stop-5",
@@ -467,7 +481,7 @@
    "ch": 1,
    "note": 28,
    "label": "Stop 5",
-   "verified": false
+   "verified": true
   },
   {
    "id": "stop-6",
@@ -476,7 +490,7 @@
    "ch": 1,
    "note": 29,
    "label": "Stop 6",
-   "verified": false
+   "verified": true
   },
   {
    "id": "stop-7",
@@ -485,7 +499,7 @@
    "ch": 1,
    "note": 30,
    "label": "Stop 7",
-   "verified": false
+   "verified": true
   },
   {
    "id": "stop-8",
@@ -494,7 +508,7 @@
    "ch": 1,
    "note": 31,
    "label": "Stop 8",
-   "verified": false
+   "verified": true
   },
   {
    "id": "previous",
@@ -503,7 +517,7 @@
    "ch": 1,
    "note": 46,
    "label": "Previous",
-   "verified": false
+   "verified": true
   },
   {
    "id": "next",
@@ -512,7 +526,7 @@
    "ch": 1,
    "note": 47,
    "label": "Next",
-   "verified": false
+   "verified": true
   },
   {
    "id": "rewind",
@@ -521,7 +535,7 @@
    "ch": 1,
    "note": 91,
    "label": "Rewind",
-   "verified": false
+   "verified": true
   },
   {
    "id": "forward",
@@ -530,7 +544,7 @@
    "ch": 1,
    "note": 92,
    "label": "Forward",
-   "verified": false
+   "verified": true
   },
   {
    "id": "pause",
@@ -539,7 +553,7 @@
    "ch": 1,
    "note": 93,
    "label": "Pause",
-   "verified": false
+   "verified": true
   },
   {
    "id": "play",
@@ -548,7 +562,7 @@
    "ch": 1,
    "note": 94,
    "label": "Play",
-   "verified": false
+   "verified": true
   },
   {
    "id": "record",
@@ -557,7 +571,7 @@
    "ch": 1,
    "note": 95,
    "label": "Record",
-   "verified": false
+   "verified": true
   },
   {
    "id": "up",
@@ -566,7 +580,7 @@
    "ch": 1,
    "note": 96,
    "label": "Up",
-   "verified": false
+   "verified": true
   },
   {
    "id": "down",
@@ -575,7 +589,7 @@
    "ch": 1,
    "note": 97,
    "label": "Down",
-   "verified": false
+   "verified": true
   },
   {
    "id": "left",
@@ -584,7 +598,7 @@
    "ch": 1,
    "note": 98,
    "label": "Left",
-   "verified": false
+   "verified": true
   },
   {
    "id": "right",
@@ -593,7 +607,7 @@
    "ch": 1,
    "note": 99,
    "label": "Right",
-   "verified": false
+   "verified": true
   },
   {
    "id": "fader-1",
@@ -601,7 +615,7 @@
    "msg": "pitchbend",
    "ch": 1,
    "label": "Fader 1",
-   "verified": false
+   "verified": true
   },
   {
    "id": "fader-2",
@@ -609,7 +623,7 @@
    "msg": "pitchbend",
    "ch": 2,
    "label": "Fader 2",
-   "verified": false
+   "verified": true
   },
   {
    "id": "fader-3",
@@ -617,7 +631,7 @@
    "msg": "pitchbend",
    "ch": 3,
    "label": "Fader 3",
-   "verified": false
+   "verified": true
   },
   {
    "id": "fader-4",
@@ -625,7 +639,7 @@
    "msg": "pitchbend",
    "ch": 4,
    "label": "Fader 4",
-   "verified": false
+   "verified": true
   },
   {
    "id": "fader-5",
@@ -633,7 +647,7 @@
    "msg": "pitchbend",
    "ch": 5,
    "label": "Fader 5",
-   "verified": false
+   "verified": true
   },
   {
    "id": "fader-6",
@@ -641,7 +655,7 @@
    "msg": "pitchbend",
    "ch": 6,
    "label": "Fader 6",
-   "verified": false
+   "verified": true
   },
   {
    "id": "fader-7",
@@ -649,7 +663,7 @@
    "msg": "pitchbend",
    "ch": 7,
    "label": "Fader 7",
-   "verified": false
+   "verified": true
   },
   {
    "id": "fader-8",
@@ -657,7 +671,88 @@
    "msg": "pitchbend",
    "ch": 8,
    "label": "Fader 8",
-   "verified": false
+   "verified": true
+  }
+ ],
+ "verifications": [
+  {
+   "date": "2026-11-24",
+   "by": "jcguevarap",
+   "method": "hardware",
+   "firmware": "V012",
+   "os": "Windows",
+   "browser": "Chrome 158",
+   "port": "SMC-Mixer",
+   "tool": "openaudiovisual.com/controllers/verify/",
+   "note": "Issue #7: https://github.com/frank890417/open-audiovisual/issues/7. The results are the ones the page handed back, which the reporter posted in https://github.com/frank890417/open-audiovisual/pull/9. Encoders 2–8 were typed as buttons, so the page asked for a press and they were skipped.",
+   "results": {
+    "encoder-1": {
+     "result": "corrected",
+     "was": {
+      "msg": "cc",
+      "ch": 1,
+      "cc": 16,
+      "relative": false
+     },
+     "got": {
+      "msg": "cc",
+      "ch": 1,
+      "cc": 16,
+      "relative": "signbit"
+     }
+    },
+    "record-1": "match",
+    "record-2": "match",
+    "record-3": "match",
+    "record-4": "match",
+    "record-5": "match",
+    "record-6": "match",
+    "record-7": "match",
+    "record-8": "match",
+    "solo-1": "match",
+    "solo-2": "match",
+    "solo-3": "match",
+    "solo-4": "match",
+    "solo-5": "match",
+    "solo-6": "match",
+    "solo-7": "match",
+    "solo-8": "match",
+    "mute-1": "match",
+    "mute-2": "match",
+    "mute-3": "match",
+    "mute-4": "match",
+    "mute-5": "match",
+    "mute-6": "match",
+    "mute-7": "match",
+    "mute-8": "match",
+    "stop-1": "match",
+    "stop-2": "match",
+    "stop-3": "match",
+    "stop-4": "match",
+    "stop-5": "match",
+    "stop-6": "match",
+    "stop-7": "match",
+    "stop-8": "match",
+    "previous": "match",
+    "next": "match",
+    "rewind": "match",
+    "forward": "match",
+    "pause": "match",
+    "play": "match",
+    "record": "match",
+    "up": "match",
+    "down": "match",
+    "left": "match",
+    "right": "match",
+    "fader-1": "match",
+    "fader-2": "match",
+    "fader-3": "match",
+    "fader-4": "match",
+    "fader-5": "match",
+    "fader-6": "match",
+    "fader-7": "match",
+    "fader-8": "match"
+   }
   }
  ]
 }

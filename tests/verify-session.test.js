@@ -42,7 +42,7 @@ test('every shipped profile can be walked from start to finish and comes out val
     const { profile: out, problems } = applyVerification(raw, s, META);
     assert.deepEqual(problems, [], raw.id);
     assert.ok(out.controls.every((x) => x.verified === true), raw.id);
-    assert.equal(out.verifications.length, 1);
+    assert.equal(out.verifications.length, (raw.verifications || []).length + 1, `${raw.id}: one more sitting in the log`);
   }
 });
 

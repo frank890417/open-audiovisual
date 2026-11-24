@@ -24,7 +24,7 @@ const files = fs.readdirSync(path.join(ROOT, dir)).filter((f) => f.endsWith('.js
 const all = files.map((f) => JSON.parse(read(`${dir}/${f}`)));
 
 test('the list and the folder agree, and nothing collides with what ships', () => {
-  assert.equal(files.length, 28);
+  assert.equal(files.length, 27, '28 converted, one since checked on a unit and moved out (m-vave-smc-mixer)');
   assert.deepEqual(IMPORTED.map((p) => p.id).sort(), all.map((p) => p.id).sort());
   const shipped = new Set(PROFILES.flatMap((p) => [p.id, p.short]));
   for (const p of all) { assert.ok(!shipped.has(p.id), p.id); assert.ok(!shipped.has(p.short), p.short); }
@@ -92,6 +92,29 @@ test('the three enriched files carry the palette with its source, and say whose 
   assert.equal(profileById('novation-launchpad-mini-mk3').palette.channels.length, 3);
 });
 
+test('a file a check on a unit corrected leaves imported/, keeps where it came from, and a new import cannot undo it', () => {
+  const id = 'm-vave-smc-mixer', p = profileById(id), raw = JSON.parse(read(`packages/midi/profiles/${id}.json`));
+  assert.ok(!files.includes(`${id}.json`) && !IMPORTED.some((r) => r.id === id), 'not in imported/ nor in its list');
+  assert.equal(EXISTING['M-VAVE-SMC-Mixer.qxi'], id, 'the importer only enriches it now');
+  assert.equal(raw.license, 'Apache-2.0'); assert.equal(raw.origin.commit, COMMIT); assert.equal(raw.origin.file, 'resources/inputprofiles/M-VAVE-SMC-Mixer.qxi');
+  assert.match(raw.sources[0].title, /QLC\+ input profile M-VAVE-SMC-Mixer\.qxi/); assert.equal(raw.face.auto, true, 'still a generated layout');
+  assert.deepEqual(validateProfile(raw), []);
+  // the check: the verification page, 2026-11-24, firmware V012 (issue #7). It skipped encoders 2-8, typed as buttons then.
+  assert.equal(raw.verifications.length, 1);
+  const v = raw.verifications[0];
+  assert.deepEqual([v.date, v.by, v.method, v.firmware, v.tool], ['2026-11-24', 'jcguevarap', 'hardware', 'V012', 'openaudiovisual.com/controllers/verify/']);
+  assert.match(v.note, /issues\/7/);
+  const res = Object.values(v.results).map((r) => (typeof r === 'string' ? r : r.result));
+  assert.deepEqual([res.filter((r) => r === 'match').length, res.filter((r) => r === 'corrected').length, res.length], [51, 1, 52], 'Match 51 · corrected 1, as the issue says');
+  const enc = p.controls.filter((c) => /^encoder-/.test(c.id));
+  assert.equal(enc.length, 8); assert.ok(enc.every((c) => c.type === 'encoder' && c.relative === 'signbit'), 'all eight are relative encoders (1 one way, 65 the other)');
+  assert.equal(enc[0].verified, true, 'encoder 1: corrected on the unit');
+  for (const c of enc.slice(1)) { assert.equal(c.verified, false, `${c.id}: skipped by the check`); assert.ok(!(c.id in v.results)); assert.match(c.note, /#7/); }
+  assert.equal(p.controls.filter((c) => c.verified === true).length, 52);
+  assert.ok(!p.controls.some((c) => c.led), 'no LED until its messages are checked');
+  for (const [lang, base] of [['en', ''], ['zh', 'zh/']]) assert.match(read(`${base}controllers/${id}/index.html`), /Apache-2\.0/, `${lang}: the page says whose data it is`);
+});
+
 test('a generated layout shows every control once and fits its faceplate', () => {
   const controls = Array.from({ length: 70 }, (_, i) => ({ id: `b${i}`, type: i < 8 ? 'fader' : i < 12 ? 'knob' : 'button' }));
   const { face, sections } = autoLayout(controls, 'Test');
@@ -108,7 +131,7 @@ test('an imported id resolves by fetching its one file, and nothing else is fetc
   const p = await resolveProfile('behringer-bcf2000', { profiles: PROFILES, fetch: async (url) => { asked.push(url); return { ok: true, json: async () => JSON.parse(read(`${dir}/behringer-bcf2000.json`)) }; } });
   assert.equal(p.id, 'behringer-bcf2000'); assert.equal(asked.length, 1);
   await assert.rejects(resolveProfile('nope', { profiles: PROFILES }), /unknown MIDI profile/);
-  assert.equal(PROFILES.length, 27, 'PROFILES stays what every embed loads');
+  assert.equal(PROFILES.length, 28, 'PROFILES stays what every embed loads (27, and the SMC-Mixer since its check on a unit)');
   assert.ok(!read('packages/midi/profiles/index.js').includes('imported/'), 'imported files are not imported statically');
 });
 
