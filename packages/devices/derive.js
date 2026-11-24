@@ -51,8 +51,9 @@ export function fromFixture(fx, { file } = {}) {
     data: { ref: { type: 'dmx-fixture', id: fx.id, file } },
     setup: [], problems: [],
     use: [{
-      package: '@openav/dmx', entry: 'Patch',
-      call: `patch.add({ id: 'light1', profile: '${fx.id}', mode: '${(fx.modes || [])[0]?.id}', address: 1 })`,
+      package: '@openav/devices', entry: 'device',
+      // device().patch() hands the profile to the Patch itself, so it also works for a fixture the Patch has never heard of (an imported one)
+      call: `(await device('${fx.id}')).patch(patch, { id: 'light1', mode: '${(fx.modes || [])[0]?.id}', address: 1 })`,
       en: 'Patched at a start address, the light takes dimmer, colour and the rest as 0..1 from the engine, and the transport sends its bytes.',
       zh: 'patch 到一個起始位址之後，這台燈從引擎拿 dimmer、顏色等 0..1 的值，由傳輸送出它的位元組。',
     }],
