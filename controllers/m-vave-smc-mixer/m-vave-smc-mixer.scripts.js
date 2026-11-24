@@ -4,7 +4,7 @@ var OAV_smcmixer = {};
 
 OAV_smcmixer.setup = [];
 OAV_smcmixer.goodbye = [];
-OAV_smcmixer.encoders = {};
+OAV_smcmixer.encoders = {"176:16":{"group":"[Library]","key":"MoveVertical","mode":"signbit"},"176:17":{"group":"[Channel1]","key":"pregain","mode":"signbit"},"176:18":{"group":"[Channel2]","key":"pregain","mode":"signbit"}};
 
 OAV_smcmixer.init = function (id, debugging) {
     OAV_smcmixer.setup.forEach(function (msg) { midi.sendSysexMsg(msg, msg.length); });
