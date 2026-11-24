@@ -14,6 +14,6 @@
 // What is here is what a show is written with. The inputs, the console, sound and the rest are assembled by
 // createShow() and reached through what it returns (show.midi, show.timeline, show.signals …).
 
-export { createShow } from './show/index.js?v=4d1326b1';
-export { Stage, createCanvas } from './stage/index.js?v=4d1326b1';
-export { Bus, Signals, Params, Loop, VERSION, sign } from './core/index.js?v=4d1326b1';
+export { createShow } from './show/index.js?v=c6e958d9';
+export { Stage, createCanvas } from './stage/index.js?v=c6e958d9';
+export { Bus, Signals, Params, Loop, VERSION, sign } from './core/index.js?v=c6e958d9';

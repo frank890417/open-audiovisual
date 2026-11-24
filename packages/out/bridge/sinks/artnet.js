@@ -10,8 +10,8 @@
 // broadcast stream of 40 packets a second reaches every device on the network and floods slow nodes and Wi-Fi. "broadcast": true
 // is there for an old node that only listens to broadcast, on a network that carries nothing else.
 import dgram from 'node:dgram';
-import { encodeArtDmx, ARTNET_PORT } from '../../../dmx/protocol/artnet.js?v=4d1326b1';
-import { DmxFrames, udpSender, flashGuardOf } from './dmx-frames.js?v=4d1326b1';
+import { encodeArtDmx, ARTNET_PORT } from '../../../dmx/protocol/artnet.js?v=c6e958d9';
+import { DmxFrames, udpSender, flashGuardOf } from './dmx-frames.js?v=c6e958d9';
 
 export const MAX_PORT_ADDRESS = 0x7fff;
 

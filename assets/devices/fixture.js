@@ -2,9 +2,9 @@
 // channel by its key), they go through the same Patch a show uses (its colour split, its 3 Hz strobe cap), and the swatch and
 // the byte table are read back from the BYTES, the way the light would read them (fixtureLook of the DMX monitor). Nothing is
 // sent anywhere, and the swatch never flashes: a strobe says its rate in words.
-import { Patch } from '../../packages/dmx/patch.js?v=4d1326b1';
-import { fixtureLook, cssColor } from '../../packages/dmx/monitor.js?v=4d1326b1';
-import { wireCopy } from './copy.js?v=4d1326b1';
+import { Patch } from '../../packages/dmx/patch.js?v=c6e958d9';
+import { fixtureLook, cssColor } from '../../packages/dmx/monitor.js?v=c6e958d9';
+import { wireCopy } from './copy.js?v=c6e958d9';
 
 const data = JSON.parse(document.getElementById('fx-data').textContent);
 const T = data.t, profile = data.profile;
