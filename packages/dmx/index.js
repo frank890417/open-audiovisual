@@ -13,16 +13,16 @@
 //   new FlashGuard(patch)                           that guard on its own, for a path of your own
 //   mountDmxMonitor(el, { patch })                  the channels and the fixtures on the page, no light needed
 //   dmxParams(engine, { groups, effects, chases })  the engine's control points as params (MIDI, the timeline, the mic drive them)
-export { Universe, Universes } from './universe.js?v=6b091ec6';
-export { validateFixture, loadFixture } from './fixture.js?v=6b091ec6';
-export { rgbToChannels } from './color.js?v=6b091ec6';
-export { Patch } from './patch.js?v=6b091ec6';
-export { DmxEngine } from './engine.js?v=6b091ec6';
-export { encodeArtDmx, decodeArtDmx } from './protocol/artnet.js?v=6b091ec6';
-export { encodeSacn, decodeSacn, sacnAddress } from './protocol/sacn.js?v=6b091ec6';
-export { encodeEnttecDmx, decodeEnttecDmx } from './protocol/enttec.js?v=6b091ec6';
-export { FIXTURES, fixtureById } from './fixtures/index.js?v=6b091ec6';
-export { FlashGuard } from './flash-guard.js?v=6b091ec6';
-export { dmxTransport } from './transport.js?v=6b091ec6';
-export { mountDmxMonitor } from './monitor.js?v=6b091ec6';
-export { dmxParams } from './params.js?v=6b091ec6';
+export { Universe, Universes } from './universe.js?v=4d1326b1';
+export { validateFixture, loadFixture } from './fixture.js?v=4d1326b1';
+export { rgbToChannels } from './color.js?v=4d1326b1';
+export { Patch } from './patch.js?v=4d1326b1';
+export { DmxEngine } from './engine.js?v=4d1326b1';
+export { encodeArtDmx, decodeArtDmx } from './protocol/artnet.js?v=4d1326b1';
+export { encodeSacn, decodeSacn, sacnAddress } from './protocol/sacn.js?v=4d1326b1';
+export { encodeEnttecDmx, decodeEnttecDmx } from './protocol/enttec.js?v=4d1326b1';
+export { FIXTURES, fixtureById } from './fixtures/index.js?v=4d1326b1';
+export { FlashGuard } from './flash-guard.js?v=4d1326b1';
+export { dmxTransport } from './transport.js?v=4d1326b1';
+export { mountDmxMonitor } from './monitor.js?v=4d1326b1';
+export { dmxParams } from './params.js?v=4d1326b1';
