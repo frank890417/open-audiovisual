@@ -1,7 +1,7 @@
 {
   "name": "@openav/dmx",
   "version": "0.1.0",
-  "description": "DMX lighting from a web page: fixture profiles, a patch, a deterministic engine (scenes, cues, chases, effects, safety caps), and Art-Net, sACN and Enttec DMX USB Pro bytes. Pure, no dependencies.",
+  "description": "DMX lighting from a web page: fixture profiles, a patch, a deterministic engine (scenes, cues, chases, effects, safety caps), Art-Net, sACN and Enttec DMX USB Pro bytes, transports (memory, the out-bridge, Web Serial), params and an on-page monitor. No dependencies.",
   "type": "module",
   "main": "index.js",
   "exports": {
@@ -13,5 +13,48 @@
     "type": "git",
     "url": "https://github.com/frank890417/open-audiovisual.git",
     "directory": "packages/dmx"
+  },
+  "lab": {
+    "module": "dmx",
+    "files": [
+      "dmx/universe.js",
+      "dmx/fixture.js",
+      "dmx/color.js",
+      "dmx/fixtures/index.js",
+      "dmx/patch.js",
+      "dmx/engine.js",
+      "dmx/protocol/artnet.js",
+      "dmx/protocol/sacn.js",
+      "dmx/protocol/enttec.js",
+      "dmx/transport.js",
+      "dmx/monitor.js",
+      "dmx/params.js",
+      "dmx/index.js"
+    ],
+    "exports": [
+      "Patch",
+      "DmxEngine",
+      "Universe",
+      "Universes",
+      "FIXTURES",
+      "fixtureById",
+      "validateFixture",
+      "loadFixture",
+      "rgbToChannels",
+      "dmxTransport",
+      "dmxParams",
+      "mountDmxMonitor",
+      "encodeArtDmx",
+      "decodeArtDmx",
+      "encodeSacn",
+      "decodeSacn",
+      "sacnAddress",
+      "encodeEnttecDmx",
+      "decodeEnttecDmx"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "lab.dmx = { patch (meta.dmx.patch), engine, out, frame(t), monitor(el), params(opts) }: a DMX rig rendered by DmxEngine; out is sim by default, ?dmx=bridge sends through lab.out (the out-bridge: Art-Net, sACN, Enttec), ?dmx=serial an Enttec DMX USB Pro by Web Serial (connect() from a click). The engine reads no signal: drive it through params.",
+    "remoteTab": null,
+    "since": "2026-11"
   }
 }

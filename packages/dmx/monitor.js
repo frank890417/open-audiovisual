@@ -16,6 +16,7 @@ const EMITTER = {
   amber: [1, 0.6, 0], uv: [0.35, 0, 0.8], lime: [0.6, 1, 0], indigo: [0.3, 0, 0.55],
 };
 const CMY = new Set(['cyan', 'magenta', 'yellow']);
+const CMY_TINT = { cyan: [0, 1, 1], magenta: [1, 0, 1], yellow: [1, 1, 0] };
 const LAMP = [1, 0.9, 0.75];            // a fixture with no colour channel: a warm white lamp
 
 /**
@@ -70,7 +71,7 @@ const CSS = `
 .oav-dmx button { font: inherit; color: #cfd6e4; background: #141a29; border: 1px solid #2a3348; border-radius: 6px; padding: 2px 8px; cursor: pointer; }
 .oav-dmx button[aria-pressed="true"] { color: #0b0e15; background: #ffd166; border-color: #ffd166; }
 .oav-dmx button.oav-dmx-connect { color: #ffd166; border-color: #8a6d1f; }
-.oav-dmx-status { color: #9aa5bd; }
+.oav-dmx-status, .oav-dmx-u { color: #9aa5bd; }
 .oav-dmx-status[data-state="open"], .oav-dmx-status[data-state="sim"] { color: #37c978; }
 .oav-dmx-status[data-state="closed"], .oav-dmx-status[data-state="unsupported"] { color: #ffb02e; }
 .oav-dmx-read { margin-left: auto; color: #9aa5bd; min-width: 18ch; text-align: right; }
@@ -140,7 +141,7 @@ export function mountDmxMonitor(el, { patch, transport = null, universe, title =
       b.onclick = () => select(u);
       return b;
     }) : []));
-    if (ids.length <= 1) tabs.append(h('span', 'oav-dmx-status', `universe ${current}`));
+    if (ids.length <= 1) tabs.append(h('span', 'oav-dmx-u', `universe ${current}`));
   };
 
   // ---- swatches
@@ -202,13 +203,24 @@ export function mountDmxMonitor(el, { patch, transport = null, universe, title =
       ctx.fillStyle = o ? '#131826' : '#0d1017';
       ctx.fillRect(x + 0.5, y + 0.5, cw - 1, ch - 1);
       if (v > 0) {
-        let tint = '#7ea6ff';
-        if (o) { if (!looks.has(o.r.id)) looks.set(o.r.id, fixtureLook(o.r, bytes)); const L = looks.get(o.r.id); tint = o.slot.type === 'color' ? cssColor(EMITTER[o.slot.color] || [1, 1, 1]) : Math.max(...L.mixed) > 0 ? cssColor(L.mixed) : '#ffd166'; }
-        ctx.globalAlpha = 0.85; ctx.fillStyle = tint;
+        let tint = [0.49, 0.65, 1];                       // a channel no fixture claims
+        if (o) {
+          if (!looks.has(o.r.id)) looks.set(o.r.id, fixtureLook(o.r, bytes));
+          const L = looks.get(o.r.id);
+          tint = o.slot.type === 'color' ? (EMITTER[o.slot.color] || CMY_TINT[o.slot.color] || [1, 1, 1]) : Math.max(...L.mixed) > 0 ? L.mixed : [1, 0.82, 0.4];
+        }
+        ctx.globalAlpha = 0.85; ctx.fillStyle = cssColor(tint);
         const bh = Math.max(1, (ch - 1) * v);
         ctx.fillRect(x + 0.5, y + ch - 0.5 - bh, cw - 1, bh);
         ctx.globalAlpha = 1;
-        if (cw >= 16) { ctx.fillStyle = v > 0.55 ? '#0b0e15' : '#fff'; ctx.fillText(String(bytes[i]), x + cw / 2, y + ch / 2 + 0.5); }
+        if (cw >= 16) {
+          // dark digits only on a tall bar that is light itself (a full blue bar keeps white digits)
+          const light = 0.2126 * tint[0] + 0.7152 * tint[1] + 0.0722 * tint[2] > 0.5;
+          ctx.fillStyle = v > 0.55 && light ? '#0b0e15' : '#fff';
+          ctx.shadowColor = v > 0.55 && light ? 'transparent' : 'rgba(0,0,0,.9)'; ctx.shadowBlur = 2;
+          ctx.fillText(String(bytes[i]), x + cw / 2, y + ch / 2 + 0.5);
+          ctx.shadowBlur = 0;
+        }
       }
       if (o && o.first) { ctx.fillStyle = '#ffd166'; ctx.fillRect(x + 0.5, y + 0.5, 1.5, ch - 1); }
       if (i === hover) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.strokeRect(x + 1, y + 1, cw - 2, ch - 2); }

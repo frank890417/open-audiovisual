@@ -123,7 +123,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-<!--gen:w-examples-->Twenty-seven<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
+<!--gen:w-examples-->Twenty-eight<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
 
 <!--gen:examples-grid-->
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
@@ -193,13 +193,18 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 </tr>
 </table>
 
-**⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera.
+**⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera, and a rig of stage lights over DMX.
 
 <table>
 <tr>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/21-p5-record/"><img src="assets/home/works/21.webp" width="260" alt="A pink dot in the middle of glowing pink and yellow rings spreading out, below the drum card playing four on the floor."></a><br><b>21 · p5 record a video</b><br>startRecording() saves the canvas and the sketch's own sound as one video, MP4 where the browser can write it; ⏺ and 📷 in the 🎹 panel need no code.<br><a href="https://openaudiovisual.com/examples/21-p5-record/">play</a> · <a href="examples/21-p5-record/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/10-record/"><img src="assets/home/works/10.webp" width="260" alt="Overlapping pink, yellow and green rings spreading over a dark field, each one a struck note."></a><br><b>10 · Record</b><br>The work plus your hands plus its own sound, in one synced video. MIDI takes too.<br><a href="https://openaudiovisual.com/examples/10-record/">play</a> · <a href="examples/10-record/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/11-controller-video/"><img src="assets/home/works/11.webp" width="260" alt="Overlapping pink, purple and yellow rings beside an on-screen MiniLab 3 with the last note written under it."></a><br><b>11 · Controller video</b><br>The performance video without a camera: the controller you play, drawn live.<br><a href="https://openaudiovisual.com/examples/11-controller-video/">play</a> · <a href="examples/11-controller-video/">source</a></td>
+</tr>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/28-dmx-lights/"><img src="assets/home/works/28.webp" width="260" alt="Coloured beams fall from a truss onto a dark floor, two thin white beams cross them, and a DMX monitor below shows ten fixture swatches and a grid of channel values."></a><br><b>28 · DMX lights</b><br>One world draws a stage and drives a lighting rig from the same params; a monitor shows what the lights get, no hardware needed.<br><a href="https://openaudiovisual.com/examples/28-dmx-lights/">play</a> · <a href="examples/28-dmx-lights/">source</a></td>
+<td></td>
+<td></td>
 </tr>
 </table>
 <!--/gen:examples-grid-->
@@ -431,7 +436,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-30 packages · 27 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1304 tests
+30 packages · 28 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1306 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

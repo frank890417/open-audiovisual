@@ -297,6 +297,25 @@ test('OutClient: heartbeat keeps a held value alive past the watchdog (still sli
   await until(() => r.udp.json().some((m) => m.v === 0), 1000, 'safe once the client is gone');
 });
 
+test('OutClient: a channel that moves every frame does not starve the still ones of their heartbeat', async () => {
+  // between two frames the queue is never empty while one channel animates; the held ones must still be resent
+  const r = await rig(udpJson({ 'light/*': 0 }, 600));                // a wide watchdog (heartbeat every 200 ms): a slow machine is not a dead page
+  const queued = [];
+  const c = new OutClient({ url: `ws://127.0.0.1:${r.bridge.port}/out`, schedule: (fn) => queued.push(fn) });
+  c.connect();
+  await until(() => c.status === 'open' && c.bridge, 1000, 'open + bridge status');
+  c.set('light/2/r', 0.7);                                            // set once, then held
+  // a page's frame, as requestAnimationFrame runs it: last frame's flush, then the work sets this frame's value, which waits
+  // for the next frame. Between two frames the queue is never empty.
+  let i = 0;
+  const anim = setInterval(() => { for (const f of queued.splice(0)) f(); c.set('light/1/r', (i++ % 100) / 100); }, 16);
+  try {
+    await sleep(2000);                                                // more than three watchdog periods
+    assert.equal(r.bridge.state.safeSent, 0, 'the held channel was never taken for a dead page');
+    assert.ok(r.udp.json().filter((m) => m.ch === 'light/2/r').length >= 3, 'it went out again as a heartbeat');
+  } finally { clearInterval(anim); c.close(); }
+});
+
 test('OutClient: reconnects with backoff after the bridge restarts, resends the held values, and says so through onStatus', async () => {
   const udp = await catcher();
   const cfg = { channels: [{ match: '*', sink: 'udp-json', port: udp.port }], timeoutMs: 5000 };

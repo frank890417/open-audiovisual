@@ -69,7 +69,9 @@ export function create(cfg, ctx, { openPort = openSerialPort } = {}) {
       if (closed) { if (p) try { p.close(); } catch {} return; }
       if (e) return down(e.message);
       port = p; state = 'up'; error = null; ctx.log(`[enttec] ${path} up (universe ${universe})`);
-      write(encodeEnttecDmx(frames.bytes(universe)));           // what the page last said, at once
+      // what the page last said, at once; nothing at all before the page has said anything (no dark frame that would also
+      // send every moving head to pan 0 at each start or replug)
+      if (frames.universes.includes(universe)) write(encodeEnttecDmx(frames.bytes(universe)));
     });
   }
   const finish = () => { const p = port; port = null; state = 'down'; if (p) try { p.close(); } catch {} };
