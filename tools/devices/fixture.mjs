@@ -11,7 +11,7 @@ import { nextLink } from '../site/next-step.mjs';
 import { byId as exampleById, L as pick } from '../examples/catalog.mjs';
 import { Patch, DmxEngine } from '../../packages/dmx/index.js';
 import { layoutOf } from '../../packages/dmx/patch.js';
-import { fill, esc, attr, sec, term, listText, plural, sourceItem, reportBlock, OG_IMAGE, PKG, SCHEMA_FIXTURE, OFL_SITE, SITE, BLOB } from './common.mjs';
+import { fill, esc, attr, sec, term, listText, plural, article, sourceItem, reportBlock, OG_IMAGE, PKG, SCHEMA_FIXTURE, OFL_SITE, SITE, BLOB } from './common.mjs';
 import { HUB_PATH } from './sources.mjs';
 
 export const DMX_EXAMPLE = '28-dmx-lights';
@@ -185,7 +185,7 @@ export function renderFixture(t, home, locale, d, ctx) {
   ];
 
   const lede = imported
-    ? fill(F.lede.imported, { name: esc(name), kind: esc(kind), maker: esc(fx.manufacturer), modes: modesWords, ofl: attr(ofl) })
+    ? fill(F.lede.imported, { name: esc(name), a: article(kind), kind: esc(kind), maker: esc(fx.manufacturer), modes: modesWords, ofl: attr(ofl) })
     : fill(F.lede.generic, { name: esc(name), modes: modesWords });
   const relList = relatedFixtures(ctx.fixtures, d);
   const runtime = {

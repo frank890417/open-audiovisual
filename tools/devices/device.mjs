@@ -14,7 +14,7 @@ import { pathCtx, headBasics, pageNode, breadcrumbNode, homeUrl, topBar, siteFoo
 import { nextLink } from '../site/next-step.mjs';
 import { byId as exampleById, L as pick } from '../examples/catalog.mjs';
 import { device as loadDevice } from '../../packages/devices/index.js';
-import { fill, esc, attr, sec, term, listText, kindWord, protocolName, sourceItem, isVendor, reportBlock, OG_IMAGE, PKG, SCHEMA_DEVICE, SITE, BLOB } from './common.mjs';
+import { fill, esc, attr, sec, term, listText, kindWord, article, protocolName, sourceItem, isVendor, reportBlock, OG_IMAGE, PKG, SCHEMA_DEVICE, SITE, BLOB } from './common.mjs';
 import { HUB_PATH } from './sources.mjs';
 import { DMX_EXAMPLE } from './fixture.mjs';
 
@@ -202,7 +202,7 @@ export async function renderDevice(t, home, locale, d, ctx) {
   const recordRel = part ? null : `packages/${d.file}`;
   const fileHref = (f) => `${c.root}${d.page}${f}`;   // files sit beside the English page; both languages link to them
   const conn = r.connections.length && !part ? fill(T.conn, { list: esc(connWords(t, r)) }) : '';
-  const lede = part ? fill(T.lede.part, { name: esc(name), kind: esc(kind) }) : fill(T.lede.record, { name: esc(name), kind: esc(kind), conn });
+  const lede = part ? fill(T.lede.part, { name: esc(name), kind: esc(kind) }) : fill(T.lede.record, { name: esc(name), a: article(kind), kind: esc(kind), conn });
   const ex = exampleById.get(DMX_EXAMPLE);
 
   // hero facts
@@ -259,7 +259,7 @@ export async function renderDevice(t, home, locale, d, ctx) {
   // body sections
   const factsSec = part
     ? `<section class="sec" id="facts" aria-labelledby="facts-title">
-    ${sec('facts', T.facts.eyebrow, fill(T.facts.title, { name: esc(name) }), T.facts.lede)}
+    ${sec('facts', T.facts.eyebrow, fill(T.facts.title, { name: esc(name) }), T.facts.ledePart)}
     <dl class="d-facts part-facts">
       ${partFacts(t, d).map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('\n      ')}
     </dl>

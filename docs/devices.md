@@ -27,6 +27,8 @@ Listing is cheap. `devices()` reads one generated file, so a page can show and s
 
 The first hand-written records are gear the project has on the desk, so each can be checked on the unit: the Yamaha AG06, the Logitech MX Brio, the Audinate Dante Virtual Soundcard, the Ultraleap Leap Motion Controller 2, WLED, the ENTTEC DMX USB Pro and the Brother QL-810W.
 
+The collection is on the site: [/devices/](https://openaudiovisual.com/devices/) lists every device by kind, with a filter and a search. A controller's page stays at `/controllers/<id>/`; each DMX fixture has one at `/fixtures/<id>/` (every mode's channel table, a virtual fixture, the patch code, the file), and a record or a part at `/devices/<id>/` (the facts with their sources, setup, problems, the code, the file; a camera or an audio input can be looked for from the page, behind a button). A device gets a page of its own when it offers at least two of: something to try on screen, code that reaches it, a file to take. The Brother QL-810W has only its record, so it stays a row of the list until OAV has code for it.
+
 ## The record
 
 Every device has the same outer record, `open-audiovisual/device@1`, described by [`device.schema.json`](../packages/devices/device.schema.json) for software that does not run this package.

@@ -104,13 +104,13 @@ openaudiovisual.com 自己的頁面裝了 Google Analytics 4（同一個資源�
 | `oav_copy` | 按下「複製」，或在程式碼區塊裡按 ⌘C、Ctrl+C | `kind`（loader、code、import_map、other）、`page_type` |
 | `oav_outbound` | 點了連到別的網站的連結 | `kind`（github、vendor、work、course、openprocessing、other）、`host`、`page_type` |
 | `oav_controller_play` | 第一次動頁面上的螢幕控制器，每次瀏覽只記一次 | `controller`、`page_type` |
-| `oav_export_download` | 從設備頁下載 QLC+、Mixxx 或 JSON 檔 | `format`（qlc、mixxx、json）、`controller`、`page_type` |
+| `oav_export_download` | 從控制器、燈具或設備頁下載 QLC+、Mixxx 或 JSON 檔 | `format`（qlc、mixxx、json）、`controller`（控制器、燈具或設備的 id）、`page_type` |
 | `oav_example_start` | 在範例裡第一次點擊或按鍵，每次瀏覽只記一次 | `example` |
 | `oav_next_step` | 點了頁面「下一步」區塊裡的連結 | `from`（頁面類型）、`to`（p5、example、docs、reference 等） |
 | `oav_search` | 在搜尋框打下第一個字，每次瀏覽只記一次 | `page_type` |
 | `oav_lang_switch` | 按 EN 或中文 | `page_type`、`to`（en、zh） |
 
-`page_type` 是頁面的類型：home、controller、controllers_index、verify、example、examples_index、docs、reference、cheatsheet、p5、made_with、changelog、webtoe、check 或 not_found。每個內容都只是一個短字或 id，不會有複製了什麼、在搜尋框打了什麼，也不會有連結的路徑或查詢字串：`host` 只有對方網站的名稱。跟每一次瀏覽一樣，Google Analytics 本身也會記下頁面的網址，並寫入它自己的 cookie。這支程式只在網站的分析程式有跑的地方跑，也就是 openaudiovisual.com，localhost 和複製出去的 repository 都不會。原始碼：`assets/track.js`。
+`page_type` 是頁面的類型：home、controller、controllers_index、verify、example、examples_index、docs、reference、cheatsheet、p5、made_with、changelog、webtoe、check、not_found、devices_index（/devices/）、fixture（/fixtures/<id>/）或 device（/devices/<id>/）。每個內容都只是一個短字或 id，不會有複製了什麼、在搜尋框打了什麼，也不會有連結的路徑或查詢字串：`host` 只有對方網站的名稱。跟每一次瀏覽一樣，Google Analytics 本身也會記下頁面的網址，並寫入它自己的 cookie。這支程式只在網站的分析程式有跑的地方跑，也就是 openaudiovisual.com，localhost 和複製出去的 repository 都不會。原始碼：`assets/track.js`。
 
 這些都不在框架裡。`p5/oav-p5.js`、`packages/`、`embed/` 不會載入這支程式，也不會多送任何東西，所以別人用 open-audiovisual 做的網頁，送出的仍然只有第一張表列的內容。`tests/track.test.js` 兩件事都會檢查。
 

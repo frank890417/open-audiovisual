@@ -165,7 +165,7 @@ export default {
     },
     conn: '，用 {list} 連接',
     aliases: '也叫',
-    facts: { eyebrow: '事實', title: '{name} 是什麼', lede: '每個值都讀自同一列的那一頁。讀不到的寫在「待確認」，不用猜的。', cols: { fact: '項目', value: '值', source: '出處' } },
+    facts: { eyebrow: '事實', title: '{name} 是什麼', lede: '每個值都讀自同一列的那一頁。讀不到的寫在「待確認」，不用猜的。', ledePart: '每個數字都讀自下方「出處」列出的規格書與產品頁。沒人能確認的值寫「待查」，也列在「待確認」裡，不用猜的。', cols: { fact: '項目', value: '值', source: '出處' } },
     factNames: {
       usbAudio: 'USB 音訊', usbAudioClass: 'USB 音訊類別', usbFormat: 'USB 格式', driverNote: '驅動程式', bitDepth: '位元深度', sampleRates: '取樣率', usbConnector: 'USB 接頭',
       inputChannels: '輸入聲道', micLineInputs: '麥克風／線路輸入', outputChannels: '輸出聲道', phantomPower: '幻象電源', powerRequirements: '電源', powerConsumption: '耗電',

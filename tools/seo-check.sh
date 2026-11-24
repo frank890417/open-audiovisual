@@ -5,7 +5,7 @@
 #   tools/seo-check.sh http://localhost:8467   # a local `node serve.js 8467`
 #   tools/seo-check.sh BASE --no-repo          # skip the repository checks (generators --check, npm test)
 #
-# Nine checks (spec: "OAV 官網 GEO／SEO／AEO 健檢與實作規格" §9.2). Each prints PASS / FAIL / SKIP, with the
+# Nine checks and a devices check (5b) (spec: "OAV 官網 GEO／SEO／AEO 健檢與實作規格" §9.2). Each prints PASS / FAIL / SKIP, with the
 # number it measured. A FAIL carries a tag that says who can fix it:
 #   [CF]  needs a Cloudflare dashboard change (the owner): AI-crawler policy, Email Obfuscation, Always Use HTTPS
 #   [EX]  waits for the examples workstream (static pages for examples/NN-*)
@@ -97,6 +97,19 @@ if [[ "$n" -gt 0 && -z "$miss" ]]; then say PASS '' "5  examples: all $n pages h
 elif [[ "$n" == 0 ]]; then say FAIL '[EX]' "5  examples: no examples/NN-*/ urls in sitemap.xml"
 else say FAIL '[EX]' "5  examples: $(echo $miss | wc -w | tr -d ' ')/$n pages lack a description or a canonical: $(echo $miss | cut -c1-110)…"; fi
 
+# ---- 5b. the device collection: the hub, and a sample of fixture and device pages, have a description, a canonical, JSON-LD
+miss=""; n=0; nf=0; nd=0
+sample=$( { printf '%s' "$sm" | grep -o '<loc>[^<]*/devices/</loc>'; printf '%s' "$sm" | grep -o '<loc>[^<]*/fixtures/[^<]*</loc>' | awk 'NR % 12 == 1'; printf '%s' "$sm" | grep -o '<loc>[^<]*/devices/[a-z0-9][^<]*/</loc>' | awk 'NR % 5 == 1'; } | sed 's/<\/*loc>//g')
+while read -r u; do
+  [[ -n "$u" ]] || continue
+  n=$((n+1)); [[ "$u" == */fixtures/* ]] && nf=$((nf+1)); [[ "$u" == */devices/?*/ ]] && nd=$((nd+1))
+  h=$(get "$(rebase "$u" | sed "s#^$BASE##")")
+  d=$(printf '%s' "$h" | count 'name="description"'); c=$(printf '%s' "$h" | count "rel=\"canonical\" href=\"$u\""); j=$(printf '%s' "$h" | count 'application/ld+json')
+  [[ "$d" -ge 1 && "$c" -ge 1 && "$j" -ge 1 ]] || miss="$miss ${u#$SITE}"
+done <<< "$sample"
+if [[ "$nf" -ge 2 && "$nd" -ge 2 && -z "$miss" ]]; then say PASS '' "5b devices: the hub, $nf fixture pages and $nd device pages (a sample) have a description, their canonical and JSON-LD"
+else say FAIL '' "5b devices: $n sampled ($nf fixtures, $nd devices); missing a description, canonical or JSON-LD:${miss:- none}"; fi
+
 # ---- 6. llms.txt is fresh, generated, and complete
 en=$(get /llms.txt); zh=$(get /zh/llms.txt); full=$(get /llms-full.txt)
 a=$(printf '%s' "$en" | count '13-score-director'); b=$(printf '%s' "$en" | count 'raw.githubusercontent.com')
@@ -127,12 +140,12 @@ fi
 # ---- 9. the repository: generators are current, tests pass
 if [[ "$REPO_CHECKS" == 1 && -f "$HERE/package.json" ]]; then
   out=""; ok=1
-  for g in home docs controllers webtoe examples; do
+  for g in home docs controllers devices webtoe examples; do
     if ! o=$(cd "$HERE" && node "tools/build-$g.mjs" --check 2>&1); then ok=0; out="$out build-$g(stale)"; fi
   done
   t=$(cd "$HERE" && node --test tests/*.test.js 2>&1 | grep -E '^# (pass|fail)' | tr '\n' ' ')
   [[ "$t" == *"# fail 0"* ]] || ok=0
-  if [[ $ok == 1 ]]; then say PASS '' "9  repository: build-home/docs/controllers/webtoe/examples --check are current; tests: $t"
+  if [[ $ok == 1 ]]; then say PASS '' "9  repository: build-home/docs/controllers/devices/webtoe/examples --check are current; tests: $t"
   else say FAIL '' "9  repository:$out tests: $t"; fi
 else
   say SKIP '' "9  repository checks skipped (--no-repo)"

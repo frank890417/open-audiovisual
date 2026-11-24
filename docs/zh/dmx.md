@@ -41,6 +41,8 @@ DMX512 是告訴舞台燈要做什麼的方法：一條線傳一個 **universe**
 
 **profile** 說明一台燈有哪些通道，以及每個模式送出它們的順序。通用的 profile 跟套件一起提供（`FIXTURES`：調光器、RGB、RGBW、RGBA、RGBAW+UV 的 par、頻閃燈、8 通道和 16 通道的搖頭燈），真正的燈具 profile 是一個 JSON 檔，複製一份，照它的說明書改。它們都沒有標成已驗證，因為只有燈就在眼前的人，才能說一份 profile 是對的。
 
+四十二台真實的燈具來自 [Open Fixture Library](https://open-fixture-library.org/)（MIT），轉換過來，不放在 `FIXTURES` 裡（用 `@openav/dmx/fixtures/imported.js` 的 `loadImportedFixture(id)`，或 [`@openav/devices`](devices.md) 的 `device(id)`，載入你要的那一台）。每一台燈具，不論通用還是匯入的，都在 `/fixtures/<id>/` 有一頁，列出各模式的通道表、能試推的虛擬燈具和 patch 它的程式碼：[設備大集合裡的 DMX 燈具](https://openaudiovisual.com/zh/devices/#kind-dmx-fixture)，例如 [Chauvet DJ SlimPAR T12 BT](https://openaudiovisual.com/zh/fixtures/chauvet-dj-slimpar-t12-bt/)。
+
 **patch** 把燈具放到 universe 和位址上，可以分組、設上下限：
 
 ```js

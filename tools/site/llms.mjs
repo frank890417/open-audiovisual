@@ -22,6 +22,9 @@ import { CHAPTERS } from '../docs/chapters.mjs';
 import { PACKAGE_GROUPS } from '../home/page.mjs';
 import { catalog, nameOf, detailUrl, PROFILE_DIR } from '../controllers/page.mjs';
 import { fullName } from '../controllers/detail.mjs';
+import { collection, ownPages, HUB_PATH } from '../devices/sources.mjs';
+import devEn from '../devices/en.mjs';
+import devZh from '../devices/zh.mjs';
 import homeEn from '../home/en.mjs';
 import homeZh from '../home/zh.mjs';
 import madeEn from '../made-with/en.mjs';
@@ -62,6 +65,7 @@ export const PAGE_BLURB = {
   'docs/': ['the complete documentation on one page: every chapter listed below, in one HTML file. Generated from the Markdown in `docs/`.', '完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。'],
   'docs/reference/': ['the API reference: every variable, function, event and option of oav-p5 (`micLevel`, `knob1`, `startDrums()` …) and every export of every package, searchable, each with a description, parameters, examples you can run and a link to the source line. Generated from the code on every build and checked against it in CI, so it cannot list a name that does not exist or miss one that does. The same data as JSON: https://openaudiovisual.com/docs/reference/reference.json.', 'API 參考：oav-p5 的每個變數、函式、事件與選項（`micLevel`、`knob1`、`startDrums()` …）和每個套件的每個匯出，能搜尋，每一條有說明、參數、能直接跑的範例與原始碼行號連結。每次建置都從程式碼產生，並在 CI 裡跟程式碼對過，所以不會列出不存在的名稱，也不會漏掉存在的。同一份資料的 JSON：https://openaudiovisual.com/docs/reference/reference.json。'],
   'controllers/': ['every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).', '每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。'],
+  'devices/': ['every device the framework knows in one list, by kind, filterable and searchable: the MIDI controllers (each on its /controllers/ page), the DMX fixtures (one page each with every mode\'s channel table, a virtual fixture and the patch code), cameras, audio interfaces, LED and DMX interfaces, sensors and the electronics parts (pins, voltages, currents with datasheets). Data: https://openaudiovisual.com/packages/devices/catalog.js.', '框架認得的每一台設備，一個清單，依種類分組，能篩選、能搜尋：MIDI 控制器（各自在 /controllers/ 的頁面）、DMX 燈具（每台一頁，有各模式的通道表、虛擬燈具和 patch 程式碼）、鏡頭、音訊介面、LED 與 DMX 介面、感測器，以及電子零件（腳位、電壓、電流，附規格書）。資料：https://openaudiovisual.com/packages/devices/catalog.js。'],
   'examples/': ['every example, with a thumbnail and what it needs.', '所有範例，附縮圖與需要什麼。'],
   'p5/': ['load `oav-p5.js` and any p5 sketch plays from MIDI, an on-screen controller or a phone; the same line adds sound (`startSound`), a drum machine with one line of rhythm (`startDrums("bd*4, [~ sd]*2, hh*8")`), the microphone (`micLevel`), video recording (`startRecording`) and values smoothed like TouchDesigner\'s Lag CHOP (`lag()`); it also runs next to Strudel. Ready-made sketches in `p5/examples/`, each playable as an example (16 to 26).', '載入 `oav-p5.js`，任何 p5 草圖都能用 MIDI、螢幕上的控制器或手機彈。同一行還有聲音（`startSound`）、能用一行字寫節奏的鼓機（`startDrums("bd*4, [~ sd]*2, hh*8")`）、麥克風（`micLevel`）、錄影（`startRecording`），以及像 TouchDesigner Lag CHOP 那樣變順的數值（`lag()`），也能和 Strudel 並排用。現成草圖在 `p5/examples/`，每一份都能在範例 16 到 26 直接玩。'],
   // the page's own meta description, read from its strings so the two cannot drift apart
@@ -70,7 +74,7 @@ export const PAGE_BLURB = {
   'webtoe/': ['the sister project and the engine half of the stack: a web-native, node-based dataflow engine for real-time visuals (TouchDesigner-style, WebGL2 + WebGPU, zero runtime dependencies) that opens TouchDesigner `.toe` projects; how `@openav/world-webtoe` performs a WebToe patch as a world. Editor: https://webtoe.openaudiovisual.com/', '姊妹專案，整套的引擎那一半：網頁原生、節點式的即時影像資料流引擎（TouchDesigner 式、WebGL2 + WebGPU、零執行期相依），能打開 TouchDesigner `.toe` 專案；`@openav/world-webtoe` 如何把 WebToe 網路當世界演奏。編輯器：https://webtoe.openaudiovisual.com/'],
 };
 export const PAGE_TITLE = {
-  '': ['Homepage', '首頁'], 'docs/': ['Handbook', '手冊'], 'docs/reference/': ['API reference', 'API 參考'], 'controllers/': ['MIDI controller library', 'MIDI 控制器圖鑑'],
+  '': ['Homepage', '首頁'], 'docs/': ['Handbook', '手冊'], 'docs/reference/': ['API reference', 'API 參考'], 'controllers/': ['MIDI controller library', 'MIDI 控制器圖鑑'], 'devices/': ['Device collection', '演出設備大集合'],
   'examples/': ['Examples', '範例'], 'p5/': ['p5.js in one line', 'p5.js 一行指令'], 'webtoe/': ['WebToe', 'WebToe'],
   'made-with/': [madeEn.meta.title.split(' · ')[0], madeZh.meta.title.split('｜')[0]],
   'changelog/': ['Changelog', '更新紀錄'],
@@ -123,7 +127,7 @@ function pagesSection(locale) {
   const reg = registry();
   const has = (p) => reg.some((e) => e.path === p);
   const lines = [];
-  for (const p of ['', 'docs/', 'docs/reference/', 'controllers/', 'examples/', 'p5/', 'made-with/', 'webtoe/', 'changelog/']) {
+  for (const p of ['', 'docs/', 'docs/reference/', 'controllers/', 'devices/', 'examples/', 'p5/', 'made-with/', 'webtoe/', 'changelog/']) {
     if (!has(p)) continue;
     const e = reg.find((x) => x.path === p);
     const en = SITE + p, zh = SITE + 'zh/' + p, both = e.langs.includes('zh');
@@ -162,6 +166,23 @@ function controllersSection(locale) {
     const n = d.total;
     return `- [${name}](${detailUrl(d.p.id, locale)}): ${locale === 'zh' ? `${n} 個控制項的 MIDI 對照表` : `${n} controls, every MIDI message`}; profile ${SITE}${PROFILE_DIR}/${d.file}`;
   }).join('\n');
+}
+
+/** The device collection's own pages, listed the way the controllers are: one line each, with the file behind the page. */
+export function devicesSection(locale) {
+  const zh = locale === 'zh', t = zh ? devZh : devEn, pre = zh ? 'zh/' : '';
+  const own = ownPages(collection());
+  const fixtures = own.filter((d) => d.row.kind === 'dmx-fixture'), pages = own.filter((d) => d.row.kind !== 'dmx-fixture');
+  const fx = fixtures.map((d) => {
+    const m = d.data.modes;
+    return `- [${d.row.name}](${SITE}${pre}${d.page}): ${zh ? `DMX 通道表，${m.length} 種模式（${m.map((x) => x.channels.length).join('/')} 通道），虛擬燈具` : `DMX channel chart, ${m.length} mode${m.length === 1 ? '' : 's'} (${m.map((x) => x.channels.length).join('/')} channels), virtual fixture`}; fixture ${SITE}packages/${d.file}`;
+  });
+  const dev = pages.map((d) => {
+    const kind = d.row.from === 'hw-part' ? t.partKinds[d.data.kind] || d.data.kind : t.kinds[d.row.kind][0];
+    const file = d.row.from === 'hw-part' ? `${SITE}${d.page}${d.row.id}.json` : `${SITE}packages/${d.file}`;
+    return `- [${d.row.name}](${SITE}${pre}${d.page}): ${kind}; ${zh ? '資料' : 'data'} ${file}`;
+  });
+  return [`### ${zh ? 'DMX 燈具' : 'DMX fixtures'}`, '', ...fx, '', `### ${zh ? '其他設備與零件' : 'Other devices and parts'}`, '', ...dev].join('\n');
 }
 
 function packagesSection(locale) {
@@ -235,6 +256,13 @@ export function llmsTxt(locale) {
       `${f.controllerCount} 份控制器設定檔，每台一頁，列出每個控制項確切的 MIDI 訊息（頻道、CC 或音符）、LED 回饋與引用出處。設定檔 JSON 就是這一頁背後的資料。`),
     ``,
     controllersSection(locale),
+    ``,
+    `## Devices`,
+    ``,
+    T(`Every device in one list: ${SITE}${HUB_PATH} (MIDI controllers, DMX fixtures, cameras, audio interfaces, LED and DMX interfaces, sensors, electronic parts). Each DMX fixture has a page with every mode's channel table and the code that patches it; each record or part with OAV code has one too. The file behind each page is named on its line.`,
+      `每一台設備都在同一個清單：${SITE}zh/${HUB_PATH}（MIDI 控制器、DMX 燈具、鏡頭、音訊介面、LED 與 DMX 介面、感測器、電子零件）。每台 DMX 燈具有一頁，列出各模式的通道表和 patch 它的程式碼。有 OAV 程式能接到的紀錄與零件也各有一頁。每一行寫出那一頁背後的檔案。`),
+    ``,
+    devicesSection(locale),
     ``,
     `## Packages`,
     ``,
@@ -363,7 +391,7 @@ export function llmsFull() {
 > Every document of open-audiovisual in one file: README, AGENTS.md and every chapter of the handbook (docs/).
 > Generated by tools/build-home.mjs from the repository (version ${f.version}); the short index is /llms.txt (${SITE}llms.txt, Traditional Chinese: ${SITE}zh/llms.txt).
 > Site: ${SITE} (English) · ${SITE}zh/ (繁體中文)
-> Handbook: ${SITE}docs/ · MIDI controller library: ${SITE}controllers/ · WebToe, the sister engine: ${SITE}webtoe/${has('examples/') ? `\n> Examples: ${SITE}examples/` : ''}${has('p5/') ? `\n> p5.js in one line: ${SITE}p5/ (oav-p5 ${f.p5Version})` : ''}${has('changelog/') ? `\n> Changelog: ${SITE}changelog/` : ''}
+> Handbook: ${SITE}docs/ · MIDI controller library: ${SITE}controllers/ · Device collection (DMX fixtures, cameras, audio interfaces, parts): ${SITE}devices/ · WebToe, the sister engine: ${SITE}webtoe/${has('examples/') ? `\n> Examples: ${SITE}examples/` : ''}${has('p5/') ? `\n> p5.js in one line: ${SITE}p5/ (oav-p5 ${f.p5Version})` : ''}${has('changelog/') ? `\n> Changelog: ${SITE}changelog/` : ''}
 > Repository: ${REPO} (MIT)
 > Today: ${f.packageCount} packages, ${f.exampleCount} examples, ${f.controllerCount} MIDI controller profiles (${f.deviceCount} devices, ${f.genericCount} generic layouts).
 

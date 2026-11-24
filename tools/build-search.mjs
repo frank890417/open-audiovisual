@@ -11,6 +11,8 @@
 //         (tools/build-docs.mjs buildDocs()): title, heading, the text under it (code blocks left out)
 //   ex    every example: title, what it teaches, the three things to try, from examples/catalog.json
 //   ctl   every MIDI controller page: its name, maker, kind
+//   dev   every page of the device collection that is not a controller's: each DMX fixture (/fixtures/<id>/) and each record
+//         or part with a page (/devices/<id>/), by name, manufacturer, aliases and kind (tools/devices/sources.mjs)
 //   page  the site's pages: the title and the one-line blurb llms.txt gives them
 // Each record exists once per language (en, zh); the search dialog shows the page's language first and the other language when only
 // that one matches, so "麥克風" finds micLevel from the English site and "microphone" finds it from the Chinese one.
@@ -25,6 +27,9 @@ import { EXAMPLES, plainText } from './examples/catalog.mjs';
 import { catalog, detailPath } from './controllers/page.mjs';
 import { fullName } from './controllers/detail.mjs';
 import { registry } from './site/pages.mjs';
+import { collection, ownPages } from './devices/sources.mjs';
+import devEn from './devices/en.mjs';
+import devZh from './devices/zh.mjs';
 import { PAGE_TITLE, PAGE_BLURB } from './site/llms.mjs';
 import { sitemapXml } from './site/pages.mjs';
 import { UI } from './search/strings.mjs';
@@ -34,7 +39,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => { try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return null; } };
 export const INDEX = 'assets/search/index.json';
 const LANGS = ['en', 'zh'];
-const CAP = { ref: 1500, doc: 2600, ex: 900, ctl: 300, page: 400 };
+const CAP = { ref: 1500, doc: 2600, ex: 900, ctl: 300, dev: 300, page: 400 };
 
 const ENT = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'", '&#x27;': "'", '&nbsp;': ' ' };
 /** HTML → plain text for the index: code blocks and scripts dropped, tags dropped, entities decoded, one line. */
@@ -122,6 +127,19 @@ function controllerRecords() {
   return out;
 }
 
+function deviceRecords() {
+  const out = [];
+  const DEV = { en: devEn, zh: devZh };
+  for (const d of ownPages(collection())) for (const l of LANGS) {
+    const t = DEV[l], r = d.row, fixture = r.kind === 'dmx-fixture';
+    const kind = fixture ? t.fixtureKinds[d.data.kind] || d.data.kind : r.from === 'hw-part' ? t.partKinds[d.data.kind] || d.data.kind : t.kinds[r.kind][0];
+    // short on purpose (the index has a size budget): a fixture is found by its name, which carries its maker; a record or a part
+    // also by the aliases people type (AG06, 燈條控制器)
+    out.push({ i: `dev:${r.id}`, t: 'dev', l, n: r.name, u: `${pre(l)}${d.page}`, s: [r.manufacturer, kind].filter(Boolean).join(' · '), a: fixture ? r.id : `${r.id} ${r.aliases.join(' ')}`, k: fixture ? 'DMX' : t.kinds[r.kind][0], d: '', x: '' });
+  }
+  return out;
+}
+
 function pageRecords() {
   const reg = registry();
   const out = [];
@@ -137,7 +155,7 @@ function pageRecords() {
 
 /** The whole index, as the object that is written. */
 export function buildIndex() {
-  const records = [...refRecords(), ...docRecords(), ...exampleRecords(), ...controllerRecords(), ...pageRecords()];
+  const records = [...refRecords(), ...docRecords(), ...exampleRecords(), ...controllerRecords(), ...deviceRecords(), ...pageRecords()];
   return { schema: 1, count: records.length, ui: UI, records };
 }
 

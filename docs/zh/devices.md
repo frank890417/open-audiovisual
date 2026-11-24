@@ -28,6 +28,8 @@ const cam = await device('logitech-mx-brio');    // a camera found by its name, 
 
 第一批手寫紀錄是專案桌上就有的器材，每一台都能拿真機驗證：Yamaha AG06、Logitech MX Brio、Audinate Dante Virtual Soundcard、Ultraleap Leap Motion Controller 2、WLED、ENTTEC DMX USB Pro 和 Brother QL-810W。
 
+這個集合在網站上：[/zh/devices/](https://openaudiovisual.com/zh/devices/) 依種類列出每一台設備，能篩選、能搜尋。控制器的頁面留在 `/controllers/<id>/`。每台 DMX 燈具在 `/fixtures/<id>/` 有一頁（各模式的通道表、虛擬燈具、patch 程式碼、檔案），紀錄和零件在 `/devices/<id>/`（附出處的事實、設定、問題、程式碼、檔案，鏡頭和音訊輸入可以在頁面上按按鈕找找看）。一台設備要提供下面三樣中至少兩樣，才有自己的頁面：能在畫面上操作的東西、接到它的程式碼、能帶走的檔案。Brother QL-810W 只有紀錄，所以在 OAV 有它的程式之前，它只是清單上的一列。
+
 ## 紀錄
 
 每台設備都有同一種外層紀錄 `open-audiovisual/device@1`，[`device.schema.json`](../../packages/devices/device.schema.json) 描述它，讓不跑這個套件的軟體也讀得懂。

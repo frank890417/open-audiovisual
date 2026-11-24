@@ -133,6 +133,7 @@ export default {
     lede: 'Every example runs without hardware. An on-screen piano, QWERTY keys, a simulated performer or a drum machine stands in for instruments. In any example: Space plays the timeline, T is performance mode, F is fullscreen.',
     playsWith: 'Plays with',
     all: 'Explore all the examples by route',
+    devices: 'Device collection: {midi} MIDI controllers, {dmx} DMX fixtures and {other} more devices, each with its data',
     note: 'Works 05 to 07 are artworks by Che-Yu Wu (2020 to 2023), used here as demos. The framework is MIT. The artworks remain © the artist, all rights reserved.',
   },
 

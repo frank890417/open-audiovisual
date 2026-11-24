@@ -52,6 +52,7 @@ export default {
     generic: '通用版面',
     imported: '來自 QLC+',
     importedNote: '取自 <a href="https://github.com/mcallegari/qlcplus">QLC+</a> 的輸入設定檔（Apache-2.0）：訊息和 LED 值是它們的，版面由這個專案自動產生。這裡還沒有人在實機上確認過，所以每個控制項都是未確認。每台都有自己的頁面，也能用你的機器驗證。',
+    collection: 'DMX 燈具、鏡頭、音訊介面和演出用的其他設備：設備大集合',
     genericNote: '找不到你那一台的話，先挑一個最接近的版面，按「學習」，再照順序把你手上的旋鈕和推桿各動一次。',
     filterLabel: '篩選：有這些控制的',
     filters: { all: '全部', pad: '打擊墊', keys: '琴鍵', knob: '旋鈕', fader: '推桿', encoder: '無段旋鈕', led: 'LED 回饋' },

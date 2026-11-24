@@ -584,6 +584,7 @@ ${topBar(home, c)}
     </div>
     ${importedBlock(t, cat, locale)}
     ${requestBlock(t)}
+    <p class="cmp-link"><a href="${c.to('devices')}">${t.catalog.collection} →</a></p>
   </section>
 
   <!-- ═════ 03 · choose: the same controllers side by side ═════ -->

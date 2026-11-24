@@ -15,6 +15,7 @@ import ctlZh from '../controllers/zh.mjs';
 import { routeGroups, L as pick } from '../examples/catalog.mjs';
 import { ROUTE_NAMES, routeMark } from '../examples/strings.mjs';
 import { madeWithLine } from '../site/next-step.mjs';
+import { collectionRows } from '../devices/sources.mjs';
 export { SITE, REPO };
 
 export const LOCALES = {
@@ -136,6 +137,12 @@ function hl(code) {
     i = re.lastIndex;
   }
   return out + esc(code.slice(i));
+}
+
+/** The one line that links the device collection (/devices/): its counts, read from the collection, never typed. */
+function devicesLine(t) {
+  const rows = collectionRows(), n = (k) => rows.filter((r) => r.kind === k).length;
+  return t.works.devices.replace('{midi}', n('midi-controller')).replace('{dmx}', n('dmx-fixture')).replace('{other}', rows.length - n('midi-controller') - n('dmx-fixture'));
 }
 
 /** The course link at the end of the page: nothing at all until both its label and its url are filled in. */
@@ -308,6 +315,7 @@ ${topBar(t, pageCtx('home', locale))}
       }).join('\n      ')}
     </ol>
     <p class="works-all"><a class="more" href="${pageCtx('home', locale).to('examples')}">${t.works.all} →</a></p>
+    <p class="works-all"><a class="more" href="${pageCtx('home', locale).to('devices')}">${devicesLine(t)} →</a></p>
     <p class="works-note">${t.works.note}</p>
   </section>
 

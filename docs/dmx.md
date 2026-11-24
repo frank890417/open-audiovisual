@@ -41,6 +41,8 @@ Some software calls its first universe "1" but sends it as Art-Net Port-Address 
 
 A **profile** says which channels a light has and in which order each mode sends them. The generic ones ship with the package (`FIXTURES`: a dimmer, RGB, RGBW, RGBA and RGBAW+UV pars, a strobe, a moving head in 8 and 16 channels); a real fixture's profile is a JSON file you copy and change to match its manual. None of them is marked verified, because only a person with the light in front of them can say a profile is right.
 
+Forty-two real fixtures come from the [Open Fixture Library](https://open-fixture-library.org/) (MIT), converted and kept out of `FIXTURES` (`loadImportedFixture(id)` from `@openav/dmx/fixtures/imported.js`, or `device(id)` of [`@openav/devices`](devices.md), loads the one you ask for). Every fixture, generic or imported, has a page at `/fixtures/<id>/` with each mode's channel table, a virtual fixture to try and the code that patches it: [the DMX fixtures of the device collection](https://openaudiovisual.com/devices/#kind-dmx-fixture), for example the [Chauvet DJ SlimPAR T12 BT](https://openaudiovisual.com/fixtures/chauvet-dj-slimpar-t12-bt/).
+
 The **patch** puts fixtures on universes and addresses, in groups, with limits:
 
 ```js

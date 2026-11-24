@@ -99,6 +99,7 @@ import zlib from 'node:zlib';
 import { buildIndex, indexText, INDEX, plain } from '../tools/build-search.mjs';
 import { EXAMPLES } from '../tools/examples/catalog.mjs';
 import { catalog } from '../tools/controllers/page.mjs';
+import { collection, ownPages } from '../tools/devices/sources.mjs';
 import { CHAPTERS } from '../tools/docs/chapters.mjs';
 
 const idx = JSON.parse(read(INDEX));
@@ -120,6 +121,7 @@ test('the index covers every source, in both languages: the reference, the handb
     assert.equal(n('ref', l), ref, `${l}: one record per reference entry`);
     assert.equal(n('ex', l), EXAMPLES.length, `${l}: one per example`);
     assert.equal(n('ctl', l), cat.pages.length, `${l}: one per controller`);
+    assert.equal(n('dev', l), ownPages(collection()).length, `${l}: one per fixture and device page`);
     assert.ok(n('doc', l) >= CHAPTERS.length * 3, `${l}: the chapters and their sections (${n('doc', l)})`);
     assert.ok(n('page', l) >= 6, `${l}: the site's pages`);
   }
@@ -176,7 +178,9 @@ test('the handbook, the examples, the controllers and the pages are found by the
 test('the index has a size budget: a page of text, not a library', () => {
   const raw = Buffer.from(read(INDEX));
   assert.ok(raw.length < 3 * 1024 * 1024, `${raw.length} bytes raw`);
-  assert.ok(zlib.gzipSync(raw).length < 700 * 1024, `${zlib.gzipSync(raw).length} bytes gzipped`);
+  // 700 KiB until the device collection's pages came in (2026-11-25: 71 pages × 2 languages, about 4.5 KiB gzipped, trimmed to
+  // name, maker, kind and id); the dialog fetches the file only when it is first opened
+  assert.ok(zlib.gzipSync(raw).length < 720 * 1024, `${zlib.gzipSync(raw).length} bytes gzipped`);
 });
 
 test('plain(): code blocks and tags out, entities decoded', () => {

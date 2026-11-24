@@ -24,6 +24,8 @@ export const protocolName = (p) => PROTOCOL_NAMES[p] || p;
 
 /** "a, b and c" in English, "a、b、c" in Chinese. */
 export const listText = (t, arr) => (t.lang === 'zh' ? arr.join(t.sep) : arr.length < 2 ? arr.join('') : arr.slice(0, -1).join(t.sep) + t.and + arr[arr.length - 1]);
+/** "a" or "an" before an English word ("an audio interface", "an LED bar"); the Chinese strings have no {a}. */
+export const article = (word) => (/^([aeiou]|LED\b)/i.test(String(word)) ? 'an' : 'a');
 /** One of a [singular, plural] pair. */
 export const plural = (pair, n) => pair[n === 1 ? 0 : 1];
 /** A kind as a word: kindWord(t, 'dmx-fixture', 2) → "DMX fixtures". */

@@ -2070,6 +2070,7 @@ timeline.onSeek((t, kind) =&gt; (kind === <span class="ts">'reset'</span> ? dire
 <p>有些軟體把第一個 universe 叫做「1」，送出去卻是 Art-Net 的 Port-Address 0，而 Art-Net 4 已經不建議用 0。節點如果設成 0，就把頁面 patch 在 universe 0（<code>dmx/0/…</code> 走 Art-Net 送得到，sACN 沒有 universe 0），比較好的做法是把節點改成 1。<code>encodeArtDmx()</code> 吃的就是 Port-Address 本身，預設是 1。</p>
 <h3 id="dmx-fixtures-and-the-patch">燈具和 patch<a class="anchor" href="#dmx-fixtures-and-the-patch" aria-label="這一節的連結">#</a></h3>
 <p><strong>profile</strong> 說明一台燈有哪些通道，以及每個模式送出它們的順序。通用的 profile 跟套件一起提供（<code>FIXTURES</code>：調光器、RGB、RGBW、RGBA、RGBAW+UV 的 par、頻閃燈、8 通道和 16 通道的搖頭燈），真正的燈具 profile 是一個 JSON 檔，複製一份，照它的說明書改。它們都沒有標成已驗證，因為只有燈就在眼前的人，才能說一份 profile 是對的。</p>
+<p>四十二台真實的燈具來自 <a href="https://open-fixture-library.org/" rel="noopener">Open Fixture Library</a>（MIT），轉換過來，不放在 <code>FIXTURES</code> 裡（用 <code>@openav/dmx/fixtures/imported.js</code> 的 <code>loadImportedFixture(id)</code>，或 <a href="#devices"><code>@openav/devices</code></a> 的 <code>device(id)</code>，載入你要的那一台）。每一台燈具，不論通用還是匯入的，都在 <code>/fixtures/&lt;id&gt;/</code> 有一頁，列出各模式的通道表、能試推的虛擬燈具和 patch 它的程式碼：<a href="../../zh/devices/#kind-dmx-fixture">設備大集合裡的 DMX 燈具</a>，例如 <a href="../../zh/fixtures/chauvet-dj-slimpar-t12-bt/">Chauvet DJ SlimPAR T12 BT</a>。</p>
 <p><strong>patch</strong> 把燈具放到 universe 和位址上，可以分組、設上下限：</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Patch } <span class="tk">from</span> <span class="ts">'@openav/dmx'</span>;
 
@@ -2256,14 +2257,14 @@ Resolume：到 Preferences → MIDI。</li>
 <tr><td><code>oav_copy</code></td><td>按下「複製」，或在程式碼區塊裡按 ⌘C、Ctrl+C</td><td><code>kind</code>（loader、code、import_map、other）、<code>page_type</code></td></tr>
 <tr><td><code>oav_outbound</code></td><td>點了連到別的網站的連結</td><td><code>kind</code>（github、vendor、work、course、openprocessing、other）、<code>host</code>、<code>page_type</code></td></tr>
 <tr><td><code>oav_controller_play</code></td><td>第一次動頁面上的螢幕控制器，每次瀏覽只記一次</td><td><code>controller</code>、<code>page_type</code></td></tr>
-<tr><td><code>oav_export_download</code></td><td>從設備頁下載 QLC+、Mixxx 或 JSON 檔</td><td><code>format</code>（qlc、mixxx、json）、<code>controller</code>、<code>page_type</code></td></tr>
+<tr><td><code>oav_export_download</code></td><td>從控制器、燈具或設備頁下載 QLC+、Mixxx 或 JSON 檔</td><td><code>format</code>（qlc、mixxx、json）、<code>controller</code>（控制器、燈具或設備的 id）、<code>page_type</code></td></tr>
 <tr><td><code>oav_example_start</code></td><td>在範例裡第一次點擊或按鍵，每次瀏覽只記一次</td><td><code>example</code></td></tr>
 <tr><td><code>oav_next_step</code></td><td>點了頁面「下一步」區塊裡的連結</td><td><code>from</code>（頁面類型）、<code>to</code>（p5、example、docs、reference 等）</td></tr>
 <tr><td><code>oav_search</code></td><td>在搜尋框打下第一個字，每次瀏覽只記一次</td><td><code>page_type</code></td></tr>
 <tr><td><code>oav_lang_switch</code></td><td>按 EN 或中文</td><td><code>page_type</code>、<code>to</code>（en、zh）</td></tr>
 </tbody>
 </table></div>
-<p><code>page_type</code> 是頁面的類型：home、controller、controllers_index、verify、example、examples_index、docs、reference、cheatsheet、p5、made_with、changelog、webtoe、check 或 not_found。每個內容都只是一個短字或 id，不會有複製了什麼、在搜尋框打了什麼，也不會有連結的路徑或查詢字串：<code>host</code> 只有對方網站的名稱。跟每一次瀏覽一樣，Google Analytics 本身也會記下頁面的網址，並寫入它自己的 cookie。這支程式只在網站的分析程式有跑的地方跑，也就是 openaudiovisual.com，localhost 和複製出去的 repository 都不會。原始碼：<code>assets/track.js</code>。</p>
+<p><code>page_type</code> 是頁面的類型：home、controller、controllers_index、verify、example、examples_index、docs、reference、cheatsheet、p5、made_with、changelog、webtoe、check、not_found、devices_index（/devices/）、fixture（/fixtures/&lt;id&gt;/）或 device（/devices/&lt;id&gt;/）。每個內容都只是一個短字或 id，不會有複製了什麼、在搜尋框打了什麼，也不會有連結的路徑或查詢字串：<code>host</code> 只有對方網站的名稱。跟每一次瀏覽一樣，Google Analytics 本身也會記下頁面的網址，並寫入它自己的 cookie。這支程式只在網站的分析程式有跑的地方跑，也就是 openaudiovisual.com，localhost 和複製出去的 repository 都不會。原始碼：<code>assets/track.js</code>。</p>
 <p>這些都不在框架裡。<code>p5/oav-p5.js</code>、<code>packages/</code>、<code>embed/</code> 不會載入這支程式，也不會多送任何東西，所以別人用 open-audiovisual 做的網頁，送出的仍然只有第一張表列的內容。<code>tests/track.test.js</code> 兩件事都會檢查。</p>
 <h3 id="controllers-sysex-modes-templates-led-colours">SysEx：模式、模板、LED 顏色<a class="anchor" href="#controllers-sysex-modes-templates-led-colours" aria-label="這一節的連結">#</a></h3>
 <p>有些事只有 SysEx 做得到：把 Launchpad 切到程式模式、選 Launch Control XL 的模板、把打擊墊點成任何 RGB 顏色。有這些功能的設定檔會列在 <code>sysex</code>，每則訊息都附出處，機器的頁面看得到。</p>
@@ -2308,6 +2309,7 @@ devices({ q: <span class="ts">'minilab'</span> });                       <span c
 <p>沒有任何東西是複製的。profile、燈具和零件都留在自己的檔案裡，那是它們的事實唯一寫下的地方，集合裡每一台的紀錄都是從那個檔案讀出來的：建置套件時讀一次（<code>node tools/build-devices.mjs</code> 寫出 <code>packages/devices/catalog.js</code>，也就是 <code>devices()</code> 回答時用的清單），<code>device()</code> 載入它時再讀一次。有 profile、燈具或零件存在、清單卻沒有它，或清單寫的跟檔案現在說的不一樣，測試就會失敗。</p>
 <p>列清單很便宜。<code>devices()</code> 只讀一個產生出來的檔案，所以網頁不用抓每一份 profile 就能顯示和搜尋整個集合。<code>device()</code> 只匯入這台設備所在的那一個檔案。</p>
 <p>第一批手寫紀錄是專案桌上就有的器材，每一台都能拿真機驗證：Yamaha AG06、Logitech MX Brio、Audinate Dante Virtual Soundcard、Ultraleap Leap Motion Controller 2、WLED、ENTTEC DMX USB Pro 和 Brother QL-810W。</p>
+<p>這個集合在網站上：<a href="../../zh/devices/">/zh/devices/</a> 依種類列出每一台設備，能篩選、能搜尋。控制器的頁面留在 <code>/controllers/&lt;id&gt;/</code>。每台 DMX 燈具在 <code>/fixtures/&lt;id&gt;/</code> 有一頁（各模式的通道表、虛擬燈具、patch 程式碼、檔案），紀錄和零件在 <code>/devices/&lt;id&gt;/</code>（附出處的事實、設定、問題、程式碼、檔案，鏡頭和音訊輸入可以在頁面上按按鈕找找看）。一台設備要提供下面三樣中至少兩樣，才有自己的頁面：能在畫面上操作的東西、接到它的程式碼、能帶走的檔案。Brother QL-810W 只有紀錄，所以在 OAV 有它的程式之前，它只是清單上的一列。</p>
 <h3 id="devices-the-record">紀錄<a class="anchor" href="#devices-the-record" aria-label="這一節的連結">#</a></h3>
 <p>每台設備都有同一種外層紀錄 <code>open-audiovisual/device@1</code>，<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/devices/device.schema.json" rel="noopener"><code>device.schema.json</code></a> 描述它，讓不跑這個套件的軟體也讀得懂。</p>
 <div class="table-wrap"><table>

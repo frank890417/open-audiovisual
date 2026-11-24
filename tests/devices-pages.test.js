@@ -254,6 +254,11 @@ test('the string tables have one shape, and the Chinese has no ； or ——', a
   for (const k of facts) assert.ok(en.device.factNames[k] && zh.device.factNames[k], `a name for the fact "${k}" in both tables`);
 });
 
+test('the deploy stamps the device pages\' module and stylesheet urls, as it does the controllers\' (tools/stamp-version.mjs)', () => {
+  const stamp = read('tools/stamp-version.mjs');
+  for (const x of ["'devices/index.html'", "'zh/devices/index.html'", "'devices', 'zh/devices', 'fixtures', 'zh/fixtures'"]) assert.ok(stamp.includes(x), `stamp-version covers ${x}`);
+});
+
 test('build-devices --check: the catalog, every page and file and the sitemap are what the generator writes', async () => {
   const { buildFiles, staleFiles } = await import('../tools/build-devices.mjs');
   assert.deepEqual(staleFiles(await buildFiles()), []);

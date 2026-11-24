@@ -66,8 +66,10 @@ walk(path.join(ROOT, 'embed'));                         // the iframe controller
 for (const p of ['controllers/index.html', 'zh/controllers/index.html', 'docs/index.html', 'zh/docs/index.html', 'docs/reference/index.html', 'zh/docs/reference/index.html', 'webtoe/index.html', 'zh/webtoe/index.html', 'check/index.html', 'zh/check/index.html',
   'zh/examples/index.html', 'p5/index.html', 'zh/p5/index.html', 'changelog/index.html', 'zh/changelog/index.html'])   // examples/index.html and every example page are under examples/ (walked above)
   if (fs.existsSync(path.join(ROOT, p))) files.push(path.join(ROOT, p));
-// one page per controller: controllers/<id>/index.html, zh/controllers/<id>/index.html
-for (const base of ['controllers', 'zh/controllers'])
+// one page per controller: controllers/<id>/index.html, zh/controllers/<id>/index.html; the device collection (tools/build-devices.mjs):
+// devices/index.html, devices/<id>/index.html, fixtures/<id>/index.html, and their zh/ twins
+for (const p of ['devices/index.html', 'zh/devices/index.html']) if (fs.existsSync(path.join(ROOT, p))) files.push(path.join(ROOT, p));
+for (const base of ['controllers', 'zh/controllers', 'devices', 'zh/devices', 'fixtures', 'zh/fixtures'])
   if (fs.existsSync(path.join(ROOT, base)))
     for (const e of fs.readdirSync(path.join(ROOT, base), { withFileTypes: true }))
       if (e.isDirectory() && fs.existsSync(path.join(ROOT, base, e.name, 'index.html'))) files.push(path.join(ROOT, base, e.name, 'index.html'));

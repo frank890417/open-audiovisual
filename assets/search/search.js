@@ -15,8 +15,8 @@ const root = new URL('../../', here);
 const stamp = here.search;                                   // ?v=<commit> on the deployed site: a new release fetches a new index
 const lang = /^zh/i.test(document.documentElement.lang) ? 'zh' : 'en';
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
-const GROUPS = ['ref', 'doc', 'ex', 'ctl', 'page'];
-const PER = { ref: 7, doc: 5, ex: 3, ctl: 3, page: 3 };
+const GROUPS = ['ref', 'doc', 'ex', 'ctl', 'dev', 'page'];
+const PER = { ref: 7, doc: 5, ex: 3, ctl: 3, dev: 3, page: 3 };
 
 let recs = null, ui = null, loading = null, dlg = null, input = null, list = null, foot = null;
 let items = [], active = -1, lastQ = '', opener = null;

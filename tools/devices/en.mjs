@@ -81,7 +81,7 @@ export default {
     },
     eyebrowGeneric: 'Generic layout',
     lede: {
-      imported: '{name}, a {kind} by {maker}, with {modes}. <a href="{ofl}" data-oav-link="other">Channel data from Open Fixture Library (MIT)</a>, converted to OAV’s fixture format and not checked on a light by this project.',
+      imported: '{name}, {a} {kind} by {maker}, with {modes}. <a href="{ofl}" data-oav-link="other">Channel data from Open Fixture Library (MIT)</a>, converted to OAV’s fixture format and not checked on a light by this project.',
       generic: '{name}: a common channel order written by hand, not one real fixture, with {modes}. Copy it and change it to match your light’s manual before you patch a real one.',
     },
     modesText: ['{n} mode', '{n} modes'],
@@ -160,12 +160,12 @@ export default {
       max: 158,
     },
     lede: {
-      record: '{name} is a {kind}{conn}. What OAV knows about it, each fact with the page it was read from, how to set it up, what goes wrong, and the code that reaches it.',
+      record: '{name} is {a} {kind}{conn}. What OAV knows about it, each fact with the page it was read from, how to set it up, what goes wrong, and the code that reaches it.',
       part: '{name} ({kind}) from the electronics library of <code>@openav/hw</code>: its pins, the voltages it takes and gives, its current, each number from its datasheet. <code>Hw.check()</code> reads the same entry when it checks a wiring.',
     },
     conn: ' over {list}',
     aliases: 'Also called',
-    facts: { eyebrow: 'Facts', title: 'What {name} is', lede: 'Each value is read from the page in its row. What could not be read is under “To be confirmed”, not guessed.', cols: { fact: 'Fact', value: 'Value', source: 'Source' } },
+    facts: { eyebrow: 'Facts', title: 'What {name} is', lede: 'Each value is read from the page in its row. What could not be read is under “To be confirmed”, not guessed.', ledePart: 'Every number is read from the datasheets and product pages listed under Sources. A value nobody could confirm says so (待查) and is listed under “To be confirmed”, not guessed.', cols: { fact: 'Fact', value: 'Value', source: 'Source' } },
     factNames: {
       usbAudio: 'USB audio', usbAudioClass: 'USB audio class', usbFormat: 'USB format', driverNote: 'Driver', bitDepth: 'Bit depth', sampleRates: 'Sample rates', usbConnector: 'USB connector',
       inputChannels: 'Input channels', micLineInputs: 'Mic / line inputs', outputChannels: 'Output channels', phantomPower: 'Phantom power', powerRequirements: 'Power', powerConsumption: 'Power consumption',

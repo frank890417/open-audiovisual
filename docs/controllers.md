@@ -109,13 +109,13 @@ openaudiovisual.com runs Google Analytics 4 on its own pages (the same property)
 | `oav_copy` | a Copy button, or ⌘C / Ctrl+C inside a code block | `kind` (loader · code · import_map · other), `page_type` |
 | `oav_outbound` | a link to another site | `kind` (github · vendor · work · course · openprocessing · other), `host`, `page_type` |
 | `oav_controller_play` | the first move on a page's on-screen controller, once per page view | `controller`, `page_type` |
-| `oav_export_download` | a QLC+, Mixxx or JSON file from a device page | `format` (qlc · mixxx · json), `controller`, `page_type` |
+| `oav_export_download` | a QLC+, Mixxx or JSON file from a controller, fixture or device page | `format` (qlc · mixxx · json), `controller` (the controller's, fixture's or device's id), `page_type` |
 | `oav_example_start` | the first click or key inside an example, once per page view | `example` |
 | `oav_next_step` | a link in a page's next-step block | `from` (the page type), `to` (p5 · example · docs · reference · …) |
 | `oav_search` | the first letter typed in a search box, once per page view | `page_type` |
 | `oav_lang_switch` | EN or 中文 | `page_type`, `to` (en · zh) |
 
-`page_type` says what kind of page it is: home, controller, controllers_index, verify, example, examples_index, docs, reference, cheatsheet, p5, made_with, changelog, webtoe, check or not_found. Each param is a short word or an id, never what was copied or typed into a search box, and never a link's path or query: `host` is the other site's name only. As with every page view, Google Analytics itself also records the page's address and sets its own cookie. The script runs only where the site's analytics runs, on openaudiovisual.com: not on localhost and not in a copy of the repository. Source: `assets/track.js`.
+`page_type` says what kind of page it is: home, controller, controllers_index, verify, example, examples_index, docs, reference, cheatsheet, p5, made_with, changelog, webtoe, check, not_found, devices_index (/devices/), fixture (/fixtures/<id>/) or device (/devices/<id>/). Each param is a short word or an id, never what was copied or typed into a search box, and never a link's path or query: `host` is the other site's name only. As with every page view, Google Analytics itself also records the page's address and sets its own cookie. The script runs only where the site's analytics runs, on openaudiovisual.com: not on localhost and not in a copy of the repository. Source: `assets/track.js`.
 
 None of this is in the framework. `p5/oav-p5.js`, `packages/` and `embed/` do not load the script and send nothing new, so a page someone else builds with open-audiovisual sends only what the first table lists. `tests/track.test.js` checks both.
 
