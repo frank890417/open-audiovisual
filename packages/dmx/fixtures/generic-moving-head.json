@@ -1,0 +1,132 @@
+{
+ "format": "open-audiovisual/fixture@1",
+ "id": "generic-moving-head",
+ "manufacturer": "Generic",
+ "name": "Moving head (RGBW)",
+ "kind": "moving-head",
+ "modes": [
+  {
+   "id": "8ch",
+   "name": "8 channel",
+   "channels": [
+    "pan",
+    "tilt",
+    "dimmer",
+    "strobe",
+    "red",
+    "green",
+    "blue",
+    "white"
+   ]
+  },
+  {
+   "id": "16ch",
+   "name": "16 channel (16-bit pan and tilt)",
+   "channels": [
+    "pan",
+    "panFine",
+    "tilt",
+    "tiltFine",
+    "speed",
+    "dimmer",
+    "strobe",
+    "red",
+    "green",
+    "blue",
+    "white",
+    "gobo",
+    "zoom",
+    "focus",
+    "program",
+    "reset"
+   ]
+  }
+ ],
+ "channels": {
+  "pan": {
+   "type": "pan",
+   "default": 128
+  },
+  "panFine": {
+   "fineOf": "pan",
+   "default": 0
+  },
+  "tilt": {
+   "type": "tilt",
+   "default": 128
+  },
+  "tiltFine": {
+   "fineOf": "tilt",
+   "default": 0
+  },
+  "speed": {
+   "type": "speed",
+   "default": 0
+  },
+  "dimmer": {
+   "type": "intensity",
+   "default": 0
+  },
+  "strobe": {
+   "type": "strobe",
+   "default": 0,
+   "ranges": [
+    {
+     "from": 0,
+     "to": 9,
+     "is": "open"
+    },
+    {
+     "from": 10,
+     "to": 255,
+     "is": "strobe"
+    }
+   ]
+  },
+  "red": {
+   "type": "color",
+   "color": "red"
+  },
+  "green": {
+   "type": "color",
+   "color": "green"
+  },
+  "blue": {
+   "type": "color",
+   "color": "blue"
+  },
+  "white": {
+   "type": "color",
+   "color": "white"
+  },
+  "gobo": {
+   "type": "gobo",
+   "default": 0
+  },
+  "zoom": {
+   "type": "zoom",
+   "default": 0
+  },
+  "focus": {
+   "type": "focus",
+   "default": 0
+  },
+  "program": {
+   "type": "control",
+   "default": 0
+  },
+  "reset": {
+   "type": "control",
+   "default": 0
+  }
+ },
+ "sources": [
+  {
+   "title": "open-audiovisual generic layout",
+   "note": "No single fixture behind it: a common channel order, written by hand. Read the manual of your light and, where its order or ranges differ, copy this file and change it before patching a real fixture. The strobe ranges say open and strobe but no Hz: a generic file cannot know how fast a given value flashes, so under the 3 Hz cap the engine keeps this channel open. Pan and tilt start at the middle (128). Which value of reset moves the head back home, and what the built-in programs do, differs from fixture to fixture: program and reset are control channels, written only by an explicit call (a built-in program flashes as it likes, outside the cap)."
+  }
+ ],
+ "license": "MIT",
+ "verified": false,
+ "verifications": []
+}

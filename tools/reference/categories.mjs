@@ -42,6 +42,8 @@ export const CATEGORIES = [
     hint: { en: 'Held notes in, chord quality and consonance out.', zh: '按住的音進來，和弦性質與協和度出去。' } },
   { id: 'osc', en: 'OSC and outputs', zh: 'OSC 與外部輸出',
     hint: { en: 'Send signals to TouchDesigner, Max or a hardware bridge.', zh: '把訊號送到 TouchDesigner、Max 或硬體橋接。' } },
+  { id: 'dmx', en: 'DMX lighting (@openav/dmx)', zh: 'DMX 燈光（@openav/dmx）',
+    hint: { en: 'Fixture profiles, the patch, scenes, cues, chases, effects, and Art-Net, sACN, Enttec bytes.', zh: '燈具 profile、patch、scene、cue、chase、effect，以及 Art-Net、sACN、Enttec 的封包。' } },
   { id: 'mapping', en: 'Mapping (@openav/mapping)', zh: '映射（@openav/mapping）',
     hint: { en: 'Routes from signals to params, curves, smoothing, learn.', zh: '從訊號到參數的路由、曲線、平滑、learn。' } },
   { id: 'core', en: 'Core: signals, params, stage, show', zh: '核心：訊號、參數、舞台、演出',
@@ -62,7 +64,7 @@ export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);
 
 /** Where a name without an entry sits on the page while it waits for one (the ledger): by package. */
 export const PACKAGE_CATEGORY = {
-  audio: 'mic', chop: 'chop', chord: 'chord', console: 'backstage', core: 'core', drums: 'drums', fab: 'fab', hw: 'hw', keys: 'keys', leap: 'leap',
+  audio: 'mic', chop: 'chop', chord: 'chord', console: 'backstage', core: 'core', dmx: 'dmx', drums: 'drums', fab: 'fab', hw: 'hw', keys: 'keys', leap: 'leap',
   mapping: 'mapping', mcp: 'mcp', midi: 'midi-io', monitor: 'backstage', osc: 'osc', out: 'osc', pattern: 'drums', pose: 'pose', record: 'record',
   relay: 'remote', remote: 'remote', score: 'timeline', show: 'core', sound: 'sound', stage: 'core', surface: 'remote', timeline: 'timeline',
   'world-webtoe': 'core', sync: 'core',

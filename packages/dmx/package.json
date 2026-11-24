@@ -1,0 +1,17 @@
+{
+  "name": "@openav/dmx",
+  "version": "0.1.0",
+  "description": "DMX lighting from a web page: fixture profiles, a patch, a deterministic engine (scenes, cues, chases, effects, safety caps), and Art-Net, sACN and Enttec DMX USB Pro bytes. Pure, no dependencies.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./fixtures/*": "./fixtures/*"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/dmx"
+  }
+}

@@ -342,7 +342,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-<!--gen:w-packages-->Twenty-nine<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+<!--gen:w-packages-->Thirty<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 <!--gen:packages-table-->
@@ -362,6 +362,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 | L4 output | [`@openav/sound`](packages/sound/) | Instruments in the page (Salamander piano, mallets, strings, organ, synth presets), one file to add your own |
 |  | [`@openav/osc`](packages/osc/) | OSC out of the browser through a small Node bridge to UDP |
 |  | [`@openav/out`](packages/out/) | Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values |
+|  | [`@openav/dmx`](packages/dmx/) | DMX lighting: fixture profiles, a patch, scenes, cues, chases and effects rendered as a function of time, a 3 Hz flash cap, and Art-Net, sACN and Enttec USB bytes |
 |  | [`@openav/record`](packages/record/) | Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed |
 |  | [`@openav/fab`](packages/fab/) | Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files |
 |  | [`@openav/hw`](packages/hw/) | What goes inside: parts with their datasheet numbers, a wiring check (logic levels, boot pins, I²C addresses, current, battery hours), a wiring diagram and a parts list |
@@ -430,7 +431,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-29 packages · 27 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1237 tests
+30 packages · 27 examples · 27 MIDI controller profiles (21 devices, 6 generic layouts, 1141 controls) · 1273 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

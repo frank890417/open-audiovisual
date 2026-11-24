@@ -1,0 +1,31 @@
+{
+ "format": "open-audiovisual/fixture@1",
+ "id": "generic-dimmer",
+ "manufacturer": "Generic",
+ "name": "Dimmer",
+ "kind": "dimmer",
+ "modes": [
+  {
+   "id": "1ch",
+   "name": "1 channel",
+   "channels": [
+    "dimmer"
+   ]
+  }
+ ],
+ "channels": {
+  "dimmer": {
+   "type": "intensity",
+   "default": 0
+  }
+ },
+ "sources": [
+  {
+   "title": "open-audiovisual generic layout",
+   "note": "No single fixture behind it: a common channel order, written by hand. Read the manual of your light and, where its order or ranges differ, copy this file and change it before patching a real fixture."
+  }
+ ],
+ "license": "MIT",
+ "verified": false,
+ "verifications": []
+}

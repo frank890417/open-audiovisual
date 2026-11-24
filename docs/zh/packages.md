@@ -1,13 +1,13 @@
 # 套件一覽
 
-二十九個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+三十個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
 | L1 輸入 | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 映射 | `mapping` · `chop` |
 | L3 世界 | `stage` · `world-webtoe` |
-| L4 輸出 | `sound` · `osc` · `out` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
+| L4 輸出 | `sound` · `osc` · `out` · `dmx` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | 手機 | `relay` · `surface` · `remote` |
 | 膠水 | `core` · `show` · `mcp` |
@@ -278,6 +278,20 @@ L4 輸出 · 把網頁作品的參數經一支本機橋接（`node packages/out/
 | 實驗室 | `meta.params[i].out: "light/1/r"` 綁定參數（照 min–max 正規化到 0..1，`outRaw` 送原值）；`?out=sim` · `?out=0` · `?out=ws://…` |
 
 設定檔與看門狗規則見套件的 README。
+
+## @openav/dmx
+
+L4 輸出（燈光）· 從網頁打 DMX，全部是純邏輯：燈具 profile（`open-audiovisual/fixture@1`）、把屬性（dimmer、color、pan、tilt、strobe、zoom，0..1）換成每台燈位元組的 patch，以及依時間算出每台燈任何時刻樣子的引擎：基礎 scene → 有淡入淡出的 cue → 跟著拍子的 chase → effect → 即時值 → 每台燈的上下限 → 總控 → blackout。安全機制預設開著：每一個造成亮度或顏色閃爍的 effect 或 chase，以及 profile 有寫 Hz 的每一個 strobe 通道，各自被限制在每秒最多 3 次（各算各的，同一台燈上疊兩個就可能超過）。沒寫 Hz 的 strobe 通道停在 open。`render(t, { beat })` 要連 `bpm` 一起給，因為上限要靠拍速計算。`control` 通道（重置、燈泡開關、內建程式）只有 `control()` 能寫。blackout 時 pan、tilt 停在原處。Art-Net、sACN 和 Enttec DMX USB Pro 的位元組由純函式編碼，送出去（輸出橋接程式、Web Serial）還不在這個套件裡。還沒有用任何一台真的燈、節點或介面試過。
+
+| 匯出 | 簽章 |
+|---|---|
+| `Patch` | `new Patch({ profiles })` · `add({ id, profile, mode, universe = 1, address, name, groups, limits })`（超過 512、模式不存在會丟錯誤）· `check()` → 重疊的位址 · `ids(target)` · `render(states, { master, blackout, maxFlashHz = 3, controls })` → `Universes` · `resolve(id, props)` · `toJSON()` · `Patch.fromJSON(json, { profiles })` |
+| `DmxEngine` | `new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 })` · `scene(name, { target: props })` · `base(...names)` · `cue(name, { scene, fadeIn, fadeOut, curve })` · `go(name, at)` · `release(at, fade)` · `chase(name, { steps, every, unit: 'beat' \| 'second', fade, start })` · `effect(name, { target, property, wave: sine \| saw \| square \| chase \| flicker \| rainbow, rate, unit, depth, phase, spread, width, seed })` · `run(name, on)` · `remove(name)` · `set(target, props)` · `clear(target, keys)` · `control(id, key, byte)` · `master`、`blackout`、`maxFlashHz` · `render(t, { beat, bpm })` → `Universes` · `state(t)` → `{ fixtures, capped }` |
+| `Universe` · `Universes` | `new Universe(id)` · `get(address)` · `set(address, value)` · `write(address, values)` · `fill(v)` · `copy()` · `data`（Uint8Array，512）· `Universes`：`get(id)` · `bytes(id)` · `ids()` · `entries()` |
+| 燈具 | `FIXTURES`（通用：調光器、RGB、RGBW 4／6 通道、RGBA、RGBAW+UV 6／8 通道、單色頻閃燈、搖頭燈 8／16 通道，全部 `"verified": false`）· `fixtureById(id)` · `validateFixture(profile)` → 問題清單 · `loadFixture(profile)` · `rgbToChannels([r, g, b], colors)` · schema 在 `@openav/dmx/fixtures/fixture.schema.json` |
+| 協定 | `encodeArtDmx(data, { universe, sequence, physical })`／`decodeArtDmx(bytes)`（ArtDmx，UDP 6454）· `encodeSacn(data, { universe, cid, source, priority, sequence })`／`decodeSacn(bytes)` · `sacnAddress(universe)`（E1.31，UDP 5568）· `encodeEnttecDmx(data)`／`decodeEnttecDmx(bytes)`（DMX USB Pro，label 6） |
+
+`node tools/import-ofl.mjs <OFL 的 checkout> fixtures/<廠牌>/<燈具>.json` 把 Open Fixture Library（MIT）的一台燈轉成這個格式，一次指定一台。Art-Net™ Designed by and Copyright Artistic Licence.
 
 ## @openav/record
 

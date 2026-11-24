@@ -1,6 +1,6 @@
 # Package reference
 
-Twenty-nine packages live in `packages/<name>/`. Each is plain ES modules with no
+Thirty packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -10,7 +10,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` · `chop` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` · `out` · `record` · `fab` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `out` · `dmx` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `mcp` |
@@ -301,6 +301,29 @@ serial motor boards, OSC. A watchdog sends every channel its configured safe val
 | lab | `meta.params[i].out: "light/1/r"` binds a param (0..1 by min–max, `outRaw` for the raw value); `?out=sim` · `?out=0` · `?out=ws://…` |
 
 See the package README for the config file and the watchdog rules.
+
+## @openav/dmx
+
+L4 output (lighting) · DMX from a page, as pure logic: fixture profiles (`open-audiovisual/fixture@1`), a patch that turns
+properties (dimmer, color, pan, tilt, strobe, zoom, 0..1) into each light's bytes, and an engine that renders every light at
+any moment as a function of time: base scenes → cues with fades → chases on beats → effects → live values → per-fixture limits →
+grand master → blackout. Safety is on by default: each effect or chase that makes intensity or colour flash, and every strobe
+channel whose profile gives Hz, is held to 3 flashes a second (each on its own: two on one light can add up); a strobe channel
+with no Hz stays open; `render(t, { beat })` needs `bpm` with it, since the cap reads the tempo; `control` channels (reset, lamp, built-in
+programs) are written only by `control()`; blackout leaves pan and tilt where they are. The bytes of Art-Net, sACN and the Enttec
+DMX USB Pro come out of pure encoders; sending them (the out-bridge, Web Serial) is not in this package yet. Nothing has been
+tried on a real fixture, node or interface.
+
+| export | signature |
+|---|---|
+| `Patch` | `new Patch({ profiles })` · `add({ id, profile, mode, universe = 1, address, name, groups, limits })` (throws past 512, unknown mode) · `check()` → overlaps · `ids(target)` · `render(states, { master, blackout, maxFlashHz = 3, controls })` → `Universes` · `resolve(id, props)` · `toJSON()` · `Patch.fromJSON(json, { profiles })` |
+| `DmxEngine` | `new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 })` · `scene(name, { target: props })` · `base(...names)` · `cue(name, { scene, fadeIn, fadeOut, curve })` · `go(name, at)` · `release(at, fade)` · `chase(name, { steps, every, unit: 'beat' \| 'second', fade, start })` · `effect(name, { target, property, wave: sine \| saw \| square \| chase \| flicker \| rainbow, rate, unit, depth, phase, spread, width, seed })` · `run(name, on)` · `remove(name)` · `set(target, props)` · `clear(target, keys)` · `control(id, key, byte)` · `master`, `blackout`, `maxFlashHz` · `render(t, { beat, bpm })` → `Universes` · `state(t)` → `{ fixtures, capped }` |
+| `Universe` · `Universes` | `new Universe(id)` · `get(address)` · `set(address, value)` · `write(address, values)` · `fill(v)` · `copy()` · `data` (Uint8Array, 512) · `Universes`: `get(id)` · `bytes(id)` · `ids()` · `entries()` |
+| fixtures | `FIXTURES` (generic: dimmer, RGB, RGBW 4/6 ch, RGBA, RGBAW+UV 6/8 ch, one-colour strobe, moving head 8/16 ch, all `"verified": false`) · `fixtureById(id)` · `validateFixture(profile)` → problems · `loadFixture(profile)` · `rgbToChannels([r, g, b], colors)` · schema `@openav/dmx/fixtures/fixture.schema.json` |
+| protocols | `encodeArtDmx(data, { universe, sequence, physical })` / `decodeArtDmx(bytes)` (ArtDmx, UDP 6454) · `encodeSacn(data, { universe, cid, source, priority, sequence })` / `decodeSacn(bytes)` · `sacnAddress(universe)` (E1.31, UDP 5568) · `encodeEnttecDmx(data)` / `decodeEnttecDmx(bytes)` (DMX USB Pro, label 6) |
+
+`node tools/import-ofl.mjs <OFL checkout> fixtures/<maker>/<fixture>.json` converts a fixture from the Open Fixture Library (MIT)
+into this format, one by name. Art-Net™ Designed by and Copyright Artistic Licence.
 
 ## @openav/record
 

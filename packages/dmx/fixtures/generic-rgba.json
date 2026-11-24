@@ -1,0 +1,46 @@
+{
+ "format": "open-audiovisual/fixture@1",
+ "id": "generic-rgba",
+ "manufacturer": "Generic",
+ "name": "RGBA par",
+ "kind": "par",
+ "modes": [
+  {
+   "id": "4ch",
+   "name": "4 channel",
+   "channels": [
+    "red",
+    "green",
+    "blue",
+    "amber"
+   ]
+  }
+ ],
+ "channels": {
+  "red": {
+   "type": "color",
+   "color": "red"
+  },
+  "green": {
+   "type": "color",
+   "color": "green"
+  },
+  "blue": {
+   "type": "color",
+   "color": "blue"
+  },
+  "amber": {
+   "type": "color",
+   "color": "amber"
+  }
+ },
+ "sources": [
+  {
+   "title": "open-audiovisual generic layout",
+   "note": "No single fixture behind it: a common channel order, written by hand. Read the manual of your light and, where its order or ranges differ, copy this file and change it before patching a real fixture."
+  }
+ ],
+ "license": "MIT",
+ "verified": false,
+ "verifications": []
+}

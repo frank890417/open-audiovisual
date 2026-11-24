@@ -1,0 +1,90 @@
+{
+ "format": "open-audiovisual/fixture@1",
+ "id": "generic-rgbaw-uv",
+ "manufacturer": "Generic",
+ "name": "RGBAW+UV par",
+ "kind": "par",
+ "modes": [
+  {
+   "id": "6ch",
+   "name": "6 channel",
+   "channels": [
+    "red",
+    "green",
+    "blue",
+    "amber",
+    "white",
+    "uv"
+   ]
+  },
+  {
+   "id": "8ch",
+   "name": "8 channel",
+   "channels": [
+    "dimmer",
+    "red",
+    "green",
+    "blue",
+    "amber",
+    "white",
+    "uv",
+    "strobe"
+   ]
+  }
+ ],
+ "channels": {
+  "dimmer": {
+   "type": "intensity",
+   "default": 0
+  },
+  "red": {
+   "type": "color",
+   "color": "red"
+  },
+  "green": {
+   "type": "color",
+   "color": "green"
+  },
+  "blue": {
+   "type": "color",
+   "color": "blue"
+  },
+  "amber": {
+   "type": "color",
+   "color": "amber"
+  },
+  "white": {
+   "type": "color",
+   "color": "white"
+  },
+  "uv": {
+   "type": "color",
+   "color": "uv"
+  },
+  "strobe": {
+   "type": "strobe",
+   "default": 0,
+   "ranges": [
+    {
+     "from": 0,
+     "to": 9,
+     "is": "open"
+    },
+    {
+     "from": 10,
+     "to": 255,
+     "is": "strobe"
+    }
+   ]
+  }
+ },
+ "sources": [
+  {
+   "title": "open-audiovisual generic layout",
+   "note": "No single fixture behind it: a common channel order, written by hand. Read the manual of your light and, where its order or ranges differ, copy this file and change it before patching a real fixture. The strobe ranges say open and strobe but no Hz: a generic file cannot know how fast a given value flashes, so under the 3 Hz cap the engine keeps this channel open."
+  }
+ ],
+ "license": "MIT",
+ "verified": false,
+ "verifications": []
+}
