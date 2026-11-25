@@ -12,7 +12,7 @@ export default {
     },
     params: [
       { name: 'container', type: 'HTMLElement', en: 'Where the panel goes. The panel is `position: absolute` and fills it, so the container needs a position (`position: relative`) and a size, or the panel has none.', zh: '面板要放的地方。面板是 `position: absolute`，會填滿它，所以容器要有定位（`position: relative`）和大小，不然面板就沒有大小。' },
-      { name: 'layout', type: 'Object', en: 'The layout JSON (see [`validateLayout()`](#validateLayout)): pages, a grid, widgets. A bad layout throws an error that lists every problem.', zh: '版面 JSON（見 [`validateLayout()`](#validateLayout)）：頁面、格線、元件。版面有問題會丟出錯誤，列出每一個問題。' },
+      { name: 'layout', type: 'Object', en: 'The layout JSON (see [`validateLayout()`](#surface-validateLayout)): pages, a grid, widgets. A bad layout throws an error that lists every problem.', zh: '版面 JSON（見 [`validateLayout()`](#surface-validateLayout)）：頁面、格線、元件。版面有問題會丟出錯誤，列出每一個問題。' },
       { name: 'sink', type: 'Function', en: '`(name, value, info) => {}`, called for every signal a touch makes. `name` is like `surface/main/hue`, `value` is normalized 0..1 (an event is `info.pulse`, a string for a text box). When a widget\'s range is not 0..1, `info.raw` holds the unscaled value, and a second call follows with the name `…/raw`. [`signalSink()`](#signalSink) writes into a `Signals`; a phone passes one that calls `relay.set`.', zh: '`(name, value, info) => {}`，每一次觸碰產生訊號都會呼叫。`name` 像 `surface/main/hue`，`value` 是正規化的 0..1（事件是 `info.pulse`，文字框則是字串）。元件的範圍不是 0..1 的時候，`info.raw` 帶著沒縮放的值，接著還會再呼叫一次，名稱是 `…/raw`。[`signalSink()`](#signalSink) 會寫進 `Signals`，手機上則傳一個呼叫 `relay.set` 的函式。' },
       { name: 'haptics', type: 'Boolean', en: 'Buzz the phone briefly on a button, a toggle, a radio choice or a double-tap reset, where the browser can (Android Chrome). `false` turns it off.', zh: '在按下按鈕、切換開關、選了單選項目、雙擊重設的時候讓手機震一下，瀏覽器做得到的話（Android Chrome）。`false` 就關掉。' },
       { name: 'tabs', type: 'Boolean', en: 'Show a tab strip when the layout has more than one page. `false` hides it, and you switch with `setPage()`.', zh: '版面有一頁以上的時候，顯示分頁列。`false` 就隱藏，改用 `setPage()` 切換。' },
@@ -38,7 +38,7 @@ export default {
       zh: '要有瀏覽器頁面（它會建立 DOM），而且容器要有大小。面板會用 [`injectTheme()`](#injectTheme) 把它的外觀注入一次。不用另外啟動：第一次觸碰就能用。在手機頁面上，用 [`lockViewport()`](#lockViewport) 讓頁面不會在手指底下捲動或縮放。',
     },
     members: {
-      setLayout: { en: '`setLayout(raw)`: rebuild the panel from a layout. Throws an `Error` that begins `invalid surface layout:` and lists every problem if [`validateLayout()`](#validateLayout) finds any. Keeps the current page when the new layout has one with the same id. Returns the surface.', zh: '`setLayout(raw)`：依版面重建面板。[`validateLayout()`](#validateLayout) 找得到問題的話，會丟出以 `invalid surface layout:` 開頭、列出每個問題的 `Error`。新版面有相同 id 的頁面時，會停留在目前那一頁。回傳面板本身。' },
+      setLayout: { en: '`setLayout(raw)`: rebuild the panel from a layout. Throws an `Error` that begins `invalid surface layout:` and lists every problem if [`validateLayout()`](#surface-validateLayout) finds any. Keeps the current page when the new layout has one with the same id. Returns the surface.', zh: '`setLayout(raw)`：依版面重建面板。[`validateLayout()`](#surface-validateLayout) 找得到問題的話，會丟出以 `invalid surface layout:` 開頭、列出每個問題的 `Error`。新版面有相同 id 的頁面時，會停留在目前那一頁。回傳面板本身。' },
       setPage: { en: '`setPage(id)`: show the page with this id, and call `onPage`.', zh: '`setPage(id)`：顯示這個 id 的頁面，並呼叫 `onPage`。' },
       feedback: { en: '`feedback(name, value)`: runner to widget. `name` is the full signal name such as `surface/main/level`, `value` is normalized 0..1. A name that no widget listens to is ignored.', zh: '`feedback(name, value)`：演出端對元件。`name` 是完整的訊號名稱，像 `surface/main/level`，`value` 是正規化的 0..1。沒有任何元件在聽的名稱會被忽略。' },
       widget: { en: '`widget(page, id)`: the widget object for a page id and a widget id, or `undefined`. Its element is `.el`.', zh: '`widget(page, id)`：某個頁面 id 與元件 id 對應的元件物件，找不到是 `undefined`。它的元素是 `.el`。' },
@@ -51,8 +51,8 @@ export default {
         zh: '公開的欄位有 `layout`（正規化之後的版面）、`root`（面板的元素）、`orientation`、`pageId`、`widgets`（`"page/id"` 對應元件的 `Map`）、`sink`、`haptics`。',
       },
       {
-        en: 'The constructor appends the panel to the container before it checks the layout, so a layout that throws there leaves an empty panel behind. Run [`validateLayout()`](#validateLayout) first if the layout comes from a file or a person.',
-        zh: '建構函式在檢查版面之前就把面板加進容器了，所以版面在那裡丟出錯誤的話，會留下一個空的面板。版面來自檔案或使用者的話，請先跑 [`validateLayout()`](#validateLayout)。',
+        en: 'The constructor appends the panel to the container before it checks the layout, so a layout that throws there leaves an empty panel behind. Run [`validateLayout()`](#surface-validateLayout) first if the layout comes from a file or a person.',
+        zh: '建構函式在檢查版面之前就把面板加進容器了，所以版面在那裡丟出錯誤的話，會留下一個空的面板。版面來自檔案或使用者的話，請先跑 [`validateLayout()`](#surface-validateLayout)。',
       },
     ],
     examples: [
@@ -117,7 +117,7 @@ try {
         caption: { en: 'A bad layout throws and lists every problem (an unknown type "dial", a duplicate id "x"); the panel that was already there stays as it was.', zh: '有問題的版面會丟出錯誤，並列出每個問題（不認得的類型「dial」、重複的 id「x」），原本的面板維持不變。' },
       },
     ],
-    related: ['signalSink', 'validateLayout', 'autoSurface', 'resolvePage', 'injectTheme', 'lockViewport', 'WIDGET_TYPES', 'mountRemote'],
+    related: ['signalSink', 'surface-validateLayout', 'autoSurface', 'resolvePage', 'injectTheme', 'lockViewport', 'WIDGET_TYPES', 'mountRemote'],
     keywords: {
       en: ['surface', 'control surface', 'touchosc', 'widgets', 'fader', 'knob', 'xy pad', 'pads', 'layout', 'phone controller', 'panel', 'touch', 'feedback'],
       zh: ['控制面板', 'touchosc', '元件', '推桿', '旋鈕', 'xy 板', '打擊墊', '版面', '手機控制器', '面板', '觸控', '回饋'],
@@ -177,8 +177,8 @@ document.getElementById('app').innerHTML = [
     },
     value: {
       type: 'string[]',
-      en: 'The keys of [`DEFAULT_SIZE`](#DEFAULT_SIZE), in that order. [`validateLayout()`](#validateLayout) rejects any `type` that is not in it.',
-      zh: '[`DEFAULT_SIZE`](#DEFAULT_SIZE) 的鍵，順序也一樣。[`validateLayout()`](#validateLayout) 會拒絕不在裡面的 `type`。',
+      en: 'The keys of [`DEFAULT_SIZE`](#DEFAULT_SIZE), in that order. [`validateLayout()`](#surface-validateLayout) rejects any `type` that is not in it.',
+      zh: '[`DEFAULT_SIZE`](#DEFAULT_SIZE) 的鍵，順序也一樣。[`validateLayout()`](#surface-validateLayout) 會拒絕不在裡面的 `type`。',
     },
     description: [
       {
@@ -204,7 +204,7 @@ document.getElementById('app').innerHTML = WIDGET_TYPES
         caption: { en: 'Lists the 14 types with their natural size in grid cells, from fader 1×4 to meter 1×4.', zh: '列出 14 種類型和它們在格線上的預設大小，從 fader 1×4 到 meter 1×4。' },
       },
     ],
-    related: ['DEFAULT_SIZE', 'WIDGET_CLASSES', 'validateLayout', 'signalNames', 'COLOR_NAMES'],
+    related: ['DEFAULT_SIZE', 'WIDGET_CLASSES', 'surface-validateLayout', 'signalNames', 'COLOR_NAMES'],
     keywords: {
       en: ['widget types', 'fader', 'knob', 'encoder', 'button', 'toggle', 'xy', 'bank', 'radio', 'pads', 'keyboard', 'number', 'text', 'label', 'meter'],
       zh: ['元件類型', '推桿', '旋鈕', '無限旋鈕', '按鈕', '開關', 'xy', '推桿組', '單選', '打擊墊', '琴鍵', '數字框', '文字框', '標籤', '音量表'],
@@ -262,8 +262,8 @@ document.getElementById('app').textContent = 'a knob is ' + w + ' cells wide and
         zh: '大部分頁面用不到它：[`Surface`](#Surface) 會在這裡查每個 `spec.type`。把它匯出來，是給只想要單一元件、不要整個面板的程式用的。`spec` 是元件在版面裡的那一項（`{ id, type, label, min, max, … }`），`ctx` 是 `{ page, out(name, value, info), haptic(ms) }`，`out` 就是元件的訊號送去的地方，`page` 是用在訊號名稱裡的頁面 id。元件的元素是 `.el`，要自己把它放進頁面。',
       },
       {
-        en: 'Adding your own key here does not make a new layout type: [`validateLayout()`](#validateLayout) only accepts the names in [`WIDGET_TYPES`](#WIDGET_TYPES).',
-        zh: '在這裡加你自己的鍵，並不會多出一種新的版面類型：[`validateLayout()`](#validateLayout) 只接受 [`WIDGET_TYPES`](#WIDGET_TYPES) 裡的名稱。',
+        en: 'Adding your own key here does not make a new layout type: [`validateLayout()`](#surface-validateLayout) only accepts the names in [`WIDGET_TYPES`](#WIDGET_TYPES).',
+        zh: '在這裡加你自己的鍵，並不會多出一種新的版面類型：[`validateLayout()`](#surface-validateLayout) 只接受 [`WIDGET_TYPES`](#WIDGET_TYPES) 裡的名稱。',
       },
     ],
     notes: [
@@ -368,7 +368,7 @@ document.getElementById('app').innerHTML = [
         caption: { en: 'Prints "page: page1 "Page 1", grid 8x6" and the widget ids fader1, fader1_ (the second fader1 was already taken), knob3.', zh: '印出「page: page1 "Page 1", grid 8x6」和元件 id：fader1、fader1_（第二個 fader1 已經被用了）、knob3。' },
       },
     ],
-    related: ['validateLayout', 'signalNames', 'resolvePage', 'Surface'],
+    related: ['surface-validateLayout', 'signalNames', 'resolvePage', 'Surface'],
     keywords: {
       en: ['normalize', 'defaults', 'fill in', 'layout', 'ids', 'grid default', 'copy'],
       zh: ['正規化', '預設值', '補齊', '版面', 'id', '預設格線', '複本'],
@@ -919,8 +919,8 @@ document.getElementById('app').innerHTML = ['--oav-bg', '--oav-accent', '--oav-r
     },
     description: [
       {
-        en: '`{ id: \'hue\', type: \'knob\', color: \'amber\' }` makes the widget\'s fill, its value readout and its pressed outline amber. A widget without a colour uses `--oav-accent` of [`THEME_VARS`](#THEME_VARS). [`autoSurface()`](#autoSurface) hands out the first six in turn (white is left for you). A name that is not in the list gets no colour of its own and falls back to the accent; [`validateLayout()`](#validateLayout) does not check it.',
-        zh: '`{ id: \'hue\', type: \'knob\', color: \'amber\' }` 會讓元件的填色、數值讀數和按下時的描邊都變成琥珀色。沒有顏色的元件用 [`THEME_VARS`](#THEME_VARS) 的 `--oav-accent`。[`autoSurface()`](#autoSurface) 會輪流發前六個（white 留給你用）。不在清單裡的名稱沒有自己的顏色，會退回強調色。[`validateLayout()`](#validateLayout) 不檢查它。',
+        en: '`{ id: \'hue\', type: \'knob\', color: \'amber\' }` makes the widget\'s fill, its value readout and its pressed outline amber. A widget without a colour uses `--oav-accent` of [`THEME_VARS`](#THEME_VARS). [`autoSurface()`](#autoSurface) hands out the first six in turn (white is left for you). A name that is not in the list gets no colour of its own and falls back to the accent; [`validateLayout()`](#surface-validateLayout) does not check it.',
+        zh: '`{ id: \'hue\', type: \'knob\', color: \'amber\' }` 會讓元件的填色、數值讀數和按下時的描邊都變成琥珀色。沒有顏色的元件用 [`THEME_VARS`](#THEME_VARS) 的 `--oav-accent`。[`autoSurface()`](#autoSurface) 會輪流發前六個（white 留給你用）。不在清單裡的名稱沒有自己的顏色，會退回強調色。[`validateLayout()`](#surface-validateLayout) 不檢查它。',
       },
     ],
     examples: [
