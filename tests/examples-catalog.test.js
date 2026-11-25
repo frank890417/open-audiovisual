@@ -93,7 +93,8 @@ test('homepage: the works section lists the whole catalog in route order, titled
     assert.match(works, /href="[^"]*examples\/">/, `${file}: links to /examples/`);
   }
   assert.ok(read('index.html').includes(`${cap(enWords(f.exampleCount))} works you can open now`));
-  assert.ok(!/Ten works/.test(read('index.html')) && !/十件作品/.test(read('zh/index.html')));
+  // the count of the very first homepage (ten) is gone: "三十件作品" (thirty) is not "十件作品" (ten)
+  assert.ok(!/\bTen works/.test(read('index.html')) && !/(^|[^一二三四五六七八九十百])十件作品/.test(read('zh/index.html')));
 });
 
 test('/examples/ and /zh/examples/: a card per example, grouped by route, ItemList of every example, breadcrumb', async () => {

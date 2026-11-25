@@ -387,3 +387,120 @@ test('clock: old samples age out, so a drifting clock is followed', () => {
   assert.equal(c.offset, 520, 'the quick-but-old sample left the window');
   assert.ok(c.samples.length <= 11);
 });
+
+// ---------------------------------------------------------------------------------------------- the marker param, since 0.11.0
+// Framework 0.11.0 decided who holds a value when several writers touch one param (docs/mapping.md#who-holds-a-value). The
+// camera page's mode reaches a tiled world as the signal tile/markers through TILE_ROUTES, and the relay replays standing config
+// (the mode among it) to a tile whenever its socket reconnects: that replay is the same mode said again, not a change.
+import { Signals } from '../packages/core/src/signals.js';
+import { Params } from '../packages/core/src/params.js';
+import { Mapper } from '../packages/mapping/index.js';
+import { TILE_PARAMS, TILE_ROUTES } from '../packages/tile/join.js';
+import { tileWorld } from '../packages/tile/world.js';
+
+test('tileMarkers under the 0.11.0 rule: Markers / Play reach every frame of a tiled world; a hand on one screen holds it until the camera page really changes mode, and the same mode replayed does not take it back', () => {
+  const signals = new Signals();
+  signals.define('tile/markers', { min: 0, max: 1, source: 'tile' });       // what joinTile() defines
+  const world = { name: 'w', params: [{ key: 'size', min: 0, max: 1, def: 0.5 }], update() {} };
+  const shown = [];
+  const tile = { mode: 'show', markers: (on) => shown.push(on) };           // joinTile() reduced to what tileWorld calls
+  const tiled = tileWorld(world, tile);
+  const params = new Params([...tiled.params]);
+  const base = { size: 0.5, tileMarkers: 0 };                               // the timeline says: play
+  const mapper = new Mapper({ signals, params, base: () => base });
+  for (const r of TILE_ROUTES) mapper.addRoute({ ...r });
+  const frames = (n = 3) => { for (let i = 0; i < n; i++) { mapper.update(1 / 60); tiled.update(1 / 60, params.resolve(base), {}); } };
+  const now = () => { shown.length = 0; frames(); return shown.at(-1); };
+  const mode = (m) => signals.set('tile/markers', m === 'markers' ? 1 : 0); // onConfig(tile/mode, m) in join.js
+
+  assert.deepEqual(TILE_PARAMS.map((p) => p.key), ['tileMarkers']);
+  assert.deepEqual(tiled.params.map((p) => p.key), ['size', 'tileMarkers'], 'tileWorld adds the param once');
+  mode('show'); assert.equal(now(), false, 'attached in show mode: no markers');
+  mode('markers'); assert.equal(now(), true, 'Markers');
+  assert.equal(params.holder('tileMarkers')?.kind, 'route', 'the route holds it');
+  mode('show'); assert.equal(now(), false, 'Play');
+  mode('markers'); assert.equal(now(), true, 'Markers again');
+
+  params.override('tileMarkers', 0);                                        // the console's slider on this one screen
+  assert.equal(now(), false, 'a hand turns this screen back to the show');
+  mode('markers'); frames(120);                                             // the relay replays the same mode (a reconnect)
+  assert.equal(now(), false, 'the same mode said again does not take the param back from the hand');
+  assert.equal(params.holder('tileMarkers')?.kind, 'hand');
+  mode('show'); mode('markers');                                            // the camera page really changes mode
+  assert.equal(now(), true, 'a real change of mode takes it again');
+  assert.equal(params.holder('tileMarkers')?.kind, 'route');
+
+  params.clearOverride('tileMarkers');                                      // ✕: the timeline plays
+  assert.equal(now(), false, 'after ✕ the timeline (0) plays');
+  mode('markers'); assert.equal(now(), false, 'still the same value as before ✕: the route waits for a change');
+  mode('show'); mode('markers'); assert.equal(now(), true, 'and takes it on the next change');
+});
+
+// ---------------------------------------------------------------------------------------------- OpenCV: the camera page only
+// The camera page loads OpenCV.js (about 10 MB) from jsDelivr. A tile, every other package and every example must never
+// reach it: the static import graph from every entry point stops before detect.js, and the address is written in one file.
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { OPENCV_URL, OPENCV_VERSION } from '../packages/tile/detect.js';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const rel = (f) => path.relative(ROOT, f).split(path.sep).join('/');
+/** every module a file reaches by static or dynamic import, relative and @openav/* (through each package's exports) */
+function reach(start) {
+  const exportsOf = (name, sub) => {
+    const pj = JSON.parse(fs.readFileSync(path.join(ROOT, 'packages', name, 'package.json'), 'utf8'));
+    const ex = pj.exports && typeof pj.exports === 'object' ? pj.exports : { '.': pj.main || 'index.js' };
+    const t = ex[sub ? './' + sub : '.'];
+    return typeof t === 'string' ? path.join(ROOT, 'packages', name, t) : null;
+  };
+  const seen = new Set(), todo = [start];
+  while (todo.length) {
+    const f = todo.pop();
+    if (seen.has(f) || !fs.existsSync(f)) continue;
+    seen.add(f);
+    const src = fs.readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+    for (const m of src.matchAll(/(?:\bfrom\s*|\bimport\s*\(\s*|^\s*import\s+)['"]([^'"]+)['"]/gm)) {
+      const spec = m[1].replace(/\?.*$/, '');
+      if (spec.startsWith('.')) todo.push(path.resolve(path.dirname(f), spec));
+      else { const o = /^@openav\/([\w-]+)(?:\/(.+))?$/.exec(spec); if (o) { const t = exportsOf(o[1], o[2]); if (t) todo.push(t); } }
+    }
+  }
+  return [...seen].map(rel);
+}
+
+test('OpenCV.js: pinned, and only the camera page reaches it (no tile, package entry or example imports detect.js; the address is written in detect.js alone)', () => {
+  assert.equal(OPENCV_VERSION, '4.12.0-release.1');
+  assert.equal(OPENCV_URL, `https://cdn.jsdelivr.net/npm/@techstark/opencv-js@${OPENCV_VERSION}/dist/opencv.js`, 'one pinned file on jsDelivr');
+  const DETECT = 'packages/tile/detect.js';
+  assert.ok(reach(path.join(ROOT, 'packages/tile/camera.js')).includes(DETECT), 'the camera page does reach it (the walk works)');
+  // every package entry but @openav/tile/detect itself, and every example's main.js and inline modules
+  const starts = [];
+  for (const d of fs.readdirSync(path.join(ROOT, 'packages'))) {
+    const f = path.join(ROOT, 'packages', d, 'package.json');
+    if (!fs.existsSync(f)) continue;
+    const pj = JSON.parse(fs.readFileSync(f, 'utf8'));
+    const ex = pj.exports && typeof pj.exports === 'object' ? pj.exports : { '.': pj.main || 'index.js' };
+    for (const [sub, t] of Object.entries(ex)) if (typeof t === 'string' && !t.includes('*') && !(d === 'tile' && sub === './detect')) starts.push(path.join(ROOT, 'packages', d, t));
+  }
+  for (const d of fs.readdirSync(path.join(ROOT, 'examples'))) if (fs.existsSync(path.join(ROOT, 'examples', d, 'main.js'))) starts.push(path.join(ROOT, 'examples', d, 'main.js'));
+  assert.ok(starts.some((s) => rel(s) === 'packages/tile/index.js') && starts.some((s) => rel(s) === 'examples/30-tile-dot/main.js'));
+  for (const s of starts) assert.ok(!reach(s).includes(DETECT), `${rel(s)} reaches ${DETECT}`);
+  // the address (and the package name) appear in code in one file: what the browser fetches is decided there
+  const hits = [];
+  // what runs, not what a comment says (dict.js names the package its table was drawn from)
+  const code = (p) => fs.readFileSync(p, 'utf8').replace(/<!--[\s\S]*?-->/g, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`\\])\/\/.*$/gm, '$1');
+  const walk = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.name === 'node_modules' || e.name.startsWith('.')) continue;
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (/\.(m?js|cjs|html)$/.test(e.name) && /techstark|opencv\.js['"`]/i.test(code(p))) hits.push(rel(p));
+    }
+  };
+  for (const d of ['packages', 'examples', 'p5', 'assets', 'embed', 'controllers', 'devices', 'fixtures', 'check', 'webtoe', 'made-with']) if (fs.existsSync(path.join(ROOT, d))) walk(path.join(ROOT, d));
+  hits.push(...['index.html', '404.html', 'serve.js'].filter((f) => /techstark/i.test(code(path.join(ROOT, f)))));
+  // the tests and the dictionary extractor read the same pinned file on purpose, and the reference prints the address
+  const allowed = new Set([DETECT, 'packages/tile/test/tile-smoke.cjs', 'packages/tile/tools/extract-dict.cjs', 'packages/tile/reference.mjs']);
+  assert.deepEqual(hits.filter((h) => !allowed.has(h)), [], 'only detect.js says where OpenCV.js comes from');
+});

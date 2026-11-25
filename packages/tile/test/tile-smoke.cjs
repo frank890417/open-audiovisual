@@ -2,20 +2,24 @@
 // tile-smoke.cjs — @openav/tile end to end, in headless Chromium. Not part of `npm test` (it needs a browser and
 // OpenCV.js); run it by hand before a release, like p5/test/*.cjs.
 //
+//   PW=<path to playwright> [SHOTS=<dir>] [THUMB=assets/home/works/30.webp] node packages/tile/test/tile-smoke.cjs
+//
+// The camera page loads the pinned OpenCV.js from jsDelivr (detect.js OPENCV_URL), as it does for a visitor. Offline or
+// behind a proxy that blocks the CDN, give it the very same file and it is served for that URL by request interception:
+//
 //   npm pack @techstark/opencv-js@4.12.0-release.1 && tar xzf techstark-opencv-js-4.12.0-release.1.tgz
-//   OPENCV=package/dist/opencv.js PW=<path to playwright> [SHOTS=<dir>] [THUMB=assets/home/works/30.webp] \
-//     node packages/tile/test/tile-smoke.cjs
+//   OPENCV=package/dist/opencv.js PW=<path to playwright> node packages/tile/test/tile-smoke.cjs
 //
-// OPENCV is the very file the camera page loads from jsDelivr (detect.js OPENCV_URL); it is served for that URL by
-// request interception, so the test also runs offline or behind a proxy that blocks the CDN.
+// No camera, MIDI or serial permission is given, and none is needed.
 //
+//   0. example 30 alone (no ?room=): one screen with the console, drawing, no console errors (SHOTS: tile-example-30.png).
 //   1. demo: the camera page's ?demo=1 — a synthetic photo of three screens (test/synth.js), detected and solved in
-//      the page, compared with the truth.
+//      the page, compared with the truth (SHOTS: tile-camera-demo.png).
 //   2. room: node serve.js; three tiles (examples/30-tile-dot) in three browser contexts the size of a laptop
 //      (2560×1600), a tablet (2048×2732) and a phone (1170×2532), the camera page in a fourth. Join, Markers; each
 //      tile's own screenshot (its real markers, drawn by drawMarkers on its canvas) is laid on a virtual table under a
 //      tilted camera — that is the photo the camera page detects, solves and sends over the relay. Each tile must then
-//      be placed where the photo put it; their clocks must agree; the page must log no error but the backstage
+//      be placed where the photo put it; their clocks and timelines must agree; the page must log no error but the backstage
 //      monitor's (ws://…:7457, expected when no monitor runs).
 //   3. the thumbnail: the three tiles frozen at one shared instant, seen from above (THUMB writes the 800×500 webp).
 const fs = require('fs'), path = require('path'), { spawn } = require('child_process');
@@ -25,7 +29,7 @@ const OPENCV = process.env.OPENCV;
 const SHOTS = process.env.SHOTS || null;
 const OPENCV_VERSION = /const OPENCV_VERSION = '([^']+)'/.exec(fs.readFileSync(path.join(ROOT, 'packages/tile/detect.js'), 'utf8'))[1];
 const CDN = `https://cdn.jsdelivr.net/npm/@techstark/opencv-js@${OPENCV_VERSION}/dist/opencv.js`;
-if (!OPENCV || !fs.existsSync(OPENCV)) { console.error('OPENCV=<path to opencv.js> is required (see the top of this file)'); process.exit(2); }
+if (OPENCV && !fs.existsSync(OPENCV)) { console.error(`OPENCV=${OPENCV}: no such file (see the top of this file)`); process.exit(2); }
 if (SHOTS) fs.mkdirSync(SHOTS, { recursive: true });
 
 const fails = [];
@@ -52,8 +56,32 @@ async function serve(port) {
     page.on('console', (m) => { if (m.type() === 'error' && !/ws:\/\/localhost:7457/.test(m.text())) errors.push(`${name}: ${m.text()}`); });
     page.on('pageerror', (e) => errors.push(`${name}: ${e.message}`));
   };
-  const opencv = (ctx) => ctx.route(CDN, (r) => r.fulfill({ path: OPENCV, contentType: 'text/javascript', headers: { 'access-control-allow-origin': '*' } }));
+  // without OPENCV the page fetches the CDN itself: the production path
+  const opencv = (ctx) => (OPENCV ? ctx.route(CDN, (r) => r.fulfill({ path: OPENCV, contentType: 'text/javascript', headers: { 'access-control-allow-origin': '*' } })) : null);
+  console.log(`# OpenCV.js: ${OPENCV ? `${OPENCV}, served for ${CDN}` : CDN}`);
   try {
+    // ------------------------------------------------------------------ 0. example 30 on its own
+    {
+      const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+      const page = await ctx.newPage();
+      const before = errors.length;
+      watch(page, 'example 30 alone');
+      await page.goto(`${base}/examples/30-tile-dot/`);
+      await page.waitForFunction(() => window.openav && window.openav.loop && window.openav.loop.running, null, { timeout: 15000 });
+      await new Promise((r) => setTimeout(r, 1500));
+      const alone = await page.evaluate(() => {
+        const c = document.querySelector('.oav-stage canvas'), g = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+        let lit = 0;
+        for (let i = 0; i < g.length; i += 16) if (g[i] + g[i + 1] + g[i + 2] > 200) lit++;
+        return { tile: window.oavTile, lit, w: c.width, h: c.height, t: window.openav.timeline.t, guide: !!document.getElementById('oav-guide') };
+      });
+      console.log(`# example 30 alone: canvas ${alone.w}×${alone.h}, ${alone.lit} lit samples, timeline at ${alone.t.toFixed(2)} s`);
+      check(alone.tile === null && alone.lit > 20 && alone.guide, 'example 30 without ?room= is one screen on its own: it draws, with its guide card');
+      check(errors.length === before, 'example 30 alone: no console errors (the ws://…:7457 backstage monitor aside)' + (errors.length > before ? ':\n  ' + errors.slice(before).join('\n  ') : ''));
+      if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'tile-example-30.png') });
+      await ctx.close();
+    }
+
     // ------------------------------------------------------------------ 1. demo
     {
       const ctx = await browser.newContext({ viewport: { width: 900, height: 1200 } });
@@ -66,7 +94,7 @@ async function serve(port) {
       console.log('# demo vs truth: ' + (r.truth || []).map((t) => `${t.id} ${t.dAngle.toFixed(4)}° ${t.dScale.toFixed(4)} % ${t.dPx.toFixed(3)} px`).join(' · '));
       check(r.ok && r.report.every((x) => x.status === 'ok'), 'demo: every screen of the synthetic photo is placed');
       check(r.truth && r.truth.every((t) => t.dAngle < 0.2 && t.dScale < 0.5 && t.dPx < 2), 'demo: within 0.2°, 0.5 %, 2 px of the truth');
-      if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'tile-demo.png'), fullPage: true });
+      if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'tile-camera-demo.png'), fullPage: true });
       await ctx.close();
     }
 
@@ -136,8 +164,11 @@ async function serve(port) {
     for (const d of devices) {
       got[d.id] = await d.page.evaluate(() => {
         const t = window.oavTile, local = performance.timeOrigin + performance.now();
+        const tl = window.openav.timeline, T = t.time();
         return { calibrated: t.calibrated, mode: t.mode, markers: getComputedStyle(document.querySelector('.tile-markers')).display, toCanvas: t.view.toCanvas, canvas: t.view.canvas,
-          reference: t.layout?.reference, offset: t.clock.offset, rtt: t.clock.rtt, skew: t.now() - local, seed: t.seed, start: t.show?.start };
+          reference: t.layout?.reference, offset: t.clock.offset, rtt: t.clock.rtt, skew: t.now() - local, seed: t.seed, start: t.show?.start,
+          // the timeline on the shared clock (syncTimeline): its playhead against the shared time, both read now, modulo the loop
+          lag: (((T % tl.total) + tl.total) % tl.total) - tl.t, total: tl.total, playing: tl.playing };
       });
     }
     check(devices.every((d) => got[d.id].calibrated && got[d.id].mode === 'show' && got[d.id].markers === 'none'), 'every tile got the layout over the relay, is placed, and plays (markers off)');
@@ -173,6 +204,10 @@ async function serve(port) {
     console.log('# clocks: ' + devices.map((d) => `${d.id} offset ${got[d.id].offset.toFixed(2)} ms (round trip ${got[d.id].rtt.toFixed(2)} ms)`).join(' · '));
     const skews = devices.map((d) => got[d.id].skew);
     check(Math.max(...skews) - Math.min(...skews) < 5, `the shared clock agrees across tiles within 5 ms (spread ${(Math.max(...skews) - Math.min(...skews)).toFixed(2)} ms; one machine, so the true spread is 0)`);
+    // a lap of the loop can fall between the two reads: fold the difference into (-total/2, total/2]
+    const lags = devices.map((d) => { const L = got[d.id].total, x = got[d.id].lag; return x - L * Math.round(x / L); });
+    console.log('# timelines: ' + devices.map((d, i) => `${d.id} ${got[d.id].playing ? 'playing' : 'stopped'}, ${(lags[i] * 1000).toFixed(1)} ms behind the shared clock`).join(' · '));
+    check(devices.every((d, i) => got[d.id].playing && Math.abs(lags[i]) < 0.1), 'every tile\'s timeline plays on the shared clock (within 0.1 s: a frame or two between the two reads)');
 
     // ------------------------------------------------------------------ 3. one instant, from above
     // params are performable: bigger dot and sparks so they read at thumbnail size, the same on every tile
