@@ -103,17 +103,18 @@
             <li><a href="#output-what-was-checked">What was checked</a></li>
           </ol>
         </li>
-        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">12</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
-        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">13</span><span class="t">Devices</span></a></li>
-        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">14</span><span class="t">p5.js in one line</span></a></li>
-        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">15</span><span class="t">With Strudel</span></a></li>
-        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">16</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
-        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">17</span><span class="t">Signals reference</span></a></li>
-        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">18</span><span class="t">Package reference</span></a></li>
-        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">19</span><span class="t">For AI agents</span></a></li>
-        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">20</span><span class="t">Lab integration (the "lab" field)</span></a></li>
-        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">21</span><span class="t">Troubleshooting</span></a></li>
-        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">22</span><span class="t">Roadmap</span></a></li>
+        <li class="toc-ch" data-ch="tile"><a href="../../docs/tile/"><span class="n">12</span><span class="t">Several screens, one canvas</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">13</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">14</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">15</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">16</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">17</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">18</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">19</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">20</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">21</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">22</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">23</span><span class="t">Roadmap</span></a></li>
       </ol>
     </nav>
   </aside>
@@ -122,13 +123,17 @@
     <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
     <article class="chapter" data-chapter="output" aria-labelledby="output">
 <h1 id="output">Projection and video out<a class="anchor" href="#output" aria-label="Link to this section">#</a></h1>
-<p class="chapter-meta"><span class="chapter-n">Chapter 11 of 22</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/output.md">docs/output.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">Chapter 11 of 23</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/output.md">docs/output.md</a></span></p>
 <p>The stage on a projector, a second screen, OBS or TouchDesigner. <code>@openav/output</code> (since 0.12.0) opens an output window
 that shows the stage, bends it so a projector that is not square to the wall still lands as a rectangle (corner-pin),
 crops one canvas for several projectors side by side, and gives each output a blackout and a brightness that are params.
 Any show also has a clean address, <code>?output</code>: the same page with the stage alone on black, for a kiosk browser, OBS's
 Browser Source or TouchDesigner's Web Render TOP. The world never knows any of this happened. Example
 <a href="../../examples/29-projector-output/">29, Projector output</a> runs all of it on one screen.</p>
+<p>This is one stage, rendered once and shown through output windows. Phones, tablets and laptops lying on a table, each
+drawing its own part of one canvas from where a photo says it lies, are <a href="../../docs/tile/">Several screens, one canvas</a>
+(<code>@openav/tile</code>): its <code>homography()</code> takes any number of measured points, where <code>cornerPin()</code> here is the four corners of one
+window.</p>
 <h2 id="output-the-output-window">The output window<a class="anchor" href="#output-the-output-window" aria-label="Link to this section">#</a></h2>
 <p>Declare the outputs once, at load, and open one from a click (a browser opens a window only after a gesture):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
@@ -387,7 +392,7 @@ Chrome's kiosk mode, TouchDesigner, OBS, NDI.</p>
 
     <nav class="ch-nav" aria-label="Previous and next chapter">
       <a class="ch-prev" rel="prev" href="../../docs/dmx/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">DMX lighting</span></a>
-      <a class="ch-next" rel="next" href="../../docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">MIDI controllers &amp; embedding</span></a>
+      <a class="ch-next" rel="next" href="../../docs/tile/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Several screens, one canvas</span></a>
     </nav>
     <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
   </main>

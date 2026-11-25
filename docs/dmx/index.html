@@ -102,17 +102,18 @@
           </ol>
         </li>
         <li class="toc-ch" data-ch="output"><a href="../../docs/output/"><span class="n">11</span><span class="t">Projection and video out</span></a></li>
-        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">12</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
-        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">13</span><span class="t">Devices</span></a></li>
-        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">14</span><span class="t">p5.js in one line</span></a></li>
-        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">15</span><span class="t">With Strudel</span></a></li>
-        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">16</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
-        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">17</span><span class="t">Signals reference</span></a></li>
-        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">18</span><span class="t">Package reference</span></a></li>
-        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">19</span><span class="t">For AI agents</span></a></li>
-        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">20</span><span class="t">Lab integration (the "lab" field)</span></a></li>
-        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">21</span><span class="t">Troubleshooting</span></a></li>
-        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">22</span><span class="t">Roadmap</span></a></li>
+        <li class="toc-ch" data-ch="tile"><a href="../../docs/tile/"><span class="n">12</span><span class="t">Several screens, one canvas</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">13</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">14</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">15</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">16</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">17</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">18</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">19</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">20</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">21</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">22</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">23</span><span class="t">Roadmap</span></a></li>
       </ol>
     </nav>
   </aside>
@@ -121,7 +122,7 @@
     <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
     <article class="chapter" data-chapter="dmx" aria-labelledby="dmx">
 <h1 id="dmx">DMX lighting<a class="anchor" href="#dmx" aria-label="Link to this section">#</a></h1>
-<p class="chapter-meta"><span class="chapter-n">Chapter 10 of 22</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/dmx.md">docs/dmx.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">Chapter 10 of 23</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/dmx.md">docs/dmx.md</a></span></p>
 <p>DMX512 is how stage lights are told what to do: one cable carries a <strong>universe</strong> of 512 channels, each a number from 0 to 255, sent about 40 times a second. A light listens to a few channels starting at its <strong>address</strong> (a par might read dimmer, red, green, blue, white, strobe from address 1 to 6), and what each channel means is in its manual, its <strong>profile</strong>. Networks carry many universes at once (Art-Net, sACN), and a USB interface turns a computer's numbers into the cable's signal.</p>
 <p><code>@openav/dmx</code> puts a lighting rig inside a work: fixture profiles, a patch, an engine that renders every light at any moment from scenes, cues, chases and effects, and three ways to get the bytes out. It runs with no light and no interface: the monitor on the page shows what the rig is getting. <a href="../../examples/28-dmx-lights/">Example 28</a> is all of it in one page.</p>
 <aside class="callout callout-warning" role="note"><p class="callout-title">Warning</p>

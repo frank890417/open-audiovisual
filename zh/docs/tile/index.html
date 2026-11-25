@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>多螢幕拼接：一張畫布｜open-audiovisual</title>
+<meta name="description" content="平放在桌上的手機、平板、筆電，不管大小、轉成什麼角度、有沒有疊在一起，都能變成一張畫布。@openav/tile 讓每台螢幕鋪滿小小的標記，從上方拍一張照片把它們全部找出來…">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/tile/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/tile/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/tile/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/tile/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="多螢幕拼接：一張畫布｜open-audiovisual">
+<meta property="og:description" content="平放在桌上的手機、平板、筆電，不管大小、轉成什麼角度、有沒有疊在一起，都能變成一張畫布。@openav/tile 讓每台螢幕鋪滿小小的標記，從上方拍一張照片把它們全部找出來…">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/tile/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="多螢幕拼接：一張畫布｜open-audiovisual">
+<meta name="twitter:description" content="平放在桌上的手機、平板、筆電，不管大小、轉成什麼角度、有沒有疊在一起，都能變成一張畫布。@openav/tile 讓每台螢幕鋪滿小小的標記，從上方拍一張照片把它們全部找出來…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=9a90f849">
+<script type="module" src="../../../assets/search/search.js?v=9a90f849"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="tile">
+<script defer src="../../../assets/track.js?v=9a90f849"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.12.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/tile/#article","url":"https://openaudiovisual.com/zh/docs/tile/","name":"多螢幕拼接：一張畫布｜open-audiovisual","description":"平放在桌上的手機、平板、筆電，不管大小、轉成什麼角度、有沒有疊在一起，都能變成一張畫布。@openav/tile 讓每台螢幕鋪滿小小的標記，從上方拍一張照片把它們全部找出來…","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"多螢幕拼接：一張畫布","version":"0.12.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["用三台螢幕跑起來","拍照頁","用在你自己的世界","共同時鐘","一張照片怎麼變成版面","中繼的訊息","已知限制","檢查過什麼"],"position":12,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/tile/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/tile/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"多螢幕拼接：一張畫布","item":"https://openaudiovisual.com/zh/docs/tile/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=9a90f849">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/tile/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/tile/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="output"><a href="../../../zh/docs/output/"><span class="n">11</span><span class="t">投影與影像輸出</span></a></li>
+        <li class="toc-ch is-here" data-ch="tile">
+          <a href="#tile" aria-current="page"><span class="n">12</span><span class="t">多螢幕拼接：一張畫布</span></a>
+          <ol class="toc-secs">
+            <li><a href="#tile-run-it-with-three-screens">用三台螢幕跑起來</a></li>
+            <li><a href="#tile-the-camera-page">拍照頁</a></li>
+            <li><a href="#tile-in-your-own-world">用在你自己的世界</a></li>
+            <li><a href="#tile-the-shared-clock">共同時鐘</a></li>
+            <li><a href="#tile-how-a-photo-becomes-a-layout">一張照片怎麼變成版面</a></li>
+            <li><a href="#tile-the-relay-messages">中繼的訊息</a></li>
+            <li><a href="#tile-known-limits">已知限制</a></li>
+            <li><a href="#tile-what-was-checked">檢查過什麼</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">13</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">14</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">15</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">16</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">17</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">18</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">19</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">20</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">21</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">22</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">23</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="tile" aria-labelledby="tile">
+<h1 id="tile">多螢幕拼接：一張畫布<a class="anchor" href="#tile" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 12 章，共 23 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/tile.md">docs/zh/tile.md</a></span></p>
+<p>平放在桌上的手機、平板、筆電，不管大小、轉成什麼角度、有沒有疊在一起，都能變成一張畫布。<code>@openav/tile</code> 讓每台螢幕鋪滿小小的標記，從上方拍一張照片把它們全部找出來，之後每台螢幕只畫共同畫面裡屬於自己的那一塊。一顆圓點離開一台螢幕，會在邊框後面繼續走，從下一台它真正該出現的位置出來，大小也一樣。畫面完全不串流：每台螢幕用同樣的兩樣東西自己算畫面，一個經過中繼共用的時鐘，和一個種子。範例 <a href="../../../examples/30-tile-dot/">30 跨螢幕圓點</a> 是一顆圓點帶著火花流過每一台螢幕。</p>
+<p>這不是投影那一章。<a href="../../../zh/docs/output/">投影與影像輸出</a> 是一個舞台，只算一次，透過輸出視窗送到投影機和第二個螢幕上。這裡是很多台裝置各自算一張畫布裡自己的那一塊，位置由一張照片決定。兩者可以出現在同一場演出裡，但誰都不需要誰。</p>
+<h2 id="tile-run-it-with-three-screens">用三台螢幕跑起來<a class="anchor" href="#tile-run-it-with-three-screens" aria-label="這一節的連結">#</a></h2>
+<p>你需要一台跟手機連同一個 wifi 的電腦（它跑中繼）、三台要拼接的螢幕，再加一支拍照的手機（也可以是三台裡的其中一台，在放平之前用第二個分頁開）。</p>
+<ol>
+<li>在電腦上、repo 裡跑 <code>node serve.js</code>。它會印出手機連得到的位址，例如 <code>http://192.168.1.20:8080</code>。</li>
+<li>每台螢幕打開 <code>http://192.168.1.20:8080/examples/30-tile-dot/?room=desk</code>，點 <strong>Tap to join</strong>（全螢幕，並保持螢幕喚醒）。把螢幕平放：任何角度、任何間距都可以，疊在一起也沒關係。</li>
+<li>拍照的手機打開 <code>http://192.168.1.20:8080/packages/tile/?room=desk</code>。每台螢幕一秒內就會出現在清單裡，附上它的編號、像素，以及是否全螢幕、是否保持喚醒。</li>
+<li>按 <strong>Markers</strong>（標記）：每台螢幕變成白底黑色標記。</li>
+<li>按 <strong>Take photo</strong>（拍照），從上方拍一張每台螢幕都入鏡的照片。每台至少要露出四個標記，其他被手或另一支手機蓋住沒關係。正上方最好，大約 45° 以內都可以。</li>
+<li>拍照頁會在照片上框出找到的東西，並畫一張畫布的平面圖。每台都定位成功時，它會送出版面並按下 <strong>Play</strong>（演出）：圓點開始流動。漏掉的螢幕會在清單裡說明原因（<code>too-few-markers</code> 等）：再拍一次，或直接按 Play。</li>
+</ol>
+<p>移動了螢幕？按標記，再拍一次。重新整理的螢幕只要尺寸沒變，就會留在原位（版面存在裝置上，中繼也會重播）。手邊沒有螢幕時，<code>packages/tile/?demo=1</code> 會在一張合成照片（三台螢幕、傾斜的相機）上跑同樣的偵測和求解，再跟真值比較。範例 30 的頁面不加 <code>?room=</code> 時，就是有控台、用自己時間的一台螢幕。</p>
+<h2 id="tile-the-camera-page">拍照頁<a class="anchor" href="#tile-the-camera-page" aria-label="這一節的連結">#</a></h2>
+<p><code>packages/tile/?room=&lt;name&gt;</code> 以 <code>runner</code> 身分加入房間。它聽每台螢幕的報到，給每台一個編號（它的標記，0 到 19，同一個房間會記住），並用常駐的設定回答，中繼會把這些重播給晚到的螢幕：編號、標記或演出、版面，以及演出的種子和起點。<strong>New start + seed</strong> 讓每台螢幕一起從頭開始，<strong>layout.json</strong> 下載最後一份版面。</p>
+<p><strong>Take photo</strong>（<code>&lt;input capture&gt;</code>）會開手機的相機 app，用完整解析度拍，任何位址都能用。<strong>Live camera</strong>（<code>getUserMedia</code>，取一格）需要安全來源，所以只在 <code>localhost</code> 或 <code>https://</code> 能用，<code>http://192.168…</code> 不行。長邊超過 4096 像素的照片會先縮小再偵測。</p>
+<p>標記由 OpenCV.js 的 ArUco 偵測器找出來（<code>@techstark/opencv-js@4.12.0-release.1</code>，OpenCV 4.12.0 的一般版本，從 jsDelivr 載，版本寫死）。它大約 10 MB（傳輸時 3 MB），只有拍照頁會載，而且是第一張照片進來時才載，之後就快取。螢幕從來不載它：標記的位元在 <code>dict.js</code> 裡，是從 OpenCV 抽出來的（見 NOTICE），框架的其他頁面和套件也都沒有提到它（<code>tests/tile.test.js</code> 會檢查）。沒有網路的場地可以自己放一份同樣的檔案，交給 <code>loadOpenCV(url)</code>。</p>
+<h2 id="tile-in-your-own-world">用在你自己的世界<a class="anchor" href="#tile-in-your-own-world" aria-label="這一節的連結">#</a></h2>
+<p>把世界包起來、把拍照頁的模式接到標記參數、讓時間軸跟著共同時鐘，再透過 view 用畫布單位畫：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
+<span class="tk">import</span> { joinTile, tileWorld, TILE_ROUTES } <span class="tk">from</span> <span class="ts">'@openav/tile'</span>;   <span class="tc">// "@openav/tile": "../../packages/tile/index.js?v=9a90f849"</span>
+
+<span class="tk">const</span> tile = joinTile({ room: <span class="ts">'desk'</span> });            <span class="tc">// or ?room=desk in the address</span>
+<span class="tk">const</span> world = {
+  name: <span class="ts">'mine'</span>,
+  params: [{ key: <span class="ts">'size'</span>, min: 0.01, max: 0.1, def: 0.03 }],
+  init({ container }) { <span class="tk">this</span>.cv = createCanvas(container); },
+  update(dt, state, io) { <span class="tk">this</span>.s = state; <span class="tk">this</span>.t = io.tile.time(); <span class="tk">this</span>.seed = io.tile.seed; },
+  render() {
+    <span class="tk">const</span> { canvas, ctx } = <span class="tk">this</span>.cv; <span class="tk">this</span>.cv.fit();
+    <span class="tk">const</span> v = tile.view;                              <span class="tc">// soloView(w, h) until a photo placed this screen</span>
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
+    v.apply2d(ctx, canvas.width / v.device.w);        <span class="tc">// from here: canvas units (the reference screen's pixels)</span>
+    <span class="tk">const</span> { w, h } = v.canvas;
+    <span class="tk">const</span> x = w / 2 + (w / 3) * Math.sin(<span class="tk">this</span>.t);    <span class="tc">// a function of the shared time, never a sum of dt</span>
+    ctx.beginPath(); ctx.arc(x, h / 2, <span class="tk">this</span>.s.size * Math.min(w, h), 0, Math.PI * 2); ctx.fill();
+  },
+};
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world: tileWorld(world, tile),
+  routes: [...TILE_ROUTES],                           <span class="tc">// tile/markers → tileMarkers</span>
+  onFrame: (dt, s) =&gt; tile.syncTimeline(s.timeline, dt),
+});
+tile.attach(show.signals);                            <span class="tc">// tile/markers, tile/synced, tile/layout</span></code></pre></div>
+<ul>
+<li><strong>時間。</strong> 讀 <code>io.tile.time()</code>（共同的秒數）和 <code>io.tile.seed</code>。晚一秒開的兩台螢幕、或掉了一格的那台，還是要畫同一瞬間，所以位置是時間和種子的函式，從不累加 <code>dt</code>（範例 30 的圓點拖尾是往回取樣時間，而不是記住前幾格）。這是拼接的世界唯一讀時鐘的地方，而且讀的是共同的那個。</li>
+<li><strong>參數</strong>仍然是世界的連續控制（<a href="../../../zh/docs/agents/">規則一</a>）。<code>tileMarkers</code> 跟其他參數一樣：拍照頁透過 <code>tile/markers</code> 推它，時間軸或旋鈕也可以。它照<a href="../../../zh/docs/mapping/#mapping-who-holds-a-value">誰握住數值</a>的規則走：在某台螢幕的控台上用手推過的滑桿會握住那一台，直到拍照頁真的換了模式。</li>
+<li><strong>view。</strong> 2D 畫布用 <code>view.apply2d(ctx, pixelRatio)</code>，p5 在 <code>draw()</code> 最前面 <code>view.applyP5(sk)</code>，HTML 元素用 <code>transform: view.css(devicePixelRatio)</code> 加上 <code>transform-origin: 0 0</code>。<code>view.visible(x, y, r)</code> 跳過不在這台螢幕上的東西，<code>view.scale</code> 是每個畫布單位多少裝置像素。畫布用基準螢幕的像素量，而且包含空隙和邊框。</li>
+</ul>
+<h2 id="tile-the-shared-clock">共同時鐘<a class="anchor" href="#tile-the-shared-clock" aria-label="這一節的連結">#</a></h2>
+<p>每台螢幕連上時 ping 中繼十次，之後每 2 秒一次。中繼本來就會用自己的時間回答每個 ping，<code>ClockSync</code> 留下最近一分鐘裡來回最快那次的偏移（簡化版的 NTP：誤差最多是那次來回的一半，家裡的 wifi 大約幾毫秒）。<code>tile.now()</code> 是在這台螢幕上讀到的中繼時鐘，<code>tile.time()</code> 是拍照頁按下演出之後過了幾秒。螢幕照自己的垂直同步更新，所以兩台之間還是可能差一格。</p>
+<p><code>syncTimeline(timeline, dt)</code> 在 <code>timeline.advance(dt)</code> 之前呼叫（createShow 的 <code>onFrame</code> 就是），把播放頭放在共同時鐘一格之前的位置，這一格就落在共同時間上，並觸發它經過的場景和 cue。自動化在每台螢幕上就讀到一樣的值。某一台的暫停、hold 或跳轉最多維持四分之一秒，之後那台就回到時鐘上。</p>
+<p>這不是 <a href="../../../zh/docs/show-control/#show-control-several-pages-one-show"><code>@openav/sync</code></a>，兩者是刻意分開的：</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th><code>@openav/sync</code></th><th>拼接的時鐘</th></tr></thead>
+<tbody>
+<tr><td>誰掌管時間</td><td>一個主控頁面跑時間軸，每一格都說它在哪裡</td><td>沒有人：每台螢幕問中繼現在幾點</td></tr>
+<tr><td>傳什麼</td><td>每一格傳主控端的播放頭（<code>T</code>、播放中、hold、速率、版本），還有 <code>extra</code> 資料</td><td>每 2 秒一個 ping，然後就沒了。版面和起點只用設定傳一次</td></tr>
+<tr><td>暫停、hold、跳轉</td><td>每個從屬端照抄</td><td>不共用：每台螢幕回到時鐘上</td></tr>
+<tr><td>有頁面掉線時</td><td>從屬端自己繼續跑，沒有主控端就沒人推進演出</td><td>什麼都不變：拍照頁可以關掉，螢幕照樣演</td></tr>
+<tr><td>用在</td><td>同一場演出的好幾個頁面，各自用自己的尺寸：一面輸出牆、大廳、排練用的筆電</td><td>一張畫布切成好幾塊，每一塊都由（時間、種子）畫出來</td></tr>
+</tbody>
+</table></div>
+<p>需要主控端的暫停和 hold 的拼接演出，兩個可以一起用：它還是一個頁面，<code>createShow({ sync })</code> 照樣能用。框架不會替你把它們接在一起。</p>
+<h2 id="tile-how-a-photo-becomes-a-layout">一張照片怎麼變成版面<a class="anchor" href="#tile-how-a-photo-becomes-a-layout" aria-label="這一節的連結">#</a></h2>
+<p>每台螢幕都躺在同一個平面（桌面）上，而且它的像素在上面是均勻排的，所以不管像素密度多少，「螢幕像素 → 桌面」對每台都是一個相似轉換（旋轉、等比縮放、位移）。相機再加上一個透視「桌面 → 照片」，對所有螢幕都一樣。所以每台螢幕的單應矩陣 <code>H_i</code>（螢幕像素 → 照片）是 <code>G · S_i</code>，而 <code>H_ref⁻¹ · H_i = S_ref⁻¹ · S_i</code> 是一個相似轉換：相機的透視互相抵消，手機的 460 ppi 對筆電的 227 ppi 就落在縮放裡。<code>solveLayout()</code>：</p>
+<ol>
+<li>每台螢幕用它所有標記的角，算一個正規化 DLT 單應矩陣。角離它很遠的標記丟掉一次（讀錯的 id）。少於 4 個標記：這台螢幕回報 <code>too-few-markers</code>，不求解，也不丟出錯誤。</li>
+<li>基準是在照片裡佔最大面積的螢幕。其他每台螢幕的相似轉換，是把它自己的角和經過 <code>H_ref⁻¹</code> 帶回來的照片角做最小平方擬合。</li>
+<li>用 Levenberg–Marquardt 把一個平面 <code>G</code> 和所有 <code>S_i</code> 一起精修，讓透視由桌上每個標記一起量（離基準很遠的螢幕才會準）。</li>
+<li>把畫布移到所有螢幕的聯集從 (0, 0) 開始。</li>
+</ol>
+<p>每台螢幕有 50 個 DICT_5X5_1000 的標記（id = 螢幕 × 50 + 格子，所以最多 20 台），短邊排四個。用 5×5 而不是 4×4：算上旋轉，這些標記任兩個至少差 5 個位元，而讀錯一個 id 會把四個角放到錯的螢幕上。結果是 <code>layout.json</code>：</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-json">{ <span class="ts">"version"</span>: 1, <span class="ts">"kind"</span>: <span class="ts">"planar"</span>, <span class="ts">"units"</span>: <span class="ts">"reference-px"</span>, <span class="ts">"reference"</span>: <span class="ts">"laptop"</span>,
+  <span class="ts">"canvas"</span>: { <span class="ts">"w"</span>: 5280.0505, <span class="ts">"h"</span>: 3638.0105 }, <span class="ts">"photo"</span>: { <span class="ts">"w"</span>: 3200, <span class="ts">"h"</span>: 2400 },
+  <span class="ts">"plane"</span>: { <span class="ts">"matrix3x3"</span>: [0.7079, -0.0529, 398.39, 0.2351, 0.7367, -418.12, 0.0000477, 0.0000618, 1] },
+  <span class="ts">"devices"</span>: [ { <span class="ts">"id"</span>: <span class="ts">"phone"</span>, <span class="ts">"index"</span>: 2, <span class="ts">"w"</span>: 1170, <span class="ts">"h"</span>: 2532, <span class="ts">"kind"</span>: <span class="ts">"planar"</span>,
+    <span class="ts">"similarity"</span>: { <span class="ts">"a"</span>: 0.409166122, <span class="ts">"b"</span>: 0.275927653, <span class="ts">"tx"</span>: 2417.846331, <span class="ts">"ty"</span>: 2279.166552 },
+    <span class="ts">"matrix3x3"</span>: [0.409166122, -0.275927653, 2417.846331, 0.275927653, 0.409166122, 2279.166552, 0, 0, 1],
+    <span class="ts">"rms"</span>: 0.1388, <span class="ts">"markers"</span>: 36, <span class="ts">"pose"</span>: <span class="tk">null</span> } ] }</code></pre></div>
+<p><code>similarity</code> 把螢幕的像素對到畫布上，<code>matrix3x3</code> 是同一個矩陣一列一列寫出來，<code>rms</code> 是重投影誤差，單位是照片像素。<code>validateLayout()</code> 列出一份檔案的每一個問題，一個問題一則訊息。帶著 <code>"pose"</code> 的 <code>"kind": "window"</code> 裝置，是留給下一步的位置：在 3D 空間擺放的螢幕（立起來的筆電、牆上的螢幕、投影機）。這一版會檢查它，它的 view 會說還畫不了。</p>
+<h2 id="tile-the-relay-messages">中繼的訊息<a class="anchor" href="#tile-the-relay-messages" aria-label="這一節的連結">#</a></h2>
+<p>螢幕在中繼房間裡是 <code>controller</code>，拍照頁是它的 <code>runner</code>。<code>packages/relay</code> 的 hub 完全沒改。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>誰送</th><th>名稱</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td>螢幕</td><td>訊號 <code>tile/&lt;id&gt;/hello</code></td><td><code>{ id, w, h, dpr, screen, css, fullscreen, wake }</code>，每秒重送</td></tr>
+<tr><td>拍照頁</td><td>設定 <code>tile/roster</code></td><td><code>{ grid, devices: [{ id, index, w, h }] }</code>：每台螢幕的編號</td></tr>
+<tr><td>拍照頁</td><td>設定 <code>tile/mode</code></td><td><code>'markers'</code> 或 <code>'show'</code></td></tr>
+<tr><td>拍照頁</td><td>設定 <code>tile/layout</code></td><td>layout.json</td></tr>
+<tr><td>拍照頁</td><td>設定 <code>tile/show</code></td><td><code>{ seed, start }</code>：在共同時鐘上的起點</td></tr>
+</tbody>
+</table></div>
+<p>寫進演出的訊號：<code>tile/markers</code>（0 或 1，拍照頁的模式）、<code>tile/synced</code>（0 或 1），以及脈衝 <code>tile/layout</code>。靜態主機（openaudiovisual.com）上沒有中繼：跑 <code>node serve.js</code>，或用 <code>?relay=wss://…</code> 讓每個頁面連到同一個中繼。中繼沒有驗證：請用封閉的網路，房間名字取一個別人猜不到的（<a href="../../../zh/docs/phones/#phones-security">安全</a>）。</p>
+<h2 id="tile-known-limits">已知限制<a class="anchor" href="#tile-known-limits" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><strong>iPhone 的 Safari 不能讓網頁全螢幕。</strong> 把頁面加入主畫面，再從主畫面打開。沒有全螢幕也能用，但瀏覽器的工具列會變成邊框的一部分，而且收起來時尺寸會變，這台螢幕就會失去定位，直到下一張照片。</li>
+<li><strong>螢幕常亮靠系統設定</strong>（iPhone：自動鎖定，永不。Android：螢幕逾時）。喚醒鎖只是保險：它要等那一下點擊，頁面被藏起來時系統會收回（⛶ 按鈕會再要一次），而且瀏覽器只在 <code>https://</code> 或 <code>localhost</code> 提供（在 <code>http://192.168…</code> 拍照頁會顯示 <code>n/a</code>）。</li>
+<li><strong>只能是平放的螢幕。</strong> 立起來的筆電不在桌面那個平面上：把它放平，或等 3D 模型。</li>
+<li>疊在一起的螢幕：不知道哪一台在上面，所以下面那台也會畫被蓋住的部分。</li>
+<li>尺寸改變的螢幕（旋轉、網址列）會自己單獨畫，直到下一張照片。</li>
+<li>在某台螢幕的控台上用手推的參數只改那一台。共用的是時間軸、時鐘和種子。</li>
+<li>最多 20 台螢幕。亮面螢幕會反射燈光：把亮度調高，避免燈就在桌子正上方。</li>
+<li>同一個瀏覽器的兩個分頁會共用一個 id（存在 <code>localStorage</code>）：在一台電腦上試的時候，加上 <code>&amp;id=a</code>、<code>&amp;id=b</code>。</li>
+</ul>
+<h2 id="tile-what-was-checked">檢查過什麼<a class="anchor" href="#tile-what-was-checked" aria-label="這一節的連結">#</a></h2>
+<p>在一台機器上，沒有實體螢幕，只有瀏覽器的分頁，也沒有任何硬體：</p>
+<ul>
+<li><code>tests/tile.test.js</code>（在 <code>npm test</code> 裡）：DLT 和相似轉換擬合，對照加了 0.5 px 雜訊的已知轉換。在合成照片上（針孔相機、真實的螢幕尺寸和密度）求解兩台和三台螢幕，包括 4 個標記和更少的情況、讀錯的標記、有精修和沒有精修。圓點跨過螢幕時保持連續。layout.json 驗證、標記 id、格子和字典、view 的矩陣、時鐘、<code>tileMarkers</code> 路由在「誰握住數值」規則下的行為，以及只有拍照頁碰得到 OpenCV。</li>
+<li><code>packages/tile/test/tile-smoke.cjs</code>，手動跑，在無頭 Chromium 裡用 jsDelivr 上固定版本的 OpenCV.js：範例 30 單獨開沒有 console 錯誤。拍照頁的 <code>?demo=1</code> 把三台合成螢幕定位在真值的 0.2°、0.5 %、2 px 以內。接著在 <code>node serve.js</code> 上開一個真的房間，三個螢幕頁面分別是筆電、平板和手機的大小，用它們自己的截圖合成拍照頁要偵測和求解的照片：每台都定位在實際位置的 1 mm 以內，圓點跨過它們時連續，時鐘和時間軸都一致。</li>
+</ul>
+<p>還沒試過：真的桌上放手機和平板、真的照片（反光、光線、角度、手機在畫面裡太小）、iPhone 和 Android 手機上的全螢幕和喚醒鎖、真實 wifi 上的時鐘，以及手機偵測一張 1200 萬像素照片要多久。套件的 README 列出到時候要看什麼。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/output/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">投影與影像輸出</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">MIDI 控制器與嵌入</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=9a90f849"></script>
+<!--/email_off-->
+</body>
+</html>

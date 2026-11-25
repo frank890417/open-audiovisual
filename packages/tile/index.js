@@ -10,13 +10,13 @@
 //
 // Full guide: packages/tile/README.md. Example: examples/30-tile-dot.
 
-export { joinTile, TileLink, tileId, helloName, HELLO_RE, TILE_KEYS, TILE_PARAMS, TILE_ROUTES } from './join.js';
-export { tileWorld } from './world.js';
-export { tileView, soloView } from './view.js';
-export { ClockSync, clockSample, estimateOffset } from './clock.js';
-export { markerGrid, markerId, decodeMarkerId, correspondences, drawMarkers, GRID_DEFAULTS, PER_DEVICE, MAX_DEVICES } from './marker.js';
+export { joinTile, TileLink, tileId, helloName, HELLO_RE, TILE_KEYS, TILE_PARAMS, TILE_ROUTES } from './join.js?v=9a90f849';
+export { tileWorld } from './world.js?v=9a90f849';
+export { tileView, soloView } from './view.js?v=9a90f849';
+export { ClockSync, clockSample, estimateOffset } from './clock.js?v=9a90f849';
+export { markerGrid, markerId, decodeMarkerId, correspondences, drawMarkers, GRID_DEFAULTS, PER_DEVICE, MAX_DEVICES } from './marker.js?v=9a90f849';
 export {
   solveLayout, validateLayout, homography, fitSimilarity, similarityMatrix, similarityOf, similarityScale, similarityAngle,
   mul3, inv3, apply3, det3, rmsError, LAYOUT_VERSION,
-} from './solve.js';
-export { DICT_NAME, markerBits, markerCode } from './dict.js';
+} from './solve.js?v=9a90f849';
+export { DICT_NAME, markerBits, markerCode } from './dict.js?v=9a90f849';

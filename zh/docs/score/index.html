@@ -106,17 +106,18 @@
         </li>
         <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
         <li class="toc-ch" data-ch="output"><a href="../../../zh/docs/output/"><span class="n">11</span><span class="t">投影與影像輸出</span></a></li>
-        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">12</span><span class="t">MIDI 控制器與嵌入</span></a></li>
-        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">13</span><span class="t">設備</span></a></li>
-        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">14</span><span class="t">p5.js 一行接上</span></a></li>
-        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">15</span><span class="t">和 Strudel 一起用</span></a></li>
-        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">16</span><span class="t">手機、中繼與控制面板</span></a></li>
-        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">17</span><span class="t">訊號一覽</span></a></li>
-        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">18</span><span class="t">套件一覽</span></a></li>
-        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">19</span><span class="t">給 AI 代理</span></a></li>
-        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">20</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
-        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">21</span><span class="t">疑難排解</span></a></li>
-        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">22</span><span class="t">路線圖</span></a></li>
+        <li class="toc-ch" data-ch="tile"><a href="../../../zh/docs/tile/"><span class="n">12</span><span class="t">多螢幕拼接：一張畫布</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">13</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">14</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">15</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">16</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">17</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">18</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">19</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">20</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">21</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">22</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">23</span><span class="t">路線圖</span></a></li>
       </ol>
     </nav>
   </aside>
@@ -125,7 +126,7 @@
     <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
     <article class="chapter" data-chapter="score" aria-labelledby="score">
 <h1 id="score">總譜與導演<a class="anchor" href="#score" aria-label="這一節的連結">#</a></h1>
-<p class="chapter-meta"><span class="chapter-n">第 9 章，共 22 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/score.md">docs/zh/score.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">第 9 章，共 23 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/score.md">docs/zh/score.md</a></span></p>
 <p>一場演出長大之後，需要一個能跟著長大的結構。<strong>總譜</strong>（<code>@openav/score</code>）把演出寫成一段一段、只有「長度」的段落，<strong>導演</strong>則負責執行每一段的程式。兩者都是純邏輯、不碰 DOM。<code>createShow()</code> 會幫你把它們接上<a href="../../../zh/docs/show-control/#show-control-timeline">時間軸</a>、控台和提詞機。</p>
 <h2 id="score-the-idea-lengths-never-seconds">核心想法：只寫長度，不寫秒數<a class="anchor" href="#score-the-idea-lengths-never-seconds" aria-label="這一節的連結">#</a></h2>
 <p>把時間軸寫成一張絕對秒數的表，它就長不大。第二個場景拉長一點，後面每個場景、cue、曲線，還有程式裡的每一句 <code>if (t &gt; 466)</code> 全都錯了，而且你只能在一次又一次排練裡一個一個找出來。在總譜裡你只寫每一段「多長」：</p>

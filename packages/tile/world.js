@@ -11,7 +11,7 @@
 // and io.tile.seed, not from a sum of its own dt: two phones that started a second apart, or dropped a frame, must
 // still draw the same instant. That is the one place a tiled world reads a clock, and it is the shared one.
 
-import { TILE_PARAMS } from './join.js';
+import { TILE_PARAMS } from './join.js?v=9a90f849';
 
 export function tileWorld(world, tile) {
   const own = world.params || [];

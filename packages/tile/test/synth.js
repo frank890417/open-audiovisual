@@ -8,7 +8,7 @@
 // screenImage(screen) → { w, h, data } is how a screen's markers become pixels: in a browser the tile's own
 // drawMarkers on a real canvas; in Node the same function on a buffer.
 
-import { similarityMatrix, mul3, inv3, apply3 } from '../solve.js';
+import { similarityMatrix, mul3, inv3, apply3 } from '../solve.js?v=9a90f849';
 
 export const deg = Math.PI / 180;
 export const SCREENS = {

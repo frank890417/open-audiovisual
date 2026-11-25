@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Several screens, one canvas · open-audiovisual</title>
+<meta name="description" content="Phones, tablets and laptops lying flat on a table, of any size, turned any way, partly on top of each other, become one canvas.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/tile/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/tile/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/tile/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/tile/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Several screens, one canvas · open-audiovisual">
+<meta property="og:description" content="Phones, tablets and laptops lying flat on a table, of any size, turned any way, partly on top of each other, become one canvas.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/tile/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Several screens, one canvas · open-audiovisual">
+<meta name="twitter:description" content="Phones, tablets and laptops lying flat on a table, of any size, turned any way, partly on top of each other, become one canvas.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=9a90f849">
+<script type="module" src="../../assets/search/search.js?v=9a90f849"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="tile">
+<script defer src="../../assets/track.js?v=9a90f849"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.12.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/tile/#article","url":"https://openaudiovisual.com/docs/tile/","name":"Several screens, one canvas · open-audiovisual","description":"Phones, tablets and laptops lying flat on a table, of any size, turned any way, partly on top of each other, become one canvas.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Several screens, one canvas","version":"0.12.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Run it with three screens","The camera page","In your own world","The shared clock","How a photo becomes a layout","The relay messages","Known limits","What was checked"],"position":12,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/tile/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/tile/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Several screens, one canvas","item":"https://openaudiovisual.com/docs/tile/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=9a90f849">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/tile/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/tile/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="output"><a href="../../docs/output/"><span class="n">11</span><span class="t">Projection and video out</span></a></li>
+        <li class="toc-ch is-here" data-ch="tile">
+          <a href="#tile" aria-current="page"><span class="n">12</span><span class="t">Several screens, one canvas</span></a>
+          <ol class="toc-secs">
+            <li><a href="#tile-run-it-with-three-screens">Run it with three screens</a></li>
+            <li><a href="#tile-the-camera-page">The camera page</a></li>
+            <li><a href="#tile-in-your-own-world">In your own world</a></li>
+            <li><a href="#tile-the-shared-clock">The shared clock</a></li>
+            <li><a href="#tile-how-a-photo-becomes-a-layout">How a photo becomes a layout</a></li>
+            <li><a href="#tile-the-relay-messages">The relay messages</a></li>
+            <li><a href="#tile-known-limits">Known limits</a></li>
+            <li><a href="#tile-what-was-checked">What was checked</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">13</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">14</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">15</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">16</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">17</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">18</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">19</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">20</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">21</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">22</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">23</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="tile" aria-labelledby="tile">
+<h1 id="tile">Several screens, one canvas<a class="anchor" href="#tile" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 12 of 23</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/tile.md">docs/tile.md</a></span></p>
+<p>Phones, tablets and laptops lying flat on a table, of any size, turned any way, partly on top of each other, become one
+canvas. <code>@openav/tile</code> covers each screen with small markers, finds them all in one photo taken from above, and from then
+on every screen draws only its own piece of one shared picture. A dot that leaves one screen travels behind the bezel and
+comes out on the next one where it would really be, at the same size. Nothing is streamed: every screen computes its own
+frame from the same two things, one clock shared through the relay and one seed. Example
+<a href="../../examples/30-tile-dot/">30, Tile dot</a> is one dot and its sparks flowing across every screen.</p>
+<p>This is not the projector chapter. <a href="../../docs/output/">Projection and video out</a> is one stage, rendered once, shown through
+output windows on projectors and second screens. Here many devices each render their own part of one canvas, placed by a
+photo. The two can meet in one show, but neither needs the other.</p>
+<h2 id="tile-run-it-with-three-screens">Run it with three screens<a class="anchor" href="#tile-run-it-with-three-screens" aria-label="Link to this section">#</a></h2>
+<p>You need a computer on the same wifi as the phones (it runs the relay), three screens to tile and one more phone to take
+the photo (it can be one of the three, in a second tab, before you lay it down).</p>
+<ol>
+<li>On the computer, in the repository: <code>node serve.js</code>. It prints the address phones can reach, for example
+<code>http://192.168.1.20:8080</code>.</li>
+<li>On each screen open <code>http://192.168.1.20:8080/examples/30-tile-dot/?room=desk</code> and tap <strong>Tap to join</strong> (fullscreen,
+and keep the screen awake). Lay the screens flat: any angle, any spacing, overlapping is fine.</li>
+<li>On the camera phone open <code>http://192.168.1.20:8080/packages/tile/?room=desk</code>. Every screen appears in the list within a
+second, with its number, its pixels, and whether it is fullscreen and awake.</li>
+<li>Press <strong>Markers</strong>: every screen turns white with black markers.</li>
+<li>Press <strong>Take photo</strong> and photograph the table from above with every screen in the frame. Each screen needs at least four
+markers in view; a hand or another phone over the rest is fine. Straight down is best, up to about 45° works.</li>
+<li>The camera page outlines what it found on the photo and draws a plan of the canvas. When every screen was placed it sends
+the layout and presses <strong>Play</strong>: the dot starts flowing. A screen that was missed says why in the list
+(<code>too-few-markers</code>, …): take the photo again, or press Play anyway.</li>
+</ol>
+<p>Moved a screen? Markers, then a photo again. A screen that reloads keeps its place (its layout is kept on the device and
+replayed by the relay) as long as its size did not change. No screens at hand: <code>packages/tile/?demo=1</code> runs the same
+detection and solve on a synthetic photo of three screens under a tilted camera and compares the result with the truth.
+The page of example 30 without <code>?room=</code> is one screen on its own, with the console, on its own time.</p>
+<h2 id="tile-the-camera-page">The camera page<a class="anchor" href="#tile-the-camera-page" aria-label="Link to this section">#</a></h2>
+<p><code>packages/tile/?room=&lt;name&gt;</code> joins the room as its <code>runner</code>. It hears every screen's hello, gives each a number (its
+markers, 0 to 19, remembered for that room), and answers with standing config the relay replays to a screen that joins
+later: the numbers, Markers or Play, the layout, and the show's seed and start. <strong>New start + seed</strong> starts every screen
+again together, and <strong>layout.json</strong> downloads the last layout.</p>
+<p><strong>Take photo</strong> (<code>&lt;input capture&gt;</code>) opens the phone's camera app at its full resolution and works on any address.
+<strong>Live camera</strong> (<code>getUserMedia</code>, one frame) needs a secure context, so it works on <code>localhost</code> or <code>https://</code>, not on
+<code>http://192.168…</code>. A photo larger than 4096 pixels on its long side is scaled down before detection.</p>
+<p>The markers are found by OpenCV.js's ArUco detector (<code>@techstark/opencv-js@4.12.0-release.1</code>, a plain build of OpenCV
+4.12.0, from jsDelivr, pinned). It is about 10 MB (3 MB over the wire), loaded by the camera page only and only when the
+first photo comes in, then cached. The screens never load it: the bits of their markers are in <code>dict.js</code>, extracted from
+OpenCV (see NOTICE), and no other page or package of the framework refers to it (<code>tests/tile.test.js</code> checks). A venue
+without the internet can serve its own copy of that file and pass it to <code>loadOpenCV(url)</code>.</p>
+<h2 id="tile-in-your-own-world">In your own world<a class="anchor" href="#tile-in-your-own-world" aria-label="Link to this section">#</a></h2>
+<p>Wrap the world, route the camera page's mode to the marker param, keep the timeline on the shared clock, and draw in
+canvas units through the view:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
+<span class="tk">import</span> { joinTile, tileWorld, TILE_ROUTES } <span class="tk">from</span> <span class="ts">'@openav/tile'</span>;   <span class="tc">// "@openav/tile": "../../packages/tile/index.js?v=9a90f849"</span>
+
+<span class="tk">const</span> tile = joinTile({ room: <span class="ts">'desk'</span> });            <span class="tc">// or ?room=desk in the address</span>
+<span class="tk">const</span> world = {
+  name: <span class="ts">'mine'</span>,
+  params: [{ key: <span class="ts">'size'</span>, min: 0.01, max: 0.1, def: 0.03 }],
+  init({ container }) { <span class="tk">this</span>.cv = createCanvas(container); },
+  update(dt, state, io) { <span class="tk">this</span>.s = state; <span class="tk">this</span>.t = io.tile.time(); <span class="tk">this</span>.seed = io.tile.seed; },
+  render() {
+    <span class="tk">const</span> { canvas, ctx } = <span class="tk">this</span>.cv; <span class="tk">this</span>.cv.fit();
+    <span class="tk">const</span> v = tile.view;                              <span class="tc">// soloView(w, h) until a photo placed this screen</span>
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
+    v.apply2d(ctx, canvas.width / v.device.w);        <span class="tc">// from here: canvas units (the reference screen's pixels)</span>
+    <span class="tk">const</span> { w, h } = v.canvas;
+    <span class="tk">const</span> x = w / 2 + (w / 3) * Math.sin(<span class="tk">this</span>.t);    <span class="tc">// a function of the shared time, never a sum of dt</span>
+    ctx.beginPath(); ctx.arc(x, h / 2, <span class="tk">this</span>.s.size * Math.min(w, h), 0, Math.PI * 2); ctx.fill();
+  },
+};
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world: tileWorld(world, tile),
+  routes: [...TILE_ROUTES],                           <span class="tc">// tile/markers → tileMarkers</span>
+  onFrame: (dt, s) =&gt; tile.syncTimeline(s.timeline, dt),
+});
+tile.attach(show.signals);                            <span class="tc">// tile/markers, tile/synced, tile/layout</span></code></pre></div>
+<ul>
+<li><strong>Time.</strong> Read <code>io.tile.time()</code> (shared seconds) and <code>io.tile.seed</code>. Two screens that started a second apart, or one that
+dropped a frame, must still draw the same instant, so positions are functions of time and seed, never sums of <code>dt</code>
+(example 30 samples its dot's tail back in time instead of remembering past frames). This is the one place a tiled world
+reads a clock, and it is the shared one.</li>
+<li><strong>Params</strong> stay the world's continuous controls (<a href="../../docs/agents/">rule 1</a>). <code>tileMarkers</code> is a param like any other: the camera
+page drives it through <code>tile/markers</code>, and the timeline or a knob can too. It follows the rule for
+<a href="../../docs/mapping/#mapping-who-holds-a-value">who holds a value</a>: a slider moved by hand on one screen's console holds that screen until
+the camera page really changes mode.</li>
+<li><strong>The view.</strong> <code>view.apply2d(ctx, pixelRatio)</code> for a 2D canvas, <code>view.applyP5(sk)</code> at the top of a p5 <code>draw()</code>,
+<code>transform: view.css(devicePixelRatio)</code> with <code>transform-origin: 0 0</code> for an element. <code>view.visible(x, y, r)</code> skips what
+is not on this screen, <code>view.scale</code> is device pixels per canvas unit. The canvas is measured in the reference screen's
+pixels and includes the gaps and bezels.</li>
+</ul>
+<h2 id="tile-the-shared-clock">The shared clock<a class="anchor" href="#tile-the-shared-clock" aria-label="Link to this section">#</a></h2>
+<p>Every screen pings the relay ten times when it connects and then every 2 s. The relay already answers every ping with its
+own time; <code>ClockSync</code> keeps the offset of the quickest round trip of the last minute (NTP, simplified: the error is at most
+half that round trip, a few ms on home wifi). <code>tile.now()</code> is the relay's clock read on this screen, and <code>tile.time()</code> the
+seconds since the camera page pressed Play. Screens refresh on their own vsync, so two of them can still be a frame apart.</p>
+<p><code>syncTimeline(timeline, dt)</code>, called before <code>timeline.advance(dt)</code> (createShow's <code>onFrame</code> is), puts the playhead where the
+shared clock was one frame ago, so the frame lands on the shared time and fires the scenes and cues it passes; the
+automation then reads the same values on every screen. A pause, a hold or a seek on one screen lasts a quarter of a second at
+most, then that screen is back on the clock.</p>
+<p>This is not <a href="../../docs/show-control/#show-control-several-pages-one-show"><code>@openav/sync</code></a>, and the two are kept apart on purpose:</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th><code>@openav/sync</code></th><th>the tile clock</th></tr></thead>
+<tbody>
+<tr><td>who keeps time</td><td>one leader page runs the timeline and says every frame where it is</td><td>nobody: every screen asks the relay what time it is</td></tr>
+<tr><td>what travels</td><td>the leader's playhead (<code>T</code>, playing, holding, rate, cut) every frame, and <code>extra</code> data</td><td>a ping every 2 s, then nothing; the layout and the start once, as config</td></tr>
+<tr><td>pause, hold, seek</td><td>copied by every follower</td><td>not shared: each screen goes back to the clock</td></tr>
+<tr><td>when a page drops out</td><td>a follower runs on by itself; without the leader nobody advances the show</td><td>nothing changes: the camera page can close, the screens play on</td></tr>
+<tr><td>for</td><td>several pages of one show at their own sizes: a wall of outputs, a lobby, a rehearsal laptop</td><td>one canvas cut into pieces, every piece drawn from (time, seed)</td></tr>
+</tbody>
+</table></div>
+<p>A tiled show that needs a leader's pause and holds can have both: it is still a page, and <code>createShow({ sync })</code> still
+works on it. Nothing in the framework joins them for you.</p>
+<h2 id="tile-how-a-photo-becomes-a-layout">How a photo becomes a layout<a class="anchor" href="#tile-how-a-photo-becomes-a-layout" aria-label="Link to this section">#</a></h2>
+<p>Every screen lies in one plane, the table, and its pixels are evenly spaced on it, so "screen pixels → table" is a
+similarity (a turn, a uniform scale, a shift) for every screen, whatever its pixel density. The camera adds one perspective,
+"table → photo", the same for all of them. So each screen's homography <code>H_i</code> (screen pixels → photo) is <code>G · S_i</code>, and
+<code>H_ref⁻¹ · H_i = S_ref⁻¹ · S_i</code> is a similarity: the camera's perspective cancels, and a phone's 460 ppi against a laptop's
+227 ppi ends up in the scale. <code>solveLayout()</code>:</p>
+<ol>
+<li>per screen, a normalized DLT homography from all its marker corners. A marker whose corners land far from it is dropped
+once (a misread id). Fewer than 4 markers: the screen is reported as <code>too-few-markers</code>, not solved, and nothing throws;</li>
+<li>the reference is the screen that covers the most of the photo; each other screen's similarity is a least-squares fit of
+its own corners to its photo corners taken back through <code>H_ref⁻¹</code>;</li>
+<li>one plane <code>G</code> and every <code>S_i</code> are refined together by Levenberg–Marquardt, so the perspective is measured by every
+marker on the table (it keeps a screen far from the reference right);</li>
+<li>the canvas is moved so the union of the screens starts at (0, 0).</li>
+</ol>
+<p>Each screen carries 50 markers of DICT_5X5_1000 (id = screen × 50 + cell, so up to 20 screens), four across its short side.
+Five by five, not four by four: two of these markers differ in at least 5 bits under rotation, and a misread id puts four
+corners on the wrong screen. The result, <code>layout.json</code>:</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{ <span class="ts">"version"</span>: 1, <span class="ts">"kind"</span>: <span class="ts">"planar"</span>, <span class="ts">"units"</span>: <span class="ts">"reference-px"</span>, <span class="ts">"reference"</span>: <span class="ts">"laptop"</span>,
+  <span class="ts">"canvas"</span>: { <span class="ts">"w"</span>: 5280.0505, <span class="ts">"h"</span>: 3638.0105 }, <span class="ts">"photo"</span>: { <span class="ts">"w"</span>: 3200, <span class="ts">"h"</span>: 2400 },
+  <span class="ts">"plane"</span>: { <span class="ts">"matrix3x3"</span>: [0.7079, -0.0529, 398.39, 0.2351, 0.7367, -418.12, 0.0000477, 0.0000618, 1] },
+  <span class="ts">"devices"</span>: [ { <span class="ts">"id"</span>: <span class="ts">"phone"</span>, <span class="ts">"index"</span>: 2, <span class="ts">"w"</span>: 1170, <span class="ts">"h"</span>: 2532, <span class="ts">"kind"</span>: <span class="ts">"planar"</span>,
+    <span class="ts">"similarity"</span>: { <span class="ts">"a"</span>: 0.409166122, <span class="ts">"b"</span>: 0.275927653, <span class="ts">"tx"</span>: 2417.846331, <span class="ts">"ty"</span>: 2279.166552 },
+    <span class="ts">"matrix3x3"</span>: [0.409166122, -0.275927653, 2417.846331, 0.275927653, 0.409166122, 2279.166552, 0, 0, 1],
+    <span class="ts">"rms"</span>: 0.1388, <span class="ts">"markers"</span>: 36, <span class="ts">"pose"</span>: <span class="tk">null</span> } ] }</code></pre></div>
+<p><code>similarity</code> maps a screen's pixel to the canvas, <code>matrix3x3</code> is the same matrix row by row, <code>rms</code> the reprojection error in
+photo pixels; <code>validateLayout()</code> lists every problem of a file, one message each. A device of <code>"kind": "window"</code> with a
+<code>"pose"</code> is the room kept for the next step, a screen posed in 3D (a laptop standing up, a screen on a wall, a projector):
+this version validates it and its view says it cannot draw it yet.</p>
+<h2 id="tile-the-relay-messages">The relay messages<a class="anchor" href="#tile-the-relay-messages" aria-label="Link to this section">#</a></h2>
+<p>A tile is a <code>controller</code> in a relay room and the camera page is its <code>runner</code>; the hub in <code>packages/relay</code> is unchanged.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>from</th><th>name</th><th>what</th></tr></thead>
+<tbody>
+<tr><td>tile</td><td>signal <code>tile/&lt;id&gt;/hello</code></td><td><code>{ id, w, h, dpr, screen, css, fullscreen, wake }</code>, re-sent every second</td></tr>
+<tr><td>camera</td><td>config <code>tile/roster</code></td><td><code>{ grid, devices: [{ id, index, w, h }] }</code>: each screen's number</td></tr>
+<tr><td>camera</td><td>config <code>tile/mode</code></td><td><code>'markers'</code> or <code>'show'</code></td></tr>
+<tr><td>camera</td><td>config <code>tile/layout</code></td><td>layout.json</td></tr>
+<tr><td>camera</td><td>config <code>tile/show</code></td><td><code>{ seed, start }</code>: the start on the shared clock</td></tr>
+</tbody>
+</table></div>
+<p>Into the show's signals: <code>tile/markers</code> (0 or 1, the camera page's mode), <code>tile/synced</code> (0 or 1) and the pulse <code>tile/layout</code>.
+On a static host (openaudiovisual.com) there is no relay: run <code>node serve.js</code>, or point every page at one with
+<code>?relay=wss://…</code>. The relay has no authentication: use a closed network and a room name nobody will guess
+(<a href="../../docs/phones/#phones-security">Security</a>).</p>
+<h2 id="tile-known-limits">Known limits<a class="anchor" href="#tile-known-limits" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>iPhone Safari cannot make a page fullscreen.</strong> Add the page to the home screen and open it from there. Without
+fullscreen it still works, but the browser bars become part of the bezel and change size when they hide, which unplaces
+the screen until the next photo.</li>
+<li><strong>Keeping the screen on is the system setting's job</strong> (iPhone: Auto-Lock, Never; Android: Screen timeout). The wake lock
+is a backup: it needs the tap, the system drops it when the page is hidden (the ⛶ button asks again), and browsers offer
+it only on <code>https://</code> or <code>localhost</code> (on <code>http://192.168…</code> the camera page lists it as <code>n/a</code>).</li>
+<li><strong>Flat screens only.</strong> A laptop standing up does not lie in the table's plane: lay it flat or wait for the 3D model.</li>
+<li>Overlapping screens: which one is on top is not known, so the one underneath also draws the part that is covered.</li>
+<li>A screen that changes size (a rotation, the address bar) draws on its own until the next photo.</li>
+<li>A param moved by hand on one screen's console changes that screen only; what is shared is the timeline, the clock and the
+seed.</li>
+<li>Up to 20 screens. Glossy screens reflect lamps: turn the brightness up and avoid a light right above the table.</li>
+<li>Two tabs of one browser share an id (it is kept in <code>localStorage</code>): add <code>&amp;id=a</code>, <code>&amp;id=b</code> when trying it on one computer.</li>
+</ul>
+<h2 id="tile-what-was-checked">What was checked<a class="anchor" href="#tile-what-was-checked" aria-label="Link to this section">#</a></h2>
+<p>On one machine, with no screens but browser contexts and no hardware at all:</p>
+<ul>
+<li><code>tests/tile.test.js</code> (in <code>npm test</code>): the DLT and the similarity fit against known transforms with 0.5 px of noise; the
+solve on synthetic photos (a pinhole camera, real screen sizes and densities) for two and three screens, with 4 markers and
+with fewer, a misread marker, with and without the refinement; a dot crossing screens stays continuous; layout.json
+validation; marker ids, the grid and the dictionary; the view's matrices; the clock; the <code>tileMarkers</code> route under the rule
+for who holds a value; and that only the camera page can reach OpenCV.</li>
+<li><code>packages/tile/test/tile-smoke.cjs</code>, by hand, in headless Chromium with the pinned OpenCV.js from jsDelivr: example 30
+alone with no console errors; the camera page's <code>?demo=1</code> placing its three synthetic screens within 0.2°, 0.5 % and 2 px
+of the truth; then a live room over <code>node serve.js</code> of three tile pages the size of a laptop, a tablet and a phone, whose own
+screenshots make the photo the camera page detects and solves: every tile placed within 1 mm of where it lies, the dot
+continuous across them, their clocks and their timelines agreeing.</li>
+</ul>
+<p>Never tried yet: phones and tablets on a real table, a real photo (reflections, light, the angle, a phone small in the
+frame), fullscreen and the wake lock on an iPhone or an Android phone, the clock over a real wifi, and a 12 MP photo's
+detection time on a phone. The README of the package lists what to look at when it is.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/output/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Projection and video out</span></a>
+      <a class="ch-next" rel="next" href="../../docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">MIDI controllers &amp; embedding</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=9a90f849"></script>
+<!--/email_off-->
+</body>
+</html>

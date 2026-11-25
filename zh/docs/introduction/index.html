@@ -97,17 +97,18 @@
         <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
         <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
         <li class="toc-ch" data-ch="output"><a href="../../../zh/docs/output/"><span class="n">11</span><span class="t">投影與影像輸出</span></a></li>
-        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">12</span><span class="t">MIDI 控制器與嵌入</span></a></li>
-        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">13</span><span class="t">設備</span></a></li>
-        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">14</span><span class="t">p5.js 一行接上</span></a></li>
-        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">15</span><span class="t">和 Strudel 一起用</span></a></li>
-        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">16</span><span class="t">手機、中繼與控制面板</span></a></li>
-        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">17</span><span class="t">訊號一覽</span></a></li>
-        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">18</span><span class="t">套件一覽</span></a></li>
-        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">19</span><span class="t">給 AI 代理</span></a></li>
-        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">20</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
-        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">21</span><span class="t">疑難排解</span></a></li>
-        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">22</span><span class="t">路線圖</span></a></li>
+        <li class="toc-ch" data-ch="tile"><a href="../../../zh/docs/tile/"><span class="n">12</span><span class="t">多螢幕拼接：一張畫布</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">13</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">14</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">15</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">16</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">17</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">18</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">19</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">20</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">21</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">22</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">23</span><span class="t">路線圖</span></a></li>
       </ol>
     </nav>
   </aside>
@@ -116,9 +117,9 @@
     <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
     <article class="chapter" data-chapter="introduction" aria-labelledby="introduction">
 <h1 id="introduction">簡介<a class="anchor" href="#introduction" aria-label="這一節的連結">#</a></h1>
-<p class="chapter-meta"><span class="chapter-n">第 1 章，共 22 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/introduction.md">docs/zh/introduction.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">第 1 章，共 23 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/introduction.md">docs/zh/introduction.md</a></span></p>
 <p>open-audiovisual（OAV）是一套在瀏覽器裡跑的 JavaScript 框架，給現場影音表演用。它只用原生的 ES module：不用建置、沒有相依套件、不用註冊帳號。把 repo clone 下來，跑一個檔案，打開一個網頁，就可以開始了。</p>
-<p>每一場演出都要從頭重做的那一塊，由它來處理：MIDI 的底層接線、把輸入變成參數、有場景的時間軸、導演控台、給演奏者的演出模式，以及給舞台監督的後台頁面。你只要寫<em>世界</em>，也就是作品本身。框架的介紹、一台即時在跑的樂器，還有二十九件範例作品，都在<a href="../../../zh/">首頁</a>。</p>
+<p>每一場演出都要從頭重做的那一塊，由它來處理：MIDI 的底層接線、把輸入變成參數、有場景的時間軸、導演控台、給演奏者的演出模式，以及給舞台監督的後台頁面。你只要寫<em>世界</em>，也就是作品本身。框架的介紹、一台即時在跑的樂器，還有三十件範例作品，都在<a href="../../../zh/">首頁</a>。</p>
 <h2 id="introduction-who-it-is-for">給誰用<a class="anchor" href="#introduction-who-it-is-for" aria-label="這一節的連結">#</a></h2>
 <ul>
 <li><strong>演奏者</strong>用 MIDI 鍵盤、麥克風、鏡頭、手機或螢幕鋼琴來彈範例，從控台操作一場演出。</li>

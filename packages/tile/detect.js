@@ -14,7 +14,7 @@
 //   • the next step, a screen as a window posed in 3D, needs solvePnP — it is in the same file.
 // The cost is size: ~10 MB (about 3 MB over the wire, compressed), on the camera page only, cached after the first visit.
 
-import { DICT_NAME } from './dict.js';
+import { DICT_NAME } from './dict.js?v=9a90f849';
 
 export const OPENCV_VERSION = '4.12.0-release.1';
 export const OPENCV_URL = `https://cdn.jsdelivr.net/npm/@techstark/opencv-js@${OPENCV_VERSION}/dist/opencv.js`;
