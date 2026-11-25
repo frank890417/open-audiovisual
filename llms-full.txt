@@ -4260,7 +4260,9 @@ projectors run at once and one photo of each frame measures all three. A fourth 
 
 `graySequence()` lists the frames, `drawGrayFrame()` draws one over the desktop. They are drawn in output pixels, never
 through the calibration: what is measured is the projector itself. Example 31's Gray code button steps through them, `[`
-and `]`, with each frame's name.
+and `]`, with each frame's name, on a scaled preview of the desktop: to shoot, draw them with `drawGrayFrame(ctx, mapping,
+frame, { view: { k: 1, x: 0, y: 0 } })` on a canvas the desktop's size, fullscreen across the outputs, so every stripe is
+whole projector pixels.
 
 To shoot them: the camera on a tripod where it sees every surface, exposure, focus and white balance fixed by hand, the
 room dark, every projector on; one photo per frame, in the sequence's order, named after the frame (`frameLabel()`). Do

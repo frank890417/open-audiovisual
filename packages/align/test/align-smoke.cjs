@@ -33,7 +33,8 @@ const freePort = () => new Promise((res) => { const s = net.createServer(); s.li
       page.on('pageerror', (e) => errors.push(String(e)));
     };
     const page = await ctx.newPage(); watch(page);
-    const ready = () => page.waitForFunction(() => window.openav && window.openav.align && window.openav.align.ui, null, { timeout: 30000 });
+    // ready, and the guide card hidden (it would cover the left output in the screenshots)
+    const ready = async () => { await page.waitForFunction(() => window.openav && window.openav.align && window.openav.align.ui, null, { timeout: 30000 }); await page.addStyleTag({ content: '.oav-guide { display: none !important }' }); };
     const settle = (ms = 400) => page.waitForTimeout(ms);
     const pixels = () => page.evaluate(() => { const c = document.querySelector('.align-desk canvas'); return c.toDataURL('image/png'); });
     const stage = () => page.$('.oav-stage');
@@ -78,7 +79,6 @@ const freePort = () => new Promise((res) => { const s = net.createServer(); s.li
     const dx = moved[0] - at.corner[0], dy = moved[1] - at.corner[1];
     say(Math.abs(dx + 120 / at.k) < 2 / at.k && Math.abs(dy + 60 / at.k) < 2 / at.k && before !== after,
       `a dragged corner moves zone R's corner by (${dx.toFixed(1)}, ${dy.toFixed(1)}) desktop px and changes the warped picture`, `corner ${at.corner} → ${moved}`);
-    await page.addStyleTag({ content: '.oav-guide { display: none !important }' });   // the guide card would cover the left output
     await (await stage()).screenshot({ path: path.join(SHOTS, 'align-example.png') });
     if (process.env.THUMB) {
       // the work itself, both projectors a little off square, the handles and the panel: the stage's top 16:10

@@ -118,7 +118,7 @@ function drawFlat() {
       g.drawImage(c, o.x * k, o.y * k, o.w * k, o.h * k);
     }
   }
-  drawOutputs(g, M, view);
+  if (state.mode !== 'gray') drawOutputs(g, M, view);   // nothing over a Gray-code frame: magenta frames would add R + B to the stripes
   bar.update();
 }
 
