@@ -215,21 +215,21 @@ half that round trip, a few ms on home wifi). <code>tile.now()</code> is the rel
 seconds since the camera page pressed Play. Screens refresh on their own vsync, so two of them can still be a frame apart.</p>
 <p><code>syncTimeline(timeline, dt)</code>, called before <code>timeline.advance(dt)</code> (createShow's <code>onFrame</code> is), puts the playhead where the
 shared clock was one frame ago, so the frame lands on the shared time and fires the scenes and cues it passes; the
-automation then reads the same values on every screen. A pause, a hold or a seek on one screen lasts a quarter of a second at
-most, then that screen is back on the clock.</p>
+automation then reads the same values on every screen. The shared clock never waits, so neither does a tiled timeline: a
+pause or a seek on one screen is undone on the next frame, and a <code>hold</code> scene parks it for one frame and is then released
+(the next scene starts and its boundary cue fires).</p>
 <p>This is not <a href="../../docs/show-control/#show-control-several-pages-one-show"><code>@openav/sync</code></a>, and the two are kept apart on purpose:</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th><code>@openav/sync</code></th><th>the tile clock</th></tr></thead>
 <tbody>
 <tr><td>who keeps time</td><td>one leader page runs the timeline and says every frame where it is</td><td>nobody: every screen asks the relay what time it is</td></tr>
-<tr><td>what travels</td><td>the leader's playhead (<code>T</code>, playing, holding, rate, cut) every frame, and <code>extra</code> data</td><td>a ping every 2 s, then nothing; the layout and the start once, as config</td></tr>
-<tr><td>pause, hold, seek</td><td>copied by every follower</td><td>not shared: each screen goes back to the clock</td></tr>
-<tr><td>when a page drops out</td><td>a follower runs on by itself; without the leader nobody advances the show</td><td>nothing changes: the camera page can close, the screens play on</td></tr>
+<tr><td>what travels</td><td>the leader's playhead (<code>T</code>, playing, holding, rate, cut) every frame, and <code>extra</code> data</td><td>nothing per frame: each screen's hello once a second and a ping every 2 s; the layout and the start once, as config</td></tr>
+<tr><td>pause, hold, seek</td><td>copied by every follower</td><td>not shared: undone on the next frame, a hold released</td></tr>
+<tr><td>when a page drops out</td><td>a follower that loses the leader runs on by itself (<code>timeline.follow()</code>)</td><td>the camera page can close: the screens play on</td></tr>
 <tr><td>for</td><td>several pages of one show at their own sizes: a wall of outputs, a lobby, a rehearsal laptop</td><td>one canvas cut into pieces, every piece drawn from (time, seed)</td></tr>
 </tbody>
 </table></div>
-<p>A tiled show that needs a leader's pause and holds can have both: it is still a page, and <code>createShow({ sync })</code> still
-works on it. Nothing in the framework joins them for you.</p>
+<p>Nothing in the framework joins the two, and they have not been tried together on one page.</p>
 <h2 id="tile-how-a-photo-becomes-a-layout">How a photo becomes a layout<a class="anchor" href="#tile-how-a-photo-becomes-a-layout" aria-label="Link to this section">#</a></h2>
 <p>Every screen lies in one plane, the table, and its pixels are evenly spaced on it, so "screen pixels → table" is a
 similarity (a turn, a uniform scale, a shift) for every screen, whatever its pixel density. The camera adds one perspective,
@@ -287,7 +287,7 @@ it only on <code>https://</code> or <code>localhost</code> (on <code>http://192.
 <li>Overlapping screens: which one is on top is not known, so the one underneath also draws the part that is covered.</li>
 <li>A screen that changes size (a rotation, the address bar) draws on its own until the next photo.</li>
 <li>A param moved by hand on one screen's console changes that screen only; what is shared is the timeline, the clock and the
-seed.</li>
+seed. The timeline cannot be paused or held on a tile: it follows the shared clock.</li>
 <li>Up to 20 screens. Glossy screens reflect lamps: turn the brightness up and avoid a light right above the table.</li>
 <li>Two tabs of one browser share an id (it is kept in <code>localStorage</code>): add <code>&amp;id=a</code>, <code>&amp;id=b</code> when trying it on one computer.</li>
 </ul>
@@ -297,8 +297,9 @@ seed.</li>
 <li><code>tests/tile.test.js</code> (in <code>npm test</code>): the DLT and the similarity fit against known transforms with 0.5 px of noise; the
 solve on synthetic photos (a pinhole camera, real screen sizes and densities) for two and three screens, with 4 markers and
 with fewer, a misread marker, with and without the refinement; a dot crossing screens stays continuous; layout.json
-validation; marker ids, the grid and the dictionary; the view's matrices; the clock; the <code>tileMarkers</code> route under the rule
-for who holds a value; and that only the camera page can reach OpenCV.</li>
+validation; marker ids, the grid and the dictionary; the view's matrices; the clock; <code>syncTimeline</code> through scenes, a cue,
+a hold scene, a pause and a seek; the <code>tileMarkers</code> route under the rule for who holds a value; and that only the camera
+page can reach OpenCV.</li>
 <li><code>packages/tile/test/tile-smoke.cjs</code>, by hand, in headless Chromium with the pinned OpenCV.js from jsDelivr: example 30
 alone with no console errors; the camera page's <code>?demo=1</code> placing its three synthetic screens within 0.2°, 0.5 % and 2 px
 of the truth; then a live room over <code>node serve.js</code> of three tile pages the size of a laptop, a tablet and a phone, whose own

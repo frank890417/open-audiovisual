@@ -430,7 +430,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-33 packages · 30 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1440 tests
+33 packages · 30 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1441 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -3977,21 +3977,21 @@ seconds since the camera page pressed Play. Screens refresh on their own vsync, 
 
 `syncTimeline(timeline, dt)`, called before `timeline.advance(dt)` (createShow's `onFrame` is), puts the playhead where the
 shared clock was one frame ago, so the frame lands on the shared time and fires the scenes and cues it passes; the
-automation then reads the same values on every screen. A pause, a hold or a seek on one screen lasts a quarter of a second at
-most, then that screen is back on the clock.
+automation then reads the same values on every screen. The shared clock never waits, so neither does a tiled timeline: a
+pause or a seek on one screen is undone on the next frame, and a `hold` scene parks it for one frame and is then released
+(the next scene starts and its boundary cue fires).
 
 This is not [`@openav/sync`](show-control.md#several-pages-one-show), and the two are kept apart on purpose:
 
 | | `@openav/sync` | the tile clock |
 |---|---|---|
 | who keeps time | one leader page runs the timeline and says every frame where it is | nobody: every screen asks the relay what time it is |
-| what travels | the leader's playhead (`T`, playing, holding, rate, cut) every frame, and `extra` data | a ping every 2 s, then nothing; the layout and the start once, as config |
-| pause, hold, seek | copied by every follower | not shared: each screen goes back to the clock |
-| when a page drops out | a follower runs on by itself; without the leader nobody advances the show | nothing changes: the camera page can close, the screens play on |
+| what travels | the leader's playhead (`T`, playing, holding, rate, cut) every frame, and `extra` data | nothing per frame: each screen's hello once a second and a ping every 2 s; the layout and the start once, as config |
+| pause, hold, seek | copied by every follower | not shared: undone on the next frame, a hold released |
+| when a page drops out | a follower that loses the leader runs on by itself (`timeline.follow()`) | the camera page can close: the screens play on |
 | for | several pages of one show at their own sizes: a wall of outputs, a lobby, a rehearsal laptop | one canvas cut into pieces, every piece drawn from (time, seed) |
 
-A tiled show that needs a leader's pause and holds can have both: it is still a page, and `createShow({ sync })` still
-works on it. Nothing in the framework joins them for you.
+Nothing in the framework joins the two, and they have not been tried together on one page.
 
 ## How a photo becomes a layout
 
@@ -4057,7 +4057,7 @@ On a static host (openaudiovisual.com) there is no relay: run `node serve.js`, o
 - Overlapping screens: which one is on top is not known, so the one underneath also draws the part that is covered.
 - A screen that changes size (a rotation, the address bar) draws on its own until the next photo.
 - A param moved by hand on one screen's console changes that screen only; what is shared is the timeline, the clock and the
-  seed.
+  seed. The timeline cannot be paused or held on a tile: it follows the shared clock.
 - Up to 20 screens. Glossy screens reflect lamps: turn the brightness up and avoid a light right above the table.
 - Two tabs of one browser share an id (it is kept in `localStorage`): add `&id=a`, `&id=b` when trying it on one computer.
 
@@ -4068,8 +4068,9 @@ On one machine, with no screens but browser contexts and no hardware at all:
 - `tests/tile.test.js` (in `npm test`): the DLT and the similarity fit against known transforms with 0.5 px of noise; the
   solve on synthetic photos (a pinhole camera, real screen sizes and densities) for two and three screens, with 4 markers and
   with fewer, a misread marker, with and without the refinement; a dot crossing screens stays continuous; layout.json
-  validation; marker ids, the grid and the dictionary; the view's matrices; the clock; the `tileMarkers` route under the rule
-  for who holds a value; and that only the camera page can reach OpenCV.
+  validation; marker ids, the grid and the dictionary; the view's matrices; the clock; `syncTimeline` through scenes, a cue,
+  a hold scene, a pause and a seek; the `tileMarkers` route under the rule for who holds a value; and that only the camera
+  page can reach OpenCV.
 - `packages/tile/test/tile-smoke.cjs`, by hand, in headless Chromium with the pinned OpenCV.js from jsDelivr: example 30
   alone with no console errors; the camera page's `?demo=1` placing its three synthetic screens within 0.2°, 0.5 % and 2 px
   of the truth; then a live room over `node serve.js` of three tile pages the size of a laptop, a tablet and a phone, whose own

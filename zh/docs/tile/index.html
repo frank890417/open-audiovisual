@@ -174,19 +174,19 @@ tile.attach(show.signals);                            <span class="tc">// tile/m
 </ul>
 <h2 id="tile-the-shared-clock">共同時鐘<a class="anchor" href="#tile-the-shared-clock" aria-label="這一節的連結">#</a></h2>
 <p>每台螢幕連上時 ping 中繼十次，之後每 2 秒一次。中繼本來就會用自己的時間回答每個 ping，<code>ClockSync</code> 留下最近一分鐘裡來回最快那次的偏移（簡化版的 NTP：誤差最多是那次來回的一半，家裡的 wifi 大約幾毫秒）。<code>tile.now()</code> 是在這台螢幕上讀到的中繼時鐘，<code>tile.time()</code> 是拍照頁按下演出之後過了幾秒。螢幕照自己的垂直同步更新，所以兩台之間還是可能差一格。</p>
-<p><code>syncTimeline(timeline, dt)</code> 在 <code>timeline.advance(dt)</code> 之前呼叫（createShow 的 <code>onFrame</code> 就是），把播放頭放在共同時鐘一格之前的位置，這一格就落在共同時間上，並觸發它經過的場景和 cue。自動化在每台螢幕上就讀到一樣的值。某一台的暫停、hold 或跳轉最多維持四分之一秒，之後那台就回到時鐘上。</p>
+<p><code>syncTimeline(timeline, dt)</code> 在 <code>timeline.advance(dt)</code> 之前呼叫（createShow 的 <code>onFrame</code> 就是），把播放頭放在共同時鐘一格之前的位置，這一格就落在共同時間上，並觸發它經過的場景和 cue。自動化在每台螢幕上就讀到一樣的值。共同時鐘從不等待，拼接的時間軸也一樣：某一台的暫停或跳轉在下一格就被拉回來，<code>hold</code> 場景只停一格，接著就放開（下一個場景開始，邊界上的 cue 照樣觸發）。</p>
 <p>這不是 <a href="../../../zh/docs/show-control/#show-control-several-pages-one-show"><code>@openav/sync</code></a>，兩者是刻意分開的：</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th><code>@openav/sync</code></th><th>拼接的時鐘</th></tr></thead>
 <tbody>
 <tr><td>誰掌管時間</td><td>一個主控頁面跑時間軸，每一格都說它在哪裡</td><td>沒有人：每台螢幕問中繼現在幾點</td></tr>
-<tr><td>傳什麼</td><td>每一格傳主控端的播放頭（<code>T</code>、播放中、hold、速率、版本），還有 <code>extra</code> 資料</td><td>每 2 秒一個 ping，然後就沒了。版面和起點只用設定傳一次</td></tr>
-<tr><td>暫停、hold、跳轉</td><td>每個從屬端照抄</td><td>不共用：每台螢幕回到時鐘上</td></tr>
-<tr><td>有頁面掉線時</td><td>從屬端自己繼續跑，沒有主控端就沒人推進演出</td><td>什麼都不變：拍照頁可以關掉，螢幕照樣演</td></tr>
+<tr><td>傳什麼</td><td>每一格傳主控端的播放頭（<code>T</code>、播放中、hold、速率、版本），還有 <code>extra</code> 資料</td><td>不是每一格都傳：每台螢幕每秒報到一次、每 2 秒一個 ping。版面和起點只用設定傳一次</td></tr>
+<tr><td>暫停、hold、跳轉</td><td>每個從屬端照抄</td><td>不共用：下一格就被拉回來，hold 會被放開</td></tr>
+<tr><td>有頁面掉線時</td><td>失去主控端的從屬端自己繼續跑（<code>timeline.follow()</code>）</td><td>拍照頁可以關掉，螢幕照樣演</td></tr>
 <tr><td>用在</td><td>同一場演出的好幾個頁面，各自用自己的尺寸：一面輸出牆、大廳、排練用的筆電</td><td>一張畫布切成好幾塊，每一塊都由（時間、種子）畫出來</td></tr>
 </tbody>
 </table></div>
-<p>需要主控端的暫停和 hold 的拼接演出，兩個可以一起用：它還是一個頁面，<code>createShow({ sync })</code> 照樣能用。框架不會替你把它們接在一起。</p>
+<p>框架沒有把兩者接在一起，也還沒有在同一個頁面上一起試過。</p>
 <h2 id="tile-how-a-photo-becomes-a-layout">一張照片怎麼變成版面<a class="anchor" href="#tile-how-a-photo-becomes-a-layout" aria-label="這一節的連結">#</a></h2>
 <p>每台螢幕都躺在同一個平面（桌面）上，而且它的像素在上面是均勻排的，所以不管像素密度多少，「螢幕像素 → 桌面」對每台都是一個相似轉換（旋轉、等比縮放、位移）。相機再加上一個透視「桌面 → 照片」，對所有螢幕都一樣。所以每台螢幕的單應矩陣 <code>H_i</code>（螢幕像素 → 照片）是 <code>G · S_i</code>，而 <code>H_ref⁻¹ · H_i = S_ref⁻¹ · S_i</code> 是一個相似轉換：相機的透視互相抵消，手機的 460 ppi 對筆電的 227 ppi 就落在縮放裡。<code>solveLayout()</code>：</p>
 <ol>
@@ -224,14 +224,14 @@ tile.attach(show.signals);                            <span class="tc">// tile/m
 <li><strong>只能是平放的螢幕。</strong> 立起來的筆電不在桌面那個平面上：把它放平，或等 3D 模型。</li>
 <li>疊在一起的螢幕：不知道哪一台在上面，所以下面那台也會畫被蓋住的部分。</li>
 <li>尺寸改變的螢幕（旋轉、網址列）會自己單獨畫，直到下一張照片。</li>
-<li>在某台螢幕的控台上用手推的參數只改那一台。共用的是時間軸、時鐘和種子。</li>
+<li>在某台螢幕的控台上用手推的參數只改那一台。共用的是時間軸、時鐘和種子。拼接螢幕上的時間軸不能暫停或 hold：它跟著共同時鐘走。</li>
 <li>最多 20 台螢幕。亮面螢幕會反射燈光：把亮度調高，避免燈就在桌子正上方。</li>
 <li>同一個瀏覽器的兩個分頁會共用一個 id（存在 <code>localStorage</code>）：在一台電腦上試的時候，加上 <code>&amp;id=a</code>、<code>&amp;id=b</code>。</li>
 </ul>
 <h2 id="tile-what-was-checked">檢查過什麼<a class="anchor" href="#tile-what-was-checked" aria-label="這一節的連結">#</a></h2>
 <p>在一台機器上，沒有實體螢幕，只有瀏覽器的分頁，也沒有任何硬體：</p>
 <ul>
-<li><code>tests/tile.test.js</code>（在 <code>npm test</code> 裡）：DLT 和相似轉換擬合，對照加了 0.5 px 雜訊的已知轉換。在合成照片上（針孔相機、真實的螢幕尺寸和密度）求解兩台和三台螢幕，包括 4 個標記和更少的情況、讀錯的標記、有精修和沒有精修。圓點跨過螢幕時保持連續。layout.json 驗證、標記 id、格子和字典、view 的矩陣、時鐘、<code>tileMarkers</code> 路由在「誰握住數值」規則下的行為，以及只有拍照頁碰得到 OpenCV。</li>
+<li><code>tests/tile.test.js</code>（在 <code>npm test</code> 裡）：DLT 和相似轉換擬合，對照加了 0.5 px 雜訊的已知轉換。在合成照片上（針孔相機、真實的螢幕尺寸和密度）求解兩台和三台螢幕，包括 4 個標記和更少的情況、讀錯的標記、有精修和沒有精修。圓點跨過螢幕時保持連續。layout.json 驗證、標記 id、格子和字典、view 的矩陣、時鐘、<code>syncTimeline</code> 經過場景、cue、hold 場景、暫停和跳轉、<code>tileMarkers</code> 路由在「誰握住數值」規則下的行為，以及只有拍照頁碰得到 OpenCV。</li>
 <li><code>packages/tile/test/tile-smoke.cjs</code>，手動跑，在無頭 Chromium 裡用 jsDelivr 上固定版本的 OpenCV.js：範例 30 單獨開沒有 console 錯誤。拍照頁的 <code>?demo=1</code> 把三台合成螢幕定位在真值的 0.2°、0.5 %、2 px 以內。接著在 <code>node serve.js</code> 上開一個真的房間，三個螢幕頁面分別是筆電、平板和手機的大小，用它們自己的截圖合成拍照頁要偵測和求解的照片：每台都定位在實際位置的 1 mm 以內，圓點跨過它們時連續，時鐘和時間軸都一致。</li>
 </ul>
 <p>還沒試過：真的桌上放手機和平板、真的照片（反光、光線、角度、手機在畫面裡太小）、iPhone 和 Android 手機上的全螢幕和喚醒鎖、真實 wifi 上的時鐘，以及手機偵測一張 1200 萬像素照片要多久。套件的 README 列出到時候要看什麼。</p>
