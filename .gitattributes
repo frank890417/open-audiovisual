@@ -1,0 +1,25 @@
+# Text files are LF in every checkout, whatever core.autocrlf says. The generators write LF and the tests compare their
+# output byte for byte, so a Windows clone that checked files out as CRLF failed them (issue #8).
+* text=auto eol=lf
+
+# Binary: stored and checked out exactly as they are.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.mp3 binary
+*.wav binary
+*.ogg binary
+*.mp4 binary
+*.webm binary
+*.mov binary
+*.pdf binary
+*.glb binary
+*.stl binary
+*.zip binary
