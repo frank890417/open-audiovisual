@@ -24,6 +24,7 @@
 - [x] 好幾個頁面演同一場：一個主控和它的從屬端，同一個瀏覽器或跨機器（`@openav/sync`）
 - [x] 整個框架有版本號，和一個永遠不變的網址。一個檔就是一場演出，不用 clone（[固定一個版本](getting-started.md#pin-a-version)）
 - [x] [用它做的](https://openaudiovisual.com/zh/made-with/)：跑在它上面的作品，每一筆都是作者自己加的
+- [x] 把舞台送上投影機或第二個螢幕：輸出視窗、四角校正、並排投影機的裁切、黑場與亮度參數，以及給 OBS 和 TouchDesigner 的乾淨網址（`@openav/output`，[投影與影像輸出](output.md)）
 
 ## 讓這一層不用再有人重做
 
@@ -35,7 +36,7 @@
 | 不用 repo 的入口 | 一個檔加一個 `import` | 控制器頁面和手機遙控也有一樣的入口 |
 | 別人讀得懂的格式 | 附 JSON Schema 的控制器設定檔、匯出成 QLC+ 與 Mixxx、對應檔、總譜 | 每種格式有自己的版本號。設定檔格式成為其他工具也採用的格式 |
 | 信得過的控制器 | 55 份設定檔，每個數字都有出處，還有一頁能用手驗實機 | 第一批在實機上驗過的設定檔，更多來自手上有那台的人 |
-| 現場的食譜 | OSC 送到 TouchDesigner、燈光與空間音訊 | 畫面送進 TouchDesigner、OBS 和投影機。場地清單（展示用的 iPad、沒有網路） |
+| 現場的食譜 | OSC 送到 TouchDesigner、燈光與空間音訊。畫面送上投影機，以及寫好的 OBS 和 TouchDesigner 做法和場地清單（[投影與影像輸出](output.md)） | OBS 和 TouchDesigner 的做法在各自的軟體裡跑過。展示用的 iPad |
 | 證明 | 它出身的那幾場演出 | [用它做的](https://openaudiovisual.com/zh/made-with/)上有別人的作品 |
 | 發問的地方 | issue、要一台控制器的表單、登記作品的表單 | 幾天內有回音 |
 
@@ -56,7 +57,7 @@
 
 ## v2.x — 舞台變寬
 
-- **畫面進入影像流程**：先用現成的工具寫成食譜（OBS 的 Browser Source 加 NDI 輸出、TouchDesigner 的 Web Render TOP）。那些做不到、而且有演出需要的時候，才做自己的閘道（headless 瀏覽器 → NDI）。
+- **畫面進入影像流程**：先用現成的工具寫成食譜（OBS 的 Browser Source 加 NDI 輸出、TouchDesigner 的 Web Render TOP）。*食譜寫好了*（[投影與影像輸出](output.md)），也有給它們用的乾淨網址（`?output`）和輸出視窗。各個軟體拿到頁面後的表現，還要在軟體裡實際跑過。那些做不到、而且有演出需要的時候，才做自己的閘道（headless 瀏覽器 → NDI）。
 - **分散式演出**：透過 WebRTC data channel 同步多個瀏覽器的訊號：好幾台電腦、一個訊號空間、分處各地的合奏團。時鐘的那一半已經做好了：好幾個頁面演同一場，從屬端透過 BroadcastChannel 或房間中繼追著主控端的時間軸（`@openav/sync`）。訊號則仍然留在收到它的那個頁面。
 - **AI 代理演奏者**：由 LLM 驅動的代理訂閱訊號、寫入參數，在人旁邊一起即興（來歷：《The Last Input 終局之前》裡自主行動的城市代理）。
 

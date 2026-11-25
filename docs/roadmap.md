@@ -30,6 +30,8 @@ before it was generalized.)
 - [x] a version for the whole framework and an address that never changes; a show in one file, with no clone
   ([Pin a version](getting-started.md#pin-a-version))
 - [x] [Made with](https://openaudiovisual.com/made-with/): the works that run on it, each added by the person who made it
+- [x] the stage on a projector or a second screen: an output window, four-corner correction, crops for projectors side by side,
+  blackout and brightness as params, and a clean address for OBS and TouchDesigner (`@openav/output`, [Projection and video out](output.md))
 
 ## So that nobody rebuilds this layer
 
@@ -42,7 +44,7 @@ already runs. A layer earns that when people can build on it without asking. Wha
 | a way in without the repository | one file and one `import` | the same for a controller page and a phone remote |
 | formats others can read | controller profiles with a JSON Schema, exports to QLC+ and Mixxx, map files, the score | each format with its own version number; the profile format as something other tools adopt |
 | controllers you can trust | 55 profiles, every number with its source, a page that checks a unit by hand | the first profiles checked on hardware; more from the people who own them |
-| recipes for the room | OSC to TouchDesigner, lights and spatial audio | the picture into TouchDesigner, OBS and a projector; a venue checklist (a kiosk iPad, no network) |
+| recipes for the room | OSC to TouchDesigner, lights and spatial audio; the picture on a projector, and written recipes for OBS and TouchDesigner with a venue checklist ([Projection and video out](output.md)) | the OBS and TouchDesigner recipes run in each app; a kiosk iPad |
 | proof | the shows it came from | works by other people on [Made with](https://openaudiovisual.com/made-with/) |
 | a place to ask | issues, a form to ask for a controller, a form to add a work | answers within days |
 
@@ -70,8 +72,9 @@ already runs. A layer earns that when people can build on it without asking. Wha
 ## v2.x — the stage widens
 
 - **The picture into video pipelines**: first as recipes with tools that exist (OBS Browser Source with NDI out,
-  TouchDesigner's Web Render TOP). A gateway of our own (headless browser → NDI) only if a show needs what
-  those cannot do.
+  TouchDesigner's Web Render TOP). *Recipes written* ([Projection and video out](output.md)), with a clean address
+  (`?output`) and an output window to feed them; what each app does with the page is still to be run in the app.
+  A gateway of our own (headless browser → NDI) only if a show needs what those cannot do.
 - **Distributed performance**: multi-browser signal sync over WebRTC data
   channels — several machines, one signal space, geographically split ensembles.
   The clock half shipped: several pages perform one show, the followers chasing a leader's
