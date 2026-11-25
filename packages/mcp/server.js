@@ -35,6 +35,7 @@ const DOCS = {
   score: 'docs/score.md',
   dmx: 'docs/dmx.md',
   output: 'docs/output.md',
+  tile: 'docs/tile.md',
   devices: 'docs/devices.md',
   roadmap: 'docs/roadmap.md',
   agents: 'AGENTS.md',

@@ -251,3 +251,13 @@ site). A mirror shows the stage's `<canvas>`: a world drawn with DOM or SVG has 
 On one screen, an output in fullscreen over the show page hides that page, and the mirror slows to the hidden-tab rate
 ([above](#the-show-slows-down-when-the-window-is-in-the-background)): put the output on another screen, or leave it a window.
 See [Projection and video out](output.md).
+
+## A screen on the table is not placed by the photo
+
+The camera page's list says why for each screen. `too-few-markers`: fewer than four of its markers were read, so take the
+photo again from closer or straighter, with less of it covered, the brightness up and no lamp reflected in it. A screen
+missing from the list has not said hello: it is in another room, or not on the relay (a static host has none: run
+`node serve.js`), or two tabs of one browser share an id (add `&id=a`). A screen placed once and drawing on its own again
+changed size (a rotation, the browser bars): fullscreen it, then take a new photo. On an iPhone, add the page to the home
+screen for fullscreen. The first photo waits for OpenCV.js (about 3 MB from jsDelivr); with no internet the camera page
+cannot detect. See [Several screens, one canvas](tile.md).

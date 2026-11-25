@@ -8,6 +8,13 @@ its position and its size; it travels behind the bezels and the gaps as if they 
 Nothing is streamed. Every screen computes its own frame from the same two things: one clock, shared through the relay,
 and one seed.
 
+Not [`@openav/output`](../output/README.md): that is one stage, rendered once, shown through projector windows (its
+`cornerPin()` is the four corners of one window; `homography()` here takes any number of measured points). Not
+[`@openav/sync`](../sync/) either: there one leader page streams its playhead to followers every frame; here there is no
+leader, every screen asks the relay what time it is. The chapter is
+[Several screens, one canvas](https://openaudiovisual.com/docs/tile/); every export has an entry in the
+[API reference](https://openaudiovisual.com/docs/reference/).
+
 | part | file | what it does |
 |---|---|---|
 | tile/join | `join.js` | a screen joins a relay room (`?room=<name>`); one tap asks for fullscreen and the screen wake lock; reports its id and its real pixels (CSS size × `devicePixelRatio`) |
@@ -167,7 +174,7 @@ What `packages/tile/?demo=1` sends (the phone of the three screens shown; number
 ```
 
 `similarity` maps a screen's pixel `(x, y)` to the canvas: `x' = a·x − b·y + tx`, `y' = b·x + a·y + ty`
-(turn `atan2(b, a)`, scale `hypot(a, b)`: the phone's 0.4936 is the laptop's 227 ppi over the phone's 460); `matrix3x3` is the same, row-major, so a later kind of device can carry a
+(turn `atan2(b, a)`, scale `hypot(a, b)`: the phone's 0.4935 is the laptop's 227 ppi over the phone's 460); `matrix3x3` is the same, row-major, so a later kind of device can carry a
 general matrix. `rms` is the reprojection error in photo pixels. `validateLayout(layout)` lists every problem, one
 message each.
 
@@ -207,7 +214,8 @@ keeps the offset of the quickest round trip of the last minute (the error is at 
 - the next step needs `solvePnP`, which is in the same file.
 
 The cost is size: about 10 MB (3 MB compressed), on the camera page only, cached after the first visit. The tiles never
-load it: the marker bits are in `dict.js` (extracted from OpenCV by `tools/extract-dict.cjs`, checked by the tests).
+load it: the marker bits are in `dict.js` (extracted from OpenCV by `tools/extract-dict.cjs`), and `tests/tile.test.js`
+checks that nothing but the camera page can reach `detect.js`. OpenCV and the npm package are Apache-2.0: see `NOTICE`.
 DICT_5X5_1000 rather than 4×4: two 5×5 markers differ in at least 5 bits under rotation, two 4×4_1000 markers can differ
 in 2, and a misread id puts four corners on the wrong screen.
 
@@ -241,11 +249,14 @@ in 2, and a misread id puts four corners on the wrong screen.
   solveLayout on synthetic photos (pinhole camera, real screen sizes and densities) for two and three screens, with 4
   markers and with fewer, a misread marker, the refinement against no refinement; continuity of a dot across screens;
   layout.json validation; marker ids, grid and dictionary; the view's matrices; the clock.
-- `packages/tile/test/tile-smoke.cjs`: end to end in headless Chromium — the camera page's demo, then a live room of
-  three tile pages (laptop, tablet and phone sizes) whose own screenshots make the photo the camera page detects and
-  solves; checks every tile's placement, the shared clock, and the console. Instructions at the top of the file.
+- `tests/tile.test.js` also drives `TILE_ROUTES` through a real `Mapper` under the rule for who holds a value, and walks
+  the import graph: only the camera page reaches `detect.js`, and no other file names the OpenCV address.
+- `packages/tile/test/tile-smoke.cjs`: end to end in headless Chromium: example 30 on its own, the camera page's demo,
+  then a live room of three tile pages (laptop, tablet and phone sizes) whose own screenshots make the photo the camera
+  page detects and solves; checks every tile's placement, the shared clock and timeline, and the console. It loads the
+  pinned OpenCV.js from jsDelivr (`OPENCV=<file>` serves a local copy instead). Instructions at the top of the file.
 - `packages/tile/tools/extract-dict.cjs --check`: `dict.js` against OpenCV's own DICT_5X5_1000.
 
 ## 中文速記
 
-在電腦跑 `node serve.js`；每台要拼接的螢幕開 `http://<電腦 IP>:8080/examples/30-tile-dot/?room=desk`，點 **Tap to join**，平放在桌上；拍照的手機開 `http://<電腦 IP>:8080/packages/tile/?room=desk`，按「標記」，從上方拍一張每台都入鏡、每台至少露出 4 個標記的照片。全部定位成功就自動「演出」。沒有裝置時開 `packages/tile/?demo=1`。iPhone 要「加入主畫面」才能全螢幕；螢幕常亮靠系統設定（自動鎖定：永不），Wake Lock 只是保險，而且只在 https 或 localhost 有；立起來的筆電這版不支援。
+在電腦跑 `node serve.js`。每台要拼接的螢幕開 `http://<電腦 IP>:8080/examples/30-tile-dot/?room=desk`，點 **Tap to join**，平放在桌上。拍照的手機開 `http://<電腦 IP>:8080/packages/tile/?room=desk`，按「標記」，從上方拍一張每台都入鏡、每台至少露出 4 個標記的照片。全部定位成功就自動「演出」。沒有裝置時開 `packages/tile/?demo=1`。iPhone 要「加入主畫面」才能全螢幕。螢幕常亮靠系統設定（自動鎖定：永不），Wake Lock 只是保險，而且只在 https 或 localhost 有。立起來的筆電這版不支援。完整的中文說明在[多螢幕拼接：一張畫布](https://openaudiovisual.com/zh/docs/tile/)。

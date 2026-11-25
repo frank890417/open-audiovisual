@@ -2524,18 +2524,18 @@
       "thumb": "assets/home/works/30.webp",
       "alt": {
         "en": "Three screens of different sizes lying at angles on a dark table; one glowing dot and its sparks cross from one screen to the next, and faint grid lines run straight across the gaps.",
-        "zh": "三台大小不同的螢幕斜放在深色桌面上；一顆發光的圓點帶著火花從一台螢幕越到下一台，淡淡的格線筆直地穿過螢幕之間的空隙。"
+        "zh": "三台大小不同的螢幕斜放在深色桌面上，一顆發光的圓點帶著火花從一台螢幕越到下一台，淡淡的格線筆直地穿過螢幕之間的空隙。"
       },
       "docs": [
         {
-          "id": "packages-openav-tile",
-          "en": "@openav/tile",
-          "zh": "@openav/tile"
+          "id": "tile",
+          "en": "Several screens, one canvas",
+          "zh": "多螢幕拼接：一張畫布"
         },
         {
-          "id": "phones",
-          "en": "Phones, relay & surfaces",
-          "zh": "手機、中繼與控制面板"
+          "id": "tile-in-your-own-world",
+          "en": "In your own world",
+          "zh": "用在你自己的世界"
         }
       ],
       "tryThree": {
@@ -2547,7 +2547,7 @@
         "zh": [
           "跑 node serve.js，在三台螢幕上打開這一頁並加上 ?room=desk，各點一下 Tap to join，平放在桌上。",
           "用一支手機打開 packages/tile/?room=desk，按「標記」，從上方拍一張把每台螢幕都拍進去的照片。",
-          "看圓點離開一台螢幕，從下一台它真正所在的位置出來；移動一台螢幕，再拍一次。"
+          "看圓點離開一台螢幕，從下一台它真正所在的位置出來。移動一台螢幕，再拍一次。"
         ]
       },
       "read": [

@@ -32,6 +32,8 @@ before it was generalized.)
 - [x] [Made with](https://openaudiovisual.com/made-with/): the works that run on it, each added by the person who made it
 - [x] the stage on a projector or a second screen: an output window, four-corner correction, crops for projectors side by side,
   blackout and brightness as params, and a clean address for OBS and TouchDesigner (`@openav/output`, [Projection and video out](output.md))
+- [x] several screens lying on a table as one canvas, placed by one photo, on one shared clock (`@openav/tile`,
+  [Several screens, one canvas](tile.md)); on a real table with real phones: still to be tried
 
 ## So that nobody rebuilds this layer
 

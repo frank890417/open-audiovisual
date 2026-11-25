@@ -1,6 +1,6 @@
 # 套件一覽
 
-三十二個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+三十三個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
@@ -296,7 +296,7 @@ L4 輸出（燈光）· 從網頁打 DMX，全部是純邏輯：燈具 profile�
 
 ## @openav/output
 
-L4 輸出（畫面）· 把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。輸出視窗可以鏡像舞台的畫布（`captureStream()` 放進 `<video>`：只算一次，畫面完全一樣），或用乾淨網址把同一個頁面再開一次，當成同步的從屬端。瀏覽器有 Window Management API 而且允許時，可以在選定的螢幕全螢幕（只在輸出視窗裡點擊時才詢問）。四角校正是一個 CSS `matrix3d` 單應矩陣，另有翻轉、轉 90°、黑邊和柔邊，用四個把手和測試圖編輯，依輸出名字存下來。一張畫布可以切給並排的投影機（沒有邊緣融合）。`output/<name>/blackout` 和 `output/<name>/brightness` 是參數。任何 `createShow()` 的頁面加上 `?output` 就是乾淨的輸出（`&follow=oav-output` 跟隨，`&play` 開始播放）。說明在 [投影與影像輸出](output.md)。
+L4 輸出（畫面）· 把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。輸出視窗可以鏡像舞台的畫布（`captureStream()` 放進 `<video>`：只算一次，畫面完全一樣），或用乾淨網址把同一個頁面再開一次，當成同步的從屬端。瀏覽器有 Window Management API 而且允許時，可以在選定的螢幕全螢幕（只在輸出視窗裡點擊時才詢問）。四角校正是一個 CSS `matrix3d` 單應矩陣，另有翻轉、轉 90°、黑邊和柔邊，用四個把手和測試圖編輯，依輸出名字存下來。一張畫布可以切給並排的投影機（沒有邊緣融合）。`output/<name>/blackout` 和 `output/<name>/brightness` 是參數。任何 `createShow()` 的頁面加上 `?output` 就是乾淨的輸出（`&follow=oav-output` 跟隨，`&play` 開始播放）。說明在 [投影與影像輸出](output.md)。好幾台裝置各自畫一張畫布裡自己的那一塊、位置由一張照片決定，是 [`@openav/tile`](#openav-tile)。
 
 | 匯出 | 簽章 |
 |---|---|
@@ -447,7 +447,7 @@ p.eventsInBar(1);   // kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8
 | 傳輸 | `BroadcastTransport({ channel })` · `RelayTransport({ url, room, role, id })` · `createTransport({ role, channel, url, id })`：每一個都是 `{ send(msg), onMessage(cb), onOpen(cb), open, close() }`，送的是 JSON |
 | `SYNC_VERSION` | `1`，每則訊息的 `v` |
 
-訊息有 `frame`（主控端送給從屬端，每一幀）、`hello`（從屬端送給主控端）和 `state`（主控端送給某一個從屬端）；作品自己的資料放在 `extra`。見[演出控制](show-control.md#several-pages-one-show)。
+訊息有 `frame`（主控端送給從屬端，每一幀）、`hello`（從屬端送給主控端）和 `state`（主控端送給某一個從屬端）；作品自己的資料放在 `extra`。見[演出控制](show-control.md#several-pages-one-show)。[`@openav/tile`](#openav-tile) 有它自己的時鐘：沒有主控端，每台螢幕問中繼現在幾點，再照它畫（[差別](tile.md#the-shared-clock)）。
 
 ## @openav/relay
 
@@ -501,19 +501,20 @@ routes.forEach((r) => mapper.addRoute(r));
 
 ## @openav/tile
 
-手機 · 幾台平放在桌上的螢幕變成一張畫布：拍一張標記的照片定位每台螢幕，同一個時鐘、同一個種子讓它們一起演。說明：[packages/tile/README.md](../../packages/tile/README.md)；範例 30。
+手機 · 幾台平放在桌上的螢幕變成一張畫布：拍一張標記的照片定位每台螢幕，經過中繼共用的時鐘和一個種子讓它們一起演，每台只畫自己的那一塊。它不是 `@openav/output`，那是一個只算一次的舞台，透過輸出視窗送上投影機。這裡是很多台裝置各自算一張畫布裡自己的那一塊，位置由一張照片決定。它的時鐘也不是 `@openav/sync`：沒有主控頁面在傳播放頭，每台螢幕自己問中繼現在幾點（差別寫在那一章）。章節是[多螢幕拼接：一張畫布](tile.md)，範例 30，拍照頁是 `packages/tile/?room=<名字>`（`?demo=1`：合成照片，不需要硬體）。
 
 | 匯出 | 簽章 |
 |---|---|
-| `joinTile` | `joinTile({ room, url, id, signals, container, ui = true })` → tile · `view` · `time()`（共同時間，秒）· `now()` · `seed` · `size()` · `markers(on)` · `attach(signals)` · `syncTimeline(timeline, dt)` · `on('layout' \| 'roster' \| 'mode' \| 'show' \| 'view' \| 'resize', cb)` · `status()` · `close()`；發布 `tile/markers`、`tile/synced`、`tile/layout`（脈衝） |
-| `tileWorld` | `tileWorld(world, tile)` → 原本的世界，加上參數 `tileMarkers`（0 演出 · 1 標記）與 `io.tile`／`ctx.tile`；`TILE_PARAMS`、`TILE_ROUTES`（`tile/markers` → `tileMarkers`） |
-| `tileView` | `tileView(layout, id)` → `{ ok, canvas, device, toCanvas, toDevice, scale, angle, bounds, polygon, point(x, y), fromDevice(x, y), matrix(pixelRatio), apply2d(ctx, pixelRatio), applyP5(sk), css(dpr), visible(x, y, r) }`，或 `{ ok: false, reason }` · `soloView(w, h)` |
-| `solveLayout` | `solveLayout({ devices: [{ id, w, h, index, markers: [{ device, photo }] }], photo, minMarkers = 4, reference, refine = true, rejectPx = 6 })` → `{ ok, layout, report, reason }`，不丟例外 · `validateLayout(layout)` → `{ ok, errors }` · `homography(src, dst)`（正規化 DLT）· `fitSimilarity(src, dst)` |
-| 標記 | `markerGrid(w, h, { short = 4, fill = 0.72 })` · `markerId(device, cell)` · `decodeMarkerId(id)` · `correspondences(found, roster, grid)` · `drawMarkers(ctx, { w, h, index, grid, label })` · `DICT_NAME`（`DICT_5X5_1000`），每台 50 個標記，最多 20 台 |
-| 時鐘 | `new ClockSync({ now, window = 60000, keep = 40 })` · `add(t0, server, t1)` · `offset` · `rtt` · `now()` · `ready` · `estimateOffset(samples)`（取來回最快的那次）· `TileLink`（會 ping 中繼、維持時鐘的 `RelayClient`） |
-| `@openav/tile/detect` | `loadOpenCV(url = OPENCV_URL)`（OpenCV.js 4.12.0，從 jsDelivr，只在拍照頁載入）· `detectMarkers(cv, image)` → `{ found: [{ id, corners }], ms, w, h }` |
+| `joinTile` | `joinTile({ room, url, id, signals, container, ui = true, storage, Link })` → tile · `view` · `time()`（共同時間，秒）· `now()` · `seed` · `size()` · `markers(on)` · `attach(signals)` · `syncTimeline(timeline, dt)` · `on('layout' \| 'roster' \| 'mode' \| 'show' \| 'view' \| 'resize', cb)` · `status()` · `close()`，發布 `tile/markers`、`tile/synced`、`tile/layout`（脈衝）· `tileId(storage)` · `helloName(id)` · `HELLO_RE` · `TILE_KEYS` |
+| `tileWorld` | `tileWorld(world, tile)` → 原本的世界，加上參數 `tileMarkers`（0 演出 · 1 標記）與 `io.tile`／`ctx.tile`，`TILE_PARAMS`、`TILE_ROUTES`（`tile/markers` → `tileMarkers`） |
+| `tileView` | `tileView(layout, id)` → `{ ok, canvas, device, toCanvas, toDevice, scale, angle, bounds, polygon, point(x, y), fromDevice(x, y), matrix(pixelRatio), apply2d(ctx, pixelRatio), applyP5(sk), css(dpr), visible(x, y, r) }`，或 `{ ok: false, reason }` · `soloView(w, h, id)` |
+| `solveLayout` | `solveLayout({ devices: [{ id, w, h, index, markers: [{ device, photo }] }], photo, minMarkers = 4, reference, refine = true, rejectPx = 6 })` → `{ ok, layout, report, reason }`，不丟例外 · `validateLayout(layout)` → `{ ok, errors }`（拼接的版面，不是 `@openav/surface` 的那個）· `LAYOUT_VERSION` |
+| 幾何 | `homography(src, dst, { normalize = true })`（正規化 DLT，4 個點以上，不丟例外。`@openav/output` 的 `cornerPin` 是給 CSS 用的四角特例）· `fitSimilarity(src, dst)` · `similarityMatrix`、`similarityOf`、`similarityScale`、`similarityAngle` · `mul3`、`inv3`、`apply3`、`det3`、`rmsError`，`@openav/tile/solve` 另外還有 `I3` 和 `normalizer` |
+| 標記 | `markerGrid(w, h, { short = 4, fill = 0.72 })` · `markerId(device, cell)` · `decodeMarkerId(id)` · `correspondences(found, roster, grid)` · `drawMarkers(ctx, { w, h, index, grid, label })` · `GRID_DEFAULTS` · `PER_DEVICE`（50）· `MAX_DEVICES`（20）· `DICT_NAME`（`DICT_5X5_1000`）、`markerCode(id)`、`markerBits(id)` |
+| 時鐘 | `new ClockSync({ now, window = 60000, keep = 40 })` · `add(t0, server, t1)` · `offset` · `rtt` · `now()` · `ready` · `clockSample(t0, server, t1)` · `estimateOffset(samples)`（取來回最快的那次）· `TileLink`（會 ping 中繼、維持時鐘的 `RelayClient`） |
+| `@openav/tile/detect` | `loadOpenCV(url = OPENCV_URL)`（OpenCV.js 4.12.0，從 jsDelivr，只在拍照頁載入）· `detectMarkers(cv, image, { maxSide = 4096, params })` → `{ found: [{ id, corners }], rejected, ms, w, h }` · `greyPixels(src, maxSide)` · `OPENCV_VERSION`、`OPENCV_URL` |
 
-拍照頁是 `packages/tile/?room=<名字>`（`?demo=1`：合成照片，不需要硬體）。`layout.json`：`{ version: 1, reference, canvas: { w, h }, plane: { matrix3x3 }, devices: [{ id, w, h, kind: 'planar', similarity: { a, b, tx, ty }, matrix3x3, rms, pose: null }] }`；`pose` 留給 3D 窗口模型。
+子路徑入口 `@openav/tile/solve`、`/clock`、`/marker`、`/view` 和 `/detect` 要各自在 import map 加一行。`layout.json`：`{ version: 1, reference, canvas: { w, h }, plane: { matrix3x3 }, devices: [{ id, w, h, kind: 'planar', similarity: { a, b, tx, ty }, matrix3x3, rms, pose: null }] }`。`pose` 留給在 3D 空間擺放的螢幕。
 
 ## @openav/devices
 

@@ -5,6 +5,10 @@ correction (corner-pin) with a test pattern, crops of one canvas for projectors 
 params, a layout file, and a clean address (`?output`) for a kiosk browser, OBS's Browser Source or TouchDesigner's Web
 Render TOP. The world never knows.
 
+One stage, rendered once, shown through windows. Many devices each drawing their own part of one canvas, placed by a photo of
+the table, is [`@openav/tile`](../tile/README.md); its `homography()` takes any number of measured points, `cornerPin()` here
+is one window's four corners.
+
 ```js
 import { createOutputs } from '@openav/output';
 

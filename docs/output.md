@@ -7,6 +7,11 @@ Any show also has a clean address, `?output`: the same page with the stage alone
 Browser Source or TouchDesigner's Web Render TOP. The world never knows any of this happened. Example
 [29, Projector output](https://openaudiovisual.com/examples/29-projector-output/) runs all of it on one screen.
 
+This is one stage, rendered once and shown through output windows. Phones, tablets and laptops lying on a table, each
+drawing its own part of one canvas from where a photo says it lies, are [Several screens, one canvas](tile.md)
+(`@openav/tile`): its `homography()` takes any number of measured points, where `cornerPin()` here is the four corners of one
+window.
+
 ## The output window
 
 Declare the outputs once, at load, and open one from a click (a browser opens a window only after a gesture):

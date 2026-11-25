@@ -25,6 +25,7 @@
 - [x] 整個框架有版本號，和一個永遠不變的網址。一個檔就是一場演出，不用 clone（[固定一個版本](getting-started.md#pin-a-version)）
 - [x] [用它做的](https://openaudiovisual.com/zh/made-with/)：跑在它上面的作品，每一筆都是作者自己加的
 - [x] 把舞台送上投影機或第二個螢幕：輸出視窗、四角校正、並排投影機的裁切、黑場與亮度參數，以及給 OBS 和 TouchDesigner 的乾淨網址（`@openav/output`，[投影與影像輸出](output.md)）
+- [x] 平放在桌上的幾台螢幕變成一張畫布，拍一張照片定位，用同一個時鐘（`@openav/tile`，[多螢幕拼接：一張畫布](tile.md)）。真的桌子、真的手機：還要試
 
 ## 讓這一層不用再有人重做
 
