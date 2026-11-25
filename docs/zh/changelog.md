@@ -146,7 +146,7 @@
 
 ### 2026-11-25
 
-- **把舞台送上投影機：0.12.0。** 新的套件 `@openav/output`。`createOutputs(show, { outputs, aspect })` 在載入時宣告演出的輸出，在點擊時呼叫 `outputs.open('main')` 就開出輸出視窗：黑底、沒有控台、游標兩秒後消失，按 F 全螢幕，電腦接了好幾個螢幕時還會列出每個螢幕，點哪個就在哪個全螢幕（Window Management API，只在那個視窗裡點擊時才詢問）。預設是鏡像舞台的畫布（只算一次，畫面完全一樣：量過，大小一樣，顏色一樣）。`{ mode: 'page' }` 則用乾淨網址把同一個頁面再開一次，跟著這個頁面的時鐘和被握住的值。[投影與影像輸出](https://openaudiovisual.com/zh/docs/output/)
+- **把舞台送上投影機：0.12.0。** 新的套件 `@openav/output`。`createOutputs(show, { outputs, aspect })` 在載入時宣告演出的輸出，在點擊時呼叫 `outputs.open('main')` 就開出輸出視窗：黑底、沒有控台、游標兩秒後消失，按 F 全螢幕，電腦接了好幾個螢幕時還會列出每個螢幕，點哪個就在哪個全螢幕（Window Management API，只在那個視窗裡點擊時才詢問）。預設是鏡像舞台的畫布（只算一次，畫面完全一樣，大小就是畫布的大小）。`{ mode: 'page' }` 則用乾淨網址把同一個頁面再開一次，跟著這個頁面的時鐘和被握住的值。[投影與影像輸出](https://openaudiovisual.com/zh/docs/output/)
 - **四角校正，以及跟著場地走的設定。** 在輸出視窗按 E 會出現四個把手：拖到螢幕的四個角（或用 1 到 4 加方向鍵），畫面就彎過去貼合，背後是一個 CSS `matrix3d` 單應矩陣（`cornerPin()`、`toMatrix3d()`）。H 和 V 為背投翻轉，O 轉 90°，[ ] 加黑邊，還有柔邊，按 G 顯示跟著彎的測試圖。設定依輸出名字存在瀏覽器裡，**Export layout**／**Import layout** 把它變成可以帶著走的檔案（`open-audiovisual/output@1`）。[四角校正](https://openaudiovisual.com/zh/docs/output/#output-corner-pin)
 - **黑場和亮度是參數，一張畫布可以分給兩台投影機。** 每個輸出都有 `output/<name>/blackout` 和 `output/<name>/brightness`，所以控台、MIDI 推桿和時間軸都推得到投影機。裁切（`{ x, y, w, h }`）把一個 32:9 的舞台分給兩台 16:9 的投影機（沒有邊緣融合）。[一張畫布給兩台投影機](https://openaudiovisual.com/zh/docs/output/#output-two-projectors-from-one-canvas)
 - **每場演出都有乾淨網址。** 任何 `createShow()` 的頁面加上 `?output`，就只剩黑底上的舞台和存下來的四個角，沒有控台、鋼琴、提示和導覽卡。`&follow=oav-output`（跨瀏覽器再加 `&via=relay`）讓它跟著演出頁面，`&play` 讓它的時間軸開始播。這就是給 kiosk 瀏覽器、OBS 的瀏覽器來源和 TouchDesigner 的 Web Render TOP 用的網址，章節裡有三種做法和場地清單。OBS 和 TouchDesigner 的步驟是照它們的文件和安裝好的軟體自己的介面文字寫的，標成待確認：兩個軟體都還沒實際跑過，也還沒上過真的投影機。[乾淨網址](https://openaudiovisual.com/zh/docs/output/#output-the-clean-address)

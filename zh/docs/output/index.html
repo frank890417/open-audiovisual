@@ -153,14 +153,14 @@ button.onclick = () =&gt; outputs.open(<span class="ts">'main'</span>);</code></
 <tr><td>怎麼做</td><td>舞台的畫布用 <code>canvas.captureStream()</code> 放進這個頁面開的視窗裡的 <code>&lt;video&gt;</code></td><td>這個頁面的乾淨網址 <code>?output=&lt;name&gt;&amp;follow=oav-output</code>，當成一個 <a href="../../../zh/docs/show-control/#show-control-several-pages-one-show">同步</a> 的從屬端</td></tr>
 <tr><td>看到什麼</td><td>跟舞台完全一樣：每個滑桿、每個音符、每顆隨機的粒子</td><td>同一個世界再畫一次：時鐘一樣，被握住的值一樣（滑桿、MIDI 旋鈕、黑場），訊號、隨機數和累加 <code>dt</code> 的東西不一樣</td></tr>
 <tr><td>解析度</td><td>舞台畫布在操作者頁面上的大小</td><td>輸出視窗自己的大小，自己的 GPU 運算</td></tr>
-<tr><td>時間</td><td>大約晚一幀（沒有在投影機上量過）</td><td>跟著時鐘：同一台機器差一兩幀，跨機器差大約一趟網路</td></tr>
+<tr><td>時間</td><td>大約晚一幀（沒有在投影機上量過）</td><td>跟著時鐘：它自己量的誤差（<code>timeline.followStatus().error</code>），在同一台機器上走 BroadcastChannel 時小於 3 ms，經過中繼到另一個瀏覽器時小於 8 ms。跨機器再加一趟網路</td></tr>
 <tr><td>機器</td><td>同一台機器、同一個瀏覽器</td><td>同一個來源的任何頁面，或經過 <code>node serve.js</code> 的中繼到別的瀏覽器、別台機器</td></tr>
 <tr><td>演出頁面重新整理時</td><td>視窗停在最後一個畫面：從頁面再開一次（會回到同一個視窗）</td><td>那個頁面照最後的速度自己跑，等主控端回來</td></tr>
 <tr><td>演出頁面被藏起來時</td><td>降到 Loop 在背景分頁的速度：只有一個螢幕時，全螢幕的輸出蓋住演出頁面，就會藏起來</td><td>不受影響</td></tr>
 <tr><td>DOM 或 SVG 的世界</td><td>沒辦法鏡像（視窗會說明）</td><td>可以</td></tr>
 </tbody>
 </table></div>
-<p>預設是鏡像，因為它對畫面永遠是對的：只算一次，表演者彈什麼，觀眾就看到什麼。在 headless Chromium 151 量過：影片的大小跟畫布一模一樣，單色區塊的顏色差 0（沒有偏色）。頁面適合第二台機器、比操作者畫布還大的輸出，或不是畫布的世界。用 <code>outputs.open('main', { mode: 'page' })</code>，或按 <strong>Page</strong>。</p>
+<p>預設是鏡像，因為它對畫面永遠是對的：只算一次，表演者彈什麼，觀眾就看到什麼。在 headless Chromium 151（軟體算圖）量過：影片的大小跟畫布一模一樣，八個單色區塊的中心讀回來跟畫的完全一樣。細節（顏色解析度較低的串流會在這裡露出來）和用 GPU 的 Chrome 都沒有量過。頁面適合第二台機器、比操作者畫布還大的輸出，或不是畫布的世界。用 <code>outputs.open('main', { mode: 'page' })</code>，或按 <strong>Page</strong>。</p>
 <h2 id="output-fullscreen-on-the-projector">投影機上的全螢幕<a class="anchor" href="#output-fullscreen-on-the-projector" aria-label="這一節的連結">#</a></h2>
 <p>只有一個螢幕時，輸出就是一個視窗：在裡面按 F。接了投影機或第二個螢幕，就把視窗拖過去再按 F。瀏覽器有 Window Management API（<code>window.getScreenDetails</code>，Chromium 有），而且電腦回報不只一個螢幕時，視窗的說明卡還會有 <strong>Find the screens…</strong>：瀏覽器會問一次這個網站能不能在你所有螢幕上擺視窗，接著列出每個螢幕（<code>名稱 · 寬×高</code>），點哪一個就用 <code>requestFullscreen({ screen })</code> 在那個螢幕全螢幕。權限只會在輸出視窗裡點擊時才詢問，不會自己跳出來，之前允許過的話會直接列出螢幕，不再問。被拒絕，或沒有這個 API（Safari、Firefox）時，說明卡會寫出一定可行的作法：把視窗拖過去，按 F。（<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window_Management_API/Using" rel="noopener">MDN：Window Management API</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen" rel="noopener">Element.requestFullscreen</a>：全螢幕需要使用者的動作，所以這裡每一次全螢幕，都是輸出視窗自己的按鍵或點擊。）</p>
 <h2 id="output-corner-pin">四角校正<a class="anchor" href="#output-corner-pin" aria-label="這一節的連結">#</a></h2>
@@ -202,7 +202,7 @@ routes: [{ source: <span class="ts">'midi/cc/7'</span>, target: <span class="ts"
   outputs: [{ name: <span class="ts">'left'</span>, crop: { x: 0, y: 0, w: 0.5, h: 1 } }, { name: <span class="ts">'right'</span>, crop: { x: 0.5, y: 0, w: 0.5, h: 1 } }],
   aspect: 32 / 9,                 <span class="tc">// two 16:9 projectors</span>
 });</code></pre></div>
-<p>每個輸出有自己的四個角、自己的參數和自己的視窗（各自用一次點擊打開：瀏覽器一個動作只開一個視窗）。形狀不同時，<code>fit</code> 決定裁切的畫面怎麼放進視窗：<code>contain</code>（預設，留黑邊）、<code>cover</code>（填滿，切掉多的）或 <code>stretch</code>。範例 29 加上 <code>?pair</code> 就是這樣。兩個畫面接起來的地方是一條硬接縫：邊緣融合（兩台投影機重疊、用對好的柔和斜坡和亮度接起來）不在這個套件裡。用一張照片拼出一整面投影牆是另一件事，另外有一個 pull request 在做（<code>@openav/tile</code>）。</p>
+<p>每個輸出有自己的四個角、自己的參數和自己的視窗（各自用一次點擊打開：瀏覽器一個動作只開一個視窗）。形狀不同時，<code>fit</code> 決定裁切的畫面怎麼放進視窗：<code>contain</code>（預設，留黑邊）、<code>cover</code>（填滿，切掉多的）或 <code>stretch</code>。範例 29 加上 <code>?pair</code> 就是這樣。兩個畫面接起來的地方是一條硬接縫：邊緣融合（兩台投影機重疊、用對好的柔和斜坡和亮度接起來）不在這個套件裡。</p>
 <h2 id="output-the-clean-address">乾淨網址<a class="anchor" href="#output-the-clean-address" aria-label="這一節的連結">#</a></h2>
 <p>任何用 <code>createShow()</code> 做的頁面，網址說要的時候就變成乾淨的輸出。控台、鋼琴、提示、MIDI 按鈕、手機卡片、範例的導覽卡，以及演出自己標上 <code>oav-operator</code> 這個 class 的東西都不顯示，控台的按鍵也關掉。舞台在黑底上填滿視窗，用這個瀏覽器替那個輸出名字存下的四個角，按鍵跟輸出視窗一樣（E、G、F、B、I）。世界的作品署名留著：署名永遠不藏。</p>
 <div class="table-wrap"><table>
@@ -276,16 +276,17 @@ routes: [{ source: <span class="ts">'midi/cc/7'</span>, target: <span class="ts"
 <p><strong>從 OBS 送出去。</strong> <strong>啟動虛擬相機</strong>（在 控制項 停駐視窗）把 OBS 的節目畫面、一個場景或一個來源變成一台相機，給 Zoom、瀏覽器或 TouchDesigner 用（旁邊的齒輪選要哪一個）。NDI 用 DistroAV 外掛（OBS 31.1.1 以上、NDI Runtime 6.3 以上，macOS 用 <code>brew install --cask distroav/tap/distroav</code>），它加上送出節目畫面的 <strong>NDI Output</strong>，以及送出單一來源的 <strong>NDI Filter</strong>。它們在 OBS 選單裡的哪個位置，要裝了外掛再確認。</p>
 <p><strong>改用視窗擷取。</strong> 要一模一樣地送出表演者彈的東西（音符、粒子、鏡像），就擷取視窗，不要再載入一次頁面：<strong>macOS 螢幕擷取</strong>（或 <strong>視窗擷取</strong>），對準輸出視窗。輸出視窗沒有控台，游標也會藏起來，所以擷取出來是乾淨的。讓它留在某個螢幕上（被藏起來的視窗可能不會畫），需要的話用來源的 <strong>裁剪</strong> 切掉多的部分。</p>
 <h2 id="output-what-was-checked">檢查了什麼<a class="anchor" href="#output-what-was-checked" aria-label="這一節的連結">#</a></h2>
-<p>headless Chromium 151（Playwright 1.62），一台機器，沒有給任何權限（沒有 MIDI、序列埠、鏡頭、麥克風，也沒有視窗管理）：</p>
+<p>headless Chromium 151（Playwright 1.62），一台機器，<code>node serve.js</code>，沒有給任何權限（沒有 MIDI、序列埠、鏡頭、麥克風，也沒有視窗管理）：</p>
 <ul>
 <li>範例 29 載入時沒有主控台錯誤（<code>ws://…7457</code> 後台監看的警告是預期的），舞台框成 16:9</li>
-<li><strong>Open output window</strong> 在點擊時開出視窗，影片的大小跟畫布一模一樣，影格一直往前走，單色區塊的顏色完全沒有差別</li>
+<li><strong>Open output window</strong> 開出視窗，影片的大小跟畫布一模一樣，影格一直往前走，八個單色區塊的中心讀回來跟畫的一樣。鏡像範例 06（p5.js 的 WEBGL 畫布）也看得到畫面：世界什麼都不用改</li>
 <li>E 顯示四個把手，拖兩個角、用按鍵推第三個角，視窗的 <code>matrix3d</code> 跟著變，存下來的正好是那幾個角。G 顯示測試圖。B 寫入 <code>output/main/blackout</code>，黑紗變全黑。從控台把亮度設成 0.4，黑紗是 0.6。輸出視窗的按鍵從來沒有動到演出</li>
 <li>演出頁面重新整理後，輸出在同一個視窗裡再打開，四個角一樣，畫面繼續動</li>
-<li><strong>Page</strong> 用乾淨網址開出一個從屬端：它跟著演出頁面的時鐘（差 0.08 秒）和被握住的值</li>
+<li><strong>Page</strong> 用乾淨網址開出一個經過 BroadcastChannel 的從屬端。另一個獨立的瀏覽器環境打開 <code>?output&amp;follow=oav-output&amp;via=relay</code>，經過 <code>node serve.js</code> 的中繼跟著用 <code>?lead</code> 打開的範例 29。兩者都握住演出頁面的黑場和它推過的一個滑桿，它們自己量的誤差（<code>timeline.followStatus().error</code>）在一秒內分別小於 3 ms 和 8 ms</li>
 <li>乾淨網址不顯示控台、鋼琴、提示、導覽卡或操作按鈕，用的是存下來的四個角。<code>?pair&amp;output=left</code> 用視窗兩倍寬畫 32:9 的舞台，只露出左半邊</li>
+<li>每個用 <code>createShow()</code> 做的範例（01 到 09、12 到 14、27 到 29）啟動時都還是沒有主控台錯誤。01、05、06、07、13、14 加上 <code>?output</code> 時只剩填滿視窗的舞台，沒有錯誤，05、06、07 的作品署名還在</li>
 </ul>
-<p>沒有檢查：真的投影機、第二個實體螢幕、Window Management 的權限詢問和在指定螢幕全螢幕、Chrome 的 kiosk 模式、TouchDesigner、OBS、NDI。</p>
+<p>沒有檢查：真的投影機、第二個實體螢幕、Window Management 的權限詢問和在指定螢幕全螢幕、瀏覽器的彈出視窗阻擋（測試用的瀏覽器沒有開，視窗只在點擊時打開是瀏覽器自己的規則）、Chrome 的 kiosk 模式、TouchDesigner、OBS、NDI。</p>
     </article>
 
     <nav class="ch-nav" aria-label="上一章與下一章">

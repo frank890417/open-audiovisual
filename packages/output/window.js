@@ -81,7 +81,8 @@ export function openOutput(source, {
     const url = outputUrl(location.href, { name, crop: cropN, aspect, fit, follow: channel, via });
     const win = window.open(url, winName, features);
     if (!win) throw new Error('[output] the browser blocked the output window: call openOutput() from a click');
-    const leading = import('./follow.js?v=7fe486df').then(({ leadOutputs }) => leadOutputs(show, { channel, via }));
+    // loaded on demand (and failing soft where follow.js is not beside this file, as in the lab's one-file bundle)
+    const leading = import('./follow.js?v=7fe486df').then(({ leadOutputs }) => leadOutputs(show, { channel, via })).catch((e) => { console.warn('[output] this page cannot lead the output page:', e); return null; });
     const remote = () => { try { return win.openav?.output ?? null; } catch { return null; } };
     return {
       name, mode, window: win, url, leading,

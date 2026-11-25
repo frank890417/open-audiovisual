@@ -48,15 +48,16 @@ There are two ways to fill an output, and a world needs neither to know.
 | how | the stage's canvas, `canvas.captureStream()`, into a `<video>` in a window this page opens | this page again at its clean address, `?output=<name>&follow=oav-output`, as a [sync](show-control.md#several-pages-one-show) follower |
 | what you see | exactly what the stage shows: every slider, note, random particle | the same world drawn again: the same clock and the same held values (sliders, MIDI knobs, blackout), not signals, not randomness, not anything integrated over `dt` |
 | resolution | the stage canvas's size on the operator's page | the output window's own size, its own GPU work |
-| timing | about a frame behind (not measured on a projector) | follows the clock: within a frame or two on one machine, about one network trip across machines |
+| timing | about a frame behind (not measured on a projector) | follows the clock: its own measure of the error (`timeline.followStatus().error`) stayed under 3 ms over a BroadcastChannel and under 8 ms over the relay to another browser, on one machine; across machines add a network trip |
 | machines | the same machine, the same browser | any page of the same origin; another browser or machine over `node serve.js`'s relay |
 | when the show page reloads | the window keeps its last picture: open it again from the page (it comes back in the same window) | the page keeps running alone on the last rate until the leader returns |
 | when the show page is hidden | it slows to the Loop's hidden-tab rate: on one screen, a fullscreen output over the show page hides it | not affected |
 | a DOM or SVG world | cannot be mirrored (the window says so) | works |
 
 Mirror is the default because it is the one that is always right about the picture: one render, and a performer who plays
-sees what the audience sees. Measured in headless Chromium 151: the video has the canvas's exact size, and flat colours arrive
-within 0 of their values (no colour shift). Page is the one for a second machine, for an output larger than the operator's
+sees what the audience sees. Measured in headless Chromium 151 (software rendering): the video has the canvas's exact size, and
+the centres of eight flat colour blocks read back exactly as drawn. Fine detail (where a stream with less colour resolution
+would show) and a GPU-backed Chrome were not measured. Page is the one for a second machine, for an output larger than the operator's
 canvas, or for a world that is not a canvas. `outputs.open('main', { mode: 'page' })`, or the **Page** button.
 
 ## Fullscreen on the projector
@@ -143,8 +144,7 @@ const outputs = createOutputs(show, {
 Each output has its own corners, its own params and its own window (open each from its own click: a browser opens one window
 per gesture). `fit` says how a crop fills its window when the shapes differ: `contain` (default, black bars), `cover` (filled,
 cut) or `stretch`. Example 29 does this with `?pair`. Where the two pictures meet there is a hard seam: edge blending (two
-projectors overlapping with a matched soft ramp and brightness) is not part of this package. A wall of projectors stitched from a
-photo is another job; a pull request for it exists separately (`@openav/tile`).
+projectors overlapping with a matched soft ramp and brightness) is not part of this package.
 
 ## The clean address
 
@@ -280,19 +280,25 @@ source's **Crop** if needed.
 
 ## What was checked
 
-Headless Chromium 151 (Playwright 1.62), one machine, no permissions granted (no MIDI, serial, camera, microphone or window
-management):
+Headless Chromium 151 (Playwright 1.62), one machine, `node serve.js`, no permissions granted (no MIDI, serial, camera,
+microphone or window management):
 
 - example 29 loads with no console errors (the `ws://…7457` monitor warning is expected), its stage boxed to 16:9
-- **Open output window** opens the window from a click; the video has the canvas's exact size and its frames advance; flat colours
-  arrive with no difference
+- **Open output window** opens the window; the video has the canvas's exact size and its frames advance; the centres of eight flat
+  colour blocks read back as drawn. A mirror of example 06 (a p5.js WEBGL canvas) shows its picture too: the world needed nothing
 - E shows four handles; dragging two corners and nudging a third with the keys changes the window's `matrix3d` and saves exactly
   those corners; G shows the test pattern; B writes `output/main/blackout` and the veil goes black; brightness 0.4 from the desk
   gives a veil of 0.6; the output window's keys never moved the show
 - after a reload of the show page, the output opens again in the same window with the same corners, and plays
-- **Page** opens the clean address as a follower: it follows the show page's clock (0.08 s apart) and its held values
+- **Page** opens the clean address as a follower over a BroadcastChannel; a page in a second, separate browser context at
+  `?output&follow=oav-output&via=relay` follows example 29 opened with `?lead` over `node serve.js`'s relay. Both hold the show page's
+  blackout and a slider it moved, and their own measure of the error (`timeline.followStatus().error`) stayed under 3 ms and under
+  8 ms over a second
 - the clean address shows no desk, piano, hint, guide or operator button, and uses the saved corners; `?pair&output=left` draws the
   32:9 stage at twice the window's width and shows its left half
+- every example built with `createShow()` (01 to 09, 12 to 14, 27 to 29) still starts with no console errors, and 01, 05, 06, 07, 13
+  and 14 at `?output` show the stage alone filling the window, with no errors, the artwork credit of 05, 06 and 07 still on it
 
 Not checked: a real projector, a second physical screen, the Window Management permission prompt and fullscreen on a chosen
-screen, Chrome's kiosk mode, TouchDesigner, OBS, NDI.
+screen, a browser's popup blocker (the test browser runs without one; a window opens from a click by the browsers' rule),
+Chrome's kiosk mode, TouchDesigner, OBS, NDI.

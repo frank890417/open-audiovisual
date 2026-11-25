@@ -39,6 +39,7 @@ export const SHELL_CSS = `
   .oav-credit b { color: #8892a8; }
   /* a clean output (?output, packages/output): the stage alone; the credit stays, an attribution is never hidden */
   body.oav-clean { display: block; background: #000; }
+  body.oav-clean .oav-stage { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; }   /* the world starts at the window's size */
   body.oav-clean .oav-side, body.oav-clean .oav-operator,
   body.oav-clean .oav-stage > :not(.oav-world):not(.oav-credit) { display: none !important; }
   @media ${STACK_QUERY} {

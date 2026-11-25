@@ -322,3 +322,13 @@ test('createShow ?output&follow: a follower of the show page, no input of its ow
     assert.equal(show.params.isOverridden('output/front/blackout'), false, 'released on the leader, released here');
   });
 });
+
+test('the shell\'s CSS for a clean page: the world starts at the window\'s size; the desk, overlays and operator UI hide, the credit stays', async () => {
+  const { SHELL_CSS } = await import('../packages/show/layout.js');
+  const rule = (sel) => { const i = SHELL_CSS.indexOf(sel); return i < 0 ? '' : SHELL_CSS.slice(i, SHELL_CSS.indexOf('}', i)); };
+  // a world that reads its container in init() (example 05 does) must not see a height of 0 before the output view takes the stage
+  assert.match(rule('body.oav-clean .oav-stage {'), /width: 100vw; height: 100vh/);
+  const hide = rule('body.oav-clean .oav-side');
+  for (const s of ['.oav-side', '.oav-operator', '.oav-stage > :not(.oav-world):not(.oav-credit)']) assert.ok(hide.includes(s), s);
+  assert.match(hide, /display: none !important/);
+});

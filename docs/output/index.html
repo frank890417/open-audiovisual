@@ -163,7 +163,7 @@ keys never move the show.</p>
 <tr><td>how</td><td>the stage's canvas, <code>canvas.captureStream()</code>, into a <code>&lt;video&gt;</code> in a window this page opens</td><td>this page again at its clean address, <code>?output=&lt;name&gt;&amp;follow=oav-output</code>, as a <a href="../../docs/show-control/#show-control-several-pages-one-show">sync</a> follower</td></tr>
 <tr><td>what you see</td><td>exactly what the stage shows: every slider, note, random particle</td><td>the same world drawn again: the same clock and the same held values (sliders, MIDI knobs, blackout), not signals, not randomness, not anything integrated over <code>dt</code></td></tr>
 <tr><td>resolution</td><td>the stage canvas's size on the operator's page</td><td>the output window's own size, its own GPU work</td></tr>
-<tr><td>timing</td><td>about a frame behind (not measured on a projector)</td><td>follows the clock: within a frame or two on one machine, about one network trip across machines</td></tr>
+<tr><td>timing</td><td>about a frame behind (not measured on a projector)</td><td>follows the clock: its own measure of the error (<code>timeline.followStatus().error</code>) stayed under 3 ms over a BroadcastChannel and under 8 ms over the relay to another browser, on one machine; across machines add a network trip</td></tr>
 <tr><td>machines</td><td>the same machine, the same browser</td><td>any page of the same origin; another browser or machine over <code>node serve.js</code>'s relay</td></tr>
 <tr><td>when the show page reloads</td><td>the window keeps its last picture: open it again from the page (it comes back in the same window)</td><td>the page keeps running alone on the last rate until the leader returns</td></tr>
 <tr><td>when the show page is hidden</td><td>it slows to the Loop's hidden-tab rate: on one screen, a fullscreen output over the show page hides it</td><td>not affected</td></tr>
@@ -171,8 +171,9 @@ keys never move the show.</p>
 </tbody>
 </table></div>
 <p>Mirror is the default because it is the one that is always right about the picture: one render, and a performer who plays
-sees what the audience sees. Measured in headless Chromium 151: the video has the canvas's exact size, and flat colours arrive
-within 0 of their values (no colour shift). Page is the one for a second machine, for an output larger than the operator's
+sees what the audience sees. Measured in headless Chromium 151 (software rendering): the video has the canvas's exact size, and
+the centres of eight flat colour blocks read back exactly as drawn. Fine detail (where a stream with less colour resolution
+would show) and a GPU-backed Chrome were not measured. Page is the one for a second machine, for an output larger than the operator's
 canvas, or for a world that is not a canvas. <code>outputs.open('main', { mode: 'page' })</code>, or the <strong>Page</strong> button.</p>
 <h2 id="output-fullscreen-on-the-projector">Fullscreen on the projector<a class="anchor" href="#output-fullscreen-on-the-projector" aria-label="Link to this section">#</a></h2>
 <p>On one screen the output is just a window: press F in it. With a projector or a second screen, drag the window onto it and
@@ -240,8 +241,7 @@ and give the stage the shape of both together.</p>
 <p>Each output has its own corners, its own params and its own window (open each from its own click: a browser opens one window
 per gesture). <code>fit</code> says how a crop fills its window when the shapes differ: <code>contain</code> (default, black bars), <code>cover</code> (filled,
 cut) or <code>stretch</code>. Example 29 does this with <code>?pair</code>. Where the two pictures meet there is a hard seam: edge blending (two
-projectors overlapping with a matched soft ramp and brightness) is not part of this package. A wall of projectors stitched from a
-photo is another job; a pull request for it exists separately (<code>@openav/tile</code>).</p>
+projectors overlapping with a matched soft ramp and brightness) is not part of this package.</p>
 <h2 id="output-the-clean-address">The clean address<a class="anchor" href="#output-the-clean-address" aria-label="Link to this section">#</a></h2>
 <p>Every page built with <code>createShow()</code> becomes a clean output when its address says so. The desk, the piano, the hints, the MIDI
 button, the phone card, the example guide, and anything a show marks with the class <code>oav-operator</code>, are not shown, and the
@@ -361,22 +361,28 @@ load the page again: <strong>macOS Screen Capture</strong> (or <strong>Window Ca
 console and hides its cursor, so the capture is clean; keep it on a screen (a hidden window may not be drawn), and crop with the
 source's <strong>Crop</strong> if needed.</p>
 <h2 id="output-what-was-checked">What was checked<a class="anchor" href="#output-what-was-checked" aria-label="Link to this section">#</a></h2>
-<p>Headless Chromium 151 (Playwright 1.62), one machine, no permissions granted (no MIDI, serial, camera, microphone or window
-management):</p>
+<p>Headless Chromium 151 (Playwright 1.62), one machine, <code>node serve.js</code>, no permissions granted (no MIDI, serial, camera,
+microphone or window management):</p>
 <ul>
 <li>example 29 loads with no console errors (the <code>ws://…7457</code> monitor warning is expected), its stage boxed to 16:9</li>
-<li><strong>Open output window</strong> opens the window from a click; the video has the canvas's exact size and its frames advance; flat colours
-arrive with no difference</li>
+<li><strong>Open output window</strong> opens the window; the video has the canvas's exact size and its frames advance; the centres of eight flat
+colour blocks read back as drawn. A mirror of example 06 (a p5.js WEBGL canvas) shows its picture too: the world needed nothing</li>
 <li>E shows four handles; dragging two corners and nudging a third with the keys changes the window's <code>matrix3d</code> and saves exactly
 those corners; G shows the test pattern; B writes <code>output/main/blackout</code> and the veil goes black; brightness 0.4 from the desk
 gives a veil of 0.6; the output window's keys never moved the show</li>
 <li>after a reload of the show page, the output opens again in the same window with the same corners, and plays</li>
-<li><strong>Page</strong> opens the clean address as a follower: it follows the show page's clock (0.08 s apart) and its held values</li>
+<li><strong>Page</strong> opens the clean address as a follower over a BroadcastChannel; a page in a second, separate browser context at
+<code>?output&amp;follow=oav-output&amp;via=relay</code> follows example 29 opened with <code>?lead</code> over <code>node serve.js</code>'s relay. Both hold the show page's
+blackout and a slider it moved, and their own measure of the error (<code>timeline.followStatus().error</code>) stayed under 3 ms and under
+8 ms over a second</li>
 <li>the clean address shows no desk, piano, hint, guide or operator button, and uses the saved corners; <code>?pair&amp;output=left</code> draws the
 32:9 stage at twice the window's width and shows its left half</li>
+<li>every example built with <code>createShow()</code> (01 to 09, 12 to 14, 27 to 29) still starts with no console errors, and 01, 05, 06, 07, 13
+and 14 at <code>?output</code> show the stage alone filling the window, with no errors, the artwork credit of 05, 06 and 07 still on it</li>
 </ul>
 <p>Not checked: a real projector, a second physical screen, the Window Management permission prompt and fullscreen on a chosen
-screen, Chrome's kiosk mode, TouchDesigner, OBS, NDI.</p>
+screen, a browser's popup blocker (the test browser runs without one; a window opens from a click by the browsers' rule),
+Chrome's kiosk mode, TouchDesigner, OBS, NDI.</p>
     </article>
 
     <nav class="ch-nav" aria-label="Previous and next chapter">

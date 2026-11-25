@@ -40,7 +40,7 @@ export function mountOutputView({ doc, target, name = 'main', room = defaultRoom
   const win = doc.defaultView;
   const mk = (tag, s, parent) => { const e = doc.createElement(tag); if (s) css(e, s); if (parent) parent.appendChild(e); return e; };
   let rm = checkRoom(room, name)[0];
-  let editing = false, patterned = false, sel = 0, last = { W: 0, H: 0, sw: 0, sh: 0 }, veil = -1, drag = null, cursorTimer = 0, disposed = false;
+  let editing = false, patterned = false, sel = 0, last = { W: 0, H: 0, sw: 0, sh: 0, cw: 0, ch: 0 }, veil = -1, drag = null, cursorTimer = 0, disposed = false;
 
   const root = mk('div', 'position:fixed;inset:0;background:#000;overflow:hidden;z-index:2147483000;user-select:none;-webkit-user-select:none;touch-action:none');
   root.className = 'oav-output';
@@ -90,7 +90,7 @@ export function mountOutputView({ doc, target, name = 'main', room = defaultRoom
       Object.assign(target.style, { left: `${p.source.left - p.clip.left}px`, top: `${p.source.top - p.clip.top}px`, width: `${p.source.width}px`, height: `${p.source.height}px` });
       last.sw = src.w; last.sh = src.h;
     }
-    last.W = W; last.H = H;
+    last.W = W; last.H = H; last.cw = cw; last.ch = ch;
     box.quad.forEach(([x, y], i) => { handles[i].style.left = `${x}px`; handles[i].style.top = `${y}px`; });
     poly.setAttribute('points', box.quad.map((p) => p.join(',')).join(' '));
     if (patterned) drawPattern(box.width, box.height);
@@ -295,7 +295,7 @@ export function mountOutputView({ doc, target, name = 'main', room = defaultRoom
     const v = read ? veilOf(read('blackout') ?? 0, read('brightness') ?? 1) : 0;
     if (v !== veil) { veil = v; veilEl.style.opacity = String(v); }
     const W = root.clientWidth, H = root.clientHeight;
-    const s = W > 0 ? sourceSize({ w: W, h: H }) : null;
+    const s = last.cw > 0 && last.ch > 0 ? sourceSize({ w: last.cw, h: last.ch }) : null;   // the same box layout() measured with
     if (W !== last.W || H !== last.H || (s && (s.w !== last.sw || s.h !== last.sh))) layout();
     win.requestAnimationFrame(tick);
   }
