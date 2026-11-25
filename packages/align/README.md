@@ -60,6 +60,7 @@ Before anything goes on the wall: `node tools/check-align-layout.mjs <layout.jso
 | calibration | `CALIBRATION_FORMAT` (= `CAL_CONTRACT`), `defaultZone`, `normalizeZone`, `normalizeCalibration`, `squareToQuad`, `warpPoint`, `featherAt`, `zoneGrid`, `rotateZone`, `quadOk` |
 | WebGL (THREE passed in) | `createBlitter(THREE, renderer)`, `createWarpRenderer(THREE)`, `createPatternTexture(THREE, size)` |
 | venue | `PATTERN_SOURCES`, `drawSource`, `createCalStore`, `createAlignUI`, `drawChart`, `drawIdent`, `drawIdentBase`, `drawIdentLive`, `normalizeAlignArgs` |
+| @openav/output | `zoneToRoom`, `roomToZone`, `outputsFromAlign` |
 
 The words drawn on the wall, on the chart and in the align panel are English, or Chinese with `lang: 'zh'`.
 
@@ -86,4 +87,9 @@ files load as they are (`art-align/v1`, `art-align-cal/v1`). What changes:
 | file | `open-audiovisual/output@1` | layout.json (`version: 1`) | `open-audiovisual/align@1` and `open-audiovisual/align-calibration@1` |
 | draws with | a CSS `matrix3d` homography | a 2D or p5 transform per screen | Canvas 2D patterns; WebGL meshes through three.js |
 
-For one tile that fills its output, an align zone's four corners and an output room are the same homography.
+For one tile that fills its output, an align zone's four corners and an output room are the same homography:
+`zoneToRoom()` and `roomToZone()` convert one into the other (tested against `@openav/output`'s own `pinnedBox()` for every
+turn and flip), and say what the other side cannot carry (a zone's mesh, feather, masks and gain; a room's overscan and
+soft edge). `outputsFromAlign(layout)` gives `createOutputs(show, { align })` the layout's outputs, so an output window per
+projector can import the align mode's calibration file. A mesh, a feather or a mask in an output window needs WebGL
+(`createWarpRenderer`); wiring that into `@openav/output` is the next step, not done.

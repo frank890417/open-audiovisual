@@ -24,3 +24,4 @@ export { createCalStore } from './cal-store.js?v=cedb93fa';
 export { createAlignUI } from './align-ui.js?v=cedb93fa';
 export { drawChart } from './chart.js?v=cedb93fa';
 export { drawIdent, drawIdentBase, drawIdentLive } from './ident.js?v=cedb93fa';
+export { zoneToRoom, roomToZone, outputsFromAlign } from './bridge.js?v=cedb93fa';

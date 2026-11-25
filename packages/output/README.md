@@ -25,7 +25,7 @@ H / V flip, O turn 90°, [ ] black border, R corners back. The layout is saved p
 
 | export | |
 |---|---|
-| `createOutputs(show, { outputs, aspect, panel, via, storage })` | declare the outputs at load; `open(name, { mode })`, `edit`, `pattern`, `lead()`, `url(name)`, `exportLayout()`, `importLayout(doc)` |
+| `createOutputs(show, { outputs, aspect, panel, via, storage, align })` | declare the outputs at load; `open(name, { mode })`, `edit`, `pattern`, `lead()`, `url(name)`, `exportLayout()`, `importLayout(doc)`; `align`: `@openav/align`'s `outputsFromAlign(layout)`, the align layout's outputs, and `importLayout()` takes an align calibration |
 | `openOutput(source, { name, crop, fit, mode, … })` | one output window, from a click: mode `'mirror'` (the stage's canvas, default) or `'page'` (the same page again, following) |
 | `cornerPin(corners, width, height)` · `toMatrix3d(H)` | the homography and its CSS `matrix3d` |
 | `cropBox({ crop, source, box, fit })` | where a source goes so its crop fills a box |
@@ -33,5 +33,5 @@ H / V flip, O turn 90°, [ ] black border, R corners back. The layout is saved p
 | `outputParams(names)` | `output/<name>/blackout` and `output/<name>/brightness` |
 | `outputQuery(search)` · `outputUrl(base, o)` | the clean address: `?output=front&crop=0,0,0.5,1&follow=oav-output&via=relay&play` |
 
-Edge blending is not part of it. The handbook chapter, with the recipes for a projector, OBS and TouchDesigner:
+Edge blending is not part of it: the four-corner part of an [`@openav/align`](../align/README.md) calibration converts into a room, its mesh, feather and masks need WebGL and stay in align. The handbook chapter, with the recipes for a projector, OBS and TouchDesigner:
 [Projection and video out](https://openaudiovisual.com/docs/output/).

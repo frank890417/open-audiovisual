@@ -19,6 +19,8 @@
 import { checkQuad } from './pin.js?v=cedb93fa';
 
 export const OUTPUT_FORMAT = 'open-audiovisual/output@1';
+/** The calibration file of @openav/align (and of art-align before it): its four-corner part converts, through the align layout. */
+export const ALIGN_CALIBRATION = ['open-audiovisual/align-calibration@1', 'art-align-cal/v1'];
 export const NAME_RE = /^[\w-]{1,32}$/;
 const ROOM_KEYS = ['corners', 'flipX', 'flipY', 'rotate', 'overscan', 'soft'];
 const STORE_PREFIX = 'oav-output:';
@@ -69,6 +71,7 @@ export function parseOutputLayout(doc) {
     try { d = JSON.parse(d); } catch (e) { throw new Error(`[output] the layout is not JSON: ${e.message}`); }
   }
   if (d === null || typeof d !== 'object' || Array.isArray(d)) throw new Error('[output] a layout is an object { format, outputs }');
+  if (ALIGN_CALIBRATION.includes(d.format ?? d.contract)) throw new Error("[output] this is an align calibration, not an output layout: its corners are desktop pixels of an align layout. Give createOutputs(show, { align: outputsFromAlign(layout) }) (from @openav/align) and import it there, or convert it with outputsFromAlign(layout).toOutputLayout(calibration)");
   const problems = [];
   if (d.format !== OUTPUT_FORMAT) problems.push(`format: must be "${OUTPUT_FORMAT}", got ${JSON.stringify(d.format)}`);
   for (const k of Object.keys(d)) if (!['format', 'outputs', 'saved'].includes(k)) problems.push(`${k}: not a key of a layout (format, outputs, saved)`);

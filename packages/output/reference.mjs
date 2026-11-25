@@ -78,11 +78,12 @@ document.querySelector('#open').onclick = () => {
     },
     params: [
       { name: 'show', type: 'Object', en: 'What `createShow()` returned.', zh: '`createShow()` 回傳的東西。' },
-      { name: 'outputs', type: 'Array', optional: true, default: "[{ name: 'main' }]", en: 'One entry per output: `{ name, crop, fit }` (a name alone also works).', zh: '每個輸出一筆：`{ name, crop, fit }`（只寫名字也可以）。' },
-      { name: 'aspect', type: 'Number | null', optional: true, default: 'null', en: 'The stage\'s shape on this page, `16 / 9` or `32 / 9` for two projectors side by side: the world\'s layer is boxed to it, centred, black around. `null` leaves the stage as it is.', zh: '舞台在這個頁面上的形狀，`16 / 9`，或兩台投影機並排時的 `32 / 9`：世界那一層會被框成這個形狀，置中，四周黑色。`null` 不改舞台。' },
+      { name: 'outputs', type: 'Array', optional: true, default: "[{ name: 'main' }]", en: 'One entry per output: `{ name, crop, fit }` (a name alone also works). With `align`, the align layout\'s outputs.', zh: '每個輸出一筆：`{ name, crop, fit }`（只寫名字也可以）。有 `align` 時用對位佈局的輸出。' },
+      { name: 'aspect', type: 'Number | null', optional: true, default: 'null', en: 'The stage\'s shape on this page, `16 / 9` or `32 / 9` for two projectors side by side: the world\'s layer is boxed to it, centred, black around. `null` leaves the stage as it is. With `align`, the align layout\'s art canvas.', zh: '舞台在這個頁面上的形狀，`16 / 9`，或兩台投影機並排時的 `32 / 9`：世界那一層會被框成這個形狀，置中，四周黑色。`null` 不改舞台。有 `align` 時用對位佈局的作品畫布。' },
       { name: 'panel', type: 'Boolean | HTMLElement', optional: true, default: 'true', en: 'The "L4 · Output" panel: `true` puts it in the console, an element puts it there, `false` leaves it out.', zh: '「L4 · Output」面板：`true` 放在控台裡，給一個元素就放在那裡，`false` 不要。' },
       { name: 'via', type: 'true | String | null', optional: true, default: 'null', en: "For mode `'page'` across browsers or machines: `true` is this server's `/relay`, or a `ws://` address.", zh: "跨瀏覽器或跨機器使用 `'page'` 模式時：`true` 是這台伺服器的 `/relay`，或一個 `ws://` 位址。" },
       { name: 'storage', type: 'Storage | null', optional: true, default: 'localStorage', en: 'Where the corners are saved.', zh: '四個角存在哪裡。' },
+      { name: 'align', type: 'Object | null', optional: true, default: 'null', en: 'What `@openav/align`\'s [`outputsFromAlign(layout)`](#outputsFromAlign) returned: the outputs and the aspect come from the align layout, and `importLayout()` also takes an align calibration (its four corners per output).', zh: '`@openav/align` 的 [`outputsFromAlign(layout)`](#outputsFromAlign) 回傳的東西：輸出和比例都從對位佈局來，`importLayout()` 也收對位校正檔（每路輸出的四個角）。' },
     ],
     returns: {
       type: 'Object',
@@ -283,6 +284,10 @@ document.getElementById('app').textContent = JSON.stringify(doc);`,
       {
         en: 'A file from the venue is fixed in one go: an unknown key, a corner outside -0.5 to 1.5, a quad that is not convex, a turn of 45° and a bad name are all listed in the one error, each with its place (`outputs.front.rotate`). Missing keys take the defaults (the picture fills the window).',
         zh: '從場地帶回來的檔案可以一次改好：不認得的鍵、超出 -0.5 到 1.5 的角、不是凸的四邊形、轉 45° 和不合格的名字，全都列在同一個錯誤裡，每一項都標出位置（`outputs.front.rotate`）。沒寫的鍵用預設值（畫面填滿視窗）。',
+      },
+      {
+        en: 'An `@openav/align` calibration (`open-audiovisual/align-calibration@1`) is refused with a message that says how to bring it in: its corners are desktop pixels of an align layout, so it converts only with that layout, through [`outputsFromAlign()`](#outputsFromAlign).',
+        zh: '`@openav/align` 的校正檔（`open-audiovisual/align-calibration@1`）會被拒絕，訊息會說怎麼匯入：它的角是對位佈局的桌面像素，所以只能透過 [`outputsFromAlign()`](#outputsFromAlign) 配合那份佈局轉換。',
       },
     ],
     examples: [

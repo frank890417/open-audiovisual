@@ -18,7 +18,7 @@
 import { mountOutputView } from './view.js?v=cedb93fa';
 import { outputParams, outputKeys, paramReader } from './params.js?v=cedb93fa';
 import { normalizeCrop, FITS } from './crop.js?v=cedb93fa';
-import { loadRoom, saveRoom, defaultStorage, layoutDoc, parseOutputLayout, NAME_RE } from './layout.js?v=cedb93fa';
+import { loadRoom, saveRoom, defaultStorage, layoutDoc, parseOutputLayout, NAME_RE, ALIGN_CALIBRATION } from './layout.js?v=cedb93fa';
 import { outputUrl } from './url.js?v=cedb93fa';
 import { mountOutputPanel } from './panel.js?v=cedb93fa';
 
@@ -156,6 +156,13 @@ function boxStage(show, aspect) {
   fit();
 }
 
+/** An align calibration (either of its format names) → the output layout its four corners make; anything else as it was. */
+function fromAlign(doc, align) {
+  let d = doc;
+  if (typeof d === 'string') { try { d = JSON.parse(d); } catch { return doc; } }
+  return d && typeof d === 'object' && ALIGN_CALIBRATION.includes(d.format ?? d.contract) ? align.toOutputLayout(d) : doc;
+}
+
 /**
  * Declare a show's outputs once, at load: their params exist from the start (so the timeline, a saved mapping and a
  * MIDI fader can reach them before any window is open), the stage takes the outputs' shape, and the desk gets an
@@ -167,10 +174,15 @@ function boxStage(show, aspect) {
  * @param {boolean|HTMLElement} [options.panel=true]   the desk panel (true: in the console), an element to put it in, or false
  * @param {true|string|null} [options.via=null] mode 'page' across browsers or machines: true = this server's /relay, or a ws:// address
  * @param {Storage|null} [options.storage]
+ * @param {object|null} [options.align=null]   what @openav/align's outputsFromAlign(layout) returned: the outputs and the
+ *   aspect come from the align layout (unless given), and importLayout() also takes an align calibration (its four corners)
  * @returns {object} { names, open(name, o), close(name), get(name), edit(name, on), pattern(name, on), lead(o), url(name, o), exportLayout(), importLayout(doc), keys(name) }
  */
-export function createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage = defaultStorage() } = {}) {
+export function createOutputs(show, { outputs = null, aspect = null, panel = true, via = null, storage = defaultStorage(), align = null } = {}) {
   if (!isShow(show)) throw new Error('[output] createOutputs needs a show (what createShow() returned)');
+  if (align !== null && !(align && Array.isArray(align.outputs) && typeof align.toOutputLayout === 'function')) throw new Error("[output] createOutputs: align is what @openav/align's outputsFromAlign(layout) returns");
+  outputs = outputs ?? align?.outputs ?? [{ name: 'main' }];
+  aspect = aspect ?? align?.aspect ?? null;
   const decl = new Map();
   for (const o of outputs) {
     const d = typeof o === 'string' ? { name: o } : { ...o };
@@ -219,9 +231,9 @@ export function createOutputs(show, { outputs = [{ name: 'main' }], aspect = nul
       for (const name of decl.keys()) rooms[name] = rig.get(name)?.room ?? loadRoom(name, storage);
       return layoutDoc(rooms, new Date().toISOString());
     },
-    /** Take a layout file (object or JSON text): checked first (throws with every problem), then saved and applied to open windows. */
+    /** Take a layout file (object or JSON text), or with `align` an align calibration: checked first (throws with every problem), then saved and applied to open windows. */
     importLayout(doc) {
-      const d = parseOutputLayout(doc);
+      const d = parseOutputLayout(align ? fromAlign(doc, align) : doc);
       for (const [name, room] of Object.entries(d.outputs)) {
         saveRoom(name, room, storage);
         const o = rig.get(name);

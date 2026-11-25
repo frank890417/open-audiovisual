@@ -1335,4 +1335,93 @@ requestAnimationFrame(tick);`,
     related: ['drawIdent', 'drawIdentBase', 'createPatternTexture'],
     keywords: { en: ['sweep', 'band of light', 'clock', 'latency'], zh: ['光帶', '時鐘', '延遲'] },
   },
+  // ------------------------------------------------------------------------------------------------ @openav/output
+  zoneToRoom: {
+    group: 'align',
+    summary: { en: 'An align zone → an @openav/output room, for a tile that fills its output: the same four-corner homography, with what a room cannot carry listed.', zh: '對位的一區 → @openav/output 的一個 room，條件是這塊剛好填滿它的輸出：同一個四角 homography，room 帶不走的東西會列出來。' },
+    params: [
+      P_ZONE,
+      { name: 'tile', type: 'Object', en: 'The zone\'s tile, which must fill its output exactly (`dst` equal to the output).', zh: '這一區的塊，必須剛好填滿它的輸出（`dst` 等於輸出）。' },
+      { name: 'output', type: 'Object', en: 'That output, from the same mapping.', zh: '那一路輸出，來自同一份映射。' },
+    ],
+    returns: { type: 'Object', en: '`{ room, dropped }`: room is `{ corners, flipX, flipY, rotate, overscan, soft }` (corners 0..1 of the window); dropped lists `mesh`, `feather`, `masks`, `gain` when the zone has them.', zh: '`{ room, dropped }`：room 是 `{ corners, flipX, flipY, rotate, overscan, soft }`（corners 是視窗的 0 到 1）。區裡有 `mesh`、`feather`、`masks`、`gain` 時，dropped 會列出來。' },
+    description: [
+      { en: 'An output room pins one window: its corners are the window\'s physical corners, relabelled by `rotate` and flips. A zone pins one tile: its corners are the segment\'s, in desktop px, the feed\'s turn baked into their order. When the tile fills its output the two are the same transform, and this converts one into the other: the room gets the feed\'s turn as `rotate`, so a turned tile stays turned.', zh: 'output 的 room 釘住一個視窗：角是視窗的實體角，再依 `rotate` 和翻轉重新對應。對位的一區釘住一塊：角是段的角，桌面 px，feed 的旋轉已經算進角的順序裡。塊剛好填滿輸出時，兩者是同一個變換，這個函式把一個換成另一個：room 的 `rotate` 拿 feed 的旋轉，所以轉過的塊還是轉著的。' },
+      { en: 'Throws when the tile does not fill its output: a room is the whole window.', zh: '塊沒有填滿輸出時丟錯：room 就是整個視窗。' },
+    ],
+    examples: [{
+      code: `import { computeMapping, defaultZone, zoneToRoom } from '@openav/align';
+${TWO}
+const M = computeMapping(layout), t = M.tiles[1], o = M.outputs[1];
+const z = defaultZone(t);
+z.corners[0] = [1920 + 96, 54];                                  // the right projector's top-left pulled in by 5 %
+z.gain = 0.9;
+const { room, dropped } = zoneToRoom(z, t, o);
+document.getElementById('app').textContent = JSON.stringify(room.corners[0]) + ' rotate ' + room.rotate + ' | dropped ' + dropped;`,
+      caption: { en: 'Prints [0.05,0.05] rotate 0 | dropped gain: the corner as a share of the window, and the one thing the room cannot hold.', zh: '印出 [0.05,0.05] rotate 0 | dropped gain：角變成視窗的比例，還有 room 存不下的那一項。' },
+    }],
+    related: ['roomToZone', 'outputsFromAlign', 'createOutputs', 'cornerPin'],
+    keywords: { en: ['output', 'corner pin', 'room', 'convert', 'bridge', 'four corners'], zh: ['輸出', '四角校正', '轉換', '四個角'] },
+  },
+
+  roomToZone: {
+    group: 'align',
+    summary: { en: 'An @openav/output room → an align zone for a tile that fills that output: the corners from the room, the mesh, feather, masks and gain from a base zone.', zh: '@openav/output 的一個 room → 填滿那路輸出的塊的對位區：角從 room 來，網格、羽化、遮罩和亮度從一個基準區來。' },
+    params: [
+      { name: 'room', type: 'Object', en: 'One output\'s room, as in an `open-audiovisual/output@1` file.', zh: '一路輸出的 room，跟 `open-audiovisual/output@1` 檔案裡的一樣。' },
+      { name: 'tile', type: 'Object', en: 'The tile, which must fill its output.', zh: '那一塊，必須填滿它的輸出。' },
+      { name: 'output', type: 'Object', en: 'That output.', zh: '那一路輸出。' },
+      { name: 'base', type: 'Object', optional: true, default: 'defaultZone(tile)', en: 'The zone to keep everything but the corners from (the current calibration\'s, to merge).', zh: '除了角以外都沿用的區（要合併時給現在校正檔的那一區）。' },
+    ],
+    returns: { type: 'Object', en: '`{ zone, dropped, mirrored }`: dropped lists `overscan` and `soft` when the room has them; mirrored is true after one flip (the quad then runs the other way: createWarpRenderer draws it, the align mode\'s corner editor refuses to move it).', zh: '`{ zone, dropped, mirrored }`：room 有 `overscan`、`soft` 時 dropped 會列出來。翻轉一次之後 mirrored 為 true（四邊形變成反方向：createWarpRenderer 照畫，對位模式的角編輯器不肯移動它）。' },
+    description: [{ en: 'The way back: corners set in an output window (its E mode) become the starting point of an align calibration, to refine with a mesh and a feather.', zh: '反過來的路：在輸出視窗（它的 E 模式）調好的角，變成對位校正的起點，再用網格和羽化細調。' }],
+    examples: [{
+      code: `import { computeMapping, roomToZone } from '@openav/align';
+${TWO}
+const M = computeMapping(layout), t = M.tiles[1], o = M.outputs[1];
+const room = { corners: [[0.05, 0], [1, 0], [1, 1], [0, 1]], flipX: false, flipY: false, rotate: 0, overscan: 0, soft: 0.1 };
+const { zone, dropped, mirrored } = roomToZone(room, t, o);
+document.getElementById('app').textContent = JSON.stringify(zone.corners[0]) + ' | dropped ' + dropped + ' | mirrored ' + mirrored;`,
+      caption: { en: 'Prints [2016,0] | dropped soft | mirrored false: 5 % of the window is 96 desktop px into the right output.', zh: '印出 [2016,0] | dropped soft | mirrored false：視窗的 5% 等於右邊那路輸出往內 96 桌面 px。' },
+    }],
+    related: ['zoneToRoom', 'outputsFromAlign', 'normalizeCalibration'],
+    keywords: { en: ['output', 'corner pin', 'room', 'convert', 'bridge'], zh: ['輸出', '四角校正', '轉換'] },
+  },
+
+  outputsFromAlign: {
+    group: 'align',
+    summary: { en: 'The outputs of an align layout as @openav/output declares them, and the conversions between an align calibration and an output layout file.', zh: '把對位佈局的輸出寫成 @openav/output 宣告的樣子，加上對位校正檔與輸出設定檔之間的轉換。' },
+    params: [
+      { name: 'layout', type: 'Object', en: 'An align layout, or its mapping.', zh: '對位佈局，或它的映射。' },
+      { name: 'variant', type: 'String', optional: true, default: 'the layout\'s id', en: 'Which variant of a calibration to read and write.', zh: '要讀寫校正檔的哪一種擺法。' },
+    ],
+    returns: { type: 'Object', en: '`{ id, variant, aspect, outputs: [{ name, crop, fit }], skipped: [{ output, why }], toOutputLayout(calibration), fromOutputLayout(doc, base), lost(calibration) }`.', zh: '一個物件 `{ id, variant, aspect, outputs: [{ name, crop, fit }], skipped: [{ output, why }], toOutputLayout(calibration), fromOutputLayout(doc, base), lost(calibration) }`。' },
+    description: [
+      { en: 'Pass it to `createOutputs(show, { align })`: the outputs and the stage\'s shape come from the layout, and the desk\'s Import layout also takes the align mode\'s calibration file, its four corners per output. Each output that one tile fills becomes an output window showing that tile\'s part of the art canvas (`crop`, `fit: \'stretch\'` so a scaled feed fills it as the layout says); an output with several tiles, or one a tile does not fill, is listed in `skipped` with the reason (a window shows one picture).', zh: '把它交給 `createOutputs(show, { align })`：輸出和舞台形狀都從佈局來，控台的 Import layout 也收對位模式的校正檔，也就是每路輸出的四個角。被一塊填滿的輸出，各變成一個輸出視窗，顯示那一塊在作品畫布上的部分（`crop`，`fit: \'stretch\'`，所以有縮放的 feed 會照佈局填滿）。有好幾塊的輸出，或沒有被一塊填滿的輸出，會列在 `skipped` 並寫出原因（一個視窗只顯示一張畫面）。' },
+      { en: 'What an output window cannot do, a mesh, a feather, masks and gain, stays in the calibration and is listed by `lost(calibration)`: those need WebGL ([`createWarpRenderer()`](#createWarpRenderer)), and wiring that into the output window is the next step, not done.', zh: '輸出視窗做不到的網格、羽化、遮罩和亮度會留在校正檔裡，`lost(calibration)` 會列出來：那些需要 WebGL（[`createWarpRenderer()`](#createWarpRenderer)），把它接進輸出視窗是下一步，還沒做。' },
+    ],
+    examples: [{
+      code: `import { outputsFromAlign, computeMapping, normalizeCalibration } from '@openav/align';
+
+const layout = await (await fetch('/packages/align/layouts/example-edge-blend.json')).json();
+const bridge = outputsFromAlign(layout);
+const cal = normalizeCalibration(null, computeMapping(layout));
+const R = cal.variants['example-edge-blend'].zones.R;
+R.corners[0] = [1920 + 96, 54]; R.feather.l = 0.1;                // set in the align mode
+const doc = bridge.toOutputLayout(cal);                           // an open-audiovisual/output@1 file
+document.getElementById('app').textContent = bridge.outputs.map((o) => o.name + ' x ' + o.crop.x.toFixed(4)).join(', ') + ' | right ' + JSON.stringify(doc.outputs.right.corners[0]) + ' | lost ' + JSON.stringify(bridge.lost(cal));`,
+      caption: { en: 'Prints left x 0.0000, right x 0.4737 | right [0.05,0.05] | lost {"right":["feather"]}: the corner goes to the output window, the feather stays behind.', zh: '印出 left x 0.0000, right x 0.4737 | right [0.05,0.05] | lost {"right":["feather"]}：角送進輸出視窗，羽化留在原地。' },
+    }, {
+      code: `import { createOutputs } from '@openav/output';
+import { outputsFromAlign } from '@openav/align';
+
+const outputs = createOutputs(show, { align: outputsFromAlign(layout) });   // one output per projector of the layout
+outputs.importLayout(calibration);                                          // the align mode's file: four corners each
+button.onclick = () => outputs.open('left');`,
+      caption: { en: 'A show whose output windows are the align layout\'s projectors, pinned with the corners of an align calibration.', zh: '一場演出，輸出視窗就是對位佈局裡的投影機，四個角用對位校正檔的值。' },
+      run: 'static', why: 'It needs a show (createShow()) and opens a window, which a browser allows only from a click.',
+    }],
+    related: ['zoneToRoom', 'roomToZone', 'createOutputs', 'parseOutputLayout', 'createWarpRenderer'],
+    keywords: { en: ['output', 'bridge', 'projector window', 'import calibration', 'corner pin', 'convert'], zh: ['輸出', '投影視窗', '匯入校正檔', '四角校正', '轉換'] },
+  },
 };
