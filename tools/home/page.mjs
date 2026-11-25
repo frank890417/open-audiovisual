@@ -32,7 +32,7 @@ export const PACKAGE_GROUPS = [
   { layer: 'l3', pkgs: ['stage', 'world-webtoe'] },
   { layer: 'l4', pkgs: ['sound', 'osc', 'out', 'dmx', 'output', 'record', 'fab', 'hw'] },
   { layer: 'sp', pkgs: ['timeline', 'score', 'pattern', 'console', 'monitor', 'sync'] },
-  { layer: 'sp', pkgs: ['relay', 'surface', 'remote'] },
+  { layer: 'sp', pkgs: ['relay', 'surface', 'remote', 'tile'] },
   { layer: 'sig', pkgs: ['core', 'show', 'devices', 'mcp'] },
 ];
 

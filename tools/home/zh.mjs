@@ -189,6 +189,7 @@ export default {
       relay: '零相依的房間中繼，讓手機和 iPad 連進來',
       surface: '類似 TouchOSC 的控制元件，以及 autoSurface(params)',
       remote: '手機與 iPad 端的 app：感測器、琴鍵、控制面板',
+      tile: '平放在桌上的幾台螢幕變成一張畫布：拍一張標記照片定位，共同時鐘與種子讓它們同步',
       core: 'Signals、Params、Loop：每一層共用的語言',
       show: 'createShow()：一次呼叫組好整個外殼',
       devices: '演出設備大集合：每一份控制器 profile、DMX 燈具和零件，加上鏡頭、音訊介面、感測器、LED 與 DMX 介面，可以搜尋，每一台交給驅動它的套件',

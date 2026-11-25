@@ -189,6 +189,7 @@ export default {
       relay: 'Zero-dependency room relay for phones and iPads',
       surface: 'TouchOSC-style widgets and autoSurface(params)',
       remote: 'The phone and iPad app: sensors, keyboard, control surface',
+      tile: 'Screens lying on a table become one canvas: one photo of their markers places them, one shared clock and seed keep them in step',
       core: 'Signals, Params and Loop: what every layer speaks',
       show: 'createShow(): one call assembles the whole shell',
       devices: 'One collection of show devices: every controller profile, DMX fixture and part, plus cameras, audio interfaces, sensors and LED and DMX interfaces, searchable, each handed to the package that drives it',
