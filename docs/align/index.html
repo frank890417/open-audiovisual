@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projector and LED alignment · open-audiovisual</title>
+<meta name="description" content="A wall made of several outputs, two projectors side by side with a blend band, an LED band folded into two 4K ports, a room corner on a splitter, is written…">
+<link rel="canonical" href="https://openaudiovisual.com/docs/align/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/align/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/align/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/align/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Projector and LED alignment · open-audiovisual">
+<meta property="og:description" content="A wall made of several outputs, two projectors side by side with a blend band, an LED band folded into two 4K ports, a room corner on a splitter, is written…">
+<meta property="og:url" content="https://openaudiovisual.com/docs/align/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Projector and LED alignment · open-audiovisual">
+<meta name="twitter:description" content="A wall made of several outputs, two projectors side by side with a blend band, an LED band folded into two 4K ports, a room corner on a splitter, is written…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=cedb93fa">
+<script type="module" src="../../assets/search/search.js?v=cedb93fa"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="align">
+<script defer src="../../assets/track.js?v=cedb93fa"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.12.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/align/#article","url":"https://openaudiovisual.com/docs/align/","name":"Projector and LED alignment · open-audiovisual","description":"A wall made of several outputs, two projectors side by side with a blend band, an LED band folded into two 4K ports, a room corner on a splitter, is written…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Projector and LED alignment","version":"0.12.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["The layout","One layout, three outputs","The calibration","Calibrate by hand on the venue day","The Gray-code sequence","What is not built yet","Output, tile and align","From art-align","What was checked"],"position":13,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/align/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/align/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Projector and LED alignment","item":"https://openaudiovisual.com/docs/align/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=cedb93fa">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/align/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/align/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="output"><a href="../../docs/output/"><span class="n">11</span><span class="t">Projection and video out</span></a></li>
+        <li class="toc-ch" data-ch="tile"><a href="../../docs/tile/"><span class="n">12</span><span class="t">Several screens, one canvas</span></a></li>
+        <li class="toc-ch is-here" data-ch="align">
+          <a href="#align" aria-current="page"><span class="n">13</span><span class="t">Projector and LED alignment</span></a>
+          <ol class="toc-secs">
+            <li><a href="#align-the-layout">The layout</a></li>
+            <li><a href="#align-one-layout-three-outputs">One layout, three outputs</a></li>
+            <li><a href="#align-the-calibration">The calibration</a></li>
+            <li><a href="#align-calibrate-by-hand-on-the-venue-day">Calibrate by hand on the venue day</a></li>
+            <li><a href="#align-the-gray-code-sequence">The Gray-code sequence</a></li>
+            <li><a href="#align-what-is-not-built-yet">What is not built yet</a></li>
+            <li><a href="#align-output-tile-and-align">Output, tile and align</a></li>
+            <li><a href="#align-from-art-align">From art-align</a></li>
+            <li><a href="#align-what-was-checked">What was checked</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">14</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">15</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">16</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">17</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">18</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">19</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">20</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">21</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">22</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">23</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">24</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="align" aria-labelledby="align">
+<h1 id="align">Projector and LED alignment<a class="anchor" href="#align" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 13 of 24</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/align.md">docs/align.md</a></span></p>
+<p>A wall made of several outputs, two projectors side by side with a blend band, an LED band folded into two 4K ports, a
+room corner on a splitter, is written once, as one JSON file: the layout. <code>@openav/align</code> (since 0.13.0) reads that file
+three ways: the test patterns, the vendor's alignment chart, and the real output mapping of the work. All three read the
+same data, so a pattern that is right on the wall means the work is right on the wall. On top of the layout goes a
+calibration made by hand on the venue day: four corners, a mesh, feathered edges, masks and brightness, for each
+projector. For the camera-in-the-loop alignment that will one day do this by itself, the package has the pattern
+generator, channel-separated Gray code. Nothing that reads a camera is built yet. Example
+<a href="../../examples/31-align/">31, Align</a> runs all of it on one screen with no hardware.</p>
+<p>This is not the projector window and not the tiling. <a href="../../docs/output/">Projection and video out</a> is one stage shown through
+output windows, four corners each. <a href="../../docs/tile/">Several screens, one canvas</a> is many devices each drawing their own piece,
+placed by a photo. <a href="#align-output-tile-and-align">Output, tile and align</a> says how the three differ and how align's
+calibration reaches an output window.</p>
+<h2 id="align-the-layout">The layout<a class="anchor" href="#align-the-layout" aria-label="Link to this section">#</a></h2>
+<p>The <strong>art canvas</strong> is the wall unrolled flat: a curved wall or a room's walls side by side become one rectangle, and the
+work draws at that size. A <strong>segment</strong> is a rectangle of the art canvas, one physical piece of the wall. An <strong>output</strong> is a
+rectangle of the <strong>desktop</strong>, the physical pixels a fullscreen browser covers (two 4K ports side by side are a desktop of
+7680 × 2160). A <strong>feed</strong> says which segment goes into which output, and where inside it. This is the room-corner example
+from <code>packages/align/layouts/</code>, two walls and the floor in front of them on one 4K output that a splitter cuts in four:</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{
+  <span class="ts">"format"</span>: <span class="ts">"open-audiovisual/align@1"</span>,
+  <span class="ts">"id"</span>: <span class="ts">"room-corner"</span>,
+  <span class="ts">"title"</span>: <span class="ts">"Two walls meeting in a corner and the floor in front of them, three projectors on one 4K output cut 2 × 2"</span>,
+  <span class="ts">"art"</span>: { <span class="ts">"w"</span>: 3200, <span class="ts">"h"</span>: 1700 },
+  <span class="ts">"segments"</span>: [
+    { <span class="ts">"id"</span>: <span class="ts">"WL"</span>, <span class="ts">"x"</span>: 0,    <span class="ts">"y"</span>: 0,   <span class="ts">"w"</span>: 1600, <span class="ts">"h"</span>: 900, <span class="ts">"meters"</span>: { <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 2.25 }, <span class="ts">"label"</span>: <span class="ts">"left wall"</span>,  <span class="ts">"plan"</span>: 1 },
+    { <span class="ts">"id"</span>: <span class="ts">"WR"</span>, <span class="ts">"x"</span>: 1600, <span class="ts">"y"</span>: 0,   <span class="ts">"w"</span>: 1600, <span class="ts">"h"</span>: 900, <span class="ts">"meters"</span>: { <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 2.25 }, <span class="ts">"label"</span>: <span class="ts">"right wall"</span>, <span class="ts">"plan"</span>: 2,
+      <span class="ts">"masks"</span>: [{ <span class="ts">"x"</span>: 1100, <span class="ts">"y"</span>: 300, <span class="ts">"w"</span>: 300, <span class="ts">"h"</span>: 600, <span class="ts">"label"</span>: <span class="ts">"door"</span> }] },
+    { <span class="ts">"id"</span>: <span class="ts">"FL"</span>, <span class="ts">"x"</span>: 0,    <span class="ts">"y"</span>: 900, <span class="ts">"w"</span>: 1600, <span class="ts">"h"</span>: 800, <span class="ts">"meters"</span>: { <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 2 },    <span class="ts">"label"</span>: <span class="ts">"floor"</span>,      <span class="ts">"plan"</span>: 3 }
+  ],
+  <span class="ts">"outputs"</span>: [
+    { <span class="ts">"id"</span>: <span class="ts">"O"</span>, <span class="ts">"x"</span>: 0, <span class="ts">"y"</span>: 0, <span class="ts">"w"</span>: 3840, <span class="ts">"h"</span>: 2160, <span class="ts">"label"</span>: <span class="ts">"4K output"</span>, <span class="ts">"cuts"</span>: { <span class="ts">"cols"</span>: 2, <span class="ts">"rows"</span>: 2 } }
+  ],
+  <span class="ts">"feeds"</span>: [
+    { <span class="ts">"segment"</span>: <span class="ts">"WL"</span>, <span class="ts">"output"</span>: <span class="ts">"O"</span>, <span class="ts">"x"</span>: 160,  <span class="ts">"y"</span>: 90 },
+    { <span class="ts">"segment"</span>: <span class="ts">"WR"</span>, <span class="ts">"output"</span>: <span class="ts">"O"</span>, <span class="ts">"x"</span>: 2080, <span class="ts">"y"</span>: 90 },
+    { <span class="ts">"segment"</span>: <span class="ts">"FL"</span>, <span class="ts">"output"</span>: <span class="ts">"O"</span>, <span class="ts">"x"</span>: 160,  <span class="ts">"y"</span>: 1170, <span class="ts">"rotate"</span>: 180 }
+  ],
+  <span class="ts">"params"</span>: {
+    <span class="ts">"floor_turn"</span>: {
+      <span class="ts">"default"</span>: 180, <span class="ts">"options"</span>: [0, 180], <span class="ts">"status"</span>: <span class="ts">"assumed"</span>,
+      <span class="ts">"note"</span>: <span class="ts">"Which way the floor projector faces: 180 when it hangs over the open side of the room looking back at the corner."</span>,
+      <span class="ts">"ask"</span>: <span class="ts">"The rigger: does the floor projector face the corner or the open side?"</span>
+    }
+  }
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>key</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>art</code></td><td><code>{ w, h }</code> in whole pixels; <code>meters</code> only when somebody measured (a number nobody measured does not go on the wall)</td></tr>
+<tr><td><code>segments[]</code></td><td><code>{ id, x, y, w, h }</code>; optional <code>meters</code>, <code>color</code> (<code>'#hex'</code> or a dark and a light one), <code>cells.size</code>, <code>blend { l, r, t, b, curve, gamma }</code> (a blend band, art px), <code>masks</code> (a door, an opening, in the segment's own px), <code>label</code>, <code>plan</code> (the number on a floor plan)</td></tr>
+<tr><td><code>outputs[]</code></td><td><code>{ id, x, y, w, h }</code> on the desktop, never overlapping; <code>cuts { cols, rows }</code> when a splitter cuts it</td></tr>
+<tr><td><code>feeds[]</code></td><td><code>{ segment, output, x, y }</code>; <code>w</code>, <code>h</code> when the output scales (an LED processor); <code>rotate</code> 0, 90, 180, 270 clockwise; one segment into two outputs is a stack (two projectors on one picture), each feed with its own <code>name</code> and <code>color</code>; <code>visible</code> when the room sees only part of it</td></tr>
+<tr><td><code>vendor[]</code></td><td>the vendor's own alignment images, <code>{ file, output }</code> or <code>{ file, rect }</code>, any number</td></tr>
+<tr><td><code>params</code></td><td>the venue questions the layout was made from, each with a <code>default</code> and a <code>note</code>; <code>status: "assumed"</code> needs an <code>ask</code>: whom to ask, and what</td></tr>
+<tr><td><code>ident</code></td><td>the identification screen's surfaces, their names, what is on each side, the order the band of light runs</td></tr>
+</tbody>
+</table></div>
+<p><code>validateLayout()</code> refuses a layout whose pixels are not whole numbers, whose segment leaves the canvas, whose outputs
+overlap, whose feed names nothing or lands outside its output, with every problem at once and where it is. It warns
+(accepts, but look) about a segment fed nowhere, two segments that overlap without a blend band, and metres whose pixels
+per metre across and down differ by more than 2 %, which on an LED wall is nearly always one number copied wrong. Before
+anything goes on the wall:</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-bash"><span class="tk">node</span> tools/check-align-layout.mjs packages/align/layouts/room-corner.json</code></pre></div>
+<p>It prints the same, then where every tile lands, the stacks and blend bands, the masks, and the params still assumed with
+the question to ask. A file written as <code>"contract": "art-align/v1"</code>, for the module this package grew from, loads as it is.</p>
+<h2 id="align-one-layout-three-outputs">One layout, three outputs<a class="anchor" href="#align-one-layout-three-outputs" aria-label="Link to this section">#</a></h2>
+<p><code>computeMapping(layout)</code> turns the layout into one table of tiles, one per feed: <code>src</code> on the art canvas, <code>dst</code> on the
+desktop. Three things read only that table:</p>
+<ol>
+<li><strong>The test patterns.</strong> <code>drawPattern(ctx, mapping, pattern)</code> draws <code>tiles</code> (a two-tone checkerboard per segment with
+cell names A1, B8 …, its name, size and metres, diagonals, a centre cross and circle), <code>grid</code> (a line every 100 art px,
+a heavy one every 500 with the absolute art coordinate), <code>edges</code>, <code>crosshair</code> (an ellipse means the proportions are
+wrong) and <code>bars</code> (<code>smpte</code>, <code>steps</code>, and a <code>ramp</code> across the whole canvas that shows a step between two segments of
+different brightness). Each tile is clipped to its place on the desktop and drawn in art pixels: the work's own path.</li>
+<li><strong>The vendor's chart.</strong> <code>drawChart(ctx, mapping, outputId)</code> draws one 1:1 image per output for the hardware or
+splitter vendor: a grid with coordinates, the splitter's cuts and the range of each, every block's size and its first
+and last pixel, its masks, which side is the art's top, and "pixel to pixel, no scaling" in the header (or a warning
+when a block scales). <code>vendorPlacements()</code> lays the vendor's own images over the outputs where the layout says they are.</li>
+<li><strong>The output.</strong> <code>blitPlan()</code> and <code>createBlitter(THREE, renderer)</code> copy the work's render target onto the desktop
+tile by tile, 1:1 or scaled; <code>createWarpRenderer(THREE)</code> does it through a calibration and can turn a feed.</li>
+</ol>
+<p>Why that is a guarantee and not a hope: a pattern is not a picture of what the wall should look like, it is drawn through
+the very tiles the work goes out through, and through the same warp (the align mode paints its patterns on the art
+canvas, <code>drawSource()</code>, and hands them to the same renderer as the work). If the cells pattern sits right on the wall, the
+work does. If the vendor's own image and the cells pattern disagree, the layout is wrong, not the wall: fix the file, and
+the patterns, the chart and the work move together.</p>
+<h2 id="align-the-calibration">The calibration<a class="anchor" href="#align-the-calibration" aria-label="Link to this section">#</a></h2>
+<p>A calibration (<code>open-audiovisual/align-calibration@1</code>) holds, for each tile, a zone: its four <code>corners</code> on the desktop
+(the segment's top-left, top-right, bottom-right, bottom-left, in px), a <code>mesh</code> of 2 to 9 points a side that shifts the
+picture on top of that perspective (a curved or uneven surface), a <code>feather</code> on each edge (a share of the zone, for the
+overlap of two projectors), a <code>gamma</code>, a <code>gain</code> and black <code>masks</code>. An uncalibrated zone is exactly the layout's mapping.
+Each variant of a work's layout keeps its own zones in the same file, and a file written as <code>art-align-cal/v1</code> loads as it
+is. <code>normalizeCalibration(file, mapping)</code> makes any file whole for a mapping: what cannot be read takes the default.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { computeMapping, normalizeCalibration, createWarpRenderer } <span class="tk">from</span> <span class="ts">'@openav/align'</span>;
+
+<span class="tk">const</span> M = computeMapping(layout);
+<span class="tk">const</span> cal = normalizeCalibration(savedFileOrNull, M);
+<span class="tk">const</span> warp = createWarpRenderer(THREE);                   <span class="tc">// three.js is passed in, never imported</span>
+warp.build(M, cal.variants[M.id].zones);                  <span class="tc">// again whenever the calibration changes</span>
+warp.draw(renderer, artTexture, { x: 0, y: 0, w: M.desktop.w, h: M.desktop.h });</code></pre></div>
+<h2 id="align-calibrate-by-hand-on-the-venue-day">Calibrate by hand on the venue day<a class="anchor" href="#align-calibrate-by-hand-on-the-venue-day" aria-label="Link to this section">#</a></h2>
+<ol>
+<li><strong>Before you go.</strong> Write the layout, run <code>node tools/check-align-layout.mjs</code> on it, answer the assumed params you can,
+and send each vendor the chart of their output (<code>drawChart</code> at the output's full size, saved as a PNG: a scaled copy is
+not a chart). Ask the LED processor and the splitter to scale nothing.</li>
+<li><strong>Arrive.</strong> Set the machine's displays to the layout's desktop, the same size and order, and open the work fullscreen
+across them. Show the identification screen (<code>ident</code>): every surface in its own colour with its name, which projector
+and which part of which output feeds it, what is on each side, and a band of light that runs along the walls in order.
+A wrong order or a wrong side shows here, before anything else.</li>
+<li><strong>Pixels.</strong> Show <code>tiles</code>. Each segment's cells must be where the vendor's chart says, the cell names readable, a stack's
+two colours mixing evenly. A cell name in the wrong place is a layout or a processor setting, not a calibration.</li>
+<li><strong>Corners.</strong> Enter the align mode and show <code>grid</code> or <code>crosshair</code>. For each zone (Tab, or a click), drag its four
+corners onto the surface's corners, or pick one with <code>[ ]</code> and move it with the arrows: 1 px, Shift 10, Alt 0.25. A
+corner that would fold the quad does not move.</li>
+<li><strong>Mesh.</strong> A surface that is not flat: G, then drag the mesh points (+ − for more or fewer).</li>
+<li><strong>Blend.</strong> Where two projectors overlap, show grey 50 % and feather (E) the overlapping side of each until the band
+is gone; gamma 2.2 is the usual start. Even out the brightness of a zone with <code>,</code> and <code>.</code>.</li>
+<li><strong>Masks.</strong> K, then N adds one, the arrows place it and Shift resizes it. A door the layout lists is already masked.</li>
+<li><strong>Check with the work.</strong> P back to the work, then the bars for black level (see 4 % and not 2 %), white for evenness,
+black for light leaking where nothing should be.</li>
+<li><strong>Keep it.</strong> Every change is saved a second later (in the browser, with the last 20 saves as backups; in an app, files
+through a bridge). X exports the file to keep with the show, I imports one, L lists the backups.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead><tr><th>key (align mode)</th><th></th></tr></thead>
+<tbody>
+<tr><td>C, G, E, K</td><td>edit corners, mesh, feather, masks</td></tr>
+<tr><td>Tab, 1–9, click</td><td>pick a zone</td></tr>
+<tr><td><code>[</code> <code>]</code></td><td>next handle (corners, mesh points, feather sides, masks)</td></tr>
+<tr><td>arrows</td><td>move 1 px; Shift ×10, Alt ×0.25; masks: Shift resizes</td></tr>
+<tr><td>drag, Shift+drag</td><td>a handle; the whole zone</td></tr>
+<tr><td>+ − · Q · N · , .</td><td>mesh density · turn the zone 90° · add a mask · brightness</td></tr>
+<tr><td>P, Shift+P · V</td><td>the next picture · the next layout variant</td></tr>
+<tr><td>O · J · Backspace</td><td>hide the frames · move the panel · the handle home (Shift: the whole zone)</td></tr>
+<tr><td>⌘S · ⌘Z · L · X · I · A</td><td>save · undo · backups · export · import · leave</td></tr>
+</tbody>
+</table></div>
+<p>The panel speaks English, or Chinese with <code>lang: 'zh'</code>. The words drawn on the wall, on the chart and on the
+identification screen take the same option.</p>
+<h2 id="align-the-gray-code-sequence">The Gray-code sequence<a class="anchor" href="#align-the-gray-code-sequence" aria-label="Link to this section">#</a></h2>
+<p>Gray code is how a camera can find which projector pixel lands where. Each axis of a projector needs one black-and-white
+stripe frame per bit of its coordinates, <code>ceil(log2 size)</code>, each followed by its inverse (so every camera pixel gets its
+own threshold, whatever the light), after one white and one black frame: a 1920 × 1200 projector is 11 + 11 bits, 46
+frames. Gray code, because a camera pixel on a stripe's edge that reads one bit wrong is then one projector pixel off,
+not half the picture. <strong>Channel separation</strong>: each projector draws only in its own colour channel, R, G or B, so three
+projectors run at once and one photo of each frame measures all three. A fourth projector takes a second pass
+(<code>channelPlan</code>).</p>
+<p><code>graySequence()</code> lists the frames, <code>drawGrayFrame()</code> draws one over the desktop. They are drawn in output pixels, never
+through the calibration: what is measured is the projector itself. Example 31's Gray code button steps through them, <code>[</code>
+and <code>]</code>, with each frame's name.</p>
+<p>To shoot them: the camera on a tripod where it sees every surface, exposure, focus and white balance fixed by hand, the
+room dark, every projector on; one photo per frame, in the sequence's order, named after the frame (<code>frameLabel()</code>). Do
+not move the camera between frames.</p>
+<h2 id="align-what-is-not-built-yet">What is not built yet<a class="anchor" href="#align-what-is-not-built-yet" aria-label="Link to this section">#</a></h2>
+<p>The camera half. In order, what an automatic alignment would still need:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>stage</th><th>what</th><th>here</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>the camera's intrinsics and distortion, the crosstalk between colour channels</td><td>not built</td></tr>
+<tr><td>1</td><td>the frames (channel-separated Gray code); then capture, a threshold per camera pixel, the camera ↔ projector correspondence</td><td>the frames and the bits → coordinate arithmetic (<code>decodeGrayBits</code>) are built; the rest is not</td></tr>
+<tr><td>2</td><td>from the correspondence into the art canvas: what "right" means, right for a viewer standing here, or evenly spread on the surface (an artistic choice)</td><td>not built</td></tr>
+<tr><td>3</td><td>blending: weights, a measured brightness field, black level</td><td>the layout's blend bands (<code>blendWeight</code>) and the hand-set feather are built; a measured field and black level are not</td></tr>
+<tr><td>4</td><td>convergence: the residual in camera pixels as the stop condition</td><td>not built</td></tr>
+<tr><td>5</td><td>save and reload: a measured result written into the same calibration file</td><td>the manual calibration file is built; a measured one is not</td></tr>
+</tbody>
+</table></div>
+<p>Until then, the venue day above is the alignment.</p>
+<h2 id="align-output-tile-and-align">Output, tile and align<a class="anchor" href="#align-output-tile-and-align" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th><code>@openav/output</code></th><th><code>@openav/tile</code></th><th><code>@openav/align</code></th></tr></thead>
+<tbody>
+<tr><td>for</td><td>one stage shown through output windows: a projector, a second screen, OBS</td><td>many screens lying on a table, each drawing its piece of one canvas</td><td>a wall of several outputs: projectors, LED processors, splitters, blend bands</td></tr>
+<tr><td>measures</td><td>four corners per window, by hand</td><td>marker corners in one photo, solved</td><td>corners, mesh, feather, masks per projector, by hand; Gray-code frames for a camera (the camera half is not built)</td></tr>
+<tr><td>writes</td><td><code>open-audiovisual/output@1</code></td><td>layout.json (<code>version: 1</code>)</td><td><code>open-audiovisual/align@1</code> (the layout) and <code>open-audiovisual/align-calibration@1</code></td></tr>
+<tr><td>draws with</td><td>a CSS <code>matrix3d</code> homography over the mirrored canvas</td><td>a 2D or p5 transform on each screen</td><td>Canvas 2D for patterns and charts; WebGL meshes through three.js</td></tr>
+</tbody>
+</table></div>
+<p>When one tile fills its output, an align zone's four corners and an output room are the same homography.
+<code>zoneToRoom()</code> and <code>roomToZone()</code> convert one into the other, and say what the other side cannot carry: a zone's mesh,
+feather, masks and gain, a room's overscan and soft edge. <code>outputsFromAlign(layout)</code> gives <code>@openav/output</code> the layout's
+outputs, one window per projector showing that projector's part of the art canvas, and <code>createOutputs(show, { align })</code>
+then imports the align mode's calibration file as well as its own:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createOutputs } <span class="tk">from</span> <span class="ts">'@openav/output'</span>;
+<span class="tk">import</span> { outputsFromAlign } <span class="tk">from</span> <span class="ts">'@openav/align'</span>;
+
+<span class="tk">const</span> outputs = createOutputs(show, { align: outputsFromAlign(layout) });
+outputs.importLayout(calibration);                        <span class="tc">// the four corners of each projector</span></code></pre></div>
+<p>An output window is a CSS homography: a mesh, a feather or a mask needs WebGL (<code>createWarpRenderer</code>). Drawing those in
+<code>@openav/output</code>'s window is the next step, not done; example 31 draws them with three.js on its own canvas.</p>
+<p>Three packages export a <code>validateLayout</code> (surface's checks a phone control surface, tile's a layout.json, align's this
+layout) and two a <code>normalizeLayout</code> (surface, align). A page that uses two imports one under another name:
+<code>import { validateLayout as validateAlignLayout } from '@openav/align'</code>.</p>
+<h2 id="align-from-art-align">From art-align<a class="anchor" href="#align-from-art-align" aria-label="Link to this section">#</a></h2>
+<p><code>@openav/align</code> is the alignment module art-align, made public. A work that copies art-align into its own folder can
+switch its import to <code>@openav/align</code>: the documented names keep their names and arguments, its layout and calibration
+files load as they are, and they are written back with the new format names. The words on the wall and the messages are
+English, Chinese with <code>lang: 'zh'</code>. <code>createCalStore()</code> keeps its files under the prefix <code>oav-align</code>; while nothing is
+saved there it reads art-align's <code>art-align/*</code> keys, so a calibration art-align saved is still found. Not here: the
+adapters to two earlier venue implementations (<code>toLegacyMap</code>, <code>layoutFromQuery</code> and their kin), the venue test page and
+its deploy tools.</p>
+<h2 id="align-what-was-checked">What was checked<a class="anchor" href="#align-what-was-checked" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><code>tests/align.test.js</code>, <code>tests/align-warp.test.js</code> and <code>tests/align-bridge.test.js</code> (in <code>npm test</code>): every example
+layout valid with no warnings, and every number of each changed by one either refused or changing the mapping; a file
+in the art-align format with its extra keys mapping exactly as the new one; the patterns tile by tile, the cells, the
+blend weights adding up to 1 across a band; every coordinate of 1920 × 1200 decoded back from the Gray-code frames; the
+warp's corners, mesh and feather; the calibration file both formats; createWarpRenderer and createBlitter with a fake
+three.js; the store with a storage in memory, art-align's keys included; the chart, the identification screen; an
+align zone against <code>@openav/output</code>'s own <code>pinnedBox()</code> for every turn and flip; and that no client, venue or vendor
+name is in the package, its tests, this chapter or the example.</li>
+<li>Example 31 in headless Chromium 151 (Playwright 1.62), one machine, <code>node serve.js</code>, no permissions granted, three.js
+0.170.0 from jsDelivr (<code>packages/align/test/align-smoke.cjs</code>): every example layout loads with no console error, its
+identification screen and its charts drawn, one warp mesh per tile; the picture list changes the warped canvas; a corner
+dragged with the mouse in the align mode moves the zone's corner by the distance dragged and changes the rendered
+picture; after a reload the corner is where it was left; the panel reads in Chinese when the guide is set to 中文; the
+Gray-code frames step in output pixels (frame 5 of 46, X bit 2 of 11). The WebGL there is the browser's software renderer.</li>
+</ul>
+<p>Not checked: a real projector, a real LED processor or splitter, a desktop of several physical outputs, the WebGL warp on
+a venue machine's graphics card, the Electron bridge of <code>createCalStore</code>, and any camera.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/tile/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Several screens, one canvas</span></a>
+      <a class="ch-next" rel="next" href="../../docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">MIDI controllers &amp; embedding</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=cedb93fa"></script>
+<!--/email_off-->
+</body>
+</html>

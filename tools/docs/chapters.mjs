@@ -24,6 +24,7 @@ export const CHAPTERS = [
   { id: 'dmx', en: 'docs/dmx.md', zh: 'docs/zh/dmx.md' },
   { id: 'output', en: 'docs/output.md', zh: 'docs/zh/output.md' },
   { id: 'tile', en: 'docs/tile.md', zh: 'docs/zh/tile.md' },
+  { id: 'align', en: 'docs/align.md', zh: 'docs/zh/align.md' },
   { id: 'controllers', en: 'docs/controllers.md', zh: 'docs/zh/controllers.md', external: true },
   { id: 'devices', en: 'docs/devices.md', zh: 'docs/zh/devices.md' },
   { id: 'p5', en: 'docs/p5.md', zh: 'docs/zh/p5.md' },

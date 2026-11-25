@@ -9,7 +9,8 @@ frame from the same two things, one clock shared through the relay and one seed.
 
 This is not the projector chapter. [Projection and video out](output.md) is one stage, rendered once, shown through
 output windows on projectors and second screens. Here many devices each render their own part of one canvas, placed by a
-photo. The two can meet in one show, but neither needs the other.
+photo. The two can meet in one show, but neither needs the other. A wall of projectors or LED outputs aligned from one
+layout file, by hand, is a third thing: [Projector and LED alignment](align.md).
 
 ## Run it with three screens
 

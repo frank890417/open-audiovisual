@@ -1,13 +1,13 @@
 # 套件一覽
 
-三十三個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
+三十四個套件放在 `packages/<name>/`。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 `@openav/<name>` 引入（照抄 `examples/01-hello-particles/index.html` 裡那份就好）。目前還沒有發布到 npm。
 
 | 層 | 套件 |
 |---|---|
 | L1 輸入 | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 映射 | `mapping` · `chop` |
 | L3 世界 | `stage` · `world-webtoe` |
-| L4 輸出 | `sound` · `osc` · `out` · `dmx` · `output` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
+| L4 輸出 | `sound` · `osc` · `out` · `dmx` · `output` · `align` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | 手機 | `relay` · `surface` · `remote` · `tile` |
 | 膠水 | `core` · `show` · `devices` · `mcp` |
@@ -296,17 +296,33 @@ L4 輸出（燈光）· 從網頁打 DMX，全部是純邏輯：燈具 profile�
 
 ## @openav/output
 
-L4 輸出（畫面）· 把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。輸出視窗可以鏡像舞台的畫布（`captureStream()` 放進 `<video>`：只算一次，畫面完全一樣），或用乾淨網址把同一個頁面再開一次，當成同步的從屬端。瀏覽器有 Window Management API 而且允許時，可以在選定的螢幕全螢幕（只在輸出視窗裡點擊時才詢問）。四角校正是一個 CSS `matrix3d` 單應矩陣，另有翻轉、轉 90°、黑邊和柔邊，用四個把手和測試圖編輯，依輸出名字存下來。一張畫布可以切給並排的投影機（沒有邊緣融合）。`output/<name>/blackout` 和 `output/<name>/brightness` 是參數。任何 `createShow()` 的頁面加上 `?output` 就是乾淨的輸出（`&follow=oav-output` 跟隨，`&play` 開始播放）。說明在 [投影與影像輸出](output.md)。好幾台裝置各自畫一張畫布裡自己的那一塊、位置由一張照片決定，是 [`@openav/tile`](#openav-tile)。
+L4 輸出（畫面）· 把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。輸出視窗可以鏡像舞台的畫布（`captureStream()` 放進 `<video>`：只算一次，畫面完全一樣），或用乾淨網址把同一個頁面再開一次，當成同步的從屬端。瀏覽器有 Window Management API 而且允許時，可以在選定的螢幕全螢幕（只在輸出視窗裡點擊時才詢問）。四角校正是一個 CSS `matrix3d` 單應矩陣，另有翻轉、轉 90°、黑邊和柔邊，用四個把手和測試圖編輯，依輸出名字存下來。一張畫布可以切給並排的投影機（沒有邊緣融合）。`output/<name>/blackout` 和 `output/<name>/brightness` 是參數。任何 `createShow()` 的頁面加上 `?output` 就是乾淨的輸出（`&follow=oav-output` 跟隨，`&play` 開始播放）。說明在 [投影與影像輸出](output.md)。好幾台裝置各自畫一張畫布裡自己的那一塊、位置由一張照片決定，是 [`@openav/tile`](#openav-tile)。由好幾路輸出組成、從一份佈局檔對位的牆是 [`@openav/align`](#openav-align)，它的校正檔可以用 `createOutputs(show, { align })` 匯入。
 
 | 匯出 | 簽章 |
 |---|---|
-| `createOutputs` | `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage })` → `{ names, open(name, { mode }), close(name), get(name), edit(name, on), pattern(name, on), lead({ channel, via }), url(name, o), exportLayout(), importLayout(doc), keys(name) }`，也放在 `show.outputs`。載入時就加好參數，舞台框成 `aspect`，控台多一個 L4 · Output 面板 |
+| `createOutputs` | `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage, align = null })` → `{ names, open(name, { mode }), close(name), get(name), edit(name, on), pattern(name, on), lead({ channel, via }), url(name, o), exportLayout(), importLayout(doc), keys(name) }`，也放在 `show.outputs`。載入時就加好參數，舞台框成 `aspect`，控台多一個 L4 · Output 面板 |
 | `openOutput` | `openOutput(source, { name = 'main', crop, fit = 'contain', mode = 'mirror', params, timeline, features, aspect, via, channel = 'oav-output', storage })` → `{ name, mode, window, closed, edit(on), pattern(on), room, set(partial), reset(), close() }`，要在點擊時呼叫 |
 | 四角校正 | `cornerPin(corners, width = 1, height = 1)` → 9 個數字（不是凸四邊形時丟出錯誤）· `toMatrix3d(H)` → `'matrix3d(…)'` |
 | 裁切 | `cropBox({ crop, source, box, fit = 'contain' })` → `{ clip, source }` |
 | 設定檔 | `OUTPUT_FORMAT`（`'open-audiovisual/output@1'`）· `parseOutputLayout(doc)` → `{ format, outputs }`（一個錯誤列出所有問題） |
 | 參數 | `outputParams(names)` → `output/<name>/blackout`（0 或 1）和 `output/<name>/brightness`（0 到 1，預設 1）的參數設定 |
 | 乾淨網址 | `outputQuery(search)` → `null` 或 `{ name, crop, aspect, fit, follow, via, play }` · `outputUrl(base, { name, crop, aspect, fit, follow, via, play })` |
+
+## @openav/align
+
+L4 輸出（畫面）· 由好幾路輸出組成的牆，從一份佈局檔來（`open-audiovisual/align@1`，art-align 的 `art-align/v1` 也不用改就讀得進來）：校正圖樣、給廠商的 1:1 對位圖和作品的輸出映射讀同一張塊的表，所以圖樣在牆上對了作品就對。佈局之上是手動校正（`open-audiovisual/align-calibration@1`：每塊的四角、網格、羽化邊、遮罩、亮度），有對位模式和存放，還有認機畫面，以及給相機閉環對位用的格雷碼圖樣（每台投影機一個色通道，拍照取像和解碼還沒做）。沒有相依套件，three.js 由呼叫端傳入。說明在 [投影與 LED 牆對位](align.md)，範例 31。它的 `validateLayout` 和 `normalizeLayout` 跟 [`@openav/tile`](#openav-tile)、[`@openav/surface`](#openav-surface) 的不是同一個。
+
+| 匯出 | 簽章 |
+|---|---|
+| 佈局 | `ALIGN_FORMAT`（＝`CONTRACT`）· `validateLayout(layout)` → `{ ok, errors, warnings }` · `normalizeLayout(layout)` · `LayoutError` · `findLayout(layouts, name)` · `identityLayout(w, h, { id, title })` · `scaleArt(layout, k)` |
+| 映射 | `computeMapping(layout)` → `{ format, id, art, desktop, outputs, segments, tiles, vendor, warnings }` · `blitPlan(mapping, { pixelRatio, buffer })` · `composePlan` · `composeArtCanvas` · `artView` · `desktopToArt(mapping, x, y)` · `artToDesktop(mapping, ax, ay)` · `cellIdAt` · `analyzeOverlaps` · `blendWeight(tile, ax, ay)` · `vendorPlacements(mapping, { base })` |
+| 格子 | `rowLabel(i)` · `cellSizeFor(w, h)` · `cellAt(seg, size, ax, ay)` · `cellRect(seg, size, name)` · `eachCell(seg, size)` |
+| 圖樣 | `ALIGN_PATTERNS` · `BAR_VARIANTS` · `drawPattern(ctx, mapping, pattern, { view, overlay, variant, highlight, outputs, lang })` · `withTile` · `highlightCell` · `drawOutputs` |
+| 格雷碼 | `graySequence(size, { inverse, refs, axes })` · `grayBitAt` · `grayRuns` · `channelPlan(mapping)` · `drawGrayFrame(ctx, mapping, frame, { assign, view })` · `decodeGrayBits(bits)` · `grayEncode` · `grayDecode` · `bitsFor` · `frameLabel(frame, lang)` |
+| 校正檔 | `CALIBRATION_FORMAT`（＝`CAL_CONTRACT`）· `normalizeCalibration(cal, mapping, variant)` · `defaultZone(tile)` · `normalizeZone` · `warpPoint(zone, u, v)` · `squareToQuad(q)` · `featherAt(f, u, v)` · `zoneGrid(zone, n)` · `rotateZone(zone, dir)` · `quadOk(q)` |
+| WebGL | `createBlitter(THREE, renderer)` · `createWarpRenderer(THREE)` → `{ build(mapping, zones, n), draw(renderer, texture, region), dispose() }` · `createPatternTexture(THREE, size)` |
+| 現場 | `PATTERN_SOURCES` · `drawSource(g, mapping, source)` · `createCalStore({ bridge, prefix, storage })` · `createAlignUI(o)` · `drawChart(ctx, mapping, outputId, opts)` · `drawIdent` · `drawIdentBase` · `drawIdentLive` · `normalizeAlignArgs(a, { patterns, fallback })` |
+| 跟 `@openav/output` | `zoneToRoom(zone, tile, output)` → `{ room, dropped }` · `roomToZone(room, tile, output, base)` → `{ zone, dropped, mirrored }` · `outputsFromAlign(layout, { variant })` → 給 `createOutputs(show, { align })` |
 
 ## @openav/record
 

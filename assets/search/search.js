@@ -1,7 +1,8 @@
 // open-audiovisual site search — the nav's button, ⌘K / Ctrl+K / "/" , one dialog, results grouped by kind.
 // Loaded by every page that has a top bar (tools/site/chrome.mjs headBasics). The page works without it: the button is a plain
 // link to the API reference, which has its own search box. What this adds:
-//   · the dialog (<dialog>, made the first time it opens), and the index (assets/search/index.json, fetched then, once)
+//   · the dialog (<dialog>, made the first time it opens), and the index (assets/search/index.json, fetched then, once): names,
+//     keywords and summaries answer at once; the body text (assets/search/text.json) is fetched right after and folded in
 //   · results from the API reference, the handbook (every section), the examples and the controllers, in both languages:
 //     the page's own language first; the other language only when just that one matches (the keywords of each entry carry both,
 //     so "麥克風" finds micLevel from the English site)
@@ -26,9 +27,16 @@ const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls)
 
 function load() {
   if (!loading) {
-    loading = fetch(new URL('assets/search/index.json' + stamp, root)).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then((j) => {
+    const get = (f) => fetch(new URL(f + stamp, root)).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+    loading = get('assets/search/index.json').then((j) => {
       ui = j.ui[lang];
       recs = j.records.map((r) => prepare({ ...r, name: r.n, names: r.a, kw: r.k, title: r.s, summary: r.d, text: r.x }));
+      // the body text: found by it is the lowest match, so the dialog answers without it and searches it once it lands
+      if (j.text) get(j.text).then((t) => {
+        if (!t || t.count !== recs.length) return;
+        recs = recs.map((r, i) => (t.x[i] ? prepare({ ...r, text: t.x[i] }) : r));
+        if (dlg && dlg.open) render(input.value);
+      }).catch(() => {});
       return recs;
     });
   }

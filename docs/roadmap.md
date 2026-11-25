@@ -34,6 +34,11 @@ before it was generalized.)
   blackout and brightness as params, and a clean address for OBS and TouchDesigner (`@openav/output`, [Projection and video out](output.md))
 - [x] several screens lying on a table as one canvas, placed by one photo, on one shared clock (`@openav/tile`,
   [Several screens, one canvas](tile.md)); on a real table with real phones: still to be tried
+- [x] a wall of several outputs from one layout file: test patterns, a vendor chart and the output mapping read the same
+  data; corners, mesh, feather and masks by hand; the Gray-code frames (`@openav/align`, [Projector and LED alignment](align.md));
+  on a real projector: still to be tried
+- [ ] automatic alignment with a camera: capture, decode, the camera ↔ projector correspondence, a solved mesh, a measured
+  blend ([what is not built yet](align.md#what-is-not-built-yet))
 
 ## So that nobody rebuilds this layer
 

@@ -102,17 +102,18 @@
             <li><a href="#tile-what-was-checked">What was checked</a></li>
           </ol>
         </li>
-        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">13</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
-        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">14</span><span class="t">Devices</span></a></li>
-        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">15</span><span class="t">p5.js in one line</span></a></li>
-        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">16</span><span class="t">With Strudel</span></a></li>
-        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">17</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
-        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">18</span><span class="t">Signals reference</span></a></li>
-        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">19</span><span class="t">Package reference</span></a></li>
-        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">20</span><span class="t">For AI agents</span></a></li>
-        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">21</span><span class="t">Lab integration (the "lab" field)</span></a></li>
-        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">22</span><span class="t">Troubleshooting</span></a></li>
-        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">23</span><span class="t">Roadmap</span></a></li>
+        <li class="toc-ch" data-ch="align"><a href="../../docs/align/"><span class="n">13</span><span class="t">Projector and LED alignment</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">14</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">15</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">16</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">17</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">18</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">19</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">20</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">21</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">22</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">23</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">24</span><span class="t">Roadmap</span></a></li>
       </ol>
     </nav>
   </aside>
@@ -121,7 +122,7 @@
     <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
     <article class="chapter" data-chapter="tile" aria-labelledby="tile">
 <h1 id="tile">Several screens, one canvas<a class="anchor" href="#tile" aria-label="Link to this section">#</a></h1>
-<p class="chapter-meta"><span class="chapter-n">Chapter 12 of 23</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/tile.md">docs/tile.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">Chapter 12 of 24</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/tile.md">docs/tile.md</a></span></p>
 <p>Phones, tablets and laptops lying flat on a table, of any size, turned any way, partly on top of each other, become one
 canvas. <code>@openav/tile</code> covers each screen with small markers, finds them all in one photo taken from above, and from then
 on every screen draws only its own piece of one shared picture. A dot that leaves one screen travels behind the bezel and
@@ -130,7 +131,8 @@ frame from the same two things, one clock shared through the relay and one seed.
 <a href="../../examples/30-tile-dot/">30, Tile dot</a> is one dot and its sparks flowing across every screen.</p>
 <p>This is not the projector chapter. <a href="../../docs/output/">Projection and video out</a> is one stage, rendered once, shown through
 output windows on projectors and second screens. Here many devices each render their own part of one canvas, placed by a
-photo. The two can meet in one show, but neither needs the other.</p>
+photo. The two can meet in one show, but neither needs the other. A wall of projectors or LED outputs aligned from one
+layout file, by hand, is a third thing: <a href="../../docs/align/">Projector and LED alignment</a>.</p>
 <h2 id="tile-run-it-with-three-screens">Run it with three screens<a class="anchor" href="#tile-run-it-with-three-screens" aria-label="Link to this section">#</a></h2>
 <p>You need a computer on the same wifi as the phones (it runs the relay), three screens to tile and one more phone to take
 the photo (it can be one of the three, in a second tab, before you lay it down).</p>
@@ -313,7 +315,7 @@ detection time on a phone. The README of the package lists what to look at when 
 
     <nav class="ch-nav" aria-label="Previous and next chapter">
       <a class="ch-prev" rel="prev" href="../../docs/output/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Projection and video out</span></a>
-      <a class="ch-next" rel="next" href="../../docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">MIDI controllers &amp; embedding</span></a>
+      <a class="ch-next" rel="next" href="../../docs/align/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Projector and LED alignment</span></a>
     </nav>
     <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
   </main>

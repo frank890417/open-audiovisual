@@ -46,7 +46,8 @@ roadmap lists them in order.
 The schemas are [`align.schema.json`](align.schema.json) and [`align-calibration.schema.json`](align-calibration.schema.json).
 Example layouts, all invented: [`layouts/`](layouts/) (one projector; two with a blend band; an LED band folded into two
 outputs; a stacked double projection; a room corner with a splitter, a turned floor, a door mask, params and ident).
-Before anything goes on the wall: `node tools/check-align-layout.mjs <layout.json>`.
+Before anything goes on the wall: `node tools/check-align-layout.mjs <layout.json>`. Example 31 in a real browser:
+`PW=<path to playwright> node packages/align/test/align-smoke.cjs` (`THUMB=assets/home/works/31.webp` also writes its thumbnail).
 
 ## API
 

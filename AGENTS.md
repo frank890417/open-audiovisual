@@ -14,7 +14,7 @@ Four layers + two spines — the contracts are in [docs/architecture.md](docs/ar
 - **Input** (`packages/midi`, `audio`, `chord`, `pose`, `leap`) → publishes named **signals**
 - **Mapping** (`packages/mapping`) → routes signals to **params** (curves, smoothing, live learn)
 - **World** (`packages/stage`) → algorithmic system that reads params, renders anything
-- **Output** (`packages/osc`, MIDI out, `packages/output`: projector window, corner-pin, `?output` for OBS / TouchDesigner; `packages/tile`: screens on a table as one canvas, placed by one photo) + **Timeline** + **Score & Director** (`packages/score`: a show as segment lengths) + **Console** + **Monitor**
+- **Output** (`packages/osc`, MIDI out, `packages/output`: projector window, corner-pin, `?output` for OBS / TouchDesigner; `packages/tile`: screens on a table as one canvas, placed by one photo; `packages/align`: a wall of several outputs from one layout file, test patterns, vendor chart, manual calibration, Gray-code frames) + **Timeline** + **Score & Director** (`packages/score`: a show as segment lengths) + **Console** + **Monitor**
 
 Full handbook (every chapter, verified against the code): https://openaudiovisual.com/docs/ —
 sources in `docs/`, one file for language models at `/llms-full.txt`.

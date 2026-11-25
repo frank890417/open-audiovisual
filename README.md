@@ -123,7 +123,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-<!--gen:w-examples-->Thirty<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
+<!--gen:w-examples-->Thirty-one<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
 
 <!--gen:examples-grid-->
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
@@ -193,7 +193,7 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 </tr>
 </table>
 
-**⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera, a rig of stage lights over DMX, the picture on a projector, its corners pinned to the wall, and one canvas across the screens lying on a table.
+**⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera, a rig of stage lights over DMX, the picture on a projector, its corners pinned to the wall, one canvas across the screens lying on a table, and a wall of several outputs aligned by hand from one layout file.
 
 <table>
 <tr>
@@ -205,6 +205,11 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/28-dmx-lights/"><img src="assets/home/works/28.webp" width="260" alt="Coloured beams fall from a truss onto a dark floor, two thin white beams cross them, and a DMX monitor below shows ten fixture swatches and a grid of channel values."></a><br><b>28 · DMX lights</b><br>One world draws a stage and drives a lighting rig from the same params; a monitor shows what the lights get, no hardware needed.<br><a href="https://openaudiovisual.com/examples/28-dmx-lights/">play</a> · <a href="examples/28-dmx-lights/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/29-projector-output/"><img src="assets/home/works/29.webp" width="260" alt="Rounded rectangles of blue, violet and orange light grow from a glowing centre to a thin white frame at the edge of a dark stage."></a><br><b>29 · Projector output</b><br>An output window for a projector or a second screen, its four corners pinned to the wall, and a clean address for OBS and TouchDesigner.<br><a href="https://openaudiovisual.com/examples/29-projector-output/">play</a> · <a href="examples/29-projector-output/">source</a></td>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/30-tile-dot/"><img src="assets/home/works/30.webp" width="260" alt="Three screens of different sizes lying at angles on a dark table; one glowing dot and its sparks cross from one screen to the next, and faint grid lines run straight across the gaps."></a><br><b>30 · Tile dot</b><br>Several screens lying on a table become one canvas: one photo places them, one clock and one seed keep them together.<br><a href="https://openaudiovisual.com/examples/30-tile-dot/">play</a> · <a href="examples/30-tile-dot/">source</a></td>
+</tr>
+<tr>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/31-align/"><img src="assets/home/works/31.webp" width="260" alt="Two projector outputs side by side on black, each warped slightly off square, coloured light bands and circles crossing the seam between them, yellow corner handles and a dark align panel over the left one."></a><br><b>31 · Align</b><br>A wall of several outputs aligned by hand from one layout file: the patterns, the vendor chart and the work take the same path, through one calibration.<br><a href="https://openaudiovisual.com/examples/31-align/">play</a> · <a href="examples/31-align/">source</a></td>
+<td></td>
+<td></td>
 </tr>
 </table>
 <!--/gen:examples-grid-->
@@ -348,7 +353,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-<!--gen:w-packages-->Thirty-three<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+<!--gen:w-packages-->Thirty-four<!--/gen:w-packages--> plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 <!--gen:packages-table-->
@@ -370,6 +375,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 |  | [`@openav/out`](packages/out/) | Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values |
 |  | [`@openav/dmx`](packages/dmx/) | DMX lighting: fixture profiles, a patch, scenes, cues, chases and effects rendered as a function of time, a 3 Hz flash cap per fixture, and Art-Net, sACN and Enttec USB bytes |
 |  | [`@openav/output`](packages/output/) | The stage on a projector or a second screen: an output window, four-corner correction with a test pattern, crops for projectors side by side, and a clean address for OBS and TouchDesigner |
+|  | [`@openav/align`](packages/align/) | A wall of several outputs from one layout file: test patterns, a vendor chart and the output mapping that cannot disagree, corners, mesh and feather by hand, Gray-code frames |
 |  | [`@openav/record`](packages/record/) | Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed |
 |  | [`@openav/fab`](packages/fab/) | Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files |
 |  | [`@openav/hw`](packages/hw/) | What goes inside: parts with their datasheet numbers, a wiring check (logic levels, boot pins, I²C addresses, current, battery hours), a wiring diagram and a parts list |
@@ -440,7 +446,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-33 packages · 30 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1441 tests
+34 packages · 31 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1495 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

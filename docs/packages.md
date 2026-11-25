@@ -1,6 +1,6 @@
 # Package reference
 
-Thirty-three packages live in `packages/<name>/`. Each is plain ES modules with no
+Thirty-four packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -10,7 +10,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` · `chop` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` · `out` · `dmx` · `output` · `record` · `fab` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `out` · `dmx` · `output` · `align` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | phones | `relay` · `surface` · `remote` · `tile` |
 | glue | `core` · `show` · `devices` · `mcp` |
@@ -342,17 +342,41 @@ the output window); four-corner correction as one CSS `matrix3d` homography, wit
 edge, edited with four handles and a test pattern and saved per output name; crops of one canvas for projectors side by side
 (no edge blending); `output/<name>/blackout` and `output/<name>/brightness` as params. Any `createShow()` page at `?output` is a
 clean output (`&follow=oav-output` to follow, `&play` to start). The chapter is [Projection and video out](output.md). Several
-devices each drawing their own part of one canvas, placed by a photo, is [`@openav/tile`](#openav-tile).
+devices each drawing their own part of one canvas, placed by a photo, is [`@openav/tile`](#openav-tile); a wall of several
+outputs aligned from one layout file is [`@openav/align`](#openav-align), whose calibration `createOutputs(show, { align })` imports.
 
 | export | signature |
 |---|---|
-| `createOutputs` | `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage })` → `{ names, open(name, { mode }), close(name), get(name), edit(name, on), pattern(name, on), lead({ channel, via }), url(name, o), exportLayout(), importLayout(doc), keys(name) }`, also on `show.outputs`; the params at load, the stage boxed to `aspect`, an L4 · Output panel |
+| `createOutputs` | `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage, align = null })` → `{ names, open(name, { mode }), close(name), get(name), edit(name, on), pattern(name, on), lead({ channel, via }), url(name, o), exportLayout(), importLayout(doc), keys(name) }`, also on `show.outputs`; the params at load, the stage boxed to `aspect`, an L4 · Output panel |
 | `openOutput` | `openOutput(source, { name = 'main', crop, fit = 'contain', mode = 'mirror', params, timeline, features, aspect, via, channel = 'oav-output', storage })` → `{ name, mode, window, closed, edit(on), pattern(on), room, set(partial), reset(), close() }`; from a click |
 | corner-pin | `cornerPin(corners, width = 1, height = 1)` → 9 numbers (throws on a quad that is not convex) · `toMatrix3d(H)` → `'matrix3d(…)'` |
 | crop | `cropBox({ crop, source, box, fit = 'contain' })` → `{ clip, source }` |
 | layout file | `OUTPUT_FORMAT` (`'open-audiovisual/output@1'`) · `parseOutputLayout(doc)` → `{ format, outputs }` (one error listing every problem) |
 | params | `outputParams(names)` → the entries of `output/<name>/blackout` (0 or 1) and `output/<name>/brightness` (0..1, default 1) |
 | clean address | `outputQuery(search)` → `null` or `{ name, crop, aspect, fit, follow, via, play }` · `outputUrl(base, { name, crop, aspect, fit, follow, via, play })` |
+
+## @openav/align
+
+L4 output (picture) · a wall of several outputs from one layout file (`open-audiovisual/align@1`; art-align's
+`art-align/v1` reads unchanged): the test patterns, the vendor's 1:1 alignment chart and the work's output mapping read the
+same table of tiles, so a pattern right on the wall means the work is right. A manual calibration on top
+(`open-audiovisual/align-calibration@1`: four corners, a mesh, feathered edges, masks, gain per tile) with an align mode
+and a store, the identification screen, and the Gray-code frames for camera-in-the-loop alignment (each projector in its
+own colour channel; capturing and decoding photos is not built). No dependencies; three.js is passed in. The chapter is
+[Projector and LED alignment](align.md); example 31. Its `validateLayout` and `normalizeLayout` are not
+[`@openav/tile`](#openav-tile)'s nor [`@openav/surface`](#openav-surface)'s.
+
+| export | signature |
+|---|---|
+| layout | `ALIGN_FORMAT` (= `CONTRACT`) · `validateLayout(layout)` → `{ ok, errors, warnings }` · `normalizeLayout(layout)` · `LayoutError` · `findLayout(layouts, name)` · `identityLayout(w, h, { id, title })` · `scaleArt(layout, k)` |
+| mapping | `computeMapping(layout)` → `{ format, id, art, desktop, outputs, segments, tiles, vendor, warnings }` · `blitPlan(mapping, { pixelRatio, buffer })` · `composePlan` · `composeArtCanvas` · `artView` · `desktopToArt(mapping, x, y)` · `artToDesktop(mapping, ax, ay)` · `cellIdAt` · `analyzeOverlaps` · `blendWeight(tile, ax, ay)` · `vendorPlacements(mapping, { base })` |
+| cells | `rowLabel(i)` · `cellSizeFor(w, h)` · `cellAt(seg, size, ax, ay)` · `cellRect(seg, size, name)` · `eachCell(seg, size)` |
+| patterns | `ALIGN_PATTERNS` · `BAR_VARIANTS` · `drawPattern(ctx, mapping, pattern, { view, overlay, variant, highlight, outputs, lang })` · `withTile` · `highlightCell` · `drawOutputs` |
+| Gray code | `graySequence(size, { inverse, refs, axes })` · `grayBitAt` · `grayRuns` · `channelPlan(mapping)` · `drawGrayFrame(ctx, mapping, frame, { assign, view })` · `decodeGrayBits(bits)` · `grayEncode` · `grayDecode` · `bitsFor` · `frameLabel(frame, lang)` |
+| calibration | `CALIBRATION_FORMAT` (= `CAL_CONTRACT`) · `normalizeCalibration(cal, mapping, variant)` · `defaultZone(tile)` · `normalizeZone` · `warpPoint(zone, u, v)` · `squareToQuad(q)` · `featherAt(f, u, v)` · `zoneGrid(zone, n)` · `rotateZone(zone, dir)` · `quadOk(q)` |
+| WebGL | `createBlitter(THREE, renderer)` · `createWarpRenderer(THREE)` → `{ build(mapping, zones, n), draw(renderer, texture, region), dispose() }` · `createPatternTexture(THREE, size)` |
+| venue | `PATTERN_SOURCES` · `drawSource(g, mapping, source)` · `createCalStore({ bridge, prefix, storage })` · `createAlignUI(o)` · `drawChart(ctx, mapping, outputId, opts)` · `drawIdent` · `drawIdentBase` · `drawIdentLive` · `normalizeAlignArgs(a, { patterns, fallback })` |
+| with `@openav/output` | `zoneToRoom(zone, tile, output)` → `{ room, dropped }` · `roomToZone(room, tile, output, base)` → `{ zone, dropped, mirrored }` · `outputsFromAlign(layout, { variant })` → for `createOutputs(show, { align })` |
 
 ## @openav/record
 

@@ -103,17 +103,18 @@
         </li>
         <li class="toc-ch" data-ch="output"><a href="../../../zh/docs/output/"><span class="n">11</span><span class="t">投影與影像輸出</span></a></li>
         <li class="toc-ch" data-ch="tile"><a href="../../../zh/docs/tile/"><span class="n">12</span><span class="t">多螢幕拼接：一張畫布</span></a></li>
-        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">13</span><span class="t">MIDI 控制器與嵌入</span></a></li>
-        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">14</span><span class="t">設備</span></a></li>
-        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">15</span><span class="t">p5.js 一行接上</span></a></li>
-        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">16</span><span class="t">和 Strudel 一起用</span></a></li>
-        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">17</span><span class="t">手機、中繼與控制面板</span></a></li>
-        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">18</span><span class="t">訊號一覽</span></a></li>
-        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">19</span><span class="t">套件一覽</span></a></li>
-        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">20</span><span class="t">給 AI 代理</span></a></li>
-        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">21</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
-        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">22</span><span class="t">疑難排解</span></a></li>
-        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">23</span><span class="t">路線圖</span></a></li>
+        <li class="toc-ch" data-ch="align"><a href="../../../zh/docs/align/"><span class="n">13</span><span class="t">投影與 LED 牆對位</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">14</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">15</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">16</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">17</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">18</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">19</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">20</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">21</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">22</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">23</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">24</span><span class="t">路線圖</span></a></li>
       </ol>
     </nav>
   </aside>
@@ -122,7 +123,7 @@
     <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
     <article class="chapter" data-chapter="dmx" aria-labelledby="dmx">
 <h1 id="dmx">DMX 燈光<a class="anchor" href="#dmx" aria-label="這一節的連結">#</a></h1>
-<p class="chapter-meta"><span class="chapter-n">第 10 章，共 23 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/dmx.md">docs/zh/dmx.md</a></span></p>
+<p class="chapter-meta"><span class="chapter-n">第 10 章，共 24 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/dmx.md">docs/zh/dmx.md</a></span></p>
 <p>DMX512 是告訴舞台燈要做什麼的方法：一條線傳一個 <strong>universe</strong>，裡面有 512 個通道，每個通道是 0 到 255 的數字，每秒送大約 40 次。一台燈從它的<strong>位址</strong>開始聽幾個通道（一台 par 可能從位址 1 到 6 依序讀 dimmer、紅、綠、藍、白、strobe），每個通道代表什麼寫在它的說明書裡，也就是它的 <strong>profile</strong>。網路可以一次傳很多個 universe（Art-Net、sACN），USB 介面則把電腦的數字變成線上的訊號。</p>
 <p><code>@openav/dmx</code> 把一套燈光放進作品裡：燈具 profile、patch、一個在任何時刻都算得出每台燈樣子的引擎（scene、cue、chase、effect），以及三種把位元組送出去的方法。沒有燈、沒有介面也能跑：頁面上的監看器會顯示燈收到什麼。<a href="../../../examples/28-dmx-lights/">範例 28</a> 把這一切放在同一頁。</p>
 <aside class="callout callout-warning" role="note"><p class="callout-title">注意</p>

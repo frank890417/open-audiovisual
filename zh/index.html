@@ -96,7 +96,7 @@
         <p class="eyebrow facts"><a href="../zh/changelog/">oav-p5 0.8 · 框架 0.12</a> · MIT 授權 · 零建置 · 零相依</p>
       </div>
       <nav class="doors" aria-label="從哪裡開始">
-        <a class="door door-1" href="#works"><span class="door-who">我做表演</span><span class="door-what">看看它做得出什麼，直接玩三十件作品</span><span class="door-arrow" aria-hidden="true">→</span></a>
+        <a class="door door-1" href="#works"><span class="door-who">我做表演</span><span class="door-what">看看它做得出什麼，直接玩三十一件作品</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-2" href="#start"><span class="door-who">我寫程式</span><span class="door-what">一分鐘跑起來，再寫自己的世界</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-3" href="../llms.txt"><span class="door-who">我是 AI 代理</span><span class="door-what">先讀 /llms.txt，再讀 AGENTS.md</span><span class="door-arrow" aria-hidden="true">→</span></a>
         <a class="door door-4" href="../zh/p5/"><span class="door-who">我用 p5.js／OpenProcessing</span><span class="door-what">加一行，就有控制器、聲音、鼓機和錄影</span><span class="door-arrow" aria-hidden="true">→</span></a>
@@ -225,7 +225,7 @@
     
     <header class="sec-head">
       <p class="eyebrow">03 · 作品</p>
-      <h2 id="works-title">三十件作品，現在就能打開</h2>
+      <h2 id="works-title">三十一件作品，現在就能打開</h2>
       <p class="sec-lede">每個範例都不需要硬體。螢幕鋼琴、電腦鍵盤、模擬演奏者或鼓機，可以先代替樂器。進到任何一個範例：空白鍵播放時間軸，T 是演出模式，F 是全螢幕。</p>
     </header>
     <ol class="works">
@@ -589,6 +589,18 @@
           <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/30-tile-dot">原始碼 ↗</a></p>
         </div>
       </li>
+      <li class="work" id="work-31">
+        <div class="work-img"><img src="../assets/home/works/31.webp" width="800" height="500" loading="lazy" decoding="async" alt="黑底上並排的兩路投影輸出，各自被拉得有點歪，彩色光帶和圓圈跨過兩者之間的接縫，左邊那路上面有黃色的角把手和一個深色的對位面板。"></div>
+        <div class="work-label">
+          <p class="work-n">31</p>
+          <h3><a class="work-link" href="../examples/31-align/">投影對位</a></h3>
+          
+          <p class="work-in"><span>演奏方式</span> 滑鼠與鍵盤 · 它自己會播 · MIDI 控制器</p>
+          <p class="work-text">兩台有熔接帶的投影機、接在兩路輸出上的 LED 帶、接在分割器上的房間角落：一份佈局檔驅動 <code>@openav/align</code> 的校正圖樣、廠商對位圖和作品，對位模式在桌面預覽上拖四角、網格、羽化邊和遮罩，格雷碼圖樣一張一張看。</p>
+          <p class="work-route"><span>⑤</span> 輸出與留存</p>
+          <p class="work-links"><a class="work-src" href="https://github.com/frank890417/open-audiovisual/tree/main/examples/31-align">原始碼 ↗</a></p>
+        </div>
+      </li>
     </ol>
     <p class="works-all"><a class="more" href="../zh/examples/">依路線瀏覽所有範例 →</a></p>
     <p class="works-all"><a class="more" href="../zh/devices/">設備大集合：55 台 MIDI 控制器、49 台 DMX 燈具，還有 23 台其他設備，每一台都附資料 →</a></p>
@@ -639,7 +651,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p>宣告作品能被什麼演奏（參數），對事件做反應，然後畫出來。交給 <code>createShow()</code>，其他部分一起到位：鋼琴、映射、時間軸、控台、聲音、後台。旁邊放一個帶 import map 的 <code>index.html</code>，照範例 01 的寫法。</p>
         
       <div class="term ">
-        <div class="term-bar"><span>examples/31-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">複製</button></div>
+        <div class="term-bar"><span>examples/32-pulse/main.js</span><button type="button" class="copy" data-copy="code-world">複製</button></div>
         <pre id="code-world"><code><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
 <span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
 
@@ -669,7 +681,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
       </div>
     </div>
 
-    <h3 class="pkgs-title">三十三個套件，依層分類</h3>
+    <h3 class="pkgs-title">三十四個套件，依層分類</h3>
     <p class="pkgs-lede">全部是原生 ES module。用 import map 引入需要的套件，或交給 <code>createShow()</code> 組裝。</p>
     <div class="pkgs">
       <div class="pkg-group pg-l1">
@@ -706,6 +718,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/out"><code>@openav/out</code></a><span>把網頁作品的參數經一支本機橋接送到 WLED 燈條、序列埠馬達板和 OSC，斷線時看門狗退回安全值</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/dmx"><code>@openav/dmx</code></a><span>DMX 燈光：燈具 profile、patch，scene、cue、chase、effect 依時間算出每台燈的值，每台燈每秒最多閃 3 次，輸出 Art-Net、sACN 與 Enttec USB 的封包</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/output"><code>@openav/output</code></a><span>把舞台送上投影機或第二個螢幕：輸出視窗、附測試圖的四角校正、並排投影機的裁切，以及給 OBS 和 TouchDesigner 的乾淨網址</span></li>
+          <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/align"><code>@openav/align</code></a><span>由好幾路輸出組成的牆，從一份佈局檔來：校正圖樣、廠商對位圖和輸出映射不會對不上，手動調四角、網格和羽化，還有格雷碼圖樣</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/record"><code>@openav/record</code></a><span>演出影片：作品疊在鏡頭畫面上、連同作品自己的聲音錄成一個檔；MIDI 演奏可錄下再重播</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/fab"><code>@openav/fab</code></a><span>做得出來嗎？對任何網格做 3D 列印檢查（水密、懸空、最薄壁、重量），匯出 STL、OBJ、GLB、STEP</span></li>
           <li><a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/hw"><code>@openav/hw</code></a><span>裡面的電子：附規格書數字的零件庫、接線檢查（邏輯電壓、開機腳、I²C 位址、電流、電池時數）、接線圖和零件清單</span></li>
@@ -870,7 +883,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
           <div class="term-bar"><span>prompt</span><button type="button" class="copy" data-copy="agent-prompt">複製</button></div>
           <pre id="agent-prompt"><code>Clone https://github.com/frank890417/open-audiovisual，先讀 AGENTS.md。
 執行 `node serve.js`，打開 http://localhost:8080/examples/01-hello-particles/，看最小的完整演出長什麼樣子。
-把 01-hello-particles 複製成 examples/31-&lt;名稱&gt;/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：
+把 01-hello-particles 複製成 examples/32-&lt;名稱&gt;/（或呼叫 openav MCP 的 scaffold_world 工具），在它的 main.js 為這件作品寫一個 World：
 
   &lt;描述這場表演，例如「一個遇到和諧和弦就綻放的水母世界」&gt;
 

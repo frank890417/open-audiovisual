@@ -2582,6 +2582,105 @@
           }
         }
       ],
+      "next": "31-align"
+    },
+    {
+      "id": "31-align",
+      "num": "31",
+      "dir": "examples/31-align/",
+      "route": "output",
+      "title": {
+        "en": "Align",
+        "zh": "投影對位"
+      },
+      "teaches": {
+        "en": "A wall of several outputs aligned by hand from one layout file: the patterns, the vendor chart and the work take the same path, through one calibration.",
+        "zh": "由好幾路輸出組成的牆，從一份佈局檔手動對位：圖樣、廠商對位圖和作品走同一條路，透過同一份校正檔。"
+      },
+      "summary": {
+        "en": "Two projectors with a blend band, an LED band on two outputs, a room corner on a splitter: one layout file drives <code>@openav/align</code>'s test patterns, its vendor chart and the work, and the align mode drags corners, a mesh, feathered edges and masks over a desktop preview, the Gray-code frames one by one.",
+        "zh": "兩台有熔接帶的投影機、接在兩路輸出上的 LED 帶、接在分割器上的房間角落：一份佈局檔驅動 <code>@openav/align</code> 的校正圖樣、廠商對位圖和作品，對位模式在桌面預覽上拖四角、網格、羽化邊和遮罩，格雷碼圖樣一張一張看。"
+      },
+      "plays": {
+        "en": "mouse and keys · plays itself · MIDI controller",
+        "zh": "滑鼠與鍵盤 · 它自己會播 · MIDI 控制器"
+      },
+      "needs": [],
+      "standIn": [
+        "auto"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/31.webp",
+      "alt": {
+        "en": "Two projector outputs side by side on black, each warped slightly off square, coloured light bands and circles crossing the seam between them, yellow corner handles and a dark align panel over the left one.",
+        "zh": "黑底上並排的兩路投影輸出，各自被拉得有點歪，彩色光帶和圓圈跨過兩者之間的接縫，左邊那路上面有黃色的角把手和一個深色的對位面板。"
+      },
+      "docs": [
+        {
+          "id": "align",
+          "en": "Projector and LED alignment",
+          "zh": "投影與 LED 牆對位"
+        },
+        {
+          "id": "align-calibrate-by-hand-on-the-venue-day",
+          "en": "Calibrate by hand on the venue day",
+          "zh": "到場那天手動校正"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Press Align and drag a yellow corner of the right projector: the picture bends to follow, and stays bent after a reload.",
+          "Pick a picture in the list (cells, grid, ident, bars): each one goes out through the same warp as the work.",
+          "Press Gray code and step with ◀ ▶: each projector draws its stripes in its own colour channel, never warped."
+        ],
+        "zh": [
+          "按 Align，拖右邊投影機的一個黃色角：畫面跟著彎過去，重新整理之後還是彎的。",
+          "在清單裡選一個畫面（逐格、格線、認機、色條）：每一個都跟作品走同一條 warp 送出去。",
+          "按 Gray code，用 ◀ ▶ 一張一張看：每台投影機在自己的色通道畫自己的條紋，從不經過 warp。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 33,
+          "to": 37,
+          "match": "const M = computeMapping(layout);",
+          "note": {
+            "en": "One layout, one mapping, one calibration: everything below reads these three.",
+            "zh": "一份佈局、一份映射、一份校正檔：下面的每一件事都讀這三樣。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 125,
+          "to": 134,
+          "match": "function frame(artCanvas) {",
+          "note": {
+            "en": "The work or a pattern, the same warp: a pattern right on the wall means the work is right.",
+            "zh": "作品或圖樣，同一條 warp：圖樣在牆上對了，作品就對。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 109,
+          "to": 113,
+          "match": "function drawFlat() {",
+          "note": {
+            "en": "Gray-code frames in output pixels, one colour channel per projector, never through the calibration.",
+            "zh": "格雷碼圖樣畫在輸出像素上，每台投影機一個色通道，從不經過校正檔。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 201,
+          "to": 204,
+          "match": "ui = createAlignUI({",
+          "note": {
+            "en": "The align mode edits the calibration; the page rebuilds the warp when it changes.",
+            "zh": "對位模式改的是校正檔，校正一變，頁面就重建 warp。"
+          }
+        }
+      ],
       "next": null
     }
   ]

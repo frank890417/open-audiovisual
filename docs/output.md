@@ -10,7 +10,9 @@ Browser Source or TouchDesigner's Web Render TOP. The world never knows any of t
 This is one stage, rendered once and shown through output windows. Phones, tablets and laptops lying on a table, each
 drawing its own part of one canvas from where a photo says it lies, are [Several screens, one canvas](tile.md)
 (`@openav/tile`): its `homography()` takes any number of measured points, where `cornerPin()` here is the four corners of one
-window.
+window. A wall of several outputs aligned from one layout file, with a mesh, feathered edges and masks per projector, is
+[Projector and LED alignment](align.md) (`@openav/align`): the four-corner part of its calibration imports into these
+windows (`createOutputs(show, { align })`).
 
 ## The output window
 
@@ -149,7 +151,8 @@ const outputs = createOutputs(show, {
 Each output has its own corners, its own params and its own window (open each from its own click: a browser opens one window
 per gesture). `fit` says how a crop fills its window when the shapes differ: `contain` (default, black bars), `cover` (filled,
 cut) or `stretch`. Example 29 does this with `?pair`. Where the two pictures meet there is a hard seam: edge blending (two
-projectors overlapping with a matched soft ramp and brightness) is not part of this package.
+projectors overlapping with a matched soft ramp and brightness) is not part of this package: `@openav/align` feathers the
+overlap in WebGL ([Projector and LED alignment](align.md)).
 
 ## The clean address
 

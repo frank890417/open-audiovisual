@@ -197,6 +197,20 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/tile/"/>
   </url>
   <url>
+    <loc>https://openaudiovisual.com/docs/align/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/align/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/align/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/align/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/align/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/align/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/align/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/align/"/>
+  </url>
+  <url>
     <loc>https://openaudiovisual.com/docs/controllers/</loc>
     <lastmod>2026-11-25</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/controllers/"/>
@@ -4781,6 +4795,9 @@
   <url>
     <loc>https://openaudiovisual.com/examples/30-tile-dot/</loc>
     <lastmod>2026-11-25</lastmod>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/examples/31-align/</loc>
   </url>
   <url>
     <loc>https://openaudiovisual.com/p5/</loc>

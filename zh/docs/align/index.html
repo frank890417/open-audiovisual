@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>投影與 LED 牆對位｜open-audiovisual</title>
+<meta name="description" content="由好幾路輸出組成的一面牆，例如兩台並排、中間有熔接帶的投影機，一條摺進兩個 4K 輸出的 LED 帶，或是接在分割器上的一個房間角落，只要寫一次，寫成一份 JSON 檔：佈局。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/align/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/align/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/align/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/align/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="投影與 LED 牆對位｜open-audiovisual">
+<meta property="og:description" content="由好幾路輸出組成的一面牆，例如兩台並排、中間有熔接帶的投影機，一條摺進兩個 4K 輸出的 LED 帶，或是接在分割器上的一個房間角落，只要寫一次，寫成一份 JSON 檔：佈局。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/align/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="投影與 LED 牆對位｜open-audiovisual">
+<meta name="twitter:description" content="由好幾路輸出組成的一面牆，例如兩台並排、中間有熔接帶的投影機，一條摺進兩個 4K 輸出的 LED 帶，或是接在分割器上的一個房間角落，只要寫一次，寫成一份 JSON 檔：佈局。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=cedb93fa">
+<script type="module" src="../../../assets/search/search.js?v=cedb93fa"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="align">
+<script defer src="../../../assets/track.js?v=cedb93fa"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.12.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/align/#article","url":"https://openaudiovisual.com/zh/docs/align/","name":"投影與 LED 牆對位｜open-audiovisual","description":"由好幾路輸出組成的一面牆，例如兩台並排、中間有熔接帶的投影機，一條摺進兩個 4K 輸出的 LED 帶，或是接在分割器上的一個房間角落，只要寫一次，寫成一份 JSON 檔：佈局。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"投影與 LED 牆對位","version":"0.12.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["佈局","一份佈局，三件輸出","校正檔","到場那天手動校正","格雷碼序列","還沒做的部分","output、tile 與 align","從 art-align 來","檢查過什麼"],"position":13,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/align/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/align/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"投影與 LED 牆對位","item":"https://openaudiovisual.com/zh/docs/align/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=cedb93fa">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/align/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/align/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="output"><a href="../../../zh/docs/output/"><span class="n">11</span><span class="t">投影與影像輸出</span></a></li>
+        <li class="toc-ch" data-ch="tile"><a href="../../../zh/docs/tile/"><span class="n">12</span><span class="t">多螢幕拼接：一張畫布</span></a></li>
+        <li class="toc-ch is-here" data-ch="align">
+          <a href="#align" aria-current="page"><span class="n">13</span><span class="t">投影與 LED 牆對位</span></a>
+          <ol class="toc-secs">
+            <li><a href="#align-the-layout">佈局</a></li>
+            <li><a href="#align-one-layout-three-outputs">一份佈局，三件輸出</a></li>
+            <li><a href="#align-the-calibration">校正檔</a></li>
+            <li><a href="#align-calibrate-by-hand-on-the-venue-day">到場那天手動校正</a></li>
+            <li><a href="#align-the-gray-code-sequence">格雷碼序列</a></li>
+            <li><a href="#align-what-is-not-built-yet">還沒做的部分</a></li>
+            <li><a href="#align-output-tile-and-align">output、tile 與 align</a></li>
+            <li><a href="#align-from-art-align">從 art-align 來</a></li>
+            <li><a href="#align-what-was-checked">檢查過什麼</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">14</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">15</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">16</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">17</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">18</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">19</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">20</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">21</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">22</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">23</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">24</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="align" aria-labelledby="align">
+<h1 id="align">投影與 LED 牆對位<a class="anchor" href="#align" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 13 章，共 24 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/align.md">docs/zh/align.md</a></span></p>
+<p>由好幾路輸出組成的一面牆，例如兩台並排、中間有熔接帶的投影機，一條摺進兩個 4K 輸出的 LED 帶，或是接在分割器上的一個房間角落，只要寫一次，寫成一份 JSON 檔：佈局。<code>@openav/align</code>（0.13.0 起）用三種方式讀這份檔：校正圖樣、廠商的對位圖，以及作品真正的輸出映射。三者讀的是同一份資料，所以圖樣在牆上對了，作品在牆上就對。佈局之上是現場那天手動做的校正：每台投影機的四角、網格、羽化邊、遮罩和亮度。至於有一天能自己完成這些事的相機閉環對位，這個套件目前有的是圖樣產生器，也就是通道分離的格雷碼。讀相機的部分還沒有做。範例
+<a href="../../../examples/31-align/">31，投影對位</a> 在一個螢幕上、不需要任何硬體，把這些全部跑一遍。</p>
+<p>這一章不是投影視窗，也不是螢幕拼接。<a href="../../../zh/docs/output/">投影與影像輸出</a> 是一個舞台透過輸出視窗送出去，每個視窗四個角。
+<a href="../../../zh/docs/tile/">多螢幕拼接：一張畫布</a> 是很多台裝置各畫自己的那一塊，用一張照片定位。
+<a href="#align-output-tile-and-align">output、tile 與 align</a> 說明三者的差別，以及 align 的校正檔怎麼送進輸出視窗。</p>
+<h2 id="align-the-layout">佈局<a class="anchor" href="#align-the-layout" aria-label="這一節的連結">#</a></h2>
+<p><strong>作品畫布</strong>是攤平的牆：彎曲的牆，或一個房間並排的幾面牆，都變成一個矩形，作品就畫這個大小。<strong>段</strong>是作品畫布上的一個矩形，也就是牆實際的一塊。<strong>輸出</strong>是<strong>桌面</strong>上的一個矩形，桌面是全螢幕瀏覽器蓋住的實體像素（兩個並排的 4K
+輸出，桌面就是 7680 × 2160）。<strong>feed</strong> 說哪一段送進哪一路輸出、貼在裡面的哪裡。下面是 <code>packages/align/layouts/</code>
+裡的房間角落範例，兩面牆和牆前的地面，接在一路 4K 輸出上，由分割器切成四格：</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-json">{
+  <span class="ts">"format"</span>: <span class="ts">"open-audiovisual/align@1"</span>,
+  <span class="ts">"id"</span>: <span class="ts">"room-corner"</span>,
+  <span class="ts">"title"</span>: <span class="ts">"Two walls meeting in a corner and the floor in front of them, three projectors on one 4K output cut 2 × 2"</span>,
+  <span class="ts">"art"</span>: { <span class="ts">"w"</span>: 3200, <span class="ts">"h"</span>: 1700 },
+  <span class="ts">"segments"</span>: [
+    { <span class="ts">"id"</span>: <span class="ts">"WL"</span>, <span class="ts">"x"</span>: 0,    <span class="ts">"y"</span>: 0,   <span class="ts">"w"</span>: 1600, <span class="ts">"h"</span>: 900, <span class="ts">"meters"</span>: { <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 2.25 }, <span class="ts">"label"</span>: <span class="ts">"left wall"</span>,  <span class="ts">"plan"</span>: 1 },
+    { <span class="ts">"id"</span>: <span class="ts">"WR"</span>, <span class="ts">"x"</span>: 1600, <span class="ts">"y"</span>: 0,   <span class="ts">"w"</span>: 1600, <span class="ts">"h"</span>: 900, <span class="ts">"meters"</span>: { <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 2.25 }, <span class="ts">"label"</span>: <span class="ts">"right wall"</span>, <span class="ts">"plan"</span>: 2,
+      <span class="ts">"masks"</span>: [{ <span class="ts">"x"</span>: 1100, <span class="ts">"y"</span>: 300, <span class="ts">"w"</span>: 300, <span class="ts">"h"</span>: 600, <span class="ts">"label"</span>: <span class="ts">"door"</span> }] },
+    { <span class="ts">"id"</span>: <span class="ts">"FL"</span>, <span class="ts">"x"</span>: 0,    <span class="ts">"y"</span>: 900, <span class="ts">"w"</span>: 1600, <span class="ts">"h"</span>: 800, <span class="ts">"meters"</span>: { <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 2 },    <span class="ts">"label"</span>: <span class="ts">"floor"</span>,      <span class="ts">"plan"</span>: 3 }
+  ],
+  <span class="ts">"outputs"</span>: [
+    { <span class="ts">"id"</span>: <span class="ts">"O"</span>, <span class="ts">"x"</span>: 0, <span class="ts">"y"</span>: 0, <span class="ts">"w"</span>: 3840, <span class="ts">"h"</span>: 2160, <span class="ts">"label"</span>: <span class="ts">"4K output"</span>, <span class="ts">"cuts"</span>: { <span class="ts">"cols"</span>: 2, <span class="ts">"rows"</span>: 2 } }
+  ],
+  <span class="ts">"feeds"</span>: [
+    { <span class="ts">"segment"</span>: <span class="ts">"WL"</span>, <span class="ts">"output"</span>: <span class="ts">"O"</span>, <span class="ts">"x"</span>: 160,  <span class="ts">"y"</span>: 90 },
+    { <span class="ts">"segment"</span>: <span class="ts">"WR"</span>, <span class="ts">"output"</span>: <span class="ts">"O"</span>, <span class="ts">"x"</span>: 2080, <span class="ts">"y"</span>: 90 },
+    { <span class="ts">"segment"</span>: <span class="ts">"FL"</span>, <span class="ts">"output"</span>: <span class="ts">"O"</span>, <span class="ts">"x"</span>: 160,  <span class="ts">"y"</span>: 1170, <span class="ts">"rotate"</span>: 180 }
+  ],
+  <span class="ts">"params"</span>: {
+    <span class="ts">"floor_turn"</span>: {
+      <span class="ts">"default"</span>: 180, <span class="ts">"options"</span>: [0, 180], <span class="ts">"status"</span>: <span class="ts">"assumed"</span>,
+      <span class="ts">"note"</span>: <span class="ts">"Which way the floor projector faces: 180 when it hangs over the open side of the room looking back at the corner."</span>,
+      <span class="ts">"ask"</span>: <span class="ts">"The rigger: does the floor projector face the corner or the open side?"</span>
+    }
+  }
+}</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>鍵</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>art</code></td><td><code>{ w, h }</code>，整數像素。<code>meters</code> 只在有人量過時才寫（沒量過的數字不上牆）</td></tr>
+<tr><td><code>segments[]</code></td><td><code>{ id, x, y, w, h }</code>。選填 <code>meters</code>、<code>color</code>（<code>'#hex'</code> 或一深一淺兩色）、<code>cells.size</code>、<code>blend { l, r, t, b, curve, gamma }</code>（熔接帶，作品 px）、<code>masks</code>（門洞、開口，用段自己的 px）、<code>label</code>、<code>plan</code>（平面圖上的編號）</td></tr>
+<tr><td><code>outputs[]</code></td><td>桌面上的 <code>{ id, x, y, w, h }</code>，彼此不重疊。分割器有切的話寫 <code>cuts { cols, rows }</code></td></tr>
+<tr><td><code>feeds[]</code></td><td><code>{ segment, output, x, y }</code>。輸出有縮放（LED 處理器）時寫 <code>w</code>、<code>h</code>。<code>rotate</code> 是順時針 0、90、180、270。一段送進兩路是疊投（兩台投影機打同一張畫面），每條 feed 各有自己的 <code>name</code> 和 <code>color</code>。現場只看得到一部分時寫 <code>visible</code></td></tr>
+<tr><td><code>vendor[]</code></td><td>廠商自己的對位圖，<code>{ file, output }</code> 或 <code>{ file, rect }</code>，張數不限</td></tr>
+<tr><td><code>params</code></td><td>這份佈局是依照哪些現場問題做出來的，每個都有 <code>default</code> 和 <code>note</code>。<code>status: "assumed"</code> 一定要寫 <code>ask</code>：要問誰、問什麼</td></tr>
+<tr><td><code>ident</code></td><td>認機畫面的各個面、名字、每一邊是什麼、光帶走的順序</td></tr>
+</tbody>
+</table></div>
+<p><code>validateLayout()</code> 會拒絕這些佈局：像素不是整數、段超出畫布、輸出互相重疊、feed 指不到東西或貼出輸出之外，而且一次列出所有問題和位置。它也會提醒（收，但要看一眼）：沒送進任何一路的段、兩段重疊卻沒有熔接帶，以及公尺換算的每公尺像素橫向和縱向差超過 2%，在 LED 牆上這幾乎都是某個數字抄錯了。上牆之前先跑：</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">node</span> tools/check-align-layout.mjs packages/align/layouts/room-corner.json</code></pre></div>
+<p>它會印出一樣的內容，再加上每一塊落在哪裡、疊投和熔接帶、遮罩，以及還在推測中的參數和要問的問題。給這個套件前身寫的 <code>"contract": "art-align/v1"</code> 檔案，不用改就讀得進來。</p>
+<h2 id="align-one-layout-three-outputs">一份佈局，三件輸出<a class="anchor" href="#align-one-layout-three-outputs" aria-label="這一節的連結">#</a></h2>
+<p><code>computeMapping(layout)</code> 把佈局變成一張表，一條 feed 一塊：<code>src</code> 在作品畫布上，<code>dst</code> 在桌面上。有三件事只讀這張表：</p>
+<ol>
+<li><strong>校正圖樣。</strong> <code>drawPattern(ctx, mapping, pattern)</code> 會畫 <code>tiles</code>（每段一組深淺棋盤，有 A1、B8 這樣的格名、段名、尺寸和公尺、對角線、中心十字和圓）、<code>grid</code>（每 100 作品 px 一條線，每 500 一條粗線並標上作品的絕對座標）、<code>edges</code>、
+<code>crosshair</code>（變成橢圓就是比例錯了），以及 <code>bars</code>（<code>smpte</code>、<code>steps</code>，還有跨整張畫布的 <code>ramp</code>，兩段亮度不同時會看到斷層）。每一塊都先裁到它在桌面上的位置，再用作品像素畫：走的是作品本身的路。</li>
+<li><strong>廠商對位圖。</strong> <code>drawChart(ctx, mapping, outputId)</code> 為硬體或分割器廠商畫每路輸出一張 1:1 的圖：有座標的格線、分割器的切線和每一格的範圍、每一塊的尺寸與第一個和最後一個像素、遮罩、作品的上緣在哪一邊，頁頭寫「pixel to pixel，不縮放」（有縮放的塊時改成警告）。<code>vendorPlacements()</code> 把廠商自己的圖，照佈局說的位置疊到輸出上。</li>
+<li><strong>輸出本身。</strong> <code>blitPlan()</code> 和 <code>createBlitter(THREE, renderer)</code> 把作品的 render target 一塊一塊貼到桌面上，1:1 或縮放。
+<code>createWarpRenderer(THREE)</code> 透過校正檔來貼，也轉得了 feed。</li>
+</ol>
+<p>為什麼這是保證而不是期望：圖樣不是一張「牆應該長這樣」的圖，它就是透過作品送出去的那些塊畫出來的，也走同一條 warp
+（對位模式把圖樣畫在作品畫布上，用 <code>drawSource()</code>，再交給跟作品同一個 renderer）。逐格圖樣在牆上對了，作品就對。廠商自己的圖跟逐格圖樣對不上時，錯的是佈局，不是牆：改那份檔案，圖樣、對位圖和作品會一起跟著動。</p>
+<h2 id="align-the-calibration">校正檔<a class="anchor" href="#align-the-calibration" aria-label="這一節的連結">#</a></h2>
+<p>校正檔（<code>open-audiovisual/align-calibration@1</code>）為每一塊存一區：四個 <code>corners</code> 在桌面上的位置（段的左上、右上、右下、左下，單位 px），疊在這個透視之上、每邊 2 到 9 個點的 <code>mesh</code>（彎曲或不平的表面），每一邊的 <code>feather</code>（佔這區的比例，給兩台投影機的重疊處），一個 <code>gamma</code>、一個 <code>gain</code>，以及黑色的 <code>masks</code>。沒校正過的區跟佈局的映射一模一樣。作品佈局的每一種擺法，在同一個檔案裡各存各的區，寫成 <code>art-align-cal/v1</code> 的檔案也不用改就讀得進來。
+<code>normalizeCalibration(file, mapping)</code> 會為一份映射把任何檔案補完整：讀不懂的部分就用預設值。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { computeMapping, normalizeCalibration, createWarpRenderer } <span class="tk">from</span> <span class="ts">'@openav/align'</span>;
+
+<span class="tk">const</span> M = computeMapping(layout);
+<span class="tk">const</span> cal = normalizeCalibration(savedFileOrNull, M);
+<span class="tk">const</span> warp = createWarpRenderer(THREE);                   <span class="tc">// three.js is passed in, never imported</span>
+warp.build(M, cal.variants[M.id].zones);                  <span class="tc">// again whenever the calibration changes</span>
+warp.draw(renderer, artTexture, { x: 0, y: 0, w: M.desktop.w, h: M.desktop.h });</code></pre></div>
+<h2 id="align-calibrate-by-hand-on-the-venue-day">到場那天手動校正<a class="anchor" href="#align-calibrate-by-hand-on-the-venue-day" aria-label="這一節的連結">#</a></h2>
+<ol>
+<li><strong>出發之前。</strong> 寫好佈局，跑一次 <code>node tools/check-align-layout.mjs</code>，能回答的推測參數先回答，再把每路輸出的對位圖寄給負責的廠商（用 <code>drawChart</code> 畫成輸出原尺寸，存成 PNG：縮小過的就不算對位圖）。請 LED 處理器和分割器都不要縮放。</li>
+<li><strong>到場。</strong> 把電腦的顯示器排列設成佈局的桌面，大小和順序都一樣，作品全螢幕橫跨所有螢幕。先放認機畫面（<code>ident</code>）：每一面一個顏色和名字，標出是哪台投影機、哪路輸出的哪一格，每一邊是什麼，還有一條照順序沿著牆走的光帶。順序錯了或方向錯了，在這裡就會先看出來。</li>
+<li><strong>像素。</strong> 放 <code>tiles</code>。每段的格子要在廠商圖說的位置，格名讀得清楚，疊投的兩種顏色混得均勻。格名出現在錯的位置，問題在佈局或處理器的設定，不是校正。</li>
+<li><strong>四角。</strong> 進入對位模式，放 <code>grid</code> 或 <code>crosshair</code>。一區一區來（Tab 或點一下），把四個角拖到表面的四個角上，或用
+<code>[ ]</code> 選一個角、方向鍵移動：1 px，Shift 是 10，Alt 是 0.25。會讓四邊形翻面的角不會動。</li>
+<li><strong>網格。</strong> 不平的表面：按 G，再拖網格點（+ − 增減點數）。</li>
+<li><strong>熔接。</strong> 兩台投影機重疊的地方，放灰 50%，用羽化（E）調兩邊重疊的那一側，調到看不出帶子為止，gamma 2.2 是常見的起點。一區的亮度用 <code>,</code> 和 <code>.</code> 拉平。</li>
+<li><strong>遮罩。</strong> 按 K，N 新增一塊，方向鍵放位置，Shift 改大小。佈局有列出的門洞已經遮好了。</li>
+<li><strong>用作品檢查。</strong> 按 P 回到作品，再看色條的黑位（看得到 4%、看不到 2%）、全白看均勻度、全黑看不該有光的地方有沒有漏光。</li>
+<li><strong>存起來。</strong> 每次改動一秒後自動存檔（在瀏覽器裡，留最近 20 次當備份，在 app 裡則透過 bridge 寫成檔案）。X 匯出檔案跟演出放在一起，I 匯入，L 列出備份。</li>
+</ol>
+<div class="table-wrap"><table>
+<thead><tr><th>按鍵（對位模式）</th><th></th></tr></thead>
+<tbody>
+<tr><td>C、G、E、K</td><td>調四角、網格、羽化、遮罩</td></tr>
+<tr><td>Tab、1–9、點一下</td><td>選一區</td></tr>
+<tr><td><code>[</code> <code>]</code></td><td>換把手（四角、網格點、羽化的邊、遮罩）</td></tr>
+<tr><td>方向鍵</td><td>移 1 px，Shift ×10，Alt ×0.25。遮罩：Shift 改大小</td></tr>
+<tr><td>拖、Shift＋拖</td><td>一個把手、整區</td></tr>
+<tr><td>+ − · Q · N · , .</td><td>網格密度 · 整區轉 90° · 新增遮罩 · 亮度</td></tr>
+<tr><td>P、Shift+P · V</td><td>下一個畫面 · 下一種擺法</td></tr>
+<tr><td>O · J · Backspace</td><td>隱藏外框 · 面板換角落 · 把手回原位（Shift：整區）</td></tr>
+<tr><td>⌘S · ⌘Z · L · X · I · A</td><td>存檔 · 復原 · 備份 · 匯出 · 匯入 · 離開</td></tr>
+</tbody>
+</table></div>
+<p>面板說英文，<code>lang: 'zh'</code> 時說中文。牆上、對位圖上和認機畫面上畫的字也吃同一個選項。</p>
+<h2 id="align-the-gray-code-sequence">格雷碼序列<a class="anchor" href="#align-the-gray-code-sequence" aria-label="這一節的連結">#</a></h2>
+<p>格雷碼讓相機找出投影機的哪個像素落在哪裡。投影機的每一個軸，座標有幾個位元就要幾張黑白條紋圖，也就是
+<code>ceil(log2 size)</code>，每張後面接它的反相（這樣不管光怎麼打，每個相機像素都有自己的閾值），最前面再加一張全白和一張全黑：
+1920 × 1200 的投影機是 11 + 11 個位元，共 46 張。用格雷碼的原因是，落在條紋邊上的相機像素讀錯一個位元時，誤差只有一個投影機像素，不是半張畫面。<strong>通道分離</strong>：每台投影機只畫在自己的色通道 R、G 或 B，所以三台同時投，每張只要拍一張照片就同時量完三台。第四台要第二輪（<code>channelPlan</code>）。</p>
+<p><code>graySequence()</code> 列出所有圖，<code>drawGrayFrame()</code> 在桌面上畫其中一張。它們畫在輸出像素上，從不經過校正檔：要量的是投影機本身。範例 31 的 Gray code 按鈕可以用 <code>[</code> 和 <code>]</code> 一張一張看，旁邊寫著每張的名字。</p>
+<p>拍法：相機放腳架，擺在看得到每一面的位置，曝光、對焦、白平衡都手動鎖定，場地關燈，所有投影機打開。照序列的順序一張圖拍一張，照片用圖的名字命名（<code>frameLabel()</code>）。拍攝中間不要動到相機。</p>
+<h2 id="align-what-is-not-built-yet">還沒做的部分<a class="anchor" href="#align-what-is-not-built-yet" aria-label="這一節的連結">#</a></h2>
+<p>相機那一半。自動對位還需要這些，照順序：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>階段</th><th>做什麼</th><th>這裡</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>相機的內參與畸變、色通道之間的串擾</td><td>還沒做</td></tr>
+<tr><td>1</td><td>圖樣（通道分離的格雷碼），然後是取像、每個相機像素的閾值、相機與投影機的對應</td><td>圖樣和位元轉座標的數學（<code>decodeGrayBits</code>）做好了，其他還沒做</td></tr>
+<tr><td>2</td><td>從對應換到作品畫布：「對」是什麼意思，是站在這裡的觀眾看起來對，還是均勻地鋪在表面上（這是藝術上的選擇）</td><td>還沒做</td></tr>
+<tr><td>3</td><td>熔接：權重、量出來的亮度場、黑位</td><td>佈局的熔接帶（<code>blendWeight</code>）和手動羽化做好了，量測的亮度場和黑位還沒做</td></tr>
+<tr><td>4</td><td>收斂：用相機像素的殘差當停止條件</td><td>還沒做</td></tr>
+<tr><td>5</td><td>存檔與重讀：把量出來的結果寫進同一份校正檔</td><td>手動校正檔做好了，量測的還沒做</td></tr>
+</tbody>
+</table></div>
+<p>在那之前，上面那一天的手動校正就是對位本身。</p>
+<h2 id="align-output-tile-and-align">output、tile 與 align<a class="anchor" href="#align-output-tile-and-align" aria-label="這一節的連結">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th><code>@openav/output</code></th><th><code>@openav/tile</code></th><th><code>@openav/align</code></th></tr></thead>
+<tbody>
+<tr><td>用來</td><td>一個舞台透過輸出視窗送出去：投影機、第二個螢幕、OBS</td><td>平放在桌上的很多台螢幕，各畫一張畫布的一塊</td><td>由好幾路輸出組成的牆：投影機、LED 處理器、分割器、熔接帶</td></tr>
+<tr><td>量什麼</td><td>每個視窗四個角，手動</td><td>一張照片裡的標記角，用解的</td><td>每台投影機的四角、網格、羽化、遮罩，手動。給相機用的格雷碼圖樣（相機那一半還沒做）</td></tr>
+<tr><td>寫出</td><td><code>open-audiovisual/output@1</code></td><td>layout.json（<code>version: 1</code>）</td><td><code>open-audiovisual/align@1</code>（佈局）和 <code>open-audiovisual/align-calibration@1</code></td></tr>
+<tr><td>怎麼畫</td><td>在鏡像的畫布上套一個 CSS <code>matrix3d</code> homography</td><td>每台螢幕一個 2D 或 p5 的變換</td><td>圖樣和對位圖用 Canvas 2D，網格透過 three.js 用 WebGL</td></tr>
+</tbody>
+</table></div>
+<p>一塊剛好填滿它的輸出時，align 一區的四個角和 output 的一個 room 是同一個 homography。<code>zoneToRoom()</code> 和 <code>roomToZone()</code>
+把一個換成另一個，並說出另一邊帶不走的東西：區的網格、羽化、遮罩和亮度，room 的 overscan 和柔邊。
+<code>outputsFromAlign(layout)</code> 把佈局的輸出交給 <code>@openav/output</code>，一台投影機一個視窗，各顯示那台投影機在作品畫布上的部分，之後 <code>createOutputs(show, { align })</code> 除了自己的設定檔，也能匯入對位模式的校正檔：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { createOutputs } <span class="tk">from</span> <span class="ts">'@openav/output'</span>;
+<span class="tk">import</span> { outputsFromAlign } <span class="tk">from</span> <span class="ts">'@openav/align'</span>;
+
+<span class="tk">const</span> outputs = createOutputs(show, { align: outputsFromAlign(layout) });
+outputs.importLayout(calibration);                        <span class="tc">// the four corners of each projector</span></code></pre></div>
+<p>輸出視窗是一個 CSS homography：網格、羽化和遮罩需要 WebGL（<code>createWarpRenderer</code>）。在 <code>@openav/output</code> 的視窗裡畫這些是下一步，還沒做。範例 31 是用 three.js 在自己的畫布上畫的。</p>
+<p>有三個套件都匯出 <code>validateLayout</code>（surface 的檢查手機控制面板，tile 的檢查 layout.json，align 的檢查這裡的佈局），兩個匯出 <code>normalizeLayout</code>（surface、align）。一個頁面用到兩個時，換個名字匯入：
+<code>import { validateLayout as validateAlignLayout } from '@openav/align'</code>。</p>
+<h2 id="align-from-art-align">從 art-align 來<a class="anchor" href="#align-from-art-align" aria-label="這一節的連結">#</a></h2>
+<p><code>@openav/align</code> 就是對位模組 art-align 公開出來的版本。把 art-align 複製進自己資料夾的作品，可以把匯入改成
+<code>@openav/align</code>：有文件的名字，名字和參數都不變，佈局檔和校正檔不用改就讀得進來，存回去時用新的格式名稱。牆上的字和訊息是英文，<code>lang: 'zh'</code> 時是中文。<code>createCalStore()</code> 把檔案存在 <code>oav-align</code> 這個前綴底下，那裡還沒有存過東西時，它會讀 art-align 的 <code>art-align/*</code> 鍵，所以 art-align 存過的校正檔還找得到。這裡沒有的：接兩個舊場地實作的轉接程式（<code>toLegacyMap</code>、<code>layoutFromQuery</code> 這一類）、場地測試頁和它的部署工具。</p>
+<h2 id="align-what-was-checked">檢查過什麼<a class="anchor" href="#align-what-was-checked" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><code>tests/align.test.js</code>、<code>tests/align-warp.test.js</code>、<code>tests/align-bridge.test.js</code>（在 <code>npm test</code> 裡）：每份範例佈局都有效、沒有提醒，而且每個數字各加減一之後，不是被拒絕就是映射跟著變。art-align 格式、帶著額外鍵的檔案，映射跟新格式完全一樣。圖樣一塊一塊畫，格名，熔接帶上權重加起來是 1。1920 × 1200 的每一個座標都能從格雷碼圖解回來。warp 的四角、網格和羽化，兩種格式的校正檔。用假的 three.js 測 createWarpRenderer 和 createBlitter。用記憶體裡的 storage 測存放，包括
+art-align 的鍵。對位圖、認機畫面。align 的一區對照 <code>@openav/output</code> 自己的 <code>pinnedBox()</code>，每種旋轉和翻轉都測。還有套件、測試、這一章和範例裡都沒有任何客戶、場地或廠商的名字。</li>
+<li>範例 31 在無頭 Chromium 151（Playwright 1.62）上，一台電腦，<code>node serve.js</code>，沒有授予任何權限，three.js 0.170.0 從 jsDelivr
+載入（<code>packages/align/test/align-smoke.cjs</code>）：每份範例佈局載入時都沒有 console 錯誤，認機畫面和對位圖都畫得出來，每塊一片
+warp 網格。畫面清單一換，warp 之後的畫布就跟著變。在對位模式用滑鼠拖一個角，那一區的角移動的距離跟拖的一樣，畫出來的畫面也變了。重新整理之後，角還在原來放的位置。導覽設成中文時，對位面板是中文。格雷碼圖樣在輸出像素上一張一張走（第 5／46 張，
+X 位元 2／11）。那裡的 WebGL 是瀏覽器的軟體算繪。</li>
+</ul>
+<p>沒檢查過：真的投影機、真的 LED 處理器或分割器、由好幾個實體輸出組成的桌面、場地電腦顯示卡上的 WebGL warp、
+<code>createCalStore</code> 的 Electron bridge，以及任何相機。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/tile/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">多螢幕拼接：一張畫布</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">MIDI 控制器與嵌入</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=cedb93fa"></script>
+<!--/email_off-->
+</body>
+</html>

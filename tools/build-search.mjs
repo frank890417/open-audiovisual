@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// build-search — the site search index: assets/search/index.json.
+// build-search — the site search index: assets/search/index.json and its body text, assets/search/text.json.
 //
 //   node tools/build-search.mjs          # write the index (and sitemap.xml)
 //   node tools/build-search.mjs --check  # exit 1 if the committed index is stale
@@ -19,7 +19,10 @@
 // Each record exists once per language (en, zh); the search dialog shows the page's language first and the other language when only
 // that one matches, so "麥克風" finds micLevel from the English site and "microphone" finds it from the Chinese one.
 // No dependency, no stemming, no word list: matching is substring (assets/search/core.js), which is what a Chinese word needs.
-// The dialog (assets/search/search.js) fetches this file the first time it opens. --check ignores nothing: it has no stamps.
+// The dialog (assets/search/search.js) fetches index.json the first time it opens: every record's name, aliases, keywords,
+// kind and summary, enough to answer at once. The longest field, the body text a record is also found by (the lowest match,
+// and the snippet), is four fifths of the bytes, so it lives in text.json, one string per record in the same order, which the
+// dialog fetches right after and folds in when it lands. --check ignores nothing: it has no stamps.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -42,6 +45,7 @@ import { isMain } from './site/is-main.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => { try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return null; } };
 export const INDEX = 'assets/search/index.json';
+export const TEXT = 'assets/search/text.json';
 const LANGS = ['en', 'zh'];
 const CAP = { ref: 1500, doc: 2600, ex: 900, ctl: 300, dev: 300, page: 400 };
 
@@ -163,13 +167,19 @@ export function buildIndex() {
   return { schema: 1, count: records.length, ui: UI, records };
 }
 
-/** One record per line, so a change to one entry is a change to one line in git. */
+/** index.json: one record per line (a change to one entry is a change to one line in git), without its body text. */
 export function indexText(idx) {
-  return `{"schema":${idx.schema},"count":${idx.count},"ui":${JSON.stringify(idx.ui)},"records":[\n${idx.records.map((r) => JSON.stringify(r)).join(',\n')}\n]}\n`;
+  return `{"schema":${idx.schema},"count":${idx.count},"text":"${TEXT}","ui":${JSON.stringify(idx.ui)},"records":[\n${idx.records.map(({ x, ...r }) => JSON.stringify(r)).join(',\n')}\n]}\n`;
+}
+
+/** text.json: every record's body text, one per line, in index.json's order. */
+export function textText(idx) {
+  return `{"schema":${idx.schema},"count":${idx.count},"x":[\n${idx.records.map((r) => JSON.stringify(r.x || '')).join(',\n')}\n]}\n`;
 }
 
 if (isMain(import.meta.url)) {
-  const files = { [INDEX]: indexText(buildIndex()), 'sitemap.xml': sitemapXml() };
+  const built = buildIndex();
+  const files = { [INDEX]: indexText(built), [TEXT]: textText(built), 'sitemap.xml': sitemapXml() };
   if (process.argv.includes('--check')) {
     const stale = Object.entries(files).filter(([rel, out]) => read(rel) === null || (rel === 'sitemap.xml' ? read(rel).replace(/<lastmod>[^<]*<\/lastmod>\s*/g, '') !== out.replace(/<lastmod>[^<]*<\/lastmod>\s*/g, '') : read(rel) !== out)).map(([rel]) => rel);
     if (stale.length) { console.error('stale (run node tools/build-search.mjs):\n  ' + stale.join('\n  ')); process.exit(1); }

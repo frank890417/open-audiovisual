@@ -8,7 +8,7 @@
 > p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.5)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 33 packages, 30 examples, 28 MIDI controller profiles (22 devices, 6 generic layouts).
+> Today: 34 packages, 31 examples, 28 MIDI controller profiles (22 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -176,7 +176,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-Thirty works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
+Thirty-one works, all playable in the browser. In any example: Space plays the timeline (at a hold: releases it), ←/→ jump scenes, T is performance mode, F is fullscreen.
 
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
 
@@ -201,10 +201,11 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 [A hexagonal ring of orange and yellow dots above a timeline with five curve lanes, scene blocks and a playhead.](https://openaudiovisual.com/examples/14-timeline/) 14 · Timeline Automation you can see: five lanes of keyframe curves drive a ring of light, scenes cut it, cues fire one-shot flashes. [play](https://openaudiovisual.com/examples/14-timeline/) · [source](examples/14-timeline/) | [A yellow and orange flower of long petals below a 16-step drum grid with kick, snare, hat and clap rows.](https://openaudiovisual.com/examples/18-p5-drums/) 18 · p5 drums and bars startDrums('breakbeat', 110) puts a 16-step drum machine on the page; kickDetected() and cueFired() turn its hits and its bars into the picture. [play](https://openaudiovisual.com/examples/18-p5-drums/) · [source](examples/18-p5-drums/) | [A blue circle with a yellow hand sweeping round it, below a drum card that shows the line bd*4, [~ sd]*2, hh*8 and its 16 steps.](https://openaudiovisual.com/examples/19-p5-rhythm/) 19 · p5 one line of rhythm startDrums("bd*4, [~ sd]*2, hh*8") writes the drums as one line of rhythm; drumPhase and beatPhase turn a hand once a bar and swell a circle on every beat. [play](https://openaudiovisual.com/examples/19-p5-rhythm/) · [source](examples/19-p5-rhythm/)
 [One rhythm drawn three ways on the canvas: a ring of coloured steps with a white hand, a spiral of the last four bars, and a 16-step grid with a playhead, under the drum card.](https://openaudiovisual.com/examples/20-p5-rhythm-visual/) 20 · p5 rhythm you can see drawRhythm() draws the rhythm on the canvas as a grid, a circle or a spiral, so a recording has it; the cells and the line on the card edit each other. [play](https://openaudiovisual.com/examples/20-p5-rhythm-visual/) · [source](examples/20-p5-rhythm-visual/) | [A pale moon in a blue and teal dusk sky, with the word dusk in the corner.](https://openaudiovisual.com/examples/13-score-director/) 13 · Score & director A day of sky as segment lengths: two cuts, a hold, cues, a segment that can crash. [play](https://openaudiovisual.com/examples/13-score-director/) · [source](examples/13-score-director/)
 
-**⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera, a rig of stage lights over DMX, the picture on a projector, its corners pinned to the wall, and one canvas across the screens lying on a table.
+**⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera, a rig of stage lights over DMX, the picture on a projector, its corners pinned to the wall, one canvas across the screens lying on a table, and a wall of several outputs aligned by hand from one layout file.
 
 [A pink dot in the middle of glowing pink and yellow rings spreading out, below the drum card playing four on the floor.](https://openaudiovisual.com/examples/21-p5-record/) 21 · p5 record a video startRecording() saves the canvas and the sketch's own sound as one video, MP4 where the browser can write it; ⏺ and 📷 in the 🎹 panel need no code. [play](https://openaudiovisual.com/examples/21-p5-record/) · [source](examples/21-p5-record/) | [Overlapping pink, yellow and green rings spreading over a dark field, each one a struck note.](https://openaudiovisual.com/examples/10-record/) 10 · Record The work plus your hands plus its own sound, in one synced video. MIDI takes too. [play](https://openaudiovisual.com/examples/10-record/) · [source](examples/10-record/) | [Overlapping pink, purple and yellow rings beside an on-screen MiniLab 3 with the last note written under it.](https://openaudiovisual.com/examples/11-controller-video/) 11 · Controller video The performance video without a camera: the controller you play, drawn live. [play](https://openaudiovisual.com/examples/11-controller-video/) · [source](examples/11-controller-video/)
 [Coloured beams fall from a truss onto a dark floor, two thin white beams cross them, and a DMX monitor below shows ten fixture swatches and a grid of channel values.](https://openaudiovisual.com/examples/28-dmx-lights/) 28 · DMX lights One world draws a stage and drives a lighting rig from the same params; a monitor shows what the lights get, no hardware needed. [play](https://openaudiovisual.com/examples/28-dmx-lights/) · [source](examples/28-dmx-lights/) | [Rounded rectangles of blue, violet and orange light grow from a glowing centre to a thin white frame at the edge of a dark stage.](https://openaudiovisual.com/examples/29-projector-output/) 29 · Projector output An output window for a projector or a second screen, its four corners pinned to the wall, and a clean address for OBS and TouchDesigner. [play](https://openaudiovisual.com/examples/29-projector-output/) · [source](examples/29-projector-output/) | [Three screens of different sizes lying at angles on a dark table; one glowing dot and its sparks cross from one screen to the next, and faint grid lines run straight across the gaps.](https://openaudiovisual.com/examples/30-tile-dot/) 30 · Tile dot Several screens lying on a table become one canvas: one photo places them, one clock and one seed keep them together. [play](https://openaudiovisual.com/examples/30-tile-dot/) · [source](examples/30-tile-dot/)
+[Two projector outputs side by side on black, each warped slightly off square, coloured light bands and circles crossing the seam between them, yellow corner handles and a dark align panel over the left one.](https://openaudiovisual.com/examples/31-align/) 31 · Align A wall of several outputs aligned by hand from one layout file: the patterns, the vendor chart and the work take the same path, through one calibration. [play](https://openaudiovisual.com/examples/31-align/) · [source](examples/31-align/)
 
 All examples run without MIDI hardware: every stage ships an on-screen piano
 (`@openav/keys`: QWERTY capture, Z/X octave) and a **simulated performer** that
@@ -343,7 +344,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-Thirty-three plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+Thirty-four plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 | layer | package | role |
@@ -364,6 +365,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 |  | [`@openav/out`](packages/out/) | Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values |
 |  | [`@openav/dmx`](packages/dmx/) | DMX lighting: fixture profiles, a patch, scenes, cues, chases and effects rendered as a function of time, a 3 Hz flash cap per fixture, and Art-Net, sACN and Enttec USB bytes |
 |  | [`@openav/output`](packages/output/) | The stage on a projector or a second screen: an output window, four-corner correction with a test pattern, crops for projectors side by side, and a clean address for OBS and TouchDesigner |
+|  | [`@openav/align`](packages/align/) | A wall of several outputs from one layout file: test patterns, a vendor chart and the output mapping that cannot disagree, corners, mesh and feather by hand, Gray-code frames |
 |  | [`@openav/record`](packages/record/) | Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed |
 |  | [`@openav/fab`](packages/fab/) | Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files |
 |  | [`@openav/hw`](packages/hw/) | What goes inside: parts with their datasheet numbers, a wiring check (logic levels, boot pins, I²C addresses, current, battery hours), a wiring diagram and a parts list |
@@ -430,7 +432,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-33 packages · 30 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1441 tests
+34 packages · 31 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1495 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -474,7 +476,7 @@ Four layers + two spines — the contracts are in [docs/architecture.md](docs/ar
 - **Input** (`packages/midi`, `audio`, `chord`, `pose`, `leap`) → publishes named **signals**
 - **Mapping** (`packages/mapping`) → routes signals to **params** (curves, smoothing, live learn)
 - **World** (`packages/stage`) → algorithmic system that reads params, renders anything
-- **Output** (`packages/osc`, MIDI out, `packages/output`: projector window, corner-pin, `?output` for OBS / TouchDesigner; `packages/tile`: screens on a table as one canvas, placed by one photo) + **Timeline** + **Score & Director** (`packages/score`: a show as segment lengths) + **Console** + **Monitor**
+- **Output** (`packages/osc`, MIDI out, `packages/output`: projector window, corner-pin, `?output` for OBS / TouchDesigner; `packages/tile`: screens on a table as one canvas, placed by one photo; `packages/align`: a wall of several outputs from one layout file, test patterns, vendor chart, manual calibration, Gray-code frames) + **Timeline** + **Score & Director** (`packages/score`: a show as segment lengths) + **Console** + **Monitor**
 
 Full handbook (every chapter, verified against the code): https://openaudiovisual.com/docs/ —
 sources in `docs/`, one file for language models at `/llms-full.txt`.
@@ -609,7 +611,7 @@ It handles the part every show rebuilds from scratch: MIDI plumbing, turning
 inputs into parameters, a timeline with scenes, a director's console, a
 performance mode for the performer, and a backstage page for the stage manager.
 You write the *world*, the piece itself. The pitch, a live instrument and the
-thirty example works are on the [homepage](https://openaudiovisual.com/).
+thirty-one example works are on the [homepage](https://openaudiovisual.com/).
 
 ## Who it is for
 
@@ -3566,7 +3568,9 @@ Browser Source or TouchDesigner's Web Render TOP. The world never knows any of t
 This is one stage, rendered once and shown through output windows. Phones, tablets and laptops lying on a table, each
 drawing its own part of one canvas from where a photo says it lies, are [Several screens, one canvas](tile.md)
 (`@openav/tile`): its `homography()` takes any number of measured points, where `cornerPin()` here is the four corners of one
-window.
+window. A wall of several outputs aligned from one layout file, with a mesh, feathered edges and masks per projector, is
+[Projector and LED alignment](align.md) (`@openav/align`): the four-corner part of its calibration imports into these
+windows (`createOutputs(show, { align })`).
 
 ## The output window
 
@@ -3705,7 +3709,8 @@ const outputs = createOutputs(show, {
 Each output has its own corners, its own params and its own window (open each from its own click: a browser opens one window
 per gesture). `fit` says how a crop fills its window when the shapes differ: `contain` (default, black bars), `cover` (filled,
 cut) or `stretch`. Example 29 does this with `?pair`. Where the two pictures meet there is a hard seam: edge blending (two
-projectors overlapping with a matched soft ramp and brightness) is not part of this package.
+projectors overlapping with a matched soft ramp and brightness) is not part of this package: `@openav/align` feathers the
+overlap in WebGL ([Projector and LED alignment](align.md)).
 
 ## The clean address
 
@@ -3879,7 +3884,8 @@ frame from the same two things, one clock shared through the relay and one seed.
 
 This is not the projector chapter. [Projection and video out](output.md) is one stage, rendered once, shown through
 output windows on projectors and second screens. Here many devices each render their own part of one canvas, placed by a
-photo. The two can meet in one show, but neither needs the other.
+photo. The two can meet in one show, but neither needs the other. A wall of projectors or LED outputs aligned from one
+layout file, by hand, is a third thing: [Projector and LED alignment](align.md).
 
 ## Run it with three screens
 
@@ -4080,6 +4086,260 @@ On one machine, with no screens but browser contexts and no hardware at all:
 Never tried yet: phones and tablets on a real table, a real photo (reflections, light, the angle, a phone small in the
 frame), fullscreen and the wake lock on an iPhone or an Android phone, the clock over a real wifi, and a 12 MP photo's
 detection time on a phone. The README of the package lists what to look at when it is.
+
+---
+
+<!-- source: docs/align.md -->
+
+# Projector and LED alignment
+
+A wall made of several outputs, two projectors side by side with a blend band, an LED band folded into two 4K ports, a
+room corner on a splitter, is written once, as one JSON file: the layout. `@openav/align` (since 0.13.0) reads that file
+three ways: the test patterns, the vendor's alignment chart, and the real output mapping of the work. All three read the
+same data, so a pattern that is right on the wall means the work is right on the wall. On top of the layout goes a
+calibration made by hand on the venue day: four corners, a mesh, feathered edges, masks and brightness, for each
+projector. For the camera-in-the-loop alignment that will one day do this by itself, the package has the pattern
+generator, channel-separated Gray code. Nothing that reads a camera is built yet. Example
+[31, Align](https://openaudiovisual.com/examples/31-align/) runs all of it on one screen with no hardware.
+
+This is not the projector window and not the tiling. [Projection and video out](output.md) is one stage shown through
+output windows, four corners each. [Several screens, one canvas](tile.md) is many devices each drawing their own piece,
+placed by a photo. [Output, tile and align](#output-tile-and-align) says how the three differ and how align's
+calibration reaches an output window.
+
+## The layout
+
+The **art canvas** is the wall unrolled flat: a curved wall or a room's walls side by side become one rectangle, and the
+work draws at that size. A **segment** is a rectangle of the art canvas, one physical piece of the wall. An **output** is a
+rectangle of the **desktop**, the physical pixels a fullscreen browser covers (two 4K ports side by side are a desktop of
+7680 × 2160). A **feed** says which segment goes into which output, and where inside it. This is the room-corner example
+from `packages/align/layouts/`, two walls and the floor in front of them on one 4K output that a splitter cuts in four:
+
+```json
+{
+  "format": "open-audiovisual/align@1",
+  "id": "room-corner",
+  "title": "Two walls meeting in a corner and the floor in front of them, three projectors on one 4K output cut 2 × 2",
+  "art": { "w": 3200, "h": 1700 },
+  "segments": [
+    { "id": "WL", "x": 0,    "y": 0,   "w": 1600, "h": 900, "meters": { "w": 4, "h": 2.25 }, "label": "left wall",  "plan": 1 },
+    { "id": "WR", "x": 1600, "y": 0,   "w": 1600, "h": 900, "meters": { "w": 4, "h": 2.25 }, "label": "right wall", "plan": 2,
+      "masks": [{ "x": 1100, "y": 300, "w": 300, "h": 600, "label": "door" }] },
+    { "id": "FL", "x": 0,    "y": 900, "w": 1600, "h": 800, "meters": { "w": 4, "h": 2 },    "label": "floor",      "plan": 3 }
+  ],
+  "outputs": [
+    { "id": "O", "x": 0, "y": 0, "w": 3840, "h": 2160, "label": "4K output", "cuts": { "cols": 2, "rows": 2 } }
+  ],
+  "feeds": [
+    { "segment": "WL", "output": "O", "x": 160,  "y": 90 },
+    { "segment": "WR", "output": "O", "x": 2080, "y": 90 },
+    { "segment": "FL", "output": "O", "x": 160,  "y": 1170, "rotate": 180 }
+  ],
+  "params": {
+    "floor_turn": {
+      "default": 180, "options": [0, 180], "status": "assumed",
+      "note": "Which way the floor projector faces: 180 when it hangs over the open side of the room looking back at the corner.",
+      "ask": "The rigger: does the floor projector face the corner or the open side?"
+    }
+  }
+}
+```
+
+| key | |
+|---|---|
+| `art` | `{ w, h }` in whole pixels; `meters` only when somebody measured (a number nobody measured does not go on the wall) |
+| `segments[]` | `{ id, x, y, w, h }`; optional `meters`, `color` (`'#hex'` or a dark and a light one), `cells.size`, `blend { l, r, t, b, curve, gamma }` (a blend band, art px), `masks` (a door, an opening, in the segment's own px), `label`, `plan` (the number on a floor plan) |
+| `outputs[]` | `{ id, x, y, w, h }` on the desktop, never overlapping; `cuts { cols, rows }` when a splitter cuts it |
+| `feeds[]` | `{ segment, output, x, y }`; `w`, `h` when the output scales (an LED processor); `rotate` 0, 90, 180, 270 clockwise; one segment into two outputs is a stack (two projectors on one picture), each feed with its own `name` and `color`; `visible` when the room sees only part of it |
+| `vendor[]` | the vendor's own alignment images, `{ file, output }` or `{ file, rect }`, any number |
+| `params` | the venue questions the layout was made from, each with a `default` and a `note`; `status: "assumed"` needs an `ask`: whom to ask, and what |
+| `ident` | the identification screen's surfaces, their names, what is on each side, the order the band of light runs |
+
+`validateLayout()` refuses a layout whose pixels are not whole numbers, whose segment leaves the canvas, whose outputs
+overlap, whose feed names nothing or lands outside its output, with every problem at once and where it is. It warns
+(accepts, but look) about a segment fed nowhere, two segments that overlap without a blend band, and metres whose pixels
+per metre across and down differ by more than 2 %, which on an LED wall is nearly always one number copied wrong. Before
+anything goes on the wall:
+
+```bash
+node tools/check-align-layout.mjs packages/align/layouts/room-corner.json
+```
+
+It prints the same, then where every tile lands, the stacks and blend bands, the masks, and the params still assumed with
+the question to ask. A file written as `"contract": "art-align/v1"`, for the module this package grew from, loads as it is.
+
+## One layout, three outputs
+
+`computeMapping(layout)` turns the layout into one table of tiles, one per feed: `src` on the art canvas, `dst` on the
+desktop. Three things read only that table:
+
+1. **The test patterns.** `drawPattern(ctx, mapping, pattern)` draws `tiles` (a two-tone checkerboard per segment with
+   cell names A1, B8 …, its name, size and metres, diagonals, a centre cross and circle), `grid` (a line every 100 art px,
+   a heavy one every 500 with the absolute art coordinate), `edges`, `crosshair` (an ellipse means the proportions are
+   wrong) and `bars` (`smpte`, `steps`, and a `ramp` across the whole canvas that shows a step between two segments of
+   different brightness). Each tile is clipped to its place on the desktop and drawn in art pixels: the work's own path.
+2. **The vendor's chart.** `drawChart(ctx, mapping, outputId)` draws one 1:1 image per output for the hardware or
+   splitter vendor: a grid with coordinates, the splitter's cuts and the range of each, every block's size and its first
+   and last pixel, its masks, which side is the art's top, and "pixel to pixel, no scaling" in the header (or a warning
+   when a block scales). `vendorPlacements()` lays the vendor's own images over the outputs where the layout says they are.
+3. **The output.** `blitPlan()` and `createBlitter(THREE, renderer)` copy the work's render target onto the desktop
+   tile by tile, 1:1 or scaled; `createWarpRenderer(THREE)` does it through a calibration and can turn a feed.
+
+Why that is a guarantee and not a hope: a pattern is not a picture of what the wall should look like, it is drawn through
+the very tiles the work goes out through, and through the same warp (the align mode paints its patterns on the art
+canvas, `drawSource()`, and hands them to the same renderer as the work). If the cells pattern sits right on the wall, the
+work does. If the vendor's own image and the cells pattern disagree, the layout is wrong, not the wall: fix the file, and
+the patterns, the chart and the work move together.
+
+## The calibration
+
+A calibration (`open-audiovisual/align-calibration@1`) holds, for each tile, a zone: its four `corners` on the desktop
+(the segment's top-left, top-right, bottom-right, bottom-left, in px), a `mesh` of 2 to 9 points a side that shifts the
+picture on top of that perspective (a curved or uneven surface), a `feather` on each edge (a share of the zone, for the
+overlap of two projectors), a `gamma`, a `gain` and black `masks`. An uncalibrated zone is exactly the layout's mapping.
+Each variant of a work's layout keeps its own zones in the same file, and a file written as `art-align-cal/v1` loads as it
+is. `normalizeCalibration(file, mapping)` makes any file whole for a mapping: what cannot be read takes the default.
+
+```js
+import { computeMapping, normalizeCalibration, createWarpRenderer } from '@openav/align';
+
+const M = computeMapping(layout);
+const cal = normalizeCalibration(savedFileOrNull, M);
+const warp = createWarpRenderer(THREE);                   // three.js is passed in, never imported
+warp.build(M, cal.variants[M.id].zones);                  // again whenever the calibration changes
+warp.draw(renderer, artTexture, { x: 0, y: 0, w: M.desktop.w, h: M.desktop.h });
+```
+
+## Calibrate by hand on the venue day
+
+1. **Before you go.** Write the layout, run `node tools/check-align-layout.mjs` on it, answer the assumed params you can,
+   and send each vendor the chart of their output (`drawChart` at the output's full size, saved as a PNG: a scaled copy is
+   not a chart). Ask the LED processor and the splitter to scale nothing.
+2. **Arrive.** Set the machine's displays to the layout's desktop, the same size and order, and open the work fullscreen
+   across them. Show the identification screen (`ident`): every surface in its own colour with its name, which projector
+   and which part of which output feeds it, what is on each side, and a band of light that runs along the walls in order.
+   A wrong order or a wrong side shows here, before anything else.
+3. **Pixels.** Show `tiles`. Each segment's cells must be where the vendor's chart says, the cell names readable, a stack's
+   two colours mixing evenly. A cell name in the wrong place is a layout or a processor setting, not a calibration.
+4. **Corners.** Enter the align mode and show `grid` or `crosshair`. For each zone (Tab, or a click), drag its four
+   corners onto the surface's corners, or pick one with `[ ]` and move it with the arrows: 1 px, Shift 10, Alt 0.25. A
+   corner that would fold the quad does not move.
+5. **Mesh.** A surface that is not flat: G, then drag the mesh points (+ − for more or fewer).
+6. **Blend.** Where two projectors overlap, show grey 50 % and feather (E) the overlapping side of each until the band
+   is gone; gamma 2.2 is the usual start. Even out the brightness of a zone with `,` and `.`.
+7. **Masks.** K, then N adds one, the arrows place it and Shift resizes it. A door the layout lists is already masked.
+8. **Check with the work.** P back to the work, then the bars for black level (see 4 % and not 2 %), white for evenness,
+   black for light leaking where nothing should be.
+9. **Keep it.** Every change is saved a second later (in the browser, with the last 20 saves as backups; in an app, files
+   through a bridge). X exports the file to keep with the show, I imports one, L lists the backups.
+
+| key (align mode) | |
+|---|---|
+| C, G, E, K | edit corners, mesh, feather, masks |
+| Tab, 1–9, click | pick a zone |
+| `[` `]` | next handle (corners, mesh points, feather sides, masks) |
+| arrows | move 1 px; Shift ×10, Alt ×0.25; masks: Shift resizes |
+| drag, Shift+drag | a handle; the whole zone |
+| + − · Q · N · , . | mesh density · turn the zone 90° · add a mask · brightness |
+| P, Shift+P · V | the next picture · the next layout variant |
+| O · J · Backspace | hide the frames · move the panel · the handle home (Shift: the whole zone) |
+| ⌘S · ⌘Z · L · X · I · A | save · undo · backups · export · import · leave |
+
+The panel speaks English, or Chinese with `lang: 'zh'`. The words drawn on the wall, on the chart and on the
+identification screen take the same option.
+
+## The Gray-code sequence
+
+Gray code is how a camera can find which projector pixel lands where. Each axis of a projector needs one black-and-white
+stripe frame per bit of its coordinates, `ceil(log2 size)`, each followed by its inverse (so every camera pixel gets its
+own threshold, whatever the light), after one white and one black frame: a 1920 × 1200 projector is 11 + 11 bits, 46
+frames. Gray code, because a camera pixel on a stripe's edge that reads one bit wrong is then one projector pixel off,
+not half the picture. **Channel separation**: each projector draws only in its own colour channel, R, G or B, so three
+projectors run at once and one photo of each frame measures all three. A fourth projector takes a second pass
+(`channelPlan`).
+
+`graySequence()` lists the frames, `drawGrayFrame()` draws one over the desktop. They are drawn in output pixels, never
+through the calibration: what is measured is the projector itself. Example 31's Gray code button steps through them, `[`
+and `]`, with each frame's name.
+
+To shoot them: the camera on a tripod where it sees every surface, exposure, focus and white balance fixed by hand, the
+room dark, every projector on; one photo per frame, in the sequence's order, named after the frame (`frameLabel()`). Do
+not move the camera between frames.
+
+## What is not built yet
+
+The camera half. In order, what an automatic alignment would still need:
+
+| stage | what | here |
+|---|---|---|
+| 0 | the camera's intrinsics and distortion, the crosstalk between colour channels | not built |
+| 1 | the frames (channel-separated Gray code); then capture, a threshold per camera pixel, the camera ↔ projector correspondence | the frames and the bits → coordinate arithmetic (`decodeGrayBits`) are built; the rest is not |
+| 2 | from the correspondence into the art canvas: what "right" means, right for a viewer standing here, or evenly spread on the surface (an artistic choice) | not built |
+| 3 | blending: weights, a measured brightness field, black level | the layout's blend bands (`blendWeight`) and the hand-set feather are built; a measured field and black level are not |
+| 4 | convergence: the residual in camera pixels as the stop condition | not built |
+| 5 | save and reload: a measured result written into the same calibration file | the manual calibration file is built; a measured one is not |
+
+Until then, the venue day above is the alignment.
+
+## Output, tile and align
+
+| | `@openav/output` | `@openav/tile` | `@openav/align` |
+|---|---|---|---|
+| for | one stage shown through output windows: a projector, a second screen, OBS | many screens lying on a table, each drawing its piece of one canvas | a wall of several outputs: projectors, LED processors, splitters, blend bands |
+| measures | four corners per window, by hand | marker corners in one photo, solved | corners, mesh, feather, masks per projector, by hand; Gray-code frames for a camera (the camera half is not built) |
+| writes | `open-audiovisual/output@1` | layout.json (`version: 1`) | `open-audiovisual/align@1` (the layout) and `open-audiovisual/align-calibration@1` |
+| draws with | a CSS `matrix3d` homography over the mirrored canvas | a 2D or p5 transform on each screen | Canvas 2D for patterns and charts; WebGL meshes through three.js |
+
+When one tile fills its output, an align zone's four corners and an output room are the same homography.
+`zoneToRoom()` and `roomToZone()` convert one into the other, and say what the other side cannot carry: a zone's mesh,
+feather, masks and gain, a room's overscan and soft edge. `outputsFromAlign(layout)` gives `@openav/output` the layout's
+outputs, one window per projector showing that projector's part of the art canvas, and `createOutputs(show, { align })`
+then imports the align mode's calibration file as well as its own:
+
+```js
+import { createOutputs } from '@openav/output';
+import { outputsFromAlign } from '@openav/align';
+
+const outputs = createOutputs(show, { align: outputsFromAlign(layout) });
+outputs.importLayout(calibration);                        // the four corners of each projector
+```
+
+An output window is a CSS homography: a mesh, a feather or a mask needs WebGL (`createWarpRenderer`). Drawing those in
+`@openav/output`'s window is the next step, not done; example 31 draws them with three.js on its own canvas.
+
+Three packages export a `validateLayout` (surface's checks a phone control surface, tile's a layout.json, align's this
+layout) and two a `normalizeLayout` (surface, align). A page that uses two imports one under another name:
+`import { validateLayout as validateAlignLayout } from '@openav/align'`.
+
+## From art-align
+
+`@openav/align` is the alignment module art-align, made public. A work that copies art-align into its own folder can
+switch its import to `@openav/align`: the documented names keep their names and arguments, its layout and calibration
+files load as they are, and they are written back with the new format names. The words on the wall and the messages are
+English, Chinese with `lang: 'zh'`. `createCalStore()` keeps its files under the prefix `oav-align`; while nothing is
+saved there it reads art-align's `art-align/*` keys, so a calibration art-align saved is still found. Not here: the
+adapters to two earlier venue implementations (`toLegacyMap`, `layoutFromQuery` and their kin), the venue test page and
+its deploy tools.
+
+## What was checked
+
+- `tests/align.test.js`, `tests/align-warp.test.js` and `tests/align-bridge.test.js` (in `npm test`): every example
+  layout valid with no warnings, and every number of each changed by one either refused or changing the mapping; a file
+  in the art-align format with its extra keys mapping exactly as the new one; the patterns tile by tile, the cells, the
+  blend weights adding up to 1 across a band; every coordinate of 1920 × 1200 decoded back from the Gray-code frames; the
+  warp's corners, mesh and feather; the calibration file both formats; createWarpRenderer and createBlitter with a fake
+  three.js; the store with a storage in memory, art-align's keys included; the chart, the identification screen; an
+  align zone against `@openav/output`'s own `pinnedBox()` for every turn and flip; and that no client, venue or vendor
+  name is in the package, its tests, this chapter or the example.
+- Example 31 in headless Chromium 151 (Playwright 1.62), one machine, `node serve.js`, no permissions granted, three.js
+  0.170.0 from jsDelivr (`packages/align/test/align-smoke.cjs`): every example layout loads with no console error, its
+  identification screen and its charts drawn, one warp mesh per tile; the picture list changes the warped canvas; a corner
+  dragged with the mouse in the align mode moves the zone's corner by the distance dragged and changes the rendered
+  picture; after a reload the corner is where it was left; the panel reads in Chinese when the guide is set to 中文; the
+  Gray-code frames step in output pixels (frame 5 of 46, X bit 2 of 11). The WebGL there is the browser's software renderer.
+
+Not checked: a real projector, a real LED processor or splitter, a desktop of several physical outputs, the WebGL warp on
+a venue machine's graphics card, the Electron bridge of `createCalStore`, and any camera.
 
 ---
 
@@ -5634,7 +5894,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Thirty-three packages live in `packages/<name>/`. Each is plain ES modules with no
+Thirty-four packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -5644,7 +5904,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` · `chop` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` · `out` · `dmx` · `output` · `record` · `fab` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `out` · `dmx` · `output` · `align` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | phones | `relay` · `surface` · `remote` · `tile` |
 | glue | `core` · `show` · `devices` · `mcp` |
@@ -5976,17 +6236,41 @@ the output window); four-corner correction as one CSS `matrix3d` homography, wit
 edge, edited with four handles and a test pattern and saved per output name; crops of one canvas for projectors side by side
 (no edge blending); `output/<name>/blackout` and `output/<name>/brightness` as params. Any `createShow()` page at `?output` is a
 clean output (`&follow=oav-output` to follow, `&play` to start). The chapter is [Projection and video out](output.md). Several
-devices each drawing their own part of one canvas, placed by a photo, is [`@openav/tile`](#openav-tile).
+devices each drawing their own part of one canvas, placed by a photo, is [`@openav/tile`](#openav-tile); a wall of several
+outputs aligned from one layout file is [`@openav/align`](#openav-align), whose calibration `createOutputs(show, { align })` imports.
 
 | export | signature |
 |---|---|
-| `createOutputs` | `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage })` → `{ names, open(name, { mode }), close(name), get(name), edit(name, on), pattern(name, on), lead({ channel, via }), url(name, o), exportLayout(), importLayout(doc), keys(name) }`, also on `show.outputs`; the params at load, the stage boxed to `aspect`, an L4 · Output panel |
+| `createOutputs` | `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage, align = null })` → `{ names, open(name, { mode }), close(name), get(name), edit(name, on), pattern(name, on), lead({ channel, via }), url(name, o), exportLayout(), importLayout(doc), keys(name) }`, also on `show.outputs`; the params at load, the stage boxed to `aspect`, an L4 · Output panel |
 | `openOutput` | `openOutput(source, { name = 'main', crop, fit = 'contain', mode = 'mirror', params, timeline, features, aspect, via, channel = 'oav-output', storage })` → `{ name, mode, window, closed, edit(on), pattern(on), room, set(partial), reset(), close() }`; from a click |
 | corner-pin | `cornerPin(corners, width = 1, height = 1)` → 9 numbers (throws on a quad that is not convex) · `toMatrix3d(H)` → `'matrix3d(…)'` |
 | crop | `cropBox({ crop, source, box, fit = 'contain' })` → `{ clip, source }` |
 | layout file | `OUTPUT_FORMAT` (`'open-audiovisual/output@1'`) · `parseOutputLayout(doc)` → `{ format, outputs }` (one error listing every problem) |
 | params | `outputParams(names)` → the entries of `output/<name>/blackout` (0 or 1) and `output/<name>/brightness` (0..1, default 1) |
 | clean address | `outputQuery(search)` → `null` or `{ name, crop, aspect, fit, follow, via, play }` · `outputUrl(base, { name, crop, aspect, fit, follow, via, play })` |
+
+## @openav/align
+
+L4 output (picture) · a wall of several outputs from one layout file (`open-audiovisual/align@1`; art-align's
+`art-align/v1` reads unchanged): the test patterns, the vendor's 1:1 alignment chart and the work's output mapping read the
+same table of tiles, so a pattern right on the wall means the work is right. A manual calibration on top
+(`open-audiovisual/align-calibration@1`: four corners, a mesh, feathered edges, masks, gain per tile) with an align mode
+and a store, the identification screen, and the Gray-code frames for camera-in-the-loop alignment (each projector in its
+own colour channel; capturing and decoding photos is not built). No dependencies; three.js is passed in. The chapter is
+[Projector and LED alignment](align.md); example 31. Its `validateLayout` and `normalizeLayout` are not
+[`@openav/tile`](#openav-tile)'s nor [`@openav/surface`](#openav-surface)'s.
+
+| export | signature |
+|---|---|
+| layout | `ALIGN_FORMAT` (= `CONTRACT`) · `validateLayout(layout)` → `{ ok, errors, warnings }` · `normalizeLayout(layout)` · `LayoutError` · `findLayout(layouts, name)` · `identityLayout(w, h, { id, title })` · `scaleArt(layout, k)` |
+| mapping | `computeMapping(layout)` → `{ format, id, art, desktop, outputs, segments, tiles, vendor, warnings }` · `blitPlan(mapping, { pixelRatio, buffer })` · `composePlan` · `composeArtCanvas` · `artView` · `desktopToArt(mapping, x, y)` · `artToDesktop(mapping, ax, ay)` · `cellIdAt` · `analyzeOverlaps` · `blendWeight(tile, ax, ay)` · `vendorPlacements(mapping, { base })` |
+| cells | `rowLabel(i)` · `cellSizeFor(w, h)` · `cellAt(seg, size, ax, ay)` · `cellRect(seg, size, name)` · `eachCell(seg, size)` |
+| patterns | `ALIGN_PATTERNS` · `BAR_VARIANTS` · `drawPattern(ctx, mapping, pattern, { view, overlay, variant, highlight, outputs, lang })` · `withTile` · `highlightCell` · `drawOutputs` |
+| Gray code | `graySequence(size, { inverse, refs, axes })` · `grayBitAt` · `grayRuns` · `channelPlan(mapping)` · `drawGrayFrame(ctx, mapping, frame, { assign, view })` · `decodeGrayBits(bits)` · `grayEncode` · `grayDecode` · `bitsFor` · `frameLabel(frame, lang)` |
+| calibration | `CALIBRATION_FORMAT` (= `CAL_CONTRACT`) · `normalizeCalibration(cal, mapping, variant)` · `defaultZone(tile)` · `normalizeZone` · `warpPoint(zone, u, v)` · `squareToQuad(q)` · `featherAt(f, u, v)` · `zoneGrid(zone, n)` · `rotateZone(zone, dir)` · `quadOk(q)` |
+| WebGL | `createBlitter(THREE, renderer)` · `createWarpRenderer(THREE)` → `{ build(mapping, zones, n), draw(renderer, texture, region), dispose() }` · `createPatternTexture(THREE, size)` |
+| venue | `PATTERN_SOURCES` · `drawSource(g, mapping, source)` · `createCalStore({ bridge, prefix, storage })` · `createAlignUI(o)` · `drawChart(ctx, mapping, outputId, opts)` · `drawIdent` · `drawIdentBase` · `drawIdentLive` · `normalizeAlignArgs(a, { patterns, fallback })` |
+| with `@openav/output` | `zoneToRoom(zone, tile, output)` → `{ room, dropped }` · `roomToZone(room, tile, output, base)` → `{ zone, dropped, mirrored }` · `outputsFromAlign(layout, { variant })` → for `createOutputs(show, { align })` |
 
 ## @openav/record
 
@@ -6338,7 +6622,7 @@ openav.mapper.routes                                    // the wiring
 ```text
 Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
 Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
-Create examples/31-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+Create examples/32-<name>/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
 
   <describe the performance, e.g. "a jellyfish world that blooms on consonant chords">
 
@@ -6717,6 +7001,11 @@ before it was generalized.)
   blackout and brightness as params, and a clean address for OBS and TouchDesigner (`@openav/output`, [Projection and video out](output.md))
 - [x] several screens lying on a table as one canvas, placed by one photo, on one shared clock (`@openav/tile`,
   [Several screens, one canvas](tile.md)); on a real table with real phones: still to be tried
+- [x] a wall of several outputs from one layout file: test patterns, a vendor chart and the output mapping read the same
+  data; corners, mesh, feather and masks by hand; the Gray-code frames (`@openav/align`, [Projector and LED alignment](align.md));
+  on a real projector: still to be tried
+- [ ] automatic alignment with a camera: capture, decode, the camera ↔ projector correspondence, a solved mesh, a measured
+  blend ([what is not built yet](align.md#what-is-not-built-yet))
 
 ## So that nobody rebuilds this layer
 
@@ -6783,7 +7072,7 @@ already runs. A layer earns that when people can build on it without asking. Wha
 
 # API reference (generated)
 
-> 611 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 675 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -10347,7 +10636,7 @@ function draw() {
 ## output
 
 - `cornerPin` (function, @openav/output): `cornerPin(corners, width = 1, height = 1)` — The homography that moves the four corners of a rectangle to four points: the math of corner-pin, as 9 numbers. Throws when the quad folds or collapses.
-- `createOutputs` (function, @openav/output): `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage = defaultStorage() } = {})` — Declares a show's outputs once, at load: their params exist from the start, the stage takes their shape, and the desk gets a panel to open, edit and test them.
+- `createOutputs` (function, @openav/output): `createOutputs(show, { outputs = null, aspect = null, panel = true, via = null, storage = defaultStorage(), align = null } = {})` — Declares a show's outputs once, at load: their params exist from the start, the stage takes their shape, and the desk gets a panel to open, edit and test them.
 - `cropBox` (function, @openav/output): `cropBox({ crop = null, source, box, fit = 'contain' } = {})` — Where a source goes so that one region of it fills a box: the crop math behind two projectors from one canvas, with contain, cover or stretch.
 - `openOutput` (function, @openav/output): `openOutput(source, { name = 'main', crop = null, fit = 'contain', mode = 'mirror', params = null, timeline = null, features = 'popup,width=960,height=540', aspect = null, via = null, channel = 'oav-output', storage = defaultStorage(), } = {})` — Opens a clean output window for a projector or a second screen and shows the stage in it, with corner-pin, a test pattern and blackout. Call it from a click.
 - `OUTPUT_FORMAT` (constant, @openav/output): `OUTPUT_FORMAT = "open-audiovisual/output@1"` — The format of a layout file: `open-audiovisual/output@1`, the `format` field of what `exportLayout()` writes and `parseOutputLayout()` reads.
@@ -10405,6 +10694,73 @@ function draw() {
 - `tileView` (function, @openav/tile): `tileView(layout, id)` — Which piece of the shared canvas one screen draws: the transform from canvas units to its pixels, for a 2D canvas, p5 or CSS.
 - `tileWorld` (function, @openav/tile): `tileWorld(world, tile)` — Wraps any world so it plays across the screens: adds the `tileMarkers` param and hands the world `io.tile`, with the view, the shared time and the seed.
 - `validateLayout` (function, @openav/tile): `validateLayout(L)` — Checks a tile layout and lists every problem, one message each: `{ ok, errors }`. Never throws.
+
+## align
+
+- `ALIGN_FORMAT`, `CONTRACT` (constant, @openav/align): `ALIGN_FORMAT = "open-audiovisual/align@1"` — The format name a layout is written with: `'open-audiovisual/align@1'`. `CONTRACT` is the same constant under the name art-align gave it.
+- `ALIGN_PATTERNS` (constant, @openav/align): `ALIGN_PATTERNS = array, 6 items` — The test patterns by name: tiles (cells), grid, edges, crosshair, bars, and vendor (the vendor's own images), in that order.
+- `analyzeOverlaps` (function, @openav/align): `analyzeOverlaps(mapping)` — Where light adds up: stacks (one segment into several outputs) and blend bands (two segments that share part of the canvas).
+- `artToDesktop` (function, @openav/align): `artToDesktop(mapping, ax, ay)` — An art-canvas point → every desktop point it lands on (a stacked segment lands on several outputs).
+- `artView` (function, @openav/align): `artView(mapping)` — The art canvas as it is, uncut: a mapping with one tile per segment and dst equal to src, for a preview of what the wall will look like.
+- `BAR_VARIANTS` (constant, @openav/align): `BAR_VARIANTS = array, 3 items` — The three kinds of colour bars: smpte, steps and ramp.
+- `bitsFor` (function, @openav/align): `bitsFor(size)` — How many bits the coordinates 0 … size − 1 need: one Gray-code frame (and its inverse) per bit.
+- `blendWeight` (function, @openav/align): `blendWeight(tile, ax, ay)` — A tile's blend weight at an art-canvas point, 0 to 1 in linear light: two segments with the same band width add up to 1 everywhere in their overlap.
+- `blitPlan` (function, @openav/align): `blitPlan(mapping, { pixelRatio = 1, buffer = mapping.desktop } = {})` — The numbers WebGL needs to copy each tile from the art render target to the canvas: viewport, scissor and UV offset and scale, already divided by the pixel ratio.
+- `CALIBRATION_FORMAT`, `CAL_CONTRACT` (constant, @openav/align): `CALIBRATION_FORMAT = "open-audiovisual/align-calibration@1"` — The format name a calibration file is written with: `'open-audiovisual/align-calibration@1'`. `CAL_CONTRACT` is the same constant, art-align's name.
+- `cellAt` (function, @openav/align): `cellAt(seg, size, ax, ay)` — The name of the cell of a segment that an art-canvas point falls in, like 'C8'; null outside the segment.
+- `cellIdAt` (function, @openav/align): `cellIdAt(mapping, ax, ay)` — The cell an art-canvas point falls in, with its segment, as 'Q4:B4'; null outside every segment.
+- `cellRect` (function, @openav/align): `cellRect(seg, size, name)` — A cell's rectangle on the art canvas, cut to its segment; null for a name that is not a cell of it.
+- `cellSizeFor` (function, @openav/align): `cellSizeFor(w, h)` — The default cell size for a segment: of the sizes that divide both its sides, the one nearest 220 px; five rows when none does.
+- `channelPlan` (function, @openav/align): `channelPlan(mapping, { channels = ['r', 'g', 'b'] } = {})` — Gives each output (projector) its own colour channel, three to a pass (R, G, B); more than three outputs take more passes.
+- `composeArtCanvas` (function, @openav/align): `composeArtCanvas(source, mapping, doc = globalThis.document)` — Puts a desktop frame (a canvas, an image, a video) back together as a new art-canvas canvas, using composePlan.
+- `composePlan` (function, @openav/align): `composePlan(mapping)` — How to put a desktop frame back together as the art canvas: one set of drawImage arguments per tile.
+- `computeMapping` (function, @openav/align): `computeMapping(layout)` — Turns an align layout into its mapping: one tile per feed, each with its rectangle on the art canvas and on the desktop, which every output reads.
+- `createAlignUI` (function, @openav/align): `createAlignUI(o)` — The align mode for the venue: handles over the picture to drag corners and mesh points, feather, masks and gain, and a panel; saved a second after each change.
+- `createBlitter` (function, @openav/align): `createBlitter(THREE, renderer, { onMismatch = (m) => console.warn(m) } = {})` — A function that copies a texture onto a three.js canvas through an align mapping, tile by tile, 1:1 or scaled; THREE is passed in.
+- `createCalStore` (function, @openav/align): `createCalStore({ bridge = null, prefix = DEFAULT_PREFIX, storage = defaultStorage() } = {})` — Where a calibration and the align mode's state are kept: an app's files through a bridge, or the browser's localStorage with the last 20 saves as backups.
+- `createPatternTexture` (function, @openav/align): `createPatternTexture(THREE, size, doc = globalThis.document, { lang = 'en' } = {})` — A three.js CanvasTexture of the art canvas's size that a source is painted into, redrawn only when the source changes (the ident screen 15 times a second).
+- `createWarpRenderer` (function, @openav/align): `createWarpRenderer(THREE)` — A three.js renderer for a calibrated output: each tile one fine mesh placed by its zone (corners and mesh), with feather, gain and masks, stacks adding up.
+- `decodeGrayBits` (function, @openav/align): `decodeGrayBits(bits)` — Bits read at one camera pixel, highest first, already 0 or 1 → the projector coordinate they code.
+- `defaultZone` (function, @openav/align): `defaultZone(tile)` — A tile's zone before anyone calibrated it: its four corners on its dst (turned with the feed), a flat 3 × 3 mesh, no feather, gamma 2.2, gain 1, the layout's masks.
+- `desktopToArt` (function, @openav/align): `desktopToArt(mapping, x, y)` — A desktop point → the art-canvas point under it, its tile, segment, output and cell; null over no tile.
+- `drawChart` (function, @openav/align): `drawChart(ctx, mapping, outputId, opts = {})` — Draws the vendor's alignment chart of one output at 1:1: grid and coordinates, the splitter's cuts, every block's size and first and last pixel, masks, which side is up.
+- `drawGrayFrame` (function, @openav/align): `drawGrayFrame(ctx, mapping, frame, { assign = channelPlan(mapping)[0], view = { k: 1, x: 0, y: 0 } } = {})` — Draws one Gray-code frame over the desktop: each output in its own projector pixels and its own colour channel, never warped.
+- `drawIdent` (function, @openav/align): `drawIdent(g, mapping, t = 0, o = {})` — Draws the whole identification screen in one call: drawIdentBase, then drawIdentLive at time t.
+- `drawIdentBase` (function, @openav/align): `drawIdentBase(g, mapping, { lang = 'en' } = {})` — Draws the still part of the identification screen on the art canvas: each surface's hue, metre grid, circle, name, projector and the words on its sides.
+- `drawIdentLive` (function, @openav/align): `drawIdentLive(g, mapping, t, { per = 2.5, now = new Date() } = {})` — Draws the moving part of the identification screen over the still one: a band of light along ident.sweep, a dot round ident.sweepFloor, a clock on every surface.
+- `drawOutputs` (function, @openav/align): `drawOutputs(ctx, mapping, view = { k: 1, x: 0, y: 0 })` — Draws each output's frame and its name, size and place on the desktop, in dashed magenta: a preview's map of the signals.
+- `drawPattern` (function, @openav/align): `drawPattern(ctx, mapping, pattern, opts = {})` — Draws one test pattern over a mapping, tile by tile: clipped to each tile on the desktop and drawn in art pixels, the way the work itself goes out.
+- `drawSource` (function, @openav/align): `drawSource(g, mapping, source, { lang = 'en' } = {})` — Paints one source of the align mode on an art-canvas context: a pattern with its variant ('bars:steps'), the identification screen, white, grey 50 % or black.
+- `eachCell` (function, @openav/align): `function* eachCell(seg, size)` — Every cell of a segment, top-left to bottom-right, row by row, as { row, col, name, x, y, w, h }: a generator.
+- `featherAt` (function, @openav/align): `featherAt(f, u, v)` — A zone's feather weight at (u, v), 0 to 1: a cosine ramp over each edge's share of the zone.
+- `findLayout` (function, @openav/align): `findLayout(layouts, name)` — Finds a layout in a list by its id or one of its aliases, ignoring case and spaces around; null when none has that name.
+- `frameLabel` (function, @openav/align): `frameLabel(frame, lang = 'en')` — A Gray-code frame's name for a person, in English ('X bit 3 of 11 (inverse)') or in Chinese.
+- `grayBitAt` (function, @openav/align): `grayBitAt(frame, coord)` — Whether a Gray-code frame is lit (1) or dark (0) at one projector coordinate along its axis.
+- `grayDecode` (function, @openav/align): `grayDecode(g)` — Gray code to binary: the inverse of grayEncode.
+- `grayEncode` (function, @openav/align): `grayEncode(n)` — Binary to Gray code: neighbouring numbers differ in exactly one bit.
+- `grayRuns` (function, @openav/align): `grayRuns(frame, size)` — A Gray-code frame's lit runs along its axis, [[start, end), …]: one fillRect each.
+- `graySequence` (function, @openav/align): `graySequence(size, { inverse = true, refs = true, axes = ['x', 'y'] } = {})` — Every Gray-code frame of one structured-light run, in shooting order: white, black, then each bit of x and of y with its inverse.
+- `highlightCell` (function, @openav/align): `highlightCell(ctx, mapping, id, view = { k: 1, x: 0, y: 0 })` — Outlines one cell ('Q2:B3') in yellow on every tile its segment is fed to; false when the cell does not exist.
+- `identityLayout` (function, @openav/align): `identityLayout(w, h, { id = `${w}x${h}`, title = `one picture ${w}×${h}` } = {})` — The simplest layout: one segment, one output, 1:1, w × h (a size typed in, or "this window as it is").
+- `LayoutError` (class, @openav/align): `new LayoutError(id, errors)` — The error computeMapping() and normalizeLayout() throw for a layout that breaks the format; its `errors` lists every problem.
+- `normalizeAlignArgs` (function, @openav/align): `normalizeAlignArgs(a, { patterns = ALIGN_PATTERNS, fallback = 'grid' } = {})` — Makes an "align" command's arguments safe, the same check on the control page and on the page that draws the wall: { on, pattern, variant?, highlight? }.
+- `normalizeCalibration` (function, @openav/align): `normalizeCalibration(cal, mapping, variant = mapping.id)` — A calibration made whole for one mapping: one zone per tile under variants[variant], other variants kept; reads art-align-cal/v1 too, anything else starts empty.
+- `normalizeLayout` (function, @openav/align): `normalizeLayout(layout)` — Checks an align layout and returns a filled-in copy: each feed's name and size, each segment's cell size, the desktop; throws LayoutError when it breaks the format.
+- `normalizeZone` (function, @openav/align): `normalizeZone(z, tile)` — One zone made whole: missing parts from the tile's default zone, numbers clamped to a sane range, a mesh of the wrong size reset to flat.
+- `outputsFromAlign` (function, @openav/align): `outputsFromAlign(layout, { variant } = {})` — The outputs of an align layout as @openav/output declares them, and the conversions between an align calibration and an output layout file.
+- `PATTERN_SOURCES` (constant, @openav/align): `PATTERN_SOURCES = array, 12 items` — What the align mode can show, in the order P cycles through: the work, the identification screen, the patterns, the bars, white, grey and black.
+- `quadOk` (function, @openav/align): `quadOk(q)` — Whether four corners make a convex quad that runs clockwise on the screen; a folded or crossed one would draw the picture inside out.
+- `roomToZone` (function, @openav/align): `roomToZone(room, tile, output, base = defaultZone(tile))` — An @openav/output room → an align zone for a tile that fills that output: the corners from the room, the mesh, feather, masks and gain from a base zone.
+- `rotateZone` (function, @openav/align): `rotateZone(zone, dir = 1)` — Turns a whole zone a quarter clockwise (or back with −1) by moving its corners round one place: a projector hung the other way.
+- `rowLabel` (function, @openav/align): `rowLabel(i)` — The letter of a cell row: 0 → A, 25 → Z, 26 → AA.
+- `scaleArt` (function, @openav/align): `scaleArt(layout, k)` — The same layout for a work that draws its art canvas at k times the density: segments, blend bands, masks and ident surfaces scale, the outputs stay.
+- `squareToQuad` (function, @openav/align): `squareToQuad(q)` — The 3 × 3 perspective matrix from the unit square to four corners, row by row; null for a degenerate quad.
+- `validateLayout` (function, @openav/align): `validateLayout(layout)` — Checks an align layout and lists every error (the layout is refused) and every warning (accepted, but look); never throws.
+- `vendorPlacements` (function, @openav/align): `vendorPlacements(mapping, { base = '', vendor = mapping.vendor } = {})` — Where the vendor's alignment images go: any number, each filling an output or a rectangle of the desktop, with percentages ready for CSS.
+- `warpPoint` (function, @openav/align): `warpPoint(zone, u, v, H = squareToQuad(zone.corners))` — A zone point (u, v) → desktop px: the perspective of the zone's four corners, plus its mesh's shift there.
+- `withTile` (function, @openav/align): `withTile(ctx, tile, view, fn)` — Draws inside one tile in art pixels: clipped to the tile's place on the desktop, scaled and turned as its feed says, then restored.
+- `zoneGrid` (function, @openav/align): `zoneGrid(zone, n = 32)` — The calibrated zone as a triangle grid for WebGL: n × n cells of desktop positions, zone coordinates and indices.
+- `zoneToRoom` (function, @openav/align): `zoneToRoom(zone, tile, output)` — An align zone → an @openav/output room, for a tile that fills its output: the same four-corner homography, with what a room cannot carry listed.
 
 ## mapping
 

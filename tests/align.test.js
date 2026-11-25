@@ -435,7 +435,9 @@ test('align: no client, venue, exhibition, vendor or private project name in the
   if (fs.existsSync(path.join(ROOT, 'examples/31-align'))) walk(path.join(ROOT, 'examples/31-align'));
   const catalog = JSON.parse(fs.readFileSync(path.join(ROOT, 'examples/catalog.json'), 'utf8')).examples.find((e) => e.id === '31-align');
   const hits = [];
-  for (const f of files) for (const [w, line] of forbiddenIn(fs.readFileSync(f, 'utf8'))) hits.push(`${path.relative(ROOT, f)}:${line}: ${w.length} characters`);
+  // an example page's head is the site generator's, the same on every page (the author's name and address in its JSON-LD): blanked, lines kept
+  const own = (f) => fs.readFileSync(f, 'utf8').replace(/<!-- oav:head -->[\s\S]*?<!-- \/oav:head -->/, (m) => m.replace(/[^\n]/g, ''));
+  for (const f of files) for (const [w, line] of forbiddenIn(own(f))) hits.push(`${path.relative(ROOT, f)}:${line}: ${w.length} characters`);
   if (catalog) for (const [w] of forbiddenIn(JSON.stringify(catalog))) hits.push(`examples/catalog.json (31-align): ${w.length} characters`);
   assert.ok(files.length > 20, `${files.length} files`);
   assert.deepEqual(hits, [], 'say where, not the word: the word itself must not be printed into a public log either');

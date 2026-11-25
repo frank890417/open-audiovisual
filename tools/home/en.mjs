@@ -178,6 +178,7 @@ export default {
       out: 'Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values',
       dmx: 'DMX lighting: fixture profiles, a patch, scenes, cues, chases and effects rendered as a function of time, a 3 Hz flash cap per fixture, and Art-Net, sACN and Enttec USB bytes',
       output: 'The stage on a projector or a second screen: an output window, four-corner correction with a test pattern, crops for projectors side by side, and a clean address for OBS and TouchDesigner',
+      align: 'A wall of several outputs from one layout file: test patterns, a vendor chart and the output mapping that cannot disagree, corners, mesh and feather by hand, Gray-code frames',
       fab: 'Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files',
       hw: 'What goes inside: parts with their datasheet numbers, a wiring check (logic levels, boot pins, I²C addresses, current, battery hours), a wiring diagram and a parts list',
       timeline: 'Param automation, scenes and cues: the clock of the show',

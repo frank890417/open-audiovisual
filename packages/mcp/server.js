@@ -36,6 +36,7 @@ const DOCS = {
   dmx: 'docs/dmx.md',
   output: 'docs/output.md',
   tile: 'docs/tile.md',
+  align: 'docs/align.md',
   devices: 'docs/devices.md',
   roadmap: 'docs/roadmap.md',
   agents: 'AGENTS.md',

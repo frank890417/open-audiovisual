@@ -337,7 +337,7 @@ export function createAlignUI(o) {
       : `${T.masks}: ${z.masks.length ? `${ui.mask + 1} / ${z.masks.length}` : T.noMask}`;
     const showFlash = flashMsg && performance.now() - flashT < 5000;
     panel.innerHTML = `
-      <h3>${T.title}   <span style="color:#ffd23f">${T.zone} ${esc(state.zone)}</span>   ${esc(face)}   ${esc(t.output)} ${t.dst.w}×${t.dst.h}</h3>
+      <h3>${T.title}   <span style="color:#ffd23f">${T.zone} ${esc(state.zone)}</span>   ${esc(face)}   → ${esc(t.output)} ${t.dst.w}×${t.dst.h}</h3>
       <div class="row">${MODES.map((m) => `<button data-mode="${m}" class="${m === ui.mode ? 'on' : ''}">${T.mode[m]}</button>`).join('')}</div>
       <div>${what}</div>
       <div>${T.gain} ${Math.round(z.gain * 100)}%   ${T.gamma} ${z.gamma}</div>

@@ -96,21 +96,27 @@ test('the reference dataset through the core: micLevel is first for its name, in
 
 // ---------------------------------------------------------------------------- the site search: the index and the way in
 import zlib from 'node:zlib';
-import { buildIndex, indexText, INDEX, plain } from '../tools/build-search.mjs';
+import { buildIndex, indexText, textText, INDEX, TEXT, plain } from '../tools/build-search.mjs';
 import { EXAMPLES } from '../tools/examples/catalog.mjs';
 import { catalog } from '../tools/controllers/page.mjs';
 import { collection, ownPages } from '../tools/devices/sources.mjs';
 import { CHAPTERS } from '../tools/docs/chapters.mjs';
 
 const idx = JSON.parse(read(INDEX));
+const text = JSON.parse(read(TEXT));
+idx.records.forEach((r, i) => { r.x = text.x[i]; });        // what the dialog has once text.json has landed (search.js folds it in)
 const built = buildIndex();
 const prepared = idx.records.map((r) => prepare({ ...r, name: r.n, names: r.a, kw: r.k, title: r.s, summary: r.d, text: r.x }));
 const ask = (q, lang = 'en', n = 5) => rank(prepared, q, { limit: 40, boost: (r) => (r.l === lang ? 400 : 0) + weightBoost(r) }).map((x) => x.rec).filter((r, i, a) => a.findIndex((y) => y.i === r.i) === i).slice(0, n);
 
 test('the index exists and is what the sources build (node tools/build-search.mjs)', () => {
   assert.equal(read(INDEX), indexText(built), 'assets/search/index.json is stale');
+  assert.equal(read(TEXT), textText(built), 'assets/search/text.json is stale');
   assert.equal(idx.schema, 1);
   assert.equal(idx.count, idx.records.length);
+  assert.equal(text.count, idx.count, 'one body text per record, in the same order');
+  assert.equal(idx.text, TEXT, 'index.json names the file its body text is in');
+  assert.ok(!JSON.parse(read(INDEX)).records.some((r) => 'x' in r), 'the body text is not in index.json');
 });
 
 test('the index covers every source, in both languages: the reference, the handbook, the examples, the controllers, the pages', () => {
@@ -176,14 +182,20 @@ test('the handbook, the examples, the controllers and the pages are found by the
 });
 
 test('the index has a size budget: a page of text, not a library', () => {
-  const raw = Buffer.from(read(INDEX));
+  // what the dialog fetches when it first opens is index.json alone: names, aliases, keywords, kinds and summaries (2026-11-25:
+  // 166 KiB gzipped). The body text, four fifths of the bytes and the lowest match, moved to text.json, fetched after it, when
+  // the 800 KiB budget below was reached by the alignment chapter and @openav/align's 66 names (840 KiB gzipped in one file)
+  const first = zlib.gzipSync(Buffer.from(read(INDEX))).length;
+  assert.ok(first < 250 * 1024, `index.json: ${first} bytes gzipped`);
+  const raw = Buffer.from(read(TEXT));
   assert.ok(raw.length < 3 * 1024 * 1024, `${raw.length} bytes raw`);
   // 700 KiB until the device collection's pages came in (2026-11-25: 71 pages × 2 languages, about 4.5 KiB gzipped, trimmed to
   // name, maker, kind and id); 720 KiB until the projection chapter and @openav/output's ten names came in (2026-11-25: 14
   // sections and 10 entries × 2 languages, about 27 KiB gzipped); 760 KiB until the tiling chapter and @openav/tile's 46 names
-  // came in (2026-11-25: the chapter, its 8 sections, a troubleshooting section and 46 entries × 2 languages, about 37 KiB gzipped); the dialog
-  // fetches the file only when it is first opened
-  assert.ok(zlib.gzipSync(raw).length < 800 * 1024, `${zlib.gzipSync(raw).length} bytes gzipped`);
+  // came in (2026-11-25: the chapter, its 8 sections, a troubleshooting section and 46 entries × 2 languages, about 37 KiB gzipped).
+  // Those were the budgets of the whole index in one file; 800 KiB is now text.json's (673 KiB on 2026-11-25), which the dialog
+  // fetches after index.json, already answering
+  assert.ok(zlib.gzipSync(raw).length < 800 * 1024, `text.json: ${zlib.gzipSync(raw).length} bytes gzipped`);
 });
 
 test('plain(): code blocks and tags out, entities decoded', () => {
