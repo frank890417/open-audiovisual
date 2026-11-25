@@ -52,4 +52,27 @@ Open Fixture Library fixture definitions
   out, wheel slots named after OFL's wheels, every file marked "verified": false. Nothing has been checked on hardware by
   this project.
 
+OpenCV ArUco dictionary
+  Project:   OpenCV, https://github.com/opencv/opencv
+  Version:   4.12.0 (the build in the npm package @techstark/opencv-js 4.12.0-release.1)
+  Source:    modules/objdetect/src/aruco/predefined_dictionaries.hpp, the dictionary DICT_5X5_1000
+  Copyright: the OpenCV authors named in its COPYRIGHT file (Intel Corporation, Willow Garage Inc., NVIDIA Corporation,
+             Advanced Micro Devices, Inc., OpenCV Foundation, Itseez Inc., Xperience AI and others)
+  Licence:   Apache License 2.0: see LICENSES/Apache-2.0.txt
+
+  Where it is:
+    packages/tile/dict.js              the 1000 markers of DICT_5X5_1000 as 25 bits each, so a screen can draw its markers
+                                       without loading OpenCV.
+
+  Changes made: each marker drawn by that build's cv.generateImageMarker at one pixel per module and read back row by row
+  into 7 hex digits (packages/tile/tools/extract-dict.cjs). Nothing else of OpenCV is in this repository.
+
+OpenCV.js, loaded at runtime (not in this repository)
+  Package:   @techstark/opencv-js 4.12.0-release.1, https://github.com/TechStark/opencv-js, a build of OpenCV 4.12.0's opencv.js
+  Licence:   Apache License 2.0 (the package's "license" field and its LICENSE file), OpenCV itself as above
+
+  The camera page of @openav/tile (packages/tile/index.html, through packages/tile/detect.js) loads
+  https://cdn.jsdelivr.net/npm/@techstark/opencv-js@4.12.0-release.1/dist/opencv.js in the visitor's browser when the first
+  photo is read. The file is not copied into this repository, and no other page or package loads it (tests/tile.test.js).
+
 Nothing in this repository comes from Mixxx mappings (GPL) or from midi.guide (CC-BY-SA).
