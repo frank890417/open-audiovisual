@@ -7,7 +7,7 @@
 | L1 輸入 | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 映射 | `mapping` · `chop` |
 | L3 世界 | `stage` · `world-webtoe` |
-| L4 輸出 | `sound` · `osc` · `out` · `dmx` · `output` · `align` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
+| L4 輸出 | `sound` · `osc` · `out` · `dmx` · `output` · `align` · `record` · `fab` · `hw`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | 手機 | `relay` · `surface` · `remote` · `tile` |
 | 膠水 | `core` · `show` · `devices` · `mcp` |
