@@ -1,4 +1,4 @@
-// open-audiovisual docs — the small amount of behaviour the static handbook needs.
+// open-audiovisual docs — the small amount of behaviour the static handbook needs (a chapter's page, /p5/, the reference).
 // The page is complete without this file; it only adds:
 //   · scroll-spy: the contents highlight where you are (and the language switch keeps your place)
 //   · the narrow-screen contents drawer
@@ -92,7 +92,7 @@ function spy(force = false) {
   if (id === current && !force) return;
   current = id;
 
-  for (const a of $$('.toc a[aria-current]')) a.removeAttribute('aria-current');
+  for (const a of $$('.toc a[aria-current="true"]')) a.removeAttribute('aria-current');   // a chapter page's own link keeps aria-current="page"
   for (const li of $$('.toc-ch.is-current')) li.classList.remove('is-current');
   for (const { a, base } of langLinks) a.setAttribute('href', base + (id ? '#' + id : ''));
   if (!id) { if (where) where.textContent = ''; return; }

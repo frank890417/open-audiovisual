@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Package reference · open-audiovisual</title>
+<meta name="description" content="Thirty-one packages live in packages/&lt;name&gt;/. Each is plain ES modules with no dependencies; in a page you import them as @openav/&lt;name&gt; through an import map…">
+<link rel="canonical" href="https://openaudiovisual.com/docs/packages/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/packages/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/packages/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/packages/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Package reference · open-audiovisual">
+<meta property="og:description" content="Thirty-one packages live in packages/&lt;name&gt;/. Each is plain ES modules with no dependencies; in a page you import them as @openav/&lt;name&gt; through an import map…">
+<meta property="og:url" content="https://openaudiovisual.com/docs/packages/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Package reference · open-audiovisual">
+<meta name="twitter:description" content="Thirty-one packages live in packages/&lt;name&gt;/. Each is plain ES modules with no dependencies; in a page you import them as @openav/&lt;name&gt; through an import map…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="packages">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/packages/#article","url":"https://openaudiovisual.com/docs/packages/","name":"Package reference · open-audiovisual","description":"Thirty-one packages live in packages/\u003cname>/. Each is plain ES modules with no dependencies; in a page you import them as @openav/\u003cname> through an import map…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Package reference","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["@openav/core","@openav/show","@openav/midi","@openav/audio","@openav/chord","@openav/pose","@openav/leap","@openav/keys","@openav/drums","@openav/mapping","@openav/chop","@openav/stage","@openav/world-webtoe","@openav/sound","@openav/osc","@openav/out","@openav/dmx","@openav/record","@openav/fab","@openav/hw","@openav/timeline","@openav/score","@openav/pattern","@openav/console","@openav/monitor","@openav/sync","@openav/relay","@openav/surface","@openav/remote","@openav/devices","@openav/mcp"],"position":17,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/packages/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/packages/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Package reference","item":"https://openaudiovisual.com/docs/packages/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/packages/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/packages/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch is-here" data-ch="packages">
+          <a href="#packages" aria-current="page"><span class="n">17</span><span class="t">Package reference</span></a>
+          <ol class="toc-secs">
+            <li><a href="#packages-openav-core">@openav/core</a></li>
+            <li><a href="#packages-openav-show">@openav/show</a></li>
+            <li><a href="#packages-openav-midi">@openav/midi</a></li>
+            <li><a href="#packages-openav-audio">@openav/audio</a></li>
+            <li><a href="#packages-openav-chord">@openav/chord</a></li>
+            <li><a href="#packages-openav-pose">@openav/pose</a></li>
+            <li><a href="#packages-openav-leap">@openav/leap</a></li>
+            <li><a href="#packages-openav-keys">@openav/keys</a></li>
+            <li><a href="#packages-openav-drums">@openav/drums</a></li>
+            <li><a href="#packages-openav-mapping">@openav/mapping</a></li>
+            <li><a href="#packages-openav-chop">@openav/chop</a></li>
+            <li><a href="#packages-openav-stage">@openav/stage</a></li>
+            <li><a href="#packages-openav-world-webtoe">@openav/world-webtoe</a></li>
+            <li><a href="#packages-openav-sound">@openav/sound</a></li>
+            <li><a href="#packages-openav-osc">@openav/osc</a></li>
+            <li><a href="#packages-openav-out">@openav/out</a></li>
+            <li><a href="#packages-openav-dmx">@openav/dmx</a></li>
+            <li><a href="#packages-openav-record">@openav/record</a></li>
+            <li><a href="#packages-openav-fab">@openav/fab</a></li>
+            <li><a href="#packages-openav-hw">@openav/hw</a></li>
+            <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
+            <li><a href="#packages-openav-score">@openav/score</a></li>
+            <li><a href="#packages-openav-pattern">@openav/pattern</a></li>
+            <li><a href="#packages-openav-console">@openav/console</a></li>
+            <li><a href="#packages-openav-monitor">@openav/monitor</a></li>
+            <li><a href="#packages-openav-sync">@openav/sync</a></li>
+            <li><a href="#packages-openav-relay">@openav/relay</a></li>
+            <li><a href="#packages-openav-surface">@openav/surface</a></li>
+            <li><a href="#packages-openav-remote">@openav/remote</a></li>
+            <li><a href="#packages-openav-devices">@openav/devices</a></li>
+            <li><a href="#packages-openav-mcp">@openav/mcp</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="packages" aria-labelledby="packages">
+<h1 id="packages">Package reference<a class="anchor" href="#packages" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 17 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/packages.md">docs/packages.md</a></span></p>
+<p>Thirty-one packages live in <code>packages/&lt;name&gt;/</code>. Each is plain ES modules with no
+dependencies; in a page you import them as <code>@openav/&lt;name&gt;</code> through an import
+map (copy the one in <code>examples/01-hello-particles/index.html</code>). Nothing is on
+npm yet.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>layer</th><th>packages</th></tr></thead>
+<tbody>
+<tr><td>L1 input</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>leap</code> · <code>keys</code> · <code>drums</code></td></tr>
+<tr><td>L2 mapping</td><td><code>mapping</code> · <code>chop</code></td></tr>
+<tr><td>L3 world</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
+<tr><td>L4 output</td><td><code>sound</code> · <code>osc</code> · <code>out</code> · <code>dmx</code> · <code>record</code> · <code>fab</code> (and MIDI out in <code>midi</code>)</td></tr>
+<tr><td>spines</td><td><code>timeline</code> · <code>score</code> · <code>pattern</code> · <code>console</code> · <code>monitor</code> · <code>sync</code></td></tr>
+<tr><td>phones</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
+<tr><td>glue</td><td><code>core</code> · <code>show</code> · <code>devices</code> · <code>mcp</code></td></tr>
+</tbody>
+</table></div>
+<p>Subpath entries (<code>@openav/remote/host</code>, <code>@openav/relay/server</code>,
+<code>@openav/surface/layout</code>, <code>@openav/surface/auto</code>) need their own import-map line
+in a browser, for example
+<code>"@openav/remote/host": "../../packages/remote/host.js?v=c6e958d9"</code>.</p>
+<h2 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="Link to this section">#</a></h2>
+<p>Glue · the shared language: <code>Signals</code>, <code>Params</code>, <code>Loop</code>, <code>Bus</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Signals</code></td><td><code>new Signals()</code> · <code>define(name, { kind, min, max, unit, description, source })</code> · <code>set(name, value)</code> · <code>pulse(name, payload = 1)</code> · <code>get(name)</code> · <code>norm(name)</code> → 0..1 · <code>on(name, cb(value, name))</code> → unsubscribe · <code>onAny(cb(name, value, meta))</code> → unsubscribe · <code>list()</code> → <code>[{ name, value, at, kind, min, max, … }]</code></td></tr>
+<tr><td><code>Params</code></td><td><code>new Params(schema = [])</code> · <code>add(entries)</code> · <code>get(key)</code> · <code>clamp(key, v)</code> · <code>override(key, v)</code> · <code>clearOverride(key)</code> · <code>clearAllOverrides()</code> · <code>isOverridden(key)</code> · <code>firePulse(key)</code> · <code>onPulse(key, cb)</code> → unsubscribe · <code>resolve(base)</code> → state · <code>schema</code>, <code>overrides</code></td></tr>
+<tr><td><code>Loop</code></td><td><code>new Loop(onFrame(dt, now), { maxDt = 0.1, clock, raf, manual = false, heartbeat })</code> · <code>start()</code> · <code>stop()</code> · <code>step(dt)</code> → <code>boolean</code> (one frame of <code>dt</code> seconds, unclamped) · <code>fps</code>, <code>running</code>, <code>manual</code>. <code>clock()</code> → ms (default <code>performance.now</code>), <code>raf(cb)</code> → the next frame (default <code>requestAnimationFrame</code>); an injected <code>raf</code> or <code>manual</code> turns the hidden-tab Worker off (<code>heartbeat: true</code> turns it on). See <a href="../../docs/show-control/#show-control-driving-the-frames-yourself">Driving the frames yourself</a></td></tr>
+<tr><td><code>Bus</code></td><td><code>new Bus()</code> · <code>on(event, cb)</code> → unsubscribe · <code>off(event, cb)</code> · <code>emit(event, payload)</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Signals, Params, Loop } <span class="tk">from</span> <span class="ts">'@openav/core'</span>;
+<span class="tk">const</span> signals = <span class="tk">new</span> Signals();
+signals.define(<span class="ts">'breath/pressure'</span>, { min: 0, max: 1 });
+signals.on(<span class="ts">'breath/pressure'</span>, (v) =&gt; console.log(v));
+signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0.4);</code></pre></div>
+<h2 id="packages-openav-show">@openav/show<a class="anchor" href="#packages-openav-show" aria-label="Link to this section">#</a></h2>
+<p>Glue · <code>createShow(options)</code>: one call that assembles a whole show around a
+world and returns every part. Options, modules and the return value are in
+<a href="../../docs/show-control/#show-control-createshow">Show control</a>; <code>loop</code>, <code>monitor</code> and <code>console</code> (the desk's <code>keys</code>) choose who drives the frames, where the backstage feed goes and which keys run the desk; <code>sync</code> makes the page one of several that perform the same show (leader or follower, <a href="#packages-openav-sync"><code>@openav/sync</code></a>).</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { keys: { base: 48 }, sound: <span class="tk">true</span> } });</code></pre></div>
+<h2 id="packages-openav-midi">@openav/midi<a class="anchor" href="#packages-openav-midi" aria-label="Link to this section">#</a></h2>
+<p>L1 input and L4 output · Web MIDI in and out, many devices at once, and
+on-screen controllers that mirror real hardware.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Midi</code></td><td><code>new Midi({ signals, filterOut = 'IAC', requestAccess, echoWindow = 40, prefer = [] })</code> · <code>enable(preferredOut = '')</code> → <code>Promise&lt;boolean&gt;</code> · <code>devices()</code> → <code>[{ slug, name, listening }]</code> · <code>setListening(slug, on)</code> · <code>onDevices(fn)</code> · <code>onOutput(fn({ text, reason, next }))</code> · <code>listen(fn(bytes, port))</code> · <code>selectOutput(name)</code> → <code>boolean</code> (and remembered as your choice) · <code>outputFor(nameOrRegExp)</code> · <code>send(bytes)</code> · <code>noteOn(note, vel = 100, ch = 1)</code> · <code>noteOff(note, ch = 1)</code> · <code>cc(cc, val, ch = 1)</code> · <code>panic()</code> · <code>dispose()</code> · hooks <code>onCC</code>, <code>onNote</code>, <code>onMessage</code>, <code>onSend</code>, <code>onDeviceChange</code> · <code>out</code>, <code>outputs</code>, <code>preferredOut</code>, <code>echoDropped</code></td></tr>
+<tr><td>output hot-plug, echo</td><td><code>pickOutput(outputs, { preferred, prefer })</code> · <code>reselectOutput({ current, outputs, preferred, prefer })</code> → <code>{ next, changed, reason, text }</code> · <code>EchoGuard({ window })</code> (<code>sent(bytes)</code>, <code>isEcho(bytes)</code>): the pure logic behind <code>Midi</code>, see <a href="../../docs/show-control/#show-control-midi-output-and-panic">Show control</a></td></tr>
+<tr><td>score to MIDI</td><td><code>new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })</code> · <code>segment({ index, cause })</code> · <code>cue({ name, n })</code>: segment changes and cues as notes and CCs, see <a href="../../docs/score/#score-score-to-midi">Score &amp; Director</a></td></tr>
+<tr><td>parsing</td><td><code>parseMessage(bytes)</code> → event · <code>encodeMessage(event)</code> → bytes · <code>genericSignals(event, { device })</code> · <code>publish(signals, list)</code> · <code>describe(event)</code> · <code>relativeDelta(value, mode)</code>, <code>relativeValue(delta, mode)</code>, <code>RELATIVE_MODES</code> · <code>bendToUnit</code>, <code>unitToBend</code>, <code>BEND_CENTER</code></td></tr>
+<tr><td>controllers</td><td><code>MidiController</code>, <code>MidiControllers</code>, <code>controllerRoutes(profile, bindings)</code>, <code>PROFILES</code>, <code>profileById(id)</code>, <code>ControllerView</code>, <code>mountMidiPanel(el, controllers, opts)</code>, <code>linkControllers</code>, profile helpers (<code>validateProfile</code>, <code>normalizeProfile</code>, <code>matchProfile</code>, …)</td></tr>
+<tr><td>Web MIDI shim</td><td><code>createVirtualMIDIAccess({ name, onOutput(bytes, timestamp), onClear })</code>, <code>virtualRequestMIDIAccess</code>, <code>splitMidi(bytes)</code>: its output is heard with each send's timestamp</td></tr>
+<tr><td><code>MidiClock</code> (<code>clock.js</code>)</td><td><code>new MidiClock({ ppq = 24, beatsPerBar = 4 })</code> · <code>feed(bytes, t)</code> → <code>'clock'·'start'·'continue'·'stop'·'spp'·'dupe'</code> · <code>bpm</code> · <code>phaseAt(t)</code> → <code>{ pos, bar, beat, bpm, running }</code> · <code>anchor()</code> · <code>state(t)</code>: follow an external MIDI clock (<a href="../../docs/strudel/">With Strudel</a>)</td></tr>
+<tr><td>embedding</td><td><code>createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut, telemetry })</code> → <code>ControllerHost</code> (<code>on(event, fn)</code>, <code>set</code>, <code>press</code>, <code>release</code>, <code>values</code>, <code>mount(el)</code>, <code>learn()</code>, <code>dispose()</code>) · <code>loadProfile(idOrUrl)</code> · the <code>&lt;oav-controller&gt;</code> element in <code>packages/midi/element.js</code> · embed protocol helpers in <code>embed.js</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Midi } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
+<span class="tk">const</span> midi = <span class="tk">new</span> Midi({ signals });
+<span class="tk">await</span> midi.enable();
+midi.noteOn(60, 100, 1);</code></pre></div>
+<p>Signals: <a href="../../docs/signals/#signals-openav-midi">Signals reference</a>. Controllers, profiles and
+the shim: <a href="../../docs/controllers/">MIDI controllers &amp; embedding</a>.</p>
+<h2 id="packages-openav-audio">@openav/audio<a class="anchor" href="#packages-openav-audio" aria-label="Link to this section">#</a></h2>
+<p>L1 input · microphone (or any audio node) analysis.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>AudioAnalyzer</code></td><td><code>new AudioAnalyzer({ signals, fftSize = 2048, smooth = 0.7 })</code> · <code>enableMic()</code> · <code>enableElement(mediaEl)</code> · <code>input()</code> → an <code>AnalyserNode</code> to connect into · <code>update()</code> per frame → <code>{ rms, peak, low, mid, high, centroid, onset, kick, snare, hat }</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { AudioAnalyzer } <span class="tk">from</span> <span class="ts">'@openav/audio'</span>;
+<span class="tk">const</span> audio = <span class="tk">new</span> AudioAnalyzer({ signals });
+<span class="tk">await</span> audio.enableMic();          <span class="tc">// from a click</span>
+<span class="tc">// every frame: audio.update();</span></code></pre></div>
+<h2 id="packages-openav-chord">@openav/chord<a class="anchor" href="#packages-openav-chord" aria-label="Link to this section">#</a></h2>
+<p>L1 input (an analyzer) · groups struck notes into gestures and publishes
+consonance, triads and clusters.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>ChordDetector</code></td><td><code>new ChordDetector({ window = 80, onChord, signals })</code> · <code>noteOn(note, vel = 0.8)</code> · <code>noteOff(note)</code> · <code>analyze(notes, vels)</code> → analysis (pure)</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { ChordDetector } <span class="tk">from</span> <span class="ts">'@openav/chord'</span>;
+<span class="tk">const</span> chord = <span class="tk">new</span> ChordDetector({ signals });
+signals.on(<span class="ts">'midi/note/on'</span>, ({ note, vel }) =&gt; chord.noteOn(note, vel));
+signals.on(<span class="ts">'midi/note/off'</span>, ({ note }) =&gt; chord.noteOff(note));
+chord.analyze([60, 64, 67]).chordType;   <span class="tc">// 'major'</span></code></pre></div>
+<h2 id="packages-openav-pose">@openav/pose<a class="anchor" href="#packages-openav-pose" aria-label="Link to this section">#</a></h2>
+<p>L1 input · body and hand tracking from the camera with MediaPipe, on the device.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>PoseTracker</code></td><td><code>new PoseTracker({ signals, mirror = true })</code> · <code>enable({ videoEl })</code> (from a click) · <code>stop()</code> · <code>skeleton(ctx, w, h, { color, lineWidth })</code> · <code>landmarks</code>, <code>running</code></td></tr>
+<tr><td><code>HandTracker</code></td><td><code>new HandTracker({ signals, mirror = true })</code> · <code>enable({ videoEl })</code> · <code>stop()</code> · <code>skeleton(ctx, w, h, { colorLeft, colorRight, lineWidth })</code> · <code>hands</code>, <code>running</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { HandTracker } <span class="tk">from</span> <span class="ts">'@openav/pose'</span>;
+<span class="tk">const</span> hands = <span class="tk">new</span> HandTracker({ signals });
+button.onclick = () =&gt; hands.enable();</code></pre></div>
+<h2 id="packages-openav-leap">@openav/leap<a class="anchor" href="#packages-openav-leap" aria-label="Link to this section">#</a></h2>
+<p>L1 input · Leap Motion / Ultraleap hands through the machine's bridge
+(<code>node packages/leap/bridge/leap-bridge.mjs</code>, <code>ws://127.0.0.1:6437</code>). The same
+bridge speaks the old LeapJS protocol, so 2014–2021 <code>leap.js</code> sketches run unchanged.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>LeapInput</code></td><td><code>new LeapInput({ signals, url, reconnect = true, fingers = true, box, thresholds })</code> · <code>connect()</code> · <code>disconnect()</code> · <code>simulate({ target })</code> → <code>stop()</code> · <code>skeleton(ctx, w, h, { view, colorLeft, colorRight, lineWidth })</code> · <code>mountPanel(el)</code> · <code>onFrame(fn)</code> · <code>onStatus(fn)</code> · <code>ingest(msg)</code> · <code>hands</code>, <code>frame</code>, <code>status</code>, <code>device</code></td></tr>
+<tr><td>frames</td><td><code>V6Converter</code> (raw → LeapJS v6) · <code>handsOf(msg)</code> · <code>normalizePoint(p, box)</code> · <code>handAngles(direction, normal)</code> · <code>mockHand(o)</code> · <code>mockFrame(t)</code></td></tr>
+<tr><td>gestures</td><td><code>HandGestures</code> · <code>Hysteresis(on, off)</code> · <code>THRESHOLDS</code> (pinch 0.86 / 0.5, both hands 0.8 / 0.5, grab 0.8 / 0.5)</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { LeapInput } <span class="tk">from</span> <span class="ts">'@openav/leap'</span>;
+<span class="tk">const</span> leap = <span class="tk">new</span> LeapInput({ signals }).connect();   <span class="tc">// ws://127.0.0.1:6437/v6.json</span>
+leap.onFrame(() =&gt; leap.skeleton(ctx, w, h));          <span class="tc">// joints in mm: leap.hands</span>
+<span class="tc">// no sensor: leap.simulate() — mouse = right palm, press = pinch</span></code></pre></div>
+<h2 id="packages-openav-keys">@openav/keys<a class="anchor" href="#packages-openav-keys" aria-label="Link to this section">#</a></h2>
+<p>L1 input · the on-screen piano, QWERTY playing and a simulated performer, all
+publishing <code>midi/note/on|off</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>mountKeys</code></td><td><code>mountKeys(container, { signals, chord, base = 48, octaves = 2, sim = true, capture = true })</code> → <code>{ piano, sim, update(dt), dispose(), captureBox }</code></td></tr>
+<tr><td><code>KeysPiano</code></td><td><code>new KeysPiano(container, { base, octaves, semitones, fill, keyWidth, velocity, minBase, maxBase, onNote, onOctave })</code> · <code>press(note, vel01)</code> · <code>release(note)</code> · <code>releaseAll()</code> · <code>setBase(n)</code> · <code>handleKeyDown(e)</code>, <code>handleKeyUp(e)</code> · <code>captureEnabled</code></td></tr>
+<tr><td><code>SimPlayer</code></td><td><code>new SimPlayer({ press, release, base = 60, scale = [0, 2, 4, 7, 9], density = 1 })</code> · <code>toggle(on)</code> · <code>update(dt)</code></td></tr>
+<tr><td><code>PIANO_KEYMAP</code></td><td><code>{ a: 0, w: 1, s: 2, … ';': 16 }</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { mountKeys } <span class="tk">from</span> <span class="ts">'@openav/keys'</span>;
+<span class="tk">const</span> keys = mountKeys(document.querySelector(<span class="ts">'#keys'</span>), { signals, base: 48 });
+<span class="tc">// every frame: keys.update(dt);</span></code></pre></div>
+<h2 id="packages-openav-drums">@openav/drums<a class="anchor" href="#packages-openav-drums" aria-label="Link to this section">#</a></h2>
+<p>L1 input and L4 output · a synthesized drum kit, a 16-step sequencer, and its
+grid UI; publishes <code>drum/*</code> in the same shapes as the microphone's drum
+detection.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>mountDrums</code></td><td><code>mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })</code> → <code>{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }</code>; <code>clock: 'lookahead'</code> schedules the hits ahead on the kit's audio clock (oav-p5 0.6 uses it) and plays a compiled rhythm line as written; <code>lang: 'zh'</code> names the lanes in Chinese; <code>rhythm: &lt;@openav/pattern&gt;</code> (or <code>useRhythm(mod)</code>) makes the line over the grid editable and the cells rewrite it, with <code>history</code> / <code>undo()</code>, Copy and Open in Strudel (0.7)</td></tr>
+<tr><td><code>DrumSequencer</code></td><td><code>new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })</code> · <code>setPattern(nameOrGrid)</code> · <code>toggleCell(lane, i)</code> · <code>toggle(on)</code> · <code>update(dt)</code> · <code>grid</code>, <code>bpm</code> (the frame clock)</td></tr>
+<tr><td><code>DrumScheduler</code>, <code>DrumTransport</code></td><td>the lookahead clock: a grid or a compiled line → timed events, positions in bars turned into seconds by a tempo map (no drift); the runtime with a Web Worker heartbeat, the audio clock, and steps / hits told when heard; <code>follow({ pos, at, bpm })</code> plays on an external clock (a small error pulled in by tempo, a large one a jump onto its grid), <code>followInfo()</code>, <code>unfollow()</code></td></tr>
+<tr><td><code>drumEngine</code></td><td><code>drumEngine({ samples })</code> → a sound engine (see <a href="../../docs/show-control/#show-control-sound">Sound</a>); <code>noteOn(note, vel, time)</code> plays at <code>time</code> on its own AudioContext and returns <code>{ time, cancel() }</code></td></tr>
+<tr><td><code>PATTERNS</code>, <code>GM</code></td><td>pattern presets; General MIDI drum notes <code>{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { mountDrums } <span class="tk">from</span> <span class="ts">'@openav/drums'</span>;
+<span class="tk">const</span> drums = mountDrums(document.querySelector(<span class="ts">'#drums'</span>), { signals });
+<span class="tc">// every frame: drums.update(dt);</span></code></pre></div>
+<h2 id="packages-openav-mapping">@openav/mapping<a class="anchor" href="#packages-openav-mapping" aria-label="Link to this section">#</a></h2>
+<p>L2 mapping · routes from signals to params, with curves, smoothing, learn and
+saved profiles.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Mapper</code></td><td><code>new Mapper({ signals, params, profile = 'default', onChange, onLearn, base })</code> · <code>addRoute(route)</code> · <code>removeRoute(id)</code> · <code>routesFor(target)</code> · <code>learn(target)</code> · <code>update(dt)</code> · <code>toJSON()</code> · <code>fromJSON(routes)</code> · <code>save()</code> · <code>load()</code> · <code>dispose()</code> · <code>routes</code>, <code>learnTarget</code></td></tr>
+<tr><td><code>LearnWizard</code></td><td><code>new LearnWizard({ mapper, keys, onChange })</code> · <code>start()</code> · <code>skip()</code> · <code>back()</code> · <code>stop()</code> · <code>sync()</code> · <code>active</code>, <code>current</code>, <code>index</code>, <code>total</code>, <code>done</code>, <code>added</code>: "map the knobs in order", see <a href="../../docs/score/#score-map-the-knobs-in-order">Score &amp; Director</a></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+<span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params });
+mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'bloom'</span>, curve: <span class="ts">'exp'</span>, smooth: 0.1 });
+<span class="tc">// every frame: mapper.update(dt);</span>
+<span class="tc">// a knob that nudges the timeline instead of replacing it, and gives the param back when you let go:</span>
+<span class="tc">// mapper.base = () =&gt; timeline.state();</span>
+<span class="tc">// mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'trim', outMin: -0.3, outMax: 0.3, release: 4 });</span></code></pre></div>
+<p>Full reference: <a href="../../docs/mapping/">Mapping</a>.</p>
+<h2 id="packages-openav-chop">@openav/chop<a class="anchor" href="#packages-openav-chop" aria-label="Link to this section">#</a></h2>
+<p>L2 mapping · values over time, the way TouchDesigner's CHOPs shape them: Lag, Trigger (<code>envelope</code>), Speed, Spring, Trail, Slope, Count. Pure logic, no clock of its own: every step is told the seconds that went by and is solved exactly over them, so 30 fps and 144 fps draw the same curve. What the parameters mean follows Derivative's TouchDesigner documentation; the code is OAV's own. In a p5 sketch, oav-p5 gives these one call each: <a href="../../p5/#p5-values-over-time-lag-env-speed-spring-trail">p5 one line</a>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>approach</code></td><td><code>approach(current, target, seconds, dt)</code> → one step of a one-pole lag; <code>seconds</code> = time to 63% of a change (the <code>smooth</code> of <code>@openav/mapping</code>, which steps with it)</td></tr>
+<tr><td><code>Lag</code></td><td><code>new Lag({ up = 0.1, down = up })</code> · <code>step(input, dt, up?, down?)</code> → output · <code>reset(v?)</code>: <code>up</code> while rising, <code>down</code> while falling (Lag CHOP's Lag 1 / Lag 2), in TouchDesigner's seconds (about 90% of a change)</td></tr>
+<tr><td><code>envelope</code></td><td><code>envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)</code> → the Trigger CHOP's level at <code>t</code> for events at <code>times</code> (seconds, oldest first): a straight attack (0 → peak), then 0 after exactly <code>decay</code>; a retrigger starts where it is · <code>envelopeStage(elapsed, attack, decay, from, peak)</code></td></tr>
+<tr><td><code>Speed</code></td><td><code>new Speed()</code> · <code>step(rate, dt)</code> → position: <code>rate</code> per second</td></tr>
+<tr><td><code>Spring</code></td><td><code>new Spring({ stiffness = 100, damping = 6 })</code> · <code>step(target, dt)</code> → position (<code>velocity</code> alongside): a mass on a spring pulled to the input, solved exactly · <code>springStep(x, v, target, k, c, dt)</code> → <code>[x, v]</code></td></tr>
+<tr><td><code>Trail</code></td><td><code>new Trail({ seconds = 2, rate = 60 })</code> · <code>step(value, dt)</code> → the last <code>seconds</code>, 60 values a second plus the newest, oldest first, fixed length</td></tr>
+<tr><td><code>Slope</code></td><td><code>new Slope()</code> · <code>step(value, dt)</code> → change per second</td></tr>
+<tr><td><code>Count</code></td><td><code>new Count({ threshold = 0.5 })</code> · <code>step(on, limit = 0)</code> → times it turned on, looped to 0 … limit − 1 with a limit · <code>wrapCount(total, limit)</code></td></tr>
+<tr><td><code>TD_LAG_RATIO</code>, <code>DEFAULTS</code></td><td><code>Math.LN10</code>: two kinds of seconds. <code>Lag</code> and <code>lag()</code> take TouchDesigner's Lag CHOP seconds (about the time to follow 90% of a change), so <code>lag(x, 0.1)</code> moves like a Lag CHOP set to 0.1; underneath, <code>Lag</code> divides by <code>TD_LAG_RATIO</code> (2.3) to get its time constant. <code>approach(…, seconds)</code> takes that time constant itself (63% of a change, what <code>@openav/mapping</code>'s <code>smooth</code> always meant); the defaults above</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Lag, envelope } <span class="tk">from</span> <span class="ts">'@openav/chop'</span>;
+<span class="tk">const</span> vu = <span class="tk">new</span> Lag({ up: 0.03, down: 0.4 });       <span class="tc">// opens at once, closes slowly</span>
+<span class="tc">// every frame: r = 50 + vu.step(level, dt) * 300; pump = envelope(kickTimes, now, 0.01, 0.3);</span></code></pre></div>
+<h2 id="packages-openav-stage">@openav/stage<a class="anchor" href="#packages-openav-stage" aria-label="Link to this section">#</a></h2>
+<p>L3 world · the world shell: lifecycle and param aggregation, no renderer.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Stage</code></td><td><code>new Stage({ container, params, signals, io = {} })</code> · <code>register(world)</code> · <code>activate(name)</code> (async) · <code>frame(dt, baseState)</code> → state · <code>active</code>, <code>activeName</code>, <code>worlds</code>, <code>io</code></td></tr>
+<tr><td><code>createCanvas</code></td><td><code>createCanvas(container, { alpha = false })</code> → <code>{ canvas, ctx, fit() → { w, h }, dispose() }</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Stage, createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
+<span class="tk">const</span> stage = <span class="tk">new</span> Stage({ container, params, signals });
+stage.register(world);
+<span class="tk">await</span> stage.activate(world.name);
+<span class="tc">// every frame: const state = stage.frame(dt, timeline.state());</span></code></pre></div>
+<h2 id="packages-openav-world-webtoe">@openav/world-webtoe<a class="anchor" href="#packages-openav-world-webtoe" aria-label="Link to this section">#</a></h2>
+<p>L3 world · performs a <a href="https://github.com/frank890417/WebToe" rel="noopener">WebToe</a> node patch
+as a world; params reach the patch's <code>ext('name', fallback)</code> bindings.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>webtoeWorld</code></td><td><code>webtoeWorld({ name = 'webtoe', app = 'https://webtoe.openaudiovisual.com/', project, params = [], extra })</code> → a world</td></tr>
+</tbody>
+</table></div>
+<p>See <a href="../../docs/writing-a-world/#writing-a-world-a-webtoe-patch">Writing a world</a>.</p>
+<h2 id="packages-openav-sound">@openav/sound<a class="anchor" href="#packages-openav-sound" aria-label="Link to this section">#</a></h2>
+<p>L4 output · instruments in the page behind a small engine contract: a Salamander
+grand piano, mallets, strings, organ, choir, harp and synth presets, chosen from a
+picker; engine params become <code>sound/*</code> params.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Sound</code></td><td><code>new Sound({ signals, params, engine, instrument, remember, picker })</code> · <code>enable()</code> (from a click) · <code>update(state)</code> per frame · <code>setInstrument(id)</code> · <code>instrument</code> · <code>status</code> · <code>onChange(cb)</code> · <code>dispose()</code> · <code>enabled</code></td></tr>
+<tr><td><code>toneEngine</code></td><td><code>toneEngine({ instrument = 'synth/pad', baseUrl, instruments, cdn, drumChannel = 10 })</code> → engine with params <code>cutoff</code>, <code>space</code>, <code>volume</code> plus the instrument's own</td></tr>
+<tr><td><code>registerInstrument</code></td><td><code>registerInstrument({ id, name, category, params, defaults, credit, create(Tone, ctx) }, { replace })</code>; also <code>getInstrument</code>, <code>listInstruments</code>, <code>instrumentGroups</code>, <code>onInstrumentsChange</code></td></tr>
+<tr><td><code>registerSynthPreset</code></td><td><code>registerSynthPreset({ id, name, voice, oscillator, envelope, filter, effects, … })</code> → <code>synth/&lt;id&gt;</code></td></tr>
+<tr><td><code>modalInstrument</code></td><td><code>modalInstrument({ id, name, partials, strike, damp })</code> → a mallet-style instrument from data</td></tr>
+<tr><td><code>mountSoundPicker</code></td><td><code>mountSoundPicker(el, sound, { lang, className })</code> → the picker the console uses</td></tr>
+</tbody>
+</table></div>
+<p>Engine contract: <code>{ params, enable(), noteOn(note, vel01), noteOff(note), set(key, value), dispose() }</code>.
+The instrument list and how to add one: <a href="../../docs/show-control/#show-control-sound">Sound</a>.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Sound, toneEngine } <span class="tk">from</span> <span class="ts">'@openav/sound'</span>;
+<span class="tk">const</span> sound = <span class="tk">new</span> Sound({ signals, params, engine: toneEngine({ instrument: <span class="ts">'piano'</span> }) });
+button.onclick = () =&gt; sound.enable();
+<span class="tc">// every frame: sound.update(state);</span></code></pre></div>
+<h2 id="packages-openav-osc">@openav/osc<a class="anchor" href="#packages-openav-osc" aria-label="Link to this section">#</a></h2>
+<p>L4 output · OSC from the browser through a small Node bridge to UDP.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>OscOut</code></td><td><code>new OscOut(url = 'http://127.0.0.1:7456')</code> · <code>enable()</code> → <code>Promise&lt;boolean&gt;</code> · <code>disable()</code> · <code>send(addr, args)</code> · <code>flush()</code> per frame · <code>rate()</code> → messages sent since the last call · hooks <code>onStatus(ok, info)</code>, <code>onMsg(addr, args)</code></td></tr>
+<tr><td>bridge</td><td><code>node packages/osc/bridges/osc-bridge.js [httpPort=7456] [targetHost=127.0.0.1] [targetPort=3456]</code></td></tr>
+</tbody>
+</table></div>
+<p>See <a href="../../docs/show-control/#show-control-osc-output">Show control</a>.</p>
+<h2 id="packages-openav-out">@openav/out<a class="anchor" href="#packages-openav-out" aria-label="Link to this section">#</a></h2>
+<p>L4 output · page parameters to physical hardware through one local bridge
+(<code>node packages/out/bridge/out-bridge.mjs --config out.json</code>, <code>ws://127.0.0.1:6450/out</code>): WLED light strips (DDP),
+serial motor boards, OSC, and DMX lighting (Art-Net, sACN, an Enttec DMX USB Pro). A watchdog sends every channel its configured
+safe value (or leaves a <code>"hold"</code> channel where it is) when the page goes quiet or the last client leaves.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>OutClient</code></td><td><code>new OutClient({ url, id, schedule })</code> · <code>connect()</code> · <code>simulate()</code> · <code>close()</code> · <code>set(ch, v)</code> · <code>batch({ ch: v })</code> · <code>onStatus(fn)</code> · <code>status</code>, <code>last</code>, <code>bridge</code>, <code>beatMs</code> — one value per channel per frame, reconnects with backoff, heartbeat</td></tr>
+<tr><td>bridge</td><td><code>node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]</code> · sinks <code>ddp</code> <code>serial</code> <code>osc</code> <code>udp-json</code> <code>log</code>, and for DMX on <code>dmx/&lt;universe&gt;/&lt;address&gt;</code>: <code>artnet</code> (unicast <code>host</code>), <code>sacn</code> (multicast or <code>host</code>, <code>priority</code>, <code>source</code>), <code>enttec</code> (<code>path</code>, <code>universe</code>), 40 Hz + a keep-alive each second, a flash guard per channel (<code>"flashGuard": false</code> | <code>{ maxFlashHz, exempt }</code>)</td></tr>
+<tr><td>lab</td><td><code>meta.params[i].out: "light/1/r"</code> binds a param (0..1 by min–max, <code>outRaw</code> for the raw value); <code>?out=sim</code> · <code>?out=0</code> · <code>?out=ws://…</code></td></tr>
+</tbody>
+</table></div>
+<p>See the package README for the config file and the watchdog rules.</p>
+<h2 id="packages-openav-dmx">@openav/dmx<a class="anchor" href="#packages-openav-dmx" aria-label="Link to this section">#</a></h2>
+<p>L4 output (lighting) · DMX from a page, as pure logic: fixture profiles (<code>open-audiovisual/fixture@1</code>), a patch that turns
+properties (dimmer, color, pan, tilt, strobe, zoom, 0..1) into each light's bytes, and an engine that renders every light at
+any moment as a function of time: base scenes → cues with fades → chases on beats → effects → live values → per-fixture limits →
+grand master → blackout. Safety is on by default, and the flash cap (3 a second) is held per fixture, twice: the engine slows
+the effects and chases that flash one fixture until their rates there add up to at most the cap (<code>state(t).slowed</code>), and every
+<code>dmxTransport()</code> puts each frame through a flash guard that holds what a fixture really emits, live values included (rises are
+rationed, falls always pass; <code>{ flashGuard: false }</code> to switch it off, and the monitor then says so). A strobe channel whose
+profile gives Hz is held to the cap, one with no Hz stays open; <code>render(t, { beat })</code> needs <code>bpm</code> with it, since the cap reads the tempo; <code>control</code> channels (reset, lamp, built-in
+programs) are written only by <code>control()</code>; blackout leaves pan and tilt where they are. The bytes of Art-Net, sACN and the Enttec
+DMX USB Pro come out of pure encoders; <code>dmxTransport()</code> sends what changed each frame (to memory, through the out-bridge, or by
+Web Serial), <code>dmxParams()</code> makes the engine's control points params, and <code>mountDmxMonitor()</code> shows the rig on the page.
+Nothing has been tried on a real fixture, node or interface. The chapter is <a href="../../docs/dmx/">DMX lighting</a>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Patch</code></td><td><code>new Patch({ profiles })</code> · <code>add({ id, profile, mode, universe = 1, address, name, groups, limits })</code> (throws past 512, unknown mode) · <code>check()</code> → overlaps · <code>ids(target)</code> · <code>render(states, { master, blackout, maxFlashHz = 3, controls })</code> → <code>Universes</code> · <code>resolve(id, props)</code> · <code>toJSON()</code> · <code>Patch.fromJSON(json, { profiles })</code></td></tr>
+<tr><td><code>DmxEngine</code></td><td><code>new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 })</code> · <code>scene(name, { target: props })</code> · <code>base(...names)</code> · <code>cue(name, { scene, fadeIn, fadeOut, curve })</code> · <code>go(name, at)</code> · <code>release(at, fade)</code> · <code>chase(name, { steps, every, unit: 'beat' | 'second', fade, start })</code> · <code>effect(name, { target, property, wave: sine | saw | square | chase | flicker | rainbow, rate, unit, depth, phase, spread, width, seed })</code> · <code>run(name, on)</code> · <code>remove(name)</code> · <code>set(target, props)</code> · <code>clear(target, keys)</code> · <code>control(id, key, byte)</code> · <code>master</code>, <code>blackout</code>, <code>maxFlashHz</code> · <code>render(t, { beat, bpm })</code> → <code>Universes</code> · <code>state(t)</code> → <code>{ fixtures, capped, slowed }</code></td></tr>
+<tr><td>live</td><td><code>dmxTransport('sim' | 'bridge' | 'serial', { patch, flashGuard = true, maxFlashHz = 3, now, client | universe })</code> · <code>send(universes)</code> → channels changed · <code>bytes(id)</code> · <code>status</code> · <code>flashGuard</code> → <code>{ on, unit, maxFlashHz, held }</code> · <code>connect()</code> (serial, from a click) · <code>close()</code> · <code>new FlashGuard(patch, { maxFlashHz })</code> · <code>apply(universes, t)</code> · <code>held</code> · <code>dmxParams(engine, { groups, effects, chases })</code> → <code>{ params, apply(state, t) }</code> · <code>mountDmxMonitor(el, { patch, transport, engine })</code> → <code>{ update(universes?), look(id), dispose() }</code> · engine <code>tune(name, { rate, depth }, at)</code> · <code>submaster(target, level)</code> · <code>describe()</code></td></tr>
+<tr><td><code>Universe</code> · <code>Universes</code></td><td><code>new Universe(id)</code> · <code>get(address)</code> · <code>set(address, value)</code> · <code>write(address, values)</code> · <code>fill(v)</code> · <code>copy()</code> · <code>data</code> (Uint8Array, 512) · <code>Universes</code>: <code>get(id)</code> · <code>bytes(id)</code> · <code>ids()</code> · <code>entries()</code></td></tr>
+<tr><td>fixtures</td><td><code>FIXTURES</code> (generic: dimmer, RGB, RGBW 4/6 ch, RGBA, RGBAW+UV 6/8 ch, one-colour strobe, moving head 8/16 ch, all <code>"verified": false</code>) · <code>fixtureById(id)</code> · <code>validateFixture(profile)</code> → problems · <code>loadFixture(profile)</code> · <code>rgbToChannels([r, g, b], colors)</code> · schema <code>@openav/dmx/fixtures/fixture.schema.json</code></td></tr>
+<tr><td>protocols</td><td><code>encodeArtDmx(data, { universe, sequence, physical })</code> / <code>decodeArtDmx(bytes)</code> (ArtDmx, UDP 6454) · <code>encodeSacn(data, { universe, cid, source, priority, sequence })</code> / <code>decodeSacn(bytes)</code> · <code>sacnAddress(universe)</code> (E1.31, UDP 5568) · <code>encodeEnttecDmx(data)</code> / <code>decodeEnttecDmx(bytes)</code> (DMX USB Pro, label 6)</td></tr>
+</tbody>
+</table></div>
+<p><code>node tools/import-ofl.mjs &lt;OFL checkout&gt; --list tools/ofl/batch-1.json</code> converts fixtures from the Open Fixture Library (MIT)
+into this format (or name them: <code>… fixtures/&lt;maker&gt;/&lt;fixture&gt;.json</code>), and refuses one the engine would get wrong on a real light.
+Forty-two are in <code>fixtures/imported/</code>, all <code>"verified": false</code>; they stay out of <code>FIXTURES</code>, and
+<code>loadImportedFixture(id)</code> from <code>@openav/dmx/fixtures/imported.js</code> (or <code>device(id)</code> of <code>@openav/devices</code>) imports the one you ask for.
+Art-Net™ Designed by and Copyright Artistic Licence.</p>
+<h2 id="packages-openav-record">@openav/record<a class="anchor" href="#packages-openav-record" aria-label="Link to this section">#</a></h2>
+<p>L4 output (video branch) · the performance video: the work and the performer's
+camera composited into one canvas of an exact size (vertical 1080×1920, 4:5,
+2.7K, 4K, landscape, square) and recorded with the work's own sound by one
+<code>MediaRecorder</code>, so picture and sound are in sync by construction; plus the
+sound as its own file, an event log, and MIDI takes (record what you play, play
+it back into the show, <code>.mid</code> in and out).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Compositor</code></td><td><code>new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions, getWorkCanvas, background, mirrorCam = true, maxFps = 60, onDraw(ctx, rects, comp) })</code> · <code>start()</code> · <code>stop()</code> · <code>draw()</code> · <code>setSize(size)</code> · <code>setLayout(layout, options)</code> · <code>setCamera(stream | video | null)</code> · <code>drawOnCamera(fn(ctx, w, h))</code> · <code>canvas</code>, <code>rects</code>, <code>video</code></td></tr>
+<tr><td><code>Recorder</code></td><td><code>new Recorder({ canvas, fps = 60, audioTracks = [], audioOnly = false, videoBitsPerSecond, mimeType })</code> · <code>start({ timeslice = 1000, ondata(blob, seq), keep })</code> · <code>stop()</code> → <code>Promise&lt;{ mimeType, ext, bytes, durationMs, width, height, blob, … }&gt;</code> · <code>t0</code></td></tr>
+<tr><td><code>AudioTap</code></td><td><code>new AudioTap({ context, sources, captureDestination })</code> · <code>add(node | stream | track, { bus })</code> · <code>captureDestination()</code> · <code>addMicrophone()</code> · <code>level()</code> · <code>tracks</code> (work + mic), <code>workTracks</code> (work only)</td></tr>
+<tr><td><code>EventLog</code></td><td><code>new EventLog({ now, filter, throttleMs })</code> · <code>start(at)</code> · <code>stop()</code> · <code>add(name, value)</code> · <code>attach(signals)</code> · <code>toJSON()</code> · <code>toTake()</code></td></tr>
+<tr><td><code>TakeRecorder</code> · <code>TakePlayer</code></td><td><code>new TakeRecorder({ signals, filter = /^midi\//, overdub })</code> · <code>start()</code> · <code>stop()</code> → take · <code>new TakePlayer({ signals, take, loop = true, speed = 1, yieldToLive, resumeAfter, clock })</code> · <code>play()</code> · <code>pause()</code> · <code>stop()</code> · <code>seek(ms)</code> · <code>update(dt)</code></td></tr>
+<tr><td>pure helpers</td><td><code>layoutRects(layout, out, src, opts)</code> · <code>PRESETS</code> · <code>presetById</code> · <code>resolveSize</code> · <code>recommendedFps(w, h)</code> · <code>recommendedBitrate(w, h, fps)</code> · <code>pickMime(isTypeSupported, { audioOnly })</code> · <code>extFor(mime)</code> · <code>normalizeTake</code> · <code>validateTake</code> · <code>trimSilence</code> · <code>quantizeTake</code> · <code>toMidiFile(take)</code> → <code>Uint8Array</code> · <code>fromMidiFile(bytes)</code> → take</td></tr>
+<tr><td>cameras</td><td><code>openCamera({ deviceId, width = 1920, height = 1080, fps = 30 })</code> → <code>MediaStream</code> · <code>listCameras()</code> · <code>listMicrophones()</code></td></tr>
+</tbody>
+</table></div>
+<p>Layouts: <code>stack</code> (work on top at full width, camera below), <code>pip</code> (camera inset
+in a corner), <code>side</code> (work left, camera right), <code>work</code>. 60 fps up to about
+1080×1920, 30 fps for 2.7K and 4K; webcams stop at 1080p, so a 4K frame
+enlarges the camera.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Compositor, AudioTap, Recorder, openCamera } <span class="tk">from</span> <span class="ts">'@openav/record'</span>;
+<span class="tk">const</span> comp = <span class="tk">new</span> Compositor({ size: <span class="ts">'vertical-1080p'</span>, layout: <span class="ts">'stack'</span>, getWorkCanvas: () =&gt; canvas });
+comp.start();
+<span class="tk">await</span> comp.setCamera(<span class="tk">await</span> openCamera());
+<span class="tk">const</span> tap = <span class="tk">new</span> AudioTap({ context, sources: [workOutput] });
+<span class="tk">const</span> rec = <span class="tk">new</span> Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks }).start();
+<span class="tc">// later: const { blob, mimeType } = await rec.stop();</span></code></pre></div>
+<p>Package README with the MIDI takes: <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/record/README.md" rel="noopener">packages/record</a>.
+Example: <a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/10-record/main.js" rel="noopener">10-record</a>.</p>
+<h2 id="packages-openav-fab">@openav/fab<a class="anchor" href="#packages-openav-fab" aria-label="Link to this section">#</a></h2>
+<p>L4 output (physical branch) · can it be made? A manufacturability report for any mesh (watertight, volume, overhang, thinnest wall, grams of PETG / PLA, one Chinese warning per problem) and STL / OBJ / GLB files; STEP and DXF when the shape is a smlibwasm Part or Shape. smlibwasm and manifold-3d are not bundled: <code>smlib()</code> / <code>manifold()</code> <code>import()</code> them from a URL on first use.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Fab</code></td><td><code>new Fab({ urls: { smlib, manifold }, scale, importer, download, context })</code> · <code>check(x, opts)</code> → report · <code>export(x, fmt, opts)</code> → <code>Promise&lt;{ bytes, mime, ext, report }&gt;</code> (<code>stl</code> <code>obj</code> <code>glb</code> <code>step</code> <code>dxf</code>) · <code>save(x, fmt, { name, params, note })</code> through <code>saver(bytes, info)</code> or a browser download · <code>smlib()</code> · <code>manifold()</code> · <code>meshOf(x)</code></td></tr>
+<tr><td>pure functions</td><td><code>checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })</code> · <code>weldMesh(mesh)</code> · <code>meshOf(x, { scale })</code> (TriMesh, smlibwasm Part, three.js Mesh/Object3D, Y up becomes Z up) · <code>toStlBytes</code> · <code>toObjText</code> · <code>toGlbBytes</code></td></tr>
+</tbody>
+</table></div>
+<h2 id="packages-openav-hw">@openav/hw<a class="anchor" href="#packages-openav-hw" aria-label="Link to this section">#</a></h2>
+<p>L4 output (physical branch) · what goes inside. <code>fab</code> checks the shell, <code>hw</code> checks the electronics. A spec lists the parts and the wires (<code>{ board, parts: { id: { part, have } }, wires: [['mcu.4', 'acc.SDA'], …] }</code>), and <code>hw</code> finds the nets and reports, one Chinese sentence per problem: a 3.3 V signal into a 5 V LED strip, a voltage above what a pin takes, a supply out of range or only there on the charger, ESP8266 boot pins, one pin wired to two jobs, I²C address clashes, current beyond a regulator, battery hours. The parts library takes every number from a datasheet; what could not be confirmed is <code>null</code> (待查) and the check says it cannot tell.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Hw</code></td><td><code>check(spec)</code> → <code>{ ok, issues: [{ level, code, text, at }], warnings, notes, nets, power: { rails, battery }, i2c }</code> · <code>diagram(spec)</code> → SVG string · <code>bom(spec)</code> → <code>{ have, buy, unknown }</code> (no prices, no shop links) · <code>parts</code> · <code>part(key)</code> · <code>resolvePin(spec, ref)</code> · <code>nets(spec)</code></td></tr>
+<tr><td><code>HW_PARTS</code></td><td>the library: Feather HUZZAH ESP8266, Arduino Leonardo and UNO R3, RC522, HC-SR501, 10 kΩ pot, LIS3DH, MPU-6050 (GY-521), WS2812B, SK6812, NeoPixel rings 12 and 16, 1-cell LiPo (JST-PH), TP4056 and Micro-Lipo USB-C chargers, Qi receiver</td></tr>
+</tbody>
+</table></div>
+<h2 id="packages-openav-timeline">@openav/timeline<a class="anchor" href="#packages-openav-timeline" aria-label="Link to this section">#</a></h2>
+<p>Spine · automation, scenes and transport; pure logic.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })</code> · <code>play()</code> (releases a hold), <code>pause()</code>, <code>toggle()</code>, <code>seek(t)</code>, <code>jumpScene(d)</code>, <code>next()</code> (releases a hold, else a scene on), <code>prev()</code>, <code>release()</code>, <code>reset()</code> (to <code>start</code>, default 0) · <code>advance(dt)</code> · <code>state(t)</code>, <code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>, <code>currentScene(t)</code>, <code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>, <code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · keyframes <code>[t, value, curve?]</code> (<code>'linear'</code> · <code>'ease'</code> · <code>'in'</code> · <code>'out'</code> · <code>'step'</code>) · <code>loop</code> (<code>true</code>, <code>'scene'</code>, a scene id, <code>{ from, to }</code>), <code>onLoop(cb)</code> · <code>cues()</code>, <code>onCue(cb(cue, { cause }))</code>, <code>fireCue(cue)</code> · <code>record(key, source)</code>, <code>stopRecording()</code>, <code>onRecord(cb)</code>, <code>mergeTake(key, take, opts)</code> · per-segment automation <code>{ key: { segmentId: [[p, value, curve?], …] } }</code>, <code>lanePos(t)</code>, <code>laneTime(id, p)</code>, <code>lanePlan()</code>, <code>lanes()</code> · <code>exportAutomation({ keys, as, precision })</code>, <code>importAutomation(doc, { keys, replace, ignoreCut })</code> · <code>anchor(epoch, opts)</code>, <code>unanchor()</code>, <code>drift()</code>, <code>onDrift(cb)</code> · <code>follow(source, opts)</code>, <code>unfollow()</code>, <code>following</code>, <code>followStatus()</code>, <code>onFollow(cb)</code> · <code>t</code>, <code>playing</code>, <code>holding</code>, <code>rate</code>, <code>total</code>, <code>start</code>, <code>score</code></td></tr>
+<tr><td><code>compileLane</code>, <code>decompileLane</code>, <code>lanePos</code>, <code>laneTime</code>, <code>isLane</code>, <code>AUTOMATION_FORMAT</code></td><td>the segment-lane conversions as pure functions over a segment table <code>[{ id, start, end }]</code> (<code>score.rootSegments</code>), for tools that have no timeline</td></tr>
+</tbody>
+</table></div>
+<p>A keyframe's third item is the curve of the segment that ends at it; a keyframe without one is linear, exactly as before. A scene's <code>cues</code> fire when playback passes them, never on a seek. <code>record()</code> writes a value source (a knob override) into a lane while the timeline plays. <code>CURVES</code> is exported too. Curves can be written per segment, saved as JSON and read back, and the timeline can watch the wall clock: <a href="../../docs/show-control/#show-control-lanes-curves-written-per-segment">Lanes</a>, <a href="../../docs/show-control/#show-control-saving-and-loading-automation">Saving and loading automation</a>, <a href="../../docs/show-control/#show-control-wall-clock-anchor-and-drift">Wall clock</a>, or follow another timeline's clock: <a href="../../docs/show-control/#show-control-following-another-clock-follow">Following another clock</a>.</p>
+<p>See <a href="../../docs/show-control/#show-control-timeline">Show control</a>.</p>
+<h2 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="Link to this section">#</a></h2>
+<p>Spine · the score and the director: a show written as segment lengths, and the modules that perform the segments. Pure logic, no DOM.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Score</code></td><td><code>new Score({ cuts, cut })</code> · <code>table()</code> · <code>total</code> · <code>segmentAt(T)</code>, <code>indexAt(T)</code> · <code>locate(T)</code>, <code>timeAt(id, p)</code> · <code>cueTime('seg.name')</code> · <code>cuesBetween(T0, T1)</code> · <code>cues()</code> · <code>scenes()</code> · <code>validate()</code> · <code>cuts</code>, <code>cut</code>, <code>segments</code> (each with its <code>meta</code>), <code>startT</code>, <code>scale</code>, <code>baseTime(T)</code>, <code>rootSegments</code>, <code>allSegmentIds()</code></td></tr>
+<tr><td><code>ScoreError</code></td><td>thrown by an invalid score; <code>problems</code> lists every reason</td></tr>
+<tr><td><code>Director</code></td><td><code>new Director({ score, modules, api, onStatus, onCue, maxStep })</code> · <code>update(T, dt, { holding, playing })</code> · <code>param(key, value, T)</code> · <code>seek(T)</code> · <code>reset()</code> · <code>status()</code> · <code>register(module)</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Score, Director } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">const</span> score = <span class="tk">new</span> Score({ cuts, cut: <span class="ts">'full'</span> });
+<span class="tk">const</span> director = <span class="tk">new</span> Director({ score, modules, api });
+<span class="tc">// every frame, after timeline.advance(dt):</span>
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });</code></pre></div>
+<p>Full reference: <a href="../../docs/score/">Score &amp; Director</a>.</p>
+<h2 id="packages-openav-pattern">@openav/pattern<a class="anchor" href="#packages-openav-pattern" aria-label="Link to this section">#</a></h2>
+<p>Spine · rhythm in one line: mini-notation, the way TidalCycles and Strudel write rhythm, read into the hits of each bar. Pure logic. An independent implementation from their public documentation (the writing comes from <a href="https://tidalcycles.org" rel="noopener">TidalCycles</a> and <a href="https://strudel.cc" rel="noopener">Strudel</a>).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>compile</code></td><td><code>compile(src, { words = WORDS })</code> → <code>{ ok, error, src, voices, layers, period, eventsInBar(bar, { seed = 0 }) }</code>, never throws · <code>eventsInBar</code> (bars from 1) → <code>[{ word, voice, n, pos, dur, vel, layer, token: { start, end } }]</code> sorted by <code>pos</code> (0..1 in the bar) · <code>error</code> → <code>{ code, index, length, message, hint }</code>, <code>code</code> one of <code>empty</code> <code>unclosed</code> <code>unexpected</code> <code>bad-number</code> <code>bad-euclid</code> <code>unknown-word</code> <code>unsupported</code></td></tr>
+<tr><td><code>parse</code></td><td><code>parse(src)</code> → <code>{ ok, tree }</code> or <code>{ ok: false, error }</code>: nodes <code>step</code> <code>rest</code> <code>seq</code> <code>layer</code> <code>alt</code> <code>fast</code> <code>slow</code> <code>euclid</code> <code>maybe</code>, each with its character range</td></tr>
+<tr><td><code>WORDS</code></td><td><code>bd</code> kick · <code>sd</code> snare · <code>hh</code> hat · <code>oh</code> openhat · <code>cp</code> clap · <code>rim</code>/<code>rs</code> · <code>lt</code> <code>mt</code> <code>ht</code> toms · <code>cr</code> crash · <code>rd</code> ride · <code>cb</code> cowbell, and the kit's own names</td></tr>
+<tr><td><code>euclid</code></td><td><code>euclid(pulses, steps, rotate = 0)</code> → booleans (Toussaint 2005)</td></tr>
+<tr><td><code>fromGrid</code></td><td><code>fromGrid(grid, { steps = 16, words, order })</code> → a line that plays exactly the grid, written the way a person would: <code>bd*4</code>, <code>[~ sd]*2</code>, <code>bd(3,8,2)</code>, else beat by beat <code>bd [~ ~ ~ bd] bd*2 ~</code> (0.7)</td></tr>
+<tr><td><code>toGrid</code></td><td><code>toGrid(srcOrCompiled, { bar = 1, steps = 16, seed = 0, bars = 16 })</code> → <code>{ ok, grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }</code>: bar <code>bar</code> on the steps and what they cannot hold; <code>seed</code> decides each <code>?</code> (as in <code>eventsInBar</code>), <code>bars</code> is how many bars it looks through to tell whether the others differ (<code>lost.varies</code>) (0.7)</td></tr>
+<tr><td><code>fromStrudel</code></td><td><code>fromStrudel(code)</code> → <code>{ strudel, ok, src, bpm, ignored, unsupported }</code>: <code>s("…")</code> / <code>sound("…")</code> copied from strudel.cc, <code>.fast</code> / <code>.slow</code> folded in, <code>setcpm</code> / <code>setcps</code> as <code>bpm</code> (0.7)</td></tr>
+<tr><td><code>toStrudel</code>, <code>strudelUrl</code></td><td><code>strudelUrl(src, { bpm, comment })</code> → <code>https://strudel.cc/#…</code> (the line as <code>s("…")</code> with <code>setcpm(bpm/4)</code>, base64 in the <code>#</code>); open it in a new tab (0.7)</td></tr>
+</tbody>
+</table></div>
+<p>Writing: spaces (steps share the bar) · <code>~</code> <code>-</code> rest · <code>[ ]</code> group · <code>,</code> layers · <code>*n</code> faster · <code>/n</code> slower, across bars · <code>&lt; &gt;</code> one per bar · <code>(k,n,r)</code> Euclidean · <code>!n</code> and <code>!</code> repeat · <code>@n</code> and <code>_</code> longer · <code>?</code> <code>?0.3</code> drop by chance (seeded) · <code>bd:2</code> sample number. <code>.</code> <code>|</code> <code>{ }</code> are refused with a hint (rests are <code>~</code> or <code>-</code>).</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { compile } <span class="tk">from</span> <span class="ts">'@openav/pattern'</span>;
+<span class="tk">const</span> p = compile(<span class="ts">'bd*4, [~ sd]*2, hh*8'</span>);
+p.eventsInBar(1);   <span class="tc">// kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8</span></code></pre></div>
+<h2 id="packages-openav-console">@openav/console<a class="anchor" href="#packages-openav-console" aria-label="Link to this section">#</a></h2>
+<p>Spine · the director's desk: transport, layer panels, params with learn, signal
+meters, performance mode.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder, keys, curves })</code> → <code>{ render(state), perf, director, curves, wizard, keys, dispose() }</code>; <code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td>Curves panel</td><td><code>curves</code>: <code>false</code> leaves it out, <code>{ open: true }</code> starts it open; <code>desk.curves</code> → <code>{ toggle(force?), open, info() }</code> (<code>null</code> with <code>curves: false</code>). One curve per automated param across the whole show, the playhead, overrides with ↩ and ↩ all, click to seek: <a href="../../docs/show-control/#show-control-the-curves-panel">The curves panel</a></td></tr>
+<tr><td>keyboard</td><td><code>keys</code>: <code>{ play, next, prev, reset, perf, fullscreen, midi, cancel, curves }</code> → a key or a list (<code>'F6'</code>, <code>'KeyR'</code>, <code>'Shift+T'</code>), <code>false</code> = off; <code>keys: false</code> = no shortcuts · <code>DEFAULT_KEYS</code> · <code>resolveKeys(keys)</code> · <code>keyLabel(keys, action)</code>: <a href="../../docs/show-control/#show-control-moving-the-shortcuts">Moving the shortcuts</a></td></tr>
+</tbody>
+</table></div>
+<p>See <a href="../../docs/show-control/#show-control-the-console">Show control</a>.</p>
+<h2 id="packages-openav-monitor">@openav/monitor<a class="anchor" href="#packages-openav-monitor" aria-label="Link to this section">#</a></h2>
+<p>Spine · the backstage page and the WebSocket relay that feeds it.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>MonitorFeed</code></td><td><code>new MonitorFeed({ url = 'ws://&lt;page host&gt;:7457', hz = 15, extra })</code> · <code>connect()</code> · <code>frame(snapshot)</code> · <code>extra(fn)</code> → <code>off()</code> · <code>connected</code>, <code>onStatus</code></td></tr>
+<tr><td><code>snapshotOf</code></td><td><code>snapshotOf({ timeline, params, signals, stage, loop, extra? }, state)</code> → a JSON snapshot; the work's own numbers (<code>extra</code>, the active world's <code>monitor()</code>) land under <code>extra</code></td></tr>
+<tr><td><code>cleanExtra</code></td><td><code>cleanExtra(x)</code> → the work's numbers made safe for JSON (a number, string, boolean, null or <code>{ v, min, max, warn }</code> per field), or <code>null</code> when there are none</td></tr>
+<tr><td>server</td><td><code>node packages/monitor/server.js [port=7457]</code>: backstage page at <code>/</code>, <code>/health</code></td></tr>
+</tbody>
+</table></div>
+<p>See <a href="../../docs/show-control/#show-control-backstage-monitor">Show control</a>.</p>
+<h2 id="packages-openav-sync">@openav/sync<a class="anchor" href="#packages-openav-sync" aria-label="Link to this section">#</a></h2>
+<p>Spine · several pages, one show: the wire between a leader and its followers, over a BroadcastChannel or the room relay. A follower's timeline chases the leader with <a href="../../docs/show-control/#show-control-following-another-clock-follow"><code>timeline.follow()</code></a>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>createSync</code></td><td><code>createSync({ role, channel, url, timeline, score, follow, extra, state, hz, info, accept, onFrame, onState, onGap, id, now, transport })</code> → a <code>SyncLeader</code> or a <code>SyncFollower</code>; a follower's timeline is made to follow it. Call <code>sync.frame()</code> after <code>timeline.advance(dt)</code> every frame; <code>sync.close()</code> lets go</td></tr>
+<tr><td><code>SyncLeader</code></td><td><code>new SyncLeader({ timeline, transport, id, cut, extra, state, hz, now, onHello })</code> · <code>frame()</code> · <code>sendState(to?)</code> · <code>status()</code> · <code>monitor()</code> · <code>close()</code></td></tr>
+<tr><td><code>SyncFollower</code></td><td><code>new SyncFollower({ transport, id, now, timeline, info, accept, onFrame, onState, onGap, resync = true, helloEvery = 1000, takeoverAfter = 1500, resyncAfter = 1000 })</code> · <code>latest()</code> (a <code>timeline.follow()</code> source) · <code>hello(reason)</code> · <code>frame()</code> · <code>status()</code> · <code>monitor()</code> · <code>close()</code></td></tr>
+<tr><td>transports</td><td><code>BroadcastTransport({ channel })</code> · <code>RelayTransport({ url, room, role, id })</code> · <code>createTransport({ role, channel, url, id })</code>: each is <code>{ send(msg), onMessage(cb), onOpen(cb), open, close() }</code> and carries JSON</td></tr>
+<tr><td><code>SYNC_VERSION</code></td><td><code>1</code>, the <code>v</code> of every message</td></tr>
+</tbody>
+</table></div>
+<p>Messages are <code>frame</code> (leader to followers, every frame), <code>hello</code> (follower to leader) and <code>state</code> (leader to one follower); work-specific data rides in <code>extra</code>. See <a href="../../docs/show-control/#show-control-several-pages-one-show">Show control</a>.</p>
+<h2 id="packages-openav-relay">@openav/relay<a class="anchor" href="#packages-openav-relay" aria-label="Link to this section">#</a></h2>
+<p>Phones · room-scoped WebSocket relay (server) and its browser client.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>RelayClient</code></td><td><code>new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig, onSync })</code> · <code>connect()</code> · <code>close()</code> · <code>set(name, value)</code> · <code>send(name, value, pulse, extra)</code> · <code>feedback(name, value)</code> · <code>config(key, data)</code> · <code>sync(msg)</code> · <code>status</code>, <code>latency</code>, <code>peers</code>; <code>role</code> is <code>controller</code>, <code>runner</code>, <code>monitor</code>, <code>leader</code> or <code>follower</code></td></tr>
+<tr><td>signals helpers</td><td><code>bindSignals(client, signals, { alias = 'any' })</code> · <code>fileSignal(signals, name, value, { pulse })</code> · <code>signalMeta(name, { pulse })</code> · <code>aliasOf(name)</code> · <code>normalizeValue(name, value)</code> · <code>deviceId()</code></td></tr>
+<tr><td><code>@openav/relay/server</code></td><td><code>attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000, maxMessageChars = 262144, maxBytes = 1048576 })</code> → <code>{ hub, close() }</code>; standalone <code>node packages/relay/server.js [port=7458]</code></td></tr>
+<tr><td><code>MidiLink</code> (<code>link.js</code>)</td><td><code>new MidiLink({ url, room, delay = 0, onMessages(list, from), onStatus })</code> · <code>connect()</code> · <code>send(bytes, whenMs)</code> · <code>info()</code> → <code>{ state, peers, rtt, trip, diff, lead, late, sent, received }</code> · <code>close()</code>; <code>LinkTiming</code>: MIDI between pages in one room, played when it sounds at the sender (<a href="../../docs/strudel/">With Strudel</a>)</td></tr>
+</tbody>
+</table></div>
+<p>See <a href="../../docs/phones/#phones-the-relay">Phones, relay &amp; surfaces</a>.</p>
+<h2 id="packages-openav-surface">@openav/surface<a class="anchor" href="#packages-openav-surface" aria-label="Link to this section">#</a></h2>
+<p>Phones · TouchOSC-style widgets, layout JSON, theme, and <code>autoSurface(params)</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>Surface</code></td><td><code>new Surface(el, { layout, sink(name, value, info), haptics = true, tabs = true, orientation, onPage })</code> · <code>setLayout(layout)</code> · <code>setPage(id)</code> · <code>feedback(name, value)</code> · <code>widget(page, id)</code> · <code>dispose()</code></td></tr>
+<tr><td><code>signalSink</code></td><td><code>signalSink(signals)</code> → a sink that writes into a local <code>Signals</code></td></tr>
+<tr><td>auto</td><td><code>autoSurface(params, { perPage, style, pairs, meters, smooth, title })</code> → <code>{ layout, routes, bindings }</code> · <code>feedbackFor(state, bindings)</code> · <code>routesFromLayout(layout, params)</code> · <code>widgetTypeFor(param)</code></td></tr>
+<tr><td>layout</td><td><code>validateLayout</code>, <code>normalizeLayout</code>, <code>resolvePage</code>, <code>autoArrange</code>, <code>signalNames</code>, <code>DEFAULT_SIZE</code>, <code>WIDGET_TYPES</code>, <code>planKeyboard</code></td></tr>
+<tr><td>platform &amp; theme</td><td><code>lockViewport</code>, <code>keepAwake</code>, <code>toggleFullscreen</code>, <code>canFullscreen</code>, <code>haptic</code>, <code>injectTheme</code>, <code>THEME_VARS</code>, <code>COLOR_NAMES</code>, <code>WIDGET_CLASSES</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Surface, autoSurface, signalSink } <span class="tk">from</span> <span class="ts">'@openav/surface'</span>;
+<span class="tk">const</span> { layout, routes } = autoSurface(world.params);
+<span class="tk">new</span> Surface(document.querySelector(<span class="ts">'#panel'</span>), { layout, sink: signalSink(signals) });
+routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
+<p>See <a href="../../docs/phones/#phones-surface-widgets">Phones, relay &amp; surfaces</a>.</p>
+<h2 id="packages-openav-remote">@openav/remote<a class="anchor" href="#packages-openav-remote" aria-label="Link to this section">#</a></h2>
+<p>Phones · the phone/iPad app and the show-side adapter.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>mountRemote</code></td><td><code>mountRemote(el, { room, relayUrl, surfaceUrl, metaUrl })</code> → the phone app (<code>/packages/remote/index.html</code> calls it)</td></tr>
+<tr><td><code>PhoneSensors</code></td><td><code>new PhoneSensors({ set, send }, { onKnock, onSample, notify })</code> · <code>start()</code> (from a tap) · <code>stop()</code> · <code>calibrate()</code> · <code>setCamera(on)</code> · <code>denied</code></td></tr>
+<tr><td><code>localSensors</code></td><td><code>localSensors(signals, { prefix = 'phone/local/', alias = 'any' })</code> → <code>PhoneSensors</code></td></tr>
+<tr><td><code>attachTouchPad</code></td><td><code>attachTouchPad(el, io, { onMove, onEnd })</code></td></tr>
+<tr><td><code>@openav/remote/host</code></td><td><code>mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, mode, controllers })</code> → host · <code>mountJoinCard(parent, host)</code> (URL, QR code, status)</td></tr>
+<tr><td><code>@openav/remote/relay-pick</code></td><td><code>pickRelay({ hostname, search, declared, storage })</code> → <code>{ mode: 'local'|'public'|'custom'|'off', url, room, shared }</code> · <code>isLocalHost(h)</code> · <code>PUBLIC_RELAY</code> · <code>phoneUrl({ base, room, relay })</code></td></tr>
+<tr><td><code>@openav/remote/qr</code></td><td><code>qrSvg(text, { ecc = 'M', margin = 2, scale })</code> → an <code>&lt;svg&gt;</code> string · <code>qrMatrix(text, { ecc })</code> → <code>{ version, size, mask, rows }</code> (byte mode, versions 1–10)</td></tr>
+</tbody>
+</table></div>
+<p>See <a href="../../docs/phones/">Phones, relay &amp; surfaces</a>.</p>
+<h2 id="packages-openav-devices">@openav/devices<a class="anchor" href="#packages-openav-devices" aria-label="Link to this section">#</a></h2>
+<p>Glue · one collection of show devices: every MIDI controller profile (hand-written and imported), every DMX fixture, every part
+of the electronics library, and hand-written records for cameras, audio interfaces, sensors, LED and DMX interfaces and printers,
+under one outer record (<code>open-audiovisual/device@1</code>, <code>@openav/devices/device.schema.json</code>) with a source for every fact. Nothing is
+copied: each profile, fixture and part stays in its own file and its record is read off it (<code>node tools/build-devices.mjs</code> writes the
+list, <code>catalog.js</code>), so listing loads no profile. The chapter is <a href="../../docs/devices/">Devices</a>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>signature</th></tr></thead>
+<tbody>
+<tr><td><code>devices</code></td><td><code>devices({ kind, q, connection })</code> → frozen rows <code>{ id, kind, manufacturer, name, aliases, connections, protocols, verified, from, file }</code>; <code>q</code> matches every word in the name, aliases, maker or id</td></tr>
+<tr><td><code>device</code></td><td><code>await device(id, options)</code> → <code>{ id, kind, name, record }</code> and, by kind: midi-controller <code>profile</code> · <code>routes(bindings, options)</code> · <code>addTo(controllers)</code>; dmx-fixture <code>profile</code> · <code>patch(patch, { id, universe, address, mode })</code>; part <code>part</code>; camera, audio-interface <code>constraints(deviceId)</code> · <code>find()</code> · <code>open()</code> (the only call that asks for a permission)</td></tr>
+<tr><td><code>deviceKinds</code></td><td><code>midi-controller</code> · <code>dmx-fixture</code> · <code>dmx-interface</code> · <code>led-controller</code> · <code>sensor</code> · <code>camera</code> · <code>audio-interface</code> · <code>projector</code> · <code>display</code> · <code>printer</code> · <code>part</code></td></tr>
+</tbody>
+</table></div>
+<h2 id="packages-openav-mcp">@openav/mcp<a class="anchor" href="#packages-openav-mcp" aria-label="Link to this section">#</a></h2>
+<p>Glue · a zero-dependency MCP server over stdio for coding agents:
+<code>node packages/mcp/server.js</code>. Tools and arguments are in
+<a href="../../docs/agents/#agents-the-mcp-server">For AI agents</a>.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/signals/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Signals reference</span></a>
+      <a class="ch-next" rel="next" href="../../docs/agents/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">For AI agents</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

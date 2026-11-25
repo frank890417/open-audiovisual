@@ -29,6 +29,6 @@ A-row whites, W-row blacks, Z/X octave, Shift accent) and **simulate performance
 | `PIANO_KEYMAP` | `{ a: 0, w: 1, s: 2, e: 3, … p: 15, ';': 16 }` · key → semitones above `base` |
 
 Signals: `midi/note/on` `{note, vel, ch: 0}` (`vel` 0..1), `midi/note/off` `{note, ch: 0}` ·
-[Signals reference](https://openaudiovisual.com/docs/#signals-openav-keys).
+[Signals reference](https://openaudiovisual.com/docs/signals/#signals-openav-keys).
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-keys)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-keys)

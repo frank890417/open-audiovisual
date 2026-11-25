@@ -31,4 +31,4 @@ const show = await createShow({ world, routes: [{ source: 'midi/cc/1', target: '
 
 Working example: `examples/04-webtoe-stage`.
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-world-webtoe)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-world-webtoe)

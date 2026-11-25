@@ -74,7 +74,7 @@ The `Midi` engine keeps the output you chose, and tells you when it moves:
 - **Score markers.** `new ScoreMidi({ midi, channel: 15, segment: { note: 36, cc: 20 }, cue: { note: 84, notes: { 'dusk.glow': 90 }, cc: 21 } })`
   sends a note (and/or CC) for each segment change and cue so a DAW can follow the show; `createShow({ score: { …, midi: { channel: 15 } } })`
   wires it. Off unless asked; only while the show plays (`scrub: true` also marks hand-made jumps). Pure logic for all three is
-  in `ports.js` and `score-out.js`; docs: [Score & Director](https://openaudiovisual.com/docs/#score-score-to-midi).
+  in `ports.js` and `score-out.js`; docs: [Score & Director](https://openaudiovisual.com/docs/score/#score-score-to-midi).
 
 ## `<oav-controller>`
 

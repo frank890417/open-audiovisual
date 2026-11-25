@@ -14,11 +14,14 @@
 // own nodes). pathCtx() places ANY page of the site (examples, /p5/, device pages …); pageCtx() is the same
 // for the named top-level pages. guardEmail() fences a page off from Cloudflare's email obfuscation.
 //
-// This file imports nothing from the other site modules (facts, pages): they import it.
+// This file imports nothing from the other site modules (facts, pages): they import it. It does import where the handbook's
+// headings live (tools/docs/anchors.mjs, a leaf module), so `c.to('docs', '#mapping-curves')` from any generator is the
+// chapter page /docs/mapping/#mapping-curves and no page links to the old one-page anchors.
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { docsHref } from '../docs/anchors.mjs';
 
 
 
@@ -65,7 +68,7 @@ export const GA_SNIPPET = `<script>if(/(^|\\.)openaudiovisual\\.com$/.test(locat
 /** What kind of page this is, as assets/track.js reports it (`page_type`). headBasics() writes it into every page; the
  *  same list is in track.js (tests/track.test.js compares them). */
 export const PAGE_TYPES = ['home', 'controller', 'controllers_index', 'verify', 'example', 'examples_index', 'docs', 'reference',
-  'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found', 'devices_index', 'fixture', 'device'];
+  'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found', 'devices_index', 'fixture', 'device', 'docs_chapter'];
 /** The site's own events (assets/track.js): loaded with defer, it does nothing unless the GA snippet above defined gtag. */
 export const TRACK_SRC = 'assets/track.js';
 
@@ -105,9 +108,12 @@ export function pathCtx(p, locale, { langs = ['en', 'zh'], page } = {}) {
   const both = langs.includes('en') && langs.includes('zh');
   const lang = { en: root + p || './', zh: both ? root + 'zh/' + p : root + 'zh/' };   // no twin: the switch goes to the homepage
   return { page, locale, other: locale === 'en' ? 'zh' : 'en', root, self: url[locale], url, lang, langs, both,
-    /** href to another page of the site, in this language */
-    to: (other, hash = '') => (root + (locale === 'zh' ? 'zh/' : '') + PAGES[other]) + hash || './' };
+    /** href to another page of the site, in this language; ('docs', '#a-heading') is the chapter page that has that heading */
+    to: (other, hash = '') => (hash.length > 1 && deep(other, root, locale, hash.slice(1))) || (root + (locale === 'zh' ? 'zh/' : '') + PAGES[other]) + hash || './' };
 }
+
+/** A heading of the handbook is on its chapter's page. null: stay on the page. */
+const deep = (page, root, locale, anchor) => (page === 'docs' ? docsHref(root, locale, anchor) : null);
 
 /** pathCtx() for a named page of PAGES. */
 export function pageCtx(page, locale) {
@@ -120,7 +126,7 @@ export function pageCtx(page, locale) {
 export function absoluteCtx(locale) {
   return { page: undefined, locale, other: locale === 'en' ? 'zh' : 'en', root: '/', self: null, url: { en: SITE, zh: SITE + 'zh/' },
     lang: { en: '/', zh: '/zh/' }, langs: ['en', 'zh'], both: true,
-    to: (other, hash = '') => '/' + (locale === 'zh' ? 'zh/' : '') + PAGES[other] + hash };
+    to: (other, hash = '') => (hash.length > 1 && deep(other, '/', locale, hash.slice(1))) || '/' + (locale === 'zh' ? 'zh/' : '') + PAGES[other] + hash };
 }
 
 // ---------------------------------------------------------------------------- JSON-LD

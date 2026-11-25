@@ -6,22 +6,30 @@ export default {
   meta: {
     title: 'Documentation · open-audiovisual',
     description: 'The open-audiovisual handbook: quick start, concepts, writing a world, inputs, mapping, show control, MIDI controllers, phones, signals, packages and AI agents.',
-    ogDescription: 'One page, every chapter: how to build a live audiovisual show in the browser with open-audiovisual.',
+    ogDescription: 'Every chapter of the handbook, one page each: how to build a live audiovisual show in the browser with open-audiovisual.',
   },
   ldLanguage: 'en',
 
   eyebrow: 'Documentation',
   title: 'The open-audiovisual handbook',
-  lede: 'Everything you need to run, write and perform a show, on one page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.',
+  lede: 'Everything you need to run, write and perform a show, one chapter per page. Every API name, option and signal here is checked against the source; when they disagree, the code is right.',
   stats: '{chapters} chapters · {sections} sections',   // then the versions, linked to /changelog/ (home ui.versions)
-  sourceNote: 'Written in Markdown in <code>docs/</code>; this page is generated from it.',
+  sourceNote: 'Written in Markdown in <code>docs/</code>; these pages are generated from it.',
   llmsNote: 'For language models: <a href="{llms}">/llms.txt</a> · <a href="{llmsFull}">/llms-full.txt</a>',
 
   cheatsheet: { label: 'oav-p5 cheat sheet', text: 'Every name a p5 sketch uses with oav-p5 on one page, with pictures: shout, hit, play, smooth. Prints on one A4.', toc: 'Cheat sheet ↗' },
   reference: { label: 'API reference', text: 'Looking for one name? Every variable, function, event and option of oav-p5 and every package export, searchable, each with an example you can run.', toc: 'API reference ↗' },
 
-  tocTitle: 'On this page',
+  tocTitle: 'Chapters',
   tocLabel: 'Documentation contents',
+  contentsLink: 'All chapters',
+  // a chapter's own page (/docs/<chapter>/)
+  chapterTitle: '{title} · open-audiovisual',
+  chapterN: 'Chapter {n} of {total}',
+  prev: 'Previous',
+  next: 'Next',
+  navLabel: 'Previous and next chapter',
+  moved: 'This chapter is at {href}.',
   tocButton: 'Contents',
   tocClose: 'Close contents',
   chapterSource: 'Source',

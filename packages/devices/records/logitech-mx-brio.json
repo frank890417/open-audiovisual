@@ -68,7 +68,7 @@
     { "title": "Logitech Support: Specification, MX BRIO", "url": "https://support.logi.com/hc/en-ca/articles/18849231040023-Specification-MX-BRIO", "read": "2026-11-25" },
     { "title": "Logitech: MX Brio UHD 4K Webcam (product page)", "url": "https://www.logitech.com/en-us/shop/p/mx-brio-4k-webcam", "read": "2026-11-25" },
     { "title": "open-audiovisual: @openav/record, camera.js (ideal, never exact, sizes; labels hidden until permission)", "url": "https://github.com/frank890417/open-audiovisual/blob/main/packages/record/camera.js", "read": "2026-11-25" },
-    { "title": "open-audiovisual handbook: Troubleshooting, the camera or microphone does not start", "url": "https://openaudiovisual.com/docs/#troubleshooting-the-camera-or-microphone-does-not-start", "read": "2026-11-25" }
+    { "title": "open-audiovisual handbook: Troubleshooting, the camera or microphone does not start", "url": "https://openaudiovisual.com/docs/troubleshooting/#troubleshooting-the-camera-or-microphone-does-not-start", "read": "2026-11-25" }
   ],
   "license": "MIT",
   "verified": false,

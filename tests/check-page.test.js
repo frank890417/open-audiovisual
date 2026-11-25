@@ -47,12 +47,13 @@ test('check: registered, in the sitemap, with hreflang twins, canonical and JSON
 });
 
 test('check: every row links into the docs, and every link lands on a heading that exists', async () => {
-  const docs = { en: read('docs/index.html'), zh: read('zh/docs/index.html') };
-  for (const [f, lang] of [['check/index.html', 'en'], ['zh/check/index.html', 'zh']]) {
+  const { landing } = await import('./_docs.js');
+  for (const f of ['check/index.html', 'zh/check/index.html']) {
     const s = read(f);
-    const links = [...s.matchAll(/href="[^"]*docs\/(#[\w-]+)"/g)].map((m) => m[1]);
+    // a heading of the handbook is on its chapter's page (/docs/<chapter>/#…; the p5 chapter's is /p5/)
+    const links = [...s.matchAll(/href="([^"]*(?:docs\/[\w-]+\/|p5\/)(?:#[\w-]+)?)"/g)].map((m) => m[1]).filter((h) => !/docs\/(reference|cheatsheet)\//.test(h));
     assert.ok(links.length >= 6, `${f}: at least six docs links (got ${links.length})`);
-    for (const h of links) assert.ok(docs[lang].includes(`id="${h.slice(1)}"`), `${f}: ${h} exists in the ${lang} docs`);
+    for (const h of links) assert.ok(landing(f, h).ok, `${f}: ${h} lands on a heading that exists`);
   }
 });
 

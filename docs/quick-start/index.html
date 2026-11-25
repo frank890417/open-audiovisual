@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick start · open-audiovisual</title>
+<meta name="description" content="Pick the one that matches what you already have. They get bigger as you go down.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/quick-start/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/quick-start/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/quick-start/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/quick-start/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Quick start · open-audiovisual">
+<meta property="og:description" content="Pick the one that matches what you already have. They get bigger as you go down.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/quick-start/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Quick start · open-audiovisual">
+<meta name="twitter:description" content="Pick the one that matches what you already have. They get bigger as you go down.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="quick-start">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/quick-start/#article","url":"https://openaudiovisual.com/docs/quick-start/","name":"Quick start · open-audiovisual","description":"Pick the one that matches what you already have. They get bigger as you go down.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Quick start","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Three ways in","Run it","One file, no clone","Pin a version","Which browser","What you are looking at","Play without hardware","Your first world","Make a new example","Check your work"],"position":2,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/quick-start/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/quick-start/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Quick start","item":"https://openaudiovisual.com/docs/quick-start/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/quick-start/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/quick-start/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch is-here" data-ch="quick-start">
+          <a href="#quick-start" aria-current="page"><span class="n">02</span><span class="t">Quick start</span></a>
+          <ol class="toc-secs">
+            <li><a href="#quick-start-three-ways-in">Three ways in</a></li>
+            <li><a href="#quick-start-run-it">Run it</a></li>
+            <li><a href="#quick-start-one-file-no-clone">One file, no clone</a></li>
+            <li><a href="#quick-start-pin-a-version">Pin a version</a></li>
+            <li><a href="#quick-start-which-browser">Which browser</a></li>
+            <li><a href="#quick-start-what-you-are-looking-at">What you are looking at</a></li>
+            <li><a href="#quick-start-play-without-hardware">Play without hardware</a></li>
+            <li><a href="#quick-start-your-first-world">Your first world</a></li>
+            <li><a href="#quick-start-make-a-new-example">Make a new example</a></li>
+            <li><a href="#quick-start-check-your-work">Check your work</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="quick-start" aria-labelledby="quick-start">
+<h1 id="quick-start">Quick start<a class="anchor" href="#quick-start" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 2 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/getting-started.md">docs/getting-started.md</a></span></p>
+<h2 id="quick-start-three-ways-in">Three ways in<a class="anchor" href="#quick-start-three-ways-in" aria-label="Link to this section">#</a></h2>
+<p>Pick the one that matches what you already have. They get bigger as you go down.</p>
+<ol>
+<li><strong>One line in a p5.js sketch.</strong> Any p5.js sketch (OpenProcessing, the p5 editor, your own page) can be played from a
+MIDI controller, from a controller drawn on screen, or from a phone, by adding one line at the top. Read
+<a href="../../p5/">p5.js in one line</a>, and play the sketch that carries it: <a href="../../examples/15-p5-one-line/">example 15</a>.
+The same line also plays sound, runs a drum machine you can write as one line of rhythm, listens to the microphone
+and records a video; each has a ready-made sketch among the <a href="../../examples/">examples</a> (16 to 26).</li>
+<li><strong>One controller in a page.</strong> <code>&lt;oav-controller profile="akai-lpd8"&gt;</code> puts a controller you can play into any web
+page. Read <a href="../../docs/controllers/">MIDI controllers &amp; embedding</a>, and pick yours in the
+<a href="../../controllers/">controller library</a>.</li>
+<li><strong>A whole show.</strong> A World plus one <code>createShow()</code> call assembles inputs, mapping, timeline, console, sound and
+backstage. Start from <a href="../../examples/01-hello-particles/">example 01</a> and keep reading below.</li>
+</ol>
+<h2 id="quick-start-run-it">Run it<a class="anchor" href="#quick-start-run-it" aria-label="Link to this section">#</a></h2>
+<p>You need Node.js (any current version; CI runs the tests on Node 22) and a
+browser. There is nothing to install: no <code>npm install</code>, no bundler.</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-bash"><span class="tk">git</span> clone https://github.com/frank890417/open-audiovisual.<span class="tk">git</span>
+<span class="tk">cd</span> open-audiovisual
+<span class="tk">node</span> serve.js            <span class="tc"># → http://localhost:8080</span></code></pre></div>
+<p><code>serve.js</code> is a static file server with caching turned off (stale code on stage
+is a nightmare) that also hosts the phone relay at <code>ws://&lt;host&gt;:8080/relay</code>.
+Pass a port to use another one: <code>node serve.js 3000</code>. The same commands exist as
+npm scripts:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>command</th><th>what it runs</th></tr></thead>
+<tbody>
+<tr><td><code>npm start</code></td><td><code>node serve.js</code></td></tr>
+<tr><td><code>npm run monitor</code></td><td><code>node packages/monitor/server.js</code>, the backstage monitor on port 7457</td></tr>
+<tr><td><code>npm run bridge</code></td><td><code>node packages/osc/bridges/osc-bridge.js</code>, the OSC → UDP bridge on port 7456</td></tr>
+<tr><td><code>npm test</code></td><td><code>node --test tests/*.test.js</code></td></tr>
+</tbody>
+</table></div>
+<p>Open <code>http://localhost:8080/examples/01-hello-particles/</code>. Every example runs
+without hardware.</p>
+<h2 id="quick-start-one-file-no-clone">One file, no clone<a class="anchor" href="#quick-start-one-file-no-clone" aria-label="Link to this section">#</a></h2>
+<p>A show of your own does not need this repository. Save <a href="../../assets/starter/show.html"><code>show.html</code></a>
+(open it, then save the page, or copy its source), serve the folder it is in, and open it:</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-bash">python3 -m http.server 8080      <span class="tc"># or any static server, or any static host</span></code></pre></div>
+<p>The file is one page with one <code>import</code>: the World you edit, and a <code>createShow()</code> call. Everything else arrives from one
+address:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow, createCanvas } <span class="tk">from</span> <span class="ts">'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js'</span>;</code></pre></div>
+<p>Import what you need from that one address. A second address is a second copy of the framework in the same page.
+The phone relay and the backstage monitor are the two things a static page does not bring: the phone uses the public
+relay unless you run <code>serve.js</code>, and the monitor is <code>node packages/monitor/server.js</code> from a clone.</p>
+<p>When the work is up, <a href="../../made-with/">add it to Made with</a>.</p>
+<h2 id="quick-start-pin-a-version">Pin a version<a class="anchor" href="#quick-start-pin-a-version" aria-label="Link to this section">#</a></h2>
+<p><code>@v0.9.0</code> in the address is a version of the whole framework. That address never changes, so the show you rehearsed is
+the show you play. To move to a newer one, change the number yourself and rehearse again.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>address</th><th>what you get</th></tr></thead>
+<tbody>
+<tr><td><code>https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js</code></td><td>exactly 0.9.0, for good</td></tr>
+<tr><td><code>https://openaudiovisual.com/packages/openav.js</code></td><td>the newest, a few minutes after each release</td></tr>
+<tr><td><code>https://openaudiovisual.com/p5/oav-p5.js</code></td><td>the one line for p5.js: the newest (<a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/changelog.md" rel="noopener">its own versions</a>)</td></tr>
+</tbody>
+</table></div>
+<p>Until 1.0, a new minor version (0.9 to 0.10) may rename or remove something, and the <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/changelog.md" rel="noopener">changelog</a> says
+so in the entry's first line; a patch version (0.9.0 to 0.9.1) only fixes. What we work hardest not to break: the
+World contract (<code>name</code>, <code>params</code>, <code>init</code>, <code>update</code>, <code>render</code>, <code>dispose</code>), the signal names in <a href="../../docs/signals/">Signals</a>,
+the controller profile format, and the names oav-p5 gives a sketch. <code>window.openav.version</code> says which version a
+running show is.</p>
+<h2 id="quick-start-which-browser">Which browser<a class="anchor" href="#quick-start-which-browser" aria-label="Link to this section">#</a></h2>
+<p>Not sure what your device can do? Open the <a href="../../check/">device check</a>. It looks at your browser, Web MIDI, microphone, camera and graphics, and says what to do about each. Nothing runs until you press a button, and nothing leaves your device.</p>
+<p>Web MIDI is the one that differs most between browsers (sources checked 2026-10-15):</p>
+<ul>
+<li><strong>Chrome and Edge</strong> have it. Use them for a show. Since Chrome 124 any use of MIDI asks for permission, where before only system-exclusive access did (<a href="https://developer.chrome.com/blog/web-midi-permission-prompt" rel="noopener">Chrome blog</a>).</li>
+<li><strong>Firefox</strong> has Web MIDI on desktop from version 108, after you install Firefox's site-permission add-on (<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108" rel="noopener">Firefox 108 release notes</a>).</li>
+<li><strong>Safari</strong> on Mac, iPhone and iPad has no Web MIDI (<a href="https://caniuse.com/midi" rel="noopener">caniuse</a>). WebKit lists it as not implemented because of fingerprinting concerns (<a href="https://webkit.org/tracking-prevention/" rel="noopener">WebKit</a>), and <a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">bug 107250</a> is still open and unassigned. Chrome on an iPhone or iPad is WebKit underneath, so it has none either. On a Mac there is a third-party Safari extension, <a href="https://github.com/triglav-modular/Safari-WebMIDI" rel="noopener">Safari-WebMIDI</a>; we have not tested it.</li>
+</ul>
+<p>Where the browser has no Web MIDI, there are three routes:</p>
+<ul>
+<li><strong>Play on screen.</strong> Every controller in the <a href="../../controllers/">library</a> plays with a finger, and every event still fires.</li>
+<li><strong>Use a phone as the controller.</strong> See <a href="../../docs/phones/">Phones, relay &amp; surfaces</a>.</li>
+<li><strong>A browser app for the iPad.</strong> <a href="https://apps.apple.com/app/midiweb-browser/id6757226617" rel="noopener">MIDIWeb Browser</a> is a third-party app for iOS 17.6 and later that gives pages Web MIDI. We have not tested it with open-audiovisual.</li>
+</ul>
+<p>On Windows 11 the built-in Windows MIDI Services (released 2026-02-17) give apps shared MIDI ports and a loopback, so loopMIDI is no longer needed to send MIDI from the browser to a DAW (<a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/" rel="noopener">Windows blog</a>); see <a href="../../docs/controllers/#controllers-play-your-daw-with-it">Play your DAW with it</a>.</p>
+<p>Two more rules apply to every browser:</p>
+<ul>
+<li><strong>Camera and microphone</strong> only work in a secure context: <code>http://localhost</code>
+or <code>https://</code>. Open the show on the machine that runs <code>serve.js</code> through
+<code>localhost</code>, not through its LAN address.</li>
+<li><strong>Phones</strong> can join over plain <code>http://</code> on the local network for touch, keys
+and the control surface. iOS only gives motion sensors and the camera to
+<code>https://</code> pages (see <a href="../../docs/phones/#phones-ios-and-https">Phones, relay &amp; surfaces</a>).</li>
+</ul>
+<h2 id="quick-start-what-you-are-looking-at">What you are looking at<a class="anchor" href="#quick-start-what-you-are-looking-at" aria-label="Link to this section">#</a></h2>
+<p>An example page has two parts: the <strong>stage</strong> on the left (the world renders
+there) and the <strong>side panel</strong> on the right. From the top, the side panel holds:</p>
+<ol>
+<li><strong>The piano</strong>, with two checkboxes: <em>keyboard</em> turns on QWERTY playing,
+<em>simulate performance</em> starts a hands-free player.</li>
+<li><strong>Transport</strong>: play/pause, previous/next scene, reset, the clock, the
+current scene, and a scrubber with one block per scene.</li>
+<li><strong>Layers</strong>: what every layer is doing right now (events per second per input,
+active routes, world and FPS, what is leaving the browser).</li>
+<li><strong>L1 · Input</strong>: MIDI devices (untick to mute one) and buttons for sources that
+need a click: 🎤 mic, 🖐 hands, 🕺 body.</li>
+<li><strong>L2 · Mapping</strong>: every route, with a mute box and ✕ to remove it.</li>
+<li><strong>L3 · Params</strong>: a slider per param, ✕ to clear an override, <em>learn</em> to map.</li>
+<li><strong>L4 · Output — sound</strong>, when the show has sound: <em>enable sound</em>.</li>
+<li><strong>Signals</strong>: a live meter for every signal.</li>
+</ol>
+<p>Each panel title collapses its panel.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>key</th><th>action</th></tr></thead>
+<tbody>
+<tr><td><kbd>Space</kbd></td><td>play / pause the timeline</td></tr>
+<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>previous / next scene</td></tr>
+<tr><td><kbd>R</kbd></td><td>stop and rewind the timeline to 0:00</td></tr>
+<tr><td><kbd>T</kbd></td><td>performance mode (teleprompter)</td></tr>
+<tr><td><kbd>F</kbd></td><td>fullscreen</td></tr>
+<tr><td><kbd>M</kbd></td><td>show/hide the on-screen MIDI controller (only in shows that set <code>modules.midi.controllers</code>)</td></tr>
+</tbody>
+</table></div>
+<h2 id="quick-start-play-without-hardware">Play without hardware<a class="anchor" href="#quick-start-play-without-hardware" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>On-screen piano</strong>: click or touch the keys; drag across them for a glissando.</li>
+<li><strong>QWERTY</strong>: tick <em>keyboard</em> first (capture is off by default so letters do not
+steal the console's hotkeys). The keys <code>A W S E D F T G Y H U J K O L P ;</code>
+play 17 notes a semitone apart, starting at the piano's base note; <kbd>Z</kbd>/<kbd>X</kbd>
+shift an octave; hold <kbd>Shift</kbd> for a louder note.</li>
+<li><strong>Simulate performance</strong>: a hands-free player noodles in a pentatonic scale
+with steps, leaps, triads and rests, so you can watch the mapping breathe.</li>
+<li><strong>Drum machine</strong> (examples 03 and 06): a step sequencer whose signals have the
+same shape as the microphone's drum detection.</li>
+<li><strong>On-screen MIDI controller</strong> (example 09): a picture of a known controller
+you can play with the mouse (the supported devices are listed on the
+<a href="../../controllers/">controllers page</a>); plug the real
+one in and the picture moves with your hands.</li>
+</ul>
+<p>All of these publish the same signals as real hardware, so nothing downstream
+can tell the difference.</p>
+<h2 id="quick-start-your-first-world">Your first world<a class="anchor" href="#quick-start-your-first-world" aria-label="Link to this section">#</a></h2>
+<p>A world is an object with <code>params</code> and four lifecycle functions. Hand it to
+<code>createShow()</code> and the rest of the show is assembled around it:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
+
+<span class="tk">const</span> pulse = {
+  name: <span class="ts">'pulse'</span>,
+  <span class="tc">// what the piece is performed WITH: sliders, knobs, hands, the timeline</span>
+  params: [{ key: <span class="ts">'size'</span>, min: 10, max: 200, def: 40 }],
+  init({ container, signals }) {
+    <span class="tk">this</span>.view = createCanvas(container);
+    <span class="tk">this</span>.r = 0;
+    <span class="tc">// a struck note is an event, so it may come straight from a signal</span>
+    signals.on(<span class="ts">'midi/note/on'</span>, ({ vel }) =&gt; { <span class="tk">this</span>.r = 120 * vel; });
+  },
+  update(dt, state) { <span class="tk">this</span>.r = Math.max(0, <span class="tk">this</span>.r - dt * 90); <span class="tk">this</span>.size = state.size; },
+  render() {
+    <span class="tk">const</span> { ctx } = <span class="tk">this</span>.view, { w, h } = <span class="tk">this</span>.view.fit();
+    ctx.fillStyle = <span class="ts">'#000'</span>; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = <span class="ts">'#fff'</span>;
+    ctx.beginPath(); ctx.arc(w / 2, h / 2, <span class="tk">this</span>.size + <span class="tk">this</span>.r, 0, 7); ctx.fill();
+  },
+  dispose() { <span class="tk">this</span>.view.dispose(); },
+};
+
+<span class="tk">await</span> createShow({ world: pulse, modules: { sound: <span class="tk">true</span> } });</code></pre></div>
+<p>Play a note: the circle jumps and decays. Drag the <em>size</em> slider, or click
+<em>learn</em> next to it and turn a knob. That is the whole model: params for
+continuous control, signals for events.</p>
+<h2 id="quick-start-make-a-new-example">Make a new example<a class="anchor" href="#quick-start-make-a-new-example" aria-label="Link to this section">#</a></h2>
+<ol>
+<li>Copy <code>examples/01-hello-particles/</code> to <code>examples/&lt;nn&gt;-&lt;name&gt;/</code> (the next free
+number). Its <code>index.html</code> already has an import map for every
+<code>@openav/*</code> package; the <code>?v=</code> suffixes are cache stamps written by
+<code>tools/stamp-version.mjs</code> before a deploy.</li>
+<li>Write your world in <code>main.js</code> (<a href="../../docs/writing-a-world/">Writing a world</a>).</li>
+<li>Change the <code>&lt;title&gt;</code> in <code>index.html</code>. Add CDN script tags there if you use p5
+or another renderer.</li>
+<li>Open <code>http://localhost:8080/examples/&lt;nn&gt;-&lt;name&gt;/</code>.</li>
+</ol>
+<p>An AI agent can do steps 1–2 with the MCP tool <code>scaffold_world</code>
+(<a href="../../docs/agents/">For AI agents</a>).</p>
+<h2 id="quick-start-check-your-work">Check your work<a class="anchor" href="#quick-start-check-your-work" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><code>npm test</code> passes (it covers the pure logic: chords, timeline, mapping, relay,
+surfaces, MIDI parsing and profiles, the site pages).</li>
+<li>The page loads with no console errors. One message is expected: if the
+backstage monitor is not running, the browser reports that
+<code>ws://localhost:7457</code> refused the connection. The page retries quietly with a
+growing delay (up to 30 s). Run <code>npm run monitor</code> to make it go away.</li>
+<li>Press <kbd>Space</kbd>: the timeline plays and something changes over time.</li>
+<li>Tick <em>keyboard</em> and press <kbd>A</kbd>: the world reacts without any hardware.</li>
+<li><code>window.openav</code> in the devtools console is the whole show (signals, params,
+mapper, timeline…), for poking at it by hand.</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/introduction/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Introduction</span></a>
+      <a class="ch-next" rel="next" href="../../docs/concepts/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Core concepts</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

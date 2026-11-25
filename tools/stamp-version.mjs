@@ -69,7 +69,9 @@ for (const p of ['controllers/index.html', 'zh/controllers/index.html', 'docs/in
 // one page per controller: controllers/<id>/index.html, zh/controllers/<id>/index.html; the device collection (tools/build-devices.mjs):
 // devices/index.html, devices/<id>/index.html, fixtures/<id>/index.html, and their zh/ twins
 for (const p of ['devices/index.html', 'zh/devices/index.html']) if (fs.existsSync(path.join(ROOT, p))) files.push(path.join(ROOT, p));
-for (const base of ['controllers', 'zh/controllers', 'devices', 'zh/devices', 'fixtures', 'zh/fixtures'])
+// the handbook, one page per chapter (tools/build-docs.mjs): docs/<chapter>/index.html; one page per oav-p5 name
+// (tools/build-reference.mjs): docs/reference/<name>/index.html; and their zh/ twins
+for (const base of ['controllers', 'zh/controllers', 'devices', 'zh/devices', 'fixtures', 'zh/fixtures', 'docs', 'zh/docs', 'docs/reference', 'zh/docs/reference'])
   if (fs.existsSync(path.join(ROOT, base)))
     for (const e of fs.readdirSync(path.join(ROOT, base), { withFileTypes: true }))
       if (e.isDirectory() && fs.existsSync(path.join(ROOT, base, e.name, 'index.html'))) files.push(path.join(ROOT, base, e.name, 'index.html'));
@@ -77,7 +79,7 @@ files.push(path.join(ROOT, 'index.html'));
 if (fs.existsSync(path.join(ROOT, 'zh', 'index.html'))) files.push(path.join(ROOT, 'zh', 'index.html'));
 
 let changed = 0; const stale = [];
-for (const f of files) {
+for (const f of [...new Set(files)]) {
   if (f.includes(`${path.sep}mcp${path.sep}`) || f.includes(`${path.sep}bridges${path.sep}`) ||
       /server\.js$|osc-bridge\.js$/.test(f)) continue;         // node-side code: never fetched by a browser
   const src = fs.readFileSync(f, 'utf8');

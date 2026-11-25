@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>設備｜open-audiovisual</title>
+<meta name="description" content="一場演出插上的東西種類很多：MIDI 控制器、PAR 燈、LED 燈條、鏡頭、音訊介面、手部感測器、接在板子上的感測器。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/devices/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/devices/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/devices/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/devices/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="設備｜open-audiovisual">
+<meta property="og:description" content="一場演出插上的東西種類很多：MIDI 控制器、PAR 燈、LED 燈條、鏡頭、音訊介面、手部感測器、接在板子上的感測器。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/devices/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="設備｜open-audiovisual">
+<meta name="twitter:description" content="一場演出插上的東西種類很多：MIDI 控制器、PAR 燈、LED 燈條、鏡頭、音訊介面、手部感測器、接在板子上的感測器。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="devices">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/devices/#article","url":"https://openaudiovisual.com/zh/docs/devices/","name":"設備｜open-audiovisual","description":"一場演出插上的東西種類很多：MIDI 控制器、PAR 燈、LED 燈條、鏡頭、音訊介面、手部感測器、接在板子上的感測器。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"設備","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["裡面有什麼","紀錄","device()，一種一種看","加一台設備","事實與授權"],"position":12,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/devices/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/devices/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"設備","item":"https://openaudiovisual.com/zh/docs/devices/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/devices/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/devices/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch is-here" data-ch="devices">
+          <a href="#devices" aria-current="page"><span class="n">12</span><span class="t">設備</span></a>
+          <ol class="toc-secs">
+            <li><a href="#devices-what-is-in-it">裡面有什麼</a></li>
+            <li><a href="#devices-the-record">紀錄</a></li>
+            <li><a href="#devices-device-kind-by-kind">device()，一種一種看</a></li>
+            <li><a href="#devices-add-a-device">加一台設備</a></li>
+            <li><a href="#devices-facts-and-licences">事實與授權</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="devices" aria-labelledby="devices">
+<h1 id="devices">設備<a class="anchor" href="#devices" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 12 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/devices.md">docs/zh/devices.md</a></span></p>
+<p>一場演出插上的東西種類很多：MIDI 控制器、PAR 燈、LED 燈條、鏡頭、音訊介面、手部感測器、接在板子上的感測器。OAV 已經能跟其中大多數溝通，各自透過自己的套件和自己的檔案格式。<code>@openav/devices</code> 把它們收成一個集合、一種外層紀錄，讓網頁、工具或代理可以列出、搜尋，並用 id 要任何一台，拿回來就能交給驅動它的套件。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { devices, device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+
+devices({ q: <span class="ts">'minilab'</span> });                       <span class="tc">// rows: id, kind, manufacturer, name, aliases, connections, protocols, verified</span>
+<span class="tk">const</span> mini = <span class="tk">await</span> device(<span class="ts">'arturia-minilab3'</span>);   <span class="tc">// its profile, mapper routes, a MidiController in your MidiControllers</span>
+<span class="tk">const</span> par = <span class="tk">await</span> device(<span class="ts">'generic-rgbw'</span>);        <span class="tc">// a DMX fixture that patches itself</span>
+<span class="tk">const</span> cam = <span class="tk">await</span> device(<span class="ts">'logitech-mx-brio'</span>);    <span class="tc">// a camera found by its name, opened only when you call open()</span></code></pre></div>
+<h2 id="devices-what-is-in-it">裡面有什麼<a class="anchor" href="#devices-what-is-in-it" aria-label="這一節的連結">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>種類</th><th>紀錄從哪裡讀</th><th><code>device()</code> 給你什麼</th></tr></thead>
+<tbody>
+<tr><td><code>midi-controller</code></td><td><code>packages/midi/profiles/</code> 裡的每一份 profile，手寫的和從 QLC+ 轉入的</td><td><code>profile</code>、<code>routes()</code>、<code>addTo(controllers)</code></td></tr>
+<tr><td><code>dmx-fixture</code></td><td><code>packages/dmx/fixtures/</code> 裡的每一台燈具（還有 <code>tools/import-ofl.mjs</code> 寫入的 <code>fixtures/imported/</code>）</td><td><code>profile</code>、<code>patch(patch, { address })</code></td></tr>
+<tr><td><code>part</code></td><td>電子零件庫 <code>packages/hw/parts.js</code> 的每一個零件</td><td><code>part</code></td></tr>
+<tr><td><code>camera</code>、<code>audio-interface</code></td><td><code>packages/devices/records/</code> 裡的一份手寫紀錄</td><td><code>constraints()</code>、<code>find()</code>、<code>open()</code></td></tr>
+<tr><td><code>sensor</code>、<code>led-controller</code>、<code>dmx-interface</code>、<code>printer</code>、<code>projector</code>、<code>display</code></td><td>一份手寫紀錄</td><td>紀錄本身，它的 <code>use</code> 寫著哪個套件接得到它</td></tr>
+</tbody>
+</table></div>
+<p>沒有任何東西是複製的。profile、燈具和零件都留在自己的檔案裡，那是它們的事實唯一寫下的地方，集合裡每一台的紀錄都是從那個檔案讀出來的：建置套件時讀一次（<code>node tools/build-devices.mjs</code> 寫出 <code>packages/devices/catalog.js</code>，也就是 <code>devices()</code> 回答時用的清單），<code>device()</code> 載入它時再讀一次。有 profile、燈具或零件存在、清單卻沒有它，或清單寫的跟檔案現在說的不一樣，測試就會失敗。</p>
+<p>列清單很便宜。<code>devices()</code> 只讀一個產生出來的檔案，所以網頁不用抓每一份 profile 就能顯示和搜尋整個集合。<code>device()</code> 只匯入這台設備所在的那一個檔案。</p>
+<p>第一批手寫紀錄是專案桌上就有的器材，每一台都能拿真機驗證：Yamaha AG06、Logitech MX Brio、Audinate Dante Virtual Soundcard、Ultraleap Leap Motion Controller 2、WLED、ENTTEC DMX USB Pro 和 Brother QL-810W。</p>
+<p>這個集合在網站上：<a href="../../../zh/devices/">/zh/devices/</a> 依種類列出每一台設備，能篩選、能搜尋。控制器的頁面留在 <code>/controllers/&lt;id&gt;/</code>。每台 DMX 燈具在 <code>/fixtures/&lt;id&gt;/</code> 有一頁（各模式的通道表、虛擬燈具、patch 程式碼、檔案），紀錄和零件在 <code>/devices/&lt;id&gt;/</code>（附出處的事實、設定、問題、程式碼、檔案，鏡頭和音訊輸入可以在頁面上按按鈕找找看）。一台設備要提供下面三樣中至少兩樣，才有自己的頁面：能在畫面上操作的東西、接到它的程式碼、能帶走的檔案。Brother QL-810W 只有紀錄，所以在 OAV 有它的程式之前，它只是清單上的一列。</p>
+<h2 id="devices-the-record">紀錄<a class="anchor" href="#devices-the-record" aria-label="這一節的連結">#</a></h2>
+<p>每台設備都有同一種外層紀錄 <code>open-audiovisual/device@1</code>，<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/devices/device.schema.json" rel="noopener"><code>device.schema.json</code></a> 描述它，讓不跑這個套件的軟體也讀得懂。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>欄位</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>id</code>、<code>kind</code>、<code>manufacturer</code>、<code>name</code></td><td>它是誰。讀它的那個檔案沒寫製造商時（零件庫、通用版面），<code>manufacturer</code> 是 <code>null</code></td></tr>
+<tr><td><code>aliases</code></td><td>大家搜尋時會打的字：短名、中文名、型號</td></tr>
+<tr><td><code>connections</code>、<code>protocols</code></td><td>怎麼接（<code>usb</code>、<code>din-midi</code>、<code>ethernet</code>、<code>wifi</code>、<code>dmx-xlr5</code>……）和說什麼協定（<code>midi</code>、<code>dmx512</code>、<code>art-net</code>……）。profile、燈具和零件都沒寫怎麼接，所以它們的 <code>connections</code> 是空的，目前 <code>devices({ connection })</code> 只找得到手寫紀錄</td></tr>
+<tr><td><code>data</code></td><td><code>ref</code>：更深一層的紀錄（<code>{ type: 'midi-profile', id, file }</code>），以及／或 <code>facts</code>：<code>[{ key, value, unit, note, source }]</code>，每一筆都引用一個來源</td></tr>
+<tr><td><code>media</code></td><td>只有鏡頭和音訊介面有：在瀏覽器的裝置裡找到它的名稱比對式、建議的限制條件，以及它們從哪裡來</td></tr>
+<tr><td><code>setup</code>、<code>problems</code></td><td>設定步驟和已知問題，<code>{ en, zh, source }</code></td></tr>
+<tr><td><code>use</code></td><td>OAV 今天怎麼接到它：<code>[{ package, entry, sink?, call, en, zh }]</code>，沒有任何路時是 <code>null</code></td></tr>
+<tr><td><code>sources</code></td><td>每一筆事實、步驟、問題出自的頁面：<code>{ title, url, read }</code></td></tr>
+<tr><td><code>license</code>、<code>verified</code>、<code>verifications</code></td><td>紀錄資料的授權，以及它有多確定</td></tr>
+<tr><td><code>notes</code>、<code>tbd</code></td><td>值得知道的事，以及無法確認的事</td></tr>
+</tbody>
+</table></div>
+<p>只有在真機上檢查過，<code>verified</code> 才是 true，沒有一筆 <code>method</code> 是 <code>hardware</code> 的驗證紀錄，紀錄會拒絕 <code>verified: true</code>。MIDI 控制器要每一個控制項都檢查過才算：M-VAVE SMC-Mixer 的紀錄裡有一次真機檢查，59 個控制項確認了 52 個，所以不算。</p>
+<h2 id="devices-device-kind-by-kind">device()，一種一種看<a class="anchor" href="#devices-device-kind-by-kind" aria-label="這一節的連結">#</a></h2>
+<p>每段程式碼都以 module 執行，網頁的 import map 用範例那一份，再加一行 <code>"@openav/devices": "../../packages/devices/index.js?v=c6e958d9"</code>。只有鏡頭那段的按鈕會要權限，而且要按下去才會。</p>
+<h3 id="devices-a-midi-controller">MIDI 控制器<a class="anchor" href="#devices-a-midi-controller" aria-label="這一節的連結">#</a></h3>
+<p><code>routes()</code> 就是 <code>@openav/midi</code> 的 <code>controllerRoutes</code>：從控制器有名字的訊號連到你的參數的路由。<code>addTo()</code> 把 profile 放進一個 <code>MidiControllers</code>，回傳它即時的控制器。管理器拿到硬體引擎時（<code>controllers.attach(midi)</code>），以及每次裝置有變化時，都會依連接埠名稱認出實機，所以請先呼叫 <code>addTo()</code>：不然已經插著的實機要等下一次有裝置插拔才會被認出。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+<span class="tk">import</span> { MidiControllers } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
+<span class="tk">import</span> { Signals } <span class="tk">from</span> <span class="ts">'@openav/core'</span>;
+
+<span class="tk">const</span> signals = <span class="tk">new</span> Signals();
+<span class="tk">const</span> mini = <span class="tk">await</span> device(<span class="ts">'arturia-minilab3'</span>);
+<span class="tk">const</span> controllers = <span class="tk">new</span> MidiControllers({ profiles: [mini.profile], signals });
+<span class="tk">const</span> live = mini.addTo(controllers);
+live.setValue(<span class="ts">'knob1'</span>, 0.5);                        <span class="tc">// the on-screen knob; the hardware sends the same message</span>
+console.log(signals.<span class="tk">get</span>(<span class="ts">'midi/minilab3/knob1'</span>));    <span class="tc">// 0.504: 64 of 127, the MIDI value the knob sends</span>
+console.log(mini.routes({ knob1: <span class="ts">'hue'</span> }));         <span class="tc">// [{ source: 'midi/minilab3/knob1', target: 'hue' }]</span></code></pre></div>
+<h3 id="devices-a-dmx-fixture">DMX 燈具<a class="anchor" href="#devices-a-dmx-fixture" aria-label="這一節的連結">#</a></h3>
+<p><code>patch()</code> 把燈具放進 <code>@openav/dmx</code> 的 <code>Patch</code>。id 預設是 <code>&lt;設備&gt;-&lt;universe&gt;-&lt;位址&gt;</code>，universe 預設 1，模式預設是 profile 的第一個。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+<span class="tk">import</span> { Patch, DmxEngine } <span class="tk">from</span> <span class="ts">'@openav/dmx'</span>;
+
+<span class="tk">const</span> par = <span class="tk">await</span> device(<span class="ts">'generic-rgbw'</span>);
+<span class="tk">const</span> patch = <span class="tk">new</span> Patch();
+par.patch(patch, { id: <span class="ts">'par1'</span>, address: 1, mode: <span class="ts">'6ch'</span> });
+<span class="tk">const</span> engine = <span class="tk">new</span> DmxEngine(patch);
+engine.<span class="tk">set</span>(<span class="ts">'par1'</span>, { dimmer: 1, color: [1, 0.5, 0] });
+console.log(engine.render(0).bytes(1).slice(0, 6));   <span class="tc">// 255 255 128 0 0 0: dimmer, red, green, blue, white, strobe</span></code></pre></div>
+<h3 id="devices-a-part">零件<a class="anchor" href="#devices-a-part" aria-label="這一節的連結">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+
+<span class="tk">const</span> ring = <span class="tk">await</span> device(<span class="ts">'neopixel-ring-12'</span>);
+console.log(ring.part.leds, ring.part.supply);   <span class="tc">// the @openav/hw library entry, as Hw.check() reads it</span></code></pre></div>
+<h3 id="devices-a-camera-or-an-audio-interface">鏡頭或音訊介面<a class="anchor" href="#devices-a-camera-or-an-audio-interface" aria-label="這一節的連結">#</a></h3>
+<p>依名稱在瀏覽器的媒體裝置裡找到它。<code>constraints()</code> 是純函式。<code>find()</code> 呼叫 <code>enumerateDevices()</code>，回傳那台裝置或 <code>null</code>。<code>open()</code> 是唯一會要權限的呼叫，所以要在點擊裡呼叫。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+
+<span class="tk">const</span> cam = <span class="tk">await</span> device(<span class="ts">'logitech-mx-brio'</span>);
+console.log(cam.constraints());       <span class="tc">// { video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60 } }, audio: false }</span>
+<span class="tk">const</span> video = document.body.appendChild(Object.assign(document.createElement(<span class="ts">'video'</span>), { autoplay: <span class="tk">true</span>, muted: <span class="tk">true</span> }));
+<span class="tk">const</span> button = document.body.appendChild(Object.assign(document.createElement(<span class="ts">'button'</span>), { textContent: <span class="ts">'Camera'</span> }));
+button.onclick = <span class="tk">async</span> () =&gt; {
+  video.srcObject = <span class="tk">await</span> cam.open();   <span class="tc">// asks once; finds the MX Brio by name; opens it by its id</span>
+};</code></pre></div>
+<p>頁面拿到一次權限之前，瀏覽器不給名稱，所以那之前 <code>find()</code> 回傳 <code>null</code>。這時 <code>open()</code> 會先要權限、再找一次，如果瀏覽器先開的是別的鏡頭，就關掉它改開這一台。名稱看得到卻沒有符合的，它會丟出錯誤並列出找到的名稱，不要任何權限。音訊介面打開時關掉回音消除、降噪和自動增益，跟 <code>@openav/audio</code> 要麥克風時一樣。要送進分析器，用 <code>analyzer.input().context.createMediaStreamSource(stream).connect(analyzer.input())</code>。<code>@openav/pose</code> 會自己打開預設的鏡頭，所以找到的鏡頭目前還送不進姿態追蹤。</p>
+<h3 id="devices-everything-else">其他種類<a class="anchor" href="#devices-everything-else" aria-label="這一節的連結">#</a></h3>
+<p>感測器、LED 控制器、DMX 介面或印表機回來的是它的紀錄。它的 <code>use</code> 寫著接得到它的套件和呼叫：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+
+<span class="tk">const</span> wled = <span class="tk">await</span> device(<span class="ts">'wled'</span>);
+<span class="tk">for</span> (<span class="tk">const</span> u <span class="tk">of</span> wled.record.use) console.log(u.package, u.sink || <span class="ts">''</span>, u.call);
+<span class="tc">// @openav/out ddp new OutClient({ url: 'ws://127.0.0.1:6450/out' }).connect().set('light/0/r', 1)</span>
+<span class="tc">// @openav/dmx artnet dmxTransport('bridge', { patch, client })</span>
+<span class="tk">const</span> printer = <span class="tk">await</span> device(<span class="ts">'brother-ql-810w'</span>);
+console.log(printer.record.use);      <span class="tc">// null: OAV has no code that talks to it, and the record says so</span></code></pre></div>
+<h2 id="devices-add-a-device">加一台設備<a class="anchor" href="#devices-add-a-device" aria-label="這一節的連結">#</a></h2>
+<ol>
+<li>有更深一層格式的設備就放那裡：MIDI 控制器是 profile（<a href="../../../zh/docs/controllers/">MIDI 控制器</a>），燈是燈具（<a href="../../../zh/docs/dmx/">DMX 燈光</a>），零件放進 <code>packages/hw/parts.js</code>。集合會自己收進來。</li>
+<li>其他的寫成一份紀錄：<code>packages/devices/records/&lt;id&gt;.json</code>，檔名就是 id。複製一份同種類的來改。</li>
+<li>執行 <code>node tools/build-devices.mjs</code>：它會檢查每一份紀錄，重寫 <code>catalog.js</code>。再跑 <code>node --test tests/devices.test.js</code>。</li>
+<li><code>verified</code> 留 false，<code>verifications</code> 留空。只有手上有那台的人能把它變成 true。</li>
+</ol>
+<h2 id="devices-facts-and-licences">事實與授權<a class="anchor" href="#devices-facts-and-licences" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><strong>每一筆事實都引用讀到它的頁面。</strong> 數字、連接埠、協定名稱、取樣率、解析度都來自原廠自己的頁面或手冊，網址和讀的日期寫在 <code>sources</code>。在這種頁面上讀不到的就不寫，或寫進 <code>tbd</code>，絕不猜。一份短而老實的紀錄勝過一份填滿卻用猜的。</li>
+<li><strong>只取事實和連結。</strong> 不抄手冊的文字，不用產品照：原廠的頁面有著作權，事實沒有。</li>
+<li><strong>設定步驟和已知問題</strong> 來自原廠的文件或這本手冊（疑難排解、套件說明），每一筆都寫出處。</li>
+<li><strong>名稱比對式</strong>（依名稱找鏡頭或音訊輸入）在有人從實機讀到瀏覽器顯示的名稱之前，是照型號寫的，每份紀錄都在 <code>tbd</code> 裡寫明。</li>
+<li><strong>授權。</strong> 紀錄是 MIT，跟專案一樣。從 profile、燈具或零件讀出來的紀錄，跟著那個檔案的授權：從 QLC+ 轉入的控制器是 Apache-2.0（見 <code>NOTICE</code>）。Mixxx（GPL）和 midi.guide（CC-BY-SA）的資料不收。</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">MIDI 控制器與嵌入</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/p5/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">p5.js 一行接上</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

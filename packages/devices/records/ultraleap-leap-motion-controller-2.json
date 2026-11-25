@@ -51,7 +51,7 @@
   "sources": [
     { "title": "Ultraleap: products (Leap Motion Controller 2)", "url": "https://www.ultraleap.com/products", "read": "2026-11-25" },
     { "title": "open-audiovisual: packages/leap README (setup on macOS, the bridge)", "url": "https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md", "read": "2026-11-25" },
-    { "title": "open-audiovisual handbook: Troubleshooting, Chrome asks about the local network, or about apps on this device", "url": "https://openaudiovisual.com/docs/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device", "read": "2026-11-25" }
+    { "title": "open-audiovisual handbook: Troubleshooting, Chrome asks about the local network, or about apps on this device", "url": "https://openaudiovisual.com/docs/troubleshooting/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device", "read": "2026-11-25" }
   ],
   "license": "MIT",
   "verified": false,

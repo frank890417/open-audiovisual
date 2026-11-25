@@ -32,6 +32,6 @@ const f = audio.update();                    // null until a source is enabled
 Signals: `audio/rms`, `audio/peak`, `audio/band/low`, `audio/band/mid`, `audio/band/high`,
 `audio/centroid`, `audio/onset` (pulse `{rms}`), `audio/kick`, `audio/snare`, `audio/hat`
 (pulse `{level}`), `audio/kick/env`, `audio/snare/env`, `audio/hat/env` (0..1) ·
-[Signals reference](https://openaudiovisual.com/docs/#signals-openav-audio).
+[Signals reference](https://openaudiovisual.com/docs/signals/#signals-openav-audio).
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-audio)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-audio)

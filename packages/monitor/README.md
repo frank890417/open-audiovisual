@@ -40,7 +40,7 @@ A value is a number, a string (80 characters at most), a boolean or `null`; `{ v
 
 ## From an https page
 
-`createShow()` does not try the monitor on an https page. A hand-assembled show on public https that connects to `ws://127.0.0.1:7457` meets Chrome's Local Network Access prompt, which covers WebSocket connections from Chrome 147 ([Chrome blog](https://developer.chrome.com/blog/local-network-access)). Press Allow, or open the page from `http://localhost`. Details: [Troubleshooting](https://openaudiovisual.com/docs/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device).
+`createShow()` does not try the monitor on an https page. A hand-assembled show on public https that connects to `ws://127.0.0.1:7457` meets Chrome's Local Network Access prompt, which covers WebSocket connections from Chrome 147 ([Chrome blog](https://developer.chrome.com/blog/local-network-access)). Press Allow, or open the page from `http://localhost`. Details: [Troubleshooting](https://openaudiovisual.com/docs/troubleshooting/#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device).
 
 ## Exports
 
@@ -51,4 +51,4 @@ A value is a number, a string (80 characters at most), a boolean or `null`; `{ v
 | `cleanExtra` | `cleanExtra(x)` → the work's numbers made safe for JSON, or `null` when there are none |
 | server | `node packages/monitor/server.js [port=7457]`: backstage page at `/`, `GET /health` → `{ ok, clients }`. The show joins as `?role=stage`; every other socket is a monitor. |
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-monitor)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-monitor)

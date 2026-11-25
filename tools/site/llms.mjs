@@ -5,7 +5,8 @@
 // Everything that can go stale is read, not typed: the counts from facts.mjs, the pages from the register
 // (pages.mjs), every device page from the controller profiles, every example from examples/, the handbook
 // chapters from tools/docs/chapters.mjs, the package one-liners from the homepage tables. Links to documents
-// point at this site (/docs/<name>.md), so a model that cites one cites openaudiovisual.com.
+// point at this site (each chapter's page /docs/<chapter>/, and its Markdown /docs/<name>.md), so a model that cites one
+// cites openaudiovisual.com.
 //
 // llms-full.txt is the same material as one file: README, AGENTS.md and every chapter. Markdown that carries
 // HTML (the README's <div>, <table>, <picture>, <img>, <p align>) is turned into plain text first
@@ -19,6 +20,7 @@ import { getFacts } from './facts.mjs';
 import { registry } from './pages.mjs';
 import { exampleLine } from './examples.mjs';
 import { CHAPTERS } from '../docs/chapters.mjs';
+import { chapterPath } from '../docs/anchors.mjs';
 import { PACKAGE_GROUPS } from '../home/page.mjs';
 import { catalog, nameOf, detailUrl, PROFILE_DIR } from '../controllers/page.mjs';
 import { fullName } from '../controllers/detail.mjs';
@@ -62,7 +64,7 @@ export const DOC_BLURB = {
 
 export const PAGE_BLURB = {
   '': ['a playable instrument, how it works, the works, quick start, for AI agents.', '能玩的樂器、運作方式、作品、快速開始、給 AI 代理。'],
-  'docs/': ['the complete documentation on one page: every chapter listed below, in one HTML file. Generated from the Markdown in `docs/`.', '完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。'],
+  'docs/': ['the handbook\'s contents: every chapter listed below, each on its own page, with its sections. Generated from the Markdown in `docs/`.', '手冊目錄：下方列出的每一章各有一頁，附各節連結。由 `docs/` 的 Markdown 生成。'],
   'docs/reference/': ['the API reference: every variable, function, event and option of oav-p5 (`micLevel`, `knob1`, `startDrums()` …) and every export of every package, searchable, each with a description, parameters, examples you can run and a link to the source line. Generated from the code on every build and checked against it in CI, so it cannot list a name that does not exist or miss one that does. The same data as JSON: https://openaudiovisual.com/docs/reference/reference.json.', 'API 參考：oav-p5 的每個變數、函式、事件與選項（`micLevel`、`knob1`、`startDrums()` …）和每個套件的每個匯出，能搜尋，每一條有說明、參數、能直接跑的範例與原始碼行號連結。每次建置都從程式碼產生，並在 CI 裡跟程式碼對過，所以不會列出不存在的名稱，也不會漏掉存在的。同一份資料的 JSON：https://openaudiovisual.com/docs/reference/reference.json。'],
   'controllers/': ['every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).', '每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。'],
   'devices/': ['every device the framework knows in one list, by kind, filterable and searchable: the MIDI controllers (each on its /controllers/ page), the DMX fixtures (one page each with every mode\'s channel table, a virtual fixture and the patch code), cameras, audio interfaces, LED and DMX interfaces, sensors and the electronics parts (pins, voltages, currents with datasheets). Data: https://openaudiovisual.com/packages/devices/catalog.js.', '框架認得的每一台設備，一個清單，依種類分組，能篩選、能搜尋：MIDI 控制器（各自在 /controllers/ 的頁面）、DMX 燈具（每台一頁，有各模式的通道表、虛擬燈具和 patch 程式碼）、鏡頭、音訊介面、LED 與 DMX 介面、感測器，以及電子零件（腳位、電壓、電流，附規格書）。資料：https://openaudiovisual.com/packages/devices/catalog.js。'],
@@ -120,6 +122,8 @@ Tools: \`list_examples\` (works and one-line summaries) · \`read_doc\` (archite
 
 // ---------------------------------------------------------------------------- pieces
 const docUrl = (ch, locale) => `${SITE}${locale === 'zh' ? 'docs/zh/' : 'docs/'}${path.posix.basename(ch.en)}`;
+/** The chapter's page on the site (/docs/<chapter>/; the p5 chapter's is /p5/). */
+const chapterUrl = (ch, locale) => `${SITE}${locale === 'zh' ? 'zh/' : ''}${chapterPath(ch.id)}`;
 const mdTitle = (rel) => { const m = /^#\s+(.+)$/m.exec(read(rel) || ''); return m ? m[1].trim() : null; };
 const L = (locale) => (locale === 'zh' ? 1 : 0);
 
@@ -145,7 +149,7 @@ function docsSection(locale) {
   ];
   for (const ch of CHAPTERS) {
     const title = mdTitle(ch[l]) || mdTitle(ch.en) || ch.id;
-    lines.push(`- [${title}](${docUrl(ch, locale)}): ${DOC_BLURB[ch.id][L(locale)]}`);
+    lines.push(`- [${title}](${chapterUrl(ch, locale)}) ([Markdown](${docUrl(ch, locale)})): ${DOC_BLURB[ch.id][L(locale)]}`);
   }
   lines.push(`- [Patch bay design](${SITE}docs/design/patchbay.md): ${locale === 'zh' ? '多裝置 MIDI 與 patch bay 的設計。' : 'multi-device MIDI and the patch bay.'}`);
   lines.push(locale === 'zh'

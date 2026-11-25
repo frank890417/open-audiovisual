@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>套件一覽｜open-audiovisual</title>
+<meta name="description" content="三十一個套件放在 packages/&lt;name&gt;/。每一個都是純 ES module，沒有任何相依套件。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/packages/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/packages/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/packages/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/packages/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="套件一覽｜open-audiovisual">
+<meta property="og:description" content="三十一個套件放在 packages/&lt;name&gt;/。每一個都是純 ES module，沒有任何相依套件。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/packages/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="套件一覽｜open-audiovisual">
+<meta name="twitter:description" content="三十一個套件放在 packages/&lt;name&gt;/。每一個都是純 ES module，沒有任何相依套件。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="packages">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/packages/#article","url":"https://openaudiovisual.com/zh/docs/packages/","name":"套件一覽｜open-audiovisual","description":"三十一個套件放在 packages/\u003cname>/。每一個都是純 ES module，沒有任何相依套件。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"套件一覽","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["@openav/core","@openav/show","@openav/midi","@openav/audio","@openav/chord","@openav/pose","@openav/leap","@openav/keys","@openav/drums","@openav/mapping","@openav/chop","@openav/stage","@openav/world-webtoe","@openav/sound","@openav/osc","@openav/out","@openav/dmx","@openav/record","@openav/fab","@openav/hw","@openav/timeline","@openav/score","@openav/pattern","@openav/console","@openav/monitor","@openav/sync","@openav/relay","@openav/surface","@openav/remote","@openav/devices","@openav/mcp"],"position":17,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/packages/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/packages/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"套件一覽","item":"https://openaudiovisual.com/zh/docs/packages/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/packages/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/packages/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch is-here" data-ch="packages">
+          <a href="#packages" aria-current="page"><span class="n">17</span><span class="t">套件一覽</span></a>
+          <ol class="toc-secs">
+            <li><a href="#packages-openav-core">@openav/core</a></li>
+            <li><a href="#packages-openav-show">@openav/show</a></li>
+            <li><a href="#packages-openav-midi">@openav/midi</a></li>
+            <li><a href="#packages-openav-audio">@openav/audio</a></li>
+            <li><a href="#packages-openav-chord">@openav/chord</a></li>
+            <li><a href="#packages-openav-pose">@openav/pose</a></li>
+            <li><a href="#packages-openav-leap">@openav/leap</a></li>
+            <li><a href="#packages-openav-keys">@openav/keys</a></li>
+            <li><a href="#packages-openav-drums">@openav/drums</a></li>
+            <li><a href="#packages-openav-mapping">@openav/mapping</a></li>
+            <li><a href="#packages-openav-chop">@openav/chop</a></li>
+            <li><a href="#packages-openav-stage">@openav/stage</a></li>
+            <li><a href="#packages-openav-world-webtoe">@openav/world-webtoe</a></li>
+            <li><a href="#packages-openav-sound">@openav/sound</a></li>
+            <li><a href="#packages-openav-osc">@openav/osc</a></li>
+            <li><a href="#packages-openav-out">@openav/out</a></li>
+            <li><a href="#packages-openav-dmx">@openav/dmx</a></li>
+            <li><a href="#packages-openav-record">@openav/record</a></li>
+            <li><a href="#packages-openav-fab">@openav/fab</a></li>
+            <li><a href="#packages-openav-hw">@openav/hw</a></li>
+            <li><a href="#packages-openav-timeline">@openav/timeline</a></li>
+            <li><a href="#packages-openav-score">@openav/score</a></li>
+            <li><a href="#packages-openav-pattern">@openav/pattern</a></li>
+            <li><a href="#packages-openav-console">@openav/console</a></li>
+            <li><a href="#packages-openav-monitor">@openav/monitor</a></li>
+            <li><a href="#packages-openav-sync">@openav/sync</a></li>
+            <li><a href="#packages-openav-relay">@openav/relay</a></li>
+            <li><a href="#packages-openav-surface">@openav/surface</a></li>
+            <li><a href="#packages-openav-remote">@openav/remote</a></li>
+            <li><a href="#packages-openav-devices">@openav/devices</a></li>
+            <li><a href="#packages-openav-mcp">@openav/mcp</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="packages" aria-labelledby="packages">
+<h1 id="packages">套件一覽<a class="anchor" href="#packages" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 17 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/packages.md">docs/zh/packages.md</a></span></p>
+<p>三十一個套件放在 <code>packages/&lt;name&gt;/</code>。每一個都是純 ES module，沒有任何相依套件。在網頁裡透過 import map，用 <code>@openav/&lt;name&gt;</code> 引入（照抄 <code>examples/01-hello-particles/index.html</code> 裡那份就好）。目前還沒有發布到 npm。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>層</th><th>套件</th></tr></thead>
+<tbody>
+<tr><td>L1 輸入</td><td><code>midi</code> · <code>audio</code> · <code>chord</code> · <code>pose</code> · <code>leap</code> · <code>keys</code> · <code>drums</code></td></tr>
+<tr><td>L2 映射</td><td><code>mapping</code> · <code>chop</code></td></tr>
+<tr><td>L3 世界</td><td><code>stage</code> · <code>world-webtoe</code></td></tr>
+<tr><td>L4 輸出</td><td><code>sound</code> · <code>osc</code> · <code>out</code> · <code>dmx</code> · <code>record</code> · <code>fab</code>（MIDI 輸出在 <code>midi</code> 裡）</td></tr>
+<tr><td>主軸</td><td><code>timeline</code> · <code>score</code> · <code>pattern</code> · <code>console</code> · <code>monitor</code> · <code>sync</code></td></tr>
+<tr><td>手機</td><td><code>relay</code> · <code>surface</code> · <code>remote</code></td></tr>
+<tr><td>膠水</td><td><code>core</code> · <code>show</code> · <code>devices</code> · <code>mcp</code></td></tr>
+</tbody>
+</table></div>
+<p>子路徑入口（<code>@openav/remote/host</code>、<code>@openav/relay/server</code>、<code>@openav/surface/layout</code>、<code>@openav/surface/auto</code>）在瀏覽器裡要各自在 import map 加一行，例如 <code>"@openav/remote/host": "../../packages/remote/host.js?v=c6e958d9"</code>。</p>
+<h2 id="packages-openav-core">@openav/core<a class="anchor" href="#packages-openav-core" aria-label="這一節的連結">#</a></h2>
+<p>膠水 · 共用的語言：<code>Signals</code>、<code>Params</code>、<code>Loop</code>、<code>Bus</code>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Signals</code></td><td><code>new Signals()</code> · <code>define(name, { kind, min, max, unit, description, source })</code> · <code>set(name, value)</code> · <code>pulse(name, payload = 1)</code> · <code>get(name)</code> · <code>norm(name)</code> → 0..1 · <code>on(name, cb(value, name))</code> → 取消訂閱函式 · <code>onAny(cb(name, value, meta))</code> → 取消訂閱函式 · <code>list()</code> → <code>[{ name, value, at, kind, min, max, … }]</code></td></tr>
+<tr><td><code>Params</code></td><td><code>new Params(schema = [])</code> · <code>add(entries)</code> · <code>get(key)</code> · <code>clamp(key, v)</code> · <code>override(key, v)</code> · <code>clearOverride(key)</code> · <code>clearAllOverrides()</code> · <code>isOverridden(key)</code> · <code>firePulse(key)</code> · <code>onPulse(key, cb)</code> → 取消訂閱函式 · <code>resolve(base)</code> → 狀態 · <code>schema</code>、<code>overrides</code></td></tr>
+<tr><td><code>Loop</code></td><td><code>new Loop(onFrame(dt, now), { maxDt = 0.1, clock, raf, manual = false, heartbeat })</code> · <code>start()</code> · <code>stop()</code> · <code>step(dt)</code> → <code>boolean</code>（跑一個長度 <code>dt</code> 秒的影格，不夾上限）· <code>fps</code>、<code>running</code>、<code>manual</code>。<code>clock()</code> → 毫秒（預設 <code>performance.now</code>），<code>raf(cb)</code> → 下一格（預設 <code>requestAnimationFrame</code>）；注入 <code>raf</code> 或 <code>manual</code> 會關掉分頁藏起來時的 Worker 心跳（<code>heartbeat: true</code> 可打開）。見<a href="../../../zh/docs/show-control/#show-control-driving-the-frames-yourself">自己驅動影格</a></td></tr>
+<tr><td><code>Bus</code></td><td><code>new Bus()</code> · <code>on(event, cb)</code> → 取消訂閱函式 · <code>off(event, cb)</code> · <code>emit(event, payload)</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Signals, Params, Loop } <span class="tk">from</span> <span class="ts">'@openav/core'</span>;
+<span class="tk">const</span> signals = <span class="tk">new</span> Signals();
+signals.define(<span class="ts">'breath/pressure'</span>, { min: 0, max: 1 });
+signals.on(<span class="ts">'breath/pressure'</span>, (v) =&gt; console.log(v));
+signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0.4);</code></pre></div>
+<h2 id="packages-openav-show">@openav/show<a class="anchor" href="#packages-openav-show" aria-label="這一節的連結">#</a></h2>
+<p>膠水 · <code>createShow(options)</code>：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見<a href="../../../zh/docs/show-control/#show-control-createshow">演出控制</a>；<code>loop</code>、<code>monitor</code>、<code>console</code>（控台的 <code>keys</code>）決定誰來給影格、後台推送送去哪裡、哪些鍵操作控台。<code>sync</code> 讓這個頁面成為好幾個演同一場的頁面之一（主控端或從屬端，見 <a href="#packages-openav-sync"><code>@openav/sync</code></a>）。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { keys: { base: 48 }, sound: <span class="tk">true</span> } });</code></pre></div>
+<h2 id="packages-openav-midi">@openav/midi<a class="anchor" href="#packages-openav-midi" aria-label="這一節的連結">#</a></h2>
+<p>L1 輸入與 L4 輸出 · Web MIDI 的輸入與輸出，可以同時接很多台裝置，還有照實體硬體做的螢幕控制器。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Midi</code></td><td><code>new Midi({ signals, filterOut = 'IAC', requestAccess, echoWindow = 40, prefer = [] })</code> · <code>enable(preferredOut = '')</code> → <code>Promise&lt;boolean&gt;</code> · <code>devices()</code> → <code>[{ slug, name, listening }]</code> · <code>setListening(slug, on)</code> · <code>onDevices(fn)</code> · <code>onOutput(fn({ text, reason, next }))</code> · <code>listen(fn(bytes, port))</code> · <code>selectOutput(name)</code> → <code>boolean</code>（並記住成你的選擇）· <code>outputFor(nameOrRegExp)</code> · <code>send(bytes)</code> · <code>noteOn(note, vel = 100, ch = 1)</code> · <code>noteOff(note, ch = 1)</code> · <code>cc(cc, val, ch = 1)</code> · <code>panic()</code> · <code>dispose()</code> · hook：<code>onCC</code>、<code>onNote</code>、<code>onMessage</code>、<code>onSend</code>、<code>onDeviceChange</code> · <code>out</code>、<code>outputs</code>、<code>preferredOut</code>、<code>echoDropped</code></td></tr>
+<tr><td>輸出熱插拔、回音</td><td><code>pickOutput(outputs, { preferred, prefer })</code> · <code>reselectOutput({ current, outputs, preferred, prefer })</code> → <code>{ next, changed, reason, text }</code> · <code>EchoGuard({ window })</code>（<code>sent(bytes)</code>、<code>isEcho(bytes)</code>）：<code>Midi</code> 背後的純邏輯，見<a href="../../../zh/docs/show-control/#show-control-midi-output-and-panic">演出控制</a></td></tr>
+<tr><td>總譜轉 MIDI</td><td><code>new ScoreMidi({ midi, channel = 15, segment = { note: 36 }, cue = { note: 84 }, length, scrub, enabled })</code> · <code>segment({ index, cause })</code> · <code>cue({ name, n })</code>：把段落切換和 cue 變成 note 與 CC，見<a href="../../../zh/docs/score/#score-score-to-midi">總譜與導演</a></td></tr>
+<tr><td>解析</td><td><code>parseMessage(bytes)</code> → 事件 · <code>encodeMessage(event)</code> → 位元組 · <code>genericSignals(event, { device })</code> · <code>publish(signals, list)</code> · <code>describe(event)</code> · <code>relativeDelta(value, mode)</code>、<code>relativeValue(delta, mode)</code>、<code>RELATIVE_MODES</code> · <code>bendToUnit</code>、<code>unitToBend</code>、<code>BEND_CENTER</code></td></tr>
+<tr><td>控制器</td><td><code>MidiController</code>、<code>MidiControllers</code>、<code>controllerRoutes(profile, bindings)</code>、<code>PROFILES</code>、<code>profileById(id)</code>、<code>ControllerView</code>、<code>mountMidiPanel(el, controllers, opts)</code>、<code>linkControllers</code>，以及 profile 輔助函式（<code>validateProfile</code>、<code>normalizeProfile</code>、<code>matchProfile</code>…）</td></tr>
+<tr><td>Web MIDI shim</td><td><code>createVirtualMIDIAccess({ name, onOutput(bytes, timestamp), onClear })</code>、<code>virtualRequestMIDIAccess</code>、<code>splitMidi(bytes)</code>：它的輸出會連同每次送出的時間戳被聽到</td></tr>
+<tr><td><code>MidiClock</code>（<code>clock.js</code>）</td><td><code>new MidiClock({ ppq = 24, beatsPerBar = 4 })</code> · <code>feed(bytes, t)</code> → <code>'clock'·'start'·'continue'·'stop'·'spp'·'dupe'</code> · <code>bpm</code> · <code>phaseAt(t)</code> → <code>{ pos, bar, beat, bpm, running }</code> · <code>anchor()</code> · <code>state(t)</code>：跟著外部 MIDI 時鐘（<a href="../../../zh/docs/strudel/">和 Strudel 一起用</a>）</td></tr>
+<tr><td>嵌入</td><td><code>createController(profile, { profiles, signals, channel, follow, midi, requestAccess, filterOut, telemetry })</code> → <code>ControllerHost</code>（<code>on(event, fn)</code>、<code>set</code>、<code>press</code>、<code>release</code>、<code>values</code>、<code>mount(el)</code>、<code>learn()</code>、<code>dispose()</code>）· <code>loadProfile(idOrUrl)</code> · <code>packages/midi/element.js</code> 裡的 <code>&lt;oav-controller&gt;</code> 元素 · <code>embed.js</code> 裡的嵌入協定輔助函式</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Midi } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
+<span class="tk">const</span> midi = <span class="tk">new</span> Midi({ signals });
+<span class="tk">await</span> midi.enable();
+midi.noteOn(60, 100, 1);</code></pre></div>
+<p>訊號：見<a href="../../../zh/docs/signals/#signals-openav-midi">訊號一覽</a>。控制器、profile 和 shim：見 <a href="../../../zh/docs/controllers/">MIDI 控制器與嵌入</a>。</p>
+<h2 id="packages-openav-audio">@openav/audio<a class="anchor" href="#packages-openav-audio" aria-label="這一節的連結">#</a></h2>
+<p>L1 輸入 · 麥克風（或任何音訊節點）的分析。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>AudioAnalyzer</code></td><td><code>new AudioAnalyzer({ signals, fftSize = 2048, smooth = 0.7 })</code> · <code>enableMic()</code> · <code>enableElement(mediaEl)</code> · <code>input()</code> → 一個可以接進去的 <code>AnalyserNode</code> · 每個影格呼叫 <code>update()</code> → <code>{ rms, peak, low, mid, high, centroid, onset, kick, snare, hat }</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { AudioAnalyzer } <span class="tk">from</span> <span class="ts">'@openav/audio'</span>;
+<span class="tk">const</span> audio = <span class="tk">new</span> AudioAnalyzer({ signals });
+<span class="tk">await</span> audio.enableMic();          <span class="tc">// from a click</span>
+<span class="tc">// every frame: audio.update();</span></code></pre></div>
+<h2 id="packages-openav-chord">@openav/chord<a class="anchor" href="#packages-openav-chord" aria-label="這一節的連結">#</a></h2>
+<p>L1 輸入（一種分析器）· 把彈下的音歸成一次一次的彈奏（gesture），發布協和度、三和弦和音堆。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>ChordDetector</code></td><td><code>new ChordDetector({ window = 80, onChord, signals })</code> · <code>noteOn(note, vel = 0.8)</code> · <code>noteOff(note)</code> · <code>analyze(notes, vels)</code> → 分析結果（純函式）</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { ChordDetector } <span class="tk">from</span> <span class="ts">'@openav/chord'</span>;
+<span class="tk">const</span> chord = <span class="tk">new</span> ChordDetector({ signals });
+signals.on(<span class="ts">'midi/note/on'</span>, ({ note, vel }) =&gt; chord.noteOn(note, vel));
+signals.on(<span class="ts">'midi/note/off'</span>, ({ note }) =&gt; chord.noteOff(note));
+chord.analyze([60, 64, 67]).chordType;   <span class="tc">// 'major'</span></code></pre></div>
+<h2 id="packages-openav-pose">@openav/pose<a class="anchor" href="#packages-openav-pose" aria-label="這一節的連結">#</a></h2>
+<p>L1 輸入 · 用 MediaPipe 從鏡頭追蹤身體和手，全部在本機運算。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>PoseTracker</code></td><td><code>new PoseTracker({ signals, mirror = true })</code> · <code>enable({ videoEl })</code>（要從點擊事件呼叫）· <code>stop()</code> · <code>skeleton(ctx, w, h, { color, lineWidth })</code> · <code>landmarks</code>、<code>running</code></td></tr>
+<tr><td><code>HandTracker</code></td><td><code>new HandTracker({ signals, mirror = true })</code> · <code>enable({ videoEl })</code> · <code>stop()</code> · <code>skeleton(ctx, w, h, { colorLeft, colorRight, lineWidth })</code> · <code>hands</code>、<code>running</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { HandTracker } <span class="tk">from</span> <span class="ts">'@openav/pose'</span>;
+<span class="tk">const</span> hands = <span class="tk">new</span> HandTracker({ signals });
+button.onclick = () =&gt; hands.enable();</code></pre></div>
+<h2 id="packages-openav-leap">@openav/leap<a class="anchor" href="#packages-openav-leap" aria-label="這一節的連結">#</a></h2>
+<p>L1 輸入 · 透過這台電腦的橋接程式讀 Leap Motion／Ultraleap 的手（<code>node packages/leap/bridge/leap-bridge.mjs</code>，<code>ws://127.0.0.1:6437</code>）。同一支橋接也講舊的 LeapJS 協定，所以 2014–2021 年用 <code>leap.js</code> 寫的作品不用改就能跑。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>LeapInput</code></td><td><code>new LeapInput({ signals, url, reconnect = true, fingers = true, box, thresholds })</code> · <code>connect()</code> · <code>disconnect()</code> · <code>simulate({ target })</code> → <code>stop()</code> · <code>skeleton(ctx, w, h, { view, colorLeft, colorRight, lineWidth })</code> · <code>mountPanel(el)</code> · <code>onFrame(fn)</code> · <code>onStatus(fn)</code> · <code>ingest(msg)</code> · <code>hands</code>、<code>frame</code>、<code>status</code>、<code>device</code></td></tr>
+<tr><td>幀</td><td><code>V6Converter</code>（原始格式 → LeapJS v6）· <code>handsOf(msg)</code> · <code>normalizePoint(p, box)</code> · <code>handAngles(direction, normal)</code> · <code>mockHand(o)</code> · <code>mockFrame(t)</code></td></tr>
+<tr><td>手勢</td><td><code>HandGestures</code> · <code>Hysteresis(on, off)</code> · <code>THRESHOLDS</code>（單手捏 0.86／0.5、雙手捏 0.8／0.5、握拳 0.8／0.5）</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { LeapInput } <span class="tk">from</span> <span class="ts">'@openav/leap'</span>;
+<span class="tk">const</span> leap = <span class="tk">new</span> LeapInput({ signals }).connect();   <span class="tc">// ws://127.0.0.1:6437/v6.json</span>
+leap.onFrame(() =&gt; leap.skeleton(ctx, w, h));          <span class="tc">// joints in mm: leap.hands</span>
+<span class="tc">// no sensor: leap.simulate() — mouse = right palm, press = pinch</span></code></pre></div>
+<h2 id="packages-openav-keys">@openav/keys<a class="anchor" href="#packages-openav-keys" aria-label="這一節的連結">#</a></h2>
+<p>L1 輸入 · 螢幕鋼琴、電腦鍵盤演奏和一位模擬演奏者，全都發布 <code>midi/note/on|off</code>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>mountKeys</code></td><td><code>mountKeys(container, { signals, chord, base = 48, octaves = 2, sim = true, capture = true })</code> → <code>{ piano, sim, update(dt), dispose(), captureBox }</code></td></tr>
+<tr><td><code>KeysPiano</code></td><td><code>new KeysPiano(container, { base, octaves, semitones, fill, keyWidth, velocity, minBase, maxBase, onNote, onOctave })</code> · <code>press(note, vel01)</code> · <code>release(note)</code> · <code>releaseAll()</code> · <code>setBase(n)</code> · <code>handleKeyDown(e)</code>、<code>handleKeyUp(e)</code> · <code>captureEnabled</code></td></tr>
+<tr><td><code>SimPlayer</code></td><td><code>new SimPlayer({ press, release, base = 60, scale = [0, 2, 4, 7, 9], density = 1 })</code> · <code>toggle(on)</code> · <code>update(dt)</code></td></tr>
+<tr><td><code>PIANO_KEYMAP</code></td><td><code>{ a: 0, w: 1, s: 2, … ';': 16 }</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { mountKeys } <span class="tk">from</span> <span class="ts">'@openav/keys'</span>;
+<span class="tk">const</span> keys = mountKeys(document.querySelector(<span class="ts">'#keys'</span>), { signals, base: 48 });
+<span class="tc">// every frame: keys.update(dt);</span></code></pre></div>
+<h2 id="packages-openav-drums">@openav/drums<a class="anchor" href="#packages-openav-drums" aria-label="這一節的連結">#</a></h2>
+<p>L1 輸入與 L4 輸出 · 合成鼓組、16 步音序器和它的格狀介面。發布的 <code>drum/*</code> 跟麥克風偵測鼓點時的長得一樣。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>mountDrums</code></td><td><code>mountDrums(container, { signals, engine, autoEnableEngine = true, onStep, onHit, onTakeover, bpm = 112, pattern, clock = 'frame', lang })</code> → <code>{ seq, engine, root, clock, play(on), setPattern(p, { text }), setBpm(bpm), update(dt), deliver(), phase(), now(), info(), dispose() }</code>；<code>clock: 'lookahead'</code> 照鼓組的音訊時鐘提前排程（oav-p5 0.6 用這個），也能照寫的樣子打編譯好的一行節奏；<code>lang: 'zh'</code> 軌道名用中文；<code>rhythm: &lt;@openav/pattern&gt;</code>（或 <code>useRhythm(mod)</code>）讓格子上方那一行可以直接改、點格子會改寫它，附 <code>history</code>／<code>undo()</code>、複製、在 Strudel 打開（0.7）</td></tr>
+<tr><td><code>DrumSequencer</code></td><td><code>new DrumSequencer({ onHit(lane, vel), onStep(i, n), bpm = 112, swing = 0.12, humanize = 0.35, pattern = 'four on floor' })</code> · <code>setPattern(nameOrGrid)</code> · <code>toggleCell(lane, i)</code> · <code>toggle(on)</code> · <code>update(dt)</code> · <code>grid</code>、<code>bpm</code>（逐幀推進的時鐘）</td></tr>
+<tr><td><code>DrumScheduler</code>、<code>DrumTransport</code></td><td>提前排程的時鐘：格子或編譯好的一行節奏 → 帶時間的事件，小節位置用速度錨點換成秒（不累積漂移）；外層是 Web Worker 心跳、音訊時鐘、聽到時才告訴頁面的步與鼓；<code>follow({ pos, at, bpm })</code> 跟著外部時鐘打（小誤差用速度慢慢拉回，大誤差直接跳到它的格線上）、<code>followInfo()</code>、<code>unfollow()</code></td></tr>
+<tr><td><code>drumEngine</code></td><td><code>drumEngine({ samples })</code> → 一個聲音引擎（見<a href="../../../zh/docs/show-control/#show-control-sound">聲音</a>）；<code>noteOn(note, vel, time)</code> 在自己 AudioContext 的 <code>time</code> 響，回傳 <code>{ time, cancel() }</code></td></tr>
+<tr><td><code>PATTERNS</code>、<code>GM</code></td><td>節奏型預設，以及 General MIDI 鼓的音符編號 <code>{ kick: 36, snare: 38, clap: 39, tom: 45, hat: 42, openhat: 46 }</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { mountDrums } <span class="tk">from</span> <span class="ts">'@openav/drums'</span>;
+<span class="tk">const</span> drums = mountDrums(document.querySelector(<span class="ts">'#drums'</span>), { signals });
+<span class="tc">// every frame: drums.update(dt);</span></code></pre></div>
+<h2 id="packages-openav-mapping">@openav/mapping<a class="anchor" href="#packages-openav-mapping" aria-label="這一節的連結">#</a></h2>
+<p>L2 映射 · 從訊號接到參數的路由，含曲線、平滑、learn，以及可以存檔的設定組（profile）。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Mapper</code></td><td><code>new Mapper({ signals, params, profile = 'default', onChange, onLearn, base })</code> · <code>addRoute(route)</code> · <code>removeRoute(id)</code> · <code>routesFor(target)</code> · <code>learn(target)</code> · <code>update(dt)</code> · <code>toJSON()</code> · <code>fromJSON(routes)</code> · <code>save()</code> · <code>load()</code> · <code>dispose()</code> · <code>routes</code>、<code>learnTarget</code></td></tr>
+<tr><td><code>LearnWizard</code></td><td><code>new LearnWizard({ mapper, keys, onChange })</code> · <code>start()</code> · <code>skip()</code> · <code>back()</code> · <code>stop()</code> · <code>sync()</code> · <code>active</code>、<code>current</code>、<code>index</code>、<code>total</code>、<code>done</code>、<code>added</code>：「依序對應旋鈕」，見<a href="../../../zh/docs/score/#score-map-the-knobs-in-order">總譜與導演</a></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+<span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params });
+mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'bloom'</span>, curve: <span class="ts">'exp'</span>, smooth: 0.1 });
+<span class="tc">// every frame: mapper.update(dt);</span>
+<span class="tc">// a knob that nudges the timeline instead of replacing it, and gives the param back when you let go:</span>
+<span class="tc">// mapper.base = () =&gt; timeline.state();</span>
+<span class="tc">// mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'trim', outMin: -0.3, outMax: 0.3, release: 4 });</span></code></pre></div>
+<p>完整說明：見<a href="../../../zh/docs/mapping/">映射</a>。</p>
+<h2 id="packages-openav-chop">@openav/chop<a class="anchor" href="#packages-openav-chop" aria-label="這一節的連結">#</a></h2>
+<p>L2 映射 · 數值隨時間的變化，像 TouchDesigner 的 CHOP 那樣塑形：Lag、Trigger（這裡叫 <code>envelope</code>）、Speed、Spring、Trail、Slope、Count。純邏輯，沒有自己的時鐘：每一步都告訴它過了幾秒，並在那段時間裡精確求解，所以 30 fps 和 144 fps 畫出同一條曲線。參數意義參考 TouchDesigner 官方文件（Derivative），程式由 OAV 自行實作。在 p5 草圖裡，oav-p5 把它們做成一行一個：見 <a href="../../../zh/p5/#p5-values-over-time-lag-env-speed-spring-trail">p5 一行注入</a>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>approach</code></td><td><code>approach(current, target, seconds, dt)</code> → 一極點 lag 的一步；<code>seconds</code>＝跟上 63% 變化的時間（<code>@openav/mapping</code> 的 <code>smooth</code> 就是用它算）</td></tr>
+<tr><td><code>Lag</code></td><td><code>new Lag({ up = 0.1, down = up })</code> · <code>step(input, dt, up?, down?)</code> → 輸出 · <code>reset(v?)</code>：上升用 <code>up</code>、下降用 <code>down</code>（Lag CHOP 的 Lag 1／Lag 2），秒數是 TouchDesigner 的（大約跟上 90% 變化的時間）</td></tr>
+<tr><td><code>envelope</code></td><td><code>envelope(times, t, attack = 0.01, decay = 0.3, peak = 1)</code> → Trigger CHOP 在時間 <code>t</code> 的值（事件時間 <code>times</code>，秒，舊的在前）：直線上升（0 → peak），<code>decay</code> 秒後剛好回到 0；還沒落完又觸發，從當下的高度接著走 · <code>envelopeStage(elapsed, attack, decay, from, peak)</code></td></tr>
+<tr><td><code>Speed</code></td><td><code>new Speed()</code> · <code>step(rate, dt)</code> → 位置：每秒加 <code>rate</code></td></tr>
+<tr><td><code>Spring</code></td><td><code>new Spring({ stiffness = 100, damping = 6 })</code> · <code>step(target, dt)</code> → 位置（另有 <code>velocity</code>）：掛在彈簧上的質點被拉向輸入，精確解 · <code>springStep(x, v, target, k, c, dt)</code> → <code>[x, v]</code></td></tr>
+<tr><td><code>Trail</code></td><td><code>new Trail({ seconds = 2, rate = 60 })</code> · <code>step(value, dt)</code> → 最近 <code>seconds</code> 秒，每秒 60 個值再加上最新的一個，舊的在前，長度固定</td></tr>
+<tr><td><code>Slope</code></td><td><code>new Slope()</code> · <code>step(value, dt)</code> → 每秒變化量</td></tr>
+<tr><td><code>Count</code></td><td><code>new Count({ threshold = 0.5 })</code> · <code>step(on, limit = 0)</code> → 打開過幾次；給 limit 就在 0 … limit − 1 之間循環 · <code>wrapCount(total, limit)</code></td></tr>
+<tr><td><code>TD_LAG_RATIO</code>、<code>DEFAULTS</code></td><td><code>Math.LN10</code>：這裡有兩種秒數。<code>Lag</code> 與 <code>lag()</code> 收的是 TouchDesigner Lag CHOP 的秒數（大約是跟上 90% 變化的時間），所以 <code>lag(x, 0.1)</code> 動起來就像 Lag CHOP 設 0.1；<code>Lag</code> 內部再除以 <code>TD_LAG_RATIO</code>（2.3）換成時間常數。<code>approach(…, seconds)</code> 收的就是時間常數本身（跟上 63%，<code>@openav/mapping</code> 的 <code>smooth</code> 一向是這個意思）；上面那些預設值</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Lag, envelope } <span class="tk">from</span> <span class="ts">'@openav/chop'</span>;
+<span class="tk">const</span> vu = <span class="tk">new</span> Lag({ up: 0.03, down: 0.4 });       <span class="tc">// opens at once, closes slowly</span>
+<span class="tc">// every frame: r = 50 + vu.step(level, dt) * 300; pump = envelope(kickTimes, now, 0.01, 0.3);</span></code></pre></div>
+<h2 id="packages-openav-stage">@openav/stage<a class="anchor" href="#packages-openav-stage" aria-label="這一節的連結">#</a></h2>
+<p>L3 世界 · 世界的外殼：管生命週期、彙整參數，本身不負責繪圖。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Stage</code></td><td><code>new Stage({ container, params, signals, io = {} })</code> · <code>register(world)</code> · <code>activate(name)</code>（非同步）· <code>frame(dt, baseState)</code> → 狀態 · <code>active</code>、<code>activeName</code>、<code>worlds</code>、<code>io</code></td></tr>
+<tr><td><code>createCanvas</code></td><td><code>createCanvas(container, { alpha = false })</code> → <code>{ canvas, ctx, fit() → { w, h }, dispose() }</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Stage, createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
+<span class="tk">const</span> stage = <span class="tk">new</span> Stage({ container, params, signals });
+stage.register(world);
+<span class="tk">await</span> stage.activate(world.name);
+<span class="tc">// every frame: const state = stage.frame(dt, timeline.state());</span></code></pre></div>
+<h2 id="packages-openav-world-webtoe">@openav/world-webtoe<a class="anchor" href="#packages-openav-world-webtoe" aria-label="這一節的連結">#</a></h2>
+<p>L3 世界 · 把一張 <a href="https://github.com/frank890417/WebToe" rel="noopener">WebToe</a> 節點網路當成世界來演奏，參數會送進網路裡的 <code>ext('name', fallback)</code> 綁定。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>webtoeWorld</code></td><td><code>webtoeWorld({ name = 'webtoe', app = 'https://webtoe.openaudiovisual.com/', project, params = [], extra })</code> → 一個世界</td></tr>
+</tbody>
+</table></div>
+<p>見<a href="../../../zh/docs/writing-a-world/#writing-a-world-a-webtoe-patch">寫一個世界</a>。</p>
+<h2 id="packages-openav-sound">@openav/sound<a class="anchor" href="#packages-openav-sound" aria-label="這一節的連結">#</a></h2>
+<p>L4 輸出 · 頁面裡的樂器，背後是一份精簡的引擎介面約定。有 Salamander 平台鋼琴、敲擊琴、弦樂、風琴、合唱、豎琴和合成器音色，從選單挑，引擎的參數會變成 <code>sound/*</code> 參數。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Sound</code></td><td><code>new Sound({ signals, params, engine, instrument, remember, picker })</code> · <code>enable()</code>（要從點擊事件呼叫）· 每個影格呼叫 <code>update(state)</code> · <code>setInstrument(id)</code> · <code>instrument</code> · <code>status</code> · <code>onChange(cb)</code> · <code>dispose()</code> · <code>enabled</code></td></tr>
+<tr><td><code>toneEngine</code></td><td><code>toneEngine({ instrument = 'synth/pad', baseUrl, instruments, cdn, drumChannel = 10 })</code> → 帶有 <code>cutoff</code>、<code>space</code>、<code>volume</code> 參數的引擎，再加上樂器自己的參數</td></tr>
+<tr><td><code>registerInstrument</code></td><td><code>registerInstrument({ id, name, category, params, defaults, credit, create(Tone, ctx) }, { replace })</code>，另外還有 <code>getInstrument</code>、<code>listInstruments</code>、<code>instrumentGroups</code>、<code>onInstrumentsChange</code></td></tr>
+<tr><td><code>registerSynthPreset</code></td><td><code>registerSynthPreset({ id, name, voice, oscillator, envelope, filter, effects, … })</code> → <code>synth/&lt;id&gt;</code></td></tr>
+<tr><td><code>modalInstrument</code></td><td><code>modalInstrument({ id, name, partials, strike, damp })</code> → 用資料寫成的敲擊類樂器</td></tr>
+<tr><td><code>mountSoundPicker</code></td><td><code>mountSoundPicker(el, sound, { lang, className })</code> → 控台用的那個選單</td></tr>
+</tbody>
+</table></div>
+<p>引擎介面約定：<code>{ params, enable(), noteOn(note, vel01), noteOff(note), set(key, value), dispose() }</code>。樂器清單和怎麼加入新樂器，寫在<a href="../../../zh/docs/show-control/#show-control-sound">聲音</a>。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Sound, toneEngine } <span class="tk">from</span> <span class="ts">'@openav/sound'</span>;
+<span class="tk">const</span> sound = <span class="tk">new</span> Sound({ signals, params, engine: toneEngine({ instrument: <span class="ts">'piano'</span> }) });
+button.onclick = () =&gt; sound.enable();
+<span class="tc">// every frame: sound.update(state);</span></code></pre></div>
+<h2 id="packages-openav-osc">@openav/osc<a class="anchor" href="#packages-openav-osc" aria-label="這一節的連結">#</a></h2>
+<p>L4 輸出 · 透過一個小小的 Node 橋接程式，把 OSC 從瀏覽器送到 UDP。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>OscOut</code></td><td><code>new OscOut(url = 'http://127.0.0.1:7456')</code> · <code>enable()</code> → <code>Promise&lt;boolean&gt;</code> · <code>disable()</code> · <code>send(addr, args)</code> · 每個影格呼叫 <code>flush()</code> · <code>rate()</code> → 上次呼叫之後送出的訊息數 · hook：<code>onStatus(ok, info)</code>、<code>onMsg(addr, args)</code></td></tr>
+<tr><td>橋接</td><td><code>node packages/osc/bridges/osc-bridge.js [httpPort=7456] [targetHost=127.0.0.1] [targetPort=3456]</code></td></tr>
+</tbody>
+</table></div>
+<p>見<a href="../../../zh/docs/show-control/#show-control-osc-output">演出控制</a>。</p>
+<h2 id="packages-openav-out">@openav/out<a class="anchor" href="#packages-openav-out" aria-label="這一節的連結">#</a></h2>
+<p>L4 輸出 · 把網頁作品的參數經一支本機橋接（<code>node packages/out/bridge/out-bridge.mjs --config out.json</code>，<code>ws://127.0.0.1:6450/out</code>）送到實體硬體：WLED 燈條（DDP）、序列埠馬達板、OSC，以及 DMX 燈光（Art-Net、sACN、Enttec DMX USB Pro）。頁面安靜下來或最後一個連線離開時，看門狗會把每個通道退回設定好的安全值（設成 <code>"hold"</code> 的通道停在原處）。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>export</th><th>簽名</th></tr></thead>
+<tbody>
+<tr><td><code>OutClient</code></td><td><code>new OutClient({ url, id, schedule })</code> · <code>connect()</code> · <code>simulate()</code> · <code>close()</code> · <code>set(ch, v)</code> · <code>batch({ ch: v })</code> · <code>onStatus(fn)</code> · <code>status</code>、<code>last</code>、<code>bridge</code>、<code>beatMs</code>：同一通道每個 frame 只送一個值，斷線以退避重連，有心跳</td></tr>
+<tr><td>橋接</td><td><code>node packages/out/bridge/out-bridge.mjs [--port 6450] [--config out.json] [--no-watchdog]</code> · sink：<code>ddp</code> <code>serial</code> <code>osc</code> <code>udp-json</code> <code>log</code>，DMX 用 <code>dmx/&lt;universe&gt;/&lt;address&gt;</code>：<code>artnet</code>（單播 <code>host</code>）、<code>sacn</code>（多播或 <code>host</code>、<code>priority</code>、<code>source</code>）、<code>enttec</code>（<code>path</code>、<code>universe</code>），每秒 40 格，沒變時每秒補送一次，每個通道一道頻閃保護（<code>"flashGuard": false</code> | <code>{ maxFlashHz, exempt }</code>）</td></tr>
+<tr><td>實驗室</td><td><code>meta.params[i].out: "light/1/r"</code> 綁定參數（照 min–max 正規化到 0..1，<code>outRaw</code> 送原值）；<code>?out=sim</code> · <code>?out=0</code> · <code>?out=ws://…</code></td></tr>
+</tbody>
+</table></div>
+<p>設定檔與看門狗規則見套件的 README。</p>
+<h2 id="packages-openav-dmx">@openav/dmx<a class="anchor" href="#packages-openav-dmx" aria-label="這一節的連結">#</a></h2>
+<p>L4 輸出（燈光）· 從網頁打 DMX，全部是純邏輯：燈具 profile（<code>open-audiovisual/fixture@1</code>）、把屬性（dimmer、color、pan、tilt、strobe、zoom，0..1）換成每台燈位元組的 patch，以及依時間算出每台燈任何時刻樣子的引擎：基礎 scene → 有淡入淡出的 cue → 跟著拍子的 chase → effect → 即時值 → 每台燈的上下限 → 總控 → blackout。安全機制預設開著，閃爍上限（每秒 3 次）以每台燈來算，守兩層：引擎把會讓同一台燈閃的 effect 和 chase 放慢，直到它們在這台燈上的頻率加起來不超過上限（<code>state(t).slowed</code>），每一個 <code>dmxTransport()</code> 再讓每一格經過頻閃保護，管住每台燈實際發出的光，即時值也算在內（變亮的次數有限額，變暗永遠直接通過，<code>{ flashGuard: false }</code> 才會關掉，監看器那時會一直顯示）。profile 寫了 Hz 的 strobe 通道遵守上限，沒寫 Hz 的停在 open。<code>render(t, { beat })</code> 要連 <code>bpm</code> 一起給，因為上限要靠拍速計算。<code>control</code> 通道（重置、燈泡開關、內建程式）只有 <code>control()</code> 能寫。blackout 時 pan、tilt 停在原處。Art-Net、sACN 和 Enttec DMX USB Pro 的位元組由純函式編碼，<code>dmxTransport()</code> 每一格把有變的部分送出去（留在記憶體、經輸出橋接程式，或用 Web Serial），<code>dmxParams()</code> 把引擎的控制點變成參數，<code>mountDmxMonitor()</code> 把燈畫在頁面上。還沒有用任何一台真的燈、節點或介面試過。完整說明在 <a href="../../../zh/docs/dmx/">DMX 燈光</a> 那一章。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Patch</code></td><td><code>new Patch({ profiles })</code> · <code>add({ id, profile, mode, universe = 1, address, name, groups, limits })</code>（超過 512、模式不存在會丟錯誤）· <code>check()</code> → 重疊的位址 · <code>ids(target)</code> · <code>render(states, { master, blackout, maxFlashHz = 3, controls })</code> → <code>Universes</code> · <code>resolve(id, props)</code> · <code>toJSON()</code> · <code>Patch.fromJSON(json, { profiles })</code></td></tr>
+<tr><td><code>DmxEngine</code></td><td><code>new DmxEngine(patch, { maxFlashHz = 3, bpm = 120 })</code> · <code>scene(name, { target: props })</code> · <code>base(...names)</code> · <code>cue(name, { scene, fadeIn, fadeOut, curve })</code> · <code>go(name, at)</code> · <code>release(at, fade)</code> · <code>chase(name, { steps, every, unit: 'beat' | 'second', fade, start })</code> · <code>effect(name, { target, property, wave: sine | saw | square | chase | flicker | rainbow, rate, unit, depth, phase, spread, width, seed })</code> · <code>run(name, on)</code> · <code>remove(name)</code> · <code>set(target, props)</code> · <code>clear(target, keys)</code> · <code>control(id, key, byte)</code> · <code>master</code>、<code>blackout</code>、<code>maxFlashHz</code> · <code>render(t, { beat, bpm })</code> → <code>Universes</code> · <code>state(t)</code> → <code>{ fixtures, capped, slowed }</code></td></tr>
+<tr><td>即時</td><td><code>dmxTransport('sim' | 'bridge' | 'serial', { patch, flashGuard = true, maxFlashHz = 3, now, client | universe })</code> · <code>send(universes)</code> → 改變的通道數 · <code>bytes(id)</code> · <code>status</code> · <code>flashGuard</code> → <code>{ on, unit, maxFlashHz, held }</code> · <code>connect()</code>（serial，要在點擊裡呼叫）· <code>close()</code> · <code>new FlashGuard(patch, { maxFlashHz })</code> · <code>apply(universes, t)</code> · <code>held</code> · <code>dmxParams(engine, { groups, effects, chases })</code> → <code>{ params, apply(state, t) }</code> · <code>mountDmxMonitor(el, { patch, transport, engine })</code> → <code>{ update(universes?), look(id), dispose() }</code> · 引擎的 <code>tune(name, { rate, depth }, at)</code> · <code>submaster(target, level)</code> · <code>describe()</code></td></tr>
+<tr><td><code>Universe</code> · <code>Universes</code></td><td><code>new Universe(id)</code> · <code>get(address)</code> · <code>set(address, value)</code> · <code>write(address, values)</code> · <code>fill(v)</code> · <code>copy()</code> · <code>data</code>（Uint8Array，512）· <code>Universes</code>：<code>get(id)</code> · <code>bytes(id)</code> · <code>ids()</code> · <code>entries()</code></td></tr>
+<tr><td>燈具</td><td><code>FIXTURES</code>（通用：調光器、RGB、RGBW 4／6 通道、RGBA、RGBAW+UV 6／8 通道、單色頻閃燈、搖頭燈 8／16 通道，全部 <code>"verified": false</code>）· <code>fixtureById(id)</code> · <code>validateFixture(profile)</code> → 問題清單 · <code>loadFixture(profile)</code> · <code>rgbToChannels([r, g, b], colors)</code> · schema 在 <code>@openav/dmx/fixtures/fixture.schema.json</code></td></tr>
+<tr><td>協定</td><td><code>encodeArtDmx(data, { universe, sequence, physical })</code>／<code>decodeArtDmx(bytes)</code>（ArtDmx，UDP 6454）· <code>encodeSacn(data, { universe, cid, source, priority, sequence })</code>／<code>decodeSacn(bytes)</code> · <code>sacnAddress(universe)</code>（E1.31，UDP 5568）· <code>encodeEnttecDmx(data)</code>／<code>decodeEnttecDmx(bytes)</code>（DMX USB Pro，label 6）</td></tr>
+</tbody>
+</table></div>
+<p><code>node tools/import-ofl.mjs &lt;OFL 的 checkout&gt; --list tools/ofl/batch-1.json</code> 把 Open Fixture Library（MIT）的燈具轉成這個格式（也可以直接指定：<code>… fixtures/&lt;廠牌&gt;/&lt;燈具&gt;.json</code>），引擎在真燈上會弄錯的燈具會被擋下來。<code>fixtures/imported/</code> 裡有四十二台，全部是 <code>"verified": false</code>。它們不在 <code>FIXTURES</code> 裡，用 <code>@openav/dmx/fixtures/imported.js</code> 的 <code>loadImportedFixture(id)</code>（或 <code>@openav/devices</code> 的 <code>device(id)</code>）載入要的那一台。Art-Net™ Designed by and Copyright Artistic Licence.</p>
+<h2 id="packages-openav-record">@openav/record<a class="anchor" href="#packages-openav-record" aria-label="這一節的連結">#</a></h2>
+<p>L4 輸出（影像分支）· 演出影片：作品和演奏者的鏡頭合成進一張尺寸精確的畫布（直式 1080×1920、4:5、2.7K、4K、橫式、方形），跟作品自己的聲音一起交給同一個 <code>MediaRecorder</code> 錄，所以畫面和聲音從結構上就是同步的；另外還有單獨的聲音檔、事件紀錄，以及 MIDI 錄音（錄下你彈的，再播回演出裡，<code>.mid</code> 可進可出）。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Compositor</code></td><td><code>new Compositor({ size = 'vertical-1080p', layout = 'stack', layoutOptions, getWorkCanvas, background, mirrorCam = true, maxFps = 60, onDraw(ctx, rects, comp) })</code> · <code>start()</code> · <code>stop()</code> · <code>draw()</code> · <code>setSize(size)</code> · <code>setLayout(layout, options)</code> · <code>setCamera(stream | video | null)</code> · <code>drawOnCamera(fn(ctx, w, h))</code> · <code>canvas</code>、<code>rects</code>、<code>video</code></td></tr>
+<tr><td><code>Recorder</code></td><td><code>new Recorder({ canvas, fps = 60, audioTracks = [], audioOnly = false, videoBitsPerSecond, mimeType })</code> · <code>start({ timeslice = 1000, ondata(blob, seq), keep })</code> · <code>stop()</code> → <code>Promise&lt;{ mimeType, ext, bytes, durationMs, width, height, blob, … }&gt;</code> · <code>t0</code></td></tr>
+<tr><td><code>AudioTap</code></td><td><code>new AudioTap({ context, sources, captureDestination })</code> · <code>add(node | stream | track, { bus })</code> · <code>captureDestination()</code> · <code>addMicrophone()</code> · <code>level()</code> · <code>tracks</code>（作品＋麥克風）、<code>workTracks</code>（只有作品）</td></tr>
+<tr><td><code>EventLog</code></td><td><code>new EventLog({ now, filter, throttleMs })</code> · <code>start(at)</code> · <code>stop()</code> · <code>add(name, value)</code> · <code>attach(signals)</code> · <code>toJSON()</code> · <code>toTake()</code></td></tr>
+<tr><td><code>TakeRecorder</code> · <code>TakePlayer</code></td><td><code>new TakeRecorder({ signals, filter = /^midi\//, overdub })</code> · <code>start()</code> · <code>stop()</code> → take · <code>new TakePlayer({ signals, take, loop = true, speed = 1, yieldToLive, resumeAfter, clock })</code> · <code>play()</code> · <code>pause()</code> · <code>stop()</code> · <code>seek(ms)</code> · <code>update(dt)</code></td></tr>
+<tr><td>純函式</td><td><code>layoutRects(layout, out, src, opts)</code> · <code>PRESETS</code> · <code>presetById</code> · <code>resolveSize</code> · <code>recommendedFps(w, h)</code> · <code>recommendedBitrate(w, h, fps)</code> · <code>pickMime(isTypeSupported, { audioOnly })</code> · <code>extFor(mime)</code> · <code>normalizeTake</code> · <code>validateTake</code> · <code>trimSilence</code> · <code>quantizeTake</code> · <code>toMidiFile(take)</code> → <code>Uint8Array</code> · <code>fromMidiFile(bytes)</code> → take</td></tr>
+<tr><td>鏡頭</td><td><code>openCamera({ deviceId, width = 1920, height = 1080, fps = 30 })</code> → <code>MediaStream</code> · <code>listCameras()</code> · <code>listMicrophones()</code></td></tr>
+</tbody>
+</table></div>
+<p>版面：<code>stack</code>（作品在上、滿寬，鏡頭在下）、<code>pip</code>（鏡頭是角落的小窗）、<code>side</code>（作品在左、鏡頭在右）、<code>work</code>（只有作品）。大約 1080×1920 以內錄 60 fps，2.7K 和 4K 錄 30 fps；網路攝影機多半只到 1080p，所以 4K 畫面裡的鏡頭是放大的。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Compositor, AudioTap, Recorder, openCamera } <span class="tk">from</span> <span class="ts">'@openav/record'</span>;
+<span class="tk">const</span> comp = <span class="tk">new</span> Compositor({ size: <span class="ts">'vertical-1080p'</span>, layout: <span class="ts">'stack'</span>, getWorkCanvas: () =&gt; canvas });
+comp.start();
+<span class="tk">await</span> comp.setCamera(<span class="tk">await</span> openCamera());
+<span class="tk">const</span> tap = <span class="tk">new</span> AudioTap({ context, sources: [workOutput] });
+<span class="tk">const</span> rec = <span class="tk">new</span> Recorder({ canvas: comp.canvas, fps: 60, audioTracks: tap.tracks }).start();
+<span class="tc">// later: const { blob, mimeType } = await rec.stop();</span></code></pre></div>
+<p>套件說明（含 MIDI 錄音）：<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/record/README.md" rel="noopener">packages/record</a>。範例：<a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/10-record/main.js" rel="noopener">10-record</a>。</p>
+<h2 id="packages-openav-fab">@openav/fab<a class="anchor" href="#packages-openav-fab" aria-label="這一節的連結">#</a></h2>
+<p>L4 輸出（實體分支）· 做得出來嗎？對任何網格出可製造性報告（水密、體積、懸空、最薄壁、PETG／PLA 估重，每個問題一句中文警告），並匯出 STL／OBJ／GLB；形狀來自 smlibwasm 的 Part／Shape 時還能出 STEP、DXF。smlibwasm 與 manifold-3d 不打包：<code>smlib()</code>／<code>manifold()</code> 第一次用到時才從網址 <code>import()</code>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Fab</code></td><td><code>new Fab({ urls: { smlib, manifold }, scale, importer, download, context })</code> · <code>check(x, opts)</code> → 報告 · <code>export(x, fmt, opts)</code> → <code>Promise&lt;{ bytes, mime, ext, report }&gt;</code>（<code>stl</code> <code>obj</code> <code>glb</code> <code>step</code> <code>dxf</code>）· <code>save(x, fmt, { name, params, note })</code> 交給 <code>saver(bytes, info)</code>，沒有就瀏覽器下載 · <code>smlib()</code> · <code>manifold()</code> · <code>meshOf(x)</code></td></tr>
+<tr><td>純函式</td><td><code>checkMesh(mesh, { angle = 45, minWall = 1.2, bed = [320, 320, 325], wallSamples = 2000 })</code> · <code>weldMesh(mesh)</code> · <code>meshOf(x, { scale })</code>（TriMesh、smlibwasm Part、three.js Mesh／Object3D，Y 朝上轉 Z 朝上）· <code>toStlBytes</code> · <code>toObjText</code> · <code>toGlbBytes</code></td></tr>
+</tbody>
+</table></div>
+<h2 id="packages-openav-hw">@openav/hw<a class="anchor" href="#packages-openav-hw" aria-label="這一節的連結">#</a></h2>
+<p>L4 輸出（實體分支）· 裡面的電子。<code>fab</code> 管外殼，<code>hw</code> 管電子。規格寫零件和接線（<code>{ board, parts: { id: { part, have } }, wires: [['mcu.4', 'acc.SDA'], …] }</code>），<code>hw</code> 找出網路並回報，每個問題一句中文：3.3 V 訊號推 5 V 燈條、超過腳位能吃的電壓、供電超出範圍或只有在充電座上才有電、ESP8266 開機腳、一支腳接了兩種用途、I²C 位址撞號、電流超過穩壓器、電池時數。零件庫的數字都取自規格書，無法確認的是 <code>null</code>（待查），檢查會說判斷不了。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Hw</code></td><td><code>check(spec)</code> → <code>{ ok, issues: [{ level, code, text, at }], warnings, notes, nets, power: { rails, battery }, i2c }</code> · <code>diagram(spec)</code> → SVG 字串 · <code>bom(spec)</code> → <code>{ have, buy, unknown }</code>（不寫價格、不放購買連結）· <code>parts</code> · <code>part(key)</code> · <code>resolvePin(spec, ref)</code> · <code>nets(spec)</code></td></tr>
+<tr><td><code>HW_PARTS</code></td><td>零件庫：Feather HUZZAH ESP8266、Arduino Leonardo 與 UNO R3、RC522、HC-SR501、10 kΩ 電位器、LIS3DH、MPU-6050（GY-521）、WS2812B、SK6812、NeoPixel 12／16 顆燈環、單顆 LiPo（JST-PH）、TP4056 與 Micro-Lipo Type-C 充電板、Qi 接收模組</td></tr>
+</tbody>
+</table></div>
+<h2 id="packages-openav-timeline">@openav/timeline<a class="anchor" href="#packages-openav-timeline" aria-label="這一節的連結">#</a></h2>
+<p>主軸 · 自動化、場景和播放控制（transport），純邏輯。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Timeline</code></td><td><code>new Timeline({ params, automation = {}, scenes = [], total = 600, score = null, start = null, loop = false, onCue = null, anchor = null })</code> · <code>play()</code>（放行 hold）、<code>pause()</code>、<code>toggle()</code>、<code>seek(t)</code>、<code>jumpScene(d)</code>、<code>next()</code>（放行 hold，否則往後一段）、<code>prev()</code>、<code>release()</code>、<code>reset()</code>（回到 <code>start</code>，預設 0）· <code>advance(dt)</code> · <code>state(t)</code>、<code>valueAt(key, t)</code> · <code>sceneIndexAt(t)</code>、<code>currentScene(t)</code>、<code>sceneEnd(i)</code> · <code>onSceneChange(cb(i, scene, { cause }))</code>、<code>onSeek(cb(t, kind))</code> · <code>layer(key, value, t)</code> · 關鍵影格 <code>[t, value, curve?]</code>（<code>'linear'</code>、<code>'ease'</code>、<code>'in'</code>、<code>'out'</code>、<code>'step'</code>）· <code>loop</code>（<code>true</code>、<code>'scene'</code>、場景 id、<code>{ from, to }</code>）、<code>onLoop(cb)</code> · <code>cues()</code>、<code>onCue(cb(cue, { cause }))</code>、<code>fireCue(cue)</code> · <code>record(key, source)</code>、<code>stopRecording()</code>、<code>onRecord(cb)</code>、<code>mergeTake(key, take, opts)</code> · 以段落為單位的自動化 <code>{ key: { 段落id: [[p, value, curve?], …] } }</code>、<code>lanePos(t)</code>、<code>laneTime(id, p)</code>、<code>lanePlan()</code>、<code>lanes()</code> · <code>exportAutomation({ keys, as, precision })</code>、<code>importAutomation(doc, { keys, replace, ignoreCut })</code> · <code>anchor(epoch, opts)</code>、<code>unanchor()</code>、<code>drift()</code>、<code>onDrift(cb)</code> · <code>follow(source, opts)</code>、<code>unfollow()</code>、<code>following</code>、<code>followStatus()</code>、<code>onFollow(cb)</code> · <code>t</code>、<code>playing</code>、<code>holding</code>、<code>rate</code>、<code>total</code>、<code>start</code>、<code>score</code></td></tr>
+<tr><td><code>compileLane</code>、<code>decompileLane</code>、<code>lanePos</code>、<code>laneTime</code>、<code>isLane</code>、<code>AUTOMATION_FORMAT</code></td><td>段落 lane 的換算，寫成對段落表 <code>[{ id, start, end }]</code>（<code>score.rootSegments</code>）操作的純函式，給沒有時間軸的工具用</td></tr>
+</tbody>
+</table></div>
+<p>關鍵影格的第三項，是「抵達這個影格的那一段」用的曲線；沒有寫就是線性，跟以前一模一樣。場景的 <code>cues</code> 在播放經過時觸發，seek 不會觸發。<code>record()</code> 在播放時，把一個數值來源（例如旋鈕的覆寫）寫進一條 lane。<code>CURVES</code> 也有匯出。曲線可以改成以段落為單位來寫、存成 JSON 再讀回來，時間軸也能盯著牆鐘：見 <a href="../../../zh/docs/show-control/#show-control-lanes-curves-written-per-segment">Lane</a>、<a href="../../../zh/docs/show-control/#show-control-saving-and-loading-automation">存取 automation</a>、<a href="../../../zh/docs/show-control/#show-control-wall-clock-anchor-and-drift">牆鐘</a>，也能去追另一條時間軸的時鐘：見<a href="../../../zh/docs/show-control/#show-control-following-another-clock-follow">追另一條時鐘</a>。</p>
+<p>見<a href="../../../zh/docs/show-control/#show-control-timeline">演出控制</a>。</p>
+<h2 id="packages-openav-score">@openav/score<a class="anchor" href="#packages-openav-score" aria-label="這一節的連結">#</a></h2>
+<p>主軸 · 總譜與導演：把演出寫成段落長度，再由模組去演出每一段。純邏輯，不碰 DOM。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Score</code></td><td><code>new Score({ cuts, cut })</code> · <code>table()</code> · <code>total</code> · <code>segmentAt(T)</code>、<code>indexAt(T)</code> · <code>locate(T)</code>、<code>timeAt(id, p)</code> · <code>cueTime('seg.name')</code> · <code>cuesBetween(T0, T1)</code> · <code>cues()</code> · <code>scenes()</code> · <code>validate()</code> · <code>cuts</code>、<code>cut</code>、<code>segments</code>（每段帶著自己的 <code>meta</code>）、<code>startT</code>、<code>scale</code>、<code>baseTime(T)</code>、<code>rootSegments</code>、<code>allSegmentIds()</code></td></tr>
+<tr><td><code>ScoreError</code></td><td>總譜不合法時丟出，<code>problems</code> 列出每一個原因</td></tr>
+<tr><td><code>Director</code></td><td><code>new Director({ score, modules, api, onStatus, onCue, maxStep })</code> · <code>update(T, dt, { holding, playing })</code> · <code>param(key, value, T)</code> · <code>seek(T)</code> · <code>reset()</code> · <code>status()</code> · <code>register(module)</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Score, Director } <span class="tk">from</span> <span class="ts">'@openav/score'</span>;
+<span class="tk">const</span> score = <span class="tk">new</span> Score({ cuts, cut: <span class="ts">'full'</span> });
+<span class="tk">const</span> director = <span class="tk">new</span> Director({ score, modules, api });
+<span class="tc">// every frame, after timeline.advance(dt):</span>
+director.update(timeline.t, dt, { holding: timeline.holding, playing: timeline.playing });</code></pre></div>
+<p>完整說明：<a href="../../../zh/docs/score/">總譜與導演</a>。</p>
+<h2 id="packages-openav-pattern">@openav/pattern<a class="anchor" href="#packages-openav-pattern" aria-label="這一節的連結">#</a></h2>
+<p>主軸 · 一行字寫節奏：把 mini-notation（TidalCycles 與 Strudel 寫節奏的方式）解析成每一小節的鼓點。純邏輯。依公開文件與論文獨立實作，寫法來自 <a href="https://tidalcycles.org" rel="noopener">TidalCycles</a> 與 <a href="https://strudel.cc" rel="noopener">Strudel</a>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>compile</code></td><td><code>compile(src, { words = WORDS })</code> → <code>{ ok, error, src, voices, layers, period, eventsInBar(bar, { seed = 0 }) }</code>，不丟例外 · <code>eventsInBar</code>（小節從 1 起算）→ 依 <code>pos</code>（小節內 0..1）排序的 <code>[{ word, voice, n, pos, dur, vel, layer, token: { start, end } }]</code> · <code>error</code> → <code>{ code, index, length, message, hint }</code>，<code>code</code> 是 <code>empty</code> <code>unclosed</code> <code>unexpected</code> <code>bad-number</code> <code>bad-euclid</code> <code>unknown-word</code> <code>unsupported</code> 其中之一</td></tr>
+<tr><td><code>parse</code></td><td><code>parse(src)</code> → <code>{ ok, tree }</code> 或 <code>{ ok: false, error }</code>：節點 <code>step</code> <code>rest</code> <code>seq</code> <code>layer</code> <code>alt</code> <code>fast</code> <code>slow</code> <code>euclid</code> <code>maybe</code>，每個都帶字元範圍</td></tr>
+<tr><td><code>WORDS</code></td><td><code>bd</code> 大鼓 · <code>sd</code> 小鼓 · <code>hh</code> 鈸 · <code>oh</code> 開鈸 · <code>cp</code> 拍手 · <code>rim</code>／<code>rs</code> · <code>lt</code> <code>mt</code> <code>ht</code> 中鼓 · <code>cr</code> 碎音鈸 · <code>rd</code> 疊音鈸 · <code>cb</code> 牛鈴，也接受鼓組自己的名字</td></tr>
+<tr><td><code>euclid</code></td><td><code>euclid(pulses, steps, rotate = 0)</code> → 布林陣列（Toussaint 2005）</td></tr>
+<tr><td><code>fromGrid</code></td><td><code>fromGrid(grid, { steps = 16, words, order })</code> → 照人會寫的樣子把格子寫成一行、打出來一模一樣：<code>bd*4</code>、<code>[~ sd]*2</code>、<code>bd(3,8,2)</code>，其他一拍一拍寫 <code>bd [~ ~ ~ bd] bd*2 ~</code>（0.7）</td></tr>
+<tr><td><code>toGrid</code></td><td><code>toGrid(srcOrCompiled, { bar = 1, steps = 16, seed = 0, bars = 16 })</code> → <code>{ ok, grid, words, voices, exact, lost: { offGrid, stacked, varies, random, samples } }</code>：第 <code>bar</code> 小節放上格子，以及格子放不下的東西；<code>seed</code> 決定每個 <code>?</code>（跟 <code>eventsInBar</code> 一樣），<code>bars</code> 是往後看幾小節來判斷其他小節有沒有不同（<code>lost.varies</code>）（0.7）</td></tr>
+<tr><td><code>fromStrudel</code></td><td><code>fromStrudel(code)</code> → <code>{ strudel, ok, src, bpm, ignored, unsupported }</code>：從 strudel.cc 複製來的 <code>s("…")</code>／<code>sound("…")</code>，<code>.fast</code>／<code>.slow</code> 併進那一行，<code>setcpm</code>／<code>setcps</code> 當速度（0.7）</td></tr>
+<tr><td><code>toStrudel</code>、<code>strudelUrl</code></td><td><code>strudelUrl(src, { bpm, comment })</code> → <code>https://strudel.cc/#…</code>（寫成 <code>s("…")</code>、前面加 <code>setcpm(bpm/4)</code>，<code>#</code> 後面是 base64）；用新分頁開（0.7）</td></tr>
+</tbody>
+</table></div>
+<p>寫法：空白（等分一小節）· <code>~</code> <code>-</code> 休止 · <code>[ ]</code> 細分 · <code>,</code> 疊層 · <code>*n</code> 加快 · <code>/n</code> 放慢、跨小節 · <code>&lt; &gt;</code> 每小節輪一個 · <code>(k,n,r)</code> 歐幾里得 · <code>!n</code> 與 <code>!</code> 重複 · <code>@n</code> 與 <code>_</code> 拉長 · <code>?</code> <code>?0.3</code> 隨機省略（有種子）· <code>bd:2</code> 取樣編號。<code>.</code> <code>|</code> <code>{ }</code> 會回錯誤與提示（休止請用 <code>~</code> 或 <code>-</code>）。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { compile } <span class="tk">from</span> <span class="ts">'@openav/pattern'</span>;
+<span class="tk">const</span> p = compile(<span class="ts">'bd*4, [~ sd]*2, hh*8'</span>);
+p.eventsInBar(1);   <span class="tc">// kick 0 .25 .5 .75 · snare .25 .75 · hat every 1/8</span></code></pre></div>
+<h2 id="packages-openav-console">@openav/console<a class="anchor" href="#packages-openav-console" aria-label="這一節的連結">#</a></h2>
+<p>主軸 · 導演控台：播放控制、各層面板、可以 learn 的參數、訊號儀表、演出模式。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>mountConsole</code></td><td><code>mountConsole(el, app, { layers, signals, learnOrder, keys, curves })</code> → <code>{ render(state), perf, director, curves, wizard, keys, dispose() }</code>。<code>app</code> = <code>{ timeline, params, mapper, signals, stage, midi?, midiPanel?, sound?, audio?, hands?, pose?, loop?, osc?, score?, director? }</code></td></tr>
+<tr><td>曲線面板</td><td><code>curves</code>：<code>false</code> 不要這個面板，<code>{ open: true }</code> 一開始就打開；<code>desk.curves</code> → <code>{ toggle(force?), open, info() }</code>（<code>curves: false</code> 時是 <code>null</code>）。整場演出每個有 automation 的參數一條曲線、播放頭、覆寫與 ↩ 和 ↩ all、點一下就跳過去：<a href="../../../zh/docs/show-control/#show-control-the-curves-panel">曲線面板</a></td></tr>
+<tr><td>鍵盤</td><td><code>keys</code>：<code>{ play, next, prev, reset, perf, fullscreen, midi, cancel, curves }</code> → 一個鍵或一串鍵（<code>'F6'</code>、<code>'KeyR'</code>、<code>'Shift+T'</code>），<code>false</code> = 關掉；<code>keys: false</code> = 不要任何快捷鍵 · <code>DEFAULT_KEYS</code> · <code>resolveKeys(keys)</code> · <code>keyLabel(keys, action)</code>：<a href="../../../zh/docs/show-control/#show-control-moving-the-shortcuts">挪動快捷鍵</a></td></tr>
+</tbody>
+</table></div>
+<p>見<a href="../../../zh/docs/show-control/#show-control-the-console">演出控制</a>。</p>
+<h2 id="packages-openav-monitor">@openav/monitor<a class="anchor" href="#packages-openav-monitor" aria-label="這一節的連結">#</a></h2>
+<p>主軸 · 後台頁面，以及餵資料給它的 WebSocket 中繼。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>MonitorFeed</code></td><td><code>new MonitorFeed({ url = 'ws://&lt;page host&gt;:7457', hz = 15, extra })</code> · <code>connect()</code> · <code>frame(snapshot)</code> · <code>extra(fn)</code> → <code>off()</code> · <code>connected</code>、<code>onStatus</code></td></tr>
+<tr><td><code>snapshotOf</code></td><td><code>snapshotOf({ timeline, params, signals, stage, loop, extra? }, state)</code> → 一份 JSON 快照；作品自己的數字（<code>extra</code>、目前啟用的世界的 <code>monitor()</code>）放在快照的 <code>extra</code> 下</td></tr>
+<tr><td><code>cleanExtra</code></td><td><code>cleanExtra(x)</code> → 把作品的數字整理成 JSON 帶得走的樣子（每個欄位是數字、字串、布林、null 或 <code>{ v, min, max, warn }</code>），沒有任何欄位時回傳 <code>null</code></td></tr>
+<tr><td>伺服器</td><td><code>node packages/monitor/server.js [port=7457]</code>：後台頁面在 <code>/</code>，另有 <code>/health</code></td></tr>
+</tbody>
+</table></div>
+<p>見<a href="../../../zh/docs/show-control/#show-control-backstage-monitor">演出控制</a>。</p>
+<h2 id="packages-openav-sync">@openav/sync<a class="anchor" href="#packages-openav-sync" aria-label="這一節的連結">#</a></h2>
+<p>主軸 · 好幾個頁面，一場演出：主控端和它的從屬端之間的那條線，走 BroadcastChannel 或房間中繼。從屬端的時間軸用 <a href="../../../zh/docs/show-control/#show-control-following-another-clock-follow"><code>timeline.follow()</code></a> 去追主控端。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>createSync</code></td><td><code>createSync({ role, channel, url, timeline, score, follow, extra, state, hz, info, accept, onFrame, onState, onGap, id, now, transport })</code> → <code>SyncLeader</code> 或 <code>SyncFollower</code>；從屬端的時間軸會被接上去追它。每個影格在 <code>timeline.advance(dt)</code> 之後呼叫 <code>sync.frame()</code>；<code>sync.close()</code> 放手</td></tr>
+<tr><td><code>SyncLeader</code></td><td><code>new SyncLeader({ timeline, transport, id, cut, extra, state, hz, now, onHello })</code> · <code>frame()</code> · <code>sendState(to?)</code> · <code>status()</code> · <code>monitor()</code> · <code>close()</code></td></tr>
+<tr><td><code>SyncFollower</code></td><td><code>new SyncFollower({ transport, id, now, timeline, info, accept, onFrame, onState, onGap, resync = true, helloEvery = 1000, takeoverAfter = 1500, resyncAfter = 1000 })</code> · <code>latest()</code>（<code>timeline.follow()</code> 的來源）· <code>hello(reason)</code> · <code>frame()</code> · <code>status()</code> · <code>monitor()</code> · <code>close()</code></td></tr>
+<tr><td>傳輸</td><td><code>BroadcastTransport({ channel })</code> · <code>RelayTransport({ url, room, role, id })</code> · <code>createTransport({ role, channel, url, id })</code>：每一個都是 <code>{ send(msg), onMessage(cb), onOpen(cb), open, close() }</code>，送的是 JSON</td></tr>
+<tr><td><code>SYNC_VERSION</code></td><td><code>1</code>，每則訊息的 <code>v</code></td></tr>
+</tbody>
+</table></div>
+<p>訊息有 <code>frame</code>（主控端送給從屬端，每一幀）、<code>hello</code>（從屬端送給主控端）和 <code>state</code>（主控端送給某一個從屬端）；作品自己的資料放在 <code>extra</code>。見<a href="../../../zh/docs/show-control/#show-control-several-pages-one-show">演出控制</a>。</p>
+<h2 id="packages-openav-relay">@openav/relay<a class="anchor" href="#packages-openav-relay" aria-label="這一節的連結">#</a></h2>
+<p>手機 · 以房間為範圍的 WebSocket 中繼（伺服器），以及它的瀏覽器用戶端。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>RelayClient</code></td><td><code>new RelayClient({ role, room, id, url, batchHz = 30, resendMs = 1000, onStatus, onSignal, onFeedback, onConfig, onSync })</code> · <code>connect()</code> · <code>close()</code> · <code>set(name, value)</code> · <code>send(name, value, pulse, extra)</code> · <code>feedback(name, value)</code> · <code>config(key, data)</code> · <code>sync(msg)</code> · <code>status</code>、<code>latency</code>、<code>peers</code>；<code>role</code> 是 <code>controller</code>、<code>runner</code>、<code>monitor</code>、<code>leader</code> 或 <code>follower</code></td></tr>
+<tr><td>訊號輔助函式</td><td><code>bindSignals(client, signals, { alias = 'any' })</code> · <code>fileSignal(signals, name, value, { pulse })</code> · <code>signalMeta(name, { pulse })</code> · <code>aliasOf(name)</code> · <code>normalizeValue(name, value)</code> · <code>deviceId()</code></td></tr>
+<tr><td><code>@openav/relay/server</code></td><td><code>attachRelay(httpServer, { path = '/relay', log, heartbeatMs = 20000, maxMessageChars = 262144, maxBytes = 1048576 })</code> → <code>{ hub, close() }</code>。單獨執行用 <code>node packages/relay/server.js [port=7458]</code></td></tr>
+<tr><td><code>MidiLink</code>（<code>link.js</code>）</td><td><code>new MidiLink({ url, room, delay = 0, onMessages(list, from), onStatus })</code> · <code>connect()</code> · <code>send(bytes, whenMs)</code> · <code>info()</code> → <code>{ state, peers, rtt, trip, diff, lead, late, sent, received }</code> · <code>close()</code>；<code>LinkTiming</code>：同一個房間的頁面之間傳 MIDI，在送出那頁響的那一刻演奏（<a href="../../../zh/docs/strudel/">和 Strudel 一起用</a>）</td></tr>
+</tbody>
+</table></div>
+<p>見<a href="../../../zh/docs/phones/#phones-the-relay">手機、中繼與控制面板</a>。</p>
+<h2 id="packages-openav-surface">@openav/surface<a class="anchor" href="#packages-openav-surface" aria-label="這一節的連結">#</a></h2>
+<p>手機 · 類似 TouchOSC 的控制元件、版面 JSON、主題，以及 <code>autoSurface(params)</code>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>Surface</code></td><td><code>new Surface(el, { layout, sink(name, value, info), haptics = true, tabs = true, orientation, onPage })</code> · <code>setLayout(layout)</code> · <code>setPage(id)</code> · <code>feedback(name, value)</code> · <code>widget(page, id)</code> · <code>dispose()</code></td></tr>
+<tr><td><code>signalSink</code></td><td><code>signalSink(signals)</code> → 一個寫進本機 <code>Signals</code> 的 sink</td></tr>
+<tr><td>auto（自動產生）</td><td><code>autoSurface(params, { perPage, style, pairs, meters, smooth, title })</code> → <code>{ layout, routes, bindings }</code> · <code>feedbackFor(state, bindings)</code> · <code>routesFromLayout(layout, params)</code> · <code>widgetTypeFor(param)</code></td></tr>
+<tr><td>layout（版面）</td><td><code>validateLayout</code>、<code>normalizeLayout</code>、<code>resolvePage</code>、<code>autoArrange</code>、<code>signalNames</code>、<code>DEFAULT_SIZE</code>、<code>WIDGET_TYPES</code>、<code>planKeyboard</code></td></tr>
+<tr><td>平台與主題</td><td><code>lockViewport</code>、<code>keepAwake</code>、<code>toggleFullscreen</code>、<code>canFullscreen</code>、<code>haptic</code>、<code>injectTheme</code>、<code>THEME_VARS</code>、<code>COLOR_NAMES</code>、<code>WIDGET_CLASSES</code></td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Surface, autoSurface, signalSink } <span class="tk">from</span> <span class="ts">'@openav/surface'</span>;
+<span class="tk">const</span> { layout, routes } = autoSurface(world.params);
+<span class="tk">new</span> Surface(document.querySelector(<span class="ts">'#panel'</span>), { layout, sink: signalSink(signals) });
+routes.forEach((r) =&gt; mapper.addRoute(r));</code></pre></div>
+<p>見<a href="../../../zh/docs/phones/#phones-surface-widgets">手機、中繼與控制面板</a>。</p>
+<h2 id="packages-openav-remote">@openav/remote<a class="anchor" href="#packages-openav-remote" aria-label="這一節的連結">#</a></h2>
+<p>手機 · 手機／iPad 上的 app，以及演出端的轉接器。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>簽章</th></tr></thead>
+<tbody>
+<tr><td><code>mountRemote</code></td><td><code>mountRemote(el, { room, relayUrl, surfaceUrl, metaUrl })</code> → 手機 app（<code>/packages/remote/index.html</code> 呼叫的就是它）</td></tr>
+<tr><td><code>PhoneSensors</code></td><td><code>new PhoneSensors({ set, send }, { onKnock, onSample, notify })</code> · <code>start()</code>（要從觸控事件呼叫）· <code>stop()</code> · <code>calibrate()</code> · <code>setCamera(on)</code> · <code>denied</code></td></tr>
+<tr><td><code>localSensors</code></td><td><code>localSensors(signals, { prefix = 'phone/local/', alias = 'any' })</code> → <code>PhoneSensors</code></td></tr>
+<tr><td><code>attachTouchPad</code></td><td><code>attachTouchPad(el, io, { onMove, onEnd })</code></td></tr>
+<tr><td><code>@openav/remote/host</code></td><td><code>mountRemoteHost({ signals, params, mapper, world, room, auto, surface, feedbackHz = 10, url, mode, controllers })</code> → host 物件 · <code>mountJoinCard(parent, host)</code>（網址、QR code、狀態）</td></tr>
+<tr><td><code>@openav/remote/relay-pick</code></td><td><code>pickRelay({ hostname, search, declared, storage })</code> → <code>{ mode: 'local'|'public'|'custom'|'off', url, room, shared }</code> · <code>isLocalHost(h)</code> · <code>PUBLIC_RELAY</code> · <code>phoneUrl({ base, room, relay })</code></td></tr>
+<tr><td><code>@openav/remote/qr</code></td><td><code>qrSvg(text, { ecc = 'M', margin = 2, scale })</code> → <code>&lt;svg&gt;</code> 字串 · <code>qrMatrix(text, { ecc })</code> → <code>{ version, size, mask, rows }</code>（byte 模式，版本 1–10）</td></tr>
+</tbody>
+</table></div>
+<p>見<a href="../../../zh/docs/phones/">手機、中繼與控制面板</a>。</p>
+<h2 id="packages-openav-devices">@openav/devices<a class="anchor" href="#packages-openav-devices" aria-label="這一節的連結">#</a></h2>
+<p>膠水 · 演出設備大集合：每一份 MIDI 控制器 profile（手寫的和轉入的）、每一台 DMX 燈具、電子零件庫的每一個零件，以及鏡頭、音訊介面、感測器、LED 與 DMX 介面、印表機的手寫紀錄，收在同一種外層紀錄裡（<code>open-audiovisual/device@1</code>，<code>@openav/devices/device.schema.json</code>），每一筆事實都有出處。沒有任何東西是複製的：每份 profile、燈具和零件都留在自己的檔案裡，紀錄從那裡讀出來（<code>node tools/build-devices.mjs</code> 寫出清單 <code>catalog.js</code>），所以列清單不會載入任何 profile。完整說明在<a href="../../../zh/docs/devices/">設備</a>那一章。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>匯出</th><th>用法</th></tr></thead>
+<tbody>
+<tr><td><code>devices</code></td><td><code>devices({ kind, q, connection })</code> → 凍結的列 <code>{ id, kind, manufacturer, name, aliases, connections, protocols, verified, from, file }</code>。<code>q</code> 的每個字要出現在名稱、別名、製造商或 id 裡</td></tr>
+<tr><td><code>device</code></td><td><code>await device(id, options)</code> → <code>{ id, kind, name, record }</code>，再依種類：midi-controller 有 <code>profile</code> · <code>routes(bindings, options)</code> · <code>addTo(controllers)</code>。dmx-fixture 有 <code>profile</code> · <code>patch(patch, { id, universe, address, mode })</code>。part 有 <code>part</code>。camera、audio-interface 有 <code>constraints(deviceId)</code> · <code>find()</code> · <code>open()</code>（唯一會要權限的呼叫）</td></tr>
+<tr><td><code>deviceKinds</code></td><td><code>midi-controller</code> · <code>dmx-fixture</code> · <code>dmx-interface</code> · <code>led-controller</code> · <code>sensor</code> · <code>camera</code> · <code>audio-interface</code> · <code>projector</code> · <code>display</code> · <code>printer</code> · <code>part</code></td></tr>
+</tbody>
+</table></div>
+<h2 id="packages-openav-mcp">@openav/mcp<a class="anchor" href="#packages-openav-mcp" aria-label="這一節的連結">#</a></h2>
+<p>膠水 · 給 AI 代理用的零相依 MCP 伺服器，走 stdio：<code>node packages/mcp/server.js</code>。工具和引數見<a href="../../../zh/docs/agents/#agents-the-mcp-server">給 AI 代理</a>。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/signals/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">訊號一覽</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/agents/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">給 AI 代理</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

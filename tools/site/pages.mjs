@@ -28,16 +28,19 @@ import { getFacts } from './facts.mjs';
 import { lastmodOf } from './git.mjs';
 import { catalog, PROFILE_DIR, detailPath, detailUrl } from '../controllers/page.mjs';
 import { registerEntries } from '../devices/sources.mjs';
+import { DOC_PAGES, chapterPath } from '../docs/anchors.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 /**
- * The pages, in sitemap order. `derive` marks where a computed group goes: the device pages (from the
+ * The pages, in sitemap order. `derive` marks where a computed group goes: the handbook chapters, the device pages (from the
  * controller profiles) and the example pages (from examples/NN-*).
  */
 export const STATIC = [
   { id: 'home', path: '', langs: ['en', 'zh'], src: ['tools/home'] },
   { id: 'docs', path: 'docs/', langs: ['en', 'zh'], src: ['docs', 'tools/docs'] },
+  // one page per handbook chapter (tools/build-docs.mjs; the p5 chapter's page is /p5/, below): its Markdown and the templates
+  { derive: 'chapters' },
   // the API reference (tools/build-reference.mjs): its sources are the code it reads and the words written beside it
   { id: 'reference', path: 'docs/reference/', langs: ['en', 'zh'], src: ['tools/reference', 'assets/reference', 'assets/search', 'p5/oav-p5.js', 'p5/reference', 'packages'] },
   // the oav-p5 cheat sheet (tools/build-reference.mjs, tools/reference/cheatsheet.mjs): one page, every name links into the reference
@@ -63,6 +66,9 @@ export const STATIC = [
 const GALLERY_SRC = [PROFILE_DIR, 'tools/controllers/page.mjs', 'tools/controllers/en.mjs', 'tools/controllers/zh.mjs'];
 
 const DERIVED = {
+  chapters() {
+    return DOC_PAGES.map((ch) => ({ id: 'docs/' + ch.id, path: chapterPath(ch.id), langs: ['en', 'zh'], src: [ch.en, ch.zh, 'tools/docs'], group: 'docs' }));
+  },
   controllers() {
     const cat = catalog();
     return [

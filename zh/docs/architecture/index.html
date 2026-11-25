@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>架構｜open-audiovisual</title>
+<meta name="description" content="open-audiovisual 是一套資料層框架。它的價值全在一件事：四層和兩條主軸分得乾乾淨淨，換掉其中任何一個，都不用碰到其他部分。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/architecture/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/architecture/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/architecture/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/architecture/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="架構｜open-audiovisual">
+<meta property="og:description" content="open-audiovisual 是一套資料層框架。它的價值全在一件事：四層和兩條主軸分得乾乾淨淨，換掉其中任何一個，都不用碰到其他部分。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/architecture/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="架構｜open-audiovisual">
+<meta name="twitter:description" content="open-audiovisual 是一套資料層框架。它的價值全在一件事：四層和兩條主軸分得乾乾淨淨，換掉其中任何一個，都不用碰到其他部分。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="architecture">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/architecture/#article","url":"https://openaudiovisual.com/zh/docs/architecture/","name":"架構｜open-audiovisual","description":"open-audiovisual 是一套資料層框架。它的價值全在一件事：四層和兩條主軸分得乾乾淨淨，換掉其中任何一個，都不用碰到其他部分。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"架構","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["畫面迴圈","L1 · 輸入：訊號（Signals）","L2 · 映射：映射器（Mapper）","L3 · 世界：舞台（Stage）","L4 · 輸出：影像與聲音兩條分支，都是選用","主軸 · 時間軸","主軸 · 後台監看","主軸周邊：控台與手機"],"position":4,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/architecture/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/architecture/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"架構","item":"https://openaudiovisual.com/zh/docs/architecture/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/architecture/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/architecture/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch is-here" data-ch="architecture">
+          <a href="#architecture" aria-current="page"><span class="n">04</span><span class="t">架構</span></a>
+          <ol class="toc-secs">
+            <li><a href="#architecture-the-frame-loop">畫面迴圈</a></li>
+            <li><a href="#architecture-l1-input-signals">L1 · 輸入：訊號（Signals）</a></li>
+            <li><a href="#architecture-l2-mapping-mapper">L2 · 映射：映射器（Mapper）</a></li>
+            <li><a href="#architecture-l3-world-stage">L3 · 世界：舞台（Stage）</a></li>
+            <li><a href="#architecture-l4-output-two-branches-video-and-audio-both-optional">L4 · 輸出：影像與聲音兩條分支，都是選用</a></li>
+            <li><a href="#architecture-spine-timeline">主軸 · 時間軸</a></li>
+            <li><a href="#architecture-spine-monitor">主軸 · 後台監看</a></li>
+            <li><a href="#architecture-around-the-spines-console-and-phones">主軸周邊：控台與手機</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="architecture" aria-labelledby="architecture">
+<h1 id="architecture">架構<a class="anchor" href="#architecture" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 4 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/architecture.md">docs/zh/architecture.md</a></span></p>
+<p>open-audiovisual 是一套<em>資料層</em>框架。它的價值全在一件事：四層和兩條主軸分得乾乾淨淨，換掉其中任何一個，都不用碰到其他部分。這一章把每一層的介面約定講清楚。</p>
+<h2 id="architecture-the-frame-loop">畫面迴圈<a class="anchor" href="#architecture-the-frame-loop" aria-label="這一節的連結">#</a></h2>
+<p>整套系統由一個 <code>Loop</code>（<code>@openav/core</code>）帶著跑。下面是 <code>createShow()</code> 每一格的執行順序（<code>packages/show/index.js</code>）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> loop = <span class="tk">new</span> Loop((dt) =&gt; {
+  keys?.update(dt);                              <span class="tc">// 0. on-screen performers: SimPlayer, drum sequencer</span>
+  drums?.update(dt);
+  audio?.update();                               <span class="tc">//    microphone analysis → audio/* signals</span>
+  onFrame?.(dt, show);                           <span class="tc">//    your assembly-level hook</span>
+  timeline.advance(dt);                          <span class="tc">// 1. time moves</span>
+  sync?.frame();                                 <span class="tc">//    several pages: the leader says where it is, a follower asks again if unanswered</span>
+  director?.update(timeline.t, dt, { holding, playing }); <span class="tc">//    with a score: segment modules enter / update / exit</span>
+  mapper.update(dt);                             <span class="tc">// 2. smoothed routes settle</span>
+  <span class="tk">const</span> state = stage.frame(dt, timeline.state()); <span class="tc">// 3. params resolve → world updates &amp; renders</span>
+  sound?.update(state);                          <span class="tc">// 4. sound/* params reach the synth</span>
+  remote?.frame(dt, state);                      <span class="tc">//    param values echo back to phones</span>
+  consoleUI.render(state);                       <span class="tc">// 5. the desk reflects reality</span>
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it (not with monitor: false)</span>
+});</code></pre></div>
+<p>訊號在兩格<em>之間</em>進來，裝置或 socket 什麼時候觸發，就什麼時候到。沒有平滑的路由會立刻寫入參數，有平滑的路由則是設一個目標值，由 <code>mapper.update(dt)</code> 慢慢滑過去。<code>createShow()</code> 不包含 OSC 輸出，要用的話，在 <code>onFrame</code> 裡呼叫 flush 送出（見<a href="../../../zh/docs/show-control/#show-control-osc-output">演出控制</a>）。</p>
+<p><code>dt</code> 以秒為單位，上限夾在 0.1（<code>new Loop(fn, { maxDt })</code>），所以就算卡頓，世界也不會爆掉。瀏覽器凍結 <code>requestAnimationFrame</code> 的時候（例如投影視窗被切到背景），一個 Web Worker 心跳會讓迴圈繼續跑，大約每 66 ms 一次（約每秒 15 格）。有人切了視窗，時間軸、映射中的訊號和後台資料流也不能停。</p>
+<p>誰來給影格是一個選擇，頁面自己的只是預設。<code>new Loop(fn, { clock, raf })</code> 讓時間和影格請求由你供應（測試用的假計時器、錄影工具的影格推進器），<code>new Loop(fn, { manual: true })</code> 則什麼都不排程：每次 <code>loop.step(dt)</code> 就是一個影格。<code>createShow({ loop: 'manual' })</code> 對整場演出做的就是這件事（<a href="../../../zh/docs/show-control/#show-control-driving-the-frames-yourself">自己驅動影格</a>）。</p>
+<p>參數解析的順序（整個設計的核心）：</p>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">timeline.state(t)          — automation curves per param
+  ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
+  ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals</code></pre></div>
+<p>覆寫會<em>黏住</em>：一旦有旋鈕碰過 <code>bloom</code>，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕）。這跟演出現場一樣：人一伸手接管，樂譜就讓位。路由可以選別的做法：<code>mode: 'trim'</code> 把旋鈕疊加在時間軸的值上、不取代它，<code>release</code> 讓旋鈕靜止時把參數還回去（<a href="../../../zh/docs/mapping/#mapping-trim-pickup-and-release">映射</a>）。</p>
+<h2 id="architecture-l1-input-signals">L1 · 輸入：訊號（Signals）<a class="anchor" href="#architecture-l1-input-signals" aria-label="這一節的連結">#</a></h2>
+<p><strong>介面約定</strong>：輸入套件把<em>有名字、經過正規化的訊號</em>發布到 <code>Signals</code> 登錄表，除此之外什麼都不做。它們從不碰參數或世界。</p>
+<ul>
+<li>名稱像路徑：<code>midi/cc/74</code>、<code>chord/consonance</code>、<code>pose/hand/right/y</code></li>
+<li>連續訊號宣告 <code>{min, max}</code>，隨時都有一個目前值</li>
+<li>脈衝訊號（<code>kind: 'pulse'</code>）觸發事件，帶的內容就是事件物件</li>
+<li>誰都可以訂閱：<code>signals.on(name, cb)</code> 或 <code>signals.onAny(cb)</code></li>
+</ul>
+<p>新增一種輸入方式（呼吸感測器、遊戲手把、股票報價、天氣 API），就是寫一個呼叫 <code>signals.set()</code>／<code>signals.pulse()</code> 的 class。下游什麼都不用改。重點就在這裡。</p>
+<p>現有的輸入：<code>@openav/midi</code>（硬體與螢幕上的控制器）、<code>keys</code>、<code>drums</code>、<code>audio</code>（麥克風）、<code>pose</code>（鏡頭看身體與手）、<code>leap</code>（Leap Motion／Ultraleap 的手），以及經由 <code>remote</code> 和 <code>surface</code> 的手機。瀏覽器自己打不開的硬體，透過一支講網頁協定的本機小橋接程式進來（<code>leap</code> 的橋接在 <code>ws://127.0.0.1:6437</code>）；瀏覽器這一側仍然只是一個發出訊號的 class。</p>
+<p>分析器位在原始來源和映射之間：<code>@openav/chord</code> 訂閱 <code>midi/note/on|off</code>，再發布 <code>chord/*</code>。對映射器來說，它還是一個輸入，只是它聽的是別的訊號，沒有直接接裝置。</p>
+<h2 id="architecture-l2-mapping-mapper">L2 · 映射：映射器（Mapper）<a class="anchor" href="#architecture-l2-mapping-mapper" aria-label="這一節的連結">#</a></h2>
+<p><strong>介面約定</strong>：把訊號接到參數的，只有它一個。路由就是資料：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">{ source: <span class="ts">'pose/hand/right/y'</span>, target: <span class="ts">'energy'</span>,
+  inMin: 0, inMax: 1, curve: <span class="ts">'smooth'</span>, invert: <span class="tk">false</span>,
+  smooth: 0.15, outMin: 0, outMax: 1 }</code></pre></div>
+<ul>
+<li><strong>多對多</strong>：一個訊號可以推動好幾個參數，一個參數也可以聽好幾個訊號（以最後寫入的為準）。learn 只會<em>新增</em>路由，從不取代。</li>
+<li><strong>learn</strong> 是廣義的 MIDI learn：<code>mapper.learn('bloom')</code> 會綁定下一個<em>動了</em>至少自身範圍 5% 的訊號，旋鈕和揮動的手都算數。</li>
+<li>路由可以序列化成 JSON → 映射設定檔就是可以分享的檔案。</li>
+</ul>
+<p>完整說明：<a href="../../../zh/docs/mapping/">映射</a>。</p>
+<h2 id="architecture-l3-world-stage">L3 · 世界：舞台（Stage）<a class="anchor" href="#architecture-l3-world-stage" aria-label="這一節的連結">#</a></h2>
+<p><strong>介面約定</strong>：世界（World）是 <code>{ name, params, init, update(dt, state, io), render, dispose }</code>。它讀 <code>state</code>（已解析的參數值）。它可以<em>為了離散事件訂閱訊號</em>（一個 note-on 生出一顆粒子，是事件，不是參數），但連續控制一定要經過參數，不然時間軸和其他輸入就再也演奏不了你的世界。</p>
+<p>舞台（Stage）管生命週期和參數彙整，刻意<strong>不</strong>管繪圖。p5、three.js、2D canvas、SVG、DOM 都可以，框架不插手。</p>
+<p>憲法級的規則（承襲自《The Last Input 終局之前》）：<strong>外殼永遠不知道作品是什麼。</strong> 換作品＝換掉世界＋自動化資料。外殼留著。</p>
+<p>完整說明：<a href="../../../zh/docs/writing-a-world/">寫一個世界</a>。</p>
+<h2 id="architecture-l4-output-two-branches-video-and-audio-both-optional">L4 · 輸出：影像與聲音兩條分支，都是選用<a class="anchor" href="#architecture-l4-output-two-branches-video-and-audio-both-optional" aria-label="這一節的連結">#</a></h2>
+<p>輸出層分成兩條分支。兩條都接在同一條「訊號 → 映射 → 參數」主軸上：聲音是一種可以演奏的狀態，不是附帶的效果。</p>
+<p><strong>影像分支</strong></p>
+<ul>
+<li><strong>螢幕</strong>是預設的輸出。演出模式（T）給演奏者一個提詞畫面，觀眾看的是全螢幕的舞台視窗（F）。</li>
+<li><strong>錄製</strong>（<code>@openav/record</code>）：作品和演奏者的鏡頭合成進一張尺寸精確的畫布（直式 1080×1920 到 4K），跟作品自己的聲音交給同一個 <code>MediaRecorder</code> 錄，畫面和聲音用的是同一個時鐘。MIDI 錄音則把演奏本身錄下來，再播回演出裡。</li>
+<li>未來：NDI 閘道（見路線圖，基礎工作在姊妹專案 WebToe 裡）。</li>
+</ul>
+<p><strong>聲音分支</strong></p>
+<ul>
+<li><strong>MIDI 輸出</strong>（外接合成器、DAW）：<code>midi.send()/noteOn()/cc()</code>，所有訊息走同一個出口，而且看得到（<code>onSend</code>），儀表能顯示每一則送出的訊息。另外有一個真的派得上用場的 <code>panic()</code>。</li>
+<li><strong>頁面內合成</strong>：<code>@openav/sound</code>，一份精簡、可抽換的引擎介面約定（<code>params, enable, noteOn, noteOff, set, dispose</code>），先支援 Tone.js 引擎（從 CDN 載入，按下 enable 才載）。這個引擎彈的是登記好的樂器：取樣的平台鋼琴、敲擊琴、弦樂、風琴、合成器音色，一個檔案一種聲音，在控台上挑。引擎的參數註冊成 <code>sound/*</code>，旋鈕、手或時間軸演奏濾波器截止頻率的方式，跟演奏畫面完全一樣。<code>@openav/drums</code> 的鼓組是用同一份介面約定寫的第二個引擎（純 WebAudio，不需要取樣音檔）。</li>
+<li><strong>OSC</strong>：瀏覽器 → HTTP → <code>osc-bridge.js</code> → UDP（Spat、Reaper、TD、燈光）。每格批次送出，同一個位址在一格裡只留最新的一則訊息。</li>
+</ul>
+<h2 id="architecture-spine-timeline">主軸 · 時間軸<a class="anchor" href="#architecture-spine-timeline" aria-label="這一節的連結">#</a></h2>
+<p>純邏輯，不碰 DOM：參數＋自動化關鍵影格＋場景 → <code>state(t)</code>。場景可以從負的 t 開始（開演前的待命）。<code>onSceneChange</code> 就是 cue 的掛鉤：聲音、燈光、提示都從這裡觸發。帶 <code>hold: true</code> 的場景，播放到它的結尾就停住，等操作者放行。</p>
+<p>有結構的演出，會把<strong>總譜</strong>（<code>@openav/score</code>）加進這條主軸：把演出寫成各段的<em>長度</em>，由 <code>Score</code> 算出每個起點、終點、cue 和倒數，再由 <code>Director</code> 去執行負責每一段的模組（進一次、出一次，某個模組壞掉只會停用它自己）。時間軸的場景和總長都從總譜來，導演則以參數層的身分接在時間軸上：</p>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ── state(t) ──→ params
+                               └─ Director ── enter / update / exit ──→ segment modules ──→ the world (through `api`)
+                                    └─ param() ── timeline.layer ──────────────────────→ Timeline</code></pre></div>
+<p>總譜只決定<em>什麼時候</em>。實際發生的事，仍然是以參數的形式傳進世界。完整說明見<a href="../../../zh/docs/score/">總譜與導演</a>。</p>
+<p>時間軸也可以不自己往前走，改去追另一條時間軸的時鐘，好幾個頁面就是這樣演同一場：主控端在跑，從屬端透過 BroadcastChannel 或房間中繼追它的 <code>T</code>，每個參數仍然是那個 <code>T</code> 的函式解出來的（<a href="../../../zh/docs/show-control/#show-control-several-pages-one-show">好幾個頁面，一場演出</a>）。</p>
+<h2 id="architecture-spine-monitor">主軸 · 後台監看<a class="anchor" href="#architecture-spine-monitor" aria-label="這一節的連結">#</a></h2>
+<p>演出頁面透過 WebSocket，把 JSON 快照（有節流，約 15 Hz）串流到一個沒有相依套件的中繼（<code>server.js</code>，手寫的 RFC 6455 實作）。區域網路裡任何一支手機或一台筆電，打開後台頁面就能看到：時鐘、場景、世界、FPS、覆寫、每個訊號和參數，還有「舞台畫面斷線」警示。後台監看在框架裡跟其他層一樣重要：沒有後台的演出，只是一場彩排。</p>
+<h2 id="architecture-around-the-spines-console-and-phones">主軸周邊：控台與手機<a class="anchor" href="#architecture-around-the-spines-console-and-phones" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><strong>控台</strong>（<code>@openav/console</code>）：側邊面板裡的導演控台，依層排列（Layers → L1 → L2 → L3 → L4 → Signals），另外還有演出模式，以及把整場 automation 畫成曲線的曲線面板。它讀的就是迴圈正在跑的那批物件，自己不保存任何狀態。</li>
+<li><strong>手機</strong>（<code>@openav/relay</code>、<code>@openav/surface</code>、<code>@openav/remote</code>）：手機和 iPad 透過 WebSocket 中繼加入一個房間，發布 <code>phone/*</code> 和 <code>surface/*</code> 訊號。對映射器來說，它們只是多一個輸入。見<a href="../../../zh/docs/phones/">手機、中繼與控制面板</a>。</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/concepts/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">核心概念</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/writing-a-world/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">寫一個世界</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

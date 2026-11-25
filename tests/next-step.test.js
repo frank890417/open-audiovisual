@@ -109,13 +109,14 @@ test('next step: the scan reads code, not comments, strings or another object\'s
 // ---------------------------------------------------------------------------- example pages
 test('next step, example pages: the chapters the example uses, then the next example on its route', async () => {
   const { EXAMPLES, nextOf } = await import('../tools/examples/catalog.mjs');
+  const { docsLinkFrom } = await import('./_docs.js');   // each chapter's own page (/docs/<chapter>/#…)
   for (const e of EXAMPLES) {
     const s = read(`${e.dir}index.html`);
     const region = e.guide === false ? s.match(/<!-- oav:next -->[\s\S]*?<!-- \/oav:next -->/)[0] : s.match(/<!-- oav:guide -->[\s\S]*?<!-- \/oav:guide -->/)[0];
     if (e.guide !== false) assert.match(region, /<h2><span lang="en">Next step<\/span><span lang="zh-Hant">下一步<\/span><\/h2>/, `${e.id}: a Next step heading`);
     for (const d of e.docs) {
-      assert.ok(region.includes(`href="../../docs/#${d.id}" data-oav-event="next_step" data-oav-to="docs"`), `${e.id}: chapter ${d.id} (en)`);
-      assert.ok(region.includes(`href="../../zh/docs/#${d.id}" data-oav-event="next_step" data-oav-to="docs"`), `${e.id}: chapter ${d.id} (zh)`);
+      assert.ok(region.includes(`href="${docsLinkFrom('../../', d.id, 'en')}" data-oav-event="next_step" data-oav-to="docs"`), `${e.id}: chapter ${d.id} (en)`);
+      assert.ok(region.includes(`href="${docsLinkFrom('../../', d.id, 'zh')}" data-oav-event="next_step" data-oav-to="docs"`), `${e.id}: chapter ${d.id} (zh)`);
     }
     const next = nextOf(e);
     if (next) {

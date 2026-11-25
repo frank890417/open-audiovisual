@@ -437,7 +437,7 @@ as one more input, **OAV Virtual MIDI**, after the real ports.
 - **🩺 "Other programs":** whether anything asked for OAV Virtual MIDI (no ⇒ "this page opened MIDI before oav-p5 loaded:
   reload", Strudel's silent failure), how many listen on its input, what came out of its output and when, the clock, the
   echoes held back, the link (room, pages, one-way trip, late notes).
-- The whole chapter, with three recipes run on strudel.cc and the credits: [docs → With Strudel](https://openaudiovisual.com/docs/#strudel).
+- The whole chapter, with three recipes run on strudel.cc and the credits: [docs → With Strudel](https://openaudiovisual.com/docs/strudel/).
   OAV contains no Strudel code and calls none of it; they meet over MIDI.
 
 ## Why `prepend`, and why one async line is enough

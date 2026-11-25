@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>映射｜open-audiovisual</title>
+<meta name="description" content="在映射層，「發生了什麼」變成「它代表什麼」。把訊號接到參數的，只有 Mapper（@openav/mapping）這一個元件，它手上就只有一份路由清單。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/mapping/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/mapping/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/mapping/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/mapping/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="映射｜open-audiovisual">
+<meta property="og:description" content="在映射層，「發生了什麼」變成「它代表什麼」。把訊號接到參數的，只有 Mapper（@openav/mapping）這一個元件，它手上就只有一份路由清單。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/mapping/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="映射｜open-audiovisual">
+<meta name="twitter:description" content="在映射層，「發生了什麼」變成「它代表什麼」。把訊號接到參數的，只有 Mapper（@openav/mapping）這一個元件，它手上就只有一份路由清單。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="mapping">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/mapping/#article","url":"https://openaudiovisual.com/zh/docs/mapping/","name":"映射｜open-audiovisual","description":"在映射層，「發生了什麼」變成「它代表什麼」。把訊號接到參數的，只有 Mapper（@openav/mapping）這一個元件，它手上就只有一份路由清單。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"映射","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["路由","一個數值經過哪些步驟","曲線","輸入窗與輸出範圍","平滑","脈衝目標","多對多","覆寫與時間軸","微調、接管與放手","Learn","靜音與移除","儲存的設定檔","對應檔：匯出、匯入與分享","替你寫好的路由","Mapper API"],"position":7,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/mapping/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/mapping/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"映射","item":"https://openaudiovisual.com/zh/docs/mapping/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/mapping/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/mapping/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch is-here" data-ch="mapping">
+          <a href="#mapping" aria-current="page"><span class="n">07</span><span class="t">映射</span></a>
+          <ol class="toc-secs">
+            <li><a href="#mapping-routes">路由</a></li>
+            <li><a href="#mapping-what-happens-to-a-value">一個數值經過哪些步驟</a></li>
+            <li><a href="#mapping-curves">曲線</a></li>
+            <li><a href="#mapping-windows-and-ranges">輸入窗與輸出範圍</a></li>
+            <li><a href="#mapping-smoothing">平滑</a></li>
+            <li><a href="#mapping-pulse-targets">脈衝目標</a></li>
+            <li><a href="#mapping-many-to-many">多對多</a></li>
+            <li><a href="#mapping-overrides-and-the-timeline">覆寫與時間軸</a></li>
+            <li><a href="#mapping-trim-pickup-and-release">微調、接管與放手</a></li>
+            <li><a href="#mapping-learn">Learn</a></li>
+            <li><a href="#mapping-muting-and-removing">靜音與移除</a></li>
+            <li><a href="#mapping-saved-profiles">儲存的設定檔</a></li>
+            <li><a href="#mapping-map-files-export-import-and-share">對應檔：匯出、匯入與分享</a></li>
+            <li><a href="#mapping-routes-written-for-you">替你寫好的路由</a></li>
+            <li><a href="#mapping-mapper-api">Mapper API</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="mapping" aria-labelledby="mapping">
+<h1 id="mapping">映射<a class="anchor" href="#mapping" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 7 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/mapping.md">docs/zh/mapping.md</a></span></p>
+<p>在映射層，「發生了什麼」變成「它代表什麼」。把訊號接到參數的，只有 <code>Mapper</code>（<code>@openav/mapping</code>）這一個元件，它手上就只有一份路由清單。</p>
+<h2 id="mapping-routes">路由<a class="anchor" href="#mapping-routes" aria-label="這一節的連結">#</a></h2>
+<p>一條路由就是一個普通物件。只有 <code>source</code> 和 <code>target</code> 是必填，其餘由 <code>addRoute()</code> 補上：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>欄位</th><th>預設</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>source</code></td><td>—</td><td>訊號名稱，例如 <code>midi/cc/74</code>、<code>hand/right/pinch/index</code>、<code>phone/any/tilt/x</code></td></tr>
+<tr><td><code>target</code></td><td>—</td><td>參數的 key，例如 <code>bloom</code>、<code>sound/cutoff</code></td></tr>
+<tr><td><code>inMin</code>, <code>inMax</code></td><td><code>0</code>, <code>1</code></td><td>取用訊號的哪一段，超出的值會壓在邊界上</td></tr>
+<tr><td><code>outMin</code>, <code>outMax</code></td><td>參數的 <code>min</code>、<code>max</code></td><td>寫進參數的範圍</td></tr>
+<tr><td><code>curve</code></td><td><code>'linear'</code></td><td><code>linear</code>、<code>exp</code>、<code>log</code> 或 <code>smooth</code></td></tr>
+<tr><td><code>invert</code></td><td><code>false</code></td><td>在套用曲線之前，把正規化後的值翻過來（1 − x）</td></tr>
+<tr><td><code>smooth</code></td><td><code>0</code></td><td>滑到新值所需的時間，單位是秒（0 = 立即到位）</td></tr>
+<tr><td><code>mode</code></td><td>（沒寫 = <code>'override'</code>）</td><td><code>'override'</code> 取代時間軸的值，<code>'trim'</code> 疊加在它上面，<code>'pickup'</code> 要旋鈕先碰到參數的值才接管：見<a href="#mapping-trim-pickup-and-release">微調、接管與放手</a></td></tr>
+<tr><td><code>release</code></td><td>（沒寫 = 不放手）</td><td>訊號靜止這麼多秒之後，路由放手、時間軸接回去</td></tr>
+<tr><td><code>enabled</code></td><td>（沒寫 = 開啟）</td><td>設成 <code>false</code> 就把這條路由靜音</td></tr>
+<tr><td><code>id</code></td><td>自動指定</td><td>一個數字，移除路由時用</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'bloom'</span> });
+show.mapper.addRoute({ source: <span class="ts">'phone/any/tilt/x'</span>, target: <span class="ts">'drift'</span>, inMin: -1, inMax: 1, smooth: 0.12 });
+show.mapper.addRoute({ source: <span class="ts">'hand/right/pinch/index'</span>, target: <span class="ts">'tightness'</span>, curve: <span class="ts">'smooth'</span>, invert: <span class="tk">true</span>, smooth: 0.1 });</code></pre></div>
+<p>在 <code>createShow()</code> 裡，同樣的物件放進 <code>routes: [...]</code>。</p>
+<h2 id="mapping-what-happens-to-a-value">一個數值經過哪些步驟<a class="anchor" href="#mapping-what-happens-to-a-value" aria-label="這一節的連結">#</a></h2>
+<p>訊號一到，每一條啟用中、<code>source</code> 相符的路由，都會依序跑這幾步：</p>
+<ol>
+<li><strong>輸入窗</strong>：<code>x = (value − inMin) / (inMax − inMin)</code>，限制在 0..1 之間。</li>
+<li><strong>反轉</strong>：如果有 <code>invert</code>，<code>x = 1 − x</code>。</li>
+<li><strong>曲線</strong>：<code>x = curve(x)</code>。</li>
+<li><strong>縮放</strong>：<code>out = outMin + (outMax − outMin) · x</code>。</li>
+<li><strong>寫入</strong>：<code>smooth: 0</code> 時，直接用 <code>out</code> 覆寫參數（並限制在參數的範圍內、對齊它的 <code>step</code>）。<code>smooth &gt; 0</code> 時，<code>out</code> 變成一個目標值，<code>mapper.update(dt)</code> 每個影格把參數往它推近一點。<code>trim</code> 路由寫的是時間軸的值加上 <code>out</code>；<code>pickup</code> 路由在旋鈕碰到參數之前什麼都不寫。</li>
+</ol>
+<h2 id="mapping-curves">曲線<a class="anchor" href="#mapping-curves" aria-label="這一節的連結">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>曲線</th><th>公式</th><th>手感</th></tr></thead>
+<tbody>
+<tr><td><code>linear</code></td><td>x</td><td>手怎麼動，值就怎麼動</td></tr>
+<tr><td><code>exp</code></td><td>x²</td><td>起步慢、尾端快：低段可以細調</td></tr>
+<tr><td><code>log</code></td><td>√x</td><td>起步快、尾端慢：高段可以細調</td></tr>
+<tr><td><code>smooth</code></td><td>x²(3 − 2x)</td><td>兩端都平緩（smoothstep）</td></tr>
+</tbody>
+</table></div>
+<p>不認得的曲線名稱，會退回 linear。</p>
+<h2 id="mapping-windows-and-ranges">輸入窗與輸出範圍<a class="anchor" href="#mapping-windows-and-ranges" aria-label="這一節的連結">#</a></h2>
+<p><code>inMin</code>/<code>inMax</code> 決定取訊號的哪一段，<code>outMin</code>/<code>outMax</code> 決定它落在參數的哪裡。常見用法：</p>
+<ul>
+<li>雙極訊號：<code>{ source: 'midi/bend', inMin: -1, inMax: 1 }</code>，或手機傾斜 <code>{ source: 'phone/any/tilt/x', inMin: -1, inMax: 1 }</code>。</li>
+<li>很小聲的訊號：<code>{ source: 'audio/rms', inMax: 0.3 }</code>，讓人聲實際到得了的音量，就能推滿整個參數範圍。</li>
+<li>讓旋鈕只推動參數範圍的一段：<code>{ source: 'midi/cc/1', target: 'hue', outMin: 180, outMax: 270 }</code>。</li>
+<li>不用 <code>invert</code> 的反向關係：<code>outMin: 1, outMax: 0</code>。</li>
+</ul>
+<aside class="callout callout-warning" role="note"><p class="callout-title">注意</p>
+<p><code>outMin</code>/<code>outMax</code> 的預設值，是<em>加入路由那一刻</em>目標參數的範圍。如果參數那時還不存在，預設就是 0..1。在 <code>createShow()</code> 裡，路由加入得比聲音引擎註冊 <code>sound/*</code> 參數還早，所以宣告接到 <code>sound/cutoff</code> 的路由時，要明確寫上 <code>outMin: 100, outMax: 8000</code>。</p>
+</aside>
+<h2 id="mapping-smoothing">平滑<a class="anchor" href="#mapping-smoothing" aria-label="這一節的連結">#</a></h2>
+<p><code>smooth</code> 是時間常數，單位是秒：過了 <code>smooth</code> 秒，參數大約走完到新值 63% 的距離（單極點濾波器，每個影格 <code>k = 1 − e^(−dt/smooth)</code>）。0.05–0.15 可以藏住 MIDI 旋鈕或 30 Hz 手機資料流的階梯感，0.2–0.5 會讓手的動作變得沉重。滑行從參數目前的值出發（手動設的值，否則就是時間軸現在說的，見 <a href="#mapping-telling-the-mapper-where-the-timeline-is"><code>base</code></a>），所以第一下動作絕不會跳，而且滑到了就停筆。</p>
+<h2 id="mapping-pulse-targets">脈衝目標<a class="anchor" href="#mapping-pulse-targets" aria-label="這一節的連結">#</a></h2>
+<p>目標是 <code>pulse</code> 參數時，路由不寫數值，改成觸發它：</p>
+<ul>
+<li><strong>脈衝</strong>來源（<code>midi/note/on</code>、<code>audio/kick</code>、<code>drum/kick</code>、<code>phone/any/knock</code>…）每來一個事件就觸發一次。</li>
+<li><strong>連續</strong>來源在正規化後的值往上越過 0.5 時觸發（手機控制面板上的按鈕從 0 變成 1、推桿推過中間）。</li>
+</ul>
+<p><code>curve</code>、<code>invert</code>、<code>smooth</code> 和輸出範圍，對脈衝目標都不起作用。</p>
+<h2 id="mapping-many-to-many">多對多<a class="anchor" href="#mapping-many-to-many" aria-label="這一節的連結">#</a></h2>
+<p>一個訊號可以推動很多個參數（加幾條 <code>source</code> 相同的路由），一個參數也可以聽很多個訊號。兩條路由寫同一個參數時，最後寫入的那條算數。<em>Learn</em> 只會新增路由，從不取代既有的路由。</p>
+<p><a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/design/patchbay.md" rel="noopener">跳線盤設計</a>規劃了每條路由的 <code>combine</code>（<code>last</code>、<code>max</code>、<code>add</code>、<code>avg</code>）和 <code>label</code> 欄位，目前還沒做。</p>
+<h2 id="mapping-overrides-and-the-timeline">覆寫與時間軸<a class="anchor" href="#mapping-overrides-and-the-timeline" aria-label="這一節的連結">#</a></h2>
+<p>路由用<strong>覆寫</strong>的方式寫入參數，而覆寫會黏住：映射過來的訊號一動，時間軸就不再推那個參數。清掉覆寫（按參數旁的 ✕，或 <code>show.params.clearOverride(key)</code>），參數就交還給時間軸，直到訊號再動一次。</p>
+<p><em>有平滑</em>的路由只在滑行的時候寫入。滑到了就停筆，所以按 ✕（或你拖動滑桿）就能把參數拿回來，而且在旋鈕再動之前它都會留在手上；滑到一半按 ✕，滑行就停下。映射器會發現參數在它上一次寫入之後被別人寫過，然後退讓。路由靜音之後就不再寫入，參數維持原本的值（靜音的 <code>trim</code> 會把偏移還回去）。</p>
+<p>取代式的路由握著參數的時候，時間軸的曲線就被丟在一邊。如果旋鈕只該<em>微調</em>時間軸，或是放開手就該<em>還給它</em>，請看下一節。</p>
+<h2 id="mapping-trim-pickup-and-release">微調、接管與放手<a class="anchor" href="#mapping-trim-pickup-and-release" aria-label="這一節的連結">#</a></h2>
+<p>有三個路由欄位決定旋鈕碰上時間軸時誰說了算。沒寫就全部不起作用：沒有 <code>mode</code> 也沒有 <code>release</code> 的路由，就是上面說的取代式路由。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>欄位</th><th>旋鈕做什麼</th></tr></thead>
+<tbody>
+<tr><td><code>mode: 'override'</code></td><td>預設：旋鈕的值<em>取代</em>時間軸的值，直到按 ✕</td></tr>
+<tr><td><code>mode: 'trim'</code></td><td>旋鈕的值是一個<em>偏移</em>，加在時間軸的值上，時間軸在底下照樣往前走</td></tr>
+<tr><td><code>mode: 'pickup'</code></td><td>跟 <code>override</code> 一樣，但旋鈕要先<em>碰到</em>參數現在的值，才接管</td></tr>
+<tr><td><code>release: 4</code></td><td>任何模式都能用：旋鈕靜止 4 秒就放手，讓時間軸接回去</td></tr>
+</tbody>
+</table></div>
+<p><code>mode</code> 和 <code>release</code> 對脈衝目標不起作用。</p>
+<h3 id="mapping-telling-the-mapper-where-the-timeline-is">告訴映射器時間軸在哪裡<a class="anchor" href="#mapping-telling-the-mapper-where-the-timeline-is" aria-label="這一節的連結">#</a></h3>
+<p><code>trim</code>、<code>pickup</code>，還有平滑滑行的起點，都需要知道參數<em>此刻</em>在時間軸上的值。映射器從 <code>base</code> 取得，它是一個回傳 <code>{ key: value }</code> 的函式：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, base: () =&gt; timeline.state() });
+<span class="tc">// a show made with createShow() already does this for you</span></code></pre></div>
+<p><code>timeline.state()</code> 是<em>還沒套用覆寫</em>的值，而且總譜的段落模組已經套用過了，也就是沒有人碰它時參數會有的值。沒有 <code>base</code> 的話，映射器用參數的 <code>def</code>：對沒有任何自動化的參數是對的，對時間軸畫著曲線的參數就不對。<code>base</code> 丟出錯誤或回傳別的東西，就當作沒有，絕不會擋住演出。它要輕：trim 握著參數的每個影格都會問一次，trim 或 pickup 的旋鈕每次讀數也會再問。</p>
+<h3 id="mapping-trim-nudge-the-timeline">trim：在時間軸上微調<a class="anchor" href="#mapping-trim-nudge-the-timeline" aria-label="這一節的連結">#</a></h3>
+<p>時間軸已經把整場演出畫好的作品，不該因為旋鈕轉到 0.9 就把曲線整條丟掉。<code>trim</code> 路由的 <code>outMin</code>/<code>outMax</code> 是<em>偏移量</em>的範圍，參數等於 <code>時間軸的值 + 偏移</code>，再夾在參數的範圍內。沒寫的話，旋鈕往兩邊各走參數範圍的一半（旋鈕在中間 = 不動）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// ±30° around whatever the timeline says, smoothed</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'hue'</span>, mode: <span class="ts">'trim'</span>, outMin: -30, outMax: 30, smooth: 0.1 });</code></pre></div>
+<ul>
+<li>偏移騎在時間軸上：曲線動，參數每個影格都跟著動。</li>
+<li><code>smooth</code> 平滑的是偏移量（從 0 開始，不會跳）。</li>
+<li>同一個參數上的兩條 trim 路由會相加，所以粗調和細調兩顆旋鈕可以一起用。參數上若同時有取代式路由，<code>trim</code> 疊在取代式路由的值上面。</li>
+<li>trim 握著參數的時候，參數是被覆寫的狀態：控台會在它旁邊顯示 ✕，讀覆寫值的 <code>timeline.record</code> 來源拿到的是加總後、觀眾看到的值。✕ 清掉偏移，旋鈕下次再動它就回來。移除或靜音路由，參數馬上交還。</li>
+</ul>
+<h3 id="mapping-pickup-take-over-only-when-you-arrive">pickup：到了才接管<a class="anchor" href="#mapping-pickup-take-over-only-when-you-arrive" aria-label="這一節的連結">#</a></h3>
+<p>旋鈕和參數很少一開始就在同一個位置。用 <code>mode: 'pickup'</code> 時，旋鈕的值要先<em>碰到</em>參數現在的值，路由才開始寫入：離得不到路由輸出範圍的 2%，或是兩次讀數之間越過了它。之後它就像取代式路由，從參數原本的位置滑過去（不跳）。比較用的是參數此刻的值，所以時間軸在動的時候也成立。<code>release</code> 或 ✕ 會把路由放回「還沒碰到」。</p>
+<h3 id="mapping-release-give-it-back">release：還回去<a class="anchor" href="#mapping-release-give-it-back" aria-label="這一節的連結">#</a></h3>
+<p><code>release: 4</code> 的意思是：訊號 4 秒沒有動，路由就放手。「動」指的是變化超過輸入窗的 0.1%，從上次算動過的位置開始量，所以慢慢飄也算動，而一直重送同一個值的來源不算。放手時：</p>
+<ul>
+<li><code>smooth: 0</code>：參數當場回到時間軸；</li>
+<li><code>smooth &gt; 0</code>：用大約三倍 <code>smooth</code> 秒淡進時間軸，然後清掉覆寫（<code>trim</code> 是把偏移淡到 0）；</li>
+<li>放手之後，路由要等來源<em>再動</em>才會接管：一直重送同一個值的來源拿不回參數；</li>
+<li>它只清自己寫的。如果這段時間滑桿已經接手，就讓它留著。</li>
+</ul>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// a main knob: meets the value first, glides, and gives the param back 4 s after the hand leaves</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/71'</span>, target: <span class="ts">'bloom'</span>, mode: <span class="ts">'pickup'</span>, release: 4, smooth: 0.15 });</code></pre></div>
+<h2 id="mapping-learn">Learn<a class="anchor" href="#mapping-learn" aria-label="這一節的連結">#</a></h2>
+<p>在 <strong>L3 · Params</strong>（參數）面板裡，點參數旁的 <em>learn</em>（或呼叫 <code>mapper.learn('bloom')</code>），然後動一樣東西。映射器會綁定第一個符合下列條件的訊號：</p>
+<ul>
+<li>從 learn 開始時的位置<strong>移動</strong>了至少宣告範圍的 5%（旋鈕、推桿、手、手機傾斜），或</li>
+<li>它是脈衝，而且<strong>觸發</strong>了一次（琴鍵、打擊墊、敲擊）。</li>
+</ul>
+<p>新路由用的是預設值：線性、不平滑、參數的完整範圍。需要曲線的話，事後再改。再點一次 <em>learn</em> 就取消。learn 是「加入」：已經有路由的參數會保留原本那條，再多一條。</p>
+<p>要一口氣綁一整串，<strong>L2 · Mapping</strong>（映射）面板有 <strong>🎛 map knobs in order</strong>：它先替第一個參數啟動 learn，你轉一顆旋鈕就綁上，接著自動換下一個參數。<em>skip</em>、<em>back</em>、<em>stop</em>（或按 Esc）可以操控它。程式裡用 <code>LearnWizard</code>（<a href="../../../zh/docs/score/#score-map-the-knobs-in-order">細節</a>）。</p>
+<aside class="callout callout-caution" role="note"><p class="callout-title">小心</p>
+<p>任何脈衝都會馬上綁上去。learn 之前，先取消勾選 <em>simulate performance</em>（模擬演奏），並停掉鼓機，不然它們彈出的下一個音就會變成這條路由。</p>
+</aside>
+<p>一則 MIDI 訊息同時發出好幾個名稱時（<code>midi/cc/74</code>、<code>midi/ch/1/cc/74</code>，接兩台裝置時還有 <code>midi/&lt;slug&gt;/cc/74</code>），learn 綁定的是第一個，也就是聽得到每一台裝置的 <code>midi/cc/74</code>。如果只想聽其中一台，把 <code>source</code> 改成那台裝置的專屬名稱。</p>
+<h2 id="mapping-muting-and-removing">靜音與移除<a class="anchor" href="#mapping-muting-and-removing" aria-label="這一節的連結">#</a></h2>
+<p><strong>L2 · Mapping</strong> 面板把每條路由列成 <code>source → target</code>，各附一個核取方塊（靜音）和 ✕（移除）。用程式碼的話：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> r = show.mapper.routesFor(<span class="ts">'bloom'</span>)[0];
+r.enabled = <span class="tk">false</span>;                  <span class="tc">// mute</span>
+show.mapper.removeRoute(r.id);      <span class="tc">// remove</span></code></pre></div>
+<h2 id="mapping-saved-profiles">儲存的設定檔<a class="anchor" href="#mapping-saved-profiles" aria-label="這一節的連結">#</a></h2>
+<p>映射器把路由存在 <code>localStorage</code> 的 <code>openav.map.&lt;profile&gt;</code> 底下。<code>createShow()</code> 用世界的名稱當設定檔名稱（或用 <code>profile</code> 選項），並且：</p>
+<ol>
+<li>有儲存的路由就載入，沒有的話就加入宣告的 <code>routes</code>。</li>
+<li>已經有儲存的設定檔時，宣告的路由裡 <code>source → target</code> 組合還沒出現過的，也會補進去，所以程式碼裡新加的路由一定會出現。</li>
+<li>每 3 秒存一次。</li>
+</ol>
+<p>所以 learn 來的路由和你做的修改，重新載入之後都還在。反過來說：如果你在程式碼裡改了某條宣告路由的曲線或平滑，同一組 <code>source → target</code> 以儲存的版本為準。要從乾淨的狀態開始，就傳入 <code>profile: false</code>（每次載入都從程式碼讀路由，像範例 09 那樣），或刪掉儲存的設定檔：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">localStorage.removeItem(<span class="ts">'openav.map.particles'</span>);   <span class="tc">// 'particles' = the world's name</span></code></pre></div>
+<p>要把一套接線帶到另一台電腦、或另一個世界，用對應檔（<a href="#mapping-map-files-export-import-and-share">下一節</a>）。</p>
+<h2 id="mapping-map-files-export-import-and-share">對應檔：匯出、匯入與分享<a class="anchor" href="#mapping-map-files-export-import-and-share" aria-label="這一節的連結">#</a></h2>
+<p><strong>L2 · Mapping</strong> 面板在「map knobs in order」下面有三個按鈕：</p>
+<ul>
+<li><strong>⬇ export</strong>：把目前的路由下載成 <code>oav-map-&lt;世界名&gt;.json</code>。</li>
+<li><strong>⬆ import</strong>：選一個對應檔。也可以<strong>把 <code>.json</code> 拖進頁面任何地方</strong>。匯入會<em>取代</em>現有路由，新的這組馬上被記住。</li>
+<li><strong>clear</strong>：移除全部路由（要點兩下）。下次載入時，世界宣告的路由會回來，跟第一次來一樣。</li>
+</ul>
+<p>按鈕下面會寫最近一次匯入的結果：進來幾條、<strong>略過</strong>哪幾條、為什麼。讀不了的檔案會說明原因，而且不動任何路由。</p>
+<h3 id="mapping-the-format">格式<a class="anchor" href="#mapping-the-format" aria-label="這一節的連結">#</a></h3>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-json">{
+  <span class="ts">"format"</span>: <span class="ts">"openav.map"</span>,
+  <span class="ts">"version"</span>: 1,
+  <span class="ts">"world"</span>: <span class="ts">"particles"</span>,
+  <span class="ts">"exported"</span>: <span class="ts">"2026-10-15T08:30:00.000Z"</span>,
+  <span class="ts">"routes"</span>: [
+    { <span class="ts">"signal"</span>: <span class="ts">"midi/cc/74"</span>, <span class="ts">"param"</span>: <span class="ts">"bloom"</span>, <span class="ts">"curve"</span>: <span class="ts">"exp"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 1], <span class="ts">"out"</span>: [0, 100] }, <span class="ts">"smooth"</span>: 0.1, <span class="ts">"invert"</span>: <span class="tk">false</span> },
+    { <span class="ts">"signal"</span>: <span class="ts">"audio/rms"</span>, <span class="ts">"param"</span>: <span class="ts">"energy"</span>, <span class="ts">"curve"</span>: <span class="ts">"linear"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 0.3], <span class="ts">"out"</span>: [0, 1] }, <span class="ts">"smooth"</span>: 0, <span class="ts">"invert"</span>: <span class="tk">false</span>, <span class="ts">"enabled"</span>: <span class="tk">false</span> }
+  ]
+}</code></pre></div>
+<p>路由用 <code>signal</code> 和 <code>param</code> 的名字指認，不用 id，所以檔案可以在不同世界之間搬：</p>
+<ul>
+<li>這個世界沒有的 <strong>param</strong>：略過並列出來。</li>
+<li>這場演出裡沒有東西能產生的 <strong>signal</strong>（例如沒有 Leap Motion 模組卻有 <code>leap/palm/x</code>）：略過並列出來。要等第一則訊息才會出現的訊號（<code>midi/…</code>、<code>surface/…</code>、<code>phone/…</code>、<code>osc/…</code>、<code>key…</code>、<code>take/…</code>）會留下，算作「等待中」。</li>
+<li>檔案的 <code>world</code> 跟現在不同時，<code>range.out</code> 會丟掉，讓每個 param 用自己的範圍（<code>in</code> 窗、曲線、平滑、反相照樣帶過來）。</li>
+<li><code>version</code> 比這個版本讀得懂的新，會拒絕並說明。<code>mapper.toJSON()</code> 的純陣列（舊作法）仍然可以匯入，當作版本 0。</li>
+<li><code>mode</code>（<code>"trim"</code> 或 <code>"pickup"</code>）和 <code>release</code>（秒）是版本 1 裡選填的路由欄位，路由有用到才會寫出來。還沒有這兩個欄位的舊版會直接忽略，把那條路由當成取代式路由讀。<code>trim</code> 路由的 <code>range.out</code> 是偏移量的範圍。</li>
+<li>超過 256 KB 或超過 500 條路由的檔案會被拒絕。</li>
+</ul>
+<h3 id="mapping-load-on-open-map">開頁就載入：<code>?map=</code><a class="anchor" href="#mapping-load-on-open-map" aria-label="這一節的連結">#</a></h3>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code>https://openaudiovisual.com/examples/01-hello-particles/?map=https://example.com/my-map.json
+https://openaudiovisual.com/examples/01-hello-particles/?map=maps/stage-left.json</code></pre></div>
+<p><code>?map=&lt;網址&gt;</code> 在頁面打開時抓檔案，像匯入一樣載入。只接受<strong>同源</strong>位址（含相對路徑）或絕對的 <strong>https</strong> 位址；指向其他主機的 <code>http:</code>、<code>data:</code>、<code>javascript:</code>、<code>file:</code>，以及帶帳號密碼的位址都會被拒絕。跨站的檔案要有 CORS（<code>Access-Control-Allow-Origin: *</code>；raw GitHub 和 gist 都有）。演出照常開始：位址被拒、抓取失敗或檔案有問題時，面板會顯示原因，路由維持原樣。明確寫的 <code>?map=</code> 優先於被記住的接線，載入的內容也會像匯入一樣被記住。程式裡 <code>createShow({ map: 'maps/a.json' })</code> 效果相同，<code>map: false</code> 則忽略 <code>?map=</code>。</p>
+<h3 id="mapping-remembered-for-you">自動記住<a class="anchor" href="#mapping-remembered-for-you" aria-label="這一節的連結">#</a></h3>
+<p>映射器每 3 秒、以及每次匯入或清除之後，把路由存進 <code>localStorage</code>（<code>openav.map.&lt;世界名&gt;</code>），每個世界一格，下次打開從你停下的地方繼續。每次讀寫都包了 try/catch：私密視窗或儲存被擋時什麼都不會壞，只是不會被記住。</p>
+<p>程式裡：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { loadMapUrl, parseMap } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+
+<span class="tk">const</span> file = show.mapper.exportMap();                    <span class="tc">// the object above</span>
+<span class="tk">const</span> report = show.mapper.importMap(text);              <span class="tc">// text or object; { mode: 'add' } keeps current routes</span>
+<span class="tc">// → { ok, added, skipped: [{ signal, param, reason: 'param' | 'signal' }], waiting, dropped, crossWorld }</span>
+<span class="tk">await</span> loadMapUrl(show.mapper, <span class="ts">'maps/a.json'</span>);            <span class="tc">// what ?map= calls; never throws</span>
+parseMap(text);                                          <span class="tc">// validate without touching a mapper</span></code></pre></div>
+<h2 id="mapping-routes-written-for-you">替你寫好的路由<a class="anchor" href="#mapping-routes-written-for-you" aria-label="這一節的連結">#</a></h2>
+<p>有幾個套件會產生同樣格式的路由：</p>
+<ul>
+<li><code>autoSurface(world.params)</code>（<code>@openav/surface</code>）會做出一個手機控制面板，以及它需要的 <code>surface/&lt;page&gt;/&lt;widget&gt; → param</code> 路由，帶 <code>smooth: 0.04</code>。<code>routesFromLayout(layout, params)</code> 對手寫的版面做一樣的事（<a href="../../../zh/docs/phones/#phones-autosurface">手機、中繼與控制面板</a>）。</li>
+<li><code>controllerRoutes(profile, { knob1: 'hue', pad1: 'burst' })</code>（<code>@openav/midi</code>）依螢幕上控制器的各個控制項寫出路由（<a href="../../../zh/docs/controllers/">MIDI 控制器與嵌入</a>）。</li>
+</ul>
+<h2 id="mapping-mapper-api">Mapper API<a class="anchor" href="#mapping-mapper-api" aria-label="這一節的連結">#</a></h2>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+
+<span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, profile: <span class="ts">'default'</span>, onChange, onLearn, base });
+mapper.addRoute(route)        <span class="tc">// → the stored route (defaults filled in, id assigned)</span>
+mapper.removeRoute(id)
+mapper.routesFor(<span class="ts">'bloom'</span>)     <span class="tc">// → routes targeting a param</span>
+mapper.routes                 <span class="tc">// the live array</span>
+mapper.learn(<span class="ts">'bloom'</span>)         <span class="tc">// arm / cancel learn; mapper.learnTarget is the armed key</span>
+mapper.base = () =&gt; timeline.state()   <span class="tc">// the timeline's value now (trim, pickup, smooth start); optional</span>
+mapper.update(dt)             <span class="tc">// every frame: glides smoothed routes, keeps trims on the timeline, applies release</span>
+mapper.toJSON(); mapper.fromJSON(array)
+mapper.exportMap(); mapper.importMap(text|object, { mode })   <span class="tc">// the portable file, see above</span>
+mapper.clear()                <span class="tc">// remove every route (and forget them)</span>
+mapper.report                 <span class="tc">// what the last import / ?map= said</span>
+mapper.save(); mapper.load()  <span class="tc">// localStorage 'openav.map.&lt;profile&gt;'; load() → true if found</span>
+mapper.dispose()              <span class="tc">// stop listening to signals</span></code></pre></div>
+<p><code>onChange()</code> 在路由變動時執行（給介面用），<code>onLearn(route, signalName)</code> 在 learn 綁定完成時執行。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/inputs/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">輸入</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/show-control/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">演出控制</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

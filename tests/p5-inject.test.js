@@ -268,8 +268,8 @@ test('example 15: the page runs that sketch file (last script, p5 from the CDN, 
   assert.equal([...html.matchAll(/sketch\.js/g)].length >= 2, true);
   assert.match(html, /<title>p5\.js in one line · open-audiovisual example<\/title>/);   // the head region of tools/build-examples.mjs
   assert.match(html, /<meta name="description"/);
-  assert.match(html, /openaudiovisual\.com\/docs\/#p5/);
-  assert.match(html, /openaudiovisual\.com\/zh\/docs\/#p5/);
+  assert.match(html, /openaudiovisual\.com\/p5\//);      // the handbook's p5 chapter is /p5/
+  assert.match(html, /openaudiovisual\.com\/zh\/p5\//);
 });
 
 test('example 15: the sketch uses the p5-style names the page promises, and the thumbnail exists', () => {

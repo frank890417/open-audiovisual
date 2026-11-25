@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>疑難排解｜open-audiovisual</title>
+<meta name="description" content="這些都是排練和寫程式時真的遇過的問題，附上解法。每個用 createShow() 做的演出，都會試著把資料串流到 ws://&lt;the page's host&gt;:7457 的後台監看。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/troubleshooting/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/troubleshooting/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/troubleshooting/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/troubleshooting/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="疑難排解｜open-audiovisual">
+<meta property="og:description" content="這些都是排練和寫程式時真的遇過的問題，附上解法。每個用 createShow() 做的演出，都會試著把資料串流到 ws://&lt;the page's host&gt;:7457 的後台監看。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/troubleshooting/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="疑難排解｜open-audiovisual">
+<meta name="twitter:description" content="這些都是排練和寫程式時真的遇過的問題，附上解法。每個用 createShow() 做的演出，都會試著把資料串流到 ws://&lt;the page's host&gt;:7457 的後台監看。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="troubleshooting">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/troubleshooting/#article","url":"https://openaudiovisual.com/zh/docs/troubleshooting/","name":"疑難排解｜open-audiovisual","description":"這些都是排練和寫程式時真的遇過的問題，附上解法。每個用 createShow() 做的演出，都會試著把資料串流到 ws://\u003cthe page's host>:7457 的後台監看。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"疑難排解","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["瀏覽器主控台出現 ws://…:7457 錯誤","Chrome 跳出「區域網路」或「這台裝置上的應用程式」的詢問","手機加入卡片顯示「relay offline」","看不到任何 MIDI 裝置","聽不到 IAC 匯流排上的 DAW","線被拔掉之後，DAW 就沒聲音了","接兩台控制器時，一條路由對兩台都有反應","電腦鍵盤按了沒反應","Learn 綁錯了訊號","時間軸不再推動某個參數","在程式碼裡改了路由，卻什麼都沒變","接到 sound/cutoff 的路由只在 0 和 1 之間動","鏡頭或麥克風啟動不了","沒有聲音","加了那一行的 p5.js 草圖不對勁","Strudel 收不到 OAV Virtual MIDI","在 iPhone 上，手機的傾斜和敲擊都沒作用","部署之後，網站還在跑舊的程式碼","視窗退到背景時，演出變慢","用到 CDN 的範例，連網時能跑，離線就不行","連接埠已經被佔用"],"position":20,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/troubleshooting/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/troubleshooting/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"疑難排解","item":"https://openaudiovisual.com/zh/docs/troubleshooting/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/troubleshooting/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/troubleshooting/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch is-here" data-ch="troubleshooting">
+          <a href="#troubleshooting" aria-current="page"><span class="n">20</span><span class="t">疑難排解</span></a>
+          <ol class="toc-secs">
+            <li><a href="#troubleshooting-the-console-shows-a-ws-7457-error">瀏覽器主控台出現 ws://…:7457 錯誤</a></li>
+            <li><a href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome 跳出「區域網路」或「這台裝置上的應用程式」的詢問</a></li>
+            <li><a href="#troubleshooting-the-phone-join-card-says-relay-offline">手機加入卡片顯示「relay offline」</a></li>
+            <li><a href="#troubleshooting-no-midi-devices-appear">看不到任何 MIDI 裝置</a></li>
+            <li><a href="#troubleshooting-a-daw-on-the-iac-bus-is-not-heard">聽不到 IAC 匯流排上的 DAW</a></li>
+            <li><a href="#troubleshooting-the-daw-went-silent-after-a-cable-was-pulled">線被拔掉之後，DAW 就沒聲音了</a></li>
+            <li><a href="#troubleshooting-with-two-controllers-a-route-reacts-to-both">接兩台控制器時，一條路由對兩台都有反應</a></li>
+            <li><a href="#troubleshooting-qwerty-keys-do-not-play">電腦鍵盤按了沒反應</a></li>
+            <li><a href="#troubleshooting-learn-bound-the-wrong-signal">Learn 綁錯了訊號</a></li>
+            <li><a href="#troubleshooting-the-timeline-no-longer-moves-a-param">時間軸不再推動某個參數</a></li>
+            <li><a href="#troubleshooting-i-changed-a-route-in-code-and-nothing-changed">在程式碼裡改了路由，卻什麼都沒變</a></li>
+            <li><a href="#troubleshooting-a-route-to-sound-cutoff-only-moves-between-0-and-1">接到 sound/cutoff 的路由只在 0 和 1 之間動</a></li>
+            <li><a href="#troubleshooting-the-camera-or-microphone-does-not-start">鏡頭或麥克風啟動不了</a></li>
+            <li><a href="#troubleshooting-there-is-no-sound">沒有聲音</a></li>
+            <li><a href="#troubleshooting-a-p5-js-sketch-with-the-one-line-misbehaves">加了那一行的 p5.js 草圖不對勁</a></li>
+            <li><a href="#troubleshooting-strudel-does-not-hear-oav-virtual-midi">Strudel 收不到 OAV Virtual MIDI</a></li>
+            <li><a href="#troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone">在 iPhone 上，手機的傾斜和敲擊都沒作用</a></li>
+            <li><a href="#troubleshooting-after-a-deploy-the-site-still-runs-old-code">部署之後，網站還在跑舊的程式碼</a></li>
+            <li><a href="#troubleshooting-the-show-slows-down-when-the-window-is-in-the-background">視窗退到背景時，演出變慢</a></li>
+            <li><a href="#troubleshooting-an-example-from-a-cdn-works-online-but-not-offline">用到 CDN 的範例，連網時能跑，離線就不行</a></li>
+            <li><a href="#troubleshooting-the-port-is-already-in-use">連接埠已經被佔用</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="troubleshooting" aria-labelledby="troubleshooting">
+<h1 id="troubleshooting">疑難排解<a class="anchor" href="#troubleshooting" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 20 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/troubleshooting.md">docs/zh/troubleshooting.md</a></span></p>
+<p>這些都是排練和寫程式時真的遇過的問題，附上解法。</p>
+<h2 id="troubleshooting-the-console-shows-a-ws-7457-error">瀏覽器主控台出現 ws://…:7457 錯誤<a class="anchor" href="#troubleshooting-the-console-shows-a-ws-7457-error" aria-label="這一節的連結">#</a></h2>
+<p>每個用 <code>createShow()</code> 做的演出，都會試著把資料串流到 <code>ws://&lt;the page's host&gt;:7457</code> 的後台監看。監看伺服器沒在跑時，瀏覽器會記下被拒絕的連線。這是預期中的，也無害：頁面會重試，間隔從大約 5 秒拉長到 30 秒，不會一直洗版。想讓它消失，就把監看伺服器跑起來：</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">npm</span> run monitor          <span class="tc"># node packages/monitor/server.js</span></code></pre></div>
+<p>用 https 開的頁面（openaudiovisual.com、https 通道）不會去連：瀏覽器在 https 頁面上會擋掉 <code>ws://</code>，公開的網站旁邊也沒有監看伺服器。如果你的監看伺服器架在 TLS 後面，就自己把位址傳進去：<code>createShow({ monitor: { url: 'wss://…' } })</code>，自己組裝的演出則是 <code>new MonitorFeed({ url: 'wss://…' })</code>。完全不該去找監看伺服器的機器（沒有後台的演出電腦）就寫 <code>createShow({ monitor: false })</code>：不會建立推送、頁面也不開任何 socket，所以什麼都不會記。</p>
+<h2 id="troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome 跳出「區域網路」或「這台裝置上的應用程式」的詢問<a class="anchor" href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" aria-label="這一節的連結">#</a></h2>
+<p>Chrome 的 Local Network Access（區域網路存取）檢查，會在<strong>公開的</strong> https 頁面要連你自己的電腦或網路時，先跳出權限詢問；從你自己這台機器提供的頁面不在範圍內（<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome 部落格</a>）。依 Chrome 版本，它管的範圍是（查證於 2026-10-15）：</p>
+<ul>
+<li>Chrome 142：<code>fetch</code> 請求（<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome 部落格</a>）。</li>
+<li>Chrome 145：分成兩種權限，一種管區域網路，一種管這台裝置本身，也就是 loopback（<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>）。</li>
+<li>Chrome 147：WebSocket 和 WebTransport 連線也管了（<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>）。</li>
+<li>Chrome 154：<code>new WebSocket(url, { targetAddressSpace })</code> 讓頁面說明它預期連的是哪一種位址（<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>）。</li>
+</ul>
+<p>演出跑在 openaudiovisual.com 或別的 https 網站上時，我們有三樣東西會去連你的電腦：OSC 橋接（<code>OscOut</code> 送到 <code>http://127.0.0.1:7456</code>）、後台監看（<code>ws://127.0.0.1:7457</code>）和 Leap 橋接。第一次 Chrome 會問。選了「封鎖」，連線就失敗，主控台會出現 <code>net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS</code>（在 Chrome 154 上看到的，見 <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">Leap 套件說明</a>）。</p>
+<p>怎麼辦：</p>
+<ul>
+<li>按<strong>允許</strong>。如果已經封鎖了，打開這個頁面的網站設定（網址列左邊的圖示），重新允許，再重新載入。</li>
+<li>或者從你自己的電腦打開頁面：<code>node serve.js</code>，然後開 <code>http://localhost:8080/…</code>。那個頁面不是公開網站，Chrome 不會問。排練或教 OAV → OSC → TouchDesigner 這條路，這是最穩的做法。</li>
+<li>在 <code>&lt;iframe&gt;</code> 裡，跨網域的框架要加 <code>allow="loopback-network"</code>；同網域的框架會繼承；加了 <code>sandbox</code> 的框架拿不到（在 Chrome 154 上驗證過，見 <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">Leap 套件說明</a>）。</li>
+<li><a href="../../../zh/check/">裝置體檢</a>有一顆按鈕，會試連橋接和後台監看，告訴你哪一個有回應。你按了才會連。</li>
+</ul>
+<h2 id="troubleshooting-the-phone-join-card-says-relay-offline">手機加入卡片顯示「relay offline」<a class="anchor" href="#troubleshooting-the-phone-join-card-says-relay-offline" aria-label="這一節的連結">#</a></h2>
+<p>在你自己的電腦上，手機中繼住在 <code>serve.js</code> 裡（<code>/relay</code>）。所以頁面如果是從檔案、或從不是 <code>node serve.js</code> 的伺服器打開的，卡片就會寫「relay offline」：請用 <code>node serve.js</code> 跑，再從那裡打開。</p>
+<p>在靜態主機（openaudiovisual.com、GitHub Pages）上，演出改用<strong>公開中繼</strong>，卡片會寫 <code>relay ok · … · public relay</code>，並附 QR code。如果寫的是 <code>can't reach the relay (wss://remote.cheyuwu.com/relay) — retrying</code>：</p>
+<ul>
+<li>網路擋了 WebSocket（有些學校和辦公室的 Wi-Fi 會）：換成手機熱點，或在跟手機同一個網路的筆電上跑 <code>node serve.js</code>；</li>
+<li>公開中繼忙線或停了：它限制每個位址同時 24 條連線、每分鐘 30 次新連線，一整間教室躲在同一台路由器後面可能就撞到。自己跑一個（<code>node packages/relay/server.js</code>），打開演出時加上 <code>?relay=wss://your.host/relay</code>；</li>
+<li>網址裡有 <code>?relay=off</code>，遙控被關掉了（這時不會畫卡片）。</li>
+</ul>
+<p>手機要開的是 QR code 裡的連結，它帶著房間和中繼。手機顯示已連線卻沒反應的話，檢查兩邊的 <code>#room</code> 是不是同一個，以及電腦上的頁面有沒有重新載入成新房間（房間是每個瀏覽器各記一個，換瀏覽器或用無痕視窗會得到另一間）。</p>
+<h2 id="troubleshooting-no-midi-devices-appear">看不到任何 MIDI 裝置<a class="anchor" href="#troubleshooting-no-midi-devices-appear" aria-label="這一節的連結">#</a></h2>
+<p>先跑一次<a href="../../../zh/check/">裝置體檢</a>，它會告訴你這個瀏覽器到底有沒有 Web MIDI。</p>
+<ul>
+<li>請用 Chrome 或 Edge。Safari 沒有 Web MIDI（<a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">WebKit bug 107250</a>，至今還開著），Firefox 要先裝它的網站權限附加元件才有（<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108" rel="noopener">Firefox 108</a>）。詳見<a href="../../../zh/docs/quick-start/#quick-start-which-browser">用哪個瀏覽器</a>。</li>
+<li>瀏覽器詢問時，允許 MIDI。從 Chrome 124 起，任何 MIDI 的使用都會問（<a href="https://developer.chrome.com/blog/web-midi-permission-prompt" rel="noopener">Chrome 部落格</a>）。權限依網站分開：在 <code>localhost:8080</code> 允許了，不代表 <code>localhost:3000</code> 也允許。</li>
+<li>裝置在頁面載入之後才接上：它應該會自己出現。沒出現的話，重新載入頁面。</li>
+<li>檢查 <strong>L1 · Input</strong>（輸入）面板：沒勾選的裝置是靜音的。</li>
+<li>可能有別的程式獨占了這個埠（Windows 上有些 DAW 和驅動程式會這樣）。把它關掉。</li>
+</ul>
+<h2 id="troubleshooting-a-daw-on-the-iac-bus-is-not-heard">聽不到 IAC 匯流排上的 DAW<a class="anchor" href="#troubleshooting-a-daw-on-the-iac-bus-is-not-heard" aria-label="這一節的連結">#</a></h2>
+<p><code>Midi</code> 引擎預設略過名稱含有 <code>IAC</code> 的所有輸入（<code>filterOut: 'IAC'</code>），不然演出透過 macOS 的 IAC 匯流排送出 MIDI，又會聽到自己的輸出，繞成迴圈。<code>createShow()</code> 用的就是這個預設。要透過 IAC 接收 DAW 送來的訊息，就關掉內建的引擎，自己建一個：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Midi } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
+
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { midi: <span class="tk">false</span> } });
+<span class="tk">const</span> midi = <span class="tk">new</span> Midi({ signals: show.signals, filterOut: <span class="tk">null</span> });   <span class="tc">// or a narrower regex</span>
+<span class="tk">await</span> midi.enable();</code></pre></div>
+<p>你的引擎發出的是同一組訊號，所以路由和世界都不用改。（控台的裝置清單和 MIDI 儀表，只跟著 <code>createShow()</code> 建立的那個引擎走。）不要把 MIDI 送到你正在聽的同一條 IAC 匯流排。</p>
+<p>另外有第二道防線，不用設定：任何輸入上，在 40 毫秒內收到一則和引擎剛<em>送出</em>的完全相同的訊息，就當作回音丟掉（<code>new Midi({ echoWindow })</code>，<code>0</code> 就關掉，<code>midi.echoDropped</code> 會計數）。</p>
+<h2 id="troubleshooting-the-daw-went-silent-after-a-cable-was-pulled">線被拔掉之後，DAW 就沒聲音了<a class="anchor" href="#troubleshooting-the-daw-went-silent-after-a-cable-was-pulled" aria-label="這一節的連結">#</a></h2>
+<p>現在不會了。輸出埠被拔掉時，<code>Midi</code> 會換到次佳的可用埠，在 MIDI 紀錄和瀏覽器 console 各印一行（<code>MIDI out: switched to "…" ("…" was unplugged)</code>），L1 · Input 面板的 <code>MIDI out →</code> 那一列也會跟著變。你選的那個埠重新插上，輸出就換回去。如果那一行寫的是 <code>no output left</code>，就是現在什麼都沒插：訊息會被丟掉，直到有埠出現。用 <code>midi.selectOutput(name)</code>（或 <code>enable(name)</code>）選好你的埠，換回來的就是它。再加上 <code>new Midi({ prefer: ['IAC'] })</code> 指定誰先頂替。</p>
+<h2 id="troubleshooting-with-two-controllers-a-route-reacts-to-both">接兩台控制器時，一條路由對兩台都有反應<a class="anchor" href="#troubleshooting-with-two-controllers-a-route-reacts-to-both" aria-label="這一節的連結">#</a></h2>
+<p>接兩個以上的 MIDI 輸入時，每台裝置會用自己的名稱（<code>midi/&lt;slug&gt;/cc/74</code>）發出訊號，<em>同時</em>也用共用的舊名稱（<code>midi/cc/74</code>）發出。接在 <code>midi/cc/74</code> 上的路由聽得到每一台裝置，把它的 source 改成那台裝置專屬的名稱就好。各裝置的 slug 會顯示在 <strong>L1 · Input</strong> 面板。</p>
+<h2 id="troubleshooting-qwerty-keys-do-not-play">電腦鍵盤按了沒反應<a class="anchor" href="#troubleshooting-qwerty-keys-do-not-play" aria-label="這一節的連結">#</a></h2>
+<p>先勾選鋼琴上方的 <em>keyboard</em>（電腦鍵盤擷取）。擷取預設是關的，這樣打字才不會跟控台的快捷鍵打架。勾選之後，<code>A W S E D F T G Y H U J K O L P ;</code> 可以彈奏，<kbd>Z</kbd>/<kbd>X</kbd> 切換八度。</p>
+<p><em>keyboard</em> 勾著的時候，字母鍵歸鋼琴，所以控台的 R（重設）、T（提詞機）、F（全螢幕）都沒作用：T 和 F 本來就是琴鍵，而且你正在彈的時候，不小心按到 R 不該把整場演出倒帶。Space、方向鍵和 <kbd>Esc</kbd> 仍然有效，按 Esc 就離開擷取。</p>
+<h2 id="troubleshooting-learn-bound-the-wrong-signal">Learn 綁錯了訊號<a class="anchor" href="#troubleshooting-learn-bound-the-wrong-signal" aria-label="這一節的連結">#</a></h2>
+<p>Learn 綁定的是第一個移動超過自身範圍 5% 的訊號，或第一個出現的脈衝（不分種類）。模擬演奏者和鼓機一直在送脈衝。先取消勾選 <em>simulate performance</em>（模擬演奏），停掉鼓機，再點一次 <em>learn</em>。用 <strong>L2 · Mapping</strong>（映射）面板裡的 ✕ 移除綁錯的路由。</p>
+<h2 id="troubleshooting-the-timeline-no-longer-moves-a-param">時間軸不再推動某個參數<a class="anchor" href="#troubleshooting-the-timeline-no-longer-moves-a-param" aria-label="這一節的連結">#</a></h2>
+<p>碰過的滑桿或有映射的訊號會<em>覆寫</em>參數，而覆寫會黏住：樂譜讓位給人。用參數旁的 ✕ 清掉（或呼叫 <code>show.params.clearOverride(key)</code>，要全部清掉就用 <code>clearAllOverrides()</code>）。<em>有平滑</em>的路由只要訊號來過，就會一直寫入，就算已經靜音也一樣。要把參數交還給時間軸，就移除那條路由。詳見<a href="../../../zh/docs/mapping/#mapping-overrides-and-the-timeline">覆寫與時間軸</a>。</p>
+<h2 id="troubleshooting-i-changed-a-route-in-code-and-nothing-changed">在程式碼裡改了路由，卻什麼都沒變<a class="anchor" href="#troubleshooting-i-changed-a-route-in-code-and-nothing-changed" aria-label="這一節的連結">#</a></h2>
+<p>映射器把昨天的路由存在 <code>localStorage</code>，而儲存的 <code>source → target</code> 組合會蓋過程式碼裡宣告的那一條（新的組合仍然會加進來）。清掉設定檔，或在開發期間傳入 <code>profile: false</code>：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">localStorage.removeItem(<span class="ts">'openav.map.&lt;world name&gt;'</span>);</code></pre></div>
+<h2 id="troubleshooting-a-route-to-sound-cutoff-only-moves-between-0-and-1">接到 sound/cutoff 的路由只在 0 和 1 之間動<a class="anchor" href="#troubleshooting-a-route-to-sound-cutoff-only-moves-between-0-and-1" aria-label="這一節的連結">#</a></h2>
+<p><code>outMin</code>/<code>outMax</code> 的預設值，是路由加入當下目標參數的範圍。在 <code>createShow()</code> 裡，宣告的路由加入得比聲音引擎註冊 <code>sound/*</code> 參數還早，所以要明確給出範圍：<code>{ source: 'midi/cc/74', target: 'sound/cutoff', outMin: 100, outMax: 8000 }</code>。</p>
+<h2 id="troubleshooting-the-camera-or-microphone-does-not-start">鏡頭或麥克風啟動不了<a class="anchor" href="#troubleshooting-the-camera-or-microphone-does-not-start" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li>頁面必須是安全環境（secure context）：<code>http://localhost</code> 或 <code>https://</code>。用一般 <code>http://</code> 連區域網路位址（<code>http://192.168.1.20:8080</code>）會被擋下來。</li>
+<li>🎤 mic、🖐 hands 和 🕺 body 按鈕要自己點，它們都不會自動啟動。按鈕顯示 <em>✗ retry</em> 代表啟動失敗，原因印在瀏覽器的主控台。</li>
+<li>在 macOS 上，瀏覽器本身要在「系統設定 → 隱私權與安全性」裡取得相機和麥克風的權限。</li>
+<li>手部和身體追蹤第一次啟動時，會從 jsDelivr 和 Google 的儲存空間載入 MediaPipe 和它的模型。離線時無法啟動。</li>
+</ul>
+<h2 id="troubleshooting-there-is-no-sound">沒有聲音<a class="anchor" href="#troubleshooting-there-is-no-sound" aria-label="這一節的連結">#</a></h2>
+<p>瀏覽器要點一下才會開始播放音訊。在 <em>L4 · Output — sound</em>（聲音輸出）面板按 <strong>🔊 enable sound</strong>（開啟聲音）。Tone.js 引擎在那一刻才從 jsDelivr 載入，所以第一次需要網路連線。第一次選鋼琴時，要載入大約 2 MB 的取樣，選單會顯示進度，鋼琴準備好之前，會繼續用前一個樂器彈。鼓機的鼓組，是勾選 <em>drum machine</em>（鼓機）之後、打下第一拍時才啟動。</p>
+<h2 id="troubleshooting-a-p5-js-sketch-with-the-one-line-misbehaves">加了那一行的 p5.js 草圖不對勁<a class="anchor" href="#troubleshooting-a-p5-js-sketch-with-the-one-line-misbehaves" aria-label="這一節的連結">#</a></h2>
+<p>oav-p5 會把出了什麼事寫在畫面上：🎹 旁邊一張卡片，用瀏覽器的語言寫發生什麼、為什麼、按哪裡（<a href="../../../zh/p5/#p5-when-something-goes-wrong">出狀況的時候</a>）。🎹 → 🩺 把版本、麥克風、MIDI、聲音、鼓機和接線放在同一張卡上，問人的時候截這張圖。常見的幾種：</p>
+<ul>
+<li>出現 <em>knob1 is not defined</em>：那一行沒載到（離線，或網址打錯）。它要放在草圖最前面，<code>setup()</code> 的上面。</li>
+<li>沒有聲音：瀏覽器要先點過頁面才出聲，按 MIDI 鍵盤上的鍵不算。點一下畫布，在那之前 🎹 按鈕上的 🔊 是黃色的。</li>
+<li>接藍牙喇叭時鼓慢半拍（0.15 到 0.25 秒）：<code>?oav_drumlatency=200</code> 用毫秒手動設定延遲。</li>
+<li>錄出來的檔是 WebM：Firefox 和舊版 Chrome 寫不出 MP4，Instagram 不收 WebM。改用 Chrome 126 以後的版本、Edge 或 Safari 錄。</li>
+<li>草圖嵌進別的網頁，麥克風一直是 0：那個 <code>&lt;iframe&gt;</code> 要加 <code>allow="microphone"</code>（要接實體控制器再加 <code>allow="midi"</code>）。</li>
+</ul>
+<h2 id="troubleshooting-strudel-does-not-hear-oav-virtual-midi">Strudel 收不到 OAV Virtual MIDI<a class="anchor" href="#troubleshooting-strudel-does-not-hear-oav-virtual-midi" aria-label="這一節的連結">#</a></h2>
+<p>OAV 比 Strudel 的 <code>midin()</code> 晚載入，<code>midin('OAV Virtual MIDI')</code> 就收不到東西、也不報錯。把 <code>await import('https://openaudiovisual.com/p5/oav-p5.js')</code> 放進 Strudel 的 settings → prebake（網址用單引號），按 save 再重新整理：prebake 會在你的程式之前跑。在那之前 🩺 會寫「沒有程式向 OAV Virtual MIDI 要過 MIDI」。詳見<a href="../../../zh/docs/strudel/#strudel-load-oav-in-strudel">和 Strudel 一起用</a>。</p>
+<h2 id="troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone">在 iPhone 上，手機的傾斜和敲擊都沒作用<a class="anchor" href="#troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone" aria-label="這一節的連結">#</a></h2>
+<p>iOS 只把動作感測器開放給 <code>https://</code> 頁面，而且要先點一下「開始」。在區域網路上用一般 <code>http://</code> 連線時，觸控、琴鍵和控制面板仍然能用。要用感測器，就透過 HTTPS 通道連到 <code>serve.js</code>。如果曾經拒絕過權限，iOS 會記住，要到「設定 → Safari → 動作與方向取用」改回來，再重新載入。</p>
+<h2 id="troubleshooting-after-a-deploy-the-site-still-runs-old-code">部署之後，網站還在跑舊的程式碼<a class="anchor" href="#troubleshooting-after-a-deploy-the-site-still-runs-old-code" aria-label="這一節的連結">#</a></h2>
+<p>GitHub Pages 讓瀏覽器把 JavaScript 快取好幾個小時，HTML 卻幾分鐘就過期，所以訪客可能拿到新的 HTML，配上舊的模組。部署前執行 <code>node tools/stamp-version.mjs</code>：它會在範例、套件和首頁的模組網址後面加上 <code>?v=&lt;commit&gt;</code>。在本機不會發生這種事：<code>serve.js</code> 會送出 <code>Cache-Control: no-store</code>。</p>
+<h2 id="troubleshooting-the-show-slows-down-when-the-window-is-in-the-background">視窗退到背景時，演出變慢<a class="anchor" href="#troubleshooting-the-show-slows-down-when-the-window-is-in-the-background" aria-label="這一節的連結">#</a></h2>
+<p>瀏覽器會在隱藏的分頁暫停 <code>requestAnimationFrame</code>。這時 <code>Loop</code> 改由 Web Worker 帶著，以大約每秒 15 格繼續跑，所以時間軸、映射的訊號和後台資料流都不會停，只是畫面更新變慢。投影視窗要一直留在畫面上，放在它自己的螢幕，開全螢幕（<kbd>F</kbd>）。</p>
+<h2 id="troubleshooting-an-example-from-a-cdn-works-online-but-not-offline">用到 CDN 的範例，連網時能跑，離線就不行<a class="anchor" href="#troubleshooting-an-example-from-a-cdn-works-online-but-not-offline" aria-label="這一節的連結">#</a></h2>
+<p>p5（範例 05、06）、Tone.js（聲音）、MediaPipe（手、身體）和 WebToe app（範例 04）都從網路載入。到離線的場地演出，先把它們下載下來，再把 script 標籤、import map 或模組選項（<code>toneEngine({ cdn })</code>、<code>webtoeWorld({ app })</code>）指到本機的副本。</p>
+<h2 id="troubleshooting-the-port-is-already-in-use">連接埠已經被佔用<a class="anchor" href="#troubleshooting-the-port-is-already-in-use" aria-label="這一節的連結">#</a></h2>
+<p><code>node serve.js 8081</code> 會改用另一個埠，OSC 橋接也接受埠號參數：<code>node packages/osc/bridges/osc-bridge.js 7470</code>（再用 <code>new OscOut('http://127.0.0.1:7470')</code>）。後台監看是例外：用 <code>createShow()</code> 做的頁面，除非你另外指定，否則會串流到自己主機的 7457 埠，所以要把這個埠空出來，或用 <code>createShow({ monitor: { url: 'ws://host:7460' } })</code> 指到別處（自己組裝的演出則是 <code>new MonitorFeed({ url: 'ws://host:7460' })</code>），再用 <code>node packages/monitor/server.js 7460</code> 啟動中繼。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/lab-integration/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">實驗室整合（"lab" 欄位）</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/roadmap/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">路線圖</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

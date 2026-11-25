@@ -33,6 +33,6 @@ chord.analyze([60, 64, 67]).chordType;   // 'major'
 root-position name. `dissonanceLevel`: 0 none · 1 mild · 2 severe (cluster).
 
 Signals: `chord/consonance` (-1..1), `chord/count`, `chord/root`, `chord/event` (pulse, the
-full analysis) · [Signals reference](https://openaudiovisual.com/docs/#signals-openav-chord).
+full analysis) · [Signals reference](https://openaudiovisual.com/docs/signals/#signals-openav-chord).
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-chord)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-chord)

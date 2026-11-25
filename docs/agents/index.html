@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For AI agents · open-audiovisual</title>
+<meta name="description" content="Worlds are visual code, and coding agents are good at code. A person describes a performance (&quot;a jellyfish world that blooms on consonant chords&quot;); an agent…">
+<link rel="canonical" href="https://openaudiovisual.com/docs/agents/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/agents/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/agents/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/agents/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="For AI agents · open-audiovisual">
+<meta property="og:description" content="Worlds are visual code, and coding agents are good at code. A person describes a performance (&quot;a jellyfish world that blooms on consonant chords&quot;); an agent…">
+<meta property="og:url" content="https://openaudiovisual.com/docs/agents/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="For AI agents · open-audiovisual">
+<meta name="twitter:description" content="Worlds are visual code, and coding agents are good at code. A person describes a performance (&quot;a jellyfish world that blooms on consonant chords&quot;); an agent…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="agents">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/agents/#article","url":"https://openaudiovisual.com/docs/agents/","name":"For AI agents · open-audiovisual","description":"Worlds are visual code, and coding agents are good at code. A person describes a performance (\"a jellyfish world that blooms on consonant chords\"); an agent…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"For AI agents","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["The two rules","Start with AGENTS.md","The MCP server","llms.txt and llms-full.txt","The create-world skill","Poking a running show","A prompt to paste","Before handing back"],"position":18,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/agents/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/agents/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"For AI agents","item":"https://openaudiovisual.com/docs/agents/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/agents/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/agents/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch is-here" data-ch="agents">
+          <a href="#agents" aria-current="page"><span class="n">18</span><span class="t">For AI agents</span></a>
+          <ol class="toc-secs">
+            <li><a href="#agents-the-two-rules">The two rules</a></li>
+            <li><a href="#agents-start-with-agents-md">Start with AGENTS.md</a></li>
+            <li><a href="#agents-the-mcp-server">The MCP server</a></li>
+            <li><a href="#agents-llms-txt-and-llms-full-txt">llms.txt and llms-full.txt</a></li>
+            <li><a href="#agents-the-create-world-skill">The create-world skill</a></li>
+            <li><a href="#agents-poking-a-running-show">Poking a running show</a></li>
+            <li><a href="#agents-a-prompt-to-paste">A prompt to paste</a></li>
+            <li><a href="#agents-before-handing-back">Before handing back</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="agents" aria-labelledby="agents">
+<h1 id="agents">For AI agents<a class="anchor" href="#agents" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 18 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/agents.md">docs/agents.md</a></span></p>
+<p>Worlds are visual code, and coding agents are good at code. A person describes a
+performance ("a jellyfish world that blooms on consonant chords"); an agent
+writes the world inside a chassis that already handles MIDI, mapping, timeline,
+console and backstage. This chapter is what an agent needs to do that well.</p>
+<h2 id="agents-the-two-rules">The two rules<a class="anchor" href="#agents-the-two-rules" aria-label="Link to this section">#</a></h2>
+<ol>
+<li><strong>Continuous control goes through params; discrete events may use signals.</strong>
+Never read <code>signals.get(…)</code> in <code>update()</code> for something that varies
+continuously. Declare a param and let a route connect the signal to it.</li>
+<li><strong>The shell never knows the work.</strong> Never edit <code>packages/*</code> to make one
+example look right. A framework change must make every work better.</li>
+</ol>
+<p>The reasoning is in <a href="../../docs/concepts/#concepts-the-two-rules">Core concepts</a>.</p>
+<h2 id="agents-start-with-agents-md">Start with AGENTS.md<a class="anchor" href="#agents-start-with-agents-md" aria-label="Link to this section">#</a></h2>
+<p><a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md" rel="noopener">AGENTS.md</a> at the repository root is the briefing: what the
+framework is, the two rules, how to create a new work, how to verify changes,
+and the conventions (vanilla ESM + JSDoc, no build step, no runtime
+dependencies, comments that explain the performance reasoning (why a knob feels
+right) rather than syntax, path-style signal names declared with <code>signals.define</code>).</p>
+<h2 id="agents-the-mcp-server">The MCP server<a class="anchor" href="#agents-the-mcp-server" aria-label="Link to this section">#</a></h2>
+<p>The repository ships a Model Context Protocol server: <code>packages/mcp/server.js</code>,
+zero dependencies, JSON-RPC 2.0 over stdio, one JSON message per line. Claude
+Code picks it up from <code>.mcp.json</code> when you open the repository. Other clients:</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{
+  <span class="ts">"mcpServers"</span>: {
+    <span class="ts">"openav"</span>: {
+      <span class="ts">"command"</span>: <span class="ts">"node"</span>,
+      <span class="ts">"args"</span>: [<span class="ts">"/path/to/open-audiovisual/packages/mcp/server.js"</span>]
+    }
+  }
+}</code></pre></div>
+<p>It answers <code>initialize</code> (server <code>openav</code> 0.1.0, echoing the client's protocol
+version, <code>2024-11-05</code> if none is given), <code>tools/list</code> and <code>tools/call</code>. Results
+come back as one text item; objects are JSON-encoded. A failing call returns a
+JSON-RPC error with code −32000 and a message.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>tool</th><th>arguments</th><th>returns</th></tr></thead>
+<tbody>
+<tr><td><code>list_examples</code></td><td>none</td><td><code>[{ dir, title, summary }]</code>: each example's folder, the <code>&lt;title&gt;</code> of its <code>index.html</code>, and the first comment line of its <code>main.js</code></td></tr>
+<tr><td><code>read_doc</code></td><td><code>doc</code> (required): <code>architecture</code>, <code>writing-a-world</code>, <code>signals</code>, <code>show-control</code>, <code>roadmap</code>, <code>agents</code>, <code>readme</code></td><td>the Markdown text. <code>agents</code> is AGENTS.md, <code>readme</code> the README; the others are <code>docs/&lt;name&gt;.md</code></td></tr>
+<tr><td><code>scaffold_world</code></td><td><code>slug</code> (required, kebab-case), <code>donor</code> (default <code>01-hello-particles</code>)</td><td><code>{ created, next_steps }</code>. Copies every file of <code>examples/&lt;donor&gt;/</code> into <code>examples/&lt;next number&gt;-&lt;slug&gt;/</code></td></tr>
+<tr><td><code>run_checks</code></td><td>none</td><td><code>{ pass, fail, ok }</code> from <code>node --test tests/*.test.js</code> (60 s timeout), or <code>{ ok: false, output }</code> with the failing lines</td></tr>
+<tr><td><code>list_controllers</code></td><td>none</td><td><code>{ count, controllers: [{ id, short, name, maker, kind, controls, unverified, url }], imported: […] }</code>: every shipped MIDI profile, its control mix (<code>{ knob: 8, pad: 8, keys: 25 }</code>), how many controls are still flagged unverified, and its page <code>https://openaudiovisual.com/controllers/&lt;id&gt;/</code></td></tr>
+<tr><td><code>read_profile</code></td><td><code>id</code> (required): a profile id or its <code>short</code></td><td><code>{ id, url, unverified, profile, mapping }</code>: the profile JSON as shipped (with <code>sysex</code>, <code>palette</code> and <code>verifications</code> when it has them), and a readable MIDI map (control, type, <code>CC 74, ch 1</code>, <code>evidence</code>: <code>hardware</code>, <code>source</code> or <code>unconfirmed</code>, signal <code>midi/&lt;short&gt;/&lt;id&gt;</code>, verified)</td></tr>
+<tr><td><code>validate_profile</code></td><td><code>profile</code> (required): an object or a JSON string</td><td><code>{ ok, problems, conflicts }</code>: the problems <code>validateProfile</code> finds, plus clashes with shipped profiles (same <code>id</code>, same <code>short</code>, overlapping <code>match.ports</code>)</td></tr>
+<tr><td><code>scaffold_profile</code></td><td><code>maker</code>, <code>model</code>, <code>controls</code> (all required): <code>[{ type, count, from? }]</code></td><td><code>{ profile, problems, unverified, next_steps }</code>: a skeleton that passes <code>validateProfile</code>, every number a placeholder with <code>"verified": false</code>, and the steps to source and register it. Nothing is written to disk</td></tr>
+</tbody>
+</table></div>
+<p>Good donors for <code>scaffold_world</code>: <code>01-hello-particles</code> (minimal 2D canvas),
+<code>02-chord-garden</code> (chord-driven), <code>03-pose-field</code> (camera, hands),
+<code>05-prebiotic-flake</code> (p5 with sound). Start with <code>read_doc agents</code>, then
+<code>read_doc writing-a-world</code>.</p>
+<h2 id="agents-llms-txt-and-llms-full-txt">llms.txt and llms-full.txt<a class="anchor" href="#agents-llms-txt-and-llms-full-txt" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="../../llms.txt">/llms.txt</a> is the short index in the <a href="https://llmstxt.org/" rel="noopener">llmstxt.org</a>
+format: what this is, the core concepts, how to start, every doc and example.</li>
+<li><a href="../../llms-full.txt">/llms-full.txt</a> is the README, AGENTS.md and the docs in one
+file, for agents that prefer to read everything at once.</li>
+<li>This handbook is plain HTML, one page per chapter at <code>/docs/&lt;chapter&gt;/</code> (and
+<code>/zh/docs/&lt;chapter&gt;/</code> in Traditional Chinese), with the contents at <code>/docs/</code>;
+every word is there without JavaScript. Each section has a stable anchor, for
+example <code>/docs/mapping/#mapping-curves</code> (an old <code>/docs/#mapping-curves</code> link
+still lands there).</li>
+</ul>
+<h2 id="agents-the-create-world-skill">The create-world skill<a class="anchor" href="#agents-the-create-world-skill" aria-label="Link to this section">#</a></h2>
+<p><code>.claude/skills/create-world/SKILL.md</code> is a Claude Code skill that turns a
+description into a runnable example: extract the inputs, the 3–6 performable
+params, the events and the acts; copy a donor; write the world; wire the
+assembly; verify in the browser; hand back the URL, the param list, the scene
+list and the signals it reacts to.</p>
+<h2 id="agents-poking-a-running-show">Poking a running show<a class="anchor" href="#agents-poking-a-running-show" aria-label="Link to this section">#</a></h2>
+<p>Every show made with <code>createShow()</code> sets <code>window.openav</code> to the whole show, so
+an agent driving a browser can inspect and steer it:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">openav.signals.list()                                   <span class="tc">// every signal, its value and range</span>
+openav.params.resolve(openav.timeline.state())          <span class="tc">// the current param values</span>
+openav.signals.pulse(<span class="ts">'midi/note/on'</span>, { note: 60, vel: 0.8, ch: 1 });   <span class="tc">// play a note</span>
+openav.timeline.seek(40); openav.timeline.play();       <span class="tc">// jump to a scene and play</span>
+openav.mapper.routes                                    <span class="tc">// the wiring</span></code></pre></div>
+<h2 id="agents-a-prompt-to-paste">A prompt to paste<a class="anchor" href="#agents-a-prompt-to-paste" aria-label="Link to this section">#</a></h2>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">Clone https://github.com/frank890417/open-audiovisual and read AGENTS.md first.
+Run `node serve.js` and open http://localhost:8080/examples/01-hello-particles/ to see the smallest complete show.
+Create examples/29-&lt;name&gt;/ by copying 01-hello-particles (or call the openav MCP tool scaffold_world), then write a World in its main.js for this piece:
+
+  &lt;describe the performance, e.g. "a jellyfish world that blooms on consonant chords"&gt;
+
+Rules from AGENTS.md: continuous control goes through params, and the mapper routes signals to them. Never edit packages/* to make one example look right.
+Done means: npm test passes, and the new example loads with zero console errors.</code></pre></div>
+<h2 id="agents-before-handing-back">Before handing back<a class="anchor" href="#agents-before-handing-back" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><code>npm test</code> passes (or <code>run_checks</code> says <code>ok</code>).</li>
+<li>The example loads with zero console errors. The refused <code>ws://…:7457</code>
+connection (no backstage monitor running) is expected.</li>
+<li>It reacts to the on-screen piano or QWERTY keys: no hardware required.</li>
+<li><kbd>Space</kbd> plays the timeline and something evolves.</li>
+<li>Report the URL, the params (what to map to knobs), the scenes, and the signals
+the world listens to.</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/packages/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Package reference</span></a>
+      <a class="ch-next" rel="next" href="../../docs/lab-integration/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Lab integration (the "lab" field)</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

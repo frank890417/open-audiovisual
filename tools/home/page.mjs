@@ -157,7 +157,8 @@ export function renderPage(t, { locale, other, version }) {
   const root = L.root;
   const self = L.url;
   const href = (h) => h.startsWith('#') || /^https?:/.test(h) ? h : root + h;
-  const faqHref = (h) => h.startsWith('#') || /^https?:/.test(h) ? h : root + (locale === 'zh' ? 'zh/' : '') + h;   // site pages, in this language
+  // site pages, in this language; a handbook heading (docs/#…) is its chapter's page
+  const faqHref = (h) => h.startsWith('#') || /^https?:/.test(h) ? h : h.startsWith('docs/#') ? pageCtx('home', locale).to('docs', h.slice(5)) : root + (locale === 'zh' ? 'zh/' : '') + h;
   const langHref = { en: locale === 'en' ? './' : '../', zh: locale === 'en' ? './zh/' : './' };
   const altPage = langHref[other];
 

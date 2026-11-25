@@ -67,9 +67,11 @@ Good donors for `scaffold_world`: `01-hello-particles` (minimal 2D canvas),
   format: what this is, the core concepts, how to start, every doc and example.
 - [/llms-full.txt](../llms-full.txt) is the README, AGENTS.md and the docs in one
   file, for agents that prefer to read everything at once.
-- This handbook is plain HTML at `/docs/` (and `/zh/docs/` in Traditional
-  Chinese); every word is there without JavaScript. Each section has a stable
-  anchor, for example `/docs/#mapping-curves`.
+- This handbook is plain HTML, one page per chapter at `/docs/<chapter>/` (and
+  `/zh/docs/<chapter>/` in Traditional Chinese), with the contents at `/docs/`;
+  every word is there without JavaScript. Each section has a stable anchor, for
+  example `/docs/mapping/#mapping-curves` (an old `/docs/#mapping-curves` link
+  still lands there).
 
 ## The create-world skill
 

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture · open-audiovisual</title>
+<meta name="description" content="open-audiovisual is a data-layer framework. Its entire value is that four layers and two spines stay cleanly separated, so any of them can be replaced without…">
+<link rel="canonical" href="https://openaudiovisual.com/docs/architecture/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/architecture/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/architecture/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/architecture/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Architecture · open-audiovisual">
+<meta property="og:description" content="open-audiovisual is a data-layer framework. Its entire value is that four layers and two spines stay cleanly separated, so any of them can be replaced without…">
+<meta property="og:url" content="https://openaudiovisual.com/docs/architecture/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Architecture · open-audiovisual">
+<meta name="twitter:description" content="open-audiovisual is a data-layer framework. Its entire value is that four layers and two spines stay cleanly separated, so any of them can be replaced without…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="architecture">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/architecture/#article","url":"https://openaudiovisual.com/docs/architecture/","name":"Architecture · open-audiovisual","description":"open-audiovisual is a data-layer framework. Its entire value is that four layers and two spines stay cleanly separated, so any of them can be replaced without…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Architecture","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["The frame loop","L1 · Input — Signals","L2 · Mapping — Mapper","L3 · World — Stage","L4 · Output — two branches, video and audio, both optional","Spine · Timeline","Spine · Monitor","Around the spines: console and phones"],"position":4,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/architecture/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/architecture/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Architecture","item":"https://openaudiovisual.com/docs/architecture/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/architecture/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/architecture/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch is-here" data-ch="architecture">
+          <a href="#architecture" aria-current="page"><span class="n">04</span><span class="t">Architecture</span></a>
+          <ol class="toc-secs">
+            <li><a href="#architecture-the-frame-loop">The frame loop</a></li>
+            <li><a href="#architecture-l1-input-signals">L1 · Input — Signals</a></li>
+            <li><a href="#architecture-l2-mapping-mapper">L2 · Mapping — Mapper</a></li>
+            <li><a href="#architecture-l3-world-stage">L3 · World — Stage</a></li>
+            <li><a href="#architecture-l4-output-two-branches-video-and-audio-both-optional">L4 · Output — two branches, video and audio, both optional</a></li>
+            <li><a href="#architecture-spine-timeline">Spine · Timeline</a></li>
+            <li><a href="#architecture-spine-monitor">Spine · Monitor</a></li>
+            <li><a href="#architecture-around-the-spines-console-and-phones">Around the spines: console and phones</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="architecture" aria-labelledby="architecture">
+<h1 id="architecture">Architecture<a class="anchor" href="#architecture" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 4 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/architecture.md">docs/architecture.md</a></span></p>
+<p>open-audiovisual is a <em>data-layer</em> framework. Its entire value is that four layers
+and two spines stay cleanly separated, so any of them can be replaced without
+touching the others. This page states each layer's contract precisely.</p>
+<h2 id="architecture-the-frame-loop">The frame loop<a class="anchor" href="#architecture-the-frame-loop" aria-label="Link to this section">#</a></h2>
+<p>One <code>Loop</code> (<code>@openav/core</code>) drives everything. This is the order <code>createShow()</code>
+runs each frame (<code>packages/show/index.js</code>):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> loop = <span class="tk">new</span> Loop((dt) =&gt; {
+  keys?.update(dt);                              <span class="tc">// 0. on-screen performers: SimPlayer, drum sequencer</span>
+  drums?.update(dt);
+  audio?.update();                               <span class="tc">//    microphone analysis → audio/* signals</span>
+  onFrame?.(dt, show);                           <span class="tc">//    your assembly-level hook</span>
+  timeline.advance(dt);                          <span class="tc">// 1. time moves</span>
+  sync?.frame();                                 <span class="tc">//    several pages: the leader says where it is, a follower asks again if unanswered</span>
+  director?.update(timeline.t, dt, { holding, playing }); <span class="tc">//    with a score: segment modules enter / update / exit</span>
+  mapper.update(dt);                             <span class="tc">// 2. smoothed routes settle</span>
+  <span class="tk">const</span> state = stage.frame(dt, timeline.state()); <span class="tc">// 3. params resolve → world updates &amp; renders</span>
+  sound?.update(state);                          <span class="tc">// 4. sound/* params reach the synth</span>
+  remote?.frame(dt, state);                      <span class="tc">//    param values echo back to phones</span>
+  consoleUI.render(state);                       <span class="tc">// 5. the desk reflects reality</span>
+  monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state)); <span class="tc">// 6. backstage hears about it (not with monitor: false)</span>
+});</code></pre></div>
+<p>Signals arrive <em>between</em> frames, whenever a device or a socket fires. An
+unsmoothed route writes its param immediately; a smoothed route sets a target
+that <code>mapper.update(dt)</code> glides toward. OSC output is not part of <code>createShow()</code>;
+if you use it, flush it from <code>onFrame</code> (<a href="../../docs/show-control/#show-control-osc-output">Show control</a>).</p>
+<p><code>dt</code> is in seconds and clamped to 0.1 (<code>new Loop(fn, { maxDt })</code>), so a stall
+never makes a world explode. When the browser freezes <code>requestAnimationFrame</code>
+(the projection window went to the background), a Web Worker heartbeat keeps the
+loop ticking, about every 66 ms (~15 frames per second): the timeline, mapped signals and
+the backstage feed must not stop because someone switched windows.</p>
+<p>Who supplies the frames is a choice, and the page's own is only the default.
+<code>new Loop(fn, { clock, raf })</code> takes the time and the frame requests from you (a
+test's fake timer, a recorder's frame pump), and <code>new Loop(fn, { manual: true })</code>
+schedules nothing: each <code>loop.step(dt)</code> is one frame. <code>createShow({ loop: 'manual' })</code>
+does that for the whole show (<a href="../../docs/show-control/#show-control-driving-the-frames-yourself">Driving the frames yourself</a>).</p>
+<p>Param resolution order (the heart of the design):</p>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">timeline.state(t)          — automation curves per param
+  ⬑ rewritten by  →  director.param()   — a segment module, inside its own segment (with a score)
+  ⬑ overridden by →  params.overrides   — set by hand sliders, mapped signals</code></pre></div>
+<p>An override is <em>sticky</em>: once a knob touched <code>bloom</code>, the timeline no longer moves
+it until the override is cleared (✕ in the console). This matches performance
+reality — when a human grabs a control, the score yields. A route can choose otherwise:
+<code>mode: 'trim'</code> adds the knob to the timeline's value instead of replacing it, and <code>release</code>
+hands the param back when the knob stands still (<a href="../../docs/mapping/#mapping-trim-pickup-and-release">Mapping</a>).</p>
+<h2 id="architecture-l1-input-signals">L1 · Input — Signals<a class="anchor" href="#architecture-l1-input-signals" aria-label="Link to this section">#</a></h2>
+<p><strong>Contract</strong>: input packages publish <em>named, normalized signals</em> into a
+<code>Signals</code> registry, and do nothing else. They never touch params or worlds.</p>
+<ul>
+<li>names are path-like: <code>midi/cc/74</code>, <code>chord/consonance</code>, <code>pose/hand/right/y</code></li>
+<li>continuous signals declare <code>{min, max}</code> and always hold a current value</li>
+<li>pulse signals (<code>kind: 'pulse'</code>) fire events; their payload is the event object</li>
+<li>anyone can subscribe: <code>signals.on(name, cb)</code> or <code>signals.onAny(cb)</code></li>
+</ul>
+<p>Adding a new input modality (breath sensor, gamepad, stock ticker, weather API)
+means writing one class that calls <code>signals.set()</code> / <code>signals.pulse()</code>.
+Nothing downstream changes. That is the whole point.</p>
+<p>The inputs today: <code>@openav/midi</code> (hardware and on-screen controllers), <code>keys</code>,
+<code>drums</code>, <code>audio</code> (microphone), <code>pose</code> (camera body and hands), <code>leap</code> (Leap
+Motion / Ultraleap hands) and phones through <code>remote</code> and <code>surface</code>. Hardware a
+browser cannot open itself reaches it through a small local bridge that speaks
+a web protocol (<code>leap</code> runs one on <code>ws://127.0.0.1:6437</code>); the browser side is
+still one class that publishes signals.</p>
+<p>Analyzers sit between raw sources and mapping: <code>@openav/chord</code> subscribes to
+<code>midi/note/on|off</code> and publishes <code>chord/*</code>. It is still an input as far as the
+mapper is concerned; it just listens to other signals instead of a device.</p>
+<h2 id="architecture-l2-mapping-mapper">L2 · Mapping — Mapper<a class="anchor" href="#architecture-l2-mapping-mapper" aria-label="Link to this section">#</a></h2>
+<p><strong>Contract</strong>: the only component that connects signals to params. Routes are data:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">{ source: <span class="ts">'pose/hand/right/y'</span>, target: <span class="ts">'energy'</span>,
+  inMin: 0, inMax: 1, curve: <span class="ts">'smooth'</span>, invert: <span class="tk">false</span>,
+  smooth: 0.15, outMin: 0, outMax: 1 }</code></pre></div>
+<ul>
+<li><strong>many-to-many</strong>: one signal may drive several params; one param may listen to
+several signals (last writer wins). Learn <em>adds</em>, it never replaces.</li>
+<li><strong>learn</strong> is generalized MIDI-learn: <code>mapper.learn('bloom')</code> binds the next
+signal that <em>moves</em> ≥5% of its range — a knob and a waving hand both qualify.</li>
+<li>routes serialize to JSON → mapping profiles are shareable files.</li>
+</ul>
+<p>Full reference: <a href="../../docs/mapping/">Mapping</a>.</p>
+<h2 id="architecture-l3-world-stage">L3 · World — Stage<a class="anchor" href="#architecture-l3-world-stage" aria-label="Link to this section">#</a></h2>
+<p><strong>Contract</strong>: a World is <code>{ name, params, init, update(dt, state, io), render, dispose }</code>.
+It reads <code>state</code> (resolved param values). It may <em>subscribe to signals for
+discrete events</em> (a note-on spawning a particle is an event, not a parameter),
+but continuous control must flow through params — otherwise your world stops
+being performable by the timeline or by other inputs.</p>
+<p>The Stage owns lifecycle and param aggregation and deliberately does <strong>not</strong> own
+a renderer. p5, three.js, 2D canvas, SVG, DOM — the framework has no opinion.</p>
+<p>Constitutional rule (inherited from The Last Input): <strong>the shell never knows the
+work.</strong> Switching works = swapping World + automation data. The shell stays.</p>
+<p>Full reference: <a href="../../docs/writing-a-world/">Writing a world</a>.</p>
+<h2 id="architecture-l4-output-two-branches-video-and-audio-both-optional">L4 · Output — two branches, video and audio, both optional<a class="anchor" href="#architecture-l4-output-two-branches-video-and-audio-both-optional" aria-label="Link to this section">#</a></h2>
+<p>The output layer splits in two. Both branches hang off the same
+signals → mapping → params spine — sound is performable state, not a side effect.</p>
+<p><strong>Video branch</strong></p>
+<ul>
+<li><strong>screen</strong> is the default output; performance mode (T) gives the performer a
+teleprompter while the audience sees the stage window fullscreen (F).</li>
+<li><strong>recording</strong> (<code>@openav/record</code>): the work and the performer's camera composited
+into one canvas of an exact size (vertical 1080×1920 up to 4K) and recorded with
+the work's own sound by one <code>MediaRecorder</code>, so picture and sound share a clock.
+MIDI takes record the playing itself and replay it into the show.</li>
+<li>future: NDI gateway (see roadmap; groundwork lives in sister project WebToe).</li>
+</ul>
+<p><strong>Audio branch</strong></p>
+<ul>
+<li><strong>MIDI out</strong> (external synths/DAWs): <code>midi.send()/noteOn()/cc()</code> — one throat,
+observable (<code>onSend</code>) so meters can watch everything, with a real <code>panic()</code>.</li>
+<li><strong>In-browser synthesis</strong>: <code>@openav/sound</code> — a small pluggable engine contract
+(<code>params, enable, noteOn, noteOff, set, dispose</code>) with a Tone.js engine first
+(CDN, loaded only on enable) that plays instruments from a registry: a sampled
+grand piano, mallets, strings, organ, synth presets, one file per sound, picked
+from the console. Engine params register as <code>sound/*</code> — a knob, a
+hand, or the timeline plays the filter cutoff exactly the way it plays the
+visuals. The drum kit in <code>@openav/drums</code> is a second engine behind the same
+contract (pure WebAudio, no samples needed).</li>
+<li><strong>OSC</strong>: browser → HTTP → <code>osc-bridge.js</code> → UDP (Spat, Reaper, TD, lights).
+Batched per frame; only the latest message per address survives a frame.</li>
+</ul>
+<h2 id="architecture-spine-timeline">Spine · Timeline<a class="anchor" href="#architecture-spine-timeline" aria-label="Link to this section">#</a></h2>
+<p>Pure logic, no DOM: params + automation keyframes + scenes → <code>state(t)</code>.
+Scenes may start at negative t (pre-show standby). <code>onSceneChange</code> is the cue
+hook — fire sound, lights, prompts from it. A scene with <code>hold: true</code> stops
+playback at its end until the operator releases it.</p>
+<p>A show with structure adds the <strong>score</strong> to this spine (<code>@openav/score</code>): the show
+written as segment <em>lengths</em>, from which <code>Score</code> computes every start, end, cue and
+countdown, and <code>Director</code> runs the module that performs each segment (enter once,
+exit once, a crash switches off only that module). The timeline takes its scenes
+and total from the score, and the director plugs into it as a param layer:</p>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">cut (segment lengths) → Score ─┬─ scenes(), total ──→ Timeline ── state(t) ──→ params
+                               └─ Director ── enter / update / exit ──→ segment modules ──→ the world (through `api`)
+                                    └─ param() ── timeline.layer ──────────────────────→ Timeline</code></pre></div>
+<p>The score only decides <em>when</em>. What happens still reaches the world as params.
+Full reference: <a href="../../docs/score/">Score &amp; Director</a>.</p>
+<p>A timeline can also follow another's clock instead of walking by itself, which is how several pages perform one show: the leader
+runs, the followers chase its <code>T</code> over a BroadcastChannel or the room relay, and every param still resolves as a function of that <code>T</code>
+(<a href="../../docs/show-control/#show-control-several-pages-one-show">Several pages, one show</a>).</p>
+<h2 id="architecture-spine-monitor">Spine · Monitor<a class="anchor" href="#architecture-spine-monitor" aria-label="Link to this section">#</a></h2>
+<p>The performance page streams JSON snapshots (throttled, ~15 Hz) over WebSocket
+to a dependency-free relay (<code>server.js</code>, hand-rolled RFC 6455). Any phone or
+laptop on the LAN opens the backstage page and sees: clock, scene, world, FPS,
+overrides, every signal and param, and a "stage feed lost" alarm. The work can add
+its own health numbers to the feed (<a href="../../docs/show-control/#show-control-the-work-s-own-numbers">Backstage monitor</a>).
+The monitor is a first-class citizen because a show without a backstage is a rehearsal.</p>
+<h2 id="architecture-around-the-spines-console-and-phones">Around the spines: console and phones<a class="anchor" href="#architecture-around-the-spines-console-and-phones" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Console</strong> (<code>@openav/console</code>): the director's desk in the side panel, laid
+out by layer (Layers → L1 → L2 → L3 → L4 → Signals), plus performance mode and
+a curve view of the whole show's automation. It reads the same objects the loop
+runs; it owns nothing.</li>
+<li><strong>Phones</strong> (<code>@openav/relay</code>, <code>@openav/surface</code>, <code>@openav/remote</code>): phones and
+iPads join a room on a WebSocket relay and publish <code>phone/*</code> and <code>surface/*</code>
+signals. To the mapper they are one more input. See
+<a href="../../docs/phones/">Phones, relay &amp; surfaces</a>.</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/concepts/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Core concepts</span></a>
+      <a class="ch-next" rel="next" href="../../docs/writing-a-world/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Writing a world</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

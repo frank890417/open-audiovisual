@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phones, relay &amp; surfaces · open-audiovisual</title>
+<meta name="description" content="Phones and iPads can be controllers: their motion sensors, a piano, and a TouchOSC-style control panel that grows from the world's params.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/phones/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/phones/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/phones/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/phones/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Phones, relay &amp; surfaces · open-audiovisual">
+<meta property="og:description" content="Phones and iPads can be controllers: their motion sensors, a piano, and a TouchOSC-style control panel that grows from the world's params.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/phones/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phones, relay &amp; surfaces · open-audiovisual">
+<meta name="twitter:description" content="Phones and iPads can be controllers: their motion sensors, a piano, and a TouchOSC-style control panel that grows from the world's params.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="phones">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/phones/#article","url":"https://openaudiovisual.com/docs/phones/","name":"Phones, relay & surfaces · open-audiovisual","description":"Phones and iPads can be controllers: their motion sensors, a piano, and a TouchOSC-style control panel that grows from the world's params.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Phones, relay & surfaces","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Set it up","The phone app","iOS and HTTPS","The show side","Surface widgets","Layout JSON","autoSurface","Hand-written layouts","Theme and phone helpers","The relay","The show page on a phone","Security"],"position":15,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/phones/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/phones/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Phones, relay & surfaces","item":"https://openaudiovisual.com/docs/phones/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/phones/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/phones/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch is-here" data-ch="phones">
+          <a href="#phones" aria-current="page"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a>
+          <ol class="toc-secs">
+            <li><a href="#phones-set-it-up">Set it up</a></li>
+            <li><a href="#phones-the-phone-app">The phone app</a></li>
+            <li><a href="#phones-ios-and-https">iOS and HTTPS</a></li>
+            <li><a href="#phones-the-show-side">The show side</a></li>
+            <li><a href="#phones-surface-widgets">Surface widgets</a></li>
+            <li><a href="#phones-layout-json">Layout JSON</a></li>
+            <li><a href="#phones-autosurface">autoSurface</a></li>
+            <li><a href="#phones-hand-written-layouts">Hand-written layouts</a></li>
+            <li><a href="#phones-theme-and-phone-helpers">Theme and phone helpers</a></li>
+            <li><a href="#phones-the-relay">The relay</a></li>
+            <li><a href="#phones-the-show-page-on-a-phone">The show page on a phone</a></li>
+            <li><a href="#phones-security">Security</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="phones" aria-labelledby="phones">
+<h1 id="phones">Phones, relay &amp; surfaces<a class="anchor" href="#phones" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 15 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/remote.md">docs/remote.md</a></span></p>
+<p>Phones and iPads can be controllers: their motion sensors, a piano, and a
+TouchOSC-style control panel that grows from the world's params. Three packages
+do it, each usable alone:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>package</th><th>role</th></tr></thead>
+<tbody>
+<tr><td><code>@openav/relay</code></td><td>a zero-dependency WebSocket relay with rooms, and its browser client</td></tr>
+<tr><td><code>@openav/surface</code></td><td>the control-surface widgets, the layout JSON, <code>autoSurface(params)</code></td></tr>
+<tr><td><code>@openav/remote</code></td><td>the phone app (tabs 感測 sensors · 琴鍵 keys · 控制台 control · MIDI) and the show-side adapter</td></tr>
+</tbody>
+</table></div>
+<p>To the mapper, a phone is one more input: it publishes signals, and routes
+connect them to params.</p>
+<h2 id="phones-set-it-up">Set it up<a class="anchor" href="#phones-set-it-up" aria-label="Link to this section">#</a></h2>
+<ol>
+<li>Run <code>node serve.js</code> on the show machine. It serves the pages <em>and</em> hosts the
+relay at <code>/relay</code>; nothing else is needed.</li>
+<li>Open a show that declares <code>modules: { remote: true }</code>, for example
+<code>http://localhost:8080/examples/08-remote-surface/</code>.</li>
+<li>The join card at the top left of the stage shows the URL a phone should open,
+with the show machine's LAN address filled in (the page asks <code>serve.js</code> for it
+at <code>/__info</code>) and the room: <code>http://&lt;lan-ip&gt;:8080/packages/remote/?room=default</code>.</li>
+<li>Open that URL on a phone on the same network. The card counts connected
+phones.</li>
+</ol>
+<p>The card also draws a <strong>QR code</strong> of that URL: point a phone's camera at it.</p>
+<h3 id="phones-on-openaudiovisual-com-and-any-static-host">On openaudiovisual.com (and any static host)<a class="anchor" href="#phones-on-openaudiovisual-com-and-any-static-host" aria-label="Link to this section">#</a></h3>
+<p>There is no <code>serve.js</code> there, so no relay of its own. A show that declares
+<code>modules: { remote: true }</code> uses the <strong>public relay</strong> (<code>wss://remote.cheyuwu.com/relay</code>)
+instead, and the card says so (<code>public relay</code>). Open
+<a href="../../examples/08-remote-surface/">example 08</a> on the computer, scan the QR code
+with the phone, and the phone's faders move the show.</p>
+<ul>
+<li><strong>The room is random</strong> (<code>show-</code> plus 10 characters), made once and kept in this
+browser's <code>localStorage</code>, so a reload keeps the same room and two visitors never
+share one. A room name declared in the show (<code>room: 'main'</code>) is ignored here for
+that reason; <code>?room=class-7</code> in the page URL always wins, which is how a
+classroom puts everyone in one show.</li>
+<li><code>?relay=wss://your.host/relay</code> uses a relay of your own (the phone link carries
+it along); <code>?relay=off</code> turns the remote off for that page.</li>
+<li>The choice is <code>pickRelay()</code> in <code>@openav/remote/relay-pick</code>: this machine or its
+LAN (<code>localhost</code>, <code>192.168.x.x</code>, <code>*.local</code>…) keeps the same-origin <code>/relay</code> and
+works exactly as before; any other host gets the public relay.</li>
+<li>The public relay has no accounts and no authentication. The room name is the
+only secret, so treat the QR code like one: whoever scans it can drive that show.
+Don't put it on a slide you share.</li>
+</ul>
+<h2 id="phones-the-phone-app">The phone app<a class="anchor" href="#phones-the-phone-app" aria-label="Link to this section">#</a></h2>
+<p><code>/packages/remote/</code> is a single page with a status header (connection, latency,
+room, the phone's id) and tabs:</p>
+<ul>
+<li><strong>感測 (sensors)</strong>: a tilt ball, acceleration and rotation readouts, a
+multi-touch pad, knocks (a sharp jolt of the phone), and light from the front
+camera. iOS needs a tap on 開始 (start) before it gives motion data.</li>
+<li><strong>琴鍵 (keys)</strong>: a piano that is one row of about three octaves in landscape,
+and two stacked rows in portrait (the upper row continues the range). Vertical
+position on a key sets velocity; hold-to-sustain and octave buttons included.</li>
+<li><strong>控制台 (control)</strong>: a control surface. Its layout comes from, in order: the
+<code>?surface=&lt;layout.json url&gt;</code> query, the <code>?meta=&lt;json url&gt;</code> query (its <code>params</code>
+go through <code>autoSurface</code>), whatever the show publishes over the relay, and
+finally a small generic panel so the page is never blank.</li>
+<li><strong>MIDI</strong>: a virtual MIDI controller, the same one the show displays
+(<a href="../../docs/controllers/">MIDI controllers &amp; embedding</a>).</li>
+</ul>
+<div class="table-wrap"><table>
+<thead><tr><th>query</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>room=&lt;name&gt;</code></td><td>the room to join (1–32 characters of <code>A–Z a–z 0–9 _ -</code>; anything else means <code>default</code>)</td></tr>
+<tr><td><code>tab=sense|keys|control|midi</code></td><td>the tab to open first</td></tr>
+<tr><td><code>surface=&lt;url&gt;</code></td><td>a layout JSON for the control tab</td></tr>
+<tr><td><code>meta=&lt;url&gt;</code></td><td>a JSON file with a <code>params</code> array; the control tab becomes <code>autoSurface(params)</code></td></tr>
+<tr><td><code>relay=ws://…</code></td><td>a relay somewhere else than the page's own server (the QR code on the join card carries it when the show uses the public relay)</td></tr>
+</tbody>
+</table></div>
+<p>Each phone keeps a short random id in <code>localStorage</code>; it is the <code>&lt;id&gt;</code> in
+<code>phone/&lt;id&gt;/…</code>.</p>
+<h2 id="phones-ios-and-https">iOS and HTTPS<a class="anchor" href="#phones-ios-and-https" aria-label="Link to this section">#</a></h2>
+<p>iOS Safari only gives motion sensors and the camera to pages served over
+<code>https://</code>. Touch, keys and the control surface work over plain <code>http://</code> on the
+LAN. For tilt and knocks on an iPhone, reach <code>serve.js</code> through an HTTPS tunnel
+and open the tunnel's address on the phone; the relay follows the page's origin
+(<code>wss://</code> on HTTPS pages). Android Chrome behaves the same for the camera.</p>
+<h2 id="phones-the-show-side">The show side<a class="anchor" href="#phones-the-show-side" aria-label="Link to this section">#</a></h2>
+<p><code>modules: { remote: true }</code> in <code>createShow()</code> (or <code>mountRemoteHost()</code> from
+<code>@openav/remote/host</code>) does five things, so the world stays ignorant of phones:</p>
+<ol>
+<li>joins the relay as the room's <strong>runner</strong> (the show);</li>
+<li>files every phone signal into <code>signals</code>, and mirrors <code>phone/&lt;id&gt;/…</code> to
+<code>phone/any/…</code>, which always holds the value from whichever phone sent it last;</li>
+<li>builds the control surface: <code>world.surface</code> if the world ships a layout,
+otherwise <code>autoSurface(world.params)</code>; and publishes it to every phone,
+including phones that join later;</li>
+<li>adds the <code>surface/… → param</code> routes to the mapper (skipping pairs that are
+already there);</li>
+<li>sends param values back to the phones about 10 times a second, so faders
+follow the timeline and other controllers.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead><tr><th><code>modules.remote</code> option</th><th>default</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>room</code></td><td><code>?room=</code> in the page URL, else <code>'default'</code></td><td>the room name</td></tr>
+<tr><td><code>auto</code></td><td><code>{}</code></td><td>options for <code>autoSurface</code> (<code>pairs</code>, <code>meters</code>, <code>style</code>, <code>perPage</code>, <code>smooth</code>, <code>title</code>)</td></tr>
+<tr><td><code>surface</code></td><td><code>world.surface</code></td><td>an explicit layout (wins over the world's)</td></tr>
+<tr><td><code>feedbackHz</code></td><td><code>10</code></td><td>how often param values are echoed</td></tr>
+<tr><td><code>relay</code></td><td>chosen by <code>pickRelay()</code></td><td><code>'wss://host/relay'</code> for a relay of your own, <code>false</code> for no remote. Without it: same-origin <code>/relay</code> on this machine or LAN, the public relay on a static host. <code>?relay=</code> in the page URL overrides it</td></tr>
+<tr><td><code>url</code></td><td>the same</td><td>alias of <code>relay</code> (and the option <code>mountRemoteHost()</code> takes: it appends <code>role</code>, <code>room</code> and <code>id</code>)</td></tr>
+</tbody>
+</table></div>
+<p>Routes for sensors are written at author time with the <code>phone/any/…</code> alias,
+because nobody knows a stranger's device id in advance (example 08):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({
+  world: bloomWorld,
+  routes: [
+    { source: <span class="ts">'phone/any/tilt/x'</span>, target: <span class="ts">'drift'</span>, inMin: -1, inMax: 1, outMin: 0, outMax: 2, smooth: 0.12 },
+    { source: <span class="ts">'phone/any/knock'</span>, target: <span class="ts">'burst'</span> },
+  ],
+  modules: { keys: { base: 48 }, remote: { auto: { pairs: [[<span class="ts">'cx'</span>, <span class="ts">'cy'</span>]], meters: [<span class="ts">'density'</span>] } } },
+});</code></pre></div>
+<p><code>show.remote</code> is the host: <code>{ relay, layout, routes, bindings, room, publish(), frame(dt, state), connect(), dispose() }</code>.</p>
+<h2 id="phones-surface-widgets">Surface widgets<a class="anchor" href="#phones-surface-widgets" aria-label="Link to this section">#</a></h2>
+<p>A surface turns fingers into named, normalized signals. Every widget publishes
+under <code>surface/&lt;page&gt;/&lt;id&gt;</code>; when the widget's range is not 0..1, the unscaled
+value also goes out as <code>…/raw</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>type</th><th>publishes</th><th>notes</th></tr></thead>
+<tbody>
+<tr><td><code>fader</code></td><td><code>&lt;id&gt;</code></td><td><code>orient: v</code>, <code>h</code> or <code>auto</code> (follows the cell's shape) · double-tap resets to <code>def</code></td></tr>
+<tr><td><code>knob</code></td><td><code>&lt;id&gt;</code></td><td>grab the rim to turn, the middle to drag</td></tr>
+<tr><td><code>encoder</code></td><td><code>&lt;id&gt;</code> (phase, wraps) and <code>&lt;id&gt;/delta</code> (turns)</td><td>endless</td></tr>
+<tr><td><code>button</code></td><td><code>&lt;id&gt;</code> 1 / 0</td><td>momentary; a <code>pulse</code> param fires on the rising edge</td></tr>
+<tr><td><code>toggle</code></td><td><code>&lt;id&gt;</code> 1 / 0</td><td></td></tr>
+<tr><td><code>xy</code></td><td><code>&lt;id&gt;/x</code>, <code>&lt;id&gt;/y</code>, <code>&lt;id&gt;/down</code></td><td><code>spring: true</code> returns to the centre</td></tr>
+<tr><td><code>bank</code></td><td><code>&lt;id&gt;/1</code> … <code>&lt;id&gt;/N</code></td><td><code>count</code>, <code>labels</code>; one finger paints across channels</td></tr>
+<tr><td><code>radio</code></td><td><code>&lt;id&gt;</code> = index / (n − 1), <code>raw</code> = index</td><td><code>options: [...]</code></td></tr>
+<tr><td><code>pads</code></td><td><code>&lt;id&gt;/hit</code> pulse <code>{ pad, row, col, vel }</code>, <code>&lt;id&gt;/&lt;n&gt;</code> velocity while held</td><td><code>rows</code>, <code>cols</code> (default 4 × 4), <code>labels</code>; <code>n</code> counts from 0; velocity = where you hit (top soft, bottom hard)</td></tr>
+<tr><td><code>keyboard</code></td><td><code>midi/note/on</code>, <code>midi/note/off</code>, <code>midi/cc/64</code></td><td>the same names a hardware keyboard uses</td></tr>
+<tr><td><code>number</code></td><td><code>&lt;id&gt;</code></td><td>− / + buttons (hold repeats) and a field</td></tr>
+<tr><td><code>text</code></td><td><code>&lt;id&gt;</code>, a string pulse</td><td>Enter or ↵ sends</td></tr>
+<tr><td><code>label</code>, <code>meter</code></td><td>nothing</td><td>display only; fed by <code>surface.feedback(name, value)</code></td></tr>
+</tbody>
+</table></div>
+<p>Common fields: <code>id</code>, <code>type</code>, <code>label</code>, <code>min</code>, <code>max</code>, <code>def</code>, <code>step</code>, <code>unit</code>,
+<code>color</code> (<code>cyan amber magenta lime violet coral white</code>), and <code>target</code> (a param key,
+or an array for <code>xy</code> and <code>bank</code>) for <a href="#phones-hand-written-layouts">hand-written layouts</a>.</p>
+<p>The phone keyboard's notes are <code>{ note, vel, velocity, ch: 1, device: 'surface' }</code>.</p>
+<h2 id="phones-layout-json">Layout JSON<a class="anchor" href="#phones-layout-json" aria-label="Link to this section">#</a></h2>
+<p>A layout is data, like a route: shareable as a file, writable by an agent,
+publishable by a world.</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{ <span class="ts">"version"</span>: 1, <span class="ts">"title"</span>: <span class="ts">"Bloom"</span>,
+  <span class="ts">"pages"</span>: [{
+    <span class="ts">"id"</span>: <span class="ts">"main"</span>, <span class="ts">"title"</span>: <span class="ts">"Main"</span>, <span class="ts">"grid"</span>: { <span class="ts">"cols"</span>: 8, <span class="ts">"rows"</span>: 4 },
+    <span class="ts">"widgets"</span>: [
+      { <span class="ts">"id"</span>: <span class="ts">"hue"</span>,  <span class="ts">"type"</span>: <span class="ts">"knob"</span>,   <span class="ts">"label"</span>: <span class="ts">"Hue"</span>, <span class="ts">"x"</span>: 0, <span class="ts">"y"</span>: 0, <span class="ts">"w"</span>: 2, <span class="ts">"h"</span>: 2, <span class="ts">"min"</span>: 0, <span class="ts">"max"</span>: 360, <span class="ts">"def"</span>: 205, <span class="ts">"color"</span>: <span class="ts">"cyan"</span>, <span class="ts">"target"</span>: <span class="ts">"hue"</span> },
+      { <span class="ts">"id"</span>: <span class="ts">"pos"</span>,  <span class="ts">"type"</span>: <span class="ts">"xy"</span>,     <span class="ts">"x"</span>: 2, <span class="ts">"y"</span>: 0, <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 4, <span class="ts">"target"</span>: [<span class="ts">"cx"</span>, <span class="ts">"cy"</span>] },
+      { <span class="ts">"id"</span>: <span class="ts">"go"</span>,   <span class="ts">"type"</span>: <span class="ts">"button"</span>, <span class="ts">"label"</span>: <span class="ts">"Burst"</span>, <span class="ts">"x"</span>: 6, <span class="ts">"y"</span>: 0, <span class="ts">"w"</span>: 2, <span class="ts">"h"</span>: 1, <span class="ts">"target"</span>: <span class="ts">"burst"</span> }
+    ],
+    <span class="ts">"portrait"</span>: { <span class="ts">"grid"</span>: { <span class="ts">"cols"</span>: 4, <span class="ts">"rows"</span>: 8 }, <span class="ts">"place"</span>: { <span class="ts">"pos"</span>: { <span class="ts">"x"</span>: 0, <span class="ts">"y"</span>: 2, <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 4 } } }
+  }] }</code></pre></div>
+<p>Phones get turned, so a page decides its arrangement like this:</p>
+<ol>
+<li>if the page has a <code>portrait</code> or <code>landscape</code> variant for the current
+orientation, use its grid (widgets missing from its <code>place</code> keep their base
+spot or fill free cells);</li>
+<li>otherwise, if the base grid already has the right shape, use it;</li>
+<li>otherwise <strong>auto-reflow</strong>: the same widgets, repacked row by row into half
+(portrait) or double (landscape) the columns.</li>
+</ol>
+<p>Rows are a count, not pixels, so the grid always fills the screen and nothing
+ever scrolls. Widgets without <code>x</code>/<code>y</code> are packed into free cells with a default
+size per type. <code>validateLayout(layout)</code> returns a list of problems (empty =
+fine); <code>new Surface()</code> throws with that list on a bad layout.</p>
+<h2 id="phones-autosurface">autoSurface<a class="anchor" href="#phones-autosurface" aria-label="Link to this section">#</a></h2>
+<p><code>autoSurface(params, options)</code> turns a world's params into a layout, the routes
+that drive the params, and the bindings for feedback:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { autoSurface, feedbackFor } <span class="tk">from</span> <span class="ts">'@openav/surface'</span>;
+
+<span class="tk">const</span> { layout, routes, bindings } = autoSurface(world.params, { pairs: [[<span class="ts">'cx'</span>, <span class="ts">'cy'</span>]], meters: [<span class="ts">'density'</span>] });
+routes.forEach((r) =&gt; mapper.addRoute(r));   <span class="tc">// surface/main/hue → hue, …</span>
+feedbackFor(state, bindings);                <span class="tc">// [{ name, value }] to echo back to the phone</span></code></pre></div>
+<p>How each param becomes a widget:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>param</th><th>widget</th></tr></thead>
+<tbody>
+<tr><td><code>pulse: true</code></td><td>button</td></tr>
+<tr><td><code>step: 1</code> and a range of 1 (two values)</td><td>toggle</td></tr>
+<tr><td><code>step: 1</code> and three to seven values</td><td>radio (labels from <code>options</code>, else the numbers)</td></tr>
+<tr><td>a pair listed in <code>pairs</code></td><td>one xy pad driving both</td></tr>
+<tr><td>anything else</td><td>a fader when there are six continuous params or fewer, knobs when there are more</td></tr>
+<tr><td><code>surface: { type, color, label }</code> on the param</td><td>whatever it says</td></tr>
+</tbody>
+</table></div>
+<p>Options: <code>pairs</code>, <code>meters</code> (params to also show read-only), <code>style</code> (<code>'auto'</code>,
+<code>'fader'</code>, <code>'knob'</code>), <code>perPage</code> (default 8; a page that scrolls is a page that
+fails), <code>smooth</code> (default 0.04 s on continuous routes, to hide 30 Hz network
+steps), <code>title</code>. Each param <code>group</code> gets its own page.</p>
+<h2 id="phones-hand-written-layouts">Hand-written layouts<a class="anchor" href="#phones-hand-written-layouts" aria-label="Link to this section">#</a></h2>
+<p>Give a widget a <code>target</code> and <code>routesFromLayout(layout, params)</code> writes its route
+(the same shape <code>autoSurface</code> produces): <code>xy</code> maps x to the first target and y to
+the second, <code>bank</code> maps channel <em>i</em> to the <em>i</em>-th target. A world can carry its
+layout as <code>world.surface</code>; the show side then uses it instead of generating one.</p>
+<h2 id="phones-theme-and-phone-helpers">Theme and phone helpers<a class="anchor" href="#phones-theme-and-phone-helpers" aria-label="Link to this section">#</a></h2>
+<p>Every control reads CSS custom properties on <code>:root</code> (<code>THEME_VARS</code>:
+<code>--oav-bg</code>, <code>--oav-surface</code>, <code>--oav-accent</code>, <code>--oav-radius</code>, <code>--oav-touch-min</code>
+(44 px) …). Override them to re-skin the whole surface. The rules: dark,
+≥ 44 px touch targets, the live number always visible, pressed = border and glow
+in the widget's color, <code>navigator.vibrate</code> where it exists.</p>
+<p><code>@openav/surface</code> also exports phone helpers: <code>lockViewport()</code> (no scrolling or
+zooming), <code>keepAwake()</code> (Wake Lock), <code>toggleFullscreen()</code>, <code>canFullscreen()</code>,
+<code>haptic(ms)</code>.</p>
+<h2 id="phones-the-relay">The relay<a class="anchor" href="#phones-the-relay" aria-label="Link to this section">#</a></h2>
+<p>Clients connect to <code>ws://&lt;host&gt;/relay?role=controller|runner|monitor|leader|follower&amp;room=&lt;name&gt;&amp;id=&lt;device&gt;</code>.
+A room is a name; peers in different rooms never hear each other.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>from</th><th>to</th><th>what</th></tr></thead>
+<tbody>
+<tr><td>controller (a phone)</td><td>runner + monitor</td><td><code>signal</code> and <code>batch</code></td></tr>
+<tr><td>runner (the show)</td><td>monitor</td><td><code>signal</code> and <code>batch</code></td></tr>
+<tr><td>runner</td><td>controllers + monitors</td><td><code>feedback</code> (meters, fader echo), <code>config</code> (the surface layout; replayed to phones that join later)</td></tr>
+<tr><td>monitor</td><td>nobody</td><td></td></tr>
+<tr><td>leader (a show page)</td><td>followers</td><td><code>sync</code> (frames, and the state it answers a follower with)</td></tr>
+<tr><td>follower (a show page)</td><td>leaders</td><td><code>sync</code> (hello)</td></tr>
+</tbody>
+</table></div>
+<p>Messages are JSON: <code>{"type":"signal","name":"phone/ab12/tilt/x","value":0.3,"t":…,"pulse"?:true}</code>,
+<code>{"type":"batch","items":[…]}</code>, <code>ping</code>/<code>pong</code>, <code>status</code> (peer counts),
+<code>feedback</code>, <code>config</code>, <code>sync</code>. Clients ignore types they do not know. When the runner
+leaves, the room forgets its config. Messages over 256 KB are ignored, frames
+over 1 MB close the connection, and a phone that stops answering pings (screen
+locked, Wi-Fi gone) is dropped within about 40 s. <code>attachRelay(server, { maxMessageChars, maxBytes })</code>
+raises both limits.</p>
+<p>Show pages use the same rooms to perform one show together: the leader's <code>sync</code> messages
+(<code>{"type":"sync","v":1,"kind":"frame",…}</code>; <code>"to":"&lt;id&gt;"</code> addresses one peer) reach the room's followers
+and a follower's reach its leaders, and nobody else hears them (<a href="../../docs/show-control/#show-control-several-pages-one-show">Several pages, one show</a>).</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { RelayClient, bindSignals } <span class="tk">from</span> <span class="ts">'@openav/relay'</span>;
+
+<span class="tk">const</span> show = <span class="tk">new</span> RelayClient({ role: <span class="ts">'runner'</span>, room: <span class="ts">'main'</span> }).connect();
+bindSignals(show, signals);                        <span class="tc">// phone signals → Signals, + phone/any/… alias</span>
+show.feedback(<span class="ts">'surface/main/level'</span>, 0.4);          <span class="tc">// runner → phones</span>
+show.config(<span class="ts">'surface'</span>, { layout });                <span class="tc">// runner → phones, kept for late joiners</span>
+
+<span class="tk">const</span> phone = <span class="tk">new</span> RelayClient({ role: <span class="ts">'controller'</span>, room: <span class="ts">'main'</span> }).connect();
+phone.<span class="tk">set</span>(<span class="ts">'phone/me/tilt/x'</span>, 0.3);                 <span class="tc">// continuous: batched at 30 Hz, re-sent every second</span>
+phone.send(<span class="ts">'midi/note/on'</span>, { note: 60 }, <span class="tk">true</span>);    <span class="tc">// pulse: immediate, never coalesced</span></code></pre></div>
+<p>Continuous values are re-sent once a second so a phone that joins late, or a
+show page reloaded mid-performance, is never stuck on stale defaults. Pulses are
+never batched or repeated: a note-on delivered twice is a bug. The client
+reconnects by itself (0.5 s, doubling up to 5 s).</p>
+<p><code>fileSignal(signals, name, value, { pulse })</code> is the receiving half of the wire
+format: it declares a name the first time it is heard (<code>signalMeta()</code> knows the
+ranges of <code>phone/…</code>, <code>surface/…</code> and <code>midi/…</code> names), fills in whichever velocity
+spelling a note message lacks (<code>vel</code> 0..1 or <code>velocity</code> 1..127), then pulses or
+sets.</p>
+<p>To run the relay without <code>serve.js</code>: <code>node packages/relay/server.js [port]</code>
+(default 7458, health at <code>/health</code>), or attach it to your own Node server with
+<code>attachRelay(server, { path: '/relay' })</code> from <code>@openav/relay/server</code>.</p>
+<h2 id="phones-the-show-page-on-a-phone">The show page on a phone<a class="anchor" href="#phones-the-show-page-on-a-phone" aria-label="Link to this section">#</a></h2>
+<p>When the show itself runs on a phone, it can read the phone's own motion
+sensors without a relay. <code>localSensors(signals)</code> publishes the same names under
+<code>phone/local/…</code>, mirrored to <code>phone/any/…</code>, so routes written for "the latest
+phone" work either way. Call <code>.start()</code> from a tap (iOS permission rules):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { localSensors } <span class="tk">from</span> <span class="ts">'@openav/remote'</span>;
+
+<span class="tk">const</span> own = localSensors(show.signals);
+button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await</span> own.start(); <span class="tk">if</span> (own.denied) alert(<span class="ts">'motion access denied'</span>); };</code></pre></div>
+<h2 id="phones-security">Security<a class="anchor" href="#phones-security" aria-label="Link to this section">#</a></h2>
+<p>The relay has no authentication. Anyone on the same network who knows the room
+name can join as a controller and move your params. For a show, use a closed
+network or a room name nobody will guess. On the public relay the room is random
+and lives in the QR code; it is a convenience for trying a show, not a lock.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/strudel/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">With Strudel</span></a>
+      <a class="ch-next" rel="next" href="../../docs/signals/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Signals reference</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

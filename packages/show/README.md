@@ -60,4 +60,4 @@ show.timeline.play();
 for (let i = 0; i < 60 * 30; i++) show.loop.step(1 / 60);   // thirty show seconds, the same thirty every time
 ```
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-show) · [createShow](https://openaudiovisual.com/docs/#show-control-createshow)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-show) · [createShow](https://openaudiovisual.com/docs/show-control/#show-control-createshow)

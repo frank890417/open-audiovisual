@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>輸入｜open-audiovisual</title>
+<meta name="description" content="每一種輸入只做一件事：發出訊號。用 createShow() 時，在 modules 裡打開需要的輸入就好。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/inputs/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/inputs/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/inputs/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/inputs/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="輸入｜open-audiovisual">
+<meta property="og:description" content="每一種輸入只做一件事：發出訊號。用 createShow() 時，在 modules 裡打開需要的輸入就好。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/inputs/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="輸入｜open-audiovisual">
+<meta name="twitter:description" content="每一種輸入只做一件事：發出訊號。用 createShow() 時，在 modules 裡打開需要的輸入就好。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="inputs">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/inputs/#article","url":"https://openaudiovisual.com/zh/docs/inputs/","name":"輸入｜open-audiovisual","description":"每一種輸入只做一件事：發出訊號。用 createShow() 時，在 modules 裡打開需要的輸入就好。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"輸入","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["MIDI","螢幕鋼琴、電腦鍵盤與模擬演奏者","鼓機","麥克風","和弦","身體與手","Leap Motion","手機與 iPad","自己做一個輸入"],"position":6,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/inputs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/inputs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"輸入","item":"https://openaudiovisual.com/zh/docs/inputs/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/inputs/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/inputs/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch is-here" data-ch="inputs">
+          <a href="#inputs" aria-current="page"><span class="n">06</span><span class="t">輸入</span></a>
+          <ol class="toc-secs">
+            <li><a href="#inputs-midi">MIDI</a></li>
+            <li><a href="#inputs-on-screen-piano-qwerty-and-the-simulated-performer">螢幕鋼琴、電腦鍵盤與模擬演奏者</a></li>
+            <li><a href="#inputs-drum-machine">鼓機</a></li>
+            <li><a href="#inputs-microphone">麥克風</a></li>
+            <li><a href="#inputs-chords">和弦</a></li>
+            <li><a href="#inputs-body-and-hands">身體與手</a></li>
+            <li><a href="#inputs-leap-motion">Leap Motion</a></li>
+            <li><a href="#inputs-phones-and-ipads">手機與 iPad</a></li>
+            <li><a href="#inputs-your-own-input">自己做一個輸入</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="inputs" aria-labelledby="inputs">
+<h1 id="inputs">輸入<a class="anchor" href="#inputs" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 6 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/inputs.md">docs/zh/inputs.md</a></span></p>
+<p>每一種輸入只做一件事：發出訊號。用 <code>createShow()</code> 時，在 <code>modules</code> 裡打開需要的輸入就好。每一種輸入也都是普通的類別，可以單獨拿出來用。訊號的確切名稱和範圍，查<a href="../../../zh/docs/signals/">訊號一覽</a>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>輸入</th><th>套件</th><th><code>modules</code> 的 key</th><th>預設</th><th>發出的訊號</th></tr></thead>
+<tbody>
+<tr><td>MIDI 硬體</td><td><code>@openav/midi</code></td><td><code>midi</code></td><td>開（設成 <code>false</code> 就關掉）</td><td><code>midi/…</code></td></tr>
+<tr><td>螢幕上的 MIDI 控制器</td><td><code>@openav/midi</code></td><td><code>midi: { controllers }</code></td><td>關</td><td><code>midi/&lt;device&gt;/&lt;control&gt;</code></td></tr>
+<tr><td>螢幕鋼琴、電腦鍵盤、模擬演奏者</td><td><code>@openav/keys</code></td><td><code>keys</code></td><td>開（設成 <code>false</code> 就移除）</td><td><code>midi/note/on</code>、<code>midi/note/off</code></td></tr>
+<tr><td>鼓機</td><td><code>@openav/drums</code></td><td><code>drums</code></td><td>關</td><td><code>drum/…</code>，以及第 10 頻道的 <code>midi/note/on</code></td></tr>
+<tr><td>麥克風</td><td><code>@openav/audio</code></td><td><code>audio</code></td><td>關</td><td><code>audio/…</code></td></tr>
+<tr><td>和弦分析</td><td><code>@openav/chord</code></td><td><code>chord</code></td><td>關</td><td><code>chord/…</code></td></tr>
+<tr><td>身體（鏡頭）</td><td><code>@openav/pose</code></td><td><code>pose</code></td><td>關</td><td><code>pose/…</code></td></tr>
+<tr><td>手（鏡頭）</td><td><code>@openav/pose</code></td><td><code>hands</code></td><td>關</td><td><code>hand/…</code></td></tr>
+<tr><td>手（Leap Motion）</td><td><code>@openav/leap</code></td><td><code>leap</code></td><td>關</td><td><code>leap/…</code></td></tr>
+<tr><td>手機與 iPad</td><td><code>@openav/remote</code></td><td><code>remote</code></td><td>關</td><td><code>phone/…</code>、<code>surface/…</code>、<code>midi/note/…</code></td></tr>
+</tbody>
+</table></div>
+<p>麥克風、鏡頭這類需要權限、或要使用者先點一下才能開的來源，<code>createShow()</code> 會先建好，但要等你在控台的 <strong>L1 · Input</strong>（輸入）面板按下對應的按鈕，才會開始：🎤 mic（麥克風）、🖐 hands（手）、🕺 body（身體）。</p>
+<h2 id="inputs-midi">MIDI<a class="anchor" href="#inputs-midi" aria-label="這一節的連結">#</a></h2>
+<p><code>createShow()</code> 啟動時會建立一個 <code>Midi</code> 引擎並呼叫 <code>enable()</code>，所以頁面一打開，瀏覽器可能就會跳出 MIDI 權限的詢問。演出中可以隨時插拔裝置，<strong>L1 · Input</strong> 面板會列出它們，取消勾選某一台就能把它靜音，不用拔線。</p>
+<p>每收到一則訊息，都會用兩組名稱發出去：</p>
+<ul>
+<li><strong>舊式名稱</strong>（legacy，大多數世界用的就是這組，不分頻道）：<code>midi/note/on</code> 和 <code>midi/note/off</code> 脈衝、<code>midi/cc/&lt;n&gt;</code>（0..1）、<code>midi/bend</code>（−1..1）。</li>
+<li><strong>分頻道</strong>：<code>midi/ch/&lt;ch&gt;/cc/&lt;n&gt;</code>、<code>midi/ch/&lt;ch&gt;/note/&lt;n&gt;</code>（按住時是 0..1 的力度，放開時為 0）、<code>midi/ch/&lt;ch&gt;/bend</code>、<code>midi/ch/&lt;ch&gt;/pressure</code>、<code>midi/ch/&lt;ch&gt;/poly/&lt;n&gt;</code>。</li>
+</ul>
+<p>note-on 帶的內容是 <code>{ note, vel, velocity, ch, device }</code>：<code>vel</code> 是 0..1，<code>velocity</code> 是原始的 1..127，<code>ch</code> 是 1..16，<code>device</code> 是連接埠的 slug。</p>
+<p>接了<strong>兩台以上的裝置</strong>時，每一台還會用自己的 slug 另外發一份，控制項才不會撞名：<code>midi/&lt;slug&gt;/cc/&lt;n&gt;</code>、<code>midi/&lt;slug&gt;/note/on</code>、<code>midi/&lt;slug&gt;/note/off</code>、<code>midi/&lt;slug&gt;/bend</code>。slug 取自連接埠名稱（<code>Arturia MiniLab 3</code> → <code>arturia-minilab-3</code>，同型號的第二台會加上 <code>-2</code>），所以裝置斷線再接回來，路由還在。舊式名稱也照常發出，所以接在 <code>midi/cc/74</code> 上的路由聽得到每一台裝置。</p>
+<p>Clock 訊息直接略過。Program change、transport 和 SysEx 不會發出（框架從不要 SysEx 權限）。</p>
+<p>不透過 <code>createShow()</code>，單獨使用：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Midi } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
+
+<span class="tk">const</span> midi = <span class="tk">new</span> Midi({ signals });     <span class="tc">// options: signals, filterOut = 'IAC', requestAccess</span>
+<span class="tk">await</span> midi.enable();                    <span class="tc">// false if the browser has no Web MIDI or permission was denied</span>
+midi.devices();                         <span class="tc">// [{ slug, name, listening }]</span>
+midi.setListening(<span class="ts">'nanokontrol2'</span>, <span class="tk">false</span>);</code></pre></div>
+<p><code>filterOut</code> 是一個不分大小寫的正規表示式，名稱符合的輸入連接埠一律略過。預設值 <code>'IAC'</code> 把 macOS 的 IAC bus 擋在外面，不然演出透過 IAC 送出 MIDI，又會聽到自己送出的訊息。想從 IAC 接收，請看<a href="../../../zh/docs/troubleshooting/#troubleshooting-a-daw-on-the-iac-bus-is-not-heard">疑難排解</a>。MIDI 輸出寫在<a href="../../../zh/docs/show-control/#show-control-midi-output-and-panic">演出控制</a>。</p>
+<h3 id="inputs-known-controllers-on-screen">螢幕上的已知控制器<a class="anchor" href="#inputs-known-controllers-on-screen" aria-label="這一節的連結">#</a></h3>
+<p><code>modules: { midi: { controllers: { profile: '&lt;profile id&gt;' } } }</code> 會在螢幕上放一張已知控制器的圖。接上那台控制器，畫面就跟著你的手一起動，沒接的話，用滑鼠或手指直接在畫面上彈。它的控制項會發出 <code>midi/&lt;device&gt;/&lt;control&gt;</code> 這類名稱，<code>controllerRoutes()</code> 幫你寫好接到參數的路由。設定檔（profile）、怎麼 learn 不認識的裝置、LED 回饋和嵌入，都在<a href="../../../zh/docs/controllers/">MIDI 控制器與嵌入</a>這一章。支援的裝置列在<a href="../../../zh/controllers/">控制器頁面</a>。</p>
+<h2 id="inputs-on-screen-piano-qwerty-and-the-simulated-performer">螢幕鋼琴、電腦鍵盤與模擬演奏者<a class="anchor" href="#inputs-on-screen-piano-qwerty-and-the-simulated-performer" aria-label="這一節的連結">#</a></h2>
+<p><code>@openav/keys</code> 預設開啟。它會在控台上方放一台鋼琴，附兩個核取方塊：<em>keyboard</em>（電腦鍵盤擷取）和 <em>simulate performance</em>（模擬演奏）。選項（<code>modules.keys</code>）：<code>base</code>（最低音，預設 48）、<code>octaves</code>（預設 2）、<code>sim</code>（是否顯示模擬演奏的核取方塊，預設 <code>true</code>）、<code>capture</code>（是否顯示 keyboard 核取方塊，預設 <code>true</code>）。</p>
+<p>它發出 <code>midi/note/on</code> <code>{ note, vel, ch: 0 }</code> 和 <code>midi/note/off</code> <code>{ note, ch: 0 }</code>。注意跟硬體不同：<code>ch</code> 是 0，而且沒有 <code>velocity</code> 和 <code>device</code> 欄位。只讀 <code>note</code> 和 <code>vel</code> 的世界，兩種都能用。</p>
+<ul>
+<li><strong>電腦鍵盤</strong>（勾選 <em>keyboard</em> 之後）：<code>A W S E D F T G Y H U J K O L P ;</code> 從 <code>base</code> 開始，依序彈出相差半音的 17 個音。<kbd>Z</kbd>／<kbd>X</kbd> 移動一個八度（base 維持在 24 到 84 之間），按住 <kbd>Shift</kbd> 力度加 20。擷取開著的時候，鋼琴會接管所有字母鍵（<code>preventDefault</code>），<kbd>Space</kbd>、方向鍵和數字鍵照常交給控台。</li>
+<li><strong>模擬演奏者</strong>（<code>SimPlayer</code>）在比 <code>base</code> 高一個八度的地方彈五聲音階：大多是級進，偶爾跳進或彈三和弦，中間也會真的停下來。用程式碼控制：<code>show.keys.sim.toggle(true)</code>。</li>
+</ul>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { mountKeys, KeysPiano, SimPlayer, PIANO_KEYMAP } <span class="tk">from</span> <span class="ts">'@openav/keys'</span>;
+
+<span class="tk">const</span> keys = mountKeys(el, { signals, base: 48, octaves: 2 });   <span class="tc">// → { piano, sim, update(dt), dispose() }</span>
+<span class="tc">// call keys.update(dt) every frame (it drives the SimPlayer)</span></code></pre></div>
+<h2 id="inputs-drum-machine">鼓機<a class="anchor" href="#inputs-drum-machine" aria-label="這一節的連結">#</a></h2>
+<p><code>modules: { drums: true }</code> 會加上一台 16 步、四軌（kick、snare、hat、clap）的音序器，附節奏型（<em>four on floor</em>、<em>breakbeat</em>、<em>half time</em>、<em>latin</em>、<em>sparse</em>）、速度滑桿（60–180 BPM，預設 112）、swing，以及模擬真人手感的時間偏移。勾選 <em>drum machine</em>（鼓機）就開始打。它用自己合成的鼓組發聲（不用取樣音色），發出：</p>
+<ul>
+<li><code>drum/kick</code>、<code>drum/snare</code>、<code>drum/hat</code>、<code>drum/clap</code>：脈衝 <code>{ level }</code>。</li>
+<li><code>drum/&lt;lane&gt;/env</code>：每一軌一條 0..1 的波封，大約 0.12 秒衰減完，可以直接映射到參數。</li>
+<li><code>midi/note/on</code> <code>{ note, vel, ch: 10 }</code>，用 General MIDI 的音高（kick 36、snare 38、clap 39、closed hat 42）。</li>
+</ul>
+<p>這些訊號跟麥克風偵測鼓點時發出的長得一樣（<code>audio/kick</code>、<code>audio/kick/env</code>…），所以映射到 kick 的世界分不出真的大鼓和鼓機。範例 06 就把兩者接到同一組參數。選項（<code>modules.drums</code>）：<code>engine</code>（改用另一個聲音引擎）、<code>autoEnableEngine</code>（預設 <code>true</code>：第一下打擊就會啟動鼓組的音訊引擎，不必另外點一下）。</p>
+<h2 id="inputs-microphone">麥克風<a class="anchor" href="#inputs-microphone" aria-label="這一節的連結">#</a></h2>
+<p><code>modules: { audio: true }</code> 會建立一個 <code>AudioAnalyzer</code>，按下 🎤 mic 之後麥克風才會開始收音。（範例 06 寫的是 <code>audio: 'mic'</code>，任何 truthy 的值都可以。）回音消除、降噪和自動增益都是關掉的，分析聽到的就是現場原本的聲音。</p>
+<p>每一影格發出：<code>audio/rms</code>（平滑過的音量）、<code>audio/peak</code>、<code>audio/band/low</code>（20–250 Hz）、<code>audio/band/mid</code>（250 Hz–2 kHz）、<code>audio/band/high</code>（2–8 kHz）、<code>audio/centroid</code>（亮度），以及脈衝 <code>audio/onset</code> <code>{ rms }</code>，每次觸發後有 100 ms 的冷卻時間。鼓點偵測把聲音瞬間的起音（暫態）依頻段拆開：<code>audio/kick</code>（20–120 Hz）、<code>audio/snare</code>（150–800 Hz）、<code>audio/hat</code>（6–14 kHz），每個都是脈衝 <code>{ level }</code>，並附一條對應的 <code>…/env</code> 波封。</p>
+<aside class="callout callout-tip" role="note"><p class="callout-title">提示</p>
+<p>真實環境的數值很少到 1。說話的 RMS 通常落在 0.05–0.2 左右，頻段能量則是很多個 FFT bin 平均出來的。把路由的輸入範圍收窄，例如 <code>{ source: 'audio/rms', target: 'energy', inMax: 0.3 }</code>。</p>
+</aside>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { AudioAnalyzer } <span class="tk">from</span> <span class="ts">'@openav/audio'</span>;
+
+<span class="tk">const</span> audio = <span class="tk">new</span> AudioAnalyzer({ signals, fftSize: 2048, smooth: 0.7 });
+<span class="tk">await</span> audio.enableMic();            <span class="tc">// or audio.enableElement(videoEl), or someNode.connect(audio.input())</span>
+<span class="tc">// every frame: audio.update()      → also returns { rms, peak, low, mid, high, centroid, onset, kick, snare, hat }</span></code></pre></div>
+<h2 id="inputs-chords">和弦<a class="anchor" href="#inputs-chords" aria-label="這一節的連結">#</a></h2>
+<p><code>modules: { chord: true }</code>（或 <code>{ chord: { window: 80 } }</code>）會加上一個 <code>ChordDetector</code>，把每一個 <code>midi/note/on</code> 和 <code>midi/note/off</code> 餵給它。它把 <code>window</code> 毫秒內（預設 80）按下的音歸成一次彈奏，每次彈奏發出：</p>
+<ul>
+<li><code>chord/consonance</code>（−1..1）、<code>chord/count</code>（音的數量）、<code>chord/root</code>（最低的 MIDI 音）。</li>
+<li><code>chord/event</code>，一個帶著完整分析結果的脈衝：</li>
+</ul>
+<div class="table-wrap"><table>
+<thead><tr><th>欄位</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>notes</code>, <code>count</code>, <code>root</code>, <code>vel</code>, <code>pcs</code></td><td>排序後的音、音的數量、最低音、平均力度（0..1）、音級（pitch class）</td></tr>
+<tr><td><code>consonance</code></td><td>兩兩音程權重的平均，−1..1（單音為 1）</td></tr>
+<tr><td><code>isConsonant</code>, <code>isDissonant</code></td><td>有兩個以上的音，而且協和度 &gt; 0.25／&lt; −0.15</td></tr>
+<tr><td><code>isTriad</code></td><td>和弦類型是大三、小三、sus2、sus4、減三或增三和弦</td></tr>
+<tr><td><code>thirdsFraction</code></td><td>相鄰音程中，3 或 4 個半音所占的比例（「真正一層層疊上去的三度」）</td></tr>
+<tr><td><code>dissonanceLevel</code></td><td>0 無 · 1 輕微（暴風雨的預兆）· 2 嚴重（真正的音堆）</td></tr>
+<tr><td><code>chordType</code></td><td><code>single</code>、<code>major</code>、<code>minor</code>、<code>sus2</code>、<code>sus4</code>、<code>dim</code>、<code>aug</code>、<code>maj7</code>、<code>min7</code>、<code>dom7</code>、<code>halfdim7</code>、<code>maj9</code>、<code>min9</code>、<code>dom9</code>、<code>six</code>、<code>min6</code>、<code>cluster</code> 或 <code>chord</code></td></tr>
+</tbody>
+</table></div>
+<p>它是替演出設計的語意層，原本是為一件作品做的：協和讓花園開花，音堆讓花園凋零（範例 02）。完整的樂理分析不在它的範圍內。<code>detector.analyze(notes, vels)</code> 是純函式，你也可以自己呼叫。</p>
+<h2 id="inputs-body-and-hands">身體與手<a class="anchor" href="#inputs-body-and-hands" aria-label="這一節的連結">#</a></h2>
+<p><code>modules: { pose: true }</code> 加上一個 <code>PoseTracker</code>（一個身體），<code>modules: { hands: true }</code> 加上一個 <code>HandTracker</code>（兩隻手，每隻 21 個點，各有一個手勢）。按下 🕺 body 或 🖐 hands，鏡頭才會開始。兩者都用 MediaPipe Tasks Vision（1.2.3），第一次啟用時從 jsDelivr 載入，模型從 Google 的儲存空間下載。推論在你的電腦上跑，影像不會離開這台機器。畫面預設左右鏡像（<code>mirror: true</code>），你舉右手，畫面右邊的手跟著動。y 軸是反過來的，1 代表<em>舉高</em>。</p>
+<ul>
+<li><strong>身體</strong>：<code>pose/present</code>、<code>pose/hand/left/x|y</code>、<code>pose/hand/right/x|y</code>（手腕）、<code>pose/hand/left/v</code>、<code>pose/hand/right/v</code>（手腕速度）、<code>pose/hands/spread</code>、<code>pose/height</code>（鼻子高度：蹲下 ↔ 站起）、<code>pose/lean</code>（−1..1）。</li>
+<li><strong>手</strong>，每一側：<code>hand/&lt;side&gt;/present</code>、<code>hand/&lt;side&gt;/x|y</code>（手掌）、<code>hand/&lt;side&gt;/tip/x|y</code>（食指指尖）、<code>hand/&lt;side&gt;/thumb/index|middle|ring|pinky</code>（拇指指尖到各指尖，0 = 碰在一起，1 = 張到最開）、<code>hand/&lt;side&gt;/openness</code>（0 = 握拳，1 = 手指全開）、<code>hand/&lt;side&gt;/angle</code>（0.5 = 手指朝上，0.75 = 指向右邊）、<code>hand/&lt;side&gt;/speed</code>。最早的幾個量 <code>hand/&lt;side&gt;/pinch/index|middle</code> 和 <code>hand/&lt;side&gt;/spread</code> 維持原樣（張開的手在它們上面大約是 0.5，範例 03 用的就是它們）。</li>
+<li><strong>捏一下，當成事件</strong>：<code>hand/&lt;side&gt;/pinch-start</code> 和 <code>pinch-end</code>（脈衝，帶著指尖的 x、y），以及 <code>hand/&lt;side&gt;/pinched</code>（0/1）。拇指和食指要靠到 0.35 個手的大小以內，<em>而且其他三指張開</em>，所以握拳不會被當成捏。超過 0.56 就放開。</li>
+<li><strong>手勢</strong>：MediaPipe 的七種，<code>hand/&lt;side&gt;/gesture/fist|open|point|thumb-up|thumb-down|victory|iloveyou</code>（0/1，各有一個 <code>…-start</code> 脈衝），還有 <code>hand/&lt;side&gt;/gesture</code>（0 沒有，1 到 7 照上面的順序）。分數超過 0.5 開始，低於 0.35 結束。</li>
+<li><strong>兩隻手</strong>：<code>hand/both/present</code>、<code>hand/both/distance</code>（手掌到手掌）、<code>hand/both/x|y</code>（中點）、<code>hand/both/angle</code>（0.5 = 水平）。</li>
+</ul>
+<p>距離都除以手的大小，而且 x 乘上畫面的長寬比，所以手往鏡頭靠近、手轉向側面，捏合的值都不會變。捏緊時數值接近 0：如果希望越捏越大，在路由上設 <code>invert: true</code>（範例 03）。脈衝可以經過路由觸發一個脈衝參數，<code>{ source: 'hand/right/gesture/victory-start', target: 'turn' }</code>，所以一個手勢可以像打擊墊一樣切場景（範例 27）。</p>
+<p>這些門檻是在桌前用一個人的手調出來的，用的是同一套算法的 TouchDesigner 模組。在那裡 MediaPipe 的手勢分數只到 0.5 到 0.82，所以手勢從 0.5 開始算，而不是很多示範用的 0.7 到 0.8。換了鏡頭、距離或場地，就打開範例 27 看數字，再重新調：<code>createShow({ modules: { hands: { thresholds: { gestureOn: 0.6, pinchOn: 0.3 } } } })</code>，或在演出中直接改 <code>show.hands.thresholds.gestureOn = 0.6</code>（馬上生效）。<code>hands.features</code> 裡有沒換算過的值（<code>thumbRaw</code>、<code>opennessRaw</code>、手勢的分數）可以拿來調。<code>gestures: false</code> 只跑手部關鍵點，不分手勢。</p>
+<p>兩種追蹤器都能把骨架畫在 2D context 上：<code>tracker.skeleton(ctx, w, h)</code>。<code>hands.overlay(ctx, w, h, { video: true })</code> 把手部追蹤器量到的東西畫出來，調門檻或給觀眾看都可以：鏡頭畫面、骨架、拇指到食指的線和數值（捏住時變綠）、手的角度、手勢和分數，還有兩個手掌之間的線和距離。<code>hands.feed(result)</code> 讓任何來源的手（錄下來的關鍵點、別的偵測器、範例 27 編出來的那雙手）走同一套計算和訊號。</p>
+<h2 id="inputs-leap-motion">Leap Motion<a class="anchor" href="#inputs-leap-motion" aria-label="這一節的連結">#</a></h2>
+<p><code>modules: { leap: true }</code> 加上一個 <code>LeapInput</code>。瀏覽器讀不到感測器，所以每台電腦跑一支小橋接程式：<code>node packages/leap/bridge/leap-bridge.mjs</code>（要先裝 Ultraleap Hand Tracking；加 <code>--mock</code> 不接感測器也有兩隻會動的假手；macOS 上 <code>bash packages/leap/bridge/install.sh</code> 讓它開機就在跑）。它只在本機迴路上提供 <code>ws://127.0.0.1:6437</code>。控台的 <strong>L1 · Input</strong> 面板會說哪一段沒接上（橋接、追蹤服務、裝置），並畫出看到的手；面板上的 <em>simulate</em> 按鈕把滑鼠變成手。</p>
+<p>訊號：每一側各有 <code>leap/hand/&lt;side&gt;/present</code>、<code>x|y|z</code>（手掌在互動空間裡的位置，0..1，y 往上、z 朝向你）、<code>pinch</code>、<code>grab</code>、<code>roll|pitch|yaw</code>（弧度）、<code>speed</code>，指尖 <code>leap/hand/&lt;side&gt;/&lt;finger&gt;/x|y|z</code>；另有 <code>leap/hands</code>、<code>leap/both/distance</code>、<code>leap/status</code>；脈衝 <code>pinch-start|pinch-end</code>、<code>grab-start|grab-end</code>（每一側）與 <code>leap/both/pinch-start|pinch-end</code>，都有遲滯（捏超過 0.86 才開始、低於 0.5 才結束）。要畫手的關節，讀 <code>leap.hands</code>。同一支橋接在 <code>/v6.json</code> 回應舊的 <code>leap.js</code> 作品，在 <code>/raw</code> 送原始的手部資料（見範例 12 與套件 README）。</p>
+<h2 id="inputs-phones-and-ipads">手機與 iPad<a class="anchor" href="#inputs-phones-and-ipads" aria-label="這一節的連結">#</a></h2>
+<p><code>modules: { remote: true }</code> 讓手機透過 <code>serve.js</code> 架起的中繼加入演出。手機的感測器發出 <code>phone/&lt;id&gt;/…</code>（傾斜、加速度、旋轉、敲擊、觸控、光線），同時複製一份到 <code>phone/any/…</code>。控制面板發出 <code>surface/&lt;page&gt;/&lt;widget&gt;</code>，手機上的琴鍵像一般鍵盤一樣發出 <code>midi/note/on|off</code>。演出頁面如果是在手機上打開，也能用 <code>localSensors()</code> 讀這支手機自己的動作感測器。完整說明在<a href="../../../zh/docs/phones/">手機、中繼與控制面板</a>。</p>
+<h2 id="inputs-your-own-input">自己做一個輸入<a class="anchor" href="#inputs-your-own-input" aria-label="這一節的連結">#</a></h2>
+<p>任何呼叫 <code>signals.set()</code> 或 <code>signals.pulse()</code> 的東西，都是輸入。下面把滑鼠／觸控指標當成樂器：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> { signals } = show;
+signals.define(<span class="ts">'pointer/x'</span>, { source: <span class="ts">'pointer'</span> });     <span class="tc">// continuous, 0..1 by default</span>
+signals.define(<span class="ts">'pointer/y'</span>, { source: <span class="ts">'pointer'</span> });
+signals.define(<span class="ts">'pointer/tap'</span>, { kind: <span class="ts">'pulse'</span>, source: <span class="ts">'pointer'</span> });
+
+addEventListener(<span class="ts">'pointermove'</span>, (e) =&gt; {
+  signals.<span class="tk">set</span>(<span class="ts">'pointer/x'</span>, e.clientX / innerWidth);
+  signals.<span class="tk">set</span>(<span class="ts">'pointer/y'</span>, 1 - e.clientY / innerHeight);  <span class="tc">// 1 = top, like every other y</span>
+});
+addEventListener(<span class="ts">'pointerdown'</span>, (e) =&gt; signals.pulse(<span class="ts">'pointer/tap'</span>, { x: e.clientX, y: e.clientY }));
+
+show.mapper.addRoute({ source: <span class="ts">'pointer/x'</span>, target: <span class="ts">'hue'</span>, smooth: 0.25 });</code></pre></div>
+<p>命名時把來源放在最前面（<code>breath/pressure</code>、<code>weather/wind</code>），宣告它的範圍，下游的一切（儀表、<em>learn</em>、路由、手機控制面板）都不用改就能用。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/writing-a-world/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">寫一個世界</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/mapping/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">映射</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

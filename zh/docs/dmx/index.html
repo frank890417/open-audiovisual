@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DMX 燈光｜open-audiovisual</title>
+<meta name="description" content="DMX512 是告訴舞台燈要做什麼的方法：一條線傳一個 universe，裡面有 512 個通道，每個通道是 0 到 255 的數字，每秒送大約 40 次。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/dmx/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/dmx/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/dmx/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/dmx/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="DMX 燈光｜open-audiovisual">
+<meta property="og:description" content="DMX512 是告訴舞台燈要做什麼的方法：一條線傳一個 universe，裡面有 512 個通道，每個通道是 0 到 255 的數字，每秒送大約 40 次。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/dmx/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DMX 燈光｜open-audiovisual">
+<meta name="twitter:description" content="DMX512 是告訴舞台燈要做什麼的方法：一條線傳一個 universe，裡面有 512 個通道，每個通道是 0 到 255 的數字，每秒送大約 40 次。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="dmx">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/dmx/#article","url":"https://openaudiovisual.com/zh/docs/dmx/","name":"DMX 燈光｜open-audiovisual","description":"DMX512 是告訴舞台燈要做什麼的方法：一條線傳一個 universe，裡面有 512 個通道，每個通道是 0 到 255 的數字，每秒送大約 40 次。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"DMX 燈光","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["離開電腦的三條路","燈具和 patch","scene、cue、chase 和 effect","每一格的位元組送去哪裡","用聲音和控制器推燈","安全","沒有硬體時怎麼看","在 TouchDesigner 裡確認","還沒有用真的硬體測過"],"position":10,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/dmx/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/dmx/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"DMX 燈光","item":"https://openaudiovisual.com/zh/docs/dmx/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/dmx/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/dmx/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch is-here" data-ch="dmx">
+          <a href="#dmx" aria-current="page"><span class="n">10</span><span class="t">DMX 燈光</span></a>
+          <ol class="toc-secs">
+            <li><a href="#dmx-three-ways-out-of-the-computer">離開電腦的三條路</a></li>
+            <li><a href="#dmx-fixtures-and-the-patch">燈具和 patch</a></li>
+            <li><a href="#dmx-scenes-cues-chases-and-effects">scene、cue、chase 和 effect</a></li>
+            <li><a href="#dmx-where-the-bytes-go-each-frame">每一格的位元組送去哪裡</a></li>
+            <li><a href="#dmx-driving-the-lights-from-sound-and-from-a-controller">用聲音和控制器推燈</a></li>
+            <li><a href="#dmx-safety">安全</a></li>
+            <li><a href="#dmx-watch-it-without-hardware">沒有硬體時怎麼看</a></li>
+            <li><a href="#dmx-check-it-in-touchdesigner">在 TouchDesigner 裡確認</a></li>
+            <li><a href="#dmx-not-yet-tested-on-real-hardware">還沒有用真的硬體測過</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="dmx" aria-labelledby="dmx">
+<h1 id="dmx">DMX 燈光<a class="anchor" href="#dmx" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 10 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/dmx.md">docs/zh/dmx.md</a></span></p>
+<p>DMX512 是告訴舞台燈要做什麼的方法：一條線傳一個 <strong>universe</strong>，裡面有 512 個通道，每個通道是 0 到 255 的數字，每秒送大約 40 次。一台燈從它的<strong>位址</strong>開始聽幾個通道（一台 par 可能從位址 1 到 6 依序讀 dimmer、紅、綠、藍、白、strobe），每個通道代表什麼寫在它的說明書裡，也就是它的 <strong>profile</strong>。網路可以一次傳很多個 universe（Art-Net、sACN），USB 介面則把電腦的數字變成線上的訊號。</p>
+<p><code>@openav/dmx</code> 把一套燈光放進作品裡：燈具 profile、patch、一個在任何時刻都算得出每台燈樣子的引擎（scene、cue、chase、effect），以及三種把位元組送出去的方法。沒有燈、沒有介面也能跑：頁面上的監看器會顯示燈收到什麼。<a href="../../../examples/28-dmx-lights/">範例 28</a> 把這一切放在同一頁。</p>
+<aside class="callout callout-warning" role="note"><p class="callout-title">注意</p>
+<p>這裡的東西還沒有用真的燈具、節點或介面試過。位元組照 Art-Net 4、ANSI E1.31 和 Enttec DMX USB Pro API 公開的格式寫，測試也在這台機器上把每個封包解回來，但還沒有任何一台燈為本專案收過它們。演出前，用<a href="#dmx-check-it-in-touchdesigner">在 TouchDesigner 裡確認</a>那一節和燈本身檢查你的燈光，手隨時放在 blackout 上。</p>
+</aside>
+<h2 id="dmx-three-ways-out-of-the-computer">離開電腦的三條路<a class="anchor" href="#dmx-three-ways-out-of-the-computer" aria-label="這一節的連結">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>路</th><th>從哪裡</th><th>需要什麼</th><th>適合</th></tr></thead>
+<tbody>
+<tr><td><strong>輸出橋接程式＋Art-Net</strong></td><td>頁面 → <code>ws://127.0.0.1:6450/out</code> → UDP 6454</td><td><code>node packages/out/bridge/out-bridge.mjs --config out.json</code>，一台 Art-Net 節點</td><td>場館、大部分網路節點、很多個 universe</td></tr>
+<tr><td><strong>輸出橋接程式＋sACN</strong></td><td>頁面 → 橋接程式 → UDP 5568（多播或單播）</td><td>同一支橋接程式，一個 sACN（E1.31）接收端</td><td>燈光控台和比較新的節點，好幾個來源之間有優先權</td></tr>
+<tr><td><strong>Web Serial＋Enttec DMX USB Pro</strong></td><td>頁面 → USB，不用橋接程式</td><td>電腦上的 Chrome 或 Edge，一台 DMX USB Pro 或講它協定的介面</td><td>一台介面、一個 universe、教室</td></tr>
+</tbody>
+</table></div>
+<p>瀏覽器不能送 UDP，所以網路協定要從<strong>輸出橋接程式</strong>出去，就是驅動 WLED 燈條和馬達板的那支本機程式（<a href="../../../zh/docs/packages/"><code>@openav/out</code></a>）。頁面替每個 DMX 位址送一個值，頻道名稱是 <code>dmx/&lt;universe&gt;/&lt;address&gt;</code>，橋接程式的 <code>artnet</code>、<code>sacn</code> 或 <code>enttec</code> 輸出替每個 universe 留一個 512 位元組的緩衝區，有變化時固定每秒送 40 格，沒變時每秒補送一次（節點大約 2.5 秒沒聽到東西，就會判定來源不見了）。</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-json">{ <span class="ts">"channels"</span>: [
+  { <span class="ts">"match"</span>: <span class="ts">"dmx/1/*"</span>, <span class="ts">"sink"</span>: <span class="ts">"artnet"</span>, <span class="ts">"host"</span>: <span class="ts">"2.0.0.10"</span> },
+  { <span class="ts">"match"</span>: <span class="ts">"dmx/2/*"</span>, <span class="ts">"sink"</span>: <span class="ts">"sacn"</span>, <span class="ts">"priority"</span>: 100, <span class="ts">"source"</span>: <span class="ts">"my show"</span> },
+  { <span class="ts">"match"</span>: <span class="ts">"dmx/3/*"</span>, <span class="ts">"sink"</span>: <span class="ts">"enttec"</span>, <span class="ts">"path"</span>: <span class="ts">"/dev/cu.usbserial-EN000000"</span>, <span class="ts">"universe"</span>: 3 }
+], <span class="ts">"safe"</span>: { <span class="ts">"dmx/1/49"</span>: <span class="ts">"hold"</span>, <span class="ts">"dmx/1/51"</span>: <span class="ts">"hold"</span>, <span class="ts">"dmx/*"</span>: 0 }, <span class="ts">"timeoutMs"</span>: 500 }</code></pre></div>
+<ul>
+<li><strong>Art-Net</strong> 送到節點的位址（<code>host</code>，也可以是一串位址）。Art-Net 4 規定 ArtDmx 不廣播：每個 universe 每秒 40 個封包會送到網路上每一台裝置，慢的節點和 Wi-Fi 會被塞爆。<code>"broadcast": true</code> 是留給只聽廣播的舊節點，而且那個網路上沒有別的東西。</li>
+<li><strong>sACN</strong> 送到每個 universe 的多播群組 <code>239.255.&lt;高位元組&gt;.&lt;低位元組&gt;</code>（接收端自己加入想要的群組），給了 <code>host</code> 就改成單播。<code>priority</code> 是 0–200（預設 100，接收端採用聽到的最高值），<code>source</code> 是控台上顯示的名字，<code>interface</code> 選多播從哪張網卡出去。正常關閉時，送完安全值之後會再送三個「stream terminated」封包。</li>
+<li><strong>Enttec</strong> 把一個 <code>universe</code> 寫到序列埠上的 DMX USB Pro。找不到裝置只是一個狀態，每 2 秒重試，絕不會讓程式當掉。</li>
+<li><strong>Web Serial</strong> 不需要橋接程式：<code>dmxTransport('serial')</code> 加一個 <strong>Connect</strong> 按鈕（瀏覽器會問要用哪個連接埠，只能在點擊時問）。只有電腦上的 Chrome 和 Edge，網址要是 https 或 localhost。</li>
+<li>這裡沒有：Enttec Open DMX 或任何沒有處理器的 FTDI 線（電腦得自己掌握 DMX break 的時序，網頁做不到穩定），RDM、Art-Net 的節點探索（ArtPoll）、ArtSync。</li>
+</ul>
+<h3 id="dmx-which-universe-is-which">哪個 universe 是哪個<a class="anchor" href="#dmx-which-universe-is-which" aria-label="這一節的連結">#</a></h3>
+<p>「universe 1」就是你 patch 時用的號碼，也是頻道名稱裡的號碼 <code>dmx/1/…</code>。它送出去是 <strong>Art-Net 的 Port-Address 1</strong>（Net 0、Sub-Net 0、Universe 1），也是 <strong>sACN 的 universe 1</strong>。<code>dmx/N/…</code> 是 Port-Address N（最大 32767，Net、Sub-Net、Universe 合成一個 15 位元的數字），也是 sACN 的 universe N（最大 63999）。</p>
+<p>有些軟體把第一個 universe 叫做「1」，送出去卻是 Art-Net 的 Port-Address 0，而 Art-Net 4 已經不建議用 0。節點如果設成 0，就把頁面 patch 在 universe 0（<code>dmx/0/…</code> 走 Art-Net 送得到，sACN 沒有 universe 0），比較好的做法是把節點改成 1。<code>encodeArtDmx()</code> 吃的就是 Port-Address 本身，預設是 1。</p>
+<h2 id="dmx-fixtures-and-the-patch">燈具和 patch<a class="anchor" href="#dmx-fixtures-and-the-patch" aria-label="這一節的連結">#</a></h2>
+<p><strong>profile</strong> 說明一台燈有哪些通道，以及每個模式送出它們的順序。通用的 profile 跟套件一起提供（<code>FIXTURES</code>：調光器、RGB、RGBW、RGBA、RGBAW+UV 的 par、頻閃燈、8 通道和 16 通道的搖頭燈），真正的燈具 profile 是一個 JSON 檔，複製一份，照它的說明書改。它們都沒有標成已驗證，因為只有燈就在眼前的人，才能說一份 profile 是對的。</p>
+<p>四十二台真實的燈具來自 <a href="https://open-fixture-library.org/" rel="noopener">Open Fixture Library</a>（MIT），轉換過來，不放在 <code>FIXTURES</code> 裡（用 <code>@openav/dmx/fixtures/imported.js</code> 的 <code>loadImportedFixture(id)</code>，或 <a href="../../../zh/docs/devices/"><code>@openav/devices</code></a> 的 <code>device(id)</code>，載入你要的那一台）。每一台燈具，不論通用還是匯入的，都在 <code>/fixtures/&lt;id&gt;/</code> 有一頁，列出各模式的通道表、能試推的虛擬燈具和 patch 它的程式碼：<a href="../../../zh/devices/#kind-dmx-fixture">設備大集合裡的 DMX 燈具</a>，例如 <a href="../../../zh/fixtures/chauvet-dj-slimpar-t12-bt/">Chauvet DJ SlimPAR T12 BT</a>。</p>
+<p><strong>patch</strong> 把燈具放到 universe 和位址上，可以分組、設上下限：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { Patch } <span class="tk">from</span> <span class="ts">'@openav/dmx'</span>;
+
+<span class="tk">const</span> patch = <span class="tk">new</span> Patch();
+<span class="tk">for</span> (<span class="tk">let</span> i = 0; i &lt; 8; i++) patch.add({ id: <span class="ts">`par${i + 1}`</span>, profile: <span class="ts">'generic-rgbw'</span>, mode: <span class="ts">'6ch'</span>, address: 1 + i * 6, groups: [<span class="ts">'pars'</span>] });
+patch.add({ id: <span class="ts">'head1'</span>, profile: <span class="ts">'generic-moving-head'</span>, mode: <span class="ts">'16ch'</span>, address: 49, groups: [<span class="ts">'heads'</span>], limits: { tilt: [0.1, 0.9] } });
+patch.check();   <span class="tc">// fixtures that share addresses, if any</span></code></pre></div>
+<p>作品從來不寫通道號碼。它要的是屬性，每個 0..1：<code>dimmer</code>、<code>color: [r, g, b]</code>、<code>pan</code>、<code>tilt</code>、<code>strobe</code>、<code>zoom</code>。patch 把它們換成每台燈的位元組：顏色拆成這台燈實際有的發光元件（RGBW par 先用白光），模式有 fine 通道的 pan 和 tilt 寫成兩個位元組，沒有調光通道的燈，dimmer 會乘進顏色裡。</p>
+<h2 id="dmx-scenes-cues-chases-and-effects">scene、cue、chase 和 effect<a class="anchor" href="#dmx-scenes-cues-chases-and-effects" aria-label="這一節的連結">#</a></h2>
+<p><code>DmxEngine</code> 把每台燈在任何時刻的樣子算出來，結果只取決於時間：同一個 <code>t</code> 永遠得到同樣的位元組，所以沒有燈也能檢查畫面，錄影也能一格一格算。由下往上的圖層：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>圖層</th><th>呼叫</th><th>是什麼</th></tr></thead>
+<tbody>
+<tr><td>基礎</td><td><code>scene(name, { target: props })</code>、<code>base(...names)</code></td><td>一直開著的畫面</td></tr>
+<tr><td>cue</td><td><code>cue(name, { scene, fadeIn, fadeOut, curve })</code>、<code>go(name, at)</code>、<code>release(at)</code></td><td>帶淡入淡出切到一個 scene，跟燈光控台一樣</td></tr>
+<tr><td>chase</td><td><code>chase(name, { steps, every, unit, fade })</code>、<code>run(name, on)</code></td><td>每隔幾拍或幾秒輪到下一個 scene</td></tr>
+<tr><td>effect</td><td><code>effect(name, { target, property, wave, rate, depth, spread })</code>、<code>tune(name, { rate, depth }, at)</code></td><td>對一群燈做 sine、saw、square、chase、flicker 或 rainbow，每台比前一台晚一點</td></tr>
+<tr><td>即時值</td><td><code>set(target, props)</code></td><td>推桿、麥克風：蓋在所有東西上面</td></tr>
+<tr><td>群組推桿</td><td><code>submaster(target, level)</code></td><td>管一個群組的推桿：把每一層算出的 dimmer 等比例調暗</td></tr>
+<tr><td>最後</td><td><code>engine.master</code>、<code>engine.blackout</code>、patch 的上下限</td><td>總控、blackout、每台燈的上下限</td></tr>
+</tbody>
+</table></div>
+<p>目標可以是燈的 id、群組、<code>'*'</code>，或這些的清單。<code>tune()</code> 改變正在跑的 effect 的速度而不會跳：波形從它現在的位置接著走，只是變快或變慢。（重新定義 effect 會讓相位重來，在已經跑了 100 秒的波形上轉旋鈕，會一下子閃過好幾個週期。）</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> engine = <span class="tk">new</span> DmxEngine(patch);
+engine.scene(<span class="ts">'on'</span>, { pars: { dimmer: 1 }, heads: { dimmer: 1, tilt: 0.4 } }).base(<span class="ts">'on'</span>);
+engine.effect(<span class="ts">'breathe'</span>, { target: <span class="ts">'pars'</span>, wave: <span class="ts">'sine'</span>, rate: 0.2, depth: 0.35, spread: 1 });
+engine.effect(<span class="ts">'sweep'</span>, { target: <span class="ts">'heads'</span>, property: <span class="ts">'pan'</span>, rate: 0.12, depth: 0.5 });
+<span class="tk">const</span> universes = engine.render(t);      <span class="tc">// every light at t seconds</span></code></pre></div>
+<h2 id="dmx-where-the-bytes-go-each-frame">每一格的位元組送去哪裡<a class="anchor" href="#dmx-where-the-bytes-go-each-frame" aria-label="這一節的連結">#</a></h2>
+<p><code>dmxTransport()</code> 每一格接過 <code>render()</code> 的結果，只送有變的部分：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { dmxTransport } <span class="tk">from</span> <span class="ts">'@openav/dmx'</span>;
+<span class="tk">import</span> { OutClient } <span class="tk">from</span> <span class="ts">'@openav/out'</span>;
+
+<span class="tk">const</span> out = dmxTransport(<span class="ts">'sim'</span>, { patch });                                       <span class="tc">// memory only: out.bytes(1)</span>
+<span class="tc">// const out = dmxTransport('bridge', { patch, client: new OutClient({ id: 'my-show' }).connect() });   // the out-bridge</span>
+<span class="tc">// const out = dmxTransport('serial', { patch, universe: 1 });  button.onclick = () =&gt; out.connect();  // an Enttec Pro</span>
+out.send(engine.render(t));</code></pre></div>
+<p>每一種傳送端在送出任何東西之前，都先讓這一格經過頻閃保護（見<a href="#dmx-safety">安全</a>），給它 <code>{ patch }</code>，它才讀得到每台燈實際的亮度。bridge 傳送端對每個有變的通道呼叫一次 <code>client.set('dmx/&lt;universe&gt;/&lt;address&gt;', byte / 255)</code>。serial 傳送端在它的 universe 有任何變化時寫出一整個 Enttec 資料框（全部 512 個通道），最多每 25 毫秒一格，沒變時每秒一次。</p>
+<p>在<a href="../../../zh/docs/lab-integration/">實驗室</a>的作品裡，<code>"modules": ["out", "dmx"]</code> 會給你 <code>lab.dmx</code>：從 <code>meta.dmx.patch</code> 建好的 patch、它的引擎、開著頻閃保護的傳送端（<code>?dmx=bridge</code> 經過 <code>lab.out</code>，<code>?dmx=serial</code> 送到 Enttec Pro）、算燈並送出的 <code>lab.dmx.frame(t)</code>、<code>lab.dmx.monitor(el)</code> 和 <code>lab.dmx.params(options)</code>。</p>
+<h2 id="dmx-driving-the-lights-from-sound-and-from-a-controller">用聲音和控制器推燈<a class="anchor" href="#dmx-driving-the-lights-from-sound-and-from-a-controller" aria-label="這一節的連結">#</a></h2>
+<p>引擎自己從來不讀訊號（框架的第一條規則：連續的控制走參數）。<code>dmxParams()</code> 把它的控制點變成參數，從此燈就跟任何世界一樣被演奏：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> rig = dmxParams(engine, { groups: [<span class="ts">'pars'</span>, <span class="ts">'heads'</span>], effects: [<span class="ts">'breathe'</span>, <span class="ts">'sweep'</span>], chases: [<span class="ts">'walk'</span>] });
+<span class="tk">const</span> lights = {
+  name: <span class="ts">'lights'</span>,
+  params: rig.params,                       <span class="tc">// dmx/master, dmx/blackout, dmx/pars/dimmer, dmx/pars/hue, dmx/sweep/rate, …</span>
+  update(dt, state) { t += dt; rig.apply(state, t); out.send(engine.render(t)); },
+  render() {},
+};</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>鍵名</th><th>推什麼</th></tr></thead>
+<tbody>
+<tr><td><code>dmx/master</code></td><td>總控</td></tr>
+<tr><td><code>dmx/blackout</code></td><td>blackout（階梯參數，0 或 1）</td></tr>
+<tr><td><code>dmx/&lt;group&gt;/dimmer</code></td><td>群組推桿：底下的 cue、chase、effect 照樣在跑</td></tr>
+<tr><td><code>dmx/&lt;group&gt;/hue</code>、<code>/saturation</code></td><td>群組的顏色，放在它自己的基礎 scene 裡（rainbow effect 會混在它上面）</td></tr>
+<tr><td><code>dmx/&lt;effect&gt;/rate</code>、<code>/depth</code></td><td>那個 effect，經過 <code>tune()</code>：轉旋鈕時不會跳</td></tr>
+<tr><td><code>dmx/&lt;chase&gt;/run</code></td><td>chase 開或關</td></tr>
+</tbody>
+</table></div>
+<p>接下來 mapping 層就能把任何東西接上去，寫在 <code>routes</code> 裡，或在 L2 · Mapping 面板按 learn：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">routes: [
+  { source: <span class="ts">'audio/rms'</span>, target: <span class="ts">'dmx/pars/dimmer'</span>, inMax: 0.25, outMin: 0.25, smooth: 0.25 },   <span class="tc">// the room's loudness (smoothed for the look)</span>
+  { source: <span class="ts">'drum/kick/env'</span>, target: <span class="ts">'dmx/pars/dimmer'</span>, outMin: 0.3, smooth: 0.12 },             <span class="tc">// the drum machine, when there is no mic</span>
+  { source: <span class="ts">'chord/consonance'</span>, target: <span class="ts">'dmx/pars/hue'</span>, inMin: -1, inMax: 1, outMin: 0.62, outMax: 0.06, smooth: 0.4 },
+  { source: <span class="ts">'midi/cc/7'</span>, target: <span class="ts">'dmx/master'</span> },                                                   <span class="tc">// any controller's volume fader</span>
+],</code></pre></div>
+<p>時間軸可以自動化同樣的鍵（<code>automation: { 'dmx/pars/hue': [[0, 0.07], [24, 0.58]] }</code>），手機控制面板把它們顯示成推桿（它們的 <code>group</code> 是 <code>lights</code>），世界自己的參數也可以同時餵畫面和燈。</p>
+<h2 id="dmx-safety">安全<a class="anchor" href="#dmx-safety" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><strong>Blackout。</strong> <code>engine.blackout = true</code>（或 <code>dmx/blackout</code> 參數，或範例 28 的 Blackout 按鈕）讓每一個 dimmer 立刻歸零（沒有調光通道的燈，連顏色也歸零，因為它的亮度就在顏色裡），pan、tilt、zoom 和 control 通道停在原處，所以全暗的時候搖頭燈不會突然轉。</li>
+<li><strong>上下限。</strong> 每台放好的燈可以設 <code>limits</code>（<code>{ dimmer: [0, 0.8], tilt: [0.1, 0.9] }</code>），在所有圖層之後、總控之前套用。</li>
+<li><strong>閃爍，以每台燈來算。</strong> 每秒閃超過大約三次，可能讓光敏性癲癇的人發作。會傷到人的是一台燈實際發出來的光，所以上限 <code>maxFlashHz</code>（預設 3）是以「每台燈」來算的，分兩層。
+<ol>
+<li><strong>引擎裡。</strong> 先把每個 effect、每個 chase 各自限制在上限以內：以秒為單位的速度直接夾住，以拍為單位的速度一次減半直到符合（這樣還是踩在拍子上），chase 把每一步的長度加倍，隨機閃爍每秒換新值的次數也不超過上限。接著對每一台燈，把所有會讓它閃的東西（作用在它的 dimmer 或顏色上的 effect，以及用位置以外的東西改變它的 chase）的頻率加起來。總和超過上限，就只在這台燈上把這些來源放慢，直到不超過為止：以秒為單位的照同一個比例放慢，以拍為單位的對半降，chase 的每一步加倍。兩個 3 Hz 的 effect 疊在同一台 par 上，在那台燈上各跑 1.5 Hz，只帶著其中一個的 par 保持原速。<code>engine.state(t).slowed</code>（以及 <code>describe().slowed</code>）列出被放慢的燈、放慢前後的總和，以及每一個來源。這一層仍然只取決於時間：同一個 <code>t</code> 得到同樣的位元組，錄影一樣可以逐格算。旋鈕用 <code>tune()</code> 改其中一個波形的速度時，同一台燈上的其他波形也從原本的位置接著走，不會跳。</li>
+<li><strong>輸出前。</strong> 每一個 <code>dmxTransport()</code>（sim、bridge、serial）在送出之前都讓這一格經過頻閃保護。它從位元組讀出每台燈的亮度（調光乘上最亮的顏色通道），照 WCAG 2.3.1 的方式算一次閃：亮度往相反方向變化兩次，每次至少滿刻度的 10%，從上一個轉折點量起。任何一秒內，一台燈變亮這麼多的次數不能超過 3 次：下一次變亮會超過的時候，燈穩穩停在上一次送出的亮度，等這一秒有空位了再跟上。變暗永遠直接通過，所以 blackout 和暗下來的 cue 下一格就到，保護也不會送出比要求更亮的光。它只壓調光通道的位元組（沒有調光通道的燈，就把顏色位元組一起等比例調低），pan、tilt、zoom、gobo、strobe、control 通道，以及沒被壓住的每一台燈，都原封不動送出。這一層擋得住引擎看不到的東西：即時值（推桿、麥克風、在 180 bpm 十六分音符下推 dimmer 的 <code>drum/kick/env</code>，是每秒 12 次）、兩個引擎推同一套燈，以及幾個波形疊起來，在某一秒裡的轉折比它們的頻率加起來還多。它有記憶，所以放在傳送端、引擎外面，數的是真實時間的秒數，不是時間軸被拉到的時間。</li>
+</ol>
+<ul>
+<li>把 patch 交給傳送端：<code>dmxTransport('sim', { patch })</code>。沒有 patch 的話，保護只能一個 DMX 通道一個通道地看，比較粗（見下面的橋接程式），狀態會寫 <code>unit: 'channel'</code>。</li>
+<li><code>out.flashGuard</code> 是 <code>{ on, unit, maxFlashHz, held }</code>：<code>held</code> 是上一格被壓住的燈。監看器會用琥珀色的框把它們圈起來。</li>
+<li>要關掉保護，必須明確寫 <code>dmxTransport(kind, { flashGuard: false })</code>。關掉的這段時間，監看器會一直顯示紅色的 <strong>FLASH GUARD OFF</strong>。調高引擎的 <code>maxFlashHz</code> 不會跟著調高保護的上限，那要在傳送端寫 <code>{ maxFlashHz }</code>。</li>
+<li>輸出橋接程式的三個 DMX 輸出也有同一道保護，預設開著，所以別的程式經由橋接程式送 DMX 時一樣受保護。橋接程式不知道 patch，所以在那裡的單位是一個 DMX 通道，比較粗：它也會壓住根本不會閃的通道。最要緊的是 16 位元的 pan 或 tilt：平順移動的時候，它的細調位元組會跑出很快的鋸齒波，被壓住時光束會跳最多一個粗調的格子（範例 28 的掃動經過它：540° 的搖頭燈上不到 2°）。把這些通道寫進那條路線的 <code>"flashGuard": { "exempt": ["dmx/1/49-52"] }</code>，或在你依靠頁面這一道保護的時候，用 <code>"flashGuard": false</code> 關掉橋接程式的。見 <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/out/README.md#the-flash-guard" rel="noopener">out 套件的 README</a>。</li>
+<li>strobe 通道照它自己的規則：profile 寫了 Hz 的遵守上限，沒寫的停在 open 的值。</li>
+<li>只有確定要的時候才調高上限（或設成 <code>Infinity</code>）。</li>
+</ul></li>
+<li><strong>兩層都擋不到的。</strong> 很多台燈一起閃：保護一台一台地算，二十台 par 各自每秒閃 3 次、但彼此錯開，整個場地看起來就閃得快很多，觀眾視野裡閃爍的總面積要由你判斷。投影、螢幕或 LED 牆上的畫面：保護只看得到 DMX（範例 28 的舞台是用保護過的位元組畫的，但 world 自己的畫布不受保護）。亮度不變、只有顏色來回換（飽和的紅和藍交替，也就是 WCAG 說的「紅色閃爍」）：這裡的亮度是調光乘上最亮的通道，不會動。pan、tilt 快速移動不算閃，也不會被壓住。</li>
+<li><strong>control 通道。</strong> <code>control</code> 通道（重置、燈泡開關、內建程式）不能被 scene、effect、參數或路線碰到，只有 <code>engine.control(id, key, byte)</code> 能寫。</li>
+<li><strong>看門狗。</strong> 走橋接程式時，頁面一停止說話（關掉分頁、頁面凍結），每個通道在 <code>timeoutMs</code>（預設 500 毫秒）之後被放到它的 <code>safe</code> 值，最後一個頁面斷線或橋接程式正常關閉時則是立刻。第一個符合的萬用字元優先，<code>"hold"</code> 表示沒有安全值：<code>{ "dmx/1/49": "hold", "dmx/*": 0 }</code> 讓整套燈暗下來，但一台搖頭燈的 pan 停在原處。Web Serial 沒有看門狗：Pro 會一直重送最後一格，所以 <code>close()</code> 之前先送一次 blackout。</li>
+</ul>
+<h2 id="dmx-watch-it-without-hardware">沒有硬體時怎麼看<a class="anchor" href="#dmx-watch-it-without-hardware" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><code>dmxTransport('sim', { patch })</code> 把經過頻閃保護的位元組留在記憶體裡，<code>out.bytes(1)</code> 就是 universe 1，<code>out.changed</code> 是上一次送出改變的通道。</li>
+<li><code>mountDmxMonitor(el, { patch, transport, engine })</code> 把燈畫在頁面上：每台燈一個色塊（顏色乘上亮度，搖頭燈的 pan 和 tilt 畫成一個小記號），再加上一個 universe 的 512 個通道表，每格用長條表示它的值，顏色是它推的那種光。滑鼠指著一格，就讀得到位址、值、燈具和通道。所有東西都從位元組讀回來，所以 profile 差一個通道，這裡的顏色也會跟著錯。<code>monitor.update()</code> 不帶參數時，顯示的是傳送端經過頻閃保護之後實際送出的內容。標題列會說保護正在做什麼，被壓住的燈有琥珀色的框，給了引擎的話，被每台燈上限放慢的燈會標上「slow」。</li>
+<li><a href="../../../examples/28-dmx-lights/">範例 28</a> 用同一套燈畫出一個舞台，下面放著監看器，預設用 <code>sim</code> 傳送端：<code>?out=bridge</code> 送到輸出橋接程式，<code>?out=serial</code> 多一個給 Enttec Pro 的 Connect 按鈕。</li>
+<li><code>tests/dmx-out.test.js</code> 在這台機器上跑橋接程式，用套件自己的解碼器把它送出的每個 Art-Net 和 sACN 封包解回來。</li>
+</ul>
+<h2 id="dmx-check-it-in-touchdesigner">在 TouchDesigner 裡確認<a class="anchor" href="#dmx-check-it-in-touchdesigner" aria-label="這一節的連結">#</a></h2>
+<p>TouchDesigner 的 <strong>DMX In CHOP</strong> 是另一個跟這份程式碼完全無關的接收端，所以在燈還沒進場之前，拿它來確認很合適。</p>
+<ol>
+<li>在 <code>out.json</code> 裡把 universe 1 送到這台機器：<code>{ "match": "dmx/1/*", "sink": "artnet", "host": "127.0.0.1" }</code>（或 <code>"sink": "sacn", "host": "127.0.0.1"</code>）。啟動橋接程式。</li>
+<li>在 TouchDesigner 加一個 DMX In CHOP。Art-Net 就選 Art-Net 介面，設 Net 0、Subnet 0、Universe 1（Port-Address 1）。sACN 就選 sACN、universe 1。</li>
+<li>用 <code>?out=bridge</code> 打開範例 28。CHOP 會顯示 512 個通道在動：par 1 是通道 1 到 6（dimmer、紅、綠、藍、白、strobe），head 1 從 49 開始。</li>
+<li>關掉分頁：半秒內通道就會回到它們的安全值。</li>
+</ol>
+<p>這個確認還沒有為本專案做過，你手上那一版 TouchDesigner 的 CHOP 參數名稱也可能寫得有點不一樣。</p>
+<h2 id="dmx-not-yet-tested-on-real-hardware">還沒有用真的硬體測過<a class="anchor" href="#dmx-not-yet-tested-on-real-hardware" aria-label="這一節的連結">#</a></h2>
+<p>確認過的：位元組的格式對照規格、每個封包都在這台機器上解回來（universe、位元組、每秒最多 44 個封包、補送的封包、頁面離開時的安全值）、Enttec 輸出和 Web Serial 傳送端用代替的連接埠測過、引擎的上限、淡入淡出和兩層頻閃保護在 <code>npm test</code> 裡（以每秒 40 格、注入的時鐘算閃爍次數，計數器跟保護本身分開寫）、範例 28 在沒有序列埠和 MIDI 權限的無頭瀏覽器裡跑過。頻閃保護還沒有在真的燈上看過：燈具拿到被壓住的調光位元組會怎麼反應（它自己的調光曲線、淡入淡出時間），這裡還不知道。沒確認的：真的 Art-Net 節點、sACN 接收端或燈光控台、Enttec DMX USB Pro、任何一台真燈的通道，以及用 TouchDesigner 當接收端。如果你手上有其中任何一樣，試試看，告訴我們你看到了什麼。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/score/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">總譜與導演</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">MIDI 控制器與嵌入</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

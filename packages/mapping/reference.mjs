@@ -138,8 +138,8 @@ export default {
         zh: '在 `createShow()` 裡，路由加進去的時間比聲音引擎登記 `sound/*` 參數還早，所以接到 `sound/cutoff` 的路由要明確寫上 `outMin: 100, outMax: 8000`。',
       },
       {
-        en: 'More, with the saved-profile rules: [Mapping](https://openaudiovisual.com/docs/#mapping).',
-        zh: '更多內容與存檔規則：[映射](https://openaudiovisual.com/zh/docs/#mapping)。',
+        en: 'More, with the saved-profile rules: [Mapping](https://openaudiovisual.com/docs/mapping/).',
+        zh: '更多內容與存檔規則：[映射](https://openaudiovisual.com/zh/docs/mapping/)。',
       },
     ],
     examples: [

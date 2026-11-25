@@ -65,7 +65,7 @@
   ],
   "sources": [
     { "title": "ENTTEC: DMX USB Pro (70304), product page and specifications", "url": "https://www.enttec.com/product/dmx-usb-interfaces/dmx-usb-pro-professional-1u-usb-to-dmx512-converter/", "read": "2026-11-25" },
-    { "title": "open-audiovisual handbook: DMX lighting (Web Serial and the enttec sink, safety, not here)", "url": "https://openaudiovisual.com/docs/#dmx", "read": "2026-11-25" }
+    { "title": "open-audiovisual handbook: DMX lighting (Web Serial and the enttec sink, safety, not here)", "url": "https://openaudiovisual.com/docs/dmx/", "read": "2026-11-25" }
   ],
   "license": "MIT",
   "verified": false,

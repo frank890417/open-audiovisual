@@ -127,4 +127,4 @@ const base = timeline.state();
   `onSeek(cb(t, kind))` · `layer(key, value, t)` (rewrite a param before overrides: the director's `param()`)
 - `t`, `playing`, `holding`, `rate` (default 1), `total`, `start`, `loop`, `loops`
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-timeline)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-timeline)

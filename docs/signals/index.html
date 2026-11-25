@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signals reference · open-audiovisual</title>
+<meta name="description" content="Signals are the single currency of the input layer: named, normalized, source-blind.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/signals/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/signals/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/signals/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/signals/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Signals reference · open-audiovisual">
+<meta property="og:description" content="Signals are the single currency of the input layer: named, normalized, source-blind.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/signals/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Signals reference · open-audiovisual">
+<meta name="twitter:description" content="Signals are the single currency of the input layer: named, normalized, source-blind.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="signals">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/signals/#article","url":"https://openaudiovisual.com/docs/signals/","name":"Signals reference · open-audiovisual","description":"Signals are the single currency of the input layer: named, normalized, source-blind.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Signals reference","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["@openav/midi","@openav/keys","@openav/chord","@openav/audio","@openav/pose","@openav/pose — HandTracker (21-landmark fine control)","@openav/leap","@openav/drums (simulator — analyzer-shaped)","@openav/sound (output events)","@openav/record (take playback)","@openav/remote · @openav/surface","Naming your own"],"position":16,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/signals/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/signals/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Signals reference","item":"https://openaudiovisual.com/docs/signals/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/signals/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/signals/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch is-here" data-ch="signals">
+          <a href="#signals" aria-current="page"><span class="n">16</span><span class="t">Signals reference</span></a>
+          <ol class="toc-secs">
+            <li><a href="#signals-openav-midi">@openav/midi</a></li>
+            <li><a href="#signals-openav-keys">@openav/keys</a></li>
+            <li><a href="#signals-openav-chord">@openav/chord</a></li>
+            <li><a href="#signals-openav-audio">@openav/audio</a></li>
+            <li><a href="#signals-openav-pose">@openav/pose</a></li>
+            <li><a href="#signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker (21-landmark fine control)</a></li>
+            <li><a href="#signals-openav-leap">@openav/leap</a></li>
+            <li><a href="#signals-openav-drums-simulator-analyzer-shaped">@openav/drums (simulator — analyzer-shaped)</a></li>
+            <li><a href="#signals-openav-sound-output-events">@openav/sound (output events)</a></li>
+            <li><a href="#signals-openav-record-take-playback">@openav/record (take playback)</a></li>
+            <li><a href="#signals-openav-remote-openav-surface">@openav/remote · @openav/surface</a></li>
+            <li><a href="#signals-naming-your-own">Naming your own</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="signals" aria-labelledby="signals">
+<h1 id="signals">Signals reference<a class="anchor" href="#signals" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 16 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/signals.md">docs/signals.md</a></span></p>
+<p>Signals are the single currency of the input layer: named, normalized, source-blind.
+This page lists every signal published by the built-in input packages.</p>
+<p>Conventions:</p>
+<ul>
+<li>ranges are 0..1 unless noted</li>
+<li><code>pulse</code> signals fire events; their value is the event payload</li>
+<li>y axes are flipped where it makes <em>performance</em> sense (1 = raised), never raw pixels</li>
+<li><code>&lt;n&gt;</code> is a number, <code>&lt;ch&gt;</code> a MIDI channel 1..16, <code>&lt;id&gt;</code> a device id, <code>&lt;slug&gt;</code> a device name made URL-safe</li>
+</ul>
+<h2 id="signals-openav-midi">@openav/midi<a class="anchor" href="#signals-openav-midi" aria-label="Link to this section">#</a></h2>
+<p>Every hardware message publishes the legacy names and the per-channel names.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>midi/note/on</code></td><td>pulse</td><td><code>{note, vel, velocity, ch, device}</code></td><td>key down: <code>vel</code> 0..1, <code>velocity</code> 1..127, <code>ch</code> 1..16, <code>device</code> = port slug</td></tr>
+<tr><td><code>midi/note/off</code></td><td>pulse</td><td><code>{note, ch, device}</code></td><td>key up</td></tr>
+<tr><td><code>midi/cc/&lt;n&gt;</code></td><td>continuous</td><td>0..1</td><td>controller n (any channel)</td></tr>
+<tr><td><code>midi/bend</code></td><td>continuous</td><td>-1..1</td><td>pitch bend (any channel)</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/cc/&lt;n&gt;</code></td><td>continuous</td><td>0..1</td><td>controller n on one channel</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/note/&lt;n&gt;</code></td><td>continuous</td><td>0..1</td><td>velocity while note n is held, 0 on release</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/bend</code></td><td>continuous</td><td>-1..1</td><td>pitch bend on one channel</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/pressure</code></td><td>continuous</td><td>0..1</td><td>channel aftertouch</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/poly/&lt;n&gt;</code></td><td>continuous</td><td>0..1</td><td>polyphonic aftertouch on note n</td></tr>
+</tbody>
+</table></div>
+<p>With two or more MIDI inputs connected, each device also publishes under its
+slug (from the port name: <code>Arturia MiniLab 3</code> → <code>arturia-minilab-3</code>, duplicates
+get <code>-2</code>, <code>-3</code>):</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>midi/&lt;slug&gt;/note/on</code></td><td>pulse</td><td><code>{note, vel, ch}</code></td><td>key down on that device</td></tr>
+<tr><td><code>midi/&lt;slug&gt;/note/off</code></td><td>pulse</td><td><code>{note, ch}</code></td><td>key up on that device</td></tr>
+<tr><td><code>midi/&lt;slug&gt;/cc/&lt;n&gt;</code></td><td>continuous</td><td>0..1</td><td>controller n on that device</td></tr>
+<tr><td><code>midi/&lt;slug&gt;/bend</code></td><td>continuous</td><td>-1..1</td><td>pitch bend on that device</td></tr>
+</tbody>
+</table></div>
+<p>On-screen controllers (<code>modules.midi.controllers</code>) publish one name per
+control, <code>midi/&lt;device&gt;/&lt;control&gt;</code> (for example <code>midi/minilab3/knob1</code>), plus
+<code>/hit</code> pulses for pads and <code>/raw</code> values. They are listed in
+<a href="../../docs/controllers/">MIDI controllers &amp; embedding</a>.</p>
+<h2 id="signals-openav-keys">@openav/keys<a class="anchor" href="#signals-openav-keys" aria-label="Link to this section">#</a></h2>
+<p>The on-screen piano, QWERTY playing and the simulated performer publish the
+legacy note names with a smaller payload:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>midi/note/on</code></td><td>pulse</td><td><code>{note, vel, ch: 0}</code></td><td>key down (<code>vel</code> 0..1)</td></tr>
+<tr><td><code>midi/note/off</code></td><td>pulse</td><td><code>{note, ch: 0}</code></td><td>key up</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-chord">@openav/chord<a class="anchor" href="#signals-openav-chord" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>chord/consonance</code></td><td>continuous</td><td>-1..1</td><td>harmonic consonance of last gesture</td></tr>
+<tr><td><code>chord/count</code></td><td>continuous</td><td>0..10</td><td>notes in last gesture</td></tr>
+<tr><td><code>chord/root</code></td><td>continuous</td><td>0..127</td><td>lowest MIDI note of last gesture</td></tr>
+<tr><td><code>chord/event</code></td><td>pulse</td><td>full analysis</td><td><code>{notes, count, root, vel, pcs, consonance, isConsonant, isDissonant, isTriad, thirdsFraction, dissonanceLevel, chordType}</code></td></tr>
+</tbody>
+</table></div>
+<p><code>chordType</code>: <code>single</code> · <code>major</code> · <code>minor</code> · <code>sus2</code> · <code>sus4</code> · <code>dim</code> · <code>aug</code> · <code>maj7</code> ·
+<code>min7</code> · <code>dom7</code> · <code>halfdim7</code> · <code>maj9</code> · <code>min9</code> · <code>dom9</code> · <code>six</code> · <code>min6</code> ·
+<code>cluster</code> (very dissonant pile) · <code>chord</code> (anything else). Inversions resolve to
+their root-position name via pitch-class rotation.</p>
+<p><code>dissonanceLevel</code>: <code>0</code> none · <code>1</code> mild (storm warning — foreshadow) · <code>2</code> severe
+(true cluster — commit to the decay language). Born from a real audience note at
+the IRCAM × C-LAB performance in Taipei: "dissonance detection wasn't strict enough."</p>
+<h2 id="signals-openav-audio">@openav/audio<a class="anchor" href="#signals-openav-audio" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>audio/rms</code></td><td>continuous</td><td>0..1</td><td>loudness (smoothed)</td></tr>
+<tr><td><code>audio/peak</code></td><td>continuous</td><td>0..1</td><td>instantaneous peak</td></tr>
+<tr><td><code>audio/band/low</code></td><td>continuous</td><td>0..1</td><td>20–250 Hz energy</td></tr>
+<tr><td><code>audio/band/mid</code></td><td>continuous</td><td>0..1</td><td>250 Hz–2 kHz energy</td></tr>
+<tr><td><code>audio/band/high</code></td><td>continuous</td><td>0..1</td><td>2–8 kHz energy</td></tr>
+<tr><td><code>audio/centroid</code></td><td>continuous</td><td>0..1</td><td>spectral brightness</td></tr>
+<tr><td><code>audio/onset</code></td><td>pulse</td><td><code>{rms}</code></td><td>transient over adaptive floor (100 ms refractory)</td></tr>
+<tr><td><code>audio/kick</code></td><td>pulse</td><td><code>{level}</code></td><td>20–120 Hz transient (90 ms refractory)</td></tr>
+<tr><td><code>audio/snare</code></td><td>pulse</td><td><code>{level}</code></td><td>150–800 Hz transient (90 ms refractory)</td></tr>
+<tr><td><code>audio/hat</code></td><td>pulse</td><td><code>{level}</code></td><td>6–14 kHz transient (60 ms refractory)</td></tr>
+<tr><td><code>audio/kick/env</code> <code>/snare/env</code> <code>/hat/env</code></td><td>continuous</td><td>0..1</td><td>decay envelope per drum (map straight onto params)</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-pose">@openav/pose<a class="anchor" href="#signals-openav-pose" aria-label="Link to this section">#</a></h2>
+<p>Mirrored by default (webcam-as-mirror). y flipped: <strong>1 = raised</strong>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>pose/present</code></td><td>continuous</td><td>0/1</td><td>someone visible</td></tr>
+<tr><td><code>pose/hand/left/x</code> <code>/y</code></td><td>continuous</td><td>0..1</td><td>left wrist (viewer's left)</td></tr>
+<tr><td><code>pose/hand/right/x</code> <code>/y</code></td><td>continuous</td><td>0..1</td><td>right wrist</td></tr>
+<tr><td><code>pose/hand/left/v</code> <code>right/v</code></td><td>continuous</td><td>0..1</td><td>wrist speed</td></tr>
+<tr><td><code>pose/hands/spread</code></td><td>continuous</td><td>0..1</td><td>wrist-to-wrist distance</td></tr>
+<tr><td><code>pose/height</code></td><td>continuous</td><td>0..1</td><td>nose height (crouch ↔ stand)</td></tr>
+<tr><td><code>pose/lean</code></td><td>continuous</td><td>-1..1</td><td>shoulder-line tilt</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker (21-landmark fine control)<a class="anchor" href="#signals-openav-pose-handtracker-21-landmark-fine-control" aria-label="Link to this section">#</a></h2>
+<p>Two hands from the camera, each with a gesture, a pinch you can trigger, and measures you can play.
+Distances are divided by the size of the hand and taken with x × the frame's aspect ratio, so neither
+the distance to the camera nor turning the hand sideways changes them. <code>&lt;side&gt;</code> is <code>left</code> or <code>right</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>hand/&lt;side&gt;/present</code></td><td>continuous</td><td>0/1</td><td>hand visible</td></tr>
+<tr><td><code>hand/&lt;side&gt;/x</code> <code>/y</code></td><td>continuous</td><td>0..1</td><td>palm position (y: 1 = raised)</td></tr>
+<tr><td><code>hand/&lt;side&gt;/pinch/index</code> <code>/pinch/middle</code></td><td>continuous</td><td>0..1</td><td>thumb-tip ↔ index or middle tip ÷ 2.2 hand sizes (0 = touching; an open hand reads about 0.5)</td></tr>
+<tr><td><code>hand/&lt;side&gt;/spread</code></td><td>continuous</td><td>0..1</td><td>index-tip ↔ pinky-tip, same scale</td></tr>
+<tr><td><code>hand/&lt;side&gt;/tip/x</code> <code>/y</code></td><td>continuous</td><td>0..1</td><td>index fingertip (y: 1 = top)</td></tr>
+<tr><td><code>hand/&lt;side&gt;/thumb/index</code> <code>/middle</code> <code>/ring</code> <code>/pinky</code></td><td>continuous</td><td>0..1</td><td>thumb-tip ↔ each fingertip, calibrated: 0 = touching, 1 = wide open</td></tr>
+<tr><td><code>hand/&lt;side&gt;/openness</code></td><td>continuous</td><td>0..1</td><td>0 = fist, 1 = all fingers out</td></tr>
+<tr><td><code>hand/&lt;side&gt;/angle</code></td><td>continuous</td><td>0..1</td><td>wrist → base of the middle finger: 0.5 = fingers up, 0.75 = pointing right, 0.25 = left</td></tr>
+<tr><td><code>hand/&lt;side&gt;/speed</code></td><td>continuous</td><td>0..1</td><td>palm speed, 1 = 3 frame heights per second</td></tr>
+<tr><td><code>hand/&lt;side&gt;/pinched</code></td><td>continuous</td><td>0/1</td><td>thumb on index with the other three fingers out</td></tr>
+<tr><td><code>hand/&lt;side&gt;/pinch-start</code> <code>/pinch-end</code></td><td>pulse</td><td><code>{side, x, y, distance}</code></td><td>thumb ↔ index below 0.35 hand sizes starts, above 0.56 ends</td></tr>
+<tr><td><code>hand/&lt;side&gt;/gesture</code></td><td>continuous</td><td>0..7</td><td>the gesture held: 0 none, 1 fist, 2 open, 3 point, 4 thumb-up, 5 thumb-down, 6 victory, 7 iloveyou</td></tr>
+<tr><td><code>hand/&lt;side&gt;/gesture/&lt;name&gt;</code></td><td>continuous</td><td>0/1</td><td><code>fist</code> <code>open</code> <code>point</code> <code>thumb-up</code> <code>thumb-down</code> <code>victory</code> <code>iloveyou</code>: score above 0.5 starts, below 0.35 ends</td></tr>
+<tr><td><code>hand/&lt;side&gt;/gesture/&lt;name&gt;-start</code></td><td>pulse</td><td><code>{side, x, y, gesture, score}</code></td><td>that gesture begins</td></tr>
+<tr><td><code>hand/both/present</code></td><td>continuous</td><td>0/1</td><td>both hands visible</td></tr>
+<tr><td><code>hand/both/distance</code></td><td>continuous</td><td>0..1</td><td>palm centre ↔ palm centre (0.2 frame heights = 0, 1.0 = 1)</td></tr>
+<tr><td><code>hand/both/x</code> <code>/y</code></td><td>continuous</td><td>0..1</td><td>midpoint between the palms</td></tr>
+<tr><td><code>hand/both/angle</code></td><td>continuous</td><td>0..1</td><td>the line from the left palm to the right: 0.5 = level, above 0.5 = right hand higher</td></tr>
+</tbody>
+</table></div>
+<p>A new state counts after it has lasted 80 ms, and a lost hand ends its pinch and gesture at once.
+The thresholds are <code>HandTracker</code>'s <code>thresholds</code> option (in a show, <code>modules: { hands: { thresholds } }</code>). Both trackers expose <code>skeleton(ctx, w, h)</code>;
+<code>hands.overlay(ctx, w, h)</code> also draws the pinch line, the angle, the gesture and the distance between the hands.</p>
+<h2 id="signals-openav-leap">@openav/leap<a class="anchor" href="#signals-openav-leap" aria-label="Link to this section">#</a></h2>
+<p>Leap Motion / Ultraleap through the machine's bridge. Positions are the palm or
+fingertip inside the interaction box, normalized and clamped (x right, y up,
+z toward the performer). <code>&lt;side&gt;</code> is <code>left</code> or <code>right</code>, <code>&lt;finger&gt;</code> one of
+<code>thumb index middle ring pinky</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>leap/status</code></td><td>continuous</td><td>0..3</td><td>0 no bridge · 1 bridge, no tracking service · 2 no device · 3 tracking</td></tr>
+<tr><td><code>leap/hands</code></td><td>continuous</td><td>0..2</td><td>hands in view</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/present</code></td><td>continuous</td><td>0/1</td><td>hand in view</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/x</code> <code>/y</code> <code>/z</code></td><td>continuous</td><td>0..1</td><td>palm position</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/pinch</code> <code>/grab</code></td><td>continuous</td><td>0..1</td><td>pinch and fist strength (0 when the hand is lost)</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/roll</code> <code>/pitch</code> <code>/yaw</code></td><td>continuous</td><td>-π..π</td><td>hand rotation in radians</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/speed</code></td><td>continuous</td><td>0..1</td><td>palm speed, 1 = 1 m/s</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/&lt;finger&gt;/x</code> <code>/y</code> <code>/z</code></td><td>continuous</td><td>0..1</td><td>fingertip position</td></tr>
+<tr><td><code>leap/both/distance</code></td><td>continuous</td><td>0..1</td><td>palm to palm, 1 = 40 cm</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/pinch-start</code> <code>/pinch-end</code></td><td>pulse</td><td><code>{side, x, y, z, strength}</code></td><td>pinch above 0.86 starts, below 0.5 ends</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/grab-start</code> <code>/grab-end</code></td><td>pulse</td><td><code>{side, x, y, z, strength}</code></td><td>fist above 0.8 starts, below 0.5 ends</td></tr>
+<tr><td><code>leap/both/pinch-start</code> <code>/pinch-end</code></td><td>pulse</td><td><code>{x, y, z, distance}</code></td><td>both pinch above 0.8 enters, either below 0.5 exits</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-drums-simulator-analyzer-shaped">@openav/drums (simulator — analyzer-shaped)<a class="anchor" href="#signals-openav-drums-simulator-analyzer-shaped" aria-label="Link to this section">#</a></h2>
+<p>The drum machine publishes the SAME shapes the audio analyzer publishes, so a
+world mapped to a kick cannot tell mic from machine (that's what a simulator
+is for). Sequencer hits also travel as <code>midi/note/on</code> (ch 10, GM notes).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>drum/kick</code> <code>/snare</code> <code>/hat</code> <code>/clap</code></td><td>pulse</td><td><code>{level}</code></td><td>a sequencer hit</td></tr>
+<tr><td><code>drum/kick/env</code> <code>…</code></td><td>continuous</td><td>0..1</td><td>decay envelope per lane (map straight onto params)</td></tr>
+<tr><td><code>midi/note/on</code></td><td>pulse</td><td><code>{note, vel, ch: 10}</code></td><td>kick 36 · snare 38 · clap 39 · closed hat 42</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-sound-output-events">@openav/sound (output events)<a class="anchor" href="#signals-openav-sound-output-events" aria-label="Link to this section">#</a></h2>
+<p>The in-page instruments listen to <code>midi/note/on|off</code> and the sustain pedal
+<code>midi/cc/64</code>, and announce one event of their own.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>sound/instrument</code></td><td>pulse</td><td><code>{id, name}</code></td><td>the instrument changed (picker, code or a cue)</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-record-take-playback">@openav/record (take playback)<a class="anchor" href="#signals-openav-record-take-playback" aria-label="Link to this section">#</a></h2>
+<p>A <code>TakePlayer</code> publishes a recorded take's events under their original names
+(<code>midi/note/on</code>, <code>midi/ch/&lt;ch&gt;/note/&lt;n&gt;</code>, <code>midi/cc/&lt;n&gt;</code>…), exactly as the
+keyboard did, plus two signals of its own.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>take/playing</code></td><td>continuous</td><td>0 / 1</td><td>1 while a take plays; 0 when paused, stopped, or yielded to live playing</td></tr>
+<tr><td><code>take/position</code></td><td>continuous</td><td>0..1</td><td>how far into the take</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-remote-openav-surface">@openav/remote · @openav/surface<a class="anchor" href="#signals-openav-remote-openav-surface" aria-label="Link to this section">#</a></h2>
+<p>Phone sensors (<code>/packages/remote/</code> → 感測). <code>&lt;id&gt;</code> is the device id; <code>phone/any/…</code> carries the value from whichever phone sent it last, so a
+World's routes can be written before any phone exists.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>range</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>phone/&lt;id&gt;/tilt/x</code> <code>/y</code></td><td>continuous</td><td>-1..1</td><td>±45° from the calibrated rest pose, in SCREEN axes (x right, y toward you)</td></tr>
+<tr><td><code>phone/&lt;id&gt;/accel/x|y|z</code></td><td>continuous</td><td>m/s²</td><td>including gravity</td></tr>
+<tr><td><code>phone/&lt;id&gt;/rot/alpha|beta|gamma</code></td><td>continuous</td><td>deg/s</td><td>rotation rate</td></tr>
+<tr><td><code>phone/&lt;id&gt;/orient/alpha|beta|gamma</code></td><td>continuous</td><td>deg</td><td>raw deviceorientation</td></tr>
+<tr><td><code>phone/&lt;id&gt;/knock</code></td><td>pulse</td><td><code>{strength, delta, t}</code></td><td>acceleration jolt over a threshold (130 ms cooldown)</td></tr>
+<tr><td><code>phone/&lt;id&gt;/light</code></td><td>continuous</td><td>0..1</td><td>front-camera mean luma</td></tr>
+<tr><td><code>phone/&lt;id&gt;/touch/x</code> <code>/y</code> <code>/down</code></td><td>continuous</td><td>0..1</td><td>finger 0; <code>touch/&lt;n&gt;/…</code> for n ≥ 1, <code>touch/count</code></td></tr>
+<tr><td><code>phone/local/…</code></td><td>—</td><td>—</td><td>the same sensor names when the show page ITSELF runs on a phone (<code>localSensors(signals)</code>, no relay; also mirrored to <code>phone/any/…</code>)</td></tr>
+</tbody>
+</table></div>
+<p>Surface widgets (normalized 0..1; <code>…/raw</code> carries the unscaled value when the range is not 0..1):</p>
+<div class="table-wrap"><table>
+<thead><tr><th>signal</th><th>kind</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;</code></td><td>continuous</td><td>fader · knob · number · toggle · button (0/1) · radio (idx/(n-1)) · encoder phase</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;/x</code> <code>/y</code> <code>/down</code></td><td>continuous</td><td>xy pad</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;/&lt;1..N&gt;</code></td><td>continuous</td><td>bank channels</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;/hit</code></td><td>pulse <code>{pad,row,col,vel}</code></td><td>pads; <code>…/&lt;n&gt;</code> (n from 0) holds the velocity while down</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;/delta</code></td><td>continuous</td><td>encoder step in turns</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;</code> (text)</td><td>pulse</td><td>the string typed into a <code>text</code> widget</td></tr>
+<tr><td><code>midi/note/on</code> <code>/off</code>, <code>midi/cc/64</code></td><td>pulse / continuous</td><td>the 琴鍵 page and the <code>keyboard</code> widget — same names and shape as <code>@openav/midi</code>: <code>{note, vel, velocity, ch: 1, device: 'surface'}</code></td></tr>
+</tbody>
+</table></div>
+<p>Receiving end: every relay message is filed by <code>fileSignal(signals, name, value, {pulse})</code> (<code>@openav/relay</code>; <code>bindSignals</code>
+uses it, so do hosts with their own socket such as the lab's <code>lab.js</code>). It declares the name on first sight (<code>signalMeta</code>),
+and fills in whichever velocity spelling a <code>midi/…/note/on|off</code> sender left out (<code>vel</code> 0..1 ⇄ <code>velocity</code> 1..127).</p>
+<h2 id="signals-naming-your-own">Naming your own<a class="anchor" href="#signals-naming-your-own" aria-label="Link to this section">#</a></h2>
+<p>Path-style, source-first: <code>breath/pressure</code>, <code>phone/{id}/gyro/x</code>, <code>weather/wind</code>.
+Declare ranges with <code>signals.define(name, {min, max})</code> so meters and <code>norm()</code>
+work; then just <code>signals.set(name, v)</code>. Anything that changes can perform.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/phones/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Phones, relay &amp; surfaces</span></a>
+      <a class="ch-next" rel="next" href="../../docs/packages/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Package reference</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

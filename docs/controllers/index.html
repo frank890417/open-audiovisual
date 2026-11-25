@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIDI controllers &amp; embedding · open-audiovisual</title>
+<meta name="description" content="open-audiovisual models MIDI controllers as data: one JSON file per device, with the faceplate layout, every control's exact MIDI message, LED feedback, how…">
+<link rel="canonical" href="https://openaudiovisual.com/docs/controllers/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/controllers/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/controllers/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/controllers/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="MIDI controllers &amp; embedding · open-audiovisual">
+<meta property="og:description" content="open-audiovisual models MIDI controllers as data: one JSON file per device, with the faceplate layout, every control's exact MIDI message, LED feedback, how…">
+<meta property="og:url" content="https://openaudiovisual.com/docs/controllers/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MIDI controllers &amp; embedding · open-audiovisual">
+<meta name="twitter:description" content="open-audiovisual models MIDI controllers as data: one JSON file per device, with the faceplate layout, every control's exact MIDI message, LED feedback, how…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="controllers">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/controllers/#article","url":"https://openaudiovisual.com/docs/controllers/","name":"MIDI controllers & embedding · open-audiovisual","description":"open-audiovisual models MIDI controllers as data: one JSON file per device, with the faceplate layout, every control's exact MIDI message, LED feedback, how…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"MIDI controllers & embedding","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Play one in a page","Listen to it","Without the element","In an iframe","Play your DAW with it","Telemetry","SysEx: modes, templates, LED colours","In other software","Add a controller"],"position":11,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/controllers/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/controllers/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"MIDI controllers & embedding","item":"https://openaudiovisual.com/docs/controllers/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/controllers/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/controllers/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch is-here" data-ch="controllers">
+          <a href="#controllers" aria-current="page"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a>
+          <ol class="toc-secs">
+            <li><a href="#controllers-play-one-in-a-page">Play one in a page</a></li>
+            <li><a href="#controllers-listen-to-it">Listen to it</a></li>
+            <li><a href="#controllers-without-the-element">Without the element</a></li>
+            <li><a href="#controllers-in-an-iframe">In an iframe</a></li>
+            <li><a href="#controllers-play-your-daw-with-it">Play your DAW with it</a></li>
+            <li><a href="#controllers-telemetry">Telemetry</a></li>
+            <li><a href="#controllers-sysex-modes-templates-led-colours">SysEx: modes, templates, LED colours</a></li>
+            <li><a href="#controllers-in-other-software">In other software</a></li>
+            <li><a href="#controllers-add-a-controller">Add a controller</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="controllers" aria-labelledby="controllers">
+<h1 id="controllers">MIDI controllers &amp; embedding<a class="anchor" href="#controllers" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 11 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/controllers.md">docs/controllers.md</a></span></p>
+<p>open-audiovisual models MIDI controllers as data: one JSON file per device, with the
+faceplate layout, every control's exact MIDI message, LED feedback, how to recognise its
+port, and the document each number came from. The same file drives an on-screen controller
+you can play, follows the real device when you plug it in, and can be dropped into any web
+page. Every device is on the <a href="../../controllers/">controllers page</a>.</p>
+<h2 id="controllers-play-one-in-a-page">Play one in a page<a class="anchor" href="#controllers-play-one-in-a-page" aria-label="Link to this section">#</a></h2>
+<div class="term" data-lang="html"><div class="term-bar"><span>html</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-html">&lt;<span class="tk">script</span> type=<span class="ts">"module"</span> src=<span class="ts">"https://openaudiovisual.com/packages/midi/element.js"</span>&gt;&lt;/<span class="tk">script</span>&gt;
+&lt;<span class="tk">oav-controller</span> profile=<span class="ts">"akai-lpd8"</span> readout&gt;&lt;/<span class="tk">oav-controller</span>&gt;</code></pre></div>
+<p>That is the whole integration. The element works without Web MIDI (Safari, iPad): it plays
+and fires events; only hardware and MIDI out report that they are unavailable. It never asks
+for MIDI permission unless you turn on <code>hardware</code>, <code>midi-out</code> or learn. Safari has none because WebKit has not implemented it (<a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">bug 107250</a>, still open).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Attribute</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><code>profile</code></td><td>which device: an id, a short name, or a URL to your own profile JSON</td></tr>
+<tr><td><code>layout</code></td><td><code>auto</code>, <code>face</code> (as it looks) or <code>stack</code> (re-gridded for a phone held upright)</td></tr>
+<tr><td><code>hardware</code></td><td><code>on</code>, or <code>ask</code> for a button: the real device moves the on-screen one</td></tr>
+<tr><td><code>midi-out</code></td><td>a port name (<code>IAC</code>, <code>loopMIDI</code>), <code>/regex/</code>, or <code>ask</code>: what you play is sent there</td></tr>
+<tr><td><code>channel</code></td><td>1–16, when your unit is set to another channel</td></tr>
+<tr><td><code>picker</code>, <code>readout</code>, <code>learn</code>, <code>follow</code></td><td>device picker, last-message line, learn button, show whatever known device you plug in</td></tr>
+</tbody>
+</table></div>
+<h2 id="controllers-listen-to-it">Listen to it<a class="anchor" href="#controllers-listen-to-it" aria-label="Link to this section">#</a></h2>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> el = document.querySelector(<span class="ts">'oav-controller'</span>);
+el.addEventListener(<span class="ts">'control'</span>, (e) =&gt; {
+  <span class="tk">const</span> { id, value, signal, message, source } = e.detail;
+  <span class="tc">// 'k1'  0..1  'midi/lpd8/k1'  { type: 'cc', ch: 1, cc: 70, value: 53 }  'ui' | 'hardware'</span>
+});
+<span class="tk">await</span> el.ready;
+el.<span class="tk">set</span>(<span class="ts">'k1'</span>, 0.5);           <span class="tc">// move a control as a hand would</span>
+el.ingest([0xb0, 70, 64]);   <span class="tc">// MIDI from anywhere: the faceplate follows</span></code></pre></div>
+<p>Other events: <code>noteon</code>, <code>noteoff</code>, <code>connect</code>, <code>disconnect</code>, <code>status</code>, <code>profilechange</code>,
+<code>ready</code>, <code>error</code>. All bubble and cross the shadow root. Every field of every payload is in
+<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md" rel="noopener">packages/midi/README.md</a>.</p>
+<h2 id="controllers-without-the-element">Without the element<a class="anchor" href="#controllers-without-the-element" aria-label="Link to this section">#</a></h2>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createController } <span class="tk">from</span> <span class="ts">'https://openaudiovisual.com/packages/midi/index.js'</span>;
+
+<span class="tk">const</span> ctl = createController(<span class="ts">'akai-lpd8'</span>, { signals });   <span class="tc">// signals: publish into a show</span>
+ctl.mount(document.querySelector(<span class="ts">'#pads'</span>));                <span class="tc">// optional</span>
+ctl.on(<span class="ts">'control'</span>, (e) =&gt; console.log(e.signal, e.value));</code></pre></div>
+<p>Inside a show, do not read <code>midi/lpd8/k1</code> in <code>update()</code>: route it to a param with
+<code>controllerRoutes(profile, { k1: 'hue' })</code> (rule 1 in <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md" rel="noopener">AGENTS.md</a>).
+Example 09 does this for six devices at once.</p>
+<h2 id="controllers-in-an-iframe">In an iframe<a class="anchor" href="#controllers-in-an-iframe" aria-label="Link to this section">#</a></h2>
+<p>For places that only take an iframe:</p>
+<div class="term" data-lang="html"><div class="term-bar"><span>html</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-html">&lt;<span class="tk">iframe</span> src=<span class="ts">"https://openaudiovisual.com/embed/controller/?profile=akai-lpd8&amp;readout&amp;frame=pads"</span>
+        width=<span class="ts">"720"</span> height=<span class="ts">"220"</span> style=<span class="ts">"border:0"</span> allow=<span class="ts">"midi"</span> title=<span class="ts">"AKAI LPD8"</span>&gt;&lt;/<span class="tk">iframe</span>&gt;</code></pre></div>
+<p>The frame posts <code>{ source: 'openav', type, frame, detail }</code> to its parent for every event,
+and accepts <code>{ target: 'openav', type: 'set' | 'ingest' | 'press' | 'release' | 'reset' | 'profile' | 'layout' | 'get', … }</code>. Add <code>origin=https://your.site</code> to talk to your page only.</p>
+<h2 id="controllers-play-your-daw-with-it">Play your DAW with it<a class="anchor" href="#controllers-play-your-daw-with-it" aria-label="Link to this section">#</a></h2>
+<ol>
+<li>macOS: Audio MIDI Setup → Window → Show MIDI Studio → IAC Driver → “Device is online”.
+Windows 11: the built-in Windows MIDI Services (released 2026-02-17, rolled out in stages to 24H2 and 25H2) share MIDI ports between apps and include a loopback, and Microsoft's announcement says web pages using Web MIDI can use it (<a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/" rel="noopener">Windows blog</a>). We have not tested it with open-audiovisual. Older Windows: install loopMIDI and add a port; that still works.</li>
+<li><code>&lt;oav-controller profile="akai-lpd8" midi-out="IAC"&gt;</code> (on Windows, give the name of the port you made or the one Windows shows).</li>
+<li>In Ableton Live, turn on Track and Remote for that input; in TouchDesigner, a MIDI In CHOP
+on it; in Resolume, Preferences → MIDI.</li>
+</ol>
+<p>Hands on the screen are sent; your real hardware is not forwarded (the DAW already hears it).
+The engine never listens to IAC inputs, and the element mutes an input named like its
+output, so nothing loops.</p>
+<h2 id="controllers-telemetry">Telemetry<a class="anchor" href="#controllers-telemetry" aria-label="Link to this section">#</a></h2>
+<p>So the project can see where its controllers and shows end up, the packages send <strong>one anonymous hit per page load</strong> to Google Analytics 4 (the openaudiovisual.com property, <code>G-1YG2JHK2WT</code>):</p>
+<div class="table-wrap"><table>
+<thead><tr><th>event</th><th>when</th><th>params</th></tr></thead>
+<tbody>
+<tr><td><code>oav_embed_load</code></td><td>an <code>&lt;oav-controller&gt;</code>, <code>createController()</code> or the iframe starts</td><td><code>oav_kind</code> (element · headless · iframe), <code>oav_profile</code>, <code>oav_host</code>, <code>oav_version</code></td></tr>
+<tr><td><code>oav_hardware_connect</code></td><td>a real controller is plugged in and matched</td><td><code>oav_kind</code>, <code>oav_profile</code>, <code>oav_host</code>, <code>oav_version</code></td></tr>
+<tr><td><code>oav_show_start</code></td><td><code>createShow()</code> starts</td><td><code>oav_kind</code> (show), <code>oav_host</code>, <code>oav_version</code></td></tr>
+</tbody>
+</table></div>
+<p><code>oav_host</code> is the <strong>origin</strong> of the page it runs on (for the iframe, the page that holds it), never the path, query or title. Nothing anyone plays is sent, no cookies are set, and the client id is random for every page load, so visitors can't be followed. No gtag.js is loaded: a page with its own Google Analytics keeps its dataLayer untouched. Nothing is sent from localhost, LAN addresses, <code>file://</code> or openaudiovisual.com itself, or when the browser sends Do Not Track / Global Privacy Control.</p>
+<p>Turn it off: <code>&lt;oav-controller telemetry="off"&gt;</code> · <code>createController(p, { telemetry: false })</code> · <code>createShow({ telemetry: false })</code> · the iframe's <code>?telemetry=0</code> · or <code>globalThis.OPENAV_TELEMETRY = false</code> before anything loads. Source: <code>packages/midi/telemetry.js</code>.</p>
+<p>The one line for p5.js (<code>oav-p5</code>) sends nothing unless a sketch sets <code>telemetry: 'on'</code>.</p>
+<p><strong>The signature is not a hit.</strong> <code>createShow()</code> also puts <code>&lt;meta name="generator" content="open-audiovisual 0.9.0"&gt;</code> in the page's head, the tag WordPress and Hugo leave. It makes no request: a person who views the source, a search of the public web or a web census can read which pages run on open-audiovisual, and that is all. <code>createShow({ signature: false })</code> leaves it out. Source: <code>packages/core/src/signature.js</code>. Works that want to be listed by name add themselves to <a href="../../made-with/">Made with</a>.</p>
+<h3 id="controllers-the-site-s-own-pages">The site's own pages<a class="anchor" href="#controllers-the-site-s-own-pages" aria-label="Link to this section">#</a></h3>
+<p>openaudiovisual.com runs Google Analytics 4 on its own pages (the same property). Besides the page views Google Analytics counts by itself, <code>assets/track.js</code> counts eight things people do there, each as its own event:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>event</th><th>when</th><th>params</th></tr></thead>
+<tbody>
+<tr><td><code>oav_copy</code></td><td>a Copy button, or ⌘C / Ctrl+C inside a code block</td><td><code>kind</code> (loader · code · import_map · other), <code>page_type</code></td></tr>
+<tr><td><code>oav_outbound</code></td><td>a link to another site</td><td><code>kind</code> (github · vendor · work · course · openprocessing · other), <code>host</code>, <code>page_type</code></td></tr>
+<tr><td><code>oav_controller_play</code></td><td>the first move on a page's on-screen controller, once per page view</td><td><code>controller</code>, <code>page_type</code></td></tr>
+<tr><td><code>oav_export_download</code></td><td>a QLC+, Mixxx or JSON file from a controller, fixture or device page</td><td><code>format</code> (qlc · mixxx · json), <code>controller</code> (the controller's, fixture's or device's id), <code>page_type</code></td></tr>
+<tr><td><code>oav_example_start</code></td><td>the first click or key inside an example, once per page view</td><td><code>example</code></td></tr>
+<tr><td><code>oav_next_step</code></td><td>a link in a page's next-step block</td><td><code>from</code> (the page type), <code>to</code> (p5 · example · docs · reference · …)</td></tr>
+<tr><td><code>oav_search</code></td><td>the first letter typed in a search box, once per page view</td><td><code>page_type</code></td></tr>
+<tr><td><code>oav_lang_switch</code></td><td>EN or 中文</td><td><code>page_type</code>, <code>to</code> (en · zh)</td></tr>
+</tbody>
+</table></div>
+<p><code>page_type</code> says what kind of page it is: home, controller, controllers_index, verify, example, examples_index, docs, reference, cheatsheet, p5, made_with, changelog, webtoe, check, not_found, devices_index (/devices/), fixture (/fixtures/&lt;id&gt;/) or device (/devices/&lt;id&gt;/). Each param is a short word or an id, never what was copied or typed into a search box, and never a link's path or query: <code>host</code> is the other site's name only. As with every page view, Google Analytics itself also records the page's address and sets its own cookie. The script runs only where the site's analytics runs, on openaudiovisual.com: not on localhost and not in a copy of the repository. Source: <code>assets/track.js</code>.</p>
+<p>None of this is in the framework. <code>p5/oav-p5.js</code>, <code>packages/</code> and <code>embed/</code> do not load the script and send nothing new, so a page someone else builds with open-audiovisual sends only what the first table lists. <code>tests/track.test.js</code> checks both.</p>
+<h2 id="controllers-sysex-modes-templates-led-colours">SysEx: modes, templates, LED colours<a class="anchor" href="#controllers-sysex-modes-templates-led-colours" aria-label="Link to this section">#</a></h2>
+<p>Some things only SysEx can do: put a Launchpad in Programmer mode, pick a Launch Control XL template, light a pad in any RGB colour. Profiles that have these list them in <code>sysex</code>, each message with its source, and the device's page shows them.</p>
+<p>The browser shows a permission prompt for SysEx, so nothing in this project asks by itself: <code>&lt;oav-controller sysex&gt;</code> adds a button, and <code>controller.enableSysex()</code> is the call behind it (run it from a click). Once it is on, the device is set up every time it connects, and <code>setLedColor(id, { r, g, b })</code> and <code>sendSysex(id)</code> work. <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#sysex" rel="noopener">Package README</a>.</p>
+<h2 id="controllers-in-other-software">In other software<a class="anchor" href="#controllers-in-other-software" aria-label="Link to this section">#</a></h2>
+<p>Every device page has the same data as a QLC+ input profile (<code>.qxi</code>) and a Mixxx mapping (<code>.midi.xml</code> and a small <code>.js</code>), and <code>node tools/export-controller.mjs &lt;id&gt;</code> writes them from any profile. The Mixxx mapping is a starting point: remap it with Mixxx's Learning Wizard. The library also lists controllers imported from QLC+'s input profiles, with generated layouts and every control marked unverified.</p>
+<h2 id="controllers-add-a-controller">Add a controller<a class="anchor" href="#controllers-add-a-controller" aria-label="Link to this section">#</a></h2>
+<ol>
+<li>Copy the closest file in <code>packages/midi/profiles/</code>, or a generic layout.</li>
+<li>Write each control's type and message from the manual's MIDI implementation chart.</li>
+<li>Cite every source; mark anything unconfirmed <code>"verified": false</code> with a note. <code>"verified": true</code> is
+for a number checked on a real unit, and needs an entry in <code>verifications</code> that says who, when, on
+which firmware, OS and browser (<code>validateProfile</code> refuses it otherwise).</li>
+<li><code>validateProfile(profile)</code> lists every problem; <code>npm test</code> checks every shipped profile.</li>
+<li>Try it with <code>&lt;oav-controller profile="./my-device.json"&gt;</code>, then register it in
+<code>profiles/index.js</code> and open a pull request.</li>
+</ol>
+<p>No manual: choose a generic layout, press Learn, move your controls in order, and keep
+<code>controller.exportMapping()</code> as the start of a profile.</p>
+<p>The format has room for what a device does beyond notes and CCs: <code>sysex</code> (mode switches, templates, LED colours, each message citing
+its source), <code>palette</code> (the LED colour table) and <code>verifications</code> (who checked what on real hardware). The field list is in the
+<a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/midi/README.md#profiles" rel="noopener">package README</a>, and
+<a href="../../packages/midi/profile.schema.json"><code>profile.schema.json</code></a> is the same format as JSON Schema.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/dmx/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">DMX lighting</span></a>
+      <a class="ch-next" rel="next" href="../../docs/devices/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Devices</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

@@ -1,18 +1,22 @@
 #!/usr/bin/env node
-// build-docs — render the documentation handbook in every language.
+// build-docs — render the documentation handbook in every language: one page per chapter, and the contents.
 //
-//   node tools/build-docs.mjs          # write docs/index.html and zh/docs/index.html
+//   node tools/build-docs.mjs          # write docs/index.html, docs/<chapter>/index.html and their zh/ twins
 //   node tools/build-docs.mjs --check  # exit 1 if the committed pages are stale
 //
-// Markdown is the source of truth (tools/docs/chapters.mjs lists the chapters);
-// the two pages are static output so crawlers and agents read every word
-// without JavaScript. Like tools/build-home.mjs this is a site generator, not a
-// framework build step: the framework itself still runs from plain files.
+// Markdown is the source of truth (tools/docs/chapters.mjs lists the chapters); the pages are static output so crawlers
+// and agents read every word without JavaScript. Like tools/build-home.mjs this is a site generator, not a framework
+// build step: the framework itself still runs from plain files.
 //
-// Links inside the Markdown are rewritten so the same file reads well on GitHub
-// and on the site: a link to another chapter's .md becomes an in-page #anchor,
-// a link to a code file becomes a GitHub URL, a link to a site page stays on the
-// site in the page's language, and a ready-made sketch named as code (`p5/examples/mic/`)
+//   /docs/                 the contents: every chapter, its first sentence, its sections as links (no chapter text), and a
+//                          forwarder that sends an old one-page link /docs/#mapping-curves to /docs/mapping/#mapping-curves
+//   /docs/<chapter>/       one chapter: its own title, a description from its first paragraph, previous / next
+//   /p5/                   the p5 chapter's page (tools/build-examples.mjs renders it); /docs/p5/ is a noindex stub to it
+// Where each chapter and each heading lives is decided once, in tools/docs/anchors.mjs.
+//
+// Links inside the Markdown are rewritten so the same file reads well on GitHub and on the site: a link to another
+// chapter's .md becomes that chapter's page (with its #anchor), a link to a code file becomes a GitHub URL, a link to a
+// site page stays on the site in the page's language, and a ready-made sketch named as code (`p5/examples/mic/`)
 // links to its page. --check ignores ?v= stamps.
 
 import fs from 'node:fs';
@@ -21,8 +25,9 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { CHAPTERS } from './docs/chapters.mjs';
 import { renderMarkdown, slugify, stripMd } from './docs/markdown.mjs';
-import { renderDocsPage } from './docs/page.mjs';
-import { SITE, BLOB, TREE, PAGES, pageCtx } from './site/chrome.mjs';
+import { renderContentsPage, renderChapterPage, renderMovedStub } from './docs/page.mjs';
+import { englishHeadings, chapterOfAnchor, docsHref, chapterPath, P5_CHAPTER, FRAME_IDS } from './docs/anchors.mjs';
+import { SITE, BLOB, TREE, PAGES, pageCtx, pathCtx } from './site/chrome.mjs';
 import { shapeDiff } from './build-home.mjs';
 import { sitemapXml, unstamp } from './site/pages.mjs';
 import { sketchHref } from './site/facts.mjs';
@@ -31,11 +36,14 @@ import zh from './docs/zh.mjs';
 import homeEn from './home/en.mjs';
 import homeZh from './home/zh.mjs';
 import { isMain } from './site/is-main.mjs';
+import { describe, sentences, closing } from './site/describe.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const STRINGS = { en, zh };
 const HOME = { en: homeEn, zh: homeZh };
 const OUT = { en: 'docs/index.html', zh: 'zh/docs/index.html' };
+/** The file of a chapter's page (repo-relative). */
+export const chapterFile = (id, locale) => (locale === 'zh' ? 'zh/' : '') + chapterPath(id) + 'index.html';
 /** Files the site serves at its root (linked as site files, not GitHub blobs). */
 const SITE_FILES = new Set(['llms.txt', 'llms-full.txt', 'robots.txt', 'sitemap.xml']);
 
@@ -59,17 +67,6 @@ function sources(locale) {
   });
 }
 
-/** English headings of every chapter: the anchor set both languages share. */
-function englishHeadings() {
-  const used = new Set(['top', 'main', 'toc']);
-  const out = new Map();
-  for (const s of sources('en')) {
-    const r = renderMarkdown(s.md, { idPrefix: s.ch.id, shift: 1, used });
-    out.set(s.ch.id, r.headings);
-  }
-  return out;
-}
-
 /** Find the anchor a `#fragment` means inside a chapter, accepting our ids and GitHub's. */
 function findAnchor(chapterId, frag, enHeads) {
   const hs = enHeads.get(chapterId) || [];
@@ -83,13 +80,15 @@ function findAnchor(chapterId, frag, enHeads) {
 /** A link resolver for one Markdown file on one page. Problems are collected, not thrown. */
 function linkResolver({ srcPath, chapterId, c, enHeads, warnings }) {
   const chapterOf = (repoPath) => CHAPTERS.find((ch) => ch.en === repoPath || ch.zh === repoPath);
+  // a heading of this chapter is on this page; any other is on its own chapter's page
+  const toAnchor = (id) => (chapterOfAnchor(id) === chapterId ? '#' + id : docsHref(c.root, c.locale, id));
   return (href) => {
     if (!href) return href;
     if (href.startsWith(SITE)) {
       // our own site: keep visitors on the site, in this language, and working on localhost
       const [rest, frag] = href.slice(SITE.length).split('#');
       const page = Object.keys(PAGES).find((p) => PAGES[p] === rest);
-      if (page === 'docs' && frag !== undefined) { const id = findAnchorAnywhere(frag); return '#' + (id || frag); }
+      if (page === 'docs' && frag !== undefined) { const id = findAnchorAnywhere(frag); if (!id) warnings.push(`${srcPath}: no heading for ${href}`); return id ? toAnchor(id) : c.to('docs'); }
       if (page) return c.to(page, frag ? '#' + frag : '');
       return c.root + href.slice(SITE.length);
     }
@@ -106,7 +105,7 @@ function linkResolver({ srcPath, chapterId, c, enHeads, warnings }) {
     if (target) {
       const id = findAnchor(target.id, frag, enHeads);
       if (!id) warnings.push(`${srcPath}: no heading for ${href}`);
-      return '#' + (id || target.id);
+      return toAnchor(id || target.id);
     }
     if (SITE_FILES.has(repoPath)) return c.root + repoPath;
     if (repoPath === 'index.html' || repoPath === '.') return c.to('home');
@@ -124,12 +123,27 @@ function linkResolver({ srcPath, chapterId, c, enHeads, warnings }) {
   }
 }
 
-/** Render one language: chapters with their sections (the TOC) and HTML. */
+// ---------------------------------------------------------------------------- a chapter's own words, for its page
+const ENT = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'" };
+const textOf = (html) => html.replace(/<[^>]+>/g, '').replace(/&(?:amp|lt|gt|quot|#39);/g, (m) => ENT[m]).replace(/\s+/g, ' ').trim();
+/** The chapter's paragraphs as plain text, in order (callouts and quotes left out: they are asides, not the opening). */
+function paragraphs(html) {
+  const bare = html.replace(/<aside[\s\S]*?<\/aside>|<blockquote>[\s\S]*?<\/blockquote>/g, '');
+  return [...bare.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((m) => textOf(m[1])).filter(Boolean);
+}
+/** The first sentence, for the contents page. */
+export const firstSentence = (html, locale) => { const p = paragraphs(html)[0]; return p ? closing(sentences(p, locale)[0] || p) : ''; };
+/** Where a description may stop: at least `min` characters (a short opening takes the next paragraph's words too), at most `max`. */
+export const LIMITS = { en: { min: 70, max: 160 }, zh: { min: 50, max: 100 } };
+/** The page's description: the chapter's opening sentences, as many as fit (tools/site/describe.mjs). No new words. */
+export const chapterDescription = (html, locale) => describe(paragraphs(html), locale, LIMITS[locale]);
+
+/** Render one language: every chapter (on the page it will live on) with its sections, description and HTML. */
 function renderLocale(locale, enHeads, warnings) {
   const t = STRINGS[locale];
-  const c = pageCtx('docs', locale);
-  const used = new Set(['top', 'main', 'toc']);
+  const used = new Set(FRAME_IDS);   // one set across every chapter, in order: the ids the handbook had when it was one page
   const chapters = sources(locale).map(({ ch, md, src, fallback }) => {
+    const c = ch.id === P5_CHAPTER ? pageCtx('p5', locale) : pathCtx(chapterPath(ch.id), locale, { page: 'docs' });
     const twin = enHeads.get(ch.id).filter((h) => h.mdLevel > 1);
     let body = md;
     if (fallback === 'untranslated') {
@@ -149,15 +163,16 @@ function renderLocale(locale, enHeads, warnings) {
       if (mine !== theirs) warnings.push(`${src}: section structure differs from ${ch.en} (anchors will not match)`);
     }
     return {
-      id: ch.id, title: r.title || ch.id, html: r.html, src, fallback,
+      id: ch.id, title: r.title || ch.id, html: r.html, src, fallback, c,
       sections: r.headings.filter((h) => h.mdLevel === 2).map((h) => ({ id: h.id, html: h.html, text: h.text })),
       headings: r.headings,
+      first: firstSentence(r.html, locale), description: chapterDescription(r.html, locale),
     };
   });
-  return { t, c, chapters };
+  return { t, chapters };
 }
 
-/** Everything: both pages, plus warnings and numbers for tests and reports. */
+/** Everything: the contents and every chapter page in both languages, plus warnings and the chapters for tests and the search index. */
 export function buildDocs() {
   const diff = shapeDiff(en, zh);
   if (diff.length) throw new Error('docs string tables differ in shape:\n  ' + diff.join('\n  '));
@@ -167,14 +182,25 @@ export function buildDocs() {
   const enHeads = englishHeadings();
   const pages = {}, chapters = {};
   for (const locale of ['en', 'zh']) {
-    const { t, c, chapters: chs } = renderLocale(locale, enHeads, warnings);
+    const { t, chapters: chs } = renderLocale(locale, enHeads, warnings);
     chapters[locale] = chs;
-    pages[OUT[locale]] = renderDocsPage(t, HOME[locale], { c, chapters: chs, version, assets });
+    pages[OUT[locale]] = renderContentsPage(t, HOME[locale], { c: pageCtx('docs', locale), chapters: chs, version, assets });
+    chs.forEach((ch, index) => {
+      if (ch.id === P5_CHAPTER) {
+        // the p5 chapter's page is /p5/ (tools/build-examples.mjs); the address the pattern promises forwards there
+        const c = pathCtx(`docs/${ch.id}/`, locale, { page: 'docs' });
+        pages[(locale === 'zh' ? 'zh/' : '') + `docs/${ch.id}/index.html`] = renderMovedStub(t, HOME[locale], {
+          c, title: ch.title, to: { rel: chapterPath(ch.id).replace(/^/, c.root + (locale === 'zh' ? 'zh/' : '')), abs: (locale === 'zh' ? 'zh/' : '') + chapterPath(ch.id) },
+        });
+        return;
+      }
+      pages[chapterFile(ch.id, locale)] = renderChapterPage(t, HOME[locale], { c: ch.c, ch, index, chapters: chs, version, assets });
+    });
   }
   return { pages, chapters, warnings };
 }
 
-/** { 'docs/index.html': html, 'zh/docs/index.html': html } */
+/** { 'docs/index.html': html, 'docs/<chapter>/index.html': html, …, and the zh/ twins } */
 export function buildPages() { return buildDocs().pages; }
 
 if (isMain(import.meta.url)) {
@@ -182,17 +208,18 @@ if (isMain(import.meta.url)) {
   const { pages: docPages, warnings } = buildDocs();
   const pages = { ...docPages, 'sitemap.xml': sitemapXml() };   // sitemap.xml: the one file every build-*.mjs writes
   for (const w of warnings) console.warn('⚠️ ', w);
-  const stale = [];
+  const stale = [], written = [];
   for (const [rel, out] of Object.entries(pages)) {
     const file = path.join(ROOT, rel);
     const cur = read(rel);
     if (check) { if (cur === null || unstamp(cur) !== unstamp(out)) stale.push(rel); continue; }
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, out);
-    console.log('wrote', rel, `(${out.length} bytes)`);
+    if (!check) written.push(`${rel} (${out.length} bytes)`);
   }
+  if (!check) console.log(`wrote ${written.length} files:\n  ` + written.join('\n  '));
   if (check) {
     if (stale.length) { console.error('stale (run node tools/build-docs.mjs):\n  ' + stale.join('\n  ')); process.exit(1); }
-    console.log('✅ docs up to date (en, zh, sitemap.xml)');
+    console.log(`✅ docs up to date (${Object.keys(docPages).length} pages in en and zh, sitemap.xml)`);
   }
 }

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DMX lighting · open-audiovisual</title>
+<meta name="description" content="DMX512 is how stage lights are told what to do: one cable carries a universe of 512 channels, each a number from 0 to 255, sent about 40 times a second.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/dmx/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/dmx/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/dmx/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/dmx/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="DMX lighting · open-audiovisual">
+<meta property="og:description" content="DMX512 is how stage lights are told what to do: one cable carries a universe of 512 channels, each a number from 0 to 255, sent about 40 times a second.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/dmx/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DMX lighting · open-audiovisual">
+<meta name="twitter:description" content="DMX512 is how stage lights are told what to do: one cable carries a universe of 512 channels, each a number from 0 to 255, sent about 40 times a second.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="dmx">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/dmx/#article","url":"https://openaudiovisual.com/docs/dmx/","name":"DMX lighting · open-audiovisual","description":"DMX512 is how stage lights are told what to do: one cable carries a universe of 512 channels, each a number from 0 to 255, sent about 40 times a second.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"DMX lighting","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Three ways out of the computer","Fixtures and the patch","Scenes, cues, chases and effects","Where the bytes go each frame","Driving the lights from sound and from a controller","Safety","Watch it without hardware","Check it in TouchDesigner","Not yet tested on real hardware"],"position":10,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/dmx/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/dmx/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"DMX lighting","item":"https://openaudiovisual.com/docs/dmx/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/dmx/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/dmx/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch is-here" data-ch="dmx">
+          <a href="#dmx" aria-current="page"><span class="n">10</span><span class="t">DMX lighting</span></a>
+          <ol class="toc-secs">
+            <li><a href="#dmx-three-ways-out-of-the-computer">Three ways out of the computer</a></li>
+            <li><a href="#dmx-fixtures-and-the-patch">Fixtures and the patch</a></li>
+            <li><a href="#dmx-scenes-cues-chases-and-effects">Scenes, cues, chases and effects</a></li>
+            <li><a href="#dmx-where-the-bytes-go-each-frame">Where the bytes go each frame</a></li>
+            <li><a href="#dmx-driving-the-lights-from-sound-and-from-a-controller">Driving the lights from sound and from a controller</a></li>
+            <li><a href="#dmx-safety">Safety</a></li>
+            <li><a href="#dmx-watch-it-without-hardware">Watch it without hardware</a></li>
+            <li><a href="#dmx-check-it-in-touchdesigner">Check it in TouchDesigner</a></li>
+            <li><a href="#dmx-not-yet-tested-on-real-hardware">Not yet tested on real hardware</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="dmx" aria-labelledby="dmx">
+<h1 id="dmx">DMX lighting<a class="anchor" href="#dmx" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 10 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/dmx.md">docs/dmx.md</a></span></p>
+<p>DMX512 is how stage lights are told what to do: one cable carries a <strong>universe</strong> of 512 channels, each a number from 0 to 255, sent about 40 times a second. A light listens to a few channels starting at its <strong>address</strong> (a par might read dimmer, red, green, blue, white, strobe from address 1 to 6), and what each channel means is in its manual, its <strong>profile</strong>. Networks carry many universes at once (Art-Net, sACN), and a USB interface turns a computer's numbers into the cable's signal.</p>
+<p><code>@openav/dmx</code> puts a lighting rig inside a work: fixture profiles, a patch, an engine that renders every light at any moment from scenes, cues, chases and effects, and three ways to get the bytes out. It runs with no light and no interface: the monitor on the page shows what the rig is getting. <a href="../../examples/28-dmx-lights/">Example 28</a> is all of it in one page.</p>
+<aside class="callout callout-warning" role="note"><p class="callout-title">Warning</p>
+<p>Nothing here has been tried with a real fixture, node or interface yet. The bytes follow the published layouts of Art-Net 4, ANSI E1.31 and the Enttec DMX USB Pro API, and the tests decode every packet on this machine, but no light has received them for this project. Before a show, check your rig with the section <a href="#dmx-check-it-in-touchdesigner">Check it in TouchDesigner</a> and with the lights themselves, and keep a hand on blackout.</p>
+</aside>
+<h2 id="dmx-three-ways-out-of-the-computer">Three ways out of the computer<a class="anchor" href="#dmx-three-ways-out-of-the-computer" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>way</th><th>from</th><th>what you need</th><th>good for</th></tr></thead>
+<tbody>
+<tr><td><strong>out-bridge + Art-Net</strong></td><td>the page → <code>ws://127.0.0.1:6450/out</code> → UDP 6454</td><td><code>node packages/out/bridge/out-bridge.mjs --config out.json</code>, an Art-Net node</td><td>venues, most network nodes, many universes</td></tr>
+<tr><td><strong>out-bridge + sACN</strong></td><td>the page → the bridge → UDP 5568 (multicast or unicast)</td><td>the same bridge, an sACN (E1.31) receiver</td><td>consoles and newer nodes, priority between sources</td></tr>
+<tr><td><strong>Web Serial + Enttec DMX USB Pro</strong></td><td>the page → USB, no bridge</td><td>Chrome or Edge on a computer, a DMX USB Pro or an interface that speaks its protocol</td><td>one interface, one universe, a classroom</td></tr>
+</tbody>
+</table></div>
+<p>A browser cannot send UDP, so the network protocols leave through the <strong>out-bridge</strong>, the same local program that drives WLED strips and motor boards (<a href="../../docs/packages/"><code>@openav/out</code></a>). The page sends one value per DMX address on channels named <code>dmx/&lt;universe&gt;/&lt;address&gt;</code>, and the bridge's <code>artnet</code>, <code>sacn</code> or <code>enttec</code> sink keeps a 512-byte buffer per universe and sends it at a fixed 40 Hz while it changes, and once a second while it does not (a node that hears nothing for about 2.5 s decides the source is gone).</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{ <span class="ts">"channels"</span>: [
+  { <span class="ts">"match"</span>: <span class="ts">"dmx/1/*"</span>, <span class="ts">"sink"</span>: <span class="ts">"artnet"</span>, <span class="ts">"host"</span>: <span class="ts">"2.0.0.10"</span> },
+  { <span class="ts">"match"</span>: <span class="ts">"dmx/2/*"</span>, <span class="ts">"sink"</span>: <span class="ts">"sacn"</span>, <span class="ts">"priority"</span>: 100, <span class="ts">"source"</span>: <span class="ts">"my show"</span> },
+  { <span class="ts">"match"</span>: <span class="ts">"dmx/3/*"</span>, <span class="ts">"sink"</span>: <span class="ts">"enttec"</span>, <span class="ts">"path"</span>: <span class="ts">"/dev/cu.usbserial-EN000000"</span>, <span class="ts">"universe"</span>: 3 }
+], <span class="ts">"safe"</span>: { <span class="ts">"dmx/1/49"</span>: <span class="ts">"hold"</span>, <span class="ts">"dmx/1/51"</span>: <span class="ts">"hold"</span>, <span class="ts">"dmx/*"</span>: 0 }, <span class="ts">"timeoutMs"</span>: 500 }</code></pre></div>
+<ul>
+<li><strong>Art-Net</strong> goes to the node's address (<code>host</code>, or a list of them). Art-Net 4 says ArtDmx is never broadcast: 40 packets a second per universe would reach every device on the network and flood slow nodes and Wi-Fi. <code>"broadcast": true</code> is there for an old node that only listens to broadcast, on a network that carries nothing else.</li>
+<li><strong>sACN</strong> goes to each universe's multicast group <code>239.255.&lt;high byte&gt;.&lt;low byte&gt;</code> (receivers join the groups they want), or to <code>host</code> when you give one. <code>priority</code> is 0–200 (100 by default: a receiver takes the highest it hears), <code>source</code> is the name a console shows, <code>interface</code> picks the network card multicast leaves from. A clean stop sends three "stream terminated" packets after the safe values.</li>
+<li><strong>Enttec</strong> writes one <code>universe</code> to a DMX USB Pro on a serial device. A missing device is a status, retried every 2 s, never a crash.</li>
+<li><strong>Web Serial</strong> needs no bridge: <code>dmxTransport('serial')</code> and a <strong>Connect</strong> button (the browser asks which port, only from a click). Chrome and Edge on a computer only, on https or localhost.</li>
+<li>Not here: an Enttec Open DMX or any bare FTDI cable (the computer would have to time the DMX break itself, which a page cannot do reliably), RDM, Art-Net discovery (ArtPoll), ArtSync.</li>
+</ul>
+<h3 id="dmx-which-universe-is-which">Which universe is which<a class="anchor" href="#dmx-which-universe-is-which" aria-label="Link to this section">#</a></h3>
+<p>"Universe 1" is the number you patch on and the number in the channel name, <code>dmx/1/…</code>. It leaves as <strong>Art-Net Port-Address 1</strong> (Net 0, Sub-Net 0, Universe 1) and as <strong>sACN universe 1</strong>. <code>dmx/N/…</code> is Port-Address N (up to 32767, Net · Sub-Net · Universe in one 15-bit number) and sACN universe N (up to 63999).</p>
+<p>Some software calls its first universe "1" but sends it as Art-Net Port-Address 0, which Art-Net 4 deprecates. If a node is set to 0, patch the page on universe 0 (<code>dmx/0/…</code> reaches it through Art-Net; sACN has no universe 0) or, better, set the node to 1. <code>encodeArtDmx()</code> takes the Port-Address itself and defaults to 1.</p>
+<h2 id="dmx-fixtures-and-the-patch">Fixtures and the patch<a class="anchor" href="#dmx-fixtures-and-the-patch" aria-label="Link to this section">#</a></h2>
+<p>A <strong>profile</strong> says which channels a light has and in which order each mode sends them. The generic ones ship with the package (<code>FIXTURES</code>: a dimmer, RGB, RGBW, RGBA and RGBAW+UV pars, a strobe, a moving head in 8 and 16 channels); a real fixture's profile is a JSON file you copy and change to match its manual. None of them is marked verified, because only a person with the light in front of them can say a profile is right.</p>
+<p>Forty-two real fixtures come from the <a href="https://open-fixture-library.org/" rel="noopener">Open Fixture Library</a> (MIT), converted and kept out of <code>FIXTURES</code> (<code>loadImportedFixture(id)</code> from <code>@openav/dmx/fixtures/imported.js</code>, or <code>device(id)</code> of <a href="../../docs/devices/"><code>@openav/devices</code></a>, loads the one you ask for). Every fixture, generic or imported, has a page at <code>/fixtures/&lt;id&gt;/</code> with each mode's channel table, a virtual fixture to try and the code that patches it: <a href="../../devices/#kind-dmx-fixture">the DMX fixtures of the device collection</a>, for example the <a href="../../fixtures/chauvet-dj-slimpar-t12-bt/">Chauvet DJ SlimPAR T12 BT</a>.</p>
+<p>The <strong>patch</strong> puts fixtures on universes and addresses, in groups, with limits:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Patch } <span class="tk">from</span> <span class="ts">'@openav/dmx'</span>;
+
+<span class="tk">const</span> patch = <span class="tk">new</span> Patch();
+<span class="tk">for</span> (<span class="tk">let</span> i = 0; i &lt; 8; i++) patch.add({ id: <span class="ts">`par${i + 1}`</span>, profile: <span class="ts">'generic-rgbw'</span>, mode: <span class="ts">'6ch'</span>, address: 1 + i * 6, groups: [<span class="ts">'pars'</span>] });
+patch.add({ id: <span class="ts">'head1'</span>, profile: <span class="ts">'generic-moving-head'</span>, mode: <span class="ts">'16ch'</span>, address: 49, groups: [<span class="ts">'heads'</span>], limits: { tilt: [0.1, 0.9] } });
+patch.check();   <span class="tc">// fixtures that share addresses, if any</span></code></pre></div>
+<p>A work never names channel numbers. It asks for properties, each 0..1: <code>dimmer</code>, <code>color: [r, g, b]</code>, <code>pan</code>, <code>tilt</code>, <code>strobe</code>, <code>zoom</code>. The patch turns them into each light's bytes: the colour is split into the emitters the fixture has (white first on an RGBW par), pan and tilt become two bytes where the mode has a fine channel, and a fixture with no dimmer channel gets the dimmer in its colour.</p>
+<h2 id="dmx-scenes-cues-chases-and-effects">Scenes, cues, chases and effects<a class="anchor" href="#dmx-scenes-cues-chases-and-effects" aria-label="Link to this section">#</a></h2>
+<p><code>DmxEngine</code> renders every light at any moment as a pure function of time: the same <code>t</code> always gives the same bytes, so a look can be checked with no light and a recording can be rendered frame by frame. The layers, bottom to top:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>layer</th><th>call</th><th>what it is</th></tr></thead>
+<tbody>
+<tr><td>base</td><td><code>scene(name, { target: props })</code>, <code>base(...names)</code></td><td>the look that is just on</td></tr>
+<tr><td>cues</td><td><code>cue(name, { scene, fadeIn, fadeOut, curve })</code>, <code>go(name, at)</code>, <code>release(at)</code></td><td>go to a scene with a fade, as on a lighting desk</td></tr>
+<tr><td>chases</td><td><code>chase(name, { steps, every, unit, fade })</code>, <code>run(name, on)</code></td><td>scenes in turn, every n beats or seconds</td></tr>
+<tr><td>effects</td><td><code>effect(name, { target, property, wave, rate, depth, spread })</code>, <code>tune(name, { rate, depth }, at)</code></td><td>sine, saw, square, chase, flicker or rainbow over a group, each fixture a little behind the one before</td></tr>
+<tr><td>live values</td><td><code>set(target, props)</code></td><td>a fader, the microphone: on top of everything</td></tr>
+<tr><td>submasters</td><td><code>submaster(target, level)</code></td><td>a fader over a group: scales the dimmer of what every layer made</td></tr>
+<tr><td>last</td><td><code>engine.master</code>, <code>engine.blackout</code>, the patch's limits</td><td>grand master, blackout, per-fixture limits</td></tr>
+</tbody>
+</table></div>
+<p>A target is a fixture id, a group, <code>'*'</code> or a list of them. <code>tune()</code> changes a running effect's rate without a jump: the wave goes on from where it is, only faster or slower. (Defining the effect again would restart its phase, and a knob turned on a wave that is 100 seconds along would sweep it through many cycles at once.)</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> engine = <span class="tk">new</span> DmxEngine(patch);
+engine.scene(<span class="ts">'on'</span>, { pars: { dimmer: 1 }, heads: { dimmer: 1, tilt: 0.4 } }).base(<span class="ts">'on'</span>);
+engine.effect(<span class="ts">'breathe'</span>, { target: <span class="ts">'pars'</span>, wave: <span class="ts">'sine'</span>, rate: 0.2, depth: 0.35, spread: 1 });
+engine.effect(<span class="ts">'sweep'</span>, { target: <span class="ts">'heads'</span>, property: <span class="ts">'pan'</span>, rate: 0.12, depth: 0.5 });
+<span class="tk">const</span> universes = engine.render(t);      <span class="tc">// every light at t seconds</span></code></pre></div>
+<h2 id="dmx-where-the-bytes-go-each-frame">Where the bytes go each frame<a class="anchor" href="#dmx-where-the-bytes-go-each-frame" aria-label="Link to this section">#</a></h2>
+<p><code>dmxTransport()</code> takes what <code>render()</code> returns, every frame, and delivers only what changed:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { dmxTransport } <span class="tk">from</span> <span class="ts">'@openav/dmx'</span>;
+<span class="tk">import</span> { OutClient } <span class="tk">from</span> <span class="ts">'@openav/out'</span>;
+
+<span class="tk">const</span> out = dmxTransport(<span class="ts">'sim'</span>, { patch });                                       <span class="tc">// memory only: out.bytes(1)</span>
+<span class="tc">// const out = dmxTransport('bridge', { patch, client: new OutClient({ id: 'my-show' }).connect() });   // the out-bridge</span>
+<span class="tc">// const out = dmxTransport('serial', { patch, universe: 1 });  button.onclick = () =&gt; out.connect();  // an Enttec Pro</span>
+out.send(engine.render(t));</code></pre></div>
+<p>Every transport puts the frame through the flash guard before anything leaves (see <a href="#dmx-safety">Safety</a>); <code>{ patch }</code> lets it read each fixture's light. The bridge transport calls <code>client.set('dmx/&lt;universe&gt;/&lt;address&gt;', byte / 255)</code> once per changed channel. The serial one writes a whole Enttec frame (all 512 channels) when anything in its universe changed, at most one every 25 ms, and once a second otherwise.</p>
+<p>In a <a href="../../docs/lab-integration/">lab</a> work, <code>"modules": ["out", "dmx"]</code> gives <code>lab.dmx</code>: a patch from <code>meta.dmx.patch</code>, its engine, the transport with the flash guard on (<code>?dmx=bridge</code> goes through <code>lab.out</code>, <code>?dmx=serial</code> to an Enttec Pro), <code>lab.dmx.frame(t)</code> to render and send, <code>lab.dmx.monitor(el)</code> and <code>lab.dmx.params(options)</code>.</p>
+<h2 id="dmx-driving-the-lights-from-sound-and-from-a-controller">Driving the lights from sound and from a controller<a class="anchor" href="#dmx-driving-the-lights-from-sound-and-from-a-controller" aria-label="Link to this section">#</a></h2>
+<p>The engine never reads a signal (the framework's first rule: continuous control goes through params). <code>dmxParams()</code> turns its control points into params, and from then on the lights are performed like any world:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> rig = dmxParams(engine, { groups: [<span class="ts">'pars'</span>, <span class="ts">'heads'</span>], effects: [<span class="ts">'breathe'</span>, <span class="ts">'sweep'</span>], chases: [<span class="ts">'walk'</span>] });
+<span class="tk">const</span> lights = {
+  name: <span class="ts">'lights'</span>,
+  params: rig.params,                       <span class="tc">// dmx/master, dmx/blackout, dmx/pars/dimmer, dmx/pars/hue, dmx/sweep/rate, …</span>
+  update(dt, state) { t += dt; rig.apply(state, t); out.send(engine.render(t)); },
+  render() {},
+};</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>key</th><th>drives</th></tr></thead>
+<tbody>
+<tr><td><code>dmx/master</code></td><td>the grand master</td></tr>
+<tr><td><code>dmx/blackout</code></td><td>blackout (a step param, 0 or 1)</td></tr>
+<tr><td><code>dmx/&lt;group&gt;/dimmer</code></td><td>a submaster over the group: cues, chases and effects keep running under it</td></tr>
+<tr><td><code>dmx/&lt;group&gt;/hue</code>, <code>/saturation</code></td><td>the group's colour, in a base scene of its own (a rainbow effect mixes over it)</td></tr>
+<tr><td><code>dmx/&lt;effect&gt;/rate</code>, <code>/depth</code></td><td>the effect, through <code>tune()</code>: no jump when a knob moves</td></tr>
+<tr><td><code>dmx/&lt;chase&gt;/run</code></td><td>a chase on or off</td></tr>
+</tbody>
+</table></div>
+<p>Now the mapper connects anything to them, in <code>routes</code> or with learn in the L2 · Mapping panel:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">routes: [
+  { source: <span class="ts">'audio/rms'</span>, target: <span class="ts">'dmx/pars/dimmer'</span>, inMax: 0.25, outMin: 0.25, smooth: 0.25 },   <span class="tc">// the room's loudness (smoothed for the look)</span>
+  { source: <span class="ts">'drum/kick/env'</span>, target: <span class="ts">'dmx/pars/dimmer'</span>, outMin: 0.3, smooth: 0.12 },             <span class="tc">// the drum machine, when there is no mic</span>
+  { source: <span class="ts">'chord/consonance'</span>, target: <span class="ts">'dmx/pars/hue'</span>, inMin: -1, inMax: 1, outMin: 0.62, outMax: 0.06, smooth: 0.4 },
+  { source: <span class="ts">'midi/cc/7'</span>, target: <span class="ts">'dmx/master'</span> },                                                   <span class="tc">// any controller's volume fader</span>
+],</code></pre></div>
+<p>The timeline automates the same keys (<code>automation: { 'dmx/pars/hue': [[0, 0.07], [24, 0.58]] }</code>), a phone surface shows them as faders (their <code>group</code> is <code>lights</code>), and a world's own params can feed both the picture and the lights.</p>
+<h2 id="dmx-safety">Safety<a class="anchor" href="#dmx-safety" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Blackout.</strong> <code>engine.blackout = true</code> (or the <code>dmx/blackout</code> param, or the Blackout button in example 28) takes every dimmer to 0 at once (and the colour of a fixture that has no dimmer channel, since its dimmer is in its colour), and leaves pan, tilt, zoom and control channels where they are, so a moving head does not swing when the room goes dark.</li>
+<li><strong>Limits.</strong> Each placed fixture can have <code>limits</code> (<code>{ dimmer: [0, 0.8], tilt: [0.1, 0.9] }</code>), applied after every layer, before the grand master.</li>
+<li><strong>Flashing, per fixture.</strong> Flashing faster than about three times a second can bring on a seizure in people with photosensitive epilepsy. What matters is the light one fixture really gives, so the cap, <code>maxFlashHz</code> (3 by default), is held per fixture, in two layers.
+<ol>
+<li><strong>In the engine.</strong> Each effect and each chase is first held to the cap on its own: a rate in seconds is clamped, a rate in beats is halved until it fits (so it stays on the beat), a chase's step is doubled, a random flicker draws no more new values than that. Then, for each fixture, the rates of everything that flashes it (effects on its dimmer or colour, chases that change it with anything but position) are added up. When the sum is over the cap, those sources are slowed on that fixture until it is not: a rate in seconds by the same factor, a rate in beats halved, a chase's step doubled. Two 3 Hz effects on one par run at 1.5 Hz each there, and on the pars that carry only one of them they keep their speed. <code>engine.state(t).slowed</code> (and <code>describe().slowed</code>) lists the fixtures slowed, with their sum before and after and each source. This layer is still a pure function of time: the same <code>t</code> gives the same bytes, so a recording renders frame by frame as before. <code>tune()</code> keeps every wave on a shared fixture going from where it is when a knob changes one of them.</li>
+<li><strong>At the output.</strong> Every <code>dmxTransport()</code> (sim, bridge and serial) puts the frame through a flash guard before it leaves. It reads each fixture's brightness from the bytes (its intensity times its brightest colour channel) and counts a flash the way WCAG 2.3.1 does: a pair of opposing changes of 10% of full scale or more, measured from the last turning point. No fixture may brighten by that much more than 3 times in any second: when the next rise would be one too many, the light stays at the level it last had, steady, until the second has room. Falls always pass, so blackout and a cue to dark land on the next frame, and the guard never sends more light than was asked. It holds only the intensity bytes (the colour bytes, scaled together, on a fixture with no dimmer channel); pan, tilt, zoom, gobo, strobe and control channels, and every fixture it is not holding, leave exactly as they came. This layer catches what the engine cannot see: live values (a fader, the microphone, <code>drum/kick/env</code> on a dimmer at 180 bpm sixteenths is 12 flashes a second), two engines on one rig, and a combination of waves that lands more edges in one second than their rates add up to. It keeps a memory, so it lives in the transport, outside the engine, and counts wall-clock seconds, never the time a timeline is scrubbed to.</li>
+</ol>
+<ul>
+<li>Give the transport the patch: <code>dmxTransport('sim', { patch })</code>. Without it the guard holds each DMX channel on its own, which is coarser (see the bridge below), and its status says <code>unit: 'channel'</code>.</li>
+<li><code>out.flashGuard</code> is <code>{ on, unit, maxFlashHz, held }</code>: the fixtures held back in the last frame. The monitor rings them in amber.</li>
+<li>Switching it off takes <code>dmxTransport(kind, { flashGuard: false })</code>, in so many words. The monitor then shows a red <strong>FLASH GUARD OFF</strong> for as long as it is off. Raising the engine's <code>maxFlashHz</code> does not raise the guard's: that is <code>{ maxFlashHz }</code> on the transport.</li>
+<li>The out-bridge's three DMX sinks carry the same guard, on by default, so another program sending DMX through the bridge is held too. A bridge knows no patch, so there the unit is one DMX channel, which is coarser: it also holds channels that flash nothing. The case that matters is a 16-bit pan or tilt: during a smooth move its fine byte runs a fast sawtooth, and holding it makes the beam step by up to one coarse step (example 28's sweep through it: under 2° on a 540° head). List those channels in the route's <code>"flashGuard": { "exempt": ["dmx/1/49-52"] }</code>, or switch the bridge's guard off with <code>"flashGuard": false</code> when the page's guard is the one you rely on. See the <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/out/README.md#the-flash-guard" rel="noopener">out package README</a>.</li>
+<li>A strobe channel follows its own rule: one whose profile gives its Hz is held to the cap, one whose profile does not stays on its open value.</li>
+<li>Raise the cap (or set <code>Infinity</code>) only on purpose.</li>
+</ul></li>
+<li><strong>What neither layer catches.</strong> Many fixtures flashing together: the guard counts each light on its own, so twenty pars each at 3 Hz but out of step are a room flashing far faster, and the total flashing area in the audience's view is yours to judge. The picture on a projector, a screen or LED wall: the guard sees DMX only (example 28 draws its stage from the guarded bytes, but a world's own canvas is not guarded). A colour that alternates at the same brightness (saturated red against blue, WCAG's "red flash"): brightness here is intensity times the brightest channel, which does not move. Fast pan and tilt are not a flash and are not held.</li>
+<li><strong>Control channels.</strong> A <code>control</code> channel (reset, lamp on and off, built-in programs) cannot be set by a scene, an effect, a param or a route: only <code>engine.control(id, key, byte)</code> writes it.</li>
+<li><strong>The watchdog.</strong> Through the bridge, a page that stops talking (a closed tab, a frozen page) gets each channel put on its <code>safe</code> value after <code>timeoutMs</code> (500 ms by default), and at once when the last page disconnects or the bridge stops cleanly. The first glob that fits wins, and <code>"hold"</code> means no safe value: <code>{ "dmx/1/49": "hold", "dmx/*": 0 }</code> darkens the rig and leaves one head's pan alone. On Web Serial there is no watchdog: the Pro keeps repeating the last frame, so send a blackout before <code>close()</code>.</li>
+</ul>
+<h2 id="dmx-watch-it-without-hardware">Watch it without hardware<a class="anchor" href="#dmx-watch-it-without-hardware" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><code>dmxTransport('sim', { patch })</code> keeps the bytes in memory, after the flash guard; <code>out.bytes(1)</code> is universe 1, <code>out.changed</code> the channels of the last send.</li>
+<li><code>mountDmxMonitor(el, { patch, transport, engine })</code> draws the rig on the page: one swatch per fixture (its colour times its dimmer, a moving head's pan and tilt as a small mark) and the 512 channels of a universe as a grid, each cell its value as a bar, tinted by what it drives. Point at a cell to read its address, value, fixture and channel. Everything is read back from the bytes, so a profile one channel off shows the wrong colour here too. <code>monitor.update()</code> with no argument shows what the transport delivered, after the flash guard; the header says what the guard is doing, held fixtures get an amber ring, and with the engine the fixtures its per-fixture cap slows are marked "slow".</li>
+<li><a href="../../examples/28-dmx-lights/">Example 28</a> draws a stage with the same lights and the monitor under it, on the <code>sim</code> transport by default: <code>?out=bridge</code> sends to the out-bridge, <code>?out=serial</code> adds a Connect button for an Enttec Pro.</li>
+<li><code>tests/dmx-out.test.js</code> runs the bridge on this machine and decodes every Art-Net and sACN packet it sends with the package's own decoders.</li>
+</ul>
+<h2 id="dmx-check-it-in-touchdesigner">Check it in TouchDesigner<a class="anchor" href="#dmx-check-it-in-touchdesigner" aria-label="Link to this section">#</a></h2>
+<p>TouchDesigner's <strong>DMX In CHOP</strong> is a second receiver that has nothing to do with this code, which makes it a good check before a rig is in the room.</p>
+<ol>
+<li>In <code>out.json</code>, send universe 1 to this machine: <code>{ "match": "dmx/1/*", "sink": "artnet", "host": "127.0.0.1" }</code> (or <code>"sink": "sacn", "host": "127.0.0.1"</code>). Start the bridge.</li>
+<li>In TouchDesigner, add a DMX In CHOP. For Art-Net, pick the Art-Net interface and set Net 0, Subnet 0, Universe 1 (Port-Address 1). For sACN, pick sACN and universe 1.</li>
+<li>Open example 28 with <code>?out=bridge</code>. The CHOP shows 512 channels moving: par 1 is channels 1 to 6 (dimmer, red, green, blue, white, strobe), head 1 starts at 49.</li>
+<li>Close the tab: within half a second the channels go to their safe values.</li>
+</ol>
+<p>This check has not been run for this project yet, and the CHOP's parameter names may read a little differently in your version of TouchDesigner.</p>
+<h2 id="dmx-not-yet-tested-on-real-hardware">Not yet tested on real hardware<a class="anchor" href="#dmx-not-yet-tested-on-real-hardware" aria-label="Link to this section">#</a></h2>
+<p>What was checked: the byte layouts against the specifications, every packet decoded on this machine (universe, bytes, at most 44 packets a second, the keep-alive, safe values when the page goes away), the Enttec sink and the Web Serial transport against stand-in ports, the engine's caps and fades and both flash layers in <code>npm test</code> (flashes counted at 40 frames a second on injected clocks, by a counter written apart from the guard), and example 28 in a headless browser with no permission for serial or MIDI. The flash guard has not been watched on a real light: what a fixture does with a held intensity byte (its own dimmer curve, its fade time) is not known here. What was not: a real Art-Net node, an sACN receiver or console, an Enttec DMX USB Pro, any real fixture's channels, and TouchDesigner as a receiver. If you have any of them, try it and tell us what you saw.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/score/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Score &amp; Director</span></a>
+      <a class="ch-next" rel="next" href="../../docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">MIDI controllers &amp; embedding</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

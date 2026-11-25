@@ -14,7 +14,7 @@ How to cite: cite the canonical URL of the page you read. Code is MIT; examples 
 ## Pages
 
 - [Homepage](https://openaudiovisual.com/) ([繁體中文](https://openaudiovisual.com/zh/)): a playable instrument, how it works, the works, quick start, for AI agents.
-- [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the complete documentation on one page: every chapter listed below, in one HTML file. Generated from the Markdown in `docs/`.
+- [Handbook](https://openaudiovisual.com/docs/) ([繁體中文](https://openaudiovisual.com/zh/docs/)): the handbook's contents: every chapter listed below, each on its own page, with its sections. Generated from the Markdown in `docs/`.
 - [API reference](https://openaudiovisual.com/docs/reference/) ([繁體中文](https://openaudiovisual.com/zh/docs/reference/)): the API reference: every variable, function, event and option of oav-p5 (`micLevel`, `knob1`, `startDrums()` …) and every export of every package, searchable, each with a description, parameters, examples you can run and a link to the source line. Generated from the code on every build and checked against it in CI, so it cannot list a name that does not exist or miss one that does. The same data as JSON: https://openaudiovisual.com/docs/reference/reference.json.
 - [MIDI controller library](https://openaudiovisual.com/controllers/) ([繁體中文](https://openaudiovisual.com/zh/controllers/)): every modeled controller as a playable faceplate with its full MIDI implementation table and cited sources; embed any of them with `<oav-controller>` or an iframe (`/embed/controller/`).
 - [Device collection](https://openaudiovisual.com/devices/) ([繁體中文](https://openaudiovisual.com/zh/devices/)): every device the framework knows in one list, by kind, filterable and searchable: the MIDI controllers (each on its /controllers/ page), the DMX fixtures (one page each with every mode's channel table, a virtual fixture and the patch code), cameras, audio interfaces, LED and DMX interfaces, sensors and the electronics parts (pins, voltages, currents with datasheets). Data: https://openaudiovisual.com/packages/devices/catalog.js.
@@ -44,27 +44,27 @@ How to cite: cite the canonical URL of the page you read. Code is MIT; examples 
 
 - [AGENTS.md](https://openaudiovisual.com/AGENTS.md): conventions for AI coding agents, the two rules, how to create a work. Read first.
 - [README](https://openaudiovisual.com/README.md): overview, architecture diagram, examples, phone remote.
-- [Introduction](https://openaudiovisual.com/docs/introduction.md): what it is, who it is for, what it handles so a show does not rebuild it.
-- [Quick start](https://openaudiovisual.com/docs/getting-started.md): run it, play it, make a new work.
-- [Core concepts](https://openaudiovisual.com/docs/concepts.md): signal, param, route, world, timeline, show, and the two rules that hold them together.
-- [Architecture](https://openaudiovisual.com/docs/architecture.md): the frame loop and every layer's contract.
-- [Writing a world](https://openaudiovisual.com/docs/writing-a-world.md): the World interface, params vs events, sound output, checklist.
-- [Inputs](https://openaudiovisual.com/docs/inputs.md): every input package and the `modules` key that switches it on.
-- [Mapping](https://openaudiovisual.com/docs/mapping.md): routes, curves, smoothing, many-to-many and "learn".
-- [Show control](https://openaudiovisual.com/docs/show-control.md): timeline, scenes, performance mode, console, monitor, OSC.
-- [Score & Director](https://openaudiovisual.com/docs/score.md): a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.
-- [DMX lighting](https://openaudiovisual.com/docs/dmx.md): stage lights from a work: fixtures, the patch, scenes, cues, chases, effects, a 3 Hz flash cap per fixture (in the engine and again at the output, live values included), out through the out-bridge (Art-Net, sACN) or Web Serial (Enttec DMX USB Pro), driven by sound and MIDI through params, a monitor for no hardware.
-- [MIDI controllers & embedding](https://openaudiovisual.com/docs/controllers.md): MIDI controllers as JSON profiles, the `<oav-controller>` element and the iframe embed.
-- [Devices](https://openaudiovisual.com/docs/devices.md): one collection of show devices (every MIDI controller profile, DMX fixture and electronics part, and hand-written records for cameras, audio interfaces, sensors, LED and DMX interfaces), one record format with a source for every fact, devices() to search, device(id) to hand one to the package that drives it.
-- [p5.js in one line](https://openaudiovisual.com/docs/p5.md): one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone, with sound, a drum machine you can write as one line of rhythm, the microphone, video recording, and values that move like TouchDesigner's CHOPs (`lag()`).
-- [With Strudel](https://openaudiovisual.com/docs/strudel.md): Strudel and OAV side by side: knobs, phone and microphone as Strudel parameters; Strudel's notes and clock drawn in a p5 sketch on the same page or in another tab (link=); Hydra.
-- [Phones, relay & surfaces](https://openaudiovisual.com/docs/remote.md): phones and iPads as controllers: relay, sensors, control surfaces.
-- [Signals reference](https://openaudiovisual.com/docs/signals.md): every signal the built-in inputs publish, with ranges.
-- [Package reference](https://openaudiovisual.com/docs/packages.md): every package, by layer.
-- [For AI agents](https://openaudiovisual.com/docs/agents.md): conventions for AI coding agents, the two rules, how to create a work.
-- [Lab integration (the `"lab"` field)](https://openaudiovisual.com/docs/lab-integration.md): the `"lab"` field in package.json.
-- [Troubleshooting](https://openaudiovisual.com/docs/troubleshooting.md): real problems found in rehearsals, and what to do about them.
-- [Roadmap](https://openaudiovisual.com/docs/roadmap.md): signal recording and replay, npm publish, WebGPU worlds, NDI gateway, distributed performance, agent performers.
+- [Introduction](https://openaudiovisual.com/docs/introduction/) ([Markdown](https://openaudiovisual.com/docs/introduction.md)): what it is, who it is for, what it handles so a show does not rebuild it.
+- [Quick start](https://openaudiovisual.com/docs/quick-start/) ([Markdown](https://openaudiovisual.com/docs/getting-started.md)): run it, play it, make a new work.
+- [Core concepts](https://openaudiovisual.com/docs/concepts/) ([Markdown](https://openaudiovisual.com/docs/concepts.md)): signal, param, route, world, timeline, show, and the two rules that hold them together.
+- [Architecture](https://openaudiovisual.com/docs/architecture/) ([Markdown](https://openaudiovisual.com/docs/architecture.md)): the frame loop and every layer's contract.
+- [Writing a world](https://openaudiovisual.com/docs/writing-a-world/) ([Markdown](https://openaudiovisual.com/docs/writing-a-world.md)): the World interface, params vs events, sound output, checklist.
+- [Inputs](https://openaudiovisual.com/docs/inputs/) ([Markdown](https://openaudiovisual.com/docs/inputs.md)): every input package and the `modules` key that switches it on.
+- [Mapping](https://openaudiovisual.com/docs/mapping/) ([Markdown](https://openaudiovisual.com/docs/mapping.md)): routes, curves, smoothing, many-to-many and "learn".
+- [Show control](https://openaudiovisual.com/docs/show-control/) ([Markdown](https://openaudiovisual.com/docs/show-control.md)): timeline, scenes, performance mode, console, monitor, OSC.
+- [Score & Director](https://openaudiovisual.com/docs/score/) ([Markdown](https://openaudiovisual.com/docs/score.md)): a show as segment lengths: cuts, cues, hold, segment modules, the prompter, score to MIDI.
+- [DMX lighting](https://openaudiovisual.com/docs/dmx/) ([Markdown](https://openaudiovisual.com/docs/dmx.md)): stage lights from a work: fixtures, the patch, scenes, cues, chases, effects, a 3 Hz flash cap per fixture (in the engine and again at the output, live values included), out through the out-bridge (Art-Net, sACN) or Web Serial (Enttec DMX USB Pro), driven by sound and MIDI through params, a monitor for no hardware.
+- [MIDI controllers & embedding](https://openaudiovisual.com/docs/controllers/) ([Markdown](https://openaudiovisual.com/docs/controllers.md)): MIDI controllers as JSON profiles, the `<oav-controller>` element and the iframe embed.
+- [Devices](https://openaudiovisual.com/docs/devices/) ([Markdown](https://openaudiovisual.com/docs/devices.md)): one collection of show devices (every MIDI controller profile, DMX fixture and electronics part, and hand-written records for cameras, audio interfaces, sensors, LED and DMX interfaces), one record format with a source for every fact, devices() to search, device(id) to hand one to the package that drives it.
+- [p5.js in one line](https://openaudiovisual.com/p5/) ([Markdown](https://openaudiovisual.com/docs/p5.md)): one line that lets any p5.js sketch play from MIDI, an on-screen controller or a phone, with sound, a drum machine you can write as one line of rhythm, the microphone, video recording, and values that move like TouchDesigner's CHOPs (`lag()`).
+- [With Strudel](https://openaudiovisual.com/docs/strudel/) ([Markdown](https://openaudiovisual.com/docs/strudel.md)): Strudel and OAV side by side: knobs, phone and microphone as Strudel parameters; Strudel's notes and clock drawn in a p5 sketch on the same page or in another tab (link=); Hydra.
+- [Phones, relay & surfaces](https://openaudiovisual.com/docs/phones/) ([Markdown](https://openaudiovisual.com/docs/remote.md)): phones and iPads as controllers: relay, sensors, control surfaces.
+- [Signals reference](https://openaudiovisual.com/docs/signals/) ([Markdown](https://openaudiovisual.com/docs/signals.md)): every signal the built-in inputs publish, with ranges.
+- [Package reference](https://openaudiovisual.com/docs/packages/) ([Markdown](https://openaudiovisual.com/docs/packages.md)): every package, by layer.
+- [For AI agents](https://openaudiovisual.com/docs/agents/) ([Markdown](https://openaudiovisual.com/docs/agents.md)): conventions for AI coding agents, the two rules, how to create a work.
+- [Lab integration (the `"lab"` field)](https://openaudiovisual.com/docs/lab-integration/) ([Markdown](https://openaudiovisual.com/docs/lab-integration.md)): the `"lab"` field in package.json.
+- [Troubleshooting](https://openaudiovisual.com/docs/troubleshooting/) ([Markdown](https://openaudiovisual.com/docs/troubleshooting.md)): real problems found in rehearsals, and what to do about them.
+- [Roadmap](https://openaudiovisual.com/docs/roadmap/) ([Markdown](https://openaudiovisual.com/docs/roadmap.md)): signal recording and replay, npm publish, WebGPU worlds, NDI gateway, distributed performance, agent performers.
 - [Patch bay design](https://openaudiovisual.com/docs/design/patchbay.md): multi-device MIDI and the patch bay.
 - [Full text](https://openaudiovisual.com/llms-full.txt): README, AGENTS.md and every handbook chapter in one file.
 

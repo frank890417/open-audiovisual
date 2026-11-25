@@ -51,7 +51,7 @@
   "sources": [
     { "title": "Audinate: Dante Virtual Soundcard (product page)", "url": "https://www.getdante.com/products/software-essentials/dante-virtual-soundcard/", "read": "2026-11-25" },
     { "title": "open-audiovisual: @openav/audio, AudioAnalyzer.enableMic() (the constraints it asks a microphone for)", "url": "https://github.com/frank890417/open-audiovisual/blob/main/packages/audio/index.js", "read": "2026-11-25" },
-    { "title": "open-audiovisual handbook: Troubleshooting, the camera or microphone does not start", "url": "https://openaudiovisual.com/docs/#troubleshooting-the-camera-or-microphone-does-not-start", "read": "2026-11-25" }
+    { "title": "open-audiovisual handbook: Troubleshooting, the camera or microphone does not start", "url": "https://openaudiovisual.com/docs/troubleshooting/#troubleshooting-the-camera-or-microphone-does-not-start", "read": "2026-11-25" }
   ],
   "license": "MIT",
   "verified": false,

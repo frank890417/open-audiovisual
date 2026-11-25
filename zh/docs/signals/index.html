@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>訊號一覽｜open-audiovisual</title>
+<meta name="description" content="訊號是輸入層唯一的通用貨幣：有名字、經過正規化、不分來源。這一頁列出內建輸入套件發布的每一個訊號。每一則硬體訊息，都會同時發布舊式名稱和分頻道的名稱。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/signals/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/signals/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/signals/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/signals/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="訊號一覽｜open-audiovisual">
+<meta property="og:description" content="訊號是輸入層唯一的通用貨幣：有名字、經過正規化、不分來源。這一頁列出內建輸入套件發布的每一個訊號。每一則硬體訊息，都會同時發布舊式名稱和分頻道的名稱。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/signals/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="訊號一覽｜open-audiovisual">
+<meta name="twitter:description" content="訊號是輸入層唯一的通用貨幣：有名字、經過正規化、不分來源。這一頁列出內建輸入套件發布的每一個訊號。每一則硬體訊息，都會同時發布舊式名稱和分頻道的名稱。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="signals">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/signals/#article","url":"https://openaudiovisual.com/zh/docs/signals/","name":"訊號一覽｜open-audiovisual","description":"訊號是輸入層唯一的通用貨幣：有名字、經過正規化、不分來源。這一頁列出內建輸入套件發布的每一個訊號。每一則硬體訊息，都會同時發布舊式名稱和分頻道的名稱。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"訊號一覽","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["@openav/midi","@openav/keys","@openav/chord","@openav/audio","@openav/pose","@openav/pose — HandTracker（21 個關鍵點的精細控制）","@openav/leap","@openav/drums（模擬器，訊號形狀和分析器相同）","@openav/sound（輸出事件）","@openav/record（MIDI 錄音的播放）","@openav/remote · @openav/surface","自己命名訊號"],"position":16,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/signals/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/signals/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"訊號一覽","item":"https://openaudiovisual.com/zh/docs/signals/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/signals/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/signals/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch is-here" data-ch="signals">
+          <a href="#signals" aria-current="page"><span class="n">16</span><span class="t">訊號一覽</span></a>
+          <ol class="toc-secs">
+            <li><a href="#signals-openav-midi">@openav/midi</a></li>
+            <li><a href="#signals-openav-keys">@openav/keys</a></li>
+            <li><a href="#signals-openav-chord">@openav/chord</a></li>
+            <li><a href="#signals-openav-audio">@openav/audio</a></li>
+            <li><a href="#signals-openav-pose">@openav/pose</a></li>
+            <li><a href="#signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker（21 個關鍵點的精細控制）</a></li>
+            <li><a href="#signals-openav-leap">@openav/leap</a></li>
+            <li><a href="#signals-openav-drums-simulator-analyzer-shaped">@openav/drums（模擬器，訊號形狀和分析器相同）</a></li>
+            <li><a href="#signals-openav-sound-output-events">@openav/sound（輸出事件）</a></li>
+            <li><a href="#signals-openav-record-take-playback">@openav/record（MIDI 錄音的播放）</a></li>
+            <li><a href="#signals-openav-remote-openav-surface">@openav/remote · @openav/surface</a></li>
+            <li><a href="#signals-naming-your-own">自己命名訊號</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="signals" aria-labelledby="signals">
+<h1 id="signals">訊號一覽<a class="anchor" href="#signals" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 16 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/signals.md">docs/zh/signals.md</a></span></p>
+<p>訊號是輸入層唯一的通用貨幣：有名字、經過正規化、不分來源。這一頁列出內建輸入套件發布的每一個訊號。</p>
+<p>慣例：</p>
+<ul>
+<li>除非另外註明，範圍都是 0..1</li>
+<li><code>pulse</code>（脈衝）訊號觸發的是事件，它的值就是事件帶的資料（payload）</li>
+<li>只要對演出來說比較直覺，y 軸就會反轉（1 = 舉高），數值絕不會是原始像素</li>
+<li><code>&lt;n&gt;</code> 是數字，<code>&lt;ch&gt;</code> 是 MIDI 頻道 1..16，<code>&lt;id&gt;</code> 是裝置 id，<code>&lt;slug&gt;</code> 是轉成網址安全格式的裝置名稱</li>
+</ul>
+<h2 id="signals-openav-midi">@openav/midi<a class="anchor" href="#signals-openav-midi" aria-label="這一節的連結">#</a></h2>
+<p>每一則硬體訊息，都會同時發布舊式名稱和分頻道的名稱。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>midi/note/on</code></td><td>脈衝</td><td><code>{note, vel, velocity, ch, device}</code></td><td>按下琴鍵：<code>vel</code> 0..1，<code>velocity</code> 1..127，<code>ch</code> 1..16，<code>device</code> = 連接埠的 slug</td></tr>
+<tr><td><code>midi/note/off</code></td><td>脈衝</td><td><code>{note, ch, device}</code></td><td>放開琴鍵</td></tr>
+<tr><td><code>midi/cc/&lt;n&gt;</code></td><td>連續</td><td>0..1</td><td>第 n 號控制器（任何頻道）</td></tr>
+<tr><td><code>midi/bend</code></td><td>連續</td><td>-1..1</td><td>彎音（任何頻道）</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/cc/&lt;n&gt;</code></td><td>連續</td><td>0..1</td><td>單一頻道上的第 n 號控制器</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/note/&lt;n&gt;</code></td><td>連續</td><td>0..1</td><td>按住音 n 時是它的力度，放開時為 0</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/bend</code></td><td>連續</td><td>-1..1</td><td>單一頻道上的彎音</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/pressure</code></td><td>連續</td><td>0..1</td><td>頻道觸後（channel aftertouch）</td></tr>
+<tr><td><code>midi/ch/&lt;ch&gt;/poly/&lt;n&gt;</code></td><td>連續</td><td>0..1</td><td>音 n 的複音觸後（polyphonic aftertouch）</td></tr>
+</tbody>
+</table></div>
+<p>接了兩個以上的 MIDI 輸入時，每台裝置也會用自己的 slug 再發布一份（slug 取自連接埠名稱：<code>Arturia MiniLab 3</code> → <code>arturia-minilab-3</code>，名稱重複的依序加上 <code>-2</code>、<code>-3</code>）：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>midi/&lt;slug&gt;/note/on</code></td><td>脈衝</td><td><code>{note, vel, ch}</code></td><td>在那台裝置上按下琴鍵</td></tr>
+<tr><td><code>midi/&lt;slug&gt;/note/off</code></td><td>脈衝</td><td><code>{note, ch}</code></td><td>在那台裝置上放開琴鍵</td></tr>
+<tr><td><code>midi/&lt;slug&gt;/cc/&lt;n&gt;</code></td><td>連續</td><td>0..1</td><td>那台裝置的第 n 號控制器</td></tr>
+<tr><td><code>midi/&lt;slug&gt;/bend</code></td><td>連續</td><td>-1..1</td><td>那台裝置的彎音</td></tr>
+</tbody>
+</table></div>
+<p>螢幕上的控制器（<code>modules.midi.controllers</code>），每個控制項發布一個 <code>midi/&lt;device&gt;/&lt;control&gt;</code>（例如 <code>midi/minilab3/knob1</code>），打擊墊另外發 <code>/hit</code> 脈衝，也有 <code>/raw</code> 原始值。完整列表在 <a href="../../../zh/docs/controllers/">MIDI 控制器與嵌入</a>。</p>
+<h2 id="signals-openav-keys">@openav/keys<a class="anchor" href="#signals-openav-keys" aria-label="這一節的連結">#</a></h2>
+<p>螢幕鋼琴、電腦鍵盤演奏和模擬演奏者，發布的是舊式的音符名稱，帶的資料比較少：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>midi/note/on</code></td><td>脈衝</td><td><code>{note, vel, ch: 0}</code></td><td>按下琴鍵（<code>vel</code> 0..1）</td></tr>
+<tr><td><code>midi/note/off</code></td><td>脈衝</td><td><code>{note, ch: 0}</code></td><td>放開琴鍵</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-chord">@openav/chord<a class="anchor" href="#signals-openav-chord" aria-label="這一節的連結">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>chord/consonance</code></td><td>連續</td><td>-1..1</td><td>最近一次彈奏的和聲協和度</td></tr>
+<tr><td><code>chord/count</code></td><td>連續</td><td>0..10</td><td>最近一次彈奏有幾個音</td></tr>
+<tr><td><code>chord/root</code></td><td>連續</td><td>0..127</td><td>最近一次彈奏裡最低的 MIDI 音</td></tr>
+<tr><td><code>chord/event</code></td><td>脈衝</td><td>完整分析結果</td><td><code>{notes, count, root, vel, pcs, consonance, isConsonant, isDissonant, isTriad, thirdsFraction, dissonanceLevel, chordType}</code></td></tr>
+</tbody>
+</table></div>
+<p><code>chordType</code>：<code>single</code> · <code>major</code> · <code>minor</code> · <code>sus2</code> · <code>sus4</code> · <code>dim</code> · <code>aug</code> · <code>maj7</code> · <code>min7</code> · <code>dom7</code> · <code>halfdim7</code> · <code>maj9</code> · <code>min9</code> · <code>dom9</code> · <code>six</code> · <code>min6</code> · <code>cluster</code>（非常不協和的一堆音）· <code>chord</code>（其他所有情況）。轉位和弦會把音級（pitch class）輪轉一遍，認回原位和弦的名稱。</p>
+<p><code>dissonanceLevel</code>：<code>0</code> 沒有 · <code>1</code> 輕微（暴風雨警報，用來預示）· <code>2</code> 嚴重（真正的音堆，整個換成衰敗的語彙）。會分成這三級，是因為台北 IRCAM × C-LAB 演出時，有觀眾真的這樣回饋：「不協和的偵測不夠嚴格。」</p>
+<h2 id="signals-openav-audio">@openav/audio<a class="anchor" href="#signals-openav-audio" aria-label="這一節的連結">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>audio/rms</code></td><td>連續</td><td>0..1</td><td>音量（經過平滑）</td></tr>
+<tr><td><code>audio/peak</code></td><td>連續</td><td>0..1</td><td>瞬間峰值</td></tr>
+<tr><td><code>audio/band/low</code></td><td>連續</td><td>0..1</td><td>20–250 Hz 的能量</td></tr>
+<tr><td><code>audio/band/mid</code></td><td>連續</td><td>0..1</td><td>250 Hz–2 kHz 的能量</td></tr>
+<tr><td><code>audio/band/high</code></td><td>連續</td><td>0..1</td><td>2–8 kHz 的能量</td></tr>
+<tr><td><code>audio/centroid</code></td><td>連續</td><td>0..1</td><td>頻譜亮度</td></tr>
+<tr><td><code>audio/onset</code></td><td>脈衝</td><td><code>{rms}</code></td><td>高過自動調整底線的暫態（冷卻 100 ms）</td></tr>
+<tr><td><code>audio/kick</code></td><td>脈衝</td><td><code>{level}</code></td><td>20–120 Hz 的暫態（冷卻 90 ms）</td></tr>
+<tr><td><code>audio/snare</code></td><td>脈衝</td><td><code>{level}</code></td><td>150–800 Hz 的暫態（冷卻 90 ms）</td></tr>
+<tr><td><code>audio/hat</code></td><td>脈衝</td><td><code>{level}</code></td><td>6–14 kHz 的暫態（冷卻 60 ms）</td></tr>
+<tr><td><code>audio/kick/env</code> <code>/snare/env</code> <code>/hat/env</code></td><td>連續</td><td>0..1</td><td>每種鼓各自的衰減波封（可以直接映射到參數）</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-pose">@openav/pose<a class="anchor" href="#signals-openav-pose" aria-label="這一節的連結">#</a></h2>
+<p>預設左右鏡像（把鏡頭當成鏡子）。y 軸反轉：<strong>1 = 舉高</strong>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>pose/present</code></td><td>連續</td><td>0/1</td><td>畫面裡有人</td></tr>
+<tr><td><code>pose/hand/left/x</code> <code>/y</code></td><td>連續</td><td>0..1</td><td>左手腕（觀看者的左邊）</td></tr>
+<tr><td><code>pose/hand/right/x</code> <code>/y</code></td><td>連續</td><td>0..1</td><td>右手腕</td></tr>
+<tr><td><code>pose/hand/left/v</code> <code>right/v</code></td><td>連續</td><td>0..1</td><td>手腕移動速度</td></tr>
+<tr><td><code>pose/hands/spread</code></td><td>連續</td><td>0..1</td><td>兩手腕之間的距離</td></tr>
+<tr><td><code>pose/height</code></td><td>連續</td><td>0..1</td><td>鼻子的高度（蹲下 ↔ 站起）</td></tr>
+<tr><td><code>pose/lean</code></td><td>連續</td><td>-1..1</td><td>肩線傾斜</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-pose-handtracker-21-landmark-fine-control">@openav/pose — HandTracker（21 個關鍵點的精細控制）<a class="anchor" href="#signals-openav-pose-handtracker-21-landmark-fine-control" aria-label="這一節的連結">#</a></h2>
+<p>用鏡頭讀兩隻手，每隻手有一個手勢、一個可以觸發的「捏一下」，還有一組可以演奏的量。距離都除以手的大小，而且 x 乘上畫面的長寬比，所以手離鏡頭遠近、手轉向側面，數值都不變。<code>&lt;side&gt;</code> 是 <code>left</code> 或 <code>right</code>。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>hand/&lt;side&gt;/present</code></td><td>連續</td><td>0/1</td><td>看得到這隻手</td></tr>
+<tr><td><code>hand/&lt;side&gt;/x</code> <code>/y</code></td><td>連續</td><td>0..1</td><td>手掌位置（y：1 = 舉高）</td></tr>
+<tr><td><code>hand/&lt;side&gt;/pinch/index</code> <code>/pinch/middle</code></td><td>連續</td><td>0..1</td><td>拇指指尖 ↔ 食指或中指指尖，除以 2.2 個手的大小（0 = 碰在一起，張開的手大約 0.5）</td></tr>
+<tr><td><code>hand/&lt;side&gt;/spread</code></td><td>連續</td><td>0..1</td><td>食指指尖 ↔ 小指指尖，同樣的比例</td></tr>
+<tr><td><code>hand/&lt;side&gt;/tip/x</code> <code>/y</code></td><td>連續</td><td>0..1</td><td>食指指尖（y：1 = 畫面上方）</td></tr>
+<tr><td><code>hand/&lt;side&gt;/thumb/index</code> <code>/middle</code> <code>/ring</code> <code>/pinky</code></td><td>連續</td><td>0..1</td><td>拇指指尖 ↔ 各指尖，校正過：0 = 碰在一起，1 = 張到最開</td></tr>
+<tr><td><code>hand/&lt;side&gt;/openness</code></td><td>連續</td><td>0..1</td><td>0 = 握拳，1 = 手指全部張開</td></tr>
+<tr><td><code>hand/&lt;side&gt;/angle</code></td><td>連續</td><td>0..1</td><td>手腕 → 中指根部：0.5 = 手指朝上，0.75 = 指向右邊，0.25 = 指向左邊</td></tr>
+<tr><td><code>hand/&lt;side&gt;/speed</code></td><td>連續</td><td>0..1</td><td>手掌速度，1 = 每秒 3 個畫面高</td></tr>
+<tr><td><code>hand/&lt;side&gt;/pinched</code></td><td>連續</td><td>0/1</td><td>拇指碰食指，而且其他三指張開</td></tr>
+<tr><td><code>hand/&lt;side&gt;/pinch-start</code> <code>/pinch-end</code></td><td>脈衝</td><td><code>{side, x, y, distance}</code></td><td>拇指 ↔ 食指小於 0.35 個手的大小開始，大於 0.56 結束</td></tr>
+<tr><td><code>hand/&lt;side&gt;/gesture</code></td><td>連續</td><td>0..7</td><td>現在的手勢：0 沒有、1 握拳、2 張開、3 指上、4 讚、5 倒讚、6 YA、7 I love you</td></tr>
+<tr><td><code>hand/&lt;side&gt;/gesture/&lt;name&gt;</code></td><td>連續</td><td>0/1</td><td><code>fist</code> <code>open</code> <code>point</code> <code>thumb-up</code> <code>thumb-down</code> <code>victory</code> <code>iloveyou</code>：分數超過 0.5 開始，低於 0.35 結束</td></tr>
+<tr><td><code>hand/&lt;side&gt;/gesture/&lt;name&gt;-start</code></td><td>脈衝</td><td><code>{side, x, y, gesture, score}</code></td><td>這個手勢開始了</td></tr>
+<tr><td><code>hand/both/present</code></td><td>連續</td><td>0/1</td><td>兩隻手都看得到</td></tr>
+<tr><td><code>hand/both/distance</code></td><td>連續</td><td>0..1</td><td>兩個手掌中心的距離（0.2 個畫面高 = 0，1.0 = 1）</td></tr>
+<tr><td><code>hand/both/x</code> <code>/y</code></td><td>連續</td><td>0..1</td><td>兩個手掌的中點</td></tr>
+<tr><td><code>hand/both/angle</code></td><td>連續</td><td>0..1</td><td>從左手掌到右手掌的連線：0.5 = 水平，大於 0.5 = 右手比較高</td></tr>
+</tbody>
+</table></div>
+<p>新的狀態要維持 80 毫秒才算數，手不見了，它的捏合和手勢馬上結束。門檻是 <code>HandTracker</code> 的 <code>thresholds</code> 選項（在演出裡是 <code>modules: { hands: { thresholds } }</code>）。兩種追蹤器都提供 <code>skeleton(ctx, w, h)</code>，<code>hands.overlay(ctx, w, h)</code> 還會畫出捏合的線、手的角度、手勢，以及兩手之間的距離。</p>
+<h2 id="signals-openav-leap">@openav/leap<a class="anchor" href="#signals-openav-leap" aria-label="這一節的連結">#</a></h2>
+<p>透過這台電腦的橋接程式讀 Leap Motion／Ultraleap。位置是手掌或指尖在互動空間裡的位置，正規化並夾在 0..1（x 往右、y 往上、z 朝向演出者）。<code>&lt;side&gt;</code> 是 <code>left</code> 或 <code>right</code>，<code>&lt;finger&gt;</code> 是 <code>thumb index middle ring pinky</code> 其中之一。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>leap/status</code></td><td>連續</td><td>0..3</td><td>0 沒有橋接 · 1 有橋接、沒有追蹤服務 · 2 沒有裝置 · 3 追蹤中</td></tr>
+<tr><td><code>leap/hands</code></td><td>連續</td><td>0..2</td><td>看得到幾隻手</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/present</code></td><td>連續</td><td>0/1</td><td>看得到這隻手</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/x</code> <code>/y</code> <code>/z</code></td><td>連續</td><td>0..1</td><td>手掌位置</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/pinch</code> <code>/grab</code></td><td>連續</td><td>0..1</td><td>捏合與握拳的強度（手不見了就歸 0）</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/roll</code> <code>/pitch</code> <code>/yaw</code></td><td>連續</td><td>-π..π</td><td>手的轉向，單位弧度</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/speed</code></td><td>連續</td><td>0..1</td><td>手掌速度，1 = 每秒 1 公尺</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/&lt;finger&gt;/x</code> <code>/y</code> <code>/z</code></td><td>連續</td><td>0..1</td><td>指尖位置</td></tr>
+<tr><td><code>leap/both/distance</code></td><td>連續</td><td>0..1</td><td>兩個手掌的距離，1 = 40 公分</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/pinch-start</code> <code>/pinch-end</code></td><td>脈衝</td><td><code>{side, x, y, z, strength}</code></td><td>捏超過 0.86 開始，低於 0.5 結束</td></tr>
+<tr><td><code>leap/hand/&lt;side&gt;/grab-start</code> <code>/grab-end</code></td><td>脈衝</td><td><code>{side, x, y, z, strength}</code></td><td>握拳超過 0.8 開始，低於 0.5 結束</td></tr>
+<tr><td><code>leap/both/pinch-start</code> <code>/pinch-end</code></td><td>脈衝</td><td><code>{x, y, z, distance}</code></td><td>兩手都捏超過 0.8 進入，任一手低於 0.5 離開</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-drums-simulator-analyzer-shaped">@openav/drums（模擬器，訊號形狀和分析器相同）<a class="anchor" href="#signals-openav-drums-simulator-analyzer-shaped" aria-label="這一節的連結">#</a></h2>
+<p>鼓機發布的訊號，跟音訊分析器的長得一模一樣，所以接到大鼓的世界分不出那是麥克風還是鼓機（做這台模擬器就是為了這個）。音序器的每一擊也會以 <code>midi/note/on</code> 送出（頻道 10，GM 音符編號）。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>drum/kick</code> <code>/snare</code> <code>/hat</code> <code>/clap</code></td><td>脈衝</td><td><code>{level}</code></td><td>音序器打了一下</td></tr>
+<tr><td><code>drum/kick/env</code> <code>…</code></td><td>連續</td><td>0..1</td><td>每一軌的衰減波封（可以直接映射到參數）</td></tr>
+<tr><td><code>midi/note/on</code></td><td>脈衝</td><td><code>{note, vel, ch: 10}</code></td><td>大鼓 36 · 小鼓 38 · 拍手 39 · 閉合 hi-hat 42</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-sound-output-events">@openav/sound（輸出事件）<a class="anchor" href="#signals-openav-sound-output-events" aria-label="這一節的連結">#</a></h2>
+<p>頁面裡的樂器會聽 <code>midi/note/on|off</code> 和延音踏板 <code>midi/cc/64</code>，自己也會發出一個事件。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>sound/instrument</code></td><td>脈衝</td><td><code>{id, name}</code></td><td>換了樂器（從選單、程式或場景提示）</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-record-take-playback">@openav/record（MIDI 錄音的播放）<a class="anchor" href="#signals-openav-record-take-playback" aria-label="這一節的連結">#</a></h2>
+<p><code>TakePlayer</code> 用原本的名稱（<code>midi/note/on</code>、<code>midi/ch/&lt;ch&gt;/note/&lt;n&gt;</code>、<code>midi/cc/&lt;n&gt;</code>……）發布錄下來的事件，跟鍵盤當時發布的一模一樣，另外有兩個自己的訊號。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>類型</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>take/playing</code></td><td>continuous</td><td>0 / 1</td><td>正在播放時是 1；暫停、停止，或讓位給現場演奏時是 0</td></tr>
+<tr><td><code>take/position</code></td><td>continuous</td><td>0..1</td><td>播到哪裡了</td></tr>
+</tbody>
+</table></div>
+<h2 id="signals-openav-remote-openav-surface">@openav/remote · @openav/surface<a class="anchor" href="#signals-openav-remote-openav-surface" aria-label="這一節的連結">#</a></h2>
+<p>手機感測器（<code>/packages/remote/</code> → 感測）。<code>&lt;id&gt;</code> 是裝置 id。<code>phone/any/…</code> 的值永遠來自最後送出數值的那支手機，所以還沒有手機連上，就能先寫好世界的路由。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>範圍</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>phone/&lt;id&gt;/tilt/x</code> <code>/y</code></td><td>連續</td><td>-1..1</td><td>從校正過的靜止姿勢算起 ±45°，以螢幕座標為準（x 向右，y 朝向你）</td></tr>
+<tr><td><code>phone/&lt;id&gt;/accel/x|y|z</code></td><td>連續</td><td>m/s²</td><td>含重力</td></tr>
+<tr><td><code>phone/&lt;id&gt;/rot/alpha|beta|gamma</code></td><td>連續</td><td>deg/s</td><td>旋轉速率</td></tr>
+<tr><td><code>phone/&lt;id&gt;/orient/alpha|beta|gamma</code></td><td>連續</td><td>deg</td><td>原始的 deviceorientation</td></tr>
+<tr><td><code>phone/&lt;id&gt;/knock</code></td><td>脈衝</td><td><code>{strength, delta, t}</code></td><td>加速度突然一震、超過門檻（冷卻 130 ms）</td></tr>
+<tr><td><code>phone/&lt;id&gt;/light</code></td><td>連續</td><td>0..1</td><td>前鏡頭畫面的平均亮度（luma）</td></tr>
+<tr><td><code>phone/&lt;id&gt;/touch/x</code> <code>/y</code> <code>/down</code></td><td>連續</td><td>0..1</td><td>第 0 根手指。n ≥ 1 用 <code>touch/&lt;n&gt;/…</code>，另有 <code>touch/count</code></td></tr>
+<tr><td><code>phone/local/…</code></td><td>—</td><td>—</td><td>演出頁面<strong>本身</strong>跑在手機上時，同一套感測器名稱（<code>localSensors(signals)</code>，不經過中繼，也會複製一份到 <code>phone/any/…</code>）</td></tr>
+</tbody>
+</table></div>
+<p>控制面板元件（正規化到 0..1，範圍不是 0..1 的元件，另用 <code>…/raw</code> 帶未縮放的原始值）：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>訊號</th><th>種類</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;</code></td><td>連續</td><td>fader · knob · number · toggle · button（0/1）· radio（idx/(n-1)）· encoder 的相位</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;/x</code> <code>/y</code> <code>/down</code></td><td>連續</td><td>xy pad</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;/&lt;1..N&gt;</code></td><td>連續</td><td>bank 的各個通道</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;/hit</code></td><td>脈衝 <code>{pad,row,col,vel}</code></td><td>pads。按住時 <code>…/&lt;n&gt;</code>（n 從 0 起算）保持力度值</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;/delta</code></td><td>連續</td><td>encoder 每一步的轉動量，單位是圈</td></tr>
+<tr><td><code>surface/&lt;page&gt;/&lt;id&gt;</code>（text）</td><td>脈衝</td><td>在 <code>text</code> 元件裡輸入的字串</td></tr>
+<tr><td><code>midi/note/on</code> <code>/off</code>、<code>midi/cc/64</code></td><td>脈衝／連續</td><td>琴鍵分頁和 <code>keyboard</code> 元件，名稱和形狀都跟 <code>@openav/midi</code> 一樣：<code>{note, vel, velocity, ch: 1, device: 'surface'}</code></td></tr>
+</tbody>
+</table></div>
+<p>接收端：每一則中繼訊息都經過 <code>fileSignal(signals, name, value, {pulse})</code> 寫進訊號（<code>@openav/relay</code>，<code>bindSignals</code> 用的就是它，自己開 socket 的宿主頁面也是，例如 lab 的 <code>lab.js</code>）。一個名稱第一次出現時，它會先宣告（<code>signalMeta</code>）。<code>midi/…/note/on|off</code> 的發送端少給了哪一種力度寫法，它就補上哪一種（<code>vel</code> 0..1 ⇄ <code>velocity</code> 1..127）。</p>
+<h2 id="signals-naming-your-own">自己命名訊號<a class="anchor" href="#signals-naming-your-own" aria-label="這一節的連結">#</a></h2>
+<p>用路徑式的寫法，來源放最前面：<code>breath/pressure</code>、<code>phone/{id}/gyro/x</code>、<code>weather/wind</code>。先用 <code>signals.define(name, {min, max})</code> 宣告範圍，儀表和 <code>norm()</code> 才算得對，之後只要 <code>signals.set(name, v)</code>。任何會變動的東西，都能拿來演出。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/phones/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">手機、中繼與控制面板</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/packages/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">套件一覽</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

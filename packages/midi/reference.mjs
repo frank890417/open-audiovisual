@@ -413,8 +413,8 @@ console.log(genericSignals(ev, { legacy: false }).map((s) => s.name));`,
     returns: { type: '{ family, ev } | null', en: '`family` is `\'channel\'` or `\'legacy\'`, and `ev` is the event. `null` for a device name (`midi/minilab3/…`), `midi/virtual` and anything else.', zh: '`family` 是 `\'channel\'` 或 `\'legacy\'`，`ev` 是事件。裝置名稱（`midi/minilab3/…`）、`midi/virtual` 和其他名稱都回傳 `null`。' },
     description: [
       {
-        en: 'It lets anything that only hears a [`Signals`](/docs/#signals-openav-midi) bus (a recorded take playing back, the on-screen piano, a phone) drive a controller model as if the bytes had arrived. Values come back on the 0..127 scale they were published from (value × 127, rounded), so the round trip through `genericSignals()` is exact.',
-        zh: '有了它，只聽得到 [`Signals`](/zh/docs/#signals-openav-midi) 匯流排的東西（正在回放的錄音、螢幕上的鋼琴、手機），也能像收到原始位元組一樣去推動控制器模型。數值會還原成當初發佈時的 0..127 尺度（值 × 127 再四捨五入），所以跟 `genericSignals()` 來回轉換不會失真。',
+        en: 'It lets anything that only hears a [`Signals`](/docs/signals/#signals-openav-midi) bus (a recorded take playing back, the on-screen piano, a phone) drive a controller model as if the bytes had arrived. Values come back on the 0..127 scale they were published from (value × 127, rounded), so the round trip through `genericSignals()` is exact.',
+        zh: '有了它，只聽得到 [`Signals`](/zh/docs/signals/#signals-openav-midi) 匯流排的東西（正在回放的錄音、螢幕上的鋼琴、手機），也能像收到原始位元組一樣去推動控制器模型。數值會還原成當初發佈時的 0..127 尺度（值 × 127 再四捨五入），所以跟 `genericSignals()` 來回轉換不會失真。',
       },
       {
         en: 'A note signal with a value above 0 is a `noteon` (velocity at least 1), and 0 is a `noteoff`. The on-screen piano publishes channel 0, which is read as `channel`. A hardware message is published under both families, so a listener that wants each message once should use [`followMidiSignals()`](#followMidiSignals) instead of calling this on every name.',

@@ -397,7 +397,7 @@ ${topBar(home, c)}
       ${term(D.use.p5Sketch, 'snip-p5-sketch', p5Sketch(d, names))}
       ${d.p.controls.some((x) => !['knob', 'fader', 'pad', 'keys'].includes(x.type)) ? `<p class="note">${D.use.p5Other}</p>` : ''}
       ${device ? '' : `<p class="note">${D.use.p5Generic}</p>`}
-      <p><a class="more" href="${c.to('docs', '')}#p5">${D.use.p5Docs} →</a></p>
+      <p><a class="more" href="${c.to('docs', '#p5')}">${D.use.p5Docs} →</a></p>
     </div>
   </section>
 

@@ -718,12 +718,12 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
     <h3 class="docs-title">Documentation</h3>
     
     <ul class="docs">
-      <li><a href="./docs/#architecture">Architecture</a><span>The layer contracts, in detail</span></li>
-      <li><a href="./docs/#writing-a-world">Writing a world</a><span>The world interface and the rule people break</span></li>
-      <li><a href="./docs/#signals">Signals reference</a><span>Every signal the built-in inputs publish</span></li>
-      <li><a href="./docs/#show-control">Show control</a><span>Timeline, scenes, performance mode, monitor, OSC</span></li>
-      <li><a href="./docs/#roadmap">Roadmap</a><span>What a real show asked for next</span></li>
-      <li><a href="./docs/#agents">AGENTS.md</a><span>Conventions for AI coding agents</span></li>
+      <li><a href="./docs/architecture/">Architecture</a><span>The layer contracts, in detail</span></li>
+      <li><a href="./docs/writing-a-world/">Writing a world</a><span>The world interface and the rule people break</span></li>
+      <li><a href="./docs/signals/">Signals reference</a><span>Every signal the built-in inputs publish</span></li>
+      <li><a href="./docs/show-control/">Show control</a><span>Timeline, scenes, performance mode, monitor, OSC</span></li>
+      <li><a href="./docs/roadmap/">Roadmap</a><span>What a real show asked for next</span></li>
+      <li><a href="./docs/agents/">AGENTS.md</a><span>Conventions for AI coding agents</span></li>
     </ul>
   </section>
 
@@ -768,7 +768,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <div class="term-bar"><span>docs/p5.md</span><button type="button" class="copy" data-copy="faq-4-code">Copy</button></div>
         <pre id="faq-4-code"><code>circle(width / 2, height / 2, 50 + lag(micLevel, 0.03, 0.4) * 300);   <span class="tc">// a VU meter: opens at once, closes slowly</span></code></pre>
       </div>
-        <p class="faq-more"><a class="more" href="./docs/#p5-values-over-time-lag-env-speed-spring-trail">More: Values over time →</a></p>
+        <p class="faq-more"><a class="more" href="./p5/#p5-values-over-time-lag-env-speed-spring-trail">More: Values over time →</a></p>
       </div>
       <div class="faq-item">
         <h3 id="faq-5">Does it work with Strudel?</h3>
@@ -781,7 +781,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <pre id="faq-5-code"><code><span class="tk">await</span> <span class="tk">import</span>(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)</code></pre>
       </div>
         <p>OAV never loads or calls any of Strudel's code.</p>
-        <p class="faq-more"><a class="more" href="./docs/#strudel">More: With Strudel →</a></p>
+        <p class="faq-more"><a class="more" href="./docs/strudel/">More: With Strudel →</a></p>
       </div>
       <div class="faq-item">
         <h3 id="faq-6">Does it work without hardware?</h3>
@@ -794,7 +794,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p>Chrome and Edge have it. Use them for a show.</p>
         <p>Safari and iPad have no Web MIDI; the on-screen controller and the phone still work there.</p>
         <p>Camera and microphone only work in a secure context: <code>http://localhost</code> or <code>https://</code>.</p>
-        <p class="faq-more"><a class="more" href="./docs/#quick-start-which-browser">More: Quick start →</a></p>
+        <p class="faq-more"><a class="more" href="./docs/quick-start/#quick-start-which-browser">More: Quick start →</a></p>
       </div>
       <div class="faq-item">
         <h3 id="faq-8">Which MIDI controllers are supported, and what is each one's CC map?</h3>
@@ -811,7 +811,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
 &lt;oav-controller profile=<span class="ts">"akai-lpd8"</span> readout&gt;&lt;/oav-controller&gt;</code></pre>
       </div>
         <p>That is the whole integration. The element works without Web MIDI (Safari, iPad): it plays and fires events; only hardware and MIDI out report that they are unavailable.</p>
-        <p class="faq-more"><a class="more" href="./docs/#controllers-play-one-in-a-page">More: MIDI controllers &amp; embedding →</a></p>
+        <p class="faq-more"><a class="more" href="./docs/controllers/#controllers-play-one-in-a-page">More: MIDI controllers &amp; embedding →</a></p>
       </div>
       <div class="faq-item">
         <h3 id="faq-10">Can an AI agent build a world for me?</h3>

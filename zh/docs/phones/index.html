@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手機、中繼與控制面板｜open-audiovisual</title>
+<meta name="description" content="手機和 iPad 可以當控制器，能用的有動作感測器、一台鋼琴，還有一個照世界的參數自動長出來、類似 TouchOSC 的控制面板。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/phones/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/phones/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/phones/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/phones/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="手機、中繼與控制面板｜open-audiovisual">
+<meta property="og:description" content="手機和 iPad 可以當控制器，能用的有動作感測器、一台鋼琴，還有一個照世界的參數自動長出來、類似 TouchOSC 的控制面板。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/phones/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="手機、中繼與控制面板｜open-audiovisual">
+<meta name="twitter:description" content="手機和 iPad 可以當控制器，能用的有動作感測器、一台鋼琴，還有一個照世界的參數自動長出來、類似 TouchOSC 的控制面板。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="phones">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/phones/#article","url":"https://openaudiovisual.com/zh/docs/phones/","name":"手機、中繼與控制面板｜open-audiovisual","description":"手機和 iPad 可以當控制器，能用的有動作感測器、一台鋼琴，還有一個照世界的參數自動長出來、類似 TouchOSC 的控制面板。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"手機、中繼與控制面板","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["架設","手機 app","iOS 與 HTTPS","演出端","控制面板元件","版面 JSON","autoSurface","手寫版面","主題與手機輔助函式","中繼","演出頁面跑在手機上","安全性"],"position":15,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/phones/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/phones/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"手機、中繼與控制面板","item":"https://openaudiovisual.com/zh/docs/phones/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/phones/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/phones/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch is-here" data-ch="phones">
+          <a href="#phones" aria-current="page"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a>
+          <ol class="toc-secs">
+            <li><a href="#phones-set-it-up">架設</a></li>
+            <li><a href="#phones-the-phone-app">手機 app</a></li>
+            <li><a href="#phones-ios-and-https">iOS 與 HTTPS</a></li>
+            <li><a href="#phones-the-show-side">演出端</a></li>
+            <li><a href="#phones-surface-widgets">控制面板元件</a></li>
+            <li><a href="#phones-layout-json">版面 JSON</a></li>
+            <li><a href="#phones-autosurface">autoSurface</a></li>
+            <li><a href="#phones-hand-written-layouts">手寫版面</a></li>
+            <li><a href="#phones-theme-and-phone-helpers">主題與手機輔助函式</a></li>
+            <li><a href="#phones-the-relay">中繼</a></li>
+            <li><a href="#phones-the-show-page-on-a-phone">演出頁面跑在手機上</a></li>
+            <li><a href="#phones-security">安全性</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="phones" aria-labelledby="phones">
+<h1 id="phones">手機、中繼與控制面板<a class="anchor" href="#phones" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 15 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/remote.md">docs/zh/remote.md</a></span></p>
+<p>手機和 iPad 可以當控制器，能用的有動作感測器、一台鋼琴，還有一個照世界的參數自動長出來、類似 TouchOSC 的控制面板。負責的是三個套件，每個都能單獨使用：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>套件</th><th>角色</th></tr></thead>
+<tbody>
+<tr><td><code>@openav/relay</code></td><td>零相依、分房間（room）的 WebSocket 中繼，以及它的瀏覽器端用戶端</td></tr>
+<tr><td><code>@openav/surface</code></td><td>控制面板元件、版面 JSON、<code>autoSurface(params)</code></td></tr>
+<tr><td><code>@openav/remote</code></td><td>手機 app（分頁：感測 · 琴鍵 · 控制台 · MIDI），以及演出端的轉接器</td></tr>
+</tbody>
+</table></div>
+<p>對映射器來說，手機只是多一種輸入：它發出訊號，路由再把訊號接到參數。</p>
+<h2 id="phones-set-it-up">架設<a class="anchor" href="#phones-set-it-up" aria-label="這一節的連結">#</a></h2>
+<ol>
+<li>在演出電腦上執行 <code>node serve.js</code>。它提供頁面，<em>同時</em>在 <code>/relay</code> 架起中繼，不需要其他東西。</li>
+<li>打開一個宣告了 <code>modules: { remote: true }</code> 的演出，例如 <code>http://localhost:8080/examples/08-remote-surface/</code>。</li>
+<li>舞台左上角的加入卡片會顯示手機該打開的網址，裡面已經填好演出電腦的區域網路位址（頁面會到 <code>/__info</code> 向 <code>serve.js</code> 詢問）和房間：<code>http://&lt;lan-ip&gt;:8080/packages/remote/?room=default</code>。</li>
+<li>用同一個網路裡的手機打開那個網址。卡片會顯示目前連上幾支手機。</li>
+</ol>
+<p>卡片上同時畫出這個網址的 <strong>QR code</strong>，用手機相機對著掃就行。</p>
+<h3 id="phones-on-openaudiovisual-com-and-any-static-host">在 openaudiovisual.com（以及任何靜態主機）<a class="anchor" href="#phones-on-openaudiovisual-com-and-any-static-host" aria-label="這一節的連結">#</a></h3>
+<p>那裡沒有 <code>serve.js</code>，也就沒有自己的中繼。宣告了 <code>modules: { remote: true }</code> 的演出會改接<strong>公開中繼</strong>（<code>wss://remote.cheyuwu.com/relay</code>），卡片上會寫 <code>public relay</code>。在電腦上打開<a href="../../../examples/08-remote-surface/">範例 08</a>，用手機掃 QR code，手機上的推桿就能推動演出。</p>
+<ul>
+<li><strong>房間是隨機的</strong>（<code>show-</code> 加 10 個字元），第一次進來產生，記在這個瀏覽器的 <code>localStorage</code>，重新整理還是同一間，兩位訪客也不會撞進同一間。演出裡宣告的房間名（<code>room: 'main'</code>）在這裡會被忽略，原因就在這；網址上的 <code>?room=class-7</code> 永遠優先，教室裡要大家進同一場演出就用這個。</li>
+<li><code>?relay=wss://your.host/relay</code> 用你自己的中繼（手機連結會一併帶上）；<code>?relay=off</code> 把那一頁的遙控關掉。</li>
+<li>選哪個中繼由 <code>@openav/remote/relay-pick</code> 的 <code>pickRelay()</code> 決定：本機或區域網路（<code>localhost</code>、<code>192.168.x.x</code>、<code>*.local</code>…）照舊用同源的 <code>/relay</code>，行為完全不變；其他主機一律用公開中繼。</li>
+<li>公開中繼沒有帳號，也沒有身分驗證。房間名稱是唯一的祕密，所以 QR code 要當成祕密看待：掃到的人就能操控那場演出。不要把它放進會分享出去的簡報。</li>
+</ul>
+<h2 id="phones-the-phone-app">手機 app<a class="anchor" href="#phones-the-phone-app" aria-label="這一節的連結">#</a></h2>
+<p><code>/packages/remote/</code> 是單一頁面，上方是狀態列（連線、延遲、房間、這支手機的 id），下面是幾個分頁：</p>
+<ul>
+<li><strong>感測</strong>：一顆跟著傾斜滾動的球、加速度與旋轉的讀數、多點觸控板、敲擊（手機被猛地一震），以及前鏡頭讀到的亮度。iOS 要先點一下「開始」，才會給動作資料。</li>
+<li><strong>琴鍵</strong>：一台鋼琴。橫拿時是一排，大約三個八度，直拿時是上下兩排，上排接著下排往高音延伸。手指按在琴鍵的哪個高度，決定力度。另外有按住就延音的按鈕和換八度按鈕。</li>
+<li><strong>控制台</strong>：一個控制面板。它的版面依序從這些地方找：<code>?surface=&lt;layout.json url&gt;</code> 查詢字串、<code>?meta=&lt;json url&gt;</code> 查詢字串（裡面的 <code>params</code> 會交給 <code>autoSurface</code>）、演出透過中繼發布的版面。都沒有的話，就用一個小小的通用面板，頁面永遠不會空白。</li>
+<li><strong>MIDI</strong>：一台虛擬 MIDI 控制器，和演出畫面上顯示的是同一台（<a href="../../../zh/docs/controllers/">MIDI 控制器與嵌入</a>）。</li>
+</ul>
+<div class="table-wrap"><table>
+<thead><tr><th>查詢字串</th><th>意思</th></tr></thead>
+<tbody>
+<tr><td><code>room=&lt;name&gt;</code></td><td>要加入的房間（1 到 32 個字元，只能用 <code>A–Z a–z 0–9 _ -</code>，其他值一律當成 <code>default</code>）</td></tr>
+<tr><td><code>tab=sense|keys|control|midi</code></td><td>一開始打開哪個分頁</td></tr>
+<tr><td><code>surface=&lt;url&gt;</code></td><td>控制台分頁用的版面 JSON</td></tr>
+<tr><td><code>meta=&lt;url&gt;</code></td><td>一個含有 <code>params</code> 陣列的 JSON 檔，控制台分頁會變成 <code>autoSurface(params)</code></td></tr>
+<tr><td><code>relay=ws://…</code></td><td>改連別處的中繼，不用頁面所在伺服器上的那一個</td></tr>
+</tbody>
+</table></div>
+<p>每支手機會在 <code>localStorage</code> 存一個短短的隨機 id，也就是 <code>phone/&lt;id&gt;/…</code> 裡的 <code>&lt;id&gt;</code>。</p>
+<h2 id="phones-ios-and-https">iOS 與 HTTPS<a class="anchor" href="#phones-ios-and-https" aria-label="這一節的連結">#</a></h2>
+<p>iOS Safari 只把動作感測器和鏡頭開放給透過 <code>https://</code> 提供的頁面。觸控、琴鍵和控制面板，在區域網路上用一般的 <code>http://</code> 就能用。要在 iPhone 上用傾斜和敲擊，請透過 HTTPS 通道（tunnel，把本機的服務開成一個 https 網址）連到 <code>serve.js</code>，在手機上打開通道的網址。中繼會跟著頁面的來源（origin）走，HTTPS 頁面就用 <code>wss://</code>。鏡頭的部分，Android Chrome 也一樣。</p>
+<h2 id="phones-the-show-side">演出端<a class="anchor" href="#phones-the-show-side" aria-label="這一節的連結">#</a></h2>
+<p>在 <code>createShow()</code> 裡設 <code>modules: { remote: true }</code>（或用 <code>@openav/remote/host</code> 的 <code>mountRemoteHost()</code>），演出端會做五件事，世界完全不必知道手機在不在：</p>
+<ol>
+<li>以房間的 <strong>runner</strong>（演出端）身分加入中繼。</li>
+<li>把每一個手機訊號放進 <code>signals</code>，並把 <code>phone/&lt;id&gt;/…</code> 複製一份到 <code>phone/any/…</code>。<code>phone/any</code> 的值永遠來自最後送出數值的那支手機。</li>
+<li>建立控制面板：世界有附版面就用 <code>world.surface</code>，沒有就用 <code>autoSurface(world.params)</code>，再發布給每一支手機，之後才加入的也收得到。</li>
+<li>把 <code>surface/… → param</code> 路由加進映射器（已經有的配對會跳過）。</li>
+<li>每秒大約 10 次把參數值送回手機，讓推桿跟著時間軸和其他控制器一起動。</li>
+</ol>
+<div class="table-wrap"><table>
+<thead><tr><th><code>modules.remote</code> 選項</th><th>預設</th><th>意思</th></tr></thead>
+<tbody>
+<tr><td><code>room</code></td><td>頁面網址裡的 <code>?room=</code>，沒有就是 <code>'default'</code></td><td>房間名稱</td></tr>
+<tr><td><code>auto</code></td><td><code>{}</code></td><td>傳給 <code>autoSurface</code> 的選項（<code>pairs</code>、<code>meters</code>、<code>style</code>、<code>perPage</code>、<code>smooth</code>、<code>title</code>）</td></tr>
+<tr><td><code>surface</code></td><td><code>world.surface</code></td><td>指定的版面（比世界自帶的版面優先）</td></tr>
+<tr><td><code>feedbackHz</code></td><td><code>10</code></td><td>每秒回送幾次參數值</td></tr>
+<tr><td><code>relay</code></td><td>由 <code>pickRelay()</code> 決定</td><td><code>'wss://host/relay'</code> 用你自己的中繼，<code>false</code> 不要遙控。沒設的話：本機或區域網路用同源 <code>/relay</code>，靜態主機用公開中繼。網址上的 <code>?relay=</code> 會蓋過它</td></tr>
+<tr><td><code>url</code></td><td>同上</td><td><code>relay</code> 的別名（也是 <code>mountRemoteHost()</code> 吃的選項：它會自己補上 <code>role</code>、<code>room</code>、<code>id</code>）</td></tr>
+</tbody>
+</table></div>
+<p>感測器的路由在寫作品時就寫好，用 <code>phone/any/…</code> 這個別名，因為沒人能事先知道別人手機的裝置 id（範例 08）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({
+  world: bloomWorld,
+  routes: [
+    { source: <span class="ts">'phone/any/tilt/x'</span>, target: <span class="ts">'drift'</span>, inMin: -1, inMax: 1, outMin: 0, outMax: 2, smooth: 0.12 },
+    { source: <span class="ts">'phone/any/knock'</span>, target: <span class="ts">'burst'</span> },
+  ],
+  modules: { keys: { base: 48 }, remote: { auto: { pairs: [[<span class="ts">'cx'</span>, <span class="ts">'cy'</span>]], meters: [<span class="ts">'density'</span>] } } },
+});</code></pre></div>
+<p><code>show.remote</code> 就是這個演出端主機：<code>{ relay, layout, routes, bindings, room, publish(), frame(dt, state), connect(), dispose() }</code>。</p>
+<h2 id="phones-surface-widgets">控制面板元件<a class="anchor" href="#phones-surface-widgets" aria-label="這一節的連結">#</a></h2>
+<p>控制面板把手指的動作變成有名字、正規化的訊號。每個元件都發布在 <code>surface/&lt;page&gt;/&lt;id&gt;</code> 底下。元件的範圍不是 0..1 時，另外會用 <code>…/raw</code> 送出未縮放的原始值。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>類型</th><th>發布</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td><code>fader</code></td><td><code>&lt;id&gt;</code></td><td><code>orient: v</code>、<code>h</code> 或 <code>auto</code>（跟著格子的形狀）· 點兩下回到 <code>def</code></td></tr>
+<tr><td><code>knob</code></td><td><code>&lt;id&gt;</code></td><td>抓外圈是轉動，抓中間是拖曳</td></tr>
+<tr><td><code>encoder</code></td><td><code>&lt;id&gt;</code>（相位，轉滿一圈會繞回）和 <code>&lt;id&gt;/delta</code>（這一下轉了幾圈）</td><td>可以無限轉</td></tr>
+<tr><td><code>button</code></td><td><code>&lt;id&gt;</code> 1 / 0</td><td>按住才有作用，<code>pulse</code> 參數在按下的瞬間（上升緣）觸發</td></tr>
+<tr><td><code>toggle</code></td><td><code>&lt;id&gt;</code> 1 / 0</td><td></td></tr>
+<tr><td><code>xy</code></td><td><code>&lt;id&gt;/x</code>、<code>&lt;id&gt;/y</code>、<code>&lt;id&gt;/down</code></td><td><code>spring: true</code> 放手後回到中心</td></tr>
+<tr><td><code>bank</code></td><td><code>&lt;id&gt;/1</code> … <code>&lt;id&gt;/N</code></td><td><code>count</code>、<code>labels</code>。一根手指劃過去，就能一路畫過好幾個通道</td></tr>
+<tr><td><code>radio</code></td><td><code>&lt;id&gt;</code> = 索引 / (n − 1)，<code>raw</code> = 索引</td><td><code>options: [...]</code></td></tr>
+<tr><td><code>pads</code></td><td><code>&lt;id&gt;/hit</code> 脈衝 <code>{ pad, row, col, vel }</code>，按住時 <code>&lt;id&gt;/&lt;n&gt;</code> 是力度</td><td><code>rows</code>、<code>cols</code>（預設 4 × 4）、<code>labels</code>。<code>n</code> 從 0 起算，力度看你打在哪裡（上輕下重）</td></tr>
+<tr><td><code>keyboard</code></td><td><code>midi/note/on</code>、<code>midi/note/off</code>、<code>midi/cc/64</code></td><td>和硬體鍵盤用的名字一樣</td></tr>
+<tr><td><code>number</code></td><td><code>&lt;id&gt;</code></td><td>− / + 按鈕（按住會連續變動）和一個輸入欄</td></tr>
+<tr><td><code>text</code></td><td><code>&lt;id&gt;</code>，一個字串脈衝</td><td>按 Enter 或 ↵ 送出</td></tr>
+<tr><td><code>label</code>、<code>meter</code></td><td>無</td><td>只負責顯示，數值由 <code>surface.feedback(name, value)</code> 餵進來</td></tr>
+</tbody>
+</table></div>
+<p>共用欄位：<code>id</code>、<code>type</code>、<code>label</code>、<code>min</code>、<code>max</code>、<code>def</code>、<code>step</code>、<code>unit</code>、<code>color</code>（<code>cyan amber magenta lime violet coral white</code>），以及給<a href="#phones-hand-written-layouts">手寫版面</a>用的 <code>target</code>（一個參數的 key，<code>xy</code> 和 <code>bank</code> 則是陣列）。</p>
+<p>手機鍵盤送出的音符是 <code>{ note, vel, velocity, ch: 1, device: 'surface' }</code>。</p>
+<h2 id="phones-layout-json">版面 JSON<a class="anchor" href="#phones-layout-json" aria-label="這一節的連結">#</a></h2>
+<p>版面跟路由一樣是資料：可以存成檔案分享，可以交給 AI 代理寫，也可以由世界發布。</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-json">{ <span class="ts">"version"</span>: 1, <span class="ts">"title"</span>: <span class="ts">"Bloom"</span>,
+  <span class="ts">"pages"</span>: [{
+    <span class="ts">"id"</span>: <span class="ts">"main"</span>, <span class="ts">"title"</span>: <span class="ts">"Main"</span>, <span class="ts">"grid"</span>: { <span class="ts">"cols"</span>: 8, <span class="ts">"rows"</span>: 4 },
+    <span class="ts">"widgets"</span>: [
+      { <span class="ts">"id"</span>: <span class="ts">"hue"</span>,  <span class="ts">"type"</span>: <span class="ts">"knob"</span>,   <span class="ts">"label"</span>: <span class="ts">"Hue"</span>, <span class="ts">"x"</span>: 0, <span class="ts">"y"</span>: 0, <span class="ts">"w"</span>: 2, <span class="ts">"h"</span>: 2, <span class="ts">"min"</span>: 0, <span class="ts">"max"</span>: 360, <span class="ts">"def"</span>: 205, <span class="ts">"color"</span>: <span class="ts">"cyan"</span>, <span class="ts">"target"</span>: <span class="ts">"hue"</span> },
+      { <span class="ts">"id"</span>: <span class="ts">"pos"</span>,  <span class="ts">"type"</span>: <span class="ts">"xy"</span>,     <span class="ts">"x"</span>: 2, <span class="ts">"y"</span>: 0, <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 4, <span class="ts">"target"</span>: [<span class="ts">"cx"</span>, <span class="ts">"cy"</span>] },
+      { <span class="ts">"id"</span>: <span class="ts">"go"</span>,   <span class="ts">"type"</span>: <span class="ts">"button"</span>, <span class="ts">"label"</span>: <span class="ts">"Burst"</span>, <span class="ts">"x"</span>: 6, <span class="ts">"y"</span>: 0, <span class="ts">"w"</span>: 2, <span class="ts">"h"</span>: 1, <span class="ts">"target"</span>: <span class="ts">"burst"</span> }
+    ],
+    <span class="ts">"portrait"</span>: { <span class="ts">"grid"</span>: { <span class="ts">"cols"</span>: 4, <span class="ts">"rows"</span>: 8 }, <span class="ts">"place"</span>: { <span class="ts">"pos"</span>: { <span class="ts">"x"</span>: 0, <span class="ts">"y"</span>: 2, <span class="ts">"w"</span>: 4, <span class="ts">"h"</span>: 4 } } }
+  }] }</code></pre></div>
+<p>手機會轉來轉去，所以每個頁面照這個順序決定怎麼排：</p>
+<ol>
+<li>如果頁面有對應目前方向的 <code>portrait</code> 或 <code>landscape</code> 變體，就用它的格線（沒寫在它 <code>place</code> 裡的元件，留在原本的位置，或填進空格）。</li>
+<li>沒有變體，但基本格線的形狀本來就對，就直接用。</li>
+<li>都不符合，就<strong>自動重排</strong>：同樣的元件，一列一列重新排進一半（直向）或兩倍（橫向）的欄數。</li>
+</ol>
+<p>列數是個數目，不是像素，所以格線永遠填滿螢幕，畫面永遠不會捲動。沒有 <code>x</code>/<code>y</code> 的元件，會依類型給一個預設大小，排進空格。<code>validateLayout(layout)</code> 回傳一份問題清單（空的就是沒問題）。遇到有問題的版面，<code>new Surface()</code> 會帶著這份清單丟出錯誤。</p>
+<h2 id="phones-autosurface">autoSurface<a class="anchor" href="#phones-autosurface" aria-label="這一節的連結">#</a></h2>
+<p><code>autoSurface(params, options)</code> 把世界的參數變成三樣東西：一份版面、驅動這些參數的路由，以及回送數值用的綁定：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { autoSurface, feedbackFor } <span class="tk">from</span> <span class="ts">'@openav/surface'</span>;
+
+<span class="tk">const</span> { layout, routes, bindings } = autoSurface(world.params, { pairs: [[<span class="ts">'cx'</span>, <span class="ts">'cy'</span>]], meters: [<span class="ts">'density'</span>] });
+routes.forEach((r) =&gt; mapper.addRoute(r));   <span class="tc">// surface/main/hue → hue, …</span>
+feedbackFor(state, bindings);                <span class="tc">// [{ name, value }] to echo back to the phone</span></code></pre></div>
+<p>每個參數會變成哪種元件：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>參數</th><th>元件</th></tr></thead>
+<tbody>
+<tr><td><code>pulse: true</code></td><td>按鈕</td></tr>
+<tr><td><code>step: 1</code>，範圍是 1（兩個值）</td><td>開關（toggle）</td></tr>
+<tr><td><code>step: 1</code>，有三到七個值</td><td>單選（radio，標籤取自 <code>options</code>，沒有就用數字）</td></tr>
+<tr><td>列在 <code>pairs</code> 裡的一對</td><td>一個 xy 觸控板，同時驅動兩個參數</td></tr>
+<tr><td>其他</td><td>連續參數在六個以內用推桿，超過六個就用旋鈕</td></tr>
+<tr><td>參數上寫了 <code>surface: { type, color, label }</code></td><td>照它寫的</td></tr>
+</tbody>
+</table></div>
+<p>選項：<code>pairs</code>、<code>meters</code>（另外以唯讀方式顯示的參數）、<code>style</code>（<code>'auto'</code>、<code>'fader'</code>、<code>'knob'</code>）、<code>perPage</code>（預設 8，要捲動的頁面就算失敗）、<code>smooth</code>（連續路由預設 0.04 秒，用來抹平網路每秒 30 次更新的階梯感）、<code>title</code>。每個參數 <code>group</code> 各自一頁。</p>
+<h2 id="phones-hand-written-layouts">手寫版面<a class="anchor" href="#phones-hand-written-layouts" aria-label="這一節的連結">#</a></h2>
+<p>給元件一個 <code>target</code>，<code>routesFromLayout(layout, params)</code> 就會寫出它的路由（形狀和 <code>autoSurface</code> 產生的一樣）：<code>xy</code> 把 x 接到第一個目標、y 接到第二個，<code>bank</code> 把第 <em>i</em> 個通道接到第 <em>i</em> 個目標。世界可以把版面放在 <code>world.surface</code> 一起帶著走，這時演出端就用它，不再自動產生。</p>
+<h2 id="phones-theme-and-phone-helpers">主題與手機輔助函式<a class="anchor" href="#phones-theme-and-phone-helpers" aria-label="這一節的連結">#</a></h2>
+<p>每個控制元件都讀 <code>:root</code> 上的 CSS 自訂屬性（<code>THEME_VARS</code>：<code>--oav-bg</code>、<code>--oav-surface</code>、<code>--oav-accent</code>、<code>--oav-radius</code>、<code>--oav-touch-min</code>（44 px）…）。覆寫它們，整個控制面板就換了外觀。設計規則是：深色底、觸控目標 ≥ 44 px、即時數值永遠看得到、按下時用元件自己的顏色亮出邊框和光暈、支援 <code>navigator.vibrate</code> 的裝置就震動。</p>
+<p><code>@openav/surface</code> 也匯出幾個手機輔助函式：<code>lockViewport()</code>（禁止捲動和縮放）、<code>keepAwake()</code>（Wake Lock）、<code>toggleFullscreen()</code>、<code>canFullscreen()</code>、<code>haptic(ms)</code>。</p>
+<h2 id="phones-the-relay">中繼<a class="anchor" href="#phones-the-relay" aria-label="這一節的連結">#</a></h2>
+<p>用戶端連到 <code>ws://&lt;host&gt;/relay?role=controller|runner|monitor|leader|follower&amp;room=&lt;name&gt;&amp;id=&lt;device&gt;</code>。房間就是一個名字，不同房間的連線彼此聽不到。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>發送端</th><th>接收端</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td>controller（手機）</td><td>runner + monitor</td><td><code>signal</code> 和 <code>batch</code></td></tr>
+<tr><td>runner（演出）</td><td>monitor</td><td><code>signal</code> 和 <code>batch</code></td></tr>
+<tr><td>runner</td><td>controllers + monitors</td><td><code>feedback</code>（儀表、推桿回送）、<code>config</code>（控制面板版面，之後加入的手機也會補收到一份）</td></tr>
+<tr><td>monitor</td><td>不送給任何人</td><td></td></tr>
+<tr><td>leader（演出頁面）</td><td>followers</td><td><code>sync</code>（frame，以及回給從屬端的 state）</td></tr>
+<tr><td>follower（演出頁面）</td><td>leaders</td><td><code>sync</code>（hello）</td></tr>
+</tbody>
+</table></div>
+<p>訊息是 JSON：<code>{"type":"signal","name":"phone/ab12/tilt/x","value":0.3,"t":…,"pulse"?:true}</code>、<code>{"type":"batch","items":[…]}</code>、<code>ping</code>/<code>pong</code>、<code>status</code>（各角色的連線數）、<code>feedback</code>、<code>config</code>、<code>sync</code>。用戶端遇到不認得的類型就略過。runner 離開時，房間會清掉它的 config。超過 256 KB 的訊息直接略過，超過 1 MB 的 frame 會讓連線直接關閉。不再回應 ping 的手機（螢幕鎖定、Wi-Fi 斷了），大約 40 秒內會被移除。
+<code>attachRelay(server, { maxMessageChars, maxBytes })</code> 可以把這兩個上限調高。</p>
+<p>演出頁面也用同樣的房間一起演同一場：主控端的 <code>sync</code> 訊息（<code>{"type":"sync","v":1,"kind":"frame",…}</code>；<code>"to":"&lt;id&gt;"</code> 指定單一對象）送給房間裡的從屬端，從屬端的訊息送給主控端，其他人都聽不到（<a href="../../../zh/docs/show-control/#show-control-several-pages-one-show">好幾個頁面，一場演出</a>）。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { RelayClient, bindSignals } <span class="tk">from</span> <span class="ts">'@openav/relay'</span>;
+
+<span class="tk">const</span> show = <span class="tk">new</span> RelayClient({ role: <span class="ts">'runner'</span>, room: <span class="ts">'main'</span> }).connect();
+bindSignals(show, signals);                        <span class="tc">// phone signals → Signals, + phone/any/… alias</span>
+show.feedback(<span class="ts">'surface/main/level'</span>, 0.4);          <span class="tc">// runner → phones</span>
+show.config(<span class="ts">'surface'</span>, { layout });                <span class="tc">// runner → phones, kept for late joiners</span>
+
+<span class="tk">const</span> phone = <span class="tk">new</span> RelayClient({ role: <span class="ts">'controller'</span>, room: <span class="ts">'main'</span> }).connect();
+phone.<span class="tk">set</span>(<span class="ts">'phone/me/tilt/x'</span>, 0.3);                 <span class="tc">// continuous: batched at 30 Hz, re-sent every second</span>
+phone.send(<span class="ts">'midi/note/on'</span>, { note: 60 }, <span class="tk">true</span>);    <span class="tc">// pulse: immediate, never coalesced</span></code></pre></div>
+<p>連續值每秒重送一次，所以晚加入的手機，或演出中途重新載入的演出頁面，都不會卡在過時的預設值上。脈衝永遠不批次、不重送：一個 note-on 送到兩次就是 bug。用戶端會自己重新連線（從 0.5 秒開始，每次加倍，最長 5 秒）。</p>
+<p><code>fileSignal(signals, name, value, { pulse })</code> 是這套傳輸格式的接收端：一個名字第一次出現時，先宣告它（<code>signalMeta()</code> 知道 <code>phone/…</code>、<code>surface/…</code>、<code>midi/…</code> 這些名字的範圍），音符訊息缺哪一種力度寫法就補上哪一種（<code>vel</code> 0..1 或 <code>velocity</code> 1..127），然後觸發脈衝或設定數值。</p>
+<p>不靠 <code>serve.js</code>，單獨跑中繼：<code>node packages/relay/server.js [port]</code>（預設 7458，健康檢查在 <code>/health</code>），或用 <code>@openav/relay/server</code> 的 <code>attachRelay(server, { path: '/relay' })</code> 掛到你自己的 Node 伺服器上。</p>
+<h2 id="phones-the-show-page-on-a-phone">演出頁面跑在手機上<a class="anchor" href="#phones-the-show-page-on-a-phone" aria-label="這一節的連結">#</a></h2>
+<p>演出本身跑在手機上時，不用中繼，就能讀這支手機自己的動作感測器。<code>localSensors(signals)</code> 用同樣的名字發布在 <code>phone/local/…</code> 底下，也複製一份到 <code>phone/any/…</code>，所以替「最新的那支手機」寫的路由，兩種情況都能用。<code>.start()</code> 要在使用者點擊時呼叫（iOS 的權限規定）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { localSensors } <span class="tk">from</span> <span class="ts">'@openav/remote'</span>;
+
+<span class="tk">const</span> own = localSensors(show.signals);
+button.onclick = <span class="tk">async</span> () =&gt; { <span class="tk">await</span> own.start(); <span class="tk">if</span> (own.denied) alert(<span class="ts">'motion access denied'</span>); };</code></pre></div>
+<h2 id="phones-security">安全性<a class="anchor" href="#phones-security" aria-label="這一節的連結">#</a></h2>
+<p>中繼沒有身分驗證。同一個網路裡，任何知道房間名稱的人，都能以 controller 身分加入，動你的參數。正式演出時，請用封閉的網路，或取一個沒人猜得到的房間名稱。公開中繼上的房間是隨機的、寫在 QR code 裡，它方便你試玩，不是一把鎖。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/strudel/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">和 Strudel 一起用</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/signals/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">訊號一覽</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

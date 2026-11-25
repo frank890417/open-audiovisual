@@ -155,4 +155,4 @@ same as strudel.cc, and the test checks both are one necklace.
 - A. McLean (2014). *Making programming languages to dance to: live coding with Tidal.* FARM 2014.
 - F. Roos & A. McLean (2023). *Strudel: Live Coding Patterns on the Web.* ICLC 2023.
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-pattern)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-pattern)

@@ -80,7 +80,7 @@
     { "title": "Yamaha AG06 Technical Specifications (ag06_en_ts_b0, published 01/2022)", "url": "https://data.yamaha.com/files/download/other_assets/3/333133/ag06_en_ts_b0.pdf", "read": "2026-11-25" },
     { "title": "Yamaha AG06 Owner's Manual (ag06_en_om_a0)", "url": "https://data.yamaha.com/files/download/other_assets/4/333124/ag06_en_om_a0.pdf", "read": "2026-11-25" },
     { "title": "open-audiovisual: @openav/audio, AudioAnalyzer.enableMic() (the constraints it asks a microphone for)", "url": "https://github.com/frank890417/open-audiovisual/blob/main/packages/audio/index.js", "read": "2026-11-25" },
-    { "title": "open-audiovisual handbook: Troubleshooting, the camera or microphone does not start", "url": "https://openaudiovisual.com/docs/#troubleshooting-the-camera-or-microphone-does-not-start", "read": "2026-11-25" }
+    { "title": "open-audiovisual handbook: Troubleshooting, the camera or microphone does not start", "url": "https://openaudiovisual.com/docs/troubleshooting/#troubleshooting-the-camera-or-microphone-does-not-start", "read": "2026-11-25" }
   ],
   "license": "MIT",
   "verified": false,

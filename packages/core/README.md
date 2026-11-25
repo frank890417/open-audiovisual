@@ -49,8 +49,8 @@ m.step(1 / 60);       // → true. dt is not clamped; 0 redraws in place; a nega
 - In a manual loop the `now` that `onFrame` and `fps` see is virtual: the sum of the `dt` stepped, from 0. Two runs with the
   same steps are the same run.
 - No `requestAnimationFrame` and not manual: `start()` throws and says what to pass.
-- `createShow({ loop: 'manual' })` does this for a whole show: [Show control](https://openaudiovisual.com/docs/#show-control-driving-the-frames-yourself).
+- `createShow({ loop: 'manual' })` does this for a whole show: [Show control](https://openaudiovisual.com/docs/show-control/#show-control-driving-the-frames-yourself).
 
-Signal naming and every built-in signal: [Signals reference](https://openaudiovisual.com/docs/#signals).
+Signal naming and every built-in signal: [Signals reference](https://openaudiovisual.com/docs/signals/).
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-core)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-core)

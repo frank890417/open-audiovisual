@@ -6,22 +6,30 @@ export default {
   meta: {
     title: '文件｜open-audiovisual',
     description: 'open-audiovisual 使用手冊：快速開始、核心概念、寫世界、輸入、映射、演出控制、MIDI 控制器、手機、訊號、套件與 AI 代理。',
-    ogDescription: '一頁讀完每一章：用 open-audiovisual 在瀏覽器裡做一場現場影音演出。',
+    ogDescription: '手冊每一章一頁：用 open-audiovisual 在瀏覽器裡做一場現場影音演出。',
   },
   ldLanguage: 'zh-Hant-TW',
 
   eyebrow: '文件',
   title: 'open-audiovisual 使用手冊',
-  lede: '跑起來、寫作品、上台演出需要知道的事，都在這一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。',
+  lede: '跑起來、寫作品、上台演出需要知道的事，一章一頁。這裡寫到的 API 名稱、選項和訊號，都對照過原始碼，兩者對不上時，以程式碼為準。',
   stats: '{chapters} 章 · {sections} 節',   // 後面接版本，連到 /zh/changelog/（首頁 ui.versions）
-  sourceNote: '內容以 Markdown 寫在 <code>docs/zh/</code>，這一頁由它產生。',
+  sourceNote: '內容以 Markdown 寫在 <code>docs/zh/</code>，這些頁面由它產生。',
   llmsNote: '給語言模型：<a href="{llms}">/llms.txt</a> · <a href="{llmsFull}">/llms-full.txt</a>',
 
   cheatsheet: { label: 'oav-p5 速查表', text: '用 oav-p5 的 p5 草圖會用到的名字放在一頁，附圖：喊、敲、彈、讓數字好用。可以印成一張 A4。', toc: '速查表 ↗' },
   reference: { label: 'API 參考', text: '只想查一個名稱？oav-p5 的每個變數、函式、事件與選項，和每個套件的匯出，都能搜尋，每一條附能直接跑的範例。', toc: 'API 參考 ↗' },
 
-  tocTitle: '本頁目錄',
+  tocTitle: '章節',
   tocLabel: '文件目錄',
+  contentsLink: '所有章節',
+  // 每一章自己的頁面（/zh/docs/<章>/）
+  chapterTitle: '{title}｜open-audiovisual',
+  chapterN: '第 {n} 章，共 {total} 章',
+  prev: '上一章',
+  next: '下一章',
+  navLabel: '上一章與下一章',
+  moved: '這一章在 {href}。',
   tocButton: '目錄',
   tocClose: '關閉目錄',
   chapterSource: '原始檔',

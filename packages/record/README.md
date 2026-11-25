@@ -11,7 +11,7 @@ play it back into the show, save it as `.mid`.
 **From a p5.js sketch** you do not build the pipeline: `startRecording()`, `stopRecording()` and `function recordingSaved(info) {}`
 record the canvas and what the sketch sounds like (`startRecording({ seconds, fps, mic, name, canvas, bitrate })` for the options).
 `oav-p5` uses this package's `recorder.js`, `mime.js` and `layout.js`, loaded the first time ⏺ is pressed or the sketch calls it.
-[Handbook: Recording](https://openaudiovisual.com/docs/#p5-recording-a-video-with-its-sound) · example [21](https://openaudiovisual.com/examples/21-p5-record/).
+[Handbook: Recording](https://openaudiovisual.com/p5/#p5-recording-a-video-with-its-sound) · example [21](https://openaudiovisual.com/examples/21-p5-record/).
 
 ```js
 import { Compositor, AudioTap, Recorder, EventLog, openCamera, recommendedFps } from '@openav/record';
@@ -178,4 +178,4 @@ compositor, drawn from `onDraw`: `(ctx, rects, comp) => comp.drawOnCamera((g, w,
 `lab.recordKit` and `lab.takes`. The lab host decides when to record, where to save, and when a
 preview plays a take.
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-record)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-record)

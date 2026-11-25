@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapping · open-audiovisual</title>
+<meta name="description" content="The mapping layer is where &quot;what happened&quot; becomes &quot;what it means&quot;. The Mapper (@openav/mapping) is the only component that connects signals to params, and…">
+<link rel="canonical" href="https://openaudiovisual.com/docs/mapping/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/mapping/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/mapping/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/mapping/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Mapping · open-audiovisual">
+<meta property="og:description" content="The mapping layer is where &quot;what happened&quot; becomes &quot;what it means&quot;. The Mapper (@openav/mapping) is the only component that connects signals to params, and…">
+<meta property="og:url" content="https://openaudiovisual.com/docs/mapping/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mapping · open-audiovisual">
+<meta name="twitter:description" content="The mapping layer is where &quot;what happened&quot; becomes &quot;what it means&quot;. The Mapper (@openav/mapping) is the only component that connects signals to params, and…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="mapping">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/mapping/#article","url":"https://openaudiovisual.com/docs/mapping/","name":"Mapping · open-audiovisual","description":"The mapping layer is where \"what happened\" becomes \"what it means\". The Mapper (@openav/mapping) is the only component that connects signals to params, and…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Mapping","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Routes","What happens to a value","Curves","Windows and ranges","Smoothing","Pulse targets","Many-to-many","Overrides and the timeline","Trim, pickup and release","Learn","Muting and removing","Saved profiles","Map files: export, import and share","Routes written for you","Mapper API"],"position":7,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/mapping/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/mapping/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Mapping","item":"https://openaudiovisual.com/docs/mapping/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/mapping/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/mapping/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch is-here" data-ch="mapping">
+          <a href="#mapping" aria-current="page"><span class="n">07</span><span class="t">Mapping</span></a>
+          <ol class="toc-secs">
+            <li><a href="#mapping-routes">Routes</a></li>
+            <li><a href="#mapping-what-happens-to-a-value">What happens to a value</a></li>
+            <li><a href="#mapping-curves">Curves</a></li>
+            <li><a href="#mapping-windows-and-ranges">Windows and ranges</a></li>
+            <li><a href="#mapping-smoothing">Smoothing</a></li>
+            <li><a href="#mapping-pulse-targets">Pulse targets</a></li>
+            <li><a href="#mapping-many-to-many">Many-to-many</a></li>
+            <li><a href="#mapping-overrides-and-the-timeline">Overrides and the timeline</a></li>
+            <li><a href="#mapping-trim-pickup-and-release">Trim, pickup and release</a></li>
+            <li><a href="#mapping-learn">Learn</a></li>
+            <li><a href="#mapping-muting-and-removing">Muting and removing</a></li>
+            <li><a href="#mapping-saved-profiles">Saved profiles</a></li>
+            <li><a href="#mapping-map-files-export-import-and-share">Map files: export, import and share</a></li>
+            <li><a href="#mapping-routes-written-for-you">Routes written for you</a></li>
+            <li><a href="#mapping-mapper-api">Mapper API</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="mapping" aria-labelledby="mapping">
+<h1 id="mapping">Mapping<a class="anchor" href="#mapping" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 7 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/mapping.md">docs/mapping.md</a></span></p>
+<p>The mapping layer is where "what happened" becomes "what it means". The <code>Mapper</code>
+(<code>@openav/mapping</code>) is the only component that connects signals to params, and
+everything it knows is a list of routes.</p>
+<h2 id="mapping-routes">Routes<a class="anchor" href="#mapping-routes" aria-label="Link to this section">#</a></h2>
+<p>A route is a plain object. Only <code>source</code> and <code>target</code> are required; <code>addRoute()</code>
+fills in the rest:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>field</th><th>default</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>source</code></td><td>—</td><td>signal name, e.g. <code>midi/cc/74</code>, <code>hand/right/pinch/index</code>, <code>phone/any/tilt/x</code></td></tr>
+<tr><td><code>target</code></td><td>—</td><td>param key, e.g. <code>bloom</code>, <code>sound/cutoff</code></td></tr>
+<tr><td><code>inMin</code>, <code>inMax</code></td><td><code>0</code>, <code>1</code></td><td>the window of the signal that is used; values outside it are clamped</td></tr>
+<tr><td><code>outMin</code>, <code>outMax</code></td><td>the param's <code>min</code>, <code>max</code></td><td>the range written into the param</td></tr>
+<tr><td><code>curve</code></td><td><code>'linear'</code></td><td><code>linear</code>, <code>exp</code>, <code>log</code> or <code>smooth</code></td></tr>
+<tr><td><code>invert</code></td><td><code>false</code></td><td>flip the normalized value (1 − x) before the curve</td></tr>
+<tr><td><code>smooth</code></td><td><code>0</code></td><td>glide time in seconds (0 = instant)</td></tr>
+<tr><td><code>mode</code></td><td>(absent = <code>'override'</code>)</td><td><code>'override'</code> replaces the timeline's value, <code>'trim'</code> adds to it, <code>'pickup'</code> takes over only once the knob has met the value: <a href="#mapping-trim-pickup-and-release">Trim, pickup and release</a></td></tr>
+<tr><td><code>release</code></td><td>(absent = never)</td><td>seconds the signal must stand still before the route lets go and the timeline plays again</td></tr>
+<tr><td><code>enabled</code></td><td>(absent = on)</td><td><code>false</code> mutes the route</td></tr>
+<tr><td><code>id</code></td><td>assigned</td><td>a number, used to remove the route</td></tr>
+</tbody>
+</table></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'bloom'</span> });
+show.mapper.addRoute({ source: <span class="ts">'phone/any/tilt/x'</span>, target: <span class="ts">'drift'</span>, inMin: -1, inMax: 1, smooth: 0.12 });
+show.mapper.addRoute({ source: <span class="ts">'hand/right/pinch/index'</span>, target: <span class="ts">'tightness'</span>, curve: <span class="ts">'smooth'</span>, invert: <span class="tk">true</span>, smooth: 0.1 });</code></pre></div>
+<p>In <code>createShow()</code>, the same objects go in <code>routes: [...]</code>.</p>
+<h2 id="mapping-what-happens-to-a-value">What happens to a value<a class="anchor" href="#mapping-what-happens-to-a-value" aria-label="Link to this section">#</a></h2>
+<p>When a signal arrives, every enabled route whose <code>source</code> matches runs these
+steps, in order:</p>
+<ol>
+<li><strong>Window</strong>: <code>x = (value − inMin) / (inMax − inMin)</code>, clamped to 0..1.</li>
+<li><strong>Invert</strong>: if <code>invert</code>, <code>x = 1 − x</code>.</li>
+<li><strong>Curve</strong>: <code>x = curve(x)</code>.</li>
+<li><strong>Scale</strong>: <code>out = outMin + (outMax − outMin) · x</code>.</li>
+<li><strong>Write</strong>: with <code>smooth: 0</code>, the param is overridden with <code>out</code> (and clamped
+and snapped to its <code>step</code>). With <code>smooth &gt; 0</code>, <code>out</code> becomes a target that
+<code>mapper.update(dt)</code> glides toward every frame. A <code>trim</code> route writes the timeline's
+value plus <code>out</code>; a <code>pickup</code> route writes nothing until the knob has met the param.</li>
+</ol>
+<h2 id="mapping-curves">Curves<a class="anchor" href="#mapping-curves" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>curve</th><th>formula</th><th>feel</th></tr></thead>
+<tbody>
+<tr><td><code>linear</code></td><td>x</td><td>as the hand moves</td></tr>
+<tr><td><code>exp</code></td><td>x²</td><td>slow start, fast end: fine control near the bottom</td></tr>
+<tr><td><code>log</code></td><td>√x</td><td>fast start, slow end: fine control near the top</td></tr>
+<tr><td><code>smooth</code></td><td>x²(3 − 2x)</td><td>gentle at both ends (smoothstep)</td></tr>
+</tbody>
+</table></div>
+<p>An unknown curve name falls back to linear.</p>
+<h2 id="mapping-windows-and-ranges">Windows and ranges<a class="anchor" href="#mapping-windows-and-ranges" aria-label="Link to this section">#</a></h2>
+<p><code>inMin</code>/<code>inMax</code> say which part of the signal matters; <code>outMin</code>/<code>outMax</code> say
+where it lands. Typical uses:</p>
+<ul>
+<li>a bipolar signal: <code>{ source: 'midi/bend', inMin: -1, inMax: 1 }</code>, or a phone
+tilt <code>{ source: 'phone/any/tilt/x', inMin: -1, inMax: 1 }</code>;</li>
+<li>a quiet signal: <code>{ source: 'audio/rms', inMax: 0.3 }</code> uses the whole param
+range for the levels a voice actually reaches;</li>
+<li>a knob that only sweeps part of a param: <code>{ source: 'midi/cc/1', target: 'hue', outMin: 180, outMax: 270 }</code>;</li>
+<li>an inverted relation without <code>invert</code>: <code>outMin: 1, outMax: 0</code>.</li>
+</ul>
+<aside class="callout callout-warning" role="note"><p class="callout-title">Warning</p>
+<p><code>outMin</code>/<code>outMax</code> default to the target param's range <em>at the moment the route
+is added</em>. If the param does not exist yet, they default to 0..1. In
+<code>createShow()</code>, routes are added before the sound engine registers its
+<code>sound/*</code> params, so a declared route to <code>sound/cutoff</code> needs explicit
+<code>outMin: 100, outMax: 8000</code>.</p>
+</aside>
+<h2 id="mapping-smoothing">Smoothing<a class="anchor" href="#mapping-smoothing" aria-label="Link to this section">#</a></h2>
+<p><code>smooth</code> is a time constant in seconds: after <code>smooth</code> seconds the param has
+covered about 63% of the distance to the new value (a one-pole filter,
+<code>k = 1 − e^(−dt/smooth)</code> per frame). 0.05–0.15 hides the steps of a MIDI knob or
+a 30 Hz phone stream; 0.2–0.5 makes a hand feel heavy. The glide starts from the
+param's current value (a value set by hand, else what the timeline says right now, see
+<a href="#mapping-telling-the-mapper-where-the-timeline-is"><code>base</code></a>), so the first movement never jumps,
+and it stops writing once it has arrived.</p>
+<h2 id="mapping-pulse-targets">Pulse targets<a class="anchor" href="#mapping-pulse-targets" aria-label="Link to this section">#</a></h2>
+<p>When the target is a <code>pulse</code> param, the route fires it instead of writing a
+value:</p>
+<ul>
+<li>a <strong>pulse</strong> source (<code>midi/note/on</code>, <code>audio/kick</code>, <code>drum/kick</code>,
+<code>phone/any/knock</code>…) fires it on every event;</li>
+<li>a <strong>continuous</strong> source fires it when the normalized value crosses 0.5 upward
+(a phone-surface button going from 0 to 1, a fader pushed past the middle).</li>
+</ul>
+<p><code>curve</code>, <code>invert</code>, <code>smooth</code> and the output range do not apply to pulse targets.</p>
+<h2 id="mapping-many-to-many">Many-to-many<a class="anchor" href="#mapping-many-to-many" aria-label="Link to this section">#</a></h2>
+<p>One signal may drive many params (add several routes with the same <code>source</code>),
+and one param may listen to many signals. When two routes write the same param,
+the last one to write wins. <em>Learn</em> adds a route; it never replaces one.</p>
+<p>The <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/design/patchbay.md" rel="noopener">patch bay design</a> plans per-route <code>combine</code>
+(<code>last</code>, <code>max</code>, <code>add</code>, <code>avg</code>) and <code>label</code> fields; they are not implemented yet.</p>
+<h2 id="mapping-overrides-and-the-timeline">Overrides and the timeline<a class="anchor" href="#mapping-overrides-and-the-timeline" aria-label="Link to this section">#</a></h2>
+<p>A route writes its param as an <strong>override</strong>, and overrides are sticky: as soon
+as a mapped signal moves, the timeline stops driving that param. Clearing the
+override (✕ next to the param, or <code>show.params.clearOverride(key)</code>) hands it back
+to the timeline until the signal moves again.</p>
+<p>A <em>smoothed</em> route writes only while it is gliding. Once it has arrived it stops, so ✕
+(or a slider you drag) takes the param back and it stays back until the knob moves
+again; ✕ in the middle of a glide stops the glide. The mapper notices when
+something else has written the param since its own last write, and stands down.
+Muting a route stops it writing; the param keeps the value it had (a muted <code>trim</code> gives
+its offset back).</p>
+<p>A replacing route throws the timeline's curve away for as long as it holds the param. For a
+knob that should <em>nudge</em> the timeline, or <em>hand it back</em> when you let go, read on.</p>
+<h2 id="mapping-trim-pickup-and-release">Trim, pickup and release<a class="anchor" href="#mapping-trim-pickup-and-release" aria-label="Link to this section">#</a></h2>
+<p>Three route fields change who wins when a knob meets a timeline. All three are off unless
+you write them: a route without <code>mode</code> and <code>release</code> is the replacing route described above.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>field</th><th>what the knob does</th></tr></thead>
+<tbody>
+<tr><td><code>mode: 'override'</code></td><td>the default: the knob's value <em>replaces</em> the timeline's, until ✕</td></tr>
+<tr><td><code>mode: 'trim'</code></td><td>the knob's value is an <em>offset</em> added to the timeline's value, which keeps moving underneath</td></tr>
+<tr><td><code>mode: 'pickup'</code></td><td>like <code>override</code>, but the knob only takes over once it has <em>met</em> the param's current value</td></tr>
+<tr><td><code>release: 4</code></td><td>with any mode: when the knob has stood still for 4 seconds, let go and let the timeline play</td></tr>
+</tbody>
+</table></div>
+<p><code>mode</code> and <code>release</code> do not apply to pulse targets.</p>
+<h3 id="mapping-telling-the-mapper-where-the-timeline-is">Telling the mapper where the timeline is<a class="anchor" href="#mapping-telling-the-mapper-where-the-timeline-is" aria-label="Link to this section">#</a></h3>
+<p><code>trim</code>, <code>pickup</code> and the start of a smooth glide all need the timeline's value for the param
+<em>right now</em>. The mapper takes it from <code>base</code>, a function that answers <code>{ key: value }</code>:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, base: () =&gt; timeline.state() });
+<span class="tc">// a show made with createShow() already does this for you</span></code></pre></div>
+<p><code>timeline.state()</code> is the value <em>before</em> overrides, with a score's segment modules already applied,
+which is what the param would be if nobody touched it. Without <code>base</code> the mapper uses the
+param's <code>def</code>: right for a param nothing automates, wrong for one the timeline draws. A <code>base</code>
+that throws or answers something else is treated as absent; it never stops the show. Keep it cheap:
+it is asked every frame while a trim holds a param, and at each reading of a trim or pickup knob.</p>
+<h3 id="mapping-trim-nudge-the-timeline">Trim: nudge the timeline<a class="anchor" href="#mapping-trim-nudge-the-timeline" aria-label="Link to this section">#</a></h3>
+<p>For a work whose timeline already draws the whole show, turning a knob to 0.9 should not throw
+the curve away. A <code>trim</code> route's <code>outMin</code>/<code>outMax</code> are an <em>offset</em> range, and the param is
+<code>timeline value + offset</code>, clamped to the param's range. Without them the knob spans half the param's
+range each way (knob in the middle = no change):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// ±30° around whatever the timeline says, smoothed</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/74'</span>, target: <span class="ts">'hue'</span>, mode: <span class="ts">'trim'</span>, outMin: -30, outMax: 30, smooth: 0.1 });</code></pre></div>
+<ul>
+<li>The offset rides on the timeline: when the curve moves, the param moves with it, every frame.</li>
+<li><code>smooth</code> smooths the offset (it starts from 0, never from a jump).</li>
+<li>Two trim routes on one param add up, so a coarse and a fine knob work together. A <code>trim</code> on a param
+that also has a replacing route sits on top of the replacing route's value.</li>
+<li>While a trim holds a param, the param is overridden: the console shows it with a ✕, and a
+<code>timeline.record</code> source that reads the override gets the sum, what the audience saw. ✕ clears the offset;
+the knob's next move brings it back. Removing or muting the route gives the param back at once.</li>
+</ul>
+<h3 id="mapping-pickup-take-over-only-when-you-arrive">Pickup: take over only when you arrive<a class="anchor" href="#mapping-pickup-take-over-only-when-you-arrive" aria-label="Link to this section">#</a></h3>
+<p>A knob and a parameter rarely start in the same place. With <code>mode: 'pickup'</code> the route writes
+nothing until the knob's value has <em>met</em> the param's current value: within 2% of the route's
+output range, or crossed over it between two readings. From then on it behaves like a replacing
+route, gliding from where the param was (no jump). The comparison uses the value the param
+has right now, so it works while the timeline moves. A <code>release</code> or ✕ puts the route back to
+"not met yet".</p>
+<h3 id="mapping-release-give-it-back">Release: give it back<a class="anchor" href="#mapping-release-give-it-back" aria-label="Link to this section">#</a></h3>
+<p><code>release: 4</code> means: when the signal has not moved for 4 seconds, the route lets go. Movement is a change of
+more than 0.1% of the input window, measured from where it last counted as moved, so a slow drift counts and a source that keeps sending the
+same value does not. Then:</p>
+<ul>
+<li>with <code>smooth: 0</code> the param goes back to the timeline at once;</li>
+<li>with <code>smooth &gt; 0</code> it fades into the timeline over about three times <code>smooth</code> seconds, then the override
+is cleared (a <code>trim</code> fades its offset to zero);</li>
+<li>the route waits until the source <em>moves</em> again before it takes anything: a source that keeps repeating
+the same value does not take the param back;</li>
+<li>it only clears what it wrote itself. If a slider took the param over in the meantime, that stays.</li>
+</ul>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// a main knob: meets the value first, glides, and gives the param back 4 s after the hand leaves</span>
+show.mapper.addRoute({ source: <span class="ts">'midi/cc/71'</span>, target: <span class="ts">'bloom'</span>, mode: <span class="ts">'pickup'</span>, release: 4, smooth: 0.15 });</code></pre></div>
+<h2 id="mapping-learn">Learn<a class="anchor" href="#mapping-learn" aria-label="Link to this section">#</a></h2>
+<p>Click <em>learn</em> next to a param in <strong>L3 · Params</strong> (or call
+<code>mapper.learn('bloom')</code>), then move something. The mapper binds the first signal
+that:</p>
+<ul>
+<li><strong>moves</strong> by at least 5% of its declared range from where it was when learn
+started (a knob, a fader, a hand, a phone tilt), or</li>
+<li><strong>fires</strong>, if it is a pulse (a key, a pad, a knock).</li>
+</ul>
+<p>The new route has the defaults: linear, no smoothing, the param's full range.
+Edit it afterwards if it needs a curve. Clicking <em>learn</em> again cancels. Learn
+<em>adds</em>: a param that already has a route keeps it and gets a second one.</p>
+<p>To bind a whole list, the <strong>L2 · Mapping</strong> panel has <strong>🎛 map knobs in order</strong>: it
+arms learn for the first param, you turn one knob, it is bound and the next param is
+armed. <em>skip</em>, <em>back</em>, <em>stop</em> (or Esc) steer it. In code it is <code>LearnWizard</code>
+(<a href="../../docs/score/#score-map-the-knobs-in-order">details</a>).</p>
+<aside class="callout callout-caution" role="note"><p class="callout-title">Caution</p>
+<p>Any pulse binds immediately. Untick <em>simulate performance</em> and stop the drum
+machine before you learn, or the next note they play becomes the route.</p>
+</aside>
+<p>When one MIDI message publishes several names (<code>midi/cc/74</code>,
+<code>midi/ch/1/cc/74</code>, and with two devices <code>midi/&lt;slug&gt;/cc/74</code>), learn binds the
+first one, <code>midi/cc/74</code>, which hears every device. Change the <code>source</code> to the
+per-device name if you need one device only.</p>
+<h2 id="mapping-muting-and-removing">Muting and removing<a class="anchor" href="#mapping-muting-and-removing" aria-label="Link to this section">#</a></h2>
+<p>The <strong>L2 · Mapping</strong> panel lists every route as <code>source → target</code> with a
+checkbox (mute) and ✕ (remove). In code:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> r = show.mapper.routesFor(<span class="ts">'bloom'</span>)[0];
+r.enabled = <span class="tk">false</span>;                  <span class="tc">// mute</span>
+show.mapper.removeRoute(r.id);      <span class="tc">// remove</span></code></pre></div>
+<h2 id="mapping-saved-profiles">Saved profiles<a class="anchor" href="#mapping-saved-profiles" aria-label="Link to this section">#</a></h2>
+<p>The mapper saves its routes to <code>localStorage</code> under <code>openav.map.&lt;profile&gt;</code>.
+<code>createShow()</code> uses the world's name as the profile (or the <code>profile</code> option) and:</p>
+<ol>
+<li>loads the saved routes if there are any, otherwise adds the declared <code>routes</code>;</li>
+<li>when a saved profile exists, still adds every declared route whose
+<code>source → target</code> pair is missing, so new routes in code arrive;</li>
+<li>saves every 3 seconds.</li>
+</ol>
+<p>So learned routes and edits survive a reload. The flip side: if you change the
+curve or smoothing of a declared route in code, the saved copy of that
+<code>source → target</code> pair wins. To start clean, pass <code>profile: false</code> (routes come
+from code on every load, as in example 09) or remove the saved profile:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">localStorage.removeItem(<span class="ts">'openav.map.particles'</span>);   <span class="tc">// 'particles' = the world's name</span></code></pre></div>
+<p>To carry a wiring to another machine or another world, use a map file
+(<a href="#mapping-map-files-export-import-and-share">next section</a>).</p>
+<h2 id="mapping-map-files-export-import-and-share">Map files: export, import and share<a class="anchor" href="#mapping-map-files-export-import-and-share" aria-label="Link to this section">#</a></h2>
+<p>The <strong>L2 · Mapping</strong> panel has three buttons under <em>map knobs in order</em>:</p>
+<ul>
+<li><strong>⬇ export</strong> downloads the routes as <code>oav-map-&lt;world&gt;.json</code>.</li>
+<li><strong>⬆ import</strong> picks a map file. You can also <strong>drop a <code>.json</code> anywhere on the page</strong>.
+Import <em>replaces</em> the routes; the new set is remembered at once.</li>
+<li><strong>clear</strong> removes every route (click twice). On the next load the world's declared
+routes come back, as on a first visit.</li>
+</ul>
+<p>Below the buttons the panel says what the last import did: how many routes came in, and
+every route it <strong>skipped</strong> and why. A file that cannot be read says so and changes nothing.</p>
+<h3 id="mapping-the-format">The format<a class="anchor" href="#mapping-the-format" aria-label="Link to this section">#</a></h3>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{
+  <span class="ts">"format"</span>: <span class="ts">"openav.map"</span>,
+  <span class="ts">"version"</span>: 1,
+  <span class="ts">"world"</span>: <span class="ts">"particles"</span>,
+  <span class="ts">"exported"</span>: <span class="ts">"2026-10-15T08:30:00.000Z"</span>,
+  <span class="ts">"routes"</span>: [
+    { <span class="ts">"signal"</span>: <span class="ts">"midi/cc/74"</span>, <span class="ts">"param"</span>: <span class="ts">"bloom"</span>, <span class="ts">"curve"</span>: <span class="ts">"exp"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 1], <span class="ts">"out"</span>: [0, 100] }, <span class="ts">"smooth"</span>: 0.1, <span class="ts">"invert"</span>: <span class="tk">false</span> },
+    { <span class="ts">"signal"</span>: <span class="ts">"audio/rms"</span>, <span class="ts">"param"</span>: <span class="ts">"energy"</span>, <span class="ts">"curve"</span>: <span class="ts">"linear"</span>,
+      <span class="ts">"range"</span>: { <span class="ts">"in"</span>: [0, 0.3], <span class="ts">"out"</span>: [0, 1] }, <span class="ts">"smooth"</span>: 0, <span class="ts">"invert"</span>: <span class="tk">false</span>, <span class="ts">"enabled"</span>: <span class="tk">false</span> }
+  ]
+}</code></pre></div>
+<p>Routes are named by <code>signal</code> and <code>param</code>, never by id, so a file travels between worlds:</p>
+<ul>
+<li>a route whose <strong>param</strong> this world does not have is skipped and listed;</li>
+<li>a route whose <strong>signal</strong> nothing in this show can produce (say <code>leap/palm/x</code> without a
+Leap Motion module) is skipped and listed. Signals that only appear when the first message
+arrives (<code>midi/…</code>, <code>surface/…</code>, <code>phone/…</code>, <code>osc/…</code>, <code>key…</code>, <code>take/…</code>) are kept and counted as
+<em>waiting</em>;</li>
+<li>when the file's <code>world</code> is a different one, the <code>range.out</code> is dropped so each param keeps its
+own range (the <code>in</code> window, curve, smoothing and invert come along);</li>
+<li><code>version</code> newer than this build reads is refused with a message. A bare array from
+<code>mapper.toJSON()</code> (the old way) still imports, as version 0.</li>
+<li><code>mode</code> (<code>"trim"</code> or <code>"pickup"</code>) and <code>release</code> (seconds) are optional route keys in version 1, written only when
+a route uses them. A build from before they existed ignores them and reads the route as a replacing route.
+For a <code>trim</code> route, <code>range.out</code> is the offset range.</li>
+<li>Files over 256 KB or with over 500 routes are refused.</li>
+</ul>
+<h3 id="mapping-load-on-open-map">Load on open: <code>?map=</code><a class="anchor" href="#mapping-load-on-open-map" aria-label="Link to this section">#</a></h3>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code>https://openaudiovisual.com/examples/01-hello-particles/?map=https://example.com/my-map.json
+https://openaudiovisual.com/examples/01-hello-particles/?map=maps/stage-left.json</code></pre></div>
+<p><code>?map=&lt;url&gt;</code> fetches the file when the page opens and loads it like an import. It accepts a
+<strong>same-origin</strong> address (relative paths included) or an absolute <strong>https</strong> one; <code>http:</code> to another
+host, <code>data:</code>, <code>javascript:</code>, <code>file:</code> and addresses with a login are refused. A cross-site file
+must be served with CORS (<code>Access-Control-Allow-Origin: *</code>; raw GitHub and gists do this).
+The show starts regardless: if the address is refused, the fetch fails or the file is bad, the
+panel shows the reason and the routes stay as they were. An explicit <code>?map=</code> beats the remembered
+wiring, and what it loads is remembered like any import. In code, <code>createShow({ map: 'maps/a.json' })</code>
+does the same and <code>map: false</code> ignores <code>?map=</code>.</p>
+<h3 id="mapping-remembered-for-you">Remembered for you<a class="anchor" href="#mapping-remembered-for-you" aria-label="Link to this section">#</a></h3>
+<p>The mapper saves its routes to <code>localStorage</code> (<code>openav.map.&lt;world&gt;</code>) every 3 seconds and right
+after an import or clear, one slot per world name, so the next visit starts where you stopped.
+Every read and write is wrapped: in a private window or with storage blocked nothing breaks,
+the wiring just is not remembered.</p>
+<p>In code:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { loadMapUrl, parseMap } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+
+<span class="tk">const</span> file = show.mapper.exportMap();                    <span class="tc">// the object above</span>
+<span class="tk">const</span> report = show.mapper.importMap(text);              <span class="tc">// text or object; { mode: 'add' } keeps current routes</span>
+<span class="tc">// → { ok, added, skipped: [{ signal, param, reason: 'param' | 'signal' }], waiting, dropped, crossWorld }</span>
+<span class="tk">await</span> loadMapUrl(show.mapper, <span class="ts">'maps/a.json'</span>);            <span class="tc">// what ?map= calls; never throws</span>
+parseMap(text);                                          <span class="tc">// validate without touching a mapper</span></code></pre></div>
+<h2 id="mapping-routes-written-for-you">Routes written for you<a class="anchor" href="#mapping-routes-written-for-you" aria-label="Link to this section">#</a></h2>
+<p>Several packages generate routes in this same shape:</p>
+<ul>
+<li><code>autoSurface(world.params)</code> (<code>@openav/surface</code>) builds a phone control panel and
+the <code>surface/&lt;page&gt;/&lt;widget&gt; → param</code> routes for it, with <code>smooth: 0.04</code>;
+<code>routesFromLayout(layout, params)</code> does the same for a hand-written layout
+(<a href="../../docs/phones/#phones-autosurface">Phones, relay &amp; surfaces</a>).</li>
+<li><code>controllerRoutes(profile, { knob1: 'hue', pad1: 'burst' })</code> (<code>@openav/midi</code>)
+writes routes from an on-screen controller's controls
+(<a href="../../docs/controllers/">MIDI controllers &amp; embedding</a>).</li>
+</ul>
+<h2 id="mapping-mapper-api">Mapper API<a class="anchor" href="#mapping-mapper-api" aria-label="Link to this section">#</a></h2>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Mapper } <span class="tk">from</span> <span class="ts">'@openav/mapping'</span>;
+
+<span class="tk">const</span> mapper = <span class="tk">new</span> Mapper({ signals, params, profile: <span class="ts">'default'</span>, onChange, onLearn, base });
+mapper.addRoute(route)        <span class="tc">// → the stored route (defaults filled in, id assigned)</span>
+mapper.removeRoute(id)
+mapper.routesFor(<span class="ts">'bloom'</span>)     <span class="tc">// → routes targeting a param</span>
+mapper.routes                 <span class="tc">// the live array</span>
+mapper.learn(<span class="ts">'bloom'</span>)         <span class="tc">// arm / cancel learn; mapper.learnTarget is the armed key</span>
+mapper.base = () =&gt; timeline.state()   <span class="tc">// the timeline's value now (trim, pickup, smooth start); optional</span>
+mapper.update(dt)             <span class="tc">// every frame: glides smoothed routes, keeps trims on the timeline, applies release</span>
+mapper.toJSON(); mapper.fromJSON(array)
+mapper.exportMap(); mapper.importMap(text|object, { mode })   <span class="tc">// the portable file, see above</span>
+mapper.clear()                <span class="tc">// remove every route (and forget them)</span>
+mapper.report                 <span class="tc">// what the last import / ?map= said</span>
+mapper.save(); mapper.load()  <span class="tc">// localStorage 'openav.map.&lt;profile&gt;'; load() → true if found</span>
+mapper.dispose()              <span class="tc">// stop listening to signals</span></code></pre></div>
+<p><code>onChange()</code> runs when routes change (for UIs); <code>onLearn(route, signalName)</code> runs
+when learn binds.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/inputs/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Inputs</span></a>
+      <a class="ch-next" rel="next" href="../../docs/show-control/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Show control</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

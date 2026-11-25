@@ -61,4 +61,4 @@ from the score, the console draws the director panel and the prompter, `?cut=sho
 There is deliberately no engine-clock table: one time line, nothing for a clock to choose between
 (docs → "Clocks: why there are none").
 
-Full reference: [docs](https://openaudiovisual.com/docs/#score) · example `examples/13-score-director/`
+Full reference: [docs](https://openaudiovisual.com/docs/score/) · example `examples/13-score-director/`

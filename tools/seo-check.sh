@@ -5,7 +5,7 @@
 #   tools/seo-check.sh http://localhost:8467   # a local `node serve.js 8467`
 #   tools/seo-check.sh BASE --no-repo          # skip the repository checks (generators --check, npm test)
 #
-# Nine checks and a devices check (5b) (spec: "OAV 官網 GEO／SEO／AEO 健檢與實作規格" §9.2). Each prints PASS / FAIL / SKIP, with the
+# Nine checks, a devices check (5b) and a handbook and reference check (5c) (spec: "OAV 官網 GEO／SEO／AEO 健檢與實作規格" §9.2). Each prints PASS / FAIL / SKIP, with the
 # number it measured. A FAIL carries a tag that says who can fix it:
 #   [CF]  needs a Cloudflare dashboard change (the owner): AI-crawler policy, Email Obfuscation, Always Use HTTPS
 #   [EX]  waits for the examples workstream (static pages for examples/NN-*)
@@ -50,17 +50,17 @@ fi
 
 # ---- 2. Cloudflare Email Obfuscation must not rewrite p5@x.y.z in code
 if [[ $LOCAL == 1 ]]; then
-  obf=$(get /docs/ | count 'email protected\|cdn-cgi/l/email-protection'); ver=$(get /docs/ | grep -o 'p5@[0-9][0-9.]*' | head -1)
-  if [[ "$obf" == 0 && -n "$ver" ]]; then say PASS '' "2  email fence: /docs/ keeps $ver, 0 obfuscated strings (local: only the repo-side email_off fence is tested)"
+  obf=$(get /docs/writing-a-world/ | count 'email protected\|cdn-cgi/l/email-protection'); ver=$(get /docs/writing-a-world/ | grep -o 'p5@[0-9][0-9.]*' | head -1)
+  if [[ "$obf" == 0 && -n "$ver" ]]; then say PASS '' "2  email fence: /docs/writing-a-world/ keeps $ver, 0 obfuscated strings (local: only the repo-side email_off fence is tested)"
   else say FAIL '' "2  email fence: obfuscated=$obf, p5 version string='${ver:-missing}'"; fi
 else
   bad=""
-  for p in /docs/ /zh/docs/ /controllers/akai-lpd8/; do
+  for p in /docs/writing-a-world/ /zh/docs/writing-a-world/ /controllers/akai-lpd8/; do
     n=$(get "$p" | count 'email protected\|cdn-cgi/l/email-protection'); [[ "$n" != 0 ]] && bad="$bad $p=$n"
   done
-  ver=$(get /docs/ | grep -o 'p5@[0-9][0-9.]*' | head -1)
-  if [[ -z "$bad" && -n "$ver" ]]; then say PASS '' "2  email obfuscation: 0 rewritten strings, /docs/ keeps $ver"
-  else say FAIL '[CF]' "2  email obfuscation rewrites code ($bad ); p5 version in /docs/: '${ver:-missing}'  (Cloudflare → Scrape Shield → Email Address Obfuscation: off)"; fi
+  ver=$(get /docs/writing-a-world/ | grep -o 'p5@[0-9][0-9.]*' | head -1)
+  if [[ -z "$bad" && -n "$ver" ]]; then say PASS '' "2  email obfuscation: 0 rewritten strings, /docs/writing-a-world/ keeps $ver"
+  else say FAIL '[CF]' "2  email obfuscation rewrites code ($bad ); p5 version in /docs/writing-a-world/: '${ver:-missing}'  (Cloudflare → Scrape Shield → Email Address Obfuscation: off)"; fi
 fi
 
 # ---- 3. http → https
@@ -109,6 +109,22 @@ while read -r u; do
 done <<< "$sample"
 if [[ "$nf" -ge 2 && "$nd" -ge 2 && -z "$miss" ]]; then say PASS '' "5b devices: the hub, $nf fixture pages and $nd device pages (a sample) have a description, their canonical and JSON-LD"
 else say FAIL '' "5b devices: $n sampled ($nf fixtures, $nd devices); missing a description, canonical or JSON-LD:${miss:- none}"; fi
+
+# ---- 5c. the handbook and the API reference, one page per chapter and per oav-p5 name: a sample has a description, a canonical,
+#          JSON-LD; and an old one-page link (/docs/#mapping-curves) is forwarded by the contents page's own script
+miss=""; n=0; nc=0; nr=0
+sample=$( { printf '%s' "$sm" | grep -o '<loc>[^<]*/docs/[a-z0-9-]*/</loc>' | grep -v '/docs/reference/</loc>\|/docs/cheatsheet/</loc>' | awk 'NR % 7 == 1'; printf '%s' "$sm" | grep -o '<loc>[^<]*/docs/reference/[a-z0-9-]*/</loc>' | awk 'NR % 40 == 1'; } | sed 's/<\/*loc>//g')
+while read -r u; do
+  [[ -n "$u" ]] || continue
+  n=$((n+1)); [[ "$u" == */docs/reference/?*/ ]] && nr=$((nr+1)) || nc=$((nc+1))
+  h=$(get "$(rebase "$u" | sed "s#^$BASE##")")
+  d=$(printf '%s' "$h" | count 'name="description"'); c=$(printf '%s' "$h" | count "rel=\"canonical\" href=\"$u\""); j=$(printf '%s' "$h" | count 'application/ld+json')
+  [[ "$d" -ge 1 && "$c" -ge 1 && "$j" -ge 1 ]] || miss="$miss ${u#$SITE}"
+done <<< "$sample"
+fw=$(get /docs/ | count "\"mapping/\",\[")
+names=$(printf '%s' "$sm" | grep -c '/docs/reference/[a-z0-9-]*/</loc>' || true)
+if [[ "$nc" -ge 2 && ( "$names" == 0 || "$nr" -ge 2 ) && -z "$miss" && "$fw" -ge 1 ]]; then say PASS '' "5c handbook and reference: $nc chapter pages and $nr name pages (a sample) have a description, their canonical and JSON-LD; /docs/ forwards old #anchors"
+else say FAIL '' "5c handbook and reference: $n sampled ($nc chapters, $nr names, forwarder: $fw); missing a description, canonical or JSON-LD:${miss:- none}"; fi
 
 # ---- 6. llms.txt is fresh, generated, and complete
 en=$(get /llms.txt); zh=$(get /zh/llms.txt); full=$(get /llms-full.txt)

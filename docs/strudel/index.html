@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>With Strudel · open-audiovisual</title>
+<meta name="description" content="Strudel is a live-coding environment for music in the browser, a JavaScript version of TidalCycles.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/strudel/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/strudel/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/strudel/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/strudel/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="With Strudel · open-audiovisual">
+<meta property="og:description" content="Strudel is a live-coding environment for music in the browser, a JavaScript version of TidalCycles.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/strudel/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="With Strudel · open-audiovisual">
+<meta name="twitter:description" content="Strudel is a live-coding environment for music in the browser, a JavaScript version of TidalCycles.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="strudel">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/strudel/#article","url":"https://openaudiovisual.com/docs/strudel/","name":"With Strudel · open-audiovisual","description":"Strudel is a live-coding environment for music in the browser, a JavaScript version of TidalCycles.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"With Strudel","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Load OAV in Strudel","Recipe 1: knobs, a phone and the microphone as Strudel's parameters","Recipe 2: Strudel plays, a p5 sketch draws","Recipe 3: Strudel, Hydra and OAV on one page","Options for Strudel","Credits and licences"],"position":14,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/strudel/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/strudel/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"With Strudel","item":"https://openaudiovisual.com/docs/strudel/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/strudel/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/strudel/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch is-here" data-ch="strudel">
+          <a href="#strudel" aria-current="page"><span class="n">14</span><span class="t">With Strudel</span></a>
+          <ol class="toc-secs">
+            <li><a href="#strudel-load-oav-in-strudel">Load OAV in Strudel</a></li>
+            <li><a href="#strudel-recipe-1-knobs-a-phone-and-the-microphone-as-strudel-s-parameters">Recipe 1: knobs, a phone and the microphone as Strudel's parameters</a></li>
+            <li><a href="#strudel-recipe-2-strudel-plays-a-p5-sketch-draws">Recipe 2: Strudel plays, a p5 sketch draws</a></li>
+            <li><a href="#strudel-recipe-3-strudel-hydra-and-oav-on-one-page">Recipe 3: Strudel, Hydra and OAV on one page</a></li>
+            <li><a href="#strudel-options-for-strudel">Options for Strudel</a></li>
+            <li><a href="#strudel-credits-and-licences">Credits and licences</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="strudel" aria-labelledby="strudel">
+<h1 id="strudel">With Strudel<a class="anchor" href="#strudel" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 14 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/strudel.md">docs/strudel.md</a></span></p>
+<p><a href="https://strudel.cc" rel="noopener">Strudel</a> is a live-coding environment for music in the browser, a JavaScript version of
+<a href="https://tidalcycles.org" rel="noopener">TidalCycles</a>. OAV is a separate program. The two run side by side the way two programs on a
+stage do: Strudel plays, and OAV brings what Strudel does not have — knobs on screen and on a phone, a microphone that
+is analysed, Web MIDI where the browser has none — and draws what Strudel plays in a p5.js sketch, on the same page or
+in another tab or on another computer. They meet through MIDI (OAV's virtual port, "OAV Virtual MIDI") and through
+the page's own variables (<code>knob1</code>, <code>micLevel</code>, <code>drumPhase</code>). OAV never loads or calls any of Strudel's code.</p>
+<p>Everything on this page was run on strudel.cc as a user runs it (its editor, Ctrl+Enter, its documented functions):
+<code>p5/test/strudel-smoke.cjs</code> does it again.</p>
+<h2 id="strudel-load-oav-in-strudel">Load OAV in Strudel<a class="anchor" href="#strudel-load-oav-in-strudel" aria-label="Link to this section">#</a></h2>
+<p>Strudel → <strong>settings</strong> → <strong>prebake</strong>, add one line at the end, <strong>save</strong>:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> <span class="tk">import</span>(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)</code></pre></div>
+<ul>
+<li><strong>Single quotes.</strong> Strudel reads text in double quotes (and backticks) as mini-notation: a URL in double quotes is a
+<code>[mini] parse error</code>.</li>
+<li><strong>Why the prebake.</strong> It runs before your code, also after a reload (about 2.5 s after the editor appears), so OAV is
+on the page before anything opens MIDI. If Strudel's <code>midin()</code> ran before OAV loaded, <code>midin('OAV Virtual MIDI')</code> gets
+nothing and says nothing: reload. 🩺 then shows "no program has asked OAV Virtual MIDI for MIDI".</li>
+<li>The line can also be the first line of your code. Options go on the line before it:
+<code>window.OAV_P5 = { link: 'my-room' }</code>.</li>
+<li>Strudel's <strong>share</strong> button puts the prebake into the link (with "share with patterns" ticked): whoever opens it gets
+OAV too.</li>
+</ul>
+<p>On strudel.cc OAV changes its manners. It does not ask for MIDI when it loads (<code>hardware=click</code>: Strudel's <code>midin()</code>
+asks). The 🎹 panel is a box in the corner, a third of the window high, so the code stays in view. One card says which
+names Strudel already has — <code>note</code>, <code>velocity</code>, <code>beat</code> are Strudel's functions, OAV leaves them alone — and what to
+read instead: <code>OAVp5.last.note</code>, <code>OAVp5.last.value</code>, <code>OAVp5.mic.on('beat', fn)</code>. <code>knob1</code>, <code>micLevel</code>, <code>drumPhase</code>
+and the rest are free names there.</p>
+<h2 id="strudel-recipe-1-knobs-a-phone-and-the-microphone-as-strudel-s-parameters">Recipe 1: knobs, a phone and the microphone as Strudel's parameters<a class="anchor" href="#strudel-recipe-1-knobs-a-phone-and-the-microphone-as-strudel-s-parameters" aria-label="Link to this section">#</a></h2>
+<p>Strudel's <code>signal()</code> turns a function into a parameter; OAV's names are plain values a function can return.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">s(<span class="ts">"bd*4"</span>).gain(signal(() =&gt; knob1))
+s(<span class="ts">"hh*8"</span>).lpf(signal(() =&gt; 300 + micLevel * 8000))</code></pre></div>
+<ul>
+<li><code>knob1</code> moves with knob 1 of the 🎹 on screen, of a MIDI controller, or of a phone (🎹 → 📱, scan the code).
+<code>knob(2)</code>, <code>fader1</code>, <code>pad1</code> are there too. Measured: knob 1 at 0, the kick is silent; at 127, it is heard (RMS 0.58).</li>
+<li>Strudel reads the value when it schedules, 0.2–0.3 s before the sound: a knob is heard that much later.</li>
+<li><code>micLevel</code>, <code>bass</code>, <code>mid</code>, <code>treble</code> are OAV's analysis of the microphone (Strudel has none); reading one asks for the
+microphone. Wear headphones: the microphone hears the speakers, and <code>gain(signal(() =&gt; micLevel))</code> feeds back.</li>
+<li>Strudel's own MIDI input works on OAV's port too, also in Safari (no Web MIDI there; OAV's port is virtual):</li>
+</ul>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> cc = <span class="tk">await</span> midin(<span class="ts">'OAV Virtual MIDI'</span>)
+s(<span class="ts">"bd*4"</span>).gain(cc(74))</code></pre></div>
+<p>Knob 1 of the on-screen MiniLab 3 is CC 74. <code>midikeys('OAV Virtual MIDI')</code> makes the 🎹 keys and the phone Strudel's
+keyboard.</p>
+<h2 id="strudel-recipe-2-strudel-plays-a-p5-sketch-draws">Recipe 2: Strudel plays, a p5 sketch draws<a class="anchor" href="#strudel-recipe-2-strudel-plays-a-p5-sketch-draws" aria-label="Link to this section">#</a></h2>
+<p><strong>On the same page.</strong> Send to OAV's port:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">note(<span class="ts">"c3 [e3 g3] &lt;a3 b3&gt; c4"</span>).midi(<span class="ts">'OAV Virtual MIDI'</span>)</code></pre></div>
+<p>Strudel hands each note over 0.21–0.32 s early with the moment it should sound; OAV waits for that moment and then
+calls <code>notePressed(note, velocity)</code> (in Strudel, with no sketch: <code>OAVp5.on('notePressed', fn)</code>), moves <code>knob1</code> for a CC,
+plays a pad. Measured on strudel.cc: each note is heard within 5 ms of its timestamp (10 notes, at most 4.5 ms late; <code>p5/test/strudel-smoke.cjs</code>), and <code>drumPhase</code> follows Strudel's clock to 0.1 ms. What arrives on the port is never handed
+back to OAV's input, so <code>midikeys('OAV Virtual MIDI')</code> played into <code>.midi('OAV Virtual MIDI')</code> is one echo, not a loop.</p>
+<p><strong>Strudel's clock.</strong> MIDI counts 24 clocks a beat, so a cycle of one 4-beat bar sends 96:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">setcps(128 / 60 / 4)
+$: s(<span class="ts">"bd*4, [~ sd]*2, hh*8"</span>)
+$: midicmd(<span class="ts">"clock*96, &lt;start stop&gt;/8"</span>).midi(<span class="ts">'OAV Virtual MIDI'</span>)</code></pre></div>
+<p><code>drumPhase</code>, <code>beatPhase</code>, <code>drumBar</code>, <code>drumStep</code> and <code>drumBpm</code> follow it. A drum machine started with <code>startDrums()</code>
+plays at Strudel's tempo, on Strudel's downbeat, and starts and stops with it (the card says "following an external
+clock · 128 BPM"). Measured at 128 bpm: <code>drumPhase</code> within 1.2 ms of Strudel's bar (median 0.04 ms), every kick within
+6 ms of Strudel's beat (three runs); Strudel's start, which arrives three times with one timestamp, counts once. Without a clock
+nothing changes; <code>clock=off</code> ignores one.</p>
+<p><strong>In another tab, or on another computer.</strong> Give both pages the same room. In Strudel's prebake:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">window.OAV_P5 = { link: <span class="ts">'my-room'</span> }
+<span class="tk">await</span> <span class="tk">import</span>(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)</code></pre></div>
+<p>and in the p5 sketch (OpenProcessing: before the one line; or <code>?sketch_oav_link=my-room</code> on the page's address):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">window.OAV_P5 = { link: <span class="ts">'my-room'</span> };
+document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+<p>Everything Strudel sends to OAV's port — notes, CCs, the clock — reaches every other OAV page in the room, through the
+same relay the phones use. 🎹 grows a 🔗: green when another page is there; the panel says the room, the pages and the
+trip. The receiving page plays each note when Strudel plays it, not when it arrives: it lines the two clocks up from the
+fastest trips it has seen and the round trips both pages measure (packages/relay/link.js explains how), and Strudel's
+quarter-second head start covers the trip. Measured with two tabs on one Mac over wss://remote.cheyuwu.com (one way
+≈ 61 ms): notes within −3 … +7 ms of Strudel's timestamps (two runs). Across two computers add the difference between the
+two halves of a round trip (usually a few ms). Keep the default relay (<code>wss://</code>): Chrome does not let strudel.cc reach a
+relay on your own machine or network (<code>ws://127.0.0.1…</code> is blocked by its local-network checks). On a network whose jitter is longer than Strudel's head start, <code>linkdelay=</code> (ms)
+buffers more. A page never sends on what it received, and a program that plays a linked note back out is caught as an
+echo. The room is the phones' room too: one QR code plays every page in it.</p>
+<p>The sketch side, ready to run: <a href="../../p5/examples/with-strudel/"><code>p5/examples/with-strudel/</code></a> (?room=… on its address).</p>
+<h2 id="strudel-recipe-3-strudel-hydra-and-oav-on-one-page">Recipe 3: Strudel, Hydra and OAV on one page<a class="anchor" href="#strudel-recipe-3-strudel-hydra-and-oav-on-one-page" aria-label="Link to this section">#</a></h2>
+<p>With OAV in the prebake:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> initHydra()
+osc(10, 0.1, () =&gt; knob1 * 2).rotate(() =&gt; drumPhase * 6.28).color(1, () =&gt; micLevel, 0.6).out()
+setcps(120 / 60 / 4)
+$: s(<span class="ts">"bd*4, [~ sd]*2, hh*8"</span>).gain(signal(() =&gt; 0.3 + knob1))
+$: midicmd(<span class="ts">"clock*96"</span>).midi(<span class="ts">'OAV Virtual MIDI'</span>)</code></pre></div>
+<p>Hydra turns once a bar on Strudel's clock (through <code>drumPhase</code>), knob 1 drives Hydra and Strudel at once, and the
+microphone colours the picture.</p>
+<h2 id="strudel-options-for-strudel">Options for Strudel<a class="anchor" href="#strudel-options-for-strudel" aria-label="Link to this section">#</a></h2>
+<p>Set before the line (<code>window.OAV_P5 = { … }</code>), or <code>?oav_key=value</code> on a p5 page's address.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>key</th><th>values</th><th>default</th></tr></thead>
+<tbody>
+<tr><td><code>link</code></td><td>a room name (letters, digits, <code>-</code>, <code>_</code>): pages in it hear each other's programs</td><td>none</td></tr>
+<tr><td><code>linkdelay</code></td><td>milliseconds of extra buffer on a linked page's notes</td><td><code>0</code></td></tr>
+<tr><td><code>clock</code></td><td><code>follow</code> (an external MIDI clock moves <code>drumPhase</code> and the drums) · <code>off</code></td><td><code>follow</code></td></tr>
+<tr><td><code>strudel</code></td><td><code>auto</code> (strudel.cc, or Strudel's functions already on the page) · <code>on</code> · <code>off</code></td><td><code>auto</code></td></tr>
+<tr><td><code>compact</code></td><td><code>on</code> (the panel as a box in the corner) · <code>off</code></td><td><code>on</code> in Strudel</td></tr>
+<tr><td><code>hardware</code></td><td><code>auto</code> · <code>click</code> · <code>off</code></td><td><code>click</code> in Strudel</td></tr>
+</tbody>
+</table></div>
+<h2 id="strudel-credits-and-licences">Credits and licences<a class="anchor" href="#strudel-credits-and-licences" aria-label="Link to this section">#</a></h2>
+<p>Strudel is © its contributors (begun by Felix Roos and Alex McLean), free software under the GNU Affero General
+Public License v3: <a href="https://strudel.cc" rel="noopener">strudel.cc</a>, source at <a href="https://codeberg.org/uzu/strudel" rel="noopener">codeberg.org/uzu/strudel</a>.
+TidalCycles, whose way of writing patterns Strudel carries to the browser, is Alex McLean's. Music you make with Strudel is
+yours (Strudel's FAQ).</p>
+<p>OAV is MIT-licensed and a separate program. It contains no Strudel code, does not load <code>@strudel/*</code> at run time and calls
+none of Strudel's functions: it only looks at the page's address and at which names the page already has, to choose its
+manners. The two meet the way two programs on a stage meet, over MIDI. OAV's own rhythm strings (<code>startDrums("bd*4, hh*8")</code>, @openav/pattern) are an independent implementation of the TidalCycles / Strudel way of writing rhythm, from their
+public documentation. Please do not ask Strudel's community for help with OAV: OAV's issues are on
+<a href="https://github.com/frank890417/open-audiovisual/issues" rel="noopener">GitHub</a>.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../p5/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">p5.js in one line</span></a>
+      <a class="ch-next" rel="next" href="../../docs/phones/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Phones, relay &amp; surfaces</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

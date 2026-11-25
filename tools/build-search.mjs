@@ -7,8 +7,9 @@
 // The index is made from the same sources as the pages it points at, never typed:
 //   ref   every entry of the API reference, from docs/reference/reference.json (tools/build-reference.mjs writes it first):
 //         name, aliases (and midi.x for OAVp5.x), the keywords in BOTH languages, the one-line summary, the description
-//   doc   every chapter and every section of the handbook, from the same Markdown render the /docs/ page is made of
-//         (tools/build-docs.mjs buildDocs()): title, heading, the text under it (code blocks left out)
+//   doc   every chapter and every section of the handbook, from the same Markdown render the chapter pages are made of
+//         (tools/build-docs.mjs buildDocs()): title, heading, the text under it (code blocks left out), pointing at the
+//         chapter's own page (/docs/<chapter>/#heading; the p5 chapter's is /p5/)
 //   ex    every example: title, what it teaches, the three things to try, from examples/catalog.json
 //   ctl   every MIDI controller page: its name, maker, kind
 //   dev   every page of the device collection that is not a controller's: each DMX fixture (/fixtures/<id>/) and each record
@@ -23,6 +24,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDocs } from './build-docs.mjs';
+import { chapterPath } from './docs/anchors.mjs';
 import { EXAMPLES, plainText } from './examples/catalog.mjs';
 import { catalog, detailPath } from './controllers/page.mjs';
 import { fullName } from './controllers/detail.mjs';
@@ -100,7 +102,7 @@ function docRecords() {
         if (h.level > 4) return;
         const body = plain(ch.html.slice(h.end, k + 1 < marks.length ? marks[k + 1].start : undefined));
         const isChapter = h.level === 2;
-        out.push({ i: `doc:${ch.id}${isChapter ? '' : '#' + h.id}`, t: 'doc', l, n: h.title, u: `${pre(l)}docs/#${h.id}`, s: isChapter ? '' : ch.title, a: '', k: '', d: '', x: cap(body, CAP.doc) });
+        out.push({ i: `doc:${ch.id}${isChapter ? '' : '#' + h.id}`, t: 'doc', l, n: h.title, u: `${pre(l)}${chapterPath(ch.id)}${isChapter ? '' : '#' + h.id}`, s: isChapter ? '' : ch.title, a: '', k: '', d: '', x: cap(body, CAP.doc) });
       });
     }
   }

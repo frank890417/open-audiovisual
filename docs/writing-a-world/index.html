@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing a world · open-audiovisual</title>
+<meta name="description" content="A world is the only part of the framework you have to write. Everything else is assembly.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/writing-a-world/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/writing-a-world/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/writing-a-world/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/writing-a-world/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Writing a world · open-audiovisual">
+<meta property="og:description" content="A world is the only part of the framework you have to write. Everything else is assembly.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/writing-a-world/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Writing a world · open-audiovisual">
+<meta name="twitter:description" content="A world is the only part of the framework you have to write. Everything else is assembly.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="writing-a-world">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/writing-a-world/#article","url":"https://openaudiovisual.com/docs/writing-a-world/","name":"Writing a world · open-audiovisual","description":"A world is the only part of the framework you have to write. Everything else is assembly.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Writing a world","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["The interface","The contract","Params","The one rule people break","Scenes and automation","Renderers","Several worlds in one show","Sound output from a world","Checklist before a show"],"position":5,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/writing-a-world/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/writing-a-world/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Writing a world","item":"https://openaudiovisual.com/docs/writing-a-world/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/writing-a-world/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/writing-a-world/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch is-here" data-ch="writing-a-world">
+          <a href="#writing-a-world" aria-current="page"><span class="n">05</span><span class="t">Writing a world</span></a>
+          <ol class="toc-secs">
+            <li><a href="#writing-a-world-the-interface">The interface</a></li>
+            <li><a href="#writing-a-world-the-contract">The contract</a></li>
+            <li><a href="#writing-a-world-params">Params</a></li>
+            <li><a href="#writing-a-world-the-one-rule-people-break">The one rule people break</a></li>
+            <li><a href="#writing-a-world-scenes-and-automation">Scenes and automation</a></li>
+            <li><a href="#writing-a-world-renderers">Renderers</a></li>
+            <li><a href="#writing-a-world-several-worlds-in-one-show">Several worlds in one show</a></li>
+            <li><a href="#writing-a-world-sound-output-from-a-world">Sound output from a world</a></li>
+            <li><a href="#writing-a-world-checklist-before-a-show">Checklist before a show</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="writing-a-world" aria-labelledby="writing-a-world">
+<h1 id="writing-a-world">Writing a world<a class="anchor" href="#writing-a-world" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 5 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/writing-a-world.md">docs/writing-a-world.md</a></span></p>
+<p>A world is the only part of the framework you <em>have</em> to write. Everything else
+is assembly.</p>
+<h2 id="writing-a-world-the-interface">The interface<a class="anchor" href="#writing-a-world-the-interface" aria-label="Link to this section">#</a></h2>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">export</span> <span class="tk">const</span> myWorld = {
+  name: <span class="ts">'my-world'</span>,
+
+  <span class="tc">// params: what the world can be performed WITH.</span>
+  <span class="tc">// These appear in the console, are automatable by the timeline,</span>
+  <span class="tc">// and are mappable to any signal.</span>
+  params: [
+    { key: <span class="ts">'energy'</span>, label: <span class="ts">'Energy'</span>, min: 0, max: 1, def: 0.3 },
+    { key: <span class="ts">'mode'</span>,   label: <span class="ts">'Mode'</span>,   min: 0, max: 3, def: 0, step: 1 },  <span class="tc">// step → snaps, holds on the timeline</span>
+    { key: <span class="ts">'reset'</span>,  label: <span class="ts">'Reset'</span>,  pulse: <span class="tk">true</span> },                       <span class="tc">// momentary trigger</span>
+  ],
+
+  init(ctx) {
+    <span class="tc">// ctx = { container, signals, params }</span>
+    <span class="tc">// build your renderer here: p5, three, or the built-in 2D helper:</span>
+    <span class="tk">this</span>.view = createCanvas(ctx.container);
+    <span class="tc">// discrete events may come straight from signals:</span>
+    <span class="tk">this</span>._unsub = ctx.signals.on(<span class="ts">'chord/event'</span>, (a) =&gt; <span class="tk">this</span>.onChord(a));
+    <span class="tk">this</span>._unpulse = ctx.params.onPulse(<span class="ts">'reset'</span>, () =&gt; <span class="tk">this</span>.reset());
+  },
+
+  update(dt, state, io) {
+    <span class="tc">// state = resolved param values. This is your ONLY continuous input.</span>
+    <span class="tc">// io = { signals } plus any output handles the assembly added (see "Sound output")</span>
+  },
+
+  render() { <span class="tc">/* draw */</span> },
+
+  dispose() { <span class="tk">this</span>._unsub?.(); <span class="tk">this</span>._unpulse?.(); <span class="tk">this</span>.view.dispose(); },
+};</code></pre></div>
+<h2 id="writing-a-world-the-contract">The contract<a class="anchor" href="#writing-a-world-the-contract" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>member</th><th>when it runs</th><th>what it gets</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>—</td><td>a unique string; the stage registers worlds by name</td></tr>
+<tr><td><code>params</code></td><td>read once, when the world is registered</td><td>an array of param declarations (below)</td></tr>
+<tr><td><code>init(ctx)</code></td><td>when the world becomes active</td><td><code>{ container, signals, params }</code>. May be <code>async</code>; <code>createShow()</code> waits for it before the loop starts</td></tr>
+<tr><td><code>update(dt, state, io)</code></td><td>every frame</td><td><code>dt</code> in seconds (≤ 0.1), <code>state</code> = <code>{ key: value }</code> for every param, <code>io</code> = <code>{ signals, … }</code></td></tr>
+<tr><td><code>render()</code></td><td>every frame, right after <code>update</code></td><td>nothing; draw from what <code>update</code> stored</td></tr>
+<tr><td><code>dispose()</code></td><td>when another world is activated</td><td>release GPU objects, DOM, subscriptions</td></tr>
+<tr><td><code>surface</code></td><td>optional</td><td>a phone control-surface layout; <code>modules.remote</code> uses it instead of generating one (<a href="../../docs/phones/#phones-the-show-side">Phones</a>)</td></tr>
+</tbody>
+</table></div>
+<p><code>container</code> is an absolutely positioned layer that fills the stage. The stage
+empties it before every <code>init</code>, so you never clean up DOM someone else left.
+An exception thrown in <code>update</code> or <code>render</code> is caught and logged
+(<code>[stage] update:</code> / <code>[stage] render:</code>); the show keeps running.</p>
+<h2 id="writing-a-world-params">Params<a class="anchor" href="#writing-a-world-params" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>field</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>key</code></td><td>the name routes, automation and the console use. Required.</td></tr>
+<tr><td><code>label</code></td><td>what the console shows. Defaults to <code>key</code>.</td></tr>
+<tr><td><code>min</code>, <code>max</code></td><td>the range. Overrides are clamped into it; routes scale into it.</td></tr>
+<tr><td><code>def</code></td><td>the value when there is no automation and no override. The core reads only <code>def</code>; <code>autoSurface()</code> alone also understands <code>default</code>.</td></tr>
+<tr><td><code>step</code></td><td>snap overrides to multiples of <code>step</code>; on the timeline a stepped param <em>holds</em> each keyframe instead of interpolating.</td></tr>
+<tr><td><code>pulse</code></td><td><code>true</code> makes it a trigger instead of a level: the console shows a <em>fire</em> button, a mapped pulse signal (or a continuous signal crossing 0.5 upward) fires it, and the world listens with <code>params.onPulse(key, cb)</code>. A pulse param has no value in <code>state</code>.</td></tr>
+<tr><td><code>group</code></td><td>a label for grouping. Engine params use <code>'sound'</code>; <code>autoSurface()</code> makes one phone page per group.</td></tr>
+<tr><td><code>options</code></td><td>names for the values of a stepped param (<code>['Circle', 'Petal', 'Star']</code>); the phone surface shows them as a radio.</td></tr>
+<tr><td><code>surface</code></td><td>a hint for the phone surface: <code>{ type, color, label }</code>.</td></tr>
+</tbody>
+</table></div>
+<p>If two registered worlds declare the same key, they share one param (the first
+declaration wins).</p>
+<h2 id="writing-a-world-the-one-rule-people-break">The one rule people break<a class="anchor" href="#writing-a-world-the-one-rule-people-break" aria-label="Link to this section">#</a></h2>
+<p><strong>Continuous control goes through params. Events may use signals.</strong></p>
+<p>If your world reads <code>signals.get('midi/cc/74')</code> directly in <code>update()</code>, it still
+works — today, with your controller. But it can no longer be driven by the
+timeline, by a dancer, or by someone else's controller profile. You've welded
+the performance to one input. Route it: declare a param, let the mapper connect
+<code>midi/cc/74 → yourParam</code>, and the same world works for everyone.</p>
+<p>Events are different: "a note was struck", "a chord resolved", "an onset hit" are
+moments, not levels. Subscribing to those in <code>init()</code> is correct and encouraged —
+that's what makes worlds <em>reactive</em> rather than just modulated.</p>
+<p>Useful event signals: <code>midi/note/on</code> and <code>midi/note/off</code> (any keyboard, the
+on-screen piano, the simulated performer, a phone), <code>chord/event</code> (one analysis
+per played gesture), <code>audio/onset</code>, <code>audio/kick</code>, <code>drum/kick</code>. The full list is
+in the <a href="../../docs/signals/">Signals reference</a>.</p>
+<h2 id="writing-a-world-scenes-and-automation">Scenes and automation<a class="anchor" href="#writing-a-world-scenes-and-automation" aria-label="Link to this section">#</a></h2>
+<p>The timeline is configured next to the world, in the <code>createShow()</code> call:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({
+  world: gardenWorld,
+  timeline: {
+    total: 120,                                       <span class="tc">// seconds</span>
+    automation: {
+      growth: [[0, 0.6], [40, 1.4], [90, 0.8], [120, 0.2]],   <span class="tc">// [t, value], linear between keyframes</span>
+      wind:   [[0, 0.05], [60, 0.3], [100, 0.7]],
+    },
+    scenes: [
+      { id: <span class="ts">'dawn'</span>,  t: 0,  title: <span class="ts">'Dawn'</span>,       note: <span class="ts">'single seeds · listen'</span> },
+      { id: <span class="ts">'bloom'</span>, t: 40, title: <span class="ts">'Full bloom'</span>, note: <span class="ts">'triads — stack real thirds'</span> },
+      { id: <span class="ts">'storm'</span>, t: 90, title: <span class="ts">'Storm'</span>,      note: <span class="ts">'clusters welcome'</span> },
+    ],
+  },
+  modules: { keys: { base: 48 }, chord: <span class="tk">true</span>, sound: <span class="tk">true</span> },
+});</code></pre></div>
+<ul>
+<li>Keyframes are <code>[seconds, value]</code>, sorted by time. Before the first keyframe
+the value is the first value; after the last, the last value.</li>
+<li>Scenes are sorted by <code>t</code>. <code>title</code> and <code>note</code> are what the performer reads in
+performance mode (<kbd>T</kbd>); the next scene and a countdown show under them.</li>
+<li>A scene with a negative <code>t</code> is a pre-show standby: with <code>t: -30</code> the clock starts at <code>-0:30</code>.</li>
+<li>Try performing your world with <strong>only</strong> the timeline. If it is boring, a
+param is missing.</li>
+</ul>
+<p>More in <a href="../../docs/show-control/#show-control-timeline">Show control</a>.</p>
+<h2 id="writing-a-world-renderers">Renderers<a class="anchor" href="#writing-a-world-renderers" aria-label="Link to this section">#</a></h2>
+<p>The stage does not own a renderer. Build one in <code>init</code>, destroy it in <code>dispose</code>.</p>
+<h3 id="writing-a-world-2d-canvas">2D canvas<a class="anchor" href="#writing-a-world-2d-canvas" aria-label="Link to this section">#</a></h3>
+<p><code>createCanvas(container, { alpha = false })</code> from <code>@openav/stage</code> returns
+<code>{ canvas, ctx, fit, dispose }</code>. <code>fit()</code> keeps the canvas the size of its
+container (device pixel ratio capped at 2) and returns <code>{ w, h }</code> in CSS pixels;
+call it at the top of <code>render()</code>. Examples 01, 02, 03, 07, 08 and 09 use it.</p>
+<h3 id="writing-a-world-p5-js">p5.js<a class="anchor" href="#writing-a-world-p5-js" aria-label="Link to this section">#</a></h3>
+<p>Load p5 with a script tag in the example's <code>index.html</code>, then run it in
+instance mode inside the container. p5 draws on its own loop, so <code>update</code> only
+stores the state and <code>render</code> stays empty (examples 05 and 06):</p>
+<div class="term" data-lang="html"><div class="term-bar"><span>html</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-html">&lt;<span class="tk">script</span> src=<span class="ts">"https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"</span>&gt;&lt;/<span class="tk">script</span>&gt;</code></pre></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> world = {
+  name: <span class="ts">'p5-world'</span>,
+  params: [{ key: <span class="ts">'hue'</span>, min: 0, max: 360, def: 200 }],
+  init({ container }) {
+    <span class="tk">const</span> self = <span class="tk">this</span>;
+    <span class="tk">this</span>.s = {};
+    <span class="tk">this</span>.p5 = <span class="tk">new</span> p5((sk) =&gt; {
+      sk.setup = () =&gt; { sk.createCanvas(container.clientWidth, container.clientHeight); sk.colorMode(sk.HSB); };
+      sk.draw = () =&gt; { sk.background(self.s.hue ?? 200, 60, 20); };
+      sk.windowResized = () =&gt; sk.resizeCanvas(container.clientWidth, container.clientHeight);
+    }, container);
+  },
+  update(dt, state) { <span class="tk">this</span>.s = state; },
+  render() { <span class="tc">/* p5 runs its own loop */</span> },
+  dispose() { <span class="tk">this</span>.p5?.remove(); },
+};</code></pre></div>
+<h3 id="writing-a-world-three-js">three.js<a class="anchor" href="#writing-a-world-three-js" aria-label="Link to this section">#</a></h3>
+<p>No bundled example uses three.js yet; this is the pattern. Add three to the
+example's import map (<code>"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"</code>),
+keep the renderer on <code>this</code>, and dispose everything:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> * as THREE <span class="tk">from</span> <span class="ts">'three'</span>;
+
+<span class="tk">const</span> orbit = {
+  name: <span class="ts">'orbit'</span>,
+  params: [{ key: <span class="ts">'spin'</span>, min: 0, max: 3, def: 1 }],
+  init({ container }) {
+    <span class="tk">this</span>.container = container;
+    <span class="tk">this</span>.renderer = <span class="tk">new</span> THREE.WebGLRenderer({ antialias: <span class="tk">true</span> });
+    container.appendChild(<span class="tk">this</span>.renderer.domElement);
+    <span class="tk">this</span>.scene = <span class="tk">new</span> THREE.Scene();
+    <span class="tk">this</span>.camera = <span class="tk">new</span> THREE.PerspectiveCamera(50, 1, 0.1, 100);
+    <span class="tk">this</span>.camera.position.z = 4;
+    <span class="tk">this</span>.mesh = <span class="tk">new</span> THREE.Mesh(<span class="tk">new</span> THREE.IcosahedronGeometry(1, 2), <span class="tk">new</span> THREE.MeshNormalMaterial({ wireframe: <span class="tk">true</span> }));
+    <span class="tk">this</span>.scene.add(<span class="tk">this</span>.mesh);
+  },
+  update(dt, s) { <span class="tk">this</span>.mesh.rotation.y += dt * s.spin; },
+  render() {
+    <span class="tk">const</span> w = <span class="tk">this</span>.container.clientWidth, h = <span class="tk">this</span>.container.clientHeight;
+    <span class="tk">if</span> (w !== <span class="tk">this</span>.w || h !== <span class="tk">this</span>.h) {
+      <span class="tk">this</span>.w = w; <span class="tk">this</span>.h = h;
+      <span class="tk">this</span>.renderer.setSize(w, h); <span class="tk">this</span>.camera.aspect = w / h; <span class="tk">this</span>.camera.updateProjectionMatrix();
+    }
+    <span class="tk">this</span>.renderer.render(<span class="tk">this</span>.scene, <span class="tk">this</span>.camera);
+  },
+  dispose() {
+    <span class="tk">this</span>.mesh.geometry.dispose(); <span class="tk">this</span>.mesh.material.dispose();
+    <span class="tk">this</span>.renderer.dispose(); <span class="tk">this</span>.renderer.domElement.remove();
+  },
+};</code></pre></div>
+<h3 id="writing-a-world-a-webtoe-patch">A WebToe patch<a class="anchor" href="#writing-a-world-a-webtoe-patch" aria-label="Link to this section">#</a></h3>
+<p><code>webtoeWorld()</code> from <code>@openav/world-webtoe</code> turns a
+<a href="https://github.com/frank890417/WebToe" rel="noopener">WebToe</a> node patch into a world. The
+patch runs in an iframe; every frame in which a param changed, the resolved
+params are posted into it, and any patch parameter written as
+<code>ext('name', fallback)</code> listens (example 04):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { webtoeWorld } <span class="tk">from</span> <span class="ts">'@openav/world-webtoe'</span>;
+
+<span class="tk">const</span> world = webtoeWorld({
+  name: <span class="ts">'garden-patch'</span>,
+  project: <span class="tk">new</span> URL(<span class="ts">'./garden.webtoe.json'</span>, location.href).href,   <span class="tc">// the app fetches it: CORS must allow it</span>
+  params: [
+    { key: <span class="ts">'speed'</span>, min: 0, max: 1, def: 0.5 },
+    { key: <span class="ts">'hue'</span>, min: 0, max: 360, def: 205 },
+  ],
+  <span class="tc">// extra: (state, out) =&gt; { out.hueRad = state.hue * Math.PI / 180; },   // derive more ext() values</span>
+});</code></pre></div>
+<p>Options: <code>name</code> (default <code>'webtoe'</code>), <code>app</code> (default
+<code>https://webtoe.openaudiovisual.com/</code>), <code>project</code>, <code>params</code>, <code>extra</code>.</p>
+<h3 id="writing-a-world-dom-svg-video">DOM, SVG, video<a class="anchor" href="#writing-a-world-dom-svg-video" aria-label="Link to this section">#</a></h3>
+<p>Anything you append to <code>container</code> is fine. The stage only calls your functions.</p>
+<h2 id="writing-a-world-several-worlds-in-one-show">Several worlds in one show<a class="anchor" href="#writing-a-world-several-worlds-in-one-show" aria-label="Link to this section">#</a></h2>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({ world: calm, worlds: [storm, after], timeline });
+<span class="tc">// switch on a cue: the old world is disposed, the new one initialized</span>
+show.timeline.onSceneChange((i, scene) =&gt; {
+  <span class="tk">if</span> (scene.id === <span class="ts">'storm'</span>) show.stage.activate(<span class="ts">'storm'</span>);
+});</code></pre></div>
+<p>All worlds' params are registered up front, so the console and the timeline can
+address any of them. <code>stage.activate(name)</code> does nothing if that world is
+already active.</p>
+<h2 id="writing-a-world-sound-output-from-a-world">Sound output from a world<a class="anchor" href="#writing-a-world-sound-output-from-a-world" aria-label="Link to this section">#</a></h2>
+<p><code>update(dt, state, io)</code> receives <code>io</code>. With <code>createShow()</code>, <code>io</code> holds only
+<code>signals</code>; add output handles once the show exists, and every world sees them:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({ world });
+show.stage.io.midi = show.midi;          <span class="tc">// the show's @openav/midi engine (MIDI out)</span>
+<span class="tc">// show.stage.io.osc = osc;              // an OscOut you created (see Show control → OSC output)</span></code></pre></div>
+<p>Then, inside the world:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tc">// trigger a sampler note when something happens in the simulation</span>
+io.midi?.noteOn(48 + creature.species * 12, 90, 2);   <span class="tc">// note, velocity 0..127, channel 2</span>
+
+<span class="tc">// stream a position to a spatializer</span>
+io.osc?.send(<span class="ts">`/source/${i}/xyz`</span>, [x, y, z]);</code></pre></div>
+<p>Often it is simpler to do it at the assembly level instead, as example 05 does:
+<code>show.signals.on('midi/note/on', ({ note, vel }) =&gt; show.midi?.noteOn(note, Math.round(vel * 127), 1))</code>.
+For instruments inside the page (a grand piano, mallets, strings, organ, synth presets), use <code>modules.sound</code> (<a href="../../docs/show-control/#show-control-sound">Show control</a>).</p>
+<h2 id="writing-a-world-checklist-before-a-show">Checklist before a show<a class="anchor" href="#writing-a-world-checklist-before-a-show" aria-label="Link to this section">#</a></h2>
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> every continuous control is a param (try performing your world with ONLY the timeline)</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> <code>dispose()</code> releases GPU objects and event subscriptions (worlds get switched live)</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> world survives <code>dt</code> spikes (the Loop clamps to 100ms, but don't assume 16ms)</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> nothing in the world reads the clock directly — the timeline owns time</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> the page loads with zero console errors, and works with only the on-screen piano</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/architecture/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Architecture</span></a>
+      <a class="ch-next" rel="next" href="../../docs/inputs/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Inputs</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

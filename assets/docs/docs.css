@@ -1,4 +1,4 @@
-/* open-audiovisual — the docs handbook (/docs/, /zh/docs/).
+/* open-audiovisual — the docs handbook (/docs/ the contents, /docs/<chapter>/ one chapter each, and their /zh/ twins).
    Same family as the homepage: ink, bone text, one signal orange, mono labels.
    Tokens come from assets/home/home.css, which every page loads first.
    Layout: sticky contents on the left, one reading column (~70ch) on the right;
@@ -32,7 +32,9 @@ html { scroll-padding-top: calc(var(--bar-h) + var(--docs-bar-h) + 20px); scroll
 .toc-ch.is-current > a .n { color: var(--sig); }
 .toc a[aria-current="true"] { color: var(--fg); border-left-color: var(--sig); }
 .toc-ch > a[aria-current="true"] { border-left: 0; }
-html.js .toc-ch:not(.is-current) .toc-secs { display: none; }
+html.js .toc-ch:not(.is-current):not(.is-here) .toc-secs { display: none; }
+.toc-ch.is-here > a { color: var(--fg); }
+.toc-ch.is-here > a .n { color: var(--sig); }
 
 /* ───────────── page head ───────────── */
 .docs-head { padding-bottom: 8px; }
@@ -170,3 +172,43 @@ kbd { font: 500 .78em var(--mono); color: var(--fg); background: var(--ink-2); b
 .toc .toc-ref { margin: 0 0 14px; }
 .toc .toc-ref a { display: inline-block; font: 500 13px var(--mono); color: var(--fg); border: 1px solid var(--line-2); padding: 5px 10px; }
 .toc .toc-ref a:hover { border-color: var(--sig); }
+
+/* ───────────── one chapter per page (/docs/<chapter>/): the # title is the h1, sections are h2 ───────────── */
+.ch-eyebrow { margin: 0; }
+.ch-eyebrow a { color: var(--sig); text-decoration: none; }
+.ch-eyebrow a:hover { text-decoration: underline; }
+.docs-chapter-page .chapter { margin-top: 18px; }
+.docs-chapter-page .chapter h1 { margin: 22px 0 10px; font: 800 clamp(34px, 4.6vw, 60px)/1 var(--sans); font-stretch: 112%; letter-spacing: -.03em; overflow-wrap: break-word; }
+html[lang^="zh"] .docs-chapter-page .chapter h1 { letter-spacing: 0; line-height: 1.15; }
+.docs-chapter-page .chapter h1 .anchor { font-size: .55em; vertical-align: .35em; }
+.docs-chapter-page .chapter h2 { margin: 56px 0 14px; font: 700 clamp(21px, 1.9vw, 27px)/1.2 var(--sans); font-stretch: 108%; letter-spacing: -.01em; }
+.docs-chapter-page .chapter h2 .anchor { font-size: inherit; vertical-align: baseline; }
+.docs-chapter-page .chapter h3 { margin: 36px 0 10px; font: 700 18px/1.3 var(--sans); font-stretch: 100%; letter-spacing: 0; }
+.docs-chapter-page .chapter :is(h4, h5) { margin: 28px 0 8px; font: 500 12.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg-2); }
+html[lang^="zh"] .docs-chapter-page .chapter :is(h2, h3) { letter-spacing: .01em; }
+.chapter h1 code { font-size: .86em; background: none; padding: 0; color: inherit; }
+@media (max-width: 640px) { .docs-chapter-page .chapter h2 { margin-top: 44px; } }
+
+/* previous / next chapter (also at the end of /p5/) */
+.ch-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 72px 0 0; max-width: 860px; }
+.ch-nav a { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 14px 16px; border: 1px solid var(--line-2); background: var(--ink-2); color: var(--fg); text-decoration: none; }
+.ch-nav a:hover, .ch-nav a:focus-visible { border-color: var(--sig); }
+.ch-nav .ch-next { grid-column: 2; text-align: right; }
+.ch-nav-k { font: 500 11.5px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.ch-nav-t { font: 600 16px/1.3 var(--sans); overflow-wrap: anywhere; }
+@media (max-width: 640px) { .ch-nav { grid-template-columns: minmax(0, 1fr); } .ch-nav .ch-next { grid-column: auto; } }
+
+/* ───────────── the contents (/docs/): every chapter, its first sentence, its sections ───────────── */
+.docs-contents { max-width: 980px; margin: 0 auto; padding: clamp(36px, 5vw, 64px) var(--pad) 0; }
+.contents { list-style: none; margin: 44px 0 0; padding: 0; }
+.contents-ch { padding: 22px 0 24px; border-top: 1px solid var(--line); }
+.contents-ch h2 { margin: 0 0 8px; font: 700 clamp(21px, 2.2vw, 29px)/1.2 var(--sans); font-stretch: 108%; letter-spacing: -.01em; }
+html[lang^="zh"] .contents-ch h2 { letter-spacing: .01em; }
+.contents-ch h2 a { display: inline-flex; gap: 12px; align-items: baseline; color: var(--fg); text-decoration: none; }
+.contents-ch h2 a:hover .t, .contents-ch h2 a:focus-visible .t { text-decoration: underline; text-decoration-color: var(--sig); }
+.contents-ch h2 .n { flex: none; font: 400 13px var(--mono); color: var(--sig); }
+.contents-ch p { max-width: 70ch; margin: 0 0 10px; color: var(--fg-2); }
+.contents-secs { display: flex; flex-wrap: wrap; gap: 4px 18px; list-style: none; margin: 0; padding: 0; font-size: 14px; line-height: 1.5; }
+.contents-secs a { color: var(--fg-3); text-decoration: none; }
+.contents-secs a:hover, .contents-secs a:focus-visible { color: var(--fg); text-decoration: underline; }
+.contents-secs code { font-size: .92em; color: inherit; background: none; padding: 0; }

@@ -18,6 +18,10 @@ import { getFacts, sketchHref } from '../site/facts.mjs';
 import { EXAMPLES, routeGroups, byId, nextOf, L, plainText, exampleUrl, sourceUrl, lineUrl } from './catalog.mjs';
 import { STRINGS, TAGS, ROUTE_NAMES, ROUTE_INTRO, ROUTE_LAYER, routeMark } from './strings.mjs';
 import { CHAPTERS } from '../docs/chapters.mjs';
+import { docsHref, P5_CHAPTER } from '../docs/anchors.mjs';
+import { chapterNav } from '../docs/page.mjs';
+import docsEn from '../docs/en.mjs';
+import docsZh from '../docs/zh.mjs';
 import { renderMarkdown } from '../docs/markdown.mjs';
 import homeEn from '../home/en.mjs';
 import homeZh from '../home/zh.mjs';
@@ -163,7 +167,7 @@ const href = (c, p) => c.root + p;
 /** A link on from an example page, counted by assets/track.js as oav_next_step (to: example | examples | docs). */
 const step = (url, to, html) => `<a href="${url}" data-oav-event="next_step" data-oav-to="${to}">${html}</a>`;
 /** The handbook chapters an example uses (catalog `docs`), in one language. */
-const docLinks = (c, e, lang) => e.docs.map((d) => step(`${href(c, lang === 'zh' ? 'zh/docs/' : 'docs/')}#${d.id}`, 'docs', esc(d[lang]))).join(lang === 'zh' ? '、' : ' · ');
+const docLinks = (c, e, lang) => e.docs.map((d) => step(docsHref(c.root, lang, d.id) || `${href(c, lang === 'zh' ? 'zh/docs/' : 'docs/')}#${d.id}`, 'docs', esc(d[lang]))).join(lang === 'zh' ? '、' : ' · ');
 /** "Next on this route: 16 p5 keys with sound →", or at the end of a route, the first example of the next one. */
 function nextLine(c, G, e, next, lang) {
   const i = lang === 'zh' ? 1 : 0, colon = lang === 'zh' ? '：' : ':';
@@ -189,7 +193,7 @@ export function exampleGuide(e) {
     ? `<p class="g-row">${bi(`<b>${G.en.docs}:</b> ${docLinks(c, e, 'en')}`, `<b>${G.zh.docs}：</b>${docLinks(c, e, 'zh')}`)}</p>`
     : '';
   const p5 = e.p5Line
-    ? `<p class="g-row g-p5">${bi(`<b>${esc(G.en.p5)}</b>`, `<b>${esc(G.zh.p5)}</b>`)} ${bi(`${step(href(c, 'examples/15-p5-one-line/'), 'example', G.en.p5Example)} · ${step(`${href(c, 'docs/')}#p5`, 'docs', G.en.p5Docs)}`, `${step(href(c, 'examples/15-p5-one-line/'), 'example', G.zh.p5Example)} · ${step(`${href(c, 'zh/docs/')}#p5`, 'docs', G.zh.p5Docs)}`)}</p>`
+    ? `<p class="g-row g-p5">${bi(`<b>${esc(G.en.p5)}</b>`, `<b>${esc(G.zh.p5)}</b>`)} ${bi(`${step(href(c, 'examples/15-p5-one-line/'), 'example', G.en.p5Example)} · ${step(href(c, 'p5/'), 'p5', G.en.p5Docs)}`, `${step(href(c, 'examples/15-p5-one-line/'), 'example', G.zh.p5Example)} · ${step(href(c, 'zh/p5/'), 'p5', G.zh.p5Docs)}`)}</p>`
     : '';
   const credit = e.credit
     ? `<p class="g-credit">${bi(`${G.en.copyright}: ${e.credit.en}. ${esc(e.credit.rights.en)}`, `${G.zh.copyright}：${e.credit.zh}。${esc(e.credit.rights.zh)}`)}</p>`
@@ -238,7 +242,8 @@ export function exampleNext(e) {
 // ---------------------------------------------------------------------------- pages made of one Markdown file: /p5/, /changelog/
 // Both are a Markdown source in docs/ set in the site's frame: docs.css + pages.css, a header written here, the
 // Markdown as one chapter. The # heading becomes the page's h1; the zh page takes the English headings' ids, so
-// /p5/#p5-drum-machine and /zh/p5/#p5-drum-machine are the same section (as on /docs/ and /zh/docs/).
+// /p5/#p5-drum-machine and /zh/p5/#p5-drum-machine are the same section (as on the handbook's chapter pages). /p5/ IS the
+// handbook's p5 chapter (tools/docs/anchors.mjs): it ends with the previous and next chapter, like every chapter page.
 const CHAPTER_OF = new Map(CHAPTERS.map((ch) => [path.posix.basename(ch.en), ch.id]));
 const readSrc = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
 
@@ -293,7 +298,7 @@ function renderSource(rel, c, { idPrefix, resolveLink, twin = null }) {
 const enTwin = (rel, c, o) => renderSource(rel, { ...c, locale: 'en' }, o).headings.filter((h) => h.mdLevel > 1);
 
 /** The page around one rendered source. `header` is the inside of <header class="docs-head">. */
-function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, chapter, header, html, css = [], pageType }) {
+function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, chapter, header, html, css = [], pageType, after = '' }) {
   const runtime = { copy: t.ui.copy, copied: t.ui.copied, linkCopied: '', tocButton: '', tocClose: '' };
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
@@ -314,7 +319,7 @@ ${header}
   <section class="chapter p5-chapter" data-chapter="${chapter}" aria-labelledby="${chapter}">
 ${html}
   </section>
-
+${after}
   <p class="docs-end"><a href="#top">↑</a></p>
 </main>
 
@@ -368,12 +373,16 @@ export function renderP5(locale) {
     <h1 id="p5">${esc(heading)}</h1>
     <p class="docs-lede">${esc(S.p5.lede)}</p>
     ${versionsLine(t, c)}
-    <p class="p5-cta"><a class="cta" href="${ex15}">${esc(S.p5.try)} →</a> <a class="more" href="${c.to('docs', '#p5')}">${esc(S.p5.docsLink)}</a> <a class="more" href="${c.to('docs', '#strudel')}">${esc(S.p5.strudel)}</a> <a class="more" href="${TREE}p5">${esc(S.p5.github)} ↗</a></p>
+    <p class="p5-cta"><a class="cta" href="${ex15}">${esc(S.p5.try)} →</a> <a class="more" href="${c.to('docs')}">${esc(S.p5.docsLink)}</a> <a class="more" href="${c.to('docs', '#strudel')}">${esc(S.p5.strudel)}</a> <a class="more" href="${TREE}p5">${esc(S.p5.github)} ↗</a></p>
     <p class="docs-note">${esc(S.p5.tryNote)}</p>
     <p class="docs-note p5-sketches">${esc(S.p5.sketches)} ${sketches}</p>`;
+  // this page is the handbook's p5 chapter (tools/docs/anchors.mjs): the chapters before and after it, as on every chapter page
+  const at = CHAPTERS.findIndex((ch) => ch.id === P5_CHAPTER);
+  const near = (ch) => ch && { id: ch.id, title: (/^#\s+(.+)$/m.exec(readSrc(fs.existsSync(path.join(ROOT, ch[locale])) ? ch[locale] : ch.en)) || [, ch.id])[1].trim() };
+  const nav = chapterNav(locale === 'zh' ? docsZh : docsEn, c, near(CHAPTERS[at - 1]), near(CHAPTERS[at + 1]));
   return markdownFrame(t, c, {
     title, description, markdownHref: `${c.root}${P5_SOURCE[locale]}`, ld, bodyClass: 'p5-page', chapter: 'p5', header, html, pageType: 'p5',
-    css: ['assets/reference/cheatsheet.css'],
+    css: ['assets/reference/cheatsheet.css'], after: nav ? `\n  ${nav}\n` : '',
   });
 }
 

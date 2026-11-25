@@ -7,7 +7,7 @@ hand can play the filter the way they play the visuals.
 
 **From a p5.js sketch** it is one call: `startSound('piano')` (after the one-line `oav-p5.js`), and every key, pad, the
 on-screen 🎹 and a phone are heard. `oav-p5` loads this package from next to itself, only when that call (or 🎹 → 🔊) is made.
-[Handbook: Sound](https://openaudiovisual.com/docs/#p5-sound-what-is-played-is-heard) · example [16](https://openaudiovisual.com/examples/16-p5-sound/).
+[Handbook: Sound](https://openaudiovisual.com/p5/#p5-sound-what-is-played-is-heard) · example [16](https://openaudiovisual.com/examples/16-p5-sound/).
 
 ```js
 // in a show: the console's L4 panel gets 🔊 enable sound and an instrument picker
@@ -173,4 +173,4 @@ optionally `setInstrument`, `instrument`, `status`, `subscribe`, `sustain(down)`
 In `createShow()`, routes are added before the engine's params exist, so a declared
 route to `sound/cutoff` needs explicit `outMin` / `outMax`.
 
-Full reference: [docs](https://openaudiovisual.com/docs/#show-control-sound)
+Full reference: [docs](https://openaudiovisual.com/docs/show-control/#show-control-sound)

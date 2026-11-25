@@ -89,7 +89,7 @@ export const STRINGS = {
       eyebrow: 'p5.js · one line',
       lede: 'The same line also plays sound, runs a drum machine you can write as one line of rhythm, listens to the microphone, and records the canvas with its sound as a video. Each one reads like the mouse: a variable to read, a function to write.',
       try: 'Try it live: example 15', tryNote: 'The sketch on that page is plain p5.js with this one line first. Click the 🎹, turn a knob, hit a pad; 🔊, 🥁 and ⏺ are in the same panel.',
-      docsLink: 'The same page in the handbook', strudel: 'With Strudel', github: 'p5/ on GitHub', file: 'oav-p5.js',
+      docsLink: 'All handbook chapters', strudel: 'With Strudel', github: 'p5/ on GitHub', file: 'oav-p5.js',
       sketches: 'Ready-made sketches:',
     },
     /** p5/examples/<name>/, in the order docs/p5.md teaches them (a new folder needs a name here: tests/changelog.test.js). */
@@ -132,7 +132,7 @@ export const STRINGS = {
       eyebrow: 'p5.js · 一行',
       lede: '同一行還能出聲音、開一台鼓機（節奏可以用一行字寫）、聽麥克風，也能把畫布連同聲音錄成影片。每一樣都像讀滑鼠：讀一個變數，寫一個函式。',
       try: '現場試玩：範例 15', tryNote: '那一頁的草圖就是普通的 p5.js，第一行是這一行。點 🎹、轉旋鈕、敲打擊墊。🔊、🥁、⏺ 也在同一個面板裡。',
-      docsLink: '手冊裡的同一章', strudel: '和 Strudel 一起用', github: 'GitHub 上的 p5/', file: 'oav-p5.js',
+      docsLink: '手冊所有章節', strudel: '和 Strudel 一起用', github: 'GitHub 上的 p5/', file: 'oav-p5.js',
       sketches: '現成草圖：',
     },
     sketches: {

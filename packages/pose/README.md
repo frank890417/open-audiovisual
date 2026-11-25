@@ -33,7 +33,7 @@ Signals: `pose/present`, `pose/hand/left/x` `/y` `/v` (and `right`), `pose/hands
 `pinch/index` `/middle`, `spread`, `thumb/index` `/middle` `/ring` `/pinky`, `openness`, `angle`,
 `speed`, `pinched`, `gesture` (0–7) and `gesture/<name>` (0/1) under `hand/<side>/`; pulses
 `hand/<side>/pinch-start` `/pinch-end` and `hand/<side>/gesture/<name>-start`; both hands
-`hand/both/present` `/distance` `/x` `/y` `/angle` · [Signals reference](https://openaudiovisual.com/docs/#signals-openav-pose).
+`hand/both/present` `/distance` `/x` `/y` `/angle` · [Signals reference](https://openaudiovisual.com/docs/signals/#signals-openav-pose).
 
 The hand maths and thresholds (`hand-features.js`, `HAND_DEFAULTS`) are the ones of the
 TouchDesigner `hand_features` module built on torinmb/mediapipe-touchdesigner for the same course,
@@ -41,4 +41,4 @@ tuned on one performer's hands: pinch below 0.35 hand sizes (with the other fing
 above 0.56; a gesture from a score of 0.5, released below 0.35; 80 ms before a new state counts.
 Example 27 shows every signal and draws them on the hands.
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-pose)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-pose)

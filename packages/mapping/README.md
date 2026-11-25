@@ -61,4 +61,4 @@ or when a continuous source rises past 0.5; `mode` and `release` do not apply to
 - A smoothed route writes only while it glides; ✕ or a slider takes the param back and it stays back until the knob moves again.
 - The portable `openav.map` file carries `mode` and `release` as optional route keys, written only when used.
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-mapping) · [Mapping](https://openaudiovisual.com/docs/#mapping)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-mapping) · [Mapping](https://openaudiovisual.com/docs/mapping/)

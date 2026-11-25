@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introduction · open-audiovisual</title>
+<meta name="description" content="open-audiovisual (OAV) is a JavaScript framework for live audiovisual performance that runs in the browser.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/introduction/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/introduction/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/introduction/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/introduction/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Introduction · open-audiovisual">
+<meta property="og:description" content="open-audiovisual (OAV) is a JavaScript framework for live audiovisual performance that runs in the browser.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/introduction/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Introduction · open-audiovisual">
+<meta name="twitter:description" content="open-audiovisual (OAV) is a JavaScript framework for live audiovisual performance that runs in the browser.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="introduction">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/introduction/#article","url":"https://openaudiovisual.com/docs/introduction/","name":"Introduction · open-audiovisual","description":"open-audiovisual (OAV) is a JavaScript framework for live audiovisual performance that runs in the browser.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Introduction","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Who it is for","Four layers and two spines","Where it comes from","How to read this handbook"],"position":1,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/introduction/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/introduction/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Introduction","item":"https://openaudiovisual.com/docs/introduction/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/introduction/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/introduction/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch is-here" data-ch="introduction">
+          <a href="#introduction" aria-current="page"><span class="n">01</span><span class="t">Introduction</span></a>
+          <ol class="toc-secs">
+            <li><a href="#introduction-who-it-is-for">Who it is for</a></li>
+            <li><a href="#introduction-four-layers-and-two-spines">Four layers and two spines</a></li>
+            <li><a href="#introduction-where-it-comes-from">Where it comes from</a></li>
+            <li><a href="#introduction-how-to-read-this-handbook">How to read this handbook</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="introduction" aria-labelledby="introduction">
+<h1 id="introduction">Introduction<a class="anchor" href="#introduction" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 1 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/introduction.md">docs/introduction.md</a></span></p>
+<p>open-audiovisual (OAV) is a JavaScript framework for live audiovisual
+performance that runs in the browser. It is plain ES modules: no build step, no
+dependencies, no account. You clone the repository, run one file, and open a
+page.</p>
+<p>It handles the part every show rebuilds from scratch: MIDI plumbing, turning
+inputs into parameters, a timeline with scenes, a director's console, a
+performance mode for the performer, and a backstage page for the stage manager.
+You write the <em>world</em>, the piece itself. The pitch, a live instrument and the
+twenty-eight example works are on the <a href="../../">homepage</a>.</p>
+<h2 id="introduction-who-it-is-for">Who it is for<a class="anchor" href="#introduction-who-it-is-for" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Performers</strong> play the examples with a MIDI keyboard, a microphone, a camera,
+a phone, or the on-screen piano, and drive a show from the console.</li>
+<li><strong>Coders</strong> write a world in about twenty lines and get inputs, mapping,
+timeline, console, sound and backstage from one <code>createShow()</code> call.</li>
+<li><strong>AI agents</strong> read <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md" rel="noopener">AGENTS.md</a>, connect to the bundled MCP
+server, and write worlds inside a chassis that already works. See
+<a href="../../docs/agents/">For AI agents</a>.</li>
+</ul>
+<h2 id="introduction-four-layers-and-two-spines">Four layers and two spines<a class="anchor" href="#introduction-four-layers-and-two-spines" aria-label="Link to this section">#</a></h2>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">L1 INPUT     "what is happening"       midi · audio · chord · pose · keys · drums · phones
+               → every input publishes named SIGNALS: midi/cc/74, chord/consonance, audio/rms
+L2 MAPPING   "what it means"           routes: signal → param, with curve, range, smoothing, learn
+L3 WORLD     "how the system behaves"  your piece; reads PARAMS, never inputs; any renderer
+L4 OUTPUT    "how it leaves"           screen · in-browser sound · MIDI out · OSC to UDP
+
+spines       timeline (automation, scenes, cues) · monitor (backstage over WebSocket)
+around them  console (the director's desk) · relay, surface, remote (phones as controllers)</code></pre></div>
+<p>Each layer has one job and a written contract (<a href="../../docs/architecture/">Architecture</a>),
+so any layer can be replaced without touching the others. Two rules keep it that
+way; they are explained in <a href="../../docs/concepts/#concepts-the-two-rules">Core concepts</a>.</p>
+<h2 id="introduction-where-it-comes-from">Where it comes from<a class="anchor" href="#introduction-where-it-comes-from" aria-label="Link to this section">#</a></h2>
+<p>The core was extracted from <strong>The Last Input</strong> (Che-Yu Wu, 2026), a performance
+for piano and a living digital world at the IRCAM residency × C-LAB Taiwan Sound
+Lab in Taipei, played on a 49.4-channel speaker dome. The timeline, the chord
+semantics, many-to-many MIDI learn and OSC batching all ran a real fourteen-scene
+show before they were generalized here. The rule since then: the framework only
+grows features that a real show asked for.</p>
+<p>The mapping layer's ideas descend from <a href="http://libmapper.github.io/" rel="noopener">libmapper</a>'s
+research on signal namespaces. The sister project
+<a href="https://github.com/frank890417/WebToe" rel="noopener">WebToe</a> is a node-based dataflow engine
+that imports TouchDesigner projects; WebToe is the engine, open-audiovisual is
+the show.</p>
+<h2 id="introduction-how-to-read-this-handbook">How to read this handbook<a class="anchor" href="#introduction-how-to-read-this-handbook" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>New here: <a href="../../docs/quick-start/">Quick start</a>, then <a href="../../docs/concepts/">Core concepts</a>,
+then <a href="../../docs/writing-a-world/">Writing a world</a>.</li>
+<li>Building a show: <a href="../../docs/inputs/">Inputs</a>, <a href="../../docs/mapping/">Mapping</a>,
+<a href="../../docs/show-control/">Show control</a>, <a href="../../docs/phones/">Phones, relay &amp; surfaces</a>.</li>
+<li>Looking something up: <a href="../../docs/signals/">Signals reference</a> and
+<a href="../../docs/packages/">Package reference</a>.</li>
+<li>Something is wrong: <a href="../../docs/troubleshooting/">Troubleshooting</a>.</li>
+</ul>
+<p>Everything here is checked against the source in
+<a href="https://github.com/frank890417/open-audiovisual/tree/main/packages/" rel="noopener">packages/</a>. When this page and the code disagree, the code is
+right and this page is a bug: please open an issue.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-next" rel="next" href="../../docs/quick-start/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Quick start</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

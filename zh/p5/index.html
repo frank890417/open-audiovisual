@@ -75,7 +75,7 @@
     <h1 id="p5">p5.js 一行接上</h1>
     <p class="docs-lede">同一行還能出聲音、開一台鼓機（節奏可以用一行字寫）、聽麥克風，也能把畫布連同聲音錄成影片。每一樣都像讀滑鼠：讀一個變數，寫一個函式。</p>
     <p class="docs-stats"><a href="../../zh/changelog/">oav-p5 0.8 · 框架 0.10</a></p>
-    <p class="p5-cta"><a class="cta" href="../../examples/15-p5-one-line/">現場試玩：範例 15 →</a> <a class="more" href="../../zh/docs/#p5">手冊裡的同一章</a> <a class="more" href="../../zh/docs/#strudel">和 Strudel 一起用</a> <a class="more" href="https://github.com/frank890417/open-audiovisual/tree/main/p5">GitHub 上的 p5/ ↗</a></p>
+    <p class="p5-cta"><a class="cta" href="../../examples/15-p5-one-line/">現場試玩：範例 15 →</a> <a class="more" href="../../zh/docs/">手冊所有章節</a> <a class="more" href="../../zh/docs/strudel/">和 Strudel 一起用</a> <a class="more" href="https://github.com/frank890417/open-audiovisual/tree/main/p5">GitHub 上的 p5/ ↗</a></p>
     <p class="docs-note">那一頁的草圖就是普通的 p5.js，第一行是這一行。點 🎹、轉旋鈕、敲打擊墊。🔊、🥁、⏺ 也在同一個面板裡。</p>
     <p class="docs-note p5-sketches">現成草圖： <a href="../../p5/examples/particles/">粒子</a> · <a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/examples/opc/sketch.js">OP Configurator ↗</a> · <a href="../../p5/examples/mic/">麥克風</a> · <a href="../../p5/examples/keys/">彈出聲音</a> · <a href="../../p5/examples/drums/">鼓機與小節</a> · <a href="../../p5/examples/rhythm/">一行節奏</a> · <a href="../../p5/examples/rhythm-visual/">看得見的節奏</a> · <a href="../../p5/examples/rhythm-lab/">節奏實驗台</a> · <a href="../../p5/examples/record/">錄成影片</a> · <a href="../../p5/examples/lag/">Lag、包絡與示波器</a> · <a href="../../p5/examples/chop/">會動的數值</a> · <a href="../../p5/examples/with-strudel/">跟 Strudel 一起</a> · <a href="../../p5/examples/note-names/">音名</a></p>
   </header>
@@ -168,7 +168,7 @@
 <tr><td><code>padPressed(n, velocity)</code>、<code>padReleased(n)</code></td><td>打擊墊按下、放開</td></tr>
 </tbody>
 </table></div>
-<p>旋鈕 1 就是你手上那台的旋鈕 1：<a href="../../zh/docs/#controllers">控制器設定檔</a>記著每顆旋鈕送哪個訊息（MiniLab 3 的旋鈕 1 是 CC 74，
+<p>旋鈕 1 就是你手上那台的旋鈕 1：<a href="../../zh/docs/controllers/">控制器設定檔</a>記著每顆旋鈕送哪個訊息（MiniLab 3 的旋鈕 1 是 CC 74，
 LPD8 是 CC 70）。OAV 沒有設定檔的控制器，你先轉的那顆就是 <code>knob1</code>，再轉的是 <code>knob2</code>。草圖裡自己已經有
 <code>note</code>、<code>velocity</code>、<code>knob1</code> 這些名字的話，原本的會留著。</p>
 <h3 id="p5-note-names">音名<a class="anchor" href="#p5-note-names" aria-label="#">#</a></h3>
@@ -232,7 +232,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <p><strong>草圖開口要，它才開。</strong> 頁面載入時什麼都不會要。草圖第一次讀到 <code>micLevel</code>、<code>bass</code>、<code>mid</code>、<code>treble</code>、<code>beat</code>，或呼叫 <code>startMic()</code>，瀏覽器才會問你要不要給麥克風；答案回來之前，每個值都是 <code>0</code>。只寫了 <code>beatDetected()</code>、什麼值都沒讀的草圖，會在第一次點擊或按鍵時開。🎹 面板裡的 <strong>🎤</strong> 按鈕可以手動開關、顯示音量；瀏覽器擋下麥克風時，它會寫出來（從網址列左邊重新允許之後，再按一次）。</p>
 <ul>
 <li><strong>瀏覽器要你先點一下的話。</strong> 瀏覽器在頁面被點過之前不讓聲音動起來。這個檔在 <code>draw()</code> 一讀到值就去要，瀏覽器擋住的話，第一次點擊或按鍵再開一次，所以不用寫 <code>userStartAudio()</code>。</li>
-<li><strong>跟 p5.sound 並存。</strong> 分析用的是 <a href="../../zh/docs/#packages"><code>@openav/audio</code></a>（一個 <code>AnalyserNode</code>），第一次用到時從這個檔旁邊載入，有自己的 <code>AudioContext</code>。同一頁可以放 <code>p5.sound</code>（<code>p5.AudioIn</code>、<code>p5.FFT</code>），兩邊的麥克風互不相干，這裡新增的名字也沒有一個跟 p5 或 p5.sound 的名字重複。p5 1.x、2.x 的全域模式都能用。</li>
+<li><strong>跟 p5.sound 並存。</strong> 分析用的是 <a href="../../zh/docs/packages/"><code>@openav/audio</code></a>（一個 <code>AnalyserNode</code>），第一次用到時從這個檔旁邊載入，有自己的 <code>AudioContext</code>。同一頁可以放 <code>p5.sound</code>（<code>p5.AudioIn</code>、<code>p5.FFT</code>），兩邊的麥克風互不相干，這裡新增的名字也沒有一個跟 p5 或 p5.sound 的名字重複。p5 1.x、2.x 的全域模式都能用。</li>
 <li><strong>多大聲算大聲。</strong> <code>micLevel</code> 是以分貝算的「聽起來的大小」，從房間量起：最低點跟著房間自己的底噪走（一兩秒內就定下來，往上每秒最多 1.5 dB，所以一直講話不會被當成新的安靜），−10 dBFS（對著筆電大喊）是 1。所以 <code>50 + micLevel * 300</code>
 在有人說話時就看得出變大。麥克風太小聲或離太遠：<code>micSensitivity(3)</code>（<code>micLevel</code> 多 9.5 dB、三個頻段乘三，上限還是 1）。原始數值在 <code>OAVp5.mic.rms</code>（0 到 1）、<code>OAVp5.mic.db</code>、<code>OAVp5.mic.floor</code>（房間底噪，dBFS）。
 <code>OAVp5.mic.on('beat', fn)</code> 跟定義 <code>beatDetected</code> 一樣，回傳一個可以取消的函式。</li>
@@ -254,7 +254,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <tr><td><code>soundIsOn</code></td><td>現在彈下去有沒有聲音</td></tr>
 </tbody>
 </table></div>
-<p>樂器來自 <a href="../../zh/docs/#packages"><code>@openav/sound</code></a>：<code>piano</code>（Salamander 平台鋼琴，第一次要載 2 MB 的取樣，載入中先用電鋼琴頂著，載不到就一直用電鋼琴）、<code>epiano</code>、<code>organ</code>、<code>strings</code>、<code>choir</code>、<code>harp</code>、<code>marimba</code>、<code>vibraphone</code>、<code>xylophone</code>、
+<p>樂器來自 <a href="../../zh/docs/packages/"><code>@openav/sound</code></a>：<code>piano</code>（Salamander 平台鋼琴，第一次要載 2 MB 的取樣，載入中先用電鋼琴頂著，載不到就一直用電鋼琴）、<code>epiano</code>、<code>organ</code>、<code>strings</code>、<code>choir</code>、<code>harp</code>、<code>marimba</code>、<code>vibraphone</code>、<code>xylophone</code>、
 <code>glockenspiel</code>、<code>music-box</code>，還有 <code>synth/…</code> 一系列合成器。🎹 面板上的 <strong>🔊</strong> 可以開關聲音，打開後有樂器選單和載入進度。</p>
 <ul>
 <li><strong>沒叫它就不載。</strong> 呼叫 <code>startSound()</code> 或按 🔊 之前什麼都不載；之後從這個檔旁邊載 <code>@openav/sound</code>，從 jsDelivr 載 Tone.js 15
@@ -302,7 +302,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <code>startDrums({ kick: 'x...x...x...x...', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.' })</code>（沒寫的那軌不打），或一行節奏（下面一節）。</li>
 <li><strong>鼓機卡。</strong> 中文瀏覽器的軌道名是中文（大鼓、小鼓、鈸、拍手），速度旁邊顯示現在第幾小節，正在響的那一欄是黃框（跟深色卡片的對比 13:1，投影也看得清楚）。</li>
 <li><strong>格子放在哪。</strong> 畫面上方正中間：在 OpenProcessing 是 🎹 和 OPC 圖示中間，不擋到下面的 console；🎹 面板打開時移到面板下面。「–」收起格子，「×」關掉鼓機；🎹 面板裡的 <strong>🥁</strong> 不寫程式也能開關。🥁 打開的鼓機先不播放，勾格子上的播放框才會出聲（草圖自己寫的 <code>startDrums()</code> 會直接播放）。</li>
-<li><strong>鼓組。</strong> <a href="../../zh/docs/#packages"><code>@openav/drums</code></a> 的合成鼓組（沒有取樣），跟聲音一樣點一下之後才聽得到；回呼從一開始就會被叫。</li>
+<li><strong>鼓組。</strong> <a href="../../zh/docs/packages/"><code>@openav/drums</code></a> 的合成鼓組（沒有取樣），跟聲音一樣點一下之後才聽得到；回呼從一開始就會被叫。</li>
 </ul>
 <p><strong>畫面再重，鼓都不歪。</strong> 鼓是照音訊時鐘提前排好的：Web Worker 裡的心跳每 25 毫秒醒一次，把接下來 0.1 秒內要打的鼓，照精確的時間交給鼓組。用鼓組自己的輸出量（<code>draw()</code> 每一格故意忙 30 毫秒）：大鼓到大鼓的間隔，差異是 0.000 毫秒；
 0.5 版在畫面輪到那一格才打，差異是 15 毫秒。回呼還是在畫面的某一格叫，叫的是聲音<strong>聽得到</strong>的那一格（排定的時間加上瀏覽器回報的輸出延遲），在 <code>draw()</code> 之前，順序跟以前一樣。</p>
@@ -330,7 +330,7 @@ OPC 變數不要取 p5 已經有的函式名稱（<code>hue</code>、<code>fill<
 <tr><td><code>(k,n)</code></td><td>n 格裡平均打 k 下</td><td><code>"bd(3,8)"</code></td></tr>
 </tbody>
 </table></div>
-<p>完整的寫法在 <a href="../../zh/docs/#packages"><code>@openav/pattern</code></a>，跟鼓機一起從 <code>oav-p5.js</code> 旁邊載入。格子上沒有那一軌的鼓（碎音鈸、疊音鈸、中鼓、開鈸）會多一列；不在 16 格上的音（三連音）畫在它落在那一格裡的位置。<code>startDrums("…")</code> <strong>寫錯了</strong>會跳一張卡（照頁面語言）說第幾個字、為什麼、怎麼改，鼓機先打 <code>'four on floor'</code>；只寫 <code>'x...x...'</code>（格子的一軌）會提醒你放進 <code>{ kick: … }</code>。</p>
+<p>完整的寫法在 <a href="../../zh/docs/packages/"><code>@openav/pattern</code></a>，跟鼓機一起從 <code>oav-p5.js</code> 旁邊載入。格子上沒有那一軌的鼓（碎音鈸、疊音鈸、中鼓、開鈸）會多一列；不在 16 格上的音（三連音）畫在它落在那一格裡的位置。<code>startDrums("…")</code> <strong>寫錯了</strong>會跳一張卡（照頁面語言）說第幾個字、為什麼、怎麼改，鼓機先打 <code>'four on floor'</code>；只寫 <code>'x...x...'</code>（格子的一軌）會提醒你放進 <code>{ kick: … }</code>。</p>
 <p><strong>從 strudel.cc 複製來的也能用</strong>：<code>startDrums('s("bd*4, [~ sd]*2").fast(2)')</code> 打的是 <code>[bd*4, [~ sd]*2]*2</code>。讀得懂
 <code>s("…")</code>、<code>sound("…")</code>（<code>"</code>、<code>'</code>、<code>`</code> 都行；好幾個 <code>$: s(…)</code> 會疊在一起）、<code>.fast(n)</code>、<code>.slow(n)</code>；<code>setcpm(110/4)</code> 或
 <code>setcps(…)</code> 在 <code>startDrums()</code> 沒給速度時拿來當速度。<code>.bank("…")</code> 先略過（OAV 用自己合成的鼓組），鏈上其他的（<code>.jux(rev)</code>、
@@ -417,7 +417,7 @@ rotate(spring(knob1, 100, 6) * TWO_PI);                                <span cla
 <code>circle(x, y, scope(lag(micLevel, 0.03, 0.4), 'lag') * 300)</code>。每個標籤是一條線，畫在 🎹 對面角落的小示波器裡：最近 4 秒和現在的值；旁邊再放一個 <code>scope(micLevel, 'mic')</code>，就看得到 lag 做了什麼。它在網頁上、不在畫布上：不會錄進影片和 📷，也不會擋到點擊；
 <code>hints=off</code> 或 <code>scope=off</code> 就不顯示。要畫進作品裡：<code>stroke(255); drawTrail(trail(micLevel, 3), 0, height - 100, width, 100)</code>
 （或 <code>drawTrail(micLevel, …)</code>，它自己記 2 秒）：框的底是 0、頂是 1（<code>h</code> 後面可以給 <code>lo</code>、<code>hi</code>），用草圖的 <code>stroke()</code>（<code>noStroke()</code> 時用白色）。</p>
-<p>數學在 <a href="../../zh/docs/#packages-openav-chop">@openav/chop</a>，第一次呼叫時從這支檔案旁邊載入；載好之前（幾幀）每個函式都直接回傳原值。參數意義參考 TouchDesigner 官方文件（Derivative），程式由 OAV 自行實作。原值和 lag 後並排、配 scope 的範例：<a href="../../p5/examples/lag/"><code>p5/examples/lag/</code></a>；用 <code>env</code>、<code>spring</code>、<code>speed</code>、<code>count</code>、<code>slope</code> 做一個大鼓撐開的圓盤（只靠 <code>startDrums()</code>，不用麥克風）：<a href="../../p5/examples/chop/"><code>p5/examples/chop/</code></a>。</p>
+<p>數學在 <a href="../../zh/docs/packages/#packages-openav-chop">@openav/chop</a>，第一次呼叫時從這支檔案旁邊載入；載好之前（幾幀）每個函式都直接回傳原值。參數意義參考 TouchDesigner 官方文件（Derivative），程式由 OAV 自行實作。原值和 lag 後並排、配 scope 的範例：<a href="../../p5/examples/lag/"><code>p5/examples/lag/</code></a>；用 <code>env</code>、<code>spring</code>、<code>speed</code>、<code>count</code>、<code>slope</code> 做一個大鼓撐開的圓盤（只靠 <code>startDrums()</code>，不用麥克風）：<a href="../../p5/examples/chop/"><code>p5/examples/chop/</code></a>。</p>
 <h3 id="p5-recording-a-video-with-its-sound">錄影：畫面和聲音一起錄<a class="anchor" href="#p5-recording-a-video-with-its-sound" aria-label="#">#</a></h3>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">function</span> keyPressed() {
   <span class="tk">if</span> (key === <span class="ts">'r'</span>) recordingIsOn ? stopRecording() : startRecording();   <span class="tc">// startRecording(10): ten seconds, then it stops</span>
@@ -452,13 +452,13 @@ rotate(spring(knob1, 100, 6) * TWO_PI);                                <span cla
 <tbody>
 <tr><td>實體控制器</td><td>Chrome、Edge、Firefox 的 Web MIDI，瀏覽器問一次就記住</td></tr>
 <tr><td>螢幕上的控制器</td><td>按 🎹 打開 <code>&lt;oav-controller&gt;</code>，接上哪台控制器就換成哪台</td></tr>
-<tr><td>手機</td><td>面板上的 📱 顯示 QR code，手機<a href="../../zh/docs/#phones">遙控頁</a>的 MIDI 分頁就能彈這份草圖</td></tr>
+<tr><td>手機</td><td>面板上的 📱 顯示 QR code，手機<a href="../../zh/docs/phones/">遙控頁</a>的 MIDI 分頁就能彈這份草圖</td></tr>
 </tbody>
 </table></div>
 <p>三種輸入進來都是同一串 MIDI，草圖分不出是誰彈的（想知道的話看 <code>midi.last.source</code>）。Safari 和 iPad 沒有
 Web MIDI，螢幕上的控制器和手機照樣能用。草圖自己寫了 Web MIDI（<code>navigator.requestMIDIAccess</code>、WebMidi.js）的話，螢幕和手機會變成多出來的一個輸入，名字叫 <strong>OAV Virtual MIDI</strong>。</p>
 <p>別的程式是第四種輸入（0.7）。程式送進 OAV Virtual MIDI <strong>輸出</strong>的東西——Strudel 的 <code>.midi('OAV Virtual MIDI')</code>——會在它標的那個時刻到草圖（<code>midi.last.source</code> 是 <code>virtual-out</code>）；外部 MIDI 時鐘推動 <code>drumPhase</code>、<code>drumBar</code> 和鼓機；
-<code>link=&lt;房間&gt;</code> 把另一個分頁、另一台電腦的程式接進這份草圖。全部寫在<a href="../../zh/docs/#strudel">和 Strudel 一起用</a>。</p>
+<code>link=&lt;房間&gt;</code> 把另一個分頁、另一台電腦的程式接進這份草圖。全部寫在<a href="../../zh/docs/strudel/">和 Strudel 一起用</a>。</p>
 <h3 id="p5-when-something-goes-wrong">出狀況的時候<a class="anchor" href="#p5-when-something-goes-wrong" aria-label="#">#</a></h3>
 <p>彈的時候沒人會去看 OpenProcessing 畫布下面的 console，所以出狀況會直接寫在畫面上：🎹 旁邊一張小卡片，不擋畫布中間，用瀏覽器的語言，同一則只跳一次，按 × 關掉。每張都寫三件事：<strong>發生什麼、為什麼、下一步按哪裡</strong>，console 也同步寫一樣的話。</p>
 <ul>
@@ -488,6 +488,11 @@ Hydra 不是 p5，沒有可以定義的 <code>notePressed()</code> 回呼，改�
 <li><strong>選項、MIDI 層的寫法和測試</strong>：<a href="https://github.com/frank890417/open-audiovisual/tree/main/p5" rel="noopener"><code>p5/README.md</code></a>。範例：<a href="../../p5/examples/particles/"><code>p5/examples/particles/</code></a>、<a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/examples/opc/sketch.js"><code>p5/examples/opc/</code></a>、<a href="../../p5/examples/mic/"><code>p5/examples/mic/</code></a>、<a href="../../p5/examples/keys/"><code>p5/examples/keys/</code></a>、<a href="../../p5/examples/drums/"><code>p5/examples/drums/</code></a>、<a href="../../p5/examples/rhythm/"><code>p5/examples/rhythm/</code></a>、<a href="../../p5/examples/rhythm-visual/"><code>p5/examples/rhythm-visual/</code></a>、<a href="../../p5/examples/rhythm-lab/"><code>p5/examples/rhythm-lab/</code></a>、<a href="../../p5/examples/record/"><code>p5/examples/record/</code></a>、<a href="../../p5/examples/lag/"><code>p5/examples/lag/</code></a>、<a href="../../p5/examples/chop/"><code>p5/examples/chop/</code></a>、<a href="../../p5/examples/with-strudel/"><code>p5/examples/with-strudel/</code></a>、<a href="../../p5/examples/note-names/"><code>p5/examples/note-names/</code></a>。</li>
 </ul>
   </section>
+
+  <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../zh/docs/devices/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">設備</span></a>
+      <a class="ch-next" rel="next" href="../../zh/docs/strudel/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">和 Strudel 一起用</span></a>
+    </nav>
 
   <p class="docs-end"><a href="#top">↑</a></p>
 </main>

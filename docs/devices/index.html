@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Devices · open-audiovisual</title>
+<meta name="description" content="The things a show plugs in are many kinds of thing: a MIDI controller, a par can, an LED strip, a camera, an audio interface, a hand sensor, a sensor wired to…">
+<link rel="canonical" href="https://openaudiovisual.com/docs/devices/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/devices/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/devices/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/devices/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Devices · open-audiovisual">
+<meta property="og:description" content="The things a show plugs in are many kinds of thing: a MIDI controller, a par can, an LED strip, a camera, an audio interface, a hand sensor, a sensor wired to…">
+<meta property="og:url" content="https://openaudiovisual.com/docs/devices/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Devices · open-audiovisual">
+<meta name="twitter:description" content="The things a show plugs in are many kinds of thing: a MIDI controller, a par can, an LED strip, a camera, an audio interface, a hand sensor, a sensor wired to…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="devices">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/devices/#article","url":"https://openaudiovisual.com/docs/devices/","name":"Devices · open-audiovisual","description":"The things a show plugs in are many kinds of thing: a MIDI controller, a par can, an LED strip, a camera, an audio interface, a hand sensor, a sensor wired to…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Devices","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["What is in it","The record","device(), kind by kind","Add a device","Facts and licences"],"position":12,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/devices/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/devices/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Devices","item":"https://openaudiovisual.com/docs/devices/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/devices/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/devices/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch is-here" data-ch="devices">
+          <a href="#devices" aria-current="page"><span class="n">12</span><span class="t">Devices</span></a>
+          <ol class="toc-secs">
+            <li><a href="#devices-what-is-in-it">What is in it</a></li>
+            <li><a href="#devices-the-record">The record</a></li>
+            <li><a href="#devices-device-kind-by-kind">device(), kind by kind</a></li>
+            <li><a href="#devices-add-a-device">Add a device</a></li>
+            <li><a href="#devices-facts-and-licences">Facts and licences</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="devices" aria-labelledby="devices">
+<h1 id="devices">Devices<a class="anchor" href="#devices" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 12 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/devices.md">docs/devices.md</a></span></p>
+<p>The things a show plugs in are many kinds of thing: a MIDI controller, a par can, an LED strip, a camera, an audio interface, a hand sensor, a sensor wired to a board. OAV already speaks to most of them, each through its own package and its own file format. <code>@openav/devices</code> puts them in one collection with one outer record, so a page, a tool or an agent can list them, search them, and ask for any one of them by id, and get it back ready for the package that drives it.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { devices, device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+
+devices({ q: <span class="ts">'minilab'</span> });                       <span class="tc">// rows: id, kind, manufacturer, name, aliases, connections, protocols, verified</span>
+<span class="tk">const</span> mini = <span class="tk">await</span> device(<span class="ts">'arturia-minilab3'</span>);   <span class="tc">// its profile, mapper routes, a MidiController in your MidiControllers</span>
+<span class="tk">const</span> par = <span class="tk">await</span> device(<span class="ts">'generic-rgbw'</span>);        <span class="tc">// a DMX fixture that patches itself</span>
+<span class="tk">const</span> cam = <span class="tk">await</span> device(<span class="ts">'logitech-mx-brio'</span>);    <span class="tc">// a camera found by its name, opened only when you call open()</span></code></pre></div>
+<h2 id="devices-what-is-in-it">What is in it<a class="anchor" href="#devices-what-is-in-it" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>kind</th><th>where the record is read from</th><th>what <code>device()</code> gives</th></tr></thead>
+<tbody>
+<tr><td><code>midi-controller</code></td><td>every profile in <code>packages/midi/profiles/</code>, hand-written and imported from QLC+</td><td><code>profile</code>, <code>routes()</code>, <code>addTo(controllers)</code></td></tr>
+<tr><td><code>dmx-fixture</code></td><td>every fixture in <code>packages/dmx/fixtures/</code> (and <code>fixtures/imported/</code>, where <code>tools/import-ofl.mjs</code> writes)</td><td><code>profile</code>, <code>patch(patch, { address })</code></td></tr>
+<tr><td><code>part</code></td><td>every part of the electronics library, <code>packages/hw/parts.js</code></td><td><code>part</code></td></tr>
+<tr><td><code>camera</code>, <code>audio-interface</code></td><td>a hand-written record in <code>packages/devices/records/</code></td><td><code>constraints()</code>, <code>find()</code>, <code>open()</code></td></tr>
+<tr><td><code>sensor</code>, <code>led-controller</code>, <code>dmx-interface</code>, <code>printer</code>, <code>projector</code>, <code>display</code></td><td>a hand-written record</td><td>the record, whose <code>use</code> says which package reaches it</td></tr>
+</tbody>
+</table></div>
+<p>Nothing is copied. A profile, a fixture and a part stay in their own files, the only place their facts are written, and the collection's record of each one is read off that file: when the package is built (<code>node tools/build-devices.mjs</code> writes <code>packages/devices/catalog.js</code>, the list <code>devices()</code> answers from) and again when <code>device()</code> loads it. A test fails when a profile, a fixture or a part exists that the list does not have, and when the list says something its file no longer does.</p>
+<p>Listing is cheap. <code>devices()</code> reads one generated file, so a page can show and search the whole collection without fetching every profile; <code>device()</code> imports the one file the device lives in.</p>
+<p>The first hand-written records are gear the project has on the desk, so each can be checked on the unit: the Yamaha AG06, the Logitech MX Brio, the Audinate Dante Virtual Soundcard, the Ultraleap Leap Motion Controller 2, WLED, the ENTTEC DMX USB Pro and the Brother QL-810W.</p>
+<p>The collection is on the site: <a href="../../devices/">/devices/</a> lists every device by kind, with a filter and a search. A controller's page stays at <code>/controllers/&lt;id&gt;/</code>; each DMX fixture has one at <code>/fixtures/&lt;id&gt;/</code> (every mode's channel table, a virtual fixture, the patch code, the file), and a record or a part at <code>/devices/&lt;id&gt;/</code> (the facts with their sources, setup, problems, the code, the file; a camera or an audio input can be looked for from the page, behind a button). A device gets a page of its own when it offers at least two of: something to try on screen, code that reaches it, a file to take. The Brother QL-810W has only its record, so it stays a row of the list until OAV has code for it.</p>
+<h2 id="devices-the-record">The record<a class="anchor" href="#devices-the-record" aria-label="Link to this section">#</a></h2>
+<p>Every device has the same outer record, <code>open-audiovisual/device@1</code>, described by <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/devices/device.schema.json" rel="noopener"><code>device.schema.json</code></a> for software that does not run this package.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>field</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>id</code>, <code>kind</code>, <code>manufacturer</code>, <code>name</code></td><td>who it is. <code>manufacturer</code> is <code>null</code> when the file it is read from names no maker (the parts library, the generic layouts)</td></tr>
+<tr><td><code>aliases</code></td><td>what people type when they search for it: a short name, the Chinese name, a model number</td></tr>
+<tr><td><code>connections</code>, <code>protocols</code></td><td>how it plugs in (<code>usb</code>, <code>din-midi</code>, <code>ethernet</code>, <code>wifi</code>, <code>dmx-xlr5</code>, …) and what it speaks (<code>midi</code>, <code>dmx512</code>, <code>art-net</code>, …). A profile, a fixture or a part says nothing about how it plugs in, so its <code>connections</code> is empty and <code>devices({ connection })</code> finds hand-written records only, for now</td></tr>
+<tr><td><code>data</code></td><td><code>ref</code>: the deeper record (<code>{ type: 'midi-profile', id, file }</code>), and/or <code>facts</code>: <code>[{ key, value, unit, note, source }]</code>, each citing a source</td></tr>
+<tr><td><code>media</code></td><td>a camera or an audio interface only: the label patterns that find it among the browser's devices, the recommended constraints, and where they come from</td></tr>
+<tr><td><code>setup</code>, <code>problems</code></td><td>steps and known problems, <code>{ en, zh, source }</code></td></tr>
+<tr><td><code>use</code></td><td>how OAV reaches it today: <code>[{ package, entry, sink?, call, en, zh }]</code>, or <code>null</code> when nothing does</td></tr>
+<tr><td><code>sources</code></td><td>every page a fact, a step or a problem comes from: <code>{ title, url, read }</code></td></tr>
+<tr><td><code>license</code>, <code>verified</code>, <code>verifications</code></td><td>the licence of the record's data, and how sure it is</td></tr>
+<tr><td><code>notes</code>, <code>tbd</code></td><td>what is worth knowing, and what could not be confirmed</td></tr>
+</tbody>
+</table></div>
+<p><code>verified</code> is true only when the device was checked on a real unit, and a record refuses <code>verified: true</code> without a verification whose <code>method</code> is <code>hardware</code>. A MIDI controller counts as verified only when every one of its controls was: the M-VAVE SMC-Mixer has a hardware check in its log, with 52 of 59 controls confirmed, and is not.</p>
+<h2 id="devices-device-kind-by-kind">device(), kind by kind<a class="anchor" href="#devices-device-kind-by-kind" aria-label="Link to this section">#</a></h2>
+<p>Each snippet runs as a module in a page whose import map is the examples' one plus <code>"@openav/devices": "../../packages/devices/index.js?v=c6e958d9"</code>. Only the camera's button asks for a permission, and only when it is clicked.</p>
+<h3 id="devices-a-midi-controller">A MIDI controller<a class="anchor" href="#devices-a-midi-controller" aria-label="Link to this section">#</a></h3>
+<p><code>routes()</code> is <code>@openav/midi</code>'s <code>controllerRoutes</code>: mapper routes from the controller's named signals to your params. <code>addTo()</code> puts the profile into a <code>MidiControllers</code> and returns its live controller. The unit is recognised by its port name when the manager gets its hardware engine (<code>controllers.attach(midi)</code>) and at each device change, so call <code>addTo()</code> first: a unit already plugged in is otherwise matched the next time a device comes or goes.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+<span class="tk">import</span> { MidiControllers } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
+<span class="tk">import</span> { Signals } <span class="tk">from</span> <span class="ts">'@openav/core'</span>;
+
+<span class="tk">const</span> signals = <span class="tk">new</span> Signals();
+<span class="tk">const</span> mini = <span class="tk">await</span> device(<span class="ts">'arturia-minilab3'</span>);
+<span class="tk">const</span> controllers = <span class="tk">new</span> MidiControllers({ profiles: [mini.profile], signals });
+<span class="tk">const</span> live = mini.addTo(controllers);
+live.setValue(<span class="ts">'knob1'</span>, 0.5);                        <span class="tc">// the on-screen knob; the hardware sends the same message</span>
+console.log(signals.<span class="tk">get</span>(<span class="ts">'midi/minilab3/knob1'</span>));    <span class="tc">// 0.504: 64 of 127, the MIDI value the knob sends</span>
+console.log(mini.routes({ knob1: <span class="ts">'hue'</span> }));         <span class="tc">// [{ source: 'midi/minilab3/knob1', target: 'hue' }]</span></code></pre></div>
+<h3 id="devices-a-dmx-fixture">A DMX fixture<a class="anchor" href="#devices-a-dmx-fixture" aria-label="Link to this section">#</a></h3>
+<p><code>patch()</code> places the fixture in a <code>@openav/dmx</code> <code>Patch</code>. The id defaults to <code>&lt;device&gt;-&lt;universe&gt;-&lt;address&gt;</code>, the universe to 1, the mode to the profile's first.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+<span class="tk">import</span> { Patch, DmxEngine } <span class="tk">from</span> <span class="ts">'@openav/dmx'</span>;
+
+<span class="tk">const</span> par = <span class="tk">await</span> device(<span class="ts">'generic-rgbw'</span>);
+<span class="tk">const</span> patch = <span class="tk">new</span> Patch();
+par.patch(patch, { id: <span class="ts">'par1'</span>, address: 1, mode: <span class="ts">'6ch'</span> });
+<span class="tk">const</span> engine = <span class="tk">new</span> DmxEngine(patch);
+engine.<span class="tk">set</span>(<span class="ts">'par1'</span>, { dimmer: 1, color: [1, 0.5, 0] });
+console.log(engine.render(0).bytes(1).slice(0, 6));   <span class="tc">// 255 255 128 0 0 0: dimmer, red, green, blue, white, strobe</span></code></pre></div>
+<h3 id="devices-a-part">A part<a class="anchor" href="#devices-a-part" aria-label="Link to this section">#</a></h3>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+
+<span class="tk">const</span> ring = <span class="tk">await</span> device(<span class="ts">'neopixel-ring-12'</span>);
+console.log(ring.part.leds, ring.part.supply);   <span class="tc">// the @openav/hw library entry, as Hw.check() reads it</span></code></pre></div>
+<h3 id="devices-a-camera-or-an-audio-interface">A camera or an audio interface<a class="anchor" href="#devices-a-camera-or-an-audio-interface" aria-label="Link to this section">#</a></h3>
+<p>The device is found among the browser's media devices by its label. <code>constraints()</code> is pure. <code>find()</code> calls <code>enumerateDevices()</code> and returns the device or <code>null</code>. <code>open()</code> is the only call that asks for a permission, so call it from a click.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+
+<span class="tk">const</span> cam = <span class="tk">await</span> device(<span class="ts">'logitech-mx-brio'</span>);
+console.log(cam.constraints());       <span class="tc">// { video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60 } }, audio: false }</span>
+<span class="tk">const</span> video = document.body.appendChild(Object.assign(document.createElement(<span class="ts">'video'</span>), { autoplay: <span class="tk">true</span>, muted: <span class="tk">true</span> }));
+<span class="tk">const</span> button = document.body.appendChild(Object.assign(document.createElement(<span class="ts">'button'</span>), { textContent: <span class="ts">'Camera'</span> }));
+button.onclick = <span class="tk">async</span> () =&gt; {
+  video.srcObject = <span class="tk">await</span> cam.open();   <span class="tc">// asks once; finds the MX Brio by name; opens it by its id</span>
+};</code></pre></div>
+<p>Browsers hide the labels until the page has had the permission once, so before that <code>find()</code> returns <code>null</code>; <code>open()</code> then asks, looks again, and if the browser opened another camera first, closes it and opens this one. With the labels visible and no match, it throws with the names it found and asks for nothing. An audio interface opens with echo cancellation, noise suppression and auto gain off, as <code>@openav/audio</code> asks a microphone; feed it to an analyzer with <code>analyzer.input().context.createMediaStreamSource(stream).connect(analyzer.input())</code>. <code>@openav/pose</code> opens the default camera itself, so a found camera does not reach the pose trackers yet.</p>
+<h3 id="devices-everything-else">Everything else<a class="anchor" href="#devices-everything-else" aria-label="Link to this section">#</a></h3>
+<p>A sensor, an LED controller, a DMX interface or a printer comes back as its record. Its <code>use</code> names the package and the call that reach it:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
+
+<span class="tk">const</span> wled = <span class="tk">await</span> device(<span class="ts">'wled'</span>);
+<span class="tk">for</span> (<span class="tk">const</span> u <span class="tk">of</span> wled.record.use) console.log(u.package, u.sink || <span class="ts">''</span>, u.call);
+<span class="tc">// @openav/out ddp new OutClient({ url: 'ws://127.0.0.1:6450/out' }).connect().set('light/0/r', 1)</span>
+<span class="tc">// @openav/dmx artnet dmxTransport('bridge', { patch, client })</span>
+<span class="tk">const</span> printer = <span class="tk">await</span> device(<span class="ts">'brother-ql-810w'</span>);
+console.log(printer.record.use);      <span class="tc">// null: OAV has no code that talks to it, and the record says so</span></code></pre></div>
+<h2 id="devices-add-a-device">Add a device<a class="anchor" href="#devices-add-a-device" aria-label="Link to this section">#</a></h2>
+<ol>
+<li>A device that has a deeper format goes there: a MIDI controller is a profile (<a href="../../docs/controllers/">MIDI controllers</a>), a light is a fixture (<a href="../../docs/dmx/">DMX lighting</a>), a part goes into <code>packages/hw/parts.js</code>. The collection picks it up.</li>
+<li>Anything else is a record: <code>packages/devices/records/&lt;id&gt;.json</code>, the file name being the id. Copy one of the same kind.</li>
+<li>Run <code>node tools/build-devices.mjs</code>: it validates every record and rewrites <code>catalog.js</code>. Then <code>node --test tests/devices.test.js</code>.</li>
+<li>Leave <code>verified</code> false and <code>verifications</code> empty. Only a person with the unit can make it true.</li>
+</ol>
+<h2 id="devices-facts-and-licences">Facts and licences<a class="anchor" href="#devices-facts-and-licences" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Every fact cites the page it was read from.</strong> A number, a port, a protocol name, a sample rate, a resolution comes from the manufacturer's own page or manual, with its URL in <code>sources</code> and the day it was read. What could not be read on such a page is left out, or written in <code>tbd</code>, never guessed. A short honest record beats a full guessed one.</li>
+<li><strong>Facts and links only.</strong> No manual prose, no product photos: a manufacturer's page is under copyright, its facts are not.</li>
+<li><strong>Setup steps and known problems</strong> come from the manufacturer's documents or from this handbook (troubleshooting, the package notes), each citing which.</li>
+<li><strong>Label patterns</strong> (how a camera or an audio input is found by name) are written from the model name until someone reads the label a browser shows on a unit; each record says so in <code>tbd</code>.</li>
+<li><strong>Licences.</strong> A record is MIT, like the project. A record read off a profile, a fixture or a part takes that file's licence: the controllers imported from QLC+ are Apache-2.0 (see <code>NOTICE</code>). Data from Mixxx (GPL) and midi.guide (CC-BY-SA) does not come in.</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">MIDI controllers &amp; embedding</span></a>
+      <a class="ch-next" rel="next" href="../../p5/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">p5.js in one line</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

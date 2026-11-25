@@ -49,7 +49,7 @@ test('platform docs: the package READMEs that talk to localhost say what Chrome 
     const s = read(f);
     assert.ok(s.includes(SRC.lna), `${f} cites the Local Network Access post`);
     assert.match(s, /Local Network Access|local network/i, `${f} names the prompt`);
-    assert.ok(s.includes('/docs/#troubleshooting-'), `${f} points at the troubleshooting section`);
+    assert.ok(s.includes('/docs/troubleshooting/#troubleshooting-'), `${f} points at the troubleshooting section`);
   }
   assert.ok(read('packages/osc/README.md').includes(SRC.lnaStatus));
 });

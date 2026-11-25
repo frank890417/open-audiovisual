@@ -32,4 +32,4 @@ Claude Code picks it up from the repository's `.mcp.json`. Other clients:
 It answers `initialize` (server `openav` 0.1.0), `tools/list` and `tools/call`. Results come
 back as one text item, objects JSON-encoded; a failing call is a JSON-RPC error, code -32000.
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-mcp) · [The MCP server](https://openaudiovisual.com/docs/#agents-the-mcp-server)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-mcp) · [The MCP server](https://openaudiovisual.com/docs/agents/#agents-the-mcp-server)

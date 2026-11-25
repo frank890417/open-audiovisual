@@ -161,9 +161,10 @@ async function sitePages() {
   const TYPE = { home: 'home', docs: 'docs', reference: 'reference', cheatsheet: 'cheatsheet', controllers: 'controllers_index', 'controllers/verify': 'verify', webtoe: 'webtoe', check: 'check', made: 'made_with', examples: 'examples_index', p5: 'p5', changelog: 'changelog' };
   const out = [];
   for (const e of registry()) {
-    const type = TYPE[e.id] || (e.group === 'controllers' ? 'controller' : e.group === 'examples' ? 'example' : e.group === 'fixtures' ? 'fixture' : e.group === 'device-pages' ? 'device' : e.id === 'devices' ? 'devices_index' : null);
+    const type = TYPE[e.id] || (e.group === 'controllers' ? 'controller' : e.group === 'examples' ? 'example' : e.group === 'fixtures' ? 'fixture' : e.group === 'device-pages' ? 'device' : e.id === 'devices' ? 'devices_index'
+      : e.group === 'docs' ? 'docs_chapter' : e.group === 'reference' ? 'reference_name' : null);
     assert.ok(type, `${e.id}: a page type for it in this test`);
-    const id = type === 'controller' || type === 'example' || type === 'fixture' || type === 'device' ? e.id.slice(e.id.indexOf('/') + 1) : '';
+    const id = ['controller', 'example', 'fixture', 'device', 'docs_chapter', 'reference_name'].includes(type) ? e.id.slice(e.id.lastIndexOf('/') + 1) : '';
     for (const lang of e.langs) out.push({ rel: fileOf(e, lang), type, id });
   }
   out.push({ rel: '404.html', type: 'not_found', id: '' });

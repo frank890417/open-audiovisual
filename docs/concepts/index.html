@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Core concepts · open-audiovisual</title>
+<meta name="description" content="Six words carry the whole framework: signal, param, route, world, timeline, show.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/concepts/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/concepts/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/concepts/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/concepts/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Core concepts · open-audiovisual">
+<meta property="og:description" content="Six words carry the whole framework: signal, param, route, world, timeline, show.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/concepts/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Core concepts · open-audiovisual">
+<meta name="twitter:description" content="Six words carry the whole framework: signal, param, route, world, timeline, show.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="concepts">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/concepts/#article","url":"https://openaudiovisual.com/docs/concepts/","name":"Core concepts · open-audiovisual","description":"Six words carry the whole framework: signal, param, route, world, timeline, show.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Core concepts","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["Signals","Params","Routes and mapping","Worlds","Timeline and scenes","The show","The two rules"],"position":3,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/concepts/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/concepts/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Core concepts","item":"https://openaudiovisual.com/docs/concepts/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/concepts/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/concepts/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch is-here" data-ch="concepts">
+          <a href="#concepts" aria-current="page"><span class="n">03</span><span class="t">Core concepts</span></a>
+          <ol class="toc-secs">
+            <li><a href="#concepts-signals">Signals</a></li>
+            <li><a href="#concepts-params">Params</a></li>
+            <li><a href="#concepts-routes-and-mapping">Routes and mapping</a></li>
+            <li><a href="#concepts-worlds">Worlds</a></li>
+            <li><a href="#concepts-timeline-and-scenes">Timeline and scenes</a></li>
+            <li><a href="#concepts-the-show">The show</a></li>
+            <li><a href="#concepts-the-two-rules">The two rules</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="concepts" aria-labelledby="concepts">
+<h1 id="concepts">Core concepts<a class="anchor" href="#concepts" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 3 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/concepts.md">docs/concepts.md</a></span></p>
+<p>Six words carry the whole framework: signal, param, route, world, timeline,
+show. This chapter defines each one and the two rules that hold them together.</p>
+<h2 id="concepts-signals">Signals<a class="anchor" href="#concepts-signals" aria-label="Link to this section">#</a></h2>
+<p>A <strong>signal</strong> is a named value that says what is happening: a knob's position,
+the loudness of the room, the height of a wrist, the consonance of the last
+chord. Every input package publishes signals into one registry (<code>Signals</code> from
+<code>@openav/core</code>) and does nothing else. Signals are the only currency of input.</p>
+<p>There are two kinds:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>kind</th><th>holds</th><th>example</th><th>read it with</th></tr></thead>
+<tbody>
+<tr><td>continuous</td><td>a current value, usually 0..1</td><td><code>midi/cc/74</code> = 0.42</td><td><code>signals.get(name)</code>, <code>signals.norm(name)</code></td></tr>
+<tr><td>pulse</td><td>the payload of the last event</td><td><code>midi/note/on</code> → <code>{ note: 60, vel: 0.8, … }</code></td><td><code>signals.on(name, cb)</code></td></tr>
+</tbody>
+</table></div>
+<p>Names are paths, source first: <code>midi/cc/74</code>, <code>audio/band/low</code>,
+<code>pose/hand/right/y</code>, <code>phone/ab12/tilt/x</code>, <code>surface/main/hue</code>. Ranges are
+normalized where that makes performance sense, and y axes are flipped so that
+1 means <em>raised</em>, never raw pixels.</p>
+<p>A signal is declared with its range so that meters and <em>learn</em> can scale it:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">signals.define(<span class="ts">'breath/pressure'</span>, { min: 0, max: 1, source: <span class="ts">'breath'</span> });
+signals.<span class="tk">set</span>(<span class="ts">'breath/pressure'</span>, 0.37);               <span class="tc">// continuous</span>
+signals.define(<span class="ts">'breath/sigh'</span>, { kind: <span class="ts">'pulse'</span> });
+signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <span class="tc">// pulse</span></code></pre></div>
+<p><code>set()</code> on a name nobody declared defines it on the spot as continuous 0..1. If
+your values live elsewhere (degrees, MIDI note numbers), declare the range first.</p>
+<p>A knob, a raised hand and a chord's consonance are equal citizens in this
+registry. That equality is what lets you mix them: a hand can do whatever a
+knob does.</p>
+<h2 id="concepts-params">Params<a class="anchor" href="#concepts-params" aria-label="Link to this section">#</a></h2>
+<p>A <strong>param</strong> is a value the world listens to: <code>hue</code>, <code>bloom</code>, <code>gravity</code>. The
+world declares its params; each one is a line of schema:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">{ key: <span class="ts">'energy'</span>, label: <span class="ts">'Energy'</span>, min: 0, max: 1, def: 0.3 }
+{ key: <span class="ts">'mode'</span>, label: <span class="ts">'Mode'</span>, min: 0, max: 3, def: 0, step: 1 }   <span class="tc">// stepped: snaps, holds on the timeline</span>
+{ key: <span class="ts">'burst'</span>, label: <span class="ts">'Burst!'</span>, pulse: <span class="tk">true</span> }                      <span class="tc">// a trigger, not a level</span></code></pre></div>
+<p>Every frame each param resolves to one number:</p>
+<div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">timeline automation at time t      (the score; def if the param has no automation)
+  ⬑ overridden by → the latest override   (a slider, a mapped knob, a phone fader)</code></pre></div>
+<p>An override is <em>sticky</em>. Once a hand or a route has touched <code>bloom</code>, the
+timeline stops moving it until the override is cleared (✕ in the console, or
+<code>params.clearOverride('bloom')</code>). That matches the stage: when a human grabs a
+control, the score yields. A route can choose otherwise: <code>mode: 'trim'</code> adds the knob to
+the timeline's value, and <code>release</code> hands the param back when the knob stands still
+(<a href="../../docs/mapping/#mapping-trim-pickup-and-release">Mapping</a>).</p>
+<p>The full field list is in <a href="../../docs/writing-a-world/#writing-a-world-params">Writing a world</a>.</p>
+<h2 id="concepts-routes-and-mapping">Routes and mapping<a class="anchor" href="#concepts-routes-and-mapping" aria-label="Link to this section">#</a></h2>
+<p>A <strong>route</strong> connects one signal to one param. Routes are plain data:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">{ source: <span class="ts">'pose/hand/right/y'</span>, target: <span class="ts">'energy'</span>, curve: <span class="ts">'smooth'</span>, smooth: 0.15 }</code></pre></div>
+<p>The <strong>mapper</strong> (<code>@openav/mapping</code>) holds the routes and applies them: it reads
+the signal, clamps it into a window (<code>inMin</code>..<code>inMax</code>), optionally inverts it,
+bends it with a curve, scales it into the param's range and, if asked, smooths
+it over time. One signal may drive several params and one param may listen to
+several signals. <em>Learn</em> binds the next signal that moves, which works for a
+knob and for a waving hand alike. Routes serialize to JSON, so a wiring is a
+file you can carry to the next venue. Details: <a href="../../docs/mapping/">Mapping</a>.</p>
+<h2 id="concepts-worlds">Worlds<a class="anchor" href="#concepts-worlds" aria-label="Link to this section">#</a></h2>
+<p>A <strong>world</strong> is the piece: an object with a name, its params, and
+<code>init</code> / <code>update</code> / <code>render</code> / <code>dispose</code>. It reads resolved params every frame
+and may subscribe to signals for discrete events. It brings its own renderer:
+2D canvas, p5, three.js, a WebToe patch, DOM, anything. The framework has no
+opinion. Details: <a href="../../docs/writing-a-world/">Writing a world</a>.</p>
+<h2 id="concepts-timeline-and-scenes">Timeline and scenes<a class="anchor" href="#concepts-timeline-and-scenes" aria-label="Link to this section">#</a></h2>
+<p>The <strong>timeline</strong> (<code>@openav/timeline</code>) is the score: keyframed automation per
+param, plus a list of scenes with titles and notes for the performer. It owns
+time; worlds never read the clock. Scenes may start before zero for a pre-show
+standby. Details: <a href="../../docs/show-control/#show-control-timeline">Show control</a>.</p>
+<h2 id="concepts-the-show">The show<a class="anchor" href="#concepts-the-show" aria-label="Link to this section">#</a></h2>
+<p>A <strong>show</strong> is a world plus one <code>createShow()</code> call (<code>@openav/show</code>). It builds
+the signals registry, the params, the stage, the timeline, the mapper, the
+inputs you ask for, sound, the console, the backstage feed and the frame loop,
+and returns all of them. Every example is a world plus this call, so when the
+framework grows a module, every show can have it by declaring it.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({
+  world,
+  timeline: { total: 120, automation, scenes },
+  routes: [{ source: <span class="ts">'audio/rms'</span>, target: <span class="ts">'energy'</span>, smooth: 0.1 }],
+  modules: { keys: { base: 48 }, chord: <span class="tk">true</span>, audio: <span class="tk">true</span>, sound: <span class="tk">true</span> },
+});</code></pre></div>
+<h2 id="concepts-the-two-rules">The two rules<a class="anchor" href="#concepts-the-two-rules" aria-label="Link to this section">#</a></h2>
+<p>Two rules make the framework composable. They come in two forms: one says how
+the system is designed, the other says what that asks of anyone writing code
+for it.</p>
+<p><strong>1. Signals are the only currency of input. So: continuous control goes
+through params; discrete events may use signals.</strong></p>
+<p>A world that reads <code>signals.get('midi/cc/74')</code> inside <code>update()</code> still works,
+today, with your controller. But it can no longer be driven by the timeline, by
+a dancer's wrist, by a phone, or by someone else's controller. You have welded
+the performance to one input. Declare a param instead and let a route connect
+<code>midi/cc/74 → yourParam</code>. The same world then works for everyone, and the
+console, the phone surface and <em>learn</em> all see the param.</p>
+<p>Events are different. "A note was struck", "a chord resolved", "a kick hit" are
+moments, not levels. Subscribing to them in <code>init()</code> is correct and encouraged;
+it is what makes a world <em>react</em> rather than just drift.</p>
+<p><strong>2. Worlds never know who is performing them. So: the shell never knows the
+work.</strong></p>
+<p>A world reads params, and whether a value came from the timeline, a MIDI knob, a
+dancer or a slider is invisible to it. The same holds for the framework: never
+edit <code>packages/*</code> to make one example look right. A framework change has to make
+every work better. Switching works means swapping a world and its data; the
+shell stays.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/quick-start/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Quick start</span></a>
+      <a class="ch-next" rel="next" href="../../docs/architecture/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Architecture</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

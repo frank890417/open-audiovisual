@@ -26,6 +26,11 @@ function generatedPages() {
   for (const base of ['controllers', 'zh/controllers']) for (const d of dirs(base)) if (exists(`${base}/${d}/index.html`)) rels.push(`${base}/${d}/index.html`);
   // the device collection (tools/build-devices.mjs): the hub, every fixture page, every device page
   rels.push('devices/index.html', 'zh/devices/index.html');
+  // the handbook, one page per chapter (tools/build-docs.mjs), and one page per oav-p5 name (tools/build-reference.mjs)
+  for (const base of ['docs', 'zh/docs', 'docs/reference', 'zh/docs/reference']) for (const d of dirs(base)) {
+    const rel = `${base}/${d}/index.html`;
+    if (exists(rel) && !/noindex/.test(read(rel).slice(0, 2000)) && !['reference', 'cheatsheet'].includes(d)) rels.push(rel);
+  }
   for (const base of ['fixtures', 'zh/fixtures', 'devices', 'zh/devices']) if (exists(base)) for (const d of dirs(base)) if (exists(`${base}/${d}/index.html`)) rels.push(`${base}/${d}/index.html`);
   return rels.map((rel) => ({ rel, html: read(rel) }));
 }
@@ -101,7 +106,9 @@ test('llms.txt (en, zh): generated, complete, no GitHub raw links', async () => 
     for (const p of f.packages) assert.ok(new RegExp(`\`${p}\``).test(s), `${file}: package ${p}`);
     for (const ch of CHAPTERS) {
       assert.ok(DOC_BLURB[ch.id], `a one-line blurb for the chapter "${ch.id}" (tools/site/llms.mjs DOC_BLURB)`);
-      assert.ok(s.includes(`${SITE}docs/${lang === 'zh' ? 'zh/' : ''}${path.posix.basename(ch.en)}`), `${file}: chapter ${ch.id}`);
+      assert.ok(s.includes(`${SITE}docs/${lang === 'zh' ? 'zh/' : ''}${path.posix.basename(ch.en)}`), `${file}: chapter ${ch.id} (its Markdown)`);
+      const page = `${SITE}${lang === 'zh' ? 'zh/' : ''}${ch.id === 'p5' ? 'p5/' : `docs/${ch.id}/`}`;
+      assert.ok(s.includes(`](${page})`), `${file}: chapter ${ch.id} (its page, ${page})`);
     }
     assert.ok(s.includes(`${SITE}p5/`) && s.includes(`docs/${lang === 'zh' ? 'zh/' : ''}p5.md`), `${file}: the p5 one-liner`);
     assert.ok(s.includes(`${SITE}${lang === 'zh' ? 'zh/' : ''}made-with/`), `${file}: the made-with page (in sitemap since 0.9.0, missing from llms.txt until 2026-11-22)`);
@@ -327,7 +334,7 @@ test('email_off: every code block with an @ sits inside the Cloudflare email_off
     }
   }
   assert.ok(withAt > 10, `the test sees code blocks with an @ (${withAt})`);
-  for (const rel of ['docs/index.html', 'zh/docs/index.html']) {
+  for (const rel of ['docs/writing-a-world/index.html', 'zh/docs/writing-a-world/index.html']) {   // the chapter that pins p5@1.9.4
     const s = read(rel);
     const at = s.indexOf('p5@1.9.4');
     assert.ok(at > 0, `${rel}: the p5@1.9.4 CDN url is on the page`);

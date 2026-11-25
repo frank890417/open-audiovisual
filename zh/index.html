@@ -718,12 +718,12 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
     <h3 class="docs-title">文件</h3>
     
     <ul class="docs">
-      <li><a href="../zh/docs/#architecture">架構</a><span>每一層的介面約定，完整說明</span></li>
-      <li><a href="../zh/docs/#writing-a-world">寫一個世界</a><span>世界的介面，以及最常被打破的那條規則</span></li>
-      <li><a href="../zh/docs/#signals">訊號一覽</a><span>內建輸入會發出的所有訊號</span></li>
-      <li><a href="../zh/docs/#show-control">演出控制</a><span>時間軸、場景、演出模式、後台監看、OSC</span></li>
-      <li><a href="../zh/docs/#roadmap">路線圖</a><span>真實演出接下來要求的功能</span></li>
-      <li><a href="../zh/docs/#agents">AGENTS.md</a><span>給 AI 程式代理的約定</span></li>
+      <li><a href="../zh/docs/architecture/">架構</a><span>每一層的介面約定，完整說明</span></li>
+      <li><a href="../zh/docs/writing-a-world/">寫一個世界</a><span>世界的介面，以及最常被打破的那條規則</span></li>
+      <li><a href="../zh/docs/signals/">訊號一覽</a><span>內建輸入會發出的所有訊號</span></li>
+      <li><a href="../zh/docs/show-control/">演出控制</a><span>時間軸、場景、演出模式、後台監看、OSC</span></li>
+      <li><a href="../zh/docs/roadmap/">路線圖</a><span>真實演出接下來要求的功能</span></li>
+      <li><a href="../zh/docs/agents/">AGENTS.md</a><span>給 AI 程式代理的約定</span></li>
     </ul>
   </section>
 
@@ -768,7 +768,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <div class="term-bar"><span>docs/zh/p5.md</span><button type="button" class="copy" data-copy="faq-4-code">複製</button></div>
         <pre id="faq-4-code"><code>circle(width / 2, height / 2, 50 + lag(micLevel, 0.03, 0.4) * 300);   <span class="tc">// a VU meter: opens at once, closes slowly</span></code></pre>
       </div>
-        <p class="faq-more"><a class="more" href="../zh/docs/#p5-values-over-time-lag-env-speed-spring-trail">延伸閱讀: 數值隨時間 →</a></p>
+        <p class="faq-more"><a class="more" href="../zh/p5/#p5-values-over-time-lag-env-speed-spring-trail">延伸閱讀: 數值隨時間 →</a></p>
       </div>
       <div class="faq-item">
         <h3 id="faq-5">可以跟 Strudel 一起用嗎？</h3>
@@ -781,7 +781,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <pre id="faq-5-code"><code><span class="tk">await</span> <span class="tk">import</span>(<span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span>)</code></pre>
       </div>
         <p>OAV 不載入、也不呼叫 Strudel 的任何程式。</p>
-        <p class="faq-more"><a class="more" href="../zh/docs/#strudel">延伸閱讀: 和 Strudel 一起用 →</a></p>
+        <p class="faq-more"><a class="more" href="../zh/docs/strudel/">延伸閱讀: 和 Strudel 一起用 →</a></p>
       </div>
       <div class="faq-item">
         <h3 id="faq-6">沒有硬體也能用嗎？</h3>
@@ -794,7 +794,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
         <p>Chrome 和 Edge 有。演出請用它們。</p>
         <p>Safari 和 iPad 沒有 Web MIDI，螢幕上的控制器和手機照樣能用。</p>
         <p>鏡頭和麥克風只在安全環境（secure context）裡能用：<code>http://localhost</code> 或 <code>https://</code>。</p>
-        <p class="faq-more"><a class="more" href="../zh/docs/#quick-start-which-browser">延伸閱讀: 快速開始 →</a></p>
+        <p class="faq-more"><a class="more" href="../zh/docs/quick-start/#quick-start-which-browser">延伸閱讀: 快速開始 →</a></p>
       </div>
       <div class="faq-item">
         <h3 id="faq-8">支援哪些 MIDI 控制器？每台的 CC 對照表在哪？</h3>
@@ -811,7 +811,7 @@ node packages/osc/bridges/osc-bridge.js   <span class="tc"># OSC → UDP bridge<
 &lt;oav-controller profile=<span class="ts">"akai-lpd8"</span> readout&gt;&lt;/oav-controller&gt;</code></pre>
       </div>
         <p>這樣就接好了。沒有 Web MIDI 的瀏覽器（Safari、iPad）一樣能彈、一樣送出事件，只有硬體和 MIDI 輸出這兩項會顯示無法使用。</p>
-        <p class="faq-more"><a class="more" href="../zh/docs/#controllers-play-one-in-a-page">延伸閱讀: MIDI 控制器與嵌入 →</a></p>
+        <p class="faq-more"><a class="more" href="../zh/docs/controllers/#controllers-play-one-in-a-page">延伸閱讀: MIDI 控制器與嵌入 →</a></p>
       </div>
       <div class="faq-item">
         <h3 id="faq-10">AI 代理可以幫我做世界嗎？</h3>

@@ -47,7 +47,7 @@ repo 內附一個 Model Context Protocol（MCP，讓 AI 工具呼叫外部功能
 
 - [/llms.txt](../../llms.txt) 是 [llmstxt.org](https://llmstxt.org/) 格式的簡短索引：這是什麼、核心概念、怎麼開始、每一份文件和每一個範例。
 - [/llms-full.txt](../../llms-full.txt) 把 README、AGENTS.md 和所有文件合成一個檔，給喜歡一次讀完的代理。
-- 這本手冊在 `/docs/` 是純 HTML（繁體中文版在 `/zh/docs/`），不開 JavaScript 也讀得到每一個字。每一節都有固定的錨點，例如 `/docs/#mapping-curves`。
+- 這本手冊是純 HTML，每一章一頁，在 `/docs/<章>/`（繁體中文版在 `/zh/docs/<章>/`），目錄在 `/docs/`，不開 JavaScript 也讀得到每一個字。每一節都有固定的錨點，例如 `/docs/mapping/#mapping-curves`（舊的 `/docs/#mapping-curves` 連結也會到同一個地方）。
 
 ## create-world 技能
 

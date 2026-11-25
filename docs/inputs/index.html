@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inputs · open-audiovisual</title>
+<meta name="description" content="Every input does one thing: publish signals. With createShow() you switch inputs on in modules; each one is also a plain class you can use on its own.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/inputs/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/inputs/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/inputs/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/inputs/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Inputs · open-audiovisual">
+<meta property="og:description" content="Every input does one thing: publish signals. With createShow() you switch inputs on in modules; each one is also a plain class you can use on its own.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/inputs/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inputs · open-audiovisual">
+<meta name="twitter:description" content="Every input does one thing: publish signals. With createShow() you switch inputs on in modules; each one is also a plain class you can use on its own.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="inputs">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/inputs/#article","url":"https://openaudiovisual.com/docs/inputs/","name":"Inputs · open-audiovisual","description":"Every input does one thing: publish signals. With createShow() you switch inputs on in modules; each one is also a plain class you can use on its own.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Inputs","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["MIDI","On-screen piano, QWERTY and the simulated performer","Drum machine","Microphone","Chords","Body and hands","Leap Motion","Phones and iPads","Your own input"],"position":6,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/inputs/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/inputs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Inputs","item":"https://openaudiovisual.com/docs/inputs/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/inputs/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/inputs/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch is-here" data-ch="inputs">
+          <a href="#inputs" aria-current="page"><span class="n">06</span><span class="t">Inputs</span></a>
+          <ol class="toc-secs">
+            <li><a href="#inputs-midi">MIDI</a></li>
+            <li><a href="#inputs-on-screen-piano-qwerty-and-the-simulated-performer">On-screen piano, QWERTY and the simulated performer</a></li>
+            <li><a href="#inputs-drum-machine">Drum machine</a></li>
+            <li><a href="#inputs-microphone">Microphone</a></li>
+            <li><a href="#inputs-chords">Chords</a></li>
+            <li><a href="#inputs-body-and-hands">Body and hands</a></li>
+            <li><a href="#inputs-leap-motion">Leap Motion</a></li>
+            <li><a href="#inputs-phones-and-ipads">Phones and iPads</a></li>
+            <li><a href="#inputs-your-own-input">Your own input</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">20</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="inputs" aria-labelledby="inputs">
+<h1 id="inputs">Inputs<a class="anchor" href="#inputs" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 6 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/inputs.md">docs/inputs.md</a></span></p>
+<p>Every input does one thing: publish signals. With <code>createShow()</code> you switch
+inputs on in <code>modules</code>; each one is also a plain class you can use on its own.
+The exact names and ranges are in the <a href="../../docs/signals/">Signals reference</a>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>input</th><th>package</th><th><code>modules</code> key</th><th>default</th><th>publishes</th></tr></thead>
+<tbody>
+<tr><td>MIDI hardware</td><td><code>@openav/midi</code></td><td><code>midi</code></td><td>on (<code>false</code> turns it off)</td><td><code>midi/…</code></td></tr>
+<tr><td>on-screen MIDI controllers</td><td><code>@openav/midi</code></td><td><code>midi: { controllers }</code></td><td>off</td><td><code>midi/&lt;device&gt;/&lt;control&gt;</code></td></tr>
+<tr><td>on-screen piano, QWERTY, simulated performer</td><td><code>@openav/keys</code></td><td><code>keys</code></td><td>on (<code>false</code> removes it)</td><td><code>midi/note/on</code>, <code>midi/note/off</code></td></tr>
+<tr><td>drum machine</td><td><code>@openav/drums</code></td><td><code>drums</code></td><td>off</td><td><code>drum/…</code>, <code>midi/note/on</code> on channel 10</td></tr>
+<tr><td>microphone</td><td><code>@openav/audio</code></td><td><code>audio</code></td><td>off</td><td><code>audio/…</code></td></tr>
+<tr><td>chord analysis</td><td><code>@openav/chord</code></td><td><code>chord</code></td><td>off</td><td><code>chord/…</code></td></tr>
+<tr><td>body (camera)</td><td><code>@openav/pose</code></td><td><code>pose</code></td><td>off</td><td><code>pose/…</code></td></tr>
+<tr><td>hands (camera)</td><td><code>@openav/pose</code></td><td><code>hands</code></td><td>off</td><td><code>hand/…</code></td></tr>
+<tr><td>hands (Leap Motion)</td><td><code>@openav/leap</code></td><td><code>leap</code></td><td>off</td><td><code>leap/…</code></td></tr>
+<tr><td>phones and iPads</td><td><code>@openav/remote</code></td><td><code>remote</code></td><td>off</td><td><code>phone/…</code>, <code>surface/…</code>, <code>midi/note/…</code></td></tr>
+</tbody>
+</table></div>
+<p>Sources that need permission or a user gesture (microphone, camera) are created
+by <code>createShow()</code> but only start when you click their button in the console's
+<strong>L1 · Input</strong> panel: 🎤 mic, 🖐 hands, 🕺 body.</p>
+<h2 id="inputs-midi">MIDI<a class="anchor" href="#inputs-midi" aria-label="Link to this section">#</a></h2>
+<p><code>createShow()</code> creates a <code>Midi</code> engine and calls <code>enable()</code> on startup, so the
+browser may ask for MIDI permission when the page opens. Devices can be plugged
+in and out during the show; the <strong>L1 · Input</strong> panel lists them, and unticking
+one mutes it without unplugging it.</p>
+<p>Every incoming message publishes two families of names:</p>
+<ul>
+<li><strong>legacy</strong> (what most worlds use, any channel): <code>midi/note/on</code> and
+<code>midi/note/off</code> pulses, <code>midi/cc/&lt;n&gt;</code> (0..1), <code>midi/bend</code> (−1..1);</li>
+<li><strong>per channel</strong>: <code>midi/ch/&lt;ch&gt;/cc/&lt;n&gt;</code>, <code>midi/ch/&lt;ch&gt;/note/&lt;n&gt;</code> (velocity 0..1
+while held, 0 on release), <code>midi/ch/&lt;ch&gt;/bend</code>, <code>midi/ch/&lt;ch&gt;/pressure</code>,
+<code>midi/ch/&lt;ch&gt;/poly/&lt;n&gt;</code>.</li>
+</ul>
+<p>A note-on payload is <code>{ note, vel, velocity, ch, device }</code>: <code>vel</code> is 0..1,
+<code>velocity</code> is the raw 1..127, <code>ch</code> is 1..16, <code>device</code> is the port's slug.</p>
+<p>With <strong>two or more devices</strong> connected, each also publishes under its own slug
+so their controls do not collide: <code>midi/&lt;slug&gt;/cc/&lt;n&gt;</code>, <code>midi/&lt;slug&gt;/note/on</code>,
+<code>midi/&lt;slug&gt;/note/off</code>, <code>midi/&lt;slug&gt;/bend</code>. The slug comes from the port name
+(<code>Arturia MiniLab 3</code> → <code>arturia-minilab-3</code>; a second identical unit gets <code>-2</code>),
+so a device that drops out and comes back keeps its routes. The legacy names
+keep publishing too, so a route on <code>midi/cc/74</code> hears every device.</p>
+<p>Clock messages are ignored. Program change, transport and SysEx are not
+published (SysEx access is never requested).</p>
+<p>Using it without <code>createShow()</code>:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Midi } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
+
+<span class="tk">const</span> midi = <span class="tk">new</span> Midi({ signals });     <span class="tc">// options: signals, filterOut = 'IAC', requestAccess</span>
+<span class="tk">await</span> midi.enable();                    <span class="tc">// false if the browser has no Web MIDI or permission was denied</span>
+midi.devices();                         <span class="tc">// [{ slug, name, listening }]</span>
+midi.setListening(<span class="ts">'nanokontrol2'</span>, <span class="tk">false</span>);</code></pre></div>
+<p><code>filterOut</code> is a case-insensitive regular expression on input port names that
+are ignored. The default, <code>'IAC'</code>, keeps the macOS IAC bus out, because a show
+that sends MIDI out through IAC would otherwise hear itself. See
+<a href="../../docs/troubleshooting/#troubleshooting-a-daw-on-the-iac-bus-is-not-heard">Troubleshooting</a> if you
+want to receive from IAC. MIDI output is described in
+<a href="../../docs/show-control/#show-control-midi-output-and-panic">Show control</a>.</p>
+<h3 id="inputs-known-controllers-on-screen">Known controllers on screen<a class="anchor" href="#inputs-known-controllers-on-screen" aria-label="Link to this section">#</a></h3>
+<p><code>modules: { midi: { controllers: { profile: '&lt;profile id&gt;' } } }</code> adds an
+on-screen picture of a known controller. Plug that controller in and the picture
+switches to it and moves with your hands; without one, play the picture with a
+mouse or a finger. Its controls publish <code>midi/&lt;device&gt;/&lt;control&gt;</code> names, and
+<code>controllerRoutes()</code> writes the routes that connect them to params. The
+<a href="../../docs/controllers/">MIDI controllers &amp; embedding</a> chapter covers profiles,
+learning unknown devices, LED feedback and embedding; the supported devices are
+on the <a href="../../controllers/">controllers page</a>.</p>
+<h2 id="inputs-on-screen-piano-qwerty-and-the-simulated-performer">On-screen piano, QWERTY and the simulated performer<a class="anchor" href="#inputs-on-screen-piano-qwerty-and-the-simulated-performer" aria-label="Link to this section">#</a></h2>
+<p><code>@openav/keys</code> is on by default. It mounts a piano above the console with two
+checkboxes, <em>keyboard</em> (QWERTY capture) and <em>simulate performance</em>. Options
+(<code>modules.keys</code>): <code>base</code> (lowest note, default 48), <code>octaves</code> (default 2),
+<code>sim</code> (show the simulate checkbox, default <code>true</code>), <code>capture</code> (show the keyboard
+checkbox, default <code>true</code>).</p>
+<p>It publishes <code>midi/note/on</code> <code>{ note, vel, ch: 0 }</code> and <code>midi/note/off</code>
+<code>{ note, ch: 0 }</code>. Note the differences from hardware: <code>ch</code> is 0 and there is
+no <code>velocity</code> or <code>device</code> field. A world that only reads <code>note</code> and <code>vel</code> works
+with both.</p>
+<ul>
+<li><strong>QWERTY</strong> (after ticking <em>keyboard</em>): <code>A W S E D F T G Y H U J K O L P ;</code> play
+17 notes a semitone apart, starting at <code>base</code>; <kbd>Z</kbd>/<kbd>X</kbd> move an octave (base stays
+between 24 and 84); <kbd>Shift</kbd> adds 20 to the velocity. While capture is
+on, the piano claims every letter key (<code>preventDefault</code>); <kbd>Space</kbd>,
+arrows and digits pass through to the console.</li>
+<li><strong>The simulated performer</strong> (<code>SimPlayer</code>) plays a pentatonic scale an octave
+above <code>base</code>: mostly steps, sometimes leaps and triads, real rests. From code:
+<code>show.keys.sim.toggle(true)</code>.</li>
+</ul>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { mountKeys, KeysPiano, SimPlayer, PIANO_KEYMAP } <span class="tk">from</span> <span class="ts">'@openav/keys'</span>;
+
+<span class="tk">const</span> keys = mountKeys(el, { signals, base: 48, octaves: 2 });   <span class="tc">// → { piano, sim, update(dt), dispose() }</span>
+<span class="tc">// call keys.update(dt) every frame (it drives the SimPlayer)</span></code></pre></div>
+<h2 id="inputs-drum-machine">Drum machine<a class="anchor" href="#inputs-drum-machine" aria-label="Link to this section">#</a></h2>
+<p><code>modules: { drums: true }</code> adds a 16-step, four-lane sequencer (kick, snare, hat,
+clap) with patterns (<em>four on floor</em>, <em>breakbeat</em>, <em>half time</em>, <em>latin</em>,
+<em>sparse</em>), a tempo slider (60–180 BPM, default 112), swing and humanized timing.
+Tick <em>drum machine</em> to start it. It plays its own synthesized kit (no samples)
+and publishes:</p>
+<ul>
+<li><code>drum/kick</code>, <code>drum/snare</code>, <code>drum/hat</code>, <code>drum/clap</code>: pulses <code>{ level }</code>;</li>
+<li><code>drum/&lt;lane&gt;/env</code>: a 0..1 envelope per lane that decays in about 0.12 s, ready
+to map straight onto a param;</li>
+<li><code>midi/note/on</code> <code>{ note, vel, ch: 10 }</code> with General MIDI notes (kick 36, snare
+38, clap 39, closed hat 42).</li>
+</ul>
+<p>The shapes match what the microphone's drum detection publishes (<code>audio/kick</code>,
+<code>audio/kick/env</code>…), so a world mapped to a kick cannot tell a real bass drum from
+the machine. Example 06 routes both to the same params. Options
+(<code>modules.drums</code>): <code>engine</code> (another sound engine), <code>autoEnableEngine</code> (default
+<code>true</code>: the kit's audio engine is switched on by the first hit, no extra click).</p>
+<h2 id="inputs-microphone">Microphone<a class="anchor" href="#inputs-microphone" aria-label="Link to this section">#</a></h2>
+<p><code>modules: { audio: true }</code> creates an <code>AudioAnalyzer</code>; the microphone starts when
+you click 🎤 mic. (Example 06 writes <code>audio: 'mic'</code>; any truthy value works.)
+Echo cancellation, noise suppression and auto gain are turned off so the
+analysis hears the room as it is.</p>
+<p>Published every frame: <code>audio/rms</code> (smoothed loudness), <code>audio/peak</code>,
+<code>audio/band/low</code> (20–250 Hz), <code>audio/band/mid</code> (250 Hz–2 kHz),
+<code>audio/band/high</code> (2–8 kHz), <code>audio/centroid</code> (brightness), and the pulse
+<code>audio/onset</code> <code>{ rms }</code> with a 100 ms refractory time. Drum detection splits
+transients by band: <code>audio/kick</code> (20–120 Hz), <code>audio/snare</code> (150–800 Hz),
+<code>audio/hat</code> (6–14 kHz), each a pulse <code>{ level }</code> with a matching <code>…/env</code>
+envelope.</p>
+<aside class="callout callout-tip" role="note"><p class="callout-title">Tip</p>
+<p>Real-world levels rarely reach 1. Speech often sits around 0.05–0.2 RMS and
+band energies are averages across many FFT bins. Narrow the route's window,
+for example <code>{ source: 'audio/rms', target: 'energy', inMax: 0.3 }</code>.</p>
+</aside>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { AudioAnalyzer } <span class="tk">from</span> <span class="ts">'@openav/audio'</span>;
+
+<span class="tk">const</span> audio = <span class="tk">new</span> AudioAnalyzer({ signals, fftSize: 2048, smooth: 0.7 });
+<span class="tk">await</span> audio.enableMic();            <span class="tc">// or audio.enableElement(videoEl), or someNode.connect(audio.input())</span>
+<span class="tc">// every frame: audio.update()      → also returns { rms, peak, low, mid, high, centroid, onset, kick, snare, hat }</span></code></pre></div>
+<h2 id="inputs-chords">Chords<a class="anchor" href="#inputs-chords" aria-label="Link to this section">#</a></h2>
+<p><code>modules: { chord: true }</code> (or <code>{ chord: { window: 80 } }</code>) adds a
+<code>ChordDetector</code> and feeds it every <code>midi/note/on</code> and <code>midi/note/off</code>. It groups
+notes struck within <code>window</code> milliseconds (default 80) into one gesture and
+publishes, per gesture:</p>
+<ul>
+<li><code>chord/consonance</code> (−1..1), <code>chord/count</code> (number of notes), <code>chord/root</code>
+(lowest MIDI note);</li>
+<li><code>chord/event</code>, a pulse carrying the whole analysis:</li>
+</ul>
+<div class="table-wrap"><table>
+<thead><tr><th>field</th><th>meaning</th></tr></thead>
+<tbody>
+<tr><td><code>notes</code>, <code>count</code>, <code>root</code>, <code>vel</code>, <code>pcs</code></td><td>sorted notes, how many, the lowest, mean velocity (0..1), pitch classes</td></tr>
+<tr><td><code>consonance</code></td><td>mean of pairwise interval weights, −1..1 (a single note is 1)</td></tr>
+<tr><td><code>isConsonant</code>, <code>isDissonant</code></td><td>two or more notes and consonance &gt; 0.25 / &lt; −0.15</td></tr>
+<tr><td><code>isTriad</code></td><td>the chord type is major, minor, sus2, sus4, dim or aug</td></tr>
+<tr><td><code>thirdsFraction</code></td><td>share of adjacent gaps that are 3 or 4 semitones ("genuinely stacked thirds")</td></tr>
+<tr><td><code>dissonanceLevel</code></td><td>0 none · 1 mild (a storm warning) · 2 severe (a true cluster)</td></tr>
+<tr><td><code>chordType</code></td><td><code>single</code>, <code>major</code>, <code>minor</code>, <code>sus2</code>, <code>sus4</code>, <code>dim</code>, <code>aug</code>, <code>maj7</code>, <code>min7</code>, <code>dom7</code>, <code>halfdim7</code>, <code>maj9</code>, <code>min9</code>, <code>dom9</code>, <code>six</code>, <code>min6</code>, <code>cluster</code>, or <code>chord</code></td></tr>
+</tbody>
+</table></div>
+<p>This is not a music-theory library; it is a performance-semantics layer built
+for a piece where consonance makes a garden flourish and clusters make it decay
+(example 02). <code>detector.analyze(notes, vels)</code> is a pure function you can call
+yourself.</p>
+<h2 id="inputs-body-and-hands">Body and hands<a class="anchor" href="#inputs-body-and-hands" aria-label="Link to this section">#</a></h2>
+<p><code>modules: { pose: true }</code> adds a <code>PoseTracker</code> (one body), <code>modules: { hands: true }</code>
+a <code>HandTracker</code> (two hands, 21 points each, and a gesture for each). The camera starts when you click
+🕺 body or 🖐 hands. Both use MediaPipe Tasks Vision (1.2.3), loaded from
+jsDelivr with its model from Google's storage the first time you enable it; the
+inference runs on your machine and no video leaves it. The view is mirrored by
+default (<code>mirror: true</code>), like a mirror on stage, and y is flipped so 1 means
+<em>raised</em>.</p>
+<ul>
+<li><strong>Body</strong>: <code>pose/present</code>, <code>pose/hand/left/x|y</code>, <code>pose/hand/right/x|y</code>
+(wrists), <code>pose/hand/left/v</code>, <code>pose/hand/right/v</code> (wrist speed),
+<code>pose/hands/spread</code>, <code>pose/height</code> (nose height: crouch ↔ stand),
+<code>pose/lean</code> (−1..1).</li>
+<li><strong>Hands</strong>, per side: <code>hand/&lt;side&gt;/present</code>, <code>hand/&lt;side&gt;/x|y</code> (palm),
+<code>hand/&lt;side&gt;/tip/x|y</code> (index fingertip), <code>hand/&lt;side&gt;/thumb/index|middle|ring|pinky</code>
+(thumb tip to each fingertip, 0 = touching, 1 = wide open), <code>hand/&lt;side&gt;/openness</code>
+(0 = fist, 1 = all fingers out), <code>hand/&lt;side&gt;/angle</code> (0.5 = fingers up, 0.75 = pointing right),
+<code>hand/&lt;side&gt;/speed</code>. The first measures, <code>hand/&lt;side&gt;/pinch/index|middle</code> and
+<code>hand/&lt;side&gt;/spread</code>, stay as they were (an open hand reads about 0.5 on them; example 03 plays them).</li>
+<li><strong>A pinch, as an event</strong>: <code>hand/&lt;side&gt;/pinch-start</code> and <code>pinch-end</code> (pulses, with the fingertip's
+x and y), and <code>hand/&lt;side&gt;/pinched</code> (0/1). Thumb and index must come closer than 0.35 hand sizes
+<em>with the other three fingers out</em>, so a fist is not a pinch; it ends above 0.56.</li>
+<li><strong>Gestures</strong>: MediaPipe's seven, <code>hand/&lt;side&gt;/gesture/fist|open|point|thumb-up|thumb-down|victory|iloveyou</code>
+(0/1, and a <code>…-start</code> pulse each), and <code>hand/&lt;side&gt;/gesture</code> (0 none, 1–7 in that order). A gesture
+starts when its score goes above 0.5 and ends below 0.35.</li>
+<li><strong>Both hands</strong>: <code>hand/both/present</code>, <code>hand/both/distance</code> (palm to palm), <code>hand/both/x|y</code>
+(the midpoint), <code>hand/both/angle</code> (0.5 = level).</li>
+</ul>
+<p>Every distance is divided by the size of the hand and measured with x × the frame's aspect ratio,
+so moving toward the camera or turning the hand sideways does not change a pinch. A closed pinch
+reads near 0: use <code>invert: true</code> on the route when closing should raise the value (example 03).
+A pulse plays a pulse param through a route, <code>{ source: 'hand/right/gesture/victory-start', target: 'turn' }</code>,
+so a gesture can cue a scene the way a pad does (example 27).</p>
+<p>The thresholds were tuned on one performer's hands at a desk, with a TouchDesigner module that uses
+the same maths. MediaPipe's gesture scores reached only 0.5–0.82 there, which is why a gesture starts
+at 0.5 and not at the 0.7–0.8 many demos use. Another camera, another distance, another room: open
+example 27, watch the numbers and retune: <code>createShow({ modules: { hands: { thresholds: { gestureOn: 0.6, pinchOn: 0.3 } } } })</code>,
+or <code>show.hands.thresholds.gestureOn = 0.6</code> while it runs (it takes effect at once).
+<code>hands.features</code> has the unmapped values (<code>thumbRaw</code>, <code>opennessRaw</code>, the gesture's score) to tune with.
+<code>gestures: false</code> runs the hand landmarker alone, without gestures.</p>
+<p>Both trackers draw their skeleton on a 2D context: <code>tracker.skeleton(ctx, w, h)</code>.
+<code>hands.overlay(ctx, w, h, { video: true })</code> draws what the hand tracker measures, for tuning or for an
+audience: the camera picture, the skeleton, the thumb-to-index line with its value (green while
+pinched), the angle, the gesture and its score, and the line between the palms with its distance.
+<code>hands.feed(result)</code> sends hands from anywhere (recorded landmarks, another detector, the made-up
+pair in example 27) through the same measures and signals.</p>
+<h2 id="inputs-leap-motion">Leap Motion<a class="anchor" href="#inputs-leap-motion" aria-label="Link to this section">#</a></h2>
+<p><code>modules: { leap: true }</code> adds a <code>LeapInput</code>. Browsers cannot read the sensor,
+so one small bridge per machine does: <code>node packages/leap/bridge/leap-bridge.mjs</code>
+(needs Ultraleap Hand Tracking installed; <code>--mock</code> gives two animated hands
+without a sensor; <code>bash packages/leap/bridge/install.sh</code> keeps it running at
+login on macOS). It serves <code>ws://127.0.0.1:6437</code> on loopback only. The console's
+<strong>L1 · Input</strong> panel shows which link is missing (bridge, tracking service,
+device) and draws the hands; its <em>simulate</em> button turns the mouse into hands.</p>
+<p>Signals: per side, <code>leap/hand/&lt;side&gt;/present</code>, <code>x|y|z</code> (palm in the interaction
+box, 0..1, y up, z toward you), <code>pinch</code>, <code>grab</code>, <code>roll|pitch|yaw</code> (radians),
+<code>speed</code>, fingertips <code>leap/hand/&lt;side&gt;/&lt;finger&gt;/x|y|z</code>; <code>leap/hands</code>,
+<code>leap/both/distance</code>, <code>leap/status</code>; pulses <code>pinch-start|pinch-end</code>,
+<code>grab-start|grab-end</code> per side and <code>leap/both/pinch-start|pinch-end</code>, with
+hysteresis (a pinch starts above 0.86 and ends below 0.5). Joints for drawing
+the hand are on <code>leap.hands</code>. The same bridge answers old <code>leap.js</code> sketches on
+<code>/v6.json</code>, and serves raw hand lines on <code>/raw</code> (example 12, package README).</p>
+<h2 id="inputs-phones-and-ipads">Phones and iPads<a class="anchor" href="#inputs-phones-and-ipads" aria-label="Link to this section">#</a></h2>
+<p><code>modules: { remote: true }</code> lets phones join the show over the relay that
+<code>serve.js</code> hosts. Their sensors publish <code>phone/&lt;id&gt;/…</code> (tilt, acceleration,
+rotation, knocks, touch, light), mirrored to <code>phone/any/…</code>; the control surface
+publishes <code>surface/&lt;page&gt;/&lt;widget&gt;</code>; the phone's piano publishes
+<code>midi/note/on|off</code> like a keyboard. The show page itself can read its own motion
+sensors on a phone with <code>localSensors()</code>. Everything is in
+<a href="../../docs/phones/">Phones, relay &amp; surfaces</a>.</p>
+<h2 id="inputs-your-own-input">Your own input<a class="anchor" href="#inputs-your-own-input" aria-label="Link to this section">#</a></h2>
+<p>An input is anything that calls <code>signals.set()</code> or <code>signals.pulse()</code>. Here is
+the pointer as an instrument:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> { signals } = show;
+signals.define(<span class="ts">'pointer/x'</span>, { source: <span class="ts">'pointer'</span> });     <span class="tc">// continuous, 0..1 by default</span>
+signals.define(<span class="ts">'pointer/y'</span>, { source: <span class="ts">'pointer'</span> });
+signals.define(<span class="ts">'pointer/tap'</span>, { kind: <span class="ts">'pulse'</span>, source: <span class="ts">'pointer'</span> });
+
+addEventListener(<span class="ts">'pointermove'</span>, (e) =&gt; {
+  signals.<span class="tk">set</span>(<span class="ts">'pointer/x'</span>, e.clientX / innerWidth);
+  signals.<span class="tk">set</span>(<span class="ts">'pointer/y'</span>, 1 - e.clientY / innerHeight);  <span class="tc">// 1 = top, like every other y</span>
+});
+addEventListener(<span class="ts">'pointerdown'</span>, (e) =&gt; signals.pulse(<span class="ts">'pointer/tap'</span>, { x: e.clientX, y: e.clientY }));
+
+show.mapper.addRoute({ source: <span class="ts">'pointer/x'</span>, target: <span class="ts">'hue'</span>, smooth: 0.25 });</code></pre></div>
+<p>Name it source first (<code>breath/pressure</code>, <code>weather/wind</code>), declare its range,
+and everything downstream (meters, <em>learn</em>, routes, the phone surface) works
+without changes.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/writing-a-world/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Writing a world</span></a>
+      <a class="ch-next" rel="next" href="../../docs/mapping/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Mapping</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

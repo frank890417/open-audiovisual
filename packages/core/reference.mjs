@@ -71,8 +71,8 @@ export default {
         zh: '訂閱者丟出錯誤會被接住、記成 `[signals] <名字>`，其他訂閱者照常執行，`set()` 也不會丟錯。',
       },
       {
-        en: 'The names every built-in package publishes are listed in [the signals reference](https://openaudiovisual.com/docs/#signals).',
-        zh: '每個內建套件發布的訊號名稱，都列在[訊號參考](https://openaudiovisual.com/zh/docs/#signals)。',
+        en: 'The names every built-in package publishes are listed in [the signals reference](https://openaudiovisual.com/docs/signals/).',
+        zh: '每個內建套件發布的訊號名稱，都列在[訊號參考](https://openaudiovisual.com/zh/docs/signals/)。',
       },
     ],
     examples: [
@@ -199,8 +199,8 @@ console.log(signals.norm('wind/speed'));    // 0.6`,
         zh: '`resolve()` 不會夾基準值，只有覆寫值在寫入時會被夾住。自動化曲線請自己保持在 `min`..`max` 之內。',
       },
       {
-        en: 'The fields a world may declare (`label`, `options`, `surface`, `group` …) are listed in [Writing a world](https://openaudiovisual.com/docs/#writing-a-world-params).',
-        zh: '世界可以宣告的欄位（`label`、`options`、`surface`、`group` ……）列在[寫一個世界](https://openaudiovisual.com/zh/docs/#writing-a-world-params)。',
+        en: 'The fields a world may declare (`label`, `options`, `surface`, `group` …) are listed in [Writing a world](https://openaudiovisual.com/docs/writing-a-world/#writing-a-world-params).',
+        zh: '世界可以宣告的欄位（`label`、`options`、`surface`、`group` ……）列在[寫一個世界](https://openaudiovisual.com/zh/docs/writing-a-world/#writing-a-world-params)。',
       },
     ],
     examples: [
@@ -287,8 +287,8 @@ console.log(params.isOverridden('typo'));               // false`,
     ],
     description: [
       {
-        en: '`new Loop((dt) => { … }).start()` runs your function once per `requestAnimationFrame`, with `dt` in seconds. It is the one clock a show has: the timeline advances, mapped signals settle, the world draws and the backstage feed is sent from inside it, in the order [the architecture page](https://openaudiovisual.com/docs/#architecture-the-frame-loop) lists. [`createShow()`](#createShow) builds and starts one for you and returns it as `show.loop`.',
-        zh: '`new Loop((dt) => { … }).start()` 每個 `requestAnimationFrame` 呼叫你的函式一次，`dt` 的單位是秒。這是一場演出唯一的時鐘：時間軸往前走、映射的訊號安頓下來、世界繪圖、後台資料送出，都在它裡面做，順序見[架構頁](https://openaudiovisual.com/zh/docs/#architecture-the-frame-loop)。[`createShow()`](#createShow) 會替你建好並啟動一個，用 `show.loop` 回傳。',
+        en: '`new Loop((dt) => { … }).start()` runs your function once per `requestAnimationFrame`, with `dt` in seconds. It is the one clock a show has: the timeline advances, mapped signals settle, the world draws and the backstage feed is sent from inside it, in the order [the architecture page](https://openaudiovisual.com/docs/architecture/#architecture-the-frame-loop) lists. [`createShow()`](#createShow) builds and starts one for you and returns it as `show.loop`.',
+        zh: '`new Loop((dt) => { … }).start()` 每個 `requestAnimationFrame` 呼叫你的函式一次，`dt` 的單位是秒。這是一場演出唯一的時鐘：時間軸往前走、映射的訊號安頓下來、世界繪圖、後台資料送出，都在它裡面做，順序見[架構頁](https://openaudiovisual.com/zh/docs/architecture/#architecture-the-frame-loop)。[`createShow()`](#createShow) 會替你建好並啟動一個，用 `show.loop` 回傳。',
       },
       {
         en: 'Browsers freeze `requestAnimationFrame` in a hidden tab, but a performance must not stop because someone switched windows. So while the loop runs, a Web Worker beats every 33 ms; whenever no animation frame has arrived for 50 ms, the loop steps itself. A hidden tab therefore ticks at roughly 15 frames a second with a normal-sized `dt`, and show time stays real time. Where the page forbids workers (a strict content security policy) that fallback is simply absent.',

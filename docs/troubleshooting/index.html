@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting · open-audiovisual</title>
+<meta name="description" content="Real problems, found in rehearsals and in the code, with what to do about them.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/troubleshooting/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/troubleshooting/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/troubleshooting/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/troubleshooting/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Troubleshooting · open-audiovisual">
+<meta property="og:description" content="Real problems, found in rehearsals and in the code, with what to do about them.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/troubleshooting/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Troubleshooting · open-audiovisual">
+<meta name="twitter:description" content="Real problems, found in rehearsals and in the code, with what to do about them.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="troubleshooting">
+<script defer src="../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/troubleshooting/#article","url":"https://openaudiovisual.com/docs/troubleshooting/","name":"Troubleshooting · open-audiovisual","description":"Real problems, found in rehearsals and in the code, with what to do about them.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Troubleshooting","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["The console shows a ws://…:7457 error","Chrome asks about the local network, or about apps on this device","The phone join card says \"relay offline\"","No MIDI devices appear","A DAW on the IAC bus is not heard","The DAW went silent after a cable was pulled","With two controllers, a route reacts to both","QWERTY keys do not play","Learn bound the wrong signal","The timeline no longer moves a param","I changed a route in code and nothing changed","A route to sound/cutoff only moves between 0 and 1","The camera or microphone does not start","There is no sound","A p5.js sketch with the one line misbehaves","Strudel does not hear OAV Virtual MIDI","The phone's tilt and knocks do nothing on an iPhone","After a deploy, the site still runs old code","The show slows down when the window is in the background","An example from a CDN works online but not offline","The port is already in use"],"position":20,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/troubleshooting/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/troubleshooting/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Troubleshooting","item":"https://openaudiovisual.com/docs/troubleshooting/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/troubleshooting/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/troubleshooting/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">11</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">12</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">13</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">14</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">15</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">16</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">17</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">18</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">19</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch is-here" data-ch="troubleshooting">
+          <a href="#troubleshooting" aria-current="page"><span class="n">20</span><span class="t">Troubleshooting</span></a>
+          <ol class="toc-secs">
+            <li><a href="#troubleshooting-the-console-shows-a-ws-7457-error">The console shows a ws://…:7457 error</a></li>
+            <li><a href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome asks about the local network, or about apps on this device</a></li>
+            <li><a href="#troubleshooting-the-phone-join-card-says-relay-offline">The phone join card says "relay offline"</a></li>
+            <li><a href="#troubleshooting-no-midi-devices-appear">No MIDI devices appear</a></li>
+            <li><a href="#troubleshooting-a-daw-on-the-iac-bus-is-not-heard">A DAW on the IAC bus is not heard</a></li>
+            <li><a href="#troubleshooting-the-daw-went-silent-after-a-cable-was-pulled">The DAW went silent after a cable was pulled</a></li>
+            <li><a href="#troubleshooting-with-two-controllers-a-route-reacts-to-both">With two controllers, a route reacts to both</a></li>
+            <li><a href="#troubleshooting-qwerty-keys-do-not-play">QWERTY keys do not play</a></li>
+            <li><a href="#troubleshooting-learn-bound-the-wrong-signal">Learn bound the wrong signal</a></li>
+            <li><a href="#troubleshooting-the-timeline-no-longer-moves-a-param">The timeline no longer moves a param</a></li>
+            <li><a href="#troubleshooting-i-changed-a-route-in-code-and-nothing-changed">I changed a route in code and nothing changed</a></li>
+            <li><a href="#troubleshooting-a-route-to-sound-cutoff-only-moves-between-0-and-1">A route to sound/cutoff only moves between 0 and 1</a></li>
+            <li><a href="#troubleshooting-the-camera-or-microphone-does-not-start">The camera or microphone does not start</a></li>
+            <li><a href="#troubleshooting-there-is-no-sound">There is no sound</a></li>
+            <li><a href="#troubleshooting-a-p5-js-sketch-with-the-one-line-misbehaves">A p5.js sketch with the one line misbehaves</a></li>
+            <li><a href="#troubleshooting-strudel-does-not-hear-oav-virtual-midi">Strudel does not hear OAV Virtual MIDI</a></li>
+            <li><a href="#troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone">The phone's tilt and knocks do nothing on an iPhone</a></li>
+            <li><a href="#troubleshooting-after-a-deploy-the-site-still-runs-old-code">After a deploy, the site still runs old code</a></li>
+            <li><a href="#troubleshooting-the-show-slows-down-when-the-window-is-in-the-background">The show slows down when the window is in the background</a></li>
+            <li><a href="#troubleshooting-an-example-from-a-cdn-works-online-but-not-offline">An example from a CDN works online but not offline</a></li>
+            <li><a href="#troubleshooting-the-port-is-already-in-use">The port is already in use</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">21</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="troubleshooting" aria-labelledby="troubleshooting">
+<h1 id="troubleshooting">Troubleshooting<a class="anchor" href="#troubleshooting" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 20 of 21</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/troubleshooting.md">docs/troubleshooting.md</a></span></p>
+<p>Real problems, found in rehearsals and in the code, with what to do about them.</p>
+<h2 id="troubleshooting-the-console-shows-a-ws-7457-error">The console shows a ws://…:7457 error<a class="anchor" href="#troubleshooting-the-console-shows-a-ws-7457-error" aria-label="Link to this section">#</a></h2>
+<p>Every show made with <code>createShow()</code> tries to stream to the backstage monitor at
+<code>ws://&lt;the page's host&gt;:7457</code>. When no monitor is running, the browser logs the
+refused connection. This is expected and harmless: the page retries with a
+growing delay (about 5 s, rising to 30 s) instead of spamming. To make it go away, run
+the monitor:</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-bash"><span class="tk">npm</span> run monitor          <span class="tc"># node packages/monitor/server.js</span></code></pre></div>
+<p>Pages served over https (openaudiovisual.com, an https tunnel) don't try at all: the
+browser blocks <code>ws://</code> there, and a published site has no relay beside it. A show that
+runs a monitor behind TLS passes the address itself: <code>createShow({ monitor: { url: 'wss://…' } })</code>, or <code>new MonitorFeed({ url: 'wss://…' })</code> in a hand-assembled show.
+A machine that should not look for a monitor at all (a performance PC with no backstage) says <code>createShow({ monitor: false })</code>: no feed is built and the page opens no socket, so nothing is logged.</p>
+<h2 id="troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device">Chrome asks about the local network, or about apps on this device<a class="anchor" href="#troubleshooting-chrome-asks-about-the-local-network-or-about-apps-on-this-device" aria-label="Link to this section">#</a></h2>
+<p>Chrome's Local Network Access check puts a permission prompt in front of a <strong>public</strong> https page that tries to reach your own machine or network; a page served from your machine is not covered (<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome blog</a>). What it gates, by Chrome version (checked 2026-10-15):</p>
+<ul>
+<li>Chrome 142: <code>fetch</code> requests (<a href="https://developer.chrome.com/blog/local-network-access" rel="noopener">Chrome blog</a>).</li>
+<li>Chrome 145: two permissions, one for the local network and one for this device itself, called loopback (<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>).</li>
+<li>Chrome 147: WebSocket and WebTransport connections as well (<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>).</li>
+<li>Chrome 154: <code>new WebSocket(url, { targetAddressSpace })</code> lets a page say which kind of address it expects (<a href="https://chromestatus.com/feature/5197681148428288" rel="noopener">Chrome Platform Status</a>).</li>
+</ul>
+<p>When a show runs on openaudiovisual.com or another https site, three things of ours reach for your machine: the OSC bridge (<code>OscOut</code> posts to <code>http://127.0.0.1:7456</code>), the backstage monitor (<code>ws://127.0.0.1:7457</code>) and the Leap bridge. The first time, Chrome asks. If you chose Block, the connection fails, and the console shows <code>net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS</code> (seen on Chrome 154, <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">Leap package notes</a>).</p>
+<p>What to do:</p>
+<ul>
+<li>Press <strong>Allow</strong>. If you blocked it, open the page's site settings (the icon left of the address) and allow it again, then reload.</li>
+<li>Or open the page from your own machine: <code>node serve.js</code>, then <code>http://localhost:8080/…</code>. That page is not a public site, so Chrome does not ask. This is the safest way to teach or rehearse the OAV → OSC → TouchDesigner path.</li>
+<li>In an <code>&lt;iframe&gt;</code>, a cross-origin frame needs <code>allow="loopback-network"</code>; a same-origin frame inherits it; a <code>sandbox</code>ed frame cannot get it (verified on Chrome 154, <a href="https://github.com/frank890417/open-audiovisual/blob/main/packages/leap/README.md" rel="noopener">Leap package notes</a>).</li>
+<li>The <a href="../../check/">device check</a> has a button that tries the bridge and the monitor and says which one answered. It connects only when you press it.</li>
+</ul>
+<h2 id="troubleshooting-the-phone-join-card-says-relay-offline">The phone join card says "relay offline"<a class="anchor" href="#troubleshooting-the-phone-join-card-says-relay-offline" aria-label="Link to this section">#</a></h2>
+<p>On your own machine the phone relay lives inside <code>serve.js</code> (<code>/relay</code>). So the
+card says "relay offline" when the page was opened from a file, or from a server that
+is not <code>node serve.js</code>: run the show with <code>node serve.js</code> and open it from there.</p>
+<p>On a static host (openaudiovisual.com, GitHub Pages) the show uses the <strong>public
+relay</strong> instead and the card reads <code>relay ok · … · public relay</code> with a QR code.
+If it says <code>can't reach the relay (wss://remote.cheyuwu.com/relay) — retrying</code>:</p>
+<ul>
+<li>the network blocks WebSockets (some school and office Wi-Fi does): try a phone
+hotspot, or run <code>node serve.js</code> on a laptop on the same network as the phones;</li>
+<li>the public relay is busy or down: it limits each address to 24 connections and
+30 new connections a minute, which a whole classroom behind one router can hit.
+Run your own (<code>node packages/relay/server.js</code>) and open the show with
+<code>?relay=wss://your.host/relay</code>;</li>
+<li><code>?relay=off</code> is in the URL, which turns the remote off (the card is not drawn).</li>
+</ul>
+<p>The phone opens the link in the QR code, which carries the room and the relay.
+If the phone says it is connected but nothing moves, check that both show the same
+<code>#room</code> and that the computer's page was not reloaded into a new room (the room is
+kept per browser, so another browser or a private window gets a different one).</p>
+<h2 id="troubleshooting-no-midi-devices-appear">No MIDI devices appear<a class="anchor" href="#troubleshooting-no-midi-devices-appear" aria-label="Link to this section">#</a></h2>
+<p>Run the <a href="../../check/">device check</a> first: it tells you whether this browser has Web MIDI at all.</p>
+<ul>
+<li>Use Chrome or Edge. Safari has no Web MIDI (<a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">WebKit bug 107250</a>, still open), and Firefox has it only after you install its site-permission add-on (<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108" rel="noopener">Firefox 108</a>). More in <a href="../../docs/quick-start/#quick-start-which-browser">Which browser</a>.</li>
+<li>Allow MIDI when the browser asks. Since Chrome 124 it asks for any MIDI use (<a href="https://developer.chrome.com/blog/web-midi-permission-prompt" rel="noopener">Chrome blog</a>). The permission is per site: allowing it on
+<code>localhost:8080</code> does not allow it on <code>localhost:3000</code>.</li>
+<li>The device was plugged in after the page loaded: it should appear by itself.
+If it does not, reload.</li>
+<li>Check the <strong>L1 · Input</strong> panel: a device with its box unticked is muted.</li>
+<li>Another program may hold the port exclusively (some DAWs and drivers on
+Windows do). Close it.</li>
+</ul>
+<h2 id="troubleshooting-a-daw-on-the-iac-bus-is-not-heard">A DAW on the IAC bus is not heard<a class="anchor" href="#troubleshooting-a-daw-on-the-iac-bus-is-not-heard" aria-label="Link to this section">#</a></h2>
+<p>By default the <code>Midi</code> engine ignores every input whose name contains <code>IAC</code>
+(<code>filterOut: 'IAC'</code>). A show that sends MIDI out through the macOS IAC bus would
+otherwise hear its own output and loop. <code>createShow()</code> uses that default. To
+receive from a DAW over IAC, turn the built-in engine off and make your own:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { Midi } <span class="tk">from</span> <span class="ts">'@openav/midi'</span>;
+
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({ world, modules: { midi: <span class="tk">false</span> } });
+<span class="tk">const</span> midi = <span class="tk">new</span> Midi({ signals: show.signals, filterOut: <span class="tk">null</span> });   <span class="tc">// or a narrower regex</span>
+<span class="tk">await</span> midi.enable();</code></pre></div>
+<p>Your engine publishes into the same signals, so routes and worlds work
+unchanged. (The console's device list and MIDI meter only follow the engine
+<code>createShow()</code> made.) Do not send MIDI out to the same IAC bus you listen to.</p>
+<p>A second guard needs no setting: a message that arrives on any input within 40 ms
+of an identical one the engine just <em>sent</em> is taken for the echo and dropped
+(<code>new Midi({ echoWindow })</code>, <code>0</code> turns it off, <code>midi.echoDropped</code> counts them).</p>
+<h2 id="troubleshooting-the-daw-went-silent-after-a-cable-was-pulled">The DAW went silent after a cable was pulled<a class="anchor" href="#troubleshooting-the-daw-went-silent-after-a-cable-was-pulled" aria-label="Link to this section">#</a></h2>
+<p>It should not any more. When the output port is unplugged <code>Midi</code> moves to the next
+best live port, prints one line in the MIDI log and one in the browser console
+(<code>MIDI out: switched to "…" ("…" was unplugged)</code>), and the L1 · Input panel's
+<code>MIDI out →</code> row follows. When the port you chose is plugged in again the output
+goes back to it. If the line says <code>no output left</code>, nothing is plugged in: messages
+are dropped until a port appears. Choose your port with <code>midi.selectOutput(name)</code>
+(or <code>enable(name)</code>) so it is the one that returns, and add
+<code>new Midi({ prefer: ['IAC'] })</code> to say which port stands in first.</p>
+<h2 id="troubleshooting-with-two-controllers-a-route-reacts-to-both">With two controllers, a route reacts to both<a class="anchor" href="#troubleshooting-with-two-controllers-a-route-reacts-to-both" aria-label="Link to this section">#</a></h2>
+<p>With two or more MIDI inputs, each device publishes under its own name
+(<code>midi/&lt;slug&gt;/cc/74</code>) <em>and</em> under the shared legacy name (<code>midi/cc/74</code>). A route
+on <code>midi/cc/74</code> hears every device; change its source to the per-device name.
+The slugs are shown in the <strong>L1 · Input</strong> panel.</p>
+<h2 id="troubleshooting-qwerty-keys-do-not-play">QWERTY keys do not play<a class="anchor" href="#troubleshooting-qwerty-keys-do-not-play" aria-label="Link to this section">#</a></h2>
+<p>Tick <em>keyboard</em> above the piano first. Capture is off by default so that typing
+never fights the console's hotkeys. Then <code>A W S E D F T G Y H U J K O L P ;</code>
+play, <kbd>Z</kbd>/<kbd>X</kbd> change octave.</p>
+<p>While <em>keyboard</em> is ticked the letters belong to the piano, so the console's R
+(reset), T (prompter) and F (fullscreen) do nothing: T and F are piano keys, and an
+accidental R must not rewind a show you are playing. Space, the arrows and
+<kbd>Esc</kbd> still work, and Esc leaves capture.</p>
+<h2 id="troubleshooting-learn-bound-the-wrong-signal">Learn bound the wrong signal<a class="anchor" href="#troubleshooting-learn-bound-the-wrong-signal" aria-label="Link to this section">#</a></h2>
+<p>Learn binds the first signal that moves by 5% of its range, or the first pulse
+of any kind. The simulated performer and the drum machine send pulses all the
+time. Untick <em>simulate performance</em>, stop the drum machine, then click <em>learn</em>
+again. Remove the wrong route with ✕ in <strong>L2 · Mapping</strong>.</p>
+<h2 id="troubleshooting-the-timeline-no-longer-moves-a-param">The timeline no longer moves a param<a class="anchor" href="#troubleshooting-the-timeline-no-longer-moves-a-param" aria-label="Link to this section">#</a></h2>
+<p>A touched slider or a mapped signal <em>overrides</em> the param, and overrides are
+sticky: the score yields to the human. Clear it with ✕ next to the param (or
+<code>show.params.clearOverride(key)</code>; <code>clearAllOverrides()</code> for all). A <em>smoothed</em>
+route keeps writing after its signal arrived, even when muted; remove the route
+to give the param back to the timeline. See
+<a href="../../docs/mapping/#mapping-overrides-and-the-timeline">Overrides and the timeline</a>.</p>
+<h2 id="troubleshooting-i-changed-a-route-in-code-and-nothing-changed">I changed a route in code and nothing changed<a class="anchor" href="#troubleshooting-i-changed-a-route-in-code-and-nothing-changed" aria-label="Link to this section">#</a></h2>
+<p>The mapper saved yesterday's routes in <code>localStorage</code>, and a saved
+<code>source → target</code> pair wins over the declared one (new pairs are still added).
+Clear the profile, or pass <code>profile: false</code> while you develop:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">localStorage.removeItem(<span class="ts">'openav.map.&lt;world name&gt;'</span>);</code></pre></div>
+<h2 id="troubleshooting-a-route-to-sound-cutoff-only-moves-between-0-and-1">A route to sound/cutoff only moves between 0 and 1<a class="anchor" href="#troubleshooting-a-route-to-sound-cutoff-only-moves-between-0-and-1" aria-label="Link to this section">#</a></h2>
+<p><code>outMin</code>/<code>outMax</code> default to the target's range when the route is added, and in
+<code>createShow()</code> declared routes are added before the sound engine registers its
+<code>sound/*</code> params. Give the range explicitly:
+<code>{ source: 'midi/cc/74', target: 'sound/cutoff', outMin: 100, outMax: 8000 }</code>.</p>
+<h2 id="troubleshooting-the-camera-or-microphone-does-not-start">The camera or microphone does not start<a class="anchor" href="#troubleshooting-the-camera-or-microphone-does-not-start" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>The page must be a secure context: <code>http://localhost</code> or <code>https://</code>. A LAN
+address over plain <code>http://</code> (<code>http://192.168.1.20:8080</code>) is blocked.</li>
+<li>The 🎤 mic, 🖐 hands and 🕺 body buttons must be clicked; nothing starts on its
+own. A button that reads <em>✗ retry</em> failed: the reason is in the browser's devtools console.</li>
+<li>On macOS, the browser itself needs camera and microphone access in System
+Settings → Privacy &amp; Security.</li>
+<li>Hands and body load MediaPipe and its model from jsDelivr and Google's storage
+the first time. Offline, they cannot start.</li>
+</ul>
+<h2 id="troubleshooting-there-is-no-sound">There is no sound<a class="anchor" href="#troubleshooting-there-is-no-sound" aria-label="Link to this section">#</a></h2>
+<p>Browsers start audio only after a click. Press <strong>🔊 enable sound</strong> in the
+<em>L4 · Output — sound</em> panel. The Tone.js engine is loaded from jsDelivr at that
+moment, so the first time needs a network connection. The piano loads about 2 MB
+of samples the first time you pick it: the picker shows the progress, and the
+previous instrument keeps playing until the piano is ready. The drum machine's kit
+starts on the first hit after you tick <em>drum machine</em>.</p>
+<h2 id="troubleshooting-a-p5-js-sketch-with-the-one-line-misbehaves">A p5.js sketch with the one line misbehaves<a class="anchor" href="#troubleshooting-a-p5-js-sketch-with-the-one-line-misbehaves" aria-label="Link to this section">#</a></h2>
+<p>oav-p5 says what went wrong on the page: a card beside the 🎹, in the browser's language, with what happened, why
+and what to press (<a href="../../p5/#p5-when-something-goes-wrong">When something goes wrong</a>). 🎹 → 🩺 puts the version, the
+microphone, MIDI, sound, the drums and the wiring on one card: screenshot it when you ask for help. The common ones:</p>
+<ul>
+<li><em>knob1 is not defined</em>: the line did not load (offline, or a typo in the URL). It goes first in the sketch,
+above <code>setup()</code>.</li>
+<li>Silence: browsers play audio only after the page has been clicked, and a key on a MIDI keyboard does not count.
+Click the canvas once; until then the 🔊 on the 🎹 button is yellow.</li>
+<li>The drums are late on a Bluetooth speaker (0.15–0.25 s): <code>?oav_drumlatency=200</code> sets the delay by hand, in
+milliseconds.</li>
+<li>The video is WebM: Firefox and older Chrome cannot write MP4, and Instagram does not take WebM. Record in Chrome
+126 or later, Edge or Safari.</li>
+<li>The microphone stays at 0 in a sketch embedded in another page: its <code>&lt;iframe&gt;</code> needs <code>allow="microphone"</code> (and
+<code>allow="midi"</code> for a hardware controller).</li>
+</ul>
+<h2 id="troubleshooting-strudel-does-not-hear-oav-virtual-midi">Strudel does not hear OAV Virtual MIDI<a class="anchor" href="#troubleshooting-strudel-does-not-hear-oav-virtual-midi" aria-label="Link to this section">#</a></h2>
+<p>OAV was loaded after Strudel's <code>midin()</code> ran, so <code>midin('OAV Virtual MIDI')</code> gets nothing and says nothing. Put
+<code>await import('https://openaudiovisual.com/p5/oav-p5.js')</code> in Strudel's settings → prebake (single quotes), save and
+reload: the prebake runs before your code. Until then 🩺 says "no program has asked OAV Virtual MIDI for MIDI".
+More in <a href="../../docs/strudel/#strudel-load-oav-in-strudel">With Strudel</a>.</p>
+<h2 id="troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone">The phone's tilt and knocks do nothing on an iPhone<a class="anchor" href="#troubleshooting-the-phone-s-tilt-and-knocks-do-nothing-on-an-iphone" aria-label="Link to this section">#</a></h2>
+<p>iOS only gives motion sensors to <code>https://</code> pages, and only after a tap on
+開始 (start). Over plain <code>http://</code> on the LAN, touch, keys and the control
+surface still work. Reach <code>serve.js</code> through an HTTPS tunnel for sensors. If the
+permission was denied once, iOS keeps saying no until you change it in
+Settings → Safari → Motion &amp; Orientation Access, then reload.</p>
+<h2 id="troubleshooting-after-a-deploy-the-site-still-runs-old-code">After a deploy, the site still runs old code<a class="anchor" href="#troubleshooting-after-a-deploy-the-site-still-runs-old-code" aria-label="Link to this section">#</a></h2>
+<p>GitHub Pages lets browsers cache JavaScript for hours while HTML expires in
+minutes, so a visitor can get new HTML with old modules. Before deploying, run
+<code>node tools/stamp-version.mjs</code>: it appends <code>?v=&lt;commit&gt;</code> to module URLs in the
+examples, packages and homepage. Locally this never happens: <code>serve.js</code> sends
+<code>Cache-Control: no-store</code>.</p>
+<h2 id="troubleshooting-the-show-slows-down-when-the-window-is-in-the-background">The show slows down when the window is in the background<a class="anchor" href="#troubleshooting-the-show-slows-down-when-the-window-is-in-the-background" aria-label="Link to this section">#</a></h2>
+<p>Browsers pause <code>requestAnimationFrame</code> in hidden tabs. The <code>Loop</code> then keeps
+running from a Web Worker at about 15 frames per second, so the timeline, mapped
+signals and the backstage feed continue, but rendering is slower. Keep the
+projection window visible, on its own screen, in fullscreen (<kbd>F</kbd>).</p>
+<h2 id="troubleshooting-an-example-from-a-cdn-works-online-but-not-offline">An example from a CDN works online but not offline<a class="anchor" href="#troubleshooting-an-example-from-a-cdn-works-online-but-not-offline" aria-label="Link to this section">#</a></h2>
+<p>p5 (examples 05, 06), Tone.js (sound), MediaPipe (hands, body) and the WebToe app
+(example 04) come from the network. For an offline venue, download them and
+point the script tags, the import map or the module options (<code>toneEngine({ cdn })</code>,
+<code>webtoeWorld({ app })</code>) at local copies.</p>
+<h2 id="troubleshooting-the-port-is-already-in-use">The port is already in use<a class="anchor" href="#troubleshooting-the-port-is-already-in-use" aria-label="Link to this section">#</a></h2>
+<p><code>node serve.js 8081</code> serves on another port, and the OSC bridge takes one too:
+<code>node packages/osc/bridges/osc-bridge.js 7470</code> (then <code>new OscOut('http://127.0.0.1:7470')</code>).
+The backstage monitor is the exception: a <code>createShow()</code> page streams to
+port 7457 on its own host unless you say otherwise, so free that port, or point the
+show elsewhere with <code>createShow({ monitor: { url: 'ws://host:7460' } })</code> (in a
+hand-assembled show: <code>new MonitorFeed({ url: 'ws://host:7460' })</code>) and start the relay with
+<code>node packages/monitor/server.js 7460</code>.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/lab-integration/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Lab integration (the "lab" field)</span></a>
+      <a class="ch-next" rel="next" href="../../docs/roadmap/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">Roadmap</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

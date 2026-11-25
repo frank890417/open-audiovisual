@@ -236,8 +236,8 @@ signals.on('leap/hand/right/pinch-start', ({ x, y }) => console.log('pinch at', 
     },
     description: [
       {
-        en: '`new LeapInput({ signals })` already declares all of these, so you rarely call this yourself. It is useful when you want the list: to build a signal picker, to check that a route\'s source exists, or to declare the signals before the sensor is connected. The names it returns are the vocabulary of the [Signals reference](https://openaudiovisual.com/docs/#signals) for Leap.',
-        zh: '`new LeapInput({ signals })` 已經把這些全部宣告好了，所以很少需要自己呼叫。想要這份清單的時候它就很有用：做訊號選單、檢查某條路由的來源存不存在、或在感測器還沒接上之前先宣告訊號。它回傳的名稱就是[訊號參考](https://openaudiovisual.com/zh/docs/#signals)裡 Leap 的那一批詞彙。',
+        en: '`new LeapInput({ signals })` already declares all of these, so you rarely call this yourself. It is useful when you want the list: to build a signal picker, to check that a route\'s source exists, or to declare the signals before the sensor is connected. The names it returns are the vocabulary of the [Signals reference](https://openaudiovisual.com/docs/signals/) for Leap.',
+        zh: '`new LeapInput({ signals })` 已經把這些全部宣告好了，所以很少需要自己呼叫。想要這份清單的時候它就很有用：做訊號選單、檢查某條路由的來源存不存在、或在感測器還沒接上之前先宣告訊號。它回傳的名稱就是[訊號參考](https://openaudiovisual.com/zh/docs/signals/)裡 Leap 的那一批詞彙。',
       },
     ],
     examples: [

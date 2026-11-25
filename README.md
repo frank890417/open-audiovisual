@@ -285,13 +285,13 @@ The same line does more, each one a call or a name in the p5 style (oav-p5 <!--g
 
 | write | and | play it |
 |---|---|---|
-| `startSound('piano')` | every key from a keyboard, the 🎹 on screen or a phone is heard ([sound](https://openaudiovisual.com/docs/#p5-sound-what-is-played-is-heard)) | [16](https://openaudiovisual.com/examples/16-p5-sound/) |
-| `micLevel`, `bass`, `beatDetected()` | the microphone, read like `mouseX`, no p5.sound ([microphone](https://openaudiovisual.com/docs/#p5-the-microphone)) | [17](https://openaudiovisual.com/examples/17-p5-microphone/) |
-| `startDrums("bd*4, [~ sd]*2, hh*8")`, `cue(5, 'bloom')` | a drum machine written as one line of rhythm (click its grid and the line rewrites itself), and a timeline of bars ([drum machine](https://openaudiovisual.com/docs/#p5-drum-machine)) | [18](https://openaudiovisual.com/examples/18-p5-drums/) · [19](https://openaudiovisual.com/examples/19-p5-rhythm/) · [20](https://openaudiovisual.com/examples/20-p5-rhythm-visual/) |
-| `startRecording()` | the canvas and the sketch's own sound in one video; ⏺ in the 🎹 panel needs no code ([recording](https://openaudiovisual.com/docs/#p5-recording-a-video-with-its-sound)) | [21](https://openaudiovisual.com/examples/21-p5-record/) |
-| `lag(micLevel, 0.03, 0.4)` | a jumpy value smoothed like TouchDesigner's Lag CHOP, in its seconds; `env()`, `spring()`, `scope()` too ([values over time](https://openaudiovisual.com/docs/#p5-values-over-time-lag-env-speed-spring-trail)) | [22](https://openaudiovisual.com/examples/22-p5-lag/) |
-| Strudel | load the line in strudel.cc: knobs, a phone and the microphone become Strudel's parameters, and its notes and clock reach a sketch ([With Strudel](https://openaudiovisual.com/docs/#strudel)) | [23](https://openaudiovisual.com/examples/23-p5-with-strudel/) |
-Details: [openaudiovisual.com/docs/#p5](https://openaudiovisual.com/docs/#p5) · [docs/p5.md](docs/p5.md) · [`p5/`](p5/).
+| `startSound('piano')` | every key from a keyboard, the 🎹 on screen or a phone is heard ([sound](https://openaudiovisual.com/p5/#p5-sound-what-is-played-is-heard)) | [16](https://openaudiovisual.com/examples/16-p5-sound/) |
+| `micLevel`, `bass`, `beatDetected()` | the microphone, read like `mouseX`, no p5.sound ([microphone](https://openaudiovisual.com/p5/#p5-the-microphone)) | [17](https://openaudiovisual.com/examples/17-p5-microphone/) |
+| `startDrums("bd*4, [~ sd]*2, hh*8")`, `cue(5, 'bloom')` | a drum machine written as one line of rhythm (click its grid and the line rewrites itself), and a timeline of bars ([drum machine](https://openaudiovisual.com/p5/#p5-drum-machine)) | [18](https://openaudiovisual.com/examples/18-p5-drums/) · [19](https://openaudiovisual.com/examples/19-p5-rhythm/) · [20](https://openaudiovisual.com/examples/20-p5-rhythm-visual/) |
+| `startRecording()` | the canvas and the sketch's own sound in one video; ⏺ in the 🎹 panel needs no code ([recording](https://openaudiovisual.com/p5/#p5-recording-a-video-with-its-sound)) | [21](https://openaudiovisual.com/examples/21-p5-record/) |
+| `lag(micLevel, 0.03, 0.4)` | a jumpy value smoothed like TouchDesigner's Lag CHOP, in its seconds; `env()`, `spring()`, `scope()` too ([values over time](https://openaudiovisual.com/p5/#p5-values-over-time-lag-env-speed-spring-trail)) | [22](https://openaudiovisual.com/examples/22-p5-lag/) |
+| Strudel | load the line in strudel.cc: knobs, a phone and the microphone become Strudel's parameters, and its notes and clock reach a sketch ([With Strudel](https://openaudiovisual.com/docs/strudel/)) | [23](https://openaudiovisual.com/examples/23-p5-with-strudel/) |
+Details: [openaudiovisual.com/docs/#p5](https://openaudiovisual.com/p5/) · [docs/p5.md](docs/p5.md) · [`p5/`](p5/).
 
 ## 🧩 A world in 20 lines
 
@@ -389,7 +389,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 
 ## 📚 Docs
 
-**The handbook: [openaudiovisual.com/docs](https://openaudiovisual.com/docs/)** ([繁體中文](https://openaudiovisual.com/zh/docs/)): every chapter on one page, generated from [`docs/`](docs/).
+**The handbook: [openaudiovisual.com/docs](https://openaudiovisual.com/docs/)** ([繁體中文](https://openaudiovisual.com/zh/docs/)): one page per chapter, generated from [`docs/`](docs/).
 **The MIDI controller library: [openaudiovisual.com/controllers](https://openaudiovisual.com/controllers/)**: every modeled controller, playable, with its MIDI map and sources.
 
 | start here | go deeper |
@@ -438,7 +438,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1370 tests
+31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1375 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

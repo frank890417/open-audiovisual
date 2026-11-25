@@ -61,4 +61,4 @@ are redrawn, and rows scrolled out of view are not drawn. A show with nothing au
 `{ toggle(force?), open, info() }`. The pure half (axis, bands, sampling, cursor, the signature that says when to redraw) is
 `src/curves.js`, tested in Node.
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-console)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-console)

@@ -45,5 +45,5 @@ is dropped, a gap is reported (`onGap`), and `extra` is delivered once each, in 
 
 With `createShow({ sync })` a follower page takes no input of its own (`keys`, `midi`, `drums`, `audio`, `hands`, `pose`, `leap` and
 `remote` are off; `input: true` keeps them), the leader's `score.cut` is checked against the follower's, and the sync numbers go to the
-backstage monitor. Full reference: [docs](https://openaudiovisual.com/docs/#show-control-several-pages-one-show) ·
-[follow](https://openaudiovisual.com/docs/#show-control-following-another-clock-follow)
+backstage monitor. Full reference: [docs](https://openaudiovisual.com/docs/show-control/#show-control-several-pages-one-show) ·
+[follow](https://openaudiovisual.com/docs/show-control/#show-control-following-another-clock-follow)

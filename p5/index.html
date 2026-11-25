@@ -75,7 +75,7 @@
     <h1 id="p5">p5.js in one line</h1>
     <p class="docs-lede">The same line also plays sound, runs a drum machine you can write as one line of rhythm, listens to the microphone, and records the canvas with its sound as a video. Each one reads like the mouse: a variable to read, a function to write.</p>
     <p class="docs-stats"><a href="../changelog/">oav-p5 0.8 · framework 0.10</a></p>
-    <p class="p5-cta"><a class="cta" href="../examples/15-p5-one-line/">Try it live: example 15 →</a> <a class="more" href="../docs/#p5">The same page in the handbook</a> <a class="more" href="../docs/#strudel">With Strudel</a> <a class="more" href="https://github.com/frank890417/open-audiovisual/tree/main/p5">p5/ on GitHub ↗</a></p>
+    <p class="p5-cta"><a class="cta" href="../examples/15-p5-one-line/">Try it live: example 15 →</a> <a class="more" href="../docs/">All handbook chapters</a> <a class="more" href="../docs/strudel/">With Strudel</a> <a class="more" href="https://github.com/frank890417/open-audiovisual/tree/main/p5">p5/ on GitHub ↗</a></p>
     <p class="docs-note">The sketch on that page is plain p5.js with this one line first. Click the 🎹, turn a knob, hit a pad; 🔊, 🥁 and ⏺ are in the same panel.</p>
     <p class="docs-note p5-sketches">Ready-made sketches: <a href="../p5/examples/particles/">Particles</a> · <a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/examples/opc/sketch.js">OP Configurator ↗</a> · <a href="../p5/examples/mic/">Microphone</a> · <a href="../p5/examples/keys/">Keys with sound</a> · <a href="../p5/examples/drums/">Drums and bars</a> · <a href="../p5/examples/rhythm/">One line of rhythm</a> · <a href="../p5/examples/rhythm-visual/">Rhythm you can see</a> · <a href="../p5/examples/rhythm-lab/">Rhythm lab</a> · <a href="../p5/examples/record/">Record a video</a> · <a href="../p5/examples/lag/">Lag, envelopes and a scope</a> · <a href="../p5/examples/chop/">Numbers that move</a> · <a href="../p5/examples/with-strudel/">With Strudel</a> · <a href="../p5/examples/note-names/">Note names</a></p>
   </header>
@@ -174,7 +174,7 @@ it prints on one landscape A4.</p>
 <tr><td><code>padPressed(n, velocity)</code>, <code>padReleased(n)</code></td><td>a pad is hit / let go</td></tr>
 </tbody>
 </table></div>
-<p>Knob 1 is knob 1 on whichever controller played it: the <a href="../docs/#controllers">controller profiles</a> say which MIDI message
+<p>Knob 1 is knob 1 on whichever controller played it: the <a href="../docs/controllers/">controller profiles</a> say which MIDI message
 each knob sends (MiniLab 3's knob 1 is CC 74, LPD8's is CC 70). On a controller OAV has no profile for, the first
 knob you turn becomes <code>knob1</code>, the next <code>knob2</code>. A sketch that already has its own <code>note</code>, <code>velocity</code> or <code>knob1</code>
 keeps it.</p>
@@ -253,7 +253,7 @@ the browser blocked the microphone (click it again after allowing it from the ad
 <li><strong>Click first, if the browser wants one.</strong> Browsers keep audio quiet until the page has been clicked. This file
 asks as soon as <code>draw()</code> reads a value and starts the microphone again on the first click or key if the browser
 held it back, so no <code>userStartAudio()</code> is needed.</li>
-<li><strong>Next to p5.sound.</strong> The analysis is <a href="../docs/#packages"><code>@openav/audio</code></a> (an <code>AnalyserNode</code>), loaded from next to this
+<li><strong>Next to p5.sound.</strong> The analysis is <a href="../docs/packages/"><code>@openav/audio</code></a> (an <code>AnalyserNode</code>), loaded from next to this
 file the first time it is needed, with its own <code>AudioContext</code>. <code>p5.sound</code> (<code>p5.AudioIn</code>, <code>p5.FFT</code>) can run on the same page; the two
 microphones do not share anything, and none of these names is a p5 or p5.sound name. It works in p5 1.x and 2.x global mode.</li>
 <li><strong>How loud is loud.</strong> <code>micLevel</code> is a loudness in decibels, measured from the room: its bottom follows the room's own
@@ -281,7 +281,7 @@ file never starts the microphone for it.</li>
 <tr><td><code>soundIsOn</code></td><td>whether notes are heard now</td></tr>
 </tbody>
 </table></div>
-<p>The instruments are those of <a href="../docs/#packages"><code>@openav/sound</code></a>: <code>piano</code> (the Salamander grand; its 2 MB of samples load the
+<p>The instruments are those of <a href="../docs/packages/"><code>@openav/sound</code></a>: <code>piano</code> (the Salamander grand; its 2 MB of samples load the
 first time, and the electric piano plays meanwhile, or instead if they cannot load), <code>epiano</code>, <code>organ</code>, <code>strings</code>, <code>choir</code>,
 <code>harp</code>, <code>marimba</code>, <code>vibraphone</code>, <code>xylophone</code>, <code>glockenspiel</code>, <code>music-box</code> and the <code>synth/…</code> presets. In the 🎹 panel,
 <strong>🔊</strong> turns sound on and off and shows a picker with every instrument and the loading progress.</p>
@@ -340,7 +340,7 @@ beside the tempo, and the step that sounds is a yellow column (13:1 against the 
 <li><strong>Where the grid sits.</strong> At the top centre: on OpenProcessing between the 🎹 and OPC's icon and clear of the console, and
 below the 🎹 panel while that is open. – folds it, × stops the machine, and <strong>🥁</strong> in the 🎹 panel opens and closes it with
 no code at all. 🥁 brings the grid up stopped: tick its play box to hear it (a sketch's own <code>startDrums()</code> plays at once).</li>
-<li><strong>The kit.</strong> <a href="../docs/#packages"><code>@openav/drums</code></a>' synthesized kit (no samples), heard from the first click like sound; the
+<li><strong>The kit.</strong> <a href="../docs/packages/"><code>@openav/drums</code></a>' synthesized kit (no samples), heard from the first click like sound; the
 callbacks run from the start either way.</li>
 </ul>
 <p><strong>On time, however heavy the sketch.</strong> The hits are handed to the kit ahead of time, on its audio clock: a heartbeat in a
@@ -378,7 +378,7 @@ the grid, and the word that sounds lights up and fades.</p>
 <tr><td><code>(k,n)</code></td><td>k hits spread over n steps</td><td><code>"bd(3,8)"</code></td></tr>
 </tbody>
 </table></div>
-<p>The whole list is in <a href="../docs/#packages"><code>@openav/pattern</code></a>, loaded from next to <code>oav-p5.js</code> with the drums. Drums the grid has no
+<p>The whole list is in <a href="../docs/packages/"><code>@openav/pattern</code></a>, loaded from next to <code>oav-p5.js</code> with the drums. Drums the grid has no
 lane for (crash, ride, toms, open hat) get a row of their own; a hit off the sixteen steps (a triplet) is drawn where it falls
 inside its step. <strong>A mistake</strong> in <code>startDrums("…")</code> shows a card in the page's language with the character it is at, why, and
 how to fix it, and the machine plays <code>'four on floor'</code> meanwhile; <code>'x...x...'</code> on its own (one lane of the grid) says to put it
@@ -488,7 +488,7 @@ on the page, not on the canvas: never in a recording or a 📷, never in the way
 it. To draw it in the work: <code>stroke(255); drawTrail(trail(micLevel, 3), 0, height - 100, width, 100)</code> (or
 <code>drawTrail(micLevel, …)</code>, which keeps its own 2 seconds): 0 at the bottom of the box, 1 at the top (<code>lo</code>, <code>hi</code> after <code>h</code>),
 the sketch's <code>stroke()</code> (white under <code>noStroke()</code>).</p>
-<p>The math is <a href="../docs/#packages-openav-chop">@openav/chop</a>, loaded from next to this file the first time one of these is called;
+<p>The math is <a href="../docs/packages/#packages-openav-chop">@openav/chop</a>, loaded from next to this file the first time one of these is called;
 until it arrives (a few frames) each returns its input as it is. What each parameter means follows Derivative's
 TouchDesigner documentation; the code is OAV's own. Raw against lagged, side by side, with the scope: <a href="../p5/examples/lag/"><code>p5/examples/lag/</code></a>. <code>env</code>, <code>spring</code>, <code>speed</code>, <code>count</code> and <code>slope</code> driving a disc that a bass drum opens, with <code>startDrums()</code> as the only input: <a href="../p5/examples/chop/"><code>p5/examples/chop/</code></a>.</p>
 <h3 id="p5-recording-a-video-with-its-sound">Recording: a video with its sound<a class="anchor" href="#p5-recording-a-video-with-its-sound" aria-label="#">#</a></h3>
@@ -539,7 +539,7 @@ from code, p5's own <code>saveCanvas('name', 'png')</code> does the same.</li>
 <tbody>
 <tr><td>a real controller</td><td>Web MIDI in Chrome, Edge and Firefox; the browser asks once</td></tr>
 <tr><td>the on-screen controller</td><td>🎹 opens <code>&lt;oav-controller&gt;</code>, which follows the controller you plug in</td></tr>
-<tr><td>a phone</td><td>📱 in that panel shows a QR code; the phone's <a href="../docs/#phones">remote page</a> MIDI tab plays the sketch</td></tr>
+<tr><td>a phone</td><td>📱 in that panel shows a QR code; the phone's <a href="../docs/phones/">remote page</a> MIDI tab plays the sketch</td></tr>
 </tbody>
 </table></div>
 <p>All three arrive as the same MIDI bytes, so the sketch cannot tell them apart (<code>midi.last.source</code> can). Safari and
@@ -549,7 +549,7 @@ iPad have no Web MIDI; the on-screen controller and the phone still work there. 
 <p>Other programs are a fourth input (0.7). What a program plays into OAV Virtual MIDI's <strong>output</strong> — Strudel's
 <code>.midi('OAV Virtual MIDI')</code> — reaches the sketch at the moment it was stamped with (<code>midi.last.source</code> is <code>virtual-out</code>);
 an external MIDI clock moves <code>drumPhase</code>, <code>drumBar</code> and a drum machine; and <code>link=&lt;room&gt;</code> brings another tab's or another
-computer's programs into this sketch. All of it: <a href="../docs/#strudel">With Strudel</a>.</p>
+computer's programs into this sketch. All of it: <a href="../docs/strudel/">With Strudel</a>.</p>
 <h3 id="p5-when-something-goes-wrong">When something goes wrong<a class="anchor" href="#p5-when-something-goes-wrong" aria-label="#">#</a></h3>
 <p>Nobody watches OpenProcessing's console while playing, so problems are said on the page: a small card beside the 🎹, never
 over the middle of the canvas, in the browser's language, once per page, with a × to close it. Each card says <strong>what
@@ -597,6 +597,11 @@ controller, and <code>allow="microphone"</code> if it should hear the microphone
 Examples: <a href="../p5/examples/particles/"><code>p5/examples/particles/</code></a>, <a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/examples/opc/sketch.js"><code>p5/examples/opc/</code></a>, <a href="../p5/examples/mic/"><code>p5/examples/mic/</code></a>, <a href="../p5/examples/keys/"><code>p5/examples/keys/</code></a>, <a href="../p5/examples/drums/"><code>p5/examples/drums/</code></a>, <a href="../p5/examples/rhythm/"><code>p5/examples/rhythm/</code></a>, <a href="../p5/examples/rhythm-visual/"><code>p5/examples/rhythm-visual/</code></a>, <a href="../p5/examples/rhythm-lab/"><code>p5/examples/rhythm-lab/</code></a>, <a href="../p5/examples/record/"><code>p5/examples/record/</code></a>, <a href="../p5/examples/lag/"><code>p5/examples/lag/</code></a>, <a href="../p5/examples/chop/"><code>p5/examples/chop/</code></a>, <a href="../p5/examples/with-strudel/"><code>p5/examples/with-strudel/</code></a> and <a href="../p5/examples/note-names/"><code>p5/examples/note-names/</code></a>.</li>
 </ul>
   </section>
+
+  <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../docs/devices/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">Devices</span></a>
+      <a class="ch-next" rel="next" href="../docs/strudel/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">With Strudel</span></a>
+    </nav>
 
   <p class="docs-end"><a href="#top">↑</a></p>
 </main>

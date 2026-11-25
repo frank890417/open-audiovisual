@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>快速開始｜open-audiovisual</title>
+<meta name="description" content="挑一個最接近你手上東西的。越往下，東西越大。你需要 Node.js（目前任何一個版本都可以，CI 用 Node 22 跑測試）和一個瀏覽器。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/quick-start/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/quick-start/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/quick-start/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/quick-start/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="快速開始｜open-audiovisual">
+<meta property="og:description" content="挑一個最接近你手上東西的。越往下，東西越大。你需要 Node.js（目前任何一個版本都可以，CI 用 Node 22 跑測試）和一個瀏覽器。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/quick-start/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="快速開始｜open-audiovisual">
+<meta name="twitter:description" content="挑一個最接近你手上東西的。越往下，東西越大。你需要 Node.js（目前任何一個版本都可以，CI 用 Node 22 跑測試）和一個瀏覽器。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="quick-start">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/quick-start/#article","url":"https://openaudiovisual.com/zh/docs/quick-start/","name":"快速開始｜open-audiovisual","description":"挑一個最接近你手上東西的。越往下，東西越大。你需要 Node.js（目前任何一個版本都可以，CI 用 Node 22 跑測試）和一個瀏覽器。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"快速開始","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["三種進場方式","跑起來","一個檔，不用 clone","固定一個版本","用哪個瀏覽器","你看到的是什麼","不用硬體也能彈","你的第一個世界","做一個新範例","檢查你的成果"],"position":2,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/quick-start/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/quick-start/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"快速開始","item":"https://openaudiovisual.com/zh/docs/quick-start/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/quick-start/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/quick-start/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch is-here" data-ch="quick-start">
+          <a href="#quick-start" aria-current="page"><span class="n">02</span><span class="t">快速開始</span></a>
+          <ol class="toc-secs">
+            <li><a href="#quick-start-three-ways-in">三種進場方式</a></li>
+            <li><a href="#quick-start-run-it">跑起來</a></li>
+            <li><a href="#quick-start-one-file-no-clone">一個檔，不用 clone</a></li>
+            <li><a href="#quick-start-pin-a-version">固定一個版本</a></li>
+            <li><a href="#quick-start-which-browser">用哪個瀏覽器</a></li>
+            <li><a href="#quick-start-what-you-are-looking-at">你看到的是什麼</a></li>
+            <li><a href="#quick-start-play-without-hardware">不用硬體也能彈</a></li>
+            <li><a href="#quick-start-your-first-world">你的第一個世界</a></li>
+            <li><a href="#quick-start-make-a-new-example">做一個新範例</a></li>
+            <li><a href="#quick-start-check-your-work">檢查你的成果</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="quick-start" aria-labelledby="quick-start">
+<h1 id="quick-start">快速開始<a class="anchor" href="#quick-start" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 2 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/getting-started.md">docs/zh/getting-started.md</a></span></p>
+<h2 id="quick-start-three-ways-in">三種進場方式<a class="anchor" href="#quick-start-three-ways-in" aria-label="這一節的連結">#</a></h2>
+<p>挑一個最接近你手上東西的。越往下，東西越大。</p>
+<ol>
+<li><strong>在 p5.js 草圖裡加一行。</strong> 任何一份 p5.js 草圖（OpenProcessing、p5 編輯器、你自己的網頁）在最前面加一行，就能用
+MIDI 控制器、螢幕上的控制器或手機來彈。讀 <a href="../../../zh/p5/">p5.js 一行接上</a>，再玩帶著這一行的草圖：
+<a href="../../../examples/15-p5-one-line/">範例 15</a>。同一行還能出聲音、開一台能用一行字寫節奏的鼓機、聽麥克風、錄成影片，每一樣在<a href="../../../zh/examples/">範例</a>裡都有一份現成的草圖（16 到 26）。</li>
+<li><strong>在網頁裡放一台控制器。</strong> <code>&lt;oav-controller profile="akai-lpd8"&gt;</code> 把一台能彈的控制器放進任何網頁。讀
+<a href="../../../zh/docs/controllers/">MIDI 控制器與嵌入</a>，到<a href="../../../zh/controllers/">控制器圖鑑</a>挑你的那一台。</li>
+<li><strong>一整場演出。</strong> 一個世界加上一次 <code>createShow()</code> 呼叫，輸入、映射、時間軸、控台、聲音和後台就一起組好。從
+<a href="../../../examples/01-hello-particles/">範例 01</a> 開始，接著往下讀。</li>
+</ol>
+<h2 id="quick-start-run-it">跑起來<a class="anchor" href="#quick-start-run-it" aria-label="這一節的連結">#</a></h2>
+<p>你需要 Node.js（目前任何一個版本都可以，CI 用 Node 22 跑測試）和一個瀏覽器。不用安裝任何東西：沒有 <code>npm install</code>，也沒有打包工具。</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tk">git</span> clone https://github.com/frank890417/open-audiovisual.<span class="tk">git</span>
+<span class="tk">cd</span> open-audiovisual
+<span class="tk">node</span> serve.js            <span class="tc"># → http://localhost:8080</span></code></pre></div>
+<p><code>serve.js</code> 是關掉快取的靜態檔案伺服器（在舞台上跑到舊的程式碼，是一場惡夢），也在 <code>ws://&lt;host&gt;:8080/relay</code> 開好給手機用的中繼。想換連接埠，就把埠號傳進去：<code>node serve.js 3000</code>。這些指令也都寫成了 npm script：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>指令</th><th>實際執行的是</th></tr></thead>
+<tbody>
+<tr><td><code>npm start</code></td><td><code>node serve.js</code></td></tr>
+<tr><td><code>npm run monitor</code></td><td><code>node packages/monitor/server.js</code>，後台監看，連接埠 7457</td></tr>
+<tr><td><code>npm run bridge</code></td><td><code>node packages/osc/bridges/osc-bridge.js</code>，OSC → UDP 橋接，連接埠 7456</td></tr>
+<tr><td><code>npm test</code></td><td><code>node --test tests/*.test.js</code></td></tr>
+</tbody>
+</table></div>
+<p>打開 <code>http://localhost:8080/examples/01-hello-particles/</code>。每個範例都不需要硬體就能跑。</p>
+<h2 id="quick-start-one-file-no-clone">一個檔，不用 clone<a class="anchor" href="#quick-start-one-file-no-clone" aria-label="這一節的連結">#</a></h2>
+<p>做自己的演出不需要這個 repo。把 <a href="../../../assets/starter/show.html"><code>show.html</code></a> 存下來（打開後另存網頁，或複製原始碼），用任何靜態伺服器開它所在的資料夾，再打開它：</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash">python3 -m http.server 8080      <span class="tc"># or any static server, or any static host</span></code></pre></div>
+<p>這個檔是一頁加一個 <code>import</code>：你要改的世界，和一次 <code>createShow()</code> 呼叫。其他東西都從一個網址進來：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow, createCanvas } <span class="tk">from</span> <span class="ts">'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js'</span>;</code></pre></div>
+<p>需要的東西都從這一個網址匯入。用了第二個網址，同一頁裡就有兩份框架。靜態頁面帶不來的只有兩樣：手機遙控會用公開的
+relay（除非你跑 <code>serve.js</code>），後台監看要從 clone 下來的 repo 跑 <code>node packages/monitor/server.js</code>。</p>
+<p>作品上線之後，<a href="../../../zh/made-with/">把它加到「用它做的」</a>。</p>
+<h2 id="quick-start-pin-a-version">固定一個版本<a class="anchor" href="#quick-start-pin-a-version" aria-label="這一節的連結">#</a></h2>
+<p>網址裡的 <code>@v0.9.0</code> 是整個框架的一個版本。這個網址永遠不會變，所以你排練的那一場就是你演出的那一場。要換新的，自己改那個數字，再排練一次。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>網址</th><th>拿到什麼</th></tr></thead>
+<tbody>
+<tr><td><code>https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js</code></td><td>就是 0.9.0，永遠是</td></tr>
+<tr><td><code>https://openaudiovisual.com/packages/openav.js</code></td><td>最新的，每次發佈後幾分鐘內</td></tr>
+<tr><td><code>https://openaudiovisual.com/p5/oav-p5.js</code></td><td>p5.js 的那一行：最新的（<a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/changelog.md" rel="noopener">它自己的版本</a>）</td></tr>
+</tbody>
+</table></div>
+<p>1.0 之前，新的次版本（0.9 到 0.10）可能改名或拿掉東西，<a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/changelog.md" rel="noopener">更新紀錄</a>會在那一條的第一行寫出來。修訂版本（0.9.0 到 0.9.1）只修問題。我們最用力不去弄壞的是：世界的約定（<code>name</code>、<code>params</code>、<code>init</code>、<code>update</code>、<code>render</code>、
+<code>dispose</code>）、<a href="../../../zh/docs/signals/">訊號</a>裡的訊號名稱、控制器設定檔的格式，以及 oav-p5 給草圖的那些名字。<code>window.openav.version</code>
+會告訴你一場正在跑的演出是哪一版。</p>
+<h2 id="quick-start-which-browser">用哪個瀏覽器<a class="anchor" href="#quick-start-which-browser" aria-label="這一節的連結">#</a></h2>
+<p>不確定你這台裝置能做什麼？打開<a href="../../../zh/check/">裝置體檢</a>。它會看你的瀏覽器、Web MIDI、麥克風、鏡頭和繪圖能力，每一項都告訴你怎麼辦。按了按鈕才會開始，也不會把任何東西送出裝置。</p>
+<p>Web MIDI 是各瀏覽器差最多的一項（出處查證於 2026-10-15）：</p>
+<ul>
+<li><strong>Chrome 和 Edge</strong> 有。演出請用它們。從 Chrome 124 起，任何 MIDI 的使用都會問你要不要允許；以前只有系統專用（system-exclusive）才問（<a href="https://developer.chrome.com/blog/web-midi-permission-prompt" rel="noopener">Chrome 部落格</a>）。</li>
+<li><strong>Firefox</strong> 桌面版從 108 版起有 Web MIDI，但要先裝 Firefox 的網站權限附加元件（<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/108" rel="noopener">Firefox 108 版本說明</a>）。</li>
+<li><strong>Safari</strong>（Mac、iPhone、iPad）沒有 Web MIDI（<a href="https://caniuse.com/midi" rel="noopener">caniuse</a>）。WebKit 把它列為不實作，理由是指紋辨識的疑慮（<a href="https://webkit.org/tracking-prevention/" rel="noopener">WebKit</a>），<a href="https://bugs.webkit.org/show_bug.cgi?id=107250" rel="noopener">bug 107250</a> 至今還開著、沒人認領。iPhone 和 iPad 上的 Chrome 底層也是 WebKit，所以一樣沒有。Mac 上有第三方的 Safari 擴充 <a href="https://github.com/triglav-modular/Safari-WebMIDI" rel="noopener">Safari-WebMIDI</a>，我們沒有實測。</li>
+</ul>
+<p>瀏覽器沒有 Web MIDI 的時候，有三條路：</p>
+<ul>
+<li><strong>直接在螢幕上彈。</strong> <a href="../../../zh/controllers/">圖鑑</a>裡每一台控制器都能用手指彈，事件照常觸發。</li>
+<li><strong>把手機當控制器。</strong> 見<a href="../../../zh/docs/phones/">手機、中繼與控制面板</a>。</li>
+<li><strong>iPad 上的瀏覽器 App。</strong> <a href="https://apps.apple.com/app/midiweb-browser/id6757226617" rel="noopener">MIDIWeb Browser</a> 是第三方 App（iOS 17.6 以上），讓網頁用得到 Web MIDI。我們沒有拿它跟 open-audiovisual 一起實測。</li>
+</ul>
+<p>Windows 11 內建的 Windows MIDI Services（2026-02-17 釋出）讓各程式共用 MIDI 埠並附有 loopback，從瀏覽器送 MIDI 到 DAW 不必再裝 loopMIDI（<a href="https://blogs.windows.com/windowsexperience/2026/02/17/making-music-with-midi-just-got-a-real-boost-in-windows-11/" rel="noopener">Windows 部落格</a>）；見<a href="../../../zh/docs/controllers/#controllers-play-your-daw-with-it">用它彈你的 DAW</a>。</p>
+<p>不管哪個瀏覽器，還有兩條規則：</p>
+<ul>
+<li><strong>鏡頭和麥克風</strong>只在安全環境（secure context）裡能用：<code>http://localhost</code> 或 <code>https://</code>。在跑 <code>serve.js</code> 的那台電腦上，請用 <code>localhost</code> 打開演出，不要用它的區域網路位址。</li>
+<li><strong>手機</strong>在區域網路裡用一般的 <code>http://</code> 連進來，就能用觸控、琴鍵和控制面板。iOS 只把動作感測器和鏡頭開放給 <code>https://</code> 頁面（見<a href="../../../zh/docs/phones/#phones-ios-and-https">手機、中繼與控制面板</a>）。</li>
+</ul>
+<h2 id="quick-start-what-you-are-looking-at">你看到的是什麼<a class="anchor" href="#quick-start-what-you-are-looking-at" aria-label="這一節的連結">#</a></h2>
+<p>範例頁面分成兩部分：左邊是<strong>舞台</strong>（世界畫在這裡），右邊是<strong>側邊面板</strong>。側邊面板由上到下是：</p>
+<ol>
+<li><strong>鋼琴</strong>，附兩個核取方塊：<em>keyboard</em>（電腦鍵盤擷取）讓你用電腦鍵盤彈，<em>simulate performance</em>（模擬演奏）讓一位模擬演奏者自己彈，不用你動手。</li>
+<li><strong>播放控制</strong>：播放／暫停、上一個／下一個場景、重設、時鐘、目前的場景，以及一條拖曳軸，每個場景占一格。</li>
+<li><strong>Layers</strong>（各層狀態）：每一層現在在做什麼（每個輸入每秒幾個事件、啟用中的路由、世界和 FPS、哪些東西正從瀏覽器送出去）。</li>
+<li><strong>L1 · Input</strong>（輸入）：MIDI 裝置（取消勾選就把那台靜音），以及要點一下才會啟用的來源按鈕：🎤 mic（麥克風）、🖐 hands（手）、🕺 body（身體）。</li>
+<li><strong>L2 · Mapping</strong>（映射）：每一條路由，附一個靜音核取方塊，按 ✕ 刪除。</li>
+<li><strong>L3 · Params</strong>（參數）：每個參數一支推桿，按 ✕ 清除覆寫，按 <em>learn</em> 建立映射。</li>
+<li><strong>L4 · Output — sound</strong>（輸出：聲音），演出有聲音時才會出現：按 <strong>🔊 enable sound</strong>（開啟聲音）。</li>
+<li><strong>Signals</strong>（訊號）：每個訊號一個即時儀表。</li>
+</ol>
+<p>點面板標題就能收合。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>按鍵</th><th>動作</th></tr></thead>
+<tbody>
+<tr><td><kbd>Space</kbd></td><td>播放／暫停時間軸</td></tr>
+<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>上一個／下一個場景</td></tr>
+<tr><td><kbd>R</kbd></td><td>停止，並把時間軸倒回 0:00</td></tr>
+<tr><td><kbd>T</kbd></td><td>演出模式（提詞畫面）</td></tr>
+<tr><td><kbd>F</kbd></td><td>全螢幕</td></tr>
+<tr><td><kbd>M</kbd></td><td>顯示／隱藏螢幕上的 MIDI 控制器（演出設定了 <code>modules.midi.controllers</code> 才有）</td></tr>
+</tbody>
+</table></div>
+<h2 id="quick-start-play-without-hardware">不用硬體也能彈<a class="anchor" href="#quick-start-play-without-hardware" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><strong>螢幕鋼琴</strong>：用滑鼠點或手指按琴鍵，在琴鍵上一路拖過去就是刮奏。</li>
+<li><strong>電腦鍵盤</strong>：先勾選 <em>keyboard</em>（預設不擷取，免得字母鍵搶走控台的快捷鍵）。<code>A W S E D F T G Y H U J K O L P ;</code> 這幾個鍵，從鋼琴的基準音開始，依序彈出相差半音的 17 個音。<kbd>Z</kbd>／<kbd>X</kbd> 換八度，按住 <kbd>Shift</kbd> 會彈得比較大聲。</li>
+<li><strong>模擬演奏</strong>：模擬演奏者在五聲音階裡隨興地彈，有級進、跳進、三和弦和休止，你只要看映射怎麼跟著起伏。</li>
+<li><strong>鼓機</strong>（範例 03 和 06）：一台步進音序器，送出的訊號跟麥克風偵測鼓點時送出的長得一樣。</li>
+<li><strong>螢幕上的 MIDI 控制器</strong>（範例 09）：畫面上是一台市售的控制器，可以用滑鼠彈（支援的裝置列在<a href="../../../zh/controllers/">控制器頁面</a>）。接上實體的那一台，畫面就跟著你的手一起動。</li>
+</ul>
+<p>這些送出的訊號都跟真實硬體一樣，所以下游分不出差別。</p>
+<h2 id="quick-start-your-first-world">你的第一個世界<a class="anchor" href="#quick-start-your-first-world" aria-label="這一節的連結">#</a></h2>
+<p>世界就是一個物件，裡面有 <code>params</code> 和四個生命週期函式。把它交給 <code>createShow()</code>，演出的其他部分就會圍著它組起來：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">import</span> { createCanvas } <span class="tk">from</span> <span class="ts">'@openav/stage'</span>;
+
+<span class="tk">const</span> pulse = {
+  name: <span class="ts">'pulse'</span>,
+  <span class="tc">// what the piece is performed WITH: sliders, knobs, hands, the timeline</span>
+  params: [{ key: <span class="ts">'size'</span>, min: 10, max: 200, def: 40 }],
+  init({ container, signals }) {
+    <span class="tk">this</span>.view = createCanvas(container);
+    <span class="tk">this</span>.r = 0;
+    <span class="tc">// a struck note is an event, so it may come straight from a signal</span>
+    signals.on(<span class="ts">'midi/note/on'</span>, ({ vel }) =&gt; { <span class="tk">this</span>.r = 120 * vel; });
+  },
+  update(dt, state) { <span class="tk">this</span>.r = Math.max(0, <span class="tk">this</span>.r - dt * 90); <span class="tk">this</span>.size = state.size; },
+  render() {
+    <span class="tk">const</span> { ctx } = <span class="tk">this</span>.view, { w, h } = <span class="tk">this</span>.view.fit();
+    ctx.fillStyle = <span class="ts">'#000'</span>; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = <span class="ts">'#fff'</span>;
+    ctx.beginPath(); ctx.arc(w / 2, h / 2, <span class="tk">this</span>.size + <span class="tk">this</span>.r, 0, 7); ctx.fill();
+  },
+  dispose() { <span class="tk">this</span>.view.dispose(); },
+};
+
+<span class="tk">await</span> createShow({ world: pulse, modules: { sound: <span class="tk">true</span> } });</code></pre></div>
+<p>彈一個音：圓圈會跳大，再慢慢縮回去。拖動 <em>size</em> 推桿，或按旁邊的 <em>learn</em>，再轉一顆旋鈕。整個模型就是這樣：連續控制用參數，事件用訊號。</p>
+<h2 id="quick-start-make-a-new-example">做一個新範例<a class="anchor" href="#quick-start-make-a-new-example" aria-label="這一節的連結">#</a></h2>
+<ol>
+<li>把 <code>examples/01-hello-particles/</code> 複製成 <code>examples/&lt;nn&gt;-&lt;name&gt;/</code>（用下一個還沒用的編號）。它的 <code>index.html</code> 已經替每個 <code>@openav/*</code> 套件寫好 import map。那些 <code>?v=</code> 後綴是快取戳記，部署前由 <code>tools/stamp-version.mjs</code> 寫進去。</li>
+<li>在 <code>main.js</code> 寫你的世界（<a href="../../../zh/docs/writing-a-world/">寫一個世界</a>）。</li>
+<li>改掉 <code>index.html</code> 裡的 <code>&lt;title&gt;</code>。如果你用 p5 或其他繪圖工具，也在這裡加上 CDN 的 script 標籤。</li>
+<li>打開 <code>http://localhost:8080/examples/&lt;nn&gt;-&lt;name&gt;/</code>。</li>
+</ol>
+<p>第 1–2 步，AI 代理可以用 MCP 工具 <code>scaffold_world</code> 一次做完（<a href="../../../zh/docs/agents/">給 AI 代理</a>）。</p>
+<h2 id="quick-start-check-your-work">檢查你的成果<a class="anchor" href="#quick-start-check-your-work" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><code>npm test</code> 通過（測的是純邏輯：和弦、時間軸、映射、中繼、控制面板、MIDI 解析與裝置設定檔、網站頁面）。</li>
+<li>頁面載入時，主控台沒有錯誤。只有一則訊息是預期中的：如果後台監看沒在跑，瀏覽器會回報 <code>ws://localhost:7457</code> 拒絕連線。頁面會自己默默重試，間隔越拉越長（最長 30 秒）。跑 <code>npm run monitor</code>，這則訊息就不會再出現。</li>
+<li>按 <kbd>Space</kbd>：時間軸開始播放，畫面裡有東西隨時間改變。</li>
+<li>勾選 <em>keyboard</em>，按 <kbd>A</kbd>：不接任何硬體，世界也會有反應。</li>
+<li>開發者工具主控台裡的 <code>window.openav</code> 就是整場演出（signals、params、mapper、timeline…），可以自己動手戳戳看。</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/introduction/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">簡介</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/concepts/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">核心概念</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

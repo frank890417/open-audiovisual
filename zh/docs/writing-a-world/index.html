@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>寫一個世界｜open-audiovisual</title>
+<meta name="description" content="世界是整套框架裡，唯一一定要自己寫的部分。其他都是組裝。container 是一個絕對定位、鋪滿整個舞台的元素。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/writing-a-world/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/writing-a-world/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/writing-a-world/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/writing-a-world/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="寫一個世界｜open-audiovisual">
+<meta property="og:description" content="世界是整套框架裡，唯一一定要自己寫的部分。其他都是組裝。container 是一個絕對定位、鋪滿整個舞台的元素。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/writing-a-world/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="寫一個世界｜open-audiovisual">
+<meta name="twitter:description" content="世界是整套框架裡，唯一一定要自己寫的部分。其他都是組裝。container 是一個絕對定位、鋪滿整個舞台的元素。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="writing-a-world">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/writing-a-world/#article","url":"https://openaudiovisual.com/zh/docs/writing-a-world/","name":"寫一個世界｜open-audiovisual","description":"世界是整套框架裡，唯一一定要自己寫的部分。其他都是組裝。container 是一個絕對定位、鋪滿整個舞台的元素。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"寫一個世界","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["介面","約定","參數","大家最常違反的那條規則","場景與自動化","渲染器","一場演出裡的多個世界","從世界輸出聲音","演出前檢查清單"],"position":5,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/writing-a-world/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/writing-a-world/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"寫一個世界","item":"https://openaudiovisual.com/zh/docs/writing-a-world/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/writing-a-world/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/writing-a-world/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch is-here" data-ch="writing-a-world">
+          <a href="#writing-a-world" aria-current="page"><span class="n">05</span><span class="t">寫一個世界</span></a>
+          <ol class="toc-secs">
+            <li><a href="#writing-a-world-the-interface">介面</a></li>
+            <li><a href="#writing-a-world-the-contract">約定</a></li>
+            <li><a href="#writing-a-world-params">參數</a></li>
+            <li><a href="#writing-a-world-the-one-rule-people-break">大家最常違反的那條規則</a></li>
+            <li><a href="#writing-a-world-scenes-and-automation">場景與自動化</a></li>
+            <li><a href="#writing-a-world-renderers">渲染器</a></li>
+            <li><a href="#writing-a-world-several-worlds-in-one-show">一場演出裡的多個世界</a></li>
+            <li><a href="#writing-a-world-sound-output-from-a-world">從世界輸出聲音</a></li>
+            <li><a href="#writing-a-world-checklist-before-a-show">演出前檢查清單</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">21</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="writing-a-world" aria-labelledby="writing-a-world">
+<h1 id="writing-a-world">寫一個世界<a class="anchor" href="#writing-a-world" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 5 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/writing-a-world.md">docs/zh/writing-a-world.md</a></span></p>
+<p>世界是整套框架裡，唯一<em>一定</em>要自己寫的部分。其他都是組裝。</p>
+<h2 id="writing-a-world-the-interface">介面<a class="anchor" href="#writing-a-world-the-interface" aria-label="這一節的連結">#</a></h2>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">export</span> <span class="tk">const</span> myWorld = {
+  name: <span class="ts">'my-world'</span>,
+
+  <span class="tc">// params: what the world can be performed WITH.</span>
+  <span class="tc">// These appear in the console, are automatable by the timeline,</span>
+  <span class="tc">// and are mappable to any signal.</span>
+  params: [
+    { key: <span class="ts">'energy'</span>, label: <span class="ts">'Energy'</span>, min: 0, max: 1, def: 0.3 },
+    { key: <span class="ts">'mode'</span>,   label: <span class="ts">'Mode'</span>,   min: 0, max: 3, def: 0, step: 1 },  <span class="tc">// step → snaps, holds on the timeline</span>
+    { key: <span class="ts">'reset'</span>,  label: <span class="ts">'Reset'</span>,  pulse: <span class="tk">true</span> },                       <span class="tc">// momentary trigger</span>
+  ],
+
+  init(ctx) {
+    <span class="tc">// ctx = { container, signals, params }</span>
+    <span class="tc">// build your renderer here: p5, three, or the built-in 2D helper:</span>
+    <span class="tk">this</span>.view = createCanvas(ctx.container);
+    <span class="tc">// discrete events may come straight from signals:</span>
+    <span class="tk">this</span>._unsub = ctx.signals.on(<span class="ts">'chord/event'</span>, (a) =&gt; <span class="tk">this</span>.onChord(a));
+    <span class="tk">this</span>._unpulse = ctx.params.onPulse(<span class="ts">'reset'</span>, () =&gt; <span class="tk">this</span>.reset());
+  },
+
+  update(dt, state, io) {
+    <span class="tc">// state = resolved param values. This is your ONLY continuous input.</span>
+    <span class="tc">// io = { signals } plus any output handles the assembly added (see "Sound output")</span>
+  },
+
+  render() { <span class="tc">/* draw */</span> },
+
+  dispose() { <span class="tk">this</span>._unsub?.(); <span class="tk">this</span>._unpulse?.(); <span class="tk">this</span>.view.dispose(); },
+};</code></pre></div>
+<h2 id="writing-a-world-the-contract">約定<a class="anchor" href="#writing-a-world-the-contract" aria-label="這一節的連結">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>成員</th><th>什麼時候執行</th><th>拿到什麼</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>—</td><td>一個不重複的字串，舞台用這個名字註冊世界</td></tr>
+<tr><td><code>params</code></td><td>註冊世界時讀一次</td><td>參數宣告組成的陣列（見下方）</td></tr>
+<tr><td><code>init(ctx)</code></td><td>世界啟用時</td><td><code>{ container, signals, params }</code>。可以是 <code>async</code>，<code>createShow()</code> 會等它跑完才啟動迴圈</td></tr>
+<tr><td><code>update(dt, state, io)</code></td><td>每一影格</td><td><code>dt</code> 以秒為單位（≤ 0.1），<code>state</code> 是每個參數的 <code>{ key: value }</code>，<code>io</code> 是 <code>{ signals, … }</code></td></tr>
+<tr><td><code>render()</code></td><td>每一影格，緊接在 <code>update</code> 之後</td><td>不帶參數，用 <code>update</code> 存下來的東西來畫</td></tr>
+<tr><td><code>dispose()</code></td><td>換成另一個世界時</td><td>釋放 GPU 物件、DOM、訂閱</td></tr>
+<tr><td><code>surface</code></td><td>選用</td><td>手機控制面板的版面。有它的話，<code>modules.remote</code> 直接用它，不再自動產生（<a href="../../../zh/docs/phones/#phones-the-show-side">手機</a>）</td></tr>
+</tbody>
+</table></div>
+<p><code>container</code> 是一個絕對定位、鋪滿整個舞台的元素。舞台在每次 <code>init</code> 之前都會把它清空，所以你不用收拾別人留下的 DOM。<code>update</code> 或 <code>render</code> 丟出的例外，舞台會接住並記下來（<code>[stage] update:</code>／<code>[stage] render:</code>），演出照常進行。</p>
+<h2 id="writing-a-world-params">參數<a class="anchor" href="#writing-a-world-params" aria-label="這一節的連結">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>欄位</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td><code>key</code></td><td>路由、自動化和控台用的名字。必填。</td></tr>
+<tr><td><code>label</code></td><td>控台上顯示的文字。預設是 <code>key</code>。</td></tr>
+<tr><td><code>min</code>, <code>max</code></td><td>範圍。覆寫的值會限制在範圍內，路由也會把訊號縮放到這個範圍。</td></tr>
+<tr><td><code>def</code></td><td>沒有自動化、也沒有覆寫時的值。核心只讀 <code>def</code>，只有 <code>autoSurface()</code> 另外看得懂 <code>default</code>。</td></tr>
+<tr><td><code>step</code></td><td>覆寫的值會對齊到 <code>step</code> 的倍數。在時間軸上，有 <code>step</code> 的參數會在每個關鍵影格<em>停住</em>，不做內插。</td></tr>
+<tr><td><code>pulse</code></td><td>設成 <code>true</code>，它就變成一次性的觸發：控台會顯示 <em>fire</em>（觸發）按鈕，映射過來的脈衝訊號（或一個往上越過 0.5 的連續訊號）會觸發它，世界用 <code>params.onPulse(key, cb)</code> 來聽。脈衝參數在 <code>state</code> 裡沒有值。</td></tr>
+<tr><td><code>group</code></td><td>分組用的標籤。聲音引擎的參數用 <code>'sound'</code>。<code>autoSurface()</code> 會替每一組做一頁手機頁面。</td></tr>
+<tr><td><code>options</code></td><td>有 <code>step</code> 的參數，每個值各叫什麼名字（<code>['Circle', 'Petal', 'Star']</code>），手機控制面板會把它們顯示成單選按鈕。</td></tr>
+<tr><td><code>surface</code></td><td>給手機控制面板的提示：<code>{ type, color, label }</code>。</td></tr>
+</tbody>
+</table></div>
+<p>兩個註冊過的世界如果宣告了同一個 key，就共用同一個參數（以先宣告的為準）。</p>
+<h2 id="writing-a-world-the-one-rule-people-break">大家最常違反的那條規則<a class="anchor" href="#writing-a-world-the-one-rule-people-break" aria-label="這一節的連結">#</a></h2>
+<p><strong>連續控制一律走參數。事件可以直接用訊號。</strong></p>
+<p>如果你的世界在 <code>update()</code> 裡直接讀 <code>signals.get('midi/cc/74')</code>，它還是會動，至少今天、接你的控制器時會動。但時間軸、舞者、別人的控制器設定檔，就再也推不動它了。你把這場演出焊死在一個輸入上了。改用路由：宣告一個參數，讓映射器接上 <code>midi/cc/74 → yourParam</code>，同一個世界誰來都能演奏。</p>
+<p>事件不一樣：「按下一個音」「一個和弦解決了」「打到一次起音」是瞬間，不是持續的量。在 <code>init()</code> 裡訂閱這些事件是對的，我們也鼓勵這樣做。有了這些事件，世界才會<em>回應</em>你，不然它只是被參數推著走。</p>
+<p>常用的事件訊號：<code>midi/note/on</code> 和 <code>midi/note/off</code>（任何鍵盤、螢幕鋼琴、模擬演奏者、手機都會發）、<code>chord/event</code>（每一次彈奏做一次分析）、<code>audio/onset</code>、<code>audio/kick</code>、<code>drum/kick</code>。完整清單在<a href="../../../zh/docs/signals/">訊號一覽</a>。</p>
+<h2 id="writing-a-world-scenes-and-automation">場景與自動化<a class="anchor" href="#writing-a-world-scenes-and-automation" aria-label="這一節的連結">#</a></h2>
+<p>時間軸跟世界寫在一起，在呼叫 <code>createShow()</code> 時設定：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">await</span> createShow({
+  world: gardenWorld,
+  timeline: {
+    total: 120,                                       <span class="tc">// seconds</span>
+    automation: {
+      growth: [[0, 0.6], [40, 1.4], [90, 0.8], [120, 0.2]],   <span class="tc">// [t, value], linear between keyframes</span>
+      wind:   [[0, 0.05], [60, 0.3], [100, 0.7]],
+    },
+    scenes: [
+      { id: <span class="ts">'dawn'</span>,  t: 0,  title: <span class="ts">'Dawn'</span>,       note: <span class="ts">'single seeds · listen'</span> },
+      { id: <span class="ts">'bloom'</span>, t: 40, title: <span class="ts">'Full bloom'</span>, note: <span class="ts">'triads — stack real thirds'</span> },
+      { id: <span class="ts">'storm'</span>, t: 90, title: <span class="ts">'Storm'</span>,      note: <span class="ts">'clusters welcome'</span> },
+    ],
+  },
+  modules: { keys: { base: 48 }, chord: <span class="tk">true</span>, sound: <span class="tk">true</span> },
+});</code></pre></div>
+<ul>
+<li>關鍵影格寫成 <code>[seconds, value]</code>，依時間排序。第一個關鍵影格之前取第一個值，最後一個之後取最後一個值。</li>
+<li>場景依 <code>t</code> 排序。<code>title</code> 和 <code>note</code> 是演奏者在演出模式（<kbd>T</kbd>）裡讀到的文字，下方還會顯示下一個場景和倒數。</li>
+<li><code>t</code> 為負數的場景，是演出開始前的待命段落：設成 <code>t: -30</code>，時鐘就從 <code>-0:30</code> 開始走。</li>
+<li>試著<strong>只用</strong>時間軸演出你的世界。如果很無聊，就是少了一個參數。</li>
+</ul>
+<p>細節見<a href="../../../zh/docs/show-control/#show-control-timeline">演出控制</a>。</p>
+<h2 id="writing-a-world-renderers">渲染器<a class="anchor" href="#writing-a-world-renderers" aria-label="這一節的連結">#</a></h2>
+<p>舞台本身不帶渲染器。在 <code>init</code> 裡建一個，在 <code>dispose</code> 裡銷毀。</p>
+<h3 id="writing-a-world-2d-canvas">2D canvas<a class="anchor" href="#writing-a-world-2d-canvas" aria-label="這一節的連結">#</a></h3>
+<p><code>@openav/stage</code> 的 <code>createCanvas(container, { alpha = false })</code> 回傳 <code>{ canvas, ctx, fit, dispose }</code>。<code>fit()</code> 讓 canvas 跟容器一樣大（裝置像素比最高到 2），回傳以 CSS 像素計的 <code>{ w, h }</code>。在 <code>render()</code> 一開頭呼叫它。範例 01、02、03、07、08 和 09 都用它。</p>
+<h3 id="writing-a-world-p5-js">p5.js<a class="anchor" href="#writing-a-world-p5-js" aria-label="這一節的連結">#</a></h3>
+<p>在範例的 <code>index.html</code> 用 script 標籤載入 p5，再用 instance mode 跑在容器裡。p5 有自己的繪圖迴圈，所以 <code>update</code> 只負責存下 state，<code>render</code> 留空（範例 05 和 06）：</p>
+<div class="term" data-lang="html"><div class="term-bar"><span>html</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-html">&lt;<span class="tk">script</span> src=<span class="ts">"https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"</span>&gt;&lt;/<span class="tk">script</span>&gt;</code></pre></div>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> world = {
+  name: <span class="ts">'p5-world'</span>,
+  params: [{ key: <span class="ts">'hue'</span>, min: 0, max: 360, def: 200 }],
+  init({ container }) {
+    <span class="tk">const</span> self = <span class="tk">this</span>;
+    <span class="tk">this</span>.s = {};
+    <span class="tk">this</span>.p5 = <span class="tk">new</span> p5((sk) =&gt; {
+      sk.setup = () =&gt; { sk.createCanvas(container.clientWidth, container.clientHeight); sk.colorMode(sk.HSB); };
+      sk.draw = () =&gt; { sk.background(self.s.hue ?? 200, 60, 20); };
+      sk.windowResized = () =&gt; sk.resizeCanvas(container.clientWidth, container.clientHeight);
+    }, container);
+  },
+  update(dt, state) { <span class="tk">this</span>.s = state; },
+  render() { <span class="tc">/* p5 runs its own loop */</span> },
+  dispose() { <span class="tk">this</span>.p5?.remove(); },
+};</code></pre></div>
+<h3 id="writing-a-world-three-js">three.js<a class="anchor" href="#writing-a-world-three-js" aria-label="這一節的連結">#</a></h3>
+<p>內附的範例目前都沒用 three.js，寫法如下。把 three 加進範例的 import map（<code>"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"</code>），渲染器存在 <code>this</code> 上，所有東西都要 dispose：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> * as THREE <span class="tk">from</span> <span class="ts">'three'</span>;
+
+<span class="tk">const</span> orbit = {
+  name: <span class="ts">'orbit'</span>,
+  params: [{ key: <span class="ts">'spin'</span>, min: 0, max: 3, def: 1 }],
+  init({ container }) {
+    <span class="tk">this</span>.container = container;
+    <span class="tk">this</span>.renderer = <span class="tk">new</span> THREE.WebGLRenderer({ antialias: <span class="tk">true</span> });
+    container.appendChild(<span class="tk">this</span>.renderer.domElement);
+    <span class="tk">this</span>.scene = <span class="tk">new</span> THREE.Scene();
+    <span class="tk">this</span>.camera = <span class="tk">new</span> THREE.PerspectiveCamera(50, 1, 0.1, 100);
+    <span class="tk">this</span>.camera.position.z = 4;
+    <span class="tk">this</span>.mesh = <span class="tk">new</span> THREE.Mesh(<span class="tk">new</span> THREE.IcosahedronGeometry(1, 2), <span class="tk">new</span> THREE.MeshNormalMaterial({ wireframe: <span class="tk">true</span> }));
+    <span class="tk">this</span>.scene.add(<span class="tk">this</span>.mesh);
+  },
+  update(dt, s) { <span class="tk">this</span>.mesh.rotation.y += dt * s.spin; },
+  render() {
+    <span class="tk">const</span> w = <span class="tk">this</span>.container.clientWidth, h = <span class="tk">this</span>.container.clientHeight;
+    <span class="tk">if</span> (w !== <span class="tk">this</span>.w || h !== <span class="tk">this</span>.h) {
+      <span class="tk">this</span>.w = w; <span class="tk">this</span>.h = h;
+      <span class="tk">this</span>.renderer.setSize(w, h); <span class="tk">this</span>.camera.aspect = w / h; <span class="tk">this</span>.camera.updateProjectionMatrix();
+    }
+    <span class="tk">this</span>.renderer.render(<span class="tk">this</span>.scene, <span class="tk">this</span>.camera);
+  },
+  dispose() {
+    <span class="tk">this</span>.mesh.geometry.dispose(); <span class="tk">this</span>.mesh.material.dispose();
+    <span class="tk">this</span>.renderer.dispose(); <span class="tk">this</span>.renderer.domElement.remove();
+  },
+};</code></pre></div>
+<h3 id="writing-a-world-a-webtoe-patch">WebToe 節點網路<a class="anchor" href="#writing-a-world-a-webtoe-patch" aria-label="這一節的連結">#</a></h3>
+<p><code>@openav/world-webtoe</code> 的 <code>webtoeWorld()</code> 把一張 <a href="https://github.com/frank890417/WebToe" rel="noopener">WebToe</a> 節點網路變成一個世界。節點網路跑在 iframe 裡。哪一格有參數改變，就把算好的參數值傳進 iframe，節點網路裡寫成 <code>ext('name', fallback)</code> 的參數都會收到（範例 04）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { webtoeWorld } <span class="tk">from</span> <span class="ts">'@openav/world-webtoe'</span>;
+
+<span class="tk">const</span> world = webtoeWorld({
+  name: <span class="ts">'garden-patch'</span>,
+  project: <span class="tk">new</span> URL(<span class="ts">'./garden.webtoe.json'</span>, location.href).href,   <span class="tc">// the app fetches it: CORS must allow it</span>
+  params: [
+    { key: <span class="ts">'speed'</span>, min: 0, max: 1, def: 0.5 },
+    { key: <span class="ts">'hue'</span>, min: 0, max: 360, def: 205 },
+  ],
+  <span class="tc">// extra: (state, out) =&gt; { out.hueRad = state.hue * Math.PI / 180; },   // derive more ext() values</span>
+});</code></pre></div>
+<p>選項：<code>name</code>（預設 <code>'webtoe'</code>）、<code>app</code>（預設 <code>https://webtoe.openaudiovisual.com/</code>）、<code>project</code>、<code>params</code>、<code>extra</code>。</p>
+<h3 id="writing-a-world-dom-svg-video">DOM、SVG、影片<a class="anchor" href="#writing-a-world-dom-svg-video" aria-label="這一節的連結">#</a></h3>
+<p>任何東西加進 <code>container</code> 都可以。舞台只負責呼叫你的函式。</p>
+<h2 id="writing-a-world-several-worlds-in-one-show">一場演出裡的多個世界<a class="anchor" href="#writing-a-world-several-worlds-in-one-show" aria-label="這一節的連結">#</a></h2>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({ world: calm, worlds: [storm, after], timeline });
+<span class="tc">// switch on a cue: the old world is disposed, the new one initialized</span>
+show.timeline.onSceneChange((i, scene) =&gt; {
+  <span class="tk">if</span> (scene.id === <span class="ts">'storm'</span>) show.stage.activate(<span class="ts">'storm'</span>);
+});</code></pre></div>
+<p>所有世界的參數一開始就會註冊，所以控台和時間軸碰得到每一個世界的參數。那個世界已經啟用的話，<code>stage.activate(name)</code> 什麼都不做。</p>
+<h2 id="writing-a-world-sound-output-from-a-world">從世界輸出聲音<a class="anchor" href="#writing-a-world-sound-output-from-a-world" aria-label="這一節的連結">#</a></h2>
+<p><code>update(dt, state, io)</code> 會收到 <code>io</code>。用 <code>createShow()</code> 時，<code>io</code> 裡只有 <code>signals</code>。演出建好之後，再把輸出用的物件加上去，每個世界都看得到：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> show = <span class="tk">await</span> createShow({ world });
+show.stage.io.midi = show.midi;          <span class="tc">// the show's @openav/midi engine (MIDI out)</span>
+<span class="tc">// show.stage.io.osc = osc;              // an OscOut you created (see Show control → OSC output)</span></code></pre></div>
+<p>接著在世界裡：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tc">// trigger a sampler note when something happens in the simulation</span>
+io.midi?.noteOn(48 + creature.species * 12, 90, 2);   <span class="tc">// note, velocity 0..127, channel 2</span>
+
+<span class="tc">// stream a position to a spatializer</span>
+io.osc?.send(<span class="ts">`/source/${i}/xyz`</span>, [x, y, z]);</code></pre></div>
+<p>很多時候，直接在組裝演出的程式裡處理會更簡單，範例 05 就是這樣：<code>show.signals.on('midi/note/on', ({ note, vel }) =&gt; show.midi?.noteOn(note, Math.round(vel * 127), 1))</code>。要用頁面裡的樂器（平台鋼琴、敲擊琴、弦樂、風琴、合成器音色），請用 <code>modules.sound</code>（<a href="../../../zh/docs/show-control/#show-control-sound">演出控制</a>）。</p>
+<h2 id="writing-a-world-checklist-before-a-show">演出前檢查清單<a class="anchor" href="#writing-a-world-checklist-before-a-show" aria-label="這一節的連結">#</a></h2>
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 每一個連續控制都是參數（試著<strong>只用</strong>時間軸演出你的世界）</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> <code>dispose()</code> 會釋放 GPU 物件和事件訂閱（世界會在演出中即時切換）</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> <code>dt</code> 突然變大時，世界撐得住（Loop 會把它限制在 100 ms 以內，但別假設它是 16 ms）</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 世界裡沒有任何地方直接讀時鐘：時間歸時間軸管</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 頁面載入時瀏覽器主控台零錯誤，只用螢幕鋼琴也跑得動</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/architecture/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">架構</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/inputs/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">輸入</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

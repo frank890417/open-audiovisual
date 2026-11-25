@@ -59,11 +59,11 @@ test('catalog: every "read these lines" range is still where it says (the match 
 
 test('catalog: docs anchors exist in the handbook, with the heading text as label (en and zh)', async () => {
   const { EXAMPLES } = await catalogMod();
-  const heading = (html, id) => { const m = new RegExp(`<h[2-4] id="${id}"[^>]*>(.*?)(?:<a class="anchor"|</h)`).exec(html); return m && m[1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim(); };
-  const en = read('docs/index.html'), zh = read('zh/docs/index.html');
+  const heading = (html, id) => { const m = new RegExp(`<h[1-4] id="${id}"[^>]*>(.*?)(?:<a class="anchor"|</h)`).exec(html); return m && m[1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim(); };
+  const { pageWith } = await import('./_docs.js');   // a heading is on its chapter's page (/docs/<chapter>/)
   for (const e of EXAMPLES) for (const d of e.docs) {
-    assert.equal(heading(en, d.id), d.en, `${e.id}: /docs/#${d.id}`);
-    assert.equal(heading(zh, d.id), d.zh, `${e.id}: /zh/docs/#${d.id}`);
+    assert.equal(heading(pageWith(d.id, 'en'), d.id), d.en, `${e.id}: /docs/…#${d.id}`);
+    assert.equal(heading(pageWith(d.id, 'zh'), d.id), d.zh, `${e.id}: /zh/docs/…#${d.id}`);
   }
 });
 
@@ -138,7 +138,7 @@ test('every example page: regions are current, description, canonical, guide rea
       for (const x of e.tryThree.en) assert.ok(html.includes(x.replace(/&/g, '&amp;')) || html.includes(x), `${e.id}: try-three in the HTML`);
       for (const r of e.read) assert.ok(html.includes(`${e.dir}${r.file}#L${r.from}`), `${e.id}: read ${r.file}`);
       assert.equal(html.includes('examples/15-p5-one-line/') && /g-p5/.test(html), !!e.p5Line, `${e.id}: the p5 one-line row only where the catalog says`);
-      if (e.p5Line) assert.ok(html.includes('docs/#p5') && html.includes('zh/docs/#p5'), `${e.id}: p5 row links /docs/#p5 and /zh/docs/#p5`);
+      if (e.p5Line) assert.ok(html.includes('href="../../p5/"') && html.includes('href="../../zh/p5/"'), `${e.id}: p5 row links /p5/ and /zh/p5/ (the handbook's p5 chapter)`);
     }
     assert.ok(next ? html.includes(`${next.dir}"`) : html.includes('examples/"'), `${e.id}: link to the next example`);
   }

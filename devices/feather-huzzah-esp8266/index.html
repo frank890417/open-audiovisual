@@ -148,7 +148,7 @@
       </div>
     <h3>Notes</h3><p class="note">The library writes its notes in Chinese; they are shown as written.</p><ul class="cnotes" lang="zh-Hant"><li>GPIO 全部 3.3 V，不耐 5 V（Espressif FAQ：「ESP8266 is not 5 V tolerant」，GPIO 上限 3.6 V）。</li></ul>
     <ul class="cnotes" lang="zh-Hant"><li><code>gpio0</code> 開機時被拉低就會進燒錄模式；板上紅色 LED 接在這支腳（低電位亮）。</li><li><code>gpio2</code> 開機時必須是高電位（板上 10K 上拉）。進燒錄模式時 ROM 會把 GPIO2 設成輸出並送出 UART 訊號（esptool 文件），燒錄或重開機那一下接在這裡的東西會收到雜訊；ESP 模組上的藍色 LED 也在這支腳。</li><li><code>gpio15</code> 開機時必須是低電位（板上 4.7K 下拉）；接的東西不能在開機時把它拉高，否則不會執行程式。</li><li><code>tx</code> TX 是 USB 序列埠的線，開機時 ROM 會從這裡印出開機訊息（74880 baud）；開機時不能被拉低。</li><li><code>rx</code> RX 是 USB 序列埠的線，接了別的東西可能燒錄失敗。</li></ul>
-    <p class="next-links"><a class="more" href="../../docs/#packages-openav-hw">How @openav/hw checks a wiring →</a> <a class="more" href="../../docs/#devices-a-part">A part in the Devices chapter →</a></p>
+    <p class="next-links"><a class="more" href="../../docs/packages/#packages-openav-hw">How @openav/hw checks a wiring →</a> <a class="more" href="../../docs/devices/#devices-a-part">A part in the Devices chapter →</a></p>
   </section>
 
   <section class="sec" id="use" aria-labelledby="use-title">
@@ -230,7 +230,7 @@ console.log(JSON.stringify(part.part.supply), Object.keys(part.part.pins).join(<
       <h2 id="next-step-title">Where it goes next</h2>
       <p class="sec-lede">The handbook chapter on the collection, and the package that drives Adafruit Feather HUZZAH with ESP8266 (2821).</p>
     </header>
-    <p class="next-links"><a class="more" href="../../docs/#devices" data-oav-event="next_step" data-oav-to="docs">The Devices chapter →</a> <a class="more" href="../../docs/#packages-openav-hw" data-oav-event="next_step" data-oav-to="docs">Handbook: @openav/hw →</a></p>
+    <p class="next-links"><a class="more" href="../../docs/devices/" data-oav-event="next_step" data-oav-to="docs">The Devices chapter →</a> <a class="more" href="../../docs/packages/#packages-openav-hw" data-oav-event="next_step" data-oav-to="docs">Handbook: @openav/hw →</a></p>
   </section>
 
 </main>

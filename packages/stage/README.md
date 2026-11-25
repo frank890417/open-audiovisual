@@ -30,4 +30,4 @@ every method is optional.
 | `Stage` | `new Stage({ container, params, signals, io = {} })` · `register(world)` · `activate(name)` (async; disposes the previous world, awaits `init`) · `frame(dt, baseState)` → resolved state (`null` with no active world) · `active`, `activeName`, `worlds` (a Map), `io` (`{ signals, ...io }`, passed to `update`) |
 | `createCanvas` | `createCanvas(container, { alpha = false })` → `{ canvas, ctx, fit() → { w, h }, dispose() }`; follows the container size, device pixel ratio capped at 2 |
 
-Full reference: [docs](https://openaudiovisual.com/docs/#packages-openav-stage)
+Full reference: [docs](https://openaudiovisual.com/docs/packages/#packages-openav-stage)

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>路線圖｜open-audiovisual</title>
+<meta name="description" content="指導原則：真實演出要求過的功能，框架才長。（核心就是這樣來的：這裡的每個模組，都先撐過一場真正的演出，才整理成通用的形式。）">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/roadmap/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/roadmap/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/roadmap/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/roadmap/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="路線圖｜open-audiovisual">
+<meta property="og:description" content="指導原則：真實演出要求過的功能，框架才長。（核心就是這樣來的：這裡的每個模組，都先撐過一場真正的演出，才整理成通用的形式。）">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/roadmap/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="路線圖｜open-audiovisual">
+<meta name="twitter:description" content="指導原則：真實演出要求過的功能，框架才長。（核心就是這樣來的：這裡的每個模組，都先撐過一場真正的演出，才整理成通用的形式。）">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="roadmap">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/roadmap/#article","url":"https://openaudiovisual.com/zh/docs/roadmap/","name":"路線圖｜open-audiovisual","description":"指導原則：真實演出要求過的功能，框架才長。（核心就是這樣來的：這裡的每個模組，都先撐過一場真正的演出，才整理成通用的形式。）","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"路線圖","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["v0.x — 底盤（現在）","讓這一層不用再有人重做","v1.x — 演出長大","v2.x — 舞台變寬","不做的事"],"position":21,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/roadmap/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/roadmap/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"路線圖","item":"https://openaudiovisual.com/zh/docs/roadmap/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/roadmap/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/roadmap/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">11</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">12</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">13</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">14</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">15</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">16</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">17</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">18</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">19</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">20</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch is-here" data-ch="roadmap">
+          <a href="#roadmap" aria-current="page"><span class="n">21</span><span class="t">路線圖</span></a>
+          <ol class="toc-secs">
+            <li><a href="#roadmap-v0-x-the-chassis-now">v0.x — 底盤（現在）</a></li>
+            <li><a href="#roadmap-so-that-nobody-rebuilds-this-layer">讓這一層不用再有人重做</a></li>
+            <li><a href="#roadmap-v1-x-the-show-grows">v1.x — 演出長大</a></li>
+            <li><a href="#roadmap-v2-x-the-stage-widens">v2.x — 舞台變寬</a></li>
+            <li><a href="#roadmap-non-goals">不做的事</a></li>
+          </ol>
+        </li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="roadmap" aria-labelledby="roadmap">
+<h1 id="roadmap">路線圖<a class="anchor" href="#roadmap" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 21 章，共 21 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/roadmap.md">docs/zh/roadmap.md</a></span></p>
+<p>指導原則：真實演出要求過的功能，框架才長。（核心就是這樣來的：這裡的每個模組，都先撐過一場真正的演出，才整理成通用的形式。）</p>
+<h2 id="roadmap-v0-x-the-chassis-now">v0.x — 底盤（現在）<a class="anchor" href="#roadmap-v0-x-the-chassis-now" aria-label="這一節的連結">#</a></h2>
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 四層：輸入（midi/audio/chord/pose）→ 映射 → 世界 → 輸出</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 時間軸：場景、負的待命時間、cue 掛鉤</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 導演控台＋演出模式</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 後台監看（零相依的 WS 中繼，支援區域網路裡的裝置）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> OSC 橋接、MIDI 輸出（走同一個看得到的出口，附 panic）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 所有純邏輯都有測試（和弦、時間軸、映射、參數）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 映射設定檔的匯入／匯出介面（JSON 檔案、拖進頁面、<code>?map=&lt;網址&gt;</code>，每個世界各記一份）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 範例：由現場樂器（麥克風）驅動、隨聲音反應的世界，<code>06-cylinder-earth</code></li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 鼓機，送出的訊號跟分析器的長得一樣（<code>@openav/drums</code>）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 螢幕上的 MIDI 控制器，跟著真實硬體同步動作（<code>@openav/midi</code>，範例 09）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 文件網站：<a href="../../../zh/docs/">openaudiovisual.com/docs</a></li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> oav-p5：任何 p5.js 草圖加一行，就有控制器、手機、麥克風、聲音、能用一行字寫節奏的鼓機、小節與 cue、錄影，版本號自己算（<a href="../../../zh/changelog/">更新紀錄</a>）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 一行節奏：TidalCycles／Strudel 式的 mini-notation（<code>@openav/pattern</code>）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 像 TouchDesigner 的 CHOP 那樣處理隨時間變的數值：lag、包絡、速度、彈簧、trail（<code>@openav/chop</code>）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 和 Strudel 並排：程式送進 OAV Virtual MIDI 的音、外部 MIDI 時鐘、<code>link=房間名</code> 跨分頁也跨電腦（<a href="../../../zh/docs/strudel/">和 Strudel 一起用</a>）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 整場的 automation 在控台上攤成曲線、以總譜的段落為單位寫曲線、automation 存成 JSON 再讀回來、時間軸錨定在牆上的時鐘（<a href="../../../zh/docs/show-control/">演出控制</a>）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 會在時間軸上微調、或等你轉到位才接手的對應，用完把參數還回去（<code>@openav/mapping</code>）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 好幾個頁面演同一場：一個主控和它的從屬端，同一個瀏覽器或跨機器（<code>@openav/sync</code>）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 整個框架有版本號，和一個永遠不變的網址。一個檔就是一場演出，不用 clone（<a href="../../../zh/docs/quick-start/#quick-start-pin-a-version">固定一個版本</a>）</li>
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> <a href="../../../zh/made-with/">用它做的</a>：跑在它上面的作品，每一筆都是作者自己加的</li>
+</ul>
+<h2 id="roadmap-so-that-nobody-rebuilds-this-layer">讓這一層不用再有人重做<a class="anchor" href="#roadmap-so-that-nobody-rebuilds-this-layer" aria-label="這一節的連結">#</a></h2>
+<p>目標是：在網頁上做一場演出，從這裡開始，就像架網站從一台別人已經在顧的伺服器開始。一層東西要做到這樣，得讓人不用問就能蓋在上面。需要的東西，和每一項現在的位置：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>現在有的</th><th>接下來</th></tr></thead>
+<tbody>
+<tr><td>可以依賴的版本</td><td>0.9.0、固定的網址、更新紀錄</td><td>1.0：世界的約定、訊號名稱和設定檔格式，沒有換主版本就不再變</td></tr>
+<tr><td>不用 repo 的入口</td><td>一個檔加一個 <code>import</code></td><td>控制器頁面和手機遙控也有一樣的入口</td></tr>
+<tr><td>別人讀得懂的格式</td><td>附 JSON Schema 的控制器設定檔、匯出成 QLC+ 與 Mixxx、對應檔、總譜</td><td>每種格式有自己的版本號。設定檔格式成為其他工具也採用的格式</td></tr>
+<tr><td>信得過的控制器</td><td>55 份設定檔，每個數字都有出處，還有一頁能用手驗實機</td><td>第一批在實機上驗過的設定檔，更多來自手上有那台的人</td></tr>
+<tr><td>現場的食譜</td><td>OSC 送到 TouchDesigner、燈光與空間音訊</td><td>畫面送進 TouchDesigner、OBS 和投影機。場地清單（展示用的 iPad、沒有網路）</td></tr>
+<tr><td>證明</td><td>它出身的那幾場演出</td><td><a href="../../../zh/made-with/">用它做的</a>上有別人的作品</td></tr>
+<tr><td>發問的地方</td><td>issue、要一台控制器的表單、登記作品的表單</td><td>幾天內有回音</td></tr>
+</tbody>
+</table></div>
+<h2 id="roadmap-v1-x-the-show-grows">v1.x — 演出長大<a class="anchor" href="#roadmap-v1-x-the-show-grows" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><strong>觀眾裝置輸入</strong>：<em>經典控制器已經上線</em>（<code>@openav/relay</code>、<code>@openav/surface</code>、<code>@openav/remote</code>）：零相依的房間伺服器、<code>phone/{id}/*</code> 感測器、一組類似 TouchOSC 的控制元件、版面 JSON、<code>autoSurface(params)</code>、回饋到手機。接下來：
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 加入卡片上的 QR code（<code>@openav/remote/qr</code>，約 150 行、零相依的編碼器）：在靜態主機上，演出改用公開中繼加隨機房間，所以 openaudiovisual.com 上的範例也能接手機</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> <em>實驗性的</em>控制面板：手勢／物理控制元件、多人共用的控制面板、觀眾模式（很多支手機 → 彙整成 <code>crowd/tilt/mean</code> 這類訊號）</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 麥克風當作手機感測器、每台裝置各自的設定檔、版面編輯器／匯入匯出介面</li>
+</ul></li>
+<li><strong>總譜與導演</strong>：<em>已經上線</em>（<code>@openav/score</code>）：用段落長度寫成的版本、衍生版本、cue、<code>hold</code>、壞了只停自己的段落模組、提詞機上的 acts、總譜轉 MIDI 標記。接下來：
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled checked aria-label="已完成"> 收 MIDI clock：<code>@openav/midi</code> 的 <code>MidiClock</code> 跟著 start、stop、song position 走，oav-p5 的鼓機和 <code>drumPhase</code> 也跟著它（0.7）</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 總譜跟著外部時鐘走，以及送出 clock 與 transport，讓 DAW 當總譜的主時鐘，或跟著總譜走</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> cut 裡的 <code>clocks</code> 表，只有哪一場演出需要引擎跑在兩條不同的時間線上才做（見<a href="../../../zh/docs/score/#score-clocks-why-there-are-none">總譜與導演</a>）</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 導演台上的總譜編輯器：拖一段的長度，看每個 cue 跟著移動</li>
+</ul></li>
+<li><strong>訊號錄製與重播</strong>：<em>MIDI 錄音已經上線</em>（<code>@openav/record</code>：<code>TakeRecorder</code>、<code>TakePlayer</code>，<code>.mid</code> 可進可出；<code>EventLog</code> 已經能在錄影時記下任何訊號）。接下來：把完整的訊號流（手、身體、聲音分析）重播給任何一個世界。演奏者不在也能排練。存下來的不只影片，還有手勢。</li>
+<li><strong>把 <code>@openav/*</code> 發布到 npm</strong>，等 1.0 說清楚哪些東西不再變（在那之前：<a href="../../../zh/docs/quick-start/#quick-start-pin-a-version">固定一個版本</a>），文件頁面本身也能用這套框架來演奏。</li>
+<li><strong>WebGPU 世界轉接</strong>，等 WebGPU compute 成熟，給粒子與群體代理類的世界用。</li>
+</ul>
+<h2 id="roadmap-v2-x-the-stage-widens">v2.x — 舞台變寬<a class="anchor" href="#roadmap-v2-x-the-stage-widens" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li><strong>畫面進入影像流程</strong>：先用現成的工具寫成食譜（OBS 的 Browser Source 加 NDI 輸出、TouchDesigner 的 Web Render TOP）。那些做不到、而且有演出需要的時候，才做自己的閘道（headless 瀏覽器 → NDI）。</li>
+<li><strong>分散式演出</strong>：透過 WebRTC data channel 同步多個瀏覽器的訊號：好幾台電腦、一個訊號空間、分處各地的合奏團。時鐘的那一半已經做好了：好幾個頁面演同一場，從屬端透過 BroadcastChannel 或房間中繼追著主控端的時間軸（<code>@openav/sync</code>）。訊號則仍然留在收到它的那個頁面。</li>
+<li><strong>AI 代理演奏者</strong>：由 LLM 驅動的代理訂閱訊號、寫入參數，在人旁邊一起即興（來歷：《The Last Input 終局之前》裡自主行動的城市代理）。</li>
+</ul>
+<h2 id="roadmap-non-goals">不做的事<a class="anchor" href="#roadmap-non-goals" aria-label="這一節的連結">#</a></h2>
+<ul>
+<li>節點式的視覺編輯器（cables.gl 已經做得很好，我們是函式庫）</li>
+<li>自己的一套合成工具（Tone.js 是鄰居：<code>@openav/sound</code> 把它包在一份精簡的引擎介面約定後面，<code>audio.input()</code> 也接受它的 node）</li>
+<li>變成一個平台：你的演出就是你的 repo，不是我們伺服器上的一個帳號</li>
+</ul>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/troubleshooting/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">疑難排解</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

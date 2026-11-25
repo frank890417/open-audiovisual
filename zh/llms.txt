@@ -14,7 +14,7 @@
 ## Pages
 
 - [首頁](https://openaudiovisual.com/zh/) ([English](https://openaudiovisual.com/)): 能玩的樂器、運作方式、作品、快速開始、給 AI 代理。
-- [手冊](https://openaudiovisual.com/zh/docs/) ([English](https://openaudiovisual.com/docs/)): 完整文件一頁讀完：下方列出的每一章都在同一個 HTML 檔。由 `docs/` 的 Markdown 生成。
+- [手冊](https://openaudiovisual.com/zh/docs/) ([English](https://openaudiovisual.com/docs/)): 手冊目錄：下方列出的每一章各有一頁，附各節連結。由 `docs/` 的 Markdown 生成。
 - [API 參考](https://openaudiovisual.com/zh/docs/reference/) ([English](https://openaudiovisual.com/docs/reference/)): API 參考：oav-p5 的每個變數、函式、事件與選項（`micLevel`、`knob1`、`startDrums()` …）和每個套件的每個匯出，能搜尋，每一條有說明、參數、能直接跑的範例與原始碼行號連結。每次建置都從程式碼產生，並在 CI 裡跟程式碼對過，所以不會列出不存在的名稱，也不會漏掉存在的。同一份資料的 JSON：https://openaudiovisual.com/docs/reference/reference.json。
 - [MIDI 控制器圖鑑](https://openaudiovisual.com/zh/controllers/) ([English](https://openaudiovisual.com/controllers/)): 每台控制器都是能玩的面板，附完整 MIDI 實作表與引用出處；可用 `<oav-controller>` 或 iframe（`/embed/controller/`）嵌入。
 - [演出設備大集合](https://openaudiovisual.com/zh/devices/) ([English](https://openaudiovisual.com/devices/)): 框架認得的每一台設備，一個清單，依種類分組，能篩選、能搜尋：MIDI 控制器（各自在 /controllers/ 的頁面）、DMX 燈具（每台一頁，有各模式的通道表、虛擬燈具和 patch 程式碼）、鏡頭、音訊介面、LED 與 DMX 介面、感測器，以及電子零件（腳位、電壓、電流，附規格書）。資料：https://openaudiovisual.com/packages/devices/catalog.js。
@@ -44,27 +44,27 @@
 
 - [AGENTS.md](https://openaudiovisual.com/AGENTS.md)：給 AI 程式代理的慣例、兩條規則、怎麼做一件作品。先讀這份。
 - [README](https://openaudiovisual.com/README.md)：總覽、架構圖、範例、手機遙控。
-- [簡介](https://openaudiovisual.com/docs/zh/introduction.md): 它是什麼、給誰用、替每場演出省掉哪些重複工作。
-- [快速開始](https://openaudiovisual.com/docs/zh/getting-started.md): 跑起來、玩一玩、做一件新作品。
-- [核心概念](https://openaudiovisual.com/docs/zh/concepts.md): 訊號、參數、路由、世界、時間軸、演出，以及把它們綁在一起的兩條規則。
-- [架構](https://openaudiovisual.com/docs/zh/architecture.md): 每一幀怎麼跑，以及每一層的契約。
-- [寫一個世界](https://openaudiovisual.com/docs/zh/writing-a-world.md): World 介面、參數與事件、聲音輸出、檢查清單。
-- [輸入](https://openaudiovisual.com/docs/zh/inputs.md): 每個輸入套件，與開啟它的 `modules` 鍵。
-- [映射](https://openaudiovisual.com/docs/zh/mapping.md): 路由、曲線、平滑、多對多與 learn。
-- [演出控制](https://openaudiovisual.com/docs/zh/show-control.md): 時間軸、場景、演出模式、控台、後台監看、OSC。
-- [總譜與導演](https://openaudiovisual.com/docs/zh/score.md): 把演出寫成段落長度：版本、cue、hold、段落模組、提詞器、樂譜轉 MIDI。
-- [DMX 燈光](https://openaudiovisual.com/docs/zh/dmx.md): 從作品打舞台燈：燈具、patch、scene、cue、chase、effect，每台燈每秒最多閃 3 次（引擎裡一層、輸出前再一層，即時值也算），經輸出橋接程式（Art-Net、sACN）或 Web Serial（Enttec DMX USB Pro）送出，用參數讓聲音和 MIDI 推燈，沒有硬體時有監看器。
-- [MIDI 控制器與嵌入](https://openaudiovisual.com/docs/zh/controllers.md): 把 MIDI 控制器寫成 JSON 設定檔，以及 `<oav-controller>` 元件與 iframe 嵌入。
-- [設備](https://openaudiovisual.com/docs/zh/devices.md): 演出設備大集合（每一份 MIDI 控制器 profile、DMX 燈具和電子零件，加上鏡頭、音訊介面、感測器、LED 與 DMX 介面的手寫紀錄），一種紀錄格式、每筆事實都有出處，devices() 搜尋，device(id) 把一台交給驅動它的套件。
-- [p5.js 一行接上](https://openaudiovisual.com/docs/zh/p5.md): 一行指令，讓任何 p5.js 草圖能用 MIDI、螢幕上的控制器或手機彈，還有聲音、能用一行字寫節奏的鼓機、麥克風、錄影，以及像 TouchDesigner CHOP 那樣隨時間變化的數值（`lag()`）。
-- [和 Strudel 一起用](https://openaudiovisual.com/docs/zh/strudel.md): Strudel 和 OAV 並排用：旋鈕、手機、麥克風變成 Strudel 的參數；Strudel 的音符和時鐘在同一頁或另一個分頁（link=）的 p5 草圖裡畫出來；Hydra。
-- [手機、中繼與控制面板](https://openaudiovisual.com/docs/zh/remote.md): 手機與 iPad 當控制器：中繼、感測器、控制面板。
-- [訊號一覽](https://openaudiovisual.com/docs/zh/signals.md): 內建輸入發出的每一個訊號與範圍。
-- [套件一覽](https://openaudiovisual.com/docs/zh/packages.md): 每個套件，依層分類。
-- [給 AI 代理](https://openaudiovisual.com/docs/zh/agents.md): 給 AI 程式代理的慣例、兩條規則、怎麼做一件作品。
-- [實驗室整合（`"lab"` 欄位）](https://openaudiovisual.com/docs/zh/lab-integration.md): package.json 的 `"lab"` 欄位。
-- [疑難排解](https://openaudiovisual.com/docs/zh/troubleshooting.md): 排練中遇到的真實問題，與處理方式。
-- [路線圖](https://openaudiovisual.com/docs/zh/roadmap.md): 訊號錄製與重播、npm 發佈、WebGPU 世界、NDI 閘道、分散式演出、代理演奏者。
+- [簡介](https://openaudiovisual.com/zh/docs/introduction/) ([Markdown](https://openaudiovisual.com/docs/zh/introduction.md)): 它是什麼、給誰用、替每場演出省掉哪些重複工作。
+- [快速開始](https://openaudiovisual.com/zh/docs/quick-start/) ([Markdown](https://openaudiovisual.com/docs/zh/getting-started.md)): 跑起來、玩一玩、做一件新作品。
+- [核心概念](https://openaudiovisual.com/zh/docs/concepts/) ([Markdown](https://openaudiovisual.com/docs/zh/concepts.md)): 訊號、參數、路由、世界、時間軸、演出，以及把它們綁在一起的兩條規則。
+- [架構](https://openaudiovisual.com/zh/docs/architecture/) ([Markdown](https://openaudiovisual.com/docs/zh/architecture.md)): 每一幀怎麼跑，以及每一層的契約。
+- [寫一個世界](https://openaudiovisual.com/zh/docs/writing-a-world/) ([Markdown](https://openaudiovisual.com/docs/zh/writing-a-world.md)): World 介面、參數與事件、聲音輸出、檢查清單。
+- [輸入](https://openaudiovisual.com/zh/docs/inputs/) ([Markdown](https://openaudiovisual.com/docs/zh/inputs.md)): 每個輸入套件，與開啟它的 `modules` 鍵。
+- [映射](https://openaudiovisual.com/zh/docs/mapping/) ([Markdown](https://openaudiovisual.com/docs/zh/mapping.md)): 路由、曲線、平滑、多對多與 learn。
+- [演出控制](https://openaudiovisual.com/zh/docs/show-control/) ([Markdown](https://openaudiovisual.com/docs/zh/show-control.md)): 時間軸、場景、演出模式、控台、後台監看、OSC。
+- [總譜與導演](https://openaudiovisual.com/zh/docs/score/) ([Markdown](https://openaudiovisual.com/docs/zh/score.md)): 把演出寫成段落長度：版本、cue、hold、段落模組、提詞器、樂譜轉 MIDI。
+- [DMX 燈光](https://openaudiovisual.com/zh/docs/dmx/) ([Markdown](https://openaudiovisual.com/docs/zh/dmx.md)): 從作品打舞台燈：燈具、patch、scene、cue、chase、effect，每台燈每秒最多閃 3 次（引擎裡一層、輸出前再一層，即時值也算），經輸出橋接程式（Art-Net、sACN）或 Web Serial（Enttec DMX USB Pro）送出，用參數讓聲音和 MIDI 推燈，沒有硬體時有監看器。
+- [MIDI 控制器與嵌入](https://openaudiovisual.com/zh/docs/controllers/) ([Markdown](https://openaudiovisual.com/docs/zh/controllers.md)): 把 MIDI 控制器寫成 JSON 設定檔，以及 `<oav-controller>` 元件與 iframe 嵌入。
+- [設備](https://openaudiovisual.com/zh/docs/devices/) ([Markdown](https://openaudiovisual.com/docs/zh/devices.md)): 演出設備大集合（每一份 MIDI 控制器 profile、DMX 燈具和電子零件，加上鏡頭、音訊介面、感測器、LED 與 DMX 介面的手寫紀錄），一種紀錄格式、每筆事實都有出處，devices() 搜尋，device(id) 把一台交給驅動它的套件。
+- [p5.js 一行接上](https://openaudiovisual.com/zh/p5/) ([Markdown](https://openaudiovisual.com/docs/zh/p5.md)): 一行指令，讓任何 p5.js 草圖能用 MIDI、螢幕上的控制器或手機彈，還有聲音、能用一行字寫節奏的鼓機、麥克風、錄影，以及像 TouchDesigner CHOP 那樣隨時間變化的數值（`lag()`）。
+- [和 Strudel 一起用](https://openaudiovisual.com/zh/docs/strudel/) ([Markdown](https://openaudiovisual.com/docs/zh/strudel.md)): Strudel 和 OAV 並排用：旋鈕、手機、麥克風變成 Strudel 的參數；Strudel 的音符和時鐘在同一頁或另一個分頁（link=）的 p5 草圖裡畫出來；Hydra。
+- [手機、中繼與控制面板](https://openaudiovisual.com/zh/docs/phones/) ([Markdown](https://openaudiovisual.com/docs/zh/remote.md)): 手機與 iPad 當控制器：中繼、感測器、控制面板。
+- [訊號一覽](https://openaudiovisual.com/zh/docs/signals/) ([Markdown](https://openaudiovisual.com/docs/zh/signals.md)): 內建輸入發出的每一個訊號與範圍。
+- [套件一覽](https://openaudiovisual.com/zh/docs/packages/) ([Markdown](https://openaudiovisual.com/docs/zh/packages.md)): 每個套件，依層分類。
+- [給 AI 代理](https://openaudiovisual.com/zh/docs/agents/) ([Markdown](https://openaudiovisual.com/docs/zh/agents.md)): 給 AI 程式代理的慣例、兩條規則、怎麼做一件作品。
+- [實驗室整合（`"lab"` 欄位）](https://openaudiovisual.com/zh/docs/lab-integration/) ([Markdown](https://openaudiovisual.com/docs/zh/lab-integration.md)): package.json 的 `"lab"` 欄位。
+- [疑難排解](https://openaudiovisual.com/zh/docs/troubleshooting/) ([Markdown](https://openaudiovisual.com/docs/zh/troubleshooting.md)): 排練中遇到的真實問題，與處理方式。
+- [路線圖](https://openaudiovisual.com/zh/docs/roadmap/) ([Markdown](https://openaudiovisual.com/docs/zh/roadmap.md)): 訊號錄製與重播、npm 發佈、WebGPU 世界、NDI 閘道、分散式演出、代理演奏者。
 - [Patch bay design](https://openaudiovisual.com/docs/design/patchbay.md): 多裝置 MIDI 與 patch bay 的設計。
 - [全文](https://openaudiovisual.com/llms-full.txt)：README、AGENTS.md 與手冊每一章，合成一個檔案。
 
