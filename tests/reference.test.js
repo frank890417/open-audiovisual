@@ -17,7 +17,9 @@ import { fileURLToPath } from 'node:url';
 import { loadModel, checkCoverage, checkEntry, itemsOf, buildRecords, checkModel, parseParams, exampleSyntaxError, toDataset, P5, LEDGER_FILE, signatureOf } from '../tools/reference/model.mjs';
 import { CATEGORIES, CATEGORY_IDS, PACKAGE_CATEGORY } from '../tools/reference/categories.mjs';
 import { packageDirs } from '../tools/reference/scan.mjs';
-import { buildFiles, PAGES, DATASET } from '../tools/build-reference.mjs';
+import { buildFiles, PAGES, DATASET, namePageFile } from '../tools/build-reference.mjs';
+import { nameSlug, slugProblems, NAME_BASE } from '../tools/reference/slug.mjs';
+import { ldNode } from './_ld.js';
 import { unstamp } from '../tools/site/pages.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -217,8 +219,10 @@ test('drill G9: a source line past the end of the file, one name behind two defi
 
 // ---------------------------------------------------------------------------- G8: the generated files are what the sources build
 const built = buildFiles(model);
-test('G8 docs/reference/ (en), zh/docs/reference/ and reference.json are what the sources build (node tools/build-reference.mjs)', () => {
-  for (const rel of [PAGES.en, PAGES.zh, DATASET]) {
+test('G8 docs/reference/ (en), zh/docs/reference/, every name page and reference.json are what the sources build (node tools/build-reference.mjs)', () => {
+  const rels = Object.keys(built).filter((f) => f !== 'sitemap.xml');
+  assert.ok(rels.length >= 5 + 2 * 150, `the build writes the index, the name pages, the cheat sheet and the dataset (${rels.length} files)`);
+  for (const rel of rels) {
     assert.ok(exists(rel), `${rel} exists`);
     assert.equal(unstamp(read(rel)), unstamp(built[rel]), `${rel} is stale: run node tools/build-reference.mjs`);
   }
@@ -325,4 +329,87 @@ test('AGENTS.md tells the next agent how to document a name', () => {
   const a = read('AGENTS.md');
   assert.match(a, /## Documenting a public name/);
   for (const w of ['tools/build-reference.mjs --missing', 'p5/reference/', 'reference.mjs', 'undocumented.json', 'tests/reference.test.js', 'reference-smoke.cjs']) assert.ok(a.includes(w), `AGENTS.md mentions ${w}`);
+});
+
+// ---------------------------------------------------------------------------- one page per oav-p5 name (/docs/reference/<name>/)
+const named = model.records.filter((r) => r.ns === P5 && r.entry);
+test('name pages: every documented oav-p5 name has a page in both languages, at a lowercase address no other name shares', () => {
+  assert.ok(named.length >= 150, `${named.length} oav-p5 names`);
+  assert.deepEqual(slugProblems(named.map((r) => r.id)), [], 'no two names on one address');
+  // names that differ only by case, an OAVp5 member and the plain name, an option and the function of the same word: all apart
+  assert.notEqual(nameSlug('scope'), nameSlug('option-scope'));
+  assert.notEqual(nameSlug('OAVp5.mic.level'), nameSlug('micLevel'));
+  assert.deepEqual(slugProblems(['noteOn', 'NoteOn']).length, 1, 'a clash is reported, never renamed quietly');
+  for (const r of named) {
+    const slug = nameSlug(r.id);
+    assert.match(slug, /^[a-z0-9]+(-[a-z0-9]+)*$/, `${r.id}: ${slug} is lowercase, words joined by -`);
+    for (const lang of ['en', 'zh']) assert.ok(exists(namePageFile(r.id, lang)), `${r.id}: ${namePageFile(r.id, lang)}`);
+  }
+  assert.equal(nameSlug('micLevel'), 'mic-level');
+  assert.equal(nameSlug('OAVp5.drums.strudelUrl'), 'oavp5-drums-strudel-url');
+  // nothing else lives in docs/reference/ but the name pages and the dataset
+  const want = new Set(named.map((r) => nameSlug(r.id)));
+  for (const d of fs.readdirSync(path.join(ROOT, NAME_BASE), { withFileTypes: true }).filter((e) => e.isDirectory())) assert.ok(want.has(d.name), `docs/reference/${d.name}/ is a name page`);
+  const pkgNames = model.records.filter((r) => r.ns !== P5);
+  assert.ok(pkgNames.length > 300 && pkgNames.every((r) => !exists(namePageFile(r.id, 'en')) || want.has(nameSlug(r.id))), 'the package exports stay on the index');
+});
+
+test('a name page: the whole entry with every example, the loader line, related names as links, title, description, canonical, hreflang, breadcrumb', () => {
+  const SITE = 'https://openaudiovisual.com/';
+  const ds = JSON.parse(read(DATASET));
+  for (const r of named) {
+    const e = ds.entries.find((x) => x.id === r.id);
+    for (const lang of ['en', 'zh']) {
+      const rel = namePageFile(r.id, lang), s = built[rel], self = SITE + (lang === 'zh' ? 'zh/' : '') + NAME_BASE + nameSlug(r.id) + '/';
+      assert.match(s, new RegExp(`<h1 id="${r.id.replace(/\./g, '\\.')}">`), `${rel}: the name is the h1, with its anchor`);
+      for (const id of r.aliasIds) assert.ok(s.includes(`id="${id}"`), `${rel}: the alias anchor #${id}`);
+      assert.equal((s.match(/<figure class="ref-ex"/g) || []).length, e.examples.length, `${rel}: every example (${e.examples.length})`);
+      for (const ex of e.examples) assert.ok(s.includes(`data-run="${ex.run}"`), `${rel}: a ${ex.run} example`);
+      if (e.examples.some((x) => x.run === 'sketch')) assert.ok(s.includes('class="ref-loader"') && s.indexOf('class="ref-loader"') < s.indexOf('<figure class="ref-ex"'), `${rel}: the loader line above the examples`);
+      assert.ok(s.includes(`<link rel="canonical" href="${self}">`), `${rel}: canonical`);
+      for (const hl of ['en', 'zh-Hant', 'x-default']) assert.ok(s.includes(`<link rel="alternate" hreflang="${hl}" href="${SITE}${hl === 'zh-Hant' ? 'zh/' : ''}${NAME_BASE}${nameSlug(r.id)}/">`), `${rel}: hreflang ${hl}`);
+      const title = /<title>([^<]*)<\/title>/.exec(s)[1];
+      assert.ok(lang === 'en' ? title.endsWith(' · oav-p5 reference · open-audiovisual') : title.endsWith('｜oav-p5 參考｜open-audiovisual'), `${rel}: title ${title}`);
+      const desc = /<meta name="description" content="([^"]*)">/.exec(s)[1];
+      assert.ok(desc.length >= 50 && desc.length <= 200, `${rel}: description length ${desc.length}`);
+      assert.deepEqual(ldNode(s, 'BreadcrumbList').itemListElement.map((x) => x.item), [SITE + (lang === 'zh' ? 'zh/' : ''), SITE + (lang === 'zh' ? 'zh/' : '') + 'docs/', SITE + (lang === 'zh' ? 'zh/' : '') + NAME_BASE, self], `${rel}: breadcrumb`);
+      assert.match(s, new RegExp(`<meta name="oav-page-type" content="reference_name" data-oav-id="${nameSlug(r.id)}">`), `${rel}: page type`);
+      // related names: a name with a page links its page, a package export its card on the index
+      for (const k of e.related) {
+        const x = model.records.find((y) => y.covers.includes(k)) || model.records.find((y) => y.id === k);
+        const href = x.ns === P5 && x.entry ? `../${nameSlug(x.id)}/` : `../#${x.id}`;
+        assert.ok(s.includes(`<li><a href="${href}">`), `${rel}: related ${k} → ${href}`);
+      }
+      for (const m of s.matchAll(/href="#([^"]+)"/g)) assert.ok(s.includes(`id="${m[1]}"`), `${rel}: #${m[1]} has a target on this page`);
+      assert.match(s, /<script type="module" src="[^"]*assets\/reference\/reference\.js/, `${rel}: the live examples`);
+    }
+  }
+});
+
+test('the index keeps every name: an oav-p5 name is a short card whose heading links its page; a package export keeps its full entry', () => {
+  for (const [lang, h] of Object.entries(html)) {
+    for (const r of named) {
+      const at = h.indexOf(`<h3 id="${r.id}">`);
+      assert.ok(at > 0, `${lang}: #${r.id} is on the index`);
+      assert.ok(h.startsWith(`<h3 id="${r.id}"><a href="${nameSlug(r.id)}/">`, at), `${lang}: #${r.id}'s heading links ${nameSlug(r.id)}/`);
+    }
+    const briefs = h.split('<article class="ref ref-brief"').slice(1).map((x) => x.slice(0, x.indexOf('</article>')));
+    assert.equal(briefs.length, named.length, `${lang}: one short card per oav-p5 name`);
+    assert.ok(briefs.every((x) => !x.includes('class="ref-ex"')), `${lang}: no example on a short card (they are on the name's page)`);
+    assert.ok(h.includes('<figure class="ref-ex" data-run="module"'), `${lang}: a package export keeps its examples on the index`);
+  }
+});
+
+test('the name pages are registered (sitemap, stamp list) and the site links them: cheat sheet, /p5/, search, c.to(reference, #name)', async () => {
+  const { registry } = await import('../tools/site/pages.mjs');
+  const reg = registry().filter((e) => e.group === 'reference');
+  assert.equal(reg.length, named.length, 'one register entry per name page');
+  const sm = read('sitemap.xml');
+  for (const r of named.slice(0, 20)) assert.ok(sm.includes(`<loc>https://openaudiovisual.com/${NAME_BASE}${nameSlug(r.id)}/</loc>`), `sitemap: ${r.id}`);
+  assert.match(read('tools/stamp-version.mjs'), /'docs\/reference', 'zh\/docs\/reference'/, 'stamp-version walks the name pages');
+  assert.ok(read('docs/cheatsheet/index.html').includes('href="../../docs/reference/mic-level/"'), 'the cheat sheet links micLevel\'s page');
+  assert.ok(read('p5/index.html').includes('href="../docs/reference/mic-level/"'), '/p5/\'s cheat sheet links micLevel\'s page');
+  const { pathCtx } = await import('../tools/site/chrome.mjs');
+  assert.equal(pathCtx('docs/', 'zh').to('reference', '#fader2'), '../../zh/docs/reference/fader1/#fader2', 'an alias is on its owner\'s page');
+  assert.equal(pathCtx('docs/', 'en').to('reference', '#out-startBridge'), '../docs/reference/#out-startBridge', 'a package export stays on the index');
 });

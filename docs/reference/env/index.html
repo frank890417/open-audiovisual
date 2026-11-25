@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>env() · oav-p5 reference · open-audiovisual</title>
+<meta name="description" content="A 0..1 pulse that jumps up after each event (a kick, a beat, a key, a press) and then fades out: TouchDesigner's Trigger CHOP.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/reference/env/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/env/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/env/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/env/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="env() · oav-p5 reference · open-audiovisual">
+<meta property="og:description" content="A 0..1 pulse that jumps up after each event (a kick, a beat, a key, a press) and then fades out: TouchDesigner's Trigger CHOP.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/reference/env/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="env() · oav-p5 reference · open-audiovisual">
+<meta name="twitter:description" content="A 0..1 pulse that jumps up after each event (a kick, a beat, a key, a press) and then fades out: TouchDesigner's Trigger CHOP.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="env">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/reference/env/#article","url":"https://openaudiovisual.com/docs/reference/env/","name":"env() · oav-p5 reference · open-audiovisual","description":"A 0..1 pulse that jumps up after each event (a kick, a beat, a key, a press) and then fades out: TouchDesigner's Trigger CHOP.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"env()","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"Values over time (CHOP)","breadcrumb":{"@id":"https://openaudiovisual.com/docs/reference/env/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/reference/env/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"API reference","item":"https://openaudiovisual.com/docs/reference/"},{"@type":"ListItem","position":4,"name":"env()","item":"https://openaudiovisual.com/docs/reference/env/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../../#play">Play</a>
+    <a href="../../../#how">How it works</a>
+    <a href="../../../#works">Works</a>
+    <a href="../../../controllers/">Controllers</a>
+    <a href="../../../docs/" aria-current="page">Docs</a>
+    <a href="../../../webtoe/">WebToe</a>
+    <a href="../../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../../docs/reference/env/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/reference/env/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Categories</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Reference categories">
+      <p class="toc-title">Values over time (CHOP)</p>
+      <p class="toc-ref"><a href="../">All names</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch"><a href="../count/"><span class="t"><code>count()</code></span></a></li>
+        <li class="toc-ch"><a href="../draw-trail/"><span class="t"><code>drawTrail()</code></span></a></li>
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>env()</code></span></a></li>
+        <li class="toc-ch"><a href="../lag/"><span class="t"><code>lag()</code></span></a></li>
+        <li class="toc-ch"><a href="../scope/"><span class="t"><code>scope()</code></span></a></li>
+        <li class="toc-ch"><a href="../slope/"><span class="t"><code>slope()</code></span></a></li>
+        <li class="toc-ch"><a href="../speed/"><span class="t"><code>speed()</code></span></a></li>
+        <li class="toc-ch"><a href="../spring/"><span class="t"><code>spring()</code></span></a></li>
+        <li class="toc-ch"><a href="../trail/"><span class="t"><code>trail()</code></span></a></li>
+        <li class="toc-ch"><a href="../trigger/"><span class="t"><code>trigger()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop/"><span class="t"><code>OAVp5.chop</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-module/"><span class="t"><code>OAVp5.chop.module</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-reset/"><span class="t"><code>OAVp5.chop.reset()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-slots/"><span class="t"><code>OAVp5.chop.slots()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-state/"><span class="t"><code>OAVp5.chop.state</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 reference</a> · <a href="../#cat-chop">Values over time (CHOP)</a></p>
+    <div class="chapter ref-one" data-chapter="env">
+<article class="ref ref-own" data-name="env" data-names="env OAVp5.chop.env" data-kw="envelope env trigger pulse attack decay flash kick beat Trigger CHOP TouchDesigner 包絡 脈衝 觸發 起音 衰減 閃一下 大鼓 拍子 TouchDesigner" data-kind="function" data-pkg="oav-p5" data-cat="chop"><span id="OAVp5.chop.env" class="ref-alias-anchor"></span><header class="ref-head"><h1 id="env"><code>env()</code><a class="anchor" href="#env" aria-label="Link to this entry">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="function" title="Call it.">function</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>env([event], [attack], [decay], [name])</code></pre><p class="ref-also">Also: <code>OAVp5.chop.env</code></p>
+<p class="ref-summary">A 0..1 pulse that jumps up after each event (a kick, a beat, a key, a press) and then fades out: TouchDesigner's Trigger CHOP.</p>
+<div class="ref-body"><p>Call it every frame and use the number like a size or a brightness: <code>circle(width / 2, height / 2, 60 + env('kick', 0.01, 0.3) * 200)</code> swells on every kick. The number rises to 1 in <code>attack</code> seconds after an event and falls back to 0 in <code>decay</code> seconds, quick at first and landing softly, the way a bass drum's swell looks right.</p><p>An event that arrives while the last pulse is still sounding restarts from where the pulse is, never from zero, so fast hits pile up into a plateau instead of flickering. The attack is measured from 0: a retrigger from halfway up takes half the attack.</p><p>The events: <code>'kick'</code>, <code>'snare'</code> and <code>'hat'</code> are the hits <a href="../kick-detected/"><code>kickDetected()</code></a> hears (from the microphone, or from the drum machine when it plays), <code>'beat'</code> is <a href="../beat/"><code>beat</code></a>, <code>'note'</code> is any key going down, <code>'bar'</code> and <code>'step'</code> come from the drum machine, a cue's name fires when <a href="../cue/"><code>cue()</code></a> does, and any other name is yours to fire with <a href="../trigger/"><code>trigger()</code></a>. The switch form, <code>env(mouseIsPressed, 0.02, 0.5)</code>, fires on every press.</p></div>
+<div class="callout callout-tip"><p class="callout-title">Before you call it</p><p><code>'kick'</code>, <code>'snare'</code>, <code>'hat'</code> and <code>'beat'</code> need something that makes them. If the sketch has not started the drum machine (<a href="../start-drums/"><code>startDrums()</code></a>), the first <code>env('kick')</code> asks for the microphone, like reading <a href="../mic-level/"><code>micLevel</code></a>, and <code>?oav_mic=off</code> means nothing ever fires. Once the drum machine is started, the microphone is not opened for it. <code>'note'</code> needs a key: play one, press 🎹, or call <a href="../oavp5-play/"><code>OAVp5.play()</code></a>. A name of your own needs <a href="../trigger/"><code>trigger()</code></a>: if nothing fires it within 4 seconds, a card says so.</p></div><div class="ref-sec"><h4>Parameters</h4><div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>event</code></td><td><code>String | Boolean | Number</code></td><td>What to react to. A name: <code>'kick'</code>, <code>'snare'</code>, <code>'hat'</code>, <code>'beat'</code> (from the microphone or the drum machine), <code>'note'</code> (any key), <code>'bar'</code>, <code>'step'</code> (the drum machine), a cue's name, or an event of your own fired with <a href="../trigger/"><code>trigger()</code></a>. Or a switch: a boolean, or a number above 0.5, and each time it turns on counts as an event. Left out: <code>'beat'</code>. <span class="ref-tag">optional</span> <span class="ref-tag">default <code>'beat'</code></span></td></tr><tr><td><code>attack</code></td><td><code>Number</code></td><td>Seconds the rise from 0 to 1 takes. <span class="ref-tag">optional</span> <span class="ref-tag">default <code>0.01</code></span></td></tr><tr><td><code>decay</code></td><td><code>Number</code></td><td>Seconds the fall from 1 back to 0 takes. <span class="ref-tag">optional</span> <span class="ref-tag">default <code>0.3</code></span></td></tr><tr><td><code>name</code></td><td><code>String | Number</code></td><td>Only for the switch form (<code>env(mouseIsPressed, …, 'a')</code>): a name for its memory, as the last argument. A named event such as <code>'kick'</code> needs none. <span class="ref-tag">optional</span> <span class="ref-tag">read from arguments</span></td></tr></tbody></table></div></div><div class="ref-sec"><h4>Returns</h4><p><code>Number</code> 0..1: 0 when nothing has happened, 1 at the top of the pulse. Until @openav/chop has loaded (a few frames) it returns 0.</p></div><div class="ref-sec"><h4>Notes</h4><ul><li>A named event needs no place in <code>draw()</code>: <code>env('kick')</code> works in <code>setup()</code> or <code>mousePressed()</code> too. Only the switch form remembers anything between frames, and an unnamed switch outside <code>draw()</code> returns 0. Calls in <code>draw()</code> are matched by order, like <a href="../lag/"><code>lag()</code></a>.</li><li><code>OAVp5.chop.env(…)</code> is this function under another name.</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">Every sketch starts with one line</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>Copy the line</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">The examples below leave it out to stay short. Copy puts it at the top for you, so what you paste into OpenProcessing (or the p5 editor) runs as it is.</p>
+      <label class="ref-p5v" hidden>p5 for live examples <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> Run the examples as they scroll into view</label>
+    </aside>
+<div class="ref-sec"><h4>Examples</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ Run</button><button type="button" class="ref-stop" hidden>■ Stop</button><button type="button" class="ref-reset" hidden>↺ Reset</button><button type="button" class="ref-copy" hidden title="Copies the example with the line that loads oav-p5 on top">Copy</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  <span class="tk">const</span> k = env(mouseIsPressed, 0.02, 0.5);   <span class="tc">// 1 right after each press, then it fades</span>
+  circle(width / 2, height / 2, 60 + k * 200);
+}</code></pre></div>
+<figcaption>Click the canvas: the circle jumps open and fades back each time.</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ Run</button><button type="button" class="ref-stop" hidden>■ Stop</button><button type="button" class="ref-reset" hidden>↺ Reset</button><button type="button" class="ref-copy" hidden title="Copies the example with the line that loads oav-p5 on top">Copy</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  noStroke();
+  startDrums(<span class="ts">'bd*4, [~ sd]*2, hh*8'</span>, 108);   <span class="tc">// a drum machine, so no microphone is needed</span>
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  <span class="tk">const</span> kick = env(<span class="ts">'kick'</span>, 0.01, 0.3);       <span class="tc">// 1 on every kick, 0 again 0.3 s later</span>
+  <span class="tk">const</span> snare = env(<span class="ts">'snare'</span>, 0.005, 0.15);
+  fill(255, 90, 31);
+  circle(120, 150, 40 + kick * 160);
+  fill(120, 190, 255);
+  circle(280, 150, 40 + snare * 160);
+}</code></pre></div>
+<figcaption>Two circles swell on the drum machine's kick and snare. Click the canvas once if you hear nothing: browsers wait for a click before they play sound.</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ Run</button><button type="button" class="ref-stop" hidden>■ Stop</button><button type="button" class="ref-reset" hidden>↺ Reset</button><button type="button" class="ref-copy" hidden title="Copies the example with the line that loads oav-p5 on top">Copy</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> mousePressed() {
+  OAVp5.play(48 + floor(random(24)), 0.8);   <span class="tc">// play a key, as a controller would</span>
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  <span class="tk">const</span> k = env(<span class="ts">'note'</span>, 0.005, 0.8);         <span class="tc">// every key makes it flash</span>
+  fill(255, 211, 107);
+  circle(width / 2, height / 2, 40 + k * 240);
+}</code></pre></div>
+<figcaption>Click the canvas, or play a key on a controller or the 🎹: every key pulses the circle.</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>Related</h4><ul><li><a href="../trigger/"><code>trigger()</code></a> <span>Fires an event of your own, by name, for <a href="#env"><code>env()</code></a> and <a href="../count/"><code>count()</code></a> to react to.</span></li><li><a href="../count/"><code>count()</code></a> <span>Counts how often <code>on</code> has turned on, or how many <code>'kick'</code> (or any other event) have happened; with a limit it loops 0, 1, … limit − 1.</span></li><li><a href="../lag/"><code>lag()</code></a> <span>Follows <code>value</code> smoothly instead of jumping: up in <code>up</code> seconds, down in <code>down</code> seconds (TouchDesigner's Lag CHOP).</span></li><li><a href="../beat/"><code>beat</code></a> <span>True for one frame each time the microphone (or the drum machine) hears a beat.</span></li><li><a href="../kick-detected/"><code>kickDetected()</code></a> <span>You define these; oav-p5 calls them when the microphone (or the drum machine) hears a kick, a snare or a hat.</span></li><li><a href="../start-drums/"><code>startDrums()</code></a> <span>Starts a drum machine: a 16-step grid on the page that plays a preset, your own grid or one line of rhythm, and counts the bars for your sketch.</span></li><li><a href="../oavp5-chop/"><code>OAVp5.chop</code></a> <span>The CHOP functions under one roof, plus the state of the module behind them: <code>OAVp5.chop.lag(…)</code>, <code>.state</code>, <code>.slots()</code>, <code>.reset()</code>.</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L3045">p5/oav-p5.js, line 3045</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">Next step</p>
+      <h2 id="next-step-title">Examples that use env()</h2>
+      <dl class="next-groups">
+        <div><dt>env()</dt><dd><a href="../../../examples/25-p5-chop/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">25</span> p5 numbers that move</a></dd></div>
+      </dl>
+      <p class="next-made"><a class="more" href="../../../made-with/" data-oav-event="next_step" data-oav-to="made_with">Made with →</a> <span>Works, tools and classes that run on open-audiovisual, and how to add yours.</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../">All names</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../../">Home</a>
+      <a href="../../../examples/">Examples</a>
+      <a href="../../../controllers/">Controllers</a>
+      <a href="../../../docs/">Docs</a>
+      <a href="../../../p5/">p5.js in one line</a>
+      <a href="../../../webtoe/">WebToe</a>
+      <a href="../../../made-with/">Made with</a>
+      <a href="../../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Categories","tocClose":"Close categories"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ Run","stop":"■ Stop","copy":"Copy","copied":"Copied","copyTitle":"Copies the example with the line that loads oav-p5 on top","open":"OpenProcessing ↗","frameTitle":"Live example","notRun":"Not run on this page (a module): run it in your own page, or see the examples.","needsMic":"Asks for the microphone","reset":"↺ Reset","auto":"Run the examples as they scroll into view","editHint":"Edit the code: the example reruns as you type","micOn":"🎤 Click to use the microphone"},"searchNone":"Nothing matches “{q}”. Try a shorter word, or browse the categories on the left.","searchCount":"{n} of {total}","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../p5/oav-p5.js","lang":"en"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

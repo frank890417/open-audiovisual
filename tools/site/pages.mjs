@@ -29,6 +29,7 @@ import { lastmodOf } from './git.mjs';
 import { catalog, PROFILE_DIR, detailPath, detailUrl } from '../controllers/page.mjs';
 import { registerEntries } from '../devices/sources.mjs';
 import { DOC_PAGES, chapterPath } from '../docs/anchors.mjs';
+import { namePages, NAME_BASE } from '../reference/slug.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -43,6 +44,8 @@ export const STATIC = [
   { derive: 'chapters' },
   // the API reference (tools/build-reference.mjs): its sources are the code it reads and the words written beside it
   { id: 'reference', path: 'docs/reference/', langs: ['en', 'zh'], src: ['tools/reference', 'assets/reference', 'assets/search', 'p5/oav-p5.js', 'p5/reference', 'packages'] },
+  // one page per oav-p5 name (tools/build-reference.mjs, tools/reference/name-page.mjs), read off docs/reference/reference.json
+  { derive: 'names' },
   // the oav-p5 cheat sheet (tools/build-reference.mjs, tools/reference/cheatsheet.mjs): one page, every name links into the reference
   { id: 'cheatsheet', path: 'docs/cheatsheet/', langs: ['en', 'zh'], src: ['tools/reference/cheatsheet.mjs', 'tools/reference/en.mjs', 'tools/reference/zh.mjs', 'assets/reference/cheatsheet.css'] },
   { derive: 'controllers' },
@@ -66,6 +69,9 @@ export const STATIC = [
 const GALLERY_SRC = [PROFILE_DIR, 'tools/controllers/page.mjs', 'tools/controllers/en.mjs', 'tools/controllers/zh.mjs'];
 
 const DERIVED = {
+  names() {
+    return namePages().map((n) => ({ id: NAME_BASE + n.slug, path: NAME_BASE + n.slug + '/', langs: ['en', 'zh'], src: ['p5/reference', 'p5/oav-p5.js', 'tools/reference/name-page.mjs', 'tools/reference/page.mjs', 'assets/reference'], group: 'reference' }));
+  },
   chapters() {
     return DOC_PAGES.map((ch) => ({ id: 'docs/' + ch.id, path: chapterPath(ch.id), langs: ['en', 'zh'], src: [ch.en, ch.zh, 'tools/docs'], group: 'docs' }));
   },

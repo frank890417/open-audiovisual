@@ -132,3 +132,19 @@ html.refpage { --ref-search-h: 74px; scroll-padding-top: calc(var(--bar-h) + var
 
 /* a long address or identifier in a sentence must wrap, not widen the page (SAMPLES_URL's summary did, on a 360 px phone) */
 .ref p, .ref li, .ref td, .ref dd, .ref figcaption { overflow-wrap: anywhere; }
+
+/* ───────────── an oav-p5 name on its own page (/docs/reference/<name>/) and its short card on the index ───────────── */
+.ref-name-page .ref-one { margin-top: 14px; padding-top: 0; }
+.ref-name-page .ref-one::before { display: none; }
+.ref-own { border-top: 0; padding-top: 18px; }
+.chapter .ref-head h1 { margin: 0; font: 700 clamp(30px, 4vw, 46px)/1.1 var(--mono); letter-spacing: -.01em; overflow-wrap: anywhere; }
+.chapter .ref-head h1 code { font: inherit; background: none; padding: 0; color: var(--fg); }
+.chapter .ref-head h1 .anchor { font-size: .5em; vertical-align: .3em; }
+.ref-own .ref-loader { margin: 26px 0 12px; }
+.ref-brief { padding-bottom: 22px; }
+.chapter .ref-head h3 a { color: inherit; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px; }
+.chapter .ref-head h3 a:hover { text-decoration-color: var(--sig); }
+.chapter .ref-more { margin: 0 !important; font: 500 13px/1.5 var(--mono); }
+.chapter .ref-more a { color: var(--fg); text-decoration-color: var(--sig); }
+.toc-names .toc-ch > a { padding: 4px 0; }
+.toc-names code { font-size: 13px; background: none; padding: 0; color: inherit; }

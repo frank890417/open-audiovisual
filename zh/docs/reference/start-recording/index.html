@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>startRecording()｜oav-p5 參考｜open-audiovisual</title>
+<meta name="description" content="把畫布和草圖發出的聲音錄成一支影片檔，並回傳一個 promise，告訴你錄影有沒有開始。從按鍵或點擊啟動：if (key === 'r') startRecording();。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/reference/start-recording/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-recording/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-recording/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-recording/">
+<link rel="describedby" href="../../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="startRecording()｜oav-p5 參考｜open-audiovisual">
+<meta property="og:description" content="把畫布和草圖發出的聲音錄成一支影片檔，並回傳一個 promise，告訴你錄影有沒有開始。從按鍵或點擊啟動：if (key === 'r') startRecording();。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/reference/start-recording/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="startRecording()｜oav-p5 參考｜open-audiovisual">
+<meta name="twitter:description" content="把畫布和草圖發出的聲音錄成一支影片檔，並回傳一個 promise，告訴你錄影有沒有開始。從按鍵或點擊啟動：if (key === 'r') startRecording();。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../../site.webmanifest">
+<link rel="preload" href="../../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="start-recording">
+<script defer src="../../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/reference/start-recording/#article","url":"https://openaudiovisual.com/zh/docs/reference/start-recording/","name":"startRecording()｜oav-p5 參考｜open-audiovisual","description":"把畫布和草圖發出的聲音錄成一支影片檔，並回傳一個 promise，告訴你錄影有沒有開始。從按鍵或點擊啟動：if (key === 'r') startRecording();。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"startRecording()","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"錄影與錄音","breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/reference/start-recording/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/reference/start-recording/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"API 參考","item":"https://openaudiovisual.com/zh/docs/reference/"},{"@type":"ListItem","position":4,"name":"startRecording()","item":"https://openaudiovisual.com/zh/docs/reference/start-recording/"}]}]}</script>
+<link rel="stylesheet" href="../../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../../zh/#play">彈奏</a>
+    <a href="../../../../zh/#how">運作方式</a>
+    <a href="../../../../zh/#works">作品</a>
+    <a href="../../../../zh/controllers/">控制器</a>
+    <a href="../../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../../zh/webtoe/">WebToe</a>
+    <a href="../../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../../docs/reference/start-recording/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../../zh/docs/reference/start-recording/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">分類</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="參考分類">
+      <p class="toc-title">錄影與錄音</p>
+      <p class="toc-ref"><a href="../">所有名稱</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch"><a href="../recording-is-on/"><span class="t"><code>recordingIsOn</code></span></a></li>
+        <li class="toc-ch"><a href="../recording-saved/"><span class="t"><code>recordingSaved()</code></span></a></li>
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>startRecording()</code></span></a></li>
+        <li class="toc-ch"><a href="../stop-recording/"><span class="t"><code>stopRecording()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-record/"><span class="t"><code>OAVp5.record</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-record-formats/"><span class="t"><code>OAVp5.record.formats()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-record-fps/"><span class="t"><code>OAVp5.record.fps</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-record-last/"><span class="t"><code>OAVp5.record.last</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-record-on/"><span class="t"><code>OAVp5.record.on()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-record-seconds/"><span class="t"><code>OAVp5.record.seconds</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-record-shot/"><span class="t"><code>OAVp5.record.shot()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-record-sources/"><span class="t"><code>OAVp5.record.sources</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-record-state/"><span class="t"><code>OAVp5.record.state</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 參考</a> · <a href="../#cat-record">錄影與錄音</a></p>
+    <div class="chapter ref-one" data-chapter="startRecording">
+<article class="ref ref-own" data-name="startRecording" data-names="startRecording OAVp5.record.start" data-kw="record recording video capture mp4 webm screen recording export video instagram canvas mediarecorder 錄影 錄製 影片 輸出影片 擷取 mp4 存成影片 畫布 作品影片" data-kind="function" data-pkg="oav-p5" data-cat="record"><span id="OAVp5.record.start" class="ref-alias-anchor"></span><header class="ref-head"><h1 id="startRecording"><code>startRecording()</code><a class="anchor" href="#startRecording" aria-label="這一條的連結">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="function" title="呼叫它。">函式</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>startRecording([o])</code></pre><p class="ref-also">同一條也包含: <code>OAVp5.record.start</code></p>
+<p class="ref-summary">把畫布和草圖發出的聲音錄成一支影片檔，並回傳一個 promise，告訴你錄影有沒有開始。</p>
+<div class="ref-body"><p>從按鍵或點擊啟動：<code>if (key === 'r') startRecording();</code>。進影片的只有畫布本身（用畫布自己的像素大小，視網膜螢幕會是兩倍），加上你的草圖發出的所有聲音：<a href="../start-sound/"><code>startSound()</code></a> 的樂器、鼓機、打擊墊、開著的麥克風、p5.sound 1.x，混成一條音軌，喇叭照常播放。🎹、鼓機格子和提示卡片是頁面的一部分，不在畫布上，所以不會出現在影片裡。錄到一半才開起來的聲音也會加入。</p><p>瀏覽器寫得出 MP4 的話，檔案就是 MP4（H.264 + AAC，Instagram、YouTube 和所有剪輯軟體都吃），不然就是 WebM，這時會有卡片說 Instagram 不收 WebM。檔名像 <code>oav-20261015-183005.mp4</code>，有給 <code>name</code> 的話會放在中間。錄完會自動下載，在能分享檔案的手機上，卡片會出現「分享」按鈕。呼叫 <a href="../stop-recording/"><code>stopRecording()</code></a> 之後，或 <code>seconds</code> 時間到了，會呼叫 <a href="../recording-saved/"><code>recordingSaved(info)</code></a> 並把細節交給它。沒給 <code>seconds</code> 的話，錄到最長長度就會自己停（預設 300 秒，載入選項 <code>reclimit</code> 可以改）。</p><p>沒給 <code>bitrate</code> 的話，畫質跟著畫布大小走：每個像素、每一格 0.16 位元，限制在每秒 4 到 16 百萬位元之間（每秒超過 30 格時是 24）。已經在錄的時候再呼叫 <code>startRecording()</code>，不會開新的一支。每支錄完之後，卡片會說錄了什麼，有地方不對的話還會說是什麼、為什麼：有聲音開著、卻沒有任何東西進到音軌、WebM、幾乎是空的檔案、畫布明明不是黑的、影片卻是黑的。</p></div>
+<div class="callout callout-tip"><p class="callout-title">呼叫之前</p><p>瀏覽器要有 <code>MediaRecorder</code>，沒有的話會跳出卡片說明，promise 也會 resolve 成 <code>false</code>。畫面馬上就錄，但頁面要有一次點擊或按鍵之後才能發聲，所以在第一次點擊之前開始的錄影，一開始是沒有聲音可錄的。畫布上如果有別的網站來的圖片（沒有 CORS），就錄不了，卡片會告訴你。</p></div><div class="ref-sec"><h4>參數</h4><div class="table-wrap"><table><thead><tr><th>名稱</th><th>型別</th><th>說明</th></tr></thead><tbody><tr><td><code>o</code></td><td><code>Number | Object</code></td><td>給數字就是秒數：<code>startRecording(10)</code> 錄十秒後自己停。給物件的話，可以放 <code>seconds</code>（同樣是秒數，不會超過一支影片的長度上限，預設 300）、<code>fps</code>（每秒幾格，最多 60，預設 30）、<code>mic</code>（<code>false</code> 就不把麥克風錄進影片）、<code>name</code>（檔名裡的一個詞）、<code>canvas</code>（要錄的畫布：<code>&lt;canvas&gt;</code>、p5 畫布或 <code>createGraphics()</code> 的緩衝區，預設是頁面上最大的那張 p5 畫布）和 <code>bitrate</code>（每秒幾位元）。不傳就一直錄到呼叫 <a href="../stop-recording/"><code>stopRecording()</code></a>。 <span class="ref-tag">可省略</span></td></tr></tbody></table></div></div><div class="ref-sec"><h4>回傳</h4><p><code>Promise&lt;Boolean&gt;</code> 錄影開始之後 resolve 成 <code>true</code>（已經在錄的話也是 <code>true</code>）。載入選項 <code>record</code> 是 <code>off</code>、找不到要錄的畫布、這個瀏覽器沒有 <code>MediaRecorder</code>、或是啟動失敗的時候，resolve 成 <code>false</code>，並且會有一張卡片說明原因。</p></div><div class="ref-sec"><h4>注意</h4><ul><li>在 🎹 面板裡，⏺ 不用寫程式就能開始和停止錄影，📷 把畫布存成 PNG（見 <a href="../oavp5-record-shot/"><code>OAVp5.record.shot()</code></a>）。錄影的時候，🎹 按鈕上會有紅點和時間。載入選項 <a href="../option-record/"><code>record</code></a>（<code>on</code>、<code>nomic</code> 或 <code>off</code>）、<code>recfps</code>、<code>reclimit</code>、<code>title</code> 可以設定預設值。</li><li>麥克風開著的時候會錄進影片：請戴耳機，不然喇叭的聲音會被錄兩次。p5 2.x 用的 p5.sound 把每個聲音直接接到喇叭，沒辦法錄（卡片會說明），請改用 p5 1.11，或用 <a href="../start-sound/"><code>startSound()</code></a> 和 <a href="../start-drums/"><code>startDrums()</code></a>。草圖自己用 Tone.js 或 Web Audio 程式發出的聲音，同樣不會被錄進去。</li><li>畫在畫布上的東西都會進影片，所以提示文字只在 <a href="../recording-is-on/"><code>recordingIsOn</code></a> 是 false 的時候畫。</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">每個草圖的第一行</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>複製這一行</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">底下的範例為了簡短把這一行省略了。按「複製」會自動把它放在最上面，貼進 OpenProcessing（或 p5 編輯器）就能直接跑。</p>
+      <label class="ref-p5v" hidden>活範例用的 p5 <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> 捲到範例就自動執行</label>
+    </aside>
+<div class="ref-sec"><h4>範例</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> keyPressed() {
+  <span class="tk">if</span> (key === <span class="ts">'r'</span>) startRecording(5);   <span class="tc">// five seconds, then it stops and downloads</span>
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  circle(200 + sin(frameCount * 0.05) * 120, 150, 50);
+  <span class="tk">if</span> (!recordingIsOn) {
+    fill(255);
+    text(<span class="ts">'press r to record 5 seconds'</span>, 20, 30);   <span class="tc">// not drawn while recording</span>
+  }
+}</code></pre></div>
+<figcaption>按 r：五秒後會下載一支圓在移動的 MP4，影片裡沒有那行提示文字。</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  startDrums(<span class="ts">'four on floor'</span>, 110);
+  startSound(<span class="ts">'synth/pluck'</span>);
+}
+
+<span class="tk">function</span> keyPressed() {
+  <span class="tk">if</span> (key === <span class="ts">'r'</span>) {
+    <span class="tk">if</span> (recordingIsOn) stopRecording();
+    <span class="tk">else</span> startRecording({ name: <span class="ts">'my piece'</span>, fps: 60 });
+  }
+  <span class="tk">if</span> (key === <span class="ts">'a'</span>) midi.play(60, 0.8);
+}
+
+<span class="tk">function</span> kickDetected(level) {
+  background(255 * level);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  <span class="tk">if</span> (!recordingIsOn) {
+    fill(255);
+    text(<span class="ts">'click once, then: a plays a note, r starts and stops a recording'</span>, 20, 30);
+  }
+}</code></pre></div>
+<figcaption>先點一下讓瀏覽器允許出聲，再按 r 開始、再按 r 停止：檔案裡有畫面、鼓聲和你彈的音。</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">let</span> layer;
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  layer = createGraphics(200, 200);
+}
+
+<span class="tk">function</span> keyPressed() {
+  <span class="tk">if</span> (key === <span class="ts">'g'</span>) startRecording({ canvas: layer, seconds: 3 });   <span class="tc">// record the buffer, not the main canvas</span>
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  layer.background(40);
+  layer.circle(100 + sin(frameCount * 0.1) * 60, 100, 40);
+  image(layer, 100, 50);
+  fill(255);
+  text(<span class="ts">'press g to record the small square only (3 s)'</span>, 20, 30);
+}</code></pre></div>
+<figcaption>按 g：影片是 200 × 200，只有那個緩衝區，不是 400 × 300 的整張畫布。</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>相關</h4><ul><li><a href="../stop-recording/"><code>stopRecording()</code></a> <span>停止錄影，影片完成後會下載，並交給 <code>recordingSaved(info)</code> 和回傳的 promise。</span></li><li><a href="../recording-is-on/"><code>recordingIsOn</code></a> <span>現在有沒有在錄影。</span></li><li><a href="../recording-saved/"><code>recordingSaved()</code></a> <span>一個由你定義的事件函式：錄影存好、檢查完之後呼叫它，帶著一個說明這支檔案的 <code>info</code> 物件。</span></li><li><a href="../oavp5-record/"><code>OAVp5.record</code></a> <span>錄影相關名稱背後的物件：狀態、時間、最後一支檔案、這個瀏覽器能寫的格式，以及存圖的函式。</span></li><li><a href="../oavp5-record-shot/"><code>OAVp5.record.shot()</code></a> <span>把畫布本身存成 PNG 圖片（不包含 🎹 和提示卡片）並下載。</span></li><li><a href="../start-sound/"><code>startSound()</code></a> <span>讓你彈的鍵都聽得到，用你指定的樂器發聲，並回傳一個 promise，告訴你聲音有沒有開起來。</span></li><li><a href="../start-drums/"><code>startDrums()</code></a> <span>啟動鼓機：頁面上出現一個 16 格的鼓機，播放預設節奏、你自己畫的格子或一行字寫的節奏，並替草圖數小節。</span></li><li><a href="../draw-rhythm/"><code>drawRhythm()</code></a> <span>把節奏畫在畫布上，樣式可以是格子、圓或螺旋，有播放頭，打擊的時候會亮起來，所以錄影也錄得到。</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L2335">p5/oav-p5.js 第 2335 行</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">下一步</p>
+      <h2 id="next-step-title">用到 startRecording() 的範例</h2>
+      <dl class="next-groups">
+        <div><dt>startRecording()</dt><dd><a href="../../../../examples/20-p5-rhythm-visual/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">20</span> p5 看得見的節奏</a><a href="../../../../examples/21-p5-record/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">21</span> p5 錄成影片</a></dd></div>
+      </dl>
+      <p class="next-made"><a class="more" href="../../../../zh/made-with/" data-oav-event="next_step" data-oav-to="made_with">用它做的 →</a> <span>跑在 open-audiovisual 上的作品、工具與課程，還有怎麼把你的加進來。</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../">所有名稱</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../../zh/">首頁</a>
+      <a href="../../../../zh/examples/">範例</a>
+      <a href="../../../../zh/controllers/">控制器</a>
+      <a href="../../../../zh/docs/">文件</a>
+      <a href="../../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../../zh/webtoe/">WebToe</a>
+      <a href="../../../../zh/made-with/">用它做的</a>
+      <a href="../../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../../llms.txt">llms.txt</a>
+      <a href="../../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"分類","tocClose":"關閉分類"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ 執行","stop":"■ 停止","copy":"複製","copied":"已複製","copyTitle":"複製範例，最上面會加上載入 oav-p5 的那一行","open":"OpenProcessing ↗","frameTitle":"活範例","notRun":"這一頁不執行（這是模組）：在你自己的頁面跑，或看範例頁。","needsMic":"會要求麥克風","reset":"↺ 還原","auto":"捲到範例就自動執行","editHint":"可以直接改程式碼，改完範例會自己重跑","micOn":"🎤 點一下開麥克風"},"searchNone":"沒有符合「{q}」的條目。換短一點的字，或從左邊的分類找。","searchCount":"{total} 條裡的 {n} 條","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../../p5/oav-p5.js","lang":"zh"}</script>
+<script type="module" src="../../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

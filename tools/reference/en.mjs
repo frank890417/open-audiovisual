@@ -111,6 +111,14 @@ export default {
   cheatLink: 'One-page cheat sheet',
   // the next-step block at the end of the page (and of the cheat sheet): the examples whose code uses each group's names
   next: { title: 'Examples that use these names' },
+  // the page of one oav-p5 name (/docs/reference/<name>/, tools/reference/name-page.mjs) and its card on this page
+  name: {
+    title: '{name} · oav-p5 reference · open-audiovisual',
+    eyebrow: 'oav-p5 reference',
+    all: 'All names',
+    more: 'The full entry',
+    uses: 'Examples that use {name}',
+  },
   untilWritten: 'waiting for a description',
   sourceLine: '{file}, line {line}',
 };

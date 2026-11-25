@@ -6,7 +6,8 @@
 //
 // The index is made from the same sources as the pages it points at, never typed:
 //   ref   every entry of the API reference, from docs/reference/reference.json (tools/build-reference.mjs writes it first):
-//         name, aliases (and midi.x for OAVp5.x), the keywords in BOTH languages, the one-line summary, the description
+//         name, aliases (and midi.x for OAVp5.x), the keywords in BOTH languages, the one-line summary, the description;
+//         an oav-p5 name points at its own page (/docs/reference/<name>/), a package export at its card (/docs/reference/#id)
 //   doc   every chapter and every section of the handbook, from the same Markdown render the chapter pages are made of
 //         (tools/build-docs.mjs buildDocs()): title, heading, the text under it (code blocks left out), pointing at the
 //         chapter's own page (/docs/<chapter>/#heading; the p5 chapter's is /p5/)
@@ -25,6 +26,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDocs } from './build-docs.mjs';
 import { chapterPath } from './docs/anchors.mjs';
+import { nameSlug, P5_PACKAGE } from './reference/slug.mjs';
 import { EXAMPLES, plainText } from './examples/catalog.mjs';
 import { catalog, detailPath } from './controllers/page.mjs';
 import { fullName } from './controllers/detail.mjs';
@@ -82,7 +84,7 @@ function refRecords() {
       const kw = [...(e.keywords.en || []), ...(e.keywords.zh || [])].join(' ');
       const text = mdText([...e.description.map((d) => d[l]), e.needs && e.needs[l], ...e.notes.map((n) => n[l]), ...e.params.map((p) => `${p.name} ${p[l] || ''}`), e.returns && e.returns[l], e.value && e.value[l]].filter(Boolean).join(' '));
       out.push({
-        i: `ref:${e.id}`, t: 'ref', l, n: shown + (e.kind === 'function' || e.kind === 'event' ? '()' : ''), u: `${pre(l)}docs/reference/#${e.id}`,
+        i: `ref:${e.id}`, t: 'ref', l, n: shown + (e.kind === 'function' || e.kind === 'event' ? '()' : ''), u: `${pre(l)}docs/reference/${e.package === P5_PACKAGE && e.documented ? nameSlug(e.id) + '/' : '#' + e.id}`,
         s: `${e.package} · ${UI[l].kinds[e.kind] || e.kind}`, a: [...al, ...midi].join(' '), k: kw,
         d: e.summary ? mdText(e.summary[l]) : '', x: cap(plain(e.documented ? text : e.signature), CAP.ref), w: Math.min(refs.get(e.id) || 0, 40),
       });

@@ -25,7 +25,7 @@
   'use strict';
 
   var PAGE_TYPES = ['home', 'controller', 'controllers_index', 'verify', 'example', 'examples_index', 'docs', 'reference',
-    'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found', 'devices_index', 'fixture', 'device', 'docs_chapter'];
+    'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found', 'devices_index', 'fixture', 'device', 'docs_chapter', 'reference_name'];
   /** event (without the oav_ prefix) → the params it may carry, in order */
   var SPEC = {
     copy: ['kind', 'page_type'],

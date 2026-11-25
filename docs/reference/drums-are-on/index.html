@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>drumsAreOn · oav-p5 reference · open-audiovisual</title>
+<meta name="description" content="Whether the drum machine is playing right now. Use it to tell &quot;the drums are not running&quot; from &quot;the drums are at step 0&quot;: drumStep is 0 in both cases.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/reference/drums-are-on/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drums-are-on/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drums-are-on/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drums-are-on/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="drumsAreOn · oav-p5 reference · open-audiovisual">
+<meta property="og:description" content="Whether the drum machine is playing right now. Use it to tell &quot;the drums are not running&quot; from &quot;the drums are at step 0&quot;: drumStep is 0 in both cases.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/reference/drums-are-on/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="drumsAreOn · oav-p5 reference · open-audiovisual">
+<meta name="twitter:description" content="Whether the drum machine is playing right now. Use it to tell &quot;the drums are not running&quot; from &quot;the drums are at step 0&quot;: drumStep is 0 in both cases.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="drums-are-on">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/reference/drums-are-on/#article","url":"https://openaudiovisual.com/docs/reference/drums-are-on/","name":"drumsAreOn · oav-p5 reference · open-audiovisual","description":"Whether the drum machine is playing right now. Use it to tell \"the drums are not running\" from \"the drums are at step 0\": drumStep is 0 in both cases.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"drumsAreOn","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"Drum machine and rhythm","breadcrumb":{"@id":"https://openaudiovisual.com/docs/reference/drums-are-on/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/reference/drums-are-on/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"API reference","item":"https://openaudiovisual.com/docs/reference/"},{"@type":"ListItem","position":4,"name":"drumsAreOn","item":"https://openaudiovisual.com/docs/reference/drums-are-on/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../../#play">Play</a>
+    <a href="../../../#how">How it works</a>
+    <a href="../../../#works">Works</a>
+    <a href="../../../controllers/">Controllers</a>
+    <a href="../../../docs/" aria-current="page">Docs</a>
+    <a href="../../../webtoe/">WebToe</a>
+    <a href="../../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../../docs/reference/drums-are-on/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/reference/drums-are-on/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Categories</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Reference categories">
+      <p class="toc-title">Drum machine and rhythm</p>
+      <p class="toc-ref"><a href="../">All names</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch"><a href="../beat-phase/"><span class="t"><code>beatPhase</code></span></a></li>
+        <li class="toc-ch"><a href="../draw-rhythm/"><span class="t"><code>drawRhythm()</code></span></a></li>
+        <li class="toc-ch"><a href="../drum-bpm/"><span class="t"><code>drumBpm</code></span></a></li>
+        <li class="toc-ch"><a href="../drum-hit/"><span class="t"><code>drumHit()</code></span></a></li>
+        <li class="toc-ch"><a href="../drum-phase/"><span class="t"><code>drumPhase</code></span></a></li>
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>drumsAreOn</code></span></a></li>
+        <li class="toc-ch"><a href="../rhythm-changed/"><span class="t"><code>rhythmChanged()</code></span></a></li>
+        <li class="toc-ch"><a href="../start-drums/"><span class="t"><code>startDrums()</code></span></a></li>
+        <li class="toc-ch"><a href="../stop-drums/"><span class="t"><code>stopDrums()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums/"><span class="t"><code>OAVp5.drums</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-copy-text/"><span class="t"><code>OAVp5.drums.copyText</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-edit/"><span class="t"><code>OAVp5.drums.edit()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-history/"><span class="t"><code>OAVp5.drums.history</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-now/"><span class="t"><code>OAVp5.drums.now</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-on/"><span class="t"><code>OAVp5.drums.on()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-pattern/"><span class="t"><code>OAVp5.drums.pattern</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-src/"><span class="t"><code>OAVp5.drums.src</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-state/"><span class="t"><code>OAVp5.drums.state</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-strudel-url/"><span class="t"><code>OAVp5.drums.strudelUrl</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-undo/"><span class="t"><code>OAVp5.drums.undo()</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 reference</a> · <a href="../#cat-drums">Drum machine and rhythm</a></p>
+    <div class="chapter ref-one" data-chapter="drumsAreOn">
+<article class="ref ref-own" data-name="drumsAreOn" data-names="drumsAreOn" data-kw="drums on playing status running drum machine 鼓機 開著 播放中 狀態 有沒有在播" data-kind="variable" data-pkg="oav-p5" data-cat="drums"><header class="ref-head"><h1 id="drumsAreOn"><code>drumsAreOn</code><a class="anchor" href="#drumsAreOn" aria-label="Link to this entry">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="variable" title="Read it like mouseX.">variable</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>drumsAreOn</code></pre>
+<p class="ref-summary">Whether the drum machine is playing right now.</p>
+<div class="ref-body"><p>Use it to tell "the drums are not running" from "the drums are at step 0": <a href="../drum-step/"><code>drumStep</code></a> is 0 in both cases. <code>if (drumsAreOn) { … }</code> is also the right guard before you read <a href="../drum-phase/"><code>drumPhase</code></a>. It changes only when the machine starts or stops, and reading it never starts anything.</p><p>For the reason behind a <code>false</code> read <code>OAVp5.drums.state</code>: <a href="../oavp5-drums-state/"><code>'loading'</code></a> while the module arrives, <code>'stopped'</code> when the grid is up but not playing, <code>'error'</code> when it could not load.</p></div>
+<dl class="ref-value"><div><dt>Type</dt><dd><code>Boolean</code></dd></div></dl><p>True while the machine plays, false at the start, after <a href="../stop-drums/"><code>stopDrums()</code></a>, after an error and while the grid's own checkbox is unticked.</p><div class="callout callout-tip"><p class="callout-title">Before it has a value</p><p>It becomes true after <a href="../start-drums/"><code>startDrums()</code></a> (or 🥁 in the 🎹 panel) has loaded the machine, usually within a fraction of a second.</p></div><div class="ref-sec"><h4>Notes</h4><ul><li>A sketch that declares its own variable called <code>drumsAreOn</code> keeps it: oav-p5 leaves the name alone and a card says to read <code>OAVp5.drums.state === 'on'</code> instead.</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">Every sketch starts with one line</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>Copy the line</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">The examples below leave it out to stay short. Copy puts it at the top for you, so what you paste into OpenProcessing (or the p5 editor) runs as it is.</p>
+      <label class="ref-p5v" hidden>p5 for live examples <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> Run the examples as they scroll into view</label>
+    </aside>
+<div class="ref-sec"><h4>Examples</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ Run</button><button type="button" class="ref-stop" hidden>■ Stop</button><button type="button" class="ref-reset" hidden>↺ Reset</button><button type="button" class="ref-copy" hidden title="Copies the example with the line that loads oav-p5 on top">Copy</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  startDrums(<span class="ts">'half time'</span>, 100);
+  textAlign(CENTER, CENTER);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  fill(drumsAreOn ? color(120, 220, 140) : color(220, 160, 60));
+  circle(width / 2, height / 2, 80);
+  fill(255);
+  text(drumsAreOn ? <span class="ts">'drums are on'</span> : <span class="ts">'drums are not running'</span>, width / 2, height - 40);
+}</code></pre></div>
+<figcaption>An amber circle for a moment while the machine loads, then green.</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="callout callout-warning"><p class="callout-title">To be confirmed</p><p>After <a href="../stop-drums/"><code>stopDrums()</code></a> and a second <a href="../start-drums/"><code>startDrums()</code></a> it stayed <code>false</code> while the machine played again (Chromium, oav-p5 0.8.0). Not confirmed whether that is intended.</p></div><div class="ref-sec ref-rel"><h4>Related</h4><ul><li><a href="../start-drums/"><code>startDrums()</code></a> <span>Starts a drum machine: a 16-step grid on the page that plays a preset, your own grid or one line of rhythm, and counts the bars for your sketch.</span></li><li><a href="../stop-drums/"><code>stopDrums()</code></a> <span>Stops the drum machine and hides its card.</span></li><li><a href="../drum-step/"><code>drumStep</code></a> <span>Which of the 16 steps of the bar the drum machine just played, from 0 to 15.</span></li><li><a href="../sound-is-on/"><code>soundIsOn</code></a> <span>Whether notes are being heard right now: true once <code>startSound()</code> has finished, false before and after.</span></li><li><a href="../mic-is-on/"><code>micIsOn</code></a> <span>Whether the microphone is running right now.</span></li><li><a href="../recording-is-on/"><code>recordingIsOn</code></a> <span>Whether a recording is running right now.</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L316">p5/oav-p5.js, line 316</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">Next step</p>
+      <h2 id="next-step-title">Examples that use drumsAreOn</h2>
+      <dl class="next-groups">
+        <div><dt>drumsAreOn</dt><dd><a href="../../../examples/26-p5-rhythm-lab/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">26</span> p5 rhythm lab</a><a href="../../../examples/18-p5-drums/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">18</span> p5 drums and bars</a><a href="../../../examples/19-p5-rhythm/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">19</span> p5 one line of rhythm</a></dd></div>
+      </dl>
+      <p class="next-made"><a class="more" href="../../../made-with/" data-oav-event="next_step" data-oav-to="made_with">Made with →</a> <span>Works, tools and classes that run on open-audiovisual, and how to add yours.</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../">All names</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../../">Home</a>
+      <a href="../../../examples/">Examples</a>
+      <a href="../../../controllers/">Controllers</a>
+      <a href="../../../docs/">Docs</a>
+      <a href="../../../p5/">p5.js in one line</a>
+      <a href="../../../webtoe/">WebToe</a>
+      <a href="../../../made-with/">Made with</a>
+      <a href="../../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Categories","tocClose":"Close categories"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ Run","stop":"■ Stop","copy":"Copy","copied":"Copied","copyTitle":"Copies the example with the line that loads oav-p5 on top","open":"OpenProcessing ↗","frameTitle":"Live example","notRun":"Not run on this page (a module): run it in your own page, or see the examples.","needsMic":"Asks for the microphone","reset":"↺ Reset","auto":"Run the examples as they scroll into view","editHint":"Edit the code: the example reruns as you type","micOn":"🎤 Click to use the microphone"},"searchNone":"Nothing matches “{q}”. Try a shorter word, or browse the categories on the left.","searchCount":"{n} of {total}","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../p5/oav-p5.js","lang":"en"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

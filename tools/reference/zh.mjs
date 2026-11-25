@@ -111,6 +111,14 @@ export default {
   },
   // 頁面（和小抄）最後的「下一步」區塊：程式裡用到每一組名稱的範例
   next: { title: '用到這些名稱的範例' },
+  // 一個 oav-p5 名稱自己的一頁（/zh/docs/reference/<名稱>/，tools/reference/name-page.mjs），和它在總表上的卡片
+  name: {
+    title: '{name}｜oav-p5 參考｜open-audiovisual',
+    eyebrow: 'oav-p5 參考',
+    all: '所有名稱',
+    more: '完整說明',
+    uses: '用到 {name} 的範例',
+  },
   cheatLink: '一頁速查表',
   untilWritten: '等著寫說明',
   sourceLine: '{file} 第 {line} 行',

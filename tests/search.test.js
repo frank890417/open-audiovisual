@@ -147,7 +147,7 @@ const askRef = (q, lang = 'en', n = 5) => ask(q, lang, 80).filter((r) => r.t ===
 test('micLevel: found in both languages, by its name, its words, and the Chinese and English words people use', () => {
   assert.equal(idx.records.filter((r) => r.i === 'ref:micLevel').length, 2, 'one record per language');
   assert.equal(ask('micLevel', 'en', 1)[0].i, 'ref:micLevel');
-  assert.equal(ask('micLevel', 'zh', 1)[0].u, 'zh/docs/reference/#micLevel', 'from the Chinese site it is the Chinese page');
+  assert.equal(ask('micLevel', 'zh', 1)[0].u, 'zh/docs/reference/mic-level/', 'from the Chinese site it is the Chinese page, its own page');
   for (const q of ['miclevel', 'mic level', '麥克風 音量', 'volume', 'loudness']) assert.equal(askRef(q, 'en', 1)[0].i, 'ref:micLevel', `"${q}": micLevel is the first API reference result`);
   for (const q of ['microphone', '麥克風', '音量']) assert.ok(askRef(q, 'en', 3).some((r) => r.i === 'ref:micLevel'), `"${q}": micLevel is in the first three API reference results`);
   // the keywords of both languages are in both records, so a query in one language is answered in the language of the page you are on

@@ -323,6 +323,2442 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/"/>
   </url>
   <url>
+    <loc>https://openaudiovisual.com/docs/reference/control-change/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/control-change/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/control-change/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/control-change/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/control-change/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/control-change/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/control-change/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/control-change/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/fader/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/fader/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/fader/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/fader/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/fader/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/fader/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/fader/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/fader/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/fader1/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/fader1/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/fader1/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/fader1/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/fader1/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/fader1/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/fader1/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/fader1/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/fader-moved/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/fader-moved/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/fader-moved/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/fader-moved/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/fader-moved/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/fader-moved/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/fader-moved/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/fader-moved/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/knob/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/knob/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/knob/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/knob/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/knob/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/knob/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/knob/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/knob/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/knob1/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/knob1/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/knob1/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/knob1/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/knob1/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/knob1/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/knob1/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/knob1/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/knob-moved/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/knob-moved/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/knob-moved/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/knob-moved/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/knob-moved/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/knob-moved/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/knob-moved/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/knob-moved/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/last-note-frame-count/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/last-note-frame-count/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/last-note-frame-count/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/last-note-frame-count/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/last-note-frame-count/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/last-note-frame-count/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/last-note-frame-count/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/last-note-frame-count/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/last-note-ts/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/last-note-ts/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/last-note-ts/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/last-note-ts/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/last-note-ts/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/last-note-ts/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/last-note-ts/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/last-note-ts/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/midi-message/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/midi-message/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/midi-message/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/midi-message/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/midi-message/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/midi-message/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/midi-message/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/midi-message/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note-is-down/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-is-down/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-is-down/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-is-down/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note-is-down/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-is-down/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-is-down/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-is-down/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note-is-pressed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-is-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-is-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-is-pressed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note-is-pressed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-is-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-is-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-is-pressed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note-off/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-off/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-off/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-off/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note-off/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-off/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-off/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-off/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note-pressed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-pressed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note-pressed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-pressed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note-released/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-released/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-released/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-released/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note-released/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-released/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-released/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-released/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/pad/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pad/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pad/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pad/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/pad/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pad/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pad/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pad/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/pad1/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pad1/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pad1/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pad1/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/pad1/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pad1/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pad1/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pad1/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/pad-pressed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pad-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pad-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pad-pressed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/pad-pressed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pad-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pad-pressed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pad-pressed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/pad-released/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pad-released/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pad-released/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pad-released/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/pad-released/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pad-released/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pad-released/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pad-released/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/pitch-bend/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pitch-bend/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pitch-bend/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pitch-bend/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/pitch-bend/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/pitch-bend/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/pitch-bend/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/pitch-bend/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/velocity/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/velocity/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/velocity/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/velocity/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/velocity/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/velocity/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/velocity/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/velocity/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-bend/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-bend/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-bend/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-bend/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-bend/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-bend/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-bend/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-bend/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-cc/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-cc/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-cc/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-cc/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-cc/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-cc/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-cc/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-cc/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-connect-hardware/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-connect-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-connect-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-connect-hardware/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-connect-hardware/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-connect-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-connect-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-connect-hardware/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-devices/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-devices/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-devices/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-devices/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-devices/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-devices/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-devices/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-devices/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-hardware/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-hardware/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-hardware/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-hardware/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-held/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-held/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-held/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-held/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-held/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-held/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-held/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-held/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-input/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-input/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-input/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-input/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-input/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-input/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-input/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-input/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-is-down/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-is-down/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-is-down/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-is-down/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-is-down/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-is-down/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-is-down/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-is-down/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-last/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-last/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-last/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-last/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-last/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-last/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-last/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-last/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-note/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-note/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-note/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-note/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-note/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-note/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-note/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-note/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-panel/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-panel/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-panel/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-panel/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-panel/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-panel/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-panel/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-panel/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-panel-open/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-panel-open/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-panel-open/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-panel-open/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-panel-open/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-panel-open/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-panel-open/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-panel-open/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-phone/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-phone/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-phone/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-phone/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-phone/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-phone/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-phone/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-phone/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-play/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-play/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-play/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-play/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-play/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-play/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-play/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-play/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-wiring/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-wiring/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-wiring/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-wiring/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-wiring/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-wiring/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-wiring/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-wiring/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note-freq/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-freq/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-freq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-freq/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note-freq/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-freq/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-freq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-freq/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note-name/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-name/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-name/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-name/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note-name/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-name/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-name/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-name/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/note-number/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-number/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-number/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-number/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/note-number/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/note-number/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/note-number/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/note-number/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/bass/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/bass/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/bass/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/bass/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/bass/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/bass/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/bass/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/bass/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/beat/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/beat/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/beat/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/beat/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/beat/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/beat/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/beat/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/beat/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/beat-detected/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/beat-detected/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/beat-detected/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/beat-detected/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/beat-detected/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/beat-detected/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/beat-detected/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/beat-detected/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/kick-detected/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/kick-detected/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/kick-detected/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/kick-detected/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/kick-detected/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/kick-detected/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/kick-detected/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/kick-detected/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/kick-is-detected/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/kick-is-detected/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/kick-is-detected/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/kick-is-detected/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/kick-is-detected/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/kick-is-detected/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/kick-is-detected/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/kick-is-detected/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/last-kick-frame-count/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/last-kick-frame-count/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/last-kick-frame-count/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/last-kick-frame-count/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/last-kick-frame-count/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/last-kick-frame-count/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/last-kick-frame-count/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/last-kick-frame-count/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/last-kick-ts/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/last-kick-ts/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/last-kick-ts/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/last-kick-ts/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/last-kick-ts/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/last-kick-ts/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/last-kick-ts/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/last-kick-ts/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/mic-is-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/mic-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/mic-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/mic-is-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/mic-is-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/mic-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/mic-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/mic-is-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/mic-level/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/mic-level/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/mic-level/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/mic-level/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/mic-level/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/mic-level/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/mic-level/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/mic-level/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/mic-sensitivity/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/mic-sensitivity/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/mic-sensitivity/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/mic-sensitivity/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/mic-sensitivity/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/mic-sensitivity/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/mic-sensitivity/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/mic-sensitivity/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/start-mic/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-mic/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-mic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-mic/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/start-mic/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-mic/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-mic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-mic/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/stop-mic/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/stop-mic/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/stop-mic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/stop-mic/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/stop-mic/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/stop-mic/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/stop-mic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/stop-mic/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-analyzer/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-analyzer/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-analyzer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-analyzer/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-analyzer/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-analyzer/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-analyzer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-analyzer/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-bass/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-bass/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-bass/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-bass/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-bass/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-bass/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-bass/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-bass/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-db/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-db/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-db/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-db/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-db/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-db/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-db/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-db/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-error/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-error/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-error/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-error/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-error/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-error/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-error/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-error/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-floor/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-floor/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-floor/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-floor/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-floor/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-floor/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-floor/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-floor/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-level/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-level/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-level/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-level/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-level/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-level/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-level/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-level/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-rms/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-rms/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-rms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-rms/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-rms/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-rms/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-rms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-rms/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-sensitivity/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-sensitivity/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-sensitivity/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-sensitivity/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-sensitivity/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-sensitivity/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-sensitivity/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-sensitivity/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-start/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-start/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-start/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-start/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-start/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-start/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-start/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-start/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-mic-stop/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-stop/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-stop/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-stop/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-mic-stop/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-mic-stop/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-mic-stop/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-mic-stop/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/sound-is-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/sound-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/sound-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/sound-is-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/sound-is-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/sound-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/sound-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/sound-is-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/start-sound/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-sound/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-sound/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-sound/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/start-sound/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-sound/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-sound/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-sound/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/stop-sound/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/stop-sound/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/stop-sound/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/stop-sound/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/stop-sound/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/stop-sound/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/stop-sound/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/stop-sound/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-sound/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-sound/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-sound-error/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-error/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-error/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-error/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-sound-error/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-error/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-error/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-error/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-sound-instrument/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-instrument/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-instrument/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-instrument/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-sound-instrument/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-instrument/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-instrument/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-instrument/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-sound-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-sound-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-sound-status/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-status/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-status/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-status/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-sound-status/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-status/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-status/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-status/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/beat-phase/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/beat-phase/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/beat-phase/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/beat-phase/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/beat-phase/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/beat-phase/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/beat-phase/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/beat-phase/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/draw-rhythm/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/draw-rhythm/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/draw-rhythm/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/draw-rhythm/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/draw-rhythm/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/draw-rhythm/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/draw-rhythm/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/draw-rhythm/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/drum-bpm/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-bpm/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-bpm/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-bpm/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/drum-bpm/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-bpm/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-bpm/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-bpm/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/drum-hit/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-hit/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-hit/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-hit/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/drum-hit/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-hit/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-hit/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-hit/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/drum-phase/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-phase/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-phase/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-phase/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/drum-phase/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-phase/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-phase/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-phase/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/drums-are-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drums-are-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drums-are-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drums-are-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/drums-are-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drums-are-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drums-are-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drums-are-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/rhythm-changed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/rhythm-changed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/rhythm-changed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/rhythm-changed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/rhythm-changed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/rhythm-changed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/rhythm-changed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/rhythm-changed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/start-drums/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-drums/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-drums/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-drums/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/start-drums/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-drums/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-drums/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-drums/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/stop-drums/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/stop-drums/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/stop-drums/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/stop-drums/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/stop-drums/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/stop-drums/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/stop-drums/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/stop-drums/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-copy-text/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-copy-text/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-copy-text/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-copy-text/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-copy-text/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-copy-text/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-copy-text/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-copy-text/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-edit/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-edit/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-edit/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-edit/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-edit/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-edit/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-edit/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-edit/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-history/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-history/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-history/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-history/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-history/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-history/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-history/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-history/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-now/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-now/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-now/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-now/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-now/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-now/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-now/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-now/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-pattern/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-pattern/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-pattern/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-pattern/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-pattern/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-pattern/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-pattern/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-pattern/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-src/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-src/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-src/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-src/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-src/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-src/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-src/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-src/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-strudel-url/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-strudel-url/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-strudel-url/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-strudel-url/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-strudel-url/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-strudel-url/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-strudel-url/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-strudel-url/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-undo/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-undo/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-undo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-undo/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-undo/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-undo/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-undo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-undo/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/bar-started/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/bar-started/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/bar-started/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/bar-started/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/bar-started/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/bar-started/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/bar-started/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/bar-started/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/cue/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/cue/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/cue/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/cue/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/cue/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/cue/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/cue/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/cue/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/cue-fired/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/cue-fired/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/cue-fired/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/cue-fired/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/cue-fired/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/cue-fired/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/cue-fired/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/cue-fired/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/cue-name/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/cue-name/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/cue-name/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/cue-name/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/cue-name/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/cue-name/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/cue-name/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/cue-name/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/drum-bar/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-bar/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-bar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-bar/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/drum-bar/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-bar/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-bar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-bar/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/drum-step/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-step/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-step/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-step/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/drum-step/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/drum-step/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/drum-step/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/drum-step/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/step-started/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/step-started/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/step-started/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/step-started/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/step-started/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/step-started/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/step-started/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/step-started/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-count/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-count/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-count/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-count/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-count/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-count/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-count/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-count/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-cue/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-cue/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-cue/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-cue/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-cue/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-cue/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-cue/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-cue/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-cues/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-cues/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-cues/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-cues/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-cues/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-cues/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-cues/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-cues/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/count/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/count/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/count/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/count/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/count/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/count/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/count/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/count/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/draw-trail/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/draw-trail/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/draw-trail/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/draw-trail/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/draw-trail/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/draw-trail/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/draw-trail/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/draw-trail/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/env/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/env/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/env/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/env/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/env/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/env/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/env/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/env/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/lag/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/lag/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/lag/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/lag/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/lag/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/lag/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/lag/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/lag/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/scope/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/scope/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/scope/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/scope/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/scope/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/scope/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/scope/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/scope/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/slope/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/slope/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/slope/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/slope/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/slope/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/slope/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/slope/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/slope/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/speed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/speed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/speed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/speed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/speed/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/speed/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/speed/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/speed/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/spring/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/spring/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/spring/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/spring/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/spring/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/spring/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/spring/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/spring/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/trail/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/trail/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/trail/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/trail/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/trail/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/trail/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/trail/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/trail/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/trigger/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/trigger/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/trigger/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/trigger/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/trigger/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/trigger/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/trigger/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/trigger/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-chop/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-chop/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-chop-module/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop-module/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop-module/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop-module/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop-module/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-chop-reset/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop-reset/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-reset/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop-reset/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-chop-reset/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop-reset/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-reset/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop-reset/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-chop-slots/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop-slots/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-slots/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop-slots/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-chop-slots/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop-slots/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-slots/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop-slots/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-chop-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-chop-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/recording-is-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/recording-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/recording-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/recording-is-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/recording-is-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/recording-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/recording-is-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/recording-is-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/recording-saved/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/recording-saved/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/recording-saved/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/recording-saved/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/recording-saved/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/recording-saved/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/recording-saved/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/recording-saved/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/start-recording/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-recording/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-recording/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-recording/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/start-recording/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-recording/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-recording/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-recording/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/stop-recording/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/stop-recording/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/stop-recording/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/stop-recording/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/stop-recording/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/stop-recording/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/stop-recording/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/stop-recording/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-record/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-record/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-record-formats/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-formats/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-formats/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-formats/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-record-formats/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-formats/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-formats/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-formats/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-record-fps/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-fps/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-fps/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-fps/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-record-fps/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-fps/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-fps/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-fps/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-record-last/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-last/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-last/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-last/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-record-last/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-last/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-last/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-last/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-record-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-record-on/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-on/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-on/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-on/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-record-seconds/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-seconds/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-seconds/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-seconds/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-record-seconds/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-seconds/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-seconds/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-seconds/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-record-shot/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-shot/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-shot/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-shot/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-record-shot/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-shot/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-shot/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-shot/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-record-sources/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-sources/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-sources/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-sources/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-record-sources/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-sources/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-sources/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-sources/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-record-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-record-state/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-record-state/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-record-state/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-record-state/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-clock/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-clock/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-clock/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-clock/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-clock/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-clock/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-clock/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-clock/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-compact/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-compact/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-compact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-compact/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-compact/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-compact/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-compact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-compact/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-corner/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-corner/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-corner/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-corner/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-corner/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-corner/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-corner/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-corner/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-debug/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-debug/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-debug/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-debug/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-debug/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-debug/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-debug/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-debug/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-dock/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-dock/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-dock/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-dock/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-dock/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-dock/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-dock/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-dock/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-drumlatency/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-drumlatency/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-drumlatency/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-drumlatency/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-drumlatency/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-drumlatency/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-drumlatency/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-drumlatency/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-drums/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-drums/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-drums/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-drums/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-drums/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-drums/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-drums/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-drums/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-hardware/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-hardware/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-hardware/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-hardware/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-hardware/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-hints/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-hints/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-hints/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-hints/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-hints/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-hints/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-hints/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-hints/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-link/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-link/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-link/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-link/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-link/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-link/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-link/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-link/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-linkdelay/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-linkdelay/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-linkdelay/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-linkdelay/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-linkdelay/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-linkdelay/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-linkdelay/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-linkdelay/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-mic/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-mic/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-mic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-mic/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-mic/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-mic/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-mic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-mic/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-opc/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-opc/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-opc/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-opc/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-opc/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-opc/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-opc/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-opc/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-panel/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-panel/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-panel/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-panel/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-panel/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-panel/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-panel/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-panel/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-profile/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-profile/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-profile/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-profile/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-profile/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-profile/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-recfps/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-recfps/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-recfps/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-recfps/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-recfps/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-recfps/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-recfps/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-recfps/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-reclimit/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-reclimit/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-reclimit/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-reclimit/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-reclimit/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-reclimit/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-reclimit/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-reclimit/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-record/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-record/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-record/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-record/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-record/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-record/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-record/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-record/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-relay/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-relay/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-relay/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-relay/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-relay/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-relay/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-relay/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-relay/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-remote/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-remote/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-remote/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-remote/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-remote/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-remote/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-remote/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-remote/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-room/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-room/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-room/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-room/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-room/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-room/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-room/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-room/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-scope/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-scope/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-scope/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-scope/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-scope/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-scope/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-scope/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-scope/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-shim/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-shim/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-shim/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-shim/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-shim/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-shim/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-shim/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-shim/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-sound/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-sound/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-sound/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-sound/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-sound/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-sound/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-sound/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-sound/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-strudel/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-strudel/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-strudel/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-strudel/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-strudel/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-strudel/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-strudel/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-strudel/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-telemetry/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-telemetry/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-telemetry/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-telemetry/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-telemetry/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-telemetry/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-telemetry/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-telemetry/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-title/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-title/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-title/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-title/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-title/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-title/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-title/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-title/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/option-tone/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-tone/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-tone/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-tone/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/option-tone/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-tone/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-tone/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-tone/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-check/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-check/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-check/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-check/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-check/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-check/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-check/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-check/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-clock/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-clock/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-clock/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-clock/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-clock/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-clock/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-clock/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-clock/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-clock-bpm/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-clock-bpm/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-clock-bpm/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-clock-bpm/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-clock-bpm/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-clock-bpm/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-clock-bpm/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-clock-bpm/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-clock-info/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-clock-info/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-clock-info/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-clock-info/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-clock-info/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-clock-info/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-clock-info/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-clock-info/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-clock-phase/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-clock-phase/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-clock-phase/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-clock-phase/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-clock-phase/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-clock-phase/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-clock-phase/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-clock-phase/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-clock/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-clock/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-clock/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-clock/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-clock/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-clock/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-clock/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-clock/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-drums-machine/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-machine/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-machine/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-machine/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-drums-machine/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-drums-machine/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-drums-machine/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-drums-machine/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-hints/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-hints/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-hints/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-hints/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-hints/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-hints/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-hints/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-hints/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-link/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-link/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-link/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-link/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-link/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-link/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-link/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-link/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-link-info/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-link-info/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-link-info/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-link-info/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-link-info/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-link-info/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-link-info/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-link-info/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-sound-shell/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-shell/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-shell/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-shell/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-sound-shell/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-sound-shell/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-sound-shell/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-sound-shell/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/docs/reference/oavp5-version/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-version/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-version/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-version/"/>
+  </url>
+  <url>
+    <loc>https://openaudiovisual.com/zh/docs/reference/oavp5-version/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-version/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-version/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-version/"/>
+  </url>
+  <url>
     <loc>https://openaudiovisual.com/docs/cheatsheet/</loc>
     <lastmod>2026-11-25</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/cheatsheet/"/>

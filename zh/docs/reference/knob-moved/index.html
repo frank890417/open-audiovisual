@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>knobMoved()｜oav-p5 參考｜open-audiovisual</title>
+<meta name="description" content="你來定義這個函式。旋鈕一轉動，oav-p5 就呼叫它。就像旋鈕版的 mouseMoved()： 旋鈕每送出一格就呼叫一次，轉動的時候每秒會呼叫很多次。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/reference/knob-moved/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/knob-moved/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/knob-moved/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/knob-moved/">
+<link rel="describedby" href="../../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="knobMoved()｜oav-p5 參考｜open-audiovisual">
+<meta property="og:description" content="你來定義這個函式。旋鈕一轉動，oav-p5 就呼叫它。就像旋鈕版的 mouseMoved()： 旋鈕每送出一格就呼叫一次，轉動的時候每秒會呼叫很多次。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/reference/knob-moved/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="knobMoved()｜oav-p5 參考｜open-audiovisual">
+<meta name="twitter:description" content="你來定義這個函式。旋鈕一轉動，oav-p5 就呼叫它。就像旋鈕版的 mouseMoved()： 旋鈕每送出一格就呼叫一次，轉動的時候每秒會呼叫很多次。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../../site.webmanifest">
+<link rel="preload" href="../../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="knob-moved">
+<script defer src="../../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/reference/knob-moved/#article","url":"https://openaudiovisual.com/zh/docs/reference/knob-moved/","name":"knobMoved()｜oav-p5 參考｜open-audiovisual","description":"你來定義這個函式。旋鈕一轉動，oav-p5 就呼叫它。就像旋鈕版的 mouseMoved()： 旋鈕每送出一格就呼叫一次，轉動的時候每秒會呼叫很多次。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"knobMoved()","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"MIDI：旋鈕、推桿、打擊墊、琴鍵","breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/reference/knob-moved/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/reference/knob-moved/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"API 參考","item":"https://openaudiovisual.com/zh/docs/reference/"},{"@type":"ListItem","position":4,"name":"knobMoved()","item":"https://openaudiovisual.com/zh/docs/reference/knob-moved/"}]}]}</script>
+<link rel="stylesheet" href="../../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../../zh/#play">彈奏</a>
+    <a href="../../../../zh/#how">運作方式</a>
+    <a href="../../../../zh/#works">作品</a>
+    <a href="../../../../zh/controllers/">控制器</a>
+    <a href="../../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../../zh/webtoe/">WebToe</a>
+    <a href="../../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../../docs/reference/knob-moved/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../../zh/docs/reference/knob-moved/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">分類</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="參考分類">
+      <p class="toc-title">MIDI：旋鈕、推桿、打擊墊、琴鍵</p>
+      <p class="toc-ref"><a href="../">所有名稱</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch"><a href="../control-change/"><span class="t"><code>controlChange()</code></span></a></li>
+        <li class="toc-ch"><a href="../fader/"><span class="t"><code>fader()</code></span></a></li>
+        <li class="toc-ch"><a href="../fader1/"><span class="t"><code>fader1</code></span></a></li>
+        <li class="toc-ch"><a href="../fader-moved/"><span class="t"><code>faderMoved()</code></span></a></li>
+        <li class="toc-ch"><a href="../knob/"><span class="t"><code>knob()</code></span></a></li>
+        <li class="toc-ch"><a href="../knob1/"><span class="t"><code>knob1</code></span></a></li>
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>knobMoved()</code></span></a></li>
+        <li class="toc-ch"><a href="../last-note-frame-count/"><span class="t"><code>lastNoteFrameCount</code></span></a></li>
+        <li class="toc-ch"><a href="../last-note-ts/"><span class="t"><code>lastNoteTs</code></span></a></li>
+        <li class="toc-ch"><a href="../midi-message/"><span class="t"><code>midiMessage()</code></span></a></li>
+        <li class="toc-ch"><a href="../note/"><span class="t"><code>note</code></span></a></li>
+        <li class="toc-ch"><a href="../note-is-down/"><span class="t"><code>noteIsDown()</code></span></a></li>
+        <li class="toc-ch"><a href="../note-is-pressed/"><span class="t"><code>noteIsPressed</code></span></a></li>
+        <li class="toc-ch"><a href="../note-off/"><span class="t"><code>noteOff()</code></span></a></li>
+        <li class="toc-ch"><a href="../note-on/"><span class="t"><code>noteOn()</code></span></a></li>
+        <li class="toc-ch"><a href="../note-pressed/"><span class="t"><code>notePressed()</code></span></a></li>
+        <li class="toc-ch"><a href="../note-released/"><span class="t"><code>noteReleased()</code></span></a></li>
+        <li class="toc-ch"><a href="../pad/"><span class="t"><code>pad()</code></span></a></li>
+        <li class="toc-ch"><a href="../pad1/"><span class="t"><code>pad1</code></span></a></li>
+        <li class="toc-ch"><a href="../pad-pressed/"><span class="t"><code>padPressed()</code></span></a></li>
+        <li class="toc-ch"><a href="../pad-released/"><span class="t"><code>padReleased()</code></span></a></li>
+        <li class="toc-ch"><a href="../pitch-bend/"><span class="t"><code>pitchBend()</code></span></a></li>
+        <li class="toc-ch"><a href="../velocity/"><span class="t"><code>velocity</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-bend/"><span class="t"><code>OAVp5.bend</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-cc/"><span class="t"><code>OAVp5.cc</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-connect-hardware/"><span class="t"><code>OAVp5.connectHardware()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-devices/"><span class="t"><code>OAVp5.devices</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-hardware/"><span class="t"><code>OAVp5.hardware</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-held/"><span class="t"><code>OAVp5.held</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-input/"><span class="t"><code>OAVp5.input()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-is-down/"><span class="t"><code>OAVp5.isDown()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-last/"><span class="t"><code>OAVp5.last</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-note/"><span class="t"><code>OAVp5.note</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-on/"><span class="t"><code>OAVp5.on()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-panel/"><span class="t"><code>OAVp5.panel</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-panel-open/"><span class="t"><code>OAVp5.panel.open()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-phone/"><span class="t"><code>OAVp5.phone()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-play/"><span class="t"><code>OAVp5.play()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-wiring/"><span class="t"><code>OAVp5.wiring()</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 參考</a> · <a href="../#cat-midi">MIDI：旋鈕、推桿、打擊墊、琴鍵</a></p>
+    <div class="chapter ref-one" data-chapter="knobMoved">
+<article class="ref ref-own" data-name="knobMoved" data-names="knobMoved" data-kw="knob moved callback event turn 旋鈕 轉動 事件 回呼" data-kind="event" data-pkg="oav-p5" data-cat="midi"><header class="ref-head"><h1 id="knobMoved"><code>knobMoved()</code><a class="anchor" href="#knobMoved" aria-label="這一條的連結">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="event" title="你來定義這個函式，oav-p5 會呼叫它。">事件</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code><span class="tk">function</span> knobMoved(n, value) {}</code></pre>
+<p class="ref-summary">你來定義這個函式。旋鈕一轉動，oav-p5 就呼叫它。</p>
+<div class="ref-body"><p>就像旋鈕版的 <code>mouseMoved()</code>：</p><div class="term" data-lang="js"><div class="term-bar"><span>js</span></div><pre><code class="language-js"><span class="tk">function</span> knobMoved(n, value) {
+  <span class="tc">// 旋鈕 n 現在在 value</span>
+}</code></pre></div><p>旋鈕每送出一格就呼叫一次，轉動的時候每秒會呼叫很多次。想要每個畫面讀一次，就改用 <a href="../knob1/"><code>knob1</code></a>。</p></div>
+<div class="ref-sec"><h4>參數</h4><div class="table-wrap"><table><thead><tr><th>名稱</th><th>型別</th><th>說明</th></tr></thead><tbody><tr><td><code>n</code></td><td><code>Number</code></td><td>哪一顆旋鈕（1 是第一顆，照控制器上印的）。 </td></tr><tr><td><code>value</code></td><td><code>Number</code></td><td>現在的位置，0..1。 </td></tr></tbody></table></div></div><aside class="ref-loader">
+      <p class="ref-loader-title">每個草圖的第一行</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>複製這一行</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">底下的範例為了簡短把這一行省略了。按「複製」會自動把它放在最上面，貼進 OpenProcessing（或 p5 編輯器）就能直接跑。</p>
+      <label class="ref-p5v" hidden>活範例用的 p5 <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> 捲到範例就自動執行</label>
+    </aside>
+<div class="ref-sec"><h4>範例</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">let</span> last = <span class="ts">'turn a knob'</span>;
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  textAlign(CENTER, CENTER);
+  textSize(32);
+}
+
+<span class="tk">function</span> knobMoved(n, value) {
+  last = <span class="ts">'knob '</span> + n + <span class="ts">': '</span> + nf(value, 1, 2);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  fill(255);
+  text(last, width / 2, height / 2);
+}</code></pre></div>
+<figcaption>顯示哪一顆旋鈕動了、現在在哪。接上控制器，或按右下角的 🎹 用螢幕上的控制器。</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>相關</h4><ul><li><a href="../knob1/"><code>knob1</code></a> <span>控制器上旋鈕的位置，從 0 到 1：<code>knob1</code> 是第一顆旋鈕，<code>knob2</code> 是第二顆，一直到 <code>knob8</code>。</span></li><li><a href="../fader-moved/"><code>faderMoved()</code></a> <span>你來定義這個函式。推桿一移動，oav-p5 就呼叫它。</span></li><li><a href="../control-change/"><code>controlChange()</code></a> <span>你來定義這個函式。每收到一個 MIDI 控制變化（旋鈕、推桿、調變輪、延音踏板），oav-p5 就呼叫它，不管控制器認不認得。</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L254">p5/oav-p5.js 第 254 行</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">下一步</p>
+      <h2 id="next-step-title">用到 knobMoved() 的範例</h2>
+      
+      <p class="next-made"><a class="more" href="../../../../zh/made-with/" data-oav-event="next_step" data-oav-to="made_with">用它做的 →</a> <span>跑在 open-audiovisual 上的作品、工具與課程，還有怎麼把你的加進來。</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../">所有名稱</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../../zh/">首頁</a>
+      <a href="../../../../zh/examples/">範例</a>
+      <a href="../../../../zh/controllers/">控制器</a>
+      <a href="../../../../zh/docs/">文件</a>
+      <a href="../../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../../zh/webtoe/">WebToe</a>
+      <a href="../../../../zh/made-with/">用它做的</a>
+      <a href="../../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../../llms.txt">llms.txt</a>
+      <a href="../../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"分類","tocClose":"關閉分類"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ 執行","stop":"■ 停止","copy":"複製","copied":"已複製","copyTitle":"複製範例，最上面會加上載入 oav-p5 的那一行","open":"OpenProcessing ↗","frameTitle":"活範例","notRun":"這一頁不執行（這是模組）：在你自己的頁面跑，或看範例頁。","needsMic":"會要求麥克風","reset":"↺ 還原","auto":"捲到範例就自動執行","editHint":"可以直接改程式碼，改完範例會自己重跑","micOn":"🎤 點一下開麥克風"},"searchNone":"沒有符合「{q}」的條目。換短一點的字，或從左邊的分類找。","searchCount":"{total} 條裡的 {n} 條","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../../p5/oav-p5.js","lang":"zh"}</script>
+<script type="module" src="../../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>clock（選項）｜oav-p5 參考｜open-audiovisual</title>
+<meta name="description" content="外部的 MIDI 時鐘（來自 DAW、Strudel 或鼓機）要不要推動 drumPhase、drumBpm 和鼓機：follow 或 off。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/reference/option-clock/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-clock/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-clock/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-clock/">
+<link rel="describedby" href="../../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="clock（選項）｜oav-p5 參考｜open-audiovisual">
+<meta property="og:description" content="外部的 MIDI 時鐘（來自 DAW、Strudel 或鼓機）要不要推動 drumPhase、drumBpm 和鼓機：follow 或 off。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/reference/option-clock/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="clock（選項）｜oav-p5 參考｜open-audiovisual">
+<meta name="twitter:description" content="外部的 MIDI 時鐘（來自 DAW、Strudel 或鼓機）要不要推動 drumPhase、drumBpm 和鼓機：follow 或 off。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../../site.webmanifest">
+<link rel="preload" href="../../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="option-clock">
+<script defer src="../../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/reference/option-clock/#article","url":"https://openaudiovisual.com/zh/docs/reference/option-clock/","name":"clock（選項）｜oav-p5 參考｜open-audiovisual","description":"外部的 MIDI 時鐘（來自 DAW、Strudel 或鼓機）要不要推動 drumPhase、drumBpm 和鼓機：follow 或 off。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"clock（選項）","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"載入選項","breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/reference/option-clock/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/reference/option-clock/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"API 參考","item":"https://openaudiovisual.com/zh/docs/reference/"},{"@type":"ListItem","position":4,"name":"clock（選項）","item":"https://openaudiovisual.com/zh/docs/reference/option-clock/"}]}]}</script>
+<link rel="stylesheet" href="../../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../../zh/#play">彈奏</a>
+    <a href="../../../../zh/#how">運作方式</a>
+    <a href="../../../../zh/#works">作品</a>
+    <a href="../../../../zh/controllers/">控制器</a>
+    <a href="../../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../../zh/webtoe/">WebToe</a>
+    <a href="../../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../../docs/reference/option-clock/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../../zh/docs/reference/option-clock/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">分類</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="參考分類">
+      <p class="toc-title">載入選項</p>
+      <p class="toc-ref"><a href="../">所有名稱</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>clock</code></span></a></li>
+        <li class="toc-ch"><a href="../option-compact/"><span class="t"><code>compact</code></span></a></li>
+        <li class="toc-ch"><a href="../option-corner/"><span class="t"><code>corner</code></span></a></li>
+        <li class="toc-ch"><a href="../option-debug/"><span class="t"><code>debug</code></span></a></li>
+        <li class="toc-ch"><a href="../option-dock/"><span class="t"><code>dock</code></span></a></li>
+        <li class="toc-ch"><a href="../option-drumlatency/"><span class="t"><code>drumlatency</code></span></a></li>
+        <li class="toc-ch"><a href="../option-drums/"><span class="t"><code>drums</code></span></a></li>
+        <li class="toc-ch"><a href="../option-hardware/"><span class="t"><code>hardware</code></span></a></li>
+        <li class="toc-ch"><a href="../option-hints/"><span class="t"><code>hints</code></span></a></li>
+        <li class="toc-ch"><a href="../option-link/"><span class="t"><code>link</code></span></a></li>
+        <li class="toc-ch"><a href="../option-linkdelay/"><span class="t"><code>linkdelay</code></span></a></li>
+        <li class="toc-ch"><a href="../option-mic/"><span class="t"><code>mic</code></span></a></li>
+        <li class="toc-ch"><a href="../option-opc/"><span class="t"><code>opc</code></span></a></li>
+        <li class="toc-ch"><a href="../option-panel/"><span class="t"><code>panel</code></span></a></li>
+        <li class="toc-ch"><a href="../option-profile/"><span class="t"><code>profile</code></span></a></li>
+        <li class="toc-ch"><a href="../option-recfps/"><span class="t"><code>recfps</code></span></a></li>
+        <li class="toc-ch"><a href="../option-reclimit/"><span class="t"><code>reclimit</code></span></a></li>
+        <li class="toc-ch"><a href="../option-record/"><span class="t"><code>record</code></span></a></li>
+        <li class="toc-ch"><a href="../option-relay/"><span class="t"><code>relay</code></span></a></li>
+        <li class="toc-ch"><a href="../option-remote/"><span class="t"><code>remote</code></span></a></li>
+        <li class="toc-ch"><a href="../option-room/"><span class="t"><code>room</code></span></a></li>
+        <li class="toc-ch"><a href="../option-scope/"><span class="t"><code>scope</code></span></a></li>
+        <li class="toc-ch"><a href="../option-shim/"><span class="t"><code>shim</code></span></a></li>
+        <li class="toc-ch"><a href="../option-sound/"><span class="t"><code>sound</code></span></a></li>
+        <li class="toc-ch"><a href="../option-strudel/"><span class="t"><code>strudel</code></span></a></li>
+        <li class="toc-ch"><a href="../option-telemetry/"><span class="t"><code>telemetry</code></span></a></li>
+        <li class="toc-ch"><a href="../option-title/"><span class="t"><code>title</code></span></a></li>
+        <li class="toc-ch"><a href="../option-tone/"><span class="t"><code>tone</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 參考</a> · <a href="../#cat-options">載入選項</a></p>
+    <div class="chapter ref-one" data-chapter="option-clock">
+<article class="ref ref-own" data-name="clock" data-names="option:clock" data-kw="clock midi clock sync tempo external clock follow DAW Strudel 時鐘 midi 時鐘 同步 速度 外部時鐘 跟隨 DAW" data-kind="option" data-pkg="oav-p5" data-cat="options"><header class="ref-head"><h1 id="option-clock"><code>clock</code><a class="anchor" href="#option-clock" aria-label="這一條的連結">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="option" title="載入那一行的一項設定。">選項</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>?oav_clock=follow | off</code></pre>
+<p class="ref-summary">外部的 MIDI 時鐘（來自 DAW、Strudel 或鼓機）要不要推動 <code>drumPhase</code>、<code>drumBpm</code> 和鼓機：<code>follow</code> 或 <code>off</code>。</p>
+<div class="ref-body"><p>設成 <code>follow</code> 的時候，外部的 MIDI 時鐘（每拍 24 個 tick，加上 start、stop 和 song position）會被跟隨：<a href="../drum-phase/"><code>drumPhase</code></a>、<a href="../beat-phase/"><code>beatPhase</code></a>、<a href="../drum-bar/"><code>drumBar</code></a>、<a href="../drum-step/"><code>drumStep</code></a>、<a href="../drum-bpm/"><code>drumBpm</code></a> 讀的就是它，已經在跑的鼓機也會從它取得速度和第一拍，跟著它開始和停止。<a href="../oavp5-clock/"><code>OAVp5.clock</code></a> 會告訴你它聽到什麼。沒有東西送時鐘過來的時候，什麼都不會改變。</p><p><code>off</code> 會忽略所有時鐘訊息：<code>OAVp5.clock.info.state</code> 一直是 <code>'none'</code>。頁面上或機器上有東西在送時鐘、而你不想讓草圖跟著它走的時候用。</p></div>
+<dl class="ref-value"><div><dt>型別</dt><dd><code>String</code></dd></div><div><dt>可用的值</dt><dd><code>follow | off</code></dd></div><div><dt>預設</dt><dd><code>follow</code></dd></div></dl><p><code>off</code> 以外的任何值都當作 <code>follow</code>。</p><div class="ref-sec"><h4>注意</h4><ul><li>要在 oav-p5 載入之前設好。寫在載入那一行上面的 <code>window.OAV_P5 = { clock: … };</code> 優先，其次是網頁網址上的 <code>?oav_clock=…</code>，最後是 script 自己網址上的 <code>?clock=…</code>。寫在 <code>window.OAV_P5</code> 裡的值會被轉成文字，所以要寫 <code>'off'</code>，不要寫 <code>false</code>。在 OpenProcessing 上，網頁網址要寫成 <code>?sketch_oav_clock=…</code>（專案的 README 說 OpenProcessing 會把它轉給草圖）。</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">每個草圖的第一行</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>複製這一行</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">底下的範例為了簡短把這一行省略了。按「複製」會自動把它放在最上面，貼進 OpenProcessing（或 p5 編輯器）就能直接跑。</p>
+      <label class="ref-p5v" hidden>活範例用的 p5 <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> 捲到範例就自動執行</label>
+    </aside>
+<div class="ref-sec"><h4>範例</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js">window.OAV_P5 = { clock: <span class="ts">'off'</span> };
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  OAVp5.input([0xFA]);                          <span class="tc">// MIDI start</span>
+  setInterval(() =&gt; OAVp5.input([0xF8]), 20);   <span class="tc">// clock ticks: 24 a beat, here 50 a second</span>
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  fill(255);
+  text(<span class="ts">'clock option: '</span> + OAVp5.options.clock, 20, 30);
+  text(<span class="ts">'external clock: '</span> + OAVp5.clock.info.state, 20, 60);   <span class="tc">// none: the clock is ignored</span>
+}</code></pre></div>
+<figcaption>草圖自己送出一個假的 MIDI 時鐘，設成 <code>clock: 'off'</code> 就被忽略：狀態一直是 "none"。把第一行刪掉，就會變成 "running"。</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>相關</h4><ul><li><a href="../oavp5-clock/"><code>OAVp5.clock</code></a> <span>oav-p5 聽到的外部 MIDI 時鐘：它的狀態、速度、現在在小節的哪裡。在別的程式或設備開始送時鐘之前什麼都沒有。</span></li><li><a href="../drum-phase/"><code>drumPhase</code></a> <span>鼓機走到這一小節的哪裡，從 0 平滑地增加到快要 1，是你耳朵聽到的位置。</span></li><li><a href="../beat-phase/"><code>beatPhase</code></a> <span>鼓機走到這一拍的哪裡，從 0 平滑地增加到快要 1，一小節會跑四次。</span></li><li><a href="../start-drums/"><code>startDrums()</code></a> <span>啟動鼓機：頁面上出現一個 16 格的鼓機，播放預設節奏、你自己畫的格子或一行字寫的節奏，並替草圖數小節。</span></li><li><a href="../option-link/"><code>link</code></a> <span>加入一個房間：房間相同的 oav-p5 頁面，會透過中繼聽到彼此的程式送出的聲音。填房間名，空的就是不加入。</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L155">p5/oav-p5.js 第 155 行</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">下一步</p>
+      <h2 id="next-step-title">用到 clock 的範例</h2>
+      
+      <p class="next-made"><a class="more" href="../../../../zh/made-with/" data-oav-event="next_step" data-oav-to="made_with">用它做的 →</a> <span>跑在 open-audiovisual 上的作品、工具與課程，還有怎麼把你的加進來。</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../">所有名稱</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../../zh/">首頁</a>
+      <a href="../../../../zh/examples/">範例</a>
+      <a href="../../../../zh/controllers/">控制器</a>
+      <a href="../../../../zh/docs/">文件</a>
+      <a href="../../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../../zh/webtoe/">WebToe</a>
+      <a href="../../../../zh/made-with/">用它做的</a>
+      <a href="../../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../../llms.txt">llms.txt</a>
+      <a href="../../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"分類","tocClose":"關閉分類"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ 執行","stop":"■ 停止","copy":"複製","copied":"已複製","copyTitle":"複製範例，最上面會加上載入 oav-p5 的那一行","open":"OpenProcessing ↗","frameTitle":"活範例","notRun":"這一頁不執行（這是模組）：在你自己的頁面跑，或看範例頁。","needsMic":"會要求麥克風","reset":"↺ 還原","auto":"捲到範例就自動執行","editHint":"可以直接改程式碼，改完範例會自己重跑","micOn":"🎤 點一下開麥克風"},"searchNone":"沒有符合「{q}」的條目。換短一點的字，或從左邊的分類找。","searchCount":"{total} 條裡的 {n} 條","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../../p5/oav-p5.js","lang":"zh"}</script>
+<script type="module" src="../../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

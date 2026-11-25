@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>startSound() · oav-p5 reference · open-audiovisual</title>
+<meta name="description" content="Makes the keys you play heard through an instrument you name, and returns a promise that says whether sound is on.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/reference/start-sound/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/start-sound/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/start-sound/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/start-sound/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="startSound() · oav-p5 reference · open-audiovisual">
+<meta property="og:description" content="Makes the keys you play heard through an instrument you name, and returns a promise that says whether sound is on.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/reference/start-sound/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="startSound() · oav-p5 reference · open-audiovisual">
+<meta name="twitter:description" content="Makes the keys you play heard through an instrument you name, and returns a promise that says whether sound is on.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="start-sound">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/reference/start-sound/#article","url":"https://openaudiovisual.com/docs/reference/start-sound/","name":"startSound() · oav-p5 reference · open-audiovisual","description":"Makes the keys you play heard through an instrument you name, and returns a promise that says whether sound is on.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"startSound()","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"Sound and instruments","breadcrumb":{"@id":"https://openaudiovisual.com/docs/reference/start-sound/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/reference/start-sound/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"API reference","item":"https://openaudiovisual.com/docs/reference/"},{"@type":"ListItem","position":4,"name":"startSound()","item":"https://openaudiovisual.com/docs/reference/start-sound/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../../#play">Play</a>
+    <a href="../../../#how">How it works</a>
+    <a href="../../../#works">Works</a>
+    <a href="../../../controllers/">Controllers</a>
+    <a href="../../../docs/" aria-current="page">Docs</a>
+    <a href="../../../webtoe/">WebToe</a>
+    <a href="../../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../../docs/reference/start-sound/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/reference/start-sound/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Categories</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Reference categories">
+      <p class="toc-title">Sound and instruments</p>
+      <p class="toc-ref"><a href="../">All names</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch"><a href="../sound-is-on/"><span class="t"><code>soundIsOn</code></span></a></li>
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>startSound()</code></span></a></li>
+        <li class="toc-ch"><a href="../stop-sound/"><span class="t"><code>stopSound()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-sound/"><span class="t"><code>OAVp5.sound</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-sound-error/"><span class="t"><code>OAVp5.sound.error</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-sound-instrument/"><span class="t"><code>OAVp5.sound.instrument</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-sound-state/"><span class="t"><code>OAVp5.sound.state</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-sound-status/"><span class="t"><code>OAVp5.sound.status</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 reference</a> · <a href="../#cat-sound">Sound and instruments</a></p>
+    <div class="chapter ref-one" data-chapter="startSound">
+<article class="ref ref-own" data-name="startSound" data-names="startSound OAVp5.sound.start" data-kw="sound audio instrument piano organ synth play tone speaker hear make noise 聲音 發聲 樂器 鋼琴 風琴 合成器 彈奏 喇叭 出聲 音色" data-kind="function" data-pkg="oav-p5" data-cat="sound"><span id="OAVp5.sound.start" class="ref-alias-anchor"></span><header class="ref-head"><h1 id="startSound"><code>startSound()</code><a class="anchor" href="#startSound" aria-label="Link to this entry">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="function" title="Call it.">function</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>startSound([id])</code></pre><p class="ref-also">Also: <code>OAVp5.sound.start</code></p>
+<p class="ref-summary">Makes the keys you play heard through an instrument you name, and returns a promise that says whether sound is on.</p>
+<div class="ref-body"><p>Call it once in <code>setup()</code>: <code>startSound('organ')</code>. From then on every note you play is heard: a MIDI keyboard, the 🎹 on screen, a phone, <code>midi.play(60, 0.8)</code>. Your own <a href="../note-pressed/"><code>notePressed()</code></a> still gets the note, and the sound is made before the sketch is told, so a slow callback never delays it. Pads on MIDI channel 10 (the General MIDI drum channel) play the drum kit instead of the instrument, and the sustain pedal holds notes.</p><p>The instrument ids are <code>piano</code>, <code>epiano</code>, <code>organ</code>, <code>strings</code>, <code>choir</code>, <code>harp</code>, <code>marimba</code>, <code>vibraphone</code>, <code>xylophone</code>, <code>glockenspiel</code>, <code>music-box</code> and the synth presets <code>synth/pad</code>, <code>synth/saw-lead</code>, <code>synth/square-lead</code>, <code>synth/pluck</code>, <code>synth/supersaw</code>, <code>synth/bass</code>, <code>synth/acid</code>, <code>synth/brass</code>, <code>synth/bell</code>, <code>synth/sub</code> and <code>synth/chip</code>. Calling <code>startSound(id)</code> while sound plays switches the instrument. An id that does not exist is listed in the console together with the real ones: an instrument that is already playing stays, and at the first call the warm pad <code>synth/pad</code> plays.</p><p>Nothing is loaded before the first call (or before 🔊 in the 🎹 panel): <a href="../#Sound">@openav/sound</a> comes from next to <code>oav-p5.js</code> and Tone.js 15 from jsDelivr (the <code>tone</code> option points it somewhere else). Only the <code>piano</code> plays recorded samples, about 2 MB the first time; the electric piano sounds meanwhile (or, when you switch from another instrument, that one keeps sounding), and <a href="../oavp5-sound-instrument/"><code>OAVp5.sound.instrument</code></a> changes to <code>piano</code> when the samples are in. Every other instrument is made by Tone.js and has no files to load.</p></div>
+<div class="callout callout-tip"><p class="callout-title">Before you call it</p><p>A browser lets a page make sound only after a click or a key press on the page, and a key on a MIDI keyboard does not count. Calling <code>startSound()</code> in <code>setup()</code> is fine: <a href="../oavp5-sound-state/"><code>OAVp5.sound.state</code></a> is <code>'waiting'</code> and a card beside the 🎹 says "Sound is ready but silent"; the first click or key press turns sound on. <a href="../sound-is-on/"><code>soundIsOn</code></a> tells when it has.</p></div><div class="ref-sec"><h4>Parameters</h4><div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>String</code></td><td>An instrument id, for example <code>'organ'</code> or <code>'synth/pluck'</code> (the list is in the description). Leave it out to keep the instrument chosen before; at the very first call that is the piano. A value that is not a non-empty string counts as left out. <span class="ref-tag">optional</span> <span class="ref-tag">default <code>'piano'</code></span></td></tr></tbody></table></div></div><div class="ref-sec"><h4>Returns</h4><p><code>Promise&lt;Boolean&gt;</code> Resolves to <code>true</code> once sound is on. When the browser wants a click first, that is after the first click or key press on the page. Resolves to <code>false</code> when the loading option <code>sound</code> is <code>off</code>, when <a href="../stop-sound/"><code>stopSound()</code></a> came first, or when Tone.js could not be loaded.</p></div><div class="ref-sec"><h4>Notes</h4><ul><li>No code at all: <code>?oav_sound=piano</code> on the page address (any instrument id; on OpenProcessing <code>?sketch_oav_sound=piano</code>) makes any sketch heard from the first click, and <a href="../option-sound/"><code>?oav_sound=off</code></a> keeps it silent: <code>startSound()</code> then does nothing and resolves to <code>false</code>. In the 🎹 panel, 🔊 turns sound on and off and shows a picker with every instrument.</li><li>Sound is separate from the drum machine: <a href="../start-drums/"><code>startDrums()</code></a> has its own kit and is heard from the first click without <code>startSound()</code>.</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">Every sketch starts with one line</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>Copy the line</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">The examples below leave it out to stay short. Copy puts it at the top for you, so what you paste into OpenProcessing (or the p5 editor) runs as it is.</p>
+      <label class="ref-p5v" hidden>p5 for live examples <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> Run the examples as they scroll into view</label>
+    </aside>
+<div class="ref-sec"><h4>Examples</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ Run</button><button type="button" class="ref-stop" hidden>■ Stop</button><button type="button" class="ref-reset" hidden>↺ Reset</button><button type="button" class="ref-copy" hidden title="Copies the example with the line that loads oav-p5 on top">Copy</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">let</span> playing = 60;
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  startSound(<span class="ts">'synth/pluck'</span>);   <span class="tc">// every key you play is heard</span>
+}
+
+<span class="tk">function</span> mousePressed() {
+  playing = 48 + floor(mouseX / 25);   <span class="tc">// low on the left, high on the right</span>
+  midi.play(playing, 0.8);
+}
+
+<span class="tk">function</span> mouseReleased() {
+  midi.play(playing, 0);
+}
+
+<span class="tk">function</span> draw() {
+  background(soundIsOn ? 30 : 90);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  text(soundIsOn ? <span class="ts">'click to play a note'</span> : <span class="ts">'click once to turn sound on'</span>, width / 2, height / 2);
+}</code></pre></div>
+<figcaption>The first click turns sound on and the background darkens; the clicks after that play a note, higher to the right.</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ Run</button><button type="button" class="ref-stop" hidden>■ Stop</button><button type="button" class="ref-reset" hidden>↺ Reset</button><button type="button" class="ref-copy" hidden title="Copies the example with the line that loads oav-p5 on top">Copy</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">const</span> KEYS = { a: 60, s: 62, d: 64, f: 65, g: 67, h: 69, j: 71, k: 72 };
+<span class="tk">let</span> dots = [];
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  noStroke();
+  startSound(<span class="ts">'epiano'</span>);
+}
+
+<span class="tk">function</span> keyPressed() {
+  <span class="tk">if</span> (KEYS[key]) midi.play(KEYS[key], 0.8);
+}
+
+<span class="tk">function</span> keyReleased() {
+  <span class="tk">if</span> (KEYS[key]) midi.play(KEYS[key], 0);
+}
+
+<span class="tk">function</span> notePressed(n, v) {
+  dots.push({ x: map(n, 60, 72, 30, width - 30), y: height, v });
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  <span class="tk">for</span> (<span class="tk">const</span> d <span class="tk">of</span> dots) {
+    fill(255, 160, 80);
+    circle(d.x, d.y, 20 + d.v * 30);
+    d.y -= 2;
+  }
+  dots = dots.filter((d) =&gt; d.y &gt; -40);
+  fill(255);
+  text(soundIsOn ? <span class="ts">'play with a s d f g h j k'</span> : <span class="ts">'press a key once to turn sound on'</span>, 20, 24);
+}</code></pre></div>
+<figcaption>Press a, s, d, f, g, h, j, k: each key sounds and a dot floats up from the matching place.</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ Run</button><button type="button" class="ref-stop" hidden>■ Stop</button><button type="button" class="ref-reset" hidden>↺ Reset</button><button type="button" class="ref-copy" hidden title="Copies the example with the line that loads oav-p5 on top">Copy</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">const</span> IDS = [<span class="ts">'synth/pluck'</span>, <span class="ts">'organ'</span>, <span class="ts">'marimba'</span>, <span class="ts">'piano'</span>];
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  startSound(IDS[0]);
+}
+
+<span class="tk">function</span> keyPressed() {
+  <span class="tk">const</span> i = Number(key) - 1;
+  <span class="tk">if</span> (IDS[i]) startSound(IDS[i]);   <span class="tc">// switches while it plays</span>
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  fill(255);
+  <span class="tk">const</span> s = OAVp5.sound.status;   <span class="tc">// the instrument being loaded</span>
+  text(<span class="ts">'keys 1-4 pick an instrument'</span>, 20, 30);
+  text(<span class="ts">'playing: '</span> + OAVp5.sound.instrument, 20, 60);
+  text(<span class="ts">'loading: '</span> + s.id + <span class="ts">' ('</span> + s.state + <span class="ts">', '</span> + nf(s.progress * 100, 1, 0) + <span class="ts">'%)'</span>, 20, 90);
+}</code></pre></div>
+<figcaption>Press 4 for the piano: "loading" shows its samples arriving while "playing" still names the instrument you hear, and flips to piano when it is ready.</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>Related</h4><ul><li><a href="../stop-sound/"><code>stopSound()</code></a> <span>Turns sound off and lets every ringing note go; the instrument stays loaded, so <code>startSound()</code> brings it back at once.</span></li><li><a href="../sound-is-on/"><code>soundIsOn</code></a> <span>Whether notes are being heard right now: true once <code>startSound()</code> has finished, false before and after.</span></li><li><a href="../oavp5-sound-state/"><code>OAVp5.sound.state</code></a> <span>Where sound is: <code>'off'</code>, <code>'waiting'</code> (for a click), <code>'loading'</code>, <code>'on'</code> or <code>'error'</code>.</span></li><li><a href="../oavp5-sound-instrument/"><code>OAVp5.sound.instrument</code></a> <span>The id of the instrument you hear right now, or <code>null</code> before sound has loaded.</span></li><li><a href="../note-pressed/"><code>notePressed()</code></a> <span>You define this function; oav-p5 calls it each time a key (or a pad) goes down.</span></li><li><a href="../start-drums/"><code>startDrums()</code></a> <span>Starts a drum machine: a 16-step grid on the page that plays a preset, your own grid or one line of rhythm, and counts the bars for your sketch.</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L1442">p5/oav-p5.js, line 1442</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">Next step</p>
+      <h2 id="next-step-title">Examples that use startSound()</h2>
+      <dl class="next-groups">
+        <div><dt>startSound()</dt><dd><a href="../../../examples/16-p5-sound/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">16</span> p5 keys with sound</a><a href="../../../examples/21-p5-record/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">21</span> p5 record a video</a></dd></div>
+      </dl>
+      <p class="next-made"><a class="more" href="../../../made-with/" data-oav-event="next_step" data-oav-to="made_with">Made with →</a> <span>Works, tools and classes that run on open-audiovisual, and how to add yours.</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../">All names</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../../">Home</a>
+      <a href="../../../examples/">Examples</a>
+      <a href="../../../controllers/">Controllers</a>
+      <a href="../../../docs/">Docs</a>
+      <a href="../../../p5/">p5.js in one line</a>
+      <a href="../../../webtoe/">WebToe</a>
+      <a href="../../../made-with/">Made with</a>
+      <a href="../../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Categories","tocClose":"Close categories"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ Run","stop":"■ Stop","copy":"Copy","copied":"Copied","copyTitle":"Copies the example with the line that loads oav-p5 on top","open":"OpenProcessing ↗","frameTitle":"Live example","notRun":"Not run on this page (a module): run it in your own page, or see the examples.","needsMic":"Asks for the microphone","reset":"↺ Reset","auto":"Run the examples as they scroll into view","editHint":"Edit the code: the example reruns as you type","micOn":"🎤 Click to use the microphone"},"searchNone":"Nothing matches “{q}”. Try a shorter word, or browse the categories on the left.","searchCount":"{n} of {total}","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../p5/oav-p5.js","lang":"en"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>drawTrail()｜oav-p5 參考｜open-audiovisual</title>
+<meta name="description" content="在畫布上畫一條穿過 values 的線，所以它會在作品裡、也會被錄進影片：最舊的在 x，lo 在方框底，hi 在方框頂。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/reference/draw-trail/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/draw-trail/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/draw-trail/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/draw-trail/">
+<link rel="describedby" href="../../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="drawTrail()｜oav-p5 參考｜open-audiovisual">
+<meta property="og:description" content="在畫布上畫一條穿過 values 的線，所以它會在作品裡、也會被錄進影片：最舊的在 x，lo 在方框底，hi 在方框頂。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/reference/draw-trail/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="drawTrail()｜oav-p5 參考｜open-audiovisual">
+<meta name="twitter:description" content="在畫布上畫一條穿過 values 的線，所以它會在作品裡、也會被錄進影片：最舊的在 x，lo 在方框底，hi 在方框頂。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../../site.webmanifest">
+<link rel="preload" href="../../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="draw-trail">
+<script defer src="../../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/reference/draw-trail/#article","url":"https://openaudiovisual.com/zh/docs/reference/draw-trail/","name":"drawTrail()｜oav-p5 參考｜open-audiovisual","description":"在畫布上畫一條穿過 values 的線，所以它會在作品裡、也會被錄進影片：最舊的在 x，lo 在方框底，hi 在方框頂。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"drawTrail()","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"數值隨時間變化（CHOP）","breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/reference/draw-trail/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/reference/draw-trail/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"API 參考","item":"https://openaudiovisual.com/zh/docs/reference/"},{"@type":"ListItem","position":4,"name":"drawTrail()","item":"https://openaudiovisual.com/zh/docs/reference/draw-trail/"}]}]}</script>
+<link rel="stylesheet" href="../../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../../zh/#play">彈奏</a>
+    <a href="../../../../zh/#how">運作方式</a>
+    <a href="../../../../zh/#works">作品</a>
+    <a href="../../../../zh/controllers/">控制器</a>
+    <a href="../../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../../zh/webtoe/">WebToe</a>
+    <a href="../../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../../docs/reference/draw-trail/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../../zh/docs/reference/draw-trail/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">分類</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="參考分類">
+      <p class="toc-title">數值隨時間變化（CHOP）</p>
+      <p class="toc-ref"><a href="../">所有名稱</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch"><a href="../count/"><span class="t"><code>count()</code></span></a></li>
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>drawTrail()</code></span></a></li>
+        <li class="toc-ch"><a href="../env/"><span class="t"><code>env()</code></span></a></li>
+        <li class="toc-ch"><a href="../lag/"><span class="t"><code>lag()</code></span></a></li>
+        <li class="toc-ch"><a href="../scope/"><span class="t"><code>scope()</code></span></a></li>
+        <li class="toc-ch"><a href="../slope/"><span class="t"><code>slope()</code></span></a></li>
+        <li class="toc-ch"><a href="../speed/"><span class="t"><code>speed()</code></span></a></li>
+        <li class="toc-ch"><a href="../spring/"><span class="t"><code>spring()</code></span></a></li>
+        <li class="toc-ch"><a href="../trail/"><span class="t"><code>trail()</code></span></a></li>
+        <li class="toc-ch"><a href="../trigger/"><span class="t"><code>trigger()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop/"><span class="t"><code>OAVp5.chop</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-module/"><span class="t"><code>OAVp5.chop.module</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-reset/"><span class="t"><code>OAVp5.chop.reset()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-slots/"><span class="t"><code>OAVp5.chop.slots()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-state/"><span class="t"><code>OAVp5.chop.state</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 參考</a> · <a href="../#cat-chop">數值隨時間變化（CHOP）</a></p>
+    <div class="chapter ref-one" data-chapter="drawTrail">
+<article class="ref ref-own" data-name="drawTrail" data-names="drawTrail OAVp5.chop.drawTrail" data-kw="drawTrail draw a trail plot graph line chart history line waveform record the plot 畫軌跡 圖表 折線圖 歷史曲線 波形 畫在畫布上 錄進影片" data-kind="function" data-pkg="oav-p5" data-cat="chop"><span id="OAVp5.chop.drawTrail" class="ref-alias-anchor"></span><header class="ref-head"><h1 id="drawTrail"><code>drawTrail()</code><a class="anchor" href="#drawTrail" aria-label="這一條的連結">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="function" title="呼叫它。">函式</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>drawTrail(values, [x], [y], [w], [h], [lo], [hi], [name])</code></pre><p class="ref-also">同一條也包含: <code>OAVp5.chop.drawTrail</code></p>
+<p class="ref-summary">在畫布上畫一條穿過 <code>values</code> 的線，所以它會在作品裡、也會被錄進影片：最舊的在 <code>x</code>，<code>lo</code> 在方框底，<code>hi</code> 在方框頂。</p>
+<div class="ref-body"><p>就是 <a href="../scope/"><code>scope()</code></a> 顯示在角落的那張圖，只是畫在畫布上：<code>stroke(255); drawTrail(trail(micLevel, 3), 0, height - 100, width, 100)</code>。這條線是草圖自己的 <code>stroke()</code> 顏色和粗細畫出的一個形狀（<code>noStroke()</code> 生效時是白色），不填色，畫完之後會把你原本的樣式還原。</p><p>最舊的值在左邊的 <code>x</code>，最新的在 <code>x + w</code>。傳數字而不傳陣列是捷徑：<code>drawTrail(micLevel, 0, 0, width, 100)</code> 不用另外呼叫 <a href="../trail/"><code>trail()</code></a> 就能畫出最近 2 秒。</p></div>
+<div class="callout callout-tip"><p class="callout-title">呼叫之前</p><p>在 <code>createCanvas()</code> 之後的 <code>draw()</code> 裡呼叫。傳數字的話，第一次呼叫會載入 @openav/chop，要幾個畫面，那之前不會畫任何東西。</p></div><div class="ref-sec"><h4>參數</h4><div class="table-wrap"><table><thead><tr><th>名稱</th><th>型別</th><th>說明</th></tr></thead><tbody><tr><td><code>values</code></td><td><code>Array&lt;Number&gt; | Number</code></td><td>像 <a href="../trail/"><code>trail()</code></a> 回傳的那種陣列。或是單一個數字：這時 drawTrail 會自己保留最近 2 秒的軌跡。 </td></tr><tr><td><code>x</code></td><td><code>Number</code></td><td>方框左邊的位置。 <span class="ref-tag">可省略</span> <span class="ref-tag">預設 <code>0</code></span></td></tr><tr><td><code>y</code></td><td><code>Number</code></td><td>方框上緣的位置。 <span class="ref-tag">可省略</span> <span class="ref-tag">預設 <code>0</code></span></td></tr><tr><td><code>w</code></td><td><code>Number</code></td><td>方框的寬度。不寫就是畫布的寬度。 <span class="ref-tag">可省略</span> <span class="ref-tag">預設 <code>width</code></span></td></tr><tr><td><code>h</code></td><td><code>Number</code></td><td>方框的高度。不寫就是畫布的高度。 <span class="ref-tag">可省略</span> <span class="ref-tag">預設 <code>height</code></span></td></tr><tr><td><code>lo</code></td><td><code>Number</code></td><td>畫在方框底部的那個值。 <span class="ref-tag">可省略</span> <span class="ref-tag">預設 <code>0</code></span></td></tr><tr><td><code>hi</code></td><td><code>Number</code></td><td>畫在方框頂部的那個值。超出 <code>lo</code> 到 <code>hi</code> 的值會貼在方框的邊上。<code>hi</code> 等於 <code>lo</code> 的話，線會從中間穿過。 <span class="ref-tag">可省略</span> <span class="ref-tag">預設 <code>1</code></span></td></tr><tr><td><code>name</code></td><td><code>String | Number</code></td><td>只有 <code>values</code> 是單一個數字的時候才用：給它自己的軌跡取的名字，寫在第 8 個參數（<code>hi</code> 後面）。 <span class="ref-tag">可省略</span> <span class="ref-tag">從 arguments 讀</span></td></tr></tbody></table></div></div><div class="ref-sec"><h4>回傳</h4><p><code>Array&lt;Number&gt;</code> 畫出來的那個陣列：你傳進來的，或是那個數字自己的軌跡。少於 2 個值的時候不會畫。</p></div><div class="ref-sec"><h4>注意</h4><ul><li>沒有名字的呼叫靠它在 <code>draw()</code> 裡的順序找回自己的記憶：第一個 <code>lag()</code> 是第一個 lag，第二個是第二個。放進 <code>if</code>，或放進長度會變的迴圈，順序就會對不上。這時會跳出一張卡片，從那之後 oav-p5 改成照「寫在哪一行」來對應。最穩的做法是在最後加一個名字。在 <code>draw()</code> 外面，沒有名字的呼叫沒有東西可以記，會回傳「回傳」欄寫的值，也會跳出卡片。</li><li><code>OAVp5.chop.drawTrail(…)</code> 是同一個函式的另一個名字。</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">每個草圖的第一行</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>複製這一行</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">底下的範例為了簡短把這一行省略了。按「複製」會自動把它放在最上面，貼進 OpenProcessing（或 p5 編輯器）就能直接跑。</p>
+      <label class="ref-p5v" hidden>活範例用的 p5 <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> 捲到範例就自動執行</label>
+    </aside>
+<div class="ref-sec"><h4>範例</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  <span class="tk">const</span> wave = 0.5 + 0.5 * sin(frameCount * 0.05);
+  stroke(255, 211, 107);
+  strokeWeight(2);
+  drawTrail(wave, 20, 100, width - 40, 100);   <span class="tc">// a number: keeps its own 2 seconds</span>
+}</code></pre></div>
+<figcaption>一條移動的正弦線，直接畫在畫布上，所以錄影也會錄到。</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  noFill();
+  strokeWeight(2);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  <span class="tk">const</span> raw = frameCount % 120 &lt; 60 ? 1 : 0;
+  <span class="tk">const</span> smooth = lag(raw, 0.3, 0.6);
+  stroke(95, 224, 138);
+  drawTrail(trail(raw, 3), 20, 60, width - 40, 80);       <span class="tc">// 0 at the bottom, 1 at the top</span>
+  stroke(255, 211, 107);
+  drawTrail(trail(smooth, 3), 20, 60, width - 40, 80);    <span class="tc">// same box: drawn on top</span>
+}</code></pre></div>
+<figcaption>綠色是原始的方波，黃色是加了 lag 的版本，畫在同一個方框裡，看得出延遲。</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  noFill();
+  stroke(255);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  <span class="tk">const</span> wave = sin(frameCount * 0.05);   <span class="tc">// -1..1</span>
+  drawTrail(trail(wave, 3), 20, 100, width - 40, 100, -1, 1);   <span class="tc">// lo and hi say what the box shows</span>
+}</code></pre></div>
+<figcaption>一條會掉到 0 以下的波：<code>lo</code> = -1、<code>hi</code> = 1 讓方框底是 -1、頂是 1，整條波就放得下。</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>相關</h4><ul><li><a href="../trail/"><code>trail()</code></a> <span><code>value</code> 最近幾秒的歷史，做成一個陣列，每秒 60 個值，最舊的在前、最新的在最後（TouchDesigner 的 Trail CHOP）。</span></li><li><a href="../scope/"><code>scope()</code></a> <span>把 <code>value</code> 顯示在網頁角落的小示波器上，並原樣還給你，所以可以包住任何運算式來觀察它。</span></li><li><a href="../lag/"><code>lag()</code></a> <span>讓數值平順地跟上 <code>value</code>，不要跳：上升花 <code>up</code> 秒，下降花 <code>down</code> 秒（TouchDesigner 的 Lag CHOP）。</span></li><li><a href="../oavp5-chop/"><code>OAVp5.chop</code></a> <span>CHOP 函式放在同一個地方，加上它們背後模組的狀態：<code>OAVp5.chop.lag(…)</code>、<code>.state</code>、<code>.slots()</code>、<code>.reset()</code>。</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L3181">p5/oav-p5.js 第 3181 行</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">下一步</p>
+      <h2 id="next-step-title">用到 drawTrail() 的範例</h2>
+      <dl class="next-groups">
+        <div><dt>drawTrail()</dt><dd><a href="../../../../examples/22-p5-lag/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">22</span> p5 lag：讓跳動的數值變順</a></dd></div>
+      </dl>
+      <p class="next-made"><a class="more" href="../../../../zh/made-with/" data-oav-event="next_step" data-oav-to="made_with">用它做的 →</a> <span>跑在 open-audiovisual 上的作品、工具與課程，還有怎麼把你的加進來。</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../">所有名稱</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../../zh/">首頁</a>
+      <a href="../../../../zh/examples/">範例</a>
+      <a href="../../../../zh/controllers/">控制器</a>
+      <a href="../../../../zh/docs/">文件</a>
+      <a href="../../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../../zh/webtoe/">WebToe</a>
+      <a href="../../../../zh/made-with/">用它做的</a>
+      <a href="../../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../../llms.txt">llms.txt</a>
+      <a href="../../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"分類","tocClose":"關閉分類"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ 執行","stop":"■ 停止","copy":"複製","copied":"已複製","copyTitle":"複製範例，最上面會加上載入 oav-p5 的那一行","open":"OpenProcessing ↗","frameTitle":"活範例","notRun":"這一頁不執行（這是模組）：在你自己的頁面跑，或看範例頁。","needsMic":"會要求麥克風","reset":"↺ 還原","auto":"捲到範例就自動執行","editHint":"可以直接改程式碼，改完範例會自己重跑","micOn":"🎤 點一下開麥克風"},"searchNone":"沒有符合「{q}」的條目。換短一點的字，或從左邊的分類找。","searchCount":"{total} 條裡的 {n} 條","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../../p5/oav-p5.js","lang":"zh"}</script>
+<script type="module" src="../../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>drawRhythm()｜oav-p5 參考｜open-audiovisual</title>
+<meta name="description" content="把節奏畫在畫布上，樣式可以是格子、圓或螺旋，有播放頭，打擊的時候會亮起來，所以錄影也錄得到。在 draw() 裡、background() 之後呼叫：drawRhythm(20, 100, 360, 100)。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/reference/draw-rhythm/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/draw-rhythm/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/draw-rhythm/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/draw-rhythm/">
+<link rel="describedby" href="../../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="drawRhythm()｜oav-p5 參考｜open-audiovisual">
+<meta property="og:description" content="把節奏畫在畫布上，樣式可以是格子、圓或螺旋，有播放頭，打擊的時候會亮起來，所以錄影也錄得到。在 draw() 裡、background() 之後呼叫：drawRhythm(20, 100, 360, 100)。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/reference/draw-rhythm/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="drawRhythm()｜oav-p5 參考｜open-audiovisual">
+<meta name="twitter:description" content="把節奏畫在畫布上，樣式可以是格子、圓或螺旋，有播放頭，打擊的時候會亮起來，所以錄影也錄得到。在 draw() 裡、background() 之後呼叫：drawRhythm(20, 100, 360, 100)。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../../site.webmanifest">
+<link rel="preload" href="../../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="draw-rhythm">
+<script defer src="../../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/reference/draw-rhythm/#article","url":"https://openaudiovisual.com/zh/docs/reference/draw-rhythm/","name":"drawRhythm()｜oav-p5 參考｜open-audiovisual","description":"把節奏畫在畫布上，樣式可以是格子、圓或螺旋，有播放頭，打擊的時候會亮起來，所以錄影也錄得到。在 draw() 裡、background() 之後呼叫：drawRhythm(20, 100, 360, 100)。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"drawRhythm()","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"鼓機與節奏","breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/reference/draw-rhythm/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/reference/draw-rhythm/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"API 參考","item":"https://openaudiovisual.com/zh/docs/reference/"},{"@type":"ListItem","position":4,"name":"drawRhythm()","item":"https://openaudiovisual.com/zh/docs/reference/draw-rhythm/"}]}]}</script>
+<link rel="stylesheet" href="../../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../../zh/#play">彈奏</a>
+    <a href="../../../../zh/#how">運作方式</a>
+    <a href="../../../../zh/#works">作品</a>
+    <a href="../../../../zh/controllers/">控制器</a>
+    <a href="../../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../../zh/webtoe/">WebToe</a>
+    <a href="../../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../../docs/reference/draw-rhythm/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../../zh/docs/reference/draw-rhythm/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">分類</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="參考分類">
+      <p class="toc-title">鼓機與節奏</p>
+      <p class="toc-ref"><a href="../">所有名稱</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch"><a href="../beat-phase/"><span class="t"><code>beatPhase</code></span></a></li>
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>drawRhythm()</code></span></a></li>
+        <li class="toc-ch"><a href="../drum-bpm/"><span class="t"><code>drumBpm</code></span></a></li>
+        <li class="toc-ch"><a href="../drum-hit/"><span class="t"><code>drumHit()</code></span></a></li>
+        <li class="toc-ch"><a href="../drum-phase/"><span class="t"><code>drumPhase</code></span></a></li>
+        <li class="toc-ch"><a href="../drums-are-on/"><span class="t"><code>drumsAreOn</code></span></a></li>
+        <li class="toc-ch"><a href="../rhythm-changed/"><span class="t"><code>rhythmChanged()</code></span></a></li>
+        <li class="toc-ch"><a href="../start-drums/"><span class="t"><code>startDrums()</code></span></a></li>
+        <li class="toc-ch"><a href="../stop-drums/"><span class="t"><code>stopDrums()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums/"><span class="t"><code>OAVp5.drums</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-copy-text/"><span class="t"><code>OAVp5.drums.copyText</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-edit/"><span class="t"><code>OAVp5.drums.edit()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-history/"><span class="t"><code>OAVp5.drums.history</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-now/"><span class="t"><code>OAVp5.drums.now</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-on/"><span class="t"><code>OAVp5.drums.on()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-pattern/"><span class="t"><code>OAVp5.drums.pattern</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-src/"><span class="t"><code>OAVp5.drums.src</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-state/"><span class="t"><code>OAVp5.drums.state</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-strudel-url/"><span class="t"><code>OAVp5.drums.strudelUrl</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-undo/"><span class="t"><code>OAVp5.drums.undo()</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 參考</a> · <a href="../#cat-drums">鼓機與節奏</a></p>
+    <div class="chapter ref-one" data-chapter="drawRhythm">
+<article class="ref ref-own" data-name="drawRhythm" data-names="drawRhythm OAVp5.drums.draw" data-kw="draw rhythm visualize grid circle spiral playhead drum visual sequencer view recording 畫節奏 視覺化 格子 圓形 螺旋 播放頭 鼓機畫面 錄影" data-kind="function" data-pkg="oav-p5" data-cat="drums"><span id="OAVp5.drums.draw" class="ref-alias-anchor"></span><header class="ref-head"><h1 id="drawRhythm"><code>drawRhythm()</code><a class="anchor" href="#drawRhythm" aria-label="這一條的連結">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="function" title="呼叫它。">函式</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>drawRhythm([x], [y], [w], [h], [style], [o])</code></pre><p class="ref-also">同一條也包含: <code>OAVp5.drums.draw</code></p>
+<p class="ref-summary">把節奏畫在畫布上，樣式可以是格子、圓或螺旋，有播放頭，打擊的時候會亮起來，所以錄影也錄得到。</p>
+<div class="ref-body"><p>在 <code>draw()</code> 裡、<code>background()</code> 之後呼叫：<code>drawRhythm(20, 100, 360, 100)</code>。每一列是節奏裡有用到的一種鼓，打擊在你聽到的那一刻亮起來（用的就是 <a href="../drum-phase/"><code>drumPhase</code></a> 讀的那個時鐘），兩格之間的打擊（例如三連音）會畫在它實際落下的位置。鼓機的卡片是頁面的一部分，錄影錄不到，但錄影錄的是畫布，所以要讓節奏進影片，就用這個。</p><p>不給方框的話，<code>'grid'</code> 畫在畫布下方的一條帶子，另外兩種畫在中間的正方形。它用 p5 自己的圖形，包在 <code>push()</code> 和 <code>pop()</code> 之間，所以不會弄亂你設定的樣式，2D 和 <code>WEBGL</code>、p5 1.x 和 2.x 都能用。在 <code>WEBGL</code> 裡原點是畫布中心：<code>drawRhythm(-width / 2, -height / 2, width, height, 'circle')</code> 會鋪滿整個畫布。</p></div>
+<div class="callout callout-tip"><p class="callout-title">呼叫之前</p><p>要先用 <a href="../start-drums/"><code>startDrums()</code></a> 啟動鼓機。在它開始播之前，畫出來的是一個空的四軌格子。</p></div><div class="ref-sec"><h4>參數</h4><div class="table-wrap"><table><thead><tr><th>名稱</th><th>型別</th><th>說明</th></tr></thead><tbody><tr><td><code>x</code></td><td><code>Number</code></td><td>要畫的方框的左邊。在 <code>WEBGL</code> 裡，畫布中心是 (0, 0)。<code>x</code>、<code>y</code>、<code>w</code>、<code>h</code> 只要有一個沒傳，就用預設的方框。 <span class="ref-tag">可省略</span></td></tr><tr><td><code>y</code></td><td><code>Number</code></td><td>方框的上邊。 <span class="ref-tag">可省略</span></td></tr><tr><td><code>w</code></td><td><code>Number</code></td><td>方框的寬。 <span class="ref-tag">可省略</span></td></tr><tr><td><code>h</code></td><td><code>Number</code></td><td>方框的高。 <span class="ref-tag">可省略</span></td></tr><tr><td><code>style</code></td><td><code>String | Object</code></td><td><code>'grid'</code>（16 格加一條播放頭）、<code>'circle'</code>（每種鼓一圈 16 格，指針照 <a href="../drum-phase/"><code>drumPhase</code></a> 轉）或 <code>'spiral'</code>（最近幾小節往外繞，現在在最外面的尖端）。這裡如果給的是物件，就當成 <code>o</code>，<code>style</code> 寫在物件裡面。 <span class="ref-tag">可省略</span> <span class="ref-tag">預設 <code>'grid'</code></span></td></tr><tr><td><code>o</code></td><td><code>Object</code></td><td>選項：<code>colors</code>（<code>{ kick: '#f66', … }</code>，每種鼓一個 p5 看得懂的顏色）、<code>color</code>（全部同一個顏色）、<code>off</code>（空格子的顏色）、<code>playhead</code>（顏色，或 <code>false</code> 表示不畫）、<code>bg</code>（方框的底色）、<code>bars</code>（只用在螺旋，1 到 16，沒寫就是 4）。 <span class="ref-tag">可省略</span></td></tr></tbody></table></div></div><div class="ref-sec"><h4>回傳</h4><p><code>Boolean</code> 有畫東西就是 <code>true</code>，方框是空的（<code>w</code> 或 <code>h</code> 不大於 0），或沒有 p5 全域模式可以畫的時候是 <code>false</code>。</p></div><div class="ref-sec"><h4>注意</h4><ul><li><code>OAVp5.drums.draw(x, y, w, h, style, o)</code> 是同一個函式，寫成方法的樣子。</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">每個草圖的第一行</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>複製這一行</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">底下的範例為了簡短把這一行省略了。按「複製」會自動把它放在最上面，貼進 OpenProcessing（或 p5 編輯器）就能直接跑。</p>
+      <label class="ref-p5v" hidden>活範例用的 p5 <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> 捲到範例就自動執行</label>
+    </aside>
+<div class="ref-sec"><h4>範例</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  startDrums(<span class="ts">'breakbeat'</span>, 120);
+}
+
+<span class="tk">function</span> draw() {
+  background(14, 16, 26);
+  drawRhythm(20, 100, 360, 100);   <span class="tc">// the 16 steps with a playhead</span>
+}</code></pre></div>
+<figcaption>節奏以格子的樣子畫在畫布上：一條白色的播放頭掃過去，每一下打擊發聲的時候那一格亮起來。</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+  startDrums(<span class="ts">'bd(3,8), [~ sd]*2, hh*8, ~ ~ ~ cp'</span>, 104);
+}
+
+<span class="tk">function</span> draw() {
+  background(14, 16, 26);
+  drawRhythm(10, 10, 180, 180, <span class="ts">'circle'</span>);
+  drawRhythm(210, 10, 180, 180, <span class="ts">'spiral'</span>, { bars: 4, colors: { kick: <span class="ts">'#ff7b54'</span> } });
+  drawRhythm(20, 220, 360, 60, <span class="ts">'grid'</span>, { bg: <span class="ts">'rgba(255, 255, 255, 0.05)'</span> });
+}</code></pre></div>
+<figcaption>同一個節奏的三種畫法：每種鼓一圈、有指針的圓，最近四小節繞成的螺旋，以及下方的格子。</figcaption>
+<div class="ref-live" hidden></div>
+</figure>
+<figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300, WEBGL);
+  startDrums(<span class="ts">'four on floor'</span>, 120);
+}
+
+<span class="tk">function</span> draw() {
+  background(14, 16, 26);
+  drawRhythm(-width / 2, -height / 2, width, height, <span class="ts">'circle'</span>);   <span class="tc">// (0, 0) is the middle in WEBGL</span>
+}</code></pre></div>
+<figcaption>在 WEBGL 畫布裡方框要從 (-width / 2, -height / 2) 開始，因為 (0, 0) 是畫布中心。</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>相關</h4><ul><li><a href="../start-drums/"><code>startDrums()</code></a> <span>啟動鼓機：頁面上出現一個 16 格的鼓機，播放預設節奏、你自己畫的格子或一行字寫的節奏，並替草圖數小節。</span></li><li><a href="../drum-phase/"><code>drumPhase</code></a> <span>鼓機走到這一小節的哪裡，從 0 平滑地增加到快要 1，是你耳朵聽到的位置。</span></li><li><a href="../drum-step/"><code>drumStep</code></a> <span>鼓機剛剛播到這一小節 16 格裡的第幾格，從 0 到 15。</span></li><li><a href="../start-recording/"><code>startRecording()</code></a> <span>把畫布和草圖發出的聲音錄成一支影片檔，並回傳一個 promise，告訴你錄影有沒有開始。</span></li><li><a href="../rhythm-changed/"><code>rhythmChanged()</code></a> <span>一個由你定義的事件函式：節奏每次改變，就會帶著新的那一行節奏被呼叫。</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L1900">p5/oav-p5.js 第 1900 行</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">下一步</p>
+      <h2 id="next-step-title">用到 drawRhythm() 的範例</h2>
+      <dl class="next-groups">
+        <div><dt>drawRhythm()</dt><dd><a href="../../../../examples/26-p5-rhythm-lab/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">26</span> p5 節奏實驗台</a><a href="../../../../examples/20-p5-rhythm-visual/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">20</span> p5 看得見的節奏</a></dd></div>
+      </dl>
+      <p class="next-made"><a class="more" href="../../../../zh/made-with/" data-oav-event="next_step" data-oav-to="made_with">用它做的 →</a> <span>跑在 open-audiovisual 上的作品、工具與課程，還有怎麼把你的加進來。</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../">所有名稱</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../../zh/">首頁</a>
+      <a href="../../../../zh/examples/">範例</a>
+      <a href="../../../../zh/controllers/">控制器</a>
+      <a href="../../../../zh/docs/">文件</a>
+      <a href="../../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../../zh/webtoe/">WebToe</a>
+      <a href="../../../../zh/made-with/">用它做的</a>
+      <a href="../../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../../llms.txt">llms.txt</a>
+      <a href="../../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"分類","tocClose":"關閉分類"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ 執行","stop":"■ 停止","copy":"複製","copied":"已複製","copyTitle":"複製範例，最上面會加上載入 oav-p5 的那一行","open":"OpenProcessing ↗","frameTitle":"活範例","notRun":"這一頁不執行（這是模組）：在你自己的頁面跑，或看範例頁。","needsMic":"會要求麥克風","reset":"↺ 還原","auto":"捲到範例就自動執行","editHint":"可以直接改程式碼，改完範例會自己重跑","micOn":"🎤 點一下開麥克風"},"searchNone":"沒有符合「{q}」的條目。換短一點的字，或從左邊的分類找。","searchCount":"{total} 條裡的 {n} 條","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../../p5/oav-p5.js","lang":"zh"}</script>
+<script type="module" src="../../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

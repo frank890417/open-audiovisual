@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OAVp5.chop.module｜oav-p5 參考｜open-audiovisual</title>
+<meta name="description" content="@openav/chop 模組本身，載好之後才有，之前是 null：CHOP 函式底下用的那些類別和函式。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5-chop-module/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5-chop-module/">
+<link rel="describedby" href="../../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="OAVp5.chop.module｜oav-p5 參考｜open-audiovisual">
+<meta property="og:description" content="@openav/chop 模組本身，載好之後才有，之前是 null：CHOP 函式底下用的那些類別和函式。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OAVp5.chop.module｜oav-p5 參考｜open-audiovisual">
+<meta name="twitter:description" content="@openav/chop 模組本身，載好之後才有，之前是 null：CHOP 函式底下用的那些類別和函式。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../../site.webmanifest">
+<link rel="preload" href="../../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="oavp5-chop-module">
+<script defer src="../../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/#article","url":"https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/","name":"OAVp5.chop.module｜oav-p5 參考｜open-audiovisual","description":"@openav/chop 模組本身，載好之後才有，之前是 null：CHOP 函式底下用的那些類別和函式。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"OAVp5.chop.module","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"數值隨時間變化（CHOP）","breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"API 參考","item":"https://openaudiovisual.com/zh/docs/reference/"},{"@type":"ListItem","position":4,"name":"OAVp5.chop.module","item":"https://openaudiovisual.com/zh/docs/reference/oavp5-chop-module/"}]}]}</script>
+<link rel="stylesheet" href="../../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../../zh/#play">彈奏</a>
+    <a href="../../../../zh/#how">運作方式</a>
+    <a href="../../../../zh/#works">作品</a>
+    <a href="../../../../zh/controllers/">控制器</a>
+    <a href="../../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../../zh/webtoe/">WebToe</a>
+    <a href="../../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../../docs/reference/oavp5-chop-module/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../../zh/docs/reference/oavp5-chop-module/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">分類</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="參考分類">
+      <p class="toc-title">數值隨時間變化（CHOP）</p>
+      <p class="toc-ref"><a href="../">所有名稱</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch"><a href="../count/"><span class="t"><code>count()</code></span></a></li>
+        <li class="toc-ch"><a href="../draw-trail/"><span class="t"><code>drawTrail()</code></span></a></li>
+        <li class="toc-ch"><a href="../env/"><span class="t"><code>env()</code></span></a></li>
+        <li class="toc-ch"><a href="../lag/"><span class="t"><code>lag()</code></span></a></li>
+        <li class="toc-ch"><a href="../scope/"><span class="t"><code>scope()</code></span></a></li>
+        <li class="toc-ch"><a href="../slope/"><span class="t"><code>slope()</code></span></a></li>
+        <li class="toc-ch"><a href="../speed/"><span class="t"><code>speed()</code></span></a></li>
+        <li class="toc-ch"><a href="../spring/"><span class="t"><code>spring()</code></span></a></li>
+        <li class="toc-ch"><a href="../trail/"><span class="t"><code>trail()</code></span></a></li>
+        <li class="toc-ch"><a href="../trigger/"><span class="t"><code>trigger()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop/"><span class="t"><code>OAVp5.chop</code></span></a></li>
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>OAVp5.chop.module</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-reset/"><span class="t"><code>OAVp5.chop.reset()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-slots/"><span class="t"><code>OAVp5.chop.slots()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-chop-state/"><span class="t"><code>OAVp5.chop.state</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 參考</a> · <a href="../#cat-chop">數值隨時間變化（CHOP）</a></p>
+    <div class="chapter ref-one" data-chapter="OAVp5.chop.module">
+<article class="ref ref-own" data-name="OAVp5.chop.module" data-names="OAVp5.chop.module midi.chop.module" data-kw="chop module @openav/chop Lag class DEFAULTS chop 模組 @openav/chop 預設值" data-kind="variable" data-pkg="oav-p5" data-cat="chop"><header class="ref-head"><h1 id="OAVp5.chop.module"><code>OAVp5.chop.module</code><a class="anchor" href="#OAVp5.chop.module" aria-label="這一條的連結">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="variable" title="像 mouseX 一樣直接讀。">變數</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>OAVp5.chop.module</code></pre>
+<p class="ref-summary">@openav/chop 模組本身，載好之後才有，之前是 <code>null</code>：CHOP 函式底下用的那些類別和函式。</p>
+<div class="ref-body"><p>要用到比 p5 風格呼叫更底層的東西時才需要：<code>OAVp5.chop.module.DEFAULTS</code> 列出這些函式用的預設值，<code>new OAVp5.chop.module.Lag({ up: 0.1 })</code> 做出一個你自己保管的 lag。先確認它不是 <code>null</code>。</p></div>
+<dl class="ref-value"><div><dt>型別</dt><dd><code>Object | null</code></dd></div></dl><p>第一次呼叫 CHOP 函式、而且模組載好之前是 <code>null</code>，之後就是那個模組（<code>Lag</code>、<code>Spring</code>、<code>Trail</code>、<code>envelope()</code>、<code>DEFAULTS</code> 等等）。</p><div class="ref-sec"><h4>注意</h4><ul><li>這是進階用法。這個模組也以 <code>@openav/chop</code> 發布，給不經過 oav-p5 的草圖和演出使用。</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">每個草圖的第一行</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>複製這一行</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">底下的範例為了簡短把這一行省略了。按「複製」會自動把它放在最上面，貼進 OpenProcessing（或 p5 編輯器）就能直接跑。</p>
+      <label class="ref-p5v" hidden>活範例用的 p5 <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> 捲到範例就自動執行</label>
+    </aside>
+<div class="ref-sec"><h4>範例</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  lag(mouseX, 0.3, 0.3, <span class="ts">'warm-up'</span>);   <span class="tc">// the first call loads the module</span>
+  <span class="tk">const</span> m = OAVp5.chop.module;
+  fill(255);
+  text(m ? <span class="ts">'spring defaults: '</span> + JSON.stringify(m.DEFAULTS.spring) : <span class="ts">'not loaded yet'</span>, 20, 30);
+}</code></pre></div>
+<figcaption>模組一載好，就印出它裡面 spring 的預設值。</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>相關</h4><ul><li><a href="../oavp5-chop-state/"><code>OAVp5.chop.state</code></a> <span>@openav/chop 模組目前的狀態：<code>'off'</code>、<code>'loading'</code>、<code>'on'</code> 或 <code>'error'</code>。</span></li><li><a href="../oavp5-chop/"><code>OAVp5.chop</code></a> <span>CHOP 函式放在同一個地方，加上它們背後模組的狀態：<code>OAVp5.chop.lag(…)</code>、<code>.state</code>、<code>.slots()</code>、<code>.reset()</code>。</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L2871">p5/oav-p5.js 第 2871 行</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">下一步</p>
+      <h2 id="next-step-title">用到 OAVp5.chop.module 的範例</h2>
+      
+      <p class="next-made"><a class="more" href="../../../../zh/made-with/" data-oav-event="next_step" data-oav-to="made_with">用它做的 →</a> <span>跑在 open-audiovisual 上的作品、工具與課程，還有怎麼把你的加進來。</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../">所有名稱</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../../zh/">首頁</a>
+      <a href="../../../../zh/examples/">範例</a>
+      <a href="../../../../zh/controllers/">控制器</a>
+      <a href="../../../../zh/docs/">文件</a>
+      <a href="../../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../../zh/webtoe/">WebToe</a>
+      <a href="../../../../zh/made-with/">用它做的</a>
+      <a href="../../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../../llms.txt">llms.txt</a>
+      <a href="../../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"分類","tocClose":"關閉分類"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ 執行","stop":"■ 停止","copy":"複製","copied":"已複製","copyTitle":"複製範例，最上面會加上載入 oav-p5 的那一行","open":"OpenProcessing ↗","frameTitle":"活範例","notRun":"這一頁不執行（這是模組）：在你自己的頁面跑，或看範例頁。","needsMic":"會要求麥克風","reset":"↺ 還原","auto":"捲到範例就自動執行","editHint":"可以直接改程式碼，改完範例會自己重跑","micOn":"🎤 點一下開麥克風"},"searchNone":"沒有符合「{q}」的條目。換短一點的字，或從左邊的分類找。","searchCount":"{total} 條裡的 {n} 條","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../../p5/oav-p5.js","lang":"zh"}</script>
+<script type="module" src="../../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

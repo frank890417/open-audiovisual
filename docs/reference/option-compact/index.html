@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>compact (option) · oav-p5 reference · open-audiovisual</title>
+<meta name="description" content="Shows the 🎹 panel as a small box in the corner, a third of the window high, instead of a full-width bar: on or off.">
+<link rel="canonical" href="https://openaudiovisual.com/docs/reference/option-compact/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/option-compact/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/option-compact/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/option-compact/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="compact (option) · oav-p5 reference · open-audiovisual">
+<meta property="og:description" content="Shows the 🎹 panel as a small box in the corner, a third of the window high, instead of a full-width bar: on or off.">
+<meta property="og:url" content="https://openaudiovisual.com/docs/reference/option-compact/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="compact (option) · oav-p5 reference · open-audiovisual">
+<meta name="twitter:description" content="Shows the 🎹 panel as a small box in the corner, a third of the window high, instead of a full-width bar: on or off.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="option-compact">
+<script defer src="../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/reference/option-compact/#article","url":"https://openaudiovisual.com/docs/reference/option-compact/","name":"compact (option) · oav-p5 reference · open-audiovisual","description":"Shows the 🎹 panel as a small box in the corner, a third of the window high, instead of a full-width bar: on or off.","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"compact (option)","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"Loading options","breadcrumb":{"@id":"https://openaudiovisual.com/docs/reference/option-compact/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/reference/option-compact/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"API reference","item":"https://openaudiovisual.com/docs/reference/"},{"@type":"ListItem","position":4,"name":"compact (option)","item":"https://openaudiovisual.com/docs/reference/option-compact/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../../#play">Play</a>
+    <a href="../../../#how">How it works</a>
+    <a href="../../../#works">Works</a>
+    <a href="../../../controllers/">Controllers</a>
+    <a href="../../../docs/" aria-current="page">Docs</a>
+    <a href="../../../webtoe/">WebToe</a>
+    <a href="../../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../../docs/reference/option-compact/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/reference/option-compact/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Categories</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Reference categories">
+      <p class="toc-title">Loading options</p>
+      <p class="toc-ref"><a href="../">All names</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch"><a href="../option-clock/"><span class="t"><code>clock</code></span></a></li>
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>compact</code></span></a></li>
+        <li class="toc-ch"><a href="../option-corner/"><span class="t"><code>corner</code></span></a></li>
+        <li class="toc-ch"><a href="../option-debug/"><span class="t"><code>debug</code></span></a></li>
+        <li class="toc-ch"><a href="../option-dock/"><span class="t"><code>dock</code></span></a></li>
+        <li class="toc-ch"><a href="../option-drumlatency/"><span class="t"><code>drumlatency</code></span></a></li>
+        <li class="toc-ch"><a href="../option-drums/"><span class="t"><code>drums</code></span></a></li>
+        <li class="toc-ch"><a href="../option-hardware/"><span class="t"><code>hardware</code></span></a></li>
+        <li class="toc-ch"><a href="../option-hints/"><span class="t"><code>hints</code></span></a></li>
+        <li class="toc-ch"><a href="../option-link/"><span class="t"><code>link</code></span></a></li>
+        <li class="toc-ch"><a href="../option-linkdelay/"><span class="t"><code>linkdelay</code></span></a></li>
+        <li class="toc-ch"><a href="../option-mic/"><span class="t"><code>mic</code></span></a></li>
+        <li class="toc-ch"><a href="../option-opc/"><span class="t"><code>opc</code></span></a></li>
+        <li class="toc-ch"><a href="../option-panel/"><span class="t"><code>panel</code></span></a></li>
+        <li class="toc-ch"><a href="../option-profile/"><span class="t"><code>profile</code></span></a></li>
+        <li class="toc-ch"><a href="../option-recfps/"><span class="t"><code>recfps</code></span></a></li>
+        <li class="toc-ch"><a href="../option-reclimit/"><span class="t"><code>reclimit</code></span></a></li>
+        <li class="toc-ch"><a href="../option-record/"><span class="t"><code>record</code></span></a></li>
+        <li class="toc-ch"><a href="../option-relay/"><span class="t"><code>relay</code></span></a></li>
+        <li class="toc-ch"><a href="../option-remote/"><span class="t"><code>remote</code></span></a></li>
+        <li class="toc-ch"><a href="../option-room/"><span class="t"><code>room</code></span></a></li>
+        <li class="toc-ch"><a href="../option-scope/"><span class="t"><code>scope</code></span></a></li>
+        <li class="toc-ch"><a href="../option-shim/"><span class="t"><code>shim</code></span></a></li>
+        <li class="toc-ch"><a href="../option-sound/"><span class="t"><code>sound</code></span></a></li>
+        <li class="toc-ch"><a href="../option-strudel/"><span class="t"><code>strudel</code></span></a></li>
+        <li class="toc-ch"><a href="../option-telemetry/"><span class="t"><code>telemetry</code></span></a></li>
+        <li class="toc-ch"><a href="../option-title/"><span class="t"><code>title</code></span></a></li>
+        <li class="toc-ch"><a href="../option-tone/"><span class="t"><code>tone</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 reference</a> · <a href="../#cat-options">Loading options</a></p>
+    <div class="chapter ref-one" data-chapter="option-compact">
+<article class="ref ref-own" data-name="compact" data-names="option:compact" data-kw="compact small panel corner box strudel panel size 精簡 小面板 角落 strudel 面板大小" data-kind="option" data-pkg="oav-p5" data-cat="options"><header class="ref-head"><h1 id="option-compact"><code>compact</code><a class="anchor" href="#option-compact" aria-label="Link to this entry">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="option" title="A setting of the loader line.">option</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>?oav_compact=on | off</code></pre>
+<p class="ref-summary">Shows the 🎹 panel as a small box in the corner, a third of the window high, instead of a full-width bar: <code>on</code> or <code>off</code>.</p>
+<div class="ref-body"><p>Normally the panel opened by 🎹 is a bar across the whole window, up to half its height. With <code>compact</code> it is a box at most 560 pixels wide and a third of the window high, in the corner the 🎹 sits in, so the page beside it stays in view. It is the default on strudel.cc, where the code editor needs the room.</p></div>
+<dl class="ref-value"><div><dt>Type</dt><dd><code>String</code></dd></div><div><dt>Values</dt><dd><code>on | off</code></dd></div><div><dt>default</dt><dd><code>off (on in Strudel)</code></dd></div></dl><p>Only <code>on</code> turns it on. <code>OAVp5.options.compact</code> reads back as <code>true</code> or <code>false</code>.</p><div class="ref-sec"><h4>Notes</h4><ul><li>Set it before oav-p5 loads. <code>window.OAV_P5 = { compact: … };</code> above the loader line wins, then <code>?oav_compact=…</code> on the page address, then <code>?compact=…</code> on the script's own URL. Values in <code>window.OAV_P5</code> are turned into text, so write <code>'off'</code>, not <code>false</code>. On OpenProcessing the page address takes <code>?sketch_oav_compact=…</code> (the project's README says OpenProcessing forwards it to the sketch).</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">Every sketch starts with one line</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>Copy the line</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">The examples below leave it out to stay short. Copy puts it at the top for you, so what you paste into OpenProcessing (or the p5 editor) runs as it is.</p>
+      <label class="ref-p5v" hidden>p5 for live examples <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> Run the examples as they scroll into view</label>
+    </aside>
+<div class="ref-sec"><h4>Examples</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ Run</button><button type="button" class="ref-stop" hidden>■ Stop</button><button type="button" class="ref-reset" hidden>↺ Reset</button><button type="button" class="ref-copy" hidden title="Copies the example with the line that loads oav-p5 on top">Copy</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js">window.OAV_P5 = { compact: <span class="ts">'on'</span>, panel: <span class="ts">'open'</span> };
+
+<span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  fill(255);
+  text(<span class="ts">'compact: '</span> + OAVp5.options.compact, 20, 30);   <span class="tc">// true</span>
+}</code></pre></div>
+<figcaption>The panel opens at once as a box in the bottom-right corner instead of a bar across the whole window.</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>Related</h4><ul><li><a href="../option-panel/"><code>panel</code></a> <span>Whether the 🎹 panel starts shut, open, or does not exist: <code>closed</code>, <code>open</code> or <code>off</code>.</span></li><li><a href="../option-strudel/"><code>strudel</code></a> <span>Whether oav-p5 treats the page as Strudel, the live-coding editor, and behaves politely beside it: <code>auto</code>, <code>on</code> or <code>off</code>.</span></li><li><a href="../option-corner/"><code>corner</code></a> <span>Which side of the window the 🎹 button, its cards and the compact panel sit on: <code>right</code> or <code>left</code>.</span></li><li><a href="../option-dock/"><code>dock</code></a> <span>Which edge of the window the 🎹 button and its cards sit on, <code>bottom</code> or <code>top</code>; set it and the panel starts on that edge too.</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L152">p5/oav-p5.js, line 152</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">Next step</p>
+      <h2 id="next-step-title">Examples that use compact</h2>
+      
+      <p class="next-made"><a class="more" href="../../../made-with/" data-oav-event="next_step" data-oav-to="made_with">Made with →</a> <span>Works, tools and classes that run on open-audiovisual, and how to add yours.</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../">All names</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../../">Home</a>
+      <a href="../../../examples/">Examples</a>
+      <a href="../../../controllers/">Controllers</a>
+      <a href="../../../docs/">Docs</a>
+      <a href="../../../p5/">p5.js in one line</a>
+      <a href="../../../webtoe/">WebToe</a>
+      <a href="../../../made-with/">Made with</a>
+      <a href="../../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Categories","tocClose":"Close categories"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ Run","stop":"■ Stop","copy":"Copy","copied":"Copied","copyTitle":"Copies the example with the line that loads oav-p5 on top","open":"OpenProcessing ↗","frameTitle":"Live example","notRun":"Not run on this page (a module): run it in your own page, or see the examples.","needsMic":"Asks for the microphone","reset":"↺ Reset","auto":"Run the examples as they scroll into view","editHint":"Edit the code: the example reruns as you type","micOn":"🎤 Click to use the microphone"},"searchNone":"Nothing matches “{q}”. Try a shorter word, or browse the categories on the left.","searchCount":"{n} of {total}","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../p5/oav-p5.js","lang":"en"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

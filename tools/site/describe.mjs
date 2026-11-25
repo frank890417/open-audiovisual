@@ -5,7 +5,7 @@
 //   describe(['First paragraph.', 'Second one.'], 'en', { min: 70, max: 160 })
 //
 // A sentence ends at . ! ? before a space in English (so p5.js stays whole), at 。！？ in Chinese; a closing quote or bracket
-// stays with it. A later paragraph's lead-in to a list ("… these three:") is skipped. Too short: the next sentence joins.
+// stays with it. A later paragraph's short lead-in to a list ("Conventions:") is skipped. Too short: the next sentence joins.
 // Too long: the sentences that fit, or one long sentence cut at a word (en) or after a comma (zh), with …
 
 /** Sentences of one paragraph of plain text. */
@@ -25,7 +25,7 @@ export function describe(paragraphs, locale, { min, max }) {
   let out = '';
   for (const p of paragraphs) {
     for (const s of sentences(p, locale)) {
-      if (out && /[:：]$/.test(s)) continue;   // a later paragraph's lead-in to a list says nothing on its own
+      if (out && /[:：]$/.test(s) && s.length < 12) continue;   // a later paragraph's two-word lead-in to a list ("Conventions:") says nothing on its own
       const next = out ? out + sep + s : s;
       if (next.length <= max) { out = next; if (out.length >= min) return closing(out); continue; }
       return out.length >= min ? closing(out) : cut(next, max - 1, locale);

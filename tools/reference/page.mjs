@@ -1,6 +1,10 @@
 // The reference page template — one structure, rendered once per language by tools/build-reference.mjs.
 // The records arrive merged (tools/reference/model.mjs): what the code says plus what a person wrote.
 //
+// The one page is the index of every name. An oav-p5 name has a page of its own (tools/reference/name-page.mjs,
+// /docs/reference/<slug>/) with its full entry and its examples, so on this page it is a short card: its signature, its summary,
+// its heading linked to that page (entryHtml mode 'brief'). A package export keeps its full entry here.
+//
 // Static HTML on purpose: crawlers and AI agents read every entry without JavaScript. assets/reference/reference.js adds
 // the search box, the live examples (a sandboxed iframe, on demand) and the copy buttons; assets/docs/docs.js (the
 // handbook's) adds the categories drawer, scroll-spy and copy-link on anchors, because this page is built on the same frame.
@@ -11,17 +15,18 @@ import { CATEGORIES } from './categories.mjs';
 import { LOADER, P5, parseParams, signatureOf } from './model.mjs';
 import { examplesUsing } from '../examples/uses.mjs';
 import { usesBlock } from '../site/next-step.mjs';
+import { nameSlug } from './slug.mjs';
 
 const fill = (s, vars) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 export const P5_VERSIONS = ['1.11.11', '2.3.4'];
 
 const link = { resolveLink: (h) => h };
 /** Paragraphs separated by a blank line, and ```lang fences as code blocks: all the markup an entry's text may use (plus `code`, **bold**, [links](#id)). */
-function para(text) {
+export function para(text, lk = link) {
   const parts = String(text).split(/```(\w*)\n([\s\S]*?)```/);
   let out = '';
   for (let i = 0; i < parts.length; i += 3) {
-    for (const p of parts[i].split(/\n{2,}/)) if (p.trim()) out += `<p>${inline(p.trim(), link)}</p>`;
+    for (const p of parts[i].split(/\n{2,}/)) if (p.trim()) out += `<p>${inline(p.trim(), lk)}</p>`;
     if (i + 1 < parts.length) {
       const lang = parts[i + 1] || 'js';
       out += `<div class="term" data-lang="${attr(lang)}"><div class="term-bar"><span>${esc(lang)}</span></div><pre><code class="language-${attr(lang)}">${highlight(parts[i + 2].replace(/\n+$/, ''), lang)}</code></pre></div>`;
@@ -30,7 +35,7 @@ function para(text) {
   return out;
 }
 
-function valueHtml(r, e, L, t) {
+function valueHtml(r, e, L, t, lk = link) {
   const v = e.value;
   if (!v) return '';
   const rows = [];
@@ -38,10 +43,10 @@ function valueHtml(r, e, L, t) {
   if (v.range) rows.push(`<div><dt>${L === 'zh' ? '範圍' : 'Range'}</dt><dd><code>${esc(v.range)}</code></dd></div>`);
   if (v.options) rows.push(`<div><dt>${L === 'zh' ? '可用的值' : 'Values'}</dt><dd><code>${esc(v.options)}</code></dd></div>`);
   if (v.default !== undefined) rows.push(`<div><dt>${esc(t.default)}</dt><dd><code>${esc(v.default)}</code></dd></div>`);
-  return `<dl class="ref-value">${rows.join('')}</dl>${v[L] ? para(v[L]) : ''}`;
+  return `<dl class="ref-value">${rows.join('')}</dl>${v[L] ? para(v[L], lk) : ''}`;
 }
 
-function paramsHtml(r, e, L, t) {
+function paramsHtml(r, e, L, t, lk = link) {
   const list = e.params || [];
   if (!list.length) return '';
   const declared = r.item.params !== undefined ? parseParams(r.item.params) : [];
@@ -53,24 +58,24 @@ function paramsHtml(r, e, L, t) {
     if (optional) bits.push(`<span class="ref-tag">${esc(t.optional)}</span>`);
     if (def !== undefined && def !== null) bits.push(`<span class="ref-tag">${esc(t.default)} <code>${esc(def)}</code></span>`);
     if (p.viaArguments) bits.push(`<span class="ref-tag">${esc(t.viaArguments)}</span>`);
-    return `<tr><td><code>${esc(p.name)}</code></td><td>${p.type ? `<code>${esc(p.type)}</code>` : ''}</td><td>${inline(p[L], { resolveLink: (h) => h })} ${bits.join(' ')}</td></tr>`;
+    return `<tr><td><code>${esc(p.name)}</code></td><td>${p.type ? `<code>${esc(p.type)}</code>` : ''}</td><td>${inline(p[L], lk)} ${bits.join(' ')}</td></tr>`;
   });
   return `<div class="ref-sec"><h4>${esc(t.sec.params)}</h4><div class="table-wrap"><table><thead><tr><th>${esc(t.cols.name)}</th><th>${esc(t.cols.type)}</th><th>${esc(t.cols.description)}</th></tr></thead><tbody>${rows.join('')}</tbody></table></div></div>`;
 }
 
-function membersHtml(r, e, L, t) {
+function membersHtml(r, e, L, t, lk = link) {
   const ms = r.item.members || [];
   if (!ms.length) return '';
   const authored = e && e.members ? e.members : {};
   const rows = ms.map((m) => {
     const sig = m.sig !== undefined && m.member.includes('method') ? `(${m.sig})` : '';
     const d = authored[m.name] ? authored[m.name][L] : (L === 'en' ? m.doc : '');
-    return `<tr><td><a href="${attr(`${BLOB}${r.source.file}#L${m.line}`)}"><code>${esc(m.name)}${esc(sig)}</code></a></td><td><span class="ref-tag">${esc(m.member)}</span></td><td>${d ? inline(d, { resolveLink: (h) => h }) : ''}</td></tr>`;
+    return `<tr><td><a href="${attr(`${BLOB}${r.source.file}#L${m.line}`)}"><code>${esc(m.name)}${esc(sig)}</code></a></td><td><span class="ref-tag">${esc(m.member)}</span></td><td>${d ? inline(d, lk) : ''}</td></tr>`;
   });
   return `<div class="ref-sec"><h4>${esc(t.sec.members)}</h4><div class="table-wrap"><table><thead><tr><th>${esc(t.cols.name)}</th><th></th><th>${esc(t.cols.description)}</th></tr></thead><tbody>${rows.join('')}</tbody></table></div></div>`;
 }
 
-function examplesHtml(r, e, L, t) {
+function examplesHtml(r, e, L, t, lk = link) {
   const list = e.examples || [];
   if (!list.length) return '';
   const items = list.map((ex, i) => {
@@ -84,24 +89,38 @@ function examplesHtml(r, e, L, t) {
     const note = run === 'static' || run === 'module' ? `<span class="ref-tag" title="${attr(t.ex.notRun)}">${esc(run === 'module' ? 'module' : 'static')}</span> ` : '';
     return `<figure class="ref-ex" data-run="${run}"${ex.needs ? ` data-needs="${attr(ex.needs)}"` : ''}>
 <div class="term" data-lang="${lang}"><div class="term-bar"><span>${esc(lang)}</span><span class="ref-ex-tools">${tools.join('')}</span></div><pre><code class="language-${lang}">${highlight(ex.code.replace(/\n+$/, ''), lang)}</code></pre></div>
-<figcaption>${note}${inline(ex.caption[L], { resolveLink: (h) => h })}${mic}</figcaption>
+<figcaption>${note}${inline(ex.caption[L], lk)}${mic}</figcaption>
 <div class="ref-live" hidden></div>
 </figure>`;
   });
   return `<div class="ref-sec"><h4>${esc(t.sec.examples)}</h4>${items.join('\n')}</div>`;
 }
 
-/** One entry card. */
-export function entryHtml(r, L, t, byKey) {
+/** How a name is shown: knob1, startMic(), and the loading options by their name (scope, which is also a function's name). */
+export const showNameOf = (r) => (r.kind === 'function' || r.kind === 'event' ? `${r.name}()` : r.name.replace(/^option:/, ''));
+/** Does this record have a page of its own (/docs/reference/<slug>/)? Every oav-p5 name with an entry. */
+export const hasPage = (r) => r.ns === P5 && !!r.entry;
+
+/**
+ * One entry card.
+ *   mode     'full' (the card with everything, a package export on the index), 'brief' (an oav-p5 name on the index: signature,
+ *            summary, the heading linked to its page) or 'page' (the name's own page: the heading is the page's h1)
+ *   lk       how links in the entry's text resolve (a name's page sits one level down: [x](#micLevel) is ../mic-level/ there)
+ *   relHref  where a related name links (default: its card on this page)
+ *   pageHref the name's own page, for 'brief'
+ */
+export function entryHtml(r, L, t, byKey, { mode = 'full', lk = link, relHref = (x) => `#${x.id}`, pageHref = '' } = {}) {
   const e = r.entry;
   const kindLabel = t.kinds[r.kind] || r.kind;
-  const showName = r.kind === 'function' || r.kind === 'event' ? `${r.name}()` : r.name.replace(/^option:/, '');
+  const showName = showNameOf(r);
   const sig = signatureOf(r);
   const aliases = r.covers.filter((c) => c !== r.key);
   const searchNames = [r.key, ...aliases, ...(r.key.startsWith('OAVp5') ? [r.key.replace(/^OAVp5/, 'midi'), ...aliases.map((a) => a.replace(/^OAVp5/, 'midi'))] : [])];
   const kw = e && e.keywords ? [...(e.keywords.en || []), ...(e.keywords.zh || [])] : [];
   const attrs = `data-name="${attr(r.key.replace(/^option:/, ''))}" data-names="${attr(searchNames.join(' '))}" data-kw="${attr(kw.join(' '))}" data-kind="${r.kind}" data-pkg="${attr(r.pkg)}" data-cat="${r.category}"`;
-  const head = `<header class="ref-head"><h3 id="${attr(r.id)}"><code>${esc(showName)}</code><a class="anchor" href="#${attr(r.id)}" aria-label="${attr(t.anchorLabel)}">#</a></h3>
+  const hTag = mode === 'page' ? 'h1' : 'h3';
+  const title = mode === 'brief' && pageHref ? `<a href="${attr(pageHref)}"><code>${esc(showName)}</code></a>` : `<code>${esc(showName)}</code>`;
+  const head = `<header class="ref-head"><${hTag} id="${attr(r.id)}">${title}<a class="anchor" href="#${attr(r.id)}" aria-label="${attr(t.anchorLabel)}">#</a></${hTag}>
 <span class="ref-badges"><span class="badge badge-kind" data-kind="${r.kind}" title="${attr(t.kindHelp[r.kind] || '')}">${esc(kindLabel)}</span><span class="badge badge-pkg">${esc(r.pkg)}</span></span></header>`;
   const aliasAnchors = r.aliasIds.map((id) => `<span id="${attr(id)}" class="ref-alias-anchor"></span>`).join('');
   const sigHtml = `<pre class="ref-sig"><code>${highlight(sig, 'js')}</code></pre>`;
@@ -110,17 +129,39 @@ export function entryHtml(r, L, t, byKey) {
   if (!e) {
     return `<article class="ref ref-stub" ${attrs}>${aliasAnchors}${head}${sigHtml}${alsoHtml}<p class="ref-nodoc">${esc(t.noDoc)}</p>${r.item.doc && L === 'en' ? `<p class="ref-srcdoc">${esc(r.item.doc)}</p>` : ''}${membersHtml(r, null, L, t)}${sourceHtml}</article>`;
   }
+  if (mode === 'brief') {
+    return `<article class="ref ref-brief" ${attrs}>${aliasAnchors}${head}${sigHtml}${alsoHtml}
+<p class="ref-summary">${inline(e.summary[L], lk)}</p>
+<p class="ref-more"><a href="${attr(pageHref)}">${esc(t.name.more)} →</a></p></article>`;
+  }
   const related = (e.related || []).map((k) => byKey.get(k)).filter(Boolean);
-  const relHtml = related.length ? `<div class="ref-sec ref-rel"><h4>${esc(t.sec.related)}</h4><ul>${related.map((x) => `<li><a href="#${attr(x.id)}"><code>${esc(x.name.replace(/^option:/, ''))}${x.kind === 'function' || x.kind === 'event' ? '()' : ''}</code></a> <span>${x.entry ? inline(x.entry.summary[L], link) : ''}</span></li>`).join('')}</ul></div>` : '';
-  const needs = e.needs ? `<div class="callout callout-tip"><p class="callout-title">${esc(r.kind === 'function' || r.kind === 'class' ? t.sec.needsFn : t.sec.needs)}</p>${para(e.needs[L])}</div>` : '';
-  const notes = (e.notes || []).length ? `<div class="ref-sec"><h4>${esc(t.sec.notes)}</h4><ul>${e.notes.map((n) => `<li>${inline(n[L], { resolveLink: (h) => h })}</li>`).join('')}</ul></div>` : '';
-  const returns = e.returns ? `<div class="ref-sec"><h4>${esc(t.sec.returns)}</h4><p>${e.returns.type ? `<code>${esc(e.returns.type)}</code> ` : ''}${inline(e.returns[L], { resolveLink: (h) => h })}</p></div>` : '';
-  const tbd = (e.tbd || []).length ? `<div class="callout callout-warning"><p class="callout-title">${esc(t.sec.tbd)}</p>${e.tbd.map((x) => para(x[L])).join('')}</div>` : '';
-  return `<article class="ref" ${attrs}>${aliasAnchors}${head}${sigHtml}${alsoHtml}
-<p class="ref-summary">${inline(e.summary[L], { resolveLink: (h) => h })}</p>
-<div class="ref-body">${(e.description || []).map((d) => para(d[L])).join('')}</div>
-${valueHtml(r, e, L, t)}${needs}${paramsHtml(r, e, L, t)}${returns}${membersHtml(r, e, L, t)}${notes}${examplesHtml(r, e, L, t)}${tbd}${relHtml}${sourceHtml}</article>`;
+  const relHtml = related.length ? `<div class="ref-sec ref-rel"><h4>${esc(t.sec.related)}</h4><ul>${related.map((x) => `<li><a href="${attr(relHref(x))}"><code>${esc(x.name.replace(/^option:/, ''))}${x.kind === 'function' || x.kind === 'event' ? '()' : ''}</code></a> <span>${x.entry ? inline(x.entry.summary[L], lk) : ''}</span></li>`).join('')}</ul></div>` : '';
+  const needs = e.needs ? `<div class="callout callout-tip"><p class="callout-title">${esc(r.kind === 'function' || r.kind === 'class' ? t.sec.needsFn : t.sec.needs)}</p>${para(e.needs[L], lk)}</div>` : '';
+  const notes = (e.notes || []).length ? `<div class="ref-sec"><h4>${esc(t.sec.notes)}</h4><ul>${e.notes.map((n) => `<li>${inline(n[L], lk)}</li>`).join('')}</ul></div>` : '';
+  const returns = e.returns ? `<div class="ref-sec"><h4>${esc(t.sec.returns)}</h4><p>${e.returns.type ? `<code>${esc(e.returns.type)}</code> ` : ''}${inline(e.returns[L], lk)}</p></div>` : '';
+  const tbd = (e.tbd || []).length ? `<div class="callout callout-warning"><p class="callout-title">${esc(t.sec.tbd)}</p>${e.tbd.map((x) => para(x[L], lk)).join('')}</div>` : '';
+  return `<article class="ref${mode === 'page' ? ' ref-own' : ''}" ${attrs}>${aliasAnchors}${head}${sigHtml}${alsoHtml}
+<p class="ref-summary">${inline(e.summary[L], lk)}</p>
+<div class="ref-body">${(e.description || []).map((d) => para(d[L], lk)).join('')}</div>
+${valueHtml(r, e, L, t, lk)}${needs}${paramsHtml(r, e, L, t, lk)}${returns}${membersHtml(r, e, L, t, lk)}${notes}${examplesHtml(r, e, L, t, lk)}${tbd}${relHtml}${sourceHtml}</article>`;
 }
+
+/** "Every sketch starts with one line": the loader line with its copy button, the p5 version the live examples use, run-on-scroll. */
+export function loaderAside(t) {
+  return `<aside class="ref-loader">
+      <p class="ref-loader-title">${esc(t.loaderTitle)}</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>${esc(t.loaderCopy)}</button></div><pre><code class="language-js">${highlight(LOADER, 'js')}</code></pre></div>
+      <p class="ref-loader-body">${esc(t.loaderBody)}</p>
+      <label class="ref-p5v" hidden>${esc(t.p5Version)} <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> ${esc(t.ex.auto)}</label>
+    </aside>`;
+}
+
+/** What reference.js reads from the page: the loader line, example strings, search strings, the p5 builds, where oav-p5.js is. */
+export const refRuntimeOf = (t, c) => ({
+  loader: LOADER, ex: t.ex, searchNone: t.searchNone, searchCount: t.searchCount, p5: { default: P5_VERSIONS[0], list: P5_VERSIONS },
+  oav: c.root + 'p5/oav-p5.js', lang: c.locale,
+});
 
 /**
  * @param {object} t      strings (tools/reference/en.mjs | zh.mjs)
@@ -131,11 +172,17 @@ ${valueHtml(r, e, L, t)}${needs}${paramsHtml(r, e, L, t)}${returns}${membersHtml
  * @param {string} o.version, o.p5Version
  * @param {{css:string, js:string, docsCss:string, docsJs:string}} o.assets  cache stamps
  */
-export function renderReferencePage(t, home, { c, records, version, p5Version, assets, guideHref }) {
-  const L = c.locale;
+/** name or anchor id → record: what `related` may name (an anchor id, leap-startBridge, where two packages share a name). */
+export function keyMap(records) {
   const byKey = new Map();
   for (const r of records) for (const k of r.covers) byKey.set(k, r);
-  for (const r of records) byKey.set(r.id, r);                         // `related` may name an anchor id (leap-startBridge) where a name is shared
+  for (const r of records) byKey.set(r.id, r);
+  return byKey;
+}
+
+export function renderReferencePage(t, home, { c, records, version, p5Version, assets, guideHref }) {
+  const L = c.locale;
+  const byKey = keyMap(records);
   const cats = CATEGORIES.filter((cat) => records.some((r) => r.category === cat.id));
   const written = records.filter((r) => r.entry).length, waiting = records.length - written;
   const ld = [
@@ -149,10 +196,7 @@ export function renderReferencePage(t, home, { c, records, version, p5Version, a
   const runtime = {
     copy: t.copy, copied: t.copied, linkCopied: t.linkCopied, tocButton: t.tocButton, tocClose: t.tocClose,
   };
-  const refRuntime = {
-    loader: LOADER, ex: t.ex, searchNone: t.searchNone, searchCount: t.searchCount, p5: { default: P5_VERSIONS[0], list: P5_VERSIONS },
-    oav: c.root + 'p5/oav-p5.js', lang: L,
-  };
+  const refRuntime = refRuntimeOf(t, c);
   const json = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
 
   const toc = `<nav class="toc" aria-label="${attr(t.tocLabel)}">
@@ -168,7 +212,7 @@ export function renderReferencePage(t, home, { c, records, version, p5Version, a
     const body = rs.map((r) => {
       const head = r.pkg !== lastPkg ? `<p class="ref-pkg-head">${esc(r.pkg)}</p>` : '';
       lastPkg = r.pkg;
-      return head + entryHtml(r, L, t, byKey);
+      return head + entryHtml(r, L, t, byKey, hasPage(r) ? { mode: 'brief', pageHref: `${nameSlug(r.id)}/` } : {});
     }).join('\n');
     return `<section class="chapter ref-cat" data-chapter="cat-${cat.id}" aria-labelledby="cat-${cat.id}">
 <h2 id="cat-${cat.id}">${esc(cat[L])}<a class="anchor" href="#cat-${cat.id}" aria-label="${attr(t.anchorLabel)}">#</a></h2>
@@ -227,13 +271,7 @@ ${topBar(home, c)}
       <p class="ref-search-status" role="status" aria-live="polite"></p>
     </div>
 
-    <aside class="ref-loader">
-      <p class="ref-loader-title">${esc(t.loaderTitle)}</p>
-      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>${esc(t.loaderCopy)}</button></div><pre><code class="language-js">${highlight(LOADER, 'js')}</code></pre></div>
-      <p class="ref-loader-body">${esc(t.loaderBody)}</p>
-      <label class="ref-p5v" hidden>${esc(t.p5Version)} <select></select></label>
-      <label class="ref-auto" hidden><input type="checkbox"> ${esc(t.ex.auto)}</label>
-    </aside>
+    ${loaderAside(t)}
 
     <div id="ref-list" class="ref-list">
 ${sections}

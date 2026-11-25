@@ -85,29 +85,29 @@ it. <strong>The framework and the site</strong> are listed by day. Every entry l
 <h4 id="changelog-0-8-5">0.8.5<a class="anchor" href="#changelog-0-8-5" aria-label="#">#</a></h4>
 <p>2026-11-06 · <a href="https://github.com/frank890417/open-audiovisual/commit/a330b30" rel="noopener">a330b30</a></p>
 <ul>
-<li><strong>The controllers imported from QLC+ work here too.</strong> Plug in a BCF2000 or a nanoPAD2, or set <code>profile</code> to one of their ids, and <code>knob1</code>, <code>fader1</code> and <code>pad1</code> follow that device: its one file is fetched when it is needed. <a href="../docs/reference/#option-profile">profile</a></li>
+<li><strong>The controllers imported from QLC+ work here too.</strong> Plug in a BCF2000 or a nanoPAD2, or set <code>profile</code> to one of their ids, and <code>knob1</code>, <code>fader1</code> and <code>pad1</code> follow that device: its one file is fetched when it is needed. <a href="../docs/reference/option-profile/">profile</a></li>
 </ul>
 <h4 id="changelog-0-8-4">0.8.4<a class="anchor" href="#changelog-0-8-4" aria-label="#">#</a></h4>
 <p>2026-10-20 · <a href="https://github.com/frank890417/open-audiovisual/commit/e9ad495" rel="noopener">e9ad495</a></p>
 <ul>
 <li><strong>🥁 opens the drums quiet.</strong> 🥁 in the 🎹 panel, and the drums it brings back after a reload, show the grid with its play box
-unticked: nothing sounds until someone ticks it. A sketch that calls <code>startDrums()</code> itself still plays at once. <a href="../docs/reference/#startDrums">startDrums</a></li>
+unticked: nothing sounds until someone ticks it. A sketch that calls <code>startDrums()</code> itself still plays at once. <a href="../docs/reference/start-drums/">startDrums</a></li>
 </ul>
 <h4 id="changelog-0-8-3">0.8.3<a class="anchor" href="#changelog-0-8-3" aria-label="#">#</a></h4>
 <p>2026-10-20 · <a href="https://github.com/frank890417/open-audiovisual/commit/8a9be83" rel="noopener">8a9be83</a></p>
 <ul>
 <li><strong>How many frames ago.</strong> <code>lastKickFrameCount</code>, <code>lastSnareFrameCount</code>, <code>lastHatFrameCount</code>, <code>lastBeatFrameCount</code> and
 <code>lastNoteFrameCount</code> are the <code>frameCount</code> of the frame that saw the hit: <code>frameCount - lastKickFrameCount</code> is 0 in the
-frame where <code>kickIsDetected</code> is true, then 1, 2, 3 …, for a shape that lasts a fixed number of frames. <a href="../docs/reference/#lastKickFrameCount">lastKickFrameCount</a></li>
+frame where <code>kickIsDetected</code> is true, then 1, 2, 3 …, for a shape that lasts a fixed number of frames. <a href="../docs/reference/last-kick-frame-count/">lastKickFrameCount</a></li>
 </ul>
 <h4 id="changelog-0-8-2">0.8.2<a class="anchor" href="#changelog-0-8-2" aria-label="#">#</a></h4>
 <p>2026-10-20 · <a href="https://github.com/frank890417/open-audiovisual/commit/b0ebbd7" rel="noopener">b0ebbd7</a></p>
 <ul>
 <li><strong>A hit as a value, like <code>mouseIsPressed</code>.</strong> <code>kickIsDetected</code>, <code>snareIsDetected</code> and <code>hatIsDetected</code> are true in the one
 frame after a kick, a snare or a hat (the drum machine's, or the microphone's when no drums play). <code>lag()</code> takes <code>true</code> as 1,
-so <code>lag(kickIsDetected, 0, 0.3)</code> is a number that flashes to 1 and fades: an alpha, a size. <a href="../docs/reference/#kickIsDetected">kickIsDetected</a></li>
+so <code>lag(kickIsDetected, 0, 0.3)</code> is a number that flashes to 1 and fades: an alpha, a size. <a href="../docs/reference/kick-is-detected/">kickIsDetected</a></li>
 <li><strong>When the last one came.</strong> <code>lastKickTs</code>, <code>lastSnareTs</code>, <code>lastHatTs</code>, <code>lastBeatTs</code> and <code>lastNoteTs</code> are on the <code>millis()</code>
-clock, so <code>millis() - lastKickTs</code> is how many ms ago; <code>-Infinity</code> until the first. <a href="../docs/reference/#lastKickTs">lastKickTs</a></li>
+clock, so <code>millis() - lastKickTs</code> is how many ms ago; <code>-Infinity</code> until the first. <a href="../docs/reference/last-kick-ts/">lastKickTs</a></li>
 </ul>
 <h4 id="changelog-0-8-1">0.8.1<a class="anchor" href="#changelog-0-8-1" aria-label="#">#</a></h4>
 <p>2026-10-20 · <a href="https://github.com/frank890417/open-audiovisual/commit/096914f" rel="noopener">096914f</a></p>
@@ -115,13 +115,13 @@ clock, so <code>millis() - lastKickTs</code> is how many ms ago; <code>-Infinity
 <li><strong>The 🎹 panel goes where you want it.</strong> Two buttons on the panel: <strong>Dock</strong> cycles bottom → top → floating (drag a
 floating panel by its bar), <strong>Size</strong> cycles small → medium → large. This browser remembers both. With no <code>dock</code> option
 the panel now opens at the bottom, OpenProcessing included: at the top it covered the sketch. The 🎹 moves out of the
-panel's way only when they share an edge. <a href="../docs/reference/#option-dock">dock</a></li>
+panel's way only when they share an edge. <a href="../docs/reference/option-dock/">dock</a></li>
 <li><strong>A reload brings back what you had on.</strong> Cmd+Enter on OpenProcessing (or any reload of the same page) opens the panel
 again if it was open, and restarts drums you started from its 🥁 on the line and tempo you ended on. A sketch that
 starts its own drums keeps its own; close the panel or stop the drums and they stay off.</li>
 <li><strong>With the drums playing, a kick is one kick.</strong> The microphone's kick, snare, hat and beat no longer reach the sketch
 while the drum machine plays: it mostly heard the drums out of the speakers, so <code>snareDetected</code> fired on kicks.
-<code>micLevel</code> and the three bands still follow the microphone. <a href="../docs/reference/#kickDetected">kickDetected</a></li>
+<code>micLevel</code> and the three bands still follow the microphone. <a href="../docs/reference/kick-detected/">kickDetected</a></li>
 <li><strong>OpenProcessing's console stays shut.</strong> It opens over the sketch for every console line, so there oav-p5 no longer
 prints what it says on its own (the wiring, a hint that is on a card, "sound on"). An error in your code, a call made
 wrong and 🩺 still print; <code>debug</code> brings the rest back.</li>
@@ -228,6 +228,7 @@ A MIDI controller, the controller on screen (🎹) and a phone all come in as th
 <h3 id="changelog-framework-and-site">Framework and site<a class="anchor" href="#changelog-framework-and-site" aria-label="#">#</a></h3>
 <h4 id="changelog-2026-11-25">2026-11-25<a class="anchor" href="#changelog-2026-11-25" aria-label="#">#</a></h4>
 <ul>
+<li><strong>A page for every oav-p5 name.</strong> Each of the 174 names of <code>oav-p5.js</code> (its variables, functions, events, <code>OAVp5.*</code> members and loading options) has its own page, <code>/docs/reference/&lt;name&gt;/</code> (<code>micLevel</code> is <a href="../docs/reference/mic-level/">/docs/reference/mic-level/</a>), with its whole entry, every example running live as before, related names as links, the examples whose sketch uses it, and its own title and description. The <a href="../docs/reference/">API reference</a> stays the index of every name, with its search: an oav-p5 name there is a short card (signature and summary) whose heading links its page, and every <code>#name</code> link still lands on that card. The package exports keep their full entries on the index. The cheat sheet, /p5/ and the site search link the name pages.</li>
 <li><strong>A page for every chapter of the handbook.</strong> Each of the 21 chapters has its own address, <code>/docs/&lt;chapter&gt;/</code> (the p5 chapter's is <a href="../p5/">/p5/</a>, which already carried it), with its own title, a description taken from its first paragraph, the previous and next chapter, and the same contents and copy buttons as before. <a href="../docs/">/docs/</a> is now the contents: every chapter with its first sentence and its sections. Every link into the one-page handbook (<code>/docs/#mapping-curves</code>) still lands on its heading: the site's own pages link the chapter pages directly, and a short script on /docs/ forwards an old link from anywhere else.</li>
 <li><strong>Every device on one page, and a page for each fixture.</strong> <a href="../devices/">/devices/</a> lists the whole collection by kind, 127 devices, with a filter by kind and manufacturer and a search over names and aliases that needs no request; every row links its page, and the controllers keep their own addresses. Each of the 49 DMX fixtures has a page: every mode's channel table, a virtual fixture whose sliders go through the real patch and colour split and show the bytes channel by channel, code that patches it from <code>device('&lt;id&gt;')</code> and prints the bytes the page says, and the fixture file. Twenty-two other devices (the AG06, the MX Brio, the Dante Virtual Soundcard, the Leap Motion Controller 2, WLED, the ENTTEC DMX USB Pro and the 16 parts of the electronics library) have one too: the facts with their sources, setup, known problems, code, and the record, a part's JSON or an out-bridge config to take. A camera or an audio input can be looked for and opened from its page, only when a button is pressed. A device gets a page when it offers two of these three: something to try, code, a file; the Brother QL-810W has only its record and stays a row. <a href="../devices/">Devices</a></li>
 <li><strong>Forty-two DMX fixtures from the Open Fixture Library.</strong> LED pars and bars, small moving heads, washes and spots, two strobes, no smoke machines, from Chauvet DJ, ADJ, Eurolite, Showtec, Stairville, Cameo, Varytec and others, converted at OFL commit 849343f6 (MIT, credited on each page) and all unverified. The importer now refuses a fixture the engine would get wrong on a real light (an upside-down dimmer, a channel a property cannot reach, a mode that stays dark or shut at rest, no manual to check against), as well as matrix and switching channels; colour and gobo wheel slots keep their names. They load one at a time: <code>loadImportedFixture(id)</code> or <code>device(id)</code>. <a href="../fixtures/chauvet-dj-slimpar-t12-bt/">SlimPAR T12 BT</a></li>

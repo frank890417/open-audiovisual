@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OAVp5｜oav-p5 參考｜open-audiovisual</title>
+<meta name="description" content="oav-p5 把所有東西掛在上面的那個物件：MIDI 狀態、面板、麥克風、時鐘、體檢。midi 和 oavMidi 是同一個物件。">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/reference/oavp5/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/reference/oavp5/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/reference/oavp5/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/reference/oavp5/">
+<link rel="describedby" href="../../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="OAVp5｜oav-p5 參考｜open-audiovisual">
+<meta property="og:description" content="oav-p5 把所有東西掛在上面的那個物件：MIDI 狀態、面板、麥克風、時鐘、體檢。midi 和 oavMidi 是同一個物件。">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/reference/oavp5/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OAVp5｜oav-p5 參考｜open-audiovisual">
+<meta name="twitter:description" content="oav-p5 把所有東西掛在上面的那個物件：MIDI 狀態、面板、麥克風、時鐘、體檢。midi 和 oavMidi 是同一個物件。">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../../site.webmanifest">
+<link rel="preload" href="../../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../../assets/home/home.css?v=c6e958d9">
+<script type="module" src="../../../../assets/search/search.js?v=c6e958d9"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="reference_name" data-oav-id="oavp5">
+<script defer src="../../../../assets/track.js?v=c6e958d9"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/reference/oavp5/#article","url":"https://openaudiovisual.com/zh/docs/reference/oavp5/","name":"OAVp5｜oav-p5 參考｜open-audiovisual","description":"oav-p5 把所有東西掛在上面的那個物件：MIDI 狀態、面板、麥克風、時鐘、體檢。midi 和 oavMidi 是同一個物件。","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"OAVp5","version":"0.10.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":"OAVp5 物件（進階）","breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/reference/oavp5/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/reference/oavp5/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"API 參考","item":"https://openaudiovisual.com/zh/docs/reference/"},{"@type":"ListItem","position":4,"name":"OAVp5","item":"https://openaudiovisual.com/zh/docs/reference/oavp5/"}]}]}</script>
+<link rel="stylesheet" href="../../../../assets/docs/docs.css?v=c6e958d9">
+<link rel="stylesheet" href="../../../../assets/reference/reference.css?v=c6e958d9">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page ref-page ref-name-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../../zh/#play">彈奏</a>
+    <a href="../../../../zh/#how">運作方式</a>
+    <a href="../../../../zh/#works">作品</a>
+    <a href="../../../../zh/controllers/">控制器</a>
+    <a href="../../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../../zh/webtoe/">WebToe</a>
+    <a href="../../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../../docs/reference/oavp5/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../../zh/docs/reference/oavp5/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">分類</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="參考分類">
+      <p class="toc-title">OAVp5 物件（進階）</p>
+      <p class="toc-ref"><a href="../">所有名稱</a></p>
+      <ol class="toc-chapters toc-names">
+        <li class="toc-ch is-here"><a href="./" aria-current="page"><span class="t"><code>OAVp5</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-check/"><span class="t"><code>OAVp5.check()</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-clock/"><span class="t"><code>OAVp5.clock</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-clock-bpm/"><span class="t"><code>OAVp5.clock.bpm</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-clock-info/"><span class="t"><code>OAVp5.clock.info</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-clock-phase/"><span class="t"><code>OAVp5.clock.phase</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-clock/"><span class="t"><code>OAVp5.drums.clock</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-drums-machine/"><span class="t"><code>OAVp5.drums.machine</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-hints/"><span class="t"><code>OAVp5.hints</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-link/"><span class="t"><code>OAVp5.link</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-link-info/"><span class="t"><code>OAVp5.link.info</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-sound-shell/"><span class="t"><code>OAVp5.sound.shell</code></span></a></li>
+        <li class="toc-ch"><a href="../oavp5-version/"><span class="t"><code>OAVp5.version</code></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../">oav-p5 參考</a> · <a href="../#cat-oavp5">OAVp5 物件（進階）</a></p>
+    <div class="chapter ref-one" data-chapter="OAVp5">
+<article class="ref ref-own" data-name="OAVp5" data-names="OAVp5 midi oavMidi midi midi oavMidi" data-kw="OAVp5 midi object oavMidi namespace advanced state api object OAVp5 midi 物件 oavMidi 命名空間 進階 狀態 api 物件" data-kind="object" data-pkg="oav-p5" data-cat="oavp5"><span id="midi" class="ref-alias-anchor"></span><span id="oavMidi" class="ref-alias-anchor"></span><header class="ref-head"><h1 id="OAVp5"><code>OAVp5</code><a class="anchor" href="#OAVp5" aria-label="這一條的連結">#</a></h1>
+<span class="ref-badges"><span class="badge badge-kind" data-kind="object" title="帶有成員的物件。">物件</span><span class="badge badge-pkg">oav-p5</span></span></header><pre class="ref-sig"><code>OAVp5</code></pre><p class="ref-also">同一條也包含: <code>midi</code> <code>oavMidi</code></p>
+<p class="ref-summary">oav-p5 把所有東西掛在上面的那個物件：MIDI 狀態、面板、麥克風、時鐘、體檢。<code>midi</code> 和 <code>oavMidi</code> 是同一個物件。</p>
+<div class="ref-body"><p>只要 oav-p5 載入了，它就在那裡，setup() 和 draw() 裡都一樣。p5 風格的簡單名稱（<code>knob1</code>、<code>note</code>、<code>micLevel</code>）是輕鬆的入口。想要更多的時候就用 <code>OAVp5</code>：原始的 MIDI 狀態（<a href="../oavp5-note/"><code>OAVp5.note</code></a>、<a href="../oavp5-cc/"><code>OAVp5.cc</code></a>、<a href="../oavp5-bend/"><code>OAVp5.bend</code></a>、<a href="../oavp5-held/"><code>OAVp5.held</code></a>、<a href="../oavp5-last/"><code>OAVp5.last</code></a>）、訂閱（<a href="../oavp5-on/"><code>OAVp5.on()</code></a>）、自己送位元組進去的方法（<a href="../oavp5-input/"><code>OAVp5.input()</code></a>）、麥克風的數字（<a href="../oavp5-mic/"><code>OAVp5.mic</code></a>）、外部時鐘（<a href="../oavp5-clock/"><code>OAVp5.clock</code></a>）、連結（<a href="../oavp5-link/"><code>OAVp5.link</code></a>）、數值隨時間變化（<a href="../oavp5-chop/"><code>OAVp5.chop</code></a>），還有體檢（<a href="../oavp5-check/"><code>OAVp5.check()</code></a>）。</p><p>三個名字，同一個物件。<code>OAVp5</code> 一定在，<code>oavMidi</code> 也一定在。<code>midi</code> 則是頁面本來沒有自己的 <code>midi</code> 時才有，如果頁面已經有了，就不去動它，console 會說要改讀 <code>OAVp5</code>。<code>OAVp5.options</code> 放的是 oav-p5 讀到的載入選項：<code>OAVp5.options.mic</code>，其他每個載入選項（例如 <a href="../option-mic/"><code>mic</code></a>）也一樣。</p></div>
+<div class="callout callout-tip"><p class="callout-title">要先做什麼才有值</p><p>只需要載入那一行。如果它沒載入，<code>OAVp5</code> 就沒有定義，讀它的草圖會停在「OAVp5 is not defined」。</p></div><div class="ref-sec"><h4>注意</h4><ul><li><code>midi</code> 和 <code>oavMidi</code> 是同一個物件的其他名字。</li></ul></div><aside class="ref-loader">
+      <p class="ref-loader-title">每個草圖的第一行</p>
+      <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="ref-loader-copy" hidden>複製這一行</button></div><pre><code class="language-js">document.head.prepend(Object.assign(document.createElement(<span class="ts">'script'</span>), { src: <span class="ts">'https://openaudiovisual.com/p5/oav-p5.js'</span> }));</code></pre></div>
+      <p class="ref-loader-body">底下的範例為了簡短把這一行省略了。按「複製」會自動把它放在最上面，貼進 OpenProcessing（或 p5 編輯器）就能直接跑。</p>
+      <label class="ref-p5v" hidden>活範例用的 p5 <select></select></label>
+      <label class="ref-auto" hidden><input type="checkbox"> 捲到範例就自動執行</label>
+    </aside>
+<div class="ref-sec"><h4>範例</h4><figure class="ref-ex" data-run="sketch">
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><span class="ref-ex-tools"><button type="button" class="ref-run" hidden>▶ 執行</button><button type="button" class="ref-stop" hidden>■ 停止</button><button type="button" class="ref-reset" hidden>↺ 還原</button><button type="button" class="ref-copy" hidden title="複製範例，最上面會加上載入 oav-p5 的那一行">複製</button><a class="ref-op" href="https://openprocessing.org/sketch/create" target="_blank" rel="noopener">OpenProcessing ↗</a></span></div><pre><code class="language-js"><span class="tk">function</span> setup() {
+  createCanvas(400, 300);
+}
+
+<span class="tk">function</span> draw() {
+  background(20);
+  fill(255);
+  text(<span class="ts">'same object: '</span> + (OAVp5 === midi &amp;&amp; OAVp5 === oavMidi), 20, 30);
+  text(<span class="ts">'version: '</span> + OAVp5.version, 20, 60);
+  text(<span class="ts">'MIDI hardware: '</span> + OAVp5.hardware, 20, 90);
+  text(<span class="ts">'microphone: '</span> + OAVp5.mic.state, 20, 120);   <span class="tc">// reading the state does not start it</span>
+  text(<span class="ts">'external clock: '</span> + OAVp5.clock.info.state, 20, 150);
+}</code></pre></div>
+<figcaption>一塊小小的狀態板：三個名字是同一個物件，然後是版本，以及 MIDI、麥克風和時鐘的狀態。</figcaption>
+<div class="ref-live" hidden></div>
+</figure></div><div class="ref-sec ref-rel"><h4>相關</h4><ul><li><a href="../oavp5-version/"><code>OAVp5.version</code></a> <span>載入的 oav-p5 的版本，是像 <code>'0.8.0'</code> 這樣的文字。</span></li><li><a href="../oavp5-on/"><code>OAVp5.on()</code></a> <span>用名字監聽一個 MIDI 事件，不必定義全域函式，並回傳一個停止監聽的函式。</span></li><li><a href="../oavp5-input/"><code>OAVp5.input()</code></a> <span>用位元組手動送一則 MIDI 訊息給 oav-p5：整個草圖的反應就像是控制器送出來的。</span></li><li><a href="../oavp5-check/"><code>OAVp5.check()</code></a> <span>執行 🩺 體檢：版本、頁面、瀏覽器、麥克風、MIDI、聲音、鼓機、錄影、接線和提示，做成一張可以截圖的卡片，也回傳成物件。</span></li><li><a href="../oavp5-mic/"><code>OAVp5.mic</code></a> <span>平常那些名稱底下的麥克風：它的狀態、跟 <code>micLevel</code> 和 <code>bass</code> 一樣的數字（讀它們不會把麥克風打開）、原始的音量，還有 start、stop 和事件。</span></li><li><a href="../oavp5-clock/"><code>OAVp5.clock</code></a> <span>oav-p5 聽到的外部 MIDI 時鐘：它的狀態、速度、現在在小節的哪裡。在別的程式或設備開始送時鐘之前什麼都沒有。</span></li><li><a href="../oavp5-chop/"><code>OAVp5.chop</code></a> <span>CHOP 函式放在同一個地方，加上它們背後模組的狀態：<code>OAVp5.chop.lag(…)</code>、<code>.state</code>、<code>.slots()</code>、<code>.reset()</code>。</span></li></ul></div><p class="ref-source"><a href="https://github.com/frank890417/open-audiovisual/blob/main/p5/oav-p5.js#L110">p5/oav-p5.js 第 110 行</a></p></article>
+    </div>
+
+    <nav class="next-step" aria-labelledby="next-step-title">
+      <p class="eyebrow">下一步</p>
+      <h2 id="next-step-title">用到 OAVp5 的範例</h2>
+      <dl class="next-groups">
+        <div><dt>OAVp5</dt><dd><a href="../../../../examples/21-p5-record/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">21</span> p5 錄成影片</a><a href="../../../../examples/16-p5-sound/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">16</span> p5 彈出聲音</a><a href="../../../../examples/23-p5-with-strudel/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">23</span> p5 跟 Strudel 一起</a><a href="../../../../examples/24-p5-note-names/" data-oav-event="next_step" data-oav-to="example"><span class="next-n">24</span> p5 音名</a></dd></div>
+      </dl>
+      <p class="next-made"><a class="more" href="../../../../zh/made-with/" data-oav-event="next_step" data-oav-to="made_with">用它做的 →</a> <span>跑在 open-audiovisual 上的作品、工具與課程，還有怎麼把你的加進來。</span></p>
+    </nav>
+
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../">所有名稱</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../../zh/">首頁</a>
+      <a href="../../../../zh/examples/">範例</a>
+      <a href="../../../../zh/controllers/">控制器</a>
+      <a href="../../../../zh/docs/">文件</a>
+      <a href="../../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../../zh/webtoe/">WebToe</a>
+      <a href="../../../../zh/made-with/">用它做的</a>
+      <a href="../../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../../llms.txt">llms.txt</a>
+      <a href="../../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"分類","tocClose":"關閉分類"}</script>
+<script type="application/json" id="oav-ref">{"loader":"document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));","ex":{"run":"▶ 執行","stop":"■ 停止","copy":"複製","copied":"已複製","copyTitle":"複製範例，最上面會加上載入 oav-p5 的那一行","open":"OpenProcessing ↗","frameTitle":"活範例","notRun":"這一頁不執行（這是模組）：在你自己的頁面跑，或看範例頁。","needsMic":"會要求麥克風","reset":"↺ 還原","auto":"捲到範例就自動執行","editHint":"可以直接改程式碼，改完範例會自己重跑","micOn":"🎤 點一下開麥克風"},"searchNone":"沒有符合「{q}」的條目。換短一點的字，或從左邊的分類找。","searchCount":"{total} 條裡的 {n} 條","p5":{"default":"1.11.11","list":["1.11.11","2.3.4"]},"oav":"../../../../p5/oav-p5.js","lang":"zh"}</script>
+<script type="module" src="../../../../assets/docs/docs.js?v=c6e958d9"></script>
+<script type="module" src="../../../../assets/reference/reference.js?v=c6e958d9"></script>
+<!--/email_off-->
+</body>
+</html>

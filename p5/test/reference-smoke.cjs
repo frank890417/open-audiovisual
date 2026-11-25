@@ -14,7 +14,9 @@
 // It reads docs/reference/reference.json (the dataset tools/build-reference.mjs writes from the code and the words beside it) and:
 //
 //   1. the PAGE, at 1440 and 390 wide: ?q=micLevel puts micLevel first; #micLevel lands on its card; the search box filters,
-//      "/" focuses it, a Chinese query finds an entry through its keywords; no sideways scroll; ▶ Run puts a live sketch in the page
+//      "/" focuses it, a Chinese query finds an entry through its keywords; no sideways scroll. Then micLevel's own page
+//      (/docs/reference/mic-level/: an oav-p5 name's examples live on its page, the index keeps a short card): every example
+//      of the entry is there, one runs by itself when scrolled to, ▶ Run puts a live sketch in the page
 //   2. every SKETCH example (run: 'sketch'), once per p5 version: the entry's code, with oav-p5 loaded before it as the loader line
 //      does, must run (frameCount moves, a canvas is drawn) with no page error and no console error. A fake microphone is the
 //      browser's own fake device; no MIDI hardware exists
@@ -154,9 +156,14 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
       await page.waitForTimeout(300);
       if (!(await page.evaluate(() => !document.querySelector('.ref-none').hidden))) bad1.push('a query with no match shows no message');
       await page.screenshot({ path: path.join(SHOTS, `reference-${lang}-${label}-none.png`) });
-      // the live example
-      await page.goto(`${base}${root}?q=micLevel`, { waitUntil: 'load' });
+      // the live example, on micLevel's own page (tools/reference/name-page.mjs); the index carries a short card that links it
+      const card = await page.evaluate(() => { const a = document.querySelector('h3#micLevel a'); return a && a.getAttribute('href'); });
+      if (card !== 'mic-level/') bad1.push(`#micLevel's heading links ${card}, not mic-level/`);
+      await page.goto(`${base}${root}mic-level/`, { waitUntil: 'load' });
       await page.waitForTimeout(500);
+      const figs = await page.evaluate(() => document.querySelectorAll('.ref-ex').length);
+      const want = (data.entries.find((e) => e.key === 'micLevel') || { examples: [] }).examples.length;
+      if (figs !== want || !figs) bad1.push(`mic-level/: ${figs} examples on the page, the entry has ${want}`);
       // an example on screen runs by itself (quiet: the microphone waits for a click inside the frame)
       await page.locator('.ref:not([hidden]) .ref-live').first().scrollIntoViewIfNeeded();
       const quiet = await page.waitForFunction(() => {
@@ -173,7 +180,7 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
       const frame = await fh.contentFrame();
       await frame.waitForFunction(() => typeof window.frameCount === 'number' && window.frameCount > 15, null, { timeout: 25000 });
       await page.screenshot({ path: path.join(SHOTS, `reference-${lang}-${label}-live.png`) });
-      say(!bad1.length && !problems.length, `page · ${lang} · ${label} (${w}×${h}): ${r.total} entries, ?q=, #anchor, "/", 麥克風, "mic level", no-match, runs by itself, ▶ Run`, [...bad1, ...problems].join('\n'));
+      say(!bad1.length && !problems.length, `page · ${lang} · ${label} (${w}×${h}): ${r.total} entries, ?q=, #anchor, "/", 麥克風, "mic level", no-match; mic-level/: ${figs} examples, runs by itself, ▶ Run`, [...bad1, ...problems].join('\n'));
     } catch (e) {
       say(false, `page · ${lang} · ${label}`, [...problems, 'did not run: ' + e.message.split('\n')[0]].join('\n'));
     }

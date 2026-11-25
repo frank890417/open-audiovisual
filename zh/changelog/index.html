@@ -82,7 +82,7 @@
 <h4 id="changelog-0-8-5">0.8.5<a class="anchor" href="#changelog-0-8-5" aria-label="#">#</a></h4>
 <p>2026-11-06 · <a href="https://github.com/frank890417/open-audiovisual/commit/a330b30" rel="noopener">a330b30</a></p>
 <ul>
-<li><strong>從 QLC+ 匯入的控制器這裡也能用。</strong> 插上 BCF2000 或 nanoPAD2，或把 <code>profile</code> 設成它們的 id，<code>knob1</code>、<code>fader1</code>、<code>pad1</code> 就會跟著那台機器，需要時才抓它的檔案。<a href="../../zh/docs/reference/#option-profile">profile</a></li>
+<li><strong>從 QLC+ 匯入的控制器這裡也能用。</strong> 插上 BCF2000 或 nanoPAD2，或把 <code>profile</code> 設成它們的 id，<code>knob1</code>、<code>fader1</code>、<code>pad1</code> 就會跟著那台機器，需要時才抓它的檔案。<a href="../../zh/docs/reference/option-profile/">profile</a></li>
 </ul>
 <h4 id="changelog-0-8-4">0.8.4<a class="anchor" href="#changelog-0-8-4" aria-label="#">#</a></h4>
 <p>2026-10-20 · <a href="https://github.com/frank890417/open-audiovisual/commit/e9ad495" rel="noopener">e9ad495</a></p>
@@ -186,6 +186,7 @@ true（鼓機的，或沒有鼓機時麥克風的）。<code>lag()</code> 把 <c
 <h3 id="changelog-framework-and-site">框架與網站<a class="anchor" href="#changelog-framework-and-site" aria-label="#">#</a></h3>
 <h4 id="changelog-2026-11-25">2026-11-25<a class="anchor" href="#changelog-2026-11-25" aria-label="#">#</a></h4>
 <ul>
+<li><strong>每一個 oav-p5 名稱都有自己的一頁。</strong> <code>oav-p5.js</code> 的 174 個名稱（變數、函式、事件、<code>OAVp5.*</code> 成員和載入選項）各有一頁 <code>/zh/docs/reference/&lt;名稱&gt;/</code>（<code>micLevel</code> 是 <a href="../../zh/docs/reference/mic-level/">/zh/docs/reference/mic-level/</a>），有完整的說明、每個範例照樣能直接跑、相關名稱的連結、用到它的範例，以及自己的標題和描述。<a href="../../zh/docs/reference/">API 參考</a>仍是所有名稱的索引，搜尋照舊：oav-p5 的名稱在上面是一張短卡片（寫法和一句話說明），標題連到它的頁面，原本的 <code>#名稱</code> 連結也都還會到這張卡片。套件的匯出仍在索引頁保留完整說明。速查表、/zh/p5/ 和站內搜尋都連到這些頁面。</li>
 <li><strong>手冊每一章都有自己的網頁。</strong> 21 章各有自己的網址 <code>/docs/&lt;章&gt;/</code>（p5 那一章在 <a href="../../zh/p5/">/zh/p5/</a>，原本就有一頁），各有自己的標題、取自第一段的描述、上一章與下一章，目錄和複製按鈕和以前一樣。<a href="../../zh/docs/">/zh/docs/</a> 現在是目錄：每一章附第一句話和各節連結。原本連到單頁手冊的連結（<code>/docs/#mapping-curves</code>）都還會到同一個標題：站內的頁面直接連到各章的頁面，從別處來的舊連結由 /docs/ 上的一小段程式轉過去。</li>
 <li><strong>每一台設備都在同一頁，每台燈具也有自己的一頁。</strong> <a href="../../zh/devices/">/zh/devices/</a> 依種類列出整個集合，127 台設備，能依種類和廠牌篩選，也能搜尋名稱和別名，搜尋不需要任何網路請求。每一列都連到它的頁面，控制器的網址不變。49 台 DMX 燈具各有一頁：每個模式的通道表、一台虛擬燈具（滑桿走真正的 patch 和顏色拆解，逐通道顯示位元組）、從 <code>device('&lt;id&gt;')</code> patch 它並印出頁面上那串位元組的程式碼，以及燈具檔。另外 22 台設備（AG06、MX Brio、Dante Virtual Soundcard、Leap Motion Controller 2、WLED、ENTTEC DMX USB Pro，以及電子零件庫的 16 個零件）也有自己的一頁：附出處的事實、設定、已知問題、程式碼，以及可以帶走的紀錄、零件 JSON 或輸出橋接程式的設定檔。鏡頭和音訊輸入可以在它的頁面上找找看、打開來，只有按下按鈕時才會做。一台設備要在「能試的東西、程式碼、檔案」三樣裡提供兩樣才有自己的頁面，Brother QL-810W 只有紀錄，所以仍是清單上的一列。<a href="../../zh/devices/">設備</a></li>
 <li><strong>四十二台來自 Open Fixture Library 的 DMX 燈具。</strong> LED PAR 燈和燈條、小搖頭燈、染色燈與圖案燈、兩台頻閃燈，沒有煙機，來自 Chauvet DJ、ADJ、Eurolite、Showtec、Stairville、Cameo、Varytec 等廠牌，從 OFL commit 849343f6 轉換（MIT，每一頁都標明出處），全部是未驗證。匯入程式現在會擋下引擎在真燈上會弄錯的燈具（亮度反過來的 dimmer、屬性接不到的通道、靜止時不亮或遮光片關著的模式、沒有說明書可以對照），矩陣與切換通道也照樣擋下，色輪和圖案輪的每一格保留名稱。它們一次載入一台：<code>loadImportedFixture(id)</code> 或 <code>device(id)</code>。<a href="../../zh/fixtures/chauvet-dj-slimpar-t12-bt/">SlimPAR T12 BT</a></li>

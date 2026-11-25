@@ -16,12 +16,14 @@
 //
 // This file imports nothing from the other site modules (facts, pages): they import it. It does import where the handbook's
 // headings live (tools/docs/anchors.mjs, a leaf module), so `c.to('docs', '#mapping-curves')` from any generator is the
-// chapter page /docs/mapping/#mapping-curves and no page links to the old one-page anchors.
+// chapter page /docs/mapping/#mapping-curves and no page links to the old one-page anchors; and where each oav-p5 name has
+// its page (tools/reference/slug.mjs), so `c.to('reference', '#micLevel')` is /docs/reference/mic-level/.
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { docsHref } from '../docs/anchors.mjs';
+import { refHref } from '../reference/slug.mjs';
 
 
 
@@ -68,7 +70,7 @@ export const GA_SNIPPET = `<script>if(/(^|\\.)openaudiovisual\\.com$/.test(locat
 /** What kind of page this is, as assets/track.js reports it (`page_type`). headBasics() writes it into every page; the
  *  same list is in track.js (tests/track.test.js compares them). */
 export const PAGE_TYPES = ['home', 'controller', 'controllers_index', 'verify', 'example', 'examples_index', 'docs', 'reference',
-  'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found', 'devices_index', 'fixture', 'device', 'docs_chapter'];
+  'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found', 'devices_index', 'fixture', 'device', 'docs_chapter', 'reference_name'];
 /** The site's own events (assets/track.js): loaded with defer, it does nothing unless the GA snippet above defined gtag. */
 export const TRACK_SRC = 'assets/track.js';
 
@@ -112,8 +114,8 @@ export function pathCtx(p, locale, { langs = ['en', 'zh'], page } = {}) {
     to: (other, hash = '') => (hash.length > 1 && deep(other, root, locale, hash.slice(1))) || (root + (locale === 'zh' ? 'zh/' : '') + PAGES[other]) + hash || './' };
 }
 
-/** A heading of the handbook is on its chapter's page. null: stay on the page. */
-const deep = (page, root, locale, anchor) => (page === 'docs' ? docsHref(root, locale, anchor) : null);
+/** A heading of the handbook is on its chapter's page; an oav-p5 name of the reference is on its own page. null: stay on the page. */
+const deep = (page, root, locale, anchor) => (page === 'docs' ? docsHref(root, locale, anchor) : page === 'reference' ? refHref(root, locale, anchor) : null);
 
 /** pathCtx() for a named page of PAGES. */
 export function pageCtx(page, locale) {

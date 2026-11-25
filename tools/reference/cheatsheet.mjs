@@ -11,6 +11,7 @@ import { highlight } from '../docs/markdown.mjs';
 import { LOADER, P5 } from './model.mjs';
 import { examplesUsing } from '../examples/uses.mjs';
 import { usesBlock } from '../site/next-step.mjs';
+import { nameSlug } from './slug.mjs';
 
 const W = (en, zh) => ({ en, zh });
 const VERSION = { now: '' };   // OAVp5.version's row says the version the page was built with (set in renderCheatsheetPage)
@@ -308,7 +309,7 @@ export function cheatsheetHrefs(pairs, refBase) {
   return (key) => {
     const id = byName.get(key);
     if (!id) throw new Error(`cheat sheet: "${key}" is not an oav-p5 name with a reference entry (tools/reference/cheatsheet.mjs)`);
-    return refBase + '#' + id;
+    return refBase + nameSlug(id) + '/';          // its own page (tools/reference/slug.mjs)
   };
 }
 
@@ -327,7 +328,7 @@ export function renderCheatsheetPage(t, home, { c, records, p5Version, assets })
     const r = byName.get(key);
     if (!r) throw new Error(`cheat sheet: "${key}" is not an oav-p5 name in the reference (tools/reference/cheatsheet.mjs)`);
     if (!r.entry) throw new Error(`cheat sheet: "${key}" has no reference entry yet`);
-    return ref + '#' + r.id;
+    return ref + nameSlug(r.id) + '/';
   };
   const sections = cheatsheetBoxes({ L, hrefOf, events: s.events, p5Version });
   // the next step: for each box, the examples whose sketch uses its names (tools/examples/uses.mjs); not printed

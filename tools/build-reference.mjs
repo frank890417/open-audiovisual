@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // build-reference — the API reference: /docs/reference/ (en), /zh/docs/reference/ (繁中) and docs/reference/reference.json,
+// one page per oav-p5 name, /docs/reference/<name>/ (tools/reference/name-page.mjs; the index keeps a short card for each),
 // and the one-page cheat sheet built from the same entries: /docs/cheatsheet/ and /zh/docs/cheatsheet/ (tools/reference/cheatsheet.mjs).
 //
 //   node tools/build-reference.mjs            # write the three files (and sitemap.xml); exit 1 if a gate is red
@@ -20,7 +21,9 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { loadModel, toDataset, LEDGER_FILE, P5 } from './reference/model.mjs';
-import { renderReferencePage } from './reference/page.mjs';
+import { renderReferencePage, keyMap, hasPage } from './reference/page.mjs';
+import { renderNamePage } from './reference/name-page.mjs';
+import { nameSlug, slugProblems, NAME_BASE } from './reference/slug.mjs';
 import { renderCheatsheetPage } from './reference/cheatsheet.mjs';
 import { CATEGORIES } from './reference/categories.mjs';
 import { SITE, BLOB, pathCtx } from './site/chrome.mjs';
@@ -39,6 +42,8 @@ const hash = (rel) => crypto.createHash('sha1').update(read(rel) || '').digest('
 export const PAGES = { en: 'docs/reference/index.html', zh: 'zh/docs/reference/index.html' };
 export const CHEAT_PAGES = { en: 'docs/cheatsheet/index.html', zh: 'zh/docs/cheatsheet/index.html' };
 export const DATASET = 'docs/reference/reference.json';
+/** The file of an oav-p5 name's own page (repo-relative). */
+export const namePageFile = (id, locale) => (locale === 'zh' ? 'zh/' : '') + NAME_BASE + nameSlug(id) + '/index.html';
 const STRINGS = { en, zh };
 const HOME = { en: homeEn, zh: homeZh };
 export const GUIDE_URL = `${BLOB}AGENTS.md#documenting-a-public-name`;
@@ -57,10 +62,19 @@ export function buildFiles(model) {
   const p5Version = /OAV_P5_VERSION = '([\d.]+)'/.exec(read('p5/oav-p5.js'))[1];
   const assets = { css: hash('assets/reference/reference.css'), js: hash('assets/reference/reference.js'), docsCss: hash('assets/docs/docs.css'), docsJs: hash('assets/docs/docs.js'), cheatCss: hash('assets/reference/cheatsheet.css') };
   const files = {};
+  // one page per oav-p5 name (tools/reference/slug.mjs says where); two names on one address is an error, not a quiet "-2"
+  const named = model.records.filter(hasPage);
+  const clash = slugProblems(named.map((r) => r.id));
+  if (clash.length) throw new Error('reference: two oav-p5 names would share a page:\n  ' + clash.map(([s, ids]) => `${s || '(empty)'}: ${ids.join(', ')}`).join('\n  '));
+  const byKey = keyMap(model.records);
   for (const locale of ['en', 'zh']) {
     const c = pathCtx('docs/reference/', locale, { page: 'docs' });
     files[PAGES[locale]] = renderReferencePage(STRINGS[locale], HOME[locale], { c, records: model.records, version: pkg.version, p5Version, assets, guideHref: GUIDE_URL });
     files[CHEAT_PAGES[locale]] = renderCheatsheetPage(STRINGS[locale], HOME[locale], { c: pathCtx('docs/cheatsheet/', locale, { page: 'docs' }), records: model.records, p5Version, assets });
+    for (const r of named) {
+      const p = NAME_BASE + nameSlug(r.id) + '/';
+      files[namePageFile(r.id, locale)] = renderNamePage(STRINGS[locale], HOME[locale], { c: pathCtx(p, locale, { page: 'docs' }), r, records: model.records, byKey, version: pkg.version, assets });
+    }
   }
   files[DATASET] = datasetText(toDataset(model, { p5Version, version: pkg.version }));
   return files;
@@ -122,11 +136,12 @@ if (isMain(import.meta.url)) {
     if (check) { if (cur === null || unstamp(cur) !== unstamp(out)) stale.push(rel); continue; }
     fs.mkdirSync(path.dirname(path.join(ROOT, rel)), { recursive: true });
     fs.writeFileSync(path.join(ROOT, rel), out);
-    console.log('wrote', rel, `(${out.length} bytes)`);
+    if (!/\/index\.html$/.test(rel) || !rel.includes(NAME_BASE) || /reference\/index\.html$/.test(rel)) console.log('wrote', rel, `(${out.length} bytes)`);
   }
+  if (!check) console.log(`wrote ${Object.keys(files).filter((f) => /reference\/[\w-]+\/index\.html$/.test(f)).length} name pages (en and zh)`);
   if (check) {
     if (stale.length) { console.error('stale (run node tools/build-reference.mjs):\n  ' + stale.join('\n  ')); process.exit(1); }
-    console.log('✅ reference up to date (en, zh, reference.json, sitemap.xml)');
+    console.log('✅ reference up to date (en, zh, the name pages, reference.json, sitemap.xml)');
   }
   void SITE; void CATEGORIES;
   process.exit(0);
