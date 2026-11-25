@@ -17,7 +17,8 @@ QLC+ input profiles
                                        values from it (Akai APC40 mkII, Akai APC mini mk2, Novation Launchpad Mini MK3).
     packages/midi/profiles/m-vave-smc-mixer.json
                                        converted like the files in imported/, then corrected after a check on a unit
-                                       (issue #7). It says "license": "Apache-2.0" and keeps its "origin" and "sources".
+                                       (issue #7) and given a faceplate, labels and LED values from the unit and its
+                                       manual (PR #9). It says "license": "Apache-2.0" and keeps its "origin" and "sources".
     tests/fixtures/qlc/                three .qxi files, unchanged, as test data.
     controllers/<id>/                  files generated from the imported profiles carry the same licence.
     packages/devices/catalog.js        the rows of the imported profiles (id, name, maker, short name) are read off them
@@ -25,7 +26,8 @@ QLC+ input profiles
 
   Changes made: read from XML into JSON, numbers decoded into MIDI messages, a generated layout added,
   every control marked "verified": false. Nothing in imported/ has been checked on hardware. The M-VAVE SMC-Mixer was
-  checked on a unit by a contributor: its encoders became relative encoders, and its "verifications" says what matched.
+  checked on a unit by a contributor: its encoders became relative encoders, its layout was drawn from the unit (no longer
+  generated), it gained LED feedback and the manual's labels, and its "verifications" says what matched.
 
 Open Fixture Library fixture definitions
   Project:   Open Fixture Library, https://github.com/OpenLightingProject/open-fixture-library

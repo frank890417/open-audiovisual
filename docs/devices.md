@@ -46,7 +46,7 @@ Every device has the same outer record, `open-audiovisual/device@1`, described b
 | `license`, `verified`, `verifications` | the licence of the record's data, and how sure it is |
 | `notes`, `tbd` | what is worth knowing, and what could not be confirmed |
 
-`verified` is true only when the device was checked on a real unit, and a record refuses `verified: true` without a verification whose `method` is `hardware`. A MIDI controller counts as verified only when every one of its controls was: the M-VAVE SMC-Mixer has a hardware check in its log, with 52 of 59 controls confirmed, and is not.
+`verified` is true only when the device was checked on a real unit, and a record refuses `verified: true` without a verification whose `method` is `hardware`. A MIDI controller counts as verified only when every one of its controls was: the M-VAVE SMC-Mixer has two hardware sittings in its log and 52 of its 59 controls marked confirmed, so it is not.
 
 ## device(), kind by kind
 

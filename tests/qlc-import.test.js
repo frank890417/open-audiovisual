@@ -95,24 +95,80 @@ test('the three enriched files carry the palette with its source, and say whose 
 test('a file a check on a unit corrected leaves imported/, keeps where it came from, and a new import cannot undo it', () => {
   const id = 'm-vave-smc-mixer', p = profileById(id), raw = JSON.parse(read(`packages/midi/profiles/${id}.json`));
   assert.ok(!files.includes(`${id}.json`) && !IMPORTED.some((r) => r.id === id), 'not in imported/ nor in its list');
+  assert.ok(!fs.existsSync(path.join(ROOT, dir, `${id}.json`)), 'the merge of PR #9, made against imported/, did not bring the old file back');
   assert.equal(EXISTING['M-VAVE-SMC-Mixer.qxi'], id, 'the importer only enriches it now');
   assert.equal(raw.license, 'Apache-2.0'); assert.equal(raw.origin.commit, COMMIT); assert.equal(raw.origin.file, 'resources/inputprofiles/M-VAVE-SMC-Mixer.qxi');
-  assert.match(raw.sources[0].title, /QLC\+ input profile M-VAVE-SMC-Mixer\.qxi/); assert.equal(raw.face.auto, true, 'still a generated layout');
+  assert.match(raw.sources[0].title, /QLC\+ input profile M-VAVE-SMC-Mixer\.qxi/);
+  assert.equal(raw.face.auto, undefined, 'its owner drew the faceplate from the unit (PR #9): not a generated layout any more');
   assert.deepEqual(validateProfile(raw), []);
-  // the check: the verification page, 2026-11-24, firmware V012 (issue #7). It skipped encoders 2-8, typed as buttons then.
-  assert.equal(raw.verifications.length, 1);
-  const v = raw.verifications[0];
-  assert.deepEqual([v.date, v.by, v.method, v.firmware, v.tool], ['2026-11-24', 'jcguevarap', 'hardware', 'V012', 'openaudiovisual.com/controllers/verify/']);
-  assert.match(v.note, /issues\/7/);
-  const res = Object.values(v.results).map((r) => (typeof r === 'string' ? r : r.result));
-  assert.deepEqual([res.filter((r) => r === 'match').length, res.filter((r) => r === 'corrected').length, res.length], [51, 1, 52], 'Match 51 · corrected 1, as the issue says');
+  // two sittings with one unit, firmware V012 (issue #7): a MIDI monitor on 2026-11-23 (posted in PR #9), then the verification page on 2026-11-24
+  const tally = (v) => { const r = Object.values(v.results).map((x) => (typeof x === 'string' ? x : x.result)); return [r.filter((x) => x === 'match').length, r.filter((x) => x === 'corrected').length, r.length]; };
+  assert.deepEqual(raw.verifications.map((v) => [v.date, v.by, v.method, v.firmware]), [['2026-11-23', 'jcguevarap', 'hardware', 'V012'], ['2026-11-24', 'jcguevarap', 'hardware', 'V012']]);
+  const mon = raw.verifications.find((v) => v.date === '2026-11-23'), page = raw.verifications.find((v) => v.date === '2026-11-24');
+  assert.match(mon.tool, /MIDI monitor/); assert.deepEqual(tally(mon), [52, 7, 59], 'every control; encoders 2-8 corrected from buttons');
+  assert.equal(page.tool, 'openaudiovisual.com/controllers/verify/'); assert.match(page.note, /issues\/7/);
+  assert.deepEqual(tally(page), [51, 1, 52], 'Match 51 · corrected 1, as the issue says; it skipped encoders 2-8, typed as buttons then');
   const enc = p.controls.filter((c) => /^encoder-/.test(c.id));
   assert.equal(enc.length, 8); assert.ok(enc.every((c) => c.type === 'encoder' && c.relative === 'signbit'), 'all eight are relative encoders (1 one way, 65 the other)');
-  assert.equal(enc[0].verified, true, 'encoder 1: corrected on the unit');
-  for (const c of enc.slice(1)) { assert.equal(c.verified, false, `${c.id}: skipped by the check`); assert.ok(!(c.id in v.results)); assert.match(c.note, /#7/); }
-  assert.equal(p.controls.filter((c) => c.verified === true).length, 52);
-  assert.ok(!p.controls.some((c) => c.led), 'no LED until its messages are checked');
+  assert.equal(enc[0].verified, true, 'encoder 1: corrected on the verification page');
+  for (const c of enc.slice(1)) {
+    assert.equal(c.verified, false, `${c.id}: the page skipped it, and the monitor sitting flips no mark`);
+    assert.ok(!(c.id in page.results)); assert.equal(mon.results[c.id].result, 'corrected');
+    assert.match(c.note, /2026-11-23/); assert.match(c.note, new RegExp(`CC ${c.cc} on channel 1`));
+  }
+  const marked = p.controls.filter((c) => c.verified === true);
+  assert.equal(marked.length, 52);
+  assert.deepEqual(marked.map((c) => c.id).sort(), Object.keys(page.results).sort(), 'the marks are exactly what the verification page confirmed');
   for (const [lang, base] of [['en', ''], ['zh', 'zh/']]) assert.match(read(`${base}controllers/${id}/index.html`), /Apache-2\.0/, `${lang}: the page says whose data it is`);
+});
+
+test('the SMC-Mixer as its owner drew it (PR #9): the faceplate, the labels of the manual, the lights', () => {
+  const id = 'm-vave-smc-mixer', raw = profileById(id), p = normalizeProfile(raw);
+  const byId = new Map(p.controls.map((c) => [c.id, c]));
+  const strip = (row) => Array.from({ length: 8 }, (_, i) => `${row}-${i + 1}`);
+  // the faceplate, top to bottom: encoders, the M S R □ rows, faders, the bottom row of 11; BT and SHIFT send nothing, so they are drawn, not controls
+  assert.deepEqual(p.sections.map((s) => [s.id, s.cols, s.rows]), [['encoders', 8, 1], ['strip-buttons', 8, 4], ['faders', 8, 1], ['transport', 11, 1]]);
+  assert.deepEqual(p.sections[1].controls, [...strip('mute'), ...strip('solo'), ...strip('record'), ...strip('stop')]);
+  assert.deepEqual(p.sections[3].controls, ['play', 'pause', 'record', 'rewind', 'forward', 'previous', 'next', 'up', 'down', 'left', 'right']);
+  assert.deepEqual(raw.face.deco.flatMap((d) => d.items), ['BT', 'SHIFT']);
+  assert.ok(raw.sources.some((s) => /user manual/.test(s.title) && /m-vave\.com/.test(s.url)), 'the manual is a source');
+  // labels from the manual; the ids (and so the signals midi/smcmixer/<id>) are QLC+'s and stay
+  assert.deepEqual([1, 8].map((n) => byId.get(`stop-${n}`).label), ['Select 1', 'Select 8']);
+  assert.deepEqual([1, 8].map((n) => byId.get(`record-${n}`).label), ['Rec 1', 'Rec 8']);
+  assert.deepEqual(['pause', 'previous', 'next'].map((x) => byId.get(x).label), ['Stop', 'Bank −', 'Bank +']);
+  // the lights: the 32 strip buttons and five transport buttons answer a Note On on their own note; bank, arrows, encoders and faders have none
+  const lit = [...strip('mute'), ...strip('solo'), ...strip('record'), ...strip('stop'), 'play', 'pause', 'record', 'rewind', 'forward'];
+  assert.deepEqual(p.controls.filter((c) => c.led).map((c) => c.id).sort(), [...lit].sort());
+  const colour = (ids) => [...new Set(ids.map((x) => byId.get(x).color))];
+  assert.deepEqual([colour(strip('mute')), colour(strip('solo')), colour(strip('record')), colour(strip('stop')), colour(['play']), colour(['pause', 'record'])], [['amber'], ['cyan'], ['coral'], ['white'], ['lime'], ['coral']]);
+  const ctl = new MidiController(raw, { sink: () => {} });
+  for (const x of lit) {
+    const c = ctl.profile.controls.find((y) => y.id === x);
+    assert.deepEqual(c.led, { msg: 'note', on: 127, off: 0 }, x);
+    assert.deepEqual([...ctl.ledBytes(c, { held: true })], [0x90, c.note, 127], `${x}: lit`);
+    assert.deepEqual([...ctl.ledBytes(c, { held: false })], [0x90, c.note, 0], `${x}: dark`);
+  }
+  assert.equal(ctl.ledSnapshot().length, 37, 'all 37 sent dark when the unit connects');
+  // where the lights come from: the owner's monitor sitting, which logged each one; nobody else has seen them
+  const mon = raw.verifications.find((v) => v.date === '2026-11-23');
+  for (const c of p.controls) assert.equal(mon.results[c.id]?.led, c.led ? 'match' : undefined, c.id);
+  assert.match(raw.notes, /as the owner reports them \(this project has not checked them\)/);
+  // the exports carry the lights: QLC+ feedback on each, Mixxx outputs for the ones it gives a job
+  assert.equal((toQxi(raw).match(/<Feedback /g) || []).length, 37);
+  assert.ok((toMixxx(raw).xml.match(/<output>/g) || []).length > 0);
+  // the page draws that faceplate and no longer calls it generated, while still saying the data is QLC+'s
+  for (const base of ['', 'zh/']) {
+    const s = read(`${base}controllers/${id}/index.html`);
+    assert.match(s, /viewBox="0 0 100 57"/, `${base}: the drawn faceplate`);
+    assert.ok(!s.includes('class="auto-note"'), `${base}: no "layout generated" note`);
+    assert.ok(!/class="b-gen"/.test((s.match(/<ul class="badges">.*?<\/ul>/) || [''])[0]), `${base}: no generated-layout badge`);
+    assert.match(s, /<li class="b-comm">(From QLC\+|來自 QLC\+)<\/li>/, `${base}: still from QLC+`);
+    assert.ok(!/b-tool/.test((s.match(/<ul class="badges">.*?<\/ul>/) || [''])[0]), `${base}: QLC+ is a project, not the artist's tool`);
+    assert.ok(s.includes('>Select 1 <code class="cid">stop-1</code>') && s.includes('>Bank − <code class="cid">previous</code>'), `${base}: the manual's labels in the MIDI table`);
+    assert.ok(s.includes('>SHIFT</text>') && s.includes('>BT</text>'), `${base}: the two buttons that send nothing, drawn`);
+  }
+  // and a file still imported keeps its generated-layout note
+  assert.match(read('controllers/m-vave-smc-pad/index.html'), /class="auto-note"/);
 });
 
 test('a generated layout shows every control once and fits its faceplate', () => {

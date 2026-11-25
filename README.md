@@ -439,7 +439,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-32 packages · 29 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1422 tests
+32 packages · 29 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1423 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

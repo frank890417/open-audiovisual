@@ -47,7 +47,7 @@ const cam = await device('logitech-mx-brio');    // a camera found by its name, 
 | `license`、`verified`、`verifications` | 紀錄資料的授權，以及它有多確定 |
 | `notes`、`tbd` | 值得知道的事，以及無法確認的事 |
 
-只有在真機上檢查過，`verified` 才是 true，沒有一筆 `method` 是 `hardware` 的驗證紀錄，紀錄會拒絕 `verified: true`。MIDI 控制器要每一個控制項都檢查過才算：M-VAVE SMC-Mixer 的紀錄裡有一次真機檢查，59 個控制項確認了 52 個，所以不算。
+只有在真機上檢查過，`verified` 才是 true，沒有一筆 `method` 是 `hardware` 的驗證紀錄，紀錄會拒絕 `verified: true`。MIDI 控制器要每一個控制項都檢查過才算：M-VAVE SMC-Mixer 的紀錄裡有兩次真機檢查，59 個控制項標成確認的有 52 個，所以不算。
 
 ## device()，一種一種看
 

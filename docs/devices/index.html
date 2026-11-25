@@ -157,7 +157,7 @@ devices({ q: <span class="ts">'minilab'</span> });                       <span c
 <tr><td><code>notes</code>, <code>tbd</code></td><td>what is worth knowing, and what could not be confirmed</td></tr>
 </tbody>
 </table></div>
-<p><code>verified</code> is true only when the device was checked on a real unit, and a record refuses <code>verified: true</code> without a verification whose <code>method</code> is <code>hardware</code>. A MIDI controller counts as verified only when every one of its controls was: the M-VAVE SMC-Mixer has a hardware check in its log, with 52 of 59 controls confirmed, and is not.</p>
+<p><code>verified</code> is true only when the device was checked on a real unit, and a record refuses <code>verified: true</code> without a verification whose <code>method</code> is <code>hardware</code>. A MIDI controller counts as verified only when every one of its controls was: the M-VAVE SMC-Mixer has two hardware sittings in its log and 52 of its 59 controls marked confirmed, so it is not.</p>
 <h2 id="devices-device-kind-by-kind">device(), kind by kind<a class="anchor" href="#devices-device-kind-by-kind" aria-label="Link to this section">#</a></h2>
 <p>Each snippet runs as a module in a page whose import map is the examples' one plus <code>"@openav/devices": "../../packages/devices/index.js?v=4d84c85b"</code>. Only the camera's button asks for a permission, and only when it is clicked.</p>
 <h3 id="devices-a-midi-controller">A MIDI controller<a class="anchor" href="#devices-a-midi-controller" aria-label="Link to this section">#</a></h3>

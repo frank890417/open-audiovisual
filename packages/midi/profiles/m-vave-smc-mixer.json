@@ -28,42 +28,40 @@
    "url": "https://github.com/mcallegari/qlcplus/blob/6ed78ed0a697aaa48b1428271e004b22327e5be3/resources/inputprofiles/M-VAVE-SMC-Mixer.qxi",
    "note": "community profile by Massimo Callegari; Apache-2.0; numbers read from QLC+ channel numbers, not checked by this project",
    "license": "Apache-2.0"
+  },
+  {
+   "title": "M-VAVE SMC-Mixer user manual",
+   "url": "https://www.m-vave.com/download.html",
+   "note": "manufacturer manual: SHIFT + ◁ / ▷ switches DAW / user mode; in DAW mode M, S, R and □ are mute, solo, record and select, and the light bar under each encoder blinks while a fader does not match the track volume"
   }
  ],
- "notes": "Converted from the QLC+ community profile (Apache-2.0, see NOTICE). Checked on a unit (firmware V012, port \"SMC-Mixer\") by jcguevarap on 2026-11-24 with the verification page, issue #7: the faders (pitch bend on channels 1–8), the 32 strip buttons, the transport and the arrows (notes on channel 1) sent what QLC+ lists, and encoder 1 counts relative with a sign bit (1 one way, 65 the other), not absolute. QLC+ lists encoders 2–8 as buttons; the owner reports they turn like encoder 1, so they are encoders here, still unverified because that run skipped them. The owner also reports that the strip and transport buttons light up; this file has no LED until those messages are checked. QLC+ has no faceplate data, so the layout is generated from the list of controls and does not look like the device.",
+ "notes": "In DAW (Mackie) mode, which SHIFT + ◁ selects (SHIFT + ▷ goes back to user mode). Converted from the QLC+ community profile (Apache-2.0, see NOTICE); the faceplate, the labels from the manual (□ is Select, II is Stop, « and » are Bank − and +), the LEDs and most of these notes come from jcguevarap and his unit (firmware V012), PR #9. He checked that unit twice (issue #7), and both sittings are in verifications: on 2026-11-23 with a MIDI monitor, every control and its light; on 2026-11-24 with the verification page, every control but encoders 2–8, which it skipped because the file had them as buttons. The 52 controls the page confirmed are marked checked on hardware. Encoders 2–8 send CC 17–23 on the monitor reading and stay unconfirmed until a run on the page turns them. Every message number is the one QLC+ lists; the correction is the encoders: all eight are relative with a sign bit (1 = clockwise, 65 = counter-clockwise), where QLC+ has encoder 1 as absolute and 2–8 as buttons. The lights, as the owner reports them (this project has not checked them): the 32 strip buttons and Play, Stop, Record, Rewind and Forward light up with a Note On on the same note sent back to the unit (velocity > 0 on, 0 off; there is no blink). Bank −/+ and the arrows have no controllable light. The light bar under each encoder is not a ring: it does not answer the Mackie ring CCs 48–55; it is the unit's own soft-takeover indicator and blinks while a fixed Pitch Bend value sent to a fader differs from where the fader is. Faders have no motor and send Pitch Bend from −8192 to +8064 in steps of 128; the unit does not report their position until they move. The unit opens two input ports that repeat the same messages (\"SMC-Mixer\" and \"MIDIIN2 (SMC-Mixer)\"); the pattern picks the first. In user mode (as shipped) the messages are different: faders CC 0–7 on channel 1, encoders CC 0–7 on channel 3 (absolute), and the buttons switch their own lights.",
  "face": {
   "w": 100,
-  "h": 70,
+  "h": 57,
   "label": "M-VAVE SMC-Mixer",
-  "auto": true
+  "body": "#1b1c1f",
+  "deco": [
+   {
+    "type": "buttons",
+    "x": 82,
+    "y": 3.5,
+    "w": 15,
+    "h": 4,
+    "items": [
+     "BT",
+     "SHIFT"
+    ]
+   }
+  ]
  },
  "sections": [
   {
-   "id": "fader",
-   "label": "Faders",
-   "x": 2,
+   "id": "encoders",
+   "label": "",
+   "x": 3,
    "y": 3,
-   "w": 96,
-   "h": 16,
-   "cols": 8,
-   "rows": 1,
-   "controls": [
-    "fader-1",
-    "fader-2",
-    "fader-3",
-    "fader-4",
-    "fader-5",
-    "fader-6",
-    "fader-7",
-    "fader-8"
-   ]
-  },
-  {
-   "id": "encoder",
-   "label": "Encoders",
-   "x": 2,
-   "y": 22,
-   "w": 96,
+   "w": 76,
    "h": 9,
    "cols": 8,
    "rows": 1,
@@ -79,31 +77,15 @@
    ]
   },
   {
-   "id": "button",
-   "label": "Buttons",
-   "x": 2,
-   "y": 34,
-   "w": 96,
-   "h": 33,
+   "id": "strip-buttons",
+   "label": "",
+   "x": 3,
+   "y": 13,
+   "w": 76,
+   "h": 18,
    "cols": 8,
-   "rows": 6,
+   "rows": 4,
    "controls": [
-    "record-1",
-    "record-2",
-    "record-3",
-    "record-4",
-    "record-5",
-    "record-6",
-    "record-7",
-    "record-8",
-    "solo-1",
-    "solo-2",
-    "solo-3",
-    "solo-4",
-    "solo-5",
-    "solo-6",
-    "solo-7",
-    "solo-8",
     "mute-1",
     "mute-2",
     "mute-3",
@@ -112,6 +94,22 @@
     "mute-6",
     "mute-7",
     "mute-8",
+    "solo-1",
+    "solo-2",
+    "solo-3",
+    "solo-4",
+    "solo-5",
+    "solo-6",
+    "solo-7",
+    "solo-8",
+    "record-1",
+    "record-2",
+    "record-3",
+    "record-4",
+    "record-5",
+    "record-6",
+    "record-7",
+    "record-8",
     "stop-1",
     "stop-2",
     "stop-3",
@@ -119,14 +117,46 @@
     "stop-5",
     "stop-6",
     "stop-7",
-    "stop-8",
-    "previous",
-    "next",
+    "stop-8"
+   ]
+  },
+  {
+   "id": "faders",
+   "label": "",
+   "x": 3,
+   "y": 32,
+   "w": 76,
+   "h": 16,
+   "cols": 8,
+   "rows": 1,
+   "controls": [
+    "fader-1",
+    "fader-2",
+    "fader-3",
+    "fader-4",
+    "fader-5",
+    "fader-6",
+    "fader-7",
+    "fader-8"
+   ]
+  },
+  {
+   "id": "transport",
+   "label": "",
+   "x": 3,
+   "y": 50,
+   "w": 94,
+   "h": 5.5,
+   "cols": 11,
+   "rows": 1,
+   "controls": [
+    "play",
+    "pause",
+    "record",
     "rewind",
     "forward",
-    "pause",
-    "play",
-    "record",
+    "previous",
+    "next",
     "up",
     "down",
     "left",
@@ -154,7 +184,7 @@
    "relative": "signbit",
    "label": "Encoder 2",
    "verified": false,
-   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
+   "note": "QLC+ lists it as a button. The owner turned it with a MIDI monitor on 2026-11-23 (the first entry in verifications): CC 17 on channel 1, relative with a sign bit (1 clockwise, 65 counter-clockwise), like encoder 1. The verification page skipped it on 2026-11-24 because the file had it as a button, so it stays unconfirmed until a run on that page turns it."
   },
   {
    "id": "encoder-3",
@@ -165,7 +195,7 @@
    "relative": "signbit",
    "label": "Encoder 3",
    "verified": false,
-   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
+   "note": "QLC+ lists it as a button. The owner turned it with a MIDI monitor on 2026-11-23 (the first entry in verifications): CC 18 on channel 1, relative with a sign bit (1 clockwise, 65 counter-clockwise), like encoder 1. The verification page skipped it on 2026-11-24 because the file had it as a button, so it stays unconfirmed until a run on that page turns it."
   },
   {
    "id": "encoder-4",
@@ -176,7 +206,7 @@
    "relative": "signbit",
    "label": "Encoder 4",
    "verified": false,
-   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
+   "note": "QLC+ lists it as a button. The owner turned it with a MIDI monitor on 2026-11-23 (the first entry in verifications): CC 19 on channel 1, relative with a sign bit (1 clockwise, 65 counter-clockwise), like encoder 1. The verification page skipped it on 2026-11-24 because the file had it as a button, so it stays unconfirmed until a run on that page turns it."
   },
   {
    "id": "encoder-5",
@@ -187,7 +217,7 @@
    "relative": "signbit",
    "label": "Encoder 5",
    "verified": false,
-   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
+   "note": "QLC+ lists it as a button. The owner turned it with a MIDI monitor on 2026-11-23 (the first entry in verifications): CC 20 on channel 1, relative with a sign bit (1 clockwise, 65 counter-clockwise), like encoder 1. The verification page skipped it on 2026-11-24 because the file had it as a button, so it stays unconfirmed until a run on that page turns it."
   },
   {
    "id": "encoder-6",
@@ -198,7 +228,7 @@
    "relative": "signbit",
    "label": "Encoder 6",
    "verified": false,
-   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
+   "note": "QLC+ lists it as a button. The owner turned it with a MIDI monitor on 2026-11-23 (the first entry in verifications): CC 21 on channel 1, relative with a sign bit (1 clockwise, 65 counter-clockwise), like encoder 1. The verification page skipped it on 2026-11-24 because the file had it as a button, so it stays unconfirmed until a run on that page turns it."
   },
   {
    "id": "encoder-7",
@@ -209,7 +239,7 @@
    "relative": "signbit",
    "label": "Encoder 7",
    "verified": false,
-   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
+   "note": "QLC+ lists it as a button. The owner turned it with a MIDI monitor on 2026-11-23 (the first entry in verifications): CC 22 on channel 1, relative with a sign bit (1 clockwise, 65 counter-clockwise), like encoder 1. The verification page skipped it on 2026-11-24 because the file had it as a button, so it stays unconfirmed until a run on that page turns it."
   },
   {
    "id": "encoder-8",
@@ -220,151 +250,7 @@
    "relative": "signbit",
    "label": "Encoder 8",
    "verified": false,
-   "note": "QLC+ lists it as a button. The owner of a unit reports it turns like encoder 1 (65 one way, 1 the other: relative, sign bit), issue #7. The verification run skipped it, so the CC number is not confirmed on hardware yet."
-  },
-  {
-   "id": "record-1",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 0,
-   "label": "Record 1",
-   "verified": true
-  },
-  {
-   "id": "record-2",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 1,
-   "label": "Record 2",
-   "verified": true
-  },
-  {
-   "id": "record-3",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 2,
-   "label": "Record 3",
-   "verified": true
-  },
-  {
-   "id": "record-4",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 3,
-   "label": "Record 4",
-   "verified": true
-  },
-  {
-   "id": "record-5",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 4,
-   "label": "Record 5",
-   "verified": true
-  },
-  {
-   "id": "record-6",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 5,
-   "label": "Record 6",
-   "verified": true
-  },
-  {
-   "id": "record-7",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 6,
-   "label": "Record 7",
-   "verified": true
-  },
-  {
-   "id": "record-8",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 7,
-   "label": "Record 8",
-   "verified": true
-  },
-  {
-   "id": "solo-1",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 8,
-   "label": "Solo 1",
-   "verified": true
-  },
-  {
-   "id": "solo-2",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 9,
-   "label": "Solo 2",
-   "verified": true
-  },
-  {
-   "id": "solo-3",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 10,
-   "label": "Solo 3",
-   "verified": true
-  },
-  {
-   "id": "solo-4",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 11,
-   "label": "Solo 4",
-   "verified": true
-  },
-  {
-   "id": "solo-5",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 12,
-   "label": "Solo 5",
-   "verified": true
-  },
-  {
-   "id": "solo-6",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 13,
-   "label": "Solo 6",
-   "verified": true
-  },
-  {
-   "id": "solo-7",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 14,
-   "label": "Solo 7",
-   "verified": true
-  },
-  {
-   "id": "solo-8",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 15,
-   "label": "Solo 8",
-   "verified": true
+   "note": "QLC+ lists it as a button. The owner turned it with a MIDI monitor on 2026-11-23 (the first entry in verifications): CC 23 on channel 1, relative with a sign bit (1 clockwise, 65 counter-clockwise), like encoder 1. The verification page skipped it on 2026-11-24 because the file had it as a button, so it stays unconfirmed until a run on that page turns it."
   },
   {
    "id": "mute-1",
@@ -373,6 +259,12 @@
    "ch": 1,
    "note": 16,
    "label": "Mute 1",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -382,6 +274,12 @@
    "ch": 1,
    "note": 17,
    "label": "Mute 2",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -391,6 +289,12 @@
    "ch": 1,
    "note": 18,
    "label": "Mute 3",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -400,6 +304,12 @@
    "ch": 1,
    "note": 19,
    "label": "Mute 4",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -409,6 +319,12 @@
    "ch": 1,
    "note": 20,
    "label": "Mute 5",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -418,6 +334,12 @@
    "ch": 1,
    "note": 21,
    "label": "Mute 6",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -427,6 +349,12 @@
    "ch": 1,
    "note": 22,
    "label": "Mute 7",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -436,6 +364,252 @@
    "ch": 1,
    "note": 23,
    "label": "Mute 8",
+   "color": "amber",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "solo-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 8,
+   "label": "Solo 1",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "solo-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 9,
+   "label": "Solo 2",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "solo-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 10,
+   "label": "Solo 3",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "solo-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 11,
+   "label": "Solo 4",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "solo-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 12,
+   "label": "Solo 5",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "solo-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 13,
+   "label": "Solo 6",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "solo-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 14,
+   "label": "Solo 7",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "solo-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 15,
+   "label": "Solo 8",
+   "color": "cyan",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "record-1",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 0,
+   "label": "Rec 1",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "record-2",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 1,
+   "label": "Rec 2",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "record-3",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 2,
+   "label": "Rec 3",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "record-4",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 3,
+   "label": "Rec 4",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "record-5",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 4,
+   "label": "Rec 5",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "record-6",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 5,
+   "label": "Rec 6",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "record-7",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 6,
+   "label": "Rec 7",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "record-8",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 7,
+   "label": "Rec 8",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -444,7 +618,13 @@
    "msg": "note",
    "ch": 1,
    "note": 24,
-   "label": "Stop 1",
+   "label": "Select 1",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -453,7 +633,13 @@
    "msg": "note",
    "ch": 1,
    "note": 25,
-   "label": "Stop 2",
+   "label": "Select 2",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -462,7 +648,13 @@
    "msg": "note",
    "ch": 1,
    "note": 26,
-   "label": "Stop 3",
+   "label": "Select 3",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -471,7 +663,13 @@
    "msg": "note",
    "ch": 1,
    "note": 27,
-   "label": "Stop 4",
+   "label": "Select 4",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -480,7 +678,13 @@
    "msg": "note",
    "ch": 1,
    "note": 28,
-   "label": "Stop 5",
+   "label": "Select 5",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -489,7 +693,13 @@
    "msg": "note",
    "ch": 1,
    "note": 29,
-   "label": "Stop 6",
+   "label": "Select 6",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -498,7 +708,13 @@
    "msg": "note",
    "ch": 1,
    "note": 30,
-   "label": "Stop 7",
+   "label": "Select 7",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -507,106 +723,13 @@
    "msg": "note",
    "ch": 1,
    "note": 31,
-   "label": "Stop 8",
-   "verified": true
-  },
-  {
-   "id": "previous",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 46,
-   "label": "Previous",
-   "verified": true
-  },
-  {
-   "id": "next",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 47,
-   "label": "Next",
-   "verified": true
-  },
-  {
-   "id": "rewind",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 91,
-   "label": "Rewind",
-   "verified": true
-  },
-  {
-   "id": "forward",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 92,
-   "label": "Forward",
-   "verified": true
-  },
-  {
-   "id": "pause",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 93,
-   "label": "Pause",
-   "verified": true
-  },
-  {
-   "id": "play",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 94,
-   "label": "Play",
-   "verified": true
-  },
-  {
-   "id": "record",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 95,
-   "label": "Record",
-   "verified": true
-  },
-  {
-   "id": "up",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 96,
-   "label": "Up",
-   "verified": true
-  },
-  {
-   "id": "down",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 97,
-   "label": "Down",
-   "verified": true
-  },
-  {
-   "id": "left",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 98,
-   "label": "Left",
-   "verified": true
-  },
-  {
-   "id": "right",
-   "type": "button",
-   "msg": "note",
-   "ch": 1,
-   "note": 99,
-   "label": "Right",
+   "label": "Select 8",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
    "verified": true
   },
   {
@@ -672,9 +795,427 @@
    "ch": 8,
    "label": "Fader 8",
    "verified": true
+  },
+  {
+   "id": "play",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 94,
+   "label": "Play",
+   "color": "lime",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "pause",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 93,
+   "label": "Stop",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "record",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 95,
+   "label": "Record",
+   "color": "coral",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "ink": "#ff5a4f",
+   "verified": true
+  },
+  {
+   "id": "rewind",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 91,
+   "label": "Rewind",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "forward",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 92,
+   "label": "Forward",
+   "color": "white",
+   "led": {
+    "msg": "note",
+    "on": 127,
+    "off": 0
+   },
+   "verified": true
+  },
+  {
+   "id": "previous",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 46,
+   "label": "Bank −",
+   "verified": true
+  },
+  {
+   "id": "next",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 47,
+   "label": "Bank +",
+   "verified": true
+  },
+  {
+   "id": "up",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 96,
+   "label": "Up",
+   "verified": true
+  },
+  {
+   "id": "down",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 97,
+   "label": "Down",
+   "verified": true
+  },
+  {
+   "id": "left",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 98,
+   "label": "Left",
+   "verified": true
+  },
+  {
+   "id": "right",
+   "type": "button",
+   "msg": "note",
+   "ch": 1,
+   "note": 99,
+   "label": "Right",
+   "verified": true
   }
  ],
  "verifications": [
+  {
+   "date": "2026-11-23",
+   "by": "jcguevarap",
+   "method": "hardware",
+   "firmware": "V012",
+   "os": "Windows",
+   "browser": "none (python-rtmidi MIDI monitor)",
+   "port": "SMC-Mixer",
+   "tool": "MIDI monitor (python-rtmidi), USB",
+   "note": "DAW mode (SHIFT + ◁). Encoders 1–8 send CC 16–23 on channel 1: 1 = one step clockwise, 65 = one step counter-clockwise. LEDs were checked by sending Note On to the output port \"SMC-Mixer\": velocity > 0 lights, 0 turns off, velocity 1 does not blink.",
+   "results": {
+    "encoder-1": "match",
+    "encoder-2": {
+     "result": "corrected",
+     "was": {
+      "type": "button",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 17
+     },
+     "got": {
+      "type": "encoder",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 17,
+      "relative": "signbit"
+     }
+    },
+    "encoder-3": {
+     "result": "corrected",
+     "was": {
+      "type": "button",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 18
+     },
+     "got": {
+      "type": "encoder",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 18,
+      "relative": "signbit"
+     }
+    },
+    "encoder-4": {
+     "result": "corrected",
+     "was": {
+      "type": "button",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 19
+     },
+     "got": {
+      "type": "encoder",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 19,
+      "relative": "signbit"
+     }
+    },
+    "encoder-5": {
+     "result": "corrected",
+     "was": {
+      "type": "button",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 20
+     },
+     "got": {
+      "type": "encoder",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 20,
+      "relative": "signbit"
+     }
+    },
+    "encoder-6": {
+     "result": "corrected",
+     "was": {
+      "type": "button",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 21
+     },
+     "got": {
+      "type": "encoder",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 21,
+      "relative": "signbit"
+     }
+    },
+    "encoder-7": {
+     "result": "corrected",
+     "was": {
+      "type": "button",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 22
+     },
+     "got": {
+      "type": "encoder",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 22,
+      "relative": "signbit"
+     }
+    },
+    "encoder-8": {
+     "result": "corrected",
+     "was": {
+      "type": "button",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 23
+     },
+     "got": {
+      "type": "encoder",
+      "msg": "cc",
+      "ch": 1,
+      "cc": 23,
+      "relative": "signbit"
+     }
+    },
+    "mute-1": {
+     "result": "match",
+     "led": "match"
+    },
+    "mute-2": {
+     "result": "match",
+     "led": "match"
+    },
+    "mute-3": {
+     "result": "match",
+     "led": "match"
+    },
+    "mute-4": {
+     "result": "match",
+     "led": "match"
+    },
+    "mute-5": {
+     "result": "match",
+     "led": "match"
+    },
+    "mute-6": {
+     "result": "match",
+     "led": "match"
+    },
+    "mute-7": {
+     "result": "match",
+     "led": "match"
+    },
+    "mute-8": {
+     "result": "match",
+     "led": "match"
+    },
+    "solo-1": {
+     "result": "match",
+     "led": "match"
+    },
+    "solo-2": {
+     "result": "match",
+     "led": "match"
+    },
+    "solo-3": {
+     "result": "match",
+     "led": "match"
+    },
+    "solo-4": {
+     "result": "match",
+     "led": "match"
+    },
+    "solo-5": {
+     "result": "match",
+     "led": "match"
+    },
+    "solo-6": {
+     "result": "match",
+     "led": "match"
+    },
+    "solo-7": {
+     "result": "match",
+     "led": "match"
+    },
+    "solo-8": {
+     "result": "match",
+     "led": "match"
+    },
+    "record-1": {
+     "result": "match",
+     "led": "match"
+    },
+    "record-2": {
+     "result": "match",
+     "led": "match"
+    },
+    "record-3": {
+     "result": "match",
+     "led": "match"
+    },
+    "record-4": {
+     "result": "match",
+     "led": "match"
+    },
+    "record-5": {
+     "result": "match",
+     "led": "match"
+    },
+    "record-6": {
+     "result": "match",
+     "led": "match"
+    },
+    "record-7": {
+     "result": "match",
+     "led": "match"
+    },
+    "record-8": {
+     "result": "match",
+     "led": "match"
+    },
+    "stop-1": {
+     "result": "match",
+     "led": "match"
+    },
+    "stop-2": {
+     "result": "match",
+     "led": "match"
+    },
+    "stop-3": {
+     "result": "match",
+     "led": "match"
+    },
+    "stop-4": {
+     "result": "match",
+     "led": "match"
+    },
+    "stop-5": {
+     "result": "match",
+     "led": "match"
+    },
+    "stop-6": {
+     "result": "match",
+     "led": "match"
+    },
+    "stop-7": {
+     "result": "match",
+     "led": "match"
+    },
+    "stop-8": {
+     "result": "match",
+     "led": "match"
+    },
+    "play": {
+     "result": "match",
+     "led": "match"
+    },
+    "pause": {
+     "result": "match",
+     "led": "match"
+    },
+    "record": {
+     "result": "match",
+     "led": "match"
+    },
+    "rewind": {
+     "result": "match",
+     "led": "match"
+    },
+    "forward": {
+     "result": "match",
+     "led": "match"
+    },
+    "previous": "match",
+    "next": "match",
+    "up": "match",
+    "down": "match",
+    "left": "match",
+    "right": "match",
+    "fader-1": "match",
+    "fader-2": "match",
+    "fader-3": "match",
+    "fader-4": "match",
+    "fader-5": "match",
+    "fader-6": "match",
+    "fader-7": "match",
+    "fader-8": "match"
+   }
+  },
   {
    "date": "2026-11-24",
    "by": "jcguevarap",
