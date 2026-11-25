@@ -17,8 +17,8 @@
 //   fit      contain (default) · cover · stretch        follow   the channel of the show page that leads (see openOutput)
 //   via      relay (this server's /relay) or a ws:// / wss:// address      play   no value: play on load
 
-import { NAME_RE } from './layout.js?v=2b72f18a';
-import { normalizeCrop, FITS } from './crop.js?v=2b72f18a';
+import { NAME_RE } from './layout.js?v=4d84c85b';
+import { normalizeCrop, FITS } from './crop.js?v=4d84c85b';
 
 const CHANNEL_RE = /^[\w-]{1,32}$/;
 const KEYS = ['output', 'crop', 'aspect', 'fit', 'follow', 'via', 'play'];

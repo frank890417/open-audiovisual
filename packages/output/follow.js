@@ -12,7 +12,7 @@ const leaders = new WeakMap();                                 // show → its o
 /**
  * Hold on this page what the leader holds: every key of `snap` the page knows is held as `{ kind: 'route', label: 'leader' }`;
  * a key this function held before and the leader no longer holds is released. `mine` remembers which keys it holds.
- * @param {import('../core/src/params.js?v=2b72f18a').Params} params
+ * @param {import('../core/src/params.js?v=4d84c85b').Params} params
  * @param {Object<string,number>|undefined} snap
  * @param {Set<string>} mine
  */
@@ -38,7 +38,7 @@ export async function leadOutputs(show, { channel = 'oav-output', via = null } =
   if (!byChannel) leaders.set(show, (byChannel = new Map()));
   if (byChannel.has(channel)) return byChannel.get(channel);
   const pending = (async () => {
-    const { createSync } = await import('../sync/index.js?v=2b72f18a');
+    const { createSync } = await import('../sync/index.js?v=4d84c85b');
     const leader = createSync({
       role: 'leader', channel, url: via ?? null, timeline: show.timeline, score: show.score,
       extra: () => ({ [PARAMS_EXTRA]: { ...show.params.overrides } }),

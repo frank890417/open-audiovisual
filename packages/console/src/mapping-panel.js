@@ -8,7 +8,7 @@
 // ⬇ export / ⬆ import / clear: the routes as a file ({ format: 'openav.map', version, world, routes }),
 // by button, by dropping a .json anywhere on the page, or by ?map=<url> (packages/show). Whatever was
 // skipped (a param this world lacks, a signal nothing here makes) is listed under the buttons.
-import { LearnWizard } from '../../mapping/wizard.js?v=2b72f18a';
+import { LearnWizard } from '../../mapping/wizard.js?v=4d84c85b';
 
 export function buildMappingPanel(root, app, opts = {}) {
   const { mapper, params } = app;

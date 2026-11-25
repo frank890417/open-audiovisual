@@ -37,7 +37,7 @@ const listOf = (x, what) => {
 
 /**
  * The params that drive an engine, and the function that hands their values to it.
- * @param {import('./engine.js?v=2b72f18a').DmxEngine} engine
+ * @param {import('./engine.js?v=4d84c85b').DmxEngine} engine
  * @param {object} [options]
  * @param {string} [options.prefix='dmx']   the first part of every key
  * @param {string[]|object} [options.groups]   group names, or { group: { hue, saturation } } with the colour to start from

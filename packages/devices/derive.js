@@ -6,7 +6,7 @@
 // devices() lists), and device() runs the same function on the one file it loads, so the list and the record cannot
 // disagree. Pure: no imports but the record module, no DOM.
 
-import { DEVICE_FORMAT } from './record.js?v=2b72f18a';
+import { DEVICE_FORMAT } from './record.js?v=4d84c85b';
 
 const uniq = (list) => [...new Set(list.filter((x) => typeof x === 'string' && x.trim() !== ''))];
 const pick = (o, keys) => Object.fromEntries(keys.filter((k) => o[k] !== undefined && o[k] !== null && o[k] !== '').map((k) => [k, o[k]]));

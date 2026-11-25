@@ -5,10 +5,10 @@
 //   Hw.diagram(spec)  → '<svg …>'
 //   Hw.bom(spec)      → { have, buy, unknown }
 //   Hw.parts / Hw.part(key)   the parts library (every value from a datasheet; null = 待查)
-import { PARTS } from './parts.js?v=2b72f18a';
-import { check, partOf, resolvePin, netsOf } from './check.js?v=2b72f18a';
-import { diagram } from './diagram.js?v=2b72f18a';
-import { bom } from './bom.js?v=2b72f18a';
+import { PARTS } from './parts.js?v=4d84c85b';
+import { check, partOf, resolvePin, netsOf } from './check.js?v=4d84c85b';
+import { diagram } from './diagram.js?v=4d84c85b';
+import { bom } from './bom.js?v=4d84c85b';
 
 /** The parts library, keyed by part id (the same object as Hw.parts). */
 export const HW_PARTS = PARTS;
