@@ -154,7 +154,7 @@ Tone's own vocabulary (`oscillator`, `envelope`, `filter`, `filterEnvelope`, `ha
 
 | export | signature |
 |---|---|
-| `Sound` | `new Sound({ signals, params = null, engine, instrument, remember = true, picker = true })` · `enable()` → Promise<true> · `update(state)` · `setInstrument(id, { remember })` · `instrument` · `status` · `choosable` · `onChange(cb)` · `dispose()` · `enabled`, `engine` |
+| `Sound` | `new Sound({ signals, params = null, engine, instrument, remember = true, picker = true, writes = 'hold' })` · `enable()` → Promise<true> · `update(state)` (hands the engine the `sound/*` values that changed; `writes: 'legacy'`: all, every frame) · `set(key, value)` (a hand on `sound/<key>`: holds until `release(key)` or ✕) · `release(key)` · `setInstrument(id, { remember })` · `instrument` · `status` · `choosable` · `onChange(cb)` · `dispose()` · `enabled`, `engine` |
 | `toneEngine` | `toneEngine({ instrument = 'synth/pad', baseUrl, instruments = {}, cdn, drumChannel = 10 })` → the engine; Tone.js is loaded on `enable()` |
 | `registerInstrument` · `unregisterInstrument` · `getInstrument` · `listInstruments({ category })` · `instrumentGroups(lang)` · `instrumentName(def, lang)` · `onInstrumentsChange(cb)` · `validateInstrument(def)` | the registry |
 | `registerSynthPreset` · `synthInstrument` · `SYNTH_PRESETS` · `validateSynthPreset` | the synth module |

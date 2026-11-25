@@ -116,7 +116,9 @@ to the timeline until the signal moves again.
 A *smoothed* route writes only while it is gliding. Once it has arrived it stops, so ✕
 (or a slider you drag) takes the param back and it stays back until the knob moves
 again; ✕ in the middle of a glide stops the glide. The mapper notices when
-something else has written the param since its own last write, and stands down.
+something else has written the param since its own last write, the same number included, and stands down.
+"Moves again" means a change: a source that sends the same reading again (the relay does, once a second, for every
+phone control) does not take the param back. The rule behind this is [Who holds a value](#who-holds-a-value).
 Muting a route stops it writing; the param keeps the value it had (a muted `trim` gives
 its offset back).
 
@@ -199,6 +201,54 @@ same value does not. Then:
 // a main knob: meets the value first, glides, and gives the param back 4 s after the hand leaves
 show.mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'pickup', release: 4, smooth: 0.15 });
 ```
+
+## Who holds a value
+
+One param can have several writers: the timeline, a few routes, the console's slider, the work's own code. An engine
+value has one more, the per-frame push of the `sound/*` params into the sound engine. Since 0.11.0 one rule decides
+between them, and every writer in the framework follows it:
+
+> **The last deliberate change wins, and a repetition is not a change.** A value set by hand holds until it is
+> released, or until a source really moves. Nothing that only pushes the same thing again may undo it.
+
+| writer | what it is | when it takes the value | what makes it let go |
+|---|---|---|---|
+| the timeline | automation, a score's segment modules (`layer`), else `def` | never: it is the base, and shows whenever nothing holds the param | (it never holds) |
+| a route | a knob, a fader, a phone, a hand, the microphone, through the mapper | when its source *changes*, by more than 0.1% of its input window. A new route (learned, imported, loaded) on a param a hand holds: from its second reading, the first only says where the knob is | a hand, ✕, its own `release`; removing or muting a `trim` |
+| a hand | the console's slider, `params.override()`, `params.hold()`, `sound.set()` | at once | ✕ or `clearOverride()`, `sound.release()`, or a route whose source changes |
+| ✕ | a hand that gives the param back: ✕ on the Params panel, ↩ on the Curves panel, `params.clearOverride()` | at once: the timeline plays it | a route whose source changes |
+
+What only pushes again, and so may never undo a hand:
+
+| re-pusher | 0.11.0 | 0.10.0 |
+|---|---|---|
+| a source that sends the same reading again: the relay refreshes every phone control once a second, many OSC senders repeat, a sensor stands still | ignored, only a change counts | took the param back after ✕ or a slider |
+| a smoothed route's glide | stops the moment anybody else writes the param, the same number included, and also a write between the knob's move and the next frame | stopped on ✕ or on a different number (since 0.9.0) |
+| `sound.update(state)`, the `sound/*` params into the engine | hands the engine a value when it changed, and every value once after `enable()` and after an instrument change | every value, every frame |
+| a `trim` riding the timeline | writes when the timeline or its offset moved | every frame |
+| the timeline's automation | the base: under every override, never over one | the same |
+| `dmxParams().apply()` | hands the lights a value when it changed | the same |
+
+The console, the backstage monitor and the values echoed to phones (`remote`) are not writers: they show a value and
+change nothing, and a phone fader under a finger ignores the echo.
+
+**Who holds it now.** `params.holder(key)` answers `null` (the timeline plays it), `{ kind: 'hand', label, value }` or
+`{ kind: 'route', label, source, mode, value }`. On the Params panel a name in yellow with ✋ is held by a hand, a name
+in blue with ⇄ by a route, and the tooltip of the name and of its ✕ says which (`route midi/cc/74`, `sound.set`); the
+Curves panel's ↩ says it too. Code that writes a param can name itself: `params.hold('palette', 2, 'piano')`.
+
+**An engine value.** `sound.set('volume', -20)` is a hand on `sound/volume`: the engine hears it at once, and the
+timeline, a route or a re-sent reading leave it there until `sound.release('volume')` or ✕. A value written straight
+into the engine (`show.sound.engine.set(…)`) is not the framework's to keep: it is no longer overwritten on the next
+frame, and stays until its param next changes.
+
+### The 0.10.0 rule
+
+`createShow({ writes: 'legacy' })` brings back exactly how 0.10.0 wrote: every `sound/*` value into the engine every
+frame, a route that takes its param back on any reading after ✕ or a slider, a glide that only notices a hand writing a
+different number. `new Mapper({ …, writes: 'legacy' })` and `new Sound({ …, writes: 'legacy' })` do the same for a
+mapper or a sound shell built by hand. It prints one deprecation warning and will go in a later version; what changed,
+and how to tell whether a work leaned on it, is in the [changelog](changelog.md).
 
 ## Learn
 
@@ -359,7 +409,7 @@ Several packages generate routes in this same shape:
 ```js
 import { Mapper } from '@openav/mapping';
 
-const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn, base });
+const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn, base, writes });   // writes: 'hold' (default) | 'legacy'
 mapper.addRoute(route)        // → the stored route (defaults filled in, id assigned)
 mapper.removeRoute(id)
 mapper.routesFor('bloom')     // → routes targeting a param

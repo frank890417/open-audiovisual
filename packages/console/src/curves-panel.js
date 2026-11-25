@@ -19,6 +19,7 @@ import {
   hasCurves, curveParams, curveAxis, axisTime, curveBands, sampleCurve, levelOf, plotY, keyframeMarks, takePoints, curveCursor,
   curveSignature, overriddenKeys, clearOverrides, visibleRows, fmtValue, fmtClock,
 } from './curves.js?v=9b499105';
+import { heldText } from './params-panel.js?v=9b499105';
 
 const HEAD_H = 18, PLOT_H = 36, ROW_H = HEAD_H + PLOT_H + 4;   // a row: label, value and ↩ above; the plot below; 4 px between
 const RULER_H = 22;
@@ -100,7 +101,7 @@ export function buildCurvesPanel(root, app, keys = {}, o = {}) {
     row.p = p;
     row.color = PALETTE[i % PALETTE.length];
     row.el.style.setProperty('--c', row.color);
-    row.label.textContent = p.label; row.label.title = p.key;
+    row.label.textContent = p.label; row.label.title = p.key; row.who = null;     // the holder's tooltip is written again on the next frame
     row.clear.title = `give ${p.label} back to its curve`; row.clear.setAttribute('aria-label', row.clear.title);
     row.base.setAttribute('aria-label', `${p.label} across the show`);
   }
@@ -283,6 +284,8 @@ export function buildCurvesPanel(root, app, keys = {}, o = {}) {
     for (const row of rowList) {
       const k = row.p.key, ovr = over.includes(k);
       if (row.ovr !== ovr) { row.ovr = ovr; row.el.classList.toggle('ovr', ovr); row.clear.hidden = !ovr; }
+      const who = ovr ? heldText(typeof params.holder === 'function' ? params.holder(k) : { kind: 'hand', label: 'hand' }) : '';
+      if (row.who !== who) { row.who = who; row.clear.title = who ? `give ${row.p.label} back to its curve (held by ${who})` : `give ${row.p.label} back to its curve`; row.label.title = who ? `${k} · held by ${who}` : k; }
       const v = state?.[k];
       const text = fmtValue(typeof v === 'number' ? v : timeline.valueAt(k));
       if (row.text !== text) { row.text = text; row.val.textContent = text; }

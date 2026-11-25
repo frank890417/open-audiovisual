@@ -61,7 +61,9 @@ timeline stops moving it until the override is cleared (✕ in the console, or
 `params.clearOverride('bloom')`). That matches the stage: when a human grabs a
 control, the score yields. A route can choose otherwise: `mode: 'trim'` adds the knob to
 the timeline's value, and `release` hands the param back when the knob stands still
-([Mapping](mapping.md#trim-pickup-and-release)).
+([Mapping](mapping.md#trim-pickup-and-release)). When a hand and a route both touch a param, the last deliberate
+change wins and a repetition is not a change: a source that sends the same reading again never undoes a hand
+([Who holds a value](mapping.md#who-holds-a-value)); `params.holder(key)` and the console say who holds it.
 
 The full field list is in [Writing a world](writing-a-world.md#params).
 

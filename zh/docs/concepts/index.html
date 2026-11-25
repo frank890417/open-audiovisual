@@ -146,7 +146,7 @@ signals.pulse(<span class="ts">'breath/sigh'</span>, { depth: 0.8 });       <spa
 <p>每一格畫面，每個參數都會解析成一個數字：</p>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">timeline automation at time t      (the score; def if the param has no automation)
   ⬑ overridden by → the latest override   (a slider, a mapped knob, a phone fader)</code></pre></div>
-<p>覆寫會<em>黏住</em>（sticky）。一旦有手或路由碰過 <code>bloom</code>，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕，或呼叫 <code>params.clearOverride('bloom')</code>）。這跟舞台上一樣：人一伸手接管，樂譜就讓位。路由可以選別的做法：<code>mode: 'trim'</code> 把旋鈕疊加在時間軸的值上，<code>release</code> 讓旋鈕靜止時把參數還回去（<a href="../../../zh/docs/mapping/#mapping-trim-pickup-and-release">映射</a>）。</p>
+<p>覆寫會<em>黏住</em>（sticky）。一旦有手或路由碰過 <code>bloom</code>，時間軸就不再推動它，直到你清掉覆寫（在控台按 ✕，或呼叫 <code>params.clearOverride('bloom')</code>）。這跟舞台上一樣：人一伸手接管，樂譜就讓位。路由可以選別的做法：<code>mode: 'trim'</code> 把旋鈕疊加在時間軸的值上，<code>release</code> 讓旋鈕靜止時把參數還回去（<a href="../../../zh/docs/mapping/#mapping-trim-pickup-and-release">映射</a>）。手和路由都碰到一個參數時，最後一個刻意的改變算數，重複不算改變：再送一次同一個讀數的來源，永遠推不掉手設定的值（<a href="../../../zh/docs/mapping/#mapping-who-holds-a-value">誰握著一個值</a>）。<code>params.holder(key)</code> 和控台會說出是誰握著它。</p>
 <p>完整的欄位列表在<a href="../../../zh/docs/writing-a-world/#writing-a-world-params">寫一個世界</a>。</p>
 <h2 id="concepts-routes-and-mapping">路由與映射<a class="anchor" href="#concepts-routes-and-mapping" aria-label="這一節的連結">#</a></h2>
 <p><strong>路由</strong>（route）把一個訊號接到一個參數。路由就是單純的資料：</p>

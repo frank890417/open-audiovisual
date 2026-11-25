@@ -428,7 +428,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1382 tests
+31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1398 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -956,7 +956,9 @@ timeline stops moving it until the override is cleared (✕ in the console, or
 `params.clearOverride('bloom')`). That matches the stage: when a human grabs a
 control, the score yields. A route can choose otherwise: `mode: 'trim'` adds the knob to
 the timeline's value, and `release` hands the param back when the knob stands still
-([Mapping](mapping.md#trim-pickup-and-release)).
+([Mapping](mapping.md#trim-pickup-and-release)). When a hand and a route both touch a param, the last deliberate
+change wins and a repetition is not a change: a source that sends the same reading again never undoes a hand
+([Who holds a value](mapping.md#who-holds-a-value)); `params.holder(key)` and the console say who holds it.
 
 The full field list is in [Writing a world](writing-a-world.md#params).
 
@@ -1930,7 +1932,9 @@ to the timeline until the signal moves again.
 A *smoothed* route writes only while it is gliding. Once it has arrived it stops, so ✕
 (or a slider you drag) takes the param back and it stays back until the knob moves
 again; ✕ in the middle of a glide stops the glide. The mapper notices when
-something else has written the param since its own last write, and stands down.
+something else has written the param since its own last write, the same number included, and stands down.
+"Moves again" means a change: a source that sends the same reading again (the relay does, once a second, for every
+phone control) does not take the param back. The rule behind this is [Who holds a value](#who-holds-a-value).
 Muting a route stops it writing; the param keeps the value it had (a muted `trim` gives
 its offset back).
 
@@ -2013,6 +2017,54 @@ same value does not. Then:
 // a main knob: meets the value first, glides, and gives the param back 4 s after the hand leaves
 show.mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'pickup', release: 4, smooth: 0.15 });
 ```
+
+## Who holds a value
+
+One param can have several writers: the timeline, a few routes, the console's slider, the work's own code. An engine
+value has one more, the per-frame push of the `sound/*` params into the sound engine. Since 0.11.0 one rule decides
+between them, and every writer in the framework follows it:
+
+> **The last deliberate change wins, and a repetition is not a change.** A value set by hand holds until it is
+> released, or until a source really moves. Nothing that only pushes the same thing again may undo it.
+
+| writer | what it is | when it takes the value | what makes it let go |
+|---|---|---|---|
+| the timeline | automation, a score's segment modules (`layer`), else `def` | never: it is the base, and shows whenever nothing holds the param | (it never holds) |
+| a route | a knob, a fader, a phone, a hand, the microphone, through the mapper | when its source *changes*, by more than 0.1% of its input window. A new route (learned, imported, loaded) on a param a hand holds: from its second reading, the first only says where the knob is | a hand, ✕, its own `release`; removing or muting a `trim` |
+| a hand | the console's slider, `params.override()`, `params.hold()`, `sound.set()` | at once | ✕ or `clearOverride()`, `sound.release()`, or a route whose source changes |
+| ✕ | a hand that gives the param back: ✕ on the Params panel, ↩ on the Curves panel, `params.clearOverride()` | at once: the timeline plays it | a route whose source changes |
+
+What only pushes again, and so may never undo a hand:
+
+| re-pusher | 0.11.0 | 0.10.0 |
+|---|---|---|
+| a source that sends the same reading again: the relay refreshes every phone control once a second, many OSC senders repeat, a sensor stands still | ignored, only a change counts | took the param back after ✕ or a slider |
+| a smoothed route's glide | stops the moment anybody else writes the param, the same number included, and also a write between the knob's move and the next frame | stopped on ✕ or on a different number (since 0.9.0) |
+| `sound.update(state)`, the `sound/*` params into the engine | hands the engine a value when it changed, and every value once after `enable()` and after an instrument change | every value, every frame |
+| a `trim` riding the timeline | writes when the timeline or its offset moved | every frame |
+| the timeline's automation | the base: under every override, never over one | the same |
+| `dmxParams().apply()` | hands the lights a value when it changed | the same |
+
+The console, the backstage monitor and the values echoed to phones (`remote`) are not writers: they show a value and
+change nothing, and a phone fader under a finger ignores the echo.
+
+**Who holds it now.** `params.holder(key)` answers `null` (the timeline plays it), `{ kind: 'hand', label, value }` or
+`{ kind: 'route', label, source, mode, value }`. On the Params panel a name in yellow with ✋ is held by a hand, a name
+in blue with ⇄ by a route, and the tooltip of the name and of its ✕ says which (`route midi/cc/74`, `sound.set`); the
+Curves panel's ↩ says it too. Code that writes a param can name itself: `params.hold('palette', 2, 'piano')`.
+
+**An engine value.** `sound.set('volume', -20)` is a hand on `sound/volume`: the engine hears it at once, and the
+timeline, a route or a re-sent reading leave it there until `sound.release('volume')` or ✕. A value written straight
+into the engine (`show.sound.engine.set(…)`) is not the framework's to keep: it is no longer overwritten on the next
+frame, and stays until its param next changes.
+
+### The 0.10.0 rule
+
+`createShow({ writes: 'legacy' })` brings back exactly how 0.10.0 wrote: every `sound/*` value into the engine every
+frame, a route that takes its param back on any reading after ✕ or a slider, a glide that only notices a hand writing a
+different number. `new Mapper({ …, writes: 'legacy' })` and `new Sound({ …, writes: 'legacy' })` do the same for a
+mapper or a sound shell built by hand. It prints one deprecation warning and will go in a later version; what changed,
+and how to tell whether a work leaned on it, is in the [changelog](changelog.md).
 
 ## Learn
 
@@ -2173,7 +2225,7 @@ Several packages generate routes in this same shape:
 ```js
 import { Mapper } from '@openav/mapping';
 
-const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn, base });
+const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn, base, writes });   // writes: 'hold' (default) | 'legacy'
 mapper.addRoute(route)        // → the stored route (defaults filled in, id assigned)
 mapper.removeRoute(id)
 mapper.routesFor('bloom')     // → routes targeting a param
@@ -2239,6 +2291,7 @@ const show = await createShow({
 | `monitor` | `true` | the [backstage feed](#backstage-monitor): `false` = none (no socket is opened), `{ url, hz }` = another relay address or rate |
 | `console` | `null` | the options of [the console](#the-console), `mountConsole`'s: `{ keys, layers, signals, learnOrder }`; `keys` moves the keyboard shortcuts |
 | `sync` | `null` | several pages, one show: `{ role: 'leader' \| 'follower', channel, url, input, extra, state, follow }`. One page leads, the others follow its clock, and a follower takes no input of its own ([below](#several-pages-one-show)) |
+| `writes` | `'hold'` | who wins when several writers touch one value: a value set by hand holds until released, and a re-sent reading, a glide or the per-frame sound push cannot undo it; `'legacy'` = exactly 0.10.0, with a deprecation warning ([Who holds a value](mapping.md#who-holds-a-value)) |
 
 Without `mount`, the page body becomes a two-column grid: the stage, and a
 340 px side panel with the piano and the console.
@@ -2882,7 +2935,9 @@ filter to 8000 Hz) and add knobs of its own, which the console shows while it
 plays: the organ's `sound/drawbars` and `sound/rotor`, `sound/attack` and
 `sound/vibrato` on the strings, `sound/vowel` on the choir, `sound/tremolo` on
 the electric piano and the vibraphone. Automation and overrides always win over
-a suggested default. The sustain pedal (`midi/cc/64`) holds every instrument's
+a suggested default. A `sound/*` value reaches the engine when it changes. To set one by hand,
+`show.sound.set('volume', -20)` holds it against the timeline, a knob and a re-sent reading until
+`show.sound.release('volume')` or ✕ ([Who holds a value](mapping.md#who-holds-a-value)). The sustain pedal (`midi/cc/64`) holds every instrument's
 note-offs. Notes on MIDI channel 10 (the drum machine) are left to a drum engine.
 
 ### Add your own instrument
@@ -7500,7 +7555,7 @@ function draw() {
 - `SALAMANDER_NOTES` (constant, @openav/sound): `SALAMANDER_NOTES = array, 30 items` — The 30 notes the Salamander piano has samples for: every minor third from A0 (MIDI 21) to C8 (108).
 - `salamanderMap` (function, @openav/sound): `salamanderMap(notes = SALAMANDER_NOTES)` — Builds the sample map of the Salamander piano for Tone.Sampler: { 'A0': 'A0.mp3', 'D#1': 'Ds1.mp3', … }.
 - `SAMPLES_URL` (constant, @openav/sound): `SAMPLES_URL = "https://openaudiovisual.com/packages/sound/samples/"` — The address of the folder with the built-in sample sets, when nobody says otherwise: openaudiovisual.com/packages/sound/samples/.
-- `Sound` (class, @openav/sound): `new Sound({ signals, params = null, engine, instrument = null, remember = true, picker = true })` — Makes every midi/note/on and midi/note/off on a bus audible through a sound engine, and puts the engine's params on the bus as sound/*. (before it has a value: `sound.enable()` from a click: browsers start audio only after a user gesture. With [`toneEngine()`](#toneEngine) it also loads Tone.js from the network (jsDelivr) the first time. Before `enable()` nothing is heard, and the bus is not listened to.)
+- `Sound` (class, @openav/sound): `new Sound({ signals, params = null, engine, instrument = null, remember = true, picker = true, writes = 'hold' })` — Makes every midi/note/on and midi/note/off on a bus audible through a sound engine, and puts the engine's params on the bus as sound/*. (before it has a value: `sound.enable()` from a click: browsers start audio only after a user gesture. With [`toneEngine()`](#toneEngine) it also loads Tone.js from the network (jsDelivr) the first time. Before `enable()` nothing is heard, and the bus is not listened to.)
 - `SOUND_PARAMS` (constant, @openav/sound): `SOUND_PARAMS = array, 3 items` — The three params every instrument shares: cutoff (the filter), space (the reverb) and volume.
 - `soundOptions` (function, @openav/sound): `soundOptions(value)` — Reads the modules.sound option of createShow() (true, an instrument id, or an object) into one normalized object.
 - `SYNTH_PRESETS` (constant, @openav/sound): `SYNTH_PRESETS = array, 11 items` — The 11 synth presets as plain data: pad, saw lead, square lead, pluck, supersaw, bass, acid, brass, bell, sub and chip.
@@ -9691,7 +9746,7 @@ function draw() {
 - `MAP_FORMAT` (constant, @openav/mapping): `MAP_FORMAT = "openav.map"` — The text `"openav.map"`: the value of `format` in every map file. A file with another format is refused.
 - `MAP_MAX_BYTES` (constant, @openav/mapping): `MAP_MAX_BYTES = 262144` — The longest map text `parseMap()` will read: 262144, which is 256 KB. Longer text is refused without being parsed.
 - `MAP_VERSION` (constant, @openav/mapping): `MAP_VERSION = 1` — The newest map file version this build reads and writes: 1. A file with a higher version is refused with a message.
-- `Mapper` (class, @openav/mapping): `new Mapper({ signals, params, profile = 'default', onChange = null, onLearn = null, base = null })` — Connects signals to params: it holds a list of routes (a window, a curve, smoothing) and writes the matching param whenever a signal arrives. (before it has a value: Create the signals and the params first, then the mapper. A smoothed route (`smooth > 0`) writes its param only inside `update(dt)`, a trim route follows the timeline there, and `release` is counted there, so call `mapper.update(dt)` every frame (`createShow()` does). `trim` and `pickup` need `base` to know the timeline's value.)
+- `Mapper` (class, @openav/mapping): `new Mapper({ signals, params, profile = 'default', onChange = null, onLearn = null, base = null, writes = 'hold' })` — Connects signals to params: it holds a list of routes (a window, a curve, smoothing) and writes the matching param whenever a signal arrives. (before it has a value: Create the signals and the params first, then the mapper. A smoothed route (`smooth > 0`) writes its param only inside `update(dt)`, a trim route follows the timeline there, and `release` is counted there, so call `mapper.update(dt)` every frame (`createShow()` does). `trim` and `pickup` need `base` to know the timeline's value.)
 - `parseMap` (function, @openav/mapping): `parseMap(input)` — Reads and cleans a map file (JSON text or a parsed value) without touching any mapper; it never throws.
 - `parseMapUrl` (function, @openav/mapping): `parseMapUrl(value, base)` — Decides whether a `?map=` address may be fetched: same origin, or an absolute https URL, and nothing else.
 - `serializeMap` (function, @openav/mapping): `serializeMap(routes, { world = 'default', now = new Date() } = {})` — Builds the portable map file object from a list of routes: `{ format, version, world, exported, routes }`.
@@ -9704,7 +9759,7 @@ function draw() {
 - `sign` (function, @openav/core): `sign(doc = globalThis.document, { product = 'open-audiovisual', version = VERSION } = {})` — Marks a page as made with open-audiovisual by adding one `<meta name="generator">` tag, without sending anything.
 - `Signals` (class, @openav/core): `new Signals()` — The registry every input writes into and everything else reads from: named values that are either a level (continuous) or an event (pulse).
 - `VERSION` (constant, @openav/core): `VERSION = "0.10.0"` — The version of the framework as a string, the same number as the tag in a pinned address.
-- `createShow` (function, @openav/show): `async createShow({ world = null, worlds = [], timeline: timelineCfg = { total: 120 }, routes = [], modules = {}, artwork = null, hint = '', profile = null, map = null, onFrame = null, mount = null, telemetry = true, signature = true, score: scoreCfg = null, loop: loopCfg = 'auto', monitor: monitorCfg = true, console: consoleOpts = null, sync: syncCfg = null, } = {})` — Builds a whole show around a world in one call: signals, params, stage, timeline, mapper, the modules you switch on, the console, the backstage feed and the frame loop. (before it has a value: `await` it: it is async because it waits for the world's `init()` (and for lazily loaded modules). It needs a page (`document`, `location`, `localStorage`), and an import map or bundler that resolves every `@openav/*` package it imports (copy the one from `examples/01-hello-particles/index.html`). Browsers start audio only after a click, so sound and the microphone start from the console's buttons.)
+- `createShow` (function, @openav/show): `async createShow({ world = null, worlds = [], timeline: timelineCfg = { total: 120 }, routes = [], modules = {}, artwork = null, hint = '', profile = null, map = null, onFrame = null, mount = null, telemetry = true, signature = true, score: scoreCfg = null, loop: loopCfg = 'auto', monitor: monitorCfg = true, console: consoleOpts = null, sync: syncCfg = null, writes = 'hold', } = {})` — Builds a whole show around a world in one call: signals, params, stage, timeline, mapper, the modules you switch on, the console, the backstage feed and the frame loop. (before it has a value: `await` it: it is async because it waits for the world's `init()` (and for lazily loaded modules). It needs a page (`document`, `location`, `localStorage`), and an import map or bundler that resolves every `@openav/*` package it imports (copy the one from `examples/01-hello-particles/index.html`). Browsers start audio only after a click, so sound and the microphone start from the console's buttons.)
 - `isStacked` (function, @openav/show): `isStacked(width, height)` — Whether a window of this size gets the stacked layout (stage on top, panel below): upright and no wider than 820 pixels.
 - `SHELL_CSS` (constant, @openav/show): `SHELL_CSS = "\n body { margin: 0; background: #000; height: 100vh; display: grid;\n grid…"` — The CSS text `createShow()` puts in the page: the two-column grid, the 340 px side panel, the hint and credit styles, and the stacked layout.
 - `STACK_MAX_WIDTH` (constant, @openav/show): `STACK_MAX_WIDTH = 820` — The widest window that can get the stacked layout: 820 pixels (a small tablet held upright).

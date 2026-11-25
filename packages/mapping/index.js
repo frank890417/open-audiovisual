@@ -27,6 +27,8 @@
 
 // the one-pole lag a smoothed route steps with: the same function oav-p5's lag() uses (packages/chop)
 import { approach } from '../chop/index.js?v=9b499105';
+// who wins when a hand and a route touch one param: 'hold' (default) or 'legacy' (0.10.0), docs/mapping.md#who-holds-a-value
+import { writesMode } from '../core/src/writes.js?v=9b499105';
 
 const CURVES = {
   linear: (x) => x,
@@ -172,19 +174,23 @@ export class Mapper {
    * @param {(route: object, sig: string) => void} [deps.onLearn]
    * @param {() => Object<string, number>} [deps.base] 時間軸「現在」的值 { key: value }，通常是 () => timeline.state()。
    *        trim／pickup 疊在它上面、平滑從它起跳。沒給就用參數的 def。可以之後再指定：mapper.base = fn
+   * @param {'hold'|'legacy'} [deps.writes='hold'] 'hold'：手設的值留著，直到訊號真的動了（重送同一個值不算）；
+   *        'legacy'：0.10.0 的寫法（✕ 或滑桿之後，下一個讀數就接管回去）。docs/mapping.md#who-holds-a-value
    */
-  constructor({ signals, params, profile = 'default', onChange = null, onLearn = null, base = null }) {
+  constructor({ signals, params, profile = 'default', onChange = null, onLearn = null, base = null, writes = 'hold' }) {
     this.signals = signals;
     this.params = params;
     this.profile = profile;
     this.base = base;
+    this.writes = writesMode(writes, 'new Mapper({ writes })');
+    this._legacy = this.writes === 'legacy';
     this.onChange = onChange || (() => {});
     this.onLearn = onLearn || (() => {});
     this.routes = [];
     this.learnTarget = null;
     this.report = null;           // what the last import/?map= said (see importMap)
     this.reportSeq = 0;
-    this._owned = new Map();      // target -> 我們最後寫進 params.overrides 的值；之後讀到不一樣，就是 ✕ 或滑桿動過
+    this._owned = new Map();      // target -> { value, rec, pending }：我們最後寫完時參數的樣子（值，和 params.holder() 的那筆紀錄）；之後讀到不一樣，就是 ✕ 或滑桿動過
     this._stamp = 0;              // 誰最後寫的：同一個參數有幾條取代 route 時，最近寫的那條贏
     this._learnBase = new Map();  // signal -> value at learn start (movement detection)
     this._unsub = signals.onAny((name, value) => this._onSignal(name, value));
@@ -283,6 +289,16 @@ export class Mapper {
   //   _caught   pickup：旋鈕已經碰到過參數的值
   //   _leaving  正在放手（淡回時間軸），_rest 放手後訊號沒再動就不重新接管
   // 這個參數最後寫成什麼，由 _commit 統一算：取代 route 的值（沒有就是時間軸的值）＋所有 trim 偏移的總和。
+  //
+  // 誰說了算（writes: 'hold'，0.11.0 起的預設；docs/mapping.md#who-holds-a-value）：
+  //   · 手（滑桿、params.override、sound.set、✕）寫過之後，這個參數上的 route 全部放手並且 _rest：要訊號「真的動了」
+  //     （輸入窗內超過 0.1%）才再接管。重送同一個值的來源（relay 每秒一次、OSC、靜止的感測器）不算動。
+  //   · 認「有人寫過」靠 params.holder() 的那筆紀錄（每次寫都是新的一筆），不是比值：同一個數字也認得出來
+  //     （stepped 參數、滑桿放在原地）。一條 route 剛接管、還沒在 update() 寫第一筆之前，就先記下參數當時的樣子（pending）。
+  //   · 參數在別人手上時，一條沒握著它的 route 只有在「動了」的讀數才接管；新 route（學來的、匯入的、載入的）的第一個讀數
+  //     只是告訴它旋鈕在哪，不算動。
+  //   · 自己的值沒變就不寫（trim 每幀重算，但時間軸和偏移都沒動就不重寫）。
+  // writes: 'legacy' 是 0.10.0：比值、✕ 之後下一個讀數就接管。
 
   /** 時間軸現在的值 { key: value }；沒提供、丟錯、或不是物件，就當沒有（絕不讓一個壞掉的 base 擋住演出）。 */
   _axis() {
@@ -300,11 +316,24 @@ export class Mapper {
     return o !== undefined ? o : this._baseOf(key);
   }
 
+  /** params.holder() 的紀錄（沒有這個方法的 params 替身：null，退回只比值）。 */
+  _rec(key) { return typeof this.params.holder === 'function' ? this.params.holder(key) : null; }
+  /** 參數還是我們最後寫的樣子嗎？legacy：同一個值。hold：同一個值，而且是同一筆寫入（別人寫了同一個數字也算別人）。 */
+  _ours(target, o = this._owned.get(target)) {
+    if (!o || this.params.overrides[target] !== o.value) return false;
+    return this._legacy || typeof this.params.holder !== 'function' || this.params.holder(target) === o.rec;
+  }
+  /** hold：參數被覆寫著，而且不是這個 mapper 寫的（手、程式，或我們剛接管、還沒寫第一筆時原本就握著它的人）。 */
+  _heldByOther(target) {
+    if (!(target in this.params.overrides)) return false;
+    const o = this._owned.get(target);
+    return !o || !!o.pending || !this._ours(target, o);
+  }
   /** 有人（主控台的 ✕、滑桿）動過我們寫的覆寫：我們不再是它的主人，這個參數上的 route 全部放手，等旋鈕下次再動。 */
   _sync(target) {
-    if (!this._owned.has(target) || this.params.overrides[target] === this._owned.get(target)) return;
+    if (!this._owned.has(target) || this._ours(target)) return;
     this._owned.delete(target);
-    for (const r of this.routes) if (r.target === target) this._drop(r);
+    for (const r of this.routes) if (r.target === target) { this._drop(r); if (!this._legacy) r._rest = true; }   // hold：重送同一個值不算「又動了」
   }
   _drop(r) { r._held = false; r._leaving = false; r._caught = false; r._side = 0; r._target = undefined; r._idle = 0; }
   _leave(r) { r._leaving = true; r._fade = 0; r._from = r._cur; r._rest = true; r._caught = false; r._side = 0; }
@@ -323,8 +352,13 @@ export class Mapper {
   _feed(r, out, xin) {
     const mode = modeOf(r), t = r.target;
     this._sync(t);
-    const moved = r._xin === undefined || Math.abs(xin - r._xin) > MOVED;   // 和「上次算動過的位置」比：慢慢飄的來源累積起來也算動
+    const fresh = r._xin === undefined;
+    const moved = fresh || Math.abs(xin - r._xin) > MOVED;   // 和「上次算動過的位置」比：慢慢飄的來源累積起來也算動
     if (moved) r._xin = xin;
+    if (!this._legacy && !r._held && this._heldByOther(t)) {   // 參數在別人手上：沒動的讀數不接管，新 route 的第一個讀數也不算動
+      if (fresh) { r._rest = true; return; }
+      if (!moved) return;
+    }
     if (r._rest) { if (!moved) return; r._rest = false; }     // 放手之後，要旋鈕真的動了才再接管；一直重送同一個值的來源不算
     if (moved) r._idle = 0;
     r._target = out;
@@ -335,6 +369,8 @@ export class Mapper {
     if (!r._held) {                                            // 剛接管：從參數現在的樣子開始，所以第一個讀數不會讓它跳
       r._held = true;
       r._cur = mode === 'trim' ? 0 : this._now(t);
+      // hold：平滑的 route 要到 update() 才寫第一筆；先記下參數現在的樣子，這之間手寫了什麼，_sync 認得出來
+      if (!this._legacy && !this._owned.has(t)) this._owned.set(t, { value: this.params.overrides[t], rec: this._rec(t), pending: true });
     }
     r._leaving = false;
     r._stamp = ++this._stamp;
@@ -345,26 +381,40 @@ export class Mapper {
 
   /** 把這個參數寫成：握著它的取代 route（最近寫的那條；沒有就是時間軸）＋所有 trim 的偏移。沒人握著了就把覆寫還給時間軸。 */
   _commit(target, axisNow = () => this._axis()) {
-    let win = null, offset = 0, trimmed = false;
+    let win = null, offset = 0;
+    const trims = [];
     for (const r of this.routes) {
       if (r.target !== target || !r._held) continue;
-      if (modeOf(r) === 'trim') { if (r.enabled !== false) { offset += r._cur; trimmed = true; } }
+      if (modeOf(r) === 'trim') { if (r.enabled !== false) { offset += r._cur; trims.push(r); } }
       else if (!win || (r._stamp || 0) >= (win._stamp || 0)) win = r;
     }
-    if (!win && !trimmed) {
-      if (this._owned.has(target) && this.params.overrides[target] === this._owned.get(target)) this.params.clearOverride(target);
+    const o = this._owned.get(target);
+    if (!win && !trims.length) {                               // 沒人握著了：只收回自己寫的那筆
+      if (o && (this._legacy ? this.params.overrides[target] === o.value : !o.pending && this._ours(target, o))) this.params.clearOverride(target);
       this._owned.delete(target);
       return;
     }
-    this.params.override(target, (win ? win._cur : this._baseOf(target, axisNow())) + offset);
-    this._owned.set(target, this.params.overrides[target]);
+    const v = (win ? win._cur : this._baseOf(target, axisNow())) + offset;
+    const by = this._by(win, trims);
+    if (!this._legacy && o && !o.pending && o.label === by.label && this._ours(target, o)
+      && Object.is(typeof this.params.clamp === 'function' ? this.params.clamp(target, v) : v, o.value)) return;   // 值沒變：不寫
+    if (typeof this.params.hold === 'function') this.params.hold(target, v, by); else this.params.override(target, v);
+    this._owned.set(target, { value: this.params.overrides[target], rec: this._rec(target), label: by.label });
+  }
+  /** 誰握著它，給 params.hold()（主控台照這個寫出是誰）：{ kind: 'route', label, source, mode, id }。 */
+  _by(win, trims) {
+    const parts = [];
+    if (win) parts.push((modeOf(win) === 'pickup' ? 'pickup ' : '') + win.source);
+    for (const r of trims) parts.push('trim ' + r.source);
+    const lead = win || trims[0];
+    return { kind: 'route', label: parts.join(' + '), source: lead.source, mode: modeOf(lead), id: lead.id };
   }
 
   /** 這些 route 被拿掉了（移除／換掉整組）：還握著參數的 trim 要把偏移收掉，不然覆寫會停在最後一個 base＋偏移。取代模式維持黏著。 */
   _letGo(gone) {
     const targets = new Set();
     for (const r of gone) if (r._held && modeOf(r) === 'trim') targets.add(r.target);
-    for (const t of targets) this._commit(t);
+    for (const t of targets) { if (!this._legacy) this._sync(t); this._commit(t); }   // hold：手在這之間寫過的，不被剩下的 route 蓋掉
   }
 
   /** Call per frame — glides smoothed routes, keeps trims riding the time axis, lets go of what has been left alone. */

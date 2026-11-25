@@ -100,6 +100,11 @@ export default {
         en: 'Several pages, one show ([`createSync()`](#createSync)): `{ role: \'leader\' | \'follower\', channel, url, input, follow, … }`. The leader runs the show and a follower\'s timeline chases its clock. `url`: nothing for pages of one browser, a `ws://` relay address for other machines, `true` for this page\'s own `/relay`. `input` says whether this page takes input of its own: by default the leader does and a follower does not, so on a follower the modules `midi`, `keys`, `drums`, `audio`, `hands`, `pose`, `leap` and `remote` are switched off. The other keys are those of [`SyncLeader`](#SyncLeader) and [`SyncFollower`](#SyncFollower); an unknown key throws.',
         zh: '好幾個頁面演同一場（[`createSync()`](#createSync)）：`{ role: \'leader\' | \'follower\', channel, url, input, follow, … }`。主控端跑演出，從屬端的時間軸追它的時鐘。`url`：同一個瀏覽器的頁面不用給，別台機器給 `ws://` 中繼位址，`true` 是這個頁面自己的 `/relay`。`input` 決定這個頁面要不要有自己的輸入：預設主控端有、從屬端沒有，所以在從屬端上，`midi`、`keys`、`drums`、`audio`、`hands`、`pose`、`leap` 和 `remote` 這些模組會被關掉。其餘的鍵就是 [`SyncLeader`](#SyncLeader) 和 [`SyncFollower`](#SyncFollower) 的選項，不認得的鍵會丟出錯誤。',
       },
+      {
+        name: 'writes', type: 'String', optional: true, default: '\'hold\'',
+        en: 'Who wins when several writers touch one value ([Who holds a value](https://openaudiovisual.com/docs/mapping/#mapping-who-holds-a-value)), handed to the [`Mapper`](#Mapper) and to [`Sound`](#Sound). `\'hold\'`: a value set by hand (a slider, `params.override()`, `sound.set()`, ✕) holds until it is released or a source really changes; a re-sent reading, a glide and the per-frame sound push cannot undo it, and `sound/*` values reach the engine when they change. `\'legacy\'`: exactly how 0.10.0 wrote, with one deprecation warning. Anything else throws before the page is touched.',
+        zh: '好幾個寫入者碰到同一個值時誰說了算（[誰握著一個值](https://openaudiovisual.com/zh/docs/mapping/#mapping-who-holds-a-value)），會交給 [`Mapper`](#Mapper) 和 [`Sound`](#Sound)。`\'hold\'`：用手設定的值（滑桿、`params.override()`、`sound.set()`、✕）會留著，直到被放開或有來源真的改變，重送的讀數、滑行和每個影格的聲音推送都推不掉它，`sound/*` 的值變了才交給引擎。`\'legacy\'`：原封不動照 0.10.0 的寫法，會印出一次「已不建議使用」的警告。其他值會在動到頁面之前丟出錯誤。',
+      },
     ],
     returns: {
       type: 'Promise<Object>',

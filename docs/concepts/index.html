@@ -162,7 +162,9 @@ timeline stops moving it until the override is cleared (✕ in the console, or
 <code>params.clearOverride('bloom')</code>). That matches the stage: when a human grabs a
 control, the score yields. A route can choose otherwise: <code>mode: 'trim'</code> adds the knob to
 the timeline's value, and <code>release</code> hands the param back when the knob stands still
-(<a href="../../docs/mapping/#mapping-trim-pickup-and-release">Mapping</a>).</p>
+(<a href="../../docs/mapping/#mapping-trim-pickup-and-release">Mapping</a>). When a hand and a route both touch a param, the last deliberate
+change wins and a repetition is not a change: a source that sends the same reading again never undoes a hand
+(<a href="../../docs/mapping/#mapping-who-holds-a-value">Who holds a value</a>); <code>params.holder(key)</code> and the console say who holds it.</p>
 <p>The full field list is in <a href="../../docs/writing-a-world/#writing-a-world-params">Writing a world</a>.</p>
 <h2 id="concepts-routes-and-mapping">Routes and mapping<a class="anchor" href="#concepts-routes-and-mapping" aria-label="Link to this section">#</a></h2>
 <p>A <strong>route</strong> connects one signal to one param. Routes are plain data:</p>

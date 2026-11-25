@@ -27,7 +27,13 @@
 //
 // The instrument is a discrete choice (sound.setInstrument, the picker); what
 // you PERFORM — cutoff, space, volume, an instrument's own knobs — stays params.
+//
+// Who wins on an engine value (docs/mapping.md#who-holds-a-value): sound.update(state) tells the engine a sound/* value
+// only when it changed, so a value written into the engine stays until its param moves. sound.set(key, v) is the hand:
+// an override on sound/<key> that the timeline, a route or a re-sent reading cannot undo, until sound.release(key) or ✕.
+// Sound({ writes: 'legacy' }) is 0.10.0: every sound/* value, every frame.
 
+import { writesMode } from '../core/src/writes.js?v=9b499105';
 import { SOUND_PARAMS, registerInstrument, getInstrument } from './registry.js?v=9b499105';
 import { piano } from './instruments/piano.js?v=9b499105';
 import { epiano } from './instruments/epiano.js?v=9b499105';
@@ -96,13 +102,17 @@ export class Sound {
    * @param {string} [deps.instrument] starting instrument (engines that have instruments)
    * @param {boolean|string} [deps.remember] keep the picker's last choice per page in localStorage (a string = your own key)
    * @param {boolean} [deps.picker] show the instrument picker in the console (default true)
+   * @param {'hold'|'legacy'} [deps.writes] 'hold' (default): a sound/* value reaches the engine when it changes;
+   *        'legacy': every value, every frame (0.10.0)
    */
-  constructor({ signals, params = null, engine, instrument = null, remember = true, picker = true }) {
+  constructor({ signals, params = null, engine, instrument = null, remember = true, picker = true, writes = 'hold' }) {
     this.signals = signals;
     this.params = params;
     this.engine = engine;
     this.enabled = false;
     this.picker = picker;
+    this.writes = writesMode(writes, 'new Sound({ writes })');
+    this._pushed = new Map();    // engine key -> the value update() last handed it (hold: only a change is handed on)
     this._unsubs = [];
     this._subs = new Set();
     this._instKeys = new Set();
@@ -126,6 +136,7 @@ export class Sound {
       this._enabling = (async () => {
         await this.engine.enable();
         this.enabled = true;
+        this._pushed.clear();                                 // the next update() hands the engine every value once
         const skip = (ch) => ch != null && this.engine.skipChannels?.includes(ch);
         this._unsubs.push(
           this.signals.on('midi/note/on', ({ note, vel, ch }) => { if (!skip(ch)) this.engine.noteOn(note, vel ?? 0.8); }),
@@ -141,13 +152,36 @@ export class Sound {
     return this._enabling;
   }
 
-  /** Per frame: push resolved sound/* params into the engine. */
+  /** Per frame: hand the engine the resolved sound/* params that changed since the last frame (legacy: all of them). */
   update(state) {
     if (!this.enabled) return;
+    const all = this.writes === 'legacy';
     for (const k of Object.keys(state)) {
-      if (k.startsWith('sound/')) this.engine.set(k.slice(6), state[k]);
+      if (!k.startsWith('sound/')) continue;
+      const key = k.slice(6), v = state[k];
+      if (!all && this._pushed.has(key) && Object.is(this._pushed.get(key), v)) continue;
+      this._pushed.set(key, v);
+      this.engine.set(key, v);
     }
   }
+
+  /**
+   * Set an engine value by hand: `sound.set('volume', -20)`. For an engine param it is an override on `sound/<key>`
+   * held by 'sound.set', so the timeline, a route and a re-sent reading leave it alone until release(key) or ✕; the
+   * engine hears it at once. A key that is not a param goes straight to the engine (update() never touches it).
+   * Returns the value the param holds (clamped), or the value handed on.
+   */
+  set(key, value) {
+    const p = this.params?.get?.('sound/' + key);
+    if (!p) { this.engine.set(key, value); return value; }
+    if (typeof this.params.hold === 'function') this.params.hold('sound/' + key, value, 'sound.set'); else this.params.override('sound/' + key, value);
+    const v = this.params.overrides['sound/' + key];
+    if (this.enabled) { this._pushed.set(key, v); this.engine.set(key, v); }
+    return v;
+  }
+  /** Let go of an engine value: `sound.release('volume')` clears the override on `sound/volume` (what ✕ does), so the
+   *  timeline (or def) plays it again from the next frame. */
+  release(key) { this.params?.clearOverride?.('sound/' + key); }
 
   /** Current instrument id (null for engines without instruments, e.g. drumEngine). */
   get instrument() { return this.engine.instrument ?? null; }
@@ -179,6 +213,7 @@ export class Sound {
 
   _onEngine(ev) {
     if (ev.type === 'instrument') {
+      this._pushed.clear();                                 // a new instrument hears every value once (its own knobs, and the shared ones)
       this._syncParams();
       this.signals?.pulse?.('sound/instrument', { id: ev.id, name: ev.name });
     }

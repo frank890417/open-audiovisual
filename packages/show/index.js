@@ -51,6 +51,7 @@ import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=9b499105';
 import { track } from '../midi/telemetry.js?v=9b499105';
 import { SHELL_CSS } from './layout.js?v=9b499105';
 import { loopOptions, monitorOptions, syncOptions, syncModules } from './options.js?v=9b499105';
+import { writesMode } from '../core/src/writes.js?v=9b499105';
 
 export async function createShow({
   world = null,
@@ -71,8 +72,10 @@ export async function createShow({
   monitor: monitorCfg = true,   // the backstage feed: true (this machine, :7457) · false (none) · { url, hz } — packages/monitor
   console: consoleOpts = null,  // options of the desk, mountConsole's: { keys: { reset: 'F6', … } | false, layers, signals, learnOrder } — packages/console
   sync: syncCfg = null,    // several pages, one show: { role: 'leader' | 'follower', channel, url?, input?, extra?, state?, follow? } — packages/sync
+  writes = 'hold',         // who wins when a hand and a re-pusher touch one value: 'hold' (a hand holds until released) · 'legacy' (0.10.0) — docs/mapping.md#who-holds-a-value
 } = {}) {
   // options that are data are checked first: a typo must stop the show before it touches the page
+  const writesOpt = writesMode(writes, 'createShow({ writes })');
   const loopOpts = loopOptions(loopCfg);
   const monitorOpts = monitorOptions(monitorCfg);
   const keyMap = resolveKeys(consoleOpts?.keys);
@@ -147,7 +150,7 @@ export async function createShow({
     timeline.onSceneChange((i, scene, info) => scoreMidi?.segment({ index: i, id: scene?.id, cause: info?.cause }));
   }
   // base：時間軸「現在」的值（不含覆寫）。trim／pickup 疊在它上面、平滑從它起跳；沒接上時會退回參數的 def（G2）
-  const mapper = new Mapper({ signals, params, profile: profile || allWorlds[0]?.name || 'show', base: () => timeline.state() });
+  const mapper = new Mapper({ signals, params, profile: profile || allWorlds[0]?.name || 'show', base: () => timeline.state(), writes: writesOpt });
   const loaded = profile !== false && mapper.load();
   if (!loaded) {
     for (const r of routes) mapper.addRoute(r);
@@ -259,7 +262,7 @@ export async function createShow({
     const o = soundOptions(modules.sound);
     // samples come from this copy of the framework (the published default is openaudiovisual.com)
     const engine = o.engine || toneEngine({ baseUrl: new URL('../sound/samples/', import.meta.url).href, ...o.engineOptions });
-    sound = new Sound({ signals, params, engine, instrument: o.instrument, remember: o.remember, picker: o.picker });
+    sound = new Sound({ signals, params, engine, instrument: o.instrument, remember: o.remember, picker: o.picker, writes: writesOpt });
   }
 
   // ---------- desk + backstage ----------

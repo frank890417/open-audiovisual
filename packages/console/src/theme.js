@@ -75,6 +75,9 @@ export const css = `
 .oav-param input[type=range] { width: 100%; accent-color: #2e6df6; height: 20px; }
 .oav-param .val { text-align: right; color: #fff; font-variant-numeric: tabular-nums; }
 .oav-param.ovr label { color: #ffd166; }
+.oav-param[data-held=hand] label::before { content: '✋ '; }
+.oav-param[data-held=route] label { color: #7ea6ff; }
+.oav-param[data-held=route] label::before { content: '⇄ '; }
 .oav-chip { font-size: 10px; border: 1px solid #2a3348; border-radius: 10px; padding: 1px 7px;
   cursor: pointer; color: #8892a8; background: none; }
 .oav-chip:hover { color: #cfd6e4; }

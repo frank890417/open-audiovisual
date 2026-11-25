@@ -1,5 +1,15 @@
 // Param panel: one row per param — slider (override on drag), value, clear-override
 // chip, learn chip (via mapper). Sliders reflect live resolved state each frame.
+// Who holds each param is on its row (docs/mapping.md#who-holds-a-value): the name in yellow with ✋ for a hand (this
+// slider, params.override(), sound.set()), in blue with ⇄ for a route; the tooltip of the name and of ✕ says which.
+
+/** What the desk says about who holds a param, from params.holder(key): 'the timeline', 'hand', 'sound.set', 'route midi/cc/74', … */
+export function heldText(h) {
+  if (!h) return 'the timeline';
+  if (h.kind === 'route') return `route ${h.label || h.source || ''}`.trim();
+  return h.label || h.kind || 'hand';
+}
+
 export function buildParamPanel(root, app) {
   const { params, mapper } = app;
   const panel = document.createElement('div');
@@ -35,6 +45,8 @@ export function buildParamPanel(root, app) {
     rows.set(p.key, row);
   };
   for (const p of params.schema) addRow(p);
+  // an older Params (or a stand-in) without holder(): an override is somebody's hand, as far as the desk can tell
+  const holderOf = (k) => (typeof params.holder === 'function' ? params.holder(k) : params.isOverridden(k) ? { kind: 'hand', label: 'hand' } : null);
 
   return {
     render(state) {
@@ -47,7 +59,15 @@ export function buildParamPanel(root, app) {
         const hide = p.hidden ? 'none' : '';
         if (row.style.display !== hide) row.style.display = hide;
         if (hide) continue;
-        row.classList.toggle('ovr', params.isOverridden(p.key));
+        const h = holderOf(p.key), kind = h ? (h.kind === 'route' ? 'route' : 'hand') : '';
+        row.classList.toggle('ovr', !!h);
+        if (row.dataset.held !== kind || row._heldText !== (h ? h.label : '')) {      // the tooltips change only when the holder does
+          row.dataset.held = kind; row._heldText = h ? h.label : '';
+          const who = heldText(h);
+          row.querySelector('label').title = `${p.key} · ${h ? 'held by ' + who : who + ' plays it'}`;
+          const x = row.querySelector('[data-clear]');
+          if (x) x.title = h ? `give ${p.key} back to the timeline (held by ${who})` : 'clear override';
+        }
         const valEl = row.querySelector('.val');
         if (!p.pulse && typeof v === 'number') {
           const slider = row.querySelector('input');

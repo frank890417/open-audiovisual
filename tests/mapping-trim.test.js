@@ -281,7 +281,8 @@ test('smooth: a value already overridden by hand is still the start; with no tim
   const a = rig();
   a.mapper.addRoute({ source: 'k', target: 'bloom', smooth: 0.5 });
   a.params.override('bloom', 70);
-  a.signals.set('k', 1); a.mapper.update(0.1);
+  // a knob being turned: its first reading tells a new route where it is (0.11.0: on a param a hand holds that is no move), the next one moves
+  a.signals.set('k', 0.99); a.signals.set('k', 1); a.mapper.update(0.1);
   close(a.params.overrides.bloom, approach(70, 100, 0.5, 0.1));
   const b = rig({ withBase: false });
   b.mapper.addRoute({ source: 'k', target: 'bloom', smooth: 0.5 });

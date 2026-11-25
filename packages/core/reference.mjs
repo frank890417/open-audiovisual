@@ -139,6 +139,10 @@ console.log(signals.norm('wind/speed'));    // 0.6`,
         zh: '覆寫是黏住的。`params.override(\'bloom\', 0.8)` 之後（滑桿、MIDI 旋鈕或映射的路由做的就是這個），時間軸就不再動 `bloom`，直到你呼叫 `clearOverride(\'bloom\')`。這跟舞台上的情形一樣：有人抓住控制的時候，樂譜讓路。覆寫值在寫入的時候就會被夾進 `min`..`max`，並對齊 `step`。',
       },
       {
+        en: 'Every override is written with who holds it, and `holder(key)` answers: `null` while nothing holds the param (the timeline plays it, or `def`), `{ kind: \'hand\', label: \'hand\', value }` after a slider or `override()`, `{ kind: \'route\', label: \'midi/cc/74\', source, mode, value }` after a [`Mapper`](#Mapper) route. The console colours each param by its holder. The record is new on every write, so a writer that kept the record of its own last write can tell that somebody else wrote since, even the same number: that is how the mapper stands down for a hand ([Who holds a value](https://openaudiovisual.com/docs/mapping/#mapping-who-holds-a-value)).',
+        zh: '每一個覆寫值在寫入時都會記下是誰握著它，`holder(key)` 回答這件事：沒有人握著的時候（時間軸在播，或用 `def`）是 `null`，滑桿或 `override()` 之後是 `{ kind: \'hand\', label: \'hand\', value }`，[`Mapper`](#Mapper) 的路由寫的是 `{ kind: \'route\', label: \'midi/cc/74\', source, mode, value }`。主控台依握著它的人替每個參數上色。這筆紀錄每寫一次就是新的一筆，所以留著自己上一筆紀錄的寫入者，看得出後來有別人寫過，就算寫的是同一個數字也一樣：映射就是這樣認出手來、讓給手的（[誰握著一個值](https://openaudiovisual.com/zh/docs/mapping/#mapping-who-holds-a-value)）。',
+      },
+      {
         en: 'A param with `pulse: true` is a trigger, not a level: nobody reads a value from it. Fire it with `firePulse(key)` (a pad, a route from a pulse signal, a console button) and listen with `onPulse(key, cb)`.',
         zh: '`pulse: true` 的參數是觸發器，不是水準值：沒有人從它讀值。用 `firePulse(key)` 觸發它（打擊墊、脈衝訊號的路由、主控台的按鈕），用 `onPulse(key, cb)` 聽它。',
       },
@@ -161,12 +165,20 @@ console.log(signals.norm('wind/speed'));    // 0.6`,
         zh: '`clamp(key, v)` 把 `v` 夾進參數的 `min`..`max`，並四捨五入到 `step` 的倍數。不認識的 key 會原樣回傳 `v`。',
       },
       override: {
-        en: '`override(key, v)` sets a sticky override, clamped like `clamp()`. A key that was never declared is ignored without a word.',
-        zh: '`override(key, v)` 設定一個黏住的覆寫值，會像 `clamp()` 那樣夾住。沒宣告過的 key 會被默默忽略。',
+        en: '`override(key, v)` sets a sticky override, clamped like `clamp()`, held by a hand (`hold(key, v)` with no `by`). A key that was never declared is ignored without a word.',
+        zh: '`override(key, v)` 設定一個黏住的覆寫值，會像 `clamp()` 那樣夾住，握著它的是一隻手（等於不給 `by` 的 `hold(key, v)`）。沒宣告過的 key 會被默默忽略。',
+      },
+      hold: {
+        en: '`hold(key, v, by)` is `override()` that says who holds the value: `by` is a label (`\'piano\'`, `\'sound.set\'`, read as a hand with that label) or an object `{ kind, label, … }`; left out, a hand. The mapper writes `{ kind: \'route\', label, source, mode, id }`. The value is clamped like `clamp()`; an unknown key is ignored.',
+        zh: '`hold(key, v, by)` 就是說得出誰握著這個值的 `override()`：`by` 是一個標籤（`\'piano\'`、`\'sound.set\'`，當成帶這個標籤的手），或一個物件 `{ kind, label, … }`，沒給就是一隻手。映射寫的是 `{ kind: \'route\', label, source, mode, id }`。值會像 `clamp()` 那樣夾住，不認識的 key 會被忽略。',
+      },
+      holder: {
+        en: '`holder(key)`: who holds this param now. `null` while nothing does; else the frozen record of the write that holds it, `{ kind, label, value, … }` (`kind` is `\'hand\'` or `\'route\'`). A new write is a new record. A value put straight into `params.overrides` (older code does that) is reported as a hand.',
+        zh: '`holder(key)`：現在是誰握著這個參數。沒有人的時候是 `null`，否則是握著它的那一筆寫入的紀錄（凍結的物件），`{ kind, label, value, … }`（`kind` 是 `\'hand\'` 或 `\'route\'`）。每寫一次就是新的一筆。直接寫進 `params.overrides` 的值（舊的程式會這樣做）回報成一隻手。',
       },
       clearOverride: {
-        en: 'Give one param back to the timeline.',
-        zh: '把一個參數還給時間軸。',
+        en: 'Give one param back to the timeline (the console\'s ✕). A route on it takes it again only when its source changes.',
+        zh: '把一個參數還給時間軸（主控台上的 ✕）。接到它的路由，要等來源真的變了才會再接管。',
       },
       clearAllOverrides: {
         en: 'Give every param back to the timeline.',

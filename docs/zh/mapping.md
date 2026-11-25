@@ -84,7 +84,7 @@ show.mapper.addRoute({ source: 'hand/right/pinch/index', target: 'tightness', cu
 
 路由用**覆寫**的方式寫入參數，而覆寫會黏住：映射過來的訊號一動，時間軸就不再推那個參數。清掉覆寫（按參數旁的 ✕，或 `show.params.clearOverride(key)`），參數就交還給時間軸，直到訊號再動一次。
 
-*有平滑*的路由只在滑行的時候寫入。滑到了就停筆，所以按 ✕（或你拖動滑桿）就能把參數拿回來，而且在旋鈕再動之前它都會留在手上；滑到一半按 ✕，滑行就停下。映射器會發現參數在它上一次寫入之後被別人寫過，然後退讓。路由靜音之後就不再寫入，參數維持原本的值（靜音的 `trim` 會把偏移還回去）。
+*有平滑*的路由只在滑行的時候寫入。滑到了就停筆，所以按 ✕（或你拖動滑桿）就能把參數拿回來，而且在旋鈕再動之前它都會留在手上；滑到一半按 ✕，滑行就停下。映射器會發現參數在它上一次寫入之後被別人寫過（寫的是同一個數字也認得出來），然後退讓。「再動」指的是真的變了：重送同一個讀數的來源（relay 每秒替每支手機的控制項重送一次）拿不回參數。背後的規則見[誰握著一個值](#who-holds-a-value)。路由靜音之後就不再寫入，參數維持原本的值（靜音的 `trim` 會把偏移還回去）。
 
 取代式的路由握著參數的時候，時間軸的曲線就被丟在一邊。如果旋鈕只該*微調*時間軸，或是放開手就該*還給它*，請看下一節。
 
@@ -143,6 +143,40 @@ show.mapper.addRoute({ source: 'midi/cc/74', target: 'hue', mode: 'trim', outMin
 // a main knob: meets the value first, glides, and gives the param back 4 s after the hand leaves
 show.mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'pickup', release: 4, smooth: 0.15 });
 ```
+
+## 誰握著一個值
+
+一個參數可以有好幾個寫入者：時間軸、幾條路由、控台的滑桿、作品自己的程式。引擎的值還多一個：每個影格把 `sound/*` 參數送進聲音引擎的那一步。0.11.0 起由一條規則決定誰說了算，框架裡的每一個寫入者都照它走：
+
+> **最後一個刻意的改變算數，重複不算改變。** 用手設定的值會一直留著，直到被放開，或有來源真的動了。只是把同樣的東西再推一次的，不能把它推掉。
+
+| 寫入者 | 是什麼 | 什麼時候拿到這個值 | 什麼讓它放手 |
+|---|---|---|---|
+| 時間軸 | 自動化、總譜的段落模組（`layer`），都沒有就是 `def` | 從來不拿：它是基準，沒有人握著參數的時候就是它 | （它從不握著） |
+| 路由 | 透過映射器的旋鈕、推桿、手機、手、麥克風 | 來源*改變*的時候，變化超過輸入窗的 0.1%。手握著的參數上的新路由（學來的、匯入的、載入的）：從第二個讀數起，第一個只是告訴它旋鈕在哪 | 一隻手、✕、它自己的 `release`，移除或靜音 `trim` |
+| 手 | 控台的滑桿、`params.override()`、`params.hold()`、`sound.set()` | 立刻 | ✕ 或 `clearOverride()`、`sound.release()`，或來源改變了的路由 |
+| ✕ | 把參數還回去的一隻手：參數面板上的 ✕、曲線面板上的 ↩、`params.clearOverride()` | 立刻：時間軸接著播 | 來源改變了的路由 |
+
+只是再推一次的，所以永遠不能推掉手設定的值：
+
+| 重推者 | 0.11.0 | 0.10.0 |
+|---|---|---|
+| 再送一次同一個讀數的來源：relay 每秒替每支手機的控制項重送一次，很多 OSC 發送端會重複，靜止的感測器 | 忽略，只有改變才算 | ✕ 或滑桿之後把參數拿回去 |
+| 平滑路由的滑行 | 只要別人寫了這個參數就停，寫同一個數字也算，在旋鈕動了之後、下一個影格之前寫的也算 | ✕ 或寫了不同的數字才停（0.9.0 起） |
+| `sound.update(state)`，把 `sound/*` 參數送進引擎 | 值變了才交給引擎，`enable()` 之後和換樂器之後每個值各送一次 | 每個影格送每一個值 |
+| 騎在時間軸上的 `trim` | 時間軸或偏移動了才寫 | 每個影格都寫 |
+| 時間軸的自動化 | 基準：在每一個覆寫值底下，從不蓋在上面 | 一樣 |
+| `dmxParams().apply()` | 值變了才交給燈 | 一樣 |
+
+控台、後台監看和回送到手機的值（`remote`）不是寫入者：它們只顯示值，什麼都不改，手指按著的手機推桿也不理會回送的值。
+
+**現在是誰握著。** `params.holder(key)` 回答 `null`（時間軸在播）、`{ kind: 'hand', label, value }` 或 `{ kind: 'route', label, source, mode, value }`。在參數面板上，黃色加 ✋ 的名稱是手握著的，藍色加 ⇄ 的是路由握著的，名稱和它的 ✕ 的提示文字會寫出是誰（`route midi/cc/74`、`sound.set`），曲線面板的 ↩ 也會寫。寫參數的程式可以報上自己的名字：`params.hold('palette', 2, 'piano')`。
+
+**引擎的值。** `sound.set('volume', -20)` 是握在 `sound/volume` 上的一隻手：引擎立刻聽到，時間軸、路由或重送的讀數都不會動它，直到 `sound.release('volume')` 或 ✕。直接寫進引擎的值（`show.sound.engine.set(…)`）不歸框架保管：它不會再在下一個影格被蓋掉，會留到它的參數下一次改變為止。
+
+### 0.10.0 的規則
+
+`createShow({ writes: 'legacy' })` 原封不動找回 0.10.0 的寫法：每個影格把每一個 `sound/*` 值送進引擎，✕ 或滑桿之後路由拿到任何讀數就接管回去，滑行只認得寫了不同數字的手。自己建的映射器或聲音外殼，用 `new Mapper({ …, writes: 'legacy' })` 和 `new Sound({ …, writes: 'legacy' })`。它會印出一次「已不建議使用」的警告，之後的版本會拿掉。改了什麼、怎麼看出一件作品有沒有靠著舊行為，寫在[更新紀錄](changelog.md)。
 
 ## Learn
 
@@ -259,7 +293,7 @@ parseMap(text);                                          // validate without tou
 ```js
 import { Mapper } from '@openav/mapping';
 
-const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn, base });
+const mapper = new Mapper({ signals, params, profile: 'default', onChange, onLearn, base, writes });   // writes: 'hold' (default) | 'legacy'
 mapper.addRoute(route)        // → the stored route (defaults filled in, id assigned)
 mapper.removeRoute(id)
 mapper.routesFor('bloom')     // → routes targeting a param

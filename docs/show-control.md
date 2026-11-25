@@ -41,6 +41,7 @@ const show = await createShow({
 | `monitor` | `true` | the [backstage feed](#backstage-monitor): `false` = none (no socket is opened), `{ url, hz }` = another relay address or rate |
 | `console` | `null` | the options of [the console](#the-console), `mountConsole`'s: `{ keys, layers, signals, learnOrder }`; `keys` moves the keyboard shortcuts |
 | `sync` | `null` | several pages, one show: `{ role: 'leader' \| 'follower', channel, url, input, extra, state, follow }`. One page leads, the others follow its clock, and a follower takes no input of its own ([below](#several-pages-one-show)) |
+| `writes` | `'hold'` | who wins when several writers touch one value: a value set by hand holds until released, and a re-sent reading, a glide or the per-frame sound push cannot undo it; `'legacy'` = exactly 0.10.0, with a deprecation warning ([Who holds a value](mapping.md#who-holds-a-value)) |
 
 Without `mount`, the page body becomes a two-column grid: the stage, and a
 340 px side panel with the piano and the console.
@@ -685,7 +686,9 @@ filter to 8000 Hz) and add knobs of its own, which the console shows while it
 plays: the organ's `sound/drawbars` and `sound/rotor`, `sound/attack` and
 `sound/vibrato` on the strings, `sound/vowel` on the choir, `sound/tremolo` on
 the electric piano and the vibraphone. Automation and overrides always win over
-a suggested default. The sustain pedal (`midi/cc/64`) holds every instrument's
+a suggested default. A `sound/*` value reaches the engine when it changes. To set one by hand,
+`show.sound.set('volume', -20)` holds it against the timeline, a knob and a re-sent reading until
+`show.sound.release('volume')` or ✕ ([Who holds a value](mapping.md#who-holds-a-value)). The sustain pedal (`midi/cc/64`) holds every instrument's
 note-offs. Notes on MIDI channel 10 (the drum machine) are left to a drum engine.
 
 ### Add your own instrument

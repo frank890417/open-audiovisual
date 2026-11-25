@@ -159,6 +159,7 @@ every part. It is <code>async</code> because it waits for the world's <code>init
 <tr><td><code>monitor</code></td><td><code>true</code></td><td>the <a href="#show-control-backstage-monitor">backstage feed</a>: <code>false</code> = none (no socket is opened), <code>{ url, hz }</code> = another relay address or rate</td></tr>
 <tr><td><code>console</code></td><td><code>null</code></td><td>the options of <a href="#show-control-the-console">the console</a>, <code>mountConsole</code>'s: <code>{ keys, layers, signals, learnOrder }</code>; <code>keys</code> moves the keyboard shortcuts</td></tr>
 <tr><td><code>sync</code></td><td><code>null</code></td><td>several pages, one show: <code>{ role: 'leader' | 'follower', channel, url, input, extra, state, follow }</code>. One page leads, the others follow its clock, and a follower takes no input of its own (<a href="#show-control-several-pages-one-show">below</a>)</td></tr>
+<tr><td><code>writes</code></td><td><code>'hold'</code></td><td>who wins when several writers touch one value: a value set by hand holds until released, and a re-sent reading, a glide or the per-frame sound push cannot undo it; <code>'legacy'</code> = exactly 0.10.0, with a deprecation warning (<a href="../../docs/mapping/#mapping-who-holds-a-value">Who holds a value</a>)</td></tr>
 </tbody>
 </table></div>
 <p>Without <code>mount</code>, the page body becomes a two-column grid: the stage, and a
@@ -659,7 +660,9 @@ filter to 8000 Hz) and add knobs of its own, which the console shows while it
 plays: the organ's <code>sound/drawbars</code> and <code>sound/rotor</code>, <code>sound/attack</code> and
 <code>sound/vibrato</code> on the strings, <code>sound/vowel</code> on the choir, <code>sound/tremolo</code> on
 the electric piano and the vibraphone. Automation and overrides always win over
-a suggested default. The sustain pedal (<code>midi/cc/64</code>) holds every instrument's
+a suggested default. A <code>sound/*</code> value reaches the engine when it changes. To set one by hand,
+<code>show.sound.set('volume', -20)</code> holds it against the timeline, a knob and a re-sent reading until
+<code>show.sound.release('volume')</code> or ✕ (<a href="../../docs/mapping/#mapping-who-holds-a-value">Who holds a value</a>). The sustain pedal (<code>midi/cc/64</code>) holds every instrument's
 note-offs. Notes on MIDI channel 10 (the drum machine) are left to a drum engine.</p>
 <h3 id="show-control-add-your-own-instrument">Add your own instrument<a class="anchor" href="#show-control-add-your-own-instrument" aria-label="Link to this section">#</a></h3>
 <p>A sound you can pick is one file: data plus a <code>create(Tone, ctx)</code> that returns

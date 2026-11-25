@@ -32,7 +32,7 @@ mapper.addRoute({ source: 'midi/cc/71', target: 'bloom', mode: 'pickup', release
 ## Exports
 
 `Mapper`
-- `new Mapper({ signals, params, profile = 'default', onChange, onLearn(route, signalName), base })` · `base() → { key: value }` is the timeline's value now (`mapper.base = fn` works too): `trim`, `pickup` and the start of a smooth glide use it, without it the param's `def` stands in
+- `new Mapper({ signals, params, profile = 'default', onChange, onLearn(route, signalName), base, writes = 'hold' })` · `base() → { key: value }` is the timeline's value now (`mapper.base = fn` works too): `trim`, `pickup` and the start of a smooth glide use it, without it the param's `def` stands in · `writes`: after ✕ or a slider a route takes its param again only when its source changes, a re-sent reading does not count (`'legacy'`: 0.10.0, any reading; [Who holds a value](../../docs/mapping.md#who-holds-a-value))
 - `addRoute(route)` → the filled-in route · `removeRoute(id)` · `routesFor(target)`
 - `learn(target)` toggles learn: the next signal that moves at least 5 % of its range (or any pulse) is bound
 - `update(dt)` per frame (glides smoothed routes, keeps trims on the timeline, applies `release`) · `toJSON()` · `fromJSON(routes)` · `save()` · `load()` → boolean

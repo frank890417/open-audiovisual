@@ -39,6 +39,11 @@ export default {
         en: 'A function that returns what the timeline says right now, `{ key: value }`, usually `() => timeline.state()`. `trim` routes add to it, `pickup` routes compare with it, and a glide starts from it. Without it the param\'s `def` stands in for the timeline\'s value. It is a plain property: set `mapper.base` later if you like. `createShow()` passes it for you.',
         zh: '一個回傳時間軸「此刻」的值 `{ key: value }` 的函式，通常是 `() => timeline.state()`。`trim` 路由疊在它上面，`pickup` 路由跟它比較，滑行也從它起跳。沒給的話，就拿參數的 `def` 當成時間軸的值。它是個普通屬性，之後再設定 `mapper.base` 也可以。`createShow()` 會替你傳。',
       },
+      {
+        name: 'writes', type: 'String', optional: true, default: '\'hold\'',
+        en: 'Who wins when a hand and a route touch one param ([Who holds a value](https://openaudiovisual.com/docs/mapping/#mapping-who-holds-a-value)). `\'hold\'`: after ✕, a slider or `params.override()`, every route on that param lets go and takes it again only when its source changes (more than 0.1% of its window); the same reading sent again does not count, and a glide stops for any other write, the same number included. `\'legacy\'`: what 0.10.0 did, the next reading takes the param back; it warns once and is deprecated. Anything else throws. Kept as `mapper.writes`.',
+        zh: '一隻手和一條路由碰到同一個參數時誰說了算（[誰握著一個值](https://openaudiovisual.com/zh/docs/mapping/#mapping-who-holds-a-value)）。`\'hold\'`：✕、滑桿或 `params.override()` 之後，這個參數上的每條路由都放手，要等來源改變（超過輸入窗的 0.1%）才再接管，重送同一個讀數不算，別人的任何寫入都會讓滑行停下，寫同一個數字也一樣。`\'legacy\'`：0.10.0 的做法，下一個讀數就把參數拿回去，會警告一次，已不建議使用。其他值會丟出錯誤。存在 `mapper.writes`。',
+      },
     ],
     description: [
       {
@@ -130,8 +135,8 @@ export default {
         zh: '路由把參數寫成**覆寫值**，沒有 `release` 的話覆寫是黏住的：映射的訊號一動，時間軸就不再驅動那個參數，直到你呼叫 `params.clearOverride(key)`（控台上的 ✕）。trim 路由也是覆寫：它寫進去的是時間軸的值加上偏移。',
       },
       {
-        en: 'A smoothed route writes only while it glides and stops once it has arrived. So after `clearOverride`, or after you drag the slider, the param stays yours: the mapper sees that somebody else wrote the override it had written, and every route on that param lets go until its signal arrives again. A muted route (`enabled = false`) writes nothing and the param keeps the value it had; a muted trim gives its offset back.',
-        zh: '平滑的路由只在滑行的時候寫入，滑到了就停筆。所以 `clearOverride` 之後，或你拖動滑桿之後，參數就留在你手上：映射會發現它寫的覆寫被別人改過，這個參數上的每條路由都放手，直到訊號再來。靜音的路由（`enabled = false`）什麼都不寫，參數維持原本的值。靜音的 trim 會把偏移還回去。',
+        en: 'A smoothed route writes only while it glides and stops once it has arrived. So after `clearOverride`, or after you drag the slider, the param stays yours: the mapper sees that somebody else wrote the override it had written (it keeps the [`params.holder()`](#Params) record of its own last write, so the same number written by a hand is seen too), and every route on that param lets go until its signal *changes*. The same reading sent again, as the relay does once a second for a phone control, is no change. A route added while a hand holds its param takes it from its second reading on. A muted route (`enabled = false`) writes nothing and the param keeps the value it had; a muted trim gives its offset back.',
+        zh: '平滑的路由只在滑行的時候寫入，滑到了就停筆。所以 `clearOverride` 之後，或你拖動滑桿之後，參數就留在你手上：映射會發現它寫的覆寫被別人改過（它留著自己上一筆寫入的 [`params.holder()`](#Params) 紀錄，所以手寫了同一個數字也認得出來），這個參數上的每條路由都放手，直到訊號*改變*。再送一次同一個讀數（relay 每秒替手機的控制項做一次）不算改變。手握著參數的時候才加進來的路由，從第二個讀數起才接管。靜音的路由（`enabled = false`）什麼都不寫，參數維持原本的值。靜音的 trim 會把偏移還回去。',
       },
       {
         en: 'With `createShow()`, routes are added before the sound engine registers its `sound/*` params, so a route to `sound/cutoff` needs an explicit `outMin: 100, outMax: 8000`.',

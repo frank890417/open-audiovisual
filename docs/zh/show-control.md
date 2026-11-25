@@ -38,6 +38,7 @@ const show = await createShow({
 | `monitor` | `true` | [後台推送](#backstage-monitor)：`false` = 不推送（頁面不會開任何 socket），`{ url, hz }` = 換一個中繼位址或頻率 |
 | `console` | `null` | [控台](#the-console)的選項，也就是 `mountConsole` 的：`{ keys, layers, signals, learnOrder }`；`keys` 用來挪動鍵盤快捷鍵 |
 | `sync` | `null` | 好幾個頁面演同一場：`{ role: 'leader' \| 'follower', channel, url, input, extra, state, follow }`。一個頁面當主控端，其餘的追它的時鐘，從屬端自己不收任何輸入（[見下](#several-pages-one-show)） |
+| `writes` | `'hold'` | 好幾個寫入者碰到同一個值時誰說了算：用手設定的值會留著直到被放開，重送的讀數、滑行和每個影格的聲音推送都推不掉它。`'legacy'` = 原封不動的 0.10.0，會印出「已不建議使用」的警告（[誰握著一個值](mapping.md#who-holds-a-value)） |
 
 沒有 `mount` 時，頁面的 body 會變成兩欄的格線：一欄是舞台，一欄是 340 px 寬、放鋼琴和控台的側邊面板。
 
@@ -544,7 +545,7 @@ show.timeline.onSceneChange((i, scene) => {
 
 邊彈邊換樂器時，舊樂器上還按著的音會先放開，不會有音卡住。取樣樂器在音檔載完之前，會繼續用舊的聲音彈，選單上看得到載入進度。每換一次，也會發出一個 `sound/instrument` 脈衝訊號（`{ id, name }`）。選單上最後一次的選擇會記在這個頁面，下次打開時會沿用，就算程式裡宣告了別的樂器也一樣。不想要這樣，就設 `remember: false`。
 
-樂器是一個離散的選擇。要連續演奏的東西仍然是參數：引擎的參數會併進演出的參數，放在 `sound/` 底下。`sound/cutoff`（100–8000 Hz，預設 2500）、`sound/space`（殘響的 wet 比例，0–1，預設 0.3）和 `sound/volume`（−36–0 dB，預設 −8）是所有樂器共用的，所以一顆旋鈕、一隻手或樂譜，演奏濾波器的方式就跟演奏畫面一樣。樂器可以建議自己的起始值（鋼琴會把濾波器開到 8000 Hz），也可以加上自己的旋鈕，它在彈的時候控台才會顯示：風琴的 `sound/drawbars` 和 `sound/rotor`，弦樂的 `sound/attack` 和 `sound/vibrato`，合唱的 `sound/vowel`，電鋼琴和顫音琴的 `sound/tremolo`。自動化和手動覆寫永遠比建議的起始值優先。延音踏板（`midi/cc/64`）對每種樂器都有效，會先留住放開的音。MIDI 第 10 頻道的音（鼓機送的）留給鼓組引擎，這裡不彈。
+樂器是一個離散的選擇。要連續演奏的東西仍然是參數：引擎的參數會併進演出的參數，放在 `sound/` 底下。`sound/cutoff`（100–8000 Hz，預設 2500）、`sound/space`（殘響的 wet 比例，0–1，預設 0.3）和 `sound/volume`（−36–0 dB，預設 −8）是所有樂器共用的，所以一顆旋鈕、一隻手或樂譜，演奏濾波器的方式就跟演奏畫面一樣。樂器可以建議自己的起始值（鋼琴會把濾波器開到 8000 Hz），也可以加上自己的旋鈕，它在彈的時候控台才會顯示：風琴的 `sound/drawbars` 和 `sound/rotor`，弦樂的 `sound/attack` 和 `sound/vibrato`，合唱的 `sound/vowel`，電鋼琴和顫音琴的 `sound/tremolo`。自動化和手動覆寫永遠比建議的起始值優先。`sound/*` 的值變了才會交給引擎。要用手設定一個，`show.sound.set('volume', -20)` 會讓它留著，時間軸、旋鈕和重送的讀數都推不掉，直到 `show.sound.release('volume')` 或按 ✕（[誰握著一個值](mapping.md#who-holds-a-value)）。延音踏板（`midi/cc/64`）對每種樂器都有效，會先留住放開的音。MIDI 第 10 頻道的音（鼓機送的）留給鼓組引擎，這裡不彈。
 
 ### 加入自己的樂器
 
