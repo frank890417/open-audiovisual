@@ -16,7 +16,7 @@
 //   crosshair  a centre cross, thirds, three circles (an ellipse = the proportions are wrong)
 //   bars       smpte (SMPTE-style bars), steps (grey steps, 1 % steps near black and near white), ramp (one gradient across
 //              the whole art canvas: two segments of different brightness show a step)
-import { eachCell } from './cells.js?v=cedb93fa';
+import { eachCell } from './cells.js?v=7229c5d3';
 
 export const ALIGN_PATTERNS = ['tiles', 'grid', 'edges', 'crosshair', 'bars', 'vendor'];
 export const BAR_VARIANTS = ['smpte', 'steps', 'ramp'];

@@ -16,7 +16,7 @@
 // rotate    0, 90, 180 or 270, clockwise              overscan  0 … 0.45: a black border, as a fraction of each side
 // soft      0 … 0.5: the picture's edges fade to black over this fraction of each side (not edge blending)
 
-import { checkQuad } from './pin.js?v=cedb93fa';
+import { checkQuad } from './pin.js?v=7229c5d3';
 
 export const OUTPUT_FORMAT = 'open-audiovisual/output@1';
 /** The calibration file of @openav/align (and of art-align before it): its four-corner part converts, through the align layout. */

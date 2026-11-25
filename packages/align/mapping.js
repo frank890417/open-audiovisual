@@ -6,8 +6,8 @@
 //   composePlan       the desktop frame put back together as the art canvas (thumbnails, export)
 //   patterns.js       the test patterns are drawn tile by tile from the same table, so they take the work's own path
 //   vendorPlacements  where the vendor's alignment images go
-import { ALIGN_FORMAT, PALETTE, normalizeLayout, rectOf } from './layout.js?v=cedb93fa';
-import { cellAt } from './cells.js?v=cedb93fa';
+import { ALIGN_FORMAT, PALETTE, normalizeLayout, rectOf } from './layout.js?v=7229c5d3';
+import { cellAt } from './cells.js?v=7229c5d3';
 
 const contains = (r, x, y) => x >= r.x && y >= r.y && x < r.x + r.w && y < r.y + r.h;
 

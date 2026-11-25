@@ -13,7 +13,7 @@
 // the w, h the tile reported. Corners are whole device pixels (the edge of a pixel, canvas convention), so what is
 // drawn and what the solver is told are the same numbers.
 
-import { markerBits, DICT_BITS, DICT_SIZE } from './dict.js?v=cedb93fa';
+import { markerBits, DICT_BITS, DICT_SIZE } from './dict.js?v=7229c5d3';
 
 export const PER_DEVICE = 50;
 export const MAX_DEVICES = Math.floor(DICT_SIZE / PER_DEVICE);

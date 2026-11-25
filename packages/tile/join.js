@@ -23,11 +23,11 @@
 //
 // Into a show's Signals: tile/markers (0 | 1, the camera page's mode), tile/synced (0 | 1), tile/layout (pulse).
 
-import { RelayClient } from '../relay/index.js?v=cedb93fa';
-import { ClockSync } from './clock.js?v=cedb93fa';
-import { tileView, soloView } from './view.js?v=cedb93fa';
-import { validateLayout } from './solve.js?v=cedb93fa';
-import { drawMarkers, GRID_DEFAULTS } from './marker.js?v=cedb93fa';
+import { RelayClient } from '../relay/index.js?v=7229c5d3';
+import { ClockSync } from './clock.js?v=7229c5d3';
+import { tileView, soloView } from './view.js?v=7229c5d3';
+import { validateLayout } from './solve.js?v=7229c5d3';
+import { drawMarkers, GRID_DEFAULTS } from './marker.js?v=7229c5d3';
 
 export const TILE_KEYS = Object.freeze({ roster: 'tile/roster', mode: 'tile/mode', layout: 'tile/layout', show: 'tile/show' });
 export const helloName = (id) => `tile/${id}/hello`;

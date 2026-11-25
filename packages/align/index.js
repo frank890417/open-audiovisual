@@ -10,18 +10,18 @@
 // What exists for it is the frame generator (graySequence, drawGrayFrame). The chapter's roadmap lists the rest.
 // Docs: https://openaudiovisual.com/docs/align/
 
-export { ALIGN_FORMAT, CONTRACT, LayoutError, validateLayout, normalizeLayout, findLayout, identityLayout, scaleArt } from './layout.js?v=cedb93fa';
-export { computeMapping, blitPlan, composePlan, composeArtCanvas, artView, desktopToArt, artToDesktop, cellIdAt, analyzeOverlaps, blendWeight, vendorPlacements } from './mapping.js?v=cedb93fa';
-export { rowLabel, cellSizeFor, cellAt, cellRect, eachCell } from './cells.js?v=cedb93fa';
-export { ALIGN_PATTERNS, BAR_VARIANTS, drawPattern, withTile, highlightCell, drawOutputs } from './patterns.js?v=cedb93fa';
-export { grayEncode, grayDecode, bitsFor, graySequence, grayBitAt, decodeGrayBits, grayRuns, channelPlan, drawGrayFrame, frameLabel } from './structured-light.js?v=cedb93fa';
-export { normalizeAlignArgs } from './control.js?v=cedb93fa';
-export { createBlitter } from './three-blit.js?v=cedb93fa';
-export { CALIBRATION_FORMAT, CAL_CONTRACT, defaultZone, normalizeZone, normalizeCalibration, squareToQuad, warpPoint, featherAt, zoneGrid, rotateZone, quadOk } from './warp.js?v=cedb93fa';
-export { createWarpRenderer } from './warp-gl.js?v=cedb93fa';
-export { PATTERN_SOURCES, drawSource, createPatternTexture } from './pattern-texture.js?v=cedb93fa';
-export { createCalStore } from './cal-store.js?v=cedb93fa';
-export { createAlignUI } from './align-ui.js?v=cedb93fa';
-export { drawChart } from './chart.js?v=cedb93fa';
-export { drawIdent, drawIdentBase, drawIdentLive } from './ident.js?v=cedb93fa';
-export { zoneToRoom, roomToZone, outputsFromAlign } from './bridge.js?v=cedb93fa';
+export { ALIGN_FORMAT, CONTRACT, LayoutError, validateLayout, normalizeLayout, findLayout, identityLayout, scaleArt } from './layout.js?v=7229c5d3';
+export { computeMapping, blitPlan, composePlan, composeArtCanvas, artView, desktopToArt, artToDesktop, cellIdAt, analyzeOverlaps, blendWeight, vendorPlacements } from './mapping.js?v=7229c5d3';
+export { rowLabel, cellSizeFor, cellAt, cellRect, eachCell } from './cells.js?v=7229c5d3';
+export { ALIGN_PATTERNS, BAR_VARIANTS, drawPattern, withTile, highlightCell, drawOutputs } from './patterns.js?v=7229c5d3';
+export { grayEncode, grayDecode, bitsFor, graySequence, grayBitAt, decodeGrayBits, grayRuns, channelPlan, drawGrayFrame, frameLabel } from './structured-light.js?v=7229c5d3';
+export { normalizeAlignArgs } from './control.js?v=7229c5d3';
+export { createBlitter } from './three-blit.js?v=7229c5d3';
+export { CALIBRATION_FORMAT, CAL_CONTRACT, defaultZone, normalizeZone, normalizeCalibration, squareToQuad, warpPoint, featherAt, zoneGrid, rotateZone, quadOk } from './warp.js?v=7229c5d3';
+export { createWarpRenderer } from './warp-gl.js?v=7229c5d3';
+export { PATTERN_SOURCES, drawSource, createPatternTexture } from './pattern-texture.js?v=7229c5d3';
+export { createCalStore } from './cal-store.js?v=7229c5d3';
+export { createAlignUI } from './align-ui.js?v=7229c5d3';
+export { drawChart } from './chart.js?v=7229c5d3';
+export { drawIdent, drawIdentBase, drawIdentLive } from './ident.js?v=7229c5d3';
+export { zoneToRoom, roomToZone, outputsFromAlign } from './bridge.js?v=7229c5d3';

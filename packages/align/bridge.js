@@ -7,10 +7,10 @@
 //
 // What a room cannot carry, a zone's mesh, feather, masks and gain, is never dropped quietly: it is listed in `dropped`.
 // What a zone cannot carry, a room's overscan and soft edge, is listed the same way. Pure: no DOM.
-import { cornerOrder } from '../output/pin.js?v=cedb93fa';
-import { OUTPUT_FORMAT, NAME_RE, parseOutputLayout } from '../output/layout.js?v=cedb93fa';
-import { computeMapping } from './mapping.js?v=cedb93fa';
-import { defaultZone, normalizeCalibration, isCalibration, CALIBRATION_FORMAT } from './warp.js?v=cedb93fa';
+import { cornerOrder } from '../output/pin.js?v=7229c5d3';
+import { OUTPUT_FORMAT, NAME_RE, parseOutputLayout } from '../output/layout.js?v=7229c5d3';
+import { computeMapping } from './mapping.js?v=7229c5d3';
+import { defaultZone, normalizeCalibration, isCalibration, CALIBRATION_FORMAT } from './warp.js?v=7229c5d3';
 
 const isMapping = (m) => !!m && Array.isArray(m.tiles) && !!m.desktop;
 const fills = (t, o) => t.dst.x === o.x && t.dst.y === o.y && t.dst.w === o.w && t.dst.h === o.h;

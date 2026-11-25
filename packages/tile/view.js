@@ -9,7 +9,7 @@
 // that leaves one screen travels behind the bezel and comes out on the next one where it would really be, at the same
 // physical size, because each screen's transform is its true position on the table.
 
-import { inv3, apply3, similarityMatrix, similarityScale, similarityAngle } from './solve.js?v=cedb93fa';
+import { inv3, apply3, similarityMatrix, similarityScale, similarityAngle } from './solve.js?v=7229c5d3';
 
 function make({ id, w, h, toCanvas, canvas }) {
   const toDevice = inv3(toCanvas);

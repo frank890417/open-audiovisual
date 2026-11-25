@@ -12,9 +12,9 @@
 // device() for the one it loads. Hand-written records (records/<id>.json) are for devices with no deeper format.
 // Listing never loads a profile: device() imports the one file it needs.
 
-import { KINDS, CONNECTIONS } from './record.js?v=cedb93fa';
-import { fromMidiProfile, fromFixture, fromPart } from './derive.js?v=cedb93fa';
-import { CATALOG } from './catalog.js?v=cedb93fa';
+import { KINDS, CONNECTIONS } from './record.js?v=7229c5d3';
+import { fromMidiProfile, fromFixture, fromPart } from './derive.js?v=7229c5d3';
+import { CATALOG } from './catalog.js?v=7229c5d3';
 
 const freeze = (o) => { for (const v of Object.values(o)) if (v && typeof v === 'object') freeze(v); return Object.freeze(o); };
 const ROWS = freeze(CATALOG.map((r) => ({ ...r })));
@@ -83,7 +83,7 @@ export async function device(id, options = {}) {
     throw new Error(`unknown device "${id}"${near.length ? ` (did you mean ${near.join(', ')}?)` : ''}`);
   }
   if (row.from === 'midi-profile') {
-    const [{ resolveProfile }, { controllerRoutes }] = await Promise.all([import('../midi/embed.js?v=cedb93fa'), import('../midi/manager.js?v=cedb93fa')]);
+    const [{ resolveProfile }, { controllerRoutes }] = await Promise.all([import('../midi/embed.js?v=7229c5d3'), import('../midi/manager.js?v=7229c5d3')]);
     const profile = await resolveProfile(await loadJson(row.file));   // validated as @openav/midi validates any profile
     const record = fromMidiProfile(profile, { file: row.file });
     return {
@@ -108,7 +108,7 @@ export async function device(id, options = {}) {
     };
   }
   if (row.from === 'hw-part') {
-    const { PARTS } = await import('../hw/parts.js?v=cedb93fa');
+    const { PARTS } = await import('../hw/parts.js?v=7229c5d3');
     const part = PARTS[id];
     return { ...base(fromPart(id, part, { file: row.file })), part };
   }
@@ -123,7 +123,7 @@ const pickPatch = (o) => Object.fromEntries(['id', 'universe', 'address', 'mode'
 async function mediaHandle(record, options) {
   const m = record.media;
   const patterns = m.labels.map((s) => new RegExp(s, 'i'));
-  const { cameraConstraints } = m.input === 'videoinput' ? await import('../record/camera.js?v=cedb93fa') : {};
+  const { cameraConstraints } = m.input === 'videoinput' ? await import('../record/camera.js?v=7229c5d3') : {};
   const md = () => {
     const api = options.mediaDevices || (typeof navigator !== 'undefined' ? navigator.mediaDevices : null);
     if (!api) throw new Error(`${record.name}: no navigator.mediaDevices here (it needs a browser page on https or localhost)`);

@@ -5,7 +5,7 @@
 // (blitPlan does it). Without that every tile is drawn twice as big over its neighbours.
 // Ask the renderer for the canvas's size (getDrawingBufferSize), never window.innerWidth: the two differ when the
 // canvas is fitted into the window.
-import { blitPlan } from './mapping.js?v=cedb93fa';
+import { blitPlan } from './mapping.js?v=7229c5d3';
 
 /**
  * A function that copies a texture onto the canvas through a mapping, tile by tile.

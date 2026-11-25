@@ -9,10 +9,10 @@
 //                   H flip left–right · V flip top–bottom · O turn 90° (Shift+O back) · [ ] border · R corners back ·
 //                   Shift+R everything back · E or Esc done
 
-import { pinnedBox, checkQuad } from './pin.js?v=cedb93fa';
-import { cropBox } from './crop.js?v=cedb93fa';
-import { defaultRoom, checkRoom } from './layout.js?v=cedb93fa';
-import { veilOf } from './params.js?v=cedb93fa';
+import { pinnedBox, checkQuad } from './pin.js?v=7229c5d3';
+import { cropBox } from './crop.js?v=7229c5d3';
+import { defaultRoom, checkRoom } from './layout.js?v=7229c5d3';
+import { veilOf } from './params.js?v=7229c5d3';
 
 const EDIT_HELP = 'drag a corner · 1–4 or Tab picks one, arrows move it (Shift ×10) · H / V flip · O turn · [ ] border · R corners back · Shift+R all back · E done';
 const KEYS_HELP = 'E corners · G test pattern · F fullscreen · B blackout · I this card';

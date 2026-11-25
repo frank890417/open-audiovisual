@@ -20,8 +20,8 @@
 //   Backspace        the picked handle back home; Shift+Backspace the whole zone
 //   Ctrl/⌘+S  Ctrl/⌘+Z  L (backups: click one to restore)  X export  I import
 //   D                next display (in an app with a bridge)
-import { handlesOf, normalizeZone, defaultZone, resampleMesh, warpPoint, squareToQuad, quadOk, featherAt, rotateZone } from './warp.js?v=cedb93fa';
-import { PATTERN_SOURCES, SOURCE_LABELS } from './pattern-texture.js?v=cedb93fa';
+import { handlesOf, normalizeZone, defaultZone, resampleMesh, warpPoint, squareToQuad, quadOk, featherAt, rotateZone } from './warp.js?v=7229c5d3';
+import { PATTERN_SOURCES, SOURCE_LABELS } from './pattern-texture.js?v=7229c5d3';
 
 const MODES = ['corner', 'mesh', 'feather', 'mask'];
 const SIDES = ['l', 'r', 't', 'b'];

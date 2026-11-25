@@ -44,5 +44,5 @@ export function importedRow(ref) {
  *  this one (the lab's bundle) the import fails and the answer is null, so only the shipped profiles are offered. */
 export async function importedUrlOf(ref) {
   if (!importedRow(ref)) return null;
-  try { return (await import('./imported.js?v=cedb93fa')).importedUrl(ref); } catch { return null; }
+  try { return (await import('./imported.js?v=7229c5d3')).importedUrl(ref); } catch { return null; }
 }

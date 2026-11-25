@@ -1,9 +1,9 @@
 // @openav/align · pattern-texture — a test pattern drawn on the ART canvas (artView: one tile per segment, dst = src) as a
 // texture, so it goes through the same warp as the work: a pattern that is right on the wall means the work is right,
 // one warp later. THREE and document are passed in by the caller.
-import { artView } from './mapping.js?v=cedb93fa';
-import { drawPattern } from './patterns.js?v=cedb93fa';
-import { drawIdentBase, drawIdentLive } from './ident.js?v=cedb93fa';
+import { artView } from './mapping.js?v=7229c5d3';
+import { drawPattern } from './patterns.js?v=7229c5d3';
+import { drawIdentBase, drawIdentLive } from './ident.js?v=7229c5d3';
 
 /** What the align mode can show: 'live' is the work itself (the caller gives it), the rest are patterns and flat colours. */
 export const PATTERN_SOURCES = ['live', 'ident', 'tiles', 'grid', 'edges', 'crosshair', 'bars:smpte', 'bars:steps', 'bars:ramp', 'white', 'gray50', 'black'];

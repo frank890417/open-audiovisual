@@ -1,7 +1,7 @@
 // @openav/align · control — the arguments of an "align" command, as a control page sends it through a relay to the page
 // that draws the wall: { on, pattern, variant?, highlight? }. The same check on both ends, so an old page and a new one
 // still understand each other: what changes is the list of patterns, not the shape.
-import { ALIGN_PATTERNS } from './patterns.js?v=cedb93fa';
+import { ALIGN_PATTERNS } from './patterns.js?v=7229c5d3';
 
 /** A name kept for the camera half of the roadmap: 'gray' would step through the Gray-code frames with a frame index. */
 export const RESERVED_ALIGN_PATTERNS = ['gray'];

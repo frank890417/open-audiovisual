@@ -20,7 +20,7 @@
 // gobo or colour wheel can be held too. flush() (the safe values, a clean stop) is never held: what it sends is what was set,
 // for every channel of a universe that changed, so a watchdog event also lets one unguarded frame of any channel held then.
 
-import { ChannelFlashGuard } from '../../../dmx/flash-guard.js?v=cedb93fa';
+import { ChannelFlashGuard } from '../../../dmx/flash-guard.js?v=7229c5d3';
 
 export const DMX_CHANNEL = /^dmx\/(\d{1,5})\/(\d{1,3})$/;
 export const SLOTS = 512;

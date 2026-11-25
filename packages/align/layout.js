@@ -21,7 +21,7 @@
 // The format is open-audiovisual/align@1. A file written for art-align/v1 (the module this package grew from) reads
 // unchanged: "contract": "art-align/v1" is accepted wherever "format" is.
 
-import { cellSizeFor } from './cells.js?v=cedb93fa';
+import { cellSizeFor } from './cells.js?v=7229c5d3';
 
 export const ALIGN_FORMAT = 'open-audiovisual/align@1';
 /** The format a layout is written with. Same value as ALIGN_FORMAT; the name art-align used. */

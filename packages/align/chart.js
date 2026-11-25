@@ -9,7 +9,7 @@
 // optional logo goes in a corner that covers no tile, header or label (bottom-right, top-right, under the header), or is
 // left out when none is free.
 // ctx: any CanvasRenderingContext2D, the output's size. Text in English, or Chinese with { lang: 'zh' }.
-import { MONO, SANS } from './patterns.js?v=cedb93fa';
+import { MONO, SANS } from './patterns.js?v=7229c5d3';
 
 const SEG = ['#2f7fd6', '#3fae6a', '#d6902f', '#c04fb0', '#4fb8c0', '#c0504f', '#8a7fd6', '#a0b040'];
 

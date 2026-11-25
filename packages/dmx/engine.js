@@ -22,7 +22,7 @@
 // (reset, lamp) is written by control() and nothing else.
 // Blackout darkens intensity and colour and leaves position (pan, tilt), zoom and control channels where they are.
 
-import { PROPS, defaultOf, checkCap } from './patch.js?v=cedb93fa';
+import { PROPS, defaultOf, checkCap } from './patch.js?v=7229c5d3';
 
 const CURVES = { linear: (x) => x, smooth: (x) => x * x * (3 - 2 * x), in: (x) => x * x, out: (x) => 1 - (1 - x) * (1 - x) };
 const WAVES = ['sine', 'saw', 'square', 'chase', 'flicker', 'rainbow'];

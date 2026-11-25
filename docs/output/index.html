@@ -33,13 +33,13 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css">
-<script type="module" src="../../assets/search/search.js"></script>
+<link rel="stylesheet" href="../../assets/home/home.css?v=7229c5d3">
+<script type="module" src="../../assets/search/search.js?v=7229c5d3"></script>
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <meta name="oav-page-type" content="docs_chapter" data-oav-id="output">
-<script defer src="../../assets/track.js"></script>
+<script defer src="../../assets/track.js?v=7229c5d3"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.13.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/output/#article","url":"https://openaudiovisual.com/docs/output/","name":"Projection and video out · open-audiovisual","description":"The stage on a projector, a second screen, OBS or TouchDesigner. @openav/output (since 0.12.0) opens an output window that shows the stage, bends it so a…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Projection and video out","version":"0.13.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["The output window","Fullscreen on the projector","Corner pin","Blackout and brightness","Two projectors from one canvas","The clean address","Recipe: a plain projector","Recipe: TouchDesigner","Recipe: OBS","What was checked"],"position":11,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/output/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/output/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Projection and video out","item":"https://openaudiovisual.com/docs/output/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=109991e4">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=7229c5d3">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page docs-chapter-page">
@@ -140,7 +140,7 @@ windows (<code>createOutputs(show, { align })</code>).</p>
 <h2 id="output-the-output-window">The output window<a class="anchor" href="#output-the-output-window" aria-label="Link to this section">#</a></h2>
 <p>Declare the outputs once, at load, and open one from a click (a browser opens a window only after a gesture):</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
-<span class="tk">import</span> { createOutputs } <span class="tk">from</span> <span class="ts">'@openav/output'</span>;      <span class="tc">// in the import map: "@openav/output": "../../packages/output/index.js"</span>
+<span class="tk">import</span> { createOutputs } <span class="tk">from</span> <span class="ts">'@openav/output'</span>;      <span class="tc">// in the import map: "@openav/output": "../../packages/output/index.js?v=7229c5d3"</span>
 
 <span class="tk">const</span> show = <span class="tk">await</span> createShow({ world });
 <span class="tk">const</span> outputs = createOutputs(show, { outputs: [{ name: <span class="ts">'main'</span> }], aspect: 16 / 9 });
@@ -430,7 +430,7 @@ Chrome's kiosk mode, TouchDesigner, OBS, NDI.</p>
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=c9e2a78a"></script>
+<script type="module" src="../../assets/docs/docs.js?v=7229c5d3"></script>
 <!--/email_off-->
 </body>
 </html>

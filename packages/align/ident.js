@@ -12,7 +12,7 @@
 //   ident.sweep       [surface id …] the band runs along these, left to right as one strip; ident.sweepFloor: the
 //                     surface whose border a light dot follows
 // drawIdentBase draws what stands still (once), drawIdentLive what moves (the band and the clock, 15 fps is plenty).
-import { SANS, MONO } from './patterns.js?v=cedb93fa';
+import { SANS, MONO } from './patterns.js?v=7229c5d3';
 
 const WORDS = {
   en: {

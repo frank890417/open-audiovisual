@@ -3,7 +3,7 @@
 // multiplies the feather and the gain, cuts the masks. Stacks and blend bands add up (additive blending).
 // THREE is passed in by the caller (the package has no dependencies). Not calibrated = the same pixels as createBlitter's
 // 1:1 or scaled copy, and it can turn a feed (feed.rotate), which createBlitter cannot.
-import { zoneGrid } from './warp.js?v=cedb93fa';
+import { zoneGrid } from './warp.js?v=7229c5d3';
 
 const MAX_MASKS = 8;
 const VERT = `
