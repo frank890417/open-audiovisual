@@ -8,9 +8,9 @@
 // it binds controls to decks. So a .qxi is a faithful copy of the messages and LED values, and a .midi.xml is a starting point
 // that gives every control something to do, for someone to remap in Mixxx's own Learning Wizard.
 
-import { sysexBytes, sysexMessage } from './sysex.js?v=c6e958d9';
-import { normalizeProfile } from './profiles.js?v=c6e958d9';
-import { evidenceOf } from './verify.js?v=c6e958d9';
+import { sysexBytes, sysexMessage } from './sysex.js?v=9b499105';
+import { normalizeProfile } from './profiles.js?v=9b499105';
+import { evidenceOf } from './verify.js?v=9b499105';
 
 const SITE = 'https://openaudiovisual.com/';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

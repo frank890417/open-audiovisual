@@ -1,7 +1,7 @@
 // /devices/<id>/: what needs a browser. A camera or an audio input is looked for and opened only when the visitor presses a
 // button, through the record's own find() and open() (@openav/devices), and stopped with the Stop button; nothing is asked for
 // on load. An Enttec DMX USB Pro page shows the frame encodeEnttecDmx() makes from three channels. The Copy buttons copy.
-import { wireCopy } from './copy.js?v=c6e958d9';
+import { wireCopy } from './copy.js?v=9b499105';
 
 const data = JSON.parse(document.getElementById('dev-data').textContent);
 wireCopy(data);
@@ -15,7 +15,7 @@ if (live) {
   const status = $('#live-status'), find = $('#live-find'), open = $('#live-open'), stop = $('#live-stop'), settings = $('#live-settings');
   const say = (s) => { status.textContent = s; };
   let dev = null, stream = null, ctx = null, raf = 0;
-  const handle = async () => dev || (dev = await (await import('../../packages/devices/index.js?v=c6e958d9')).device(data.device));
+  const handle = async () => dev || (dev = await (await import('../../packages/devices/index.js?v=9b499105')).device(data.device));
   const api = () => (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices ? navigator.mediaDevices : null);
   const shutdown = () => {
     if (stream) for (const t of stream.getTracks()) t.stop();
@@ -71,7 +71,7 @@ if (live) {
 // ---------------------------------------------------------------- the frame an Enttec DMX USB Pro receives
 const frame = $('#frame');
 if (frame) {
-  const [{ encodeEnttecDmx }, { Universe }] = await Promise.all([import('../../packages/dmx/protocol/enttec.js?v=c6e958d9'), import('../../packages/dmx/universe.js?v=c6e958d9')]);
+  const [{ encodeEnttecDmx }, { Universe }] = await Promise.all([import('../../packages/dmx/protocol/enttec.js?v=9b499105'), import('../../packages/dmx/universe.js?v=9b499105')]);
   const u = new Universe(1);
   const inputs = [...frame.querySelectorAll('input[type="range"]')];
   const hex = (b) => b.toString(16).padStart(2, '0');

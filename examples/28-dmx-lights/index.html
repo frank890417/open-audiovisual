@@ -30,29 +30,29 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <meta name="oav-page-type" content="example" data-oav-id="28-dmx-lights">
-<script defer src="../../assets/track.js"></script>
-<script defer src="../../assets/send-bar.js" data-strings="{&quot;en&quot;:{&quot;send&quot;:&quot;Send this page to your computer&quot;,&quot;copied&quot;:&quot;Link copied. Open it on your computer.&quot;,&quot;close&quot;:&quot;Close&quot;},&quot;zh&quot;:{&quot;send&quot;:&quot;把這一頁傳到電腦&quot;,&quot;copied&quot;:&quot;已複製連結，到電腦上打開。&quot;,&quot;close&quot;:&quot;關閉&quot;}}"></script>
+<script defer src="../../assets/track.js?v=9b499105"></script>
+<script defer src="../../assets/send-bar.js?v=9b499105" data-strings="{&quot;en&quot;:{&quot;send&quot;:&quot;Send this page to your computer&quot;,&quot;copied&quot;:&quot;Link copied. Open it on your computer.&quot;,&quot;close&quot;:&quot;Close&quot;},&quot;zh&quot;:{&quot;send&quot;:&quot;把這一頁傳到電腦&quot;,&quot;copied&quot;:&quot;已複製連結，到電腦上打開。&quot;,&quot;close&quot;:&quot;關閉&quot;}}"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.10.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/28-dmx-lights/#webpage","url":"https://openaudiovisual.com/examples/28-dmx-lights/","name":"DMX lights · open-audiovisual example","description":"One world draws a stage and drives a lighting rig from the same params; a monitor shows what the lights get, no hardware needed. Runs in the browser, no hardware needed.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/28-dmx-lights/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/28-dmx-lights/#breadcrumb"}},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/28-dmx-lights/#code","name":"DMX lights (open-audiovisual example 28)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/28-dmx-lights","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/28-dmx-lights/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"DMX lights","item":"https://openaudiovisual.com/examples/28-dmx-lights/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/examples/guide.css">
+<link rel="stylesheet" href="../../assets/examples/guide.css?v=9b499105">
 <!-- /oav:head -->
 <script type="importmap">
 {
   "imports": {
-    "@openav/core": "../../packages/core/index.js?v=c6e958d9",
-    "@openav/midi": "../../packages/midi/index.js?v=c6e958d9",
-    "@openav/keys": "../../packages/keys/index.js?v=c6e958d9",
-    "@openav/chord": "../../packages/chord/index.js?v=c6e958d9",
-    "@openav/audio": "../../packages/audio/index.js?v=c6e958d9",
-    "@openav/pose": "../../packages/pose/index.js?v=c6e958d9",
-    "@openav/sound": "../../packages/sound/index.js?v=c6e958d9",
-    "@openav/mapping": "../../packages/mapping/index.js?v=c6e958d9",
-    "@openav/timeline": "../../packages/timeline/index.js?v=c6e958d9",
-    "@openav/stage": "../../packages/stage/index.js?v=c6e958d9",
-    "@openav/console": "../../packages/console/index.js?v=c6e958d9",
-    "@openav/monitor": "../../packages/monitor/index.js?v=c6e958d9",
-    "@openav/show": "../../packages/show/index.js?v=c6e958d9",
-    "@openav/out": "../../packages/out/client.js?v=c6e958d9",
-    "@openav/dmx": "../../packages/dmx/index.js?v=c6e958d9"
+    "@openav/core": "../../packages/core/index.js?v=9b499105",
+    "@openav/midi": "../../packages/midi/index.js?v=9b499105",
+    "@openav/keys": "../../packages/keys/index.js?v=9b499105",
+    "@openav/chord": "../../packages/chord/index.js?v=9b499105",
+    "@openav/audio": "../../packages/audio/index.js?v=9b499105",
+    "@openav/pose": "../../packages/pose/index.js?v=9b499105",
+    "@openav/sound": "../../packages/sound/index.js?v=9b499105",
+    "@openav/mapping": "../../packages/mapping/index.js?v=9b499105",
+    "@openav/timeline": "../../packages/timeline/index.js?v=9b499105",
+    "@openav/stage": "../../packages/stage/index.js?v=9b499105",
+    "@openav/console": "../../packages/console/index.js?v=9b499105",
+    "@openav/monitor": "../../packages/monitor/index.js?v=9b499105",
+    "@openav/show": "../../packages/show/index.js?v=9b499105",
+    "@openav/out": "../../packages/out/client.js?v=9b499105",
+    "@openav/dmx": "../../packages/dmx/index.js?v=9b499105"
   }
 }
 </script>
@@ -85,8 +85,8 @@
     
   </div>
 </aside>
-<script src="../../assets/examples/guide.js"></script>
+<script src="../../assets/examples/guide.js?v=9b499105"></script>
 <!-- /oav:guide -->
-<script type="module" src="./main.js?v=c6e958d9"></script>
+<script type="module" src="./main.js?v=9b499105"></script>
 </body>
 </html>

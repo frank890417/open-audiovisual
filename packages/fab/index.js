@@ -3,15 +3,15 @@
 //   fab.check(threeMesh, { scale: 10 })            → report (watertight, volume, overhang, thinnest wall, grams, warnings)
 //   await fab.export(part, 'stl')                  → { bytes, mime, ext, report }
 //   await fab.save(part, 'step', { name: 'bracket' }) → through fab.saver (the lab's /api/fab) or a browser download
-import { checkMesh, weldMesh } from './checks.js?v=c6e958d9';
-import { meshOf, meshOfAsync, fromMeshLike } from './mesh.js?v=c6e958d9';
-import { exportAs, toStlBytes, fromStlBytes, toObjText, toGlbBytes, MIME } from './export.js?v=c6e958d9';
-import { loadKernel } from './kernel.js?v=c6e958d9';
+import { checkMesh, weldMesh } from './checks.js?v=9b499105';
+import { meshOf, meshOfAsync, fromMeshLike } from './mesh.js?v=9b499105';
+import { exportAs, toStlBytes, fromStlBytes, toObjText, toGlbBytes, MIME } from './export.js?v=9b499105';
+import { loadKernel } from './kernel.js?v=9b499105';
 
-export { checkMesh, weldMesh } from './checks.js?v=c6e958d9';
-export { meshOf, meshOfAsync, fromMeshLike } from './mesh.js?v=c6e958d9';
-export { exportAs, toStlBytes, fromStlBytes, toObjText, toGlbBytes, MIME } from './export.js?v=c6e958d9';
-export { loadKernel, candidateUrls, DEFAULT_URLS } from './kernel.js?v=c6e958d9';
+export { checkMesh, weldMesh } from './checks.js?v=9b499105';
+export { meshOf, meshOfAsync, fromMeshLike } from './mesh.js?v=9b499105';
+export { exportAs, toStlBytes, fromStlBytes, toObjText, toGlbBytes, MIME } from './export.js?v=9b499105';
+export { loadKernel, candidateUrls, DEFAULT_URLS } from './kernel.js?v=9b499105';
 
 export class Fab {
   // opts: { urls: { smlib, manifold }, importer(url), download(bytes, info), context() → { id, params }, scale }

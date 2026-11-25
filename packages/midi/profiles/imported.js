@@ -2,7 +2,7 @@
 // The list is imported-list.js. This file reads its own address (import.meta.url), so it is ES-module only: the lab bundles the list
 // and leaves this file out. The data is Apache-2.0: see NOTICE at the root of the repository.
 
-import { IMPORTED, importedRow } from './imported-list.js?v=c6e958d9';
+import { IMPORTED, importedRow } from './imported-list.js?v=9b499105';
 
 export { IMPORTED };
 

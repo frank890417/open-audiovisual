@@ -23,15 +23,15 @@
 // message as it came, leap.frame. Continuous control should still reach a world through params
 // (map leap/hand/right/y → a param); the joints are for drawing the hand itself.
 
-import { FINGERS, INTERACTION_BOX, V6Converter, handsOf, handAngles, normalizePoint, handBones } from './frame.js?v=c6e958d9';
-import { HandGestures, THRESHOLDS } from './gesture.js?v=c6e958d9';
-import { mockHand } from './mock.js?v=c6e958d9';
-import { mountLeapPanel } from './panel.js?v=c6e958d9';
+import { FINGERS, INTERACTION_BOX, V6Converter, handsOf, handAngles, normalizePoint, handBones } from './frame.js?v=9b499105';
+import { HandGestures, THRESHOLDS } from './gesture.js?v=9b499105';
+import { mockHand } from './mock.js?v=9b499105';
+import { mountLeapPanel } from './panel.js?v=9b499105';
 
-export { FINGERS, INTERACTION_BOX, PROTOCOL_VERSION, V6Converter, rawToV6, handsOf, handAngles, normalizePoint, handBones, boneBasis, palmBasis, v6Header, deviceEvent, protocolOfPath } from './frame.js?v=c6e958d9';
-export { Hysteresis, HandGestures, THRESHOLDS } from './gesture.js?v=c6e958d9';
-export { mockHand, mockFrame } from './mock.js?v=c6e958d9';
-export { mountLeapPanel } from './panel.js?v=c6e958d9';
+export { FINGERS, INTERACTION_BOX, PROTOCOL_VERSION, V6Converter, rawToV6, handsOf, handAngles, normalizePoint, handBones, boneBasis, palmBasis, v6Header, deviceEvent, protocolOfPath } from './frame.js?v=9b499105';
+export { Hysteresis, HandGestures, THRESHOLDS } from './gesture.js?v=9b499105';
+export { mockHand, mockFrame } from './mock.js?v=9b499105';
+export { mountLeapPanel } from './panel.js?v=9b499105';
 
 export const DEFAULT_URL = 'ws://127.0.0.1:6437/v6.json';
 export const STATUS = Object.freeze({ off: 0, bridge: 1, service: 2, tracking: 3 });
@@ -64,7 +64,7 @@ export function leapSignals({ fingers = true } = {}) {
 export class LeapInput {
   /**
    * @param {object} [o]
-   * @param {import('../core/src/signals.js?v=c6e958d9').Signals} [o.signals]
+   * @param {import('../core/src/signals.js?v=9b499105').Signals} [o.signals]
    * @param {string}  [o.url]           bridge URL: ws://127.0.0.1:6437/v6.json (default) or …/raw
    * @param {boolean} [o.reconnect=true]
    * @param {boolean} [o.fingers=true]  publish fingertip signals (15 per hand)
