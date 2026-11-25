@@ -26,9 +26,9 @@
 // and loadMapUrl() fetches one for `?map=<url>`. docs/mapping.md#save-load-and-share.
 
 // the one-pole lag a smoothed route steps with: the same function oav-p5's lag() uses (packages/chop)
-import { approach } from '../chop/index.js?v=4d84c85b';
+import { approach } from '../chop/index.js?v=9a90f849';
 // who wins when a hand and a route touch one param: 'hold' (default) or 'legacy' (0.10.0), docs/mapping.md#who-holds-a-value
-import { writesMode } from '../core/src/writes.js?v=4d84c85b';
+import { writesMode } from '../core/src/writes.js?v=9a90f849';
 
 const CURVES = {
   linear: (x) => x,
@@ -167,8 +167,8 @@ let _nextId = 1;
 export class Mapper {
   /**
    * @param {object} deps
-   * @param {import('../core/src/signals.js?v=4d84c85b').Signals} deps.signals
-   * @param {import('../core/src/params.js?v=4d84c85b').Params} deps.params
+   * @param {import('../core/src/signals.js?v=9a90f849').Signals} deps.signals
+   * @param {import('../core/src/params.js?v=9a90f849').Params} deps.params
    * @param {string} [deps.profile='default'] localStorage namespace
    * @param {() => void} [deps.onChange] routes changed (UI refresh)
    * @param {(route: object, sig: string) => void} [deps.onLearn]
@@ -524,4 +524,4 @@ export class Mapper {
   dispose() { this._unsub?.(); }
 }
 
-export { LearnWizard } from './wizard.js?v=4d84c85b';
+export { LearnWizard } from './wizard.js?v=9a90f849';

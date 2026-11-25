@@ -33,29 +33,29 @@
 // an override on sound/<key> that the timeline, a route or a re-sent reading cannot undo, until sound.release(key) or ✕.
 // Sound({ writes: 'legacy' }) is 0.10.0: every sound/* value, every frame.
 
-import { writesMode } from '../core/src/writes.js?v=4d84c85b';
-import { SOUND_PARAMS, registerInstrument, getInstrument } from './registry.js?v=4d84c85b';
-import { piano } from './instruments/piano.js?v=4d84c85b';
-import { epiano } from './instruments/epiano.js?v=4d84c85b';
-import { organ } from './instruments/organ.js?v=4d84c85b';
-import { strings } from './instruments/strings.js?v=4d84c85b';
-import { choir } from './instruments/choir.js?v=4d84c85b';
-import { harp } from './instruments/harp.js?v=4d84c85b';
-import { xylophone } from './instruments/xylophone.js?v=4d84c85b';
-import { marimba } from './instruments/marimba.js?v=4d84c85b';
-import { vibraphone } from './instruments/vibraphone.js?v=4d84c85b';
-import { glockenspiel } from './instruments/glockenspiel.js?v=4d84c85b';
-import { musicBox } from './instruments/musicbox.js?v=4d84c85b';
-import { SYNTH_PRESETS, synthInstrument } from './instruments/synth.js?v=4d84c85b';
+import { writesMode } from '../core/src/writes.js?v=9a90f849';
+import { SOUND_PARAMS, registerInstrument, getInstrument } from './registry.js?v=9a90f849';
+import { piano } from './instruments/piano.js?v=9a90f849';
+import { epiano } from './instruments/epiano.js?v=9a90f849';
+import { organ } from './instruments/organ.js?v=9a90f849';
+import { strings } from './instruments/strings.js?v=9a90f849';
+import { choir } from './instruments/choir.js?v=9a90f849';
+import { harp } from './instruments/harp.js?v=9a90f849';
+import { xylophone } from './instruments/xylophone.js?v=9a90f849';
+import { marimba } from './instruments/marimba.js?v=9a90f849';
+import { vibraphone } from './instruments/vibraphone.js?v=9a90f849';
+import { glockenspiel } from './instruments/glockenspiel.js?v=9a90f849';
+import { musicBox } from './instruments/musicbox.js?v=9a90f849';
+import { SYNTH_PRESETS, synthInstrument } from './instruments/synth.js?v=9a90f849';
 
 export {
   SOUND_PARAMS, CATEGORIES, registerInstrument, unregisterInstrument, getInstrument, listInstruments,
   instrumentName, instrumentGroups, onInstrumentsChange, validateInstrument,
-} from './registry.js?v=4d84c85b';
-export { SYNTH_PRESETS, synthInstrument, registerSynthPreset, validateSynthPreset } from './instruments/synth.js?v=4d84c85b';
-export { modalInstrument } from './instruments/modal.js?v=4d84c85b';
-export { salamanderMap, SALAMANDER_NOTES } from './instruments/piano.js?v=4d84c85b';
-export { mountSoundPicker } from './picker.js?v=4d84c85b';
+} from './registry.js?v=9a90f849';
+export { SYNTH_PRESETS, synthInstrument, registerSynthPreset, validateSynthPreset } from './instruments/synth.js?v=9a90f849';
+export { modalInstrument } from './instruments/modal.js?v=9a90f849';
+export { salamanderMap, SALAMANDER_NOTES } from './instruments/piano.js?v=9a90f849';
+export { mountSoundPicker } from './picker.js?v=9a90f849';
 
 export const TONE_CDN = 'https://cdn.jsdelivr.net/npm/tone@15.0.4/+esm';
 /** Where the built-in sample sets live when nobody says otherwise (GitHub Pages sends CORS headers).
@@ -96,8 +96,8 @@ const pageKey = () => {
 export class Sound {
   /**
    * @param {object} deps
-   * @param {import('../core/src/signals.js?v=4d84c85b').Signals} deps.signals
-   * @param {import('../core/src/params.js?v=4d84c85b').Params} [deps.params] register engine params (prefixed sound/)
+   * @param {import('../core/src/signals.js?v=9a90f849').Signals} deps.signals
+   * @param {import('../core/src/params.js?v=9a90f849').Params} [deps.params] register engine params (prefixed sound/)
    * @param {object} deps.engine engine implementing the contract above
    * @param {string} [deps.instrument] starting instrument (engines that have instruments)
    * @param {boolean|string} [deps.remember] keep the picker's last choice per page in localStorage (a string = your own key)

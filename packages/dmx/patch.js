@@ -3,10 +3,10 @@
 // RGBW par the red is the third channel and that this moving head wants pan as two bytes. Nobody writing a work should have
 // to remember that channel 37 is red.
 
-import { loadFixture, isLoaded } from './fixture.js?v=4d84c85b';
-import { rgbToChannels } from './color.js?v=4d84c85b';
-import { Universes, SLOTS } from './universe.js?v=4d84c85b';
-import { FIXTURES } from './fixtures/index.js?v=4d84c85b';
+import { loadFixture, isLoaded } from './fixture.js?v=9a90f849';
+import { rgbToChannels } from './color.js?v=9a90f849';
+import { Universes, SLOTS } from './universe.js?v=9a90f849';
+import { FIXTURES } from './fixtures/index.js?v=9a90f849';
 
 export const PATCH_FORMAT = 'open-audiovisual/patch@1';
 /** The properties every fixture understands (each 0..1; color is [r, g, b]). Any other name is a channel key of the profile. */

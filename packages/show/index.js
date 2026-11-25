@@ -40,24 +40,24 @@
 // sound, audio, hands, pose, leap, remote, score, director, sync, loop, monitor, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools (with a score: window.openav.show.goto('dusk'), .table(), …).
 
-import { Signals, Params, Loop, VERSION, sign } from '../core/index.js?v=4d84c85b';
-import { Midi } from '../midi/index.js?v=4d84c85b';
-import { mountKeys } from '../keys/index.js?v=4d84c85b';
-import { AudioAnalyzer } from '../audio/index.js?v=4d84c85b';
-import { ChordDetector } from '../chord/index.js?v=4d84c85b';
-import { mountDrums } from '../drums/index.js?v=4d84c85b';
-import { PoseTracker, HandTracker } from '../pose/index.js?v=4d84c85b';
-import { Mapper, loadMapUrl } from '../mapping/index.js?v=4d84c85b';
-import { Timeline } from '../timeline/index.js?v=4d84c85b';
-import { Stage } from '../stage/index.js?v=4d84c85b';
-import { mountConsole, resolveKeys, keyLabel } from '../console/index.js?v=4d84c85b';
-import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=4d84c85b';
-import { track } from '../midi/telemetry.js?v=4d84c85b';
-import { SHELL_CSS } from './layout.js?v=4d84c85b';
-import { loopOptions, monitorOptions, syncOptions, syncModules } from './options.js?v=4d84c85b';
-import { writesMode } from '../core/src/writes.js?v=4d84c85b';
-import { outputQuery } from '../output/url.js?v=4d84c85b';
-import { adoptOverrides, PARAMS_EXTRA } from '../output/follow.js?v=4d84c85b';
+import { Signals, Params, Loop, VERSION, sign } from '../core/index.js?v=9a90f849';
+import { Midi } from '../midi/index.js?v=9a90f849';
+import { mountKeys } from '../keys/index.js?v=9a90f849';
+import { AudioAnalyzer } from '../audio/index.js?v=9a90f849';
+import { ChordDetector } from '../chord/index.js?v=9a90f849';
+import { mountDrums } from '../drums/index.js?v=9a90f849';
+import { PoseTracker, HandTracker } from '../pose/index.js?v=9a90f849';
+import { Mapper, loadMapUrl } from '../mapping/index.js?v=9a90f849';
+import { Timeline } from '../timeline/index.js?v=9a90f849';
+import { Stage } from '../stage/index.js?v=9a90f849';
+import { mountConsole, resolveKeys, keyLabel } from '../console/index.js?v=9a90f849';
+import { MonitorFeed, snapshotOf } from '../monitor/index.js?v=9a90f849';
+import { track } from '../midi/telemetry.js?v=9a90f849';
+import { SHELL_CSS } from './layout.js?v=9a90f849';
+import { loopOptions, monitorOptions, syncOptions, syncModules } from './options.js?v=9a90f849';
+import { writesMode } from '../core/src/writes.js?v=9a90f849';
+import { outputQuery } from '../output/url.js?v=9a90f849';
+import { adoptOverrides, PARAMS_EXTRA } from '../output/follow.js?v=9a90f849';
 
 export async function createShow({
   world = null,
@@ -150,7 +150,7 @@ export async function createShow({
   // ---------- the score: structure as segment lengths, performed by segment modules (loaded only when declared) ----------
   let score = null, director = null, scoreMidi = null;
   if (scoreCfg) {
-    const { Score, Director } = await import('../score/index.js?v=4d84c85b');
+    const { Score, Director } = await import('../score/index.js?v=9a90f849');
     const cutId = new URLSearchParams(location.search).get('cut') || scoreCfg.cut;
     const known = new Score({ cuts: scoreCfg.cuts, cut: scoreCfg.cut }).cuts.map((c) => c.id);
     if (cutId && !known.includes(cutId)) console.warn(`[score] ?cut=${cutId} is not a cut of this show (${known.join(', ')}); playing ${scoreCfg.cut || known[0]}`);
@@ -182,7 +182,7 @@ export async function createShow({
   // several pages, one show: the leader broadcasts its clock every frame, a follower's timeline chases it (loaded only when declared)
   let sync = null;
   if (syncOpts) {
-    const { createSync } = await import('../sync/index.js?v=4d84c85b');
+    const { createSync } = await import('../sync/index.js?v=9a90f849');
     const { role, channel, url, input, ...rest } = syncOpts;
     sync = createSync({ role, channel, url, timeline, score, ...rest });
   }
@@ -201,7 +201,7 @@ export async function createShow({
   midi?.enable();
   // the score → MIDI out (off unless declared): segment changes and cues leave as notes / CCs so a DAW can follow the show
   if (scoreCfg?.midi && midi) {
-    const { ScoreMidi } = await import('../midi/score-out.js?v=4d84c85b');
+    const { ScoreMidi } = await import('../midi/score-out.js?v=9a90f849');
     scoreMidi = new ScoreMidi({ midi, ...(typeof scoreCfg.midi === 'object' ? scoreCfg.midi : {}) });
   }
   // on-screen MIDI controllers: plug a known device in and it appears on screen and moves; no device → play it here.
@@ -209,7 +209,7 @@ export async function createShow({
   let controllers = null, midiPanel = null;
   const ctlCfg = modules.midi && typeof modules.midi === 'object' ? modules.midi.controllers : null;
   if (ctlCfg) {
-    const { MidiControllers, mountMidiPanel, PROFILES } = await import('../midi/index.js?v=4d84c85b');
+    const { MidiControllers, mountMidiPanel, PROFILES } = await import('../midi/index.js?v=9a90f849');
     const o = typeof ctlCfg === 'object' ? ctlCfg : {};
     controllers = new MidiControllers({ profiles: o.profiles || PROFILES, signals, midi, initial: new URLSearchParams(location.search).get('profile') || o.profile });
     midiPanel = mountMidiPanel(stageEl, controllers, { mode: 'dock', contained: true, open: o.open !== false, id: 'oav-midi' });
@@ -244,7 +244,7 @@ export async function createShow({
   // modules.leap: true · { url, simulate, fingers, box } — simulate: mouse/touch over the stage become hands
   let leap = null;
   if (modules.leap) {
-    const { LeapInput } = await import('../leap/index.js?v=4d84c85b');
+    const { LeapInput } = await import('../leap/index.js?v=9a90f849');
     const o = typeof modules.leap === 'object' ? modules.leap : {};
     const q = new URLSearchParams(location.search).get('leap');   // ?leap=sim · ?leap=ws://host:port/v6.json
     leap = new LeapInput({ signals, ...o, ...(q && /^wss?:\/\//.test(q) ? { url: q } : {}) });
@@ -257,8 +257,8 @@ export async function createShow({
   // ignorant: its params become the phone's control panel (surface/autoSurface).
   let remote = null;
   if (modules.remote) {
-    const { mountRemoteHost, mountJoinCard } = await import('../remote/host.js?v=4d84c85b');
-    const { pickRelay } = await import('../remote/relay-pick.js?v=4d84c85b');
+    const { mountRemoteHost, mountJoinCard } = await import('../remote/host.js?v=9a90f849');
+    const { pickRelay } = await import('../remote/relay-pick.js?v=9a90f849');
     const o = typeof modules.remote === 'object' ? modules.remote : {};
     // which relay and room: this machine's own on `node serve.js`; the public relay with a random room on a static host
     // (openaudiovisual.com); ?relay=wss://… or ?relay=off override; ?room=… always wins
@@ -277,7 +277,7 @@ export async function createShow({
   // modules.sound: true · 'piano' · { instrument, remember, picker, engine, …toneEngine options }
   let sound = null;
   if (modules.sound) {
-    const { Sound, toneEngine, soundOptions } = await import('../sound/index.js?v=4d84c85b');
+    const { Sound, toneEngine, soundOptions } = await import('../sound/index.js?v=9a90f849');
     const o = soundOptions(modules.sound);
     // samples come from this copy of the framework (the published default is openaudiovisual.com)
     const engine = o.engine || toneEngine({ baseUrl: new URL('../sound/samples/', import.meta.url).href, ...o.engineOptions });
@@ -312,7 +312,7 @@ export async function createShow({
   show.loop = loop;
   // a clean output: the stage moves into an output surface (corners, crop, blackout, test pattern); show.output drives it
   if (outQ) {
-    const { mountOutputPage } = await import('../output/page.js?v=4d84c85b');
+    const { mountOutputPage } = await import('../output/page.js?v=9a90f849');
     show.output = mountOutputPage(show, outQ);
   }
   loop.start();

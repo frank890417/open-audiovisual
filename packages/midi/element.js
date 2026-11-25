@@ -29,8 +29,8 @@
 //   ingest(bytes) · send(bytes) · on(name, fn) → off · connectHardware() · disconnectHardware()
 //   setOutput(nameOrRegex) · toggleLearn(on) · ready (Promise) · core / controller / controllers / view / midi
 
-import { createController, loadProfile, PROFILES } from './index.js?v=4d84c85b';
-import { parseEmbedOptions, describeDetail, preferredAspect, findProfile, EMBED_ATTRS, DEFAULT_PROFILE } from './embed.js?v=4d84c85b';
+import { createController, loadProfile, PROFILES } from './index.js?v=9a90f849';
+import { parseEmbedOptions, describeDetail, preferredAspect, findProfile, EMBED_ATTRS, DEFAULT_PROFILE } from './embed.js?v=9a90f849';
 
 const UI = {
   en: {

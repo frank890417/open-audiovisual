@@ -126,7 +126,7 @@ export class FlashGuard {
   #rule;
 
   /**
-   * @param {import('./patch.js?v=4d84c85b').Patch} patch  the fixtures whose light to read and hold
+   * @param {import('./patch.js?v=9a90f849').Patch} patch  the fixtures whose light to read and hold
    * @param {object} [options]
    * @param {number} [options.maxFlashHz=3]  flashes a light may make in any second (Infinity: no limit)
    */

@@ -5,9 +5,9 @@
 // window.oavVerify is there for devtools and scripted checks, like window.openav in the examples.
 
 import '../../packages/midi/element.js?v=dd4a4d59';
-import { PROFILES } from '../../packages/midi/profiles/index.js?v=4d84c85b';
-import { Midi, matchProfile, pickPort, loadProfile, DEVICE_INQUIRY, parseDeviceInquiry } from '../../packages/midi/index.js?v=4d84c85b';
-import { VerifySession, applyVerification, verificationReport, messageText, portMethod, ledTestBytes, ledTestSysex } from '../../packages/midi/verify-session.js?v=4d84c85b';
+import { PROFILES } from '../../packages/midi/profiles/index.js?v=9a90f849';
+import { Midi, matchProfile, pickPort, loadProfile, DEVICE_INQUIRY, parseDeviceInquiry } from '../../packages/midi/index.js?v=9a90f849';
+import { VerifySession, applyVerification, verificationReport, messageText, portMethod, ledTestBytes, ledTestSysex } from '../../packages/midi/verify-session.js?v=9a90f849';
 
 const T = JSON.parse(document.getElementById('ctl-i18n').textContent);
 const S = T.s, E = T.end, U = T.setup, G = T.lights;

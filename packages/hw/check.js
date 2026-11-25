@@ -9,7 +9,7 @@
 // }
 // A pin is '<instance>.<pin name or alias>' (case-insensitive aliases: 'mcu.SDA' = 'mcu.4' on a Feather).
 
-import { PARTS } from './parts.js?v=4d84c85b';
+import { PARTS } from './parts.js?v=9a90f849';
 
 const r2 = (x) => Math.round(x * 100) / 100;
 const r1 = (x) => Math.round(x * 10) / 10;

@@ -17,7 +17,7 @@
 //
 // Landmark indexes (BlazePose 33): nose 0 · shoulders 11/12 · wrists 15/16.
 
-import { HAND_DEFAULTS, GESTURES, HandState, handFeatures, twoHands, topGesture, assignSides, handSignals } from './hand-features.js?v=4d84c85b';
+import { HAND_DEFAULTS, GESTURES, HandState, handFeatures, twoHands, topGesture, assignSides, handSignals } from './hand-features.js?v=9a90f849';
 
 // 1.2.3 (2026-11): on the same camera frames it gave the same landmarks, gestures and body as 0.10.14,
 // in about the same time (Chromium on an M4 Max, fake camera, 2026-11-24).
@@ -27,7 +27,7 @@ const MODEL_URL = 'https://storage.googleapis.com/mediapipe-models/pose_landmark
 export class PoseTracker {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js?v=4d84c85b').Signals} [opts.signals]
+   * @param {import('../core/src/signals.js?v=9a90f849').Signals} [opts.signals]
    * @param {boolean} [opts.mirror=true] mirror x (webcam-as-mirror; natural for performers)
    */
   constructor({ signals = null, mirror = true } = {}) {
@@ -175,7 +175,7 @@ const LABEL = { fist: 'FIST', open: 'OPEN', point: 'POINT', 'thumb-up': 'THUMB U
 export class HandTracker {
   /**
    * @param {object} opts
-   * @param {import('../core/src/signals.js?v=4d84c85b').Signals} [opts.signals]
+   * @param {import('../core/src/signals.js?v=9a90f849').Signals} [opts.signals]
    * @param {boolean} [opts.mirror=true]   webcam as a mirror
    * @param {boolean} [opts.gestures=true] recognise gestures (GestureRecognizer); false = landmarks only (HandLandmarker)
    * @param {object}  [opts.thresholds]    overrides for HAND_DEFAULTS (hand-features.js)
