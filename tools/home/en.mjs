@@ -26,6 +26,8 @@ export default {
   },
 
   ui: {
+    // the bar a phone shows on the homepage, /p5/, the example pages, /controllers/ and the controller pages (assets/send-bar.js)
+    send: { send: 'Send this page to your computer', copied: 'Link copied. Open it on your computer.', close: 'Close' },
     skip: 'Skip to content',
     navLabel: 'Sections',
     nav: { play: 'Play', how: 'How it works', works: 'Works', start: 'Start', controllers: 'Controllers', docs: 'Docs', webtoe: 'WebToe', agents: 'For agents' },

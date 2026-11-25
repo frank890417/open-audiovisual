@@ -189,7 +189,7 @@ Resolume：到 Preferences → MIDI。</li>
 <p>p5.js 的那一行（<code>oav-p5</code>）預設什麼都不送，草圖自己設 <code>telemetry: 'on'</code> 才會送。</p>
 <p><strong>簽名不是一筆紀錄。</strong> <code>createShow()</code> 還會在頁面的 head 裡放一個 <code>&lt;meta name="generator" content="open-audiovisual 0.9.0"&gt;</code>，WordPress 和 Hugo 留的也是這種標籤。它不發出任何請求，檢視原始碼的人、公開網頁的搜尋與普查可以從它讀出哪些頁面跑在 open-audiovisual 上，就這樣而已。<code>createShow({ signature: false })</code> 就不放。原始碼：<code>packages/core/src/signature.js</code>。想被列出名字的作品，自己到<a href="../../../zh/made-with/">用它做的</a>加上來。</p>
 <h3 id="controllers-the-site-s-own-pages">網站自己的頁面<a class="anchor" href="#controllers-the-site-s-own-pages" aria-label="這一節的連結">#</a></h3>
-<p>openaudiovisual.com 自己的頁面裝了 Google Analytics 4（同一個資源）。除了 Google Analytics 本身會算的瀏覽次數，<code>assets/track.js</code> 另外記下訪客在頁面上做的八件事，每件都是一個獨立的事件：</p>
+<p>openaudiovisual.com 自己的頁面裝了 Google Analytics 4（同一個資源）。除了 Google Analytics 本身會算的瀏覽次數，<code>assets/track.js</code> 另外記下訪客在頁面上做的九件事，每件都是一個獨立的事件：</p>
 <div class="table-wrap"><table>
 <thead><tr><th>事件</th><th>什麼時候</th><th>內容</th></tr></thead>
 <tbody>
@@ -201,9 +201,10 @@ Resolume：到 Preferences → MIDI。</li>
 <tr><td><code>oav_next_step</code></td><td>點了頁面「下一步」區塊裡的連結</td><td><code>from</code>（頁面類型）、<code>to</code>（p5、example、docs、reference 等）</td></tr>
 <tr><td><code>oav_search</code></td><td>在搜尋框打下第一個字，每次瀏覽只記一次</td><td><code>page_type</code></td></tr>
 <tr><td><code>oav_lang_switch</code></td><td>按 EN 或中文</td><td><code>page_type</code>、<code>to</code>（en、zh）</td></tr>
+<tr><td><code>oav_send_to_desktop</code></td><td>按下手機上那一條「把這一頁傳到電腦」的按鈕</td><td><code>method</code>（share、copy）、<code>page_type</code></td></tr>
 </tbody>
 </table></div>
-<p><code>page_type</code> 是頁面的類型：home、controller、controllers_index、verify、example、examples_index、docs、reference、cheatsheet、p5、made_with、changelog、webtoe、check、not_found、devices_index（/devices/）、fixture（/fixtures/&lt;id&gt;/）或 device（/devices/&lt;id&gt;/）。每個內容都只是一個短字或 id，不會有複製了什麼、在搜尋框打了什麼，也不會有連結的路徑或查詢字串：<code>host</code> 只有對方網站的名稱。跟每一次瀏覽一樣，Google Analytics 本身也會記下頁面的網址，並寫入它自己的 cookie。這支程式只在網站的分析程式有跑的地方跑，也就是 openaudiovisual.com，localhost 和複製出去的 repository 都不會。原始碼：<code>assets/track.js</code>。</p>
+<p><code>page_type</code> 是頁面的類型：home、controller、controllers_index、verify、example、examples_index、docs、docs_chapter（/docs/&lt;章&gt;/）、reference、reference_name（/docs/reference/&lt;名稱&gt;/）、cheatsheet、p5、made_with、changelog、webtoe、check、not_found、devices_index（/devices/）、fixture（/fixtures/&lt;id&gt;/）或 device（/devices/&lt;id&gt;/）。每個內容都只是一個短字或 id，不會有複製了什麼、在搜尋框打了什麼，也不會有連結的路徑或查詢字串：<code>host</code> 只有對方網站的名稱。跟每一次瀏覽一樣，Google Analytics 本身也會記下頁面的網址，並寫入它自己的 cookie。這支程式只在網站的分析程式有跑的地方跑，也就是 openaudiovisual.com，localhost 和複製出去的 repository 都不會。原始碼：<code>assets/track.js</code>。</p>
 <p>這些都不在框架裡。<code>p5/oav-p5.js</code>、<code>packages/</code>、<code>embed/</code> 不會載入這支程式，也不會多送任何東西，所以別人用 open-audiovisual 做的網頁，送出的仍然只有第一張表列的內容。<code>tests/track.test.js</code> 兩件事都會檢查。</p>
 <h2 id="controllers-sysex-modes-templates-led-colours">SysEx：模式、模板、LED 顏色<a class="anchor" href="#controllers-sysex-modes-templates-led-colours" aria-label="這一節的連結">#</a></h2>
 <p>有些事只有 SysEx 做得到：把 Launchpad 切到程式模式、選 Launch Control XL 的模板、把打擊墊點成任何 RGB 顏色。有這些功能的設定檔會列在 <code>sysex</code>，每則訊息都附出處，機器的頁面看得到。</p>

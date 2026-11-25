@@ -16,6 +16,7 @@
 //   oav_next_step        from (the page_type), to (p5 | example | docs | reference | …)
 //   oav_search           page_type                     once per page view: the first input in a search box, never its text
 //   oav_lang_switch      page_type, to (en | zh)
+//   oav_send_to_desktop  method (share | copy), page_type   the phone bar's button (assets/send-bar.js)
 //
 // The hooks are declarative: the generators write data-oav-event="…" (with data-oav-to, -format, -id, -link, -copy) on
 // the elements, the chrome writes <meta name="oav-page-type" content="…" data-oav-id="…">, and one listener per kind of
@@ -36,6 +37,7 @@
     next_step: ['from', 'to'],
     search: ['page_type'],
     lang_switch: ['page_type', 'to'],
+    send_to_desktop: ['method', 'page_type'],
   };
   var ONCE = ['controller_play', 'example_start', 'search'];
   var COPY_KINDS = ['loader', 'code', 'import_map', 'other'];
@@ -43,6 +45,7 @@
   var NEXT_TO = ['p5', 'example', 'examples', 'docs', 'reference', 'cheatsheet', 'controllers', 'made_with', 'changelog', 'home'];
   var FORMATS = ['qlc', 'mixxx', 'json'];
   var LANGS = ['en', 'zh'];
+  var SEND = ['share', 'copy'];
   var OWN = /(^|\.)openaudiovisual\.com$/;
 
   /** Any value → a short token: lower case, a-z 0-9 _ . - only, at most 40 characters. */
@@ -107,6 +110,7 @@
     if (d.event === 'export_download') return event('export_download', { format: pick(d.format, FORMATS, 'other'), controller: d.id || d.pageId, page_type: pt });
     if (d.event === 'next_step') return d.to ? event('next_step', { from: pt, to: pick(d.to, NEXT_TO, 'other') }) : null;
     if (d.event === 'lang_switch') return d.lang && !d.current ? event('lang_switch', { page_type: pt, to: pick(d.lang, LANGS, 'other') }) : null;
+    if (d.event === 'send_to_desktop') return event('send_to_desktop', { method: pick(d.method, SEND, 'other'), page_type: pt });
     var host = d.href ? hostOf(d.href) : '';
     if (host && host !== String(d.here || '').toLowerCase() && !OWN.test(host)) return event('outbound', { kind: outKind(d.link, host), host: host, page_type: pt });
     return null;
@@ -128,7 +132,7 @@
     return d && d.inCode ? event('copy', { kind: copyKind('', d.text), page_type: d.pageType }) : null;
   }
 
-  var api = { PAGE_TYPES: PAGE_TYPES, SPEC: SPEC, ONCE: ONCE, COPY_KINDS: COPY_KINDS, OUT_KINDS: OUT_KINDS, NEXT_TO: NEXT_TO, FORMATS: FORMATS,
+  var api = { PAGE_TYPES: PAGE_TYPES, SPEC: SPEC, ONCE: ONCE, COPY_KINDS: COPY_KINDS, OUT_KINDS: OUT_KINDS, NEXT_TO: NEXT_TO, FORMATS: FORMATS, SEND: SEND,
     clean: clean, event: event, copyKind: copyKind, hostOf: hostOf, outKind: outKind,
     fromClick: fromClick, fromControl: fromControl, fromInput: fromInput, fromInteract: fromInteract, fromNativeCopy: fromNativeCopy };
   // tests/track.test.js runs this file in a sandbox that has this one object, and no window
@@ -166,7 +170,7 @@
     send(fromClick({
       pageType: pageType, pageId: pageId, here: location.hostname,
       copyButton: !!btn, copy: get(btn, 'data-oav-copy'), text: btn ? codeOf(btn) : '',
-      event: get(h, 'data-oav-event'), to: get(h, 'data-oav-to'), format: get(h, 'data-oav-format'), id: get(h, 'data-oav-id'),
+      event: get(h, 'data-oav-event'), to: get(h, 'data-oav-to'), format: get(h, 'data-oav-format'), id: get(h, 'data-oav-id'), method: get(h, 'data-oav-method'),
       lang: get(h, 'data-lang') || get(h, 'data-set'), current: !!h && (get(h, 'aria-current') === 'page' || get(h, 'aria-pressed') === 'true'),
       href: a ? a.href : '', link: get(a, 'data-oav-link'),
     }));
@@ -195,7 +199,7 @@
   if (pageType === 'example') {
     var start = function (e) {
       var t = e.target;
-      send(fromInteract({ pageType: pageType, pageId: pageId, inGuide: !!(t && t.closest && t.closest('#oav-guide, .oav-next')) }));
+      send(fromInteract({ pageType: pageType, pageId: pageId, inGuide: !!(t && t.closest && t.closest('#oav-guide, .oav-next, .oav-send')) }));
     };
     window.addEventListener('pointerdown', start, true);
     window.addEventListener('keydown', start, true);

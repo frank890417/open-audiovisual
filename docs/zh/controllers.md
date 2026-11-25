@@ -97,7 +97,7 @@ p5.js 的那一行（`oav-p5`）預設什麼都不送，草圖自己設 `telemet
 
 ### 網站自己的頁面
 
-openaudiovisual.com 自己的頁面裝了 Google Analytics 4（同一個資源）。除了 Google Analytics 本身會算的瀏覽次數，`assets/track.js` 另外記下訪客在頁面上做的八件事，每件都是一個獨立的事件：
+openaudiovisual.com 自己的頁面裝了 Google Analytics 4（同一個資源）。除了 Google Analytics 本身會算的瀏覽次數，`assets/track.js` 另外記下訪客在頁面上做的九件事，每件都是一個獨立的事件：
 
 | 事件 | 什麼時候 | 內容 |
 |---|---|---|
@@ -109,8 +109,9 @@ openaudiovisual.com 自己的頁面裝了 Google Analytics 4（同一個資源�
 | `oav_next_step` | 點了頁面「下一步」區塊裡的連結 | `from`（頁面類型）、`to`（p5、example、docs、reference 等） |
 | `oav_search` | 在搜尋框打下第一個字，每次瀏覽只記一次 | `page_type` |
 | `oav_lang_switch` | 按 EN 或中文 | `page_type`、`to`（en、zh） |
+| `oav_send_to_desktop` | 按下手機上那一條「把這一頁傳到電腦」的按鈕 | `method`（share、copy）、`page_type` |
 
-`page_type` 是頁面的類型：home、controller、controllers_index、verify、example、examples_index、docs、reference、cheatsheet、p5、made_with、changelog、webtoe、check、not_found、devices_index（/devices/）、fixture（/fixtures/<id>/）或 device（/devices/<id>/）。每個內容都只是一個短字或 id，不會有複製了什麼、在搜尋框打了什麼，也不會有連結的路徑或查詢字串：`host` 只有對方網站的名稱。跟每一次瀏覽一樣，Google Analytics 本身也會記下頁面的網址，並寫入它自己的 cookie。這支程式只在網站的分析程式有跑的地方跑，也就是 openaudiovisual.com，localhost 和複製出去的 repository 都不會。原始碼：`assets/track.js`。
+`page_type` 是頁面的類型：home、controller、controllers_index、verify、example、examples_index、docs、docs_chapter（/docs/<章>/）、reference、reference_name（/docs/reference/<名稱>/）、cheatsheet、p5、made_with、changelog、webtoe、check、not_found、devices_index（/devices/）、fixture（/fixtures/<id>/）或 device（/devices/<id>/）。每個內容都只是一個短字或 id，不會有複製了什麼、在搜尋框打了什麼，也不會有連結的路徑或查詢字串：`host` 只有對方網站的名稱。跟每一次瀏覽一樣，Google Analytics 本身也會記下頁面的網址，並寫入它自己的 cookie。這支程式只在網站的分析程式有跑的地方跑，也就是 openaudiovisual.com，localhost 和複製出去的 repository 都不會。原始碼：`assets/track.js`。
 
 這些都不在框架裡。`p5/oav-p5.js`、`packages/`、`embed/` 不會載入這支程式，也不會多送任何東西，所以別人用 open-audiovisual 做的網頁，送出的仍然只有第一張表列的內容。`tests/track.test.js` 兩件事都會檢查。
 

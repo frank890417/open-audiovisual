@@ -44,6 +44,15 @@ export default {
     controlsN: '{n} 個控制項',
   },
 
+  // /zh/controllers/ 最上面的搜尋框與廠牌篩選（手機上第一眼就是它）：每一台控制器的頁面，依名稱或廠牌
+  find: {
+    label: '找控制器',
+    placeholder: '名稱或型號：「lpd8」「minilab」',
+    maker: '廠牌',
+    makerAll: '所有廠牌',
+    shown: '{total} 台中的 {n} 台',
+    none: '沒有符合的。少打幾個字，或改選所有廠牌。',
+  },
   catalog: {
     eyebrow: '02 · 目錄',
     title: '目前收錄的控制器',

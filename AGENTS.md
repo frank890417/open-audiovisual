@@ -76,7 +76,7 @@ node --test tests/reference.test.js           # the gates, with the message that
 PW=<playwright> node p5/test/reference-smoke.cjs   # every example and claim in a real headless Chromium (CI runs it too)
 ```
 
-Never edit `docs/reference/index.html`, `zh/docs/reference/index.html` or `docs/reference/reference.json` by hand: they are
+Never edit `docs/reference/index.html`, `zh/docs/reference/index.html`, the name pages `docs/reference/<name>/` (one per oav-p5 name) or `docs/reference/reference.json` by hand: they are
 generated and `--check` (inside `tools/release.sh`) rejects a hand edit. `tools/reference/undocumented.json` is the ledger of
 names still waiting for an entry; it may only shrink (`node tools/build-reference.mjs --prune-ledger` drops the ones that have an
 entry now). Do not add to it: write the entry.

@@ -305,7 +305,7 @@ export function renderDetail(t, home, locale, d, cat) {
   const issueUrl = `${REPO}/issues/new?title=${encodeURIComponent(fill(D.report.issueTitle, { name, id }))}`;
   const runtime = { lang: locale, copy: home.ui.copy, copied: home.ui.copied, profile: id, imported: d.prov.imported, sysex: p.sysex ? D.sysex.status : null };
 
-  const head = headBasics(home, c, { title, description, ogDescription: description, ogImage: OG_IMAGE, ogImageAlt: D.ld.image, robots: 'index, follow, max-image-preview:large, max-snippet:-1', ld, pageType: 'controller', pageId: id });
+  const head = headBasics(home, c, { title, description, ogDescription: description, ogImage: OG_IMAGE, ogImageAlt: D.ld.image, robots: 'index, follow, max-image-preview:large, max-snippet:-1', ld, pageType: 'controller', pageId: id, sendBar: { [c.locale]: home.ui.send } });
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>

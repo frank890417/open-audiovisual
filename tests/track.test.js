@@ -32,7 +32,7 @@ const TOKEN = /^[a-z0-9_.-]{1,40}$/;
 test('track: a click, a copy, a control, a search and a key map to the listed events and params', () => {
   const page = { pageType: 'controller', pageId: 'akai-lpd8', here: 'openaudiovisual.com' };
   const click = (d) => T.fromClick({ ...page, ...d });
-  assert.deepEqual(NAMES.sort(), ['oav_controller_play', 'oav_copy', 'oav_example_start', 'oav_export_download', 'oav_lang_switch', 'oav_next_step', 'oav_outbound', 'oav_search'].sort());
+  assert.deepEqual(NAMES.sort(), ['oav_controller_play', 'oav_copy', 'oav_example_start', 'oav_export_download', 'oav_lang_switch', 'oav_next_step', 'oav_outbound', 'oav_search', 'oav_send_to_desktop'].sort());
   for (const k of Object.keys(T.SPEC)) assert.ok(T.SPEC[k].length <= 3, `${k}: at most three params`);
 
   // copy: what was copied, never the text
@@ -80,6 +80,10 @@ test('track: a click, a copy, a control, a search and a key map to the listed ev
   assert.deepEqual(T.fromInteract({ pageType: 'example', pageId: '09-midi-controllers' }), { name: 'oav_example_start', params: { example: '09-midi-controllers' } });
   assert.equal(T.fromInteract({ pageType: 'example', pageId: '09-midi-controllers', inGuide: true }), null, 'the guide card is not the example');
   assert.equal(T.fromInteract({ pageType: 'docs', pageId: '' }), null);
+  // the phone bar's button (assets/send-bar.js): how the page was sent on, and from what kind of page
+  assert.deepEqual(click({ event: 'send_to_desktop', method: 'share' }), { name: 'oav_send_to_desktop', params: { method: 'share', page_type: 'controller' } });
+  assert.deepEqual(T.fromClick({ pageType: 'p5', event: 'send_to_desktop', method: 'copy' }), { name: 'oav_send_to_desktop', params: { method: 'copy', page_type: 'p5' } });
+  assert.equal(click({ event: 'send_to_desktop', method: 'https://example.org/?q=x' }).params.method, 'other', 'only share or copy, never an address');
   assert.deepEqual(T.fromNativeCopy({ inCode: true, text: loader, pageType: 'cheatsheet' }), { name: 'oav_copy', params: { kind: 'loader', page_type: 'cheatsheet' } });
   assert.equal(T.fromNativeCopy({ inCode: false, text: 'a sentence', pageType: 'docs' }), null, 'copying prose is not counted');
 });
@@ -235,4 +239,38 @@ test('track: p5/oav-p5.js, p5/examples, packages/ and embed/ never load the trac
     assert.ok(!/\bgtag\s*\(/.test(s), `${f}: calls gtag()`);
     if (/gtag/.test(s)) assert.ok(GTAG_OK.has(f), `${f}: mentions gtag (only the telemetry files may, to say they never load it)`);
   }
+});
+
+// ---------------------------------------------------------------------------- the phone bar (assets/send-bar.js)
+test('send bar: the homepage, /p5/, every example, /controllers/ and every controller page load it once, with their words; no other page does', async () => {
+  const { registry, fileOf } = await import('../tools/site/pages.mjs');
+  const en = (await import('../tools/home/en.mjs')).default, zh = (await import('../tools/home/zh.mjs')).default;
+  const carries = (e) => ['home', 'p5', 'controllers'].includes(e.id) || e.group === 'examples' || (e.group === 'controllers' && e.id !== 'controllers/verify');
+  let n = 0;
+  for (const e of registry()) for (const lang of e.langs) {
+    const rel = fileOf(e, lang), s = read(rel);
+    const tags = [...s.matchAll(/<script defer src="[^"]*assets\/send-bar\.js(?:\?v=[\w.+-]+)?" data-strings="([^"]*)"><\/script>/g)];
+    if (!carries(e)) { assert.equal(tags.length, 0, `${rel}: no phone bar`); continue; }
+    assert.equal(tags.length, 1, `${rel}: the phone bar's script, once`);
+    const strings = JSON.parse(tags[0][1].replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+    const want = e.group === 'examples' ? { en: en.ui.send, zh: zh.ui.send } : { [lang]: (lang === 'zh' ? zh : en).ui.send };
+    assert.deepEqual(strings, want, `${rel}: the words of its language${e.group === 'examples' ? 's (the guide can be either)' : ''}`);
+    n++;
+  }
+  assert.ok(n >= 2 + 2 + 28 + 2 + 2 * 50, `${n} pages carry the bar`);
+  for (const t of [en, zh]) for (const k of ['send', 'copied', 'close']) assert.ok(t.ui.send[k] && !/[；]|——/.test(t.ui.send[k]), `ui.send.${k}`);
+  assert.match(zh.ui.send.send, /電腦/);
+});
+
+test('send bar: only a narrow touch screen, share or copy, dismissed for the session only, counted as oav_send_to_desktop', () => {
+  const js = read('assets/send-bar.js');
+  assert.match(js, /WHEN = '\(max-width: 760px\) and \(pointer: coarse\)'/, 'narrow AND the primary input is touch');
+  assert.match(js, /!matchMedia\(WHEN\)\.matches\) return/, 'nothing at all otherwise');
+  assert.match(js, /navigator\.share/, 'the share sheet when there is one');
+  assert.match(js, /clipboard\.writeText/, 'copy the link when there is not');
+  assert.match(js, /sessionStorage\.setItem\(KEY, '1'\)/, 'a dismissal lasts the visit');
+  assert.ok(!/localStorage|document\.cookie|fetch\(|XMLHttpRequest|sendBeacon/.test(js), 'nothing kept after the tab closes, nothing sent');
+  assert.match(js, /'data-oav-event', 'send_to_desktop'/);
+  assert.match(js, /'data-oav-method', canShare \? 'share' : 'copy'/);
+  assert.match(read('assets/track.js'), /t\.closest\('#oav-guide, \.oav-next, \.oav-send'\)/, 'a tap on the bar does not start an example');
 });

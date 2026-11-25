@@ -193,7 +193,7 @@ export function renderPage(t, { locale, other, version }) {
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-${headBasics(t, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld, pageType: 'home' })}
+${headBasics(t, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld, pageType: 'home', sendBar: { [locale]: t.ui.send } })}
 <noscript><style>.status, .switches, .keys-hint, .roll { display: none; }</style></noscript>
 <script type="importmap">
 ${JSON.stringify(importmap, null, 2)}

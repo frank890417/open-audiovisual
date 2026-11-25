@@ -21,6 +21,33 @@ const total = (p) => p.controls.reduce((a, c) => a + (c.type === 'keys' ? c.to -
 const motion = () => !matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine = matchMedia('(pointer: fine)').matches;
 
+// ------------------------------------------------------------------ find: the search box and the manufacturer filter
+// Every controller with a page, from a small JSON the page carries (#ctl-find): every word must be in its name, model or maker,
+// ignoring case, spaces and punctuation (the same matching as /devices/). Nothing is listed until something is typed or chosen.
+(function find() {
+  const q = $('#find-q'), maker = $('#find-maker'), list = $('#find-list'), shown = $('#find-shown');
+  if (!q || !maker || !list) return;
+  let rows = [];
+  try { rows = JSON.parse($('#ctl-find').textContent); } catch { return; }
+  const fold = (s) => String(s).toLowerCase();
+  const squash = (s) => fold(s).replace(/[^a-z0-9㐀-鿿]+/g, '');
+  for (const r of rows) { r.hay = fold(`${r.n} ${r.m} ${r.id} ${r.a}`); r.flat = squash(r.hay); }
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  function apply() {
+    const tokens = fold(q.value).split(/\s+/).filter(Boolean), m = maker.value;
+    if (!tokens.length && !m) { list.hidden = true; shown.hidden = true; list.replaceChildren(); return; }
+    const hits = rows.filter((r) => (!m || r.m === m) && tokens.every((t) => r.hay.includes(t) || (squash(t) !== '' && r.flat.includes(squash(t)))));
+    list.innerHTML = hits.map((r) => `<li><a href="${esc(r.id)}/">${esc(r.n)}<small>${esc(r.m)}</small></a></li>`).join('');
+    list.hidden = !hits.length;
+    shown.textContent = hits.length ? shown.dataset.tpl.replace('{n}', hits.length).replace('{total}', shown.dataset.total) : shown.dataset.none;
+    shown.hidden = false;
+  }
+  q.addEventListener('input', apply);
+  maker.addEventListener('change', apply);
+  $('#find').addEventListener('submit', (e) => { e.preventDefault(); const a = $('a', list); if (a) location.href = a.href; });
+  apply();   // a value the browser kept from before (back button)
+})();
+
 // ------------------------------------------------------------------ hero
 const hero = $('#hero-ctl');
 const switcher = $('.switch');

@@ -73,6 +73,8 @@ export const PAGE_TYPES = ['home', 'controller', 'controllers_index', 'verify', 
   'cheatsheet', 'p5', 'made_with', 'changelog', 'webtoe', 'check', 'not_found', 'devices_index', 'fixture', 'device', 'docs_chapter', 'reference_name'];
 /** The site's own events (assets/track.js): loaded with defer, it does nothing unless the GA snippet above defined gtag. */
 export const TRACK_SRC = 'assets/track.js';
+/** The phone bar, "Send this page to your computer" (headBasics sendBar). */
+export const SEND_SRC = 'assets/send-bar.js';
 
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 export const attr = (s) => esc(s).replace(/"/g, '&quot;');
@@ -210,11 +212,13 @@ const OG_LOCALE = { en: 'en_US', zh: 'zh_TW' };
  *   pageType, pageId                    one of PAGE_TYPES (required), and the page's own id (a controller, an example) for
  *                                       assets/track.js: <meta name="oav-page-type" content="…" data-oav-id="…">
  *   track                               false → no assets/track.js (it is loaded whether or not the page carries its own GA snippet)
+ *   sendBar                             { en?, zh? }: the words of the phone bar "Send this page to your computer" (homepage tables,
+ *                                       ui.send) → assets/send-bar.js, deferred; it shows only on a narrow touch screen
  */
 export function headBasics(t, c, {
   title, description, ogDescription = description, ogImage = SITE + 'assets/home/og.png', ogImageAlt = t.seo.ogImageAlt,
   ogType = 'website', noindex = false, robots = '', markdownHref = '', ld = [], siteCss = true, analytics = true,
-  pageType, pageId = '', track = true,
+  pageType, pageId = '', track = true, sendBar = null,
 }) {
   if (!PAGE_TYPES.includes(pageType)) throw new Error(`headBasics: pageType must be one of ${PAGE_TYPES.join(', ')} (got ${JSON.stringify(pageType)})`);
   const canonical = !noindex && c.self;
@@ -259,6 +263,7 @@ export function headBasics(t, c, {
     analytics ? GA_SNIPPET : '',
     `<meta name="oav-page-type" content="${pageType}"${pageId ? ` data-oav-id="${attr(pageId)}"` : ''}>`,
     track ? `<script defer src="${c.root}${TRACK_SRC}"></script>` : '',
+    sendBar ? `<script defer src="${c.root}${SEND_SRC}" data-strings="${attr(JSON.stringify(sendBar))}"></script>` : '',
     ld === false ? '' : ldScript(jsonLdGraph(c, t, ld)),
   ];
   return lines.filter(Boolean).join('\n');

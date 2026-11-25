@@ -158,7 +158,8 @@ export function exampleHead(e) {
     breadcrumbNode(c, [[STRINGS.en.crumbs.home, SITE], [STRINGS.en.crumbs.examples, SITE + 'examples/'], [e.title.en, c.self]]),
   ];
   return [
-    headBasics(t, c, { title, description, ld, siteCss: false, analytics: false, pageType: 'example', pageId: e.id }),
+    // an example page is in English with a bilingual guide: the phone bar gets both languages and follows the guide's
+    headBasics(t, c, { title, description, ld, siteCss: false, analytics: false, pageType: 'example', pageId: e.id, sendBar: { en: homeEn.ui.send, zh: homeZh.ui.send } }),
     e.guide === false ? '' : `<link rel="stylesheet" href="${c.root}assets/examples/guide.css">`,
   ].filter(Boolean).join('\n');
 }
@@ -298,12 +299,12 @@ function renderSource(rel, c, { idPrefix, resolveLink, twin = null }) {
 const enTwin = (rel, c, o) => renderSource(rel, { ...c, locale: 'en' }, o).headings.filter((h) => h.mdLevel > 1);
 
 /** The page around one rendered source. `header` is the inside of <header class="docs-head">. */
-function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, chapter, header, html, css = [], pageType, after = '' }) {
+function markdownFrame(t, c, { title, description, markdownHref, ld, bodyClass, chapter, header, html, css = [], pageType, after = '', sendBar = null }) {
   const runtime = { copy: t.ui.copy, copied: t.ui.copied, linkCopied: '', tocButton: '', tocClose: '' };
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-${headBasics(t, c, { title, description, ogType: 'article', markdownHref, ld, pageType })}
+${headBasics(t, c, { title, description, ogType: 'article', markdownHref, ld, pageType, sendBar })}
 <link rel="stylesheet" href="${c.root}assets/docs/docs.css">
 <link rel="stylesheet" href="${c.root}assets/examples/pages.css">
 ${css.map((h) => `<link rel="stylesheet" href="${c.root}${h}">\n`).join('')}<script>document.documentElement.classList.add('js')</script>
@@ -382,7 +383,7 @@ export function renderP5(locale) {
   const nav = chapterNav(locale === 'zh' ? docsZh : docsEn, c, near(CHAPTERS[at - 1]), near(CHAPTERS[at + 1]));
   return markdownFrame(t, c, {
     title, description, markdownHref: `${c.root}${P5_SOURCE[locale]}`, ld, bodyClass: 'p5-page', chapter: 'p5', header, html, pageType: 'p5',
-    css: ['assets/reference/cheatsheet.css'], after: nav ? `\n  ${nav}\n` : '',
+    css: ['assets/reference/cheatsheet.css'], after: nav ? `\n  ${nav}\n` : '', sendBar: { [locale]: t.ui.send },
   });
 }
 

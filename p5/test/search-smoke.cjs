@@ -13,7 +13,7 @@
 //     covers another; the page does not scroll sideways
 //   · the dialog opens by clicking the button, by Ctrl+K, by "/" (where the page does not use "/" itself: the API reference does),
 //     and closes with Esc and with the × ; typing "micLevel" puts the API reference's micLevel first, under "API reference"
-//   · Enter goes to docs/reference/#micLevel and the card is on screen; "麥克風" finds micLevel from the Chinese pages (and the English);
+//   · Enter goes to micLevel's own page, docs/reference/mic-level/, and its heading is on screen; "麥克風" finds micLevel from the Chinese pages (and the English);
 //     a word of the handbook finds a handbook section; a word nothing has says so; the dialog fits the window (a phone: all of it)
 // Exit code 1 when any row fails.
 const fs = require('fs'), path = require('path'), http = require('http'), os = require('os');
@@ -80,7 +80,7 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
         await page.keyboard.type('micLevel');
         await page.waitForSelector('.os-item', { timeout: 5000 });
         const first = await page.evaluate(() => { const a = document.querySelector('.os-item a'); return { href: a && a.getAttribute('href'), group: a && a.closest('.os-group').querySelector('.os-h').textContent, title: a && a.querySelector('.os-t').textContent, selected: !!document.querySelector('.os-item.is-active') }; });
-        if (!/docs\/reference\/#micLevel$/.test(first.href || '')) problems.push(`"micLevel": the first result goes to ${first.href}`);
+        if (!/docs\/reference\/mic-level\/$/.test(first.href || '')) problems.push(`"micLevel": the first result goes to ${first.href}`);
         if (!/API/.test(first.group || '')) problems.push(`the first group is "${first.group}"`);
         if (zh && !/^\.\.\/\.\.\/|zh\/docs\/reference\//.test(first.href || '') && !/zh\//.test(first.href || '')) problems.push(`from a Chinese page the first result is not the Chinese one: ${first.href}`);
         if (!first.selected) problems.push('no result is selected (Enter would do nothing)');
@@ -89,7 +89,7 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
         await page.fill('.os-input', '麥克風');
         await page.waitForSelector('.os-item');
         const zhFirst = await page.evaluate(() => [...document.querySelectorAll('.os-item a')].slice(0, 3).map((a) => a.getAttribute('href')));
-        if (!zhFirst.some((x) => /docs\/reference\/#micLevel$/.test(x))) problems.push(`"麥克風": micLevel is not among the first three (${zhFirst.join(', ')})`);
+        if (!zhFirst.some((x) => /docs\/reference\/mic-level\/$/.test(x))) problems.push(`"麥克風": micLevel is not among the first three (${zhFirst.join(', ')})`);
         await page.fill('.os-input', 'relay');
         await page.waitForTimeout(150);
         const hb = await page.evaluate(() => [...document.querySelectorAll('.os-group')].map((g) => g.querySelector('.os-h').textContent));
@@ -118,7 +118,7 @@ const say = (ok, name, why) => { rows++; if (!ok) bad++; console.log(`${ok ? '�
         await page.keyboard.type('micLevel');
         await page.waitForSelector('.os-item');
         await page.keyboard.press('Enter');
-        await page.waitForFunction(() => /docs\/reference\/?(\?[^#]*)?#micLevel$/.test(location.pathname + location.search + location.hash), null, { timeout: 8000 });
+        await page.waitForFunction(() => /docs\/reference\/mic-level\/$/.test(location.pathname + location.search + location.hash), null, { timeout: 8000 });   // an oav-p5 name has its own page
         await page.waitForTimeout(600);
         const landed = await page.evaluate(() => { const e = document.getElementById('micLevel'); const r = e && e.getBoundingClientRect(); return { ok: !!e, top: r && Math.round(r.top), ih: innerHeight, hidden: !!(e && e.closest('.ref') && e.closest('.ref').hidden), url: location.pathname + location.hash }; });
         if (!landed.ok) problems.push('Enter: #micLevel is not on the page we landed on');

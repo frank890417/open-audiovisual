@@ -457,6 +457,26 @@ function legacyRedirect(cat) {
   return `(function(){var ids=${ids},m=/^#spec-([\\w-]+)$/.exec(location.hash),q=/[?&]profile=([\\w-]+)/.exec(location.search),id=m?m[1]:q&&q[1];if(!id||ids.indexOf(id)<0)return;var b=location.pathname.replace(/index\\.html$/,'');if(b.slice(-1)!=='/')b+='/';location.replace(b+id+'/')})()`;
 }
 
+/**
+ * The search box and the manufacturer filter, first in the page (on a phone, before the big controller): every controller with a
+ * page (the cards, the generic layouts and the imported list), found by name, model or maker, each a link to its page. The list
+ * is drawn by assets/controllers/controllers.js from a small JSON (no request); without JavaScript the form is not shown and the
+ * page below has every link anyway.
+ */
+export function findBlock(t, cat, locale) {
+  const F = t.find;
+  const maker = (p) => p.maker || t.catalog.badges.generic;
+  const rows = cat.pages.map((d) => ({ id: d.p.id, n: nameOf(d.p, locale), m: maker(d.p), a: [d.p.short, d.p.nameEn, d.p.name].filter(Boolean).join(' ') }));
+  const makers = [...new Set(rows.map((r) => r.m))].sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
+  return `<form class="find js-only" id="find" role="search" aria-label="${attr(F.label)}">
+    <label class="find-q"><span class="sr">${esc(F.label)}</span><input id="find-q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="${attr(F.placeholder)}"></label>
+    <label class="find-maker"><span class="sr">${esc(F.maker)}</span><select id="find-maker"><option value="">${esc(F.makerAll)}</option>${makers.map((m) => `<option value="${attr(m)}">${esc(m)}</option>`).join('')}</select></label>
+    <p class="find-shown" id="find-shown" aria-live="polite" data-tpl="${attr(F.shown)}" data-none="${attr(F.none)}" data-total="${rows.length}" hidden></p>
+    <ul class="find-list" id="find-list" hidden></ul>
+  </form>
+  <script type="application/json" id="ctl-find">${JSON.stringify(rows).replace(/</g, '\\u003c')}</script>`;
+}
+
 // ------------------------------------------------------------------ the page
 export function renderPage(t, home, locale) {
   const c = pageCtx('controllers', locale);
@@ -510,7 +530,7 @@ export function renderPage(t, home, locale) {
   return guardEmail(`<!DOCTYPE html>
 <html lang="${t.htmlLang}">
 <head>
-${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld, pageType: 'controllers_index' })}
+${headBasics(home, c, { title: t.meta.title, description: t.meta.description, ogDescription: t.meta.ogDescription, ld, pageType: 'controllers_index', sendBar: { [locale]: home.ui.send } })}
 <link rel="stylesheet" href="${c.root}assets/controllers/controllers.css">
 <noscript><style>.js-only { display: none !important; }</style></noscript>
 <script>${legacyRedirect(cat)}</script>
@@ -519,6 +539,7 @@ ${headBasics(home, c, { title: t.meta.title, description: t.meta.description, og
 ${topBar(home, c)}
 
 <main id="main">
+  ${findBlock(t, cat, locale)}
   ${noMidiStrip(t, c)}
 
   <!-- ═════ 01 · play: one live controller, any device, your hardware moves it ═════ -->

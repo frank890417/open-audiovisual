@@ -227,3 +227,24 @@ test('no Web MIDI: a hidden strip, shown by a script that asks the browser (no u
     assert.ok(!/userAgent|platform|navigator\.vendor/i.test(scripts[0]), 'no UA guessing');
   }
 });
+
+// ---------------------------------------------------------------------------- find a controller (first thing on a phone)
+test('controllers index: a search box and a manufacturer filter come first, over every controller page; faceplates wait on a phone', async () => {
+  const { catalog } = await import('../tools/controllers/page.mjs');
+  const cat = catalog();
+  for (const rel of ['controllers/index.html', 'zh/controllers/index.html']) {
+    const s = read(rel);
+    const main = s.slice(s.indexOf('<main id="main">'));
+    assert.ok(/^<main id="main">\s*<form class="find js-only" id="find" role="search"/.test(main), `${rel}: the search form is the first thing in <main>`);
+    assert.match(main, /<input id="find-q" type="search"/);
+    const rows = JSON.parse(/<script type="application\/json" id="ctl-find">([\s\S]*?)<\/script>/.exec(s)[1]);
+    assert.deepEqual(rows.map((r) => r.id).sort(), cat.pages.map((d) => d.p.id).sort(), `${rel}: every controller page, once`);
+    const makers = [...main.matchAll(/<option value="([^"]+)">/g)].map((m) => m[1]).filter((m) => !/^[\w-]+$/.test(m) || rows.some((r) => r.m === m));
+    for (const r of rows) assert.ok(makers.includes(r.m.replace(/&/g, '&amp;')), `${rel}: ${r.m} is in the manufacturer filter`);
+  }
+  const css = read('assets/controllers/controllers.css');
+  assert.match(css, /@media \(max-width: 760px\) \{\s*\.card-face \{ content-visibility: auto;/, 'faceplates are drawn when they come near, on a phone');
+  assert.ok(read('controllers/index.html').includes('<svg class="fp"'), 'the faceplates are still in the HTML a crawler reads');
+  const js = read('assets/controllers/controllers.js');
+  assert.match(js, /\$\('#ctl-find'\)/, 'the script reads the list from the page, no request');
+});

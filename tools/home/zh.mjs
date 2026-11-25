@@ -26,6 +26,8 @@ export default {
   },
 
   ui: {
+    // 手機上首頁、/zh/p5/、範例頁、/zh/controllers/ 與每台控制器頁的那一條（assets/send-bar.js）
+    send: { send: '把這一頁傳到電腦', copied: '已複製連結，到電腦上打開。', close: '關閉' },
     skip: '跳到主要內容',
     navLabel: '頁面區塊',
     nav: { play: '彈奏', how: '運作方式', works: '作品', start: '開始', controllers: '控制器', docs: '文件', webtoe: 'WebToe', agents: '給 AI 代理' },

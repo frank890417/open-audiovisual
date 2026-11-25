@@ -45,6 +45,15 @@ export default {
     controlsN: '{n} controls',
   },
 
+  // the search box and manufacturer filter at the top of /controllers/ (first thing on a phone): every controller page, by name or maker
+  find: {
+    label: 'Find a controller',
+    placeholder: 'Name or model: “lpd8”, “minilab”',
+    maker: 'Manufacturer',
+    makerAll: 'Any manufacturer',
+    shown: '{n} of {total}',
+    none: 'Nothing matches. Try fewer letters, or any manufacturer.',
+  },
   catalog: {
     eyebrow: '02 · Catalog',
     title: 'Every controller in the library',
