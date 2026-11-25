@@ -1,0 +1,23 @@
+{
+  "format": "open-audiovisual/align@1",
+  "id": "led-wall-two-outputs",
+  "aliases": ["led-band"],
+  "title": "An LED band 24 m × 1.5 m (7680 × 480, 320 px a metre) folded into two 1920 × 1080 outputs, two quarters each",
+  "art": { "w": 7680, "h": 480, "meters": { "w": 24, "h": 1.5 } },
+  "segments": [
+    { "id": "Q1", "x": 0,    "y": 0, "w": 1920, "h": 480, "meters": { "w": 6, "h": 1.5 }, "label": "first quarter",  "color": ["#2f6f9f", "#9cc3df"] },
+    { "id": "Q2", "x": 1920, "y": 0, "w": 1920, "h": 480, "meters": { "w": 6, "h": 1.5 }, "label": "second quarter", "color": ["#7a4f9a", "#c3a6d6"] },
+    { "id": "Q3", "x": 3840, "y": 0, "w": 1920, "h": 480, "meters": { "w": 6, "h": 1.5 }, "label": "third quarter",  "color": ["#4f8a3a", "#b0d39f"] },
+    { "id": "Q4", "x": 5760, "y": 0, "w": 1920, "h": 480, "meters": { "w": 6, "h": 1.5 }, "label": "fourth quarter", "color": ["#9a6a2f", "#dcc09a"] }
+  ],
+  "outputs": [
+    { "id": "A", "x": 0,    "y": 0, "w": 1920, "h": 1080, "label": "output A" },
+    { "id": "B", "x": 1920, "y": 0, "w": 1920, "h": 1080, "label": "output B" }
+  ],
+  "feeds": [
+    { "segment": "Q1", "output": "A", "x": 0, "y": 0 },
+    { "segment": "Q2", "output": "A", "x": 0, "y": 480 },
+    { "segment": "Q3", "output": "B", "x": 0, "y": 0 },
+    { "segment": "Q4", "output": "B", "x": 0, "y": 480 }
+  ]
+}

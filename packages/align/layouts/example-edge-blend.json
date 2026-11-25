@@ -1,0 +1,21 @@
+{
+  "format": "open-audiovisual/align@1",
+  "id": "example-edge-blend",
+  "title": "Two 1920 × 1080 projectors side by side, overlapping by 192 px: an art canvas of 3648 × 1080",
+  "notes": [
+    "How to write a blend band: the two segments share 192 px of the art canvas (L's right edge, R's left edge), each declares a band of the same width, and in the overlap their weights add up to 1 everywhere."
+  ],
+  "art": { "w": 3648, "h": 1080 },
+  "segments": [
+    { "id": "L", "x": 0,    "y": 0, "w": 1920, "h": 1080, "label": "left", "plan": 1, "blend": { "r": 192, "curve": "cosine", "gamma": 2.2 } },
+    { "id": "R", "x": 1728, "y": 0, "w": 1920, "h": 1080, "label": "right", "plan": 2, "blend": { "l": 192, "curve": "cosine", "gamma": 2.2 } }
+  ],
+  "outputs": [
+    { "id": "left",  "x": 0,    "y": 0, "w": 1920, "h": 1080, "label": "projector left" },
+    { "id": "right", "x": 1920, "y": 0, "w": 1920, "h": 1080, "label": "projector right" }
+  ],
+  "feeds": [
+    { "segment": "L", "output": "left",  "x": 0, "y": 0 },
+    { "segment": "R", "output": "right", "x": 0, "y": 0 }
+  ]
+}

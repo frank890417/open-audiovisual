@@ -1,0 +1,20 @@
+{
+  "format": "open-audiovisual/align@1",
+  "id": "stacked-double",
+  "title": "One picture from two projectors on top of each other (twice the light): 1920 × 1200 into two outputs",
+  "notes": [
+    "The two feeds of one segment get two colours on the cells pattern: when the projectors line up the colours mix evenly, when they do not a coloured fringe shows."
+  ],
+  "art": { "w": 1920, "h": 1200 },
+  "segments": [
+    { "id": "S", "x": 0, "y": 0, "w": 1920, "h": 1200, "label": "screen" }
+  ],
+  "outputs": [
+    { "id": "upper", "x": 0,    "y": 0, "w": 1920, "h": 1200, "label": "projector upper" },
+    { "id": "lower", "x": 1920, "y": 0, "w": 1920, "h": 1200, "label": "projector lower" }
+  ],
+  "feeds": [
+    { "name": "S1", "segment": "S", "output": "upper", "x": 0, "y": 0, "color": ["#2f8b83", "#a6cbc7"] },
+    { "name": "S2", "segment": "S", "output": "lower", "x": 0, "y": 0, "color": ["#8a3f6f", "#d3a3c3"] }
+  ]
+}

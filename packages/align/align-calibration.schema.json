@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openaudiovisual.com/packages/align/align-calibration.schema.json",
+  "title": "open-audiovisual/align-calibration@1: a manual calibration of a layout",
+  "description": "For each variant (a layout of the work) and each tile of it, a zone: where its four corners land on the desktop (px), a mesh of shifts on top, the feather of each edge, a gamma, a gain and black masks (@openav/align, normalizeCalibration). A file written as art-align-cal/v1 (key \"contract\") reads unchanged.",
+  "type": "object",
+  "required": ["variants"],
+  "anyOf": [{ "required": ["format"] }, { "required": ["contract"] }],
+  "properties": {
+    "format": { "enum": ["open-audiovisual/align-calibration@1", "art-align-cal/v1"] },
+    "contract": { "enum": ["open-audiovisual/align-calibration@1", "art-align-cal/v1"], "description": "art-align's name for format" },
+    "savedAt": { "type": ["string", "null"] },
+    "variants": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object", "required": ["zones"],
+        "properties": { "zones": { "type": "object", "additionalProperties": { "$ref": "#/$defs/zone" } } }
+      }
+    }
+  },
+  "$defs": {
+    "point": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+    "zone": {
+      "type": "object",
+      "properties": {
+        "corners": { "type": "array", "items": { "$ref": "#/$defs/point" }, "minItems": 4, "maxItems": 4, "description": "the segment's top-left, top-right, bottom-right, bottom-left, desktop px" },
+        "mesh": {
+          "type": "object", "required": ["cols", "rows", "d"],
+          "properties": { "cols": { "type": "integer", "minimum": 2, "maximum": 9 }, "rows": { "type": "integer", "minimum": 2, "maximum": 9 }, "d": { "type": "array", "items": { "$ref": "#/$defs/point" }, "description": "cols × rows shifts, desktop px, row by row" } }
+        },
+        "feather": { "type": "object", "properties": { "l": { "$ref": "#/$defs/share" }, "r": { "$ref": "#/$defs/share" }, "t": { "$ref": "#/$defs/share" }, "b": { "$ref": "#/$defs/share" } } },
+        "gamma": { "type": "number", "minimum": 0.5, "maximum": 4 },
+        "gain": { "type": "number", "minimum": 0, "maximum": 1.5 },
+        "masks": { "type": "array", "maxItems": 8, "items": { "type": "object", "properties": { "u": { "$ref": "#/$defs/unit" }, "v": { "$ref": "#/$defs/unit" }, "w": { "$ref": "#/$defs/unit" }, "h": { "$ref": "#/$defs/unit" } } } }
+      }
+    },
+    "share": { "type": "number", "minimum": 0, "maximum": 0.5 },
+    "unit": { "type": "number", "minimum": 0, "maximum": 1 }
+  }
+}

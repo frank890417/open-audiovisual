@@ -1,0 +1,40 @@
+{
+  "format": "open-audiovisual/align@1",
+  "id": "room-corner",
+  "title": "Two walls meeting in a corner and the floor in front of them, three projectors on one 4K output cut 2 × 2",
+  "art": { "w": 3200, "h": 1700 },
+  "segments": [
+    { "id": "WL", "x": 0,    "y": 0,   "w": 1600, "h": 900, "meters": { "w": 4, "h": 2.25 }, "label": "left wall",  "plan": 1 },
+    { "id": "WR", "x": 1600, "y": 0,   "w": 1600, "h": 900, "meters": { "w": 4, "h": 2.25 }, "label": "right wall", "plan": 2,
+      "masks": [{ "x": 1100, "y": 300, "w": 300, "h": 600, "label": "door" }] },
+    { "id": "FL", "x": 0,    "y": 900, "w": 1600, "h": 800, "meters": { "w": 4, "h": 2 },    "label": "floor",      "plan": 3 }
+  ],
+  "outputs": [
+    { "id": "O", "x": 0, "y": 0, "w": 3840, "h": 2160, "label": "4K output", "cuts": { "cols": 2, "rows": 2 } }
+  ],
+  "feeds": [
+    { "segment": "WL", "output": "O", "x": 160,  "y": 90 },
+    { "segment": "WR", "output": "O", "x": 2080, "y": 90 },
+    { "segment": "FL", "output": "O", "x": 160,  "y": 1170, "rotate": 180 }
+  ],
+  "params": {
+    "floor_turn": {
+      "default": 180, "options": [0, 180], "status": "assumed",
+      "note": "Which way the floor projector faces: 180 when it hangs over the open side of the room looking back at the corner.",
+      "ask": "The rigger: does the floor projector face the corner or the open side?"
+    },
+    "door_mask": {
+      "default": true, "options": [true, false], "status": "decided",
+      "note": "Black out the door in the right wall, so nobody walking in is lit."
+    }
+  },
+  "ident": {
+    "surfaces": [
+      { "id": "L", "x": 0,    "y": 0,   "w": 1600, "h": 900, "meters": { "w": 4, "h": 2.25 }, "name": "left wall",  "big": "L", "hue": 205, "edges": { "right": "right wall ▶" } },
+      { "id": "R", "x": 1600, "y": 0,   "w": 1600, "h": 900, "meters": { "w": 4, "h": 2.25 }, "name": "right wall", "big": "R", "hue": 25,  "edges": { "left": "◀ left wall" } },
+      { "id": "F", "x": 0,    "y": 900, "w": 1600, "h": 800, "meters": { "w": 4, "h": 2 },    "name": "floor",      "big": "F", "hue": 130, "edges": { "top": "▲ the walls" } }
+    ],
+    "sweep": ["L", "R"],
+    "sweepFloor": "F"
+  }
+}

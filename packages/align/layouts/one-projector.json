@@ -1,0 +1,15 @@
+{
+  "format": "open-audiovisual/align@1",
+  "id": "one-projector",
+  "title": "One projector, 1920 × 1080, 1:1",
+  "art": { "w": 1920, "h": 1080 },
+  "segments": [
+    { "id": "P", "x": 0, "y": 0, "w": 1920, "h": 1080, "label": "screen", "plan": 1 }
+  ],
+  "outputs": [
+    { "id": "main", "x": 0, "y": 0, "w": 1920, "h": 1080, "label": "projector" }
+  ],
+  "feeds": [
+    { "segment": "P", "output": "main", "x": 0, "y": 0 }
+  ]
+}

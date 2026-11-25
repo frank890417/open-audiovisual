@@ -326,7 +326,7 @@ document.getElementById('app').innerHTML = ['good: ' + JSON.stringify(good), ...
         caption: { en: 'Prints "good: []", then five problems for the bad layout: the page id, the unknown type, the duplicate id, the missing id and min equal to max.', zh: '印出「good: []」，然後是有問題的版面的五個問題：頁面 id、不認得的類型、重複的 id、缺少的 id、以及 min 等於 max。' },
       },
     ],
-    related: ['normalizeLayout', 'Surface', 'WIDGET_TYPES'],
+    related: ['surface-normalizeLayout', 'Surface', 'WIDGET_TYPES'],
     keywords: {
       en: ['validate', 'layout', 'check layout', 'errors', 'problems', 'lint', 'layout json'],
       zh: ['驗證', '版面', '檢查版面', '錯誤', '問題', '版面 json'],
@@ -485,7 +485,7 @@ document.getElementById('app').innerHTML = [r.source, ...r.placements.map((p) =>
         caption: { en: 'Prints "explicit": a goes where the portrait entry says, the knob and the button (which have no place) fill the free cells.', zh: '印出「explicit」：a 照 portrait 項目寫的位置放，旋鈕和按鈕（沒有位置）填進空的格子。' },
       },
     ],
-    related: ['autoArrange', 'stretchRows', 'orientationOf', 'gridOrientation', 'normalizeLayout', 'Surface'],
+    related: ['autoArrange', 'stretchRows', 'orientationOf', 'gridOrientation', 'surface-normalizeLayout', 'Surface'],
     keywords: {
       en: ['resolve page', 'orientation', 'portrait', 'landscape', 'reflow', 'responsive', 'grid', 'placements', 'rotate phone'],
       zh: ['解析頁面', '方向', '直向', '橫向', '重排', '響應式', '格線', '位置', '轉手機'],
@@ -625,7 +625,7 @@ document.getElementById('app').innerHTML = names.join('<br>');`,
         caption: { en: 'Prints surface/main/hue, then pos/x, pos/y, pos/down, then mix/1 and mix/2: the label gives nothing.', zh: '印出 surface/main/hue，然後是 pos/x、pos/y、pos/down，再來是 mix/1 和 mix/2：label 什麼都不給。' },
       },
     ],
-    related: ['WIDGET_TYPES', 'normalizeLayout', 'routesFromLayout'],
+    related: ['WIDGET_TYPES', 'surface-normalizeLayout', 'routesFromLayout'],
     keywords: {
       en: ['signal names', 'list signals', 'layout signals', 'outputs', 'what does it publish'],
       zh: ['訊號名稱', '列出訊號', '版面訊號', '輸出', '會發布什麼'],

@@ -1,0 +1,13 @@
+{
+  "name": "@openav/align",
+  "version": "0.1.0",
+  "description": "Projection and LED alignment from one layout file (open-audiovisual/align@1): test patterns, a vendor chart and the real output mapping read the same data; a manual calibration (four corners, mesh, feathered edges, masks, brightness) with an align mode and a store; the Gray-code pattern generator for camera-in-the-loop alignment (the camera half is not built). No dependencies; three.js is passed in.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./layouts/*": "./layouts/*"
+  },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/frank890417/open-audiovisual.git", "directory": "packages/align" }
+}

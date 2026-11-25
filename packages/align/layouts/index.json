@@ -1,0 +1,7 @@
+[
+  { "id": "one-projector", "file": "one-projector.json" },
+  { "id": "example-edge-blend", "file": "example-edge-blend.json" },
+  { "id": "led-wall-two-outputs", "file": "led-wall-two-outputs.json" },
+  { "id": "stacked-double", "file": "stacked-double.json" },
+  { "id": "room-corner", "file": "room-corner.json" }
+]

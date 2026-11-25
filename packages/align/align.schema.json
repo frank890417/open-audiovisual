@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openaudiovisual.com/packages/align/align.schema.json",
+  "title": "open-audiovisual/align@1: a layout (how a wall is built and wired)",
+  "description": "One file drives the test patterns, the vendor chart and the real output mapping (@openav/align). A file written as art-align/v1 (key \"contract\") reads unchanged. validateLayout() checks more than this schema can say: pixels inside the canvas, outputs that do not overlap, feeds inside their output, unique names.",
+  "type": "object",
+  "required": ["id", "art", "segments", "outputs", "feeds"],
+  "anyOf": [{ "required": ["format"] }, { "required": ["contract"] }],
+  "properties": {
+    "format": { "enum": ["open-audiovisual/align@1", "art-align/v1"] },
+    "contract": { "enum": ["open-audiovisual/align@1", "art-align/v1"], "description": "art-align's name for format" },
+    "id": { "$ref": "#/$defs/id" },
+    "title": { "type": "string" },
+    "aliases": { "type": "array", "items": { "type": "string" } },
+    "art": { "type": "object", "required": ["w", "h"], "properties": { "w": { "$ref": "#/$defs/size" }, "h": { "$ref": "#/$defs/size" }, "meters": { "$ref": "#/$defs/meters" } } },
+    "cells": { "type": "object", "required": ["size"], "properties": { "size": { "$ref": "#/$defs/size" } } },
+    "desktop": { "type": "object", "required": ["w", "h"], "properties": { "w": { "$ref": "#/$defs/size" }, "h": { "$ref": "#/$defs/size" } } },
+    "segments": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["id", "x", "y", "w", "h"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" }, "x": { "$ref": "#/$defs/pos" }, "y": { "$ref": "#/$defs/pos" }, "w": { "$ref": "#/$defs/size" }, "h": { "$ref": "#/$defs/size" },
+          "meters": { "$ref": "#/$defs/meters" }, "color": { "$ref": "#/$defs/color" }, "label": { "type": "string" }, "plan": { "type": ["string", "number"] },
+          "cells": { "type": "object", "required": ["size"], "properties": { "size": { "$ref": "#/$defs/size" } } },
+          "blend": {
+            "type": "object",
+            "properties": { "l": { "$ref": "#/$defs/pos" }, "r": { "$ref": "#/$defs/pos" }, "t": { "$ref": "#/$defs/pos" }, "b": { "$ref": "#/$defs/pos" }, "curve": { "enum": ["linear", "cosine", "smoothstep"] }, "gamma": { "type": "number", "exclusiveMinimum": 0 } }
+          },
+          "masks": { "type": "array", "items": { "type": "object", "required": ["x", "y", "w", "h"], "properties": { "x": { "$ref": "#/$defs/pos" }, "y": { "$ref": "#/$defs/pos" }, "w": { "$ref": "#/$defs/size" }, "h": { "$ref": "#/$defs/size" }, "label": { "type": "string" } } } }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["id", "x", "y", "w", "h"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" }, "x": { "$ref": "#/$defs/pos" }, "y": { "$ref": "#/$defs/pos" }, "w": { "$ref": "#/$defs/size" }, "h": { "$ref": "#/$defs/size" },
+          "label": { "type": "string" },
+          "cuts": { "type": "object", "properties": { "cols": { "$ref": "#/$defs/size" }, "rows": { "$ref": "#/$defs/size" } } }
+        }
+      }
+    },
+    "feeds": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["segment", "output", "x", "y"],
+        "properties": {
+          "segment": { "type": "string" }, "output": { "type": "string" }, "name": { "$ref": "#/$defs/id" },
+          "x": { "$ref": "#/$defs/pos" }, "y": { "$ref": "#/$defs/pos" }, "w": { "$ref": "#/$defs/size" }, "h": { "$ref": "#/$defs/size" },
+          "rotate": { "enum": [0, 90, 180, 270] }, "color": { "$ref": "#/$defs/color" },
+          "visible": { "type": "object", "properties": { "x": { "$ref": "#/$defs/pos" }, "y": { "$ref": "#/$defs/pos" }, "w": { "$ref": "#/$defs/size" }, "h": { "$ref": "#/$defs/size" } } }
+        }
+      }
+    },
+    "vendor": {
+      "type": "array",
+      "items": { "type": "object", "required": ["file"], "properties": { "file": { "type": "string", "minLength": 1 }, "output": { "type": "string" }, "rect": { "type": "object", "required": ["x", "y", "w", "h"] } } }
+    },
+    "params": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object", "required": ["default", "note", "status"],
+        "properties": { "value": {}, "default": {}, "options": { "type": "array", "minItems": 1 }, "status": { "enum": ["decided", "assumed"] }, "note": { "type": "string", "minLength": 1 }, "ask": { "type": "string" } }
+      }
+    },
+    "ident": {
+      "type": "object", "required": ["surfaces"],
+      "properties": {
+        "surfaces": { "type": "array", "items": { "type": "object", "required": ["id", "x", "y", "w", "h"], "properties": { "id": { "type": "string" }, "x": { "type": "integer" }, "y": { "type": "integer" }, "w": { "type": "integer" }, "h": { "type": "integer" }, "meters": { "$ref": "#/$defs/meters" }, "name": { "type": "string" }, "big": { "type": "string" }, "letter": { "type": "string" }, "sub": { "type": "string" }, "hue": { "type": "number" }, "edges": { "type": "object" }, "arrow": { "const": "up" } } } },
+        "sweep": { "type": "array", "items": { "type": "string" } },
+        "sweepFloor": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.@-]{0,47}$" },
+    "pos": { "type": "integer", "minimum": 0 },
+    "size": { "type": "integer", "minimum": 1 },
+    "meters": { "type": "object", "required": ["w", "h"], "properties": { "w": { "type": "number", "exclusiveMinimum": 0 }, "h": { "type": "number", "exclusiveMinimum": 0 } } },
+    "color": { "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 2 }] }
+  }
+}

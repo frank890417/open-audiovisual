@@ -48,6 +48,8 @@ export const CATEGORIES = [
     hint: { en: 'An output window, four-corner correction, crops for several projectors, a clean address for OBS and TouchDesigner.', zh: '輸出視窗、四角校正、多台投影機的裁切、給 OBS 和 TouchDesigner 的乾淨網址。' } },
   { id: 'tile', en: 'Several screens, one canvas (@openav/tile)', zh: '多螢幕拼接（@openav/tile）',
     hint: { en: 'Screens lying on a table placed by one photo of their markers, a shared clock, the piece of the canvas each one draws.', zh: '平放在桌上的螢幕，拍一張標記照片定位，共同時鐘，每台各畫畫布的哪一塊。' } },
+  { id: 'align', en: 'Alignment of projectors and LED walls (@openav/align)', zh: '投影與 LED 牆對位（@openav/align）',
+    hint: { en: 'One layout file for the test patterns, the vendor chart and the output mapping; corners, mesh, feather and masks by hand; the Gray-code frames.', zh: '一份佈局檔驅動校正圖樣、廠商對位圖和輸出映射，手動調四角、網格、羽化和遮罩，以及格雷碼圖樣。' } },
   { id: 'mapping', en: 'Mapping (@openav/mapping)', zh: '映射（@openav/mapping）',
     hint: { en: 'Routes from signals to params, curves, smoothing, learn.', zh: '從訊號到參數的路由、曲線、平滑、learn。' } },
   { id: 'core', en: 'Core: signals, params, stage, show', zh: '核心：訊號、參數、舞台、演出',
@@ -73,5 +75,5 @@ export const PACKAGE_CATEGORY = {
   audio: 'mic', chop: 'chop', chord: 'chord', console: 'backstage', core: 'core', devices: 'devices', dmx: 'dmx', drums: 'drums', fab: 'fab', hw: 'hw', keys: 'keys', leap: 'leap',
   mapping: 'mapping', mcp: 'mcp', midi: 'midi-io', monitor: 'backstage', osc: 'osc', out: 'osc', output: 'output', pattern: 'drums', pose: 'pose', record: 'record',
   relay: 'remote', remote: 'remote', score: 'timeline', show: 'core', sound: 'sound', stage: 'core', surface: 'remote', timeline: 'timeline',
-  'world-webtoe': 'core', sync: 'core', tile: 'tile',
+  'world-webtoe': 'core', sync: 'core', tile: 'tile', align: 'align',
 };
