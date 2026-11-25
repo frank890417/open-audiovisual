@@ -7,7 +7,7 @@
 | L1 輸入 | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 映射 | `mapping` · `chop` |
 | L3 世界 | `stage` · `world-webtoe` |
-| L4 輸出 | `sound` · `osc` · `out` · `dmx` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
+| L4 輸出 | `sound` · `osc` · `out` · `dmx` · `output` · `record` · `fab`（MIDI 輸出在 `midi` 裡） |
 | 主軸 | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | 手機 | `relay` · `surface` · `remote` |
 | 膠水 | `core` · `show` · `devices` · `mcp` |
@@ -35,7 +35,7 @@ signals.set('breath/pressure', 0.4);
 
 ## @openav/show
 
-膠水 · `createShow(options)`：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見[演出控制](show-control.md#createshow)；`loop`、`monitor`、`console`（控台的 `keys`）決定誰來給影格、後台推送送去哪裡、哪些鍵操作控台。`sync` 讓這個頁面成為好幾個演同一場的頁面之一（主控端或從屬端，見 [`@openav/sync`](#openav-sync)）。
+膠水 · `createShow(options)`：呼叫一次，以一個世界為中心組好整場演出，再把每個部分交給你。選項、模組和回傳值見[演出控制](show-control.md#createshow)；`loop`、`monitor`、`console`（控台的 `keys`）決定誰來給影格、後台推送送去哪裡、哪些鍵操作控台。`sync` 讓這個頁面成為好幾個演同一場的頁面之一（主控端或從屬端，見 [`@openav/sync`](#openav-sync)）。同一個頁面加上 `?output` 就是乾淨的輸出：只剩黑底上的舞台，沒有控台（[`@openav/output`](#openav-output)）。
 
 ```js
 import { createShow } from '@openav/show';
@@ -293,6 +293,20 @@ L4 輸出（燈光）· 從網頁打 DMX，全部是純邏輯：燈具 profile�
 | 協定 | `encodeArtDmx(data, { universe, sequence, physical })`／`decodeArtDmx(bytes)`（ArtDmx，UDP 6454）· `encodeSacn(data, { universe, cid, source, priority, sequence })`／`decodeSacn(bytes)` · `sacnAddress(universe)`（E1.31，UDP 5568）· `encodeEnttecDmx(data)`／`decodeEnttecDmx(bytes)`（DMX USB Pro，label 6） |
 
 `node tools/import-ofl.mjs <OFL 的 checkout> --list tools/ofl/batch-1.json` 把 Open Fixture Library（MIT）的燈具轉成這個格式（也可以直接指定：`… fixtures/<廠牌>/<燈具>.json`），引擎在真燈上會弄錯的燈具會被擋下來。`fixtures/imported/` 裡有四十二台，全部是 `"verified": false`。它們不在 `FIXTURES` 裡，用 `@openav/dmx/fixtures/imported.js` 的 `loadImportedFixture(id)`（或 `@openav/devices` 的 `device(id)`）載入要的那一台。Art-Net™ Designed by and Copyright Artistic Licence.
+
+## @openav/output
+
+L4 輸出（畫面）· 把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。輸出視窗可以鏡像舞台的畫布（`captureStream()` 放進 `<video>`：只算一次，畫面完全一樣），或用乾淨網址把同一個頁面再開一次，當成同步的從屬端。瀏覽器有 Window Management API 而且允許時，可以在選定的螢幕全螢幕（只在輸出視窗裡點擊時才詢問）。四角校正是一個 CSS `matrix3d` 單應矩陣，另有翻轉、轉 90°、黑邊和柔邊，用四個把手和測試圖編輯，依輸出名字存下來。一張畫布可以切給並排的投影機（沒有邊緣融合）。`output/<name>/blackout` 和 `output/<name>/brightness` 是參數。任何 `createShow()` 的頁面加上 `?output` 就是乾淨的輸出（`&follow=oav-output` 跟隨，`&play` 開始播放）。說明在 [投影與影像輸出](output.md)。
+
+| 匯出 | 簽章 |
+|---|---|
+| `createOutputs` | `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage })` → `{ names, open(name, { mode }), close(name), get(name), edit(name, on), pattern(name, on), lead({ channel, via }), url(name, o), exportLayout(), importLayout(doc), keys(name) }`，也放在 `show.outputs`。載入時就加好參數，舞台框成 `aspect`，控台多一個 L4 · Output 面板 |
+| `openOutput` | `openOutput(source, { name = 'main', crop, fit = 'contain', mode = 'mirror', params, timeline, features, aspect, via, channel = 'oav-output', storage })` → `{ name, mode, window, closed, edit(on), pattern(on), room, set(partial), reset(), close() }`，要在點擊時呼叫 |
+| 四角校正 | `cornerPin(corners, width = 1, height = 1)` → 9 個數字（不是凸四邊形時丟出錯誤）· `toMatrix3d(H)` → `'matrix3d(…)'` |
+| 裁切 | `cropBox({ crop, source, box, fit = 'contain' })` → `{ clip, source }` |
+| 設定檔 | `OUTPUT_FORMAT`（`'open-audiovisual/output@1'`）· `parseOutputLayout(doc)` → `{ format, outputs }`（一個錯誤列出所有問題） |
+| 參數 | `outputParams(names)` → `output/<name>/blackout`（0 或 1）和 `output/<name>/brightness`（0 到 1，預設 1）的參數設定 |
+| 乾淨網址 | `outputQuery(search)` → `null` 或 `{ name, crop, aspect, fit, follow, via, play }` · `outputUrl(base, { name, crop, aspect, fit, follow, via, play })` |
 
 ## @openav/record
 

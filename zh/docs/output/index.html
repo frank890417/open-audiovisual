@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>投影與影像輸出｜open-audiovisual</title>
+<meta name="description" content="把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。@openav/output（0.12.0 起）會開一個顯示舞台的輸出視窗，把畫面彎過去…">
+<link rel="canonical" href="https://openaudiovisual.com/zh/docs/output/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/output/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/output/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/output/">
+<link rel="describedby" href="../../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="投影與影像輸出｜open-audiovisual">
+<meta property="og:description" content="把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。@openav/output（0.12.0 起）會開一個顯示舞台的輸出視窗，把畫面彎過去…">
+<meta property="og:url" content="https://openaudiovisual.com/zh/docs/output/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="投影與影像輸出｜open-audiovisual">
+<meta name="twitter:description" content="把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。@openav/output（0.12.0 起）會開一個顯示舞台的輸出視窗，把畫面彎過去…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual：網頁原生的影音表演框架。訊號、映射、參數、世界。MIDI、音訊、和弦、手勢、手機。字標旁有一團橘色的諧波圖。">
+<link rel="icon" href="../../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<link rel="preload" href="../../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/home/home.css?v=7fe486df">
+<script type="module" src="../../../assets/search/search.js?v=7fe486df"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="output">
+<script defer src="../../../assets/track.js?v=7fe486df"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.11.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/zh/docs/output/#article","url":"https://openaudiovisual.com/zh/docs/output/","name":"投影與影像輸出｜open-audiovisual","description":"把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。@openav/output（0.12.0 起）會開一個顯示舞台的輸出視窗，把畫面彎過去…","inLanguage":"zh-Hant-TW","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"投影與影像輸出","version":"0.11.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["輸出視窗","投影機上的全螢幕","四角校正","黑場與亮度","一張畫布給兩台投影機","乾淨網址","做法：一般投影機","做法：TouchDesigner","做法：OBS","檢查了什麼"],"position":11,"breadcrumb":{"@id":"https://openaudiovisual.com/zh/docs/output/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/zh/docs/output/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/zh/"},{"@type":"ListItem","position":2,"name":"文件","item":"https://openaudiovisual.com/zh/docs/"},{"@type":"ListItem","position":3,"name":"投影與影像輸出","item":"https://openaudiovisual.com/zh/docs/output/"}]}]}</script>
+<link rel="stylesheet" href="../../../assets/docs/docs.css?v=7fe486df">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="top">
+  <a class="brand" href="../../../zh/" aria-label="open-audiovisual 首頁"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="頁面區塊">
+    <a href="../../../zh/#play">彈奏</a>
+    <a href="../../../zh/#how">運作方式</a>
+    <a href="../../../zh/#works">作品</a>
+    <a href="../../../zh/controllers/">控制器</a>
+    <a href="../../../zh/docs/" aria-current="page">文件</a>
+    <a href="../../../zh/webtoe/">WebToe</a>
+    <a href="../../../zh/#agents">給 AI 代理</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../../zh/docs/reference/" data-search data-placeholder="搜尋 API 參考、手冊、範例…" data-loading="正在載入索引…" aria-label="搜尋整個網站" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">搜尋</span></a>
+    <div class="langs" role="group" aria-label="語言">
+      <a href="../../../docs/output/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch">EN</a><span aria-hidden="true">|</span><a href="../../../zh/docs/output/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch" aria-current="page">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">目錄</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="文件目錄">
+      <p class="toc-title">章節</p>
+      <p class="toc-ref"><a href="../../../zh/docs/">所有章節</a></p>
+      <p class="toc-ref"><a href="../../../zh/docs/reference/">API 參考 ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../../zh/docs/introduction/"><span class="n">01</span><span class="t">簡介</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../../zh/docs/quick-start/"><span class="n">02</span><span class="t">快速開始</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../../zh/docs/concepts/"><span class="n">03</span><span class="t">核心概念</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../../zh/docs/architecture/"><span class="n">04</span><span class="t">架構</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../../zh/docs/writing-a-world/"><span class="n">05</span><span class="t">寫一個世界</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../../zh/docs/inputs/"><span class="n">06</span><span class="t">輸入</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../../zh/docs/mapping/"><span class="n">07</span><span class="t">映射</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../../zh/docs/show-control/"><span class="n">08</span><span class="t">演出控制</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../../zh/docs/score/"><span class="n">09</span><span class="t">總譜與導演</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../../zh/docs/dmx/"><span class="n">10</span><span class="t">DMX 燈光</span></a></li>
+        <li class="toc-ch is-here" data-ch="output">
+          <a href="#output" aria-current="page"><span class="n">11</span><span class="t">投影與影像輸出</span></a>
+          <ol class="toc-secs">
+            <li><a href="#output-the-output-window">輸出視窗</a></li>
+            <li><a href="#output-fullscreen-on-the-projector">投影機上的全螢幕</a></li>
+            <li><a href="#output-corner-pin">四角校正</a></li>
+            <li><a href="#output-blackout-and-brightness">黑場與亮度</a></li>
+            <li><a href="#output-two-projectors-from-one-canvas">一張畫布給兩台投影機</a></li>
+            <li><a href="#output-the-clean-address">乾淨網址</a></li>
+            <li><a href="#output-recipe-a-plain-projector">做法：一般投影機</a></li>
+            <li><a href="#output-recipe-touchdesigner">做法：TouchDesigner</a></li>
+            <li><a href="#output-recipe-obs">做法：OBS</a></li>
+            <li><a href="#output-what-was-checked">檢查了什麼</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../../zh/docs/controllers/"><span class="n">12</span><span class="t">MIDI 控制器與嵌入</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../../zh/docs/devices/"><span class="n">13</span><span class="t">設備</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../../zh/p5/"><span class="n">14</span><span class="t">p5.js 一行接上</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../../zh/docs/strudel/"><span class="n">15</span><span class="t">和 Strudel 一起用</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../../zh/docs/phones/"><span class="n">16</span><span class="t">手機、中繼與控制面板</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../../zh/docs/signals/"><span class="n">17</span><span class="t">訊號一覽</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../../zh/docs/packages/"><span class="n">18</span><span class="t">套件一覽</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../../zh/docs/agents/"><span class="n">19</span><span class="t">給 AI 代理</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../../zh/docs/lab-integration/"><span class="n">20</span><span class="t">實驗室整合（"lab" 欄位）</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../../zh/docs/troubleshooting/"><span class="n">21</span><span class="t">疑難排解</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../../zh/docs/roadmap/"><span class="n">22</span><span class="t">路線圖</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../../zh/docs/">文件</a></p>
+    <article class="chapter" data-chapter="output" aria-labelledby="output">
+<h1 id="output">投影與影像輸出<a class="anchor" href="#output" aria-label="這一節的連結">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">第 11 章，共 22 章</span><span>原始檔: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/zh/output.md">docs/zh/output.md</a></span></p>
+<p>把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner。<code>@openav/output</code>（0.12.0 起）會開一個顯示舞台的輸出視窗，把畫面彎過去，讓沒有正對牆面的投影機投出來還是長方形（四角校正），把一張畫布切給並排的好幾台投影機，並讓每個輸出都有黑場和亮度兩個參數。每一場演出也都有一個乾淨網址 <code>?output</code>：同一個頁面，只剩黑底上的舞台，給 kiosk 瀏覽器、OBS 的瀏覽器來源或 TouchDesigner 的 Web Render TOP 用。世界完全不知道這些事。範例 <a href="../../../examples/29-projector-output/">29 投影輸出</a> 在一個螢幕上就能跑完全部。</p>
+<h2 id="output-the-output-window">輸出視窗<a class="anchor" href="#output-the-output-window" aria-label="這一節的連結">#</a></h2>
+<p>在載入時宣告一次輸出，在點擊時開視窗（瀏覽器只在使用者有動作之後才開視窗）：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">import</span> { createOutputs } <span class="tk">from</span> <span class="ts">'@openav/output'</span>;      <span class="tc">// in the import map: "@openav/output": "../../packages/output/index.js?v=7fe486df"</span>
+
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({ world });
+<span class="tk">const</span> outputs = createOutputs(show, { outputs: [{ name: <span class="ts">'main'</span> }], aspect: 16 / 9 });
+button.onclick = () =&gt; outputs.open(<span class="ts">'main'</span>);</code></pre></div>
+<p><code>createOutputs</code> 會馬上加好 <code>output/main/blackout</code> 和 <code>output/main/brightness</code> 兩個參數，把這個頁面上的舞台框成 16:9（置中，四周黑色），讓世界畫出投影機的形狀，並在控台放一個 <strong>L4 · Output</strong> 面板：每個輸出有 <strong>Open</strong>（鏡像視窗）、<strong>Page</strong>（第二個頁面，見下面）、<strong>Edit</strong> 和 <strong>Grid</strong>，顯示它開著沒、多大，最下面是 <strong>Export layout</strong>、<strong>Import layout</strong> 和 <strong>Lead</strong>。不想先宣告的話，<code>openOutput(show, { name })</code> 對單一個輸出做一樣的事（參數在開視窗時才出現）。</p>
+<p>視窗是黑的，沒有控台，滑鼠兩秒不動游標就消失。視窗裡的按鍵：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>按鍵</th><th>做什麼</th></tr></thead>
+<tbody>
+<tr><td>F</td><td>全螢幕（再按一次離開）</td></tr>
+<tr><td>E</td><td>編輯四個角（見下面），做完再按 E 或 Esc</td></tr>
+<tr><td>G</td><td>測試圖：格線、十字、圓，四個邊各一種顏色（上紅、右綠、下藍、左黃）</td></tr>
+<tr><td>B</td><td>黑場開或關：它寫的是參數 <code>output/&lt;name&gt;/blackout</code>，所以控台看得到，按 ✕ 就清掉</td></tr>
+<tr><td>I</td><td>說明卡</td></tr>
+</tbody>
+</table></div>
+<p>這些按鍵屬於輸出視窗。演出本身的按鍵（空白鍵、方向鍵、R）收不到它們，輸出視窗的按鍵也從來不會動到演出。</p>
+<h3 id="output-mirror-or-page">鏡像或頁面<a class="anchor" href="#output-mirror-or-page" aria-label="這一節的連結">#</a></h3>
+<p>填滿一個輸出有兩種方式，世界哪一種都不需要知道。</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>鏡像（預設）</th><th>頁面</th></tr></thead>
+<tbody>
+<tr><td>怎麼做</td><td>舞台的畫布用 <code>canvas.captureStream()</code> 放進這個頁面開的視窗裡的 <code>&lt;video&gt;</code></td><td>這個頁面的乾淨網址 <code>?output=&lt;name&gt;&amp;follow=oav-output</code>，當成一個 <a href="../../../zh/docs/show-control/#show-control-several-pages-one-show">同步</a> 的從屬端</td></tr>
+<tr><td>看到什麼</td><td>跟舞台完全一樣：每個滑桿、每個音符、每顆隨機的粒子</td><td>同一個世界再畫一次：時鐘一樣，被握住的值一樣（滑桿、MIDI 旋鈕、黑場），訊號、隨機數和累加 <code>dt</code> 的東西不一樣</td></tr>
+<tr><td>解析度</td><td>舞台畫布在操作者頁面上的大小</td><td>輸出視窗自己的大小，自己的 GPU 運算</td></tr>
+<tr><td>時間</td><td>大約晚一幀（沒有在投影機上量過）</td><td>跟著時鐘：同一台機器差一兩幀，跨機器差大約一趟網路</td></tr>
+<tr><td>機器</td><td>同一台機器、同一個瀏覽器</td><td>同一個來源的任何頁面，或經過 <code>node serve.js</code> 的中繼到別的瀏覽器、別台機器</td></tr>
+<tr><td>演出頁面重新整理時</td><td>視窗停在最後一個畫面：從頁面再開一次（會回到同一個視窗）</td><td>那個頁面照最後的速度自己跑，等主控端回來</td></tr>
+<tr><td>演出頁面被藏起來時</td><td>降到 Loop 在背景分頁的速度：只有一個螢幕時，全螢幕的輸出蓋住演出頁面，就會藏起來</td><td>不受影響</td></tr>
+<tr><td>DOM 或 SVG 的世界</td><td>沒辦法鏡像（視窗會說明）</td><td>可以</td></tr>
+</tbody>
+</table></div>
+<p>預設是鏡像，因為它對畫面永遠是對的：只算一次，表演者彈什麼，觀眾就看到什麼。在 headless Chromium 151 量過：影片的大小跟畫布一模一樣，單色區塊的顏色差 0（沒有偏色）。頁面適合第二台機器、比操作者畫布還大的輸出，或不是畫布的世界。用 <code>outputs.open('main', { mode: 'page' })</code>，或按 <strong>Page</strong>。</p>
+<h2 id="output-fullscreen-on-the-projector">投影機上的全螢幕<a class="anchor" href="#output-fullscreen-on-the-projector" aria-label="這一節的連結">#</a></h2>
+<p>只有一個螢幕時，輸出就是一個視窗：在裡面按 F。接了投影機或第二個螢幕，就把視窗拖過去再按 F。瀏覽器有 Window Management API（<code>window.getScreenDetails</code>，Chromium 有），而且電腦回報不只一個螢幕時，視窗的說明卡還會有 <strong>Find the screens…</strong>：瀏覽器會問一次這個網站能不能在你所有螢幕上擺視窗，接著列出每個螢幕（<code>名稱 · 寬×高</code>），點哪一個就用 <code>requestFullscreen({ screen })</code> 在那個螢幕全螢幕。權限只會在輸出視窗裡點擊時才詢問，不會自己跳出來，之前允許過的話會直接列出螢幕，不再問。被拒絕，或沒有這個 API（Safari、Firefox）時，說明卡會寫出一定可行的作法：把視窗拖過去，按 F。（<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window_Management_API/Using" rel="noopener">MDN：Window Management API</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen" rel="noopener">Element.requestFullscreen</a>：全螢幕需要使用者的動作，所以這裡每一次全螢幕，都是輸出視窗自己的按鍵或點擊。）</p>
+<h2 id="output-corner-pin">四角校正<a class="anchor" href="#output-corner-pin" aria-label="這一節的連結">#</a></h2>
+<p>投影機沒有正對牆面，投出來就是梯形。在輸出視窗按 E，把四個有編號的把手拖到螢幕的四個角（或牆上你要的範圍），畫面就會彎過去，投出來是長方形。用 1 到 4（或 Tab）選一個角，用方向鍵一次移 1 px，按住 Shift 一次 10 px。調的時候打開測試圖（G）：角對了，格線是直的，每一格一樣大。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>按鍵（編輯中）</th><th></th></tr></thead>
+<tbody>
+<tr><td>拖把手，或 1–4、Tab 加方向鍵</td><td>移動一個角（Shift 乘以 10）</td></tr>
+<tr><td>H、V</td><td>左右鏡像（背投）、上下鏡像（倒吊又不能自己翻的投影機）</td></tr>
+<tr><td>O、Shift+O</td><td>畫面順時針轉 90°、轉回來（側放的投影機）</td></tr>
+<tr><td>[ ]</td><td>黑邊，每次每邊 0.5 %，最多 45 %（overscan：把掉出螢幕的邊拉回來）</td></tr>
+<tr><td>R、Shift+R</td><td>四個角回到視窗的四個角、全部回到預設</td></tr>
+</tbody>
+</table></div>
+<p>四個點剛好決定一個投影轉換（單應矩陣，homography）。<code>cornerPin(corners, width, height)</code> 算出它，<code>toMatrix3d()</code> 把它寫成 CSS 的 <code>matrix3d(…)</code>，瀏覽器就用 GPU 把整個輸出彎過去，畫面和測試圖一起彎，什麼都不用重畫。投影機投不出來的四邊形（一個角被推進去、兩條邊交叉、三個角在同一條線上）會被拒絕：那個角停在原處。柔邊（<code>soft</code>，0 到 0.5）讓畫面的邊在每邊這個比例內淡到黑，它是淡出，不是邊緣融合。</p>
+<h3 id="output-the-layout-file">設定檔<a class="anchor" href="#output-the-layout-file" aria-label="這一節的連結">#</a></h3>
+<p>每個改動都存在這個瀏覽器裡，鍵是 <code>oav-output:&lt;name&gt;</code>，所以場地的設定重新整理後還在，同一個瀏覽器裡同名的乾淨頁面也會用它。<strong>Export layout</strong> 把每個輸出的場地設定寫成一個檔案，帶到下一次排練，<strong>Import layout</strong> 先檢查檔案，再存下來，套用到開著的視窗：</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-json">{ <span class="ts">"format"</span>: <span class="ts">"open-audiovisual/output@1"</span>,
+  <span class="ts">"saved"</span>: <span class="ts">"2026-12-01T09:30:00.000Z"</span>,
+  <span class="ts">"outputs"</span>: {
+    <span class="ts">"main"</span>: { <span class="ts">"corners"</span>: [[0.02, 0.01], [0.97, 0.03], [0.99, 0.98], [0.01, 0.96]],
+              <span class="ts">"flipX"</span>: <span class="tk">false</span>, <span class="ts">"flipY"</span>: <span class="tk">false</span>, <span class="ts">"rotate"</span>: 0, <span class="ts">"overscan"</span>: 0, <span class="ts">"soft"</span>: 0 } } }</code></pre></div>
+<p>檔案記的是場地，程式碼記的是演出：檔案只存場地對每個輸出做了什麼（四個角，是輸出視窗的 0 到 1，翻轉、旋轉、黑邊、柔邊），從來不存它顯示什麼。裁切寫在程式碼裡。<code>parseOutputLayout()</code> 拒絕一個檔案時，會用一則訊息列出所有問題（<code>outputs.main.rotate: must be 0, 90, 180 or 270</code>），一次就能改好。</p>
+<h2 id="output-blackout-and-brightness">黑場與亮度<a class="anchor" href="#output-blackout-and-brightness" aria-label="這一節的連結">#</a></h2>
+<p>規則一：被演奏的東西都經過參數。每個輸出有兩個參數，在任何視窗打開之前就宣告好：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>參數</th><th>範圍</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>output/&lt;name&gt;/blackout</code></td><td>0 或 1</td><td>1：這個輸出全黑，不管它在顯示什麼</td></tr>
+<tr><td><code>output/&lt;name&gt;/brightness</code></td><td>0 到 1，預設 1</td><td>蓋在畫面上的一層黑紗（蓋 <code>1 - brightness</code>），不是投影機的燈泡</td></tr>
+</tbody>
+</table></div>
+<p>所以控台的滑桿、MIDI 推桿、時間軸和手機，推投影機的方式跟推世界一樣。範例 29 在時間軸的最後 8 秒把投影機淡出，也把它交給任何控制器的音量推桿：</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">timeline: { total: 48, automation: { <span class="ts">'output/main/brightness'</span>: [[0, 1], [40, 1], [48, 0]] } },
+routes: [{ source: <span class="ts">'midi/cc/7'</span>, target: <span class="ts">'output/main/brightness'</span> }],</code></pre></div>
+<h2 id="output-two-projectors-from-one-canvas">一張畫布給兩台投影機<a class="anchor" href="#output-two-projectors-from-one-canvas" aria-label="這一節的連結">#</a></h2>
+<p>一張寬畫布，兩台投影機並排：宣告兩個輸出，各自裁切舞台的一塊（<code>{ x, y, w, h }</code>，0 到 1），再把舞台的形狀設成兩台加起來的形狀。</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js"><span class="tk">const</span> outputs = createOutputs(show, {
+  outputs: [{ name: <span class="ts">'left'</span>, crop: { x: 0, y: 0, w: 0.5, h: 1 } }, { name: <span class="ts">'right'</span>, crop: { x: 0.5, y: 0, w: 0.5, h: 1 } }],
+  aspect: 32 / 9,                 <span class="tc">// two 16:9 projectors</span>
+});</code></pre></div>
+<p>每個輸出有自己的四個角、自己的參數和自己的視窗（各自用一次點擊打開：瀏覽器一個動作只開一個視窗）。形狀不同時，<code>fit</code> 決定裁切的畫面怎麼放進視窗：<code>contain</code>（預設，留黑邊）、<code>cover</code>（填滿，切掉多的）或 <code>stretch</code>。範例 29 加上 <code>?pair</code> 就是這樣。兩個畫面接起來的地方是一條硬接縫：邊緣融合（兩台投影機重疊、用對好的柔和斜坡和亮度接起來）不在這個套件裡。用一張照片拼出一整面投影牆是另一件事，另外有一個 pull request 在做（<code>@openav/tile</code>）。</p>
+<h2 id="output-the-clean-address">乾淨網址<a class="anchor" href="#output-the-clean-address" aria-label="這一節的連結">#</a></h2>
+<p>任何用 <code>createShow()</code> 做的頁面，網址說要的時候就變成乾淨的輸出。控台、鋼琴、提示、MIDI 按鈕、手機卡片、範例的導覽卡，以及演出自己標上 <code>oav-operator</code> 這個 class 的東西都不顯示，控台的按鍵也關掉。舞台在黑底上填滿視窗，用這個瀏覽器替那個輸出名字存下的四個角，按鍵跟輸出視窗一樣（E、G、F、B、I）。世界的作品署名留著：署名永遠不藏。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>鍵</th><th>例子</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>output</code></td><td><code>?output</code>、<code>?output=front</code></td><td>這個頁面是乾淨的輸出，名字是 <code>main</code> 或 <code>front</code></td></tr>
+<tr><td><code>crop</code></td><td><code>&amp;crop=0,0,0.5,1</code></td><td>舞台的 x、y、w、h，0 到 1。沒寫就用程式碼替那個名字宣告的裁切</td></tr>
+<tr><td><code>aspect</code></td><td><code>&amp;aspect=32:9</code></td><td>舞台的形狀。沒寫就用程式碼的 <code>aspect</code></td></tr>
+<tr><td><code>fit</code></td><td><code>&amp;fit=cover</code></td><td><code>contain</code>（預設）、<code>cover</code>、<code>stretch</code></td></tr>
+<tr><td><code>follow</code></td><td><code>&amp;follow=oav-output</code></td><td>跟著演出頁面的時鐘和被握住的值，自己不收輸入</td></tr>
+<tr><td><code>via</code></td><td><code>&amp;via=relay</code>、<code>&amp;via=ws://10.0.0.5:8080/relay</code></td><td>經過這台伺服器的 <code>/relay</code>（別的瀏覽器或別台機器）跟隨，而不是 BroadcastChannel</td></tr>
+<tr><td><code>play</code></td><td><code>&amp;play</code></td><td>一載入就播放時間軸：在 OBS 或 TouchDesigner 裡沒人能按空白鍵</td></tr>
+</tbody>
+</table></div>
+<p><code>outputs.url('main', { follow: 'oav-output', via: true })</code> 會替你寫出網址，面板上的 <strong>Lead</strong> 也會。頁面要能跟隨，演出頁面必須當主控端：按面板上的 <strong>Lead</strong>、在程式碼裡呼叫 <code>outputs.lead()</code>，或用 <code>?lead</code> 打開範例 29。跨瀏覽器（OBS 和 TouchDesigner 各自跑自己的瀏覽器）或跨機器時要經過中繼：在演出的機器上跑 <code>node serve.js</code>，用 <code>via=relay</code>。</p>
+<p>不跟隨的乾淨頁面會自己跑整場演出：它的時間軸只在有 <code>&amp;play</code> 時才播，輸入是演出宣告的那些，但沒有人在操作。跟隨的乾淨頁面不收輸入（鍵盤鋼琴、MIDI、麥克風、鏡頭、手機都關掉），顯示演出頁面的時鐘和被握住的值說的內容，在演出頁面彈的音符不會傳到它那裡。要一模一樣地帶出現場演奏，就用鏡像（見上面），或擷取演出頁面的視窗（OBS，見下面）。</p>
+<h2 id="output-recipe-a-plain-projector">做法：一般投影機<a class="anchor" href="#output-recipe-a-plain-projector" aria-label="這一節的連結">#</a></h2>
+<p>檢查過的：輸出視窗、它的按鍵、四角校正、重新整理後設定還在、乾淨網址，都在一台機器上的 headless Chromium 151 裡。還沒有：真的投影機、第二個實體螢幕，以及選螢幕時的權限詢問。</p>
+<ol>
+<li>從這台機器跑演出：<code>node serve.js</code>，再用 Chrome 打開 <code>http://localhost:8080/examples/29-projector-output/</code>（或你的演出）。</li>
+<li>接上投影機，把電腦設成延伸桌面（不是鏡像顯示）。</li>
+<li>按 <strong>Open output window</strong>。把視窗拖到投影機上，在視窗裡按 F（或按 <strong>Find the screens…</strong>，點投影機）。</li>
+<li>按 G，再按 E。把四個角拖到螢幕的四個角，直到格子看起來一樣大。按 E 結束。</li>
+<li>再按一次 G 回到演出畫面。設定已經存好：重新整理、再開一次視窗，都落在同一個位置。</li>
+<li>按 <strong>Export layout</strong>，把檔案跟演出放在一起：下次在這個場地排練時匯入它。</li>
+<li>觀眾進場前：試一次 B（黑場）和它的推桿，以及時間軸的結尾。</li>
+</ol>
+<p>只負責投影的機器（kiosk），用 Chrome 的 kiosk 模式打開乾淨網址。<code>--kiosk</code> 是「Enable kiosk mode」（不是 Chrome OS 的 kiosk 模式），<code>--autoplay-policy=no-user-gesture-required</code> 讓頁面的聲音不用點擊就能開始，<code>--user-data-dir</code> 是瀏覽器存放所有狀態的資料夾，給它一個自己的資料夾，kiosk 存下的四個角和權限就跟你平常用的設定檔分開：</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-bash"><span class="tc"># macOS; the Chrome path differs on Windows and Linux. To be confirmed on the venue machine.</span>
+<span class="ts">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"</span> --kiosk --autoplay-policy=no-user-gesture-required \
+  --user-data-dir=<span class="ts">"$HOME/oav-kiosk"</span> <span class="ts">"http://localhost:8080/examples/29-projector-output/?output&amp;play"</span></code></pre></div>
+<p>這些參數出自 Chromium 的參數列表（<a href="https://peter.sh/experiments/chromium-command-line-switches/" rel="noopener">peter.sh</a>），自動播放的參數出自 <a href="https://developer.chrome.com/blog/autoplay" rel="noopener">Chrome 的自動播放政策</a>（靜音的自動播放永遠允許，這個參數解除聲音要有使用者動作的規定）。kiosk 視窗開在 Chrome 選的螢幕上：是哪一個，以及 <code>--start-fullscreen</code> 或 <code>--window-position</code> 能不能把它移到投影機上，要在場地的機器上確認。kiosk 設定檔的四個角要在那個設定檔裡設：先不加 <code>--kiosk</code> 用它打開乾淨網址，按 E，或在那個設定檔的一般頁面匯入設定檔。</p>
+<p>場地檢查清單，在 <a href="../../../zh/docs/show-control/#show-control-pre-show-checklist">演出前檢查清單</a> 之外再加上：</p>
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 顯示器是延伸桌面，投影機自己的梯形校正關掉或歸零（只在一個地方校正），解析度是它的原生解析度</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 電腦不會睡眠、變暗或跳通知，投影機自己的休眠也關掉</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 演出從這台機器跑（<code>node serve.js</code>），不從網路跑：演出時不需要網路</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 設定檔匯出了，也試過重新整理</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 黑場從控台、從它的推桿，以及在輸出視窗按 B 都試過</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 演出頁面重新整理時怎麼辦：再開一次輸出（鏡像），或什麼都不用做（頁面）</li>
+<li class="task"><input type="checkbox" disabled aria-label="尚未完成"> 用 kiosk iPad 或手機當遙控器：見 <a href="../../../zh/docs/phones/">手機</a>，在封閉的網路裡用這台機器的中繼</li>
+</ul>
+<h2 id="output-recipe-touchdesigner">做法：TouchDesigner<a class="anchor" href="#output-recipe-touchdesigner" aria-label="這一節的連結">#</a></h2>
+<p>檢查過的：下面的參數名稱，出自 Derivative 的 Web Render TOP 頁面（<a href="https://docs.derivative.ca/Web_Render_TOP" rel="noopener">docs.derivative.ca/Web_Render_TOP</a>，以及 TouchDesigner 2025.33230 離線說明裡的同一頁），以及乾淨網址在 headless Chromium 裡的表現。沒有在 TouchDesigner 裡跑過：這裡的每一步都要在軟體裡確認。TouchDesigner 2025.33230 內附 Chromium Embedded Framework 132.3.1、Chromium 132.0.6834.83（從安裝的程式讀出來的），Web Render TOP 接上 Info DAT 會列出它實際用的版本。</p>
+<ol>
+<li>在演出的機器上跑 <code>node serve.js</code>，用中繼上的主控端打開演出頁面：範例 29 用 <code>http://localhost:8080/examples/29-projector-output/?lead</code>（或按控台上的 <strong>Lead</strong>，或在程式碼裡用 <code>via: true</code> 呼叫 <code>outputs.lead()</code>）。</li>
+<li>在 TouchDesigner 加一個 <strong>Web Render TOP</strong>。在它的 Web Render 頁把 <strong>URL or File</strong> 設成會跟隨的乾淨網址：<code>http://localhost:8080/examples/29-projector-output/?output&amp;follow=oav-output&amp;via=relay</code>。<strong>Active</strong> 保持開著。</li>
+<li>在它的 Common 頁把 <strong>Output Resolution</strong> 設成 <strong>Custom Resolution</strong>，<strong>Resolution</strong> 設成你要的大小（1920 × 1080）。頁面會用這個大小畫，有 <code>?output</code> 時舞台會填滿它。</li>
+<li><strong>Audio Options</strong>：只要畫面就保持 <strong>Off</strong>（演出的聲音留在演出的機器上），要在 TouchDesigner 裡拿到聲音就選 <strong>Route to Audio Web Render CHOPs</strong>。改這個選項會重新啟動瀏覽器程序（文件這樣寫）。</li>
+<li><strong>Maximum Render Frame Rate</strong>：頁面在 TouchDesigner 裡的影格率（文件說可以設超過 60，但不保證做得到）。<strong>Cook Always</strong> 讓它每一格都 cook。</li>
+</ol>
+<p>在裡面不能用的，就框架這邊能判斷的：</p>
+<ul>
+<li><strong>Web MIDI。</strong> Derivative 的頁面沒有提到它。<code>navigator.requestMIDIAccess</code> 在 Web Render TOP 裡存不存在、會不會詢問，要確認。加上 <code>&amp;follow</code> 時頁面根本不會要 MIDI（從屬端的輸入是關的）。MIDI 請直接接進 TouchDesigner，或在演出頁面上彈。</li>
+<li><strong>鏡頭和麥克風。</strong> Web Render TOP 有 <strong>Enable Media Stream</strong>（「Allows the web render instance to use the mic and the camera」）。會不會跳出權限詢問、能不能回答，要確認。從屬端的頁面兩個都不會要。</li>
+<li><strong>點擊和按鍵。</strong> 在裡面沒有人會點：你自己 Chrome 裡存的四個角，在 TouchDesigner 的瀏覽器裡不存在（它有自己的儲存空間 <strong>User Cache Directory</strong>，預設是暫時的）。請在 TouchDesigner 裡校正畫面：<strong>Corner Pin TOP</strong> 能移動影像的四個角點（<a href="https://docs.derivative.ca/Corner_Pin_TOP" rel="noopener">Corner Pin TOP</a>），palette 裡也有做投影映射的 <strong>stoner</strong>。時間軸從演出頁面開始播（或在不跟隨的頁面加上 <code>&amp;play</code>）。</li>
+<li><strong>彈出視窗。</strong> 頁面的彈出視窗會被忽略，或用 <strong>Redirect Popups</strong> 在原地換過去：沒辦法從裡面開輸出視窗。</li>
+</ul>
+<p>另一個方向已經有了：演出的訊號經過橋接程式用 OSC 送進 TouchDesigner（<a href="../../../zh/docs/show-control/#show-control-osc-output">OSC 輸出</a>、<a href="../../../zh/docs/show-control/#show-control-touchdesigner-as-the-receiver">TouchDesigner 當接收端</a>）。畫面走 Web Render TOP、控制走 OSC，兩條可以同時跑。</p>
+<h2 id="output-recipe-obs">做法：OBS<a class="anchor" href="#output-recipe-obs" aria-label="這一節的連結">#</a></h2>
+<p>檢查過的：下面的屬性和按鈕名稱，出自安裝的 OBS Studio 33.0.2（它自己的英文和繁體中文介面文字），以及 OBS 關於 <a href="https://obsproject.com/kb/browser-source" rel="noopener">瀏覽器來源</a> 和 <a href="https://obsproject.com/kb/virtual-camera-guide" rel="noopener">虛擬相機</a> 的頁面，NDI 出自 <a href="https://github.com/DistroAV/DistroAV" rel="noopener">DistroAV</a>。沒有在 OBS 裡跑過：這裡的每一步都要在軟體裡確認。OBS 33.0.2 的瀏覽器來源內附 Chromium 150.0.7871.287（從安裝的程式讀出來的）。寫這一章的機器沒有裝 DistroAV。</p>
+<p><strong>瀏覽器來源。</strong> 在演出的機器上跑 <code>node serve.js</code>，用主控端打開演出頁面（<code>…/29-projector-output/?lead</code>）。在 OBS 加一個 <strong>瀏覽器</strong> 來源：</p>
+<ol>
+<li><strong>網址</strong>：<code>http://localhost:8080/examples/29-projector-output/?output&amp;follow=oav-output&amp;via=relay</code>。</li>
+<li><strong>寬度</strong> 和 <strong>高度</strong>：畫面的大小，1920 × 1080（OBS 的預設是 800 × 600）。有 <code>?output</code> 時舞台會填滿它。</li>
+<li><strong>使用自訂的畫面速率</strong> 和 <strong>FPS (影格率)</strong>：60 fps 的畫布就設 60（OBS 的預設是 30）。</li>
+<li><strong>使用 OBS 控制音訊</strong>：OBS 裡處理頁面聲音的開關。它對演出有什麼作用要確認：演出的聲音要點擊才開始，從屬端的頁面自己也不出聲，所以只要畫面時沒有差別。</li>
+<li><strong>自訂CSS</strong>：OBS 的預設會把背景變透明，乾淨頁面會自己塗黑，保持原樣就好。</li>
+<li><strong>不可見時關閉來源</strong>：關掉，切到別的場景時頁面才會繼續跟隨。</li>
+</ol>
+<p><strong>從 OBS 送出去。</strong> <strong>啟動虛擬相機</strong>（在 控制項 停駐視窗）把 OBS 的節目畫面、一個場景或一個來源變成一台相機，給 Zoom、瀏覽器或 TouchDesigner 用（旁邊的齒輪選要哪一個）。NDI 用 DistroAV 外掛（OBS 31.1.1 以上、NDI Runtime 6.3 以上，macOS 用 <code>brew install --cask distroav/tap/distroav</code>），它加上送出節目畫面的 <strong>NDI Output</strong>，以及送出單一來源的 <strong>NDI Filter</strong>。它們在 OBS 選單裡的哪個位置，要裝了外掛再確認。</p>
+<p><strong>改用視窗擷取。</strong> 要一模一樣地送出表演者彈的東西（音符、粒子、鏡像），就擷取視窗，不要再載入一次頁面：<strong>macOS 螢幕擷取</strong>（或 <strong>視窗擷取</strong>），對準輸出視窗。輸出視窗沒有控台，游標也會藏起來，所以擷取出來是乾淨的。讓它留在某個螢幕上（被藏起來的視窗可能不會畫），需要的話用來源的 <strong>裁剪</strong> 切掉多的部分。</p>
+<h2 id="output-what-was-checked">檢查了什麼<a class="anchor" href="#output-what-was-checked" aria-label="這一節的連結">#</a></h2>
+<p>headless Chromium 151（Playwright 1.62），一台機器，沒有給任何權限（沒有 MIDI、序列埠、鏡頭、麥克風，也沒有視窗管理）：</p>
+<ul>
+<li>範例 29 載入時沒有主控台錯誤（<code>ws://…7457</code> 後台監看的警告是預期的），舞台框成 16:9</li>
+<li><strong>Open output window</strong> 在點擊時開出視窗，影片的大小跟畫布一模一樣，影格一直往前走，單色區塊的顏色完全沒有差別</li>
+<li>E 顯示四個把手，拖兩個角、用按鍵推第三個角，視窗的 <code>matrix3d</code> 跟著變，存下來的正好是那幾個角。G 顯示測試圖。B 寫入 <code>output/main/blackout</code>，黑紗變全黑。從控台把亮度設成 0.4，黑紗是 0.6。輸出視窗的按鍵從來沒有動到演出</li>
+<li>演出頁面重新整理後，輸出在同一個視窗裡再打開，四個角一樣，畫面繼續動</li>
+<li><strong>Page</strong> 用乾淨網址開出一個從屬端：它跟著演出頁面的時鐘（差 0.08 秒）和被握住的值</li>
+<li>乾淨網址不顯示控台、鋼琴、提示、導覽卡或操作按鈕，用的是存下來的四個角。<code>?pair&amp;output=left</code> 用視窗兩倍寬畫 32:9 的舞台，只露出左半邊</li>
+</ul>
+<p>沒有檢查：真的投影機、第二個實體螢幕、Window Management 的權限詢問和在指定螢幕全螢幕、Chrome 的 kiosk 模式、TouchDesigner、OBS、NDI。</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="上一章與下一章">
+      <a class="ch-prev" rel="prev" href="../../../zh/docs/dmx/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← 上一章</span><span class="ch-nav-t">DMX 燈光</span></a>
+      <a class="ch-next" rel="next" href="../../../zh/docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">下一章 →</span><span class="ch-nav-t">MIDI 控制器與嵌入</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ 回到頂端</a> · <a href="../../../zh/docs/">所有章節</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT 授權。<a href="https://cheyuwu.com/zh/">吳哲宇 Che-Yu Wu</a> 製作。</p>
+      <p class="note">範例 05 到 07 收錄吳哲宇的作品，著作權屬藝術家，保留一切權利。</p>
+    </div>
+    <nav aria-label="頁面">
+      <a href="../../../zh/">首頁</a>
+      <a href="../../../zh/examples/">範例</a>
+      <a href="../../../zh/controllers/">控制器</a>
+      <a href="../../../zh/docs/">文件</a>
+      <a href="../../../zh/p5/">p5.js 一行接上</a>
+      <a href="../../../zh/webtoe/">WebToe</a>
+      <a href="../../../zh/made-with/">用它做的</a>
+      <a href="../../../zh/changelog/">更新紀錄</a>
+    </nav>
+    <nav aria-label="給機器讀的">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../../llms.txt">llms.txt</a>
+      <a href="../../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"複製","copied":"已複製","linkCopied":"已複製連結","tocButton":"目錄","tocClose":"關閉目錄"}</script>
+<script type="module" src="../../../assets/docs/docs.js?v=7fe486df"></script>
+<!--/email_off-->
+</body>
+</html>

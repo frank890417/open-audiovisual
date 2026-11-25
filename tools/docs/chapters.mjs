@@ -22,6 +22,7 @@ export const CHAPTERS = [
   { id: 'show-control', en: 'docs/show-control.md', zh: 'docs/zh/show-control.md' },
   { id: 'score', en: 'docs/score.md', zh: 'docs/zh/score.md' },
   { id: 'dmx', en: 'docs/dmx.md', zh: 'docs/zh/dmx.md' },
+  { id: 'output', en: 'docs/output.md', zh: 'docs/zh/output.md' },
   { id: 'controllers', en: 'docs/controllers.md', zh: 'docs/zh/controllers.md', external: true },
   { id: 'devices', en: 'docs/devices.md', zh: 'docs/zh/devices.md' },
   { id: 'p5', en: 'docs/p5.md', zh: 'docs/zh/p5.md' },

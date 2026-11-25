@@ -10,7 +10,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` · `chop` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` · `out` · `dmx` · `record` · `fab` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `out` · `dmx` · `output` · `record` · `fab` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | phones | `relay` · `surface` · `remote` |
 | glue | `core` · `show` · `devices` · `mcp` |
@@ -43,7 +43,7 @@ signals.set('breath/pressure', 0.4);
 
 Glue · `createShow(options)`: one call that assembles a whole show around a
 world and returns every part. Options, modules and the return value are in
-[Show control](show-control.md#createshow); `loop`, `monitor` and `console` (the desk's `keys`) choose who drives the frames, where the backstage feed goes and which keys run the desk; `sync` makes the page one of several that perform the same show (leader or follower, [`@openav/sync`](#openav-sync)).
+[Show control](show-control.md#createshow); `loop`, `monitor` and `console` (the desk's `keys`) choose who drives the frames, where the backstage feed goes and which keys run the desk; `sync` makes the page one of several that perform the same show (leader or follower, [`@openav/sync`](#openav-sync)). The same page at `?output` is a clean output: the stage alone on black, no desk ([`@openav/output`](#openav-output)).
 
 ```js
 import { createShow } from '@openav/show';
@@ -332,6 +332,26 @@ into this format (or name them: `… fixtures/<maker>/<fixture>.json`), and refu
 Forty-two are in `fixtures/imported/`, all `"verified": false`; they stay out of `FIXTURES`, and
 `loadImportedFixture(id)` from `@openav/dmx/fixtures/imported.js` (or `device(id)` of `@openav/devices`) imports the one you ask for.
 Art-Net™ Designed by and Copyright Artistic Licence.
+
+## @openav/output
+
+L4 output (picture) · the stage on a projector, a second screen, OBS or TouchDesigner. An output window that mirrors the
+stage's canvas (`captureStream()` into a `<video>`: one render, the same frames) or opens the same page again at its clean
+address as a sync follower; fullscreen on a chosen screen where the Window Management API allows it (asked only from a click in
+the output window); four-corner correction as one CSS `matrix3d` homography, with flip, a quarter turn, a black border and a soft
+edge, edited with four handles and a test pattern and saved per output name; crops of one canvas for projectors side by side
+(no edge blending); `output/<name>/blackout` and `output/<name>/brightness` as params. Any `createShow()` page at `?output` is a
+clean output (`&follow=oav-output` to follow, `&play` to start). The chapter is [Projection and video out](output.md).
+
+| export | signature |
+|---|---|
+| `createOutputs` | `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage })` → `{ names, open(name, { mode }), close(name), get(name), edit(name, on), pattern(name, on), lead({ channel, via }), url(name, o), exportLayout(), importLayout(doc), keys(name) }`, also on `show.outputs`; the params at load, the stage boxed to `aspect`, an L4 · Output panel |
+| `openOutput` | `openOutput(source, { name = 'main', crop, fit = 'contain', mode = 'mirror', params, timeline, features, aspect, via, channel = 'oav-output', storage })` → `{ name, mode, window, closed, edit(on), pattern(on), room, set(partial), reset(), close() }`; from a click |
+| corner-pin | `cornerPin(corners, width = 1, height = 1)` → 9 numbers (throws on a quad that is not convex) · `toMatrix3d(H)` → `'matrix3d(…)'` |
+| crop | `cropBox({ crop, source, box, fit = 'contain' })` → `{ clip, source }` |
+| layout file | `OUTPUT_FORMAT` (`'open-audiovisual/output@1'`) · `parseOutputLayout(doc)` → `{ format, outputs }` (one error listing every problem) |
+| params | `outputParams(names)` → the entries of `output/<name>/blackout` (0 or 1) and `output/<name>/brightness` (0..1, default 1) |
+| clean address | `outputQuery(search)` → `null` or `{ name, crop, aspect, fit, follow, via, play }` · `outputUrl(base, { name, crop, aspect, fit, follow, via, play })` |
 
 ## @openav/record
 

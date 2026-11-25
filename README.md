@@ -123,7 +123,7 @@ Two rules make the whole thing composable:
 
 ## 🖼 Examples
 
-<!--gen:w-examples-->Twenty-eight<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
+<!--gen:w-examples-->Twenty-nine<!--/gen:w-examples--> works, all playable in the browser. In any example: <kbd>Space</kbd> plays the timeline (at a hold: releases it), <kbd>←</kbd>/<kbd>→</kbd> jump scenes, <kbd>T</kbd> is performance mode, <kbd>F</kbd> is fullscreen.
 
 <!--gen:examples-grid-->
 All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.com/examples/)
@@ -193,7 +193,7 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 </tr>
 </table>
 
-**⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera, and a rig of stage lights over DMX.
+**⑤ Take it out of the browser**: One synced video, from one line in a p5 sketch, with or without a camera, a rig of stage lights over DMX, and the picture on a projector, its corners pinned to the wall.
 
 <table>
 <tr>
@@ -203,7 +203,7 @@ All examples, by route: [openaudiovisual.com/examples/](https://openaudiovisual.
 </tr>
 <tr>
 <td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/28-dmx-lights/"><img src="assets/home/works/28.webp" width="260" alt="Coloured beams fall from a truss onto a dark floor, two thin white beams cross them, and a DMX monitor below shows ten fixture swatches and a grid of channel values."></a><br><b>28 · DMX lights</b><br>One world draws a stage and drives a lighting rig from the same params; a monitor shows what the lights get, no hardware needed.<br><a href="https://openaudiovisual.com/examples/28-dmx-lights/">play</a> · <a href="examples/28-dmx-lights/">source</a></td>
-<td></td>
+<td width="33%" align="center" valign="top"><a href="https://openaudiovisual.com/examples/29-projector-output/"><img src="assets/home/works/29.webp" width="260" alt="Rounded rectangles of blue, violet and orange light grow from a glowing centre to a thin white frame at the edge of a dark stage."></a><br><b>29 · Projector output</b><br>An output window for a projector or a second screen, its four corners pinned to the wall, and a clean address for OBS and TouchDesigner.<br><a href="https://openaudiovisual.com/examples/29-projector-output/">play</a> · <a href="examples/29-projector-output/">source</a></td>
 <td></td>
 </tr>
 </table>
@@ -439,7 +439,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 an MCP server, and a handbook site.
 
 <!-- facts:start (written by tools/build-examples.mjs) -->
-32 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1421 tests
+32 packages · 29 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1421 tests
 <!-- facts:end -->
 
 Planned ([full roadmap](docs/roadmap.md)):

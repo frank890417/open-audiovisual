@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projection and video out · open-audiovisual</title>
+<meta name="description" content="The stage on a projector, a second screen, OBS or TouchDesigner. @openav/output (since 0.12.0) opens an output window that shows the stage, bends it so a…">
+<link rel="canonical" href="https://openaudiovisual.com/docs/output/">
+<link rel="alternate" hreflang="en" href="https://openaudiovisual.com/docs/output/">
+<link rel="alternate" hreflang="zh-Hant" href="https://openaudiovisual.com/zh/docs/output/">
+<link rel="alternate" hreflang="x-default" href="https://openaudiovisual.com/docs/output/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Projection and video out · open-audiovisual">
+<meta property="og:description" content="The stage on a projector, a second screen, OBS or TouchDesigner. @openav/output (since 0.12.0) opens an output window that shows the stage, bends it so a…">
+<meta property="og:url" content="https://openaudiovisual.com/docs/output/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Projection and video out · open-audiovisual">
+<meta name="twitter:description" content="The stage on a projector, a second screen, OBS or TouchDesigner. @openav/output (since 0.12.0) opens an output window that shows the stage, bends it so a…">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/home/home.css?v=7fe486df">
+<script type="module" src="../../assets/search/search.js?v=7fe486df"></script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+<meta name="oav-page-type" content="docs_chapter" data-oav-id="output">
+<script defer src="../../assets/track.js?v=7fe486df"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.11.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/output/#article","url":"https://openaudiovisual.com/docs/output/","name":"Projection and video out · open-audiovisual","description":"The stage on a projector, a second screen, OBS or TouchDesigner. @openav/output (since 0.12.0) opens an output window that shows the stage, bends it so a…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Projection and video out","version":"0.11.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["The output window","Fullscreen on the projector","Corner pin","Blackout and brightness","Two projectors from one canvas","The clean address","Recipe: a plain projector","Recipe: TouchDesigner","Recipe: OBS","What was checked"],"position":11,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/output/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/output/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Projection and video out","item":"https://openaudiovisual.com/docs/output/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=7fe486df">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="docs-page docs-chapter-page">
+<!--email_off-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="../../" aria-label="open-audiovisual home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="6.5" cy="16" r="3.6"/><path d="M11 16c2.6 0 2.9-9 6-9s3.2 18 6.2 18 3-9 5.8-9"/></svg><span>open-audiovisual</span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="../../#play">Play</a>
+    <a href="../../#how">How it works</a>
+    <a href="../../#works">Works</a>
+    <a href="../../controllers/">Controllers</a>
+    <a href="../../docs/" aria-current="page">Docs</a>
+    <a href="../../webtoe/">WebToe</a>
+    <a href="../../#agents">For agents</a>
+  </nav>
+  <div class="top-end">
+    <a class="nav-search" href="../../docs/reference/" data-search data-placeholder="Search the API reference, handbook, examples…" data-loading="Loading the index…" aria-label="Search the whole site" aria-keyshortcuts="Control+K Meta+K /"><svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="nav-search-label">Search</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <a href="../../docs/output/" hreflang="en" lang="en" data-lang="en" data-oav-event="lang_switch" aria-current="page">EN</a><span aria-hidden="true">|</span><a href="../../zh/docs/output/" hreflang="zh-Hant" lang="zh-Hant-TW" data-lang="zh" data-oav-event="lang_switch">中文</a>
+    </div>
+    <a class="gh" href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+  </div>
+</header>
+
+<div class="docs-bar">
+  <button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc"><span class="toc-icon" aria-hidden="true"></span><span class="toc-toggle-label">Contents</span></button>
+  <span class="docs-bar-where" aria-hidden="true"></span>
+</div>
+
+<div class="docs-layout">
+  <aside class="docs-side" id="toc">
+    <nav class="toc" aria-label="Documentation contents">
+      <p class="toc-title">Chapters</p>
+      <p class="toc-ref"><a href="../../docs/">All chapters</a></p>
+      <p class="toc-ref"><a href="../../docs/reference/">API reference ↗</a></p>
+      <ol class="toc-chapters">
+        <li class="toc-ch" data-ch="introduction"><a href="../../docs/introduction/"><span class="n">01</span><span class="t">Introduction</span></a></li>
+        <li class="toc-ch" data-ch="quick-start"><a href="../../docs/quick-start/"><span class="n">02</span><span class="t">Quick start</span></a></li>
+        <li class="toc-ch" data-ch="concepts"><a href="../../docs/concepts/"><span class="n">03</span><span class="t">Core concepts</span></a></li>
+        <li class="toc-ch" data-ch="architecture"><a href="../../docs/architecture/"><span class="n">04</span><span class="t">Architecture</span></a></li>
+        <li class="toc-ch" data-ch="writing-a-world"><a href="../../docs/writing-a-world/"><span class="n">05</span><span class="t">Writing a world</span></a></li>
+        <li class="toc-ch" data-ch="inputs"><a href="../../docs/inputs/"><span class="n">06</span><span class="t">Inputs</span></a></li>
+        <li class="toc-ch" data-ch="mapping"><a href="../../docs/mapping/"><span class="n">07</span><span class="t">Mapping</span></a></li>
+        <li class="toc-ch" data-ch="show-control"><a href="../../docs/show-control/"><span class="n">08</span><span class="t">Show control</span></a></li>
+        <li class="toc-ch" data-ch="score"><a href="../../docs/score/"><span class="n">09</span><span class="t">Score &amp; Director</span></a></li>
+        <li class="toc-ch" data-ch="dmx"><a href="../../docs/dmx/"><span class="n">10</span><span class="t">DMX lighting</span></a></li>
+        <li class="toc-ch is-here" data-ch="output">
+          <a href="#output" aria-current="page"><span class="n">11</span><span class="t">Projection and video out</span></a>
+          <ol class="toc-secs">
+            <li><a href="#output-the-output-window">The output window</a></li>
+            <li><a href="#output-fullscreen-on-the-projector">Fullscreen on the projector</a></li>
+            <li><a href="#output-corner-pin">Corner pin</a></li>
+            <li><a href="#output-blackout-and-brightness">Blackout and brightness</a></li>
+            <li><a href="#output-two-projectors-from-one-canvas">Two projectors from one canvas</a></li>
+            <li><a href="#output-the-clean-address">The clean address</a></li>
+            <li><a href="#output-recipe-a-plain-projector">Recipe: a plain projector</a></li>
+            <li><a href="#output-recipe-touchdesigner">Recipe: TouchDesigner</a></li>
+            <li><a href="#output-recipe-obs">Recipe: OBS</a></li>
+            <li><a href="#output-what-was-checked">What was checked</a></li>
+          </ol>
+        </li>
+        <li class="toc-ch" data-ch="controllers"><a href="../../docs/controllers/"><span class="n">12</span><span class="t">MIDI controllers &amp; embedding</span></a></li>
+        <li class="toc-ch" data-ch="devices"><a href="../../docs/devices/"><span class="n">13</span><span class="t">Devices</span></a></li>
+        <li class="toc-ch" data-ch="p5"><a href="../../p5/"><span class="n">14</span><span class="t">p5.js in one line</span></a></li>
+        <li class="toc-ch" data-ch="strudel"><a href="../../docs/strudel/"><span class="n">15</span><span class="t">With Strudel</span></a></li>
+        <li class="toc-ch" data-ch="phones"><a href="../../docs/phones/"><span class="n">16</span><span class="t">Phones, relay &amp; surfaces</span></a></li>
+        <li class="toc-ch" data-ch="signals"><a href="../../docs/signals/"><span class="n">17</span><span class="t">Signals reference</span></a></li>
+        <li class="toc-ch" data-ch="packages"><a href="../../docs/packages/"><span class="n">18</span><span class="t">Package reference</span></a></li>
+        <li class="toc-ch" data-ch="agents"><a href="../../docs/agents/"><span class="n">19</span><span class="t">For AI agents</span></a></li>
+        <li class="toc-ch" data-ch="lab-integration"><a href="../../docs/lab-integration/"><span class="n">20</span><span class="t">Lab integration (the "lab" field)</span></a></li>
+        <li class="toc-ch" data-ch="troubleshooting"><a href="../../docs/troubleshooting/"><span class="n">21</span><span class="t">Troubleshooting</span></a></li>
+        <li class="toc-ch" data-ch="roadmap"><a href="../../docs/roadmap/"><span class="n">22</span><span class="t">Roadmap</span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <p class="eyebrow ch-eyebrow" id="top"><a href="../../docs/">Documentation</a></p>
+    <article class="chapter" data-chapter="output" aria-labelledby="output">
+<h1 id="output">Projection and video out<a class="anchor" href="#output" aria-label="Link to this section">#</a></h1>
+<p class="chapter-meta"><span class="chapter-n">Chapter 11 of 22</span><span>Source: <a href="https://github.com/frank890417/open-audiovisual/blob/main/docs/output.md">docs/output.md</a></span></p>
+<p>The stage on a projector, a second screen, OBS or TouchDesigner. <code>@openav/output</code> (since 0.12.0) opens an output window
+that shows the stage, bends it so a projector that is not square to the wall still lands as a rectangle (corner-pin),
+crops one canvas for several projectors side by side, and gives each output a blackout and a brightness that are params.
+Any show also has a clean address, <code>?output</code>: the same page with the stage alone on black, for a kiosk browser, OBS's
+Browser Source or TouchDesigner's Web Render TOP. The world never knows any of this happened. Example
+<a href="../../examples/29-projector-output/">29, Projector output</a> runs all of it on one screen.</p>
+<h2 id="output-the-output-window">The output window<a class="anchor" href="#output-the-output-window" aria-label="Link to this section">#</a></h2>
+<p>Declare the outputs once, at load, and open one from a click (a browser opens a window only after a gesture):</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { createShow } <span class="tk">from</span> <span class="ts">'@openav/show'</span>;
+<span class="tk">import</span> { createOutputs } <span class="tk">from</span> <span class="ts">'@openav/output'</span>;      <span class="tc">// in the import map: "@openav/output": "../../packages/output/index.js?v=7fe486df"</span>
+
+<span class="tk">const</span> show = <span class="tk">await</span> createShow({ world });
+<span class="tk">const</span> outputs = createOutputs(show, { outputs: [{ name: <span class="ts">'main'</span> }], aspect: 16 / 9 });
+button.onclick = () =&gt; outputs.open(<span class="ts">'main'</span>);</code></pre></div>
+<p><code>createOutputs</code> adds the params <code>output/main/blackout</code> and <code>output/main/brightness</code> at once, boxes the stage on this page to
+16:9 (centred, black around it) so the world draws the shape the projector has, and puts an <strong>L4 · Output</strong> panel on the desk:
+per output <strong>Open</strong> (a mirror window), <strong>Page</strong> (a second page, below), <strong>Edit</strong> and <strong>Grid</strong>, whether it is open and how large,
+and <strong>Export layout</strong>, <strong>Import layout</strong> and <strong>Lead</strong>. <code>openOutput(show, { name })</code> does the same for one output without the
+declaration (its params appear when it opens).</p>
+<p>The window is black, has no console, and hides the cursor after two seconds. Its keys:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>key</th><th>what it does</th></tr></thead>
+<tbody>
+<tr><td>F</td><td>fullscreen (again: leave it)</td></tr>
+<tr><td>E</td><td>edit the corners (below); E or Esc again when done</td></tr>
+<tr><td>G</td><td>the test pattern: a grid, a crosshair, circles, the four edges in colour (top red, right green, bottom blue, left yellow)</td></tr>
+<tr><td>B</td><td>blackout on or off: it writes the param <code>output/&lt;name&gt;/blackout</code>, so the desk shows it and ✕ clears it</td></tr>
+<tr><td>I</td><td>the help card</td></tr>
+</tbody>
+</table></div>
+<p>These keys belong to the output window. The show's own keys (Space, the arrows, R) do not see them, and the output window's
+keys never move the show.</p>
+<h3 id="output-mirror-or-page">Mirror or page<a class="anchor" href="#output-mirror-or-page" aria-label="Link to this section">#</a></h3>
+<p>There are two ways to fill an output, and a world needs neither to know.</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>mirror (default)</th><th>page</th></tr></thead>
+<tbody>
+<tr><td>how</td><td>the stage's canvas, <code>canvas.captureStream()</code>, into a <code>&lt;video&gt;</code> in a window this page opens</td><td>this page again at its clean address, <code>?output=&lt;name&gt;&amp;follow=oav-output</code>, as a <a href="../../docs/show-control/#show-control-several-pages-one-show">sync</a> follower</td></tr>
+<tr><td>what you see</td><td>exactly what the stage shows: every slider, note, random particle</td><td>the same world drawn again: the same clock and the same held values (sliders, MIDI knobs, blackout), not signals, not randomness, not anything integrated over <code>dt</code></td></tr>
+<tr><td>resolution</td><td>the stage canvas's size on the operator's page</td><td>the output window's own size, its own GPU work</td></tr>
+<tr><td>timing</td><td>about a frame behind (not measured on a projector)</td><td>follows the clock: within a frame or two on one machine, about one network trip across machines</td></tr>
+<tr><td>machines</td><td>the same machine, the same browser</td><td>any page of the same origin; another browser or machine over <code>node serve.js</code>'s relay</td></tr>
+<tr><td>when the show page reloads</td><td>the window keeps its last picture: open it again from the page (it comes back in the same window)</td><td>the page keeps running alone on the last rate until the leader returns</td></tr>
+<tr><td>when the show page is hidden</td><td>it slows to the Loop's hidden-tab rate: on one screen, a fullscreen output over the show page hides it</td><td>not affected</td></tr>
+<tr><td>a DOM or SVG world</td><td>cannot be mirrored (the window says so)</td><td>works</td></tr>
+</tbody>
+</table></div>
+<p>Mirror is the default because it is the one that is always right about the picture: one render, and a performer who plays
+sees what the audience sees. Measured in headless Chromium 151: the video has the canvas's exact size, and flat colours arrive
+within 0 of their values (no colour shift). Page is the one for a second machine, for an output larger than the operator's
+canvas, or for a world that is not a canvas. <code>outputs.open('main', { mode: 'page' })</code>, or the <strong>Page</strong> button.</p>
+<h2 id="output-fullscreen-on-the-projector">Fullscreen on the projector<a class="anchor" href="#output-fullscreen-on-the-projector" aria-label="Link to this section">#</a></h2>
+<p>On one screen the output is just a window: press F in it. With a projector or a second screen, drag the window onto it and
+press F. Where the browser has the Window Management API (<code>window.getScreenDetails</code>, Chromium) and the computer reports more
+than one screen, the window's card also offers <strong>Find the screens…</strong>: the browser asks once whether this site may place
+windows on all your screens, then lists them (<code>label · width×height</code>), and a click on one goes fullscreen on that screen with
+<code>requestFullscreen({ screen })</code>. The permission is only ever asked from a click inside the output window, never on its own,
+and when it was granted before, the screens are listed without asking. When it is refused, or the API is not there (Safari,
+Firefox), the card says what always works: drag the window, press F.
+(<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window_Management_API/Using" rel="noopener">MDN: Window Management API</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen" rel="noopener">Element.requestFullscreen</a>: fullscreen needs a
+user gesture, which is why every fullscreen here is a key or a click in the output window itself.)</p>
+<h2 id="output-corner-pin">Corner pin<a class="anchor" href="#output-corner-pin" aria-label="Link to this section">#</a></h2>
+<p>A projector that is not square to the wall throws a trapezoid. Press E in the output window and drag its four numbered
+handles onto the corners of the screen (or of the wall area you want): the picture bends so that it lands as a rectangle.
+Pick a corner with 1 to 4 (or Tab) and move it with the arrows, 1 px at a time, Shift for 10 px. Turn the test pattern on (G)
+while you do it: its grid shows straight lines and even cells when the corners are right.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>key (editing)</th><th></th></tr></thead>
+<tbody>
+<tr><td>drag a handle, or 1–4 / Tab and the arrows</td><td>move a corner (Shift ×10)</td></tr>
+<tr><td>H, V</td><td>mirror left–right (rear projection), top–bottom (a projector hung upside down that cannot flip itself)</td></tr>
+<tr><td>O, Shift+O</td><td>turn the picture 90° clockwise, back (a projector on its side)</td></tr>
+<tr><td>[ ]</td><td>a black border, 0.5 % of each side at a time, up to 45 % (overscan: bring back edges that fall off the screen)</td></tr>
+<tr><td>R, Shift+R</td><td>the corners back to the window's; everything back</td></tr>
+</tbody>
+</table></div>
+<p>Four points decide one projective transform (a homography). <code>cornerPin(corners, width, height)</code> computes it and
+<code>toMatrix3d()</code> writes it as a CSS <code>matrix3d(…)</code>, so the browser bends the whole output, picture and test pattern together,
+on the GPU, with nothing redrawn. A quad no projector can throw (a corner pushed inside, two edges crossed, three corners on
+a line) is refused: the corner stays where it was. A soft edge (<code>soft</code>, from 0 to 0.5) fades the picture's edges to black
+over that share of each side; it is a fade, not edge blending.</p>
+<h3 id="output-the-layout-file">The layout file<a class="anchor" href="#output-the-layout-file" aria-label="Link to this section">#</a></h3>
+<p>Every change is saved in this browser under <code>oav-output:&lt;name&gt;</code>, so the venue's setup survives a reload, and a clean page of
+the same name in the same browser uses it too. <strong>Export layout</strong> writes every output's room to a file you can carry to the next
+rehearsal, and <strong>Import layout</strong> checks one, saves it and applies it to open windows:</p>
+<div class="term" data-lang="json"><div class="term-bar"><span>json</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-json">{ <span class="ts">"format"</span>: <span class="ts">"open-audiovisual/output@1"</span>,
+  <span class="ts">"saved"</span>: <span class="ts">"2026-12-01T09:30:00.000Z"</span>,
+  <span class="ts">"outputs"</span>: {
+    <span class="ts">"main"</span>: { <span class="ts">"corners"</span>: [[0.02, 0.01], [0.97, 0.03], [0.99, 0.98], [0.01, 0.96]],
+              <span class="ts">"flipX"</span>: <span class="tk">false</span>, <span class="ts">"flipY"</span>: <span class="tk">false</span>, <span class="ts">"rotate"</span>: 0, <span class="ts">"overscan"</span>: 0, <span class="ts">"soft"</span>: 0 } } }</code></pre></div>
+<p>The file is the room, the code is the show: it holds what the venue did to each output (corners as 0..1 of the output window,
+flips, turn, border, soft edge), never what the output shows. Crops live in the code. <code>parseOutputLayout()</code> refuses a file with
+one message that lists every problem (<code>outputs.main.rotate: must be 0, 90, 180 or 270</code>), so a file is fixed in one go.</p>
+<h2 id="output-blackout-and-brightness">Blackout and brightness<a class="anchor" href="#output-blackout-and-brightness" aria-label="Link to this section">#</a></h2>
+<p>Rule 1: what is performed goes through params. Each output has two, declared before any window opens:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>param</th><th>range</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>output/&lt;name&gt;/blackout</code></td><td>0 or 1</td><td>1: this output is black, whatever it shows</td></tr>
+<tr><td><code>output/&lt;name&gt;/brightness</code></td><td>0 to 1, default 1</td><td>a black veil over the picture (<code>1 - brightness</code> of it); not the projector's lamp</td></tr>
+</tbody>
+</table></div>
+<p>So the console's sliders, a MIDI fader, the timeline and a phone all reach the projector the same way they reach the world.
+Example 29 fades the projector out over the last 8 seconds of its timeline and gives it to any controller's volume fader:</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">timeline: { total: 48, automation: { <span class="ts">'output/main/brightness'</span>: [[0, 1], [40, 1], [48, 0]] } },
+routes: [{ source: <span class="ts">'midi/cc/7'</span>, target: <span class="ts">'output/main/brightness'</span> }],</code></pre></div>
+<h2 id="output-two-projectors-from-one-canvas">Two projectors from one canvas<a class="anchor" href="#output-two-projectors-from-one-canvas" aria-label="Link to this section">#</a></h2>
+<p>One wide canvas, two projectors side by side: declare two outputs, each with its crop of the stage (<code>{ x, y, w, h }</code>, 0 to 1),
+and give the stage the shape of both together.</p>
+<div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">const</span> outputs = createOutputs(show, {
+  outputs: [{ name: <span class="ts">'left'</span>, crop: { x: 0, y: 0, w: 0.5, h: 1 } }, { name: <span class="ts">'right'</span>, crop: { x: 0.5, y: 0, w: 0.5, h: 1 } }],
+  aspect: 32 / 9,                 <span class="tc">// two 16:9 projectors</span>
+});</code></pre></div>
+<p>Each output has its own corners, its own params and its own window (open each from its own click: a browser opens one window
+per gesture). <code>fit</code> says how a crop fills its window when the shapes differ: <code>contain</code> (default, black bars), <code>cover</code> (filled,
+cut) or <code>stretch</code>. Example 29 does this with <code>?pair</code>. Where the two pictures meet there is a hard seam: edge blending (two
+projectors overlapping with a matched soft ramp and brightness) is not part of this package. A wall of projectors stitched from a
+photo is another job; a pull request for it exists separately (<code>@openav/tile</code>).</p>
+<h2 id="output-the-clean-address">The clean address<a class="anchor" href="#output-the-clean-address" aria-label="Link to this section">#</a></h2>
+<p>Every page built with <code>createShow()</code> becomes a clean output when its address says so. The desk, the piano, the hints, the MIDI
+button, the phone card, the example guide, and anything a show marks with the class <code>oav-operator</code>, are not shown, and the
+desk's keys are off. The stage fills the window on black, with the corners this browser saved for that output name and the
+same keys as an output window (E, G, F, B, I). The world's artwork credit stays: an attribution is never hidden.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>key</th><th>example</th><th></th></tr></thead>
+<tbody>
+<tr><td><code>output</code></td><td><code>?output</code>, <code>?output=front</code></td><td>this page is a clean output, called <code>main</code> or <code>front</code></td></tr>
+<tr><td><code>crop</code></td><td><code>&amp;crop=0,0,0.5,1</code></td><td>x, y, w, h of the stage, 0 to 1; without it, the crop the code declares for that name</td></tr>
+<tr><td><code>aspect</code></td><td><code>&amp;aspect=32:9</code></td><td>the stage's shape; without it, the code's <code>aspect</code></td></tr>
+<tr><td><code>fit</code></td><td><code>&amp;fit=cover</code></td><td><code>contain</code> (default), <code>cover</code>, <code>stretch</code></td></tr>
+<tr><td><code>follow</code></td><td><code>&amp;follow=oav-output</code></td><td>follow the show page's clock and held values; no input of its own</td></tr>
+<tr><td><code>via</code></td><td><code>&amp;via=relay</code>, <code>&amp;via=ws://10.0.0.5:8080/relay</code></td><td>follow over this server's <code>/relay</code> (another browser or machine) instead of a BroadcastChannel</td></tr>
+<tr><td><code>play</code></td><td><code>&amp;play</code></td><td>start the timeline on load: nobody can press Space inside OBS or TouchDesigner</td></tr>
+</tbody>
+</table></div>
+<p><code>outputs.url('main', { follow: 'oav-output', via: true })</code> writes the address for you, and so does <strong>Lead</strong> on the panel.
+For a page to follow, the show page has to lead: <strong>Lead</strong> on the panel, <code>outputs.lead()</code> in code, or example 29 opened with
+<code>?lead</code>. Across browsers (OBS and TouchDesigner each run their own) or machines that needs the relay: run <code>node serve.js</code>
+on the show machine and use <code>via=relay</code>.</p>
+<p>A clean page that does not follow runs the show by itself: its timeline plays only with <code>&amp;play</code>, and its inputs are whatever
+the show declares, with nobody at them. A clean page that follows takes no input (keyboard piano, MIDI, microphone, camera,
+phones are off) and shows what the show page's clock and held values say; a note played on the show page does not reach it.
+To carry live playing exactly, mirror (above) or capture the show page's window (OBS, below).</p>
+<h2 id="output-recipe-a-plain-projector">Recipe: a plain projector<a class="anchor" href="#output-recipe-a-plain-projector" aria-label="Link to this section">#</a></h2>
+<p>What was checked: the output window, its keys, the corner-pin, the layout surviving a reload, the clean address, in headless
+Chromium 151 on one machine. Not yet: a real projector, a second physical screen, and the screen picker's permission prompt.</p>
+<ol>
+<li>Run the show from this machine: <code>node serve.js</code>, then open <code>http://localhost:8080/examples/29-projector-output/</code> (or your show) in Chrome.</li>
+<li>Connect the projector and set the computer to extend the desktop onto it (not mirror the display).</li>
+<li>Click <strong>Open output window</strong>. Drag the window onto the projector and press F in it (or <strong>Find the screens…</strong> and click the projector).</li>
+<li>Press G, then E. Drag the four corners onto the screen's corners until the grid's cells look even. Press E to finish.</li>
+<li>Press G again to see the show. The layout is saved: a reload, and the window opened again, land in the same place.</li>
+<li><strong>Export layout</strong> and keep the file with the show: the next rehearsal in this room imports it.</li>
+<li>Before the audience comes in: try B (blackout) and its fader, and the end of the timeline.</li>
+</ol>
+<p>For a machine that only shows the picture (a kiosk), open the clean address in Chrome's kiosk mode. <code>--kiosk</code> is
+"Enable kiosk mode" (not Chrome OS kiosk mode), <code>--autoplay-policy=no-user-gesture-required</code> lets the page's sound start without
+a click, and <code>--user-data-dir</code> is the folder where the browser keeps all of its state, so a folder of its own keeps the kiosk's
+saved corners and permissions apart from your everyday profile:</p>
+<div class="term" data-lang="bash"><div class="term-bar"><span>bash</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-bash"><span class="tc"># macOS; the Chrome path differs on Windows and Linux. To be confirmed on the venue machine.</span>
+<span class="ts">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"</span> --kiosk --autoplay-policy=no-user-gesture-required \
+  --user-data-dir=<span class="ts">"$HOME/oav-kiosk"</span> <span class="ts">"http://localhost:8080/examples/29-projector-output/?output&amp;play"</span></code></pre></div>
+<p>The switches come from the Chromium switch list (<a href="https://peter.sh/experiments/chromium-command-line-switches/" rel="noopener">peter.sh</a>) and the
+autoplay flag from <a href="https://developer.chrome.com/blog/autoplay" rel="noopener">Chrome's autoplay policy</a> ("Muted autoplay is always allowed"; the
+flag lifts the gesture rule for sound). A kiosk window opens on the screen Chrome chooses: which one, and whether <code>--start-fullscreen</code>
+or <code>--window-position</code> move it to the projector, is to be confirmed on the venue machine. Corners for a kiosk profile are set in that
+profile: open the clean address there once without <code>--kiosk</code>, press E, or import the layout file on a normal page of that profile.</p>
+<p>The venue checklist, beyond the <a href="../../docs/show-control/#show-control-pre-show-checklist">pre-show checklist</a>:</p>
+<ul class="tasks">
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> the display is extended, the projector's own keystone is off or at zero (correct in one place only), its resolution is native</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> the computer does not sleep, dim or show notifications; the projector's own sleep is off</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> the show runs from this machine (<code>node serve.js</code>), not from the internet: no network needed during the show</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> the layout file exported, and tried on a reload</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> blackout tested from the desk, from its fader, and with B in the output window</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> what happens when the show page reloads: open the output again (mirror), or nothing to do (page)</li>
+<li class="task"><input type="checkbox" disabled aria-label="not done yet"> a kiosk iPad or a phone as a remote: see <a href="../../docs/phones/">Phones</a>; on a closed network, the relay of this machine</li>
+</ul>
+<h2 id="output-recipe-touchdesigner">Recipe: TouchDesigner<a class="anchor" href="#output-recipe-touchdesigner" aria-label="Link to this section">#</a></h2>
+<p>What was checked: the parameter names below, from Derivative's Web Render TOP page
+(<a href="https://docs.derivative.ca/Web_Render_TOP" rel="noopener">docs.derivative.ca/Web_Render_TOP</a>, and the same page in the offline help of
+TouchDesigner 2025.33230); the clean address in headless Chromium. Not run in TouchDesigner: every step here is to be confirmed in
+the app. TouchDesigner 2025.33230 ships Chromium Embedded Framework 132.3.1 with Chromium 132.0.6834.83 (read from the installed
+app); the Info DAT of a Web Render TOP reports the versions it runs.</p>
+<ol>
+<li>On the show machine run <code>node serve.js</code> and open the show page with a leader on the relay: example 29 at
+<code>http://localhost:8080/examples/29-projector-output/?lead</code> (or <strong>Lead</strong> on the desk, or <code>outputs.lead()</code> with <code>via: true</code>).</li>
+<li>In TouchDesigner add a <strong>Web Render TOP</strong>. On its Web Render page set <strong>URL or File</strong> to the clean address that follows:
+<code>http://localhost:8080/examples/29-projector-output/?output&amp;follow=oav-output&amp;via=relay</code>. Keep <strong>Active</strong> on.</li>
+<li>On its Common page set <strong>Output Resolution</strong> to <strong>Custom Resolution</strong> and <strong>Resolution</strong> to the size you need (1920 × 1080).
+The page draws at that size: with <code>?output</code> the stage fills it.</li>
+<li><strong>Audio Options</strong>: leave it <strong>Off</strong> for the picture alone (the show's sound stays on the show machine), or route it to
+<strong>Audio Web Render CHOPs</strong> to have it in TouchDesigner. Changing it restarts the browser process (the docs say so).</li>
+<li><strong>Maximum Render Frame Rate</strong>: the page's frame rate in TouchDesigner (the docs: it can be set above 60, without a guarantee).
+<strong>Cook Always</strong> keeps it cooking every frame.</li>
+</ol>
+<p>What does not work inside it, as far as the framework can tell:</p>
+<ul>
+<li><strong>Web MIDI.</strong> Derivative's page does not mention it. Whether <code>navigator.requestMIDIAccess</code> exists or prompts in the Web Render
+TOP is to be confirmed; with <code>&amp;follow</code> the page does not ask for MIDI at all (a follower's input is off). Bring MIDI into
+TouchDesigner itself, or play it on the show page.</li>
+<li><strong>Camera and microphone.</strong> The Web Render TOP has <strong>Enable Media Stream</strong> ("Allows the web render instance to use the mic and the
+camera"). Whether a permission prompt appears, and whether it can be answered, is to be confirmed. A follower page asks for neither.</li>
+<li><strong>Clicks and keys.</strong> Nothing is clicked in there: the corners saved in your own Chrome do not exist in TouchDesigner's browser (it
+keeps its own storage, <strong>User Cache Directory</strong>, by default a temporary one). Correct the picture in TouchDesigner instead: the
+<strong>Corner Pin TOP</strong> moves the corner points of an image (<a href="https://docs.derivative.ca/Corner_Pin_TOP" rel="noopener">Corner Pin TOP</a>), and the
+palette has <strong>stoner</strong> for mapping. Start the timeline from the show page (or add <code>&amp;play</code> to a page that does not follow).</li>
+<li><strong>Popups.</strong> A page's popups are ignored, or followed in place with <strong>Redirect Popups</strong>: an output window cannot be opened from there.</li>
+</ul>
+<p>The other direction already exists: the show's signals as OSC into TouchDesigner, through the bridge
+(<a href="../../docs/show-control/#show-control-osc-output">OSC output</a>, <a href="../../docs/show-control/#show-control-touchdesigner-as-the-receiver">TouchDesigner as the receiver</a>).
+Picture by Web Render TOP and control by OSC can run side by side.</p>
+<h2 id="output-recipe-obs">Recipe: OBS<a class="anchor" href="#output-recipe-obs" aria-label="Link to this section">#</a></h2>
+<p>What was checked: the property and button names below, from the installed OBS Studio 33.0.2 (its own English and Traditional
+Chinese labels) and from OBS's pages on the <a href="https://obsproject.com/kb/browser-source" rel="noopener">Browser Source</a> and the
+<a href="https://obsproject.com/kb/virtual-camera-guide" rel="noopener">virtual camera</a>; NDI from <a href="https://github.com/DistroAV/DistroAV" rel="noopener">DistroAV</a>.
+Not run in OBS: every step here is to be confirmed in the app. OBS 33.0.2 ships Chromium 150.0.7871.287 for its browser source
+(read from the installed app). DistroAV is not installed on the machine this was written on.</p>
+<p><strong>Browser Source.</strong> On the show machine run <code>node serve.js</code> and open the show page as the leader
+(<code>…/29-projector-output/?lead</code>). In OBS add a source <strong>Browser</strong>:</p>
+<ol>
+<li><strong>URL</strong>: <code>http://localhost:8080/examples/29-projector-output/?output&amp;follow=oav-output&amp;via=relay</code>.</li>
+<li><strong>Width</strong> and <strong>Height</strong>: the size of the picture, 1920 × 1080 (OBS's defaults are 800 × 600). With <code>?output</code> the stage fills it.</li>
+<li><strong>Use custom frame rate</strong> and <strong>FPS</strong>: 60 for a 60 fps canvas (OBS's default is 30).</li>
+<li><strong>Control audio via OBS</strong>: the switch for the page's sound in OBS. What it does with a show is to be confirmed: a show's sound
+starts on a click, and a follower page makes none of its own, so for the picture alone it does not matter.</li>
+<li><strong>Custom CSS</strong>: OBS's default makes the background transparent; the clean page paints its own black, so leave it.</li>
+<li><strong>Shutdown source when not visible</strong>: off, so the page keeps following while another scene is on air.</li>
+</ol>
+<p><strong>Out of OBS.</strong> <strong>Start Virtual Camera</strong> (Controls dock) gives OBS's program, a scene or a source as a camera to Zoom, a browser or
+TouchDesigner (the gear next to it chooses which). For NDI, the DistroAV plugin (OBS 31.1.1 or newer, NDI Runtime 6.3 or newer;
+on macOS <code>brew install --cask distroav/tap/distroav</code>) adds an <strong>NDI Output</strong> for the program and an <strong>NDI Filter</strong> for one
+source. Where they sit in OBS's menus is to be confirmed with the plugin installed.</p>
+<p><strong>Window capture instead.</strong> To send exactly what the performer plays (notes, particles, the mirror), capture the window rather than
+load the page again: <strong>macOS Screen Capture</strong> (or <strong>Window Capture</strong>), pointed at the output window. The output window has no
+console and hides its cursor, so the capture is clean; keep it on a screen (a hidden window may not be drawn), and crop with the
+source's <strong>Crop</strong> if needed.</p>
+<h2 id="output-what-was-checked">What was checked<a class="anchor" href="#output-what-was-checked" aria-label="Link to this section">#</a></h2>
+<p>Headless Chromium 151 (Playwright 1.62), one machine, no permissions granted (no MIDI, serial, camera, microphone or window
+management):</p>
+<ul>
+<li>example 29 loads with no console errors (the <code>ws://…7457</code> monitor warning is expected), its stage boxed to 16:9</li>
+<li><strong>Open output window</strong> opens the window from a click; the video has the canvas's exact size and its frames advance; flat colours
+arrive with no difference</li>
+<li>E shows four handles; dragging two corners and nudging a third with the keys changes the window's <code>matrix3d</code> and saves exactly
+those corners; G shows the test pattern; B writes <code>output/main/blackout</code> and the veil goes black; brightness 0.4 from the desk
+gives a veil of 0.6; the output window's keys never moved the show</li>
+<li>after a reload of the show page, the output opens again in the same window with the same corners, and plays</li>
+<li><strong>Page</strong> opens the clean address as a follower: it follows the show page's clock (0.08 s apart) and its held values</li>
+<li>the clean address shows no desk, piano, hint, guide or operator button, and uses the saved corners; <code>?pair&amp;output=left</code> draws the
+32:9 stage at twice the window's width and shows its left half</li>
+</ul>
+<p>Not checked: a real projector, a second physical screen, the Window Management permission prompt and fullscreen on a chosen
+screen, Chrome's kiosk mode, TouchDesigner, OBS, NDI.</p>
+    </article>
+
+    <nav class="ch-nav" aria-label="Previous and next chapter">
+      <a class="ch-prev" rel="prev" href="../../docs/dmx/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">← Previous</span><span class="ch-nav-t">DMX lighting</span></a>
+      <a class="ch-next" rel="next" href="../../docs/controllers/" data-oav-event="next_step" data-oav-to="docs"><span class="ch-nav-k">Next →</span><span class="ch-nav-t">MIDI controllers &amp; embedding</span></a>
+    </nav>
+    <p class="docs-end"><a href="#top">↑ Back to top</a> · <a href="../../docs/">All chapters</a></p>
+  </main>
+</div>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">open-audiovisual</p>
+  <div class="foot-grid">
+    <div>
+      <p>MIT license. Made by <a href="https://cheyuwu.com">Che-Yu Wu 吳哲宇</a>.</p>
+      <p class="note">Examples 05 to 07 integrate artworks © Che-Yu Wu, all rights reserved.</p>
+    </div>
+    <nav aria-label="Pages">
+      <a href="../../">Home</a>
+      <a href="../../examples/">Examples</a>
+      <a href="../../controllers/">Controllers</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../p5/">p5.js in one line</a>
+      <a href="../../webtoe/">WebToe</a>
+      <a href="../../made-with/">Made with</a>
+      <a href="../../changelog/">Changelog</a>
+    </nav>
+    <nav aria-label="For machines">
+      <a href="https://github.com/frank890417/open-audiovisual">GitHub</a>
+      <a href="../../llms.txt">llms.txt</a>
+      <a href="../../llms-full.txt">llms-full.txt</a>
+      <a href="https://github.com/frank890417/open-audiovisual/blob/main/AGENTS.md">AGENTS.md</a>
+    </nav>
+  </div>
+</footer>
+
+<p class="docs-toast" role="status" aria-live="polite"></p>
+<script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
+<script type="module" src="../../assets/docs/docs.js?v=7fe486df"></script>
+<!--/email_off-->
+</body>
+</html>

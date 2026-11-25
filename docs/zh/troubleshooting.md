@@ -147,3 +147,7 @@ p5（範例 05、06）、Tone.js（聲音）、MediaPipe（手、身體）和 We
 ## 連接埠已經被佔用
 
 `node serve.js 8081` 會改用另一個埠，OSC 橋接也接受埠號參數：`node packages/osc/bridges/osc-bridge.js 7470`（再用 `new OscOut('http://127.0.0.1:7470')`）。後台監看是例外：用 `createShow()` 做的頁面，除非你另外指定，否則會串流到自己主機的 7457 埠，所以要把這個埠空出來，或用 `createShow({ monitor: { url: 'ws://host:7460' } })` 指到別處（自己組裝的演出則是 `new MonitorFeed({ url: 'ws://host:7460' })`），再用 `node packages/monitor/server.js 7460` 啟動中繼。
+
+## 輸出視窗打不開，或一直是黑的
+
+瀏覽器只在點擊時才開視窗，所以 `outputs.open()` 和 `openOutput()` 要放在按鈕的處理函式裡，放在別的地方會丟出 the browser blocked the output window。阻擋彈出視窗的設定也可能擋掉一次點擊（允許這個網站開彈出視窗）。鏡像顯示的是舞台的 `<canvas>`：用 DOM 或 SVG 畫的世界沒有畫布，視窗會說明（改用 `{ mode: 'page' }`）。演出頁面重新整理後，鏡像停在最後一個畫面：從頁面再開一次輸出。只有一個螢幕時，全螢幕的輸出蓋住演出頁面，演出頁面就被藏起來，鏡像會降到背景分頁的速度（[見上面](#the-show-slows-down-when-the-window-is-in-the-background)）：把輸出放到另一個螢幕，或讓它保持視窗。見 [投影與影像輸出](output.md)。

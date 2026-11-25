@@ -55,8 +55,8 @@ export const ROUTE_INTRO = {
     '演的是一場演出，不只一件作品：看得見的時間軸、會數小節的鼓機，以及有導演的總譜。',
   ],
   output: [
-    'One synced video, from one line in a p5 sketch, with or without a camera, and a rig of stage lights over DMX.',
-    '同步的一支影片：p5 草圖加一行就能錄，有鏡頭或沒有鏡頭都行。還有一套用 DMX 打的舞台燈。',
+    'One synced video, from one line in a p5 sketch, with or without a camera, a rig of stage lights over DMX, and the picture on a projector, its corners pinned to the wall.',
+    '同步的一支影片：p5 草圖加一行就能錄，有鏡頭或沒有鏡頭都行。還有一套用 DMX 打的舞台燈，以及送上投影機、四個角釘到牆上的畫面。',
   ],
 };
 

@@ -241,3 +241,13 @@ port 7457 on its own host unless you say otherwise, so free that port, or point 
 show elsewhere with `createShow({ monitor: { url: 'ws://host:7460' } })` (in a
 hand-assembled show: `new MonitorFeed({ url: 'ws://host:7460' })`) and start the relay with
 `node packages/monitor/server.js 7460`.
+
+## The output window does not open, or stays black
+
+A browser opens a window only from a click, so `outputs.open()` and `openOutput()` work in a button's handler and throw
+"the browser blocked the output window" anywhere else; a popup blocker can also stop one click (allow popups for this
+site). A mirror shows the stage's `<canvas>`: a world drawn with DOM or SVG has none, and the window says so (use
+`{ mode: 'page' }`). After the show page reloads, a mirror keeps its last picture: open the output again from the page.
+On one screen, an output in fullscreen over the show page hides that page, and the mirror slows to the hidden-tab rate
+([above](#the-show-slows-down-when-the-window-is-in-the-background)): put the output on another screen, or leave it a window.
+See [Projection and video out](output.md).

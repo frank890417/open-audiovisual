@@ -2391,6 +2391,106 @@
           }
         }
       ],
+      "next": "29-projector-output"
+    },
+    {
+      "id": "29-projector-output",
+      "num": "29",
+      "dir": "examples/29-projector-output/",
+      "route": "output",
+      "title": {
+        "en": "Projector output",
+        "zh": "投影輸出"
+      },
+      "teaches": {
+        "en": "An output window for a projector or a second screen, its four corners pinned to the wall, and a clean address for OBS and TouchDesigner.",
+        "zh": "給投影機或第二個螢幕的輸出視窗，四個角釘到牆上的位置，還有給 OBS 和 TouchDesigner 用的乾淨網址。"
+      },
+      "summary": {
+        "en": "A world of rings in its canvas's own shape goes to a projector through <code>@openav/output</code>: an output window that mirrors the stage, corner-pin with four handles and a test pattern, blackout and brightness as params the timeline fades, <code>?pair</code> for two projectors side by side and <code>?output</code> for a clean page.",
+        "zh": "一個照畫布形狀畫圓環的世界，經過 <code>@openav/output</code> 送上投影機：鏡像舞台的輸出視窗、拖四個角的四角校正和測試圖、時間軸能淡出的黑場與亮度參數，<code>?pair</code> 讓兩台投影機並排，<code>?output</code> 是乾淨的輸出頁。"
+      },
+      "plays": {
+        "en": "on-screen piano · QWERTY · MIDI controller · a second screen",
+        "zh": "螢幕鋼琴 · 電腦鍵盤 · MIDI 控制器 · 第二個螢幕"
+      },
+      "needs": [],
+      "standIn": [
+        "piano",
+        "qwerty"
+      ],
+      "p5Line": false,
+      "thumb": "assets/home/works/29.webp",
+      "alt": {
+        "en": "Rounded rectangles of blue, violet and orange light grow from a glowing centre to a thin white frame at the edge of a dark stage.",
+        "zh": "藍、紫、橘色的圓角矩形光環從發亮的中心往外長，一直到暗色舞台邊緣的白色細框。"
+      },
+      "docs": [
+        {
+          "id": "output",
+          "en": "Projection and video out",
+          "zh": "投影與影像輸出"
+        },
+        {
+          "id": "output-corner-pin",
+          "en": "Corner pin",
+          "zh": "四角校正"
+        }
+      ],
+      "tryThree": {
+        "en": [
+          "Press “Open output window”, drag the window onto the projector or a second screen, and press F in it (on one screen it stays a window).",
+          "Press E in the output window and drag the four numbered corners: the picture bends to fit; G shows the test pattern bent the same way, and a reload keeps it.",
+          "Press Space: the timeline fades the projector out over the last 8 seconds through output/main/brightness, the same param the console's slider moves."
+        ],
+        "zh": [
+          "按「Open output window」，把視窗拖到投影機或第二個螢幕上，在視窗裡按 F（只有一個螢幕時它就是一個視窗）。",
+          "在輸出視窗按 E，拖四個有編號的角：畫面會跟著彎過去。按 G 顯示一樣彎過去的測試圖，重新整理後還在。",
+          "按空白鍵：時間軸在最後 8 秒經過 output/main/brightness 把投影淡出，控台上的滑桿推的也是同一個參數。"
+        ]
+      },
+      "read": [
+        {
+          "file": "main.js",
+          "from": 25,
+          "to": 44,
+          "match": "const rings = {",
+          "note": {
+            "en": "The world: rings in its canvas's own shape and a frame on its edge. It knows nothing about projectors.",
+            "zh": "世界：照畫布形狀畫的圓環，邊上一圈框。它完全不知道投影機的事。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 78,
+          "to": 78,
+          "match": "const fadeOut",
+          "note": {
+            "en": "The timeline reaches the projector the way it reaches the rings: output/<name>/brightness is a param.",
+            "zh": "時間軸推投影機的方式跟推圓環一樣：output/<name>/brightness 是一個參數。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 107,
+          "to": 110,
+          "match": "const outputs = createOutputs(show, pair",
+          "note": {
+            "en": "The outputs, declared at load: one 16:9 projector, or with ?pair two halves of a 32:9 canvas.",
+            "zh": "在載入時宣告輸出：一台 16:9 投影機，或加 ?pair 時一張 32:9 畫布的左右兩半。"
+          }
+        },
+        {
+          "file": "main.js",
+          "from": 116,
+          "to": 123,
+          "match": "for (const name of names) {",
+          "note": {
+            "en": "The button: a browser opens a window only from a click, and .oav-operator keeps it off a clean output page.",
+            "zh": "按鈕：瀏覽器只在點擊時才開視窗，.oav-operator 讓它不出現在乾淨的輸出頁上。"
+          }
+        }
+      ],
       "next": null
     }
   ]

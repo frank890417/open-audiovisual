@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- oav:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projector output · open-audiovisual example</title>
+<meta name="description" content="An output window for a projector or a second screen, its four corners pinned to the wall, and a clean address for OBS and TouchDesigner. Runs in the browser, no hardware needed.">
+<link rel="canonical" href="https://openaudiovisual.com/examples/29-projector-output/">
+<link rel="describedby" href="../../llms.txt" title="llms.txt">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="open-audiovisual">
+<meta property="og:title" content="Projector output · open-audiovisual example">
+<meta property="og:description" content="An output window for a projector or a second screen, its four corners pinned to the wall, and a clean address for OBS and TouchDesigner. Runs in the browser, no hardware needed.">
+<meta property="og:url" content="https://openaudiovisual.com/examples/29-projector-output/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Projector output · open-audiovisual example">
+<meta name="twitter:description" content="An output window for a projector or a second screen, its four corners pinned to the wall, and a clean address for OBS and TouchDesigner. Runs in the browser, no hardware needed.">
+<meta name="twitter:image" content="https://openaudiovisual.com/assets/home/og.png">
+<meta name="twitter:image:alt" content="open-audiovisual: a web-native framework for audiovisual performance. signals, mapping, params, world. MIDI, audio, chords, hands, phones. An orange harmonograph glows beside the wordmark.">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<meta name="oav-page-type" content="example" data-oav-id="29-projector-output">
+<script defer src="../../assets/track.js?v=7fe486df"></script>
+<script defer src="../../assets/send-bar.js?v=7fe486df" data-strings="{&quot;en&quot;:{&quot;send&quot;:&quot;Send this page to your computer&quot;,&quot;copied&quot;:&quot;Link copied. Open it on your computer.&quot;,&quot;close&quot;:&quot;Close&quot;},&quot;zh&quot;:{&quot;send&quot;:&quot;把這一頁傳到電腦&quot;,&quot;copied&quot;:&quot;已複製連結，到電腦上打開。&quot;,&quot;close&quot;:&quot;關閉&quot;}}"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.11.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"WebPage","@id":"https://openaudiovisual.com/examples/29-projector-output/#webpage","url":"https://openaudiovisual.com/examples/29-projector-output/","name":"Projector output · open-audiovisual example","description":"An output window for a projector or a second screen, its four corners pinned to the wall, and a clean address for OBS and TouchDesigner. Runs in the browser, no hardware needed.","inLanguage":["en","zh-Hant"],"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"about":{"@id":"https://openaudiovisual.com/#software"},"mainEntity":{"@id":"https://openaudiovisual.com/examples/29-projector-output/#code"},"breadcrumb":{"@id":"https://openaudiovisual.com/examples/29-projector-output/#breadcrumb"}},{"@type":"SoftwareSourceCode","@id":"https://openaudiovisual.com/examples/29-projector-output/#code","name":"Projector output (open-audiovisual example 29)","url":"https://github.com/frank890417/open-audiovisual/tree/main/examples/29-projector-output","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","isPartOf":{"@id":"https://openaudiovisual.com/#software"},"author":{"@id":"https://cheyuwu.com/#person"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/examples/29-projector-output/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://openaudiovisual.com/examples/"},{"@type":"ListItem","position":3,"name":"Projector output","item":"https://openaudiovisual.com/examples/29-projector-output/"}]}]}</script>
+<link rel="stylesheet" href="../../assets/examples/guide.css?v=7fe486df">
+<!-- /oav:head -->
+<script type="importmap">
+{
+  "imports": {
+    "@openav/core": "../../packages/core/index.js?v=7fe486df",
+    "@openav/midi": "../../packages/midi/index.js?v=7fe486df",
+    "@openav/keys": "../../packages/keys/index.js?v=7fe486df",
+    "@openav/chord": "../../packages/chord/index.js?v=7fe486df",
+    "@openav/audio": "../../packages/audio/index.js?v=7fe486df",
+    "@openav/pose": "../../packages/pose/index.js?v=7fe486df",
+    "@openav/sound": "../../packages/sound/index.js?v=7fe486df",
+    "@openav/mapping": "../../packages/mapping/index.js?v=7fe486df",
+    "@openav/timeline": "../../packages/timeline/index.js?v=7fe486df",
+    "@openav/stage": "../../packages/stage/index.js?v=7fe486df",
+    "@openav/console": "../../packages/console/index.js?v=7fe486df",
+    "@openav/monitor": "../../packages/monitor/index.js?v=7fe486df",
+    "@openav/show": "../../packages/show/index.js?v=7fe486df",
+    "@openav/output": "../../packages/output/index.js?v=7fe486df"
+  }
+}
+</script>
+<script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
+</head>
+<body>
+<!-- oav:guide -->
+<aside class="oav-guide" id="oav-guide" data-ui="en" aria-labelledby="g-title">
+  <div class="g-bar">
+    <p class="g-eyebrow"><span lang="en">Example 29 · <a href="../../examples/#route-output">Take it out of the browser</a></span><span lang="zh-Hant">範例 29 · <a href="../../zh/examples/#route-output">輸出與留存</a></span></p>
+    <span class="g-tools" hidden>
+      <button type="button" class="g-lang" data-set="en" aria-pressed="true" data-oav-event="lang_switch">EN</button><button type="button" class="g-lang" data-set="zh" aria-pressed="false" data-oav-event="lang_switch">中文</button>
+      <button type="button" class="g-toggle" aria-expanded="true" aria-controls="g-body" data-hide="Hide" data-show="Guide" data-hide-zh="收起" data-show-zh="帶路">Hide</button>
+    </span>
+  </div>
+  <div class="g-body" id="g-body">
+    <h1 id="g-title"><span lang="en">Projector output</span><span lang="zh-Hant">投影輸出</span></h1>
+    <p class="g-teaches"><span lang="en">An output window for a projector or a second screen, its four corners pinned to the wall, and a clean address for OBS and TouchDesigner.</span><span lang="zh-Hant">給投影機或第二個螢幕的輸出視窗，四個角釘到牆上的位置，還有給 OBS 和 TouchDesigner 用的乾淨網址。</span></p>
+    <h2><span lang="en">Try these three things</span><span lang="zh-Hant">試試這三件事</span></h2>
+        <ol class="g-try" lang="en"><li>Press “Open output window”, drag the window onto the projector or a second screen, and press F in it (on one screen it stays a window).</li><li>Press E in the output window and drag the four numbered corners: the picture bends to fit; G shows the test pattern bent the same way, and a reload keeps it.</li><li>Press Space: the timeline fades the projector out over the last 8 seconds through output/main/brightness, the same param the console's slider moves.</li></ol>
+        <ol class="g-try" lang="zh-Hant"><li>按「Open output window」，把視窗拖到投影機或第二個螢幕上，在視窗裡按 F（只有一個螢幕時它就是一個視窗）。</li><li>在輸出視窗按 E，拖四個有編號的角：畫面會跟著彎過去。按 G 顯示一樣彎過去的測試圖，重新整理後還在。</li><li>按空白鍵：時間軸在最後 8 秒經過 output/main/brightness 把投影淡出，控台上的滑桿推的也是同一個參數。</li></ol>
+    <p class="g-row"><span lang="en"><b>No hardware needed.</b> On-screen piano · QWERTY keys.</span><span lang="zh-Hant"><b>不需要硬體。</b>螢幕鋼琴、電腦鍵盤。</span></p>
+    <h2><span lang="en">Read these lines</span><span lang="zh-Hant">讀這幾行</span></h2>
+    <ul class="g-read"><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/29-projector-output/main.js#L25-L44"><code>main.js:25–44</code></a> <span lang="en">The world: rings in its canvas's own shape and a frame on its edge. It knows nothing about projectors.</span><span lang="zh-Hant">世界：照畫布形狀畫的圓環，邊上一圈框。它完全不知道投影機的事。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/29-projector-output/main.js#L78"><code>main.js:78</code></a> <span lang="en">The timeline reaches the projector the way it reaches the rings: output/&lt;name&gt;/brightness is a param.</span><span lang="zh-Hant">時間軸推投影機的方式跟推圓環一樣：output/&lt;name&gt;/brightness 是一個參數。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/29-projector-output/main.js#L107-L110"><code>main.js:107–110</code></a> <span lang="en">The outputs, declared at load: one 16:9 projector, or with ?pair two halves of a 32:9 canvas.</span><span lang="zh-Hant">在載入時宣告輸出：一台 16:9 投影機，或加 ?pair 時一張 32:9 畫布的左右兩半。</span></li><li><a href="https://github.com/frank890417/open-audiovisual/blob/main/examples/29-projector-output/main.js#L116-L123"><code>main.js:116–123</code></a> <span lang="en">The button: a browser opens a window only from a click, and .oav-operator keeps it off a clean output page.</span><span lang="zh-Hant">按鈕：瀏覽器只在點擊時才開視窗，.oav-operator 讓它不出現在乾淨的輸出頁上。</span></li></ul>
+    <h2><span lang="en">Next step</span><span lang="zh-Hant">下一步</span></h2>
+    
+    <p class="g-row"><span lang="en"><b>In the docs:</b> <a href="../../docs/output/" data-oav-event="next_step" data-oav-to="docs">Projection and video out</a> · <a href="../../docs/output/#output-corner-pin" data-oav-event="next_step" data-oav-to="docs">Corner pin</a></span><span lang="zh-Hant"><b>文件裡：</b><a href="../../zh/docs/output/" data-oav-event="next_step" data-oav-to="docs">投影與影像輸出</a>、<a href="../../zh/docs/output/#output-corner-pin" data-oav-event="next_step" data-oav-to="docs">四角校正</a></span></p>
+    <p class="g-next"><span lang="en">That was the last one.</span><span lang="zh-Hant">這是最後一個範例。</span>
+    <span lang="en"><a href="../../examples/" data-oav-event="next_step" data-oav-to="examples">All examples</a></span><span lang="zh-Hant"><a href="../../zh/examples/" data-oav-event="next_step" data-oav-to="examples">所有範例</a></span></p>
+    
+  </div>
+</aside>
+<script src="../../assets/examples/guide.js?v=7fe486df"></script>
+<!-- /oav:guide -->
+<script type="module" src="./main.js?v=7fe486df"></script>
+</body>
+</html>

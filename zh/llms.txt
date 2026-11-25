@@ -4,7 +4,7 @@
 
 輸入（MIDI、麥克風、和弦、身體與手部姿態、手機）發出有名字的訊號；映射層把訊號接到參數；演算的「世界」只讀參數，產生畫面與聲音；時間軸、導演控台與後台監看負責把演出跑起來。原生 ES module，零建置、零相依。從《The Last Input》（吳哲宇，2026；IRCAM 駐村 × C-LAB，臺北，49.4 聲道表演）抽出來。
 
-目前：32 個套件、28 個範例、28 份 MIDI 控制器設定檔（22 台真機與 6 種通用版型），版本 0.11.0，oav-p5 0.8.5（https://openaudiovisual.com/zh/changelog/）。
+目前：32 個套件、29 個範例、28 份 MIDI 控制器設定檔（22 台真機與 6 種通用版型），版本 0.11.0，oav-p5 0.8.5（https://openaudiovisual.com/zh/changelog/）。
 
 網站：https://openaudiovisual.com/（English）· https://openaudiovisual.com/zh/（繁體中文）
 原始碼：https://github.com/frank890417/open-audiovisual
@@ -37,7 +37,7 @@
 ## Start
 
 - 執行：`git clone https://github.com/frank890417/open-audiovisual.git && cd open-audiovisual && node serve.js` → http://localhost:8080（不用 npm install；Web MIDI 與鏡頭請用 Chrome／Edge）
-- 做一件新作品：把 `examples/01-hello-particles/` 複製成 `examples/29-<名稱>/`，在 `main.js` 寫 World，打開 `http://localhost:8080/examples/29-<名稱>/`。
+- 做一件新作品：把 `examples/01-hello-particles/` 複製成 `examples/30-<名稱>/`，在 `main.js` 寫 World，打開 `http://localhost:8080/examples/30-<名稱>/`。
 - 驗證：`npm test`（node --test）全過；範例載入時 console 沒有錯誤（沒開監看時，被拒絕的 `ws://localhost:7457` 連線是正常的）。
 
 ## Docs
@@ -54,6 +54,7 @@
 - [演出控制](https://openaudiovisual.com/zh/docs/show-control/) ([Markdown](https://openaudiovisual.com/docs/zh/show-control.md)): 時間軸、場景、演出模式、控台、後台監看、OSC。
 - [總譜與導演](https://openaudiovisual.com/zh/docs/score/) ([Markdown](https://openaudiovisual.com/docs/zh/score.md)): 把演出寫成段落長度：版本、cue、hold、段落模組、提詞器、樂譜轉 MIDI。
 - [DMX 燈光](https://openaudiovisual.com/zh/docs/dmx/) ([Markdown](https://openaudiovisual.com/docs/zh/dmx.md)): 從作品打舞台燈：燈具、patch、scene、cue、chase、effect，每台燈每秒最多閃 3 次（引擎裡一層、輸出前再一層，即時值也算），經輸出橋接程式（Art-Net、sACN）或 Web Serial（Enttec DMX USB Pro）送出，用參數讓聲音和 MIDI 推燈，沒有硬體時有監看器。
+- [投影與影像輸出](https://openaudiovisual.com/zh/docs/output/) ([Markdown](https://openaudiovisual.com/docs/zh/output.md)): 把舞台送上投影機、第二個螢幕、OBS 或 TouchDesigner：輸出視窗（鏡像畫布，或跟著時鐘的同一個頁面）、附測試圖的四角校正、並排投影機的裁切、黑場與亮度參數、設定檔、乾淨網址 ?output，以及 kiosk 瀏覽器、OBS 和 TouchDesigner 的做法。
 - [MIDI 控制器與嵌入](https://openaudiovisual.com/zh/docs/controllers/) ([Markdown](https://openaudiovisual.com/docs/zh/controllers.md)): 把 MIDI 控制器寫成 JSON 設定檔，以及 `<oav-controller>` 元件與 iframe 嵌入。
 - [設備](https://openaudiovisual.com/zh/docs/devices/) ([Markdown](https://openaudiovisual.com/docs/zh/devices.md)): 演出設備大集合（每一份 MIDI 控制器 profile、DMX 燈具和電子零件，加上鏡頭、音訊介面、感測器、LED 與 DMX 介面的手寫紀錄），一種紀錄格式、每筆事實都有出處，devices() 搜尋，device(id) 把一台交給驅動它的套件。
 - [p5.js 一行接上](https://openaudiovisual.com/zh/p5/) ([Markdown](https://openaudiovisual.com/docs/zh/p5.md)): 一行指令，讓任何 p5.js 草圖能用 MIDI、螢幕上的控制器或手機彈，還有聲音、能用一行字寫節奏的鼓機、麥克風、錄影，以及像 TouchDesigner CHOP 那樣隨時間變化的數值（`lag()`）。
@@ -110,6 +111,7 @@
 - [26-p5-rhythm-lab](https://openaudiovisual.com/examples/26-p5-rhythm-lab/): OAVp5.drums.edit('bd(3,8), …') 像打字一樣換節奏，OAVp5.drums.undo() 回上一行，OAVp5.drums.strudelUrl 把這一行帶去 Strudel；rhythmChanged() 告訴你現在是哪一行。 （按鍵 1–4、Z、S · 鼓機（🥁））
 - [27-hand-gestures](https://openaudiovisual.com/examples/27-hand-gestures/): 鏡頭能從兩隻手讀出什麼：七種手勢、捏一下、手張開多少、手的角度、兩手的距離。數字直接畫在手上，鏡頭打開之前有兩隻模擬的手在演。 （鏡頭（手）· 模擬的手 · 螢幕鋼琴）
 - [28-dmx-lights](https://openaudiovisual.com/examples/28-dmx-lights/): 八台 RGBW par 和兩台搖頭燈（@openav/dmx）跟畫面用同一組參數：聲音、和弦和任何 MIDI 控制器經過映射層推動它們，通道監看器代替真的燈，?out=bridge 就送出 Art-Net 或 sACN。 （螢幕鋼琴 · 電腦鍵盤 · 鼓機 · 麥克風 · MIDI 控制器）
+- [29-projector-output](https://openaudiovisual.com/examples/29-projector-output/): 一個照畫布形狀畫圓環的世界，經過 @openav/output 送上投影機：鏡像舞台的輸出視窗、拖四個角的四角校正和測試圖、時間軸能淡出的黑場與亮度參數，?pair 讓兩台投影機並排，?output 是乾淨的輸出頁。 （螢幕鋼琴 · 電腦鍵盤 · MIDI 控制器 · 第二個螢幕）
 
 範例 05–07 整合了吳哲宇的作品（2020–2023），版權所有；框架為 MIT 授權。
 

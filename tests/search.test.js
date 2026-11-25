@@ -179,8 +179,9 @@ test('the index has a size budget: a page of text, not a library', () => {
   const raw = Buffer.from(read(INDEX));
   assert.ok(raw.length < 3 * 1024 * 1024, `${raw.length} bytes raw`);
   // 700 KiB until the device collection's pages came in (2026-11-25: 71 pages × 2 languages, about 4.5 KiB gzipped, trimmed to
-  // name, maker, kind and id); the dialog fetches the file only when it is first opened
-  assert.ok(zlib.gzipSync(raw).length < 720 * 1024, `${zlib.gzipSync(raw).length} bytes gzipped`);
+  // name, maker, kind and id); 720 KiB until the projection chapter and @openav/output's ten names came in (2026-11-25: 14
+  // sections and 10 entries × 2 languages, about 27 KiB gzipped); the dialog fetches the file only when it is first opened
+  assert.ok(zlib.gzipSync(raw).length < 760 * 1024, `${zlib.gzipSync(raw).length} bytes gzipped`);
 });
 
 test('plain(): code blocks and tags out, entities decoded', () => {
