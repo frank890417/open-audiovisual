@@ -10,9 +10,9 @@
 //
 // Nothing here touches the page when it is imported: the pure parts (pin, crop, layout, url, params) run in node.
 
-export { cornerPin, toMatrix3d } from './pin.js?v=7fe486df';
-export { cropBox } from './crop.js?v=7fe486df';
-export { OUTPUT_FORMAT, parseOutputLayout } from './layout.js?v=7fe486df';
-export { outputParams } from './params.js?v=7fe486df';
-export { outputQuery, outputUrl } from './url.js?v=7fe486df';
-export { openOutput, createOutputs } from './window.js?v=7fe486df';
+export { cornerPin, toMatrix3d } from './pin.js?v=2b72f18a';
+export { cropBox } from './crop.js?v=2b72f18a';
+export { OUTPUT_FORMAT, parseOutputLayout } from './layout.js?v=2b72f18a';
+export { outputParams } from './params.js?v=2b72f18a';
+export { outputQuery, outputUrl } from './url.js?v=2b72f18a';
+export { openOutput, createOutputs } from './window.js?v=2b72f18a';

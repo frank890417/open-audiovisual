@@ -21,7 +21,7 @@
 // refresh costs ~nothing and makes "last value wins" true for late joiners.
 // Why pulses are never batched or re-sent: a note-on delivered twice is a bug.
 
-export { bindSignals, signalMeta, aliasOf, fileSignal, normalizeValue } from './signals.js?v=7fe486df';
+export { bindSignals, signalMeta, aliasOf, fileSignal, normalizeValue } from './signals.js?v=2b72f18a';
 
 const rnd = () => Math.random().toString(36).slice(2, 7);
 

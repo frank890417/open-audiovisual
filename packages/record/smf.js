@@ -10,7 +10,7 @@
 // changes and SMPTE time division, and returns a take whose events are the
 // signals a keyboard playing that file would have published.
 
-import { normalizeTake, midiEventsOf, signalsOfMidi } from './take.js?v=7fe486df';
+import { normalizeTake, midiEventsOf, signalsOfMidi } from './take.js?v=2b72f18a';
 
 const vlq = (n) => {
   n = Math.max(0, Math.round(n));

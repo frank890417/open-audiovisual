@@ -3,8 +3,8 @@
 // I²C blue, data green, SPI purple, analog orange. A wire a check complains about is dashed and marked.
 // Pure: builds a string, touches no DOM. Every text that comes from the spec is escaped.
 
-import { check, partOf } from './check.js?v=7fe486df';
-import { PARTS } from './parts.js?v=7fe486df';
+import { check, partOf } from './check.js?v=2b72f18a';
+import { PARTS } from './parts.js?v=2b72f18a';
 
 export const COLORS = { power: '#d6336c', ground: '#343a40', i2c: '#1c7ed6', data: '#2f9e44', spi: '#7048e8', analog: '#e8590c', other: '#868e96' };
 const LEGEND = [['power', '電源'], ['ground', '地線'], ['i2c', 'I²C'], ['data', '資料'], ['spi', 'SPI'], ['analog', '類比']];

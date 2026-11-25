@@ -15,12 +15,12 @@
 //                            clock and every value a hand or a route holds, not signals or randomness: a world that reacts
 //                            to a note, or integrates dt, draws something else there.
 
-import { mountOutputView } from './view.js?v=7fe486df';
-import { outputParams, outputKeys, paramReader } from './params.js?v=7fe486df';
-import { normalizeCrop, FITS } from './crop.js?v=7fe486df';
-import { loadRoom, saveRoom, defaultStorage, layoutDoc, parseOutputLayout, NAME_RE } from './layout.js?v=7fe486df';
-import { outputUrl } from './url.js?v=7fe486df';
-import { mountOutputPanel } from './panel.js?v=7fe486df';
+import { mountOutputView } from './view.js?v=2b72f18a';
+import { outputParams, outputKeys, paramReader } from './params.js?v=2b72f18a';
+import { normalizeCrop, FITS } from './crop.js?v=2b72f18a';
+import { loadRoom, saveRoom, defaultStorage, layoutDoc, parseOutputLayout, NAME_RE } from './layout.js?v=2b72f18a';
+import { outputUrl } from './url.js?v=2b72f18a';
+import { mountOutputPanel } from './panel.js?v=2b72f18a';
 
 const streams = new WeakMap();                     // canvas → its MediaStream (two windows of one canvas share it)
 const isShow = (s) => !!(s && s.stage && s.params && s.timeline);
@@ -82,7 +82,7 @@ export function openOutput(source, {
     const win = window.open(url, winName, features);
     if (!win) throw new Error('[output] the browser blocked the output window: call openOutput() from a click');
     // loaded on demand (and failing soft where follow.js is not beside this file, as in the lab's one-file bundle)
-    const leading = import('./follow.js?v=7fe486df').then(({ leadOutputs }) => leadOutputs(show, { channel, via })).catch((e) => { console.warn('[output] this page cannot lead the output page:', e); return null; });
+    const leading = import('./follow.js?v=2b72f18a').then(({ leadOutputs }) => leadOutputs(show, { channel, via })).catch((e) => { console.warn('[output] this page cannot lead the output page:', e); return null; });
     const remote = () => { try { return win.openav?.output ?? null; } catch { return null; } };
     return {
       name, mode, window: win, url, leading,
@@ -210,7 +210,7 @@ export function createOutputs(show, { outputs = [{ name: 'main' }], aspect = nul
      * TouchDesigner): every frame they get this page's clock and held values. o: { channel, via } (via: true = this server's
      * /relay, needed for another browser or machine). Resolves to the SyncLeader; calling it again changes nothing.
      */
-    lead(o = {}) { return import('./follow.js?v=7fe486df').then(({ leadOutputs }) => leadOutputs(show, { via, ...o })); },
+    lead(o = {}) { return import('./follow.js?v=2b72f18a').then(({ leadOutputs }) => leadOutputs(show, { via, ...o })); },
     /** The clean address of an output (for a kiosk browser, OBS or TouchDesigner). o: { follow, via, play }. */
     url(name, o = {}) { const d = known(name); return outputUrl(location.href, { name, crop: d.crop, fit: d.fit, aspect, ...o }); },
     /** Every declared output's room (what is open now, else what this browser saved) as an open-audiovisual/output@1 document. */

@@ -16,7 +16,7 @@
 // effect types: chorus · delay · pingpong · distortion · vibrato · tremolo ·
 // phaser · autofilter · filter · eq · compressor · chebyshev · widener.
 
-import { registerInstrument } from '../registry.js?v=7fe486df';
+import { registerInstrument } from '../registry.js?v=2b72f18a';
 
 const VOICES = { synth: 'Synth', mono: 'MonoSynth', fm: 'FMSynth', am: 'AMSynth' };
 const EFFECTS = {

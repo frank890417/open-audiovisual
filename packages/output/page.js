@@ -3,9 +3,9 @@
 // shape the address asks for, the output's blackout and brightness params, and the same keys as an output window
 // (E corners, G test pattern, F fullscreen, B blackout, I help). The console was never shown: createShow hid it.
 
-import { mountOutputView } from './view.js?v=7fe486df';
-import { outputParams, outputKeys, paramReader } from './params.js?v=7fe486df';
-import { loadRoom, saveRoom, defaultStorage } from './layout.js?v=7fe486df';
+import { mountOutputView } from './view.js?v=2b72f18a';
+import { outputParams, outputKeys, paramReader } from './params.js?v=2b72f18a';
+import { loadRoom, saveRoom, defaultStorage } from './layout.js?v=2b72f18a';
 
 /**
  * @param {object} show  what createShow() built

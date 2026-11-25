@@ -16,7 +16,7 @@
 // rotate    0, 90, 180 or 270, clockwise              overscan  0 … 0.45: a black border, as a fraction of each side
 // soft      0 … 0.5: the picture's edges fade to black over this fraction of each side (not edge blending)
 
-import { checkQuad } from './pin.js?v=7fe486df';
+import { checkQuad } from './pin.js?v=2b72f18a';
 
 export const OUTPUT_FORMAT = 'open-audiovisual/output@1';
 export const NAME_RE = /^[\w-]{1,32}$/;
