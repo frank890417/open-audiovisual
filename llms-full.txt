@@ -5906,7 +5906,7 @@ npm yet.
 | L1 input | `midi` · `audio` · `chord` · `pose` · `leap` · `keys` · `drums` |
 | L2 mapping | `mapping` · `chop` |
 | L3 world | `stage` · `world-webtoe` |
-| L4 output | `sound` · `osc` · `out` · `dmx` · `output` · `align` · `record` · `fab` (and MIDI out in `midi`) |
+| L4 output | `sound` · `osc` · `out` · `dmx` · `output` · `align` · `record` · `fab` · `hw` (and MIDI out in `midi`) |
 | spines | `timeline` · `score` · `pattern` · `console` · `monitor` · `sync` |
 | phones | `relay` · `surface` · `remote` · `tile` |
 | glue | `core` · `show` · `devices` · `mcp` |
