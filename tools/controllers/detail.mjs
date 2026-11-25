@@ -282,7 +282,8 @@ export function renderDetail(t, home, locale, d, cat) {
     [F.messages, esc(msgKinds(t, d).join(' · '))],
     [F.channels, chs.join(', ')],
     [F.led, d.prov.led ? F.ledYes : F.ledNo],
-    ...(d.prov.imported ? [[F.layout, F.layoutAuto], [F.license, fill(F.licenseQlc, { notice: `${BLOB}NOTICE` })]] : []),
+    ...(d.prov.auto ? [[F.layout, F.layoutAuto]] : []),
+    ...(d.prov.imported ? [[F.license, fill(F.licenseQlc, { notice: `${BLOB}NOTICE` })]] : []),
     ...(device ? [[F.checked, checked.hardware ? fill(F.checkedSome, { n: checked.hardware, total: checked.controls, date: esc(checked.latest.date) }) : F.checkedNone]] : []),
     [F.signals, `<code>midi/${esc(p.short)}/…</code>`],
     [F.port, ports || F.portNone],
@@ -295,7 +296,8 @@ export function renderDetail(t, home, locale, d, cat) {
   if (d.prov.generic) badgeLi.push(`<li class="b-gen">${B.generic}</li>`);
   if (d.prov.led) badgeLi.push(`<li class="b-led">${B.led}</li>`);
   if (d.prov.sysex) badgeLi.push(`<li class="b-led"><a href="#sysex">SysEx</a></li>`);
-  if (d.prov.imported) badgeLi.push(`<li class="b-comm">${B.fromQlc}</li>`, `<li class="b-gen">${B.auto}</li>`);
+  if (d.prov.imported) badgeLi.push(`<li class="b-comm">${B.fromQlc}</li>`);
+  if (d.prov.auto) badgeLi.push(`<li class="b-gen">${B.auto}</li>`);
   if (d.prov.unverified) badgeLi.push(`<li class="b-unv">${fill(B.unverified, { n: d.prov.unverified })}</li>`);
 
   // snippets
@@ -349,7 +351,7 @@ ${topBar(home, c)}
     <div class="stage-foot">
       <p class="stage-meta"><b>${fill(D.play.title, { name: esc(name) })}</b> ${d.prov.imported ? '' : `<a href="${c.root}examples/09-midi-controllers/?view=controller&amp;profile=${id}">${D.play.full} ↗</a> `}<a href="${c.root}${jsonRel}">${D.report.raw} ↗</a> <a href="${c.to('controllers')}">${D.play.back}</a></p>
     </div>
-    ${d.prov.imported ? `<p class="auto-note">${D.play.autoNote}</p>` : ''}
+    ${d.prov.auto ? `<p class="auto-note">${D.play.autoNote}</p>` : ''}
     <p class="hint js-only">${D.play.hint}</p>
     <noscript><p class="noscript">${D.play.noscript}</p></noscript>
   </section>

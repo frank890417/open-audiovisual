@@ -71,15 +71,17 @@ export function describeProfile(raw, i, files) {
   const counts = new Map();
   for (const c of p.controls) counts.set(c.type, (counts.get(c.type) || 0) + physical(c));
   const sources = p.sources || [];
+  const qlc = p.origin?.tool === 'QLC+';
   const prov = {
     maker: p.kind === 'device' && sources.some((s) => sourceKind(s, p) === 'maker'),
     community: sources.some((s) => sourceKind(s, p) === 'community'),
-    tool: p.face.auto ? null : p.origin && p.origin.tool ? p.origin.tool : sources.some(isTool) ? 'TouchDesigner' : null,   // an imported file's origin is a project, not the artist's own tool
+    tool: qlc ? null : p.origin && p.origin.tool ? p.origin.tool : sources.some(isTool) ? 'TouchDesigner' : null,   // an imported file's origin is a project, not the artist's own tool
     generic: p.kind === 'generic',
     unverified: p.controls.filter((c) => c.verified === false).reduce((a, c) => a + physical(c), 0),
     led: p.controls.some((c) => c.led),
     sysex: (p.sysex?.messages || []).length,
-    imported: !!p.face.auto,
+    imported: qlc,          // the data came from QLC+ (Apache-2.0, see NOTICE), whoever drew the layout since
+    auto: !!p.face.auto,    // nobody drew the layout: it was generated from the list of controls
   };
   const has = TYPE_ORDER.filter((t) => counts.has(t));
   if (prov.led) has.push('led');
