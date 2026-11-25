@@ -46,7 +46,7 @@ python3 -m http.server 8080      # or any static server, or any static host
 這個檔是一頁加一個 `import`：你要改的世界，和一次 `createShow()` 呼叫。其他東西都從一個網址進來：
 
 ```js
-import { createShow, createCanvas } from 'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js';
+import { createShow, createCanvas } from 'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.12.0/packages/openav.js';
 ```
 
 需要的東西都從這一個網址匯入。用了第二個網址，同一頁裡就有兩份框架。靜態頁面帶不來的只有兩樣：手機遙控會用公開的
@@ -56,12 +56,12 @@ relay（除非你跑 `serve.js`），後台監看要從 clone 下來的 repo 跑
 
 ## 固定一個版本
 
-網址裡的 `@v0.9.0` 是整個框架的一個版本。這個網址永遠不會變，所以你排練的那一場就是你演出的那一場。要換新的，自己改
+網址裡的 `@v0.12.0` 是整個框架的一個版本。這個網址永遠不會變，所以你排練的那一場就是你演出的那一場。要換新的，自己改
 那個數字，再排練一次。
 
 | 網址 | 拿到什麼 |
 |---|---|
-| `https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js` | 就是 0.9.0，永遠是 |
+| `https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.12.0/packages/openav.js` | 就是 0.12.0，永遠是 |
 | `https://openaudiovisual.com/packages/openav.js` | 最新的，每次發佈後幾分鐘內 |
 | `https://openaudiovisual.com/p5/oav-p5.js` | p5.js 的那一行：最新的（[它自己的版本](changelog.md)） |
 

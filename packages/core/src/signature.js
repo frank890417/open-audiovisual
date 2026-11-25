@@ -1,14 +1,14 @@
 // @openav/core · signature — how a page says "this runs on open-audiovisual" without sending anything.
 //
 // sign() adds one tag to the page's <head>:
-//     <meta name="generator" content="open-audiovisual 0.12.0">
+//     <meta name="generator" content="open-audiovisual 0.13.0">
 // the same tag WordPress, Hugo and p5's editor leave. Nothing leaves the browser: no request, no cookie, no id.
 // It is there so a person reading the source, a search of the public web or a web census can tell what a show
 // is built on; that is how the project learns which works use it (docs/introduction.md, "What a page tells the world").
 // createShow() calls it; createShow({ signature: false }) leaves the page untouched.
 
-/** The version of the framework: the one in package.json, and the tag a pinned URL names (v0.12.0). */
-export const VERSION = '0.12.0';
+/** The version of the framework: the one in package.json, and the tag a pinned URL names (v0.13.0). */
+export const VERSION = '0.13.0';
 
 /**
  * Mark a document as made with open-audiovisual. Returns the <meta> element, or null where there is no document

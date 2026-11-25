@@ -1,6 +1,6 @@
 {
   "name": "open-audiovisual",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "A web-native framework for audiovisual performance: input (MIDI · audio · chords · pose) → mapping → algorithmic worlds → output, with a timeline and a backstage monitor.",
   "type": "module",
   "private": true,

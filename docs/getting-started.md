@@ -54,7 +54,7 @@ The file is one page with one `import`: the World you edit, and a `createShow()`
 address:
 
 ```js
-import { createShow, createCanvas } from 'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js';
+import { createShow, createCanvas } from 'https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.12.0/packages/openav.js';
 ```
 
 Import what you need from that one address. A second address is a second copy of the framework in the same page.
@@ -65,12 +65,12 @@ When the work is up, [add it to Made with](https://openaudiovisual.com/made-with
 
 ## Pin a version
 
-`@v0.9.0` in the address is a version of the whole framework. That address never changes, so the show you rehearsed is
+`@v0.12.0` in the address is a version of the whole framework. That address never changes, so the show you rehearsed is
 the show you play. To move to a newer one, change the number yourself and rehearse again.
 
 | address | what you get |
 |---|---|
-| `https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.9.0/packages/openav.js` | exactly 0.9.0, for good |
+| `https://cdn.jsdelivr.net/gh/frank890417/open-audiovisual@v0.12.0/packages/openav.js` | exactly 0.12.0, for good |
 | `https://openaudiovisual.com/packages/openav.js` | the newest, a few minutes after each release |
 | `https://openaudiovisual.com/p5/oav-p5.js` | the one line for p5.js: the newest ([its own versions](changelog.md)) |
 
