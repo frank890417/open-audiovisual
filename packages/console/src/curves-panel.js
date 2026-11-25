@@ -18,8 +18,8 @@
 import {
   hasCurves, curveParams, curveAxis, axisTime, curveBands, sampleCurve, levelOf, plotY, keyframeMarks, takePoints, curveCursor,
   curveSignature, overriddenKeys, clearOverrides, visibleRows, fmtValue, fmtClock,
-} from './curves.js?v=9b499105';
-import { heldText } from './params-panel.js?v=9b499105';
+} from './curves.js?v=7fe486df';
+import { heldText } from './params-panel.js?v=7fe486df';
 
 const HEAD_H = 18, PLOT_H = 36, ROW_H = HEAD_H + PLOT_H + 4;   // a row: label, value and ↩ above; the plot below; 4 px between
 const RULER_H = 22;

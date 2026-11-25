@@ -2,7 +2,7 @@
 // this file). The list is imported-list.js; this file imports a fixture's JSON when it is asked for, by a path relative to
 // itself (no import.meta, so it runs wherever the package does). The data is MIT (Open Fixture Library): see NOTICE.
 
-import { IMPORTED_FIXTURES, importedFixtureRow } from './imported-list.js?v=9b499105';
+import { IMPORTED_FIXTURES, importedFixtureRow } from './imported-list.js?v=7fe486df';
 
 export { IMPORTED_FIXTURES };
 

@@ -184,7 +184,7 @@ const arcPath = (a0, a1, r = 40) => {
 export class ControllerView {
   /**
    * @param {HTMLElement} container
-   * @param {import('./controller.js?v=9b499105').MidiController} controller
+   * @param {import('./controller.js?v=7fe486df').MidiController} controller
    * @param {object} [o]
    * @param {'auto'|'face'|'stack'} [o.mode='auto']
    * @param {number} [o.minTouch=38]   px a control needs before `face` gives way to `stack`

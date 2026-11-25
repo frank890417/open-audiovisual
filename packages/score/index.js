@@ -8,5 +8,5 @@
 //
 // createShow({ score: { cuts, modules } }) does all of this wiring for you. Docs: docs/score.md.
 
-export { Score, ScoreError } from './score.js?v=9b499105';
-export { Director } from './director.js?v=9b499105';
+export { Score, ScoreError } from './score.js?v=7fe486df';
+export { Director } from './director.js?v=7fe486df';
