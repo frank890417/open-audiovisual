@@ -33,13 +33,13 @@
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="preload" href="../../assets/home/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/home/home.css">
-<script type="module" src="../../assets/search/search.js"></script>
+<link rel="stylesheet" href="../../assets/home/home.css?v=cedb93fa">
+<script type="module" src="../../assets/search/search.js?v=cedb93fa"></script>
 <script>if(/(^|\.)openaudiovisual\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-1YG2JHK2WT');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1YG2JHK2WT';document.head.appendChild(s)}</script>
 <meta name="oav-page-type" content="docs_chapter" data-oav-id="devices">
-<script defer src="../../assets/track.js"></script>
+<script defer src="../../assets/track.js?v=cedb93fa"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://openaudiovisual.com/#website","url":"https://openaudiovisual.com/","name":"open-audiovisual","inLanguage":["en","zh-Hant"],"publisher":{"@id":"https://cheyuwu.com/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://openaudiovisual.com/docs/reference/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://cheyuwu.com/#person","name":"Che-Yu Wu","alternateName":"吳哲宇","url":"https://cheyuwu.com/","sameAs":["https://github.com/frank890417","https://www.wikidata.org/wiki/Q138836579"]},{"@type":["SoftwareSourceCode","SoftwareApplication"],"@id":"https://openaudiovisual.com/#software","name":"open-audiovisual","alternateName":"OAV","url":"https://openaudiovisual.com/","description":"A web-native, zero-build, zero-dependency JavaScript framework for audiovisual performance: MIDI, microphones, chords, hand tracking and phones publish named signals, a mapping layer routes them to parameters, and algorithmic worlds (p5.js, WebGL, WebToe) render and sound them.","codeRepository":"https://github.com/frank890417/open-audiovisual","programmingLanguage":"JavaScript","runtimePlatform":"Web browser","applicationCategory":"MultimediaApplication","operatingSystem":"Any (Chromium for Web MIDI)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"version":"0.12.0","keywords":["audiovisual performance","creative coding","Web MIDI","generative art","live visuals","OSC","show control","MCP"],"author":{"@id":"https://cheyuwu.com/#person"},"isPartOf":{"@id":"https://openaudiovisual.com/#website"},"sameAs":["https://github.com/frank890417/open-audiovisual"]},{"@type":"TechArticle","@id":"https://openaudiovisual.com/docs/devices/#article","url":"https://openaudiovisual.com/docs/devices/","name":"Devices · open-audiovisual","description":"The things a show plugs in are many kinds of thing: a MIDI controller, a par can, an LED strip, a camera, an audio interface, a hand sensor, a sensor wired to…","inLanguage":"en","isPartOf":{"@id":"https://openaudiovisual.com/#website"},"author":{"@id":"https://cheyuwu.com/#person"},"publisher":{"@id":"https://cheyuwu.com/#person"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://openaudiovisual.com/assets/home/og.png","width":1200,"height":630},"headline":"Devices","version":"0.12.0","license":"https://opensource.org/licenses/MIT","about":{"@id":"https://openaudiovisual.com/#software"},"articleSection":["What is in it","The record","device(), kind by kind","Add a device","Facts and licences"],"position":14,"breadcrumb":{"@id":"https://openaudiovisual.com/docs/devices/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://openaudiovisual.com/docs/devices/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"open-audiovisual","item":"https://openaudiovisual.com/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://openaudiovisual.com/docs/"},{"@type":"ListItem","position":3,"name":"Devices","item":"https://openaudiovisual.com/docs/devices/"}]}]}</script>
-<link rel="stylesheet" href="../../assets/docs/docs.css?v=109991e4">
+<link rel="stylesheet" href="../../assets/docs/docs.css?v=cedb93fa">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="docs-page docs-chapter-page">
@@ -160,7 +160,7 @@ devices({ q: <span class="ts">'minilab'</span> });                       <span c
 </table></div>
 <p><code>verified</code> is true only when the device was checked on a real unit, and a record refuses <code>verified: true</code> without a verification whose <code>method</code> is <code>hardware</code>. A MIDI controller counts as verified only when every one of its controls was: the M-VAVE SMC-Mixer has two hardware sittings in its log and 52 of its 59 controls marked confirmed, so it is not.</p>
 <h2 id="devices-device-kind-by-kind">device(), kind by kind<a class="anchor" href="#devices-device-kind-by-kind" aria-label="Link to this section">#</a></h2>
-<p>Each snippet runs as a module in a page whose import map is the examples' one plus <code>"@openav/devices": "../../packages/devices/index.js"</code>. Only the camera's button asks for a permission, and only when it is clicked.</p>
+<p>Each snippet runs as a module in a page whose import map is the examples' one plus <code>"@openav/devices": "../../packages/devices/index.js?v=cedb93fa"</code>. Only the camera's button asks for a permission, and only when it is clicked.</p>
 <h3 id="devices-a-midi-controller">A MIDI controller<a class="anchor" href="#devices-a-midi-controller" aria-label="Link to this section">#</a></h3>
 <p><code>routes()</code> is <code>@openav/midi</code>'s <code>controllerRoutes</code>: mapper routes from the controller's named signals to your params. <code>addTo()</code> puts the profile into a <code>MidiControllers</code> and returns its live controller. The unit is recognised by its port name when the manager gets its hardware engine (<code>controllers.attach(midi)</code>) and at each device change, so call <code>addTo()</code> first: a unit already plugged in is otherwise matched the next time a device comes or goes.</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js"><span class="tk">import</span> { device } <span class="tk">from</span> <span class="ts">'@openav/devices'</span>;
@@ -265,7 +265,7 @@ console.log(printer.record.use);      <span class="tc">// null: OAV has no code 
 
 <p class="docs-toast" role="status" aria-live="polite"></p>
 <script type="application/json" id="oav-docs-i18n">{"copy":"Copy","copied":"Copied","linkCopied":"Link copied","tocButton":"Contents","tocClose":"Close contents"}</script>
-<script type="module" src="../../assets/docs/docs.js?v=c9e2a78a"></script>
+<script type="module" src="../../assets/docs/docs.js?v=cedb93fa"></script>
 <!--/email_off-->
 </body>
 </html>

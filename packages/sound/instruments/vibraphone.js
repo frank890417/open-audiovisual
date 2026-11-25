@@ -1,7 +1,7 @@
 // Vibraphone · aluminium bars, a motor-driven tremolo and a damper. Bars ring for
 // seconds; releasing a key damps it (hold the sustain pedal, CC 64, to let it ring).
 // sound/tremolo sets how deep the motor fans pulse the sound.
-import { modalInstrument } from './modal.js?v=9a90f849';
+import { modalInstrument } from './modal.js?v=cedb93fa';
 
 export const vibraphone = modalInstrument({
   id: 'vibraphone',

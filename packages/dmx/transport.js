@@ -19,8 +19,8 @@
 // Not here: an Enttec Open DMX or any bare FTDI cable (the computer has to time the DMX break itself, which a page cannot
 // do reliably), RDM, Art-Net discovery.
 
-import { encodeEnttecDmx } from './protocol/enttec.js?v=9a90f849';
-import { FlashGuard, ChannelFlashGuard, universeList } from './flash-guard.js?v=9a90f849';
+import { encodeEnttecDmx } from './protocol/enttec.js?v=cedb93fa';
+import { FlashGuard, ChannelFlashGuard, universeList } from './flash-guard.js?v=cedb93fa';
 
 const SLOTS = 512;
 const FRAME_MS = 25;            // 40 Hz at most to a serial widget

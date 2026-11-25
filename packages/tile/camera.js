@@ -11,10 +11,10 @@
 // It joins the room as its `runner`: it hears the tiles' hello signals, and what it says (roster, mode, layout, show)
 // is standing config that the relay replays to any tile that joins later.
 
-import { TileLink, HELLO_RE, TILE_KEYS } from './join.js?v=9a90f849';
-import { correspondences, GRID_DEFAULTS, drawMarkers, MAX_DEVICES } from './marker.js?v=9a90f849';
-import { solveLayout, mul3, inv3, apply3, similarityOf } from './solve.js?v=9a90f849';
-import { loadOpenCV, detectMarkers, greyPixels, OPENCV_URL } from './detect.js?v=9a90f849';
+import { TileLink, HELLO_RE, TILE_KEYS } from './join.js?v=cedb93fa';
+import { correspondences, GRID_DEFAULTS, drawMarkers, MAX_DEVICES } from './marker.js?v=cedb93fa';
+import { solveLayout, mul3, inv3, apply3, similarityOf } from './solve.js?v=cedb93fa';
+import { loadOpenCV, detectMarkers, greyPixels, OPENCV_URL } from './detect.js?v=cedb93fa';
 
 const COLORS = ['#ff7a59', '#7ea6ff', '#5fd39a', '#f2c94c', '#c58bff', '#4dd0e1', '#ff8fb1', '#a3e05f'];
 const color = (i) => COLORS[i % COLORS.length];
@@ -288,7 +288,7 @@ export function mountCamera(el, { room = q('room') || 'tile', url = null, demo =
   async function runDemo() {
     msg('Drawing a synthetic photo: three screens, their markers drawn by the tiles\' own code, under a tilted camera…');
     await new Promise((r) => setTimeout(r, 30));
-    const { sceneThree, renderPhoto, truthLayout } = await import('./test/synth.js?v=9a90f849');
+    const { sceneThree, renderPhoto, truthLayout } = await import('./test/synth.js?v=cedb93fa');
     const scene = sceneThree();
     const photo = renderPhoto(scene, { screenImage: (s) => markerImage(s.w, s.h, s.index) });
     const c = document.createElement('canvas'); c.width = photo.w; c.height = photo.h;

@@ -19,7 +19,7 @@
 // `seq` counts the leader's frames: a follower drops what is old or twice, sees a gap, and asks for the state again.
 // A leader of 0.10.0 ignores 'here' and 'bye'; a follower of 0.10.0 sends neither and is counted as it always was.
 
-import { RelayClient } from '../relay/index.js?v=9a90f849';
+import { RelayClient } from '../relay/index.js?v=cedb93fa';
 
 export const SYNC_VERSION = 1;
 const CHANNEL_RE = /^[\w-]{1,32}$/;                        // the relay's room names are the same shape (hub.js cleanRoom)
