@@ -1,6 +1,6 @@
 # Package reference
 
-Thirty-one packages live in `packages/<name>/`. Each is plain ES modules with no
+Thirty-two packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.

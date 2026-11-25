@@ -3,6 +3,9 @@
 //   wide (desktop, tablet, any phone on its side):  [ stage | 340px side panel ]
 //   stacked (a phone or small tablet held upright):  stage on top (58% of the window), the panel below it, scrolling
 //
+// A clean output page (?output) is neither: body.oav-clean drops the panel and every overlay of the stage but the world and
+// its credit, and anything a show marks .oav-operator (its own buttons for the person at the desk).
+//
 // Before this, an upright phone got a 340px panel next to a 50px-wide stage. The rule is one media query,
 // and `isStacked()` is the same rule as a pure function, so a test can hold the two together.
 
@@ -34,6 +37,10 @@ export const SHELL_CSS = `
   .oav-credit { position: absolute; right: 12px; bottom: 10px; color: #556; z-index: 2;
     font: 10px ui-monospace, monospace; text-align: right; pointer-events: none; }
   .oav-credit b { color: #8892a8; }
+  /* a clean output (?output, packages/output): the stage alone; the credit stays, an attribution is never hidden */
+  body.oav-clean { display: block; background: #000; }
+  body.oav-clean .oav-side, body.oav-clean .oav-operator,
+  body.oav-clean .oav-stage > :not(.oav-world):not(.oav-credit) { display: none !important; }
   @media ${STACK_QUERY} {
     body { height: 100vh; height: 100dvh; grid-template-columns: minmax(0, 1fr);
       grid-template-rows: ${STAGE_SHARE}vh minmax(0, 1fr); grid-template-rows: ${STAGE_SHARE}dvh minmax(0, 1fr); }

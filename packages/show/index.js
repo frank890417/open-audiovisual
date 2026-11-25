@@ -32,6 +32,10 @@
 //     sync: { role: 'follower', channel: 'hall', url: 'ws://leader.local:8080/relay' },   // another machine: the room relay (url: true = this page's /relay)
 //     // extra: () => data that travels with the clock · state: (hello) => data for a page that joins late · follow: { jump, lostAfter, … }
 //
+// A clean output (packages/output): the same page at ?output (?output=front&crop=0,0,0.5,1&follow=oav-output …) shows the
+// stage alone on black, no desk, no piano, no overlays, with that output's saved corners; &follow=<channel> makes it a
+// sync follower of the show page, &play starts the timeline. The address to give a kiosk browser, OBS or TouchDesigner.
+//
 // createShow returns { signals, params, stage, timeline, mapper, midi, keys,
 // sound, audio, hands, pose, leap, remote, score, director, sync, loop, monitor, console } — every part reachable, nothing
 // hidden. It also sets window.openav for devtools (with a score: window.openav.show.goto('dusk'), .table(), …).
@@ -52,6 +56,8 @@ import { track } from '../midi/telemetry.js?v=7fe486df';
 import { SHELL_CSS } from './layout.js?v=7fe486df';
 import { loopOptions, monitorOptions, syncOptions, syncModules } from './options.js?v=7fe486df';
 import { writesMode } from '../core/src/writes.js?v=7fe486df';
+import { outputQuery } from '../output/url.js?v=7fe486df';
+import { adoptOverrides, PARAMS_EXTRA } from '../output/follow.js?v=7fe486df';
 
 export async function createShow({
   world = null,
@@ -74,6 +80,17 @@ export async function createShow({
   sync: syncCfg = null,    // several pages, one show: { role: 'leader' | 'follower', channel, url?, input?, extra?, state?, follow? } — packages/sync
   writes = 'hold',         // who wins when a hand and a re-pusher touch one value: 'hold' (a hand holds until released) · 'legacy' (0.10.0) — docs/mapping.md#who-holds-a-value
 } = {}) {
+  // ?output: this page is a clean output (packages/output/url.js). Read first, because it changes what is built: no desk keys
+  // (Space, T, R mean nothing on a projector), and with &follow=<channel> the page follows that leader's clock and held values
+  const outQ = typeof location !== 'undefined' ? outputQuery(location.search) : null;
+  let params = null;
+  if (outQ) {
+    consoleOpts = { ...(consoleOpts || {}), keys: false };
+    if (outQ.follow) {
+      const held = new Set(), adopt = (m) => { if (params) adoptOverrides(params, m?.extra?.[PARAMS_EXTRA], held); };
+      syncCfg = { role: 'follower', channel: outQ.follow, url: outQ.via, follow: syncCfg?.follow, onFrame: adopt, onState: adopt };
+    }
+  }
   // options that are data are checked first: a typo must stop the show before it touches the page
   const writesOpt = writesMode(writes, 'createShow({ writes })');
   const loopOpts = loopOptions(loopCfg);
@@ -97,6 +114,7 @@ export async function createShow({
   if (!sideEl) { sideEl = document.createElement('div'); document.body.appendChild(sideEl); }
   stageEl.classList.add('oav-stage');
   sideEl.classList.add('oav-side');
+  if (outQ) document.body.classList.add('oav-clean');               // the desk, the piano and the stage's overlays stay hidden (layout.js)
   const keysSlot = document.createElement('div');
   keysSlot.className = 'oav-keys-slot';
   const desk = document.createElement('div');
@@ -122,8 +140,9 @@ export async function createShow({
 
   // ---------- core ----------
   const signals = new Signals();
-  const params = new Params();
+  params = new Params();
   const stage = new Stage({ container: stageEl, params, signals });
+  stage.layer.classList.add('oav-world');                           // what a clean output keeps of the stage (with the credit)
   const allWorlds = world ? [world, ...worlds] : worlds;
   for (const w of allWorlds) stage.register(w);
   if (allWorlds.length) await stage.activate(allWorlds[0].name);
@@ -291,6 +310,11 @@ export async function createShow({
     monitor?.frame(snapshotOf({ timeline, params, signals, stage, loop }, state));
   }, loopOpts);
   show.loop = loop;
+  // a clean output: the stage moves into an output surface (corners, crop, blackout, test pattern); show.output drives it
+  if (outQ) {
+    const { mountOutputPage } = await import('../output/page.js?v=7fe486df');
+    show.output = mountOutputPage(show, outQ);
+  }
   loop.start();
   show.version = VERSION;      // window.openav.version: which open-audiovisual this page runs
   window.openav = show;

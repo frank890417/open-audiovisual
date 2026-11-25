@@ -8,7 +8,7 @@
 > p5.js in one line: https://openaudiovisual.com/p5/ (oav-p5 0.8.5)
 > Changelog: https://openaudiovisual.com/changelog/
 > Repository: https://github.com/frank890417/open-audiovisual (MIT)
-> Today: 31 packages, 28 examples, 28 MIDI controller profiles (22 devices, 6 generic layouts).
+> Today: 32 packages, 28 examples, 28 MIDI controller profiles (22 devices, 6 generic layouts).
 
 ## MIDI controllers at a glance
 
@@ -343,7 +343,7 @@ agent and it can inspect, scaffold and verify a performance. Machine-readable en
 
 ## 📦 Packages
 
-Thirty-one plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
+Thirty-two plain-ES-module packages in [`packages/`](packages/), no dependencies. Import what you need
 through an import map, or let `createShow()` assemble them. Reference: [docs/packages.md](docs/packages.md).
 
 | layer | package | role |
@@ -363,6 +363,7 @@ through an import map, or let `createShow()` assemble them. Reference: [docs/pac
 |  | [`@openav/osc`](packages/osc/) | OSC out of the browser through a small Node bridge to UDP |
 |  | [`@openav/out`](packages/out/) | Page parameters to WLED lights, serial motor boards and OSC through one local bridge, with a watchdog that falls back to safe values |
 |  | [`@openav/dmx`](packages/dmx/) | DMX lighting: fixture profiles, a patch, scenes, cues, chases and effects rendered as a function of time, a 3 Hz flash cap per fixture, and Art-Net, sACN and Enttec USB bytes |
+|  | [`@openav/output`](packages/output/) | The stage on a projector or a second screen: an output window, four-corner correction with a test pattern, crops for projectors side by side, and a clean address for OBS and TouchDesigner |
 |  | [`@openav/record`](packages/record/) | Performance video: the work above the webcam in one file with its own sound; MIDI takes recorded and replayed |
 |  | [`@openav/fab`](packages/fab/) | Can it be made? A 3D-print check for any mesh (watertight, overhang, thinnest wall, grams) and STL, OBJ, GLB, STEP files |
 |  | [`@openav/hw`](packages/hw/) | What goes inside: parts with their datasheet numbers, a wiring check (logic levels, boot pins, I²C addresses, current, battery hours), a wiring diagram and a parts list |
@@ -428,7 +429,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1402 tests
+32 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1421 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -5101,7 +5102,7 @@ work; then just `signals.set(name, v)`. Anything that changes can perform.
 
 # Package reference
 
-Thirty-one packages live in `packages/<name>/`. Each is plain ES modules with no
+Thirty-two packages live in `packages/<name>/`. Each is plain ES modules with no
 dependencies; in a page you import them as `@openav/<name>` through an import
 map (copy the one in `examples/01-hello-particles/index.html`). Nothing is on
 npm yet.
@@ -6180,7 +6181,7 @@ already runs. A layer earns that when people can build on it without asking. Wha
 
 # API reference (generated)
 
-> 555 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
+> 565 public names of oav-p5 0.8.5 and every package, read from the code and checked against it in CI. Page: https://openaudiovisual.com/docs/reference/ (search it, every name has an anchor: #micLevel). Data: https://openaudiovisual.com/docs/reference/reference.json. An oav-p5 example starts, in a sketch, with this line: `document.head.prepend(Object.assign(document.createElement('script'), { src: 'https://openaudiovisual.com/p5/oav-p5.js' }));`
 
 ## midi
 
@@ -9740,6 +9741,19 @@ function draw() {
 - `Universe` (class, @openav/dmx): `new Universe(id = 1)` — One DMX universe: 512 values of 0–255 in a Uint8Array, read and written by address 1–512, the way a fixture and a patch sheet count.
 - `Universes` (class, @openav/dmx): `new Universes()` — Several DMX universes by number, each made (all zeros) the first time it is asked for: what Patch.render() and DmxEngine.render() return.
 - `validateFixture` (function, @openav/dmx): `validateFixture(profile)` — Checks a fixture profile (open-audiovisual/fixture@1) and returns every problem as one sentence; an empty list means it can be patched.
+
+## output
+
+- `cornerPin` (function, @openav/output): `cornerPin(corners, width = 1, height = 1)` — The homography that moves the four corners of a rectangle to four points: the math of corner-pin, as 9 numbers. Throws when the quad folds or collapses.
+- `createOutputs` (function, @openav/output): `createOutputs(show, { outputs = [{ name: 'main' }], aspect = null, panel = true, via = null, storage = defaultStorage() } = {})` — Declares a show's outputs once, at load: their params exist from the start, the stage takes their shape, and the desk gets a panel to open, edit and test them.
+- `cropBox` (function, @openav/output): `cropBox({ crop = null, source, box, fit = 'contain' } = {})` — Where a source goes so that one region of it fills a box: the crop math behind two projectors from one canvas, with contain, cover or stretch.
+- `openOutput` (function, @openav/output): `openOutput(source, { name = 'main', crop = null, fit = 'contain', mode = 'mirror', params = null, timeline = null, features = 'popup,width=960,height=540', aspect = null, via = null, channel = 'oav-output', storage = defaultStorage(), } = {})` — Opens a clean output window for a projector or a second screen and shows the stage in it, with corner-pin, a test pattern and blackout. Call it from a click.
+- `OUTPUT_FORMAT` (constant, @openav/output): `OUTPUT_FORMAT = "open-audiovisual/output@1"` — The format of a layout file: `open-audiovisual/output@1`, the `format` field of what `exportLayout()` writes and `parseOutputLayout()` reads.
+- `outputParams` (function, @openav/output): `outputParams(names)` — The param entries of one or more outputs: `output/<name>/blackout` (0 or 1) and `output/<name>/brightness` (0..1, default 1), for `params.add()`.
+- `outputQuery` (function, @openav/output): `outputQuery(search)` — What a page address asks of a clean output: `null` without `?output`, else `{ name, crop, aspect, fit, follow, via, play }`. createShow() reads it.
+- `outputUrl` (function, @openav/output): `outputUrl(base, { name = 'main', crop = null, aspect = null, fit = 'contain', follow = null, via = null, play = false } = {})` — The clean output address of a page, to type into a kiosk browser, OBS's Browser Source or TouchDesigner's Web Render TOP.
+- `parseOutputLayout` (function, @openav/output): `parseOutputLayout(doc)` — Reads an `open-audiovisual/output@1` layout file (text or object), fills in the defaults and checks it, throwing one error that lists every problem.
+- `toMatrix3d` (function, @openav/output): `toMatrix3d(H)` — The CSS `matrix3d(…)` for a homography, so a browser bends a whole element with it. Use it with `transform-origin: 0 0`.
 
 ## mapping
 

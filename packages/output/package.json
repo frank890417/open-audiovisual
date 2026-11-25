@@ -1,0 +1,43 @@
+{
+  "name": "@openav/output",
+  "version": "0.1.0",
+  "description": "The stage on a projector or a second screen: an output window (a mirror of the stage's canvas, or the same page again following its clock), four-corner correction as a CSS homography, flip, rotation, border and soft edge, crops for several projectors from one canvas, blackout and brightness as params, the layout saved per output and as a file (open-audiovisual/output@1), and a clean address (?output) for a kiosk browser, OBS or TouchDesigner. No dependencies.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frank890417/open-audiovisual.git",
+    "directory": "packages/output"
+  },
+  "lab": {
+    "module": "output",
+    "files": [
+      "output/pin.js",
+      "output/crop.js",
+      "output/layout.js",
+      "output/params.js",
+      "output/url.js",
+      "output/view.js",
+      "output/panel.js",
+      "output/window.js"
+    ],
+    "exports": [
+      "openOutput",
+      "cornerPin",
+      "toMatrix3d",
+      "cropBox",
+      "parseOutputLayout",
+      "OUTPUT_FORMAT",
+      "outputParams",
+      "outputUrl"
+    ],
+    "wire": "lab.wire.js",
+    "autowire": "Only exposes the kit, wires nothing: lab.output.openOutput(canvas, { name }) mirrors a work's canvas into a projector window (from a click) with corner-pin, a test pattern, fullscreen and the layout saved per name; cornerPin, cropBox and the layout file as pure functions. Mode 'page' and createOutputs need a createShow() page and stay out of the lab.",
+    "remoteTab": null,
+    "since": "2026-11"
+  }
+}

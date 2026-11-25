@@ -16,6 +16,7 @@
   var KEY = 'oav-send-dismissed';
   var WHEN = '(max-width: 760px) and (pointer: coarse)';
   if (!me || !window.matchMedia || !matchMedia(WHEN).matches) return;
+  if (/[?&]output(=|&|$)/.test(location.search)) return;       // a clean output page (?output): the stage alone, nothing over it
   try { if (sessionStorage.getItem(KEY) === '1') return; } catch (e) { /* storage blocked: show it, it can still be closed */ }
   var all = {};
   try { all = JSON.parse(me.getAttribute('data-strings') || '{}'); } catch (e) { return; }

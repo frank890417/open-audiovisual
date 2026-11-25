@@ -1,10 +1,12 @@
 // The guide card on an example page (assets/examples/guide.css). The card is complete HTML; this file only adds
 //   · a Hide / Guide button: the card folds to a pill, and remembers it (localStorage "oav-guide")
 //   · the EN | 中文 switch, remembered in "oav-ui" (the same key example 15 and the examples index use)
-// First visit on a wide screen: open. Phones: folded. Nothing here touches the example itself.
+// First visit on a wide screen: open. Phones: folded. A clean output page (?output): hidden. Nothing here touches the example itself.
 (function () {
   var card = document.getElementById('oav-guide');
   if (!card) return;
+  // a clean output page (?output, packages/output) shows the stage alone: the card is not for a projector, OBS or TouchDesigner
+  if (/[?&]output(=|&|$)/.test(location.search)) { card.style.display = 'none'; return; }
   var tools = card.querySelector('.g-tools'), toggle = card.querySelector('.g-toggle');
   var get = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
   var set = function (k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private mode */ } };
