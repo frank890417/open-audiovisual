@@ -504,3 +504,43 @@ test('OpenCV.js: pinned, and only the camera page reaches it (no tile, package e
   const allowed = new Set([DETECT, 'packages/tile/test/tile-smoke.cjs', 'packages/tile/tools/extract-dict.cjs', 'packages/tile/reference.mjs']);
   assert.deepEqual(hits.filter((h) => !allowed.has(h)), [], 'only detect.js says where OpenCV.js comes from');
 });
+
+// ---------------------------------------------------------------------------------------------- the timeline on the shared clock
+// joinTile() on a fake page (tests/_fakepage.js), its relay link replaced by one that only keeps the clock: what syncTimeline
+// does to a timeline every frame, the way createShow's onFrame calls it (before timeline.advance).
+import { withGlobals, anything } from './_fakepage.js';
+import { joinTile } from '../packages/tile/join.js';
+import { Timeline } from '../packages/timeline/index.js';
+
+test('syncTimeline: the timeline follows the shared clock through scenes and cues; a hold scene parks it one frame and is released, a pause or a seek on one screen is undone on the next frame', async () => {
+  let now = 1_000_000;                                    // this device's clock, ms; the relay's is the same (offset 0)
+  class FakeLink {
+    constructor(o) { Object.assign(this, o); this.clock = new ClockSync({ now: () => now }); this.open = true; }
+    connect() { return this; } set() {} close() {}
+  }
+  await withGlobals({
+    document: anything(), location: { search: '' }, navigator: {}, screen: { width: 390, height: 844 },
+    innerWidth: 390, innerHeight: 844, devicePixelRatio: 3, addEventListener() {}, removeEventListener() {},
+  }, async () => {
+    const tile = joinTile({ room: 'desk', id: 'phone', ui: false, storage: null, Link: FakeLink });
+    tile.link.clock.add(now - 10, now - 5, now);          // one pong: the clock is ready
+    tile.link.onConfig('tile/show', { seed: 7, start: now - 3000 });   // the camera page pressed Play 3 s ago
+    assert.equal(tile.synced, true);
+    const cues = [];
+    const tl = new Timeline({ params: [], total: 60, loop: true, onCue: (c) => cues.push(c.id),
+      scenes: [{ id: 'a', t: 0, hold: true }, { id: 'b', t: 5 }, { id: 'c', t: 10, cues: [{ id: 'x', t: 11 }] }] });
+    const dt = 1 / 60;
+    const frame = () => { now += 1000 * dt; tile.syncTimeline(tl, dt); tl.advance(dt); };
+    const onClock = (what) => assert.ok(Math.abs(tl.t - tile.time()) < 1e-6 && tl.playing && !tl.holding, `${what}: t ${tl.t} on the clock ${tile.time()}, playing ${tl.playing}, holding ${tl.holding}`);
+    frame(); onClock('first frame');
+    let held = 0;
+    for (let i = 0; i < 60 * 9; i++) { frame(); if (tl.holding) held++; }
+    onClock('9 s later, past the hold at 5 s');
+    assert.ok(held <= 1, `held for ${held} frames`);
+    assert.equal(tl.currentScene().id, 'c');
+    assert.deepEqual(cues, ['x'], 'the cue at 11 s fired, on every screen alike');
+    tl.pause(); frame(); onClock('a pause, one frame later');
+    tl.seek(40); frame(); onClock('a seek, one frame later');
+    tile.close();
+  });
+});

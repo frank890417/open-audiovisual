@@ -170,14 +170,17 @@ export function joinTile({ room = q('room') || 'tile', url = null, id = tileId()
      * Keep a Timeline on the shared clock: call it before timeline.advance(dt) (createShow's onFrame does). The
      * playhead is put where the shared clock was one frame ago, so advance(dt) lands on the shared time and fires the
      * scenes and cues it passes; a jump (the first sync, a lap of the loop) is a seek. Every screen's automation then
-     * reads the same values.
+     * reads the same values. The shared clock never waits, so neither does a tiled timeline: a pause or a seek on one
+     * screen is undone on the next frame, and a `hold` scene parks it for one frame and is then released (the next scene
+     * starts and its boundary cue fires): a screen that held while the others play on would be out of step with them.
      */
     syncTimeline(timeline, dt = 0) {
       if (!this.clock.ready || !this.show) return false;
       const total = timeline.total;
       let T = this.time();
       T = timeline.loop ? ((T % total) + total) % total : Math.max(0, Math.min(total, T));
-      if (!timeline.playing && !timeline.holding) timeline.play();
+      if (timeline.holding) timeline.release();
+      if (!timeline.playing) timeline.play();
       const prev = Math.max(0, T - dt * (timeline.rate || 1));
       if (Math.abs(timeline.t - prev) > 0.25) timeline.seek(prev, 'jump'); else timeline.t = prev;
       return true;

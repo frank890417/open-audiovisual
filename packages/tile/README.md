@@ -116,7 +116,8 @@ tile.attach(show.signals);
 - **Time.** Read `io.tile.time()` (shared seconds) and `io.tile.seed`. Two screens that started a second apart, or one
   that dropped a frame, must still draw the same instant, so positions are functions of time, not sums of `dt`. This is
   the one place a tiled world reads a clock, and it is the shared one; `syncTimeline` puts the timeline on it too, so
-  automation and scenes agree across screens.
+  automation and scenes agree across screens. The shared clock never waits: a pause, a seek or a `hold` scene on one screen
+  lasts one frame.
 - **Params** stay the world's continuous controls (AGENTS.md rule 1). `tileMarkers` is a param like any other: the
   camera page drives it through `tile/markers`, the timeline or a knob can too.
 - **p5:** `view.applyP5(sk)` at the top of `draw()` (p5 draws in CSS pixels; the view divides by the density).
