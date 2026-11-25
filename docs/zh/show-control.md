@@ -398,6 +398,7 @@ const show = await createShow({
 | `extra`、`state` | 無 | 主控端：跟著時鐘一起走的資料（見下） |
 | `info`、`accept`、`onFrame`、`onState`、`onGap` | 無 | 從屬端：掛鉤與檢查（見下） |
 | `hz` | 每幀 | 主控端：每秒最多送幾幀；狀態改變（播放、暫停、hold、rate、seek）的那一幀會馬上送 |
+| `aliveEvery`、`forgetAfter` | 2000、6000 | 從屬端：拿到 state 之後每隔這麼多毫秒說一聲 `here`（0 = 不說）。主控端：說過 `here` 之後安靜了這麼久的從屬端就不再算 |
 | `id`、`now` | 隨機、`performance.now` | 對等端的 id 與時鐘 |
 
 **傳輸。** 同一台機器上，頁面之間走 `BroadcastChannel`：不用網路，也不用另外跑任何東西。瀏覽器只會連通同一個來源、同一個設定檔的頁面，所以主控端和從屬端要從同一個網址打開。跨機器的話，它們用 `role=leader` 和 `role=follower` 加入[房間中繼](remote.md#the-relay)的房間；主控端那台機器跑 `node serve.js` 就夠了（`url: 'ws://<那台機器>:8080/relay'`）。用 https 提供的頁面要用 `wss://` 位址（瀏覽器擋掉那裡的 `ws://`）。中繼沒有身分驗證：請用封閉的網路，以及沒人猜得到的 channel 名（[安全性](remote.md#security)）。兩種傳輸送的是同一份 JSON，所以換傳輸時作品不用改。
@@ -408,9 +409,10 @@ const show = await createShow({
 { v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }      leader → followers, every frame
 { v:1, kind:'hello', id, role:'follower', info?, reason? }                    follower → leader: "I am here, where are we?"
 { v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower
+{ v:1, kind:'here', id }  /  { v:1, kind:'bye', id }                          follower → leader: still here (every 2 s), gone
 ```
 
-從屬端一上線就說 `hello`，之後每秒再說一次，直到拿到 `state`；`seq` 出現缺口、沉默一段時間之後、以及連線重連時也會再說。主控端回一則 `state`，所以中途加入或重新載入的頁面，第一幀就落在演出的現在。`cut` 是總譜的版本 id：從屬端的版本和主控端不同（長度不同，`T` 的意思就不同）時，會拒收它的 frame，後台會顯示 `refused: cut …`。
+從屬端一上線就說 `hello`，之後每秒再說一次，直到拿到 `state`；`seq` 出現缺口、沉默一段時間之後、以及連線重連時也會再說。主控端回一則 `state`，所以中途加入或重新載入的頁面，第一幀就落在演出的現在。拿到 state 之後，從屬端每隔 `aliveEvery`（2 秒）說一聲 `here`，關掉時說 `bye`，所以主控端的 `status().followers` 和後台的 `sync/followers` 數的是還在的頁面，重新載入的頁面在 `forgetAfter`（6 秒）之後被忘掉。0.10.0 的頁面兩樣都不說，照以前那樣算。`cut` 是總譜的版本 id：從屬端的版本和主控端不同（長度不同，`T` 的意思就不同）時，會拒收它的 frame，後台會顯示 `refused: cut …`。
 
 **帶作品自己的資料。** 凡是要跟著時鐘一起走的東西（操作員設的覆寫值、一個音符、被跳過的開場）都放在 `extra`。框架把它送到、每則一次、依序，從來不讀它。
 

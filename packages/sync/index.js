@@ -15,7 +15,9 @@
 //   { v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }   leader → followers, every frame
 //   { v:1, kind:'hello', id, role:'follower', info?, reason? }                 follower → leader: "I am here, tell me where we are"
 //   { v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? } leader → that follower (late joiners, resyncs)
+//   { v:1, kind:'here', id } / { v:1, kind:'bye', id }                         follower → leader: still here (every aliveEvery ms), gone
 // `seq` counts the leader's frames: a follower drops what is old or twice, sees a gap, and asks for the state again.
+// A leader of 0.10.0 ignores 'here' and 'bye'; a follower of 0.10.0 sends neither and is counted as it always was.
 
 import { RelayClient } from '../relay/index.js?v=9b499105';
 
@@ -91,18 +93,28 @@ export class SyncLeader {
    * @param {number} [o.hz]        每秒最多幾幀（0＝每個 frame() 都送）。狀態變了（播放、暫停、hold、rate、seek）的那一幀一定馬上送
    * @param {()=>number} [o.now]   毫秒（只用在 hz）
    * @param {(hello:object)=>void} [o.onHello]
+   * @param {number} [o.forgetAfter=6000]  毫秒：說過「還在」（here）的從屬端安靜這麼久就不算了（重新整理的頁面、關掉的分頁）
    */
-  constructor({ timeline, transport, id = 'L-' + rnd(), cut = null, extra = null, state = null, hz = 0, now = defaultNow, onHello = null } = {}) {
+  constructor({ timeline, transport, id = 'L-' + rnd(), cut = null, extra = null, state = null, hz = 0, now = defaultNow, onHello = null, forgetAfter = 6000 } = {}) {
     if (!timeline) throw new TypeError('[sync] SyncLeader needs a timeline');
     if (!transport) throw new TypeError('[sync] SyncLeader needs a transport');
-    Object.assign(this, { timeline, transport, id, cut, extra, state, hz, now, onHello });
+    Object.assign(this, { timeline, transport, id, cut, extra, state, hz, now, onHello, forgetAfter });
     this.role = 'leader';
     this.seq = 0; this.sent = 0; this.hellos = 0; this.closed = false;
     this._followers = new Map(); this._last = null; this._at = -Infinity; this._force = true;
     timeline.onSeek?.(() => { this._force = true; });
     transport.onMessage((m) => this._onMessage(m));
   }
-  _cut() { const c = typeof this.cut === 'function' ? this.cut() : this.cut; return c === undefined ? null : c; }
+  _cut() {
+    let c = this.cut;
+    if (typeof c === 'function') {
+      try { c = c(); } catch (e) {                          // a throwing cut() must not take the rest of the show's frame with it
+        c = null;
+        if (!this._cutWarned) { this._cutWarned = true; console.error('[sync] the leader\'s cut() threw; frames go out without a cut:', e); }
+      }
+    }
+    return c === undefined ? null : c;
+  }
   _ask(fn, arg) {
     if (typeof fn !== 'function') return undefined;
     try { return fn(arg); } catch (e) { console.error('[sync] a leader hook threw:', e); return undefined; }
@@ -132,15 +144,29 @@ export class SyncLeader {
     this.transport.send(msg);
   }
   _onMessage(m) {
-    if (!isMsg(m) || m.kind !== 'hello' || typeof m.id !== 'string') return;
+    if (!isMsg(m) || typeof m.id !== 'string') return;
+    if (m.kind === 'bye') { this._followers.delete(m.id); return; }
+    if (m.kind === 'here') {                                 // still here: a follower that says so is forgotten when it stops saying it
+      const f = this._followers.get(m.id);
+      if (f) { f.seen = this.now(); f.beats = true; } else this._followers.set(m.id, { seen: this.now(), info: undefined, beats: true });
+      return;
+    }
+    if (m.kind !== 'hello') return;
     this.hellos++;
-    this._followers.set(m.id, { seen: this.now(), info: m.info });
+    const f = this._followers.get(m.id);
+    this._followers.set(m.id, { seen: this.now(), info: m.info, beats: !!f?.beats });
     this._ask(this.onHello, m);
     this.sendState(m.id, m);
   }
-  status() { return { role: 'leader', id: this.id, open: !!this.transport.open, seq: this.seq, sent: this.sent, hellos: this.hellos, followers: this._followers.size, cut: this._cut() }; }
+  /** 從屬端還有幾個：說過 here 的，forgetAfter 毫秒沒再聽到就忘掉；0.10.0 的從屬端（只會 hello）照舊一直算。 */
+  _count() {
+    const now = this.now();
+    for (const [id, f] of this._followers) if (f.beats && this.forgetAfter > 0 && now - f.seen > this.forgetAfter) this._followers.delete(id);
+    return this._followers.size;
+  }
+  status() { return { role: 'leader', id: this.id, open: !!this.transport.open, seq: this.seq, sent: this.sent, hellos: this.hellos, followers: this._count(), cut: this._cut() }; }
   /** 給後台 monitor 的數字（createShow 掛上 monitor.extra）。 */
-  monitor() { return { 'sync/role': 'leader', 'sync/followers': this._followers.size, 'sync/connected': !!this.transport.open }; }
+  monitor() { return { 'sync/role': 'leader', 'sync/followers': this._count(), 'sync/connected': !!this.transport.open }; }
   close() { this.closed = true; this.transport.close(); }
 }
 
@@ -163,14 +189,15 @@ export class SyncFollower {
    * @param {number} [o.helloEvery=1000]    還沒有 state 的時候每隔多少毫秒再 hello 一次（frame() 負責計時）
    * @param {number} [o.takeoverAfter=1500] 原本的主控端安靜了這麼多毫秒，才接受別的主控端（人工把另一台升成主控端、主控端重開）
    * @param {number} [o.resyncAfter=1000]   安靜了這麼多毫秒之後的第一幀，當作「回來了」
+   * @param {number} [o.aliveEvery=2000]    拿到 state 之後，每隔多少毫秒跟主控端說一聲「還在」（here），主控端才數得對（0＝不說）
    */
-  constructor({ transport, id = 'F-' + rnd(), now = defaultNow, timeline = null, info, accept = null, onFrame = null, onState = null, onGap = null, resync = true, helloEvery = 1000, takeoverAfter = 1500, resyncAfter = 1000 } = {}) {
+  constructor({ transport, id = 'F-' + rnd(), now = defaultNow, timeline = null, info, accept = null, onFrame = null, onState = null, onGap = null, resync = true, helloEvery = 1000, takeoverAfter = 1500, resyncAfter = 1000, aliveEvery = 2000 } = {}) {
     if (!transport) throw new TypeError('[sync] SyncFollower needs a transport');
-    Object.assign(this, { transport, id, now, timeline, info, accept, onFrame, onState, onGap, resync, helloEvery, takeoverAfter, resyncAfter });
+    Object.assign(this, { transport, id, now, timeline, info, accept, onFrame, onState, onGap, resync, helloEvery, takeoverAfter, resyncAfter, aliveEvery });
     this.role = 'follower';
     this.src = null; this.seq = -1; this.haveState = false; this.refused = null; this.closed = false; this.attached = false;
     this.counts = { frames: 0, states: 0, gaps: 0, dropped: 0, rejected: 0, ignored: 0, hellos: 0 };
-    this._last = null; this._at = null; this._helloAt = -Infinity; this._opened = false; this._acceptWarned = false;
+    this._last = null; this._at = null; this._helloAt = -Infinity; this._hereAt = -Infinity; this._opened = false; this._acceptWarned = false;
     transport.onMessage((m) => this._onMessage(m));
     transport.onOpen?.(() => { this.hello(this._opened ? 'reconnect' : undefined); this._opened = true; });
     if (transport.open) { this._opened = true; this.hello(); }
@@ -186,10 +213,15 @@ export class SyncFollower {
     this.transport.send({ v: SYNC_VERSION, kind: 'hello', id: this.id, role: 'follower', ...(this.info !== undefined ? { info: this.info } : {}), ...(reason ? { reason } : {}) });
     return true;
   }
-  /** 每個影格呼叫一次：還沒拿到 state（主控端還沒上線、hello 被丟了）就每隔 helloEvery 再問一次。 */
+  /** 每個影格呼叫一次：還沒拿到 state（主控端還沒上線、hello 被丟了）就每隔 helloEvery 再問一次；拿到了就每 aliveEvery 說一聲還在。 */
   frame() {
-    if (this.closed || this.haveState) return;
-    if (this.now() - this._helloAt >= this.helloEvery) this.hello('retry');
+    if (this.closed) return;
+    const now = this.now();
+    if (!this.haveState) { if (now - this._helloAt >= this.helloEvery) this.hello('retry'); return; }
+    if (this.aliveEvery > 0 && now - this._hereAt >= this.aliveEvery && this.transport.open) {
+      this._hereAt = now;
+      this.transport.send({ v: SYNC_VERSION, kind: 'here', id: this.id });
+    }
   }
 
   _hook(fn, arg) {
@@ -261,6 +293,7 @@ export class SyncFollower {
     };
   }
   close() {
+    if (!this.closed && this.transport.open) this.transport.send({ v: SYNC_VERSION, kind: 'bye', id: this.id });   // the leader stops counting it now
     this.closed = true;
     if (this.attached) this.timeline?.unfollow?.();
     this.transport.close();
@@ -290,16 +323,16 @@ export function createSync({ role, channel, url = null, id, timeline, score = nu
   const tr = transport || createTransport({ role, channel, url, id: me });
   const cutOf = () => (score && score.cut !== undefined ? score.cut : null);
   if (role === 'leader') {
-    const { extra, state, hz, onHello } = rest;
-    return new SyncLeader({ timeline, transport: tr, id: me, now, cut: cutOf, extra, state, hz, onHello });
+    const { extra, state, hz, onHello, forgetAfter } = rest;
+    return new SyncLeader({ timeline, transport: tr, id: me, now, cut: cutOf, extra, state, hz, onHello, forgetAfter });
   }
-  const { info, accept, onFrame, onState, onGap, resync, helloEvery, takeoverAfter, resyncAfter } = rest;
+  const { info, accept, onFrame, onState, onGap, resync, helloEvery, takeoverAfter, resyncAfter, aliveEvery } = rest;
   const guard = (m) => {
     const mine = cutOf();
     if (mine !== null && m.cut !== undefined && m.cut !== null && m.cut !== mine) return `cut ${m.cut} ≠ ${mine}`;   // 不同版本的主控端：長度不同，T 對不起來
     return typeof accept === 'function' ? accept(m) : true;
   };
-  const f = new SyncFollower({ transport: tr, id: me, now, timeline, info, accept: guard, onFrame, onState, onGap, resync, helloEvery, takeoverAfter, resyncAfter });
+  const f = new SyncFollower({ transport: tr, id: me, now, timeline, info, accept: guard, onFrame, onState, onGap, resync, helloEvery, takeoverAfter, resyncAfter, aliveEvery });
   timeline.follow(f, { ...follow, now: f.now });
   f.attached = true;
   return f;

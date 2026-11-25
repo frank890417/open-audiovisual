@@ -428,7 +428,7 @@ L4 video/audio split, timeline, **Score &amp; Director**, console, backstage mon
 **oav-p5** (sound, a drum machine with one line of rhythm, recording, TouchDesigner-style lag, Strudel side by side),
 an MCP server, and a handbook site.
 
-31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1398 tests
+31 packages · 28 examples · 28 MIDI controller profiles (22 devices, 6 generic layouts, 1200 controls) · 1402 tests
 
 Planned ([full roadmap](docs/roadmap.md)):
 
@@ -2753,6 +2753,7 @@ const show = await createShow({
 | `extra`, `state` | none | leader: data that travels with the clock (below) |
 | `info`, `accept`, `onFrame`, `onState`, `onGap` | none | follower: hooks and checks (below) |
 | `hz` | every frame | leader: at most this many frames a second; a change of state (play, pause, hold, rate, seek) is sent at once |
+| `aliveEvery`, `forgetAfter` | 2000, 6000 | follower: say `here` every this many ms once it has the state (0 = never). Leader: stop counting a follower that said `here` and then went quiet this long |
 | `id`, `now` | random, `performance.now` | the peer id and the clock |
 
 **Transports.** On one machine the pages talk through a `BroadcastChannel`: no network and nothing to run. The browser connects only pages of the same origin and profile, so open the leader and the followers from the same address. Across machines they join a room on the [room relay](remote.md#the-relay) as `role=leader` and `role=follower`; `node serve.js` on the leader's machine is enough (`url: 'ws://<that machine>:8080/relay'`). A page served over https needs a `wss://` address (the browser blocks `ws://` there). The relay has no authentication: use a closed network and a channel name nobody will guess ([Security](remote.md#security)). Both transports carry the same JSON, so a work does not change when the wire does.
@@ -2763,9 +2764,10 @@ const show = await createShow({
 { v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }      leader → followers, every frame
 { v:1, kind:'hello', id, role:'follower', info?, reason? }                    follower → leader: "I am here, where are we?"
 { v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower
+{ v:1, kind:'here', id }  /  { v:1, kind:'bye', id }                          follower → leader: still here (every 2 s), gone
 ```
 
-A follower says `hello` when it comes up, and again every second until it has a `state`, after a gap in `seq`, after a silence and whenever its socket reconnects. The leader answers with a `state`, so a page that joins in the middle, or reloads, is on the show's present at its first frame. `cut` is the score's cut id: a follower on another cut than the leader (another length, so `T` means something else) refuses its frames, and the monitor says `refused: cut …`.
+A follower says `hello` when it comes up, and again every second until it has a `state`, after a gap in `seq`, after a silence and whenever its socket reconnects. The leader answers with a `state`, so a page that joins in the middle, or reloads, is on the show's present at its first frame. With its state, a follower says `here` every `aliveEvery` (2 s) and `bye` when it is closed, so the leader's `status().followers` and the backstage's `sync/followers` count the pages that are there; a reloaded page is forgotten after `forgetAfter` (6 s). A page of 0.10.0 says neither and is counted as before. `cut` is the score's cut id: a follower on another cut than the leader (another length, so `T` means something else) refuses its frames, and the monitor says `refused: cut …`.
 
 **Carrying the work's data.** Whatever has to travel with the clock (an override the operator set, a note, a skipped intro) goes in `extra`. The framework delivers it once each and in order, and never reads it.
 
@@ -9773,8 +9775,8 @@ function draw() {
 - `createTransport` (function, @openav/sync): `createTransport({ role, channel, url = null, id = (role === 'leader' ? 'L-' : 'F-') + rnd(), BroadcastChannel, Client } = {})` — Builds the transport for a role and a channel: a `BroadcastTransport` when there is no `url`, a `RelayTransport` when there is one.
 - `RelayTransport` (class, @openav/sync): `new RelayTransport({ url = null, room, role, id, Client = RelayClient } = {})` — The sync transport between machines: a WebSocket to the room relay, joined with the role `leader` or `follower`. The room is the channel. (before it has a value: A room relay the page can reach. The relay has no authentication: use a closed network and a channel name nobody will guess. A `state` over 256 KB needs `attachRelay(server, { maxMessageChars, maxBytes })`.)
 - `SYNC_VERSION` (constant, @openav/sync): `SYNC_VERSION = 1` — The version of the sync messages: `1`, the `v` field of every frame, hello and state. A message with another `v` is ignored.
-- `SyncFollower` (class, @openav/sync): `new SyncFollower({ transport, id = 'F-' + rnd(), now = defaultNow, timeline = null, info, accept = null, onFrame = null, onState = null, onGap = null, resync = true, helloEvery = 1000, takeoverAfter = 1500, resyncAfter = 1000 } = {})` — The follower's end of the sync: takes the leader's frames in order, keeps the last one for `timeline.follow()`, and says hello until it has the state. (before it has a value: Call `frame()` every frame so that a lost hello is retried. To make a timeline follow it by hand: `timeline.follow(follower, { now: follower.now })`.)
-- `SyncLeader` (class, @openav/sync): `new SyncLeader({ timeline, transport, id = 'L-' + rnd(), cut = null, extra = null, state = null, hz = 0, now = defaultNow, onHello = null } = {})` — The leader's end of the sync: each `frame()` sends the timeline's `T`, playing, holding and rate, and every follower's hello is answered with the state. (before it has a value: Call `frame()` every frame: nothing is sent by itself.)
+- `SyncFollower` (class, @openav/sync): `new SyncFollower({ transport, id = 'F-' + rnd(), now = defaultNow, timeline = null, info, accept = null, onFrame = null, onState = null, onGap = null, resync = true, helloEvery = 1000, takeoverAfter = 1500, resyncAfter = 1000, aliveEvery = 2000 } = {})` — The follower's end of the sync: takes the leader's frames in order, keeps the last one for `timeline.follow()`, and says hello until it has the state. (before it has a value: Call `frame()` every frame so that a lost hello is retried. To make a timeline follow it by hand: `timeline.follow(follower, { now: follower.now })`.)
+- `SyncLeader` (class, @openav/sync): `new SyncLeader({ timeline, transport, id = 'L-' + rnd(), cut = null, extra = null, state = null, hz = 0, now = defaultNow, onHello = null, forgetAfter = 6000 } = {})` — The leader's end of the sync: each `frame()` sends the timeline's `T`, playing, holding and rate, and every follower's hello is answered with the state. (before it has a value: Call `frame()` every frame: nothing is sent by itself.)
 - `webtoeWorld` (function, @openav/world-webtoe): `webtoeWorld({ name = 'webtoe', app = 'https://webtoe.openaudiovisual.com/', project = null, params = [], extra = null, } = {})` — Turns a WebToe node patch into a world: the patch runs in an iframe and every changed param is posted into it. (before it has a value: The page must be able to load the WebToe app in an iframe (the network, by default `https://webtoe.openaudiovisual.com/`), and the patch file must be reachable by the app. The world does its work when it is activated, so use it with `createShow({ world })`, or `stage.register()` and `stage.activate()`.)
 
 ## remote

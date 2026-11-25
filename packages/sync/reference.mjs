@@ -56,8 +56,8 @@ export default {
       },
       {
         name: 'rest', type: 'Object', optional: true,
-        en: 'Not a key of its own: every other key of the options object. A leader takes `extra`, `state`, `hz` and `onHello` (see [`SyncLeader`](#SyncLeader)); a follower takes `info`, `accept`, `onFrame`, `onState`, `onGap`, `resync`, `helloEvery`, `takeoverAfter` and `resyncAfter` (see [`SyncFollower`](#SyncFollower)).',
-        zh: '它本身不是一個鍵，而是選項物件裡其餘的所有鍵。主控端收 `extra`、`state`、`hz` 和 `onHello`（見 [`SyncLeader`](#SyncLeader)）。從屬端收 `info`、`accept`、`onFrame`、`onState`、`onGap`、`resync`、`helloEvery`、`takeoverAfter` 和 `resyncAfter`（見 [`SyncFollower`](#SyncFollower)）。',
+        en: 'Not a key of its own: every other key of the options object. A leader takes `extra`, `state`, `hz`, `onHello` and `forgetAfter` (see [`SyncLeader`](#SyncLeader)); a follower takes `info`, `accept`, `onFrame`, `onState`, `onGap`, `resync`, `helloEvery`, `takeoverAfter`, `resyncAfter` and `aliveEvery` (see [`SyncFollower`](#SyncFollower)).',
+        zh: '它本身不是一個鍵，而是選項物件裡其餘的所有鍵。主控端收 `extra`、`state`、`hz`、`onHello` 和 `forgetAfter`（見 [`SyncLeader`](#SyncLeader)）。從屬端收 `info`、`accept`、`onFrame`、`onState`、`onGap`、`resync`、`helloEvery`、`takeoverAfter`、`resyncAfter` 和 `aliveEvery`（見 [`SyncFollower`](#SyncFollower)）。',
       },
     ],
     returns: {
@@ -210,6 +210,11 @@ console.log(show.sync.status());`,
         en: 'Called as `onHello(hello)` for every hello, before the state is sent.',
         zh: '每收到一個 hello，就在送出 state 之前以 `onHello(hello)` 呼叫。',
       },
+      {
+        name: 'forgetAfter', type: 'Number', optional: true, default: '6000',
+        en: 'Milliseconds. A follower that has said it is still there (`here`, every `aliveEvery` of its own) and then went quiet this long is no longer counted in `followers`: a page that was reloaded or closed. `0` keeps every follower. A follower of 0.10.0 never says `here` and is counted as it always was.',
+        zh: '毫秒。說過「還在」（`here`，每隔它自己的 `aliveEvery`）之後安靜了這麼久的從屬端，就不再算進 `followers`：重新整理過或關掉的頁面。`0` 是每個都一直算。0.10.0 的從屬端從來不說 `here`，照以前那樣算。',
+      },
     ],
     description: [
       {
@@ -217,8 +222,8 @@ console.log(show.sync.status());`,
         zh: '[`createSync({ role: \'leader\', … })`](#createSync) 會替你連同傳輸一起建好一個。每個影格在 `timeline.advance(dt)` 之後呼叫一次 `leader.frame()`：它送出 `{ v, kind: \'frame\', src, seq, T, playing, holding, rate, cut?, extra? }`，每送一幀 `seq` 就加一。從屬端說 hello 的時候，主控端記下它，並回一則指名給它的 `state` 訊息，讓它落在演出的現在。',
       },
       {
-        en: 'An `extra`, `state` or `onHello` hook that throws is caught and logged as `[sync]`; the message still goes out, without its `extra`. A `cut` function is not guarded: an error in it comes out of `frame()`.',
-        zh: '`extra`、`state` 或 `onHello` 掛鉤丟出錯誤會被接住、記成 `[sync]`，訊息照樣送出，只是沒有 `extra`。`cut` 函式沒有這層保護：它丟出的錯誤會從 `frame()` 冒出來。',
+        en: 'An `extra`, `state` or `onHello` hook that throws is caught and logged as `[sync]`; the message still goes out, without its `extra`. A `cut` function that throws is caught too: the message goes out without a `cut`, and the error is logged once.',
+        zh: '`extra`、`state` 或 `onHello` 掛鉤丟出錯誤會被接住、記成 `[sync]`，訊息照樣送出，只是沒有 `extra`。`cut` 函式丟出錯誤也會被接住：訊息照樣送出，只是沒有 `cut`，錯誤只記一次。',
       },
     ],
     needs: {
@@ -235,8 +240,8 @@ console.log(show.sync.status());`,
         zh: '`sendState(to?, hello?)`：把目前的 state 送給 id 是 `to` 的從屬端，不給 `to` 就送給所有從屬端。hello 會自動用它回覆。作品有新的常駐資料要推的時候，可以自己呼叫。',
       },
       status: {
-        en: '`{ role: \'leader\', id, open, seq, sent, hellos, followers, cut }`. `followers` counts the ids that have said hello; an id that leaves is not removed.',
-        zh: '`{ role: \'leader\', id, open, seq, sent, hellos, followers, cut }`。`followers` 是說過 hello 的 id 數量，離開的 id 不會被移除。',
+        en: '`{ role: \'leader\', id, open, seq, sent, hellos, followers, cut }`. `followers` counts the followers that are there: one that says goodbye (`close()`) leaves at once, one that went quiet for `forgetAfter` after saying it was there leaves then, and a follower of 0.10.0 (hello only) stays counted.',
+        zh: '`{ role: \'leader\', id, open, seq, sent, hellos, followers, cut }`。`followers` 是還在的從屬端數量：說了再見（`close()`）的馬上離開，說過還在、然後安靜了 `forgetAfter` 的那時離開，0.10.0 的從屬端（只會 hello）一直算著。',
       },
       monitor: {
         en: 'The numbers for the backstage monitor: `{ \'sync/role\': \'leader\', \'sync/followers\', \'sync/connected\' }`. `createShow()` hooks it to `monitor.extra()`.',
@@ -350,6 +355,11 @@ console.log(JSON.stringify(sent[0]));`,
         en: 'The first frame after a silence of this many milliseconds counts as "the leader is back" and asks for the state.',
         zh: '安靜了這麼多毫秒之後的第一幀，算是「主控端回來了」，會去要 state。',
       },
+      {
+        name: 'aliveEvery', type: 'Number', optional: true, default: '2000',
+        en: 'Once it has the state, `frame()` tells the leader it is still there (`{ v, kind: \'here\', id }`) at once and then every this many milliseconds, so the leader can tell a page that left from one that is quiet. `0` says nothing (the leader then counts it as a follower of 0.10.0). `close()` says goodbye (`kind: \'bye\'`). A leader of 0.10.0 ignores both.',
+        zh: '拿到 state 之後，`frame()` 會馬上、然後每隔這麼多毫秒跟主控端說一聲還在（`{ v, kind: \'here\', id }`），主控端才分得出離開的頁面和安靜的頁面。`0` 是什麼都不說（主控端就把它當成 0.10.0 的從屬端來算）。`close()` 會說再見（`kind: \'bye\'`）。0.10.0 的主控端兩樣都不理。',
+      },
     ],
     description: [
       {
@@ -375,8 +385,8 @@ console.log(JSON.stringify(sent[0]));`,
         zh: '`hello(reason?)`：跟主控端說「我在這裡，告訴我現在到哪了」。送出去了回傳 `true`，從屬端已關閉或傳輸沒開則回傳 `false`。',
       },
       frame: {
-        en: 'Call once per frame. While there is no state yet, it says hello again every `helloEvery` milliseconds; otherwise it does nothing.',
-        zh: '每個影格呼叫一次。還沒拿到 state 的時候，每 `helloEvery` 毫秒再說一次 hello，其他時候什麼都不做。',
+        en: 'Call once per frame. While there is no state yet, it says hello again every `helloEvery` milliseconds; once it has the state, it says `here` every `aliveEvery` milliseconds.',
+        zh: '每個影格呼叫一次。還沒拿到 state 的時候，每 `helloEvery` 毫秒再說一次 hello，拿到之後每 `aliveEvery` 毫秒說一聲 `here`。',
       },
       status: {
         en: '`{ role: \'follower\', id, leader, connected, seq, haveState, silence, refused, frames, states, gaps, dropped, rejected, ignored, hellos }`. `silence` is the seconds since the last accepted message (`null` before the first); `refused` is the reason of the last refusal, or `null`.',
@@ -387,8 +397,8 @@ console.log(JSON.stringify(sent[0]));`,
         zh: '給後台監看的數字：`sync/role`、`sync/state`、`sync/error`、`sync/silence`、`sync/lost`、`sync/jumps`、`sync/gaps`。主控端失聯或被拒絕的時候，`sync/error` 和 `sync/lost` 會帶著 `warn: true`（變紅）。',
       },
       close: {
-        en: 'Stop listening and close the transport. A follower made by `createSync()` also calls `timeline.unfollow()`.',
-        zh: '停止收訊息並關掉傳輸。由 `createSync()` 建的從屬端還會呼叫 `timeline.unfollow()`。',
+        en: 'Say goodbye to the leader (`kind: \'bye\'`, so it stops counting this page), stop listening and close the transport. A follower made by `createSync()` also calls `timeline.unfollow()`.',
+        zh: '跟主控端說再見（`kind: \'bye\'`，它就不再算這個頁面），停止收訊息並關掉傳輸。由 `createSync()` 建的從屬端還會呼叫 `timeline.unfollow()`。',
       },
     },
     notes: [

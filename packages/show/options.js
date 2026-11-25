@@ -37,7 +37,7 @@ export function monitorOptions(monitor) {
 
 /** The modules that make input. A follower page takes none of its own (the leader is the only one that plays), so `sync` switches these off for it. */
 export const SYNC_INPUT_MODULES = ['midi', 'keys', 'drums', 'audio', 'hands', 'pose', 'leap', 'remote'];
-const SYNC_KEYS = ['role', 'channel', 'url', 'input', 'id', 'now', 'follow', 'extra', 'state', 'hz', 'onHello', 'info', 'accept', 'onFrame', 'onState', 'onGap', 'resync', 'helloEvery', 'takeoverAfter', 'resyncAfter'];
+const SYNC_KEYS = ['role', 'channel', 'url', 'input', 'id', 'now', 'follow', 'extra', 'state', 'hz', 'onHello', 'info', 'accept', 'onFrame', 'onState', 'onGap', 'resync', 'helloEvery', 'takeoverAfter', 'resyncAfter', 'forgetAfter', 'aliveEvery'];
 const SYNC_FUNCTIONS = ['now', 'extra', 'state', 'onHello', 'accept', 'onFrame', 'onState', 'onGap'];
 
 /**
@@ -50,8 +50,8 @@ const SYNC_FUNCTIONS = ['now', 'extra', 'state', 'onHello', 'accept', 'onFrame',
  *                'ws://host:port/relay': a relay on another machine
  *       input    whether this page takes input of its own (keyboard piano, MIDI, microphone, camera, phones). Default: the leader
  *                does, a follower does not (SYNC_INPUT_MODULES are switched off for it)
- *       extra, state, hz, onHello          leader: data that travels with the clock; see SyncLeader
- *       info, accept, onFrame, onState, onGap, resync, helloEvery, takeoverAfter, resyncAfter   follower: see SyncFollower
+ *       extra, state, hz, onHello, forgetAfter   leader: data that travels with the clock; see SyncLeader
+ *       info, accept, onFrame, onState, onGap, resync, helloEvery, takeoverAfter, resyncAfter, aliveEvery   follower: see SyncFollower
  *       follow   { nudge, deadband, jump, lostAfter, latency, onFollow }: Timeline.follow()'s options
  *       id, now  the peer id and the clock (a test's fake clock)
  * @returns {object|null} the options for createSync() (plus `input`), or null for no sync

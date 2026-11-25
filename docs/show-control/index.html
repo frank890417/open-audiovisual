@@ -525,6 +525,7 @@ expensive there. On a name two sources share, <code>extra</code> beats the world
 <tr><td><code>extra</code>, <code>state</code></td><td>none</td><td>leader: data that travels with the clock (below)</td></tr>
 <tr><td><code>info</code>, <code>accept</code>, <code>onFrame</code>, <code>onState</code>, <code>onGap</code></td><td>none</td><td>follower: hooks and checks (below)</td></tr>
 <tr><td><code>hz</code></td><td>every frame</td><td>leader: at most this many frames a second; a change of state (play, pause, hold, rate, seek) is sent at once</td></tr>
+<tr><td><code>aliveEvery</code>, <code>forgetAfter</code></td><td>2000, 6000</td><td>follower: say <code>here</code> every this many ms once it has the state (0 = never). Leader: stop counting a follower that said <code>here</code> and then went quiet this long</td></tr>
 <tr><td><code>id</code>, <code>now</code></td><td>random, <code>performance.now</code></td><td>the peer id and the clock</td></tr>
 </tbody>
 </table></div>
@@ -532,8 +533,9 @@ expensive there. On a name two sources share, <code>extra</code> beats the world
 <p><strong>Messages.</strong> The same on both transports; <code>seq</code> counts the leader's frames.</p>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-text">{ v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }      leader → followers, every frame
 { v:1, kind:'hello', id, role:'follower', info?, reason? }                    follower → leader: "I am here, where are we?"
-{ v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower</code></pre></div>
-<p>A follower says <code>hello</code> when it comes up, and again every second until it has a <code>state</code>, after a gap in <code>seq</code>, after a silence and whenever its socket reconnects. The leader answers with a <code>state</code>, so a page that joins in the middle, or reloads, is on the show's present at its first frame. <code>cut</code> is the score's cut id: a follower on another cut than the leader (another length, so <code>T</code> means something else) refuses its frames, and the monitor says <code>refused: cut …</code>.</p>
+{ v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower
+{ v:1, kind:'here', id }  /  { v:1, kind:'bye', id }                          follower → leader: still here (every 2 s), gone</code></pre></div>
+<p>A follower says <code>hello</code> when it comes up, and again every second until it has a <code>state</code>, after a gap in <code>seq</code>, after a silence and whenever its socket reconnects. The leader answers with a <code>state</code>, so a page that joins in the middle, or reloads, is on the show's present at its first frame. With its state, a follower says <code>here</code> every <code>aliveEvery</code> (2 s) and <code>bye</code> when it is closed, so the leader's <code>status().followers</code> and the backstage's <code>sync/followers</code> count the pages that are there; a reloaded page is forgotten after <code>forgetAfter</code> (6 s). A page of 0.10.0 says neither and is counted as before. <code>cut</code> is the score's cut id: a follower on another cut than the leader (another length, so <code>T</code> means something else) refuses its frames, and the monitor says <code>refused: cut …</code>.</p>
 <p><strong>Carrying the work's data.</strong> Whatever has to travel with the clock (an override the operator set, a note, a skipped intro) goes in <code>extra</code>. The framework delivers it once each and in order, and never reads it.</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>Copy</button></div><pre><code class="language-js">sync: {
   role: <span class="ts">'leader'</span>, channel: <span class="ts">'hall'</span>,

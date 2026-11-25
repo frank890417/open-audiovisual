@@ -51,8 +51,8 @@ export default {
       },
       {
         name: 'anchor', type: 'Boolean | Number | Date | String | Object | null', optional: true, default: 'null',
-        en: 'The same as calling `timeline.anchor()` once. `true` measures against the wall clock from the first playing frame; a number of milliseconds, a `Date` or an ISO date string is the wall-clock moment of show time 0; an object is `{ epoch, mode, tolerance, warnAt, jump, wait, stall, now, onDrift }`.',
-        zh: '等於呼叫一次 `timeline.anchor()`。`true` 是從第一個播放中的影格開始對牆鐘計帳。毫秒數、`Date` 或 ISO 日期字串，是演出時間 0 對應的牆鐘時刻。物件則是 `{ epoch, mode, tolerance, warnAt, jump, wait, stall, now, onDrift }`。',
+        en: 'The same as calling `timeline.anchor()` once. `true` measures against the wall clock from the first playing frame; a number of milliseconds (`0` included), a `Date` or an ISO date string is the wall-clock moment of show time 0; an object is `{ epoch, mode, tolerance, warnAt, jump, wait, stall, now, onDrift }`. `null`, `false` and `\'\'` mean no anchor.',
+        zh: '等於呼叫一次 `timeline.anchor()`。`true` 是從第一個播放中的影格開始對牆鐘計帳。毫秒數（包括 `0`）、`Date` 或 ISO 日期字串，是演出時間 0 對應的牆鐘時刻。物件則是 `{ epoch, mode, tolerance, warnAt, jump, wait, stall, now, onDrift }`。`null`、`false` 和 `\'\'` 是不錨定。',
       },
     ],
     description: [

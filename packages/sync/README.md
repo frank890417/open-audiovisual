@@ -30,15 +30,18 @@ Transports: a `BroadcastChannel` when there is no `url` (pages of one browser pr
 { v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }      leader → followers, every frame
 { v:1, kind:'hello', id, role:'follower', info?, reason? }                    follower → leader
 { v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower (late joiners, resync)
+{ v:1, kind:'here', id }  /  { v:1, kind:'bye', id }                          follower → leader: still here (every aliveEvery), gone
 ```
 
 A follower says `hello` when it comes up, until it has a `state`, after a gap in `seq`, after a silence, and when its socket
 reconnects; the leader answers with a `state`, so a page that joins late lands on the show's present. A frame older than the newest
-is dropped, a gap is reported (`onGap`), and `extra` is delivered once each, in order.
+is dropped, a gap is reported (`onGap`), and `extra` is delivered once each, in order. With its state a follower says `here` every
+`aliveEvery` ms (2000) and `bye` on `close()`, so the leader's `followers` counts the pages that are there (one quiet for `forgetAfter`,
+6000 ms, is forgotten; a 0.10.0 follower says neither and is counted as before).
 
 | export | |
 |---|---|
-| `createSync({ role, channel, url, timeline, score, follow, extra, state, hz, info, accept, onFrame, onState, onGap, id, now, transport })` | a `SyncLeader` or `SyncFollower`; a follower's timeline is made to follow it; `close()` lets go |
+| `createSync({ role, channel, url, timeline, score, follow, extra, state, hz, forgetAfter, info, accept, onFrame, onState, onGap, aliveEvery, id, now, transport })` | a `SyncLeader` or `SyncFollower`; a follower's timeline is made to follow it; `close()` lets go |
 | `SyncLeader` | `frame()` · `sendState(to?)` · `status()` · `monitor()` · `close()` |
 | `SyncFollower` | `latest()` (the `timeline.follow()` source) · `hello(reason)` · `frame()` · `status()` · `monitor()` · `close()` |
 | `BroadcastTransport` · `RelayTransport` · `createTransport` | `{ send(msg), onMessage(cb), onOpen(cb), open, close() }` |

@@ -212,7 +212,7 @@ export class Timeline {
     this._follow = null;            // follow() 的狀態；null＝沒有在追別人的時鐘，advance() 一個位元都沒變
     this._followCbs = [];
     if (automation && Object.values(automation).some(isLane)) this.automation = this._compileAutomation(automation);
-    if (anchor) {
+    if (anchor !== null && anchor !== undefined && anchor !== false && anchor !== '') {   // anchor: 0 is an epoch (1970), not "none"
       const cfg = anchor !== true && !(anchor instanceof Date) && typeof anchor === 'object' ? anchor : null;   // true｜毫秒｜Date｜ISO 字串｜{ epoch, mode, … }
       this.anchor(cfg ? cfg.epoch : anchor === true ? undefined : anchor, cfg || {});
     }

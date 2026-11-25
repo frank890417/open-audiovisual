@@ -422,6 +422,7 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop, extra: { buil
 <tr><td><code>extra</code>、<code>state</code></td><td>無</td><td>主控端：跟著時鐘一起走的資料（見下）</td></tr>
 <tr><td><code>info</code>、<code>accept</code>、<code>onFrame</code>、<code>onState</code>、<code>onGap</code></td><td>無</td><td>從屬端：掛鉤與檢查（見下）</td></tr>
 <tr><td><code>hz</code></td><td>每幀</td><td>主控端：每秒最多送幾幀；狀態改變（播放、暫停、hold、rate、seek）的那一幀會馬上送</td></tr>
+<tr><td><code>aliveEvery</code>、<code>forgetAfter</code></td><td>2000、6000</td><td>從屬端：拿到 state 之後每隔這麼多毫秒說一聲 <code>here</code>（0 = 不說）。主控端：說過 <code>here</code> 之後安靜了這麼久的從屬端就不再算</td></tr>
 <tr><td><code>id</code>、<code>now</code></td><td>隨機、<code>performance.now</code></td><td>對等端的 id 與時鐘</td></tr>
 </tbody>
 </table></div>
@@ -429,8 +430,9 @@ monitor.frame(snapshotOf({ timeline, params, signals, stage, loop, extra: { buil
 <p><strong>訊息。</strong> 兩種傳輸都一樣；<code>seq</code> 是主控端送出的 frame 的編號。</p>
 <div class="term" data-lang="text"><div class="term-bar"><span>text</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-text">{ v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }      leader → followers, every frame
 { v:1, kind:'hello', id, role:'follower', info?, reason? }                    follower → leader: "I am here, where are we?"
-{ v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower</code></pre></div>
-<p>從屬端一上線就說 <code>hello</code>，之後每秒再說一次，直到拿到 <code>state</code>；<code>seq</code> 出現缺口、沉默一段時間之後、以及連線重連時也會再說。主控端回一則 <code>state</code>，所以中途加入或重新載入的頁面，第一幀就落在演出的現在。<code>cut</code> 是總譜的版本 id：從屬端的版本和主控端不同（長度不同，<code>T</code> 的意思就不同）時，會拒收它的 frame，後台會顯示 <code>refused: cut …</code>。</p>
+{ v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower
+{ v:1, kind:'here', id }  /  { v:1, kind:'bye', id }                          follower → leader: still here (every 2 s), gone</code></pre></div>
+<p>從屬端一上線就說 <code>hello</code>，之後每秒再說一次，直到拿到 <code>state</code>；<code>seq</code> 出現缺口、沉默一段時間之後、以及連線重連時也會再說。主控端回一則 <code>state</code>，所以中途加入或重新載入的頁面，第一幀就落在演出的現在。拿到 state 之後，從屬端每隔 <code>aliveEvery</code>（2 秒）說一聲 <code>here</code>，關掉時說 <code>bye</code>，所以主控端的 <code>status().followers</code> 和後台的 <code>sync/followers</code> 數的是還在的頁面，重新載入的頁面在 <code>forgetAfter</code>（6 秒）之後被忘掉。0.10.0 的頁面兩樣都不說，照以前那樣算。<code>cut</code> 是總譜的版本 id：從屬端的版本和主控端不同（長度不同，<code>T</code> 的意思就不同）時，會拒收它的 frame，後台會顯示 <code>refused: cut …</code>。</p>
 <p><strong>帶作品自己的資料。</strong> 凡是要跟著時鐘一起走的東西（操作員設的覆寫值、一個音符、被跳過的開場）都放在 <code>extra</code>。框架把它送到、每則一次、依序，從來不讀它。</p>
 <div class="term" data-lang="js"><div class="term-bar"><span>js</span><button type="button" class="copy" hidden>複製</button></div><pre><code class="language-js">sync: {
   role: <span class="ts">'leader'</span>, channel: <span class="ts">'hall'</span>,

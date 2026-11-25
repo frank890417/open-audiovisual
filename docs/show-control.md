@@ -503,6 +503,7 @@ const show = await createShow({
 | `extra`, `state` | none | leader: data that travels with the clock (below) |
 | `info`, `accept`, `onFrame`, `onState`, `onGap` | none | follower: hooks and checks (below) |
 | `hz` | every frame | leader: at most this many frames a second; a change of state (play, pause, hold, rate, seek) is sent at once |
+| `aliveEvery`, `forgetAfter` | 2000, 6000 | follower: say `here` every this many ms once it has the state (0 = never). Leader: stop counting a follower that said `here` and then went quiet this long |
 | `id`, `now` | random, `performance.now` | the peer id and the clock |
 
 **Transports.** On one machine the pages talk through a `BroadcastChannel`: no network and nothing to run. The browser connects only pages of the same origin and profile, so open the leader and the followers from the same address. Across machines they join a room on the [room relay](remote.md#the-relay) as `role=leader` and `role=follower`; `node serve.js` on the leader's machine is enough (`url: 'ws://<that machine>:8080/relay'`). A page served over https needs a `wss://` address (the browser blocks `ws://` there). The relay has no authentication: use a closed network and a channel name nobody will guess ([Security](remote.md#security)). Both transports carry the same JSON, so a work does not change when the wire does.
@@ -513,9 +514,10 @@ const show = await createShow({
 { v:1, kind:'frame', src, seq, T, playing, holding, rate, cut?, extra? }      leader → followers, every frame
 { v:1, kind:'hello', id, role:'follower', info?, reason? }                    follower → leader: "I am here, where are we?"
 { v:1, kind:'state', src, seq, to, T, playing, holding, rate, cut?, extra? }  leader → that follower
+{ v:1, kind:'here', id }  /  { v:1, kind:'bye', id }                          follower → leader: still here (every 2 s), gone
 ```
 
-A follower says `hello` when it comes up, and again every second until it has a `state`, after a gap in `seq`, after a silence and whenever its socket reconnects. The leader answers with a `state`, so a page that joins in the middle, or reloads, is on the show's present at its first frame. `cut` is the score's cut id: a follower on another cut than the leader (another length, so `T` means something else) refuses its frames, and the monitor says `refused: cut …`.
+A follower says `hello` when it comes up, and again every second until it has a `state`, after a gap in `seq`, after a silence and whenever its socket reconnects. The leader answers with a `state`, so a page that joins in the middle, or reloads, is on the show's present at its first frame. With its state, a follower says `here` every `aliveEvery` (2 s) and `bye` when it is closed, so the leader's `status().followers` and the backstage's `sync/followers` count the pages that are there; a reloaded page is forgotten after `forgetAfter` (6 s). A page of 0.10.0 says neither and is counted as before. `cut` is the score's cut id: a follower on another cut than the leader (another length, so `T` means something else) refuses its frames, and the monitor says `refused: cut …`.
 
 **Carrying the work's data.** Whatever has to travel with the clock (an override the operator set, a note, a skipped intro) goes in `extra`. The framework delivers it once each and in order, and never reads it.
 
